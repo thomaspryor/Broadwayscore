@@ -1,0 +1,200 @@
+name: Account Metrics
+
+# Accounts went live 2026-10-04 (BRO-4525). This keeps the owner's
+# /admin/accounts page current and pages them when sign-in or saving breaks
+# (BRO-4615).
+#
+#   metrics (every 3 h): scripts/account-metrics.js reads Supabase with the
+#     service role (counts only; no emails or ids leave the job) and PostHog
+#     HogQL, then pushes analytics/account-dashboard.json to the PRIVATE
+#     core-data repo, where /api/admin/account-stats reads it. Account numbers
+#     never enter this public repo. The 24-hour health numbers go through
+#     owner-alert-router.js (once per incident; resolved when they clear).
+#   signin-check (daily): scripts/check-signin-redirects.mjs clicks "Continue
+#     with Google" / "Continue with Apple" on the live site and checks each
+#     still reaches the provider's sign-in page. Signs nobody in.
+#
+# Dry run of the sign-in alert: dispatch with simulate=signin-stalled. It
+# prints the alert that would fire and sends nothing.
+on:
+  schedule:
+    - cron: '17 */3 * * *'   # metrics
+    - cron: '41 7 * * *'     # signin-check (also runs the metrics job)
+  workflow_dispatch:
+    inputs:
+      simulate:
+        description: 'Dry-run an alert instead of a real run (sends nothing)'
+        required: false
+        default: 'none'
+        type: choice
+        options: ['none', 'signin-stalled']
+      signin_check:
+        description: 'Also run the Google/Apple sign-in start check'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  metrics:
+    runs-on: ubuntu-latest
+    # Same group for both jobs' ledger commits is not needed: push-with-retry
+    # rebases, and alert-ledger.json is an apiFallbackMerge file.
+    concurrency:
+      group: account-metrics
+      cancel-in-progress: false
+    # ~6 HogQL statements; a PostHog 504 takes ~5 min and each is retried once.
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+      - uses: ./.github/actions/setup-node
+
+      - name: Dry run (simulate)
+        if: inputs.simulate == 'signin-stalled'
+        run: node scripts/account-metrics.js --simulate=signin-stalled --out=account-metrics
+
+      - name: Checkout core data (private repo for the dashboard payload)
+        if: inputs.simulate != 'signin-stalled'
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Build numbers + route alerts
+        if: inputs.simulate != 'signin-stalled'
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/account-metrics.js --out=account-metrics
+
+      # Private repo only. Same retry/rebase policy as analyze-traffic-sources.yml
+      # (only analytics/ is ours, so the rebase is conflict-free).
+      # hygiene-push-ok: pushes to the external private-repo checkout in /tmp —
+      # push-with-retry.sh targets the main workspace checkout and can't be reused here.
+      - name: Save dashboard data (private repo)
+        if: always() && inputs.simulate != 'signin-stalled'
+        run: |
+          if [ ! -f account-metrics/account-dashboard.json ]; then
+            echo "No dashboard this run (see the previous step) — private repo left as is."
+            exit 0
+          fi
+          if [ ! -d /tmp/core-data-checkout/.git ]; then
+            echo "::error::dashboard built but the core-data clone is missing — cannot save it"
+            exit 1
+          fi
+          mkdir -p /tmp/core-data-checkout/analytics
+          cp account-metrics/account-dashboard.json /tmp/core-data-checkout/analytics/
+          cd /tmp/core-data-checkout
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add analytics/account-dashboard.json
+          if git diff --staged --quiet; then
+            echo "Dashboard unchanged."
+            exit 0
+          fi
+          git commit -m "analytics: account dashboard ($(date -u +%Y-%m-%dT%H:%MZ))"
+          for i in 1 2 3 4 5; do
+            if git push origin HEAD:main; then exit 0; fi
+            if [ "$i" = "5" ]; then echo "::error::push failed after 5 attempts"; exit 1; fi
+            sleep $((i * 3 + RANDOM % 5))
+            if ! git pull --rebase -X theirs origin main; then
+              git rebase --abort 2>/dev/null || true
+              git reset --hard "@{u}" 2>/dev/null || true
+              echo "::error::rebase onto the new private main failed; dashboard not saved this run"
+              exit 1
+            fi
+          done
+
+      # routeAlert's ledger must persist or every run starts cold and the
+      # once-per-incident rule never holds. One commit for all three files
+      # (see audit-imageless-scored-shows.yml for why it must not be split).
+      - name: Commit alert ledger
+        if: always() && inputs.simulate != 'signin-stalled'
+        env:
+          PUSH_DEADLINE_SEC: '600'
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No ledger changes"
+          else
+            git commit -m "data: account-metrics alert ledger [skip ci]
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Account Metrics Failed'
+          severity: 'warning'
+
+  signin-check:
+    # Never during a dry run: this job routes real alerts.
+    if: (github.event.schedule == '41 7 * * *' || inputs.signin_check == true) && inputs.simulate != 'signin-stalled'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: account-signin-check
+      cancel-in-progress: false
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+      - uses: ./.github/actions/setup-node
+      - uses: ./.github/actions/setup-playwright
+        with:
+          browsers: chromium
+
+      - name: Check Google + Apple sign-in starts
+        id: check
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/check-signin-redirects.mjs --json=signin-check.json --route-alerts
+
+      - name: Commit alert ledger
+        if: always()
+        env:
+          PUSH_DEADLINE_SEC: '600'
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No ledger changes"
+          else
+            git commit -m "data: sign-in check alert ledger [skip ci]
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Upload result
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: signin-check-${{ github.run_id }}
+          path: signin-check.json
+          retention-days: 14
+          if-no-files-found: warn
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Sign-in Check Failed'
+          severity: 'warning'

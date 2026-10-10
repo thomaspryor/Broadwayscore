@@ -1,0 +1,108 @@
+name: Codex card runner
+
+# BRO-4745: the unattended Codex card worker (scripts/codex/daily-runner.js).
+# Codex (owner's ChatGPT plan, login kept encrypted on a Linear card) fixes
+# Todo cards; an independent Claude check (API key, capped per review and per
+# run) must pass before the runner lands the fix via land/codex-bro-N.
+# 5 runs x --limit 4 = up to 20 cards a day. The runner's own branch lock
+# (refs/heads/codex-runner-lock) keeps a hand-started cloud run from overlapping.
+#
+# Credential layout: checkout does NOT persist a token (Codex and the unit tests
+# it writes run in this workspace). The runner pushes through a credential
+# helper that reads CODEX_RUNNER_PUSH_TOKEN; scrubEnv drops every *TOKEN* var
+# from the Codex, unit-test and reviewer shells, so they cannot push.
+
+on:
+  schedule:
+    - cron: '13 1,6,11,16,21 * * *'
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'Max cards this run'
+        default: '4'
+      ids:
+        description: 'Only these cards (comma-separated BRO ids), optional'
+        default: ''
+      extra:
+        description: 'Extra runner flags, e.g. --dry-run or --no-land'
+        default: ''
+
+concurrency:
+  group: codex-runner
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  run:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 355
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          filter: blob:none
+          persist-credentials: false
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          # claude-code 2.1.292 requires node >= 22
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install
+        run: |
+          npm ci --no-audit --no-fund
+          npm i -g --no-audit --no-fund @openai/codex@0.160.0 @anthropic-ai/claude-code@2.1.292
+          # Ubuntu 24.04 blocks unprivileged user namespaces; Codex's Linux sandbox needs them.
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 || true
+
+      - name: Git identity and push credential
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git config --global credential.https://github.com.helper \
+            '!f() { test "$1" = get || exit 0; test -n "$CODEX_RUNNER_PUSH_TOKEN" || exit 0; echo username=x-access-token; echo "password=$CODEX_RUNNER_PUSH_TOKEN"; }; f'
+
+      - name: Run Codex card runner
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          # Opens the stored Codex login: the cloud env's OpenAI key, which differs from
+          # the OPENAI_API_KEY secret above (scripts/codex/auth-store.js keyMaterial).
+          CODEX_AUTH_KEY: ${{ secrets.CODEX_AUTH_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CODEX_RUNNER_PUSH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+          LIMIT: ${{ inputs.limit || '4' }}
+          IDS: ${{ inputs.ids }}
+          EXTRA: ${{ inputs.extra }}
+        run: |
+          # Until the owner adds the CODEX_AUTH_KEY secret the login cannot be opened here;
+          # skip instead of failing five times a day. Adding the secret starts the runner.
+          if [ -z "$CODEX_AUTH_KEY" ]; then
+            echo "::warning::CODEX_AUTH_KEY secret is not set, so the Codex runner is skipping (see BRO-4745)"
+            exit 0
+          fi
+          args=(--limit "$LIMIT" --max-minutes 150)
+          if [ -n "$IDS" ]; then args+=(--ids "$IDS"); fi
+          # shellcheck disable=SC2206 -- word-split the free-form flags on purpose
+          if [ -n "$EXTRA" ]; then args+=($EXTRA); fi
+          node scripts/codex/daily-runner.js "${args[@]}"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Codex card runner failed'
+          description: 'The runner job itself failed (setup, login or a crash). Cards it held are named on the codex-runner-lock branch and the next run adopts them.'
+          severity: 'warning'

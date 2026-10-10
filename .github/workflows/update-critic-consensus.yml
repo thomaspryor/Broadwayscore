@@ -1,0 +1,117 @@
+name: Update Critics' Take
+
+on:
+  # Run weekly on Sundays at 2 AM UTC (9 PM ET Saturday)
+  schedule:
+    - cron: '0 2 * * 0'
+  # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Force regenerate all shows (ignore 3+ review threshold)'
+        required: false
+        type: boolean
+        default: false
+      max_shows:
+        description: 'Maximum shows to regenerate per run (0 = unlimited)'
+        required: false
+        type: number
+        default: 200
+      show:
+        description: 'Show ID, or comma-separated list of IDs, to regenerate (opening-night remediation task #389; poller batch BRO-4595)'
+        required: false
+        type: string
+        default: ''
+
+concurrency:
+  group: update-critic-consensus
+  cancel-in-progress: false
+
+jobs:
+  update-consensus:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Critics' Take
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          FORCE: ${{ inputs.force }}
+          MAX_SHOWS: ${{ inputs.max_shows }}
+          SHOW: ${{ inputs.show }}
+        run: |
+          ARGS=""
+          if [ "$FORCE" = "true" ]; then
+            ARGS="$ARGS --force"
+          fi
+          if [ -n "$MAX_SHOWS" ] && [ "$MAX_SHOWS" != "0" ]; then
+            ARGS="$ARGS --max-shows=$MAX_SHOWS"
+          fi
+          # Show filter: one ID (how opening-night-checklist.js /
+          # critics-take-present.check.js self-heal a missing take, task #389)
+          # or a comma-separated list (opening-night-poller.yml's single
+          # dispatch per poll cycle, BRO-4595). generate-critic-consensus.js
+          # parses --shows= via scripts/lib/parse-show-list-arg.js; --show= is
+          # a list-accepting alias, so single-ID callers are unchanged.
+          # Whitespace is stripped so a hand-typed "a, b" does not split into
+          # two argv words on the unquoted $ARGS below.
+          # The max_shows default (200) applies to workflow_dispatch runs
+          # (inputs are empty on the Sunday schedule, which runs uncapped)
+          # and must stay above the largest plausible per-night batch (58 on
+          # 2026-10-04): the cap counts generations only, and the generator
+          # logs any requested IDs it did not get to evaluate.
+          SHOW="${SHOW//[[:space:]]/}"
+          if [ -n "$SHOW" ]; then
+            ARGS="$ARGS --shows=$SHOW"
+          fi
+          node scripts/generate-critic-consensus.js $ARGS
+
+      - name: Note on commit
+        if: always()
+        run: |
+          # critic-consensus.json is gitignored (core data in private repo).
+          # push-core-data action below handles syncing to the private repo.
+          echo "Consensus file written locally — push-core-data will sync to private repo."
+
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from update-critic-consensus'
+
+      - name: Dispatch deploy
+        if: always()
+        uses: ./.github/actions/dispatch-deploy
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Update Critics Take Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

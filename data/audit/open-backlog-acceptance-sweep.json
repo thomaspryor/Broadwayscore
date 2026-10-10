@@ -1,0 +1,201 @@
+{
+  "generatedAt": "2026-10-10T13:10:00.838Z",
+  "shadow": true,
+  "checkoutSha": "3005fa7f7183b853cd015d6e3f0866e67ccf0375",
+  "totalCandidates": 1412,
+  "eligibleCandidates": 92,
+  "checked": 30,
+  "truncated": true,
+  "fetchError": null,
+  "counts": {
+    "pass": 19,
+    "fail": 1,
+    "unverifiable": 10
+  },
+  "alreadyDone": [
+    {
+      "id": "BRO-4971",
+      "name": "Round-up-listed reviews excluded by an automated verdict are never re-checked (5 of 16 were false in BRO-4956)",
+      "verifyCmd": "node --test scripts/audit-show-review-gap.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4898",
+      "name": "Corpus-wide cleanup: counted reviews that break invariants + flagged-in-window recovery worklist (from the revival spot check)",
+      "verifyCmd": "node --test tests/unit/check-corpus-drift.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4888",
+      "name": "London Into the Woods + Evita London pages: missing Telegraph/FT fixes, misfiled Bridge reviews (revival promo)",
+      "verifyCmd": "node --test tests/unit/revival-promo-prior-run-id.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4887",
+      "name": "Into the Woods Broadway pages: wrong 2022 opening date, false flags, wrong bylines, misfiled reviews (revival promo)",
+      "verifyCmd": "node --test tests/unit/revival-promo-itw-broadway.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4878",
+      "name": "National tour pages show wrong information: 1 page problem(s) (schedule-orphan)",
+      "verifyCmd": "node --test scripts/lib/tour-page-audit.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4877",
+      "name": "National tour pages show wrong information: 1 page problem(s) (poster-missing)",
+      "verifyCmd": "node --test scripts/lib/tour-page-audit.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4868",
+      "name": "Make linear-next, the watchdog and the classifier honour the NO-DISPATCH marker, and anchor its regex",
+      "verifyCmd": "node --test scripts/lib/cloud-worker-pick.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4860",
+      "name": "Coverage holes repair (BRO-4849 A-C): re-collect the 110 no-text reviews, read the 40 rejected-yet-verified, repair 7 wrong URLs, score the 41 unscored",
+      "verifyCmd": "node --test tests/unit/coverage-holes-audit.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4849",
+      "name": "P1: ~260 found reviews never reach the site (no text, wrongly rejected, never scored) across 394 current shows",
+      "verifyCmd": "node --test tests/unit/coverage-holes-audit.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4840",
+      "name": "Star-band drift triage: human-review overrides, relayed ratings, letter-grade extraction, and a daily published-score audit in the health digest",
+      "verifyCmd": "node --test tests/unit/published-score-star-band.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4839",
+      "name": "P1: 189 published reviews contradict the critic's own star rating or all 3 AI readers (adjudicated/human/relay overrides)",
+      "verifyCmd": "node --test tests/unit/published-score-star-band.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4831",
+      "name": "Lane rehearsal follow-ups: record a real-opening fixture (Paranormal Activity), wire arm-check into the real lane driver and a T-24h rehearsal, production lane driver on runLaneNight",
+      "verifyCmd": "node --test tests/unit/opening-night-lane-rehearsal.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4823",
+      "name": "Lane publish: wire real ports in CI (pushData via push-with-retry, isLeased from lease-guard, deploy that commits public/data/shows/{id}.json, live base URL) and a 2-minute publish driver",
+      "verifyCmd": "node --test tests/unit/opening-night-lane-publish.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4820",
+      "name": "Lane discovery follow-ups: Show Score, Playbill Verdict, Google News (redirect unwrap), Talkin' Broadway, SERP adapter, 2-min loop driver, feed date confirmation",
+      "verifyCmd": "node --test tests/unit/opening-night-lane-discovery.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4814",
+      "name": "stuck-card-closer closes too few In Review cards: 27 of 44 were verifiably done and sat up to 46 days",
+      "verifyCmd": "node --test scripts/lib/stuck-card-closer.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4813",
+      "name": "Triage 24 stranded land/** refs that name no card (interactive-session branches)",
+      "verifyCmd": "node --test scripts/lib/land-stranded-refs.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4792",
+      "name": "Schedule audit-transfer-review-gaps in the corpus-drift workflow with a baseline for --ci (BRO-1361 follow-up)",
+      "verifyCmd": "node --test scripts/lib/transfer-review-gaps.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4758",
+      "name": "Commercial: AI-researched figures must be confirmed on the cited page before showing as fact",
+      "verifyCmd": "node --test tests/unit/commercial-source-verify.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4735",
+      "name": "commercial.json: 9 /biz fields show internal research wording (Per policy, owner review, recouped:null)",
+      "verifyCmd": "node scripts/validate-data.js",
+      "detail": null
+    }
+  ],
+  "failing": [
+    {
+      "id": "BRO-4930",
+      "name": "Adopt the 8 outlet tier moves from the 2026-10 audit (owner approved)",
+      "verifyCmd": "node --test scripts/verify-outlet-tiers-published.test.mjs",
+      "detail": "TAP version 13\n# Subtest: every published review from a 2026-10 moved outlet shows its adopted tier\nnot ok 1 - every published review from a 2026-10 moved outlet shows its adopted tier\n  ---\n  duration_ms: 135.010315\n  location: '/tmp/open-backlog-sweep-Jv5VjH/main/scripts/verify-outlet-tiers-published.test.mjs:26:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    6/1797 published reviews still c"
+    }
+  ],
+  "unverifiable": [
+    {
+      "id": "BRO-4966",
+      "name": "push-core-data: bound each git push with a timeout so a transport hang falls into the retry loop",
+      "verifyCmd": "node --test tests/unit/push-core-data-push-timeout.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/push-core-data-push-timeout.test.mjs"
+    },
+    {
+      "id": "BRO-4960",
+      "name": "Critics' Take blurb outlives its reviews for up to 7 days after a wrongShow/removal (prune only runs weekly)",
+      "verifyCmd": "node --test tests/unit/critic-consensus-prune-only.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/critic-consensus-prune-only.test.mjs"
+    },
+    {
+      "id": "BRO-4911",
+      "name": "Prevention for the Into the Woods page bugs: byline dedup, fabricated-row block, openingDate source, same-URL self-heal",
+      "verifyCmd": "node --test tests/unit/itw-prevention-byline-fabricated.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/itw-prevention-byline-fabricated.test.mjs"
+    },
+    {
+      "id": "BRO-4908",
+      "name": "P1: direct-ingested reviews sit unscored ~45min — cron LLM Ensemble run reports 'No reviews to process' (rent-west-end-2026 WEBF/LTD)",
+      "verifyCmd": "node --test scripts/llm-scoring/index.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/llm-scoring/index.test.mjs"
+    },
+    {
+      "id": "BRO-4896",
+      "name": "App: TestFlight submission of build 82 failed at Apple (eas-build run 37856154098)",
+      "verifyCmd": "node --test scripts/ship.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/ship.test.mjs"
+    },
+    {
+      "id": "BRO-4891",
+      "name": "Older musicals and missing prior-production pages for revival promo (Dreamgirls 2016, Sound of Music tour, Full Monty, JP, Paddington, director data)",
+      "verifyCmd": "node --test tests/unit/revival-promo-musicals-and-missing-pages.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/revival-promo-musicals-and-missing-pages.test.mjs"
+    },
+    {
+      "id": "BRO-4889",
+      "name": "Older Broadway pages behind spring 2027 revivals: contamination, false flags, junk rows (Evita, Osage, Cat, Private Lives, Dreamgirls 1981)",
+      "verifyCmd": "node --test tests/unit/revival-promo-older-broadway.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/revival-promo-older-broadway.test.mjs"
+    },
+    {
+      "id": "BRO-4835",
+      "name": "Lane inline scoring follow-ups: lane workflow with sparse shallow checkout, CI wiring of realFetchPorts and the ensemble scorer, first live fetch check",
+      "verifyCmd": "node --test scripts/lib/opening-night-lane-inline-score.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/opening-night-lane-inline-score.test.mjs"
+    },
+    {
+      "id": "BRO-4638",
+      "name": "Mac-to-cloud step 1: retire Mac opening-night monitor after verifying cloud watch",
+      "verifyCmd": "node --test tests/unit/opening-night-monitor-retired.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/opening-night-monitor-retired.test.mjs"
+    },
+    {
+      "id": "BRO-4617",
+      "name": "P1: update-show-status closes a just-opened show via prior-production ShowScore URL + stale todaytixId",
+      "verifyCmd": "node --test scripts/lib/update-show-status.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/update-show-status.test.mjs"
+    }
+  ]
+}

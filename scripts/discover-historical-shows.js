@@ -1,0 +1,720 @@
+#!/usr/bin/env node
+/**
+ * Historical Broadway Show Discovery
+ *
+ * Discovers closed Broadway shows from past seasons by scraping IBDB season pages
+ * and adds them to shows.json with "closed" status.
+ *
+ * Data source: https://www.ibdb.com/season/{numericId}
+ *   - Season ID = startYear - 727 (e.g., 2024-2025 → 1297)
+ *   - Provides: title, type (Musical/Play/Special), Original/Revival, opening date, theater
+ *   - IBDB production URLs used for direct date enrichment (no Google SERP needed)
+ *
+ * Usage: node scripts/discover-historical-shows.js --seasons=2024-2025,2023-2024 [--dry-run] [--time-budget-min=N]
+ *
+ * --time-budget-min=N: wall-clock budget in minutes for the IBDB enrichment
+ * loop (0 or omitted = unlimited). Exits cleanly once exceeded instead of
+ * running into the job timeout; unenriched shows are still added, just
+ * without IBDB-sourced dates/creative team (a later manual run or the
+ * weekly enrich-ibdb-dates.yml cron picks them up).
+ */
+
+const fs = require('fs');
+const path = require('path');
+const { JSDOM } = require('jsdom');
+const { slugify, checkForDuplicate } = require('./lib/deduplication');
+const { validateVenue } = require('./lib/broadway-theaters');
+const { sanitizeVenueForWrite } = require('./lib/venue-classification');
+const { classifyShow } = require('./lib/classify-show');
+const { writeClosingDate } = require('./lib/closing-date-guard');
+const { isTourProduction } = require('./lib/tour-detection');
+const { getSeasonForDate, validateSeason } = require('./lib/broadway-seasons');
+const { extractDatesFromIBDBPage } = require('./lib/ibdb-dates');
+const { fetchPage } = require('./lib/scraper');
+const { scrapeCurrentRuntimes, scrapeShowRuntime, matchRuntimesToShows } = require('./lib/broadway-com-runtimes');
+const showsWriteGuard = require('./lib/shows-write-guard');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { assignRevivalChain } = require('./lib/revival-chain');
+
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `discover-historical-shows.js — Historical Broadway Show Discovery.
+
+Usage:
+  node scripts/discover-historical-shows.js [options]
+  node scripts/discover-historical-shows.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
+const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
+const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'historical-shows-pending.json');
+
+// IBDB season IDs are NOT sequential — they have gaps (COVID years, etc.)
+// This mapping is extracted from the season dropdown on any IBDB season page.
+// To update: scrape any /season/ page and parse <option value="/season/{id}">{season}</option>
+const IBDB_SEASON_IDS = {
+  '2025-2026': 1298,
+  '2024-2025': 1297,
+  '2023-2024': 1296,
+  '2022-2023': 1295,
+  '2021-2022': 1291,
+  '2020-2021': 1290,
+  '2019-2020': 1289,
+  '2018-2019': 1288,
+  '2017-2018': 1287,
+  '2016-2017': 1286,
+  '2015-2016': 1285,
+  '2014-2015': 1284,
+  '2013-2014': 1283,
+  '2012-2013': 1282,
+  '2011-2012': 1281,
+  '2010-2011': 1280,
+  '2009-2010': 1278,
+  '2008-2009': 1277,
+  '2007-2008': 1276,
+  '2006-2007': 1275,
+  '2005-2006': 1274,
+  '2004-2005': 1273,
+  '2003-2004': 1272,
+  '2002-2003': 1271,
+  '2001-2002': 1270,
+  '2000-2001': 1268,
+  '1999-2000': 1101,
+  '1998-1999': 1100,
+  '1997-1998': 1099,
+  '1996-1997': 1098,
+  '1995-1996': 1097,
+  '1994-1995': 1096,
+  '1993-1994': 1095,
+  '1992-1993': 1094,
+  '1991-1992': 1093,
+  '1990-1991': 1092,
+  '1989-1990': 1091,
+  '1988-1989': 1090,
+  '1987-1988': 1089,
+  '1986-1987': 1088,
+  '1985-1986': 1087,
+  '1984-1985': 1086,
+  '1983-1984': 1085,
+  '1982-1983': 1084,
+  '1981-1982': 1083,
+  '1980-1981': 1082,
+  '1979-1980': 1081,
+  '1978-1979': 1080,
+  '1977-1978': 1079,
+  '1976-1977': 1078,
+  '1975-1976': 1077,
+  '1974-1975': 1076,
+  '1973-1974': 1075,
+  '1972-1973': 1074,
+  '1971-1972': 1073,
+  '1970-1971': 1072,
+};
+
+const dryRun = process.argv.includes('--dry-run');
+const skipRuntimes = process.argv.includes('--skip-runtimes');
+const timeBudget = createRunBudget(parseTimeBudgetMin(process.argv));
+
+// Parse season argument
+const seasonsArg = process.argv.find(arg => arg.startsWith('--seasons='));
+const seasons = seasonsArg ? seasonsArg.split('=')[1].split(',') : [];
+
+if (seasons.length === 0) {
+  console.error('Error: Must specify at least one season with --seasons=YYYY-YYYY');
+  console.error('   Example: --seasons=2024-2025,2023-2024');
+  process.exit(1);
+}
+
+function loadShows() {
+  return showsWriteGuard.loadShows();
+}
+
+function saveShows(data) {
+  // Dedup guard: parallel runs can create duplicate entries
+  const seen = new Set();
+  const before = data.shows.length;
+  for (let i = data.shows.length - 1; i >= 0; i--) {
+    if (seen.has(data.shows[i].id)) {
+      data.shows.splice(i, 1);
+    } else {
+      seen.add(data.shows[i].id);
+    }
+  }
+  const removed = before - data.shows.length;
+  if (removed > 0) {
+    console.log(`⚠️  Dedup guard: removed ${removed} duplicate show(s) before saving`);
+  }
+  showsWriteGuard.saveShows(data);
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/**
+ * Parse IBDB date string like "Jun 5, 2024" or "November 12, 2024" → "2024-06-05"
+ */
+function parseIBDBDateString(dateStr) {
+  if (!dateStr) return null;
+  const cleaned = dateStr.trim();
+  const parsed = new Date(cleaned);
+  if (isNaN(parsed.getTime())) return null;
+  return parsed.toISOString().split('T')[0];
+}
+
+/**
+ * Fetch IBDB season page HTML via the shared fetchPage() fallback chain.
+ * ibdb.com is a public, simple-HTML, no-anti-bot site (scraper.js tries free
+ * Playwright first for it) — a direct ScrapingBee premium_proxy=true call
+ * here paid $2.48/1k for a page that doesn't need proxying at all (task #5).
+ */
+async function fetchIBDBSeasonPage(url) {
+  const result = await fetchPage(url);
+  return result.content;
+}
+
+/**
+ * Map IBDB type text to our schema
+ * "Musical, Original" → { type: 'musical', isRevival: false }
+ * "Play, Revival" → { type: 'play', isRevival: true }
+ * "Special, Original" → null (skip)
+ */
+function parseIBDBType(typeText) {
+  if (!typeText) return null;
+  const cleaned = typeText.trim();
+
+  // Skip specials (concerts, benefits, one-person shows)
+  if (cleaned.toLowerCase().startsWith('special')) return null;
+
+  const isRevival = cleaned.toLowerCase().includes('revival');
+
+  if (cleaned.toLowerCase().startsWith('musical')) {
+    return { type: 'musical', isRevival };
+  }
+  if (cleaned.toLowerCase().startsWith('play')) {
+    return { type: 'play', isRevival };
+  }
+
+  // Unknown type — include but mark as musical (safe default)
+  return { type: 'musical', isRevival: false };
+}
+
+/**
+ * Fetch and parse IBDB season page to discover shows
+ *
+ * IBDB season URL: https://www.ibdb.com/season/{numericId}
+ * Season IDs are looked up from IBDB_SEASON_IDS (not computed — they have gaps)
+ *
+ * HTML structure:
+ * <div class="row seasons-list">
+ *   <div class="col s4"><a href="/broadway-production/...">Title</a></div>
+ *   <div class="col s2">Musical, Original</div>
+ *   <div class="col s2">Jun 5, 2024</div>
+ *   <div class="col s3">Palace Theatre</div>
+ * </div>
+ */
+async function fetchShowsFromIBDB(season) {
+  const seasonId = IBDB_SEASON_IDS[season];
+  if (!seasonId) {
+    console.error(`  Error: Unknown IBDB season ID for "${season}". Add it to IBDB_SEASON_IDS.`);
+    return [];
+  }
+  const url = `https://www.ibdb.com/season/${seasonId}`;
+
+  console.log(`Fetching season ${season} from IBDB (ID: ${seasonId})...`);
+
+  try {
+    const html = await fetchIBDBSeasonPage(url);
+    console.log(`  Received ${html.length} chars of HTML`);
+
+    const dom = new JSDOM(html);
+    const document = dom.window.document;
+
+    const showsList = [];
+
+    // IBDB season pages have two sections:
+    //   <h1>Productions Opening During the Season</h1> — shows that debuted (we want these)
+    //   <h1>Productions Closing During the Season</h1> — shows that closed (skip)
+    //
+    // Each show is a row: <div class="row seasons-list">
+    //   <div class="col s4"><a href="/broadway-production/...">Title</a></div>
+    //   <div class="col s2">Musical, Original</div>
+    //   <div class="col s2">Jun 5, 2024</div>
+    //   <div class="col s3">Palace Theatre</div>
+    // </div>
+
+    const allRows = Array.from(document.querySelectorAll('.row.seasons-list'));
+    console.log(`  Found ${allRows.length} total show rows`);
+
+    // Find the "Closing" section <h1> to know where to stop
+    const allH1s = Array.from(document.querySelectorAll('h1'));
+    let closingH1 = null;
+    for (const h1 of allH1s) {
+      if ((h1.textContent || '').includes('Closing')) {
+        closingH1 = h1;
+        break;
+      }
+    }
+
+    // Process rows, stopping at the Closing section
+    for (const row of allRows) {
+      // If we've reached the closing section, stop
+      if (closingH1) {
+        const pos = row.compareDocumentPosition(closingH1);
+        // If closingH1 precedes this row (bit 2 set), this row is in the Closing section
+        if (pos & 2) { // Node.DOCUMENT_POSITION_PRECEDING
+          continue;
+        }
+      }
+
+      const link = row.querySelector('a[href*="/broadway-production/"]');
+      if (!link) continue;
+
+      const href = link.getAttribute('href');
+      const ibdbUrl = `https://www.ibdb.com${href}`;
+      const title = link.textContent.trim();
+
+      if (!title || title.length < 2) continue;
+
+      // Extract type, date, theater from child div.col elements
+      // cols[0] = s4 (title/link), cols[1] = s2 (type), cols[2] = s2 (date), cols[3] = s3 (theater)
+      const cols = Array.from(row.querySelectorAll('.col'));
+      let ibdbTypeText = null;
+      let dateText = null;
+      let venue = null;
+
+      if (cols.length >= 4) {
+        ibdbTypeText = cols[1].textContent.trim();
+        dateText = cols[2].textContent.trim();
+        venue = cols[3].textContent.trim();
+      } else if (cols.length >= 3) {
+        ibdbTypeText = cols[1].textContent.trim();
+        dateText = cols[2].textContent.trim();
+      } else if (cols.length >= 2) {
+        ibdbTypeText = cols[1].textContent.trim();
+      }
+
+      const parsedType = parseIBDBType(ibdbTypeText);
+      if (parsedType === null) {
+        // Special type — skip
+        console.log(`  [SKIP] "${title}" — Special (not Musical/Play)`);
+        continue;
+      }
+
+      const openingDate = parseIBDBDateString(dateText);
+
+      // IBDB's theater column can be blank/malformed on some historical rows
+      // (missing <div class=col> entirely) — same #994/#1060-class leak,
+      // guarded instead of resurrected via `|| 'TBA'`. Skip the row rather
+      // than write a placeholder; IBDB seasons are re-scraped on later runs.
+      const sanitizedVenue = sanitizeVenueForWrite(venue);
+      if (!sanitizedVenue) {
+        console.log(`  [SKIP] "${title}" — IBDB venue "${venue || ''}" is a placeholder/blob, deferring to next run (card #1060 follow-up)`);
+        continue;
+      }
+
+      showsList.push({
+        title,
+        ibdbUrl,
+        openingDate,
+        venue: sanitizedVenue,
+        type: parsedType.type,
+        isRevival: parsedType.isRevival,
+        ibdbTypeText: ibdbTypeText || 'unknown',
+        season
+      });
+    }
+
+    console.log(`  Extracted ${showsList.length} shows from ${season} (excluding Specials)`);
+    return showsList;
+  } catch (e) {
+    console.error(`  Error fetching season ${season} from IBDB: ${e.message}`);
+    return [];
+  }
+}
+
+/**
+ * Enrich shows with dates and creative team from individual IBDB production pages.
+ * Uses the IBDB URLs we already have from the season page (no SERP search needed).
+ */
+async function enrichFromIBDB(shows) {
+  console.log(`Enriching ${shows.length} shows from IBDB production pages...`);
+  let budgetExitCount = 0;
+
+  for (let i = 0; i < shows.length; i++) {
+    // Each show's extractDatesFromIBDBPage() goes through the full
+    // fetchPage() fallback chain (SD→BD→SB→Playwright, each with its own
+    // retries/timeouts) — an unbounded season list can burn past the job's
+    // timeout-minutes with nothing committed (same class as #369/#415).
+    // Shows are already pushed to newShows before this runs, so a budget
+    // exit just leaves the remainder without IBDB dates, not unadded.
+    // Returned so the caller can flag it in the discovery issue instead of
+    // it only being visible in job logs (ship-check finding, #421 follow-up).
+    if (timeBudget.exceeded()) {
+      budgetExitCount = shows.length - i;
+      console.log(`\n⏱ Time budget (${timeBudget.minutes} min) reached during IBDB enrichment — ${budgetExitCount} show(s) added without IBDB dates/creative team.`);
+      break;
+    }
+
+    const show = shows[i];
+    if (!show.ibdbUrl) continue;
+
+    console.log(`  [${i + 1}/${shows.length}] "${show.title}"...`);
+
+    try {
+      const result = await extractDatesFromIBDBPage(show.ibdbUrl);
+
+      if (result) {
+        // IBDB opening date is authoritative
+        if (result.openingDate) {
+          show.openingDate = result.openingDate;
+        }
+
+        // Preview start date (not available on season page)
+        if (result.previewsStartDate) {
+          show.previewsStartDate = result.previewsStartDate;
+        }
+
+        // Closing date — route through guard so humanCorrectedClosingDate is honored.
+        if (result.closingDate) {
+          writeClosingDate(show, result.closingDate, 'historical-shows discovery');
+        }
+
+        // Creative team (director, choreographer, etc.)
+        if (result.creativeTeam && result.creativeTeam.length > 0) {
+          show.creativeTeam = result.creativeTeam;
+        }
+      }
+    } catch (e) {
+      console.log(`    Warning: IBDB enrichment failed for "${show.title}": ${e.message}`);
+    }
+
+    // Rate limit: 1.5s between IBDB requests
+    if (i < shows.length - 1) {
+      await sleep(1500);
+    }
+  }
+
+  return { budgetExitCount };
+}
+
+async function discoverHistoricalShows() {
+  console.log('='.repeat(60));
+  console.log('BROADWAY HISTORICAL SHOW DISCOVERY (IBDB)');
+  console.log('='.repeat(60));
+  console.log(`Mode: ${dryRun ? 'DRY RUN' : 'LIVE'}`);
+  console.log(`Seasons: ${seasons.join(', ')}`);
+  console.log('');
+
+  const data = loadShows();
+  console.log(`Existing shows in database: ${data.shows.length}`);
+  console.log('');
+
+  // Fetch shows from each season via IBDB
+  const allDiscoveredShows = [];
+  for (const season of seasons) {
+    const validation = validateSeason(season);
+    if (!validation.isValid) {
+      console.error(`Invalid season format: ${season} — ${validation.reason}`);
+      continue;
+    }
+
+    const seasonShows = await fetchShowsFromIBDB(season);
+    allDiscoveredShows.push(...seasonShows);
+
+    // Rate limit between seasons
+    if (seasons.indexOf(season) < seasons.length - 1) {
+      await sleep(2000);
+    }
+  }
+
+  console.log('');
+  console.log(`Total shows discovered: ${allDiscoveredShows.length}`);
+  console.log('');
+
+  // Filter: dedup, venue validation, tour detection
+  const newShows = [];
+  const skippedDuplicates = [];
+  const skippedTours = [];
+  const skippedInvalidVenue = [];
+
+  for (const show of allDiscoveredShows) {
+    // Build slug and ID with year suffix to prevent collisions
+    const openingYear = show.openingDate ? show.openingDate.split('-')[0] : show.season.split('-')[0];
+    const baseSlug = slugify(show.title);
+    const id = `${baseSlug}-${openingYear}`;
+    // Fix: slug = id ensures unique slugs for multi-production shows
+    show.slug = id;
+    show.id = id;
+
+    // STEP 0: Slug collision check (catches cross-season duplicates like shows straddling season boundaries)
+    const existingBySlug = data.shows.find(s => s.id === id || s.slug === id);
+    if (existingBySlug) {
+      skippedDuplicates.push({
+        title: show.title, season: show.season,
+        reason: `Slug "${id}" already exists (${existingBySlug.title})`, existingId: existingBySlug.id
+      });
+      continue;
+    }
+
+    // STEP 1: Tour detection (check venue category first for off-Broadway awareness)
+    const venueCategory = validateVenue(show.venue)?.category;
+    const isOffBroadway = show.category === 'off-broadway' || venueCategory === 'off-broadway';
+    const tourCheck = isTourProduction(show, { allowOffBroadway: isOffBroadway });
+    if (tourCheck.isTour) {
+      skippedTours.push({
+        title: show.title, season: show.season,
+        reason: tourCheck.reason, type: tourCheck.type
+      });
+      continue;
+    }
+
+    // STEP 2: Venue validation
+    const venueValidation = validateVenue(show.venue);
+    if (!venueValidation.isValid && show.venue && show.venue !== 'TBA') {
+      skippedInvalidVenue.push({
+        title: show.title, season: show.season,
+        venue: show.venue, reason: venueValidation.reason
+      });
+      continue;
+    }
+    if (venueValidation.isValid) {
+      show.venue = venueValidation.canonical;
+    }
+
+    // STEP 3: Season validation
+    if (show.openingDate) {
+      try {
+        const computedSeason = getSeasonForDate(show.openingDate);
+        if (computedSeason !== show.season) {
+          console.log(`  Warning: Season mismatch for "${show.title}": listed as ${show.season}, date suggests ${computedSeason}`);
+        }
+      } catch (e) {
+        // Date parsing issue — will be handled later
+      }
+    }
+
+    // STEP 4: Duplicate check
+    const duplicateCheck = checkForDuplicate(show, data.shows);
+    if (duplicateCheck.isDuplicate) {
+      skippedDuplicates.push({
+        title: show.title, season: show.season,
+        reason: duplicateCheck.reason, existingId: duplicateCheck.existingShow?.id
+      });
+      continue;
+    }
+
+    newShows.push(show);
+  }
+
+  // IBDB date enrichment: get preview dates, closing dates, creative team
+  let ibdbBudgetExitCount = 0;
+  if (newShows.length > 0 && !dryRun) {
+    console.log('');
+    try {
+      const enrichResult = await enrichFromIBDB(newShows);
+      ibdbBudgetExitCount = enrichResult.budgetExitCount;
+    } catch (e) {
+      console.log(`Warning: IBDB enrichment failed (continuing without): ${e.message}`);
+    }
+    console.log('');
+  }
+
+  // Log skipped shows
+  if (skippedTours.length > 0) {
+    console.log(`Rejected ${skippedTours.length} tour/non-Broadway production(s):`);
+    for (const skip of skippedTours) {
+      console.log(`   - "${skip.title}" [${skip.season}] (${skip.type}: ${skip.reason})`);
+    }
+    console.log('');
+  }
+
+  if (skippedInvalidVenue.length > 0) {
+    console.log(`Skipped ${skippedInvalidVenue.length} show(s) with unrecognized venues:`);
+    for (const skip of skippedInvalidVenue) {
+      console.log(`   - "${skip.title}" at "${skip.venue}" [${skip.season}]`);
+    }
+    console.log('');
+  }
+
+  if (skippedDuplicates.length > 0) {
+    console.log(`Skipped ${skippedDuplicates.length} duplicate(s):`);
+    for (const skip of skippedDuplicates) {
+      console.log(`   - "${skip.title}" [${skip.season}] (${skip.reason}) -> existing: ${skip.existingId}`);
+    }
+    console.log('');
+  }
+
+  if (newShows.length === 0) {
+    console.log('No new historical shows discovered');
+    return { newShows: [], count: 0 };
+  }
+
+  console.log(`Found ${newShows.length} NEW historical show(s):`);
+  console.log('-'.repeat(40));
+
+  for (const show of newShows) {
+    const typeLabel = show.isRevival
+      ? (show.type === 'play' ? 'PLAY REVIVAL' : 'MUSICAL REVIVAL')
+      : (show.type === 'play' ? 'PLAY' : 'MUSICAL');
+    console.log(`  ${show.id} — ${show.title} (${typeLabel}) [${show.venue}]`);
+  }
+  console.log('');
+
+  // --- Runtime enrichment from Broadway.com ---
+  let runtimeEnrichments = {};
+  if (!dryRun && !skipRuntimes && newShows.length > 0) {
+    try {
+      console.log('⏱️  Looking up runtimes from Broadway.com...');
+      // Centralized page covers current shows; for historical, try individual pages
+      const runtimeEntries = await scrapeCurrentRuntimes();
+      runtimeEnrichments = matchRuntimesToShows(runtimeEntries, [...data.shows, ...newShows]);
+
+      // For shows not matched on centralized page, try individual pages
+      for (const show of newShows.slice(0, 25)) { // Limit to 25 to avoid rate issues
+        if (runtimeEnrichments[show.id]) continue;
+        try {
+          const result = await scrapeShowRuntime(show.title);
+          if (result.runtime) {
+            runtimeEnrichments[show.id] = result;
+          }
+        } catch (e) { /* skip */ }
+        await new Promise(r => setTimeout(r, 2000)); // Rate limit
+      }
+    } catch (e) {
+      console.log(`⚠️  Runtime lookup failed (continuing without): ${e.message}`);
+    }
+    console.log('');
+  }
+
+  if (!dryRun) {
+    // Add new shows to database
+    for (const show of newShows) {
+      const tags = ['historical'];
+      if (show.isRevival) tags.push('revival');
+
+      // Find existing productions for revival linking. originalProductionId
+      // must point to the chronologically EARLIEST production in the title
+      // group — not just whatever already happened to be in shows.json,
+      // which broke when an older production was discovered after a newer
+      // one already existed (verified 173/214 shows.json entries backwards
+      // as of 2026-08-25; see scripts/lib/revival-chain.js).
+      let originalProductionId = null;
+      let productionNumber = 1;
+
+      if (show.isRevival) {
+        const baseSlug = slugify(show.title);
+        const existingProductions = data.shows.filter(s => {
+          const sBase = (s.slug || s.id).replace(/-\d{4}$/, '');
+          return sBase === baseSlug && s.id !== show.id;
+        });
+
+        if (existingProductions.length > 0) {
+          const chain = assignRevivalChain([
+            ...existingProductions.map(s => ({ id: s.id, openingDate: s.openingDate })),
+            { id: show.id, openingDate: show.openingDate },
+          ]);
+          const chainById = new Map(chain.map(c => [c.id, c]));
+
+          const own = chainById.get(show.id);
+          originalProductionId = own.originalProductionId;
+          productionNumber = own.productionNumber;
+
+          // Retroactively fix the rest of the group (productionNumber for
+          // all, and originalProductionId for anyone whose "earliest" this
+          // show's true chronological position displaces).
+          for (const existing of existingProductions) {
+            const c = chainById.get(existing.id);
+            if (existing.originalProductionId !== c.originalProductionId) {
+              existing.originalProductionId = c.originalProductionId;
+            }
+            if (existing.productionNumber !== c.productionNumber) {
+              existing.productionNumber = c.productionNumber;
+            }
+          }
+        }
+      }
+
+      // Stamp category+market — prevents the null-category creator bug documented in
+      // memory/feedback_recurring_backfill_means_broken_creator.md. Prefer the
+      // venue-derived category; fall back to classifyShow() for TBA/unknown venues.
+      const venueCat = validateVenue(show.venue)?.category;
+      const { category, market } = classifyShow({ category: show.category || venueCat });
+
+      data.shows.push({
+        id: show.id,
+        title: show.title,
+        slug: show.slug,
+        venue: show.venue,
+        openingDate: show.openingDate || null,
+        closingDate: show.closingDate || null,
+        status: 'closed',
+        category,
+        market,
+        type: show.type,
+        runtime: (runtimeEnrichments[show.id] && runtimeEnrichments[show.id].runtime) || null,
+        intermissions: runtimeEnrichments[show.id] != null ? runtimeEnrichments[show.id].intermissions : null,
+        images: {},
+        synopsis: '',
+        ageRecommendation: (runtimeEnrichments[show.id] && runtimeEnrichments[show.id].ageRecommendation) || null,
+        previewsStartDate: show.previewsStartDate || null,
+        tags,
+        ticketLinks: [],
+        cast: [],
+        creativeTeam: show.creativeTeam || [],
+        isRevival: show.isRevival,
+        originalProductionId,
+        productionNumber,
+        season: show.season,
+        ibdbUrl: show.ibdbUrl || null,
+      });
+    }
+
+    saveShows(data);
+    console.log(`Added ${newShows.length} historical shows to shows.json`);
+
+    // Summary
+    const revivals = newShows.filter(s => s.isRevival).length;
+    const plays = newShows.filter(s => s.type === 'play' && !s.isRevival).length;
+    const musicals = newShows.filter(s => s.type === 'musical' && !s.isRevival).length;
+
+    console.log('');
+    console.log('Detection Summary:');
+    if (musicals > 0) console.log(`   ${musicals} original musical(s)`);
+    if (plays > 0) console.log(`   ${plays} original play(s)`);
+    if (revivals > 0) console.log(`   ${revivals} revival(s)`);
+    console.log('');
+
+    // Save pending shows for review
+    fs.writeFileSync(OUTPUT_FILE, JSON.stringify({
+      discoveredAt: new Date().toISOString(),
+      seasons,
+      ibdbBudgetExitCount,
+      shows: newShows.map(s => ({
+        id: s.id, title: s.title, slug: s.slug, venue: s.venue,
+        openingDate: s.openingDate, closingDate: s.closingDate,
+        type: s.type, isRevival: s.isRevival, season: s.season,
+        ibdbUrl: s.ibdbUrl
+      })),
+    }, null, 2));
+    console.log(`Saved pending shows to ${OUTPUT_FILE}`);
+  }
+
+  // GitHub Actions outputs
+  if (process.env.GITHUB_OUTPUT) {
+    const outputFile = process.env.GITHUB_OUTPUT;
+    fs.appendFileSync(outputFile, `historical_shows_count=${newShows.length}\n`);
+    fs.appendFileSync(outputFile, `historical_shows=${newShows.map(s => s.title).join(', ')}\n`);
+    fs.appendFileSync(outputFile, `historical_slugs=${newShows.map(s => s.slug).join(',')}\n`);
+    fs.appendFileSync(outputFile, `ibdb_incomplete_count=${ibdbBudgetExitCount}\n`);
+  }
+
+  return { newShows, count: newShows.length };
+}
+
+discoverHistoricalShows()
+  .catch(e => {
+    console.error('Discovery failed:', e);
+    process.exit(1);
+  });

@@ -1,0 +1,81 @@
+name: Check Flag Parity
+
+# Weekly guardrail (card #250) that no session can silently ship experiment
+# code whose PostHog flag doesn't exist or has drifted from its registered
+# state. Generalizes the per-experiment flagHealth() check in
+# analyze-gate-cold-start.js (card #247) to EVERY flag referenced in src/,
+# via scripts/lib/flag-registry.js.
+#
+# Two independent checks, both in scripts/monitor-flag-parity.js:
+#   1. Live PostHog state vs each REGISTERED_FLAGS entry's expected state
+#      (exists / active / variant split / rollout).
+#   2. A fresh static scan of src/ for flag keys with NO registry entry —
+#      this is the pre-merge CI gate (scripts/lib/flag-registry.test.mjs,
+#      part of the standard test.yml run) run again post-merge as a backstop
+#      in case CI was bypassed or the registry drifted after merge.
+#
+# Root incident (2026-07-12, discovered 07-20): mobile-gate-timing shipped
+# client code + monitor + guardrail emails, but the PostHog flag itself was
+# never created. The client polled null 2,710 times over 8 days and nothing
+# detected it. This workflow is that comparison, run on a schedule.
+#
+# Never judges or touches flag config — alerts only. Actionable-only email
+# policy (see scripts/lib/discord-notify.js).
+
+on:
+  schedule:
+    - cron: '10 13 * * 1'  # Mondays 13:10 UTC (9:10 AM ET) — 10 min after Monitor Gate A/B
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Compute decisions but send nothing / save nothing'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: check-flag-parity
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+
+      - name: Run flag-parity monitor
+        env:
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/monitor-flag-parity.js ${{ inputs.dry_run && '--dry-run' || '' }}
+
+      - name: Commit monitor state
+        if: ${{ always() && !inputs.dry_run }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          [ -f data/audit/flag-parity-monitor-state.json ] && git add data/audit/flag-parity-monitor-state.json
+          if git diff --cached --quiet; then
+            echo "No state change to commit"
+            exit 0
+          fi
+          git commit -m "data: flag-parity monitor state [skip ci]"
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Check Flag Parity Failed'
+          severity: 'warning'

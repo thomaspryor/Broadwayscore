@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "showId": "franz-and-marie-west-end-2026",
+  "openingDate": "2026-10-05",
+  "detectedAt": "2026-10-10T19:08:40.564Z",
+  "windowDays": 7,
+  "orphans": [
+    {
+      "file": "firstnightmagazine--unknown.json",
+      "outletId": "firstnightmagazine",
+      "criticName": "Unknown",
+      "url": "https://firstnightmagazine.com/tag/franz-and-marie/",
+      "fullTextLen": 543,
+      "dispatchActionable": false,
+      "skipReason": "terminal_text_gate_block",
+      "rescoreBlockedReason": "input_validation_failed:body_too_short",
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
+    },
+    {
+      "file": "whatnightout--unknown.json",
+      "outletId": "whatnightout",
+      "criticName": "Unknown",
+      "url": "https://whatnightout.uk/london/events/franz-marie-8871320",
+      "fullTextLen": 709,
+      "dispatchActionable": false,
+      "skipReason": "terminal_text_gate_block",
+      "rescoreBlockedReason": "input_validation_failed:body_too_short",
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
+    }
+  ],
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 0,
+  "blockedOrphanCount": 2,
+  "blockBroadcast": true,
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
+}

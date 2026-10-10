@@ -1,0 +1,397 @@
+#!/usr/bin/env node
+/**
+ * Archive show images locally
+ *
+ * Downloads poster, thumbnail, and hero images for all shows from CDN URLs.
+ * Saves optimized WebP copies to public/images/shows/{show-id}/
+ * Backs up original CDN URLs to data/image-sources.json
+ * Updates shows.json to point to local paths
+ *
+ * Usage:
+ *   node scripts/archive-show-images.js              # Archive all shows
+ *   node scripts/archive-show-images.js --force       # Re-download even if local file exists
+ *   node scripts/archive-show-images.js --show=hamilton-2015  # Archive specific show
+ */
+
+const fs = require('fs');
+const path = require('path');
+const crypto = require('crypto');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
+
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `archive-show-images.js — Archive show images locally.
+
+Usage:
+  node scripts/archive-show-images.js [options]
+  node scripts/archive-show-images.js --help, -h    print this usage and exit
+`;
+let sharp;
+try {
+  sharp = require('sharp');
+} catch {
+  sharp = null;
+}
+
+const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
+const OUTPUT_DIR = path.join(__dirname, '..', 'public', 'images', 'shows');
+
+// Aspect-ratio thresholds — match scripts/check-image-aspect.js (canonical).
+// A wide-landscape file saved as poster.webp renders as a vertical sliver
+// inside the show page's aspect-[2/3] object-cover container (evita-west-end-2025
+// commit a71c3defe4). Reject after download so fetch-show-images-auto can re-source.
+const ASPECT_THRESHOLDS = {
+  poster:    { minRatio: 1.00, maxRatio: Infinity },
+  thumbnail: { minRatio: 0.85, maxRatio: 1.70 },
+  hero:      { minRatio: 0,    maxRatio: 0.85 },
+};
+
+async function checkAspect(filePath, role) {
+  if (!sharp) return { ok: true, reason: 'sharp unavailable, skipping' };
+  const t = ASPECT_THRESHOLDS[role];
+  if (!t) return { ok: true };
+  try {
+    const m = await sharp(filePath).metadata();
+    if (!m.width || !m.height) return { ok: false, reason: 'no dimensions' };
+    const ratio = m.height / m.width;
+    if (ratio < t.minRatio || ratio > t.maxRatio) {
+      return { ok: false, reason: `${m.width}x${m.height} h/w=${ratio.toFixed(2)} — wrong shape for ${role}` };
+    }
+    return { ok: true, ratio };
+  } catch (e) {
+    return { ok: false, reason: `sharp failed: ${e.message}` };
+  }
+}
+
+// Placeholder-hash detection is canonical in scripts/lib/show-images.js.
+// This file used to keep its own copy of the Set with only 3 hashes while
+// fetch-show-images-auto.js carried 6 — so three "Coming Soon" variants were
+// archived here as if they were real key art (2026-07-31 review). Import it,
+// never re-declare it.
+const { isPlaceholderFile } = require('./lib/show-images');
+const { canReuseArchivedFile, isDownloadableSource, isRejectedImage, imagePathOwner } = require('./lib/image-source-match');
+const { IMAGE_SOURCES_PATH: SOURCES_PATH, loadImageSources, saveImageSources } = require('./lib/image-sources-store');
+
+const FORMATS = ['poster', 'thumbnail', 'hero'];
+
+// Import pinned images list from fetch script to prevent overwriting curated thumbnails
+const PINNED_IMAGES = new Set([
+  // Manually curated promotional art (restored/selected by human review)
+  'sunset-boulevard-2024',        // Nicole Scherzinger Tony Award promo art
+  'an-enemy-of-the-people-2024',  // Jeremy Strong underwater poster art
+  'waiting-for-godot-2025',       // Reeves & Winter blue promo poster
+  'good-night-and-good-luck-2025',// George Clooney B&W full title poster
+  'parade-2023',                  // Ben Platt & Micaela Diamond promo art
+  'redwood-2025',                 // Idina Menzel "Returns to Broadway" poster
+  'smash-2025',                   // Red marquee light-bulb logo
+  'once-upon-a-mattress-2024',    // Sutton Foster promo art
+  'maybe-happy-ending-2024',      // Square key art (protected from poster crop)
+  'romeo-juliet-2024',            // Manually uploaded promotional art
+  'art-2025',                     // Manually sourced thumbnail
+  // Currently open shows — thumbnails curated/verified by human
+  'aladdin-2014',
+  'all-out-2025',
+  'and-juliet-2022',
+  'book-of-mormon-2011',
+  'buena-vista-social-club-2025',
+  'bug-2026',
+  'chess-2025',
+  'chicago-1996',
+  'death-becomes-her-2024',
+  'hadestown-2019',
+  'hamilton-2015',
+  'harry-potter-2021',
+  'hells-kitchen-2024',
+  'just-in-time-2025',
+  'marjorie-prime-2025',
+  'mj-2022',
+  'moulin-rouge-2019',
+  'oedipus-2025',
+  'oh-mary-2024',
+  'operation-mincemeat-2025',
+  'ragtime-2025',
+  'six-2021',
+  'stranger-things-2024',
+  'the-great-gatsby-2024',
+  'the-lion-king-1997',
+  'the-outsiders-2024',
+  'two-strangers-bway-2025',
+  'wicked-2003',
+]);
+
+// Contentful transformation parameters for each format
+const CONTENTFUL_PARAMS = {
+  poster:    'w=720&h=1080&fit=fill&f=face&fm=webp&q=85',
+  thumbnail: 'w=540&h=540&fit=fill&f=face&fm=webp&q=85',
+  hero:      'w=1920&h=800&fit=fill&f=center&fm=webp&q=85',
+};
+
+function getDownloadUrl(url, format) {
+  if (!url) return null;
+  if (url.includes('images.ctfassets.net')) {
+    const baseUrl = url.split('?')[0];
+    return `${baseUrl}?${CONTENTFUL_PARAMS[format]}`;
+  }
+  return url;
+}
+
+function getLocalExtension(url) {
+  if (url.includes('ctfassets.net')) return 'webp'; // Contentful serves WebP via fm=webp
+  const match = url.match(/\.(webp|png|jpg|jpeg|gif)/i);
+  return match ? match[1].toLowerCase() : 'webp';
+}
+
+async function downloadImage(url, filepath) {
+  const response = await fetch(url, {
+    headers: { 'User-Agent': 'Mozilla/5.0 (compatible; BroadwayScorecard/1.0)' },
+    signal: AbortSignal.timeout(30000),
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status} ${response.statusText}`);
+  }
+
+  const buffer = Buffer.from(await response.arrayBuffer());
+
+  if (buffer.length < 1000) {
+    throw new Error(`Suspiciously small file (${buffer.length} bytes)`);
+  }
+
+  fs.mkdirSync(path.dirname(filepath), { recursive: true });
+  fs.writeFileSync(filepath, buffer);
+  return buffer.length;
+}
+
+async function main() {
+  const args = process.argv.slice(2);
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(args)) { console.log(USAGE); return; }
+  const force = args.includes('--force');
+  const checkAspectFlag = args.includes('--check-aspect');
+  const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
+
+  const showsData = loadShows();
+
+  // Load or create image sources backup
+  const imageSources = loadImageSources();
+
+  let shows = showsData.shows;
+  if (showFilter) {
+    shows = shows.filter(s => s.id === showFilter || s.slug === showFilter);
+    if (shows.length === 0) {
+      console.error(`Show not found: ${showFilter}`);
+      process.exit(1);
+    }
+  }
+
+  let totalDownloaded = 0;
+  let totalSkipped = 0;
+  let totalFailed = 0;
+  let totalBytes = 0;
+  let showsUpdated = 0;
+
+  console.log(`Archiving images for ${shows.length} shows...`);
+  console.log(`Output: ${OUTPUT_DIR}`);
+  console.log(`Force re-download: ${force}\n`);
+
+  for (const show of shows) {
+    if (!show.images) continue;
+
+    // Save original CDN URLs before we overwrite them
+    if (!imageSources[show.id]) {
+      imageSources[show.id] = {};
+    }
+
+    let showDownloaded = 0;
+    let showChanged = false;
+
+    for (const format of FORMATS) {
+      const url = show.images[format];
+      if (!url) continue;
+
+      // Reject "Coming Soon" placeholder CDN URLs — don't download or archive them
+      if (!url.startsWith('/images/') && (/coming.?soon/i.test(url) || /NORAM[_\s]/i.test(url) || /square_photo\.png/i.test(url))) {
+        console.log(`  ⚠ ${show.title} ${format}: CDN URL is a "Coming Soon" placeholder — clearing`);
+        show.images[format] = null;
+        showChanged = true;
+        continue;
+      }
+
+      // Skip pinned thumbnails — these were manually curated
+      if (format === 'thumbnail' && PINNED_IMAGES.has(show.id) && !force) {
+        const localPath = path.join(OUTPUT_DIR, show.id, 'thumbnail.webp');
+        const localJpg = path.join(OUTPUT_DIR, show.id, 'thumbnail.jpg');
+        if (fs.existsSync(localPath) || fs.existsSync(localJpg)) {
+          totalSkipped++;
+          continue;
+        }
+      }
+
+      // If URL is already local and we're not forcing, skip
+      if (url.startsWith('/images/') && !force) {
+        // Check that the local file actually exists
+        const localPath = path.join(__dirname, '..', 'public', url);
+        if (fs.existsSync(localPath)) {
+          // --check-aspect: verify shape; if wrong, null + delete + re-source from imageSources
+          if (checkAspectFlag) {
+            const aspect = await checkAspect(localPath, format);
+            if (!aspect.ok) {
+              console.log(`  ⚠ ${show.title} ${format}: local file has wrong aspect (${aspect.reason}) — re-downloading`);
+              try { fs.unlinkSync(localPath); } catch {}
+              show.images[format] = null; // let downstream fall through to source-URL re-fetch below
+              showChanged = true;
+              // fall through to the source-URL block
+            } else {
+              totalSkipped++;
+              continue;
+            }
+          } else {
+            totalSkipped++;
+            continue;
+          }
+        }
+        // Local path in shows.json but file is missing - try to re-download from source
+        // Keyed by the file's owner: a row may serve another show's file (BRO-4901).
+        const sourceUrl = imageSources[imagePathOwner(url) || show.id]?.[format];
+        if (!sourceUrl) {
+          console.warn(`  ⚠ ${show.title} ${format}: Local file missing and no source URL`);
+          totalFailed++;
+          continue;
+        }
+        // A hand-set file (manual:<note>) has nothing to re-download, and a
+        // source a person rejected for this show would bring the wrong
+        // production's art back (BRO-4901).
+        if (!isDownloadableSource(sourceUrl) || isRejectedImage({ [format]: sourceUrl }, show)) {
+          console.warn(`  ⚠ ${show.title} ${format}: Local file missing; recorded source is ${isDownloadableSource(sourceUrl) ? 'rejected for this show' : 'not downloadable'} — not re-downloading`);
+          totalFailed++;
+          continue;
+        }
+        // Re-download from source
+        const ext = getLocalExtension(sourceUrl);
+        const filepath = path.join(OUTPUT_DIR, show.id, `${format}.${ext}`);
+        try {
+          const dlUrl = getDownloadUrl(sourceUrl, format);
+          const size = await downloadImage(dlUrl, filepath);
+          // Aspect-check: reject wide-landscape posters / portrait heroes / etc.
+          // The source URL can produce a wrong-shape file (Evita case) — fall through
+          // to fetch-show-images-auto on the next run rather than persisting bad shape.
+          const aspect = await checkAspect(filepath, format);
+          if (!aspect.ok) {
+            console.warn(`  ⚠ ${show.title} ${format}: re-download failed aspect check (${aspect.reason}) — leaving null`);
+            try { fs.unlinkSync(filepath); } catch {}
+            show.images[format] = null;
+            showChanged = true;
+            totalFailed++;
+          } else {
+            show.images[format] = `/images/shows/${show.id}/${format}.${ext}`;
+            showDownloaded++;
+            totalDownloaded++;
+            totalBytes += size;
+            showChanged = true;
+          }
+        } catch (e) {
+          console.error(`  ✗ ${show.title} ${format}: ${e.message}`);
+          totalFailed++;
+        }
+        await new Promise(r => setTimeout(r, 150));
+        continue;
+      }
+
+      const ext = getLocalExtension(url);
+      const filepath = path.join(OUTPUT_DIR, show.id, `${format}.${ext}`);
+
+      // Keep the file on disk only when it was downloaded from this same URL.
+      // A fetch that picks new art with an unchanged file name (.jpg for .jpg)
+      // must replace it (BRO-2242). The source is recorded only after a good
+      // download, so a failed one is retried rather than marked done.
+      if (canReuseArchivedFile({ recordedSource: imageSources[show.id][format], incomingUrl: url, fileExists: fs.existsSync(filepath), force })) {
+        // File exists - just update shows.json to use local path
+        const localPath = `/images/shows/${show.id}/${format}.${ext}`;
+        if (show.images[format] !== localPath) {
+          show.images[format] = localPath;
+          showChanged = true;
+        }
+        totalSkipped++;
+        continue;
+      }
+
+      // Download the image
+      const dlUrl = getDownloadUrl(url, format);
+      if (!dlUrl) continue;
+
+      // Download beside the current file and replace it only once the checks
+      // pass: now that new art for an existing file name is downloaded, a
+      // rejected download must not delete the art already on disk.
+      const tmpPath = `${filepath}.incoming`;
+      try {
+        const size = await downloadImage(dlUrl, tmpPath);
+
+        // Reject known placeholder images — don't let them overwrite real art
+        if (isPlaceholderFile(tmpPath)) {
+          console.warn(`  ⚠ ${show.title} ${format}: Downloaded image is a "Coming Soon" placeholder — rejecting`);
+          fs.unlinkSync(tmpPath);
+          totalFailed++;
+          continue;
+        }
+
+        // Reject wrong-aspect downloads — wide poster, portrait hero, etc.
+        // (evita-west-end-2025 commit a71c3defe4 class).
+        const aspect = await checkAspect(tmpPath, format);
+        if (!aspect.ok) {
+          console.warn(`  ⚠ ${show.title} ${format}: Downloaded image has wrong aspect (${aspect.reason}) — rejecting`);
+          fs.unlinkSync(tmpPath);
+          totalFailed++;
+          continue;
+        }
+        fs.renameSync(tmpPath, filepath);
+
+        show.images[format] = `/images/shows/${show.id}/${format}.${ext}`;
+        imageSources[show.id][format] = url;
+        showDownloaded++;
+        totalDownloaded++;
+        totalBytes += size;
+        showChanged = true;
+
+        // Clean up old file with different extension (e.g., .jpg replaced by .webp)
+        const otherExts = ['jpg', 'jpeg', 'png', 'webp'].filter(e => e !== ext);
+        for (const oldExt of otherExts) {
+          const oldPath = path.join(OUTPUT_DIR, show.id, `${format}.${oldExt}`);
+          if (fs.existsSync(oldPath)) {
+            fs.unlinkSync(oldPath);
+            console.log(`  🗑️  Cleaned up old ${format}.${oldExt}`);
+          }
+        }
+      } catch (e) {
+        try { fs.unlinkSync(tmpPath); } catch {}
+        console.error(`  ✗ ${show.title} ${format}: ${e.message}`);
+        totalFailed++;
+      }
+
+      // Rate limit
+      await new Promise(r => setTimeout(r, 150));
+    }
+
+    if (showChanged) showsUpdated++;
+    if (showDownloaded > 0) {
+      console.log(`✓ ${show.title}: ${showDownloaded} images downloaded`);
+    }
+  }
+
+  // Save image sources backup
+  saveImageSources(imageSources);
+
+  // Save updated shows.json with local paths
+  saveShows(showsData);
+
+  console.log(`\n--- Summary ---`);
+  console.log(`Downloaded: ${totalDownloaded} images (${(totalBytes / 1024 / 1024).toFixed(1)} MB)`);
+  console.log(`Already cached: ${totalSkipped}`);
+  console.log(`Failed: ${totalFailed}`);
+  console.log(`Shows updated in shows.json: ${showsUpdated}`);
+  console.log(`Image sources backed up to: ${SOURCES_PATH}`);
+}
+
+main().catch(err => {
+  console.error('Fatal error:', err);
+  process.exit(1);
+});

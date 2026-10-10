@@ -1,0 +1,543 @@
+name: Push review-texts
+description: Commits and pushes review-texts changes to the private repo
+
+inputs:
+  token:
+    description: PAT for private repo access
+    required: true
+  message:
+    description: Commit message
+    required: false
+    default: 'data: Update review texts'
+
+runs:
+  using: composite
+  steps:
+    - name: Push review-texts to private repo
+      shell: bash
+      working-directory: data/review-texts
+      env:
+        REVIEW_TEXTS_TOKEN: ${{ inputs.token }}
+        COMMIT_MSG: ${{ inputs.message }}
+      run: |
+        # Configure git for this nested repo
+        git config user.name "GitHub Action"
+        git config user.email "action@github.com"
+
+        # Ensure remote uses the token (actions/checkout may have set it, but be safe)
+        git remote set-url origin "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" 2>/dev/null || \
+          git remote add origin "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git"
+
+        # SAFETY: Pull remote changes FIRST so we don't overwrite data (e.g., fullText)
+        # that was fetched/committed by other processes while local changes were pending.
+        # MUST use --autostash: the tree is always dirty here (the workflow's changes
+        # aren't committed yet) and a plain `git pull --rebase` REFUSES to run on a
+        # dirty tree — the old `|| true` swallowed that refusal, so this pull
+        # silently no-oped on EVERY run and the protected-field restore below
+        # compared against a stale HEAD (three whole-file review clobbers,
+        # 2026-07-18/19: theatre-weekly, talkinbroadway x2). If the autostash pop
+        # conflicts, prefer the stash (this workflow's fresh writes) and let the
+        # protected-field restore re-add anything the stale base was missing.
+        # Failure shapes (adversarial review 2026-07-20):
+        #  - Mid-rebase conflict (exit != 0): ABORT back to the pre-pull state.
+        #    Stale baseline for this run, but no corruption — the push-retry
+        #    loop below resolves the same conflict content-aware (fullText
+        #    length) with the corrected HEAD/REBASE_HEAD logic.
+        #  - Autostash-POP conflict: `git pull --rebase --autostash` exits 0
+        #    (!) and leaves conflict markers + unmerged paths, which the old
+        #    exit-code gate missed — `git add -A` below would have COMMITTED
+        #    the markers. Detect via unmerged paths and resolve toward the
+        #    stash side (this workflow's writes; stage 3 = stash in a pop
+        #    conflict). The protected-field restore below then re-adds any
+        #    richer content the fresh HEAD has.
+        if ! git pull --rebase --autostash origin main -q 2>/dev/null; then
+          echo "::warning::push-review-texts: pre-stage pull hit a rebase conflict — aborted; baseline stale, push-loop resolves content-aware"
+          git rebase --abort 2>/dev/null || true
+        fi
+        if [ -n "$(git ls-files -u)" ]; then
+          echo "::warning::push-review-texts: autostash pop conflicted — keeping this workflow's writes; protected fields restored below"
+          git checkout --theirs -- . 2>/dev/null || true
+          git add -A
+        fi
+
+        # BRO-4786: opening-night lane lease. While the lane holds a show's night lease, no
+        # other workflow may write that show's directory: undo any uncommitted change under a
+        # leased show (also covers the autostash-conflict staging above) before staging.
+        # The lane's own workflow sets OPENING_NIGHT_LANE_HOLDER and passes through.
+        # Re-sync first: the copy fetched at checkout can be a whole job old.
+        node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" sync || true
+        node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" enforce --dir="$GITHUB_WORKSPACE/data/review-texts" || \
+          echo "::warning::push-review-texts: opening-night lease enforce failed to run"
+
+        # Stage all changes
+        # ROOT-CAUSE GUARD (2026-05-27): the review-texts data repo contains
+        # ONLY JSON review files — never symlinks. A stray symlink
+        # (broadway-review-texts -> /Users/tompryor/broadway-review-texts,
+        # absolute local path) was committed via `git add -A` from a local
+        # session, dangled in CI, and crashed the collection pipeline for
+        # ~8h. Delete any symlinks in the tree before staging so one can
+        # never be committed again. -print surfaces them in the log.
+        STRAY_LINKS=$(find . -type l -not -path './.git/*')
+        if [ -n "$STRAY_LINKS" ]; then
+          echo "::warning::push-review-texts: removing stray symlink(s) before commit:"
+          echo "$STRAY_LINKS"
+          # -delete removes the symlink entry from the working tree. The
+          # `git add -A` below then stages that removal automatically —
+          # including for an already-tracked symlink — so no separate
+          # `git rm --cached` is needed (and the unquoted-var form of it was
+          # unsafe under whitespace in paths).
+          find . -type l -not -path './.git/*' -delete
+        fi
+
+        git add -A
+
+        # Check if there are changes to commit
+        if git diff --staged --quiet; then
+          echo "No review-texts changes to push"
+          exit 0
+        fi
+
+        # Protect scored/collected review data: for any staged review-text JSON where
+        # local is missing fields that the committed version has, restore them.
+        # This prevents any workflow from accidentally wiping scores, fullText, or metadata.
+        node -e "
+          const fs = require('fs');
+          const path = require('path');
+          const { execSync } = require('child_process');
+          // S2-T2: PROTECTED is sourced from the single source of truth in
+          // scripts/lib/review-write-guard.js. The action keeps a small local
+          // extension for fields that are intentionally NOT in the global
+          // PROTECTED list (clearFailureFlags clears them on success) but
+          // SHOULD survive a rebase here at push time.
+          const guardPath = process.env.GITHUB_WORKSPACE
+            ? path.join(process.env.GITHUB_WORKSPACE, 'scripts/lib/review-write-guard.js')
+            : path.resolve('scripts/lib/review-write-guard.js');
+          const { PROTECTED_FIELDS, isIntentionalClear } = require(guardPath);
+          const ACTION_EXTRA = [
+            // SERP retry state intentionally excluded from guard's PROTECTED_FIELDS
+            // because clearFailureFlags() clears them on success. But on rebase,
+            // losing them would reset the cooldown backoff and re-trigger 13K stuck
+            // wrong_content files. Belt-and-braces: protect them at push time.
+            'serpRetryCount',
+            'serpDiscoveryAbandoned',
+            // Fetch retry lifecycle gate state (BRO-787), same reasoning as the
+            // SERP fields above but for failed-fetches.json retries:
+            // clearFailureFlags() clears BOTH fields on a successful fetch, so
+            // neither is in the guard's PROTECTED_FIELDS — but losing them on
+            // rebase would reset the cooldown/abandonment and re-trigger
+            // retries on closed-old shows whose URL is confirmed dead, burning
+            // Browserbase/Bright Data/ScrapingBee spend the guard exists to stop.
+            'fetchRetryAfter',
+            'fetchDiscoveryAbandoned',
+            // Pre-publication retry tallies (BRO-4281): subtracted from the
+            // retry counts above; cleared on success like them. Losing one on
+            // rebase would charge opening-eve failures to the post-opening budget.
+            'fetchPrePubFailures',
+            'serpPrePubCount',
+            // Head-of-line rescore block state (Notion 3ad637c5-416f-8169), same
+            // reasoning as the SERP fields above: clearFailureFlags() may clear
+            // them on success so they are not in the guard's PROTECTED_FIELDS,
+            // but losing them on rebase silently reverts the fix — the file
+            // un-blocks and re-enters the head of the needsRescore queue, which
+            // is exactly the pinned-at-131 state the stamp exists to prevent.
+            // isBlockedFromRescore() keys on ALL of these together (reason +
+            // text-length fingerprint + excerpt flag), so they must survive as a
+            // set or the fingerprint compares against a partially-restored record.
+            'rescoreBlockedReason',
+            'rescoreBlockedAt',
+            'rescoreBlockedTextLength',
+            'rescoreBlockedHadExcerpt',
+          ];
+          const PROTECTED = Array.from(new Set([...PROTECTED_FIELDS, ...ACTION_EXTRA]));
+          const staged = execSync('git diff --cached --name-only', { encoding: 'utf8' }).trim().split('\n').filter(Boolean);
+          let restored = 0;
+          let scoreSaves = 0;
+          // 'isEmpty' covers undefined, null, AND empty string / empty array.
+          // Required for the empty-string overwrite case observed during Joe
+          // Turner opening night 2026-04-26: a poller / rebuild step wrote
+          // fullText: '' over a non-empty value, which the previous null-only
+          // check did NOT catch. See memory/feedback_admin_ingest_opening_night_2026-04-26.md
+          const isEmpty = (v) => v === undefined || v === null
+            || (typeof v === 'string' && v.length === 0)
+            || (Array.isArray(v) && v.length === 0);
+          for (const f of staged) {
+            if (!f.endsWith('.json') || f.includes('failed-fetches')) continue;
+            try {
+              const local = JSON.parse(fs.readFileSync(f, 'utf8'));
+              const committed = JSON.parse(execSync('git show HEAD:' + f, { encoding: 'utf8', stdio: ['pipe','pipe','pipe'] }));
+              const restoredFields = [];
+              // Per-file _locked flag — when true on either side, ALL protected
+              // fields where committed had content are restored unconditionally.
+              // Strongest defense for opening-night ingestion.
+              const isLocked = committed._locked === true || local._locked === true;
+              // Intentional-clear breadcrumb exception (GENERALIZED 2026-06-05).
+              // Some heals/audits deliberately null or delete a PROTECTED field
+              // and leave a durable breadcrumb marking the clear as intentional
+              // (duplicateClearReason for duplicateOf; the canonical human-clear
+              // signals for wrongProduction/wrongShow; originalScoreCleared for
+              // originalScore). Without honoring those breadcrumbs the restore
+              // below treats the empty value as data loss and resurrects the
+              // stale flag — which is exactly why the stale-duplicateOf gate
+              // stayed red indefinitely (Protected-N-from-data-loss, pushed
+              // nothing). Originally field-specific to duplicateOf; the same bug
+              // applied to the other manual-clear families, so the predicate now
+              // lives in review-write-guard.js (isIntentionalClear) as the single
+              // source of truth, mirroring the canonical is-cleared semantics in
+              // review-guards.js. NOTE: this skip runs BEFORE the isLocked branch
+              // so an intentional clear is honored even on a _locked file (same
+              // precedence the duplicateOf carve-out always had).
+              for (const field of PROTECTED) {
+                if (isEmpty(local[field]) && isIntentionalClear(field, local, committed)) {
+                  continue;
+                }
+                const committedHasContent = !isEmpty(committed[field]);
+                const localIsEmpty = isEmpty(local[field]);
+                if (committedHasContent && (localIsEmpty || isLocked)) {
+                  local[field] = committed[field];
+                  restoredFields.push(field);
+                  if (field === 'assignedScore') scoreSaves++;
+                }
+              }
+              if (restoredFields.length > 0) {
+                fs.writeFileSync(f, JSON.stringify(local, null, 2) + '\n');
+                restored++;
+                console.log('  Protected: ' + f + ' (' + restoredFields.join(', ') + ')');
+              }
+            } catch (e) { /* new file or parse error — skip */ }
+          }
+          if (restored > 0) console.log('Protected ' + restored + ' review(s) from data loss (' + scoreSaves + ' scores saved)');
+
+          // Newer-scoring-wins (BRO-4770): a long gather run writes whole files
+          // from a snapshot taken at checkout; if a rescore landed on HEAD since,
+          // the staged copy would revert it. Carry the newer scoring group from
+          // HEAD onto the staged file (scripts/lib/scoring-recency.js).
+          const recencyPath = process.env.GITHUB_WORKSPACE
+            ? path.join(process.env.GITHUB_WORKSPACE, 'scripts/lib/scoring-recency.js')
+            : path.resolve('scripts/lib/scoring-recency.js');
+          const { carryNewerScoring } = require(recencyPath);
+          let scoreCarried = 0;
+          for (const f of staged) {
+            if (!f.endsWith('.json') || f.includes('failed-fetches')) continue;
+            try {
+              const local = JSON.parse(fs.readFileSync(f, 'utf8'));
+              const committed = JSON.parse(execSync('git show HEAD:' + f, { encoding: 'utf8', stdio: ['pipe','pipe','pipe'] }));
+              if (carryNewerScoring(local, committed).changed) {
+                fs.writeFileSync(f, JSON.stringify(local, null, 2) + '\n');
+                scoreCarried++;
+                console.log('  Newer scoring kept from HEAD: ' + f);
+              }
+            } catch (e) { /* new file or parse error — skip */ }
+          }
+          if (scoreCarried > 0) console.log('Kept newer scoring from HEAD in ' + scoreCarried + ' review(s)');
+
+          // Aggregator-score contamination strip (defense-in-depth at push time).
+          // Catches the case where a rebase or merge leaves a file in the
+          // (scoreSource ∈ AGGREGATOR_SCORE_SOURCES) ∧ (originalScore != null)
+          // state — which fails validate-data's validateAggregatorScoreContamination
+          // CI gate and turns main red. The same strip lives in
+          // scripts/lib/review-write-guard.js:263 (per-write) and
+          // scripts/rebuild-all-reviews.js:1574 (per-rebuild). Belt-and-braces here
+          // so a post-rebuild rebase/conflict-resolve can't re-introduce it.
+          const normPath = process.env.GITHUB_WORKSPACE
+            ? path.join(process.env.GITHUB_WORKSPACE, 'scripts/lib/review-normalization.js')
+            : path.resolve('scripts/lib/review-normalization.js');
+          const { AGGREGATOR_SCORE_SOURCES } = require(normPath);
+          let stripped = 0;
+          for (const f of staged) {
+            if (!f.endsWith('.json') || f.includes('failed-fetches')) continue;
+            try {
+              const data = JSON.parse(fs.readFileSync(f, 'utf8'));
+              if (data.scoreSource && AGGREGATOR_SCORE_SOURCES.has(data.scoreSource) && data.originalScore != null) {
+                data.originalScore = null;
+                data.originalScoreSource = null;
+                data.originalScoreNormalized = null;
+                fs.writeFileSync(f, JSON.stringify(data, null, 2) + '\n');
+                stripped++;
+                console.log('  Stripped contaminated originalScore: ' + f + ' (scoreSource=' + data.scoreSource + ')');
+              }
+            } catch (e) { /* parse error — skip */ }
+          }
+          if (stripped > 0) console.log('Stripped aggregator-contamination from ' + stripped + ' review(s)');
+        " || true
+
+        # Re-stage after protection pass
+        git add -A
+        if git diff --staged --quiet; then
+          echo "No review-texts changes to push (all changes were stale)"
+          exit 0
+        fi
+
+        # CONFLICT-MARKER / INVALID-JSON GUARD (2026-08-03): an autostash-pop
+        # conflict slipped past the ls-files -u check above (checkout --theirs
+        # failures are swallowed by `|| true`) and raw <<<<<<< markers were
+        # COMMITTED to the data repo (small-off-broadway-2026/
+        # washpost--unknown.json, commit 609b1bef553 via rebuild-fast), turning
+        # CI Data Validation red for 8 consecutive runs. push-core-data already
+        # validates JSON before committing; this is the review-texts twin,
+        # scoped to STAGED files (full-tree scan of 41K files is too slow).
+        # A bad staged file is reverted to its last committed version (or
+        # dropped entirely if new) so one poisoned file never blocks the push.
+        BAD_FILES=$(git diff --staged --name-only --diff-filter=ACMR \
+          | { grep '\.json$' || true; } \
+          | node -e '
+            const fs = require("fs");
+            const files = fs.readFileSync(0, "utf8").split("\n").filter(Boolean);
+            for (const f of files) {
+              try {
+                const raw = fs.readFileSync(f, "utf8");
+                if (/^<{7} /m.test(raw)) { console.log(f); continue; }
+                JSON.parse(raw);
+              } catch { console.log(f); }
+            }
+          ')
+        if [ -n "$BAD_FILES" ]; then
+          BAD_JSON=0
+          while IFS= read -r f; do
+            [ -n "$f" ] || continue
+            BAD_JSON=$((BAD_JSON+1))
+            if git cat-file -e "HEAD:$f" 2>/dev/null; then
+              echo "::warning::push-review-texts: $f has conflict markers or invalid JSON — reverted to HEAD version"
+              git checkout HEAD -- "$f"
+            else
+              echo "::warning::push-review-texts: new file $f has conflict markers or invalid JSON — dropped from commit"
+              git rm --cached -q -- "$f" 2>/dev/null || true
+              rm -f -- "$f"
+            fi
+          done <<< "$BAD_FILES"
+          echo "::warning::push-review-texts: repaired $BAD_JSON invalid staged JSON file(s) before commit"
+          if git diff --staged --quiet; then
+            echo "No review-texts changes to push after invalid-file repair"
+            exit 0
+          fi
+        fi
+
+        # Commit
+        CHANGED=$(git diff --staged --stat | tail -1)
+        git commit -m "${COMMIT_MSG}" -m "Changed: ${CHANGED}"
+
+        # Push with retry and content-aware conflict resolution
+        # Instead of -X theirs (which silently drops local changes), we rebase
+        # without auto-resolution, then resolve conflicts by keeping the version
+        # with richer content (longer fullText). This prevents a truncated archive
+        # snapshot from overwriting a complete review pushed by another workflow.
+        for i in 1 2 3 4 5; do
+          STDERR_FILE=$(mktemp)
+          # Try fast path first: if no conflicts, rebase + push succeeds immediately
+          if git pull --rebase origin main 2>"$STDERR_FILE"; then
+            cat "$STDERR_FILE" >&2
+            # CROSS-SHOW OWNERSHIP GATE (2026-07-12, Notion 39b637c5-416f-8134):
+            # in-process guards (url-ownership.js Guard I, gather's cross-production
+            # check) validate against the CHECKOUT snapshot. If a manual cross-show
+            # move landed after this run checked out, a re-created sibling duplicate
+            # passes those guards (stale-checkout race — the tender poller incident,
+            # creation commit 65159277b5b, 6 min after the disambiguation push).
+            # The pre-stage pull now lands remote commits (--autostash,
+            # 2026-07-20), but it can fall back to a stale baseline on a
+            # mid-rebase conflict — this post-rebase point is still the last
+            # guaranteed-fresh view, so validate files our commits ADDED and
+            # git-rm + commit any whose URL is live under another show here.
+            # Fail-open: a validator crash must never block a data push.
+            node ../../scripts/validate-added-review-ownership.js --base=origin/main \
+              || echo "::warning::validate-added-review-ownership crashed (non-blocking)"
+            if git push origin main 2>"$STDERR_FILE"; then
+              cat "$STDERR_FILE" >&2
+              echo "Review-texts pushed successfully (attempt $i)"
+              rm -f "$STDERR_FILE"
+              exit 0
+            fi
+            cat "$STDERR_FILE" >&2
+          else
+            cat "$STDERR_FILE" >&2
+          fi
+
+          # Rebase hit conflicts — resolve them content-aware
+          UNMERGED=$(git diff --name-only --diff-filter=U 2>/dev/null || true)
+          if [ -n "$UNMERGED" ]; then
+            echo "Resolving conflicts with content-aware merge (attempt $i)..."
+            KEPT_OURS=0
+            KEPT_THEIRS=0
+
+            while IFS= read -r f; do
+              # Handle delete/modify conflicts
+              if [ ! -f "$f" ]; then
+                git rm "$f" 2>/dev/null || true
+                continue
+              fi
+
+              # For JSON review files: compare fullText length, keep the richer version
+              if [[ "$f" == *.json ]] && [[ "$f" != "failed-fetches.json" ]]; then
+                OUR_LEN=0
+                THEIR_LEN=0
+
+                # REBASE_HEAD = our commit being replayed, HEAD = remote base
+                OUR_CONTENT=$(git show REBASE_HEAD:"$f" 2>/dev/null || echo "")
+                THEIR_CONTENT=$(git show HEAD:"$f" 2>/dev/null || echo "")
+
+                if [ -n "$OUR_CONTENT" ]; then
+                  OUR_LEN=$(echo "$OUR_CONTENT" | python3 -c "import sys,json;print(len(json.load(sys.stdin).get('fullText','') or ''))" 2>/dev/null || echo "0")
+                fi
+
+                if [ -n "$THEIR_CONTENT" ]; then
+                  THEIR_LEN=$(echo "$THEIR_CONTENT" | python3 -c "import sys,json;print(len(json.load(sys.stdin).get('fullText','') or ''))" 2>/dev/null || echo "0")
+                fi
+
+                if [ "$OUR_LEN" -gt "$THEIR_LEN" ] 2>/dev/null; then
+                  git show REBASE_HEAD:"$f" > "$f" 2>/dev/null
+                  git add "$f"
+                  KEPT_OURS=$((KEPT_OURS + 1))
+                  echo "  $f: kept ours (${OUR_LEN} chars > ${THEIR_LEN} chars)"
+                else
+                  # Use explicit `git show HEAD:` — NOT `git checkout --theirs`.
+                  # During a REBASE git inverts ours/theirs: --theirs means the
+                  # commit being replayed (REBASE_HEAD, this workflow's version),
+                  # so the old line wrote the SHORTER side while logging that it
+                  # kept the richer one. That inversion destroyed restored
+                  # reviews three times on 2026-07-18/19 (a 5,435-char
+                  # talkinbroadway review lost to a 0-char husk twice).
+                  # Write via temp: `git show X > f` truncates f BEFORE git show
+                  # runs, so a failed show must not leave a 0-byte file.
+                  if git show HEAD:"$f" > "$f.mergetmp" 2>/dev/null; then
+                    mv "$f.mergetmp" "$f"
+                  else
+                    rm -f "$f.mergetmp"
+                    git show REBASE_HEAD:"$f" > "$f" 2>/dev/null || true
+                  fi
+                  git add "$f"
+                  KEPT_THEIRS=$((KEPT_THEIRS + 1))
+                  echo "  $f: kept remote (${THEIR_LEN} chars >= ${OUR_LEN} chars)"
+                fi
+              elif [[ "$f" == "failed-fetches.json" ]]; then
+                # Merge failed-fetches arrays: union by reviewId, keep newer (ours) entries
+                git show REBASE_HEAD:"$f" > /tmp/ff_ours.json 2>/dev/null || echo "[]" > /tmp/ff_ours.json
+                git show HEAD:"$f" > /tmp/ff_theirs.json 2>/dev/null || echo "[]" > /tmp/ff_theirs.json
+                OURS_CT=$(jq 'if type == "array" then length else 0 end' /tmp/ff_ours.json 2>/dev/null || echo 0)
+                THEIRS_CT=$(jq 'if type == "array" then length else 0 end' /tmp/ff_theirs.json 2>/dev/null || echo 0)
+                # Concat theirs+ours (ours last = wins on duplicate), group by reviewId, keep last
+                if jq -n --slurpfile ours /tmp/ff_ours.json --slurpfile theirs /tmp/ff_theirs.json '(($theirs[0] // []) + ($ours[0] // [])) | group_by(.reviewId) | map(last)' > /tmp/ff_merged.json 2>/dev/null; then
+                  cp /tmp/ff_merged.json "$f"
+                  MERGED_CT=$(jq 'length' /tmp/ff_merged.json 2>/dev/null || echo "?")
+                  echo "  $f: merged arrays (ours=$OURS_CT + theirs=$THEIRS_CT -> $MERGED_CT unique)"
+                else
+                  echo "  $f: jq merge failed, keeping ours"
+                  git show REBASE_HEAD:"$f" > "$f" 2>/dev/null || git checkout --ours "$f" 2>/dev/null
+                fi
+                rm -f /tmp/ff_ours.json /tmp/ff_theirs.json /tmp/ff_merged.json
+                git add "$f"
+              else
+                # Other non-review files: keep ours (this workflow's version).
+                # Rebase inverts --ours/--theirs, so "ours" = REBASE_HEAD, not
+                # `git checkout --ours` (which would take the remote base). If
+                # REBASE_HEAD lacks the file our commit deleted it — honor the
+                # delete rather than resurrecting the remote copy.
+                if git show REBASE_HEAD:"$f" > "$f.mergetmp" 2>/dev/null; then
+                  mv "$f.mergetmp" "$f"
+                  git add "$f"
+                else
+                  rm -f "$f.mergetmp"
+                  git rm -q "$f" 2>/dev/null || true
+                fi
+              fi
+            done <<< "$UNMERGED"
+
+            echo "Conflict resolution: kept $KEPT_OURS ours, $KEPT_THEIRS theirs"
+
+            # Newer-scoring-wins (BRO-4770): the resolver above picks a WHOLE file
+            # by fullText length, so a stale gather file with a longer body used to
+            # revert a newer rescore (slam-frank 1 Minute Critic, c7aa1d3f7), and a
+            # remote win could drop a rescore job's newer score. Carry the newest
+            # scoring group from either side onto the resolved files.
+            # shellcheck disable=SC2086
+            CARRIED=$(node ../../scripts/lib/carry-newer-scoring.js --refs=HEAD,REBASE_HEAD $UNMERGED 2>&1 | tail -1) || CARRIED="0"
+            if [ "$CARRIED" -gt 0 ] 2>/dev/null; then
+              echo "  Kept newer scoring in $CARRIED conflicted file(s)"
+              git add -A
+            fi
+
+            # If all conflicts were resolved by keeping theirs, our commit is empty — skip it
+            if git diff --staged --quiet 2>/dev/null && [ "$KEPT_OURS" -eq 0 ]; then
+              echo "All conflicts resolved by keeping theirs — skipping our empty commit"
+              GIT_EDITOR=true git rebase --skip 2>/dev/null || true
+            else
+              GIT_EDITOR=true git rebase --continue 2>/dev/null || true
+            fi
+
+            # After rebase, restore any manually-set correction fields (humanReviewScore,
+            # manualContentTier, etc.) that content-length resolution may have dropped.
+            # These fields are ONLY set by humans — always safe to merge from either side.
+            if command -v node &>/dev/null; then
+              # Guarded with `|| RESTORED="0"`: this step runs under
+              # bash -e -o pipefail, so if restore-protected-fields.js
+              # throws, the pipe to `tail -1` still propagates its non-zero
+              # exit to this assignment — unguarded, that trips errexit and
+              # kills the whole script mid-rebase (worse than a normal
+              # crash: mid-conflict-resolution). Same bug/fix as
+              # push-core-data/action.yml (task #1911); found by
+              # scripts/audit-errexit-unguarded-substitution.js (task #97).
+              # "0" is the safe fallback: skip the amend below rather than
+              # guess how many files were restored.
+              RESTORED=$(node ../../scripts/lib/restore-protected-fields.js "origin/main" 2>&1 | tail -1) || RESTORED="0"
+              if [ "$RESTORED" -gt 0 ] 2>/dev/null; then
+                echo "  Restored protected fields in $RESTORED file(s) after conflict resolution"
+                git add -A
+                bash "${GITHUB_WORKSPACE}/scripts/lib/commit-or-amend.sh" "origin/main" "${COMMIT_MSG:-data: reconcile after concurrent push}" >/dev/null 2>&1 || true
+              fi
+            fi
+
+            # OWNERSHIP GATE, conflict path: the content-aware resolver above
+            # keeps "ours" on a delete/modify conflict whenever our fullText is
+            # longer than the deleted side's 0 chars — which RESURRECTS a file a
+            # manual cross-show move just deleted. Re-validate added files
+            # against the resolved tree before pushing (same gate as fast path).
+            node ../../scripts/validate-added-review-ownership.js --base=origin/main \
+              || echo "::warning::validate-added-review-ownership crashed (non-blocking)"
+
+            if git push origin main 2>"$STDERR_FILE"; then
+              cat "$STDERR_FILE" >&2
+              echo "Review-texts pushed successfully after content-aware merge (attempt $i)"
+              rm -f "$STDERR_FILE"
+              exit 0
+            fi
+            cat "$STDERR_FILE" >&2
+          fi
+
+          # BRO-66 sibling (card #1850): distinguish a GitHub-API-rate-limit
+          # failure from a real merge conflict before deciding how long to
+          # wait. STDERR_FILE holds whichever git call most recently failed
+          # above (the pre-loop pull, the fast-path push, or the
+          # content-aware-merge push) — conflict-shaped stderr doesn't match
+          # the rate-limit pattern, so the case below falls through to the
+          # existing flat-jitter retry unchanged for that path.
+          echo "Push attempt $i failed"
+          # Guarded with `|| DECISION=stop:decision-error`: this step runs
+          # under bash -e, and an unguarded command substitution assigned to
+          # a variable trips errexit if the inner node -e throws — killing
+          # the whole retry loop on attempt 1 instead of falling through to
+          # the existing flat-jitter retry below. Same bug/fix as
+          # push-core-data/action.yml (task #1911).
+          DECISION=$(STDERR_FILE="$STDERR_FILE" ATTEMPT="$i" node -e "
+            const fs = require('fs');
+            const { shouldRetry, retryDelayMs } = require('${GITHUB_WORKSPACE}/scripts/lib/github-rate-limit-retry.js');
+            const stderr = fs.readFileSync(process.env.STDERR_FILE, 'utf8');
+            const attempt = Number(process.env.ATTEMPT);
+            const r = shouldRetry({ attempt, exitCode: 1, stderr, maxAttempts: 5 });
+            console.log(r.retry ? ('retry:' + retryDelayMs(attempt)) : ('stop:' + r.reason));
+          ") || DECISION="stop:decision-error"
+          rm -f "$STDERR_FILE"
+          git rebase --abort 2>/dev/null || true
+
+          case "$DECISION" in
+            retry:*)
+              DELAY_MS="${DECISION#retry:}"
+              DELAY_S=$(( (DELAY_MS + 999) / 1000 ))
+              echo "::warning::Review-texts push hit a GitHub API rate limit (attempt $i/5) — backing off ${DELAY_S}s before retry"
+              sleep "$DELAY_S"
+              ;;
+            *)
+              echo "Retrying in $((RANDOM % 10 + 5))s..."
+              sleep $((RANDOM % 10 + 5))
+              ;;
+          esac
+        done
+
+        echo "WARNING: Failed to push review-texts after 5 attempts"
+        exit 1

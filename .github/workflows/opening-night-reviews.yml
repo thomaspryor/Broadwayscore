@@ -1,0 +1,407 @@
+name: Opening Night Reviews
+
+on:
+  schedule:
+    # HEAVY ticks (2x daily, same spend as the old schedule): full pass —
+    # workflow-level SERP discovery, WE census scrapers, Reddit dispatch.
+    - cron: '0 5 * * *'
+    - cron: '0 17 * * *'
+    # LIGHT ticks (every 3h between heavies): only the cheap, per-show-deduped
+    # arms — gather-reviews dispatch (full gather re-runs its own discovery)
+    # and the census-anchored coverage audit with --dispatch self-heal.
+    # WHY: the old twice-daily schedule left a 13-hour blind window that
+    # landed exactly when critics publish. On 2026-07-31 the Guardian
+    # (~15:00 UTC), Telegraph (~16:20) and two more Tao of Glass reviews ALL
+    # published after the day's final 15:39 run — the 50th owner-observed
+    # instance of "Google has reviews the site lacks" the day after an
+    # opening. UK outlets publish 09:00–18:00 UTC, NYC 14:00–04:00 UTC; only
+    # a rolling cadence covers both. Light ticks skip the Reddit dispatch and
+    # uncached census scrapes (second-opinion review 2026-07-31: running those
+    # per-tick would 4x their spend), so extra ticks cost only a deduped
+    # gather per in-window show.
+    - cron: '0 2,8,11,14,20,23 * * *'
+  workflow_dispatch:
+    inputs:
+      lookback_days:
+        description: 'How many days back to check for openings (default 14)'
+        required: false
+        type: number
+        default: 14
+      alert_only:
+        description: 'Audit + Discord alert only — skip the auto-gather dispatch (read-only gap report)'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  actions: write
+
+# Overlapping ticks would double-run push-review-texts and the audit
+# --dispatch step (second-opinion review 2026-07-31). Queue, never cancel.
+concurrency:
+  group: opening-night-reviews
+  cancel-in-progress: false
+
+jobs:
+  check-and-trigger:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Detect tick mode
+        id: mode
+        run: |
+          # Heavy = the two legacy daily crons or any manual dispatch. Keyed on
+          # github.event.schedule (NOT wall clock — GHA crons fire late and
+          # wall-clock keying misfires; see enrich-west-end-dates fix #649).
+          SCHED='${{ github.event.schedule }}'
+          if [ -z "$SCHED" ] || [ "$SCHED" = '0 5 * * *' ] || [ "$SCHED" = '0 17 * * *' ]; then
+            echo "heavy=true" >> $GITHUB_OUTPUT
+          else
+            echo "heavy=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Find recently opened shows (scheduled search days)
+        id: find
+        run: |
+          LOOKBACK=${{ inputs.lookback_days || 14 }}
+          # Find shows opened in lookback window, but only SERP-search on scheduled days:
+          # Days 0-1: full search (all outlets)
+          # Day 3: search outlets with <2 reviews
+          # Day 7: search outlets with <2 reviews
+          # Day 14: final sweep
+          # Other days: skip SERP (saves ~75% of daily SERP calls)
+          RESULT=$(node -e "
+            const shows = require('./data/shows.json').shows;
+            const now = new Date();
+            const cutoff = new Date(now);
+            cutoff.setDate(cutoff.getDate() - $LOOKBACK);
+            cutoff.setHours(0,0,0,0);
+
+            const SEARCH_DAYS = [0, 1, 3, 7, 14];
+            const GATHER_MAX_DAYS = 3; // Only dispatch gather-reviews for shows ≤3 days old
+
+            const opened = shows.filter(s => {
+              if (s.status !== 'open' || !s.openingDate) return false;
+              const d = new Date(s.openingDate);
+              d.setHours(0,0,0,0);
+              return d >= cutoff && d <= now;
+            });
+
+            // Partition into SERP-eligible and gather-eligible.
+            // gatherFull (day 1-3): SERP has indexed opening-night reviews, so run a
+            //   FULL gather (aggregators_only=false) — its all-tier London outlet pass
+            //   is the ONLY automated path that catches the long-tail blogs (Theatre
+            //   and Tonic, The Upcoming, FT, etc.). Notion 38a637c5-416f-81a7.
+            // gatherAgg (day 0): SERP hasn't indexed yet, so stay aggregators-only.
+            const serpShows = [];
+            const gatherFull = [];
+            const gatherAgg = [];
+
+            for (const s of opened) {
+              const daysSinceOpening = Math.floor((now - new Date(s.openingDate)) / (1000 * 60 * 60 * 24));
+              const isSearchDay = SEARCH_DAYS.includes(daysSinceOpening);
+              if (isSearchDay) serpShows.push(s.id);
+              if (daysSinceOpening <= GATHER_MAX_DAYS) {
+                if (daysSinceOpening >= 1) gatherFull.push(s.id);
+                else gatherAgg.push(s.id);
+              }
+            }
+
+            // Output as JSON for structured parsing
+            console.log(JSON.stringify({
+              serp: serpShows,
+              gatherFull,
+              gatherAgg,
+              all: opened.map(s => s.id)
+            }));
+          ")
+
+          if [ -z "$RESULT" ] || [ "$RESULT" = '{"serp":[],"gatherFull":[],"gatherAgg":[],"all":[]}' ]; then
+            echo "No recently opened shows found"
+            echo "has_shows=false" >> $GITHUB_OUTPUT
+          else
+            SERP_SHOWS=$(echo "$RESULT" | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');const j=JSON.parse(d);console.log(j.serp.join(','))")
+            GATHER_FULL=$(echo "$RESULT" | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');const j=JSON.parse(d);console.log(j.gatherFull.join(','))")
+            GATHER_AGG=$(echo "$RESULT" | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');const j=JSON.parse(d);console.log(j.gatherAgg.join(','))")
+            ALL_SHOWS=$(echo "$RESULT" | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');const j=JSON.parse(d);console.log(j.all.join(','))")
+
+            echo "All recently opened shows: $ALL_SHOWS"
+            echo "SERP-eligible (scheduled day): $SERP_SHOWS"
+            echo "Gather-eligible FULL (day 1-3, SERP): $GATHER_FULL"
+            echo "Gather-eligible AGG (day 0): $GATHER_AGG"
+
+            echo "has_shows=true" >> $GITHUB_OUTPUT
+            echo "shows=$ALL_SHOWS" >> $GITHUB_OUTPUT
+            echo "serp_shows=$SERP_SHOWS" >> $GITHUB_OUTPUT
+            echo "gather_full=$GATHER_FULL" >> $GITHUB_OUTPUT
+            echo "gather_agg=$GATHER_AGG" >> $GITHUB_OUTPUT
+          fi
+
+      # Per-show dispatch dedup (not a blanket "any gather running → skip").
+      # gather-reviews queues runs FIFO itself (BRO-4859 slot gate), so the only thing
+      # we must avoid is queuing a SECOND gather for a show that already has one
+      # in-flight. scripts/lib/gather-idempotency.js matches the run-name suffix.
+      # The old blanket guard starved opening shows entirely (it was always busy).
+      - name: Compute per-show gather dispatch
+        if: steps.find.outputs.has_shows == 'true'
+        id: guard
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          RUNS=$(gh run list --workflow=gather-reviews.yml --json status,displayTitle --limit 100 2>/dev/null || echo '[]')
+          NEEDED_FULL=$(GATHER_RUNS="$RUNS" WANT='${{ steps.find.outputs.gather_full }}' node -e '
+            const { showsNeedingGather } = require("./scripts/lib/gather-idempotency.js");
+            const runs = JSON.parse(process.env.GATHER_RUNS || "[]");
+            const want = (process.env.WANT || "").split(",").filter(Boolean);
+            console.log(showsNeedingGather(runs, want).join(","));
+          ')
+          # BRO-2269: also skip aggregators-only gather for a show with an in-flight
+          # TARGETED poller (same aggregator layer, same repos = duplicate + push
+          # race). Fail-open: a failed poller listing passes everything through.
+          POLLER_RUNS=$(gh run list --workflow=opening-night-poller.yml --json status,displayTitle,createdAt --limit 100 2>/dev/null || echo '[]')
+          NEEDED_AGG=$(GATHER_RUNS="$RUNS" POLLER_RUNS="$POLLER_RUNS" WANT='${{ steps.find.outputs.gather_agg }}' node -e '
+            const { showsNeedingAggregatorGather } = require("./scripts/lib/gather-idempotency.js");
+            const runs = JSON.parse(process.env.GATHER_RUNS || "[]");
+            let pollers = [];
+            try { pollers = JSON.parse(process.env.POLLER_RUNS || "[]"); } catch (e) { console.error("::warning::poller run list unparseable, skipping poller dedup"); }
+            const want = (process.env.WANT || "").split(",").filter(Boolean);
+            const needed = showsNeedingAggregatorGather(runs, pollers, want);
+            const dropped = want.filter((id) => !needed.includes(id));
+            if (dropped.length) console.error("Aggregators-only gather skipped (gather or targeted poller already in flight): " + dropped.join(","));
+            console.log(needed.join(","));
+          ')
+          echo "needed_full=$NEEDED_FULL" >> $GITHUB_OUTPUT
+          echo "needed_agg=$NEEDED_AGG" >> $GITHUB_OUTPUT
+          echo "Full-mode dispatch (not already in-flight): ${NEEDED_FULL:-<none>}"
+          echo "Aggregators-only dispatch (not already in-flight): ${NEEDED_AGG:-<none>}"
+
+      - name: Setup Node.js
+        if: steps.find.outputs.has_shows == 'true'
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        if: steps.find.outputs.has_shows == 'true'
+        run: npm ci --ignore-scripts
+
+      - name: Checkout review-texts
+        if: steps.find.outputs.has_shows == 'true'
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Discover reviews via SERP (scheduled days, heavy ticks only)
+        if: steps.find.outputs.has_shows == 'true' && steps.find.outputs.serp_shows != '' && steps.mode.outputs.heavy == 'true'
+        continue-on-error: true
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          SERP_SHOWS="${{ steps.find.outputs.serp_shows }}"
+          if [ -z "$SERP_SHOWS" ]; then
+            echo "No shows eligible for SERP today (not a scheduled search day)"
+            exit 0
+          fi
+          IFS=',' read -ra SHOWS <<< "$SERP_SHOWS"
+          echo "SERP searching ${#SHOWS[@]} shows (scheduled search day)"
+          for SHOW in "${SHOWS[@]}"; do
+            echo "=== Discovering reviews for $SHOW ==="
+            node scripts/discover-opening-night-reviews.js --show="$SHOW" --tiers=1,2 || true
+            sleep 2
+          done
+
+      - name: Push review-texts (SERP discoveries)
+        if: steps.find.outputs.has_shows == 'true' && steps.mode.outputs.heavy == 'true'
+        continue-on-error: true
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Opening night SERP discoveries'
+
+      # Day 1-3: FULL gather (aggregators_only=false). SERP has indexed by now, so
+      # the all-tier London outlet pass runs and catches the long-tail blogs.
+      - name: Trigger gather-reviews — FULL (day 1-3, SERP indexed)
+        if: steps.find.outputs.has_shows == 'true' && steps.guard.outputs.needed_full != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          GATHER_SHOWS="${{ steps.guard.outputs.needed_full }}"
+          # BRO-3388: 4+ shows in one sequential batch reliably blew the
+          # gather job's 40-min script budget. Splitting across 2 parallel
+          # matrix jobs halves the shows-per-job so each is more likely to
+          # finish within budget instead of deferring shows to the next tick.
+          IFS=',' read -ra GATHER_SHOWS_ARR <<< "$GATHER_SHOWS"
+          JOBS=1
+          if [ "${#GATHER_SHOWS_ARR[@]}" -ge 4 ]; then
+            JOBS=2
+          fi
+          echo "Triggering FULL gather-reviews (SERP) for: $GATHER_SHOWS (parallel_jobs=$JOBS)"
+          gh workflow run gather-reviews.yml \
+            -f shows="$GATHER_SHOWS" \
+            -f parallel_jobs=$JOBS \
+            -f max_tier=3 \
+            -f aggregators_only=false \
+            -f validate_urls=true \
+            -f opening_night=true
+          echo "Full gather triggered for: $GATHER_SHOWS"
+
+      # Day 0: aggregators-only. SERP hasn't indexed opening-night reviews yet
+      # (the poller handles SERP later with its own deferral). Avoids wrong-URL
+      # SERP hits on the opening morning.
+      - name: Trigger gather-reviews — aggregators-only (day 0)
+        if: steps.find.outputs.has_shows == 'true' && steps.guard.outputs.needed_agg != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          GATHER_SHOWS="${{ steps.guard.outputs.needed_agg }}"
+          # BRO-3388: see FULL-gather step above for rationale.
+          IFS=',' read -ra GATHER_SHOWS_ARR <<< "$GATHER_SHOWS"
+          JOBS=1
+          if [ "${#GATHER_SHOWS_ARR[@]}" -ge 4 ]; then
+            JOBS=2
+          fi
+          echo "Triggering aggregators-only gather-reviews for: $GATHER_SHOWS (parallel_jobs=$JOBS)"
+          gh workflow run gather-reviews.yml \
+            -f shows="$GATHER_SHOWS" \
+            -f parallel_jobs=$JOBS \
+            -f max_tier=3 \
+            -f aggregators_only=true \
+            -f validate_urls=true \
+            -f opening_night=true
+          echo "Aggregators-only gather triggered for: $GATHER_SHOWS"
+
+      - name: Trigger Reddit sentiment for recently opened shows
+        if: steps.find.outputs.has_shows == 'true' && steps.mode.outputs.heavy == 'true'
+        continue-on-error: true
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Reddit discussion exists by opening night — trigger sentiment scrape
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'update-reddit-sentiment.yml',
+                ref: 'main',
+                inputs: {
+                  // Default 20h freshness skip. This list is the whole 14-day
+                  // opening window (38 shows on 2026-09-29, ~8.5K ScrapingBee
+                  // credits per run when forced with '0'). The forced refresh for
+                  // a just-opened show comes from update-show-status opened_shows.
+                  shows: '${{ steps.find.outputs.shows }}'
+                }
+              });
+              console.log('Triggered Reddit sentiment for: ${{ steps.find.outputs.shows }}');
+            } catch (e) {
+              console.log('Reddit sentiment trigger failed:', e.message);
+            }
+
+      # Refresh the WE roundup archives so the completeness census (in the audit
+      # step below) has data. Roundups publish slowly — a miss/404 is fine; the
+      # audit then reads no-census-yet for that show (never falsely complete).
+      - name: Refresh WE roundup archives (for census)
+        if: steps.find.outputs.has_shows == 'true' && steps.find.outputs.serp_shows != '' && steps.mode.outputs.heavy == 'true'
+        continue-on-error: true
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          SHOWS="${{ steps.find.outputs.serp_shows }}"
+          node scripts/scrape-theatre-reviews.js --shows="$SHOWS" || true
+          node scripts/scrape-london-box-office-roundups.js --shows="$SHOWS" || true
+
+      # The census scrapers above also create/update review-text stubs (TR/LBO
+      # excerpts, star metadata, newly discovered reviews). They run AFTER the
+      # SERP push, so without this second push those writes were silently
+      # discarded every run and only re-landed when a dispatched gather
+      # happened to re-scrape the same pages. The archive HTML they fetch is
+      # intentionally NOT persisted (aggregator-archive repo isn't checked out
+      # here — the census reads it fresh in the audit step below).
+      - name: Push review-texts (census discoveries)
+        if: steps.find.outputs.has_shows == 'true' && steps.find.outputs.serp_shows != '' && steps.mode.outputs.heavy == 'true'
+        continue-on-error: true
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: WE census discoveries (TR/LBO)'
+
+      - name: Audit coverage gaps (census-anchored, multi-source)
+        if: steps.find.outputs.has_shows == 'true'
+        id: coverage
+        continue-on-error: true
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Census-anchored: unions the WE roundup critic lists with the T1 floor.
+          # --alert  → Discord on incomplete/floor-breach (lists census-missing outlets).
+          # --dispatch → auto-fires FULL gather + collect (→rebuild→score) for gap shows,
+          #   throttled by gather-reviews' FIFO slot gate + per-show gather-idempotency dedup.
+          # exit 1 on major/incomplete is the signal; continue-on-error keeps the job green
+          # but yellow in the summary so gaps are visible.
+          LOOKBACK=${{ inputs.lookback_days || 14 }}
+          # alert_only=true (manual read-only gap report): refresh archives + alert, but
+          # do NOT auto-fire the expensive gather/collect. Default keeps --dispatch on.
+          DISPATCH_FLAG="--dispatch"
+          if [ "${{ inputs.alert_only || 'false' }}" = "true" ]; then DISPATCH_FLAG=""; fi
+          node scripts/audit-opening-night-coverage.js --days=$LOOKBACK --alert $DISPATCH_FLAG
+
+      # discover-opening-night-reviews.js (SERP step above) and scrape-london-
+      # box-office-roundups.js (census refresh step above) both call
+      # url-discovery.js's SERP path, which writes attribution rows to
+      # data/audit/scraper-spend-ledger.jsonl on the runner's local disk (task
+      # #752/#784). This job never checked that file out for push before —
+      # every tick (up to 8x/day) discarded its SERP telemetry (Sprint 3,
+      # card 3b1637c5).
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true  # telemetry-only commit (Sprint 3, card 3b1637c5) — push contention under concurrent scheduled runs must never fail an otherwise-successful job
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/scraper-spend-ledger.jsonl 2>/dev/null || true
+          # alert-ledger.json / alert-digest-queue.json / alert-router-
+          # attempts.jsonl (BRO-3671): audit-opening-night-coverage.js's
+          # --alert flag calls routeAlert(disposition:'digest') at :689 — its
+          # cooldown ledger, queued digest line, and logDispatchAttempt()'s
+          # rewritten-every-attempt tracked file all only exist on this job's
+          # ephemeral runner disk otherwise (BRO-3662: unstaged, the attempts
+          # file makes a rebase refuse pre-flight and forces the clobber-prone
+          # merge path in push-with-retry.sh).
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No ledger changes to commit"
+          else
+            git commit -m "chore: Record scraper-spend ledger (opening-night-reviews)"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Opening Night Reviews Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

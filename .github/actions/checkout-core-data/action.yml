@@ -1,0 +1,177 @@
+name: Checkout core data
+description: Checks out core data files from private repo into data/
+
+inputs:
+  token:
+    description: PAT for private repo access
+    required: true
+
+runs:
+  using: composite
+  steps:
+    # NO actions/cache HERE, DELIBERATELY (BRO-3887) — do not "restore" this.
+    #
+    # This action used to wrap the clone in actions/cache restore+save keyed on
+    # `core-data-${{ runner.os }}-${{ github.run_id }}`. Because the key carried
+    # the run id, EVERY job of EVERY run minted a new entry — 284 invocations
+    # across 191 workflow files. Two faults compounded:
+    #
+    #   1. The artifact grew without bound. Each run restored the previous copy,
+    #      ran `git fetch --depth 1` (which adds objects a shallow repo never
+    #      prunes), and re-saved the bigger result. A pristine depth-1 clone of
+    #      this repo is 534 MB; the cached artifact had reached 3,634 MB (6.8x).
+    #   2. At ~1 new 3.4 GiB entry per 75s the repo blew through GitHub's 10 GiB
+    #      per-repo cache limit — measured 28.06 GiB live across 12 entries on
+    #      2026-09-20 — so LRU eviction cleared the ENTIRE cache namespace about
+    #      hourly.
+    #
+    # The damage was not slow builds, it was scraper spend. The 22 KB SERP cache
+    # (scripts/lib/serp-cache.js, /tmp/bd-serp-cache, 24h TTL) never survived to
+    # the next of opening-night-reviews.yml's 8 daily ticks, so every tick re-paid
+    # for SERP queries it had already answered. gather-reviews.js went 360 ->
+    # 9,178 scraper credits/day over 2026-09-14..09-20 on FLAT dispatch volume,
+    # and the cross-run SERP hit rate sat at 17% (77 hits / 366 live calls in run
+    # 35525599209), all of it intra-run.
+    #
+    # And the cache never paid for itself even ignoring the eviction damage.
+    # Measured in run 35497194379's outlet-serp job:
+    #     actions/cache/restore  31,521 ms
+    #     actions/cache/save     25,379 ms
+    #     total overhead         56,900 ms  per job
+    #     work it avoided        "Core data updated from cache in 3s"
+    # against a from-scratch `git clone --depth 1` of the same repo timed at 24s
+    # (534 MB, home internet — a runner is same-datacenter, so that is an upper
+    # bound). ~60s spent to avoid <=24s. Cloning every time is strictly faster
+    # AND frees the whole cache namespace.
+    #
+    # scripts/audit-workflow-hygiene.js now fails CI on any actions/cache key
+    # containing github.run_id without an explicit exemption comment, so this
+    # shape cannot come back silently.
+    - name: Clone core data repo
+      shell: bash
+      env:
+        CORE_DATA_TOKEN: ${{ inputs.token }}
+      run: |
+        # BRO-66: REVIEW_TEXTS_TOKEN is a classic PAT (5000 req/hr across ALL
+        # API calls from that token, shared by every workflow that checks out
+        # core-data or review-texts). An opening-night burst of orchestrator
+        # dispatches can exhaust that quota mid-run; a rate-limited clone gets
+        # its own detection + 30s-base exponential backoff here (via
+        # scripts/lib/github-rate-limit-retry.js, unit-tested in
+        # tests/unit/checkout-rate-limit-retry.test.mjs) instead of the flat
+        # 10s sleep this used to give every failure regardless of cause.
+        MAX_RETRIES=3
+        STDERR_FILE=$(mktemp)
+        for ATTEMPT in $(seq 1 $MAX_RETRIES); do
+          START=$(date +%s)
+          SUCCESS=false
+          : > "$STDERR_FILE"
+
+          # Always a fresh clone. The "restored cache — fast update via fetch"
+          # branch that used to sit here went with the cache (BRO-3887): with no
+          # restore step, /tmp/core-data-checkout/.git only ever exists if this
+          # action runs twice in one job (no workflow does — verified across all
+          # .github/workflows/*.yml), and the retry loop below rm -rf's the dir
+          # before every retry anyway, so the branch was unreachable. Leaving a
+          # live-looking "cache reuse fast path" behind is what would re-invite
+          # the cache, so it is deleted rather than commented out.
+          # --branch main is load-bearing, not decoration (ship-check finding).
+          # The deleted fast-update branch pinned the ref explicitly
+          # (`git fetch origin main && git reset --hard origin/main`); this clone
+          # did not, and relied on the remote's default branch instead. That was
+          # survivable while the clone was the RARE path behind a cache hit — now
+          # it is the ONLY path, so an unpinned ref would silently serve another
+          # branch's core data to all 284 invocations with every job still green.
+          # checkout-review-texts/action.yml:44 already pins the same way.
+          rm -rf /tmp/core-data-checkout
+          if git clone --depth 1 --branch main "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" /tmp/core-data-checkout 2>>"$STDERR_FILE"; then
+            ELAPSED=$(($(date +%s) - START))
+            echo "Core data cloned fresh in ${ELAPSED}s"
+            SUCCESS=true
+          fi
+
+          if [ "$SUCCESS" = "true" ]; then
+            break
+          fi
+
+          cat "$STDERR_FILE" >&2
+
+          # Guarded with `|| DECISION=stop:decision-error`: this step runs
+          # under bash -e, and an unguarded command substitution assigned to
+          # a variable trips errexit if the inner node -e throws — killing
+          # the whole retry loop on attempt 1 instead of falling through to
+          # the existing retry/exit handling below. Same bug/fix as
+          # push-core-data/action.yml (task #1911).
+          DECISION=$(STDERR_FILE="$STDERR_FILE" ATTEMPT="$ATTEMPT" MAX_RETRIES="$MAX_RETRIES" node -e "
+            const fs = require('fs');
+            const { shouldRetry, retryDelayMs } = require('${GITHUB_WORKSPACE}/scripts/lib/github-rate-limit-retry.js');
+            const stderr = fs.readFileSync(process.env.STDERR_FILE, 'utf8');
+            const attempt = Number(process.env.ATTEMPT);
+            const r = shouldRetry({ attempt, exitCode: 1, stderr, maxAttempts: Number(process.env.MAX_RETRIES) });
+            console.log(r.retry ? ('retry:' + retryDelayMs(attempt)) : ('stop:' + r.reason));
+          ") || DECISION="stop:decision-error"
+
+          rm -rf /tmp/core-data-checkout
+
+          case "$DECISION" in
+            retry:*)
+              DELAY_MS="${DECISION#retry:}"
+              DELAY_S=$(( (DELAY_MS + 999) / 1000 ))
+              echo "::warning::Core data checkout hit a GitHub API rate limit (attempt $ATTEMPT/$MAX_RETRIES) — backing off ${DELAY_S}s before retry"
+              sleep "$DELAY_S"
+              ;;
+            stop:max-attempts-reached)
+              echo "::error::Core data checkout still rate-limited after $MAX_RETRIES attempts — giving up"
+              exit 1
+              ;;
+            stop:not-rate-limit|*)
+              if [ "$ATTEMPT" -lt "$MAX_RETRIES" ]; then
+                echo "::warning::Core data checkout failed (attempt $ATTEMPT/$MAX_RETRIES, non-rate-limit) — retrying in 10s"
+                sleep 10
+              else
+                echo "::error::Core data checkout failed after $MAX_RETRIES attempts"
+                exit 1
+              fi
+              ;;
+          esac
+        done
+
+    - name: Copy core data to data/
+      shell: bash
+      run: |
+        # Remove any dangling symlinks in data/ before copying (e.g. reviews.json
+        # was previously tracked as a symlink to a local Mac path, which dangles in CI)
+        for f in /tmp/core-data-checkout/*.json; do
+          basename=$(basename "$f")
+          [ -L "data/$basename" ] && rm -f "data/$basename"
+        done
+        # outlet-registry.json (BRO-1084) is PUBLIC-repo-owned as of this change —
+        # never overwrite it from the private clone, even if a stale copy still
+        # lingers there post-migration. Without this explicit skip, this wildcard
+        # copy would silently revert any public-repo edit to the registry made
+        # between this migration landing and the private copy actually being
+        # deleted (or if it's ever accidentally re-added there later).
+        for f in /tmp/core-data-checkout/*.json; do
+          basename=$(basename "$f")
+          [ "$basename" = "outlet-registry.json" ] && continue
+          [ -f "$f" ] && cp -f "$f" data/
+        done
+        # Canary check — fail fast if key files missing
+        if [ ! -f "data/shows.json" ] || [ ! -f "data/reviews.json" ]; then
+          echo "::error::Core data checkout FAILED — shows.json or reviews.json missing"
+          exit 1
+        fi
+        echo "Core data restored from private repo ($(ls /tmp/core-data-checkout/*.json | wc -l) files)"
+
+        # Save a snapshot that survives git checkout -- . in push-with-retry.sh.
+        # Some core data files (audience-buzz.json, shows.json) may be tracked in
+        # the public repo, and git checkout reverts them to stale versions. This
+        # snapshot preserves the private repo's authoritative state. outlet-
+        # registry.json is deliberately excluded (public-repo-owned, see above).
+        rm -rf /tmp/core-data-snapshot
+        mkdir -p /tmp/core-data-snapshot
+        for f in /tmp/core-data-checkout/*.json; do
+          basename=$(basename "$f")
+          [ "$basename" = "outlet-registry.json" ] && continue
+          [ -f "$f" ] && cp -f "$f" /tmp/core-data-snapshot/
+        done

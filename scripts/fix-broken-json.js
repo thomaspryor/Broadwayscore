@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+
+const fs = require('fs');
+
+const path = 'data/review-texts/boop-2025/theatrely--juan-a-ramirez.json';
+
+const fixed = {
+  showId: "boop-2025",
+  outletId: "theatrely",
+  outlet: "THEATRELY",
+  criticName: "Juan A. Ramirez",
+  url: "https://www.theatrely.com/post/boop-the-musical-betty-lands-on-broadway-and-broadway-gains-a-star-review",
+  publishDate: "April 7, 2025",
+  fullText: "If you've never actually seen a Betty Boop short film – and, despite her ubiquity on tattooed biceps, it's likely – you're in for a treat. Like all the best early 20th century works tragically and systematically erased from our cultural memory, she's bright, effervescent, relentlessly charming and sexy. Pretty much the same can be said about Boop! The Musical, which just opened at the Broadhurst, but especially about Jasmine Amy Rogers, the instant star imbuing each of the cartoon's iconic curls with larger-than-life charisma.\n\nLike the, ahem, real Betty, every second is an opportunity for Rogers' face to charm: a curl of the lip, a flash of brow, a twitch of the nose, or the cooing or wallop of her voice. Hers is an irresistible seduction, skilled but not calculated, and it's impossible to take your eyes off of her.\n\nAnd here conclude such words as \"sexy\" and \"seduction,\" as Boop! is firmly a family show, though not one which panders or leaves its adult audiences wanting. Doing double-duty as director and choreographer, Jerry Mitchell turbo-charges the production with his usual razzle-dazzle, bridging the gap between audiences and eras.\n\nCrossing over is also on Betty's mind: though the star of hundreds of popular films in her own cartoon universe (we learn of her range in the fabulous opening number, \"A Little Versatility\"), she realizes she doesn't truly know herself. Her silly, mad scientist Grampy (Stephen DeRosa) teases a way for her to explore other worlds and she, of course, crashes into ours.\n\nThe production faces somewhat of an uphill battle getting people to care about Betty Boop in the year 2025, especially younger ones who might not even be familiar with her. But it smartly lands her real-world arrival in the midst of a ComicCon, visually re-establishing her in the pantheon of fictional greats, and where she's assumed to be just another cosplayer amid a sea of Ninja Turtles, Raggedy Anns and Marvel characters.\n\nIt's there she meets Trisha (Angelica Hale), a nerdy teen with a Boop obsession who takes her home to meet her aunt Carol (Anastacia McCleskey), the beleaguered campaign manager for a slimy sanitation official running for mayor (Erich Bergen). His insisted-upon slogan? \"Let's doo doo this.\" Busy handling that, Trisha's de facto babysitter is the handsome Dwayne (Ainsley Melham), who sounds like a young Norbert Leo Butz and who Betty discovers shares her language of hot '20s jazz.\n\nThose two off to the romantic races, the mayoral plot provides a diverting throwback to WPA-era stories about big-time crooks and the plucky upstarts who bring them down. But the flirting twosome aren't the only ones looking to pair off. Trailing behind her is Grampy, his pup Pudgy (an adorable marionette controlled by Phillip Huber) in tow, who finds time to reignite an old flame (Faith Prince). And, back home, Betty's director (Aubie Merrylees) and his assistant (a very funny Ricky Schroeder) are still awaiting their star's return.\n\nIt's a lot. A lot – and not all of it amounts to much more than in-the-moment entertainment. So it's a good thing Mitchell's showman tendencies allow to slip the narrative excesses of Bob Martin's book, favoring instead its humor and the sizzle of David Foster's score and Susan Birkenhead's lyrics. The second act opener, where denizens of both worlds search feverishly for the now-outed Betty, is a feast of technicolor and b&w, and makes the best use of David Rockwell's unimpressive set and Gregg Barnes' uneven costumes – though Betty always looks terrific via Sabana Majeed's wig and hair design.\n\nMitchell finds plenty of space for top-notch choreography, for illusions (designed by Skylar Fox), for unexpectedly comic supporting performances (Morgan McGhee, I will remember your name) and, most importantly, for his lead to shine. Hurtling towards us through metaphysical universes and a sometimes bumpy production, Rogers arrives fully-formed: a star.",
+  isFullReview: true,
+  source: "playwright-scraped",
+  scrapedAt: "2026-01-23T18:00:00.000Z",
+  dtliExcerpt: "Like all the best early 20th century works tragically and systematically erased from our cultural memory, she's bright, effervescent, relentlessly charming and sexy. Pretty much the same can be said about Boop! The Musical, which just opened at the Broadhurst, but especially about Jasmine Amy Rogers, the instant star imbuing each of the cartoon's iconic curls with larger-than-life charisma.",
+  bwwExcerpt: "Hurtling towards us through metaphysical universes and a sometimes bumpy production, Rogers arrives fully-formed: a star.",
+  originalScore: null,
+  assignedScore: null,
+  sourceUrl: "https://www.broadwayworld.com/article/Review-Roundup-BOOP-THE-MUSICAL-Opens-on-Broadway-20250407",
+  dtliThumb: "Up"
+};
+
+fs.writeFileSync(path, JSON.stringify(fixed, null, 2) + '\n');
+console.log('Fixed file written');

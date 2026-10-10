@@ -1,0 +1,226 @@
+name: Update Theatr Data
+
+on:
+  schedule:
+    # Weekly on Sundays at 2 PM UTC (9 AM EST), after Mezzanine at 1 PM
+    - cron: '0 14 * * 0'
+  workflow_dispatch:
+    inputs:
+      show:
+        description: 'Single show ID to update (e.g., hamilton-2015)'
+        required: false
+        type: string
+      shows:
+        description: 'Comma-separated show IDs (used by orchestrator)'
+        required: false
+        type: string
+      limit:
+        description: 'Max number of shows to process'
+        required: false
+        type: number
+        default: 0
+      dry_run:
+        description: 'Dry run (no writes)'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  # MUST be a shared group (same group as rotate-theatr-token.yml). Theatr
+  # refresh tokens are single-use and rotate on every auth call — parallel
+  # runs both read THEATR_REFRESH_TOKEN, the first burns it, the second fails
+  # auth and trips Theatr's reuse detection, which can revoke the rotated
+  # token too. Per-run groups (the old theatr-run_id pattern) caused the
+  # Jun 7-11 2026 incident: a freshly rotated token died within days, then 4
+  # consecutive auth failures. Tradeoff vs the Cats 2026-04-07 dropped-dispatch
+  # concern: GitHub keeps only the newest pending run per group, so a queued
+  # dispatch can be superseded — acceptable here because the weekly cron sweeps
+  # all shows. Do NOT revert to per-run groups.
+  group: theatr
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  scrape-theatr:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Pre-flight — refuse to burn the token if the PAT cannot persist it
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          # Root cause of the Jun 7 2026 token death (run 27100884711): the
+          # scrape succeeded (old token burned, new one issued) but the
+          # `gh secret set` persist failed with HTTP 403 "API rate limit
+          # exceeded" — the PAT's 5,000/hr REST budget was exhausted by other
+          # workflows (Tonys day). The rotated token was lost and the chain
+          # was dead until manual re-capture. The /rate_limit endpoint itself
+          # is free, so check the budget BEFORE calling Theatr auth: if we
+          # can't persist afterwards, don't burn the token at all — fail now
+          # and let the next dispatch retry with the secret still valid.
+          REMAINING=$(gh api rate_limit --jq .resources.core.remaining 2>/dev/null || echo "")
+          if [ -z "$REMAINING" ]; then
+            sleep 10
+            REMAINING=$(gh api rate_limit --jq .resources.core.remaining 2>/dev/null || echo "")
+          fi
+          if [ -z "$REMAINING" ]; then
+            echo "::error::Could not read PAT rate limit — refusing to burn the Theatr token without persist certainty. Secret unchanged; rerun later."
+            exit 1
+          fi
+          if [ "$REMAINING" -lt 100 ]; then
+            echo "::error::PAT has only $REMAINING REST calls left this hour — gh secret set would likely fail AFTER Theatr burns the token (Jun 7 incident). Aborting BEFORE auth; secret unchanged; rerun after the limit resets."
+            exit 1
+          fi
+          echo "PAT rate limit OK ($REMAINING remaining) — safe to rotate"
+
+      - name: Run Theatr scraper
+        env:
+          THEATR_REFRESH_TOKEN: ${{ secrets.THEATR_REFRESH_TOKEN }}
+        run: |
+          ARGS="--verbose"
+
+          if [ -n "${{ inputs.show }}" ]; then
+            ARGS="$ARGS --show=${{ inputs.show }}"
+          fi
+
+          if [ -n "${{ inputs.shows }}" ]; then
+            ARGS="$ARGS --shows=${{ inputs.shows }}"
+          fi
+
+          if [ "${{ inputs.limit }}" != "0" ] && [ -n "${{ inputs.limit }}" ]; then
+            ARGS="$ARGS --limit=${{ inputs.limit }}"
+          fi
+
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+
+          node scripts/scrape-theatr-audience.js $ARGS
+
+      - name: Update refresh token secret
+        # NO dry_run gate here, deliberately: the scraper auths (and therefore
+        # burns the old token) even on --dry-run, so the rotated token MUST be
+        # persisted on every run that produced one. The old
+        # `inputs.dry_run != true` gate meant a green dry-run silently killed
+        # the token chain.
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          # The old token is already burned by this point (Theatr rotates on
+          # every auth call) — if this step fails, the new token is lost and
+          # the next run dies with "auth refresh failed" until a manual
+          # re-capture via rotate-theatr-token.yml. So: retry, and fail the
+          # job loudly rather than silently dropping the token.
+          TOKEN_FILE="data/theatr-refresh-token.tmp"
+          # -s (non-empty), not -f: an empty file would overwrite the secret
+          # with garbage instead of leaving it alone.
+          if [ ! -s "$TOKEN_FILE" ]; then
+            echo "No rotated token file — scraper failed before auth, secret unchanged"
+            exit 0
+          fi
+          FALLBACK="/tmp/core-data-checkout/theatr-refresh-token-fallback.json"
+          for attempt in 1 2 3 4 5; do
+            if gh secret set THEATR_REFRESH_TOKEN < "$TOKEN_FILE"; then
+              rm "$TOKEN_FILE"
+              # Secret persisted — remove any stale git fallback from a prior
+              # rate-limited run so it can't linger in the private repo.
+              # push-core-data does `git add -A`, so the deletion is committed.
+              if [ -f "$FALLBACK" ]; then
+                rm "$FALLBACK"
+                echo "Cleaned up git fallback token (secret is authoritative again)"
+              fi
+              echo "Refresh token rotated (attempt $attempt)"
+              exit 0
+            fi
+            echo "::warning::gh secret set failed (attempt $attempt/5), retrying..."
+            [ "$attempt" -lt 5 ] && sleep $((attempt * 10))
+          done
+          # Last resort: the REST API is unavailable (e.g. hour-long rate-limit
+          # exhaustion — the Jun 7 incident), but git pushes are NOT REST-rate-
+          # limited. Persist the token into the private core-data checkout; the
+          # always() push-core-data step commits it. The next run's scraper
+          # reads this fallback when the secret's token fails auth, recovers,
+          # and the cleanup branch above removes the file.
+          if [ -d "/tmp/core-data-checkout/.git" ]; then
+            node -e "
+              const fs = require('fs');
+              const token = fs.readFileSync('$TOKEN_FILE', 'utf8').trim();
+              fs.writeFileSync('$FALLBACK', JSON.stringify({
+                refreshToken: token,
+                savedAt: new Date().toISOString(),
+                reason: 'gh secret set failed after 5 attempts (likely PAT rate limit) — run $GITHUB_RUN_ID'
+              }, null, 2) + '\n');
+            "
+            echo "::error::gh secret set failed 5x — rotated token persisted to PRIVATE repo fallback (theatr-refresh-token-fallback.json) instead. Next run auto-recovers; no re-capture needed."
+          else
+            echo "::error::Failed to persist rotated THEATR_REFRESH_TOKEN after 5 attempts AND no core-data checkout for git fallback — token is BURNED and LOST. Re-capture from the iOS app and run rotate-theatr-token.yml."
+          fi
+          exit 1
+
+      - name: Commit coverage audit to public repo
+        # theatr-coverage.json lives in the PUBLIC repo's data/audit/ and feeds
+        # health-check.js's "Audience coverage: open-show gaps" check. push-core-
+        # data (below) only handles the PRIVATE core-data repo, so without this
+        # step the audit is written in CI but never committed — the check would
+        # never see Theatr gaps. Mirrors update-mezzanine.yml's staging of
+        # mezzanine-coverage.json.
+        if: always() && inputs.dry_run != true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if [ -f data/audit/theatr-coverage.json ]; then
+            git add data/audit/theatr-coverage.json
+          fi
+          if git diff --staged --quiet; then
+            echo "No coverage-audit changes to commit"
+            exit 0
+          fi
+          git commit -m "data: Update Theatr coverage audit"
+          if bash scripts/lib/push-with-retry.sh; then
+            exit 0
+          else
+            echo "Failed to push coverage audit after retries"
+            exit 1
+          fi
+
+      - name: Push core data to private repo
+        if: always() && inputs.dry_run != true
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from update-theatr'
+
+      - name: Dispatch deploy
+        # success() (not always()): only deploy when the scrape, token rotation
+        # AND push-core-data all succeeded. Previously always() fired a Vercel
+        # deploy even when the scrape failed (e.g. expired THEATR_REFRESH_TOKEN
+        # — a weeks-long state), shipping a no-op deploy and feeding the deploy
+        # cascade. No new data → no deploy. (Theatr's own red still surfaces the
+        # expired token via check-secrets-health's update-theatr run-history check.)
+        if: success() && inputs.dry_run != true
+        uses: ./.github/actions/dispatch-deploy
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Update Theatr Data Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

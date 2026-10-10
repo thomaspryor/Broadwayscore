@@ -1,0 +1,118 @@
+name: Discover Tour Stop Reviews
+
+# BRO-4656: a national tour is reviewed by the local papers of each city it
+# plays. scripts/discover-tour-stop-reviews.js searches every stop that opened
+# in the last 4 weeks, plus a capped newest-first backfill of older stops never
+# searched (state in data/audit/tour-stop-discovery.json), and ingests the
+# results into the tour. A review dated outside its stop is flagged and never
+# counts. Daily so the backfill (~1,400 past stops) clears in about a month.
+
+on:
+  schedule:
+    - cron: '20 22 * * *'  # Daily 10:20 PM UTC
+  workflow_dispatch:
+    inputs:
+      show:
+        description: 'Single tour ID (default: every tour)'
+        required: false
+        default: ''
+        type: string
+      backfill:
+        description: 'Older, never-searched stops to search this run'
+        required: false
+        default: '60'
+        type: string
+      dry_run:
+        description: 'Dry run (search only; nothing ingested or written)'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: discover-tour-stop-reviews
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Run tour-stop discovery
+        id: discover
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SERP_SB_MAX_CALLS_PER_RUN: '10'
+          SB_CREDIT_BUDGET: '50'
+          INPUT_SHOW: ${{ github.event.inputs.show }}
+          INPUT_BACKFILL: ${{ github.event.inputs.backfill }}
+          INPUT_DRY_RUN: ${{ github.event.inputs.dry_run }}
+        run: |
+          ARGS="--backfill=${INPUT_BACKFILL:-60} --max-minutes=38"
+          if [ -n "$INPUT_SHOW" ]; then ARGS="$ARGS --show=$INPUT_SHOW"; fi
+          if [ "$INPUT_DRY_RUN" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          echo "Running: node scripts/discover-tour-stop-reviews.js $ARGS"
+          node scripts/discover-tour-stop-reviews.js $ARGS
+
+      - name: Push review texts
+        if: always() && github.event.inputs.dry_run != 'true'
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "feat: Discover tour stop reviews via SERP (BRO-4656)"
+
+      - name: Commit state
+        if: always() && github.event.inputs.dry_run != 'true'
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/tour-stop-discovery.json 2>/dev/null || true
+          git add data/audit/scraper-spend-ledger.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No state changes"
+          else
+            git commit -m "chore: Update tour-stop discovery state
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      # Only when a review file was written (the script sets `written`).
+      - name: Trigger rebuild
+        if: success() && github.event.inputs.dry_run != 'true' && steps.discover.outputs.written != '0' && steps.discover.outputs.written != ''
+        run: |
+          gh workflow run rebuild-reviews.yml -f reason="Post tour-stop discovery"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Discover Tour Stop Reviews Failed'
+          severity: 'warning'

@@ -1,0 +1,604 @@
+# Close aggregator coverage gaps — audit, gather missing reviews in parallel, rebuild
+# Era-prioritized: most recent shows first
+name: Close Coverage Gaps
+
+on:
+  workflow_dispatch:
+    inputs:
+      era:
+        description: 'Era to process (by show opening year)'
+        required: true
+        default: '2021-2026'
+        type: choice
+        options:
+          - '2021-2026'
+          - '2016-2020'
+          - '2011-2015'
+          - 'pre-2011'
+          - 'all'
+      parallel_jobs:
+        description: 'Number of parallel gather jobs (1-10)'
+        required: false
+        default: '5'
+        type: string
+      search_all:
+        description: 'Search ALL shows in era (not just gap shows — use to fill DTLI/Show Score blind spots)'
+        required: false
+        default: false
+        type: boolean
+      dry_run:
+        description: 'Dry run (audit only, no gathering)'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+# Per-run group (not shared): the `gather-gaps` job matrix-partitions gap
+# shows into disjoint parallel_jobs shards. A shared group would queue a
+# second manual invocation behind the first rather than let them run, which
+# is fine for this rare orchestration workflow but not needed — this makes
+# "one run's own jobs never race each other" explicit without adding an
+# unnecessary queue for concurrent era runs. See docs/workflow-concurrency-audit.md.
+concurrency:
+  group: close-coverage-gaps-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  # Job 1: Audit coverage, identify gap shows, partition into batches
+  prepare:
+    name: Prepare & audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      matrix: ${{ steps.partition.outputs.matrix }}
+      job_count: ${{ steps.partition.outputs.job_count }}
+      gap_shows: ${{ steps.audit.outputs.gap_shows }}
+      gap_count: ${{ steps.audit.outputs.gap_count }}
+      truly_missing: ${{ steps.audit.outputs.truly_missing }}
+      show_count: ${{ steps.filter.outputs.show_count }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Filter shows by era
+        id: filter
+        run: |
+          ERA="${{ inputs.era }}"
+          node -e "
+            const shows = require('./data/shows.json').shows;
+            function getYear(s) {
+              if (s.openingDate) return parseInt(s.openingDate.split('-')[0]);
+              const m = s.id.match(/(\d{4})$/);
+              if (m) return parseInt(m[1]);
+              if (s.previewsStartDate) return parseInt(s.previewsStartDate.split('-')[0]);
+              return 0;
+            }
+            const era = '$ERA';
+            let filtered;
+            if (era === 'all') {
+              filtered = shows;
+            } else if (era === 'pre-2011') {
+              filtered = shows.filter(s => getYear(s) < 2011);
+            } else {
+              const [start, end] = era.split('-').map(Number);
+              filtered = shows.filter(s => { const y = getYear(s); return y >= start && y <= end; });
+            }
+            const ids = filtered.map(s => s.id);
+            console.log(ids.join(','));
+          " > /tmp/show_ids.txt
+
+          SHOW_IDS=$(cat /tmp/show_ids.txt)
+          SHOW_COUNT=$(echo "$SHOW_IDS" | tr ',' '\n' | wc -l | tr -d ' ')
+          echo "show_ids=$SHOW_IDS" >> $GITHUB_OUTPUT
+          echo "show_count=$SHOW_COUNT" >> $GITHUB_OUTPUT
+          echo "Era: $ERA — $SHOW_COUNT shows"
+
+      - name: Run coverage audit
+        id: audit
+        run: |
+          # pipefail (BRO-4157): GHA's bash default already sets this, made
+          # explicit — a crashed audit must not fall through to reading a
+          # missing/stale aggregator-coverage.json below as if it succeeded.
+          set -o pipefail
+          node scripts/audit-aggregator-coverage.js --output-gaps 2>&1 | tee /tmp/audit-output.txt
+
+          # Extract truly missing count
+          TRULY_MISSING=$(node -e "const d=require('./data/audit/aggregator-coverage.json'); console.log(d._meta.totalTrulyMissing)")
+          echo "truly_missing=$TRULY_MISSING" >> $GITHUB_OUTPUT
+
+          # Extract show IDs to process
+          ERA_SHOWS="${{ steps.filter.outputs.show_ids }}"
+          SEARCH_ALL="${{ inputs.search_all }}"
+
+          if [ "$SEARCH_ALL" = "true" ]; then
+            # Process ALL shows in the era (fills DTLI/Show Score blind spots)
+            GAP_SHOWS="$ERA_SHOWS"
+            GAP_COUNT=$(echo "$GAP_SHOWS" | tr ',' '\n' | grep -c . || echo "0")
+            echo "gap_shows=$GAP_SHOWS" >> $GITHUB_OUTPUT
+            echo "gap_count=$GAP_COUNT" >> $GITHUB_OUTPUT
+            echo "search_all mode: Processing ALL $GAP_COUNT shows in era"
+          else
+            # Only process shows with identified gaps
+            GAP_SHOWS=$(node -e "
+              const gapLine = require('fs').readFileSync('/tmp/audit-output.txt','utf8')
+                .split('\n').find(l => l.includes(',') && !l.includes(':') && l.match(/^[a-z0-9,-]+$/));
+              if (!gapLine) { console.log(''); process.exit(0); }
+              const eraSet = new Set('$ERA_SHOWS'.split(','));
+              const filtered = gapLine.split(',').filter(id => eraSet.has(id));
+              console.log(filtered.join(','));
+            ")
+
+            GAP_COUNT=0
+            if [ -n "$GAP_SHOWS" ]; then
+              GAP_COUNT=$(echo "$GAP_SHOWS" | tr ',' '\n' | grep -c . || echo "0")
+            fi
+            echo "gap_shows=$GAP_SHOWS" >> $GITHUB_OUTPUT
+            echo "gap_count=$GAP_COUNT" >> $GITHUB_OUTPUT
+            echo "Truly missing: $TRULY_MISSING reviews across $GAP_COUNT shows in this era"
+          fi
+
+      - name: Write gap shows to artifact
+        run: |
+          mkdir -p /tmp/gap-data
+          echo "${{ steps.audit.outputs.gap_shows }}" > /tmp/gap-data/gap-shows.txt
+          echo "${{ steps.audit.outputs.gap_count }}" > /tmp/gap-data/gap-count.txt
+          echo "${{ steps.audit.outputs.truly_missing }}" > /tmp/gap-data/truly-missing.txt
+
+      - uses: actions/upload-artifact@v5
+        with:
+          name: gap-data
+          path: /tmp/gap-data/
+
+      - name: Partition gap shows into matrix batches
+        id: partition
+        run: |
+          GAP_SHOWS="${{ steps.audit.outputs.gap_shows }}"
+          JOBS=${{ inputs.parallel_jobs }}
+
+          # Validate parallel_jobs is 1-10
+          if [ "$JOBS" -lt 1 ] 2>/dev/null || [ "$JOBS" -gt 10 ] 2>/dev/null; then
+            JOBS=5
+          fi
+
+          if [ -z "$GAP_SHOWS" ]; then
+            echo 'matrix={"include":[]}' >> $GITHUB_OUTPUT
+            echo "job_count=0" >> $GITHUB_OUTPUT
+            echo "No gap shows to process"
+            exit 0
+          fi
+
+          IFS=',' read -ra SHOW_ARRAY <<< "$GAP_SHOWS"
+          TOTAL=${#SHOW_ARRAY[@]}
+
+          if [ "$JOBS" -gt "$TOTAL" ]; then
+            JOBS=$TOTAL
+          fi
+
+          echo "Gap shows: $TOTAL, parallel jobs: $JOBS"
+
+          # Load-balanced round-robin: sort shows by review count descending
+          # then distribute, so heavy shows spread evenly across batches
+          SORTED_SHOWS=$(node -e "
+            const fs = require('fs');
+            const path = require('path');
+            const shows = process.argv.slice(1);
+            const base = 'data/review-texts';
+            const counts = shows.map(s => {
+              try {
+                const dir = path.join(base, s.trim());
+                const files = fs.readdirSync(dir).filter(f => f.endsWith('.json'));
+                return { id: s.trim(), count: files.length };
+              } catch { return { id: s.trim(), count: 0 }; }
+            });
+            counts.sort((a, b) => b.count - a.count);
+            console.log(counts.map(c => c.id).join(','));
+          " "${SHOW_ARRAY[@]}" 2>/dev/null || echo "$GAP_SHOWS")
+
+          IFS=',' read -ra SORTED_ARRAY <<< "$SORTED_SHOWS"
+
+          declare -a BATCHES
+          for i in $(seq 0 $((JOBS - 1))); do
+            BATCHES[$i]=""
+          done
+
+          for i in "${!SORTED_ARRAY[@]}"; do
+            BATCH_IDX=$((i % JOBS))
+            SHOW=$(echo "${SORTED_ARRAY[$i]}" | xargs)
+            if [ -n "${BATCHES[$BATCH_IDX]}" ]; then
+              BATCHES[$BATCH_IDX]="${BATCHES[$BATCH_IDX]},$SHOW"
+            else
+              BATCHES[$BATCH_IDX]="$SHOW"
+            fi
+          done
+
+          # Build JSON matrix
+          MATRIX='{"include":['
+          FIRST=true
+          for i in $(seq 0 $((JOBS - 1))); do
+            if [ -n "${BATCHES[$i]}" ]; then
+              if [ "$FIRST" = true ]; then
+                FIRST=false
+              else
+                MATRIX="$MATRIX,"
+              fi
+              DELAY=$((i * 30))
+              MATRIX="$MATRIX{\"batch_id\":$i,\"shows\":\"${BATCHES[$i]}\",\"delay\":$DELAY}"
+            fi
+          done
+          MATRIX="$MATRIX]}"
+
+          echo "Matrix: $MATRIX"
+          echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
+          echo "job_count=$JOBS" >> $GITHUB_OUTPUT
+
+      - name: Commit audit results
+        run: |
+          if git diff --quiet data/audit/; then
+            echo "No audit changes"
+            exit 0
+          fi
+
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/aggregator-coverage.json
+
+          TRULY_MISSING="${{ steps.audit.outputs.truly_missing }}"
+          git commit -m "audit: Coverage audit for ${{ inputs.era }} ($TRULY_MISSING truly missing)
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+          bash scripts/lib/push-with-retry.sh
+
+  # Job 2: Gather reviews for gap shows in parallel (aggregators only — no web search)
+  gather-gaps:
+    name: "Gather batch ${{ matrix.batch_id }}"
+    needs: prepare
+    if: ${{ needs.prepare.outputs.gap_count != '0' && needs.prepare.outputs.gap_count != '' && inputs.dry_run != true }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 90-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Stagger start
+        if: matrix.delay > 0
+        run: |
+          echo "Waiting ${{ matrix.delay }}s before starting (batch ${{ matrix.batch_id }})"
+          sleep ${{ matrix.delay }}
+
+      - name: Pull latest
+        run: git pull --rebase origin main || true
+
+      - name: Configure git
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+      - name: Gather reviews with checkpointing
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          IFS=',' read -ra SHOWS <<< "${{ matrix.shows }}"
+          TOTAL=${#SHOWS[@]}
+          CHECKPOINT_EVERY=10
+          COUNT=0
+          TOTAL_COMMITTED=0
+          FAILED_SHOWS=""
+
+          echo "Batch ${{ matrix.batch_id }}: Gathering $TOTAL shows (aggregators-only, checkpoint every $CHECKPOINT_EVERY)..."
+
+          for show in "${SHOWS[@]}"; do
+            COUNT=$((COUNT + 1))
+            echo ""
+            echo "==========================================="
+            echo "[$COUNT/$TOTAL] Gathering: $show"
+            echo "==========================================="
+
+            if ! node scripts/gather-reviews.js --shows="$show" --aggregators-only; then
+              echo "FAILED: $show"
+              FAILED_SHOWS="$FAILED_SHOWS,$show"
+            fi
+
+            # Checkpoint every N shows or on the last show
+            if [ $((COUNT % CHECKPOINT_EVERY)) -eq 0 ] || [ "$COUNT" -eq "$TOTAL" ]; then
+              echo "--- Checkpoint at $COUNT/$TOTAL ---"
+              # Aggregator archive files are pushed to private repo at end of job
+              echo "Aggregator archive checkpoint: $(find data/aggregator-archive -type f 2>/dev/null | wc -l) total files"
+            fi
+          done
+
+          echo ""
+          echo "==========================================="
+          echo "DONE: Batch ${{ matrix.batch_id }} processed $COUNT/$TOTAL shows, committed $TOTAL_COMMITTED files"
+          if [ -n "$FAILED_SHOWS" ]; then
+            echo "FAILED: ${FAILED_SHOWS:1}"
+          fi
+          echo "==========================================="
+
+          # Write failures for artifact upload
+          mkdir -p /tmp/failures
+          echo "${FAILED_SHOWS:1}" > /tmp/failures/batch-${{ matrix.batch_id }}.txt
+
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Close Coverage Gaps — Final commit (catch uncommitted files)"
+      - name: Push aggregator-archive to private repo
+        if: always()
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Close Coverage Gaps — batch ${{ matrix.batch_id }} (${{ inputs.era }})"
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: close-coverage-gaps-gather-gaps
+
+      - name: Upload failure report
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: failures-batch-${{ matrix.batch_id }}
+          path: /tmp/failures/
+          if-no-files-found: ignore
+
+  # Job 3: Scrape Playbill Verdict + NYC Theatre for gap shows
+  scrape-pv-nyc:
+    name: Scrape PV + NYC Theatre
+    needs: [prepare, gather-gaps]
+    if: ${{ always() && needs.prepare.result == 'success' && needs.prepare.outputs.gap_count != '0' && inputs.dry_run != true }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 60-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Pull latest (after all gather jobs)
+        run: git pull --rebase origin main || true
+
+      - name: Configure git
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: gap-data
+          path: /tmp/gap-data/
+
+      - name: Scrape Playbill Verdict
+        continue-on-error: true
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          SHOWS=$(cat /tmp/gap-data/gap-shows.txt)
+          node scripts/scrape-playbill-verdict.js --shows="$SHOWS" --no-date-filter || true
+
+      - name: Scrape NYC Theatre
+        continue-on-error: true
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: |
+          SHOWS=$(cat /tmp/gap-data/gap-shows.txt)
+          node scripts/scrape-nyc-theatre-roundups.js --shows="$SHOWS" || true
+
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Close Coverage Gaps — Commit PV + NYC results"
+      - name: Push aggregator-archive to private repo
+        if: always()
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Close Coverage Gaps — PV + NYC Theatre (${{ inputs.era }})"
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: close-coverage-gaps-scrape-pv-nyc
+
+  # Job 4: Validate and rebuild reviews.json
+  rebuild:
+    name: Validate & rebuild
+    needs: [prepare, gather-gaps, scrape-pv-nyc]
+    if: ${{ always() && needs.prepare.result == 'success' && inputs.dry_run != true }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Pull latest (after all gather + scrape jobs)
+        run: git pull --rebase origin main || true
+
+      - name: Configure git
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+      - name: Validate data
+        id: validate
+        run: node scripts/validate-data.js
+
+      - name: Rebuild reviews.json
+        if: steps.validate.outcome != 'failure'
+        run: node scripts/rebuild-all-reviews.js
+
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Close Coverage Gaps — Commit rebuild"
+      - name: Commit rebuild
+        if: always()
+        run: |
+          git add data/audit/
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          git commit -m "data: Rebuild reviews.json after ${{ inputs.era }} coverage gap closure
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+          bash scripts/lib/push-with-retry.sh
+
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from close-coverage-gaps'
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Close Coverage Gaps Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Coverage Gap Closure: ${{ inputs.era }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Shows in era:** ${{ needs.prepare.outputs.show_count }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Truly missing reviews:** ${{ needs.prepare.outputs.truly_missing }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Shows with gaps:** ${{ needs.prepare.outputs.gap_count }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Parallel jobs:** ${{ inputs.parallel_jobs }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Dry run:** ${{ inputs.dry_run }}" >> $GITHUB_STEP_SUMMARY

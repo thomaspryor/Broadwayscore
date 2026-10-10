@@ -1,0 +1,46 @@
+{
+  "_meta": {
+    "generatedAt": "2026-01-24T12:00:00Z",
+    "source": "dtli-validation"
+  },
+  "showId": "hadestown-2019",
+  "dtli": {
+    "sourceUrl": "https://didtheylikeit.com/shows/hadestown-review/",
+    "archiveDate": "2022-09-21T14:39:21+00:00",
+    "totalReviews": 5,
+    "thumbsUp": 5,
+    "thumbsFlat": 0,
+    "thumbsDown": 0
+  },
+  "ourData": {
+    "totalReviews": 23
+  },
+  "validation": {
+    "matched": 5,
+    "allDtliInOurs": true,
+    "missingFromUs": [],
+    "onlyInUs": [
+      {"outlet": "Entertainment Weekly", "critic": "Leah Greenblatt"},
+      {"outlet": "amNewYork", "critic": "Matt Windman"},
+      {"outlet": "Observer", "critic": "David Cote"},
+      {"outlet": "The Wall Street Journal", "critic": "Terry Teachout"},
+      {"outlet": "The Washington Post", "critic": "Peter Marks"},
+      {"outlet": "BroadwayWorld", "critic": "Michael Dale"},
+      {"outlet": "New York Daily News", "critic": "Chris Jones"},
+      {"outlet": "Vulture", "critic": "Sara Holdren"},
+      {"outlet": "New York Post", "critic": "Johnny Oleksinski"},
+      {"outlet": "TheWrap", "critic": "Thom Geier"},
+      {"outlet": "Rolling Stone", "critic": "Will Hermes"},
+      {"outlet": "Daily Beast", "critic": "Tim Teeman"},
+      {"outlet": "New York Stage Review", "critic": "Michael Sommers"},
+      {"outlet": "New York Stage Review", "critic": "Elysa Gardner"},
+      {"outlet": "NJ.com", "critic": "Christopher Kelly"}
+    ],
+    "thumbMismatches": []
+  },
+  "issues": [
+    "DTLI only has 5 reviews while we have 23 - DTLI may be incomplete for this show",
+    "Possible duplicate: WSJ has 'Terry Teachout' and 'Terry Teachout' (likely typo)",
+    "Possible duplicate: Entertainment Weekly has two different critics listed"
+  ]
+}

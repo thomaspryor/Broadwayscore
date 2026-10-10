@@ -1,0 +1,102 @@
+# Poll LouReviews (loureviews.blog) for new Louise Penn reviews of DB shows.
+# Single-critic WordPress blog → wp-json feed matched against shows.json via the
+# unit-tested scripts/lib/loureviews-match.js. New full-text reviews are ingested
+# into review-texts; scoring + rebuild + deploy run downstream (same as every
+# other source), and the ensemble wrong-production check is the final safety net.
+name: Poll LouReviews
+
+on:
+  schedule:
+    - cron: '0 7 * * *'  # Daily 07:00 UTC — after the 04:00 rebuild / 05:00 score, catches prior-day UK reviews
+  workflow_dispatch:
+    inputs:
+      days:
+        description: 'Lookback window in days (use a large value to backfill)'
+        required: false
+        default: '400'
+
+permissions:
+  contents: read   # only READS shows.json (checkout-core-data); review-texts push uses REVIEW_TEXTS_TOKEN PAT
+  actions: write   # dispatch llm-ensemble-score when new reviews land
+
+concurrency:
+  # per-run group intended: single daily cron + rare manual dispatch, no
+  # external dispatcher can stack triggers. Ingestion dedups by existing file
+  # (see comment above), so an overlapping run is a self-deduping no-op, not
+  # a race (task #922 audit, 2026-08-03).
+  group: poll-loureviews-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts from private repo
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Poll LouReviews
+        id: poll
+        run: |
+          # BRO-4157 triage: NOT adding pipefail here on purpose. poll-loureviews.js's
+          # own docstring is explicit — "Exit 0 always (a poller failure must
+          # not red a cron)" — its top-level `.catch()` always calls
+          # `process.exit(0)` after logging `__LOUREVIEWS_NEW__=0`. Pipefail
+          # would correctly propagate a crash's exit code into this step, but
+          # the script itself never produces a nonzero one to propagate, so it
+          # would be a no-op here (confirmed via Codex adversarial review,
+          # which caught an earlier draft of this comment overclaiming what
+          # pipefail alone could fix). Fixing the swallow would mean reversing
+          # that documented design choice, out of scope for this triage.
+          # Wide default (400d ≈ 750 posts, under the poller's 10-page/1000-post cap).
+          # 14d missed MJ The Musical + All My Sons: Louise reviewed them Oct/Nov 2025,
+          # but both shows only entered shows.json on 2026-03-02 — ~4mo later, long
+          # outside a 14d window. A show can join our DB well after its review drops,
+          # so a narrow window permanently blinds the poller to it. Re-scanning the
+          # full recent feed daily is cheap: matching is in-memory and dedup skips
+          # existing files, so only genuinely-new matches trigger extraction/scoring.
+          DAYS="${{ inputs.days || '400' }}"
+          echo "Polling loureviews.blog (last $DAYS days)..."
+          node scripts/poll-loureviews.js --days="$DAYS" | tee /tmp/poll.out
+          NEW=$(grep -oE '__LOUREVIEWS_NEW__=[0-9]+' /tmp/poll.out | tail -1 | cut -d= -f2)
+          echo "new=${NEW:-0}" >> "$GITHUB_OUTPUT"
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: LouReviews poll (Louise Penn)'
+
+      - name: Score new reviews (rebuild + deploy downstream)
+        if: steps.poll.outputs.new != '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Dispatching LLM Ensemble Score for ${{ steps.poll.outputs.new }} new review(s)..."
+          gh workflow run "LLM Ensemble Score Reviews" -f fast_rebuild=true
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'LouReviews Poller Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

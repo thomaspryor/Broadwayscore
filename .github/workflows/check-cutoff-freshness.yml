@@ -1,0 +1,42 @@
+name: Check Cutoff Freshness
+
+# Advisory v1: warns when an awards eligibility cutoff is approaching but
+# the lastVerified date on the record is stale. Exits 0 always — does not
+# block deploys. Flip to fail once we trust the gate (after one full cycle).
+#
+# Why: SOLT and the Tony Administration Committee occasionally shift windows
+# late in the season (COVID precedent; calendar resets). A wrong end date
+# silently biases the "this season" rank pool on show pages.
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'  # Mondays 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+
+      - name: Install minimal deps for tsc
+        run: npm ci --ignore-scripts
+
+      - name: Run cutoff freshness check
+        run: node scripts/check-cutoff-freshness.js
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Check Cutoff Freshness Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

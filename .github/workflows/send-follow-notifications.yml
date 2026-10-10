@@ -1,0 +1,141 @@
+name: Send Follow Show Notifications
+on:
+  schedule:
+    - cron: '0 14 * * 1'  # Monday 2 PM UTC (morning US)
+  workflow_dispatch: {}
+
+# Serialize schedule + manual-dispatch runs against data/audit/follow-send-
+# checkpoint.json. This checkpoint is the double-send guard for user email
+# notifications — push-with-retry.sh's generic conflict rule for data/audit/*
+# is "keep local," so a losing run's checkpoint update (which may already
+# reflect a notification just sent) can be overwritten by a run that started
+# from a stale base, silently reverting the "already sent" record and risking
+# a duplicate email next run. Same class as the update-cast-changes.yml
+# incident (Notion 3a5637c5-416f-812a). Queued, not cancelled.
+concurrency:
+  group: send-follow-notifications
+  cancel-in-progress: false
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Check for followers (early exit if none)
+        id: check
+        run: |
+          FOLLOW_COUNT=$(node -e "
+            const { countFollowers } = require('./scripts/lib/follower-count.js');
+            try {
+              console.log(countFollowers(require('./data/followers.json')));
+            } catch { console.log(0); }
+          ")
+          echo "follower_count=$FOLLOW_COUNT"
+          if [ "$FOLLOW_COUNT" = "0" ]; then
+            echo "No followers — skipping all notification work"
+            echo "has_followers=false" >> $GITHUB_OUTPUT
+          else
+            echo "$FOLLOW_COUNT followers found"
+            echo "has_followers=true" >> $GITHUB_OUTPUT
+          fi
+
+      - uses: actions/setup-node@v5
+        if: steps.check.outputs.has_followers == 'true'
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        if: steps.check.outputs.has_followers == 'true'
+        run: npm ci
+
+      - name: Sync followers from Formspree
+        if: steps.check.outputs.has_followers == 'true'
+        env:
+          FORMSPREE_FOLLOW_API_KEY: ${{ secrets.FORMSPREE_FOLLOW_API_KEY }}
+          FORMSPREE_SUBSCRIBER_API_KEY: ${{ secrets.FORMSPREE_SUBSCRIBER_API_KEY }}
+          FORMSPREE_FOLLOW_FORM_ID: ${{ secrets.FORMSPREE_FOLLOW_FORM_ID }}
+          FORMSPREE_SUBSCRIBER_FORM_ID: ${{ secrets.FORMSPREE_SUBSCRIBER_FORM_ID }}
+        run: node scripts/sync-followers.js
+
+      - name: Detect show changes
+        if: steps.check.outputs.has_followers == 'true'
+        run: node scripts/detect-show-changes.js
+
+      # The "Detect social pulse tier transitions (BRO-770)" step that ran
+      # here was removed 2026-10-02 (BRO-4507): Social Buzz is retired and
+      # update-social-pulse.yml no longer refreshes tiers, so emailing
+      # followers from frozen tier data would be wrong. The
+      # data/audit/social-tier-transitions.json entry in the commit loop
+      # below stays (core-data-merge-registry.js registers it as this
+      # workflow's single-writer file; the drift test wants a writer).
+
+      - name: Send notifications
+        if: steps.check.outputs.has_followers == 'true'
+        id: send
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: node scripts/send-follow-notifications.js
+
+      - name: Push core data to private repo
+        # sync-followers.js (above) writes data/followers.json +
+        # data/subscribers.json + data/subscribers-westend.json to the working
+        # dir. Without this push, those mutations die with the runner and the
+        # Monday 14:00 UTC run repeats work already persisted at the daily
+        # 12:00 UTC sync. if: always() so we still persist state if the
+        # notification send or change detection fails downstream.
+        if: always() && steps.check.outputs.has_followers == 'true'
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Sync followers & subscribers (from send-follow-notifications)'
+
+      - name: Commit updates
+        if: always() && steps.check.outputs.has_followers == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # followers.json is gitignored + owned by sync-followers.yml (private core-data repo).
+          # This workflow only writes audit files — do not re-add followers.json here.
+          # follow-send-checkpoint.json is ephemeral (send-follow-notifications.js
+          # deletes it on a full-success run), so `git add` must not be a single
+          # all-or-nothing command: a nonexistent pathspec makes git add fail with
+          # nothing staged (verified), silently dropping the digest/checkpoint
+          # commit on every successful send and re-diffing the same stale digest
+          # next run (BRO-1593). That fix was not enough: this step staged the
+          # files but never committed them, and push-with-retry.sh only pushes
+          # commits, so the digest stayed at 2026-02-09 and the same Hamilton
+          # email went to one follower every Monday 2026-08-24..10-05 (BRO-4897).
+          # audit-workflow-hygiene.js rule (p) now fails any stage-then-push
+          # step without a commit. detect-show-changes.js re-baselines on its
+          # own when the committed digest is older than 21 days.
+          for f in data/audit/show-changes-digest.json data/audit/follow-send-checkpoint.json data/audit/social-tier-transitions.json; do
+            if [ -f "$f" ]; then
+              git add "$f"
+            elif git ls-files --error-unmatch "$f" >/dev/null 2>&1; then
+              git rm --cached "$f"
+            fi
+          done
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "data: follow-notification digest state [skip ci]"
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Send Follow Notifications Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

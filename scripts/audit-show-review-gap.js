@@ -1,0 +1,2767 @@
+#!/usr/bin/env node
+/**
+ * audit-show-review-gap.js
+ *
+ * Show-centric review gap audit. For each open show in the opening-night
+ * window, find its Playbill Verdict + BWW Review Roundup aggregator
+ * articles, extract the outlet review URLs those articles list, and diff
+ * against what we have in data/review-texts/{showId}/ + reviews.json.
+ *
+ * Why this exists:
+ *   The opening-night poller/gather already finds reviews via SERP +
+ *   outlet RSS + dedicated aggregator scrapers, but its discovery is
+ *   per-outlet and per-URL-pattern. Aggregator articles are the canonical
+ *   "here are the reviews for THIS show" lists curated by Playbill/BWW
+ *   editors — using them as a gap reference catches the long tail of
+ *   reviews from blogs/niche outlets that aren't in our outlet-registry.
+ *
+ *   Surfaced concrete gaps 2026-05-27 (Notion 36d637c5-416f-81d4):
+ *     - Animal Wisdom: 9 reviews on Playbill Verdict, 3 in reviews.json
+ *     - The Maids: 6 listed, 5 ours (NYT URL discovered but mis-routed)
+ *     - Heated Rivalry: 4 listed, 3 ours
+ *
+ * Modes:
+ *   --show=ID[,ID...]     one show, or a comma-separated list (audited in the order given)
+ *   --window=14           every open show opened within N days (default 21)
+ *   --fail-on-gap         exit 1 when any in-window show has missing URLs
+ *   --dispatch-gather     gh workflow run gather-reviews.yml for each show
+ *                         that has a gap > 0 (rate-limited at 1 dispatch/show)
+ *   --ingest-missing      run scripts/ingest-review-from-url.js directly for
+ *                         each missing aggregator URL whose outlet is in the
+ *                         registry. Targets the specific URL rather than re-
+ *                         running gather's SERP+RSS discovery (which already
+ *                         failed). Cap of 5 URLs/show via --ingest-cap=N.
+ *   --ingest-cap=N        per-show ingest cap (default 5)
+ *   --dry-run             don't write audit file
+ *   --verbose             log per-show details to stdout
+ *
+ * Output: data/audit/show-review-gap.json
+ *
+ * Usage:
+ *   node scripts/audit-show-review-gap.js --show=the-maids-off-broadway-2026
+ *   node scripts/audit-show-review-gap.js --window=21 --dispatch-gather
+ *   node scripts/audit-show-review-gap.js --window=21 --fail-on-gap   # CI
+ */
+
+'use strict';
+
+const fs = require('fs');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
+const path = require('path');
+const cheerio = require('cheerio');
+const { execSync, execFileSync } = require('child_process');
+
+const { fetchPage, cleanup: scraperCleanup } = require('./lib/scraper');
+const { serpQuery, calculateDateWindow, getShowInfo, isGenericShowTitle, hasDisambiguator, canDisambiguateGenericTitle } = require('./lib/url-discovery');
+const { buildCensusPlan, isCensusPassComplete, shouldRunSerpCensus, DEFAULT_COOLDOWN_HOURS: SERP_CENSUS_DEFAULT_COOLDOWN_HOURS } = require('./lib/serp-review-census');
+const { showRecencyKey, NO_DATE_SENTINEL } = require('./lib/collection-priority');
+const { parseShowFilter, selectShowsById } = require('./lib/gap-audit-show-filter');
+const {
+  provisionalOutletIdFromHost,
+  sameOutletUrlVariant,
+  _buildDomainMap,
+} = require('./lib/outlet-canonicalize');
+const { describeUnresolvedProvisionalOutlet } = require('./lib/aggregator-domains');
+const { isIncludableForRebuild } = require('./lib/review-guards');
+const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
+const { execErrorDetail } = require('./lib/exec-error-detail');
+const { partitionUnextractable, updateZeroCharCounts } = require('./lib/gap-unextractable'); // BRO-4765
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+// Same incident class as scripts/autonomous-run.js / autonomous-probe.js /
+// autonomous-merge.js (tasks #260/#264): this script spawns real `gh`
+// subprocesses (workflow dispatch at dispatchGatherFor, repo-variable
+// read/write in the self-proving auto-enable block) with no --help guard.
+// USAGE / hasHelpFlag(argv) is checked as the FIRST line of main(), before
+// loadShows() or anything else runs, so `--help` combined with a real action
+// flag (--dispatch-gather, --ingest-missing) can never fall through.
+const USAGE = `audit-show-review-gap.js — show-centric review gap audit vs Playbill Verdict / BWW Review Roundup.
+
+Usage:
+  node scripts/audit-show-review-gap.js --show=ID
+  node scripts/audit-show-review-gap.js --window=21 --dispatch-gather
+  node scripts/audit-show-review-gap.js --window=21 --fail-on-gap   # CI
+
+Modes:
+  --show=ID[,ID...]     one show, or a comma-separated list (audited in the order given)
+  --window=14            every open show opened within N days (default 21)
+  --fail-on-gap          exit 1 when any in-window show has missing URLs
+  --dispatch-gather      gh workflow run gather-reviews.yml for each show
+                         that has a gap > 0 (rate-limited at 1 dispatch/show)
+  --ingest-missing       run scripts/ingest-review-from-url.js directly for
+                         each missing aggregator URL whose outlet is in the
+                         registry
+  --ingest-cap=N         per-show ingest cap (default 5)
+  --census-window=N      widen ONLY the SERP census eligibility window (task
+                         #903 S5 one-off catch-up backfill; default is
+                         inOpeningWindow's own 21 days regardless of --window)
+  --checkpoint           process least-recently-audited shows first, skip
+                         shows audited within a freshness window
+  --include-closed       also audit closed shows (back-catalogue backfill)
+  --time-budget-min=N    soft time budget for --checkpoint runs (default 20)
+  --freshness-hours=N    checkpoint freshness window (default 12)
+  --dry-run              don't write audit file
+  --verbose              log per-show details to stdout
+  --help, -h             print this usage and exit
+
+Output: data/audit/show-review-gap.json`;
+const {
+  FLAGGED_RECOVERY_CAP,
+  isEmptyBodyFile,
+  isRecoverableFlaggedFile,
+  hostFallbackVouchers,
+  isRecoverableUncitedStub,
+  STAR_SOURCE_BY_REFERENCE,
+  decideEmptyBodyRecovery,
+  nextRecoveryCount,
+  filledDateOutsideWindow,
+  filledDateOutsideWindowNote,
+  filledTextIsOtherArticle,
+  discardWrongPageFill,
+} = require('./lib/flagged-recovery');
+// Same set the rebuild's aggregatorStars-fallback scores from (P5.7) — the
+// star fallback below must not write stars the rebuild would then ignore.
+const { KNOWN_STAR_OUTLETS } = require('./lib/score-extractors');
+
+const ROOT = path.join(__dirname, '..');
+const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
+const REVIEWS_PATH = path.join(ROOT, 'data', 'reviews.json');
+const OUTLET_REGISTRY_PATH = path.join(ROOT, 'data', 'outlet-registry.json');
+// REVIEW_TEXTS_DIR can be overridden via env so local runs can point at the
+// user's master ~/broadway-review-texts checkout (which is fresher than a
+// worktree's stale copy). CI's checkout-core-data action populates
+// data/review-texts directly so the default works there.
+const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR
+  || path.join(ROOT, 'data', 'review-texts');
+const AUDIT_PATH = path.join(ROOT, 'data', 'audit', 'show-review-gap.json');
+const UNKNOWN_OUTLETS_PATH = path.join(ROOT, 'data', 'audit', 'unknown-aggregator-outlets.json');
+
+const args = process.argv.slice(2);
+const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1]; // one id or a,b,c
+const windowDays = parseInt(args.find(a => a.startsWith('--window='))?.split('=')[1] || '21', 10);
+// One-off catch-up lever (task #903 S5, 60-day verdict backfill): the SERP
+// census itself is normally scoped to inOpeningWindow's own 21-day default
+// regardless of --window, by design (S1 bounds ongoing SERP spend to
+// freshly-opened shows). --census-window=N widens ONLY the census
+// eligibility check for a bounded backfill run. Omitted (the cron's normal
+// invocation), behavior is byte-identical to before this flag existed.
+const censusWindowRaw = parseInt(args.find(a => a.startsWith('--census-window='))?.split('=')[1] || '', 10);
+const censusWindowDays = Number.isFinite(censusWindowRaw) ? censusWindowRaw : undefined;
+const failOnGap = args.includes('--fail-on-gap');
+const dispatchGather = args.includes('--dispatch-gather');
+const ingestMissing = args.includes('--ingest-missing');
+const dryRun = args.includes('--dry-run');
+const verbose = args.includes('--verbose');
+// Cap how many URLs we ingest per show to avoid runaway loops on a noisy
+// aggregator article. Each missing URL hits fetchPage which costs Bright Data
+// credits — 5 per show per cron run is a sane budget.
+const INGEST_PER_SHOW_CAP = parseInt(args.find(a => a.startsWith('--ingest-cap='))?.split('=')[1] || '5', 10);
+
+// Checkpointing (added 2026-06-06): the CI job has timeout-minutes:25 and every
+// hourly run was being CANCELLED at the cap — so a single run never finished a
+// full sweep and later shows were never audited. With --checkpoint the run
+// processes the LEAST-recently-audited shows first, skips shows audited within a
+// freshness window, and stops cleanly under a soft time budget — so successive
+// hourly runs grind through the whole eligible set (and, with --include-closed,
+// the back catalogue) instead of re-auditing the same first shows forever.
+const useCheckpoint = args.includes('--checkpoint');
+const includeClosed = args.includes('--include-closed');
+const TIME_BUDGET_MS = parseInt(args.find(a => a.startsWith('--time-budget-min='))?.split('=')[1] || '20', 10) * 60 * 1000;
+const FRESHNESS_HOURS = parseInt(args.find(a => a.startsWith('--freshness-hours='))?.split('=')[1] || '12', 10);
+const CHECKPOINT_PATH = path.join(ROOT, 'data', 'audit', 'gap-audit-checkpoint.json');
+// WE completeness gate (2026-07-10): reference rows from WE roundup aggregators.
+const { getWeReferenceRows, isWeShow, inOpeningWindow, missingSetHash } = require('./lib/gap-reference-sources');
+// How long after opening a London show is still checked against the WE round-ups (BRO-4956).
+const WE_REFERENCE_WINDOW_DAYS = 45;
+// The one predicate for "citation from an earlier production of this title".
+// Every count a human reads goes through it — see that module's docstring for
+// why five scattered `!m.priorRun` filters were not enough.
+const { collectCarriedFiles } = require('./lib/prior-run-sibling');
+const {
+  isPriorProductionCitation,
+  currentRunOnly,
+  currentRunCount,
+  splitGapCounts,
+} = require('./lib/prior-production-citations');
+const { serpCensusPreflight } = require('./lib/serp-census-preflight');
+const { recordGateObservation, evaluateProving, emptyTracker, aggregatorAccuracy, lowTrustSources } = require('./lib/we-gate-proving');
+const WE_PROVING_PATH = path.join(ROOT, 'data', 'audit', 'we-gate-proving.json');
+function loadWeProving() {
+  try { return JSON.parse(fs.readFileSync(WE_PROVING_PATH, 'utf8')) || emptyTracker(); } catch { return emptyTracker(); }
+}
+function saveWeProving(t) {
+  try { fs.writeFileSync(WE_PROVING_PATH, JSON.stringify(t, null, 2) + '\n'); } catch { /* non-fatal */ }
+}
+const { normalizeOutlet: normalizeOutletId } = require('./lib/review-normalization');
+// Production-identity + ingest-eligibility policy (2026-07-11): Broadway-path
+// aggregator articles are date-gated against the show's opening window, and
+// prior-run URLs are ingest-blocked on EVERY path (see lib/gap-ingest-policy.js).
+const { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow } = require('./lib/gap-ingest-policy');
+const { classifyIngestSkip, describeSkip } = require('./lib/ingest-skip-classify');
+// WE reference schema version — bump to invalidate WE checkpoint entries (59 shows
+// recorded gaps:0 from vacuous Broadway-only-reference runs and closed-clean shows
+// get a 365d skip; without invalidation the WE reference would never run on them).
+const WE_REF_VERSION = 2;
+// Write-then-rename. A plain writeFileSync of a 150KB JSON is not atomic: a
+// concurrent reader (newsletter-preflight, another audit run) can observe a
+// truncated file, and on the audit file specifically a torn read turns into
+// "previous file unparseable", which is the #893 wipe all over again.
+// rename(2) within the same directory is atomic on macOS and Linux.
+function writeJsonAtomic(filePath, obj) {
+  // mkdir here, not at the first audit write: on a fresh checkout with no
+  // data/audit/ a write was silently swallowed by its own catch and the run
+  // lost all its state.
+  fs.mkdirSync(path.dirname(filePath), { recursive: true });
+  const tmp = `${filePath}.tmp-${process.pid}`;
+  try {
+    fs.writeFileSync(tmp, JSON.stringify(obj, null, 2));
+    fs.renameSync(tmp, filePath);
+  } catch (e) {
+    // Don't leave a predictable half-written .tmp-<pid> behind for the next
+    // run (or a glob) to trip over.
+    try { fs.unlinkSync(tmp); } catch { /* already gone */ }
+    throw e;
+  }
+}
+// Freshness + ordering policy (extracted 2026-07-14 — opening-week shows must
+// re-audit every hourly run and sort ahead of the back-catalogue grind; The
+// Whoopi Monologues' missing NYT review sat 3 days behind the backlog).
+const { freshnessMsFor, compareAuditPriority, checkpointTs } = require('./lib/gap-audit-freshness');
+// Per-show merge for the audit file (#893) + the S0 blast-radius guard.
+const { mergeGapAudit, countsFor, riskStateMap, isRiskyGapChange, confirmQuarantinedStates, partitionAuditedResults, withFileLock } = require('./lib/gap-audit-merge');
+// Merge-aware checkpoint read-modify-write (#923 — the #893 race class, one
+// file over). saveCheckpoint(wholeObject) used to write the ENTIRE in-memory
+// checkpoint from inside the per-show loop, unlocked on two of its three call
+// sites; saveCheckpointEntries only ever writes the ids THIS call touched, so
+// an overlapping run's stamps for other shows survive.
+const {
+  loadCheckpoint: loadCheckpointFile,
+  saveCheckpointEntries,
+  rollbackCheckpointEntries,
+} = require('./lib/gap-audit-checkpoint');
+const loadCheckpoint = () => loadCheckpointFile(CHECKPOINT_PATH);
+const { blastRadiusCheck } = require('./lib/coverage-gate');
+const { auditExitDecision } = require('./lib/aggregator-gap-audit-exit');
+
+// Non-review host/path patterns — canonical copy lives in
+// scripts/lib/non-review-url-patterns.js (task #907 ship-check finding:
+// this file and the S5 adversarial probe each hand-maintained their own
+// list, which drifts). namedNonReviewReason() covers the newer
+// ticketing/venue/listing class (newyorkcitytheatre.com,
+// nationaltheatre.org.uk/productions/, etc.) that also needs filtering here
+// so it never becomes a "gap" candidate for ANY isReviewUrl consumer, not
+// just the probe's own post-lookup fallback.
+// Host normalization + URL classification live in lib/non-review-url-patterns.js
+// (task #1073): registrableHost/hostOf moved there VERBATIM so the canonical
+// classifyReviewUrl and this audit share one implementation.
+const { classifyReviewUrl, registrableHost, hostOf } = require('./lib/non-review-url-patterns');
+const { parseHistoricalDate } = require('./lib/date-utils');
+
+// provisionalOutletIdFromHost lives in scripts/lib/outlet-canonicalize.js so the
+// gap audit and its unit test share one implementation (CLAUDE.md §15).
+
+// Normalize an aggregator review URL for dedupe/storage: drop tracking query +
+// fragment. EXCEPTION: Lighting & Sound America's per-review identity lives
+// entirely in story.asp?ID=… (the path carries no title). Blanket-stripping the
+// query collapses every LSA link to the bare /news/story.asp, which then looks
+// like the SAME uncaptured URL in every show AND feeds --ingest-missing an
+// un-ingestable bare URL — so genuine LSA reviews were never recovered across
+// the whole catalogue (2026-06-21). Preserve the ID so a real LSA review keeps a
+// distinct, ingestable URL. Discovery-layer cousin of the LSA extractor fix.
+//
+// The same holds for every query-ID host, not only LSA (BRO-4956): London
+// Theatre Reviews is post.cfm?p=N, Talkin' Broadway d.php?id=N. Stripped, the
+// audit fed --ingest-missing a bare post.cfm (0-char extraction, so every LTR
+// gap failed to ingest) and let ANY LTR file vouch for any LTR listing. Article
+// id keys are the shared review-url-clusters.js set; tracking params still go.
+const { ARTICLE_ID_QUERY_KEY } = require('./lib/review-url-clusters');
+function normalizeReviewUrl(href) {
+  const noHash = String(href).split('#')[0];
+  const qi = noHash.indexOf('?');
+  if (qi === -1) return noHash;
+  const kept = noHash.slice(qi + 1).split('&').filter((kv) => kv && ARTICLE_ID_QUERY_KEY.test(kv.split('=')[0]));
+  return noHash.slice(0, qi) + (kept.length ? `?${kept.join('&')}` : '');
+}
+
+// Candidate-URL gate: delegates to the CANONICAL classifier in
+// lib/non-review-url-patterns.js (task #1073) so this audit, the write path
+// (review-guards roundup policy), and the S5 probe can never drift apart
+// again — the exact split-brain that let BWW /reviews/ hub pages and cast
+// pages count as review candidates on Disruption / The Vessel (2026-08-05).
+// Rejections are tallied so censusVerdict can report filtering happened
+// instead of silently shrinking the candidate set.
+const candidateRejections = { count: 0, byReason: {} };
+
+// Fill result.candidatesRejected with this show's slice of the global tally
+// (delta since auditShow() started). Called at every auditShow return point.
+function tallyRejections(result, startCount, startByReason) {
+  result.candidatesRejected.count = candidateRejections.count - startCount;
+  for (const [reason, n] of Object.entries(candidateRejections.byReason)) {
+    const delta = n - (startByReason[reason] || 0);
+    if (delta > 0) result.candidatesRejected.byReason[reason] = delta;
+  }
+}
+function isReviewUrl(href) {
+  const verdict = classifyReviewUrl(href);
+  if (!verdict.ok) {
+    candidateRejections.count++;
+    candidateRejections.byReason[verdict.reason] =
+      (candidateRejections.byReason[verdict.reason] || 0) + 1;
+  }
+  return verdict.ok;
+}
+
+function loadShows() {
+  const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  return Array.isArray(data) ? data : (data.shows || []);
+}
+
+// Domain → outletId map from outlet-registry.json. Used to detect aggregator-
+// listed URLs whose outlet isn't in our registry (the gay-city-news /
+// theknockturnal class — gather rejects them with "Could not resolve outlet"
+// and the review never lands). Surfacing these in data/audit/unknown-
+// aggregator-outlets.json closes the loop between gap detection and outlet
+// onboarding.
+let _knownDomainMap = null;
+function getKnownDomainMap() {
+  if (_knownDomainMap) return _knownDomainMap;
+  const map = new Map();
+  try {
+    const raw = JSON.parse(fs.readFileSync(OUTLET_REGISTRY_PATH, 'utf8'));
+    const outlets = raw.outlets || raw;
+    for (const [id, o] of Object.entries(outlets || {})) {
+      if (!o || typeof o !== 'object') continue;
+      const domains = [];
+      if (typeof o.domain === 'string') domains.push(o.domain);
+      // domainAliases is the canonical alternate-domain field in outlet-registry.json
+      // (50 outlets, e.g. huffpost→huffingtonpost.com, guardian→guardian.co.uk).
+      // The legacy domains/alternateDomains keys survive on 1 outlet each; keep
+      // reading them so no entry silently drops out.
+      if (Array.isArray(o.domainAliases)) domains.push(...o.domainAliases);
+      if (Array.isArray(o.domains)) domains.push(...o.domains);
+      if (Array.isArray(o.alternateDomains)) domains.push(...o.alternateDomains);
+      for (const d of domains) {
+        if (typeof d === 'string' && d) map.set(registrableHost(d), id);
+      }
+    }
+  } catch (e) {
+    if (verbose) console.error(`  outlet-registry load failed: ${e.message}`);
+  }
+  _knownDomainMap = map;
+  return map;
+}
+
+// Curated show → Show Score page URL map (data/show-score-urls.json), loaded once.
+// Used by the Show Score reconciliation source; missing entries fall back to
+// slug construction in showScoreUrlForShow.
+let _showScoreUrlMap = null;
+function getShowScoreUrlMap() {
+  if (_showScoreUrlMap) return _showScoreUrlMap;
+  _showScoreUrlMap = require('./lib/show-score-discover').loadShowScoreUrlMap(ROOT);
+  return _showScoreUrlMap;
+}
+
+function loadReviews() {
+  const data = JSON.parse(fs.readFileSync(REVIEWS_PATH, 'utf8'));
+  return Array.isArray(data) ? data : (data.reviews || []);
+}
+
+function loadDirFiles(showId) {
+  const dir = path.join(REVIEW_TEXTS_DIR, showId);
+  if (!fs.existsSync(dir)) return [];
+  return fs.readdirSync(dir).filter(f => f.endsWith('.json')).map(f => {
+    try { return Object.assign({ _file: f }, JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'))); }
+    catch { return null; }
+  }).filter(Boolean);
+}
+
+let _bwwRoundupUrlMap = null;
+function getBwwRoundupUrlMap() {
+  if (_bwwRoundupUrlMap) return _bwwRoundupUrlMap;
+  try { _bwwRoundupUrlMap = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'bww-roundup-urls.json'), 'utf8')) || {}; }
+  catch { _bwwRoundupUrlMap = {}; }
+  return _bwwRoundupUrlMap;
+}
+
+// Playbill's Verdict category page lists only recent articles; a show that opened
+// more than 30 days ago (or hasn't opened) won't be on it.
+function isInVerdictWindow(show, now = Date.now()) {
+  const opened = show && show.openingDate ? Date.parse(show.openingDate) : NaN;
+  return Number.isFinite(opened) && opened <= now + 86400000 && now - opened <= 30 * 86400000;
+}
+
+const _verdictPageCache = new Map();
+async function fetchVerdictCategoryOnce(url) {
+  if (!_verdictPageCache.has(url)) {
+    const res = await fetchPage(url, { skipVerify: true }).catch(() => null);
+    _verdictPageCache.set(url, (res && res.content) || '');
+  }
+  return _verdictPageCache.get(url);
+}
+
+async function findAggregatorArticles(show) {
+  const title = show.title;
+  const id = show.id;
+  const tokens = titleTokens(title);
+  const queries = [
+    `site:playbill.com/article "${title}" reviews`,
+    `site:broadwayworld.com "Review Roundup" "${title}"`,
+  ];
+  const urls = new Set();
+  for (const q of queries) {
+    _serpStats.attempts++;
+    try {
+      const results = await serpQuery(q, { num: 5 });
+      for (const r of (results || [])) {
+        const u = r.link || r.url;
+        if (!u) continue;
+        // The SERP routinely returns OTHER shows' verdict/roundup articles for a
+        // show's query (cold-start ranking). Require the show's title tokens in the
+        // article slug so we don't fetch + extract a wrong-show roundup (e.g. the
+        // "weather-girl" Playbill verdict for a "Girl, Interrupted" query —
+        // girl-interrupted 2026-06-06). Verdict slugs embed the title, so a real
+        // match passes; "weather-girl" matches only "girl" and is rejected.
+        const clean = u.split('?')[0].split('#')[0];
+        if (!urlMatchesShow(clean, tokens)) continue;
+        // Playbill Verdict article patterns
+        if (/playbill\.com\/article\/(read|what|reviews|critics)/i.test(u) && /\.html?$|article\//.test(u)) {
+          urls.add(clean);
+        }
+        // BWW Review Roundup article patterns
+        if (/broadwayworld\.com\/article\/Review-Roundup-/i.test(u)) {
+          urls.add(clean);
+        }
+      }
+    } catch (e) {
+      _serpStats.errors++;
+      if (verbose) console.error(`  SERP error for ${id}: ${e.message}`);
+    }
+  }
+  // Known-good sources first (BRO-4272, School Girls 2026-09-28). The SERP query above
+  // returned only the 2017 off-Broadway Playbill article and no BWW roundup, so this
+  // audit diffed the Broadway opening against the wrong production while the poller,
+  // using these same two sources, had the right roundups all along:
+  //   1. the BWW roundup URL the poller already verified and persisted;
+  //   2. Playbill's Verdict category page (recent articles only, so opening-window
+  //      shows only; the page is fetched once per run, not once per show).
+  const persistedBww = show.bwwRoundupUrl || getBwwRoundupUrlMap()[id];
+  if (typeof persistedBww === 'string' && persistedBww) urls.add(persistedBww.split('?')[0].split('#')[0]);
+  // US shows only: a WE show sharing a title with a Broadway production would otherwise
+  // pick up the Broadway Verdict (a medium-confidence title match).
+  if (['broadway', 'off-broadway'].includes(show.category) && isInVerdictWindow(show)) {
+    try {
+      const { searchPlaybillVerdict } = require('./lib/playbill-verdict-discover');
+      const hit = await searchPlaybillVerdict(show, { fetchHtml: fetchVerdictCategoryOnce });
+      const clean = hit && hit.articleUrl ? hit.articleUrl.split('?')[0].split('#')[0] : null;
+      // Same slug gate the SERP results above pass through.
+      if (clean && urlMatchesShow(clean, tokens)) urls.add(clean);
+    } catch (e) {
+      if (verbose) console.error(`  Playbill Verdict lookup error for ${id}: ${e.message}`);
+    }
+  }
+  // Deterministic BWW Review Roundup discovery via the market section page
+  // (/off-broadway/ etc.) — does NOT depend on Google SERP, which ranks fresh
+  // opening-night roundups poorly and missed the BWW RR for A Woman Among Women
+  // (2026-06). Cheap ScrapingBee scan; falls back internally to reviews.php.
+  try {
+    const { discoverBwwRoundupUrl } = require('./lib/bww-rr-discover');
+    // For closed shows skip the PAID Browserbase reviews.php fallback — it only
+    // lists recent roundups, so it can't help an old show and would burn ~$0.10/show
+    // across the back-catalogue grind. The cheap section scan and the cheap
+    // fetchPage reviews.php scan both still run.
+    //
+    // This is OR'd with the lib's shouldSkipReviewsPhp(show) default (2026-07-31):
+    // previously `show.status === 'closed'` evaluated to an explicit `false` for
+    // every OPEN show, which counted as "caller supplied a value" and disabled the
+    // category default entirely — so this hourly audit was the one caller that
+    // bypassed T4 completely.
+    const bww = await discoverBwwRoundupUrl(show, { skipReviewsPhp: show.status === 'closed' });
+    if (bww && bww.url) urls.add(bww.url.split('?')[0].split('#')[0]);
+  } catch (e) {
+    if (verbose) console.error(`  BWW section discovery error for ${id}: ${e.message}`);
+  }
+  return [...urls];
+}
+
+function titleTokens(title) {
+  // Significant tokens (3+ chars, not stopwords) from the show title.
+  // Used to filter aggregator-article links to URLs actually about THIS show
+  // (vs sidebar/related-article links).
+  const STOPWORDS = new Set([
+    'the','and','for','off','broadway','musical','play','theater','theatre',
+    'review','reviews','what','are','is','of','to','in','on','at','a','an',
+    'with','by','from','presents','starring','new','york','nyc','show',
+  ]);
+  // Fold diacritics BEFORE stripping non-alphanumerics. Without the NFD
+  // decomposition the `[^a-z0-9 ]` strip turns each accented letter into a
+  // SPACE, shredding one word into fragments that can never match an ASCII URL
+  // slug: "Les Misérables" became ["les","mis","rables"] instead of
+  // ["les","miserables"]. Because urlMatchesShow requires n-1 of n tokens, the
+  // two phantom fragments made every real review URL for that show unmatchable
+  // — the census reported "0 gaps" for Les Misérables: The Arena Concert
+  // Spectacular on 2026-07-30 while amNewYork and New York Theatre Guide were
+  // both live and missing. 28 corpus shows are affected; the worst are operas
+  // where the fragment count collapses to 1-2 tokens and the `tokens.length<=2`
+  // branch then demands a 100% match: "La Bohème" → ["boh"], "Jenůfa" → ["jen"].
+  // Same fold as title-normalization.js:29 / show-matching.js:1078.
+  return (title || '').toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9 ]+/g, ' ')
+    .split(/\s+/)
+    .filter(t => t.length >= 3 && !STOPWORDS.has(t));
+}
+
+function urlMatchesShow(href, tokens) {
+  if (tokens.length === 0) return true; // no tokens → accept everything
+  try {
+    const p = new URL(href).pathname.toLowerCase();
+    // Token must match a full path SEGMENT (split on / - _ . space), not a
+    // substring. P1 fix 2026-05-27 (ship-check): substring matching let
+    // `maids` slip into `/the-handmaids-tale-revival` because "maids"
+    // appears inside "handmaids". Segment match catches the actual show
+    // slug while rejecting accidental substring overlap.
+    const segments = new Set(p.split(/[\/\-_.\s]+/).filter(Boolean));
+    const matched = tokens.filter(t => segments.has(t)).length;
+    // Require enough DISTINCTIVE overlap so a different show that merely shares a
+    // common word isn't accepted — "Weather Girl" matched "Girl, Interrupted" on
+    // "girl" alone (girl-interrupted 2026-06-06), the same title-token class as the
+    // original wrong-show leak. Short titles (1-2 tokens) must match ALL tokens;
+    // longer titles tolerate one missing token (slug truncation / subtitle drop).
+    if (tokens.length <= 2) return matched === tokens.length;
+    return matched >= tokens.length - 1;
+  } catch { return false; }
+}
+
+const BOOK_HOST_RE = /(^|\.)(amazon\.[a-z.]+|goodreads\.com|bookbrowse\.com|hardcover\.app|bestthrillerbooks\.com|barnesandnoble\.com|kirkusreviews\.com|publishersweekly\.com|bookshop\.org|storygraph\.com)$/i;
+function isBookPageUrl(href) {
+  try {
+    const x = new URL(href);
+    return BOOK_HOST_RE.test(x.hostname) || /(^|[\/\-_])(book-review|books?|novel)([\/\-_]|$)/i.test(x.pathname);
+  } catch { return false; }
+}
+
+// Pure per-result acceptance decision for the SERP review census (#371 —
+// Soundsphere/JonathanBaz class). Given one raw SERP hit, decides whether it
+// counts as a discovered review URL for this show, applying the SAME
+// review/show-match filters as the aggregator-article path above plus the
+// generic-title disambiguation guard url-discovery.js uses for outlet-scoped
+// discovery (a bare "<title> review" query has no site: restriction, so it's
+// more exposed to wrong-show contamination on ambiguous titles). Extracted as
+// a standalone function (CLAUDE.md §15) so the acceptance logic is unit-
+// testable with fabricated SERP results, independent of live BD/SB/SERP
+// availability (which, unlike this decision, is not something a test controls).
+// @param {{url?: string, link?: string, title?: string, snippet?: string}} sr raw SERP result
+// @param {{show: object, showInfo: object}} ctx show ({id,title}) + url-discovery's getShowInfo(show.id) shape
+// @returns {string|null} normalized review URL if accepted, else null
+function acceptSerpCensusResult(sr, { show, showInfo }) {
+  const u = sr && (sr.url || sr.link);
+  if (!u || !isReviewUrl(u)) return null;
+  const tokens = titleTokens(show.title);
+  if (!urlMatchesShow(u, tokens)) return null;
+  // Different-work guard (BRO-4540). urlMatchesShow tolerates ONE missing token
+  // on 3+ token titles (slug truncation), which on an un-scoped SERP query lets
+  // a different work through: "A Thousand Natural Shocks" -> ['thousand',
+  // 'natural','shocks'] accepted Lauren Gunderson's "Natural Shocks" URLs. For
+  // the census, require EVERY title token in the URL path or in the SERP
+  // title/snippet, and drop book-review/bookstore pages (the same title also
+  // names novels).
+  if (tokens.length >= 3) {
+    const segs = new Set(new URL(u).pathname.toLowerCase().split(/[\/\-_.\s]+/).filter(Boolean));
+    const hay = new Set(titleTokens(`${sr.title || ''} ${sr.snippet || ''}`));
+    if (!tokens.every(t => segs.has(t) || hay.has(t))) return null;
+  }
+  if (isBookPageUrl(u)) return null;
+  // Stale-production guard (#872). The naive census arm runs WITHOUT the
+  // after:/before: window on purpose (undated blog posts are exactly what it
+  // exists to catch), which lets long-running titles drag their own history
+  // in: a bare "The Car Man review" returns 2015 Sadler's Wells and 2022
+  // Royal Albert Hall write-ups alongside the 2026 run. A URL that carries a
+  // year in its path is cheap, reliable evidence — if that year predates this
+  // production's window (and no priorRuns claim it), it is a different
+  // production and does not belong in this show's gap list.
+  // isUrlYearOutOfWindow (lib/gap-ingest-policy.js) is the single copy of this
+  // check — a second, drifted copy is how a dash-form URL trips one guard
+  // while staying invisible to the priorRuns escape hatch in the other.
+  if (isUrlYearOutOfWindow(u, show)) return null;
+  // Weak-specificity gate (ship-check 2026-07-24): isGenericShowTitle's raw
+  // word-count test misses titles that are 2+ words on paper but reduce to a
+  // SINGLE significant token once titleTokens() strips stopwords/short words
+  // — e.g. "Oh, Mary!" -> ['mary'], "Life of Pi" -> ['life'], even
+  // "Trainspotting the Musical" -> ['trainspotting']. urlMatchesShow (just
+  // above) actually matches on THAT token set, so the real acceptance bar for
+  // those titles is a single generic word — an un-scoped SERP query (no
+  // site: restriction, unlike the aggregator-article queries above) is more
+  // exposed to wrong-show contamination on exactly these titles. Gate on
+  // tokens.length, not just isGenericShowTitle's word count, so the
+  // disambiguation check actually fires when it needs to.
+  if ((isGenericShowTitle(show.title) || tokens.length <= 1) && canDisambiguateGenericTitle(showInfo)) {
+    const hay = `${(sr.title || '')} ${u} ${(sr.snippet || '')}`.toLowerCase();
+    if (!hasDisambiguator(hay, showInfo)) return null;
+  }
+  return normalizeReviewUrl(u);
+}
+
+// Within-run cache of fetched aggregator articles. Playbill Verdict often
+// covers multiple shows in one article (e.g. a "Best of Off-Broadway" recap
+// linked from 3-5 different shows' Verdict permalinks). Without this cache,
+// the hourly cron fetches the same URL N times. P1 fix 2026-05-27
+// (ship-check): cap BD credit burn at ~1 fetch per unique article per run.
+const _articleCache = new Map();
+
+// Run-level fetch health. A single un-scrapeable article is tolerated (logged
+// + skipped) so the hourly audit doesn't crash on one bad URL — e.g. a BWW
+// `/westend/` redirect that all providers fail. But if EVERY attempted article
+// fetch throws, the scraper stack itself is down (dead Bright Data zone /
+// exhausted ScrapingBee / no Playwright) — the run must still redden CI so the
+// outage is visible. See plan-review 2026-05-31. `errors` counts hard throws
+// (all providers failed); `empty` counts 200-but-no-content (can be a legit
+// page with no matching links, so it does NOT count toward the outage floor).
+const _fetchStats = { attempts: 0, errors: 0, empty: 0 };
+
+// Discovery (SERP) health — companion to _fetchStats for the OTHER outage class.
+// findAggregatorArticles swallows SERP errors (returns [] on failure,
+// indistinguishable from "no coverage"). Without this counter, a total SERP/key
+// outage makes every show report 0 articles → extractAggregatorReviewUrls is
+// never called → _fetchStats.attempts stays 0 → the article-fetch floor can't
+// fire, and the audit silently reports "no gaps" during a real blackout
+// (ship-check 2026-06-01, both reviewers). Count SERP calls + errors so the
+// floor below catches discovery outage too.
+const _serpStats = { attempts: 0, errors: 0 };
+
+async function extractAggregatorReviewUrls(articleUrl, show) {
+  let html;
+  if (_articleCache.has(articleUrl)) {
+    html = _articleCache.get(articleUrl);
+  } else {
+    _fetchStats.attempts++;
+    let r;
+    try {
+      r = await fetchPage(articleUrl);
+    } catch (e) {
+      // Per-URL scrape failure. Mirror audit-url-validation.js:392 — record the
+      // throw, warn, continue. The run-level floor below still reddens CI if
+      // the WHOLE collector is down (every attempted fetch threw).
+      _fetchStats.errors++;
+      console.log(`::warning::aggregator fetch failed (${hostOf(articleUrl) || articleUrl}): ${e.message.split('\n')[0].slice(0, 120)}`);
+      // Do NOT cache null on a THROW: a transient failure shouldn't poison the
+      // URL for other shows that share this article, and re-attempting on each
+      // show keeps _fetchStats accurate so the outage floor fires on a real
+      // blackout (ship-check 2026-06-01). Only legit empty-content is cached.
+      return null;
+    }
+    if (!r?.content) {
+      _fetchStats.empty++;
+      _articleCache.set(articleUrl, null);
+      return null;
+    }
+    html = r.content;
+    _articleCache.set(articleUrl, html);
+  }
+  if (html == null) return null;
+  const $ = cheerio.load(html);
+  const tokens = titleTokens(show.title);
+  const urls = new Set();
+  $('a[href]').each((_, el) => {
+    const href = $(el).attr('href') || '';
+    if (!isReviewUrl(href)) return;
+    if (!urlMatchesShow(href, tokens)) return;
+    urls.add(normalizeReviewUrl(href));
+  });
+  // Production identity (2026-07-11): urlMatchesShow filters wrong SHOWS, not
+  // wrong PRODUCTIONS — a same-title prior production's roundup passes it (the
+  // 2018 TKAM Broadway RR → 77 "missing" 2018 URLs class). Date the ARTICLE
+  // against this show's opening window; the caller marks out-of-window
+  // articles' URLs priorRun (report-only, never auto-ingested). Computed per
+  // (article, show) pair — a multi-show recap can be current for one show and
+  // prior for another — so it lives outside the shared HTML cache.
+  const identity = articleRunIdentity(html, show, articleUrl);
+  return { urls: [...urls], priorRun: identity.priorRun, publishDate: identity.publishDate };
+}
+
+// Coarse label for reporting WHY a file is excluded (shown in flaggedMisses detail).
+function classifyShowFile(d) {
+  if (d.wrongProduction) return 'wrongProduction';
+  if (d.wrongShow) return 'wrongShow';
+  if (d.isNonReview) return 'nonReview';
+  if (d.duplicateOf) return 'duplicate';
+  if (d.isRoundupArticle) return 'roundup';
+  if (!(d.fullText && d.fullText.length >= 400) && !d.aggregatorStars && d.assignedScore == null) {
+    return 'emptyBody';
+  }
+  return 'clean';
+}
+
+// Canonical coverage test: a dir file "covers" an aggregator-listed review only if
+// the rebuild would actually INCLUDE it. classifyShowFile()==='clean' previously
+// counted empty-body / url_content_mismatch / stub files as covered (they carry no
+// wrong* flag) even though rebuild drops them for low content-tier — that blind spot
+// let Glengarry WE's empty Times review read as "covered" while it was excluded from
+// reviews.json. Delegating to isIncludableForRebuild keeps the gap audit's notion of
+// "covered" identical to the rebuild's notion of "included" by definition.
+function isCoveredFile(d, show) {
+  // A file carried from the earlier-run entry (BRO-4759) is judged — and read from disk —
+  // in the context of the entry whose folder holds it.
+  const ctx = d._ctxShow || show;
+  try {
+    const filePath = d._file ? path.join(REVIEW_TEXTS_DIR, ctx.id, d._file) : null;
+    return isIncludableForRebuild(d, ctx, filePath) === true;
+  } catch (_) {
+    return classifyShowFile(d) === 'clean';
+  }
+}
+
+// FLAGGED_RECOVERY_CAP + isRecoverableFlaggedFile moved to scripts/lib/flagged-recovery.js
+// (CLAUDE.md §15) so the self-healing write-loop below and its unit test share one
+// implementation. A flagged-out file is auto-recoverable ONLY in the merge-safe
+// empty-body case (no usable fullText/stars/score, no wrong-production/wrong-show
+// flag, not human-protected, under the cap). Re-fetching the aggregator's
+// current-production URL then just FILLS the missing text (createOrMergeReviewFile
+// merges, never clobbers). Stale-slug wrongProduction recovery is deliberately NOT
+// automated — see the deferral note on the recovery loop in main().
+
+const { lastNewReviewAt, hasRecentReviewActivity } = require('./lib/collection-phase');
+
+function isShowEligible(show) {
+  // Recency falls back openingDate → previewsStartDate. This used to be a bare
+  // `if (!show.openingDate) return false`, which made this audit — the one whose
+  // entire job is catching "Playbill Verdict lists 9 reviews, we have 3" —
+  // structurally blind to every show still in previews. On 2026-08-12 The
+  // Winter's Tale and An American Daughter both had a live BWW roundup and a
+  // Playbill Verdict article, 11 and 9 discovered review URLs, zero collected
+  // text, and this audit never looked at either of them.
+  const recencyDate = showRecencyKey(show);
+  if (recencyDate === NO_DATE_SENTINEL) return false;
+  // --include-closed: also audit closed shows (one-time back-catalogue backfill).
+  // Without it, only currently open/previews shows are checked (the default cron).
+  if (!includeClosed && !['open', 'previews'].includes(show.status)) return false;
+  const opened = new Date(recencyDate);
+  const today = new Date();
+  const diffDays = (today - opened) / 86400000;
+  // Eligible if opened within window OR in pre-opening (<=3 days from now)
+  if (diffDays >= -3 && diffDays <= windowDays) return true;
+  // BRO-4770: a show past the window stays in scope while it is still collecting
+  // reviews (a review first seen in the last 10 days), so a late review re-enters it.
+  if (['open', 'previews'].includes(show.status)) {
+    return hasRecentReviewActivity(lastNewReviewAt(path.join(REVIEW_TEXTS_DIR, show.id)));
+  }
+  return false;
+}
+
+async function auditShow(show, opts = {}) {
+  const result = {
+    showId: show.id,
+    title: show.title,
+    openingDate: show.openingDate,
+    status: show.status,
+    category: show.category,
+    aggregatorArticles: [],
+    aggregatorListedUrls: [],
+    dirFiles: 0,
+    dirClean: 0,
+    inReviewsJson: 0,
+    missing: [],         // urls listed by aggregator but not in dir
+    dirOnly: [],         // urls in dir but not on aggregator (FYI, not necessarily bad)
+    flaggedMisses: [],   // urls listed by aggregator that ARE in dir but flagged out
+    citedNoUrl: [],      // WE reference rows with no URL (WET tables) whose outlet has no covered file — alert-only, never auto-ingestable
+    weReference: null,   // WE reference source health ({sources, rowCount, allSourcesFailed})
+    serpCensus: null,    // SERP review census health ({ran, query, resultCount, urlsFound} or {ran:false, reason})
+    // Per-show tally of candidate URLs the canonical classifier rejected (task
+    // #1073, W3.E defense-in-depth): makes filtering VISIBLE in the audit +
+    // digest instead of silently shrinking the candidate set. A junk-harvest
+    // regression shows up here as a spike, not as phantom "missing reviews".
+    candidatesRejected: { count: 0, byReason: {} },
+    // Candidates suppressed because the SAME outlet's review is already held
+    // for this show under another registered host (The Pass / one-minute-critic
+    // Substack move, 2026-08-03). Recorded, never silently dropped — same rule
+    // as candidatesRejected above.
+    dedupedVariants: [],
+  };
+  const rejStartCount = candidateRejections.count;
+  const rejStartByReason = { ...candidateRejections.byReason };
+
+  const articles = await findAggregatorArticles(show);
+  result.aggregatorArticles = articles;
+
+  const aggUrls = new Set();
+  // Broadway-path production identity: URLs cited ONLY by out-of-window
+  // (prior-production) articles are priorRun → ingest-blocked. A URL also cited
+  // by a current-run article stays ingestable (the current citation vouches).
+  const bwCurrentUrls = new Set();
+  const bwPriorCandidateUrls = new Set();
+  for (const art of articles) {
+    const extracted = await extractAggregatorReviewUrls(art, show);
+    if (!extracted) continue;
+    for (const u of extracted.urls) {
+      aggUrls.add(u);
+      (extracted.priorRun ? bwPriorCandidateUrls : bwCurrentUrls).add(u);
+    }
+    if (extracted.priorRun) {
+      result.priorRunArticles = result.priorRunArticles || [];
+      result.priorRunArticles.push({ url: art, publishDate: extracted.publishDate });
+      console.log(`  ⏮  prior-production article (published ${extracted.publishDate || '?'}, opening ${show.openingDate}): ${art} — its ${extracted.urls.length} URL(s) are report-only`);
+    } else if (!extracted.publishDate && extracted.urls.length > 0) {
+      // Fail-open observability (codex review 2026-07-11): Playbill/BWW roundup
+      // articles reliably carry OpenGraph/JSON-LD dates, so a dateless one means
+      // metadata drift — and the production-identity gate is silently OFF for it.
+      console.log(`::warning::no publish date extracted from aggregator article ${art} (${show.id}) — production-identity gate fails open for its ${extracted.urls.length} URL(s)`);
+    }
+  }
+  const bwPriorRunUrls = new Set([...bwPriorCandidateUrls].filter(u => !bwCurrentUrls.has(u)));
+
+  // Show Score per-show page → direct outlet review URLs. Show Score covers
+  // off-Broadway (unlike DTLI, which is Broadway-only) — it lands later and lists
+  // fewer reviews than Playbill/BWW, but the hourly audit eventually reconciles a
+  // review that surfaced only there. We PAGINATE (Show Score renders only the
+  // first 8; the rest come from /paginate_critic_reviews — The Receptionist has
+  // 13). The "Read more" links are show-page-vouched, so we do NOT title-match
+  // them — that lets opaque outlet URLs through (Lighting & Sound America uses
+  // story.asp?ID=… with no title in the path, which title-matching rejected, so
+  // L&SA was systematically missed across shows, 2026-06-06). isReviewUrl still
+  // strips ticketing/maps/form links.
+  //
+  // Production identity (BRO-1412): Show Score keeps ONE page per title (the
+  // current or most recent production), with no roundup article to date via
+  // articleRunIdentity — it links straight to each outlet's own review. A
+  // revival's page can still surface a prior production's review (e.g. an
+  // outlet's own old notice still linked from the show's page). Fall back to
+  // the URL-embedded-year signal (same one the SERP census applies) so a
+  // stale-year Show Score URL is tagged priorRun and permanently ingest-
+  // blocked rather than silently treated as current-run.
+  const ssPriorRunUrls = new Set();
+  try {
+    const { showScoreUrlForShow, fetchAllShowScoreReviewUrls } = require('./lib/show-score-discover');
+    const ssUrl = showScoreUrlForShow(show, getShowScoreUrlMap());
+    if (ssUrl) {
+      const fetchHtml = async (u) => {
+        const r = await fetchPage(u, { timeout: 45000 });
+        return (typeof r === 'string') ? r : ((r && (r.content || r.html || r.body)) || '');
+      };
+      for (const u of await fetchAllShowScoreReviewUrls(ssUrl, fetchHtml)) {
+        if (!isReviewUrl(u)) continue;
+        const norm = normalizeReviewUrl(u);
+        aggUrls.add(norm);
+        if (isUrlYearOutOfWindow(norm, show)) ssPriorRunUrls.add(norm);
+      }
+    }
+  } catch (e) {
+    if (verbose) console.error(`  Show Score discovery error for ${show.id}: ${e.message}`);
+  }
+
+  // ---- SERP review census (completeness reference, 2026-07-23) ----
+  // Playbill/BWW/WET/TR/LBO/Show Score above are all EDITOR-CURATED references —
+  // they only see outlets those editors chose to cite. Trainspotting WE
+  // (2026-07-23): a manual "<title> review" Google sweep surfaced 2 published
+  // reviews (soundspheremag.com, jonathanbaz.com) NO aggregator cited —
+  // invisible to every reference above by construction. This runs the SAME
+  // search a human does, through the existing BD/SB/Scrapingdog chain, scoped
+  // to the opening window and cooldown-gated (checkpoint) to bound SERP spend
+  // (SB has hit its monthly cap before — #224). Kill switch: SERP_GAP_CENSUS_DISABLED=1.
+  const serpCensusUrls = new Set();
+  if (process.env.SERP_GAP_CENSUS_DISABLED !== '1') {
+    const inWindowNow = censusWindowDays !== undefined
+      ? inOpeningWindow(show, Date.now(), censusWindowDays)
+      : inOpeningWindow(show);
+    const cooldownRaw = parseInt(process.env.SERP_CENSUS_COOLDOWN_HOURS || '', 10);
+    const cooldownHours = Number.isFinite(cooldownRaw) ? cooldownRaw : SERP_CENSUS_DEFAULT_COOLDOWN_HOURS;
+    if (shouldRunSerpCensus({ inWindow: inWindowNow, lastRunAt: opts.lastCensusAt || null, cooldownHours })) {
+      const showInfo = getShowInfo(show.id);
+      // Every show gets whatever scoped follow-up queries its metadata
+      // supports (venue token, creative surname) — no title-ambiguity
+      // trigger — PLUS the naive "<title> <venue> review" arm read three
+      // pages deep, which is literally what the owner types. Rationale +
+      // rejected alternatives documented on buildCensusQueries /
+      // buildCensusPlan (serp-review-census.js).
+      const naivePagesRaw = parseInt(process.env.SERP_CENSUS_NAIVE_PAGES || '', 10);
+      const plan = buildCensusPlan(show, {
+        creativeNames: showInfo.creativeNames || [],
+        ...(Number.isFinite(naivePagesRaw) ? { naivePages: naivePagesRaw } : {}),
+      });
+      if (plan.length) {
+        const dateRange = calculateDateWindow(show);
+        const queryStatus = [];
+        for (const step of plan) {
+          try {
+            // preferSpeed:false (BD-first) — this is a background completeness
+            // sweep, not a user-waiting flow, and BD is the cheaper provider
+            // (matches brand-mention-serp.js's SB-conservation posture).
+            const serpResults = await serpQuery(step.query, {
+              dateRange: step.useDateRange ? dateRange : null,
+              preferSpeed: false,
+              page: step.page,
+              geo: step.geo,
+            });
+            let accepted = 0;
+            for (const sr of (serpResults || [])) {
+              const url = acceptSerpCensusResult(sr, { show, showInfo });
+              if (url && !serpCensusUrls.has(url)) accepted++;
+              if (url) serpCensusUrls.add(url);
+            }
+            queryStatus.push({
+              arm: step.arm, query: step.query, page: step.page, geo: step.geo,
+              ok: true, results: (serpResults || []).length, accepted, error: null,
+            });
+          } catch (e) {
+            const err = (e.message || '').slice(0, 120);
+            queryStatus.push({
+              arm: step.arm, query: step.query, page: step.page, geo: step.geo,
+              ok: false, results: 0, accepted: 0, error: err,
+            });
+            console.error(`::error::SERP census query failed for ${show.id} (${step.arm}: ${step.query} p${step.page}): ${err}`);
+          }
+        }
+        const okCount = queryStatus.filter(q => q.ok).length;
+        // Which failures may burn the cooldown? The scoped arms are the census's
+        // floor — if any of those failed, the pass was not a census. The naive
+        // arm is deeper and more pages, so it is the likeliest to flake; before
+        // #872 there were 1-3 arms and "all must succeed" was cheap, but with 6
+        // arms an "all" rule means one chronically-failing deep page pins
+        // complete:false forever, the cooldown never stamps, and the census
+        // re-fires every cycle on every in-window show (~4,000 calls/day for a
+        // single bad show — ship-check 2026-08-02). So: all scoped arms must
+        // succeed AND the naive arm must have produced at least one good page.
+        const censusComplete = isCensusPassComplete(queryStatus);
+        // `complete` gates the checkpoint cooldown in main(): a partial or
+        // total provider outage must NOT burn the cooldown, or a dead/flaky
+        // provider silently sleeps the census through the whole opening
+        // window (ship-check 2026-07-25 — the first cut stamped off "any
+        // query ran", which let one surviving low-value query mask a failed
+        // primary for 6h). `ran` stays "did any census work happen" for
+        // reporting; `queriesOk`/`queryStatus` keep per-arm truth so a
+        // partially-degraded pass is still visible even when it stamps.
+        result.serpCensus = {
+          ran: okCount > 0,
+          complete: censusComplete,
+          query: plan[0].query,
+          queryStatus,
+          queriesOk: okCount,
+          queriesTotal: plan.length,
+          resultCount: serpCensusUrls.size,
+          error: okCount === plan.length ? null : (queryStatus.filter(q => !q.ok).map(q => q.error)[0] || null),
+        };
+      }
+    } else {
+      result.serpCensus = { ran: false, reason: inWindowNow ? 'cooldown' : 'out-of-window' };
+    }
+  }
+  for (const u of serpCensusUrls) aggUrls.add(u);
+
+  // ---- West End reference (completeness gate, 2026-07-10) ----
+  // Playbill/BWW above are Broadway aggregators; for WE shows they find ~nothing,
+  // which made "no gaps" vacuous (TKAM 2026: 6 live, 15 recoverable, zero alarms).
+  // Reference = union of outlets cited by WET / theatre.reviews / LBO roundups,
+  // via the same discovery libs the opening-night poller uses. Scoped to the
+  // opening window so the 1095d back-catalogue grind doesn't fetch 4 aggregators
+  // for all 362 WE shows every cycle. Kill switch: WE_GAP_REFERENCE_DISABLED=1.
+  const weRefUrls = new Set();
+  const weRefPriorRunUrls = new Set();
+  const weRefUrlSources = new Map();  // normalized URL → Set of citing sources
+  // normalized URL → {stars, source} from the first current-run citing row that
+  // carries a star rating. Feeds the paywall star-fallback in recovery (The
+  // Stage class): when the text can't be fetched, the citing roundup's stars
+  // still make the review scoreable.
+  const weRefUrlStars = new Map();
+  const weRefNoUrlRows = [];
+  let weRefData = null;
+  // Per-source corroboration counts ({src: {cited, corroborated}}) — feeds the
+  // proving tracker's aggregatorAccuracy (each source's citations vs reality).
+  const weRefPerSource = {};
+  const bumpPerSource = (src, corroborated) => {
+    const e = weRefPerSource[src] = weRefPerSource[src] || { cited: 0, corroborated: 0 };
+    e.cited++;
+    if (corroborated) e.corroborated++;
+  };
+  // 45 days, not the 21-day opening window (BRO-4956): small-house London reviews
+  // and the round-ups that list them keep arriving for weeks. On 2026-10-10, 18
+  // shows that opened 3-8 weeks earlier still lacked 53 reviews a round-up linked.
+  if (process.env.WE_GAP_REFERENCE_DISABLED !== '1' && isWeShow(show) && inOpeningWindow(show, Date.now(), WE_REFERENCE_WINDOW_DAYS)) {
+    try {
+      const weRef = await getWeReferenceRows(show, { log: (m) => { if (verbose) console.log(m); } });
+      weRefData = weRef;
+      result.weReference = { rowCount: weRef.rows.length, sources: weRef.sources, allSourcesFailed: weRef.allSourcesFailed };
+      // Health floors (plan-review 2026-07-09): a broken detector must ALARM,
+      // never read as "no gaps" — that vacuous green is the failure this gate exists to kill.
+      if (weRef.allSourcesFailed) {
+        console.error(`::error::WE reference blackout for ${show.id} — all WE aggregator discoveries errored; "no gaps" for this show is NOT meaningful this run.`);
+      }
+      for (const [src, st] of Object.entries(weRef.sources)) {
+        if (!st.emptyParse) continue;
+        // Passive (archive-only) sources are bonus coverage: a 0-row archive is
+        // a stale paywall-stub artifact or parser drift — visible, but not a
+        // detector failure of the live reference (QA review 2026-07-11).
+        if (st.passive) console.log(`::warning::WE reference ${src} archive for ${show.id} parsed 0 rows (paywall-stub archive or parser drift) — source skipped this run.`);
+        else console.error(`::error::WE reference empty-parse for ${show.id} — ${src} roundup was found but parsed 0 rows (parser drift?). Detector failure, not zero citations.`);
+      }
+      for (const row of weRef.rows) {
+        if (row.url) {
+          if (!isReviewUrl(row.url)) continue;
+          const u = normalizeReviewUrl(row.url);
+          aggUrls.add(u);
+          weRefUrls.add(u);
+          // Source attribution is CURRENT-RUN only (QA review 2026-07-11): a
+          // source's prior-run citation must not earn corroboration credit for
+          // (or vouch trust on) a URL its current roundup never cited.
+          if (!row.priorRun) {
+            if (!weRefUrlSources.has(u)) weRefUrlSources.set(u, new Set());
+            weRefUrlSources.get(u).add(row.source);
+            if (typeof row.stars === 'number' && row.stars > 0 && !weRefUrlStars.has(u)) {
+              weRefUrlStars.set(u, { stars: row.stars, source: row.source });
+            }
+          }
+          if (row.priorRun) weRefPriorRunUrls.add(u);
+        } else {
+          weRefNoUrlRows.push(row);
+        }
+      }
+      // Current-run rows first (stable): the outlet-dedup loop below is
+      // first-row-wins, and a prior-run citation must never shadow a current-run
+      // citation of the same outlet (QA review 2026-07-11 — a shadowed current
+      // gap would be mislabeled priorRun and lose its 24h alert re-ping).
+      weRefNoUrlRows.sort((a, b) => (a.priorRun ? 1 : 0) - (b.priorRun ? 1 : 0));
+    } catch (e) {
+      console.error(`::error::WE reference failed for ${show.id}: ${(e.message || '').slice(0, 120)}`);
+    }
+  }
+
+  result.aggregatorListedUrls = [...aggUrls];
+  if (aggUrls.size === 0 && weRefNoUrlRows.length === 0) {
+    tallyRejections(result, rejStartCount, rejStartByReason);
+    return result;
+  }
+
+  // BRO-4759: the rebuild carries a declared earlier run's reviews onto this entry, so a URL
+  // held in that entry's folder is covered here. Without this, a returning show's audit lists
+  // the earlier run's reviews as missing, re-ingests them every hour (they land nowhere: the
+  // URL already lives in the sibling folder) and its Coverage Verdict never leaves "incomplete".
+  const dirData = loadDirFiles(show.id).concat(
+    collectCarriedFiles(show, opts.allShows, { loadFiles: loadDirFiles, isCovered: isCoveredFile }),
+  );
+  result.dirFiles = dirData.length;
+
+  // Map dir files by hostname (multiple files per host possible)
+  const dirByHost = new Map();
+  for (const d of dirData) {
+    const h = hostOf(d.url || '');
+    if (!h) continue;
+    if (!dirByHost.has(h)) dirByHost.set(h, []);
+    dirByHost.get(h).push(d);
+    if (isCoveredFile(d, show)) result.dirClean++;
+  }
+
+  const reviewsJson = loadReviews();
+  result.inReviewsJson = reviewsJson.filter(r => r.showId === show.id).length;
+
+  // URLs of files we already hold AND count as covered for this show. Used by
+  // the alias-variant check below; deliberately covered-only, so a flagged or
+  // excluded file can never vouch for a candidate.
+  // Carried files (BRO-4759) vouch for their own URL only, never as a same-outlet variant.
+  const coveredUrls = dirData.filter(d => d.url && !d._exactMatchOnly && isCoveredFile(d, show)).map(d => d.url);
+  // Registry host -> outletId, plus the set of hosts 2+ outlets claim. The
+  // ambiguous set is why this uses outlet-canonicalize's map and not the
+  // audit's own getKnownDomainMap(), which resolves a contested host to one
+  // arbitrary outlet (last writer wins) — good enough for labelling a gap,
+  // not good enough for HIDING one.
+  const { domainToOutlet: aliasOutletMap, ambiguous: ambiguousHosts } = _buildDomainMap();
+
+  // For each aggregator-listed URL: is it covered locally?
+  const knownDomains = getKnownDomainMap();
+  for (const aggUrl of aggUrls) {
+    const aggHost = hostOf(aggUrl);
+    if (!aggHost) continue;
+    const knownOutletId = knownDomains.get(aggHost) || null;
+    // W3.D (task #1073): coverage is exact-URL first. Host-level fallback only
+    // counts dir files whose OWN url is itself a plausible review URL (or has
+    // no url — manual entries) — a BWW /shows/…/cast stub must not "cover"
+    // the BWW hub URL and hide a genuine gap (The Vessel, 2026-08-05).
+    const dirFilesAll = dirByHost.get(aggHost) || [];
+    // Scheme / www / trailing-slash / host-case variants are the same URL
+    // (ship-check: without this, a flagged file whose URL differed only by a
+    // trailing slash stopped vouching once hostFallbackVouchers dropped
+    // flagged files, and the listed URL was re-ingested every run).
+    const urlIdentity = (u) => normalizeReviewUrl(u)
+      .replace(/^https?:\/\//i, '')
+      .replace(/^www\./i, '')
+      .replace(/^([^/]+)/, (h) => h.toLowerCase())
+      .replace(/\/+$/, '');
+    const aggNorm = urlIdentity(aggUrl);
+    const exactMatches = dirFilesAll.filter(d => d.url && urlIdentity(d.url) === aggNorm);
+    const dirFiles = exactMatches.length > 0
+      ? exactMatches
+      : hostFallbackVouchers(
+        // A carried file (BRO-4759) must not vouch for a DIFFERENT URL on its host: the
+        // February NYT review would hide a new nytimes.com review of the return.
+        dirFilesAll.filter(d => !d._exactMatchOnly && (!d.url || classifyReviewUrl(d.url).ok)),
+        d => isCoveredFile(d, show),
+      );
+    if (dirFiles.length === 0) {
+      // Before calling it missing: is this the SAME outlet's review we already
+      // hold, published on another host that outlet has registered? The Pass
+      // (2026-08-03) was reported as missing a one-minute-critic review we held
+      // the whole time — the census found the Substack mirror
+      // (1minutecritic.substack.com/p/…) while the file carried the .com URL,
+      // and the two paths don't match so no URL-level dedupe could see it. That
+      // phantom gap helped get the show deleted from the newsletter.
+      const variant = sameOutletUrlVariant({
+        candidateUrl: aggUrl,
+        heldUrls: coveredUrls,
+        domainToOutlet: aliasOutletMap,
+        ambiguous: ambiguousHosts,
+        hostOf,
+      });
+      if (variant.dup) {
+        // Recorded, never silently dropped — same rule as candidatesRejected:
+        // a filter that shrinks the candidate set invisibly is how a real gap
+        // would eventually hide behind this one.
+        result.dedupedVariants.push({
+          url: aggUrl, host: aggHost, matchedUrl: variant.matchedUrl,
+          outletId: variant.outletId, reason: variant.reason,
+        });
+        continue;
+      }
+      result.missing.push({ url: aggUrl, host: aggHost, knownOutletId });
+    } else {
+      const clean = dirFiles.filter(d => isCoveredFile(d, show));
+      if (clean.length === 0) {
+        // recoverable = at least one excluded file for this host is empty-body or
+        // explicitly marked needsRefetch (Guardian stale-slug guard). Those can be
+        // healed by re-fetching the aggregator's CURRENT-production URL. Genuine
+        // wrong-show / manually-protected exclusions are NOT recoverable.
+        const recoverableFile = dirFiles.find(d => isRecoverableFlaggedFile(d));
+        result.flaggedMisses.push({
+          url: aggUrl,
+          host: aggHost,
+          knownOutletId,
+          recoverable: !!recoverableFile,
+          recoverableFile: recoverableFile ? recoverableFile._file : null,
+          // Carry the EXISTING file's outletId + criticName so the recovery
+          // re-ingest writes back into the SAME slug (createOrMergeReviewFile
+          // resolves by outletId+criticName) instead of spawning a sibling file.
+          // Fall back to the aggregator-derived knownOutletId if the stored file
+          // has no outletId.
+          recoverableOutletId: recoverableFile ? (recoverableFile.outletId || knownOutletId) : null,
+          recoverableCritic: recoverableFile ? (recoverableFile.criticName || null) : null,
+          recoverableCount: recoverableFile ? (recoverableFile.aggUrlRecoveryCount || 0) : 0,
+          dirFlags: dirFiles.map(d => ({ file: d._file, flag: classifyShowFile(d), urlInDir: d.url })),
+        });
+      }
+    }
+  }
+
+  // dirOnly: hosts in dir clean but not on aggregator
+  const aggHosts = new Set([...aggUrls].map(hostOf));
+  for (const [h, files] of dirByHost) {
+    if (aggHosts.has(h)) continue;
+    const clean = files.filter(d => isCoveredFile(d, show));
+    if (clean.length > 0) {
+      result.dirOnly.push({ host: h, count: clean.length });
+    }
+  }
+
+  // Tag WE-reference-derived missing URLs. Ingest for these is gated by
+  // WE_GAP_INGEST=1 (absent = report-only — the SAFE default; a dropped env line
+  // must fail closed), and prior-run roundup URLs are PERMANENTLY report-only
+  // (auto-ingesting a prior production's URLs is the WET mass-ingestion class).
+  if (weRefUrls.size > 0 || bwPriorRunUrls.size > 0 || serpCensusUrls.size > 0 || ssPriorRunUrls.size > 0) {
+    for (const m of [...result.missing, ...result.flaggedMisses]) {
+      if (weRefUrls.has(m.url)) {
+        m.weRef = true;
+        m.weRefSources = [...(weRefUrlSources.get(m.url) || [])];
+        const starRow = weRefUrlStars.get(m.url);
+        if (starRow) {
+          m.weRefStars = starRow.stars;
+          m.weRefStarsSource = starRow.source;
+        }
+      }
+      if (weRefPriorRunUrls.has(m.url)) m.priorRun = true;
+      // Broadway-path production identity: cited only by a prior production's
+      // dated aggregator article → permanently report-only (TKAM 2018 class).
+      if (bwPriorRunUrls.has(m.url)) { m.priorRun = true; m.priorRunSource = 'aggregator-article-date'; }
+      // Show Score production identity (BRO-1412): URL's own embedded year
+      // predates this production's window → permanently report-only. Don't
+      // clobber priorRunSource if the (stronger, HTML-dated) article check
+      // above already attributed this URL — attribution is audit-trail only,
+      // ingestBlockReason reads the boolean, but the article date is the
+      // higher-confidence signal and should win when both apply.
+      if (ssPriorRunUrls.has(m.url)) {
+        m.priorRun = true;
+        if (!m.priorRunSource) m.priorRunSource = 'show-score-url-year';
+      }
+      // SERP census provenance (report/debug only — ingest eligibility for
+      // these follows the same rules as any other missing URL: blocked on WE
+      // shows until WE_GAP_INGEST=1, per gap-ingest-policy.js).
+      if (serpCensusUrls.has(m.url)) m.serpCensus = true;
+    }
+  }
+
+  // Outlet-based coverage for URL-less WE citations (WET's dominant table format
+  // cites outlet+stars with NO link — URL-only matching would silently drop the
+  // biggest citation class; plan-review P0). Covered = any file for the outlet
+  // that passes isIncludableForRebuild (this naturally covers paywalled star-stubs,
+  // which ARE scoreable — memory: paywalled star outlets are not gaps), or a
+  // _pending/ no-byline strand file (known, tracked elsewhere — not a NEW gap).
+  let _weCoveredNoUrl = 0;
+  if (weRefNoUrlRows.length > 0) {
+    // Canonical outlet key: WET prints display variants that normalize to ids the
+    // registry doesn't use ("Time Out London"→timeout-london vs registry timeout;
+    // "Broadway World UK"→broadway-world-uk vs broadwayworld). Collapse hyphens and
+    // strip a -london/-uk market suffix so a COVERED outlet is never reported
+    // missing for 21 days over a naming variant (ship-check P1 2026-07-10).
+    const outletKey = (oid) => String(oid || '').replace(/-(london|uk)$/,'').replace(/-/g, '');
+    const dirByOutlet = new Map();
+    for (const d of dirData) {
+      const oid = outletKey(normalizeOutletId(d.outletId || (d._file || '').split('--')[0] || ''));
+      if (!oid) continue;
+      if (!dirByOutlet.has(oid)) dirByOutlet.set(oid, []);
+      dirByOutlet.get(oid).push(d);
+    }
+    let pendingOutlets = new Set();
+    try {
+      const pendingDir = path.join(REVIEW_TEXTS_DIR, '_pending', show.id);
+      if (fs.existsSync(pendingDir)) {
+        pendingOutlets = new Set(fs.readdirSync(pendingDir).filter(f => f.endsWith('.json')).map(f => outletKey(normalizeOutletId(f.split('--')[0]))));
+      }
+    } catch { /* pending scan is best-effort */ }
+    const seenOutlets = new Set();
+    for (const row of weRefNoUrlRows) {
+      const rawOid = normalizeOutletId(row.outletId || row.outletName);
+      const oid = outletKey(rawOid);
+      if (!oid || seenOutlets.has(oid)) continue;
+      seenOutlets.add(oid);
+      const files = dirByOutlet.get(oid) || [];
+      if (files.some(d => isCoveredFile(d, show))) {
+        if (!row.priorRun) { _weCoveredNoUrl++; bumpPerSource(row.source, true); }
+        continue;
+      }
+      if (pendingOutlets.has(oid)) continue;
+      // Accuracy counts only CHECKABLE citations (QA review 2026-07-11): an
+      // outlet with NO files at all is merely un-gathered — unverifiable, not
+      // contradicted — and must not count against the source's accuracy (a
+      // fresh opening's first hours would otherwise flip sources low-trust).
+      // Excluded-files-exist IS checkable: we hold independent data and it
+      // doesn't corroborate the citation.
+      if (!row.priorRun && files.length > 0) bumpPerSource(row.source, false);
+      result.citedNoUrl.push({
+        outletId: rawOid,
+        outletName: row.outletName,
+        stars: row.stars,
+        source: row.source,
+        sourceArticleUrl: row.sourceArticleUrl,
+        priorRun: row.priorRun,
+        hasExcludedFiles: files.length > 0,
+      });
+    }
+  }
+
+  // Corroboration stats for the self-proving gate (ship-check P0 2026-07-11):
+  // proving must measure REFERENCE CORRECTNESS, not detector uptime. A citation is
+  // corroborated when it names a review we independently have (covered file) —
+  // CURRENT-RUN rows only; prior-run rows are permanently ingest-blocked and prove
+  // nothing about ingest safety.
+  if (result.weReference && weRefData) {
+    const currentRunRows = currentRunOnly(weRefData.rows);
+    const missingUrls = new Set(result.missing.map(m => m.url));
+    const flaggedUrls = new Set(result.flaggedMisses.map(m => m.url));
+    let coveredUrlRows = 0;
+    const seenUrls = new Set();
+    for (const row of currentRunRows) {
+      if (!row.url || !isReviewUrl(row.url)) continue;
+      const u = normalizeReviewUrl(row.url);
+      if (seenUrls.has(u)) continue;
+      seenUrls.add(u);
+      const covered = !missingUrls.has(u) && !flaggedUrls.has(u);
+      if (covered) coveredUrlRows++;
+      // Accuracy counts only CHECKABLE citations (QA review 2026-07-11): a URL
+      // still in `missing` (no file for its host at all) is merely un-gathered —
+      // unverifiable, not contradicted. covered = corroborated; flagged = we
+      // hold files for the host and none corroborate = checkable blame.
+      if (missingUrls.has(u)) continue;
+      // Every current-run source that cited this URL earns the credit/blame —
+      // per-source accuracy is about EACH source's citations matching reality.
+      for (const src of (weRefUrlSources.get(u) || [])) bumpPerSource(src, covered);
+    }
+    result.weReference.currentRunRows = currentRunRows.length;
+    result.weReference.corroborated = coveredUrlRows + _weCoveredNoUrl;
+    result.weReference.perSource = weRefPerSource;
+  }
+
+  tallyRejections(result, rejStartCount, rejStartByReason);
+  return result;
+}
+
+// Use execFileSync (no shell) so attacker-controllable URLs from aggregator
+// pages can't smuggle backticks/$()/$VAR/newlines into a shell. P0 fix
+// 2026-05-27 (ship-check). The earlier execSync apostrophe-only escape was
+// insufficient — aggregator pages are third-party HTML that can include
+// arbitrary anchor href values.
+//
+// P1 fix 2026-05-27 (ship-check): skip dispatch if gather-reviews already ran
+// for this show within the last 2 hours. Without this, the hourly cron would
+// re-dispatch the same failing-to-find show indefinitely (gather can't find
+// what gather couldn't find an hour ago). Two-hour cooldown matches the
+// orchestrator's poll cadence so we don't fight it.
+const GATHER_DISPATCH_COOLDOWN_MS = 2 * 60 * 60 * 1000;
+function recentlyDispatched(showId) {
+  try {
+    const out = execFileSync('gh', [
+      'run', 'list',
+      '--workflow=gather-reviews.yml',
+      '--limit=20',
+      '--json=createdAt,displayTitle,event',
+    ], { stdio: ['ignore', 'pipe', 'pipe'], timeout: 30000 }).toString();
+    const runs = JSON.parse(out);
+    const now = Date.now();
+    for (const run of runs) {
+      const title = (run.displayTitle || '').toLowerCase();
+      // gather-reviews dispatches with `shows=<id>` show up in displayTitle.
+      // Fall through to any workflow_dispatch within window as a fail-safe.
+      if (title.includes(showId.toLowerCase()) || run.event === 'workflow_dispatch') {
+        const age = now - Date.parse(run.createdAt);
+        if (age < GATHER_DISPATCH_COOLDOWN_MS && title.includes(showId.toLowerCase())) {
+          return true;
+        }
+      }
+    }
+  } catch { /* fail-open: better to dispatch on uncertain history than block */ }
+  return false;
+}
+async function dispatchGatherFor(showId) {
+  if (recentlyDispatched(showId)) {
+    console.log(`  ⏸  gather-reviews dispatched within last 2h for ${showId} — skipping`);
+    return false;
+  }
+  try {
+    execFileSync('gh', ['workflow', 'run', 'gather-reviews.yml', '-f', `shows=${showId}`], { stdio: 'pipe' });
+    return true;
+  } catch (e) {
+    console.error(`  dispatch failed for ${showId}: ${e.message}`);
+    return false;
+  }
+}
+
+// Direct ingest of a missing URL via scripts/ingest-review-from-url.js. Unlike
+// dispatchGatherFor (which re-runs SERP discovery — the same pipeline that
+// already failed to find this URL), this targets the specific aggregator-
+// listed URL. Closes the systemic gap where Playbill Verdict / BWW RR lists a
+// review URL but our outlet-registry or SERP cadence misses it.
+//
+// Returns { ok, reason } so the caller can log per-URL outcomes. Skips URLs
+// whose host is unknown to the registry (those should be added to the registry
+// first via the unknown-aggregator-outlets audit).
+function ingestMissingUrl(showId, url, knownOutletId) {
+  const args = ['scripts/ingest-review-from-url.js', `--show=${showId}`, `--url=${url}`];
+  let provisional = false;
+  if (knownOutletId) {
+    args.push(`--outlet=${knownOutletId}`);
+  } else {
+    // Auto-onboard: capture the review under a domain-derived provisional slug
+    // rather than skipping (the pre-2026-06-05 behavior, which lost the ctvoice /
+    // New York Notebook class). The host is still recorded in
+    // unknown-aggregator-outlets.json so it can be promoted to a real registry
+    // entry; --provisional skips fuzzy alias resolution so the slug is written as-is.
+    const provHost = hostOf(url);
+    const provId = provisionalOutletIdFromHost(provHost);
+    // BRO-4155 — "show-score ingest logs unknown-outlet-no-host": see
+    // describeUnresolvedProvisionalOutlet for why a single reason string
+    // collapsed two very different failures into one misleading message.
+    if (!provId) return { ok: false, reason: describeUnresolvedProvisionalOutlet(provHost), provisional: true };
+    args.push(`--outlet=${provId}`, '--provisional');
+    provisional = true;
+  }
+  let ingestOut = '';
+  try {
+    // Capture stdout: the child's `⚠️  Skipped: <reason>` line is the ONLY
+    // signal that separates a benign no-op from a data conflict (both exit 0).
+    // killSignal: on timeout, execFileSync's default SIGTERM can be caught
+    // or ignored by the child (a stuck fetch/browser call) and leave it
+    // running past the timeout window. SIGKILL guarantees the immediate
+    // child dies. It does NOT reach any grandchild process the child itself
+    // spawned (no detached/process-group kill here) — if grandchild orphaning
+    // turns out to be the real problem, this needs `detached: true` on spawn
+    // + `process.kill(-pid)` on timeout instead (ship-check finding, task #361).
+    ingestOut = String(execFileSync('node', args, { stdio: 'pipe', timeout: 120000, killSignal: 'SIGKILL' }) || '');
+  } catch (e) {
+    // BRO-4765: execErrorDetail keeps only the first 100 chars, and warnings can print before the line
+    // that says extraction returned 0 chars. Look at the child's whole output for it.
+    const zeroChar = /Article extraction returned 0 chars/i.test(`${e && e.stderr || ''}${e && e.stdout || ''}${e && e.message || ''}`);
+    return { ok: false, reason: execErrorDetail(e, 100), provisional, zeroChar };
+  }
+  // Exit 0 is NOT proof the review landed: ingest-review-from-url.js exits 0
+  // on no-op skips ("already exists", cross-show dedup) too. The recovery path
+  // learned this on ship-check 2026-06-22 and re-reads its file; this path
+  // never did — a 2016 WSJ Cats URL reported ok:true against cats-west-end-2026
+  // on every hourly run while its text lived under cats-1982/ (OWE opening
+  // audit 2026-08-06). Re-scan the show dir for the URL: only a file HERE
+  // counts, so a permanent no-op shows up as a residual gap instead of a
+  // silent evergreen "success".
+  const target = normalizeReviewUrl(url);
+  try {
+    const dir = path.join(REVIEW_TEXTS_DIR, showId);
+    const landed = fs.readdirSync(dir).filter(f => f.endsWith('.json')).some(f => {
+      try {
+        const j = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+        return j.url && normalizeReviewUrl(j.url) === target;
+      } catch { return false; }
+    });
+    if (landed) return { ok: true, reason: null, provisional };
+  } catch { /* dir unreadable → fall through to not-landed */ }
+  // Not landed. Split the two very different things that look identical here
+  // (both exit 0, both leave no file):
+  //
+  //   CONFLICT — another show owns this URL, or the outlet/domain disagree.
+  //     Exactly one side is wrong; retrying can never fix it and ignoring it
+  //     silently caps coverage forever. I'm Every Woman lost its Guardian,
+  //     Times and Standard reviews this way: they were filed under The Car Man,
+  //     so ownership vetoed every hourly attempt and the audit logged "no-op"
+  //     each time (2026-08-09). These MUST surface.
+  //   EXPECTED — the write was refused and that refusal is correct and
+  //     permanent (cross-market leak, an onMerge hook that declined, nothing to
+  //     write at all). Printed once so it is never invisible, but NOT residual:
+  //     counting a permanently-correct refusal as an unresolved gap is exactly
+  //     the chronic hourly alarm ship-check 2026-08-06 removed.
+  //   BENIGN — the desired end state already holds (no-changes), or the URL
+  //     legitimately isn't a review (junk-outlet). Quiet.
+  //
+  // Unknown reasons are contract drift with review-file-writer.js and DO count
+  // as residual — see computeResidualCounts.
+  const skip = classifyIngestSkip(ingestOut);
+  if (skip.kind === 'conflict') {
+    return {
+      ok: false,
+      noop: true,
+      conflict: true,
+      conflictReason: skip.reason,
+      conflictDetail: skip.detail,
+      reason: describeSkip(showId, url, skip),
+      provisional,
+    };
+  }
+  if (skip.kind === 'expected') {
+    return {
+      ok: false,
+      noop: true,
+      expected: true,
+      expectedReason: skip.reason,
+      reason: describeSkip(showId, url, skip),
+      provisional,
+    };
+  }
+  return {
+    ok: false,
+    noop: true,
+    // An unrecognised skip reason is contract drift with review-file-writer.js,
+    // not a benign no-op — surfaced separately (and counted as residual) so a
+    // newly-added reason string announces itself instead of inheriting silence.
+    unclassified: skip.kind === 'unclassified' && !!skip.reason,
+    // Carry the raw string: "unclassified=1" without the reason forces whoever
+    // reads the log to go re-run the ingest by hand to find out WHICH reason.
+    unclassifiedReason: skip.kind === 'unclassified' ? skip.reason : null,
+    reason: `ingest no-op — exit 0 but no file with this URL landed in this show dir${skip.reason ? ` (${skip.reason})` : ''}`,
+    provisional,
+  };
+}
+
+// Residual-gap counts for one audited show (extracted for unit tests, §15).
+// Design invariants, each learned from a live chronic-alarm incident:
+// - failedIngest excludes noop entries: ingest-review-from-url exits 0 for many
+//   PERMANENT skip classes (cross-show-url-owned, junk-outlet, domain-mismatch,
+//   no-changes) — counting those as failures re-alarms every hourly run forever
+//   (ship-check 2026-08-06). They surface as `noopIngest` instead.
+// - uningested/flaggedOut exclude priorRun entries: prior-production URLs are
+//   permanently ingest-blocked by design (Cats 2026-08-06: 46 blocked URLs +
+//   62 wrongProduction files printed "114 gap" forever).
+// - recovered heals subtract from flaggedOut but uncited-stub recoveries don't
+//   (ship-check 2026-07-23, Codex finding).
+// - conflictIngest is a SUBSET of noopIngest that is never benign: another show
+//   owns the URL, or outlet/domain disagree. Retrying cannot clear it, so
+//   unlike the chronic-alarm classes the 2026-08-06 ship-check silenced, it
+//   stays loud until someone resolves the underlying disagreement.
+//   NB: this does NOT change `uncollected` — that is computed separately from
+//   r.missing (see the checkpoint write below), and a conflicted URL is still
+//   in r.missing, so the coverage COUNT was always right. What was missing is
+//   WHY: every run read as "still waiting on a fetch" when the true state was
+//   "two shows claim this URL". conflictIngest exists to make that visible in
+//   `residual` and in the per-conflict ::error:: lines.
+// - expectedIngest is the third bucket (ship-check 2026-08-09, finding C): a
+//   refusal that is CORRECT and PERMANENT — a genuine cross-market leak, a
+//   caller's onMerge hook declining, an entry with nothing to write. It is
+//   printed once per run so it is never invisible, but deliberately does NOT
+//   enter `residual`: re-inflating the tally with refusals no human can action
+//   is the chronic hourly alarm the 2026-08-06 ship-check removed, and it
+//   retrains the owner to ignore the warning that matters.
+// - unclassifiedIngest counts skip reasons in NO list — contract drift with
+//   review-file-writer.js. It IS residual (fixed 2026-08-09, finding B): the
+//   first version computed the count but never added it to `residual` and only
+//   printed it inside `if (residualShows.length > 0)`, so a run whose ONLY
+//   problem was a brand-new skip reason stayed completely silent — the exact
+//   bug this module exists to kill, reproduced inside its own reporting.
+// Same "uncollected" definition pre-send-check.mjs already gates on (current-
+// run missing + citedNoUrl; flaggedMisses excluded as collected-but-excluded,
+// often permanently and correctly so) — MINUS whatever this same run's
+// --ingest-missing pass just successfully filled. Without the subtraction, a
+// show whose gap this run's own ingest just closed would still be reported as
+// gapped by anything computed before the ingest step ran (ship-check finding,
+// BRO-3928: the first draft of the opening-window digest below snapshotted
+// this BEFORE ingestion).
+function currentRunUncollected(r) {
+  const ingestedOk = new Set((r.ingestResults || []).filter(x => x.ok).map(x => x.url));
+  const missing = currentRunOnly(r.missing).filter(m => !ingestedOk.has(m.url)).length;
+  const citedNoUrl = currentRunCount(r.citedNoUrl);
+  return missing + citedNoUrl;
+}
+
+// End-of-night coverage alert (BRO-4272). The expected-vs-captured tally below only
+// printed ::warning:: lines into the daily digest, so on School Girls 2026 three
+// roundup-listed reviews sat uncaptured all night and were found by hand. For a
+// Broadway / off-Broadway show in its first 3 days, a residual gap after auto-ingest
+// now files an 'auto' card (roundup-gap:<showId>); a later run that audits the show
+// with no residual resolves it. WE shows keep their own weAlert path above.
+const ROUNDUP_GAP_ALERT_DAYS = 3;
+function planRoundupGapAlerts(results, ingestMissing, now = Date.now()) {
+  const alert = [];
+  const resolve = [];
+  for (const r of results || []) {
+    if (!['broadway', 'off-broadway'].includes(r.category)) continue;
+    const opened = r.openingDate ? Date.parse(r.openingDate) : NaN;
+    if (!Number.isFinite(opened) || opened > now || now - opened > ROUNDUP_GAP_ALERT_DAYS * 86400000) continue;
+    const counts = computeResidualCounts(r, ingestMissing);
+    if (counts.residual > 0) alert.push({ showId: r.showId, title: r.title, counts, missing: currentRunOnly(r.missing || []) });
+    // Resolve only on a run that actually found the roundups: a discovery miss (SERP
+    // outage, Verdict fetch failure) also shows residual 0 and would close the incident,
+    // so the next run's gap would file a fresh duplicate card.
+    else if ((r.aggregatorArticles || []).length > 0) resolve.push(r.showId);
+  }
+  return { alert, resolve };
+}
+
+function computeResidualCounts(r, ingestMissing) {
+  const failedIngest = (r.ingestResults || []).filter(x => !x.ok && !x.noop).length;
+  const noopIngest = (r.ingestResults || []).filter(x => x.noop).length;
+  const conflictIngest = (r.ingestResults || []).filter(x => x.conflict).length;
+  const expectedIngest = (r.ingestResults || []).filter(x => x.expected).length;
+  const unclassifiedIngest = (r.ingestResults || []).filter(x => x.unclassified).length;
+  const capped = (r.ingestSkippedByCap || []).length;
+  const uningested = ingestMissing ? 0 : currentRunCount(r.missing);
+  const recovered = (r.recoveryResults || []).filter(x => x.recovered && !x.uncited).length;
+  const flaggedOut = Math.max(0, currentRunCount(r.flaggedMisses) - recovered);
+  const residual = failedIngest + capped + uningested + flaggedOut + conflictIngest + unclassifiedIngest;
+  return { residual, failedIngest, noopIngest, conflictIngest, expectedIngest, unclassifiedIngest, capped, uningested, flaggedOut, recovered };
+}
+
+// Persist aggUrlRecoveryCount onto the existing dir file. Called after a recovery
+// attempt that did NOT actually fill the file (fetch failure OR a no-op/misrouted
+// ingest), so a dead / permanently-paywalled / misrouted URL stops after
+// FLAGGED_RECOVERY_CAP tries instead of being re-fetched every hour forever (the
+// credit-burn failure mode the cap exists to prevent). Writes to REVIEW_TEXTS_DIR
+// (where the audit detected the file).
+//
+// Concurrency bound (known, accepted): the counter is NOT a PROTECTED_FIELD, and
+// push-review-texts resolves same-file conflicts whole-file by fullText length —
+// so if another workflow modifies this empty file in the same window and pushes
+// first, this bump can be dropped on rebase. That is bounded, not unbounded: the
+// audit cron is single-instance (queued), so it simply re-bumps next hour; the
+// worst case is a few extra retries on one file, never an infinite loop. Adding it
+// to PROTECTED_FIELDS would not help — the restore step only re-adds MISSING fields,
+// it does not reconcile a stale-lower value. Best-effort: a write failure must not
+// crash the run.
+function bumpRecoveryCount(showId, file, value) {
+  try {
+    const fp = path.join(REVIEW_TEXTS_DIR, showId, file);
+    const data = JSON.parse(fs.readFileSync(fp, 'utf8'));
+    data.aggUrlRecoveryCount = value;
+    data.aggUrlRecoveryAt = new Date().toISOString();
+    // Route through safeWriteReview so this metadata bump preserves protected
+    // fields / manual clears (CI lint enforces all review-texts writes go through it).
+    safeWriteReview(fp, data);
+    return true;
+  } catch (e) {
+    console.log(`::warning::failed to persist aggUrlRecoveryCount for ${showId}/${file}: ${e.message.split('\n')[0].slice(0, 100)}`);
+    return false;
+  }
+}
+
+// Self-healing recovery for ONE empty-body flaggedMiss. Re-ingests the
+// aggregator's current-production URL under the existing file's outletId +
+// criticName so createOrMergeReviewFile MERGES the fetched text into the empty
+// file (a fill, not a sibling). The retry counter is bumped regardless of fetch
+// outcome (see bumpRecoveryCount) so the cap actually halts retries. Returns the
+// per-flaggedMiss outcome for logging + the audit JSON.
+function recoverEmptyBodyFlaggedMiss(showId, m, openingDate = null, show = null) {
+  // Re-run the cap/url decision against the CURRENT on-disk file, not the
+  // reconstructed flaggedMiss view. The audit JSON can be minutes stale, and a
+  // parallel session/workflow may have FILLED the file since detection —
+  // 2026-07-18 incident: heathers theatre-weekly was manually filled (3367
+  // chars, scored 74) between audit detection and this recovery pass; the old
+  // reconstructed view ({aggUrlRecoveryCount} with fullText absent) read as
+  // empty-body, the recovery re-ingested an empty aggregator fetch, and the
+  // workflow's stale checkout then pushed the husk over the real review.
+  // decideEmptyBodyRecovery's isEmptyBodyFile check on the fresh read makes
+  // this pass a no-op when the file is no longer empty. Fall back to the
+  // reconstructed view only when the file is unreadable (deleted/renamed —
+  // recovery would then recreate it, which is the intended fill behavior).
+  let file;
+  try {
+    file = JSON.parse(fs.readFileSync(path.join(REVIEW_TEXTS_DIR, showId, m.recoverableFile), 'utf8'));
+  } catch {
+    file = { aggUrlRecoveryCount: m.recoverableCount || 0 };
+  }
+  const decision = decideEmptyBodyRecovery({
+    file,
+    outletId: m.recoverableOutletId || m.knownOutletId || null,
+    critic: m.recoverableCritic || null,
+    url: m.url,
+  });
+  if (decision.action !== 'recover') {
+    return { url: m.url, host: m.host, file: m.recoverableFile, recovered: false, skipped: true, reason: decision.reason };
+  }
+  // Re-ingest under the existing slug. For a registry-known outlet pass --outlet
+  // directly (canonical resolution); only fall back to provisional onboarding when
+  // the host isn't in the registry. Force the critic so the slug matches the
+  // empty file (else a re-extracted byline could spawn a sibling).
+  const iargs = ['scripts/ingest-review-from-url.js', `--show=${showId}`, `--url=${m.url}`];
+  let provisional = false;
+  if (decision.outletId) {
+    iargs.push(`--outlet=${decision.outletId}`);
+  } else {
+    const provId = provisionalOutletIdFromHost(m.host);
+    if (provId) { iargs.push(`--outlet=${provId}`, '--provisional'); provisional = true; }
+  }
+  if (decision.critic && decision.critic.toLowerCase() !== 'unknown') {
+    iargs.push(`--critic=${decision.critic}`);
+  }
+  let ingestExit = false; let reason = null;
+  try {
+    execFileSync('node', iargs, { stdio: 'pipe', timeout: 120000 });
+    ingestExit = true;
+  } catch (e) {
+    reason = execErrorDetail(e, 100);
+  }
+  // "recovered" = the empty file is now ACTUALLY filled — NOT merely that the child
+  // exited 0. ingest-review-from-url.js exits 0 on a no-op skip ("already exists",
+  // "no-changes") too, and a URL-refined / cross-market merge can land the text in a
+  // DIFFERENT file while THIS one stays empty (ship-check 2026-06-22, both reviewers).
+  // Re-reading the file is the only honest signal: it keeps totalRecovered + the
+  // residual-gap warning accurate and lets the counter keep climbing toward the cap
+  // when the heal didn't actually land here.
+  let recovered = false;
+  try {
+    const fp = path.join(REVIEW_TEXTS_DIR, showId, m.recoverableFile);
+    const after = JSON.parse(fs.readFileSync(fp, 'utf8'));
+    recovered = !isEmptyBodyFile(after);
+    // Post-fill production-window check (Tender/Sessions 2026-07-24): a
+    // DATELESS stub passes the pre-fetch prior-run guard open; only the filled
+    // text carries the real publishDate. If it lands outside the production
+    // window, the URL was a different production/show SERP-mismatched onto
+    // this entry — flag it here instead of shipping it to validate-data.js
+    // (which went red on main when the sweep filled a 2021 'Sessions' review
+    // into Tender's Times slot).
+    // `show` lets a date inside a declared priorRuns/tourLegs window pass.
+    if (recovered && filledTextIsOtherArticle(after.publishDate, after.url, openingDate, show)) {
+      // BRO-4430: right url, wrong article served. Discard the fill (kept
+      // in wrongFullText for the audit trail) instead of flagging the url.
+      const servedDate = after.publishDate;
+      discardWrongPageFill(after);
+      safeWriteReview(fp, after, { force: true });
+      recovered = false;
+      reason = `fetch served a different article (dated ${servedDate}); fill discarded, url kept`;
+    } else if (recovered && filledDateOutsideWindow(after.publishDate, openingDate, show) && !laneBypasses(after, 'wrongProduction')) {
+      after.wrongProduction = true;
+      invalidateWrongProductionAutoClear(after);
+      after.wrongProductionNote = filledDateOutsideWindowNote(after.publishDate, openingDate);
+      safeWriteReview(fp, after, { force: true });
+      recovered = false;
+      reason = `filled text dated ${after.publishDate} — outside production window, flagged wrongProduction`;
+    }
+  } catch { /* file unreadable/missing → treat as not recovered */ }
+  if (ingestExit && !recovered && !reason) reason = 'ingest no-op (text landed elsewhere or unchanged)';
+  // Star fallback (The Stage class, 2026-07-23): the text fetch failed — usually
+  // a paywall — but the citing WE roundup carries the outlet's star rating.
+  // Writing aggregatorStars makes the review scoreable via the rebuild's
+  // aggregator-star path, instead of retrying the paywall to the cap and going
+  // silent. Only fires when the file (re-read post-ingest) is still empty-body.
+  let starFallback = false;
+  if (!recovered && typeof m.weRefStars === 'number' && m.weRefStars > 0
+      && STAR_SOURCE_BY_REFERENCE[m.weRefStarsSource]) {
+    try {
+      const fp = path.join(REVIEW_TEXTS_DIR, showId, m.recoverableFile);
+      const cur = JSON.parse(fs.readFileSync(fp, 'utf8'));
+      // Rebuild's aggregatorStars fallback only scores KNOWN_STAR_OUTLETS
+      // (rebuild-helpers.js P5.7) — an aggregator may have invented a rating
+      // for an outlet that doesn't publish stars. Writing stars for an unknown
+      // outlet would flip this audit green while the rebuild still excludes the
+      // review (ship-check 2026-07-23, Codex finding). Gate on the same set.
+      const outletForStars = cur.outletId || m.recoverableOutletId || m.knownOutletId;
+      if (KNOWN_STAR_OUTLETS.has(outletForStars) && isEmptyBodyFile(cur) && !cur.aggregatorStars) {
+        cur.aggregatorStars = `${m.weRefStars}/5`;
+        cur.scoreSource = STAR_SOURCE_BY_REFERENCE[m.weRefStarsSource];
+        safeWriteReview(fp, cur);
+        const after = JSON.parse(fs.readFileSync(fp, 'utf8'));
+        recovered = !isEmptyBodyFile(after);
+        starFallback = recovered;
+        if (recovered) reason = null;
+      }
+    } catch (e) {
+      console.log(`::warning::star fallback failed for ${showId}/${m.recoverableFile}: ${e.message.split('\n')[0].slice(0, 100)}`);
+    }
+  }
+  // Bump the counter EVERY time the heal didn't land here (failure OR no-op) so a
+  // dead/misrouted URL halts at the cap. A genuinely-healed file is no longer
+  // empty-body, so it won't be re-selected and doesn't need the bump.
+  let nextCount = m.recoverableCount || 0;
+  if (!recovered) {
+    nextCount = nextRecoveryCount(file);
+    bumpRecoveryCount(showId, m.recoverableFile, nextCount);
+  }
+  return { url: m.url, host: m.host, file: m.recoverableFile, recovered, skipped: false, provisional, starFallback, reason, recoveryCount: nextCount };
+}
+
+// CLI entry — guarded so the module can be require()'d by unit tests without
+// running the audit (CLAUDE.md §15: test the real urlMatchesShow/titleTokens).
+// Extracted to a named, argv-taking function (rather than the previous bare
+// IIFE) so --help can be proven, in-process, to return before loadShows() or
+// any gh subprocess runs (task #266 — same pattern as autonomous-merge.js).
+// NOTE: the argv param only feeds hasHelpFlag() — every other flag below
+// (showFilter, dispatchGather, useCheckpoint, etc.) still reads the
+// module-level consts parsed from real process.argv at require time. That's
+// fine for the real CLI (argv defaults to the same process.argv) and for
+// --help (which always returns before any flag is consulted); a
+// programmatic caller passing a DIFFERENT argv would still route real
+// actions off the module-level parse, not the passed argv.
+async function main(argv = process.argv.slice(2)) {
+  if (hasHelpFlag(argv)) { console.log(USAGE); return; }
+
+  // Precondition, checked ONCE before any show is audited: can the SERP census
+  // actually run? Without a key, url-discovery's serpSearch early-returns null
+  // and every show gets written with a 0-live/0-candidate verdict plus a fresh
+  // zero-gap checkpoint entry that newsletter-preflight reads as VERIFIED
+  // COMPLETE — while page fetches keep succeeding, so nothing looks wrong.
+  // Checked here rather than thrown at the call site because serpSearch's
+  // callers catch and continue by design (one failed query must not kill a
+  // 26-show run), so a throw there would be swallowed and rerouted.
+  const preflight = serpCensusPreflight(process.env);
+  if (!preflight.ok) {
+    console.error(`::error::gap audit preflight failed — ${preflight.reason}`);
+    process.exit(1);
+  }
+
+  const allShows = loadShows();
+  let targets;
+  if (showFilter) {
+    let ids;
+    try { ids = parseShowFilter(showFilter); } catch (e) { console.error(e.message); process.exit(1); }
+    const sel = selectShowsById(allShows, ids);
+    if (sel.missing.length) console.error(`Show not found: ${sel.missing.join(', ')}`);
+    // Every requested id must exist: a typo in a dispatched id list would
+    // otherwise audit the rest and look like success.
+    if (sel.targets.length === 0 || sel.missing.length) process.exit(1);
+    targets = sel.targets;
+  } else {
+    targets = allShows.filter(isShowEligible);
+  }
+
+  // Checkpoint ordering: process least-recently-audited shows first and skip
+  // those still within their freshness window, so each time-boxed run makes
+  // forward progress instead of re-auditing the same first shows every hour.
+  const checkpoint = useCheckpoint ? loadCheckpoint() : {};
+  // Pre-run snapshot: if the blast-radius guard refuses this run's results, the
+  // freshness stamps written during the run are equally untrustworthy and get
+  // rolled back to this (see the guard branch near the end of main()).
+  const checkpointAtStart = useCheckpoint ? JSON.parse(JSON.stringify(checkpoint)) : null;
+  if (useCheckpoint && !showFilter) {
+    const now = Date.now();
+    const before = targets.length;
+    targets = targets
+      .filter((s) => {
+        const e = checkpoint[s.id];
+        if (!e) return true; // never audited → always include
+        // WE reference invalidation: entries written before the WE reference
+        // existed recorded vacuous gaps:0 (59 shows) and closed-clean shows get a
+        // 365d skip — force one re-audit under the new reference version.
+        if (isWeShow(s) && e.refVersion !== WE_REF_VERSION) return true;
+        // checkpointTs → 0 on malformed `at`, so a corrupt entry reads as
+        // never-audited (always due) instead of NaN-skipped forever.
+        return (now - checkpointTs(e)) >= freshnessMsFor(s, e, { freshnessHours: FRESHNESS_HOURS, now });
+      })
+      // Opening-window shows first (reviews landing NOW), then oldest-audited.
+      .sort((a, b) => compareAuditPriority(a, b, checkpoint, now));
+    console.log(`audit-show-review-gap: ${targets.length}/${before} due for audit (checkpoint, freshness skip applied)`);
+  }
+
+  console.log(`audit-show-review-gap: ${targets.length} target(s) (window=${windowDays}d${includeClosed ? ', incl. closed' : ''})`);
+
+  const results = [];
+  const dispatched = new Set();
+  const runStart = Date.now();
+  let budgetHit = false;
+  // Per-aggregator trust, measured from accumulated corroboration (start-of-run
+  // snapshot — this run's observations inform the NEXT run's trust decisions).
+  // A source whose citations have measurably failed corroboration loses
+  // auto-ingest privileges; its rows stay report-only (fail-open on thin samples).
+  const lowTrust = lowTrustSources(loadWeProving());
+  if (lowTrust.size > 0) {
+    console.log(`⚠️  low-trust WE reference source(s) — rows report-only: ${[...lowTrust].join(', ')}`);
+  }
+  for (const s of targets) {
+    // Soft time budget: stop taking on new shows before the CI hard timeout so
+    // the checkpoint + ingested review-texts commit cleanly (the 25-min cancel
+    // race). Next run resumes from the next least-recently-audited show.
+    if (useCheckpoint && (Date.now() - runStart) > TIME_BUDGET_MS) {
+      budgetHit = true;
+      console.log(`⏱  time budget (${Math.round(TIME_BUDGET_MS / 60000)}m) reached — stopping after ${results.length} shows; checkpoint will resume the rest next run.`);
+      break;
+    }
+    if (verbose) console.log(`\n${s.id} "${s.title}" (${s.openingDate} ${s.status})`);
+    const r = await auditShow(s, { lastCensusAt: checkpoint[s.id] && checkpoint[s.id].serpCensusAt, allShows });
+    // BRO-4765: URLs whose extraction returned 0 chars on several consecutive runs are terminal. They
+    // leave missing[] (so no re-ingest and no hold on the Coverage Verdict) but stay in the report.
+    const zeroCharStored = checkpoint[s.id] && checkpoint[s.id].zeroChar;
+    const unx = partitionUnextractable(r.missing, zeroCharStored, Date.now());
+    r.missing = unx.missing;
+    r.unextractable = unx.unextractable;
+    if (unx.unextractable.length) console.log(`  ⛔ ${unx.unextractable.length} URL(s) unextractable (0-char extraction on repeated runs) — not re-ingested, excluded from the verdict`);
+    if (useCheckpoint) {
+      // serpCensusAt: only stamped when the census actually ran this pass
+      // (cooldown gate consults it); otherwise carry forward whatever was
+      // already recorded so the cooldown isn't reset by an unrelated skip.
+      const prevCensusAt = checkpoint[s.id] && checkpoint[s.id].serpCensusAt;
+      checkpoint[s.id] = {
+        at: new Date().toISOString(),
+        // CURRENT-RUN gap total. This was the raw sum of all three lists, so
+        // every revival carried a permanently non-zero `gaps` — and
+        // gap-audit-freshness.js grants its 365-day re-audit skip ONLY to a
+        // closed show with `gaps === 0`. A closed revival could therefore
+        // never earn the skip: it stayed in the hourly rotation forever,
+        // spending scraper credit re-confirming 2012 citations while shows
+        // that genuinely owed reviews queued behind it in the same rotation.
+        gaps: splitGapCounts(r).total,
+        // Report-only companion, so the subtraction is visible in the file
+        // rather than the gap looking like it silently vanished.
+        priorProductionGaps: splitGapCounts(r).priorProduction.total,
+        // uncollected: CURRENT-run reviews we literally do not have on disk
+        // (aggregator lists a URL we never fetched, or cites an outlet with no
+        // URL). Consumed by the newsletter pre-send gate (task #823), which
+        // must NOT block on: flaggedMisses (collected-but-excluded files whose
+        // exclusions are often permanent and correct — non-reviews, roundups),
+        // or priorRun rows (prior-production URLs kept report-only in the
+        // audit — the TKAM class, where a WE revival "missed" 77 URLs from the
+        // 2018 Broadway run; same filter the WE completeness alert applies).
+        uncollected: currentRunCount(r.missing) + currentRunCount(r.citedNoUrl),
+        ...(isWeShow(s) ? { refVersion: WE_REF_VERSION } : {}),
+        ...(checkpoint[s.id] && checkpoint[s.id].weAlert ? { weAlert: checkpoint[s.id].weAlert } : {}),
+        ...(zeroCharStored && Object.keys(zeroCharStored).length ? { zeroChar: zeroCharStored } : {}),
+        // Cooldown stamps ONLY on a fully-successful census (every query
+        // executed). Partial provider outages keep the prior stamp so the
+        // next hourly run retries — bounded: ≤3 BD queries/show/hour ≈
+        // $0.005/hour worst case while a provider is down.
+        ...((r.serpCensus && r.serpCensus.complete) ? { serpCensusAt: new Date().toISOString() } : (prevCensusAt ? { serpCensusAt: prevCensusAt } : {})),
+      };
+      // Merge-aware (#923): write only s.id, not the whole in-memory
+      // checkpoint — an overlapping run's stamps for other shows must survive.
+      saveCheckpointEntries(CHECKPOINT_PATH, { [s.id]: checkpoint[s.id] });
+    }
+    results.push(r);
+
+    // WE completeness alert: email the named missing outlets for opening-window
+    // WE shows. Deduped on missing-SET change + 24h re-ping — the hourly cron
+    // would otherwise re-alert ~240× per show over a 10-day window and the
+    // channel gets muted (plan-review 2026-07-09; the ::warning:: digest failed
+    // exactly this way). Delivered via email (discord-notify email:true) — the
+    // log-only path is what kept months of gaps invisible.
+    // Scope the alert STRICTLY to WE-reference-derived gaps (weRef missing +
+    // citedNoUrl). The Broadway-path SERP finds same-title PRIOR-PRODUCTION
+    // roundups for WE revivals (TKAM: the 2018 Broadway BWW RR → 77 'missing'
+    // US URLs) — alerting on those is a noise blast that gets the channel muted
+    // (verified in the 2026-07-10 e2e run). Those stay in the audit JSON and the
+    // existing ::warning:: digest, as before.
+    const weMissing = r.missing.filter(m => m.weRef);
+    if (isWeShow(s) && r.weReference && (weMissing.length + r.citedNoUrl.length) > 0) {
+      const missingIds = [
+        ...weMissing.map(m => m.knownOutletId || m.host),
+        ...r.citedNoUrl.map(c => c.outletId),
+      ];
+      const hash = missingSetHash(missingIds);
+      const prevAlert = (checkpoint[s.id] && checkpoint[s.id].weAlert) || {};
+      const rePingDue = !prevAlert.at || (Date.now() - new Date(prevAlert.at).getTime()) > 24 * 60 * 60 * 1000;
+      // Prior-run-only sets are UNFIXABLE rows (report-only forever) — alert once
+      // on set-change, never daily re-ping, or a returning production emails every
+      // day of the 21-day window (ship-check P1 2026-07-10).
+      const allPriorRun = [...weMissing, ...r.citedNoUrl].every(isPriorProductionCitation);
+      // Manual runs (no --checkpoint) have no dedup state — the operator is
+      // watching stdout; log instead of emailing on every invocation.
+      if (useCheckpoint && (hash !== prevAlert.hash || (rePingDue && !allPriorRun))) {
+        try {
+          const { sendAlert } = require('./lib/discord-notify');
+          const lines = [
+            ...weMissing.map(m => `• ${m.knownOutletId || m.host} — ${m.url}${m.priorRun ? ' [prior-run roundup]' : ''}`),
+            ...r.citedNoUrl.map(c => `• ${c.outletId} — cited by ${c.source}${c.stars ? ` (${c.stars}★)` : ''}, no URL${c.priorRun ? ' [prior-run roundup]' : ''}`),
+          ];
+          const delivered = await sendAlert({
+            title: `WE review gap — ${s.title}: ${lines.length} outlet(s) missing`,
+            description: `${r.inReviewsJson} review(s) in reviews.json; WE roundups cite ${weMissing.length + r.citedNoUrl.length} outlet(s) we don't have. Ingest a URL: node scripts/ingest-review-from-url.js --show=${s.id} --url=<url>`,
+            severity: 'warning',
+            fields: [{ name: 'Missing outlets', value: lines.slice(0, 20).join('\n') || '(none)' }],
+            url: `https://github.com/${process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore'}/actions`,
+            email: true,
+          });
+          // Record the hash when the alert was HANDLED: delivered, or
+          // suppressed by the actionable-only email policy (warning-severity
+          // alerts no longer email, 2026-07-11 — without this, `delivered`
+          // stays false forever and the hourly cron re-attempts the same
+          // alert indefinitely). Retry-on-false is preserved only for the
+          // case it was built for: policy WOULD email but delivery failed
+          // (missing RESEND/OWNER_EMAIL or Resend error).
+          const { shouldEmailAlert } = require('./lib/discord-notify');
+          if (delivered || !shouldEmailAlert('warning')) {
+            checkpoint[s.id] = { ...(checkpoint[s.id] || {}), weAlert: { hash, at: new Date().toISOString(), delivered } };
+            saveCheckpointEntries(CHECKPOINT_PATH, { [s.id]: checkpoint[s.id] });
+          }
+        } catch (e) {
+          console.error(`::error::WE gap alert failed for ${s.id}: ${(e.message || '').slice(0, 100)}`);
+        }
+      }
+    }
+
+    // Self-proving tracker: record this observation for WE in-window shows so the
+    // gate can auto-enable ingest once it has proven itself (see lib/we-gate-proving.js).
+    if (isWeShow(s) && inOpeningWindow(s) && process.env.WE_GAP_REFERENCE_DISABLED !== '1') {
+      const proving = loadWeProving();
+      recordGateObservation(proving, s, r.weReference);
+      saveWeProving(proving);
+    }
+
+    // Prior-run entries are PERMANENTLY ingest-blocked by design (a different
+    // production's reviews are not a gap in this one) — count them separately
+    // so a common-title show doesn't read as a disaster. Cats (Regent's Park
+    // 2026) printed "114 gap" when every one of those was a correctly-blocked
+    // Jellicle Ball / 2019 movie / 2016 Broadway-revival URL (2026-08-06).
+    const nPriorGap = splitGapCounts(r).priorProduction.total;
+    const gapTotal = r.missing.length + r.flaggedMisses.length + r.citedNoUrl.length - nPriorGap;
+    const gapSplit = splitGapCounts(r);
+    const summary = `  ${r.inReviewsJson}/${r.aggregatorListedUrls.length || '?'} reviews | ${gapTotal} gap (missing=${gapSplit.missing} flagged=${gapSplit.flaggedMisses} citedNoUrl=${gapSplit.citedNoUrl}${nPriorGap ? ` | +${nPriorGap} prior-run blocked, not counted` : ''})`;
+    if (verbose || gapTotal > 0) console.log(`${r.showId}${verbose ? '' : ': ' + r.title}\n${summary}`);
+    if (verbose && r.missing.length > 0) {
+      for (const m of r.missing) console.log(`    ❌ ${m.url}`);
+    }
+    if (verbose && r.flaggedMisses.length > 0) {
+      for (const m of r.flaggedMisses) console.log(`    ⚠️ ${m.url} (flagged: ${m.dirFlags.map(f => f.flag).join(',')})`);
+    }
+    if (dispatchGather && gapTotal > 0 && !dispatched.has(r.showId)) {
+      const ok = await dispatchGatherFor(r.showId);
+      if (ok) {
+        dispatched.add(r.showId);
+        console.log(`  ⤳ dispatched gather-reviews for ${r.showId}`);
+      }
+    }
+    // --ingest-missing: directly ingest each missing aggregator URL whose host
+    // is in our outlet-registry. Targets the specific URL rather than re-
+    // running gather's SERP+RSS discovery (which already failed). Unknown
+    // outlets are skipped (see data/audit/unknown-aggregator-outlets.json for
+    // registry-onboarding queue).
+    // Per-show fetch budget shared across missing-URL ingest AND empty-body
+    // recovery, so a fresh opening with both kinds of gap can't burn 2×
+    // INGEST_PER_SHOW_CAP scraper credits in a single hourly run.
+    let perShowFetches = 0;
+    if (ingestMissing && r.missing.length > 0) {
+      // Auto-onboard 2026-06-05: ingest ALL missing URLs, not just registry-known
+      // outlets. Unknown outlets are captured under a domain-derived provisional
+      // slug (ingestMissingUrl) instead of being skipped — that skip lost the
+      // ctvoice / New York Notebook class on the Girl, Interrupted opening. The
+      // host is still recorded in unknown-aggregator-outlets.json for promotion
+      // to a real registry entry.
+      // WE ingest gate (default OFF — plan-review 2026-07-09): WE-reference URLs
+      // ingest ONLY when WE_GAP_INGEST=1 is explicitly set (a dropped env line
+      // fails closed to report-only), and prior-run roundup URLs NEVER ingest.
+      const weGateOn = process.env.WE_GAP_INGEST === '1';
+      // SERP census gate (#371, default OFF): an un-scoped SERP hit is weaker-
+      // specificity than a site:-restricted aggregator query — start report-
+      // only until proven, same posture as the WE gate before WE_GAP_INGEST.
+      const serpCensusGateOn = process.env.SERP_CENSUS_INGEST === '1';
+      // On WE shows, the gate covers ALL missing URLs — not just weRef rows. The
+      // Broadway-path SERP/Show Score discovery finds same-title US/prior-production
+      // roundups for WE shows and ingested their reviews (2026-07-10 first-run
+      // incident: 2018 TKAM Broadway, 2013 Midsummer/Taymor, 2014 Last Ship, 2025
+      // NYC JLP reviews all ingested onto WE entries → validate-data red).
+      const showIsWe = isWeShow(s);
+      // Canonical ingest-eligibility predicate (lib/gap-ingest-policy.js):
+      // prior-run URLs block on EVERY market/path; WE gate blocks the rest on
+      // WE shows + weRef rows until WE_GAP_INGEST=1; serpCensus rows wait for
+      // SERP_CENSUS_INGEST=1 on every market.
+      const blockedPred = (m) => ingestBlockReason(m, { showIsWe, weGateOn, lowTrustSources: lowTrust, serpCensusGateOn }) !== null;
+      const weBlocked = r.missing.filter(blockedPred);
+      const eligibleMissing = r.missing.filter(m => !blockedPred(m));
+      if (weBlocked.length > 0) {
+        r.weIngestBlocked = weBlocked.map(m => ({ url: m.url, host: m.host, priorRun: !!m.priorRun, reason: ingestBlockReason(m, { showIsWe, weGateOn, lowTrustSources: lowTrust, serpCensusGateOn }) }));
+        const nPrior = weBlocked.filter(isPriorProductionCitation).length;
+        console.log(`  ⛔ ${weBlocked.length} URL(s) not ingested (${nPrior} prior-production — permanently report-only${nPrior < weBlocked.length ? `; ${weBlocked.length - nPrior} WE_GAP_INGEST unset — report-only mode` : ''})`);
+      }
+      const ingestable = eligibleMissing.slice(0, INGEST_PER_SHOW_CAP);
+      // P1 fix 2026-05-27 (ship-check): record cap-skipped URLs so future runs
+      // (and operators) can see they exist and weren't silently dropped.
+      const cappedSkipped = eligibleMissing.slice(INGEST_PER_SHOW_CAP);
+      r.ingestResults = [];
+      r.ingestSkippedByCap = cappedSkipped.map(m => ({ url: m.url, host: m.host, outletId: m.knownOutletId || provisionalOutletIdFromHost(m.host) }));
+      for (const m of ingestable) {
+        const res = ingestMissingUrl(r.showId, m.url, m.knownOutletId);
+        perShowFetches++;
+        const outletId = m.knownOutletId || provisionalOutletIdFromHost(m.host);
+        // conflict/conflictReason MUST be carried through: computeResidualCounts
+        // and the ::error:: summary read this array, not `res`. Omitting them
+        // made the whole conflict signal dead code (ship-check 2026-08-09).
+        r.ingestResults.push({
+          url: m.url,
+          host: m.host,
+          outletId,
+          provisional: !!res.provisional,
+          ok: res.ok,
+          noop: !!res.noop,
+          conflict: !!res.conflict,
+          conflictReason: res.conflictReason || null,
+          unclassified: !!res.unclassified,
+          zeroChar: !!res.zeroChar,
+          reason: res.reason,
+        });
+        const tag = res.ok
+          ? (res.provisional ? `✅ ingested (provisional outlet "${outletId}")` : '✅ ingested')
+          : (res.conflict ? `⛔ CONFLICT (${res.conflictReason}) — ${res.reason}` : `✗ ingest failed (${res.reason || 'unknown'})`);
+        console.log(`  ${tag}: ${m.url}`);
+      }
+      // BRO-4765: record this run's 0-char streaks; a URL that just hit the cap leaves missing[] now.
+      if (useCheckpoint && r.ingestResults.length) {
+        const nextZero = updateZeroCharCounts(zeroCharStored, r.ingestResults, Date.now());
+        checkpoint[s.id] = { ...(checkpoint[s.id] || {}) };
+        if (Object.keys(nextZero).length) checkpoint[s.id].zeroChar = nextZero; else delete checkpoint[s.id].zeroChar;
+        saveCheckpointEntries(CHECKPOINT_PATH, { [s.id]: checkpoint[s.id] });
+        const again = partitionUnextractable(r.missing, nextZero, Date.now());
+        r.missing = again.missing;
+        const newlyTerminal = again.unextractable.filter(u => !(r.unextractable || []).some(x => x.url === u.url));
+        r.unextractable = [...(r.unextractable || []), ...newlyTerminal];
+        // One visible line per URL at the moment it goes terminal: it drops out of every gap count after this.
+        for (const u of newlyTerminal) console.log(`::warning::review gap — ${r.showId}: ${u.url} extracted 0 chars on ${u.zeroCharAttempts} runs over 24h+; no longer retried (may be a non-review page, a paywall or a missing extractor pattern). Retried once after 30 days.`);
+      }
+      if (cappedSkipped.length > 0) {
+        console.log(`  ⏸  skipped ${cappedSkipped.length} URL(s) over per-show cap (--ingest-cap=${INGEST_PER_SHOW_CAP}) — recorded in audit JSON for next run`);
+      }
+    }
+
+    // --ingest-missing: ALSO self-heal recoverable flaggedMisses — reviews whose
+    // file EXISTS but is empty-body (paywalled empty fetch, etc.). The block above
+    // only handles URLs with NO file; this is the other half of the gap that made
+    // new openings land "short" (Glengarry WE empty Times review). Re-ingest the
+    // aggregator's current-production URL under the existing slug so the fetched
+    // text MERGES into the empty file (a fill, never a clobber). isRecoverableFlaggedFile
+    // already excluded wrong-production / wrong-show / human-protected / over-cap
+    // files in auditShow, so only the merge-safe subset carries recoverable:true.
+    //
+    // STALE-SLUG wrongProduction recovery is deliberately NOT done here — no clean
+    // unattended path exists yet (verified ship-check 2026-06-22):
+    //   • --force-clear-stale-flag only bypasses detectIngestCollision's PRE-CHECK
+    //     (manual-review-fields.js:210); it does NOT clear wrongProduction.
+    //   • createOrMergeReviewFile merges only into FALSY fields (review-file-writer.js:503),
+    //     so an existing wrongProduction:true (and any stale body) survives the merge —
+    //     the re-ingested review stays excluded.
+    //   • the generic ingest path has no Guardian-style date guard, so re-fetching a
+    //     stale slug can re-store the prior-production body.
+    // Net: an unattended force-clear would churn (re-flag every rebuild), not heal.
+    // Those flaggedMisses stay visible for --dispatch-gather and manual
+    // `ingest-review-from-url.js --force-clear-stale-flag` (operator clears the flag).
+    if (ingestMissing) {
+      // P0 (ship-check 2026-07-10): recovery must respect the WE ingest gate and
+      // the prior-run block — an empty-body guardian file + a 2022 WET roundup
+      // citing a Guardian URL would otherwise re-ingest PRIOR-PRODUCTION text
+      // into the current show's file every hour (the WET mass-ingestion class).
+      const weRecGateOn = process.env.WE_GAP_INGEST === '1';
+      const serpCensusRecGateOn = process.env.SERP_CENSUS_INGEST === '1';
+      // Same canonical predicate as the missing-URL ingest above — prior-run
+      // (production-identity) blocks recovery on every market, not just weRef rows.
+      const recBlockedPred = (m) => ingestBlockReason(m, { showIsWe: isWeShow(s), weGateOn: weRecGateOn, lowTrustSources: lowTrust, serpCensusGateOn: serpCensusRecGateOn }) !== null;
+      const weRecBlocked = r.flaggedMisses.filter(m => m.recoverable && recBlockedPred(m));
+      if (weRecBlocked.length > 0) {
+        const nPrior = weRecBlocked.filter(isPriorProductionCitation).length;
+        console.log(`  ⛔ ${weRecBlocked.length} recoverable(s) not recovered (${nPrior} prior-production — permanently report-only${nPrior < weRecBlocked.length ? `; ${weRecBlocked.length - nPrior} WE_GAP_INGEST unset — report-only mode` : ''})`);
+      }
+      const recoverables = r.flaggedMisses.filter(m => m.recoverable && !recBlockedPred(m));
+      // Recovery draws from whatever the missing-URL ingest left of the shared
+      // per-show fetch budget (INGEST_PER_SHOW_CAP). Anything beyond rolls to the
+      // next hourly run via the audit JSON.
+      const recBudget = Math.max(0, INGEST_PER_SHOW_CAP - perShowFetches);
+      if (recoverables.length > 0) {
+        const budget = recoverables.slice(0, recBudget);
+        const recCapped = recoverables.slice(recBudget);
+        r.recoveryResults = [];
+        for (const m of budget) {
+          const res = recoverEmptyBodyFlaggedMiss(r.showId, m, s.openingDate, s);
+          if (!res.skipped) perShowFetches++;
+          r.recoveryResults.push(res);
+          if (res.skipped) {
+            console.log(`  ⏭  recovery skip (${res.reason}): ${m.recoverableFile} ${m.url}`);
+          } else if (res.recovered) {
+            console.log(`  ♻️  recovered empty-body review → ${m.recoverableFile} from ${m.url}`);
+          } else {
+            console.log(`  ✗ recovery did not land (try ${res.recoveryCount}/${FLAGGED_RECOVERY_CAP}; ${res.reason || 'still empty body'}): ${m.recoverableFile} ${m.url}`);
+          }
+        }
+        if (recCapped.length > 0) {
+          r.recoverySkippedByCap = recCapped.map(m => ({ url: m.url, host: m.host, file: m.recoverableFile }));
+          console.log(`  ⏸  ${recCapped.length} recoverable flaggedMiss(es) over shared per-show fetch budget (--ingest-cap=${INGEST_PER_SHOW_CAP}) — next run`);
+        }
+      }
+
+      // UNCITED stub retry (The Upcoming class, 2026-07-23): empty-body files
+      // whose outlets NO aggregator cites never enter flaggedMisses, so the
+      // recovery above never touches them — a 0-byte stub of a real published
+      // review sat inert until a human refetched it (the first retry succeeded
+      // immediately). Retry each suspect file against its OWN url — that URL
+      // was already accepted at collection time, so this is a refetch, not a
+      // new aggregator-driven ingest (no weRef/prior-run gate applies). Same
+      // per-show fetch budget and per-file retry cap as the cited path.
+      try {
+        const citedFiles = new Set(r.flaggedMisses.map(m => m.recoverableFile).filter(Boolean));
+        const dirAll = loadDirFiles(r.showId);
+        // Prior-run date guard (ship-check 2026-07-23, Codex finding): "accepted
+        // at collection time" is not "safe forever" — unflagged prior-production
+        // files exist in the corpus (task #275). A stub whose publishDate falls
+        // before [opening - 30d] is a prior-run artifact; refetching it would
+        // pull the earlier production's text. Dateless stubs fail open (same
+        // posture as gap-ingest-policy's dateless-article warning).
+        const openingMs = s.openingDate ? new Date(s.openingDate).getTime() : null;
+        const notPriorRun = (d) => {
+          if (!openingMs || !d.publishDate) return true;
+          const parsed = parseHistoricalDate(d.publishDate);
+          if (!parsed) return true;
+          return parsed.getTime() >= openingMs - 30 * 86400000;
+        };
+        const uncited = dirAll.filter(d => d._file && !citedFiles.has(d._file) && isRecoverableUncitedStub(d) && notPriorRun(d));
+        const uncitedBudget = Math.max(0, INGEST_PER_SHOW_CAP - perShowFetches);
+        if (uncited.length > uncitedBudget) {
+          console.log(`  ⏸  ${uncited.length - uncitedBudget} uncited stub(s) over shared per-show fetch budget — next run`);
+        }
+        for (const d of uncited.slice(0, uncitedBudget)) {
+          const m = {
+            url: d.url,
+            host: hostOf(d.url),
+            knownOutletId: d.outletId || null,
+            recoverable: true,
+            recoverableFile: d._file,
+            recoverableOutletId: d.outletId || null,
+            recoverableCritic: d.criticName || null,
+            recoverableCount: d.aggUrlRecoveryCount || 0,
+          };
+          const res = recoverEmptyBodyFlaggedMiss(r.showId, m, s.openingDate, s);
+          if (!res.skipped) perShowFetches++;
+          r.recoveryResults = r.recoveryResults || [];
+          r.recoveryResults.push({ ...res, uncited: true });
+          if (res.skipped) {
+            console.log(`  ⏭  uncited-stub skip (${res.reason}): ${d._file} ${d.url}`);
+          } else if (res.recovered) {
+            console.log(`  ♻️  recovered uncited stub → ${d._file} from ${d.url}`);
+          } else {
+            console.log(`  ✗ uncited-stub retry did not land (try ${res.recoveryCount}/${FLAGGED_RECOVERY_CAP}; ${res.reason || 'still empty body'}): ${d._file} ${d.url}`);
+          }
+        }
+      } catch (e) {
+        console.log(`::warning::uncited-stub sweep failed for ${r.showId}: ${(e.message || '').slice(0, 120)}`);
+      }
+    }
+  }
+
+  // ── Self-proving auto-enable (2026-07-11, hardened per ship-check) ─────────
+  // "Enable ingest after the report proves itself" was a human-memory step;
+  // nobody was going to remember it. When the proving criteria are met
+  // (lib/we-gate-proving.js — corroboration-based, not uptime-based), the audit
+  // enables ingest itself and emails the owner. Safety posture:
+  //   - CI-only: a LOCAL --checkpoint run must never flip a prod variable via
+  //     the operator's gh session (ship-check P1).
+  //   - Create, never overwrite: if WE_GAP_INGEST already EXISTS as a repo
+  //     variable (any value), an operator has expressed state — respect it.
+  //     This also makes "owner emptied the variable" a durable off switch even
+  //     if the tracker commit was lost (ship-check P1).
+  //   - Crash-safe ordering: provenAt saved BEFORE the flip, enabledAt saved
+  //     immediately AFTER; email-delivery failure sets notifyPending so later
+  //     runs retry the notification until it lands (flip-but-owner-unaware is
+  //     the "alert channel silently dead" incident — ship-check P1).
+  //   - Attempt throttle: non-enabled outcomes retry at most every 24h.
+  // Per-aggregator accuracy (measured corroboration, accumulated in the proving
+  // tracker) — printed every run so the trust data is visible, not just consumed
+  // by the low-trust ingest block above.
+  {
+    const acc = aggregatorAccuracy(loadWeProving());
+    const { ACCURACY_DEFAULTS } = require('./lib/we-gate-proving');
+    const srcs = Object.keys(acc).sort();
+    if (srcs.length > 0) {
+      console.log('\nWE reference source accuracy (citations corroborated against independently-held reviews):');
+      for (const src of srcs) {
+        const a = acc[src];
+        const pct = a.accuracy === null ? `n/a (<${ACCURACY_DEFAULTS.minCited} cited)` : `${Math.round(a.accuracy * 100)}%`;
+        console.log(`  ${src}: ${a.corroborated}/${a.cited} corroborated (${pct}) across ${a.shows} show(s)${lowTrust.has(src) ? '  ⛔ LOW TRUST — rows report-only' : ''}`);
+      }
+    }
+  }
+
+  if (useCheckpoint && process.env.GITHUB_ACTIONS === 'true'
+      && process.env.WE_GAP_INGEST !== '1' && process.env.WE_GAP_REFERENCE_DISABLED !== '1') {
+    const proving = loadWeProving();
+    const { routeAlert } = require('./lib/owner-alert-router');
+    // Routed through the owner-alert-router ledger (not just this file's own
+    // lastEnableAttemptAt throttle) so repeat CI runs of the SAME unresolved
+    // condition (e.g. workflow token still can't write the variable) collapse
+    // to one email instead of one per run — email-noise Sprint 2 (2026-07-23):
+    // two "PROVEN" emails landed ~1h apart because the local proving.json
+    // state wasn't shared between overlapping hourly cron runs. The ledger is
+    // a separately-committed file with its own conditionKey, so it survives
+    // that race even when proving.json's own throttle doesn't.
+    const DAY = 24 * 60 * 60 * 1000;
+    const attemptDue = !proving.lastEnableAttemptAt || (Date.now() - new Date(proving.lastEnableAttemptAt).getTime()) > DAY;
+    if (proving.enabledAt && proving.notifyPending) {
+      // Flip already happened but the owner was never notified — retry until it lands.
+      const result = await routeAlert({
+        conditionKey: 'we-gate:enabled-delayed-notice',
+        title: 'WE auto-ingest is ENABLED (delayed notice — earlier notification failed)',
+        description: `Auto-ingest was enabled at ${proving.enabledAt} after the gate proved itself. Prior-run roundup URLs remain blocked; per-show caps apply. Kill switch: repo variable WE_GAP_REFERENCE_DISABLED=1.`,
+        severity: 'error',
+        disposition: 'human',
+        cooldownHours: 24,
+      });
+      // action === 'digest' means routeAlert's page-worthy gate (card #611)
+      // downgraded this from the requested 'human' — the owner WILL see it in
+      // tomorrow's digest, so that counts as notified same as a delivered email.
+      if ((result.action === 'human' && result.delivered) || result.action === 'digest') { proving.notifyPending = false; saveWeProving(proving); }
+      else if (result.action === 'human') console.error('::error::WE auto-ingest is ON but the owner still could not be notified (email failing). Fix RESEND_API_KEY/OWNER_EMAIL.');
+    } else if (!proving.enabledAt && attemptDue) {
+      const verdict = evaluateProving(proving);
+      if (verdict.enable) {
+        proving.provenAt = proving.provenAt || new Date().toISOString();
+        proving.lastEnableAttemptAt = new Date().toISOString();
+        saveWeProving(proving); // persist proof BEFORE side effects (crash safety)
+        // Respect operator state: only CREATE the variable if it does not exist.
+        let varExists = true;
+        try { execFileSync('gh', ['variable', 'get', 'WE_GAP_INGEST'], { stdio: 'pipe' }); }
+        catch { varExists = false; }
+        if (varExists) {
+          console.log('WE gate proven, but WE_GAP_INGEST variable already exists (operator-set state) — not touching it.');
+          const result = await routeAlert({
+            conditionKey: 'we-gate:proven-variable-already-set',
+            title: 'WE completeness gate PROVEN — variable already set, respecting your state',
+            description: `Proving criteria met (${verdict.reason}) on: ${verdict.qualifying.join(', ')}. The WE_GAP_INGEST repo variable already exists, so nothing was changed. To enable: gh variable set WE_GAP_INGEST --body 1`,
+            severity: 'error',
+            disposition: 'human',
+            cooldownHours: 24,
+          });
+          // notifyPending stays false when result.action === 'digest' too (the
+          // page-worthy gate, card #611, downgraded this from 'human') — the
+          // owner WILL see it in the next digest, so there's nothing pending.
+          proving.notifyPending = result.action === 'human' && !result.delivered;
+          proving.enabledAt = new Date().toISOString(); // terminal state: decision handed to operator, never re-fire
+          saveWeProving(proving);
+        } else {
+          let flipped = false;
+          try {
+            execFileSync('gh', ['variable', 'set', 'WE_GAP_INGEST', '--body', '1'], { stdio: 'pipe' });
+            flipped = true;
+          } catch (e) {
+            console.error(`::warning::WE gate PROVEN but variable write failed (${(e.message || '').slice(0, 80)}) — will email manual instructions.`);
+          }
+          if (flipped) { proving.enabledAt = new Date().toISOString(); saveWeProving(proving); }
+          const result = await routeAlert({
+            conditionKey: flipped ? 'we-gate:enabled' : 'we-gate:proven-flip-failed',
+            title: flipped
+              ? 'WE auto-ingest ENABLED — completeness gate proved itself'
+              : 'WE completeness gate PROVEN — one command to enable auto-ingest',
+            description: flipped
+              ? `Proving criteria met (${verdict.reason}) on: ${verdict.qualifying.join(', ')}. Auto-ingest of WE-reference review URLs is now ON (prior-run roundup URLs remain permanently blocked; per-show ingest caps apply). Kill switch: repo variable WE_GAP_REFERENCE_DISABLED=1 (WE-only), or empty WE_GAP_INGEST.`
+              : `Proving criteria met (${verdict.reason}) on: ${verdict.qualifying.join(', ')}, but the workflow token could not set the repo variable. Run: gh variable set WE_GAP_INGEST --body 1`,
+            severity: 'error',
+            disposition: 'human',
+            cooldownHours: 24,
+          });
+          // Same as above: result.action === 'digest' (page-worthy gate, card
+          // #611, downgraded 'human') is NOT a delivery failure — only a
+          // genuinely undelivered 'human' result should retry hourly.
+          if (flipped && result.action === 'human' && !result.delivered) {
+            proving.notifyPending = true;
+            saveWeProving(proving);
+            console.error('::error::WE auto-ingest was ENABLED but the notification email failed — will retry notifying hourly. Fix RESEND_API_KEY/OWNER_EMAIL.');
+          }
+        }
+      }
+    }
+  }
+
+  const runAudit = {
+    generatedAt: new Date().toISOString(),
+    windowDays,
+    targets: targets.length,
+    results,
+  };
+
+  // #893: this file used to be overwritten wholesale from `results`, so a
+  // `--show=X` run (what the send-day runbook and every "collect the missing
+  // reviews" hint tell you to run) replaced every other show's audited state
+  // with one entry — and newsletter-preflight then reported "unverified" for
+  // the rest. Merge per show instead: this run wins for the shows it audited,
+  // everything else is carried forward with its own computedAt stamp.
+  //
+  // A PRESENT-BUT-UNPARSEABLE file is NOT the same as an absent one. Swallowing
+  // a parse error into `prevAudit = null` would silently recreate #893 exactly:
+  // the next `--show=X` merges against an empty prior and writes one entry over
+  // 25 shows' state. Absent → nothing to carry (first run, fine). Corrupt →
+  // refuse to write, keep the bad file for inspection, and say so loudly.
+  //
+  // The read → merge → write is done under an exclusive lock, because the
+  // GitHub concurrency group only serializes GitHub runs: the hourly cron and a
+  // human running the same command locally can overlap, and last-writer-wins on
+  // an unlocked read-modify-write drops the other run's per-show results — #893
+  // again, from a different cause. This satisfies the plan's S0 acceptance
+  // ("--show=X twice concurrently → no lost data"), proven by
+  // scripts/lib/gap-audit-merge.concurrent.test.mjs.
+  const { audit, mergedResults, unknownOutlets, blast, lockHeld, riskyShowIds, quarantined, outletsWritten } = withFileLock(`${AUDIT_PATH}.lock`, (held) => {
+  let prevAudit = null;
+  let prevUnreadable = null;
+  if (fs.existsSync(AUDIT_PATH)) {
+    try {
+      prevAudit = JSON.parse(fs.readFileSync(AUDIT_PATH, 'utf8'));
+      if (!prevAudit || !Array.isArray(prevAudit.results)) {
+        prevUnreadable = 'file parsed but has no results array';
+        prevAudit = null;
+      }
+    } catch (e) {
+      prevUnreadable = (e.message || String(e)).slice(0, 200);
+      prevAudit = null;
+    }
+  }
+  const audit = mergeGapAudit(prevAudit, runAudit);
+  const mergedResults = audit.results;
+  const nextRiskAll = riskStateMap(mergedResults);
+
+  // Blast-radius guard (plan S0): a run that flips >5% of shows' coverage state
+  // is far more likely to be a broken input (dead SERP provider, empty census,
+  // partial core-data checkout) than a real mass change. Refuse the write and
+  // say so. Fail-open by construction — small/scoped runs and an absent
+  // previous file both return ok. Force through with
+  // COVERAGE_BLAST_RADIUS_OVERRIDE=1.
+  const blast = prevUnreadable
+    ? {
+      ok: false, compared: 0, changed: 0, changedPct: 0, changedIds: [],
+      reason: `previous ${AUDIT_PATH} exists but could not be read (${prevUnreadable}) — refusing to write, because merging against an empty prior would drop every show not audited this run (#893). Delete or repair the file, then re-run.`,
+    }
+    : (() => {
+      // Compare ONLY the shows this run actually re-examined. Comparing the
+      // whole merged file against the whole previous file would dilute the
+      // signal into uselessness: carried-forward entries are copies, so they
+      // can never change state, but they still count toward the denominator.
+      // The checkpoint tracks ~490 shows while a throttled hourly run audits a
+      // few dozen — a 100%-corrupted batch from a dead SERP provider would land
+      // at 20/490 = 4% and slip under the 5% threshold, which is the exact
+      // outage this guard exists to catch (ship-check finding, task #902).
+      const auditedIds = new Set(results.map(r => r && r.showId).filter(Boolean));
+      const only = (m) => Object.fromEntries(Object.entries(m).filter(([id]) => auditedIds.has(id)));
+      // BRO-513 (2026-08-26, recurrence of a 2026-08-03 16.7% refusal): a
+      // bare verdict diff can't tell "the census found a genuine NEW gap"
+      // (complete → incomplete, benign) apart from "we lost coverage we used
+      // to have" (also complete → incomplete, but the exact broken-input
+      // failure this guard exists to catch). riskStateMap/isRiskyGapChange
+      // (gap-audit-merge.js) compare liveCount/candidateCount instead of the
+      // verdict word — see their doc comments for the full rationale.
+      // BRO-4185: a quarantined show whose re-audit reproduces its
+      // quarantined state is a deterministic rule change, not a broken input
+      // — accept it as baseline (see confirmQuarantinedStates).
+      const nextRisk = only(nextRiskAll);
+      const { prevStates, confirmed } = confirmQuarantinedStates(
+        only(riskStateMap(prevAudit && prevAudit.results)), nextRisk, prevAudit && prevAudit.results);
+      if (confirmed.length) console.log(`  ✓ ${confirmed.length} quarantined show(s) reproduced their quarantined state — accepted as baseline: ${confirmed.slice(0, 20).join(', ')}`);
+      return blastRadiusCheck(prevStates, nextRisk, { label: 'review-gap', isRiskyChange: isRiskyGapChange });
+    })();
+
+  // Roll up unknown outlet hosts: hosts that aggregator articles linked to
+  // but our outlet-registry.json doesn't recognize. These are the gather
+  // chain's blind spots — gather rejects them with "Could not resolve outlet
+  // from URL" and the review never lands. (gaycitynews.com and theknockturnal.com
+  // on 2026-05-27 — both registered after this audit surfaced them.)
+  // Rolled up over the MERGED results, not just this run's — same clobber class
+  // as the audit file itself (#893): a `--show=X` run used to blank the
+  // unknown-outlet list for every other show.
+  function computeUnknownOutlets(resultsArr) {
+    const hosts = new Map();
+    for (const r of resultsArr) {
+      for (const m of (r.missing || [])) {
+        if (m.knownOutletId) continue;
+        if (!hosts.has(m.host)) {
+          hosts.set(m.host, { host: m.host, provisionalOutletId: provisionalOutletIdFromHost(m.host), occurrences: 0, sampleUrls: [], shows: new Set() });
+        }
+        const e = hosts.get(m.host);
+        e.occurrences++;
+        if (e.sampleUrls.length < 3) e.sampleUrls.push(m.url);
+        e.shows.add(r.showId);
+      }
+    }
+    return [...hosts.values()].map(e => ({ ...e, shows: [...e.shows] })).sort((a, b) => b.occurrences - a.occurrences);
+  }
+  const unknownOutlets = computeUnknownOutlets(mergedResults);
+
+  // BRO-3002: a batch that mixes a handful of genuinely-changed shows into a
+  // much larger set the checkpoint happened to select together must not have
+  // its ENTIRE write refused — see partitionAuditedResults's doc comment
+  // (gap-audit-merge.js) for the self-perpetuating loop this caused (the same
+  // ~9-show set recurred across three straight hourly runs, each rolling the
+  // WHOLE batch's checkpoint back to the identical stale baseline). Split the
+  // write: shows blastRadiusCheck did NOT flag persist and advance normally;
+  // the flagged subset falls back to its carried-forward prior entry (still
+  // parked, still re-selected, still alerting) instead of being lost.
+  // `prevUnreadable` stays an absolute block — merging fresh results against
+  // an unreadable prior would silently drop every OTHER show (#893) — and a
+  // batch where EVERY examined show is risky (safeResults empty) degrades to
+  // the same full-block behavior as before.
+  const { safe: safeResults, risky: riskyResults } = (!prevUnreadable && blast.changedIds.length > 0)
+    ? partitionAuditedResults(results, blast.changedIds)
+    : { safe: [], risky: [] };
+  const canPartialWrite = !blast.ok && !prevUnreadable && riskyResults.length > 0 && safeResults.length > 0;
+  // protectedIds (Codex adversarial review, BRO-3002): a quarantined show's
+  // carried-forward entry is otherwise just an ordinary stale row to
+  // mergeGapAudit's retention clock — its computedAt is frozen at the run
+  // BEFORE it got quarantined and never advances (it's excluded from
+  // freshIds every subsequent run for as long as it stays risky), so once
+  // real wall-clock time exceeds DEFAULT_RETENTION_DAYS it would silently
+  // get pruned — the exact "lost, not just parked" outcome this whole fix
+  // exists to prevent. Exempt it from the retention drop (still carried
+  // forward, still comparable, just never evicted purely for staleness).
+  const quarantined = canPartialWrite
+    ? mergeGapAudit(prevAudit, { ...runAudit, results: safeResults }, { protectedIds: new Set(riskyResults.map(r => r.showId)) })
+    : null;
+  // Stamp the state each quarantined show was held at, so the next run can
+  // tell a reproduced state (accept) from a transient one (keep holding).
+  if (quarantined) {
+    const at = new Date().toISOString();
+    const riskyIds = new Set(riskyResults.map(r => r.showId));
+    for (const row of quarantined.results) {
+      if (!row || !riskyIds.has(row.showId)) continue;
+      const ns = nextRiskAll[row.showId];
+      const same = row.quarantine && row.quarantine.nextState === ns;
+      row.quarantine = { nextState: ns, since: same ? row.quarantine.since : at, lastAt: at };
+    }
+  }
+
+  if (!dryRun && (blast.ok || canPartialWrite)) {
+    const toWrite = blast.ok ? audit : quarantined;
+    const outletsToWrite = blast.ok ? unknownOutlets : computeUnknownOutlets(quarantined.results);
+    fs.mkdirSync(path.dirname(AUDIT_PATH), { recursive: true });
+    writeJsonAtomic(AUDIT_PATH, toWrite);
+    if (blast.ok) {
+      console.log(`\nWrote audit: ${AUDIT_PATH} (${toWrite.auditedThisRun} audited this run, ${toWrite.carriedForward} carried forward, ${toWrite.prunedStale} pruned >${toWrite.retentionDays}d)`);
+    } else {
+      console.log(`\nWrote audit (PARTIAL — ${riskyResults.length} risky show(s) quarantined, not persisted): ${AUDIT_PATH} (${toWrite.auditedThisRun} audited this run, ${toWrite.carriedForward} carried forward, ${toWrite.prunedStale} pruned >${toWrite.retentionDays}d). Quarantined: ${riskyResults.map(r => r.showId).slice(0, 20).join(', ')}`);
+    }
+    writeJsonAtomic(UNKNOWN_OUTLETS_PATH, {
+      generatedAt: toWrite.generatedAt,
+      count: outletsToWrite.length,
+      outlets: outletsToWrite,
+    });
+    console.log(`Wrote unknown-outlets: ${UNKNOWN_OUTLETS_PATH} (${outletsToWrite.length} hosts)`);
+    return { audit, mergedResults, unknownOutlets, blast, lockHeld: held, riskyShowIds: riskyResults.map(r => r.showId), quarantined, outletsWritten: outletsToWrite };
+  }
+  return { audit, mergedResults, unknownOutlets, blast, lockHeld: held, riskyShowIds: riskyResults.map(r => r.showId), quarantined, outletsWritten: unknownOutlets };
+  }); // end withFileLock
+
+  if (!lockHeld) {
+    console.error('::warning::gap-audit lock could not be acquired (assumed stale and broken, or lock dir unwritable) — the read-modify-write ran unprotected. A concurrent audit run could have lost data.');
+  }
+
+  // BRO-3002: true only when SOME (not all) of this run's examined shows were
+  // quarantined — i.e. the write above was a partial success, not a full
+  // block. Read at the exit-code line too: a partial write made real forward
+  // progress and must not keep the cron permanently red the way a genuine
+  // full block should.
+  const partial = !!(riskyShowIds && riskyShowIds.length && riskyShowIds.length < results.length);
+
+  // Alerting is deliberately OUTSIDE the lock: routeAlert does network I/O and
+  // must not hold the write lock across an await.
+  if (!dryRun && !blast.ok) {
+    console.error(`::error::${blast.reason}`);
+    console.error(`Changed shows (first 20): ${blast.changedIds.slice(0, 20).join(', ')}`);
+    try {
+      const { routeAlert } = require('./lib/owner-alert-router');
+      await routeAlert({
+        conditionKey: 'review-gap:blast-radius-refused',
+        title: `Review-gap audit refused to write — ${blast.changedPct.toFixed(1)}% of shows changed coverage state`,
+        description: `${blast.reason}\n\nChanged shows: ${blast.changedIds.slice(0, 30).join(', ')}\n\n${partial ? `PARTIAL write: the other ${results.length - riskyShowIds.length} show(s) audited this run were NOT risky and were persisted normally. Only the ${riskyShowIds.length} changed show(s) above were quarantined (kept at their prior entry).` : `The previous ${AUDIT_PATH} is intact — nothing was lost (every examined show this run was risky, so nothing could be safely split out).`} Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …`,
+        severity: 'error',
+        disposition: 'human',
+        cooldownHours: 6,
+      });
+    } catch (e) {
+      // Alerting must never mask the guard: the ::error:: above already fired.
+      console.error(`::warning::blast-radius alert routing failed: ${(e.message || '').slice(0, 120)}`);
+    }
+    // The refused run's checkpoint stamps are just as suspect as its results,
+    // and newsletter-preflight's HARD gate reads the checkpoint, not this file
+    // (lib/newsletter-preflight.js completenessFindings). Leaving `uncollected:
+    // 0, at: <now>` behind would let a refused audit bless the weekly send.
+    // Roll the checkpoint back so those shows re-audit — but ONLY the entries
+    // for shows THIS run touched, and under the checkpoint's own lock.
+    // Re-writing the whole start-of-run snapshot would clobber a concurrent
+    // run's freshly-saved stamps for shows this run never looked at (the
+    // wholesale-overwrite bug this whole task exists to kill, reintroduced on
+    // the sibling file). rollbackCheckpointEntries re-reads under the lock so
+    // it merges against current state rather than our stale in-memory copy.
+    //
+    // BRO-3002: when the write above was a PARTIAL (quarantine) write, only
+    // the risky subset's stamps are suspect — the safe majority was just
+    // persisted with fresh data and must keep its advanced checkpoint entry,
+    // or the next run's least-recently-audited selection would immediately
+    // re-pick the same batch and reproduce the exact stuck loop this split
+    // exists to break. `riskyShowIds` is empty (falls back to the full
+    // audited set) whenever the write was a full block, matching prior
+    // behavior exactly.
+    const auditedIds = results.map(r => r && r.showId).filter(Boolean);
+    const rollbackIds = (riskyShowIds && riskyShowIds.length) ? riskyShowIds : auditedIds;
+    if (useCheckpoint && checkpointAtStart && rollbackIds.length) {
+      try {
+        rollbackCheckpointEntries(CHECKPOINT_PATH, rollbackIds, checkpointAtStart);
+        console.error(`::warning::rolled ${rollbackIds.length} show(s) back in the gap-audit checkpoint — this run's freshness stamps are not trustworthy.${rollbackIds.length < auditedIds.length ? ` (${auditedIds.length - rollbackIds.length} other audited show(s) were safe and persisted normally)` : ''}`);
+      } catch (e) {
+        console.error(`::warning::checkpoint rollback failed: ${(e.message || '').slice(0, 120)}`);
+      }
+    }
+  }
+  if (verbose) console.log(`Blast radius: ${blast.reason}`);
+  // BRO-3002: on a partial (quarantine) write, `audit`/`mergedResults` still
+  // describe the FULL unpartitioned merge — including the risky shows'
+  // rejected fresh data, which was never persisted. Report against
+  // `quarantined` (what's actually on disk) whenever it exists, so the CI log
+  // matches the file a reader would open to debug the discrepancy.
+  const reportedAudit = (partial && quarantined) ? quarantined : audit;
+  const reportedResults = reportedAudit.results;
+  console.log(`Summary: ${reportedAudit.counts.withGap}/${reportedResults.length} shows on file with gaps (${results.length} audited this run) | ${reportedAudit.counts.missingCurrentRun} URLs not in dir | ${reportedAudit.counts.totalFlaggedMisses} URLs in dir but flagged out (${reportedAudit.counts.totalRecoverable} recoverable, ${reportedAudit.counts.totalRecovered} self-healed) | ${outletsWritten.length} unknown outlets${reportedAudit.counts.priorProductionCitations ? ` | +${reportedAudit.counts.priorProductionCitations} prior-production citation(s) on file, permanently report-only, NOT counted above` : ''}`);
+  if (useCheckpoint) {
+    console.log(`Checkpoint: ${results.length} shows audited this run${budgetHit ? ' (time-budget partial — remaining shows resume next run)' : ' (full eligible set complete)'}. State: ${CHECKPOINT_PATH}`);
+  }
+
+  // BRO-3928 item 3: --fail-on-gap exists but nothing wires its signal to a
+  // human — it only reddens this hourly CI job's own log, which "nobody
+  // reads" (the ticket's framing). Queue ONE routeAlert(disposition:'digest')
+  // line per opening-window show with a genuine current-run gap, same pattern
+  // as the T1 scoreboard in audit-opening-night-coverage.js, so a real gap on
+  // a show readers will see this week reaches the daily digest.
+  //   - Reads from `reportedResults` (the blast-radius-accepted, ACTUALLY
+  //     PERSISTED data), not the raw per-run `results` — a quarantined show's
+  //     unvetted fresh numbers must never reach the owner (ship-check/Codex
+  //     finding: queuing before the blast-radius decision could advertise a
+  //     result the write path itself judged untrustworthy).
+  //   - `currentRunUncollected` nets out this run's own successful ingests, so
+  //     a gap this same run just closed isn't reported as still open.
+  //   - Per-show conditionKey (not one combined key for the whole run): the
+  //     checkpoint's time budget means a hurried run only touches a handful
+  //     of shows, and one combined key's cooldown would suppress a genuinely
+  //     NEW gap on a different show found in a later run for up to
+  //     cooldownHours (Codex finding).
+  //   - Skipped entirely on --dry-run — a dry run must never have the one
+  //     real side effect (queuing owner-facing content) that isn't gated on
+  //     `!dryRun` everywhere else in this file.
+  //   - Gated on --checkpoint, matching this file's existing convention (see
+  //     the WE completeness alert above): a manual `--show=X` debugging run
+  //     has no dedup state and the operator is watching stdout, not the
+  //     digest — it must not queue a real alert every invocation.
+  if (!dryRun && useCheckpoint) {
+    try {
+      const { routeAlert, removeDigestLines } = require('./lib/owner-alert-router');
+      for (const r of reportedResults) {
+        if (!r || !r.showId || !inOpeningWindow({ openingDate: r.openingDate })) continue;
+        const conditionKey = `review-gap:opening-window:${r.showId}`;
+        const uncollected = currentRunUncollected(r);
+        if (uncollected <= 0) {
+          // Queue-only cleanup (never resolveCondition/ledger — a resolved
+          // ledger condition would reset the OTHER show's cooldown clock is
+          // not a risk here since keys are per-show, but resolving on every
+          // quiet run is still the known anti-pattern documented at
+          // audit-opening-night-coverage.js's "No resolveCondition() call"
+          // comment; removeDigestLines only trims the not-yet-sent queue).
+          removeDigestLines(conditionKey);
+          continue;
+        }
+        await routeAlert({
+          conditionKey,
+          title: `Review gap — "${r.title || r.showId}" missing ${uncollected} cited review(s)`,
+          description: `${r.title || r.showId} (${r.showId}): ${uncollected} review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=${r.showId} --checkpoint --ingest-missing`,
+          severity: 'warning',
+          disposition: 'digest',
+          cooldownHours: 20,
+        }).catch((e) => console.error(`::error::opening-window gap digest queue failed for ${r.showId}: ${(e.message || '').slice(0, 120)}`));
+      }
+    } catch (e) {
+      console.error(`::error::opening-window gap digest routing failed: ${(e.message || '').slice(0, 120)}`);
+    }
+  }
+  if (verbose && outletsWritten.length > 0) {
+    console.log('\nUnknown outlets (not in outlet-registry.json):');
+    for (const u of outletsWritten) {
+      console.log(`  ${u.host} — ${u.occurrences} occurrence(s) across ${u.shows.length} show(s): ${u.sampleUrls[0]}`);
+    }
+  }
+
+  // Collector-outage floor (plan-review 2026-05-31): tolerate one bad URL, but
+  // if every attempted article fetch threw, the scraper stack is down — redden
+  // CI so a dead Bright Data zone / exhausted SB doesn't masquerade as "no gaps
+  // found" (which would silently miss reviews during opening night). Distinct
+  // from --fail-on-gap: this fires on infrastructure failure, not on gaps.
+  if (_fetchStats.attempts >= 3 && _fetchStats.errors === _fetchStats.attempts) {
+    console.error(`::error::collector outage — all ${_fetchStats.errors}/${_fetchStats.attempts} aggregator article fetches threw (Bright Data / ScrapingBee / Playwright all failing). Check BRIGHTDATA_ZONE + ScrapingBee credits; this audit found nothing because nothing could be fetched.`);
+    process.exit(1);
+  }
+  // Discovery-outage floor (ship-check 2026-06-01): the article-fetch floor
+  // above only fires once we reach fetching. If SERP discovery itself is down,
+  // 0 articles are found, fetching never happens, and the audit would otherwise
+  // report "no gaps" during a total blackout. If every SERP query errored,
+  // redden. Requires >=3 attempts so a tiny --show run can't false-trigger.
+  if (_serpStats.attempts >= 3 && _serpStats.errors === _serpStats.attempts) {
+    console.error(`::error::discovery outage — all ${_serpStats.errors}/${_serpStats.attempts} SERP queries errored (SCRAPINGBEE_API_KEY / SERP provider down). No aggregator articles could be discovered; "no gaps" here is meaningless.`);
+    process.exit(1);
+  }
+
+  // Expected-vs-captured alert (girl-interrupted 2026-06-05): after auto-ingest,
+  // surface any show that STILL has roundup-cited reviews we couldn't capture.
+  // Unlike check-opening-night-completeness.js (which only detects DISAPPEARANCE
+  // vs a prior snapshot), this catches reviews that were never captured at all —
+  // absence at first sight. A cited URL is by definition already published, so no
+  // settle window is needed. Fires on every run (not just --fail-on-gap) so the
+  // hourly cron surfaces residual gaps in the daily digest via ::warning::.
+  const residualShows = [];
+  for (const r of results) {
+    const counts = computeResidualCounts(r, ingestMissing);
+    if (counts.residual > 0) {
+      const conflicts = (r.ingestResults || []).filter(x => x.conflict).map(x => x.reason);
+      residualShows.push({ showId: r.showId, title: r.title, ...counts, conflicts });
+    }
+  }
+  if (residualShows.length > 0) {
+    for (const s of residualShows) {
+      console.log(`::warning::review gap — ${s.showId} (${s.title}): ${s.residual} roundup-cited review(s) still uncaptured after auto-ingest (failed=${s.failedIngest} capped=${s.capped} uningested=${s.uningested} flaggedOut=${s.flaggedOut} recovered=${s.recovered}${s.noopIngest ? ` noop=${s.noopIngest}` : ''}${s.conflictIngest ? ` conflict=${s.conflictIngest}` : ''}${s.expectedIngest ? ` expected=${s.expectedIngest}` : ''}${s.unclassifiedIngest ? ` unclassified=${s.unclassifiedIngest}` : ''})`);
+      // Conflicts get their own ::error:: line naming the other side. A count
+      // buried in the residual tally is what let the I'm Every Woman / Car Man
+      // ownership conflict sit unresolved (2026-08-09) — the operator must be
+      // able to act straight from the log without re-deriving anything.
+      for (const c of (s.conflicts || [])) {
+        console.log(`::error::review conflict — ${c}`);
+      }
+    }
+    console.log(`Expected-vs-captured: ${residualShows.length} show(s) with residual review gaps after auto-ingest.`);
+  }
+
+  // Opening-window alert (BRO-4272): CI runs only (manual runs have an operator
+  // watching stdout and no committed ledger).
+  // Same inputs and gates as the opening-window alert above: reportedResults (the
+  // blast-radius-accepted set) and never on --dry-run.
+  if (!dryRun && useCheckpoint && process.env.GITHUB_ACTIONS === 'true') {
+    const plan = planRoundupGapAlerts(reportedResults, ingestMissing);
+    if (plan.alert.length || plan.resolve.length) {
+      const { routeAlert, resolveCondition } = require('./lib/owner-alert-router');
+      for (const showId of plan.resolve) {
+        try { resolveCondition(`roundup-gap:${showId}`, { reason: 'no residual roundup gap after auto-ingest' }); }
+        catch (e) { console.error(`::warning::roundup-gap resolve failed for ${showId}: ${(e.message || '').slice(0, 120)}`); }
+      }
+      for (const g of plan.alert) {
+        const lines = g.missing.slice(0, 15).map((m) => `- ${m.knownOutletId || m.host}: ${m.url}`);
+        try {
+          await routeAlert({
+            conditionKey: `roundup-gap:${g.showId}`,
+            title: `${g.title}: ${g.counts.residual} roundup-listed review(s) still not captured`,
+            description: `The BWW / Playbill roundups for ${g.showId} list reviews the site doesn't have after this run's auto-ingest `
+              + `(failed=${g.counts.failedIngest} capped=${g.counts.capped} flaggedOut=${g.counts.flaggedOut} conflict=${g.counts.conflictIngest}).\n`
+              + `${lines.join('\n') || '(see data/audit/show-review-gap.json)'}\n\n`
+              + 'For each: grep the poller / this audit log for the URL; the EXCLUSION line names the guard that dropped it. Fix the guard, then ingest.',
+            severity: 'warning',
+            disposition: 'auto',
+            cooldownHours: 12,
+            verify: {
+              line: `VERIFY: node scripts/audit-show-review-gap.js --show=${g.showId} --dry-run --verbose`,
+              note: 'no "review gap" warning for the show once every roundup-cited review is captured',
+            },
+          });
+        } catch (e) {
+          console.error(`::error::roundup-gap alert failed for ${g.showId}: ${(e.message || '').slice(0, 120)}`);
+        }
+      }
+    }
+  }
+
+  // Contract drift, reported OUTSIDE the residual loop (ship-check 2026-08-09,
+  // finding B). The first version printed this only for shows that already had
+  // residual > 0, so a run whose ONLY problem was an unrecognised skip reason
+  // said nothing at all — the module built to stop silent skips had a silent
+  // skip in its own reporting. It now both counts toward `residual` (above) and
+  // prints unconditionally here, naming the reason strings so the fix does not
+  // require re-running the ingest by hand to discover which one drifted.
+  const driftReasons = new Map(); // reason -> [showId]
+  for (const r of results) {
+    for (const x of (r.ingestResults || [])) {
+      if (!x.unclassified) continue;
+      const key = x.unclassifiedReason || '(no reason string parsed)';
+      if (!driftReasons.has(key)) driftReasons.set(key, []);
+      driftReasons.get(key).push(r.showId);
+    }
+  }
+  for (const [reason, showIds] of driftReasons) {
+    console.log(`::error::ingest skip reason "${reason}" is in NO list in scripts/lib/ingest-skip-classify.js `
+      + `(${showIds.length} occurrence(s), e.g. ${showIds.slice(0, 3).join(', ')}). Add it to CONFLICT_REASONS, `
+      + 'EXPECTED_REJECTION_REASONS or BENIGN_REASONS — until then it defaults to quiet, which is the failure '
+      + 'mode that module exists to remove.');
+  }
+
+  // Expected rejections: visible every run, never residual. One aggregate line
+  // per reason rather than per URL — enough to notice a spike (an extractor
+  // returning empty in bulk shows up as empty-unknown climbing) without
+  // re-arming a per-show alarm nobody can action.
+  const expectedByReason = new Map();
+  for (const r of results) {
+    for (const x of (r.ingestResults || [])) {
+      if (!x.expected) continue;
+      const key = x.expectedReason || 'unknown';
+      expectedByReason.set(key, (expectedByReason.get(key) || 0) + 1);
+    }
+  }
+  if (expectedByReason.size > 0) {
+    const parts = [...expectedByReason].map(([k, n]) => `${k}=${n}`).join(' ');
+    console.log(`Expected rejections this run (correct + permanent, not counted as gaps): ${parts}`);
+  }
+
+  // Force a clean exit. fetchPage can leave a Playwright/Browserbase browser or
+  // socket handle open, so without an explicit exit Node lingers on the event loop
+  // after the audit finishes (especially after a soft-budget break) until the
+  // 40-min job HARD-cancel — which then starves the commit/push step of its window
+  // and the run shows 'cancelled' with the checkpoint+ingests un-pushed (the
+  // steady-state maintenance-cancel bug, 2026-06-16). Close the scraper and exit.
+  // --fail-on-gap judges THIS run, not the whole file. Since #893 made the
+  // audit file cumulative (carried-forward entries from earlier runs), reading
+  // audit.counts here would redden CI on gaps this run never looked at — and
+  // keep it red until every historical entry aged out.
+  const runWithGap = countsFor(results).withGap;
+  // A refused write — full OR partial (BRO-3002) — must redden the run.
+  // Exiting 0 would leave the workflow green while a real, unresolved issue
+  // (a show whose coverage state disagrees with its own recent history)
+  // sits quarantined indefinitely — the exact "green run, nobody notices"
+  // shape as the collector/discovery outage floors above, which both exit 1.
+  // The alert alone is not enough: it is cooldown'd and email-delivery can
+  // fail. Unlike the write/checkpoint split above, staying red here is
+  // deliberately NOT relaxed for a partial write (adversarial review, BRO-3002
+  // follow-up): the quarantined shows' underlying flag never heals on its
+  // own, so a green partial-write run would let check-cron-health's
+  // CRITICAL_CRONS entry report "healthy" while genuinely unresolved coverage
+  // sat parked — the workflow now makes real progress (the fix's whole
+  // point) but still surfaces loudly until a human resolves or overrides the
+  // specific quarantined shows.
+  const { exitCode } = auditExitDecision({ dryRun, blast, failOnGap, runWithGap });
+  try { await scraperCleanup(); } catch { /* best-effort */ }
+  process.exit(exitCode);
+}
+
+if (require.main === module) {
+  main().catch(async (e) => {
+    console.error('Fatal:', e.message);
+    try { await scraperCleanup(); } catch { /* best-effort */ }
+    process.exit(1);
+  });
+}
+
+// bumpRecoveryCount is exported for the integration test that proves the retry
+// cap actually persists to disk (acceptance: "retry cap proven"). It writes to
+// the module-level REVIEW_TEXTS_DIR captured at require time, so the test sets
+// REVIEW_TEXTS_DIR before requiring this module.
+// main + USAGE are exported so scripts/audit-show-review-gap.test.mjs can
+// prove --help never falls through to a real gh call (task #266).
+module.exports = { planRoundupGapAlerts, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, computeResidualCounts, currentRunUncollected, main, USAGE };

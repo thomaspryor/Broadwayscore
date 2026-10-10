@@ -1,0 +1,174 @@
+name: Update Tony Awards Data
+
+on:
+  # Tony Awards season: nominations announced ~early May, ceremony ~early June.
+  # Cron runs daily during April-June at 16:00 UTC (12 PM ET) to catch noms +
+  # winners as Wikipedia is updated. Wikipedia scraping is idempotent: when
+  # there's no new data the workflow exits without committing. Outside of
+  # awards season the cron doesn't fire, so no wasted runs.
+  #
+  # Previously workflow_dispatch only — the 2026 nominations announced May 5
+  # never made it into awards.json because nobody manually triggered it,
+  # leaving every 2025-26 show showing 0 Tony noms on the site.
+  schedule:
+    - cron: '0 16 * 4-6 *'  # 16:00 UTC daily, April-June
+  workflow_dispatch:
+    inputs:
+      year:
+        description: 'Specific year to scrape (leave empty for all years)'
+        required: false
+        type: string
+
+# Prevent two runs from committing awards.json simultaneously
+concurrency:
+  group: tony-awards-update
+  cancel-in-progress: false
+
+jobs:
+  update-awards:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Scrape Tony Awards data
+        run: |
+          if [ -n "${{ inputs.year }}" ]; then
+            echo "Scraping year ${{ inputs.year }} only..."
+            node scripts/scrape-tony-awards.js --year=${{ inputs.year }}
+          else
+            echo "Scraping all years..."
+            node scripts/scrape-tony-awards.js
+          fi
+
+      - name: Check for changes
+        id: changes
+        run: |
+          CHANGED_FILES=""
+          ! git diff --quiet data/awards.json && CHANGED_FILES="$CHANGED_FILES awards.json"
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No changes to Tony data files"
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "changed_files=$CHANGED_FILES" >> $GITHUB_OUTPUT
+            BEFORE=$(git show HEAD:data/awards.json 2>/dev/null | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');console.log(Object.keys(JSON.parse(d).shows||{}).length)" 2>/dev/null || echo "0")
+            AFTER=$(node -e "const d=require('./data/awards.json');console.log(Object.keys(d.shows||{}).length)")
+            echo "before=$BEFORE" >> $GITHUB_OUTPUT
+            echo "after=$AFTER" >> $GITHUB_OUTPUT
+            echo "Changed:$CHANGED_FILES | Awards: $BEFORE → $AFTER shows"
+          fi
+
+      - name: Commit and push
+        if: always() && steps.changes.outputs.has_changes == 'true'
+        env:
+          # BRO-76: awards.json has a case arm in push-with-retry.sh's
+          # resolve_conflicts() (fires on an actual rebase conflict), but
+          # `git pull --rebase -X ours` can also silently absorb a nearby
+          # hunk WITHOUT ever raising a conflict — the exact gap reconcile-
+          # merged-json.js's opt-in pass exists to close (see its own header).
+          # This workflow and update-precursor-awards.yml are the only two
+          # writers, so opting both in gives awards.json full coverage on
+          # both the conflicting and non-conflicting silent-drop paths.
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/awards.json
+
+          YEAR_NOTE=""
+          if [ -n "${{ inputs.year }}" ]; then
+            YEAR_NOTE=" (year ${{ inputs.year }})"
+          fi
+
+          git commit -m "chore: Update Tony Awards data${YEAR_NOTE}
+
+          Shows with awards: ${{ steps.changes.outputs.before }} → ${{ steps.changes.outputs.after }}"
+
+          bash scripts/lib/push-with-retry.sh
+
+      # data/awards.json is dual-tracked: the public-repo commit above feeds
+      # test.yml's staleness gate + vercel-preview's build-trigger path, but
+      # checkout-core-data/push-core-data's private repo
+      # (thomaspryor/broadway-scorecard-data) is what every OTHER workflow
+      # actually reads via checkout-core-data. Without this step the scrape
+      # never reaches that authoritative copy — card #1441.
+      # Gated on has_changes (not a bare always()) so a scraper failure that
+      # exits before/mid-write — leaving data/awards.json unchanged or
+      # partially written — can't get pushed to the private repo just because
+      # this step ran unconditionally (ship-check/Codex finding).
+      - name: Push core data to private repo
+        if: always() && steps.changes.outputs.has_changes == 'true'
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update Tony Awards data (private repo sync)'
+
+      - name: Create IBDB scraper reminder issue
+        if: steps.changes.outputs.has_changes == 'true' && github.event_name == 'workflow_dispatch'
+        run: |
+          YEAR="${{ inputs.year }}"
+          if [ -z "$YEAR" ]; then
+            YEAR="$(date +%Y)"
+          fi
+          gh issue create \
+            --title "Run Tony nominations IBDB scraper for ${YEAR}" \
+            --body "$(cat <<'ISSUE_EOF'
+          ## Tony Awards data updated
+
+          The Wikipedia Tony Awards scraper has committed new data to \`awards.json\`.
+          The IBDB person-level nominations scraper needs to run locally to pick up new shows.
+
+          ### Steps
+
+          1. Pull latest: \`git pull\`
+          2. Run the scraper for missing shows only:
+             \`\`\`
+             node scripts/scrape-tony-nominees.js --missing
+             \`\`\`
+          3. Verify: \`node scripts/verify-tony-data.js\`
+          4. Commit and push the updated \`data/tony-nominations.json\`
+
+          **Why local?** IBDB is behind Cloudflare and requires a headed Playwright browser.
+          The \`--missing\` flag only processes shows where \`awards.json\` expects nominations
+          but \`tony-nominations.json\` has 0 person-level entries.
+          ISSUE_EOF
+          )" \
+            --label "data"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Update Tony Awards Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+      - name: Summary
+        run: |
+          echo "## Tony Awards Update" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.changes.outputs.has_changes }}" == "true" ]; then
+            echo "✅ Tony data updated: ${{ steps.changes.outputs.changed_files }}" >> $GITHUB_STEP_SUMMARY
+            echo "- Awards shows: ${{ steps.changes.outputs.before }} → ${{ steps.changes.outputs.after }}" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "ℹ️ No changes to Tony data files" >> $GITHUB_STEP_SUMMARY
+          fi

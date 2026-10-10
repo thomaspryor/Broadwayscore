@@ -1,0 +1,133 @@
+name: Backfill Historical Show Metadata
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'Max shows to process (0 = all)'
+        required: false
+        default: '100'
+      shows:
+        description: 'Comma-separated show IDs to target (overrides limit)'
+        required: false
+        default: ''
+      dry_run:
+        description: 'Dry run (no commits)'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+# BRO-934: manual shows.json writer; serialize with the other shows.json writers (lost-update race).
+concurrency:
+  group: shows-json-writer
+  cancel-in-progress: false
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 60-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # TodayTix synopsis pages fall back to Playwright; without browsers that
+      # fallback failed silently for every row (BRO-4851, run 37788691313).
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Backfill synopsis + creative team
+        id: backfill
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SHOWS: ${{ inputs.shows }}
+        run: |
+          ARGS="--backfill-historical"
+          LIMIT="${{ inputs.limit || '100' }}"
+          if [ "$LIMIT" != "0" ]; then
+            ARGS="$ARGS --limit=$LIMIT"
+          fi
+          # Targeted ids (e.g. newly promoted historical rows); quoted so a
+          # list with spaces stays one --show= argument.
+          SHOWS="${SHOWS// /}"
+          node scripts/auto-fix-show-data.js $ARGS ${SHOWS:+"--show=$SHOWS"}
+
+      - name: Validate data
+        run: node scripts/validate-data.js
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet data/shows.json; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            FIXED="${{ steps.backfill.outputs.fixed_count || 'unknown' }}"
+            echo "fixed=$FIXED" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push
+        if: always() && steps.changes.outputs.changed == 'true' && inputs.dry_run != 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/auto-fix-results.json
+          git commit -m "chore: Backfill historical show metadata (synopsis + creative team)
+
+          Fixed ${{ steps.changes.outputs.fixed }} issues via TodayTix + Claude API.
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+          bash scripts/lib/push-with-retry.sh
+
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from backfill-historical-metadata'
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: backfill-historical-metadata
+      - name: Summary
+        run: |
+          echo "## Historical Metadata Backfill Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Fixed:** ${{ steps.backfill.outputs.fixed_count || 'see logs' }} issues" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ inputs.dry_run }}" == "true" ]; then
+            echo "**Mode:** Dry run (no changes committed)" >> $GITHUB_STEP_SUMMARY
+          fi
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Backfill Historical Metadata Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

@@ -1,0 +1,210 @@
+{
+  "guard": {
+    "blind": false,
+    "count": 0,
+    "reason": "ok",
+    "at": "2026-10-10T14:13:20.711Z"
+  },
+  "venueReaders": {
+    "at": "2026-10-10T14:13:20.711Z",
+    "readers": 54,
+    "active": 165,
+    "activeCovered": 101,
+    "activeDated": 77,
+    "uncovered": {
+      "broadway comedy club": {
+        "firstSeen": "2026-10-01T15:00:20.501Z",
+        "venue": "Broadway Comedy Club"
+      },
+      "ensemble studio": {
+        "firstSeen": "2026-09-30T17:53:29.256Z",
+        "venue": "Ensemble Studio Theatre"
+      },
+      "la mama experimental theatre club": {
+        "firstSeen": "2026-10-03T12:53:57.507Z",
+        "venue": "La MaMa Experimental Theatre Club"
+      },
+      "tank": {
+        "firstSeen": "2026-10-01T15:00:20.501Z",
+        "venue": "The Tank"
+      },
+      "theatre row theatre 5": {
+        "firstSeen": "2026-09-30T01:29:53.899Z",
+        "venue": "Theatre Row, Theatre 5"
+      }
+    },
+    "explained": [
+      {
+        "venue": "The Shed",
+        "recentShows": 5,
+        "reason": "queue-it bot wall on theshed.org/program; needs a real browser"
+      },
+      {
+        "venue": "AMT Theater",
+        "recentShows": 4,
+        "reason": "sells through Ludus behind a Cloudflare JS challenge; the Wix site lists shows as free text"
+      },
+      {
+        "venue": "The Culture Club",
+        "recentShows": 3,
+        "reason": "no public listing found"
+      },
+      {
+        "venue": "St. Luke's Theatre",
+        "recentShows": 3,
+        "reason": "stlukestheatre.com says the venue closed in January 2021"
+      },
+      {
+        "venue": "Theater 555",
+        "recentShows": 3,
+        "reason": "Wix pages are image-only; tickets are a VenueTix single-page app"
+      },
+      {
+        "venue": "Theaterlab",
+        "recentShows": 3,
+        "reason": "site returns an empty page to a plain fetch"
+      },
+      {
+        "venue": "Urban Stages",
+        "recentShows": 3,
+        "reason": "site lists readings and a music festival, no production listing"
+      },
+      {
+        "venue": "the cell",
+        "recentShows": 2,
+        "reason": "Tickettailor listing says \"Multiple dates\"; run dates only on per-event pages"
+      },
+      {
+        "venue": "Peter Jay Sharp Theater",
+        "recentShows": 2,
+        "reason": "name shared by Playwrights Horizons (read) and Symphony Space"
+      },
+      {
+        "venue": "spit&vigor's Tiny Baby Blackbox Theatre",
+        "recentShows": 2,
+        "reason": "Wix events widget returns only the next ~8 dates"
+      }
+    ]
+  },
+  "venueReadersLondon": {
+    "at": "2026-10-10T14:13:20.711Z",
+    "readers": 23,
+    "active": 92,
+    "activeCovered": 31,
+    "activeDated": 26,
+    "uncovered": {
+      "haymarket theatre royal": {
+        "firstSeen": "2026-10-01T15:00:20.501Z",
+        "venue": "Haymarket, Theatre Royal"
+      },
+      "yard": {
+        "firstSeen": "2026-09-30T17:53:29.256Z",
+        "venue": "The Yard Theatre"
+      }
+    },
+    "explained": [
+      {
+        "venue": "Soho Theatre",
+        "recentShows": 11,
+        "reason": "Spektrix account (sohotheatre) is ~1,500 events, almost all stand-up; not read on purpose"
+      },
+      {
+        "venue": "Sadler's Wells",
+        "recentShows": 10,
+        "reason": "dance house; not read"
+      },
+      {
+        "venue": "Charing Cross Theatre",
+        "recentShows": 7,
+        "reason": "no ticketing feed or dated listing on the homepage (probed 2026-09-30)"
+      },
+      {
+        "venue": "Donmar Warehouse",
+        "recentShows": 7,
+        "reason": "403 to a plain fetch (Cloudflare); no public ticketing feed found"
+      },
+      {
+        "venue": "Globe Theatre",
+        "recentShows": 7,
+        "reason": "Shakespeare's Globe site has no dated listing or public feed in its HTML (probed 2026-09-30)"
+      },
+      {
+        "venue": "Peacock Theatre",
+        "recentShows": 7,
+        "reason": "Sadler's Wells' West End dance house; dance, not theatre"
+      },
+      {
+        "venue": "Sam Wanamaker Playhouse",
+        "recentShows": 6,
+        "reason": "Shakespeare's Globe's indoor house; same site as the Globe"
+      },
+      {
+        "venue": "Regent's Park Open Air Theatre",
+        "recentShows": 5,
+        "reason": "Regent's Park Open Air Theatre site renders its listing in JavaScript"
+      },
+      {
+        "venue": "The Arts at Marble Arch",
+        "recentShows": 3,
+        "reason": "TodayTix-run venue (The Arts at Marble Arch); its shows are TodayTix listings"
+      },
+      {
+        "venue": "Barbican Theatre",
+        "recentShows": 3,
+        "reason": "Spektrix account (barbicancentre) is ~3,000 events / 4.9 MB with no usable performance counts, and its Theatre art form holds 3-day dance and circus visits: not read (BRO-4398 review)"
+      },
+      {
+        "venue": "Jermyn Street Theatre",
+        "recentShows": 3,
+        "reason": "no ticketing feed or dated listing on the homepage (probed 2026-09-30)"
+      },
+      {
+        "venue": "Theatre on Kew",
+        "recentShows": 3,
+        "reason": "seasonal pop-up in Kew Gardens"
+      },
+      {
+        "venue": "County Hall",
+        "recentShows": 2,
+        "reason": "immersive/event space in a former office building"
+      },
+      {
+        "venue": "Hackney Empire",
+        "recentShows": 2,
+        "reason": "variety/receiving house (comedy, panto, tours)"
+      },
+      {
+        "venue": "New Wimbledon Theatre",
+        "recentShows": 2,
+        "reason": "ATG receiving house (UK tours)"
+      },
+      {
+        "venue": "Queen Elizabeth Hall - Southbank Centre",
+        "recentShows": 2,
+        "reason": "Southbank Centre halls are concert venues"
+      },
+      {
+        "venue": "Richmond",
+        "recentShows": 2,
+        "reason": "a place name, not a venue: fix the show rows"
+      },
+      {
+        "venue": "The Vaults Theatre",
+        "recentShows": 2,
+        "reason": "Wix site: the programme is images and Eventbrite links, no dated listing, JSON-LD events or ticketing feed (probed 2026-09-30, BRO-4433)"
+      }
+    ],
+    "undatedOnly": [
+      {
+        "venue": "The Other Palace",
+        "recentShows": 13,
+        "reader": "The Other Palace"
+      },
+      {
+        "venue": "Marylebone Theatre",
+        "recentShows": 6,
+        "reader": "Marylebone Theatre"
+      }
+    ]
+  }
+}

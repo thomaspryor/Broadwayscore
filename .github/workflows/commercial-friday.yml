@@ -1,0 +1,268 @@
+name: Commercial Friday Refresh
+
+# Mid-week refresh so the Sunday newsletter has fresh recoupment data.
+# Saturday cron (commercial-weekly.yml, 18:00 UTC) runs the heavy batch + deep-research pass.
+# This Friday run is lightweight: just the recoupment-announcement scraper,
+# which catches "X recouped" trade-press announcements that drop Mon-Fri.
+
+on:
+  schedule:
+    - cron: '0 22 * * 5'  # Friday 22:00 UTC / 6 PM ET — leaves ~36h buffer before Sunday send
+  workflow_dispatch:
+    inputs:
+      shows:
+        description: 'Comma-separated slugs to scan (default: all in-scope shows)'
+        required: false
+        type: string
+      dry_run:
+        description: 'Dry run (no commit/push)'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: commercial-data-write
+  cancel-in-progress: false
+
+jobs:
+  recoupment-scan:
+    runs-on: ubuntu-latest
+    # BRO-2303: was 45. The scan step's unbounded per-show loop was overrunning
+    # 45min weekly (run 34658940127: 43min inside "Scan for recoupment
+    # announcements" alone), and a timeout-killed job reports `cancelled` —
+    # notify-failure's `if: failure()` never fires, so it went stale 3+ weeks
+    # undetected (same class as BRO-2285). Now bounded by --time-budget-min on
+    # both the scan and reconcile steps; 60min sizing: ~2min setup + 20min scan
+    # budget + ~1min auto-apply + 12min reconcile budget + ~3min strict
+    # gate/contamination/model-refresh/deletion-guard + up to 10min
+    # PUSH_DEADLINE_SEC on commit + ~3min push-core-data + deploy dispatch =
+    # ~51min worst case, leaving a ~9min cushion (same margin BRO-2285's
+    # second-opinion review settled on for commercial-weekly.yml's
+    # batch-research job).
+    timeout-minutes: 60
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Scan for recoupment announcements
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          ARGS=""
+          if [ -n "${{ inputs.shows }}" ]; then
+            ARGS="$ARGS --shows=${{ inputs.shows }}"
+          fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          ARGS="$ARGS --time-budget-min=20"
+          echo "Running: node scripts/scrape-recoupment-announcements.js $ARGS"
+          node scripts/scrape-recoupment-announcements.js $ARGS
+
+      - name: Auto-apply high-confidence findings
+        if: inputs.dry_run != true
+        # NOT continue-on-error: ship-check CDX-P0-4 — a failed apply must not
+        # silently progress to commit + push + deploy with a half-mutated
+        # workspace. If apply throws, the commit step below short-circuits
+        # via `git diff --staged --quiet` and the next Friday run retries.
+        # BRO-4758: scraper credentials so cited pages can be read before a figure may print as fact.
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          if [ -f data/commercial-pending-review.json ]; then
+            # --auto-apply-claims-from bypasses the recouped:true safety gate
+            # for entries whose detectedBy matches AND confidence==high AND
+            # sourceHost ∈ trusted-recoupment-domains. Without this flag, the
+            # gate at apply-commercial-pending.js:124 blocks all recoupment
+            # finds from auto-applying.
+            node scripts/apply-commercial-pending.js --all --min-confidence=high \
+              --auto-apply-claims-from=recoupment-announcement-scraper
+          fi
+
+      - name: Reconcile recoupment claim queue
+        if: inputs.dry_run != true
+        # Closes stale duplicates (pending claims already resolved+cited in
+        # commercial.json by a prior pipeline run) and attempts SERP+LLM
+        # verification of the rest against TRUSTED_RECOUPMENT_HOSTS, so the
+        # manual queue only ever holds genuinely unverifiable claims. NOT
+        # continue-on-error, matching auto-apply above — writes only happen
+        # after the full pass succeeds (see reconcile-recoupment-claims.js),
+        # so a mid-run failure leaves no partial state; the strict gate below
+        # audits whatever it did apply.
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          if [ -f data/commercial-pending-review.json ]; then
+            node scripts/reconcile-recoupment-claims.js --time-budget-min=12
+          fi
+
+      - name: Self-heal resurrected duplicate key pairs
+        if: inputs.dry_run != true
+        # BRO-4623: same step as commercial-weekly.yml. The strict gate below
+        # fails on an ID/slug duplicate key pair, and before this step only
+        # the Saturday weekly run healed them, so a pair written mid-week
+        # (RSS-poll apply, 2026-09-26/28) turned every Friday run red.
+        # --apply deletes only pairs whose ID entry adds nothing beyond
+        # notes/sources/research bookkeeping (values printed to the log).
+        # A conflicting pair is refused with exit 1: like a strict-gate
+        # failure, that blocks this week's commit and core-data push (the
+        # auto-apply/reconcile results are retried next run), and the
+        # sentinel below keeps the push blocked even if it is ever made
+        # always()-gated.
+        run: |
+          if ! node scripts/dedupe-commercial-id-keys.js --apply; then
+            echo "dedupe-commercial-id-keys refused a conflicting ID/slug pair — blocking core-data push" \
+              > "${RUNNER_TEMP:-/tmp}/.skip-push-core-data"
+            exit 1
+          fi
+
+      - name: Commercial data strict gate (required)
+        if: inputs.dry_run != true
+        # S1-T5: hard gate — recouped:true entries with no citation, or
+        # sources[].url pointing at an LLM tool (chatgpt.com etc.), must never
+        # reach the private repo. On violation we also write the push-core-data
+        # refusal sentinel so the always()-gated push below cannot fire.
+        # Runs right after auto-apply + reconciler (same position as
+        # commercial-weekly.yml) so it audits the applied state before
+        # derived-model refresh.
+        run: |
+          if ! node scripts/audit-commercial-data.js --strict; then
+            echo "commercial strict audit failed (unsourced recouped or LLM-tool source URL) — blocking core-data push" \
+              > "${RUNNER_TEMP:-/tmp}/.skip-push-core-data"
+            exit 1
+          fi
+
+      - name: Commercial scope-contamination audit (informational)
+        if: inputs.dry_run != true
+        # OUT_OF_MARKET_SCOPE/SHOW_NOT_IN_DB are warn-only (not ship-blocking,
+        # see script header) but were previously NEVER run on a schedule —
+        # audit-commercial-contamination.js was only wired via `--gate` in
+        # test.yml, which checks a different, narrower signal set (impossible
+        # physics/contradictions only). A market-vs-category filter bug let
+        # 28 Off-Broadway/West-End shows sit undetected in commercial.json
+        # for a day (2026-07-14/15) with nothing surfacing it until a manual
+        # sweep. This step doesn't gate the push — it just guarantees the
+        # signal appears in this run's log every week instead of only when
+        # someone happens to run the script by hand.
+        run: node scripts/audit-commercial-contamination.js --strict
+        continue-on-error: true
+
+      - name: Refresh recoupment model
+        if: inputs.dry_run != true
+        run: node scripts/merge-model-recoupment.js
+        continue-on-error: true
+
+      - name: Deletion guard for commercial.json
+        if: always() && inputs.dry_run != true
+        run: |
+          node -e "
+            const fs = require('fs');
+            if (!fs.existsSync('./data/commercial.json')) { console.log('no commercial.json'); process.exit(0); }
+            const comm = JSON.parse(fs.readFileSync('./data/commercial.json','utf8'));
+            const count = Object.keys(comm.shows || {}).length;
+            console.log('Current show count: ' + count);
+            if (count < 120) {
+              console.error('::error::Commercial show count dropped below 120 (' + count + '). Aborting commit.');
+              process.exit(1);
+            }
+          "
+
+      - name: Commit applied data
+        if: inputs.dry_run != true
+        # Task #574: commits commercial-pending-review.json (union-merged
+        # managed file) — see push-with-retry.sh's reconcile_merged_json().
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+          # BRO-123: this MANAGED-file push is disqualified from the Git Data
+          # API fallback (see push-with-retry.sh), so under normal main-branch
+          # commit churn the default 240s deadline was self-aborting after
+          # only ~2 real fetch/rebase/push cycles (task #458's documented
+          # failure mode — "All push attempts failed after 7 attempts" was
+          # misleading; only 2 ever ran). Job has 45min timeout with ~20min
+          # headroom past this step; 600s is smaller than the 1200s override
+          # update-show-status.yml uses for the same root cause (that job has
+          # a much bigger timeout budget).
+          PUSH_DEADLINE_SEC: '600'
+          # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
+          # its 90s default to 30s — a pre-transfer connection stall burns the
+          # whole 90s cap with zero transfer progress, the same class as the
+          # #458 failure documented above. Matches BRO-334/BRO-346.
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          git add data/commercial-pending-review.json data/recoupment-calibration-anchors.json 2>/dev/null || true
+          bash scripts/lib/stage-data-changes.sh
+          if git diff --staged --quiet; then
+            echo "No changes to commit (no new recoupment announcements detected)"
+          else
+            git commit -m "data: Friday recoupment refresh
+
+          Auto-applied high-confidence recoupment-announcement scraper findings.
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Push core data to private repo
+        if: inputs.dry_run != true
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Commercial Friday recoupment refresh'
+
+      - name: Dispatch deploy
+        if: inputs.dry_run != true
+        uses: ./.github/actions/dispatch-deploy
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Commercial Friday Refresh" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Scoped lightweight pre-newsletter scan for recoupment trade-press announcements." >> $GITHUB_STEP_SUMMARY
+          if [ -f data/commercial-pending-review.json ]; then
+            node -e "
+              const p = JSON.parse(require('fs').readFileSync('./data/commercial-pending-review.json','utf8'));
+              const shows = p.shows || {};
+              const detected = Object.entries(shows).filter(([_,e]) => e.detectedBy === 'recoupment-announcement-scraper');
+              console.log('- **Newly detected recouped shows:** ' + detected.length);
+              for (const [slug, e] of detected) {
+                console.log('  - ' + slug + ' (' + (e.recoupedDate || 'date?') + ') — ' + (e.sourceHost || ''));
+              }
+            " >> $GITHUB_STEP_SUMMARY 2>/dev/null || true
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Commercial Friday Refresh Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

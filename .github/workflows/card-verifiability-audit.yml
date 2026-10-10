@@ -1,0 +1,164 @@
+name: Card Verifiability Audit
+
+# Card #796: "Data: undispatchable backlog cards" health-check row. Root
+# cause was that scripts/audit-card-verifiability.js (regenerates
+# data/audit/card-verifiability.json — read-only w.r.t. Notion/Linear) and
+# scripts/enrich-card-acceptance.js (LLM-drafts + writes acceptance-criteria
+# sections for refused cards) both existed and worked, but were never
+# scheduled anywhere — confirmed via grep across .github/workflows/*.yml and
+# ~/Library/LaunchAgents/*.plist, which found zero cron/launchd invocation
+# outside test.yml's unit-test path triggers. The report only ever got
+# regenerated as a side effect of ad-hoc fix sessions (task #646, BRO-2188,
+# task #1713 x2) — 18 days stale at last count, during which the refused
+# count silently grew from 52 to 62. This workflow is the fix: run the
+# audit -> enrich -> audit cycle daily so the backlog can never again drift
+# unnoticed between manual sessions.
+#
+# Modeled on .github/workflows/check-arm-yield.yml (same repo, same shape).
+#
+# Schedule: 05:30 UTC. data-health-check.yml moved to 02:15 UTC (BRO-4800), so
+# it now reads the previous day's report (~22h old); the 48h tolerance below covers it.
+# Originally ~75min before data-health-check.yml's 06:45 UTC read
+# of data/audit/card-verifiability.json — chosen so the health-check row
+# reflects a same-day-fresh report. check-health-row-absent.js's own 48h
+# staleness tolerance absorbs the occasional late-cron slip this repo's own
+# memory documents (feedback_github_cron_delays.md).
+#
+# Secrets: NOTION_API_KEY (not NOTION_TOKEN — notion-brain.js:45 hard-requires
+# that exact name; some sibling workflows set an env var literally named
+# NOTION_TOKEN that no script actually reads). ANTHROPIC_API_KEY /
+# OPENROUTER_API_KEY / GEMINI_API_KEY give enrich-card-acceptance.js its
+# built-in provider fallback — all four confirmed present via `gh secret
+# list`.
+#
+# BRO-4135: now --source both, not Notion-only. R1 of BRO-3913's backlog
+# drain plan assumed this workflow already armed Linear Urgent/High cards
+# with acceptance criteria — it never did: the migration (task #1830) added
+# enrich-card-acceptance.js's Linear leg as CODE, but this was, and until
+# this fix remained, the only scheduled caller, and it never passed
+# --source linear/both. Measured 09-24: the Linear leg's own P0/P1-first
+# default ordering (priorityTierRank in enrich-card-acceptance.js) was never
+# exercised in production. --limit 25 caps BOTH legs (main()'s `limit` is one
+# value shared across runNotionLeg and runLinearLeg — --from-report only
+# changes where the Notion leg's CANDIDATE LIST comes from, not its cap) —
+# down from the Notion leg's own previous unflagged DEFAULT_LIMIT=100, and
+# deliberately conservative for the brand-new Linear leg, which previously
+# made zero live Linear writes. Inside the same 20-minute job ceiling this
+# workflow already ran within for the larger Notion-only-at-100 leg alone
+# (raised below to give the new Linear leg's LLM-call volume real margin
+# regardless). Keeps the
+# Notion leg running too (not yet retired — Phase 1 of the CLAUDE.md rule 6
+# migration is still mid-flight per project memory); drop --source back to
+# implicit 'notion', or the whole Notion leg, once Notion stops taking cards.
+
+on:
+  schedule:
+    - cron: '30 5 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: card-verifiability-audit
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    # Raised 20->35 (BRO-4135): the new Linear leg (--source both) roughly
+    # doubles the LLM-drafting work this step does — up to 25 more Haiku
+    # calls, each followed by a 1s pacing sleep on enrich/fail
+    # (enrich-card-acceptance.js's runLinearLeg) — inside the same step that
+    # also runs the Notion leg and both audit passes. 35 gives real margin
+    # without needing a live-cost measurement against production Linear to
+    # pin an exact number.
+    timeout-minutes: 50 # BRO-3619: +15 for the separate Linear audit step
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+
+      # Required: notion-brain.js requires @notionhq/client, not in
+      # node_modules without this. Same exact class caught data-health-
+      # check.yml on 2026-07-23 — "every single auto-dispatch on this cron
+      # failed with 'Cannot find module '@notionhq/client'' until this step
+      # was added" (data-health-check.yml's own comment on its identical
+      # step). /ship-check's Codex review caught this workflow repeating that
+      # incident before it ever ran for real.
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      # Three steps in one job, same checkout: the Notion audit refreshes
+      # data/audit/card-verifiability.json (health-check.js's warn row reads
+      # it), enrich drafts acceptance criteria for open LINEAR issues only
+      # (BRO-3018: the Notion leg was spending LLM calls on a frozen board;
+      # that report is no longer shrunk by this job), then audit runs again.
+      - name: Audit, enrich, re-audit
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          # Required by the enrich step (--source linear); the Notion audit steps don't use it —
+          # linear-client.js's getApiKey() only throws inside an actual
+          # graphql() call, which the Notion-only leg never makes. Included
+          # anyway: its audit-secret-scan-always-trace marker (linear-client.js
+          # header) makes scripts/audit-workflow-secret-gaps.js flag its
+          # absence unconditionally (CI-enforced, test.yml:3244) precisely
+          # because a missing-but-only-sometimes-needed secret shipped silently
+          # broken once already (audit-imageless-scored-shows.yml, 2026-08-31).
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: |
+          node scripts/audit-card-verifiability.js --source notion
+          node scripts/enrich-card-acceptance.js --source linear --limit 25
+          # BRO-2170: a narrowed stamping rule must not strand an already-stamped cohort.
+          node scripts/enrich-card-acceptance.js --source linear --recheck-markers --limit 10
+          node scripts/audit-card-verifiability.js --source notion
+
+      # BRO-3619: the Linear report (health-check's vacuous/refused/stale rows read it) was never refreshed on a
+      # schedule. Its own step: the audit re-fetches every flagged issue (~475 round trips), so it gets its own
+      # timeout and cannot fail the job or skip the commit step if it hangs.
+      - name: Audit Linear cards
+        timeout-minutes: 15
+        continue-on-error: true
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/audit-card-verifiability.js --source linear
+
+      - name: Commit refreshed report
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/card-verifiability.json data/audit/card-verifiability-linear.json
+          if git diff --cached --quiet; then
+            echo "No state change to commit"
+            exit 0
+          fi
+          git commit -m "audit: refresh card-verifiability report [skip ci]"
+          bash scripts/lib/push-with-retry.sh 5 main
+
+      - name: Notify on failure
+        # BRO-3707: a hang in "Audit, enrich, re-audit" hitting the job's own
+        # timeout-minutes: 20 reports conclusion "cancelled", not "failure" —
+        # a bare failure() here would silently drop this critical alert.
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Card Verifiability Audit Failed'
+          description: 'The audit/enrich/re-audit cycle for undispatchable backlog cards crashed — data/audit/card-verifiability.json (or the Linear twin) may now be stale again, which is exactly the failure mode this workflow exists to prevent (card #796).'
+          # BRO-4603: not on the owner's page-worthy list (scripts/lib/page-worthy-alerts.js
+          # PAGE_WORTHY_WORKFLOWS) — failures reach the morning digest, never email.
+          severity: 'warning'
+          email: 'false'
+          # BRO-4141: one-off failures of this job are not owner-actionable; email
+          # only when it keeps failing (streak mode re-pages every 4th failure after).
+          min_consecutive_failures: '2'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

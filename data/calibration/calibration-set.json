@@ -1,0 +1,389 @@
+{
+  "timestamp": "2026-01-24T23:41:37.641Z",
+  "totalCandidates": 49,
+  "calibrationSetSize": 16,
+  "byRating": {
+    "5/5": 14,
+    "4/5": 23,
+    "3/5": 8,
+    "2/5": 3,
+    "1/5": 1
+  },
+  "accuracy": {
+    "assigned": {
+      "correct": 6,
+      "total": 7,
+      "percentage": 86
+    },
+    "llm": {
+      "correct": 0,
+      "total": 1,
+      "percentage": 0
+    }
+  },
+  "starRanges": {
+    "5/5": {
+      "min": 85,
+      "max": 100,
+      "midpoint": 92.5
+    },
+    "4/5": {
+      "min": 72,
+      "max": 88,
+      "midpoint": 80
+    },
+    "3/5": {
+      "min": 55,
+      "max": 72,
+      "midpoint": 63.5
+    },
+    "2/5": {
+      "min": 35,
+      "max": 55,
+      "midpoint": 45
+    },
+    "1/5": {
+      "min": 0,
+      "max": 35,
+      "midpoint": 17.5
+    }
+  },
+  "calibrationSet": [
+    {
+      "file": "ragtime-2025/ny-stage-review--roma-torre.json",
+      "showId": "ragtime-2025",
+      "outlet": "New York Stage Review",
+      "criticName": "Roma Torre",
+      "originalScore": "5/5",
+      "expectedRange": {
+        "min": 85,
+        "max": 100,
+        "midpoint": 92.5
+      },
+      "expectedMidpoint": 92.5,
+      "assignedScore": 100,
+      "llmScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "textQuality": "full",
+      "hasFullText": true,
+      "textLength": 6372,
+      "assignedInRange": true,
+      "assignedDelta": 7.5
+    },
+    {
+      "file": "oedipus-2025/culture-sauce--thom-geier.json",
+      "showId": "oedipus-2025",
+      "outlet": "Culture Sauce",
+      "criticName": "Thom Geier",
+      "originalScore": "5/5",
+      "expectedRange": {
+        "min": 85,
+        "max": 100,
+        "midpoint": 92.5
+      },
+      "expectedMidpoint": 92.5,
+      "assignedScore": null,
+      "llmScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "textQuality": "full",
+      "hasFullText": true,
+      "textLength": 6051
+    },
+    {
+      "file": "moulin-rouge-2019/ny-stage-review--melissa-rose-bernardo.json",
+      "showId": "moulin-rouge-2019",
+      "outlet": "New York Stage Review",
+      "criticName": "Melissa Rose Bernardo",
+      "originalScore": "5/5",
+      "expectedRange": {
+        "min": 85,
+        "max": 100,
+        "midpoint": 92.5
+      },
+      "expectedMidpoint": 92.5,
+      "assignedScore": null,
+      "llmScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "textQuality": "full",
+      "hasFullText": true,
+      "textLength": 5824
+    },
+    {
+      "file": "stereophonic-2024/ny-stage-review--bob-verini.json",
+      "showId": "stereophonic-2024",
+      "outlet": "New York Stage Review",
+      "criticName": "Bob Verini",
+      "originalScore": "5/5",
+      "expectedRange": {
+        "min": 85,
+        "max": 100,
+        "midpoint": 92.5
+      },
+      "expectedMidpoint": 92.5,
+      "assignedScore": 100,
+      "llmScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "textQuality": "full",
+      "hasFullText": true,
+      "textLength": 5037,
+      "assignedInRange": true,
+      "assignedDelta": 7.5
+    },
+    {
+      "file": "cabaret-2024/ny-stage-review--frank-scheck.json",
+      "showId": "cabaret-2024",
+      "outlet": "New York Stage Review",
+      "criticName": "Frank Scheck",
+      "originalScore": "4/5",
+      "expectedRange": {
+        "min": 72,
+        "max": 88,
+        "midpoint": 80
+      },
+      "expectedMidpoint": 80,
+      "assignedScore": 80,
+      "llmScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "textQuality": "full",
+      "hasFullText": true,
+      "textLength": 5752,
+      "assignedInRange": true,
+      "assignedDelta": 0
+    },
+    {
+      "file": "stranger-things-2024/ny-stage-review--bob-verini.json",
+      "showId": "stranger-things-2024",
+      "outlet": "New York Stage Review",
+      "criticName": "Bob Verini",
+      "originalScore": "4/5",
+      "expectedRange": {
+        "min": 72,
+        "max": 88,
+        "midpoint": 80
+      },
+      "expectedMidpoint": 80,
+      "assignedScore": null,
+      "llmScore": null,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "textQuality": "full",
+      "hasFullText": true,
+      "textLength": 5587
+    },
+    {
+      "file": "mamma-mia-2025/culture-sauce--thom-geier.json",
+      "showId": "mamma-mia-2025",
+      "outlet": "Culture Sauce",
+      "criticName": "Thom Geier",
+      "originalScore": "4/5",
+      "expectedRange": {
+        "min": 72,
+        "max": 88,
+        "midpoint": 80
+      },
+      "expectedMidpoint": 80,
+      "assignedScore": null,
+      "llmScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "textQuality": "full",
+      "hasFullText": true,
+      "textLength": 5510
+    },
+    {
+      "file": "liberation-2025/ny-stage-review--roma-torre.json",
+      "showId": "liberation-2025",
+      "outlet": "New York Stage Review",
+      "criticName": "Roma Torre",
+      "originalScore": "4/5",
+      "expectedRange": {
+        "min": 72,
+        "max": 88,
+        "midpoint": 80
+      },
+      "expectedMidpoint": 80,
+      "assignedScore": 80,
+      "llmScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "textQuality": "full",
+      "hasFullText": true,
+      "textLength": 5309,
+      "assignedInRange": true,
+      "assignedDelta": 0
+    },
+    {
+      "file": "the-notebook-2024/ny-stage-review--roma-torre.json",
+      "showId": "the-notebook-2024",
+      "outlet": "New York Stage Review",
+      "criticName": "Roma Torre",
+      "originalScore": "3/5",
+      "expectedRange": {
+        "min": 55,
+        "max": 72,
+        "midpoint": 63.5
+      },
+      "expectedMidpoint": 63.5,
+      "assignedScore": null,
+      "llmScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "textQuality": "full",
+      "hasFullText": true,
+      "textLength": 6335
+    },
+    {
+      "file": "mj-2022/TIMEOUTNY--adam-feldman.json",
+      "showId": "mj-2022",
+      "outlet": "Time Out New York",
+      "criticName": "Adam Feldman",
+      "originalScore": "3/5",
+      "expectedRange": {
+        "min": 55,
+        "max": 72,
+        "midpoint": 63.5
+      },
+      "expectedMidpoint": 63.5,
+      "assignedScore": 74,
+      "llmScore": 74,
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "textQuality": "full",
+      "hasFullText": true,
+      "textLength": 6005,
+      "assignedInRange": false,
+      "assignedDelta": 10.5,
+      "llmInRange": false,
+      "llmDelta": 10.5
+    },
+    {
+      "file": "the-notebook-2024/ny-stage-review--steven-suskin.json",
+      "showId": "the-notebook-2024",
+      "outlet": "New York Stage Review",
+      "criticName": "Steven Suskin",
+      "originalScore": "3/5",
+      "expectedRange": {
+        "min": 55,
+        "max": 72,
+        "midpoint": 63.5
+      },
+      "expectedMidpoint": 63.5,
+      "assignedScore": null,
+      "llmScore": null,
+      "dtliThumb": null,
+      "bwwThumb": "Meh",
+      "textQuality": "full",
+      "hasFullText": true,
+      "textLength": 5680
+    },
+    {
+      "file": "mamma-mia-2025/ny-stage-review--david-finkle.json",
+      "showId": "mamma-mia-2025",
+      "outlet": "New York Stage Review",
+      "criticName": "David Finkle",
+      "originalScore": "3/5",
+      "expectedRange": {
+        "min": 55,
+        "max": 72,
+        "midpoint": 63.5
+      },
+      "expectedMidpoint": 63.5,
+      "assignedScore": null,
+      "llmScore": null,
+      "dtliThumb": "Meh",
+      "bwwThumb": "Meh",
+      "textQuality": "full",
+      "hasFullText": true,
+      "textLength": 5495
+    },
+    {
+      "file": "queen-versailles-2025/ny-stage-review--david-finkle.json",
+      "showId": "queen-versailles-2025",
+      "outlet": "New York Stage Review",
+      "criticName": "David Finkle",
+      "originalScore": "2/5",
+      "expectedRange": {
+        "min": 35,
+        "max": 55,
+        "midpoint": 45
+      },
+      "expectedMidpoint": 45,
+      "assignedScore": 40,
+      "llmScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "textQuality": "full",
+      "hasFullText": true,
+      "textLength": 4871,
+      "assignedInRange": true,
+      "assignedDelta": -5
+    },
+    {
+      "file": "oh-mary-2024/ny-stage-review--michael-sommers.json",
+      "showId": "oh-mary-2024",
+      "outlet": "New York Stage Review",
+      "criticName": "Michael Sommers",
+      "originalScore": "2/5",
+      "expectedRange": {
+        "min": 35,
+        "max": 55,
+        "midpoint": 45
+      },
+      "expectedMidpoint": 45,
+      "assignedScore": 40,
+      "llmScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "textQuality": "full",
+      "hasFullText": true,
+      "textLength": 4042,
+      "assignedInRange": true,
+      "assignedDelta": -5
+    },
+    {
+      "file": "chess-2025/ny-stage-review--bob-verini.json",
+      "showId": "chess-2025",
+      "outlet": "New York Stage Review",
+      "criticName": "Bob Verini",
+      "originalScore": "2/5",
+      "expectedRange": {
+        "min": 35,
+        "max": 55,
+        "midpoint": 45
+      },
+      "expectedMidpoint": 45,
+      "assignedScore": null,
+      "llmScore": null,
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "textQuality": "full",
+      "hasFullText": true,
+      "textLength": 3615
+    },
+    {
+      "file": "queen-versailles-2025/culture-sauce--thom-geier.json",
+      "showId": "queen-versailles-2025",
+      "outlet": "Culture Sauce",
+      "criticName": "Thom Geier",
+      "originalScore": "1/5",
+      "expectedRange": {
+        "min": 0,
+        "max": 35,
+        "midpoint": 17.5
+      },
+      "expectedMidpoint": 17.5,
+      "assignedScore": null,
+      "llmScore": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "textQuality": "full",
+      "hasFullText": true,
+      "textLength": 3960
+    }
+  ]
+}

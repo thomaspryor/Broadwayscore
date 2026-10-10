@@ -1,0 +1,295 @@
+# One-time backfill of Playbill Verdict + NYC Theatre data for all shows
+# Re-runnable: cached shows cost 0 API calls on repeat runs
+name: Backfill Aggregator Data
+
+on:
+  workflow_dispatch:
+    inputs:
+      parallel_jobs:
+        description: 'Number of parallel jobs (1-10)'
+        required: false
+        default: '5'
+        type: string
+      aggregator:
+        description: 'Which aggregator to backfill'
+        required: true
+        type: choice
+        options:
+          - all
+          - playbill-verdict
+          - nyc-theatre
+      date_filter:
+        description: 'Apply 2023+ date filter to Playbill Verdict (false = all eras)'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+# Per-run group (not shared): the `backfill` job's matrix partitions the
+# 730+ show set into disjoint parallel_jobs shards — a shared group would
+# only ever contain one run at a time anyway (manual, one-off trigger), so
+# this exists to make the "runs don't collide" property explicit rather
+# than to serialize anything real. See docs/workflow-concurrency-audit.md.
+concurrency:
+  group: backfill-aggregators-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.split.outputs.matrix }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Split shows into parallel batches
+        id: split
+        run: |
+          JOBS=${{ inputs.parallel_jobs }}
+
+          # Validate parallel_jobs is 1-10
+          if [ "$JOBS" -lt 1 ] 2>/dev/null || [ "$JOBS" -gt 10 ] 2>/dev/null; then
+            JOBS=5
+          fi
+
+          # Extract all show slugs from shows.json
+          SHOWS=$(node -e '
+            const data = JSON.parse(require("fs").readFileSync("data/shows.json", "utf8"));
+            const slugs = data.shows.map(s => s.slug || s.id);
+            console.log(slugs.join(","));
+          ')
+
+          # Split comma-separated shows into array
+          IFS=',' read -ra SHOW_ARRAY <<< "$SHOWS"
+          TOTAL=${#SHOW_ARRAY[@]}
+
+          echo "Total shows: $TOTAL, parallel jobs: $JOBS"
+
+          # Don't use more jobs than shows
+          if [ "$JOBS" -gt "$TOTAL" ]; then
+            JOBS=$TOTAL
+          fi
+
+          # Distribute shows across jobs round-robin
+          declare -a BATCHES
+          for i in $(seq 0 $((JOBS - 1))); do
+            BATCHES[$i]=""
+          done
+
+          for i in "${!SHOW_ARRAY[@]}"; do
+            BATCH_IDX=$((i % JOBS))
+            SHOW=$(echo "${SHOW_ARRAY[$i]}" | xargs)
+            if [ -n "${BATCHES[$BATCH_IDX]}" ]; then
+              BATCHES[$BATCH_IDX]="${BATCHES[$BATCH_IDX]},$SHOW"
+            else
+              BATCHES[$BATCH_IDX]="$SHOW"
+            fi
+          done
+
+          # Build JSON matrix
+          MATRIX='{"include":['
+          FIRST=true
+          for i in $(seq 0 $((JOBS - 1))); do
+            if [ -n "${BATCHES[$i]}" ]; then
+              if [ "$FIRST" = true ]; then
+                FIRST=false
+              else
+                MATRIX="$MATRIX,"
+              fi
+              DELAY=$((i * 30))
+              BATCH_SIZE=$(echo "${BATCHES[$i]}" | tr ',' '\n' | wc -l | xargs)
+              MATRIX="$MATRIX{\"batch_id\":$i,\"shows\":\"${BATCHES[$i]}\",\"delay\":$DELAY,\"size\":$BATCH_SIZE}"
+            fi
+          done
+          MATRIX="$MATRIX]}"
+
+          echo "Matrix: $(echo "$MATRIX" | head -c 500)..."
+          echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
+
+  backfill:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
+      fail-fast: false
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 60-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Stagger start
+        if: matrix.delay > 0
+        run: |
+          echo "Batch ${{ matrix.batch_id }} (${{ matrix.size }} shows): waiting ${{ matrix.delay }}s..."
+          sleep ${{ matrix.delay }}
+
+      - name: Scrape Playbill Verdict
+        if: ${{ inputs.aggregator == 'all' || inputs.aggregator == 'playbill-verdict' }}
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          echo "Batch ${{ matrix.batch_id }}: Playbill Verdict for ${{ matrix.size }} shows"
+          DATE_FLAG=""
+          if [ "${{ inputs.date_filter }}" != "true" ]; then
+            DATE_FLAG="--no-date-filter"
+          fi
+          node scripts/scrape-playbill-verdict.js --shows=${{ matrix.shows }} $DATE_FLAG
+
+      - name: Scrape NYC Theatre roundups
+        if: ${{ inputs.aggregator == 'all' || inputs.aggregator == 'nyc-theatre' }}
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: |
+          echo "Batch ${{ matrix.batch_id }}: NYC Theatre for ${{ matrix.size }} shows (2023+ only)"
+          node scripts/scrape-nyc-theatre-roundups.js --shows=${{ matrix.shows }}
+
+      - name: Check for large files
+        if: always()
+        uses: ./.github/actions/check-file-sizes
+
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Backfill Aggregator Data — Commit and push changes"
+      - name: Push aggregator-archive to private repo
+        if: always()
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Backfill aggregator data (batch ${{ matrix.batch_id }})"
+
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from backfill-aggregators'
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: backfill-aggregators
+  rebuild:
+    needs: [backfill]
+    if: always() && needs.backfill.result != 'cancelled'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Rebuild reviews.json
+        run: node scripts/rebuild-all-reviews.js
+
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Backfill Aggregator Data — Commit and push rebuilt reviews.json"
+      - name: Commit and push rebuilt reviews.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/
+          git diff --staged --quiet && { echo "No changes to reviews.json"; exit 0; }
+
+          git commit -m "data: Auto-rebuild reviews.json after aggregator backfill"
+
+          bash scripts/lib/push-with-retry.sh
+
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from backfill-aggregators'
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Backfill Aggregators Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

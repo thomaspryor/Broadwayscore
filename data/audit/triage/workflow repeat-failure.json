@@ -1,0 +1,20 @@
+{
+  "system": "workflow repeat-failure",
+  "status": "warn",
+  "lastChecked": "2026-10-10T13:07:35.987Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "monitoring",
+  "details": [
+    {
+      "name": "Workflow repeat-failure: Check Corpus Drift",
+      "status": "warn",
+      "message": "Check Corpus Drift failed 2 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Opening Night Broadcast",
+      "status": "warn",
+      "message": "Opening Night Broadcast failed 2 times in the last 24h — likely broken, not transient."
+    }
+  ]
+}

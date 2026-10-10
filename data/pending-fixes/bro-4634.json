@@ -1,0 +1,438 @@
+{
+  "issueNumber": "bro-4634",
+  "planId": "55fe6dd1-4c86-4a39-9203-3ab84f7812fb",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4634: add the reported capitalizations (with source links) for Merrily We Roll Along, All In, The Picture of Dorian Gray and Real Women Have Curves; replace stale placeholder notes on five closed shows; correct five closing dates (SIX and & Juliet close Jan 3, 2027; The Fear of 13 closed Jun 28, 2026; Oh, Mary! plays through Jul 10, 2027; Operation Mincemeat through Mar 14, 2027).",
+    "steps": [
+      "Capitalizations: Deadline recoupment reports (Merrily Mar 2024, All In Feb 2025), an SEC filing cited by Deadline (Dorian Gray, Jul 2025), Deadline closing report (Real Women Have Curves, Jun 2025).",
+      "Closing dates: BroadwayWorld/Deadline (SIX Aug 27, & Juliet Sep 10), Playbill (Fear of 13), ohmaryplay.com, BroadwayWorld (Mincemeat 10th extension)."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "merrily-we-roll-along",
+        "showId": "merrily-we-roll-along",
+        "field": "capitalization",
+        "oldValue": 13000000,
+        "newValue": 12000000,
+        "description": "merrily-we-roll-along: capitalization (recoupment report gives $12M)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "merrily-we-roll-along",
+        "showId": "merrily-we-roll-along",
+        "field": "capitalizationSource",
+        "oldValue": "Broadway Journal production estimate stating 'manageable $13 million capitalization'",
+        "newValue": "Deadline (Mar 2024) recoupment report: $12M",
+        "description": "merrily-we-roll-along: capitalizationSource (recoupment report gives $12M)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "merrily-we-roll-along",
+        "showId": "merrily-we-roll-along",
+        "field": "notes",
+        "oldValue": "Recouped $13M capitalization in approximately 5 months with $950k weekly running costs. Described as 'smash hit of the fall' with strong star appeal from Daniel Radcliffe, Lindsay Mendez, and Jonathan Groff.",
+        "newValue": "Recouped its $12M capitalization in about five months (Deadline, Mar 2024), with weekly running costs around $950K. Starred Daniel Radcliffe, Lindsay Mendez and Jonathan Groff.",
+        "description": "merrily-we-roll-along: notes (recoupment report gives $12M)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "all-in-comedy-about-love-2024",
+        "showId": "all-in-comedy-about-love-2024",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 4800000,
+        "description": "all-in-comedy-about-love-2024: capitalization (cap reported)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "all-in-comedy-about-love-2024",
+        "showId": "all-in-comedy-about-love-2024",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Deadline (Feb 2025): initial capitalization $4.8M",
+        "description": "all-in-comedy-about-love-2024: capitalizationSource (cap reported)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "all-in-comedy-about-love-2024",
+        "showId": "all-in-comedy-about-love-2024",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/all-in-recoups-on-broadway/",
+            "date": "2025-02-18"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1i1cn91/grosses_analysis_week_ending_january_12/",
+            "date": "2025-01-12"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/all-in-recoups-on-broadway/",
+            "date": "2025-02-18"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1i1cn91/grosses_analysis_week_ending_january_12/",
+            "date": "2025-01-12"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/02/all-in-comedy-about-love-all-out-broadway-1236293428/",
+            "date": null
+          }
+        ],
+        "description": "all-in-comedy-about-love-2024: sources (cap reported)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-picture-of-dorian-gray-2025",
+        "showId": "the-picture-of-dorian-gray-2025",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 8750000,
+        "description": "the-picture-of-dorian-gray-2025: capitalization (cap reported)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-picture-of-dorian-gray-2025",
+        "showId": "the-picture-of-dorian-gray-2025",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC filing cited by Deadline (Jul 2025)",
+        "description": "the-picture-of-dorian-gray-2025: capitalizationSource (cap reported)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-picture-of-dorian-gray-2025",
+        "showId": "the-picture-of-dorian-gray-2025",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1lrqvuh/dorian_gray_recouped_the_investment_what_does/",
+            "date": "2026-02-04"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1kge7ci/posttony_nominations_grosses_analysis_week_ending/",
+            "date": "2026-02-04"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1lrqvuh/dorian_gray_recouped_the_investment_what_does/",
+            "date": "2026-02-04"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1kge7ci/posttony_nominations_grosses_analysis_week_ending/",
+            "date": "2026-02-04"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/07/picture-of-dorian-gray-sarah-snook-recoups-1236448100/",
+            "date": null
+          }
+        ],
+        "description": "the-picture-of-dorian-gray-2025: sources (cap reported)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "real-women-have-curves",
+        "showId": "real-women-have-curves",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 16500000,
+        "description": "real-women-have-curves: capitalization (cap reported)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "real-women-have-curves",
+        "showId": "real-women-have-curves",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Deadline (Jun 2025): capitalized for up to $16.5M",
+        "description": "real-women-have-curves: capitalizationSource (cap reported)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "real-women-have-curves",
+        "showId": "real-women-have-curves",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/REAL-WOMEN-HAVE-CURVES-Will-Close-On-Broadway-This-Month-20250617",
+            "date": "2025-06-17"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1l1tekd/how_are_boop_and_real_women_have_curves_still/",
+            "date": "2026-02-04"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1ldtpcu/grosses_analysis_week_ending_june_15/",
+            "date": "2026-02-04"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/article/REAL-WOMEN-HAVE-CURVES-Will-Close-On-Broadway-This-Month-20250617",
+            "date": "2025-06-17"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1l1tekd/how_are_boop_and_real_women_have_curves_still/",
+            "date": "2026-02-04"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1ldtpcu/grosses_analysis_week_ending_june_15/",
+            "date": "2026-02-04"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/06/real-women-have-curves-broadway-closing-date-1236435698/",
+            "date": null
+          }
+        ],
+        "description": "real-women-have-curves: sources (cap reported)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dog-day-afternoon",
+        "showId": "dog-day-afternoon",
+        "field": "notes",
+        "oldValue": "Play starring Jon Bernthal. In previews at August Wilson Theatre. Reddit grosses analysis shows strong $1M+ opening week.",
+        "newValue": "Commercial play (Warner Bros. Theatre Ventures), opened Mar 30, 2026 and closed Jul 12, 2026. No capitalization reported and no recoupment announced.",
+        "description": "dog-day-afternoon: notes (stale previews note)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "joe-turners-come-and-gone",
+        "showId": "joe-turners-come-and-gone",
+        "field": "notes",
+        "oldValue": "Auto-enrolled stub; awaiting model + curation.",
+        "newValue": "Commercial revival (lead producer Brian Anthony Moreland), opened Apr 25, 2026 and closed Jul 26, 2026. No capitalization reported and no recoupment announced.",
+        "description": "joe-turners-come-and-gone: notes (stale stub note)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "death-of-a-salesman",
+        "showId": "death-of-a-salesman",
+        "field": "notes",
+        "oldValue": "Revival currently in previews at Winter Garden Theatre. First two previews sold out per trade press reports.",
+        "newValue": "Revival produced by Scott Rudin, Barry Diller and Roy Furman; opened Apr 9, 2026 and closed Aug 9, 2026, grossing about $36.9M. No capitalization reported and no recoupment announced (these producers typically do not announce one). The 2012 revival's recoupment does not apply to this production.",
+        "description": "death-of-a-salesman: notes (stale previews note)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "celebrity-autobiography",
+        "showId": "celebrity-autobiography",
+        "field": "notes",
+        "oldValue": "Auto-enrolled stub; awaiting model + curation.",
+        "newValue": "Limited engagement at the Shubert, opened May 18, 2026 and closed Jun 21, 2026. No financial data disclosed.",
+        "description": "celebrity-autobiography: notes (stale stub note)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-fear-of-13",
+        "showId": "the-fear-of-13",
+        "field": "notes",
+        "oldValue": "Auto-enrolled stub; awaiting model + curation.",
+        "newValue": "Play starring Adrien Brody and Tessa Thompson at the James Earl Jones; opened Apr 15, 2026 and closed early on Jun 28, 2026. No capitalization reported and no recoupment announced.",
+        "description": "the-fear-of-13: notes (stale stub note)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "six-2021",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2027-01-03",
+        "description": "six-2021: closingDate (closing announced Aug 27 2026)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "and-juliet-2022",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2027-01-03",
+        "description": "and-juliet-2022: closingDate (closing announced Sep 10 2026)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-fear-of-13-2026",
+        "field": "closingDate",
+        "oldValue": "2026-07-12",
+        "newValue": "2026-06-28",
+        "description": "the-fear-of-13-2026: closingDate (closed early Jun 28 2026)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "oh-mary-2024",
+        "field": "closingDate",
+        "oldValue": "2027-03-10",
+        "newValue": "2027-07-10",
+        "description": "oh-mary-2024: closingDate (official site: through Jul 10 2027)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "operation-mincemeat-2025",
+        "field": "closingDate",
+        "oldValue": "2027-03-09",
+        "newValue": "2027-03-14",
+        "description": "operation-mincemeat-2025: closingDate (10th extension to Mar 14 2027)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-05T01:02:18.954Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for merrily-we-roll-along"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for merrily-we-roll-along"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for merrily-we-roll-along"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for all-in-comedy-about-love-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for all-in-comedy-about-love-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for all-in-comedy-about-love-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-picture-of-dorian-gray-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-picture-of-dorian-gray-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-picture-of-dorian-gray-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for real-women-have-curves"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for real-women-have-curves"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for real-women-have-curves"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for dog-day-afternoon"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for joe-turners-come-and-gone"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for death-of-a-salesman"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for celebrity-autobiography"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-fear-of-13"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for six-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for and-juliet-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for the-fear-of-13-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for oh-mary-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for operation-mincemeat-2025"
+    }
+  ]
+}

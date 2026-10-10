@@ -1,0 +1,578 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# testing
+/coverage
+/test-results/
+/playwright-report/
+/playwright/.cache/
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env*.local
+# Timestamped .env backups. Sessions routinely copy .env before editing it
+# (`cp .env .env.bak-YYYYMMDD-reason`) — three such files existed untracked and
+# UNIGNORED on 2026-08-09, each a full copy of every live credential. `.env` on
+# line 115 does not cover them, so a single `git add -A` would have committed
+# real keys to a repo. Ignore the whole family, not just the exact name.
+.env.bak*
+.env.backup*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# Review texts (copyrighted full-text reviews — stored in private repo thomaspryor/broadway-review-texts)
+data/review-texts/
+# setup-local-data.sh --all builds the fresh mirror beside the old one, then swaps
+data/.review-texts.new.*
+data/.review-texts.old.*
+# BRO-4241: setup-local-data.sh --link-only makes data/review-texts a symlink in
+# worktrees; a trailing-slash pattern only matches directories, so ignore the link too.
+/data/review-texts
+
+# Aggregator archive (copyrighted scraped HTML — stored in private repo thomaspryor/broadway-review-texts)
+data/aggregator-archive/
+# newspapers.com extraction test output (copyrighted page-image screenshots + OCR'd text, BRO-137)
+data/newspapers-com-test/
+# Finances (billing PII: receipts + P&L ledgers — stored in private repo thomaspryor/broadway-scorecard-data under data/finances/, GitHub-API access only, never checked into the public build)
+data/finances/
+# Audit HTML caches (copyrighted source HTML — used by audit-opening-night-extraction.js)
+data/review-sources/
+# Live HTML test fixtures (copyrighted aggregator snapshots used to reproduce
+# extraction bugs locally; unit tests use synthetic HTML instead)
+tests/fixtures/opening-night/
+
+# Cleanup backups (contain copyrighted review text)
+data/audit/cleanup-backups/
+
+# Scraper pre-write backups (cast-changes.backup-<ts>.json) — must never be committed
+data/cast-changes.backup-*.json
+
+# Subscriber/follower PII (generated fresh each workflow run)
+data/subscribers.json
+data/subscribers-westend.json
+data/followers.json
+
+# data/pending-fixes/ WAS fully ignored here (2026-03-08, PII). That silently
+# broke the whole fix-approval chain: the plan-commit steps in
+# auto-fix-feedback-bug.yml / execute-approved-fix.yml fail on `git add` of an
+# ignored path, so every Approve email since then pointed at a plan file that
+# never existed. Plans are now persisted PII-REDACTED (no submitter
+# name/email/message — see generate-remediation-plan.js), so executor-shaped
+# files ({issue}.json, digit-leading) are trackable again; everything else in
+# the dir stays ignored so a stray `git add -A` can't stage arbitrary files.
+data/pending-fixes/*
+!data/pending-fixes/[0-9]*.json
+!data/pending-fixes/.gitkeep
+
+# Opening night broadcast dedup state (regenerated from Formspree sync + send receipts)
+data/opening-night-sent.json
+
+# Opening-night monitor's runtime lock — mkdir'd/rm'd every launch cycle; a
+# `git add -A` picking it up would let a later checkout/clean reset its
+# birthtime and defeat #568's in-flight-launch grace window.
+data/opening-night-monitor/monitor.lock/
+
+# Opening-night monitor's other runtime state/logs — heartbeat.json getting
+# git-tracked (c5881300e89) is what made the original #568 fix unreachable in
+# production: it sat 2 days stale in the repo while launchDecision assumed
+# heartbeatAgeMin could still be null. None of these are read via git/CI, only
+# local fs — untracked from here on (#568 follow-up).
+data/opening-night-monitor/heartbeat.json
+data/opening-night-monitor/night-state-*.json
+data/opening-night-monitor/auth-starved-*.json
+data/opening-night-monitor/session-state-*.json
+data/opening-night-monitor/*.log
+data/opening-night-monitor/*.err
+# Per-attempt debug snapshots (attempt-N-noop.json etc) — missed by the
+# state/log patterns above, which is why one kept surfacing as untracked and
+# blocking sync-audit-checkout.sh's ff-only merge for launchd jobs sharing
+# this checkout (found via 2026-08-26 email triage: predispatch-queue-audit
+# and backlog-drain both stuck since 2026-08-20 on "dirty-outside-audit").
+data/opening-night-monitor/attempt-*.json
+
+# Sunday newsletter review launcher's runtime log/lock — same class of bug as
+# opening-night-monitor above (local-fs-only state that isn't read via git/CI
+# but kept getting committed, which then blocked sync-audit-checkout.sh the
+# same way). Untracked from here on (2026-08-26 email triage).
+data/audit/digest-autofix-logs/
+data/newsletter-drafts/*.log
+data/newsletter-drafts/sunday-review-lock.json
+
+# SQLite database (ephemeral query layer, rebuilt from JSON)
+data/broadway.db
+data/broadway.db.tmp
+data/broadway.db.tmp-shm
+data/broadway.db.tmp-wal
+data/broadway.db-shm
+data/broadway.db-wal
+
+# Image audit archive (21MB+ binary images, local recovery only)
+data/audit/deleted-images/
+
+# Cookie files for paywall bypass (contain session tokens — never commit)
+data/cookies/
+
+# Playwright MCP screenshots
+.playwright-mcp/
+
+# agent output (run logs)
+/data/agent-output/
+/data/debug/
+.mcp.json
+.env
+# Google service account keys
+ga-service-account*.json
+# Raw scraped HTML archives (contain embedded API keys, tracking pixels)
+data/archives/
+
+
+# Generated show lookup for My Shows page (regenerated at build time)
+public/data/show-lookup.json
+
+# Commercial scorecard export (scripts/generate-commercial-export.js). The
+# scorecard is unreleased on prod (owner, 2026-10-04); anything under public/
+# ships whatever the commercial flag says, so these must never be committed.
+public/data/commercial.json
+public/data/commercial.csv
+
+# Generated actor-slug manifest for Tony nominees page (regenerated at build time
+# from data/cast/* — replaces dynamic process.cwd() reads that bloated NFT bundle)
+data/actor-slugs.json
+# Generated cast manifest for /cast/[slug] profile pages (regenerated at build
+# time from data/cast/* — feeds data-actors.ts so it doesn't dynamically read
+# data/cast/ at runtime, which would re-bloat the NFT bundle and 404 every
+# /cast/[slug] when data/cast/** is in outputFileTracingExcludes).
+data/cast-manifest.json
+
+# LLM classification checkpoint (ephemeral, crash-recovery only)
+.classify-wp-checkpoint.json
+
+# Copyrighted content / scraped data (removed from public repo Feb 2026)
+data/master-review-list.json
+data/review-texts-quarantine/
+data/calibration/calibration-examples.json
+data/collected-reviews/
+# migrate-reroute-backlog.js writes full "before" review-text snapshots
+# (including fullText) into its plan/log JSON — outside data/review-texts/,
+# so the "no copyrighted content in public repo" CI guard (path-scoped to
+# data/review-texts/ and data/aggregator-archive/) would never catch a leak.
+data/reroute-migration-plan.json
+data/reroute-migration-plan-cross-market.json
+data/reroute-migration-log.json
+data/reroute-migration-log-cross-market.json
+data/mezzanine-screenshots/
+data/bug-reviews.json
+
+# Individual audience review data (private analysis only — not for site display)
+data/audience-reviews/
+
+# Full audience-score history snapshots — SAME competitive data as audience-buzz.json
+# (which is private/gitignored). snapshot-audience-history.yml writes these into the
+# PRIVATE core-data repo; this rule stops a stray local/manual run from leaking them
+# into the public repo. (NOTE: the Tony-only data/audience-snapshots/ IS public by design.)
+data/audience-history/
+
+# Audience review scrapers (private — expose API endpoints and auth patterns)
+scripts/scrape-mezzanine-reviews.js
+scripts/scrape-theatr-reviews.js
+.github/workflows/theatr-review-discovery.yml
+
+# Diary/historical show data (stored in private repo thomaspryor/broadway-scorecard-data)
+data/diary-shows.json
+data/mezzanine-productions-raw.json
+data/diary-import-checkpoint.json
+
+# Generated diary data (regenerated at build time)
+public/data/diary-search.json
+public/data/related-shows-mobile.json
+public/data/diary-lookup.json
+
+# Core data files (stored in private repo thomaspryor/broadway-scorecard-data)
+data/shows.json
+data/reviews.json
+data/grosses.json
+data/grosses-history.json
+data/commercial.json
+data/audience-buzz.json
+data/critic-consensus.json
+data/critic-registry.json
+# Retired show-id registry + archive of the deleted rows (2026 data audit,
+# S0-T2). Written by scripts/lib/retired-show-ids.js; the archive holds full
+# shows.json rows, so both are core data (§11) — same repo as shows.json,
+# synced by push-core-data's CORE_FILES, never committed here.
+data/retired-show-ids.json
+data/deleted-shows.json
+# Critic-slug alias registry (2026 data audit, S5-T9): {"<old-slug>":
+# "<canonical-slug>"}, read by scripts/lib/critic-slug-aliases.js at prebuild.
+# Core data (§11) — same repo as shows.json, synced by push-core-data's
+# CORE_FILES, never committed here. Template: tests/fixtures/critic-slug-aliases.seed.json.
+data/critic-slug-aliases.json
+# Feedback reader contact details (BRO-4453): name/email/message keyed by
+# submission id. Core data (§11), pushed by push-core-data's CORE_FILES.
+data/feedback-submitters.json
+
+# Theatr rotated refresh token (written by scrape-theatr-audience.js) — a live
+# credential that must never be committed. The BroadwayScorecard/ line below
+# only covered the iOS-app subdir path, not the actual repo-root location.
+data/theatr-refresh-token.tmp
+# Git-persisted token fallback (lives in the PRIVATE core-data repo; lands in
+# data/ via checkout-core-data). Must never reach the PUBLIC repo — workflows
+# that stage data/ broadly would otherwise commit a live credential.
+data/theatr-refresh-token-fallback.json
+# Mobile app (separate repo)
+BroadwayScorecard/data/theatr-refresh-token.tmp
+
+# Claude Code agent config
+# - /.claude/settings.local.json — local-only (machine secrets, paths)
+# - /.claude/commands/ + /.claude/settings.json — INTENTIONALLY TRACKED so
+#   cloud Claude Code sessions (iOS/Mac app/web) load them. See .claude/CLOUD.md.
+# - /.claude/worktrees/ — always local
+# - scraper-reference/references/cookies.md — holds paywall site name + exact
+#   cookie names; local-only so it stays out of the PUBLIC repo + skill catalogs.
+#   Do NOT commit it to "fix" the pointer in gotchas.md — that re-publishes it.
+/.claude/settings.local.json
+/.claude/worktrees/
+/.claude/skills/scraper-reference/references/cookies.md
+# - skills/.redaction-denylist.txt — sensitive strings the pre-push guard blocks
+#   from committed skills; local-only so the denylist itself doesn't re-leak them.
+/.claude/skills/.redaction-denylist.txt
+/.core-data-checkout/
+
+# Agent memory (self-updating, may contain operational details — local only)
+/scripts/agent-memory/
+
+# Internal planning docs (root)
+/CAST-PLAN.md
+/EXPANSION-PLAN.md
+/FORMSPREE-SETUP.md
+/HISTORICAL-EXPANSION-PLAN.md
+/HISTORICAL-SHOWS-GUIDE.md
+/PLAN-commercial-update-automation.md
+/SETUP-USER-ACCOUNTS.md
+/SOFT-LAUNCH-PLAYBOOK.md
+/SPRINTS-commercial-update-automation.md
+/TEST-REVIEW-SUBMISSION.md
+/TESTING-GUIDE.md
+/plan.md
+/sprint-plan-llm-scoring-v5.md
+/debug-output.txt
+
+# Internal docs, plans, audit narratives
+# /docs/* (not /docs/) + a negation below: git can't re-include a path whose
+# PARENT directory is itself excluded, so a blanket `/docs/` would make
+# `!/docs/experiments/` a no-op (git never traverses into an excluded dir).
+/docs/*
+# Feature specs are cross-session deliverables (Notion cards + PRs point at
+# them) — durable-path rule, same rationale as /docs/experiments/ below.
+!/docs/specs/
+# Experiment pre-registration docs are referenced by code comments as the
+# canonical source of truth (analyze-gate-cold-start.js, flag-registry.js,
+# docs/experiments/README.md's setup contract) and must be committed for
+# other sessions to find them — not scratch/local like the rest of /docs/.
+!/docs/experiments/
+# BRO-3018 inventory; scripts/tests/notion-live-write-paths.test.mjs reads it in CI.
+!/docs/notion-linear-residue-sweep.md
+# BRO-4907 outlet tier audit: the card's acceptance criteria require these committed.
+!/docs/audits/
+/docs/audits/*
+!/docs/audits/outlet-tier-audit-2026-10.*
+# Task #1218's hit/miss audit of the review process itself — acceptance
+# criteria requires it committed (not scratch), so future sessions/audits
+# can find it without depending on one machine's claude-outputs copy.
+!/docs/review-effectiveness-audit.md
+# BRO-764: per-scraper SERP volume inventory; scripts/lib/aggregator-serp.test.mjs enforces it
+!/docs/aggregator-serp-cost-audit.md
+# BRO-104's health-digest warning triage — the card's acceptance criteria is
+# literally `test -f docs/health-check-triage-2026-07-24.md`, so it has to be
+# committed rather than scratch/local like the rest of /docs/.
+!/docs/health-check-triage-2026-07-24.md
+# BRO-4207's opening-night ingestion review — the design that BRO-4210 (the
+# opening-night lane epic) and BRO-4208/BRO-4209 point at, so the sessions
+# that pick those cards up can find it in the repo, not in one cloud sandbox's
+# scratch copy (same durable-path rule as the two entries above).
+!/docs/opening-night-autonomy-review-2026-09-28.md
+# BRO-128's Les Mis Arena Concert Reddit post draft — acceptance criteria is
+# literally `test -f docs/reddit-les-mis-arena-concert.md`, so it has to be
+# committed rather than scratch/local like the rest of /docs/.
+!/docs/reddit-les-mis-arena-concert.md
+# BRO-381 Phase 2 deliverable: the canonical port-or-delete table for the
+# dispatcher's safety logic (Notion → Linear transition). Referenced by the
+# Linear issue and its PR; must be committed so future sessions find it.
+!/docs/dispatcher-safety-port-table.md
+# BRO-131's Forbes pitch/briefing memo for Marc Hershberg (Commercial
+# Scorecard) — acceptance criteria is literally
+# `test -f docs/forbes-pitch-marc-hershberg.md`, so it has to be committed
+# rather than scratch/local like the rest of /docs/.
+!/docs/forbes-pitch-marc-hershberg.md
+# BRO-373: the written decision that the Codex DELEGATION lane is dropped.
+# tests/unit/codex-delegation.test.mjs reads this file directly (it is the
+# card's acceptance criteria), so it must be committed or CI fails on a
+# missing file rather than on the thing the test is guarding.
+!/docs/BRO-373-codex-lane-decision.md
+# BRO-517: documents why the Codex ship-check reviewer's data preflight
+# (AGENTS.md) is now diff-scoped instead of unconditional. The card's
+# acceptance criteria is literally `test -f
+# docs/codex-ship-check-reviewer-instructions.md`, so it must be committed.
+!/docs/codex-ship-check-reviewer-instructions.md
+# BRO-377 Phase 1 deliverable: the dual-write window + induced-failure drill
+# result. The card's acceptance criteria is literally
+# `test -f docs/Phase-1-drill-results.md`, so it has to be committed.
+!/docs/Phase-1-drill-results.md
+# BRO-382 Phase 3 deliverable: the dispatcher shadow review that had to be
+# recorded BEFORE anything was switched off. Committed so the evidence for
+# switching the Notion dispatcher off outlives this machine.
+!/docs/BRO-382-dispatcher-shadow-review.md
+# BRO-44: the sessions_engaged GA4 headline-KPI report definition. Acceptance
+# criteria is literally `test -f docs/GA4_Engaged_Sessions_Report.md`, so it
+# has to be committed rather than scratch/local like the rest of /docs/.
+!/docs/GA4_Engaged_Sessions_Report.md
+# BRO-837: Will & Rach (The Theater Lovers) partnership tracking — contact
+# info, audience size, and meetup status. Acceptance criteria is literally
+# `test -f docs/partnerships.md`, so it has to be committed rather than
+# scratch/local like the rest of /docs/.
+!/docs/partnerships.md
+# BRO-864: Titanique opening-night post-mortem — acceptance criteria is
+# literally `test -f docs/titanique-opening-night-postmortem.md`, so it has
+# to be committed rather than scratch/local like the rest of /docs/.
+!/docs/titanique-opening-night-postmortem.md
+# BRO-860: Opening Night Express manual-workarounds playbook. Acceptance
+# criteria is literally `test -f docs/opening-night-express.md`, so it has to
+# be committed rather than scratch/local like the rest of /docs/.
+!/docs/opening-night-express.md
+# BRO-917: cross-repo workflow dependency graph. Acceptance criteria is
+# literally `test -f docs/workflow-dependency-graph.md`, so it has to be
+# committed rather than scratch/local like the rest of /docs/.
+!/docs/workflow-dependency-graph.md
+# BRO-3500: concurrency-group audit for the 22 review-texts-writing workflows
+# that had none. Acceptance criteria is literally
+# `test -f docs/workflow-concurrency-audit.md`, so it has to be committed
+# rather than scratch/local like the rest of /docs/.
+!/docs/workflow-concurrency-audit.md
+# BRO-2721: ScrapingBee credit-usage triage record. Acceptance criteria is
+# literally `test -f docs/scraping-bee-usage.md`, so it has to be committed
+# rather than scratch/local like the rest of /docs/.
+!/docs/scraping-bee-usage.md
+# BRO-4204 (2026 data audit, S4-T14): the show inclusion policy the discovery
+# gates enforce. Referenced by code comments in scripts/discover-new-shows.js,
+# scripts/lib/venue-classification.js and scripts/validate-data.js, so it has
+# to be committed rather than scratch/local like the rest of /docs/.
+!/docs/show-inclusion-policy.md
+# BRO-4204 (2026 data audit, S5-T4 / S7-T9): two audit records other
+# sessions act on — the per-id root-cause table behind the id-year-drift
+# WARN (the S8-T1 rename worklist) and the Show-Score 8-tile reproduction
+# that fetch-aggregator-pages.ts's header points at. /docs/* excludes the
+# docs/audit DIRECTORY, so it is re-included, its other contents re-excluded,
+# and only these two files negated (the /docs/experiments/ pattern above).
+!/docs/audit/
+/docs/audit/*
+!/docs/audit/id-year-drift-2026.md
+!/docs/audit/show-score-8-tile-note.md
+/memory/
+/data/deep-research/
+/data/theater-research/
+/data/audit/**/*.md
+/data/audit/*.md
+/data/*.md
+!/data/integrity-report.md
+# Auto-regenerated audit outputs — local only, not versioned.
+# These rules come AFTER the !negation above so they win (last match wins).
+/data/audit/score-integrity.json
+# Pure-output rebuild reports — written by rebuild-all-reviews.js /
+# audit-critic-outlets.js, never read back by any code (verified 2026-06-25:
+# grep -rn across scripts/ src/ .github/ shows only the writer). Tracking them
+# meant ~150 bot commits/3d EACH that clobbered human merges to main.
+/data/audit/critic-outlet-affinity.json
+/data/audit/rebuild-consistency.json
+# Task #653: audit-corpus-determinism.js output. Same class — a pure report
+# recomputed from git history on every run, read by nothing. Tracking it would
+# add a commit per acceptance recheck.
+/data/audit/corpus-determinism.json
+/data/audit/touring-contamination-report.json
+/data/audit/touring-contamination-report.*.json
+/data/audit/.touring-contamination-checkpoint.json
+/data/audit/.touring-contamination-checkpoint.*.json
+# Runner-local push-retry failure telemetry (task #394). Written by
+# scripts/lib/push-with-retry.sh on abort/exhaustion, read locally by
+# health-check.js's "Push-retry deadman" row. Never committed by the helper —
+# ignore so `git add -A` in the ~130 caller workflows can't stage it as churn.
+/data/audit/push-retry-failures.jsonl
+# Runner-local digest content-invariant FAIL telemetry (task #1648). Written
+# by scripts/send-morning-digest.js on assertDigestInvariants() violation,
+# read locally by health-check.js's "Digest: content-invariant check" row.
+/data/audit/digest-invariant-fail-ledger.jsonl
+# Structural #1 — daily exclusion logs (may contain URLs, not committed)
+/data/audit/exclusions-*.jsonl
+/data/audit/exclusion-summary-yesterday.json
+# BRO-925: per-show grouping of the same exclusion events above (may contain
+# URLs, not committed — same reasoning as exclusions-*.jsonl)
+/data/audit/rebuild-exclusions-*.json
+# BRO-75: cross-day seen-files ledger for wrong-production-exclusion-analysis.js
+# — local-only ad-hoc investigation state, same reasoning as exclusions-*.jsonl
+/data/audit/wrongproduction-seen-files.json
+# BRO-2379: generalized cross-day ledger (all exclusion reasons, not just
+# skippedWrongProduction) for scripts/lib/exclusion-trend.js.
+/data/audit/exclusion-seen-files.json
+# BRO-176: exclusion-rule-census.js snapshot — regenerated every run from the
+# review-texts corpus, same reasoning as the ledger above.
+/data/audit/exclusion-rule-census.json
+/data/integrity-report.md
+/data/review-reports/
+
+# Scripts documentation (internal)
+/scripts/critic-reviews-agent/
+/scripts/lib/README.md
+/scripts/llm-scoring/CHANGELOG-v52.md
+
+# Social Pulse trial fixtures (untracked)
+tmp/
+/data/audit/aggregator-archive-integrity.json
+
+# Local test/debug caches (e.g. GD API JSON fixtures)
+.cache/
+.claude/visual-qa/
+.claude/review-verdicts.jsonl
+# BRO-4593: land-preflight hook verdict log (blocks, bypasses, skips)
+.claude/land-preflight.jsonl
+.claude/ux-walkthrough/
+
+# Autonomous nightly loop — generated queue artifact (rewritten every triage run)
+/data/audit/autonomous-queue.json
+/data/audit/autonomous-ledger.jsonl
+/data/audit/autonomous-run.pid
+/data/audit/autonomous-email-preview.html
+# data/audit/autonomous-recheck-ledger.jsonl is intentionally NOT listed here
+# (task #695): it's a DEDICATED, tracked path for
+# scripts/autonomous-acceptance-recheck.js, now hosted daily in
+# data-health-check.yml on an ephemeral CI runner, so its results must be
+# committed (like alert-ledger.json/provider-spend-daily.jsonl) to survive
+# past that job. Deliberately separate from autonomous-ledger.jsonl above,
+# which stays Mac-local — com.broadwayscore.autonomous-shadow is still loaded
+# and appends to that path nightly via a `git fetch && merge --ff-only`
+# update step; sharing the path would make that merge start failing silently
+# the first time CI and the Mac diverged on it (ship-check finding).
+# bsc-prune's runtime lock — mkdir'd/rm'd by live processes, same trap as the
+# opening-night monitor.lock/ above (2026-09-03 crown cycle: `git add data/audit/`
+# silently staged and pushed it to origin/main; this entry prevents recurrence).
+/data/audit/bsc-prune.lock/
+# bsc-next/bsc-prune dispatch-attempt journal (task #334) — Mac-local
+/data/audit/dispatch-ledger.jsonl
+# Append-only local telemetry for the intake storm breaker. Tracked would mean
+# every session's create conflicts with every other session's on the same lines.
+/data/audit/intake-ledger.jsonl
+# CI-red claim ledger (task #584) — Mac-local, same append-only pattern
+/data/audit/ci-red-claims.jsonl
+# Backlog drain engine (task #654) — Mac-local; both producer
+# (scripts/backlog-drain.js) and consumer (send-morning-digest.js) run on
+# this Mac via launchd, so no git commit is needed to bridge them.
+# Per-machine telemetry from the pre-implementation infra review gate (#1079):
+# every warn/block the hook emits. Local observability, not shared state.
+/data/audit/infra-review-gate.jsonl
+/data/audit/backlog-drain-ledger.jsonl
+/data/audit/backlog-drain-metric.json
+/data/audit/backlog-drain-logs/
+/data/audit/job-leases/
+# Task #1896: per-task fresh-dispatch claim dir (atomic-claim.js), and the
+# pre-existing succession-lock dir it shares its primitive with — both are
+# ephemeral mkdir-marker locks, same class as job-leases/ above, that were
+# never actually gitignored before now.
+/data/audit/dispatch-claims/
+/data/audit/succession-locks/
+# linear-next.js's own fresh-dispatch claim dir (task #1898) — separate id
+# space from bsc-next.js's dispatch-claims/ above, same ephemeral mkdir-
+# marker-lock class.
+/data/audit/linear-dispatch-claims/
+# Predispatch queue backlog digest metric (task #1801) — Mac-local, same
+# reasoning as backlog-drain-metric.json above (producer
+# scripts/predispatch-queue-audit.js + consumer send-morning-digest.js both
+# run on this Mac via launchd).
+/data/audit/predispatch-queue-audit-snapshot.json
+/data/audit/predispatch-queue-audit-history.json
+# BRO-4135: linear-drain-throughput-snapshot.json — same reasoning, producer
+# send-morning-digest.js + consumer scripts/check-linear-drain-throughput.js
+# both run on this Mac (the digest is launchd-scheduled, not CI).
+/data/audit/linear-drain-throughput-snapshot.json
+# sync-audit-checkout.sh refusal snapshots (task #1563) — Mac-local, one per
+# SYNC_TAG (shadow/digest/backlog-drain/predispatch-queue-audit). Producer:
+# scripts/lib/sync-audit-checkout.sh's refuse-loud path. Consumer:
+# send-morning-digest.js. Cleared automatically on the next successful sync.
+/data/audit/sync-refused-*.json
+# Dispatch guard queue backlog digest metric (task #1802) — same producer
+# (scripts/predispatch-queue-audit.js, one script now writes two snapshots),
+# same Mac-local reasoning as the pair directly above.
+/data/audit/dispatch-guard-queue-audit-snapshot.json
+/data/audit/dispatch-guard-queue-audit-history.json
+# Digest-autofix S6 daily canary (task #1225) — Mac-local, same reasoning as
+# backlog-drain-ledger.jsonl above (producer + consumer both run on this Mac).
+# canary-*.marker is DELIBERATELY NOT listed here: close-time-verify.js checks
+# a card's acceptance command against a fresh checkout of origin/main (see
+# scripts/lib/acceptance-check-core.js), never the dispatched session's own
+# ephemeral, isolated job worktree — so the marker file the canary card asks
+# a session to create MUST be committed+pushed to be checkable at all
+# (Codex adversarial review, task #1225: a gitignored marker can never be
+# seen by that check, so a genuinely successful canary would self-report
+# FAILED every single day).
+/data/audit/autofix-canary-ledger.jsonl
+/data/audit/reconcile-report.jsonl
+supabase/.temp/
+
+# Autonomous loop UI screenshot evidence (S2-T6) — attached to the morning
+# email, never committed (binary, per-branch, regenerated every attempt).
+data/audit/autonomous-ui/
+
+# Per-run feedback outcome report (owner email input). Ephemeral, and holds
+# submitter names/emails/message text — must never land in this public repo.
+/data/audit/feedback-run-report.json
+
+# Interactive-session scratch files left at repo root (BRO-3212) — these
+# showed up untracked in launchd sync-refused snapshots (sync-audit-checkout.sh
+# treats an untracked path outside data/audit/ as a genuine blocker), parking
+# jobs on scratch files that were never meant to be committed in the first place.
+/scratchpad_a.txt
+/census_tmp_script*.js
+
+# analyze-traffic-sources.js local output (CI uploads it as an artifact)
+traffic-analysis/
+
+# BRO-2719: Mac-local daemon logs/state that were TRACKED and dirtied the shared
+# main checkout hourly, blocking `git pull --ff-only` for ~20 sessions (5 stalls
+# in one crown session) and forcing merge-worktree-to-main.sh to stash. Every
+# reader is local-fs and tolerates absence (health-check.js try/catch,
+# bsc-reconcile.js state default). CI-shared ledgers (stage-latency.jsonl,
+# scraper-spend-ledger.jsonl, outlet-registry-gaps.json: written/read by
+# workflows, merge=union) intentionally stay tracked. Guarded by
+# tests/unit/audit-log-gitignore.test.mjs.
+/data/audit/worktree-gc.log
+/data/audit/worktree-gc.launchd.log
+/data/audit/verify-merge-landed.log
+/data/audit/untracked-sweep-state.json
+
+# Python bytecode (BRO-4780: tracked .pyc was rewritten by every cookie-renewal test run)
+__pycache__/
+*.pyc
+data/opening-night/leases.json
+
+# archive-show-images.js downloads here before its checks pass (BRO-2242)
+public/images/shows/**/*.incoming

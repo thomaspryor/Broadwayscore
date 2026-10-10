@@ -1,0 +1,185 @@
+{
+  "runDate": "2026-10-10T18:58:03.682Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 100,
+    "priority": "all",
+    "showFilter": "three-sisters-west-end-2019,a-kind-of-people-west-end-2019,a-taste-of-honey-west-end-2019,girl-from-the-north-country-west-end-2019",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 22,
+    "failed": 7,
+    "skipped": 0,
+    "successRate": "75.9%"
+  },
+  "tierBreakdown": {
+    "playwright": 18,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingdog": 1,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 0,
+    "archive": 3
+  },
+  "statistics": {
+    "tier1Attempts": 21,
+    "tier1Success": 20,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier1_9Attempts": 1,
+    "tier1_9Success": 1,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 4,
+    "tier4Success": 3,
+    "totalFailed": 7,
+    "scrapingBeePageCredits": 0,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "thisRun": {
+    "processed": 22,
+    "failed": 7,
+    "shows": [
+      "a-kind-of-people-west-end-2019",
+      "a-taste-of-honey-west-end-2019",
+      "girl-from-the-north-country-west-end-2019",
+      "three-sisters-west-end-2019"
+    ],
+    "outOfScopeShows": [],
+    "inheritedFromResume": {
+      "processed": 0,
+      "failed": 0
+    }
+  },
+  "processed": [
+    "girl-from-the-north-country-west-end-2019/london-box-office--josephine-balfour-oatts.json",
+    "girl-from-the-north-country-west-end-2019/london-box-office--phil-willmott.json",
+    "girl-from-the-north-country-west-end-2019/london-box-office--stuart-king.json",
+    "a-kind-of-people-west-end-2019/timeout-london--holly-williams.json",
+    "a-kind-of-people-west-end-2019/artsdesk--aleks-sierz.json",
+    "a-kind-of-people-west-end-2019/telegraph--laura-barnett.json",
+    "a-kind-of-people-west-end-2019/thestage--ava-wong-davies.json",
+    "a-kind-of-people-west-end-2019/times-uk--sam-marlowe.json",
+    "a-kind-of-people-west-end-2019/whatsonstage--daniel-perks.json",
+    "a-taste-of-honey-west-end-2019/closeupculture--unknown.json",
+    "a-taste-of-honey-west-end-2019/essentialsurrey--unknown.json",
+    "a-taste-of-honey-west-end-2019/london-box-office--stuart-king.json",
+    "a-taste-of-honey-west-end-2019/london-theatre--mark-shenton.json",
+    "a-taste-of-honey-west-end-2019/londontheatre1--unknown.json",
+    "a-taste-of-honey-west-end-2019/standard--nick-curtis.json",
+    "a-taste-of-honey-west-end-2019/times-uk--jane-edwardes.json",
+    "three-sisters-west-end-2019/a-younger-theatre--unknown.json",
+    "three-sisters-west-end-2019/i-paper--unknown.json",
+    "three-sisters-west-end-2019/london-box-office--philip-swan.json",
+    "three-sisters-west-end-2019/london-theatre--unknown.json",
+    "three-sisters-west-end-2019/sierz-co-uk--unknown.json",
+    "three-sisters-west-end-2019/thestage--unknown.json"
+  ],
+  "failed": [
+    "a-kind-of-people-west-end-2019/guardian--michael-billington.json",
+    "a-taste-of-honey-west-end-2019/guardian--gregory-robinson.json",
+    "a-taste-of-honey-west-end-2019/guardian--unknown.json",
+    "a-taste-of-honey-west-end-2019/beyondthecurtain--unknown.json",
+    "a-taste-of-honey-west-end-2019/city-am--adam-bloodworth.json",
+    "a-taste-of-honey-west-end-2019/letterboxd--unknown.json",
+    "three-sisters-west-end-2019/guardian--unknown.json"
+  ],
+  "cumulativeResumedState": {
+    "processed": [
+      "girl-from-the-north-country-west-end-2019/london-box-office--josephine-balfour-oatts.json",
+      "girl-from-the-north-country-west-end-2019/london-box-office--phil-willmott.json",
+      "girl-from-the-north-country-west-end-2019/london-box-office--stuart-king.json",
+      "a-kind-of-people-west-end-2019/timeout-london--holly-williams.json",
+      "a-kind-of-people-west-end-2019/artsdesk--aleks-sierz.json",
+      "a-kind-of-people-west-end-2019/telegraph--laura-barnett.json",
+      "a-kind-of-people-west-end-2019/thestage--ava-wong-davies.json",
+      "a-kind-of-people-west-end-2019/times-uk--sam-marlowe.json",
+      "a-kind-of-people-west-end-2019/whatsonstage--daniel-perks.json",
+      "a-taste-of-honey-west-end-2019/closeupculture--unknown.json",
+      "a-taste-of-honey-west-end-2019/essentialsurrey--unknown.json",
+      "a-taste-of-honey-west-end-2019/london-box-office--stuart-king.json",
+      "a-taste-of-honey-west-end-2019/london-theatre--mark-shenton.json",
+      "a-taste-of-honey-west-end-2019/londontheatre1--unknown.json",
+      "a-taste-of-honey-west-end-2019/standard--nick-curtis.json",
+      "a-taste-of-honey-west-end-2019/times-uk--jane-edwardes.json",
+      "three-sisters-west-end-2019/a-younger-theatre--unknown.json",
+      "three-sisters-west-end-2019/i-paper--unknown.json",
+      "three-sisters-west-end-2019/london-box-office--philip-swan.json",
+      "three-sisters-west-end-2019/london-theatre--unknown.json",
+      "three-sisters-west-end-2019/sierz-co-uk--unknown.json",
+      "three-sisters-west-end-2019/thestage--unknown.json"
+    ],
+    "failed": [
+      "a-kind-of-people-west-end-2019/guardian--michael-billington.json",
+      "a-taste-of-honey-west-end-2019/guardian--gregory-robinson.json",
+      "a-taste-of-honey-west-end-2019/guardian--unknown.json",
+      "a-taste-of-honey-west-end-2019/beyondthecurtain--unknown.json",
+      "a-taste-of-honey-west-end-2019/city-am--adam-bloodworth.json",
+      "a-taste-of-honey-west-end-2019/letterboxd--unknown.json",
+      "three-sisters-west-end-2019/guardian--unknown.json"
+    ]
+  },
+  "tierDetails": {
+    "playwright": [
+      "girl-from-the-north-country-west-end-2019/london-box-office--josephine-balfour-oatts.json",
+      "girl-from-the-north-country-west-end-2019/london-box-office--phil-willmott.json",
+      "girl-from-the-north-country-west-end-2019/london-box-office--stuart-king.json",
+      "a-kind-of-people-west-end-2019/timeout-london--holly-williams.json",
+      "a-kind-of-people-west-end-2019/artsdesk--aleks-sierz.json",
+      "a-kind-of-people-west-end-2019/thestage--ava-wong-davies.json",
+      "a-kind-of-people-west-end-2019/whatsonstage--daniel-perks.json",
+      "a-taste-of-honey-west-end-2019/closeupculture--unknown.json",
+      "a-taste-of-honey-west-end-2019/essentialsurrey--unknown.json",
+      "a-taste-of-honey-west-end-2019/london-box-office--stuart-king.json",
+      "a-taste-of-honey-west-end-2019/london-theatre--mark-shenton.json",
+      "a-taste-of-honey-west-end-2019/londontheatre1--unknown.json",
+      "a-taste-of-honey-west-end-2019/standard--nick-curtis.json",
+      "three-sisters-west-end-2019/i-paper--unknown.json",
+      "three-sisters-west-end-2019/london-box-office--philip-swan.json",
+      "three-sisters-west-end-2019/london-theatre--unknown.json",
+      "three-sisters-west-end-2019/sierz-co-uk--unknown.json",
+      "three-sisters-west-end-2019/thestage--unknown.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingdog": [
+      "three-sisters-west-end-2019/a-younger-theatre--unknown.json"
+    ],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": [
+      "a-kind-of-people-west-end-2019/telegraph--laura-barnett.json",
+      "a-kind-of-people-west-end-2019/times-uk--sam-marlowe.json",
+      "a-taste-of-honey-west-end-2019/times-uk--jane-edwardes.json"
+    ]
+  },
+  "failuresByOutlet": {
+    "The Guardian": {
+      "count": 4,
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": []
+}

@@ -1,0 +1,1126 @@
+/**
+ * LLM-Based Content Verification
+ *
+ * Primary content gate for scraped review texts. Runs by default on all
+ * reviews with 200+ chars. Detects:
+ *   1. Wrong article (different topic, different show entirely)
+ *   2. Wrong production (tour, regional, off-Broadway, West End — not Broadway)
+ *   3. Film/TV content (movie adaptation, streaming, TV special)
+ *   4. Truncation (paywall, incomplete content)
+ *   5. Navigation/junk (scraped footer instead of article)
+ *
+ * Provider chain: Gemini Flash (cheapest) → GPT-4o-mini → Claude Sonnet → heuristic fallback
+ * Falls back to heuristic checks when no API keys are available.
+ */
+
+const https = require('https');
+const crypto = require('crypto');
+const { GEMINI_FLASH, GPT4O_MINI, CLAUDE_HAIKU, CLAUDE_SONNET } = require('./models');
+const { foldDiacritics } = require('./title-match');
+const { isLondonMarket, isSpecialEngagementVenue } = require('./venue-classification');
+const { applyTemporalOverrides, applyVenueClassificationCarveout } = require('./review-guards');
+const { buildVenueContext: _expandVenueContext } = require('./venue-aliases');
+const { getCvStyle } = require('./outlet-canonicalize');
+const { hasOpinionLanguage, stripLeadingJsonBlob } = require('./content-quality');
+const { stripConsentLayerPrefix } = require('./text-cleaning');
+const { buildClassifySample } = require('./classify-sample');
+
+/**
+ * Extract a sensible publication year from a URL path.
+ *
+ * Matches `/YYYY/` segments (the Variety/NYT/Guardian convention) and the
+ * YYYYMMDD-suffix pattern used by BWW article slugs. Returns null when no
+ * signal is found or the extracted year is out of a sensible [1990, currentYear+1]
+ * window. Per CLAUDE.md rule 3 the result is NOT authoritative for positive
+ * matching — callers should surface it as context, not act on it.
+ *
+ * Private to content-verifier — if other modules need URL-year extraction
+ * they should extract this to scripts/lib/url-year.js first.
+ */
+/**
+ * Single source of truth for the `market` string passed to verifyContent().
+ * Was duplicated as an inline `show?.type === 'opera' ? 'opera' : ...` ternary
+ * across 4 call sites (collect-review-texts.js, reverify-with-haiku.js x2,
+ * verify-existing-reviews.js x2) — none of them accounted for the
+ * special-venue class, so fixing it required updating every call site
+ * anyway. Centralized here so the next carve-out only needs one edit.
+ *
+ * @param {{type?: string, category?: string, venue?: string}|null|undefined} show
+ * @returns {string}
+ */
+function resolveCvMarket(show) {
+  if (show?.type === 'opera') return 'opera';
+  if (isSpecialEngagementVenue(show?.venue)) return 'special-venue';
+  return show?.category || 'broadway';
+}
+
+/**
+ * Parse a date string the way the temporal guard does, NOT the way bare
+ * `new Date()` does.
+ *
+ * BRO-2835 fixed this class at the guard and at the persisted annotation, but
+ * the two prompt-building sites below kept bare `new Date(...)`, which is
+ * Invalid Date for an ordinal publishDate ("October 6th, 2022"). 13.4% of the
+ * dated review corpus (4,717 of 35,167) stores dates in that form, so the
+ * NaN silently propagated: `daysDiff <= 30` is false for NaN, so the
+ * opening-week temporalHint was omitted for 2,079 reviews that were in fact
+ * within 30 days of opening, and `Number.isFinite(NaN)` is false, so
+ * urlYearConflict was nulled.
+ *
+ * The parseHistoricalDate fallback is load-bearing, not defensive:
+ * parseDate() enforces normalizeDate()'s 1970-2030 calendar-year floor, so a
+ * genuine pre-1970 review would come back null and NEWLY lose a hint it gets
+ * today. Same pairing as daysFromOpening() below and as review-guards' own
+ * parse. The fallback's two hazards — a shape-dependent UTC/local anchor, and
+ * silent rollover of impossible dates — are handled inline below.
+ *
+ * @param {string|null|undefined} dateStr
+ * @returns {Date|null}
+ */
+function _cvParseDate(dateStr) {
+  const { parseDate, parseHistoricalDate, stripOrdinals } = require('./date-utils');
+  const viaNormalized = parseDate(dateStr);
+  if (viaNormalized) return viaNormalized;            // already UTC midnight
+  if (!dateStr || typeof dateStr !== 'string') return null;
+
+  const cleaned = stripOrdinals(dateStr.trim());
+
+  // parseHistoricalDate is `new Date(string)`, whose anchor depends on the
+  // string's SHAPE: an ISO date-only string ("1964-09-22") is parsed as UTC
+  // midnight, a prose date ("September 23, 1964") as LOCAL midnight. Assuming
+  // one basis for both silently shifts the other by a day — re-anchoring an
+  // ISO-shaped historical date moves it a day EARLIER west of UTC, which is
+  // exactly the kind of off-by-one this whole function exists to remove.
+  // The optional time portion matters: an ISO string that carries one
+  // ("1964-09-22T00:00:00Z") would otherwise fall through to the prose branch
+  // and be re-anchored from LOCAL components, landing a day earlier west of
+  // UTC. Post-1970 timestamps never reach here (parseDate handles them), so
+  // this only bites historical ones — no corpus instance today, but the corpus
+  // gains pre-1970 entries whenever an archival show is backfilled.
+  const iso = cleaned.match(/^(\d{4})-(\d{2})-(\d{2})(?:[T ].*)?$/);
+  if (iso) {
+    const y = Number(iso[1]);
+    const m = Number(iso[2]);
+    const d = Number(iso[3]);
+    const utc = new Date(Date.UTC(y, m - 1, d));
+    const real = utc.getUTCFullYear() === y && utc.getUTCMonth() === m - 1 && utc.getUTCDate() === d;
+    return real ? utc : null;   // already UTC-anchored; do NOT re-anchor
+  }
+
+  const viaHistorical = parseHistoricalDate(dateStr);
+  if (!viaHistorical) return null;
+
+  // `new Date()` rolls an impossible calendar date silently forward
+  // ("February 30, 2022" -> March 2). parseDate() rejects those through
+  // validateCalendarDate, so without this the historical leg would smuggle
+  // them back in and could fire an opening-week hint off a date that does not
+  // exist. Scoped to month-NAME forms: numeric formats are parseDate's job and
+  // a day-token check would misread the month field in "2022/10/06".
+  if (/[a-z]{3,}/i.test(cleaned)) {
+    const dayToken = cleaned.match(/(?:^|[^\d])(\d{1,2})(?:[^\d]|$)/);
+    if (dayToken && Number(dayToken[1]) !== viaHistorical.getDate()) return null;
+  }
+
+  // Prose form only: re-anchor local midnight onto UTC so the day-difference
+  // and getUTCFullYear() below stop being timezone-dependent.
+  return new Date(Date.UTC(
+    viaHistorical.getFullYear(),
+    viaHistorical.getMonth(),
+    viaHistorical.getDate()
+  ));
+}
+
+function _extractUrlYear(url) {
+  if (!url || typeof url !== 'string') return null;
+  // Try /YYYY/ path segment first (Variety, NYT, Guardian, etc.)
+  const pathMatch = url.match(/\/((?:19|20)\d{2})\//);
+  if (pathMatch) {
+    const y = parseInt(pathMatch[1], 10);
+    if (y >= 1990 && y <= new Date().getFullYear() + 1) return y;
+  }
+  // Fallback: YYYYMMDD suffix (BWW article IDs)
+  const suffixMatch = url.match(/-((?:19|20)\d{2})(\d{2})(\d{2})\d{0,2}(?:[/?#]|$)/);
+  if (suffixMatch) {
+    const y = parseInt(suffixMatch[1], 10);
+    if (y >= 1990 && y <= new Date().getFullYear() + 1) return y;
+  }
+  return null;
+}
+
+// Article types a scene-setting/historical opening can be mistaken for.
+const HEAD_AMBIGUOUS_ARTICLE_TYPES = new Set(['preview', 'feature', 'news', 'other']);
+
+// The prompt shows the verifier only this many leading chars of the article.
+const CV_WINDOW_CHARS = 2500;
+// BRO-4429: after that head the prompt also carries up to two passages that
+// name the show and this many closing chars, so a multi-show column whose first
+// section is another show (Theatrely on Hungry Women) or a review whose verdict
+// comes late is not judged on its opening alone. The head (and so contentHash
+// and isCvVerdictFromPartialWindow) is unchanged.
+const CV_TAIL_CHARS = 800;
+
+/**
+ * Hash the first 2500 chars of text — used to detect when contentVerification
+ * was done on different content than the stored fullText.
+ */
+function contentHash(text) {
+  if (!text) return null;
+  // BRO-4429: hash what the verifier actually reads (leading JSON blob removed).
+  return crypto.createHash('md5').update(stripLeadingJsonBlob(text).substring(0, CV_WINDOW_CHARS)).digest('hex');
+}
+
+// ============================================================
+// LLM Provider Implementations (cheapest → most expensive)
+// ============================================================
+
+/**
+ * Call Gemini Flash — ~$0.0001/review (practically free)
+ */
+function callGemini(prompt) {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) throw new Error('GEMINI_API_KEY not set');
+
+  // gemini-2.5-flash was retired by Google (HTTP 404 "no longer available")
+  // ~2026-06; 2.5-flash is the current equivalent (already used by the
+  // llm-scoring ensemble). NOTE: ~30 other scripts still hardcode the dead
+  // 2.0-flash — tracked as a separate class-fix card.
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_FLASH}:generateContent?key=${apiKey}`;
+
+  return new Promise((resolve, reject) => {
+    const body = JSON.stringify({
+      contents: [{ role: 'user', parts: [{ text: prompt }] }],
+      // thinkingBudget:0 — gemini-2.5-flash is a thinking model; without this it
+      // spends the whole maxOutputTokens budget on internal thinking and returns
+      // empty/truncated text (memory: feedback_gemini_thinking_token_budget).
+      generationConfig: { temperature: 0.1, maxOutputTokens: 400, thinkingConfig: { thinkingBudget: 0 } }
+    });
+
+    const req = https.request(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    }, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        if (res.statusCode === 200) {
+          try {
+            const json = JSON.parse(data);
+            const text = json.candidates?.[0]?.content?.parts?.[0]?.text || '';
+            resolve(text);
+          } catch (e) {
+            reject(new Error(`Gemini parse error: ${e.message}`));
+          }
+        } else {
+          reject(new Error(`Gemini HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+        }
+      });
+    });
+    req.on('error', reject);
+    req.write(body);
+    req.end();
+  });
+}
+
+/**
+ * Call OpenAI GPT-4o-mini — ~$0.0003/review
+ */
+function callOpenAI(prompt) {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) throw new Error('OPENAI_API_KEY not set');
+
+  return new Promise((resolve, reject) => {
+    const body = JSON.stringify({
+      model: GPT4O_MINI,
+      messages: [{ role: 'user', content: prompt }],
+      max_tokens: 400,
+      temperature: 0.1
+    });
+
+    const req = https.request('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      }
+    }, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        if (res.statusCode === 200) {
+          try {
+            const json = JSON.parse(data);
+            resolve(json.choices?.[0]?.message?.content || '');
+          } catch (e) {
+            reject(new Error(`OpenAI parse error: ${e.message}`));
+          }
+        } else {
+          reject(new Error(`OpenAI HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+        }
+      });
+    });
+    req.on('error', reject);
+    req.write(body);
+    req.end();
+  });
+}
+
+/**
+ * Call Claude Sonnet — ~$0.003/review (most expensive, last resort)
+ */
+// opts.timeoutMs (BRO-4603): abort the request (no late reply, no socket left
+// open) after that long. Unset = no timeout, the behaviour every existing
+// caller relies on.
+function callAnthropic(model, { timeoutMs } = {}) {
+  return function (prompt) {
+    const apiKey = process.env.ANTHROPIC_API_KEY;
+    if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set');
+
+    return new Promise((resolve, reject) => {
+      const body = JSON.stringify({
+        model,
+        max_tokens: 400,
+        messages: [{ role: 'user', content: prompt }],
+      });
+
+      const req = https.request('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+        },
+      }, (res) => {
+        let data = '';
+        res.on('data', chunk => data += chunk);
+        res.on('end', () => {
+          if (res.statusCode === 200) {
+            try {
+              const json = JSON.parse(data);
+              resolve(json.content?.[0]?.text || '');
+            } catch (e) {
+              reject(new Error(`Anthropic parse error: ${e.message}`));
+            }
+          } else {
+            reject(new Error(`Anthropic HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+          }
+        });
+      });
+      req.on('error', reject);
+      if (timeoutMs) req.setTimeout(timeoutMs, () => req.destroy(new Error(`Anthropic: no reply in ${Math.round(timeoutMs / 1000)}s`)));
+      req.write(body);
+      req.end();
+    });
+  };
+}
+
+const callClaudeHaiku = callAnthropic(CLAUDE_HAIKU);
+const callClaudeSonnet = callAnthropic(CLAUDE_SONNET);
+
+// ============================================================
+// Provider Chain
+// ============================================================
+
+/**
+ * Provider chain — accuracy-ordered (was cheapest-first until 2026-04-15).
+ *
+ * Switched primary from Gemini 2.0 Flash to Claude Haiku 4.5 after a 7-model
+ * sweep against a 30-case golden fixture (scripts/evals/content-verifier-
+ * model-sweep.js). Numbers:
+ *   Gemini Flash:  precision 52%, recall 93%, FP rate 87%, $6/yr
+ *   Claude Haiku:  precision 74%, recall 93%, FP rate 33%, $120/yr
+ * +20pp precision and -54pp FP rate for ~$114/yr extra. The previous chain
+ * shipped 33% wrong-production garbage downstream into scoring.
+ *
+ * Fallback order keeps cheaper models available if Haiku quota runs out.
+ */
+function getProviderChain() {
+  const providers = [];
+  if (process.env.ANTHROPIC_API_KEY) {
+    providers.push({ name: 'claude-haiku', call: callClaudeHaiku });
+  }
+  if (process.env.GEMINI_API_KEY) providers.push({ name: 'gemini', call: callGemini });
+  if (process.env.OPENAI_API_KEY) providers.push({ name: 'openai', call: callOpenAI });
+  if (process.env.ANTHROPIC_API_KEY) {
+    // Keep Sonnet as final fallback — same vendor but stronger model.
+    providers.push({ name: 'claude-sonnet', call: callClaudeSonnet });
+  }
+  return providers;
+}
+
+/**
+ * Call LLM with automatic fallback through provider chain
+ * @returns {{ text: string, provider: string }}
+ */
+async function callWithFallback(prompt) {
+  const chain = getProviderChain();
+  if (chain.length === 0) return null;
+
+  for (let i = 0; i < chain.length; i++) {
+    const { name, call } = chain[i];
+    try {
+      const text = await call(prompt);
+      return { text, provider: name };
+    } catch (e) {
+      console.log(`    ${name} verify error: ${e.message}`);
+      if (i < chain.length - 1) {
+        console.log(`    Falling back to ${chain[i + 1].name}...`);
+      }
+    }
+  }
+
+  return null; // All providers failed
+}
+
+async function callPinnedProvider({ name, call }, prompt) {
+  try {
+    return { text: await call(prompt), provider: name };
+  } catch (e) {
+    console.log(`    ${name} verify error: ${e.message}`);
+    return null;
+  }
+}
+
+// ============================================================
+// Main Verification
+// ============================================================
+
+/**
+ * Verify scraped content matches expected review for the correct market
+ *
+ * @param {Object} params
+ * @param {string} params.scrapedText - The scraped full text
+ * @param {string} params.excerpt - Known excerpt from aggregator
+ * @param {string} params.showTitle - Show title for context
+ * @param {string} params.outletName - Outlet name
+ * @param {string} params.criticName - Critic name
+ * @param {string} [params.openingDate] - Opening date (YYYY-MM-DD) for temporal context
+ * @param {string} [params.publishDate] - Review publish date (YYYY-MM-DD) — used with openingDate to prevent false wrongProduction flags
+ * @param {string} [params.venue] - Venue name
+ * @param {string} [params.market] - Market: 'broadway' (default), 'west-end', 'off-west-end', 'off-broadway'
+ * @param {boolean} [params.isLongRunningProduction] - True when the production has run
+ *   continuously for many years (Mousetrap 1952, Phantom WE 1986, Les Mis WE 1985, Mamma Mia 1999).
+ *   When set, the LLM is told NOT to flag wrongProduction based on publishDate-vs-openingDate
+ *   age gap alone. See WE long-runner CV hardening card 34c637c5-416f-812b issue #3.
+ * @param {string} [params.url] - Review URL. Used to surface URL-year-vs-publishDate conflicts
+ *   to the LLM (issue #4). Per CLAUDE.md rule 3 the URL year is not authoritative but it's a
+ *   useful signal when publishDate disagrees by multiple years.
+ * @param {{name: string, call: (prompt: string) => Promise<string>}} [params.provider] - Pin one
+ *   model instead of the default provider chain (BRO-4603).
+ * @returns {Object} { isValid, confidence, issues, truncated, wrongArticle, wrongProduction, isFilmTv, reasoning, verifiedBy, urlYearConflict }
+ */
+async function verifyContent({ scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue, market, publishDate, isLongRunningProduction, url, bwwRoundupUrl, otherShowTitles, show, provider }) {
+  // Judge the article, not a consent layer captured ahead of it: the prompt
+  // shows only the first 2,500 chars, which for WhatsOnStage captures was
+  // entirely IAB consent text (BRO-4185 A).
+  scrapedText = stripLeadingJsonBlob(stripConsentLayerPrefix(scrapedText));
+  if (!scrapedText || scrapedText.length < 200) {
+    return {
+      isValid: false,
+      confidence: 'high',
+      issues: ['Content too short (<200 chars)'],
+      truncated: true,
+      wrongArticle: false,
+      wrongProduction: false,
+      isFilmTv: false,
+      verifiedBy: 'skip-short',
+      urlYearConflict: null
+    };
+  }
+
+  const { prompt, urlYearConflict } = buildVerificationPrompt({
+    scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue, market, publishDate, isLongRunningProduction, url,
+    // Declared earlier runs / tour legs: reviews of those are THIS production.
+    priorRuns: show && show.priorRuns,
+    tourLegs: show && show.tourLegs,
+  });
+
+  // `provider` ({ name, call }) pins one model instead of the cheap-first
+  // chain — audit-wrong-article.js --adjudicate (BRO-4603) asks Opus about
+  // suspects the default chain already passed. A failed call returns null and
+  // falls to the heuristic below (verifiedBy 'heuristic'), never a fake verdict.
+  const result = provider ? await callPinnedProvider(provider, prompt) : await callWithFallback(prompt);
+
+  if (!result) {
+    // No LLM providers available — fall back to heuristics
+    return { ...heuristicVerify({ scrapedText, excerpt, showTitle }), urlYearConflict };
+  }
+
+  try {
+    const jsonMatch = result.text.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      const parsed = JSON.parse(jsonMatch[0]);
+      let wpFlag = parsed.wrongProduction || false;
+      let wpConfidence = parsed.confidence || 'medium';
+      let wpReasoning = parsed.reasoning || '';
+
+      // Temporal proximity guards — pure logic lives in review-guards.js (testable in isolation).
+      // Call site keeps logging and wpReasoning annotation so CI output remains informative.
+      let filmTvFlag = parsed.isFilmTv || false;
+      let filmTvConfidence = parsed.confidence || 'medium';
+      const temporalOverrides = applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, publishDate, {
+        issues: parsed.issues,
+        reasoning: parsed.reasoning,
+        show,
+        fullText: scrapedText,
+        // Audit S6-T4 (BRO-4204): url + show feed the in-window slug-match
+        // veto; wrongShow is the CV shape the rebuild routes to its wrongShow
+        // family (wrongArticle AND wrongProduction).
+        url,
+        bwwRoundupUrl,
+        otherShowTitles,
+        wrongShow: !!(parsed.wrongArticle && wpFlag),
+      });
+      if (temporalOverrides.inWindowSlugMatch && wpFlag) {
+        console.log(`    ⚠ In-window slug-match veto: URL slug names the show and publishDate is inside the production window — wrongProduction confidence downgraded to low`);
+      }
+      // BRO-2835: these day-counts were `new Date(...)`, which is Invalid Date
+      // for an ordinal publishDate, so the annotation persisted onto the review
+      // read "[OVERRIDE: review within NaNd of opening ...]". Same parser as the
+      // guard itself, including the pre-1970 fallback.
+      const daysFromOpening = () => {
+        // BRO-2840: was the raw parseDate||parseHistoricalDate pairing, which
+        // carries the two fallback hazards _cvParseDate exists to absorb — a
+        // shape-dependent UTC/local anchor, and silent rollover of impossible
+        // calendar dates. Leaving it raw meant the PERSISTED annotation could
+        // report a day-count derived from a date the PROMPT had just refused to
+        // hint on, from the same two inputs. One parser for both.
+        const o = _cvParseDate(openingDate);
+        const p2 = _cvParseDate(publishDate);
+        if (!o || !p2) return null;
+        return Math.round(Math.abs((p2.getTime() - o.getTime()) / 86400000));
+      };
+      if (temporalOverrides.bypassedForStrongSignal && wpFlag) {
+        console.log(`    ✓ LLM wrongProduction NOT overridden: CV issues contain explicit "different show" markers — keeping ${wpConfidence} confidence`);
+      }
+      if (temporalOverrides.wpConfidence !== wpConfidence && wpFlag && openingDate && publishDate) {
+        const daysDiff = daysFromOpening();
+        // daysFromOpening() returns null when _cvParseDate rejects a date the
+        // override itself accepted — applyTemporalOverrides uses the permissive
+        // raw parser, so the two can disagree on an impossible calendar date.
+        // Interpolating that null persisted "[OVERRIDE: review within nulld of
+        // opening]", which is just the NaNd bug this file already fixed once
+        // wearing a different word. Drop the day-count clause instead.
+        const dayClause = Number.isFinite(daysDiff) ? `within ${daysDiff}d of opening` : 'near opening';
+        console.log(`    ⚠ LLM wrongProduction overridden: review published ${Number.isFinite(daysDiff) ? `${daysDiff}d` : 'an unparseable interval'} from opening — downgrading to low confidence`);
+        wpReasoning = `[OVERRIDE: review ${dayClause}, likely correct production] ${wpReasoning}`;
+      }
+      if (!temporalOverrides.filmTvFlag && filmTvFlag && openingDate && publishDate) {
+        const daysDiff = daysFromOpening();
+        console.log(`    ⚠ LLM isFilmTv overridden: review published ${Number.isFinite(daysDiff) ? `${daysDiff}d` : 'an unparseable interval'} from opening — downgrading to low confidence`);
+        filmTvConfidence = 'low';
+      }
+      wpConfidence = temporalOverrides.wpConfidence;
+      filmTvFlag = temporalOverrides.filmTvFlag;
+
+      // Festival-venue carve-out (R&J Delacorte 2026-06-15): the Public
+      // Theater's Delacorte / Shakespeare-in-the-Park stage is filed off-broadway
+      // here. The LLM keeps treating "not an Off-Broadway venue" as wrongProduction
+      // and/or isValid=false on correctly-attributed reviews. Neutralize a
+      // venue-only objection deterministically so it can't drop a legit review.
+      let isValid = parsed.isValid ?? true;
+      const venueCarve = applyVenueClassificationCarveout(
+        { wrongProduction: wpFlag, isValid, issues: parsed.issues || [], reasoning: parsed.reasoning || '' },
+        show
+      );
+      if (venueCarve.venueCarveoutApplied) {
+        const parts = [];
+        if (venueCarve.clearedWrongProduction) parts.push('wrongProduction→false');
+        if (venueCarve.restoredValidity) parts.push('isValid→true');
+        console.log(`    ✓ Festival-venue carve-out (${show && show.venue}): ${parts.join(', ')} — venue classification is not wrong-production`);
+        wpFlag = venueCarve.wrongProduction;
+        isValid = venueCarve.isValid;
+      }
+
+      if (urlYearConflict) {
+        console.log(`    ⚠ URL-year/publishDate conflict: URL says ${urlYearConflict.urlYear}, publishDate says ${urlYearConflict.publishYear} (${urlYearConflict.gapYears}yr gap)`);
+      }
+
+      return {
+        isValid,
+        confidence: wpFlag ? wpConfidence : filmTvFlag ? filmTvConfidence : (parsed.confidence || 'medium'),
+        issues: parsed.issues || [],
+        truncated: parsed.truncated || false,
+        wrongArticle: parsed.wrongArticle || false,
+        articleType: parsed.articleType || 'review',
+        articleTypeConfidence: parsed.articleTypeConfidence || 'medium',
+        wrongProduction: wpFlag,
+        isFilmTv: filmTvFlag,
+        reasoning: wpFlag ? wpReasoning : (parsed.reasoning || ''),
+        verifiedBy: `llm:${result.provider}`,
+        contentHash: contentHash(scrapedText),
+        urlYearConflict
+      };
+    }
+
+    console.log(`    LLM verify (${result.provider}): could not parse JSON, falling back to heuristic`);
+    return { ...heuristicVerify({ scrapedText, excerpt, showTitle }), urlYearConflict };
+
+  } catch (error) {
+    console.error(`    LLM verify parse error: ${error.message}`);
+    return { ...heuristicVerify({ scrapedText, excerpt, showTitle }), urlYearConflict };
+  }
+}
+
+/**
+ * Pure prompt-builder for verifyContent — no network calls, so it's directly
+ * unit-testable (content-verifier.test.mjs) without mocking LLM providers.
+ *
+ * @returns {{ prompt: string, urlYearConflict: {urlYear: number, publishYear: number, gapYears: number}|null }}
+ */
+function buildVerificationPrompt({ scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue, market, publishDate, isLongRunningProduction, url, priorRuns, tourLegs }) {
+  // Market-aware prompt construction
+  const effectiveMarket = market || 'broadway';
+  const marketConfig = {
+    'broadway': {
+      label: 'Broadway',
+      description: 'shows performed in Broadway theaters in New York City',
+      dateLabel: 'Broadway opening date',
+      venueLabel: 'Broadway venue',
+      wrongProdExamples: [
+        'National tour, touring production, touring company, "on tour"',
+        'Regional theater (Ahmanson, Kennedy Center, Old Globe, Goodman, etc.)',
+        'Off-Broadway or Off-Off-Broadway venue',
+        'West End / London production',
+        'Pre-Broadway tryout or out-of-town engagement'
+      ]
+    },
+    'west-end': {
+      label: 'West End',
+      description: 'shows performed in West End theaters in London',
+      dateLabel: 'West End opening date',
+      venueLabel: 'West End venue',
+      wrongProdExamples: [
+        'UK touring production, "on tour"',
+        'Regional UK theater (not a West End venue)',
+        'Broadway / New York production',
+        'Edinburgh Fringe or other festival',
+        'Pre-West End tryout or transfer preview'
+      ]
+    },
+    'off-west-end': {
+      label: 'Off-West End',
+      description: 'shows performed in Off-West End theaters in London',
+      dateLabel: 'Off-West End opening date',
+      venueLabel: 'Off-West End venue',
+      wrongProdExamples: [
+        'UK touring production, "on tour"',
+        'Regional UK theater (not a London venue)',
+        'Broadway / New York production',
+        'Edinburgh Fringe or other festival',
+        'Pre-West End tryout or transfer preview'
+      ]
+    },
+    'off-broadway': {
+      label: 'Off-Broadway',
+      description: 'shows performed in Off-Broadway theaters in New York City',
+      dateLabel: 'Off-Broadway opening date',
+      venueLabel: 'Off-Broadway venue',
+      wrongProdExamples: [
+        'Broadway production (different from Off-Broadway run)',
+        'National tour, touring production',
+        'Regional theater production',
+        'West End / London production'
+      ]
+    },
+    // 'opera' is set by callers when show.type === 'opera' (e.g. Met Opera at
+    // Lincoln Center). Met productions are tagged category=off-broadway in our
+    // data model but the off-broadway prompt flags Met-venue mentions as wrong.
+    // Met IS the canonical venue for these shows; flag wrong PRODUCTION (different
+    // season, different cast, prior revival) but NOT wrong VENUE.
+    'opera': {
+      label: 'Met Opera',
+      description: 'opera productions performed at the Metropolitan Opera House in New York City',
+      dateLabel: 'Met Opera opening date',
+      venueLabel: 'Met Opera venue',
+      wrongProdExamples: [
+        'Different opera house (Royal Opera House, Paris Opera, Sydney Opera, Bolshoi, Glyndebourne, etc.)',
+        'Prior season or prior Met revival of the same opera (different cast/conductor/year)',
+        'Touring production / Met "Live in HD" cinema broadcast (not the staged production)',
+        'Festival performance (Salzburg, Bayreuth, etc.)'
+      ]
+    },
+    // 'regional' — Broadway-feeder tryout productions (category:'regional':
+    // Arena Stage, Goodman, A.R.T., Alliance, La Jolla, ...). Without this
+    // entry the fallback was the BROADWAY prompt, whose wrong-production
+    // examples explicitly list "Regional theater" and "Pre-Broadway tryout" —
+    // so EVERY regional review got LLM-flagged wrongProduction (Millions @
+    // Alliance E2E, 2026-07-10). The regional venue IS the canonical venue;
+    // "pre-Broadway tryout" language describes this very production.
+    'regional': {
+      label: 'regional (Broadway-feeder)',
+      description: 'professional regional-theater productions — often pre-Broadway tryouts — performed at the named regional venue (NOT in a Broadway theater; an out-of-town dateline is correct, not a mismatch)',
+      dateLabel: 'Regional opening date',
+      venueLabel: 'Regional venue',
+      wrongProdExamples: [
+        'A DIFFERENT production of the same title: on Broadway, in the West End, on tour, or at a different theater than the named regional venue',
+        'A prior year/season production of the title at another venue',
+        'Coverage of a later Broadway transfer rather than this regional run'
+      ]
+    },
+    // 'tour' — US/North American national tours of a Broadway show
+    // (category:'tour', BRO-4211). Same failure as regional before it had a
+    // profile: the Broadway fallback calls every tour-stop review "a touring
+    // production, not the Broadway run" (all 9 Beetlejuice tour pilot reviews,
+    // 2026-09-28). A city dateline and a local presenting series are correct here.
+    'tour': {
+      label: 'national tour',
+      description: 'the touring company of a Broadway show, reviewed at any stop on its US/Canada national tour (a city dateline, a touring venue such as the Buell, Hobby Center or Golden Gate Theatre, or a local "Broadway series" presenter is correct, not a mismatch)',
+      dateLabel: 'Tour launch date',
+      venueLabel: 'Tour',
+      wrongProdExamples: [
+        'The original Broadway run in New York (reviewed at the Broadway theatre, not on tour)',
+        'A West End, UK-tour or other non-North-American production of the title',
+        'A regional or community theatre staging of the title (its own cast and creative team, not the touring company)',
+        'A pre-Broadway tryout of the title'
+      ]
+    },
+    // 'special-venue' — off-broadway/type:'special' shows filed at large or
+    // prestige NYC venues (Radio City Music Hall, Park Avenue Armory, Carnegie
+    // Hall, NYU Skirball, New York City Center) that read as "Broadway-caliber"
+    // to a naive LLM. Same root cause as the 'opera' carve-out above — without
+    // this entry the off-broadway prompt's "Broadway production" red flag fires
+    // on every mention of the venue name, wrongly flagging correctly-attributed
+    // reviews (Les Misérables: The Arena Concert Spectacular @ Radio City,
+    // 2026-07-30). The named venue IS the canonical venue for these shows.
+    'special-venue': {
+      label: 'special engagement',
+      description: 'a one-off or limited-run concert, dance, or special engagement performed at the named NYC venue — not a traditional Off-Broadway house, but the correct and canonical venue for this production',
+      dateLabel: 'opening date',
+      venueLabel: 'venue',
+      wrongProdExamples: [
+        'A DIFFERENT production of the same title reviewed at another venue, on a national tour, or in a different city',
+        'A prior year/season engagement of the same title',
+        'Coverage of a Broadway transfer or different mounting of the same title, rather than this engagement'
+      ]
+    }
+  };
+  const mc = marketConfig[effectiveMarket] || marketConfig['broadway'];
+  // Tour shows invert three pieces of the shared guidance below (BRO-4211 ship-check):
+  // "on Broadway now" signals the WRONG run, the Kennedy Center is a normal tour
+  // stop, and a local critic at the local stop is the ordinary case, not an exception.
+  const isTour = effectiveMarket === 'tour';
+  const correctRunPhrases = isTour
+    ? `"now playing [city]'s [touring venue]", "on its national tour", "the touring company"`
+    : `"on Broadway/West End now", "in its new ${mc.label} incarnation"`;
+  const differentRunExamples = isTour
+    ? 'the original Broadway run in New York / a West End or UK production / a regional or community staging / TV / film'
+    : 'a Kennedy Center / Almeida / La Jolla / TV / film / prior-revival';
+  const outletLocationGuidance = isTour
+    ? `- **Local critics reviewing their city's tour stop is the NORMAL case.** A local outlet (Denver Post, Chicago Sun-Times, Tulsa World, a BroadwayWorld city edition) and a touring venue or presenter (Kennedy Center, Ahmanson, Golden Gate, Buell, Hobby Center, a "Broadway in [city]" series) are correct for this show. Only flag wrongProduction when the body reviews the New York Broadway run (a Broadway theatre named as where the critic saw it) or a non-touring staging.`
+    : `- **Outlet location does NOT determine production location.** Many out-of-town newspapers have critics who cover ${mc.label} reviews from NYC/London. Peter Marks (Washington Post), Chris Jones (Chicago Tribune), Charles McNulty (LA Times), Matt Wolf (London Theatre / International Herald Tribune), Dominic Cavendish (Telegraph), Michael Billington (Guardian), and many others file reviews of the ${mc.label} production from their home paper. The byline/outlet being "Washington Post" or "Chicago Tribune" or "Manchester Evening News" is NOT by itself evidence of wrong production — look at the VENUE named in the body.`;
+
+  const dateContext = openingDate ? `\n- ${mc.dateLabel}: ${openingDate}` : '';
+  const publishDateContext = publishDate ? `\n- Review publish date: ${publishDate}` : '';
+  // Venue context expands known renames ("His Majesty's" → "formerly Her Majesty's...")
+  // so the LLM doesn't flag legitimate pre-rename reviews as wrongProduction.
+  // See memory WE long-runner CV hardening card 34c637c5-416f-812b.
+  // Pass the RAW market (not effectiveMarket): a show with no market must get
+  // the legacy match-any-region lookup, not be treated as Broadway — that
+  // would drop London rename context and re-open the Phantom FP class.
+  const venueContext = venue ? `\n- ${mc.venueLabel}: ${_expandVenueContext(venue, market)}` : '';
+  const excerptContext = excerpt ? `\n- Known excerpt: "${excerpt.substring(0, 300)}"` : '';
+
+  // Temporal proximity: if review published within 30 days of opening, very likely correct production
+  let temporalHint = '';
+  const _pubDate = _cvParseDate(publishDate);
+  const _openDate = _cvParseDate(openingDate);
+  if (_openDate && _pubDate) {
+    const daysDiff = Math.abs((_pubDate.getTime() - _openDate.getTime()) / 86400000);
+    if (daysDiff <= 30) {
+      temporalHint = `\n\n**IMPORTANT**: This review was published ${daysDiff <= 1 ? 'on opening night' : `within ${Math.round(daysDiff)} days of the ${mc.label} opening`}. Reviews published near opening night are almost always reviewing the current ${mc.label} production. Be very cautious about flagging wrongProduction or isFilmTv for opening-week reviews. Do NOT confuse the show with same-name films, musicals, or prior productions — use the publish date as strong evidence this is the current ${mc.label} production. Do NOT hallucinate prior productions that may not exist.`;
+    }
+  }
+
+  // Long-runner hint: Mousetrap (1952), Phantom WE (1986), Les Mis WE (1985),
+  // Mamma Mia (1999) — these are continuous-run productions. Any review from
+  // any year during that run is legitimate. Without this hint the LLM sees a
+  // 40-year publishDate-vs-openingDate gap and flags wrongProduction because
+  // its mental model is "revival" not "continuous run". See issue #3 of
+  // Notion 34c637c5-416f-812b.
+  let longRunnerHint = '';
+  if (isLongRunningProduction && openingDate) {
+    longRunnerHint = `\n\n**LONG-RUNNING PRODUCTION**: This is a continuous-run ${mc.label} production that has been playing since ${openingDate}. Reviews from ANY year in that continuous run are valid — do NOT flag wrongProduction based on publishDate-vs-openingDate age gap alone. A 2010 review of a show that opened in 1986 is not "wrong production"; it is a review of the same ongoing production 24 years in. Treat the publish date as irrelevant to wrongProduction for long-runners. Only flag wrongProduction if the content explicitly references a DIFFERENT named production (e.g., a touring company, a Broadway transfer, a film adaptation), not based on date math.`;
+  }
+
+  // URL-year conflict hint: when the URL path contains /YYYY/ that's significantly
+  // earlier than publishDate, the page's metadata date is likely a re-crawl/update
+  // timestamp while the URL slug preserves the true publication year. Don't
+  // auto-override — CLAUDE.md rule 3 says URLs are unreliable for positive matching.
+  // Surface both dates to the LLM and let it decide. See Mamma Mia WE 2021 case:
+  // URL was /1999/legit/reviews/mamma-mia-... but publishDate came out as 2015-09-03,
+  // leading CV to flag the "time gap" on a legitimate 1999 Variety review.
+  // Issue #4 of Notion 34c637c5-416f-812b.
+  let urlYearHint = '';
+  const urlYear = _extractUrlYear(url);
+  let urlYearConflict = null;
+  if (urlYear && _pubDate) {
+    const pubYear = _pubDate.getUTCFullYear();
+    if (Number.isFinite(pubYear) && Math.abs(pubYear - urlYear) >= 3) {
+      const gapYears = Math.abs(pubYear - urlYear);
+      urlYearConflict = { urlYear, publishYear: pubYear, gapYears };
+      urlYearHint = `\n\n**URL-YEAR / PUBLISHDATE CONFLICT**: The review URL path contains "/${urlYear}/" but the stored publishDate is ${publishDate} (year ${pubYear}) — a ${gapYears}-year gap. This often happens when the outlet recrawls / republishes an older article and the metadata date gets updated while the URL slug preserves the original publication year. Treat the URL year as ONE signal, not authoritative. If the review text itself reads as contemporary to the ${urlYear} opening of the production, the URL year is probably correct. Do NOT flag wrongProduction based solely on the publishDate being far from openingDate when this conflict is present.`;
+    }
+  }
+
+  const priorRunHint = buildPriorRunHint(priorRuns, tourLegs);
+
+  const wrongProdList = mc.wrongProdExamples.map(e => `   - ${e}`).join('\n');
+
+  const prompt = `You are a content verification assistant for a theater review aggregator. We are verifying reviews of **${mc.label}** productions (${mc.description}).
+
+I scraped what should be a ${mc.label} theater review. Verify if the content is valid.
+
+**Expected Review:**
+- Show: "${showTitle}"
+- Market: ${mc.label}
+- Outlet: ${outletName}
+- Critic: ${criticName || 'Unknown'}${dateContext}${publishDateContext}${venueContext}${excerptContext}
+
+**Scraped Content (${scrapedText.length > CV_WINDOW_CHARS + CV_TAIL_CHARS ? `first ${CV_WINDOW_CHARS} chars, then the passages that name the show and the ending; "[...]" marks omitted text, which is NOT truncation` : 'complete'}):**
+${buildClassifySample(showTitle, scrapedText, { head: CV_WINDOW_CHARS, tail: CV_TAIL_CHARS, window: 700, maxWindows: 2, fullLimit: CV_WINDOW_CHARS + CV_TAIL_CHARS })}
+
+**Total scraped length:** ${scrapedText.length} characters
+
+Analyze the content and respond with ONLY valid JSON (no markdown fences):
+{
+  "isValid": true/false,
+  "confidence": "high"/"medium"/"low",
+  "wrongArticle": true/false,
+  "articleType": "review"/"preview"/"interview"/"news"/"feature"/"box-office"/"obituary"/"listicle"/"other",
+  "articleTypeConfidence": "high"/"medium"/"low",
+  "wrongProduction": true/false,
+  "isFilmTv": true/false,
+  "truncated": true/false,
+  "issues": ["list of issues found"],
+  "reasoning": "1-2 sentence explanation"
+}
+
+**Check these specific things:**
+
+1. **Article type (CRITICAL)**: Is this a REVIEW — a critic evaluating a show after seeing it and giving their opinion? Or is it something else:
+   - **preview**: written before opening, previewing what to expect
+   - **interview**: conversation with cast/creatives
+   - **news/feature**: reporting on the show (casting, box office, closings)
+   - **box-office**: grosses/financial data
+   Set wrongArticle=true if it is NOT a review. Set articleType to the correct category.
+   A review MUST contain the critic's assessment of the show's quality.
+
+2. **Wrong article (legacy)**: Is this about a completely different show, or not a theater review at all?
+
+2. **Wrong production** (IMPORTANT): Is this reviewing a NON-${mc.label} production of "${showTitle}"? Red flags:
+${wrongProdList}
+   A review of the ${mc.label} production that merely *mentions* other productions is NOT a wrong production — it must be *reviewing* a non-${mc.label} staging.
+
+   **"Reviews OF" vs "mentions OF" — the critical distinction (Schmigadoon 2026 FP class):**
+   Before flagging wrongProduction=true, ask yourself: is this critic evaluating the ${mc.label} run that just opened, or is the critic evaluating a different run?
+     - **Evaluates the ${mc.label} run** (NOT wrongProduction, even if other productions are named): critic attended the ${mc.label} performance, the opinion-bearing sentences describe the ${mc.label} cast/staging, phrases like "the show at [${mc.label} theatre]", "this ${mc.label} outing", ${correctRunPhrases}.
+     - **Evaluates a different run** (IS wrongProduction): the opinion-bearing sentences describe ${differentRunExamples} cast and venue — the review was WRITTEN about that run and merely refiled on a ${mc.label} show page.
+   Background paragraphs that contextualize ("this is a transfer from the Kennedy Center pre-Broadway tryout"), historical asides ("the show was famously a 2021 Apple TV+ series"), or comparative references ("like NBC's Smash…") are NOT evidence of wrongProduction. Do not flag on mention alone.
+   **Confidence calibration for this flag:** Only set wrongProduction=true with confidence="high" when the review's opinion-bearing content evaluates a non-${mc.label} production. If the evidence is only a passing mention, contextual aside, or comparative reference, set wrongProduction=false. If you're uncertain whether the review is OF the ${mc.label} run or OF a different run, set confidence="low" — the rebuild gate requires confidence>=medium for promotion.
+
+   **YEAR / PRODUCTION MATCHING (most common failure mode):** The showTitle may contain a year suffix (e.g. "Cats 1982", "A Christmas Carol 2001", "Art 1998"). Many shows have multiple revivals — Cats had a 1982 original and a 2016 Broadway revival at different venues. DO NOT assume the review matches the showTitle year just because the show name matches. Cross-check:
+   - What year/run does the review actually describe? Look for opening-year mentions, cast names, venue names, and the review's publishDate.
+   - If the showTitle says "Cats 1982" but the review describes a production at Neil Simon Theatre (the 2016 revival was at Neil Simon; the 1982 original was at Winter Garden), that is wrongProduction=true.
+   - If the showTitle says "Art 1998" and the review mentions cast members famously in a LATER revival (e.g. Bobby Cannavale / NPH were in the 2025 Art revival, not 1998), that is wrongProduction=true.
+   - If the review's publishDate is more than 2 years away from the year in the showTitle, treat it as a strong signal the review is for a different production.
+   - Do NOT hallucinate or invent a cast/venue to match the showTitle. Only use facts actually in the scraped text.
+
+3. **Film/TV content**: Is this a review of a film adaptation, TV special, streaming version, or filmed stage production (not a live ${mc.label} performance)?
+
+4. **Truncation**: Does the text end mid-sentence, hit a paywall ("subscribe to read more"), or appear incomplete?
+
+5. **Junk content**: Is this mostly navigation, footer, cookie notices, or non-article content?
+
+**CRITICAL NUANCES — avoid known false positives:**
+
+${outletLocationGuidance}
+
+- **American Airlines Theatre / Todd Haimes Theatre** is on Broadway at 227 W 42nd Street (Roundabout's venue). It is NOT in Washington DC even if the review is in the Washington Post. Do not confuse it with the name.
+
+- **Venue TAXONOMY is never wrongProduction.** Whether a venue "counts as" Off-Broadway / Broadway / a festival stage is a classification question, NOT evidence about which production the review is of. The Public Theater's Delacorte Theater (Free Shakespeare in the Park) and similar NYC not-for-profit / outdoor festival stages are filed here under the expected category — a review correctly describing that staging is the RIGHT production. Do NOT set wrongProduction=true, and do NOT set isValid=false, merely because a venue is "not technically Off-Broadway," is "an outdoor summer festival," or is "in Central Park." Only flag when the OPINION-bearing content evaluates a genuinely different staging (different cast/director/season).
+
+${effectiveMarket === 'broadway' ? `- **Touring company playing AT a Broadway venue (CRITICAL EDGE CASE):** Sometimes a Broadway show entry IS a touring company doing a limited engagement at a Broadway venue (e.g., Mamma Mia 2025 at Winter Garden, The Wiz 2024 at Marquis). Critics may write "the national tour has settled into the [Broadway theatre]" or "this is a touring production playing on Broadway." This is CORRECT (not wrongProduction) — the Broadway show entry represents that specific limited engagement. The KEY signal: if the venue named in the review is a known Broadway theatre (Winter Garden, Marquis, Imperial, Booth, Shubert, Music Box, Majestic, Palace, St. James, etc.), lean CORRECT regardless of whether the production is described as "touring." Only flag wrongProduction when the venue is explicitly non-NYC (Curran SF, Ahmanson LA, Kennedy Center DC, Goodman Chicago, Cadillac Palace Chicago, etc.).` : ''}
+
+${effectiveMarket === 'west-end' || effectiveMarket === 'off-west-end' ? `- **Touring company playing AT a West End venue:** Sometimes a West End show entry IS a touring company doing a limited run at a West End theatre. If the venue named is a West End theatre (Palace, Apollo, Lyceum London, Savoy, Dominion, etc.), lean CORRECT regardless of whether the production is described as "touring."
+
+- **Pre-West-End tryouts at Off-West-End / regional venues:** Reviews at the Almeida, Young Vic, Donmar Warehouse, Royal Court, Hampstead, Menier Chocolate Factory, Southwark Playhouse, Bridge Theatre, Chichester Festival Theatre, Sheffield Crucible, Bristol Old Vic, Manchester Royal Exchange, etc. BEFORE the West End transfer ARE wrong production for the West End entry. Even if the same show later moved to the West End, the tryout review describes the pre-transfer version.` : ''}
+
+${effectiveMarket === 'broadway' ? `- **Pre-Broadway tryouts at regional houses:** Reviews at Chicago Shakespeare, Goodman Theatre, Kennedy Center, La Jolla Playhouse, Old Globe, Mark Taper Forum, ART Cambridge, etc. BEFORE the Broadway transfer ARE wrong production for the Broadway entry. Even if the same show later moved to Broadway, the tryout review describes the pre-Broadway venue.` : ''}
+
+Set isValid=true only if the content is a review of the ${mc.label} production and is not truncated/junk.${temporalHint}${longRunnerHint}${urlYearHint}${priorRunHint}`;
+
+  return { prompt, urlYearConflict };
+}
+
+/**
+ * Declared earlier runs / tour legs of THIS production (show.priorRuns,
+ * show.tourLegs) as a prompt hint. Without it the collector's verifier flags
+ * a review of a declared run (Totoro's Barbican run, the Garrick 2022 run of
+ * My Son's a Queer) as wrongProduction, and that "Collector LLM" reason is not
+ * one shouldAutoClearWrongProductionPriorRun may override, so the file stays
+ * excluded. Wording mirrors scripts/llm-scoring/input-builder.ts so the
+ * collector and the scorer judge a declared run the same way. Also used by
+ * clear-stale-wrong-production-flags.js's re-check prompt.
+ *
+ * @param {Array<{openingDate?: string, closingDate?: string, venue?: string}>} [priorRuns]
+ * @param {Array<{startDate?: string, endDate?: string, venue?: string}>} [tourLegs]
+ * @returns {string} '' when neither declares an entry
+ */
+function buildPriorRunHint(priorRuns, tourLegs) {
+  const sanitize = (s) => String(s).replace(/\s+/g, ' ').trim().slice(0, 200);
+  const describe = (venue, from, to) => {
+    const dates = from || to ? ` (${from || 'unknown'} to ${to || 'unknown'})` : '';
+    return `${venue ? sanitize(venue) : 'earlier run'}${dates}`;
+  };
+  const legs = [];
+  for (const p of Array.isArray(priorRuns) ? priorRuns : []) {
+    if (p && typeof p === 'object') legs.push(describe(p.venue, p.openingDate, p.closingDate));
+  }
+  for (const l of Array.isArray(tourLegs) ? tourLegs : []) {
+    if (l && typeof l === 'object') legs.push(describe(l.venue, l.startDate, l.endDate));
+  }
+  if (legs.length === 0) return '';
+  return `\n\n**DECLARED EARLIER RUNS / TOUR LEGS OF THIS PRODUCTION**: This same production also played declared earlier runs/tour legs: ${legs.join('; ')}. A review of a listed run at that venue, published during that run or in the weeks right after it closed, IS a review of THIS production: do NOT set wrongProduction=true for it, even where the guidance above calls a tryout, transfer or earlier venue a different production. Any other staging (including earlier stagings by the same company, even at the same venue in a different year) is still wrongProduction.`;
+}
+
+// ============================================================
+// Heuristic Fallback
+// ============================================================
+
+/**
+ * Heuristic-based content verification (no API needed)
+ * Used as fallback when all LLM providers are unavailable
+ */
+function heuristicVerify({ scrapedText, excerpt, showTitle }) {
+  const issues = [];
+  let truncated = false;
+  let wrongArticle = false;
+
+  if (!scrapedText) {
+    return {
+      isValid: false,
+      confidence: 'high',
+      issues: ['No content'],
+      truncated: true,
+      wrongArticle: false,
+      wrongProduction: false,
+      isFilmTv: false,
+      verifiedBy: 'heuristic'
+    };
+  }
+
+  // Fold diacritics on both sides — shows.json titles are largely ASCII
+  // ("Les Miserables") while outlets spell them correctly with accents
+  // ("Les Misérables"); without folding both the haystack and the needle,
+  // an accented body never matches an unaccented title or vice versa
+  // (task #648/#760 class — see title-match.js:foldDiacritics).
+  const text = foldDiacritics(scrapedText).toLowerCase();
+  const showLower = foldDiacritics(showTitle || '').toLowerCase();
+
+  // Check if show title appears in text
+  const showMentioned = showLower && (
+    text.includes(showLower) ||
+    text.includes(showLower.replace(/[^a-z0-9]/g, ''))
+  );
+
+  if (!showMentioned && showTitle && showTitle.length > 3) {
+    issues.push(`Show title "${showTitle}" not found in content`);
+    wrongArticle = true;
+  }
+
+  // Check for truncation signals
+  const truncationSignals = [
+    'subscribe to', 'sign in to', 'create an account', 'members only',
+    'continue reading', 'read more', 'premium content', 'paywall',
+    'already a subscriber', 'log in to continue'
+  ];
+
+  for (const signal of truncationSignals) {
+    if (text.includes(signal)) {
+      issues.push(`Truncation signal: "${signal}"`);
+      truncated = true;
+    }
+  }
+
+  // Check if ends mid-sentence
+  const trimmed = scrapedText.trim();
+  const lastChar = trimmed.slice(-1);
+  if (!['.', '!', '?', '"', "'", ')'].includes(lastChar)) {
+    issues.push('Content may be truncated (does not end with punctuation)');
+    truncated = true;
+  }
+
+  // Check excerpt match (if provided)
+  if (excerpt && excerpt.length > 50) {
+    const excerptNorm = excerpt.toLowerCase().replace(/[^a-z0-9\s]/g, '').substring(0, 100);
+    const textNorm = text.replace(/[^a-z0-9\s]/g, '');
+    const excerptWords = excerptNorm.split(/\s+/).filter(w => w.length > 4);
+    const matchingWords = excerptWords.filter(w => textNorm.includes(w));
+    const matchRate = matchingWords.length / excerptWords.length;
+
+    if (matchRate < 0.3 && excerptWords.length > 5) {
+      issues.push(`Low excerpt match rate: ${(matchRate * 100).toFixed(0)}%`);
+      wrongArticle = true;
+    }
+  }
+
+  // Check for navigation/junk content
+  const junkSignals = [
+    'privacy policy', 'terms of use', 'cookie policy', 'all rights reserved',
+    'advertisement', 'sponsored content', 'related articles'
+  ];
+
+  let junkCount = 0;
+  for (const signal of junkSignals) {
+    if (text.includes(signal)) junkCount++;
+  }
+
+  if (junkCount >= 3) {
+    issues.push('Content appears to be mostly navigation/footer junk');
+  }
+
+  const isValid = !wrongArticle && issues.length <= 1;
+
+  return {
+    isValid,
+    confidence: issues.length === 0 ? 'high' : issues.length <= 2 ? 'medium' : 'low',
+    issues,
+    truncated,
+    wrongArticle,
+    wrongProduction: false, // Heuristics can't reliably detect this
+    isFilmTv: false, // Heuristics can't reliably detect this
+    verifiedBy: 'heuristic',
+    contentHash: contentHash(scrapedText)
+  };
+}
+
+/**
+ * Quick check if content is likely a valid review (fast, no API)
+ */
+function quickValidityCheck(text, showTitle) {
+  if (!text || text.length < 300) return false;
+
+  const lower = text.toLowerCase();
+
+  const theaterWords = ['broadway', 'theater', 'theatre', 'musical', 'stage', 'performance', 'actor', 'cast', 'director'];
+  const hasTheaterContent = theaterWords.some(w => lower.includes(w));
+
+  const showMentioned = !showTitle || lower.includes(showTitle.toLowerCase());
+
+  const junkRatio = (lower.match(/privacy|terms|cookie|subscribe|sign in/g) || []).length;
+
+  return hasTheaterContent && showMentioned && junkRatio < 3;
+}
+
+/**
+ * Decide whether the LLM CV pass's wrongShow promotion should be deferred
+ * (flagged for human review instead of auto-promoted) because the outlet is
+ * known for long-biographical leads that resemble wrong-show content.
+ *
+ * Returns true only when ALL of:
+ *   1. contentTier is NOT 'invalid'
+ *   2. getCvStyle(outletId) === 'long-biographical'
+ *   3. wordCount(fullText) > 500
+ *   4. hasOpinionLanguage(fullText) is true
+ *
+ * The guard exists to rescue real reviews the CV misread (e.g. a genuine
+ * Vulture review with a long essayistic lead) — an invalid-tier scrape is
+ * not a review the CV misread, so it must never qualify for deferral
+ * (BRO-2834: 114/118 historical predicate matches were invalid-tier junk).
+ *
+ * Safe defaults: returns false for missing outletId or fullText.
+ *
+ * @param {{ outletId?: string, fullText?: string, contentTier?: string }} reviewData
+ * @returns {boolean}
+ */
+function shouldDeferCvWrongShow(reviewData) {
+  const { outletId, fullText, contentTier } = reviewData || {};
+  if (!outletId || !fullText) return false;
+  if (contentTier === 'invalid') return false;
+  if (getCvStyle(outletId) !== 'long-biographical') return false;
+  const wordCount = fullText.split(/\s+/).filter(Boolean).length;
+  if (wordCount <= 500) return false;
+  return hasOpinionLanguage(fullText);
+}
+
+/**
+ * BRO-4429: a "not a review" CV verdict (wrongArticle) formed from the first
+ * 2500 chars of a LONGER article is a weak signal — a review whose opening is
+ * scene-setting reads as a preview (the-saviors / TheaterMania). Such a verdict
+ * must not terminally exclude the file: rebuild treats it as advisory.
+ * A high-confidence non-preview verdict (interview, obituary, listicle...) stays
+ * actionable since those are identifiable from the head.
+ */
+function isCvVerdictFromPartialWindow(cv, fullText, review = null) {
+  if (!cv || cv.wrongArticle !== true) return false;
+  // wrongProduction evidence (different show named in the head) is not a
+  // truncation artifact; only the "is this an evaluation at all" call is.
+  if (cv.wrongProduction === true) return false;
+  if (!HEAD_AMBIGUOUS_ARTICLE_TYPES.has(cv.articleType)) return false;
+  const len = stripLeadingJsonBlob(fullText || '').length;
+  // A high-confidence verdict needs the window to have missed a substantial
+  // part of the piece (>1.5x); anything less confident only needs to be cut off.
+  const minLen = cv.confidence === 'high' ? CV_WINDOW_CHARS * 1.5 : CV_WINDOW_CHARS;
+  if (len > minLen) return true;
+  // BRO-4563: a verdict judged on a cut-off fetch. The collector stamps it;
+  // with the review record the test also runs here, because the reverify
+  // scripts replace the whole cv object and would drop the stamp.
+  if (cv.truncatedFetch === true) return true;
+  return !!review && isCvVerdictFromTruncatedFetch(cv, review.fullText || review.wrongFullText || '', review.url);
+}
+
+// The verifier's own words saying the text it saw stops short.
+const CV_TRUNCATION_TEXT = /\btruncat|\bcut off\b|\bcuts off\b|\bpaywall|\bonly the (?:lede|lead|opening|first paragraph|byline)|\bbody (?:is )?missing\b|\breview content (?:appears to be |is )?missing\b/i;
+
+/**
+ * BRO-4563: a "not a review" verdict (wrongArticle) on a fetch that stopped
+ * after the lede is a truncation artifact, not a judgement of the article.
+ * Baltimore Sun's Maybe Happy Ending tour review (URL ".../maybe-happy-ending-
+ * review/") came back as 1,952 chars of lede; the verifier said "news" at high
+ * confidence while also saying the text was "severely truncated", and the
+ * collector nulled a real review. True only when all hold: the verdict is a
+ * head-ambiguous type (news/preview/feature/other) with no wrongProduction,
+ * the verifier itself says the text is cut off, the whole stored text is
+ * shorter than the verifier window (it saw everything there was), and the URL
+ * path names the page a review.
+ */
+function isCvVerdictFromTruncatedFetch(cv, text, url) {
+  if (!cv || cv.wrongArticle !== true || cv.wrongProduction === true) return false;
+  if (!HEAD_AMBIGUOUS_ARTICLE_TYPES.has(cv.articleType)) return false;
+  const said = [...(Array.isArray(cv.issues) ? cv.issues : []), cv.reasoning || ''].join(' ');
+  if (cv.truncated !== true && !CV_TRUNCATION_TEXT.test(said)) return false;
+  if (stripLeadingJsonBlob(text || '').length >= CV_WINDOW_CHARS) return false;
+  // A roundup, a year-in-review or a /reviews/ section page is not one review.
+  let pathname;
+  try { pathname = new URL(String(url || '')).pathname; } catch { return false; }
+  if (/roundup|year-in-review|best-of|(?:^|\/)reviews?\/?$/i.test(pathname)) return false;
+  // Same "this URL is a review page" test as the classifier's RC2 guard
+  // (flagged-recovery.js shouldSkipNonReviewStamp). Lazy: avoids a load cycle.
+  return require('./flagged-recovery').looksLikeReviewUrl(String(url || ''));
+}
+
+module.exports = {
+  CV_WINDOW_CHARS,
+  isCvVerdictFromPartialWindow,
+  isCvVerdictFromTruncatedFetch,
+  verifyContent,
+  heuristicVerify,
+  quickValidityCheck,
+  contentHash,
+  shouldDeferCvWrongShow,
+  resolveCvMarket,
+  // Pure prompt-builder, exported so WE long-runner CV hardening issues #2-#4
+  // (venue aliases, long-runner hint, URL-year conflict) are directly
+  // unit-testable without mocking the LLM call. See card 34c637c5-416f-812b.
+  buildVerificationPrompt,
+  buildPriorRunHint,
+  // Generic prompt→text providers, exported so other verifiers (e.g. the
+  // slug-misroute content check) can run multi-model agreement without
+  // duplicating the HTTPS plumbing. Each takes a prompt string, returns a
+  // Promise<string>, and throws if its API key is unset.
+  callGemini,
+  callOpenAI,
+  // Factory: callAnthropic(modelId) -> prompt => Promise<string>. Pair with
+  // verifyContent's `provider` to pin a model (audit-wrong-article.js uses Opus).
+  callAnthropic,
+};

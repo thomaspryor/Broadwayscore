@@ -1,0 +1,869 @@
+name: Push core data
+description: Commits and pushes core data changes to the private repo
+
+inputs:
+  token:
+    description: PAT for private repo access
+    required: true
+  message:
+    description: Commit message
+    required: false
+    default: 'data: Update core data'
+
+runs:
+  using: composite
+  steps:
+    # Notion 362637c5-416f-8174 — refuse to push if a prior step in this job
+    # signalled "data is bad." validate-data.js writes ${RUNNER_TEMP}/.skip-push-core-data
+    # when it exits 1. Without this gate, 64 workflows using push-core-data with
+    # `if: always()` would push corrupt rows even after validate failed (because
+    # the gate was on the public-repo commit step only). One-line cost; no
+    # per-workflow edits required.
+    #
+    # IMPORTANT: in GitHub Actions composite actions, `exit 0` in one step does NOT
+    # skip subsequent steps — only `exit 1` halts execution. So this step sets a
+    # step output, and the two real steps below gate on it via `if:`.
+    - name: Refuse if prior validation failed
+      id: refusal-check
+      shell: bash
+      run: |
+        SENTINEL="${RUNNER_TEMP:-/tmp}/.skip-push-core-data"
+        if [ -f "$SENTINEL" ]; then
+          echo "::warning::push-core-data refused — prior step (likely validate-data.js) signalled bad data. See $SENTINEL for details."
+          # Bound the cat: sentinel files should be tiny (~200 bytes), but defend against runaway error blobs.
+          head -c 4096 "$SENTINEL" 2>/dev/null || true
+          echo "skip=true" >> "$GITHUB_OUTPUT"
+        else
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+        fi
+
+    - name: Sync core data files to checkout
+      if: steps.refusal-check.outputs.skip != 'true'
+      shell: bash
+      run: |
+        # Copy ONLY files this workflow actually modified during the run.
+        # Baseline: /tmp/core-data-snapshot/ — written by checkout-core-data at
+        # checkout time (checkout-core-data/action.yml, "Copy core data to data/").
+        # A file identical to its snapshot was NOT touched by this workflow;
+        # copying it back would push content that is stale by the workflow's
+        # entire runtime, silently reverting any concurrent push that landed
+        # mid-run. Incident 2026-07-13: fetch-guardian-reviews reverted a
+        # just-pushed commercial.json fix ~25 min after it landed — a file that
+        # workflow never writes. (An earlier diff-based version was removed for
+        # "silently missing changes" — it diffed against the wrong baseline.
+        # The snapshot IS the correct baseline.)
+        #
+        # Decision table is mirrored + pinned in
+        # scripts/lib/core-data-sync-decision.js and
+        # tests/unit/core-data-sync-decision.test.mjs — change both together.
+        # retired-show-ids.json + deleted-shows.json (2026 data audit,
+        # S0-T2/S0-T4): the retired-id registry and its archive of deleted
+        # rows, written by scripts/lib/retired-show-ids.js retireId(). Core
+        # data (§11) — listed here so a CI run that retires an id pushes both.
+        # critic-slug-aliases.json (2026 data audit, S5-T9): retired critic
+        # slug → canonical slug, read by scripts/lib/critic-slug-aliases.js at
+        # prebuild for the /critics/* 301s. Human-edited today; listed so a
+        # future CI writer (S7-T3 diacritic fold) pushes it like the rest.
+        # feedback-submitters.json (BRO-4453): reader name/email/message for
+        # feedback reports, written by process-feedback.js. Private by design:
+        # it is what keeps those details out of the public issues.
+        CORE_FILES="shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json diary-shows.json audience-reviews-lbo.json opening-night-sent.json followers.json subscribers.json subscribers-westend.json awards.json retired-show-ids.json deleted-shows.json critic-slug-aliases.json feedback-submitters.json"
+        # Manifest of files this workflow actually modified — consumed by the
+        # "Commit and push core data" step below to decide whether the
+        # per-slug reconciliation merge (commercial.json, diary-shows.json) is
+        # safe to run. Same staleness class as the sync logic itself (see
+        # comment below): a workflow that never touched a file has nothing
+        # meaningful to contribute to a merge, and capturing its stale on-disk
+        # copy as "ours" can out-vote a concurrent fix that landed on remote
+        # mid-run (ties in mergeCommercialJson's pickNewer default to "ours").
+        : > /tmp/.core-data-changed-files
+        if [ ! -d "/tmp/core-data-snapshot" ]; then
+          # Failsafe: no snapshot dir means we can't tell which files this
+          # workflow modified (checkout-core-data predates snapshotting, or was
+          # bypassed). Fall back to legacy copy-all rather than silently
+          # pushing nothing — but warn, because copy-all can revert concurrent
+          # pushes of files this workflow didn't touch.
+          echo "::warning::/tmp/core-data-snapshot missing — cannot detect workflow-modified files; falling back to copy-all (may revert concurrent data pushes). Ensure checkout-core-data ran in this job."
+          COPIED=""
+          for f in $CORE_FILES; do
+            if [ -f "data/$f" ]; then
+              cp -f "data/$f" /tmp/core-data-checkout/
+              COPIED="$COPIED $f"
+              echo "$f" >> /tmp/.core-data-changed-files
+            fi
+          done
+          echo "Synced core data files (copy-all fallback):$COPIED"
+        else
+          for f in $CORE_FILES; do
+            if [ ! -f "data/$f" ]; then
+              # Missing from data/ (e.g. reverted by `git checkout -- .`).
+              # Hard skip — never restore from snapshot: a point-in-time
+              # snapshot copied over the fresh checkout can also revert
+              # concurrent pushes, and is a content no-op at best.
+              echo "skipped (missing): $f"
+            elif [ ! -f "/tmp/core-data-snapshot/$f" ]; then
+              cp -f "data/$f" /tmp/core-data-checkout/
+              echo "copied (new): $f"
+              echo "$f" >> /tmp/.core-data-changed-files
+            elif cmp -s "data/$f" "/tmp/core-data-snapshot/$f"; then
+              echo "skipped (unchanged): $f"
+            else
+              cp -f "data/$f" /tmp/core-data-checkout/
+              echo "copied (changed): $f"
+              echo "$f" >> /tmp/.core-data-changed-files
+            fi
+          done
+        fi
+
+    - name: Commit and push core data
+      if: steps.refusal-check.outputs.skip != 'true'
+      shell: bash
+      working-directory: /tmp/core-data-checkout
+      env:
+        CORE_DATA_TOKEN: ${{ inputs.token }}
+        COMMIT_MSG: ${{ inputs.message }}
+      run: |
+        if [ ! -d ".git" ]; then
+          echo "::warning::Core data checkout not found — skipping push (checkout may have failed)"
+          exit 0
+        fi
+
+        git config user.name "GitHub Action"
+        git config user.email "action@github.com"
+        git remote set-url origin "https://x-access-token:${CORE_DATA_TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git"
+
+        # Validate JSON files before committing (catches conflict markers from stash/rebase)
+        INVALID=0
+        for f in *.json; do
+          if [ -f "$f" ]; then
+            if grep -q '<<<<<<' "$f" 2>/dev/null; then
+              echo "::error::$f contains merge conflict markers — aborting commit"
+              INVALID=1
+            elif ! node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))" 2>/dev/null; then
+              echo "::error::$f is not valid JSON — aborting commit"
+              INVALID=1
+            fi
+          fi
+        done
+        if [ "$INVALID" -ne 0 ]; then
+          echo "::error::One or more core data files are invalid. Fix before retrying."
+          exit 1
+        fi
+
+        # Recalculate audience-buzz combinedScores BEFORE committing. Any caller
+        # that writes audience-buzz.json may have stored an uncalibrated
+        # combinedScore (e.g., a scraper that bypassed audience-weighting.js).
+        # This guarantees combinedScore + designation are always derived from
+        # the current calibration logic before data leaves CI.
+        if [ -f "audience-buzz.json" ] && [ -n "${GITHUB_WORKSPACE}" ]; then
+          node -e '
+            const path = require("path");
+            const ws = process.env.GITHUB_WORKSPACE;
+            const { calculateCombinedScore, getDesignation } = require(path.join(ws, "scripts/lib/audience-weighting"));
+            const fs = require("fs");
+            try {
+              const audienceBuzz = JSON.parse(fs.readFileSync("audience-buzz.json", "utf8"));
+              const showsData = fs.existsSync("shows.json") ? JSON.parse(fs.readFileSync("shows.json", "utf8")) : null;
+              const showMap = {};
+              if (showsData) for (const s of (showsData.shows || [])) showMap[s.id] = s;
+              let updated = 0;
+              for (const [showId, show] of Object.entries(audienceBuzz.shows || {})) {
+                const showData = showMap[showId];
+                const showInfo = showData ? { closingDate: showData.closingDate, status: showData.status, category: showData.category } : undefined;
+                const { score } = calculateCombinedScore(show.sources, showInfo);
+                if (score !== null && score !== show.combinedScore) {
+                  show.combinedScore = score;
+                  show.designation = getDesignation(score);
+                  updated++;
+                }
+              }
+              if (updated > 0) {
+                fs.writeFileSync("audience-buzz.json", JSON.stringify(audienceBuzz, null, 2) + "\n");
+                console.log("Pre-commit: recalculated combinedScore for " + updated + " shows");
+              }
+            } catch (e) {
+              console.error("Pre-commit recalc failed (non-fatal):", e.message);
+            }
+          ' 2>&1 || true
+        fi
+
+        git add -A
+
+        if git diff --staged --quiet; then
+          echo "No core data changes to push"
+          exit 0
+        fi
+
+        CHANGED=$(git diff --staged --stat | tail -1)
+        git commit -m "${COMMIT_MSG}" -m "Changed: ${CHANGED}"
+
+        # Save our audience-buzz.json before push attempts (for reconciliation)
+        if [ -f "audience-buzz.json" ]; then
+          cp audience-buzz.json /tmp/our-audience-buzz.json
+        fi
+
+        UPSTREAM_TIP=""
+        for i in 1 2 3 4 5; do
+          PUSH_STDERR_FILE=$(mktemp)
+          if git push origin main 2>"$PUSH_STDERR_FILE"; then
+            cat "$PUSH_STDERR_FILE" >&2
+            echo "Core data pushed successfully (attempt $i)"
+            rm -f "$PUSH_STDERR_FILE"
+            exit 0
+          fi
+          cat "$PUSH_STDERR_FILE" >&2
+
+          # BRO-66 sibling (card #1850): a rate-limited push means the GitHub
+          # API itself is throttling REVIEW_TEXTS_TOKEN, not "another workflow
+          # pushed first" — the fetch/rebase/reconcile dance below issues
+          # several MORE API calls (git fetch, several git show per file) that
+          # would just as likely fail too and waste the attempt. Detect via
+          # scripts/lib/github-rate-limit-retry.js (BRO-66, unit-tested in
+          # tests/unit/checkout-rate-limit-retry.test.mjs) and skip straight to
+          # a backoff + retry of the push itself when rate-limited; any other
+          # failure falls through to the existing reconciliation dance below,
+          # unchanged.
+          # Guarded with `|| DECISION=stop:decision-error`: this runs under
+          # `bash -e`, and a bare `DECISION=$(...)` assignment DOES trigger
+          # errexit if the command substitution exits non-zero (e.g.
+          # github-rate-limit-retry.js throws — missing/unreadable module,
+          # unexpected stderr shape). Unguarded, that would kill the entire
+          # retry loop on attempt 1 of ANY push conflict, before the existing
+          # fetch/rebase/reconcile fallback below ever runs — the same
+          # "one bad command kills all 5 retries" bug class as the amend
+          # guards above (task #1911 second-opinion review).
+          DECISION=$(PUSH_STDERR_FILE="$PUSH_STDERR_FILE" ATTEMPT="$i" node -e "
+            const fs = require('fs');
+            const { shouldRetry, retryDelayMs } = require('${GITHUB_WORKSPACE}/scripts/lib/github-rate-limit-retry.js');
+            const stderr = fs.readFileSync(process.env.PUSH_STDERR_FILE, 'utf8');
+            const attempt = Number(process.env.ATTEMPT);
+            const r = shouldRetry({ attempt, exitCode: 1, stderr, maxAttempts: 5 });
+            console.log(r.retry ? ('retry:' + retryDelayMs(attempt)) : ('stop:' + r.reason));
+          ") || DECISION="stop:decision-error"
+          rm -f "$PUSH_STDERR_FILE"
+
+          case "$DECISION" in
+            retry:*)
+              DELAY_MS="${DECISION#retry:}"
+              DELAY_S=$(( (DELAY_MS + 999) / 1000 ))
+              echo "::warning::Core data push hit a GitHub API rate limit (attempt $i/5) — backing off ${DELAY_S}s before retrying push directly (skipping fetch/rebase/reconcile)"
+              sleep "$DELAY_S"
+              continue
+              ;;
+            stop:max-attempts-reached)
+              # Still rate-limited on the final attempt — the dance below issues
+              # several MORE API calls against the same throttled token (fetch +
+              # several git show per file); running it here can't help this job
+              # (no attempts left) and only worsens the shared-PAT burst for
+              # every other workflow sharing REVIEW_TEXTS_TOKEN's quota.
+              echo "::error::Core data push still rate-limited after $i attempts — giving up without the fetch/rebase/reconcile dance"
+              exit 1
+              ;;
+          esac
+
+          # Push failed — another workflow pushed first. Fetch their version
+          # before rebasing so we can reconcile JSON data.
+          git fetch origin main 2>/dev/null || true
+
+          # Save remote's audience-buzz.json before rebase overwrites it
+          git show origin/main:audience-buzz.json > /tmp/remote-audience-buzz.json 2>/dev/null || true
+
+          # Save remote's shows.json before rebase overwrites it
+          git show origin/main:shows.json > /tmp/remote-shows.json 2>/dev/null || true
+          # ...and the BASE we started from, so the reconciliation below can tell
+          # a show remote ADDED while we were running (must be kept) from one we
+          # deliberately DELETED (must stay deleted). Without the base, those two
+          # cases are indistinguishable and either new shows vanish or deleted
+          # ones resurrect. See the show-recovery block after the rebase.
+          #
+          # PRIMARY SOURCE is the checkout snapshot, NOT git history:
+          # checkout-core-data clones with --depth 1 and `git reset --hard`, so
+          # `git merge-base HEAD origin/main` frequently resolves to nothing in a
+          # shallow repo — the recovery would then quietly disable itself in
+          # exactly the concurrent case it exists for. /tmp/core-data-snapshot/
+          # is the pristine copy taken at checkout time, before this job touched
+          # anything, which is precisely "the base" and needs no history at all.
+          # merge-base stays as a fallback for callers that skipped the snapshot.
+          if [ -f /tmp/core-data-snapshot/shows.json ]; then
+            cp -f /tmp/core-data-snapshot/shows.json /tmp/base-shows.json
+          else
+            BASE_SHA="$(git merge-base HEAD origin/main 2>/dev/null || true)"
+            if [ -n "$BASE_SHA" ]; then
+              git show "${BASE_SHA}:shows.json" > /tmp/base-shows.json 2>/dev/null || rm -f /tmp/base-shows.json
+            else
+              rm -f /tmp/base-shows.json
+            fi
+          fi
+
+          # Save remote's commercial.json + commercial-pending-review.json
+          # before rebase overwrites them. With RSS poller + scraper + sweep
+          # all writing to these, multi-writer concurrency demands a real merge.
+          # Ship-check CDX-P0-2.
+          #
+          # Guard: only capture "ours" (and therefore only run the merge) for
+          # commercial.json if this workflow's Sync step actually copied it
+          # into the checkout (see /tmp/.core-data-changed-files, written
+          # above). If this job never touched commercial.json, "ours" is
+          # whatever was on disk at checkout time — possibly tens of minutes
+          # stale — and merging it against remote can out-vote a fix that
+          # landed on remote mid-run (mergeCommercialJson's pickNewer defaults
+          # to "ours" on a tie, e.g. a manual field-only edit that didn't bump
+          # lastUpdated). Without this guard, the rebase above already
+          # resolves correctly on its own — our commit has no diff for an
+          # untouched file, so there's no conflict and remote's content
+          # simply carries through. Card #268, 2026-07-21:
+          # opening-night-poller's fast_path job never writes commercial.json,
+          # yet its stale "ours" snapshot reverted a concurrent one-line fix
+          # via this exact merge.
+          #
+          # commercial-pending-review.json is intentionally NOT gated the same
+          # way: it isn't in CORE_FILES (see Sync step above), so the Sync
+          # step never syncs it from data/ and the manifest never carries an
+          # entry for it — there is no reliable "did this job touch it"
+          # signal to gate on. Capturing it unconditionally here matches its
+          # pre-existing (already-imprecise, separately tracked) behavior;
+          # tying its capture to commercial.json's manifest flag would be an
+          # arbitrary coupling between two unrelated files (ship-check
+          # finding, 2026-07-21).
+          #
+          # BRO-4657: also keep the checkout snapshot as the base, so the merge
+          # can tell a record this job DELETED (dedupe self-heal) from one
+          # remote added. Snapshot only, never merge-base: after the rebase
+          # that resolves to remote and would delete every remote addition.
+          if grep -qxF "commercial.json" /tmp/.core-data-changed-files 2>/dev/null; then
+            git show origin/main:commercial.json > /tmp/remote-commercial.json 2>/dev/null || true
+            [ -f "commercial.json" ] && cp commercial.json /tmp/our-commercial.json
+            if [ -f /tmp/core-data-snapshot/commercial.json ]; then
+              cp -f /tmp/core-data-snapshot/commercial.json /tmp/base-commercial.json
+            else
+              rm -f /tmp/base-commercial.json
+            fi
+          fi
+          git show origin/main:commercial-pending-review.json > /tmp/remote-commercial-pending.json 2>/dev/null || true
+          [ -f "commercial-pending-review.json" ] && cp commercial-pending-review.json /tmp/our-commercial-pending.json
+
+          # Save remote's diary-shows.json + our pre-rebase copy. diary-shows.json
+          # is an array-of-shows with THREE independent writers (import-mezzanine-
+          # historical, resolve-unmatched-imports nightly, refresh-mezzanine-catalog
+          # weekly). -X ours alone silently drops the side that lost the race's
+          # newly-added shows — same data-loss class as commercial.json (card #176).
+          # Same staleness guard as commercial.json above (card #268).
+          if grep -qxF "diary-shows.json" /tmp/.core-data-changed-files 2>/dev/null; then
+            git show origin/main:diary-shows.json > /tmp/remote-diary-shows.json 2>/dev/null || true
+            [ -f "diary-shows.json" ] && cp diary-shows.json /tmp/our-diary-shows.json
+          fi
+
+          # Save remote's pre-rebase copy of every OTHER registered
+          # private-core-data file (BRO-76: scripts/lib/core-data-merge-
+          # registry.js) — awards.json, opening-night-sent.json,
+          # critic-registry.json, grosses-history.json as of this card. Same
+          # staleness guard as commercial.json/diary-shows.json above (card
+          # #268): only capture a file this job's Sync step actually touched,
+          # or "ours" is a stale on-disk copy that can out-vote a concurrent
+          # fix. Generic reconciliation itself runs post-rebase, below.
+          mkdir -p /tmp/remote-core-data
+          node -e '
+            const { activeEntriesFor } = require(require("path").join(process.env.GITHUB_WORKSPACE, "scripts/lib/core-data-merge-registry"));
+            for (const e of activeEntriesFor("private-core-data")) console.log(e.file);
+          ' > /tmp/.core-data-registry-files 2>/dev/null || true
+          while IFS= read -r f; do
+            [ -n "$f" ] || continue
+            if grep -qxF "$f" /tmp/.core-data-changed-files 2>/dev/null; then
+              git show origin/main:"$f" > "/tmp/remote-core-data/$f" 2>/dev/null || true
+            fi
+          done < /tmp/.core-data-registry-files
+
+          # Defensive: `git pull --rebase` refuses OUTRIGHT ("You have
+          # unstaged changes") on any dirty working tree, before it even
+          # attempts a rebase. Live incident (task #1911 follow-up, run
+          # 32614795280, 2026-08-23): iteration 1 reconciled+amended cleanly,
+          # but iteration 2's rebase call refused this way every time,
+          # burning all 5 attempts with no actual conflict ever in play. This
+          # exact class of failure could never surface before the amend
+          # guards above existed — any earlier amend refusal ("would make it
+          # empty") crashed the whole script on iteration 1, so the loop
+          # never lived long enough to reach a SECOND iteration and expose
+          # it. Whatever leaves the tree dirty between iterations (a
+          # reconciliation write not fully folded into its amend is the
+          # leading suspect, but unconfirmed from CI logs alone), folding it
+          # into the current commit — or, if that somehow still fails,
+          # hard-resetting to the last known-good commit — guarantees a
+          # clean tree before every rebase attempt regardless of cause.
+          if ! git diff --quiet || ! git diff --staged --quiet; then
+            git add -A
+            bash "${GITHUB_WORKSPACE}/scripts/lib/commit-or-amend.sh" "${UPSTREAM_TIP:-}" "${COMMIT_MSG}" >/dev/null 2>&1 || git reset --hard HEAD
+          fi
+
+          # Rebase with -X ours: our version wins on conflicts.
+          # Post-rebase reconciliation below restores any remote-only changes
+          # that -X ours silently dropped (manual corrections to shows.json, audience-buzz).
+          if ! git pull --rebase -X ours origin main; then
+            git rebase --abort 2>/dev/null || true
+            sleep $((RANDOM % 10 + 5))
+            continue
+          fi
+          # BRO-4688: if the rebase dropped our commit (patch already upstream),
+          # HEAD is now the remote's own tip — the amend sites below must not
+          # rewrite it. commit-or-amend.sh compares HEAD against this ref.
+          UPSTREAM_TIP=$(git rev-parse FETCH_HEAD 2>/dev/null || true)
+
+          # Reconcile shows.json: restore manually-correctable fields from remote
+          # that -X ours may have dropped. Only restores a safelist of fields that
+          # are typically set by manual corrections (venue, synopsis, dates, runtime).
+          # Excludes derived/internal fields (_meta, lastUpdated, tags, images) and
+          # fields that may be intentionally nulled (closingDate clearing, etc.).
+          # Date fields (openingDate, previewsStartDate, openingDateSource) are on
+          # the safelist as of 2026-04-28 — without them, parallel crons writing
+          # date corrections (e.g. enrich-west-end-dates, the new OB equivalent)
+          # silently lost their work on rebase races. See KENREX 2026-04-28 root
+          # cause and memory/feedback_off_broadway_opening_date_gap.md.
+          # humanCorrectedClosingDate added 2026-05-24 — when a human manually
+          # fixes a closingDate via the private repo, the flag tells all auto-
+          # writers to skip. Reconciling it here means a concurrent push by an
+          # auto-writer can't drop the flag on rebase. See
+          # scripts/lib/closing-date-guard.js.
+          # tourLegs + priorRuns added 2026-08-03 (Coverage Verdict S4) — both
+          # are manually-declared returning-production/tour-continuity data
+          # (see scripts/lib/wrong-production-autoclear.js + tour-legs-validation.js);
+          # without reconciliation here, a concurrent -X ours rebase silently
+          # drops a just-declared leg/run and the wrongProduction guards it was
+          # meant to exempt start re-flagging legitimate reviews again.
+          # Field-level reconcile + whole-show re-add logic lives in
+          # scripts/lib/reconcile-shows-fields.js (colocated *.test.mjs,
+          # runs in the scripts/lib/*.test.mjs glob) — pulled out of this
+          # inline node -e (task #1817) because the old inline version
+          # restored a RECONCILABLE field from remote whenever OUR value was
+          # null, with no way to tell "we never had it" from "we just
+          # deliberately cleared it." fix-shared-ibdb-urls.js's self-heal
+          # nulls a revival's stale shared ibdbUrl earlier in the calling
+          # workflow, but origin/main's copy (never having received a prior
+          # fix either, for the same reason) still had the old shared URL —
+          # so this step read that as "remote added a value we lost" and
+          # restored the exact bug the self-heal had just cleared, on every
+          # push retry. Confirmed live: 2026-07-03 through 2026-08-19, every
+          # run healed its own working tree but no "Update from
+          # update-show-status" commit ever actually touched ibdbUrl.
+          # reconcileShowsJson now also takes /tmp/base-shows.json (the
+          # pre-run snapshot) and only restores a field from remote when the
+          # baseline was ALSO empty for it — if baseline had a value and our
+          # local doesn't, this run itself cleared it, and that must stand.
+          if [ -f "/tmp/remote-shows.json" ] && [ -f "shows.json" ]; then
+            node -e '
+              const fs = require("fs");
+              const path = require("path");
+              const ws = process.env.GITHUB_WORKSPACE;
+              const { reconcileShowsJson } = require(path.join(ws, "scripts/lib/reconcile-shows-fields"));
+              try {
+                const local = JSON.parse(fs.readFileSync("shows.json", "utf8"));
+                const remote = JSON.parse(fs.readFileSync("/tmp/remote-shows.json", "utf8"));
+                let base = null;
+                try {
+                  base = JSON.parse(fs.readFileSync("/tmp/base-shows.json", "utf8"));
+                } catch {
+                  // No base (first push, shallow clone, unreadable) — cannot
+                  // distinguish add from delete, so do NOT re-add. Silently
+                  // losing a show is bad; silently resurrecting a deleted one
+                  // is worse, and the stuck-request check will surface the loss.
+                  base = null;
+                }
+
+                // Retired ids (2026 data audit, S0-T4): a retired id is never
+                // re-added, whatever the base says — once the deleting run has
+                // pushed, every later job base-snapshot lacks the id too, so a
+                // stale concurrent writer would otherwise read as a genuine
+                // concurrent add and resurrect the row. Read from THIS checkout
+                // (post-rebase, so it carries every retirement any run has
+                // pushed), not the workspace copy taken at job start. Missing
+                // or empty file = no retirements yet. An unreadable file
+                // (bad JSON, not an array) reconciles with an EMPTY list and
+                // warns. Never hand the module undefined here: it would
+                // re-read its default path, throw on the same corruption, and
+                // the outer catch would then skip the ENTIRE reconcile,
+                // field recovery included.
+                let retiredIds = [];
+                try {
+                  if (fs.existsSync("retired-show-ids.json")) {
+                    const rawRetired = fs.readFileSync("retired-show-ids.json", "utf8");
+                    if (rawRetired.trim() !== "") {
+                      const retired = JSON.parse(rawRetired);
+                      if (!Array.isArray(retired)) {
+                        throw new Error("expected a JSON array, got " + (retired === null ? "null" : typeof retired));
+                      }
+                      retiredIds = retired.map((e) => e && e.id).filter(Boolean);
+                    }
+                  }
+                } catch (e) {
+                  console.log("::warning::retired-show-ids.json in the core-data checkout is unreadable (" + e.message + ") — reconciling with an EMPTY retired list this run; a retired id present on remote can be re-added until the file is fixed");
+                  retiredIds = [];
+                }
+
+                const { recovered, readded, baseAvailable, retiredSkipped } = reconcileShowsJson(local, remote, base, undefined, retiredIds);
+
+                if (recovered > 0 || readded > 0) {
+                  fs.writeFileSync("shows.json", JSON.stringify(local, null, 2) + "\n");
+                  console.log(
+                    "Reconciled " + recovered + " fields from remote shows.json" +
+                    (readded > 0 ? "; re-added " + readded + " show(s) a concurrent job created" : "")
+                  );
+                }
+                if (retiredSkipped > 0) {
+                  console.log("Refused to re-add " + retiredSkipped + " retired show id(s) present on remote shows.json (data/retired-show-ids.json)");
+                }
+                if (readded === 0 && !baseAvailable) {
+                  const localIds = new Set((local.shows || []).map((s) => s && s.id).filter(Boolean));
+                  const remoteOnly = (remote.shows || []).filter((rs) => rs && rs.id && !localIds.has(rs.id)).length;
+                  if (remoteOnly > 0) {
+                    console.log(
+                      "::warning::" + remoteOnly + " show(s) exist on remote but not locally and no merge base was " +
+                      "readable — cannot tell concurrent-add from delete, so they were NOT recovered."
+                    );
+                  }
+                }
+              } catch (e) {
+                console.error("Shows reconciliation failed (non-fatal):", e.message);
+              }
+            ' 2>&1 || true
+          fi
+
+          # Reconcile audience-buzz.json: merge show-level entries from remote
+          # that our -X ours rebase may have dropped. This prevents concurrent
+          # audience-buzz writers from clobbering each other's work.
+          if [ -f "/tmp/our-audience-buzz.json" ] && [ -f "/tmp/remote-audience-buzz.json" ]; then
+            node -e '
+              const fs = require("fs");
+              try {
+                const ours = JSON.parse(fs.readFileSync("/tmp/our-audience-buzz.json", "utf8"));
+                const remote = JSON.parse(fs.readFileSync("/tmp/remote-audience-buzz.json", "utf8"));
+                const current = JSON.parse(fs.readFileSync("audience-buzz.json", "utf8"));
+                const shows = current.shows || {};
+                const remoteShows = remote.shows || {};
+                let recovered = 0;
+                for (const [id, entry] of Object.entries(remoteShows)) {
+                  if (!shows[id]) {
+                    // Remote has a show we dont — keep it
+                    shows[id] = entry;
+                    recovered++;
+                  } else {
+                    // Both have this show — merge sources we are missing
+                    const ourSrc = shows[id].sources || {};
+                    const remoteSrc = entry.sources || {};
+                    for (const [src, data] of Object.entries(remoteSrc)) {
+                      if (data && data.score != null && (!ourSrc[src] || ourSrc[src].score == null)) {
+                        ourSrc[src] = data;
+                        recovered++;
+                      }
+                    }
+                    shows[id].sources = ourSrc;
+                  }
+                }
+                if (recovered > 0) {
+                  current.shows = shows;
+                  fs.writeFileSync("audience-buzz.json", JSON.stringify(current, null, 2) + "\n");
+                  console.log("Reconciled " + recovered + " entries from remote audience-buzz.json");
+                }
+              } catch (e) {
+                console.error("Reconciliation failed (non-fatal):", e.message);
+              }
+            ' 2>&1 || true
+
+            # Recalculate combinedScores after source merging so calibration
+            # and weighting are always correctly applied (not just copied from source).
+            if [ -f "audience-buzz.json" ] && [ -n "${GITHUB_WORKSPACE}" ]; then
+              node -e '
+                const path = require("path");
+                const ws = process.env.GITHUB_WORKSPACE;
+                const { calculateCombinedScore, getDesignation } = require(path.join(ws, "scripts/lib/audience-weighting"));
+                const fs = require("fs");
+                try {
+                  const audienceBuzz = JSON.parse(fs.readFileSync("audience-buzz.json", "utf8"));
+                  const showsData = fs.existsSync("shows.json") ? JSON.parse(fs.readFileSync("shows.json", "utf8")) : null;
+                  const showMap = {};
+                  if (showsData) for (const s of (showsData.shows || [])) showMap[s.id] = s;
+                  let updated = 0;
+                  for (const [showId, show] of Object.entries(audienceBuzz.shows || {})) {
+                    const showData = showMap[showId];
+                    const showInfo = showData ? { closingDate: showData.closingDate, status: showData.status, category: showData.category } : undefined;
+                    const { score } = calculateCombinedScore(show.sources, showInfo);
+                    if (score !== null && score !== show.combinedScore) {
+                      show.combinedScore = score;
+                      show.designation = getDesignation(score);
+                      updated++;
+                    }
+                  }
+                  if (updated > 0) {
+                    fs.writeFileSync("audience-buzz.json", JSON.stringify(audienceBuzz, null, 2) + "\n");
+                    console.log("Recalculated combinedScore for " + updated + " shows");
+                  }
+                } catch (e) {
+                  console.error("Recalculate failed (non-fatal):", e.message);
+                }
+              ' 2>&1 || true
+            fi
+
+            # Re-stage and amend if audience-buzz reconciliation changed the file.
+            # When the reconciled content converges back to exactly HEAD^'s
+            # tree (our contribution fully superseded by a concurrent push),
+            # git refuses an amend that would be empty. Left unguarded, that
+            # refusal (exit 1) runs under this step's `bash -e` and kills the
+            # ENTIRE retry loop on the spot — task #1911 traced the Opening
+            # Night Poller's week-long nightly failure streak to exactly this
+            # (reviews.json/critic-registry.json reconciling to a no-op
+            # almost every run, since the poller fires every ~15-45 min and
+            # frequently finds nothing new).
+            #
+            # UPDATED (task #1911 follow-up): originally guarded with plain
+            # `2>/dev/null || true` instead of --allow-empty, reasoning that
+            # HEAD already matches what we'd be committing so there was
+            # nothing to gain by amending. That reasoning missed that `git
+            # add` above ALREADY staged the new content before this line
+            # runs — a refused, swallowed amend leaves the index dirty
+            # (file staged but never committed) instead of leaving nothing
+            # to commit at all. That dirty state then makes the NEXT loop
+            # iteration's `git pull --rebase` refuse outright with "You have
+            # unstaged changes," burning the rest of the retry budget on a
+            # failure with no real push conflict in it (confirmed live, run
+            # 32614795280, 2026-08-23 — reachable in all 6 per-file amend
+            # blocks in this file, not just this one). `--allow-empty`
+            # closes that gap: the amend always succeeds, so `git add`ed
+            # content is always folded into a real commit and the tree
+            # stays clean. The tradeoff (occasional true no-op commits in
+            # the private repo's history) is strictly preferable to a
+            # retry loop that can no longer make progress.
+            if ! git diff --quiet audience-buzz.json 2>/dev/null; then
+              git add audience-buzz.json
+              bash "${GITHUB_WORKSPACE}/scripts/lib/commit-or-amend.sh" "${UPSTREAM_TIP:-}" "${COMMIT_MSG}" >/dev/null 2>&1 || true
+              echo "Amended commit with reconciled audience-buzz.json"
+            fi
+          fi
+
+          # Re-stage shows.json if reconciliation changed it (outside audience-buzz guard)
+          if ! git diff --quiet shows.json 2>/dev/null; then
+            git add shows.json
+            bash "${GITHUB_WORKSPACE}/scripts/lib/commit-or-amend.sh" "${UPSTREAM_TIP:-}" "${COMMIT_MSG}" >/dev/null 2>&1 || true
+            echo "Amended commit with reconciled shows.json"
+          fi
+
+          # Reconcile commercial.json + commercial-pending-review.json. Both
+          # are per-slug dictionaries written by multiple workflows (Friday
+          # scraper, Saturday orchestrator, RSS poller, closing-stale
+          # classifier). -X ours alone would silently lose slugs added on the
+          # other side. mergeCommercialJson preserves humanReviewed* flags
+          # from the loser side so manual corrections always survive.
+          if [ -f "/tmp/our-commercial.json" ] && [ -f "/tmp/remote-commercial.json" ] && [ -f "commercial.json" ]; then
+            node -e '
+              const path = require("path");
+              const ws = process.env.GITHUB_WORKSPACE;
+              const fs = require("fs");
+              try {
+                const { mergeCommercialJson } = require(path.join(ws, "scripts/lib/merge-commercial-data"));
+                const ours = JSON.parse(fs.readFileSync("/tmp/our-commercial.json", "utf8"));
+                const remote = JSON.parse(fs.readFileSync("/tmp/remote-commercial.json", "utf8"));
+                // BRO-4657: no readable base -> two-way union, as before.
+                let base;
+                try { base = JSON.parse(fs.readFileSync("/tmp/base-commercial.json", "utf8")); } catch { base = undefined; }
+                const { merged, stats } = mergeCommercialJson(ours, remote, base);
+                fs.writeFileSync("commercial.json", JSON.stringify(merged, null, 2) + "\n");
+                console.log("Reconciled commercial.json: " + JSON.stringify(stats));
+              } catch (e) {
+                console.error("commercial.json reconciliation failed (non-fatal):", e.message);
+              }
+            ' 2>&1 || true
+            if ! git diff --quiet commercial.json 2>/dev/null; then
+              git add commercial.json
+              # See audience-buzz.json amend above for why this is guarded
+              # with `2>/dev/null || true` instead of left to crash the loop.
+              bash "${GITHUB_WORKSPACE}/scripts/lib/commit-or-amend.sh" "${UPSTREAM_TIP:-}" "${COMMIT_MSG}" >/dev/null 2>&1 || true
+              echo "Amended commit with reconciled commercial.json"
+            fi
+          fi
+          if [ -f "/tmp/our-commercial-pending.json" ] && [ -f "/tmp/remote-commercial-pending.json" ] && [ -f "commercial-pending-review.json" ]; then
+            node -e '
+              const path = require("path");
+              const ws = process.env.GITHUB_WORKSPACE;
+              const fs = require("fs");
+              try {
+                const { mergePendingReview } = require(path.join(ws, "scripts/lib/merge-commercial-data"));
+                const ours = JSON.parse(fs.readFileSync("/tmp/our-commercial-pending.json", "utf8"));
+                const remote = JSON.parse(fs.readFileSync("/tmp/remote-commercial-pending.json", "utf8"));
+                const { merged, stats } = mergePendingReview(ours, remote);
+                fs.writeFileSync("commercial-pending-review.json", JSON.stringify(merged, null, 2) + "\n");
+                console.log("Reconciled commercial-pending-review.json: " + JSON.stringify(stats));
+              } catch (e) {
+                console.error("commercial-pending-review.json reconciliation failed (non-fatal):", e.message);
+              }
+            ' 2>&1 || true
+            if ! git diff --quiet commercial-pending-review.json 2>/dev/null; then
+              git add commercial-pending-review.json
+              bash "${GITHUB_WORKSPACE}/scripts/lib/commit-or-amend.sh" "${UPSTREAM_TIP:-}" "${COMMIT_MSG}" >/dev/null 2>&1 || true
+              echo "Amended commit with reconciled commercial-pending-review.json"
+            fi
+          fi
+
+          # Reconcile diary-shows.json. Array-of-shows keyed by mezzanineId, with
+          # three independent append/update-only writers (import-mezzanine-
+          # historical, resolve-unmatched-imports, refresh-mezzanine-catalog).
+          # -X ours would keep only our side wholesale, silently dropping any
+          # shows the other side added. mergeDiaryShows unions both sides by
+          # mezzanineId (fallback id); ours wins on shared keys (matches -X ours),
+          # remote-only shows are re-added. Card #176 (same class as CDX-P0-2).
+          if [ -f "/tmp/our-diary-shows.json" ] && [ -f "/tmp/remote-diary-shows.json" ] && [ -f "diary-shows.json" ]; then
+            node -e '
+              const path = require("path");
+              const ws = process.env.GITHUB_WORKSPACE;
+              const fs = require("fs");
+              try {
+                const { mergeDiaryShows } = require(path.join(ws, "scripts/lib/merge-diary-shows"));
+                const ours = JSON.parse(fs.readFileSync("/tmp/our-diary-shows.json", "utf8"));
+                const remote = JSON.parse(fs.readFileSync("/tmp/remote-diary-shows.json", "utf8"));
+                const { merged, stats } = mergeDiaryShows(ours, remote);
+                // Match the three writers on-disk format (no trailing newline)
+                // so a no-op merge produces a byte-identical file and skips the amend.
+                fs.writeFileSync("diary-shows.json", JSON.stringify(merged, null, 2));
+                console.log("Reconciled diary-shows.json: " + JSON.stringify(stats));
+              } catch (e) {
+                console.error("diary-shows.json reconciliation failed (non-fatal):", e.message);
+              }
+            ' 2>&1 || true
+            if ! git diff --quiet diary-shows.json 2>/dev/null; then
+              git add diary-shows.json
+              bash "${GITHUB_WORKSPACE}/scripts/lib/commit-or-amend.sh" "${UPSTREAM_TIP:-}" "${COMMIT_MSG}" >/dev/null 2>&1 || true
+              echo "Amended commit with reconciled diary-shows.json"
+            fi
+          fi
+
+          # Generic reconciliation for every OTHER registered private-core-data
+          # file (BRO-76: scripts/lib/core-data-merge-registry.js), using the
+          # pre-rebase snapshots captured above. One node call drives all of
+          # them (awards.json, opening-night-sent.json, critic-registry.json,
+          # grosses-history.json as of this card) instead of a bespoke inline
+          # block per file — a NEW multi-writer file only needs a merge fn +
+          # registry entry, not a matching edit here. Prints changed
+          # basenames, one per line, so exactly those get `git add`ed — not
+          # a blanket `-A` (same reasoning as the per-file blocks above).
+          # Second arg (BRO-4852): the checkout snapshot is the base for
+          # three-way mergers (reviews.json), so a row our rebuild excluded is
+          # not unioned back from remote's older copy.
+          if [ -d /tmp/remote-core-data ]; then
+            RECONCILED_REGISTRY_FILES=$(node "${GITHUB_WORKSPACE}/scripts/lib/reconcile-core-data-registry.js" /tmp/remote-core-data /tmp/core-data-snapshot 2>&1 >/tmp/.reconciled-registry-files) || true
+            [ -n "$RECONCILED_REGISTRY_FILES" ] && echo "$RECONCILED_REGISTRY_FILES"
+            if [ -s /tmp/.reconciled-registry-files ]; then
+              # `|| [ -n "$f" ]` keeps an unterminated last line (BRO-4809: the
+              # last line is the reconciled file itself, e.g. reviews.json, and
+              # plain `read` skipped it). The body is an `if` so a missing file
+              # or refused `git add` on that last line can't trip `bash -e`.
+              while IFS= read -r f || [ -n "$f" ]; do
+                if [ -n "$f" ] && [ -f "$f" ]; then
+                  git add "$f" || echo "::warning::could not stage reconciled $f"
+                fi
+              done < /tmp/.reconciled-registry-files
+              if ! git diff --staged --quiet; then
+                # Same no-op-amend guard as the per-file blocks above — this
+                # is the block that most often hits it in practice (reviews.json
+                # via scripts/lib/merge-reviews-json.js reconciles to a byte-
+                # identical no-op almost every time two high-frequency writers
+                # like opening-night-poller race each other).
+                bash "${GITHUB_WORKSPACE}/scripts/lib/commit-or-amend.sh" "${UPSTREAM_TIP:-}" "${COMMIT_MSG}" >/dev/null 2>&1 || true
+                echo "Amended commit with reconciled: $(tr '\n' ' ' < /tmp/.reconciled-registry-files)"
+              fi
+            fi
+          fi
+
+          sleep $((RANDOM % 10 + 5))
+        done
+
+        echo "WARNING: Failed to push core data after 5 attempts"
+
+        # Durable failure telemetry (task: push-core-data retry exhaustion, 2026-08-25,
+        # /second-opinion'd — separate card from the parked "main-branch push contention:
+        # systemic architecture fix" epic, which explicitly scoped this composite action
+        # OUT to avoid converging two retry implementations mid-migration). Reuses the
+        # already-generic, already-tested scripts/record-push-retry-failure.js CLI built
+        # for push-with-retry.sh's own Phase 0 (PR #700) — same `push-retry-failures` git
+        # branch, same reason-string convention ("retries-exhausted", matching
+        # push-with-retry.sh's record_push_failure() so scripts/health-check.js's
+        # push-retry-deadman digest groups both push paths' exhaustions together instead
+        # of fragmenting into a bespoke reason bucket).
+        #
+        # That script gates recording on cwd's git origin matching the canonical PUBLIC
+        # Broadwayscore repo (CANONICAL_ORIGIN_RE) and deliberately no-ops from private-repo
+        # clones like this step's own working-directory (/tmp/core-data-checkout) — so it's
+        # invoked here from $GITHUB_WORKSPACE (the root checkout) instead, with --remote
+        # naming the private repo that actually failed. timeout+`|| true`: best-effort,
+        # must never fail this step or block the job on top of the push failure itself.
+        ( cd "$GITHUB_WORKSPACE" && timeout 15 node scripts/record-push-retry-failure.js \
+            --reason=retries-exhausted --attempt=5 --max-retries=5 \
+            --branch=main --remote=broadway-scorecard-data \
+            --workflow="${GITHUB_WORKFLOW:-unknown}" --ci=true ) >/dev/null 2>&1 || true
+
+        exit 1
+
+    # BRO-1084: outlet-registry.json moved from private-core-data (this
+    # action's CORE_FILES above) to public-repo-tracked. It's no longer in
+    # CORE_FILES, so the "Sync core data files" step above never looks at
+    # it — but ~20 workflows call rebuild-all-reviews.js's unconditional
+    # "AUTO-REGISTER NEW OUTLETS" block (scripts/rebuild-all-reviews.js
+    # ~line 6009), which writes data/outlet-registry.json on disk in the
+    # CALLING workflow's own root checkout (GITHUB_WORKSPACE, the public
+    # repo) whenever a genuinely new outlet is found in that run's reviews.
+    # None of those 21 workflows' own commit steps stage this file (they
+    # only stage narrow lists like data/audit/*.json) — they relied
+    # entirely on this action's old CORE_FILES entry to persist it via the
+    # private repo. Without this step, a CI-auto-registered outlet is
+    # written to the ephemeral runner's disk and silently discarded when
+    # the job ends: never committed anywhere. This step commits it
+    # directly to the public repo (where the calling job is already
+    # checked out) instead — the same repo/branch every other public-repo
+    # commit in these workflows lands on.
+    #
+    # BRO-4370 / BRO-4401: the same block now also writes
+    # data/audit/outlet-registry-staging.json — the outlets it REFUSED to
+    # register (no resolvable domain, a critic name, a domain collision)
+    # instead of minting a domain:null row. audit-outlet-registry.js
+    # --strict in test.yml reads the COMMITTED staging file (it runs with
+    # no prior rebuild) to tell a parked id from a NEW registry gap, so the
+    # staging file has to land here too. It is `git add`ed before any diff
+    # check on purpose: `git diff --quiet -- <path>` exits 0 for an
+    # UNTRACKED file, so the old "unchanged → exit 0" guard would have
+    # discarded the staging file the first time it was ever created
+    # (second-opinion finding, BRO-4401).
+    - name: Sync outlet-registry.json + staging list to public repo (BRO-1084, BRO-4370)
+      if: steps.refusal-check.outputs.skip != 'true'
+      shell: bash
+      working-directory: ${{ github.workspace }}
+      env:
+        # The staging file is multi-writer (every rebuild-running workflow
+        # pushes it through this step) and registered active in
+        # scripts/lib/core-data-merge-registry.js; this flag makes
+        # push-with-retry.sh run that union merge instead of ours-wins.
+        PUSH_RECONCILE_MERGED_JSON: '1'
+      run: |
+        REGISTRY="data/outlet-registry.json"
+        STAGING="data/audit/outlet-registry-staging.json"
+        if [ ! -f "$REGISTRY" ] && [ ! -f "$STAGING" ]; then
+          exit 0
+        fi
+        if [ -f "$REGISTRY" ] && ! node -e "JSON.parse(require('fs').readFileSync('$REGISTRY','utf8'))" 2>/dev/null; then
+          echo "::error::$REGISTRY is not valid JSON — refusing to commit"
+          exit 1
+        fi
+        # Same identity-config need as any inline root-checkout commit (see
+        # .github/workflows/CLAUDE.md "Git Identity for Inline Commits") —
+        # this action's other steps only configure git identity inside the
+        # private clone at /tmp/core-data-checkout, never here.
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add -- "$REGISTRY" 2>/dev/null || true
+        if [ -f "$STAGING" ]; then
+          if node -e "JSON.parse(require('fs').readFileSync('$STAGING','utf8'))" 2>/dev/null; then
+            git add -- "$STAGING" 2>/dev/null || true
+          else
+            # Advisory file: a bad write must not fail ~20 workflows' push step.
+            echo "::warning::$STAGING is not valid JSON — leaving it uncommitted this run"
+            git reset -q -- "$STAGING" 2>/dev/null || true
+          fi
+        fi
+        if git diff --staged --quiet -- "$REGISTRY" "$STAGING"; then
+          exit 0
+        fi
+        git commit -m "data: outlet registry auto-register/staging from rebuild"
+        bash scripts/lib/push-with-retry.sh 5 main

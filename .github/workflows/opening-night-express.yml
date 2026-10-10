@@ -1,0 +1,662 @@
+name: Opening Night Express
+
+# Streamlined single-job opening night pipeline.
+# Runs gather → collect → push → rebuild → deploy inline in strict sequence.
+# Eliminates the concurrent-CI data race (issue #9) that caused 5+ opening night failures.
+#
+# BEFORE RUNNING: This workflow cancels competing orchestrator/poller runs automatically.
+# The existing opening-night-orchestrator.yml will be paused for the duration.
+# When Express completes, the orchestrator resumes on its next cron.
+#
+# AUTO-FIRE (task #1349): update-show-status.yml's daily transition check dispatches
+# this workflow automatically for every real previews->open show, and reroutes its
+# gather-reviews.yml/collect-review-texts.yml dispatches + retires its
+# opening-night-poller.yml auto-dispatch for those shows to avoid double-processing
+# the same review data. Reverting Express now means undoing those too — it is no
+# longer a drop-in-delete file. Kill switch: `gh variable set EXPRESS_AUTOFIRE_DISABLED --body true`.
+#
+# Usage:
+#   gh workflow run opening-night-express.yml -f show_id=cats-the-jellicle-ball-2026 -f market=broadway
+#   gh workflow run opening-night-express.yml -f show_id=cats-the-jellicle-ball-2026 -f market=broadway -f clear_stale_scores=true
+
+on:
+  workflow_dispatch:
+    inputs:
+      show_id:
+        description: 'Show ID (e.g. cats-the-jellicle-ball-2026)'
+        required: true
+        type: string
+      market:
+        description: 'Market'
+        required: false
+        type: choice
+        options: [broadway, west-end]
+        default: broadway
+      bww_roundup_url:
+        description: 'BWW Review Roundup URL (bypasses SERP discovery)'
+        required: false
+        type: string
+        default: ''
+      clear_stale_scores:
+        description: 'Clear scores from reviews published 30+ days before opening (fixes #13)'
+        required: false
+        type: boolean
+        default: false
+      skip_gather:
+        description: 'Skip gather step (use if URLs already found by poller)'
+        required: false
+        type: boolean
+        default: false
+      skip_collect:
+        description: 'Skip collect step (use if texts already collected)'
+        required: false
+        type: boolean
+        default: false
+      skip_score:
+        description: 'Skip LLM scoring step (use for text-only re-runs or after a separate scoring run)'
+        required: false
+        type: boolean
+        default: false
+      dry_run:
+        description: 'Dry run — gather and collect but skip push/rebuild/deploy'
+        required: false
+        type: boolean
+        default: false
+      is_retry:
+        description: 'Internal: this run is a same-night retry (card #1889) — never re-enqueues another retry'
+        required: false
+        type: boolean
+        default: false
+      retry_delay_hours:
+        description: 'Same-night retry delay in hours, when this run finds coverage too thin to trust (card #1889)'
+        required: false
+        type: string
+        default: '16'
+
+permissions:
+  contents: write
+  actions: write
+
+# One Express run per show at a time. cancel-in-progress:false queues instead of
+# cancels. Per-show (not a single global group): GitHub Actions concurrency only
+# holds ONE pending run per group — a 3rd+ dispatch into an already-running +
+# already-pending group cancels the pending one outright, it does not extend the
+# queue. A shared group would silently drop every show but the last on a
+# multi-show opening night (caught in /ship-check review, task #1349). Per-show
+# groups mean every dispatched show actually runs. ORCHESTRATOR_PAUSED below is
+# therefore reference-counted (not a single value) so concurrent same-day runs
+# don't clobber each other's pause — see "Set/Clear ORCHESTRATOR_PAUSED".
+concurrency:
+  group: opening-night-express-${{ inputs.show_id }}
+  cancel-in-progress: false
+
+jobs:
+  express:
+    name: Opening Night Express — ${{ inputs.show_id }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 90-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
+
+      - name: Set ORCHESTRATOR_PAUSED (time-limited lease, blocks cron-triggered orchestrators)
+        # BRO-3707: moved BEFORE "Cancel competing orchestrator/poller runs"
+        # (was after). This step doesn't read anything the cancel step
+        # produces, and ordering it first closes a race an adversarial review
+        # found: the cancelled orchestrator/poller run's own "Check for
+        # Express preemption" step (gated `if: cancelled()`) can execute and
+        # read ORCHESTRATOR_PAUSED within milliseconds of being cancelled —
+        # well before the cancel step's later `sleep 15` — so with the lease
+        # set AFTER cancelling, that check could still read empty and send a
+        # false "Failed" alert on a routine takeover. Setting the lease first
+        # means it's already visible before any competing run is cancelled.
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          # JSON lease body so the orchestrator can auto-expire a hung Express run after 90min.
+          # Manual pauses ("true") are NOT overwritten here — we only set if cleared OR already ours.
+          # NOTE: `gh api ... --jq '.value' 2>/dev/null || echo ""` is buggy — when the variable
+          # doesn't exist (404), gh prints the error JSON to stdout and `||echo ""` runs INSIDE the
+          # subshell, appending instead of replacing. Capture exit code then reset CURRENT="" on
+          # failure so a missing variable correctly classifies as 'empty' instead of 'other'.
+          #
+          # runIds is a reference count, not a single value: auto-fire (task #1349) can start
+          # several Express runs the same day (one per opened show, each its own concurrency
+          # group). Without a count, whichever run finished first would clear the lease while a
+          # sibling run for a DIFFERENT show was still mid-write, un-suppressing the orchestrator
+          # for it. Adding our run_id here and only deleting the variable once the array is empty
+          # (see "Clear ORCHESTRATOR_PAUSED") keeps the pause active as long as ANY Express run
+          # holds it. This has the same read-modify-write race as any unlocked GH variable — two
+          # runs starting in the same instant could both read an empty/stale array and each write
+          # a 1-element result, dropping one id. Accepted: the race window is sub-second and the
+          # 90-min auto-expire in the orchestrator's own read path is the backstop either way.
+          CURRENT=$(gh api repos/${{ github.repository }}/actions/variables/ORCHESTRATOR_PAUSED --jq '.value' 2>/dev/null) || CURRENT=""
+          PARSE_RESULT=$(CURRENT="$CURRENT" RUN_ID="${{ github.run_id }}" node -e "
+            const raw = process.env.CURRENT || '';
+            const runId = process.env.RUN_ID;
+            if (!raw) {
+              console.log(JSON.stringify({ kind: 'empty', body: { value: 'express', setAt: new Date().toISOString(), runIds: [runId] } }));
+              process.exit(0);
+            }
+            let p;
+            try { p = JSON.parse(raw); } catch (e) { p = null; }
+            if (!p || p.value !== 'express') {
+              console.log(JSON.stringify({ kind: 'other' }));
+              process.exit(0);
+            }
+            const runIds = Array.isArray(p.runIds) ? p.runIds.slice() : (p.runId ? [p.runId] : []);
+            if (!runIds.includes(runId)) runIds.push(runId);
+            console.log(JSON.stringify({ kind: 'express', body: { value: 'express', setAt: p.setAt || new Date().toISOString(), runIds } }));
+          " 2>/dev/null || echo '{"kind":"other"}')
+          KIND=$(echo "$PARSE_RESULT" | node -e "process.stdin.on('data',d=>process.stdout.write(JSON.parse(d).kind))")
+          if [ "$KIND" = "other" ]; then
+            echo "::error::ORCHESTRATOR_PAUSED already set by non-express pause (value=$CURRENT) — aborting"
+            exit 1
+          fi
+          LEASE_BODY=$(echo "$PARSE_RESULT" | node -e "process.stdin.on('data',d=>process.stdout.write(JSON.stringify(JSON.parse(d).body)))")
+          if gh variable set ORCHESTRATOR_PAUSED --body "$LEASE_BODY"; then
+            echo "ORCHESTRATOR_PAUSED=$LEASE_BODY"
+            echo "  (new orchestrator crons will yield; lease auto-expires after 90min)"
+          else
+            echo "::error::Could not set ORCHESTRATOR_PAUSED — aborting to prevent unguarded concurrent orchestrator writes"
+            exit 1
+          fi
+
+      - name: Cancel competing orchestrator/poller runs
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          echo "=== Pausing competing workflows to prevent data races ==="
+          CANCELLED=0
+          # BRO-4461: orchestrator/poller cancels are recorded so the final step can
+          # re-dispatch them (they were silently lost mid embargo-lift window before).
+          node scripts/lib/express-preemption.js cancel "$RUNNER_TEMP/express-preempted.json"
+          CANCELLED=$(node -e "console.log(require('fs').readFileSync('$RUNNER_TEMP/express-preempted.json','utf8').length>2?1:0)")
+          for RUN_ID in $(gh run list --workflow=llm-ensemble-score.yml --status=in_progress --json databaseId --jq '.[].databaseId' 2>/dev/null) $(gh run list --workflow=llm-ensemble-score.yml --status=queued --json databaseId --jq '.[].databaseId' 2>/dev/null); do
+            echo "  Cancelling llm-ensemble-score.yml run $RUN_ID..."
+            gh run cancel "$RUN_ID" && CANCELLED=1 || echo "  ⚠ Could not cancel $RUN_ID"
+          done
+          echo "Express has the data repo to itself."
+          # Wait briefly for cancellations to propagate
+          [ $CANCELLED -gt 0 ] && sleep 15 || true
+
+      - name: Checkout core data (shows.json, reviews.json, etc.)
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Opening-night lease sync (BRO-4786)
+        uses: ./.github/actions/opening-night-lease-sync
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Verify show exists and get opening date
+        id: show_meta
+        run: |
+          SHOW_ID="${{ inputs.show_id }}"
+          SHOW=$(node -e "
+            const s = require('./data/shows.json').shows.find(s => s.id === '$SHOW_ID');
+            if (!s) { console.error('Show not found: $SHOW_ID'); process.exit(1); }
+            console.log(JSON.stringify({ name: s.name, openingDate: s.openingDate || '', market: s.market || '${{ inputs.market }}' }));
+          ")
+          echo "show_json=$SHOW" >> $GITHUB_OUTPUT
+          OPENING_DATE=$(echo "$SHOW" | node -e "process.stdin||(r=require);const d=JSON.parse(require('fs').readFileSync('/dev/stdin','utf8'));console.log(d.openingDate||'')")
+          SHOW_NAME=$(echo "$SHOW" | node -e "process.stdin||(r=require);const d=JSON.parse(require('fs').readFileSync('/dev/stdin','utf8'));console.log(d.name||'$SHOW_ID')")
+          echo "opening_date=$OPENING_DATE" >> $GITHUB_OUTPUT
+          echo "show_name=$SHOW_NAME" >> $GITHUB_OUTPUT
+          echo "Show: $SHOW_NAME | Opening: ${OPENING_DATE:-unknown} | Market: ${{ inputs.market }}"
+
+      - name: Pre-flight ScrapingBee credit check
+        continue-on-error: true
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: |
+          # Soft warning only — Express typically uses <300 SB credits, so never block on this.
+          # Emits ::warning:: if ≥90% used so the run summary flags it for manual attention.
+          node scripts/lib/check-sb-credits.js --warn-used-pct=90 2>&1 | grep -v '^{' || true
+
+      - name: Clear stale pre-opening scores
+        if: inputs.clear_stale_scores && steps.show_meta.outputs.opening_date != ''
+        run: |
+          echo "=== Clearing scores from prior-production reviews (30+ days before opening) ==="
+          OPENING="${{ steps.show_meta.outputs.opening_date }}"
+          node scripts/strip-stale-single-model-scores.js \
+            --before-opening="$OPENING" \
+            --show="${{ inputs.show_id }}" \
+            --apply
+          echo "Score clearing complete."
+
+      - name: Gather review URLs
+        if: inputs.skip_gather != true
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
+          BROWSERBASE_ENABLED: 'true'
+        run: |
+          echo "=== Gathering review URLs (aggregator-first: BWW RR → DTLI → Playbill → SERP) ==="
+          BWW_FLAG=""
+          if [ -n "${{ inputs.bww_roundup_url }}" ]; then
+            BWW_FLAG="--bww-roundup-url=${{ inputs.bww_roundup_url }}"
+            echo "  Using provided BWW RR URL: ${{ inputs.bww_roundup_url }}"
+          fi
+          node scripts/gather-reviews.js \
+            --shows="${{ inputs.show_id }}" \
+            --from-post-opening \
+            --opening-night \
+            $BWW_FLAG
+          echo "Gather complete."
+
+      - name: Collect review texts
+        if: inputs.skip_collect != true
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
+          BROWSERBASE_ENABLED: 'true'
+          BROWSERBASE_MAX_SESSIONS_PER_RUN: '20'
+          SHOW_FILTER: ${{ inputs.show_id }}
+          NYT_EMAIL: ${{ secrets.NYT_EMAIL }}
+          NYT_PASSWORD: ${{ secrets.NYTIMES_PASSWORD }}
+          VULTURE_EMAIL: ${{ secrets.VULTURE_EMAIL }}
+          VULTURE_PASSWORD: ${{ secrets.VULTURE_PASSWORD }}
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+          NYT_COOKIES: ${{ secrets.NYT_COOKIES }}
+          VULTURE_COOKIES: ${{ secrets.VULTURE_COOKIES }}
+          WAPO_COOKIES: ${{ secrets.WAPO_COOKIES }}
+          COOKIES_BUNDLE_1: ${{ secrets.COOKIES_BUNDLE_1 }}
+          COOKIES_BUNDLE_2: ${{ secrets.COOKIES_BUNDLE_2 }}
+          COOKIES_BUNDLE_3: ${{ secrets.COOKIES_BUNDLE_3 }}
+          COOKIES_BUNDLE_4: ${{ secrets.COOKIES_BUNDLE_4 }}
+          COOKIES_BUNDLE_5: ${{ secrets.COOKIES_BUNDLE_5 }}
+          COOKIES_BUNDLE_6: ${{ secrets.COOKIES_BUNDLE_6 }}
+          COOKIES_BUNDLE_7: ${{ secrets.COOKIES_BUNDLE_7 }}
+          COOKIES_BUNDLE_8: ${{ secrets.COOKIES_BUNDLE_8 }}
+          COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
+          COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
+          COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
+          # BRO-2381: without this, pushReviewTextsCheckpoint()'s mid-run
+          # checkpoint to the private review-texts repo silently no-ops —
+          # this job has a 90-min timeout, and the "Push review texts to
+          # private repo" step below never runs if this step is killed by it,
+          # so the mid-run checkpoint is the only safety net for an opening-
+          # night run that runs long.
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          echo "=== Collecting review texts for ${{ inputs.show_id }} ==="
+          node scripts/collect-review-texts.js \
+            --aggressive \
+            --max-reviews=50
+          echo "Collection complete."
+
+      # Card #1889: Express auto-fires once, immediately, on the previews->open
+      # transition — for an evening opening that can land hours before curtain,
+      # finding next to nothing, with no retry. If this run's collected text
+      # looks too thin to trust (isIncludableForRebuild-scoreable records
+      # mostly stub/excerpt, not real text), queue a same-night retry rather
+      # than leaving the show to the weekly recollect-for-scores.yml cron.
+      # Writes data/audit/express-retry-queue.json when a retry is warranted —
+      # picked up by the existing "Check for changes"/"Commit and push" steps
+      # below, no separate push needed. is_retry=true runs never re-enqueue;
+      # if a retry run is STILL thin, this routes an alert instead.
+      - name: Evaluate full-text coverage for same-night retry
+        if: inputs.dry_run != true
+        run: |
+          node scripts/express-retry-queue.js evaluate \
+            --show="${{ inputs.show_id }}" \
+            --market="${{ inputs.market }}" \
+            --is-retry="${{ inputs.is_retry }}" \
+            --retry-delay-hours="${{ inputs.retry_delay_hours }}"
+
+      - name: Push review texts to private repo
+        if: inputs.dry_run != true
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Opening Night Express — review texts for ${{ inputs.show_id }}"
+
+      - name: Score reviews
+        if: inputs.dry_run != true && inputs.skip_score != true
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          echo "=== Scoring reviews (all 3 models) ==="
+          # Score only this show's unscored reviews
+          npx ts-node scripts/llm-scoring/index.ts \
+            --show="${{ inputs.show_id }}" \
+            --ensemble \
+            --unscored-only \
+            --limit=30
+          echo "Scoring complete."
+
+      # GAP 1 FIX: Push scored review-text files back to private repo.
+      # The first push-review-texts ran before scoring; this second push commits
+      # the llmScore/scoreStatus/ensembleData fields written by the scoring step.
+      # Without this, the morning nightly rebuild sees these reviews as unscored,
+      # triggers llm-ensemble-score.yml, and potentially re-scores with different
+      # results before the broadcast fires.
+      - name: Push scored review texts
+        if: inputs.dry_run != true
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Opening Night Express — scored reviews for ${{ inputs.show_id }}"
+
+      # GAP 2 BELT-AND-SUSPENDERS: Re-cancel any orchestrators/pollers that started
+      # during the scoring window (which can take 10-30 min on opening night).
+      # The initial cancel at the top of this job handles runs active at Express start;
+      # this step catches cron-triggered runs that started while scoring was in progress.
+      - name: Re-cancel orchestrator/poller runs started during scoring
+        if: inputs.dry_run != true
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          node scripts/lib/express-preemption.js cancel "$RUNNER_TEMP/express-preempted.json"
+
+      - name: Get review count before rebuild
+        id: before
+        run: |
+          COUNT=$(node -e "const d=require('./data/reviews.json');console.log(d.reviews.filter(r=>r.showId===\"${{ inputs.show_id }}\").length)" 2>/dev/null || echo "0")
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+          echo "Reviews for show before rebuild: $COUNT"
+
+      - name: Rebuild reviews.json
+        if: inputs.dry_run != true
+        env:
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          echo "=== Rebuilding reviews.json ==="
+          node scripts/rebuild-all-reviews.js
+          echo "Rebuild complete."
+
+      - name: Get review count after rebuild
+        id: after
+        run: |
+          COUNT=$(node -e "const d=require('./data/reviews.json');console.log(d.reviews.filter(r=>r.showId===\"${{ inputs.show_id }}\").length)" 2>/dev/null || echo "0")
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+          echo "Reviews for show after rebuild: $COUNT"
+
+      # GAP 3 FIX: Write Express completion record to data/audit/ so the broadcast
+      # workflow can distinguish "Express ran cleanly" from "normal pipeline" and
+      # log accordingly. Staged by the existing `git add data/audit/*.json` line.
+      - name: Write Express completion record
+        if: inputs.dry_run != true
+        run: |
+          node -e "
+            const fs = require('fs');
+            const filePath = 'data/audit/opening-night-express-completed.json';
+            const existing = fs.existsSync(filePath)
+              ? JSON.parse(fs.readFileSync(filePath, 'utf8'))
+              : { shows: {} };
+            const rawReviews = require('./data/reviews.json');
+            const allReviews = Array.isArray(rawReviews.reviews) ? rawReviews.reviews
+              : Array.isArray(rawReviews) ? rawReviews : [];
+            const showReviews = allReviews.filter(r => r.showId === '${{ inputs.show_id }}');
+            existing.shows['${{ inputs.show_id }}'] = {
+              completedAt: new Date().toISOString(),
+              runId: '${{ github.run_id }}',
+              reviewCount: showReviews.length,
+              scoredCount: showReviews.filter(r => r.compositeScore > 0).length,
+              isRetry: ${{ inputs.is_retry }},
+            };
+            fs.writeFileSync(filePath, JSON.stringify(existing, null, 2) + '\n');
+            console.log('Express completion record written' + (${{ inputs.is_retry }} ? ' (retry)' : '') + ': ' +
+              showReviews.length + ' reviews, ' + showReviews.filter(r => r.compositeScore > 0).length + ' scored');
+          "
+
+      - name: Check for changes
+        if: inputs.dry_run != true
+        id: changes
+        run: |
+          # git diff catches modified tracked files; git status --porcelain catches new untracked
+          # files (e.g. data/audit/opening-night-express-completed.json on first Express run).
+          if ! git diff --quiet data/reviews.json public/data/shows/ 2>/dev/null || \
+             git status --porcelain data/audit/ public/data/shows/ 2>/dev/null | grep -q .; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No changes detected — skipping commit/deploy"
+          fi
+
+      # PUSH_DEADLINE_SEC='900' (task #1842, same class as task #1791's
+      # audit-aggregator-gap.yml fix): confirmed live in runs 32251748635 +
+      # 32237876239 (jeeves-takes-charge-west-end-2026, 2026-08-19) — this
+      # step's push-with-retry.sh hit the shared 240s default, restored HEAD,
+      # and aborted before reaching origin, against the same heavy
+      # concurrent data/audit/* write contention as the other two confirmed
+      # instances of this class. Unlike data-health-check.yml, no job
+      # timeout-minutes change is needed here: the job budget is already
+      # 90 minutes (line 87) and this step runs partway through a scraping +
+      # scoring pipeline, leaving ample headroom for 900s — matching #1791's
+      # own value rather than data-health-check.yml's tighter 600s, since
+      # this workflow has the same generous-headroom profile #1791's target
+      # did.
+      - name: Commit and push
+        if: inputs.dry_run != true && (steps.changes.outputs.has_changes == 'true' || steps.after.outputs.count > steps.before.outputs.count)
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
+          # its 90s default to 30s. Same class of pre-transfer connection
+          # stall as audit-aggregator-gap.yml (task #1791) — 90s burns the
+          # whole cap with zero transfer progress, so only ~4-6 retries fit
+          # inside the 900s deadline above. 30s roughly triples realized
+          # attempts in the same budget. Matches BRO-334/BRO-346.
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add data/audit/*.json 2>/dev/null || true
+          # alert-ledger.json is already covered by the glob above at
+          # runtime, but named explicitly here so the alert-ledger-commit-
+          # check.js CI gate can see it without depending on glob semantics.
+          # alert-router-attempts.jsonl (BRO-3671): the *.json glob misses it
+          # outright (.jsonl extension) — logDispatchAttempt() rewrites this
+          # TRACKED file on every dispatch attempt, and left unstaged it
+          # makes a rebase refuse pre-flight and forces the clobber-prone
+          # merge path in push-with-retry.sh (BRO-3662).
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          git add public/data/shows/ 2>/dev/null || true
+          bash scripts/lib/git-add-existing.sh public/opening-night-status.json public/status.html
+          git checkout -- data/reviews.json data/audience-buzz.json 2>/dev/null || true
+
+          BEFORE=${{ steps.before.outputs.count }}
+          AFTER=${{ steps.after.outputs.count }}
+          DIFF=$((AFTER - BEFORE))
+          DIFF_STR=$([ $DIFF -ge 0 ] && echo "+$DIFF" || echo "$DIFF")
+          RETRY_TAG=$([ "${{ inputs.is_retry }}" = "true" ] && echo " (retry)" || echo "")
+
+          git commit -m "data: Opening Night Express$RETRY_TAG — ${{ steps.show_meta.outputs.show_name }} ($DIFF_STR reviews)
+
+          Show: ${{ inputs.show_id }}
+          Reviews: $BEFORE → $AFTER
+          Market: ${{ inputs.market }}
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Push core data to private repo
+        if: inputs.dry_run != true
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Opening Night Express — ${{ inputs.show_id }}"
+
+      - name: Deploy to Vercel
+        # Deploy whenever reviews were actually added to the private repo — decoupled from
+        # the public-repo git diff (which often sees no changes because reviews flow through
+        # push-core-data, not the public repo commit). Validated via E2E test 2026-04-19:
+        # full run added 18 reviews but has_changes=false because public repo had no diff.
+        if: inputs.dry_run != true && steps.after.outputs.count > steps.before.outputs.count
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          echo "Triggering production deploy..."
+          gh workflow run vercel-deploy.yml || echo "::warning::Deploy dispatch failed — trigger manually: gh workflow run vercel-deploy.yml"
+
+      # BRO-2402: the evaluate step above only runs when gather + collect both
+      # succeed, and its queue write is only committed by "Commit and push"
+      # (also success-gated). A run that dies in gather/collect (the likeliest
+      # outcome when it fires hours before any review exists) found zero real
+      # reviews and queued NO retry. On any failure, evaluate from whatever is
+      # on disk and commit just the retry queue so the same-night retry still
+      # exists. Idempotent: enqueueRetry never double-queues a show.
+      - name: Queue same-night retry after failed run
+        # cancelled() covers the job's own 90-min timeout (reports "cancelled").
+        # show_meta success skips early aborts (paused orchestrator, bad
+        # checkout, unknown show) where a retry would hit the same abort.
+        if: (failure() || cancelled()) && inputs.dry_run != true && steps.show_meta.outcome == 'success'
+        continue-on-error: true
+        env:
+          PUSH_DEADLINE_SEC: '120'
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          node scripts/express-retry-queue.js evaluate \
+            --show="${{ inputs.show_id }}" \
+            --market="${{ inputs.market }}" \
+            --is-retry="${{ inputs.is_retry }}" \
+            --retry-delay-hours="${{ inputs.retry_delay_hours }}" \
+            || echo "::warning::BRO-2402 failure-path retry evaluate failed — no same-night retry queued"
+          if git status --porcelain data/audit/express-retry-queue.json | grep -q .; then
+            git config --local user.email "github-actions[bot]@users.noreply.github.com"
+            git config --local user.name "github-actions[bot]"
+            git add data/audit/express-retry-queue.json
+            # retry runs route a still-thin digest alert; persist its ledger too
+            git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json 2>/dev/null || true
+            git commit -m "data: Express retry queued after failed run — ${{ inputs.show_id }} [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: opening-night-express
+
+      - name: Step summary
+        if: always()
+        run: |
+          echo "## Opening Night Express — ${{ steps.show_meta.outputs.show_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| | |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| Show | ${{ inputs.show_id }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Market | ${{ inputs.market }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Reviews (this show) | ${{ steps.before.outputs.count }} → ${{ steps.after.outputs.count }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Dry run | ${{ inputs.dry_run }} |" >> $GITHUB_STEP_SUMMARY
+          # Show completion record if written
+          if [ -f "data/audit/opening-night-express-completed.json" ]; then
+            RECORD=$(node -e "
+              const d = require('./data/audit/opening-night-express-completed.json');
+              const s = d.shows && d.shows['${{ inputs.show_id }}'];
+              if (s) console.log('✅ ' + s.scoredCount + '/' + s.reviewCount + ' scored at ' + s.completedAt);
+              else console.log('—');
+            " 2>/dev/null || echo "—")
+            echo "| Express completion | $RECORD |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      # GAP 2 CLEANUP: Always clear ORCHESTRATOR_PAUSED at job end.
+      # Parses JSON lease body and only clears if value==="express" — preserves manual "true" pauses.
+      - name: Clear ORCHESTRATOR_PAUSED
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          # See "Set ORCHESTRATOR_PAUSED" for why we capture exit code instead of `|| echo ""`
+          # inside the subshell (404 error body would otherwise leak through), and for why this
+          # removes our run_id from a shared runIds array instead of unconditionally deleting the
+          # variable — a sibling Express run for a different show may still hold the lease.
+          CURRENT=$(gh api repos/${{ github.repository }}/actions/variables/ORCHESTRATOR_PAUSED \
+            --jq '.value' 2>/dev/null) || CURRENT=""
+          RESULT=$(CURRENT="$CURRENT" RUN_ID="${{ github.run_id }}" node -e "
+            const raw = process.env.CURRENT || '';
+            const runId = process.env.RUN_ID;
+            if (!raw) { console.log(JSON.stringify({ kind: 'empty' })); process.exit(0); }
+            let p;
+            try { p = JSON.parse(raw); } catch (e) { p = null; }
+            if (!p || p.value !== 'express') { console.log(JSON.stringify({ kind: 'other' })); process.exit(0); }
+            const runIds = (Array.isArray(p.runIds) ? p.runIds.slice() : (p.runId ? [p.runId] : [])).filter(id => id !== runId);
+            if (runIds.length === 0) { console.log(JSON.stringify({ kind: 'last' })); process.exit(0); }
+            console.log(JSON.stringify({ kind: 'remaining', body: { value: 'express', setAt: p.setAt, runIds } }));
+          " 2>/dev/null || echo '{"kind":"other"}')
+          KIND=$(echo "$RESULT" | node -e "process.stdin.on('data',d=>process.stdout.write(JSON.parse(d).kind))")
+          case "$KIND" in
+            last)
+              gh variable delete ORCHESTRATOR_PAUSED \
+                && echo "ORCHESTRATOR_PAUSED cleared — orchestrator crons may resume" \
+                || echo "::warning::Could not clear ORCHESTRATOR_PAUSED — run: gh variable delete ORCHESTRATOR_PAUSED"
+              ;;
+            remaining)
+              BODY=$(echo "$RESULT" | node -e "process.stdin.on('data',d=>process.stdout.write(JSON.stringify(JSON.parse(d).body)))")
+              gh variable set ORCHESTRATOR_PAUSED --body "$BODY" \
+                && echo "ORCHESTRATOR_PAUSED still held by other Express run(s): $BODY" \
+                || echo "::warning::Could not update ORCHESTRATOR_PAUSED runIds — run: gh variable delete ORCHESTRATOR_PAUSED"
+              ;;
+            other)
+              echo "ORCHESTRATOR_PAUSED=$CURRENT (manual pause — not clearing)"
+              ;;
+            *)
+              echo "ORCHESTRATOR_PAUSED already cleared"
+              ;;
+          esac
+
+      # BRO-4461: restore what Express cancelled (e.g. a west-end orchestrator/poller
+      # for a different show, mid embargo-lift window). Runs after the lease is
+      # cleared so the re-dispatched orchestrator does not yield to our own pause.
+      - name: Re-dispatch orchestrator/poller runs Express cancelled
+        if: always() && inputs.dry_run != true
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: node scripts/lib/express-preemption.js redispatch "$RUNNER_TEMP/express-preempted.json" || true
+
+      - name: Notify on failure
+        # BRO-3707: a hang hitting the job's own timeout-minutes: 90 reports
+        # conclusion "cancelled", not "failure" — a bare failure() here would
+        # silently drop this critical alert.
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Opening Night Express Failed — ${{ inputs.show_id }}'
+          description: 'Express pipeline failed mid-run. Check logs. Manual workaround: cancel orchestrator, local rebuild, push data repo, gh workflow run vercel-deploy.yml'
+          # BRO-4603: not on the owner's page-worthy list (scripts/lib/page-worthy-alerts.js
+          # PAGE_WORTHY_WORKFLOWS) — failures reach the morning digest, never email.
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          email: 'false'
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

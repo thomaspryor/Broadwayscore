@@ -1,0 +1,103 @@
+name: Dedupe Same-URL Byline Double-counts
+
+# Scheduled cleanup for the same-URL / multi-byline double-count class in
+# data/review-texts/: one article scraped under 2+ DIFFERENT real critic bylines
+# at the same URL, with no duplicateOf link. The rebuild treats these as a legit
+# "multi-critic page" and includes all of them, counting the one review 2-3× in
+# the composite (e.g. all-the-way-2014 NYT Brantley + Isherwood). Only cohesive
+# groups (same article, confirmed by fingerprint/high word-Jaccard) that the
+# rebuild's own fingerprint/fuzzy dedup MISSES are collapsed; genuinely-different
+# reviews at one URL are written to data/audit/same-url-different-text.json for
+# triage, never collapsed.
+#
+# Producer prevention: review-write-guard's URL-collision detector marks new
+# same-URL siblings duplicateOf at write time, so this is a legacy backlog. Daily
+# heal keeps the test.yml gate ("Audit same-URL byline double-counts") green.
+# Sibling of clear-stale-duplicate-of.yml and fix-circular-duplicate-pairs.yml.
+on:
+  schedule:
+    # Daily at 11:50 AM UTC — staggered after clear-stale (:30) and
+    # fix-circular (:40) so the three duplicateOf-family heals don't contend for
+    # the review-texts push lock.
+    - cron: '50 11 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Report only, no fix'
+        required: false
+        default: 'false'
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: dedupe-same-url-bylines
+  cancel-in-progress: false
+
+jobs:
+  dedupe:
+    name: Dedupe same-URL byline double-counts
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout review-texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Run audit (report)
+        id: audit
+        run: |
+          set +e
+          OUT=$(node scripts/dedupe-same-url-bylines.js 2>&1)
+          STATUS=$?
+          echo "$OUT"
+          COUNT=$(echo "$OUT" | grep -oE '[0-9]+ cohesive' | head -1 | awk '{print $1}')
+          COUNT=${COUNT:-0}
+          echo "count=$COUNT" >> "$GITHUB_OUTPUT"
+          echo "status=$STATUS" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Apply fix
+        if: steps.audit.outputs.status != '0' && inputs.dry_run != 'true'
+        run: node scripts/dedupe-same-url-bylines.js --fix
+
+      - name: Push to private repo
+        if: steps.audit.outputs.status != '0' && inputs.dry_run != 'true'
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: |
+            chore: collapse ${{ steps.audit.outputs.count }} same-URL byline double-counts [same-url-dedup]
+
+      - name: Summary
+        run: |
+          {
+            echo "## Same-URL Byline Double-count Sweep"
+            echo ""
+            echo "**Cohesive (collapsible) groups detected:** ${{ steps.audit.outputs.count }}"
+            if [ "${{ inputs.dry_run }}" = "true" ]; then
+              echo "**Mode:** dry-run (no commit)"
+            elif [ "${{ steps.audit.outputs.status }}" = "0" ]; then
+              echo "**Mode:** no fix needed"
+            else
+              echo "**Mode:** auto-fixed + pushed"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Dedupe Same-URL Bylines Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

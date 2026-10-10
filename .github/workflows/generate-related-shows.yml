@@ -1,0 +1,80 @@
+name: Generate Related Shows
+
+on:
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Force regenerate all shows'
+        required: false
+        default: 'false'
+        type: boolean
+      show_filter:
+        description: 'Single show slug to process'
+        required: false
+        type: string
+  schedule:
+    # Monthly on the 1st at 3 AM UTC
+    - cron: '0 3 1 * *'
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Generate related shows
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          ARGS=""
+          if [ "${{ inputs.force }}" = "true" ]; then
+            ARGS="$ARGS --force"
+          fi
+          if [ -n "${{ inputs.show_filter }}" ]; then
+            ARGS="$ARGS --show=${{ inputs.show_filter }}"
+          fi
+          # Cap scheduled runs to ensure completion within timeout (new shows processed first)
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            ARGS="$ARGS --max=200"
+          fi
+          node scripts/generate-related-shows.js $ARGS
+
+      - name: Commit and push results
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/related-shows.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          SHOW_COUNT=$(node -e "const d=require('./data/related-shows.json');console.log(Object.keys(d.shows).length)")
+          git commit -m "chore: Update related shows ($SHOW_COUNT shows)"
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Generate Related Shows Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

@@ -1,0 +1,122 @@
+name: Star-band backfill (BRO-4770)
+
+# Manual only. Repairs the existing review corpus after the clobber-race fix:
+#   audit          counts unanchored / out-of-band star reviews (read-only)
+#   reflag         flag-late-star-reanchor.js --apply (sets needsRescore, no API spend)
+#   html-dry       backfill-html-only-ratings.js dry run (fetches pages, writes nothing)
+#   html-apply     backfill-html-only-ratings.js --apply (recovers stars, sets needsRescore)
+# The anchored rescore itself is drained by llm-ensemble-score.yml --needs-rescore.
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'audit | reflag | html-dry | html-apply'
+        required: true
+        default: 'audit'
+        type: string
+      per_outlet:
+        description: 'html modes: sample at most N files per outlet (0 = no per-outlet cap)'
+        required: false
+        default: '0'
+        type: string
+      limit:
+        description: 'html modes: max candidate files to fetch (0 = all)'
+        required: false
+        default: '5'
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: star-band-backfill
+  cancel-in-progress: false
+
+jobs:
+  backfill:
+    name: Star-band backfill
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # depth 300 keeps push-with-retry.sh's shallow boundary an ancestor of main for the final ledger commit (BRO-2388)
+          fetch-depth: 300
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Validate mode
+        run: |
+          case "${{ inputs.mode }}" in
+            audit|reflag|html-dry|html-apply) ;;
+            *) echo "::error::mode must be audit|reflag|html-dry|html-apply"; exit 1 ;;
+          esac
+
+      - name: Audit (before)
+        shell: bash
+        run: node scripts/audit-star-band-drift.js --json=/tmp/star-band-before.json | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Re-flag unanchored star reviews
+        if: inputs.mode == 'reflag'
+        shell: bash
+        run: node scripts/flag-late-star-reanchor.js --apply | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: HTML-only rating backfill
+        if: startsWith(inputs.mode, 'html-')
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+        shell: bash
+        run: |
+          APPLY=""
+          [ "${{ inputs.mode }}" = "html-apply" ] && APPLY="--apply"
+          LIMIT="${{ inputs.limit }}"
+          LIMIT_ARG=""
+          PO="${{ inputs.per_outlet }}"
+          [ "${PO:-0}" != "0" ] && LIMIT_ARG="--per-outlet=${PO}"
+          [ "${LIMIT:-0}" != "0" ] && LIMIT_ARG="$LIMIT_ARG --limit=${LIMIT}"
+          node scripts/backfill-html-only-ratings.js $APPLY $LIMIT_ARG | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Push to private repo
+        if: inputs.mode == 'reflag' || inputs.mode == 'html-apply'
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'chore: star-band backfill (${{ inputs.mode }}) [BRO-4770]'
+
+      - name: Commit scraper-spend ledger
+        if: always() && startsWith(inputs.mode, 'html-')
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: star-band-backfill
+
+      - name: Audit (after)
+        if: always()
+        shell: bash
+        run: node scripts/audit-star-band-drift.js | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Star-band backfill failed'
+          severity: 'warning'

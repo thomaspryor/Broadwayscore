@@ -1,0 +1,5 @@
+{
+  "floor": 205,
+  "evidenceFile": "data/audit/duplicate-flag-inheritance-baseline.json",
+  "note": "Seeded 2026-08-11 (task #1256) at the count measured by node scripts/audit-duplicate-flag-inheritance.js the day the inheritance rule shipped. Revised same-day (ship-check finding): the detector now also scans the duplicateTextOf field (95 additional candidates, same bug class as duplicateOf, patched in the same rebuild-all-reviews.js change) and excludes circular pairs with CONFIRMED different text (5 fewer duplicateOf false positives), for a net 110 duplicateOf + 95 duplicateTextOf = 205. The code fix (scripts/lib/review-guards.js duplicateOfInheritedFlag + rebuild-all-reviews.js wiring on both duplicateOf and duplicateTextOf blocks) only prevents NEW leaks going forward and does not retroactively touch already-live reviews.json content; these 205 clear as the normal ~30-min CI rebuild cadence reprocesses the corpus with the new rule and as review-write-guard/manual audits set the underlying flags. Ratchet this down as counts drop — do not raise it without updating evidenceFile to a fresh measurement."
+}

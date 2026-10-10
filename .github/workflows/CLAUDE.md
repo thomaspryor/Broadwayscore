@@ -1,0 +1,715 @@
+# GitHub Actions Workflow Reference
+
+Detailed descriptions of all automated workflows. See root `CLAUDE.md` for secrets table and critical rules.
+
+## Failure Notifications
+
+All new workflows MUST include the `notify-failure` composite action (`.github/actions/notify-failure/`). Add as the LAST step in the last job:
+```yaml
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Workflow Name Failed'
+          severity: 'warning'  # 'critical' only for workflows in page-worthy-alerts.js PAGE_WORTHY_WORKFLOWS (§Notification Severity)
+```
+For critical workflows, add `email: 'true'` + `resend_api_key`/`owner_email` secrets. The `discord_webhook` input is accepted but ignored (kept for call-site compatibility — no need to pass it in new workflows). Currently 186/186 workflows have notifications. A CI guard in `test.yml` (`audit-workflow-hygiene.js`) enforces this for all new workflows. Exempt a workflow: add `# hygiene-notify-ok: <reason>` anywhere in the file.
+
+## Playwright Setup
+
+All workflows that use Playwright MUST use the shared composite action instead of inline `npx playwright install`:
+```yaml
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+```
+This caches `~/.cache/ms-playwright` across runs (~15s saved per workflow). CI guard in `test.yml` enforces this; exempt with `# hygiene-playwright-ok: <reason>`. For non-chromium browsers:
+```yaml
+        with:
+          browsers: 'chromium webkit'
+```
+Default is `chromium` only. Never use inline `npx playwright install` — the CI lint will eventually enforce this.
+
+## Push Retry
+
+All push-to-remote steps MUST use the shared script instead of inline retry loops:
+```bash
+bash scripts/lib/push-with-retry.sh [max_retries] [branch]
+```
+Defaults: 7 retries, main branch. Handles cleanup, rebase -X theirs, random backoff, `::error::` + `exit 1` on failure. CI guard in `test.yml` enforces this; exempt with `# hygiene-push-ok: <reason>` (external remotes, custom retry loops).
+
+## Git Identity for Inline Commits
+
+Any job that runs an inline `git commit -m` on the ROOT checkout must configure git identity first — either via the shared composite action:
+```yaml
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+```
+or inline:
+```bash
+git config user.name "github-actions[bot]"
+git config user.email "github-actions[bot]@users.noreply.github.com"
+```
+`checkout-core-data`/`push-core-data`/`checkout-review-texts` composite actions do NOT satisfy this — they configure git only inside their own nested checkout dirs (`/tmp/core-data-checkout`, `data/review-texts`), never the root checkout where these inline commits run. Without identity, `git commit` fails with `fatal: empty ident name` (task #659). CI guard in `test.yml` (`audit-workflow-hygiene.js`) enforces this per-job; exempt with `# hygiene-git-identity-ok: <reason>`.
+
+## Public Show JSON Safety
+
+**Only `rebuild-all-reviews.js` may write complete `public/data/shows/*.json` files.** Any other script that needs to update a single field (images, audience data, metadata) MUST do a surgical merge: read the existing public JSON, update only the field it owns, write back. **Never regenerate public show JSONs from core-data** — the core-data checkout may be stale, and regeneration wipes reviews added by concurrent sessions.
+
+```js
+// GOOD: surgical update of one field
+const show = JSON.parse(fs.readFileSync(publicPath));
+show.hi = newImagePath;
+fs.writeFileSync(publicPath, JSON.stringify(show));
+
+// BAD: full regeneration (wipes reviews if core-data is stale)
+const show = buildPublicShowJson(coreDataShow, coreDataReviews);
+fs.writeFileSync(publicPath, JSON.stringify(show));
+```
+
+**Lesson:** An image-path rebuild regenerated 837 public JSONs from a stale reviews.json, wiping all reviews for recently-scored shows (March 20, 2026).
+
+## Staging Data Files
+
+**NEVER commit `data/aggregator-archive/` or `data/review-texts/` to the public repo.** These contain copyrighted content. They live in private repos and are synced via `push-review-texts` / `push-core-data` actions.
+
+When staging data changes in workflows, use the shared helper:
+```bash
+bash scripts/lib/stage-data-changes.sh              # stages data/ with exclusions
+bash scripts/lib/stage-data-changes.sh data/ public/ # stages specific paths with exclusions
+```
+This automatically excludes `data/aggregator-archive/` and `data/review-texts/`. **NEVER use `git add -f data/aggregator-archive/`** — this overrides `.gitignore` and leaks copyrighted files. A CI guard ("Guard — no copyrighted content in public repo" in `test.yml`) catches violations, but fix the workflow rather than repeatedly untracking files.
+
+## Step Ordering: Outputs Before State Commits
+
+**Any success-gated step that produces a unique user-visible output (issue, alert, email, pipeline dispatch) must run BEFORE the push that marks its input as processed/alerted** — a cancellation between the two silently swallows the output, and cancelled runs skip notify-failure. Reference incident: process-feedback.yml run 28876301784 (2026-07-07); pattern doc: memory/feedback_pipeline_output_step_ordering.md. Audited 2026-07-12 (15 push-then-output workflows, per-workflow verdicts on Notion 39a637c5-416f-81d9): 13 benign (later step is failure-only, or output regenerated by an independent cron, or the push IS the output); 2 fixed — `check-opening-night-drift.yml` (lastAlertTs was pushed before the Discord alert step; a death between them cooldown-suppressed the alert 6h → alert now sends first) and `discover-historical-shows.yml` (downstream issue + gather-reviews jobs required job *success*; a timeout after the always()-push stranded discovered shows forever → jobs now gate on an explicit `data_pushed` output + `always()`, which also stops dry-runs dispatching gather-reviews for never-added shows).
+
+## Step Ordering: Writes Before Pushes
+
+**Any step that writes a repo file the run should persist must come BEFORE the push of that repo — or self-commit (health-stamp pattern: stage → `git diff --staged --quiet ||` commit → `push-with-retry.sh`).** Writes after the last push of a tree are silently discarded at job end; the run looks green and the loss is invisible. Audited 2026-07-11 (15 workflows scanned): the shared indexing quota ledger (`data/audit/indexing-api-usage.json`) was dropped by `opening-night-broadcast.yml` + `update-show-status.yml`, and TR/LBO census review-stubs by `opening-night-reviews.yml`. Post-push steps that only dispatch (`gh workflow run`), call external APIs without a ledger, or write gitignored scratch (e.g. `data/audit/score-integrity.json`) are fine. Intentionally-local writes (e.g. poller's "Rebuild reviews.json locally (for readiness check)") should say so in the step name. Re-run the audit with `python3 scripts/audit-outputs-after-push.py` (add `--no-push-jobs` for the inverse blind spot: jobs that write repo files but never push).
+
+## Notification Severity
+
+**Owner rule (BRO-4603, 2026-10-04): email only when it is urgent AND the owner must act.** `severity: 'critical'` (+ `email: 'true'`) emails the owner only for workflows listed in `scripts/lib/page-worthy-alerts.js` `PAGE_WORTHY_WORKFLOWS` (today: `check-morning-digest-sent`, `opening-night-orchestrator`, `opening-night-poller`, `opening-night-broadcast`, `restore-supabase`; `test-ugc-roundtrip` pages through the routed `ugc-roundtrip:users-affected` key instead, only for urgent checks). The composite action checks that list before its cooldown/streak logic, and `tests/unit/page-worthy-workflows.test.mjs` fails unless the set of `severity: 'critical'` notify steps equals the list, so a new paging workflow means editing that file (the one the owner reads) and stating why the owner must act. A failure that only an agent or a session can fix is `warning`: it reaches the morning digest through `check-cron-health.yml` (staleness keyed off the last successful run) and `health-check.js` repeat-failure rows. `suppressed` is `'true'` whenever the call did not page, so `investigate-alert.yml` dispatches gated on `suppressed != 'true'` no longer email for non-paging failures. Non-critical failures appear in the digest below.
+
+All other workflows (including `send-follow-notifications`) use `'warning'` or `'low'`. Their failures surface in the **daily email digest** — specifically `getWorkflowRunSummary()` at `scripts/health-check.js:818` which queries the GitHub Actions API for every workflow run in the last 24 hours and renders a `Workflow Runs (24h)` section plus a `⚠️ Repeat Workflow Failures (24h)` section for any workflow that failed 2+ times (surfaces stuck-broken workflows before they rot for days). **As of card #364 (owner merge decision 2026-07-26), `health-check.js` no longer sends this digest as its own email** — it writes `data/audit/health-digest-snapshot.json` (via `sendEmailDigest`, despite the name) and `autonomous-email.js` folds it into the autonomous loop's single scheduled morning email, so the owner gets exactly one scheduled email/day instead of two. This reverses card #409's 07:00→16:00 retiming (which existed only to space two separate emails apart); `data-health-check.yml` now runs at **06:45 UTC**, BEFORE the loop starts (03:30 ET / 07:30 UTC), so the snapshot is same-day fresh when the morning email reads it. As of 2026-06-16 (Notion 381637c5) repeat failures are also **promoted into the digest's check results** via `repeatFailureResults()`: each offending workflow becomes a `Workflow repeat-failure: <name>` check (`error` at 3+ failures, `warn` at exactly 2), routed to `fix-now` in the playbook, so it now drives the subject line, the unfixed-error count, consecutive-error escalation, and auto-triage — not just the passive body section. Real-time escalation for scheduled workflows with deterministic cadence lives in `check-cron-health.yml`'s `CRITICAL_CRONS` list — add entries there when a workflow's staleness is user-facing (pages a user can screenshot). **`test.yml` on push to main is a special case:** a 24h window with 2+ main test.yml failures now escalates via the promoted check above, but the digest is once-daily; check-cron-health still can't see it (it keys staleness off the last *successful* run, so interleaved greens reset the clock). The `test-summary` job's "Detect consecutive main test failures" step remains the real-time path — it pages the owner by email the moment main test.yml fails on 2+ consecutive pushes, firing once per streak. Added 2026-06-15 after main was red 11/19 push runs over 06-13→06-15 with no alert. **This entire path depends on `test-summary`'s `needs:` list covering every sibling job that can fail on a push** (task #1690, 2026-08-16): on 2026-08-13→16, `lint-workflows` failed on a push while the 5 jobs then in `needs:` stayed green, so "Check results" reported success and actively resolved the open alert incident even though main was still red — a job can fail without the alert pipeline ever seeing it if it isn't listed. **Exception (BRO-3425, 2026-09-22): `data-validation` is deliberately NOT in `needs:`** — it audits corpus state that bots rewrite ~300x/day, is job-level `continue-on-error`, and routes failures to the daily digest (`test-yml:data-validation-red`). Main red means code broke. The leak/regression guards it used to hold live in the blocking `data-safety-guards` job. Do not add `data-validation` back to `needs:`; promote a specific step into `data-safety-guards` instead if it truly guards code. **BRO-4434 (2026-09-30) finished the split:** the last two outside-state jobs left test.yml — the npm advisory gate is now `audit-dependencies.yml` (daily, files a Linear card per finding via `routeAlert`, in `CRITICAL_CRONS`) and `data/awards.json` freshness is a `check-corpus-drift.js` AUDITS entry. `tests/unit/test-yml-code-only-jobs.test.mjs` pins `needs:` to the documented code-only set and forbids new schedule-only jobs outside it; a check whose answer depends on the world (a data file's age, an advisory feed, a third-party site) goes in its own daily card-filing workflow, never in test.yml. Otherwise `needs:` covers all the sibling jobs and "Check results" reads `toJSON(needs)` and fails on any result other than success/skipped (one allowlist over the whole `needs:` set; it was a `contains()` denylist of failure/cancelled until BRO-4752, which a runner-starved job's result slipped past) instead of one hardcoded clause per job, so a future job only has to be added to `needs:` — not to two parallel lists — to stay covered. **The digest snapshot carrier (`data-health-check.yml`) watches itself:** it's a `CRITICAL_CRONS` entry at a deliberately-tight 26h band (well under the generic daily 36h) so a fully-cancelled/dead cron trips fast against its 24h cadence (cancellation writes no snapshot and notify-failure ignores `conclusion=cancelled`). Staleness = hours since the last *successful* run; at 06:45 UTC the noon-UTC check sees a healthy run ~5h old, so a single cancel is caught the same day at ~29h. The band is exempt from the cushion warning in `audit-cron-health-coverage.js` (`TIGHT_BY_DESIGN`) — keep it tight (do not push toward 36h). Added 2026-06-16 (Notion 381637c5-416f-81af) after 2/14 digest runs were silently cancelled.
+
+## Actionlint
+
+Structural workflow linting runs in `test.yml` (`lint-workflows` job). Shellcheck disabled (`-shellcheck=""`). `>10 inputs` rule suppressed (3 workflows legitimately exceed). **The "Lint workflow files" step is NOT `continue-on-error`** — this line claimed it was until 2026-09-06 (BRO-2906), and the claim was wrong for long enough that a fix built on it would have silently done nothing. actionlint failing is job-fatal. That is why the step now runs *after* Setup Node + Install dependencies rather than before them: every step after the `id: deps` anchor is gated on `always() && steps.deps.outcome == 'success'`, so an actionlint failure no longer skips them, while a genuine setup failure still does. Coverage is now **all 57 steps after the anchor**, not just the 31 that invoke a `scripts/audit-*.js`: this landed in two independent passes on 2026-09-06 (BRO-2906), the first covering the 31 `audit-*.js` steps and the second extending it to the inline `node -e` and shell checks that the `audit-*.js` matcher cannot see. `tests/unit/workflow-audit-steps-always.test.mjs` pins both — the audit-matcher rule and a separate every-step-after-the-anchor rule — so re-verify with that test rather than trusting this paragraph. It also only lints `.github/workflows/*.yml` — `.github/actions/*/action.yml` composite actions are never linted by CI, and running `actionlint` on one directly misparses it as a malformed workflow (missing `on`/`jobs`) rather than validating composite-action syntax; treat that output as noise, not a real error.
+
+**Composite-action steps don't support `timeout-minutes`** (task #1814/#1815, 2026-08-19) — that key is only valid on job-level steps in a workflow file. Adding it to a step inside `.github/actions/*/action.yml` is a silent no-op (`update-show-status.yml`'s job kept timing out from a hung `setup-playwright` install because of exactly this). To bound a composite-action step, wrap the command in the shell: `timeout <seconds> "$cmd" || { echo "::error::..."; exit 1; }` — see `.github/actions/setup-playwright/action.yml`'s "Install Playwright browsers" step for the pattern (captures output to a log file too, since redirecting to `/dev/null` hides the diagnostic signal a hang needs).
+
+**A step-level `timeout-minutes` on an ORDINARY (non-composite) job step reports that step's conclusion as `cancelled`, not `failure`** (card #90, 2026-08-22) — any later `if: failure()` step in the same job (e.g. the `Notify on failure`/`Trigger investigation` pattern from the Failure Notifications section above) silently never fires for a timeout that used this mechanism, exactly backwards from what a "catch a hang and alert" fix needs. Use the same inline `status=0; timeout <seconds> cmd || status=$?; [ "$status" -ne 0 ] && { ...; exit 1; }` pattern as the composite-action case above even for ordinary workflow-file steps whenever the goal is "hang → loud failure that reaches the existing alert chain," not just "hang → bounded." **The `|| status=$?` guard is load-bearing, not stylistic** (BRO-3839, 2026-09-20): GHA's default shell is `bash -eo pipefail`, so a bare `status=$?` on its own line after a standalone `timeout` statement is dead code — a nonzero exit aborts the script under `-e` before that line ever runs, silently skipping the whole diagnostic block. `vercel-deploy.yml`'s Build step and `demo-alias-watchdog.yml`'s re-alias step are the reference implementations of the guarded form.
+
+---
+
+## Data Sync Architecture
+
+**Source of truth:** `data/review-texts/{show-id}/*.json` (individual review files in private repo `thomaspryor/broadway-review-texts`)
+**Derived file:** `data/reviews.json` (aggregated for website consumption, in private repo `thomaspryor/broadway-scorecard-data`)
+
+### Private Repo Pattern (core data)
+9 core data files (`shows.json`, `reviews.json`, `grosses.json`, etc.) live in `thomaspryor/broadway-scorecard-data`. All workflows check them out via `.github/actions/checkout-core-data/` and push changes via `.github/actions/push-core-data/`. See root `CLAUDE.md` §7b for full details.
+
+**Exception — `data/awards.json` is dual-tracked:** unlike every other `CORE_FILES` entry, it's ALSO committed directly to the public repo, because the freshness audit (`scripts/audit-awards-freshness.js`, via the commits-by-path API — test.yml's job until BRO-4434) and `vercel-preview.yml`'s build-trigger path both key off its *public* git history. Workflows that write it (`update-tony-awards.yml`, `update-precursor-awards.yml`) commit to the public repo AND call `push-core-data` — don't "fix" the public commit away as if it were the #1441 bug class.
+
+| Workflow | Modifies review-texts | Rebuilds reviews.json | Notes |
+|----------|----------------------|----------------------|-------|
+| `rebuild-reviews.yml` | ✅ | ✅ | **PRIMARY sync** - daily + manual trigger. Pre-rebuild flag-setters (flag-wrong-production-by-date, cleanup-phantom-outlets, etc.) write review-texts, pushed via push-review-texts (line 375). LLM enrichment moved to `enrich-reviews.yml` 2026-04-30. |
+| `enrich-reviews.yml` | ✅ | ❌ | LLM enrichment of review-text flags (isNonReview, wrongProduction, wrongShow, criticName backfill). Every 6h. |
+| `review-refresh.yml` | ✅ | ✅ | Daily extraction + rebuild |
+| `gather-reviews.yml` | ✅ | ✅ | Parallel-safe, rebuilds inline, **dispatches deploy** |
+| `collect-review-texts.yml` | ✅ | ✅ | Parallel-safe, rebuilds inline after commit |
+| `fetch-guardian-reviews.yml` | ✅ | ✅ | Single-threaded, rebuilds inline |
+| `process-review-submission.yml` | ✅ | ✅ | Single-threaded, rebuilds inline |
+| `adjudicate-review-queue.yml` | ✅ | ❌ | Daily 5 AM UTC, triggers rebuild after commit |
+| `scrape-nysr.yml` | ✅ | ❌ | Weekly NYSR via WordPress API, relies on daily rebuild |
+| `scrape-new-aggregators.yml` | ✅ | ✅ | Weekly Playbill Verdict + NYC Theatre, rebuilds inline after scrape |
+| `scrape-bww-reviews.yml` | ✅ | ✅ | Weekly BWW /reviews/ pages + roundups, rebuilds after scrape |
+| `audit-aggregator-coverage.yml` | ❌ | ❌ | Weekly audit, writes `data/audit/aggregator-coverage.json` only |
+| `close-coverage-gaps.yml` | ✅ | ✅ | Manual per-era gap closure orchestration (audit → parallel gather → scrape PV/NYC → rebuild) |
+| `opening-night-broadcast.yml` | ✅ | ✅ | 2x daily, discovers reviews via SERP + aggregators, rebuilds, sends broadcast email |
+| `scrape-dtli-show-score.yml` | ✅ | ✅ | Weekly DTLI + Show Score page fetching, extraction, rebuild |
+
+**For bulk imports (100s of shows):** Run parallel gather-reviews, then trigger manual rebuild via:
+```bash
+gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
+```
+
+---
+
+## `rebuild-fast.yml`
+- **Runs:** Every 4 hours at :45 UTC (`45 */4 * * *` — safety-net cron) + manual trigger
+- **Does:** Lightweight rebuild: checkout → rebuild reviews.json → push → deploy. No backfill, classification, or flagging steps. ~5 min instead of ~30 min.
+- **Concurrency:** Per-run group (`rebuild-fast-${{ github.run_id }}`); parallel runs allowed.
+- **Safety-net role (Notion 362637c5-416f-81ce):** Vercel's static export only re-renders /opera, /broadway, /off-broadway, /west-end when a deploy fires. If `llm-ensemble-score.yml`'s rebuild dispatch silently 403s on GitHub API rate limits, reviews land but pages stay frozen at the last-build snapshot. The 4-hourly cron + dispatch-retry in `llm-ensemble-score.yml` close that gap. Cron runs are byte-identical no-ops via the change-gate commit/deploy step when there's nothing to do.
+- **When to use manually:** Opening-night corrections, manual data fixes, any time you need a fast rebuild without the full pipeline
+- **Manual trigger:** `gh workflow run "Rebuild Reviews (Fast)" -f reason="your reason"`
+- **Options:** `reason` (commit message; defaults to "Scheduled safety-net refresh" on cron), `force_write` (override regression guard)
+- **Key difference from full rebuild:** Skips extract-pull-quotes, classify-non-reviews, flag-wrong-production, classify-wrong-production, classify-wrong-show, backfill-unknown-critics, cleanup-phantom-outlets, strip-stale-scores, detect-syndicated-duplicates, apply-audit-flags, analyze-rebuild-drops, audit-wrong-production, enrich-cast, generate-status-page. Keeps: rebuild, critic registry, mobile detail JSONs, deploy, **`check-opening-night-completeness.js`** (A #20 — strict per-show drop alert for shows in ±7d opening-night window).
+
+## `enrich-reviews.yml`
+- **Runs:** Every 6 hours at :30 (04:30, 10:30, 16:30, 22:30 UTC), or manually
+- **Does:** Runs the 4 LLM/scraper enrichers that previously lived in `rebuild-reviews.yml`: `classify-non-reviews.js`, `classify-wrong-production.js`, `classify-wrong-show.js`, `backfill-unknown-critics.js --critics-only`. Pushes flag updates back to `data/review-texts/` private repo. Does NOT rebuild reviews.json or deploy — flag changes land in the next rebuild via `isIncludableForRebuild`.
+- **Why decoupled (Notion 351637c5-416f-8177):** When these 4 steps lived inside `rebuild-reviews.yml`, their cumulative ~20-40min runtime made the rebuild job a cancellation magnet. Step 18 "Rebuild reviews.json" was getting skipped on most runs and reviews.json went stale for hours. Splitting moved the slow LLM work to its own concurrency group so cancellation can't block the canonical scored composite.
+- **Concurrency:** `enrich-reviews-${{ github.run_id }}` (per-run, queued, never cancels — same pattern as rebuild-fast.yml)
+- **Options (all default false):** `skip_classify_non_reviews`, `skip_classify_wrong_production`, `skip_classify_wrong_show`, `skip_backfill_critics`
+- **Manual trigger:** `gh workflow run "Enrich Reviews"`
+- **Requires:** `GEMINI_API_KEY` (3 of 4 steps), `BRIGHTDATA_TOKEN`+`BRIGHTDATA_ZONE`+`SCRAPINGBEE_API_KEY` (backfill-unknown-critics), `REVIEW_TEXTS_TOKEN` (push)
+- **All steps `continue-on-error: true`** — partial failure does not stop later enrichers, and the `if: always()` push step at the end commits whatever flags landed.
+
+## `rebuild-reviews.yml`
+- **Runs:** Daily at 4 AM UTC (11 PM EST), auto-triggered via `workflow_run` when "Collect Review Texts" completes successfully, or manually triggered
+- **Does:** Rebuilds `reviews.json` from `review-texts/` source files. Pre-rebuild utilities: `flag-wrong-production-by-date`, `audit-pre2005-reviews`, `backfill-unknown-outlets` (local), `cleanup-phantom-outlets`, `strip-stale-single-model-scores`, `detect-syndicated-duplicates`, `apply-audit-flags`, `audit-duplicate-of-url-mismatch --fix` (URL-mismatch/dangling duplicateOf), `heal-orphaned-duplicate-pointers --fix` (BRO-3250: duplicateOf pointers whose target was later flagged invalid). LLM enrichment (4 steps) MOVED to `enrich-reviews.yml` 2026-04-30.
+- **Manual trigger:** `gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"`
+- **Purpose:** PRIMARY sync mechanism for derived data
+- **Concurrency:** `rebuild-reviews` group (queued, not cancelled)
+- **When to use manually:**
+  - After bulk imports (100s of shows via parallel gather-reviews)
+  - After manual edits to review-texts files
+  - When reviews.json appears stale
+- **Script:** `scripts/rebuild-all-reviews.js`
+- **Auto-scoring:** After rebuild, auto-triggers `llm-ensemble-score.yml` if 5+ reviews need scoring (threshold lowered from 100 on Feb 25, 2026)
+- **Drop analysis:** After rebuild, runs `scripts/analyze-rebuild-drops.js` (`continue-on-error: true`). Fires if total dropped >30 OR any single show >10. Calls Claude Sonnet to classify drops as flag-explained (routine dedup/quality work) vs unexplained. Sends email with ROUTINE/NEEDS_REVIEW/SUSPICIOUS verdict. 48h cooldown. All guards in `rebuild-all-reviews.js` are **non-blocking** — they write audit files to `data/audit/rebuild-score-drift.json` (Guard 3B), `data/audit/rebuild-regression.json` (Guard 3B-ii), and `data/audit/rebuild-show-drift.json` (Guard 3B-iii) but never call `process.exit(1)`. The `ALLOW_DRIFT` env var has been removed from all workflows.
+- **Opening-night drop check:** After analyze-rebuild-drops, runs `scripts/check-opening-night-completeness.js` (`continue-on-error: true`). Stricter than analyze-rebuild-drops for shows in the ±7d opening-night window: any per-show drop OR per-critic disappearance fires a Discord alert (warning severity, 60-min per-show cooldown). Reads the same `data/audit/rebuild-regression.json` plus its own `data/audit/opening-night-completeness-state.json` snapshot. See A #19 / A #20 in `memory/feedback_admin_ingest_opening_night_2026-04-26.md`.
+
+## `update-show-status.yml`
+- **Runs:** Daily at 8 AM UTC (3 AM EST)
+- **Does:** Updates show statuses (open → closed, previews → open), discovers new shows on Broadway.org, auto-adds new shows with status "previews"
+- **IBDB enrichment:** New shows are enriched with preview/opening/closing dates from IBDB. If IBDB fails, Broadway.org's "Begins:" date is treated as `previewsStartDate` (not `openingDate`)
+- **Metadata enrichment (after discovery):** Enriches newly discovered shows with TodayTix runtimes/intermissions/age (`enrich-todaytix-runtimes.js`), Wikipedia synopses (`enrich-wikipedia-synopsis.js --limit=20`), and Wikipedia runtimes (`enrich-wikipedia-runtimes.js --limit=20`). All `continue-on-error: true`. Added Feb 23, 2026.
+- **Timeout:** 10 minutes (to accommodate IBDB lookups with rate limiting)
+- **Triggers for newly opened shows (previews → open):** `gather-reviews.yml`, `update-reddit-sentiment.yml`, `update-show-score.yml`, `update-mezzanine.yml`, `fetch-all-image-formats.yml`, `opening-night-poller.yml`, `opening-night-broadcast.yml`
+- **Outputs:** `opened_count`, `opened_slugs` (shows transitioning previews→open), plus discovery outputs. National tours (`category: 'tour'`) are left out of both and out of the readiness check (BRO-4724): a tour's first stop is no press night. Their reviews come from `opening-night-reviews.yml`'s day-0..3 gathers.
+- **Note:** Discord notification for new shows removed Feb 20, 2026 (noise reduction)
+
+## `opening-night-checklist.yml`
+- **Runs:** Hourly at :17 (`17 * * * *`), or manually via `workflow_dispatch`
+- **Does:** Runs 6 automated opening-night QA checks for shows opening within ±2 days, evaluates stage-latency SLA, dispatches Discord/email alerts for breaches. Commits `data/audit/opening-night-history.json` + `data/audit/opening-night-latency-YYYY-MM-DD.json`.
+- **SLA thresholds:** 30-min in-flight review → Discord warning; 60-min → P0 page (Discord + email to owner)
+- **Severity:** `warning` (non-critical — failures surface in daily digest, not real-time alert)
+- **CRITICAL_CRONS:** registered with 3h max gap in `check-cron-health.yml`
+- **Options:** `show_id` (target specific show), `dry_run` (evaluate SLA, skip Discord/email dispatch)
+- **Scripts:** `scripts/opening-night-checklist.js`, `scripts/opening-night-latency-report.js`, `scripts/opening-night-sla-dispatch.js`
+- **Requires:** `DISCORD_WEBHOOK_ALERTS`, `RESEND_API_KEY`, `OWNER_EMAIL`, `REVIEW_TEXTS_TOKEN`
+- **Manual trigger:** `gh workflow run opening-night-checklist.yml -f show_id=the-rocky-horror-show-2026 -f dry_run=true`
+- **Related:** `opening-night-orchestrator.yml` also calls the checklist once after its polling loop; `opening-night-broadcast.yml` gates sends on checklist passing (override with `force_broadcast=true`)
+
+## `opening-night-completeness-check.yml`
+- **Runs:** Every 15 min (`*/15 * * * *`), or manually via `workflow_dispatch`
+- **Does:** Fast snapshot-diff drop detector for shows in the ±7d opening-night window. No aggregator fetches — just reads `data/reviews.json`, builds the per-show `(outletId, criticName)` set, and diffs against `data/audit/opening-night-completeness-state.json` from the previous run. Any disappearance, score-source loss, or count regression fires a single Discord alert summarizing all affected shows.
+- **Why it exists (A #19/#A20):** Joe Turner's Come and Gone went 14 → 12 → 14 → 17 reviews silently across opening night because `analyze-rebuild-drops.js` only runs in the full rebuild and was below its 30-total / 10-single-show thresholds. Operator noticed Culture Sauce was missing from the live page only by manual eyeball. This workflow + the new step in rebuild-fast/rebuild-reviews catches per-critic drops at every cadence (rebuild + 15-min cron).
+- **Skips when rebuild is in flight:** Avoids racing with `rebuild-reviews.yml` / `rebuild-fast.yml` (those workflows run the same script as a post-rebuild step).
+- **Cooldown:** 60 min per show — prevents storm during a rebuild-loop opening night.
+- **Severity:** `warning` (Discord alert via `scripts/lib/discord-notify.js`; failures surface in the daily digest).
+- **State file:** `data/audit/opening-night-completeness-state.json` — committed back via `push-with-retry.sh` so consecutive runs share snapshot.
+- **Options:** `show_id` (single-show), `window_days` (default 7), `force` (bypass cooldown).
+- **Manual trigger:** `gh workflow run "Opening Night Completeness Check" -f show_id=joe-turners-come-and-gone-2026 -f force=true`
+- **Script:** `scripts/check-opening-night-completeness.js`
+- **Requires:** `DISCORD_WEBHOOK_ALERTS`, `REVIEW_TEXTS_TOKEN` (for checkout-core-data)
+
+## `opening-night-reviews.yml`
+- **Runs:** Heavy ticks 05:00 + 17:00 UTC (full pass: SERP discovery, WE census scrapers, Reddit dispatch) and LIGHT ticks every 3h between (02,08,11,14,20,23 UTC — only the per-show-deduped gather dispatch + census-anchored coverage audit). Rolling cadence added 2026-07-31: reviews publish continuously the day after opening (UK 09:00–18:00 UTC, NYC 14:00–04:00 UTC) and the old twice-daily schedule left a 13h blind window. Manually dispatchable (manual = heavy).
+- **Does:** Finds shows that opened in the last 2 days (by `openingDate`), triggers `gather-reviews.yml` to catch opening night reviews the same evening they're published
+- **Why:** The morning `update-show-status.yml` (8 AM UTC) fires before reviews exist (~10-11 PM EST). This evening workflow catches reviews after publication.
+- **Options:** `lookback_days` (default 2)
+- **Guards:** Checks if gather-reviews is already running before triggering
+- **No secrets needed** beyond `GITHUB_TOKEN`
+- **Manual trigger:** `gh workflow run "Opening Night Reviews" -f lookback_days=7`
+
+## `opening-night-broadcast.yml`
+- **Runs:** Daily cron at 12:30 UTC (8:30 AM EDT / 7:30 AM EST) with `send_to_all=true` semantics — creates Resend draft AND emails owner a preview. Also dispatched by: (1) `update-show-status.yml` when a show opens (preview only), (2) `workflow_run` after `LLM Ensemble Score Reviews` completes (preview only, auto-retry), (3) manual `workflow_dispatch`, (4) hourly `41 13-23 * * *` redundancy cron (preview only unless past the draft deadline, see below)
+- **Does:** Thin "check & send" workflow — reads existing scored data, generates consensus, sends broadcast email. Heavy lifting (gather, rebuild, score) handled by independent data pipeline.
+- **Pipeline:** Find recently opened BW+WE shows → check already broadcast → sync subscribers (Formspree) → generate consensus → send broadcast → commit → deploy → indexing
+- **Data dependency:** Relies on data pipeline chain: `update-show-status` → `gather-reviews` → `rebuild` → `llm-ensemble-score`. The 5 AM run catches shows scored overnight; 8 AM catches shows scored between 5-8 AM.
+- **Early exit:** No recent openers or all already broadcast → exits in <10s (no Node setup)
+- **Readiness gate:** 8+ scored reviews required before sending (in `send-opening-night-broadcast.js`)
+- **Critic-consensus gate (BRO-227, added 2026-08-26):** `send-opening-night-broadcast.js` drops any show from the send batch that lacks a `critic-consensus.json` verdict — the email-capture modal promises subscribers a critics' verdict on every send — and exits 1 only if that leaves NOTHING to send this run. Filters PER SHOW (mirrors `readiness_gate`'s own per-show fix below, for the same coalesced-batch reason); a ready show still sends even if a same-night sibling isn't ready. `--send-to` owner previews are exempt (warn-only) so the owner can still see a draft-in-progress. `run_market`'s `|| true` swallows the exit code (no job failure) when nothing sends, so a stuck-on-consensus show surfaces only via the existing "Alert if broadcast overdue" step below, whose `why` diagnostic now names the missing-consensus case alongside the pre-existing orphan-unscored one.
+- **Checklist gate (added 2026-04-17):** Before sending, runs `opening-night-checklist.js --show=ID --json` for each pending show. If any show has checklist errors, blocks broadcast and sends Discord warning + email to owner. Override with `force_broadcast=true` input (emergency use only).
+- **Orphan-unscored gate (self-heal, added 2026-07-24 #356):** Blocks send while any pending show has `data/audit/orphan-unscored-{showId}.json` (written by `verify-all-scored.js` for includable-but-unscored reviews). Instead of emailing every ~2.8h broadcast retry, `scripts/dispatch-orphan-rescore-requeue.js` self-dispatches the `llm-ensemble-score.yml` rescore once `verify-all-scored.js`'s own 60-min per-show cooldown clears (reusing its exact `rescore_reason` so the two dispatchers share one concurrency lane — a mismatched reason would let them fire concurrently against the same show), capped at 2 auto-attempts per show per rolling 24h in `data/audit/orphan-rescore-requeue-state.json`. Only past that cap does it notify the operator, via `owner-alert-router` (never a raw email). The step sets a `blocked` output instead of failing the job, so a self-healing block stays green in Actions.
+- **Market filter:** Only Broadway and West End shows trigger emails. OB shows get website data via pipeline but no broadcast.
+- **Budget gate:** Cap at 60 sends/market (Broadway) and 35 sends/market (West End) per run
+- **Multi-show coalescing:** If 2+ shows open same night in a market, sends single email with multiple score cards
+- **Resume:** Tracks `sentCount` in `data/opening-night-sent.json` (gitignored but `git add --force` in commit step). If interrupted, next cron run picks up where it left off.
+- **Double-send prevention (3 layers as of PR #233, 2026-04-11):**
+  1. `completed: true` flag per show in `opening-night-sent.json` short-circuits both the "Check already broadcast" workflow step and the script's pendingShows filter.
+  2. Rolling-window dedup via `scripts/lib/preview-dedup.js`: `checkPreviewDedup` (script-side, 24h + 3-new-review exception) and `hasRecentPreviewForShow` (workflow-side "Check already broadcast" step, 24h). Replaced the old UTC-day key that failed at UTC rollover (2026-04-11 incident). Overdue alerts use `hasRecentOverdueAlert`.
+  3. Cross-session advisory lock via `scripts/lib/send-lock.js`. All 3 audience-facing email paths (Resend preview `--send-to`, Buttondown draft creation, Resend owner notification) acquire a sha-CAS'd lock at `data/email-send.lock` before the network call and release on success + failure. Workflow's broadcast step MUST have `GH_TOKEN: ${{ github.token }}` in env or the lock helper exits(1) and blocks the send (fail-safe).
+  4. `opening-night-sent.json` is force-added to git (`git add --force`) to persist across cron runs despite being gitignored. CLI preview runs additionally sync it to origin/main via `gh api contents PUT` through `syncTrackerToOrigin()`.
+- **Preview vs approval mode:**
+  - `workflow_dispatch` with `send_to=<email>`: single transactional preview to that address only (no draft).
+  - `workflow_dispatch` with `send_to_all=true` OR the 12:30 UTC scheduled run: preview to owner AND creates a Resend draft for owner to click Send in Resend UI. Bypasses preview dedup so the draft can still fire even if an earlier preview went out.
+  - All other triggers (`update-show-status`, `workflow_run` from scoring, the hourly `41 13-23 * * *` cron, default `workflow_dispatch`): preview to owner only, subject to 24h rolling preview dedup, UNLESS a pending show is past its draft deadline (below).
+- **Draft deadline (BRO-4417, 2026-09-30):** the 12:30 cron fires 4-7h late and was the only automatic draft trigger, so one gate-blocked run meant no draft until the next day (School Girls, 2026-09-29). `scripts/lib/broadcast-deadline.js` sets the deadline at 14:00 UTC the day after opening (10am EDT); the overdue page (04:00 UTC) reads its constant from the same file. Once a pending, still-owed show (`shouldRequeueShow` semantics, West End Weekly Round-up exclusion) is past it, the "Check already broadcast" step narrows the batch to past-deadline shows and skips preview dedup for them, the checklist/drift/orphan-unscored gates record findings for those shows as `overridden` instead of blocking, and the broadcast step creates the draft on ANY trigger. Still draft-only (never `/send`). When a draft is really created over findings, "Page owner: deadline draft created over QA findings" pages via `broadcast:deadline-draft:` (page-worthy) with the checklist errors and unscored/drift notes, so the owner checks them before pressing Send. Time and readiness gates still apply in deadline mode.
+- **Scripts:** `scripts/send-opening-night-broadcast.js`, `scripts/generate-critic-consensus.js`
+- **Requires:** ANTHROPIC_API_KEY, RESEND_API_KEY, FORMSPREE_FOLLOW_API_KEY, FORMSPREE_SUBSCRIBER_API_KEY, FORMSPREE_FOLLOW_FORM_ID, FORMSPREE_SUBSCRIBER_FORM_ID, FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID, FORMSPREE_WESTEND_SUBSCRIBER_API_KEY
+- **Manual trigger:** `gh workflow run "Opening Night Broadcast" -f lookback_days=7`
+- **Related:** `opening-night-reviews.yml` handles SERP discovery + triggers gather-reviews (runs at 5 AM UTC). The data pipeline runs independently and feeds scored data to this broadcast workflow.
+
+## `recreate-broadcast-draft.yml`
+- **Runs:** Manual only. Inputs `market`, `shows` (ids exactly as in the old draft), `lookback_days` (default 3), `dry_run` (default **true**).
+- **Does:** Replaces an opening-night Resend draft built from stale data via `send-opening-night-broadcast.js --recreate-draft`: regenerates consensus, refuses unless every tracker record for the shows is unsent AND a live Resend GET of each old draftId says `draft`/`cancelled` (a 404 is refused, Resend also reaps sent broadcasts), deletes the old draft (a failed DELETE aborts before the tracker is touched), creates a fresh draft and the owner's "draft ready" email, pushes core data. Never calls `/send`. Guard logic: `scripts/lib/recreate-draft-guard.js` (BRO-4875).
+- **Dispatch:** `gh workflow run recreate-broadcast-draft.yml -f market=west-end -f shows=<id> -f dry_run=false` (rehearse first with the default dry run).
+
+## `gather-reviews.yml`
+- **Runs:** When new shows discovered (or manually triggered)
+- **Does:** Gathers review data by searching aggregators and outlets, then scrapes supplementary aggregators (Playbill Verdict + NYC Theatre), then rebuilds `reviews.json`
+- **Secrets required:** `ANTHROPIC_API_KEY`, `BRIGHTDATA_TOKEN`, `SCRAPINGBEE_API_KEY`
+- **Script:** `scripts/gather-reviews.js`
+- **Manual trigger:** `gh workflow run gather-reviews.yml -f shows=show-id-here`
+- **Job pipeline:** `prepare → gather-reviews → scrape-aggregators (non-blocking) → rebuild → deploy`
+  - `scrape-aggregators`: Runs Playbill Verdict + NYC Theatre for the target shows (`--shows=`). Uses `continue-on-error: true` so rebuild always runs even if scrapers fail. 30-minute timeout.
+  - `rebuild` job: rebuilds reviews.json, pushes to both private repos, **dispatches Deploy to Vercel** (15-min dedup), then auto-triggers text collection if >20 reviews need it, and **auto-triggers LLM scoring** if any unscored reviews exist for the gathered shows.
+- **Technical notes:**
+  - Installs Playwright Chromium for Show Score carousel scraping
+  - Show Score extraction uses Playwright to scroll through ALL critic reviews (not just first 8)
+  - Detects and rejects Show Score redirects to off-broadway shows
+  - Tries `-broadway` URL suffix patterns first
+  - **Parallel-safe:** Only commits `review-texts/` and `archives/` (NOT `reviews.json`)
+  - Uses retry loop (5 attempts) with random backoff for git push conflicts
+
+## `review-refresh.yml`
+- **Runs:** Daily at 9 AM UTC (cron `0 9 * * *`; this entry previously said "Weekly on Mondays" — stale, corrected BRO-3500)
+- **Does:** Checks all open shows for new reviews, extracts from aggregator archives, **rebuilds reviews.json**, triggers collection if needed
+- **Script:** `scripts/check-show-freshness.js`
+- **Key steps:** Extract reviews → **flag-wrong-production-by-date** → Rebuild reviews.json → Commit → Trigger collection for shows with gaps
+- **Note:** Now automatically rebuilds `reviews.json` after extraction (fixed Jan 2026)
+- **Pre-rebuild flagger (task #653, 2026-08-02):** the rebuild used to run BARE here while every other entry point ran the temporal flagger first. Combined with `extract-dtli-reviews.js` blind-overwriting already-flagged files, that published ~155 excluded historical DTLI excerpts to `reviews.json`, which `push-review-texts`' PROTECTED_FIELDS restore then re-excluded — the ±150/day exact-revert corpus flap. Keep this step immediately before the rebuild.
+
+## `fetch-aggregator-pages.yml`
+- **Runs:** Manual trigger only
+- **Does:** Fetches and archives HTML pages from all three aggregator sources (Show Score, DTLI, BWW Review Roundups)
+- **Manual trigger:**
+  ```bash
+  gh workflow run "Fetch Aggregator Pages" --field aggregator=all --field shows=missing
+  ```
+- **Options:** `aggregator` (show-score/dtli/bww-rr/all), `shows` (comma-separated IDs/"all"/"missing"), `force`
+- **Archives saved to:** `data/aggregator-archive/{show-score,dtli,bww-roundups}/`
+
+## `fetch-all-image-formats.yml`
+- **Runs:** Twice weekly (Mon & Thu at 6 AM UTC), or triggered by show discovery
+- **Does:** Fetches poster/thumbnail/hero images, archives locally as WebP, updates `shows.json` to use local paths
+- **Image sourcing (3-tier fallback):**
+  1. **TodayTix API** (open shows) — batch-fetches all active NYC shows from `api.todaytix.com/api/v2/shows`, uses native `posterImageSquare` (1080x1080), `posterImage` (480x720), `appHeroImage`. No ScrapingBee needed.
+  2. **TodayTix page scrape** (closed shows) — discovers TodayTix page via Google SERP, scrapes Contentful image URLs, crops portrait to square via Contentful transforms
+  3. **Playbill fallback** — OG image only (landscape, used as hero)
+- **Scripts:** `scripts/fetch-show-images-auto.js` → `scripts/archive-show-images.js`
+- **Triggered by:** `update-show-status.yml` and `discover-historical-shows.yml`
+- **Image formats:** Poster 720x1080 (portrait), Thumbnail 1080x1080 (square), Hero 1920x800 (landscape) — all WebP
+- **Flags:** `--missing` (only shows without images), `--bad-images` (re-source shows with identical Playbill images), `--show=ID` (single show)
+
+## `weekly-grosses.yml`
+- **Runs:** Every Tuesday & Wednesday at 3pm UTC (10am ET)
+- **Does:** Scrapes weekly box office (`scripts/scrape-grosses.ts`) and all-time stats (`scripts/scrape-alltime.ts`), enriches with WoW/YoY from `grosses-history.json`
+- **Data source:** Playbill `playbill.com/grosses` first (League figures, static HTML via `fetchPage()`, parser `scripts/lib/parse-playbill-grosses.js`), BroadwayWorld `grosses.php` as fallback. BWW has served a Cloudflare challenge since 2026-09-23 (BRO-4623). All-time stats are still BWW-only (`grossescumulative`), `continue-on-error`, and carried forward unchanged when it fails.
+- **Self-healing history:** a Playbill run backfills any of the 8 weeks before the current one that are missing from `grosses-history.json` (`?week=YYYY-MM-DD`), so a failed week fills itself on the next run. `--week=YYYY-MM-DD` scrapes one week by hand; a week older than `grosses.json`'s only updates history.
+- **Fallback and staleness:** if Playbill is still on an older week than can be out (e.g. the Tuesday run before Playbill updates), the BWW tiers are tried for a newer week. A run whose newest week is more than 14 days old fails instead of rewriting the same week, so a frozen source shows up in cron health.
+- **Skips:** when grosses.json already holds last Sunday's week (unless force=true), so the Wednesday run is a no-op after a good Tuesday. The check builds last Sunday as unpadded `M/D/YYYY` (`date +%-m/%-d/%Y`) to match grosses.json's `weekEnding`; it was zero-padded until BRO-4623 and so missed every single-digit month or day. A history gap that Tuesday's gap fill could not fetch then waits for the next Tuesday run.
+
+## `backfill-grosses.yml`
+- **Runs:** Manual trigger only
+- **Does:** Scrapes Playbill for historical weekly grosses to populate `grosses-history.json`
+- **Options:** `weeks` (default 55), `start_from` (YYYY-MM-DD)
+- **Reliability:** Fetches each week through `fetchPage()` and parses with the shared Playbill parser, 3 retries per week. Weeks already in history (or under a nearby Monday key) are skipped. A row sum that misses the page's Week's Total is a `::warning::` here (some pre-2022 Playbill weeks do this), not a failure as in the weekly run.
+- **Script:** `scripts/backfill-grosses-history.ts`
+- **Note:** Only for initial setup or extending history range. Recent gaps (last 8 weeks) are filled by `weekly-grosses.yml` itself.
+
+## `backfill-aggregators.yml`
+- **Runs:** Manual trigger only
+- **Does:** One-time parallel backfill of Playbill Verdict + NYC Theatre data for all shows (730+)
+- **Options:** `parallel_jobs` (default 5, 1-10), `aggregator` (all/playbill-verdict/nyc-theatre), `date_filter` (default false = all eras)
+- **Job pipeline:** `prepare → backfill (N parallel matrix jobs) → rebuild`
+- **Parallel-safe:** 30s stagger between jobs, 5-retry push with random backoff
+- **Caching:** Both scripts skip shows with existing archives in `data/aggregator-archive/`. Re-runs cost ~0 API calls.
+- **Cost:** ~$8-11 ScrapingBee credits for full 730-show backfill (first run)
+- **Manual trigger:** `gh workflow run "Backfill Aggregator Data" -f parallel_jobs=5 -f aggregator=all`
+
+## `bulk-collect-review-texts.yml`
+- **Runs:** Manual trigger only
+- **Does:** One-time bulk collection of review full texts across all shows, partitioned across parallel runners
+- **Options:** `parallel_jobs` (default 5, 1-10), `max_per_job` (0 = all), `batch_size` (default 10), `browserbase_enabled` (default true), `browserbase_per_job` (default 5), `retry_failed` (default true), `archive_first` (default true), `content_tier` (filter), `aggressive` (default true, skips Playwright for known-blocked sites), `test_mode` (limit to 5/job), `max_rounds` (default 3, auto-chaining), `current_round` (auto-set)
+- **Job pipeline:** `prepare → collect (N parallel matrix jobs) → rebuild → chain next round`
+- **Self-chaining:** After rebuild, counts remaining reviews. If >50 remain and rounds left, auto-dispatches next round. Set `max_rounds=0` to disable. Stops at diminishing returns (<50 remaining).
+- **Parallel-safe:** 45s stagger between jobs, SHOW_FILTER ensures disjoint show sets, 5-retry push with shows.json integrity check
+- **Load balancing:** Prepare job counts reviews per show, sorts by count descending, distributes round-robin
+- **Script:** `scripts/collect-review-texts.js` (with SHOW_FILTER env var for partitioning)
+- **Requires:** `SCRAPINGBEE_API_KEY`, `BRIGHTDATA_TOKEN`, `BROWSERBASE_API_KEY`, `BROWSERBASE_PROJECT_ID`, plus login credentials (NYT, Vulture, WSJ, WaPo)
+- **Cost:** ~$22-38 ScrapingBee + Browserbase credits per round
+- **Manual trigger:** `gh workflow run "Bulk Collect Review Texts" -f parallel_jobs=5`
+- **Full autonomous run:** `gh workflow run "Bulk Collect Review Texts" -f parallel_jobs=5 -f max_rounds=5` (chains up to 5 rounds)
+- **Test mode:** `gh workflow run "Bulk Collect Review Texts" -f parallel_jobs=2 -f test_mode=true`
+
+## `discover-historical-shows.yml`
+- **Runs:** Manual trigger only
+- **Does:** Discovers closed Broadway shows from past seasons, adds with status "closed" and tag "historical", auto-triggers review gathering
+- **IBDB enrichment:** Enriches preview/opening/closing dates from IBDB after discovery
+- **Usage:** Specify seasons like `2024-2025,2023-2024` (one or two at a time)
+
+## `enrich-ibdb-dates.yml`
+- **Runs:** Weekly on Wednesdays at 7 AM UTC (scheduled), or manually
+- **Does:** Enriches or verifies show dates (preview, opening, closing) from IBDB. Scheduled runs target open shows only (skips 700+ closed).
+- **Options:** `mode` (enrich/verify/force), `show` (optional slug), `status` (optional filter)
+- **Script:** `scripts/enrich-ibdb-dates.js`
+- **Requires:** `SCRAPINGBEE_API_KEY` (primary), `BRIGHTDATA_TOKEN` (fallback)
+- **Modes:**
+  - `enrich` (default): Fill missing/null dates only, never overwrite existing
+  - `verify`: Compare IBDB vs shows.json, report discrepancies (read-only)
+  - `force`: Overwrite all dates with IBDB values
+- **Rate limiting:** 1.5s between IBDB requests, 30-minute timeout
+
+## `process-review-formspree.yml`
+- **Runs:** Weekly on Mondays at 6 AM UTC (1 AM EST) — safety net now that `/api/submit-review` creates+dispatches instantly on submit — or manually
+- **Does:** Polls Formspree review submission form, creates GitHub Issues for each new submission in the format `process-review-submission.yml` expects. Tracks processed IDs to prevent duplicates.
+- **User-facing page:** `/submit-review` (Formspree form)
+- **Script:** `scripts/process-review-formspree.js`
+- **Tracking:** `data/audit/processed-review-submissions.json`
+- **Concurrency:** `process-review-formspree` group (queued, not cancelled) — added 2026-07-22 (Notion 3a5637c5-416f-812a) so an overlapping schedule/manual run can't both process the same submission and create a duplicate issue before either's tracking write lands.
+- **Requires:** `FORMSPREE_TOKEN`, `GITHUB_TOKEN`
+- **Flow:** Formspree form → this workflow creates Issue → `process-review-submission.yml` auto-triggers
+
+## `process-review-submission.yml`
+- **Runs:** When GitHub issue created/edited with `review-submission` label
+- **Does:** Validates review submission via Claude API, scrapes and adds if approved, closes issue
+- **Triggered by:** `process-review-formspree.yml` (creates issues with `review-submission` label)
+- **Issue template:** `.github/ISSUE_TEMPLATE/missing-review.yml`
+- **Script:** `scripts/validate-review-submission.js`
+
+## `update-show-score.yml`
+- **Runs:** Weekly (Sundays 12pm UTC), on previews → open transition, or manually
+- **Does:** Scrapes show-score.com for audience scores, updates `data/audience-buzz.json`
+- **Options:** `show`, `shows` (comma-separated), `limit` (default 50)
+- **Technical:** Uses ScrapingBee with JS rendering, extracts from JSON-LD, 1-hour timeout with `if: always()` commit
+- **Script:** `scripts/scrape-show-score-audience.js`
+
+## `update-reddit-sentiment.yml`
+- **Runs:** Monthly (1st of month at 10am UTC), on previews → open transition, or manually
+- **Does:** Scrapes r/Broadway for discussions, uses Claude Sonnet for sentiment analysis, updates `data/audience-buzz.json`. Default: open shows only (use --all for closed).
+- **Options:** `show`, `shows` (comma-separated), `limit` (default 50)
+- **Technical:** Uses ScrapingBee with premium proxy, generic titles use Broadway-qualified searches, 2-hour timeout with `if: always()` commit
+- **Script:** `scripts/scrape-reddit-sentiment.js`
+
+## `update-mezzanine.yml`
+- **Runs:** Weekly (Sundays 1pm UTC, after Show Score), on previews → open transition, or manually
+- **Does:** Calls Mezzanine (theaterdiary.com) Parse API to fetch all Broadway production ratings, matches to shows.json, updates `data/audience-buzz.json`
+- **Options:** `show`, `shows` (comma-separated or "missing"), `limit`, `dry_run`
+- **Technical:** Direct Parse Server REST API calls, no web scraping needed. Fetches all productions with ratings, filters to NYC/Broadway, matches via normalized title + year. 15-minute timeout.
+- **Script:** `scripts/scrape-mezzanine-audience.js`
+- **Requires:** `MEZZANINE_APP_ID`, `MEZZANINE_SESSION_TOKEN`
+- **Note:** Session token may expire. To refresh, intercept Mezzanine iOS app traffic via mitmproxy and update the `MEZZANINE_SESSION_TOKEN` GitHub Secret.
+
+## `update-lottery-rush.yml`
+- **Runs:** Twice-weekly (Mondays + Thursdays 10 AM UTC / 5 AM EST), or manually
+- **Does:** Scrapes BwayRush.com (ScrapingBee with JS rendering → HTML→markdown → regex parsing) and Playbill lottery/rush article (ScrapingBee → Claude Sonnet LLM extraction). Incrementally merges into `data/lottery-rush.json`, syncs tags in `data/shows.json`.
+- **Script:** `scripts/scrape-lottery-rush.js`
+- **Requires:** `SCRAPINGBEE_API_KEY`, `ANTHROPIC_API_KEY`
+- **Optional:** `BRIGHTDATA_TOKEN` (fallback, currently zone not configured)
+- **Concurrency:** `update-lottery-rush` group (queued, not cancelled) — added 2026-07-22 (Notion 3a5637c5-416f-812a) after auditing for the update-cast-changes.yml race class: schedule + workflow_dispatch both read-modify-write `data/lottery-rush.json`/`data/show-schedules.json` via plain `push-with-retry.sh` (generic "accept remote" fallback, no per-file merge), so an overlapping run could silently lose the other's scrape.
+- **Safety features:**
+  - Pre-write backup (keeps last 5)
+  - Incremental merge (scrapers add/update, never delete)
+  - Stability guard (aborts if >5 new or >3 removed show IDs)
+  - Closed show + orphan cleanup (separate lifecycle step)
+  - Per-source post-processing (catches LLM lottery vs rush misclassifications)
+  - Post-merge cleanup (deduplicates cross-source entries, removes non-integer SRO prices)
+- **CLI:** `--source=bwayrush|playbill`, `--dry-run`, `--verbose`
+- **Manual trigger:** `gh workflow run "Update Lottery/Rush Data"`
+- **Alerting (BRO-873, BRO-4603):** failures stay owner-visible through `check-cron-health.yml`'s `CRITICAL_CRONS` at 110h (matches its real Mon+Thu cadence), which puts a missed run in the morning digest. It no longer emails (`severity: 'warning'`): a failed scrape is not something the owner acts on.
+
+## `adjudicate-review-queue.yml`
+- **Runs:** Daily at 5 AM UTC (1 hour after rebuild generates queue), or manually
+- **Does:** Auto-resolves flagged reviews where LLM scores disagree with aggregator thumbs using Claude Sonnet
+- **Script:** `scripts/adjudicate-review-queue.js`
+- **Requires:** ANTHROPIC_API_KEY
+- **Manual trigger:** `gh workflow run "Adjudicate Review Queue"` (supports `dry_run` option)
+- **Logic:**
+  - Reads `data/audit/needs-human-review.json` (produced by `rebuild-all-reviews.js`)
+  - Early exit if queue is empty (no Node setup, no API calls)
+  - For each flagged review: loads source file, calls Claude Sonnet with full text + context
+  - High/medium confidence → writes `humanReviewScore` to source file
+  - Low confidence → increments `adjudicationAttempts`, skips
+  - After 3 uncertain attempts → auto-accepts LLM original score (permanent queue removal)
+  - API errors don't consume adjudication attempts (transient failures)
+  - Commits changed files, triggers `Rebuild Reviews Data` workflow
+- **Parallel-safe:** Only commits `review-texts/`, uses push retry loop
+
+## `update-critic-consensus.yml`
+- **Runs:** Every Sunday at 2 AM UTC, auto-triggered by rebuild (when scoring not needed), or manually
+- **Does:** Generates "Critics' Take" editorial summaries (1-2 sentences, max 280 chars) via Claude Sonnet. Smart regeneration: only processes shows where data changed meaningfully.
+- **Triggers for regeneration (any one):** 3+ new reviews, 3+ full-text upgrades, 2+ reviews removed, or 8+ pt mean score drift. Fingerprints (`reviewCount`, `fullTextCount`, `meanScore`) tracked per show.
+- **Options:** `force` (regenerate all), `max_shows` (default 200, cost control)
+- **Concurrency:** `update-critic-consensus` group (queued, not cancelled)
+- **Script:** `scripts/generate-critic-consensus.js` (`--shows=a,b` batch mode, fed by the `show` input which accepts a comma-separated list so opening-night-poller.yml dispatches once per poll cycle (BRO-4595); `--show=X` is a list-accepting alias used by single-show remediation; `--max-shows=N` cap, `--force`, `--cleanup-orphans`)
+- **Data:** `data/critic-consensus.json` (gitignored, synced via push-core-data to private repo)
+- **Requires:** ANTHROPIC_API_KEY, REVIEW_TEXTS_TOKEN
+- **Chain:** scoring → rebuild → consensus (rebuild dispatches consensus when scoring doesn't fire)
+
+## `detect-ob-closings.yml`
+- **Runs:** Weekly on Mondays at 11 AM UTC, or manually (`gh workflow run detect-ob-closings.yml`)
+- **Does:** Off-Broadway closing detector. Two signals, no new scraping: (1) review-text sweep — regex-scans `data/review-texts/<show>/*.json` fullText for closing boilerplate ("runs through <date>", "closes <date>", …), year resolved from publishDate context, proposes when 2+ reviews agree (high) or 1 review implies a 1–10wk run (medium); (2) TodayTix staleness — open OB shows whose todaytixId vanishes from `data/todaytix-showtimes.json` for 2+ consecutive checks. Suppression guards (`shouldSuppressCandidate`): shows that already have a closingDate (extensions supersede review boilerplate) and proposals >365d past (extended/open-ended, e.g. Little Shop 2019).
+- **Writes shows.json for two-signal-confirmed closures only** (`selectAutoApplyClosures`, 2026-09-08): needs high confidence (2+ agreeing reviews) AND TodayTix absence for 2+ consecutive checks spanning 13+ days AND a past proposed date AND no stored closingDate AND no review mentioning a LATER date (the extension guard — reviews keep quoting the original date after a run extends; Shifters had 9 reviews agreeing on 08-30 against a real 09-20 close). Writes go through `writeClosingDate()` so `humanCorrectedClosingDate` is honoured and `closingDateSource`/`closingDateUpdatedAt` are stamped. Everything else stays alert-only in `data/audit/ob-closing-candidates.json`; `health-check.js` (`obClosingBacklogResults`) surfaces those in the daily digest.
+- **Why it auto-applies now:** alert-only failed. `my-joy-is-heavy` was flagged high-confidence, surfaced daily (escalating to `error` at 21d), and sat `status=open` for five months until a reader emailed about an unrelated show on 2026-09-08.
+- **Why it exists:** OB closings had zero automation (update-show-status.yml is Broadway.org-only); Misterman closed 2026-07-05 and sat open until its producer emailed (GH #393, 2026-07-12).
+- **Scripts:** `scripts/detect-ob-closings.js` (CLI; applies by default, `--dry-run` to report only), `scripts/lib/ob-closing-detector.js` (pure decision fns + colocated tests)
+- **Requires:** `REVIEW_TEXTS_TOKEN` (core-data + review-texts checkout)
+
+## `process-feedback.yml`
+- **Runs:** Every 10 minutes (`*/10 * * * *`) — GitHub throttles high-frequency schedules, so effective cadence is often ~90 min. Monitored by `check-cron-health.yml` (state-check catches `disabled_manually`; 12h recency band).
+- **Does:** Fetches Formspree submissions, AI-categorizes feedback, auto-diagnoses bugs/content errors, creates GitHub issue digest + separate bug-diagnosis issues
+- **User-facing page:** `/feedback`
+- **Scripts:** `scripts/process-feedback.js`, `scripts/diagnose-feedback-bug.js`
+- **Requires:** FORMSPREE_TOKEN, ANTHROPIC_API_KEY
+- **Bug diagnosis:** For each Bug/Content Error submission (max 5), keyword-matches to relevant file categories, loads code/data within ~30K token budget, calls Claude Sonnet for structured diagnosis. Creates separate GitHub Issue per bug with labels `bug-diagnosis` + `{priority}-priority`.
+- **Cancellation resilience (2026-07-10):** Diagnoses persist in `data/audit/pending-bug-diagnoses.json` (committed with the tracking file) and issue creation runs BEFORE the push-retry tracking commit; timeout is 30 min. Previously issue creation was the last step gated `if: success()`, so a job timing out during push contention was cancelled with the submission already marked processed — the diagnosis vanished with no issue and no alert (Erik Andersen's homepage-filter bug, run 28876301784, 2026-07-07). Leftover pending diagnoses are drained on the next run via the `has_pending_diagnoses` output.
+- **Cost:** ~$0.15/bug diagnosis, typical week $0-0.45, max $0.75
+- **CLI test:** `node scripts/diagnose-feedback-bug.js --message "score seems wrong" --show "Hamilton"`
+
+## `auto-fix-feedback-bug.yml`
+- **Runs:** Automatically when a GitHub issue is created with the `bug-diagnosis` label (triggered by `process-feedback.yml`)
+- **Does:** Auto-applies data-level fixes for high-confidence bug diagnoses. Parses structured diagnosis JSON embedded in the issue body, calls Claude Sonnet to generate exact field edits, applies them with safety rails, validates, commits, and closes the issue.
+- **Script:** `scripts/auto-fix-feedback-bug.js`
+- **Requires:** ANTHROPIC_API_KEY
+- **Concurrency:** Serialized (queued, not cancelled) to prevent parallel data file conflicts
+- **Auto-fix criteria:** `fixType=data` + `confidence=high` + resolved show ID
+- **Allowed fields:** canonical list in `scripts/lib/feedback-pipeline-fields.js` (`FEEDBACK_EDITABLE_FIELDS`, shared with `diagnose-feedback-bug.js`, `generate-remediation-plan.js`, `execute-approved-fix.js` — card #1482 consolidated 4 independent copies)
+- **Protected fields:** id, slug, images, tags, cast, deepResearch (everything else editable per the shared allowlist above)
+- **Safety:** oldValue verification prevents stale-data writes, validate-data.js post-check with git rollback on failure
+- **Outcomes:** `fixed` (closes issue), `not-a-bug` (labels, leaves open), `skipped` (labels needs-manual-review), `error`/`validation-failed` (labels needs-manual-review)
+- **Cost:** ~$0.01-0.03 per fix attempt (one Claude Sonnet call)
+
+## `update-commercial.yml`
+- **Runs:** Every Wednesday at 4 PM UTC
+- **Does:** Scrapes Reddit grosses analysis posts, searches trade press, optional SEC EDGAR filings, uses Claude Sonnet to propose commercial.json updates, multi-source validation, shadow classifier
+- **Options:** `dry_run`, `gather_only`
+- **CLI flags:** `--gather-sec`, `--gather-trade-full`, `--skip-validation`, `--gather-reddit`, `--gather-trade`, `--gather-all`
+- **Script:** `scripts/update-commercial-data.js`
+- **Supporting modules:** `scripts/lib/parse-grosses.js`, `scripts/lib/trade-press-scraper.js`, `scripts/lib/sec-edgar-scraper.js`, `scripts/lib/source-validator.js`
+- **Requires:** ANTHROPIC_API_KEY, SCRAPINGBEE_API_KEY
+- **Optional:** NYT_EMAIL, NYTIMES_PASSWORD, VULTURE_EMAIL, VULTURE_PASSWORD
+- **On failure:** Auto-creates GitHub issue
+
+## `process-commercial-tip.yml`
+- **Runs:** When GitHub issue created/edited with `commercial-tip` label
+- **Does:** Validates user-submitted commercial data tips via Claude API, applies if valid
+- **Issue template:** `.github/ISSUE_TEMPLATE/commercial-tip.yml`
+- **Script:** `scripts/process-commercial-tip.js`
+
+## `collect-review-texts.yml`
+- **Runs:** 3x daily at 4:30 AM, 10 AM, 6 PM UTC (150/batch + 2 chains for scheduled runs) + manual trigger
+- **Rebuild trigger:** Rebuild fires automatically via `workflow_run` when collection completes (no explicit dispatch needed)
+- **Does:** Fetches full review text using multi-tier fallback: Archive.org → Playwright → Browserbase → ScrapingBee → Bright Data. Supports subscription logins for paywalled sites.
+- **Manual trigger:** `gh workflow run "Collect Review Texts" --field show_filter=show-id`
+- **Parallel runs:** YES - launch multiple with different show_filter values
+- **Options:** `batch_size` (default 10), `max_reviews` (default 500), `show_filter` (REQUIRED for parallel runs), `stealth_proxy`, `browserbase_enabled` (default true), `browserbase_max_sessions` (default 10)
+- **Browserbase tier (1.5):** Managed browser cloud with CAPTCHA solving. Costs ~$0.10/session. Enabled by default. Spending caps (raised 2026-05-17 from incorrect "30/day, $3/day" doc — empirical April 2026 max was 275/day on Joe Turner opening night): `BROWSERBASE_MAX_SESSIONS_PER_DAY` 250 (hard ceiling $25/day = $750/mo MAX), `_PER_RUN` 30, `_PER_DOMAIN` 10. Normal usage $5-9/day. Cap defaults live in `scripts/collect-review-texts.js` and the pure decision function in `scripts/lib/browserbase-caps.js`. Per-run override via `browserbase_max_sessions` input.
+- **Cross-run cap enforcement (#312, 2026-07-27):** The daily cap above is enforced against `data/collection-state/browserbase-usage.json`, a file written once at process exit — concurrent runs (e.g. gather-reviews.yml's per-show auto-dispatch racing into multiple simultaneous Collect Review Texts runs, observed 12-13x back-to-back on 2026-07-20/21) each start from the same stale snapshot and can't see each other's spend. `scripts/lib/browserbase-live-usage.js` closes this by querying Browserbase's `/v1/sessions` API directly (same endpoint `scraper-cost-report.yml` treats as billing ground truth) at run start and every 5th session created mid-run, taking `max(local, live)` as the effective count — shared by `collect-review-texts.js` AND `scripts/lib/bww-rr-discover.js` (used by `opening-night-poller.yml`, `aggregator-url-watcher.yml` — previously had NO session cap at all, only "cadence gated at the caller side" in name). **Emergency kill switch:** set the `BROWSERBASE_KILL_SWITCH` repo/org Actions **variable** (not secret) to `true` to disable Browserbase globally across every workflow that wires it in (`collect-review-texts.yml`, `bulk-collect-review-texts.yml`, `opening-night-poller.yml`, `aggregator-url-watcher.yml`) without a code change or redeploy: `gh variable set BROWSERBASE_KILL_SWITCH --body true`. Unset or set to any other value to re-enable.
+- **Script:** `scripts/collect-review-texts.js`
+- **Truncation detection:** Checks for paywall text, "read more" prompts, proper punctuation, text length ratios, footer junk. Marks as `textQuality: "truncated"`.
+- **Main-repo checkpoint cadence (BRO-2983):** `data/collection-state/` local commits happen every batch (amended into one pending commit, not a fresh commit each time), but the PUSH to origin/main is wall-clock throttled to `MAIN_PUSH_INTERVAL_MIN` (default 30) instead of the old every-5-batches — was landing ~267 separate "chore: Checkpoint" commits/day on main and starving other jobs' pushes. Decoupled from the private review-texts-repo checkpoint (`pushReviewTextsCheckpoint`), which keeps its existing `pushEveryNBatches` cadence since that's the data-loss-relevant path.
+
+## `llm-ensemble-score.yml`
+- **Runs:** Daily at 5 AM UTC (1 AM EST, after rebuild at 4 AM), auto-triggered by rebuild if 5+ unscored reviews, or manually
+- **Concurrency:** `scoring-reviews` group (queued, not cancelled — separate from rebuild to avoid blocking)
+- **Does:** Scores reviews using 3-model ensemble (Claude Sonnet + gpt-4o + Gemini 2.5 Flash) with bucket-first approach
+  - **Bucket-first scoring:** Models classify into bucket (Rave/Positive/Mixed/Negative/Pan) first, then score within range
+  - **Voting logic:** Unanimous (all 3 agree) → Majority (2/3) → No consensus (uses median)
+  - **Graceful degradation:** 3→2→1 model fallback if any model fails
+  - **2-model mode:** If GEMINI_API_KEY not set, uses Claude + gpt-4o only
+  - **OpenAI leg model:** gpt-4o stays the default (task #504, 2026-07-26) — the gpt-5.4-mini A/B (n=24 real reviews) failed the rule-13 gate: Mixed bucket collapsed 29%->0%, max shift 29.2pp (limit 5pp). It polarizes scores away from the middle rather than being a like-for-like cheaper substitute. `--openai-model=gpt-5.4-mini` is wired for re-testing once the V5 prompt is recalibrated for it.
+- **Options:** `show`, `limit`, `run_calibration` (default true), `run_validation`, `dry_run`, `needs_rescore`
+- **Script:** `scripts/llm-scoring/index.ts`
+- **Requires:** ANTHROPIC_API_KEY, OPENAI_API_KEY
+- **Optional:** GEMINI_API_KEY (enables 3-model mode)
+- **Pre-flight test:** `npx ts-node scripts/llm-scoring/test-ensemble.ts` (tests ensemble logic with all 3 models)
+- **Ensemble calibration:** `npx ts-node scripts/llm-scoring/index.ts --ensemble-calibrate` (analyzes per-model performance)
+- **Phase 4 — stuck-emergency retry:** Daily check after Phase 3 (stale-scores). Counts reviews flagged `ensembleData.singleModelEmergency=true` with `singleModelEmergencyRetryCount<1` (and otherwise scoreable). If 1-50 found, dispatches `--retry-emergency` mode. Most cases are transient Gemini outages — the retry succeeds with 2+ models, the flag clears naturally inside `ensemble.ts:261`. If retry still single-model, `singleModelEmergencyRetryCount=1` is written so the next cron skips. Cap >50 disables auto-retry and emits a `::warning::` (manual investigation required — likely a model API-key revocation). Manual trigger: `gh workflow run "LLM Ensemble Score Reviews" -f retry_emergency=true`.
+
+## `scrape-nysr.yml`
+- **Runs:** Weekly on Sundays at 10 AM UTC, or manually
+- **Does:** Scrapes New York Stage Review via WordPress REST API, fetches full text + star ratings for all Broadway reviews
+- **Script:** `scripts/scrape-nysr-reviews.js`
+- **No secrets needed** (public WordPress API)
+- **Technical:** Paginates `/wp-json/wp/v2/posts?categories=1`, extracts star ratings from `excerpt.rendered`, strips cross-reference lines to prevent rating contamination, HTML→plain text via cheerio
+- **Parallel-safe:** Only commits `review-texts/` and `aggregator-archive/nysr/`
+
+## `scrape-new-aggregators.yml`
+- **Runs:** Weekly on Sundays at 11 AM UTC (after NYSR), or manually. Also triggered per-show via `gather-reviews.yml` scrape-aggregators job.
+- **Does:** Scrapes Playbill Verdict (review URL discovery) and NYC Theatre roundups (excerpt extraction), then rebuilds `reviews.json`
+- **Options:** `aggregator` (all/playbill-verdict/nyc-theatre), `shows` (comma-separated show IDs for targeted runs)
+- **Requires:** SCRAPINGBEE_API_KEY (for Google search + page fetching)
+- **Optional:** BRIGHTDATA_TOKEN (fallback for Playbill Verdict)
+- **Scripts:** `scripts/scrape-playbill-verdict.js` (`--shows=X,Y,Z`, `--no-date-filter`), `scripts/scrape-nyc-theatre-roundups.js` (`--shows=X,Y,Z`)
+- **NYC Theatre:** Only processes shows from 2023+, skip-if-exists caching via `data/aggregator-archive/nyc-theatre/`
+- **Parallel-safe:** Only commits `review-texts/` and `aggregator-archive/`, rebuild commits `reviews.json`
+
+## `scrape-bww-reviews.yml`
+- **Runs:** Weekly on Sundays at 1 PM UTC (after existing scrapers), or manually
+- **Does:** Scrapes BWW `/reviews/` pages (1-10 scores, review URLs, excerpts) and BWW Review Roundup articles (thumb up/meh/down, review URLs, excerpts), then rebuilds `reviews.json`
+- **Options:** `type` (all/reviews/roundup), `shows` (comma-separated show IDs), `limit` (default 200), `force` (override cache)
+- **Requires:** BRIGHTDATA_TOKEN (primary), SCRAPINGBEE_API_KEY (fallback)
+- **Script:** `scripts/scrape-bww-reviews.js`
+- **Three BWW formats handled:** (1) `/reviews/` pages with 1-10 scores, (2) new-format roundups (~2023+) with thumb images, (3) old-format roundups (pre-2023) with plain text
+- **Checkpointing:** Every 25 shows in CI with git push retry
+- **Archives:** `data/aggregator-archive/bww-reviews/` (review pages), `data/aggregator-archive/bww-roundups/` (roundup articles)
+- **Parallel-safe:** Only commits `review-texts/` and `aggregator-archive/`, rebuild commits `reviews.json`
+
+## `scrape-dtli-show-score.yml`
+- **Runs:** Weekly on Sundays at 3 PM UTC (after BWW at 1 PM), or manually
+- **Does:** Discovers DTLI slugs from sitemaps, fetches DTLI + Show Score aggregator pages, extracts reviews, rebuilds `reviews.json`
+- **Options:** `aggregator` (all/dtli/show-score), `shows` (comma-separated/"all"/"missing", default missing), `force` (re-fetch existing)
+- **Job pipeline (4 jobs):**
+  1. `discover-dtli-slugs` — Scrapes 13 DTLI WordPress sitemaps, matches slugs to our shows, writes `data/dtli-slug-map.json`
+  2. `fetch-dtli` (needs #1) — `npx tsx scripts/fetch-aggregator-pages.ts --aggregator dtli --shows missing` → archives to `data/aggregator-archive/dtli/`
+  3. `fetch-show-score` (parallel with #2) — `npx tsx scripts/fetch-aggregator-pages.ts --aggregator show-score --shows missing` → archives to `data/aggregator-archive/show-score/`
+  4. `extract-and-rebuild` (needs #2 + #3) — Extracts reviews from archives, rebuilds reviews.json, auto-triggers text collection if >20 reviews need it
+- **Key data file:** `data/dtli-slug-map.json` — persistent mapping of our show IDs to DTLI URL slugs (discovered from sitemaps, 583+ entries)
+- **Scripts:** `scripts/discover-dtli-slugs.js`, `scripts/fetch-aggregator-pages.ts`, `scripts/extract-dtli-reviews.js`, `scripts/rebuild-all-reviews.js`
+- **Requires:** `SCRAPINGBEE_API_KEY` (for Show Score), Playwright (installed in CI)
+- **Parallel-safe:** Each job commits only its own data, 5-retry push with rebase
+- **Manual trigger:** `gh workflow run "Scrape DTLI & Show Score Pages" -f aggregator=dtli -f shows=hamilton-2015,cabaret-2024`
+
+## `audit-aggregator-coverage.yml`
+- **Runs:** Weekly on Mondays at 6 AM UTC, or manually
+- **Does:** Audits review coverage across all 6 aggregator sources (DTLI, Show Score, BWW Roundups, BWW Reviews, Playbill Verdict, NYC Theatre) for all shows. Compares archive-extracted counts against local review files to identify genuine coverage gaps.
+- **Options:** `status` (open/closed/all, default all), `show` (single show ID for targeted audit)
+- **Script:** `scripts/audit-aggregator-coverage.js`
+- **Output:** `data/audit/aggregator-coverage.json` — per-show gap analysis with `trulyMissing` metric
+- **Key metrics:**
+  - Per-aggregator gaps: how many reviews each aggregator lists that we don't have attributed to that source
+  - `trulyMissing = max(0, maxAggregatorCount - totalLocal)`: genuine missing reviews (not just source attribution differences)
+  - ~97% of per-aggregator gaps are source-attribution differences, not truly missing reviews
+- **No secrets needed** (reads local files only)
+- **Parallel-safe:** Only commits `data/audit/aggregator-coverage.json`
+- **CLI:** `node scripts/audit-aggregator-coverage.js --output-gaps` (prints show IDs with genuine gaps for piping to gather-reviews)
+
+## `close-coverage-gaps.yml`
+- **Runs:** Manual trigger only (workflow_dispatch)
+- **Does:** Orchestrates full coverage gap closure for a given era: audits gaps, gathers reviews in parallel (aggregators-only mode), scrapes PV/NYC Theatre, validates, rebuilds reviews.json
+- **Options:**
+  - `era`: `2021-2026` | `2016-2020` | `2011-2015` | `pre-2011` | `all`
+  - `parallel_jobs`: Number of parallel gather jobs (1-10, default 5)
+  - `dry_run`: Audit only, no gathering
+- **Manual trigger:**
+  ```bash
+  gh workflow run "Close Coverage Gaps" --field era="2021-2026" --field parallel_jobs=5 --field dry_run=false
+  ```
+- **Job pipeline (4 jobs):**
+  1. `prepare` — Filters shows by era, runs coverage audit, identifies gap shows, partitions into matrix batches, uploads gap-data artifact
+  2. `gather-gaps` (matrix, N parallel jobs) — Runs `gather-reviews.js --aggregators-only` per show, checkpoint commits every 10 shows, pre-commit JSON validation, failure tracking via artifacts. No ANTHROPIC_API_KEY needed.
+  3. `scrape-pv-nyc` — Runs Playbill Verdict + NYC Theatre for gap shows (60 min, continue-on-error)
+  4. `rebuild` — Validates data, rebuilds reviews.json, writes step summary
+- **Requires:** SCRAPINGBEE_API_KEY, BRIGHTDATA_TOKEN (no ANTHROPIC_API_KEY needed — aggregators-only mode)
+- **Performance:** ~20 sec/show (vs ~5 min/show previously). 100 gap shows in ~7 min with 5 parallel jobs.
+- **Parallel-safe:** Matrix strategy with round-robin distribution, 30s stagger, 5-retry push with rebase, fail-fast: false, pre-commit JSON validation, atomic file writes
+
+## `fetch-todaytix-showtimes.yml`
+- **Runs:** Daily at 6 AM UTC (1 AM EST), or manually
+- **Does:** Fetches performance-level showtime IDs from TodayTix public API for all open shows with `todaytixId`. Also generates `show-schedules.json` entries for WE/OB shows (Broadway uses bwayrush). Cleans up closed WE/OB shows from schedules.
+- **Script:** `scripts/fetch-todaytix-showtimes.js`
+- **No secrets needed** (public TodayTix API)
+- **Data files:** `data/todaytix-showtimes.json` (deep-link IDs), `data/show-schedules.json` (weekly schedule grid)
+- **Safety guard:** Aborts if <50% of shows return data (prevents silent data loss from API outage)
+- **Monitored by:** `check-cron-health.yml` (36h max gap)
+- **Validated by:** `validate-data.js` (staleness, coverage, structural integrity)
+- **CLI:** `node scripts/fetch-todaytix-showtimes.js [--dry-run] [--limit N]`
+
+## `fix-todaytix-links.yml`
+- **Runs:** Weekly on Mondays at 10 AM EST (3 PM UTC), or manually
+- **Does:** Checks all TodayTix URLs in shows.json via HEAD requests. Detects 404s and wrong-show redirects (ID recycling) by comparing page `<title>`. Auto-fixes broken links using TodayTix public API (`api.todaytix.com/api/v2/shows?query=NAME&location=1`). Removes stale links for closed shows. Commits fixes directly.
+- **Script:** `scripts/fix-todaytix-links.js`
+- **No secrets needed** (public TodayTix API + HEAD requests)
+- **CLI:** `node scripts/fix-todaytix-links.js [--dry-run]`
+
+## `fix-platform-ticket-links.yml`
+- **Runs:** Monthly (1st Monday at 4 PM UTC), or manually
+- **Does:** Validates Telecharge/Ticketmaster links (separate from TodayTix). Telecharge: verifies URL matches deterministic construction from title. Ticketmaster: re-verifies via SERP. Removes stale links for closed shows. Also runs official URL enrichment for Broadway shows.
+- **Scripts:** `scripts/fix-platform-ticket-links.js`, `scripts/enrich-official-urls.js --category=broadway`
+- **Requires:** SCRAPINGBEE_API_KEY (for Ticketmaster SERP + official URL SERP)
+- **Note:** Neither Telecharge (Akamai queue-it → 302) nor Ticketmaster (requires JS) can be HTTP-verified. Validation uses URL construction matching and SERP re-verification respectively.
+- **CLI:** `node scripts/fix-platform-ticket-links.js [--dry-run]`
+
+## `test.yml`
+- **Runs:** On push to `main`, daily at 6 AM UTC, manually
+- **Tests:** Data validation (duplicates, required fields, dates, status), contamination audits (`--strict`), absolute floors (500 shows / 15k reviews), topology/write guards, unit tests, tsc, lint, E2E (homepage, show pages, navigation, filters, mobile)
+- **Quality gate (2026-06-21 split):** Blocks only on a **catastrophe floor** — `audit-text-quality.js --gate` (wide bands: <10% full / >85% truncated / >25% unknown). The tight drift bands (text-quality %, aggregator count ratios, regex FP counts) MOVED to the non-blocking `check-corpus-drift.yml` because they flapped main red as the rebuild bots drift the corpus every ~30 min. See that workflow + `health-check.js` "Quality: corpus drift".
+- **On Failure:** Auto-creates GitHub issue (Discord alerts removed Feb 20, 2026)
+
+## `check-corpus-drift.yml`
+- **Runs:** Daily at 6:20 AM UTC + `workflow_run` after "Rebuild Reviews Data" + manual
+- **Does:** Runs the three corpus-statistics audits — `audit-text-quality.js` (MONITOR band), `validate-aggregator-truth.js`, `audit-regex-patterns.js --full` — via `scripts/check-corpus-drift.js`, writes `data/audit/corpus-drift.json`, commits it. **Non-blocking by design:** drift is not a job failure (exit 0); only an audit that *cannot run* (scan failed/crashed) fails the job. Surfaced in the daily digest by `health-check.js` ("Quality: corpus drift") — that's the channel that keeps the moved signals visible, since a non-blocking job reports conclusion=success and `getWorkflowRunSummary()` would otherwise never see it.
+- **Why it exists:** these audits assert on live-corpus properties that drift continuously; in `test.yml` they reddened main for non-code reasons every few hours (root cause: `memory/feedback_test_yml_data_gates_flap_and_shortcircuit.md`). The catastrophe FLOOR stays blocking in `test.yml` via `--gate`.
+- **Script:** `scripts/check-corpus-drift.js` (`--strict` to escalate drift to job failure; `--audit-out=PATH`)
+- **Requires:** `REVIEW_TEXTS_TOKEN` (core-data + review-texts checkout)
+- **Manual trigger:** `gh workflow run "Check Corpus Drift"`
+
+## `check-secrets-health.yml`
+- **Runs:** Weekly on Mondays at 12 PM UTC (7 AM EST), or manually
+- **Does:** Tests 10 critical service API keys/tokens for validity + balance/quota where available
+- **Services tested:**
+  - Anthropic, OpenAI, Gemini: key validity via `GET /models` (free, no token cost)
+  - OpenRouter: key validity + `limit_remaining` balance (warns <$5, fails <$1)
+  - ScrapingBee: key validity + credit usage (warns >50% monitor, >75% opening nights at risk)
+  - ScrapingDog: key validity (401/403 → fail) + credit/burn status via `evaluateScrapingdogCredits` (scripts/lib/scrapingdog-ack.js) — previously untested here, so a revoked key only surfaced as a daily `warn` (task #474)
+  - Bright Data: `mcp_unlocker` zone status — verifies `disable` field absent (catches trial limit + soft-delete before opening night)
+  - Private Repo PAT (`REVIEW_TEXTS_TOKEN`): repo access
+  - Vercel: token validity via `GET /v2/user`
+  - Sentry: token validity via project API
+  - Resend: token validity via `GET /domains`
+- **All checks run in parallel** via `Promise.all()` for speed
+- **On failure:** Sends Discord alert + email to owner (`email: true`)
+- **Script:** `scripts/check-secrets-health.js`
+- **Requires:** ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY, OPENROUTER_API_KEY, SCRAPINGBEE_API_KEY, SCRAPINGDOG_API_KEY, BRIGHTDATA_TOKEN, REVIEW_TEXTS_TOKEN, VERCEL_TOKEN, SENTRY_AUTH_TOKEN, RESEND_API_KEY, DISCORD_WEBHOOK_ALERTS, OWNER_EMAIL
+- **Manual trigger:** `gh workflow run "Check Secrets Health"`
+
+## `posthog-adhoc-query.yml`
+- **Runs:** Manual only (`workflow_dispatch`), input `hogql`
+- **Does:** Runs one or more HogQL statements (separate with a line containing only `---`) against PostHog project 332742 via `scripts/posthog-adhoc-query.js` and renders each result as a markdown table on the run **Summary** page. `{{REAL_USERS_WHERE}}` in a statement expands to the shared Real Users lens from `scripts/lib/posthog-query.js`. Read-only: no commits, no pushes, no PostHog mutations, no email. Renders at most 500 rows per statement; warns when PostHog reports the result as capped (`hasMore`, HogQL's silent ~100-row cap on statements without `LIMIT`, `cloud-memory/feedback_posthog_hogql_default_row_limit.md`); retries a transient PostHog error (5xx/429/timeout) once per statement.
+- **Why it exists (BRO-4327):** `POSTHOG_PERSONAL_API_KEY` is CI-only and every scheduled PostHog job runs a fixed query set, so "is anyone using feature X?" had no answer path. First use: whether the Social Buzz card on show pages gets clicks.
+- **Dispatch:** `gh workflow run posthog-adhoc-query.yml -f hogql="$(cat queries.sql)"` (the Actions UI box is single-line; the API keeps multi-line input intact). Local dry run of the renderer: `node scripts/posthog-adhoc-query.js --self-test`.
+- **Requires:** `POSTHOG_PERSONAL_API_KEY`
+- **Cron health:** none (manual only)
+
+## `supabase-custom-domain.yml`
+- **Runs:** Manual only (`workflow_dispatch`), inputs `action` (status | create | dns | initialize | reverify | activate | delete), `hostname` (default `auth.broadwayscorecard.com`), `confirm` (`ACTIVATE` / `DELETE` for the two irreversible actions)
+- **Does:** Sets up and operates the Supabase custom auth domain through `scripts/supabase-custom-domain.mjs`: CNAME + TXT records in Vercel DNS (`scripts/lib/vercel-dns.mjs`, keyed on name+type+value, never id), registration and verification via the Supabase Management API, activation only after a live probe shows Google accepts `https://<host>/auth/v1/callback` (a `redirect_uri_mismatch` page means the owner has not added it to the OAuth client yet and activating would break every web Google sign-in). Exit 0 done, 1 broken or refused, 2 pending (run the next step later). Step summary lists every record created.
+- **Why it exists (BRO-4894):** Google's account chooser read "Sign in to continue to <ref>.supabase.co" and about 40% of Google sign-ins backed out there. The old `<ref>.supabase.co` host keeps working after activation, so client code needs no change.
+- **Order:** `create` (safe to repeat; exit 2 while DNS propagates or the certificate is pending) then `reverify` until exit 0, then the owner adds the callback to the Google OAuth client, then `activate` with `confirm=ACTIVATE` (judged by re-reading the stored state, not the POST echo). `status` is read-only; `delete` with `confirm=DELETE` removes the hostname, its CNAME, and that hostname's verification TXT records. Every summary ends with a plain-English next step and the exact Google callback URL. The `/config/auth` body (SMTP and provider secrets) is never printed.
+- **Requires:** `SUPABASE_ACCESS_TOKEN`, `SUPABASE_PROJECT_REF`, `VERCEL_TOKEN`
+- **Cron health:** none (manual only)
+
+## `analyze-traffic-sources.yml`
+- **Runs:** Weekly Monday 09:30 UTC (after `posthog-monday.yml` at 08:00), or manually (`gh workflow run analyze-traffic-sources.yml -f days=91`)
+- **Does:** Pulls the last N days from GA4 (channel group, source/medium, campaign, landing page, country) and PostHog (session-entry channel type, referring domain, UTM, country, landing page; Real Users lens), buckets by ISO week, flags any source ≥3x its prior weekly median or brand new, lists month-over-month rising/falling sources (last 4 full weeks vs the 4 before, 20+/week floor), new referring sites (5+ visits, search engines excluded) and where non-search referral traffic lands (referrer × landing page), and renders a plain-English "What changed" report on the run **Summary** page (raw JSON as an artifact, 14 days). **A plain-language summary is emailed to OWNER_EMAIL** via `scripts/email-traffic-report.js` (Resend, transactional; body built by `scripts/lib/traffic-report-human.js` with show titles from `data/shows.json` via `checkout-core-data`, full report attached) — the owner reads email, not GitHub. `send_email=false` dispatches a no-send verification run; `node scripts/analyze-traffic-sources.js --from-raw=<raw.json> --shows=data/shows.json` re-renders locally from a run's artifact. Vercel Web Analytics has no query API and is not included.
+- **GA-style tiles, charts, dashboard (BRO-4136):** the email opens with nine tiles (last week vs the week before and the 4-week average, month to date vs the same days last month, last full month vs the month before, year over year — "Not yet, available from March 2027" until a full same-week-last-year exists, visitors, pages per visit, top page/referrer/country) and two charts (13-week visits + search line; top 8 landing pages), rendered to PNG by QuickChart at send time and attached inline (`cid:`); QuickChart down = email sends without charts. Numbers come from `scripts/lib/traffic-metrics.js`. The long series live in a **visit-history store in the PRIVATE core-data repo** (`analytics/traffic-history.json`, `scripts/lib/traffic-history.js`): each run re-queries only the last 6 weeks from PostHog (daily visits+pageviews, daily channel, weekly + monthly distinct visitors, each on its own chunk grid) and merges; first run backfills from 2026-03-09. The store and `analytics/traffic-dashboard.json` are pushed by the "Save visit history" step ONLY after a full refresh (a failed refresh writes neither file, falls the tiles back to the 13-week rows, and turns the run red). `/admin/traffic` (admin cookie, 404 otherwise; data via `/api/admin/traffic-stats` reading the private repo at request time, no deploy needed) shows the tiles, 52-week visits/visitors line, weekly source stack, monthly bars and top-10 tables. Local preview: `node scripts/email-traffic-report.js --report=<dir>/traffic-sources-report.md --dry-run --html-out=preview.html`.
+- **Script:** `scripts/analyze-traffic-sources.js` (`--days`, `--out`); pure helpers unit-tested in `scripts/tests/analyze-traffic-sources.test.mjs`
+- **Failure semantics:** any failed query is listed in an "Incomplete report" banner and the job exits 1 (never a green half-report). PostHog 5xx/429 are retried once after 20s — a 504 takes ~5 min to come back; the history refresh has its own 12-minute budget, hence `timeout-minutes: 30`.
+- **Requires:** `GA4_PROPERTY_ID`, `GA_SERVICE_ACCOUNT_KEY`, `POSTHOG_PERSONAL_API_KEY` (all CI-only; local `.env` has none, which is why this is a workflow)
+- **Cron health:** digest-only (`.cron-health-exempt.txt`), not in `CRITICAL_CRONS`
+- **Origin:** BRO-3419 (2026-09-15). First run found Hong Kong as a PostHog-only bot geo (added to `REAL_USERS_WHERE` + `data/audit/known-bot-geos.json`); BRO-3432 tracks teaching `audit-geo-bots.js` to read PostHog too.
+
+## `check-seo-health.yml`
+- **Runs:** Weekly on Sundays at 8 AM UTC, or manually
+- **Does:** Comprehensive SEO health monitoring via Google Search Console APIs. 5 features: (1) search performance tracking (clicks, impressions, CTR, position vs prior week + top queries/pages), (2) index coverage sampling (URL Inspection API on 50 random show URLs), (3) sitemap status verification, (4) new page indexing (auto-resubmits shows opened 2-7 days ago if not indexed), (5) stale page detection (resubmits pages with lastCrawlTime >30 days, capped at 50/week)
+- **Anomaly detection:** Compares current week to 4-week rolling average. Alerts on clicks down >25%, impressions down >30%, position worse by >5. Seasonality guard: if 52+ weeks of history, suppresses alerts that match same-week-last-year pattern (within 30%).
+- **Data persistence:** `data/audit/seo-health.json` (latest snapshot), `data/audit/seo-performance-history.json` (52-week rolling history), `data/audit/indexing-api-usage.json` (shared daily quota ledger, 200/day)
+- **Script:** `scripts/check-seo-health.js` (imports from `scripts/submit-google-indexing.js`)
+- **Requires:** GOOGLE_INDEXING_KEY, DISCORD_WEBHOOK_ALERTS, RESEND_API_KEY, OWNER_EMAIL, REVIEW_TEXTS_TOKEN (for checkout-core-data)
+- **Alerts:** Discord for warnings, Discord + email for errors (>20% traffic drop or >10% deindexing)
+- **Manual trigger:** `gh workflow run "Check SEO Health"`
+- **Note:** Audit data pushes do NOT trigger Vercel deploys (seo-* paths not in deploy trigger list). Commit uses `[skip ci]`.
+
+## `update-deploy-watermark.yml`
+- **Runs:** Dispatched by `vercel-deploy.yml` after every successful production deploy (unthrottled dispatch — see that workflow's step comment for why). This job's own "Check watermark throttle" step decides whether to actually WRITE: it skips its own "Checkout core data" / "Emit deployed-live stage-latency event" / "Update watermark" steps when `data/audit/deploy-watermark.json`'s `updatedAt` (from this run's own checkout) is fresher than `WATERMARK_MIN_INTERVAL_MIN` (repo var, default 30) — was writing a commit on EVERY deploy (~121 commits/day to main, BRO-2983). `scripts/lib/deploy-watermark-throttle.js`'s `shouldSkipWatermarkDispatch()` fails OPEN (writes) on a missing/unparseable timestamp, mirroring `should-deploy-gate.js`'s staleness-tolerant design. Checked here rather than in `vercel-deploy.yml`'s dispatch step deliberately: this job's `concurrency` group (`deploy-watermark-update`, `cancel-in-progress: false`) serializes runs, so the read-before-write here can't race the way a check from independently-checked-out parallel deploy jobs would. A skipped run's counts/event are simply not recorded, not "merged" into the next one — the next run past the throttle records only its own data. Kill switch: repo var `WATERMARK_THROTTLE_DISABLED=true` forces every run to write (mirrors `DEPLOY_GATE_DISABLED`).
+- **Does:** Commits updated `data/audit/deploy-watermark.json` (show/review counts) used by `pre-deploy-check.js` as a regression baseline. Since 2026-07-13 also appends the `deployed-live` stage-latency event (from `deployed_at`/`deploy_sha`/`deploy_run_id` dispatch inputs) to `data/audit/stage-latency.jsonl` in the same commit — the inline emit step in `vercel-deploy.yml` burned its full 3-min push-retry timeout on most deploys.
+- **Why async:** Push retries on concurrent branches took ~2 min inline. Moved to separate workflow to unblock deploy completion.
+- **Concurrency:** `deploy-watermark-update` group, `cancel-in-progress: false` (a running run finishes its stage-latency append instead of dying mid-write; only the newest QUEUED run survives a burst). A burst can still drop an intermediate deploy's event; the newer deploy's event supersedes it (slight latency overstatement, acceptable).
+- **Requires:** REVIEW_TEXTS_TOKEN (for checkout-core-data — reads shows.json/reviews.json)
+- **If it fails:** Pre-deploy check uses a slightly stale baseline. Absolute floors (500 shows, 10K reviews) are the real safety net. A missed stage-latency event is superseded by the next deploy's event.
+
+## `vercel-demo.yml`
+- **Runs:** Every 8 hours (6 AM, 2 PM, 10 PM UTC), or manually
+- **Does:** Builds and deploys to `demo.broadwayscorecard.com` with ALL feature flags enabled. For partner meetings (TodayTix, ShowScore) where feature-flagged content needs to be visible.
+- **Key difference from production:** Rewrites `feature-flags.ts` source at build time to enable ALL flags (auto-extracted from getter names — no manual sync needed). Deploys WITHOUT `--prod` (cannot touch production). Uses `vercel alias set` to assign `demo.broadwayscorecard.com`.
+- **Concurrency:** `vercel-demo-deploy` group, `cancel-in-progress: false` (queued). **DO NOT change to `true`** — cancelling mid-build leaves the demo alias pointing at stale production content without feature flags. Queuing adds ~13min delay but guarantees the alias always points at a flag-rewritten build.
+- **Requires:** VERCEL_TOKEN, REVIEW_TEXTS_TOKEN (for checkout-core-data)
+- **Manual trigger:** `gh workflow run "Deploy Demo Site"`

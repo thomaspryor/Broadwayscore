@@ -1,0 +1,27 @@
+name: Analyze Show Review Rankings
+
+# hygiene-notify-ok: read-only ad-hoc analysis, no data writes, failure is self-evident in the run log
+on:
+  workflow_dispatch: {}
+
+concurrency:
+  group: analyze-show-review-rankings
+  cancel-in-progress: false
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Analyze show review rankings
+        env:
+          GOOGLE_INDEXING_KEY: ${{ secrets.GOOGLE_INDEXING_KEY }}
+        run: node scripts/analyze-show-review-rankings.js

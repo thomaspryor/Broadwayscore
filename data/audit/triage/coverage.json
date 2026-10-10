@@ -1,0 +1,20 @@
+{
+  "system": "coverage",
+  "status": "warn",
+  "lastChecked": "2026-10-10T13:07:35.985Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "monitoring",
+  "details": [
+    {
+      "name": "Coverage: SERP census recall",
+      "status": "warn",
+      "message": "Review coverage dropped — a plain Google search now finds 17% vs 38% recently (across 1 recent opening(s); 18 review pages any of our searches could find). New shows may be going live with published reviews missing."
+    },
+    {
+      "name": "Coverage: adversarial probe",
+      "status": "warn",
+      "message": "The naive search found 2 review URL(s) this pipeline hasn't discovered yet: our-sinatra-a-musical-celebration-off-broadway-2026"
+    }
+  ]
+}

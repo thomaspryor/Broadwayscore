@@ -1,0 +1,1251 @@
+name: Opening Night Poller
+
+# run-name embeds show_id (when set) so other tools can detect in-flight
+# pollers for a specific show via `gh run list --json displayTitle`. The
+# aggregator-url-watcher uses this for idempotency — see
+# scripts/watch-aggregator-urls.js: pollerInFlightForShow().
+run-name: Opening Night Poller — ${{ inputs.show_id || 'auto' }}
+
+# Fast review discovery for opening nights. Runs 4 layers:
+#   1. Aggregators (BWW RR, Show Score, DTLI) — fastest
+#   2. RSS feeds (Variety, NYT, Guardian) — free
+#   3. Direct site search (outlet search endpoints) — instant
+#   4. SERP backup (Google) — catches the rest
+#
+# Creates review files for newly discovered reviews.
+# After discovery: triggers collect → rebuild → score pipeline chain.
+#
+# NO CRON — only dispatched by update-show-status.yml when a show transitions to open,
+# or manually via workflow_dispatch for targeted polling.
+
+on:
+  # No cron — dispatched by update-show-status.yml only when a show actually opens.
+  # Manual dispatch available for targeted polling.
+  workflow_dispatch:
+    inputs:
+      show_id:
+        description: 'Show ID to poll (leave empty for auto-discovery)'
+        required: false
+        type: string
+        default: ''
+      lookback_days:
+        description: 'Days back to check for openings (default 2)'
+        required: false
+        type: number
+        default: 2
+      skip_serp:
+        description: 'Skip SERP layer (save API credits)'
+        required: false
+        type: boolean
+        default: false
+      force_serp:
+        description: 'Force SERP to run regardless of poll-mode cadence gate (manual overrides outside aggressive/morning windows)'
+        required: false
+        type: boolean
+        default: false
+      market:
+        description: 'Filter to market (empty = all markets)'
+        required: false
+        type: string
+        default: ''
+      bww_roundup_url:
+        description: 'Direct BWW Review Roundup URL to bypass SERP discovery (use when SERP returns wrong result)'
+        required: false
+        type: string
+        default: ''
+      tb_review_url:
+        description: 'Direct Talkin Broadway review URL (SERP returns forum posts — use https://www.talkinbroadway.com/page/world/{title}{year}.html)'
+        required: false
+        type: string
+        default: ''
+      fast_path:
+        description: 'Inline rebuild+deploy after scoring (skips separate rebuild-reviews.yml dispatch)'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  # Per-show concurrency when show_id is set, otherwise a single shared
+  # auto-discovery group. Per-show groups serialize multiple targeted dispatches
+  # for the SAME show (watcher + orchestrator + update-show-status all converging
+  # during opening night) without a global group cancelling unrelated per-show
+  # runs (Cats postmortem 2026-04-07). Auto-discovery dispatches previously got
+  # unique per-run groups (github.run_id) — that let stacked orchestrators run
+  # 3-4 pollers concurrently, and every run commits to the same repos, so the
+  # losers died in "Commit new review files" push races and paged the owner
+  # (2026-08-03 alert storm: 4 emails/hr). Auto-discovery runs poll the same
+  # show set every time, so serializing them loses nothing: one runs, one
+  # queues, and GitHub superseding an older pending dispatch is harmless
+  # (cancelled runs never alert and don't count toward failure streaks).
+  # Market-scoped when the dispatcher passes market (orchestrator always does),
+  # so BW and WE orchestrators keep their pollers parallel to each other and
+  # update-show-status's market-less opener dispatch doesn't compete with them.
+  # Deliberately NOT one shared group for every review-texts writer (BRO-4273):
+  # that would queue the targeted per-show poller behind a 60-min auto run on
+  # opening night. Concurrent pushes are push-with-retry.sh's job; run
+  # 36511035811's "dropped _pending stubs" abort was a rename-detection false
+  # positive in the survival check (fixed there with --no-renames), not a
+  # lost write.
+  group: opening-night-poller-${{ inputs.show_id || inputs.market || 'auto-discovery' }}
+  cancel-in-progress: false
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    # 60->100 (card #1910 audit, 2026-08-26): raising 2 push steps below to
+    # 600s/20-retries (from #1842/#1891's undersizing pattern) pushed this
+    # job's worst-case summed step budget — all 6 push-with-retry.sh steps
+    # (2x600s + 4x240s = 2160s) plus every OTHER step's own explicit
+    # timeout-minutes (2880s) — to 5040s (84min), which the OLD 60min
+    # (3600s) timeout couldn't cover even before this fix (the job was
+    # already undersized on a worst-case run; this audit is what surfaced
+    # it, not something the 2 step edits introduced). 100min leaves ~16min
+    # (16%) of real margin over the 84min worst case.
+    # 100->125 (BRO-2322 audit): later steps/budget growth took the audited
+    # worst case to 6240s (5640s other steps + 600s push deadline), -4% vs
+    # the 100min ceiling; 125min = 7500s restores ~17% margin.
+    timeout-minutes: 125
+    steps:
+      # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
+      # on the checkout below), so rebase/diff/show fetch missing blobs over the
+      # network outside push-with-retry.sh's per-op timeout wrappers. Set git's
+      # low-speed abort (1 KB/s for 45 s, the bound the helper applies to its own
+      # fetch/push) for EVERY git transfer in this job: --global, and before the
+      # checkout, so actions/checkout's own first lazy blob batch and the depth-1
+      # private-repo clones (checkout-core-data / checkout-review-texts, no
+      # timeout of their own; their retry loop catches the abort) are bounded
+      # too. A stalled transfer fails fast instead of hanging to the job timeout.
+      # lowSpeed cannot catch a pre-transfer stall. Runner $HOME is ephemeral.
+      - name: Set git low-speed abort for this job
+        run: |
+          git config --global http.lowSpeedLimit 1000
+          git config --global http.lowSpeedTime 45
+
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          # fetch-depth: 0 (full history) is REQUIRED, not an optimization. The
+          # fast-path commits directly to the web repo main via push-with-retry.sh.
+          # On a shallow (default depth-1) checkout, a graft-boundary HEAD lets the
+          # push-retry rebase/merge/reset path treat local vs origin/main as
+          # unrelated histories and produce a PARENTLESS root commit — that is the
+          # #209 incident (53ff06a4a7a, 2026-07-19: a second root merged into main,
+          # doubling clone weight + corrupting per-file history). Full history keeps
+          # merge-base resolvable so every commit stays properly parented.
+          #
+          # filter: blob:none (BRO-4273) keeps that full commit graph (a
+          # partial clone is NOT shallow, so merge-base still resolves) but
+          # skips downloading every historical file version. The full-blob
+          # clone took 25-30 min per run (runs 36493405907..36511035811),
+          # about half of each run, delaying reviews by ~30 min. Blobs the
+          # job actually needs (working tree, rebase inputs) are fetched on
+          # demand. Same setup as land.yml, which also pushes main.
+          fetch-depth: 0
+          filter: blob:none
+
+      # BRO-66: REVIEW_TEXTS_TOKEN is a classic PAT — 5000 req/hr across ALL
+      # API calls from that token, shared by every workflow that checks out
+      # or pushes core-data/review-texts. Logging remaining/reset at job start
+      # and end (see the matching step near the bottom of this job) makes a
+      # near-exhausted quota visible in the run log BEFORE it causes a hard
+      # failure, instead of the only signal being the checkout step's error.
+      - name: Log REVIEW_TEXTS_TOKEN rate-limit status (start)
+        timeout-minutes: 1
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          gh api rate_limit --jq '.rate | "REVIEW_TEXTS_TOKEN rate limit: \(.remaining)/\(.limit) remaining, resets \(.reset | todate)"' \
+            || echo "::warning::Could not fetch REVIEW_TEXTS_TOKEN rate-limit status"
+        continue-on-error: true
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Opening-night lease sync (BRO-4786)
+        uses: ./.github/actions/opening-night-lease-sync
+
+      - name: Find shows to poll
+        id: find
+        run: |
+          # WE reviews publish 12-48h after press night; use longer window
+          DEFAULT_LOOKBACK=2
+          if [ "${{ inputs.market }}" = "west-end" ]; then
+            DEFAULT_LOOKBACK=4
+          fi
+          LOOKBACK=${{ inputs.lookback_days || '' }}
+          LOOKBACK=${LOOKBACK:-$DEFAULT_LOOKBACK}
+          INPUT_SHOW="${{ inputs.show_id }}"
+          MARKET="${{ inputs.market }}"
+
+          if [ -n "$INPUT_SHOW" ]; then
+            echo "Using manual show: $INPUT_SHOW"
+            echo "shows=$INPUT_SHOW" >> $GITHUB_OUTPUT
+            echo "has_shows=true" >> $GITHUB_OUTPUT
+          else
+            SHOWS=$(node -e "
+              const shows = require('./data/shows.json').shows;
+              const { isStuckPreviewsPollCandidate } = require('./scripts/lib/opening-signal');
+              const now = new Date();
+              const cutoff = new Date(now);
+              cutoff.setDate(cutoff.getDate() - $LOOKBACK);
+              cutoff.setHours(0,0,0,0);
+              const market = '$MARKET';
+              const opened = shows.filter(s => {
+                const cat = s.category || 'broadway';
+                if (cat !== 'broadway' && cat !== 'west-end' && cat !== 'off-west-end' && cat !== 'off-broadway') return false;
+                if (market === 'broadway' && cat !== 'broadway' && cat !== 'off-broadway') return false;
+                if (market === 'west-end' && cat !== 'west-end' && cat !== 'off-west-end') return false;
+
+                if (!s.openingDate) {
+                  // Stuck-preview backstop (BRO-3138): a null openingDate would
+                  // otherwise permanently exclude this show from every poller
+                  // run, so discovery never finds review URLs, so
+                  // openSignalFromDiscovery() (scripts/lib/opening-signal.js)
+                  // never gets data to backfill openingDate from — a deadlock.
+                  // Poll anyway once previews have run long enough that the
+                  // show has plausibly opened (bounded window — see that file
+                  // for why both ends of the window exist).
+                  return isStuckPreviewsPollCandidate(s, now);
+                }
+
+                // Include 'previews' shows whose opening date has passed — update-show-status
+                // runs at 8 AM UTC but opening night polling starts at 9 PM ET (1 AM UTC),
+                // so shows are still 'previews' during the critical polling window.
+                const validStatus = s.status === 'open' || s.status === 'upcoming' ||
+                  (s.status === 'previews' && new Date(s.openingDate) <= now);
+                if (!validStatus) return false;
+                const d = new Date(s.openingDate);
+                d.setHours(0,0,0,0);
+                return d >= cutoff && d <= now;
+              });
+              if (opened.length > 0) console.log(opened.map(s => s.id).join(','));
+            ")
+
+            if [ -z "$SHOWS" ]; then
+              echo "No recently opened shows"
+              echo "has_shows=false" >> $GITHUB_OUTPUT
+            else
+              echo "Recently opened shows: $SHOWS"
+              echo "shows=$SHOWS" >> $GITHUB_OUTPUT
+              echo "has_shows=true" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+      # Early exit if no shows — skip Node setup entirely
+      - name: Early exit check
+        if: steps.find.outputs.has_shows != 'true'
+        run: echo "No shows to poll. Exiting."
+
+      - uses: actions/setup-node@v5
+        if: steps.find.outputs.has_shows == 'true'
+        with:
+          node-version: 20
+
+      # Restore 24h SERP cache (scripts/lib/serp-cache.js) + BWW anchor memo
+      # (scripts/lib/bww-rr-discover.js, T5) + 45min SERP negative-cache
+      # (scripts/lib/serp-negative-cache.js, T11). All three are disk-backed
+      # by design specifically so a fresh runner on the NEXT dispatch can
+      # reuse them — without this step they'd only dedup within a single
+      # run's shell loop over SHOW_ARRAY, not across separate workflow runs.
+      - name: Restore SERP + BWW anchor caches
+        if: steps.find.outputs.has_shows == 'true'
+        # hygiene-cache-runid-ok: ~22 KB payload, and the run-id in the SAVE key is
+        # load-bearing — actions/cache silently skips the save on an exact key hit, so
+        # a stable key would freeze the cache at its first contents. Cross-run reuse
+        # comes from the `restore-keys: bd-serp-cache-` prefix. This is the cache
+        # BRO-3887 was protecting, not the one that caused the incident.
+        uses: actions/cache@v5
+        with:
+          path: |
+            /tmp/bd-serp-cache
+            /tmp/bww-anchors
+            /tmp/bd-serp-negative-cache
+          key: bd-serp-cache-${{ github.run_id }}
+          restore-keys: |
+            bd-serp-cache-
+
+      - name: Install dependencies
+        if: steps.find.outputs.has_shows == 'true'
+        run: npm ci
+
+      - name: Setup Playwright
+        if: steps.find.outputs.has_shows == 'true'
+        uses: ./.github/actions/setup-playwright
+
+      # BRO-4408: drain the _pending/ no-byline sink for the in-window shows
+      # BEFORE the poll loop. Site-search hits without a byline (TheWrap /
+      # Telegraph / WhatsOnStage on opening night) land in _pending/ and were
+      # only promoted by enrich-reviews.yml (every 6h), so a T1/T2 review sat
+      # invisible for hours. Promotions stay UNCOMMITTED in the review-texts
+      # checkout: the poll step's `git status --porcelain` then sets any_new,
+      # which gates the commit + collect + score chain for them. Scoped to the
+      # exact in-window list (steps.find.outputs.shows), never --all-open.
+      # BD_OPENING_NIGHT exempts these in-window fetches from the BD daily
+      # breaker (brightdata-caps.js isExemptCaller); replay-pending-bylines.js
+      # is not on the script allowlist.
+      - name: Drain pending no-byline reviews (in-window shows)
+        if: steps.find.outputs.has_shows == 'true'
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BD_OPENING_NIGHT: '1'
+          IN_WINDOW_SHOWS: ${{ steps.find.outputs.shows }}
+        run: node scripts/replay-pending-bylines.js --shows="$IN_WINDOW_SHOWS" --time-budget-min=4
+        continue-on-error: true
+        timeout-minutes: 8
+
+      - name: Run poller for each show
+        if: steps.find.outputs.has_shows == 'true'
+        id: poll
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          # BRO-67: DTLI/BWW extraction now routes through
+          # llmFallbackExtractIfNeeded (zero AND partial-extraction triggers).
+          # Without this, callClaude rejects immediately with "ANTHROPIC_API_KEY
+          # not set" and the fallback silently degrades to the regex baseline —
+          # this step is the only one that runs the extraction code, so it's
+          # the one that needs the key (the later "Score reviews inline" step's
+          # key is for LLM ensemble scoring, unrelated).
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
+          # WE opening-night SERP burst is ON by default (automated; overrides the
+          # orchestrator's iteration-1-8 --skip-serp deferral for aggressive-window WE shows,
+          # bounded by the hard caps in scripts/lib/serp-burst-caps.js). Emergency kill-switch:
+          #   gh variable set DISABLE_WE_SERP_BURST --body true   (delete the var to re-enable).
+          DISABLE_WE_SERP_BURST: ${{ vars.DISABLE_WE_SERP_BURST }}
+          # Broadway hourly SERP sweep after first reviews land (BRO-4272).
+          # Kill switch: gh variable set DISABLE_BW_SERP_BURST --body true
+          DISABLE_BW_SERP_BURST: ${{ vars.DISABLE_BW_SERP_BURST }}
+          # For the burst cascade tripwire's automated owner email (scripts/lib/discord-notify.js).
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: |
+          IFS=',' read -ra SHOW_ARRAY <<< "${{ steps.find.outputs.shows }}"
+          ANY_NEW=false
+          ANY_READY=false
+          SKIP_SERP_FLAG=""
+          if [ "${{ inputs.skip_serp }}" = "true" ]; then
+            SKIP_SERP_FLAG="--skip-serp"
+          fi
+          FORCE_SERP_FLAG=""
+          if [ "${{ inputs.force_serp }}" = "true" ]; then
+            FORCE_SERP_FLAG="--force-serp"
+          fi
+
+          GUARDIAN_REDISPATCH_SHOWS=""
+          # BRO-735: per-show pipeline crash counters (gather stage). The loop
+          # deliberately keeps polling every show even if one crashes (`|| true`
+          # below preserves that resilience — GH Actions bash runs with -e, so
+          # without it one bad show would kill the whole loop) but a crash must
+          # no longer be indistinguishable from "ran fine, found nothing new".
+          # Counted here and verified fail-fast in the "Verify pipeline stages"
+          # step near the end of this job — see scripts/lib/opening-night-pipeline-stages.js.
+          GATHER_FAILED=0
+          GATHER_TOTAL=0
+          for SHOW_ID in "${SHOW_ARRAY[@]}"; do
+            echo "════════════════════════════════════════"
+            echo "Polling: $SHOW_ID"
+            echo "════════════════════════════════════════"
+            BWW_ARG=""
+            TB_ARG=""
+            if [ -n "${{ inputs.bww_roundup_url }}" ]; then
+              BWW_ARG="--bww-roundup-url=${{ inputs.bww_roundup_url }}"
+            fi
+            if [ -n "${{ inputs.tb_review_url }}" ]; then
+              TB_ARG="--tb-review-url=${{ inputs.tb_review_url }}"
+            fi
+            # Capture poller output to a per-show file so we can grep for
+            # guardian_redispatch_needed below. --force-serp is derived from workflow input.
+            PER_SHOW_OUT="$RUNNER_TEMP/poller-$SHOW_ID.log"
+            GATHER_TOTAL=$((GATHER_TOTAL + 1))
+            POLLER_RC=0
+            timeout 600 node scripts/opening-night-poller.js --show="$SHOW_ID" $SKIP_SERP_FLAG $FORCE_SERP_FLAG $BWW_ARG $TB_ARG 2>&1 | tee "$PER_SHOW_OUT" || POLLER_RC=${PIPESTATUS[0]}
+            if [ "$POLLER_RC" -ne 0 ]; then
+              GATHER_FAILED=$((GATHER_FAILED + 1))
+              echo "  ⚠️ poller exited $POLLER_RC for $SHOW_ID — counted as a gather-stage failure"
+            fi
+
+            # Check if files were created (review-texts is a separate git checkout)
+            CREATED=$(cd data/review-texts && git status --porcelain | wc -l | tr -d ' ')
+            if [ "$CREATED" -gt 0 ]; then
+              ANY_NEW=true
+              echo "  → $CREATED new review files"
+            fi
+            # Joe Turner 2026-04-25 postmortem: a poll that returns 0 NEW files
+            # but has UNSCORED existing reviews used to skip the entire scoring
+            # + rebuild + deploy chain — leaving openings with collected-but-
+            # unscored reviews stranded under the 5-review llm-ensemble auto-
+            # trigger threshold. Detect that case here so the scoring + rebuild
+            # gates can fire.
+            UNSCORED=$(node -e "
+              const fs = require('fs');
+              const path = require('path');
+              const { isStaleScoreInput } = require('./scripts/lib/rescore-flagging');
+              const { isActionableRescore, loadShowsById } = require('./scripts/lib/scoring-queue-counts');
+              const dir = path.join('data', 'review-texts', '$SHOW_ID');
+              if (!fs.existsSync(dir)) { console.log(0); process.exit(0); }
+              // Full record, not just filePath: a tour's own reviews say
+              // 'national tour', and the guard needs category to know (BRO-4563).
+              const show = loadShowsById().get('$SHOW_ID');
+              let n = 0;
+              for (const f of fs.readdirSync(dir)) {
+                // _blocklist.json and other _-prefixed files are show metadata,
+                // not reviews (counting them kept any_action true every poll).
+                if (!f.endsWith('.json') || f.startsWith('_')) continue;
+                try {
+                  const d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+                  // 'Unscored' = no llmScore AND no humanReviewScore AND no
+                  // originalScore. originalScore alone (e.g., a star rating)
+                  // does NOT count as scored — composite still needs LLM.
+                  const hasScore = d.llmScore != null || d.humanReviewScore != null;
+                  if (!hasScore && !d.wrongProduction && !d.wrongShow && !d.isRoundupArticle) n++;
+                  // Scored off a roundup excerpt but full text is now on disk
+                  // (or already queued for that rescore). School Girls 2026:
+                  // 6 of 19 reviews sat at excerpt scores for hours because
+                  // nothing counted them as work.
+                  // Counts only what the scorer would actually take
+                  // (isActionableRescore mirrors index.ts's --needs-rescore
+                  // filter: text-gate blocks, cooldowns), so a stuck flag
+                  // cannot force a rebuild + deploy on every poll.
+                  else if (hasScore && (isActionableRescore(d, { show, showTitle: show && show.title, filePath: path.join(dir, f) }) || isStaleScoreInput(d, show, path.join(dir, f)))) n++;
+                } catch (_) {}
+              }
+              console.log(n);
+            " 2>/dev/null || echo 0)
+            if [ "$UNSCORED" -gt 0 ]; then
+              ANY_READY=true
+              echo "  → $UNSCORED unscored or excerpt-scored review(s) waiting for $SHOW_ID"
+            fi
+            # Balusters postmortem CLASS 4 — collect shows needing Guardian redispatch
+            if grep -q "\[GUARDIAN\] Guardian URL discovered without originalScore" "$PER_SHOW_OUT" 2>/dev/null; then
+              GUARDIAN_REDISPATCH_SHOWS="$GUARDIAN_REDISPATCH_SHOWS,$SHOW_ID"
+            fi
+          done
+
+          # Strip leading comma, expose as output
+          GUARDIAN_REDISPATCH_SHOWS="${GUARDIAN_REDISPATCH_SHOWS#,}"
+          # any_new gates file-commit steps (only fire when files actually changed).
+          # any_action gates score/rebuild/deploy (fires for new files OR existing
+          # unscored reviews — closes the Joe-Turner gap).
+          ANY_ACTION=false
+          if [ "$ANY_NEW" = "true" ] || [ "$ANY_READY" = "true" ]; then ANY_ACTION=true; fi
+          echo "any_new=$ANY_NEW" >> $GITHUB_OUTPUT
+          echo "any_ready=$ANY_READY" >> $GITHUB_OUTPUT
+          echo "any_action=$ANY_ACTION" >> $GITHUB_OUTPUT
+          echo "gather_failed=$GATHER_FAILED" >> $GITHUB_OUTPUT
+          echo "gather_total=$GATHER_TOTAL" >> $GITHUB_OUTPUT
+          echo "guardian_redispatch_shows=$GUARDIAN_REDISPATCH_SHOWS" >> $GITHUB_OUTPUT
+          if [ -n "$GUARDIAN_REDISPATCH_SHOWS" ]; then
+            echo "Guardian redispatch needed for: $GUARDIAN_REDISPATCH_SHOWS"
+          fi
+
+      - name: Dispatch Guardian API refetch for shows with new Guardian URLs
+        if: steps.poll.outputs.guardian_redispatch_shows != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # fetch-guardian-reviews.yml accepts `shows` as comma-separated IDs, so
+          # one dispatch covers every pending show in this poll run.
+          SHOWS_CSV="${{ steps.poll.outputs.guardian_redispatch_shows }}"
+          echo "→ Dispatching fetch-guardian-reviews.yml for: $SHOWS_CSV"
+          gh workflow run fetch-guardian-reviews.yml -f shows="$SHOWS_CSV" \
+            || echo "::warning::Guardian redispatch failed for $SHOWS_CSV"
+
+      # Balusters CLASS 7 follow-through: backoff state must persist across CI runs.
+      # Without this step, every fresh CI checkout starts with consecutiveNoOp=0 and
+      # backoff NEVER triggers. This commit runs regardless of whether new reviews
+      # were found — no-op runs are exactly when the counter matters.
+      - name: Commit poller backoff state
+        if: steps.find.outputs.has_shows == 'true' && always()
+        continue-on-error: true
+        env:
+          # Concurrent poller runs (per-show_id concurrency group — different
+          # shows run in parallel) both append to the shared BWW roundup
+          # miss-ledger. `git rebase -X theirs` resolves that hunk silently
+          # (no reported conflict) in favour of whichever run rebases last,
+          # dropping the other run's appended miss (task #698). This opts the
+          # ledger into the same post-rebase union-reconcile pass #420/#574
+          # built for commercial.json et al. — see merge-bww-roundup-ledger.js.
+          PUSH_RECONCILE_MERGED_JSON: '1'
+          # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
+          # its 90s default to 30s — a pre-transfer connection stall burns the
+          # whole 90s cap with zero transfer progress. Matches BRO-334/BRO-346.
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          # Backoff state + SERP-burst ledger live in the MAIN repo working tree under
+          # data/audit/ (tracked in the public repo, NOT the core-data overlay). Stays at
+          # repo root (no `cd data`, task #698) — reconcile-merged-json.js's PUSH_RECONCILE_
+          # MERGED_JSON pass above resolves MANAGED file paths (e.g.
+          # data/audit/bww-roundup-miss-ledger.jsonl) relative to repo root like every other
+          # push-with-retry.sh caller; a `cd data` cwd would make it look for a nonexistent
+          # data/data/audit/... path and silently no-op the reconciliation it's here for.
+          # alert-ledger.json is tracked in the public repo, so it always exists
+          # post-checkout — a `[ ! -f ... ]` clause on it is always false and made
+          # this early exit unreachable. git diff --cached --quiet below still
+          # short-circuits correctly; dropped the dead clause.
+          if [ ! -d data/audit/poller-backoff ] && [ ! -f data/audit/serp-burst-ledger.json ] && [ ! -f data/audit/serp-session-ledger.json ] && [ ! -f data/audit/bww-roundup-miss-ledger.jsonl ] && [ ! -f data/audit/scraper-spend-ledger.jsonl ]; then
+            echo "No backoff/ledger state to commit"
+            exit 0
+          fi
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          # Stage each path INDEPENDENTLY. `git add a b c` is atomic: if ANY pathspec matches
+          # nothing it fails (exit 128) and stages NONE of them. The SERP-burst ledger only
+          # exists after a WE burst actually fires, so for most runs that pathspec is missing —
+          # which silently blocked staging of the backoff state AND the session ledger (the
+          # `2>/dev/null || true` hid the fatal). Guard existence per file so a missing ledger
+          # can't starve the others. (Regression introduced with the WE-burst pathspec.)
+          # Each line ends `|| true` so a missing file (guard false) OR a real add failure
+          # never aborts this step under `bash -e` — staging is best-effort; the commit below
+          # only fires if something actually got staged. (Ledgers are rewritten on UTC rollover,
+          # never deleted, so the `-f` guard never needs to stage a deletion.)
+          git add data/audit/poller-backoff/ 2>/dev/null || true
+          { [ -f data/audit/serp-burst-ledger.json ] && git add data/audit/serp-burst-ledger.json; } || true
+          { [ -f data/audit/serp-session-ledger.json ] && git add data/audit/serp-session-ledger.json; } || true
+          # T6 BWW roundup miss-ledger (Scraping v2 Sprint 1) — must persist across CI
+          # checkouts for isInRoundupMissCooldown() to see prior misses at all; without
+          # this commit every run starts from an empty ledger and the cooldown never fires.
+          { [ -f data/audit/bww-roundup-miss-ledger.jsonl ] && git add data/audit/bww-roundup-miss-ledger.jsonl; } || true
+          # Task #752: Browserbase/BD/SB/SD call-attribution ledger. This workflow is the
+          # heaviest caller (BWW RR discovery + Stage cookie fetch via bww-rr-discover.js /
+          # opening-night-poller.js's own BB session) — without this line every session it
+          # creates is attributed at the source but the row never leaves the ephemeral
+          # runner, so attributedPct reads artificially low for exactly the traffic #752
+          # exists to name.
+          { [ -f data/audit/scraper-spend-ledger.jsonl ] && git add data/audit/scraper-spend-ledger.jsonl; } || true
+          # BRO-1699: the SERP-burst tripwire now calls routeAlert()
+          # (scripts/lib/owner-alert-router.js), which writes the CI-tracked
+          # ledger at this path. Must be committed in this same job or the
+          # tripwireAlerted-style dedup the router provides resets every run
+          # (alert-ledger-commit-check.js CI gate).
+          { [ -f data/audit/alert-ledger.json ] && git add data/audit/alert-ledger.json; } || true
+          git diff --cached --quiet && { echo "No backoff/ledger changes"; exit 0; }
+          git commit -m "audit: Opening night poller — backoff + SERP ledger state update [skip ci]"
+          bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::Backoff/ledger state push failed (non-critical)"
+
+      # PUSH_DEADLINE_SEC='600' + MAX_RETRIES=20 (card #1910 audit, 2026-08-26):
+      # this is one of only 2 genuinely hard-fail push steps in this job (the
+      # other 4 "Commit ..." steps below are wrapped in `|| echo` or
+      # `continue-on-error: true`) — a failed push here silently drops newly
+      # discovered opening-night reviews. Same #1842/#1891-class undersizing:
+      # the shared 5-retries/240s default backoff-sums to only 45s
+      # (N^2+4N), far under the deadline. Sized to the same 20/600s pairing
+      # as rebuild-fast.yml's #1891 fix (ratio ~0.8).
+      - name: Commit new review files
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        env:
+          PUSH_DEADLINE_SEC: '600'
+          # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
+          # its 90s default to 30s — a pre-transfer connection stall burns the
+          # whole 90s cap with zero transfer progress, so only ~4-6 retries fit
+          # inside the 600s deadline above. Matches BRO-334/BRO-346.
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          cd data/review-texts
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m "data: Opening night poller — new reviews discovered [skip ci]"
+          bash ../../scripts/lib/push-with-retry.sh 20 main
+
+      - name: Collect full text inline
+        id: collect
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        env:
+          SHOW_FILTER: ${{ steps.find.outputs.shows }}
+          MAX_REVIEWS: '100'
+          BATCH_SIZE: '10'
+          # Opt-in soft deadline (scripts/collect-review-texts.js) — stops the
+          # loop cleanly with a checkpoint well before the step's own
+          # timeout-minutes below, so a big backlog exits 0 instead of being
+          # externally SIGKILLed (which the fail-fast verify step below
+          # correctly treats as a crash worth paging on — but a graceful
+          # "ran out of time this run" isn't one; task #1911 follow-up,
+          # 2026-08-23). 9 min leaves ~3 min for an in-flight review
+          # (90s REVIEW_TIMEOUT + up to 90s browser-restart recovery) plus
+          # the final checkpoint commit/push to land before the 12-min cap.
+          MAX_DURATION_MS: '540000'
+          ARCHIVE_FIRST: 'true'
+          RETRY_FAILED: 'true'
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
+          BROWSERBASE_ENABLED: 'true'
+          BROWSERBASE_MAX_SESSIONS_PER_RUN: '10'
+          # Account-wide daily ceiling, injected so this job's bww-rr-discover
+          # path enforces the SAME number as collect-review-texts.js. Sourced
+          # from a repo VARIABLE (like BROWSERBASE_KILL_SWITCH above) so the
+          # Scraping v2 T13 step-down (250 -> 100 -> 60) is a one-line variable
+          # change with no deploy — and so it can be reverted in seconds if
+          # yield drops. Unset/empty resolves to the 250 default in
+          # lib/browserbase-caps.js. Do NOT lower it without the gate check in
+          # memory/browserbase-cap-stepdown-runbook.md.
+          BROWSERBASE_MAX_SESSIONS_PER_DAY: ${{ vars.BROWSERBASE_MAX_SESSIONS_PER_DAY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          NYT_EMAIL: ${{ secrets.NYT_EMAIL }}
+          NYTIMES_PASSWORD: ${{ secrets.NYTIMES_PASSWORD }}
+          VULTURE_EMAIL: ${{ secrets.VULTURE_EMAIL }}
+          VULTURE_PASSWORD: ${{ secrets.VULTURE_PASSWORD }}
+          COOKIES_BUNDLE_1: ${{ secrets.COOKIES_BUNDLE_1 }}
+          COOKIES_BUNDLE_2: ${{ secrets.COOKIES_BUNDLE_2 }}
+          COOKIES_BUNDLE_3: ${{ secrets.COOKIES_BUNDLE_3 }}
+          COOKIES_BUNDLE_4: ${{ secrets.COOKIES_BUNDLE_4 }}
+          COOKIES_BUNDLE_5: ${{ secrets.COOKIES_BUNDLE_5 }}
+          COOKIES_BUNDLE_6: ${{ secrets.COOKIES_BUNDLE_6 }}
+          COOKIES_BUNDLE_7: ${{ secrets.COOKIES_BUNDLE_7 }}
+          COOKIES_BUNDLE_8: ${{ secrets.COOKIES_BUNDLE_8 }}
+          COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
+          COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
+          COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+          # Explicit opening-night marker for the BD breaker — this step runs a
+          # general-purpose collector that must NOT be exempt for bulk runs.
+          BD_OPENING_NIGHT: '1'
+          # BRO-4273: written after the final checkpoint; the Verify step
+          # reads it so a collect that finished but was killed on exit (or
+          # skipped slow URLs) reads as degraded, not crashed.
+          COLLECT_SUMMARY_FILE: ${{ runner.temp }}/collect-summary.json
+        run: node scripts/collect-review-texts.js --aggressive
+        continue-on-error: true
+        timeout-minutes: 12
+
+      - name: Commit collected texts
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        env:
+          # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
+          # its 90s default to 30s — a pre-transfer connection stall burns the
+          # whole 90s cap with zero transfer progress. Matches BRO-334/BRO-346.
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          cd data/review-texts
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m "data: Opening night poller — collected review texts"
+          bash ../../scripts/lib/push-with-retry.sh 5 main
+        continue-on-error: true
+
+      - name: Flag combined (joint) reviews
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        # MUST run before scoring. The ensemble's scoreability check rejects
+        # joint reviews as wrong_show on the half of the article that's about
+        # the OTHER show in the pairing. Marking the file isCombinedReview:true
+        # routes them to the Haiku fallback in llm-scoring/index.ts and skips
+        # the wrongShow flag write. Issue #316 (NYer Schmigadoon!/Lost Boys
+        # joint review).
+        run: node scripts/flag-combined-reviews.js
+        continue-on-error: true
+
+      - name: Commit combined-review flags
+        # Independent commit before scoring so flag-combined writes survive
+        # even when no scoring runs (any_action == 'false'). Without this, the
+        # bundled "Commit scores" step at line 388 would skip the push and the
+        # flag changes would only exist on this runner. Issue #316 ship-check
+        # (P1/D).
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        env:
+          # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
+          # its 90s default to 30s — a pre-transfer connection stall burns the
+          # whole 90s cap with zero transfer progress. Matches BRO-334/BRO-346.
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          cd data/review-texts
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m "data: Opening night poller — flagged combined reviews"
+          bash ../../scripts/lib/push-with-retry.sh 5 main
+        continue-on-error: true
+
+      - name: Score reviews inline
+        id: score
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          SHOWS="${{ steps.find.outputs.shows }}"
+          IFS=',' read -ra SHOW_ARRAY <<< "$SHOWS"
+          # BRO-735: same per-show crash counting as the gather stage above —
+          # `|| true` keeps the loop resilient across shows, but a genuine
+          # crash is now counted and verified fail-fast, not silently dropped.
+          SCORE_FAILED=0
+          SCORE_TOTAL=0
+          for SHOW_ID in "${SHOW_ARRAY[@]}"; do
+            echo "Scoring: $SHOW_ID"
+            SCORE_TOTAL=$((SCORE_TOTAL + 1))
+            SCORE_RC=0
+            npx ts-node scripts/llm-scoring/index.ts --show="$SHOW_ID" --ensemble 2>&1 || SCORE_RC=$?
+            # Rescore reviews first scored off a roundup excerpt whose full
+            # text has since arrived (often from a parallel job, so the
+            # collect-time trigger never saw a score to invalidate). The
+            # normal pass above skips anything already scored.
+            node scripts/audit-stale-score-input.js --fix --show="$SHOW_ID" 2>&1 || true
+            PENDING_RESCORE=$(SHOW_ID="$SHOW_ID" node -e "
+              const fs = require('fs'); const path = require('path');
+              const { isActionableRescore, loadShowsById } = require('./scripts/lib/scoring-queue-counts');
+              const dir = path.join('data', 'review-texts', process.env.SHOW_ID);
+              const show = loadShowsById().get(process.env.SHOW_ID);
+              let n = 0;
+              try { for (const f of fs.readdirSync(dir)) {
+                if (!f.endsWith('.json') || f.startsWith('_')) continue;
+                try { if (isActionableRescore(JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')), { show, showTitle: show && show.title, filePath: path.join(dir, f) })) n++; } catch (_) {}
+              } } catch (_) {}
+              console.log(n);
+            " 2>/dev/null || echo 0)
+            if [ "${PENDING_RESCORE:-0}" -gt 0 ]; then
+              echo "  Rescoring $PENDING_RESCORE excerpt-scored review(s) on full text for $SHOW_ID"
+              # A failure here is logged, not counted as a score-stage crash:
+              # one unrescoreable file must not fail every poll.
+              npx ts-node scripts/llm-scoring/index.ts --show="$SHOW_ID" --ensemble --needs-rescore 2>&1 \
+                || echo "  ⚠️ needs-rescore pass exited non-zero for $SHOW_ID (flags stay queued for the daily drain)"
+            fi
+            if [ "$SCORE_RC" -ne 0 ]; then
+              SCORE_FAILED=$((SCORE_FAILED + 1))
+              echo "  ⚠️ scoring exited $SCORE_RC for $SHOW_ID — counted as a score-stage failure"
+            fi
+          done
+          echo "score_failed=$SCORE_FAILED" >> $GITHUB_OUTPUT
+          echo "score_total=$SCORE_TOTAL" >> $GITHUB_OUTPUT
+        continue-on-error: true
+        timeout-minutes: 10
+
+      - name: Commit scores
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true'
+        env:
+          # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
+          # its 90s default to 30s — a pre-transfer connection stall burns the
+          # whole 90s cap with zero transfer progress. Matches BRO-334/BRO-346.
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          cd data/review-texts
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m "data: Opening night poller — scored reviews"
+          bash ../../scripts/lib/push-with-retry.sh 5 main
+        continue-on-error: true
+
+      # === FAST PATH: inline rebuild+deploy (skips separate rebuild-reviews.yml) ===
+      # NYT Critic's Pick on opening night: data/nyt-critics-picks.json is
+      # otherwise refreshed only Mon/Wed/Fri (weekly-nyt-critics-picks.yml),
+      # so a pick published tonight waited up to 2 days for its badge
+      # (School Girls 2026). Runs on EVERY fast_path poll, not only when the
+      # poll found new files: a pick usually appears on the spotlight page
+      # after the NYT review was already scored. The helper only fires for
+      # recent, unflagged NYT reviews not yet on the list, at most once per
+      # 30 min (negative cache: data/audit/nyt-spotlight-check.json), and fetches
+      # page 1 of the spotlight only. A new pick sets picks_added, which
+      # forces the rebuild/commit/deploy below. The weekly job also writes
+      # this file; both only ever ADD URLs, so a push-with-retry conflict
+      # that drops one of our additions heals on the next scrape.
+      - name: Refresh NYT Critic's Picks (fast_path)
+        id: nyt_picks
+        # Kill switch: repo variable DISABLE_NYT_PICK_FASTPATH=1.
+        if: inputs.fast_path && steps.find.outputs.has_shows == 'true' && vars.DISABLE_NYT_PICK_FASTPATH != '1'
+        continue-on-error: true
+        timeout-minutes: 10  # spotlight fetch (<=2 min budget) + push-with-retry (240s deadline) + buffer
+        env:
+          SHOWS: ${{ steps.find.outputs.shows }}
+          # Union-merge the append-only spend ledger on push conflicts
+          # (reconcile-coverage.js requires it for scraper-spend-ledger.jsonl).
+          PUSH_RECONCILE_MERGED_JSON: '1'
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          echo "picks_added=false" >> "$GITHUB_OUTPUT"
+          NEEDED=$(node scripts/lib/nyt-pick-refresh-needed.js --shows="$SHOWS" --min-interval-min=30 | grep -o 'refresh_needed=[a-z]*' | cut -d= -f2)
+          if [ "$NEEDED" != "true" ]; then
+            echo "No recent unpicked NYT review (or checked <30 min ago) - skipping spotlight fetch"
+            exit 0
+          fi
+          BEFORE=$(node -e "try{console.log(require('./data/nyt-critics-picks.json').urls.length)}catch{console.log(0)}")
+          node scripts/lib/nyt-pick-refresh-needed.js --mark-checked
+          node scripts/refresh-nyt-critics-picks.js --max-pages=1 --time-budget-min=2 || echo "::warning::NYT spotlight refresh failed - badge waits for the next poll or the Mon/Wed/Fri job"
+          AFTER=$(node -e "try{console.log(require('./data/nyt-critics-picks.json').urls.length)}catch{console.log(0)}")
+          if [ "$AFTER" -gt "$BEFORE" ]; then
+            echo "Added $((AFTER - BEFORE)) NYT Critic's Pick(s) - forcing rebuild"
+            echo "picks_added=true" >> "$GITHUB_OUTPUT"
+          fi
+          # Persist the check stamp, spend ledger and any new picks now, not
+          # only when the fast rebuild commits: otherwise the 30-min negative
+          # cache resets every run (fresh checkout) and the spend goes unrecorded.
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          bash scripts/lib/git-add-existing.sh data/nyt-critics-picks.json data/audit/nyt-spotlight-check.json data/audit/scraper-spend-ledger.jsonl
+          if ! git diff --cached --quiet; then
+            git commit -m "data: NYT Critic's Picks opening-night check [skip ci]"
+            GIT_NET_TIMEOUT_SEC=30 bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::NYT picks check commit did not push; the fast-path commit retries it"
+          fi
+
+      - name: Cancel competing rebuilds (fast_path)
+        if: inputs.fast_path && steps.find.outputs.has_shows == 'true' && (steps.poll.outputs.any_action == 'true' || steps.nyt_picks.outputs.picks_added == 'true')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Fast path: cancelling any in-progress rebuilds..."
+          for id in $(gh run list --workflow=rebuild-reviews.yml --limit=5 --json databaseId,status \
+            -q '.[] | select(.status=="in_progress" or .status=="queued") | .databaseId'); do
+            echo "  Cancelling rebuild run $id"
+            gh run cancel "$id" 2>/dev/null || true
+          done
+          for id in $(gh run list --workflow=rebuild-fast.yml --limit=3 --json databaseId,status \
+            -q '.[] | select(.status=="in_progress" or .status=="queued") | .databaseId'); do
+            echo "  Cancelling fast rebuild run $id"
+            gh run cancel "$id" 2>/dev/null || true
+          done
+        continue-on-error: true
+
+      - name: Rebuild reviews.json (fast_path)
+        id: fast_rebuild
+        if: inputs.fast_path && steps.find.outputs.has_shows == 'true' && (steps.poll.outputs.any_action == 'true' || steps.nyt_picks.outputs.picks_added == 'true')
+        env:
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          echo "Fast path: rebuilding reviews.json inline..."
+          if node scripts/rebuild-all-reviews.js; then
+            echo "Rebuild succeeded"
+          else
+            echo "⚠️  Rebuild failed — re-cloning review-texts and retrying..."
+            rm -rf data/review-texts
+            git clone --depth 1 "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" data/review-texts
+            node scripts/rebuild-all-reviews.js
+          fi
+        timeout-minutes: 5
+
+      # NOTE: snapshot-overwrite step removed 2026-07-19. /tmp/core-data-snapshot/ is
+      # the checkout-time baseline push-core-data diffs against (2beb6617c58);
+      # overwriting it with rebuilt files made them read as "untouched" and
+      # silently skipped from the private-repo push.
+
+      - name: Update critic registry (fast_path)
+        if: inputs.fast_path && steps.fast_rebuild.outcome == 'success'
+        run: node scripts/audit-critic-outlets.js
+        continue-on-error: true
+
+      - name: Regenerate mobile detail JSONs (fast_path)
+        if: inputs.fast_path && steps.fast_rebuild.outcome == 'success'
+        # Calls the canonical script directly — the stage-2→3 invariant (pipeline-invariant-generator)
+        # lives inside generate-mobile-show-details.js and fires here automatically.
+        # continue-on-error is intentional: invariant failure is logged + exits 1 (loud), but
+        # opening-night deploys must not be blocked by an assertion (non-blocking by design).
+        run: node scripts/generate-mobile-show-details.js
+        continue-on-error: true
+
+      - name: Generate Critics' Take (fast_path)
+        if: inputs.fast_path && steps.fast_rebuild.outcome == 'success' && steps.find.outputs.has_shows == 'true'
+        # BRO-927: the fast path rebuilds reviews.json inline and never went
+        # through rebuild-reviews.yml, which is what auto-dispatches
+        # update-critic-consensus.yml. Opening-night shows scored via this
+        # path fell back to the synopsis in the Critics' Take slot even with
+        # a full set of scored reviews (Fear of 13, 21 reviews, no take).
+        #
+        # Dispatches update-critic-consensus.yml rather than calling
+        # generate-critic-consensus.js inline here — critic-consensus.json is
+        # registered 'single-writer' in scripts/lib/core-data-merge-registry.js
+        # (only update-critic-consensus.yml writes it) and is NOT in
+        # activeEntriesFor('private-core-data'), so push-core-data's -X ours
+        # rebase does not reconcile it. This fast path runs on a ~15-min cycle
+        # for BOTH markets concurrently on a live opening night (unlike
+        # opening-night-broadcast.yml's twice-daily call to the same script),
+        # so writing the file inline here would raise a real, frequent
+        # lost-update race between concurrent BW/WE poller pushes. Dispatching
+        # the queued workflow instead keeps the single-writer invariant intact
+        # and reuses the remediation path
+        # opening-night-checks/critics-take-present.check.js already declares
+        # for the same gap (task #389) — see that workflow's `show` input.
+        # Async by design: the take lands on a later deploy, not this one.
+        #
+        # BRO-4595: ONE dispatch carrying the whole polled list, never one per
+        # show. update-critic-consensus.yml runs under `concurrency: group:
+        # update-critic-consensus, cancel-in-progress: false`, which GitHub
+        # resolves as one RUNNING run plus one PENDING run: every further
+        # dispatch into the group cancels the previously pending one. The
+        # per-show loop this replaced dispatched 58 runs on 2026-10-04 (poller
+        # run 37208094284) and 56 of them were cancelled, so 56 shows never
+        # had a take regenerated. The generator takes the list as --shows=a,b
+        # (scripts/lib/parse-show-list-arg.js); the workflow's max_shows
+        # default (200) is above any plausible per-night batch, and the
+        # generator logs any requested IDs the cap did not reach.
+        # Residual supersession is accepted, not eliminated: the BW and WE
+        # pollers run in parallel and each dispatch once; the orchestrator
+        # dispatches per-show pollers (opening-night-orchestrator.yml, the
+        # single-show branch of its dispatch step, ~L649); remediation
+        # dispatches {show, force:'true'} (scripts/lib/opening-night-
+        # remediation.js dispatchWorkflow, ~L566); and rebuild-reviews.yml
+        # (~L959) dispatches a whole scan when nothing is active. Two of those
+        # arriving while a batch is pending can still cancel that batch. That
+        # is tolerable because this poller re-finds the same shows on every
+        # ~15-min cycle for the whole 2-day lookback (find step above), so a
+        # cancelled batch is re-dispatched on the next run and the gap
+        # self-heals; the Sunday whole scan is the backstop after that.
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SHOWS: ${{ steps.find.outputs.shows }}
+        run: |
+          SHOWS="${SHOWS//[[:space:]]/}"
+          if [ -z "$SHOWS" ]; then
+            echo "No shows to dispatch Critics' Take generation for"
+            exit 0
+          fi
+          echo "Dispatching Critics' Take generation once for: $SHOWS"
+          gh workflow run update-critic-consensus.yml -f show="$SHOWS" || echo "::warning::Critics' Take dispatch failed for $SHOWS"
+        continue-on-error: true
+        timeout-minutes: 2
+
+      - name: Audit recovery state (non-blocking)
+        id: verify_recovery
+        if: inputs.fast_path && steps.fast_rebuild.outcome == 'success' && steps.find.outputs.has_shows == 'true'
+        # Runs verify-review-recovery.js per polled show to catch stranded/misflagged
+        # files that the pipeline produced. Non-blocking — surfaces findings to the
+        # step summary so they can be investigated before the morning broadcast.
+        # Deliberately omits --production to avoid network-dependent flakiness.
+        run: |
+          SHOWS="${{ steps.find.outputs.shows }}"
+          IFS=',' read -ra SHOW_ARRAY <<< "$SHOWS"
+          FAIL_COUNT=0
+          FAIL_SUMMARY=""
+          echo "## Recovery audit" >> "$GITHUB_STEP_SUMMARY"
+          for SHOW_ID in "${SHOW_ARRAY[@]}"; do
+            SHOW_ID="$(echo "$SHOW_ID" | xargs)"
+            [ -z "$SHOW_ID" ] && continue
+            echo "### $SHOW_ID" >> "$GITHUB_STEP_SUMMARY"
+            # Capture output + exit code separately
+            if node scripts/verify-review-recovery.js --show="$SHOW_ID" > "/tmp/verify-$SHOW_ID.log" 2>&1; then
+              echo "✓ all checks pass" >> "$GITHUB_STEP_SUMMARY"
+            else
+              FAIL_COUNT=$((FAIL_COUNT + 1))
+              FAIL_SUMMARY+="$SHOW_ID "
+              echo "::warning::verify-review-recovery found issues for $SHOW_ID — see step summary"
+              echo '```' >> "$GITHUB_STEP_SUMMARY"
+              tail -50 "/tmp/verify-$SHOW_ID.log" >> "$GITHUB_STEP_SUMMARY"
+              echo '```' >> "$GITHUB_STEP_SUMMARY"
+            fi
+          done
+          if [ "$FAIL_COUNT" -gt 0 ]; then
+            echo "::warning::Recovery audit: $FAIL_COUNT show(s) with issues: $FAIL_SUMMARY"
+          fi
+          echo "fail_count=$FAIL_COUNT" >> "$GITHUB_OUTPUT"
+        continue-on-error: true
+        timeout-minutes: 5
+
+      # PUSH_DEADLINE_SEC='600' + MAX_RETRIES=20 (card #1910 audit, 2026-08-26):
+      # the other genuinely hard-fail push step in this job (see "Commit new
+      # review files" above) — this one gates the deploy-trigger step right
+      # after it, so a failed push here silently blocks the fast-path deploy
+      # on a live opening night. Was on the bare shared default (7 retries/
+      # 240s, backoffSum 77s). Same 20/600s pairing as rebuild-fast.yml's
+      # #1891 fix.
+      - name: Commit and push rebuilt data (fast_path)
+        if: inputs.fast_path && steps.fast_rebuild.outcome == 'success'
+        env:
+          PUSH_DEADLINE_SEC: '600'
+          # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
+          # its 90s default to 30s — a pre-transfer connection stall burns the
+          # whole 90s cap with zero transfer progress, so only ~4-6 retries fit
+          # inside the 600s deadline above. Matches BRO-334/BRO-346.
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/*.json 2>/dev/null || true
+          # The NYT step commits its own stamp + spend-ledger rows; the picks
+          # file is re-added here only so a same-run pick rides with the rebuild.
+          bash scripts/lib/git-add-existing.sh public/opening-night-status.json public/status.html \
+            data/nyt-critics-picks.json data/audit/nyt-spotlight-check.json
+          git add public/data/shows/ 2>/dev/null || true
+          git checkout -- data/reviews.json data/audience-buzz.json 2>/dev/null || true
+          git diff --cached --quiet && { echo "No public data changes to commit"; exit 0; }
+          git commit -m "data: Opening night poller (fast path) — inline rebuild"
+          bash scripts/lib/push-with-retry.sh 20 main
+
+      - name: Push core data to private repo (fast_path)
+        if: always() && inputs.fast_path && steps.fast_rebuild.outcome == 'success'
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Opening night poller (fast path) — inline rebuild'
+
+      - name: Trigger deploy (fast_path)
+        id: deploy
+        if: inputs.fast_path && steps.fast_rebuild.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          DEPLOY_SHA=$(git rev-parse HEAD)
+          echo "deploy_sha=$DEPLOY_SHA" >> $GITHUB_OUTPUT
+          echo "Fast path: triggering deploy for $DEPLOY_SHA..."
+          if gh workflow run vercel-deploy.yml; then
+            echo "dispatched=true" >> $GITHUB_OUTPUT
+          else
+            echo "::warning::Deploy dispatch call failed — will deploy on next 5-min content-aware cron gate"
+            echo "dispatched=false" >> $GITHUB_OUTPUT
+          fi
+
+      # BRO-735: the old "Trigger deploy" step above dispatched vercel-deploy.yml
+      # fire-and-forget (`|| echo warning`, no wait, no check the commit was
+      # ever actually served) — the clearest silent handoff in this pipeline.
+      # check-prod-deploy.js polls Vercel's production-deployment API directly
+      # for the target SHA, so it needs no GH Actions run-id discovery (unlike
+      # waiting on a dispatched *workflow run*). A timeout here is NOT treated
+      # as a hard failure — vercel-deploy.yml's own 5-min content-aware cron
+      # gate is the documented backstop for a missed/slow deploy — but it must
+      # be visible in the pipeline verdict below, not swallowed.
+      - name: Wait for deploy to go live (fast_path)
+        id: deploy_verify
+        if: inputs.fast_path && steps.fast_rebuild.outcome == 'success' && steps.deploy.outputs.dispatched == 'true'
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          set +e
+          node scripts/check-prod-deploy.js "${{ steps.deploy.outputs.deploy_sha }}" --wait=480
+          RC=$?
+          set -e
+          if [ "$RC" -eq 0 ]; then
+            echo "verified=true" >> $GITHUB_OUTPUT
+          elif [ "$RC" -eq 1 ]; then
+            echo "::warning::Deploy for ${{ steps.deploy.outputs.deploy_sha }} was not verified live on production within the wait window — the 5-min content-aware cron gate will pick it up"
+            echo "verified=false" >> $GITHUB_OUTPUT
+            echo "timed_out=true" >> $GITHUB_OUTPUT
+          else
+            echo "::error::Deploy verification for ${{ steps.deploy.outputs.deploy_sha }} failed with exit $RC (Vercel API/token problem, not just 'not live yet')"
+            echo "verified=false" >> $GITHUB_OUTPUT
+            echo "timed_out=false" >> $GITHUB_OUTPUT
+            echo "reason=check-prod-deploy.js exited $RC" >> $GITHUB_OUTPUT
+          fi
+        continue-on-error: true
+        timeout-minutes: 9
+
+      # === LEGACY PATH: dispatch rebuild-reviews.yml (when fast_path is off) ===
+      - name: Trigger rebuild + deploy (legacy)
+        if: (!inputs.fast_path) && steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run rebuild-reviews.yml -f reason="Opening night poller (inline)"
+
+      - name: Rebuild reviews.json locally (for readiness check)
+        id: readiness_rebuild
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true'
+        run: node scripts/rebuild-all-reviews.js 2>&1 | tail -5
+        continue-on-error: true
+        timeout-minutes: 5
+
+      - name: Check readiness and trigger broadcast
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          SHOWS="${{ steps.find.outputs.shows }}"
+          IFS=',' read -ra SHOW_ARRAY <<< "$SHOWS"
+          for SHOW_ID in "${SHOW_ARRAY[@]}"; do
+            RESULT=$(node -e "
+              try {
+                const { checkReadiness } = require('./scripts/opening-night-poller');
+                const shows = require('./data/shows.json').shows;
+                const s = shows.find(x => x.id === '$SHOW_ID');
+                const market = (s && s.category) || 'broadway';
+                const r = checkReadiness('$SHOW_ID', market);
+                console.log(JSON.stringify(r));
+              } catch(e) { console.log(JSON.stringify({ready:false,total:0,reasons:['error: '+e.message]})); }
+            ")
+            TOTAL=$(echo "$RESULT" | node -e "process.stdout.write(String(JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')).total))")
+            IS_READY=$(echo "$RESULT" | node -e "process.stdout.write(String(JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')).ready))")
+            REASONS=$(echo "$RESULT" | node -e "process.stdout.write((JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')).reasons||[]).join(', '))")
+
+            echo "$SHOW_ID: $TOTAL scored reviews, ready=$IS_READY ${REASONS:+(gaps: $REASONS)}"
+
+            if [ "$IS_READY" = "true" ]; then
+              # Guard: only dispatch if broadcast wasn't already sent or dispatched recently
+              ALREADY_SENT=$(node -e "
+                try {
+                  const sent = require('./data/opening-night-sent.json');
+                  const entry = sent.shows && sent.shows['$SHOW_ID'];
+                  console.log(entry && entry.completed ? 'true' : 'false');
+                } catch(e) { console.log('false'); }
+              " 2>/dev/null || echo "false")
+
+              RECENT_DISPATCH=$(gh run list --workflow=opening-night-broadcast.yml --limit=5 \
+                --json createdAt -q "[.[] | select(.createdAt > \"$(date -u -d '2 hours ago' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-2H +%Y-%m-%dT%H:%M:%SZ)\")] | length" 2>/dev/null || echo "0")
+
+              if [ "$ALREADY_SENT" = "true" ]; then
+                echo "★ $SHOW_ID is BROADCAST READY but already sent — skipping dispatch"
+              elif [ "$RECENT_DISPATCH" -gt 0 ]; then
+                echo "★ $SHOW_ID is BROADCAST READY but broadcast dispatched recently — skipping duplicate"
+              else
+                echo "★ $SHOW_ID is BROADCAST READY — dispatching broadcast"
+                gh workflow run opening-night-broadcast.yml -f lookback_days=2 || true
+              fi
+            fi
+          done
+
+      - name: Log REVIEW_TEXTS_TOKEN rate-limit status (end)
+        if: always()
+        timeout-minutes: 1
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          gh api rate_limit --jq '.rate | "REVIEW_TEXTS_TOKEN rate limit: \(.remaining)/\(.limit) remaining, resets \(.reset | todate)"' \
+            || echo "::warning::Could not fetch REVIEW_TEXTS_TOKEN rate-limit status"
+        continue-on-error: true
+
+      # BRO-735 "Single integrated opening night pipeline": aggregates every
+      # stage's real outcome (gather/collect/score/rebuild/deploy — all inline
+      # in this one job above) and fails the JOB if any stage genuinely
+      # crashed, instead of that crash disappearing behind the per-stage
+      # `continue-on-error: true` the way it did for 6 consecutive opening
+      # nights. Placed AFTER every other stage/broadcast step (not between
+      # them) so a crash surfaced here never skips already-queued work — every
+      # step above still runs its own `if:`-gated best-effort attempt; this
+      # step only makes the final job conclusion tell the truth about it,
+      # which is what fires the existing "Notify on failure" step below.
+      # Pure verification logic lives in scripts/lib/opening-night-pipeline-stages.js
+      # (tested by scripts/opening-night-pipeline.test.mjs) — this step is
+      # just the GH Actions step-outcome -> env-var glue.
+      - name: Verify pipeline stages (fail-fast)
+        if: always() && steps.find.outputs.has_shows == 'true'
+        env:
+          GATHER_FAILED: ${{ steps.poll.outputs.gather_failed }}
+          GATHER_TOTAL: ${{ steps.poll.outputs.gather_total }}
+          COLLECT_ATTEMPTED_RAW: ${{ steps.poll.outputs.any_new }}
+          COLLECT_OUTCOME: ${{ steps.collect.outcome }}
+          SCORE_ATTEMPTED_RAW: ${{ steps.poll.outputs.any_action }}
+          SCORE_OUTCOME: ${{ steps.score.outcome }}
+          SCORE_FAILED_RAW: ${{ steps.score.outputs.score_failed }}
+          SCORE_TOTAL_RAW: ${{ steps.score.outputs.score_total }}
+          FAST_PATH: ${{ inputs.fast_path }}
+          REBUILD_ATTEMPTED_RAW: ${{ steps.poll.outputs.any_action }}
+          FAST_REBUILD_OUTCOME: ${{ steps.fast_rebuild.outcome }}
+          READINESS_REBUILD_OUTCOME: ${{ steps.readiness_rebuild.outcome }}
+          DEPLOY_ATTEMPTED_RAW: ${{ steps.fast_rebuild.outcome }}
+          DEPLOY_DISPATCHED: ${{ steps.deploy.outputs.dispatched }}
+          DEPLOY_VERIFIED: ${{ steps.deploy_verify.outputs.verified }}
+          DEPLOY_TIMED_OUT: ${{ steps.deploy_verify.outputs.timed_out }}
+          DEPLOY_REASON: ${{ steps.deploy_verify.outputs.reason }}
+          COLLECT_SUMMARY_FILE: ${{ runner.temp }}/collect-summary.json
+        run: |
+          COLLECT_ATTEMPTED=false
+          [ "$COLLECT_ATTEMPTED_RAW" = "true" ] && COLLECT_ATTEMPTED=true
+
+          # Defend against the score step crashing/timing out BEFORE it could
+          # write its own per-show counters — an empty SCORE_TOTAL combined
+          # with outcome=failure/cancelled means it never finished, which must
+          # read as "the stage crashed", not "nothing to do".
+          SCORE_FAILED="$SCORE_FAILED_RAW"
+          SCORE_TOTAL="$SCORE_TOTAL_RAW"
+          if [ "$SCORE_ATTEMPTED_RAW" = "true" ] && [ -z "$SCORE_TOTAL_RAW" ] && { [ "$SCORE_OUTCOME" = "failure" ] || [ "$SCORE_OUTCOME" = "cancelled" ]; }; then
+            SCORE_FAILED=1
+            SCORE_TOTAL=1
+          fi
+
+          REBUILD_ATTEMPTED=false
+          [ "$REBUILD_ATTEMPTED_RAW" = "true" ] && REBUILD_ATTEMPTED=true
+          if [ "$FAST_PATH" = "true" ]; then
+            REBUILD_OUTCOME="$FAST_REBUILD_OUTCOME"
+          else
+            REBUILD_OUTCOME="$READINESS_REBUILD_OUTCOME"
+          fi
+
+          DEPLOY_ATTEMPTED=false
+          if [ "$FAST_PATH" = "true" ] && [ "$DEPLOY_ATTEMPTED_RAW" = "success" ]; then
+            DEPLOY_ATTEMPTED=true
+          fi
+
+          GATHER_FAILED="$GATHER_FAILED" GATHER_TOTAL="$GATHER_TOTAL" \
+          COLLECT_ATTEMPTED="$COLLECT_ATTEMPTED" COLLECT_OUTCOME="$COLLECT_OUTCOME" \
+          SCORE_FAILED="$SCORE_FAILED" SCORE_TOTAL="$SCORE_TOTAL" \
+          REBUILD_ATTEMPTED="$REBUILD_ATTEMPTED" REBUILD_OUTCOME="$REBUILD_OUTCOME" \
+          DEPLOY_ATTEMPTED="$DEPLOY_ATTEMPTED" DEPLOY_DISPATCHED="$DEPLOY_DISPATCHED" \
+          DEPLOY_VERIFIED="$DEPLOY_VERIFIED" DEPLOY_TIMED_OUT="$DEPLOY_TIMED_OUT" DEPLOY_REASON="$DEPLOY_REASON" \
+          node scripts/opening-night-pipeline-verify.js
+
+      # BRO-3707: opening-night-express.yml deliberately `gh run cancel`s any
+      # in-progress poller run before taking over (its "Cancel competing
+      # orchestrator/poller runs" step), then sets ORCHESTRATOR_PAUSED — an
+      # expected, routine cancellation, not a hang. Without this check, adding
+      # cancelled() to Notify below would page "Poller Failed" on every
+      # Express takeover. If the lease is set, this cancellation is very
+      # likely that takeover, not a genuine job-timeout; skip the alert.
+      - name: Check for Express preemption
+        id: check_preemption
+        if: cancelled()
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          PAUSED=$(gh api "repos/${{ github.repository }}/actions/variables/ORCHESTRATOR_PAUSED" --jq '.value' 2>/dev/null) || PAUSED=""
+          if [ -n "$PAUSED" ]; then
+            echo "preempted=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::ORCHESTRATOR_PAUSED=$PAUSED — treating this cancellation as an Express takeover, not a hang. Skipping alert."
+          else
+            echo "preempted=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Notify on failure
+        id: notify
+        # BRO-3707: a hang hitting the job's own timeout-minutes: 125 reports
+        # conclusion "cancelled", not "failure" — a bare failure() here would
+        # silently drop this critical alert. Guarded against the Express-
+        # takeover false positive by check_preemption above.
+        if: failure() || (cancelled() && steps.check_preemption.outputs.preempted != 'true')
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Opening Night Poller Failed'
+          severity: 'critical'
+          email: 'true'
+          # Poller runs every ~30-45 min; a one-off failure (push contention,
+          # scraper blip) self-resolves on the next run. Page on the 2nd
+          # consecutive failure, once per streak. (2026-07-13: 3 transient
+          # overnight failures → 5-email thread, self-recovered by 08:05.)
+          min_consecutive_failures: '2'
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+      - name: Trigger investigation
+        # Gate on the page actually firing — otherwise every graced transient
+        # still sends an investigation email (the 2026-07-13 5-email storm).
+        if: failure() && steps.notify.outputs.suppressed != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          gh workflow run investigate-alert.yml \
+            -f alert_type=poller_fail \
+            -f alert_title="Opening Night Poller Failed" \
+            -f alert_context='{}' \
+            -f run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"

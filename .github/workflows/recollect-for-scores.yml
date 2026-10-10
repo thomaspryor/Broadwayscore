@@ -1,0 +1,230 @@
+name: Recollect for Scores
+
+# Weekly re-collection of review HTML from free outlet websites to extract
+# explicit P0 scores for reviews that were originally collected via aggregators
+# (which don't include HTML/star ratings).
+
+concurrency:
+  group: recollect-scores
+  cancel-in-progress: false
+
+on:
+  schedule:
+    # Weekly: Sunday 8 PM UTC (3 PM EST) — after other Sunday workflows finish
+    - cron: '0 20 * * 0'
+  workflow_dispatch:
+    inputs:
+      outlets:
+        description: 'Comma-separated outlet IDs (or "all-free" for all free outlets with extractors)'
+        required: false
+        default: 'all-free'
+      limit:
+        description: 'Max reviews per outlet'
+        required: false
+        default: '100'
+      dry_run:
+        description: 'Just list targets, do not fetch or write (true/false)'
+        required: false
+        default: 'false'
+      delay:
+        description: 'Delay between requests in ms'
+        required: false
+        default: '2000'
+
+jobs:
+  recollect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    permissions:
+      contents: write
+      actions: write
+
+    steps:
+      # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
+      # on the checkout below), so rebase/diff/show fetch missing blobs over the
+      # network outside push-with-retry.sh's per-op timeout wrappers. Set git's
+      # low-speed abort (1 KB/s for 45 s, the bound the helper applies to its own
+      # fetch/push) for EVERY git transfer in this job: --global, and before the
+      # checkout, so actions/checkout's own first lazy blob batch and the depth-1
+      # private-repo clones (checkout-core-data / checkout-review-texts, no
+      # timeout of their own; their retry loop catches the abort) are bounded
+      # too. A stalled transfer fails fast instead of hanging to the job timeout.
+      # lowSpeed cannot catch a pre-transfer stall. Runner $HOME is ephemeral.
+      - name: Set git low-speed abort for this job
+        run: |
+          git config --global http.lowSpeedLimit 1000
+          git config --global http.lowSpeedTime 45
+
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+          # BRO-4231: filter: blob:none keeps the full commit graph fetch-depth: 0 is
+          # here for (a resolvable merge-base for push-with-retry.sh; #209 parentless
+          # root) but stops downloading every historical blob of this repo's data/*.json
+          # rewrites: ~24 min -> ~30 s per checkout (llm-ensemble-score runs 36523767401
+          # -> 36672742657). Full rationale: opening-night-poller.yml's Checkout step.
+          filter: blob:none
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Create directories
+        run: mkdir -p data/archives/reviews
+
+      - name: Configure git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Determine outlets to process
+        id: outlets
+        run: |
+          OUTLETS_INPUT="${{ inputs.outlets || 'all-free' }}"
+          if [ "$OUTLETS_INPUT" = "all-free" ]; then
+            # Free outlets with dedicated score extractors (not noScoreExtractor)
+            # Paywalled UK outlets (telegraph, thestage) use cookie secrets for auth
+            # Excluded: guardian (stars from API not HTML), usatoday (no stars in HTML)
+            # Excluded: theater-life, london-theatre (no stars in HTML)
+            # Excluded: nydailynews, rollingstone (no star ratings)
+            # nysr (BRO-4486): its stars sit in the intro <p class="text-xl">,
+            # which body extraction drops, so only the HTML carries them.
+            OUTLETS="timeout,timeout-london,ew,standard,independent,culturesauce,nysr,whatsonstage,telegraph,thestage,nypost,daily-mail,artsdesk,one-minute-critic,broadwayworld,theatre-weekly,radio-times,london-box-office,all-that-dazzles-uk,i-paper,the-express,city-am,times-uk,financialtimes"
+          else
+            OUTLETS="$OUTLETS_INPUT"
+          fi
+          echo "list=$OUTLETS" >> $GITHUB_OUTPUT
+          echo "Processing outlets: $OUTLETS"
+
+      - name: Recollect review HTML for score extraction
+        id: recollect
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          SB_CREDIT_BUDGET: '500'
+          COOKIES_BUNDLE_1: ${{ secrets.COOKIES_BUNDLE_1 }}
+          COOKIES_BUNDLE_2: ${{ secrets.COOKIES_BUNDLE_2 }}
+          COOKIES_BUNDLE_3: ${{ secrets.COOKIES_BUNDLE_3 }}
+          COOKIES_BUNDLE_4: ${{ secrets.COOKIES_BUNDLE_4 }}
+          COOKIES_BUNDLE_5: ${{ secrets.COOKIES_BUNDLE_5 }}
+          COOKIES_BUNDLE_6: ${{ secrets.COOKIES_BUNDLE_6 }}
+          COOKIES_BUNDLE_7: ${{ secrets.COOKIES_BUNDLE_7 }}
+          COOKIES_BUNDLE_8: ${{ secrets.COOKIES_BUNDLE_8 }}
+          COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
+          COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
+          COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+        run: |
+          IFS=',' read -ra OUTLET_ARRAY <<< "${{ steps.outlets.outputs.list }}"
+          LIMIT="${{ inputs.limit || '100' }}"
+          DELAY="${{ inputs.delay || '2000' }}"
+          DRY_RUN="${{ inputs.dry_run || 'false' }}"
+          TOTAL_EXTRACTED=0
+          TOTAL_FAILED=0
+          TOTAL_ERRORS=0
+          RESULTS=""
+
+          for outlet in "${OUTLET_ARRAY[@]}"; do
+            outlet=$(echo "$outlet" | xargs)  # trim whitespace
+            echo ""
+            echo "========================================"
+            echo "Processing outlet: $outlet"
+            echo "========================================"
+
+            ARGS="--outlet=$outlet --limit=$LIMIT --delay=$DELAY"
+            if [ "$DRY_RUN" = "true" ]; then
+              ARGS="$ARGS --dry-run"
+            else
+              ARGS="$ARGS --execute"
+            fi
+
+            # Capture output and parse summary
+            OUTPUT=$(node scripts/recollect-for-scores.js $ARGS 2>&1) || true
+            echo "$OUTPUT"
+
+            # Extract counts from summary line: "Extracted: N | No score: N | Errors: N"
+            EXTRACTED=$(echo "$OUTPUT" | grep -oP 'Extracted: \K\d+' || echo "0")
+            NO_SCORE=$(echo "$OUTPUT" | grep -oP 'No score: \K\d+' || echo "0")
+            ERRORS=$(echo "$OUTPUT" | grep -oP 'Errors: \K\d+' || echo "0")
+
+            TOTAL_EXTRACTED=$((TOTAL_EXTRACTED + EXTRACTED))
+            TOTAL_FAILED=$((TOTAL_FAILED + NO_SCORE))
+            TOTAL_ERRORS=$((TOTAL_ERRORS + ERRORS))
+            RESULTS="${RESULTS}${outlet}: ${EXTRACTED} extracted, ${NO_SCORE} no score, ${ERRORS} errors\n"
+
+            echo ""
+          done
+
+          echo "========================================"
+          echo "GRAND TOTAL"
+          echo "========================================"
+          echo -e "$RESULTS"
+          echo "Total extracted: $TOTAL_EXTRACTED | Total no score: $TOTAL_FAILED | Total errors: $TOTAL_ERRORS"
+
+          echo "total_extracted=$TOTAL_EXTRACTED" >> $GITHUB_OUTPUT
+          echo "total_errors=$TOTAL_ERRORS" >> $GITHUB_OUTPUT
+
+      - name: Check for large files
+        if: always()
+        uses: ./.github/actions/check-file-sizes
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Recollect review HTML for score extraction"
+
+      - name: Commit audit data
+        if: always()
+        run: |
+          git add data/audit/ data/archives/ 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No audit changes to commit"
+          else
+            git commit -m "data: Recollect for scores audit data
+
+          Co-Authored-By: GitHub Action <action@github.com>"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Trigger rebuild if scores were extracted
+        if: success() && steps.recollect.outputs.total_extracted != '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          EXTRACTED="${{ steps.recollect.outputs.total_extracted }}"
+          echo "Triggering rebuild — $EXTRACTED new scores extracted"
+          gh workflow run rebuild-reviews.yml -f reason="Post recollect-for-scores ($EXTRACTED new P0 scores)"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Recollect for Scores Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

@@ -1,0 +1,252 @@
+name: Fetch Show Images
+
+on:
+  workflow_dispatch:
+    inputs:
+      show_id:
+        description: 'Show ID, or comma-separated list of show IDs (leave empty for all)'
+        required: false
+        default: ''
+      only_missing:
+        description: 'Only fetch for shows missing images'
+        required: false
+        default: 'true'
+        type: boolean
+      bad_images:
+        description: 'Re-source shows with bad (identical Playbill) images via Google SERP discovery'
+        required: false
+        default: false
+        type: boolean
+      force_redownload:
+        description: 'Force re-download all images (use after switching to new image sources)'
+        required: false
+        default: false
+        type: boolean
+      concurrency:
+        description: 'Number of parallel image fetches (default 5)'
+        required: false
+        default: '5'
+      verify:
+        description: 'Verify fetched images using Gemini 2.0 Flash vision (LLM gate)'
+        required: false
+        default: true
+        type: boolean
+      include_closed:
+        description: 'Include closed/historical shows (needed for backfill)'
+        required: false
+        default: false
+        type: boolean
+  schedule:
+    - cron: '0 6 * * 1,4'  # Twice weekly on Monday and Thursday at 6 AM UTC
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-images:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    concurrency:
+      group: fetch-images
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.ref }}
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # BRO-4326: fetch-show-images-auto.js's fetchPage() chain tries
+      # Playwright first for public sites (todaytix, ibdb, playbill). Without
+      # a browser every attempt failed "Executable doesn't exist" and fell
+      # straight through to paid Bright Data / Scrapingdog — 53 wasted
+      # launches per run, invisible because the fallbacks kept the job green.
+      # Pinned by tests/unit/workflow-playwright-setup.test.mjs.
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Fetch show images (auto-discovery)
+        id: fetch
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          MEZZANINE_APP_ID: ${{ secrets.MEZZANINE_APP_ID }}
+          MEZZANINE_SESSION_TOKEN: ${{ secrets.MEZZANINE_SESSION_TOKEN }}
+          # Intentionally NOT passing THEATR_REFRESH_TOKEN.
+          # fetch-show-images-auto.js reads data/theatr-image-cache.json only.
+          # Theatr API is called exclusively from update-theatr.yml via
+          # scripts/scrape-theatr-audience.js which also populates this cache.
+          # This prevents the refresh-token race where two workflows rotated
+          # the token and one lost the rotated value.
+        run: |
+          ARGS=""
+          if [ -n "${{ inputs.show_id }}" ]; then
+            ARGS="--show=${{ inputs.show_id }}"
+          elif [ "${{ inputs.bad_images }}" == "true" ]; then
+            ARGS="--bad-images"
+          elif [ "${{ inputs.only_missing }}" == "true" ] || [ "${{ github.event_name }}" == "schedule" ]; then
+            ARGS="--missing"
+          fi
+          CONCURRENCY="${{ inputs.concurrency || '5' }}"
+          VERIFY_FLAG=""
+          if [ "${{ inputs.verify }}" != "false" ]; then
+            VERIFY_FLAG="--verify"
+          fi
+          INCLUDE_CLOSED=""
+          if [ "${{ inputs.include_closed }}" == "true" ]; then
+            INCLUDE_CLOSED="--include-closed"
+          fi
+          node scripts/fetch-show-images-auto.js $ARGS $INCLUDE_CLOSED --concurrency=$CONCURRENCY $VERIFY_FLAG --max-runtime=150
+
+      - name: Archive images locally
+        if: always()
+        run: |
+          echo "Downloading CDN images to local storage..."
+          ARCHIVE_ARGS=""
+          if [ "${{ inputs.bad_images }}" == "true" ] || [ "${{ inputs.force_redownload }}" == "true" ]; then
+            ARCHIVE_ARGS="--force"
+          fi
+          node scripts/archive-show-images.js $ARCHIVE_ARGS
+
+      # BRO-4901: advisory. Lists art whose recorded source is a URL the show rejected.
+      - name: Audit image sources against rejected URLs
+        if: always()
+        continue-on-error: true
+        run: node scripts/audit-image-source-rejected.js --strict
+
+      - name: Check for changes
+        if: always()
+        id: changes
+        run: |
+          if git diff --quiet data/ && [ -z "$(git ls-files --others --exclude-standard public/images/shows/)" ]; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Changes detected:"
+            git diff --stat data/
+            git ls-files --others --exclude-standard public/images/shows/ | head -20
+          fi
+
+      - name: Commit and push if changed
+        id: webpush
+        if: always() && steps.changes.outputs.changed == 'true'
+        env:
+          # Same root cause + fix as scrape-new-aggregators.yml's BWW/PV
+          # unmatched-audit commit steps (PR #667, 2026-08-22): a real run
+          # (32575615449, targeted show_id=benevolent-off-broadway-2026)
+          # fetched the images successfully but the push failed —
+          # push-with-retry.sh hit its default 240s PUSH_DEADLINE_SEC after
+          # only 2 attempts, then refused the Git Data API fallback because
+          # this step's diff touches data/audit/ paths (scraper-spend-ledger
+          # etc.) alongside the image files. The job itself has a 180-minute
+          # budget (timeout-minutes: 180 above), so there is enormous
+          # headroom — bump the deadline and keep every attempt local rather
+          # than wasting attempts on a fallback that's structurally refused
+          # for this diff shape.
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_DISABLE: '1'
+          # BRO-3068 EXCLUSION (codex adversarial review, 2026-09-13):
+          # deliberately NOT lowering GIT_NET_TIMEOUT_SEC here like its 11
+          # siblings. GIT_NET_TIMEOUT_SEC bounds the whole `git push` process
+          # wall-clock, not idle/no-progress time (push-with-retry.sh's
+          # `_timeout "$GIT_NET_TIMEOUT_SEC" git ... push --progress`) — this
+          # step pushes real WebP binary assets (git commit above stages
+          # public/images/shows/), so a HEALTHY large-batch transfer that
+          # takes >30s would be killed exactly like a genuine hang. Stays at
+          # the 90s default.
+        run: |
+          BRANCH="${GITHUB_REF#refs/heads/}"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          bash scripts/lib/stage-data-changes.sh data/ public/images/shows/
+
+          # Drop aspect-ratio violators from the batch instead of letting the
+          # pre-commit gate abort the ENTIRE commit (2026-07-14: one landscape
+          # thumbnail discarded every fetched image, twice in one day).
+          node scripts/check-image-aspect.js --staged --quarantine
+
+          git commit -m "chore: Auto-fetch and archive show images
+
+          Fetched from TodayTix CDN and archived locally as WebP.
+          Local images served directly — no external CDN dependency.
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+          # BRO-2526: was `5`, capping the retry loop (`for i in $(seq 1
+          # "$MAX_RETRIES")` in push-with-retry.sh) well under the 900s
+          # PUSH_DEADLINE_SEC set above. Every recent failure (4 in the 3
+          # days before this fix) exhausted exactly 5/5 attempts in
+          # ~520-610s — each hitting the 90s per-attempt transport-stall cap
+          # on this step's large WebP binary pushes — leaving ~300-400s of
+          # the declared budget unused. Interleaved runs in the same window
+          # succeeded, so the stall is transient; 10 retries lets the loop
+          # actually spend the deadline it was given instead of giving up
+          # early, matching the "enormous headroom" intent documented above.
+          bash scripts/lib/push-with-retry.sh 10 HEAD:$BRANCH
+
+      # Gated on the web-repo push: shows.json here carries /images/shows/...
+      # paths whose files land in THAT commit. Pushing core data anyway when
+      # the web push failed publishes dangling paths (steve-burns-alive /
+      # the-pass / father-time incident, 2026-07-14 run).
+      - name: Push core data to private repo
+        if: always() && steps.webpush.outcome != 'failure'
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from fetch-show-images'
+
+      # BRO-873 cousin fix (found while auditing for the same shape): this
+      # step had no severity/email inputs, which default to 'low'/'false' —
+      # notify-failure/action.yml is a no-op for anything but 'critical', so
+      # this twice-weekly, user-facing workflow (broken/missing show images)
+      # was producing zero alerts on failure, same as update-lottery-rush.yml
+      # before that fix. BRO-4603: it no longer emails (a failed image fetch is
+      # not something the owner acts on); check-cron-health.yml flags it in the
+      # morning digest when no run has succeeded in 110h.
+      - name: Notify on failure
+        # BRO-3707: a hang hitting the job's own timeout-minutes: 180 reports
+        # conclusion "cancelled", not "failure" — a bare failure() here would
+        # silently drop this critical alert.
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Image Fetch Failed'
+          # BRO-4603: not on the owner's page-worthy list (scripts/lib/page-worthy-alerts.js
+          # PAGE_WORTHY_WORKFLOWS) — failures reach the morning digest, never email.
+          severity: 'warning'
+          email: 'false'
+          # BRO-4141: one-off failures of this job are not owner-actionable; email
+          # only when it keeps failing (streak mode re-pages every 4th failure after).
+          min_consecutive_failures: '2'
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Image Fetch Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Images fetched:** ${{ steps.fetch.outputs.images_fetched || 'see logs' }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Failed:** ${{ steps.fetch.outputs.images_failed || 'see logs' }}" >> $GITHUB_STEP_SUMMARY
+          echo "**LLM rejected:** ${{ steps.fetch.outputs.images_rejected || 'N/A' }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Verification:** ${{ inputs.verify != 'false' && 'Enabled' || 'Disabled' }}" >> $GITHUB_STEP_SUMMARY
+          if [ -n "${{ steps.fetch.outputs.promotional_art }}" ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Image Types:** Promotional art: ${{ steps.fetch.outputs.promotional_art }}, Production stills: ${{ steps.fetch.outputs.production_stills }}" >> $GITHUB_STEP_SUMMARY
+          fi

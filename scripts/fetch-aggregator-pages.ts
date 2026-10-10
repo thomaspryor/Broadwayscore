@@ -1,0 +1,805 @@
+#!/usr/bin/env npx tsx
+/**
+ * Fetch Aggregator Pages
+ *
+ * Fetches HTML pages from review aggregator sites using Playwright.
+ * Supports: Show Score, Did They Like It (DTLI), BroadwayWorld Review Roundups
+ *
+ * Usage:
+ *   npx tsx scripts/fetch-aggregator-pages.ts --aggregator show-score --shows two-strangers-bway-2025,boop-2025
+ *   npx tsx scripts/fetch-aggregator-pages.ts --aggregator dtli --shows all
+ *   npx tsx scripts/fetch-aggregator-pages.ts --aggregator all --shows two-strangers-bway-2025
+ *
+ * Options:
+ *   --aggregator: show-score, dtli, bww-rr, or all
+ *   --shows: comma-separated show IDs, "all", or "missing" (only fetch missing)
+ *   --force: re-fetch even if file exists
+ */
+
+import { chromium, Browser, Page } from 'playwright';
+import * as fs from 'fs';
+import * as path from 'path';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { validateRoundupPageTitle } = require('./lib/show-matching');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const {
+  loadNotFoundForAggregator: loadNotFoundForAggregatorLib,
+  saveNotFoundForAggregator: saveNotFoundForAggregatorLib,
+  shouldSkipAsKnownNotFound,
+  applyFetchResultToCache,
+} = require('./lib/not-found-cache');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { findConflictingShowId } = require('./lib/show-score-url-map');
+const { parseShowScorePagination, showScorePaginationPages } = require('./lib/show-score-discover');
+
+// Paths
+const DATA_DIR = path.join(__dirname, '../data');
+const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
+const SHOW_SCORE_URLS_PATH = path.join(DATA_DIR, 'show-score-urls.json');
+const DTLI_SLUG_MAP_PATH = path.join(DATA_DIR, 'dtli-slug-map.json');
+const ARCHIVE_DIR = path.join(DATA_DIR, 'aggregator-archive');
+
+// Not-found cache: per-aggregator files tracking shows confirmed absent.
+// Decision logic lives in scripts/lib/not-found-cache.js (CLAUDE.md rule 15
+// — shared with scripts/tests/not-found-cache-backfill.test.mjs).
+function loadNotFoundForAggregator(aggregator: string): Record<string, string> {
+  return loadNotFoundForAggregatorLib(ARCHIVE_DIR, aggregator);
+}
+
+function saveNotFoundForAggregator(aggregator: string, cache: Record<string, string>): void {
+  saveNotFoundForAggregatorLib(ARCHIVE_DIR, aggregator, cache);
+}
+
+// Types
+interface Show {
+  id: string;
+  title: string;
+  slug: string;
+  category?: string;
+  market?: string;
+  venue?: string;
+  transferredTo?: string;
+  transferOf?: string;
+}
+
+interface FetchResult {
+  showId: string;
+  aggregator: string;
+  success: boolean;
+  error?: string;
+  // true only when the aggregator was actually checked and confirmed to have
+  // no page for this show — distinct from transient errors (timeouts,
+  // network failures) that should be retried, not cached into _not-found.json.
+  notFoundReason?: boolean;
+}
+
+// Load shows data
+function loadShows(): Record<string, Show> {
+  const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  // Convert array to record keyed by id
+  const shows: Record<string, Show> = {};
+  for (const show of data.shows) {
+    shows[show.id] = show;
+  }
+  return shows;
+}
+
+// Load Show Score URL mappings
+function loadShowScoreUrls(): Record<string, string> {
+  try {
+    const data = JSON.parse(fs.readFileSync(SHOW_SCORE_URLS_PATH, 'utf8'));
+    return data.shows || {};
+  } catch {
+    return {};
+  }
+}
+
+// Load DTLI slug map
+function loadDtliSlugMap(): Record<string, string> {
+  try {
+    const data = JSON.parse(fs.readFileSync(DTLI_SLUG_MAP_PATH, 'utf8'));
+    return data.shows || {};
+  } catch {
+    return {};
+  }
+}
+
+// Generate metadata header for archived HTML
+function generateMetadata(aggregator: string, showTitle: string, url: string): string {
+  const now = new Date().toISOString();
+  return `<!--
+Archive: ${aggregator} - ${showTitle}
+URL: ${url}
+Fetched: ${now.split('T')[0]}
+-->
+`;
+}
+
+// Save HTML to archive. Returns true if the file was written, false if the
+// title-mismatch guard rejected it — callers MUST check this before treating
+// the fetch as a success or persisting the URL (e.g. Show Score's stored-URL
+// cache), otherwise a wrong-show page gets recorded as a confirmed match.
+function saveHtml(aggregator: string, showId: string, html: string, showTitle: string, url: string): boolean {
+  // Validate page title matches the show before archiving — Stuart King 2026-04-25
+  // Show Score uses a redirect-to-homepage pattern when a show doesn't exist,
+  // so this is especially important there.
+  const validation = validateRoundupPageTitle(html, showTitle);
+  if (!validation.ok) {
+    console.log(`  [SKIP] page-title mismatch (${validation.reason}): "${(validation.pageTitle || '').substring(0, 60)}" doesn't match "${showTitle}" — not archived`);
+    return false;
+  }
+
+  const archiveSubdir = aggregator === 'show-score' ? 'show-score' :
+                        aggregator === 'dtli' ? 'dtli' : 'bww-roundups';
+  const archivePath = path.join(ARCHIVE_DIR, archiveSubdir);
+
+  if (!fs.existsSync(archivePath)) {
+    fs.mkdirSync(archivePath, { recursive: true });
+  }
+
+  const filePath = path.join(archivePath, `${showId}.html`);
+  const metadata = generateMetadata(aggregator, showTitle, url);
+  fs.writeFileSync(filePath, metadata + html);
+  console.log(`  Saved: ${filePath}`);
+  return true;
+}
+
+// Check if archive file exists
+function archiveExists(aggregator: string, showId: string): boolean {
+  const archiveSubdir = aggregator === 'show-score' ? 'show-score' :
+                        aggregator === 'dtli' ? 'dtli' : 'bww-roundups';
+  const filePath = path.join(ARCHIVE_DIR, archiveSubdir, `${showId}.html`);
+  return fs.existsSync(filePath);
+}
+
+// === SHOW SCORE ===
+// URL discovery order:
+//   1. Stored URL from data/show-score-urls.json (authoritative for OB shows where
+//      Show Score's slug is {title}-{venue} not {title} — KENREX 2026-04-28 root cause)
+//   2. Title-derived URL patterns (fallback for shows missing from the URL map)
+// After landing on a valid page, render the critic tiles past the first 8 by
+// calling Show Score's own pagination endpoint from the page context and
+// appending the returned tiles into the carousel before page.content() is
+// saved (BRO-4204 S7-T9). Show Score server-renders only 8 critic tiles;
+// tiles 9..N exist solely as /shows/{slug}/paginate_critic_reviews?page=N
+// JSON fragments, which the site loads on a click of the carousel's next
+// arrow — NOT on scroll. The previous "scroll the container to the right"
+// loop (2026-04-28) never triggered a single pagination request, so it
+// broke out after two idle iterations and every archived page with >8
+// critics saved exactly 8 tiles: 357 of the 361 rows in
+// data/audit/show-score-extraction-gaps.json read `extracted: 8`, 24 of them
+// 2026 shows (bug-2026: 8 of 19). Reproduction + probe: docs/audit/show-score-8-tile-note.md.
+async function fetchShowScore(page: Page, showId: string, shows: Record<string, Show>, urlMappings: Record<string, string>): Promise<FetchResult> {
+  const show = shows[showId];
+  if (!show) {
+    return { showId, aggregator: 'show-score', success: false, error: 'Show not found in shows.json', notFoundReason: true };
+  }
+
+  // Show Score only has Broadway and Off-Broadway listings — no 'regional'
+  // section. Without a stored URL, a regional show's slug-guess falls through
+  // to the broadway-shows base (same as an uncategorized show) and, for a
+  // regional-to-Broadway transfer, the guessed `${baseSlug}-broadway` pattern
+  // IS the sibling Broadway show's real slug — matching and archiving the
+  // sibling's page under this show's own filename, every run (no stored URL
+  // ever gets cached to short-circuit the guess). BRO-363 (2026-08-15): hit
+  // two-strangers-carry-a-cake-across-new-york-at-art-regional-2025,
+  // little-bear-ridge-road-regional-2024, and
+  // the-outsiders-world-premiere-regional-2023 this way.
+  //
+  // Also gate a pre-categorization show (category null/undefined) that has
+  // a known sibling (ship-check finding): it falls through to the same
+  // broadway-shows slug-guess as an explicitly-categorized regional show, so
+  // it carries the identical slug-collision risk whenever a same-title
+  // sibling exists to collide with. A null-category show with NO sibling is
+  // still allowed through — blocking it too would break the common case of
+  // fetching ShowScore data for a brand-new show before it's categorized.
+  const isListedCategory = show.category === 'broadway' || show.category === 'off-broadway';
+  const hasKnownSibling = !!show.transferredTo || !!show.transferOf;
+  if (!isListedCategory && (show.category != null || hasKnownSibling) && !urlMappings[showId]) {
+    return { showId, aggregator: 'show-score', success: false, error: `category "${show.category ?? 'null'}"${hasKnownSibling ? ' (has known sibling)' : ''} has no Show Score listings and no stored URL — skipping slug-guess fallback` };
+  }
+
+  // Generate URL slug from title
+  const baseSlug = show.title
+    .toLowerCase()
+    .replace(/['']/g, '')
+    .replace(/[!?.,&:]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+
+  // URL patterns depend on show category
+  const isOffBroadway = show.category === 'off-broadway';
+  const showScoreBase = isOffBroadway
+    ? 'https://www.show-score.com/off-broadway-shows'
+    : 'https://www.show-score.com/broadway-shows';
+  const expectedPath = isOffBroadway ? '/off-broadway-shows/' : '/broadway-shows/';
+
+  // Stored URL goes FIRST. Title-derived patterns are fallback only.
+  const generatedPatterns = isOffBroadway
+    ? [
+        `${showScoreBase}/${baseSlug}`,
+        `${showScoreBase}/${baseSlug}-the-musical`,
+      ]
+    : [
+        `${showScoreBase}/${baseSlug}-broadway`,
+        `${showScoreBase}/${baseSlug}`,
+        `${showScoreBase}/${baseSlug}-the-musical-broadway`,
+      ];
+  const storedUrl = urlMappings[showId];
+  // Drop any GUESSED pattern another show already owns in the curated map
+  // (BRO-3471, mirrors the guard in scripts/lib/show-score-discover.js:62 and
+  // scripts/gather-reviews.js). Without this, a same-title sibling with no
+  // stored URL of its own (she-loves-me-1994, after its stale curated entry
+  // was removed for pointing at the 2016 revival's page) falls through to
+  // `${showScoreBase}/${baseSlug}` — exactly the URL the OTHER production
+  // owns — lands on a valid page (category path + aggregateRating both
+  // check out), saves it, and silently re-recreates the same wrong-production
+  // mapping this fix just removed. Only a GUESSED pattern is filtered; an
+  // explicit storedUrl for THIS show is untouched.
+  const ownedByOtherShow = new Set(
+    Object.entries(urlMappings)
+      .filter(([id, u]) => id !== showId && typeof u === 'string' && u)
+      .map(([, u]) => u.toLowerCase().replace(/\/+$/, ''))
+  );
+  const guessedPatterns = generatedPatterns.filter(
+    u => !ownedByOtherShow.has(u.toLowerCase().replace(/\/+$/, ''))
+  );
+  const urlPatterns = storedUrl
+    ? [storedUrl, ...guessedPatterns.filter(u => u !== storedUrl)]
+    : guessedPatterns;
+
+  try {
+    for (const tryUrl of urlPatterns) {
+      const response = await page.goto(tryUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
+      await page.waitForTimeout(1000);
+
+      const pageUrl = page.url();
+
+      // Always reject off-off-broadway
+      if (pageUrl.includes('/off-off-broadway-shows/')) {
+        continue;
+      }
+
+      // Reject if redirected to wrong category
+      if (!isOffBroadway && pageUrl.includes('/off-broadway-shows/')) {
+        continue;
+      }
+
+      // Check if we landed on a valid show page for our category
+      if (!pageUrl.includes(expectedPath) || pageUrl.includes('/search')) {
+        continue; // Try next pattern
+      }
+
+      // Initial HTML check — must look like a show page
+      let html = await page.content();
+      if (!html.includes('aggregateRating') && !html.includes('Critic Reviews')) {
+        continue; // Try next pattern
+      }
+
+      // Read on-page critic count BEFORE rendering so we know how many tiles to expect.
+      const headingText = html.match(/Critic Reviews \((\d+)\)/);
+      const expectedCount = headingText ? parseInt(headingText[1], 10) : 0;
+
+      // Render tiles 9..N through the site's own pagination endpoint (see the
+      // fetchShowScore header): same-origin fetch from the page context, then
+      // append each returned tile wrapper into the carousel's element
+      // container so page.content() below serialises the full set exactly as
+      // a fully-paged carousel would. Page list comes from the shared helper
+      // (2..ceil(N/8)+1); the loop stops at the first empty/short fragment or
+      // a page that adds no new tile id, so a stale heading can't loop.
+      const { nextPagePath, totalCount } = parseShowScorePagination(html);
+      const pagesToFetch = showScorePaginationPages(Math.max(totalCount, expectedCount));
+      if (pagesToFetch.length > 0 && !nextPagePath) {
+        console.warn(`  ⚠️  [show-score] ${showId}: heading says ${expectedCount} critic reviews but no data-next-page-path — format change? archiving the initial 8 only`);
+      }
+      if (pagesToFetch.length > 0 && nextPagePath) {
+        const appended = await page.evaluate(async ({ nextPagePath, pages }) => {
+          const root = document.querySelector('.js-show-page-v2__critic-reviews');
+          if (!root) return { added: 0, pagesFetched: 0, reason: 'no carousel root' };
+          const container = root.querySelector('.js-scrollable-block__elements') || root;
+          const seen = new Set(Array.from(document.querySelectorAll('.review-tile-v2.-critic')).map((el) => el.id));
+          let added = 0;
+          let pagesFetched = 0;
+          for (const p of pages) {
+            let body;
+            try {
+              const resp = await fetch(`${nextPagePath}?page=${p}`, { credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+              if (!resp.ok) return { added, pagesFetched, reason: `page ${p} HTTP ${resp.status}` };
+              body = await resp.json();
+            } catch (e) {
+              return { added, pagesFetched, reason: `page ${p} failed: ${(e && e.message) || e}` };
+            }
+            pagesFetched++;
+            const fragment = body && typeof body.html === 'string' ? body.html : '';
+            if (fragment.trim().length < 10) break; // {"html":" "} — past the last page
+            const tmp = document.createElement('div');
+            tmp.innerHTML = fragment;
+            let addedThisPage = 0;
+            for (const tile of Array.from(tmp.querySelectorAll('.review-tile-v2.-critic'))) {
+              if (tile.id && seen.has(tile.id)) continue;
+              if (tile.id) seen.add(tile.id);
+              // Keep Show Score's own wrapper around the tile so the archive has the
+              // same shape a fully-paged carousel would have.
+              container.appendChild(tile.closest('.js-scrollable-block__element') || tile);
+              addedThisPage++;
+            }
+            added += addedThisPage;
+            if (addedThisPage === 0) break;
+          }
+          return { added, pagesFetched };
+        }, { nextPagePath, pages: pagesToFetch });
+        console.log(`  [show-score] ${showId}: +${appended.added} paginated critic tile(s) over ${appended.pagesFetched} page(s) (heading ${expectedCount}, data-total-count ${totalCount})${appended.reason ? ` — ${appended.reason}` : ''}`);
+      }
+
+      // Re-capture HTML AFTER pagination so saved file has all rendered tiles.
+      // Distinct ids: Show Score renders each tile's `critic_review_N` id twice
+      // (the tile and an inner anchor), so a raw match count is 2x the tiles.
+      html = await page.content();
+      const finalTiles = new Set(html.match(/id=['"]critic_review_\d+['"]/g) || []).size;
+
+      // BRO-4055: ownedByOtherShow above only filters GUESSED patterns
+      // before navigation — it can't see a redirect. A pattern nobody owns
+      // can still 30x to a page another showId's stored URL already points
+      // at (Show Score canonicalizing a slug variant), recreating the exact
+      // wrong-production collision this ticket exists to close. Check the
+      // actual landed pageUrl, not just the tried pattern.
+      const conflictShowId = findConflictingShowId(urlMappings, showId, pageUrl);
+      if (conflictShowId) {
+        console.warn(`  ⚠️  [show-score] ${showId}: landed on ${pageUrl}, already owned by ${conflictShowId} — skipping`);
+        continue;
+      }
+
+      // Save; a title mismatch means this URL is the WRONG show — don't record
+      // it as this show's stored URL, and don't count it as a success. Try the
+      // next pattern instead.
+      const saved = saveHtml('show-score', showId, html, show.title, pageUrl);
+      if (!saved) {
+        continue;
+      }
+
+      if (urlMappings[showId] !== pageUrl) {
+        urlMappings[showId] = pageUrl;
+      }
+
+      const ratio = expectedCount > 0 ? `${finalTiles}/${expectedCount}` : `${finalTiles}/?`;
+      console.log(`  [show-score] ${showId}: captured ${ratio} critic tiles`);
+      if (expectedCount > 0 && finalTiles < expectedCount) {
+        console.warn(`  ⚠️  [show-score] ${showId}: only ${finalTiles} of ${expectedCount} critic tiles rendered (pagination endpoint short or changed) — extract-show-score-reviews.js will report the gap`);
+      }
+
+      return { showId, aggregator: 'show-score', success: true };
+    }
+
+    // All patterns failed
+    const tried = storedUrl ? `${urlPatterns.length} URL patterns (incl. stored)` : `${urlPatterns.length} URL patterns`;
+    return { showId, aggregator: 'show-score', success: false, error: `No Show Score page found (tried ${tried})`, notFoundReason: true };
+  } catch (error) {
+    return { showId, aggregator: 'show-score', success: false, error: String(error) };
+  }
+}
+
+// === DID THEY LIKE IT ===
+// DTLI uses different URLs for different productions of the same show:
+//   /shows/our-town/     = 2002 revival
+//   /shows/our-town-2/   = 2024 revival
+//   /shows/suffs/        = off-Broadway 2022
+//   /shows/suffs-bway/   = Broadway 2024
+// We need to search DTLI to find the correct URL for our specific production.
+
+// BRO-725: DTLI's per-review thumb-up/meh/down images are part of the same
+// client-rendered list as the rest of the review-item markup — a fixed
+// 500ms post-domcontentloaded wait could race the page's own JS on slower
+// loads and capture review-item blocks before their BigThumbs_* <img> tags
+// had attached, silently losing per-review thumb data (aggregate counts from
+// the summary image stayed correct since those are server-rendered
+// separately). Wait for at least one thumb image to attach to the DOM before
+// reading page.content() — a fast no-op once thumbs are already present (the
+// common case today), a real fix if DTLI's rendering timing regresses.
+//
+// Guarded to only wait when review-item blocks actually exist on the page:
+// the fallback URL-pattern loop in fetchDtli() tries up to 7 guessed slugs
+// per show, several of which return an HTTP-200 "not found" page — without
+// this guard every one of those would eat the full timeout across the
+// weekly batch of ~100s of shows. state:'attached' (not the default
+// 'visible') because the extractor is a regex over page.content() and
+// doesn't care about CSS visibility. A timeout with review items present
+// logs instead of failing silently, so a real future regression is visible
+// in the scrape-dtli-show-score.yml logs rather than indistinguishable from
+// success.
+async function waitForDtliThumbs(page: Page): Promise<void> {
+  const reviewItemCount = await page.locator('.review-item, .poster-review-item').count().catch(() => 0);
+  if (reviewItemCount === 0) return;
+  const found = await page
+    .waitForSelector('img[alt^="BigThumbs_"]', { state: 'attached', timeout: 3000 })
+    .then(() => true)
+    .catch(() => false);
+  if (!found) {
+    console.log(`    ⚠️  DTLI thumb wait timed out with ${reviewItemCount} review-item(s) present — thumbs may be missing from this capture`);
+  }
+}
+
+async function fetchDtli(page: Page, showId: string, shows: Record<string, Show>, dtliSlugMap: Record<string, string>): Promise<FetchResult> {
+  const show = shows[showId];
+  if (!show) {
+    return { showId, aggregator: 'dtli', success: false, error: 'Show not found in shows.json', notFoundReason: true };
+  }
+
+  const expectedYear = showId.match(/-(\d{4})$/)?.[1];
+  const expectedVenue = show.venue?.toLowerCase() || '';
+
+  // Helper to validate page matches expected production
+  const validateProduction = (html: string): boolean => {
+    // Extract opening date from DTLI page
+    const openingMatch = html.match(/Opening Night[:\s]*(?:&nbsp;)?(?:<[^>]+>)?([A-Za-z]+\s+\d+,?\s+\d{4})/i);
+    if (openingMatch && expectedYear) {
+      const pageYear = openingMatch[1].match(/\d{4}/)?.[0];
+      if (pageYear && Math.abs(parseInt(pageYear) - parseInt(expectedYear)) > 1) {
+        console.log(`    ⚠️ Year mismatch: page has ${pageYear}, expected ${expectedYear}`);
+        return false;
+      }
+      // Year matches - this is likely the right production
+      console.log(`    ✓ Year matches: ${pageYear}`);
+      return true;
+    }
+    // No opening date found - accept the page (can't validate, rely on URL pattern)
+    console.log(`    ⚠️ No opening date found, accepting based on URL pattern`);
+    return true;
+  };
+
+  // Try slug map first (most reliable — discovered from DTLI sitemaps)
+  const mappedSlug = dtliSlugMap[showId];
+  if (mappedSlug) {
+    const mappedUrl = `https://didtheylikeit.com/shows/${mappedSlug}/`;
+    console.log(`    Trying mapped URL: ${mappedUrl}`);
+    try {
+      const response = await page.goto(mappedUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
+      if (response && response.status() === 200) {
+        await page.waitForTimeout(500);
+        await waitForDtliThumbs(page);
+        const html = await page.content();
+        if (!html.includes('Page not found') && !html.includes('404') && html.includes('didtheylikeit')) {
+          if (validateProduction(html) && saveHtml('dtli', showId, html, show.title, mappedUrl)) {
+            return { showId, aggregator: 'dtli', success: true };
+          }
+        }
+      }
+    } catch (e) {
+      console.log(`    Mapped URL failed: ${e}`);
+    }
+  }
+
+  // Same slug-collision risk as fetchShowScore's guard above (BRO-363
+  // what-else follow-up): the `-bway`/`-broadway` fallback patterns below are
+  // guesses at a SIBLING production's own DTLI slug, not this show's. For a
+  // regional-to-Broadway transfer they ARE the sibling's real slug. Unlike
+  // Show Score, DTLI's validateProduction() below only compares showId's
+  // year suffix to the page's opening year — a same-calendar-year sibling
+  // pair (e.g. Two Strangers itself: regional June 2025, Broadway Nov 2025)
+  // passes that check and still gets archived under the wrong filename. Gate
+  // the guess the same way: skip for a non-listed category, or a
+  // pre-categorization show with a known sibling, unless a curated slug-map
+  // entry already exists for this show (checked above, authoritative).
+  const isListedCategory = show.category === 'broadway' || show.category === 'off-broadway';
+  const hasKnownSibling = !!show.transferredTo || !!show.transferOf;
+  if (!isListedCategory && (show.category != null || hasKnownSibling) && !mappedSlug) {
+    return { showId, aggregator: 'dtli', success: false, error: `category "${show.category ?? 'null'}"${hasKnownSibling ? ' (has known sibling)' : ''} has no curated DTLI slug — skipping slug-guess fallback` };
+  }
+
+  // Fall back to URL guessing for unmapped shows
+  const baseSlug = show.title
+    .toLowerCase()
+    .replace(/['']/g, '')
+    .replace(/[!?.,]/g, '')
+    .replace(/&/g, 'and')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
+
+  // For revivals/transfers, DTLI often uses suffixes like -2, -bway, -broadway, etc.
+  const urlPatterns = [
+    `https://didtheylikeit.com/shows/${baseSlug}-bway/`,      // Broadway transfer (suffs-bway)
+    `https://didtheylikeit.com/shows/${baseSlug}-broadway/`,  // Broadway suffix
+    `https://didtheylikeit.com/shows/${baseSlug}-2/`,         // Revival suffix (our-town-2)
+    `https://didtheylikeit.com/shows/${baseSlug}-3/`,         // Third production
+    `https://didtheylikeit.com/shows/${baseSlug}-at-the-kit-kat-club/`, // Cabaret special case
+    `https://didtheylikeit.com/shows/${baseSlug}/`,           // Base URL (try last - may be old production)
+    `https://didtheylikeit.com/shows/${show.slug}/`,          // Show ID slug
+  ];
+
+  try {
+    for (const url of urlPatterns) {
+      console.log(`    Trying: ${url}`);
+      const response = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+
+      if (response && response.status() === 200) {
+        await page.waitForTimeout(500);
+        await waitForDtliThumbs(page);
+        const html = await page.content();
+
+        if (html.includes('Page not found') || html.includes('404') || !html.includes('didtheylikeit')) {
+          continue;
+        }
+
+        // Validate this is the right production
+        if (validateProduction(html) && saveHtml('dtli', showId, html, show.title, url)) {
+          return { showId, aggregator: 'dtli', success: true };
+        } else {
+          console.log(`    Skipping ${url} - wrong production`);
+        }
+      }
+    }
+
+    return { showId, aggregator: 'dtli', success: false, error: 'Page not found or wrong production (tried multiple URL patterns)', notFoundReason: true };
+  } catch (error) {
+    return { showId, aggregator: 'dtli', success: false, error: String(error) };
+  }
+}
+
+// === BROADWAYWORLD REVIEW ROUNDUPS ===
+async function fetchBwwRoundup(page: Page, showId: string, shows: Record<string, Show>): Promise<FetchResult> {
+  const show = shows[showId];
+  if (!show) {
+    return { showId, aggregator: 'bww-rr', success: false, error: 'Show not found in shows.json', notFoundReason: true };
+  }
+
+  // Use BWW's internal search instead of Google (Google blocks headless browsers)
+  const searchQuery = `${show.title} review roundup`;
+  const searchUrl = `https://www.broadwayworld.com/search/?q=${encodeURIComponent(searchQuery)}&searchtype=articles`;
+
+  try {
+    await page.goto(searchUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    await page.waitForTimeout(3000);
+
+    // Look for review roundup link in search results
+    // BWW search results have links with "Review-Roundup" in the URL
+    const roundupLinks = page.locator('a[href*="Review-Roundup"]');
+
+    if (await roundupLinks.count() === 0) {
+      // Try broader search for any review article
+      const reviewLinks = page.locator('a[href*="broadwayworld.com/article/"][href*="Review"]');
+      if (await reviewLinks.count() === 0) {
+        return { showId, aggregator: 'bww-rr', success: false, error: 'No review roundup found in BWW search', notFoundReason: true };
+      }
+      // Use first review link as fallback
+      const href = await reviewLinks.first().getAttribute('href');
+      if (!href) {
+        return { showId, aggregator: 'bww-rr', success: false, error: 'Could not extract URL from search results' };
+      }
+      await page.goto(href, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    } else {
+      // Click the first review roundup link
+      const href = await roundupLinks.first().getAttribute('href');
+      if (!href) {
+        return { showId, aggregator: 'bww-rr', success: false, error: 'Could not extract review roundup URL' };
+      }
+      await page.goto(href, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    }
+
+    await page.waitForTimeout(2000);
+
+    const finalUrl = page.url();
+    const html = await page.content();
+
+    // Verify it's a BWW article page
+    if (!html.includes('broadwayworld') || !finalUrl.includes('/article/')) {
+      return { showId, aggregator: 'bww-rr', success: false, error: 'Page does not appear to be a BWW article' };
+    }
+
+    if (!saveHtml('bww-rr', showId, html, show.title, finalUrl)) {
+      return { showId, aggregator: 'bww-rr', success: false, error: 'Search result page-title did not match this show' };
+    }
+    return { showId, aggregator: 'bww-rr', success: true };
+  } catch (error) {
+    return { showId, aggregator: 'bww-rr', success: false, error: String(error) };
+  }
+}
+
+// Main fetch function
+async function fetchAggregatorPage(
+  browser: Browser,
+  aggregator: string,
+  showId: string,
+  shows: Record<string, Show>,
+  showScoreUrls: Record<string, string>,
+  dtliSlugMap: Record<string, string>
+): Promise<FetchResult> {
+  const page = await browser.newPage();
+
+  try {
+    switch (aggregator) {
+      case 'show-score':
+        return await fetchShowScore(page, showId, shows, showScoreUrls);
+      case 'dtli':
+        return await fetchDtli(page, showId, shows, dtliSlugMap);
+      case 'bww-rr':
+        return await fetchBwwRoundup(page, showId, shows);
+      default:
+        return { showId, aggregator, success: false, error: `Unknown aggregator: ${aggregator}` };
+    }
+  } finally {
+    await page.close();
+  }
+}
+
+// Parse command line arguments
+function parseArgs(): { aggregators: string[]; showIds: string[]; force: boolean } {
+  const args = process.argv.slice(2);
+  let aggregator = 'all';
+  let shows = 'missing';
+  let force = false;
+
+  for (let i = 0; i < args.length; i++) {
+    if (args[i] === '--aggregator' && args[i + 1]) {
+      aggregator = args[i + 1];
+      i++;
+    } else if (args[i] === '--shows' && args[i + 1]) {
+      shows = args[i + 1];
+      i++;
+    } else if (args[i] === '--force') {
+      force = true;
+    }
+  }
+
+  const aggregators = aggregator === 'all'
+    ? ['show-score', 'dtli', 'bww-rr']
+    : [aggregator];
+
+  const showsData = loadShows();
+  let showIds: string[];
+
+  if (shows === 'all') {
+    showIds = Object.keys(showsData);
+  } else if (shows === 'missing') {
+    // Will be filtered per-aggregator
+    showIds = Object.keys(showsData);
+  } else {
+    showIds = shows.split(',').map(s => s.trim());
+  }
+
+  return { aggregators, showIds, force };
+}
+
+// Run Show Score extraction after fetching
+async function runShowScoreExtraction(): Promise<void> {
+  console.log('\nRunning Show Score extraction script...');
+  const { execSync } = require('child_process');
+  try {
+    execSync('node scripts/extract-show-score-reviews.js', {
+      cwd: path.join(__dirname, '..'),
+      stdio: 'inherit'
+    });
+  } catch (error) {
+    console.error('Extraction script failed:', error);
+  }
+}
+
+// Main
+async function main() {
+  console.log('=== Aggregator Page Fetcher ===\n');
+
+  const { aggregators, showIds, force } = parseArgs();
+  const shows = loadShows();
+  const showScoreUrls = loadShowScoreUrls();
+  const dtliSlugMap = loadDtliSlugMap();
+
+  console.log(`Aggregators: ${aggregators.join(', ')}`);
+  console.log(`Shows: ${showIds.length} total`);
+  console.log(`DTLI slug map: ${Object.keys(dtliSlugMap).length} entries`);
+  console.log(`Force re-fetch: ${force}\n`);
+
+  const browser = await chromium.launch({ headless: true });
+  const results: FetchResult[] = [];
+  let fetchedShowScore = false;
+
+  try {
+    for (const aggregator of aggregators) {
+      console.log(`\n--- ${aggregator.toUpperCase()} ---`);
+      let notFound = loadNotFoundForAggregator(aggregator);
+      let skippedNotFound = 0;
+      let skippedMarket = 0;
+      let fetchCount = 0;
+
+      for (const showId of showIds) {
+        const show = shows[showId];
+
+        // Skip London shows — Show Score and DTLI only cover Broadway/OB
+        if (show && (show.market === 'west-end' || show.market === 'off-west-end' || showId.includes('-west-end-') || showId.includes('-off-west-end-'))) {
+          skippedMarket++;
+          continue;
+        }
+
+        // Skip if file exists and not forcing
+        if (!force && archiveExists(aggregator, showId)) {
+          continue;
+        }
+
+        // Skip if previously confirmed not found (unless forcing)
+        if (shouldSkipAsKnownNotFound(notFound, showId, force)) {
+          skippedNotFound++;
+          continue;
+        }
+
+        console.log(`[${showId}] Fetching...`);
+        const result = await fetchAggregatorPage(browser, aggregator, showId, shows, showScoreUrls, dtliSlugMap);
+        results.push(result);
+        fetchCount++;
+
+        if (result.success) {
+          console.log(`[${showId}] Success`);
+          if (aggregator === 'show-score') fetchedShowScore = true;
+        } else {
+          console.log(`[${showId}] Failed: ${result.error}`);
+        }
+        // Cache "not found" failures (not transient errors like timeouts/network);
+        // clear any stale entry on success.
+        notFound = applyFetchResultToCache(notFound, showId, result, new Date().toISOString().split('T')[0]);
+
+        // Checkpoint not-found cache every 50 fetches (survives timeouts)
+        if (fetchCount % 50 === 0) {
+          saveNotFoundForAggregator(aggregator, notFound);
+          console.log(`  [checkpoint] Saved not-found cache (${Object.keys(notFound).length} entries)`);
+        }
+
+        // Small delay between requests
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+
+      saveNotFoundForAggregator(aggregator, notFound);
+      if (skippedNotFound > 0) console.log(`  Skipped ${skippedNotFound} shows (previously not found)`);
+      if (skippedMarket > 0) console.log(`  Skipped ${skippedMarket} shows (wrong market)`);
+    }
+  } finally {
+    await browser.close();
+  }
+
+  // Update Show Score URL mappings if any changed
+  if (fetchedShowScore) {
+    // BRO-4055 follow-up: this used to overwrite the WHOLE file from the
+    // in-memory `showScoreUrls` snapshot taken at loadShowScoreUrls() —
+    // silently dropping _discoveryAttempts (and any other top-level key)
+    // every time this script found even one new URL, and losing any
+    // concurrent write another script made to `shows` while this run was
+    // fetching. Re-read the CURRENT on-disk file at write time and merge
+    // this run's additions on top instead of replacing wholesale.
+    let onDisk: { _meta?: Record<string, unknown>; shows?: Record<string, string>; [k: string]: unknown } = {};
+    try {
+      onDisk = JSON.parse(fs.readFileSync(SHOW_SCORE_URLS_PATH, 'utf8'));
+    } catch {
+      onDisk = {};
+    }
+    fs.writeFileSync(SHOW_SCORE_URLS_PATH, JSON.stringify({
+      ...onDisk,
+      _meta: {
+        ...(onDisk._meta || {}),
+        lastUpdated: new Date().toISOString(),
+        source: 'Show Score Broadway section',
+        needsManualFetch: [],
+        needsManualFetchNote: 'URLs auto-updated by fetch script'
+      },
+      shows: { ...(onDisk.shows || {}), ...showScoreUrls }
+    }, null, 2) + '\n');
+
+    // Run extraction
+    await runShowScoreExtraction();
+  }
+
+  // Summary
+  console.log('\n=== Summary ===');
+  const successful = results.filter(r => r.success);
+  const failed = results.filter(r => !r.success);
+
+  console.log(`Fetched: ${successful.length}`);
+  console.log(`Failed: ${failed.length}`);
+
+  if (failed.length > 0) {
+    console.log('\nFailed shows:');
+    for (const r of failed) {
+      console.log(`  ${r.aggregator}/${r.showId}: ${r.error}`);
+    }
+  }
+}
+
+main().catch(err => {
+  console.error('Fatal error:', err);
+  process.exit(1);
+});

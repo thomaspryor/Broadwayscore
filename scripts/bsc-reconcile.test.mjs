@@ -1,0 +1,977 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+const { reconcileTaskSessions, redispatchArgv, USAGE } = require('./bsc-reconcile.js');
+const { JOB_EVENTS, ORPHAN_CONFIRM_MS, ORPHAN_SUSPECT_MAX_AGE_MS } = require('./lib/dispatch-ledger.js');
+
+test('redispatchArgv: the real redispatch command MUST carry --force', () => {
+  // Self-review catch (2026-08-03): bsc-next's duplicate-dispatch guard
+  // (findLiveWorkspaceForTask) matches on listing+title, never liveness — the
+  // dead-but-still-open tab this reconciler confirmed dead via two
+  // independent checkLiveness calls is exactly what that guard would
+  // otherwise match and refuse as "a live workspace already matches," even
+  // though it is not live. Without --force NOTHING this reconciler finds
+  // dead would ever actually get re-dispatched.
+  const argv = redispatchArgv('853');
+  assert.ok(argv.includes('--id'));
+  assert.ok(argv.includes('853'));
+  assert.ok(argv.includes('--force'), 'missing --force means every redispatch is silently refused by the duplicate-dispatch guard');
+});
+
+test('USAGE documents --dry-run and the new task-session re-dispatch behavior', () => {
+  assert.match(USAGE, /--dry-run/);
+  assert.match(USAGE, /re-dispatches/);
+});
+
+// ── reconcileTaskSessions (task #883) ───────────────────────────────────────
+const SUBJECT = 'Session-system overhaul S0: hook foundations for the reconciler';
+const inProgressTask = (id, subject = SUBJECT) => ({ id: String(id), subject, status: 'in_progress' });
+const launch = (taskId, ref, subject = SUBJECT) => ({ event: 'launch', taskId: String(taskId), subject, workspaceRef: ref, ts: '2026-08-02T10:00:00.000Z' });
+const ws = (n, title = SUBJECT) => ({ ref: `workspace:${n}`, title });
+
+function harness({ tasks = [], entries = [], workspaces = [], aliveRefs = new Set(), dispatchStatus = 0 } = {}) {
+  const reported = [];
+  const dispatched = [];
+  const woke = { count: 0 };
+  const deps = {
+    loadTasksFn: () => tasks,
+    tasksDir: '/fake/dir',
+    listWorkspacesFn: () => workspaces,
+    isDoneTitleFn: (title) => String(title).trim().slice(0, 4).includes('✅'),
+    claudeAliveInFn: (ref) => aliveRefs.has(ref),
+    surfaceAliveInFn: (ref) => aliveRefs.has(ref),
+    readLedgerEntriesFn: () => entries,
+    wakeFn: () => { woke.count++; },
+    clearWakeFn: () => {},
+    sleepFn: () => {},
+    dispatchFn: (taskId) => { dispatched.push(String(taskId)); return { status: dispatchStatus, stdout: '', stderr: dispatchStatus === 0 ? '' : 'refused' }; },
+    reportFn: (line) => reported.push(line),
+  };
+  return { deps, reported, dispatched, woke };
+}
+
+test('reconcileTaskSessions: no in_progress tasks — no-op', () => {
+  const { deps, reported, dispatched } = harness({ tasks: [{ id: '1', status: 'pending', subject: SUBJECT }] });
+  const r = reconcileTaskSessions({ deps });
+  assert.deepEqual(r, { checked: 0, dead: [], redispatched: [] });
+  assert.deepEqual(reported, []);
+  assert.deepEqual(dispatched, []);
+});
+
+test('reconcileTaskSessions: in_progress task with no ledger launch is untracked — never dispatched', () => {
+  const { deps, dispatched } = harness({ tasks: [inProgressTask('1')], entries: [] });
+  const r = reconcileTaskSessions({ deps });
+  assert.deepEqual(r.dead, []);
+  assert.deepEqual(dispatched, [], 'a task nobody auto-dispatched must never get an auto re-dispatch');
+});
+
+test('reconcileTaskSessions: live workspace (alive by both signals) — nothing dead, no wake, no dispatch', () => {
+  const { deps, dispatched, woke } = harness({
+    tasks: [inProgressTask('1')],
+    entries: [launch('1', 'workspace:1')],
+    workspaces: [ws(1)],
+    aliveRefs: new Set(['workspace:1']),
+  });
+  const r = reconcileTaskSessions({ deps });
+  assert.deepEqual(r.dead, []);
+  assert.deepEqual(dispatched, []);
+  assert.equal(woke.count, 0, 'a healthy sweep never needs to wake cmux');
+});
+
+test('reconcileTaskSessions: dead workspace (missing claude process) is re-dispatched via bsc-next --id', () => {
+  const { deps, reported, dispatched, woke } = harness({
+    tasks: [inProgressTask('853')],
+    entries: [launch('853', 'workspace:12')],
+    workspaces: [ws(12)],
+    aliveRefs: new Set(), // neither signal reports alive
+  });
+  const r = reconcileTaskSessions({ deps });
+  assert.deepEqual(r.dead, ['853']);
+  assert.deepEqual(r.redispatched, ['853']);
+  assert.deepEqual(dispatched, ['853']);
+  assert.equal(woke.count, 1, 'must wake cmux once before trusting a dead verdict (#849)');
+  assert.ok(reported.some(l => l.kind === 'task-session-dead'));
+  assert.ok(reported.some(l => l.kind === 'task-redispatched'));
+});
+
+test('reconcileTaskSessions: workspace ref missing entirely (vanished OR renumbered) is deferred to bsc-prune, never re-dispatched directly', () => {
+  // ship-check P1 fix (2026-08-03): an earlier version tried to disambiguate
+  // "vanished" refs itself (title-rematch, else redispatch). That raced
+  // bsc-prune's OWN vanished/park sweep — if reconcile fired first, it could
+  // re-dispatch a task the owner just closed, before bsc-prune's 'vanished'
+  // write ever lands to make bsc-next's parkedGuard refuse it. A missing ref
+  // is ambiguous by construction (restart-renumber vs. real close) and that
+  // disambiguation belongs to bsc-prune alone — this reconciler only acts
+  // when the workspace IS still listed but its claude process died (the
+  // literal #853 "found dead manually" shape).
+  const { deps, dispatched } = harness({
+    tasks: [inProgressTask('853')],
+    entries: [launch('853', 'workspace:12')],
+    workspaces: [], // ref not in the listing at all
+  });
+  const r = reconcileTaskSessions({ deps });
+  assert.deepEqual(r.dead, []);
+  assert.deepEqual(dispatched, []);
+
+  // Same outcome even when a renumbered twin IS visible under a new ref —
+  // reconcile still defers; it's bsc-prune's remap to make, not a reason
+  // for reconcile to treat the OLD ref as "confirmed dead" either.
+  const { deps: deps2, dispatched: dispatched2 } = harness({
+    tasks: [inProgressTask('853')],
+    entries: [launch('853', 'workspace:12')],
+    workspaces: [{ ref: 'workspace:41', title: `🤖⚡ Data·${SUBJECT}` }],
+  });
+  const r2 = reconcileTaskSessions({ deps: deps2 });
+  assert.deepEqual(r2.dead, []);
+  assert.deepEqual(dispatched2, []);
+});
+
+test('reconcileTaskSessions: a task that already died DEAD_ATTEMPT_LIMIT times is reported, not re-shelled', () => {
+  const { deps, reported, dispatched } = harness({
+    tasks: [inProgressTask('297')],
+    entries: [
+      launch('297', 'workspace:12'),
+      { event: 'dead', taskId: '297', workspaceRef: 'workspace:9' },
+      { event: 'dead', taskId: '297', workspaceRef: 'workspace:10' },
+    ],
+    workspaces: [ws(12)],
+  });
+  const r = reconcileTaskSessions({ deps });
+  assert.deepEqual(r.dead, ['297']);
+  assert.deepEqual(r.redispatched, []);
+  assert.deepEqual(dispatched, [], 'must never re-shell a task bsc-next has already given up on');
+  assert.ok(reported.some(l => l.kind === 'task-redispatch-blocked'));
+});
+
+test('reconcileTaskSessions: per-tick redispatch budget throttles a burst, deferring the rest to the next tick', () => {
+  const tasks = [inProgressTask('1'), inProgressTask('2'), inProgressTask('3')];
+  const entries = [launch('1', 'workspace:1'), launch('2', 'workspace:2'), launch('3', 'workspace:3')];
+  const workspaces = [ws(1), ws(2), ws(3)];
+  const { deps, reported, dispatched } = harness({ tasks, entries, workspaces }); // all dead (default aliveRefs empty)
+  const r = reconcileTaskSessions({ deps });
+  assert.equal(r.dead.length, 3);
+  assert.equal(dispatched.length, 2, 'only MAX_REDISPATCH_PER_TICK fire this tick');
+  assert.ok(reported.some(l => l.kind === 'task-redispatch-throttled'));
+});
+
+test('reconcileTaskSessions: a wake that revives the tab cancels the re-dispatch (false alarm)', () => {
+  let calls = 0;
+  const deps = harness({
+    tasks: [inProgressTask('853')],
+    entries: [launch('853', 'workspace:12')],
+    workspaces: [ws(12)],
+  }).deps;
+  // Alive only AFTER the wake (simulates a dormant, backgrounded-app tab).
+  deps.claudeAliveInFn = () => { calls++; return calls > 1; };
+  deps.surfaceAliveInFn = () => calls > 1;
+  const dispatched = [];
+  deps.dispatchFn = (id) => { dispatched.push(id); return { status: 0 }; };
+  const r = reconcileTaskSessions({ deps });
+  assert.deepEqual(r.dead, [], 'the post-wake re-check must clear the false-dead reading');
+  assert.deepEqual(dispatched, []);
+});
+
+test('reconcileTaskSessions: ✅-marked (finished) workspace is left for bsc-prune, never re-dispatched', () => {
+  const { deps, dispatched } = harness({
+    tasks: [inProgressTask('853')],
+    entries: [launch('853', 'workspace:12')],
+    workspaces: [ws(12, `✅ ${SUBJECT}`)],
+  });
+  const r = reconcileTaskSessions({ deps });
+  assert.deepEqual(r.dead, []);
+  assert.deepEqual(dispatched, []);
+});
+
+test('reconcileTaskSessions: bsc-next refusal (e.g. duplicate/park guard) is reported, not treated as success', () => {
+  const { deps, reported } = harness({
+    tasks: [inProgressTask('853')],
+    entries: [launch('853', 'workspace:12')],
+    workspaces: [ws(12)],
+    dispatchStatus: 1,
+  });
+  const r = reconcileTaskSessions({ deps });
+  assert.deepEqual(r.redispatched, []);
+  assert.ok(reported.some(l => l.kind === 'task-redispatch-refused'));
+});
+
+test('reconcileTaskSessions: --dry-run reports dead sessions but dispatches nothing', () => {
+  const { deps, reported, dispatched } = harness({
+    tasks: [inProgressTask('853')],
+    entries: [launch('853', 'workspace:12')],
+    workspaces: [ws(12)],
+  });
+  const r = reconcileTaskSessions({ dryRun: true, deps });
+  assert.deepEqual(r.dead, ['853']);
+  assert.deepEqual(dispatched, []);
+  assert.ok(reported.some(l => l.kind === 'task-session-dead'));
+});
+
+test('reconcileTaskSessions: a failed cmux listing is reported and returns cleanly (no crash)', () => {
+  const { deps } = harness({ tasks: [inProgressTask('853')] });
+  deps.listWorkspacesFn = () => { throw new Error('cmux socket busy'); };
+  const r = reconcileTaskSessions({ deps });
+  assert.equal(r.checked, 1);
+  assert.deepEqual(r.dead, []);
+  assert.ok(r.error);
+});
+
+// ── reconcileStalledTasks (owner mandate 2026-08-03: close the loop) ────────
+const { reconcileStalledTasks, stallRedispatchArgv, STALL_EVENT, STALL_COOLDOWN_MS } = require('./bsc-reconcile.js');
+
+const NOW = Date.parse('2026-08-03T12:00:00.000Z');
+const hoursAgo = (h) => new Date(NOW - h * 3600 * 1000).toISOString();
+const jobSpawned = (taskId, jobId, ts) => ({ event: 'job-spawned', taskId: String(taskId), jobId, ts });
+const jobEnd = (taskId, jobId, event, ts) => ({ event, taskId: String(taskId), jobId, ts });
+
+function stallHarness({ tasks = [], entries = [], dispatchStatus = 0 } = {}) {
+  const reported = [];
+  const dispatched = [];
+  const appended = [];
+  const deps = {
+    loadTasksFn: () => tasks,
+    tasksDir: '/fake/dir',
+    readLedgerEntriesFn: () => entries,
+    appendLedgerFn: (e) => appended.push({ ts: new Date(NOW).toISOString(), ...e }),
+    dispatchFn: (taskId) => { dispatched.push(String(taskId)); return { status: dispatchStatus, stderr: 'guard: refused' }; },
+    reportFn: (l) => reported.push(l),
+    nowFn: () => NOW,
+  };
+  return { deps, reported, dispatched, appended };
+}
+
+test('stallRedispatchArgv deliberately carries NO --force — every bsc-next guard stays armed', () => {
+  const argv = stallRedispatchArgv('733');
+  assert.ok(argv.includes('--id') && argv.includes('733'));
+  assert.ok(!argv.includes('--force'), 'stalled redispatch must go through the fully-guarded path');
+});
+
+test('the 2026-08-03 shape: terminal job-failed + in_progress task → reported stalled and redispatched', () => {
+  const h = stallHarness({
+    tasks: [inProgressTask(733, 'Fix: Test Suite repeat-failure')],
+    entries: [jobSpawned(733, 'j1', hoursAgo(6)), jobEnd(733, 'j1', 'job-failed', hoursAgo(5))],
+  });
+  const r = reconcileStalledTasks({ deps: h.deps });
+  assert.deepEqual(r.stalled, ['733']);
+  assert.deepEqual(h.dispatched, ['733']);
+  assert.ok(h.reported.some(l => l.kind === 'task-stalled' && /job-failed/.test(l.detail)));
+  assert.ok(h.appended.some(e => e.event === STALL_EVENT && e.taskId === '733'), 'marker stamped');
+});
+
+test('job-done but task still in_progress → stalled, with the never-completed wording', () => {
+  const h = stallHarness({
+    tasks: [inProgressTask(808, 'BSC Daily: Audience coverage')],
+    entries: [jobSpawned(808, 'j2', hoursAgo(6)), jobEnd(808, 'j2', 'job-done', hoursAgo(5))],
+  });
+  reconcileStalledTasks({ deps: h.deps });
+  assert.ok(h.reported.some(l => l.kind === 'task-stalled' && /never completed/.test(l.detail)));
+});
+
+test('open headless job → NOT stalled (orphan sweep owns it)', () => {
+  const h = stallHarness({
+    tasks: [inProgressTask(900)],
+    entries: [jobSpawned(900, 'j3', hoursAgo(6))],
+  });
+  const r = reconcileStalledTasks({ deps: h.deps });
+  assert.deepEqual(r.stalled, []);
+  assert.deepEqual(h.dispatched, []);
+});
+
+test('open workspace launch → NOT stalled (tab sweep owns it)', () => {
+  const h = stallHarness({
+    tasks: [inProgressTask(901)],
+    entries: [launch(901, 'workspace:9')],
+  });
+  assert.deepEqual(reconcileStalledTasks({ deps: h.deps }).stalled, []);
+});
+
+test('no ledger history at all → skipped (hand-claimed sessions are invisible on purpose)', () => {
+  const h = stallHarness({ tasks: [inProgressTask(902)], entries: [] });
+  assert.deepEqual(reconcileStalledTasks({ deps: h.deps }).stalled, []);
+});
+
+test('cooldown: terminal event younger than STALL_COOLDOWN_MS → not yet stalled', () => {
+  const freshTs = new Date(NOW - STALL_COOLDOWN_MS / 2).toISOString();
+  const h = stallHarness({
+    tasks: [inProgressTask(903)],
+    entries: [jobSpawned(903, 'j4', hoursAgo(1)), jobEnd(903, 'j4', 'job-failed', freshTs)],
+  });
+  assert.deepEqual(reconcileStalledTasks({ deps: h.deps }).stalled, []);
+});
+
+test('marker newer than last activity → stall already handled, no re-attempt every tick', () => {
+  const h = stallHarness({
+    tasks: [inProgressTask(904)],
+    entries: [
+      jobSpawned(904, 'j5', hoursAgo(8)), jobEnd(904, 'j5', 'job-failed', hoursAgo(7)),
+      { event: STALL_EVENT, taskId: '904', ts: hoursAgo(6) },
+    ],
+  });
+  const r = reconcileStalledTasks({ deps: h.deps });
+  assert.deepEqual(r.stalled, []);
+  assert.deepEqual(h.dispatched, []);
+});
+
+test('new activity after the marker re-arms the stall', () => {
+  const h = stallHarness({
+    tasks: [inProgressTask(905)],
+    entries: [
+      jobSpawned(905, 'j6', hoursAgo(9)), jobEnd(905, 'j6', 'job-failed', hoursAgo(8)),
+      { event: STALL_EVENT, taskId: '905', ts: hoursAgo(7) },
+      jobSpawned(905, 'j7', hoursAgo(3)), jobEnd(905, 'j7', 'job-failed', hoursAgo(2)),
+    ],
+  });
+  assert.deepEqual(reconcileStalledTasks({ deps: h.deps }).stalled, ['905']);
+});
+
+test('refused dispatch still stamps the marker and reports task-stall-refused (no every-tick spam)', () => {
+  const h = stallHarness({
+    tasks: [inProgressTask(906)],
+    entries: [jobSpawned(906, 'j8', hoursAgo(6)), jobEnd(906, 'j8', 'job-failed', hoursAgo(5))],
+    dispatchStatus: 1,
+  });
+  const r = reconcileStalledTasks({ deps: h.deps });
+  assert.deepEqual(r.redispatched, []);
+  assert.ok(h.reported.some(l => l.kind === 'task-stall-refused'));
+  assert.ok(h.appended.some(e => e.event === STALL_EVENT && e.taskId === '906'));
+});
+
+test('per-tick budget throttles the third stalled task WITHOUT a marker (retries next tick)', () => {
+  const mk = (id, job) => [jobSpawned(id, job, hoursAgo(6)), jobEnd(id, job, 'job-failed', hoursAgo(5))];
+  const h = stallHarness({
+    tasks: [inProgressTask(910), inProgressTask(911), inProgressTask(912)],
+    entries: [...mk(910, 'a'), ...mk(911, 'b'), ...mk(912, 'c')],
+  });
+  const r = reconcileStalledTasks({ deps: h.deps });
+  assert.equal(r.stalled.length, 3);
+  assert.equal(h.dispatched.length, 2);
+  assert.ok(h.reported.some(l => l.kind === 'task-stall-throttled' && l.taskId === '912'));
+  assert.ok(!h.appended.some(e => e.event === STALL_EVENT && e.taskId === '912'), 'throttled task must NOT be marker-stamped');
+});
+
+test('dryRun reports but never stamps or dispatches', () => {
+  const h = stallHarness({
+    tasks: [inProgressTask(913)],
+    entries: [jobSpawned(913, 'j9', hoursAgo(6)), jobEnd(913, 'j9', 'job-failed', hoursAgo(5))],
+  });
+  const r = reconcileStalledTasks({ dryRun: true, deps: h.deps });
+  assert.deepEqual(r.stalled, ['913']);
+  assert.deepEqual(h.dispatched, []);
+  assert.deepEqual(h.appended, []);
+});
+
+test('Codex catch: the job-done 48-sessions/day loop is capped — after MAX_STALL_ATTEMPTS_PER_TASK markers, exhausted, no dispatch', () => {
+  const { MAX_STALL_ATTEMPTS_PER_TASK } = require('./bsc-reconcile.js');
+  // Two prior stall cycles, each: marker → redispatch → job-done without completion.
+  const h = stallHarness({
+    tasks: [inProgressTask(920)],
+    entries: [
+      jobSpawned(920, 'k1', hoursAgo(20)), jobEnd(920, 'k1', 'job-done', hoursAgo(19)),
+      { event: STALL_EVENT, taskId: '920', ts: hoursAgo(18) },
+      jobSpawned(920, 'k2', hoursAgo(17)), jobEnd(920, 'k2', 'job-done', hoursAgo(16)),
+      { event: STALL_EVENT, taskId: '920', ts: hoursAgo(15) },
+      jobSpawned(920, 'k3', hoursAgo(14)), jobEnd(920, 'k3', 'job-done', hoursAgo(13)),
+    ],
+  });
+  assert.equal(MAX_STALL_ATTEMPTS_PER_TASK, 2);
+  const r = reconcileStalledTasks({ deps: h.deps });
+  assert.deepEqual(r.stalled, ['920'], 'still reported stalled (honest surface)');
+  assert.deepEqual(h.dispatched, [], 'but NO further session is spawned');
+  assert.ok(h.reported.some(l => l.kind === 'task-stall-exhausted'));
+  assert.ok(h.appended.some(e => e.event === STALL_EVENT), 'exhausted verdict stamps a marker so it reports once per re-arm, not every tick');
+});
+
+test('exhausted verdict is silenced by its own marker on the following tick', () => {
+  const h = stallHarness({
+    tasks: [inProgressTask(921)],
+    entries: [
+      jobSpawned(921, 'm1', hoursAgo(20)), jobEnd(921, 'm1', 'job-done', hoursAgo(19)),
+      { event: STALL_EVENT, taskId: '921', ts: hoursAgo(18) },
+      jobSpawned(921, 'm2', hoursAgo(17)), jobEnd(921, 'm2', 'job-done', hoursAgo(16)),
+      { event: STALL_EVENT, taskId: '921', ts: hoursAgo(15) },
+      jobSpawned(921, 'm3', hoursAgo(14)), jobEnd(921, 'm3', 'job-done', hoursAgo(13)),
+      { event: STALL_EVENT, taskId: '921', ts: hoursAgo(12) }, // the exhausted stamp
+    ],
+  });
+  const r = reconcileStalledTasks({ deps: h.deps });
+  assert.deepEqual(r.stalled, [], 'marker newer than last activity — quiet until new activity');
+  assert.deepEqual(h.dispatched, []);
+});
+
+// ── reconcileFlaglessSessions (task #985) ───────────────────────────────────
+const { reconcileFlaglessSessions, MAX_REVIVE_PER_TICK } = require('./bsc-reconcile.js');
+
+function flaglessHarness({ workspaces = [], entries = [], alive = () => true, midTurn = () => false, detections = {} } = {}) {
+  const reported = [];
+  const revived = [];
+  const deps = {
+    listWorkspacesFn: () => workspaces,
+    claudeAliveInFn: (ref) => alive(ref),
+    claudeMidTurnInFn: (ref) => midTurn(ref),
+    readLedgerEntriesFn: () => entries,
+    detectFn: (ref) => detections[ref] || { flagless: false, pid: null, command: null },
+    reviveFn: (ref) => { revived.push(ref); return { revived: true, ref, pid: 1, command: `claude --resume x --dangerously-skip-permissions` }; },
+    reportFn: (l) => reported.push(l),
+  };
+  return { deps, reported, revived };
+}
+
+test('reconcileFlaglessSessions: flags and revives a 🤖 workspace whose live claude is missing the flag', () => {
+  const h = flaglessHarness({
+    workspaces: [{ ref: 'workspace:116', title: '🤖⚡ Data·gap-audit-checkpoint-lock-warning' }],
+    detections: { 'workspace:116': { flagless: true, pid: 35401, command: 'claude --worktree x --resume abc' } },
+  });
+  const r = reconcileFlaglessSessions({ deps: h.deps });
+  assert.deepEqual(r.flagless, ['workspace:116']);
+  assert.deepEqual(r.revived, ['workspace:116']);
+  assert.ok(h.reported.some(l => l.kind === 'flagless-session'));
+  assert.ok(h.reported.some(l => l.kind === 'flagless-revived'));
+});
+
+test('reconcileFlaglessSessions: ignores non-🤖 workspaces even if flagless', () => {
+  const h = flaglessHarness({
+    workspaces: [{ ref: 'workspace:5', title: 'Owner-opened session' }],
+    detections: { 'workspace:5': { flagless: true, pid: 1, command: 'claude --resume abc' } },
+  });
+  const r = reconcileFlaglessSessions({ deps: h.deps });
+  assert.deepEqual(r.checked, 0);
+  assert.deepEqual(r.flagless, []);
+});
+
+test('reconcileFlaglessSessions: 🤖 detected via ledger even without the title glyph (card #971 pattern)', () => {
+  const h = flaglessHarness({
+    workspaces: [{ ref: 'workspace:200', title: 'Renamed mid-work status line' }],
+    entries: [{ event: 'launch', taskId: '985', subject: 'Renamed mid-work status line', workspaceRef: 'workspace:200' }],
+    detections: { 'workspace:200': { flagless: true, pid: 2, command: 'claude --resume abc' } },
+  });
+  const r = reconcileFlaglessSessions({ deps: h.deps });
+  assert.deepEqual(r.flagless, ['workspace:200']);
+});
+
+test('reconcileFlaglessSessions: skips a dead workspace (other sweeps own it)', () => {
+  const h = flaglessHarness({
+    workspaces: [{ ref: 'workspace:1', title: '🤖 dead tab' }],
+    alive: () => false,
+    detections: { 'workspace:1': { flagless: true, pid: 1, command: 'claude --resume abc' } },
+  });
+  const r = reconcileFlaglessSessions({ deps: h.deps });
+  assert.deepEqual(r.flagless, [], 'a dead workspace must not be flagged by this sweep');
+  assert.deepEqual(r.revived, []);
+});
+
+test('reconcileFlaglessSessions: already-flagged 🤖 workspace is left alone', () => {
+  const h = flaglessHarness({
+    workspaces: [{ ref: 'workspace:2', title: '🤖 healthy tab' }],
+    detections: { 'workspace:2': { flagless: false, pid: 1, command: 'claude --model sonnet --dangerously-skip-permissions x' } },
+  });
+  const r = reconcileFlaglessSessions({ deps: h.deps });
+  assert.deepEqual(r.flagless, []);
+  assert.deepEqual(r.revived, []);
+});
+
+test('reconcileFlaglessSessions: dryRun reports but never revives', () => {
+  const h = flaglessHarness({
+    workspaces: [{ ref: 'workspace:116', title: '🤖 gap-audit' }],
+    detections: { 'workspace:116': { flagless: true, pid: 1, command: 'claude --resume abc' } },
+  });
+  const r = reconcileFlaglessSessions({ dryRun: true, deps: h.deps });
+  assert.deepEqual(r.flagless, ['workspace:116']);
+  assert.deepEqual(r.revived, []);
+  assert.deepEqual(h.revived, []);
+});
+
+test('reconcileFlaglessSessions: per-tick revive budget throttles further flagless tabs', () => {
+  const workspaces = Array.from({ length: MAX_REVIVE_PER_TICK + 2 }, (_, i) => ({ ref: `workspace:${i}`, title: '🤖 tab' }));
+  const detections = Object.fromEntries(workspaces.map(w => [w.ref, { flagless: true, pid: 1, command: 'claude --resume abc' }]));
+  const h = flaglessHarness({ workspaces, detections });
+  const r = reconcileFlaglessSessions({ deps: h.deps });
+  assert.equal(r.flagless.length, workspaces.length, 'every flagless tab is still reported');
+  assert.equal(r.revived.length, MAX_REVIVE_PER_TICK, 'but only the per-tick budget is actually revived');
+  assert.ok(h.reported.some(l => l.kind === 'flagless-revive-throttled'));
+});
+
+test('reconcileFlaglessSessions: cmux listing failure reports and returns empty, non-fatal', () => {
+  const reported = [];
+  const r = reconcileFlaglessSessions({
+    deps: {
+      listWorkspacesFn: () => { throw new Error('socket down'); },
+      reportFn: (l) => reported.push(l),
+    },
+  });
+  assert.deepEqual(r, { checked: 0, flagless: [], revived: [] });
+  assert.ok(reported.some(l => l.kind === 'flagless-sweep-error'));
+});
+
+// Ship-check adversarial finding: a flagless session that hasn't hit its
+// first permission-gated tool call yet is still ACTIVELY WORKING, not
+// stalled — respawn-pane would kill it mid-task. Only revive when idle.
+test('reconcileFlaglessSessions: defers a flagless-but-mid-turn (busy) workspace instead of killing it', () => {
+  const h = flaglessHarness({
+    workspaces: [{ ref: 'workspace:116', title: '🤖 gap-audit' }],
+    midTurn: () => true,
+    detections: { 'workspace:116': { flagless: true, pid: 1, command: 'claude --resume abc' } },
+  });
+  const r = reconcileFlaglessSessions({ deps: h.deps });
+  assert.deepEqual(r.flagless, ['workspace:116'], 'still reported — the owner should know');
+  assert.deepEqual(r.revived, [], 'but NOT revived — killing an active turn would lose in-progress work');
+  assert.ok(h.reported.some(l => l.kind === 'flagless-revive-deferred-busy'));
+  assert.deepEqual(h.revived, []);
+});
+
+test('reconcileFlaglessSessions: revives once the busy session goes idle (mid-turn check reflects current state, not cached)', () => {
+  const h = flaglessHarness({
+    workspaces: [{ ref: 'workspace:116', title: '🤖 gap-audit' }],
+    midTurn: () => false,
+    detections: { 'workspace:116': { flagless: true, pid: 1, command: 'claude --resume abc' } },
+  });
+  const r = reconcileFlaglessSessions({ deps: h.deps });
+  assert.deepEqual(r.revived, ['workspace:116']);
+});
+
+// Same rule as pruneDone's close-path guard (card #971) — never act on a
+// workspace the owner is currently looking at; they may already be about to
+// hand-approve the stalled prompt.
+test('reconcileFlaglessSessions: never revives (or even attempts) the currently-selected workspace', () => {
+  const h = flaglessHarness({
+    workspaces: [{ ref: 'workspace:116', title: '🤖 gap-audit', selected: true }],
+    detections: { 'workspace:116': { flagless: true, pid: 1, command: 'claude --resume abc' } },
+  });
+  const r = reconcileFlaglessSessions({ deps: h.deps });
+  assert.deepEqual(r.checked, 1, 'still counted as an auto-dispatched workspace checked');
+  assert.deepEqual(r.flagless, [], 'selected tab is skipped before even running detection');
+  assert.deepEqual(r.revived, []);
+  assert.deepEqual(h.revived, []);
+});
+
+// ── collectTimeoutResumeCandidates (task #1184 S1) ─────────────────────────
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+const { collectTimeoutResumeCandidates, MAX_RESUME_PER_TASK, sweepUntrackedInProgress } = require('./bsc-reconcile.js');
+
+const T1184_NOW = Date.parse('2026-08-10T12:00:00.000Z');
+const tsAgo = (h) => new Date(T1184_NOW - h * 3600e3).toISOString();
+const spawned = (taskId, jobId, h = 2) => ({ event: 'job-spawned', taskId: String(taskId), jobId, ts: tsAgo(h) });
+const timedOut = (taskId, jobId, h = 1, extra = {}) => ({
+  event: 'job-failed', stage: 'timeout', taskId: String(taskId), jobId,
+  sessionId: `sess-${jobId}`, cwd: `/tmp/wt-${jobId}`, ts: tsAgo(h), ...extra,
+});
+
+test('collectTimeoutResumeCandidates: a recent timeout with sessionId+cwd is resumable', () => {
+  const out = collectTimeoutResumeCandidates([spawned(7, 'j1'), timedOut(7, 'j1')], { nowMs: T1184_NOW });
+  assert.equal(out.length, 1);
+  assert.equal(out[0].jobId, 'j1');
+  assert.equal(out[0].sessionId, 'sess-j1');
+});
+
+test('collectTimeoutResumeCandidates: pre-#1184 entries (no sessionId/cwd) are unresumable', () => {
+  const bare = { event: 'job-failed', stage: 'timeout', taskId: '7', jobId: 'j1', ts: tsAgo(1) };
+  assert.equal(collectTimeoutResumeCandidates([spawned(7, 'j1'), bare], { nowMs: T1184_NOW }).length, 0);
+});
+
+test('collectTimeoutResumeCandidates: one resume per job — a RETRIED jobId never re-resumes', () => {
+  const entries = [spawned(7, 'j1'), timedOut(7, 'j1'),
+    { event: 'job-retried', taskId: '7', jobId: 'j1', ts: tsAgo(0.5) }];
+  assert.equal(collectTimeoutResumeCandidates(entries, { nowMs: T1184_NOW }).length, 0);
+});
+
+test('collectTimeoutResumeCandidates: per-task resume cap — a card that keeps timing out parks', () => {
+  const entries = [];
+  for (let i = 0; i < MAX_RESUME_PER_TASK; i++) {
+    entries.push({ event: 'job-retried', taskId: '7', jobId: `old-${i}`, ts: tsAgo(10 + i) });
+  }
+  entries.push(spawned(7, 'jN'), timedOut(7, 'jN'));
+  assert.equal(collectTimeoutResumeCandidates(entries, { nowMs: T1184_NOW }).length, 0,
+    `task with ${MAX_RESUME_PER_TASK} prior resumes must not get another`);
+});
+
+test('collectTimeoutResumeCandidates: stale timeouts (outside lookback) are worktree-gc territory', () => {
+  assert.equal(collectTimeoutResumeCandidates([spawned(7, 'j1', 50), timedOut(7, 'j1', 49)], { nowMs: T1184_NOW }).length, 0);
+});
+
+test('collectTimeoutResumeCandidates: non-timeout failures are never resumed', () => {
+  const err = { ...timedOut(7, 'j1'), stage: 'implementer-error' };
+  assert.equal(collectTimeoutResumeCandidates([spawned(7, 'j1'), err], { nowMs: T1184_NOW }).length, 0);
+});
+
+// ── sweepUntrackedInProgress (task #1184 S2) ───────────────────────────────
+// The complementary shape reconcileStalledTasks deliberately skips: an
+// in_progress task with NO ledger history whose interactive session died.
+function zombieHarness({ tasks, entries = [], workspaces = [], cards = {}, stateAge = null }) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'zombie-sweep-'));
+  const statePath = path.join(dir, 'state.json');
+  if (stateAge != null) fs.writeFileSync(statePath, JSON.stringify({ lastRunTs: tsAgo(stateAge) }));
+  const flips = [];
+  const cardCorrections = [];
+  const reports = [];
+  const outcomeParkMarks = [];
+  return {
+    flips, cardCorrections, reports, outcomeParkMarks, statePath,
+    deps: {
+      loadTasksFn: () => tasks,
+      tasksDir: dir,
+      readLedgerEntriesFn: () => entries,
+      listWorkspacesFn: () => workspaces,
+      readLeaseFn: () => null,
+      fetchCardFn: (nid) => cards[nid] || null,
+      flipFn: (task) => flips.push(String(task.id)),
+      correctCardFn: (nid) => { cardCorrections.push(nid); return true; },
+      markOutcomeParkedFn: (task) => outcomeParkMarks.push(String(task.id)),
+      reportFn: (l) => reports.push(l),
+      nowFn: () => T1184_NOW,
+      statePath,
+    },
+  };
+}
+const zTask = (id, over = {}) => ({
+  id: String(id), status: 'in_progress', subject: `Some long zombie card subject for #${id}`,
+  description: `[notion:aaaa${id}aaa-1111-2222-3333-444444444444] P1 Next`, metadata: {}, ...over,
+});
+
+test('zombie sweep: flips an idle untracked in_progress task and corrects its card', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({ tasks: [zTask(9)], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72) } } });
+  const r = sweepUntrackedInProgress({ deps: h.deps });
+  assert.equal(r.ran, true);
+  assert.deepEqual(h.flips, ['9']);
+  assert.deepEqual(h.cardCorrections, [nid]);
+});
+
+test('zombie sweep: never touches ledger-tracked, recheck-parked, tab-matched, or recently-edited tasks', () => {
+  const nid = (id) => `aaaa${id}aaa-1111-2222-3333-444444444444`;
+  const h = zombieHarness({
+    tasks: [
+      zTask(1),                                                       // ledger-tracked
+      zTask(2, { metadata: { recheckAfter: '2026-08-20' } }),          // RECHECK-AFTER parked
+      zTask(3),                                                       // live tab titled like the subject
+      zTask(4),                                                       // card edited 1h ago
+    ],
+    entries: [{ event: 'launch', taskId: '1', ts: tsAgo(100) }],
+    workspaces: [{ ref: 'workspace:5', title: '🤖 Some long zombie card subject for #3' }],
+    cards: { [nid(3)]: { status: 'In progress', lastEditedAt: tsAgo(72) }, [nid(4)]: { status: 'In progress', lastEditedAt: tsAgo(1) } },
+  });
+  const r = sweepUntrackedInProgress({ deps: h.deps });
+  assert.equal(r.ran, true);
+  assert.deepEqual(h.flips, [], `nothing should flip; got ${h.flips}`);
+});
+
+test('zombie sweep: cadence gate — a recent prior run skips entirely (no Notion fetches)', () => {
+  const h = zombieHarness({ tasks: [zTask(9)], stateAge: 1, cards: {} });
+  const r = sweepUntrackedInProgress({ deps: h.deps });
+  assert.equal(r.ran, false);
+});
+
+test('zombie sweep: dry-run reports but never flips or stamps state', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({ tasks: [zTask(9)], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72) } } });
+  const r = sweepUntrackedInProgress({ dryRun: true, deps: h.deps });
+  assert.equal(r.flipped.length, 1, 'dry-run still REPORTS the would-be flip');
+  assert.deepEqual(h.flips, [], 'no local write');
+  assert.ok(!fs.existsSync(h.statePath), 'dry-run must not stamp the cadence state');
+});
+
+// ── Outcome-filled card: park, don't reopen (task #1272, the #383 class) ────
+test('zombie sweep: a card with a filled Outcome is parked (Paused), never flipped to pending/Not-started', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({
+    tasks: [zTask(9)],
+    cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72), outcome: 'FINDINGS.md written, 12 screenshots.' } },
+  });
+  const r = sweepUntrackedInProgress({ deps: h.deps });
+  assert.equal(r.ran, true);
+  assert.deepEqual(h.flips, [], 'must never locally flip a done-but-unclosed card back to pending');
+  assert.deepEqual(h.cardCorrections, [nid], 'still corrects the Notion card (to Paused, not Not started)');
+  assert.deepEqual(r.flipped, [], 'not counted as a flip');
+  assert.ok(r.skipped.some(s => s.id === '9' && s.why === 'has-completed-outcome'));
+});
+
+test('zombie sweep: outcome-filled card parks with status Paused (not Not started) and a distinct note', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const statuses = [];
+  const h = zombieHarness({ tasks: [zTask(9)], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72), outcome: 'Done already.' } } });
+  h.deps.correctCardFn = (id, note, status) => { statuses.push({ id, note, status }); return true; };
+  sweepUntrackedInProgress({ deps: h.deps });
+  assert.equal(statuses.length, 1);
+  assert.equal(statuses[0].status, 'Paused');
+  assert.match(statuses[0].note, /#1272/);
+});
+
+test('zombie sweep: outcome-filled card reports zombie-outcome-needs-review, not zombie-flip', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({ tasks: [zTask(9)], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72), outcome: 'Done already.' } } });
+  sweepUntrackedInProgress({ deps: h.deps });
+  assert.ok(h.reports.some(r => r.kind === 'zombie-outcome-needs-review' && r.taskId === '9'));
+  assert.ok(!h.reports.some(r => r.kind === 'zombie-flip'));
+});
+
+test('zombie sweep: dry-run on an outcome-filled card reports but never calls correctCardFn', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({ tasks: [zTask(9)], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72), outcome: 'Done already.' } } });
+  const r = sweepUntrackedInProgress({ dryRun: true, deps: h.deps });
+  assert.deepEqual(h.cardCorrections, []);
+  assert.deepEqual(h.flips, []);
+  assert.ok(r.skipped.some(s => s.id === '9' && s.why === 'has-completed-outcome'));
+});
+
+test('zombie sweep: a successful park stamps the local idempotency marker (ship-check Codex finding — otherwise re-parks forever)', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({ tasks: [zTask(9)], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72), outcome: 'Done already.' } } });
+  sweepUntrackedInProgress({ deps: h.deps });
+  assert.deepEqual(h.outcomeParkMarks, ['9']);
+});
+
+test('zombie sweep: a card already carrying the outcome-park marker is skipped entirely (idempotent — no re-fetch, no re-report)', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({
+    tasks: [zTask(9, { description: '[outcome-park 2026-08-01] parked — Notion card set to Paused.\n\n' + zTask(9).description })],
+    cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72), outcome: 'Done already.' } },
+  });
+  const r = sweepUntrackedInProgress({ deps: h.deps });
+  assert.deepEqual(h.cardCorrections, []);
+  assert.equal(r.checked, 0, 'must not even fetch the card for an already-parked task');
+});
+
+// ── BRO-2993: a failed cmux listing must fail closed, not silently disable
+// the live-tab guard ────────────────────────────────────────────────────────
+test('zombie sweep: a failed cmux listing flips ZERO tasks, even one otherwise eligible to flip', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({ tasks: [zTask(9)], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72) } } });
+  h.deps.listWorkspacesFn = () => { throw new Error('cmux socket busy'); };
+  const r = sweepUntrackedInProgress({ deps: h.deps });
+  assert.equal(r.ran, true);
+  assert.deepEqual(r.flipped, [], 'a cmux outage must never authorize a flip — uncertainty is not evidence the tab is dead');
+  assert.deepEqual(h.flips, []);
+  assert.equal(r.checked, 0, 'must not even reach the Notion card fetch — the guard fires before it');
+  assert.ok(r.skipped.some(s => s.id === '9' && /^live-tab cmux-unavailable:/.test(s.why)));
+  assert.ok(h.reports.some(rep => rep.kind === 'untracked-sweep-error' && /cmux socket busy/.test(rep.detail)));
+});
+
+test('zombie sweep: a successful (even empty) cmux listing behaves exactly as before — a genuinely idle task still flips', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({ tasks: [zTask(9)], workspaces: [], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72) } } });
+  const r = sweepUntrackedInProgress({ deps: h.deps });
+  assert.deepEqual(h.flips, ['9'], 'a real empty workspace list is legitimate evidence of no live tab, not uncertainty');
+  assert.deepEqual(r.flipped, ['9']);
+});
+
+test('zombie sweep: a failed cmux listing still respects ledger-tracked/recheck-parked exclusions (no over-broad skip inflation)', () => {
+  const h = zombieHarness({
+    tasks: [zTask(1), zTask(2, { metadata: { recheckAfter: '2026-08-20' } })],
+    entries: [{ event: 'launch', taskId: '1', ts: tsAgo(100) }],
+  });
+  h.deps.listWorkspacesFn = () => { throw new Error('cmux socket busy'); };
+  const r = sweepUntrackedInProgress({ deps: h.deps });
+  assert.deepEqual(r.flipped, []);
+  assert.ok(!r.skipped.some(s => /cmux-unavailable/.test(s.why)), 'neither task was ever a candidate for the live-tab guard, so the cmux-unavailable reason must not appear for them');
+});
+
+test('zombie sweep: a failed Notion park is reported honestly and never stamps the local marker (retried next sweep)', () => {
+  const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
+  const h = zombieHarness({ tasks: [zTask(9)], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72), outcome: 'Done already.' } } });
+  h.deps.correctCardFn = () => false; // Notion write failed
+  const r = sweepUntrackedInProgress({ deps: h.deps });
+  assert.deepEqual(h.outcomeParkMarks, [], 'no local marker on a failed park — must retry, not silently give up');
+  assert.ok(h.reports.some(rep => rep.kind === 'zombie-outcome-park-failed' && rep.taskId === '9'));
+  assert.deepEqual(r.flipped, []);
+});
+
+// ── sweepOrphanedJobs (BRO-3052) ────────────────────────────────────────────
+// Live 2026-09-08 (linear:BRO-2565): a single negative liveness glance wrote
+// job-orphaned + released the lease while the job's process was still
+// running 15+ minutes later. sweepOrphanedJobs debounces: the first negative
+// glance writes ORPHAN_SUSPECT only; the terminal job-orphaned row (and the
+// lease release) only happens once a LATER call still finds it dead, past
+// dispatch-ledger.js's ORPHAN_CONFIRM_MS.
+const { sweepOrphanedJobs, GRACE_MS } = require('./bsc-reconcile.js');
+
+const ORPHAN_NOW = Date.parse('2026-09-08T04:30:00.000Z');
+
+function orphanHarness({ lease = null, alive = false, freshEntries = null } = {}) {
+  const appended = [];
+  const released = [];
+  const reports = [];
+  const deps = {
+    readLeaseFn: () => lease,
+    pidLooksLikeClaudeFn: () => alive,
+    appendEntryFn: (e) => appended.push(e),
+    releaseLeaseFn: (taskId, jobId) => released.push({ taskId, jobId }),
+    // Explicit, never the real on-disk ledger (dispatch-ledger.js's REPO is a
+    // hardcoded Mac-local absolute path) — a test that forgets this override
+    // would silently read this machine's actual dispatch-ledger.jsonl instead
+    // of its own fixture. Defaults to the same entries the sweep was called
+    // with (no divergence since the snapshot), matching the common case.
+    readLedgerEntriesFn: () => freshEntries || [],
+    reportFn: (r) => reports.push(r),
+    nowFn: () => ORPHAN_NOW,
+  };
+  return { appended, released, reports, deps };
+}
+
+test('sweepOrphanedJobs: an alive lease is never touched', () => {
+  const h = orphanHarness({ lease: { jobId: 'j1', pid: 123, acquiredAt: new Date(ORPHAN_NOW - 3600e3).toISOString() }, alive: true });
+  const entries = [{ event: JOB_EVENTS.SPAWNED, taskId: '1', jobId: 'j1' }];
+  const { orphans } = sweepOrphanedJobs(entries, { deps: h.deps });
+  assert.deepEqual(orphans, []);
+  assert.deepEqual(h.appended, []);
+});
+
+test('sweepOrphanedJobs: a freshly-acquired lease (pid:null, inside GRACE_MS) is presumed starting, not orphaned', () => {
+  const h = orphanHarness({ lease: { jobId: 'j1', pid: null, acquiredAt: new Date(ORPHAN_NOW - 1000).toISOString() }, alive: false });
+  assert.ok(1000 < GRACE_MS, 'fixture must actually land inside the grace window');
+  const entries = [{ event: JOB_EVENTS.SPAWNED, taskId: '1', jobId: 'j1' }];
+  const { orphans } = sweepOrphanedJobs(entries, { deps: h.deps });
+  assert.deepEqual(orphans, []);
+  assert.deepEqual(h.appended, []);
+});
+
+test('sweepOrphanedJobs: FIRST negative glance writes an ORPHAN_SUSPECT row, not job-orphaned — the live BRO-2565 shape', () => {
+  const h = orphanHarness({ lease: null, alive: false });
+  const entries = [{ event: JOB_EVENTS.SPAWNED, taskId: '2565', jobId: 'j2565', ts: '2026-09-08T04:14:26.000Z' }];
+  const { orphans } = sweepOrphanedJobs(entries, { deps: h.deps });
+  assert.deepEqual(orphans, [], 'must not write the terminal row off one glance');
+  assert.equal(h.appended.length, 1);
+  assert.equal(h.appended[0].event, JOB_EVENTS.ORPHAN_SUSPECT);
+  assert.equal(h.appended[0].jobId, 'j2565');
+  assert.deepEqual(h.released, [], 'the lease must not be released on a mere suspicion');
+  assert.ok(h.reports.some((r) => r.kind === 'orphan-suspect'));
+});
+
+test('sweepOrphanedJobs: an alive job with a stale prior suspicion CLEARS it — the ledger stops trusting that old blip', () => {
+  const oldSuspectTs = new Date(ORPHAN_NOW - 60 * 1000).toISOString();
+  const h = orphanHarness({ lease: { jobId: 'j9', pid: 123, acquiredAt: new Date(ORPHAN_NOW - 3600e3).toISOString() }, alive: true });
+  const entries = [
+    { event: JOB_EVENTS.SPAWNED, taskId: '9', jobId: 'j9', ts: '2026-09-08T04:00:00.000Z' },
+    { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '9', jobId: 'j9', ts: oldSuspectTs },
+  ];
+  const { orphans } = sweepOrphanedJobs(entries, { deps: h.deps });
+  assert.deepEqual(orphans, []);
+  assert.equal(h.appended.length, 1, 'must clear the stale suspicion now that the job is observed alive');
+  assert.equal(h.appended[0].event, JOB_EVENTS.ORPHAN_CLEARED);
+  assert.equal(h.appended[0].jobId, 'j9');
+});
+
+// Codex adversarial ship-check catch (2nd pass): ORPHAN_CLEARED is
+// non-terminal, so the SAME TOCTOU hazard that threatens the ORPHANED write
+// also threatens this one — a real job-done landing between the alive glance
+// and this write would otherwise get "reopened" by a later, non-terminal
+// clear row (last-wins fold).
+test('sweepOrphanedJobs: a job-done that landed AFTER this tick\'s snapshot but BEFORE the clear write is never reopened by ORPHAN_CLEARED', () => {
+  const oldSuspectTs = new Date(ORPHAN_NOW - 60 * 1000).toISOString();
+  const staleSnapshot = [
+    { event: JOB_EVENTS.SPAWNED, taskId: '9', jobId: 'j9', ts: '2026-09-08T04:00:00.000Z' },
+    { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '9', jobId: 'j9', ts: oldSuspectTs },
+  ];
+  const freshOnDisk = [
+    ...staleSnapshot,
+    { event: JOB_EVENTS.DONE, taskId: '9', jobId: 'j9', ts: new Date(ORPHAN_NOW - 500).toISOString(), sessionId: 's1' },
+  ];
+  const h = orphanHarness({ lease: { jobId: 'j9', pid: 123, acquiredAt: new Date(ORPHAN_NOW - 3600e3).toISOString() }, alive: true, freshEntries: freshOnDisk });
+  const { orphans } = sweepOrphanedJobs(staleSnapshot, { deps: h.deps });
+  assert.deepEqual(orphans, []);
+  assert.deepEqual(h.appended, [], 'must not write ORPHAN_CLEARED over a real completion — that would reopen a finished job');
+});
+
+test('sweepOrphanedJobs: an alive job with NO prior suspicion writes nothing (the overwhelming common case must not spam the ledger)', () => {
+  const h = orphanHarness({ lease: { jobId: 'j1', pid: 123, acquiredAt: new Date(ORPHAN_NOW - 3600e3).toISOString() }, alive: true });
+  const entries = [{ event: JOB_EVENTS.SPAWNED, taskId: '1', jobId: 'j1' }];
+  const { orphans } = sweepOrphanedJobs(entries, { deps: h.deps });
+  assert.deepEqual(orphans, []);
+  assert.deepEqual(h.appended, []);
+});
+
+test('sweepOrphanedJobs: a SECOND tick that still finds it dead, past ORPHAN_CONFIRM_MS, writes the real job-orphaned row and releases the lease', () => {
+  const suspectTs = new Date(ORPHAN_NOW - ORPHAN_CONFIRM_MS - 1000).toISOString();
+  const entries = [
+    { event: JOB_EVENTS.SPAWNED, taskId: '2565', jobId: 'j2565', ts: '2026-09-08T04:14:26.000Z' },
+    { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '2565', jobId: 'j2565', ts: suspectTs },
+  ];
+  const h = orphanHarness({ lease: null, alive: false, freshEntries: entries });
+  const { orphans } = sweepOrphanedJobs(entries, { deps: h.deps });
+  assert.equal(orphans.length, 1);
+  assert.equal(h.appended.length, 1);
+  assert.equal(h.appended[0].event, JOB_EVENTS.ORPHANED);
+  assert.deepEqual(h.released, [{ taskId: '2565', jobId: 'j2565' }]);
+});
+
+// Codex adversarial ship-check catch: main() confirms off a SNAPSHOT read at
+// the top of its tick. The job's own process can legitimately finish and
+// append job-done in the real, on-disk ledger between that snapshot and this
+// write — appendEntryFn always appends to the CURRENT end of the file, so a
+// stale-snapshot ORPHANED write would otherwise land after a real job-done
+// and silently override it (foldJobs' last-wins fold). readLedgerEntriesFn is
+// the TOCTOU re-check's fresh read; here it diverges from the stale snapshot.
+test('sweepOrphanedJobs: TOCTOU — a job-done that landed AFTER this tick\'s snapshot but BEFORE the write is never overridden by job-orphaned', () => {
+  const suspectTs = new Date(ORPHAN_NOW - ORPHAN_CONFIRM_MS - 1000).toISOString();
+  const staleSnapshot = [
+    { event: JOB_EVENTS.SPAWNED, taskId: '2817', jobId: 'j2817', ts: '2026-09-08T04:00:00.000Z' },
+    { event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '2817', jobId: 'j2817', ts: suspectTs },
+  ];
+  const freshOnDisk = [
+    ...staleSnapshot,
+    { event: JOB_EVENTS.DONE, taskId: '2817', jobId: 'j2817', ts: new Date(ORPHAN_NOW - 500).toISOString(), sessionId: 's1' },
+  ];
+  const h = orphanHarness({ lease: null, alive: false, freshEntries: freshOnDisk });
+  const { orphans } = sweepOrphanedJobs(staleSnapshot, { deps: h.deps });
+  assert.deepEqual(orphans, [], 'must not orphan a job that has since reached job-done');
+  assert.deepEqual(h.appended, [], 'must not write job-orphaned over a real completion');
+  assert.deepEqual(h.released, []);
+  assert.ok(h.reports.some((r) => r.kind === 'orphan-resolved'));
+});
+
+test('sweepOrphanedJobs: does not spam a fresh suspect row every tick while still waiting to confirm', () => {
+  const suspectTs = new Date(ORPHAN_NOW - 30 * 1000).toISOString(); // 30s old, well inside ORPHAN_CONFIRM_MS
+  const h = orphanHarness({ lease: null, alive: false });
+  const entries = [{ event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '9', jobId: 'j9', ts: suspectTs }];
+  const { orphans } = sweepOrphanedJobs(entries, { deps: h.deps });
+  assert.deepEqual(orphans, []);
+  assert.deepEqual(h.appended, [], 'a suspect row already exists and is fresh — must not write a duplicate');
+});
+
+test('sweepOrphanedJobs: a STALE suspect row (past ORPHAN_SUSPECT_MAX_AGE_MS) is not corroboration — re-arms with a fresh suspect instead of confirming', () => {
+  const suspectTs = new Date(ORPHAN_NOW - ORPHAN_SUSPECT_MAX_AGE_MS - 1000).toISOString();
+  const h = orphanHarness({ lease: null, alive: false });
+  const entries = [{ event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '9', jobId: 'j9', ts: suspectTs }];
+  const { orphans } = sweepOrphanedJobs(entries, { deps: h.deps });
+  assert.deepEqual(orphans, [], 'an ancient suspicion must never confirm an unrelated later observation');
+  assert.equal(h.appended.length, 1, 'must re-arm with a fresh suspect row');
+  assert.equal(h.appended[0].event, JOB_EVENTS.ORPHAN_SUSPECT);
+});
+
+test('sweepOrphanedJobs: dryRun never writes to the ledger or releases the lease, even once confirmed', () => {
+  const suspectTs = new Date(ORPHAN_NOW - ORPHAN_CONFIRM_MS - 1000).toISOString();
+  const entries = [{ event: JOB_EVENTS.ORPHAN_SUSPECT, taskId: '9', jobId: 'j9', ts: suspectTs }];
+  const h = orphanHarness({ lease: null, alive: false, freshEntries: entries });
+  const { orphans } = sweepOrphanedJobs(entries, { dryRun: true, deps: h.deps });
+  assert.equal(orphans.length, 1, 'dry-run still reports what WOULD be orphaned');
+  assert.deepEqual(h.appended, []);
+  assert.deepEqual(h.released, []);
+});
+
+// ── BRO-4054: red-first ordering ─────────────────────────────────────────────
+
+test('red-first ordering: main() runs the bounded red-first pass BEFORE any orphan/tab sweep', () => {
+  const { runRedFirstPassBounded, RED_FIRST_TIMEOUT_MS } = require('./bsc-reconcile.js');
+  assert.equal(typeof runRedFirstPassBounded, 'function');
+  assert.ok(RED_FIRST_TIMEOUT_MS > 0 && RED_FIRST_TIMEOUT_MS < 300 * 1000, 'must finish inside the 300s launchd StartInterval');
+  const src = fs.readFileSync(new URL('./bsc-reconcile.js', import.meta.url), 'utf8');
+  const mainStart = src.indexOf('async function main() {');
+  assert.ok(mainStart > 0);
+  const body = src.slice(mainStart);
+  const redFirstAt = body.indexOf('await runRedFirstPassBounded();');
+  const sweepAt = body.indexOf('sweepOrphanedJobs(entries');
+  assert.ok(redFirstAt > 0, 'main() must invoke the red-first pass');
+  assert.ok(sweepAt > 0);
+  assert.ok(redFirstAt < sweepAt, 'red-first must precede the orphan sweep (and everything after it)');
+});
+
+test('red-first pass is bounded and non-fatal: a hanging pass times out and a throwing pass is swallowed', async () => {
+  const redFirst = require('./lib/red-first-dispatch.js');
+  const { runRedFirstPassBounded } = require('./bsc-reconcile.js');
+  const orig = redFirst.runRedFirstPass;
+  try {
+    redFirst.runRedFirstPass = async () => { throw new Error('boom'); };
+    await runRedFirstPassBounded(); // must not throw
+  } finally {
+    redFirst.runRedFirstPass = orig;
+  }
+});

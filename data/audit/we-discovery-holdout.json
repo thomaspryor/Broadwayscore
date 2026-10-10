@@ -1,0 +1,372 @@
+{
+  "_meta": {
+    "generatedAt": "2026-05-16T19:04:11.655Z",
+    "purpose": "WE-discovery verifier holdout (S1-T4 validation) — distinct from S1 probe set",
+    "shows": [
+      "operation-mincemeat-west-end-2024",
+      "hadestown-west-end-2024"
+    ],
+    "notes": "Plan referenced sunset-boulevard-west-end-2024 + operation-mincemeat-2023, but those exact IDs do not exist in shows.json. Substituted with the closest WE catalogue entries that have TR coverage: operation-mincemeat-west-end-2024 (the WE original, 21 TR reviews) + hadestown-west-end-2024 (Lyric Theatre, 20 TR reviews). Both are distinct from the 5-show probe set (evita, hercules, the-producers, kinky-boots, inter-alia)."
+  },
+  "shows": {
+    "operation-mincemeat-west-end-2024": {
+      "reviewCount": 11,
+      "reviews": [
+        {
+          "outletId": "artsdesk",
+          "outlet": "The Arts Desk",
+          "criticName": "Helen Hawkins",
+          "url": "https://theartsdesk.com/theatre/operation-mincemeat-fortune-theatre-review-high-octane-musical-comedy-hits-big-time",
+          "publishDate": "2023-05-11",
+          "textWordCount": 800,
+          "contentTier": "complete",
+          "sources": [
+            "show-score",
+            "show-score-playwright",
+            "theatre-record"
+          ],
+          "theatreRecordUrl": "https://www.theatrerecord.com/archive/2023/5/3207-operation-mincemeat",
+          "expectedValid": true
+        },
+        {
+          "outletId": "broadwayworld",
+          "outlet": "BroadwayWorld",
+          "criticName": "Cindy Marcolina",
+          "url": "https://www.broadwayworld.com/westend/article/Review-OPERATION-MINCEMEAT-Fortune-Theatre-20230510",
+          "publishDate": "May 10th, 2023",
+          "textWordCount": 894,
+          "contentTier": "invalid",
+          "sources": [
+            "show-score",
+            "show-score-playwright",
+            "theatre-record"
+          ],
+          "theatreRecordUrl": "https://www.theatrerecord.com/archive/2023/5/3207-operation-mincemeat",
+          "expectedValid": true
+        },
+        {
+          "outletId": "everything-theatre",
+          "outlet": "Everything Theatre (UK)",
+          "criticName": "Lily Middleton",
+          "url": "https://everything-theatre.co.uk/2023/05/review-operation-mincemeat-fortune-theatre/",
+          "publishDate": "2023-05-10",
+          "textWordCount": 667,
+          "contentTier": "complete",
+          "sources": [
+            "show-score",
+            "show-score-playwright",
+            "theatre-record"
+          ],
+          "theatreRecordUrl": "https://www.theatrerecord.com/archive/2023/5/3207-operation-mincemeat",
+          "expectedValid": true
+        },
+        {
+          "outletId": "express-uk",
+          "outlet": "Express  (UK)",
+          "criticName": "Neil Norman",
+          "url": "https://www.express.co.uk/entertainment/theatre/1769203/Operation-Mincemeat-musical-review-London-2023-Fortune-theatre-dates-tickets",
+          "publishDate": "2023-05-11",
+          "textWordCount": 498,
+          "contentTier": "truncated",
+          "sources": [
+            "theatre-record"
+          ],
+          "theatreRecordUrl": "https://www.theatrerecord.com/archive/2023/5/3207-operation-mincemeat",
+          "expectedValid": true
+        },
+        {
+          "outletId": "financialtimes",
+          "outlet": "Financial Times",
+          "criticName": "Sarah Hemming",
+          "url": "https://www.ft.com/content/836286f5-cdbb-4bdc-b161-ec6275ff29bd?syn-25a6b1a6=1",
+          "publishDate": "2023-05-17",
+          "textWordCount": 488,
+          "contentTier": "complete",
+          "sources": [
+            "theatre-record"
+          ],
+          "theatreRecordUrl": "https://www.theatrerecord.com/archive/2023/5/3207-operation-mincemeat",
+          "expectedValid": true
+        },
+        {
+          "outletId": "i-paper",
+          "outlet": "i news",
+          "criticName": "Fiona Mountford",
+          "url": "https://inews.co.uk/culture/arts/operation-mincemeat-fortune-theatre-review-comedy-musical-2330050?srsltid=AfmBOooVhwlf_JYT7roKvJBDGEHTOQA4I5R8owkTbom2W2ON7UsdQOQ4",
+          "publishDate": "2023-05-10",
+          "textWordCount": 471,
+          "contentTier": "complete",
+          "sources": [
+            "theatre-record",
+            "westendtheatre"
+          ],
+          "theatreRecordUrl": "https://www.theatrerecord.com/archive/2023/5/3207-operation-mincemeat",
+          "expectedValid": true
+        },
+        {
+          "outletId": "london-theatre",
+          "outlet": "London Theatre",
+          "criticName": "Marianka Swain",
+          "url": "https://www.londontheatre.co.uk/reviews/operation-mincemeat-review-fortune-theatre",
+          "publishDate": "2023-05-11",
+          "textWordCount": 857,
+          "contentTier": "complete",
+          "sources": [
+            "show-score",
+            "show-score-playwright",
+            "theatre-record"
+          ],
+          "theatreRecordUrl": "https://www.theatrerecord.com/archive/2023/5/3207-operation-mincemeat",
+          "expectedValid": true
+        },
+        {
+          "outletId": "standard",
+          "outlet": "The London Evening Standard",
+          "criticName": "Nick Curtis",
+          "url": "https://www.standard.co.uk/culture/theatre/operation-mincemeat-fortune-theatre-review-world-war-2-musical-b1079967.html",
+          "publishDate": "2023-05-10",
+          "textWordCount": 549,
+          "contentTier": "complete",
+          "sources": [
+            "show-score",
+            "show-score-playwright",
+            "theatre-record",
+            "westendtheatre"
+          ],
+          "theatreRecordUrl": "https://www.theatrerecord.com/archive/2023/5/3207-operation-mincemeat",
+          "expectedValid": true
+        },
+        {
+          "outletId": "telegraph",
+          "outlet": "The Telegraph",
+          "criticName": "Dominic Cavendish",
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/operation-mincemeat-fortune-theatre-review/",
+          "publishDate": "May 10th, 2023",
+          "textWordCount": 478,
+          "contentTier": "complete",
+          "sources": [
+            "show-score",
+            "show-score-playwright",
+            "theatre-record",
+            "westendtheatre"
+          ],
+          "theatreRecordUrl": "https://www.theatrerecord.com/archive/2023/5/3207-operation-mincemeat",
+          "expectedValid": true
+        },
+        {
+          "outletId": "thestage",
+          "outlet": "The Stage (UK)",
+          "criticName": "Tim Bano",
+          "url": "https://www.thestage.co.uk/reviews/operation-mincemeat-review-fortune-theatre-london-spitlip-david-cumming-felix-hagan-natasha-hodgson-zoe-roberts",
+          "publishDate": "2023-05-10",
+          "textWordCount": 522,
+          "contentTier": "complete",
+          "sources": [
+            "show-score",
+            "show-score-playwright",
+            "theatre-record",
+            "westendtheatre"
+          ],
+          "theatreRecordUrl": "https://www.theatrerecord.com/archive/2023/5/3207-operation-mincemeat",
+          "expectedValid": true
+        },
+        {
+          "outletId": "timeout-london",
+          "outlet": "Time Out London",
+          "criticName": "Andrzej Lukowski",
+          "url": "https://www.timeout.com/london/theatre/operation-mincemeat-review",
+          "publishDate": "2023-05-10",
+          "textWordCount": 684,
+          "contentTier": "complete",
+          "sources": [
+            "show-score",
+            "show-score-playwright",
+            "theatre-record",
+            "westendtheatre"
+          ],
+          "theatreRecordUrl": "https://www.theatrerecord.com/archive/2023/5/3207-operation-mincemeat",
+          "expectedValid": true
+        }
+      ]
+    },
+    "hadestown-west-end-2024": {
+      "reviewCount": 11,
+      "reviews": [
+        {
+          "outletId": "artsdesk",
+          "outlet": "The Arts Desk",
+          "criticName": "Mert Dilek",
+          "url": "https://theartsdesk.com/theatre/hadestown-lyric-theatre-review-soul-stirring-musical-gloriously-revamps-classical-myths",
+          "publishDate": null,
+          "textWordCount": 615,
+          "contentTier": "complete",
+          "sources": [
+            "show-score",
+            "show-score-playwright",
+            "theatre-record"
+          ],
+          "theatreRecordUrl": "https://www.theatrerecord.com/archive/2024/2/7272-hadestown",
+          "expectedValid": true
+        },
+        {
+          "outletId": "broadwayworld",
+          "outlet": "BroadwayWorld",
+          "criticName": "Cindy Marcolina",
+          "url": "/article/Review-HADESTOWN-Lyric-Theatre-20240222",
+          "publishDate": null,
+          "textWordCount": 801,
+          "contentTier": "complete",
+          "sources": [
+            "bww-roundup",
+            "theatre-record"
+          ],
+          "theatreRecordUrl": "https://www.theatrerecord.com/archive/2024/2/7272-hadestown",
+          "expectedValid": true
+        },
+        {
+          "outletId": "everything-theatre",
+          "outlet": "Everything Theatre",
+          "criticName": "Dean Wood",
+          "url": "https://everything-theatre.co.uk/2024/02/review-hadestown-lyric-theatre/",
+          "publishDate": "2024-02-24",
+          "textWordCount": 660,
+          "contentTier": "complete",
+          "sources": [
+            "stagedoor",
+            "theatre-record"
+          ],
+          "theatreRecordUrl": "https://www.theatrerecord.com/archive/2024/2/7272-hadestown",
+          "expectedValid": true
+        },
+        {
+          "outletId": "express-uk",
+          "outlet": "Express  (UK)",
+          "criticName": "Stefan Kyriazis",
+          "url": "https://www.express.co.uk/entertainment/theatre/1869798/Hadestown-review-musical-London-lyric-theatre-Orpheus",
+          "publishDate": null,
+          "textWordCount": 685,
+          "contentTier": "complete",
+          "sources": [
+            "theatre-record"
+          ],
+          "theatreRecordUrl": "https://www.theatrerecord.com/archive/2024/2/7272-hadestown",
+          "expectedValid": true
+        },
+        {
+          "outletId": "financialtimes",
+          "outlet": "Financial Times",
+          "criticName": "Sarah Hemming",
+          "url": "https://www.ft.com/content/44054524-0af1-49ee-9983-4e963f73a5a9?syn-25a6b1a6=1",
+          "publishDate": "2024-02-26",
+          "textWordCount": 515,
+          "contentTier": "complete",
+          "sources": [
+            "theatre-record"
+          ],
+          "theatreRecordUrl": "https://www.theatrerecord.com/archive/2024/2/7272-hadestown",
+          "expectedValid": true
+        },
+        {
+          "outletId": "i-paper",
+          "outlet": "i news",
+          "criticName": "Fiona Mountford",
+          "url": "https://inews.co.uk/culture/arts/hadestown-review-lyric-theatre-2920484?srsltid=AfmBOoqty6mX7tY4_B7Nu93D7LPH_W9dHiyP9n0hGQpsMutb5pgqjqpw",
+          "publishDate": null,
+          "textWordCount": 437,
+          "contentTier": "complete",
+          "sources": [
+            "theatre-record"
+          ],
+          "theatreRecordUrl": "https://www.theatrerecord.com/archive/2024/2/7272-hadestown",
+          "expectedValid": true
+        },
+        {
+          "outletId": "london-theatre",
+          "outlet": "London Theatre",
+          "criticName": "Marianka Swain",
+          "url": "https://www.londontheatre.co.uk/reviews/hadestown-review-lyric-theatre",
+          "publishDate": null,
+          "textWordCount": 670,
+          "contentTier": "complete",
+          "sources": [
+            "showscore-roundup",
+            "bww-roundup",
+            "show-score-playwright",
+            "theatre-record"
+          ],
+          "theatreRecordUrl": "https://www.theatrerecord.com/archive/2024/2/7272-hadestown",
+          "expectedValid": true
+        },
+        {
+          "outletId": "telegraph",
+          "outlet": "The Telegraph",
+          "criticName": "Dominic Cavendish",
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/hadestown-review-nationals-olivier-theatre-enjoyable-winter/",
+          "publishDate": "2024-02-22",
+          "textWordCount": 554,
+          "contentTier": "complete",
+          "sources": [
+            "showscore-roundup",
+            "thestage-roundup",
+            "theatre-reviews",
+            "show-score-playwright",
+            "theatre-record"
+          ],
+          "theatreRecordUrl": "https://www.theatrerecord.com/archive/2024/2/7272-hadestown",
+          "expectedValid": true
+        },
+        {
+          "outletId": "theatre-weekly",
+          "outlet": "Theatre Weekly (UK)",
+          "criticName": "Greg Stewart",
+          "url": "https://theatreweekly.com/review-hadestown-at-the-lyric-theatre/",
+          "publishDate": "2024-02-21",
+          "textWordCount": 463,
+          "contentTier": "complete",
+          "sources": [
+            "show-score",
+            "show-score-playwright",
+            "theatre-record"
+          ],
+          "theatreRecordUrl": "https://www.theatrerecord.com/archive/2024/2/7272-hadestown",
+          "expectedValid": true
+        },
+        {
+          "outletId": "thestage",
+          "outlet": "The Stage",
+          "criticName": "Sam Marlowe",
+          "url": "https://www.thestage.co.uk/reviews/hadestown-review-at-lyric-theatre-london-from-anais-mitchell-and-rachel-chavkin",
+          "publishDate": "2024-02-22",
+          "textWordCount": 571,
+          "contentTier": "complete",
+          "sources": [
+            "showscore-roundup",
+            "bww-roundup",
+            "show-score-playwright",
+            "theatre-record"
+          ],
+          "theatreRecordUrl": "https://www.theatrerecord.com/archive/2024/2/7272-hadestown",
+          "expectedValid": true
+        },
+        {
+          "outletId": "whatsonstage",
+          "outlet": "WhatsOnStage",
+          "criticName": "Sarah Crompton",
+          "url": "https://www.whatsonstage.com/london-theatre/reviews/hadestown-national-anais-mitchel-eva-noblezada_48001.html",
+          "publishDate": "2024-02-21",
+          "textWordCount": 695,
+          "contentTier": "complete",
+          "sources": [
+            "showscore-roundup",
+            "thestage-roundup",
+            "bww-roundup",
+            "show-score-playwright",
+            "theatre-record"
+          ],
+          "theatreRecordUrl": "https://www.theatrerecord.com/archive/2024/2/7272-hadestown",
+          "expectedValid": true
+        }
+      ]
+    }
+  }
+}

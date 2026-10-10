@@ -1,0 +1,88 @@
+name: Automation Freeze
+
+# BRO-934: opening-night / manual-intervention freeze. Disables non-critical cron and
+# workflow_run workflows (never CRITICAL_CRONS or the opening-night pipeline: see
+# scripts/lib/automation-freeze.js) so cascading automation stops fighting a manual
+# fix. Records exactly what it disabled in the `freeze-ledger` artifact; unfreeze (or
+# the 2-hourly auto-expiry check) re-enables only those. Runbook:
+# memory/opening-night-freeze-runbook.md. Default hours: 8 (max 24).
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'freeze | unfreeze'
+        type: choice
+        options: [freeze, unfreeze]
+        default: freeze
+      hours:
+        description: 'Freeze length in hours (auto re-enable after this)'
+        default: '8'
+      dry_run:
+        description: 'Print the plan, change nothing'
+        type: boolean
+        default: false
+  schedule:
+    - cron: '17 */2 * * *'  # auto-expiry check: re-enables once the ledger has expired
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency:
+  group: automation-freeze
+  cancel-in-progress: false
+
+jobs:
+  freeze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+
+      - name: Fetch current ledger
+        # Newest run of ANY conclusion that carries one (a failed freeze still saved its partial ledger).
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p /tmp/ledger-prev
+          for id in $(gh run list --workflow=automation-freeze.yml --limit=15 --json databaseId --jq '.[].databaseId'); do
+            if gh run download "$id" -n freeze-ledger -D /tmp/ledger-prev 2>/dev/null; then
+              echo "ledger from run $id"; break
+            fi
+          done
+          ls /tmp/ledger-prev
+
+      - name: Apply
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ACTION: ${{ github.event.inputs.action || 'auto' }}
+          HOURS: ${{ github.event.inputs.hours || '8' }}
+          DRY: ${{ github.event.inputs.dry_run == 'true' && '--dry-run' || '' }}
+        run: |
+          mkdir -p /tmp/ledger-out
+          cp /tmp/ledger-prev/ledger.json /tmp/ledger-out/ledger.json 2>/dev/null || true
+          if [ "$ACTION" = "freeze" ] && [ -s /tmp/ledger-out/ledger.json ] && grep -q '"status": "frozen"' /tmp/ledger-out/ledger.json; then
+            echo "::error::already frozen; unfreeze first (ledger: $(cat /tmp/ledger-out/ledger.json | head -c 300))"; exit 1
+          fi
+          node scripts/automation-freeze.js "$ACTION" --hours="$HOURS" --ledger=/tmp/ledger-out/ledger.json $DRY
+
+      - name: Save ledger
+        if: ${{ always() && github.event.inputs.dry_run != 'true' }}
+        uses: actions/upload-artifact@v5
+        with:
+          name: freeze-ledger
+          path: /tmp/ledger-out/ledger.json
+          if-no-files-found: ignore
+          retention-days: 30
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Automation Freeze Failed (check the freeze-ledger: some workflows may still be disabled)'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

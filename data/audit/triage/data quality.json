@@ -1,0 +1,55 @@
+{
+  "system": "data quality",
+  "status": "warn",
+  "lastChecked": "2026-10-10T13:07:35.984Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Data quality: provider spend ledger",
+      "status": "pass",
+      "message": "Newest entry (day=2026-10-08) 2d past its end-of-day"
+    },
+    {
+      "name": "Data quality: cross-outlet attribution drift",
+      "status": "warn",
+      "message": "Unreviewed cross-outlet attribution suspect(s) found (23h ago)"
+    },
+    {
+      "name": "Data quality: cv-wrongproduction lifetime sweep",
+      "status": "warn",
+      "message": "39 NEW unhandled CV.wrongProduction review(s) since last run (1061 total across 488 show(s), 23h ago)"
+    },
+    {
+      "name": "Data quality: fulltext-mentions-show lifetime sweep",
+      "status": "warn",
+      "message": "116 NEW unmatched review(s) since last run (801 total across 386 show(s), 23h ago)"
+    },
+    {
+      "name": "Data quality: slug-mismatch lifetime sweep",
+      "status": "warn",
+      "message": "68 NEW cross-show URL mismatch(es) since last run (1761 total across 783 show(s), 23h ago)"
+    },
+    {
+      "name": "Data quality: roundup-url-mismatch lifetime sweep",
+      "status": "pass",
+      "message": "No new violations since last run (45 known baseline across 2452 show(s), 23h ago)"
+    },
+    {
+      "name": "Data quality: revival-unverified lifetime sweep",
+      "status": "warn",
+      "message": "2 NEW unverified revival flag(s) since last run (64 total across 64 show(s), 23h ago)"
+    },
+    {
+      "name": "Data quality: missed opening-night broadcasts",
+      "status": "warn",
+      "message": "7 show(s) opened and qualified but never emailed subscribers (0 still alertable, 7 aged out past the paging window, 23h ago)"
+    },
+    {
+      "name": "Data quality: stale announced shows",
+      "status": "warn",
+      "message": "1 show(s) still 'announced' after apparently opening (18 silenced by contamination, 23h ago)"
+    }
+  ]
+}

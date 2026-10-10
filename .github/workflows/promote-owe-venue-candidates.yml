@@ -1,0 +1,175 @@
+# Off-West End venue-page promotion (BRO-4204 S4-T12) — the scheduled half
+# of scripts/promote-owe-venue-candidates.js (S4-T11), the OWE analogue of
+# promote-we-aggregator.yml's West End promotion.
+#
+# Why its own workflow rather than a step in promote-we-aggregator.yml
+# (second-opinion pass recorded via review-gate.mjs, 2026-09-28 — three ways
+# a step there could have broken the existing job):
+#   1. Concurrency / commit paths: data/audit/owe-venue-candidates.json is
+#      written by discover-new-shows.js inside update-show-status.yml
+#      (concurrency group shows-json-writer), PRUNED by this promoter, and
+#      merged into by hand --stage-only landings through land.yml. It was
+#      once registered single-writer/apiFallbackSafe on the theory that the
+#      first two writers are mutually exclusive in that group; the third
+#      writer made that false (BRO-4268, 2026-09-29: a stale Update Shows
+#      push overwrote 53 landed rows), so scripts/lib/core-data-merge-
+#      registry.js now registers it as an active union merge with
+#      apiFallbackMerge, and this workflow's commit step opts into
+#      push-with-retry.sh's reconcile pass (PUSH_RECONCILE_MERGED_JSON).
+#      The promoter's own log and state file stay apiFallbackSafe (sole
+#      writer). This workflow still joins `shows-json-writer` so it never
+#      races discovery on shows.json itself; a step inside
+#      promote-we-aggregator.yml (group promote-we-aggregator) would have
+#      queued the West End promotion behind every shows-json writer.
+#   2. Secrets: the same fetch tiers as the WE job (Bright Data /
+#      ScrapingBee / Scrapingdog) — the promoter's only network is one
+#      fetchPage() per staged venue (~12/day). No email path, so no
+#      RESEND/OWNER_EMAIL, and no image dispatch (promoted rows are
+#      `announced` with no reviews; the Mon/Thu fetch-show-images sweep
+#      picks them up), so no `actions: write`.
+#   3. Timeout: the WE job's 30-min budget is already spent 25 min deep by
+#      its own --time-budget-min; adding ~12 fetches + a second validate-data
+#      there risked cancelling the WE promotion's push-core-data step.
+#
+# Runs daily AFTER venue-page discovery (update-show-status.yml, 08:00 UTC,
+# 130-min timeout) and after the West End promotion (14:30 UTC, 30 min), in
+# a slot no other shows-json-writer member uses (audit-closing-dates 14:00,
+# audit-we-closing-dates 14:15 — both done by 14:35).
+#
+# Failure semantics mirror S4-T10: the promoter's exit code is captured so
+# validate-data STILL runs (a non-zero promoter exit may have modified
+# shows.json; validate-data arms push-core-data's sentinel refusal), then
+# validate-data's exit code fails the step and the job; the job summary
+# names promoted / dropped / refused ids. `cmd || RC=$?` is the load-bearing
+# form under GHA's default `bash -eo pipefail` (.github/workflows/CLAUDE.md
+# § Actionlint).
+name: Promote Off-West End Venue Candidates
+
+on:
+  schedule:
+    - cron: '20 15 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (no writes)'
+        required: false
+        type: boolean
+        default: false
+      max_promote:
+        description: 'Cap rows written this run (blank = script default, 25); the rest stay staged'
+        required: false
+        type: string
+        default: ''
+
+permissions:
+  contents: write
+
+# Shared with update-show-status.yml (the staging file's other producer) —
+# see the header. cancel-in-progress stays false so a queued run waits for
+# discovery to finish rather than killing it mid-push.
+concurrency:
+  group: shows-json-writer
+  cancel-in-progress: false
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node
+        uses: ./.github/actions/setup-node
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Promote Off-West End venue-page candidates (staging → shows.json)
+        id: promote
+        if: always()
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: |
+          if [ ! -f data/shows.json ]; then
+            echo "::warning::core data missing — skipping Off-West End promotion this run"
+            exit 0
+          fi
+          DRY_FLAG=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then DRY_FLAG="--dry-run"; fi
+          MAX_FLAG=""
+          if [ -n "${{ inputs.max_promote }}" ]; then MAX_FLAG="--max-promote=${{ inputs.max_promote }}"; fi
+          PROMOTE_RC=0
+          node scripts/promote-owe-venue-candidates.js --time-budget-min=10 $DRY_FLAG $MAX_FLAG || PROMOTE_RC=$?
+          if [ "$PROMOTE_RC" -ne 0 ]; then
+            echo "::error::Off-West End promotion script exited $PROMOTE_RC"
+          fi
+          # The log is tee'd for the job-summary step below; `pipefail` makes
+          # `|| VALIDATE_RC=$?` see node's exit, not tee's.
+          VALIDATE_RC=0
+          node scripts/validate-data.js 2>&1 | tee "$RUNNER_TEMP/owe-validate-data.log" || VALIDATE_RC=$?
+          if [ "$VALIDATE_RC" -ne 0 ]; then
+            echo "::error::validate-data FAILED after Off-West End promotion (exit $VALIDATE_RC) — push-core-data will refuse the push (sentinel); the refused ids are in the job summary"
+            exit "$VALIDATE_RC"
+          fi
+          exit "$PROMOTE_RC"
+
+      # Same builder as the WE job (scripts/we-promotion-job-summary.js),
+      # pointed at this promoter's own state file: what this run promoted,
+      # what it dropped from staging, and the ids validate-data refused.
+      - name: Job summary — promoted / dropped / validate-data refusals
+        if: always()
+        run: |
+          {
+            echo "## Off-West End venue-page promotion"
+            echo ""
+            node scripts/we-promotion-job-summary.js "$RUNNER_TEMP/owe-validate-data.log" --state=data/audit/owe-last-promotion-ids.json --rejected-note="dropped from staging: duplicate, retired, non-theatre, or no longer on the venue page — discovery re-stages anything a venue page still lists"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Push core data (Off-West End venue-page promotion)
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: auto-promote Off-West End shows from venue-page staging"
+
+      # The pruned staging file + this promoter's audit log and state file
+      # live in the PUBLIC repo — push-core-data above never touches them.
+      # All three are registered in scripts/lib/core-data-merge-registry.js:
+      # the log and state file as apiFallbackSafe (sole writer, group
+      # shows-json-writer), the staging file as an active union merge with
+      # apiFallbackMerge (BRO-4268 — discovery, this prune and hand
+      # --stage-only landings all write it; a stale copy overwrote 53 landed
+      # rows on 2026-09-29). PUSH_RECONCILE_MERGED_JSON=1 makes push-with-
+      # retry.sh re-merge the staging file against the remote tip after a
+      # rebase (same as update-show-status.yml's "Commit and push changes"
+      # and scrape-new-aggregators.yml's OB prune step; audit-reconcile-
+      # coverage.js requires it). Same precedent as promote-we-
+      # aggregator.yml's "Commit WE promotion audit log" step.
+      - name: Commit OWE promotion audit log + pruned staging
+        if: always()
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          bash scripts/lib/git-add-existing.sh data/audit/owe-venue-candidates.json data/audit/owe-promotion-log.jsonl data/audit/owe-last-promotion-ids.json
+          if ! git diff --staged --quiet; then
+            git commit -m "data: OWE venue-page promotion audit log [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          else
+            echo "No staging/audit log changes to commit"
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Off-West End Venue-Page Promotion Failed'
+          severity: 'warning'

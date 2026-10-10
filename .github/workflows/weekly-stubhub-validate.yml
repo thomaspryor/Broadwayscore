@@ -1,0 +1,108 @@
+name: Weekly StubHub URL Validator
+
+on:
+  schedule:
+    # Every Monday at 9:30 AM ET (1:30 PM UTC) — 30 min after the affiliate report
+    - cron: '30 13 * * 1'
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: 'Apply fixes (replace broken URLs with search fallbacks)'
+        type: boolean
+        default: false
+
+# BRO-934: per-workflow group: stops overlapping runs of the same job racing on the private-repo push. Not a shared class group (GH pending-queue depth is 1; see rebuild-fast.yml).
+concurrency:
+  group: weekly-stubhub-validate
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Run StubHub URL validator
+        id: validator
+        run: |
+          APPLY_FLAG=""
+          if [ "${{ inputs.apply }}" = "true" ]; then
+            APPLY_FLAG="--apply"
+          fi
+          NODE_EXIT=0
+          node scripts/validate-stubhub-urls.js $APPLY_FLAG > /tmp/stubhub-report.txt 2>&1 || NODE_EXIT=$?
+          cat /tmp/stubhub-report.txt
+          # Extract summary counts for email subject line
+          BROKEN=$(grep -oE 'broken: *[0-9]+' /tmp/stubhub-report.txt | tail -1 | grep -oE '[0-9]+' || echo "?")
+          OK=$(grep -oE '\bok: *[0-9]+' /tmp/stubhub-report.txt | tail -1 | grep -oE '[0-9]+' || echo "?")
+          echo "broken=$BROKEN" >> $GITHUB_OUTPUT
+          echo "ok=$OK" >> $GITHUB_OUTPUT
+          # Full report always lands in the run's step summary (FYI channel).
+          {
+            echo "### StubHub URL Validator"
+            echo '```'
+            cat /tmp/stubhub-report.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          # A crashed validator must FAIL the run (surfaces via digest/notify) —
+          # with the all-OK email gone, a silent crash would otherwise report
+          # nowhere at all.
+          if [ "$NODE_EXIT" -ne 0 ] || [ "$BROKEN" = "?" ]; then
+            echo "::error::Validator crashed or produced no summary (exit=$NODE_EXIT, broken=$BROKEN)"
+            exit 1
+          fi
+
+      - name: Commit & push fixes (if --apply and broken found)
+        if: inputs.apply == true && steps.validator.outputs.broken != '0' && steps.validator.outputs.broken != '?'
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data(stubhub): Auto-fix ${{ steps.validator.outputs.broken }} stale URL(s) via weekly validator'
+
+      - name: Dispatch deploy (if fixes applied)
+        if: inputs.apply == true && steps.validator.outputs.broken != '0' && steps.validator.outputs.broken != '?'
+        uses: ./.github/actions/dispatch-deploy
+
+      # Actionable-only email policy (2026-07-11): all-OK and inconclusive
+      # (bot-blocked) runs are FYI — step summary only, no inbox. Email only when
+      # confirmed-broken URLs (404/410 or wrong-show redirects) need action.
+      - name: Send email via Resend
+        if: steps.validator.outputs.broken != '0' && steps.validator.outputs.broken != '?'
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: |
+          BROKEN="${{ steps.validator.outputs.broken }}"
+          OK="${{ steps.validator.outputs.ok }}"
+          APPLIED_TAG=""
+          if [ "${{ inputs.apply }}" = "true" ]; then
+            APPLIED_TAG=" (auto-fixed)"
+          fi
+          SUBJECT="StubHub URL Validator — $BROKEN broken / $OK OK${APPLIED_TAG} · $(date -u +'%b %d, %Y')"
+          jq -n \
+            --arg from "Broadway Scorecard <notifications@broadwayscorecard.com>" \
+            --arg to "thomas.pryor@gmail.com" \
+            --arg subject "$SUBJECT" \
+            --arg text "$(cat /tmp/stubhub-report.txt)" \
+            '{from: $from, to: $to, subject: $subject, text: $text}' \
+          | curl -s -X POST "https://api.resend.com/emails" \
+            -H "Authorization: Bearer $RESEND_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d @- | jq '{id: .id, error: .error}'
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Weekly StubHub URL Validator Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

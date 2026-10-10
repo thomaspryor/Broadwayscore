@@ -1,0 +1,758 @@
+/*
+ * Inter — self-hosted, NOT next/font/google.
+ *
+ * Why self-hosted: next/font/google derives its generated class name from
+ * sha1(the CSS Google returns at build time) — see next-font-loader/index.js.
+ * Google's response for Inter drifts (font revision, unicode-range edits), so
+ * two loader runs can produce two different hashes. With `.next/cache`
+ * persisted across deploys (vercel-deploy.yml), the JS side and the emitted
+ * CSS asset can come from *different* runs: the HTML then ships
+ * `class="__variable_<A>"` while the stylesheet only defines
+ * `.__variable_<B>{--font-inter:...}`. `--font-inter` resolves to nothing,
+ * which makes the whole `font-family: var(--font-inter), ...` declaration
+ * invalid at computed-value time — so it falls back to the *initial* value
+ * (Times New Roman), not to the sans-serif stack. That shipped to production
+ * on 2026-08-16 and rendered the entire site in serif.
+ *
+ * Self-hosting removes the build-time network dependency: these @font-face
+ * names are literal and stable, so no hash can ever drift out of sync. Files
+ * are content-hashed in public/fonts/ and served immutable (vercel.json).
+ * Regenerate with: node scripts/update-inter-font.js
+ *
+ * Files + unicode-ranges are Google's own Inter v20 variable subsets.
+ */
+@font-face {
+  font-family: 'InterVariable';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/Inter-latin-var.3100e775.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'InterVariable';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/Inter-latin-ext-var.34b9c504.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7,
+    U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF,
+    U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/*
+ * Metric-matched Arial, so the swap from fallback to Inter doesn't shift
+ * layout. Overrides are the ones next/font computed for this exact file
+ * (getFallbackMetricsFromFontFile, sans-serif) — kept so the fix is
+ * CLS-neutral vs. what production served before it broke.
+ *
+ * These four numbers describe ONE specific font file. Swapping the woff2
+ * without recomputing them silently un-matches the metrics and reintroduces
+ * the layout shift this block exists to prevent — a failure nothing would
+ * report, because the page still renders. The marker below names the file they
+ * were computed from, and check-font-integrity.js fails the build if it stops
+ * matching the latin @font-face src. Recompute via the metrics block printed
+ * by scripts/update-inter-font.js.
+ *
+ * metrics-for: /fonts/Inter-latin-var.3100e775.woff2
+ */
+@font-face {
+  font-family: 'InterVariable Fallback';
+  src: local('Arial');
+  ascent-override: 89.79%;
+  descent-override: 22.36%;
+  line-gap-override: 0%;
+  size-adjust: 107.89%;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-surface text-gray-100;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Custom selection color */
+  ::selection {
+    @apply bg-brand/30 text-white;
+  }
+}
+
+@layer components {
+  /* Full-width section band (My Shows, Shared Plans; the iOS app's section
+     headers, BRO-4558). The fill and the top/bottom hairlines are a
+     border-image painted out over the page gutter; outset is paint-only, so
+     the band reaches the edges without widening its parent (negative margins
+     did, and tripped the overflow probe). Content stays on the column. */
+  .band-bleed {
+    --band-bg: theme('colors.surface.raised');
+    --band-line: rgb(255 255 255 / 0.05);
+    border-image: linear-gradient(to bottom, var(--band-line) 0 1px, var(--band-bg) 1px calc(100% - 1px), var(--band-line) calc(100% - 1px)) 0 fill / 0 / 0 1rem;
+  }
+  @media (min-width: 640px) {
+    .band-bleed { border-image-outset: 0 1.5rem; }
+  }
+  .band-bleed-amber {
+    --band-bg: rgb(245 158 11 / 0.06);
+    --band-line: rgb(245 158 11 / 0.15);
+  }
+
+  /* Card component - more depth and polish */
+  .card {
+    @apply bg-surface-raised rounded-card shadow-card border border-white/5;
+    contain: layout style; /* CSS containment for better rendering performance */
+  }
+
+  .card-interactive {
+    @apply card;
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, background-color 0.2s ease-out, border-color 0.2s ease-out;
+  }
+
+  .card-interactive:hover {
+    @apply shadow-card-hover bg-surface-overlay border-white/10;
+    will-change: transform;
+    transform: translateY(-2px);
+  }
+
+  /* Premium card variant with subtle gradient */
+  .card-premium {
+    @apply card relative overflow-hidden;
+  }
+
+  .card-premium::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-br from-brand/5 to-transparent pointer-events-none;
+  }
+
+/* Score badges - more modern, rounded design */
+  .score-badge {
+    @apply inline-flex items-center justify-center rounded-badge font-bold shadow-sm;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .score-badge:hover {
+    @apply scale-105;
+  }
+
+  .score-badge-sm {
+    @apply w-10 h-10 text-score-sm rounded-lg;
+  }
+
+  .score-badge-md {
+    @apply w-12 h-12 text-score-md rounded-xl;
+  }
+
+  .score-badge-lg {
+    @apply w-16 h-16 text-score-lg rounded-xl;
+  }
+
+  .score-badge-xl {
+    @apply w-20 h-20 text-score-xl rounded-2xl;
+  }
+
+  /* Must See (83-100) - Metallic gold with gradient, glow, and gold ring */
+  .score-must-see {
+    background: linear-gradient(135deg, #DAA520 0%, #FFD700 30%, #FFF0A0 50%, #FFD700 70%, #DAA520 100%);
+    color: #1a1a1a;
+    box-shadow:
+      0 0 24px rgba(218, 165, 32, 0.55),
+      0 0 12px rgba(255, 215, 0, 0.4),
+      0 4px 12px rgba(0, 0, 0, 0.3),
+      inset 0 2px 0 rgba(255, 255, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+    border: 2px solid #C8960E;
+  }
+
+  .score-must-see::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 2.5s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+  }
+
+  /* Subtle whole-badge breathing — used by AwardScoreBadge when a show is
+     in-progress (Tony season open, score will keep climbing). Replaces the
+     small asterisk overlay; the breathing IS the "score is alive" signal. */
+  @keyframes award-breathe {
+    0%, 100% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.04); filter: brightness(1.08); }
+  }
+
+  /* Gold List badges — gold metallic with shimmer, square shape */
+  .gold-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    flex-grow: 0;
+    aspect-ratio: 1;
+    border-radius: 2px;
+    background: linear-gradient(135deg, #DAA520 0%, #FFD700 30%, #FFF0A0 50%, #FFD700 70%, #DAA520 100%);
+    box-shadow:
+      0 0 10px rgba(218, 165, 32, 0.35),
+      0 1px 4px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    position: relative;
+    overflow: hidden;
+    border: 1.5px solid #C8960E;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: geometricPrecision;
+  }
+  .gold-badge::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+    animation: shimmer 2.5s infinite;
+  }
+
+  .gold-badge-xs { width: 16px; height: 16px; border-width: 1px; }
+  .gold-badge-sm { width: 20px; height: 20px; border-width: 1px; }
+  .gold-badge-md {
+    width: 36px; height: 36px; border-radius: 2px;
+    box-shadow:
+      0 0 16px rgba(218, 165, 32, 0.45),
+      0 2px 8px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  }
+  .gold-badge-lg {
+    width: 48px; height: 48px; border-radius: 2px; border-width: 2px;
+    box-shadow:
+      0 0 24px rgba(218, 165, 32, 0.55),
+      0 0 12px rgba(255, 215, 0, 0.4),
+      0 4px 12px rgba(0, 0, 0, 0.3),
+      inset 0 2px 0 rgba(255, 255, 255, 0.3);
+  }
+
+  /* Audience A+ - Premium green with gradient, glow, and shimmer */
+  .audience-top-grade {
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 50%, #22c55e 100%);
+    color: white;
+    box-shadow:
+      0 0 24px rgba(34, 197, 94, 0.5),
+      0 0 12px rgba(34, 197, 94, 0.4),
+      0 4px 12px rgba(0, 0, 0, 0.3),
+      inset 0 2px 0 rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .audience-top-grade::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: shimmer 2.5s infinite;
+  }
+
+  /* Great (75-84) - Green */
+  .score-great {
+    background-color: #22c55e;
+    color: white;
+    box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+  }
+
+  /* Good (65-74) - Teal */
+  .score-good {
+    background-color: #14b8a6;
+    color: white;
+    box-shadow: 0 2px 8px rgba(20, 184, 166, 0.3);
+  }
+
+  /* Tepid (55-64) - Amber/Orange */
+  .score-tepid {
+    background-color: #d97706;
+    color: #1a1a1a;
+    box-shadow: 0 2px 8px rgba(217, 119, 6, 0.3);
+  }
+
+  /* Skip (0-54) - Red */
+  .score-skip {
+    background-color: #ef4444;
+    color: white;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+  }
+
+  /* Legacy classes for compatibility */
+  .score-high {
+    background-color: #22c55e;
+    color: white;
+    box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+  }
+
+  .score-medium {
+    background-color: #d97706;
+    color: #1a1a1a;
+    box-shadow: 0 2px 8px rgba(217, 119, 6, 0.3);
+  }
+
+  .score-low {
+    background-color: #ef4444;
+    color: white;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+  }
+
+  .score-none {
+    @apply bg-surface-overlay text-gray-500 border border-white/10;
+  }
+
+  /* Status chips - pill style like TodayTix */
+  .chip {
+    @apply inline-flex items-center px-3 py-1.5 rounded-pill text-xs font-semibold tracking-wide uppercase;
+  }
+
+  .chip-open {
+    @apply bg-status-open-bg text-status-open border border-status-open/20;
+  }
+
+  .chip-closed {
+    @apply bg-status-closed-bg text-status-closed border border-status-closed/20;
+  }
+
+  .chip-previews {
+    @apply bg-status-previews-bg text-status-previews border border-status-previews/20;
+  }
+
+  /* Confidence badges */
+  .confidence-badge {
+    @apply chip text-[10px];
+  }
+
+  .confidence-high {
+    @apply bg-score-high-bg text-score-high border border-score-high/20;
+  }
+
+  .confidence-medium {
+    @apply bg-score-medium-bg text-score-medium border border-score-medium/20;
+  }
+
+  .confidence-low {
+    @apply bg-score-low-bg text-score-low border border-score-low/20;
+  }
+
+  /* Button styles - more TodayTix-like */
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2.5 rounded-badge font-semibold transition-all duration-200;
+  }
+
+  .btn-primary {
+    @apply btn bg-gradient-brand text-white hover:shadow-glow-sm hover:scale-[1.02] active:scale-[0.98];
+  }
+
+  .btn-ghost {
+    @apply btn bg-transparent text-gray-400 hover:text-white hover:bg-white/5;
+  }
+
+  /* Secondary action — neutral fill (2026-07-12 button hierarchy):
+     btn-primary (champagne gradient) = THE primary action of a screen
+     (Get Tickets, Add show, Create a list, Save). btn-secondary = other
+     tappable actions (Want to See, Rate it). Bright #FFD700 is reserved
+     for stars/scores and must never be a button fill (CI-guarded). */
+  .btn-secondary {
+    @apply btn bg-white/10 border border-white/15 text-white hover:bg-white/15 hover:border-white/25;
+  }
+
+  .btn-active {
+    @apply btn bg-brand text-white;
+  }
+
+  /* Toolbar controls (Share, sort select, grid/list toggle) share one look
+     so a row of them lines up: same height, radius, fill and outline
+     (owner, 2026-10-03: they were three heights and three styles). 44px on
+     phones, 36px from sm. The outline is an inset ring, so it never
+     shrinks the 44px tap area the mobile rule enforces. 16px text on phones
+     stops iOS Safari zooming the page when the select is focused. */
+  .toolbar-control {
+    @apply inline-flex items-center justify-center gap-1.5 h-11 sm:h-9 px-3 rounded-badge
+      bg-white/[0.06] ring-1 ring-inset ring-white/10 text-base sm:text-sm font-medium text-gray-200
+      hover:bg-white/10 hover:text-white transition-colors outline-none
+      focus-visible:ring-2 focus-visible:ring-brand;
+  }
+
+  select.toolbar-control {
+    @apply appearance-none pr-8 bg-no-repeat cursor-pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%239ca3af'%3E%3Cpath fill-rule='evenodd' d='M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z' clip-rule='evenodd'/%3E%3C/svg%3E");
+    background-position: right 0.5rem center;
+    background-size: 1rem;
+  }
+
+  /* Filter pills - horizontal scroll on mobile */
+  .filter-pills {
+    @apply flex gap-2 overflow-x-auto pb-2 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .filter-pills::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-pill {
+    @apply px-5 py-2.5 rounded-pill transition-all whitespace-nowrap text-sm font-semibold border;
+  }
+
+  .filter-pill-active {
+    @apply filter-pill bg-brand text-white border-brand shadow-glow-sm;
+  }
+
+  .filter-pill-inactive {
+    @apply filter-pill bg-surface-raised text-gray-400 border-white/10 hover:text-white hover:border-white/20 hover:bg-surface-overlay;
+  }
+
+  /* Search input - enhanced */
+  .search-input {
+    @apply w-full px-5 py-3.5 bg-surface-raised border border-white/10 rounded-card text-white placeholder-gray-500;
+    @apply focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 transition-all;
+  }
+
+  /* Table styles - cleaner, more modern */
+  .data-table {
+    @apply w-full;
+  }
+
+  .data-table thead {
+    @apply bg-surface/80 backdrop-blur-sm sticky top-0;
+  }
+
+  .data-table th {
+    @apply px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-400;
+  }
+
+  .data-table tbody {
+    @apply divide-y divide-white/5;
+  }
+
+  .data-table tr {
+    @apply transition-colors duration-200;
+  }
+
+  .data-table tbody tr:hover {
+    @apply bg-white/[0.03];
+  }
+
+  .data-table td {
+    @apply px-4 py-5;
+  }
+
+  /* Score breakdown grid */
+  .score-grid {
+    @apply grid grid-cols-3 gap-4;
+  }
+
+  .score-grid-item {
+    @apply text-center;
+  }
+
+  .score-grid-label {
+    @apply text-xs text-gray-500 uppercase tracking-wide mb-1;
+  }
+
+  .score-grid-value {
+    @apply font-bold text-white text-lg;
+  }
+
+  /* Section spacing */
+  .section {
+    @apply py-section;
+  }
+
+  /* Header nav link - subtle, secondary navigation */
+  .nav-link {
+    @apply relative px-2 py-1 text-xs text-gray-500 hover:text-gray-300 transition-colors;
+  }
+
+  .nav-link::after {
+    content: '';
+    @apply absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-brand/60 rounded-full transition-all duration-300;
+  }
+
+  .nav-link:hover::after {
+    @apply w-4;
+  }
+
+  .nav-link-active {
+    @apply text-gray-400;
+  }
+
+  .nav-link-active::after {
+    @apply w-4 bg-brand;
+  }
+
+  /* Show card mobile - enhanced */
+  .show-card {
+    @apply card-interactive p-5 block;
+  }
+
+  .show-card:hover .show-card-title {
+    @apply text-brand;
+  }
+
+  .show-card-title {
+    @apply font-semibold text-white leading-tight transition-colors;
+  }
+
+  /* Tier badges */
+  .tier-badge {
+    @apply px-2 py-0.5 rounded text-xs font-medium;
+  }
+
+  .tier-1 {
+    @apply bg-accent-gold/20 text-accent-gold;
+  }
+
+  .tier-2 {
+    @apply bg-gray-500/20 text-gray-400;
+  }
+
+  .tier-3 {
+    @apply bg-surface-overlay text-gray-500;
+  }
+
+  /* Mobile touch targets */
+  @media (max-width: 640px) {
+    .btn, .filter-pill {
+      @apply min-h-[48px];
+    }
+  }
+
+  /* Gradient text utility */
+  .text-gradient {
+    @apply bg-gradient-brand bg-clip-text text-transparent;
+  }
+
+  /* Subtle divider */
+  .divider {
+    @apply border-t border-white/5;
+  }
+
+  /* Animation utilities */
+  .animate-in {
+    @apply animate-fade-in;
+  }
+
+  .animate-up {
+    @apply animate-slide-up;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Hide scrollbar utility */
+  .scrollbar-hide {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Content visibility for long lists - skip rendering off-screen items */
+  .content-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 100px;
+  }
+
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface;
+  }
+
+  /* Glassmorphism utility - use smaller blur for better performance */
+  .glass {
+    @apply bg-surface-raised/90 backdrop-blur-sm border border-white/10;
+  }
+
+  /* Subtle shine effect */
+  .shine {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shine::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .shine:hover::after {
+    left: 100%;
+  }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* iOS Safe Area support */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.safe-area-top {
+  padding-top: env(safe-area-inset-top, 0);
+}
+
+/* Prevent horizontal overflow on mobile */
+/* Note: Don't use overflow-x: hidden on html/body - it breaks position: fixed on iOS Safari */
+main {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Ensure all images are responsive */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Mobile tap highlight removal for cleaner touch feedback */
+@media (max-width: 640px) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Ensure minimum touch targets on mobile.
+     WARNING: this applies to ALL <a> tags. Any row with multiple stacked block Links
+     (e.g. person name + show title) will be 44px × N links tall.
+     Add a row-level exception class below if you add a new compact table row type. */
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Exception for inline links */
+  p a, span a, li a {
+    min-height: auto;
+    min-width: auto;
+  }
+
+  /* Exception for compact table rows — links are text labels, not standalone tap targets.
+     If you add a new compact row type to nominees/page.tsx, add its class here too. */
+  .performer-row a, .craft-row a {
+    min-height: auto;
+    min-width: auto;
+  }
+
+  /* Exception for compact star rows — five adjacent star buttons must fit a
+     ~112px-wide grid card (44px minimums forced 220px, clipping both ends),
+     and readOnly display stars ballooned to 44px giants in diary rows
+     (owner reports, 2026-07-19). Applied by: WatchlistCard rate strip,
+     StarRating when readOnly. Adjacent interactive stars remain an easy
+     compound target even below 44px each. */
+  .star-compact button {
+    min-height: auto;
+    min-width: auto;
+  }
+
+  /* Exception for switch toggles — a 44x24 pill inflated to 44x44 renders as
+     a CIRCLE with a stranded knob (Ranked-list toggle, owner 2026-07-20).
+     44px width is already met; the 24px height matches platform switches. */
+  button[role="switch"] {
+    min-height: auto;
+    min-width: auto;
+  }
+
+  /* Exception for the outlet tier chip on review rows (BRO-4881) — an 18px
+     "T1" inflated to a 44px square squeezed the outlet name to one letter.
+     The ::before tap area lives in the pointer: coarse block below so touch
+     tablets wider than 640px get it too. */
+  .tier-chip {
+    min-height: auto;
+    min-width: auto;
+  }
+
+  /* Exception for the showtime picker's icon row (matinee/evening/custom/clear)
+     — same "N adjacent icons must fit a ~100px card" problem as .star-compact
+     above. (The Add-to-Calendar icon that also used it is now a labeled
+     44px button, BRO-4481.)
+     44px minimums on 4 adjacent icons overflowed the card (visual QA, 2026-08-17). */
+  .showtime-compact,
+  .showtime-compact button,
+  .showtime-compact a {
+    min-height: auto;
+    min-width: auto;
+  }
+
+  /* iOS zooms the page when focusing any text control under 16px — on the
+     Create List sheet this zoomed past the right edge and, combined with the
+     modal scroll lock, read as a frozen page (owner, 2026-07-20). A 16px
+     floor on text-entry controls kills the zoom trigger site-wide. */
+  input[type="text"], input[type="search"], input[type="email"], input[type="date"], textarea, select {
+    font-size: 16px;
+  }
+}
+
+/* Beat the Critics — standalone mode hides site chrome */
+body.btc-standalone {
+  padding-top: 0 !important;
+}
+body.btc-standalone > header,
+body.btc-standalone > footer,
+body.btc-standalone nav[aria-label="Main"],
+body.btc-standalone > div:last-of-type > footer {
+  display: none !important;
+}
+body.btc-standalone > main,
+body.btc-standalone > div > main {
+  min-height: 100vh !important;
+}
+
+/* Outlet tier chip (BRO-4881): an invisible ~44px-tall tap area around the
+   18px chip on touch screens of any width, without changing the layout. */
+@media (pointer: coarse) {
+  .tier-chip::before {
+    content: "";
+    position: absolute;
+    inset: -13px -6px;
+  }
+}

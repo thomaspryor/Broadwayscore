@@ -1,0 +1,184 @@
+name: Backfill Cast Data
+
+on:
+  # Weekly: refresh current cast for open shows
+  schedule:
+    - cron: '0 6 * * 3'
+  workflow_dispatch:
+    inputs:
+      shard:
+        description: 'Shard index (0-based). Leave empty to process all shows.'
+        required: false
+        type: string
+      total_shards:
+        description: 'Total number of shards (default 10)'
+        required: false
+        default: '10'
+        type: string
+      show_filter:
+        description: 'Optional: specific show ID to process'
+        required: false
+        type: string
+      force:
+        description: 'Re-scrape shows with existing cast files'
+        required: false
+        default: false
+        type: boolean
+      open_only:
+        description: 'Only process open/previews shows (for current cast updates)'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+# Queued, not cancelled — a manual dispatch overlapping the weekly scheduled
+# run (or two manual dispatches) would otherwise race-write the same
+# data/cast/{id}.json files with no lock (ship-check adversarial review,
+# task #712 follow-up). Matches backfill-cast-web.yml's existing pattern.
+concurrency:
+  group: backfill-cast
+  cancel-in-progress: false
+
+jobs:
+  backfill-cast:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 45-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Run cast backfill
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          FLAGS=""
+
+          # Scheduled runs: refresh current cast for open shows
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            FLAGS="--open-only --force"
+            echo "Scheduled run: refreshing current cast for open shows"
+          else
+            # Shard flags
+            if [ -n "${{ inputs.shard }}" ]; then
+              FLAGS="$FLAGS --shard ${{ inputs.shard }} --total-shards ${{ inputs.total_shards }}"
+            fi
+
+            # Show filter
+            if [ -n "${{ inputs.show_filter }}" ]; then
+              FLAGS="$FLAGS --show-filter ${{ inputs.show_filter }}"
+            fi
+
+            # Force flag
+            if [ "${{ inputs.force }}" = "true" ]; then
+              FLAGS="$FLAGS --force"
+            fi
+
+            # Open only flag
+            if [ "${{ inputs.open_only }}" = "true" ]; then
+              FLAGS="$FLAGS --open-only"
+            fi
+          fi
+
+          echo "Running: node scripts/backfill-cast.js $FLAGS"
+          node scripts/backfill-cast.js $FLAGS
+
+      - name: Check for changes
+        if: always()
+        id: git-check
+        run: |
+          CAST_FILES=$(git status --porcelain data/cast/ | wc -l | tr -d ' ')
+          SHOWS_CHANGED=$(git diff --name-only data/shows.json | wc -l | tr -d ' ')
+          echo "Changed cast files: $CAST_FILES"
+          echo "Shows.json changed: $SHOWS_CHANGED"
+          if [ "$CAST_FILES" -gt "0" ] || [ "$SHOWS_CHANGED" -gt "0" ]; then
+            echo "changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push
+        if: always() && steps.git-check.outputs.changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/cast/
+
+          SHARD_MSG=""
+          if [ -n "${{ inputs.shard }}" ]; then
+            SHARD_MSG=" (shard ${{ inputs.shard }}/${{ inputs.total_shards }})"
+          fi
+
+          SHOW_MSG=""
+          if [ -n "${{ inputs.show_filter }}" ]; then
+            SHOW_MSG=" for ${{ inputs.show_filter }}"
+          fi
+
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            SHARD_MSG=" (weekly refresh)"
+          fi
+
+          CAST_COUNT=$(git status --porcelain data/cast/ | wc -l | tr -d ' ')
+          git commit -m "data: Backfill cast data${SHARD_MSG}${SHOW_MSG} [${CAST_COUNT} files]"
+
+          bash scripts/lib/push-with-retry.sh 15
+
+      - name: Enrich shows.json cast from cast files
+        if: always() && steps.git-check.outputs.changes == 'true'
+        run: |
+          node scripts/enrich-cast-from-files.js --force
+          # Shared wrapper regenerates detail + index together (single source of
+          # truth). This site only stages the detail JSONs (cast doesn't change
+          # the index), so the regenerated index is an unstaged no-op here.
+          bash scripts/generate-mobile-artifacts.sh
+          # shows.json syncs via push-core-data; only stage public-repo files here.
+          git add public/data/shows/ || true
+          if ! git diff --cached --quiet; then
+            git commit -m "data: Enrich mobile show details after cast backfill"
+            bash scripts/lib/push-with-retry.sh 5
+          fi
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from backfill-cast'
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: backfill-cast
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Backfill Cast Data Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

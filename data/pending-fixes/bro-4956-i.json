@@ -1,0 +1,66 @@
+{
+  "issueNumber": "bro-4956-i",
+  "planId": "06c5138a-5380-4aa8-a902-e87d3f914b45",
+  "status": "applied",
+  "createdAt": "2026-10-10T11:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4956: four live London Theatre Reviews reviews have url null because the empty-url fill treated post.cfm?p=N as a different show (fixed in review-normalization.js). Re-ingest each url so the merge fills it.",
+    "steps": [
+      "Re-ingest four LTR urls into their existing files"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=affluenza-off-west-end-2026 --url=\"https://www.londontheatrereviews.co.uk/post.cfm?p=29281\"",
+        "description": "Fill the url on the London Theatre Reviews file for affluenza-off-west-end-2026 (it went in with url null: slugLooksLikeDifferentShow read post.cfm as another show)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=darkling-off-west-end-2026 --url=\"https://www.londontheatrereviews.co.uk/post.cfm?p=29032\" --critic=\"Kay Johal\"",
+        "description": "Fill the url on the London Theatre Reviews file for darkling-off-west-end-2026 (it went in with url null: slugLooksLikeDifferentShow read post.cfm as another show)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=night-city-off-west-end-2026 --url=\"https://www.londontheatrereviews.co.uk/post.cfm?p=29022\" --critic=\"Cara-Louise Scott-Lapish\"",
+        "description": "Fill the url on the London Theatre Reviews file for night-city-off-west-end-2026 (it went in with url null: slugLooksLikeDifferentShow read post.cfm as another show)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=who-killed-marilyn-off-west-end-2026 --url=\"https://www.londontheatrereviews.co.uk/post.cfm?p=28806\" --critic=\"Jason Lane\"",
+        "description": "Fill the url on the London Theatre Reviews file for who-killed-marilyn-off-west-end-2026 (it went in with url null: slugLooksLikeDifferentShow read post.cfm as another show)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-10T11:50:13.800Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ]
+}

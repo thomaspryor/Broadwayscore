@@ -1,0 +1,2099 @@
+name: Update Shows
+
+on:
+  # Run daily at 8 AM UTC (3 AM EST) to catch new show openings quickly
+  schedule:
+    - cron: '0 8 * * *'
+    # Weekly ShowScore status refresh — Wednesdays 6 AM UTC
+    - cron: '0 6 * * 3'
+  # Allow manual triggering
+  workflow_dispatch:
+    inputs:
+      skip_discovery:
+        description: 'Skip new show discovery'
+        required: false
+        default: 'false'
+        type: boolean
+      include_showscore:
+        description: 'Include ShowScore status refresh (auto-enabled on weekly schedule)'
+        required: false
+        default: 'false'
+        type: boolean
+
+permissions:
+  contents: write
+  issues: write
+  actions: write
+
+# Share the `shows-json-writer` concurrency group with enrich-off-broadway-dates
+# so the two writers don't race on shows.json + data/playbill-urls.json. Without
+# this, an overlapping daily run can lost-update either file via the read-mutate-
+# write pattern. Caught in /ship-check 2026-04-30 (QA agent P0 finding).
+concurrency:
+  group: shows-json-writer
+  cancel-in-progress: false
+
+jobs:
+  update-shows:
+    runs-on: ubuntu-latest
+    # Raised 25→45→75→130 (task #1814, 2026-08-19). At 75, the job was being
+    # CANCELLED (not failed) by GitHub's own timeout-minutes enforcement — job-
+    # level API timing (gh api .../actions/runs/{id}/jobs) on the 4 most recent
+    # cancelled runs showed the job's started_at→completed_at duration landing at
+    # 75.3-75.6 min, exactly the cap. Full step-level timing on those same runs
+    # found two independent causes:
+    #   1. "Setup Playwright" intermittently hung 50-75 min (vs 0-4 min normally)
+    #      on apt `--with-deps` installs — confirmed on a run that PREDATES the
+    #      fetch-depth:0 checkout change below, so this is a pre-existing,
+    #      independent issue, not caused by it. Fixed at the source (task #1815,
+    #      landed concurrently) by wrapping the install in `timeout 480` inside
+    #      .github/actions/setup-playwright/action.yml — composite-action steps
+    #      don't support the `timeout-minutes` key, so a shell-level `timeout` is
+    #      what actually stops a hang from silently eating the whole job's
+    #      budget (it now fails loud within 8 min, with captured output).
+    #   2. Checkout's fetch-depth: 0 (task #1810, see below) added a real, ongoing
+    #      ~17-25 min per run for the full all-branches/tags fetch — until
+    #      BRO-4231 made it blobless (~30 s). The budget below keeps that
+    #      headroom rather than re-deriving it.
+    # 130 gives real headroom over the corrected worst case: checkout + misc
+    # setup ~40 min + discovery 45 min (hard step cap, see timeout-minutes on
+    # "Discover new shows" below) + enrichment ~18 min (incl. BRO-166's
+    # "OB discovery S7" step, 8 min hard cap, continue-on-error) + StubHub
+    # 5 min (hard step cap) + push retries up to 20 min (PUSH_DEADLINE_SEC=1200
+    # below) + setup-node/misc ~5 min ≈ 108-118 min, ~12-22 min margin to 130.
+    timeout-minutes: 133
+    outputs:
+      new_shows_count: ${{ steps.discover.outputs.new_shows_count }}
+      new_shows: ${{ steps.discover.outputs.new_shows }}
+      new_slugs: ${{ steps.discover.outputs.new_slugs }}
+      opened_count: ${{ steps.status-update.outputs.opened_count }}
+      opened_slugs: ${{ steps.status-update.outputs.opened_slugs }}
+      we_new_count: ${{ steps.discover.outputs.we_new_count }}
+      # Pre-discovery validation status — distinguishes "data was already broken
+      # before this run" from "discovery introduced a new error". Consumed by
+      # alert-on-failure to write a contextual alert instead of pointing the
+      # operator at the Broadway.org scraper for a lottery-rush.json bug.
+      pre_validation_status: ${{ steps.pre-validate.outputs.status }}
+      validate_outcome: ${{ steps.validate.outcome }}
+    steps:
+      # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
+      # on the checkout below), so rebase/diff/show fetch missing blobs over the
+      # network outside push-with-retry.sh's per-op timeout wrappers. Set git's
+      # low-speed abort (1 KB/s for 45 s, the bound the helper applies to its own
+      # fetch/push) for EVERY git transfer in this job: --global, and before the
+      # checkout, so actions/checkout's own first lazy blob batch and the depth-1
+      # private-repo clones (checkout-core-data / checkout-review-texts, no
+      # timeout of their own; their retry loop catches the abort) are bounded
+      # too. A stalled transfer fails fast instead of hanging to the job timeout.
+      # lowSpeed cannot catch a pre-transfer stall. Runner $HOME is ephemeral.
+      - name: Set git low-speed abort for this job
+        run: |
+          git config --global http.lowSpeedLimit 1000
+          git config --global http.lowSpeedTime 45
+
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          # fetch-depth: 0 (task #1810 root-cause fix): a GIT_TRACE_CURL diagnostic
+          # dispatch (run 32212462925) proved the "Commit and push changes" step's
+          # 90s hangs are PURE LOCAL git computation, not network — the info/refs
+          # ref-advertisement GET completes in ~300ms on every attempt, then there
+          # is a silent 90s gap with ZERO curl activity (the pack POST never even
+          # opens) before GIT_NET_TIMEOUT_SEC kills it. That signature is git
+          # building the push pack against a SHALLOW (fetch-depth 1, the default)
+          # local history: this job runs 30-40+ min after checkout (discovery +
+          # enrichment), so origin/main has always advanced by push time, and a
+          # shallow client can't cheaply negotiate "what the remote already has"
+          # the way a full clone can. A full checkout removes that ambiguity, and
+          # push-with-retry.sh's shallow-bounding logic (task #466 — a DIFFERENT
+          # fix, for slow FETCHES from a shallow client, not this) becomes a no-op
+          # here. fetch-depth: 0 fetches all branches/tags (its actual documented
+          # semantics — NOT just a deep clone of main), against this repo's ~2.2GB
+          # packed object DB — measured at ~17-25 min per run. See the
+          # timeout-minutes comment above for current headroom accounting (task
+          # #1814, 2026-08-19, corrected and raised it after finding this
+          # checkout step was a secondary cost, not the dominant driver of the
+          # cancellations that prompted the correction).
+          fetch-depth: 0
+          # BRO-4231: filter: blob:none keeps the full commit graph fetch-depth: 0 is
+          # here for (a resolvable merge-base for push-with-retry.sh; #209 parentless
+          # root) but stops downloading every historical blob of this repo's data/*.json
+          # rewrites: ~24 min -> ~30 s per checkout (llm-ensemble-score runs 36523767401
+          # -> 36672742657). Full rationale: opening-night-poller.yml's Checkout step.
+          filter: blob:none
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      # Step 1: Update existing show statuses
+      # ShowScore refresh runs on weekly Wed schedule or manual include_showscore=true
+      - name: Update show statuses
+        id: status-update
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: |
+          SS_FLAG=""
+          # Auto-enable ShowScore on Wednesday schedule (cron index 1)
+          if [ "${{ github.event.schedule }}" = "0 6 * * 3" ]; then
+            SS_FLAG="--include-showscore"
+            echo "Weekly ShowScore refresh enabled (Wednesday schedule)"
+          fi
+          # Also enable via manual toggle
+          if [ "${{ inputs.include_showscore }}" = "true" ]; then
+            SS_FLAG="--include-showscore"
+            echo "ShowScore refresh enabled (manual toggle)"
+          fi
+          node scripts/update-show-status.js $SS_FLAG
+
+      # BRO-3428: the previews->open transition the step above just applied is
+      # exactly what leaves a show status=open while its tags array still
+      # carries 'upcoming' from before it opened. stale-upcoming-tag.check.js
+      # (opening-night-checklist.js, ±2-day window only) detects this daily and
+      # prints the remediation command, but nothing had ever run it — 36 shows
+      # had accumulated with the stale tag (some well outside that ±2-day
+      # window, since the digest only surfaces the windowed subset) before this
+      # step was added, cleared by hand once (data: Drop stale 'upcoming' tag
+      # from 36 open shows). Running the bulk (unwindowed) form here, right
+      # after the transition that causes it, bounds recurrence to at most ~48h
+      # instead of accumulating indefinitely — not <24h: "Validate data" later
+      # in this same job (line ~373) can ALSO flip previews->open on its own
+      # (validate-data.js's own stale-status auto-fix), after this step has
+      # already run, so a tag created that way waits for tomorrow's run of
+      # THIS step rather than being caught same-run (Codex adversarial review,
+      # BRO-3428). Deliberately not reordered to run later and catch that case
+      # same-run: that would put this step's own write past every validation
+      # step in the job, so a hypothetical bug here would ship completely
+      # unvalidated. Early placement — same spot as "Self-heal shared
+      # ibdbUrls" below — keeps it inside that day's validate-data.js coverage
+      # at the cost of the extra day on that one edge case. Supersedes the
+      # kind:'alert'-only decision recorded on that check's own remediation
+      # stanza (owner review gate, rule 18, task #1132) — that decision
+      # predates this cost evidence (BRO-3427: 14 stale-tag rows were 16% of
+      # the daily digest's card queue, ~$84/day in auto-dispatched sessions to
+      # do what this no-op-when-clean step now does for free). continue-on-
+      # error: true — a lock/read hiccup on this purely cosmetic tag cleanup
+      # must not fail the whole daily status-update job, matching "Regenerate
+      # Off-Broadway venue allowlist" below (same idempotent-fixer shape:
+      # no-op when nothing to fix).
+      - name: Fix stale upcoming tags
+        continue-on-error: true
+        run: node scripts/fix-stale-upcoming-tags.js --apply
+
+      # BRO-4913: demote open/previews shows with 0 reviews past openingDate whose
+      # official/TodayTix page shows a future launch date (postponed productions).
+      - name: Demote postponed productions
+        continue-on-error: true
+        timeout-minutes: 3
+        run: node scripts/audit-postponed-shows.js --demote
+
+      # Self-heal shared ibdbUrls BEFORE validation. A revival stub that
+      # inherited the original production's ibdbUrl hard-fails validate-data
+      # ("Shared ibdbUrl ... null the stale url on the revival entry") and
+      # blocked the discovery commit daily 2026-07-03→05 (Sound of Music,
+      # A Few Good Men). This applies the validator's prescribed remedy
+      # automatically: earliest production keeps the URL, later entries are
+      # nulled; enrichment re-adds the revival's own URL later.
+      - name: Self-heal shared ibdbUrls
+        run: node scripts/fix-shared-ibdb-urls.js
+
+      # Pre-discovery validation snapshot. Runs the same validator that gates
+      # the commit below, but warn-only, and captures full output so the
+      # post-discovery step can set-diff errors (task #649) — a pre-existing,
+      # unrelated error here must not discard today's discovery commit.
+      - name: Pre-validate existing data (baseline error snapshot)
+        id: pre-validate
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          if node scripts/validate-data.js 2>&1 | tee /tmp/pre-validate-output.txt; then
+            echo "status=ok" >> $GITHUB_OUTPUT
+            echo "Pre-discovery validation: OK"
+          else
+            echo "status=broken" >> $GITHUB_OUTPUT
+            echo "::warning::Data validation already failing BEFORE discovery — peripheral data file has an unrelated error. Discovery will still run; the commit is only blocked if discovery introduces a NEW validation error (task #649 set-diff)."
+          fi
+
+      # Step 2a: Discover ShowScore URLs and generate candidates for new show discovery
+      - name: Discover ShowScore URLs and candidates
+        if: ${{ inputs.skip_discovery != 'true' }}
+        run: node scripts/discover-show-score-urls-from-listings.js
+        continue-on-error: true
+
+      # Step 2b: Discover new Broadway + OB + WE shows (unless skipped)
+      - name: Discover new shows
+        id: discover
+        if: ${{ inputs.skip_discovery != 'true' }}
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        # Discovery is best-effort and has grown slow (per-candidate IBDB revival
+        # SERP × the late-May OB-venue expansion pushed it to ~21 min). It must
+        # NOT be able to cancel the critical pipeline (status updates,
+        # opening-night readiness, push) by eating the whole job budget — that
+        # cancellation is what made every run go stale and spammed cron-health.
+        # Cap it and continue-on-error so the run still succeeds if it overruns.
+        # 45 min: the 30-min cap was hit on 2026-07-14 (discovery killed mid-run,
+        # masked by continue-on-error) — new-show enrichment after a big skip
+        # list doesn't fit in 30.
+        # --time-budget-min=35 (task #438, same class as #369/#415/#421): a
+        # SIGKILL at the 45-min timeout loses ALL discovered results (the whole
+        # node process dies mid-write) AND leaves the job running long enough
+        # that, by the time "Commit and push changes" runs, enough commit churn
+        # has landed on main that push-with-retry.sh's 7 retries can exhaust
+        # (run 30080143665, 2026-07-24). A clean 35-min budget-exit commits
+        # whatever was found and finishes the job ~10 min sooner, well inside
+        # the 45-min step timeout (kept as a backstop).
+        timeout-minutes: 45
+        continue-on-error: true
+        run: node scripts/discover-new-shows.js --include-off-broadway --include-west-end --consume-show-score-candidates --time-budget-min=35
+
+      # Broadway source-coverage guard (card #1445): independently diffs
+      # Playbill's announced Broadway schedule against shows.json and alerts
+      # on anything Playbill has that discovery above didn't add. Alert-only
+      # (never writes shows.json); continue-on-error so a scraper hiccup here
+      # never blocks the rest of the pipeline. S4-T2 (BRO-4204): when the
+      # Playbill parser has ROTTED (0 entries for >24h) the script now exits 1,
+      # leaves the gaps file untouched and records `guard.blind: true` in
+      # data/audit/broadway-source-coverage-state.json — continue-on-error is
+      # deliberately KEPT so status flips still run; the verdict is applied by
+      # the separate discovery-source-blind job below (S4-T3).
+      - name: Check Broadway source coverage
+        continue-on-error: true
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+        run: node scripts/check-broadway-source-coverage.js
+
+      # Off-Broadway twin (BRO-4381): diffs TheaterMania's current OB listings
+      # (public WP REST API, no secrets) against shows.json + pending-fix
+      # add-show plans. Alert-only, never writes shows.json. A blind feed
+      # exits 1 and records `guard.blind: true` in
+      # data/audit/off-broadway-source-coverage-state.json; continue-on-error
+      # keeps status flips running and the discovery-source-blind job below
+      # turns the run red.
+      - name: Check Off-Broadway source coverage
+        continue-on-error: true
+        run: node scripts/check-off-broadway-source-coverage.js
+
+      # Regional→Broadway transfer auto-linking: if a just-discovered (or any
+      # existing) Broadway show title-matches a tracked regional tryout and
+      # opened after it, set the reciprocal transferOf/transferredTo pair so
+      # both pages cross-link with the tryout score (feature 2026-07-11).
+      # Pure detection logic + tests: scripts/lib/transfer-detection.js.
+      # Ambiguous matches are emailed, never applied. validate-data (below)
+      # enforces reciprocity before anything pushes.
+      - name: Detect regional→Broadway transfers
+        continue-on-error: true
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/detect-regional-transfers.js --email
+
+      # Step 3: Enrich new/incomplete shows with metadata from free APIs
+      - name: Enrich shows with TodayTix runtimes
+        if: ${{ inputs.skip_discovery != 'true' }}
+        run: node scripts/enrich-todaytix-runtimes.js
+        continue-on-error: true
+
+      - name: Enrich shows with TodayTix ticket links
+        if: ${{ inputs.skip_discovery != 'true' }}
+        run: node scripts/enrich-todaytix-data.js
+        continue-on-error: true
+
+      - name: Refresh ticket prices from TodayTix
+        run: node scripts/enrich-ticket-prices.js
+        continue-on-error: true
+
+      - name: Refresh StubHub prices (scraping — temporary until API access)
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: node scripts/enrich-stubhub-prices.js --time-budget-min=4
+        continue-on-error: true
+        timeout-minutes: 5
+
+      - name: Enrich shows with Telecharge/Ticketmaster links
+        if: ${{ inputs.skip_discovery != 'true' }}
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: node scripts/enrich-ticket-platform-links.js
+        continue-on-error: true
+
+      # Fallback for shows neither TodayTix nor the Broadway venue map covers
+      # (Off-Broadway / Off-West End / regional): SERP-discover an allowlisted
+      # ticketing-platform or first-party venue URL. Bounded to 10 shows/run.
+      - name: Enrich remaining shows with fallback ticket links (SERP)
+        if: ${{ inputs.skip_discovery != 'true' }}
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: node scripts/enrich-fallback-ticket-links.js --limit=10 --time-budget-min=8
+        continue-on-error: true
+        timeout-minutes: 10
+
+      # BRO-166: shows the step above still couldn't attach an affiliate-able
+      # ticketLinks entry to (no TodayTix/venue-site match) get an Official
+      # Site fallback instead — SERP-discovered dedicated site, or the show's
+      # own OB venue homepage — so they never dead-end with no buy button.
+      - name: OB discovery S7 — Official Site fallback for shows with no buy button
+        if: ${{ inputs.skip_discovery != 'true' }}
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: node scripts/ob-discovery-ticket-links.js --limit=15 --time-budget-min=6
+        continue-on-error: true
+        timeout-minutes: 8
+
+      # S4-T13 (BRO-4204): enrich-wikipedia-synopsis.js verifies every
+      # candidate article with Claude before writing and logs "Verifier
+      # (ANTHROPIC_API_KEY): DISABLED — nothing will be written" without the
+      # key — both steps below ran that way since 2026-02-23, so the synopsis
+      # refresh was a silent no-op on every run.
+      - name: Enrich shows with Wikipedia synopses (Broadway/OB)
+        if: ${{ inputs.skip_discovery != 'true' }}
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/enrich-wikipedia-synopsis.js --limit=20
+        continue-on-error: true
+
+      - name: Enrich shows with Wikipedia synopses (West End + Off-West End)
+        if: ${{ inputs.skip_discovery != 'true' }}
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          node scripts/enrich-wikipedia-synopsis.js --category=west-end --limit=10
+          node scripts/enrich-wikipedia-synopsis.js --category=off-west-end --limit=10
+        continue-on-error: true
+
+      - name: Enrich shows with Wikipedia runtimes
+        if: ${{ inputs.skip_discovery != 'true' }}
+        run: node scripts/enrich-wikipedia-runtimes.js --limit=20
+        continue-on-error: true
+
+      # National tours (BRO-4262): launch/closing dates from Tours To You,
+      # confirmed by Wikipedia; a close needs a positive signal, never an
+      # empty listing. Also gives tours their Broadway parent's art/synopsis.
+      # Report-only until 2026-10-06 unless the TOUR_DATES_MODE repo variable
+      # says otherwise (off|report|write). Status flips stay date-driven.
+      - name: Enrich national tours (dates, parent art)
+        # lint-allow-swallow: best-effort enrichment; a failure must not block status updates, problems land in data/audit/tour-dates.json; digest surfacing is BRO-4262 follow-up
+        if: ${{ inputs.skip_discovery != 'true' }}
+        env:
+          TOUR_DATES_MODE: ${{ vars.TOUR_DATES_MODE }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: node scripts/enrich-tour-dates.js --write --time-budget-min=6
+        continue-on-error: true
+        timeout-minutes: 8
+
+      # Second self-heal pass: discovery + IBDB enrichment above can attach an
+      # original production's ibdbUrl to a freshly discovered revival stub —
+      # that's exactly what blocked the commit daily 2026-07-03→05 and again
+      # 2026-08-15→18 (task #1817). The pass before pre-validate heals
+      # pre-existing data; this pass heals what discovery just introduced.
+      # Idempotent and near-instant.
+      #
+      # Root cause of the recurrence (#1817, verified 2026-08-19): both
+      # passes DID clear the field in this job's working tree every single
+      # run — the premise in the old version of this comment ("the stale
+      # URLs never landed in shows.json; each day's discovery re-created
+      # them in the working tree") was wrong. The real bug was one layer
+      # downstream: push-core-data/action.yml's post-rebase reconciliation
+      # step restores a safelisted field from origin/main whenever OUR
+      # local value is null — and since origin/main had never received a
+      # prior fix either (same bug, every run), it still had the old shared
+      # URL, so the reconciliation silently restored the exact value this
+      # self-heal had just cleared, on every push that needed a rebase.
+      # Fixed by making that reconciliation baseline-aware (see
+      # scripts/lib/reconcile-shows-fields.js).
+      - name: Self-heal shared ibdbUrls (post-discovery)
+        if: ${{ inputs.skip_discovery != 'true' }}
+        run: node scripts/fix-shared-ibdb-urls.js
+
+      # Every show ID this run touched, from ANY of the steps above — diffed
+      # against /tmp/core-data-snapshot/shows.json, the pre-run baseline
+      # checkout-core-data (above) saves specifically for this kind of
+      # diff. data/shows.json itself is gitignored in this repo and never
+      # committed to its git history, so a git-HEAD-based diff would not
+      # work here. Feeds the per-show partial-block gate (task #1439): a
+      # new-slugs/opened-slugs-only candidate set would miss shows touched
+      # ONLY by an enrichment step (TodayTix runtimes/links, Wikipedia
+      # synopsis/runtimes, StubHub prices, fallback ticket links) — exactly
+      # the writers card #1439 was filed to cover. Pure logic + snapshot
+      # reader: scripts/lib/shows-since-checkout-diff.js.
+      - name: Compute candidate show IDs
+        id: candidates
+        run: node scripts/compute-candidate-show-ids.js >> "$GITHUB_OUTPUT"
+
+      # Step 4: Validate data after discovery/enrichment. continue-on-error
+      # keeps the job going so the set-diff step below can decide whether
+      # this run should still commit — a pre-existing, unrelated error must
+      # not discard good discovery/enrichment work (task #649). The
+      # "Commit gate" step further down re-fails the job when the set-diff
+      # finds a genuinely NEW error, restoring the original hard-fail
+      # semantics for that case only.
+      - name: Validate data
+        id: validate
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          # GHA's default shell runs with `-e`, so a bare `echo $?` after a
+          # failing pipeline never executes — pipefail makes the pipeline
+          # itself the failing command and `-e` aborts the step right there,
+          # silently skipping the exit-code capture (verified locally: repro
+          # confirms the file is never written without the `|| EC=$?` guard).
+          # `|| EC=$?` makes the assignment itself the (succeeding) statement
+          # `-e` sees, so the step continues and $EC holds the real code.
+          EC=0
+          node scripts/validate-data.js 2>&1 | tee /tmp/post-validate-output.txt || EC=$?
+          echo "$EC" > /tmp/post-validate-exitcode.txt
+
+      # Set-diff: did discovery/enrichment introduce a NEW validation error,
+      # or is the only failure a pre-existing one it didn't cause? Only the
+      # former should block the commit (task #649). --post-exit-code guards
+      # against a validate-data.js crash/format-change that exits non-zero
+      # but prints nothing matching "❌ ERROR:" — without it that would read
+      # as should_commit=true (ship-check finding). --candidate-ids enables
+      # per-show attribution (task #1439): a new error attributed to one
+      # show holds back just that show instead of the whole batch. Pure
+      # logic lives in scripts/lib/validation-setdiff.js, tested in
+      # tests/unit/discovery-validation-setdiff.test.mjs.
+      - name: Compute validation error set-diff
+        id: setdiff
+        if: always()
+        run: node scripts/check-validation-setdiff.js --pre=/tmp/pre-validate-output.txt --post=/tmp/post-validate-output.txt --post-exit-code="$(cat /tmp/post-validate-exitcode.txt 2>/dev/null || echo '')" --candidate-ids="${{ steps.candidates.outputs.candidate_ids }}" >> "$GITHUB_OUTPUT"
+
+      # Partial-block recovery (task #1439): when the set-diff attributed a
+      # new error to specific show(s), revert just those shows to their
+      # pre-run state (or remove them if newly discovered this run) so the
+      # rest of the batch can still commit. Mirrors scripts/enrich-ibdb-
+      # dates.js's in-memory snapshot/revert/reverify, adapted for this
+      # workflow's multi-process mutation (scripts/lib/shows-since-
+      # checkout-diff.js). Runs even if the validate/setdiff steps above
+      # produced nothing (blocked_ids is then empty and this is a no-op
+      # condition).
+      - name: Revert blocked shows (partial-block recovery)
+        id: revert-blocked
+        if: always() && steps.setdiff.outputs.blocked_ids != ''
+        run: node scripts/revert-blocked-shows.js --ids="${{ steps.setdiff.outputs.blocked_ids }}"
+
+      # Re-validate after the revert, to CONFIRM it actually cleared the
+      # attributed error(s) before trusting the attribution — same paranoia
+      # as enrich-ibdb-dates.js's reverifyDecision check. An attribution
+      # that turns out wrong must still block the whole commit, not just
+      # silently drop the mis-attributed show.
+      - name: Re-validate after revert
+        id: reverify
+        if: always() && steps.setdiff.outputs.blocked_ids != ''
+        run: |
+          set -o pipefail
+          EC=0
+          node scripts/validate-data.js 2>&1 | tee /tmp/reverify-validate-output.txt || EC=$?
+          echo "$EC" > /tmp/reverify-validate-exitcode.txt
+
+      - name: Compute reverify set-diff
+        id: reverify-setdiff
+        if: always() && steps.setdiff.outputs.blocked_ids != ''
+        run: node scripts/check-validation-setdiff.js --pre=/tmp/pre-validate-output.txt --post=/tmp/reverify-validate-output.txt --post-exit-code="$(cat /tmp/reverify-validate-exitcode.txt 2>/dev/null || echo '')" >> "$GITHUB_OUTPUT"
+
+      # Fails the job — WITHOUT continue-on-error — only when the set-diff
+      # found a NEW error that survived the revert above. Every downstream
+      # `if:` below keys off steps.commit-gate.outcome exactly like it
+      # previously keyed off steps.validate.outcome, but the decision now
+      # comes from the set-diff instead of validate-data.js's raw exit code
+      # (task #649).
+      - name: Commit gate — block only on NEW validation errors
+        id: commit-gate
+        if: always()
+        run: |
+          # A required (non-continue-on-error) step before "Validate data" —
+          # Update show statuses, either Self-heal shared ibdbUrls step — can
+          # fail and leave that step 'skipped' rather than run. Without this
+          # check the missing post-validate file reads as "0 post errors" and
+          # this gate would wrongly pass — fail closed instead (same
+          # adversarial-review finding as task #663).
+          if [ "${{ steps.validate.outcome }}" = "skipped" ]; then
+            echo "::error::A required step failed before validation could run (steps.validate was skipped) — refusing to commit or push."
+            exit 1
+          fi
+          if [ -n "${{ steps.setdiff.outputs.blocked_ids }}" ]; then
+            # Partial block: trust the reverify result, not the original
+            # setdiff (which is expected to still show the now-reverted
+            # error until reverify confirms it's gone).
+            if [ "${{ steps.reverify-setdiff.outputs.should_commit }}" != "true" ]; then
+              echo "::error::Revert of held-back show(s) [${{ steps.setdiff.outputs.blocked_ids }}] did not clear the new error(s) — attribution was wrong. Blocking the full commit."
+              exit 1
+            fi
+            if [ "${{ steps.setdiff.outputs.committable_count }}" = "0" ]; then
+              echo "::warning::${{ steps.setdiff.outputs.new_error_count }} new validation error(s) attributed to show(s): ${{ steps.setdiff.outputs.blocked_ids }} — ALL candidate show(s) this run touched were held back and reverted (revert re-verified clean). No show-related changes commit this run; other non-show writes still proceed."
+            else
+              echo "::warning::${{ steps.setdiff.outputs.new_error_count }} new validation error(s) attributed to show(s): ${{ steps.setdiff.outputs.blocked_ids }} — held back, revert re-verified clean. ${{ steps.setdiff.outputs.committable_count }} other candidate show(s) still committed."
+            fi
+          elif [ "${{ steps.setdiff.outputs.should_commit }}" != "true" ]; then
+            echo "::error::Discovery/enrichment introduced ${{ steps.setdiff.outputs.new_error_count }} new validation error(s) — see data/audit/discovery-blocked/ (written by the next step) for the diff."
+            exit 1
+          fi
+          echo "No new validation errors blocking the full batch — commit is clear to proceed (${{ steps.setdiff.outputs.pre_error_count }} pre-existing error(s) ignored)."
+
+      # Audit trail when validation blocks the commit. Two outputs:
+      #   1. $GITHUB_STEP_SUMMARY — at-a-glance diagnosis on the run page
+      #   2. data/audit/discovery-blocked/<runId>.json — persistent record that
+      #      survives run retention (90d default) and is greppable from
+      #      operator's local checkout. Pushed via push-core-data below
+      #      (audit/ files are in the private core-data repo).
+      # Defensive: variables piped through env to avoid YAML interpolation
+      # in shell heredocs breaking on exotic characters in show slugs.
+      # should_commit != 'true' now means the set-diff found a genuinely NEW
+      # error — a pre-existing-only failure no longer reaches this step at
+      # all (task #649), so the diagnosis here is always "discovery-
+      # introduced". Includes the actual new-error text (not just counts) so
+      # an operator finding this a week later can tell which file to fix
+      # without re-running validate-data.js locally.
+      # Fires on a full block (should_commit=false) same as before, AND on a
+      # partial block (blocked_ids non-empty even though the rest committed)
+      # — task #1439's own reviewers flagged that a partial block succeeding
+      # the job would otherwise leave NO audit trail, unlike today's loud
+      # full-block failure.
+      - name: Audit discovery on validation failure
+        id: audit
+        if: always() && (steps.setdiff.outputs.should_commit != 'true' || steps.setdiff.outputs.blocked_ids != '')
+        env:
+          PRE_VALIDATION: ${{ steps.pre-validate.outputs.status }}
+          NEW_ERROR_COUNT: ${{ steps.setdiff.outputs.new_error_count }}
+          NEW_ERRORS_PREVIEW: ${{ steps.setdiff.outputs.new_errors_preview }}
+          NEW_SHOWS_COUNT: ${{ steps.discover.outputs.new_shows_count }}
+          NEW_SLUGS: ${{ steps.discover.outputs.new_slugs }}
+          OPENED_COUNT: ${{ steps.status-update.outputs.opened_count }}
+          OPENED_SLUGS: ${{ steps.status-update.outputs.opened_slugs }}
+          WE_NEW_COUNT: ${{ steps.discover.outputs.we_new_count }}
+          BLOCKED_IDS: ${{ steps.setdiff.outputs.blocked_ids }}
+          COMMITTABLE_COUNT: ${{ steps.setdiff.outputs.committable_count }}
+          RUN_ID: ${{ github.run_id }}
+          REPO: ${{ github.repository }}
+        run: |
+          if [ -n "$BLOCKED_IDS" ]; then
+            DIAGNOSIS_KIND="partial-block"
+            DIAGNOSIS_TEXT="${NEW_ERROR_COUNT} NEW validation error(s) attributed to show(s): ${BLOCKED_IDS} (task #1439 per-show gate). Held back and reverted; ${COMMITTABLE_COUNT} other candidate show(s) still committed."
+          else
+            DIAGNOSIS_KIND="discovery-introduced"
+            DIAGNOSIS_TEXT="Discovery/enrichment introduced ${NEW_ERROR_COUNT} NEW validation error(s) not present before this run (task #649 set-diff). See new_errors_preview below, or re-run \`node scripts/validate-data.js\` locally, for the file to fix."
+          fi
+
+          {
+            echo "## Validation ${DIAGNOSIS_KIND}"
+            echo ""
+            echo "**Pre-discovery validation:** \`${PRE_VALIDATION}\`"
+            echo "**New errors introduced:** \`${NEW_ERROR_COUNT}\`"
+            echo ""
+            echo "${DIAGNOSIS_TEXT}"
+            echo ""
+            echo "### New validation errors (preview)"
+            echo ""
+            echo "\`${NEW_ERRORS_PREVIEW}\`"
+            echo ""
+            echo "### Discovery output (would have been committed)"
+            echo ""
+            echo "| Field | Value |"
+            echo "| --- | --- |"
+            echo "| new_shows_count | \`${NEW_SHOWS_COUNT}\` |"
+            echo "| new_slugs | \`${NEW_SLUGS}\` |"
+            echo "| opened_count | \`${OPENED_COUNT}\` |"
+            echo "| opened_slugs | \`${OPENED_SLUGS}\` |"
+            echo "| we_new_count | \`${WE_NEW_COUNT}\` |"
+            echo "| blocked_ids | \`${BLOCKED_IDS}\` |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          # Persistent JSON for grep-ability after run retention expires.
+          mkdir -p data/audit/discovery-blocked
+          AUDIT_FILE="data/audit/discovery-blocked/${RUN_ID}.json"
+          DIAGNOSIS_KIND="${DIAGNOSIS_KIND}" AUDIT_FILE="${AUDIT_FILE}" node -e '
+            const fs = require("fs");
+            const out = {
+              runId: process.env.RUN_ID,
+              runUrl: "https://github.com/" + process.env.REPO + "/actions/runs/" + process.env.RUN_ID,
+              completedAt: new Date().toISOString(),
+              diagnosis: process.env.DIAGNOSIS_KIND,
+              preValidationStatus: process.env.PRE_VALIDATION,
+              newErrorCount: process.env.NEW_ERROR_COUNT || "",
+              newErrorsPreview: process.env.NEW_ERRORS_PREVIEW || "",
+              newShowsCount: process.env.NEW_SHOWS_COUNT || "",
+              newSlugs: process.env.NEW_SLUGS || "",
+              openedCount: process.env.OPENED_COUNT || "",
+              openedSlugs: process.env.OPENED_SLUGS || "",
+              weNewCount: process.env.WE_NEW_COUNT || "",
+              blockedIds: process.env.BLOCKED_IDS || "",
+              committableCount: process.env.COMMITTABLE_COUNT || ""
+            };
+            fs.writeFileSync(process.env.AUDIT_FILE, JSON.stringify(out, null, 2) + "\n");
+            console.log("Wrote audit:", process.env.AUDIT_FILE);
+          '
+          echo "audit_file=${AUDIT_FILE}" >> "$GITHUB_OUTPUT"
+
+      # Step 4: Check for any changes
+      - name: Check for changes
+        id: git-check
+        run: |
+          git diff --exit-code data/shows.json || echo "changes=true" >> $GITHUB_OUTPUT
+          if [ -f data/new-shows-pending.json ]; then
+            echo "has_pending=true" >> $GITHUB_OUTPUT
+          fi
+
+      # Record pipeline health timestamp (always, even if no show changes)
+      - name: Record pipeline success
+        if: always() && steps.commit-gate.outcome == 'success'
+        run: |
+          mkdir -p data/audit/pipeline-health
+          date -u > data/audit/pipeline-health/update-show-status.last-success
+
+      # Step 5: Commit and push changes (skip if validation failed)
+      # Keep the Off-Broadway venue allowlist (used by the TodayTix discovery
+      # fallback) in sync with the OB shows now in shows.json. Idempotent —
+      # a no-op when no new OB venue appeared. See scripts/build-ob-venues.js.
+      - name: Regenerate Off-Broadway venue allowlist
+        if: always() && steps.commit-gate.outcome == 'success'
+        run: node scripts/build-ob-venues.js
+        continue-on-error: true
+
+      - name: Commit and push changes
+        id: commit-public
+        if: always() && steps.commit-gate.outcome == 'success'
+        # PUSH_DEADLINE_SEC override (task #458): this step's push measured ~3
+        # min per GENUINE (non-stalled) conflict-resolution cycle under this
+        # workflow's high main-branch churn (run 30186060030) — the shared 240s
+        # default only fit ~1.3 cycles before self-aborting, so "failed after 7
+        # attempts" was misleading (only ~2 real cycles ran).
+        #
+        # 600s (round 1) verified live on run 30187244663: correctly fit ~4
+        # real cycles (up from ~2) but STILL exhausted before a fetch cleanly
+        # landed — the underlying per-cycle cost is genuinely ~190s under
+        # sustained high churn (root cause: two consecutive 90s
+        # GIT_NET_TIMEOUT_SEC fetch timeouts, not rebase/merge compute — see
+        # task #464). That same live run's TOTAL job wall-clock was only
+        # ~31.5 min against the then-75-min timeout, so there was 40+ min of
+        # measured (not guessed) unused headroom. Raised to 1200s (round 2,
+        # ~6 real cycles) — keeps buffer under the job's own worst-case
+        # non-push budget. [UPDATED 2026-08-19, task #1814]: the job timeout
+        # was since raised 75→130 min after job-level API timing showed runs
+        # being CANCELLED (not failed) exactly at the old 75-min cap, driven
+        # mainly by an intermittent Setup Playwright hang (50-75 min, now
+        # capped at 8 min at the source via task #1815) plus fetch-depth:0 checkout cost
+        # (~17-25 min then; ~30 s since BRO-4231 made the clone blobless).
+        # Worst-case non-push budget at the time was ~100-110 min
+        # (checkout+setup ~40 + discovery 45 hard cap + enrichment ~10 +
+        # StubHub 5 hard cap), leaving ~20-30 min of the 130-min ceiling for
+        # push — 1200s (20 min) still preserves real margin, now with more to spare. Scoped to THIS step only (not the shared script default — see
+        # push-with-retry.sh's PUSH_DEADLINE_SEC comment for why) since the
+        # other push-with-retry.sh calls below push much smaller,
+        # rarely-conflicting files. If churn persists past this, the real
+        # fix is task #464 (root-cause + shorten the per-cycle cost itself),
+        # not another deadline bump.
+        env:
+          PUSH_DEADLINE_SEC: '1200'
+          # scraper-spend-ledger.jsonl is now in this step's git add list
+          # (Sprint 3, card 3b1637c5): discover-new-shows.js/enrich-ticket-
+          # platform-links.js/discover-playbill-urls.js call url-discovery.js's
+          # SERP path, which writes rows to it on the runner's local disk —
+          # never staged before, so daily SERP telemetry was lost every run.
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          # Core data files pushed to private repo by push-core-data action
+          if [ -f data/new-shows-pending.json ]; then
+            git add data/new-shows-pending.json
+          fi
+          git add data/show-score-urls.json 2>/dev/null || true
+          git add data/show-score-candidates.json 2>/dev/null || true
+          git add data/off-broadway-venues.json 2>/dev/null || true
+          git add data/audit/pipeline-health/ 2>/dev/null || true
+          git add data/audit/scraper-spend-ledger.jsonl 2>/dev/null || true
+          # Source-coverage telemetry (card #1445) — without this the
+          # per-source zero-streak state never persists across runs, so
+          # sustained source blindness would still be treated as one-run
+          # noise every time a fresh runner checks out a stale committed copy.
+          git add data/audit/discovery-source-coverage.json 2>/dev/null || true
+          # Reconciliation before/after audit trail (BRO-2072) - this is the
+          # ONLY step that runs discover-new-shows.js, so without this line
+          # every applied/held reconciliation patch audit record is
+          # silently discarded at job end (same gap shape as the
+          # discovery-source-coverage.json fix above, ship-check finding).
+          git add data/audit/discovery-reconciliation-log.json 2>/dev/null || true
+          git add data/audit/playbill-broadway-last-success.json 2>/dev/null || true
+          # S4-T4/T5 (2026 data audit): per-source last-success markers and the
+          # Theatremonkey show-page venue cache — without these three the cache
+          # never fills across runs and the empty-parse streaks never accumulate.
+          git add data/audit/olt-last-success.json 2>/dev/null || true
+          git add data/audit/theatremonkey-last-success.json 2>/dev/null || true
+          git add data/audit/theatremonkey-venue-cache.json 2>/dev/null || true
+          # enrich-tour-dates.js report (BRO-4262); health-check.js reads it for the digest.
+          git add data/audit/tour-dates.json 2>/dev/null || true
+          git add data/audit/broadway-source-coverage-gaps.json 2>/dev/null || true
+          git add data/audit/broadway-source-coverage-state.json 2>/dev/null || true
+          # BRO-4381 OB coverage guard (registered in core-data-merge-registry.js).
+          git add data/audit/off-broadway-source-coverage-gaps.json 2>/dev/null || true
+          git add data/audit/off-broadway-source-coverage-state.json 2>/dev/null || true
+          # OB + OWE venue-page staging (BRO-182 adversarial review, 2026-08-26):
+          # this is the ONLY step that runs discover-new-shows.js
+          # --include-off-broadway --include-west-end, which is the only writer
+          # of these 3 files — none were previously in this step's git-add list,
+          # so every candidate staged/counted here was silently discarded at job
+          # end (the OB staging gate has been non-durable since it shipped;
+          # ob-venue-counts.json's 7-day anomaly baseline never had a chance to
+          # persist). owe-venue-candidates.json is new (this fix); the other two
+          # close a pre-existing gap in the same step.
+          git add data/audit/ob-venue-candidates.json 2>/dev/null || true
+          git add data/audit/ob-venue-counts.json 2>/dev/null || true
+          git add data/audit/owe-venue-candidates.json 2>/dev/null || true
+
+          # Only commit if there are staged changes
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          # Create appropriate commit message
+          if [ "${{ steps.discover.outputs.new_shows_count }}" != "" ] && [ "${{ steps.discover.outputs.new_shows_count }}" != "0" ]; then
+            git commit -m "chore: Update shows - added ${{ steps.discover.outputs.new_shows_count }} new show(s)"
+          else
+            git commit -m "chore: Auto-update show statuses"
+          fi
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Queue new Broadway shows for commercial research
+        if: steps.discover.outputs.new_shows_count != '' && steps.discover.outputs.new_shows_count != '0'
+        # Task #574: commits commercial-research-queue.json (union-merged
+        # managed file) — see push-with-retry.sh's reconcile_merged_json().
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          RAW_NEW_SLUGS="${{ steps.discover.outputs.new_slugs }}"
+          if [ -z "$RAW_NEW_SLUGS" ]; then
+            echo "No new slugs to queue"
+            exit 0
+          fi
+          # Filter out any slug whose show got reverted/removed by the
+          # partial-block gate above (task #1439) — discover's raw new_slugs
+          # output predates that revert, so an unfiltered pass here would
+          # queue commercial research for a show no longer in shows.json.
+          NEW_SLUGS=$(RAW_NEW_SLUGS="$RAW_NEW_SLUGS" node -e '
+            const fs = require("fs");
+            const shows = JSON.parse(fs.readFileSync("data/shows.json", "utf8")).shows;
+            const present = new Set(shows.map((s) => s.slug));
+            const kept = process.env.RAW_NEW_SLUGS.split(",").filter(Boolean).filter((s) => present.has(s));
+            console.log(kept.join(","));
+          ')
+          if [ -z "$NEW_SLUGS" ]; then
+            echo "No new slugs to queue (all held back by the partial-block gate)"
+            exit 0
+          fi
+          # Logic lives in scripts/lib/commercial-queue.js (colocated-tested,
+          # see tests/unit/commercial-queue.test.mjs) — this step just wires
+          # the discovered slugs through the CLI wrapper.
+          node scripts/queue-commercial-research.js --new-slugs="$NEW_SLUGS"
+          QUEUE_FILE="data/commercial-research-queue.json"
+          git add "$QUEUE_FILE" 2>/dev/null || true
+          if ! git diff --staged --quiet; then
+            git commit -m "data: Queue new Broadway shows for commercial research"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Queue pre-opening shows for commercial research
+        continue-on-error: true
+        # Task #574: commits commercial-research-queue.json (union-merged
+        # managed file) — see push-with-retry.sh's reconcile_merged_json().
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          node scripts/queue-commercial-research.js --pre-opening
+          QUEUE_FILE="data/commercial-research-queue.json"
+          git add "$QUEUE_FILE" 2>/dev/null || true
+          if ! git diff --staged --quiet; then
+            git commit -m "data: Queue pre-opening shows for commercial research"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Queue closing TBD shows for commercial research
+        continue-on-error: true
+        # Task #574: commits commercial-research-queue.json (union-merged
+        # managed file) — see push-with-retry.sh's reconcile_merged_json().
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          node scripts/queue-commercial-research.js --closing
+          QUEUE_FILE="data/commercial-research-queue.json"
+          git add "$QUEUE_FILE" 2>/dev/null || true
+          if ! git diff --staged --quiet; then
+            git commit -m "data: Queue closing TBD shows for commercial research"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      # Push the audit JSON to the private core-data repo when validate
+      # blocked the commit. push-core-data (below) only syncs top-level
+      # JSONs (shows.json, reviews.json, etc.) and won't carry audit/
+      # subdirectories. Using gh api for a targeted single-file commit
+      # avoids racing with concurrent core-data writers and dodges the
+      # "validate failed so nothing pushes" gate. Pattern from
+      # memory/feedback_gh_api_emergency_commit.md.
+      # Pushes whenever the audit step ran (full block OR partial block —
+      # task #1439), not just steps.commit-gate.outcome == 'failure'. A
+      # partial block lets the job SUCCEED, so gating this push on job
+      # failure would leave the local audit_file written but never pushed
+      # anywhere — silently discarded at job end (same class of bug as the
+      # "Writes Before Pushes" rule in .github/workflows/CLAUDE.md).
+      - name: Push discovery-blocked audit to private repo
+        if: always() && steps.audit.outputs.audit_file != ''
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          RUN_ID: ${{ github.run_id }}
+          AUDIT_FILE: ${{ steps.audit.outputs.audit_file }}
+        run: |
+          if [ ! -f "${AUDIT_FILE}" ]; then
+            echo "::warning::Audit file not found: ${AUDIT_FILE}"
+            exit 0
+          fi
+          REMOTE_PATH="audit/discovery-blocked/${RUN_ID}.json"
+          CONTENT_B64=$(base64 < "${AUDIT_FILE}" | tr -d '\n')
+          # Check if file already exists (re-run of same run_id), retrieve sha if so
+          EXISTING_SHA=$(gh api "repos/thomaspryor/broadway-scorecard-data/contents/${REMOTE_PATH}" --jq '.sha // empty' 2>/dev/null || true)
+          if [ -n "${EXISTING_SHA}" ]; then
+            gh api "repos/thomaspryor/broadway-scorecard-data/contents/${REMOTE_PATH}" \
+              --method PUT \
+              -f "message=audit: discovery blocked by validate-data (run ${RUN_ID})" \
+              -f "content=${CONTENT_B64}" \
+              -f "sha=${EXISTING_SHA}" \
+              --silent
+          else
+            gh api "repos/thomaspryor/broadway-scorecard-data/contents/${REMOTE_PATH}" \
+              --method PUT \
+              -f "message=audit: discovery blocked by validate-data (run ${RUN_ID})" \
+              -f "content=${CONTENT_B64}" \
+              --silent
+          fi
+          echo "Pushed audit: thomaspryor/broadway-scorecard-data:${REMOTE_PATH}"
+
+      - name: Push aggregator-archive to private repo
+        if: always()
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Show Score archives from update-show-status'
+
+      # validate-data.js writes ${RUNNER_TEMP}/.skip-push-core-data itself
+      # whenever it exits with ANY error — pre-existing or not — since it has
+      # no notion of the set-diff decision made above. Without this step, a
+      # pre-existing-only failure would leave the sentinel written by the
+      # "Validate data" step, and push-core-data's OWN internal refusal-check
+      # would still silently block the private-repo push even though
+      # commit-gate (and the public-repo commit above) proceeded — the exact
+      # discard-good-work bug this fix targets, just one step downstream.
+      # Ship-check finding, task #649.
+      - name: Clear stale push-refusal sentinel (pre-existing errors only)
+        if: always() && steps.commit-gate.outcome == 'success'
+        run: |
+          SENTINEL="${RUNNER_TEMP:-/tmp}/.skip-push-core-data"
+          if [ -f "$SENTINEL" ]; then
+            echo "Clearing stale push-refusal sentinel — set-diff found no NEW validation errors (task #649)."
+            rm -f "$SENTINEL"
+          fi
+
+      # BRO-2913, the sibling of BRO-2912 in commercial-weekly.yml. `commit-gate`
+      # runs at step 31, BEFORE the commit at 36, so its outcome is already
+      # fixed at 'success' when the commit runs, and `always()` means a FAILED
+      # commit does not stop the publishers below. Observed live in run
+      # 32947722300 (schedule, 2026-08-26), job update-shows:
+      #   31 success  Commit gate — block only on NEW validation errors
+      #   36 FAILURE  Commit and push changes
+      #   42 success  Clear stale push-refusal sentinel
+      #   43 success  Push core data to private repo   <- published anyway
+      #
+      # What diverges: push-core-data ships data/shows.json (gitignored in this
+      # repo at .gitignore:200, so it lives only in the private core-data repo),
+      # while data/new-shows-pending.json — the bookkeeping the `create-issue`
+      # job reads to open a tracking issue for each newly discovered show — only
+      # ever lands in the PUBLIC repo, from the commit above. A failed commit
+      # therefore ships the new shows into shows.json while permanently losing
+      # their pending record: the next run no longer sees them as new (they are
+      # in shows.json already), so the tracking issue is never created and the
+      # OB/OWE venue staging baseline never persists. Skipping BOTH publishers
+      # instead makes that failure self-healing — nothing shipped, so the next
+      # run re-discovers and re-commits the pair together.
+      #
+      # The availability cost is real and was measured, not assumed: across the
+      # 12 most recent runs (2026-08-27 .. 2026-09-06) "Commit and push changes"
+      # reported `success` in 11/11 completed runs, so this gate is a no-op on
+      # the normal path. The one observed failure is exactly the divergence case
+      # above. A skip here delays a status flip by one daily cron, which is the
+      # cheaper of the two failures.
+      #
+      # `== 'success'` and not `!= 'failure'`: commit-gate carries `if: always()`
+      # so it has no legitimate `skipped` outcome, and `!= 'failure'` is TRUE for
+      # both `skipped` and `cancelled` — the reads-as-safe-while-nothing-ran
+      # shape BRO-2907's own barrier comment warns against.
+      #
+      # NOT gated, deliberately, and pinned as a named exclusion in
+      # tests/unit/update-show-status-publish-gate.test.mjs so the exclusion is a
+      # recorded decision rather than an invisible gap:
+      #   - "Push aggregator-archive to private repo": an append-only scrape
+      #     cache with no pairing to shows.json; losing a run's scrapes to a
+      #     failed public commit would be a pure regression.
+      #   - "Push discovery-blocked audit to private repo": it exists to record
+      #     the failure path, so gating it on success would delete the evidence.
+      - name: Push core data to private repo
+        if: always() && steps.commit-gate.outcome == 'success' && steps.commit-public.outcome == 'success'
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from update-show-status'
+
+      # NOTE: this step has been `skipped` in 11/11 completed runs since at
+      # least 2026-08-27, because `git-check` computes `changes` with
+      # `git diff --exit-code data/shows.json` and that path is gitignored at
+      # .gitignore:200 — the diff is always empty, so `changes` is never set.
+      # Tracked separately as BRO-2936; the commit-public clause below is
+      # correct either way and does not depend on that being fixed first.
+      - name: Trigger deploy (core data changed)
+        if: always() && steps.git-check.outputs.changes == 'true' && steps.commit-gate.outcome == 'success' && steps.commit-public.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Deploy dedup: skip if a deploy was ALREADY triggered after our rebuild started
+          OUR_RUN_START=$(gh run view ${{ github.run_id }} --json createdAt -q '.createdAt' 2>/dev/null || echo "")
+          RECENT=$(gh run list --workflow=vercel-deploy.yml --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
+
+          if [ -n "$RECENT" ] && [ -n "$OUR_RUN_START" ]; then
+            RECENT_TS=$(date -d "$RECENT" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$RECENT" +%s 2>/dev/null || echo "0")
+            OUR_TS=$(date -d "$OUR_RUN_START" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$OUR_RUN_START" +%s 2>/dev/null || echo "0")
+            NOW_TS=$(date +%s)
+            DIFF=$((NOW_TS - RECENT_TS))
+
+            if [ "$RECENT_TS" -gt "$OUR_TS" ] && [ "$DIFF" -lt 900 ]; then
+              echo "Skipping deploy — already triggered after this run started (${DIFF}s ago)"
+              exit 0
+            fi
+          fi
+
+          echo "Triggering deploy..."
+          gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — will deploy on next schedule"
+
+  # S4-T3 (2026 data audit, BRO-4204): the workflow RUN turns red when a
+  # discovery source is blind. Two signals were already WRITTEN every run but
+  # nothing ever read them — playbillBroadway sat at a 24-run zero streak (olt
+  # and theatremonkey at 23) with every run green:
+  #   * data/audit/discovery-source-coverage.json — zeroStreak >= 3 on
+  #     playbillBroadway / olt / theatremonkey (the same threshold
+  #     scripts/lib/discovery-source-coverage.js alerts at);
+  #   * data/audit/broadway-source-coverage-state.json `guard.blind` — written
+  #     by update-shows' "Check Broadway source coverage" step when the
+  #     Playbill parser has rotted (S4-T2).
+  #   * data/audit/off-broadway-source-coverage-state.json `guard.blind` and
+  #     the theatermaniaOB zero streak (BRO-4381) — the OB twin.
+  # Its OWN job, not a final step of update-shows (owner decision 2026-09-28):
+  # create-issue, trigger-data-agent, catchup-zero-review-shows and
+  # check-opening-night-readiness all gate on update-shows SUCCEEDING, so a
+  # failing step there would have silently switched off review collection for
+  # every new/opened show for as long as a source stayed blind. Here only this
+  # job fails: the run is red, update-shows stays green, every downstream job
+  # runs exactly as before, and alert-on-failure (needs: update-shows,
+  # if: failure()) is untouched. Nothing may list this job in `needs:` —
+  # tests/unit/check-discovery-source-blind.test.mjs pins that.
+  # `ref: main` (same as catchup-zero-review-shows) so the verdict reads the
+  # streaks update-shows just committed rather than the trigger commit's copy.
+  # Both files are tracked in this repo, so no core-data checkout; the script
+  # has no npm dependencies, so no install. Read-only — never writes data/audit/.
+  discovery-source-blind:
+    needs: update-shows
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+
+      - name: Fail if a discovery source is blind
+        run: node scripts/check-discovery-source-blind.js
+
+  create-issue:
+    needs: update-shows
+    if: needs.update-shows.outputs.new_shows_count != '' && needs.update-shows.outputs.new_shows_count != '0'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout to read pending shows
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Create issue for new shows
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const count = '${{ needs.update-shows.outputs.new_shows_count }}';
+
+            // Read pending shows from file instead of workflow output (safer for special characters)
+            const pendingData = JSON.parse(fs.readFileSync('data/new-shows-pending.json', 'utf8'));
+            const shows = pendingData.shows;
+            const showsList = shows.map(s => `- ${s.title} (${s.venue})`).join('\n');
+            const slugs = shows.map(s => s.slug);
+
+            const issueBody = `## New Broadway Shows Discovered
+
+            The automated discovery script found **${count} new show(s)** on Broadway:
+
+            ${showsList}
+
+            ### Action Required
+
+            These shows have been added to \`shows.json\` with basic metadata but need:
+
+            - [ ] Review data collection (critic reviews, scores)
+            - [ ] Complete metadata (opening date, runtime, cast, creative team)
+            - [ ] Image verification
+
+            ### Shows to process:
+            ${slugs.map(s => `- [ ] \`${s}\``).join('\n')}
+
+            ### How to gather review data
+
+            Run the data agent or manually add reviews to \`reviews.json\`:
+
+            \`\`\`bash
+            # Check the pending shows file
+            cat data/new-shows-pending.json
+
+            # Run data agent (if available)
+            node scripts/gather-reviews.js --shows=${slugs.join(',')}
+            \`\`\`
+
+            ---
+            *This issue was auto-generated by the Broadway Show Discovery workflow*
+            `;
+
+            const title = shows.length === 1
+              ? `🎭 New Show: ${shows[0].title}`
+              : `🎭 ${shows.length} New Shows Discovered`;
+
+            // Issue creation disabled — pipeline auto-handles new shows
+            // (gather-reviews, image fetch, IBDB enrichment all trigger automatically)
+            console.log(`Discovered ${shows.length} new show(s): ${slugs.join(', ')}`);
+            console.log('Skipping issue creation — pipeline handles these automatically');
+
+  # Optional: Trigger review data gathering workflow
+  # Note: Only triggers for shows that have opened (not previews)
+  trigger-data-agent:
+    needs: update-shows
+    if: |
+      (needs.update-shows.outputs.new_shows_count != '' && needs.update-shows.outputs.new_shows_count != '0') ||
+      (needs.update-shows.outputs.opened_count != '' && needs.update-shows.outputs.opened_count != '0')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout to filter previews shows
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          # BRO-2388 (task #466 class): depth 1000 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 360-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 1000
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Combine discovered and opened shows
+        id: filter
+        run: |
+          new_slugs="${{ needs.update-shows.outputs.new_slugs }}"
+          opened_slugs="${{ needs.update-shows.outputs.opened_slugs }}"
+
+          # Combine both sources, dedup
+          # Include open + closed shows (they have reviews to gather)
+          # Skip previews (no reviews published yet)
+          all_slugs=""
+          for slug in $(echo "$new_slugs,$opened_slugs" | tr ',' '\n' | sort -u); do
+            [ -z "$slug" ] && continue
+            status=$(node -e "const shows = require('./data/shows.json'); const show = shows.shows.find(s => s.id === '$slug' || s.slug === '$slug'); console.log(show?.status || 'unknown');")
+            if [ "$status" = "open" ] || [ "$status" = "closed" ]; then
+              [ -n "$all_slugs" ] && all_slugs="$all_slugs,$slug" || all_slugs="$slug"
+            fi
+          done
+
+          echo "opened_shows=$all_slugs" >> $GITHUB_OUTPUT
+          echo "Combined shows for data pipelines: $all_slugs"
+
+          # Shows Opening Night Express now owns end-to-end (gather->collect->score->
+          # rebuild->push->deploy, inline in one job — see opening-night-express.yml)
+          # are true previews/upcoming/announced->open transitions this run, i.e.
+          # $opened_slugs. Excluding them here is what stops gather-reviews.yml /
+          # collect-review-texts.yml from redundantly re-processing the same show
+          # Express is already handling — that double-processing is exactly the
+          # "concurrent-CI data race" (issue #9) Express was built to eliminate.
+          # new_slugs-only entries (shows discovered already open/closed — bulk
+          # backfill, not a live opening-night event) still need the legacy chain.
+          #
+          # EXPRESS_AUTOFIRE_DISABLED kill switch: when set, "Trigger Opening Night
+          # Express" below won't fire, so the exclusion must NOT happen either —
+          # otherwise a killed Express leaves transitioned shows with zero automated
+          # gather/collect coverage at all (found in /ship-check review, task #1349).
+          EXPRESS_DISABLED="${{ vars.EXPRESS_AUTOFIRE_DISABLED }}"
+          legacy_gather_targets=""
+          for slug in $(echo "$all_slugs" | tr ',' '\n'); do
+            [ -z "$slug" ] && continue
+            if [ "$EXPRESS_DISABLED" != "true" ]; then
+              case ",$opened_slugs," in
+                *",$slug,"*) continue ;;
+              esac
+            fi
+            [ -n "$legacy_gather_targets" ] && legacy_gather_targets="$legacy_gather_targets,$slug" || legacy_gather_targets="$slug"
+          done
+          echo "legacy_gather_targets=$legacy_gather_targets" >> $GITHUB_OUTPUT
+          echo "Legacy gather/collect targets (excludes Express-owned shows): $legacy_gather_targets"
+
+          # Also output newly discovered preview shows (for Reddit — discussions start at previews)
+          preview_slugs=""
+          for slug in $(echo "$new_slugs" | tr ',' '\n' | sort -u); do
+            [ -z "$slug" ] && continue
+            status=$(node -e "const shows = require('./data/shows.json'); const show = shows.shows.find(s => s.id === '$slug' || s.slug === '$slug'); console.log(show?.status || 'unknown');")
+            if [ "$status" = "previews" ]; then
+              [ -n "$preview_slugs" ] && preview_slugs="$preview_slugs,$slug" || preview_slugs="$slug"
+            fi
+          done
+          echo "preview_shows=$preview_slugs" >> $GITHUB_OUTPUT
+          echo "New preview shows (for Reddit): $preview_slugs"
+
+          # Filter to London-market shows only (for WE-only scrapers: SeatPlan, LBO, LTD)
+          london_slugs=""
+          for slug in $(echo "$all_slugs" | tr ',' '\n'); do
+            [ -z "$slug" ] && continue
+            category=$(node -e "const shows = require('./data/shows.json'); const show = shows.shows.find(s => s.id === '$slug' || s.slug === '$slug'); console.log(show?.category || 'broadway');")
+            if [ "$category" = "west-end" ] || [ "$category" = "off-west-end" ]; then
+              [ -n "$london_slugs" ] && london_slugs="$london_slugs,$slug" || london_slugs="$slug"
+            fi
+          done
+          echo "london_shows=$london_slugs" >> $GITHUB_OUTPUT
+          echo "London shows for WE-only scrapers: $london_slugs"
+
+          # Also output ALL new shows (including previews) for cast backfill
+          # Cast data is available on IBDB as soon as previews begin
+          # Skip OB/WE shows — IBDB is Broadway-only
+          all_cast_slugs=""
+          for slug in $(echo "$new_slugs,$opened_slugs" | tr ',' '\n' | sort -u); do
+            [ -z "$slug" ] && continue
+            category=$(node -e "const shows = require('./data/shows.json'); const show = shows.shows.find(s => s.id === '$slug' || s.slug === '$slug'); console.log(show?.category || 'broadway');")
+            if [ "$category" != "broadway" ] && [ "$category" != "" ]; then
+              echo "Skipping cast backfill for non-Broadway show: $slug ($category)"
+              continue
+            fi
+            [ -n "$all_cast_slugs" ] && all_cast_slugs="$all_cast_slugs,$slug" || all_cast_slugs="$slug"
+          done
+          echo "cast_shows=$all_cast_slugs" >> $GITHUB_OUTPUT
+          echo "Shows for cast backfill (incl previews): $all_cast_slugs"
+
+      - name: Trigger data agent workflow
+        # legacy_gather_targets excludes true previews->open transitions (opened_slugs)
+        # — those now run through opening-night-express.yml instead, which calls this
+        # same gather-reviews.js script inline. Dispatching this workflow for those
+        # shows too would re-run the same discovery concurrently with Express against
+        # the same review-texts files (the exact race Express exists to eliminate).
+        if: steps.filter.outputs.legacy_gather_targets != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Check if the gather-reviews workflow exists
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'gather-reviews.yml',
+                ref: 'main',
+                inputs: {
+                  shows: '${{ steps.filter.outputs.legacy_gather_targets }}',
+                  max_tier: '3',
+                  // This fires the moment a show flips to 'open' — it IS the
+                  // first opening-night discovery pass, so it must be exempt
+                  // from the Bright Data daily breaker (Scraping cost v3 S2).
+                  // Without the flag the run reaches gather-reviews.yml as
+                  // "Gather Review Data" and loses the workflow-name carve-out.
+                  opening_night: 'true'
+                }
+              });
+              console.log('Triggered gather-reviews workflow for opened shows (max_tier=3)');
+            } catch (e) {
+              // Workflow doesn't exist yet, that's okay
+              console.log('gather-reviews workflow not found, skipping trigger');
+            }
+
+      - name: Trigger related shows generation for opened shows
+        if: steps.filter.outputs.opened_shows != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Generate recommendations for each newly opened show individually
+            // (show_filter accepts a single show slug)
+            const slugs = '${{ steps.filter.outputs.opened_shows }}'.split(',').filter(Boolean);
+            for (const slug of slugs) {
+              try {
+                await github.rest.actions.createWorkflowDispatch({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  workflow_id: 'generate-related-shows.yml',
+                  ref: 'main',
+                  inputs: {
+                    show_filter: slug
+                  }
+                });
+                console.log(`Triggered related shows generation for: ${slug}`);
+                // Space dispatches to avoid rate limits
+                if (slugs.length > 1) await new Promise(r => setTimeout(r, 10000));
+              } catch (e) {
+                console.log(`Related shows trigger failed for ${slug}:`, e.message);
+              }
+            }
+
+      - name: Trigger Reddit sentiment workflow
+        if: steps.filter.outputs.opened_shows != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Trigger Reddit sentiment scraping for newly opened shows
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'update-reddit-sentiment.yml',
+                ref: 'main',
+                inputs: {
+                  shows: '${{ steps.filter.outputs.opened_shows }}',
+                  // Just opened — bypass the 20h freshness skip (BRO-4215).
+                  skip_fresh_hours: '0'
+                }
+              });
+              console.log('Triggered Reddit sentiment workflow for opened shows: ${{ steps.filter.outputs.opened_shows }}');
+            } catch (e) {
+              console.log('Reddit sentiment workflow trigger failed:', e.message);
+            }
+
+      - name: Trigger Reddit sentiment for new preview shows
+        if: steps.filter.outputs.preview_shows != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Reddit discussions start as soon as previews begin — don't wait for opening night
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'update-reddit-sentiment.yml',
+                ref: 'main',
+                inputs: {
+                  shows: '${{ steps.filter.outputs.preview_shows }}'
+                }
+              });
+              console.log('Triggered Reddit sentiment for preview shows: ${{ steps.filter.outputs.preview_shows }}');
+            } catch (e) {
+              console.log('Reddit sentiment trigger for previews failed:', e.message);
+            }
+
+      - name: Trigger Broadway.com audience workflow
+        if: steps.filter.outputs.opened_shows != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Trigger Broadway.com audience scraping for newly opened shows
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'update-broadway-com.yml',
+                ref: 'main',
+                inputs: {
+                  shows: '${{ steps.filter.outputs.opened_shows }}'
+                }
+              });
+              console.log('Triggered Broadway.com audience workflow for opened shows: ${{ steps.filter.outputs.opened_shows }}');
+            } catch (e) {
+              console.log('Broadway.com audience workflow trigger failed:', e.message);
+            }
+
+      - name: Trigger Show Score workflow
+        if: steps.filter.outputs.opened_shows != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Trigger Show Score scraping for newly opened shows
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'update-show-score.yml',
+                ref: 'main',
+                inputs: {
+                  shows: '${{ steps.filter.outputs.opened_shows }}',
+                  // Just opened — bypass the 20h freshness skip (BRO-4215).
+                  skip_fresh_hours: '0'
+                }
+              });
+              console.log('Triggered Show Score workflow for opened shows: ${{ steps.filter.outputs.opened_shows }}');
+            } catch (e) {
+              console.log('Show Score workflow trigger failed:', e.message);
+            }
+
+      - name: Trigger Mezzanine workflow
+        if: steps.filter.outputs.opened_shows != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Trigger Mezzanine scraping for newly opened shows
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'update-mezzanine.yml',
+                ref: 'main',
+                inputs: {
+                  shows: '${{ steps.filter.outputs.opened_shows }}'
+                }
+              });
+              console.log('Triggered Mezzanine workflow for opened shows: ${{ steps.filter.outputs.opened_shows }}');
+            } catch (e) {
+              console.log('Mezzanine workflow trigger failed:', e.message);
+            }
+
+      - name: Trigger Theatr workflow
+        if: steps.filter.outputs.opened_shows != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Trigger Theatr scraping for newly opened shows (Broadway/OB only — Theatr doesn't cover WE)
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'update-theatr.yml',
+                ref: 'main',
+                inputs: {
+                  shows: '${{ steps.filter.outputs.opened_shows }}'
+                }
+              });
+              console.log('Triggered Theatr workflow for opened shows: ${{ steps.filter.outputs.opened_shows }}');
+            } catch (e) {
+              console.log('Theatr workflow trigger failed:', e.message);
+            }
+
+      - name: Trigger SeatPlan workflow for London shows
+        if: steps.filter.outputs.london_shows != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Trigger SeatPlan scraping for newly opened London shows
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'update-seatplan.yml',
+                ref: 'main',
+                inputs: {
+                  shows: '${{ steps.filter.outputs.london_shows }}'
+                }
+              });
+              console.log('Triggered SeatPlan workflow for London shows: ${{ steps.filter.outputs.london_shows }}');
+            } catch (e) {
+              console.log('SeatPlan workflow trigger failed:', e.message);
+            }
+
+      - name: Trigger LBO workflow for London shows
+        if: steps.filter.outputs.london_shows != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Trigger LBO scraping for newly opened London shows
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'update-lbo.yml',
+                ref: 'main',
+                inputs: {
+                  shows: '${{ steps.filter.outputs.london_shows }}'
+                }
+              });
+              console.log('Triggered LBO workflow for London shows: ${{ steps.filter.outputs.london_shows }}');
+            } catch (e) {
+              console.log('LBO workflow trigger failed:', e.message);
+            }
+
+      - name: Trigger LTD workflow for London shows
+        if: steps.filter.outputs.london_shows != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Trigger London Theatre Direct scraping for newly opened London shows
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'update-ltd.yml',
+                ref: 'main',
+                inputs: {
+                  shows: '${{ steps.filter.outputs.london_shows }}'
+                }
+              });
+              console.log('Triggered LTD workflow for London shows: ${{ steps.filter.outputs.london_shows }}');
+            } catch (e) {
+              console.log('LTD workflow trigger failed:', e.message);
+            }
+
+      - name: Trigger WE aggregator sweep for London shows
+        if: steps.filter.outputs.london_shows != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Pre-populate WET/TR/SD/TS archives before opening night poller runs
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'sweep-we-aggregators.yml',
+                ref: 'main',
+                inputs: {
+                  shows: '${{ steps.filter.outputs.london_shows }}',
+                  force: 'true'
+                }
+              });
+              console.log('Triggered WE aggregator sweep for London shows: ${{ steps.filter.outputs.london_shows }}');
+            } catch (e) {
+              console.log('WE aggregator sweep trigger failed:', e.message);
+            }
+
+      - name: Trigger image fetching workflow
+        if: steps.filter.outputs.opened_shows != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Trigger image fetching + archival for newly opened shows
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'fetch-all-image-formats.yml',
+                ref: 'main',
+                inputs: {
+                  only_missing: 'true'
+                }
+              });
+              console.log('Triggered image fetching workflow for newly opened shows');
+            } catch (e) {
+              console.log('Image fetching workflow trigger failed:', e.message);
+            }
+
+      - name: Trigger cast backfill for new shows
+        if: steps.filter.outputs.cast_shows != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Trigger IBDB cast scraping for each new show (including previews)
+            const slugs = '${{ steps.filter.outputs.cast_shows }}'.split(',').filter(Boolean);
+            for (const slug of slugs) {
+              try {
+                await github.rest.actions.createWorkflowDispatch({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  workflow_id: 'backfill-cast.yml',
+                  ref: 'main',
+                  inputs: {
+                    show_filter: slug
+                  }
+                });
+                console.log(`Triggered cast backfill for: ${slug}`);
+                // 10s spacing between dispatch calls
+                await new Promise(r => setTimeout(r, 10000));
+              } catch (e) {
+                console.log(`Cast backfill trigger failed for ${slug}:`, e.message);
+              }
+            }
+
+      - name: Discover Playbill URLs for new shows (cast changes tracking)
+        if: steps.filter.outputs.cast_shows != ''
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: |
+          for slug in $(echo "${{ steps.filter.outputs.cast_shows }}" | tr ',' '\n'); do
+            echo "Discovering Playbill URL for: $slug"
+            node scripts/discover-playbill-urls.js --show=$slug || echo "::warning::Playbill URL not found for $slug"
+          done
+          # Commit updated playbill-urls.json if changed
+          if ! git diff --quiet data/playbill-urls.json 2>/dev/null; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add data/playbill-urls.json
+            git commit -m "data: Add Playbill URLs for new shows [skip ci]" || true
+            bash scripts/lib/push-with-retry.sh || echo "::warning::Push failed for playbill-urls"
+          fi
+        continue-on-error: true
+
+      - name: Trigger WE outlet-based SERP collection for new WE shows
+        if: needs.update-shows.outputs.we_new_count != '' && needs.update-shows.outputs.we_new_count != '0'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Trigger outlet-based SERP collection for new West End shows
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'collect-outlet-reviews.yml',
+                ref: 'main',
+                inputs: {
+                  market: 'west-end',
+                  max_tier: '2',
+                  max_searches: '30'
+                }
+              });
+              console.log('Triggered WE outlet-based SERP collection');
+            } catch (e) {
+              console.log('WE outlet SERP trigger failed:', e.message);
+            }
+
+      - name: Trigger social media post for opened shows
+        if: steps.filter.outputs.opened_shows != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Post to social media for each newly opened show
+            const slugs = '${{ steps.filter.outputs.opened_shows }}'.split(',').filter(Boolean);
+            for (const slug of slugs) {
+              try {
+                await github.rest.actions.createWorkflowDispatch({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  workflow_id: 'social-post.yml',
+                  ref: 'main',
+                  inputs: {
+                    event: 'opened',
+                    show: slug
+                  }
+                });
+                console.log(`Triggered social post for opened show: ${slug}`);
+              } catch (e) {
+                console.log(`Social post trigger failed for ${slug}:`, e.message);
+              }
+            }
+
+      - name: Trigger review text collection for opened shows
+        # legacy_gather_targets excludes true previews->open transitions (opened_slugs)
+        # — see the same note on "Trigger data agent workflow" above. Express's inline
+        # "Collect review texts" step does this same job for those shows.
+        if: steps.filter.outputs.legacy_gather_targets != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Trigger full text collection for each newly opened show
+            const slugs = '${{ steps.filter.outputs.legacy_gather_targets }}'.split(',').filter(Boolean);
+            for (const slug of slugs) {
+              try {
+                await github.rest.actions.createWorkflowDispatch({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  workflow_id: 'collect-review-texts.yml',
+                  ref: 'main',
+                  inputs: {
+                    show_filter: slug,
+                    max_reviews: '0'
+                  }
+                });
+                console.log(`Triggered review text collection for: ${slug}`);
+                await new Promise(r => setTimeout(r, 10000));
+              } catch (e) {
+                console.log(`Review text collection trigger failed for ${slug}:`, e.message);
+              }
+            }
+
+      - name: Trigger Deep Research for opened shows
+        if: steps.filter.outputs.opened_shows != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'deep-research-commercial.yml',
+                ref: 'main',
+                inputs: {
+                  shows: '${{ steps.filter.outputs.opened_shows }}',
+                  model: 'o4-mini',
+                  budget: '20',
+                  max_shows: '3'
+                }
+              });
+              console.log('Triggered Deep Research for opened shows: ${{ steps.filter.outputs.opened_shows }}');
+            } catch (e) {
+              console.log('Deep Research trigger failed:', e.message);
+            }
+
+      # Opening Night Poller's auto-dispatch only fires when Express's auto-fire is
+      # killed (task #1349). Poller's ENTIRE automated purpose (per its own header
+      # comment: "NO CRON — only dispatched by update-show-status.yml when a show
+      # transitions to open") is superseded by Express when Express is enabled, so
+      # dispatching both would be UNSAFE, not just redundant: Express's own "cancel
+      # competing orchestrator/poller runs" step only cancels poller's run — it
+      # can't recall the downstream workflows poller's job may have already
+      # dispatched in the few seconds before that cancellation lands. When Express
+      # IS killed, there's no Express run to race, so poller reverts to its
+      # pre-#1349 role as the standalone opening-night discovery trigger.
+      - name: Trigger Opening Night Poller for opened shows (Express-disabled fallback)
+        if: needs.update-shows.outputs.opened_count != '' && needs.update-shows.outputs.opened_count != '0' && vars.EXPRESS_AUTOFIRE_DISABLED == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'opening-night-poller.yml',
+                ref: 'main',
+                inputs: {}
+              });
+              console.log('Triggered Opening Night Poller for opened shows (Express auto-fire disabled)');
+            } catch (e) {
+              console.log('Opening Night Poller trigger failed:', e.message);
+            }
+
+      - name: Trigger Opening Night Express for opened shows
+        # Kill switch independent of reverting this file: gh variable set EXPRESS_AUTOFIRE_DISABLED --body true
+        if: needs.update-shows.outputs.opened_count != '' && needs.update-shows.outputs.opened_count != '0' && vars.EXPRESS_AUTOFIRE_DISABLED != 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // One dispatch per true previews->open transition this run. Each show
+            // gets its own Express concurrency group (opening-night-express-<show_id>
+            // — see opening-night-express.yml), so multiple same-day openings all
+            // run rather than a shared group silently dropping all but the last.
+            const shows = require('./data/shows.json').shows;
+            const slugs = '${{ needs.update-shows.outputs.opened_slugs }}'.split(',').filter(Boolean);
+            for (const slug of slugs) {
+              const show = shows.find(s => s.id === slug || s.slug === slug);
+              const category = show?.category || 'broadway';
+              const market = (category === 'west-end' || category === 'off-west-end') ? 'west-end' : 'broadway';
+              try {
+                await github.rest.actions.createWorkflowDispatch({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  workflow_id: 'opening-night-express.yml',
+                  ref: 'main',
+                  inputs: {
+                    show_id: slug,
+                    market
+                  }
+                });
+                console.log(`Triggered Opening Night Express for: ${slug} (market=${market})`);
+                if (slugs.length > 1) await new Promise(r => setTimeout(r, 10000));
+              } catch (e) {
+                console.log(`Opening Night Express trigger failed for ${slug}:`, e.message);
+              }
+            }
+
+      - name: Trigger Opening Night Broadcast (preview to owner)
+        if: needs.update-shows.outputs.opened_count != '' && needs.update-shows.outputs.opened_count != '0'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Dispatch the broadcast — defaults to preview-to-owner only.
+            // Owner must manually re-dispatch with send_to_all=true to send to subscribers.
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'opening-night-broadcast.yml',
+                ref: 'main',
+                inputs: {}
+              });
+              console.log('Triggered Opening Night Broadcast (preview mode) for opened shows');
+            } catch (e) {
+              console.log('Opening Night Broadcast trigger failed:', e.message);
+            }
+
+      - name: Submit new show pages to Google Indexing API + IndexNow
+        continue-on-error: true
+        env:
+          GOOGLE_INDEXING_KEY: ${{ secrets.GOOGLE_INDEXING_KEY }}
+        run: |
+          # Submit ALL new + opened shows (not just opened) — pages should be indexed as soon as discovered
+          NEW_SLUGS="${{ needs.update-shows.outputs.new_slugs }}"
+          OPENED_SLUGS="${{ needs.update-shows.outputs.opened_slugs }}"
+          ALL_SLUGS=$(echo "$NEW_SLUGS,$OPENED_SLUGS" | tr ',' '\n' | sort -u | tr '\n' ',' | sed 's/,$//')
+          ALL_SLUGS=$(echo "$ALL_SLUGS" | sed 's/^,//')
+
+          if [ -z "$ALL_SLUGS" ] || [ "$ALL_SLUGS" = "" ]; then
+            echo "No new show slugs to submit"
+            exit 0
+          fi
+
+          echo "Submitting show pages to search engines: $ALL_SLUGS"
+
+          # Convert show IDs to URL slugs
+          SLUGS=$(node -e "
+            const shows = require('./data/shows.json').shows;
+            const ids = '$ALL_SLUGS'.split(',').filter(Boolean);
+            const slugs = ids.map(id => {
+              const s = shows.find(x => x.id === id);
+              return s ? (s.slug || s.id) : id;
+            });
+            console.log(slugs.join(','));
+          ")
+
+          # Google Indexing API
+          if [ -n "$GOOGLE_INDEXING_KEY" ]; then
+            node scripts/submit-google-indexing.js --shows "$SLUGS" || true
+          fi
+
+          # IndexNow (Bing, Yandex, etc.)
+          node scripts/submit-indexnow.js --shows "$SLUGS" || true
+
+      # submit-google-indexing.js records usage in the shared daily quota
+      # ledger (data/audit/indexing-api-usage.json, 200/day). This job never
+      # commits, so without this step the run's usage is silently discarded
+      # and other same-day callers (check-seo-health, opening-night-broadcast)
+      # undercount the quota.
+      - name: Record indexing quota usage
+        continue-on-error: true
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          bash scripts/lib/git-add-existing.sh data/audit/indexing-api-usage.json
+          if git diff --staged --quiet; then
+            echo "No quota usage to record"
+            exit 0
+          fi
+          git commit -m "chore: Record indexing API quota usage [skip ci]"
+          bash scripts/lib/push-with-retry.sh || echo "::warning::Quota ledger push failed"
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: update-show-status-trigger-data-agent
+
+  # Safety net: catch open shows that slipped through without review collection
+  catchup-zero-review-shows:
+    needs: update-shows
+    if: always() && needs.update-shows.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+
+      - name: Find open shows with zero reviews
+        id: find-gaps
+        run: |
+          # Selection logic lives in scripts/lib/zero-review-catchup.js
+          # (BRO-3389 — the previous inline node -e had no age bound and no
+          # attempt memory, so it re-dispatched the same handful of long-open
+          # zero-review shows every day forever). Selection ONLY — writes
+          # gap_shows straight to $GITHUB_OUTPUT itself (never via "the last
+          # stdout line": command substitution strips trailing blank lines,
+          # which promoted a diagnostic sentence into the id list when the
+          # batch was empty — ship-check finding).
+          node scripts/find-zero-review-catchup-gaps.js
+
+      - name: Dispatch gather-reviews for gap shows
+        id: dispatch-gaps
+        if: steps.find-gaps.outputs.gap_shows != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          GAPS="${{ steps.find-gaps.outputs.gap_shows }}"
+          # Drop shows already covered by an in-flight gather-reviews run
+          # (scripts/lib/gather-idempotency.js, ship-check finding: this job
+          # used to dispatch its whole batch unconditionally, so a show whose
+          # first attempt was still running could get a second overlapping
+          # dispatch).
+          NEEDING=$(node scripts/filter-active-gather-shows.js "$GAPS")
+          if [ -z "$NEEDING" ]; then
+            echo "All of [$GAPS] already covered by an active gather-reviews run — skipping dispatch"
+            echo "dispatched=true" >> $GITHUB_OUTPUT
+          else
+            echo "Dispatching gather-reviews for: $NEEDING"
+            if gh workflow run gather-reviews.yml -f shows="$NEEDING"; then
+              echo "dispatched=true" >> $GITHUB_OUTPUT
+            else
+              echo "::warning::gather-reviews dispatch failed — NOT recording a catch-up attempt for this batch (retried tomorrow, doesn't count against the give-up budget)"
+              echo "dispatched=false" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+      # Attempt is recorded only after a CONFIRMED successful dispatch (BRO-3389
+      # ship-check finding) — recording it unconditionally, as the first cut of
+      # this fix did, would burn the give-up budget on transient gh-cli/API
+      # failures that never actually attempted collection.
+      - name: Record zero-review catch-up attempt
+        if: steps.find-gaps.outputs.gap_shows != '' && steps.dispatch-gaps.outputs.dispatched == 'true'
+        run: node scripts/record-zero-review-catchup-attempt.js "${{ steps.find-gaps.outputs.gap_shows }}"
+
+      - name: Commit zero-review catch-up attempt memory
+        if: always()
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/zero-review-catchup-attempts.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No attempt-memory changes to commit"
+          else
+            git commit -m "audit: zero-review catch-up attempt memory
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+  # Auto-trigger opening night readiness check for shows opening tomorrow
+  check-opening-night-readiness:
+    needs: update-shows
+    if: always() && needs.update-shows.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v5
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Check for shows opening tomorrow
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TOMORROW=$(date -u -d "+1 day" +%Y-%m-%d 2>/dev/null || date -u -v+1d +%Y-%m-%d)
+          echo "Checking for shows opening on $TOMORROW..."
+          SHOWS=$(node -e "
+            const shows = require('./data/shows.json').shows;
+            // A national tour's first stop is no press night (BRO-4724).
+            const opening = shows.filter(s => s.openingDate === '$TOMORROW' && s.status !== 'closed' && s.category !== 'tour');
+            opening.forEach(s => console.log(s.id + '|' + (s.category || 'broadway')));
+          " 2>/dev/null)
+
+          if [ -z "$SHOWS" ]; then
+            echo "No shows opening tomorrow. Skipping readiness check."
+            exit 0
+          fi
+
+          echo "$SHOWS" | while IFS='|' read -r SHOW_ID MARKET; do
+            echo "Triggering readiness check for: $SHOW_ID (market: $MARKET)"
+            gh workflow run check-opening-night-readiness.yml -f show_id="$SHOW_ID" -f market="$MARKET" || echo "::warning::Failed to trigger readiness check for $SHOW_ID"
+          done
+
+  # Alert on consecutive failures
+  alert-on-failure:
+    needs: update-shows
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Notify on failure
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Update Shows Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+      # Streak counted over the last 10 scheduled runs (not 5, not workflow_dispatch).
+      # Why filter to schedule: during 05-09 incident, 4 manual workflow_dispatch
+      # retries interleaved with scheduled failures and would have buried the
+      # failing run out of a 5-run window, suppressing the alert entirely. Why 10:
+      # gives 2x headroom while still being recent enough that a streak signals
+      # an ongoing condition, not historical noise.
+      - name: Check consecutive failures
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          FAILURES=$(gh run list --workflow=update-show-status.yml --event=schedule --limit=10 \
+            --json conclusion -q '[.[] | select(.conclusion == "failure")] | length')
+          echo "Recent failures: $FAILURES out of last 10 scheduled runs"
+          echo "failure_count=$FAILURES" >> "$GITHUB_OUTPUT"
+
+      # This job only runs `if: failure()`, so this step never sees a fully
+      # green run — but a later failing run can still see failure_count drop
+      # below 6 as older failures age out of the trailing-10 window. Resolving
+      # here (rather than requiring a success run that never triggers this
+      # job) means the NEXT time the streak climbs back to 6+, routeAlert
+      # treats it as a fresh incident and pages immediately instead of
+      # silently waiting out the 7-day cooldown.
+      - name: Resolve repeat-failure condition if streak has dropped
+        if: fromJSON(steps.check.outputs.failure_count) < 6
+        run: |
+          node -e '
+            const { resolveCondition } = require("./scripts/lib/owner-alert-router.js");
+            resolveCondition("update-show-status:repeat-failure");
+          '
+
+      # Resolve the actual failing step from THIS run. Previously this used
+      # `gh run list --status=failure --limit=5 --jq '.[0]'` which coincidentally
+      # returned the in-flight current run, but the design was misleading — and
+      # `[0]` could surface a prior failure if a future caller changed the
+      # surrounding context. github.run_id is deterministic and self-documenting.
+      # Note: the jobs API for the current in-flight run still surfaces the
+      # already-finished `update-shows` job (verified against real failed runs).
+      - name: Resolve failing step + run URL
+        id: step-info
+        if: fromJSON(steps.check.outputs.failure_count) >= 6
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          REPO: ${{ github.repository }}
+        run: |
+          RUN_URL="https://github.com/${REPO}/actions/runs/${RUN_ID}"
+          FAILING_STEP=$(gh api "repos/${REPO}/actions/runs/${RUN_ID}/jobs" \
+            --jq '[.jobs[] | select(.name=="update-shows") | .steps[]? | select(.conclusion=="failure")][0].name // "unknown"')
+          echo "failing_step=${FAILING_STEP}" >> "$GITHUB_OUTPUT"
+          echo "run_url=${RUN_URL}" >> "$GITHUB_OUTPUT"
+          echo "Failing step in update-shows job: ${FAILING_STEP}"
+          echo "Run URL: ${RUN_URL}"
+
+      - name: Send alert on 6+ consecutive failures
+        if: fromJSON(steps.check.outputs.failure_count) >= 6
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          FAILURE_COUNT: ${{ steps.check.outputs.failure_count }}
+          FAILING_STEP: ${{ steps.step-info.outputs.failing_step }}
+          RUN_URL: ${{ steps.step-info.outputs.run_url }}
+          PRE_VALIDATION_STATUS: ${{ needs.update-shows.outputs.pre_validation_status }}
+        run: |
+          node -e '
+            const { routeAlert } = require("./scripts/lib/owner-alert-router.js");
+            const count = process.env.FAILURE_COUNT;
+            const step = process.env.FAILING_STEP || "unknown";
+            const runUrl = process.env.RUN_URL || undefined;
+            const preValidation = process.env.PRE_VALIDATION_STATUS || "";
+
+            // Match order matters: Pre-validate FIRST because /Validate data/i
+            // would also match "Pre-validate existing data". Both rules use
+            // anchored ^...$ to keep matching deterministic.
+            //
+            // Task #649: "Validate data" and "Compute validation error
+            // set-diff" both run with continue-on-error, so they can no
+            // longer be the failing step reported by the gh api query below
+            // (their conclusion is always success). "Commit gate" is the
+            // step that actually fails the job now, and only for a
+            // genuinely NEW error — a pre-existing-only failure no longer
+            // reaches this alert at all, since the commit still lands.
+            let hint;
+            if (/^Pre-validate /i.test(step)) {
+              hint = "Pre-validation step itself errored — investigate validate-data.js for a thrown exception (not just a non-zero exit). continue-on-error should swallow a clean exit-1, so a real failure here means an uncaught throw or process crash.";
+            } else if (/^Commit gate/i.test(step)) {
+              hint = "Discovery/enrichment introduced a NEW validation error not present before this run (task #649 set-diff) — a pre-existing, unrelated error alone no longer blocks the commit. Check data/audit/discovery-blocked/ (new_errors_preview) or the run step summary for the specific error.";
+            } else if (/^Discover new shows$/i.test(step)) {
+              hint = "discover-new-shows.js itself failed. Check TodayTix API availability, Playbill scraping, and ScrapingBee/Bright Data credits.";
+            } else if (/^Update show statuses$/i.test(step)) {
+              hint = "update-show-status.js (status transitions) failed before discovery ran. Check ShowScore + aggregator availability.";
+            } else {
+              hint = "Inspect the failing step in the linked run.";
+            }
+
+            routeAlert({
+              conditionKey: "update-show-status:repeat-failure",
+              title: "Update Shows — " + count + " of last 10 scheduled runs failed",
+              description: "Failing step: `" + step + "`. " + hint,
+              severity: "error",
+              disposition: "human",
+              url: runUrl,
+              fields: [
+                { name: "Failing step", value: "`" + step + "`" },
+                { name: "Most recent failed run", value: runUrl || "(unknown)" },
+                { name: "Pre-discovery validation", value: preValidation || "(not set)" }
+              ]
+            }).catch(e => console.error("Alert failed:", e.message));
+          '
+
+      - name: Commit alert ledger
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # MUST commit here or the routeAlert/resolveCondition ledger state
+          # never persists across daily cron runs — the alert would re-open
+          # and re-email every run, reintroducing the exact storm this
+          # migration fixes (#486, same class as #406's opening-night fix).
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          # BRO-3662: logDispatchAttempt() rewrites this TRACKED file on every
+          # dispatch attempt; left unstaged it makes every later rebase refuse
+          # pre-flight and forces the clobber-prone merge path.
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No ledger changes to commit"
+          else
+            git commit -m "audit: update-show-status alert ledger [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main
+          fi

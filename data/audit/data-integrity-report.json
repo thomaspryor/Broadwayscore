@@ -1,0 +1,4575 @@
+{
+  "auditedAt": "2026-02-04T16:22:00.326Z",
+  "totalFilesScanned": 11539,
+  "totalWithFullText": 3057,
+  "fixesApplied": 0,
+  "totalIssues": 331,
+  "results": {
+    "investigation1": {
+      "contentMismatches": [
+        {
+          "file": "1776-2022/guardian--adrian-horton.json",
+          "showTitle": "1776",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"1776\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.theguardian.com/stage/2022/sep/17/1776-review-broadway-revival-american-revolution"
+        },
+        {
+          "file": "1776-2022/wsj--charles-isherwood.json",
+          "showTitle": "1776",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"1776\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.wsj.com/articles/1776-review-revolutionary-casting-meets-timeless-show-11665770401"
+        },
+        {
+          "file": "1984-2017/nytimes--ben-brantley.json",
+          "showTitle": "1984",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"1984\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2017/06/23/theater/1984-review-big-brother-broadway.html"
+        },
+        {
+          "file": "700-sundays-2013/wsj--terry-teachout.json",
+          "showTitle": "700 Sundays",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"700 Sundays\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.wsj.com/articles/SB10001424052702304470504579162943094099658"
+        },
+        {
+          "file": "a-chorus-line-2006/nytimes--ben-brantley.json",
+          "showTitle": "A Chorus Line",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"A Chorus Line\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2006/10/06/theater/reviews/06chor.html"
+        },
+        {
+          "file": "a-christmas-carol-2022/timeout--adam-feldman.json",
+          "showTitle": "A Christmas Carol",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"A Christmas Carol\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.timeout.com/newyork/theater/a-christmas-carol-review"
+        },
+        {
+          "file": "a-dolls-house-2023/thewrap--robert-hofler.json",
+          "showTitle": "A Doll's House",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"A Doll's House\" not found in text"
+          ],
+          "hasExcerpts": false,
+          "wrongShowMentioned": null,
+          "url": "https://www.thewrap.com/a-dolls-house-broadway-review-jessica-chastain/"
+        },
+        {
+          "file": "a-dolls-house-part-2-2017/wsj--terry-teachout.json",
+          "showTitle": "A Doll's House, Part 2",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"A Doll's House, Part 2\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.wsj.com/articles/a-dolls-house-part-2-review-nora-slams-the-door-again-1491516003"
+        },
+        {
+          "file": "a-raisin-in-the-sun-2014/talkinbroadway--matthew-murray.json",
+          "showTitle": "A Raisin in the Sun",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"A Raisin in the Sun\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "http://www.talkinbroadway.com/page/regional/boston/bo574.html"
+        },
+        {
+          "file": "a-steady-rain-2009/nytimes--ben-brantley.json",
+          "showTitle": "A Steady Rain",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"A Steady Rain\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2009/09/30/theater/reviews/30rain.html"
+        },
+        {
+          "file": "a-strange-loop-2022/thewrap--robert-hofler.json",
+          "showTitle": "A Strange Loop",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"A Strange Loop\" not found in text"
+          ],
+          "hasExcerpts": false,
+          "wrongShowMentioned": null,
+          "url": "https://www.thewrap.com/a-strange-loop-broadway-review-michael-jackson/"
+        },
+        {
+          "file": "a-view-from-the-bridge-2015/theatermania--david-gordon.json",
+          "showTitle": "A View From the Bridge",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"A View From the Bridge\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.theatermania.com/new-york-city-theater/reviews/a-view-from-the-bridge_73039.html"
+        },
+        {
+          "file": "aint-too-proud-2019/washpost--peter-marks.json",
+          "showTitle": "Ain't Too Proud",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Ain't Too Proud\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/aint-too-proud-review-the-temptations-mus"
+        },
+        {
+          "file": "all-my-sons-2019/hollywood-reporter--david-rooney.json",
+          "showTitle": "All My Sons",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"All My Sons\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.hollywoodreporter.com/news/culture-news/all-my-sons-broadway-review-1205449/"
+        },
+        {
+          "file": "amelie-a-new-musical-2017/variety--marilyn-stasio.json",
+          "showTitle": "Amélie, A New Musical",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Amélie, A New Musical\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2017/legit/reviews/amelie-a-new-musical-review-1202020405/"
+        },
+        {
+          "file": "american-buffalo-2008/talkinbroadway--matthew-murray.json",
+          "showTitle": "American Buffalo",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"American Buffalo\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "http://www.talkinbroadway.com/world/AmericanBuffalo.html"
+        },
+        {
+          "file": "american-buffalo-2022/washpost--peter-marks.json",
+          "showTitle": "American Buffalo",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"American Buffalo\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.washingtonpost.com/theater-dance/2022/04/15/american-buffalo-review-broadway/"
+        },
+        {
+          "file": "american-psycho-2016/thewrap--steve-pond.json",
+          "showTitle": "American Psycho",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"American Psycho\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.thewrap.com/american-psycho-theater-review-broadway-musical/"
+        },
+        {
+          "file": "an-enemy-of-the-people-2024/talkinbroadway--matthew-murray.json",
+          "showTitle": "An Enemy of the People",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"An Enemy of the People\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.talkinbroadway.com/page/world/nyc/nyc723.html"
+        },
+        {
+          "file": "angels-in-america-2018/variety--marilyn-stasio-pt2.json",
+          "showTitle": "Angels in America",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Angels in America\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2018/legit/reviews/angels-in-america-perestroika-review-broadway-1202737916/"
+        },
+        {
+          "file": "anything-goes-2011/hollywood-reporter--david-rooney.json",
+          "showTitle": "Anything Goes",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Anything Goes\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.hollywoodreporter.com/reviews/anything-goes-broadway-review-172002/"
+        },
+        {
+          "file": "beetlejuice-2019/stageandcinema--juan-a-ramirez.json",
+          "showTitle": "Beetlejuice",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Beetlejuice\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://stageandcinema.com/2019/05/01/beetlejuice-broadway/"
+        },
+        {
+          "file": "bengal-tiger-at-the-baghdad-zoo-2011/timeout--david-cote.json",
+          "showTitle": "Bengal Tiger at the Baghdad Zoo",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Bengal Tiger at the Baghdad Zoo\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.timeout.com/newyork/theater/bengal-tiger-at-the-baghdad-zoo"
+        },
+        {
+          "file": "betrayal-2019/washpost--peter-marks.json",
+          "showTitle": "Betrayal",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Betrayal\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.washingtonpost.com/goingoutguide/theater/betrayal-review-tom-hiddleston-zawe-ashton-and-"
+        },
+        {
+          "file": "blackbird-2016/talkinbroadway--matthew-murray.json",
+          "showTitle": "Blackbird",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Blackbird\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "http://www.talkinbroadway.com/world/Blackbird.html"
+        },
+        {
+          "file": "bright-star-2016/talkinbroadway--matthew-murray.json",
+          "showTitle": "Bright Star",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Bright Star\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "http://www.talkinbroadway.com/world/BrightStar.html"
+        },
+        {
+          "file": "bring-it-on-the-musical-2012/talkinbroadway--matthew-murray.json",
+          "showTitle": "Bring It On The Musical",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Bring It On The Musical\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "http://www.talkinbroadway.com/world/BringItOn.html"
+        },
+        {
+          "file": "bullets-over-broadway-2014/variety--marilyn-stasio.json",
+          "showTitle": "Bullets Over Broadway",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Bullets Over Broadway\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2014/legit/reviews/bullets-over-broadway-theater-review-1201149119/"
+        },
+        {
+          "file": "bullets-over-broadway-2014/wsj--terry-teachout.json",
+          "showTitle": "Bullets Over Broadway",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Bullets Over Broadway\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.wsj.com/articles/bullets-over-broadway-review-woody-allens-musical-shoots-blanks-1396580"
+        },
+        {
+          "file": "burn-this-2019/theatermania--jesse-green.json",
+          "showTitle": "Burn This",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Burn This\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.theatermania.com/broadway/reviews/burn-this_86851.html"
+        },
+        {
+          "file": "burn-this-2019/vulture--jesse-green.json",
+          "showTitle": "Burn This",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Burn This\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.vulture.com/2019/04/theater-review-burn-this-on-broadway.html"
+        },
+        {
+          "file": "cat-on-a-hot-tin-roof-2008/nytimes--ben-brantley.json",
+          "showTitle": "Cat on a Hot Tin Roof",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Cat on a Hot Tin Roof\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2008/03/07/theater/reviews/07cat.html"
+        },
+        {
+          "file": "charlie-and-the-chocolate-factory-2017/timeout--adam-feldman.json",
+          "showTitle": "Charlie and the Chocolate Factory",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Charlie and the Chocolate Factory\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.timeout.com/newyork/theater/charlie-and-the-chocolate-factory"
+        },
+        {
+          "file": "chinglish-2011/nytimes--charles-isherwood.json",
+          "showTitle": "Chinglish",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Chinglish\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2011/10/28/theater/reviews/chinglish-by-david-henry-hwang-review.html"
+        },
+        {
+          "file": "clydes-2021/vulture--jesse-green.json",
+          "showTitle": "Clyde's",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Clyde's\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.vulture.com/2021/12/theater-review-clydes-broadway.html"
+        },
+        {
+          "file": "clydes-2021/wsj--charles-isherwood.json",
+          "showTitle": "Clyde's",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Clyde's\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.wsj.com/articles/clydes-review-a-kitchen-where-hope-simmers-11638479401"
+        },
+        {
+          "file": "colin-quinn-long-story-short-2010/nytimes--charles-isherwood.json",
+          "showTitle": "Colin Quinn: Long Story Short",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Colin Quinn: Long Story Short\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2010/11/10/theater/reviews/10quinn.html"
+        },
+        {
+          "file": "constellations-2015/usatoday--elysa-gardner.json",
+          "showTitle": "Constellations",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Constellations\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.usatoday.com/story/life/theater/2015/01/13/constellations-broadway-review/21726923/"
+        },
+        {
+          "file": "cost-of-living-2022/wsj--charles-isherwood.json",
+          "showTitle": "Cost of Living",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Cost of Living\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.wsj.com/articles/cost-of-living-review-a-drama-about-disability-and-dignity-11666382400"
+        },
+        {
+          "file": "crybaby-2008/variety--charles-isherwood.json",
+          "showTitle": "Cry-Baby",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Cry-Baby\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2008/legit/reviews/cry-baby-1200472551/"
+        },
+        {
+          "file": "dames-at-sea-2015/observer--rex-reed.json",
+          "showTitle": "Dames at Sea",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Dames at Sea\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://observer.com/2015/10/theater-review-dames-at-sea-revival-has-all-the-right-moves/"
+        },
+        {
+          "file": "dana-h-2021/thewrap--robert-hofler.json",
+          "showTitle": "Dana H.",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Dana H.\" not found in text"
+          ],
+          "hasExcerpts": false,
+          "wrongShowMentioned": null,
+          "url": "https://www.thewrap.com/dana-h-broadway-review-lucas-hnath-aryan-brotherhood/"
+        },
+        {
+          "file": "dead-accounts-2012/hollywood-reporter--david-rooney.json",
+          "showTitle": "Dead Accounts",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Dead Accounts\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.hollywoodreporter.com/news/general-news/dead-accounts-theater-review-392240/"
+        },
+        {
+          "file": "dead-accounts-2012/nytimes--ben-brantley.json",
+          "showTitle": "Dead Accounts",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Dead Accounts\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2012/11/30/theater/reviews/dead-accounts-with-katie-holmes-opens-on-broadway"
+        },
+        {
+          "file": "death-of-a-salesman-2012/nytimes--ben-brantley.json",
+          "showTitle": "Death of a Salesman",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Death of a Salesman\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2012/03/16/theater/reviews/death-of-a-salesman-starring-philip-seymour-hoffm"
+        },
+        {
+          "file": "death-of-a-salesman-2022/talkinbroadway--matthew-murray.json",
+          "showTitle": "Death of a Salesman",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Death of a Salesman\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "http://www.talkinbroadway.com/page/world/Death_of_a_Salesman_2022.html"
+        },
+        {
+          "file": "disaster-2016/variety--marilyn-stasio.json",
+          "showTitle": "Disaster!",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Disaster!\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2016/legit/reviews/disaster-review-broadway-musical-1201722916/"
+        },
+        {
+          "file": "elf-2012/nytimes--charles-isherwood.json",
+          "showTitle": "Elf",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Elf\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2012/12/18/theater/reviews/elf-at-al-hirschfeld-theater.html"
+        },
+        {
+          "file": "end-of-the-rainbow-2012/nytimes--ben-brantley.json",
+          "showTitle": "End of the Rainbow",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"End of the Rainbow\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2012/04/03/theater/reviews/end-of-the-rainbow-at-belasco-theater.html"
+        },
+        {
+          "file": "end-of-the-rainbow-2012/variety--marilyn-stasio.json",
+          "showTitle": "End of the Rainbow",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"End of the Rainbow\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2012/legit/reviews/end-of-the-rainbow-1117947169/"
+        },
+        {
+          "file": "eureka-day-2024/vulture--jesse-green.json",
+          "showTitle": "Eureka Day",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Eureka Day\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.vulture.com/article/eureka-day-theater-review.html"
+        },
+        {
+          "file": "farinelli-and-the-king-2017/wsj--terry-teachout.json",
+          "showTitle": "Farinelli and the King",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Farinelli and the King\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.wsj.com/articles/farinelli-and-the-king-review-rylances-mad-king-1513290002"
+        },
+        {
+          "file": "fat-ham-2023/wsj--terry-teachout.json",
+          "showTitle": "Fat Ham",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Fat Ham\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.wsj.com/articles/fat-ham-review-a-hamlet-update-that-sizzles-11682630400"
+        },
+        {
+          "file": "fish-in-the-dark-2015/nypost--elisabeth-vincentelli.json",
+          "showTitle": "Fish in the Dark",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Fish in the Dark\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://nypost.com/2015/03/06/larry-davids-fish-in-the-dark-is-a-comedy-thats-dead-in-the-water/"
+        },
+        {
+          "file": "fish-in-the-dark-2015/washpost--peter-marks.json",
+          "showTitle": "Fish in the Dark",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Fish in the Dark\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/fish-in-the-dark-theater-review-larry-dav"
+        },
+        {
+          "file": "fool-for-love-2015/wsj--terry-teachout.json",
+          "showTitle": "Fool for Love",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Fool for Love\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.wsj.com/articles/fool-for-love-review-sam-shepards-drama-loses-its-way-1444340363"
+        },
+        {
+          "file": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/nytimes--jesse-green.json",
+          "showTitle": "for colored girls who have considered suicide / when the rainbow is enuf",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"for colored girls who have considered suicide / when the rainbow is enuf\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2022/04/21/theater/for-colored-girls-review.html"
+        },
+        {
+          "file": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/theatermania--jesse-green.json",
+          "showTitle": "for colored girls who have considered suicide / when the rainbow is enuf",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"for colored girls who have considered suicide / when the rainbow is enuf\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.theatermania.com/broadway/reviews/for-colored-girls-who-have-considered-suicide-when-the"
+        },
+        {
+          "file": "frankie-and-johnny-in-the-clair-de-lune-2019/variety--marilyn-stasio.json",
+          "showTitle": "Frankie and Johnny in the Clair de Lune",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Frankie and Johnny in the Clair de Lune\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2019/legit/reviews/frankie-and-johnny-in-the-clair-de-lune-review-audra-mcdonald"
+        },
+        {
+          "file": "frostnixon-2007/nytimes--ben-brantley.json",
+          "showTitle": "Frost/Nixon",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Frost/Nixon\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2007/04/23/theater/reviews/23fros.html"
+        },
+        {
+          "file": "funny-girl-2022/guardian--adrian-horton.json",
+          "showTitle": "Funny Girl",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Funny Girl\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.theguardian.com/stage/2022/apr/25/funny-girl-review-beanie-feldstein-broadway-revival"
+        },
+        {
+          "file": "gettin-the-band-back-together-2018/variety--marilyn-stasio.json",
+          "showTitle": "Gettin' The Band Back Together",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Gettin' The Band Back Together\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2018/legit/reviews/gettin-the-band-back-together-review-1202901585/"
+        },
+        {
+          "file": "girl-from-the-north-country-2022/theatermania--jesse-green.json",
+          "showTitle": "Girl From The North Country",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Girl From The North Country\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.theatermania.com/broadway/reviews/girl-from-the-north-country_89456.html"
+        },
+        {
+          "file": "golden-boy-2012/theatermania--charles-isherwood.json",
+          "showTitle": "Golden Boy",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Golden Boy\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.theatermania.com/broadway/reviews/golden-boy_62094.html"
+        },
+        {
+          "file": "good-night-oscar-2023/nytimes--jesse-green.json",
+          "showTitle": "Good Night, Oscar",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Good Night, Oscar\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2023/05/09/theater/good-night-oscar-review.html"
+        },
+        {
+          "file": "good-people-2011/nytimes--ben-brantley.json",
+          "showTitle": "Good People",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Good People\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2011/03/04/theater/reviews/good-people-by-david-lindsay-abaire-review.html"
+        },
+        {
+          "file": "grey-gardens-2006/wsj--terry-teachout.json",
+          "showTitle": "Grey Gardens",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Grey Gardens\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.wsj.com/articles/SB116227748528463883"
+        },
+        {
+          "file": "groundhog-day-2017/nytimes--ben-brantley.json",
+          "showTitle": "Groundhog Day",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Groundhog Day\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2017/04/17/theater/groundhog-day-review-broadway.html"
+        },
+        {
+          "file": "groundhog-day-2017/variety--marilyn-stasio.json",
+          "showTitle": "Groundhog Day",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Groundhog Day\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2017/legit/reviews/groundhog-day-review-broadway-1202025441/"
+        },
+        {
+          "file": "hangmen-2022/thewrap--robert-hofler.json",
+          "showTitle": "Hangmen",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Hangmen\" not found in text"
+          ],
+          "hasExcerpts": false,
+          "wrongShowMentioned": null,
+          "url": "https://www.thewrap.com/hangmen-broadway-review-martin-mcdonagh/"
+        },
+        {
+          "file": "harmony-2023/talkinbroadway--matthew-murray.json",
+          "showTitle": "Harmony",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Harmony\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://talkinbroadway.com/page/world/harmony-1123.html"
+        },
+        {
+          "file": "harry-potter-2021/ew--kristen-baldwin.json",
+          "showTitle": "Harry Potter and the Cursed Child",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Harry Potter and the Cursed Child\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://ew.com/theater/2018/04/22/harry-potter-cursed-child-broadway-review/"
+        },
+        {
+          "file": "harry-potter-2021/indiewire--david-ehrlich.json",
+          "showTitle": "Harry Potter and the Cursed Child",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Harry Potter and the Cursed Child\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.indiewire.com/2018/04/harry-potter-cursed-child-broadway-review-1201953943/"
+        },
+        {
+          "file": "harvey-2012/nytimes--charles-isherwood.json",
+          "showTitle": "Harvey",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Harvey\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2012/06/15/theater/reviews/harvey-with-jim-parsons-at-studio-54.html"
+        },
+        {
+          "file": "harvey-2012/vulture--jesse-green.json",
+          "showTitle": "Harvey",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Harvey\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.vulture.com/2012/06/theater-review-harvey.html"
+        },
+        {
+          "file": "head-over-heels-2018/nytimes--jesse-green.json",
+          "showTitle": "Head Over Heels",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Head Over Heels\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2018/07/27/theater/head-over-heels-review.html"
+        },
+        {
+          "file": "honeymoon-in-vegas-2015/variety--marilyn-stasio.json",
+          "showTitle": "Honeymoon in Vegas",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Honeymoon in Vegas\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2015/legit/reviews/honeymoon-in-vegas-review-1201414814/"
+        },
+        {
+          "file": "how-i-learned-to-drive-2022/timeout--adam-feldman.json",
+          "showTitle": "How I Learned to Drive",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"How I Learned to Drive\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.timeout.com/newyork/theater/how-i-learned-to-drive-review"
+        },
+        {
+          "file": "how-i-learned-to-drive-2022/variety--peter-marks.json",
+          "showTitle": "How I Learned to Drive",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"How I Learned to Drive\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2022/legit/reviews/how-i-learned-to-drive-review-broadway-1235224478/"
+        },
+        {
+          "file": "how-i-learned-to-drive-2022/washpost--peter-marks.json",
+          "showTitle": "How I Learned to Drive",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"How I Learned to Drive\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.washingtonpost.com/theater_dance/2022/04/20/how-i-learned-to-drive-review/"
+        },
+        {
+          "file": "how-to-succeed-in-business-without-really-trying-2011/observer--rex-reed.json",
+          "showTitle": "How to Succeed in Business Without Really Trying",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"How to Succeed in Business Without Really Trying\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://observer.com/2011/03/how-to-succeed-in-business-without-really-trying-daniel-radcliffe-makes"
+        },
+        {
+          "file": "how-to-succeed-in-business-without-really-trying-2011/variety--marilyn-stasio.json",
+          "showTitle": "How to Succeed in Business Without Really Trying",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"How to Succeed in Business Without Really Trying\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2011/legit/reviews/how-to-succeed-in-business-without-really-trying-1117944570/"
+        },
+        {
+          "file": "hughie-2016/vulture--jesse-green.json",
+          "showTitle": "Hughie",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Hughie\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.vulture.com/2016/02/theater-review-hughie.html"
+        },
+        {
+          "file": "hughie-2016/washpost--peter-marks.json",
+          "showTitle": "Hughie",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Hughie\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/hughie-review-forest-whitaker-shines-in-o"
+        },
+        {
+          "file": "ifthen-2014/nytimes--ben-brantley.json",
+          "showTitle": "If/Then",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"If/Then\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2014/03/31/theater/reviews/if-then-with-idina-menzel-opens-on-broadway.html"
+        },
+        {
+          "file": "ifthen-2014/thewrap--unknown.json",
+          "showTitle": "If/Then",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"If/Then\" not found in text"
+          ],
+          "hasExcerpts": false,
+          "wrongShowMentioned": null,
+          "url": "https://www.thewrap.com/ifthen-theater-review/"
+        },
+        {
+          "file": "ill-eat-you-last-a-chat-with-sue-mengers-2013/bloomberg-news--unknown.json",
+          "showTitle": "I'll Eat You Last: A Chat With Sue Mengers",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"I'll Eat You Last: A Chat With Sue Mengers\" not found in text"
+          ],
+          "hasExcerpts": false,
+          "wrongShowMentioned": null,
+          "url": "http://www.bloomberg.com/news/2013-04-25/midler-dishes-hollywood-in-i-ll-eat-you-last-review.html"
+        },
+        {
+          "file": "irenas-vow-2009/variety--charles-isherwood.json",
+          "showTitle": "Irena's Vow",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Irena's Vow\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2009/legit/reviews/irena-s-vow-1200472737/"
+        },
+        {
+          "file": "is-this-a-room-2021/wsj--terry-teachout.json",
+          "showTitle": "Is This a Room",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Is This a Room\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.wsj.com/articles/is-this-a-room-review-reality-winner-and-the-fbi-11634154600"
+        },
+        {
+          "file": "its-only-a-play-2014/variety--marilyn-stasio.json",
+          "showTitle": "It's Only a Play",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"It's Only a Play\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2014/legit/reviews/broadway-review-its-only-a-play-1201334637/"
+        },
+        {
+          "file": "junk-2017/nytimes--ben-brantley.json",
+          "showTitle": "Junk",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Junk\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2017/11/02/theater/junk-review-lincoln-center.html"
+        },
+        {
+          "file": "leopoldstadt-2022/washpost--peter-marks.json",
+          "showTitle": "Leopoldstadt",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Leopoldstadt\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.washingtonpost.com/theater/2022/10/03/leopoldstadt-tom-stoppard-review/"
+        },
+        {
+          "file": "les-liaisons-dangereuses-2008/variety--charles-isherwood.json",
+          "showTitle": "Les Liaisons Dangereuses",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Les Liaisons Dangereuses\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2008/legit/reviews/les-liaisons-dangereuses-1200472031/"
+        },
+        {
+          "file": "life-of-pi-2023/variety--aramide-tinubu.json",
+          "showTitle": "Life of Pi",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Life of Pi\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2023/legit/reviews/life-of-pi-broadway-review-1235565110/"
+        },
+        {
+          "file": "long-days-journey-into-night-2016/hollywood-reporter--david-rooney.json",
+          "showTitle": "Long Day's Journey Into Night",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Long Day's Journey Into Night\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.hollywoodreporter.com/news/theater/long-days-journey-night-theater-885969/"
+        },
+        {
+          "file": "m-butterfly-2017/guardian--jesse-green.json",
+          "showTitle": "M. Butterfly",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"M. Butterfly\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.theguardian.com/stage/2017/oct/27/m-butterfly-review-broadway-clive-owen"
+        },
+        {
+          "file": "macbeth-2022/variety--aramide-tinubu.json",
+          "showTitle": "Macbeth",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Macbeth\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2022/legit/reviews/macbeth-review-daniel-craig-ruth-negga-broadway-1235232736/"
+        },
+        {
+          "file": "machinal-2014/nytimes--charles-isherwood.json",
+          "showTitle": "Machinal",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Machinal\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2014/01/17/theater/reviews/machinal-with-rebecca-hall-at-roundabout-theater."
+        },
+        {
+          "file": "mary-poppins-2006/variety--charles-isherwood.json",
+          "showTitle": "Mary Poppins",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Mary Poppins\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2006/legit/reviews/mary-poppins-1200514276/"
+        },
+        {
+          "file": "mary-stuart-2009/nytimes--ben-brantley.json",
+          "showTitle": "Mary Stuart",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Mary Stuart\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2009/04/20/theater/reviews/20mary.html"
+        },
+        {
+          "file": "matilda-the-musical-2013/variety--marilyn-stasio.json",
+          "showTitle": "Matilda The Musical",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Matilda The Musical\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2013/legit/reviews/matilda-the-musical-1200334421/"
+        },
+        {
+          "file": "mike-birbiglia-the-old-man-and-the-pool-2022/variety--jesse-green.json",
+          "showTitle": "Mike Birbiglia: The Old Man & The Pool",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Mike Birbiglia: The Old Man & The Pool\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2022/legit/reviews/mike-birbiglia-the-old-man-and-the-pool-review-1235424070/"
+        },
+        {
+          "file": "million-dollar-quartet-2010/nytimes--ben-brantley.json",
+          "showTitle": "Million Dollar Quartet",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Million Dollar Quartet\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2010/04/12/theater/reviews/12quartet.html"
+        },
+        {
+          "file": "misery-2015/nytimes--charles-isherwood.json",
+          "showTitle": "Misery",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Misery\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2015/11/16/theater/review-misery-on-broadway-tortures-bruce-willis-and-us.ht"
+        },
+        {
+          "file": "mr-saturday-night-2022/thewrap--robert-hofler.json",
+          "showTitle": "Mr. Saturday Night",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Mr. Saturday Night\" not found in text"
+          ],
+          "hasExcerpts": false,
+          "wrongShowMentioned": null,
+          "url": "https://www.thewrap.com/mr-saturday-night-broadway-review-billy-crystal-musical/"
+        },
+        {
+          "file": "mrs-doubtfire-2021/variety--charles-isherwood.json",
+          "showTitle": "Mrs. Doubtfire",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Mrs. Doubtfire\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2021/legit/reviews/mrs-doubtfire-review-broadway-musical-1235121016/"
+        },
+        {
+          "file": "mrs-warrens-profession-2010/nytimes--ben-brantley.json",
+          "showTitle": "Mrs. Warren's Profession",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Mrs. Warren's Profession\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2010/10/04/theater/reviews/04warren.html"
+        },
+        {
+          "file": "my-fair-lady-2018/washpost--peter-marks.json",
+          "showTitle": "My Fair Lady",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"My Fair Lady\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/my-fair-lady-review-lincolns-center-theat"
+        },
+        {
+          "file": "network-2018/talkinbroadway--matthew-murray.json",
+          "showTitle": "Network",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Network\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "http://www.talkinbroadway.com/page/regional/boston/bos618.html"
+        },
+        {
+          "file": "new-york-new-york-2023/wsj--charles-isherwood.json",
+          "showTitle": "New York, New York",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"New York, New York\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.wsj.com/articles/new-york-new-york-review-a-big-budget-broadway-musical-that-doesnt-quit"
+        },
+        {
+          "file": "no-mans-land-2013/observer--rex-reed.json",
+          "showTitle": "No Man's Land",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"No Man's Land\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://observer.com/2013/11/no-mans-land-revivals-at-cort-theatre-showcase-brilliant-performances-b"
+        },
+        {
+          "file": "noises-off-2016/nytimes--ben-brantley.json",
+          "showTitle": "Noises Off",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Noises Off\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2016/01/15/theater/review-noises-off-on-broadway-takes-a-tumble.html"
+        },
+        {
+          "file": "november-2008/variety--david-rooney.json",
+          "showTitle": "November",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"November\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2008/legit/reviews/november-1200472043/"
+        },
+        {
+          "file": "oh-hello-on-broadway-2016/hollywood-reporter--david-rooney.json",
+          "showTitle": "Oh, Hello on Broadway",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Oh, Hello on Broadway\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.hollywoodreporter.com/news/general-news/oh-hello-broadway-theater-review-942743/"
+        },
+        {
+          "file": "oh-hello-on-broadway-2016/vulture--jesse-green.json",
+          "showTitle": "Oh, Hello on Broadway",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Oh, Hello on Broadway\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.vulture.com/2016/10/theater-review-oh-hello-on-broadway.html"
+        },
+        {
+          "file": "old-times-2015/nytimes--ben-brantley.json",
+          "showTitle": "Old Times",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Old Times\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2015/10/07/theater/review-old-times-with-clive-owen-eve-best-and-kelly-reill"
+        },
+        {
+          "file": "old-times-2015/thewrap--unknown.json",
+          "showTitle": "Old Times",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Old Times\" not found in text"
+          ],
+          "hasExcerpts": false,
+          "wrongShowMentioned": null,
+          "url": "https://www.thewrap.com/old-times-broadway-review-clive-owen-kelly-reilly-eve-best-pinter/"
+        },
+        {
+          "file": "old-times-2015/timeout--adam-feldman.json",
+          "showTitle": "Old Times",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Old Times\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.timeout.com/newyork/theater/old-times"
+        },
+        {
+          "file": "on-a-clear-day-you-can-see-forever-2011/variety--marilyn-stasio.json",
+          "showTitle": "On a Clear Day You Can See Forever",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"On a Clear Day You Can See Forever\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2011/legit/reviews/on-a-clear-day-you-can-see-forever-1117946748/"
+        },
+        {
+          "file": "on-the-town-2014/washpost--peter-marks.json",
+          "showTitle": "On the Town",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"On the Town\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/on-the-town-on-broadway-young-sailors-tak"
+        },
+        {
+          "file": "on-your-feet-2015/ap--mark-kennedy.json",
+          "showTitle": "On Your Feet!",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"On Your Feet!\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://apnews.com/article/entertainment-music-broadway-gloria-estefan-emilio-estefan-9b8c4e4c4d4a4c"
+        },
+        {
+          "file": "once-2012/chicagotribune--chris-jones.json",
+          "showTitle": "Once",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Once\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.chicagotribune.com/entertainment/theater/ct-ent-once-broadway-review-20120319-story.html"
+        },
+        {
+          "file": "one-man-two-guvnors-2012/stageandcinema--samuel-l-leiter.json",
+          "showTitle": "One Man, Two Guvnors",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"One Man, Two Guvnors\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://stageandcinema.com/2012/04/30/one-man-two-guvnors-broadway/"
+        },
+        {
+          "file": "orphans-2013/nysr--mark-rifkin.json",
+          "showTitle": "Orphans",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Orphans\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nystagereview.com/2013/04/orphans.html"
+        },
+        {
+          "file": "orphans-2013/nytimes--ben-brantley.json",
+          "showTitle": "Orphans",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Orphans\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2013/04/19/theater/reviews/orphans-on-broadway-starring-alec-baldwin.html"
+        },
+        {
+          "file": "other-desert-cities-2011/nytimes--ben-brantley.json",
+          "showTitle": "Other Desert Cities",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Other Desert Cities\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2011/11/04/theater/reviews/other-desert-cities-at-lincoln-center-theater-rev"
+        },
+        {
+          "file": "pass-over-2021/hollywood-reporter--david-rooney.json",
+          "showTitle": "Pass Over",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Pass Over\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.hollywoodreporter.com/movies/movie-reviews/pass-over-review-1235010651/"
+        },
+        {
+          "file": "passing-strange-2008/nytimes--ben-brantley.json",
+          "showTitle": "Passing Strange",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Passing Strange\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2008/02/29/theater/reviews/29pass.html"
+        },
+        {
+          "file": "peter-and-the-starcatcher-2012/variety--marilyn-stasio.json",
+          "showTitle": "Peter and the Starcatcher",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Peter and the Starcatcher\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2012/legit/reviews/peter-and-the-starcatcher-1117947311/"
+        },
+        {
+          "file": "peter-pan-goes-wrong-2023/nytimes--jesse-green.json",
+          "showTitle": "Peter Pan Goes Wrong",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Peter Pan Goes Wrong\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2023/04/20/theater/peter-pan-goes-wrong-review.html"
+        },
+        {
+          "file": "picnic-2013/nytimes--ben-brantley.json",
+          "showTitle": "Picnic",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Picnic\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2013/01/14/theater/reviews/picnic-by-william-inge-on-broadway.html"
+        },
+        {
+          "file": "picnic-2013/stageandcinema--victor-gluck.json",
+          "showTitle": "Picnic",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Picnic\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://stageandcinema.com/2013/01/13/picnic-broadway-review/"
+        },
+        {
+          "file": "picnic-2013/washpost--peter-marks.json",
+          "showTitle": "Picnic",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Picnic\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/picnic-on-broadway-sultry-drama-about-sma"
+        },
+        {
+          "file": "private-lives-2011/talkinbroadway--matthew-murray.json",
+          "showTitle": "Private Lives",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Private Lives\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "http://www.talkinbroadway.com/world/PrivateLives.html"
+        },
+        {
+          "file": "pygmalion-2007/nytimes--ben-brantley.json",
+          "showTitle": "Pygmalion",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Pygmalion\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2007/10/19/theater/reviews/19pygm.html"
+        },
+        {
+          "file": "ragtime-2009/nypost--frank-scheck.json",
+          "showTitle": "Ragtime",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Ragtime\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://nypost.com/2009/11/16/ragtime-revival-is-a-stirring-experience/"
+        },
+        {
+          "file": "rodgers-hammersteins-cinderella-2013/variety--marilyn-stasio.json",
+          "showTitle": "Rodgers + Hammerstein's Cinderella",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Rodgers + Hammerstein's Cinderella\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2013/legit/reviews/rodgers-hammersteins-cinderella-1200327326/"
+        },
+        {
+          "file": "romeo-juliet-2024/vulture--jackson-mchenry.json",
+          "showTitle": "Romeo + Juliet",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Romeo + Juliet\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.vulture.com/article/romeo-juliet-broadway-review-kit-connor-rachel-zegler.html"
+        },
+        {
+          "file": "six-degrees-of-separation-2017/nytimes--ben-brantley.json",
+          "showTitle": "Six Degrees of Separation",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Six Degrees of Separation\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2017/04/26/theater/six-degrees-of-separation-review.html"
+        },
+        {
+          "file": "six-degrees-of-separation-2017/timeout--adam-feldman.json",
+          "showTitle": "Six Degrees of Separation",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Six Degrees of Separation\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.timeout.com/newyork/theater/six-degrees-of-separation-review"
+        },
+        {
+          "file": "skylight-2015/nytimes--ben-brantley.json",
+          "showTitle": "Skylight",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Skylight\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2015/04/03/theater/review-carey-mulligan-and-bill-nighy-in-skylight.html"
+        },
+        {
+          "file": "some-like-it-hot-2022/wsj--charles-isherwood.json",
+          "showTitle": "Some Like It Hot",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Some Like It Hot\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.wsj.com/articles/some-like-it-hot-review-broadway-musical-11671754800"
+        },
+        {
+          "file": "something-rotten-2015/ap--mark-kennedy.json",
+          "showTitle": "Something Rotten!",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Something Rotten!\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://apnews.com/article/entertainment-theater-broadway-reviews-68c5d4e8c4a74c5f9d8e2b1a3f6c9d5e"
+        },
+        {
+          "file": "something-rotten-2015/usatoday--elysa-gardner.json",
+          "showTitle": "Something Rotten!",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Something Rotten!\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.usatoday.com/story/life/theater/2015/04/22/something-rotten-broadway-review/26180611/"
+        },
+        {
+          "file": "speedtheplow-2008/variety--david-rooney.json",
+          "showTitle": "Speed-the-Plow",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Speed-the-Plow\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2008/legit/reviews/speed-the-plow-1200476124/"
+        },
+        {
+          "file": "spring-awakening-2006/nytimes--ben-brantley.json",
+          "showTitle": "Spring Awakening",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Spring Awakening\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2006/12/11/theater/reviews/11spring.html"
+        },
+        {
+          "file": "stick-fly-2011/variety--marilyn-stasio.json",
+          "showTitle": "Stick Fly",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Stick Fly\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2011/legit/reviews/stick-fly-1117946942/"
+        },
+        {
+          "file": "sunday-in-the-park-with-george-2017/wsj--terry-teachout.json",
+          "showTitle": "Sunday in the Park with George",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Sunday in the Park with George\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.wsj.com/articles/sunday-in-the-park-with-george-review-sondheim-musical-starring-jake-gy"
+        },
+        {
+          "file": "sweat-2017/variety--marilyn-stasio.json",
+          "showTitle": "Sweat",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Sweat\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2017/legit/reviews/sweat-review-broadway-lynn-nottage-1202008014/"
+        },
+        {
+          "file": "sylvia-2015/talkinbroadway--matthew-murray.json",
+          "showTitle": "Sylvia",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Sylvia\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "http://www.talkinbroadway.com/world/Sylvia.html"
+        },
+        {
+          "file": "sylvia-2015/usatoday--elysa-gardner.json",
+          "showTitle": "Sylvia",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Sylvia\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.usatoday.com/story/life/theater/2015/10/28/sylvia-broadway-review/74735668/"
+        },
+        {
+          "file": "sylvia-2015/wsj--terry-teachout.json",
+          "showTitle": "Sylvia",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Sylvia\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.wsj.com/articles/sylvia-review-a-dog-gone-good-time-1445547066"
+        },
+        {
+          "file": "that-championship-season-2011/nytimes--ben-brantley.json",
+          "showTitle": "That Championship Season",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"That Championship Season\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2011/03/07/theater/reviews/that-championship-season-review.html"
+        },
+        {
+          "file": "that-championship-season-2011/variety--marilyn-stasio.json",
+          "showTitle": "That Championship Season",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"That Championship Season\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2011/legit/reviews/that-championship-season-1117945061/"
+        },
+        {
+          "file": "that-championship-season-2011/wsj--terry-teachout.json",
+          "showTitle": "That Championship Season",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"That Championship Season\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.wsj.com/articles/SB10001424052748704791004576204663465089234"
+        },
+        {
+          "file": "the-addams-family-2010/variety--david-rooney.json",
+          "showTitle": "The Addams Family",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Addams Family\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2010/legit/reviews/the-addams-family-1117942143/"
+        },
+        {
+          "file": "the-audience-2015/nytimes--charles-isherwood.json",
+          "showTitle": "The Audience",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Audience\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2015/03/09/theater/review-helen-mirren-returns-to-the-audience-on-broadway.h"
+        },
+        {
+          "file": "the-bands-visit-2017/variety--marilyn-stasio.json",
+          "showTitle": "The Band's Visit",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Band's Visit\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2017/legit/reviews/the-bands-visit-review-broadway-1202623434/"
+        },
+        {
+          "file": "the-big-knife-2013/hollywood-reporter--david-rooney.json",
+          "showTitle": "The Big Knife",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Big Knife\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.hollywoodreporter.com/movies/movie-reviews/big-knife-theater-review-434615/"
+        },
+        {
+          "file": "the-big-knife-2013/variety--marilyn-stasio.json",
+          "showTitle": "The Big Knife",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Big Knife\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2013/legit/reviews/the-big-knife-1200740963/"
+        },
+        {
+          "file": "the-coast-of-utopia-2006/nytimes--ben-brantley.json",
+          "showTitle": "The Coast of Utopia",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Coast of Utopia\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2006/11/28/theater/reviews/28voya.html"
+        },
+        {
+          "file": "the-coast-of-utopia-2006/variety--charles-isherwood.json",
+          "showTitle": "The Coast of Utopia",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Coast of Utopia\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2007/legit/reviews/the-coast-of-utopia-part-3-salvage-1200558847/"
+        },
+        {
+          "file": "the-collaboration-2022/deadline--pete-hammond.json",
+          "showTitle": "The Collaboration",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Collaboration\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://deadline.com/2022/12/the-collaboration-review-paul-bettany-jeremy-pope-broadway-1235194847/"
+        },
+        {
+          "file": "the-color-purple-2015/nydailynews--joe-dziemianowicz.json",
+          "showTitle": "The Color Purple",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Color Purple\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nydailynews.com/2015/12/11/the-color-purple-review-oprah-produced-broadway-revival-is-a-"
+        },
+        {
+          "file": "the-country-girl-2008/variety--charles-isherwood.json",
+          "showTitle": "The Country Girl",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Country Girl\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2008/legit/reviews/the-country-girl-1200472139/"
+        },
+        {
+          "file": "the-country-house-2014/nytimes--ben-brantley.json",
+          "showTitle": "The Country House",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Country House\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2014/10/03/theater/the-country-house-by-donald-margulies-opens-on-broadway.h"
+        },
+        {
+          "file": "the-cripple-of-inishmaan-2014/nytimes--ben-brantley.json",
+          "showTitle": "The Cripple of Inishmaan",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Cripple of Inishmaan\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2014/04/21/theater/reviews/the-cripple-of-inishmaan-starring-daniel-radcliff"
+        },
+        {
+          "file": "the-cripple-of-inishmaan-2014/variety--marilyn-stasio.json",
+          "showTitle": "The Cripple of Inishmaan",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Cripple of Inishmaan\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2014/legit/reviews/the-cripple-of-inishmaan-1201156021/"
+        },
+        {
+          "file": "the-cripple-of-inishmaan-2014/wsj--terry-teachout.json",
+          "showTitle": "The Cripple of Inishmaan",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Cripple of Inishmaan\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.wsj.com/articles/theater-review-the-cripple-of-inishmaan-1397770824"
+        },
+        {
+          "file": "the-curious-incident-of-the-dog-in-the-nighttime-2014/artsfuse--bill-marx.json",
+          "showTitle": "The Curious Incident of the Dog in the Night-Time",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Curious Incident of the Dog in the Night-Time\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://artsfuse.org/145462/theater-review-the-curious-incident-of-the-dog-in-the-night-time-ethel-b"
+        },
+        {
+          "file": "the-curious-incident-of-the-dog-in-the-nighttime-2014/hollywood-reporter--david-rooney.json",
+          "showTitle": "The Curious Incident of the Dog in the Night-Time",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Curious Incident of the Dog in the Night-Time\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.hollywoodreporter.com/news/general-news/curious-incident-dog-night-time-743056/"
+        },
+        {
+          "file": "the-curious-incident-of-the-dog-in-the-nighttime-2014/nypost--elisabeth-vincentelli.json",
+          "showTitle": "The Curious Incident of the Dog in the Night-Time",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Curious Incident of the Dog in the Night-Time\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://nypost.com/2014/10/06/the-curious-incident-of-the-dog-in-the-night-time-review/"
+        },
+        {
+          "file": "the-curious-incident-of-the-dog-in-the-nighttime-2014/variety--marilyn-stasio.json",
+          "showTitle": "The Curious Incident of the Dog in the Night-Time",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Curious Incident of the Dog in the Night-Time\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2014/legit/reviews/broadway-review-the-curious-incident-of-the-dog-in-the-night-"
+        },
+        {
+          "file": "the-elephant-man-2014/guardian--jesse-green.json",
+          "showTitle": "The Elephant Man",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Elephant Man\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.theguardian.com/stage/2014/dec/08/the-elephant-man-review-bradley-cooper-booth-theatre-b"
+        },
+        {
+          "file": "the-front-page-2016/talkinbroadway--matthew-murray.json",
+          "showTitle": "The Front Page",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Front Page\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "http://www.talkinbroadway.com/page/world/nyc/nyc484.html"
+        },
+        {
+          "file": "the-glass-menagerie-2013/wsj--terry-teachout.json",
+          "showTitle": "The Glass Menagerie",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Glass Menagerie\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.wsj.com/articles/SB10001424052702303448204579169010736188762"
+        },
+        {
+          "file": "the-glass-menagerie-2017/nytimes--ben-brantley.json",
+          "showTitle": "The Glass Menagerie",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Glass Menagerie\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2017/03/10/theater/the-glass-menagerie-review-sally-field.html"
+        },
+        {
+          "file": "the-glass-menagerie-2017/variety--marilyn-stasio.json",
+          "showTitle": "The Glass Menagerie",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Glass Menagerie\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2017/legit/reviews/the-glass-menagerie-review-sally-field-1202006615/"
+        },
+        {
+          "file": "the-height-of-the-storm-2019/wsj--terry-teachout.json",
+          "showTitle": "The Height of the Storm",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Height of the Storm\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.wsj.com/articles/the-height-of-the-storm-review-jonathan-pryce-and-eileen-atkins-weather"
+        },
+        {
+          "file": "the-heiress-2012/wsj--terry-teachout.json",
+          "showTitle": "The Heiress",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Heiress\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.wsj.com/articles/SB10001424052970204712904578092590446398098"
+        },
+        {
+          "file": "the-hills-of-california-2024/theatermania--jesse-green.json",
+          "showTitle": "The Hills of California",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Hills of California\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.theatermania.com/broadway/reviews/the-hills-of-california_94471"
+        },
+        {
+          "file": "the-house-of-blue-leaves-2011/washpost--peter-marks.json",
+          "showTitle": "The House of Blue Leaves",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The House of Blue Leaves\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.washingtonpost.com/lifestyle/style/theater-review-the-house-of-blue-leaves/2011/04/26/AF"
+        },
+        {
+          "file": "the-house-of-blue-leaves-2011/wsj--terry-teachout.json",
+          "showTitle": "The House of Blue Leaves",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The House of Blue Leaves\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.wsj.com/articles/SB10001424052748704107204576164272108574548"
+        },
+        {
+          "file": "the-inheritance-2019/variety--charles-isherwood.json",
+          "showTitle": "The Inheritance",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Inheritance\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2019/legit/reviews/the-inheritance-review-broadway-1203381347/"
+        },
+        {
+          "file": "the-kite-runner-2022/variety--frank-rizzo.json",
+          "showTitle": "The Kite Runner",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Kite Runner\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2022/legit/reviews/the-kite-runner-review-broadway-1235324624/"
+        },
+        {
+          "file": "the-lehman-trilogy-2021/guardian--adrian-horton.json",
+          "showTitle": "The Lehman Trilogy",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Lehman Trilogy\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.theguardian.com/stage/2021/oct/15/the-lehman-trilogy-review-broadway-ned-eisenberg-adam-"
+        },
+        {
+          "file": "the-little-foxes-2017/timeout--adam-feldman.json",
+          "showTitle": "The Little Foxes",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Little Foxes\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.timeout.com/newyork/theater/the-little-foxes"
+        },
+        {
+          "file": "the-minutes-2022/nytimes--jesse-green.json",
+          "showTitle": "The Minutes",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Minutes\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2022/04/18/theater/the-minutes-review.html"
+        },
+        {
+          "file": "the-mountaintop-2011/variety--marilyn-stasio.json",
+          "showTitle": "The Mountaintop",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Mountaintop\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2011/legit/reviews/the-mountaintop-1117946326/"
+        },
+        {
+          "file": "the-new-one-2018/variety--marilyn-stasio.json",
+          "showTitle": "The New One",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The New One\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2018/legit/reviews/the-new-one-review-mike-birbiglia-1203017059/"
+        },
+        {
+          "file": "the-other-place-2013/nypost--elisabeth-vincentelli.json",
+          "showTitle": "The Other Place",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Other Place\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://nypost.com/2013/01/11/the-other-place-review-laurie-metcalf-delivers-a-tour-de-force/"
+        },
+        {
+          "file": "the-other-place-2013/washpost--peter-marks.json",
+          "showTitle": "The Other Place",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Other Place\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/the-other-place-review-laurie-metcalf-bri"
+        },
+        {
+          "file": "the-parisian-woman-2017/theatermania--adam-feldman.json",
+          "showTitle": "The Parisian Woman",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Parisian Woman\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.theatermania.com/broadway/reviews/the-parisian-woman_79708.html"
+        },
+        {
+          "file": "the-people-in-the-picture-2011/variety--david-rooney.json",
+          "showTitle": "The People in the Picture",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The People in the Picture\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2011/legit/reviews/the-people-in-the-picture-1117945176/"
+        },
+        {
+          "file": "the-present-2017/variety--marilyn-stasio.json",
+          "showTitle": "The Present",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Present\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2017/legit/reviews/the-present-review-cate-blanchett-1201963916/"
+        },
+        {
+          "file": "the-price-2017/talkinbroadway--matthew-murray.json",
+          "showTitle": "The Price",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Price\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "http://www.talkinbroadway.com/page/regional/boston/b667.html"
+        },
+        {
+          "file": "the-realistic-joneses-2014/nytimes--ben-brantley.json",
+          "showTitle": "The Realistic Joneses",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Realistic Joneses\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2014/04/07/theater/the-realistic-joneses-opens-on-broadway.html"
+        },
+        {
+          "file": "the-ritz-2007/nytimes--ben-brantley.json",
+          "showTitle": "The Ritz",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Ritz\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2007/08/12/theater/reviews/12ritz.html"
+        },
+        {
+          "file": "the-river-2014/nytimes--ben-brantley.json",
+          "showTitle": "The River",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The River\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2014/11/17/theater/the-river-with-hugh-jackman-opens-on-broadway.html"
+        },
+        {
+          "file": "the-road-to-mecca-2012/nytimes--ben-brantley.json",
+          "showTitle": "The Road to Mecca",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Road to Mecca\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2012/01/18/theater/reviews/the-road-to-mecca-at-the-american-airlines-theate"
+        },
+        {
+          "file": "the-rose-tattoo-2019/guardian--adrian-horton.json",
+          "showTitle": "The Rose Tattoo",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Rose Tattoo\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.theguardian.com/stage/2019/oct/08/the-rose-tattoo-review-marisa-tomei-broadway-american-"
+        },
+        {
+          "file": "the-royal-family-2009/washpost--peter-marks.json",
+          "showTitle": "The Royal Family",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Royal Family\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.washingtonpost.com/wp-dyn/content/article/2009/10/07/AR2009100703664.html"
+        },
+        {
+          "file": "the-visit-2015/nytimes--ben-brantley.json",
+          "showTitle": "The Visit",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Visit\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2015/04/24/theater/review-the-visit-a-musical-swan-song-for-chita-rivera.htm"
+        },
+        {
+          "file": "the-visit-2015/usatoday--elysa-gardner.json",
+          "showTitle": "The Visit",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Visit\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.usatoday.com/story/life/theater/2015/04/23/the-visit-broadway-review/26251945/"
+        },
+        {
+          "file": "the-waverly-gallery-2018/vulture--jesse-green.json",
+          "showTitle": "The Waverly Gallery",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Waverly Gallery\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.vulture.com/2018/10/theater-review-the-waverly-gallery.html"
+        },
+        {
+          "file": "the-wedding-singer-2006/variety--charles-isherwood.json",
+          "showTitle": "The Wedding Singer",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Wedding Singer\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2006/legit/reviews/the-wedding-singer-1200512345/"
+        },
+        {
+          "file": "the-winslow-boy-2013/talkinbroadway--matthew-murray.json",
+          "showTitle": "The Winslow Boy",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Winslow Boy\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "http://www.talkinbroadway.com/world/WinslopBoy.html"
+        },
+        {
+          "file": "the-woman-in-white-2005/nytimes--ben-brantley.json",
+          "showTitle": "The Woman in White",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"The Woman in White\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2005/11/18/theater/reviews/the-woman-in-white-a-musical-shrouded-in-gloom.ht"
+        },
+        {
+          "file": "this-is-our-youth-2014/guardian--jesse-green.json",
+          "showTitle": "This Is Our Youth",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"This Is Our Youth\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.theguardian.com/stage/2014/sep/12/this-is-our-youth-review-michael-cera-kieran-culkin"
+        },
+        {
+          "file": "this-is-our-youth-2014/nytimes--ben-brantley.json",
+          "showTitle": "This Is Our Youth",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"This Is Our Youth\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2014/09/12/theater/this-is-our-youth-with-michael-cera-opens-on-broadway.htm"
+        },
+        {
+          "file": "thoughts-of-a-colored-man-2021/wsj--charles-isherwood.json",
+          "showTitle": "Thoughts of a Colored Man",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Thoughts of a Colored Man\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.wsj.com/articles/thoughts-of-a-colored-man-review-seven-voices-one-story-11635462002"
+        },
+        {
+          "file": "three-days-of-rain-2006/nytimes--ben-brantley.json",
+          "showTitle": "Three Days of Rain",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Three Days of Rain\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2006/03/07/theater/reviews/07rain.html"
+        },
+        {
+          "file": "three-tall-women-2018/usatoday--charles-isherwood.json",
+          "showTitle": "Three Tall Women",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Three Tall Women\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.usatoday.com/story/life/theater/2018/03/26/three-tall-women-review-glenda-jackson-laurie"
+        },
+        {
+          "file": "to-kill-a-mockingbird-2018/washpost--peter-marks.json",
+          "showTitle": "To Kill a Mockingbird",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"To Kill a Mockingbird\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/to-kill-a-mockingbird-on-broadway-is-a-ne"
+        },
+        {
+          "file": "tootsie-2019/deadline--pete-hammond.json",
+          "showTitle": "Tootsie",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Tootsie\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://deadline.com/2019/04/tootsie-broadway-review-santino-fontana-1202598844/"
+        },
+        {
+          "file": "tootsie-2019/variety--marilyn-stasio.json",
+          "showTitle": "Tootsie",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Tootsie\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2019/legit/reviews/tootsie-review-broadway-musical-1203186015/"
+        },
+        {
+          "file": "topdog-underdog-2022/ap--mark-kennedy.json",
+          "showTitle": "Topdog / Underdog",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Topdog / Underdog\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://apnews.com/article/entertainment-theater-broadway-reviews-new-york-97b8b8c8f8b8b8b8b8b8b8b8b"
+        },
+        {
+          "file": "topdog-underdog-2022/nypost--johnny-oleksinski.json",
+          "showTitle": "Topdog / Underdog",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Topdog / Underdog\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://nypost.com/2022/10/21/topdog-underdog-review-yahya-abdul-mateen-ii-and-corey-hawkins-are-ele"
+        },
+        {
+          "file": "topdog-underdog-2022/theatermania--jesse-green.json",
+          "showTitle": "Topdog / Underdog",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Topdog / Underdog\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.theatermania.com/broadway/reviews/topdog-underdog_93234.html"
+        },
+        {
+          "file": "torch-song-2018/nytimes--ben-brantley.json",
+          "showTitle": "Torch Song",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Torch Song\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2018/11/01/theater/torch-song-review-harvey-fierstein.html"
+        },
+        {
+          "file": "tuck-everlasting-2016/variety--marilyn-stasio.json",
+          "showTitle": "Tuck Everlasting",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Tuck Everlasting\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2016/legit/reviews/tuck-everlasting-review-broadway-1201752320/"
+        },
+        {
+          "file": "venus-in-fur-2011/wsj--terry-teachout.json",
+          "showTitle": "Venus in Fur",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Venus in Fur\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.wsj.com/articles/SB10001424052970204621904577013923045932670"
+        },
+        {
+          "file": "waiting-for-godot-2013/guardian--jesse-green.json",
+          "showTitle": "Waiting for Godot",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Waiting for Godot\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.theguardian.com/stage/2013/nov/25/waiting-for-godot-review-broadway"
+        },
+        {
+          "file": "war-paint-2017/washpost--peter-marks.json",
+          "showTitle": "War Paint",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"War Paint\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/war-paint-review-patti-lupone-and-christi"
+        },
+        {
+          "file": "whos-afraid-of-virginia-woolf-2012/nytimes--ben-brantley.json",
+          "showTitle": "Who's Afraid of Virginia Woolf?",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Who's Afraid of Virginia Woolf?\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2012/10/14/theater/reviews/whos-afraid-of-virginia-woolf-with-tracy-letts-an"
+        },
+        {
+          "file": "wit-2012/nytimes--ben-brantley.json",
+          "showTitle": "Wit",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Wit\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2012/01/27/theater/reviews/wit-with-cynthia-nixon-at-manhattan-theater-club."
+        },
+        {
+          "file": "wonderland-2011/variety--david-rooney.json",
+          "showTitle": "Wonderland",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Wonderland\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://variety.com/2011/legit/reviews/wonderland-1117945116/"
+        },
+        {
+          "file": "xanadu-2007/nytimes--ben-brantley.json",
+          "showTitle": "Xanadu",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Xanadu\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.nytimes.com/2007/07/11/theater/reviews/11xana.html"
+        },
+        {
+          "file": "yellow-face-2024/wsj--charles-isherwood.json",
+          "showTitle": "Yellow Face",
+          "verdict": "confident_mismatch",
+          "score": -3,
+          "negativeSignalCount": 1,
+          "positiveSignals": [],
+          "negativeSignals": [
+            "Show title \"Yellow Face\" not found in text"
+          ],
+          "hasExcerpts": true,
+          "wrongShowMentioned": null,
+          "url": "https://www.wsj.com/arts-culture/theater/yellow-face-review-david-henry-hwang-broadway-518c5a4e"
+        }
+      ],
+      "probableMismatches": [
+        {
+          "file": "9-to-5-2009/nytimes--ben-brantley.json",
+          "showTitle": "9 to 5",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"9 to 5\" not found in text"
+          ],
+          "positiveSignals": [
+            "Creative team \"Patricia Resnick\" (Book) found",
+            "Creative team \"Dolly Parton\" (Lyrics) found"
+          ],
+          "url": "https://www.nytimes.com/2009/05/01/theater/reviews/01nine.html"
+        },
+        {
+          "file": "a-free-man-of-color-2010/nytimes--ben-brantley.json",
+          "showTitle": "A Free Man of Color",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"A Free Man of Color\" not found in text"
+          ],
+          "positiveSignals": [
+            "Director \"George C. Wolfe\" found"
+          ],
+          "url": "https://www.nytimes.com/2010/11/19/theater/reviews/19free.html"
+        },
+        {
+          "file": "a-little-night-music-2009/nytimes--ben-brantley.json",
+          "showTitle": "A Little Night Music",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"A Little Night Music\" not found in text"
+          ],
+          "positiveSignals": [
+            "Creative team \"Stephen Sondheim\" (Lyrics) found",
+            "Creative team \"Stephen Sondheim\" (Music) found"
+          ],
+          "url": "https://www.nytimes.com/2009/12/14/theater/reviews/14night.html"
+        },
+        {
+          "file": "a-strange-loop-2022/usatoday--elysa-gardner.json",
+          "showTitle": "A Strange Loop",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"A Strange Loop\" not found in text"
+          ],
+          "positiveSignals": [
+            "Creative team \"Michael R. Jackson\" (Book) found",
+            "Creative team \"Michael R. Jackson\" (Lyrics) found"
+          ],
+          "url": "https://www.usatoday.com/story/life/theater/2022/04/26/strange-loop-review-broadway/7450028001/"
+        },
+        {
+          "file": "act-one-2014/nytimes--charles-isherwood.json",
+          "showTitle": "Act One",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"Act One\" not found in text"
+          ],
+          "positiveSignals": [
+            "Director \"James Lapine\" found"
+          ],
+          "url": "https://www.nytimes.com/2014/04/18/theater/reviews/act-one-adapts-moss-harts-memoir-for-the-stage.ht"
+        },
+        {
+          "file": "almost-famous-2022/wsj--terry-teachout.json",
+          "showTitle": "Almost Famous",
+          "score": -2,
+          "negativeSignals": [
+            "Show title \"Almost Famous\" not found in text"
+          ],
+          "positiveSignals": [
+            "Creative team \"Cameron Crowe\" (Book) found"
+          ],
+          "url": "https://www.wsj.com/articles/almost-famous-theater-review-a-rock-musical-that-rocks-11667834400"
+        },
+        {
+          "file": "angels-in-america-2018/washpost--peter-marks.json",
+          "showTitle": "Angels in America",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"Angels in America\" not found in text"
+          ],
+          "positiveSignals": [
+            "Director \"Marianne Elliott\" found"
+          ],
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-angels-in-america-on-broadway-is-t"
+        },
+        {
+          "file": "betrayal-2013/talkinbroadway--matthew-murray.json",
+          "showTitle": "Betrayal",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"Betrayal\" not found in text"
+          ],
+          "positiveSignals": [
+            "Director \"Mike Nichols\" found"
+          ],
+          "url": "http://www.talkinbroadway.com/world/Betrayal.html"
+        },
+        {
+          "file": "billy-elliot-the-musical-2008/variety--david-rooney.json",
+          "showTitle": "Billy Elliot: The Musical",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"Billy Elliot: The Musical\" not found in text"
+          ],
+          "positiveSignals": [
+            "Director \"Stephen Daldry\" found"
+          ],
+          "url": "https://variety.com/2008/legit/reviews/billy-elliot-the-musical-1200470924/"
+        },
+        {
+          "file": "brighton-beach-memoirs-2009/nytimes--charles-isherwood.json",
+          "showTitle": "Brighton Beach Memoirs",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"Brighton Beach Memoirs\" not found in text"
+          ],
+          "positiveSignals": [
+            "Director \"David Cromer\" found"
+          ],
+          "url": "https://www.nytimes.com/2009/10/26/theater/reviews/26brighton.html"
+        },
+        {
+          "file": "camelot-2023/wsj--charles-isherwood.json",
+          "showTitle": "Camelot",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"Camelot\" not found in text"
+          ],
+          "positiveSignals": [
+            "Creative team \"Alan Jay Lerner\" (Book) found",
+            "Creative team \"Alan Jay Lerner\" (Lyrics) found"
+          ],
+          "url": "https://www.wsj.com/articles/camelot-broadway-review-lincoln-center-theater-revival-phillipa-soo-and"
+        },
+        {
+          "file": "catch-me-if-you-can-2011/variety--marilyn-stasio.json",
+          "showTitle": "Catch Me If You Can",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"Catch Me If You Can\" not found in text"
+          ],
+          "positiveSignals": [
+            "Creative team \"Terrence McNally\" (Book) found",
+            "Creative team \"Scott Wittman and Marc Shaiman\" (Lyrics) found"
+          ],
+          "url": "https://variety.com/2011/legit/reviews/catch-me-if-you-can-1117945108/"
+        },
+        {
+          "file": "diana-the-musical-2021/nytimes--jesse-green.json",
+          "showTitle": "Diana, The Musical",
+          "score": -2,
+          "negativeSignals": [
+            "Show title \"Diana, The Musical\" not found in text"
+          ],
+          "positiveSignals": [
+            "Venue \"Longacre Theatre\" found"
+          ],
+          "url": "https://www.nytimes.com/2021/11/17/theater/diana-musical-review.html"
+        },
+        {
+          "file": "evita-2012/nytimes--ben-brantley.json",
+          "showTitle": "Evita",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"Evita\" not found in text"
+          ],
+          "positiveSignals": [
+            "Creative team \"Tim Rice\" (Lyrics) found",
+            "Creative team \"Andrew Lloyd Webber\" (Music) found"
+          ],
+          "url": "https://www.nytimes.com/2012/04/06/theater/reviews/evita-revival-with-elena-roger-and-ricky-martin.h"
+        },
+        {
+          "file": "floyd-collins-2025/thewrap--robert-hofler.json",
+          "showTitle": "Floyd Collins",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"Floyd Collins\" not found in text"
+          ],
+          "positiveSignals": [
+            "Creative team \"Adam Guettel\" (Lyrics) found",
+            "Creative team \"Adam Guettel\" (Music) found"
+          ],
+          "url": "https://www.thewrap.com/floyd-collins-broadway-review-jeremy-jordan/"
+        },
+        {
+          "file": "fool-for-love-2015/vulture--jesse-green.json",
+          "showTitle": "Fool for Love",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"Fool for Love\" not found in text"
+          ],
+          "positiveSignals": [
+            "Director \"Daniel Aukin\" found"
+          ],
+          "url": "https://www.vulture.com/2015/10/theater-review-fool-for-love.html"
+        },
+        {
+          "file": "girl-from-the-north-country-2022/nytimes--jesse-green.json",
+          "showTitle": "Girl From The North Country",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"Girl From The North Country\" not found in text"
+          ],
+          "positiveSignals": [
+            "Creative team \"Bob Dylan\" (Lyrics) found",
+            "Creative team \"Bob Dylan\" (Music) found"
+          ],
+          "url": "https://www.nytimes.com/2022/03/03/theater/girl-from-the-north-country-review.html"
+        },
+        {
+          "file": "god-of-carnage-2009/variety--david-rooney.json",
+          "showTitle": "God of Carnage",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"God of Carnage\" not found in text"
+          ],
+          "positiveSignals": [
+            "Director \"Matthew Warchus\" found"
+          ],
+          "url": "https://variety.com/2009/legit/reviews/god-of-carnage-1200472154/"
+        },
+        {
+          "file": "golden-boy-2012/variety--marilyn-stasio.json",
+          "showTitle": "Golden Boy",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"Golden Boy\" not found in text"
+          ],
+          "positiveSignals": [
+            "Director \"Bartlett Sher\" found"
+          ],
+          "url": "https://variety.com/2012/legit/reviews/golden-boy-1117949065/"
+        },
+        {
+          "file": "good-people-2011/wsj--terry-teachout.json",
+          "showTitle": "Good People",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"Good People\" not found in text"
+          ],
+          "positiveSignals": [
+            "Director \"Daniel Sullivan\" found"
+          ],
+          "url": "https://www.wsj.com/articles/SB10001424052748704681904576246023735089268"
+        },
+        {
+          "file": "hangmen-2022/nysr--frank-scheck.json",
+          "showTitle": "Hangmen",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"Hangmen\" not found in text"
+          ],
+          "positiveSignals": [
+            "Director \"Matthew Dunster\" found"
+          ],
+          "url": "https://nystagereview.com/2022/04/21/hangmen-gallows-humor-literally/"
+        },
+        {
+          "file": "inherit-the-wind-2007/nytimes--ben-brantley.json",
+          "showTitle": "Inherit the Wind",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"Inherit the Wind\" not found in text"
+          ],
+          "positiveSignals": [
+            "Director \"Doug Hughes\" found"
+          ],
+          "url": "https://www.nytimes.com/2007/04/13/theater/reviews/13wind.html"
+        },
+        {
+          "file": "is-this-a-room-2021/thewrap--robert-hofler.json",
+          "showTitle": "Is This a Room",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"Is This a Room\" not found in text"
+          ],
+          "positiveSignals": [
+            "Director \"Tina Satter\" found"
+          ],
+          "url": "https://www.thewrap.com/is-this-a-room-broadway-review-reality-winner/"
+        },
+        {
+          "file": "jagged-little-pill-2019/deadline--pete-hammond.json",
+          "showTitle": "Jagged Little Pill",
+          "score": -2,
+          "negativeSignals": [
+            "Show title \"Jagged Little Pill\" not found in text"
+          ],
+          "positiveSignals": [
+            "Creative team \"Alanis Morissette\" (Lyrics) found"
+          ],
+          "url": "https://deadline.com/2019/12/jagged-little-pill-broadway-review-alanis-morissette-musical-1202807944"
+        },
+        {
+          "file": "kinky-boots-2013/washpost--peter-marks.json",
+          "showTitle": "Kinky Boots",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"Kinky Boots\" not found in text"
+          ],
+          "positiveSignals": [
+            "Creative team \"Harvey Fierstein\" (Book) found",
+            "Creative team \"Cyndi Lauper\" (Lyrics) found"
+          ],
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/kinky-boots-review-a-drag-queen-saves-a-s"
+        },
+        {
+          "file": "les-miserables-1987/newsday--unknown.json",
+          "showTitle": "Les Miserables",
+          "score": -2,
+          "negativeSignals": [
+            "Show title \"Les Miserables\" not found in text"
+          ],
+          "positiveSignals": [
+            "Venue \"Broadway Theatre\" found"
+          ],
+          "url": "http://www.newsday.com/entertainment/theater/les-miserables-review-smartly-cast-1.7479430"
+        },
+        {
+          "file": "les-miserables-2014/variety--unknown.json",
+          "showTitle": "Les Misérables",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"Les Misérables\" not found in text"
+          ],
+          "positiveSignals": [
+            "Director \"Laurence Connor and James Powell\" found"
+          ],
+          "url": "http://variety.com/2014/legit/reviews/broadway-review-les-miserables-1201143947/"
+        },
+        {
+          "file": "long-days-journey-into-night-2016/nytimes--ben-brantley.json",
+          "showTitle": "Long Day's Journey Into Night",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"Long Day's Journey Into Night\" not found in text"
+          ],
+          "positiveSignals": [
+            "Director \"Jonathan Kent\" found"
+          ],
+          "url": "https://www.nytimes.com/2016/04/20/theater/review-long-days-journey-into-night-starring-gabriel-byrn"
+        },
+        {
+          "file": "lovemusik-2007/variety--charles-isherwood.json",
+          "showTitle": "Lovemusik",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"Lovemusik\" not found in text"
+          ],
+          "positiveSignals": [
+            "Creative team \"Kurt Weill\" (Lyrics) found",
+            "Creative team \"Kurt Weill\" (Music) found"
+          ],
+          "url": "https://variety.com/2007/legit/reviews/lovemusik-1200556789/"
+        },
+        {
+          "file": "matilda-the-musical-2013/timeout--adam-feldman.json",
+          "showTitle": "Matilda The Musical",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"Matilda The Musical\" not found in text"
+          ],
+          "positiveSignals": [
+            "Creative team \"Dennis Kelly\" (Book) found",
+            "Creative team \"Tim Minchin\" (Lyrics) found"
+          ],
+          "url": "https://www.timeout.com/newyork/theater/matilda-the-musical"
+        },
+        {
+          "file": "mj-2022/dailybeast--tim-teeman.json",
+          "showTitle": "MJ The Musical",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"MJ The Musical\" not found in text"
+          ],
+          "positiveSignals": [
+            "Venue \"Neil Simon Theatre\" found",
+            "Creative team \"Lynn Nottage\" (Book) found"
+          ],
+          "url": "https://www.thedailybeast.com/mj-the-michael-jackson-broadway-musical-is-high-on-dazzle-low-on-depth"
+        },
+        {
+          "file": "mj-2022/thewrap--robert-hofler.json",
+          "showTitle": "MJ The Musical",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"MJ The Musical\" not found in text"
+          ],
+          "positiveSignals": [
+            "Venue \"Neil Simon Theatre\" found",
+            "Creative team \"Lynn Nottage\" (Book) found"
+          ],
+          "url": "https://www.thewrap.com/mj-broadway-review-michael-jackson/"
+        },
+        {
+          "file": "my-fair-lady-2018/variety--marilyn-stasio.json",
+          "showTitle": "My Fair Lady",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"My Fair Lady\" not found in text"
+          ],
+          "positiveSignals": [
+            "Creative team \"Alan Jay Lerner\" (Book) found",
+            "Creative team \"Alan Jay Lerner\" (Lyrics) found"
+          ],
+          "url": "https://variety.com/2018/legit/reviews/my-fair-lady-review-broadway-revival-1202747826/"
+        },
+        {
+          "file": "natasha-pierre-and-the-great-comet-of-1812-2016/timeout--adam-feldman.json",
+          "showTitle": "Natasha, Pierre & The Great Comet of 1812",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"Natasha, Pierre & The Great Comet of 1812\" not found in text"
+          ],
+          "positiveSignals": [
+            "Creative team \"Dave Malloy\" (Book) found",
+            "Creative team \"Dave Malloy\" (Lyrics) found"
+          ],
+          "url": "https://www.timeout.com/newyork/theater/natasha-pierre-and-the-great-comet-of-1812"
+        },
+        {
+          "file": "nice-work-if-you-can-get-it-2012/nytimes--ben-brantley.json",
+          "showTitle": "Nice Work If You Can Get It",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"Nice Work If You Can Get It\" not found in text"
+          ],
+          "positiveSignals": [
+            "Creative team \"Ira Gershwin\" (Lyrics) found",
+            "Creative team \"George Gershwin\" (Music) found"
+          ],
+          "url": "https://www.nytimes.com/2012/04/25/theater/reviews/nice-work-if-you-can-get-it-at-imperial-theater.h"
+        },
+        {
+          "file": "noises-off-2016/theatermania--jesse-green.json",
+          "showTitle": "Noises Off",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"Noises Off\" not found in text"
+          ],
+          "positiveSignals": [
+            "Director \"Jeremy Herrin\" found"
+          ],
+          "url": "https://www.theatermania.com/broadway/reviews/noises-off_75798.html"
+        },
+        {
+          "file": "of-mice-and-men-2014/washpost--peter-marks.json",
+          "showTitle": "Of Mice and Men",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"Of Mice and Men\" not found in text"
+          ],
+          "positiveSignals": [
+            "Director \"Anna D. Shapiro\" found"
+          ],
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/of-mice-and-men-review-a-stellar-cast-in-"
+        },
+        {
+          "file": "on-the-twentieth-century-2015/nytg--brian-scott-lipton.json",
+          "showTitle": "On the Twentieth Century",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"On the Twentieth Century\" not found in text"
+          ],
+          "positiveSignals": [
+            "Creative team \"Betty Comden and Adolph Green\" (Book) found",
+            "Creative team \"Betty Comden and Adolph Green\" (Lyrics) found"
+          ],
+          "url": "https://newyorktheatreguide.com/reviews/on-the-twentieth-century"
+        },
+        {
+          "file": "parade-2023/variety--aramide-tinubu.json",
+          "showTitle": "Parade",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"Parade\" not found in text"
+          ],
+          "positiveSignals": [
+            "Creative team \"Alfred Uhry\" (Book) found",
+            "Creative team \"Jason Robert Brown\" (Lyrics) found"
+          ],
+          "url": "https://variety.com/2023/legit/reviews/parade-review-broadway-revival-ben-platt-micaela-diamond-1235"
+        },
+        {
+          "file": "pass-over-2021/indiewire--david-ehrlich.json",
+          "showTitle": "Pass Over",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"Pass Over\" not found in text"
+          ],
+          "positiveSignals": [
+            "Director \"Danya Taymor\" found"
+          ],
+          "url": "https://www.indiewire.com/2021/09/pass-over-broadway-review-antoinette-chinonye-nwandu-1234663478/"
+        },
+        {
+          "file": "school-of-rock-the-musical-2015/nytimes--ben-brantley.json",
+          "showTitle": "School of Rock – The Musical",
+          "score": -2,
+          "negativeSignals": [
+            "Show title \"School of Rock – The Musical\" not found in text"
+          ],
+          "positiveSignals": [
+            "Creative team \"Andrew Lloyd Webber\" (Music) found"
+          ],
+          "url": "https://www.nytimes.com/2015/12/07/theater/review-school-of-rock-gets-an-a-for-effort.html"
+        },
+        {
+          "file": "skeleton-crew-2022/usatoday--charles-isherwood.json",
+          "showTitle": "Skeleton Crew",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"Skeleton Crew\" not found in text"
+          ],
+          "positiveSignals": [
+            "Director \"Ruben Santiago-Hudson\" found"
+          ],
+          "url": "https://www.usatoday.com/story/entertainment/theater/2022/01/07/skeleton-crew-broadway-review-phylic"
+        },
+        {
+          "file": "the-cherry-orchard-2016/observer--rex-reed.json",
+          "showTitle": "The Cherry Orchard",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"The Cherry Orchard\" not found in text"
+          ],
+          "positiveSignals": [
+            "Director \"Simon Godwin\" found"
+          ],
+          "url": "https://observer.com/2016/10/the-cherry-orchard-review-diane-lane-john-glover-stephen-karam/"
+        },
+        {
+          "file": "the-collaboration-2022/theatermania--jesse-green.json",
+          "showTitle": "The Collaboration",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"The Collaboration\" not found in text"
+          ],
+          "positiveSignals": [
+            "Director \"Kwame Kwei-Armah\" found"
+          ],
+          "url": "https://www.theatermania.com/broadway/reviews/the-collaboration_92485.html"
+        },
+        {
+          "file": "the-curious-incident-of-the-dog-in-the-nighttime-2014/chicagotribune--chris-jones.json",
+          "showTitle": "The Curious Incident of the Dog in the Night-Time",
+          "score": -2,
+          "negativeSignals": [
+            "Show title \"The Curious Incident of the Dog in the Night-Time\" not found in text"
+          ],
+          "positiveSignals": [
+            "Venue \"Ethel Barrymore Theatre\" found"
+          ],
+          "url": "https://www.chicagotribune.com/2014/10/06/the-curious-incident-of-the-dog-in-the-night-time-broadway"
+        },
+        {
+          "file": "the-encounter-2016/wsj--terry-teachout.json",
+          "showTitle": "The Encounter",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"The Encounter\" not found in text"
+          ],
+          "positiveSignals": [
+            "Director \"Simon McBurney\" found"
+          ],
+          "url": "https://www.wsj.com/articles/the-encounter-review-a-one-man-show-with-the-sound-of-the-amazon-147467"
+        },
+        {
+          "file": "the-king-and-i-2015/talkinbroadway--matthew-murray.json",
+          "showTitle": "The King and I",
+          "score": -2,
+          "negativeSignals": [
+            "Show title \"The King and I\" not found in text"
+          ],
+          "positiveSignals": [
+            "Creative team \"Richard Rodgers\" (Music) found"
+          ],
+          "url": "http://www.talkinbroadway.com/world/KingandI.html"
+        },
+        {
+          "file": "the-mystery-of-edwin-drood-2012/timeout--david-cote.json",
+          "showTitle": "The Mystery of Edwin Drood",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"The Mystery of Edwin Drood\" not found in text"
+          ],
+          "positiveSignals": [
+            "Creative team \"Rupert Holmes\" (Book) found",
+            "Creative team \"Rupert Holmes\" (Lyrics) found"
+          ],
+          "url": "https://www.timeout.com/newyork/theater/the-mystery-of-edwin-drood"
+        },
+        {
+          "file": "the-norman-conquests-2009/wsj--terry-teachout.json",
+          "showTitle": "The Norman Conquests",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"The Norman Conquests\" not found in text"
+          ],
+          "positiveSignals": [
+            "Director \"Matthew Warchus\" found"
+          ],
+          "url": "https://www.wsj.com/articles/SB125434567890123456"
+        },
+        {
+          "file": "the-outsiders-2024/theatermania--adam-feldman.json",
+          "showTitle": "The Outsiders",
+          "score": -2,
+          "negativeSignals": [
+            "Show title \"The Outsiders\" not found in text"
+          ],
+          "positiveSignals": [
+            "Creative team \"Jamestown Revival\" (Music & Lyrics) found"
+          ],
+          "url": "https://www.theatermania.com/new-york-city-theater/reviews/the-outsiders_93847.html"
+        },
+        {
+          "file": "the-price-2017/vulture--jesse-green.json",
+          "showTitle": "The Price",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"The Price\" not found in text"
+          ],
+          "positiveSignals": [
+            "Director \"Terry Kinney\" found"
+          ],
+          "url": "https://www.vulture.com/2017/03/theater-review-the-price-on-broadway.html"
+        },
+        {
+          "file": "the-sound-inside-2019/variety--marilyn-stasio.json",
+          "showTitle": "The Sound Inside",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"The Sound Inside\" not found in text"
+          ],
+          "positiveSignals": [
+            "Director \"David Cromer\" found"
+          ],
+          "url": "https://variety.com/2019/legit/reviews/the-sound-inside-review-mary-louise-parker-1203370204/"
+        },
+        {
+          "file": "title-of-show-2008/nytimes--ben-brantley.json",
+          "showTitle": "[title of show]",
+          "score": -2,
+          "negativeSignals": [
+            "Show title \"[title of show]\" not found in text"
+          ],
+          "positiveSignals": [
+            "Venue \"Lyceum Theatre\" found"
+          ],
+          "url": "https://www.nytimes.com/2008/07/22/theater/reviews/22title.html"
+        },
+        {
+          "file": "travesties-2018/wsj--charles-isherwood.json",
+          "showTitle": "Travesties",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"Travesties\" not found in text"
+          ],
+          "positiveSignals": [
+            "Director \"Patrick Marber\" found"
+          ],
+          "url": "https://www.wsj.com/articles/travesties-review-tom-stoppards-dada-esque-comedy-1524261600"
+        },
+        {
+          "file": "true-west-2019/vulture--jesse-green.json",
+          "showTitle": "True West",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"True West\" not found in text"
+          ],
+          "positiveSignals": [
+            "Director \"James Macdonald\" found"
+          ],
+          "url": "https://www.vulture.com/2019/01/theater-review-true-west-on-broadway.html"
+        },
+        {
+          "file": "water-for-elephants-2024/theatermania--david-gordon.json",
+          "showTitle": "Water for Elephants",
+          "score": -2,
+          "negativeSignals": [
+            "Show title \"Water for Elephants\" not found in text"
+          ],
+          "positiveSignals": [
+            "Creative team \"Mary-Mitchell Campbell and Benedict Braxton-Smith\" (Music Supervision) found"
+          ],
+          "url": "https://www.theatermania.com/broadway/reviews/water-for-elephants_93847.html"
+        },
+        {
+          "file": "you-cant-take-it-with-you-2014/wsj--terry-teachout.json",
+          "showTitle": "You Can't Take It With You",
+          "score": -1,
+          "negativeSignals": [
+            "Show title \"You Can't Take It With You\" not found in text"
+          ],
+          "positiveSignals": [
+            "Director \"Scott Ellis\" found"
+          ],
+          "url": "https://www.wsj.com/articles/theater-review-you-cant-take-it-with-you-1409339853"
+        }
+      ]
+    },
+    "investigation2": {
+      "categories": {
+        "published_before": 54,
+        "no_note": 32,
+        "manual_offbroadway": 35,
+        "other_auto": 1
+      },
+      "likelyFalsePositives": [
+        {
+          "file": "stranger-things-2024/bbc-news--neil-armstrong.json",
+          "category": "other_auto",
+          "reason": "Content matches show (score 6): Show title \"Stranger Things: The First Shadow\" found in text, Director \"Stephen Daldry\" found, Creative team \"Kate Trefry\" (Playwright) found",
+          "note": "London West End production (Dec 2023), not Broadway production (Mar 2025)",
+          "otherProductionExists": false
+        }
+      ],
+      "confirmedCorrect": [
+        {
+          "file": "cats-the-jellicle-ball-2026/chicagotribune--chris-jones.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Perelman Performing Arts Center, June 2024"
+        },
+        {
+          "file": "cats-the-jellicle-ball-2026/cititour--brian-scott-lipton.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Perelman Performing Arts Center, June 2024"
+        },
+        {
+          "file": "cats-the-jellicle-ball-2026/exeunt-nyc--lane-williamson.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Perelman Performing Arts Center, June 2024"
+        },
+        {
+          "file": "cats-the-jellicle-ball-2026/nydailynews--unknown.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Perelman Performing Arts Center, June 2024"
+        },
+        {
+          "file": "cats-the-jellicle-ball-2026/nypost--johnny-oleksinski.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Perelman Performing Arts Center, June 2024"
+        },
+        {
+          "file": "cats-the-jellicle-ball-2026/nysr--unknown.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Perelman Performing Arts Center, June 2024"
+        },
+        {
+          "file": "cats-the-jellicle-ball-2026/nytg--kyle-turner.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Perelman Performing Arts Center, June 2024"
+        },
+        {
+          "file": "cats-the-jellicle-ball-2026/nytimes--jesse-green.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Perelman Performing Arts Center, June 2024"
+        },
+        {
+          "file": "cats-the-jellicle-ball-2026/queerty--matthew-wexler.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Perelman Performing Arts Center, June 2024"
+        },
+        {
+          "file": "cats-the-jellicle-ball-2026/theatermania--zachary-stewart.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Perelman Performing Arts Center, June 2024"
+        },
+        {
+          "file": "cats-the-jellicle-ball-2026/thewrap--robert-hofler.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Perelman Performing Arts Center, June 2024"
+        },
+        {
+          "file": "cats-the-jellicle-ball-2026/timeout--adam-feldman.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Perelman Performing Arts Center, June 2024"
+        },
+        {
+          "file": "days-of-wine-and-roses-2024/variety--aramide-tinubu.json",
+          "category": "manual_offbroadway",
+          "note": "URL points to 2005 off-Broadway play by Owen McCafferty, not 2024 Broadway musical"
+        },
+        {
+          "file": "hamilton-2015/hollywood-reporter--frank-scheck.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway/pre-Broadway run at Public Theater. Reusable if off-Broadway show entry is created."
+        },
+        {
+          "file": "hamilton-2015/nytimes--ben-brantley.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway/pre-Broadway run at Public Theater. Reusable if off-Broadway show entry is created."
+        },
+        {
+          "file": "hamilton-2015/theatermania--zachary-stewart.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway/pre-Broadway run at Public Theater. Reusable if off-Broadway show entry is created."
+        },
+        {
+          "file": "hamilton-2015/vulture--jesse-green.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway/pre-Broadway run at Public Theater. Reusable if off-Broadway show entry is created."
+        },
+        {
+          "file": "hells-kitchen-2024/nyt-theater--jonathan-mandell.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Public Theater (Nov 2023), not Broadway transfer (Mar 2024)"
+        },
+        {
+          "file": "illinoise-2024/nytg--amelia-merrill.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway/pre-Broadway run at Park Avenue Armory. Reusable if off-Broadway show entry is created."
+        },
+        {
+          "file": "illinoise-2024/theater-scene--victor-gluck.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway/pre-Broadway run at Park Avenue Armory. Reusable if off-Broadway show entry is created."
+        },
+        {
+          "file": "illinoise-2024/washpost--gloria-oladipo.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway/pre-Broadway run at Park Avenue Armory. Reusable if off-Broadway show entry is created."
+        },
+        {
+          "file": "marjorie-prime-2025/vulture--sara-holdren.json",
+          "category": "manual_offbroadway",
+          "note": "fullText is from 2015 off-Broadway review at Playwrights Horizons, not 2025 Broadway revival"
+        },
+        {
+          "file": "mary-jane-2024/deadline--pete-hammond.json",
+          "category": "manual_offbroadway",
+          "note": "URL points to 2017 NYTW off-Broadway production starring Carrie Coon, not 2024 Broadway transfer sta"
+        },
+        {
+          "file": "oh-mary-2024/cititour--brian-scott-lipton.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Lucille Lortel Theatre (Feb-May 2024), not Broadway transfer (Jun 2024)"
+        },
+        {
+          "file": "oh-mary-2024/this-week-in-new-york--mark-rifkin.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Lucille Lortel Theatre (Feb-May 2024), not Broadway transfer (Jun 2024)"
+        },
+        {
+          "file": "stereophonic-2024/lighting-and-sound-america--david-barbour.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Playwrights Horizons (Oct 2023), not Broadway transfer (Apr 2024)"
+        },
+        {
+          "file": "stereophonic-2024/nytg--joe-dziemianowicz.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Playwrights Horizons (Oct 2023), not Broadway transfer (Apr 2024)"
+        },
+        {
+          "file": "stereophonic-2024/nytimes--jesse-green.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Playwrights Horizons (Oct 2023), not Broadway transfer (Apr 2024)"
+        },
+        {
+          "file": "stereophonic-2024/observer--david-cote.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway/pre-Broadway run at Playwrights Horizons. Reusable if off-Broadway show entry is create"
+        },
+        {
+          "file": "stereophonic-2024/talkinbroadway--marc-miller.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Playwrights Horizons (Oct 2023), not Broadway transfer (Apr 2024)"
+        },
+        {
+          "file": "stereophonic-2024/vulture--jackson-mchenry.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run at Playwrights Horizons (Oct 2023), not Broadway transfer (Apr 2024)"
+        },
+        {
+          "file": "the-great-gatsby-2024/nytg--gillian-russo.json",
+          "category": "manual_offbroadway",
+          "note": "Immersive off-Broadway production at Park Central Hotel (Jun 2023), not Broadway musical (Mar 2024)"
+        },
+        {
+          "file": "the-great-gatsby-2024/nytimes--maya-phillips.json",
+          "category": "manual_offbroadway",
+          "note": "Immersive off-Broadway production at Park Central Hotel (Jun 2023), not Broadway musical (Mar 2024)"
+        },
+        {
+          "file": "the-great-gatsby-2024/theater-pizzazz--brian-scott-lipton.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway/pre-Broadway run at Park Central Hotel (immersive). Reusable if off-Broadway show entry"
+        },
+        {
+          "file": "two-strangers-bway-2025/cititour--brian-scott-lipton.json",
+          "category": "manual_offbroadway",
+          "note": "Off-Broadway run (Jan 2025), not Broadway transfer (Nov 2025)"
+        }
+      ]
+    },
+    "investigation3": {
+      "suspiciousUrls": [
+        {
+          "file": "aladdin-2014/new-jersey-newsroom--michael-sommers.json",
+          "url": "http://www.newjerseynewsroom.com/movies/aladdin-broadway-review-a-smooth-ride-for-the-family-crowd",
+          "outletId": "new-jersey-newsroom",
+          "assignedScore": 74,
+          "reason": "URL contains non-theater segment: /movies/aladdin-broadway-review-a-smooth-ride-for-the-family-crowd"
+        },
+        {
+          "file": "book-of-mormon-2011/rollingstone--peter-travers.json",
+          "url": "http://www.rollingstone.com/movies/videos/the-book-of-mormon-the-genii-of-south-park-hit-broadway-an",
+          "outletId": "rollingstone",
+          "assignedScore": 91,
+          "reason": "URL contains non-theater segment: /movies/videos/the-book-of-mormon-the-genii-of-south-park-hit-broadway-and-histo"
+        },
+        {
+          "file": "company-2021/hollywood-reporter--angie-han.json",
+          "url": "https://www.hollywoodreporter.com/movies/movie-reviews/company-review-1235056094/",
+          "outletId": "hollywood-reporter",
+          "assignedScore": 79,
+          "reason": "URL contains non-theater segment: /movies/movie-reviews/company-review-1235056094/"
+        },
+        {
+          "file": "is-this-a-room-2021/hollywood-reporter--angie-han.json",
+          "url": "https://www.hollywoodreporter.com/movies/movie-reviews/is-this-a-room-1235037847/",
+          "outletId": "hollywood-reporter",
+          "assignedScore": 79,
+          "reason": "URL contains non-theater segment: /movies/movie-reviews/is-this-a-room-1235037847/"
+        }
+      ]
+    },
+    "investigation4": {
+      "roundupDuplicates": [
+        {
+          "url": "https://www.interestedbystander.com/2024/11/theater-reviews-capsule-reviews-of-drag.html",
+          "files": [
+            "a-wonderful-world-the-louis-armstrong-musical-2024/the-interested-bystander--cary-wong.json",
+            "sunset-boulevard-2017/the-interested-bystander--cary-wong.json",
+            "sunset-boulevard-2024/the-interested-bystander--cary-wong.json"
+          ],
+          "showCount": 3
+        },
+        {
+          "url": "https://www.interestedbystander.com/2025/04/broadway-two-icons-are-celebrated-in.html?m=0",
+          "files": [
+            "boop-2025/the-interested-bystander--cary-wong.json",
+            "stephen-sondheims-old-friends-2025/the-interested-bystander--cary-wong.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.interestedbystander.com/2026/01/theater-catching-up-on-theater-filled.html?m=0",
+          "files": [
+            "bug-2026/the-interested-bystander--cary-wong.json",
+            "two-strangers-bway-2025/the-interested-bystander--cary-wong.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/",
+          "files": [
+            "cabaret-2024/deadline--greg-evans.json",
+            "illinoise-2024/deadline--greg-evans.json",
+            "lempicka-2024/deadline--greg-evans.json",
+            "patriots-2024/deadline--greg-evans.json",
+            "stereophonic-2024/deadline--greg-evans.json",
+            "the-outsiders-2024/deadline--greg-evans.json",
+            "uncle-vanya-2024/deadline--greg-evans.json"
+          ],
+          "showCount": 7
+        },
+        {
+          "url": "https://www.interestedbystander.com/2024/05/broadway-reviews-three-recent-tony.html",
+          "files": [
+            "cabaret-2024/the-interested-bystander--cary-wong.json",
+            "the-outsiders-2024/the-interested-bystander--cary-wong.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.interestedbystander.com/2025/01/theater-review-gypsy-triumphs-again-on.html",
+          "files": [
+            "cult-of-love-2024/the-interested-bystander--cary-wong.json",
+            "gypsy-2024/the-interested-bystander--cary-wong.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.interestedbystander.com/2024/11/broadway-reviews-death-becomes-her-is.html?m=0",
+          "files": [
+            "death-becomes-her-2024/the-interested-bystander--cary-wong.json",
+            "maybe-happy-ending-2024/the-interested-bystander--cary-wong.json",
+            "tammy-faye-2024/the-interested-bystander--cary-wong.json"
+          ],
+          "showCount": 3
+        },
+        {
+          "url": "https://www.interestedbystander.com/2025/04/theater-reviews-tragedy-of-floyd.html#more",
+          "files": [
+            "floyd-collins-2025/the-interested-bystander--cary-wong.json",
+            "john-proctor-is-the-villain-2025/the-interested-bystander--cary-wong.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.interestedbystander.com/2025/12/reviews-catching-up-on-theater.html",
+          "files": [
+            "oedipus-2025/the-interested-bystander--cary-wong.json",
+            "queen-versailles-2025/the-interested-bystander--cary-wong.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.interestedbystander.com/2024/10/theater-review-romeo-juliet-jellicle.html",
+          "files": [
+            "our-town-2024/the-interested-bystander--cary-wong.json",
+            "romeo-juliet-2024/the-interested-bystander--cary-wong.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.interestedbystander.com/2025/05/theater-reviews-stranger-things-first.html?m=0",
+          "files": [
+            "real-women-have-curves-2025/the-interested-bystander--cary-wong.json",
+            "stranger-things-2024/the-interested-bystander--cary-wong.json"
+          ],
+          "showCount": 2
+        }
+      ],
+      "nonRoundupDuplicates": [
+        {
+          "url": "https://deadline.com/2022/12/aint-no-mo-beautiful-noise-neil-diamond-musical-broadway-reviews-123518",
+          "files": [
+            "a-beautiful-noise-the-neil-diamond-musical-2022/deadline--greg-evans.json",
+            "aint-no-mo-2022/deadline--greg-evans.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "http://www.amny.com/entertainment/a-bronx-tale-review-chazz-palminteri-s-saga-becomes-musical-1.1147",
+          "files": [
+            "a-bronx-tale-2007/amny--unknown.json",
+            "a-bronx-tale-the-musical-2016/amny--unknown.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/a-bronx-tale-musical-theater-865401",
+          "files": [
+            "a-bronx-tale-2007/hollywood-reporter--unknown.json",
+            "a-bronx-tale-the-musical-2016/hollywood-reporter--unknown.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "http://www.nj.com/entertainment/index.ssf/2016/02/a_bronx_tale_review_paper_mill_playhouse_robert_de",
+          "files": [
+            "a-bronx-tale-2007/njcom--unknown.json",
+            "a-bronx-tale-the-musical-2016/njcom--unknown.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/robert-de-niro-co-directs-bronx-tale-musical-a",
+          "files": [
+            "a-bronx-tale-2007/nydailynews--unknown.json",
+            "a-bronx-tale-the-musical-2016/nydailynews--unknown.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "http://www.nytimes.com/2016/02/25/theater/review-a-bronx-tale-the-musical-doo-wops-down-mean-streets",
+          "files": [
+            "a-bronx-tale-2007/nytimes--unknown.json",
+            "a-bronx-tale-the-musical-2016/nytimes--unknown.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "http://deadline.com/2015/04/the-visit-airline-highway-broadway-review-1201414889/",
+          "files": [
+            "airline-highway-2015/deadline--unknown.json",
+            "the-visit-2011/deadline--jeremy-gerard.json",
+            "the-visit-2015/deadline--jeremy-gerard.json"
+          ],
+          "showCount": 3
+        },
+        {
+          "url": "https://www.nytimes.com/2018/03/25/theater/angels-in-america-review.html",
+          "files": [
+            "angels-in-america-2018/nytimes--ben-brantley-pt2.json",
+            "angels-in-america-perestroika-2018/nytimes--ben-brantley.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.nytimes.com/2018/03/25/theater/angels-in-america-review-andrew-garfield.html",
+          "files": [
+            "angels-in-america-2018/nytimes--ben-brantley.json",
+            "angels-in-america-millennium-approaches-2018/nytimes--ben-brantley.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://observer.com/2018/04/angels-in-america-perestroika-broadway-review/",
+          "files": [
+            "angels-in-america-2018/observer--rex-reed.json",
+            "angels-in-america-perestroika-2018/observer--rex-reed.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.theatermania.com/new-york-city-theater/reviews/angels-in-america-perestroika_84691.html",
+          "files": [
+            "angels-in-america-2018/theatermania--jesse-green.json",
+            "angels-in-america-perestroika-2018/theatermania--jesse-green.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/angels-in-america-millennium-approaches-review",
+          "files": [
+            "angels-in-america-2018/timeout--adam-feldman.json",
+            "angels-in-america-millennium-approaches-2018/timeout--adam-feldman.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://variety.com/2018/legit/reviews/angels-in-america-perestroika-review-broadway-1202737916/",
+          "files": [
+            "angels-in-america-2018/variety--marilyn-stasio-pt2.json",
+            "angels-in-america-perestroika-2018/variety--marilyn-stasio.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://variety.com/2018/legit/reviews/angels-in-america-review-andrew-garfield-nathan-lane-12027369",
+          "files": [
+            "angels-in-america-2018/variety--marilyn-stasio.json",
+            "angels-in-america-millennium-approaches-2018/variety--marilyn-stasio.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.vulture.com/2018/03/theater-review-angels-in-america-on-broadway.html",
+          "files": [
+            "angels-in-america-2018/vulture--jesse-green-pt2.json",
+            "angels-in-america-millennium-approaches-2018/vulture--jesse-green.json",
+            "angels-in-america-perestroika-2018/vulture--jesse-green.json"
+          ],
+          "showCount": 3
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-angels-in-america-on-broadway-is-t",
+          "files": [
+            "angels-in-america-2018/washpost--peter-marks.json",
+            "angels-in-america-millennium-approaches-2018/washpost--peter-marks.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater/2025/04/10/boop-smash-broadway-review/",
+          "files": [
+            "boop-2025/washpost--naveen-kumar.json",
+            "smash-2025/washpost--naveen-kumar.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "http://www.ft.com/home/us",
+          "files": [
+            "china-doll-2015/financialtimes--unknown.json",
+            "fiddler-on-the-roof-2015/financialtimes--unknown.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.talkinbroadway.com/page/world/index.html",
+          "files": [
+            "death-of-a-salesman-2012/talkinbroadway--howard-miller.json",
+            "the-sign-in-sidney-brusteins-window-2023/talkinbroadway--howard-miller.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.vulture.com/2016/03/theater-white-rabbit-red-rabbit.html",
+          "files": [
+            "disaster-2016/vulture--jesse-green.json",
+            "red-2010/vulture--jesse-green.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "http://www.latimes.com/entertainment/arts/la-et-cm-meteor-shower-play-review-20160803-snap-story.htm",
+          "files": [
+            "martin-short-fame-becomes-me-2006/latimes--unknown.json",
+            "meteor-shower-2017/latimes--unknown.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://twi-ny.com/2024/10/07/big-small-screen-stars-on-broadway-yellow-face-the-roommate-mcneal/",
+          "files": [
+            "mcneal-2024/this-week-in-new-york--mark-rifkin.json",
+            "the-roommate-2024/this-week-in-new-york--mark-rifkin.json",
+            "yellow-face-2024/this-week-in-new-york--mark-rifkin.json"
+          ],
+          "showCount": 3
+        },
+        {
+          "url": "http://abcnews.go.com/Entertainment/wireStory/review-spring-awakening-opens-arms-34093481",
+          "files": [
+            "old-times-2015/abc-news--unknown.json",
+            "spring-awakening-2006/ap--unknown.json",
+            "spring-awakening-2015/ap--unknown.json"
+          ],
+          "showCount": 3
+        },
+        {
+          "url": "https://ew.com/once-upon-a-mattress-review-sutton-foster-shines-broadway-revival-8694003",
+          "files": [
+            "once-2012/ew--emlyn-travis.json",
+            "once-upon-a-mattress-2024/ew--emlyn-travis.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/once-upon-a-mattress-broadway-review-sutton-foster",
+          "files": [
+            "once-2012/nytg--amelia-merrill.json",
+            "once-upon-a-mattress-2024/unknown--unknown.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-sutton-foster-and-once-upon-a-mattress-hit-broadway-with-it",
+          "files": [
+            "once-2012/theatermania--kenji-fujishima.json",
+            "once-upon-a-mattress-2024/theatermania--kenji-fujishima.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.vulture.com/article/review-once-upon-a-mattress-sutton-foster-theater-encores.html",
+          "files": [
+            "once-2012/vulture--chris-bonano.json",
+            "once-upon-a-mattress-2024/vulture--christopher-bonanos.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "http://www.talkinbroadway.com/page/regional/boston/b633.html",
+          "files": [
+            "sister-act-2011/talkinbroadway--matthew-murray.json",
+            "the-visit-2015/talkinbroadway--matthew-murray.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.nytimes.com/2006/11/28/theater/reviews/28voya.html",
+          "files": [
+            "the-coast-of-utopia-2006/nytimes--ben-brantley.json",
+            "the-coast-of-utopia-part-1-voyage-2006/nytimes--ben-brantley.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://variety.com/2007/legit/reviews/the-coast-of-utopia-part-3-salvage-1200558847/",
+          "files": [
+            "the-coast-of-utopia-2006/variety--charles-isherwood.json",
+            "the-coast-of-utopia-part-3-salvage-2007/variety--charles-isherwood.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.nydailynews.com/2009/04/17/the-norman-conquests-table-manners-living-together-round-and-",
+          "files": [
+            "the-norman-conquests-2009/nydailynews--joe-dziemianowicz.json",
+            "the-norman-conquests-table-manners-2009/nydailynews--joe-dziemianowicz.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.nytimes.com/2009/04/30/theater/reviews/30norman.html",
+          "files": [
+            "the-norman-conquests-2009/nytimes--ben-brantley.json",
+            "the-norman-conquests-living-together-2009/nytimes--ben-brantley.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://observer.com/2009/04/the-norman-conquests-living-together-table-manners-and-round-and-round-",
+          "files": [
+            "the-norman-conquests-2009/observer--rex-reed.json",
+            "the-norman-conquests-living-together-2009/observer--rex-reed.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "http://www.talkinbroadway.com/world/TableManners.html",
+          "files": [
+            "the-norman-conquests-2009/talkinbroadway--matthew-murray.json",
+            "the-norman-conquests-table-manners-2009/talkinbroadway--matthew-murray.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.theatermania.com/broadway/reviews/the-norman-conquests-round-and-round-the-garden_22359.",
+          "files": [
+            "the-norman-conquests-2009/theatermania--brian-scott-lipton.json",
+            "the-norman-conquests-round-and-round-the-garden-2009/theatermania--brian-scott-lipton.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.theatermania.com/new-york-city-theater/reviews/the-norman-conquests-table-manners_19773.",
+          "files": [
+            "the-norman-conquests-2009/theatermania--david-finkle.json",
+            "the-norman-conquests-table-manners-2009/theatermania--david-finkle.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.theatermania.com/new-york-city-theater/reviews/the-norman-conquests-living-together_2039",
+          "files": [
+            "the-norman-conquests-2009/theatermania--david-rooney.json",
+            "the-norman-conquests-living-together-2009/theatermania--david-rooney.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/round-and-round-the-garden",
+          "files": [
+            "the-norman-conquests-2009/timeout--david-cote.json",
+            "the-norman-conquests-round-and-round-the-garden-2009/timeout--david-cote.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://variety.com/2009/legit/reviews/the-norman-conquests-table-manners-1200474901/",
+          "files": [
+            "the-norman-conquests-2009/variety--charles-isherwood.json",
+            "the-norman-conquests-table-manners-2009/variety--charles-isherwood.json"
+          ],
+          "showCount": 2
+        },
+        {
+          "url": "https://www.wsj.com/articles/SB125434567890123456",
+          "files": [
+            "the-norman-conquests-2009/wsj--terry-teachout.json",
+            "the-norman-conquests-living-together-2009/wsj--terry-teachout.json"
+          ],
+          "showCount": 2
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "system": "sync",
+  "status": "warn",
+  "lastChecked": "2026-10-10T13:07:35.983Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Sync: review-texts vs reviews.json",
+      "status": "pass",
+      "message": "54318 files, 26790 reviews (surplus: 27528)"
+    },
+    {
+      "name": "Sync: open show coverage",
+      "status": "pass",
+      "message": "25 open shows all have reviews and grosses"
+    },
+    {
+      "name": "Sync: phantom show detection",
+      "status": "pass",
+      "message": "No phantom show candidates found"
+    },
+    {
+      "name": "Sync: cast coverage",
+      "status": "warn",
+      "message": "2 empty cast: Billy Crystal 860, A Few Good Men"
+    },
+    {
+      "name": "Sync: baseline drift",
+      "status": "warn",
+      "message": "Reviews dropped: 26790 vs baseline 26998"
+    },
+    {
+      "name": "Sync: grosses weekEnding",
+      "status": "pass",
+      "message": "weekEnding 10/4/2026 (6d ago)"
+    }
+  ]
+}

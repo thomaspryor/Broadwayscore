@@ -1,0 +1,419 @@
+// Tests for opening-signal.js — the review-driven "this show has opened" signal
+// that backstops update-show-status.js Check 2d. No network, pure fixtures.
+//
+// Regression target: rodeo / the-last-man / small (2026-06) sat in `previews`
+// with null openingDate + no ShowScore URL, so the date- and ShowScore-based
+// flips never fired and their scores were suppressed by the showTBD gate.
+
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const {
+  openingDateStillAhead,
+  MIN_REVIEWS_BY_CATEGORY,
+  MIN_REVIEWS_CURATED_HISTORICAL,
+  T3_ONLY_EXTRA_REVIEWS,
+  STUCK_PREVIEWS_POLL_MIN_DAYS,
+  STUCK_PREVIEWS_POLL_MAX_DAYS,
+  minReviewsForCategory,
+  reviewsRemainingForScore,
+  countByShow,
+  estimatePressNight,
+  isStuckInPreviews,
+  openSignalFromReviews,
+  chooseOpeningDateBackfill,
+  findStuckPreviews,
+  isStuckPreviewsPollCandidate,
+  openSignalFromDiscovery,
+  PRE_OPEN_STATUSES,
+  runDates,
+  reviewsPredateRun,
+} = require('./opening-signal.js');
+
+// Deterministic clock for backfill tests: "today" is 2026-06-03.
+const isReached = (d) => new Date(d) <= new Date('2026-06-03');
+// Later clock for open-signal tests (post-press-night): "today" is 2026-06-22.
+const isReachedLate = (d) => new Date(d) <= new Date('2026-06-22');
+
+test('thresholds mirror src/config/score-buckets.ts MIN_REVIEWS_FOR_SCORE*', () => {
+  assert.equal(MIN_REVIEWS_BY_CATEGORY.broadway, 5);
+  assert.equal(MIN_REVIEWS_BY_CATEGORY['off-broadway'], 3);
+  assert.equal(MIN_REVIEWS_BY_CATEGORY['west-end'], 5);
+  assert.equal(MIN_REVIEWS_BY_CATEGORY['off-west-end'], 3);
+  assert.equal(MIN_REVIEWS_BY_CATEGORY.regional, 3);
+  assert.equal(MIN_REVIEWS_CURATED_HISTORICAL, 4);
+  assert.equal(T3_ONLY_EXTRA_REVIEWS, 2);
+  assert.equal(minReviewsForCategory('off-broadway'), 3);
+  assert.equal(minReviewsForCategory(undefined), 5, 'unknown category falls back to the strict default');
+});
+
+// BRO-159: this table used to have no 'off-off-broadway' key, so an enumerated
+// off-off-broadway show would fall through the `?? MIN_REVIEWS_DEFAULT` to the
+// Broadway threshold (5) instead of 3 — delaying its previews->open auto-flip.
+test('MIN_REVIEWS_BY_CATEGORY / minReviewsForCategory: off-off-broadway gets the Off-Broadway threshold', () => {
+  assert.equal(MIN_REVIEWS_BY_CATEGORY['off-off-broadway'], 3);
+  assert.equal(minReviewsForCategory('off-off-broadway'), 3);
+});
+
+test('reviewsRemainingForScore ports the score-buckets.ts logic, incl. T3-only +2', () => {
+  // Plain category thresholds (tier1And2 undefined → no T3 penalty).
+  assert.equal(reviewsRemainingForScore(3, 'off-broadway', undefined, false), 0);
+  assert.equal(reviewsRemainingForScore(2, 'off-broadway', undefined, false), 1);
+  assert.equal(reviewsRemainingForScore(5, 'broadway', undefined, false), 0);
+
+  // T3-only penalty: zero T1/T2 reviews raises the bar by 2.
+  assert.equal(reviewsRemainingForScore(3, 'off-broadway', 0, false), 2, '3 T3-only OB reviews need 5, so 2 remain');
+  assert.equal(reviewsRemainingForScore(5, 'off-broadway', 0, false), 0, '5 T3-only OB reviews qualify');
+  assert.equal(reviewsRemainingForScore(3, 'off-broadway', 1, false), 0, 'one T1/T2 removes the penalty');
+
+  // Curated-historical only lowers the Broadway bar to 4, and only with a T1/T2.
+  assert.equal(reviewsRemainingForScore(4, 'broadway', 1, true), 0);
+  assert.equal(reviewsRemainingForScore(4, 'broadway', 0, true), 3, 'no T1/T2 → no curated discount AND +2 penalty (4→7? no: min 5+2=7-4=3)');
+});
+
+test('countByShow tallies counts, T1/T2 tier counts, and valid dates', () => {
+  const tierOf = (r) => ({ nytimes: 1, theatermania: 2, blog: 3 }[r.outletId]);
+  const map = countByShow(
+    [
+      { showId: 'a', outletId: 'nytimes', publishDate: '2026-05-31' }, // T1
+      { showId: 'a', outletId: 'theatermania', publishDate: '2026-06-01T09:00:00Z' }, // T2
+      { showId: 'a', outletId: 'blog', date: 'not-a-date' }, // T3, bad date
+      { showId: 'b', outletId: 'blog', publishDate: '2026-05-14' }, // T3
+      { publishDate: '2026-05-14' }, // no showId — ignored
+    ],
+    tierOf,
+  );
+  assert.equal(map.a.count, 3);
+  assert.equal(map.a.tier1And2, 2);
+  assert.deepEqual(map.a.dates, ['2026-05-31', '2026-06-01']);
+  assert.equal(map.b.count, 1);
+  assert.equal(map.b.tier1And2, 0);
+  // Without a tier resolver, tier1And2 stays 0 (no T3 penalty applied downstream
+  // because callers pass the resolver; this only guards the optional-arg path).
+  const noTier = countByShow([{ showId: 'c', outletId: 'nytimes', publishDate: '2026-05-01' }]);
+  assert.equal(noTier.c.tier1And2, 0);
+});
+
+test('estimatePressNight returns the modal date, breaking ties to earliest', () => {
+  assert.equal(
+    estimatePressNight(['2026-05-14', '2026-05-14', '2026-05-14', '2026-05-14', '2026-05-15', '2026-05-21']),
+    '2026-05-14',
+  );
+  assert.equal(estimatePressNight(['2026-06-01', '2026-05-31', '2026-06-01', '2026-05-31']), '2026-05-31');
+  assert.equal(estimatePressNight(['2026-05-28', '2026-05-29', '2026-05-29']), '2026-05-29');
+  assert.equal(estimatePressNight([]), null);
+  assert.equal(estimatePressNight(['garbage', '']), null);
+});
+
+test('isStuckInPreviews fires only when the show would actually display a score', () => {
+  // The three real incidents (all had T1/T2 coverage).
+  assert.equal(isStuckInPreviews({ status: 'previews', category: 'off-broadway' }, { count: 4, tier1And2: 2 }), true); // small
+  assert.equal(isStuckInPreviews({ status: 'previews', category: 'off-west-end' }, { count: 7, tier1And2: 3 }), true); // the-last-man
+  assert.equal(isStuckInPreviews({ status: 'previews', category: 'off-broadway' }, { count: 5, tier1And2: 3 }), true); // rodeo
+
+  // P1 regression: 3 T3-only OB reviews must NOT flip — the site still shows TBD
+  // (needs 5), so flipping would label it "Now Playing" with a TBD score.
+  assert.equal(isStuckInPreviews({ status: 'previews', category: 'off-broadway' }, { count: 3, tier1And2: 0 }), false);
+  // …but the same show with 5 T3-only reviews DOES qualify.
+  assert.equal(isStuckInPreviews({ status: 'previews', category: 'off-broadway' }, { count: 5, tier1And2: 0 }), true);
+
+  // Below threshold during genuine previews — must NOT flip.
+  assert.equal(isStuckInPreviews({ status: 'previews', category: 'off-broadway' }, { count: 2, tier1And2: 1 }), false);
+  assert.equal(isStuckInPreviews({ status: 'previews', category: 'broadway' }, { count: 4, tier1And2: 2 }), false);
+
+  // upcoming also counts as pre-open.
+  assert.equal(isStuckInPreviews({ status: 'upcoming', category: 'broadway' }, { count: 5, tier1And2: 1 }), true);
+
+  // Already-correct statuses, and missing entry, are never "stuck".
+  assert.equal(isStuckInPreviews({ status: 'open', category: 'broadway' }, { count: 10, tier1And2: 5 }), false);
+  assert.equal(isStuckInPreviews({ status: 'closed', category: 'broadway' }, { count: 10, tier1And2: 5 }), false);
+  assert.equal(isStuckInPreviews({ status: 'previews', category: 'off-broadway' }, undefined), false);
+  assert.equal(isStuckInPreviews(null, { count: 10, tier1And2: 5 }), false);
+});
+
+test('chooseOpeningDateBackfill derives openingDate from press night only, never fabricates', () => {
+  // Normal case: review cluster present → press night (modal date).
+  assert.deepEqual(
+    chooseOpeningDateBackfill({ openingDate: null, previewsStartDate: '2026-05-01' }, ['2026-05-31', '2026-05-31', '2026-06-01'], isReached),
+    { date: '2026-05-31', source: 'review-derived-press-night' },
+  );
+  // Every review dateless → null. We do NOT fabricate from previewsStartDate (that's
+  // previews start, not opening; openingDate renders verbatim as "Opened {date}").
+  // The status still flips; openingDate stays null (a tolerated state for open shows).
+  assert.equal(chooseOpeningDateBackfill({ openingDate: null, previewsStartDate: '2026-05-01' }, [], isReached), null);
+  // Dateless with no previewsStartDate → null.
+  assert.equal(chooseOpeningDateBackfill({ openingDate: null }, [], isReached), null);
+  // A future-only press night → null, never write the future date (Check 2c oscillation guard).
+  assert.equal(chooseOpeningDateBackfill({ openingDate: null, previewsStartDate: '2026-05-01' }, ['2027-03-03'], isReached), null);
+  // Never overwrite an existing openingDate.
+  assert.equal(chooseOpeningDateBackfill({ openingDate: '2026-04-04', previewsStartDate: '2026-05-01' }, ['2026-05-31'], isReached), null);
+});
+
+test('findStuckPreviews surfaces stuck shows with press-night estimate, ignores healthy ones', () => {
+  const shows = [
+    { id: 'small', title: 'Small', category: 'off-broadway', status: 'previews', openingDate: null },
+    { id: 'rodeo', title: 'Rodeo', category: 'off-broadway', status: 'previews', openingDate: null },
+    { id: 't3-thin', title: 'Fringe', category: 'off-broadway', status: 'previews', openingDate: null },
+    { id: 'open-show', title: 'Open', category: 'broadway', status: 'open', openingDate: '2026-04-01' },
+  ];
+  const countMap = {
+    small: { count: 4, tier1And2: 2, dates: ['2026-05-29', '2026-05-29', '2026-06-01', '2026-05-31'] },
+    rodeo: { count: 5, tier1And2: 3, dates: ['2026-06-01', '2026-06-01', '2026-05-31', '2026-06-01', '2026-06-01'] },
+    't3-thin': { count: 3, tier1And2: 0, dates: ['2026-05-20', '2026-05-20', '2026-05-21'] }, // T3-only, below bar
+    'open-show': { count: 12, tier1And2: 8, dates: ['2026-04-01'] },
+  };
+  const stuck = findStuckPreviews(shows, countMap);
+  assert.equal(stuck.length, 2);
+  const byId = Object.fromEntries(stuck.map((s) => [s.id, s]));
+  assert.equal(byId.small.pressNight, '2026-05-29');
+  assert.equal(byId.rodeo.pressNight, '2026-06-01');
+  assert.equal(byId.small.reviewCount, 4);
+  assert.ok(!byId['t3-thin'], 'T3-only show below the displayable bar is not flagged');
+  assert.ok(!byId['open-show'], 'open show is not stuck');
+});
+
+test('openSignalFromReviews fires on >=1 review dated on/after previews start', () => {
+  // Label•less case: 2 OB reviews (below the 3 score gate) but demonstrably open.
+  const show = { status: 'previews', category: 'off-broadway', previewsStartDate: '2026-06-10' };
+  const entry = { count: 2, tier1And2: 1, dates: ['2026-06-18', '2026-06-19'] };
+  const sig = openSignalFromReviews(show, entry, isReachedLate);
+  assert.deepEqual(sig, { date: '2026-06-18', source: 'review-open-signal' });
+});
+
+test('openSignalFromReviews: single review is enough (the whole point)', () => {
+  const show = { status: 'previews', category: 'off-broadway', previewsStartDate: '2026-06-10' };
+  const sig = openSignalFromReviews(show, { count: 1, tier1And2: 0, dates: ['2026-06-18'] }, isReachedLate);
+  assert.equal(sig.date, '2026-06-18');
+});
+
+test('openSignalFromReviews does NOT fire when no signal applies', () => {
+  // No dated reviews.
+  assert.equal(openSignalFromReviews({ status: 'previews', category: 'off-broadway' }, { count: 1, tier1And2: 0, dates: [] }, isReachedLate), null);
+  // Future press night (not reached) — avoids open→previews oscillation.
+  assert.equal(openSignalFromReviews({ status: 'previews', category: 'off-broadway', previewsStartDate: '2026-06-10' }, { count: 1, tier1And2: 0, dates: ['2026-07-01'] }, isReachedLate), null);
+  // Review predates previews start — not press coverage of this run.
+  assert.equal(openSignalFromReviews({ status: 'previews', category: 'off-broadway', previewsStartDate: '2026-06-10' }, { count: 1, tier1And2: 0, dates: ['2026-06-02'] }, isReachedLate), null);
+  // Already open / closed — not a pre-open status.
+  assert.equal(openSignalFromReviews({ status: 'open', category: 'off-broadway' }, { count: 1, tier1And2: 0, dates: ['2026-06-18'] }, isReachedLate), null);
+  assert.equal(openSignalFromReviews(null, { count: 1, tier1And2: 0, dates: ['2026-06-18'] }, isReachedLate), null);
+});
+
+test('openSignalFromReviews fires with no previewsStartDate (date guard relaxed)', () => {
+  const sig = openSignalFromReviews({ status: 'previews', category: 'off-broadway', previewsStartDate: null }, { count: 1, tier1And2: 0, dates: ['2026-06-18'] }, isReachedLate);
+  assert.equal(sig.date, '2026-06-18');
+});
+
+test('findStuckPreviews with isDateReached also surfaces open-signalled shows below the score gate', () => {
+  const shows = [
+    { id: 'labelless', title: 'Label•less', category: 'off-broadway', status: 'previews', openingDate: null, previewsStartDate: '2026-06-10' },
+    { id: 'rodeo', title: 'Rodeo', category: 'off-broadway', status: 'previews', openingDate: null, previewsStartDate: '2026-05-20' },
+  ];
+  const countMap = {
+    labelless: { count: 2, tier1And2: 1, dates: ['2026-06-18', '2026-06-19'] }, // below 3 gate, but open-signal
+    rodeo: { count: 5, tier1And2: 3, dates: ['2026-06-01', '2026-06-01', '2026-05-31', '2026-06-01', '2026-06-01'] }, // score-threshold
+  };
+  // Without isDateReached: only score-threshold shows (back-compat).
+  const legacy = findStuckPreviews(shows, countMap);
+  assert.deepEqual(legacy.map((s) => s.id).sort(), ['rodeo']);
+  // With isDateReached: both, tagged by which signal fired.
+  const both = findStuckPreviews(shows, countMap, isReachedLate);
+  const byId = Object.fromEntries(both.map((s) => [s.id, s]));
+  assert.equal(byId.labelless.signal, 'open-signal');
+  assert.equal(byId.rodeo.signal, 'score-threshold');
+  assert.equal(byId.labelless.pressNight, '2026-06-18');
+});
+
+// Regression target: garry-starr-classic-penguins-off-broadway-2026 (BRO-3138)
+// sat with openingDate=null, status='previews' for 6 days after it actually
+// opened, because opening-night-poller.yml's auto-discovery filter required
+// openingDate to be set, so discovery never ran and openSignalFromDiscovery
+// never had data to backfill openingDate from — a permanent deadlock.
+test('isStuckPreviewsPollCandidate: admits a previews show once previewsStartDate is old enough', () => {
+  const now = new Date('2026-09-09T12:00:00Z');
+  assert.equal(
+    isStuckPreviewsPollCandidate(
+      { status: 'previews', openingDate: null, previewsStartDate: '2026-09-03' },
+      now
+    ),
+    true
+  );
+});
+
+test('isStuckPreviewsPollCandidate: rejects a show that just started previews', () => {
+  const now = new Date('2026-09-09T12:00:00Z');
+  assert.equal(
+    isStuckPreviewsPollCandidate(
+      { status: 'previews', openingDate: null, previewsStartDate: '2026-09-07' },
+      now
+    ),
+    false
+  );
+});
+
+test('isStuckPreviewsPollCandidate: rejects once past the max window (undiscoverable, stop re-polling forever)', () => {
+  const now = new Date('2026-09-09T12:00:00Z');
+  assert.equal(
+    isStuckPreviewsPollCandidate(
+      { status: 'previews', openingDate: null, previewsStartDate: '2026-07-01' },
+      now
+    ),
+    false
+  );
+});
+
+test('isStuckPreviewsPollCandidate: rejects when openingDate is already set (other branch handles it)', () => {
+  const now = new Date('2026-09-09T12:00:00Z');
+  assert.equal(
+    isStuckPreviewsPollCandidate(
+      { status: 'previews', openingDate: '2026-09-08', previewsStartDate: '2026-09-03' },
+      now
+    ),
+    false
+  );
+});
+
+test('isStuckPreviewsPollCandidate: rejects wrong status, missing previewsStartDate, and malformed dates', () => {
+  const now = new Date('2026-09-09T12:00:00Z');
+  assert.equal(isStuckPreviewsPollCandidate({ status: 'open', openingDate: null, previewsStartDate: '2026-09-03' }, now), false);
+  assert.equal(isStuckPreviewsPollCandidate({ status: 'previews', openingDate: null, previewsStartDate: null }, now), false);
+  assert.equal(isStuckPreviewsPollCandidate({ status: 'previews', openingDate: null, previewsStartDate: 'not-a-date' }, now), false);
+  assert.equal(isStuckPreviewsPollCandidate(null, now), false);
+});
+
+test('STUCK_PREVIEWS_POLL_MIN_DAYS/MAX_DAYS are the documented bounds', () => {
+  assert.equal(STUCK_PREVIEWS_POLL_MIN_DAYS, 5);
+  assert.equal(STUCK_PREVIEWS_POLL_MAX_DAYS, 30);
+});
+
+// --- BRO-3091: date-less 'announced' shows are in scope for the catch-up ----
+// tartuffe-remixed-off-west-end-2026 and night-city-off-west-end-2026 sat in
+// status='announced' with openingDate AND previewsStartDate both null while
+// carrying real scored reviews in reviews.json. decideAnnouncedPromotion needs
+// a date to fire, and this file's catch-up used to skip 'announced' entirely,
+// so there was no path out — and engine.ts hides reviews+score for 'announced',
+// making those reviews invisible on the site.
+
+test('PRE_OPEN_STATUSES covers announced (BRO-3091 deadlock)', () => {
+  assert.equal(PRE_OPEN_STATUSES.has('announced'), true);
+  assert.equal(PRE_OPEN_STATUSES.has('previews'), true);
+  assert.equal(PRE_OPEN_STATUSES.has('upcoming'), true);
+  // Post-open statuses must stay out, or the catch-up would re-flip closed shows.
+  assert.equal(PRE_OPEN_STATUSES.has('open'), false);
+  assert.equal(PRE_OPEN_STATUSES.has('closed'), false);
+});
+
+test('openSignalFromReviews fires for a date-less announced show (night-city class)', () => {
+  // Both dates null, 2 reviews sharing one press night — the real shape of
+  // night-city-off-west-end-2026 on 2026-09-13.
+  const show = {
+    id: 'night-city-off-west-end-2026',
+    status: 'announced',
+    category: 'off-west-end',
+    openingDate: null,
+    previewsStartDate: null,
+  };
+  const sig = openSignalFromReviews(show, { count: 2, tier1And2: 0, dates: ['2026-06-18', '2026-06-18'] }, isReachedLate);
+  assert.deepEqual(sig, { date: '2026-06-18', source: 'review-open-signal' });
+});
+
+test('openSignalFromReviews: a single review unsticks an announced show (tartuffe class)', () => {
+  const show = { id: 'tartuffe-remixed-off-west-end-2026', status: 'announced', category: 'off-west-end', openingDate: null, previewsStartDate: null };
+  const sig = openSignalFromReviews(show, { count: 1, tier1And2: 0, dates: ['2026-06-18'] }, isReachedLate);
+  assert.equal(sig.date, '2026-06-18');
+});
+
+test('announced shows still need real evidence — no review, no flip', () => {
+  const base = { id: 'x', status: 'announced', category: 'off-west-end', openingDate: null, previewsStartDate: null };
+  // A speculative future announcement has no reviews at all.
+  assert.equal(openSignalFromReviews(base, { count: 0, tier1And2: 0, dates: [] }, isReachedLate), null);
+  // Reviews exist but the press night has not been reached — a future-dated
+  // record must not flip the show (Check 2c would revert it: oscillation).
+  assert.equal(openSignalFromReviews(base, { count: 1, tier1And2: 0, dates: ['2026-07-01'] }, isReachedLate), null);
+  // A review predating a known previews start is prior-production contamination.
+  assert.equal(
+    openSignalFromReviews({ ...base, previewsStartDate: '2026-06-10' }, { count: 1, tier1And2: 0, dates: ['2026-06-02'] }, isReachedLate),
+    null
+  );
+});
+
+test('openSignalFromDiscovery still refuses date-less announced shows', () => {
+  // The discovery layer is unscrubbed, so previewsStartDate is the only thing
+  // separating this run's press coverage from a prior production's. The BRO-3091
+  // class has no previewsStartDate, so the weakest signal must stay silent for it
+  // even though 'announced' is now a pre-open status.
+  const show = { id: 'night-city-off-west-end-2026', status: 'announced', category: 'off-west-end', previewsStartDate: null };
+  const files = [{ url: 'https://example.com/r', publishDate: '2026-06-18' }];
+  assert.equal(openSignalFromDiscovery(show, files, isReachedLate), null);
+  // With a previewsStartDate it does fire, confirming status was never the blocker.
+  const dated = { ...show, previewsStartDate: '2026-06-10' };
+  assert.deepEqual(openSignalFromDiscovery(dated, files, isReachedLate), { date: '2026-06-18', source: 'discovery-open-signal' });
+});
+
+test('isStuckInPreviews counts an announced show against the score gate', () => {
+  assert.equal(isStuckInPreviews({ status: 'announced', category: 'off-west-end' }, { count: 3, tier1And2: 1 }), true);
+  assert.equal(isStuckInPreviews({ status: 'announced', category: 'off-west-end' }, { count: 2, tier1And2: 1 }), false);
+});
+
+// shouldSkipPreviewsShow — shared aggregator-scraper previews gate
+// (our-sinatra 2026-09-27: stale previews status + null opening deadlocked).
+{
+  const { shouldSkipPreviewsShow } = require('./opening-signal.js');
+  const today = '2026-09-27';
+  test('shouldSkipPreviewsShow: future opening date → skip (genuinely pre-opening)', () => {
+    assert.equal(shouldSkipPreviewsShow({ status: 'previews', previewsStartDate: '2026-09-17', openingDate: '2026-10-04' }, today), true);
+  });
+  test('shouldSkipPreviewsShow: null opening, previews under way → process', () => {
+    assert.equal(shouldSkipPreviewsShow({ status: 'previews', previewsStartDate: '2026-09-11', openingDate: null }, today), false);
+  });
+  test('shouldSkipPreviewsShow: past opening, status not yet flipped → process', () => {
+    assert.equal(shouldSkipPreviewsShow({ status: 'previews', previewsStartDate: '2026-09-11', openingDate: '2026-09-15' }, today), false);
+  });
+  test('shouldSkipPreviewsShow: article published before previews began → skip (other production)', () => {
+    assert.equal(shouldSkipPreviewsShow({ status: 'previews', previewsStartDate: '2026-09-11', openingDate: null }, today, '2024-05-01T10:00:00Z'), true);
+  });
+  test('shouldSkipPreviewsShow: no previews date / not started → skip', () => {
+    assert.equal(shouldSkipPreviewsShow({ status: 'previews', openingDate: null }, today), true);
+    assert.equal(shouldSkipPreviewsShow({ status: 'previews', previewsStartDate: '2026-10-10', openingDate: null }, today), true);
+  });
+  test('shouldSkipPreviewsShow: non-previews status never skipped here', () => {
+    assert.equal(shouldSkipPreviewsShow({ status: 'open', openingDate: '2026-09-15' }, today), false);
+  });
+}
+
+// BRO-4857: rows carrying an earlier production's reviews flipped open with
+// that production's press night (Cursed Child one-part got 2016-07-30).
+const reached = (today) => (d) => d <= today;
+test('reviewsPredateRun blocks the count flip before previews or on old-run reviews only', () => {
+  const show = { status: 'upcoming', previewsStartDate: '2026-10-09' };
+  const old = { count: 12, tier1And2: 6, dates: Array(12).fill('2016-07-31') };
+  assert.equal(reviewsPredateRun(show, old, reached('2026-10-06')), true); // previews not started
+  assert.equal(reviewsPredateRun({ ...show, status: 'previews' }, old, reached('2026-10-20')), true); // all old
+  const mixed = { count: 15, tier1And2: 8, dates: [...Array(12).fill('2016-07-31'), '2026-10-15', '2026-10-15', '2026-10-15'] };
+  assert.equal(reviewsPredateRun({ ...show, status: 'previews' }, mixed, reached('2026-10-20')), false);
+  assert.equal(reviewsPredateRun({ status: 'previews' }, old, reached('2026-10-20')), false); // no previews date: unchanged
+  assert.equal(reviewsPredateRun({ ...show, status: 'previews' }, { count: 6, dates: [] }, reached('2026-10-20')), false); // dateless: unchanged
+});
+
+test('press night ignores reviews dated before previews (mixed old + new run)', () => {
+  const show = { status: 'previews', previewsStartDate: '2026-10-09' };
+  const dates = [...Array(5).fill('2016-07-31'), '2026-10-15', '2026-10-15', '2026-10-15'];
+  assert.deepEqual(runDates(show, dates), ['2026-10-15', '2026-10-15', '2026-10-15']);
+  assert.deepEqual(chooseOpeningDateBackfill(show, dates, reached('2026-10-20')), { date: '2026-10-15', source: 'review-derived-press-night' });
+  assert.equal(chooseOpeningDateBackfill(show, Array(5).fill('2016-07-31'), reached('2026-10-20')), null);
+  assert.deepEqual(openSignalFromReviews(show, { count: 8, dates }, reached('2026-10-20')), { date: '2026-10-15', source: 'review-open-signal' });
+});
+
+test('openingDateStillAhead: a known future opening blocks review-driven open (BRO-4953)', () => {
+  const isReached = (d) => d <= '2026-10-10';
+  // The Heart: previews 2026-10-08, opening 2026-10-29, four dateless wrong-show reviews.
+  assert.equal(openingDateStillAhead({ openingDate: '2026-10-29', previewsStartDate: '2026-10-08' }, isReached), true);
+  assert.equal(openingDateStillAhead({ openingDate: '2026-10-10', previewsStartDate: '2026-10-01' }, isReached), false);
+  // Future opening but previews not started: Check 2c wouldn't revert, so not blocked.
+  assert.equal(openingDateStillAhead({ openingDate: '2026-11-20', previewsStartDate: '2026-11-01' }, isReached), false);
+  assert.equal(openingDateStillAhead({ openingDate: '2026-11-20' }, isReached), false);
+  // Null openingDate is exactly the case Check 2d exists for: never blocked.
+  assert.equal(openingDateStillAhead({ openingDate: null }, isReached), false);
+  assert.equal(openingDateStillAhead(null, isReached), false);
+});

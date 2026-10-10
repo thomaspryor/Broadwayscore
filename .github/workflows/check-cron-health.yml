@@ -1,0 +1,859 @@
+name: Check Cron Health
+
+on:
+  schedule:
+    - cron: '0 12 * * *'  # Noon UTC daily — checks that morning crons actually fired
+  workflow_dispatch: {}
+
+# BRO-3071: added so its own cron can't race a manual workflow_dispatch into
+# a lost push on data/audit/cron-health-state.json (that file is now
+# apiFallbackSafe — see scripts/lib/core-data-merge-registry.js — which
+# requires this dedicated group).
+concurrency:
+  group: check-cron-health
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Check critical crons ran recently
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+          # Self-heal redispatches use the PAT so the redispatched run can trigger
+          # its own downstream workflow_run/dispatch chains (github.token can't).
+          DISPATCH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          # Run history is read through the Actions REST endpoint, never through
+          # `gh run list --limit=N` — see scripts/lib/gh-runs-query.sh for why
+          # (BRO-2771/BRO-2767: the CLI returns arbitrary, sometimes months-stale
+          # result SETS on this repo). The helper emits `gh run list --json` field
+          # names, so the jq below is unchanged from the pre-BRO-2771 version.
+          . scripts/lib/gh-runs-query.sh
+
+          # Critical cron workflows and their max allowed gap (hours)
+          # Format: "workflow_filename|max_hours|friendly_name[|active_months]"
+          # active_months (optional, e.g. "4-6"): seasonal crons are only checked
+          # during those months — outside the window staleness is by design.
+          # LO-HI only, no wrap-around ranges (e.g. "11-2" would never match).
+          CRITICAL_CRONS=(
+            "opening-night-broadcast.yml|36|Opening Night Broadcast"
+            "monitor-gate-ab.yml|184|Weekly A/B Monitors"
+            "check-flag-parity.yml|184|Check Flag Parity"
+            # BRO-4373: the dead-Mac detector. If IT silently stops, the next Mac outage is invisible again.
+            "check-morning-digest-sent.yml|36|Check Morning Digest Sent"
+            # Sunday 06:00 UTC weekly offsite backup. CRITICAL, not digest-only: this is
+            # the ONLY point-in-time recovery that exists. The 3 GitLab mirrors are
+            # replicas, not backups — each does clone --mirror then push --force every
+            # 6h, so destructive changes propagate to them within 6 hours. A backup cron
+            # that silently stops is undetectable until the day you need it.
+            # 184h = weekly cadence + 16h cron-lag cushion.
+            "r2-cold-backup.yml|184|R2 Cold Backup"
+            # Monday 07:00 UTC weekly full-history secret scan. Deliberately CRITICAL
+            # rather than digest-only: this workflow exists BECAUSE a live Buffer token
+            # sat in the public repo ~4 months with nothing scanning for it. A secret
+            # scanner that silently stops running reproduces that exact failure, and it
+            # is invisible by construction — a scanner that never runs looks identical
+            # to a scanner finding nothing. 184h = weekly cadence + 16h cron-lag cushion.
+            "gitleaks.yml|184|Secret Scan (gitleaks)"
+            "opening-night-orchestrator.yml|25|Opening Night Orchestrator"
+            "update-show-status.yml|36|Update Show Status"
+            "rebuild-reviews.yml|36|Rebuild Reviews"
+            "collect-review-texts.yml|36|Collect Review Texts"
+            "llm-ensemble-score.yml|48|LLM Ensemble Score"
+            "test.yml|48|Test Suite"
+            # Daily 02:15 UTC (BRO-4800; was 06:45). Card #364 (owner merge decision 2026-07-26) moved this
+            # back off the 16 UTC slot #409 put it in: health-check.js no longer sends
+            # its own email (see health-check.js's sendEmailDigest) — it writes
+            # data/audit/health-digest-snapshot.json, which autonomous-email.js folds
+            # into the loop's single scheduled morning email. The reason for a ≥3h gap
+            # from that email (avoid a second, separate send) no longer applies, and
+            # running BEFORE the loop (03:30 ET / 07:30 UTC) keeps the snapshot
+            # same-day fresh. Still the ONLY surface for all non-critical alerting (cron
+            # staleness, cookie health, repeat-failures, OB candidates) — a *cancelled*
+            # run writes no snapshot, so alerting goes dark with nobody to flag it
+            # (2/14 runs cancelled ~14% incl. 2026-06-14). notify-failure ignores
+            # conclusion=cancelled. Staleness = hours since the last SUCCESSFUL run.
+            # This check is scheduled 12 UTC but fires ~15:30-20:00 UTC (schedule lag),
+            # and the 02:15 run lands ~08:15-10:50 UTC, so on a healthy day it sees
+            # today's run ~6-12h old; after a single cancel the next check sees ~30-36h.
+            # Band = 26h (the pre-#409 value, restored — same schedule geometry): tight
+            # to the 24h cadence to trip a dead cron fast, with modest slack so a lagged
+            # check can't false-trip. A false trip self-heals by redispatching
+            # data-health-check.yml, which just rewrites the snapshot now (no email
+            # re-send to worry about). See Notion 381637c5-416f-81af; audit exemption in
+            # scripts/audit-cron-health-coverage.js (TIGHT_BY_DESIGN).
+            "data-health-check.yml|26|Daily Data Health Check (digest snapshot carrier)"
+            "commercial-weekly.yml|192|Commercial Weekly Orchestrator"
+            # Friday 22:00 UTC weekly. Feeds fresh recoupment data to the Sunday
+            # newsletter and carries the S1-T5 strict data gate. 192h = weekly
+            # cadence + 24h cron-lag cushion (same as commercial-weekly).
+            "commercial-friday.yml|192|Commercial Friday Refresh"
+            # Daily 07:00 UTC. If this cron silently dies, pending-review holds go
+            # invisible again — the exact failure mode it was built to fix (S1-T4,
+            # Notion 39c637c5-416f-8112). 36h = daily cadence + 12h cron-lag cushion.
+            "commercial-pending-review-notify.yml|36|Commercial Pending Review Notify"
+            "fetch-todaytix-showtimes.yml|36|Fetch TodayTix Showtimes"
+            # BRO-4601: tour Now/Next lines and Tour Schedule cards go stale if this dies.
+            "fetch-tour-schedules.yml|36|Fetch Tour Schedules"
+            # BRO-4723: daily crawl of every tour surface; findings file Linear
+            # cards, so a red run means the audit itself could not run or file.
+            "audit-tour-pages.yml|36|Audit Tour Pages"
+            # BRO-4434: the npm advisory gate left test.yml (main = code only). Its
+            # findings are Linear cards, and its own failure (exit 2/3) is a plain
+            # red run that notify-failure(warning) never emails — this entry is what
+            # notices a daily-red, disabled, or dead cron (keyed on the last success).
+            "audit-dependencies.yml|36|Audit Dependencies"
+            # BRO-4615: every 3 h. Keeps /admin/accounts current and runs the
+            # accounts alerts; dead = those alerts silently stop. 15h = 3h + 12h cushion.
+            "account-metrics.yml|15|Account Metrics"
+            "audit-closing-dates.yml|36|Audit Closing Dates"
+            "audit-opening-dates.yml|36|Audit Opening Dates"
+            "audit-we-closing-dates.yml|36|Audit WE Closing Dates"
+            "recover-explicit-ratings.yml|200|Recover Explicit Ratings"
+            # Weekly Sun 14 UTC. Catches dead-token failure streaks AND weekly
+            # sweeps silently cancelled while pending in the shared `theatr`
+            # concurrency group (cancelled runs never alert via notify-failure).
+            "update-theatr.yml|200|Update Theatr"
+            "collect-we-ob-reviews.yml|50|Collect WE/OB Reviews"
+            "sweep-we-aggregators.yml|192|Sweep WE Aggregators"
+            # Real cadence: Mon 7 UTC + Thu 8 UTC → Thu→Mon gap is 95h.
+            # 110h leaves a 15h cushion for cron lag (commonly 30min-3h per
+            # memory/feedback_github_cron_delays.md, plus retries).
+            "enrich-west-end-dates.yml|110|Enrich West End Dates"
+            "enrich-off-broadway-dates.yml|110|Enrich Off-Broadway Dates"
+            # BRO-873 cousin: Mon+Thu 6 UTC, same cadence as the two enrich-*
+            # entries above. Broken/missing show images are user-facing;
+            # wasn't in this list at all before, so a dead cron here had NO
+            # backstop (staleness OR real-time) until now.
+            "fetch-all-image-formats.yml|110|Fetch All Image Formats"
+            "refresh-show-score-opening-night.yml|50|Refresh Show Score (opening-night)"
+            "scrape-westendtheatre.yml|192|Scrape WestEndTheatre"
+            # User-facing data refresh workflows. Stale data hits /lotteries,
+            # /rush, /standing-room, /discount-tickets, /box-office — pages
+            # Reddit users screenshot. Added 2026-04-14 after
+            # update-lottery-rush silently failed 5 days in a row.
+            # BRO-873: was 192h (the once-a-week cushion value used elsewhere
+            # in this file) even though this cron runs TWICE weekly (Mon+Thu,
+            # true max gap ~96h) — looser than the 5-day incident being
+            # guarded against, so this backstop wouldn't have caught it even
+            # with the threshold as originally set. 110h matches the same
+            # cadence/cushion used for enrich-west-end-dates.yml below.
+            "update-lottery-rush.yml|110|Update Lottery/Rush"
+            "weekly-grosses.yml|192|Weekly Grosses"
+            # Monday 13:00 UTC owner revenue email (the site's only revenue
+            # report). BRO-4951: the 2026-10-05 run's job never got a runner
+            # and was cancelled, so no email and no notify-failure; this
+            # workflow was exempt, so nothing noticed. A stale run self-heals
+            # by redispatch: the email arrives 2-3 days late, and since the
+            # report is a rolling 7 days back from send time, a day or two
+            # before that window go unreported that week. 192h = weekly cadence
+            # + 24h cron-lag cushion (observed runs land up to ~8h late).
+            # Watchable only since its link-integrity job moved to its own
+            # workflow: a success now means the email was delivered.
+            "weekly-affiliate-report.yml|192|Weekly Affiliate Report"
+            "weekly-video-reviews.yml|192|Weekly Video Reviews"
+            "weekly-nyt-critics-picks.yml|72|NYT Critics Picks"
+            "outlet-listing-poller.yml|25|Outlet Listing Poller"
+            "update-cast-changes.yml|120|Update Cast Changes"
+            "update-show-score.yml|192|Update Show Score"
+            "update-mezzanine.yml|192|Update Mezzanine"
+            # Weekly Sunday cron — director-attribution audit. 200h gap = 1 missed week = alert
+            "check-show-metadata-consensus.yml|200|Check Show Metadata Consensus"
+            # Daily April-June cron — Tony Awards data refresh during ceremony
+            # season. 36h gap during Apr-Jun = 1 missed day + grace, alert needed.
+            # User-facing data feeds /awards-scorecard. Seasonal: the cron doesn't
+            # fire Jul-Mar, so only check during Apr-Jun (was chronic-stale noise
+            # in the digest every day of July 2026 before the seasonal field).
+            "update-tony-awards.yml|36|Update Tony Awards|4-6"
+            # The two carriers of the review-completeness invariant (BRO-1618). Both were
+            # unmonitored: the system that proves "every published review is live" had no
+            # heartbeat of its own, so it could stop silently and look exactly like a quiet
+            # week with no openings. That is the failure mode this whole file exists for.
+            # NOTE ON DETECTION LATENCY: this workflow itself runs once daily (12:00 UTC),
+            # so a threshold below 24h does not buy faster detection — it only decides
+            # whether the outage is still flagged when the daily check does run. Both
+            # entries are sized so any real stall is still stale at the next noon pass.
+            # Hourly at :37; 3h. Detects aggregator-listed URLs missing from review-texts,
+            # so a dead cron here means real published reviews stay invisible.
+            "audit-aggregator-gap.yml|3|Audit Aggregator Review Gap"
+            # Rolling cadence: heavy passes 05:00/17:00 UTC plus light ticks at
+            # 02,08,11,14,20,23 — a run every ~3h. 5h = 1 missed tick + cron-lag cushion.
+            # The 13-hour blind window this schedule replaced is what let the Guardian and
+            # Telegraph Tao of Glass reviews (2026-07-31) publish after the day's last run.
+            "opening-night-reviews.yml|5|Opening Night Reviews"
+            # Drift detector runs every 30 min; 2h gap = 4 missed runs = alert needed
+            "check-opening-night-drift.yml|2|Check Opening Night Drift"
+            # Opening night checklist fires hourly; 3h = 2 missed runs = needs paging
+            "opening-night-checklist.yml|3|Opening Night Checklist"
+            # Same-night Express retry dispatcher (card #1889); hourly at :50.
+            # 3h = 2 missed runs = alert. A dead cron here means a queued
+            # same-night retry never dispatches — the exact silent-miss this
+            # card fixed — and the queue's own alerts can't fire either.
+            "opening-night-express-retry-check.yml|3|Opening Night Express Retry Check"
+            # Hourly trade-press RSS recoupment poll. Powers ≤1h detection
+            # latency for Variety/Deadline recoupment news.
+            # BRO-3666 (2026-09-20): widened 3h -> 8h. The old band assumed the
+            # schedule ('0 * * * *') is what actually runs, and read "3h = 2
+            # missed runs = alert". It isn't: GitHub throttles this repo's
+            # hourly schedules hard, and over 2026-09-16 -> 2026-09-20 (30 runs)
+            # the real cadence was ~1.5-5.5h with a MAX gap of 5h31m
+            # (2026-09-20T07:08:39Z -> 12:39:26Z) and a cluster of 4h54m-5h31m
+            # gaps in the 01:00-12:00 UTC window. So 3h flagged a perfectly
+            # healthy workflow on any noon following a normal throttle gap —
+            # firing the self-heal redispatch and then paging on the second
+            # consecutive check. Same reasoning the process-feedback.yml entry
+            # below already applies to its */10 schedule ("12h tolerates
+            # GitHub's heavy throttling").
+            # 8h = observed max + ~2.5h headroom, NOT the generic
+            # worst-gap + 12h cushion (which would be 13h — 12h of cushion over
+            # an expression-derived 1h gap that never occurs). Registered in
+            # scripts/audit-cron-health-coverage.js TIGHT_BY_DESIGN so the
+            # cushion warning stays silenced and nobody "fixes" it to 13h; that
+            # map matches maxHours on STRICT EQUALITY, so changing the 8 here
+            # means changing it there in the same commit. That coupling is
+            # enforced by tests/unit/cron-health-tight-by-design-sync.test.mjs —
+            # the audit itself only WARNS (it needs --strict to exit non-zero,
+            # and neither test.yml nor the pre-push hook passes it), so without
+            # that test a desync silently degrades to a yellow line, which is
+            # precisely the "someone fixes it to 13h" outcome this comment is
+            # trying to prevent.
+            #
+            # Detection cost, quantified — NOTE THE OFF-BY-ONE. The comparison
+            # below is `HOURS_AGO -gt max_hours` where
+            # HOURS_AGO = (NOW - LAST_TS) / 3600 in integer (FLOORING) shell
+            # arithmetic, so a band of 8 does not alert until age >= 9h: the
+            # effective band is 9h, not 8h. Real headroom over the observed
+            # 5h31m max gap is therefore ~3.5h, not ~2.5h.
+            # The checker runs daily at 12:00 UTC, so it alerts at noon only
+            # when the last success was <= 03:00 UTC (age >= 9h). Under the old
+            # 3h band that cutoff was <= 08:00 UTC (age >= 4h). So the outages
+            # that lose same-day detection from this widening are exactly those
+            # whose last success falls in 03:00-08:00 UTC. Worst case: a last
+            # success at 03:00:01 is still 8h59m old at noon (floors to 8, not
+            # > 8), so it waits for the next day's check and surfaces at ~33h.
+            "commercial-rss-poll.yml|8|Commercial RSS Poll"
+            # Weekly Monday cron — Tony + Olivier cutoff freshness check. 200h = 1 missed week.
+            # Advisory v1 (warnings only), but staleness still pages so we re-verify dates before
+            # season cutoffs bias the show-page rank pool.
+            "check-cutoff-freshness.yml|200|Check Cutoff Freshness"
+            # */10 cron, but the POINT of this entry is the state-check (catches
+            # disabled_manually immediately), not recency — user feedback submissions
+            # silently went unprocessed for 15 days after this workflow was manually
+            # disabled on 2026-06-11 with nothing watching it (no CRITICAL_CRONS entry,
+            # and audit-cron-health-coverage.js only validates LISTED crons). 12h on the
+            # recency band tolerates GitHub's heavy throttling of */10 schedules; the real
+            # alert is the workflow no longer being 'active'.
+            "process-feedback.yml|12|Process Feedback Submissions"
+            # Welcome email for new accounts (BRO-4620), every 15 min. Listed (not
+            # exempt) because GitHub throttles this repo's high-frequency schedules
+            # hard (process-feedback */10 really runs every ~3h) and has left at
+            # least one */10 schedule (land-retry-cancelled) never firing at all;
+            # a dead schedule here means new sign-ups silently get no email.
+            # 13h = 0.25h expression gap + 12h cushion. Self-heal redispatches with
+            # no inputs, and the workflow's dispatch default is mode=run, so the
+            # redispatch really sends (the script's once-per-account claim and
+            # caps make that one extra tick). Detection is NOT 13h: this checker
+            # runs once a day at 12:00 UTC and HOURS_AGO floors, so the effective
+            # band is 14h: noon only flags a last success at or before ~22:00 the
+            # day before, and a schedule whose last success is ~22:01 is noticed
+            # ~38h later. Accounts are eligible for 20h, so
+            # some sign-ups can still be missed before the redispatch; the page
+            # comes a day later if the redispatch does not revive the schedule.
+            "send-welcome-emails.yml|13|Send Welcome Emails"
+            # Weekly Monday 14:00 UTC. Keys off last SUCCESSFUL run, so
+            # timeout-CANCELLED runs (invisible to the failure digest — cancelled
+            # != failure) trip this after ~8.5 days. It went 8 straight Mondays
+            # cancelled (May 25 - Jul 13 2026) with zero alerts.
+            "scraper-cost-report.yml|205|Weekly Scraper Cost Report"
+            # Daily 12:25 UTC. The cross-run dead-arm detector (card #647). A
+            # detector that stops running is indistinguishable from one finding
+            # nothing — the same invisibility that let three arms sit dead for
+            # 11 days, 16 days and 5 months. 36h = daily cadence + 12h cron-lag
+            # cushion. Safe to list because check-arm-yield.js exits 0 whenever
+            # it RAN, dead arms included, so a real dead arm can never make this
+            # entry look stale and trigger a redispatch loop.
+            "check-arm-yield.yml|36|Check Arm Yield (dead-arm detector)"
+            # Daily 05:30 UTC. Card #796: audit-card-verifiability.js /
+            # enrich-card-acceptance.js existed and worked but were never
+            # scheduled anywhere for 18+ days, letting the undispatchable-
+            # backlog count silently grow unnoticed — the exact class of
+            # invisibility this list exists to catch. 36h = daily cadence +
+            # 12h cron-lag cushion, matching check-arm-yield.yml above.
+            "card-verifiability-audit.yml|36|Card Verifiability Audit (undispatchable-backlog drain)"
+            # BRO-4787: Monday 06:10 UTC weekly opening-night lane rehearsal. The lane only arms for a real opening
+            # when the last rehearsal passed, so a rehearsal that silently stops leaves the lane disarmed with no
+            # alert. 184h = weekly cadence + 16h cron-lag cushion.
+            "lane-rehearsal.yml|184|Opening-night lane rehearsal"
+          )
+
+          FAILURES=""
+          WARNINGS=""
+          # Crons whose run-history query itself failed. Deliberately a THIRD bucket:
+          # their health is UNKNOWN, which is neither "stale" (would auto-redispatch
+          # and page) nor "healthy" (would hide a real outage). Reported once, in
+          # aggregate, so an API-wide outage produces one line rather than 45.
+          QUERY_FAILED=""
+          NOW=$(date +%s)
+
+          # Fetch state for every workflow in the repo. A workflow in `disabled_manually`
+          # keeps emitting cancelled scheduled runs that *look* recent to a plain
+          # `gh run list` — the May 2026 orchestrator outage went undetected for ~2.5
+          # days because of this. Querying state directly catches it within one
+          # check-cron-health cycle. Pages until one comes back short (BRO-4951: this
+          # read a fixed two pages = 200 workflows while the repo had 270, so every
+          # workflow past the 200th silently skipped the state check).
+          WF_STATES=$(
+            for page in 1 2 3 4 5 6 7 8 9 10; do
+              PAGE_ROWS=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows?per_page=100&page=${page}" \
+                --jq '.workflows[] | "\(.path | split("/") | last)|\(.state)"' 2>/dev/null) || break
+              [ -n "$PAGE_ROWS" ] && printf '%s\n' "$PAGE_ROWS"
+              [ "$(printf '%s' "$PAGE_ROWS" | grep -c .)" -lt 100 ] && break
+            done
+            true  # loop status must not trip bash -e on the assignment
+          )
+
+          # friendly_name → workflow file, for self-heal redispatch below.
+          declare -A WF_FILE
+
+          CURRENT_MONTH=$(date -u +%-m)
+          for entry in "${CRITICAL_CRONS[@]}"; do
+            IFS='|' read -r workflow max_hours name months <<< "$entry"
+            WF_FILE["$name"]="$workflow"
+
+            # 0. Seasonal window — skip checks outside the cron's active months.
+            if [ -n "$months" ]; then
+              LO=${months%-*}; HI=${months#*-}
+              if [ "$CURRENT_MONTH" -lt "$LO" ] || [ "$CURRENT_MONTH" -gt "$HI" ]; then
+                echo "⏸  ${name}: out of season (active months ${months}) — skipping"
+                continue
+              fi
+            fi
+
+            # 1. State check — fast, catches disabled_manually immediately.
+            STATE=$(echo "$WF_STATES" | grep -F "${workflow}|" | head -1 | cut -d'|' -f2)
+            if [ -n "$STATE" ] && [ "$STATE" != "active" ]; then
+              FAILURES="${FAILURES}❌ ${name}: workflow state is '${STATE}' (expected 'active'). Re-enable in the Actions tab or via: gh api -X PUT repos/$GITHUB_REPOSITORY/actions/workflows/${workflow}/enable\n"
+              continue
+            fi
+
+            # 2. Recency check — require a recent *successful* run, not just any run.
+            # Filtering to successes matters because cancelled runs otherwise read as
+            # "recent," which is how a disabled workflow's still-firing schedule events
+            # hide a real outage.
+            # A FAILED QUERY IS NOT AN EMPTY RESULT. The pre-BRO-2771 form piped
+            # straight into jq with `|| echo '{}'`, so an auth error, a rate limit, a
+            # network blip or a malformed response all collapsed into the same empty
+            # value as "this cron has genuinely never succeeded" — and that value
+            # feeds FAILURES, which feeds NEWLY_STALE, which AUTO-REDISPATCHES the
+            # workflow and pages the owner. One expired token would therefore have
+            # redispatched every critical cron at once and paged about all of them.
+            # Capture the query's exit status BEFORE the pipeline hides it.
+            if ! LAST_RUN_RAW=$(gh_runs_query "$GITHUB_REPOSITORY" "$workflow" 1 status=success 2>/dev/null); then
+              # Newline-joined, NOT comma-joined: normalize_names splits on both, and a
+              # friendly name containing a comma would split into two bogus tokens, making
+              # the prev-stale intersection miss and reporting that cron RECOVERED again —
+              # the exact bug this bucket exists to prevent. No current name contains a
+              # comma; this makes that not matter.
+              QUERY_FAILED="${QUERY_FAILED}${name}\n"
+              continue
+            fi
+            LAST_RUN=$(printf '%s' "$LAST_RUN_RAW" | jq -r '.[0] // {}' 2>/dev/null || echo '{}')
+            LAST_DATE=$(echo "$LAST_RUN" | jq -r '.createdAt // empty' 2>/dev/null)
+
+            if [ -z "$LAST_DATE" ]; then
+              FAILURES="${FAILURES}❌ ${name}: No successful runs found at all!\n"
+              continue
+            fi
+
+            # Latest run regardless of OUTCOME. The LAST_RUN query above forces
+            # status=success, so its conclusion is ALWAYS "success" — keying the
+            # "ran recently but the latest run failed" warning off it made that
+            # branch unreachable for EVERY cron. That dead branch is how main
+            # test.yml stayed red across 2026-06-13→06-15 with no warning: a recent
+            # green push kept it un-stale, but the latest run being red never
+            # surfaced. Fetch the most-recent run separately so the warning keys off
+            # its real conclusion.
+            #
+            # BRO-2771: scoped to status=completed on purpose. `gh run list` reported
+            # an in-progress run's conclusion as the empty string; the REST endpoint
+            # reports it as null, so `// "missing"` would newly resolve to "missing"
+            # and collide with the "No successful runs found at all!" wording above.
+            # Reading the latest COMPLETED run's real conclusion avoids that and
+            # keeps the warning branch below reachable, which is the entire reason
+            # this second query exists.
+            # "unknown" (not "missing") when THIS query fails, so a transport error is
+            # never rendered as a factual statement about the cron's latest run. The
+            # recency verdict above already succeeded, so this one failing is not
+            # worth abandoning the entry over.
+            if LATEST_RAW=$(gh_runs_query "$GITHUB_REPOSITORY" "$workflow" 1 status=completed 2>/dev/null); then
+              LATEST_ANY=$(printf '%s' "$LATEST_RAW" | jq -r '.[0].conclusion // "missing"' 2>/dev/null || echo "unknown")
+            else
+              LATEST_ANY="unknown"
+            fi
+
+            # Calculate hours since last successful run
+            LAST_TS=$(date -d "$LAST_DATE" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$LAST_DATE" +%s 2>/dev/null || echo "0")
+            HOURS_AGO=$(( (NOW - LAST_TS) / 3600 ))
+
+            if [ "$HOURS_AGO" -gt "$max_hours" ]; then
+              # Surface the latest run's conclusion so the alert tells us whether
+              # recent runs are failing vs cancelled vs simply absent.
+              FAILURES="${FAILURES}❌ ${name}: Last SUCCESS ${HOURS_AGO}h ago (max ${max_hours}h). Latest run conclusion: ${LATEST_ANY}\n"
+            elif [ "$LATEST_ANY" = "failure" ]; then
+              WARNINGS="${WARNINGS}⚠️ ${name}: Latest run failed (last success ${HOURS_AGO}h ago)\n"
+            fi
+          done
+
+          # Surface UNKNOWN-health crons as a warning, deliberately NOT as a failure:
+          # a failure here would page and, via NEWLY_STALE, auto-redispatch workflows
+          # whose health we could not actually determine. One aggregate line, because
+          # the realistic cause (expired token, rate limit, GitHub API incident) hits
+          # every entry at once.
+          if [ -n "$QUERY_FAILED" ]; then
+            WARNINGS="${WARNINGS}⚠️ Run-history query FAILED for: $(join_names "$(printf '%b' "${QUERY_FAILED}")") — health UNKNOWN for these (not assumed healthy, not redispatched). Check gh auth and the API rate limit.\n"
+          fi
+
+          # State-diff: only escalate to email+critical for NEWLY-stale workflows.
+          # Chronic stale entries (already stale yesterday) keep firing in the digest
+          # but don't re-page the user. Prevents alert fatigue that masked WET going
+          # silent for 47 days in April–May 2026.
+          STATE_FILE="data/audit/cron-health-state.json"
+          # Extract just the friendly names from the FAILURES list (one per line).
+          CURRENT_STALE=$(printf '%s' "$FAILURES" | grep -oE '❌ [^:]+:' | sed 's/^❌ //;s/:$//' | sort -u)
+          PREV_STALE=""
+          if [ -f "$STATE_FILE" ]; then
+            PREV_STALE=$(jq -r '.stale[]?' "$STATE_FILE" 2>/dev/null | sort -u)
+          fi
+          # Crons whose run-history query failed are ABSENT from CURRENT_STALE, because
+          # we could not determine their state. Absence is otherwise indistinguishable
+          # from health, so without this they would be reported RECOVERED: their
+          # cron-health and cron-health-chronic conditions would resolve, and
+          # update-cron-health-state.js would reset their consecutive-stale streak to
+          # 0. An API failure every other day would then keep the 3-consecutive-day
+          # chronic escalation permanently out of reach for a cron that is still dead.
+          # Sort so comm's input-order requirement holds.
+          # The set arithmetic lives in scripts/lib/cron-health-sets.sh so it can be
+          # tested against the real code rather than a copy (CLAUDE.md rule 15).
+          . scripts/lib/cron-health-sets.sh
+          UNKNOWN_NAMES=$(normalize_names "$(printf '%b' "${QUERY_FAILED}")")
+          SETS=$(compute_cron_health_sets "$CURRENT_STALE" "$PREV_STALE" "$UNKNOWN_NAMES")
+          NEWLY_STALE=$(printf '%s' "$SETS" | awk 'BEGIN{s=0} /^--$/{s++;next} s==0')
+          RECOVERED=$(printf '%s' "$SETS" | awk 'BEGIN{s=0} /^--$/{s++;next} s==1')
+          PERSIST_STALE=$(printf '%s' "$SETS" | awk 'BEGIN{s=0} /^--$/{s++;next} s==2')
+          NEWLY_COUNT=$(printf '%s' "$NEWLY_STALE" | grep -c . || true)
+          CHRONIC_COUNT=$(printf '%s' "$CURRENT_STALE" | grep -c . || true)
+          CHRONIC_COUNT=$(( CHRONIC_COUNT - NEWLY_COUNT ))
+
+          # Self-heal before paging: a stale cron is usually a missed/cancelled
+          # schedule, and the manual fix has always been "redispatch it". Do that
+          # automatically: newly-stale crons get ONE redispatch (no page). If the
+          # same cron is still stale at the NEXT check after a redispatch, the
+          # self-heal failed — page then. Redispatch failures (disabled workflow,
+          # no dispatch trigger) page immediately.
+          PREV_REDISPATCHED=""
+          if [ -f "$STATE_FILE" ]; then
+            PREV_REDISPATCHED=$(jq -r '.redispatched[]?' "$STATE_FILE" 2>/dev/null | sort -u)
+          fi
+          PAGE_LIST=""
+          PAGE_NAMES=""
+          REDISPATCHED_NOW=""
+          # Still stale despite last check's redispatch → self-heal failed, page.
+          STILL_STALE_AFTER_HEAL=$(comm -12 <(printf '%s\n' "$CURRENT_STALE") <(printf '%s\n' "$PREV_REDISPATCHED") | sed '/^$/d')
+          while IFS= read -r name; do
+            [ -z "$name" ] && continue
+            PAGE_LIST="${PAGE_LIST}${name} (still stale after auto-redispatch)"$'\n'
+            PAGE_NAMES="${PAGE_NAMES}${name}"$'\n'
+          done <<< "$STILL_STALE_AFTER_HEAL"
+          while IFS= read -r name; do
+            [ -z "$name" ] && continue
+            wf="${WF_FILE[$name]:-}"
+            if [ -n "$wf" ] && GH_TOKEN="${DISPATCH_TOKEN:-$GH_TOKEN}" gh workflow run "$wf" >/dev/null 2>&1; then
+              echo "🔁 Self-heal: redispatched ${wf} for '${name}' — pages only if still stale at next check"
+              REDISPATCHED_NOW="${REDISPATCHED_NOW}${name}"$'\n'
+            else
+              echo "🚨 Self-heal FAILED for '${name}' (${wf:-no workflow file mapped}) — paging"
+              PAGE_LIST="${PAGE_LIST}${name} (auto-redispatch failed — workflow disabled or undispatchable)"$'\n'
+              PAGE_NAMES="${PAGE_NAMES}${name}"$'\n'
+            fi
+          done <<< "$NEWLY_STALE"
+          PAGE_COUNT=$(printf '%s' "$PAGE_LIST" | grep -c . || true)
+
+          # Persist current state for next run's diff (stale set + one-shot
+          # redispatch ledger; an entry gets a single self-heal attempt per
+          # streak) AND advance each entry's consecutive-stale-day count.
+          #
+          # The streak is card #647's root cause (b). Before it, this file
+          # recorded WHICH crons were stale but not FOR HOW LONG, so "stale
+          # again today" and "stale for eleven days" were indistinguishable and
+          # every long outage decayed into a silent chronic-stale digest line.
+          # The 2026-07-30 audit found this file listing "Opening Night
+          # Orchestrator" as stale with "redispatched": [] — it knew, and had
+          # no mechanism to do anything further about it.
+          #
+          # Decision logic lives in scripts/lib/cron-stale-streak.js so the
+          # escalation boundary is unit-tested against the real function
+          # (CLAUDE.md rule 15), not re-implemented in shell.
+          CURRENT_STALE="$PERSIST_STALE" REDISPATCHED_NOW="$REDISPATCHED_NOW" \
+            STATE_FILE="$STATE_FILE" node scripts/update-cron-health-state.js
+
+          # Emit step outputs the notify-failure step reads to toggle severity/email.
+          echo "newly_stale_count=${NEWLY_COUNT}" >> "$GITHUB_OUTPUT"
+          echo "chronic_stale_count=${CHRONIC_COUNT}" >> "$GITHUB_OUTPUT"
+          echo "page_count=${PAGE_COUNT}" >> "$GITHUB_OUTPUT"
+          echo "page_list=$(printf '%s' "$PAGE_LIST" | paste -sd ';' - | sed 's/;/; /g')" >> "$GITHUB_OUTPUT"
+          # Bare cron names (no parenthetical reason) for routeAlert's per-cron
+          # conditionKey (card #608) — page_list above stays for the human-readable
+          # email body.
+          echo "page_names=$(printf '%s' "$PAGE_NAMES" | paste -sd ';' -)" >> "$GITHUB_OUTPUT"
+          echo "recovered_names=$(printf '%s' "$RECOVERED" | paste -sd ';' -)" >> "$GITHUB_OUTPUT"
+          if [ -n "$RECOVERED" ]; then
+            echo "✅ Recovered crons (no longer stale):"
+            printf '%s\n' "$RECOVERED" | sed 's/^/  /'
+          fi
+          if [ -n "$REDISPATCHED_NOW" ]; then
+            echo "🔁 Self-healed this check (redispatched, no page):"
+            printf '%s' "$REDISPATCHED_NOW" | sed 's/^/  /'
+          fi
+          if [ "$PAGE_COUNT" -gt 0 ]; then
+            echo "🚨 PAGING (self-heal failed or impossible — email + critical severity):"
+            printf '%s' "$PAGE_LIST" | sed 's/^/  /'
+          fi
+          if [ "$CHRONIC_COUNT" -gt 0 ]; then
+            echo "⏳ Chronic stale ($CHRONIC_COUNT entries — digest only, expected to keep firing until fixed):"
+            comm -12 <(printf '%s\n' "$CURRENT_STALE") <(printf '%s\n' "$PREV_STALE") | sed 's/^/  /'
+          fi
+
+          if [ -n "$FAILURES" ]; then
+            echo "::error::Critical cron workflows have stopped running!"
+            echo ""
+            echo "=== STALE CRONS ==="
+            echo -e "$FAILURES"
+            if [ -n "$WARNINGS" ]; then
+              echo "=== WARNINGS ==="
+              echo -e "$WARNINGS"
+              # Export them here too, not only on the all-healthy path below. The
+              # realistic cause of a run-history query failure (expired token, rate
+              # limit, API incident) is ALSO a likely cause of concurrent stale
+              # entries, so the branch that drops warnings is exactly the branch the
+              # UNKNOWN-health warning is most likely to arrive on.
+              {
+                echo "warnings<<EOF"
+                echo -e "$WARNINGS"
+                echo "EOF"
+              } >> "$GITHUB_OUTPUT"
+            fi
+            echo ""
+            echo "Fix: Go to Actions tab, find the stale workflow, click 'Enable workflow' or trigger manually."
+            echo "Common causes: GitHub disables crons after 60 days inactivity, after persistent failures, or after workflow file changes."
+            exit 1
+          elif [ -n "$WARNINGS" ]; then
+            echo "All crons running on schedule, but some have recent failures:"
+            echo -e "$WARNINGS"
+            # Emit the warnings to $GITHUB_OUTPUT so the next step can forward them to Discord.
+            # WARNINGS is multi-line, so use the heredoc form.
+            {
+              echo "warnings<<EOF"
+              echo -e "$WARNINGS"
+              echo "EOF"
+            } >> "$GITHUB_OUTPUT"
+          else
+            echo "✅ All critical crons healthy"
+          fi
+
+      - name: Check deploy duration regression
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Each `run:` block is its own shell, so the helper is sourced per step.
+          . scripts/lib/gh-runs-query.sh
+
+          # Get last 5 successful deploy runs and their durations.
+          # Last-30-deploy avg is ~12min, max ~15min (745MB Vercel upload + 4.5GB
+          # core-data cache restore + npm install + next build). Thresholds set
+          # above the natural ceiling so the alert fires on a real regression,
+          # not on a 5-deploy window that happens to land on the slow tail.
+          DEPLOY_WARN_MINS=12
+          DEPLOY_FAIL_MINS=15
+
+          # gh_runs_query returns a JSON ARRAY (raw REST returns an object, whose
+          # `jq length` is 2 — the key count — not the run count). See
+          # scripts/lib/gh-runs-query.sh.
+          # A failed query used to collapse to '[]', print "no recent successful
+          # deploys" and exit 0 — i.e. an API error was reported as a clean bill of
+          # health for the deploy pipeline. Separate the two.
+          if ! RUNS=$(gh_runs_query "$GITHUB_REPOSITORY" vercel-deploy.yml 5 status=success 2>/dev/null); then
+            echo "::warning::deploy-duration check SKIPPED — run-history query failed (auth/rate-limit/network). This is NOT a statement that deploy durations are healthy."
+            exit 0
+          fi
+          COUNT=$(echo "$RUNS" | jq 'length')
+
+          if [ "$COUNT" -eq 0 ]; then
+            echo "No recent successful deploys found — skipping duration check"
+            exit 0
+          fi
+
+          MAX_MINS=0
+          TOTAL_MINS=0
+          SLOW_RUNS=""
+
+          for i in $(seq 0 $((COUNT - 1))); do
+            CREATED=$(echo "$RUNS" | jq -r ".[$i].createdAt")
+            UPDATED=$(echo "$RUNS" | jq -r ".[$i].updatedAt")
+            RUN_ID=$(echo "$RUNS" | jq -r ".[$i].databaseId")
+
+            START=$(date -d "$CREATED" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$CREATED" +%s 2>/dev/null || echo "0")
+            END=$(date -d "$UPDATED" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$UPDATED" +%s 2>/dev/null || echo "0")
+            DURATION_MINS=$(( (END - START) / 60 ))
+
+            TOTAL_MINS=$((TOTAL_MINS + DURATION_MINS))
+            if [ "$DURATION_MINS" -gt "$MAX_MINS" ]; then MAX_MINS=$DURATION_MINS; fi
+            if [ "$DURATION_MINS" -gt "$DEPLOY_WARN_MINS" ]; then
+              SLOW_RUNS="${SLOW_RUNS}  Run ${RUN_ID}: ${DURATION_MINS}min\n"
+            fi
+          done
+
+          AVG_MINS=$((TOTAL_MINS / COUNT))
+          echo "Deploy durations (last ${COUNT}): avg=${AVG_MINS}min, max=${MAX_MINS}min (warn>${DEPLOY_WARN_MINS}min, fail>${DEPLOY_FAIL_MINS}min)"
+
+          if [ "$AVG_MINS" -gt "$DEPLOY_FAIL_MINS" ]; then
+            echo "::error::Deploy duration regression! Average ${AVG_MINS}min exceeds ${DEPLOY_FAIL_MINS}min threshold."
+            echo -e "Slow runs:\n${SLOW_RUNS}"
+            echo "Investigate: something was added to the deploy pipeline that shouldn't be there."
+            exit 1
+          elif [ "$AVG_MINS" -gt "$DEPLOY_WARN_MINS" ]; then
+            echo "::warning::Deploy durations trending high — average ${AVG_MINS}min (warn threshold: ${DEPLOY_WARN_MINS}min)"
+            echo -e "Slow runs:\n${SLOW_RUNS}"
+          else
+            echo "✅ Deploy durations healthy"
+          fi
+
+      # Real-time Discord warning for the non-stale "last run failed" case.
+      # Previously these only printed to the workflow log (nobody reads that).
+      # Matches notify-failure's 2h cooldown pattern: if check-cron-health itself
+      # already ran successfully within the last 2h (e.g., manual re-dispatch on
+      # top of the noon UTC cron), suppress the second alert.
+      - name: Cooldown check for warning alert
+        id: warn_cooldown
+        # always(), not success(): the check step exits 1 whenever any cron is stale,
+        # and the UNKNOWN-health warning (a failed run-history query) is MOST likely to
+        # arrive on exactly that branch, since an expired token or rate limit tends to
+        # produce stale-looking entries at the same time. Gating on success() made the
+        # warning export on the failure branch unreachable.
+        if: always() && steps.check.outputs.warnings != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const cooldownMinutes = 120;
+            const cutoff = new Date(Date.now() - cooldownMinutes * 60 * 1000);
+            try {
+              const runs = await github.rest.actions.listWorkflowRuns({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'check-cron-health.yml',
+                status: 'success',
+                per_page: 10,
+                created: `>=${cutoff.toISOString().split('T')[0]}`,
+              }).catch(() => ({ data: { workflow_runs: [] } }));
+              const recentSuccess = (runs.data.workflow_runs || []).filter(r => {
+                const created = new Date(r.created_at);
+                return created >= cutoff && r.id !== context.runId;
+              });
+              if (recentSuccess.length > 0) {
+                console.log(`[Cooldown] ${recentSuccess.length} prior success(es) in last ${cooldownMinutes}min — suppressing duplicate warning alert.`);
+                core.setOutput('suppressed', 'true');
+              } else {
+                core.setOutput('suppressed', 'false');
+              }
+            } catch (e) {
+              console.log(`[Cooldown] Check failed (${e.message}), sending alert anyway`);
+              core.setOutput('suppressed', 'false');
+            }
+
+      - name: Send warning Discord alert
+        if: always() && steps.check.outputs.warnings != '' && steps.warn_cooldown.outputs.suppressed != 'true'
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          WARNINGS: ${{ steps.check.outputs.warnings }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { sendAlert } = require('./scripts/lib/discord-notify.js');
+            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const warnings = (process.env.WARNINGS || '').trim();
+            if (!warnings) {
+              console.log('[WarnAlert] No warnings payload — skipping.');
+              return;
+            }
+            await sendAlert({
+              title: 'Cron Health Warnings (recent failures)',
+              description: 'All crons are running on schedule, but some have recent failures. Investigate before they go stale.',
+              severity: 'warning',
+              fields: [
+                { name: 'Affected Workflows', value: warnings.slice(0, 1024), inline: false },
+                { name: 'Run', value: `[View logs](${runUrl})`, inline: false },
+              ],
+              url: runUrl,
+            }).catch(e => console.error('Warning alert failed:', e.message));
+
+      # State-diff dispatch: pages only when self-heal failed (redispatch errored,
+      # or the cron is still stale a check AFTER being redispatched). Newly-stale
+      # crons that redispatch cleanly do NOT page — the redispatch IS the fix the
+      # page used to ask the owner to perform. Chronic stale falls through to the
+      # digest (warning, Discord-only — notify-failure is a no-op for warning per
+      # workflows/CLAUDE.md, intentionally).
+      #
+      # Routed per-cron through owner-alert-router (not notify-failure) — card #608
+      # (2026-07-28): notify-failure's built-in cooldown is TIME-based (default 2h)
+      # keyed on the check-cron-health WORKFLOW as a whole, which is a no-op for a
+      # once-daily cron: 24h between runs always clears a 2h window, so a cron that
+      # stays broken (Commercial Weekly Orchestrator failed its --strict gate 5
+      # days running, 07-24 through 07-28) pages fresh every single day. routeAlert
+      # gives each STALE CRON its own conditionKey + a real 24h cooldown, and
+      # resolveCondition below re-arms it the moment that cron actually recovers —
+      # so a genuinely new incident still pages immediately, only the "still
+      # broken, already told you" repeat is silenced.
+      - name: Notify — stale critical crons self-heal failed (paging, deduped per-cron)
+        if: failure() && steps.check.outputs.page_count != '0' && steps.check.outputs.page_count != ''
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          PAGE_NAMES: ${{ steps.check.outputs.page_names }}
+          PAGE_LIST: ${{ steps.check.outputs.page_list }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          node -e '
+            const { routeAlert } = require("./scripts/lib/owner-alert-router.js");
+            const names = (process.env.PAGE_NAMES || "").split(";").map(s => s.trim()).filter(Boolean);
+            const runUrl = process.env.RUN_URL;
+            (async () => {
+              for (const name of names) {
+                const conditionKey = `cron-health:${name}`;
+                const result = await routeAlert({
+                  conditionKey,
+                  title: `🚨 Critical cron stale, self-heal failed: ${name}`,
+                  description: `Self-heal redispatch did not bring this cron back to healthy. See the run log for the mapped workflow file and last-success timestamp.`,
+                  severity: "critical",
+                  disposition: "human",
+                  cooldownHours: 24,
+                  url: runUrl,
+                  fields: [{ name: "Run", value: `[View logs](${runUrl})` }],
+                });
+                // result.action==='digest' means the page-worthy gate (card #611) downgraded
+                // this from 'human' — the owner WILL see it in the next digest.
+                console.log(`[cron-health] ${conditionKey}: ${result.action}` + (result.action === "silent" ? " (24h cooldown, already reported)" : ""));
+              }
+            })().catch(e => { console.error("routeAlert failed:", e.message); process.exit(1); });
+          '
+
+      # Multi-day stale crons ESCALATE from "digest line" to actual work
+      # (card #647, root cause (b)). The pre-existing paths both stop short:
+      # the self-heal redispatch fires once per streak, and the chronic-stale
+      # branch below is a warning, which notify-failure deliberately no-ops.
+      # After 3 consecutive daily checks stale, the redispatch has demonstrably
+      # not fixed it, so this files a Notion Action Queue card that the action
+      # dispatcher works hands-free — disposition 'auto', the router's existing
+      # mechanism for machine-investigable conditions. cooldownHours 168 keeps
+      # a cron nobody can fix to one card a week rather than one a day.
+      - name: Escalate crons stale 3+ consecutive days
+        if: always() && steps.check.outputs.escalate_count != '0' && steps.check.outputs.escalate_count != ''
+        env:
+          ESCALATE_NAMES: ${{ steps.check.outputs.escalate_names }}
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          # card #1786: this step's disposition:'auto' path calls
+          # routeAlert -> findLinearDuplicate + dispatchCard, both of which
+          # shell out to linear-brain.js — without this the Linear dedupe
+          # check and issue creation both fail with "LINEAR_API_KEY not set"
+          # (failing open on the dedupe check, but dispatchCard's own
+          # execFileSync still throws), so the chronic-stale escalation this
+          # step exists for never actually files a tracker. Confirmed via
+          # run 32137177060's log: "Update Show Status" was correctly
+          # identified as stale 3+ consecutive days, but issue dispatch
+          # failed silently on this missing secret.
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          node -e '
+            const { routeAlert } = require("./scripts/lib/owner-alert-router.js");
+            const names = (process.env.ESCALATE_NAMES || "").split(";").map(s => s.trim()).filter(Boolean);
+            const runUrl = process.env.RUN_URL;
+            (async () => {
+              for (const name of names) {
+                const result = await routeAlert({
+                  conditionKey: `cron-health-chronic:${name}`,
+                  title: `Cron stale 3+ consecutive days: ${name}`,
+                  description: `${name} has been stale on three or more consecutive daily cron-health checks. The one-shot self-heal redispatch has already run and did not fix it, so this needs a real diagnosis rather than another notification.`,
+                  hint: `Check whether its runs are CANCELLED rather than failed (a timeout cap — notify-failure never sees those, and \`if: always()\` does not fire on cancellation), or failing at severity:low/email:false. Start with: gh api "repos/{owner}/{repo}/actions/workflows/<file>/runs?per_page=30" reading .workflow_runs[] .created_at/.conclusion/.event — NOT the gh CLI run-listing shorthand, which is months-stale here (BRO-2771).`,
+                  severity: "error",
+                  disposition: "auto",
+                  cooldownHours: 168,
+                  url: runUrl,
+                  fields: [{ name: "Run", value: `[View logs](${runUrl})` }],
+                });
+                console.log(`[cron-health-chronic] ${name}: ${result.action}`);
+              }
+            })().catch(e => { console.error("escalation routeAlert failed:", e.message); process.exit(1); });
+          '
+
+      # Recovered crons re-arm their condition immediately (same rationale as
+      # update-show-status.yml's #486 fix) — without this a cron that flaps
+      # (broken → self-heals → breaks again next week) would wait out the 24h
+      # cooldown from its PRIOR incident before paging the new one.
+      - name: Resolve recovered cron conditions
+        if: always() && steps.check.outputs.recovered_names != ''
+        run: |
+          node -e '
+            const { resolveCondition } = require("./scripts/lib/owner-alert-router.js");
+            const names = (process.env.RECOVERED_NAMES || "").split(";").map(s => s.trim()).filter(Boolean);
+            for (const name of names) {
+              resolveCondition(`cron-health:${name}`);
+              // Also re-arm the 3-day chronic escalation (card #647): without
+              // this a cron that flaps would sit out the prior-incident 168h
+              // cooldown before its NEXT multi-day outage could escalate.
+              // (No apostrophes in this comment — this whole node -e body is
+              // inside a bash single-quoted string, which has no escape for
+              // a literal quote; one here silently truncated the script and
+              // broke resolveCondition() on every run, see BRO-450.)
+              resolveCondition(`cron-health-chronic:${name}`);
+            }
+          '
+        env:
+          RECOVERED_NAMES: ${{ steps.check.outputs.recovered_names }}
+
+      - name: Notify — chronic stale (digest only)
+        if: failure() && (steps.check.outputs.page_count == '0' || steps.check.outputs.page_count == '')
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Cron Health Check Failed (chronic stale crons or deploy regression)'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+      # Persist state file so the next run's diff can identify newly-stale entries.
+      # Always runs (even on `exit 1` above) so the state stays current even when
+      # the check reports failures.
+      - name: Persist cron-health state
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # alert-ledger.json: routeAlert()/resolveCondition()'s cooldown ledger
+          # (card #608) — must be committed here or the per-cron 24h cooldown
+          # added above never persists across daily runs (same class as #394).
+          # alert-router-attempts.jsonl (BRO-3662): logDispatchAttempt() rewrites
+          # this TRACKED file on every dispatch attempt; left unstaged it makes
+          # every later rebase refuse pre-flight and forces the clobber-prone
+          # merge path in push-with-retry.sh.
+          for f in data/audit/cron-health-state.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl; do
+            [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
+          done
+          if git diff --staged --quiet; then
+            echo "No state change to commit."
+            exit 0
+          fi
+          git commit -m "audit: Update cron-health state [skip ci]"
+          bash scripts/lib/push-with-retry.sh 5 main

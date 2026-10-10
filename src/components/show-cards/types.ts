@@ -1,0 +1,48 @@
+/** Audience grade shape shared across all page client interfaces */
+export interface AudienceGrade {
+  grade: string;
+  label: string;
+  color: string;
+  textColor: string;
+  tooltip: string;
+}
+
+/**
+ * Union type for show data passed to ShowListCard and MiniShowCard.
+ * All 4 page clients (Home, OB, WE, Browse) pass objects conforming to this shape.
+ * Optional fields cover market-specific data (isOffWestEnd for WE, performances for Browse).
+ */
+export interface ShowCardShow {
+  id: string;
+  slug: string;
+  title: string;
+  venue: string;
+  openingDate: string;
+  closingDate?: string;
+  previewsStartDate?: string;
+  status: string;
+  type: string;
+  isRevival?: boolean;
+  season?: string;
+  reviewYearNote?: string;
+  /** National tours: this build's current and next engagement (BRO-4601). */
+  tourNowNext?: import('@/lib/tour-schedule').TourNowNext | null;
+  images?: { thumbnail?: string; poster?: string; hero?: string };
+  criticScore?: { score?: number; reviewCount?: number; tier1Count?: number; tier2Count?: number };
+  audienceCombinedScore: number | null;
+  audienceGrade: AudienceGrade | null;
+  category?: string; // undefined for legacy Broadway shows — defaults to 'broadway'
+  genre?: string; // dance/magic/comedy/cabaret/concert/circus — drives GenrePill + OWE routing (see src/lib/genre.ts)
+  subtitle?: string; // e.g. "$10 lottery" — shown below title on shelf cards
+  subtitleColor?: string; // Tailwind text color class (default: emerald-400)
+  tags?: string[];
+  ageRecommendation?: string;
+  creativeTeam?: Array<{ name: string; role: string }>;
+  // Market-specific optional fields
+  isOffWestEnd?: boolean; // West End only
+  performances?: number; // Browse only
+  runtime?: string; // Browse only
+  ticketLinks?: { platform: string; url: string; priceFrom?: number | null }[];
+}
+
+export type ScoreModeParam = 'critics' | 'audience';

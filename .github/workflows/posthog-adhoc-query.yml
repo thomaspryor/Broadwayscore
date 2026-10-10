@@ -1,0 +1,60 @@
+name: PostHog Ad-hoc Query
+
+# On-demand, READ-ONLY HogQL against PostHog (project 332742), rendered as
+# markdown tables on the run's Summary page. Built for BRO-4327: the owner
+# asked "is the Social Buzz card on show pages used?" and nothing could
+# answer it — POSTHOG_PERSONAL_API_KEY exists only as a GitHub secret, and
+# every scheduled PostHog job (posthog-weekly-insights.yml, analyze-traffic-
+# sources.yml, adhoc-ab-test-readout.yml) runs a FIXED query set. Any future
+# "is anyone using X?" question is one dispatch of this workflow.
+#
+# Makes no commits, no pushes, no PostHog mutations, no email: the /query/
+# endpoint executes HogQL SELECTs only, and scripts/posthog-adhoc-query.js
+# writes nowhere but stdout and GITHUB_STEP_SUMMARY. A human reads the
+# Summary. The `hogql` input reaches the script ONLY through an env var
+# (never interpolated into a shell line), so query text cannot inject shell.
+#
+# Gotcha (cloud-memory/feedback_posthog_hogql_default_row_limit.md): HogQL
+# silently caps GROUP BY results at ~100 rows without an explicit LIMIT.
+# `{{REAL_USERS_WHERE}}` inside a statement expands to the shared Real Users
+# lens (owner + bot geos excluded) from scripts/lib/posthog-query.js.
+on:
+  workflow_dispatch:
+    inputs:
+      hogql:
+        # The Actions UI shows a single-line box; multi-line text arrives
+        # intact when dispatched through the API / gh (`-f hogql="$(cat q.sql)"`).
+        description: 'HogQL statement(s); separate several with a line containing only ---. {{REAL_USERS_WHERE}} expands to the Real Users lens. Multi-line via API/gh dispatch.'
+        required: true
+        type: string
+
+concurrency:
+  group: posthog-adhoc-query
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  query:
+    name: Run HogQL and render the Summary
+    runs-on: ubuntu-latest
+    # A PostHog 504 takes ~5 min to come back and the script retries once per
+    # statement, so a few statements can legitimately outlast 10 minutes.
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/setup-node
+
+      - name: Run statements
+        env:
+          HOGQL: ${{ inputs.hogql }}
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+        run: node scripts/posthog-adhoc-query.js
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'PostHog Ad-hoc Query Failed'
+          severity: 'low'

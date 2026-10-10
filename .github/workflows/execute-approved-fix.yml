@@ -1,0 +1,210 @@
+name: Execute Approved Fix
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'GitHub issue number, or a Linear id (bro-N) for a session-authored plan in data/pending-fixes/'
+        required: true
+        type: string
+      plan_id:
+        description: 'planId from the approval link — executor refuses on mismatch (stale-link guard)'
+        required: true
+        type: string
+      mode:
+        description: 'apply executes the plan; reject marks it rejected without executing'
+        required: false
+        default: 'apply'
+        type: choice
+        options: [apply, reject]
+
+permissions:
+  contents: write
+  issues: write
+
+# Per-issue group, matching auto-fix-feedback-bug.yml's key exactly (BRO-3500
+# what-else follow-up) — see that file's comment for why a shared group was
+# wrong. workflow_dispatch-only here so inputs.issue_number is always set.
+concurrency:
+  group: auto-fix-feedback-bug-${{ inputs.issue_number }}
+  cancel-in-progress: false
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    # 45 (was 10): BRO-4431 lets run-script ingest review URLs, each a scraper
+    # fetch of up to a few minutes (run-script caps each script at 5 min).
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Execute approved fix
+        id: exec
+        env:
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
+          PLAN_ID: ${{ inputs.plan_id }}
+          EXEC_MODE: ${{ inputs.mode }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # Plans are PII-redacted; the submitter thank-you recovers contact
+          # info from the issue's DIAGNOSIS_JSON, which needs a token.
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-4431: run-script can ingest a review URL (ingest-review-from-url.js
+          # fetches through the shared scraper chain).
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: node scripts/execute-approved-fix.js
+
+      - name: Refresh recoupment model after a commercial.json fix
+        # A fixed weekly cost or capitalization changes break-even and
+        # recoupment %; re-run the model so they never trail the new figure
+        # until Friday (BRO-4985).
+        if: steps.exec.outputs.result == 'fixed'
+        env:
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
+        run: |
+          PLAN="data/pending-fixes/${ISSUE_NUMBER}.json"
+          if [ -f "$PLAN" ] && grep -q 'commercial.json' "$PLAN"; then
+            node scripts/merge-model-recoupment.js
+          else
+            echo "Plan does not touch commercial.json; model refresh skipped"
+          fi
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Execute Approved Fix — Commit and push changes"
+      - name: Commit and push changes
+        if: always() && (steps.exec.outputs.result == 'fixed' || steps.exec.outputs.result == 'no-changes' || steps.exec.outputs.result == 'validation-failed' || steps.exec.outputs.result == 'rejected')
+        env:
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
+        run: |
+          git add data/pending-fixes/
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "fix(data): Execute approved fix for #${ISSUE_NUMBER}
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from execute-approved-fix'
+      - name: Update GitHub issue
+        if: always()
+        uses: actions/github-script@v7
+        env:
+          FIX_RESULT: ${{ steps.exec.outputs.result }}
+          FIX_FAILED: ${{ steps.exec.outputs.failed }}
+          FIX_ISSUE_NUMBER: ${{ inputs.issue_number }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const result = process.env.FIX_RESULT || 'error';
+            const rawIssue = process.env.FIX_ISSUE_NUMBER || '';
+            const issueNumber = parseInt(rawIssue);
+            // BRO-4216: session-authored plans are keyed by a Linear id
+            // (e.g. bro-4202), not a GitHub issue. Nothing to comment on.
+            if (!/^\d/.test(rawIssue)) {
+              core.info(`Plan ${rawIssue} is not a GitHub issue; result=${result}`);
+              const refused = parseInt(process.env.FIX_FAILED || '0') || 0;
+              if (result !== 'fixed' && result !== 'already-applied' && result !== 'rejected') core.setFailed(`Plan ${rawIssue}: ${result}`);
+              else if (refused > 0) core.setFailed(`Plan ${rawIssue}: ${refused} action(s) refused; see the Execute step log`);
+              return;
+            }
+            const isSystematic = rawIssue.includes('-systematic');
+
+            if (result === 'fixed') {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: isSystematic
+                  ? '## Systematic Fix Applied\n\nThe approved systematic remediation plan has been executed across the dataset. Changes will be live after the next deploy.\n\n---\n*Executed via one-click approval*'
+                  : '## Fix Applied\n\nThe approved remediation plan has been executed. Changes will be live after the next deploy.\n\n---\n*Executed via one-click approval*'
+              });
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber, labels: [isSystematic ? 'systematic-fix-applied' : 'auto-fixed']
+              });
+              if (!isSystematic) {
+                await github.rest.issues.update({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  issue_number: issueNumber,
+                  state: 'closed', state_reason: 'completed'
+                });
+              }
+            } else if (result === 'already-applied') {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: '## Already Applied\n\nThis fix was already executed. No duplicate action taken.'
+              });
+            } else if (result === 'validation-failed') {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: '## Validation Failed\n\nThe approved fix was applied but failed data validation. Changes were rolled back. Needs manual review.'
+              });
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber, labels: ['needs-manual-review']
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: `## Execution Error\n\nFix execution returned: \`${result}\`. A maintainer will review.`
+              });
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issueNumber, labels: ['needs-manual-review']
+              });
+            }
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Execute Approved Fix Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

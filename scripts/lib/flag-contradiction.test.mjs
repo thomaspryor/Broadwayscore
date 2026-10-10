@@ -1,0 +1,718 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+
+const require = createRequire(import.meta.url);
+const {
+  detectFlagContradiction,
+  detectCvFlagContradiction,
+  contradictionFixCommand,
+  shouldAlertContradiction,
+  detectAllSelfContradictoryClears,
+  retractStaleClearBreadcrumb,
+  demoteStaleWrongShowPromotion,
+  isZeroScoreImpactFix,
+} = require('./flag-contradiction.js');
+const { safeWriteReview, isIntentionalClear } = require('./review-write-guard.js');
+
+// Pre-fix Grace Pervades snapshot: a real West End review flagged
+// wrongProduction:true by an early flagger (2026-04-15), then re-verified by a
+// LATER contentVerification run (2026-06-06) that rules it a valid review of
+// the RIGHT West End production. The stale flag still suppresses it — this is
+// exactly the contradiction the detector must surface.
+const GRACE_STALE_FLAG = {
+  showId: 'grace-pervades-west-end-2026',
+  outletId: 'financialtimes',
+  criticName: 'Sarah Hemming',
+  url: 'https://www.ft.com/content/grace-pervades-west-end',
+  wrongProduction: true,
+  wrongProductionFlaggedAt: '2026-04-15T19:50:55.444Z',
+  contentVerification: {
+    isValid: true,
+    wrongProduction: false,
+    wrongArticle: false,
+    articleType: 'review',
+    reasoning: 'Substantive review of Grace Pervades at Theatre Royal Haymarket (West End), published day after opening. Valid, right production.',
+    verifiedBy: 'llm:claude-haiku',
+    verifiedAt: '2026-06-06T06:04:00.397Z',
+  },
+};
+
+test('Grace Pervades stale-flag snapshot triggers a contradiction', () => {
+  const c = detectFlagContradiction(GRACE_STALE_FLAG);
+  assert.ok(c, 'should detect a contradiction');
+  assert.equal(c.flag, 'wrongProduction');
+  assert.equal(c.flaggedAt, '2026-04-15T19:50:55.444Z');
+  assert.equal(c.verifiedAt, '2026-06-06T06:04:00.397Z');
+  assert.match(c.cvReasoning, /right production|Haymarket|West End/i);
+});
+
+test('manual-cleared file does NOT trigger (human ruling wins)', () => {
+  const cleared = { ...GRACE_STALE_FLAG, wrongProductionManualClear: true };
+  assert.equal(detectFlagContradiction(cleared), null);
+});
+
+test('humanReviewedWrongProduction:true (human confirmed wrong-prod) does NOT trigger', () => {
+  const confirmed = { ...GRACE_STALE_FLAG, humanReviewedWrongProduction: true };
+  assert.equal(detectFlagContradiction(confirmed), null);
+});
+
+test('humanReviewScore set does NOT trigger', () => {
+  const scored = { ...GRACE_STALE_FLAG, humanReviewScore: 88 };
+  assert.equal(detectFlagContradiction(scored), null);
+});
+
+test('wrongProductionOverride does NOT trigger', () => {
+  const overridden = { ...GRACE_STALE_FLAG, wrongProductionOverride: true };
+  assert.equal(detectFlagContradiction(overridden), null);
+});
+
+test('CV that AGREES with the flag (genuine Bath tryout) does NOT trigger', () => {
+  // The real FT/Bath file: file flag AND CV both say wrongProduction:true. No
+  // contradiction — the flag is correct.
+  const bath = {
+    ...GRACE_STALE_FLAG,
+    contentVerification: {
+      ...GRACE_STALE_FLAG.contentVerification,
+      isValid: false,
+      wrongProduction: true,
+      reasoning: 'Reviews the Theatre Royal Bath tryout, not the West End production.',
+    },
+  };
+  assert.equal(detectFlagContradiction(bath), null);
+});
+
+test('CV OLDER than the flag does NOT trigger (same-run / stale CV)', () => {
+  // A CV that pre-dates the flag can't contradict it — it may be the very
+  // verdict that led to the flag, or an older read the flagger superseded.
+  const olderCv = {
+    ...GRACE_STALE_FLAG,
+    contentVerification: {
+      ...GRACE_STALE_FLAG.contentVerification,
+      verifiedAt: '2026-04-10T00:00:00.000Z', // before the 2026-04-15 flag
+    },
+  };
+  assert.equal(detectFlagContradiction(olderCv), null);
+});
+
+test('flag with NO timestamp does NOT trigger (can not prove CV is newer)', () => {
+  const noStamp = { ...GRACE_STALE_FLAG };
+  delete noStamp.wrongProductionFlaggedAt;
+  assert.equal(detectFlagContradiction(noStamp), null);
+});
+
+test('wrongShow is OUT OF SCOPE (no reliable flag-set timestamp) — does NOT fire', () => {
+  // wrongShowFlaggedAt does not exist in the corpus, and generic flaggedAt is
+  // written by unrelated flows, so the "newer than flag" test can't be trusted.
+  const wrongShow = {
+    showId: 'giant-2026',
+    outletId: 'nytimes',
+    wrongShow: true,
+    flaggedAt: '2026-04-22T00:00:00.000Z', // generic — NOT trusted
+    contentVerification: {
+      isValid: true, wrongProduction: false, wrongArticle: false,
+      articleType: 'review', reasoning: 'Valid Broadway review of Giant.',
+      verifiedAt: '2026-05-01T00:00:00.000Z',
+    },
+  };
+  assert.equal(detectFlagContradiction(wrongShow), null);
+});
+
+test('wrongProduction with ONLY generic flaggedAt (no wrongProductionFlaggedAt) does NOT fire', () => {
+  // Guards the Codex finding: generic flaggedAt must not establish "newer".
+  const genericOnly = {
+    showId: 'x', outletId: 'nytimes', wrongProduction: true,
+    flaggedAt: '2026-04-15T00:00:00.000Z', // generic, unrelated writer
+    contentVerification: { isValid: true, wrongProduction: false, verifiedAt: '2026-06-06T00:00:00.000Z' },
+  };
+  assert.equal(detectFlagContradiction(genericOnly), null);
+});
+
+test('duplicateOf is out of scope (CV can not contradict duplication)', () => {
+  const dup = {
+    showId: 'grace-pervades-west-end-2026',
+    duplicateOf: 'artsdesk--unknown.json',
+    flaggedAt: '2026-04-15T00:00:00.000Z',
+    contentVerification: {
+      isValid: true, wrongProduction: false, wrongArticle: false,
+      verifiedAt: '2026-06-06T00:00:00.000Z',
+    },
+  };
+  assert.equal(detectFlagContradiction(dup), null);
+});
+
+test('no contentVerification → null', () => {
+  assert.equal(detectFlagContradiction({ wrongProduction: true, wrongProductionFlaggedAt: '2026-04-15T00:00:00Z' }), null);
+});
+
+test('fix command names the file + points at the show-scoped clearer', () => {
+  const cmd = contradictionFixCommand('grace-pervades-west-end-2026', 'financialtimes--sarah-hemming.json', 'wrongProduction');
+  assert.match(cmd, /clear-stale-wrong-production-flags\.js/);
+  assert.match(cmd, /--show=grace-pervades-west-end-2026/);
+  assert.match(cmd, /financialtimes--sarah-hemming\.json/);
+});
+
+test('dedupe: re-alert only after the window', () => {
+  const now = new Date('2026-07-22T12:00:00Z');
+  assert.equal(shouldAlertContradiction(null, now), true);
+  assert.equal(shouldAlertContradiction('2026-07-22T00:00:00Z', now), false); // <7d
+  assert.equal(shouldAlertContradiction('2026-07-10T00:00:00Z', now), true);  // >7d
+  assert.equal(shouldAlertContradiction('garbage', now), true);               // unparseable → alert
+});
+
+// --- detectCvFlagContradiction (#651) — timestamp-free, broader flag coverage ---
+
+test('JCS case: isRoundupArticle flag + high-confidence affirming CV → contradiction', () => {
+  const jcs = {
+    isRoundupArticle: true,
+    textWordCount: 821,
+    contentVerification: { isValid: true, confidence: 'high', reasoning: 'Reviews the current West End staging.' },
+  };
+  const result = detectCvFlagContradiction(jcs);
+  assert.equal(result.contradicted, true);
+  assert.equal(result.flag, 'isRoundupArticle');
+});
+
+test('Heathers case: wrongProduction flag + high-confidence affirming CV → contradiction', () => {
+  const heathers = {
+    wrongProduction: true,
+    textWordCount: 1092,
+    contentVerification: { isValid: true, confidence: 'high', reasoning: 'Confirms the Off-West End run.' },
+  };
+  const result = detectCvFlagContradiction(heathers);
+  assert.equal(result.contradicted, true);
+  assert.equal(result.flag, 'wrongProduction');
+});
+
+test('wrongShow flag also covered (unlike detectFlagContradiction, which excludes it)', () => {
+  const f = {
+    wrongShow: true,
+    wordCount: 500,
+    contentVerification: { isValid: true, confidence: 'high' },
+  };
+  assert.equal(detectCvFlagContradiction(f).flag, 'wrongShow');
+});
+
+test('falls back to wordCount when textWordCount is absent', () => {
+  const f = {
+    wrongProduction: true,
+    wordCount: 400,
+    contentVerification: { isValid: true, confidence: 'high' },
+  };
+  assert.ok(detectCvFlagContradiction(f));
+});
+
+test('no flag set → null', () => {
+  const f = { textWordCount: 900, contentVerification: { isValid: true, confidence: 'high' } };
+  assert.equal(detectCvFlagContradiction(f), null);
+});
+
+test('CV confidence medium (not high) → null', () => {
+  const f = {
+    wrongProduction: true, textWordCount: 900,
+    contentVerification: { isValid: true, confidence: 'medium' },
+  };
+  assert.equal(detectCvFlagContradiction(f), null);
+});
+
+test('CV isValid false → null (CV itself agrees something is wrong)', () => {
+  const f = {
+    wrongProduction: true, textWordCount: 900,
+    contentVerification: { isValid: false, confidence: 'high' },
+  };
+  assert.equal(detectCvFlagContradiction(f), null);
+});
+
+test('word count at/under 300 → null (too short to trust)', () => {
+  const f = {
+    wrongProduction: true, textWordCount: 300,
+    contentVerification: { isValid: true, confidence: 'high' },
+  };
+  assert.equal(detectCvFlagContradiction(f), null);
+});
+
+test('human-decided file never fires (manual clear wins over CV)', () => {
+  const f = {
+    wrongProduction: true, textWordCount: 900,
+    wrongProductionManualClear: true,
+    contentVerification: { isValid: true, confidence: 'high' },
+  };
+  assert.equal(detectCvFlagContradiction(f), null);
+});
+
+test('no contentVerification → null', () => {
+  assert.equal(detectCvFlagContradiction({ wrongProduction: true, textWordCount: 900 }), null);
+});
+
+test('null/undefined data → null (never throws)', () => {
+  assert.equal(detectCvFlagContradiction(null), null);
+  assert.equal(detectCvFlagContradiction(undefined), null);
+});
+
+// BRO-2244: anticipatory ingest gate (wrongProductionReason:
+// 'anticipatory_pre_opening_post') flags on temporal grounds a content-only CV
+// pass cannot evaluate — rebuild-all-reviews.js and wrong-production-autoclear.js
+// already treat it as protected from CV-based auto-clear, so this audit must not
+// surface it as a "new contradiction" either (real prod instance: a-christmas
+// -carol-west-end-2026/broadwayworld--aliya-al-hassan.json).
+test('anticipatory_pre_opening_post wrongProductionReason exempted, even with high-confidence affirming CV', () => {
+  const f = {
+    wrongProduction: true,
+    wrongProductionReason: 'anticipatory_pre_opening_post',
+    textWordCount: 508,
+    contentVerification: { isValid: true, confidence: 'high', wrongProduction: false },
+  };
+  assert.equal(detectCvFlagContradiction(f), null);
+});
+
+test('anticipatory exemption is wrongProduction-only — same reason string on wrongShow still fires', () => {
+  const f = {
+    wrongShow: true,
+    wrongProductionReason: 'anticipatory_pre_opening_post',
+    textWordCount: 900,
+    contentVerification: { isValid: true, confidence: 'high' },
+  };
+  assert.equal(detectCvFlagContradiction(f).flag, 'wrongShow');
+});
+
+// Codex ship-check finding: exempting an anticipatory wrongProduction flag must
+// fall through to a co-occurring wrongShow flag on the SAME file, not abort
+// outright — the exempt reason says nothing about whether wrongShow is also a
+// legitimate contradiction worth human triage. 0 corpus instances today, but
+// nothing structurally prevents a file from carrying both.
+test('wrongProduction exempt + wrongShow both true on one file → wrongShow still surfaces', () => {
+  const f = {
+    wrongProduction: true,
+    wrongProductionReason: 'anticipatory_pre_opening_post',
+    wrongShow: true,
+    textWordCount: 900,
+    contentVerification: { isValid: true, confidence: 'high' },
+  };
+  assert.equal(detectCvFlagContradiction(f).flag, 'wrongShow');
+});
+
+test('a different (non-exempt) wrongProductionReason still fires as a contradiction', () => {
+  const f = {
+    wrongProduction: true,
+    wrongProductionReason: 'CV-promoted: some other reason',
+    textWordCount: 900,
+    contentVerification: { isValid: true, confidence: 'high' },
+  };
+  assert.equal(detectCvFlagContradiction(f).flag, 'wrongProduction');
+});
+
+// SELF_CLEAR_PAIRS coverage (tasks #1020/#1022/#1023) — a record asserting an
+// exclusion flag AND its own retraction breadcrumb at once. Regression guard
+// for #1023: an-american-in-paris-2015/broadwayworld--roy-berko.json and
+// kinky-boots-off-broadway-2026/broadwayworld--roy-berko.json shipped with
+// wrongAttribution:true + crossOutletVerified:true simultaneously (a 'flag'
+// action from an earlier sweep whose crossOutletVerified was never retracted
+// with the clearBreadcrumbRetracted breadcrumb review-write-guard.js's
+// PROTECTED_FIELDS preserve loop requires to honor the delete).
+test('wrongAttribution + crossOutletVerified fires (#1023 pair)', () => {
+  const f = { wrongAttribution: true, crossOutletVerified: true };
+  const hits = detectAllSelfContradictoryClears(f);
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].flag, 'wrongAttribution');
+  assert.equal(hits[0].breadcrumb, 'crossOutletVerified');
+  assert.equal(hits[0].task, '#1023');
+});
+
+test('wrongAttribution alone (no crossOutletVerified) does NOT fire', () => {
+  assert.deepEqual(detectAllSelfContradictoryClears({ wrongAttribution: true }), []);
+});
+
+test('crossOutletVerified alone (no wrongAttribution) does NOT fire', () => {
+  assert.deepEqual(detectAllSelfContradictoryClears({ crossOutletVerified: true }), []);
+});
+
+test('human-decided file exempt from the #1023 pair too', () => {
+  const f = { wrongAttribution: true, crossOutletVerified: true, humanReviewScore: 85 };
+  assert.deepEqual(detectAllSelfContradictoryClears(f), []);
+});
+
+test('retractStaleClearBreadcrumb deletes crossOutletVerified, leaves wrongAttribution, stamps retraction breadcrumb', () => {
+  const f = {
+    wrongAttribution: true,
+    wrongAttributionReason: 'unconfirmed byline',
+    crossOutletVerified: true,
+    crossOutletVerifiedNote: 'regional critic pattern',
+  };
+  const [contradiction] = detectAllSelfContradictoryClears(f);
+  const removed = retractStaleClearBreadcrumb(f, contradiction);
+  assert.deepEqual(removed, ['crossOutletVerified']);
+  assert.equal(f.crossOutletVerified, undefined);
+  assert.equal(f.wrongAttribution, true, 'the flag must survive — it is the live verdict');
+  assert.equal(f.wrongAttributionReason, 'unconfirmed byline');
+  assert.ok(f.clearBreadcrumbRetracted.includes('#1023'));
+  assert.ok(f.clearBreadcrumbRetractedFields.includes('crossOutletVerified'));
+  assert.deepEqual(detectAllSelfContradictoryClears(f), [], 're-running the detector on the fixed record finds nothing');
+});
+
+test('retractStaleClearBreadcrumb on a no-contradiction record is a no-op', () => {
+  const f = { wrongAttribution: true };
+  assert.deepEqual(retractStaleClearBreadcrumb(f, null), []);
+});
+
+test('hasClearBreadcrumbValue: a non-empty-string breadcrumb also fires the #1023 pair', () => {
+  // The detector's hasClearBreadcrumbValue() treats any non-empty string as an
+  // asserted breadcrumb, not just boolean true (flag-contradiction.js:249-253)
+  // — mirrors wrongProductionAutoCleared's mixed string/boolean corpus shape.
+  // crossOutletVerified is written as a boolean everywhere observed, but the
+  // detector doesn't special-case that, so prove the string path too.
+  const hits = detectAllSelfContradictoryClears({ wrongAttribution: true, crossOutletVerified: 'yes' });
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].breadcrumb, 'crossOutletVerified');
+});
+
+// Durability contract (codex adversarial finding on this same task): the tests
+// above only check the in-memory object after retraction. The actual bug this
+// card fixes is that review-write-guard.js's safeWriteReview() PRESERVE loop
+// resurrects a deleted PROTECTED field from the on-disk `existing` record
+// unless the incoming write carries a breadcrumb isIntentionalClear()
+// recognizes. Exercise the REAL safeWriteReview (CLAUDE.md rule 15), not a
+// re-implementation, so a regression in either module fails here.
+test('isIntentionalClear recognizes a retracted crossOutletVerified as intentional', () => {
+  const f = { wrongAttribution: true, crossOutletVerified: true };
+  const [contradiction] = detectAllSelfContradictoryClears(f);
+  retractStaleClearBreadcrumb(f, contradiction);
+  assert.equal(isIntentionalClear('crossOutletVerified', f), true);
+});
+
+test('safeWriteReview does NOT resurrect crossOutletVerified when the incoming write retracted it (the #1023 bug, replayed)', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'self-clear-'));
+  const target = path.join(root, 'an-american-in-paris-2015--broadwayworld--roy-berko.json');
+
+  // Pre-fix on-disk state: the exact self-contradiction this card exists to fix.
+  fs.writeFileSync(target, JSON.stringify({
+    wrongAttribution: true,
+    wrongAttributionReason: 'could not confirm this specific file',
+    crossOutletVerified: true,
+    crossOutletVerifiedNote: 'regional critic pattern',
+    assignedScore: 87,
+  }, null, 2));
+
+  // The retraction fix, applied the same way audit-self-contradictory-clears.js
+  // --fix does: read, retract, write back through safeWriteReview (not the
+  // audit script's own bypass-write) to prove the guard itself honors it.
+  const existing = JSON.parse(fs.readFileSync(target, 'utf8'));
+  const [contradiction] = detectAllSelfContradictoryClears(existing);
+  assert.ok(contradiction, 'fixture must reproduce the #1023 contradiction');
+  const fixed = { ...existing };
+  retractStaleClearBreadcrumb(fixed, contradiction);
+
+  safeWriteReview(target, fixed);
+
+  const onDisk = JSON.parse(fs.readFileSync(target, 'utf8'));
+  assert.equal(onDisk.crossOutletVerified, undefined, 'safeWriteReview must not resurrect the retracted breadcrumb from the on-disk existing record');
+  assert.equal(onDisk.wrongAttribution, true, 'the live exclusion flag must survive');
+  assert.equal(onDisk.assignedScore, 87, 'unrelated protected fields must be unaffected');
+
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
+// /what-else cousins of the #1023 pair — same self-contradiction shape
+// (wrongArticleManualClear is the ACTUAL breadcrumb review-write-guard.js's
+// _wrongArticleCleared() checks for both wrongFullText and wrongAttribution),
+// zero corpus instances as of 2026-08-14 but no writer invalidates the
+// breadcrumb on re-flag the way invalidateWrongProductionAutoClear() does for
+// its sibling, so a future re-flag would reproduce #1023 undetected without
+// these two SELF_CLEAR_PAIRS rows.
+test('wrongFullText + wrongArticleManualClear fires (cousin of the #1023 pair)', () => {
+  const hits = detectAllSelfContradictoryClears({ wrongFullText: true, wrongArticleManualClear: true });
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].flag, 'wrongFullText');
+  assert.equal(hits[0].breadcrumb, 'wrongArticleManualClear');
+});
+
+test('wrongAttribution + wrongArticleManualClear fires directly, even without crossOutletVerified', () => {
+  const hits = detectAllSelfContradictoryClears({ wrongAttribution: true, wrongArticleManualClear: true });
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].breadcrumb, 'wrongArticleManualClear');
+});
+
+test('a file with BOTH wrongAttribution cousin pairs reports both (retraction must converge in one pass)', () => {
+  const f = { wrongAttribution: true, crossOutletVerified: true, wrongArticleManualClear: true };
+  const hits = detectAllSelfContradictoryClears(f);
+  assert.equal(hits.length, 2);
+  assert.deepEqual(hits.map((h) => h.breadcrumb).sort(), ['crossOutletVerified', 'wrongArticleManualClear']);
+});
+
+test('isIntentionalClear recognizes a retracted wrongArticleManualClear as intentional (durability for the new CLEAR_BREADCRUMBS row)', () => {
+  const f = { wrongFullText: true, wrongArticleManualClear: true };
+  const [contradiction] = detectAllSelfContradictoryClears(f);
+  retractStaleClearBreadcrumb(f, contradiction);
+  assert.equal(f.wrongArticleManualClear, undefined);
+  assert.equal(isIntentionalClear('wrongArticleManualClear', f), true);
+});
+
+// wrongShow + contentVerificationPromoted (#1022, BRO-168) — the pair whose
+// resolution is demote-flag, not retract-breadcrumb. Fixture mirrors the real
+// girl-interrupted-off-broadway-2026 talkinbroadway--unknown.json pre-fix state
+// (task #1021).
+const GIRL_INTERRUPTED_FIXTURE = {
+  wrongShow: true,
+  contentVerificationPromoted: 'rebuild: promoted from contentVerification (llm:claude-haiku, high)',
+  contentVerification: {
+    isValid: true,
+    confidence: 'high',
+    wrongArticle: false,
+    wrongProduction: false,
+    isFilmTv: false,
+    verifiedBy: 'llm:openai',
+    verifiedAt: '2026-06-05T23:55:34.160Z',
+    reasoning: 'The content is a review of the Off-Broadway production...',
+  },
+};
+
+test('wrongShow + contentVerificationPromoted fires (#1022 pair) and is tagged resolution=demote-flag', () => {
+  const hits = detectAllSelfContradictoryClears(GIRL_INTERRUPTED_FIXTURE);
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].flag, 'wrongShow');
+  assert.equal(hits[0].breadcrumb, 'contentVerificationPromoted');
+  assert.equal(hits[0].task, '#1022');
+  assert.equal(hits[0].resolution, 'demote-flag');
+});
+
+test('other SELF_CLEAR_PAIRS entries are still tagged resolution=retract-breadcrumb', () => {
+  const f = { wrongAttribution: true, crossOutletVerified: true };
+  const [hit] = detectAllSelfContradictoryClears(f);
+  assert.equal(hit.resolution, 'retract-breadcrumb');
+});
+
+test('demoteStaleWrongShowPromotion clears wrongShow (not the breadcrumb), preserves the fresh CV reasoning, and deletes contentVerificationPromoted', () => {
+  const f = JSON.parse(JSON.stringify(GIRL_INTERRUPTED_FIXTURE));
+  const [contradiction] = detectAllSelfContradictoryClears(f);
+  const result = demoteStaleWrongShowPromotion(f, contradiction, new Date('2026-08-14T00:00:00.000Z'));
+
+  assert.equal(result, true);
+  assert.equal(f.wrongShow, undefined, 'the stale flag must be cleared — this is the actual BRO-168 fix');
+  assert.equal(f.contentVerificationPromoted, undefined, 'the stale provenance stamp must be removed');
+  assert.equal(f.wrongShowOverride, true, 'clearWrongProductionFlags stamps the standard clear marker');
+  assert.equal(f.contentVerification.reasoning, GIRL_INTERRUPTED_FIXTURE.contentVerification.reasoning, 'the fresh CV verdict\'s own reasoning must survive, not the generic "Superseded by" wrapper');
+  assert.ok(f.wrongShowAutoCleared.includes('#1022'));
+  assert.deepEqual(detectAllSelfContradictoryClears(f), [], 're-running the detector on the fixed record finds nothing');
+});
+
+test('demoteStaleWrongShowPromotion declines (no-op) when the strict predicate disagrees with the looser extra() match — medium confidence', () => {
+  // Regression guard for the second-opinion review finding: the #1022 extra()
+  // detector accepts medium confidence for REPORTING, but the mutation must
+  // re-gate through isStaleCvPromotedWrongShow's stricter high-confidence bar.
+  const f = {
+    ...GIRL_INTERRUPTED_FIXTURE,
+    contentVerification: { ...GIRL_INTERRUPTED_FIXTURE.contentVerification, confidence: 'medium' },
+  };
+  const [contradiction] = detectAllSelfContradictoryClears(f);
+  assert.ok(contradiction, 'extra() still reports it (broad recall)');
+  const result = demoteStaleWrongShowPromotion(f, contradiction);
+  assert.equal(result, false);
+  assert.equal(f.wrongShow, true, 'must NOT be cleared on weaker evidence than the promote path required');
+  assert.equal(f.contentVerificationPromoted, GIRL_INTERRUPTED_FIXTURE.contentVerificationPromoted);
+});
+
+test('demoteStaleWrongShowPromotion is a no-op on null/mismatched contradiction', () => {
+  assert.equal(demoteStaleWrongShowPromotion(null, {}), false);
+  assert.equal(demoteStaleWrongShowPromotion({}, null), false);
+  assert.equal(demoteStaleWrongShowPromotion({ wrongShow: true }, { flag: 'wrongProduction', breadcrumb: 'wrongProductionAutoCleared' }), false);
+});
+
+// BRO-185: isZeroScoreImpactFix — the safety check --fix-safe uses to decide
+// which contradictions are safe to bulk-resolve. Checked against the SAME
+// canonical functions rebuild-all-reviews.js calls (isIncludableForRebuild,
+// getBestScore), not a re-derived proxy — see the function's own docstring
+// for why an earlier classifyContentTier-based draft was replaced.
+
+test('isZeroScoreImpactFix: true when the flag was never actually cleared (stale, non-fresh breadcrumb) — inclusion is unchanged either way', () => {
+  // No wrongProductionAutoClearedAt, so isFreshWrongProductionAutoClear is
+  // false: the flag was excluding this record before the retraction AND
+  // after it (retracting only removes the redundant breadcrumb).
+  const f = { wrongProduction: true, wrongProductionAutoCleared: true, fullText: 'x'.repeat(300) };
+  const [c] = detectAllSelfContradictoryClears(f);
+  assert.equal(isZeroScoreImpactFix(f, c), true);
+});
+
+test('isZeroScoreImpactFix: false when a FRESH auto-clear was the only thing keeping a scored review included — the exact 2026-08-14 incident shape', () => {
+  const f = {
+    wrongProduction: true,
+    wrongProductionAutoCleared: true,
+    wrongProductionAutoClearedAt: new Date().toISOString().split('T')[0],
+    fullText: 'a full review of the correct production',
+    assignedScore: 83,
+  };
+  const [c] = detectAllSelfContradictoryClears(f);
+  // Before: the fresh clear overrides the flag, so this IS included with a score.
+  // Retracting it re-excludes the review entirely — an inclusion flip, not a no-op.
+  assert.equal(isZeroScoreImpactFix(f, c), false);
+});
+
+test('isZeroScoreImpactFix never mutates the file it is checking', () => {
+  const f = {
+    wrongProduction: true,
+    wrongProductionAutoCleared: true,
+    wrongProductionAutoClearedAt: new Date().toISOString().split('T')[0],
+    assignedScore: 83,
+    fullText: 'x'.repeat(300),
+  };
+  const before = JSON.stringify(f);
+  isZeroScoreImpactFix(f, detectAllSelfContradictoryClears(f)[0]);
+  assert.equal(JSON.stringify(f), before);
+});
+
+test('isZeroScoreImpactFix defers to demoteStaleWrongShowPromotion\'s strict predicate for the demote-flag pair', () => {
+  // Weak/medium-confidence CV promotion: the strict predicate declines, so the
+  // resolver is a no-op and isZeroScoreImpactFix must say "not safe" rather
+  // than crediting a fix that never actually applied.
+  const f = {
+    ...GIRL_INTERRUPTED_FIXTURE,
+    contentVerification: { ...GIRL_INTERRUPTED_FIXTURE.contentVerification, confidence: 'medium' },
+  };
+  const [c] = detectAllSelfContradictoryClears(f);
+  assert.equal(c.resolution, 'demote-flag');
+  assert.equal(isZeroScoreImpactFix(f, c), false);
+});
+
+test('isZeroScoreImpactFix: false for a demote-flag fix that would un-suppress a previously-excluded review — the BRO-168/#1022 mirror-image risk', () => {
+  // A codebase-aware review (BRO-185) flagged that the strict predicate
+  // succeeding is NOT the same thing as the fix being zero-impact: demoting
+  // wrongShow here moves a review from excluded to included, which is exactly
+  // the kind of silent scoring change this whole safety check exists to catch
+  // — regardless of whether hasLiveScoreSignal would have looked empty on the
+  // still-excluded pre-fix record (it plausibly always will, since an
+  // excluded review rarely has a score written to it yet).
+  const f = {
+    ...GIRL_INTERRUPTED_FIXTURE,
+    fullText: 'a real review with substantial text about the correct show entirely'.repeat(5),
+  };
+  const [c] = detectAllSelfContradictoryClears(f);
+  assert.equal(c.resolution, 'demote-flag');
+  assert.equal(isZeroScoreImpactFix(f, c), false);
+});
+
+test('isZeroScoreImpactFix returns false for null/undefined inputs', () => {
+  assert.equal(isZeroScoreImpactFix(null, {}), false);
+  assert.equal(isZeroScoreImpactFix({}, null), false);
+});
+
+// --- BRO-3416: isRoundupArticle is exempt when the URL is itself a roundup ---
+//
+// Fixture URLs are the real ones from the corpus, not invented shapes — four
+// of them are the exact rows cv-flag-contradiction-baseline.json had frozen on
+// 2026-09-05, which is the evidence that the baseline was absorbing this class
+// one row per ingested roundup rather than the detector declining to fire.
+
+const CV_HIGH_BRO3416 = { isValid: true, confidence: 'high' };
+
+const ROUNDUP_URLS_BRO3416 = [
+  ['BWW Review-Roundup (new, garry-starr)', 'broadwayworld', 'https://www.broadwayworld.com/article/Review-Roundup-GARRY-STARR-CLASSIC-PENGUINS-20260909'],
+  ['BWW Review-Roundup (new, pre-existing-condition)', 'broadwayworld', 'https://www.broadwayworld.com/article/Review-Roundup-PRE-EXISTING-CONDITION-Opens-at-Greenwich-House-Theater-20260914'],
+  ['BWW Review-Roundup (baselined, winters-tale)', 'broadwayworld', 'https://www.broadwayworld.com/article/Review-Roundup-THE-WINTERS-TALE-Opens-as-Part-of-Free-Shakespeare'],
+  ['Playbill critics-think-of (baselined, paranormal-activity)', 'playbill', 'https://playbill.com/article/reviews-what-do-the-critics-think-of-paranormal-activity-on-broadway'],
+  ['bestoftheatre review-roundup (baselined, the-story)', 'bestoftheatre', 'https://www.bestoftheatre.co.uk/blog/post/review-roundup-the-story-national-theatre'],
+  ['WET *-reviews/ (baselined, electra-persona)', 'westendtheatre', 'https://www.westendtheatre.com/364740/news/electra-persona-reviews/'],
+];
+
+for (const [label, outletId, url] of ROUNDUP_URLS_BRO3416) {
+  test(`detectCvFlagContradiction: the roundup page under its OWN outlet is not a contradiction — ${label}`, () => {
+    const f = {
+      isRoundupArticle: true,
+      outletId,
+      url,
+      textWordCount: 900,
+      contentVerification: CV_HIGH_BRO3416,
+    };
+    assert.equal(detectCvFlagContradiction(f), null);
+  });
+}
+
+// The exemption is gated on outletId as well as URL. These six are real corpus
+// records: a WET roundup URL stored under the QUOTED outlet's id, carrying the
+// WET compiler's byline. They are an unresolved attribution problem, not a
+// settled roundup, so the audit must keep surfacing them. A URL-only gate
+// silenced all six — the blind spot this test locks out.
+const MISATTRIBUTED_ROUNDUPS_BRO3416 = [
+  ['beetlejuice-west-end-2026', 'timeout', 'https://www.westendtheatre.com/356598/news/reviews/beetlejuice-the-musical-review/'],
+  ['equus-west-end-2026', 'timeout', 'https://www.westendtheatre.com/355440/news/reviews/equus-reviews-2/'],
+  ['glengarry-glen-ross-west-end-2026', 'telegraph', 'https://www.westendtheatre.com/358451/news/reviews/glengarry-glen-ross-reviews/'],
+  ['mother-courage-and-her-children-globe-west-end-2026', 'timeout', 'https://www.westendtheatre.com/355184/news/reviews/mother-courage-reviews/'],
+  ['one-flew-over-the-cuckoos-nest-west-end-2026', 'standard', 'https://www.westendtheatre.com/350117/news/reviews/one-flew-over-cuckoos-nest-aaron-pierre-review/'],
+  ['the-price-off-west-end-2026', 'telegraph', 'https://www.westendtheatre.com/351724/news/reviews/the-price-reviews/'],
+];
+
+for (const [show, outletId, url] of MISATTRIBUTED_ROUNDUPS_BRO3416) {
+  test(`detectCvFlagContradiction: roundup URL under a DIFFERENT outlet still fires — ${show} (${outletId})`, () => {
+    const f = {
+      isRoundupArticle: true,
+      outletId,
+      url,
+      textWordCount: 900,
+      contentVerification: CV_HIGH_BRO3416,
+    };
+    assert.equal(detectCvFlagContradiction(f).flag, 'isRoundupArticle');
+  });
+}
+
+test('detectCvFlagContradiction: a roundup URL buried in a query param does not exempt an unrelated review', () => {
+  // isRoundupPageAsReview parses the hostname; a substring match on the whole
+  // URL would have exempted this one.
+  const f = {
+    isRoundupArticle: true,
+    outletId: 'timeout',
+    url: 'https://www.timeout.com/london/theatre/some-show-review?ref=https://playbill.com/article/reviews-what-do-the-critics-think-of-some-show',
+    textWordCount: 900,
+    contentVerification: CV_HIGH_BRO3416,
+  };
+  assert.equal(detectCvFlagContradiction(f).flag, 'isRoundupArticle');
+});
+
+test('detectCvFlagContradiction: a re-flagged record carrying a prior clear note still fires', () => {
+  // shouldSkipRoundupAudit sees roundupArticleClearedNote, so isRoundupPageAsReview
+  // returns false: a flag re-applied after a human clear is exactly what triage wants.
+  const f = {
+    isRoundupArticle: true,
+    outletId: 'broadwayworld',
+    roundupArticleClearedNote: '[2026-04-25 cleared stale isRoundupArticle]',
+    url: 'https://www.broadwayworld.com/article/Review-Roundup-GARRY-STARR-CLASSIC-PENGUINS-20260909',
+    textWordCount: 900,
+    contentVerification: CV_HIGH_BRO3416,
+  };
+  assert.equal(detectCvFlagContradiction(f).flag, 'isRoundupArticle');
+});
+
+test('detectCvFlagContradiction: isRoundupArticle on a NON-roundup URL still fires — the real FP this audit exists to catch', () => {
+  // bloodsport-after-helen-of-troy-off-west-end-2026/london-box-office--stuart-king.json:
+  // a genuine 520-word single-production review wrongly carrying the roundup
+  // flag. LBO's actual roundups live at /news/post/review-round-up-*; this URL
+  // ends in -review and must NOT be exempted even though the outlet matches
+  // the host.
+  const f = {
+    isRoundupArticle: true,
+    outletId: 'london-box-office',
+    url: 'https://www.londonboxoffice.co.uk/news/post/bloodsport-after-helen-of-troy-theatre-royal-stratford-east-review',
+    textWordCount: 520,
+    contentVerification: CV_HIGH_BRO3416,
+  };
+  assert.equal(detectCvFlagContradiction(f).flag, 'isRoundupArticle');
+});
+
+test('detectCvFlagContradiction: roundup exemption falls through to a co-occurring wrongShow rather than aborting', () => {
+  // Mirrors the wrongProductionExempt fall-through contract documented beside
+  // it: exempting one flag says nothing about whether another flag on the same
+  // record is legitimate.
+  const f = {
+    isRoundupArticle: true,
+    wrongShow: true,
+    outletId: 'broadwayworld',
+    url: 'https://www.broadwayworld.com/article/Review-Roundup-GARRY-STARR-CLASSIC-PENGUINS-20260909',
+    textWordCount: 900,
+    contentVerification: CV_HIGH_BRO3416,
+  };
+  assert.equal(detectCvFlagContradiction(f).flag, 'wrongShow');
+});
+
+test('detectCvFlagContradiction: isRoundupArticle with no URL at all still fires (nothing to exempt on)', () => {
+  const f = { isRoundupArticle: true, textWordCount: 900, contentVerification: CV_HIGH_BRO3416 };
+  assert.equal(detectCvFlagContradiction(f).flag, 'isRoundupArticle');
+});

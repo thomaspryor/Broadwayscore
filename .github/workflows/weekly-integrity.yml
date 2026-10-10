@@ -1,0 +1,363 @@
+name: Weekly Data Integrity Check
+
+on:
+  schedule:
+    - cron: '0 3 * * 0'  # Sundays 3 AM UTC
+  workflow_dispatch:
+    inputs:
+      force_issue:
+        description: 'Create issue even if no problems found'
+        required: false
+        default: 'false'
+        type: boolean
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: weekly-integrity
+  cancel-in-progress: false
+
+jobs:
+  integrity-check:
+    runs-on: ubuntu-latest
+    # Raised 15->130 (BRO-2799, same bug class as BRO-2370's data-health-
+    # check.yml fix): all 6 commit steps below call push-with-retry.sh with
+    # NO PUSH_DEADLINE_SEC/MAX_RETRIES override, so each was governed by the
+    # script's own defaults (240s deadline, 7 retries) — but
+    # scripts/audit-push-retry-budgets.js's evaluateStep() measured that
+    # 240s only funds 2 real retry attempts once each attempt costs a full
+    # GIT_NET_TIMEOUT_SEC=90s hang under contention (computeFundableAttempts
+    # gave 2, below the 3-attempt floor). Live evidence: runs 33303127307
+    # (2026-08-30) and 32616475588 (2026-08-23) both hard-failed at "Detect
+    # and auto-fix critic typos" with `push-with-retry: overall deadline
+    # 240s exceeded after 3/2 attempt(s); giving up` — the job itself never
+    # got near the old 15min ceiling in either run (~9-10.5min actual), so
+    # this was push-with-retry.sh's own internal deadline giving up too
+    # early, not GitHub's external SIGKILL.
+    # Fix mirrors data-health-check.yml's established pattern exactly:
+    # PUSH_DEADLINE_SEC=900 + `push-with-retry.sh 25 main` on all 6 steps
+    # (verified against evaluateStep(): fundableAttempts=5, retryDeadlineRatio
+    # =725/900=0.81, both clear their thresholds). That raises each step's
+    # own worst-case budget to 900s, so the job ceiling needs real margin
+    # above 6*900s=5400s (90min) plus ~15min for checkout/npm ci/the node
+    # scripts (real runs today take 3-10min total) = ~105min theoretical
+    # ceiling. 130 gives ~25min headroom on top of that (audit tool's own
+    # marginRatio at 130min: 30.8%, comfortably past its 15% threshold),
+    # nowhere near GitHub Actions' 360min hard job ceiling.
+    # Verified via `node scripts/audit-push-retry-budgets.js --json --top=999
+    # | grep weekly-integrity`: 6 flagged entries -> 0.
+    timeout-minutes: 130
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-2388 (task #466 class): depth 1000 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 130-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 1000
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Detect and auto-fix critic typos
+        id: typos
+        # BRO-2811 (2026-09-08): BRO-2799 above raised this to 900s/25 retries
+        # to fund enough LOCAL attempts, but the early-trigger threshold for
+        # the Git Data API fallback — floor((25+1)/2)=13 — is still not
+        # reached before the deadline aborts the loop (computeFundableAttempts
+        # gives ~5), so the fallback only ever engages LATE, with its own
+        # minimum retry budget instead of the larger one it'd get from an
+        # early break (scripts/audit-push-retry-budgets.js's
+        # fallback-early-trigger-unreachable flag, ac121bef9bd/45f0ea3e897).
+        # data/auto-critic-aliases.json is outside data/audit/ and unmanaged,
+        # so it's fallback-eligible by push-with-retry.sh's own disqualifier.
+        # Override=3 matches the BRO-2370 data-health-check.yml precedent
+        # exactly (not the full ~5 fundableAttempts) — leaves 2 attempts of
+        # margin for ordinary transient contention to resolve locally before
+        # the early-trigger break hands off to the fallback.
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+        run: |
+          node scripts/detect-critic-typos.js
+          # Commit auto-aliases if changed
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/auto-critic-aliases.json
+          if git diff --staged --quiet; then
+            echo "No new critic typos detected"
+            echo "new_typos=0" >> $GITHUB_OUTPUT
+          else
+            NEW=$(git diff --staged --stat | grep -oE '[0-9]+ insertion' | grep -oE '[0-9]+' || echo "0")
+            echo "new_typos=$NEW" >> $GITHUB_OUTPUT
+            git commit -m "data: Auto-detect critic name typos"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
+
+      - name: Run dedup cleanup
+        id: dedup
+        run: |
+          OUTPUT=$(node scripts/cleanup-dedup-comprehensive.js 2>&1)
+          echo "$OUTPUT"
+          OUTLET=$(echo "$OUTPUT" | grep "Outlet alias duplicates merged:" | grep -oE '[0-9]+' || echo "0")
+          CRITIC=$(echo "$OUTPUT" | grep "Critic typo duplicates fixed:" | grep -oE '[0-9]+' || echo "0")
+          CROSS=$(echo "$OUTPUT" | grep "Cross-show files flagged:" | grep -oE '[0-9]+' || echo "0")
+          URL=$(echo "$OUTPUT" | grep "Same-show URL dupes flagged:" | grep -oE '[0-9]+' || echo "0")
+          TOTAL=$((OUTLET + CRITIC + CROSS + URL))
+          echo "dedup_total=$TOTAL" >> $GITHUB_OUTPUT
+          echo "dedup_summary=Outlet:$OUTLET Critic:$CRITIC CrossShow:$CROSS URL:$URL" >> $GITHUB_OUTPUT
+
+
+      - name: Backfill review quality flags (incremental)
+        run: |
+          echo "Running incremental backfill of showNotMentioned, misattributed, duplicateTextOf flags..."
+          node scripts/backfill-review-flags.js 2>&1 | tail -15
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Weekly Data Integrity Check — Commit dedup cleanup + flag backfill"
+      - name: Commit dedup cleanup
+        if: always()
+        env:
+          PUSH_DEADLINE_SEC: '900'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          # review-texts now pushed via push-review-texts composite action
+          if git diff --staged --quiet; then
+            echo "No dedup fixes needed"
+          else
+            git commit -m "chore: Auto-cleanup duplicate review files"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
+
+      - name: Clean up junk outlet files
+        run: |
+          node -e "
+            const fs = require('fs');
+            const path = require('path');
+            const reviewTextsDir = 'data/review-texts';
+            const registry = JSON.parse(fs.readFileSync('data/outlet-registry.json', 'utf8'));
+
+            // Build set of valid outlets
+            const validOutlets = new Set(Object.keys(registry.outlets));
+            if (registry._aliasIndex) {
+              for (const alias of Object.keys(registry._aliasIndex)) {
+                if (alias !== '_note') validOutlets.add(alias);
+              }
+            }
+            for (const outlet of Object.values(registry.outlets)) {
+              if (outlet.aliases) outlet.aliases.forEach(a => validOutlets.add(a));
+            }
+
+            // Known junk patterns: scraping artifacts, person names used as outlets
+            const JUNK_PATTERNS = [/^advertisement$/, /^sponsored$/, /^promoted$/, /^ad$/, /^promo$/];
+
+            let deleted = 0;
+            const showDirs = fs.readdirSync(reviewTextsDir).filter(f =>
+              fs.statSync(path.join(reviewTextsDir, f)).isDirectory()
+            );
+
+            for (const showDir of showDirs) {
+              const files = fs.readdirSync(path.join(reviewTextsDir, showDir))
+                .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+              for (const file of files) {
+                try {
+                  const filePath = path.join(reviewTextsDir, showDir, file);
+                  const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+                  const outletId = (data.outletId || '').toLowerCase();
+                  if (!outletId || outletId === 'unknown') continue;
+
+                  // Delete files with blocklisted outlet IDs
+                  if (JUNK_PATTERNS.some(p => p.test(outletId))) {
+                    fs.unlinkSync(filePath);
+                    console.log('Deleted junk: ' + showDir + '/' + file);
+                    deleted++;
+                    continue;
+                  }
+
+                  // Delete files where outletId has no URL and critic is 'unknown' and outlet not in registry
+                  // (these are scraper garbage: actor names, movie titles, etc.)
+                  const hyphenCount = (outletId.match(/-/g) || []).length;
+                  if (!data.url && (data.criticName || '').toLowerCase() === 'unknown' &&
+                      !validOutlets.has(outletId) && hyphenCount <= 5) {
+                    fs.unlinkSync(filePath);
+                    console.log('Deleted orphan: ' + showDir + '/' + file + ' (outletId=' + outletId + ', no URL, unknown critic)');
+                    deleted++;
+                  }
+                } catch (e) {}
+              }
+            }
+
+            if (deleted > 0) {
+              console.log('Cleaned up ' + deleted + ' junk review file(s)');
+            } else {
+              console.log('No junk review files found');
+            }
+          "
+
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Weekly Data Integrity Check — Commit cleanup"
+      - name: Commit cleanup
+        if: always()
+        env:
+          PUSH_DEADLINE_SEC: '900'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          # review-texts now pushed via push-review-texts composite action
+          if git diff --staged --quiet; then
+            echo "No junk files to clean"
+          else
+            git commit -m "chore: Auto-cleanup junk outlet review files"
+            bash scripts/lib/push-with-retry.sh 25 main || echo "::warning::Push failed — cleanup data may not have synced"
+          fi
+
+      - name: P0 score integrity check
+        id: score_integrity
+        run: |
+          node scripts/check-score-integrity.js
+          echo "score_issues=$(cat data/audit/score-integrity.json | jq '.totalIssues')" >> $GITHUB_OUTPUT
+
+      - name: Published score vs model reading audit (BRO-4596)
+        # Report only: prints total / baselined / new findings so a rise is
+        # visible in the run log. continue-on-error so it can never fail the
+        # integrity run; an empty review-texts checkout exits 2 (not "0 found").
+        # Baseline: data/audit/score-vs-models-baseline.json (--write-baseline).
+        continue-on-error: true
+        timeout-minutes: 10
+        run: |
+          set -o pipefail
+          node scripts/audit-score-vs-models.js 2>&1 | tee /tmp/score-vs-models.txt
+          { echo '### Published score vs model reading'; echo '```'; head -45 /tmp/score-vs-models.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Tier-skip drift audit (scraping cost v3, S1-T4)
+        # continue-on-error (ship-check finding): this step does LIVE network
+        # recovery probes against external domains — a single SD outage or
+        # timeout must not skip the rest of this workflow's unconditional
+        # steps (integrity report, history commit, issue creation).
+        continue-on-error: true
+        env:
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+        run: |
+          node scripts/audit-tier-skip-drift.js
+
+      - name: Commit tier-skip drift alert state (only if a verdict alerted)
+        if: always()
+        # BRO-2811 (2026-09-08): same fallback-early-trigger-unreachable shape
+        # as "Detect and auto-fix critic typos" above — alert-ledger.json and
+        # alert-digest-queue.json are both apiFallbackMerge-registered
+        # (BRO-2413), so this call is fallback-eligible, but the fallback only
+        # engages LATE at these numbers. Override=3 matches the same BRO-2370
+        # precedent.
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No drift alert state to commit"
+          else
+            git commit -m "chore: Tier-skip drift audit alert state"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
+
+      - name: Run integrity check
+        id: check
+        run: |
+          node scripts/generate-integrity-report.js
+          echo "has_issues=$(cat data/integrity-report.json | jq '.hasIssues')" >> $GITHUB_OUTPUT
+          echo "total_reviews=$(cat data/integrity-report.json | jq '.summary.totalReviews')" >> $GITHUB_OUTPUT
+          echo "unknown_outlets=$(cat data/integrity-report.json | jq '.summary.unknownOutlets')" >> $GITHUB_OUTPUT
+          echo "duplicates=$(cat data/integrity-report.json | jq '.summary.duplicates')" >> $GITHUB_OUTPUT
+          echo "sync_delta=$(cat data/integrity-report.json | jq '.summary.syncDelta')" >> $GITHUB_OUTPUT
+
+      - name: Commit history update
+        if: always()
+        # BRO-2811 (2026-09-08): same fallback-early-trigger-unreachable shape
+        # as "Detect and auto-fix critic typos" above — integrity-history.json/
+        # integrity-report.json are outside data/audit/ and unmanaged, so this
+        # call is fallback-eligible by default. Override=3 matches the same
+        # BRO-2370 precedent.
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/integrity-history.json data/integrity-report.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "data: Update integrity history"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: weekly-integrity
+          push-retry-args: '25 main'
+
+      - name: Create issue if problems found
+        if: steps.check.outputs.has_issues == 'true' || inputs.force_issue == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('data/integrity-report.md', 'utf8');
+            // Issue creation disabled — daily digest email covers data integrity
+            console.log('Data integrity issues found — see daily digest email for details');
+            console.log(report.substring(0, 500));
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Weekly Data Integrity Check Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+      - name: Record pipeline success
+        if: success()
+        env:
+          PUSH_DEADLINE_SEC: '900'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          mkdir -p data/audit/pipeline-health
+          date -u > data/audit/pipeline-health/weekly-integrity.last-success
+          git add data/audit/pipeline-health/
+          git diff --staged --quiet || git commit -m "health: Record weekly-integrity success" && bash scripts/lib/push-with-retry.sh 25 main || echo "::warning::Health recording push failed"

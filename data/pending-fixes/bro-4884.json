@@ -1,0 +1,61 @@
+{
+  "issueNumber": "bro-4884",
+  "planId": "e39652fc-03e8-4872-929e-9d4160162d19",
+  "status": "applied",
+  "createdAt": "2026-10-09T11:40:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4884: clear two validate-data errors that refuse every validate-gated core-data push. The King and I West End 2024 holds a 2018 London Palladium review (held, not flagged, on an LLM content-verification pass); How to Dance in Ohio 2023 holds a BWW roundup-parse stub whose outlet is a sentence fragment and whose critic is the show's director (deleted 2026-09-06, re-created 2026-10-06). Code fixes for both causes land in the same change.",
+    "steps": [
+      "Phil Willmott's London Box Office review is dated 2018-07-17 and names Kelli O'Hara and Ken Watanabe: the 2018 London Palladium production, not the 2024 Dominion one.",
+      "Reason for the flag above.",
+      "Roundup-parse garbage: outlet 'how-to-dance-in-ohio-is-an-underdog-itself', critic Sammi Cannold (the show's director), no URL. The stub path now refuses it at write time."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-king-and-i-west-end-2024/london-box-office--phil-willmott.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Phil Willmott's London Box Office review is dated 2018-07-17 and names Kelli O'Hara and Ken Watanabe: the 2018 London Palladium production, not the 2024 Dominion one."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-king-and-i-west-end-2024/london-box-office--phil-willmott.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "manual-review",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "how-to-dance-in-ohio-2023/how-to-dance-in-ohio-is-an-underdog-itself--sammi-cannold.json",
+        "description": "Roundup-parse garbage: outlet 'how-to-dance-in-ohio-is-an-underdog-itself', critic Sammi Cannold (the show's director), no URL. The stub path now refuses it at write time."
+      }
+    ]
+  },
+  "executedAt": "2026-10-09T12:03:33.908Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-king-and-i-west-end-2024/london-box-office--phil-willmott.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-king-and-i-west-end-2024/london-box-office--phil-willmott.json wrongProductionReason: null -> \"manual-review\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted how-to-dance-in-ohio-2023/how-to-dance-in-ohio-is-an-underdog-itself--sammi-cannold.json"
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Generalized hook liveness (task #1104). Runs
+         scripts/check-hook-liveness.js, which checks EVERY hook command
+         registered in ~/.claude/settings.json AND this repo's
+         .claude/settings.json — not just the single #1079 gate that
+         com.broadwayscore.infra-gate-registration.plist already watches.
+
+         2026-08-06: hook-syntax-guard.sh quarantined TWO healthy hooks in
+         the same run (bash-3.2-vs-5.3 bug). infra-plan-review-gate.sh was
+         caught because #1094's check watches it by name; notion-card-
+         required-stop.sh was silently disabled for ~4 hours because
+         nothing watched it at all. This job closes that gap for all 34+
+         registered hooks: existence, non-empty, executable (when the
+         command actually invokes the path directly rather than through an
+         explicit `bash <path>` wrapper), and parses under its own declared
+         interpreter. infra-plan-review-gate.sh additionally gets the #1079
+         synthetic-block probe layered on top, unchanged from #1094.
+
+         Also asserts hook-syntax-guard.sh's own launchd job is loaded and
+         has stamped its heartbeat file recently — a stalled/unloaded guard
+         looks identical to a healthy quiet run without this, because the
+         guard's verbose log only grows on a quarantine/restore event.
+
+         MUST run on this Mac, not GitHub Actions — same reason as
+         com.broadwayscore.infra-gate-registration.plist: CI runners never
+         see this machine's ~/.claude.
+
+         On failure: routes an error-severity digest row via routeAlert
+         (disposition='digest', not a page — a silently-broken safety net,
+         not a ticking-clock incident), naming the specific broken hook(s).
+
+         08:35 ET daily, right after infra-gate-registration (08:30) — both
+         are Mac-only hook-integrity probes.
+
+         StartCalendarInterval Hour/Minute is LOCAL TIME on this Mac
+         (America/New_York, DST-safe — launchd reads the system clock).
+
+         Install:  cp scripts/launchd/com.broadwayscore.hook-liveness.plist ~/Library/LaunchAgents/
+                   launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.hook-liveness.plist
+         Manual run: launchctl kickstart -k gui/$(id -u)/com.broadwayscore.hook-liveness
+         Kill:     launchctl bootout gui/$(id -u)/com.broadwayscore.hook-liveness
+         Manual check: node scripts/check-hook-liveness.js -->
+    <key>Label</key>
+    <string>com.broadwayscore.hook-liveness</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-c</string>
+        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; exec node scripts/check-hook-liveness.js</string>
+    </array>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>8</integer>
+        <key>Minute</key>
+        <integer>35</integer>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>/tmp/hook-liveness-launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/hook-liveness-launchd.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/Users/tompryor/.local/bin</string>
+    </dict>
+</dict>
+</plist>

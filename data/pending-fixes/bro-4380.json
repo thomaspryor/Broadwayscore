@@ -1,0 +1,573 @@
+{
+  "issueNumber": "bro-4380",
+  "planId": "87bbc869-288d-4566-8835-6fbcd637f068",
+  "status": "partial",
+  "createdAt": "2026-09-29T20:09:19.085Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4380: 25 shows used another show's image paths or held another show's art in their own folder. Clear the wrong paths and keep own files verified to be this show's art.",
+    "steps": [
+      "Replace images on each listed show (compare-and-set on the current object; only null or existing own /images/shows/ files)",
+      "Posters were copied over 3 wrong thumbnails in the landing that added this plan; the 30 image files showing other shows are deleted in a follow-up landing once this plan has applied"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-over-1971",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/joe-turners-come-and-gone-1988/thumbnail.jpg",
+          "poster": "/images/shows/joe-turners-come-and-gone-1988/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "all-over-1971: stop showing another show's art (own files are Godspell and a Black History Month flyer)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ovids-metamorphoses-1971",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/joe-turners-come-and-gone-1988/thumbnail.jpg",
+          "poster": "/images/shows/joe-turners-come-and-gone-1988/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "ovids-metamorphoses-1971: stop showing another show's art (own thumbnail is an On the Town Playbill)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "migrant-qa-panel-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/jackals-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/migrant-qa-panel-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "migrant-qa-panel-off-west-end-2026: stop showing another show's art (own files are a news graphic and a genocide-exhibit panel flyer)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "new-26-feral-threads-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/jackals-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/new-26-feral-threads-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "new-26-feral-threads-off-west-end-2026: stop showing another show's art (own poster is Inter Alia, thumbnail a van icon)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "new-26-van-man-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/jackals-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/new-26-van-man-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "new-26-van-man-off-west-end-2026: stop showing another show's art (own poster is Hamilton, thumbnail a WNO flyer)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "new-26-that-last-summer-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/jackals-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/new-26-that-last-summer-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "new-26-that-last-summer-off-west-end-2026: stop showing another show's art (own poster is Hamilton)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "new-26-xl-bully-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/jackals-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/new-26-xl-bully-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "new-26-xl-bully-off-west-end-2026: stop showing another show's art (own poster is Hamilton)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jasmines-demo-show-4-the-end-off-broadway-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/im-every-woman-off-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "jasmines-demo-show-4-the-end-off-broadway-2026: stop showing another show's art (own files are unrelated Jasmine news graphics)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "twenty-thousand-streets-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/jackals-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/twenty-thousand-streets-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/twenty-thousand-streets-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/twenty-thousand-streets-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "description": "twenty-thousand-streets-off-west-end-2026: stop showing another show's art (own thumbnail is the correct Twenty Thousand Streets Under the Sky art)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "phyl-off-broadway-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/bocking-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/phyl-off-broadway-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "phyl-off-broadway-2026: stop showing another show's art (own files are A Chorus Line Teens Edition and a Mint Theater audition notice)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ukaff-hostile-special-qa-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/bocking-off-broadway-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "ukaff-hostile-special-qa-off-west-end-2026: stop showing another show's art (own files are Hostile Territory and Hostile Takeover film posters)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dukes-off-broadway-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/bocking-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/dukes-off-broadway-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "dukes-off-broadway-2026: stop showing another show's art (own files are Dukes & Boots (Arkansas) and The Fantasticks)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "an-evening-of-stratford-east-singers-2026-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/bocking-off-broadway-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "an-evening-of-stratford-east-singers-2026-off-west-end-2026: stop showing another show's art (own thumbnail is Bollywood Time Machine)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "babymother-3-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/bocking-off-broadway-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/babymother-3-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/babymother-3-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "description": "babymother-3-off-west-end-2026: stop showing another show's art (own poster is the Babymother screening art; thumbnail (a safe-haven notice) replaced by the poster)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kings-2-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/kings-2-off-west-end-2026/hero.jpg",
+          "thumbnail": "/images/shows/bocking-off-broadway-2026/thumbnail.jpg",
+          "poster": null
+        },
+        "newValue": {
+          "hero": "/images/shows/kings-2-off-west-end-2026/hero.jpg",
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "kings-2-off-west-end-2026: stop showing another show's art (own thumbnail is a prayer-night flyer; hero kept)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "keith-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "hero": "https://assets.playbill.com/playbill-covers/_1200x630_crop_center-center_82_none/Lewberger-The-Wizard-Of-Friendship-Playbill-2023-03-01_Web-revised.jpg?mtime=1675962114",
+          "thumbnail": "/images/shows/bocking-off-broadway-2026/thumbnail.jpg",
+          "poster": null
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "keith-off-west-end-2026: stop showing another show's art (hero is a Lewberger Playbill cover; own files are Mark Reeves and Keith Charles flyers)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "compost-whats-left-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/work-of-devotion-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/work-of-devotion-off-broadway-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "compost-whats-left-off-west-end-2026: stop showing another show's art (no own files)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jest-to-impress-off-broadway-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/work-of-devotion-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/work-of-devotion-off-broadway-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/jest-to-impress-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/jest-to-impress-off-broadway-2026/poster.jpg",
+          "hero": null
+        },
+        "description": "jest-to-impress-off-broadway-2026: stop showing another show's art (own poster is the Mark Simmons: Jest to Impress art; thumbnail (The Princess Bride) replaced by the poster)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "this-road-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/bar-events-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/bar-events-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "this-road-off-west-end-2026: stop showing another show's art (own files are a Road Trip photo and a Kilburn festival flyer)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "drag-tales-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/bar-events-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/bar-events-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/drag-tales-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/drag-tales-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "description": "drag-tales-off-west-end-2026: stop showing another show's art (own files are the Drag Tales art)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "julian-clary-work-in-progess-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/bar-events-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/bar-events-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/julian-clary-work-in-progess-off-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "julian-clary-work-in-progess-off-west-end-2026: stop showing another show's art (own thumbnail is the Julian Clary art)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-talking-drum-voices-from-the-andover-estate-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/bar-events-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/bar-events-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/the-talking-drum-voices-from-the-andover-estate-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/the-talking-drum-voices-from-the-andover-estate-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "description": "the-talking-drum-voices-from-the-andover-estate-off-west-end-2026: stop showing another show's art (own files are the Talking Drum art)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lou-wall-where-are-all-the-tall-grandmas-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/bar-events-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/bar-events-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/lou-wall-where-are-all-the-tall-grandmas-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/lou-wall-where-are-all-the-tall-grandmas-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "description": "lou-wall-where-are-all-the-tall-grandmas-off-west-end-2026: stop showing another show's art (own files show Lou Wall in this show)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bull-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/bar-events-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/bar-events-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/bull-off-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "bull-off-west-end-2026: stop showing another show's art (own thumbnail is the Bull art; own poster is the film The Bull of the West)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "untitled-new-work-by-monica-bill-barnes-and-robbie-saenz-de-viteri-off-broadway-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/ish-off-west-end-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "untitled-new-work-by-monica-bill-barnes-and-robbie-saenz-de-viteri-off-broadway-2026: stop showing another show's art (own files are Chicago and Violet's Magic Glasses)"
+      }
+    ]
+  },
+  "executedAt": "2026-09-29T20:58:38.642Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for all-over-1971"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for ovids-metamorphoses-1971"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "Show \"migrant-qa-panel-off-west-end-2026\" not found in shows.json"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for new-26-feral-threads-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for new-26-van-man-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for new-26-that-last-summer-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for new-26-xl-bully-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for jasmines-demo-show-4-the-end-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for twenty-thousand-streets-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for phyl-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "Show \"ukaff-hostile-special-qa-off-west-end-2026\" not found in shows.json"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for dukes-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for an-evening-of-stratford-east-singers-2026-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for babymother-3-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for kings-2-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for keith-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for compost-whats-left-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for jest-to-impress-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for this-road-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for drag-tales-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for julian-clary-work-in-progess-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-talking-drum-voices-from-the-andover-estate-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for lou-wall-where-are-all-the-tall-grandmas-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for bull-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for untitled-new-work-by-monica-bill-barnes-and-robbie-saenz-de-viteri-off-broadway-2026"
+    }
+  ]
+}

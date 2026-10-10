@@ -1,0 +1,179 @@
+name: Recover WSJ Reviews (Subscriber Cookies)
+
+on:
+  # Run daily — small batch to stay under DataDome threshold
+  schedule:
+    - cron: '0 7 * * *'  # 7 AM UTC / 2 AM EST daily
+  workflow_dispatch:
+    inputs:
+      max_urls:
+        description: 'Max URLs to process (0 = all)'
+        required: false
+        default: '5'
+      dry_run:
+        description: 'Dry run (true = no file writes)'
+        required: false
+        default: 'false'
+      delay_min_ms:
+        description: 'Min delay between requests in ms'
+        required: false
+        default: '8000'
+      delay_max_ms:
+        description: 'Max delay between requests in ms'
+        required: false
+        default: '15000'
+      checkpoint_interval:
+        description: 'Checkpoint every N recoveries'
+        required: false
+        default: '5'
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: recover-wsj-subscriber
+  cancel-in-progress: false
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check for WSJ cookies
+        env:
+          COOKIES_BUNDLE_1: ${{ secrets.COOKIES_BUNDLE_1 }}
+          COOKIES_BUNDLE_2: ${{ secrets.COOKIES_BUNDLE_2 }}
+          COOKIES_BUNDLE_3: ${{ secrets.COOKIES_BUNDLE_3 }}
+          COOKIES_BUNDLE_4: ${{ secrets.COOKIES_BUNDLE_4 }}
+          COOKIES_BUNDLE_5: ${{ secrets.COOKIES_BUNDLE_5 }}
+          COOKIES_BUNDLE_6: ${{ secrets.COOKIES_BUNDLE_6 }}
+          COOKIES_BUNDLE_7: ${{ secrets.COOKIES_BUNDLE_7 }}
+          COOKIES_BUNDLE_8: ${{ secrets.COOKIES_BUNDLE_8 }}
+          COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
+          COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
+          COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+        run: |
+          if [ -z "$COOKIES_BUNDLE_11" ]; then
+            echo "::warning::Cookie bundles not set — skipping recovery"
+            echo "SKIP=true" >> $GITHUB_ENV
+          else
+            echo "SKIP=false" >> $GITHUB_ENV
+          fi
+
+      - name: Checkout repository
+        if: env.SKIP != 'true'
+        uses: actions/checkout@v5
+
+
+
+      - name: Checkout core data
+        if: env.SKIP != 'true'
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        if: env.SKIP != 'true'
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        if: env.SKIP != 'true'
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        if: env.SKIP != 'true'
+        run: npm install
+
+      - name: Configure git
+        if: env.SKIP != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run WSJ subscriber recovery
+        if: env.SKIP != 'true'
+        env:
+          MAX_URLS: ${{ inputs.max_urls || '5' }}
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+          DELAY_MIN_MS: ${{ inputs.delay_min_ms || '8000' }}
+          DELAY_MAX_MS: ${{ inputs.delay_max_ms || '15000' }}
+          CHECKPOINT_INTERVAL: ${{ inputs.checkpoint_interval || '5' }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/recover-wsj-subscriber.js
+
+
+      - name: Push review-texts to private repo
+        if: always() && env.SKIP != 'true'
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Recover WSJ Reviews (Subscriber Cookies) — Final commit and push"
+      - name: Final commit and push
+        if: always() && env.SKIP != 'true'
+        run: |
+          git add data/audit/
+          git diff --staged --quiet && echo "No changes to commit" && exit 0
+
+          RECOVERED=$(grep -o '"recovered":[0-9]*' data/audit/wsj-subscriber-recovery-report.json | head -1 | grep -o '[0-9]*' || echo "0")
+          git commit -m "feat: WSJ subscriber recovery - ${RECOVERED} reviews recovered"
+
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Trigger rebuild
+        if: always() && env.SKIP != 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ ! -f data/audit/wsj-subscriber-recovery-report.json ]; then exit 0; fi
+          RECOVERED=$(grep -o '"recovered":[0-9]*' data/audit/wsj-subscriber-recovery-report.json | head -1 | grep -o '[0-9]*' || echo "0")
+          DRY_RUN="${{ inputs.dry_run || 'false' }}"
+          if [ "$RECOVERED" -gt "0" ] && [ "$DRY_RUN" != "true" ]; then
+            echo "Triggering rebuild for ${RECOVERED} recovered reviews..."
+            gh workflow run rebuild-reviews.yml --repo ${{ github.repository }} || true
+          fi
+
+      - name: Upload recovery report
+        if: always() && env.SKIP != 'true'
+        uses: actions/upload-artifact@v5
+        with:
+          name: wsj-subscriber-recovery-report
+          path: data/audit/wsj-subscriber-recovery-report.json
+          retention-days: 30
+
+      - name: Summary
+        if: always() && env.SKIP != 'true'
+        run: |
+          echo "## WSJ Subscriber Recovery Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f data/audit/wsj-subscriber-recovery-report.json ]; then
+            cat data/audit/wsj-subscriber-recovery-report.json | node -e "
+              const r = JSON.parse(require('fs').readFileSync('/dev/stdin','utf8'));
+              console.log('| Metric | Count |');
+              console.log('|--------|-------|');
+              console.log('| Candidates | ' + r.totalCandidates + ' |');
+              console.log('| **Recovered** | **' + r.recovered + '** |');
+              console.log('| Upgraded | ' + r.upgraded + ' |');
+              console.log('| New text | ' + r.newText + ' |');
+              console.log('| HTTP 401 | ' + r.http401 + ' |');
+              console.log('| No NextData | ' + r.noNextData + ' |');
+              console.log('| Not authenticated | ' + r.notAuthenticated + ' |');
+              console.log('| Errors | ' + r.errors + ' |');
+              console.log('');
+              console.log('Dry run: ' + r.dryRun);
+              console.log('Max URLs: ' + r.maxUrls);
+            " >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Recover WSJ Reviews Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

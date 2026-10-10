@@ -1,0 +1,61 @@
+name: Commercial Tip
+description: Share insider info about a Broadway show's commercial performance
+title: "[Commercial Tip] "
+labels: ["commercial-tip", "needs-processing"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Share Commercial Information
+
+        Help us keep the Commercial Scorecard accurate by sharing financial information about Broadway shows.
+
+  - type: input
+    id: show_name
+    attributes:
+      label: Show Name
+      description: Name of the Broadway show
+      placeholder: Hamilton, Wicked, Death Becomes Her, etc.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: tip_type
+    attributes:
+      label: Type of Information
+      description: What kind of financial info are you sharing?
+      options:
+        - Recoupment announcement
+        - Capitalization / investment amount
+        - Weekly running cost
+        - Closing announcement
+        - Other financial info
+    validations:
+      required: true
+
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: What did you learn? Include specific numbers if possible.
+      placeholder: "E.g., 'Death Becomes Her announced recoupment on Feb 1 per Deadline article'"
+    validations:
+      required: true
+
+  - type: input
+    id: source
+    attributes:
+      label: Source (optional)
+      description: Where did you find this info?
+      placeholder: "URL, publication name, or 'personal knowledge'"
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        **What happens next:**
+        1. Our system validates the tip and matches it to a show
+        2. If valid, the commercial data is updated automatically
+        3. You'll get a comment on this issue with the result

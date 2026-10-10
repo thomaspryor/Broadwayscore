@@ -1,0 +1,201 @@
+name: Auto-Maintain Show Data
+
+on:
+  schedule:
+    # Daily at 6 AM UTC (1 AM ET)
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    inputs:
+      check_closing_dates:
+        description: 'Also check for closing date announcements'
+        required: false
+        default: 'false'
+        type: boolean
+      skip_auto_fix:
+        description: 'Skip auto-fix (just report issues)'
+        required: false
+        default: 'false'
+        type: boolean
+
+permissions:
+  contents: write
+  issues: write
+
+# Share the `shows-json-writer` concurrency group with update-show-status.yml
+# et al. (BRO-2072, follow-up to #1446): this workflow's check-show-freshness.js
+# + auto-fix-show-data.js write shows.json via the same read-mutate-write
+# pattern those writers do. Without a shared group, an overlapping run is
+# last-writer-wins per scripts/lib/shows-write-guard.js.
+concurrency:
+  group: shows-json-writer
+  cancel-in-progress: false
+
+jobs:
+  auto-maintain:
+    runs-on: ubuntu-latest
+    outputs:
+      needs_images: ${{ steps.autofix.outputs.needs_images }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # TodayTix synopsis pages fall back to Playwright; without browsers that
+      # fallback failed silently for every row (BRO-4851, run 37788691313).
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      # Step 1: Update show statuses (open/closed based on dates)
+      - name: Update show statuses
+        run: node scripts/check-show-freshness.js
+
+      # Step 2: Validate TodayTix URLs
+      - name: Validate TodayTix URLs
+        id: validate-urls
+        run: node scripts/validate-todaytix-urls.js --verbose
+        continue-on-error: true
+
+      # Step 3: Run auto-fix (ticket links, flag issues)
+      # continue-on-error: auto-fix errors must not block status change commits
+      - name: Auto-fix show data
+        id: autofix
+        if: inputs.skip_auto_fix != 'true'
+        continue-on-error: true
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/auto-fix-show-data.js
+
+      # Step 4: Closing dates handled by audit-closing-dates.yml (daily 14:00 UTC)
+
+      # Step 5: Validate and commit
+      # if: always() — must run even if auto-fix failed, so status changes get committed
+      - name: Check for changes
+        id: changes
+        if: always()
+        run: |
+          if git diff --quiet data/; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Validate data integrity
+        if: always() && steps.changes.outputs.has_changes == 'true'
+        continue-on-error: true
+        run: node scripts/validate-data.js
+
+      - name: Build site (verify no breaking changes)
+        if: always() && steps.changes.outputs.has_changes == 'true'
+        run: npm run build
+        env:
+          NODE_ENV: production
+          NEXT_PUBLIC_SANITY_PROJECT_ID: fp1ft8k8
+          NEXT_PUBLIC_SANITY_DATASET: production
+          NEXT_PUBLIC_SANITY_API_VERSION: '2024-10-01'
+
+      # Push core data (shows.json etc) to private repo
+      - name: Push core data to private repo
+        if: always() && steps.changes.outputs.has_changes == 'true'
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from auto-maintain'
+
+      - name: Commit and push non-gitignored changes
+        if: always() && steps.changes.outputs.has_changes == 'true'
+        # Task #574: bare stage-data-changes.sh stages all of data/, so a
+        # managed union-merged file (commercial.json et al.) could be swept
+        # in even though this step never names one — see push-with-retry.sh's
+        # reconcile_merged_json().
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          bash scripts/lib/stage-data-changes.sh
+
+          # Build commit message from results
+          FIXED_COUNT="${{ steps.autofix.outputs.fixed_count }}"
+          MSG="chore: Auto-maintain show data"
+
+          if [ -n "$FIXED_COUNT" ] && [ "$FIXED_COUNT" != "0" ]; then
+            MSG="$MSG - fixed $FIXED_COUNT issues"
+          fi
+
+          # Only commit if there are staged changes (core data already pushed above)
+          if git diff --cached --quiet; then
+            echo "No non-gitignored changes to commit"
+          else
+            git commit -m "$MSG
+
+          Auto-maintained by GitHub Actions
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Auto-Maintenance Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Fixed:** ${{ steps.autofix.outputs.fixed_count || 0 }} issues" >> $GITHUB_STEP_SUMMARY
+          echo "**Needs images:** ${{ steps.autofix.outputs.needs_images }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✨ **Fully automated** - no human intervention needed!" >> $GITHUB_STEP_SUMMARY
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Auto-Maintain Show Data Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+  # Trigger image fetch if shows are missing images
+  # always() (card #1456): without it, this job was silently SKIPPED every
+  # time auto-maintain's overall conclusion was failure — even on runs where
+  # the "Evaluate and set job outputs" step (itself `if: always()`) correctly
+  # computed needs_images=true. An unrelated `npm run build` verify step in
+  # auto-maintain failed for 5+ consecutive days (2026-08-09 -> 2026-08-13),
+  # so this backstop never fired despite looking green in its own output.
+  fetch-missing-images:
+    needs: auto-maintain
+    if: always() && needs.auto-maintain.outputs.needs_images == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger image fetch workflow
+        uses: actions/github-script@v7
+        with:
+          script: |
+            console.log('Triggering image fetch for shows with missing images...');
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'fetch-all-image-formats.yml',
+                ref: 'main',
+                inputs: {}
+              });
+              console.log('Successfully triggered fetch-all-image-formats workflow');
+            } catch (e) {
+              console.log(`Could not trigger: ${e.message}`);
+            }

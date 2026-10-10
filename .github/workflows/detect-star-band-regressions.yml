@@ -1,0 +1,99 @@
+name: Detect star-band regressions (BRO-4770)
+
+# Every 6h, over the WHOLE corpus (local files only, no date window): flag
+# needsRescore on any review whose star/grade is not anchored or sits outside its
+# band, and on any file whose newer scoring was reverted by a later whole-file write. The normal needsRescore
+# drain (llm-ensemble-score.yml) repairs them; the finding goes to the digest via
+# owner-alert-router. Roundup-listed reviews missing from the live show JSON are
+# covered by audit-aggregator-gap.yml (hourly).
+on:
+  schedule:
+    - cron: '47 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: 'Flag needsRescore (false = dry run, report only)'
+        required: false
+        default: 'true'
+        type: string
+      history_days:
+        description: 'How far back in review-texts history to look for scoring reverts'
+        required: false
+        default: '2'
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: detect-star-band-regressions
+  cancel-in-progress: false
+
+jobs:
+  detect:
+    name: Detect star-band regressions
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # depth 300 keeps push-with-retry.sh's shallow boundary an ancestor of main for the final commit (BRO-2388)
+          fetch-depth: 300
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (recent history for the clobber check)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          # a run only needs the commits since the previous run; 100 covers several 6h ticks without a full-blob clone (BRO-4231)
+          fetch-depth: '100'
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Detect and flag
+        shell: bash
+        env:
+          APPLY: ${{ inputs.apply || 'true' }}
+          HISTORY_DAYS: ${{ inputs.history_days || '2' }}
+        run: |
+          FLAGS="--history-days=${HISTORY_DAYS} --alert --json=/tmp/star-band-findings.json"
+          [ "$APPLY" = "true" ] && FLAGS="$FLAGS --apply"
+          node scripts/detect-star-band-regressions.js $FLAGS | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Push flags to private repo
+        if: always() && (inputs.apply || 'true') == 'true'
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'chore: star-band detector flags needsRescore [BRO-4770]'
+
+      - name: Commit alert ledger
+        if: always()
+        shell: bash
+        run: |
+          for f in data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl; do
+            [ -e "$f" ] && git add "$f" || true
+          done
+          if git diff --cached --quiet; then
+            echo "No alert-ledger changes to commit"
+          else
+            git commit -m "audit: star-band detector alert ledger [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Star-band detector failed'
+          severity: 'warning'

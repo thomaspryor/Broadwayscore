@@ -1,0 +1,55 @@
+{
+  "system": "data",
+  "status": "error",
+  "lastChecked": "2026-10-10T13:07:35.985Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "monitoring",
+  "details": [
+    {
+      "name": "Data: OB closing candidates awaiting review",
+      "status": "warn",
+      "message": "3 open Off-Broadway show(s) look closed per the weekly detector. Oldest: pied-a-terre-off-broadway-2026 (missing 19d)"
+    },
+    {
+      "name": "Data: tour dates need a look",
+      "status": "warn",
+      "message": "1 tour(s) could not be dated automatically: spamilton-an-american-parody-tour-2018 (no schedule segment matches this tour)"
+    },
+    {
+      "name": "Data: closed national tour lists new dates",
+      "status": "warn",
+      "message": "harry-potter-tour-2024 (closed 2026-10-11, listed again from 2027-03-31: closing 2026-10-11 was checked by hand). Left closed: the page doesn't say whether it is the same tour."
+    },
+    {
+      "name": "Data: T1/T2 silent review gaps",
+      "status": "error",
+      "message": "12 discovered review(s) not reaching the composite score (4 T1). Oldest: million-dollar-quartet-off-west-end-2026 — broadwayworld (unscored)"
+    },
+    {
+      "name": "Data: uncollected live review strands",
+      "status": "warn",
+      "message": "31 discovered review URL(s) across 22 live show(s) were never fetched. First: kimberly-akimbo-off-west-end-2026 (3 stranded)"
+    },
+    {
+      "name": "Data: reviewed shows missing from shows.json",
+      "status": "error",
+      "message": "5 aggregator-reviewed show(s) not in the catalogue. Oldest: \"De Profundis\" (guardian-review — missing 4d) — 2 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
+    },
+    {
+      "name": "Data: undispatchable backlog cards",
+      "status": "warn",
+      "message": "17 of 300 pending/in-progress card(s) have no runnable acceptance-criteria command (bsc-next would refuse them). First: [P2 Later] [Review Submission] 100 Word Review review of Human Things Refusal causes: no-section=17."
+    },
+    {
+      "name": "Data: armed-but-vacuous backlog cards",
+      "status": "warn",
+      "message": "3 card(s) carry an acceptance check that cannot tell done from not done (Notion=3; 3 can never fail, 0 can never pass). First: 3c2637c5-416f-8127-896f-c55a56e79721 P1: morning-digest's real (non-refused) auto-fix dispatch is unguarded by any checkout-freshness OR complete kill-switch coverage — LINEAR_NEXT_DISABLED never set"
+    },
+    {
+      "name": "Data: undispatchable Linear backlog cards",
+      "status": "warn",
+      "message": "478 of 1413 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-4973 Opening-night audit 2026-10-10"
+    }
+  ]
+}

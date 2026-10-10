@@ -1,0 +1,302 @@
+name: Deploy Demo Site
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'content/**'
+      - 'next.config.*'
+      - 'tailwind.config.*'
+      - 'tsconfig.*'
+      - 'package.json'
+      - 'package-lock.json'
+  schedule:
+    - cron: '0 6,14,22 * * *'  # Every 8 hours: 6 AM, 2 PM, 10 PM UTC
+  # NOTE: workflow_run trigger on "Deploy to Vercel" removed 2026-04-01.
+  # It caused 100+ demo deploys/day during cascade events. The 8-hour cron
+  # is sufficient — demo only needs to stay reasonably fresh for partner meetings.
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Branch / tag / SHA to deploy (default: main)'
+        required: false
+        default: 'main'
+        type: string
+
+jobs:
+  deploy-demo:
+    runs-on: ubuntu-latest
+    # (No job-level `if:` — the workflow_run trigger this once guarded was
+    # removed on 2026-04-01, leaving a literal `if: true` that actionlint
+    # flags as a constant condition. Removed 2026-08-31: the Lint Workflows
+    # job only runs when a workflow file changes, so this had sat latent
+    # since April and reddened main on the next unrelated workflow edit.)
+    # Split concurrency by event type so user-initiated dispatches don't
+    # get evicted from the queue by rapid main-push triggers. Both groups
+    # still serialize against themselves (queued, not cancelled) — they
+    # just don't compete with each other for the single queue slot.
+    concurrency:
+      group: vercel-demo-deploy-${{ github.event_name == 'workflow_dispatch' && format('dispatch-{0}', github.event.inputs.ref || 'main') || 'auto' }}
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.inputs.ref || 'main' }}
+          fetch-depth: 1
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Validate core data JSON
+        run: |
+          INVALID=0
+          for f in data/*.json; do
+            if [ ! -f "$f" ]; then continue; fi
+            if grep -qE '(<{7}|={7}|>{7})' "$f" 2>/dev/null; then
+              echo "::error::$f contains merge conflict markers"
+              INVALID=1
+            elif ! node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))" 2>/dev/null; then
+              echo "::error::$f is not valid JSON"
+              INVALID=1
+            fi
+          done
+          if [ "$INVALID" -ne 0 ]; then
+            echo "::error::Core data validation failed — check the private data repo for corrupt files"
+            exit 1
+          fi
+          echo "All data/*.json files valid"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Pre-deploy data integrity check
+        run: node scripts/pre-deploy-check.js
+
+      - name: Pull Vercel Environment
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: npx vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
+
+      - name: Backfill Sanity public env vars (preview env is missing them)
+        # Production Vercel env has NEXT_PUBLIC_SANITY_PROJECT_ID / _DATASET
+        # but preview does not, so /blog (which calls @sanity/client.createClient
+        # at build time via src/sanity/env.ts assertValue) fails with
+        # "Configuration must contain `projectId`" and aborts the whole build.
+        # These are public NEXT_PUBLIC_ values (the dataset is publicly readable
+        # — verified via fp1ft8k8.api.sanity.io). Demo points at the same Sanity
+        # content as production by design. Idempotent: skips if already present.
+        run: |
+          ENV_FILE=".vercel/.env.preview.local"
+          if [ ! -f "$ENV_FILE" ]; then
+            echo "::error::$ENV_FILE not found — vercel pull may have failed"
+            exit 1
+          fi
+          add_var() {
+            local key="$1"
+            local val="$2"
+            if grep -q "^${key}=" "$ENV_FILE"; then
+              echo "$key already present in $ENV_FILE"
+            else
+              echo "${key}=\"${val}\"" >> "$ENV_FILE"
+              echo "Added $key to $ENV_FILE"
+            fi
+          }
+          add_var NEXT_PUBLIC_SANITY_PROJECT_ID fp1ft8k8
+          add_var NEXT_PUBLIC_SANITY_DATASET production
+          add_var NEXT_PUBLIC_SANITY_API_VERSION 2024-10-01
+
+      - name: Compute demo feature flag list (extract from feature-flags.ts)
+        id: demo-flags
+        run: |
+          # Compute the comma-separated flag list once and expose it as a
+          # step output. The Build step reads it as a shell env var
+          # (NEXT_PUBLIC_FEATURES) which Next.js inlines at build time as
+          # string literals — that's the mechanism that actually reaches
+          # the bundle. Earlier 2026-05-17 attempt at writing to
+          # .vercel/.env.preview.local DID NOT work: `npx vercel build`
+          # logs "WARNING! Build not running on Vercel. System environment
+          # variables will not be available." and only honors env vars in
+          # the build step's `env:` block (same pattern Sanity vars use).
+          ALL=$(node -e "
+            const src = require('fs').readFileSync('src/config/feature-flags.ts', 'utf8');
+            const flags = [...src.matchAll(/get\s+(\w+)\(\)/g)].map(m => m[1]);
+            if (flags.length < 5) { console.error('Only found', flags.length, 'flags — aborting'); process.exit(1); }
+            process.stdout.write(flags.join(','));
+          ")
+          echo "flags=$ALL" >> "$GITHUB_OUTPUT"
+          echo "Computed $(echo "$ALL" | tr ',' '\n' | wc -l | tr -d ' ') flags: $ALL"
+
+      # NO build cache for demo — config rewrites + cache = stale pages forever.
+      # Demo builds every 8h; the ~3min penalty is worth guaranteed correctness.
+      # Also clear .vercel/output — stale symlinks from a prior vercel build in the
+      # same runner workspace cause EEXIST errors on the next build.
+      - name: Clear any leftover build cache
+        run: rm -rf .next/cache .vercel/output
+
+      - name: Build (all features enabled)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          # All feature flags enabled — Next.js inlines NEXT_PUBLIC_* env
+          # values at build time as string literals, so enabledFeatures Set
+          # gets populated with all flag names. Server and client components
+          # both see featureFlags.X === true. Computed by `demo-flags` step.
+          NEXT_PUBLIC_FEATURES: ${{ steps.demo-flags.outputs.flags }}
+          # Sanity public config — preview Vercel env doesn't have these,
+          # /blog needs them at build time. See "Backfill Sanity" step above.
+          NEXT_PUBLIC_SANITY_PROJECT_ID: fp1ft8k8
+          NEXT_PUBLIC_SANITY_DATASET: production
+          NEXT_PUBLIC_SANITY_API_VERSION: '2024-10-01'
+        run: |
+          # /what-else sweep after card #90 (vercel-deploy.yml): this job has
+          # NO job-level timeout-minutes at all, so if Vercel server-side
+          # cancels this build's deployment (its "latest wins" dedup) while
+          # the CLI hangs waiting on it instead of exiting, this job could
+          # run for GH's default 6-HOUR job timeout with zero alert — a
+          # bigger blast radius than the production case card #90 fixed.
+          # Same inline-timeout + explicit-exit fix, not step-level
+          # timeout-minutes (reports conclusion=cancelled, which any future
+          # if:failure() step here would silently skip).
+          status=0
+          timeout 900 npx vercel build --token=$VERCEL_TOKEN || status=$?
+          if [ "$status" -ne 0 ]; then
+            if [ "$status" -eq 124 ]; then
+              echo "::error::vercel build timed out after 15m (possible Vercel-side cancellation hang, see card #90)"
+            else
+              echo "::error::vercel build failed (exit $status)"
+            fi
+            exit 1
+          fi
+
+      - name: Deploy
+        id: deploy
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          # Deploy without --prod (safe: cannot touch production)
+          #
+          # BRO-451 what-else sweep (2026-09-11): mirrors the retry fix
+          # applied to vercel-deploy.yml's "Deploy to Production" step after
+          # a transient network write EPIPE mid-upload there. No job-level
+          # timeout-minutes exists on this job (see the Build step's comment
+          # above), so there's no ceiling to fit the retry worst-case into.
+          # Guarded `A && B || C` form is required under this step's
+          # `bash -e` — an unguarded `URL=$(...); status=$?` trips errexit
+          # and kills the script before status=$? runs (task #1911 pattern,
+          # see checkout-core-data/action.yml).
+          MAX_RETRIES=3
+          for ATTEMPT in $(seq 1 $MAX_RETRIES); do
+            ATTEMPT_TIMEOUT=600
+            if [ "$ATTEMPT" -gt 1 ]; then
+              ATTEMPT_TIMEOUT=240
+            fi
+            URL=$(timeout "$ATTEMPT_TIMEOUT" npx vercel deploy --prebuilt --archive=tgz --token=$VERCEL_TOKEN) && status=0 || status=$?
+            if [ "$status" -eq 0 ]; then
+              break
+            fi
+            if [ "$status" -eq 124 ]; then
+              echo "::warning::vercel deploy timed out after ${ATTEMPT_TIMEOUT}s on attempt $ATTEMPT/$MAX_RETRIES (possible Vercel-side cancellation hang, see card #90)"
+            else
+              echo "::warning::vercel deploy failed (exit $status) on attempt $ATTEMPT/$MAX_RETRIES"
+            fi
+            if [ "$ATTEMPT" -lt "$MAX_RETRIES" ]; then
+              sleep $(( 10 * ATTEMPT ))
+            fi
+          done
+          if [ "$status" -ne 0 ]; then
+            if [ "$status" -eq 124 ]; then
+              echo "::error::vercel deploy timed out on all $MAX_RETRIES attempts (possible Vercel-side cancellation hang, see card #90)"
+            else
+              echo "::error::vercel deploy failed (exit $status) on all $MAX_RETRIES attempts"
+            fi
+            exit 1
+          fi
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          echo "Deployed to: $URL"
+
+      - name: Check demo pin
+        id: pin
+        # Demo can be pinned to a branch via .github/demo-pin.txt (which
+        # lives on main, NOT on feature branches). The workflow fetches
+        # main here and reads the pin file directly. While pinned, only
+        # deploys of that branch alias demo; everything else builds-
+        # without-aliasing. Empty / missing file = legacy behavior (every
+        # successful deploy aliases). See .github/DEMO-PIN.md.
+        run: |
+          set +e
+          git fetch origin main --depth=1 2>/dev/null
+          PIN=$(git show origin/main:.github/demo-pin.txt 2>/dev/null | tr -d '[:space:]')
+          set -e
+          REF="${{ github.event.inputs.ref }}"
+          if [ -z "$REF" ] || [ "$REF" = "null" ]; then REF="${{ github.ref_name }}"; fi
+          echo "Pin from origin/main: '${PIN}'"
+          echo "Deployed ref:         '${REF}'"
+          if [ -n "$PIN" ] && [ "$PIN" != "$REF" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::Demo pinned to '$PIN'; deploy from '$REF' — skipping alias (preview URL still accessible)."
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            if [ -n "$PIN" ]; then
+              echo "::notice::Pin matches deployed ref '$REF' — aliasing as normal."
+            fi
+          fi
+
+      - name: Alias to demo domain
+        if: steps.pin.outputs.skip != 'true'
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          DEPLOY_URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          DEMO_DOMAIN="demo.broadwayscorecard.com"
+          echo "Aliasing $DEPLOY_URL → $DEMO_DOMAIN"
+          npx vercel alias set "$DEPLOY_URL" "$DEMO_DOMAIN" --token=$VERCEL_TOKEN --scope=thomaspryors-projects
+          # Verify the alias actually updated
+          sleep 5
+          RESOLVED=$(curl -s -o /dev/null -w "%{redirect_url}" "https://$DEMO_DOMAIN" || true)
+          echo "Alias verification: demo domain resolves (check smoke test for HTTP 200)"
+
+      - name: Smoke test demo site
+        run: |
+          echo "Waiting 15s for alias to propagate..."
+          sleep 15
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://demo.broadwayscorecard.com/)
+          echo "Homepage returned HTTP $STATUS"
+          if [ "$STATUS" != "200" ]; then
+            echo "::error::Demo smoke test failed — homepage returned HTTP $STATUS"
+            exit 1
+          fi
+          echo "Demo site is live at https://demo.broadwayscorecard.com"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Deploy Demo Site Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+      - name: Write deploy summary
+        if: always()
+        run: |
+          echo "## Demo Site Deployment" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "${{ steps.deploy.outputs.url }}" ]; then
+            echo "**Demo URL:** https://demo.broadwayscorecard.com" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "**Built at:** $(date -u '+%Y-%m-%d %H:%M UTC')" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "**All feature flags enabled** — identical to production except all features are visible." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Deploy failed — no demo URL generated." >> "$GITHUB_STEP_SUMMARY"
+          fi

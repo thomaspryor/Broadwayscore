@@ -1,0 +1,359 @@
+#!/usr/bin/env node
+/**
+ * Hourly Trade-Press RSS Poller — Recoupment Detection
+ *
+ * Polls trade-press RSS feeds (Variety Legit, Deadline) flagged
+ * `trackRecoupment: true` in scripts/lib/rss-discovery.js. Detects new
+ * recoupment announcements within ~1h of publish, vs. the Friday SERP
+ * scraper's worst-case 7-day latency.
+ *
+ * Flow:
+ *   1. For each tracked feed: fetch + parse, dedup by guid against state
+ *   2. Reject items older than 60 days (Playbill-style SEO-republished evergreens)
+ *   3. Pre-filter title+description against /recoup(ed|ment|s)?|earned back/i.
+ *      NOT "paid off" (puff pieces) or "profit" (matches "non-profit").
+ *   4. Match RSS title to a show in scope (recoupment-scan-scope.js RSS_SCOPE:
+ *      running or closed within 2 years, not yet recouped) using
+ *      titleMatchesShow from rss-discovery.js
+ *   5. fetchPage + classifyArticle (shared lib). Gate on
+ *      productionMatch === 'exact' AND confidence === 'high'.
+ *   6. articleDate must be ≤ 14 days old (older = re-surfacing, not breaking news)
+ *   7. Write to commercial-pending-review.json with detectedBy:'rss-poller'.
+ *      Bump state.lastSeenGuid ONLY on pending-write success (transactional).
+ *
+ * apply-commercial-pending.js (run by commercial-rss-poll.yml right after this
+ * script) auto-applies entries via:
+ *   --auto-apply-claims-from=rss-poller,recoupment-announcement-scraper
+ * which gates on detectedBy ∈ list AND confidence==='high' AND sourceHost ∈
+ * TRUSTED_RECOUPMENT_HOSTS.
+ *
+ * Usage:
+ *   node scripts/poll-trade-press-rss.js                  # default (1h window)
+ *   node scripts/poll-trade-press-rss.js --window-hours=24
+ *   node scripts/poll-trade-press-rss.js --feed=variety
+ *   node scripts/poll-trade-press-rss.js --dry-run
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+const { TRACK_RECOUPMENT_FEEDS, parseFeedItems, titleMatchesShow, fetchUrl } = require('./lib/rss-discovery');
+const { fetchPage, cleanup } = require('./lib/scraper');
+const { classifyArticle } = require('./lib/recoupment-classify');
+const { guardRejectionWarning } = require('./lib/recoupment-production-guard');
+const { pickRecoupmentCandidates, RSS_SCOPE } = require('./lib/recoupment-scan-scope');
+const { TRUSTED_RECOUPMENT_HOSTS } = require('./lib/trusted-recoupment-domains');
+const { runMain } = require('./lib/run-main');
+
+// ---- args ----
+const args = process.argv.slice(2);
+const flags = {};
+for (const a of args) {
+  if (a.startsWith('--')) {
+    const [k, v] = a.slice(2).split('=');
+    flags[k] = v === undefined ? true : v;
+  }
+}
+const DRY_RUN = flags['dry-run'] === true;
+const WINDOW_HOURS = parseInt(flags['window-hours'], 10) || 24;
+const FEED_FILTER = flags['feed'] ? flags['feed'].split(',').map(s => s.trim()) : null;
+const LLM_CALL_CAP = parseInt(flags['llm-cap'], 10) || 20;
+// Test-only: bypass the candidate filter for one slug so the e2e chain can be
+// exercised against a real RSS article for a show that's already recouped in
+// commercial.json. Only effective with --dry-run.
+const TEST_SHOW = flags['test-show'] || null;
+
+// ---- constants ----
+const RECOUP_REGEX = /recoup(ed|ment|s)?|earned back/i;
+const SIXTY_DAYS_MS = 60 * 24 * 60 * 60 * 1000;
+const ARTICLE_DATE_MAX_AGE_MS = 14 * 24 * 60 * 60 * 1000;
+// Per ship-check P2 on THR onboarding: alert when a single feed burns more than
+// this many LLM calls in one run. Signals a film/TV-franchise news cycle that
+// title-collides with a Broadway candidate (Beetlejuice, Mamma Mia,
+// Schmigadoon, plus single-word titles like Giant/Bug/Chess/Art). Costs are
+// still bounded by LLM_CALL_CAP, but persistent high rates merit a look.
+const PER_FEED_LLM_WARN_THRESHOLD = 5;
+
+// ---- paths (mirrors scrape-recoupment-announcements.js dataPath) ----
+function dataPath(filename, { writable = false } = {}) {
+  const local = path.join(__dirname, '..', 'data', filename);
+  if (fs.existsSync(local)) return local;
+  if (writable) return local;
+  const mainRepo = path.join('/Users/tompryor/Broadwayscore/data', filename);
+  if (fs.existsSync(mainRepo)) return mainRepo;
+  return local;
+}
+const SHOWS_PATH = dataPath('shows.json');
+const COMMERCIAL_PATH = dataPath('commercial.json');
+const PENDING_PATH = dataPath('commercial-pending-review.json', { writable: true });
+const STATE_PATH = dataPath('commercial-rss-state.json', { writable: true });
+
+// ---- helpers ----
+function log(...a) { console.log(...a); }
+function loadJSON(p) { return JSON.parse(fs.readFileSync(p, 'utf8')); }
+function hostnameOf(url) {
+  try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return ''; }
+}
+
+function loadState() {
+  if (!fs.existsSync(STATE_PATH)) return { version: 1, feeds: {} };
+  try { return JSON.parse(fs.readFileSync(STATE_PATH, 'utf8')); }
+  catch { return { version: 1, feeds: {} }; }
+}
+function writeState(state) {
+  state.lastRunAt = new Date().toISOString();
+  fs.writeFileSync(STATE_PATH, JSON.stringify(state, null, 2) + '\n');
+}
+
+function loadPending() {
+  if (!fs.existsSync(PENDING_PATH)) return { shows: {}, lastUpdated: null };
+  return loadJSON(PENDING_PATH);
+}
+function writePending(pending) {
+  pending.lastUpdated = new Date().toISOString();
+  fs.writeFileSync(PENDING_PATH, JSON.stringify(pending, null, 2) + '\n');
+}
+
+// ---- show candidate scope (shared with the Friday scraper) ----
+// scripts/lib/recoupment-scan-scope.js. This poller only string-matches RSS
+// titles against candidates before any LLM call, so it uses the wide
+// RSS_SCOPE: every running unrecouped Broadway show regardless of age, plus
+// closed shows within two years (BRO-4623 item 5: the old 28-365-day window
+// missed Purpose's post-closing tax-credit recoupment and every long runner).
+function pickCandidates(allShows, commercial) {
+  const shows = allShows.shows || allShows;
+  return pickRecoupmentCandidates(shows, commercial.shows || {}, RSS_SCOPE);
+}
+
+// ---- state diff (pure; tested in tests/unit/rss-poller-state.test.mjs) ----
+/**
+ * Given an item list (most-recent-first per feed convention) and a lastSeenGuid,
+ * return items above the lastSeenGuid AND within the date window.
+ *
+ * - First-ever poll (no lastSeenGuid): return all items in window.
+ * - lastSeenGuid present and found in list: return items before its position.
+ * - lastSeenGuid present but NOT found (item aged out of feed): return all items
+ *   in window (fail-open; the date window prevents over-emit).
+ */
+function diffNewItems(items, lastSeenGuid, windowMs = WINDOW_HOURS * 60 * 60 * 1000) {
+  const cutoff = Date.now() - windowMs;
+  let stopAt = items.length;
+  if (lastSeenGuid) {
+    const idx = items.findIndex(i => i.guid === lastSeenGuid);
+    if (idx >= 0) stopAt = idx;
+  }
+  return items.slice(0, stopAt).filter(i => {
+    if (!i.pubDate || isNaN(i.pubDate.getTime())) return false;
+    if (Date.now() - i.pubDate.getTime() > SIXTY_DAYS_MS) return false;
+    return i.pubDate.getTime() >= cutoff;
+  });
+}
+
+// ---- matching: extract show match for an RSS item ----
+function matchShow(rssTitle, rssDescription, candidates) {
+  const haystack = `${rssTitle} ${rssDescription || ''}`;
+  for (const show of candidates) {
+    if (titleMatchesShow(haystack, show.title)) return show;
+  }
+  return null;
+}
+
+// ---- per-feed processing ----
+async function processFeed(feed, state, candidates, counters) {
+  const feedState = state.feeds[feed.outletId] || { lastSeenGuid: null, lastPolledAt: null, errorCount: 0 };
+  log(`\n— ${feed.name} (${feed.outletId}) —`);
+  log(`  lastSeenGuid: ${feedState.lastSeenGuid || '(first run)'}`);
+
+  let items;
+  try {
+    const xml = await fetchUrl(feed.url, 15000);
+    items = parseFeedItems(xml);
+  } catch (e) {
+    log(`  ✗ fetch error: ${e.message}`);
+    feedState.errorCount = (feedState.errorCount || 0) + 1;
+    feedState.lastError = e.message;
+    state.feeds[feed.outletId] = feedState;
+    return [];
+  }
+
+  // Reset error count on success
+  feedState.errorCount = 0;
+  feedState.lastError = null;
+
+  const fresh = diffNewItems(items, feedState.lastSeenGuid);
+  log(`  ${items.length} items parsed → ${fresh.length} new+in-window`);
+
+  const matched = [];
+  for (const item of fresh) {
+    const hayTitle = item.title;
+    const hayDesc = item.description || '';
+    if (!RECOUP_REGEX.test(hayTitle) && !RECOUP_REGEX.test(hayDesc)) continue;
+    const show = matchShow(hayTitle, hayDesc, candidates);
+    if (!show) {
+      log(`    skip (no show match): ${hayTitle.slice(0, 90)}`);
+      continue;
+    }
+    if (counters.llmCalls >= LLM_CALL_CAP) {
+      log(`    🛑 LLM call cap (${LLM_CALL_CAP}) hit — deferring "${hayTitle.slice(0, 60)}"`);
+      // Don't bump lastSeenGuid past this item — next run picks it up.
+      return { findings: matched, capHit: true, mostRecentGuid: items[0]?.guid };
+    }
+    log(`    🔎 match → ${show.slug} :: ${hayTitle.slice(0, 90)}`);
+    let html;
+    try {
+      const fetched = await fetchPage(item.link, { timeout: 25_000 });
+      html = typeof fetched === 'string' ? fetched : (fetched?.content || '');
+    } catch (e) {
+      log(`      ✗ fetch failed: ${e.message}`);
+      continue;
+    }
+    counters.llmCalls++;
+    counters.perFeed[feed.outletId] = (counters.perFeed[feed.outletId] || 0) + 1;
+    // opts.show turns on the BRO-4623 production guard (pre-preview dates,
+    // tour / West End / Off-Broadway articles are rejected).
+    const verdict = await classifyArticle(show.title, item.link, html, { show, headline: item.title });
+    log(`      → recouped=${verdict.recouped} match=${verdict.productionMatch} conf=${verdict.confidence}`);
+    if (verdict.guardReason) {
+      log(`         ⛔ production guard: ${verdict.guardReason}`);
+      console.log(guardRejectionWarning(show.slug, item.link, verdict));
+    }
+    if (verdict.evidence) log(`         "${String(verdict.evidence).slice(0, 140)}"`);
+
+    if (!verdict.recouped) continue;
+    if (verdict.productionMatch !== 'exact') continue;
+    if (verdict.confidence !== 'high') continue;
+
+    const host = hostnameOf(item.link);
+    if (!TRUSTED_RECOUPMENT_HOSTS.has(host)) {
+      log(`      ⏭️  ${host} not in TRUSTED_RECOUPMENT_HOSTS — skipping auto-apply path`);
+      continue;
+    }
+    if (verdict.articleDate) {
+      const articleAgeMs = Date.now() - new Date(verdict.articleDate).getTime();
+      if (articleAgeMs > ARTICLE_DATE_MAX_AGE_MS) {
+        log(`      ⏭️  article from ${verdict.articleDate} is >14d old — likely re-surfacing, skipping`);
+        continue;
+      }
+    }
+
+    matched.push({ show, url: item.link, host, verdict, rssItem: item });
+  }
+
+  return { findings: matched, capHit: false, mostRecentGuid: items[0]?.guid };
+}
+
+// ---- main ----
+async function main() {
+  if (!process.env.OPENAI_API_KEY) {
+    console.error('FATAL: OPENAI_API_KEY not set');
+    process.exit(1);
+  }
+
+  const allShows = loadJSON(SHOWS_PATH);
+  const commercial = loadJSON(COMMERCIAL_PATH);
+  let candidates = pickCandidates(allShows, commercial);
+  if (TEST_SHOW && DRY_RUN) {
+    const allShowsArr = allShows.shows || allShows;
+    const testShow = allShowsArr.find(s => s.slug === TEST_SHOW);
+    if (testShow && !candidates.find(s => s.slug === TEST_SHOW)) {
+      log(`[--test-show=${TEST_SHOW}] bypassing candidate filter`);
+      candidates = [...candidates, testShow];
+    }
+  }
+  log(`RSS poller — ${candidates.length} candidate shows | window=${WINDOW_HOURS}h | dry-run=${DRY_RUN} | LLM cap=${LLM_CALL_CAP}`);
+
+  const state = loadState();
+  state.feeds = state.feeds || {};
+
+  const feeds = TRACK_RECOUPMENT_FEEDS.filter(f => !FEED_FILTER || FEED_FILTER.includes(f.outletId));
+  if (feeds.length === 0) {
+    log(`No feeds to poll (filter=${FEED_FILTER ? FEED_FILTER.join(',') : 'none'})`);
+    return;
+  }
+
+  const counters = { llmCalls: 0, perFeed: {} };
+  const allFindings = [];
+  const feedResults = {};
+
+  for (const feed of feeds) {
+    const result = await processFeed(feed, state, candidates, counters);
+    feedResults[feed.outletId] = result;
+    for (const f of result.findings) allFindings.push(f);
+  }
+
+  log(`\n========== SUMMARY ==========`);
+  log(`LLM calls: ${counters.llmCalls} / ${LLM_CALL_CAP}`);
+  for (const [outletId, n] of Object.entries(counters.perFeed)) {
+    log(`  ${outletId}: ${n} LLM call${n === 1 ? '' : 's'}`);
+    if (n > PER_FEED_LLM_WARN_THRESHOLD) {
+      // GHA `::warning::` surfaces in the Test Summary + run notification.
+      console.log(`::warning::RSS poller burned ${n} LLM calls on feed "${outletId}" (threshold ${PER_FEED_LLM_WARN_THRESHOLD}). Likely a title collision with a film/TV franchise — audit recent classifications.`);
+    }
+  }
+  log(`Promotable findings: ${allFindings.length}`);
+  for (const f of allFindings) {
+    log(`  ✅ ${f.show.slug}: ${f.verdict.recoupedDate || 'date?'} (${f.host})`);
+    log(`     ${f.url}`);
+  }
+
+  if (DRY_RUN) {
+    log(`\n[dry-run] not writing to pending or state`);
+    return;
+  }
+
+  // Write pending FIRST; bump state lastSeenGuid only on success (transactional).
+  if (allFindings.length > 0) {
+    const pending = loadPending();
+    pending.shows = pending.shows || {};
+    const now = new Date().toISOString();
+    // LLM verdicts sometimes return the literal string "null" for recoupedDate;
+    // normalize to real null so downstream apply/validate never see a bad date.
+    const { cleanNullish } = require('./lib/commercial-apply-gate');
+    let written = 0;
+    for (const f of allFindings) {
+      pending.shows[f.show.slug] = {
+        ...(pending.shows[f.show.slug] || {}),
+        recouped: true,
+        _recoupedClaim: true,
+        recoupedDate: cleanNullish(f.verdict.recoupedDate) || null,
+        recoupedSource: f.url,
+        confidence: f.verdict.confidence,
+        evidence: f.verdict.evidence || null,
+        sourceHost: f.host,
+        detectedBy: 'rss-poller',
+        detectedAt: now,
+        researchedAt: now,
+        promoteRecommended: true,
+      };
+      written++;
+    }
+    writePending(pending);
+    log(`\nWrote ${written} entries to ${path.relative(process.cwd(), PENDING_PATH)}`);
+  }
+
+  // Bump state per feed only if processing succeeded (no early return from cap).
+  // capHit:true means we bailed mid-feed — leave lastSeenGuid alone so next run
+  // retries those items.
+  const nowIso = new Date().toISOString();
+  for (const feed of feeds) {
+    const result = feedResults[feed.outletId];
+    const feedState = state.feeds[feed.outletId] || { lastSeenGuid: null, errorCount: 0 };
+    feedState.lastPolledAt = nowIso;
+    if (result && !result.capHit && result.mostRecentGuid) {
+      feedState.lastSeenGuid = result.mostRecentGuid;
+    }
+    state.feeds[feed.outletId] = feedState;
+  }
+  writeState(state);
+  log(`State written to ${path.relative(process.cwd(), STATE_PATH)}`);
+}
+
+// Export pure helpers for unit tests.
+module.exports = { diffNewItems, matchShow, pickCandidates, RECOUP_REGEX, SIXTY_DAYS_MS, ARTICLE_DATE_MAX_AGE_MS, PER_FEED_LLM_WARN_THRESHOLD };
+
+if (require.main === module) {
+  // BRO-4623: runMain awaits scraper cleanup() and exits explicitly; a bare
+  // main().catch() exits on failure only, and a successful Playwright fetch
+  // otherwise holds the event loop open until the job timeout.
+  runMain(main, { teardown: [cleanup] });
+}

@@ -1,0 +1,300 @@
+/**
+ * acceptance-check-core.js — run a card's OWN acceptance-criteria command
+ * against a fresh, detached checkout of origin/main.
+ *
+ * Extracted from scripts/autonomous-acceptance-recheck.js (task #1003) because
+ * a second caller now needs the identical behaviour at a different moment:
+ *
+ *   - autonomous-acceptance-recheck.js — nightly, shadow, many cards, one
+ *     shared checkout.
+ *   - notion-brain.js `update --status Done` — synchronous, one card, at the
+ *     instant the card would close.
+ *
+ * Two copies of "check out origin/main and run the card's command" would drift
+ * the moment one of them learned something (the exit-3 convention, the
+ * retry-once rule, the shallow-clone fetch bound) — CLAUDE.md §15: one
+ * implementation, require()d by both, and by the tests.
+ *
+ * Safety properties carried over verbatim from the recheck:
+ *   - The command is UNTRUSTED text off a Notion card. It is re-validated
+ *     against isSafeCheckCommand at RUN time, not just at capture time.
+ *   - It runs with the secret-free, fake-HOME env the check gauntlet uses.
+ *   - The worktree is disposable and DETACHED: it creates no branch and cannot
+ *     disturb the calling checkout's state.
+ *   - One retry before believing a failure — a transient flake must never
+ *     manufacture "your finished work is broken".
+ *   - Exit 3 is the repo's "cannot verify" convention and is reported as
+ *     unverifiable, never as a failure.
+ */
+
+'use strict';
+
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
+const { execFileSync } = require('child_process');
+
+const { shallowFetchArgs } = require('./shallow-fetch-args.js');
+// extractCheckPaths is the SAME path-token extraction isSafeCheckCommand's own
+// SAFE_CHECK_FORMS matches on (CLAUDE.md §15 — one copy, reused here rather
+// than a second regex over the command string).
+const { isSafeCheckCommand, extractCheckPaths } = require('./autonomous-triage-core.js');
+const { checksEnv, cardCheckArgv, prepareCheckWorkdir, CHECK_TIMEOUT_MS } = require('./autonomous-checks.js');
+const { refreshDataClone } = require('./data-clone-refresh.js');
+
+const DEFAULT_REPO = path.join(__dirname, '..', '..');
+// Per-git-call ceiling. Generous enough for a cold fetch on a large repo,
+// short enough that a synchronous caller can promise a bound.
+const GIT_TIMEOUT_MS = 120000;
+// A depth-1 clone of this repo took ~30s from a cloud session (BRO-4241).
+const CLONE_TIMEOUT_MS = 300000;
+
+// node_modules/gitignored-core-data live at the MAIN checkout, not a git
+// WORKTREE (every code session in this repo runs from one, CLAUDE.md makes
+// it mandatory) — `repo` below may be either. prepareCheckWorkdir()
+// (autonomous-checks.js) resolves the real install root itself via
+// resolveInstallRoot(), originally written HERE and promoted there so
+// land-branch.js's callers hit the same fix instead of a second copy
+// (BRO-3907, CLAUDE.md §15).
+
+/**
+ * ONE disposable worktree per run: every card verifies against the same
+ * origin/main, so N checkouts would be N copies of one tree.
+ * @param {{repo?:string, prefix?:string, sha?:string|null}} o - `sha` pins the
+ *   checkout to a caller-supplied commit instead of "origin/main at fetch
+ *   time" (card #1433's merge-post-merge-test-gate.js needs the EXACT origin
+ *   tip a specific merge pulled in, not whatever origin/main has drifted to
+ *   by the time the gate runs — a later concurrent push landing a NEW,
+ *   unfixed regression between those two moments must not read as
+ *   "pre-existing").
+ * @returns {{dir:string, wt:string, repo:string}}
+ */
+function makeFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-', sha: pinnedSha = null } = {}) {
+  // Depth-bound the fetch when repo is a SHALLOW clone (task #420/#466). This
+  // is reachable from shallow-checkout workflows; there an unbounded fetch
+  // makes upload-pack send the whole ~2.1 GB / 165k-commit repo instead of the
+  // delta. Anchor the window on the local boundary commit so
+  // `worktree add origin/main` below still resolves. A complete clone (the
+  // owner's Mac, the usual case) gets no extra flags — bounding it would
+  // truncate a full clone into a shallow one.
+  let isShallow = false;
+  try {
+    isShallow = execFileSync('git', ['rev-parse', '--is-shallow-repository'], { cwd: repo, encoding: 'utf8', timeout: GIT_TIMEOUT_MS }).trim() === 'true';
+  } catch { /* fail open — treat as complete */ }
+  let oldestCommitEpoch = 0;
+  if (isShallow) {
+    try {
+      const sha = execFileSync('git', ['rev-list', 'HEAD'], { cwd: repo, encoding: 'utf8', timeout: GIT_TIMEOUT_MS }).trim().split('\n').pop();
+      oldestCommitEpoch = Number(execFileSync('git', ['log', '-1', '--format=%ct', sha], { cwd: repo, encoding: 'utf8', timeout: GIT_TIMEOUT_MS }).trim());
+    } catch { /* helper falls back to a bounded --deepen */ }
+  }
+  const depthArgs = shallowFetchArgs({ isShallow, oldestCommitEpoch });
+  // Every git call here is TIME-BOXED. A synchronous caller (notion-brain's
+  // close-time check) is holding a person or a sync sweep hostage while this
+  // runs, and an unbounded `fetch`/`worktree add` can wait forever on a
+  // contended lock or a stalled remote — a hang is worse than a failure,
+  // because a failure fails OPEN and a hang does not (Codex ship-check P0).
+  try {
+    // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
+    execFileSync('git', ['fetch', ...depthArgs, 'origin', 'main'], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
+  } catch (err) {
+    // BRO-4241: cloud clones can't deepen (`fatal: error in object: unshallow
+    // <sha>`), which made every VERIFY command unverifiable there. When the
+    // caller only needs "origin/main now", clone its tip into a SEPARATE temp
+    // repo. Never fall back to `fetch --depth=1` in `repo` itself: that
+    // rewrites .git/shallow, orphans local main from origin/main and breaks
+    // later rebases and ancestry checks (see shallow-fetch-args.js).
+    if (!shouldCloneAfterFetchFailure(err, pinnedSha)) throw err;
+    return makeStandaloneCheckout({ repo, prefix });
+  }
+  // Pin to the SHA we just fetched, not the moving ref: between this fetch and
+  // the worktree add, a parallel session's push can advance origin/main, and
+  // the card would then be judged against a commit that landed after it
+  // (Codex ship-check P1). The pinned sha is returned so callers can report it.
+  // A caller-supplied `pinnedSha` skips the rev-parse entirely and checks out
+  // that exact commit instead — the fetch above still runs first so the sha
+  // is guaranteed reachable even if it only just landed on origin.
+  const sha = pinnedSha || execFileSync('git', ['rev-parse', 'origin/main'], { cwd: repo, timeout: GIT_TIMEOUT_MS, encoding: 'utf8' }).trim();
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), prefix));
+  const wt = path.join(dir, 'main');
+  let dataClone = { status: 'skipped' };
+  try {
+    execFileSync('git', ['worktree', 'add', '--detach', wt, sha], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
+    // BRO-4830: refresh the data clone BEFORE it is copied (once per process).
+    dataClone = refreshDataClone(repo);
+    // prepareCheckWorkdir resolves the real install root itself now (BRO-3907)
+    // — `repo` may be a node_modules-less worktree, same gap this file's
+    // resolveInstallRoot() originally closed only for its own caller.
+    prepareCheckWorkdir(wt, repo);
+  } catch (err) {
+    // Clean up our OWN tempdir before rethrowing. The caller's `finally` can
+    // only remove a checkout it was handed, and it was never handed this one —
+    // so without this, every failed `worktree add` (a lock contended by another
+    // session, a full disk) leaks a directory. Once per night was tolerable;
+    // once per card close is not (ship-check finding).
+    try { fs.rmSync(dir, { recursive: true, force: true }); } catch { /* best effort */ }
+    throw err;
+  }
+  // prepareCheckWorkdir is best-effort by design (it swallows link failures),
+  // so a checkout can come back without node_modules. Running `node --test` or
+  // `npx tsc` there fails on the ENVIRONMENT, exit 1, indistinguishable from a
+  // real assertion failure — which at close time refuses an innocent card
+  // (Codex ship-check P1). Report the state instead of hiding it; runVerify
+  // downgrades to unverifiable.
+  // node_modules only. prepareCheckWorkdir also copies core data and swallows
+  // ITS failures, so a checkout can be prepared:true and still be missing a
+  // data file a command needs — that residual case still reads as FAIL
+  // (Codex, second pass). node_modules is the one that breaks EVERY command.
+  // BRO-4830: a stale-but-dirty/diverged data clone was copied above; its
+  // results would measure old data, not the card, so report unprepared.
+  const prepared = fs.existsSync(path.join(wt, 'node_modules')) && dataClone.status !== 'unsafe';
+  return { dir, wt, repo, sha, prepared, dataClone };
+}
+
+/**
+ * BRO-4241: fall back to a standalone clone ONLY for the shallow-clone
+ * "can't deepen" failure. A timeout, lock contention or an offline host keeps
+ * failing fast as before: a 5-minute clone on every ordinary fetch hiccup
+ * would stall synchronous close-time callers (Codex-style review finding).
+ * Never when the caller pinned a sha (the merge-gate baseline needs that
+ * exact commit, which a depth-1 clone of main may not contain).
+ */
+function shouldCloneAfterFetchFailure(err, pinnedSha) {
+  if (pinnedSha) return false;
+  if (!err || err.signal) return false; // killed by our own timeout
+  const text = `${err.stderr || ''} ${err.message || ''}`;
+  return /unshallow|error in object/i.test(text);
+}
+
+/**
+ * Depth-1 clone of origin/main into its own temp repo (BRO-4241). Used only
+ * when the in-repo fetch fails; the caller's repo and object store are never
+ * touched. Same return shape as makeFreshCheckout plus `standalone: true`,
+ * which tells removeCheckout to delete the directory instead of a worktree.
+ */
+function makeStandaloneCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-' } = {}) {
+  const url = execFileSync('git', ['remote', 'get-url', 'origin'], { cwd: repo, encoding: 'utf8', timeout: GIT_TIMEOUT_MS }).trim();
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), prefix));
+  const wt = path.join(dir, 'main');
+  let dataClone = { status: 'skipped' };
+  try {
+    execFileSync('git', ['clone', '--quiet', '--depth', '1', '--single-branch', '-b', 'main', url, wt], { timeout: CLONE_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
+    dataClone = refreshDataClone(repo);
+    prepareCheckWorkdir(wt, repo);
+  } catch (err) {
+    try { fs.rmSync(dir, { recursive: true, force: true }); } catch { /* best effort */ }
+    throw err;
+  }
+  const sha = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: wt, encoding: 'utf8', timeout: GIT_TIMEOUT_MS }).trim();
+  const prepared = fs.existsSync(path.join(wt, 'node_modules')) && dataClone.status !== 'unsafe';
+  return { dir, wt, repo, sha, prepared, dataClone, standalone: true };
+}
+
+/** Best effort: a leftover worktree is picked up by `git worktree prune`. */
+function removeCheckout(co) {
+  if (!co) return;
+  if (co.standalone) {
+    try { fs.rmSync(co.dir, { recursive: true, force: true }); } catch { /* best effort */ }
+    return;
+  }
+  const repo = co.repo || DEFAULT_REPO;
+  try { execFileSync('git', ['worktree', 'remove', '--force', co.wt], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] }); }
+  catch { /* leave for git worktree prune */ }
+  try { fs.rmSync(co.dir, { recursive: true, force: true }); } catch { /* best effort */ }
+}
+
+// node --test prints a summary line `# pass N` (TAP, the default when piped)
+// or `ℹ pass N` (spec). True only when that line says 0; no summary line at
+// all (an unusual reporter) stays a pass, so this never fails a real check.
+const PASS_SUMMARY_RE = /^(?:#|ℹ)\s*pass\s+(\d+)\s*$/gm;
+function zeroPassingTests(output) {
+  const counts = [...String(output || '').matchAll(PASS_SUMMARY_RE)].map((m) => Number(m[1]));
+  return counts.length > 0 && counts[counts.length - 1] === 0;
+}
+
+/**
+ * Run one card's acceptance command in `cwd`.
+ * @param {string} cwd - the fresh checkout (or any directory, for tests)
+ * @param {string} cmd - the card's safe-form command, UNTRUSTED
+ * @param {{attempts?:number, timeoutMs?:number}} o
+ * @returns {{status:'pass'|'fail'|'unverifiable', detail:string|null}}
+ */
+function runVerify(cwd, cmd, { attempts = 2, timeoutMs = CHECK_TIMEOUT_MS, prepared = true } = {}) {
+  const argv = cardCheckArgv(cmd, isSafeCheckCommand);
+  if (!argv) return { status: 'unverifiable', detail: `command failed safe-form re-validation at run time: ${String(cmd).slice(0, 120)}` };
+  if (!prepared) {
+    return { status: 'unverifiable', detail: 'checkout not prepared (no node_modules, or the local data clone is stale and dirty/diverged) — any result would measure the environment, not the card' };
+  }
+  // BRO-3446: a card's acceptance command can name a path that was never
+  // created — a --allow-phantom-path dispatch guess, or a stale reference to
+  // a file since renamed/deleted — and isSafeCheckCommand only validates
+  // SHAPE, never existence. Running it anyway makes node exit non-zero on a
+  // missing module and this function would report `fail`, which reads as
+  // "the fix broke" when the true state is "the evidence was never there".
+  // Same fail-open posture this function already takes for a timeout kill and
+  // for exit 3: the absence of evidence is not evidence of failure.
+  //
+  // `missingPath: true` is carried on the result (Codex adversarial finding):
+  // close-time-verify.js's decideClose() used to detect this exact case a
+  // different way — by pattern-matching "could not find" in a FAIL detail,
+  // AFTER actually running the command — to REFUSE the close with "merge the
+  // branch first" guidance (a close attempted before the branch merged, so
+  // the card's own test exists only in its worktree, is not a broken test).
+  // This guard now intercepts before the command ever runs, so that FAIL
+  // never happens and the regex-based detection would go dead, silently
+  // ALLOWING a close it used to correctly refuse. The flag lets that caller
+  // keep refusing on this specific cause without this module needing to know
+  // close-time-verify.js exists.
+  const missing = extractCheckPaths(cmd).filter(p => !fs.existsSync(path.join(cwd, p)));
+  if (missing.length) {
+    return {
+      status: 'unverifiable',
+      detail: `acceptance command names a path absent from this checkout, not evidence the fix broke: ${missing.join(', ')}`,
+      missingPath: true,
+    };
+  }
+  const env = checksEnv();
+  const maxAttempts = Math.max(1, attempts);
+  let last = null;
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      const out = execFileSync(argv[0], argv.slice(1), { cwd, stdio: ['ignore', 'pipe', 'pipe'], timeout: timeoutMs, encoding: 'utf8', env });
+      // BRO-4523: a test file whose tests all skip (a missing env var, a
+      // guard on CI) exits 0 having proven nothing. Counting that as pass let
+      // the done-evidence audit call a card STUCK and the Done gate accept it.
+      if (argv.includes('--test') && zeroPassingTests(out)) {
+        return { status: 'unverifiable', detail: 'ran no passing tests (all skipped or none ran)' };
+      }
+      return { status: 'pass', detail: attempt > 1 ? 'passed on retry (first run flaked)' : null };
+    } catch (err) {
+      // Exit 3 is the repo convention for "cannot verify" (infrastructure
+      // missing/stale — e.g. check-health-row-absent.js with a stale
+      // snapshot). Reporting it as FAIL would claim finished work broke when
+      // the evidence merely wasn't available (Codex finding, 2026-08-02).
+      if (err.status === 3) {
+        return { status: 'unverifiable', detail: `check exited 3 (cannot verify — evidence unavailable): ${String(err.stderr || err.stdout || '').slice(0, 200)}` };
+      }
+      // A timeout kill (SIGTERM, no exit status) is infrastructure, not a
+      // verdict: at close time it would refuse a card because the machine was
+      // busy. Report it as unverifiable so every caller fails OPEN.
+      // (Behaviour change vs the recheck's pre-extraction copy, which counted a
+      // timeout as a FAIL and fed it to shouldExitShadow. A timeout is the
+      // absence of an answer, not a failing answer, in both callers.)
+      if (err.signal && err.status == null) {
+        return { status: 'unverifiable', detail: `check killed by ${err.signal} after ${timeoutMs}ms (timeout — no verdict)` };
+      }
+      // The command never STARTED (binary missing, bad interpreter, permission
+      // denied). Node reports these as spawn errors with no exit status. That
+      // is not evidence the work is broken, and a close-time caller that read
+      // it as FAIL would refuse a card over a typo in its own verify string
+      // (ship-check finding — it violated this module's fail-open contract).
+      if (err.status == null && err.code) {
+        return { status: 'unverifiable', detail: `command could not be started (${err.code}): ${argv[0]}` };
+      }
+      last = String(err.stderr || err.stdout || err.message).slice(0, 400);
+    }
+  }
+  return { status: 'fail', detail: last };
+}
+
+module.exports = { makeFreshCheckout, removeCheckout, runVerify, zeroPassingTests, shouldCloneAfterFetchFailure, DEFAULT_REPO, CHECK_TIMEOUT_MS };

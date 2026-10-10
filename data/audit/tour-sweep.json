@@ -1,0 +1,504 @@
+{
+  "generatedAt": "2026-10-10T19:03:27.206Z",
+  "moved": 0,
+  "held": [],
+  "repaired": 0,
+  "integrity": {
+    "flagged": 0,
+    "held": false,
+    "rows": []
+  },
+  "tours": [
+    {
+      "tourId": "beetlejuice-tour-2022",
+      "fromIds": [
+        "beetlejuice-2019",
+        "beetlejuice-2022",
+        "beetlejuice-2025"
+      ],
+      "held": false,
+      "counts": {
+        "already-routed": 1,
+        "ambiguous-tour": 2,
+        "non-review": 2,
+        "duplicate-on-tour": 2,
+        "broadway-production": 1,
+        "wrong-show": 1,
+        "no-tour-evidence": 1,
+        "before-tour-launch": 1
+      }
+    },
+    {
+      "tourId": "shucked-tour-2024",
+      "fromIds": [
+        "shucked-2023"
+      ],
+      "held": false,
+      "counts": {
+        "no-tour-evidence": 1,
+        "non-review": 10,
+        "target-collision": 1,
+        "wrong-show": 1,
+        "duplicate": 1,
+        "duplicate-on-tour": 3,
+        "ambiguous-tour": 3
+      }
+    },
+    {
+      "tourId": "life-of-pi-tour-2024",
+      "fromIds": [
+        "life-of-pi-2023"
+      ],
+      "held": false,
+      "counts": {
+        "undated-after-close": 1,
+        "wrong-show": 1,
+        "duplicate-on-tour": 6,
+        "non-review": 1,
+        "duplicate": 1
+      }
+    },
+    {
+      "tourId": "and-juliet-tour-2024",
+      "fromIds": [
+        "and-juliet-2022"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "beetlejuice-tour-2026",
+      "fromIds": [
+        "beetlejuice-2019",
+        "beetlejuice-2022",
+        "beetlejuice-2025"
+      ],
+      "held": false,
+      "counts": {
+        "already-routed": 1,
+        "ambiguous-tour": 2,
+        "non-review": 2,
+        "broadway-production": 1,
+        "before-broadway-opening": 2,
+        "no-tour-evidence": 1
+      }
+    },
+    {
+      "tourId": "book-of-mormon-tour-2022",
+      "fromIds": [
+        "book-of-mormon-2011"
+      ],
+      "held": false,
+      "counts": {
+        "already-routed": 1,
+        "before-tour-launch": 2
+      }
+    },
+    {
+      "tourId": "buena-vista-social-club-tour-2026",
+      "fromIds": [
+        "buena-vista-social-club-2025"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "death-becomes-her-tour-2026",
+      "fromIds": [
+        "death-becomes-her-2024"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "hells-kitchen-tour-2025",
+      "fromIds": [
+        "hells-kitchen-2024"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "jersey-boys-tour-2026",
+      "fromIds": [
+        "jersey-boys-2005"
+      ],
+      "held": false,
+      "counts": {
+        "uk-production": 1,
+        "before-tour-launch": 1,
+        "undated-before-launch": 1
+      }
+    },
+    {
+      "tourId": "maybe-happy-ending-tour-2026",
+      "fromIds": [
+        "maybe-happy-ending-2024"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "mrs-doubtfire-tour-2025",
+      "fromIds": [
+        "mrs-doubtfire-2021"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "the-great-gatsby-tour-2026",
+      "fromIds": [
+        "the-great-gatsby-2024"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "the-notebook-tour-2025",
+      "fromIds": [
+        "the-notebook-2024"
+      ],
+      "held": false,
+      "counts": {
+        "tryout": 1
+      }
+    },
+    {
+      "tourId": "the-outsiders-tour-2025",
+      "fromIds": [
+        "the-outsiders-2024"
+      ],
+      "held": false,
+      "counts": {
+        "duplicate-on-tour": 11
+      }
+    },
+    {
+      "tourId": "the-phantom-of-the-opera-tour-2025",
+      "fromIds": [
+        "the-phantom-of-the-opera-1988"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "waitress-tour-2026",
+      "fromIds": [
+        "waitress-2016",
+        "waitress-2021"
+      ],
+      "held": false,
+      "counts": {
+        "before-broadway-opening": 1,
+        "already-routed": 2
+      }
+    },
+    {
+      "tourId": "water-for-elephants-tour-2025",
+      "fromIds": [
+        "water-for-elephants-2024"
+      ],
+      "held": false,
+      "counts": {
+        "duplicate-on-tour": 2
+      }
+    },
+    {
+      "tourId": "suffs-tour-2025",
+      "fromIds": [
+        "suffs-2024"
+      ],
+      "held": false,
+      "counts": {
+        "duplicate-on-tour": 4
+      }
+    },
+    {
+      "tourId": "oh-mary-tour-2026",
+      "fromIds": [
+        "oh-mary-2024"
+      ],
+      "held": false,
+      "counts": {
+        "uk-production": 1
+      }
+    },
+    {
+      "tourId": "operation-mincemeat-tour-2026",
+      "fromIds": [
+        "operation-mincemeat-2025"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "boop-tour-2026",
+      "fromIds": [
+        "boop-2025"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "hamilton-tour-2024",
+      "fromIds": [
+        "hamilton-2015"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "the-lion-king-tour-2021",
+      "fromIds": [
+        "the-lion-king-1997"
+      ],
+      "held": false,
+      "counts": {
+        "non-review": 1,
+        "wrong-show": 1,
+        "undated-perennial": 4,
+        "uk-production": 1,
+        "broadway-production": 1
+      }
+    },
+    {
+      "tourId": "wicked-tour-2021",
+      "fromIds": [
+        "wicked-2003"
+      ],
+      "held": false,
+      "counts": {
+        "undated-perennial": 9,
+        "duplicate": 2,
+        "uk-production": 3
+      }
+    },
+    {
+      "tourId": "hadestown-tour-2024",
+      "fromIds": [
+        "hadestown-2019"
+      ],
+      "held": false,
+      "counts": {
+        "duplicate": 1,
+        "before-tour-launch": 1,
+        "already-routed": 1
+      }
+    },
+    {
+      "tourId": "six-tour-2022",
+      "fromIds": [
+        "six-2021"
+      ],
+      "held": false,
+      "counts": {
+        "tryout": 1,
+        "uk-production": 2
+      }
+    },
+    {
+      "tourId": "the-wiz-tour-2026",
+      "fromIds": [
+        "the-wiz-1975",
+        "the-wiz-1984",
+        "the-wiz-2024"
+      ],
+      "held": false,
+      "counts": {
+        "undated-before-launch": 4,
+        "no-tour-evidence": 4,
+        "before-tour-launch": 2
+      }
+    },
+    {
+      "tourId": "beauty-and-the-beast-tour-2025",
+      "fromIds": [
+        "beauty-and-the-beast-1994"
+      ],
+      "held": false,
+      "counts": {
+        "before-tour-launch": 1
+      }
+    },
+    {
+      "tourId": "the-sound-of-music-tour-2025",
+      "fromIds": [
+        "the-sound-of-music-1998",
+        "the-sound-of-music-2027"
+      ],
+      "held": false,
+      "counts": {
+        "uk-production": 1
+      }
+    },
+    {
+      "tourId": "spamalot-tour-2025",
+      "fromIds": [
+        "spamalot-2005",
+        "spamalot-2023"
+      ],
+      "held": false,
+      "counts": {
+        "no-tour-evidence": 7,
+        "tryout": 1
+      }
+    },
+    {
+      "tourId": "the-music-man-tour-2026",
+      "fromIds": [
+        "the-music-man-2000",
+        "the-music-man-2022"
+      ],
+      "held": false,
+      "counts": {
+        "before-tour-launch": 1
+      }
+    },
+    {
+      "tourId": "mamma-mia-tour-2026",
+      "fromIds": [
+        "mamma-mia-2001",
+        "mamma-mia-2025"
+      ],
+      "held": false,
+      "counts": {
+        "before-tour-launch": 2,
+        "uk-production": 2
+      }
+    },
+    {
+      "tourId": "harry-potter-tour-2024",
+      "fromIds": [
+        "harry-potter-2021"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "fromIds": [
+        "a-beautiful-noise-the-neil-diamond-musical-2022"
+      ],
+      "held": false,
+      "counts": {
+        "non-review": 1,
+        "wrong-show": 4,
+        "ambiguous-tour": 1,
+        "duplicate": 3,
+        "no-tour-evidence": 2
+      }
+    },
+    {
+      "tourId": "kinky-boots-tour-2025",
+      "fromIds": [
+        "kinky-boots-2013"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "a-beautiful-noise-the-neil-diamond-musical-tour-2026",
+      "fromIds": [
+        "a-beautiful-noise-the-neil-diamond-musical-2022"
+      ],
+      "held": false,
+      "counts": {
+        "non-review": 1,
+        "wrong-show": 4,
+        "ambiguous-tour": 1,
+        "no-tour-evidence": 3,
+        "duplicate": 1
+      }
+    },
+    {
+      "tourId": "a-christmas-story-the-musical-tour-2026",
+      "fromIds": [
+        "a-christmas-story-the-musical-2012"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "dr-seuss-how-the-grinch-stole-christmas-tour-2026",
+      "fromIds": [
+        "dr-seuss-how-the-grinch-stole-christmas-2007"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "just-in-time-tour-2027",
+      "fromIds": [
+        "just-in-time-2025"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "legally-blonde-tour-2027",
+      "fromIds": [
+        "legally-blonde-2007"
+      ],
+      "held": false,
+      "counts": {
+        "no-tour-evidence": 4,
+        "wrong-show": 1
+      }
+    },
+    {
+      "tourId": "mark-twain-tonight-tour-2027",
+      "fromIds": [
+        "mark-twain-tonight-1977",
+        "mark-twain-tonight-2005"
+      ],
+      "held": false,
+      "counts": {
+        "before-tour-launch": 1
+      }
+    },
+    {
+      "tourId": "shucked-tour-2027",
+      "fromIds": [
+        "shucked-2023"
+      ],
+      "held": false,
+      "counts": {
+        "no-tour-evidence": 1,
+        "non-review": 10,
+        "before-tour-launch": 4,
+        "wrong-show": 1,
+        "duplicate": 1,
+        "ambiguous-tour": 3
+      }
+    },
+    {
+      "tourId": "the-whos-tommy-tour-2026",
+      "fromIds": [
+        "the-whos-tommy-1993",
+        "the-whos-tommy-2024"
+      ],
+      "held": false,
+      "counts": {
+        "tryout": 1,
+        "before-tour-launch": 1
+      }
+    },
+    {
+      "tourId": "dirty-dancing-tour-2026",
+      "fromIds": [
+        "dirty-dancing-2027"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "mystic-pizza-tour-2026",
+      "fromIds": [
+        "mystic-pizza-regional-2025"
+      ],
+      "held": false,
+      "counts": {}
+    }
+  ]
+}

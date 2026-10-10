@@ -1,0 +1,151 @@
+name: Enrich Runtimes
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Mode: current-only (open shows, 1 request), all (batch), single show'
+        required: true
+        default: 'current-only'
+        type: choice
+        options:
+          - current-only
+          - all
+          - show
+      show:
+        description: 'Show slug (required if mode=show)'
+        required: false
+        type: string
+      force:
+        description: 'Overwrite existing runtime values'
+        required: false
+        default: false
+        type: boolean
+      dry_run:
+        description: 'Preview changes only (no writes)'
+        required: false
+        default: false
+        type: boolean
+  schedule:
+    - cron: '0 7 * * 1'  # Weekly Mondays at 7 AM UTC
+
+permissions:
+  contents: write
+
+# BRO-934: per-workflow group: stops overlapping runs of the same job racing on the private-repo push. Not a shared class group (GH pending-queue depth is 1; see rebuild-fast.yml).
+concurrency:
+  group: enrich-runtimes
+  cancel-in-progress: false
+
+jobs:
+  enrich-runtimes:
+    runs-on: ubuntu-latest
+    # The TodayTix page audit fetches ~250 show pages via Playwright (~25 min
+    # observed 2026-07-20 — run 29749778141 finished at 29 of 30 min).
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 60-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Run runtime enrichment
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          FLAGS=""
+
+          # Mode flags
+          MODE="${{ inputs.mode || 'current-only' }}"
+
+          if [ "$MODE" = "current-only" ]; then
+            FLAGS="$FLAGS --current-only"
+          elif [ "$MODE" = "show" ]; then
+            if [ -z "${{ inputs.show }}" ]; then
+              echo "Error: --show is required when mode=show"
+              exit 1
+            fi
+            FLAGS="$FLAGS --show=${{ inputs.show }}"
+          fi
+          # "all" mode needs no extra flags
+
+          # Force flag
+          if [ "${{ inputs.force }}" = "true" ]; then
+            FLAGS="$FLAGS --force"
+          fi
+
+          # Dry run flag
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            FLAGS="$FLAGS --dry-run"
+          fi
+
+          echo "Running: node scripts/scrape-broadway-com-runtimes.js $FLAGS"
+          node scripts/scrape-broadway-com-runtimes.js $FLAGS
+
+      # Broadway.com only covers currently-running Broadway shows. Off-Broadway
+      # and West End runtimes come from TodayTix, whose REST API can be stale
+      # (Birthright 2026-07: API said 90min, page said 3hr30). This audits every
+      # active show against the TodayTix PAGE and corrects drift.
+      - name: Audit runtimes vs TodayTix pages
+        if: inputs.mode != 'show'
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            # Exit 1 on mismatch is informational in dry-run mode
+            node scripts/audit-todaytix-runtimes.js || echo "Mismatches found (dry run — not fixing)"
+          else
+            node scripts/audit-todaytix-runtimes.js --fix
+          fi
+
+      - name: Run validation
+        if: inputs.dry_run != true
+        run: node scripts/validate-data.js
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from enrich-runtimes'
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: enrich-runtimes
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Enrich Runtimes Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

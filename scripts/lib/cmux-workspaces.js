@@ -1,0 +1,828 @@
+/**
+ * cmux-workspaces — shared Cmux workspace helpers for bsc-next / bsc-prune.
+ *
+ * Conventions (owner, 2026-07-12; closing rules tightened 2026-07-15):
+ *  - A finished session retitles its own workspace with a leading ✅ (wrap-up
+ *    skill / workspace-mark-done hook). The mark is visual ONLY. Closing is
+ *    owner-triggered exclusively: bsc-prune (run by the owner) closes ✅-marked
+ *    workspaces. Nothing closes automatically — wrap-up self-close and the
+ *    bsc-next dispatch-time sweep were both removed after three same-day
+ *    incidents of tabs closing while the owner was typing in them.
+ *  - "Idle" = no running claude_code process in the workspace (cmux top tag).
+ *    Idle but un-marked workspaces are listed, never auto-closed.
+ *
+ * Pure parsers are exported for tests; only the run/close/list wrappers touch
+ * the cmux socket.
+ */
+
+const fs = require('fs');
+const { execFileSync } = require('child_process');
+const { isCloseable, hasAutoDispatchMarker } = require('./prune-closeable.js');
+const dispatchLedger = require('./dispatch-ledger.js');
+const { cmuxSpawnEnv, classifyCmuxError, withoutCmuxPassword } = require('./cmux-socket-auth.js');
+
+const CMUX = '/Applications/cmux.app/Contents/Resources/bin/cmux';
+
+function cmuxAvailable() {
+  return fs.existsSync(CMUX);
+}
+
+// Every socket call funnels through here (see this file's header: only the
+// run/close/list wrappers touch the cmux socket), which makes it the one
+// place that has to carry the socket credential — see cmux-socket-auth.js
+// for why per-LaunchAgent injection under-fixes (BRO-2959).
+//
+// The retry is the safety valve: if the password on disk is stale, a caller
+// that would otherwise have been admitted by cmux-ancestry alone would now
+// fail on a credential it never needed. So on an auth rejection we re-read
+// the config once (picking up a rotation) and, failing that, try again with
+// no credential at all.
+//
+// Retrying ONLY on auth-denied is what makes this safe for the mutating
+// commands that also come through here (closing a workspace, respawn-pane,
+// workspace-action, creating a workspace). An auth rejection happens at the
+// connection handshake, BEFORE the daemon ever sees the command, so nothing
+// was applied and re-sending cannot double-apply it. A timeout is the
+// opposite — the command may well have landed and only the reply was lost —
+// which is exactly why timeouts (and refused connections) are re-thrown to
+// the caller's existing degraded path instead of being retried here. The one
+// exception is opt-in: a caller that KNOWS its command is a read passes
+// `retryTimeouts` (see RUN_RETRY_BUDGET_MS below, BRO-3413).
+//
+// The timeout is new too: this call sits inside a 5-min launchd tick, and a
+// wedged socket previously blocked it indefinitely, silently disabling the
+// orphan detection that runs after it.
+const RUN_TIMEOUT_MS = 30_000;
+
+// The recovery warnings below describe a standing CONFIG state, so they are
+// the same on every call. A stale credential in a process whose socket would
+// admit it by ancestry makes attempt 1 fail and attempt 2 succeed EVERY time,
+// and a tick issues dozens of cmux calls — unguarded that is dozens of
+// identical lines every five minutes (review finding). Once per process is
+// enough to diagnose it; the condition cannot change mid-process without a
+// config edit, which starts a new tick anyway.
+const warnedMessages = new Set();
+
+// logFn must never be able to convert a SUCCESSFUL cmux call into a failure:
+// the warning is diagnostic, the command already ran.
+//
+// `key` defaults to `message` for this file's original 2-arg callers (the
+// auth-retry warnings below, whose message text IS a stable, enum-like
+// identity). A caller whose message embeds data that varies call-to-call
+// passes an explicit, stable `key` instead — listWorkspaces()'s parse-anomaly
+// warning is the case that needed this (BRO-2995, codex ship-check finding):
+// its message interpolates raw/parsed line counts that differ on every call
+// as the real open-workspace count changes, so deduping on the literal
+// message would never actually fire (cmux-launch.js's pollUntil re-lists
+// every few seconds during launch verification — a persistent format change
+// would otherwise flood the log for the duration of every launch attempt
+// fleet-wide instead of warning once per process).
+function warnOnce(logFn, message, key = message) {
+  if (warnedMessages.has(key)) return;
+  warnedMessages.add(key);
+  try { logFn(message); } catch { /* diagnostics must not break the caller */ }
+}
+
+// Test-only: the once-per-process guard is module state, so each test needs a
+// clean slate or only the first one would ever observe a warning.
+function _resetRunWarnings() { warnedMessages.clear(); retryLatchedOff = false; }
+
+// `execFn` is a test-only seam (same idiom as this file's listWorkspaces/
+// closeWorkspace injection points). The ladder below is the riskiest logic in
+// the module and execFileSync is otherwise impossible to drive from a test
+// without spawning real processes against a live socket.
+// Timeout retry (BRO-3413) — OPT-IN, never inferred from argv. The header
+// above explains why run() does not retry timeouts by default: a mutating
+// command may have landed with only its reply lost. A pure READ has no such
+// hazard, and the read-only listing wrappers below (listWorkspaces,
+// listWorkspacesWithCwd) are what the dispatch path depends on: cmux
+// list-workspaces was measured at 15s / 10s / 0.16s on three consecutive
+// calls under ~30 sessions of socket contention, so one slow call aborted a
+// whole dispatch (linear-next, the morning digest's auto-fix). Callers pass
+// `retryTimeouts: N` only for commands they know are reads. Matching argv here
+// instead was rejected in review: a future `workspace list-…` mutation or a
+// reordered argv could silently cross into the retrying set.
+//
+// The retry is bounded by TOTAL elapsed time, not just attempt count: a
+// wedged socket costs the full RUN_TIMEOUT_MS per attempt, and bsc-reconcile
+// lists several times inside one 5-min launchd tick. Every retry's own
+// subprocess timeout is capped at what is left of RUN_RETRY_BUDGET_MS, and no
+// retry starts with less than RUN_RETRY_MIN_ATTEMPT_MS left, so one call
+// never runs past max(RUN_TIMEOUT_MS, RUN_RETRY_BUDGET_MS). cmux's own
+// "Command timed out" fires at ~15s, so the contention case still gets all
+// its attempts.
+//
+// And once a retried call has EXHAUSTED its budget on timeouts, the socket is
+// wedged rather than busy: later calls in the same process fall straight back
+// to a single attempt instead of paying the budget again each time (review
+// finding: four reconcile sweeps x a full budget would overrun the tick, and
+// every retry adds load to the very socket that is struggling).
+const RUN_RETRY_BUDGET_MS = 45_000;
+const RUN_RETRY_MIN_ATTEMPT_MS = 5_000;
+const RUN_RETRY_BACKOFF_MS = [1000, 2000]; // + up to 1s jitter each
+let retryLatchedOff = false;
+
+function sleepMs(ms) {
+  try { Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms); } catch { /* no SAB: skip the pause, still retry */ }
+}
+
+function run(args, { retryTimeouts = 0, sleepFn = sleepMs, nowFn = Date.now, ...opts } = {}) {
+  const maxRetries = retryLatchedOff ? 0 : retryTimeouts;
+  const deadline = nowFn() + RUN_RETRY_BUDGET_MS;
+  let timeoutMs = RUN_TIMEOUT_MS;
+  for (let retry = 0; ; retry++) {
+    try {
+      const out = runOnce(args, { ...opts, timeoutMs });
+      if (retry > 0) {
+        // Reports what was observed, not a cause: a daemon stall/restart looks
+        // the same from here as contention.
+        warnOnce(opts.logFn || console.error, `[cmux] \`${args.join(' ')}\` timed out and succeeded on retry ${retry} (BRO-3413).`, `cmux:timeout-recovered:${args.join(' ')}`);
+      }
+      return out;
+    } catch (e) {
+      if (classifyCmuxError(e) !== 'timeout') throw e;
+      if (retry >= maxRetries) { if (maxRetries > 0) retryLatchedOff = true; throw e; }
+      const base = RUN_RETRY_BACKOFF_MS[Math.min(retry, RUN_RETRY_BACKOFF_MS.length - 1)];
+      const pause = base + Math.floor(Math.random() * 1000);
+      if (deadline - nowFn() - pause < RUN_RETRY_MIN_ATTEMPT_MS) { retryLatchedOff = true; throw e; }
+      sleepFn(pause);
+      timeoutMs = Math.min(RUN_TIMEOUT_MS, deadline - nowFn());
+      if (timeoutMs < RUN_RETRY_MIN_ATTEMPT_MS) { retryLatchedOff = true; throw e; }
+    }
+  }
+}
+
+function runOnce(args, { execFn = execFileSync, logFn = console.error, timeoutMs = RUN_TIMEOUT_MS } = {}) {
+  const base = { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: timeoutMs };
+  let firstAuthError = null;
+
+  try {
+    return execFn(CMUX, args, { ...base, env: cmuxSpawnEnv(process.env) });
+  } catch (e) {
+    if (classifyCmuxError(e) !== 'auth-denied') throw e;
+    firstAuthError = e;
+  }
+
+  try {
+    // force: the caller's own CMUX_SOCKET_PASSWORD has now been PROVEN wrong
+    // by a rejection, so disk wins. Without force this attempt would be
+    // byte-identical to the one that just failed.
+    const callerHadPassword = Boolean(process.env.CMUX_SOCKET_PASSWORD);
+    const retryEnv = cmuxSpawnEnv(process.env, { refresh: true, force: true });
+    const out = execFn(CMUX, args, { ...base, env: retryEnv });
+    // Announce here too, not only on attempt 3. Once a rejected credential is
+    // DROPPED under force, the common "no password on disk" case succeeds
+    // right here — and reporting only from attempt 3 made a permanently wrong
+    // LaunchAgent password completely invisible, which is the masking this
+    // warning exists to prevent (review finding).
+    //
+    // Which message is right depends on what the CALLER had, not just on what
+    // the retry env ended up with: a dropped stale credential and a caller
+    // that never had one both leave retryEnv empty, but they are different
+    // diagnoses and only the first names something to fix.
+    warnOnce(logFn, retryEnv.CMUX_SOCKET_PASSWORD
+      ? '[cmux] socket password was rejected; a refreshed one from ~/.config/cmux/cmux.json worked. The stale value is still in this process’s environment.'
+      : callerHadPassword
+        ? '[cmux] the CMUX_SOCKET_PASSWORD in this environment was rejected and no usable one is on disk; the call succeeded without any credential. Fix automation.socketPassword in ~/.config/cmux/cmux.json or drop the stale value from the caller.'
+        : '[cmux] socket password was rejected; succeeded without it. Check automation.socketPassword in ~/.config/cmux/cmux.json.');
+    return out;
+  } catch (e2) {
+    // Same rule as the final throw below, which was fixed first and left this
+    // rung behind (review finding): surface the ORIGINAL auth rejection. If
+    // the credential is rejected and then the daemon drops between attempts —
+    // a cmux restart, which is how the socket mode changed in the first
+    // place — throwing attempt 2's 'unavailable' would erase the auth
+    // diagnosis and the permanent misconfiguration would go unreported again.
+    if (classifyCmuxError(e2) !== 'auth-denied') throw firstAuthError || e2;
+  }
+
+  try {
+    // Last resort: no credential, so an in-cmux caller falls back to the
+    // ancestry check that admitted it before any of this existed.
+    // A "skip attempt 3 when it would repeat attempt 2 byte-for-byte" short
+    // circuit was tried here and REVERTED. It saved one spawn in the outage
+    // state, but whether attempts 2 and 3 differ depends on whether the HOST
+    // has a password in ~/.config/cmux/cmux.json — so it silently changed the
+    // ladder's call count on any machine without one, breaking three existing
+    // tests on exactly the CI runners that have no cmux config. A one-spawn
+    // saving is not worth a host-dependent ladder (review finding).
+    const out = execFn(CMUX, args, { ...base, env: withoutCmuxPassword(process.env) });
+    // Saying nothing here would mask a permanently wrong password forever:
+    // every call would quietly cost three spawns and still look healthy.
+    warnOnce(logFn, '[cmux] socket password was rejected; succeeded without it. Check automation.socketPassword in ~/.config/cmux/cmux.json.');
+    return out;
+  } catch (e3) {
+    // Surface the ORIGINAL auth rejection, not this last attempt's error.
+    // If attempt 3 happens to fail as 'unavailable', throwing it would hide
+    // the auth diagnosis from summarizeCmuxFailures and nothing would page —
+    // precisely the under-alerting this whole change exists to end.
+    throw classifyCmuxError(e3) === 'auth-denied' ? e3 : (firstAuthError || e3);
+  }
+}
+
+// ── pure logic (exported for tests) ────────────────────────────────────────
+
+// Parse `cmux list-workspaces` lines:
+//   "* workspace:31  Build: Autonomous nightly loop (v4)  [selected]"
+//   "  workspace:2  ⠂ Box office card improvements"
+function parseWorkspaces(text) {
+  return String(text).split('\n').map(line => {
+    const m = /^\s*(\*)?\s*(workspace:\d+)\s+(.*)$/.exec(line);
+    if (!m) return null;
+    const selected = Boolean(m[1]) || /\[selected\]\s*$/.test(m[3]);
+    const title = m[3].replace(/\s*\[selected\]\s*$/, '').trim();
+    return { ref: m[2], title, selected };
+  }).filter(Boolean);
+}
+
+// The done marker must LEAD the title. cmux prepends activity glyphs
+// (braille spinners ⠂/⠐, ✳) before the title in list output, so tolerate a
+// few non-word prefix chars — but a ✅ later in a real title must not count.
+function isDoneTitle(title) {
+  return String(title).trim().slice(0, 4).includes('✅');
+}
+
+// Strips a leading run of non-letter/non-digit characters — cmux's activity
+// glyphs/spinners (⠂/⠐/✳) and status markers (✅/🤖) — same convention as
+// crown-duplicate-detector.js's titleFamilyKey and dispatch-ledger.js's
+// titleMatchesSubject prefix-stripping. Used by sendToWorkspace's
+// expectedTitle check (BRO-4140) so routine glyph churn between resolving a
+// ref and sending to it doesn't read as a wrong-tab mismatch.
+function stripLeadingGlyphs(title) {
+  return String(title || '').trim().replace(/^[^\p{L}\p{N}]+/u, '').trim();
+}
+
+// BRO-3044: a tag id carries the agent name and an optional session uuid:
+//   workspace:<uuid>:tag:claude_code
+//   workspace:<uuid>:tag:codex.01a055e0-8ac3-7c33-b4fa-6c12c2cf89ce
+// Matching on the tag NAME (any agent) rather than a hard-coded list is deliberate: the
+// failure this guards is "we did not know about that one". Moved here from cmux-triage.js
+// (which now imports it) because every close path's liveness check lives in this file.
+const AGENT_TAG_RE = /:tag:([A-Za-z][A-Za-z0-9_-]*)(?:\.[0-9a-fA-F-]+)?$/;
+
+// Which agent CLI, if any, has a live PROCESS in this workspace (tag name, e.g. 'codex'),
+// from `cmux top --processes --format tsv`. Requires a process row, not just a tag row, so a
+// crashed agent's stale tag stays prunable. ACCEPTED LIMIT (erring toward alive): any tag
+// with a process row counts, so a future non-agent tag would read alive and never be pruned.
+// Live case 2026-09-07: workspace:100 was an idle Codex session holding an unmerged commit
+// and every claude-only check called it dead.
+function liveAgentIn(tsvText) {
+  for (const line of String(tsvText || '').split('\n')) {
+    const c = line.split('\t');
+    if (c[3] !== 'process') continue;
+    const m = AGENT_TAG_RE.exec(c[5] || '');
+    if (m) return m[1];
+  }
+  return null;
+}
+
+// `cmux top --workspace X --processes --format tsv` emits one row per node;
+// a live Claude Code session appears as a tag row whose columns are
+// cpu\trss\tproc\ttype\tid\tparent\tstatus. Column-exact match — a substring
+// test would false-positive on statuses like "NotRunning" or a title
+// containing "Running" (ship-check reviewer finding, 2026-07-12).
+function hasRunningClaude(tsvText) {
+  return String(tsvText).split('\n').some(l => {
+    const c = l.split('\t');
+    if (c[3] !== 'tag') return false;
+    const m = AGENT_TAG_RE.exec(c[4] || '');
+    if (!m) return false;
+    const status = (c[6] || '').trim();
+    // claude_code: busy only when cmux says Running (an idle Claude has an EMPTY status).
+    if (m[1] === 'claude_code') return status === 'Running';
+    // BRO-3044: any OTHER agent (Codex, ...) is busy unless it says exactly Idle. The one
+    // Codex tag row seen live reported `Idle`; what it reports mid-turn was never observed,
+    // so "not Idle" is the fail-safe reading (a working tab must never look closable).
+    // Known limit: this reads the TAG row only, so a stale non-Claude tag with no process row
+    // beside an idle Claude reads busy and keeps that tab from auto-closing. Safe direction.
+    return status !== 'Idle';
+  });
+}
+
+// A claude_code PROCESS row (a `process` row parented to a claude_code tag),
+// regardless of tag status. A claude waiting at the prompt has the tag row
+// with NO status but its process rows are present — it is a live session.
+// 2026-07-21 incident: pruneDone used the Running-only check, so a
+// conductor's sweep closed 10 ✅-marked tabs whose claude was alive and
+// waiting on the owner (✅ auto-marks land when the task completes, even with
+// user review pending). Prune's charter is sweeping sessions that DIED —
+// process presence, not activity, is the closability test. Requiring the
+// process row (not just the tag) also keeps a hypothetical stale tag row
+// left behind by a crashed claude prunable (codex ship-check finding).
+function hasLiveClaude(tsvText) {
+  return String(tsvText).split('\n').some(l => {
+    const c = l.split('\t');
+    return c[3] === 'process' && /:tag:claude_code$/.test(c[5] || '');
+  });
+}
+
+// Parse `cmux workspace list --json` into the same shape as parseWorkspaces
+// PLUS `cwd` (card #1938, crown-duplicate-detector.js): the plain-text
+// `list-workspaces` form used everywhere else in this file never carried the
+// working directory, and telling a bare-checkout Crown tab (dangerous — it
+// shares the main checkout with every other bare-cwd session) from a
+// worktree-scoped one (safe — its own branch) needs it. A malformed/empty
+// payload returns [] rather than throwing — callers treat a lookup failure
+// as "no crown candidates found," not license to crash a routine sweep.
+function parseWorkspacesJson(jsonText) {
+  let parsed;
+  try { parsed = JSON.parse(jsonText); } catch { return []; }
+  const workspaces = parsed && Array.isArray(parsed.workspaces) ? parsed.workspaces : [];
+  return workspaces.map(w => ({
+    ref: w.ref,
+    id: w.id || null,
+    title: w.custom_title || w.title || '',
+    selected: Boolean(w.selected),
+    cwd: w.current_directory || null,
+  })).filter(w => w.ref);
+}
+
+// Distinguishes "cmux printed zero workspace lines" (a real empty-cmux
+// state) from "cmux printed N non-blank lines but none of them matched the
+// parser" (truncated output, a crash mid-write, or a future cmux release
+// rewording the list-workspaces line format) — both currently collapse to
+// the same `[]` from parseWorkspaces, which is the exact ambiguity BRO-2995
+// exists to remove. Pure logic, exported for tests (this file's convention).
+//
+// Deliberately does NOT throw and does not change parseWorkspaces()'s own
+// return value — see listWorkspaces() below for why. Callers that want the
+// raw signal (rather than a swallowed [] with a log line) call this
+// directly instead of listWorkspaces().
+function parseWorkspacesWithFailures(text) {
+  const rawLineCount = String(text).split('\n').filter(l => l.trim() !== '').length;
+  const workspaces = parseWorkspaces(text);
+  return { workspaces, rawLineCount, parseFailures: Math.max(0, rawLineCount - workspaces.length) };
+}
+
+// A valid workspace ref is cmux's `workspace:<N>` list form — the ONLY form
+// ever actually passed to `--workspace` anywhere in this codebase (matches
+// dispatch-ledger.js's own established WORKSPACE_REF_RE). BRO-4140: a
+// caller-supplied BARE NUMBER (`'13'`) is NOT that — it looks like a
+// `workspace:N` ref with the prefix dropped, but cmux's CLI resolves a bare
+// number as a list INDEX into the CURRENT listing, not a workspace id.
+// Indices shift as workspaces open/close/renumber, so "13" silently resolves
+// to whatever tab currently sits at position 13 — a DIFFERENT, unrelated
+// workspace from the one the caller meant. This is exactly how a live
+// incident misdelivered a crown handoff: sendToWorkspace('13', ...) typed
+// into the wrong tab, and the sender's own follow-up check
+// (claudeMidTurnIn('13')) resolved to that SAME wrong tab and "confirmed" a
+// delivery that never happened.
+//
+// Silently prefixing a bare number with "workspace:" was considered and
+// rejected: the caller may genuinely have meant the list index (some
+// external tooling reports 1-based positions), and guessing wrong would
+// silently repeat this exact bug one layer down. Refuse instead — every real
+// call site in this codebase already gets its ref from a `listWorkspaces()`
+// row (`w.ref`), never from a bare index, so nothing legitimate is broken by
+// requiring the explicit form.
+//
+// listWorkspacesWithCwd() also carries a permanent per-workspace UUID
+// (`w.id`), but accepting that here was tried and DROPPED (adversarial
+// review, BRO-4140): nothing in this codebase has ever verified that cmux's
+// CLI actually accepts a raw UUID as a `--workspace` value, and accepting an
+// unverified second ref FORMAT here — while every real lookup (sendToWorkspace's
+// title check included) only ever indexes listWorkspaces() by the `workspace:N`
+// `ref` field — would let a syntactically-"valid" UUID sail past this guard
+// and then fail (or worse, mismatch) downstream instead of here. Scope this
+// fix to the one ref shape this codebase has ever actually used.
+const WORKSPACE_REF_RE = /^workspace:\d+$/;
+
+function isValidWorkspaceRef(ref) {
+  const s = typeof ref === 'string' ? ref : String(ref ?? '');
+  return WORKSPACE_REF_RE.test(s);
+}
+
+// Throws SYNCHRONOUSLY, before any socket call — every caller in this file
+// that also has a fail-safe try/catch around its `run()` call (claudeMidTurnIn,
+// claudeAliveIn, terminalSurfaceAliveIn, terminalSurfaceConfirmedMissing)
+// validates BEFORE entering that try, specifically so this error propagates
+// as a real crash instead of being silently swallowed into "true"/"alive" by
+// those catches — an invalid ref must never be indistinguishable from a
+// transient cmux error.
+function assertValidWorkspaceRef(ref) {
+  if (isValidWorkspaceRef(ref)) return ref;
+  throw new Error(`cmux-workspaces: invalid workspace ref ${JSON.stringify(ref)} — expected "workspace:<N>", got a bare/malformed value. cmux resolves a bare number as a list INDEX (not a workspace id), which silently targets the wrong tab (BRO-4140). Resolve the real ref via listWorkspaces() first.`);
+}
+
+// ── socket wrappers ─────────────────────────────────────────────────────────
+
+// Read-only listings opt in to run()'s timeout retry (BRO-3413): 3 attempts.
+// Exported so other read-only listing callers use the same setting.
+const LIST_RETRY_TIMEOUTS = 2;
+
+// `runFn` is a test-only seam (same idiom as run()'s own execFn injection)
+// so the anomaly-logging wiring below is covered end-to-end, not just via
+// parseWorkspacesWithFailures in isolation.
+function listWorkspaces({ runFn = run } = {}) {
+  const { workspaces, rawLineCount, parseFailures } = parseWorkspacesWithFailures(runFn(['list-workspaces'], { retryTimeouts: LIST_RETRY_TIMEOUTS }));
+  if (parseFailures > 0) {
+    // NEVER throw here (BRO-2995 plan-review finding, second-opinion agent):
+    // cmux-launch.js's launchCmuxSessionInner (the fleet's actual dispatch
+    // path) calls listWorkspaces() at lines ~1215/1240 with no local
+    // try/catch — it sits inside launchCmuxSession's try/**finally**, not
+    // try/catch, so a throw here would propagate uncaught and abort a live
+    // launch attempt. That module's own terminal-capacity probe a few
+    // hundred lines above documents the same rule for a different signal:
+    // "a capacity reading can never block a dispatch." An observability gap
+    // must not become an availability outage to fix itself. So this stays a
+    // same-shape, never-throwing wrapper — the fix is making the anomaly
+    // LOUD and INSPECTABLE (parseWorkspacesWithFailures is exported for any
+    // caller — e.g. a future health check — that wants to tell "confirmed
+    // empty" from "parse failure" for itself instead of trusting a bare []).
+    const totalFailure = workspaces.length === 0;
+    const message = totalFailure
+      ? `[cmux-workspaces] listWorkspaces(): cmux printed ${rawLineCount} non-blank line(s) but none parsed as a workspace — this looks like a PARSE FAILURE (truncated output, a reworded cmux format, or a crash mid-write), not a genuinely empty workspace list (BRO-2995). Returning [] anyway; callers that already treat [] as fail-safe uncertainty are unaffected. Call parseWorkspacesWithFailures() directly for the raw counts.`
+      : `[cmux-workspaces] listWorkspaces(): ${parseFailures} of ${rawLineCount} raw line(s) from cmux did not parse as a workspace — returning the ${workspaces.length} that did; the open-workspace list may be incomplete (BRO-2995).`;
+    // warnOnce, not a bare console.error (codex ship-check findings, both
+    // fixed by reusing this file's own existing pattern):
+    //  (1) wraps the log call in try/catch — a replaced/broken console.error
+    //      must not itself become a NEW throw on this uncaught-listWorkspaces()
+    //      dispatch path;
+    //  (2) dedupes per process by ANOMALY CATEGORY (the key below), not the
+    //      literal message — cmux-launch.js's pollUntil re-lists every few
+    //      seconds during launch verification, and the interpolated counts
+    //      differ call to call as real workspaces open/close, so deduping on
+    //      the exact message would never actually fire and a persistent
+    //      format change would flood the log for the duration of every
+    //      launch attempt fleet-wide.
+    warnOnce(console.error, message, totalFailure ? 'cmux-workspaces:parse-failure-total' : 'cmux-workspaces:parse-failure-partial');
+  }
+  return workspaces;
+}
+
+function listWorkspacesWithCwd() {
+  return parseWorkspacesJson(run(['workspace', 'list', '--json'], { retryTimeouts: LIST_RETRY_TIMEOUTS }));
+}
+
+function closeWorkspace(ref) {
+  assertValidWorkspaceRef(ref);
+  run(['close-workspace', '--workspace', ref]);
+}
+
+// Type text into a live workspace's prompt and submit it (card #1009). The two
+// calls are the same pair a human-driven session ran by hand on 2026-08-04 to
+// get a corrected card into workspace:156 — `cmux send <text>` fills the
+// prompt, `send-key Enter` submits it. Text MUST already be a single line:
+// cmux treats a newline (and the literal two-character sequence "\n") as
+// Enter, so an unflattened message submits itself half-typed. Callers use
+// dispatch-card-drift.formatAmendMessage, which flattens.
+//
+// BRO-4140: `opts.expectedTitle`, when passed, is checked against the
+// resolved workspace's CURRENT title (via a fresh listWorkspaces() call)
+// BEFORE anything is typed — the misdelivery incident this guards against
+// had the wrong ref resolve to a real, live, unrelated tab, so "the send
+// succeeded" alone proves nothing about WHICH tab received it. Checking
+// title identity first (refuse-before-type) is safer than a post-send check
+// alone: it refuses BEFORE typing whenever the mismatch is visible up front.
+// It is NOT a perfect, atomic guarantee — cmux gives no single "send iff
+// still this title" primitive, so a title change or a ref recycle landing in
+// the gap between this check and the `send`/`send-key` calls below is a
+// known, accepted residual risk (adversarial review, BRO-4140), same as
+// bsc-next.js's runAmend()/occupantStillThisTask, which has carried the
+// identical race for the same reason since card #503. This still closes the
+// incident that prompted it: a hand-typed BARE-NUMBER ref that resolves to a
+// completely unrelated tab is caught here, every time, before anything types.
+// Crown/handoff senders — the exact call shape that misdelivered — should
+// always pass the title they resolved the ref from.
+//
+// The comparison strips each side's leading activity-glyph/spinner run
+// (cmux's list-workspaces text form prepends these — see isDoneTitle above)
+// before comparing: a spinner frame or ✅/🤖 marker change between resolving
+// the ref and calling this function is routine drift, not evidence of a
+// wrong tab, and treating it as a mismatch would make this guard misfire on
+// the common case instead of the rare one it exists to catch.
+function sendToWorkspace(ref, text, opts = {}) {
+  assertValidWorkspaceRef(ref);
+  // runFn/listWorkspacesFn are test-only seams (same idiom as listWorkspaces's
+  // own runFn above) — real callers get the module's real run()/listWorkspaces().
+  const { expectedTitle, listWorkspacesFn = listWorkspaces, runFn = run } = opts;
+  if (expectedTitle != null) {
+    const current = listWorkspacesFn().find(w => w.ref === ref);
+    if (!current) {
+      throw new Error(`sendToWorkspace: refusing to send — ${ref} was not found in the current workspace listing (it may have closed or been renumbered). Re-resolve the ref before sending.`);
+    }
+    if (stripLeadingGlyphs(current.title) !== stripLeadingGlyphs(expectedTitle)) {
+      throw new Error(`sendToWorkspace: refusing to send — ${ref}'s current title (${JSON.stringify(current.title)}) does not match the expected title (${JSON.stringify(expectedTitle)}). This is the wrong-tab misdelivery shape from BRO-4140; re-resolve the ref and retry.`);
+    }
+  }
+  runFn(['send', '--workspace', ref, '--', String(text)]);
+  runFn(['send-key', '--workspace', ref, 'Enter']);
+}
+
+// SAFE variant for the close-decision path (card #709 ship-check catch).
+// An earlier version of this reused a legacy helper that failed OPEN to
+// "not running" on any I/O error — the same unsafe direction the #559 fix
+// (claudeAliveIn) eliminated from the close path. That legacy helper is
+// deleted (what-else, card #709 follow-up) rather than kept around unused —
+// its name was an attractive nuisance for a future session to grab instead
+// of this one and reintroduce the exact false-negative it caused: a
+// transient cmux error silently reading as "idle," pruneDone treating that
+// as "safe to close," and a live ✅🤖 tab getting closed mid-turn on pure
+// uncertainty. Fails safe to TRUE (mid-turn/busy) instead — uncertainty
+// must never look like idle.
+function claudeMidTurnIn(ref) {
+  assertValidWorkspaceRef(ref);
+  try {
+    return hasRunningClaude(run(['top', '--workspace', ref, '--processes', '--format', 'tsv']));
+  } catch {
+    return true; // uncertain → treat as mid-turn → do not close
+  }
+}
+
+// Pure core of claudeAliveIn (BRO-3044): Claude OR any other agent has a live process.
+function anyAgentAliveInTsv(tsvText) {
+  return hasLiveClaude(tsvText) || liveAgentIn(tsvText) !== null;
+}
+
+function claudeAliveIn(ref) {
+  assertValidWorkspaceRef(ref);
+  try {
+    // BRO-3044: ANY live agent process counts (the name is historical). Every close path and
+    // launch guard asks "is something alive here"; asking only about Claude let bsc-prune's
+    // reclaim path close a live Codex session. One `cmux top` call serves both predicates.
+    const tsv = run(['top', '--workspace', ref, '--processes', '--format', 'tsv']);
+    return anyAgentAliveInTsv(tsv);
+  } catch {
+    // FAIL-SAFE for the close path: a transient cmux error (busy socket,
+    // timeout) is indistinguishable from "vanished" here, and guessing
+    // "dead" closes a live tab (both ship-check reviewers, 2026-07-21).
+    // Treat errors as alive — a truly vanished workspace needs no closing.
+    return true;
+  }
+}
+
+// SECOND, INDEPENDENT liveness signal for the close path (card #559).
+// claudeAliveIn only ever queries cmux's tag/process registry (`cmux top
+// --processes`). Card #548 proved that registry can desync from cmux's
+// separate terminal-surface registry (capture-pane/read-screen/list-panes) —
+// there, the tag registry falsely said Running while the surface registry
+// said the surface was gone (a false POSITIVE for the launch-verify path).
+// Nothing rules out the same desync in the opposite direction here: the tag
+// registry falsely saying dead while a real terminal surface — and possibly
+// a human typing in it — is still there. pruneDone would then CLOSE a live
+// tab (#559, the opposite direction of #548, same root cause).
+//
+// A bare "does the workspace still have a pane/surface" check (an earlier
+// draft of this fix) turns out to be USELESS here: every ref pruneDone ever
+// tests comes straight out of `listWorkspaces()`, so by construction it
+// still exists and still has panes — that check would report "alive" for
+// every workspace pruneDone considers and make it a permanent no-op
+// (adversarial review caught this, 2026-07-26, verified live: 0/18
+// workspaces on this machine were closable under that version of the check).
+//
+// What actually discriminates "dead" from "human still typing" is the
+// RENDERED SCREEN CONTENT, not surface existence. A live Claude Code session
+// draws a persistent status bar — model glyph + "ctx NN%" (or "ctx ?" before
+// the first response) — for its entire lifetime, regardless of permission
+// mode, git branch, or theme. This is real content-level evidence from a
+// code path (the terminal renderer) completely independent of the
+// tag/process bookkeeping claudeAliveIn reads. Verified LIVE on this
+// machine, 2026-07-26: workspace:24 had claudeAliveIn() === false (no
+// process row in the tag/process registry) while `read-screen` still showed
+// "🔮 OPUS │ ctx 54% │ main │ Broadwayscore" — the exact #559 false-negative
+// shape, reproduced in production, not hypothetical.
+//
+// Anchored on the SEPARATOR BEFORE "ctx", not what follows it — what
+// follows varies (a "⚠" high-context warning glyph, more "│ segment" fields,
+// or end-of-line when ctx is the last field), but the model-glyph section
+// immediately preceding "ctx" is stable across every sample captured live.
+// A second-pass adversarial review (2026-07-26) caught an earlier version of
+// this regex that required "│" to immediately FOLLOW the percentage —
+// verified live to false-negative on any workspace over ~75% context, where
+// cmux inserts "ctx 77%⚠ │ ..." (the ⚠ breaks the old `\s*│` adjacency). 3 of
+// 18 real workspaces on this machine hit that shape at the moment of
+// testing, including one (workspace:118) that had been misdiagnosed as
+// harmless "render-timing noise" before the actual cause was found.
+//
+// Known limitation, accepted: this check only runs from pruneDone when
+// claudeAliveIn ALREADY said dead, so it never blocks a close that the
+// primary registry alone would have skipped anyway. Requiring BOTH signals
+// to independently misreport at the same moment (rather than trusting
+// either alone) is the actual safety margin this fix buys, not a guarantee
+// of zero false negatives from either check individually.
+//
+// Pure parser (exported for tests, per this file's convention above).
+function hasClaudeChrome(screenText) {
+  return /│\s*ctx\s+(?:\?|\d+%)/.test(String(screenText));
+}
+
+// A ref that was real and is now genuinely closed returns
+// `Error: not_found: Workspace not found` from read-screen (verified live,
+// 2026-07-26, against workspace:1 — a real, previously-issued, now-closed
+// ID). That "not_found" is what confirms real death. This holds for real
+// IDs; a NEVER-issued, out-of-range ref number (e.g. workspace:999999) falls
+// back to the currently-selected workspace instead of erroring — a separate
+// cmux quirk that doesn't affect pruneDone, since every ref it ever queries
+// here comes straight out of a `listWorkspaces()` call that just ran, so it
+// is always a real (until-a-moment-ago-valid) ID, never a fabricated one.
+// Any error OTHER than not_found (busy socket, timeout) is uncertainty, not
+// confirmation, and must NOT contribute to a close verdict — same fail-safe
+// rule as claudeAliveIn. Pure parser (exported).
+//
+// Card #1829: cmux now also throws `Error: internal_error: ERROR: Terminal
+// surface not found` for a workspace whose pane was never rendered (the
+// #1199 deferred-render case) — a DIFFERENT error-type prefix
+// (`internal_error`, not `not_found`) with the confirmation in the message
+// text instead. The original regex only matched the `not_found:` prefix, so
+// this shape fell through to "any other error = uncertainty" and
+// terminalSurfaceAliveIn reported these workspaces ALIVE — the exact
+// misclassification that let 7/7 dead cmux-tab dispatches on 2026-08-19
+// report launch success with no agent running. Matching the message text
+// directly (not just the error-type prefix) catches both shapes.
+function isNotFoundError(message) {
+  return /not_found|(?:surface|workspace|pane)\s+not\s+found/i.test(String(message || ''));
+}
+
+function terminalSurfaceAliveIn(ref) {
+  assertValidWorkspaceRef(ref);
+  try {
+    return hasClaudeChrome(run(['read-screen', '--workspace', ref]));
+  } catch (e) {
+    return !isNotFoundError(e.message);
+  }
+}
+
+// Card #1829, correctness fix from adversarial review: terminalSurfaceAliveIn
+// requires hasClaudeChrome — the persistent "ctx NN%" status bar — which is
+// the RIGHT bar for its existing callers (they already suspect the workspace
+// might be dead on other grounds, so "chrome not painted yet" siding with
+// "not proven alive" is the safe direction). It is the WRONG signal for a
+// caller deciding whether to REPORT SUCCESS on a workspace that just this
+// instant registered a live wrapper + cmux tag: claude can legitimately have
+// a real, rendered pane for a moment before its own UI paints that status
+// bar, and conflating "chrome not visible yet" with "surface confirmed gone"
+// would make a brand-new, healthy launch fail this check by pure timing —
+// the opposite failure mode from the one this card fixes (false success),
+// but just as damaging to real dispatch throughput.
+//
+// This function answers only the narrower, purely negative question a
+// success-path caller actually needs: is the surface CONFIRMED missing? A
+// successful read-screen call proves the surface exists regardless of what
+// is drawn on it yet, so only the isNotFoundError-classified exception case
+// counts as confirmed-missing; every other outcome (a successful read with
+// no chrome yet, or a different/transient error) is "not confirmed missing"
+// — the correct fail-open direction for gating a success report.
+function terminalSurfaceConfirmedMissing(ref) {
+  assertValidWorkspaceRef(ref);
+  try {
+    run(['read-screen', '--workspace', ref]);
+    return false;
+  } catch (e) {
+    return isNotFoundError(e.message);
+  }
+}
+
+// Shared two-signal liveness check (cards #559/#564). claudeAliveIn alone
+// queries only cmux's tag/process registry, which can desync from the truth
+// in EITHER direction (#548: false positive; #559: false negative, verified
+// live in production). Every call site that treats a workspace as
+// confirmed-dead — closing it, or writing a 'dead' ledger breadcrumb that
+// feeds the duplicate-dispatch guard — must require the independent
+// terminal-surface registry (surfaceAliveFn) to ALSO report it gone before
+// trusting that verdict. Any error deciding either signal = treat as alive
+// (fail-safe): every caller of this function treats "dead" as license to do
+// something consequential (close a tab, count a dispatch as failed), so
+// uncertainty must never resolve to "dead".
+//
+// Returns { dead, disagreement }. disagreement is true when the primary
+// registry said dead but the surface registry said alive — direct evidence
+// the underlying cmux registry desync is happening in production right now,
+// not just a theoretical risk this function guards against.
+// BRO-4140: deliberately does NOT call assertValidWorkspaceRef itself — its
+// own try/catch below already absorbs whatever aliveFn(ref) throws (including
+// a validation error from a real claudeAliveIn), which matches this
+// function's documented, pre-existing "any error = fail safe" contract. That
+// matters for computeClaudeAlive(), whose meta.workspaceRef can legitimately
+// be a non-cmux value (dispatch-ledger.js's `headless:<taskId>` convention
+// for headless launches) — making THIS function throw on that shape would be
+// a new, uncaught failure mode for a caller this fix's incident never
+// touched (the incident was a DIRECT sendToWorkspace/claudeMidTurnIn call
+// with a hand-typed ref, not a checkLiveness sweep). claudeAliveIn/
+// claudeMidTurnIn/sendToWorkspace etc. still validate and throw on their own
+// — that's what actually closes the incident; this function's contract is
+// unchanged.
+function checkLiveness(ref, aliveFn, surfaceAliveFn) {
+  let primaryAlive = true;
+  try { primaryAlive = aliveFn(ref); } catch { primaryAlive = true; }
+  if (primaryAlive) return { dead: false, disagreement: false };
+  let surfaceAlive = true;
+  try { surfaceAlive = surfaceAliveFn(ref); } catch { surfaceAlive = true; }
+  return { dead: !surfaceAlive, disagreement: surfaceAlive };
+}
+
+// Shared claudeAlive computation for launch-decision call sites (card #567,
+// same class as #559/#564). A bare `claudeAliveIn(ref)` trusts cmux's
+// tag/process registry alone, which can desync (see checkLiveness's header
+// comment above) — here a false-negative ("dead" when the workspace is
+// actually still running a long tool call) would make launchDecision return
+// 'reclaim-and-launch' and open a duplicate babysitter session on top of a
+// live one. Requires BOTH signals to agree "dead" before reporting not-alive.
+// Test-only seams mirror pruneDone's pattern.
+function computeClaudeAlive(meta, opts = {}) {
+  if (!meta || !meta.workspaceRef) return false;
+  const aliveFn = opts.claudeAliveIn || claudeAliveIn;
+  const surfaceAliveFn = opts.terminalSurfaceAliveIn || terminalSurfaceAliveIn;
+  return !checkLiveness(meta.workspaceRef, aliveFn, surfaceAliveFn).dead;
+}
+
+// Close ✅-marked 🤖 auto-dispatched workspaces that are dead or idle at the
+// prompt (owner rule #3, 2026-08-02: auto-close is limited to sessions that
+// were automatically spun up by other sessions — owner-opened ✅ tabs are
+// never closed autonomously, even with a fully dead claude; they are
+// reported as skipped and the owner closes them by hand). Mid-turn tabs are
+// never closed (card #709: idle-at-prompt vs mid-turn distinction). The
+// 2026-07-21 incident (10 tabs lost mid-review) is why uncertainty always
+// resolves to skip. See scripts/lib/prune-closeable.js for the pure
+// predicate + idle-vs-mid-turn signal (hasLiveClaude && !hasRunningClaude).
+//
+// "🤖 auto-dispatched" is detected two ways as of card #971: the title glyph
+// (hasAutoDispatchMarker) OR an unreconciled dispatch-ledger launch record
+// whose subject still matches the LIVE title (dispatchLedger.
+// isLedgerAutoDispatched — two independent signals, ledger + title, so a
+// recycled ref's unrelated owner-opened tab can't inherit a stale launch's
+// auto-dispatch status) — a session that renames its tab mid-work drops the
+// glyph but the ledger still remembers bsc-next.js launched it.
+//
+// A "not alive" verdict from claudeAliveIn alone is not enough to close
+// (card #559) — see checkLiveness's header comment. Returns
+// { closed, skipped, disagreements }; failures to close one workspace don't
+// abort.
+function pruneDone(opts = {}) {
+  // Seams are test-only (prove the skip/throw paths without a cmux socket).
+  const aliveFn = opts.claudeAliveIn || claudeAliveIn;
+  const surfaceAliveFn = opts.terminalSurfaceAliveIn || terminalSurfaceAliveIn;
+  const runningFn = opts.claudeMidTurnIn || claudeMidTurnIn;
+  const listFn = opts.listWorkspaces || listWorkspaces;
+  const closeFn = opts.closeWorkspace || closeWorkspace;
+  const readLedgerEntriesFn = opts.readLedgerEntries || dispatchLedger.readEntries;
+  const done = listFn().filter(w => isDoneTitle(w.title));
+  const closed = [];
+  const skipped = [];
+  const disagreements = [];
+  // Card #971: a 🤖 auto-dispatched session that renames its tab mid-work
+  // (common — status-reflecting renames) drops the title glyph, so
+  // hasAutoDispatchMarker alone misreads it as owner-opened and it never
+  // auto-closes even after it ✅-marks and goes idle/dead. Read once per
+  // sweep (not per workspace) — a ledger read failure fails closed to []
+  // (isLedgerAutoDispatched then finds no launch for any ref, same as
+  // before this fix: only the title glyph counts).
+  let ledgerEntries = [];
+  if (done.length) {
+    try { ledgerEntries = readLedgerEntriesFn(); } catch { ledgerEntries = []; }
+  }
+  for (const w of done) {
+    // Never close the workspace the owner is currently LOOKING AT (owner
+    // escalation 2026-08-02, enables the scheduled auto-prune tick). A ✅🤖
+    // tab is often selected precisely because the owner is reading its final
+    // summary; yanking it mid-read is the 2026-07-15 "closed while typing"
+    // incident class. A later tick closes it once focus moves elsewhere.
+    if (w.selected) { skipped.push(w); continue; }
+    const { dead, disagreement } = checkLiveness(w.ref, aliveFn, surfaceAliveFn);
+    if (disagreement) disagreements.push(w);
+    // Query mid-turn status for EVERY live ✅ tab (owner rule #3,
+    // 2026-08-02: only 🤖 auto-dispatched tabs are closeable at all — see
+    // prune-closeable.js — but the probe still runs for observability). Any
+    // error defaults isRunning to true — fail-safe: never treat uncertainty
+    // as "idle, close it."
+    const isAutoDispatched = hasAutoDispatchMarker(w.title) || dispatchLedger.isLedgerAutoDispatched(w.ref, w.title, ledgerEntries);
+    let isRunning = true;
+    if (!dead) {
+      try { isRunning = runningFn(w.ref); } catch { isRunning = true; }
+    }
+    // title is threaded through so isCloseable can veto crown (owner-loop) tabs
+    // outright — see prune-closeable.js's CROWN_TAB_RE comment (task #1751).
+    if (!isCloseable({ hasLiveClaude: !dead, isAutoDispatched, isRunning, title: w.title })) { skipped.push(w); continue; }
+    if (opts.dryRun) { closed.push(w); continue; }
+    // TOCTOU guard (adversarial review, 2026-08-02): the selected flag above
+    // is a snapshot from the top-of-sweep listing — the liveness probes take
+    // seconds per workspace, and the owner can click INTO this tab in that
+    // window. Re-list immediately before the destructive close and skip if
+    // it is selected NOW. Any error re-listing = uncertainty = don't close.
+    //
+    // Card #971 extension (Codex adversarial review P0, 2026-08-03): the
+    // original guard only re-checked `selected`, not workspace IDENTITY — if
+    // this exact ref were closed and immediately recycled to an unrelated
+    // tab within the probe window, that new tab's title was never
+    // re-verified before the close below. Re-run the SAME auto-dispatch test
+    // against the FRESH title (not the stale `w.title` this loop iteration
+    // captured) so a same-tick identity change also aborts the close, not
+    // just a same-tick selection change.
+    try {
+      const fresh = listFn().find(x => x.ref === w.ref);
+      if (!fresh || fresh.selected) { skipped.push(w); continue; }
+      const stillAutoDispatched = hasAutoDispatchMarker(fresh.title) || dispatchLedger.isLedgerAutoDispatched(fresh.ref, fresh.title, ledgerEntries);
+      if (!stillAutoDispatched) { skipped.push(w); continue; }
+    } catch { skipped.push(w); continue; }
+    try { closeFn(w.ref); closed.push(w); }
+    catch (e) { console.error(`[cmux-workspaces] failed to close ${w.ref}: ${e.message}`); }
+  }
+  return { closed, skipped, disagreements };
+}
+
+module.exports = {
+  CMUX, cmuxAvailable, run, _resetRunWarnings, LIST_RETRY_TIMEOUTS, RUN_RETRY_BUDGET_MS,
+  parseWorkspaces, parseWorkspacesJson, parseWorkspacesWithFailures, isDoneTitle, hasRunningClaude, hasLiveClaude, liveAgentIn, AGENT_TAG_RE, anyAgentAliveInTsv,
+  hasClaudeChrome, isNotFoundError, isValidWorkspaceRef, assertValidWorkspaceRef,
+  listWorkspaces, listWorkspacesWithCwd, closeWorkspace, sendToWorkspace, claudeMidTurnIn, claudeAliveIn,
+  terminalSurfaceAliveIn, terminalSurfaceConfirmedMissing, checkLiveness, computeClaudeAlive, pruneDone,
+};

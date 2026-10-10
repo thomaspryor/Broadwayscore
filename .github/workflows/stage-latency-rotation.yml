@@ -1,0 +1,57 @@
+# Belt-and-suspenders rotation for data/audit/stage-latency.jsonl.
+#
+# emitStage() (scripts/lib/stage-latency.js) already self-rotates the log at
+# 40MB on every pipeline write, so this cron is a safety net for the case
+# where no pipeline writes for a while and the file sits oversized. It's
+# already on the ALLOW_LARGE allowlist in check-file-sizes/action.yml, so
+# the 5MB gate isn't at risk — this exists to stay well clear of GitHub's
+# 100MiB hard push limit (hit once at 100.15MB on 2026-07-05, blocked every
+# data-committing workflow for a day). BRO-54.
+name: Stage Latency Log Rotation
+
+on:
+  schedule:
+    # Daily at 3 AM UTC. Rotation only fires roughly once every ~20 days
+    # (log grows ~1MB/day, rotates at 40MB) — every other run is a cheap
+    # no-op exit.
+    - cron: '0 3 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: stage-latency-rotation
+  cancel-in-progress: false
+
+jobs:
+  rotate:
+    name: Rotate stage-latency.jsonl if oversized
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      # scripts/stage-latency-rotation.sh is self-contained: it no-ops below
+      # the 40MB threshold, and when it rotates it commits + pushes itself
+      # via push-with-retry.sh. Rotation always shrinks the file, so a
+      # separate check-file-sizes step on this workflow's own commit would
+      # be structurally moot — intentionally not run here.
+      - name: Rotate stage-latency.jsonl
+        run: bash scripts/stage-latency-rotation.sh
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Stage Latency Log Rotation Failed'
+          severity: 'warning'

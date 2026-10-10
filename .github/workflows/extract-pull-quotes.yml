@@ -1,0 +1,198 @@
+name: Extract Pull Quotes
+
+on:
+  workflow_dispatch:
+    inputs:
+      show:
+        description: 'Show ID to process (blank = all)'
+        required: false
+        default: ''
+        type: string
+      limit:
+        description: 'Max reviews to process (0 = all)'
+        required: false
+        default: '0'
+        type: string
+      overwrite:
+        description: 'Re-extract even if llmPullQuote exists'
+        required: false
+        default: false
+        type: boolean
+      dry_run:
+        description: 'Log only, do not write files'
+        required: false
+        default: false
+        type: boolean
+      chain:
+        description: 'Auto-chain another run after this one'
+        required: false
+        default: false
+        type: boolean
+      remaining_batches:
+        description: 'Remaining chain iterations (0 = no chaining)'
+        required: false
+        default: '0'
+        type: string
+
+permissions:
+  contents: write
+  actions: write
+
+# Shared group is safe here even though this workflow self-chains: the
+# "Chain next run" step is the LAST step of the single `extract` job, so by
+# the time it dispatches the next run, this run has nothing left to do but
+# exit — the new run queues for at most a few seconds, not "eating its own
+# tail". A shared group is also the actual fix for the real race: THREE
+# independent callers (bulk-collect-review-texts.yml, llm-ensemble-score.yml,
+# rebuild-reviews.yml) can all dispatch this workflow around the same time;
+# without a group two of those dispatches could run in parallel and race on
+# the same review-texts files. See docs/workflow-concurrency-audit.md.
+concurrency:
+  group: extract-pull-quotes
+  cancel-in-progress: false
+
+jobs:
+  extract:
+    name: Extract pull quotes
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Run extraction
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          ARGS=""
+          if [ "${{ inputs.dry_run }}" == "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          if [ -n "${{ inputs.show }}" ]; then
+            ARGS="$ARGS --show=${{ inputs.show }}"
+          fi
+          if [ "${{ inputs.limit }}" != "0" ] && [ -n "${{ inputs.limit }}" ]; then
+            ARGS="$ARGS --limit=${{ inputs.limit }}"
+          fi
+          if [ "${{ inputs.overwrite }}" == "true" ]; then
+            ARGS="$ARGS --overwrite"
+          fi
+
+          echo "Running: node scripts/extract-pull-quotes.js $ARGS --verbose"
+          node scripts/extract-pull-quotes.js $ARGS --verbose
+
+      - name: Check for large files
+        if: always()
+        uses: ./.github/actions/check-file-sizes
+        continue-on-error: true
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Extract LLM pull quotes"
+
+      - name: Commit and push changes
+        if: always()
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          # review-texts pushed via push-review-texts composite action above
+          # Stage any public repo changes (audit files only — reviews.json is gitignored)
+          git add data/audit/ 2>/dev/null || true
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          CHANGED=$(git diff --staged --stat | tail -1)
+          git commit -m "data: Extract LLM pull quotes
+
+          $CHANGED
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+          bash scripts/lib/push-with-retry.sh
+
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from extract-pull-quotes'
+      - name: Trigger rebuild
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "${{ inputs.dry_run }}" == "true" ]; then
+            echo "Dry run — skipping rebuild trigger"
+            exit 0
+          fi
+
+          # Only trigger if we actually committed changes
+          if git diff --quiet HEAD~1 -- 2>/dev/null; then
+            echo "No review-text changes — skipping rebuild"
+            exit 0
+          fi
+
+          # NOTE: Rebuild dispatch removed 2026-04-01. Pull quotes are stored in review-text
+          # files and will be picked up by the daily 4 AM rebuild cron. Dispatching rebuild
+          # here created a Rebuild→Score→PullQuotes→Rebuild cascade (1000+ runs/day).
+          echo "Skipping rebuild — daily cron will pick up pull quote changes."
+        continue-on-error: true
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Extract Pull Quotes Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+      - name: Chain next run
+        if: always() && inputs.chain
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          REMAINING=${{ inputs.remaining_batches }}
+          if [ "$REMAINING" -le "0" ] 2>/dev/null; then
+            echo "No remaining batches. Stopping chain."
+            exit 0
+          fi
+
+          NEXT_REMAINING=$((REMAINING - 1))
+          echo "Chaining next run (remaining: $NEXT_REMAINING)..."
+
+          gh workflow run extract-pull-quotes.yml \
+            -f show="${{ inputs.show }}" \
+            -f limit="${{ inputs.limit }}" \
+            -f overwrite="${{ inputs.overwrite }}" \
+            -f dry_run="${{ inputs.dry_run }}" \
+            -f chain=true \
+            -f remaining_batches=$NEXT_REMAINING

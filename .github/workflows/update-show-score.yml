@@ -1,0 +1,165 @@
+name: Update Show Score Data
+
+on:
+  # Run weekly (Show Score data changes moderately)
+  schedule:
+    - cron: '0 12 * * 0'  # Sundays at 12pm UTC
+  # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      show_id:
+        description: 'Specific show ID to process (optional)'
+        required: false
+        type: string
+      shows:
+        description: 'Comma-separated show IDs/slugs (for batch processing)'
+        required: false
+        type: string
+      limit:
+        description: 'Limit number of shows to process'
+        required: false
+        type: number
+        default: 50
+      skip_fresh_hours:
+        # BRO-4215: the opening-night orchestrator dispatches the same shows ~7x/day;
+        # this run was ~11% of ScrapingBee spend (9/21-9/27). Set 0 to force a re-scrape.
+        description: 'With shows: skip shows whose Show Score was updated within this many hours (0 = never skip)'
+        required: false
+        type: string
+        default: '20'
+
+concurrency:
+  # per-run group intended: prevents the orchestrator's back-to-back dispatches from
+  # dropping each other at GitHub's 1-pending-queue limit. See Cats 2026-04-07
+  # poller postmortem — shared groups silently discard the middle runs.
+  # (task #922 audit, 2026-08-03)
+  group: show-score-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  scrape-show-score:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60  # 1 hour timeout
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 60-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Discover new Show Score URLs from listings
+        run: node scripts/discover-show-score-urls-from-listings.js
+        continue-on-error: true
+
+      - name: Run Show Score scraper
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          ARGS=""
+          if [ -n "${{ github.event.inputs.show_id }}" ]; then
+            ARGS="$ARGS --show=${{ github.event.inputs.show_id }}"
+          elif [ -n "${{ github.event.inputs.shows }}" ]; then
+            SKIP_FRESH_HOURS="${{ github.event.inputs.skip_fresh_hours || '20' }}"
+            # Numeric only (free-text dispatch input); anything else falls back to 20.
+            [[ "$SKIP_FRESH_HOURS" =~ ^[0-9]+(\.[0-9]+)?$ ]] || SKIP_FRESH_HOURS=20
+            ARGS="$ARGS --shows=${{ github.event.inputs.shows }} --skip-fresh-hours=$SKIP_FRESH_HOURS"
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            # Manual/API trigger without filter: default to recently opened shows (≤14 days)
+            RECENT=$(node -e "
+              const shows = require('./data/shows.json').shows;
+              const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 14);
+              const recent = shows.filter(s => s.status === 'open' && s.openingDate && new Date(s.openingDate) >= cutoff);
+              console.log(recent.map(s => s.id).join(','));
+            ")
+            if [ -n "$RECENT" ]; then
+              echo "No show filter provided — defaulting to recently opened: $RECENT"
+              ARGS="$ARGS --shows=$RECENT"
+            else
+              echo "No show filter and no recent openings — processing all open shows"
+            fi
+          fi
+          if [ -n "${{ github.event.inputs.limit }}" ]; then
+            ARGS="$ARGS --limit=${{ github.event.inputs.limit }}"
+          fi
+          node scripts/scrape-show-score-audience.js $ARGS
+
+      - name: Commit and push changes
+        if: always()
+        run: |
+          git add data/show-score-urls.json
+          git add data/show-score-candidates.json 2>/dev/null || true
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: Update Show Score audience data
+
+            Automated update from show-score.com.
+
+            Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+            bash scripts/lib/push-with-retry.sh
+            echo "✓ Changes committed and pushed"
+          fi
+
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from update-show-score'
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: update-show-score
+
+      - name: Dispatch deploy
+        if: always()
+        uses: ./.github/actions/dispatch-deploy
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Update Show Score Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

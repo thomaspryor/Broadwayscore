@@ -1,0 +1,2757 @@
+/**
+ * Review Normalization Module
+ *
+ * Centralizes all outlet and critic name normalization to prevent duplicate
+ * review files from being created with slightly different names.
+ *
+ * Used by:
+ * - scripts/gather-reviews.js (when creating review files)
+ * - scripts/build-master-review-list.js (when deduplicating)
+ * - scripts/cleanup-duplicate-reviews.js (for fixing existing duplicates)
+ *
+ * IMPORTANT: The outlet-registry.json is the source of truth for outlet data.
+ * When adding new outlet variations, add them to data/outlet-registry.json.
+ * When adding known critic name variations, add them to CRITIC_ALIASES below.
+ */
+
+/**
+ * isPreviewPlaceholder: true — a review file created before openingDate, likely
+ * a stub with incomplete fullText or pre-opening aggregator signal. Safe to
+ * REPLACE on post-opening discovery. Contrast with a real review (no flag)
+ * which must NEVER be replaced by a downstream discovery.
+ *
+ * This flag is respected by mergeReviews(): when existing.isPreviewPlaceholder
+ * is true and the caller passes { fromPostOpening: true }, the incoming review
+ * fully replaces the placeholder rather than being merged into it.
+ */
+
+const fs = require('fs');
+const path = require('path');
+const { decodeHtmlEntities } = require('./text-cleaning');
+const { isUrlProvenanceWrongProduction } = require('./wrongproduction-provenance');
+const { logExclusion } = require('./exclusion-logger');
+
+// Score sources from aggregator sites — these are third-party star ratings,
+// not the outlet's own score. Used to prevent contamination at both ingestion
+// (gather-reviews.js) and merge (mergeReviews below) time.
+const AGGREGATOR_SCORE_SOURCES = new Set([
+  'theatre-reviews-star-rating', 'westendtheatre-star-rating',
+  'show-score-stars', 'stagedoor-star-rating',
+  'lbo-star-rating', 'lbo-css-stars', 'thestage-roundup-star-rating',
+]);
+
+// Cache for the outlet registry data
+let _registryCache = null;
+let _registryAliasMap = null;
+let _outletAliasesCache = null;
+
+/**
+ * Load and cache the outlet registry from JSON file.
+ * Returns the registry object with outlets and _aliasIndex.
+ */
+function loadOutletRegistry() {
+  if (_registryCache) return _registryCache;
+
+  try {
+    const registryPath = path.join(__dirname, '..', '..', 'data', 'outlet-registry.json');
+    const data = fs.readFileSync(registryPath, 'utf-8');
+    _registryCache = JSON.parse(data);
+    return _registryCache;
+  } catch (err) {
+    console.warn('Warning: Could not load outlet-registry.json, falling back to built-in aliases');
+    return null;
+  }
+}
+
+/**
+ * Build a complete alias-to-canonical mapping from the registry.
+ * Combines both the aliases arrays from each outlet and the _aliasIndex.
+ */
+function buildRegistryAliasMap() {
+  if (_registryAliasMap) return _registryAliasMap;
+
+  const registry = loadOutletRegistry();
+  _registryAliasMap = new Map();
+
+  if (registry) {
+    // Add all aliases from outlet definitions
+    for (const [outletId, outletData] of Object.entries(registry.outlets || {})) {
+      // Load-time defense-in-depth (task #1783): a junk/sentinel id like
+      // "unknown" reaching the registry via ANY path — not just the write
+      // sites already guarded — must never enter the alias map. This is
+      // what actually broke normalizeOutlet('Unknown Publication 123') and
+      // getOutletDisplayName('unknown-outlet') when a poisoned "unknown"
+      // entry existed: the concatenated-prefix match below trusts every
+      // canonical id/alias unconditionally.
+      if (isSentinelOutletId(outletId)) continue;
+
+      // Map the outlet ID itself
+      _registryAliasMap.set(outletId.toLowerCase(), outletId);
+
+      // Map the display name (so "The Arts Fuse" → "artsfuse")
+      if (outletData.displayName) {
+        _registryAliasMap.set(outletData.displayName.toLowerCase(), outletId);
+      }
+
+      // Map all aliases
+      if (outletData.aliases) {
+        for (const alias of outletData.aliases) {
+          _registryAliasMap.set(alias.toLowerCase(), outletId);
+        }
+      }
+    }
+
+    // Add mappings from _aliasIndex (these may include slugified variations)
+    if (registry._aliasIndex) {
+      for (const [alias, canonicalId] of Object.entries(registry._aliasIndex)) {
+        if (alias !== '_note') {
+          _registryAliasMap.set(alias.toLowerCase(), canonicalId);
+        }
+      }
+    }
+  }
+
+  return _registryAliasMap;
+}
+
+/**
+ * Build OUTLET_ALIASES-format object from outlet-registry.json.
+ * Returns { canonicalId: [alias1, alias2, ...], ... } or null on failure.
+ */
+function buildOutletAliasesFromRegistry() {
+  const registry = loadOutletRegistry();
+  if (!registry || !registry.outlets) return null;
+  const result = {};
+  for (const [outletId, data] of Object.entries(registry.outlets)) {
+    if (outletId === '_aliasIndex' || outletId === '_meta') continue;
+    // Load-time defense-in-depth (task #1783) — see buildRegistryAliasMap.
+    if (isSentinelOutletId(outletId)) continue;
+    const aliases = new Set();
+    aliases.add(outletId.toLowerCase());
+    for (const a of (data.aliases || [])) {
+      aliases.add(a.toLowerCase().trim());
+    }
+    result[outletId] = [...aliases];
+  }
+  return Object.keys(result).length > 0 ? result : null;
+}
+
+/**
+ * Get OUTLET_ALIASES — auto-generated from registry, with legacy fallback.
+ */
+function getOutletAliases() {
+  if (_outletAliasesCache) return _outletAliasesCache;
+  _outletAliasesCache = buildOutletAliasesFromRegistry();
+  if (!_outletAliasesCache) {
+    console.error('ERROR: outlet-registry.json not found. Run: ./scripts/setup-local-data.sh');
+    _outletAliasesCache = {};
+  }
+  return _outletAliasesCache;
+}
+
+// LEGACY_OUTLET_ALIASES removed — outlet-registry.json is the single source of truth.
+// See: data/outlet-registry.json (outlets + _aliasIndex)
+
+let _ambiguousPrefixSlugsCache = null;
+
+/**
+ * Slugs that are unsafe to use as a concatenated outlet-critic prefix (see
+ * the fuzzy loop in normalizeOutlet) because they are themselves a
+ * hyphen-prefix of a DIFFERENT outlet's own registered name. E.g. vulture's
+ * alias "new york" is a prefix of nytg's "new-york-theater-guide" and of
+ * new-york-sun's "new-york-sun" — treating it as a safe "outlet-critic"
+ * prefix silently misrouted "New York Theater Guide" reviews to vulture
+ * (card #116). Computed once and cached; registry is static at runtime.
+ */
+function buildAmbiguousPrefixSlugs() {
+  if (_ambiguousPrefixSlugsCache) return _ambiguousPrefixSlugsCache;
+
+  // Pull directly from the registry (not just getOutletAliases()) so
+  // displayName variants that aren't duplicated into an outlet's aliases
+  // array (e.g. "Lighting & Sound America" vs alias "lighting and sound
+  // america") are still counted as that outlet's "own name" — matching what
+  // the exact-match phase above already recognizes.
+  const registry = loadOutletRegistry();
+  const ownSlugsByCanonical = new Map();
+  for (const [canonical, data] of Object.entries((registry && registry.outlets) || {})) {
+    if (canonical === '_aliasIndex' || canonical === '_meta') continue;
+    // Load-time defense-in-depth (task #1783) — see buildRegistryAliasMap.
+    if (isSentinelOutletId(canonical)) continue;
+    const slugs = new Set([slugify(canonical)]);
+    if (data.displayName) {
+      const s = slugify(data.displayName);
+      if (s) slugs.add(s);
+    }
+    for (const alias of (data.aliases || [])) {
+      const s = slugify(alias);
+      if (s) slugs.add(s);
+    }
+    ownSlugsByCanonical.set(canonical, slugs);
+  }
+
+  const allOwnSlugs = [];
+  for (const [canonical, slugs] of ownSlugsByCanonical) {
+    for (const slug of slugs) allOwnSlugs.push({ slug, canonical });
+  }
+
+  const ambiguous = new Set();
+  for (const [canonical, slugs] of ownSlugsByCanonical) {
+    for (const prefixSlug of slugs) {
+      if (prefixSlug.length < 4) continue;
+      const crossesFamily = allOwnSlugs.some(({ slug, canonical: otherCanonical }) =>
+        otherCanonical !== canonical && slug.startsWith(prefixSlug + '-')
+      );
+      if (crossesFamily) ambiguous.add(prefixSlug);
+    }
+  }
+
+  _ambiguousPrefixSlugsCache = ambiguous;
+  return ambiguous;
+}
+
+/**
+ * Known critic name variations and typos.
+ * Maps variations to canonical names.
+ * Format: 'canonical-name': ['variation1', 'variation2', ...]
+ */
+const CRITIC_ALIASES = {
+  // IMPORTANT: Only include FULL NAME variations and KNOWN TYPOS.
+  // Do NOT include first-name-only aliases (e.g., 'jesse', 'ben') as they
+  // will incorrectly match other critics with the same first name.
+  'jesse-green': ['jesse green', 'j. green', 'jessie green'],
+  'ben-brantley': ['ben brantley', 'b. brantley', 'ben brantly', 'ben branley', 'ben brantely', 'marcus ben brantley'],
+  'charles-isherwood': ['charles isherwood', 'c. isherwood', 'charle isherwood', 'charles ishwerwood'],
+  'johnny-oleksinski': ['johnny oleksinski', 'johnny oleksinki', 'john oleksinski', 'jonny oleksinski'],
+  // Added from Levenshtein audit (Task 1.2) - these were valid matches that need explicit aliases
+  'ad-amorosi': ['a.d. amorosi', 'ad amorosi', 'a d amorosi', 'a. d. amorosi'],
+  'elisabeth-vincentelli': ['elisabeth vincentelli', 'elizabeth vincentelli', 'elisabeth vincetelli', 'elisabeth vincemtelli', 'elisabeth vincintelli', 'elisabeth vencentelli', 'franklin elisabeth vincentelli'],
+  'charles-mcnulty': ['charles mcnulty', 'charlesmcnulty', 'charles-mcnulty', 'chales mcnulty'],
+  'sara-holdren': ['sara holdren', 's. holdren', 'sarah holdren', 'sara holden'],
+  'helen-shaw': ['helen shaw', 'h. shaw'],
+  'adam-feldman': ['adam feldman', 'a. feldman'],
+  'david-rooney': ['david rooney', 'd. rooney', 'davod rooney'],
+  'frank-scheck': ['frank scheck', 'f. scheck', 'franck scheck', 'frank sheck'],
+  'greg-evans': ['greg evans', 'g. evans'],
+  'dalton-ross': ['dalton ross', 'd. ross'],
+  'aramide-tinubu': ['aramide tinubu', 'aramide timubu', 'arimide timubu'],
+  'juan-a-ramirez': ['juan a ramirez', 'juan a. ramirez', 'juan ramirez'],
+  'zachary-stewart': ['zachary stewart', 'zach stewart', 'z. stewart'],
+  'brittani-samuel': ['brittani samuel', 'b. samuel'],
+  'chris-jones': ['chris jones', 'c. jones', 'christopher jones', 'chris jone'],
+  'gillian-russo': ['gillian russo', 'g. russo'],
+  'jd-knapp': ['jd knapp', 'j.d. knapp', 'j d knapp'],
+  'vinson-cunningham': ['vinson cunningham', 'v. cunningham'],
+  'naveen-kumar': ['naveen kumar', 'n. kumar', 'naeen kumar', 'naveen kamal'],
+  'jonathan-mandell': ['jonathan mandell', 'j. mandell', 'jon mandell', 'jonathan mandrell', 'jonthan mandell', 'jonathan mandel'],
+  'brian-scott-lipton': ['brian scott lipton', 'brian lipton', 'b. lipton', 'scott lipton', 'brain scott lipton', 'brian scot lipton', 'brian scott lipon'],
+  'melissa-rose-bernardo': ['melissa rose bernardo', 'melissa bernardo', 'm. bernardo', 'rose bernardo'],
+  'david-finkle': ['david finkle', 'd. finkle'],
+  'david-cote': ['david cote', 'd. cote', 'davide cote'],
+  'tim-teeman': ['tim teeman', 't. teeman', 'tom teeman'],
+  'kristen-baldwin': ['kristen baldwin', 'k. baldwin'],
+  'adrian-horton': ['adrian horton', 'a. horton'],
+  'lane-williamson': ['lane williamson', 'l. williamson'],
+  'linda-winer': ['linda winer', 'l. winer', 'linda winder'],
+  'michael-kuchwara': ['michael kuchwara', 'm. kuchwara'],
+  'rex-reed': ['rex reed', 'r. reed', 'red reed'],
+  'elysa-gardner': ['elysa gardner', 'e. gardner', 'elyse gardner', 'elysa garder', 'elyssa garner'],
+  'peter-marks': ['peter marks', 'p. marks'],
+  'matt-windman': ['matt windman', 'm. windman', 'matthew windman', 'matt windham', 'matt windam', 'matt windmand'],
+  'robert-hofler': ['robert hofler', 'r. hofler', 'bob hofler', 'robert holfer', 'robert hofter', 'robert hoffler'],
+  'steven-suskin': ['steven suskin', 's. suskin', 'steve suskin', 'stephen suskin', 'steven suskind'],
+  // Typo variants discovered by Feb 2026 audit
+  'hilton-als': ['hilton als', 'hinton als'],
+  'michael-feingold': ['michael feingold', 'michal feingold'],
+  'leah-greenblatt': ['leah greenblatt', 'lea greenblatt', 'leah glreenblatt', 'leah greenblat'],
+  'barbara-schuler': ['barbara schuler', 'barbara shuler', 'barbra schuler'],
+  'lovia-gyarkye': ['lovia gyarkye', 'lovia gyarke', 'lovia gayarkye', 'love gyarkye'],
+  'thom-geier': ['thom geier', 'thom geir', 'thom geler', 'thom greier', 'thorn geier', 'thomas geier', 'tom geier'],
+  'adam-markovitz': ['adam markovitz', 'adam markavitz', 'adam markowitz'],
+  'diane-snyder': ['diane snyder', 'diana snyder', 'diane synder'],
+  'suzy-evans': ['suzy evans', 'suzt evans'],
+  'marilyn-stasio': ['marilyn stasio', 'marilyn stasio.', 'marylin stasio'],
+  'rob-weinert-kendt': ['rob weinert-kendt', 'rob weinert- kendt'],
+  // Feb 2026 comprehensive audit — new critic entries
+  'terry-teachout': ['terry teachout', 't. teachout', 'terry techout', 'terry tecahout', 'tery teachout'],
+  'joe-dziemianowicz': ['joe dziemianowicz', 'j. dziemianowicz', 'joe dziemianowizc', 'joe dziemianwoicz', 'joe dzeimianowicz', 'joe dziemianozicz', 'joe dziemianowitz', 'jeo dziemianowicz', 'joe dziemianowics', 'joe dziemianowiczny'],
+  'michael-dale': ['michael dale', 'michel dale', 'ichael dale'],
+  'scott-brown': ['scott brown', 'scott brow'],
+  'frank-rizzo': ['frank rizzo', 'fran rizzo'],
+  'nicole-serratore': ['nicole serratore', 'nicole serratori'],
+  'tom-gliatto': ['tom gliatto', 'tom gilatto'],
+  'danny-groner': ['danny groner', 'dany groner'],
+  'trish-deitch': ['trish deitch', 'trish dietch'],
+  'christopher-kelly': ['christopher kelly', 'christopher kell', 'christoher kelly'],
+  'lester-fabian-brathwaite': ['lester fabian brathwaite', 'fabian brathwaite'],
+  'amanda-marie-miller': ['amanda marie miller', 'marie miller'],
+  'nancy-van-valkenburg': ['nancy van valkenburg', 'van valkenburg'],
+  'nancy-sasso-janis': ['nancy sasso janis', 'sasso janis'],
+  'maria-cortes-gonzalez': ['maria cortes gonzalez', 'cortes gonzalez'],
+  'david-patrick-stearns': ['david patrick stearns', 'patrick stearns'],
+  'david-patrick-stern': ['david patrick stern', 'patrick stern'],
+  'ron-fassler': ['ron fassler', 'ron fassler critic'],
+  // Feb 2026 Levenshtein similarity audit — new canonical entries
+  'robert-feldberg': ['robert feldberg', 'rolbert feldberg'],
+  'alexis-soloski': ['alexis soloski', 'alex soloski', 'alexsis soloski'],
+  'robert-kahn': ['robert kahn', 'roberth kahn'],
+  'mark-shenton': ['mark shenton', 'mark sheton'],
+  'brendan-lemon': ['brendan lemon', 'brandan lemon'],
+  'jennifer-vanasco': ['jennifer vanasco', 'jennifer vavasco'],
+  'dave-quinn': ['dave quinn', 'david quinn'],
+  'pete-hempstead': ['pete hempstead', 'peter hempstead'],
+  'hayley-levitt': ['hayley levitt', 'haley levitt'],
+  'toby-zinman': ['toby zinman', 'tody zinman', 'tony zinman'],
+  'philip-boroff': ['philip boroff', 'phillip boroff'],
+  'ronni-reich': ['ronni reich', 'ronnie reich'],
+  'jose-solis': ['jose solis', 'jose sols'],
+  'bedatri-d-choudhury': ['bedatri d choudhury', 'bedatri dchoudhury'],
+  'lily-janiak': ['lily janiak', 'lilly janiak'],
+  'isabella-biedenharn': ['isabella biedenharn', 'isabella biedenahrn'],
+  'kelly-nestruck': ['kelly nestruck', 'j kelly nestruck', 'j. kelly nestruck'],
+  'chris-nashawaty': ['chris nashawaty', 'chris nashawty'],
+  'michael-j-fressola': ['michael j fressola', 'micael j fressola'],
+  'erik-haagensen': ['erik haagensen', 'eric haagensen'],
+  'owen-gleiberman': ['owen gleiberman', 'owen glieberman'],
+  'alissa-wilkinson': ['alissa wilkinson', 'alissa wiklnson'],
+  'david-tereshchuk': ['david tereshchuk', 'david tereschuck'],
+  'chris-wiegand': ['chris wiegand', 'chris weigand'],
+  'daniel-fienberg': ['daniel fienberg', 'daniel feinberg'],
+  'breanne-l-heldman': ['breanne l heldman', 'breanne j heldman'],
+  'courtney-castellino': ['courtney castellino', 'courtney castelino'],
+  'kerensa-cadenas': ['kerensa cadenas', 'kerensa cardenas'],
+  'steven-babyak': ['steven babyak', 'steve babyak'],
+  'nilgun-yusuf': ['nilgun yusuf', 'nilg n yusuf', 'nilgün yusuf'],
+};
+
+// Merge auto-discovered aliases from weekly integrity workflow
+try {
+  const autoAliasPath = path.join(__dirname, '..', '..', 'data', 'auto-critic-aliases.json');
+  const autoAliases = JSON.parse(fs.readFileSync(autoAliasPath, 'utf8'));
+  if (autoAliases.aliases) {
+    for (const [canonical, aliases] of Object.entries(autoAliases.aliases)) {
+      if (CRITIC_ALIASES[canonical]) {
+        for (const a of aliases) {
+          if (!CRITIC_ALIASES[canonical].includes(a)) CRITIC_ALIASES[canonical].push(a);
+        }
+      } else {
+        CRITIC_ALIASES[canonical] = aliases;
+      }
+    }
+  }
+} catch (e) { /* auto-critic-aliases.json not found or invalid — skip */ }
+
+/**
+ * Check if an outlet name resolves to a known/registered outlet.
+ * Returns true if the name matches a canonical outlet in the registry or alias map,
+ * false if it would just be slugified into a new phantom outlet ID.
+ */
+function isRegisteredOutlet(outletName) {
+  if (!outletName) return false;
+  const normalized = normalizeOutlet(outletName);
+  const registry = loadOutletRegistry();
+  return !!(registry && registry.outlets && registry.outlets[normalized]);
+}
+
+/**
+ * Normalize an outlet name to its canonical ID.
+ * Returns the canonical outlet ID (lowercase, hyphenated).
+ *
+ * Priority:
+ * 1. Check outlet-registry.json (source of truth)
+ * 2. Fall back to built-in OUTLET_ALIASES
+ * 3. Generate slug from name
+ */
+function normalizeOutlet(outletName) {
+  if (!outletName) return 'unknown';
+
+  // Collapse multiple spaces to single space (e.g., "All That Dazzles  (UK)" → "All That Dazzles (UK)")
+  const lower = outletName.toLowerCase().trim().replace(/\s{2,}/g, ' ');
+  const withoutThe = lower.replace(/^the\s+/, '');
+
+  // First, check the registry alias map (source of truth)
+  const registryAliasMap = buildRegistryAliasMap();
+  if (registryAliasMap.size > 0) {
+    // Try exact match
+    if (registryAliasMap.has(lower)) {
+      return registryAliasMap.get(lower);
+    }
+    // Try without "the " prefix
+    if (registryAliasMap.has(withoutThe)) {
+      return registryAliasMap.get(withoutThe);
+    }
+  }
+
+  // Fall back to OUTLET_ALIASES (auto-generated from registry, with legacy fallback)
+  const outletAliases = getOutletAliases();
+  for (const [canonical, aliases] of Object.entries(outletAliases)) {
+    if (aliases.some(alias => {
+      // Exact match
+      if (lower === alias) return true;
+      // Remove "the " prefix and check
+      if (withoutThe === alias) return true;
+      if (alias.replace(/^the\s+/, '') === lower) return true;
+      return false;
+    })) {
+      return canonical;
+    }
+  }
+
+  // Check for concatenated outlet-critic patterns (e.g., "variety-frank-rizzo", "new-york-magazinevulture-sara-holdren")
+  // These come from upstream data sources that merge outlet and critic names
+  const slug = slugify(outletName);
+  // Prefixes that also lead a DIFFERENT outlet's own registered name (e.g.
+  // vulture's "new york" vs. nytg's "new-york-theater-guide") can never be
+  // trusted to mean "outlet + critic name" — exclude them (card #116).
+  const ambiguousPrefixSlugs = buildAmbiguousPrefixSlugs();
+  for (const [canonical, aliases] of Object.entries(outletAliases)) {
+    // Skip short canonical IDs to prevent false prefix matches (e.g., "new", "ap", "ew", "gq")
+    if (canonical.length < 4) continue;
+    // Check if the slug starts with the canonical outlet ID followed by a critic name
+    if (!ambiguousPrefixSlugs.has(slugify(canonical)) && slug.startsWith(canonical + '-') && slug.length > canonical.length + 3) {
+      return canonical;
+    }
+    // Check if the slug starts with any alias (slugified) followed by a critic name
+    for (const alias of aliases) {
+      const aliasSlug = slugify(alias);
+      if (!aliasSlug || ambiguousPrefixSlugs.has(aliasSlug)) continue;
+      if (aliasSlug.length >= 4 && slug.startsWith(aliasSlug + '-') && slug.length > aliasSlug.length + 3) {
+        return canonical;
+      }
+      // Also check without separator (e.g., "newyorkmagazinevulture")
+      if (aliasSlug.length > 5 && slug.startsWith(aliasSlug) && slug.length > aliasSlug.length + 3) {
+        return canonical;
+      }
+    }
+  }
+
+  // Try the slugified form against the registry (catches display-name inputs
+  // like "The Arts Fuse" → slug "the-arts-fuse" → registered alias → "artsfuse")
+  if (slug !== lower) {
+    if (registryAliasMap.has(slug)) {
+      return registryAliasMap.get(slug);
+    }
+    const slugWithoutThe = slug.replace(/^the-/, '');
+    if (slugWithoutThe !== slug && registryAliasMap.has(slugWithoutThe)) {
+      return registryAliasMap.get(slugWithoutThe);
+    }
+  }
+
+  // Not found in aliases - create a slug from the name
+  return slug;
+}
+
+// Garbage prefixes (CSA., MC., etc.) that sometimes lead a scraped byline.
+// Module-level so scripts/lib/critic-display-name.js applies the SAME strip
+// before its alias lookup instead of carrying a second copy (audit S7-T1).
+const CRITIC_JUNK_PREFIX_RE = /^(CSA\.|MC\.|MS\.|MR\.|DR\.)\s*/i;
+
+// CMS boilerplate scraped as a byline is not a critic. "Posted By: Aidan
+// O'Connor" extracted as critic "Posted By" minted a phantom MDTG critic and
+// a duplicate review on the live CrazySexyCool page (2026-07-09) — the
+// manual-entry dedup matches on outlet+critic, so a junk byline defeats it.
+// Mapping to 'unknown' routes these through the Unknown-byline guards instead.
+// Lowercase, trailing ':'/'.' already stripped by the caller. Exported so the
+// emission-time placeholder list (critic-display-name.js) is a superset of
+// this set by construction rather than a drifting copy (audit S7-T1).
+const JUNK_BYLINES = new Set([
+  'posted by', 'written by', 'by', 'staff', 'staff writer', 'staff reports',
+  'admin', 'administrator', 'ri-admin', 'editor', 'editorial staff', 'contributor',
+  'guest', 'guest contributor', 'press release', 'newsdesk', 'news desk',
+]);
+
+/**
+ * Normalize a critic name to its canonical form.
+ * Returns the canonical critic name (lowercase, hyphenated).
+ */
+function normalizeCritic(criticName) {
+  if (!criticName) return 'unknown';
+
+  // Clean up garbage prefixes (CSA., MC., etc.) that sometimes appear
+  let cleaned = criticName
+    .replace(CRITIC_JUNK_PREFIX_RE, '')
+    .replace(/^\s*&nbsp;\s*/i, '')
+    .trim();
+
+  if (!cleaned) return 'unknown';
+
+  const lower = cleaned.toLowerCase().trim();
+
+  if (JUNK_BYLINES.has(lower.replace(/[:.]+$/, '').trim())) return 'unknown';
+
+  // Check against all aliases
+  for (const [canonical, aliases] of Object.entries(CRITIC_ALIASES)) {
+    if (aliases.some(alias => {
+      // Exact match only - no partial/first-name matching
+      // (first-name matching was causing Jesse Oxfeld → jesse-green)
+      if (lower === alias) return true;
+      return false;
+    })) {
+      return canonical;
+    }
+  }
+
+  // Not found in aliases - create a slug from the full name
+  // But first, ensure we have a reasonable name (at least 2 chars)
+  if (lower.length < 2) return 'unknown';
+
+  return slugify(criticName);
+}
+
+/**
+ * Generate a standardized filename for a review.
+ * Format: {outlet}--{critic}.json
+ */
+function generateReviewFilename(outlet, critic) {
+  const normalizedOutlet = normalizeOutlet(outlet);
+  const normalizedCritic = normalizeCritic(critic);
+  if (isSuspiciousOutletId(normalizedOutlet)) {
+    console.warn(`  ⚠️  Suspicious outlet ID in filename: "${normalizedOutlet}" (${outlet})`);
+  }
+  return `${normalizedOutlet}--${normalizedCritic}.json`;
+}
+
+/**
+ * Check if an outlet ID looks like a sentence fragment rather than a real outlet.
+ * Real outlets are typically under 40 chars with ≤4 hyphens.
+ * Sentence fragments like "its-a-brave-writer-who-would-contrive-this-show" are much longer.
+ */
+function isSuspiciousOutletId(outletId) {
+  if (!outletId) return true;
+  const hyphenCount = (outletId.match(/-/g) || []).length;
+  return outletId.length > 50 || hyphenCount > 6;
+}
+
+/**
+ * Generate a unique review key for deduplication.
+ * This is used to identify the same review across different sources.
+ */
+function generateReviewKey(outlet, critic) {
+  return `${normalizeOutlet(outlet)}|${normalizeCritic(critic)}`;
+}
+
+/**
+ * Create a slug from text (lowercase, hyphenated, no special chars).
+ * Handles HTML entities, Unicode curly quotes, diacritics, and em/en dashes.
+ */
+function slugify(text) {
+  if (!text) return '';
+  return decodeHtmlEntities(text)                        // &#8217; → ' (U+2019), &eacute; → é
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')    // Strip diacritics: é → e, ñ → n
+    .toLowerCase()
+    .trim()
+    .replace(/['\u2018\u2019\u2032]/g, '')               // All apostrophe variants (straight + curly + prime)
+    .replace(/[\u2013\u2014]/g, '-')                     // Em/en dash → hyphen
+    .replace(/[&]/g, 'and')                              // Replace & with and
+    .replace(/[^\w\s-]/g, '')                            // Remove special chars except spaces and hyphens
+    .replace(/\s+/g, '-')                                // Replace spaces with hyphens
+    .replace(/-+/g, '-')                                 // Collapse multiple hyphens
+    .replace(/^-+|-+$/g, '');                            // Trim hyphens from ends
+}
+
+/**
+ * Check if two reviews are duplicates based on outlet and critic.
+ * Returns true if they represent the same review.
+ */
+function areReviewsDuplicates(review1, review2) {
+  const key1 = generateReviewKey(review1.outlet, review1.criticName);
+  const key2 = generateReviewKey(review2.outlet, review2.criticName);
+  return key1 === key2;
+}
+
+/**
+ * Calculate Levenshtein distance between two strings.
+ *
+ * NOTE: This function is exported for AUDIT/DEBUGGING purposes only.
+ * It is NOT used in production critic matching (areCriticsSimilar).
+ * Levenshtein matching was removed in Sprint 1 because it caused false positives
+ * (e.g., "Helen Smith" incorrectly matching "Helen Smyth").
+ *
+ * @param {string} str1 - First string
+ * @param {string} str2 - Second string
+ * @returns {number} Edit distance between the two strings
+ */
+function levenshteinDistance(str1, str2) {
+  const m = str1.length;
+  const n = str2.length;
+  const dp = Array(m + 1).fill(null).map(() => Array(n + 1).fill(0));
+
+  for (let i = 0; i <= m; i++) dp[i][0] = i;
+  for (let j = 0; j <= n; j++) dp[0][j] = j;
+
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      if (str1[i - 1] === str2[j - 1]) {
+        dp[i][j] = dp[i - 1][j - 1];
+      } else {
+        dp[i][j] = 1 + Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]);
+      }
+    }
+  }
+  return dp[m][n];
+}
+
+/**
+ * Check if two critic names are similar enough to be the same person.
+ * Handles cases like "Jesse Green" vs "Jesse" or typos.
+ */
+function areCriticsSimilar(critic1, critic2) {
+  if (!critic1 || !critic2) return false;
+
+  const c1 = critic1.toLowerCase().trim();
+  const c2 = critic2.toLowerCase().trim();
+
+  // Exact match
+  if (c1 === c2) return true;
+
+  // Normalize both
+  const n1 = normalizeCritic(critic1);
+  const n2 = normalizeCritic(critic2);
+  if (n1 === n2) return true;
+
+  // REMOVED: First-name matching caused false positives
+  // "Jesse Green" matched "Jesse Oxfeld" (different critics!)
+  // Now rely only on explicit aliases in CRITIC_ALIASES
+
+  // REMOVED (Task 1.2): Levenshtein matching caused false positives
+  // (e.g., "Helen Smith" matched "Helen Smyth" - different critics!)
+  // Now rely only on exact matches and explicit CRITIC_ALIASES.
+  // Valid typos discovered via audit were added to CRITIC_ALIASES above.
+
+  return false;
+}
+
+/**
+ * Check if two outlet names refer to the same outlet.
+ */
+function areOutletsSame(outlet1, outlet2) {
+  if (!outlet1 || !outlet2) return false;
+  return normalizeOutlet(outlet1) === normalizeOutlet(outlet2);
+}
+
+/**
+ * Merge two review objects, keeping the best data from each.
+ * Prefers: longer text, more complete URLs, original scores, etc.
+ *
+ * @param {object} existing - The on-disk review object
+ * @param {object} incoming - The newly-discovered review object
+ * @param {object} [options]
+ * @param {boolean} [options.fromPostOpening] - When true, a placeholder file
+ *   (existing.isPreviewPlaceholder === true) will be fully REPLACED by the
+ *   incoming review rather than merged. Has no effect on real reviews.
+ * @param {object} [context]
+ * @param {object} [context.show] - Full show record (previewDate/
+ *   previewsStartDate/openingDate/closingDate/category/market/priorRuns/
+ *   tourLegs). When supplied, a urlChanged swap whose candidate URL's own
+ *   url-path date falls outside the show's current-run window is refused
+ *   (task #1478, mirrors maybeUpgradeUrl's #1416 fix) — a prior-production's
+ *   article masquerading as a content upgrade, not a genuine URL correction.
+ */
+function mergeReviews(existing, incoming, options = {}, context = {}) {
+  // Post-opening discovery replaces preview-period placeholder wholesale.
+  // Real reviews (no isPreviewPlaceholder flag) are never replaced this way.
+  if (existing.isPreviewPlaceholder === true && options.fromPostOpening === true) {
+    return { ...incoming };
+  }
+
+  // URL analysis runs BEFORE any field merging so the cross-outlet guard
+  // below can no-op the whole merge, not just the URL swap.
+  //
+  // EXCEPTION: if existing URL is marked urlVerified or urlManualOverride,
+  // don't auto-overwrite with a different URL. First-URL-set (existing.url
+  // is null/undefined) is still allowed — the protection only blocks CHANGES.
+  // See: Boy at the Back of the Class thestage URL oscillation (2026-04-10).
+  // School Girls 2026-09-29: an AUTO flip-flop pin (urlVerifiedAuto) on a url
+  // an independent aggregator record contradicts (BWW's typo'd Theatrely link
+  // vs Playbill Verdict's real one) must yield to the corroborated url, or the
+  // write guard's tie-break (review-write-guard.js _flipFlopShouldTakeIncoming)
+  // never sees the change. Human pins (urlManualOverride, urlVerified without
+  // Auto, _locked) are never lifted. Lazy require: review-write-guard requires
+  // this module lazily too.
+  const tieBreakTakesIncoming = !!incoming.url && !!existing.url && existing._locked !== true
+    && existing.urlManualOverride !== true
+    && existing.urlVerified === true && existing.urlVerifiedAuto === true
+    && require('./review-write-guard')._flipFlopShouldTakeIncoming(existing.url, incoming.url, existing);
+  const urlIsProtected = (existing.urlVerified === true || existing.urlManualOverride === true) && !tieBreakTakesIncoming;
+  const existingUrlLooksBroken = !existing.url || existing.url.includes('undefined');
+  // A garbage incoming url ('undefined' fragments, non-http strings like
+  // 'N/A' or relative paths) must never REPLACE a real existing url — the
+  // invariant below deliberately no-ops on garbage (no state wipe), so
+  // adopting the garbage url here would swap the url with no clear, no
+  // breadcrumb, and a publishDate refresh (ship-check 2026-07-11). First-set
+  // onto an empty/broken url is still allowed for http(s) urls only.
+  const incomingUrlGarbage = !!incoming.url && (typeof incoming.url !== 'string'
+    || incoming.url.includes('undefined') || !/^https?:\/\//i.test(incoming.url));
+  const urlChanged = incoming.url && existing.url && !incomingUrlGarbage
+    && normalizeUrl(incoming.url) !== normalizeUrl(existing.url);
+
+  // Flip-flop breaker (BRO-121): a poller/aggregator alternating between two
+  // url variants that normalizeUrl() treats as different articles (most
+  // often an untracked query param — see the loginsuccessful strip above)
+  // otherwise re-triggers applyUrlChangeInvariant's full state wipe
+  // (llmScore/fullText/aggregatorStars/etc) on EVERY run. isUrlFlipFlop()
+  // detects the swap-BACK half of the cycle — incoming matches the url this
+  // file held before its last URL-change clear — and refuses it.
+  const { isUrlFlipFlop } = require('./url-change-invariant');
+  const urlFlipFlop = urlChanged && !tieBreakTakesIncoming && isUrlFlipFlop(existing, incoming.url);
+  if (urlFlipFlop) {
+    console.warn(`[mergeReviews] refused url flip-flop for ${existing.outletId || context.file || '?'}: ${incoming.url} matches the url this file held before its last change`);
+    logExclusion({
+      script: context.script || 'unknown-caller',
+      showId: context.showId || 'unknown',
+      file: context.file || '-',
+      reason: 'skippedUrlFlipFlop',
+      details: { existingUrl: existing.url, incomingUrl: incoming.url, outletId: existing.outletId, criticName: existing.criticName },
+    });
+  }
+
+  // Wrong-production regression guard (#1478, mirrors #1416's maybeUpgradeUrl
+  // fix): a urlChanged swap whose candidate is dated outside the show's
+  // current-run window is a prior production's article, not a genuine URL
+  // correction — refuse it the same way maybeUpgradeUrl does. Computed here
+  // (before any field merging) so it can also gate adopting incoming.fullText
+  // below — that text was scraped from the rejected candidate URL, so
+  // refusing the url swap but still taking its fullText would leave the
+  // CORRECT current-run url paired with the WRONG production's content,
+  // undetectable by url-dated audits. Only applies when the caller supplied
+  // a show record; fails open (no-op) otherwise, same as isUrlSwapRegression
+  // itself.
+  let urlSwapRegressed = false;
+  if (urlChanged && context.show) {
+    const { isUrlSwapRegression } = require('./url-downgrade-guard');
+    const verdict = isUrlSwapRegression({ newUrl: incoming.url, show: context.show, outletId: existing.outletId });
+    if (verdict.regression) {
+      urlSwapRegressed = true;
+      console.warn(`[mergeReviews] refused regressing swap for ${existing.outletId || context.file || '?'}: ${verdict.reason}`);
+      logExclusion({
+        script: context.script || 'unknown-caller',
+        showId: context.showId || 'unknown',
+        file: context.file || '-',
+        reason: 'skippedUrlSwapRegression',
+        details: {
+          existingUrl: existing.url, incomingUrl: incoming.url, outletId: existing.outletId,
+          criticName: existing.criticName, urlDate: verdict.urlDate, issue: verdict.issue, diffDays: verdict.diffDays,
+        },
+      });
+    }
+  }
+
+  // Cross-show guard, maybeUpgradeUrl's twin (mergeReviews had none). A
+  // urlChanged swap whose candidate slug names a DIFFERENT show is another
+  // show's review: on 2026-09-17 a WET roundup mis-matched to "Man to Man"
+  // swapped The Stage's man-to-man URL for fences-review-leeds-playhouse here,
+  // and the Fences 4-star score, date and critic all went live on the Man to
+  // Man page. Like the cross-outlet guard below, nothing from such a record
+  // (url, text, score, critic, date) belongs here, so the whole merge no-ops.
+  // Fails open without a show title (slugLooksLikeDifferentShow's contract).
+  // Only fires when the EXISTING url names this show: headline-style slugs
+  // ("katie-holmes-...-review", "aisle-review-...") name no title at all, and
+  // refusing their swaps was ~20 false positives across the corpus (ship-check
+  // on #940). The real incident swapped AWAY from a man-to-man-review slug.
+  const _mergeShowTitle = (context.show && context.show.title) || context.showTitle || null;
+  if (urlChanged && !urlSwapRegressed && _mergeShowTitle
+      && urlSlugNamesShow(existing.url, _mergeShowTitle)
+      && reviewSlugNamesDifferentShow(incoming.url, _mergeShowTitle)) {
+    console.warn(`[mergeReviews] refused cross-show swap for ${existing.outletId || context.file || '?'}: ${incoming.url} does not match "${_mergeShowTitle || existing.url}"`);
+    logExclusion({
+      script: context.script || 'unknown-caller',
+      showId: context.showId || 'unknown',
+      file: context.file || '-',
+      reason: 'skippedCrossShowUrlSwap',
+      details: {
+        existingUrl: existing.url, incomingUrl: incoming.url, outletId: existing.outletId,
+        criticName: existing.criticName, showTitle: _mergeShowTitle,
+      },
+    });
+    return { ...existing };
+  }
+
+  // Sibling URL-collision guard (BRO-3092). A urlChanged swap onto a URL that
+  // a DIFFERENT file in this show already owns manufactures exactly the state
+  // validate-data.js errors on ("One URL per outlet per show = one review"),
+  // and the applyUrlChangeInvariant call below then wipes this file's
+  // excerpts/llmScore/assignedScore as "old-URL-derived state" on the way in.
+  // That is how the-addams-family-2010's scored Terry Teachout record was
+  // reduced to an empty stub while 6.6KB of WSJ registration boilerplate under
+  // the byline "Unknown" survived into reviews.json (2026-09-08 08:41Z).
+  //
+  // Either the two files are the same review — in which case they need
+  // merging, not a second copy of the URL — or the candidate is wrong.
+  // Refusing keeps this file's url AND its content in both readings.
+  //
+  // Only applies when the caller supplied context.showDir; fails open
+  // otherwise, same shape as the context.show gate above.
+  let urlCollidesWithSibling = false;
+  if (urlChanged && context.showDir) {
+    const { findSiblingUrlOwner } = require('./review-url-collision');
+    const owner = findSiblingUrlOwner({
+      showDir: context.showDir,
+      url: incoming.url,
+      selfOutletId: existing.outletId,
+      selfCriticName: existing.criticName,
+      selfFilename: context.file && context.file !== '-' ? context.file : undefined,
+    });
+    if (owner) {
+      urlCollidesWithSibling = true;
+      console.warn(`[mergeReviews] refused url swap for ${existing.outletId || context.file || '?'}: ${incoming.url} is already owned by ${owner.filename}`);
+      logExclusion({
+        script: context.script || 'unknown-caller',
+        showId: context.showId || 'unknown',
+        file: context.file || '-',
+        reason: 'skippedSiblingUrlCollision',
+        details: {
+          existingUrl: existing.url, incomingUrl: incoming.url, outletId: existing.outletId,
+          criticName: existing.criticName, ownedBy: owner.filename,
+        },
+      });
+    }
+  }
+
+  // Merged-away URL guard (BRO-4414): a URL an earlier merge folded into this
+  // record is the same article as this record, not a URL change. Adopting it
+  // makes applyUrlChangeInvariant wipe the surviving text + score (Culture
+  // Sauce "How Shakespeare Saved My Life", 2026-09-30). No-op the whole merge,
+  // like the cross-outlet guard below: incoming.fullText came from that URL.
+  if (urlChanged && incoming.urlManualOverride !== true && incoming.allowMergedDuplicateUrl !== true
+      && require('./merged-duplicate-urls').isMergedDuplicateUrl(existing, incoming.url)) {
+    console.warn(`[mergeReviews] refused merged-away url for ${existing.outletId || context.file || '?'}: ${incoming.url}`);
+    logExclusion({
+      script: context.script || 'unknown-caller',
+      showId: context.showId || 'unknown',
+      file: context.file || '-',
+      reason: 'skippedMergedDuplicateUrl',
+      details: { existingUrl: existing.url, incomingUrl: incoming.url, outletId: existing.outletId, criticName: existing.criticName },
+    });
+    return { ...existing };
+  }
+
+  // Cross-outlet guard: an incoming record whose URL the registry maps to a
+  // DIFFERENT outlet is another outlet's review — do not merge ANY of it
+  // (url, text, critic, dates). Slots whose outletId was minted from a SERP
+  // source label (no registry domain) otherwise swallow other outlets'
+  // reviews on in-place URL updates — Louise Penn's loureviews.blog reviews
+  // were published under the phantom outlet 'Cambridge' this way (her email,
+  // 2026-07-12). An unresolvable incoming domain still merges: blocking
+  // requires positive evidence of a mismatch, not mere ignorance. And a
+  // resolver mismatch is NOT evidence when the existing outlet's own registry
+  // entry owns the incoming domain — shared-domain losers (sunday-telegraph
+  // on telegraph.co.uk) and domainAliases (ap syndicated on abcnews.go.com)
+  // resolve to the domain's primary owner, not the slot's outlet.
+  if (urlChanged && existing.outletId && isCrossOutletUrl(existing.outletId, incoming.url)) {
+    logExclusion({
+      script: context.script || 'unknown-caller',
+      showId: context.showId || 'unknown',
+      file: context.file || '-',
+      reason: 'skippedCrossOutletMerge',
+      details: {
+        existingUrl: existing.url, incomingUrl: incoming.url, outletId: existing.outletId,
+        criticName: existing.criticName,
+        incomingResolvedOutletId: (resolveOutletFromUrl(incoming.url) || {}).outletId,
+      },
+    });
+    return { ...existing };
+  }
+
+  const merged = { ...existing };
+
+  // Flip-flop detected: pin the file at its current (stable) url so neither
+  // direction of the cycle can reopen it. Mirrors the manual urlVerified fix
+  // already applied by hand to jesus-christ-superstar-west-end-2026's
+  // independent--alice-saville.json (Notion 3aa637c5) — automating it here so
+  // future files don't need the same manual intervention.
+  if (urlFlipFlop && !merged.urlVerified) {
+    merged.urlVerified = true;
+    merged.urlVerifiedAuto = true;
+    merged.urlVerifiedNote = `Auto-pinned ${new Date().toISOString().slice(0, 10)}: url flip-flopped back to a prior value (poller alternates ${existing.url} ↔ ${incoming.url}) — locked against further automated changes (BRO-121).`;
+  }
+
+  // Prefer longer/more complete fullText (decode entities on incoming text).
+  // Skipped when the url swap was just refused as a wrong-production
+  // regression, or as a flip-flop — that text was scraped from the rejected
+  // candidate URL, so adopting it here would contaminate the existing
+  // (correct) url's record with the oscillating/wrong-production content.
+  // urlCollidesWithSibling joins the same suppression set: that text was
+  // scraped from the sibling's URL, so taking it here would pair THIS file's
+  // (retained) url with ANOTHER article's body — undetectable by url-dated
+  // audits, exactly like the regressed-swap case.
+  if (incoming.fullText && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling) {
+    const decodedFullText = decodeHtmlEntities(incoming.fullText);
+    if (!existing.fullText || decodedFullText.length > existing.fullText.length) {
+      merged.fullText = decodedFullText;
+    }
+  }
+
+  // Prefer valid URLs — and when URL changes, clear stale content flags.
+  // This handles preview-article stubs being replaced by real review URLs.
+  // Block URL changes only when the existing URL is protected AND not
+  // obviously broken, or when the swap is a detected flip-flop.
+  // First-URL-set and undefined-repair always proceed.
+  const blockUrlChange = (urlIsProtected && !existingUrlLooksBroken && urlChanged) || urlFlipFlop;
+  if (blockUrlChange && !urlFlipFlop) {
+    logExclusion({
+      script: context.script || 'unknown-caller',
+      showId: context.showId || 'unknown',
+      file: context.file || '-',
+      reason: 'skippedBlockedUrlChange',
+      details: { existingUrl: existing.url, incomingUrl: incoming.url, outletId: existing.outletId, criticName: existing.criticName },
+    });
+  }
+
+  if (incoming.url && !incomingUrlGarbage
+      && (!existing.url || existing.url.includes('undefined') || urlChanged)
+      && !blockUrlChange && !urlSwapRegressed && !urlCollidesWithSibling) {
+    merged.url = incoming.url;
+    if (urlChanged) {
+      // URL moved to a different canonical article. Refresh publishDate and
+      // fullText from the incoming record — the fresh URL's text beats any
+      // old-URL text regardless of length (the length-preference above was
+      // written for same-URL refreshes and would keep the OLD article's
+      // longer text here).
+      if (incoming.publishDate) merged.publishDate = incoming.publishDate;
+      if (incoming.fullText) {
+        const decodedIncoming = decodeHtmlEntities(incoming.fullText);
+        if (decodedIncoming === decodeHtmlEntities(existing.fullText || '')) {
+          // Incoming ECHOES the old article's text (modulo entity encoding)
+          // under a new URL — keep the raw existing value so the invariant's
+          // deep-equal clears it. Taking the decoded echo would masquerade the
+          // old article's text as fresh content for the new URL, and it would
+          // then be LLM-scored against the wrong article.
+          merged.fullText = existing.fullText;
+        } else {
+          merged.fullText = decodedIncoming;
+        }
+      }
+      delete merged.wrongArticle;
+      // Write-topology invariant (Notion 399637c5): everything derived from
+      // the OLD url — wrong flags (including manual wrongShowReason: flagging
+      // a file for its URL is really flagging the URL), content state,
+      // excerpts, aggregatorStars, LLM scores, old text — must not survive.
+      // This replaced a partial hand-rolled clear whose carve-outs (manual
+      // wrongShowReason, non-'Same URL' notes, scored content) suppressed the
+      // real JCS Palladium reviews on 2026-07-08..10. Date-based
+      // wrongProduction flags are still preserved inside the invariant.
+      const { applyUrlChangeInvariant } = require('./url-change-invariant');
+      applyUrlChangeInvariant(existing, merged, {
+        fileLabel: context.file || `${existing.outletId || existing.outlet || '?'}--${existing.criticName || '?'}`,
+      });
+      merged.urlUpdatedFrom = existing.url;
+      merged.urlUpdatedAt = new Date().toISOString();
+    }
+  }
+
+  // BRO-4430: when the incoming record names a DIFFERENT article than the one
+  // this file now holds (its url change was refused or never applied), its
+  // byline and date describe that other article. Anansi the Spider: Show
+  // Score's 2023 Unicorn review filled "January 26th, 2023" and Anna James
+  // into the file holding the 2026 Regent's Park review, which the date
+  // guards then dropped as another production.
+  // Narrow on purpose: only a url this file was explicitly MOVED AWAY from
+  // (its last url-change breadcrumb, previousUrl or urlCorrectedFrom) proves
+  // the incoming is another article; a mere url variant must still fill.
+  const _movedAwayFrom = [existing._urlChangedClear && existing._urlChangedClear.from, existing.previousUrl, existing.urlCorrectedFrom]
+    .filter((u) => typeof u === 'string' && /^https?:\/\//i.test(u)).map(normalizeUrl);
+  const incomingIsOtherArticle = !!(incoming.url && merged.url
+    && /^https?:\/\//i.test(incoming.url) && /^https?:\/\//i.test(merged.url)
+    && normalizeUrl(incoming.url) !== normalizeUrl(merged.url)
+    && _movedAwayFrom.includes(normalizeUrl(incoming.url)));
+
+  // Upgrade Unknown critic name from incoming data
+  if (!incomingIsOtherArticle && incoming.criticName && incoming.criticName !== 'Unknown'
+      && (!existing.criticName || existing.criticName === 'Unknown')
+      && !existing.criticNameManual) {
+    merged.criticName = incoming.criticName;
+  }
+
+  // Keep all excerpts (decode entities on incoming). Gates check `merged`, not
+  // `existing`, so a fresh incoming excerpt still lands when the URL-change
+  // invariant above just cleared a stale old-URL excerpt (identical behavior
+  // to checking `existing` on every other path).
+  if (incoming.dtliExcerpt && !merged.dtliExcerpt) {
+    merged.dtliExcerpt = decodeHtmlEntities(incoming.dtliExcerpt);
+  }
+  if (incoming.bwwExcerpt && !merged.bwwExcerpt) {
+    merged.bwwExcerpt = decodeHtmlEntities(incoming.bwwExcerpt);
+  }
+  if (incoming.showScoreExcerpt && !merged.showScoreExcerpt) {
+    merged.showScoreExcerpt = decodeHtmlEntities(incoming.showScoreExcerpt);
+  }
+  if (incoming.nycTheatreExcerpt && !merged.nycTheatreExcerpt) {
+    merged.nycTheatreExcerpt = decodeHtmlEntities(incoming.nycTheatreExcerpt);
+  }
+
+  // Keep thumb data
+  if (incoming.dtliThumb && !existing.dtliThumb) {
+    merged.dtliThumb = incoming.dtliThumb;
+  }
+  if (incoming.bwwThumb && !existing.bwwThumb) {
+    merged.bwwThumb = incoming.bwwThumb;
+  }
+
+  // Prefer original scores — but NEVER overwrite outlet-verified scores
+  // with aggregator scores (prevents theatre-reviews/ShowScore contamination)
+  const incomingIsAggregator = AGGREGATOR_SCORE_SOURCES.has(incoming.scoreSource);
+  if (incoming.originalScore && !existing.originalScore && !incomingIsAggregator) {
+    merged.originalScore = incoming.originalScore;
+    merged.originalRating = incoming.originalRating;
+  }
+
+  // Keep better publish date
+  if (incoming.publishDate && !existing.publishDate && !incomingIsOtherArticle) {
+    merged.publishDate = incoming.publishDate;
+  }
+
+  // Track all sources
+  const sources = new Set();
+  if (existing.source) sources.add(existing.source);
+  if (incoming.source) sources.add(incoming.source);
+  if (existing.sources) existing.sources.forEach(s => sources.add(s));
+  if (incoming.sources) incoming.sources.forEach(s => sources.add(s));
+  merged.sources = Array.from(sources);
+  merged.source = merged.sources[0]; // Keep primary source
+
+  // Clear wrongProduction if incoming data has a valid URL and the flag
+  // was URL-based (venue transfer self-heal). Date-based flags persist —
+  // a URL refresh doesn't change when the review was published. The rebuild's
+  // pre-opening guard re-evaluates date-based flags fresh each run, so clearing
+  // them here just creates an oscillation loop with the rebuild.
+  //
+  // Only 'Same URL' (URL-based) auto-clears here. Date-based flag prefixes
+  // ('Pre-opening guard', 'Date guard', 'Dateless show') and 'Tour transfer'
+  // manual flags must persist until a new valid date or manual override.
+  //
+  // A MISSING note is not evidence of a URL-based flag — it is the absence of
+  // evidence, and it must not clear. The flaggers that write
+  // `wrongProductionReason` without a `wrongProductionNote` (collect-review-
+  // texts' ingest-anticipatory-gate, the collector/CV LLM promotions) are all
+  // content- or date-based, so the old `!merged.wrongProductionNote` default
+  // auto-cleared exactly the flags this block promises to preserve. That put a
+  // 2016 Broadway 'Cats' review live on the 2026 West End show page (class-A
+  // cross-market leak, main red 2026-08-06) and corrupted 18 files in one day.
+  // Note presence alone is not a type system: cleanup-dedup-comprehensive.js
+  // (live via weekly-integrity.yml) writes a genuinely URL-based cross-show
+  // collision flag with only `_wrongProductionReason` and no note, and it must
+  // keep its self-heal. So accept EITHER a 'Same URL' note or explicit
+  // URL-collision provenance (codex adversarial review, 2026-08-06).
+  const isUrlBasedWrongProd = isUrlProvenanceWrongProduction(merged);
+  // Content verification that read the article and said "different production"
+  // outranks a URL-shaped self-heal: a fresh URL for the same wrong article is
+  // still the wrong article. Gated to HIGH confidence — the rebuild already
+  // refuses to promote stale/low-confidence CV, and vetoing on those here would
+  // let one weak false positive pin a legitimate transfer forever with no
+  // automated way out (the CV self-heal in review-guards.js is provenance-gated
+  // to CV-promoted flags and would not cover a 'Same URL' flag).
+  const cv = merged.contentVerification;
+  const cvSaysWrongProduction = !!cv
+    && cv.wrongProduction === true
+    && cv.confidence === 'high';
+  // A REFUSED url is not evidence of anything (BRO-3092 ship-check, Codex).
+  // This self-heal reads "a new URL arrived, so a URL-shaped wrong-production
+  // verdict about the OLD url is void" — but it only ever tested that
+  // incoming.url looks like an http url, never that the swap was accepted. All
+  // three refusal guards leave merged.url exactly as it was, so without this
+  // the rejected candidate still un-excludes the review: the record keeps the
+  // very URL the flag is about, minus the flag. urlSwapRegressed and
+  // urlFlipFlop had this hole before BRO-3092; urlCollidesWithSibling would
+  // have inherited it.
+  // BRO-4887: a URL-based flag about a url whose own path date sits clearly
+  // outside this show's run (a 2022 article filed under the 1987 show) is NOT
+  // a venue-transfer to heal. Two misfiled NY Post / NYSR copies were
+  // auto-cleared this way and went live on the 1987 page with a fake date.
+  // Veto only: same helper, same fail-open rules as the url-swap guard above
+  // (no show record, no show dates or no date in the url => unchanged).
+  let autoClearUrlDateVeto = false;
+  if (context.show && merged.url && merged.wrongProduction && incoming.url && incoming.url.startsWith('http')
+      && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling
+      && !merged.wrongProductionManualClear && !cvSaysWrongProduction && isUrlBasedWrongProd) {
+    const { isUrlSwapRegression: _urlOutsideRun } = require('./url-downgrade-guard');
+    const veto = _urlOutsideRun({ newUrl: merged.url, show: context.show, outletId: existing.outletId });
+    if (veto.regression) {
+      autoClearUrlDateVeto = true;
+      console.warn(`[mergeReviews] kept wrongProduction for ${existing.outletId || context.file || '?'}: ${veto.reason}`);
+      logExclusion({
+        script: context.script || 'unknown-caller',
+        showId: context.showId || 'unknown',
+        file: context.file || '-',
+        reason: 'skippedAutoClearUrlDateVeto',
+        details: {
+          url: merged.url, outletId: existing.outletId, criticName: existing.criticName,
+          urlDate: veto.urlDate, issue: veto.issue, diffDays: veto.diffDays,
+        },
+      });
+    }
+  }
+  if (merged.wrongProduction && incoming.url && incoming.url.startsWith('http')
+      && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling
+      && !merged.wrongProductionManualClear
+      && !cvSaysWrongProduction
+      && !autoClearUrlDateVeto
+      && isUrlBasedWrongProd) {
+    delete merged.wrongProduction;
+    delete merged.wrongProductionNote;
+    merged.wrongProductionAutoCleared = true;
+    merged.wrongProductionAutoClearedAt = new Date().toISOString().slice(0, 10);
+  }
+
+  return merged;
+}
+
+// isUrlProvenanceWrongProduction() — is this wrongProduction flag URL-based
+// (and therefore eligible for the venue-transfer self-heal above), as
+// opposed to date- or content-based? Moved to scripts/lib/wrongproduction-
+// provenance.js (task #1109) as part of the shared provenance vocabulary
+// every wrongProduction writer now has access to — imported at the top of
+// this file. Detectors that predate the explicit `wrongProductionProvenance`
+// field (currently just cleanup-dedup-comprehensive.js, keyed by
+// `_wrongProductionDetectedBy` with no note) live there as
+// LEGACY_URL_DETECTORS.
+//
+// A MISSING note is NOT evidence of a URL-based flag — that default is what
+// cleared date-based flags and put a 2016 Broadway 'Cats' review on the 2026
+// West End show page (main red, 2026-08-06). Evidence must be positive:
+// either an explicit wrongProductionProvenance='url' stamp, a 'Same URL'
+// note, or a legacy URL-collision detector stamp.
+
+/**
+ * Get the full outlet object from the registry.
+ * Returns { displayName, tier, aliases, domain } or null if not found.
+ */
+// Wire services syndicate on arbitrary partner domains (AP reviews live on
+// huffpost.com, sfgate.com, washingtontimes.com, …), so URL-domain identity
+// checks can never apply to them. Single source of truth — gather-reviews'
+// ingestion domain gate and the mergeReviews cross-outlet guard both use it.
+const WIRE_SERVICE_OUTLETS = new Set(['ap', 'reuters', 'bloomberg', 'upi']);
+
+/**
+ * Is this URL positive evidence of a DIFFERENT outlet than outletId?
+ * True only when the registry maps the URL's domain to another outlet AND
+ * outletId's own registry entry does not claim that domain, path-aware
+ * (outletOwnsUrlDomainIgnoringPath — domain / domainAliases, but path-split
+ * domains like timeout.com/london still refine) AND outletId is not a wire
+ * service. Used to refuse cross-outlet URL swaps (Louise Penn 'Cambridge'
+ * incident, 2026-07-12).
+ */
+function isCrossOutletUrl(outletId, url) {
+  if (!outletId || !url) return false;
+  const id = normalizeOutlet(outletId);
+  if (WIRE_SERVICE_OUTLETS.has(id)) return false;
+  const resolved = resolveOutletFromUrl(url);
+  if (!resolved || resolved.outletId === id) return false;
+  return !outletOwnsUrlDomainIgnoringPath(id, url);
+}
+
+/**
+ * Does this outlet's own registry entry claim the URL's domain?
+ * Checks `domain` plus `domainAliases` (syndication hosts), matching the
+ * hostname exactly or as a subdomain. Used by the mergeReviews cross-outlet
+ * guard: when two outlets share a domain (telegraph/sunday-telegraph) or an
+ * outlet syndicates on another's domain (ap on abcnews.go.com),
+ * resolveOutletFromUrl returns the domain's primary owner — the slot's outlet
+ * still legitimately owns the URL and must not be blocked.
+ */
+function outletOwnsUrlDomain(outletId, url) {
+  if (!outletId || !url) return false;
+  const entry = getOutletFromRegistry(outletId);
+  if (!entry) return false;
+  let hostname;
+  try {
+    hostname = new URL(url).hostname.replace(/^www\./, '').toLowerCase();
+  } catch {
+    return false;
+  }
+  const owned = [entry.domain, ...(Array.isArray(entry.domainAliases) ? entry.domainAliases : [])]
+    .filter(d => typeof d === 'string' && d)
+    .map(d => d.replace(/^www\./, '').toLowerCase());
+  return owned.some(d => hostname === d || hostname.endsWith('.' + d));
+}
+
+/**
+ * Like outletOwnsUrlDomain, but only shields the label when the URL's PATH
+ * carries no outlet-identifying signal beyond the bare domain. Two outlets
+ * can share a bare domain for two different reasons:
+ *  - pure edition/section labels with no path signal (telegraph vs
+ *    sunday-telegraph, express-uk vs sunday-express) — domain ownership
+ *    alone should protect the existing label here.
+ *  - a genuine path-split domain (timeout.com/london vs timeout.com/newyork)
+ *    — the path IS the signal that identifies the correct outlet, so owning
+ *    the bare domain must NOT block refinement.
+ * Detected generically, mirroring review-file-writer.js's Case 1
+ * pathInformed check (task #1529): resolve the URL's bare origin — if that
+ * resolves to a DIFFERENT outlet than the full URL, the path is informative
+ * and this returns false so the caller still refines.
+ */
+function outletOwnsUrlDomainIgnoringPath(outletId, url) {
+  if (!outletOwnsUrlDomain(outletId, url)) return false;
+  try {
+    const fullResolved = resolveOutletFromUrl(url);
+    const originResolved = resolveOutletFromUrl(new URL(url).origin + '/');
+    // Matches review-file-writer.js's Case 1 pathInformed check exactly: an
+    // origin that fails to resolve at all counts as path-informed (not just
+    // an origin that resolves to a DIFFERENT outlet) — an unresolvable bare
+    // domain means whatever the full URL matched, it matched on the path.
+    const pathInformed = !originResolved || (fullResolved && originResolved.outletId !== fullResolved.outletId);
+    if (pathInformed) {
+      return false;
+    }
+  } catch { /* unparseable — fall through to the domain-only answer */ }
+  return true;
+}
+
+// Hosts where resolveOutletFromUrl's path check ALWAYS determines the outlet
+// — for every URL on the host, including one with no distinguishing path at
+// all (a bare timeout.com URL still deterministically means "not /london",
+// i.e. Time Out New York). Kept in sync with the path-aware block at the top
+// of resolveOutletFromUrl below; currently just the one declared path-split
+// edition pair (see outlet-registry-domain-collisions.js's EDITION_PAIRS).
+const PATH_SPLIT_EDITION_HOSTS = new Set(['timeout.com', 'timeout.co.uk']);
+
+// Time Out city editions that are NEITHER registered outlet (2026-09-29
+// ship-check: /chicago, /sydney, … used to fall through to T1 "timeout").
+// First path segment, lowercased. /newyork and any non-city path (the
+// long-standing NY convention: /theater-reviews, /movies, bare origin) stay
+// "timeout"; /london and /uk, and every timeout.co.uk URL, are Time Out London.
+const TIMEOUT_OTHER_CITY_EDITIONS = new Set([
+  'chicago', 'los-angeles', 'miami', 'boston', 'washington-dc', 'san-francisco',
+  'las-vegas', 'austin', 'philadelphia', 'seattle', 'atlanta', 'new-orleans', 'nashville',
+  'sydney', 'melbourne', 'australia', 'edinburgh', 'manchester', 'birmingham', 'bristol',
+  'dublin', 'paris', 'barcelona', 'madrid', 'lisbon', 'porto', 'berlin', 'rome', 'milan',
+  'amsterdam', 'hong-kong', 'singapore', 'tokyo', 'dubai', 'mumbai', 'delhi',
+  'mexico-city', 'buenos-aires', 'sao-paulo', 'rio-de-janeiro', 'montreal', 'toronto',
+  'cape-town', 'tel-aviv', 'istanbul', 'bangkok', 'seoul', 'shanghai', 'beijing',
+]);
+
+/**
+ * Which registered Time Out outlet a timeout.com / timeout.co.uk URL belongs
+ * to: 'timeout-london', 'timeout' (New York), or null for another city
+ * edition. Single source for resolveOutletFromUrl's path split.
+ */
+function timeoutEditionForPath(hostname, urlPath) {
+  const first = String(urlPath || '').toLowerCase().split('/').filter(Boolean)[0] || '';
+  if (hostname === 'timeout.co.uk') return 'timeout-london';
+  if (first === 'london' || first.startsWith('london-') || first === 'uk') return 'timeout-london';
+  if (TIMEOUT_OTHER_CITY_EDITIONS.has(first)) return null;
+  return 'timeout';
+}
+
+/**
+ * Resolve an outlet from a URL ONLY when its host is a DECLARED path-split
+ * edition domain (currently timeout.com/timeout.co.uk) — where the path,
+ * including its absence, always decides the outlet on its own.
+ *
+ * Returns null for every other domain, including an UNDECLARED collision
+ * like telegraph.co.uk/express.co.uk: those editions have no path signal at
+ * all (the bare origin and any path resolve to the same eponymous-wins
+ * outlet), so they are deliberately left unresolved by URL — byline/section
+ * data disambiguates them downstream instead (see the collision-rule comment
+ * in buildDomainToOutletIndex above).
+ *
+ * BRO-4153: this is the ONE shared path-aware check. outlet-canonicalize.js's
+ * resolveCanonicalOutletId/lookupOutletForHost only ever see a bare hostname
+ * (or mark a shared host fully "ambiguous"), so without this a timeout.com
+ * URL routed through operator-supplied outlet input, or through the
+ * no-outlet-supplied ingest branch, could silently resolve to the wrong
+ * edition — in either direction (a generic "timeout" input with a /london
+ * URL, or a "timeout-london" input with a /newyork URL).
+ */
+function resolveOutletFromUrlIfPathInformed(url) {
+  if (!url) return null;
+  let hostname;
+  try {
+    hostname = new URL(url).hostname.replace(/^www\./, '').toLowerCase();
+  } catch {
+    return null;
+  }
+  if (!PATH_SPLIT_EDITION_HOSTS.has(hostname)) return null;
+  return resolveOutletFromUrl(url);
+}
+
+function getOutletFromRegistry(outletId) {
+  const registry = loadOutletRegistry();
+  if (!registry || !registry.outlets) return null;
+
+  // First normalize the outlet ID
+  const normalizedId = normalizeOutlet(outletId);
+
+  // Load-time defense-in-depth (task #1783): even if a junk/sentinel id
+  // like "unknown" somehow re-enters the registry data (manual edit, stale
+  // file copy), never surface it as a real outlet entry.
+  if (isSentinelOutletId(normalizedId)) return null;
+
+  // Look up in registry
+  return registry.outlets[normalizedId] || null;
+}
+
+/**
+ * Get the tier for an outlet (1, 2, or 3).
+ * Returns 3 (lowest tier) if not found in registry.
+ */
+function getOutletTier(outletId) {
+  const outlet = getOutletFromRegistry(outletId);
+  return outlet?.tier || 3;
+}
+
+// =====================================================
+// CRITIC-OUTLET VALIDATION
+// =====================================================
+
+let _criticRegistryCache = null;
+
+/**
+ * Load and cache the critic registry from JSON file.
+ * Returns null if registry doesn't exist (non-fatal).
+ */
+function loadCriticRegistry() {
+  if (_criticRegistryCache) return _criticRegistryCache;
+  try {
+    const registryPath = path.join(__dirname, '..', '..', 'data', 'critic-registry.json');
+    const data = fs.readFileSync(registryPath, 'utf-8');
+    _criticRegistryCache = JSON.parse(data);
+    return _criticRegistryCache;
+  } catch (err) {
+    return null;
+  }
+}
+
+/**
+ * Validate whether a critic is expected at a given outlet.
+ * Uses the auto-generated critic registry for data-driven detection.
+ *
+ * @param {string} critic - Critic name
+ * @param {string} outlet - Outlet name or ID
+ * @returns {{ isSuspicious: boolean, confidence: string, reason?: string, knownOutlets?: string[] }}
+ */
+function validateCriticOutlet(critic, outlet) {
+  const normalizedCritic = normalizeCritic(critic);
+  const normalizedOutlet = normalizeOutlet(outlet);
+
+  if (normalizedCritic === 'unknown' || normalizedOutlet === 'unknown') {
+    return { isSuspicious: false, confidence: 'low', reason: 'Unknown critic or outlet' };
+  }
+
+  const registry = loadCriticRegistry();
+  if (!registry || !registry.critics) {
+    return { isSuspicious: false, confidence: 'low', reason: 'No critic registry available' };
+  }
+
+  // Look up by slugified critic name
+  const criticSlug = normalizedCritic.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const criticEntry = registry.critics[criticSlug];
+  if (!criticEntry) {
+    return { isSuspicious: false, confidence: 'low', reason: 'Critic not in registry' };
+  }
+
+  const knownOutlets = criticEntry.knownOutlets || [];
+  if (knownOutlets.length === 0) {
+    return { isSuspicious: false, confidence: 'low', reason: 'No known outlets for critic' };
+  }
+
+  // Freelancers get a pass - they write for many outlets
+  if (criticEntry.isFreelancer) {
+    return { isSuspicious: false, confidence: 'low', reason: 'Critic is a known freelancer' };
+  }
+
+  if (knownOutlets.includes(normalizedOutlet)) {
+    return { isSuspicious: false, confidence: 'high' };
+  }
+
+  const totalReviews = criticEntry.totalReviews || 0;
+  const outletCount = criticEntry.outletCounts?.[normalizedOutlet] || 0;
+
+  // High confidence: 10+ reviews, 0 at this outlet, not a freelancer
+  if (totalReviews >= 10 && outletCount === 0) {
+    return {
+      isSuspicious: true,
+      confidence: 'high',
+      reason: `${critic} has ${totalReviews} reviews, all at ${knownOutlets.join(', ')} -- never at ${outlet}`,
+      knownOutlets,
+    };
+  }
+
+  // Medium confidence: 5+ reviews, target outlet <10% share
+  if (totalReviews >= 5 && outletCount <= 1) {
+    return {
+      isSuspicious: true,
+      confidence: 'medium',
+      reason: `${critic} has only ${outletCount}/${totalReviews} reviews at ${outlet}`,
+      knownOutlets,
+    };
+  }
+
+  return { isSuspicious: false, confidence: 'low' };
+}
+
+/**
+ * Resolve an outlet name from a critic name using the critic registry.
+ * Useful when Show-Score extraction gets a null outlet (missing avatar alt text)
+ * but has a valid critic name — we can look up their primaryOutlet.
+ *
+ * @param {string} criticName - The critic's name (display name or slug)
+ * @returns {{ outletId: string, displayName: string, isFreelancer: boolean } | null}
+ */
+function resolveOutletFromCritic(criticName) {
+  if (!criticName) return null;
+
+  const registry = loadCriticRegistry();
+  if (!registry || !registry.critics) return null;
+
+  // Normalize critic name to slug format for lookup
+  const criticSlug = normalizeCritic(criticName);
+  if (criticSlug === 'unknown') return null;
+
+  const criticEntry = registry.critics[criticSlug];
+  if (!criticEntry || !criticEntry.primaryOutlet) return null;
+
+  const outletId = criticEntry.primaryOutlet;
+  const displayName = getOutletDisplayName(outletId);
+
+  return {
+    outletId,
+    displayName: displayName || outletId,
+    isFreelancer: !!criticEntry.isFreelancer,
+  };
+}
+
+/**
+ * Clear the critic registry cache (for testing or after regeneration).
+ */
+function clearCriticRegistryCache() {
+  _criticRegistryCache = null;
+}
+
+// Cache for domain-to-outlet reverse index
+let _domainToOutletCache = null;
+
+/**
+ * Build reverse domain index from outlet-registry.json.
+ * Maps domain bases and full hostnames to outlet IDs.
+ *
+ * Examples:
+ *   "nytimes" -> { outletId: "nytimes", displayName: "The New York Times" }
+ *   "nytimes.com" -> { outletId: "nytimes", displayName: "The New York Times" }
+ */
+function buildDomainToOutletIndex() {
+  if (_domainToOutletCache) return _domainToOutletCache;
+
+  _domainToOutletCache = new Map();
+  const registry = loadOutletRegistry();
+
+  if (registry && registry.outlets) {
+    // Two-pass build: primary domains take precedence over domainAliases.
+    // This prevents a defunct outlet's stale alias from poisoning a live outlet's
+    // primary domain (DoaS Apr 9-10 #7/#8: wolf-entertainment-guide.domainAliases
+    // claimed newyorktheatreguide.com, observer.domainAliases claimed
+    // theguardian.com — single-pass iteration order made the bug intermittent).
+    //
+    // Pass 1: register every outlet's primary `domain`.
+    //
+    // Primary-domain COLLISIONS exist (9 as of 2026-07-11): edition splits
+    // (telegraph/sunday-telegraph, express-uk/sunday-express) and registry
+    // duplicates (scene/scene-on-stage, theupcoming/the-upcoming-uk, …).
+    // The old last-write-wins rule silently handed telegraph.co.uk to
+    // sunday-telegraph (iterated later), so EVERY Telegraph URL resolved to
+    // the Sunday edition and the shared writer re-homed daily-Telegraph
+    // reviews under sunday-telegraph--*.json (card 38b637c5 discovery).
+    // Collision rule: the eponymous outlet (id matches the domain base, e.g.
+    // 'telegraph' for telegraph.co.uk) wins its own domain; otherwise the
+    // FIRST registration wins (registry order lists the primary edition
+    // first). A URL can never positively identify the non-eponymous edition
+    // of a shared domain — byline/section data has to do that downstream.
+    const _idMatchesBase = (id, base) =>
+      String(id).replace(/[^a-z0-9]/g, '') === String(base).replace(/[^a-z0-9]/g, '');
+    const _claimDomain = (key, entry, base) => {
+      const existing = _domainToOutletCache.get(key);
+      if (!existing) { _domainToOutletCache.set(key, entry); return; }
+      if (existing.outletId === entry.outletId) return;
+      if (_idMatchesBase(entry.outletId, base) && !_idMatchesBase(existing.outletId, base)) {
+        console.warn(`  ⚠️  Domain collision on "${key}": ${existing.outletId} vs ${entry.outletId} — eponymous ${entry.outletId} wins`);
+        _domainToOutletCache.set(key, entry);
+        return;
+      }
+      console.warn(`  ⚠️  Domain collision on "${key}": keeping ${existing.outletId}, ignoring ${entry.outletId}`);
+    };
+    // Pass 1a: claim every outlet's primary FULL host. Genuine same-full-host
+    // collisions (edition splits that literally share one host — telegraph.co.uk
+    // for telegraph/sunday-telegraph, express.co.uk, timeout.com) resolve via
+    // the eponymous rule above and warn, because a URL on that host truly cannot
+    // name the edition. Also record which full host(s) each bare domainBase is
+    // claimed by, so Pass 1b can tell edition splits apart from the
+    // same-brand-word-across-TLDs class below.
+    const _baseToHosts = new Map(); // domainBase -> Set(fullHost)
+    for (const [outletId, outletData] of Object.entries(registry.outlets)) {
+      if (!outletData.domain) continue;
+      const entry = { outletId, displayName: outletData.displayName };
+      const fullHost = outletData.domain.replace(/^www\./, '').toLowerCase();
+      // Identity label of the registrable domain, not the first label: a
+      // subdomain host (newyork.edgemedianetwork.com, news.abs-cbn.com) must
+      // not claim its subdomain word ("newyork", "news") as a bare base
+      // (BRO-4502).
+      const domainBase = registrableDomain(fullHost).split('.')[0];
+      _claimDomain(fullHost, entry, domainBase);
+      if (!_baseToHosts.has(domainBase)) _baseToHosts.set(domainBase, new Set());
+      _baseToHosts.get(domainBase).add(fullHost);
+    }
+
+    // Pass 1b: claim bare domain bases (the TLD-stripped fallback key). A base
+    // reached from a SINGLE full host registers to that host's resolved winner
+    // (so the eponymous rule stays authoritative for edition splits). But a base
+    // claimed by 2+ DISTINCT full hosts is the same-brand-word-across-TLDs class
+    // task #1254 fixed elsewhere: dancemagazine.com (dance-magazine) vs
+    // dancemagazine.co.uk (dance-informa-uk), independent.com vs independent.co.uk,
+    // donshewey.com vs donshewey.substack.com, boston.com vs
+    // boston.edgemedianetwork.com — legitimately distinct outlets that each
+    // already resolve by their own full host. The bare base is genuinely
+    // ambiguous, so we map it to no one and do NOT warn: it is expected registry
+    // data, not a conflict to resolve. (Real URLs carry a TLD and hit the
+    // exact-host match; only a bare-base fallback is affected, and returning
+    // nothing beats silently handing it to whichever outlet was iterated first.)
+    for (const [domainBase, hosts] of _baseToHosts) {
+      if (hosts.size !== 1) continue; // cross-TLD brand collision — leave ambiguous
+      const fullHost = [...hosts][0];
+      // A subdomain outlet (abcnews.go.com, yonkerstribune.typepad.com) is
+      // not the brand of its parent domain: it claims no bare base, or
+      // go.com would resolve to ABC News (BRO-4502 ship-check).
+      if (registrableDomain(fullHost) !== fullHost) continue;
+      const winner = _domainToOutletCache.get(fullHost);
+      if (winner) _claimDomain(domainBase, winner, domainBase);
+    }
+
+    // Pass 2: register domainAliases ONLY where the key is not already taken
+    // by a primary domain. This guarantees a live outlet's primary always wins
+    // over any other outlet's alias claiming the same domain.
+    for (const [outletId, outletData] of Object.entries(registry.outlets)) {
+      if (!outletData.domainAliases) continue;
+      const entry = { outletId, displayName: outletData.displayName };
+      for (const alias of outletData.domainAliases) {
+        const aliasHost = alias.replace(/^www\./, '').toLowerCase();
+        const aliasBase = registrableDomain(aliasHost).split('.')[0];
+        if (!_domainToOutletCache.has(aliasHost)) {
+          _domainToOutletCache.set(aliasHost, entry);
+        }
+        // Same rule as pass 1b: only a registrable alias host claims a bare
+        // base, and never one pass 1a saw on 2+ hosts (left ambiguous).
+        if (registrableDomain(aliasHost) === aliasHost
+            && !(_baseToHosts.has(aliasBase) && _baseToHosts.get(aliasBase).size > 1)
+            && !_domainToOutletCache.has(aliasBase)) {
+          _domainToOutletCache.set(aliasBase, entry);
+        }
+      }
+    }
+  }
+
+  return _domainToOutletCache;
+}
+
+// News portals whose hosts carry other publishers' copy (wire stories,
+// partner feeds); a URL there never identifies the outlet. Shared with
+// outlet-mismatch-heal.js so the heal and the resolver agree.
+const SYNDICATION_PORTAL_HOSTS = Object.freeze(['yahoo.com', 'msn.com', 'aol.com']);
+function isSyndicationPortalHost(hostname) {
+  const h = String(hostname || '').toLowerCase().replace(/\.+$/, '').replace(/^www\./, '');
+  return SYNDICATION_PORTAL_HOSTS.some((p) => h === p || h.endsWith('.' + p));
+}
+
+/**
+ * The registrable part of a (www-stripped, lowercased) host: the identity
+ * label plus its public suffix. example.com, example.co.uk, and on a blog
+ * platform the publication itself (someone.substack.com). A host equal to
+ * its registrable domain has no subdomain.
+ */
+function registrableDomain(hostname) {
+  const { platformSuffixOf, multipartSuffixOf } = require('./host-suffix-lists');
+  // Unlisted country suffixes of the common shape (com.ph, org.sg) count as
+  // multi-part too, or mb.com.ph would be keyed under the bare base "com".
+  const ccSecondLevel = hostname.match(/\.((?:co|com|org|net|ac|gov|edu)\.[a-z]{2})$/);
+  const suffix = platformSuffixOf(hostname) || multipartSuffixOf(hostname)
+    || (ccSecondLevel && ccSecondLevel[1])
+    || hostname.slice(hostname.lastIndexOf('.') + 1);
+  if (hostname === suffix || !hostname.endsWith('.' + suffix)) return hostname;
+  const head = hostname.slice(0, -(suffix.length + 1));
+  return head.slice(head.lastIndexOf('.') + 1) + '.' + suffix;
+}
+
+/**
+ * Resolve an outlet from a URL by matching the domain against outlet-registry.json.
+ *
+ * @param {string} url - The review URL
+ * @returns {{ outletId: string, displayName: string } | null} - Resolved outlet or null
+ *
+ * Examples:
+ *   "https://www.nytimes.com/..." -> { outletId: "nytimes", displayName: "The New York Times" }
+ *   "https://culturesauce.com/..." -> { outletId: "culturesauce", displayName: "Culture Sauce" }
+ */
+function resolveOutletFromUrl(url) {
+  if (!url) return null;
+
+  try {
+    const parsedUrl = new URL(url);
+    const hostname = parsedUrl.hostname.replace(/\.+$/, '').replace(/^www\./, '').toLowerCase();
+    const domainBase = hostname.split('.')[0];
+    // News portals republish wire/partner copy under their own domain, so the
+    // host never names the publisher (BRO-4502: AP reviews on news.yahoo.com).
+    if (isSyndicationPortalHost(hostname)) return null;
+
+    // Path-aware overrides for shared-domain outlets (before domain lookup)
+    // timeout.com hosts both Time Out New York and Time Out London under different paths
+    const urlPath = parsedUrl.pathname.toLowerCase();
+    // City subdomains (newyork.timeout.com, london.timeout.com) are the same
+    // Time Out editions as the /newyork and /london paths (BRO-4502: these
+    // used to fall to the bare first-label fallback, so "newyork" hit
+    // newyork.edgemedianetwork.com's bare base and 22 Time Out NY reviews
+    // resolved to Edge New York).
+    if (hostname.endsWith('.timeout.com')) {
+      const city = hostname.slice(0, -'.timeout.com'.length);
+      if (city === 'newyork' || city === 'new-york' || city === 'ny') return { outletId: 'timeout', displayName: 'Time Out New York' };
+      if (city === 'london' || city === 'uk') return { outletId: 'timeout-london', displayName: 'Time Out London' };
+      // Any other city edition (losangeles., hongkong.) or a non-edition host
+      // (media.timeout.com) is neither registered outlet.
+      return null;
+    }
+    if (hostname === 'timeout.com' || hostname === 'timeout.co.uk') {
+      const edition = timeoutEditionForPath(hostname, urlPath);
+      if (edition === 'timeout-london') return { outletId: 'timeout-london', displayName: 'Time Out London' };
+      if (edition === 'timeout') return { outletId: 'timeout', displayName: 'Time Out New York' };
+      // Another city edition (Chicago, Sydney, …): neither registered outlet.
+      // Resolve nothing rather than hand it T1 Time Out New York's weight.
+      return null;
+    }
+
+    const domainIndex = buildDomainToOutletIndex();
+
+    // Try exact hostname match first
+    if (domainIndex.has(hostname)) {
+      return domainIndex.get(hostname);
+    }
+
+    // Try parent hosts before any bare-base guess: chicago.example.com ->
+    // example.com. Stops at the registrable domain (never looks up "com" or
+    // "co.uk").
+    const registrable = registrableDomain(hostname);
+    let parent = hostname;
+    while (parent !== registrable && parent.includes('.')) {
+      parent = parent.slice(parent.indexOf('.') + 1);
+      if (domainIndex.has(parent)) return domainIndex.get(parent);
+    }
+
+    // Bare first-label fallback (domain base without TLD) ONLY when the host
+    // has no subdomain, so example.net still finds example.com's outlet. For a
+    // subdomain host the first label is the subdomain, not the brand: BRO-4502
+    // newyork.timeout.com -> "newyork" -> Edge New York's bare base.
+    if (hostname === registrable && domainIndex.has(domainBase)) {
+      return domainIndex.get(domainBase);
+    }
+
+    // Generic subdomains (blog.example.net) get the same bare-base fallback
+    // as their registrable domain, which is what they are an alias of.
+    const withoutSub = hostname.replace(/^(blog|news|review|reviews|arts|entertainment)\./i, '');
+    if (withoutSub !== hostname && withoutSub === registrable) {
+      const subBase = withoutSub.split('.')[0];
+      if (domainIndex.has(subBase)) {
+        return domainIndex.get(subBase);
+      }
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Clear the domain-to-outlet cache (for testing or after registry updates).
+ */
+function clearDomainCache() {
+  _domainToOutletCache = null;
+}
+
+/**
+ * Get the canonical display name for an outlet ID.
+ * Priority: outlet-registry.json, then built-in fallback.
+ */
+function getOutletDisplayName(outletId) {
+  // First check the registry (source of truth)
+  const outlet = getOutletFromRegistry(outletId);
+  if (outlet?.displayName) {
+    return outlet.displayName;
+  }
+
+  // Fall back to built-in display names for outlets not in registry
+  const displayNames = {
+    'nytimes': 'The New York Times',
+    'vulture': 'Vulture',
+    'variety': 'Variety',
+    'hollywood-reporter': 'The Hollywood Reporter',
+    'deadline': 'Deadline',
+    'timeout': 'Time Out New York',
+    'guardian': 'The Guardian',
+    'washpost': 'The Washington Post',
+    'wsj': 'The Wall Street Journal',
+    'nypost': 'New York Post',
+    'nydailynews': 'New York Daily News',
+    'ew': 'Entertainment Weekly',
+    'theatermania': 'TheaterMania',
+    'broadwaynews': 'Broadway News',
+    'broadwayworld': 'BroadwayWorld',
+    'playbill': 'Playbill',
+    'thewrap': 'The Wrap',
+    'indiewire': 'IndieWire',
+    'observer': 'Observer',
+    'newyorker': 'The New Yorker',
+    'ap': 'Associated Press',
+    'theatrely': 'Theatrely',
+    'nysr': 'New York Stage Review',
+    'nytg': 'New York Theatre Guide',
+    'nyt-theater': 'New York Theater',
+    'cititour': 'Cititour',
+    'stageandcinema': 'Stage and Cinema',
+    'talkinbroadway': "Talkin' Broadway",
+    'frontmezzjunkies': 'Front Mezz Junkies',
+    'dailybeast': 'The Daily Beast',
+    'usatoday': 'USA Today',
+    'forward': 'The Forward',
+    'rollingstone': 'Rolling Stone',
+    'thestage': 'The Stage',
+    'chicagotribune': 'Chicago Tribune',
+    'latimes': 'Los Angeles Times',
+    'sfchronicle': 'San Francisco Chronicle',
+    'whatsonstage': "What's On Stage",
+    'telegraph': 'The Telegraph',
+    'financialtimes': 'Financial Times',
+    'billboard': 'Billboard',
+    'amny': 'amNewYork',
+    'culturesauce': 'Culture Sauce',
+    'one-minute-critic': '1 Minute Critic',
+    'artsfuse': 'The Arts Fuse',
+    'jitney': 'The Jitney',
+    'slantmagazine': 'Slant Magazine',
+    'buzzfeed': 'BuzzFeed',
+    'vox': 'Vox',
+    'huffpost': 'HuffPost',
+    'nbcnews': 'NBC News',
+    'cbsnews': 'CBS News',
+    'newsweek': 'Newsweek',
+    'time': 'Time',
+    'newyorkmagazine': 'New York Magazine / Vulture',
+    // New outlets from BWW/DTLI
+    'newsday': 'Newsday',
+    'npr': 'NPR',
+    'njcom': 'NJ.com',
+    'dctheatrescene': 'DC Theatre Scene',
+    'nbcny': 'NBC New York',
+    'londontheatre': 'London Theatre',
+    'towncountry': 'Town & Country',
+    'vanityfair': 'Vanity Fair',
+    'vogue': 'Vogue',
+    'artsdesk': 'The Arts Desk',
+  };
+
+  return displayNames[outletId] || outletId;
+}
+
+/**
+ * Normalize a publish date string to a consistent format.
+ * - Strips ordinal suffixes (1st, 2nd, 3rd, 4th, etc.)
+ * - Returns the cleaned date string
+ *
+ * Examples:
+ *   "November 16th, 2025" -> "November 16, 2025"
+ *   "March 1st, 2024" -> "March 1, 2024"
+ *   "April 22nd, 2024" -> "April 22, 2024"
+ */
+function normalizePublishDate(dateStr) {
+  if (!dateStr) return dateStr;
+  const { stripOrdinals } = require('./date-utils');
+  return stripOrdinals(dateStr);
+}
+
+// A CI-rejected ("not a review") or flagged (wrongProduction/duplicateOf)
+// record's identity must never be inferred from a partial signal (outlet
+// name alone, shared domain) — only an exact URL match (pass 0 above/below,
+// which exists specifically to prevent byline-extraction duplicates on a
+// CONFIRMED-identical article) may still reuse one. Every other, weaker pass
+// must treat these as terminal: a human/override flow handles them explicitly.
+// BRO-3182: guardian--stephen-unwin.json (rejectionReason: not_a_review, a
+// flagged director essay) was returned as a merge target for an unrelated,
+// same-day Mark Lawson review purely because it was the only file in the
+// outlet slot.
+function isFlaggedMergeTarget(data) {
+  return !!(data && (data.wrongProduction || data.duplicateOf || data.rejectionReason));
+}
+
+// True when an incoming critic identity is a safe merge match for a file's
+// stored critic (accepts either a hyphenated filename slug or a display
+// name for `fileCritic`). Both sides unresolved (byline-less dedup) is safe;
+// both sides naming the SAME (or a known-similar/pseudonymous) critic is
+// safe. An unresolved incoming critic matching a file that already names a
+// REAL critic is never safe — that asymmetry is exactly what let BRO-3182's
+// ingest fall through to an outlet-only match and silently claim a
+// different critic's review slot.
+function criticIsCompatibleMergeTarget(incomingCritic, fileCritic) {
+  const incomingUnknown = !incomingCritic || incomingCritic.toLowerCase() === 'unknown';
+  const fileUnknown = !fileCritic || fileCritic.toLowerCase() === 'unknown';
+  if (incomingUnknown && fileUnknown) return true;
+  if (incomingUnknown !== fileUnknown) {
+    // Exactly one side is unresolved: only safe when it's the FILE's byline
+    // that's unknown (a legitimate byline-discovery fill-in). An unresolved
+    // incoming critic must never claim a file that already names someone.
+    return fileUnknown;
+  }
+  return normalizeCritic(incomingCritic) === normalizeCritic(fileCritic) ||
+    areCriticsSimilar(incomingCritic, fileCritic.replace(/-/g, ' '));
+}
+
+// True when BOTH the incoming critic and the file's STORED criticName name a
+// real person and they are not the same person (normalized / known alias).
+// Used to revalidate filename-slug matches in findExistingReviewFile, whose
+// slug can lag the stored byline (an "--unknown" file whose byline was filled).
+function storedCriticConflicts(incomingCritic, data) {
+  const stored = data && typeof data.criticName === 'string' ? data.criticName.trim() : '';
+  const isUnk = (n) => !n || /^(unknown|unnamed)$/i.test(String(n).trim());
+  if (isUnk(incomingCritic) || isUnk(stored)) return false;
+  return !criticIsCompatibleMergeTarget(incomingCritic, stored);
+}
+
+// True only when BOTH sides name a real, specific critic and they actually
+// match (or are a known pseudonym/typo pair) — the strongest identity
+// signal findExistingReviewFile ever has short of an exact URL. Used to
+// exempt isFlaggedMergeTarget's terminal treatment of flagged/rejected
+// files: several scrapers (extract-dtli-reviews.js's self-heal of a stale
+// garbage_text rejection, chief among them) legitimately re-merge onto a
+// flagged file identified by a confirmed same critic with no URL to hand.
+// The "both unknown" branch of criticIsCompatibleMergeTarget is NOT strong
+// enough for this — neither side confirms who actually wrote either piece —
+// so it does not qualify here.
+function isConfirmedNamedCriticMatch(incomingCritic, fileCritic) {
+  const incomingUnknown = !incomingCritic || incomingCritic.toLowerCase() === 'unknown';
+  const fileUnknown = !fileCritic || fileCritic.toLowerCase() === 'unknown';
+  if (incomingUnknown || fileUnknown) return false;
+  return normalizeCritic(incomingCritic) === normalizeCritic(fileCritic) ||
+    areCriticsSimilar(incomingCritic, fileCritic.replace(/-/g, ' '));
+}
+
+// The self-heal exemption from isFlaggedMergeTarget's terminal treatment —
+// but ONLY for a rejectionReason-only file (a CI content-quality verdict
+// that a fresh, better extraction can legitimately correct). wrongProduction
+// and duplicateOf are a DIFFERENT, stronger class of flag — a deliberate
+// assertion that this file is NOT this production's review (or is a known
+// duplicate) — and must stay terminal REGARDLESS of critic match: the same
+// critic can easily have byline'd both the wrong production's coverage and
+// (later) this one, so a name match there is no evidence at all about
+// content identity. Conflating the two broke
+// tests/unit/find-existing-review-by-url.test.mjs's "never merges into a
+// wrongProduction file even if URL matched" — same critic name, wrongProduction
+// file, exact URL match, and the file must still never be reused.
+function isExemptFlaggedMergeTarget(data, incomingCritic, fileCritic) {
+  if (!data) return false;
+  if (data.wrongProduction || data.duplicateOf) return false;
+  if (!data.rejectionReason) return false;
+  return isConfirmedNamedCriticMatch(incomingCritic, fileCritic);
+}
+
+/**
+ * Find an existing review file for the same outlet in a show directory.
+ * Checks all filename variants: normalized outlet ID, raw slug, with/without critic.
+ * Returns { path, data } if found, null if no existing file for this outlet.
+ *
+ * Used by aggregator scrapers to prevent creating duplicate files when different
+ * scrapers use different outlet name formats (e.g., "variety-frank-rizzo" vs "variety").
+ */
+function findExistingReviewFile(showDir, outletName, criticName, url = null) {
+  if (!fs.existsSync(showDir)) return null;
+
+  const normalizedOutlet = normalizeOutlet(outletName);
+  const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json'));
+
+  // Pass 0: match by canonical URL WITHIN THE SAME OUTLET. A review URL uniquely
+  // identifies one review, so a re-scrape that extracts a DIFFERENT byline from
+  // the page's author list (e.g. WhatsOnStage/Times pages whose byline selector
+  // is non-deterministic — one URL → 9 files "whatsonstage--alex-wood",
+  // "--alun-hood", … all same body) must merge into the existing file, not spawn
+  // a byline variant. Filename is keyed on criticName, so without this the
+  // variants accumulate, the write-guard marks them url-collision duplicates, and
+  // the real review ends up buried (invalid tier + circular duplicateOf) and never
+  // scores. Byline-explosion detector: scripts/audit-review-url-clusters.js.
+  //
+  // No critic-authority guard here, deliberately (BRO-2274): the BRO-730 guard in
+  // gather-reviews.js protects a real second review from being lost, but one canonical URL (query-ID params kept) is
+  // one article, so two differently named critics on one canonical URL means one
+  // byline is wrong (corpus 2026-10-05: 154 such groups, e.g. nytimes
+  // Brantley+Isherwood). A guard would resurrect byline explosion. Pinned by
+  // tests/unit/review-normalization-pass0.test.mjs.
+  //
+  // The same-outlet gate is REQUIRED: aggregator roundup URLs are legitimately
+  // shared across outlets (one WET/Show-Score/Stagedoor roundup URL backs the
+  // Telegraph, FT, Guardian star-stubs — distinct outlets, distinct scores; see
+  // feedback_aggregator_roundup_urls_shared_across_outlets). Matching on URL
+  // alone would collapse those into one and lose real reviews. canonicalReviewUrl
+  // (strips query/hash/trailing-slash — the SAME URL identity the detector uses)
+  // is intentionally stronger than the write-guard's normalizeUrl. Skips
+  // wrongProduction/duplicateOf files so contamination is never a merge target.
+  if (url) {
+    const { canonicalReviewUrl } = require('./review-url-clusters');
+    const canonUrl = canonicalReviewUrl(url);
+    if (canonUrl) {
+      for (const file of files) {
+        const filePath = path.join(showDir, file);
+        try {
+          const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+          if (!data || !data.url || data.wrongProduction || data.duplicateOf) continue;
+          const fileOutlet = normalizeOutlet(data.outletId || file.split('--')[0]);
+          if (fileOutlet !== normalizedOutlet) continue;
+          if (canonicalReviewUrl(data.url) === canonUrl) {
+            return { path: filePath, filename: file, data };
+          }
+        } catch { /* unreadable — skip */ }
+      }
+    }
+  }
+
+  // Pass 1: match by filename prefix (fast path — no file reads needed)
+  for (const file of files) {
+    const parts = file.replace('.json', '').split('--');
+    if (parts.length !== 2) continue;
+
+    const fileOutlet = parts[0];
+    const fileCritic = parts[1];
+
+    // Check if file's outlet matches our normalized outlet
+    const fileOutletNormalized = normalizeOutlet(fileOutlet);
+    if (fileOutletNormalized === normalizedOutlet) {
+      // If we have a critic name and file has a different named critic, skip
+      // (different critics at same outlet are separate reviews). BRO-3182:
+      // an unresolved incoming criticName must not silently match a file
+      // that already names a real critic — see criticIsCompatibleMergeTarget.
+      if (!criticIsCompatibleMergeTarget(criticName, fileCritic)) {
+        continue; // Different/unconfirmed critic at same outlet — not a duplicate
+      }
+
+      const filePath = path.join(showDir, file);
+      try {
+        const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+        // Skip flagged/rejected files — this filename-only match has no URL
+        // confirmation, so a flagged record must never silently absorb an
+        // unconfirmed write. Exempt only a CONFIRMED same-named critic (both
+        // sides name the same real person): that's the self-heal case
+        // extract-dtli-reviews.js relies on to clear a stale garbage_text
+        // rejection with no URL to hand — weaker evidence (both unknown)
+        // does not qualify.
+        if (isFlaggedMergeTarget(data) && !isExemptFlaggedMergeTarget(data, criticName, fileCritic)) continue;
+        // The filename slug can be stale: an "--unknown" file whose byline was
+        // later filled (Theatre Record Unknown→Alice merge; the rebuild's rename
+        // runs only afterwards) still matches every incoming critic by filename.
+        // Revalidate against the STORED byline — a file that already names a
+        // DIFFERENT real critic is never a merge target for this one (adversarial
+        // review 2026-09-24: Bob at the same outlet would otherwise merge into
+        // Alice's review).
+        if (storedCriticConflicts(criticName, data)) continue;
+        return { path: filePath, filename: file, data };
+      } catch {
+        return { path: filePath, filename: file, data: null };
+      }
+    }
+  }
+
+  // Pass 2: match by outletId + criticName stored inside the JSON file,
+  // ignoring the filename entirely. Catches two distinct cases:
+  //   (a) a file whose filename-outlet prefix doesn't match its stored
+  //       outletId — e.g. "nytimes--adam-feldman.json" with outletId:
+  //       "timeout" inside, caused by bulk fix scripts that updated outletId
+  //       without renaming the file.
+  //   (b) BRO-1031: a file whose filename DOES match on outlet, but whose
+  //       filename critic slug has drifted from the stored criticName — e.g.
+  //       a year-suffix-disambiguated filename like
+  //       amny--matt-windman-2026.json with internal criticName "Matt
+  //       Windman". Pass 1 skips it because criticIsCompatibleMergeTarget
+  //       rejects the filename slug "matt-windman-2026" against "Matt
+  //       Windman". A prior version of this pass ALSO skipped case (b) via
+  //       an "already checked above" guard that wrongly assumed Pass 1 fully
+  //       evaluated any file whose filename-outlet matched — but Pass 1 only
+  //       reads a file once its filename-critic passes that same check, so a
+  //       critic-drifted filename slipped through both untouched, and the
+  //       next write for that outlet+critic silently created a duplicate
+  //       file. Scanning every file (not just filename-outlet-mismatched
+  //       ones) fixes both without a second full-directory scan.
+  for (const file of files) {
+    const filePath = path.join(showDir, file);
+    let data;
+    try {
+      data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    } catch {
+      continue;
+    }
+    if (!data || !data.outletId) continue;
+    if (normalizeOutlet(data.outletId) !== normalizedOutlet) continue;
+    // BRO-4805: a lane night file (outlet--critic--on-<night>.json, written beside a flagged slot) is found by its URL in
+    // Pass 0 and by nothing else. Matching it here by outlet + critic would let an ordinary re-scrape of the OLD
+    // flagged review merge into it, past the wrongProduction guards the lane exempts it from.
+    if (data.openingNightLane && file.replace('.json', '').split('--').length > 2) continue;
+
+    // Prefer the stored criticName; only fall back to the filename's critic
+    // slug when the file has none recorded internally. A file whose
+    // filename already names a specific critic (e.g.
+    // "amny--jane-critic.json") must not be treated as an anonymous
+    // byline-fill-in target just because its internal field happens to be
+    // blank — criticIsCompatibleMergeTarget would otherwise let an
+    // unrelated named incoming critic silently claim it.
+    const parts = file.replace('.json', '').split('--');
+    const filenameCritic = parts.length === 2 ? parts[1] : null;
+    const fileCriticForMatch = data.criticName || filenameCritic;
+
+    // BRO-3182: same asymmetric-unknown check as pass 1 — an unresolved
+    // incoming critic must not claim a file that already names someone.
+    if (!criticIsCompatibleMergeTarget(criticName, fileCriticForMatch)) {
+      continue; // Different/unconfirmed critic at same outlet — not a duplicate
+    }
+
+    // Skip flagged/rejected files unless the critic match above was a
+    // CONFIRMED same named critic (see pass 1's comment).
+    if (isFlaggedMergeTarget(data) && !isExemptFlaggedMergeTarget(data, criticName, fileCriticForMatch)) continue;
+
+    return { path: filePath, filename: file, data };
+  }
+
+  // Pass 3: shared-domain outlet dedup via URL resolution.
+  // Catches the case where different scrapers use different outlet aliases for the
+  // same publication (e.g., "timeout" vs "timeout-london" both on timeout.com).
+  // Pass 1 and 2 miss this because the outlet IDs normalize to different canonical values.
+  // We only read files where the critic matches AND both outlets share a registered domain.
+  const registry = loadOutletRegistry();
+  const outletDefs = registry ? (registry.outlets || {}) : {};
+  const incomingDomain = outletDefs[normalizedOutlet] ? outletDefs[normalizedOutlet].domain : null;
+
+  if (incomingDomain) {
+    for (const file of files) {
+      const parts = file.replace('.json', '').split('--');
+      if (parts.length !== 2) continue;
+
+      const fileOutletNormalized = normalizeOutlet(parts[0]);
+      // Safe to skip: any file whose filename-outlet already equals the
+      // target outlet is fully covered by Pass 1 (filename match) and Pass 2
+      // (internal outletId/criticName match, BRO-1031) above — this pass
+      // exists only to resolve a DIFFERENT filename-outlet alias that shares
+      // the same registered domain, which by definition doesn't apply here.
+      if (fileOutletNormalized === normalizedOutlet) continue;
+
+      // Check if this file's outlet shares the same domain as the incoming outlet
+      const fileDomain = outletDefs[fileOutletNormalized] ? outletDefs[fileOutletNormalized].domain : null;
+      if (!fileDomain || fileDomain !== incomingDomain) continue;
+
+      // Critic pre-filter: only proceed if critic matches (avoids unnecessary
+      // file reads). BRO-3182: an unresolved incoming critic must not
+      // pre-pass against a filename slug that names a real critic.
+      if (!criticIsCompatibleMergeTarget(criticName, parts[1])) continue;
+
+      const filePath = path.join(showDir, file);
+      let data;
+      try {
+        data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+      } catch {
+        continue;
+      }
+      if (!data) continue;
+      if (isFlaggedMergeTarget(data) && !isExemptFlaggedMergeTarget(data, criticName, parts[1])) continue;
+      // Same stale-filename-slug revalidation as pass 1.
+      if (storedCriticConflicts(criticName, data)) continue;
+
+      // Verify via URL resolution: does this file's URL resolve to the incoming outlet?
+      // Without URL confirmation, different regional editions on the same domain would
+      // be falsely merged (e.g., timeout.com/london vs timeout.com/newyork).
+      if (!data.url) continue;
+      const resolved = resolveOutletFromUrl(data.url);
+      if (!resolved || resolved.outletId !== normalizedOutlet) continue;
+
+      // File's URL resolves to same outlet as incoming — duplicate under a different alias
+      return { path: filePath, filename: file, data };
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Reject outlet names that are scraping artifacts, not real publications.
+ * These slip in when aggregator HTML has ad images with alt text like "advertisement".
+ * Check this BEFORE writing review files.
+ */
+const JUNK_OUTLETS = new Set([
+  'advertisement', 'sponsor', 'sponsored', 'promo', 'promotion',
+  'unknown', 'null', 'undefined', 'n/a', 'na', 'none',
+  'ad', 'ads', 'banner', 'pixel', 'tracking',
+  'garth-drabinsky', 'paradise-square',
+  'buy-tickets', 'click-here',
+  'lets-note', 'lets-go-to-the-theater',
+  // BRO-3515: Rex Features photo-agency livefeed caption, not a critic
+  // outlet — see domain-filters.js REFERENCE_DOMAINS for the write-time block.
+  'rexfeatures',
+]);
+
+// Exact reserved-word match only — no structural fuzz (length/hyphen-count/
+// sentence-fragment heuristics). Those heuristics are fine for filtering a
+// NEW candidate before it's written (worst case: a maybe-real outlet stays
+// unregistered a while longer), but wrong for a "must never exist" registry
+// invariant: several genuinely sentence-fragment ids already sit in the
+// live registry as a separate, pre-existing backlog (task #1783 audit), and
+// a fuzzy check would fail --strict on all of them the moment it's added.
+// Reserved literal sentinels like "unknown" are categorically different —
+// they're what normalizeOutlet()/normalizeCritic() themselves return as a
+// fallback, so having one as a REAL registry id is always a bug, never a
+// borderline judgment call.
+function isSentinelOutletId(outletName) {
+  if (!outletName) return true;
+  const normalized = outletName.toLowerCase().trim();
+  if (JUNK_OUTLETS.has(normalized)) return true;
+  const slug = normalized.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  return JUNK_OUTLETS.has(slug);
+}
+
+function isJunkOutlet(outletName) {
+  if (!outletName) return true;
+  const normalized = outletName.toLowerCase().trim();
+  if (normalized.length < 2) return true;
+  if (JUNK_OUTLETS.has(normalized)) return true;
+  const slug = normalized.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  if (JUNK_OUTLETS.has(slug)) return true;
+  // Structural: reject suspiciously long names (45+ chars catches BWW sentence fragments)
+  if (slug.length > 45) return true;
+  // Too many hyphens — sentence fragments (6+ segments)
+  if ((slug.match(/-/g) || []).length > 5) return true;
+  // Known garbage patterns from BWW extraction
+  if (/photo-credit|average-rating|read-the-reviews|reviewed-its|the-unthinkable/.test(slug)) return true;
+  // Ticket/box-office CTA link text (e.g. Playbill Verdict "Buy Tickets Directly
+  // from the Theatre") — not an outlet, but the anchor text passes every other
+  // heuristic here (short enough, few enough hyphens) so it needs its own check.
+  // ('box-office' alone only — NOT a suffix match, which would also catch the
+  // real registered aggregator outlet 'london-box-office'.)
+  if (/^(buy|get)-tickets\b|tickets-directly|^box-office$/.test(slug)) return true;
+  // Starts with conjunctions/verbs that indicate a sentence fragment
+  if (/^(but-|and-(?!juliet)|is-a-|is-not-|are-|has-|its-|enjoying-|id-wager|how-to-\w+-is-|does-|turns-|keeps?-|tackles-)/.test(slug)) return true;
+  // Contains verb phrases never found in outlet names
+  if (/(promises-the|crafted-a|likely-to|fun-surf|wager-that|silence-after|antidote-to|underdog-itself|make-it-fun|speeding-along|seen-on-broadway|rose-to-fame|debacle-of|candid-about|exactly-what|dear-evan-hansen)/.test(slug)) return true;
+  // Contains year numbers (19XX/20XX) but not date-formatted — sentence fragments
+  if (/(?:19|20)\d{2}/.test(slug) && !/\d{2}-\d{2}/.test(slug)) return true;
+  return false;
+}
+
+/**
+ * URL-aware junk check (BRO-2717). isJunkOutlet matches the outlet NAME only,
+ * so a venue listing or PR-firm page whose domain slugifies to a short
+ * plausible id ("southbank", "spincyclenyc") sails through, becomes a NEW
+ * outletId, and reddens audit-outlet-registry --strict. This refuses by URL
+ * SHAPE (blocked domain sets, named non-review host+path pairs, listing-page
+ * and evergreen ticket/what's-on paths) when the outlet is not already a
+ * registered one. Registered outlets are never refused here: their own
+ * guards (rebuild, review-guards) still apply, and a registered outlet
+ * with a listing-shaped URL is a per-file question, not an outlet-identity one.
+ *
+ * @param {string} outletName outletId or outlet display name
+ * @param {string|null} url review URL
+ * @param {{outletKnown?: boolean}} [opts]
+ * @returns {{junk: boolean, reason: string|null}}
+ */
+function classifyJunkOutletForUrl(outletName, url, opts = {}) {
+  if (isJunkOutlet(outletName)) return { junk: true, reason: 'junk-outlet-name' };
+  if (opts.outletKnown || !url || typeof url !== 'string') return { junk: false, reason: null };
+  const { isBlockedReviewUrl } = require('./domain-filters');
+  if (isBlockedReviewUrl(url)) return { junk: true, reason: 'blocked-domain' };
+  const { namedNonReviewReason, listingPageUrlReason } = require('./non-review-url-patterns');
+  const named = namedNonReviewReason(url);
+  if (named) return { junk: true, reason: named };
+  const listing = listingPageUrlReason(url);
+  // bare-host (an outlet homepage) is left to the read side, same as the BRO-4596 writer guard.
+  if (listing && listing !== 'bare-host') return { junk: true, reason: listing };
+  if (require('./cross-production-guards').isEvergreenListingUrl(url)) {
+    return { junk: true, reason: 'evergreen-listing-url' };
+  }
+  return { junk: false, reason: null };
+}
+
+// Zero-width spaces, LTR/RTL marks, BOM -- some sites (e.g. theatre.reviews) inject
+// these into canonical URLs invisibly, breaking byte-for-byte comparison (see #702).
+const INVISIBLE_UNICODE_RE = /[​-‏‪-‮⁠-⁤﻿]/g;
+
+function stripInvisibleUnicode(url) {
+  return url.normalize('NFC').replace(INVISIBLE_UNICODE_RE, '');
+}
+
+/**
+ * Normalize a URL for dedup comparison.
+ * Strips invisible Unicode, protocol, www prefix, trailing slashes, fragments, and tracking params.
+ * Returns a canonical string for comparison (NOT a valid URL).
+ *
+ * Used by:
+ * - gather-reviews.js (write-time URL dedup)
+ * - cleanup-dedup-comprehensive.js (batch cleanup)
+ */
+function normalizeUrl(url) {
+  if (!url) return '';
+  try {
+    let u = stripInvisibleUnicode(url).toLowerCase().trim()
+      .replace(/^https?:\/\//, '')
+      .replace(/^www\./, '')
+      .replace(/\/+$/, '')
+      .replace(/#.*$/, '')
+      // HTML-entity-encoded query separators: some stored URLs have literal
+      // "&amp;" instead of "&" (king-kong-2018 NYT recirculation-module URL,
+      // task #1627) — undecoded, every param after the first is glued onto
+      // the previous one ("amp;contentcollection=...") and the tracking-param
+      // strip below can't recognize or remove any of them.
+      .replace(/&amp;/g, '&');
+    // Tracking-param strip first so any later regex can anchor on the
+    // post-strip path/query state.
+    // loginsuccessful (BRO-121): Independent.co.uk appends ?loginSuccessful=true
+    // after its paywall-login gate. LBO roundups cite the article verbatim
+    // WITH the param while a direct fetch/verify doesn't carry it, so the two
+    // variants normalized as DIFFERENT urls — mergeReviews() then flipped the
+    // file's url on every poller run, wiping llmScore/fullText/aggregatorStars
+    // via applyUrlChangeInvariant on each flip (data/review-texts/jesus-christ-
+    // superstar-west-end-2026 had to be manually urlVerified-pinned to stop it).
+    // gaa_(at|n|ts|sig) (BRO-121 cousin, found via /what-else on the
+    // loginsuccessful fix): Google's "Grant Access via Google" cross-domain
+    // paywall-bypass tokens appear on WSJ urls and are CRYPTOGRAPHICALLY
+    // SIGNED per-grant — never stable across two fetches of the same article.
+    // 173 corpus files carry one; at least one (meteor-shower-2017/wsj--terry-
+    // teachout.json) was found already wiped (llmScore gone, _urlChangedClear
+    // set) from this exact class of ping-pong. Enumerated (not a gaa_\w+
+    // wildcard, per codex adversarial review) — these are the 4 known keys
+    // Google's protocol emits; an open wildcard risks stripping a genuinely
+    // meaningful gaa_* param on some other, unrelated site.
+    // action/contentcollection/region/module/version/contentplacement/pgtype
+    // (task #1627): NYT's "recirculation module" tracking params, appended
+    // when a review URL is clicked from a related-stories widget rather than
+    // the article page directly. searchresultposition: NYT search-results
+    // tracking param. Both varied per-fetch across siblings of the SAME
+    // article, so review-write-guard.js's stale-duplicateOf self-heal saw a
+    // URL "mismatch" and wrongly un-collapsed an already-resolved
+    // byline-explosion cluster (mother-play-2024, king-kong-2018).
+    // Query-aware split/filter/rejoin (BRO-2409, replacing a blind regex
+    // strip): a regex removing `[?&]param=value` pieces in place leaves a
+    // dangling separator behind whenever the removed param was FIRST (the
+    // `?` goes with it, stranding the next param's `&` with no `?` left in
+    // the string at all — `?_r=1&taid=X` -> `&taid=X`, never `?taid=X`) or
+    // LAST (a literal trailing `?_r=1&` baked into the source page, the
+    // the-winslow-boy-2013 live-corpus shape, leaves a bare trailing `&`).
+    // Both produced a false "URL changed" against the SAME article with its
+    // tracked param in a different position or its query reduced to nothing
+    // — exactly the comparator disagreement BRO-2409 is about. Splitting the
+    // query into params, filtering, and rejoining is order-independent and
+    // can never leave an artifact regardless of which param was tracked.
+    const qIdx = u.indexOf('?');
+    if (qIdx !== -1) {
+      const base = u.slice(0, qIdx);
+      const kept = u.slice(qIdx + 1).split('&').filter((pair) => {
+        if (!pair) return false; // drop empty segments from a stray &/&& in the source
+        return !/^(utm_\w+|ref|source|fbclid|gclid|partner|emc|_r|smid|campaign|algo|nc|srsltid|loginsuccessful|gaa_(?:at|n|ts|sig)|action|contentcollection|region|module|version|contentplacement|pgtype|searchresultposition)=/.test(pair);
+      });
+      u = kept.length ? `${base}?${kept.join('&')}` : base;
+    }
+    // Re-strip trailing slashes: the first strip (above) runs before the
+    // query string is removed, so `/review/?utm_source=x` still ends in a
+    // slash here and would compare unequal to `/review` — a false "URL
+    // changed" signal for the url-change invariant (and a missed dedup).
+    u = u.replace(/\/+$/, '');
+    // AMP-suffix strip (added 2026-04-28, Item 3 of systematic CI plan).
+    // Only matches a path-final `/amp` segment; never a mid-path `/amp/`
+    // to avoid false collisions on outlets that legitimately use `/amp/`
+    // as a non-AMP route segment. Origin: dracula-west-end-2025
+    // metro--brooke-ivey-johnson AMP-URL re-scrape produced a parallel file
+    // alongside the canonical metro-uk entry. `/amp` + `?amp=1` are the two
+    // BWW/Metro/NYT AMP shapes seen in the corpus. MUST run AFTER tracking
+    // strip so URLs like `/foo/amp?utm_source=x` lose the utm and then
+    // strip `/amp` cleanly (otherwise `/amp$` doesn't match while `?utm`
+    // is still present).
+    u = u.replace(/\/amp$/, '').replace(/[?&]amp=1\b/g, '');
+    // WordPress comment-pagination suffix (BRO-2869): `/article/comment-page-1`
+    // serves the SAME article body as `/article`. Path-final only, so a real
+    // slug that merely contains the words is untouched.
+    u = u.replace(/\/comment-page-\d+$/, '');
+    return u;
+  } catch (e) {
+    return url.toLowerCase().trim();
+  }
+}
+
+/**
+ * Drop the ENTIRE query string (not just the enumerated tracking params
+ * normalizeUrl() strips), then trim trailing encoded-spaces/whitespace/slash.
+ * Two URLs differing only by query string are the same article far more
+ * often than not, and normalizeUrl's tracking-param allowlist is chronic
+ * whack-a-mole — every outlet mints its own share/recirculation params (BWO's
+ * `mod=`, Guardian's `CMP=`, EW's `taid=`, NYT's `smtyp=`/`_r=1&`, Variety's
+ * `categoryid=`/`cs=`/`cmpid=`, AP's `page=`), and each un-enumerated one
+ * previously made review-write-guard.js's stale-duplicateOf self-heal see a
+ * false "URL mismatch" and wrongly clear a correct duplicateOf pointer
+ * (BRO-2409 — confirmed live on 9 of 22 real same-URL clusters left with
+ * ZERO duplicate pointer on either side after this exact false self-heal:
+ * a-life-in-the-theatre-2010, here-lies-love-2023, king-kong-2018,
+ * patriots-2024, the-waverly-gallery-2018, the-winslow-boy-2013, …).
+ *
+ * A genuinely different article still differs by PATH, which this never
+ * touches — only trivially-dirty query-string variants of the SAME URL
+ * collapse to equal. Originally lived only in
+ * audit-duplicate-of-url-mismatch.js (as its own `stripTrivial`, used for the
+ * identical purpose: deciding whether a duplicateOf pointer's URL mismatch is
+ * real or trivial); moved here so review-write-guard.js's write-time
+ * self-heal can use the SAME comparator instead of the narrower
+ * `normalizeUrl` alone — the two disagreeing on what counts as "the same
+ * URL" was BRO-2409's actual mechanism: the write-time self-heal would clear
+ * a pointer the audit itself would never have flagged as stale.
+ *
+ * Splits on the FIRST `?` OR `&`, not just `?`: when this runs after
+ * normalizeUrl() (the standard composition), a query string whose FIRST
+ * param already got stripped by normalizeUrl's tracking-param allowlist
+ * leaves the remainder starting with a bare `&` (e.g. `smid=..&smtyp=cur`
+ * with `smid` stripped leaves `&smtyp=cur`) — no `?` survives for a
+ * `.split('?')` to find, so the leftover param would silently defeat this
+ * function's entire purpose. A literal unencoded `&` occurring inside a URL
+ * PATH (as opposed to its query) is not a real-world shape in this corpus.
+ *
+ * @param {string} u  already lowercased/normalized (pass through normalizeUrl() first)
+ * @returns {string}
+ */
+function stripTrivial(u) {
+  if (!u) return u;
+  return u.split(/[?&]/)[0].replace(/(?:%20|\s|\/)+$/gi, '');
+}
+
+/**
+ * Normalize an outlet name and return both the canonical ID and display name.
+ * Convenience wrapper combining normalizeOutlet() + getOutletDisplayName().
+ */
+function normalizeOutletFull(outletName) {
+  const outletId = normalizeOutlet(outletName);
+  const name = getOutletDisplayName(outletId);
+  return { name, outletId };
+}
+
+/**
+ * Detect URLs that are critic/author profile pages rather than actual reviews.
+ * These get scraped from aggregator pages (ShowScore /people/, BWW /people/) but
+ * are not review content — they inflate review counts and cause cross-show dupes.
+ */
+function isProfileUrl(url) {
+  if (!url) return false;
+  const lower = url.toLowerCase();
+  // BWW critic profiles
+  if (/broadwayworld\.com\/people\//.test(lower)) return true;
+  // ShowScore critic profiles
+  if (/show-score\.com\/people\//.test(lower)) return true;
+  // Cititour critic profiles (e.g., /NYC_Broadway/critic/1234)
+  if (/cititour\.com\/.*\/\d+$/.test(lower) && !/review/i.test(lower)) return false; // cititour show pages have numeric IDs too
+  // Generic author/contributor pages — only match at end of URL path to avoid false positives
+  // e.g., /author/jane-doe/ but NOT /author-reviews-hamilton
+  if (/\/(?:author|writers?|contributors?|staff|columnists?)\/[^/]+\/?$/.test(lower)) return true;
+  // ShowScore /people/ without domain (stored as relative paths)
+  if (/^\/people\/[A-Z]/i.test(url)) return true;
+  // TheaterMania /shows/ pages are listing pages, not reviews
+  if (/theatermania\.com\/shows\//.test(lower)) return true;
+  // BWW /shows/{id}/{sub-page} (cast/synopsis/videos) pages are listing pages —
+  // a SERP-discovered cast page was ingested as a "review" for The Vessel
+  // (task #1073, 2026-08-05). Sub-path REQUIRED: the bare
+  // /shows/Title-123.html shape hosts 3 currently-scored real reviews
+  // (Oliver!/Something Rotten!/Titanique — QA ship-check 2026-08-06), so only
+  // sub-pages are blocked. Mirrors the TheaterMania line above.
+  if (/broadwayworld\.com\/shows?\/[^/]+\/.+/.test(lower)) return true;
+  return false;
+}
+
+// Generic URL-slug tokens that don't identify a specific show. Excluded from the
+// cross-show match below so a shared "review"/"theatre" token can't make e.g. an
+// Equus URL look like it belongs to a War Horse review.
+const URL_GENERIC_SLUG_TOKENS = new Set([
+  // show-agnostic article/section words
+  'review', 'reviews', 'roundup', 'roundups', 'round', 'ups', 'news', 'article',
+  'culture', 'story', 'stories', 'arts', 'stage', 'play', 'plays', 'musical',
+  'musicals', 'tickets', 'production', 'productions', 'opening', 'press', 'night',
+  'show', 'shows', 'feature', 'features', 'entertainment', 'post', 'posts',
+  // venue / market words common to West End + Broadway slugs
+  'theatre', 'theater', 'national', 'west', 'end', 'london', 'broadway',
+  'olivier', 'lyttelton', 'cottesloe', 'menier', 'chocolate', 'factory',
+  // stopwords that survive slug tokenisation
+  'the', 'and', 'for', 'with', 'from', 'are', 'was',
+]);
+
+// Distinctive (show-identifying) tokens from a URL slug. Drops generic words,
+// pure numbers, and very short fragments.
+function _showSlugTokens(url) {
+  if (!url) return [];
+  // A query-ID url (londontheatrereviews post.cfm?p=N, talkinbroadway
+  // d.php?id=N, LSA story.asp?ID=N) keeps the article's identity in the query:
+  // its path is the outlet's script name and can never name the show. Read as a
+  // slug, "post cfm" looked like a different show and the empty-url fill
+  // silently dropped every LTR url (BRO-4956: Affluenza's LTR review went live
+  // with no url, so the gap audit re-ingested it every hour).
+  try {
+    const { ARTICLE_ID_QUERY_KEY } = require('./review-url-clusters');
+    const u = new URL(url);
+    if ([...u.searchParams.keys()].some((k) => ARTICLE_ID_QUERY_KEY.test(k))) return [];
+  } catch { /* not a URL: fall through */ }
+  const { urlSlugTokens } = require('./show-match-verifier');
+  return urlSlugTokens(url).filter(
+    (t) => t.length >= 3 && !URL_GENERIC_SLUG_TOKENS.has(t) && !/^\d+$/.test(t)
+  );
+}
+
+/**
+ * True when `newUrl`'s slug clearly identifies a DIFFERENT show than the one
+ * described by `refShowTitle` (or, if no title, by `refUrl`'s slug). Returns
+ * false when there is no confident signal (no distinctive tokens on either
+ * side) so callers fail open. Used to block combined-roundup cross-show
+ * contamination at both the URL-upgrade and empty-fill paths.
+ */
+function slugLooksLikeDifferentShow(newUrl, { showTitle, refUrl } = {}) {
+  const newTokens = new Set(_showSlugTokens(newUrl));
+  if (!newTokens.size) return false;
+  let refTokens = [];
+  if (showTitle) {
+    const { titleTokens } = require('./show-match-verifier');
+    refTokens = titleTokens(showTitle);
+  }
+  if (!refTokens.length) refTokens = _showSlugTokens(refUrl || '');
+  if (!refTokens.length) return false;
+  return !refTokens.some((t) => newTokens.has(t));
+}
+
+/**
+ * Narrow, high-precision variant of slugLooksLikeDifferentShow for write
+ * paths that must not false-positive on headline-style slugs
+ * ("theater-review-a-cozy-little-mcshtetl" reviews Fiddler; ~12% of live URLs
+ * trip the broad check). Only fires on the structured "<show>-review-..."
+ * slug shape most UK/US outlets use (thestage.co.uk/reviews/fences-review-
+ * leeds-playhouse, standard.co.uk/.../burlesque-savoy-theatre-review-b123):
+ * the tokens BEFORE "review" in the last path segment are the show being
+ * reviewed. True only when that segment has distinctive tokens and none of
+ * them (nor a squashed-title match, e.g. "electrapersona") names this show.
+ */
+/**
+ * Does the URL's last path segment contain one of the show title's tokens
+ * (whole, or inside a squashed compound)? Positive identity, the counterpart
+ * of reviewSlugNamesDifferentShow below.
+ */
+function urlSlugNamesShow(url, showTitle) {
+  if (!url || !showTitle) return false;
+  let seg = '';
+  try {
+    seg = new URL(url).pathname.toLowerCase().split('/').filter(Boolean).pop() || '';
+  } catch { return false; }
+  const { titleTokens } = require('./show-match-verifier');
+  const tTokens = titleTokens(showTitle);
+  if (!tTokens.length || !seg) return false;
+  const segTokens = seg.replace(/\.[a-z]+$/, '').split('-');
+  const squashedSeg = segTokens.join('');
+  return tTokens.some((t) => segTokens.includes(t) || squashedSeg.includes(t));
+}
+
+function reviewSlugNamesDifferentShow(url, showTitle) {
+  if (!url || !showTitle) return false;
+  let seg = '';
+  try {
+    seg = new URL(url).pathname.toLowerCase().split('/').filter(Boolean).pop() || '';
+  } catch { return false; }
+  seg = seg.replace(/\.[a-z]+$/, '');
+  const m = seg.match(/^([a-z0-9-]+?)-review(?:-|$)/);
+  if (!m) return false;
+  const pre = m[1].split('-').filter(
+    (t) => t.length >= 3 && !URL_GENERIC_SLUG_TOKENS.has(t) && !/^\d+$/.test(t)
+  );
+  if (!pre.length) return false;
+  const { titleTokens } = require('./show-match-verifier');
+  const tTokens = titleTokens(showTitle);
+  if (!tTokens.length) return false;
+  // The title may sit AFTER "review" too ("bww-review-...-a-dolls-house",
+  // "ny1-theater-review---a-raisin-in-the-sun"): any title token anywhere in
+  // the segment, or inside a squashed compound ("electrapersona"), clears it.
+  const segTokens = seg.split('-');
+  if (tTokens.some((t) => segTokens.includes(t))) return false;
+  const squashedSeg = seg.replace(/-/g, '');
+  if (tTokens.some((t) => squashedSeg.includes(t))) return false;
+  return true;
+}
+
+/**
+ * Upgrade a review file's primary URL when an aggregator provides a better one.
+ * Only replaces when existing content is bad (truncated/stub/excerpt/missing).
+ * Returns true if the URL was upgraded (caller should mark file as changed).
+ *
+ * @param {object} [opts]
+ * @param {string} [opts.showTitle] - Title of the review's show. When supplied,
+ *   the candidate URL must share a distinctive token with it (or with the
+ *   existing URL slug) or the upgrade is refused — this blocks combined-roundup
+ *   cross-show swaps (the 2026-06-04 War Horse → Equus contamination).
+ * @param {object} [opts.show] - Full show record (previewDate/previewsStartDate/
+ *   openingDate/closingDate/category/market/priorRuns/tourLegs). When supplied,
+ *   a candidate URL whose own url-path date falls outside the show's
+ *   current-run window is refused (task #1416) — "shares a slug token" only
+ *   rules out a different SHOW, not a prior PRODUCTION of the same show.
+ * @param {object} [opts.preMergeScore] - {originalScore, aggregatorStars} snapshot
+ *   taken BEFORE the caller merged incoming fields onto existingData (BRO-4128).
+ *   Without it, the score-loss guard below would judge staleness from
+ *   existingData's score even when the incoming write just planted that same
+ *   score alongside newUrl — refusing to ever apply a freshly-discovered
+ *   (score, url) pair together.
+ * @param {object} [opts.preMergeSnapshot] - Full copy of the review record as
+ *   it existed on disk BEFORE the caller's field-merge loop ran (BRO-4130).
+ *   Used as applyUrlChangeInvariant's "before" instead of a fresh copy of
+ *   `existingData` taken here — by this point in the write pipeline,
+ *   `existingData` may already carry fields THIS SAME incoming write just
+ *   merged in (e.g. a fresh originalScore arriving alongside this very
+ *   newUrl in one call). A copy taken here would make that fresh value look
+ *   identical on both sides of the invariant's "did this ride along
+ *   unchanged from the old record" check and wipe it as stale old-url state,
+ *   even though it's brand new. Callers that don't pre-merge fields (direct
+ *   tests, other call sites) omit this and fall back to `existingData`,
+ *   preserving prior behavior.
+ */
+function maybeUpgradeUrl(existingData, newUrl, source, opts = {}) {
+  if (!newUrl || existingData.url === newUrl) return false;
+  // Reject invalid replacement URLs (relative paths, profile pages)
+  if (!newUrl.startsWith('http://') && !newUrl.startsWith('https://')) return false;
+  if (isProfileUrl(newUrl)) return false;
+  // BRO-4414: never adopt a URL an earlier merge folded into this record.
+  if (require('./merged-duplicate-urls').isMergedDuplicateUrl(existingData, newUrl)) return false;
+  // Manual URL decisions win — mirrors review-write-guard.js's own
+  // locked/urlVerified/urlManualOverride check. Without this, a manually
+  // verified URL could get silently swapped here.
+  // Exception (School Girls 2026-09-29): an AUTO flip-flop pin on a url that an
+  // independent aggregator record on this file contradicts — BWW linked
+  // Theatrely with a typo'd 404 url while playbillVerdictUrl held the real one,
+  // and the pin locked in the 404. Human pins (_locked, urlManualOverride,
+  // urlVerified without Auto) still always win. See review-write-guard.js
+  // _flipFlopShouldTakeIncoming (shared tie-break; it also lifts the pin on write).
+  const corroboratedOverAutoPin = existingData._locked !== true && existingData.urlManualOverride !== true
+    && existingData.urlVerified === true && existingData.urlVerifiedAuto === true
+    && require('./review-write-guard')._flipFlopShouldTakeIncoming(existingData.url, newUrl, existingData);
+  if (!corroboratedOverAutoPin
+    && (existingData._locked === true || existingData.urlVerified === true || existingData.urlManualOverride === true)) {
+    return false;
+  }
+  // Task #1695: contentTier is only ever 'invalid' when a wrongProduction/
+  // wrongShow/duplicateOf verdict was reached (content-quality.js's T5 check) —
+  // it's flag-driven, not a genuine content-quality gap. badContent below would
+  // otherwise treat that flagged file as "bad content" worth a URL swap, and
+  // the swap's applyUrlChangeInvariant(force:true) call clears wrongProduction/
+  // wrongShow right along with it — silently un-excluding a deliberately
+  // flagged review. This is narrower than refusing on the flags alone: a file
+  // flagged via an unrelated auto-guard but with genuinely missing/stub content
+  // (contentTier !== 'invalid', e.g. 'stub') still needs to be upgradeable —
+  // see url-change-invariant.test.mjs's STALE_FLAGS fixture.
+  // BRO-4430 exception: when the flagged url is itself a non-review page (a
+  // cast announcement, show page or round-up), the flag describes that page,
+  // not a review, so a real review url takes the slot and the invariant clears
+  // the page's flags with it (The Body of Mary TheaterMania, The Pass NYTG).
+  if (existingData.contentTier === 'invalid'
+    && (existingData.wrongProduction || existingData.wrongShow || existingData.duplicateOf)
+    && !require('./review-slot-guards').isStaleNonReviewSlot(existingData, newUrl)) {
+    return false;
+  }
+  // Only upgrade if current content is bad
+  // A url contradicted by an independent aggregator record counts as bad
+  // content: the stored text may have come from the other url before a flip.
+  const badContent = !existingData.fullText
+    || (existingData.contentTier && existingData.contentTier !== 'complete')
+    || existingData.needsRefetch
+    || corroboratedOverAutoPin;
+  if (!badContent) return false;
+
+  // Roundup-page guard (BRO-4128): a candidate that is itself a roundup/
+  // aggregation page (e.g. The Stage's /review-round-ups/ section) must never
+  // replace an individual outlet review. badContent above is satisfied by a
+  // perfectly normal paywalled review STUB (no fullText, but a real
+  // originalScore lifted from the outlet's own star markup) — swapping that
+  // stub's url onto the outlet's roundup page doesn't refetch a better
+  // individual review, it points the file at a multi-critic compilation and
+  // (via applyUrlChangeInvariant below) wipes the real score along with it.
+  // Reuses the same isRoundupUrl() predicate the write path already trusts to
+  // keep roundup pages from being ingested as reviews at all.
+  const { isRoundupUrl } = require('./review-guards');
+  // BRO-4430: any aggregator host (show-score, stagedoor, westendtheatre, ...)
+  // too, not only round-up shapes: the rebuild drops a file carrying one.
+  if (isRoundupUrl(newUrl).isRoundup || require('./review-slot-guards').isAggregatorPageUrl(newUrl)) {
+    console.warn(`[maybeUpgradeUrl] refused roundup-page swap for ${existingData.outletId || source || '?'}: ${newUrl}`);
+    return false;
+  }
+
+  // Score-loss guard: never let a URL swap discard a real preservable score
+  // (originalScore or aggregatorStars — hasPreservableAggregatorScore is the
+  // canonical predicate three other call sites already share, ship-check/
+  // Codex adversarial finding: a hand-rolled `originalScore != null` here
+  // would silently miss the aggregatorStars-only shape) unless the existing
+  // record is already flagged wrong (wrongProduction/wrongShow/duplicateOf) —
+  // in that case swapping to a fresh url in search of a recovery is the
+  // point. An unflagged, scored stub is exactly the state a paywalled review
+  // sits in permanently; badContent (missing fullText) alone is not evidence
+  // the score itself is wrong, so it's not grounds to erase it via a URL swap
+  // whose candidate isn't independently verified as the SAME individual
+  // review.
+  //
+  // opts.preMergeScore (ship-check/Codex adversarial finding): the write
+  // path's field merge runs BEFORE this function, so `existingData` may
+  // already carry a score the INCOMING write itself just supplied alongside
+  // this very newUrl — checking existingData directly would refuse to ever
+  // apply a freshly-discovered (score, url) pair together, stranding the new
+  // score on the old, still-bad url. When the caller supplies a pre-merge
+  // snapshot, judge staleness from that instead; callers that don't (direct
+  // tests, other callers) fall back to existingData, preserving prior
+  // behavior.
+  const { hasPreservableAggregatorScore } = require('./aggregator-domains');
+  const scoreState = opts.preMergeScore || existingData;
+  if (hasPreservableAggregatorScore(scoreState)
+    && !existingData.wrongProduction && !existingData.wrongShow && !existingData.duplicateOf) {
+    console.warn(`[maybeUpgradeUrl] refused swap for ${existingData.outletId || source || '?'}: would discard score (originalScore=${JSON.stringify(scoreState.originalScore)}, aggregatorStars=${JSON.stringify(scoreState.aggregatorStars)})`);
+    return false;
+  }
+
+  // Cross-show guard: never replace a URL with one that points at a DIFFERENT
+  // show. A combined theatre.reviews roundup (War Horse + Equus) supplied an
+  // Equus URL as an "upgrade" for a WhatsOnStage War Horse review whose real URL
+  // had a bad (cookie-walled) scrape, silently swapping war-horse → equus.
+  if (slugLooksLikeDifferentShow(newUrl, { showTitle: opts.showTitle, refUrl: existingData.url })) {
+    return false; // candidate URL is about a different show — refuse the swap
+  }
+
+  // Wrong-production regression guard (#1416): same show, but a candidate
+  // dated outside the current run's window (a prior revival's article) is
+  // not an upgrade — 8/8 corpus-verified cases of this exact swap (Equus,
+  // Romeo and Juliet, Cats: The Jellicle Ball, NYSR, Mexodus) discarded a
+  // correct current-run URL for a wrong-production one.
+  if (opts.show) {
+    const { isUrlSwapRegression } = require('./url-downgrade-guard');
+    const verdict = isUrlSwapRegression({ newUrl, show: opts.show, outletId: existingData.outletId });
+    if (verdict.regression) {
+      console.warn(`[maybeUpgradeUrl] refused regressing swap for ${existingData.outletId || source || '?'}: ${verdict.reason}`);
+      return false;
+    }
+  }
+
+  // Sibling URL-collision guard (BRO-3092), the mergeReviews guard's twin.
+  // findExistingReviewFile's pass-0 URL dedup normally stops this writer from
+  // ever reaching a byline file when another file already owns the candidate
+  // URL — but pass 0 SKIPS wrongProduction/duplicateOf siblings, so a flagged
+  // sibling's URL still routes here by outlet+critic and gets swapped in,
+  // duplicating the URL and wiping this file via applyUrlChangeInvariant
+  // below. Only applies when the caller supplied opts.showDir; fails open.
+  if (opts.showDir) {
+    const { findSiblingUrlOwner } = require('./review-url-collision');
+    const owner = findSiblingUrlOwner({
+      showDir: opts.showDir,
+      url: newUrl,
+      selfOutletId: existingData.outletId,
+      selfCriticName: existingData.criticName,
+      selfFilename: opts.selfFilename,
+    });
+    if (owner) {
+      console.warn(`[maybeUpgradeUrl] refused colliding swap for ${existingData.outletId || source || '?'}: ${newUrl} is already owned by ${owner.filename}`);
+      // Machine-readable trace, matching the mergeReviews twin. This is the
+      // higher-traffic writer path; a console.warn alone leaves refusals here
+      // invisible to every audit (BRO-3092 ship-check).
+      logExclusion({
+        script: source || 'maybeUpgradeUrl',
+        showId: existingData.showId || 'unknown',
+        file: opts.selfFilename || '-',
+        reason: 'skippedSiblingUrlCollision',
+        details: {
+          existingUrl: existingData.url, incomingUrl: newUrl,
+          outletId: existingData.outletId, criticName: existingData.criticName,
+          ownedBy: owner.filename,
+        },
+      });
+      return false;
+    }
+  }
+
+  // Snapshot BEFORE mutation so the invariant below can tell which fields
+  // provably rode along from the old-URL record (#483: wrongProduction/
+  // wrongShow/contentVerification survived this upgrade because nothing
+  // cleared them — this function only ever wiped the body fields directly,
+  // which the shared invariant never saw).
+  //
+  // BRO-4130: prefer opts.preMergeSnapshot over a fresh `{...existingData}`
+  // copy taken here. See the opts.preMergeSnapshot doc above — existingData
+  // may already carry this same write's own merged-in fields by this point,
+  // and a copy taken now would wrongly present them as pre-existing.
+  const before = opts.preMergeSnapshot ? { ...opts.preMergeSnapshot } : { ...existingData };
+
+  existingData.urlCorrectedFrom = existingData.url;
+  existingData.urlCorrectedReason = `Replaced with ${source} URL — original had bad/missing content`;
+  existingData.url = newUrl;
+  existingData.needsRefetch = true;
+
+  // Old-URL-derived state (fullText/contentTier/wrongProduction/wrongShow/
+  // contentVerification/…) describes content we just decided was bad and are
+  // discarding — none of it must survive onto the file that's about to be
+  // refetched. Delegating the actual clearing to applyUrlChangeInvariant
+  // (rather than hand-rolling a field list here) is what keeps this in sync
+  // with URL_DERIVED_FIELDS as that set grows — a hardcoded subset is exactly
+  // how wrongProduction/contentVerification went stale in the first place.
+  // force:true because this "upgrade" is often a cosmetic URL swap (tracking
+  // params, protocol, AMP suffix) that normalizeUrl() treats as the SAME
+  // canonical article, so the invariant's own urlCanonicallyChanged() gate
+  // would otherwise never fire here (#483 — the actual escape path:
+  // badContent already means the old verdict is void regardless of whether
+  // the URLs normalize equal).
+  const { applyUrlChangeInvariant } = require('./url-change-invariant');
+  applyUrlChangeInvariant(before, existingData, {
+    fileLabel: existingData.outletId || source || '?',
+    force: true,
+  });
+
+  return true;
+}
+
+module.exports = {
+  normalizeOutlet,
+  normalizeOutletFull,
+  isRegisteredOutlet,
+  isJunkOutlet,
+  classifyJunkOutletForUrl,
+  isSentinelOutletId,
+  normalizeCritic,
+  normalizePublishDate,
+  normalizeUrl,
+  stripTrivial,
+  generateReviewFilename,
+  generateReviewKey,
+  slugify,
+  areReviewsDuplicates,
+  areCriticsSimilar,
+  areOutletsSame,
+  mergeReviews,
+  isUrlProvenanceWrongProduction,
+  getOutletDisplayName,
+  getOutletFromRegistry,
+  getOutletTier,
+  loadOutletRegistry,
+  levenshteinDistance,
+  findExistingReviewFile,
+  isFlaggedMergeTarget,
+  criticIsCompatibleMergeTarget,
+  storedCriticConflicts,
+  isConfirmedNamedCriticMatch,
+  isExemptFlaggedMergeTarget,
+  maybeUpgradeUrl,
+  slugLooksLikeDifferentShow,
+  reviewSlugNamesDifferentShow,
+  urlSlugNamesShow,
+  validateCriticOutlet,
+  loadCriticRegistry,
+  resolveOutletFromCritic,
+  clearCriticRegistryCache,
+  resolveOutletFromUrl,
+  resolveOutletFromUrlIfPathInformed,
+  outletOwnsUrlDomain,
+  outletOwnsUrlDomainIgnoringPath,
+  isCrossOutletUrl,
+  WIRE_SERVICE_OUTLETS,
+  isSyndicationPortalHost,
+  clearDomainCache,
+  getOutletAliases,
+  isProfileUrl,
+  isSuspiciousOutletId,
+  CRITIC_ALIASES,
+  JUNK_BYLINES,
+  CRITIC_JUNK_PREFIX_RE,
+  AGGREGATOR_SCORE_SOURCES,
+};
+
+// OUTLET_ALIASES as a lazy getter — auto-generates from registry on first access
+Object.defineProperty(module.exports, 'OUTLET_ALIASES', {
+  get: getOutletAliases,
+  enumerable: true,
+  configurable: true,
+});

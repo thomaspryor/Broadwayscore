@@ -1,0 +1,235 @@
+name: Reddit Engagement Digest
+
+on:
+  schedule:
+    # Daily (01:45 UTC since BRO-4800). Card #511 (owner merge decision — exactly one scheduled
+    # email/day, not three): this no longer emails on its own. It writes
+    # data/audit/reddit-digest-snapshot.json instead; autonomous-email.js
+    # folds it into the loop's single scheduled morning email. Went from
+    # twice-daily (01:00/13:00 UTC) to once-daily — a second same-day run
+    # would just overwrite this one's snapshot before the morning email ever
+    # read it, silently dropping its threads. Runs BEFORE daily-digest.yml
+    # (02:00 UTC) / the loop start (07:30 UTC) so the snapshot is same-day
+    # fresh. The draft-opening-posts job (BRO-4333/4360) drafts Reddit posts
+    # and emails each new one on its own (~8am Berlin).
+    # BRO-4800: moved 06:00 -> 01:45 UTC (still ahead of daily-digest.yml,
+    # now 02:00). GitHub's schedule lag here is 5-8h, so 06:00 landed after
+    # the 11:30 UTC morning digest (2026-10-06: snapshot written 12:25 UTC).
+    - cron: '45 1 * * *'
+
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Preview only: no digest snapshot written, no Reddit drafts saved, no draft emails sent'
+        required: false
+        default: 'false'
+        type: boolean
+      resend_shows:
+        description: 'Comma-separated show ids, no spaces: redraft these and email them again with screenshots. Skips the digest and all other drafts; posted ones are never resent; a failed redraft fails the run before any email. With dry_run, the email preview shows the old drafts. Empty = normal run.'
+        required: false
+        default: ''
+        type: string
+
+concurrency:
+  group: reddit-engagement-digest
+  cancel-in-progress: false
+
+jobs:
+  digest:
+    # A resend dispatch is about a few named drafts only; running the digest
+    # too would write a snapshot the 06:00 run overwrites unread (see above).
+    if: ${{ github.event_name == 'schedule' || inputs.resend_shows == '' }}
+    runs-on: ubuntu-latest
+    # Was 10 — the fallback chain (Reddit OAuth dormant, Bright Data refuses
+    # reddit.com, unauthenticated JSON hard-403s) pushes nearly every call
+    # through Scrapingdog's tier-escalation retries or 429 backoff, and
+    # `enrichWithComments` makes up to 30 of those sequentially per run.
+    # 10 min was cancelling this job on most days (matches
+    # brand-mention-monitor.yml's 15 for the same shared reddit-api.js client;
+    # 20 adds headroom for npm ci/checkout on top of it).
+    timeout-minutes: 20
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate digest snapshot
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: |
+          ARGS="--time-budget-min=16"
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run --verbose"
+          fi
+          node scripts/reddit-engagement-digest.js $ARGS
+
+      - name: Commit history and digest snapshot
+        if: always()
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          if [ -f data/reddit-digest-history.json ]; then
+            git add --force data/reddit-digest-history.json
+          fi
+          # Card #511: the digest snapshot autonomous-email.js folds into the
+          # morning email — same commit pattern as daily-digest.yml.
+          git add data/audit/reddit-digest-snapshot.json 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -m "data: Update Reddit digest state [automated]"
+            bash scripts/lib/push-with-retry.sh
+          else
+            echo "No changes to digest state"
+          fi
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: reddit-engagement-digest
+
+      - name: Job summary
+        if: always()
+        run: |
+          echo "## Reddit Engagement Digest" >> $GITHUB_STEP_SUMMARY
+          if [ -f /tmp/reddit-digest-result.json ]; then
+            node -e "
+              const r = require('/tmp/reddit-digest-result.json');
+              console.log('**Digest #' + r.digestNumber + '**');
+              console.log('');
+              console.log('- Threads evaluated: ' + r.threadsEvaluated);
+              console.log('- Threads suggested: ' + r.threadsSuggested);
+              console.log('- Promo links: ' + r.promoLinksIncluded);
+              if (r.dryRun) console.log('*(Dry run — snapshot not written)*');
+            " >> $GITHUB_STEP_SUMMARY
+          else
+            echo "No result file — script may have exited early (no qualifying threads)" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Reddit Engagement Digest Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+  # BRO-4333: draft "reviews are in" Reddit posts for West End / Off-West End /
+  # Off-Broadway openings, each emailed on its own with a one-tap prefilled
+  # Reddit link (scripts/send-reddit-post-email.js). Its own job so a slow
+  # draft can't eat the engagement digest's time budget above, and a digest
+  # timeout can't drop the drafts.
+  draft-opening-posts:
+    runs-on: ubuntu-latest
+    # Was 10. BRO-4597 added Playwright setup (worst case ~8 min, see
+    # setup-playwright) and a 4-minute screenshot budget in the email step
+    # (90s per show on a resend, so 5 shows need ~8).
+    timeout-minutes: 25
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Draft Reddit opening posts
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          RESEND_SHOWS: ${{ inputs.resend_shows }}
+        run: |
+          ARGS=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="--dry-run"
+          fi
+          if [ -n "$RESEND_SHOWS" ]; then
+            [[ "$RESEND_SHOWS" =~ ^[a-z0-9-]+(,[a-z0-9-]+)*$ ]] || { echo "::error::resend_shows must be comma-separated show ids"; exit 1; }
+            ARGS="$ARGS --show=$RESEND_SHOWS"
+          fi
+          node scripts/draft-reddit-opening-posts.js $ARGS
+
+      # BRO-4597: the email carries phone-width screenshots of the show page
+      # (scripts/lib/reddit-post-screenshots.js). A failed install or capture
+      # only drops the images; the email still goes out.
+      - name: Setup Playwright
+        continue-on-error: true
+        uses: ./.github/actions/setup-playwright
+
+      # BRO-4360: each new draft goes out as its own email (owner ask), plus
+      # one reminder if still unposted a day later. Runs BEFORE the commit
+      # that stamps emailedAt, so a failed commit can repeat an email but
+      # never drop one.
+      - name: Email new Reddit drafts
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_SHOWS: ${{ inputs.resend_shows }}
+        run: |
+          ARGS=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="--dry-run"
+          fi
+          # Validated in the draft step, which runs first.
+          if [ -n "$RESEND_SHOWS" ]; then
+            ARGS="$ARGS --resend=$RESEND_SHOWS"
+          fi
+          node scripts/send-reddit-post-email.js $ARGS
+
+      - name: Commit drafts
+        if: always()
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add -f data/audit/reddit-post-drafts.json 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -m "data: Update Reddit opening-post drafts [automated]"
+            bash scripts/lib/push-with-retry.sh
+          else
+            echo "No changes to Reddit opening-post drafts"
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Reddit Opening-Post Drafts Failed'

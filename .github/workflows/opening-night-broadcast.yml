@@ -1,0 +1,1650 @@
+name: Opening Night Broadcast
+
+# Thin "check & send" workflow — reads existing scored data, generates consensus, sends email.
+# Heavy lifting (gather, rebuild, score) is handled by the data pipeline:
+#   update-show-status → gather-reviews → rebuild → llm-ensemble-score
+
+on:
+  # Triggers:
+  #   1. Daily cron at 12:30 UTC (8:30 AM EDT / 7:30 AM EST) — self-dispatched with
+  #      send_to_all=true. Creates the Resend draft AND emails the owner a preview so
+  #      they can review and hit Send from Resend. All existing gates still apply
+  #      (time ≥ 7 AM ET, readiness ≥ 15 reviews + aggregator, checklist clean).
+  #   2. update-show-status.yml dispatches when a show transitions to open (preview only)
+  #   3. Auto-retries after scoring completes (pipeline: gather → rebuild → score → broadcast)
+  #   4. Manual dispatch for testing or re-sends
+  #   5. Hourly 13:41-23:41 UTC redundancy (BRO-4417). GitHub fires the 12:30
+  #      cron 4-7h late, and a single blocked run used to mean no draft until the
+  #      next day. The hourly run is preview-only (with dedup) UNLESS a pending
+  #      show is past its draft deadline (scripts/lib/broadcast-deadline.js), in
+  #      which case it creates the draft with the QA gates advisory for that show.
+  schedule:
+    - cron: '30 12 * * *'
+    - cron: '41 13-23 * * *'
+  workflow_run:
+    workflows: ["LLM Ensemble Score Reviews"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      lookback_days:
+        description: 'How many days back to check for openings (default 2)'
+        required: false
+        type: number
+        default: 2
+      send_to:
+        description: 'Preview mode: send a test email to this address only (does not create a Resend draft)'
+        required: false
+        type: string
+        default: ''
+      send_to_all:
+        description: 'Approval dispatch: send to all subscribers (skips preview dedup check)'
+        required: false
+        type: boolean
+        default: false
+      force_broadcast:
+        description: 'Override checklist gate — send even if QA errors found (emergency use only)'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: broadcast-send
+  cancel-in-progress: false
+
+jobs:
+  broadcast:
+    runs-on: ubuntu-latest
+    # 15->20 (card #1910 audit, 2026-08-26): raising this job's 2 hard-fail
+    # push steps to 300s/14-retries each (from the shared 240s/7-retries
+    # default) pushed the summed worst-case push budget (300+300+240=840s)
+    # to only 6.7% margin against the old 900s timeout. 20min (1200s) clears
+    # the 15% margin threshold with real headroom.
+    # 20->24 (BRO-2435, 2026-08-26): splitting "Commit orphan-rescore-requeue
+    # state" into two independent push-with-retry.sh calls (one per file, so
+    # the single-writer orphan-rescore-requeue-state.json alone qualifies for
+    # the Git Data API fallback — see that step's own comment) added a THIRD
+    # 300s/14-retries push call site to this job's worst case
+    # (300+300+300+240=1140s), pushing margin back under the 15% floor
+    # (60s/5% at 20min). `node scripts/audit-push-retry-budgets.js` confirmed
+    # the regression and confirms 24min (1440s, margin 300s/20.8%) clears it
+    # again — re-run that script before changing any of these numbers.
+    timeout-minutes: 24
+    # Skip if triggered by a failed scoring run
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      # #1407: this used to be a raw actions/setup-node@v5 + `npm ci` pair
+      # sitting right before "Sync subscribers" (~line 556), well AFTER
+      # checklist_gate. node_modules didn't exist yet when checklist_gate ran
+      # opening-night-checklist.js, so any script in its require chain
+      # needing an npm package (cheerio, via scripts/lib/page-validator.js <-
+      # scripts/gather-reviews.js <- scripts/opening-night-checklist.js)
+      # crashed with MODULE_NOT_FOUND — and the gate fails closed on a crash
+      # (correct for a real QA failure), so it blocked every broadcast on an
+      # infra bug that had nothing to do with QA. Same bug class as task
+      # #1073 (opening-night-checklist.yml), fixed there the same way:
+      # switch to the shared composite (used by every other workflow in this
+      # repo) and run it right after checkout, before any script that needs
+      # node_modules. Guarded against regressing by
+      # scripts/assert-broadcast-step-order.js (test.yml Lint Workflows).
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Check recovery hold marker
+        run: |
+          if [ -f data/audit/recovery-active.marker ]; then
+            ACTIVE_UNTIL=$(jq -r '.activeUntil' data/audit/recovery-active.marker)
+            NOW=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+            if [ "$ACTIVE_UNTIL" \> "$NOW" ]; then
+              REASON=$(jq -r '.reason' data/audit/recovery-active.marker)
+              echo "::warning::Broadcast skipped: recovery-active marker present (reason: $REASON, expires: $ACTIVE_UNTIL)"
+              echo "BROADCAST_HOLD_ACTIVE=true" >> $GITHUB_ENV
+              exit 0
+            fi
+          fi
+          echo "BROADCAST_HOLD_ACTIVE=false" >> $GITHUB_ENV
+
+      - name: Find recently opened shows
+        id: find
+        run: |
+          LOOKBACK=${{ inputs.lookback_days || 2 }}
+
+          SHOWS=$(node -e "
+            const shows = require('./data/shows.json').shows;
+            const now = new Date();
+            const cutoff = new Date(now);
+            cutoff.setDate(cutoff.getDate() - $LOOKBACK);
+            cutoff.setHours(0,0,0,0);
+
+            const opened = shows.filter(s => {
+              if (!s.openingDate) return false;
+              // Accept 'open' OR 'upcoming' with today's opening date
+              // (status flip can be lost to concurrent pushes)
+              if (s.status !== 'open' && s.status !== 'upcoming') return false;
+              // Only broadcast for Broadway and West End — skip OB/OWE
+              const cat = s.category || 'broadway';
+              if (cat !== 'broadway' && cat !== 'west-end') return false;
+              const d = new Date(s.openingDate);
+              d.setHours(0,0,0,0);
+              return d >= cutoff && d <= now;
+            });
+
+            if (opened.length > 0) {
+              console.log(opened.map(s => s.id).join(','));
+            }
+          ")
+
+          if [ -z "$SHOWS" ]; then
+            echo "No recently opened shows found"
+            echo "has_shows=false" >> $GITHUB_OUTPUT
+          else
+            echo "Recently opened shows: $SHOWS"
+            echo "has_shows=true" >> $GITHUB_OUTPUT
+            echo "shows=$SHOWS" >> $GITHUB_OUTPUT
+
+            # Split shows by market for broadcast step
+            node -e "
+              const shows = require('./data/shows.json').shows;
+              const ids = '$SHOWS'.split(',');
+              const broadway = [], westend = [];
+              for (const id of ids) {
+                const s = shows.find(x => x.id === id);
+                if (s && s.category === 'west-end') westend.push(id);
+                else if (!s || !s.category || s.category === 'broadway') broadway.push(id);
+              }
+              if (broadway.length) console.log('broadway=' + broadway.join(','));
+              if (westend.length) console.log('westend=' + westend.join(','));
+            " | while IFS= read -r line; do
+              echo "$line" >> $GITHUB_OUTPUT
+            done
+          fi
+
+      - name: Time gate — no broadcast before 7 AM ET
+        # No send_to_all skip here or on the readiness gate (BRO-4417 what-else):
+        # the old `inputs.send_to_all != 'true'` compared a BOOLEAN input to a
+        # string, which GitHub coerces to 1 != NaN, so it was always true and
+        # both gates always ran (run 36594174568, send_to_all=true, ran both).
+        # Making it a real skip would leave readiness_gate.outputs.ready_shows
+        # empty, and the check step reads only that, so an approval dispatch
+        # would find zero shows and create no draft.
+        if: steps.find.outputs.has_shows == 'true'
+        id: time_gate
+        run: |
+          # Every run, manual approval dispatches included, waits until 7 AM ET
+          # (see the note above this step's if:).
+          HOUR_UTC=$(date -u +%H)
+          # 7 AM ET = 11 AM UTC (EDT) or 12 PM UTC (EST). Use 11 as the threshold.
+          if [ "$HOUR_UTC" -lt 11 ]; then
+            echo "::notice::Time gate: $HOUR_UTC UTC is before 7 AM ET (11 UTC). Skipping broadcast — will retry on next scoring cycle."
+            echo "blocked=true" >> $GITHUB_OUTPUT
+          else
+            echo "Time gate passed: $HOUR_UTC UTC (after 7 AM ET)"
+            echo "blocked=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Readiness gate — market-aware (Broadway 15+agg, West End 12)
+        if: steps.find.outputs.has_shows == 'true' && steps.time_gate.outputs.blocked != 'true'
+        id: readiness_gate
+        run: |
+          # Market-aware readiness gate (scripts/lib/broadcast-readiness.js):
+          #   - Broadway: 15+ scored reviews AND >=1 aggregator (DTLI or BWW).
+          #   - West End: 12+ scored reviews, NO aggregator requirement (WE reviews
+          #     are LLM-scored and never carry DTLI/BWW thumbs; the old Broadway-only
+          #     aggregator gate silently excluded every WE show — 2026-06-29).
+          # PER-SHOW filter — shows that aren't ready are excluded, but ready shows
+          # continue. Previously a single not-ready show blocked the entire batch
+          # (e.g. a WE show with 0 reviews held Broadway hostage on Cats opening day
+          # 2026-04-08: cats-the-jellicle-ball-2026 was ready but midnight-in-the-
+          # toyshop-west-end-2026 had 0 reviews and failed the gate for both).
+          SHOWS="${{ steps.find.outputs.shows }}"
+          node -e "
+            try {
+              const { evaluateBroadcastReadiness } = require('./scripts/lib/broadcast-readiness');
+              const raw = require('./data/reviews.json');
+              const reviews = raw.reviews || raw;
+              const allReviews = Array.isArray(reviews) ? reviews : [];
+              const showsData = require('./data/shows.json').shows || require('./data/shows.json');
+              const showsList = Array.isArray(showsData) ? showsData : Object.values(showsData);
+              const catById = new Map(showsList.map(s => [s.id || s.slug, s.category || 'broadway']));
+              const shows = '$SHOWS'.split(',');
+              const ready = [];
+              for (const id of shows) {
+                const showReviews = allReviews.filter(r => r.showId === id);
+                const category = catById.get(id) || 'broadway';
+                const verdict = evaluateBroadcastReadiness(showReviews, category);
+                if (!verdict.ready) {
+                  process.stderr.write(id + ' (' + category + '): ' + verdict.reason + ' — not ready (excluded)\n');
+                  continue;
+                }
+                process.stderr.write(id + ' (' + category + '): ' + verdict.reason + ' — ready\n');
+                ready.push(id);
+              }
+              if (ready.length > 0) process.stdout.write(ready.join(','));
+            } catch (err) {
+              process.stderr.write('Readiness gate error: ' + err.message + '\n');
+              process.exit(2);
+            }
+          " 2>/tmp/readiness_log 1>/tmp/ready_shows || {
+            echo '::error::Readiness gate crashed — see log below'
+            cat /tmp/readiness_log
+            echo 'blocked=true' >> $GITHUB_OUTPUT
+            echo 'ready_shows=' >> $GITHUB_OUTPUT
+            # Exit 1 (not 0) so the job fails and notify-failure fires.
+            # Otherwise blocked=true silently short-circuits everything downstream
+            # and a persistently broken gate would prevent broadcasts forever
+            # without alerting. The legitimate "no shows ready" case (line ~190)
+            # uses exit 0 and is unaffected.
+            exit 1
+          }
+          cat /tmp/readiness_log
+          READY_SHOWS=$(cat /tmp/ready_shows)
+          if [ -z "$READY_SHOWS" ]; then
+            echo "::notice::Readiness gate: no shows ready for broadcast. Will retry on next scoring cycle."
+            echo "blocked=true" >> $GITHUB_OUTPUT
+            echo "ready_shows=" >> $GITHUB_OUTPUT
+          else
+            echo "Ready shows: $READY_SHOWS"
+            echo "blocked=false" >> $GITHUB_OUTPUT
+            echo "ready_shows=$READY_SHOWS" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check already broadcast
+        if: steps.find.outputs.has_shows == 'true' && steps.time_gate.outputs.blocked != 'true' && steps.readiness_gate.outputs.blocked != 'true'
+        id: check
+        run: |
+          # Read opening-night-sent.json if it exists, filter out completed shows.
+          # SHOWS = only shows that passed the readiness gate (per-show filter) —
+          # NOT steps.find.outputs.shows (which would include not-ready shows that
+          # would poison the broadcast run).
+          SHOWS="${{ steps.readiness_gate.outputs.ready_shows }}"
+          PENDING=$(node -e "
+            const fs = require('fs');
+            const { hasRecentPreviewForShow } = require('./scripts/lib/preview-dedup');
+            const sentPath = 'data/opening-night-sent.json';
+            let sent = {};
+            try { sent = JSON.parse(fs.readFileSync(sentPath, 'utf8')).shows || {}; } catch {}
+
+            const shows = '$SHOWS'.split(',');
+            // When send_to_all=true (approval dispatch) OR this is the scheduled
+            // 12:30 UTC daily run, skip the preview dedup check. In both cases an
+            // earlier preview may have already gone out (5 AM auto-dispatch after
+            // scoring), and we still want to create the owner-review draft.
+            // Only the 12:30 daily cron has approval semantics; the hourly
+            // redundancy cron (BRO-4417) is preview-only unless a show is past
+            // its draft deadline (handled per show below).
+            const sendToAll = '${{ inputs.send_to_all }}' === 'true'
+              || ('${{ github.event_name }}' === 'schedule' && '${{ github.event.schedule }}' === '30 12 * * *');
+
+            // BRO-4417: shows past their draft deadline (10am ET the day after
+            // opening) skip preview dedup, and the batch is narrowed to them so
+            // the gate override never pulls a fresh opening into a forced draft.
+            let deadlineIds = new Set();
+            try {
+              const { pastDeadlineShows } = require('./scripts/lib/broadcast-deadline');
+              let newsletterIssues = [];
+              try { newsletterIssues = JSON.parse(fs.readFileSync('data/newsletter-state.json', 'utf8')).issues || []; } catch {}
+              const past = pastDeadlineShows({ showIds: shows, shows: require('./data/shows.json').shows, sentShows: sent, newsletterIssues });
+              deadlineIds = new Set(past.map(p => p.id));
+              for (const p of past) process.stderr.write('Draft deadline passed for ' + p.id + ' (' + p.deadlineAt + ')\n');
+            } catch (err) {
+              process.stderr.write('::warning::draft-deadline check failed (' + err.message + ') — normal gating applies\n');
+            }
+
+            // Load reviews once for readiness pre-check
+            let allReviews = [];
+            try {
+              const rv = JSON.parse(fs.readFileSync('data/reviews.json', 'utf8'));
+              allReviews = Array.isArray(rv) ? rv : (rv.reviews || []);
+            } catch {}
+
+            const pending = shows.filter(id => {
+              // Always skip if full broadcast already completed
+              if (sent[id] && sent[id].completed) return false;
+              // Skip shows with 0 scored reviews — the broadcast script will exit early anyway,
+              // and without this guard the failed attempt triggers gather → rebuild → score →
+              // broadcast again (infinite feedback loop). Re-evaluated each scoring run.
+              // Exception: approval dispatch always proceeds regardless of review count.
+              if (!sendToAll) {
+                const scoredCount = allReviews.filter(r => r.showId === id && r.assignedScore != null).length;
+                if (scoredCount === 0) {
+                  process.stderr.write('Skipping ' + id + ' — 0 scored reviews, not ready\n');
+                  return false;
+                }
+              }
+              // Skip if a preview for this show went out within the rolling 24h window —
+              // but NOT in approval/send_to_all mode. Previously used sentAt.startsWith(today),
+              // which silently double-sent at UTC rollover (2026-04-11 incident had a 14h gap
+              // between duplicate sends — UTC-day check and short windows both missed it).
+              // Rolling window + prefix scan lives in scripts/lib/preview-dedup.js.
+              if (!sendToAll && !deadlineIds.has(id) && hasRecentPreviewForShow(sent, id)) {
+                process.stderr.write('Skipping ' + id + ' — preview sent within the last 24h\n');
+                return false;
+              }
+              return true;
+            });
+
+            const overdue = pending.filter(id => deadlineIds.has(id));
+            const batch = overdue.length > 0 ? overdue : pending;
+            if (overdue.length > 0 && overdue.length < pending.length) {
+              process.stderr.write('Deadline mode: drafting only ' + overdue.join(',') + ' this run; ' + pending.filter(id => !deadlineIds.has(id)).join(',') + ' wait for a normal run\n');
+            }
+            fs.writeFileSync('/tmp/deadline_shows', overdue.join(','));
+            if (batch.length > 0) console.log(batch.join(','));
+          ")
+          DEADLINE_SHOWS=$(cat /tmp/deadline_shows 2>/dev/null || true)
+          echo "deadline_shows=$DEADLINE_SHOWS" >> $GITHUB_OUTPUT
+
+          if [ -z "$PENDING" ]; then
+            echo "All shows already broadcast"
+            echo "pending_shows=" >> $GITHUB_OUTPUT
+            echo "broadway=" >> $GITHUB_OUTPUT
+            echo "westend=" >> $GITHUB_OUTPUT
+          else
+            echo "Pending shows: $PENDING"
+            echo "pending_shows=$PENDING" >> $GITHUB_OUTPUT
+
+            # Split PENDING (post-readiness-gate) by market for the broadcast/push steps.
+            # CRITICAL: must derive from PENDING — not from steps.find.outputs.{broadway,westend} —
+            # otherwise shows that failed the workflow's stricter 15-review readiness gate
+            # would still get broadcast via the script's looser internal MIN_REVIEWS=8 (WE).
+            node -e "
+              const shows = require('./data/shows.json').shows;
+              const ids = '$PENDING'.split(',');
+              const broadway = [], westend = [];
+              for (const id of ids) {
+                const s = shows.find(x => x.id === id);
+                if (s && s.category === 'west-end') westend.push(id);
+                else if (!s || !s.category || s.category === 'broadway') broadway.push(id);
+              }
+              if (broadway.length) console.log('broadway=' + broadway.join(','));
+              else console.log('broadway=');
+              if (westend.length) console.log('westend=' + westend.join(','));
+              else console.log('westend=');
+            " | while IFS= read -r line; do
+              echo "$line" >> $GITHUB_OUTPUT
+            done
+          fi
+
+      - name: Checklist gate — block send if QA errors (unless FORCE_BROADCAST=true)
+        id: checklist_gate
+        if: steps.check.outputs.pending_shows != ''
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # BRO-2378: same checklist script as opening-night-checklist.yml (BRO-67);
+          # without the key its LLM parity fallback silently no-ops in this gate.
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          FORCE="${{ inputs.force_broadcast }}"
+          BLOCKED=false
+          BREACHED_SHOWS=()
+          # BRO-4417: a show past its draft deadline is not blocked by this
+          # gate; it is recorded as overridden and the owner is paged with the
+          # findings once the draft exists (see "Page owner: deadline draft").
+          DEADLINE_SHOWS=",${{ steps.check.outputs.deadline_shows }},"
+          OVERRIDDEN_SHOWS=()
+          gate_breach() {
+            if [[ "$DEADLINE_SHOWS" == *",$1,"* ]]; then
+              OVERRIDDEN_SHOWS+=("$1")
+              echo "::warning::Show $1 is past its draft deadline: gate finding recorded, draft not blocked"
+            else
+              BLOCKED=true
+              BREACHED_SHOWS+=("$1")
+            fi
+          }
+          IFS=',' read -ra SHOWS <<< "${{ steps.check.outputs.pending_shows }}"
+          for SHOW in "${SHOWS[@]}"; do
+            # --out: remediation logs go to stdout, so a merged redirect makes
+            # the JSON unparseable and the catch below reads ERRORS=0 — passing
+            # the QA gate exactly when a show has missing reviews.
+            # rc discrimination (task #1073, Codex ship-check): exit 0/1 are the
+            # designed outcomes (clean / shows-have-errors); anything else means
+            # the checklist itself CRASHED (MODULE_NOT_FOUND ran silently for 3
+            # months this way) — treat a crashed QA gate as BLOCKED, never as
+            # 0 errors. Same for missing/unparseable output: fail CLOSED (-1
+            # sentinel), not open.
+            RC=0
+            node scripts/opening-night-checklist.js --show="$SHOW" --json --out=/tmp/checklist-"$SHOW".json 2>&1 || RC=$?
+            if [ "$RC" -gt 1 ]; then
+              echo "::error::checklist crashed for $SHOW (exit $RC) — failing the gate closed"
+              gate_breach "$SHOW"
+              continue
+            fi
+            ERRORS=$(node -e "
+              try {
+                const d = JSON.parse(require('fs').readFileSync('/tmp/checklist-${SHOW}.json','utf8'));
+                const total = (d.shows||[]).reduce((s,x)=>s+(x.summary&&x.summary.errors||0),0);
+                console.log(total);
+              } catch { console.log(-1); }
+            " 2>/dev/null || echo -1)
+            echo "Show $SHOW: $ERRORS checklist error(s)"
+            if [ "$ERRORS" -ne 0 ]; then
+              gate_breach "$SHOW"
+            fi
+          done
+
+          if [ "$BLOCKED" = "true" ] && [ "$FORCE" != "true" ]; then
+            # Sorted (not iteration-order) so the same breached set always
+            # produces the same conditionKey — codex adversarial review
+            # 2026-07-23 flagged unsorted joins as a silent dedup-bypass if
+            # array order ever shifted between retries.
+            BREACHED_LIST=$(printf '%s\n' "${BREACHED_SHOWS[@]}" | sort | paste -sd, -)
+            echo "::error::Checklist gate blocked broadcast — QA errors found. Set force_broadcast=true to override."
+            # Routed through the alert router (email-noise Sprint 2, 2026-07-23):
+            # a stuck orphan-unscored/checklist condition used to re-email this
+            # SAME "Blocked" alert on every retry (9 emails for one root cause on
+            # 2026-07-22) — the per-show conditionKey now collapses repeats
+            # within 24h to a single email.
+            #
+            # blocked=true is written from INSIDE the node call, only once we
+            # know the owner was actually informed (delivered or already-silent
+            # per the ledger) — codex adversarial review 2026-07-23 flagged the
+            # previous write-before-call ordering as a fail-CLOSED regression:
+            # if routeAlert() threw or Resend delivery failed, blocked=true
+            # would already be set, suppressing the generic notify-failure
+            # fallback below and leaving the owner with ZERO email for a real
+            # blocked broadcast (worse than the pre-migration behavior).
+            BREACHED_LIST="$BREACHED_LIST" node -e "
+              const { routeAlert } = require('./scripts/lib/owner-alert-router');
+              routeAlert({
+                conditionKey: 'broadcast-gate:checklist:' + (process.env.BREACHED_LIST || 'unknown'),
+                title: 'Opening Night Broadcast Blocked — Checklist Errors',
+                description: 'Automated broadcast halted: opening night checklist found errors for pending shows.\nCheck /tmp/checklist-*.json or re-run with force_broadcast=true to override.',
+                severity: 'error',
+                disposition: 'human',
+                cooldownHours: 24,
+                fields: [{ name: 'Shows', value: process.env.BREACHED_LIST || '(unknown)' }],
+              }).then((result) => {
+                // action==='digest' means the page-worthy gate (card #611) downgraded this
+                // from 'human' — the owner WILL see it in the morning digest, so that
+                // counts as informed too (otherwise this falls through to the generic
+                // direct-email notify-failure step below, defeating the gate).
+                const informed = result.action === 'silent' || result.action === 'digest' || (result.action === 'human' && result.delivered);
+                if (informed) require('fs').appendFileSync(process.env.GITHUB_OUTPUT, 'blocked=true\n');
+                else console.error('::warning::Alert delivery unconfirmed — leaving generic fallback notifier enabled');
+                process.exit(1);
+              }).catch(e => { process.stderr.write(e.message+'\n'); process.exit(1); });
+            "
+          else
+            echo "Checklist gate passed (blocked=$BLOCKED, force=$FORCE)"
+          fi
+          echo "overridden=$(IFS=,; echo "${OVERRIDDEN_SHOWS[*]}")" >> $GITHUB_OUTPUT
+
+      - name: Drift gate — block send if reviews.json out of sync with review-texts (per-show)
+        id: drift_gate
+        if: steps.check.outputs.pending_shows != ''
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: |
+          # Per-show drift gate. Same predicate as the daily Check Review-Count Drift
+          # workflow, but with a tighter single-show threshold (>2 absolute, vs >3 daily).
+          # At broadcast time the source-of-truth (data/review-texts/) and the derived
+          # file (data/reviews.json) should agree near-exactly for the show we're about
+          # to email — a missing review here is the most user-visible failure mode.
+          # Audit output is show-scoped (data/audit/review-count-drift-{show}.json) so
+          # this never overwrites the daily run's audit file.
+          FORCE="${{ inputs.force_broadcast }}"
+          BLOCKED=false
+          BREACHED_SHOWS=()
+          # BRO-4417: a show past its draft deadline is not blocked by this
+          # gate; it is recorded as overridden and the owner is paged with the
+          # findings once the draft exists (see "Page owner: deadline draft").
+          DEADLINE_SHOWS=",${{ steps.check.outputs.deadline_shows }},"
+          OVERRIDDEN_SHOWS=()
+          gate_breach() {
+            if [[ "$DEADLINE_SHOWS" == *",$1,"* ]]; then
+              OVERRIDDEN_SHOWS+=("$1")
+              echo "::warning::Show $1 is past its draft deadline: gate finding recorded, draft not blocked"
+            else
+              BLOCKED=true
+              BREACHED_SHOWS+=("$1")
+            fi
+          }
+          IFS=',' read -ra SHOWS <<< "${{ steps.check.outputs.pending_shows }}"
+          for SHOW in "${SHOWS[@]}"; do
+            # Capture exit code WITHOUT a pipe (memory: pipe-masks-exit-code).
+            # --strict exits 2 on breach; everything else is exit 0/1.
+            set +e
+            node scripts/check-review-count-drift.js \
+              --show="$SHOW" \
+              --single-show-delta=2 \
+              --strict \
+              > /tmp/drift-"$SHOW".log 2>&1
+            STATUS=$?
+            set -e
+            cat /tmp/drift-"$SHOW".log
+            echo "Show $SHOW: drift check exit=$STATUS"
+            if [ "$STATUS" -eq 2 ]; then
+              gate_breach "$SHOW"
+            elif [ "$STATUS" -ne 0 ]; then
+              # Non-2 non-zero = script crash. Don't block broadcast on infrastructure
+              # failure (review-texts dir missing, JSON parse error, etc.) — surface
+              # as a warning so the run still notifies, but proceed to the send path.
+              echo "::warning::Drift check for $SHOW crashed (exit $STATUS). Not blocking broadcast."
+            fi
+          done
+
+          if [ "$BLOCKED" = "true" ] && [ "$FORCE" != "true" ]; then
+            BREACHED_LIST=$(printf '%s\n' "${BREACHED_SHOWS[@]}" | sort | paste -sd, -)
+            echo "::error::Drift gate blocked broadcast — review-count drift exceeds ±2 for: $BREACHED_LIST. Set force_broadcast=true to override."
+            # blocked=true only written after confirmed delivery/silence — see
+            # the checklist gate above for the fail-closed-to-silence bug this
+            # avoids (codex adversarial review 2026-07-23).
+            BREACHED_LIST="$BREACHED_LIST" node -e "
+              const { routeAlert } = require('./scripts/lib/owner-alert-router');
+              routeAlert({
+                conditionKey: 'broadcast-gate:drift:' + (process.env.BREACHED_LIST || 'unknown'),
+                title: 'Opening Night Broadcast Blocked — Review-Count Drift',
+                description: 'Automated broadcast halted: scored in-window reviews are missing from data/reviews.json for one or more pending shows (or reviews.json is stale).\nCheck data/audit/review-count-drift-{show}.json or re-run with force_broadcast=true to override.',
+                severity: 'error',
+                disposition: 'human',
+                cooldownHours: 24,
+                fields: [{ name: 'Shows', value: process.env.BREACHED_LIST || '(unknown)' }],
+              }).then((result) => {
+                // action==='digest' means the page-worthy gate (card #611) downgraded this
+                // from 'human' — the owner WILL see it in the morning digest, so that
+                // counts as informed too (otherwise this falls through to the generic
+                // direct-email notify-failure step below, defeating the gate).
+                const informed = result.action === 'silent' || result.action === 'digest' || (result.action === 'human' && result.delivered);
+                if (informed) require('fs').appendFileSync(process.env.GITHUB_OUTPUT, 'blocked=true\n');
+                else console.error('::warning::Alert delivery unconfirmed — leaving generic fallback notifier enabled');
+                process.exit(1);
+              }).catch(e => { process.stderr.write(e.message+'\n'); process.exit(1); });
+            "
+          else
+            echo "Drift gate passed (blocked=$BLOCKED, force=$FORCE)"
+          fi
+          echo "overridden=$(IFS=,; echo "${OVERRIDDEN_SHOWS[*]}")" >> $GITHUB_OUTPUT
+
+      - name: Orphan-unscored gate — self-heal requeue, alert only after exhausted attempts
+        id: orphan_gate
+        if: steps.check.outputs.pending_shows != ''
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Lost Boys 2026-04-26 #8 defense (Gap 1). scripts/verify-all-scored.js
+          # writes data/audit/orphan-unscored-{showId}.json when reviews with
+          # includable text+excerpt land on disk without an assignedScore, and
+          # dispatches a rescore unless its own 60-min per-show cooldown
+          # suppresses it (lastDispatch = 'suppressed-cooldown').
+          #
+          # #356 self-heal: this used to email the operator on EVERY blocked
+          # run — broadcast retries every ~2.8h via workflow_run, so a
+          # cooldown-suppressed dispatch meant repeated emails until an
+          # operator manually ran the rescore command (2026-07-23,
+          # trainspotting-the-musical-west-end-2026, run 30054954304 —
+          # nothing had auto-retried). scripts/dispatch-orphan-rescore-requeue.js
+          # now self-dispatches once the cooldown clears, capped at 2
+          # auto-attempts per show per rolling 24h, and only escalates through
+          # owner-alert-router (never a raw email) past that cap — so this
+          # step no longer fails the job / pages the operator on every retry;
+          # it just blocks the send via the `blocked` output below.
+          FORCE="${{ inputs.force_broadcast }}"
+          BLOCKED=false
+          # BRO-4417: same deadline override as the checklist/drift gates. The
+          # requeue script still runs, so a rescore is dispatched either way.
+          DEADLINE_SHOWS=",${{ steps.check.outputs.deadline_shows }},"
+          OVERRIDDEN_SHOWS=()
+          IFS=',' read -ra SHOWS <<< "${{ steps.check.outputs.pending_shows }}"
+          for SHOW in "${SHOWS[@]}"; do
+            PRIOR_BLOCKED=$BLOCKED
+            RESULT=$(node scripts/dispatch-orphan-rescore-requeue.js --show="$SHOW")
+            echo "Show $SHOW: $RESULT"
+            ACTION=$(echo "$RESULT" | node -e "try{process.stdout.write(JSON.parse(require('fs').readFileSync(0,'utf8')).action||'error')}catch{process.stdout.write('error')}")
+            case "$ACTION" in
+              clear) ;;
+              in-flight|wait|dispatch) BLOCKED=true ;;
+              alert) BLOCKED=true; echo "::error::Show $SHOW: orphan-unscored self-heal exhausted its 2-attempt/24h budget — owner-alert-router notified once." ;;
+              error) BLOCKED=true; echo "::warning::Show $SHOW: dispatch-orphan-rescore-requeue.js hit an internal error (see log above) — failing closed, broadcast stays blocked." ;;
+              *) BLOCKED=true; echo "::warning::Show $SHOW: dispatch-orphan-rescore-requeue.js returned unexpected action '$ACTION'" ;;
+            esac
+            if [ "$BLOCKED" = "true" ] && [ "$PRIOR_BLOCKED" != "true" ] && [[ "$DEADLINE_SHOWS" == *",$SHOW,"* ]]; then
+              BLOCKED=false
+              # id:action so the owner page can tell "still unscored" from "check crashed".
+              OVERRIDDEN_SHOWS+=("$SHOW:$ACTION")
+              echo "::warning::Show $SHOW is past its draft deadline: unscored review(s) recorded ($ACTION), draft not blocked"
+            fi
+          done
+
+          if [ "$BLOCKED" = "true" ] && [ "$FORCE" != "true" ]; then
+            echo "::notice::Orphan-unscored gate blocking broadcast — self-heal requeue in progress (see per-show output above). No operator email unless the auto-dispatch budget is exhausted."
+            echo "blocked=true" >> $GITHUB_OUTPUT
+          else
+            echo "Orphan-unscored gate passed (blocked=$BLOCKED, force=$FORCE)"
+            echo "blocked=false" >> $GITHUB_OUTPUT
+          fi
+          echo "overridden=$(IFS=,; echo "${OVERRIDDEN_SHOWS[*]}")" >> $GITHUB_OUTPUT
+
+      - name: Commit orphan-rescore-requeue state (early — before the job's 24-min budget can time out)
+        # Writes Before Pushes (.github/workflows/CLAUDE.md): the late commit
+        # steps near the end of this job run under `if: always()`, which does
+        # NOT fire on cancellation — and this job runs consensus generation
+        # (Claude calls) + broadcast send after this point, well within reach
+        # of the 24-min job timeout on a multi-show day. A cancellation
+        # between here and the late commit would silently lose the
+        # attempt/alert-ledger state this self-heal depends on, resetting the
+        # 2-attempt/24h budget and re-arming an alert that already fired —
+        # the exact "repeated forever" failure mode this fix closes.
+        # Committing+pushing right after the state is written NARROWS that
+        # window; the late steps re-stage the same paths as defense-in-depth.
+        # It does not CLOSE it: only a successful push reaches origin, and if
+        # the job is cancelled or the runner dies before the late steps, an
+        # unpushed local commit dies with the runner (ship-check/Codex,
+        # 2026-09-08 — the earlier wording here claimed otherwise and was
+        # wrong). That residual window is identical whether this step is
+        # hard-fail or continue-on-error, so it is not a cost of this change.
+        #
+        # BRO-2435 (2026-08-26): this step used to bundle BOTH audit files
+        # into one step under a shared PUSH_DEADLINE_SEC, and hard-failed on
+        # every run that actually had something to push — which skipped every
+        # later step including "Create broadcast draft" (the entire point of a
+        # scheduled run). Now one file per step, per the BRO-2455 rationale at
+        # the late steps below: two steps, two `env:` blocks, so
+        # scripts/lib/audit-push-retry-budgets.js can attribute a deadline to
+        # each call instead of charging one step's budget to both.
+        #
+        # BRO-2435 phase 2 (2026-09-08): `continue-on-error: true` replaces the
+        # old `STATUS=0 / || STATUS=1 / exit $STATUS` hard-fail. Rationale,
+        # measured on run 34171674469 rather than assumed:
+        #   * The hard-fail bought NOTHING. By the time `exit $STATUS` ran, the
+        #     push had already been attempted and the commit already existed on
+        #     local HEAD. Failing the step afterwards does not retry the push
+        #     and does not shrink the cancellation window above (the commit and
+        #     push happen at the same instant either way). Its only observable
+        #     effect was skipping "Create broadcast draft".
+        #   * Red signal is NOT lost: the late "Commit orphan-rescore-requeue
+        #     state" step below is still a bare hard-fail push, still carries
+        #     the `git log origin/main..HEAD` stranded-commit gate, and runs
+        #     AFTER the draft. So a commit that genuinely never reaches origin
+        #     still fails the job — just after the draft exists, not instead
+        #     of it. On run 34171674469 that late step recovered this exact
+        #     stranded commit in 6s on attempt 1 (7d6ff226..e05e52b7).
+        #   * The push failures are NOT budget starvation and cannot be fixed
+        #     by resizing. Every push in that run burned the full
+        #     GIT_NET_TIMEOUT_SEC=90s cap (rc=124 transport hang — the
+        #     repo-wide BRO-2373 wall documented at push-with-retry.sh:~140).
+        #     The audit models a hung attempt at MIN_TIMED_OUT_ATTEMPT_SEC=180
+        #     (push+fetch), so funding its MIN_FUNDABLE_ATTEMPTS=3 would need a
+        #     >372s deadline — impossible inside this 24-min job's margin.
+        #     `deadline-cannot-fund-retries` is therefore permanent here and on
+        #     all 5 of this job's push sites; do not "fix" it by raising the
+        #     deadline (a /second-opinion FAIL already stands against 300->600).
+        # Sizing: 240s/13 here + 60s/5 for alert-ledger below == the single
+        # 300s/14 step these replace, so the split is budget-NEUTRAL and adds
+        # no job-timeout-margin-undersized flag (MARGIN_THRESHOLD 0.15; this
+        # job sits at 0.167 and any net increase would trip it). Re-confirm
+        # with `node scripts/audit-push-retry-budgets.js` before changing them.
+        #
+        # BRO-2811 (2026-09-08, investigated — deliberately NOT overridden):
+        # this call is fallback-eligible (orphan-rescore-requeue-state.json is
+        # apiFallbackSafe) and scripts/audit-push-retry-budgets.js flags it
+        # fallback-early-trigger-unreachable (240s/13 funds only 2 attempts
+        # against the derived default's floor((13+1)/2)=7). But an explicit
+        # PUSH_API_FALLBACK_AFTER_ATTEMPTS override only helps when set BELOW
+        # fundableAttempts — at exactly 2 (the max reachable) the early-break
+        # fires at essentially the same wall-clock moment the deadline check
+        # would have anyway, so it buys nothing; dropping to 1 would bail to
+        # the API after a single local attempt on this job's PRIMARY hard-fail
+        # recovery step, which is premature (push-with-retry.sh's own docs:
+        # ordinary transient contention resolves in 2-3 attempts) for a site
+        # this job's own header comment already establishes is dominated by a
+        # 90s-transport-hang wall a reviewed /second-opinion rejected trying
+        # to fix via deadline/retry sizing. Left as-is.
+        id: commit_orphan_state_early
+        if: steps.check.outputs.pending_shows != ''
+        continue-on-error: true
+        env:
+          PUSH_DEADLINE_SEC: '240'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          bash scripts/lib/git-add-existing.sh data/audit/orphan-rescore-requeue-state.json
+          if git diff --cached --quiet; then
+            echo "No orphan-rescore-requeue-state.json changes to commit"
+          else
+            git commit -m "chore: Update orphan-rescore-requeue state [skip ci]"
+            bash scripts/lib/push-with-retry.sh 13 main
+          fi
+
+      - name: Commit alert-ledger state (early — before the job's 24-min budget can time out)
+        # Split out of the step above (BRO-2435). Unlike
+        # orphan-rescore-requeue-state.json — single-writer and registered
+        # apiFallbackSafe in scripts/lib/core-data-merge-registry.js — this
+        # file has 12 independent writers via routeAlert() (see that
+        # registry's `verifiedBy` for audit/alert-ledger.json, BRO-2413), so
+        # it can never claim a whole-file "ours wins" API fallback. It does
+        # get the Git Data API fallback's per-conditionKey UNION merge
+        # (scripts/lib/merge-alert-ledger.js) — that fallback ran on run
+        # 34171674469 and reconciled cleanly, then timed out on the same 90s
+        # transport wall as the local path. So this file's push is the one
+        # that structurally cannot be made reliable here.
+        #
+        # Deliberately sized SMALL (60s/5, mirroring the late
+        # orphan-rescore-requeue step below) rather than the 300s/14 it
+        # inherited: it is non-fatal and fully recovered downstream, so
+        # spending job margin on attempts that all hit the 90s wall buys
+        # nothing. NOTE (BRO-2435 review): push-with-retry.sh runs its API
+        # fallback AFTER the deadline expires, so this step's real worst case
+        # is ~60s + up to 2 more capped API attempts — do not treat the freed
+        # budget as spendable elsewhere.
+        id: commit_alert_ledger_early
+        if: steps.check.outputs.pending_shows != ''
+        continue-on-error: true
+        env:
+          PUSH_DEADLINE_SEC: '60'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # alert-router-attempts.jsonl (BRO-3662): logDispatchAttempt() rewrites
+          # this TRACKED file on every dispatch attempt; left unstaged it makes
+          # every later rebase refuse pre-flight and forces the clobber-prone
+          # merge path in push-with-retry.sh.
+          bash scripts/lib/git-add-existing.sh data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl
+          if git diff --cached --quiet; then
+            echo "No alert-ledger.json changes to commit"
+          else
+            git commit -m "chore: Update alert-ledger state [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main
+          fi
+
+      - name: Surface early-push failures (continue-on-error hides them from failure())
+        # BRO-2435 ship-check (Codex + gpt-5.4-mini, both flagged): under
+        # `continue-on-error: true` GitHub keeps `steps.<id>.outcome` as
+        # 'failure' but sets the effective conclusion to 'success', so a lost
+        # early push does NOT make failure() true and "Notify on failure"
+        # below never fires. That is deliberate — the late hard-fail steps are
+        # the real signal, and alerting on a transport blip the late step then
+        # recovers would be pure noise. But the blip must not be INVISIBLE:
+        # this echoes it into the run log and the job summary so an operator
+        # grepping a green run can still see the BRO-2373 wall was hit.
+        # Cannot fail (plain echoes), so it cannot re-introduce the cascade.
+        if: always() && steps.check.outputs.pending_shows != ''
+        run: |
+          ORPHAN='${{ steps.commit_orphan_state_early.outcome }}'
+          LEDGER='${{ steps.commit_alert_ledger_early.outcome }}'
+          if [ "$ORPHAN" = "failure" ]; then
+            echo "::warning::early orphan-rescore-requeue-state push failed (outcome=$ORPHAN) — commit left on local HEAD for the late recovery steps; broadcast draft intentionally NOT blocked (BRO-2435)"
+            echo "- early orphan-rescore-requeue-state push FAILED (recovered later, or the late step will fail this job)" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ "$LEDGER" = "failure" ]; then
+            echo "::warning::early alert-ledger push failed (outcome=$LEDGER) — commit left on local HEAD for the late recovery steps; broadcast draft intentionally NOT blocked (BRO-2435)"
+            echo "- early alert-ledger push FAILED (recovered later, or the late step will fail this job)" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ "$ORPHAN" != "failure" ] && [ "$LEDGER" != "failure" ]; then
+            echo "Both early state pushes OK (orphan=$ORPHAN, ledger=$LEDGER)"
+          fi
+
+      - name: Sync subscribers (Formspree → local)
+        if: steps.check.outputs.pending_shows != ''
+        env:
+          FORMSPREE_FOLLOW_API_KEY: ${{ secrets.FORMSPREE_FOLLOW_API_KEY }}
+          FORMSPREE_SUBSCRIBER_API_KEY: ${{ secrets.FORMSPREE_SUBSCRIBER_API_KEY }}
+          FORMSPREE_FOLLOW_FORM_ID: ${{ secrets.FORMSPREE_FOLLOW_FORM_ID }}
+          FORMSPREE_SUBSCRIBER_FORM_ID: ${{ secrets.FORMSPREE_SUBSCRIBER_FORM_ID }}
+          FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID: ${{ secrets.FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID }}
+          FORMSPREE_WESTEND_SUBSCRIBER_API_KEY: ${{ secrets.FORMSPREE_WESTEND_SUBSCRIBER_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          # BUTTONDOWN_API_KEY intentionally omitted — Buttondown sync is manual only.
+          # Automated sync hammers the 100/day API limit. Run sync-followers.js locally when needed.
+        run: node scripts/sync-followers.js
+
+      - name: Generate consensus
+        if: steps.check.outputs.pending_shows != ''
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          PENDING: ${{ steps.check.outputs.pending_shows }}
+        run: |
+          # One call for the whole list (--shows=a,b, BRO-4595): one shows.json
+          # load and one consensus-file write instead of one per show.
+          PENDING="${PENDING//[[:space:]]/}"
+          node scripts/generate-critic-consensus.js --shows="$PENDING" || true
+
+      - name: Generate mobile data (pre-computed scores for email)
+        if: steps.check.outputs.pending_shows != ''
+        run: bash scripts/generate-mobile-artifacts.sh
+
+      - name: Create broadcast draft (owner sends manually from Resend)
+        if: steps.check.outputs.pending_shows != '' && env.BROADCAST_HOLD_ACTIVE != 'true' && steps.orphan_gate.outputs.blocked != 'true'
+        id: broadcast
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_WE_AUDIENCE_ID: ${{ secrets.RESEND_WE_AUDIENCE_ID }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # Required by scripts/lib/send-lock.js — it acquires a cross-session
+          # advisory lock via the GitHub Contents API before any Resend
+          # call, to prevent double-sends when a CLI session and this workflow run
+          # in parallel. Without GH_TOKEN, `gh api` in CI would fail auth and the
+          # lock helper would exit(1), blocking the send rather than risking a race.
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Modes:
+          #   - send_to=<email>: transactional preview to that address only (no draft)
+          #   - send_to_all=true OR scheduled run: send preview to owner AND create Resend draft
+          #   - default (workflow_run auto-retry / update-show-status dispatch): preview to owner only
+          LOOKBACK=${{ inputs.lookback_days || 2 }}
+          SEND_TO_FLAG=""
+          CREATE_DRAFT="false"
+
+          if [ -n "${{ inputs.send_to }}" ]; then
+            SEND_TO_FLAG="--send-to=${{ inputs.send_to }}"
+            echo "** PREVIEW MODE — sending test email to ${{ inputs.send_to }} only **"
+          elif [ "${{ inputs.send_to_all }}" = "true" ] || [ "${{ github.event.schedule }}" = "30 12 * * *" ]; then
+            # Approval dispatch or scheduled 12:30 UTC run: preview to owner + Resend draft
+            SEND_TO_FLAG="--send-to=${{ secrets.OWNER_EMAIL }}"
+            CREATE_DRAFT="true"
+            echo "** APPROVAL MODE — sending preview to owner AND creating Resend draft **"
+          elif [ -n "${{ steps.check.outputs.deadline_shows }}" ]; then
+            # BRO-4417: every pending show is past its draft deadline (the check
+            # step narrowed the batch), so any run type creates the draft now.
+            SEND_TO_FLAG="--send-to=${{ secrets.OWNER_EMAIL }}"
+            CREATE_DRAFT="true"
+            # The workflow readiness gate (15+ reviews + aggregator) already
+            # passed; the script's stricter T1/T2/high-confidence gate must not
+            # silently leave a past-deadline show with no draft. The owner still
+            # reviews the draft (and the page lists what the gates flagged).
+            DRAFT_FLAGS="--force-create-draft"
+            echo "** DEADLINE MODE — draft deadline passed for ${{ steps.check.outputs.deadline_shows }}: preview to owner AND creating Resend draft **"
+          else
+            SEND_TO_FLAG="--send-to=${{ secrets.OWNER_EMAIL }}"
+            echo "** PREVIEW MODE — sending preview to owner for approval **"
+          fi
+
+          SENT="false"
+
+          run_market() {
+            local market="$1"
+            local shows="$2"
+            echo "--- $market preview ---"
+            OUTPUT=$(node scripts/send-opening-night-broadcast.js --market="$market" --lookback="$LOOKBACK" --shows="$shows" $SEND_TO_FLAG 2>&1) || true
+            echo "$OUTPUT"
+            if echo "$OUTPUT" | grep -q "Draft ready\|Draft created\|Preview sent to"; then
+              SENT="true"
+            fi
+            if [ "$CREATE_DRAFT" = "true" ]; then
+              echo "--- $market draft ---"
+              OUTPUT=$(node scripts/send-opening-night-broadcast.js --market="$market" --lookback="$LOOKBACK" --shows="$shows" ${DRAFT_FLAGS:-} 2>&1) || true
+              echo "$OUTPUT"
+              if echo "$OUTPUT" | grep -q "Draft ready\|Draft created"; then
+                SENT="true"
+                DRAFTED="true"
+              fi
+            fi
+          }
+
+          # Broadway (skip if no Broadway shows passed the readiness gate).
+          # Uses steps.check.outputs.broadway (post-gate filtered), NOT steps.find.outputs.broadway.
+          # Passing --shows=ID,ID restricts the script to the exact ready set so its looser
+          # internal MIN_REVIEWS threshold can't bypass the workflow's stricter gate.
+          if [ -n "${{ steps.check.outputs.broadway }}" ]; then
+            run_market broadway "${{ steps.check.outputs.broadway }}"
+          else
+            echo "No Broadway shows to send"
+          fi
+
+          # West End (skip if no WE shows passed the readiness gate)
+          if [ -n "${{ steps.check.outputs.westend }}" ]; then
+            run_market west-end "${{ steps.check.outputs.westend }}"
+          else
+            echo "No West End shows to send"
+          fi
+
+          echo "broadcast_sent=$SENT" >> $GITHUB_OUTPUT
+          echo "draft_created=${DRAFTED:-false}" >> $GITHUB_OUTPUT
+
+      # BRO-4417: the deadline override lets a draft through a QA gate, so the
+      # owner must see what the gate flagged BEFORE pressing Send. Only fires when
+      # a draft was really created (not on a preview, not when the script itself
+      # refused, e.g. missing consensus). The conditionKey prefix is page-worthy,
+      # so this pages immediately instead of landing in the next morning's digest.
+      - name: "Page owner: deadline draft created over QA findings"
+        # always(): a draft that exists must be flagged even if some earlier,
+        # unrelated step in the job failed (audit-alert-reachability, BRO-2817).
+        if: always() && steps.broadcast.outputs.draft_created == 'true' && (steps.checklist_gate.outputs.overridden != '' || steps.drift_gate.outputs.overridden != '' || steps.orphan_gate.outputs.overridden != '')
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          CHECKLIST_OVERRIDDEN: ${{ steps.checklist_gate.outputs.overridden }}
+          DRIFT_OVERRIDDEN: ${{ steps.drift_gate.outputs.overridden }}
+          ORPHAN_OVERRIDDEN: ${{ steps.orphan_gate.outputs.overridden }}
+        run: |
+          node -e "
+            const fs = require('fs');
+            const { routeAlert } = require('./scripts/lib/owner-alert-router');
+            const split = v => (v || '').split(',').filter(Boolean);
+            const lines = [];
+            const ids = new Set();
+            for (const id of split(process.env.CHECKLIST_OVERRIDDEN)) {
+              ids.add(id);
+              let errs = [];
+              try {
+                const d = JSON.parse(fs.readFileSync('/tmp/checklist-' + id + '.json', 'utf8'));
+                for (const s of d.shows || []) for (const c of s.checks || []) {
+                  if (!c.ok && c.severity === 'error') errs.push(c.name + ': ' + String(c.message).slice(0, 300));
+                }
+              } catch (e) { errs.push('the QA checklist did not produce results (it crashed or timed out), so NONE of this show\'s reviews were checked'); }
+              lines.push(id + ' QA checklist errors:\n  - ' + (errs.length ? errs.join('\n  - ') : 'the checklist reported errors but none could be read back, so treat every review as unchecked'));
+            }
+            for (const id of split(process.env.DRIFT_OVERRIDDEN)) {
+              ids.add(id);
+              lines.push(id + ': review-count drift over 2 (a scored review may be missing from the email). See data/audit/review-count-drift-' + id + '.json');
+            }
+            for (const entry of split(process.env.ORPHAN_OVERRIDDEN)) {
+              const [id, action] = entry.split(':');
+              ids.add(id);
+              if (action === 'error' || !['in-flight', 'wait', 'dispatch', 'alert'].includes(action)) {
+                lines.push(id + ': the unscored-review check itself failed (' + (action || 'unknown') + '), so it is not known whether every review was scored. Check the score in the draft.');
+              } else {
+                lines.push(id + ': at least one review was still unscored (' + action + '), so the score in the draft may change once it is scored.');
+              }
+            }
+            const list = [...ids].sort().join(',');
+            routeAlert({
+              conditionKey: 'broadcast:deadline-draft:' + list,
+              title: 'Opening-night draft created past deadline: check these before you press Send',
+              description: 'The draft deadline (10am ET the day after opening) passed, so the Resend draft was created even though QA checks flagged the items below. Nothing was sent to subscribers. Look over these reviews in the draft before sending.\n\n' + lines.join('\n\n'),
+              severity: 'warning',
+              disposition: 'human',
+              cooldownHours: 24,
+              fields: [{ name: 'Shows', value: list }],
+            }).then(r => {
+              // Page-worthy, so 'digest' means the allowlist lost this prefix: the
+              // owner would only hear about it tomorrow morning, after the draft.
+              if (r.action === 'digest') console.error('::warning::deadline-draft alert was downgraded to the morning digest; check broadcast:deadline-draft: in scripts/lib/page-worthy-alerts.js');
+              else console.log('[alert-router] deadline-draft alert: ' + r.action);
+            })
+              .catch(e => { console.error('::warning::deadline-draft alert failed: ' + e.message); });
+          "
+
+      - name: Gather more reviews if not ready
+        if: steps.check.outputs.pending_shows != '' && steps.broadcast.outputs.broadcast_sent != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PENDING="${{ steps.check.outputs.pending_shows }}"
+
+          # Guard 1: Only dispatch gather after embargo lifts (~1 AM UTC / 8 PM ET).
+          # Before that, reviews don't exist yet — dispatching just creates a feedback loop
+          # (broadcast → gather → rebuild → score → broadcast).
+          HOUR_UTC=$(date -u +%H)
+          if [ "$HOUR_UTC" -lt 1 ] || [ "$HOUR_UTC" -ge 8 ]; then
+            # Between 8 AM and 1 AM UTC (3 AM-8 PM ET) — too early for opening-night reviews
+            # Skip the check between 1-8 AM UTC when reviews are expected
+            # Also skip shows opening today (no reviews can exist yet)
+            SAME_DAY_ONLY=$(node -e "
+              const shows = require('./data/shows.json').shows;
+              const today = new Date().toISOString().slice(0,10);
+              const ids = '$PENDING'.split(',');
+              const allToday = ids.every(id => {
+                const s = shows.find(x => x.id === id);
+                return s && s.openingDate === today;
+              });
+              console.log(allToday ? 'true' : 'false');
+            ")
+            if [ "$SAME_DAY_ONLY" = "true" ]; then
+              echo "All pending shows opened today — reviews won't exist until this evening. Skipping gather."
+              exit 0
+            fi
+          fi
+
+          # Guard 2: Don't dispatch if gather already running or dispatched recently
+          RUNNING=$(gh run list --workflow=gather-reviews.yml --status=in_progress --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          if [ "$RUNNING" -gt 0 ]; then
+            echo "Gather already running/queued — skipping dispatch"
+          else
+            # Guard 3: Don't dispatch if gather ran in the last 2 hours (prevents loop)
+            RECENT=$(gh run list --workflow=gather-reviews.yml --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
+            SKIP_GATHER=false
+            if [ -n "$RECENT" ]; then
+              RECENT_TS=$(date -d "$RECENT" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$RECENT" +%s 2>/dev/null || echo "0")
+              NOW_TS=$(date +%s)
+              AGE=$(( NOW_TS - RECENT_TS ))
+              if [ "$AGE" -lt 7200 ]; then
+                echo "Gather ran ${AGE}s ago (<2h) — skipping to prevent loop"
+                SKIP_GATHER=true
+              fi
+            fi
+
+            if [ "$SKIP_GATHER" = "false" ]; then
+              echo "Shows not ready for broadcast — triggering gather-reviews for: $PENDING"
+              gh workflow run gather-reviews.yml -f shows="$PENDING" -f validate_urls=true || echo "Gather dispatch failed"
+            fi
+          fi
+
+      - name: Alert if broadcast overdue (max once per show per day)
+        # always() (BRO-2815): this must run even when an earlier gate step
+        # (Checklist/Drift/Orphan-unscored) fails and blocks the send — a
+        # blocked gate is the single most likely reason a broadcast goes
+        # overdue, and GHA skips this step by default once any prior step in
+        # the job fails. steps.check.outputs.pending_shows still gates out
+        # unrelated failures upstream of the pending-shows computation (if
+        # "Check already broadcast" itself never ran, pending_shows is empty
+        # and this step still no-ops); steps.broadcast.outputs.broadcast_sent
+        # stays empty when "Create broadcast draft" is skipped by a gate
+        # failure, same as today. The step's own script only actually pages
+        # when it computes a real overdue show — always() only makes the
+        # step reachable, it doesn't change when it decides to alert.
+        if: always() && steps.check.outputs.pending_shows != '' && steps.broadcast.outputs.broadcast_sent != 'true'
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: |
+          # Alert if a show's opening-night reviews should exist by now but broadcast hasn't sent.
+          # Reference: 4 AM UTC day after opening (~11 PM ET + 5h for gather/score pipeline).
+          # Dedup: only alert once per show per day via opening-night-sent.json.
+          OVERDUE_RAW=$(node -e "
+            const fs = require('fs');
+            const { hasRecentOverdueAlert } = require('./scripts/lib/preview-dedup');
+            const { wasCoveredByWeeklyRoundup } = require('./scripts/lib/missed-broadcasts');
+            const shows = require('./data/shows.json').shows;
+            const ids = '${{ steps.check.outputs.pending_shows }}'.split(',');
+            const now = Date.now();
+
+            // Dedup: read sent tracking to skip shows already alerted within 24h
+            let sent = {};
+            try { sent = JSON.parse(fs.readFileSync('data/opening-night-sent.json', 'utf8')).shows || {}; } catch {}
+
+            // BRO-3088: West End does not get an individual broadcast as a matter
+            // of course once the Weekly Round-up already covered it (owner decision
+            // 2026-09-08) — same predicate/rationale as check-missed-broadcasts.js's
+            // stale catch-up sweep. Broadway has no equivalent weekly digest.
+            let newsletterIssues = [];
+            try { newsletterIssues = JSON.parse(fs.readFileSync('data/newsletter-state.json', 'utf8')).issues || []; } catch {}
+
+            // Load reviews to check whether a show has enough scored reviews to actually send.
+            // A show with <8 scored reviews cannot broadcast yet — this is not a pipeline failure,
+            // just a show with sparse critical coverage. Don't alert until reviews exist.
+            let allReviews = [];
+            try {
+              const rv = JSON.parse(fs.readFileSync('data/reviews.json', 'utf8'));
+              allReviews = Array.isArray(rv) ? rv : (rv.reviews || []);
+            } catch {}
+            const MIN_REVIEWS_TO_ALERT = 8;
+
+            const overdue = ids.filter(id => {
+              const s = shows.find(x => x.id === id);
+              if (!s || !s.openingDate) return false;
+              // Skip if show doesn't have enough scored reviews to send a broadcast.
+              // Alerting here would be noise — the pipeline isn't stuck, reviews just haven't
+              // accumulated yet. The broadcast will auto-send once MIN_REVIEWS_TO_ALERT is reached.
+              const scoredCount = allReviews.filter(r => r.showId === id && r.assignedScore != null).length;
+              if (scoredCount < MIN_REVIEWS_TO_ALERT) return false;
+              // Reviews should be gathered/scored by 4 AM UTC the day after opening
+              // (curtain ~8 PM ET, reviews ~10-11 PM ET, gather/score pipeline ~2-3h)
+              // Midnight ET the day AFTER opening; shared with the draft deadline (BRO-4417).
+              const overdueAfter = require('./scripts/lib/broadcast-deadline').overdueAlertAt(s.openingDate);
+              if (!overdueAfter || now <= overdueAfter.getTime()) return false;
+              // Skip West End shows the Weekly Round-up already covered — paging to
+              // ask for a force_broadcast here would be the exact redundant-send
+              // ask the owner declined for electra-persona/the-story/abigails-party
+              // on 2026-09-07/08 (BRO-3088).
+              if (s.category === 'west-end' && wasCoveredByWeeklyRoundup(newsletterIssues, id)) return false;
+              // Skip if overdue alert already sent within the rolling 24h window for this show.
+              // Previously startsWith(today) against UTC date — silently re-alerted across UTC
+              // midnight (2026-04-11 bug class). Helper lives in scripts/lib/preview-dedup.js.
+              if (hasRecentOverdueAlert(sent, id, 24 * 3600 * 1000, now)) return false;
+              return true;
+            }).map(id => {
+              const s = shows.find(x => x.id === id);
+              // Diagnosis in the alert itself: the WHY already exists on disk
+              // (orphan-unscored gate snapshot). The old email said only 'the
+              // pipeline may be stuck' while the exact stuck outlet/file sat
+              // unread in data/audit/ — Tao of Glass was blocked 3 days by one
+              // guardian-uk file and the owner was never told which.
+              let why = '';
+              try {
+                const orphan = JSON.parse(fs.readFileSync('data/audit/orphan-unscored-' + id + '.json', 'utf8'));
+                if (orphan && orphan.blockBroadcast && Array.isArray(orphan.orphans) && orphan.orphans.length) {
+                  why = ' — blocked by unscored: ' + orphan.orphans.map(o => (o.outletId || o.file) + (o.rescoreBlockedReason ? ' (' + o.rescoreBlockedReason + ')' : '')).join(', ');
+                }
+              } catch { /* no orphan snapshot — generic message stands */ }
+              // BRO-227: send-opening-night-broadcast.js now refuses to send without a
+              // critic-consensus verdict (exit 1, swallowed by run_market's \`|| true\`).
+              // Surface that as the reason here so a stuck-on-consensus show doesn't read
+              // as an unexplained pipeline hang. Adversarial review 2026-08-26: don't let a
+              // read/parse failure (e.g. a partial core-data checkout) mislabel EVERY overdue
+              // show as consensus-blocked — that's a confident wrong answer, worse than the
+              // old generic message. Only claim \"missing\" once the file actually parsed.
+              if (!why) {
+                try {
+                  const { getShowConsensusText } = require('./scripts/lib/critic-consensus-lookup');
+                  const consensus = JSON.parse(fs.readFileSync('data/critic-consensus.json', 'utf8'));
+                  if (!getShowConsensusText(consensus, id, s && s.slug)) {
+                    why = ' — blocked by missing critic-consensus (critic-consensus.json)';
+                  }
+                } catch (err) {
+                  why = ' — could not check critic-consensus.json (' + err.message + ')';
+                }
+              }
+              return { id, line: (s ? s.title : id) + why };
+            });
+
+            // NOTE: the 'overdue-alert:ID' stamp used to be written HERE,
+            // unconditionally once overdue.length>0 — before the alert was
+            // even attempted. Moved into the routeAlert() .then() below
+            // (BRO-1699 ship-check finding): this file's OWN checklist/drift
+            // gates above already stamp state only after confirmed delivery
+            // (\"blocked=true is written from INSIDE the node call, only once
+            // we know the owner was actually informed\") specifically because
+            // writing first and notifying second means a delivery failure
+            // gets silently marked as handled, suppressing the real retry for
+            // up to cooldownHours. Same discipline applied here.
+
+            // Single JSON line (not two positional stdout lines — a future
+            // diagnostic console.log anywhere above this, including a
+            // module-load log in a required lib, would silently shift the
+            // sed -n '1p'/'2p' split this used to rely on: conditionKey
+            // becomes unstable garbage and the per-show stamp below writes
+            // wrong keys). ids: sorted for a stable routeAlert conditionKey
+            // (same overdue combination within the cooldown window dedupes to
+            // one email, mirroring BREACHED_LIST above); line: the display
+            // string bash already relied on.
+            console.log(JSON.stringify({
+              ids: overdue.map(o => o.id).sort().join(','),
+              line: overdue.map(o => o.line).join(' | '),
+            }));
+          ")
+
+          OVERDUE_IDS=$(OVERDUE_RAW="$OVERDUE_RAW" node -e "console.log(JSON.parse(process.env.OVERDUE_RAW || '{}').ids || '')")
+          OVERDUE=$(OVERDUE_RAW="$OVERDUE_RAW" node -e "console.log(JSON.parse(process.env.OVERDUE_RAW || '{}').line || '')")
+
+          if [ -n "$OVERDUE" ]; then
+            echo "::warning::Broadcast overdue for: $OVERDUE"
+            # Record alert timestamp to enforce cooldown on next runs
+            node -e "
+              const fs = require('fs');
+              const sentPath = 'data/opening-night-sent.json';
+              let data = {};
+              try { data = JSON.parse(fs.readFileSync(sentPath, 'utf8')); } catch {}
+              if (!data.shows) data.shows = {};
+              const ids = '${{ steps.check.outputs.pending_shows }}'.split(',');
+              for (const id of ids) {
+                if (!data.shows[id]) data.shows[id] = {};
+                data.shows[id].lastOverdueAlertAt = new Date().toISOString();
+              }
+              fs.writeFileSync(sentPath, JSON.stringify(data, null, 2));
+            "
+            # opening-night-sent.json is untracked+ignored in the public repo
+            # (task #1759) — persisted to the private repo by "Push core data
+            # to private repo" later in this job, not staged here (staging it
+            # would re-track it via the later "Commit data" step's diff gate,
+            # reproducing the outage this fix exists to prevent).
+            # Pass via env, never shell-interpolated into the JS source: a
+            # title with an apostrophe (190 shows in the corpus) breaks the
+            # single-quoted literal, the step exits 1 with NO alert sent, and
+            # the cooldown stamped above suppresses the retry — silent
+            # permanent suppression. Same pattern as BREACHED_LIST above.
+            #
+            # Routed through owner-alert-router (BRO-1699 migration): this used
+            # to call sendAlert(email:true) directly, bypassing the ACTION-only
+            # policy and the alert ledger's dedup — the two direct-bypass senders
+            # this card exists to close. conditionKey is the sorted overdue-ID
+            # list (same pattern as the checklist/drift gates' BREACHED_LIST) so
+            # a recurring identical overdue set within cooldownHours collapses to
+            # one email instead of re-firing every ~2.8h retry.
+            OVERDUE_LIST="$OVERDUE" OVERDUE_IDS="$OVERDUE_IDS" node -e "
+              const fs = require('fs');
+              const { routeAlert } = require('./scripts/lib/owner-alert-router');
+              routeAlert({
+                conditionKey: 'broadcast:overdue:' + (process.env.OVERDUE_IDS || 'unknown'),
+                title: 'Opening Night Broadcast Overdue',
+                description: 'These shows opened 6+ hours ago but the broadcast has not sent. Each line names the blocking unscored file when the orphan gate is the cause; otherwise the pipeline (gather/rebuild/score) may be stuck.',
+                severity: 'error',
+                disposition: 'human',
+                cooldownHours: 24,
+                fields: [{ name: 'Shows', value: process.env.OVERDUE_LIST || '?' }],
+              }).then((result) => {
+                // Same 'informed' definition as the checklist/drift gates above:
+                // silent (already notified, cooldown open) / digest (queued,
+                // durable) / auto (filed, durable) all count; 'human' only
+                // counts if sendAlert() actually delivered. Stamp the per-show
+                // dedup key ONLY when informed — an unconfirmed delivery must
+                // leave the retry path open for the next run.
+                const informed = result.action === 'silent' || result.action === 'digest' || result.action === 'auto' || (result.action === 'human' && result.delivered);
+                if (!informed) {
+                  console.error('::warning::overdue-broadcast alert delivery unconfirmed — not stamping overdue-alert keys, next run will retry');
+                  return;
+                }
+                const sentPath = 'data/opening-night-sent.json';
+                let sentData = {};
+                try { sentData = JSON.parse(fs.readFileSync(sentPath, 'utf8')); } catch {}
+                if (!sentData.shows) sentData.shows = {};
+                const ids = (process.env.OVERDUE_IDS || '').split(',').filter(Boolean);
+                for (const id of ids) {
+                  sentData.shows['overdue-alert:' + id] = { sentAt: new Date().toISOString() };
+                }
+                fs.writeFileSync(sentPath, JSON.stringify(sentData, null, 2));
+                console.log('[alert-router] overdue-broadcast alert routed: ' + result.action);
+              }).catch(e => { console.error('::warning::routeAlert failed (non-fatal): ' + e.message); });
+            "
+          fi
+
+      - name: Append broadcast handoff to Express completion audit
+        if: steps.broadcast.outputs.broadcast_sent == 'true' && steps.check.outputs.pending_shows != ''
+        continue-on-error: true
+        run: |
+          # Updates data/audit/opening-night-express-completed.json with broadcastDraftedAt/DraftId
+          # for any show that has an Express completion record AND just got a Resend draft created.
+          # This makes the audit file a single end-to-end view (Express → rebuild → score → broadcast draft).
+          # Non-fatal: if the audit file doesn't exist (broadcast ran without Express), we just skip.
+          node -e "
+            const fs = require('fs');
+            const auditPath = 'data/audit/opening-night-express-completed.json';
+            const sentPath = 'data/opening-night-sent.json';
+            if (!fs.existsSync(auditPath)) {
+              console.log('No Express completion audit — skipping handoff append');
+              process.exit(0);
+            }
+            const audit = JSON.parse(fs.readFileSync(auditPath, 'utf8'));
+            const sent = fs.existsSync(sentPath)
+              ? JSON.parse(fs.readFileSync(sentPath, 'utf8'))
+              : { shows: {} };
+            let updated = 0;
+            for (const [showId, record] of Object.entries(audit.shows || {})) {
+              const sentRec = sent.shows && sent.shows[showId];
+              if (sentRec && sentRec.draftId && record.broadcastDraftId !== sentRec.draftId) {
+                record.broadcastDraftedAt = sentRec.draftCreatedAt || new Date().toISOString();
+                record.broadcastDraftId = sentRec.draftId;
+                updated++;
+              }
+            }
+            if (updated > 0) {
+              fs.writeFileSync(auditPath, JSON.stringify(audit, null, 2) + '\n');
+              console.log('Appended broadcast handoff for ' + updated + ' Express shows');
+            } else {
+              console.log('No Express shows to update (either no drafts this run or already recorded)');
+            }
+          "
+
+      - name: Send push notifications (mobile app)
+        # BRO-4417: only when a preview/draft really went out this run, and once per
+        # show (push:<id> marker in opening-night-sent.json). Before this, any run
+        # that reached this step re-pushed, which the hourly deadline cron would
+        # have turned into up to 11 "reviews are in" pushes a day.
+        if: steps.check.outputs.broadway != '' && env.BROADCAST_HOLD_ACTIVE != 'true' && steps.broadcast.outputs.broadcast_sent == 'true'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          # Dispatch push notification to mobile app for each Broadway show that
+          # actually broadcast (post-readiness-gate set, NOT steps.find.outputs.broadway).
+          IFS=',' read -ra SHOW_IDS <<< "${{ steps.check.outputs.broadway }}"
+          for SHOW_ID in "${SHOW_IDS[@]}"; do
+            if node -e "
+              const s = JSON.parse(require('fs').readFileSync('data/opening-night-sent.json', 'utf8')).shows || {};
+              process.exit(s['push:' + process.argv[1]] ? 0 : 1);
+            " "$SHOW_ID" 2>/dev/null; then
+              echo "Push already sent for $SHOW_ID, skipping"
+              continue
+            fi
+            # Look up slug and title from shows.json
+            SHOW_INFO=$(node -e "
+              const shows = require('./data/shows.json').shows;
+              const s = shows.find(x => x.id === '$SHOW_ID');
+              if (s) console.log(JSON.stringify({ slug: s.slug || s.id, title: s.title }));
+            ")
+            if [ -z "$SHOW_INFO" ]; then
+              echo "Show $SHOW_ID not found in shows.json, skipping push"
+              continue
+            fi
+            SLUG=$(echo "$SHOW_INFO" | jq -r '.slug')
+            TITLE=$(echo "$SHOW_INFO" | jq -r '.title')
+            echo "Dispatching push notification for: $TITLE ($SLUG)"
+            gh workflow run send-notifications.yml \
+              --repo thomaspryor/BroadwayScorecard-app \
+              -f type=reviews-in \
+              -f "show=$SLUG" \
+              -f "title=$TITLE" && node -e "
+                const fs = require('fs');
+                const p = 'data/opening-night-sent.json';
+                const d = JSON.parse(fs.readFileSync(p, 'utf8'));
+                d.shows = d.shows || {};
+                d.shows['push:' + process.argv[1]] = { sentAt: new Date().toISOString() };
+                fs.writeFileSync(p, JSON.stringify(d, null, 2) + '\n');
+              " "$SHOW_ID" || echo "Push dispatch failed for $SLUG — non-critical"
+          done
+
+      # BRO-2455 (2026-08-26): this used to be one "Commit data" step
+      # bundling orphan-rescore-requeue-state.json (single-writer,
+      # apiFallbackSafe) with 3 disqualifying multi-writer files in one
+      # push-with-retry.sh call — the mixed-safety-bundle shape BRO-2435
+      # already fixed in the earlier "Commit orphan-rescore-requeue state"
+      # step above. Split into 2 SEPARATE steps (not just 2 calls in one
+      # step) so each gets its own `env: PUSH_DEADLINE_SEC` that
+      # scripts/lib/audit-push-retry-budgets.js can actually see — an inline
+      # `PUSH_DEADLINE_SEC=N bash push-with-retry.sh` prefix on one call
+      # within a shared step is real at runtime but is a deliberately
+      # unrecognized shape for that audit (see its findPushRetryCalls()
+      # comment: "inlineDeadlineSec is kept ... always null"), so it would
+      # silently keep charging the step-level 300s against this job's
+      # margin math for a call that's actually smaller.
+      - name: Commit orphan-rescore-requeue state (late — defense-in-depth for a stranded early push)
+        if: always() && steps.find.outputs.has_shows == 'true'
+        env:
+          PUSH_DEADLINE_SEC: '60'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # #356: orphan-unscored self-heal attempt tracking. Must be
+          # committed here (this workflow is the caller) or the next run's
+          # checkout starts fresh and re-notifies/re-attempts from zero. In
+          # its own step (not bundled with the multi-writer files below) so
+          # it keeps the Git Data API fallback (BRO-2455).
+          #
+          # Sized DOWN from the other hard-fail steps' 300s/14 (MAX_RETRIES=5
+          # below) because this file's real job here is narrow: the early
+          # "Commit orphan-rescore-requeue state" step (above) already
+          # commits+pushes it, and its only writer
+          # (dispatch-orphan-rescore-requeue.js) runs BEFORE that early step,
+          # not between the two — so under normal operation nothing NEW is
+          # staged here. This step exists to flush a commit stranded by a
+          # failed EARLY push, and apiFallbackSafe kicks in after
+          # ceil((5+1)/2)=3 local attempts, well inside this smaller budget.
+          # BRO-2435 (2026-09-08): that stranded-commit path is NO LONGER
+          # rare, and this step is now the job's primary red-signal source.
+          # The early steps are `continue-on-error: true` (they must not skip
+          # "Create broadcast draft"), so whenever the BRO-2373 90s transport
+          # wall defeats an early push, its commit lands here instead. This
+          # step's failure still turns the job red AFTER the draft rather
+          # than instead of it. Correction (ship-check, Claude): red here does
+          # NOT always page. "Notify on failure" below is suppressed when
+          # orphan_gate.outputs.blocked == 'true', and the paths that write
+          # orphan state (dispatch/wait/in-flight/alert) are exactly the ones
+          # that set it — so those runs go red in the Actions UI with no
+          # email. They are also runs where the draft is gate-skipped anyway,
+          # so this does not affect the BRO-2435 symptom; the durable record
+          # is push-retry-failures.jsonl via push-retry-deadman.js.
+          # `node scripts/audit-push-retry-budgets.js` reports no flags at
+          # this sizing (retryDeadlineRatio 45/60=0.75, job-timeout margin
+          # restored to ~17%) — re-confirm with that script before changing.
+          #
+          # BRO-2435: a dirty index isn't the only reason to push here. The
+          # early "Commit orphan-rescore-requeue state" step commits BEFORE
+          # pushing (by design), so if its own push-with-retry.sh call
+          # hard-failed (retries-exhausted), the commit it made is still
+          # sitting on local HEAD, unpushed — push-with-retry.sh's
+          # restore_head_if_moved() preserves an advanced HEAD rather than
+          # resetting it (task #769), it just never reached origin. The old
+          # `git diff --cached --quiet` gate alone can't see that: nothing
+          # NEW is staged here (the file was already committed), so it
+          # exited 0 and silently left the commit stranded — the exact gap
+          # that let origin/main's orphan-rescore-requeue-state.json sit
+          # stale at its 2026-08-01 version despite local runs "succeeding"
+          # at writing it. Push whenever EITHER this step staged something
+          # new OR local HEAD already sits ahead of origin/main.
+          if [ -f data/audit/orphan-rescore-requeue-state.json ]; then
+            git add data/audit/orphan-rescore-requeue-state.json
+            echo "Staged orphan-rescore-requeue-state.json"
+          fi
+          # BRO-2435 ship-check (gpt-5.4-mini): `git log origin/main..HEAD` with
+          # stderr discarded yields an EMPTY string on error as well as on
+          # "nothing unpushed" — a missing/unfetched origin/main or a shallow
+          # boundary would therefore read as "no stranded commit" and skip the
+          # push, which is exactly the silent-strand this gate exists to stop.
+          # Distinguish the two: only treat empty as authoritative when the
+          # query actually succeeded. On error, fall through and push (a push
+          # with nothing to send is a fast no-op; a skipped push is data loss).
+          if UNPUSHED=$(git log origin/main..HEAD --oneline 2>/dev/null); then
+            ANCESTRY_OK=true
+          else
+            ANCESTRY_OK=false
+            echo "::warning::could not compare against origin/main (unfetched, shallow, or missing ref) — assuming there may be unpushed commits and pushing anyway"
+          fi
+          if git diff --cached --quiet && [ "$ANCESTRY_OK" = "true" ] && [ -z "$UNPUSHED" ]; then
+            echo "No orphan-rescore-requeue-state.json changes to commit and no unpushed local commits — skipping push"
+            exit 0
+          fi
+          if ! git diff --cached --quiet; then
+            git commit -m "data: Update orphan-rescore-requeue state [skip ci]"
+          else
+            echo "No new orphan-rescore-requeue-state.json changes to stage, but local HEAD has unpushed commit(s) — pushing those now"
+          fi
+          # BRO-2435 ship-check (Claude): NON-FATAL, deliberately. This step is
+          # sized 60s/5 — ~1 fundable attempt against the 90s BRO-2373 wall —
+          # because it was written to flush a RARE stranded orphan-state
+          # commit. It is now the first step to see a stranded alert-ledger
+          # commit too, so hard-failing here produced a FALSE RED: this push
+          # loses, the job goes red, and then "Commit data" below (300s/14,
+          # budgeted for exactly that multi-writer file) pushes the very same
+          # commit successfully. State was never at risk; only the job
+          # conclusion was wrong. "Commit data" is now the single hard-fail
+          # authority for stranded commits — it runs immediately after this,
+          # is gated `always()`, and carries the same origin/main..HEAD gate,
+          # so nothing is lost by letting this one warn instead of fail.
+          bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::late orphan-state push failed (60s/5 budget) — the stranded commit is still on local HEAD; 'Commit data' below retries it with the 300s/14 budget and hard-fails if it too cannot land"
+
+      # PUSH_DEADLINE_SEC='300' + MAX_RETRIES=14 (card #1910 audit,
+      # 2026-08-26): see "Commit orphan-rescore-requeue state" (early) above
+      # for the sizing rationale — this is the last of this job's hard-fail
+      # push steps sharing the same tight 24-min job budget. Unchanged from
+      # pre-BRO-2455 sizing: this is the same call that existed before,
+      # minus orphan-rescore-requeue-state.json (moved to its own step
+      # above) — the config that already worked standalone, still handling
+      # alert-ledger.json's real multi-writer contention.
+      - name: Commit data
+        if: always() && steps.find.outputs.has_shows == 'true'
+        env:
+          PUSH_DEADLINE_SEC: '300'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Core data files (including opening-night-sent.json) pushed to the
+          # private repo by the "Push core data to private repo" step below —
+          # untracked+ignored in the public repo (task #1759), same as every
+          # other CORE_FILES entry, so it is NOT staged here.
+          # Subscriber files are ephemeral (recreated from Formspree each run)
+          if [ -f data/audit/opening-night-express-completed.json ]; then
+            git add data/audit/opening-night-express-completed.json
+            echo "Staged opening-night-express-completed.json (broadcast handoff)"
+          fi
+          if [ -f data/audit/alert-ledger.json ]; then
+            git add data/audit/alert-ledger.json
+            echo "Staged alert-ledger.json"
+          fi
+          # BRO-3662: logDispatchAttempt() rewrites this TRACKED file on every
+          # dispatch attempt; left unstaged it makes every later rebase refuse
+          # pre-flight and forces the clobber-prone merge path.
+          if [ -f data/audit/alert-router-attempts.jsonl ]; then
+            git add data/audit/alert-router-attempts.jsonl
+            echo "Staged alert-router-attempts.jsonl"
+          fi
+          # A 'human' disposition not on the page-worthy allowlist (or any
+          # conditionKey routeAlert downgrades) falls through to
+          # queueDigestLine(), which writes this file — without staging it
+          # here the queued line only ever exists on the ephemeral runner and
+          # is lost the moment the job ends (the update-mezzanine.yml
+          # incident this file's dedup logic exists to prevent).
+          if [ -f data/audit/alert-digest-queue.json ]; then
+            git add data/audit/alert-digest-queue.json
+            echo "Staged alert-digest-queue.json"
+          fi
+          # BRO-2435: a dirty index is not the only reason to push here. The
+          # two early commit steps commit BEFORE pushing (by design) and are
+          # now `continue-on-error: true`, so a failed early push leaves its
+          # commit sitting on local HEAD, unpushed — push-with-retry.sh's
+          # restore_head_if_moved() preserves an advanced HEAD rather than
+          # resetting it (task #769). The old bare `git diff --cached --quiet`
+          # gate could not see that: nothing NEW is staged here (the file was
+          # already committed), so it exited 0 and left the commit stranded.
+          # The late orphan step above normally catches this first (it pushes
+          # all of origin/main..HEAD); this is the second chance if that push
+          # also failed. Same gate shape as that step, deliberately.
+          # BRO-2435 ship-check (gpt-5.4-mini): `git log origin/main..HEAD` with
+          # stderr discarded yields an EMPTY string on error as well as on
+          # "nothing unpushed" — a missing/unfetched origin/main or a shallow
+          # boundary would therefore read as "no stranded commit" and skip the
+          # push, which is exactly the silent-strand this gate exists to stop.
+          # Distinguish the two: only treat empty as authoritative when the
+          # query actually succeeded. On error, fall through and push (a push
+          # with nothing to send is a fast no-op; a skipped push is data loss).
+          if UNPUSHED=$(git log origin/main..HEAD --oneline 2>/dev/null); then
+            ANCESTRY_OK=true
+          else
+            ANCESTRY_OK=false
+            echo "::warning::could not compare against origin/main (unfetched, shallow, or missing ref) — assuming there may be unpushed commits and pushing anyway"
+          fi
+          if git diff --cached --quiet && [ "$ANCESTRY_OK" = "true" ] && [ -z "$UNPUSHED" ]; then
+            echo "No opening-night-express-completed/alert-ledger/alert-digest-queue changes to commit and no unpushed local commits — skipping push"
+            exit 0
+          fi
+          if ! git diff --cached --quiet; then
+            git commit -m "data: Update opening-night broadcast audit state"
+          else
+            echo "No new audit-state changes to stage, but local HEAD has unpushed commit(s) — pushing those now"
+          fi
+          bash scripts/lib/push-with-retry.sh 14 main
+
+
+      - name: Push core data to private repo
+        if: always() && steps.find.outputs.has_shows == 'true'
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from opening-night-broadcast'
+
+      - name: Trigger deploy (core data changed)
+        if: always() && steps.find.outputs.has_shows == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Deploy dedup: skip if a deploy was ALREADY triggered after our rebuild started
+          OUR_RUN_START=$(gh run view ${{ github.run_id }} --json createdAt -q '.createdAt' 2>/dev/null || echo "")
+          RECENT=$(gh run list --workflow=vercel-deploy.yml --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
+
+          if [ -n "$RECENT" ] && [ -n "$OUR_RUN_START" ]; then
+            RECENT_TS=$(date -d "$RECENT" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$RECENT" +%s 2>/dev/null || echo "0")
+            OUR_TS=$(date -d "$OUR_RUN_START" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$OUR_RUN_START" +%s 2>/dev/null || echo "0")
+            NOW_TS=$(date +%s)
+            DIFF=$((NOW_TS - RECENT_TS))
+
+            if [ "$RECENT_TS" -gt "$OUR_TS" ] && [ "$DIFF" -lt 900 ]; then
+              echo "Skipping deploy — already triggered after this run started (${DIFF}s ago)"
+              exit 0
+            fi
+          fi
+
+          echo "Triggering deploy..."
+          gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — will deploy on next schedule"
+
+      - name: Submit show pages to Google Indexing API
+        if: steps.find.outputs.has_shows == 'true' && env.GOOGLE_INDEXING_KEY != ''
+        continue-on-error: true
+        env:
+          GOOGLE_INDEXING_KEY: ${{ secrets.GOOGLE_INDEXING_KEY }}
+        run: |
+          # Convert show IDs to slugs for URL submission
+          SLUGS=$(node -e "
+            const shows = require('./data/shows.json').shows;
+            const ids = '${{ steps.find.outputs.shows }}'.split(',');
+            const slugs = ids.map(id => {
+              const s = shows.find(x => x.id === id);
+              return s ? s.slug : id;
+            });
+            console.log(slugs.join(','));
+          ")
+          node scripts/submit-google-indexing.js --shows "$SLUGS"
+
+      - name: Submit show pages to IndexNow
+        if: steps.find.outputs.has_shows == 'true'
+        continue-on-error: true
+        run: |
+          SLUGS=$(node -e "
+            const shows = require('./data/shows.json').shows;
+            const ids = '${{ steps.find.outputs.shows }}'.split(',');
+            const slugs = ids.map(id => {
+              const s = shows.find(x => x.id === id);
+              return s ? s.slug : id;
+            });
+            console.log(slugs.join(','));
+          ")
+          node scripts/submit-indexnow.js --shows "$SLUGS"
+
+      # submit-google-indexing.js records usage in the shared daily quota
+      # ledger (data/audit/indexing-api-usage.json, 200/day). The submit steps
+      # run AFTER "Commit data", so without this commit the run's usage is
+      # silently discarded and other same-day callers (check-seo-health,
+      # update-show-status) undercount the quota.
+      - name: Record indexing quota usage
+        if: steps.find.outputs.has_shows == 'true' && env.GOOGLE_INDEXING_KEY != ''
+        continue-on-error: true
+        env:
+          GOOGLE_INDEXING_KEY: ${{ secrets.GOOGLE_INDEXING_KEY }}
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          bash scripts/lib/git-add-existing.sh data/audit/indexing-api-usage.json
+          if git diff --staged --quiet; then
+            echo "No quota usage to record"
+            exit 0
+          fi
+          git commit -m "chore: Record indexing API quota usage [skip ci]"
+          bash scripts/lib/push-with-retry.sh || echo "::warning::Quota ledger push failed"
+
+      # Skipped when a broadcast gate (checklist/drift/orphan-unscored) already
+      # blocked and alerted above — that alert is specific (which gate, which
+      # show, the fix command) and already routed through owner-alert-router's
+      # dedup ledger. Without this guard, ONE gate-blocked failure produced a
+      # triplet of emails ([CRITICAL] Blocked + [CRITICAL] Failed + [Investigation]
+      # Failed) — 9 emails for one stuck condition across 3 retries on
+      # 2026-07-22 (email-noise Sprint 2, 2026-07-23). A genuine crash with no
+      # gate flag set still pages normally.
+      - name: Notify on failure
+        id: notify
+        # BRO-3707: a hang hitting the job's own timeout-minutes: 24 reports
+        # conclusion "cancelled", not "failure" — a bare failure() here would
+        # silently drop this critical alert. The gate outputs stay a safe
+        # AND-guard on cancellation too: a cancelled gate step never sets its
+        # 'blocked' output, so the != 'true' checks still pass through.
+        if: (failure() || cancelled()) && steps.checklist_gate.outputs.blocked != 'true' && steps.drift_gate.outputs.blocked != 'true' && steps.orphan_gate.outputs.blocked != 'true'
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Opening Night Broadcast Failed'
+          severity: 'critical'
+          email: 'true'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+      - name: Trigger investigation
+        # Only when the failure actually paged (2h cooldown) — a repeat failure
+        # inside the cooldown shouldn't send a second investigation email. Same
+        # known-gate skip as "Notify on failure" above.
+        if: failure() && steps.notify.outputs.suppressed != 'true' && steps.checklist_gate.outputs.blocked != 'true' && steps.drift_gate.outputs.blocked != 'true' && steps.orphan_gate.outputs.blocked != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          gh workflow run investigate-alert.yml \
+            -f alert_type=opening_night_broadcast_fail \
+            -f alert_title="Opening Night Broadcast Failed" \
+            -f alert_context='{"note":"Broadcast auto-retry is prohibited — investigation only, no auto-fix."}' \
+            -f run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"

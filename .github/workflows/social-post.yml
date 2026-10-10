@@ -1,0 +1,158 @@
+name: Social Media Post
+
+on:
+  # Daily at 3 PM UTC (10 AM ET) — peak engagement for arts content
+  schedule:
+    - cron: '0 15 * * *'
+
+  # Manual trigger + event-driven dispatch
+  workflow_dispatch:
+    inputs:
+      type:
+        description: 'Content type override (auto = day-of-week rotation)'
+        required: false
+        type: choice
+        default: 'auto'
+        options:
+          - auto
+          - box-office
+          - spotlight
+          - insight
+          - picks
+          - divergence
+          - closing
+          - reviews
+      event:
+        description: 'Event trigger (opened/closed)'
+        required: false
+        type: string
+      show:
+        description: 'Show slug (for event triggers)'
+        required: false
+        type: string
+      dry_run:
+        description: 'Generate but do not post'
+        required: false
+        default: 'false'
+        type: boolean
+
+# per-run group intended (not static): update-show-status.yml dispatches this workflow
+# once per newly-opened show in a tight loop with no delay, so a multi-show
+# opening night can fire several back-to-back dispatches. A static group would
+# queue them, but GitHub only holds ONE pending run per group — a 3rd dispatch
+# while one run is active and one is queued silently cancels the queued run's
+# social post (see the Cats 2026-04-07 poller postmortem; same fix applied to
+# update-mezzanine.yml/update-show-score.yml/update-reddit-sentiment.yml). This
+# group is unique per run by construction, so it does NOT serialize concurrent
+# runs against each other — concurrent pushes to data/social-post-history.json
+# are expected and handled by a real merge (mergeSocialPostHistory, wired into
+# push-with-retry.sh's resolve_conflicts()) instead, the same pattern used for
+# diary-shows.json's multi-writer race. (task #922 audit, 2026-08-03)
+concurrency:
+  group: social-post-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Generate and post
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
+          TWITTER_API_SECRET: ${{ secrets.TWITTER_API_SECRET }}
+          TWITTER_ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
+          TWITTER_ACCESS_SECRET: ${{ secrets.TWITTER_ACCESS_SECRET }}
+        run: |
+          ARGS=""
+          TYPE="${{ inputs.type }}"
+          EVENT="${{ inputs.event }}"
+          SHOW="${{ inputs.show }}"
+          DRY="${{ inputs.dry_run }}"
+
+          if [ "$TYPE" != "" ] && [ "$TYPE" != "auto" ]; then
+            ARGS="$ARGS --type=$TYPE"
+          fi
+          if [ "$EVENT" != "" ]; then
+            ARGS="$ARGS --event=$EVENT"
+          fi
+          if [ "$SHOW" != "" ]; then
+            ARGS="$ARGS --show=$SHOW"
+          fi
+          if [ "$DRY" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+
+          node scripts/generate-social-post.js $ARGS
+
+      - name: Commit post history
+        if: always() && inputs.dry_run != 'true'
+        # Task #574: commits social-post-history.json (union-merged managed
+        # file) — see push-with-retry.sh's reconcile_merged_json(). This
+        # workflow runs per-run-group per show (see comment at top of file),
+        # so concurrent pushes for different shows are the expected case.
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          if ! git diff --quiet data/social-post-history.json 2>/dev/null; then
+            git add data/social-post-history.json
+            git commit -m "data: Update social post history [automated]"
+            bash scripts/lib/push-with-retry.sh
+          else
+            echo "No changes to social post history"
+          fi
+
+      - name: Job summary
+        if: always()
+        run: |
+          echo "## Social Post Result" >> $GITHUB_STEP_SUMMARY
+          if [ -f /tmp/social-post-result.json ]; then
+            node -e "
+              const r = require('/tmp/social-post-result.json');
+              console.log('**Type:** ' + r.type);
+              console.log('');
+              console.log('**Text:**');
+              console.log('> ' + (r.text || '(none)').replace(/\n/g, '\n> '));
+              console.log('');
+              if (r.tweetUrl) console.log('**Tweet:** ' + r.tweetUrl);
+              if (r.dryRun) console.log('*(Dry run — not posted)*');
+              if (!r.success && !r.dryRun) console.log('**Status:** Failed or skipped');
+            " >> $GITHUB_STEP_SUMMARY
+          else
+            echo "No result file found" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Social Media Post Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

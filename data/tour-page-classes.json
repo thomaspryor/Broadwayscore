@@ -1,0 +1,178 @@
+{
+  "_doc": "Human calls on Tours To You show pages (BRO-4931): what a page is when the tour-page-class.js rules cannot or must not decide. Shape: { \"<slug>\": { class: production|event|aggregator|template|company, title?, type?, parentId?, companyOf?, reason, issue: \"BRO-N\", reviewedAt } }. An override always wins over every rule. A production with no parentId is a standalone touring show and needs title and type (musical|play|special|opera). An event, aggregator, template or company page is never read by running-tour discovery.",
+  "holiday-shows": {
+    "class": "aggregator",
+    "reason": "Lists many different holiday shows on one page (21 cities with an engagement at the same moment on 2026-10-09), not one tour.",
+    "issue": "BRO-4931",
+    "reviewedAt": "2026-10-09"
+  },
+  "miscellaneous-shows": {
+    "class": "aggregator",
+    "reason": "A catch-all page for unrelated shows; its engagements are many productions mixed together.",
+    "issue": "BRO-4931",
+    "reviewedAt": "2026-10-09"
+  },
+  "show-page-template": {
+    "class": "template",
+    "reason": "Tours To You site template page (its slug says so); not a tour.",
+    "issue": "BRO-4931",
+    "reviewedAt": "2026-10-09"
+  },
+  "dear-evan-hansen-show-template": {
+    "class": "template",
+    "reason": "Tours To You site template page named for Dear Evan Hansen; not a tour.",
+    "issue": "BRO-4931",
+    "reviewedAt": "2026-10-09"
+  },
+  "dear-evan-hansen-tester": {
+    "class": "template",
+    "reason": "Tours To You test page (\"Dear Evan Hansen TESTER\", last edited 2025-11-06). Its 63 engagements from 2026-10-10 to 2027-06-27 are the same city, venue and start date rows as the Beetlejuice page and none of the Dear Evan Hansen pages, so it is a copied schedule, not a tour.",
+    "issue": "BRO-4931",
+    "reviewedAt": "2026-10-09"
+  },
+  "hamilton-angelica": {
+    "class": "company",
+    "companyOf": "hamilton-tour-2024",
+    "reason": "One company of the Hamilton tour under its own Tours To You page; the tour is tracked as hamilton-tour-2024.",
+    "issue": "BRO-4931",
+    "reviewedAt": "2026-10-09"
+  },
+  "hamilton-peggy": {
+    "class": "company",
+    "companyOf": "hamilton-tour-2024",
+    "reason": "One company of the Hamilton tour under its own Tours To You page; the tour is tracked as hamilton-tour-2024.",
+    "issue": "BRO-4931",
+    "reviewedAt": "2026-10-09"
+  },
+  "hamilton-philip": {
+    "class": "company",
+    "companyOf": "hamilton-tour-2024",
+    "reason": "One company of the Hamilton tour under its own Tours To You page; the tour is tracked as hamilton-tour-2024.",
+    "issue": "BRO-4931",
+    "reviewedAt": "2026-10-09"
+  },
+  "six-the-musical-boleyn": {
+    "class": "company",
+    "companyOf": "six-tour-2022",
+    "reason": "One company of the SIX tour under its own Tours To You page; the tour is tracked as six-tour-2022.",
+    "issue": "BRO-4931",
+    "reviewedAt": "2026-10-09"
+  },
+  "six-the-musical-aragon": {
+    "class": "company",
+    "companyOf": "six-tour-2022",
+    "reason": "One company of the SIX tour under its own Tours To You page; the tour is tracked as six-tour-2022.",
+    "issue": "BRO-4931",
+    "reviewedAt": "2026-10-09"
+  },
+  "riverdance": {
+    "class": "event",
+    "reason": "Irish dance show. Owner decision 2026-10-09 (BRO-4931): dance, percussion, concert and circus events are not tracked.",
+    "issue": "BRO-4931",
+    "reviewedAt": "2026-10-09"
+  },
+  "stomp": {
+    "class": "event",
+    "reason": "Percussion show. Owner decision 2026-10-09 (BRO-4931): dance, percussion, concert and circus events are not tracked.",
+    "issue": "BRO-4931",
+    "reviewedAt": "2026-10-09"
+  },
+  "the-hip-hop-nutcracker": {
+    "class": "event",
+    "reason": "Dance show. Owner decision 2026-10-09 (BRO-4931): dance, percussion, concert and circus events are not tracked.",
+    "issue": "BRO-4931",
+    "reviewedAt": "2026-10-09"
+  },
+  "mannheim-steamroller-christmas": {
+    "class": "event",
+    "reason": "Concert. Owner decision 2026-10-09 (BRO-4931): dance, percussion, concert and circus events are not tracked.",
+    "issue": "BRO-4931",
+    "reviewedAt": "2026-10-09"
+  },
+  "the-simon-and-garfunkel-story": {
+    "class": "event",
+    "reason": "Concert-style tribute show. Owner decision 2026-10-09 (BRO-4931): dance, percussion, concert and circus events are not tracked.",
+    "issue": "BRO-4931",
+    "reviewedAt": "2026-10-09"
+  },
+  "cirque-musica-holiday-wonderland": {
+    "class": "event",
+    "reason": "Circus show. Owner decision 2026-10-09 (BRO-4931): dance, percussion, concert and circus events are not tracked.",
+    "issue": "BRO-4931",
+    "reviewedAt": "2026-10-09"
+  },
+  "cirque-dreams-holidaze": {
+    "class": "event",
+    "reason": "Circus show. Owner decision 2026-10-09 (BRO-4931): dance, percussion, concert and circus events are not tracked.",
+    "issue": "BRO-4931",
+    "reviewedAt": "2026-10-09"
+  },
+  "a-magical-cirque-christmas": {
+    "class": "event",
+    "reason": "Circus show. Owner decision 2026-10-09 (BRO-4931): dance, percussion, concert and circus events are not tracked.",
+    "issue": "BRO-4931",
+    "reviewedAt": "2026-10-09"
+  },
+  "twas-the-night-before": {
+    "class": "event",
+    "reason": "Cirque-style holiday dance and acrobatics show, not a book or play. Owner decision 2026-10-09 (BRO-4931): dance, percussion, concert and circus events are not tracked.",
+    "issue": "BRO-4931",
+    "reviewedAt": "2026-10-09"
+  },
+  "broadways-next-hit-musical": {
+    "class": "event",
+    "reason": "Improvised comedy show that makes up a new musical each night; there is no fixed production to track.",
+    "issue": "BRO-4931",
+    "reviewedAt": "2026-10-09"
+  },
+  "a-charlie-brown-christmas": {
+    "class": "event",
+    "reason": "Pending owner decision on whether this live holiday concert-style show counts; treated as an event until the owner says otherwise. Owner decision 2026-10-09 (BRO-4931): dance, percussion, concert and circus events are not tracked.",
+    "issue": "BRO-4931",
+    "reviewedAt": "2026-10-09"
+  },
+  "lord-of-the-dance": {
+    "class": "event",
+    "reason": "Irish dance show. Owner decision 2026-10-09 (BRO-4931): dance, percussion, concert and circus events are not tracked.",
+    "issue": "BRO-4931",
+    "reviewedAt": "2026-10-09"
+  },
+  "blue-man-group": {
+    "class": "event",
+    "reason": "Percussion and performance-art show. Owner decision 2026-10-09 (BRO-4931): dance, percussion, concert and circus events are not tracked.",
+    "issue": "BRO-4931",
+    "reviewedAt": "2026-10-09"
+  },
+  "the-cat-in-the-hat": {
+    "class": "production",
+    "title": "Dr. Seuss' The Cat in the Hat",
+    "type": "musical",
+    "reason": "Dr. Seuss family stage musical. Owner decision 2026-10-09 (BRO-4931): family and holiday stage shows and parodies are tracked.",
+    "issue": "BRO-4931",
+    "reviewedAt": "2026-10-09"
+  },
+  "hallmarkish": {
+    "class": "production",
+    "title": "The Unauthorized Hallmark(ish) Parody Musical",
+    "type": "musical",
+    "reason": "Holiday-movie parody musical. Owner decision 2026-10-09 (BRO-4931): family and holiday stage shows and parodies are tracked.",
+    "issue": "BRO-4931",
+    "reviewedAt": "2026-10-09"
+  },
+  "dolly-partons-smoky-mountain-christmas-carol": {
+    "class": "production",
+    "title": "Dolly Parton's Smoky Mountain Christmas Carol",
+    "type": "musical",
+    "reason": "Holiday stage musical. Owner decision 2026-10-09 (BRO-4931): family and holiday stage shows and parodies are tracked.",
+    "issue": "BRO-4931",
+    "reviewedAt": "2026-10-09"
+  },
+  "potted-potter": {
+    "class": "production",
+    "title": "Potted Potter",
+    "type": "play",
+    "reason": "Harry Potter parody play. Owner decision 2026-10-09 (BRO-4931): family and holiday stage shows and parodies are tracked. Tracked once its page lists enough stops (it lists 3 on 2026-10-09; a national tour needs at least 4).",
+    "issue": "BRO-4931",
+    "reviewedAt": "2026-10-09"
+  }
+}

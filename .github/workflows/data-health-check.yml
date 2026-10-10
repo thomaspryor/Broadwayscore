@@ -1,0 +1,1517 @@
+name: Daily Data Health Check
+on:
+  schedule:
+    # 06:45 UTC daily. Card #364 (owner merge decision 2026-07-26 — "I don't
+    # like getting emails unless they're urgent") REVERSES #409's 07:00→16:00
+    # move: health-check.js no longer sends its own "BSC Daily"/"BSC URGENT"
+    # email (see health-check.js's sendEmailDigest — it now writes
+    # data/audit/health-digest-snapshot.json instead of emailing). That
+    # snapshot is folded into the autonomous loop's ONE scheduled morning email
+    # (scripts/autonomous-email.js), so there's no second email to space away
+    # from anymore — the constraint that justified 16:00 is gone. 06:45 runs
+    # BEFORE the loop starts (03:30 ET / 07:30 UTC) so the snapshot is same-day
+    # fresh when the morning email reads it, with margin before the 07:00 UTC
+    # trio. See the staleness-band note in check-cron-health.yml before
+    # re-timing again.
+    - cron: '45 6 * * *'
+  workflow_dispatch: {}
+
+# Ship-check finding (card #374): a manual workflow_dispatch overlapping the
+# 7am cron would let two runs read-modify-write data/audit/alert-router-attempts.jsonl
+# and data/audit/alert-ledger.json concurrently — logDispatchAttempt() does a
+# full read-filter-rewrite, not an atomic append, and push-with-retry.sh
+# resolves data/audit/* conflicts by keeping one side wholesale, so the loser's
+# rows silently vanish. Queuing (not cancelling) means both runs still
+# complete, just serialized — cancelling would drop whichever run's alerts
+# were in flight.
+concurrency:
+  group: data-health-check
+  cancel-in-progress: false
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    # Raised 10->15 (task #695 ship-check finding): adding the "Acceptance
+    # recheck" step below without more headroom risked GitHub Actions killing
+    # the WHOLE job mid-run — losing health-check-history.json and every other
+    # step's commit, not just the new step's. See that step's own budget.
+    # Raised 15->20 (BRO-386 ship-check finding): the two new steps this
+    # fix adds ("Upload acceptance recheck ledger" + "Commit acceptance
+    # recheck ledger") push the sum of this job's per-step timeout-minutes
+    # budgets past the prior 15-min ceiling even before the uncapped steps
+    # (Run health check, E2E canary, bulk commit) are counted — a job-level
+    # kill mid-git-operation on ANY step carries the same stale-REBASE_HEAD
+    # risk documented on the ledger-commit step below.
+    # Raised 20->35->45 (task #1842, same class as task #1791). First pass
+    # (20->35) set both commit steps to PUSH_DEADLINE_SEC=600s — verified
+    # LIVE via manual workflow_dispatch run 32393356269 (2026-08-20) and it
+    # was NOT enough: the bulk commit step burned 4 full
+    # fetch->rebase-conflict->retry cycles (~720s real wall-clock) against
+    # heavier contention than the original incident's 2-cycle/405s failure,
+    # and still hit "overall deadline 600s exceeded" before landing. Raised
+    # to 900s (matching task #1791's own value — this repo's data/audit/*
+    # write contention is evidently not lighter than audit-aggregator-gap.yml's,
+    # so there's no basis left for a discounted daily-cadence number here).
+    # "Commit acceptance recheck ledger"'s own timeout-minutes moved 13->17
+    # to stay above its new 900s deadline. Job timeout raised 35->45 to give
+    # "Commit health check + triage data" — no per-step cap, runs LAST —
+    # real headroom to reach its own new 900s deadline even after every step
+    # ahead of it in this job. Nowhere near GitHub Actions' 360-min hard job
+    # ceiling.
+    # Raised 45->60 (Notion 3c4637c5-416f-8127, run 32559247279 push-race): the new "Commit digest snapshot" step
+    # (17min cap, same 900s-deadline sizing as the ledger step) runs BEFORE
+    # "Commit health check + triage data", so its worst case adds fully on
+    # top of every budget this comment already accounts for — and because
+    # both steps' pushes can genuinely contend with the SAME concurrent
+    # main-branch churn in the same run (that's the whole reason either one
+    # exists), a correlated worst case where both hit their full 900s
+    # deadline is a real scenario for this job, not just an independent-step
+    # sum.
+    # Raised 60->135 (ship-check finding — two independent reviewers both
+    # caught this — run 32625283171 push-race, follow-up to the digest-
+    # isolation fix): added ANOTHER 17min-capped push step, "Commit health
+    # check audit snapshots (apiFallbackSafe)", between "Commit digest
+    # snapshot" and "Commit health check + triage data". Following this
+    # comment's own established convention (sum every step's explicit
+    # timeout-minutes, then size the job ceiling above that sum with real
+    # margin — see every prior raise above): summing all 14 currently-capped
+    # steps (5+5+17+3+5+2+2+2+2+4+4+4+17+17 = 89min) plus the final "Commit
+    # health check + triage data" step's own worst case (uncapped, but
+    # governed by the same 900s PUSH_DEADLINE_SEC as its capped siblings —
+    # budget it the same ~17min those get) plus ~10min for the remaining
+    # uncapped setup/scan steps (checkout, install, run health check, E2E
+    # canary, provider spend reconciliation, the two artifact uploads) gives
+    # a worst-case theoretical ceiling around 116min. 135 gives real headroom
+    # above that, not a bare-minimum fit — this job pages the owner on ANY
+    # failure including a job-level timeout kill, so cheap margin here is
+    # worth more than a tight number, and even 135 is nowhere near GitHub
+    # Actions' 360-min hard job ceiling.
+    #
+    # Raised 135->180 (BRO-2370, live incidents 2026-09-01→09-04: runs
+    # 33505505323, 33626125042, 33650672952, 33751235270, 33869398248).
+    # "Commit digest snapshot" and "Commit health check audit snapshots
+    # (apiFallbackSafe)" were each still hard-capped at their own
+    # timeout-minutes: 17 despite carrying the same PUSH_DEADLINE_SEC=900
+    # sizing as their siblings — the ONE thing the earlier fix passes above
+    # deliberately did NOT do to them (compare "Commit health check + triage
+    # data"'s own comment: left uncapped on purpose "mirroring #1791's own
+    # fix"). Field evidence (run 33869398248) shows why that gap matters:
+    # push-with-retry.sh's `$SECONDS -ge $PUSH_DEADLINE_SEC` check only runs
+    # at the TOP of each retry iteration, and under this run's contention a
+    # single iteration cost ~190-200s (two of its internal git-push calls
+    # each burned the full GIT_NET_TIMEOUT_SEC=90s hang, a known/logged
+    # behavior per task #1810's else-branch, not a new bug) — so the loop
+    # can already be committed to an iteration when the 900s mark passes,
+    # and GitHub's OWN external timeout-minutes SIGKILLs the step first
+    # ("has timed out after 17 minutes", ~1033s wall-clock) BEFORE
+    # push-with-retry.sh's internal deadline-exceeded break, and before its
+    # Git Data API fallback (task #1847) — the mechanism specifically built
+    # to rescue exactly this contention pattern — ever gets a chance to run.
+    # An external SIGKILL mid-git-operation is strictly worse than letting
+    # the script's own bounded internal logic (900s local budget + a
+    # capped-retry API fallback pass) finish and degrade gracefully.
+    # Un-capped both steps below (removed timeout-minutes: 17) so they
+    # inherit this job ceiling instead, same treatment as the bulk step.
+    # Re-sized the ceiling for 3 uncapped-but-900s-governed steps instead of
+    # 1: worst case per step is no longer assumed to fit in ~17min (that
+    # assumption is exactly what just failed live) — budgeted generously at
+    # ~30min each (900s local deadline + one in-flight iteration's overshoot
+    # + a capped API-fallback pass) = 90min, replacing the two removed
+    # 17min caps (-34min) in the running sum. New theoretical ceiling: 43min
+    # (remaining 12 capped non-commit steps) + 17min ("Commit acceptance
+    # recheck ledger", still capped/continue-on-error, unaffected by this
+    # incident) + 90min (3 uncapped 900s-governed commit steps) + ~10min
+    # uncapped setup/scan steps ≈ 160min. 180 keeps the same real-margin-
+    # above-the-sum convention as every prior raise, still nowhere near
+    # GitHub Actions' 360-min hard job ceiling.
+    #
+    # BRO-352: "Commit digest snapshot" and "Commit health check audit
+    # snapshots (apiFallbackSafe)" were merged into ONE step (see that step's
+    # own comment below), which by itself would drop this job from 3 to 2
+    # uncapped 900s-governed commit steps. A concurrent fix (BRO-472) added a
+    # NEW one, "Commit lifetime sweep snapshots (apiFallbackSafe)", landing
+    # net-neutral at 3 — the same count this comment's ~90min budget already
+    # assumes, just composed of different steps than when that budget was
+    # written. timeout-minutes stays at 180.
+    #
+    # Raised 180->210 (BRO-4135): two new capped steps, "Open backlog
+    # acceptance sweep (shadow mode)" (timeout-minutes: 8) and "Commit open
+    # backlog acceptance sweep" (timeout-minutes: 17), positioned immediately
+    # after "Commit acceptance recheck ledger" — same shape and same
+    # immediately-after-its-own-write-step placement as that pair, for the
+    # same BRO-471 git-reset-hard-collision reason. +25min added to the
+    # explicit capped-step sum this comment tracks; 210 keeps real margin
+    # above the new total, still nowhere near GitHub Actions' 360-min hard
+    # job ceiling.
+    #
+    # Raised 210->330 (BRO-2322 audit of push-with-retry.sh callers): the
+    # sum model in scripts/audit-push-retry-budgets.js (every OTHER step's
+    # timeout-minutes cap, 15540s, plus the largest push step's 900s
+    # deadline) is 16440s; the 210min ceiling left a -30% margin, i.e. all 10
+    # flagged commit steps could be SIGKILLed by the job timeout before their
+    # own PUSH_DEADLINE_SEC / Git Data API fallback ran (the #1842/#1891
+    # class). 330min = 19800s gives ~17% margin over that sum. Tradeoff: a
+    # truly hung run is detected later; still under GitHub's 360-min cap, and
+    # the concurrency group queues (not cancels) overlapping runs. Now gated
+    # by `audit-push-retry-budgets.js --fail-on-job-timeout` in test.yml.
+    timeout-minutes: 330
+    permissions:
+      contents: write
+      issues: write
+      actions: write
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      # review-texts is a SEPARATE private repo (broadway-review-texts) — NOT
+      # pulled by checkout-core-data. health-check.js's "Quality: star-vs-score
+      # mismatch" check (card #396) scans data/review-texts; without this step it
+      # would hit the exists() guard and silently return pass/"Skipped", so the
+      # daily star-vs-score alert would never fire. Same pattern as
+      # check-corpus-drift.yml.
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+
+      # Required since owner-alert-router.js (#279) started shelling out to
+      # notion-brain.js for disposition='auto' cards — that script requires
+      # @notionhq/client, which isn't in node_modules without this. Every
+      # single auto-dispatch on this cron failed with "Cannot find module
+      # '@notionhq/client'" until this step was added (2026-07-23 email-noise
+      # Sprint 2) — health-check.js's own error text misleadingly pointed at
+      # NOTION_API_KEY, which was never the actual problem.
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      # Affiliate revenue-stream monitor (affiliate hardening 2026-08-03).
+      # Runs BEFORE the health check so its snapshot is fresh when the
+      # "Revenue: affiliate health" digest line reads it. continue-on-error:
+      # a crash here must not block the health snapshot commit — the digest
+      # line's own 48h staleness guard is the dead-man for this step dying.
+      # Kill switch: `gh variable set AFFILIATE_MONITOR_DISABLED --body true`.
+      # Shadow burn-in until 2026-08-17 is enforced inside the script.
+      - name: Affiliate health monitor
+        continue-on-error: true
+        timeout-minutes: 5
+        env:
+          IMPACT_ACCOUNT_SID: ${{ secrets.IMPACT_ACCOUNT_SID }}
+          IMPACT_AUTH_TOKEN: ${{ secrets.IMPACT_AUTH_TOKEN }}
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          POSTHOG_PROJECT_ID: ${{ secrets.POSTHOG_PROJECT_ID }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          AFFILIATE_MONITOR_DISABLED: ${{ vars.AFFILIATE_MONITOR_DISABLED }}
+        run: node scripts/check-affiliate-health.js
+
+      - name: Run health check
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          ALERT_TOKEN_SECRET: ${{ secrets.ALERT_TOKEN_SECRET }}
+          # Deploy: production freshness check (should-deploy gate watchdog)
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          # Stuck work: paused/orphaned Notion-brain card detection (raw REST).
+          # Also used by owner-alert-router.js (#279): humanAction items file
+          # Action Queue cards instead of a raw paste-prompt in the email.
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/health-check.js
+
+      # Daily failure digest removed — workflow failure summary is included
+      # in the email digest sent by health-check.js. Discord alerts are reserved
+      # for critical real-time workflow failures via notify-failure action.
+
+      # BRO-2529: isolated commit for the 4 files "Affiliate health monitor"
+      # and "Run health check" already wrote to disk above, positioned
+      # immediately after the write with NO other push-with-retry.sh call in
+      # between — same fix shape as BRO-386/BRO-471 (acceptance recheck
+      # ledger), BRO-472 (lifetime sweep snapshots), and BRO-3317 (provider
+      # spend ledger). Root cause confirmed live on run 35093780383
+      # (2026-09-16, job reported overall SUCCESS): "Run health check" wrote a
+      # fresh health-digest-snapshot.json at 12:07:35 ("[Health Digest]
+      # Snapshot written..."), but it sat uncommitted through FOUR intervening
+      # push-with-retry.sh callers ("Commit provider spend ledger", "Commit
+      # acceptance recheck ledger", "Commit done-evidence audit", "Commit
+      # lifetime sweep snapshots") before reaching the old late commit step.
+      # At 12:17:59 the "Commit done-evidence audit" step's push hit 3 failed
+      # local attempts and fired the Git Data API fallback, whose `git reset
+      # --hard $RESTORE_BASE_HEAD` wiped the still-uncommitted digest write —
+      # when the late step finally ran at 12:19:05, `git diff --staged --quiet`
+      # found nothing to commit for these 4 files. Confirmed on origin/main:
+      # health-digest-snapshot.json's last real commit stayed frozen at
+      # 2026-09-15 for a full day+ despite the cron reporting green daily —
+      # this is scripts/autonomous-email.js's ONE source file for the owner's
+      # daily digest, so a stuck snapshot is silent and page-worthy, which is
+      # why (like its 4 siblings) this step has no continue-on-error.
+      #
+      # BRO-352 (2026-09-14) merged the OLD standalone "Commit digest
+      # snapshot" step (health-digest-snapshot.json alone) into the late
+      # "Commit health check audit snapshots" step to stop two LATE steps
+      # wiping each other, but never moved the merged step earlier next to
+      # the write — so it stayed exposed to the 4 commit steps in between.
+      # This step is NOT a revival of that old "Commit digest snapshot" name
+      # (deliberately renamed — see core-data-merge-registry.js:236's
+      # verifiedBy comment, now stale, for the old step this used to mean).
+      #
+      # All 4 files are independently registered `apiFallbackSafe: true`,
+      # concurrencyGroup 'data-health-check', in
+      # scripts/lib/core-data-merge-registry.js — same registry entries the
+      # late step already relied on, just committed sooner. No
+      # timeout-minutes override (inherits the 330min job ceiling (BRO-2322)), matching
+      # "Commit provider spend ledger" and "Commit lifetime sweep snapshots"
+      # above/below.
+      - name: Commit digest + coverage snapshots (apiFallbackSafe)
+        if: always()
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+          GIT_NET_TIMEOUT_SEC: '30'
+          PUSH_API_REST_REF_UPDATE: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/health-digest-snapshot.json 2>/dev/null || true
+          git add data/audit/health-check-history.json 2>/dev/null || true
+          git add data/audit/workflow-run-coverage.json 2>/dev/null || true
+          git add data/audit/affiliate-health.json 2>/dev/null || true
+          # Nightly CI green-rate reading (scripts/ci-green-rate.js --record,
+          # appended by health-check.js's "Main: green rate" row) — the
+          # trend/"day D of 14" line in the digest reads this history back.
+          git add data/audit/ci-green-rate.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No digest/coverage snapshot changes"
+          else
+            git commit -m "data: Update digest and coverage snapshots [skip ci]"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
+
+      # E2E canary for the alert→card→dispatch chain (Notion card #374,
+      # 2026-07-24 postmortem). Runs in the SAME job/env as the health check
+      # above (same checkout, same `npm ci`) so a future regression to this
+      # job's environment breaks both identically — that's exactly how the
+      # npm-ci bug slipped past everything for days. `if: always()` so a
+      # canary failure never masks (or is masked by) the health check's own
+      # result; the job-level "Notify on failure" step below still fires on
+      # ANY step failure, independent of both notion-brain.js and
+      # owner-alert-router.js, as the last-resort backstop.
+      - name: E2E canary — alert→card→dispatch chain
+        if: always()
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/e2e-canary-alert-chain.js
+
+      # BRO-4487: the outcome number for the Linear P0/P1 queue (open count,
+      # P0 older than 24h, P1 older than 7d, total open). Runs here, in CI,
+      # because the Mac-side digest and dispatcher can go dark for days.
+      # Queues a digest row when overdue; never fails the job (a red job
+      # emails the owner, and paging is page-worthy-alerts.js's call).
+      - name: P0/P1 queue health
+        if: always()
+        continue-on-error: true
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/check-priority-queue-health.js --alert
+
+      # BRO-4719: email the owner when a card newly carries a "DECISION
+      # NEEDED:" line or the awaiting-owner label. Runs here, not on the Mac
+      # (owner 2026-10-05: "don't rely on the Mac Studio"). Each card is
+      # announced once; the told-set rides alert-ledger.json, committed by the
+      # ledger step below.
+      - name: Email owner about new decisions
+        # lint-allow-swallow: advisory email; a Linear/Resend outage only delays the email to the next daily run and must not block the health snapshot commit below
+        if: always()
+        continue-on-error: true
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/notify-owner-decisions.js
+
+      # BRO-4487: cancel auto-filed alert cards whose condition has cleared in
+      # the ledger (untouched backlog cards filed for exactly that condition
+      # only; see scripts/lib/resolved-alert-card-sweep.js). Also cancels finished opening-night watch/audit log cards (3+ days after the night). Max 50 per run.
+      - name: Cancel alert cards whose condition cleared
+        # lint-allow-swallow: optional board cleanup; a failure only leaves stale cards open for the next run and must not block the health snapshot commit below
+        if: always()
+        continue-on-error: true
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/sweep-resolved-alert-cards.js --apply
+
+      # Scraping Cost System v2 truth layer (owner-approved 2026-07-30):
+      # daily billing-API reconciliation. continue-on-error because a crash
+      # here must not block the health snapshot commit below — a stuck
+      # producer surfaces via digest-snapshots.js's 36h staleness banner,
+      # and unreachable billing APIs are recorded as 'unknown' days by the
+      # script itself (fail-closed: unknown breaks the verification streak).
+      - name: Provider spend reconciliation
+        if: always()
+        continue-on-error: true
+        env:
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          # MUST match what the collectors enforce, or the digest's
+          # cap-exhausted line goes silent exactly when it matters: after the
+          # T13 step-down sets this repo variable to 100, enforcement clips at
+          # 100 while an un-injected renderSnapshot would still compare against
+          # the 250 default — so a fully-clipped day renders no warning, reads
+          # as healthy, and counts toward the step-down streak. That is the
+          # inverse of the gate's purpose (ship-check finding, task #684).
+          BROWSERBASE_MAX_SESSIONS_PER_DAY: ${{ vars.BROWSERBASE_MAX_SESSIONS_PER_DAY }}
+          # provider-spend:overspend routes disposition:'auto' (Linear issue).
+          # Missing key = every overspend logged a failed dispatch and tripped
+          # the alert-router dispatch-deadman page (2026-09-21/22).
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/check-provider-spend.js
+
+      # BRO-3317: the write above (fs.writeFileSync in check-provider-spend.js)
+      # lands in the working tree UNCOMMITTED. Every later commit checkpoint
+      # in this job — starting with "Commit acceptance recheck ledger" right
+      # below — calls push-with-retry.sh, whose last-resort fallback path
+      # (rebase AND merge both fail) does `git reset --hard origin/main` then
+      # cherry-picks only its OWN commit back on top. That hard reset silently
+      # discards any uncommitted file this job wrote and hasn't committed yet
+      # — confirmed live on 2026-09-14 (run 34857395085): the "Commit health
+      # check audit snapshots" step further below reported a successful push,
+      # but `git show <that commit> -- data/audit/provider-spend-daily.jsonl`
+      # was empty — the write from this step never survived, which is why the
+      # ledger sat frozen at 2026-09-04 for 11 days despite the job running
+      # daily. Commit right here, before any other step gets a chance to
+      # trigger that fallback. Same apiFallbackSafe pattern as "Commit
+      # lifetime sweep snapshots" below.
+      # The 3 alert-router files ride along (all apiFallbackMerge-registered):
+      # check-provider-spend.js routes alerts, and those writes were still
+      # unstaged when this step's own push-with-retry reset the tree, so the
+      # attribution-gap cards filed on 2026-09-29 (BRO-4354/4355) left no
+      # alert-ledger entry. The later "Commit alert router state" step still
+      # commits the rest of the job's router writes.
+      - name: Commit provider spend ledger (apiFallbackSafe)
+        if: always()
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+          GIT_NET_TIMEOUT_SEC: '30'
+          PUSH_API_REST_REF_UPDATE: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/provider-spend-daily.jsonl 2>/dev/null || true
+          git add data/audit/provider-spend-snapshot.json 2>/dev/null || true
+          git add data/audit/scraper-spend-daily-agg.jsonl 2>/dev/null || true
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No provider spend ledger changes"
+          else
+            git commit -m "data: Update provider spend ledger [skip ci]"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
+
+      # Acceptance recheck (task #695): the only host for
+      # scripts/autonomous-acceptance-recheck.js was the Mac-local
+      # autonomous-nightly launchd job, retired 2026-07-27 — it currently
+      # NEVER RUNS, so nothing has re-verified a Done card's own acceptance
+      # command since then. SHADOW MODE ONLY: it reports to
+      # data/audit/autonomous-recheck-ledger.jsonl (committed below, a path
+      # dedicated to this CI job — never the Mac-local
+      # data/audit/autonomous-ledger.jsonl the shadow-run launchd job still
+      # writes nightly) and never
+      # reopens a card — enforcement stays off until shouldExitShadow's bar
+      # clears (scripts/lib/autonomous-recheck-core.js), which requires an
+      # explicit .claude/autonomous-config.json opt-in this repo does not
+      # have. continue-on-error: a crash here must not block the health
+      # snapshot commit.
+      - name: Acceptance recheck (shadow mode)
+        if: always()
+        continue-on-error: true
+        # 3min verify budget + 8min step timeout backstop (task #695
+        # ship-check finding, widened 5->8min for BRO-3373): the script's own
+        # internal deadline is a soft check inside its verify loop — a single
+        # hung/non-timing-out check command wouldn't hit it until the NEXT
+        # loop iteration. The step timeout is the hard stop that guarantees
+        # this step dies with time for the commit step after it, instead of
+        # the whole job hitting its 15min ceiling. Widened because BRO-3373
+        # added a Linear candidate fetch (its own internal 60s deadline,
+        # linear-recheck-source.js DEADLINE_MS) ON TOP of the existing 3min
+        # verify budget + Notion listing/hydration — a ship-check review
+        # measured worst case at ~260-300s, leaving the old 5min (300s) step
+        # timeout with near-zero margin; a hard step-timeout kill (unlike the
+        # script's own internal deadline) drops mid-run with no ledger write
+        # at all, silently losing that night's coverage instead of reporting
+        # it truncated.
+        timeout-minutes: 8
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          # BRO-3373: without this, fetchLinearRecheckCandidates's every call
+          # fails auth (linear-client.js's getApiKey() throws with no key set)
+          # — a ship-check review caught this BEFORE it shipped: the step
+          # would have stayed green forever while silently checking zero
+          # Linear candidates, reproducing the exact "silently unverified"
+          # failure this whole change exists to fix, for a different reason.
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          # Emergency kill switch (Codex finding): `gh variable set
+          # ACCEPTANCE_RECHECK_KILL_SWITCH --body true` disables this step's
+          # work without a code change, same pattern as BROWSERBASE_KILL_SWITCH.
+          ACCEPTANCE_RECHECK_KILL_SWITCH: ${{ vars.ACCEPTANCE_RECHECK_KILL_SWITCH }}
+        # 3 -> 5 (BRO-3434). Two changes made 3 too tight. The script now
+        # starts its deadline BEFORE makeFreshCheckout instead of after, so
+        # the checkout's git calls are charged to this budget rather than
+        # running outside it; and the verifyCmd fallback arms cards that used
+        # to cost zero runtime, so the budget is actually spent now. At 3 a
+        # slow-checkout night could defer EVERY card after paying the full
+        # checkout cost — zero coverage where it previously managed one card.
+        # Still inside the 8min step ceiling above: the ~260-300s worst case
+        # measured for this step already contained the old 3min verify budget,
+        # so the non-verify overhead is ~2min, and 2 + 5 = 7 < 8. The script's
+        # own deadline is the soft bound that keeps it there; the step timeout
+        # stays the hard backstop it was.
+        run: node scripts/autonomous-acceptance-recheck.js --time-budget-min 5
+
+      # Ledger artifact backup (BRO-386): uploaded BEFORE the isolated commit
+      # below, so this run's recheck verdicts are recoverable from the Actions
+      # run page (90-day retention) even if the commit step that follows
+      # crashes outright or its push loses a rebase race with nothing else in
+      # this run to carry it. Concretely this is the ONLY safety net when the
+      # isolated push fails AND none of the OTHER data/audit/* files staged by
+      # ANY of this job's later commit+push steps happen to have changed that
+      # run — a later step's successful push carries forward whatever is
+      # already on local HEAD (including this step's stranded, unpushed
+      # commit), even though that later step's own `git diff --staged` only
+      # reflects ITS OWN files; if every later step's staged set is also
+      # unchanged that run, none of them call push-with-retry.sh at all, so
+      # there is no second chance to carry the stranded local ledger commit
+      # along.
+      # if-no-files-found: ignore — a run where nothing changed writes no new
+      # ledger lines (the file may not exist yet on a fresh checkout).
+      - name: Upload acceptance recheck ledger (artifact backup)
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: autonomous-recheck-ledger-${{ github.run_id }}
+          path: data/audit/autonomous-recheck-ledger.jsonl
+          retention-days: 90
+          if-no-files-found: ignore
+
+      # Commit acceptance recheck ledger in its OWN small commit+push
+      # (BRO-386), immediately after the script step that writes it and the
+      # artifact backup above — repositioned here from much later in the job
+      # by BRO-471 (2026-09-14), same fix pattern as BRO-472's "Commit
+      # lifetime sweep snapshots" step below. Root cause of the ORIGINAL bug
+      # this step fixed: run 31871526977 (2026-08-15T07:19Z) evaluated 10+
+      # cards correctly — including the owner's 24h-green headline bar — but
+      # the bulk commit bundled this file with 15 OTHER data/audit/* files
+      # into ONE commit, and that commit's push lost its push-with-retry.sh
+      # race. The whole 16-file commit failed to push together, and because
+      # the GitHub Actions runner filesystem is ephemeral, every recheck
+      # verdict from that run vanished with it.
+      #
+      # BRO-2588 (2026-08-31) registered this file `apiFallbackSafe: true` and
+      # dissolved the "must run last" constraint BRO-2538 had imposed — but
+      # left the step positioned THIRD of the job's four commit+push steps,
+      # right before the bulk step. BRO-471's adversarial-review pass found
+      # that position still left a real gap: this file is written here, but
+      # TWO other apiFallbackSafe/apiFallbackMerge commit+push steps
+      # ("Commit lifetime sweep snapshots", "Commit health check audit
+      # snapshots") ran BEFORE the old position and could each independently
+      # trigger push-with-retry.sh's Git Data API fallback prep — which does
+      # an unconditional `git reset --hard "$RESTORE_BASE_HEAD"` that reverts
+      # every OTHER already-tracked file's uncommitted content, this ledger
+      # included, back to its last-committed version (see "Commit lifetime
+      # sweep snapshots"'s own header comment for the confirmed-live incident
+      # this exact mechanism caused for a sibling file group). Moving the
+      # commit to run immediately after the write, before ANY other
+      # push-with-retry.sh call in this job, closes that window FOR THIS
+      # FILE, the same way BRO-472 closed it for the 5 lifetime-sweep files.
+      #
+      # NOT a full fix for the class of bug (second-opinion review, BRO-471
+      # follow-up): this step's OWN fallback prep can now trigger the same
+      # `git reset --hard` against files written by "Affiliate health
+      # monitor", "Run health check", and "Provider spend reconciliation"
+      # (all of which run earlier and remain uncommitted at this point) —
+      # health-digest-snapshot.json, health-check-history.json,
+      # workflow-run-coverage.json, the provider-spend-* files, and
+      # affiliate-health.json specifically. That risk already existed before
+      # this step moved (BRO-472's own earlier "Commit lifetime sweep
+      # snapshots" step has the identical exposure to the same files, since
+      # it also runs before "Commit health check audit snapshots" commits
+      # them) — this move adds a second opportunity for the same pre-existing
+      # gap, not a new bug class. BRO-3311 tracks auditing and closing this
+      # properly (likely: commit those files right after "Provider spend
+      # reconciliation", mirroring this exact pattern, before either sweep
+      # step's commit can run).
+      #
+      # continue-on-error: true, matching every other shadow-mode step in this
+      # job (including "Acceptance recheck" itself) — this ledger is
+      # explicitly non-enforcing shadow-mode telemetry (see that step's own
+      # header comment: "never reopens a card"), so a push failure here
+      # should degrade silently rather than trip this workflow's
+      # severity:critical failure() steps. The artifact upload immediately
+      # above is what makes that silent degrade survivable instead of a
+      # second silent loss. "Silent" here means "doesn't page" — a push
+      # failure still isn't invisible: push-with-retry.sh's own
+      # record_push_failure() logs every exhausted retry to
+      # data/audit/push-retry-failures.jsonl regardless of continue-on-error,
+      # and health-check.js surfaces that as the "Push-retry deadman" digest
+      # row.
+      #
+      # timeout-minutes: 17, PUSH_DEADLINE_SEC='900' (task #1842, same class
+      # as task #1791's audit-aggregator-gap.yml fix) — this step calls the
+      # identical push-with-retry.sh against the identical heavy
+      # data/audit/* write contention every other commit step in this job
+      # faces, so it gets the same generous budget as those. This file is
+      # single-writer + apiFallbackSafe (scripts/lib/core-data-merge-
+      # registry.js), so PUSH_API_FALLBACK_AFTER_ATTEMPTS=3 makes the Git
+      # Data API fallback actually reachable, same override as its sibling
+      # apiFallbackSafe steps.
+      - name: Commit acceptance recheck ledger
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 17
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+          # BRO-3068: same GIT_NET_TIMEOUT_SEC=90s hang class documented in the
+          # job-level comment above (line ~102). Lower to 30s so more real
+          # attempts fit in the 900s deadline. Matches BRO-334/BRO-346.
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/autonomous-recheck-ledger.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No recheck ledger changes"
+          else
+            git commit -m "data: Update acceptance recheck ledger [skip ci]"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
+
+      # Open backlog acceptance sweep (BRO-4135, closing BRO-3551's R3 gap):
+      # scripts/sweep-open-backlog-acceptance.js existed as working code but
+      # had no scheduled caller anywhere (grep of .github/workflows and
+      # ~/Library/LaunchAgents found it only in test.yml's unit-test path
+      # trigger) — data/audit/open-backlog-acceptance-sweep.json never
+      # existed in the main checkout, so linear-watchdog-source.js's
+      # `alreadyPasses` gate always saw an empty set. SHADOW/report-only
+      # (never closes, comments on, or mutates a Linear issue — see that
+      # script's own header) — continue-on-error so a crash here can never
+      # block this job's other commits. Modeled directly on "Acceptance
+      # recheck (shadow mode)" above: same 5min internal script deadline
+      # inside an 8min step-timeout backstop for the same reason (a hung
+      # check command inside the verify loop wouldn't hit the internal
+      # deadline until the NEXT iteration).
+      - name: Open backlog acceptance sweep (shadow mode)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 8
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/sweep-open-backlog-acceptance.js --time-budget-min 5
+
+      # Commit immediately after the step that writes it, before any other
+      # push-with-retry.sh call later in this job — same BRO-471 lesson
+      # "Commit acceptance recheck ledger" above already documents: a later
+      # step's push-with-retry.sh fallback prep does an unconditional `git
+      # reset --hard $RESTORE_BASE_HEAD` that would wipe this file's
+      # uncommitted content if this commit ran any later. Same budget/env
+      # values as that sibling step — this file is also single-writer
+      # (only this cron writes it) and apiFallbackSafe for the same reason.
+      - name: Commit open backlog acceptance sweep
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 17
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/open-backlog-acceptance-sweep.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No open backlog acceptance sweep changes"
+          else
+            git commit -m "data: Update open backlog acceptance sweep [skip ci]"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
+
+      # ── Done-evidence audit (BRO-3426) ───────────────────────────────────
+      # Re-proves every Done(14d) / In Review / In Progress card's OWN claimed
+      # evidence — a PR-EVIDENCE commit/PR, or its acceptance command — against
+      # a fresh origin/main, and reports what no longer holds.
+      #
+      # WHY IT IS A SEPARATE STEP from the acceptance recheck above, which also
+      # re-runs card commands against fresh main: that one answers "did the ~10
+      # cards that PROMISED a recheck (a RECHECK-AFTER stamp, or a Done inside
+      # 24h) still hold", and is deliberately budget-capped to protect the
+      # morning email behind it. This one sweeps the WHOLE board every night to
+      # answer a different question — "is the board's own record of what is
+      # finished true at all" — after a hand sweep on 2026-09-13/15 found 26+
+      # cards whose state was simply wrong. They share every primitive that
+      # matters (acceptance-check-core.js's sandboxed runner, verify-gate.js,
+      # card-premises-auditor.js) and differ only in selection.
+      #
+      # SHADOW MODE: it writes two files under data/audit and nothing else. It
+      # never calls a Linear mutation, so no issue's state can move because of
+      # it. Auto-flipping STUCK -> Done is explicitly a LATER card, once this
+      # report has been right for a week.
+      #
+      # 10min soft budget inside a 14min step timeout. Measured live on
+      # 2026-09-15: 374 cards in ~9min wall, dominated not by the 251 fast
+      # `node --test` checks (~0.3s each) but by ~30 corpus-scanning
+      # `node scripts/validate-data.js`-class commands. The script's own
+      # deadline is a soft check between cards, so it cannot stop a single hung
+      # command — the step timeout is the hard backstop, set above the budget
+      # for the same reason the recheck step's 8min sits above its 3min budget.
+      # A run that hits the budget records the remaining cards as not-re-run
+      # rather than dropping them, and the report names its own slowest checks
+      # so the next budget change is made from data.
+      #
+      # GH_TOKEN is REQUIRED, not optional: PR-EVIDENCE ancestry is resolved
+      # through the GitHub compare API rather than `git merge-base
+      # --is-ancestor`, because this job checks out at depth 1 and
+      # scripts/lib/landing-verify.js hard-SKIPS its unshallow under
+      # GITHUB_ACTIONS (BRO-3320 — an unshallow must move ~1.8 GB here and
+      # cannot finish). Without the token every ancestry probe answers UNKNOWN,
+      # which never accuses anyone — so the step would stay green forever while
+      # silently checking nothing, the same invisible-failure shape BRO-3373
+      # had to fix for a different reason.
+      # continue-on-error: a crash here must never block the commit steps that
+      # follow, exactly like the recheck step above.
+      - name: Done-evidence audit (shadow mode)
+        if: always()
+        # lint-allow-swallow: shadow-mode telemetry whose failure is NOT signal-less.
+        # The guard's concern (a swallowed data/audit/ writer discarding its
+        # writes with nothing to notice) is answered by the digest itself: the
+        # doneEvidence row in scripts/lib/digest-snapshots.js carries
+        # maxAgeH: 36, so a crashed or wedged run shows up as an explicit
+        # "didn't update overnight: done-evidence audit" line in the owner's
+        # morning email within 36h. continue-on-error is load-bearing here for
+        # the same reason it is on the acceptance-recheck step above: this step
+        # sits BEFORE several commit+push steps in a 330-minute job, and a crash
+        # in shadow-mode reporting must never block the health snapshot commit
+        # that follows it.
+        continue-on-error: true
+        timeout-minutes: 14
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Emergency kill switch, same pattern as
+          # ACCEPTANCE_RECHECK_KILL_SWITCH: `gh variable set
+          # DONE_EVIDENCE_AUDIT_KILL_SWITCH --body true` stops this instantly
+          # without a code change or a revert.
+          DONE_EVIDENCE_AUDIT_KILL_SWITCH: ${{ vars.DONE_EVIDENCE_AUDIT_KILL_SWITCH }}
+        run: node scripts/audit-done-evidence.js --time-budget-min 10
+
+      # Committed in its OWN small commit+push, immediately after the step that
+      # writes it — the BRO-386/BRO-471 pattern the recheck ledger above uses,
+      # and for the same measured reason: bundling a file with 15 other
+      # data/audit/* files into one commit means one lost push-with-retry race
+      # discards ALL of them, and the runner filesystem is ephemeral, so there
+      # is no second chance. The digest snapshot is the half that matters —
+      # send-morning-digest.js reads it off main, so a snapshot that never
+      # lands is a digest line that never appears.
+      - name: Commit done-evidence audit
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 17
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/done-evidence-audit.json data/audit/done-evidence-digest-snapshot.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No done-evidence audit changes"
+          else
+            git commit -m "data: Update done-evidence audit [skip ci]"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
+
+      # BRO-4523: act on the audit's STUCK label. Cards whose own check passes
+      # on main sat open for weeks because nothing read the label. Closing is
+      # owner-approved (BRO-4535, 2026-10-02): each close goes through
+      # linear-brain's Done gate, which re-runs the check on a fresh
+      # origin/main, and the run stops at the time budget, 3 gate refusals or
+      # 50 closes. The report lists what closed and why the rest were left.
+      # Rules: scripts/lib/stuck-card-closer.js. Same shadow-mode reasoning as
+      # the audit step above: a crash here must never block the commits after
+      # it. Kill switch: repo variable STUCK_CARD_CLOSER_KILL_SWITCH=1.
+      - name: Stuck verified card closer
+        if: always()
+        # lint-allow-swallow: best-effort closer; the committed report's
+        # generatedAt shows a missed day, and the audit it reads is already
+        # watched by the digest's 36h freshness row.
+        continue-on-error: true
+        timeout-minutes: 25
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          STUCK_CARD_CLOSER_KILL_SWITCH: ${{ vars.STUCK_CARD_CLOSER_KILL_SWITCH }}
+        run: node scripts/close-stuck-verified-cards.js --apply
+
+      - name: Commit stuck card closer report
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 17
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/stuck-card-closer.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No stuck card closer changes"
+          else
+            git commit -m "data: Update stuck card closer report [skip ci]"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
+
+      # Cross-outlet attribution drift check (card #1550, Notion 3bd637c5-416f-81b0):
+      # audit-cross-outlet-attributions.test.mjs's four acceptance assertions were
+      # only CI-gated when someone edited the audited script itself (test.yml
+      # path-trigger) — new review-texts from opening-night pollers/discovery never
+      # got diffed against them, so the count silently drifted from 0 to 11 suspects
+      # between two manual recheck sessions (task #1006). Runs here because this job
+      # already checks out data/review-texts (required — the test self-skips
+      # otherwise) and commits data/audit snapshots. SHADOW MODE: writes a snapshot,
+      # never fails the step or reopens anything — drift is expected as new reviews
+      # arrive, so a hard CI gate would redden main on legitimate data, not a
+      # regression. The digest check in health-check.js is what surfaces it to a
+      # human. continue-on-error + timeout: a hang here must never block the commit.
+      - name: Cross-outlet attribution drift check (shadow mode)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 3
+        run: node scripts/check-cross-outlet-attribution-drift.js
+
+      # cv-wrongproduction-unhandled lifetime sweep (task #1731). The check
+      # module (scripts/lib/opening-night-checks/cv-wrongproduction-unhandled.check.js)
+      # only ever runs via opening-night-checklist.js, gated to shows within
+      # ±2 days of openingDate — a show past that window is never re-checked
+      # for the juan-a-ramirez bypass class again. Task #1712's corpus audit
+      # found 3 live instances reintroduced weeks post-opening via an
+      # unrelated bug, outside that window. This step runs the SAME check
+      # against the full corpus. SHADOW MODE (matches the pattern immediately
+      # above): a real run against production data found 800+ hits, the large
+      # majority shaped like intentional priorRuns coverage (pre-Broadway
+      # tryouts, prior runs) the check has no way to recognize — a hard CI
+      # gate here would redden main on legitimate data, not a regression,
+      # exactly the reasoning that keeps the cross-outlet check above
+      # non-blocking too. The digest check in health-check.js surfaces the
+      # count; the script's own exit code (1 on any hit) is for manual/local
+      # triage runs, not this cron.
+      - name: cv-wrongproduction lifetime sweep (shadow mode)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 5
+        run: node scripts/audit-cv-wrongproduction-lifetime.js
+
+      # BRO-80: unopened-show prior-run / readmission sweep. The pre-opening
+      # temporal gate (review-guards.js isPrematureReviewForUnopenedShow) is a
+      # TEMPORARY exclusion - it only fires while a show's status is
+      # announced/upcoming/previews. Every old review it silently holds out
+      # readmits into the live score the moment the show opens, so a
+      # contaminated review with no durable flag of its own becomes an
+      # opening-night landmine. The 2026-08-30 triage of 54 unopened shows
+      # found 2 genuine Edinburgh Fringe transfers (declared via priorRuns,
+      # readmitting 4 legitimate reviews) and 6 contaminated reviews with no
+      # durable flag of their own, now explicitly flagged. Those 6 would ALSO
+      # have been caught by the rebuild's own pre-window date guard once their
+      # show had a real opening date, so the flags are defence in depth rather
+      # than a rescue - which is why this sweep now models that guard too and
+      # only reports what survives BOTH.
+      #
+      # This has to run on a CRON, not in test.yml: the risk is a DATA state
+      # that changes when update-show-status.js flips a show, with no code
+      # push involved, so a code-triggered gate would never see it.
+      #
+      # SHADOW MODE, non-blocking, same reasoning as the sweep above:
+      # explainExclusion is a strong diagnostic mirror of the rebuild's rules
+      # but explicitly NOT the audit of record (see its docstring), so a false
+      # positive must never be able to red main.
+      - name: unopened-show readmission-risk sweep (shadow mode)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 2
+        run: node scripts/triage-unopened-shows.mjs
+
+      # 4 more lifetime corpus sweeps (task #1746), extending #1731's pattern
+      # above to the other opening-night-checks plugins with the exact same
+      # structural risk: wrong/mismatched content shipped into reviews.json,
+      # only ever checked within opening-night-checklist.js's ±2-day window,
+      # never re-checked once a show ages out of that window. Same reasoning
+      # as the cv-wrongproduction step: SHADOW MODE, non-blocking — these are
+      # measurements of an unknown-precision population (temporal-override
+      # near-opening reasoning, intentional priorRuns cross-links, and similar
+      # legitimate-but-check-can't-tell cases), not a regression gate. The
+      # digest checks in health-check.js key off each snapshot's
+      # newSinceLastRun, not totalViolations, for the same alert-fatigue
+      # reason documented on the cv-wrongproduction digest check below.
+      #
+      # timeout-minutes: 2, not 5 like cv-wrongproduction's step — ship-check
+      # (Codex adversarial review) flagged that the job's existing per-step
+      # timeout-minutes already summed well past the 20-min job ceiling
+      # (steps stay fast in practice; the ceilings are worst-case circuit
+      # breakers, not a real budget). These 4 scripts are pure local-file
+      # reads with zero network I/O (unlike most other steps in this job),
+      # measured at <1s each against the real 2005-show/43K-file corpus — a
+      # tight ceiling caps worst-case exposure without risking a real run.
+      - name: fulltext-mentions-show lifetime sweep (shadow mode)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 2
+        run: node scripts/audit-fulltext-mentions-show-lifetime.js
+
+      # BRO-4603: the daily LLM pass the gate below (and review-write-guard.js)
+      # always assumed existed. Asks Opus, through content-verifier's own
+      # prompt, about each unverified suspect and writes
+      # data/audit/wrong-article-adjudicated.json (committed by "Commit lifetime
+      # sweep snapshots"). A 'same-show' verdict clears that exact text; a
+      # 'wrong-article' verdict keeps the gate red as CONFIRMED. Never edits
+      # review data. Capped at 20 suspects/run, 40s per call (13.3 min worst
+      # case, under this step's 15-min cap; verdicts are written after each
+      # call so a cap hit loses nothing), inside the 330-min job ceiling. Until 2026-10-04 nothing ran this, so
+      # the gate failed whenever new reviews landed (22 unverified that day).
+      - name: wrong-article LLM adjudication (Opus, capped)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 15
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/audit-wrong-article.js --adjudicate --max=20
+
+      # BRO-4383: NOT shadow mode. A scored review whose text is a different
+      # article (2 reached the live site) is a correctness bug, so an
+      # unverified suspect (no cast/creative/venue evidence, title named <=1x,
+      # no Opus verdict in data/audit/wrong-article-verified.json or
+      # data/audit/wrong-article-adjudicated.json) fails the step.
+      - name: wrong-article audit (fails on unverified suspects)
+        if: always()
+        timeout-minutes: 3
+        run: node scripts/audit-wrong-article.js
+
+      - name: slug-mismatch lifetime sweep (shadow mode)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 2
+        run: node scripts/audit-slug-mismatch-lifetime.js
+
+      - name: roundup-url-mismatch lifetime sweep (shadow mode)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 2
+        run: node scripts/audit-roundup-url-mismatch-lifetime.js
+
+      - name: revival-unverified lifetime sweep (shadow mode)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 2
+        run: node scripts/audit-revival-unverified-lifetime.js
+
+      # Commit the 5 lifetime-sweep snapshots (BRO-472) IMMEDIATELY after the
+      # 5 sweep steps above write them, in their own isolated step — same
+      # "isolate to shrink blast radius" reasoning as "Commit digest snapshot"
+      # below, one incident later. Root cause: these 5 files used to sit
+      # UNCOMMITTED in the working tree from here until the much-later "Commit
+      # health check audit snapshots (apiFallbackSafe)" step, with several
+      # OTHER push-with-retry.sh invocations (e.g. "Commit digest snapshot")
+      # running in between. push-with-retry.sh's Git Data API fallback path
+      # does `git reset --hard "$RESTORE_BASE_HEAD"` to get a clean diff when
+      # ITS push needs the fallback — a hard reset clears the WHOLE working
+      # tree, not just commits, so it silently wiped these 5 files' fresh,
+      # not-yet-staged content every time it fired. Confirmed live: sweep
+      # step logs "16 new since last run" (fresh content written), but the
+      # later bulk step then logs "No health check audit snapshot changes"
+      # (nothing left to commit) — these 5 files hadn't actually updated on
+      # main since 2026-09-05, a 9-day silent gap, until this fix. Committing
+      # here, before any other push-with-retry.sh call in this job can run,
+      # closes the window entirely — no other step's `git add` for these 5
+      # paths remains needed, so they're removed from the later bulk step.
+      # Same apiFallbackSafe env as "Commit health check audit snapshots"
+      # below — all 5 files are independently verified single-writer there.
+      - name: Commit lifetime sweep snapshots (apiFallbackSafe)
+        if: always()
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+          # BRO-471 consistency fix: PUSH_API_FALLBACK_AFTER_ATTEMPTS=3 means
+          # the local loop still makes 3 real `git push` attempts before
+          # falling back to REST (see "Commit health check audit snapshots
+          # (apiFallbackSafe)"'s comment for the full correction) — this gets
+          # those 3 attempts through their fail-fast cycle sooner.
+          GIT_NET_TIMEOUT_SEC: '30'
+          PUSH_API_REST_REF_UPDATE: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/cv-wrongproduction-lifetime.json 2>/dev/null || true
+          git add data/audit/fulltext-mentions-show-lifetime.json 2>/dev/null || true
+          git add data/audit/slug-mismatch-lifetime.json 2>/dev/null || true
+          git add data/audit/roundup-url-mismatch-lifetime.json 2>/dev/null || true
+          git add data/audit/revival-unverified-lifetime.json 2>/dev/null || true
+          git add data/audit/wrong-article-adjudicated.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No lifetime sweep snapshot changes"
+          else
+            git commit -m "data: Update lifetime sweep snapshots [skip ci]"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
+
+      # Stale announced-shows audit (BRO-2620, BRO-93). audit-stale-announced-
+      # shows.js catches a show still marked status='announced' after it has
+      # demonstrably already opened (Sherlock Holmes WE ran and closed entirely
+      # in 'announced' status, scoring nothing — see that script's own header).
+      # Nothing ran this in CI before now: it appeared in test.yml only as a
+      # push-path trigger for its own unit test, and that Unit Tests job has no
+      # data/review-texts checkout, so even the test's review-texts-driven
+      # signal was vacuous there. This job is the right home because it already
+      # checks out data/review-texts (private repo) above, giving the audit its
+      # full signal. SHADOW MODE like every other sweep in this job: writes a
+      # snapshot, never fails the step — a hard CI gate would have turned main
+      # red on real, still-open true positives the day this landed (BRO-2611
+      # already discounts wrong-show/wrong-production contamination out of
+      # flaggedCount via silencedByContamination; a gate would still be wrong
+      # to trip on the rest). The digest check in health-check.js surfaces
+      # flaggedCount and silencedByContaminationCount; --fail-on-gap is for
+      # manual/local triage runs, not this cron.
+      # Not shadow mode, unlike the sweeps above: this one pages. Those measure
+      # populations of unknown precision; this one reports a binary, verifiable
+      # fact (a show qualified to broadcast and no email exists), and nothing
+      # retries it automatically — opening-night-broadcast.yml only ever looks
+      # at shows opened within the last 2 days, so once a show ages out of that
+      # window the owner acting on this alert is the ONLY remaining path to the
+      # send. Exits non-zero only on missing/empty core data (a cheerful zero
+      # read off a partial checkout would be worse than a crash); the alert
+      # itself is routed, not thrown, so a real finding never fails the job.
+      - name: Missed opening-night broadcast sweep
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 2
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/check-missed-broadcasts.js
+
+      - name: Stale announced shows audit (shadow mode)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 3
+        run: node scripts/audit-stale-announced-shows.js
+
+      # Notion-schedule-coupling audit (BRO-3431 reopen). The four schedules
+      # named in BRO-3431 all shared one shape: a LIVE schedule (a loaded
+      # launchd plist, or a schedule:-cron'd workflow) running a script that
+      # read the frozen Notion task mirror as if it were a current work
+      # source. The owner's real question was "are there other gaps like
+      # this?" — this sweeps every cron'd workflow in this repo (the launchd
+      # half is Mac-only and self-reports skipped here, same restriction as
+      # check-hook-liveness.js) so the answer is a command, not a four-hour
+      # manual audit. SHADOW MODE like every sweep above: report-only, never
+      # fails the step on a finding.
+      - name: Notion-schedule-coupling audit (shadow mode)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 3
+        run: node scripts/audit-notion-schedule-coupling.js
+
+      # Trunk status snapshot (task #1003) — is test.yml green on main, for
+      # how long has it been red, and which files are named in the failures.
+      # Feeds the morning digest's standing trunk line AND the close-time
+      # attribution gate in notion-brain.js. Runs here because this job
+      # already commits data/audit snapshots the Mac Studio pulls.
+      # continue-on-error + a hard timeout: a gh hiccup must never block the
+      # health commit, and a missing snapshot fails the close gate OPEN.
+      - name: Trunk status snapshot
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 4
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/produce-trunk-snapshot.js
+
+      # Time-to-publish SLA (task #388) — 90% of opening-night reviews live
+      # within 15 min of outlet publication. 2026-04-15 (Fear of 13) BWSC was
+      # the LAST aggregator to have the reviews up; this is the standing
+      # reading of whether that is still true. --alert queues a DIGEST line
+      # (never its own email) when the target is missed. Runs here because this
+      # job already checks out core data + review-texts and commits
+      # data/audit snapshots. continue-on-error: a metric must never block the
+      # health commit.
+      - name: Time-to-publish SLA
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 4
+        run: node scripts/time-to-publish-sla.js --windows=2 --alert
+
+      # Linear issue-cap monitor + Done auto-archive (BRO-285, task #1313).
+      # The free tier hard-caps the workspace at 250 unarchived issues; at the
+      # cap, issueCreate fails and the Linear-side intake front door jams
+      # (Phase 2 of the new-system plan routes alerts through it). Archive
+      # first (Done/Canceled >= 48h, audit-logged), then check the count.
+      # continue-on-error: a breach surfaces as a DIGEST row via --alert's
+      # routeAlert (ACTION-only bar, 7d cooldown), never a job failure — this
+      # workflow is severity:critical and a real-time email for a slow-moving
+      # backlog condition would be alert noise.
+      - name: Linear issue-cap monitor + Done auto-archive
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 4
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: |
+          # || true: archive-done exits 1 on ANY per-issue archive failure —
+          # under bash -e that would skip the cap check exactly when a flaky
+          # Linear API leaves the count elevated. The cap check is the
+          # monitor; it must run regardless of the archiver's exit.
+          node scripts/linear-archive-done.js || true
+          node scripts/check-linear-cap.js --alert
+
+      # Digest snapshot artifact backup (Notion 3c4637c5-416f-8127 (run 32559247279 push-race), same BRO-386 pattern as
+      # "Upload acceptance recheck ledger" above). data/audit/health-digest-
+      # snapshot.json is the ONE file scripts/autonomous-email.js:51 actually
+      # reads (HEALTH_DIGEST_PATH) to build the owner's single scheduled
+      # morning email — and it's the file this job's own "Notify on failure"
+      # step (bottom of this job) blames by name when the commit below fails
+      # ("its digest snapshot may not have written"). Uploaded BEFORE the
+      # isolated commit so this run's snapshot is recoverable from the Actions
+      # run page (90-day retention) even if the push that follows loses its
+      # race entirely.
+      - name: Upload digest snapshot (artifact backup)
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: digest-snapshot-${{ github.run_id }}
+          path: data/audit/health-digest-snapshot.json
+          retention-days: 90
+          if-no-files-found: ignore
+
+      # BRO-352 MERGE (2026-09-14): this step used to be TWO separate steps —
+      # "Commit digest snapshot" (health-digest-snapshot.json alone) and
+      # "Commit health check audit snapshots (apiFallbackSafe)" (the other 15
+      # files below), with the digest-only step running first. That split was
+      # itself a prior fix (task #1868 / run 32559247279 push-race, then run
+      # 32625283171) for a DIFFERENT problem: a bulk commit's push losing its
+      # race and hard-failing the whole job, taking every file in the commit
+      # down with it. Splitting into small isolated commits fixed that.
+      #
+      # It created a NEW, silent problem the split's authors didn't have
+      # visibility into yet: push-with-retry.sh's Git Data API fallback
+      # (task #707), used when local fetch/rebase/push keeps failing (as it
+      # has been doing daily this week — GitHub git-transport hangs, rc=124
+      # after the 90s per-op timeout), captures its own commit's diff and
+      # then runs `git reset --hard "$RESTORE_BASE_HEAD"` (push-with-
+      # retry.sh, search "Git Data API fallback") to get a clean local state
+      # before applying that diff via the REST API. `git reset --hard`
+      # discards EVERYTHING in the working tree that isn't part of the
+      # commit being captured — including any OTHER file an earlier step in
+      # this same job had already written to disk but not yet committed,
+      # because a LATER step (this one) owns committing it.
+      #
+      # Confirmed live (run 34783179310, 2026-09-13): the "Cross-outlet
+      # attribution drift check" step (above) wrote a fresh
+      # data/audit/cross-outlet-attribution-drift.json at 21:18:41. The old
+      # "Commit digest snapshot" step ran next, hit 3 transport-hang push
+      # failures, and its Git Data API fallback fired at 21:25:30 — wiping
+      # the drift file (and, by the same mechanism, every other file below)
+      # back to whatever was last actually committed. The old
+      # "Commit health check audit snapshots" step then ran at 21:25:37,
+      # `git add`ed the drift file, and found nothing staged: the fresh write
+      # was already gone. This is why data/audit/cross-outlet-attribution-
+      # drift.json sat stuck at its 2026-09-05 content for 9 days straight
+      # despite the check running (and overwriting it) correctly every day.
+      #
+      # FIX: merge the two steps into ONE commit+push, so there is no window
+      # between "file written by an earlier step" and "file committed" for a
+      # DIFFERENT step's push-with-retry.sh call to land in and reset away.
+      # All 13 files here (health-digest-snapshot.json + the 12 below) are
+      # independently registered `apiFallbackSafe: true` in scripts/lib/core-
+      # data-merge-registry.js (single-writer, same concurrency group), so
+      # the merge does not weaken the Git Data API fallback's own safety
+      # check (see push-with-retry.sh's disqualifier) — it only removes the
+      # gap between them. Traded away: the old split's failure-isolation
+      # property (if this step's OWN push totally fails — both the local
+      # retry loop AND the API fallback — all 13 files miss this run
+      # together, not just some of them). Accepted because that property was
+      # never what actually failed here; every observed failure of these
+      # steps this week was the API fallback SUCCEEDING and then wiping a
+      # sibling step's uncommitted work, which merging removes entirely.
+      #
+      # NOTE: a concurrent fix (BRO-472) independently found and closed the
+      # SAME class of gap for 5 sibling files (the "lifetime sweep"
+      # snapshots) via a different lever — committing each right after the
+      # step that writes it, in its own new earlier "Commit lifetime sweep
+      # snapshots (apiFallbackSafe)" step — rather than merging them in here.
+      # Both fixes are complementary, not overlapping: those 5 files are
+      # deliberately NOT in this step's git-add list below.
+      #
+      # BRO-2529 follow-up (2026-09-16): this step itself had gone on to
+      # violate its own rule below for health-digest-snapshot.json,
+      # health-check-history.json, workflow-run-coverage.json, and
+      # affiliate-health.json — all 4 are written far ABOVE this point in the
+      # job ("Affiliate health monitor" / "Run health check"), with FOUR other
+      # push-with-retry.sh callers in between that could (and, confirmed live
+      # on run 35093780383, did) fire the Git Data API fallback and wipe the
+      # uncommitted write before it reached here. Moved to their own earlier
+      # "Commit digest + coverage snapshots (apiFallbackSafe)" step, right
+      # after the steps that write them — see that step's own comment for the
+      # incident. This step now owns 9 files, not 13.
+      #
+      # IF YOU ADD A NEW SHADOW-MODE STEP that writes a data/audit/*.json
+      # snapshot for the daily digest to read: (1) make sure it runs BEFORE
+      # this step (i.e. above this point in the job), (2) add its `git add`
+      # line to the list below, and (3) do NOT insert a new commit+push step
+      # between its write and this one — that reopens exactly this bug for
+      # the new file.
+      #
+      # No continue-on-error: unlike the shadow-mode steps above, a failure
+      # to persist these snapshots is exactly the page-worthy failure this
+      # workflow exists to catch.
+      #
+      # No explicit timeout-minutes (BRO-2370, removed the prior 17min caps
+      # from both original steps — live incidents 2026-09-01→09-04 showed
+      # 17min isn't enough headroom above this step's own
+      # PUSH_DEADLINE_SEC=900 for push-with-retry.sh's internal deadline
+      # check + Git Data API fallback to run to completion before GitHub's
+      # external timeout SIGKILLs it mid-iteration; see the job-level
+      # timeout-minutes comment above for the full incident and sizing
+      # rationale). Inherits the job ceiling instead, same treatment
+      # "Commit health check + triage data" already got from #1791/#1842.
+      # BRO-2370 DEFECT B: MAX_RETRIES=25 makes push-with-retry.sh's own
+      # PUSH_API_FALLBACK_AFTER_ATTEMPTS default to (25+1)/2=13 — but the
+      # script's deadline check runs at the TOP of the loop, before an
+      # attempt starts, and real measured attempt cost under contention is
+      # ~190-200s (live run 33869398248: gaps of 194s/190s/190s/193s/196s),
+      # so only ~5 attempts ever execute before PUSH_DEADLINE_SEC=900 fires
+      # and the loop self-aborts — attempt 13 is structurally unreachable and
+      # the Git Data API fallback never engages. Explicitly overriding
+      # PUSH_API_FALLBACK_AFTER_ATTEMPTS=3 here (3*~193s≈579s, well under
+      # 900s) makes the fallback trigger reachable while leaving MAX_RETRIES
+      # at 25 — that value stays as-is because aa51b22c558 (task #1842) chose
+      # it specifically to give this step many cheap retries under the
+      # common low-contention case, which lowering MAX_RETRIES would regress.
+      # All 9 files here are single-writer + apiFallbackSafe, so the
+      # fallback is actually usable. (The old "Commit health check + triage
+      # data" step was split by BRO-3318: its 3 alert files now get this
+      # same override in "Commit alert router state (apiFallbackMerge)";
+      # only "Commit triage data", a directory, stays fallback-disqualified.)
+      - name: Commit health check audit snapshots (apiFallbackSafe)
+        if: always()
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+          # EXPERIMENTAL, OPT-IN ONLY (BRO-2233/BRO-2951 Phase 2) - do NOT
+          # copy this into a new workflow step without reading
+          # scripts/lib/push-via-git-api-rest.js's header first. This step
+          # (as "Commit digest snapshot") was failing nearly every day (4/4
+          # git-push attempts timing out at the 90s cap under main's commit
+          # contention, confirmed live run 34690587066) while a diagnostic
+          # REST write from the same actor in the same job completed in
+          # ~400ms - the fallback below now lands via GitHub's REST Git Data
+          # API instead of `git push` for exactly this step. Every other
+          # push-with-retry.sh caller (~150+) is unaffected: this variable is
+          # opt-in and unset everywhere else. Kill switch: delete this line,
+          # falls back to today's exact git-push behavior with zero code
+          # change.
+          #
+          # BRO-3068 correction (BRO-471 adversarial-review finding): the
+          # PREVIOUS version of this comment claimed GIT_NET_TIMEOUT_SEC was
+          # unnecessary here because this step "bypasses git push entirely" —
+          # that's wrong. PUSH_API_FALLBACK_AFTER_ATTEMPTS=3 means the local
+          # loop still makes 3 real `git push` attempts (at the 90s default
+          # GIT_NET_TIMEOUT_SEC) BEFORE falling back to the REST API. Setting
+          # it to 30 here gets those 3 attempts through their fail-fast cycle
+          # sooner, reaching the REST fallback in ~90s instead of ~270s under
+          # a hung transport — matching BRO-334/BRO-346's fix on the plain
+          # `git push` steps in this file.
+          GIT_NET_TIMEOUT_SEC: '30'
+          PUSH_API_REST_REF_UPDATE: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/time-to-publish-sla.json 2>/dev/null || true
+          # provider-spend-daily.jsonl, provider-spend-snapshot.json, and
+          # scraper-spend-daily-agg.jsonl moved to their own earlier
+          # "Commit provider spend ledger (apiFallbackSafe)" step (BRO-3317)
+          # — committing them here was too late: intervening commit steps'
+          # push-with-retry.sh hard-reset fallback could wipe the uncommitted
+          # write before it ever reached this step.
+          # health-digest-snapshot.json, health-check-history.json,
+          # workflow-run-coverage.json, and affiliate-health.json moved to
+          # their own earlier "Commit digest + coverage snapshots
+          # (apiFallbackSafe)" step, right after "Run health check" /
+          # "Affiliate health monitor" write them (BRO-2529) — same reason as
+          # the provider-spend move above: this step runs too late, after 4
+          # OTHER push-with-retry.sh callers that could wipe the uncommitted
+          # write before it ever reached here.
+          # digest-history.json intentionally NOT added here — ship-check
+          # review (2026-08-23) found it has zero writers anywhere in the
+          # codebase (orphaned since card #364); see core-data-merge-
+          # registry.js's comment at this file's old registry slot.
+          git add data/audit/linear-archive-done.jsonl 2>/dev/null || true
+          git add data/audit/trunk-status-snapshot.json 2>/dev/null || true
+          git add data/audit/cross-outlet-attribution-drift.json 2>/dev/null || true
+          # cv-wrongproduction-lifetime.json, fulltext-mentions-show-lifetime.json,
+          # slug-mismatch-lifetime.json, roundup-url-mismatch-lifetime.json,
+          # revival-unverified-lifetime.json moved to their own earlier
+          # "Commit lifetime sweep snapshots (apiFallbackSafe)" step (BRO-472)
+          # — no longer added here.
+          git add data/audit/stale-announced-shows.json 2>/dev/null || true
+          git add data/audit/notion-schedule-coupling.json 2>/dev/null || true
+          git add data/audit/missed-broadcasts.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No health check audit snapshot changes"
+          else
+            git commit -m "data: Update health check audit snapshots [skip ci]"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
+
+      # PUSH_DEADLINE_SEC='900' (task #1842, same class as task #1791's
+      # audit-aggregator-gap.yml fix): this is the step that actually failed
+      # in the incident that opened this card — run 32344089679 (2026-08-20)
+      # ran 405s (07:37:37→07:44:22), hit push-with-retry.sh's shared 240s
+      # default after 2 rebase/conflict cycles against heavy concurrent
+      # data/audit/* writers, aborted, and hard-failed the job (no
+      # continue-on-error here, unlike every shadow-mode step above), firing
+      # the misleading "Daily Data Health Check Crashed" critical email even
+      # though the health-check script itself passed.
+      #
+      # health-digest-snapshot.json moved OUT of this step's git-add list
+      # (Notion 3c4637c5-416f-8127 (run 32559247279 push-race)) into its own isolated "Commit digest snapshot" step
+      # above — see that step's comment for why. Everything else here is
+      # unchanged; this step still owns the other ~14 data/audit/* files.
+      #
+      # First fix pass set this to 600s and was verified LIVE via manual
+      # workflow_dispatch run 32393356269 (2026-08-20) — it was NOT enough:
+      # this step burned 4 full fetch->rebase-conflict->retry cycles
+      # (~720s real wall-clock) against contention heavier than the original
+      # incident and still hit "overall deadline 600s exceeded" before
+      # landing. Raised to 900s (matching #1791's own value) on the evidence
+      # that this repo's data/audit/* contention is not actually lighter
+      # than audit-aggregator-gap.yml's.
+      #
+      # Third pass (still task #1842): TWO further live verification runs at
+      # 900s (32396596947, 32398165382 — the second deliberately run with NO
+      # other worktree-merge activity from this session, to rule out
+      # self-inflicted contention) BOTH still failed — but not from the
+      # deadline. Log evidence: "All push attempts failed after 7 attempts"
+      # fired at ~140s and ~140s respectively, nowhere near the 900s budget.
+      # push-with-retry.sh's default MAX_RETRIES=7 (not PUSH_DEADLINE_SEC)
+      # was the actual binding constraint — its per-attempt backoff
+      # (WAIT=3+i*2+jitter, script line ~1554) sums to only ~110s over 7
+      # attempts, so raising the time deadline alone bought this step nothing
+      # to spend it on: the loop still gave up at attempt 7 with ~760s of
+      # granted deadline unused. push-with-retry.sh checks
+      # `$SECONDS -ge $PUSH_DEADLINE_SEC` at the top of EVERY loop iteration
+      # (script line ~952), independent of MAX_RETRIES — so raising
+      # MAX_RETRIES here doesn't weaken the deadline safety valve, it just
+      # stops attempt-count from cutting the loop off before the deadline
+      # can. 25 (positional arg 1) is sized so the backoff schedule's own sum
+      # (~725s across 25 attempts, per the formula above) plus per-attempt
+      # work lands just under the 900s deadline — the deadline, not an
+      # arbitrary retry count, is what actually governs this step now.
+      #
+      # No explicit timeout-minutes override on this step (matching
+      # audit-aggregator-gap.yml's equivalent fix, which also left its
+      # bulk-commit step uncapped) — it inherits the job timeout-minutes
+      # below, which is raised specifically to give this LAST step real
+      # headroom past its new 900s internal deadline even after every step
+      # ahead of it in this job.
+      #
+      # BRO-2370 DEFECT B history (superseded by BRO-3318 split below):
+      # PUSH_API_FALLBACK_AFTER_ATTEMPTS=3 was added to the apiFallbackSafe
+      # steps above ("Commit lifetime sweep snapshots", "Commit health check
+      # audit snapshots", "Commit acceptance recheck ledger" — BRO-352 merged
+      # two of the original steps into one, BRO-472 added a new one, net
+      # unchanged at 3) to make their Git Data API fallback reachable (see
+      # "Commit health check audit snapshots (apiFallbackSafe)"'s comment).
+      # This job used to bundle triage/, alert-ledger.json, alert-digest-
+      # queue.json, and alert-router-attempts.jsonl into ONE step and treat
+      # all 4 as equally fallback-disqualified ("verified genuinely
+      # multi-writer (2026-08-23), no apiFallbackSafe path available for
+      # them"). That was already stale by the time it mattered: BRO-2413
+      # (2026-09-04, 10 days before this split) registered the 3 non-triage
+      # files `apiFallbackMerge: true` in core-data-merge-registry.js with
+      # real per-key reconciliation functions (mergeAlertLedger/
+      # mergeAlertDigestQueue/mergeAlertRouterAttempts) — push-via-git-api.sh
+      # looks them up unconditionally, no env opt-in needed. Only
+      # data/audit/triage/ (a directory, a different shape from the
+      # registry's single-file merge contract — see its own "NOT added"
+      # comment in core-data-merge-registry.js) genuinely has no fallback
+      # path. Because push-with-retry.sh's disqualifier is a `.find()` over
+      # the WHOLE staged diff, bundling triage/ into the same commit as the
+      # other 3 disqualified the fallback for ALL 4 — so the 3 mergeable
+      # files were silently riding on the slow fetch+rebase+push loop alone,
+      # identical to a file with no protection at all. BRO-3318 (2026-09-14)
+      # split them into two steps below so the 3 apiFallbackMerge files
+      # actually get the fast REST path push-with-retry.sh already offers
+      # every other apiFallbackSafe/Merge step in this job, instead of
+      # resting on continue-on-error as the only safety net.
+      - name: Commit alert router state (apiFallbackMerge)
+        if: always()
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          # Same override as "Commit lifetime sweep snapshots"/"Commit health
+          # check audit snapshots" above — makes the fallback reachable
+          # within the deadline instead of exhausting all 25 local attempts
+          # first (BRO-2370 DEFECT B). Safe here because these 3 files are
+          # apiFallbackMerge-covered, unlike the triage/ step below.
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+          GIT_NET_TIMEOUT_SEC: '30'
+          PUSH_API_REST_REF_UPDATE: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No alert router state changes"
+          else
+            git commit -m "data: Update alert router state [skip ci]"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
+
+      # data/audit/triage/ split out alone (BRO-3318, 2026-09-14): a
+      # directory of per-item files, structurally different from the
+      # registry's single-file {ours,remote}->merged contract, so it has no
+      # apiFallbackMerge path and (per core-data-merge-registry.js's own
+      # comment) "needs its own design, out of scope" — genuinely
+      # fallback-disqualified, not just under-registered like its former
+      # 3 bundle-mates above.
+      #
+      # continue-on-error: true (BRO-3318): this was the ONLY commit step in
+      # the job without it, on the theory that a lost push here was uniquely
+      # page-worthy (see the incident comment above — run 32344089679 is why
+      # it fired the critical alert). Field evidence from the SAME day this
+      # card was filed falsified that theory: runs 34841009910 (11:59 UTC)
+      # and 34848771085 (13:21 UTC, AFTER BRO-352/BRO-471/BRO-472 landed at
+      # 12:31 UTC — ruling those fixes out as the cause) both crashed on
+      # THIS step (then still bundled with the 3 files above), both with the
+      # identical signature — all 13 local push attempts failing with
+      # rc=124 "killed mid-transport at the 30s cap... a transport HANG, not
+      # a rejection" (task #1810's known GitHub git-transport degradation,
+      # not a rebase/data bug), correctly DISQUALIFIED from the fallback.
+      # That combination — real transport degradation this step has no
+      # escape hatch from — crashed the job on every run for a week
+      # (2026-09-07 through 2026-09-14+), paging on infrastructure noise
+      # instead of a real data-loss signal, while masking the one thing this
+      # workflow uniquely hosts: scripts/autonomous-acceptance-recheck.js's
+      # shadow-mode recheck ledger (confirmed via the run logs to still
+      # execute successfully every time — it runs and commits in its own
+      # earlier, already-continue-on-error step, unaffected by this one).
+      # record_push_failure() (scripts/lib/push-with-retry.sh) writes to
+      # data/audit/push-retry-failures.jsonl unconditionally on exhaustion,
+      # independent of continue-on-error, and health-check.js surfaces that
+      # ledger as the "Push-retry deadman" digest row — so a lost push here
+      # still reaches the owner, just via the non-critical daily digest
+      # instead of a critical page + a false "Daily Data Health Check
+      # Crashed" reading of the whole job.
+      - name: Commit triage data
+        if: always()
+        continue-on-error: true
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          # BRO-3068: same GIT_NET_TIMEOUT_SEC=90s hang class documented in the
+          # job-level comment above (line ~102). Lower to 30s so more real
+          # attempts fit in the 900s deadline. Matches BRO-334/BRO-346.
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # 15 files this step used to also bundle here (health-check-
+          # history.json, time-to-publish-sla.json, workflow-run-coverage.json,
+          # provider-spend-daily.jsonl, provider-spend-snapshot.json, digest-
+          # history.json, affiliate-health.json, linear-archive-done.jsonl,
+          # trunk-status-snapshot.json, cross-outlet-attribution-drift.json,
+          # cv-wrongproduction-lifetime.json, fulltext-mentions-show-
+          # lifetime.json, slug-mismatch-lifetime.json, roundup-url-mismatch-
+          # lifetime.json, revival-unverified-lifetime.json) moved to their own
+          # isolated "Commit health check audit snapshots (apiFallbackSafe)"
+          # step above (run 32625283171 push-race, 2026-08-23) — verified
+          # single-writer, now apiFallbackSafe in core-data-merge-registry.js.
+          # BRO-472 (2026-09-14): the 5 lifetime-sweep files listed above moved
+          # AGAIN, this time to their own even-earlier "Commit lifetime sweep
+          # snapshots (apiFallbackSafe)" step, right after the sweep scripts
+          # that write them — see that step's comment for why.
+          # autonomous-recheck-ledger.jsonl is committed+pushed in its OWN
+          # step much earlier in this job (BRO-386, "Commit acceptance
+          # recheck ledger"; repositioned to run immediately after its own
+          # write step by BRO-471, 2026-09-14 — see that step's comment).
+          # health-digest-snapshot.json (Card #364's file) is committed+pushed
+          # in the earlier "Commit health check audit snapshots
+          # (apiFallbackSafe)" step above. alert-ledger.json/alert-digest-
+          # queue.json/alert-router-attempts.jsonl moved to their own earlier
+          # "Commit alert router state (apiFallbackMerge)" step (BRO-3318,
+          # 2026-09-14) — see that step's comment for why they no longer
+          # share a commit with triage/.
+          git add data/audit/triage/ 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No triage data changes"
+          else
+            git commit -m "data: Update triage state [skip ci]"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
+
+      - name: Notify on failure
+        id: notify
+        # BRO-3707: a hang in any uncapped step hitting the job's own
+        # timeout-minutes: 330 reports conclusion "cancelled", not "failure" —
+        # a bare failure() here would silently drop this critical alert.
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Daily Data Health Check Crashed'
+          description: 'Health check script crashed — its digest snapshot may not have written, so tomorrow''s morning email won''t carry site-health data.'
+          # BRO-4603: not on the owner's page-worthy list (scripts/lib/page-worthy-alerts.js
+          # PAGE_WORTHY_WORKFLOWS) — failures reach the morning digest, never email.
+          severity: 'warning'
+          email: 'false'
+          # BRO-4141: one-off failures of this job are not owner-actionable; email
+          # only when it keeps failing (streak mode re-pages every 4th failure after).
+          min_consecutive_failures: '2'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+      - name: Trigger investigation
+        # Only when the failure actually paged (2h cooldown) — a repeat failure
+        # inside the cooldown shouldn't send a second investigation email.
+        if: failure() && steps.notify.outputs.suppressed != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          gh workflow run investigate-alert.yml \
+            -f alert_type=data_health_fail \
+            -f alert_title="Daily Data Health Check Crashed" \
+            -f alert_context='{"note":"Health check script crashed — BSC Daily email may not have sent."}' \
+            -f run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"

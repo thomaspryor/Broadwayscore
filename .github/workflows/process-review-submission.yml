@@ -1,0 +1,533 @@
+name: Process Review Submission
+
+# Issue comments/labels/closes below use GH_DISPATCH_TOKEN (BRO-4141). The
+# /api/submit-review route opens these issues with that same owner PAT, so the
+# owner is the issue author and was emailed for every github-actions[bot]
+# comment and close. GitHub doesn't notify you of your own actions. Only
+# `opened` triggers any workflow here, so PAT-authored comments trigger nothing.
+on:
+  issues:
+    types: [opened]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'GitHub Issue number to process'
+        required: true
+        type: string
+
+# Per-issue group, not shared: GitHub cancels a PENDING run in a concurrency
+# group the moment a third run for that same group arrives, regardless of
+# cancel-in-progress (docs: "any existing pending job... will be canceled and
+# the new queued job... will take its place"). A shared group here would
+# silently drop issue B's submission if issue C is opened while A is still
+# running — each issue is distinct, non-idempotent work, not an interchangeable
+# retry. Keying by issue number means different issues never collide.
+concurrency:
+  group: process-review-submission-${{ github.event.issue.number || inputs.issue_number }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    # Run for workflow_dispatch or new issues with review-submission label
+    # (opened only — edited excluded to prevent re-runs on already-processed issues)
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      contains(github.event.issue.labels.*.name, 'review-submission')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      recommendation: ${{ steps.validate.outputs.recommendation }}
+      show_id: ${{ steps.validate.outputs.show_id }}
+      review_url: ${{ steps.validate.outputs.review_url }}
+      issue_number: ${{ steps.resolve.outputs.issue_number }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Resolve issue context
+        id: resolve
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            ISSUE_NUM="${{ github.event.inputs.issue_number }}"
+          else
+            ISSUE_NUM="${{ github.event.issue.number }}"
+          fi
+          echo "issue_number=$ISSUE_NUM" >> $GITHUB_OUTPUT
+
+          # Fetch issue body from API (works for both trigger types)
+          gh api "repos/${{ github.repository }}/issues/$ISSUE_NUM" --jq '.body' > .issue-body.txt
+          echo "Resolved issue #$ISSUE_NUM"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate submission
+        id: validate
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          ISSUE_BODY="$(cat .issue-body.txt)" node scripts/validate-review-submission.js
+        # continue-on-error so cleanup steps (comments, labels) still run.
+        # Scrape job gates on recommendation=='approve', so crashes are safe.
+        continue-on-error: true
+
+      - name: Post validation result
+        if: always()
+        uses: actions/github-script@v7
+        env:
+          ISSUE_NUMBER: ${{ steps.resolve.outputs.issue_number }}
+        with:
+          github-token: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const commentFile = '.github-comment.md';
+            if (!fs.existsSync(commentFile)) {
+              console.log('No validation comment file found');
+              return;
+            }
+            const body = fs.readFileSync(commentFile, 'utf8');
+            if (!body.trim()) {
+              console.log('Validation comment is empty');
+              return;
+            }
+            const issueNumber = parseInt(process.env.ISSUE_NUMBER);
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              body: body
+            });
+
+      - name: Add label - Approved
+        if: steps.validate.outputs.recommendation == 'approve'
+        uses: actions/github-script@v7
+        env:
+          ISSUE_NUMBER: ${{ steps.resolve.outputs.issue_number }}
+        with:
+          github-token: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const issueNumber = parseInt(process.env.ISSUE_NUMBER);
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              labels: ['validated', 'approved']
+            });
+            await github.rest.issues.removeLabel({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              name: 'needs-validation'
+            }).catch(() => {});
+
+      - name: Notify submitter - Approved
+        if: steps.validate.outputs.recommendation == 'approve'
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: |
+          EMAIL=$(grep -A1 '### Submitter Email' .issue-body.txt | tail -1 | tr -d '[:space:]')
+          if [[ -z "$EMAIL" || "$EMAIL" == "_Noresponse_" ]]; then
+            echo "No submitter email — skipping notification"
+            exit 0
+          fi
+          REVIEW_URL=$(grep -A1 '### Review URL' .issue-body.txt | tail -1 | tr -d '[:space:]')
+          curl -s -o /dev/null -w "%{http_code}" -X POST https://api.resend.com/emails \
+            -H "Authorization: Bearer $RESEND_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"from\": \"Broadway Scorecard <noreply@broadwayscorecard.com>\",
+              \"to\": [\"$EMAIL\"],
+              \"reply_to\": \"$OWNER_EMAIL\",
+              \"subject\": \"Your review submission was approved\",
+              \"text\": \"Great news — the review you submitted to Broadway Scorecard has been approved and will be added to our database shortly.\n\nURL: $REVIEW_URL\n\nThank you for helping expand our database!\"
+            }" | grep -qE '^2' || echo "::warning::Resend approved notification failed"
+
+      - name: Add label - Rejected
+        if: steps.validate.outputs.recommendation == 'reject'
+        uses: actions/github-script@v7
+        env:
+          ISSUE_NUMBER: ${{ steps.resolve.outputs.issue_number }}
+        with:
+          github-token: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const issueNumber = parseInt(process.env.ISSUE_NUMBER);
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              labels: ['invalid']
+            });
+            await github.rest.issues.removeLabel({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              name: 'needs-validation'
+            }).catch(() => {});
+            // Close rejected issues
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              state: 'closed'
+            });
+
+      - name: Notify submitter - Rejected
+        if: steps.validate.outputs.recommendation == 'reject'
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: |
+          EMAIL=$(grep -A1 '### Submitter Email' .issue-body.txt | tail -1 | tr -d '[:space:]')
+          if [[ -z "$EMAIL" || "$EMAIL" == "_Noresponse_" ]]; then
+            echo "No submitter email — skipping notification"
+            exit 0
+          fi
+          REVIEW_URL=$(grep -A1 '### Review URL' .issue-body.txt | tail -1 | tr -d '[:space:]')
+          curl -s -o /dev/null -w "%{http_code}" -X POST https://api.resend.com/emails \
+            -H "Authorization: Bearer $RESEND_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"from\": \"Broadway Scorecard <noreply@broadwayscorecard.com>\",
+              \"to\": [\"$EMAIL\"],
+              \"reply_to\": \"$OWNER_EMAIL\",
+              \"subject\": \"Your review submission was not approved\",
+              \"text\": \"We reviewed the URL you submitted to Broadway Scorecard but were unable to add it to our database.\n\nURL: $REVIEW_URL\n\nCommon reasons: the review is from an outlet we don't currently track, the URL didn't resolve to a review of a Broadway or West End production, or the content didn't meet our scoring criteria. If you think this is an error, you can reply to this email.\n\nThanks for your submission.\"
+            }" | grep -qE '^2' || echo "::warning::Resend rejected notification failed"
+
+      - name: Add label - Needs Manual Review
+        if: steps.validate.outputs.recommendation == 'needs-manual-review'
+        uses: actions/github-script@v7
+        env:
+          ISSUE_NUMBER: ${{ steps.resolve.outputs.issue_number }}
+        with:
+          github-token: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const issueNumber = parseInt(process.env.ISSUE_NUMBER);
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              labels: ['needs-manual-review']
+            });
+
+  scrape-review:
+    needs: validate
+    # Only run if validation passed
+    if: needs.validate.outputs.recommendation == 'approve'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25  # BRO-4431: one retry + stub fallback
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 25-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Scrape review
+        id: scrape
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          NYT_EMAIL: ${{ secrets.NYT_EMAIL }}
+          NYT_PASSWORD: ${{ secrets.NYT_PASSWORD }}
+          VULTURE_EMAIL: ${{ secrets.VULTURE_EMAIL }}
+          VULTURE_PASSWORD: ${{ secrets.VULTURE_PASSWORD }}
+        run: |
+          # Get show ID and review URL from validation output
+          SHOW_ID="${{ needs.validate.outputs.show_id }}"
+          REVIEW_URL="${{ needs.validate.outputs.review_url }}"
+
+          if [ -z "$SHOW_ID" ] || [ -z "$REVIEW_URL" ]; then
+            echo "Missing show_id or review_url from validation"
+            exit 1
+          fi
+
+          # Single-URL ingest. Replaces the previous
+          # `collect-review-texts-v2.js --show=X --url=Y` which silently ignored
+          # both flags and scanned the full backlog (cancelled at 15-min timeout
+          # for issue #309 on 2026-05-03). The new script fetches just the
+          # submitted URL, extracts text + byline, resolves the outlet from
+          # the URL domain, and runs the same write path as
+          # scripts/ingest-manual-review.js.
+          #
+          # BRO-4431: a failed fetch used to fail the job, label the issue
+          # scraping-failed and stop (Golden Boy #907/#908, Thelma & Louise
+          # #919). Retry once (bot walls and proxy blips are often transient),
+          # then save a URL-only stub queued for automatic retry: the
+          # collector, the T1/T2 gap audit and the paywall/aggregator star
+          # salvage all work from it, and the landed check below treats it as
+          # pending (awaiting-score sweep), not as a dead end. A refusal
+          # (blocked domain, blocklist, wrong show) still fails here.
+          status=0
+          node scripts/ingest-review-from-url.js --show="$SHOW_ID" --url="$REVIEW_URL" || status=$?
+          [ "$status" -eq 0 ] && exit 0
+          # Exit 3 = the page could not be read. Anything else is a refusal
+          # (blocked/non-review URL, blocklist, wrong show): fail as before.
+          [ "$status" -ne 3 ] && exit "$status"
+          echo "::warning::First ingest attempt could not read the page; retrying in 60s"
+          sleep 60
+          node scripts/ingest-review-from-url.js --show="$SHOW_ID" --url="$REVIEW_URL" --stub-on-failure
+
+      # BRO-4141: score the new review before the rebuild. Without a score the
+      # rebuild leaves it out, the landed check below reported "not on the
+      # site", and the owner got an Action email for every submission (11 in
+      # two days, 9/23-9/24). The llm-ensemble-score cron scored each one about
+      # 45 min later and it went live on its own. Same call as
+      # opening-night-poller.yml "Score reviews inline". A scoring failure
+      # falls through to the landed check, which still reports it.
+      - name: Score review inline
+        if: success()
+        continue-on-error: true
+        timeout-minutes: 10
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          SHOW_ID: ${{ needs.validate.outputs.show_id }}
+        run: npx ts-node scripts/llm-scoring/index.ts --show="$SHOW_ID" --ensemble --limit=10
+
+      - name: Rebuild reviews.json
+        if: success()
+        run: node scripts/rebuild-all-reviews.js
+
+      # Issue #908: the success comment used to fire whenever ingest exited 0,
+      # even when the written file was excluded (contentTier=invalid) and never
+      # reached the site. Ask the rebuilt reviews.json instead.
+      - name: Check review landed in reviews.json
+        id: landed
+        if: success()
+        run: |
+          node scripts/check-submission-landed.js \
+            --show="${{ needs.validate.outputs.show_id }}" \
+            --url="${{ needs.validate.outputs.review_url }}"
+
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Process Review Submission — Commit and push changes"
+      - name: Commit and push changes
+        if: always()
+        env:
+          ISSUE_NUMBER: ${{ needs.validate.outputs.issue_number }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # review-texts now pushed via push-review-texts composite action
+          # data/audit/*.json (rebuild-all-reviews.js's non-blocking guard
+          # ledgers) is NOT in push-core-data's CORE_FILES list, so it must be
+          # staged explicitly here — the prior comment claiming push-core-data
+          # covered it was wrong and made this step a permanent no-op
+          # (task #1460, same bug class as #1456).
+          git add data/audit/*.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Add review from submission #${ISSUE_NUMBER}"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from process-review-submission'
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: process-review-submission
+
+      - name: Post success comment
+        if: success() && steps.landed.outputs.landed == 'true'
+        uses: actions/github-script@v7
+        env:
+          ISSUE_NUMBER: ${{ needs.validate.outputs.issue_number }}
+        with:
+          github-token: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const issueNumber = parseInt(process.env.ISSUE_NUMBER);
+            const now = new Date().toISOString();
+            const body = '## ✅ Review Successfully Added!\n\n' +
+              'The review has been scraped and added to our database. ' +
+              'It will appear on the site within a few minutes after the next deployment.\n\n' +
+              'Thank you for your contribution to Broadway Scorecard! 🎭\n\n' +
+              '---\n' +
+              '*Added by automated system • ' + now + '*';
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              body: body
+            });
+
+            // Close the issue
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              state: 'closed',
+              state_reason: 'completed'
+            });
+
+      # BRO-4141: a review that only lacks a score goes live once the
+      # llm-ensemble-score cron scores it, so thank the submitter and label it
+      # awaiting-score instead of flagging a maintainer and emailing the owner.
+      - name: Post awaiting-score comment
+        if: success() && steps.landed.outputs.landed != 'true' && steps.landed.outputs.pending_score == 'true'
+        uses: actions/github-script@v7
+        env:
+          ISSUE_NUMBER: ${{ needs.validate.outputs.issue_number }}
+        with:
+          github-token: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const issueNumber = parseInt(process.env.ISSUE_NUMBER);
+            const body = '## ✅ Review received\n\n' +
+              'The review has been added to our database and will appear on the site once it has been scored (usually within the hour).\n\n' +
+              'Thank you for your contribution to Broadway Scorecard! 🎭\n\n' +
+              '---\n*Automated check • ' + new Date().toISOString() + '*';
+            await github.rest.issues.createComment({
+              owner: context.repo.owner, repo: context.repo.repo, issue_number: issueNumber, body,
+            });
+            // Left open: scripts/sweep-awaiting-score-submissions.js (run by
+            // rebuild-fast.yml) closes it once the review is live, or relabels
+            // it needs-manual-review if it is never scored.
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner, repo: context.repo.repo, issue_number: issueNumber,
+              labels: ['awaiting-score'],
+            });
+
+      - name: Post not-landed comment
+        if: success() && steps.landed.outputs.landed != 'true' && steps.landed.outputs.pending_score != 'true'
+        uses: actions/github-script@v7
+        env:
+          ISSUE_NUMBER: ${{ needs.validate.outputs.issue_number }}
+          EXCLUDED_REASON: ${{ steps.landed.outputs.excluded_reason }}
+        with:
+          github-token: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const issueNumber = parseInt(process.env.ISSUE_NUMBER);
+            const body = '## ⏳ Received — needs a manual check\n\n' +
+              'Thanks! This submission was approved, but our automated pipeline could not add it to the site on its own ' +
+              '(`' + (process.env.EXCLUDED_REASON || 'unknown') + '`). It has been flagged for a maintainer to review by hand.\n\n' +
+              '---\n*Automated check • ' + new Date().toISOString() + '*';
+            await github.rest.issues.createComment({
+              owner: context.repo.owner, repo: context.repo.repo, issue_number: issueNumber, body,
+            });
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner, repo: context.repo.repo, issue_number: issueNumber,
+              labels: ['needs-manual-review'],
+            });
+
+      - name: Email owner - approved submission not on site
+        if: success() && steps.landed.outputs.landed != 'true' && steps.landed.outputs.pending_score != 'true'
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          ISSUE_NUMBER: ${{ needs.validate.outputs.issue_number }}
+          SHOW_ID: ${{ needs.validate.outputs.show_id }}
+          REVIEW_URL: ${{ needs.validate.outputs.review_url }}
+          EXCLUDED_REASON: ${{ steps.landed.outputs.excluded_reason }}
+        run: |
+          if [ -z "$RESEND_API_KEY" ] || [ -z "$OWNER_EMAIL" ]; then
+            echo "::warning::Missing RESEND_API_KEY/OWNER_EMAIL; owner not emailed"; exit 0
+          fi
+          PAYLOAD=$(node -e 'const e=process.env;process.stdout.write(JSON.stringify({
+            from:"Broadway Scorecard <noreply@broadwayscorecard.com>",to:[e.OWNER_EMAIL],
+            subject:`Action: approved review submission #${e.ISSUE_NUMBER} is not on the site`,
+            text:`A reader-submitted review was approved but did not make it onto the site.\n\nShow: ${e.SHOW_ID}\nURL: ${e.REVIEW_URL}\nReason: ${e.EXCLUDED_REASON||"unknown"}\n\nIssue: https://github.com/${process.env.GITHUB_REPOSITORY}/issues/${e.ISSUE_NUMBER}`}))')
+          curl -s -o /dev/null -w "%{http_code}" -X POST https://api.resend.com/emails \
+            -H "Authorization: Bearer $RESEND_API_KEY" -H "Content-Type: application/json" \
+            -d "$PAYLOAD" | grep -qE '^2' || echo "::warning::Owner email failed"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Process Review Submission Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+      - name: Post failure comment
+        if: failure()
+        uses: actions/github-script@v7
+        env:
+          ISSUE_NUMBER: ${{ needs.validate.outputs.issue_number }}
+        with:
+          github-token: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const issueNumber = parseInt(process.env.ISSUE_NUMBER);
+            const now = new Date().toISOString();
+            const body = '## ⚠️ Scraping Failed\n\n' +
+              'The review validation passed, but we encountered an error while scraping the review content.\n\n' +
+              'A maintainer will investigate and manually add the review if possible.\n\n' +
+              '---\n' +
+              '*Error occurred at ' + now + '*';
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              body: body
+            });
+
+            // Add needs-manual-review label
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              labels: ['scraping-failed']
+            });

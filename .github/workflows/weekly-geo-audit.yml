@@ -1,0 +1,76 @@
+name: Weekly Geo Bot Audit
+
+# Runs every Monday at 9 AM UTC. Queries GA4 for last 7 days of country-level
+# engagement metrics, alerts via Discord + email if any new bot countries
+# (high sessions, low engagement) appeared since last audit. Silent on
+# no-new-bots so we don't get spammed.
+#
+# See: scripts/audit-geo-bots.js + memory/analytics-real-users-segment.md
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+    inputs:
+      test:
+        description: 'Force alert by ignoring known-bot-geos.json (for verifying email/Discord wiring)'
+        type: boolean
+        default: false
+
+concurrency:
+  group: weekly-geo-audit
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run geo bot audit
+        run: node scripts/audit-geo-bots.js ${{ inputs.test == true && '--test' || '' }}
+        env:
+          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+          GA_SERVICE_ACCOUNT_KEY: ${{ secrets.GA_SERVICE_ACCOUNT_KEY }}
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+
+      # BRO-3671: audit-geo-bots.js:138 calls routeAlert(disposition:'digest')
+      # per new bot country — this job had NO commit step at all, so the
+      # cooldown ledger, the queued digest line, and the dispatch-attempts
+      # log never persisted across weekly runs; every Monday re-alerted (or
+      # silently dropped its digest line) from a blank slate.
+      - name: Commit alert state
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No alert-state changes to commit."
+          else
+            git commit -m "chore: geo-bot-audit alert state [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Weekly Geo Bot Audit failed'
+          severity: 'low'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

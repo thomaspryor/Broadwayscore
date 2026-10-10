@@ -1,0 +1,272 @@
+/**
+ * Synopsis validation — shared between auto-fix-show-data.js (generation-time
+ * gate) and pre-deploy-check.js (self-healing guard).
+ *
+ * Why this exists: Claude and other LLMs sometimes refuse to generate a
+ * synopsis for an unfamiliar show and return a refusal paragraph instead.
+ * The old validator only checked length, marketing openers, and trailing
+ * punctuation, so "I do not have enough information about the specific plot
+ * or premise of X to provide a factual synopsis..." passed every check and
+ * was written to shows.json — from where it leaked into the public show
+ * page AND the SEO meta description (src/app/show/[slug]/page.tsx:126).
+ *
+ * Extracted per project rule §15 (Test Extraction Pattern).
+ */
+
+// First-person refusal / hedging patterns the LLM emits when it lacks facts.
+// Each regex targets a distinct phrasing so we can tell which one tripped.
+const REFUSAL_PATTERNS = [
+  /\bI do not have\b/i,
+  /\bI don't have\b/i,
+  /\bI'm afraid I (don't|do not)\b/i,
+  /\bI am unable to\b/i,
+  /\bI'm unable to\b/i,
+  /\bI cannot (write|provide|generate|create|offer)\b/i,
+  /\bI can't (write|provide|generate|create|offer)\b/i,
+  /\bI'm sorry,? but\b/i,
+  /\bI apologi[sz]e,? but\b/i,
+  /\bUnfortunately,? I (do not|don't|cannot|can't)\b/i,
+  /\bwithout more (details|information|context)\b/i,
+  /\bwithout access to (details|information|reliable)\b/i,
+  /\bto provide a (factual|concise|informative|brief|specific|accurate) (synopsis|summary|description)\b/i,
+  /\b(enough|sufficient) (information|context|details) (about|to|regarding)\b/i,
+  /\bbased on the (information|context|details) (provided|given|you provided)\b/i,
+  /\bas (requested|an AI)\b/i,
+  /\bas a (large )?language model\b/i,
+];
+
+// Generic "production-history placeholder" — describes who wrote it / where it
+// premiered / that it's transferring, with no actual plot. The canonical shape
+// is "<title> is a (stage) play/musical written by <name>." These pass the
+// length/refusal/marketing checks but tell a reader nothing about the show.
+// 1536 sat live with one of these for weeks (fixed 2026-06-21) because the only
+// gate was length. Anchored on "is a … written by" so plot text that merely
+// mentions a play-within-a-play ("a play written by his late wife") is safe.
+//
+// IMPORTANT: the "is a play written by X" opener ALSO appears in perfectly good
+// synopses ("X is a play written by Y about [plot]..."), so the opener alone is
+// NOT enough — that over-flagged real synopses and made the LLM backfill reject
+// its own good output (2026-06-21). A synopsis is a placeholder only when the
+// opener is paired with production-history sentences (premiere/transfer dates)
+// OR the whole thing is just the bare attribution (no room for a plot).
+const PLACEHOLDER_OPENER_RE = /\bis (a|an) (stage play|musical|play|new play|new musical|production)\b[^.]*\bwritten by\b/i;
+
+// Production-history sentences that mark a placeholder when no plot is present.
+const PRODUCTION_HISTORY_RE = /\b(had its world premiere|world[- ]?premiered?|premiered (at|in|on)|opened (at|on|in)|scheduled to (transfer|open|begin)|will transfer|transferred (to|from)|is set to (open|transfer|premiere)|made its [^.]{0,30}(debut|premiere)|originally (ran|opened|premiered|produced))\b/i;
+
+// A synopsis this short with the bare attribution opener AND no plot signal has
+// no room for a plot. The plot-signal guard is essential: "The Guest is a play
+// written by Jane Doe about a grieving son..." is a GOOD short synopsis and must
+// not be flagged just for being under the length bound (ship-check, 2026-06-21).
+const BARE_ATTRIBUTION_MAX = 130;
+
+// Phrases that signal a synopsis actually describes the plot (setting, premise,
+// characters, conflict). If any are present, the text is not a bare placeholder.
+const PLOT_SIGNAL_RE = /\b(about|set in|set during|set on|takes place|follows?|following|centers? on|centres? on|tells the (story|tale)|story of|tale of|in which|when |after |during |explores?|chronicles?|depicts?|portrays?|examines?|recounts?|charts?|traces?|where )\b/i;
+
+// Future-tense theatrical-transfer/premiere language that goes stale the moment a
+// show actually opens ("scheduled to transfer to the West End in 2026" on a show
+// that's now playing). MUST be anchored to a production context (a market, a
+// theatre, or a year) WITHIN 40 chars of the verb, so ordinary plot verbs
+// ("they will run away", "the show will open in Chicago") are NOT misread as
+// stale (ship-check, 2026-06-21). The 40-char window is deliberately tight: a
+// very verbose stale sentence (anchor >40 chars after the verb) is a tolerated
+// FALSE NEGATIVE — it just leaves the synopsis as-is. Widening the window is the
+// wrong trade because "theatre"/"Broadway" appearing in PLOT text within range
+// would become a false positive, and stale ones strip the synopsis at deploy.
+// Only stale when paired with an open/closed status.
+//
+// S4-T13 (2026 data audit, BRO-4204): four more pre-opening shapes that sat
+// live on OPENED shows because none of them uses a "scheduled to"-style verb
+// — Wikipedia's lede "<Title> is an upcoming 2026 musical with music and
+// lyrics by…", marketing's "is coming to Broadway / the West End", and the
+// dated "will open on 12 March 2026" / "opens on March 12, 2026". Each is
+// scoped as narrowly as the original: "is an upcoming" allows at most two
+// qualifier words before a work-noun ("is an upcoming Broadway musical"), so
+// "she is an upcoming actress in a play" cannot trip it; "is coming to" needs
+// a MARKET right after it ("a rich relative who is coming to visit" never
+// matches); "opens on <month>" additionally needs a 20xx year or a
+// theatre/market within 40 chars, because plot text does say "the action
+// opens on June 6, 1944". A verbose stale sentence outside these shapes is,
+// as before, a tolerated false negative.
+const MONTH_RE_SRC = '(?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)';
+const STALE_FUTURE_RE = new RegExp([
+  // Original (2026-06-21): schedule verb + market/theatre/year within 40 chars.
+  '\\b(?:scheduled to|set to|is set to|will|due to|expected to|slated to)\\s+(?:transfer|open|begin previews|begin its run|premiere|return|run|play)\\b[^.]{0,40}\\b(?:west end|broadway|off-?broadway|theatre|theater|in \\d{4})\\b',
+  // "<Title> is an upcoming 2026 musical…" — Wikipedia's pre-opening lede.
+  '\\bis an upcoming (?:[\\w\'’-]+ ){0,2}(?:musical|play|stage play|production|revival|comedy|drama|opera|adaptation)\\b',
+  // "is coming to Broadway / the West End" — a market, never a verb phrase.
+  '\\bis coming to (?:the )?(?:broadway|west end|off-?broadway|off-?west end)\\b',
+  // "will open on 12 March 2026" / "will open in March 2026" / "will open in 2026".
+  '\\bwill open (?:on|in) (?:\\d{1,2}(?:st|nd|rd|th)? )?(?:' + MONTH_RE_SRC + '|\\d{4})\\b',
+  // "opens on March 12, 2026" / "opens on 5 March at the Adelphi Theatre".
+  '\\bopens on (?:\\d{1,2}(?:st|nd|rd|th)? )?' + MONTH_RE_SRC + '\\b[^.]{0,40}\\b(?:20\\d{2}|west end|broadway|off-?broadway|theatre|theater)\\b',
+].join('|'), 'i');
+
+// "is coming to the Adelphi Theatre" — the venue form of "is coming to".
+// Case-SENSITIVE on purpose (so it cannot live inside the /i regex above): the
+// house name must be Capitalised Words ending in Theatre/Theater/Playhouse,
+// which is what keeps "a critic is coming to the theatre to review the show"
+// (plot, lowercase) from ever matching.
+const STALE_COMING_TO_VENUE_RE = /\bis coming to (?:the )?(?:[A-Z][\w'’.&-]*\s){1,5}(?:Theatre|Theater|Playhouse)\b/;
+
+// Page chrome a scraper grabbed instead of the blurb. Five West End/Off-Broadway
+// shows carried "We use cookies to personalise your experience..." as their
+// synopsis (found 2026-10-07, BRO-4853) because nothing here rejected it.
+const SCRAPED_PAGE_CHROME_RE = /\b(we use cookies|this (web)?site uses cookies|accept (all )?cookies|cookie (policy|settings|preferences|consent)|enable javascript|javascript is (disabled|required))\b/i;
+
+// Wikipedia scraps that are not prose: a leading "=" (heading/list remnant), infobox
+// "key = value" lines, and disambiguation pages ("Peter Pan commonly refers to:").
+// Sweep of 2,082 synopses on 2026-10-07 (BRO-4853) found each of these live on prod.
+const WIKI_ARTIFACT_RE = /^\s*=|\b(?:characters|genre|setting|composer|language|executive_producer|premiere|place premiered) = |\b(?:most commonly|commonly|usually|may|can) refers? to\b/i;
+
+const LIVE_STATUSES = new Set(['open', 'now-playing', 'closed']);
+
+/**
+ * Returns the first matching refusal pattern, or null.
+ * @param {string} text
+ * @returns {RegExp | null}
+ */
+function detectRefusalPattern(text) {
+  if (!text || typeof text !== 'string') return null;
+  for (const pattern of REFUSAL_PATTERNS) {
+    if (pattern.test(text)) return pattern;
+  }
+  return null;
+}
+
+/**
+ * True if the text is a generic production-history placeholder rather than a
+ * plot synopsis.
+ * @param {string} text
+ * @returns {boolean}
+ */
+function isPlaceholderSynopsis(text) {
+  if (!text || typeof text !== 'string') return false;
+  if (!PLACEHOLDER_OPENER_RE.test(text)) return false;
+  // Opener + production history (premiere/transfer) → placeholder.
+  if (PRODUCTION_HISTORY_RE.test(text)) return true;
+  // Opener + short + NO plot signal → bare attribution placeholder. The plot
+  // signal guard prevents nulling good short synopses like "X is a play written
+  // by Y about [premise]".
+  if (text.trim().length < BARE_ATTRIBUTION_MAX && !PLOT_SIGNAL_RE.test(text)) return true;
+  return false;
+}
+
+/**
+ * True if a show's synopsis uses future-tense transfer/open language while the
+ * show is already open or closed (stale pre-opening copy).
+ * @param {{ synopsis?: string, status?: string }} show
+ * @returns {boolean}
+ */
+function isStaleSynopsis(show) {
+  const text = show && show.synopsis;
+  if (!text || typeof text !== 'string') return false;
+  const status = (show.status || '').toLowerCase();
+  if (!LIVE_STATUSES.has(status)) return false;
+  return STALE_FUTURE_RE.test(text) || STALE_COMING_TO_VENUE_RE.test(text);
+}
+
+/**
+ * Classify why a show's synopsis is bad, or null if it's fine. Single source of
+ * truth for the freshness gate (check-show-freshness.js) and the deploy-time
+ * self-heal (pre-deploy-check.js).
+ * @param {{ synopsis?: string, status?: string }} show
+ * @returns {{ bad: boolean, reason: 'missing'|'refusal'|'placeholder'|'stale'|'invalid'|null }}
+ */
+function classifyBadSynopsis(show) {
+  const text = show && show.synopsis;
+  if (!text || typeof text !== 'string' || text.trim().length < 50) {
+    return { bad: true, reason: 'missing' };
+  }
+  if (detectRefusalPattern(text)) return { bad: true, reason: 'refusal' };
+  if (isPlaceholderSynopsis(text)) return { bad: true, reason: 'placeholder' };
+  if (isStaleSynopsis(show)) return { bad: true, reason: 'stale' };
+  if (!isValidSynopsis(text)) return { bad: true, reason: 'invalid' };
+  return { bad: false, reason: null };
+}
+
+/**
+ * True if the text looks like an LLM refusal rather than a real synopsis.
+ * @param {string} text
+ * @returns {boolean}
+ */
+function isLlmRefusal(text) {
+  return detectRefusalPattern(text) !== null;
+}
+
+/**
+ * Validate whether text is a genuine synopsis (not accessibility info,
+ * marketing copy, truncated text, or an LLM refusal).
+ *
+ * @param {string} text - Synopsis text to validate
+ * @returns {boolean} true if the text is a valid synopsis
+ */
+function isValidSynopsis(text) {
+  if (!text || typeof text !== 'string') return false;
+
+  const trimmed = text.trim();
+
+  // Reject text shorter than 50 characters
+  if (trimmed.length < 50) return false;
+
+  // Reject LLM refusals
+  if (isLlmRefusal(trimmed)) return false;
+
+  // Reject generic production-history placeholders (no plot)
+  if (isPlaceholderSynopsis(trimmed)) return false;
+
+  // Reject accessibility keywords (word-boundary to avoid "adaptation" matching "ada")
+  const accessibilityPattern = /\bwheelchair\b|\bhearing assist\b|\belevator access\b|\baccessible seating\b|\bada seating\b|\brestrooms\b|\bclosed captioning\b|\bassistive listening\b/i;
+  if (accessibilityPattern.test(trimmed)) return false;
+
+  // Reject scraped page chrome (cookie banners, JS-required notices)
+  if (SCRAPED_PAGE_CHROME_RE.test(trimmed)) return false;
+
+  // Reject Wikipedia markup / disambiguation scraps
+  if (WIKI_ARTIFACT_RE.test(trimmed.slice(0, 300))) return false;
+
+  // Reject marketing openers
+  if (/^(See |Get tickets|Don't miss|Experience the|Come discover)/i.test(trimmed)) return false;
+
+  // Reject text that ends mid-sentence (ends with comma, or ends with lowercase letter without period)
+  if (/,\s*$/.test(trimmed)) return false;
+  if (/[a-z]$/.test(trimmed) && !/[.!?'")\]]$/.test(trimmed)) return false;
+
+  return true;
+}
+
+/**
+ * Trim a model reply that ran out of tokens back to its last complete
+ * sentence (BRO-4884: 200-token replies cut mid-sentence failed
+ * isValidSynopsis and were dropped). Returns '' when no sentence ends.
+ *
+ * @param {string} text
+ * @returns {string}
+ */
+function cutToLastSentence(text) {
+  if (!text || typeof text !== 'string') return '';
+  const trimmed = text.trim();
+  if (/[.!?]['"\u2019\u201D)\]]?$/.test(trimmed)) return trimmed;
+  let end = -1;
+  for (const m of trimmed.matchAll(/[.!?]['"\u2019\u201D)\]]?(?=\s)/g)) end = m.index + m[0].length;
+  return end > 0 ? trimmed.slice(0, end) : '';
+}
+
+module.exports = {
+  PLOT_SIGNAL_RE,
+  REFUSAL_PATTERNS,
+  PLACEHOLDER_OPENER_RE,
+  PRODUCTION_HISTORY_RE,
+  STALE_FUTURE_RE,
+  STALE_COMING_TO_VENUE_RE,
+  SCRAPED_PAGE_CHROME_RE,
+  WIKI_ARTIFACT_RE,
+  detectRefusalPattern,
+  isLlmRefusal,
+  isPlaceholderSynopsis,
+  isStaleSynopsis,
+  isValidSynopsis,
+  classifyBadSynopsis,
+  cutToLastSentence,
+};

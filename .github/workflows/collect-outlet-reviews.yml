@@ -1,0 +1,230 @@
+name: Collect Outlet Reviews (SERP)
+
+on:
+  schedule:
+    - cron: '0 14 * * 1'  # Weekly Monday 2 PM UTC (9 AM EST)
+  workflow_dispatch:
+    inputs:
+      market:
+        description: 'Market to collect for (ignored if shows is set)'
+        required: false
+        default: 'broadway'
+        type: choice
+        options:
+          - broadway
+          - west-end
+          - off-west-end
+          - off-broadway
+      max_tier:
+        description: 'Maximum outlet tier to search'
+        required: false
+        default: '2'
+        type: choice
+        options:
+          - '1'
+          - '2'
+          - '3'
+      shows:
+        description: 'Comma-separated show IDs (auto-detects market, overrides market input)'
+        required: false
+        default: ''
+        type: string
+      show_filter:
+        description: 'Single show ID (legacy, prefer shows)'
+        required: false
+        default: ''
+        type: string
+      max_searches:
+        description: 'Maximum SERP searches (cost control)'
+        required: false
+        default: '200'
+        type: string
+      dry_run:
+        description: 'Dry run (no files written)'
+        required: false
+        default: false
+        type: boolean
+      no_skip_existing:
+        description: 'Re-search outlets even if a review file exists (for filling missing URLs)'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: collect-outlet-reviews-${{ github.event.inputs.market || 'manual' }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  # Cron: run each market in parallel so no market starves the others
+  collect-market:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        market: [broadway, west-end, off-broadway]
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Run outlet-based SERP collector (${{ matrix.market }})
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          echo "=== Market: ${{ matrix.market }} ==="
+          # Auto-retry once on failure (SERP transient errors, rate limits)
+          node scripts/collect-outlet-reviews.js --market "${{ matrix.market }}" --open-only --max-tier 2 --max-searches 150 --retry-urlless || {
+            echo "⚠️ First attempt failed, retrying after 30s..."
+            sleep 30
+            node scripts/collect-outlet-reviews.js --market "${{ matrix.market }}" --open-only --max-tier 2 --max-searches 150 --retry-urlless
+          }
+
+      - name: Push review texts
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "feat: Collect outlet reviews via SERP (${{ matrix.market }})"
+
+      # collect-outlet-reviews.js's discoverCorrectUrl calls url-discovery.js's
+      # serpQuery (150 searches/market), which writes attribution rows to
+      # data/audit/scraper-spend-ledger.jsonl on the runner's local disk (task
+      # #752/#784) — never staged before this weekly cron (Sprint 3, card
+      # 3b1637c5). 3 markets run concurrently and can race on this file;
+      # merge=union in .gitattributes + the reconcile opt-in below both cover it.
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true  # telemetry-only commit (Sprint 3, card 3b1637c5) — push contention under concurrent scheduled runs must never fail an otherwise-successful job
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/scraper-spend-ledger.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No ledger changes to commit"
+          else
+            git commit -m "chore: Record scraper-spend ledger (collect-outlet-reviews ${{ matrix.market }})"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+  # After all markets finish, trigger a single rebuild
+  rebuild:
+    needs: collect-market
+    if: github.event_name == 'schedule' && !cancelled()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Trigger rebuild
+        run: |
+          gh workflow run rebuild-reviews.yml -f reason="Post weekly outlet SERP collection"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+  # Manual dispatch: single job for targeted runs
+  collect-manual:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Run outlet-based SERP collector
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          if [ -n "${{ github.event.inputs.shows }}" ]; then
+            ARGS="--shows ${{ github.event.inputs.shows }}"
+          elif [ -n "${{ github.event.inputs.show_filter }}" ]; then
+            ARGS="--shows ${{ github.event.inputs.show_filter }}"
+          else
+            ARGS="--market ${{ github.event.inputs.market }}"
+          fi
+          ARGS="$ARGS --max-tier ${{ github.event.inputs.max_tier }} --max-searches ${{ github.event.inputs.max_searches }}"
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          if [ "${{ github.event.inputs.no_skip_existing }}" = "true" ]; then
+            ARGS="$ARGS --no-skip-existing"
+          fi
+          echo "Running: node scripts/collect-outlet-reviews.js $ARGS"
+          node scripts/collect-outlet-reviews.js $ARGS
+
+      - name: Push review texts
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "feat: Collect outlet reviews via SERP (manual)"
+
+      - name: Trigger rebuild
+        if: success() && github.event.inputs.dry_run != 'true'
+        run: |
+          gh workflow run rebuild-reviews.yml -f reason="Post outlet SERP collection (manual)"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true  # telemetry-only commit (Sprint 3, card 3b1637c5) — push contention under concurrent scheduled runs must never fail an otherwise-successful job
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/scraper-spend-ledger.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No ledger changes to commit"
+          else
+            git commit -m "chore: Record scraper-spend ledger (collect-outlet-reviews manual)"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Collect Outlet Reviews Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

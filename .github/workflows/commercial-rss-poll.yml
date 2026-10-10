@@ -1,0 +1,400 @@
+name: Commercial RSS Poll
+
+# Hourly trade-press RSS poll for recoupment announcements. Shrinks detection
+# latency from ~36h (Friday SERP → Saturday apply → Sunday newsletter) to ~1h.
+# Apply step gates on the same auto-apply contract as the Friday pipeline:
+# detectedBy in allowlist + confidence==='high' + sourceHost in
+# TRUSTED_RECOUPMENT_HOSTS (scripts/lib/trusted-recoupment-domains.js).
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # every hour, on the hour
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (poll + classify, no writes)'
+        required: false
+        type: boolean
+        default: false
+      window_hours:
+        description: 'Reject RSS items with pubDate older than this many hours'
+        required: false
+        type: number
+        default: 24
+      feed:
+        description: 'Comma-separated feed outletId filter (e.g. variety,deadline)'
+        required: false
+        type: string
+        default: ''
+
+concurrency:
+  group: commercial-data-write
+  cancel-in-progress: false
+
+jobs:
+  poll-and-apply:
+    runs-on: ubuntu-latest
+    # Polling 2 feeds + up to 20 LLM calls + fetchPage per match. Budget headroom.
+    # BRO-335 follow-up: raised 15->20min after a Codex adversarial review of
+    # the "Commit breaker state" PUSH_DEADLINE_SEC=300 change flagged that the
+    # two sequential push-with-retry.sh steps in this job now advertise 300s
+    # + 420s (720s) of deadline budget alone — under the OLD 15min (900s) cap
+    # that left only ~180s for checkout/poll/apply/breaker-checks/push-core-
+    # data/deploy-dispatch combined, which the poll step's own worst case (up
+    # to 20 LLM calls) can exceed on its own. A worst case where both push
+    # steps fully exhaust local+API-fallback retries simultaneously could
+    # have hit the job timeout, which cancels the job outright — losing the
+    # "Dispatch deploy" and "Notify on failure" steps, strictly worse than a
+    # single failed step. 20min (1200s) leaves real margin (~300s+) even in
+    # that compound worst case.
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Poll trade-press RSS
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          # Pre-mortem: scraper modules require BD + SB even on cache-only paths
+          # (scripts/lib/scraper.js init asserts both present). Pass both.
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: |
+          ARGS="--window-hours=${{ inputs.window_hours || '24' }}"
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ -n "${{ inputs.feed }}" ]; then ARGS="$ARGS --feed=${{ inputs.feed }}"; fi
+          set -o pipefail
+          node scripts/poll-trade-press-rss.js $ARGS
+
+      - name: Auto-apply high-confidence recoupment claims
+        if: inputs.dry_run != true
+        run: |
+          if [ -f data/commercial-pending-review.json ]; then
+            # Reuses the Friday pipeline's auto-apply gate: detectedBy must be
+            # in this allowlist AND confidence==='high' AND sourceHost ∈
+            # TRUSTED_RECOUPMENT_HOSTS. Other entries fall through to manual review.
+            # BRO-4758: this hourly step only applies recoupment claims. --no-source-verify keeps it from fetching
+            # pages every hour and leaves entries that carry figures for the verified weekly/Friday pass.
+            node scripts/apply-commercial-pending.js \
+              --all --min-confidence=high --no-source-verify \
+              --auto-apply-claims-from=rss-poller,recoupment-announcement-scraper
+          else
+            echo "No pending file — nothing to apply"
+          fi
+
+      - name: Commit poll output
+        # BRO-3665: commit the poll step's own output ADJACENT TO ITS PRODUCER,
+        # before any push-with-retry.sh call in this job can run.
+        #
+        # push-with-retry.sh hard-resets the worktree on several paths — its
+        # conflict-resolution branch (git reset --hard "origin/$PULL_BRANCH",
+        # ~L2008) and its pre-API-fallback diff branch (git reset --hard
+        # "$RESTORE_BASE_HEAD", ~L2274) — and NOTHING in its 2532 lines
+        # inspects, stashes or preserves a dirty worktree. So any unstaged
+        # tracked file on disk when it runs is destroyed.
+        #
+        # Until this step existed, data/commercial-rss-state.json and
+        # data/commercial-pending-review.json (written by "Poll trade-press
+        # RSS" above) sat UNSTAGED across the "Commit breaker state" push
+        # below. Run 34855723797 (2026-09-14) is the proof: the poll step
+        # SUCCEEDED — poll-trade-press-rss.js sets feedState.lastPolledAt for
+        # every feed and calls writeState() unconditionally, so the state file
+        # WAS written — the breaker push then exhausted into its API fallback
+        # and hard-reset, and the later "Commit data changes" step printed
+        # "No changes to commit". The hour's poll output was gone.
+        #
+        # That was survivable-but-visible while the breaker push was job-fatal
+        # (it reddened the run). BRO-2524 soft-failed that push on 2026-09-15,
+        # which made this silent: green job, no poll output, RSS state never
+        # advancing. Committing here is the repo's established fix for exactly
+        # this shape — see data-health-check.yml's "Commit provider spend
+        # ledger" (BRO-3317) and its BRO-472 sibling, both of which moved a
+        # commit EARLIER for the same hard-reset reason.
+        #
+        # Commit only, no push: the "Commit data changes" step below owns the
+        # push for this data and is job-fatal, so nothing here is soft-failed
+        # or stranded.
+        if: always() && inputs.dry_run != true
+        run: |
+          bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/commercial-rss-state.json
+          if git diff --staged --quiet; then
+            echo "No poll output to commit"
+          else
+            git commit -m "data: hourly poll — recoupment scan
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+          fi
+
+      - name: Clear BD blacklist of GitHub runner IPs
+        # Bright Data's unknown-IP detector auto-blacklists rotating GitHub
+        # Actions runner ranges on the zone, silently degrading the scraping
+        # fallback chain (2026-07-27: 158.23.190.0/24 on web_unlocker2).
+        # Control-plane API only (3 calls, no page fetches) — hosted here
+        # because this workflow is the hourly cron that already carries the
+        # BD token. Runs even when the poll fails; must run BEFORE the commit
+        # step so digest-queue writes for genuinely unknown IPs persist.
+        # continue-on-error: a BD-API blip or /meta rate-limit must not red
+        # this CRITICAL data cron or fire "Commercial RSS Poll Failed";
+        # persistent BD auth breakage still surfaces via check-secrets-health.
+        # hygiene-run-budget-ok: check-bd-blacklist.js makes a handful of
+        # bounded control-plane API calls (2 reads + one delete per blacklist
+        # entry + 1 verify), each with an AbortSignal timeout — no per-item
+        # page-fetch loop to budget. (poll-trade-press-rss.js already wires
+        # run-budget; this exemption is for the blacklist step's FP only.)
+        if: always() && inputs.dry_run != true
+        continue-on-error: true
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          # Authenticated /meta: unauthenticated is 60 req/hr per source IP,
+          # shared with every tenant on the runner's egress IP.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/check-bd-blacklist.js
+
+      - name: Bright Data daily circuit-breaker check
+        # Scraping cost v3 S2-T2 (card 3b1637c5). Asks BD's billing API how many
+        # requests each zone billed today and writes/clears
+        # data/audit/bd-circuit-breaker.json, which scripts/lib/brightdata-caps.js
+        # consults inside the two BD chokepoints. Hosted here for the same reason
+        # as the blacklist step above: this is the hourly cron that already
+        # carries the BD token, and the plan forbids adding a new cron.
+        # Must run BEFORE the commit step so the state file (and any digest-queue
+        # alert) reaches main within the hour — a breaker that never lands on
+        # main is a breaker no other workflow can see.
+        # continue-on-error: a billing-API blip must not red this CRITICAL data
+        # cron. The script already fails open on unknown billing, so a skipped
+        # run means "no new decision", never "cap lifted".
+        # hygiene-run-budget-ok: 2 bounded billing API reads (one per zone), each
+        # with an AbortSignal timeout — no per-item fetch loop to budget.
+        if: always() && inputs.dry_run != true
+        continue-on-error: true
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          BRIGHTDATA_SERP_ZONE: ${{ secrets.BRIGHTDATA_SERP_ZONE }}
+          # routeAlert(disposition:'auto') files a Linear issue; without the key
+          # every trip logged "LINEAR_API_KEY not set" and fed the alert-router
+          # dispatch-deadman page (2026-09-21/22).
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/check-bd-breaker.js
+
+      - name: ScrapingDog daily circuit-breaker check
+        # Card #1252 — same rationale as the Bright Data step above: hosted
+        # here because this is the hourly cron that already carries scraping
+        # secrets, and the plan (mirroring S2-T2) forbids adding a new cron.
+        # Must run BEFORE the commit step so the state file (and any
+        # digest-queue alert) reaches main within the hour.
+        # continue-on-error: an /account API blip must not red this CRITICAL
+        # data cron. The script fails open on unknown billing (leaves any
+        # existing trip in place), so a skipped run means "no new decision".
+        # hygiene-run-budget-ok: 1 bounded /account API read with an
+        # AbortSignal timeout (provider-billing.js) — no per-item fetch loop.
+        if: always() && inputs.dry_run != true
+        continue-on-error: true
+        env:
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          # BRO-2943 rollback knobs, sourced from repo VARIABLES so an
+          # emergency pin needs `gh variable set SD_BREAKER_CEILING --body N`
+          # (or SD_BREAKER_BURST_FACTOR), not a workflow commit riding the
+          # same push path that loses races most hours. Unset → empty →
+          # ignored by the script (plan-derived fair share applies).
+          SD_BREAKER_CEILING: ${{ vars.SD_BREAKER_CEILING }}
+          SD_BREAKER_BURST_FACTOR: ${{ vars.SD_BREAKER_BURST_FACTOR }}
+        run: node scripts/check-sd-breaker.js
+
+      - name: Commit breaker state
+        # BRO-2960: this job's "Commit data changes" step below (the big
+        # commercial-pending-review.json/commercial-rss-state.json commit)
+        # was losing its push race ~9 of the last 12 runs (2026-09-06/07),
+        # throwing away a freshly-computed BD/SD breaker verdict every time —
+        # the two checks above run continue-on-error so the verdict itself
+        # always succeeds, only the commit was silently lost. Giving the
+        # breaker state its OWN small, early commit+push means a later
+        # failure on the bigger commit no longer costs it: this step runs
+        # right after both breaker checks (and "Clear BD blacklist" above,
+        # which also calls routeAlert()) and before anything else touches
+        # data/audit/alert-ledger.json or alert-digest-queue.json this job,
+        # so staging those two here (not just the breaker files) captures
+        # every trip/clear alert from all three checks — the ledger only
+        # exists on this job's ephemeral runner disk and must be committed
+        # in the SAME job (owner-alert-router.js, card #618) or that alert
+        # state is silently lost. BRO-3022 adds breaker-transitions.jsonl to
+        # the same list for the same reason: it is the ONLY record of which
+        # DAYS each guard tripped (alert-ledger.json keeps a cumulative
+        # notifyCount per condition and nothing per-day), it is appended by the
+        # two checks directly above, and it lives only on this runner's disk
+        # until committed. It is registered apiFallbackMerge in
+        # scripts/lib/core-data-merge-registry.js precisely so adding it here
+        # does NOT trip push-with-retry.sh's "unaudited data/audit/ path"
+        # disqualifier and strip the Git Data API fallback from this commit.
+        # data-health-check.yml already establishes
+        # multiple push-with-retry.sh calls per job as a supported pattern
+        # (see its stranded-commit-cascade test).
+        # BRO-2524 (2026-09-15): the push line below is now soft-failed
+        # (`|| echo "::warning::..."`), not job-fatal — was chronic-staling
+        # this cron 2026-09-11->14 (20 consecutive hourly job failures) purely
+        # from this push losing a transient race on a high-churn main branch,
+        # while every other step in the same runs (poll, auto-apply, the 3
+        # breaker checks, the LATER "Commit data changes" push, core-data
+        # push, deploy) succeeded every single time — proof the contention is
+        # transient and self-clearing within the same job, not a real bug.
+        # routeAlert() already fired synchronously inside the 3 checks above
+        # BEFORE this step runs, so no alert is lost if this git push alone
+        # fails; only alert-ledger/breaker-transitions.jsonl's persistence to
+        # main is delayed ~1h. Scoped to the push-with-retry.sh call only
+        # (matches check-push-ledger.yml's "Commit alert state" step, which
+        # commits this same alert-ledger.json the same way) — git-add/git
+        # commit failures above stay job-fatal, since those would be a real
+        # script/data bug, not push contention.
+        if: always() && inputs.dry_run != true
+        # BRO-335 (2026-09-08): this step ran on the script's default 240s
+        # PUSH_DEADLINE_SEC/fundable=2-attempt budget until run 34195321965
+        # (2026-09-08T06:35 UTC) failed here with the exact push-contention
+        # signature BRO-2811 (965408d99d6, commit below) had already fixed on
+        # the sibling "Commit data changes" step: 2 local attempts (~291s,
+        # cheaper than the 180s/attempt worst-case model since fetch was fast
+        # both times) blew the 240s deadline, leaving 0s remaining for the Git
+        # Data API fallback, which floors to 2 retries (push-with-retry.sh
+        # ~L2200-2207) — both of which also timed out that run. 965408d99d6's
+        # own message explicitly investigated this step and left it alone,
+        # but only evaluated PUSH_API_FALLBACK_AFTER_ATTEMPTS ("only
+        # below-boundary override is 1 — premature"); it never tried
+        # PUSH_DEADLINE_SEC, the lever that actually fixed the sibling step.
+        # 300s is NOT a fundability fix — scripts/lib/audit-push-retry-budgets.js's
+        # own worst-case model still computes fundableAttempts=2 at 300s (needs
+        # ≥373s to reach 3, and 400s+ trips its job-timeout-margin guardrail
+        # given this job's shared 15-min budget across two push-with-retry.sh
+        # calls). It's a narrow, evidence-targeted nudge past the exact
+        # observed choke point (291s > 240s deadline check), matching the
+        # existing 300s precedent at opening-night-broadcast.yml's commit
+        # step. Not raising PUSH_API_FALLBACK_AFTER_ATTEMPTS — still agrees
+        # with 965408d99d6 that 1 is too aggressive for an hourly
+        # primary-path commit. If this repeats, the real fix is
+        # `timeout-minutes: 20` on the job to unlock room for an actual
+        # fundability fix, not further per-step tuning.
+        env:
+          PUSH_DEADLINE_SEC: '300'
+          # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
+          # its 90s default to 30s — a pre-transfer connection stall burns the
+          # whole 90s cap with zero transfer progress, which is exactly the
+          # "2 local attempts blew the 240s/300s deadline" failure shape
+          # documented in BRO-335's comment above. Matches BRO-334/BRO-346.
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          bash scripts/lib/git-add-existing.sh data/audit/bd-circuit-breaker.json data/audit/sd-circuit-breaker.json data/audit/breaker-transitions.jsonl data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl
+          if git diff --staged --quiet; then
+            echo "No breaker state changes to commit"
+          else
+            git commit -m "data: hourly poll — BD/SD breaker state
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            bash scripts/lib/push-with-retry.sh || echo "::warning::Breaker-state push failed after retries — next run re-derives BD/SD verdicts from billing APIs; alert-ledger/breaker-transitions state persists to main on the next successful push."
+          fi
+
+      - name: Commit data changes
+        if: always() && inputs.dry_run != true
+        # Task #574: commits commercial-pending-review.json (union-merged
+        # managed file) — see push-with-retry.sh's reconcile_merged_json().
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+          # BRO-123: same root cause as commercial-friday.yml — MANAGED-file
+          # push disqualified from the Git Data API fallback, default 240s
+          # deadline self-aborting after ~2 real cycles under main's commit
+          # churn. This job runs hourly with only a 15min timeout (poll+LLM
+          # steps use ~4min), so 420s (not the 600s used elsewhere) to leave
+          # real buffer against the job timeout.
+          #
+          # BRO-2811 (2026-09-08): commercial-pending-review.json is
+          # apiFallbackMerge (BRO-2795) and the incidental breaker files
+          # stage-data-changes.sh sweeps along (bd-circuit-breaker.json etc.,
+          # also BRO-2795) are apiFallbackSafe, so this diff is fallback-
+          # eligible — but the default fallback threshold, floor((7+1)/2)=4,
+          # exceeds the 3 attempts 420s actually funds, so the fallback only
+          # ever engages LATE with its minimum 2-attempt API budget. Override
+          # to 2 (below the 3 fundable, not just at the boundary — an
+          # override at exactly 3 would fire at essentially the same moment
+          # natural deadline exhaustion would anyway, buying nothing) frees a
+          # real ~185s of extra fallback budget while still giving 2 local
+          # attempts first, in line with push-with-retry.sh's own "ordinary
+          # transient contention resolves in 2-3 attempts" design assumption.
+          PUSH_DEADLINE_SEC: '420'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '2'
+          # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
+          # its 90s default to 30s — same pre-transfer connection-stall class
+          # as the sibling "Commit breaker state" step above. Matches
+          # BRO-334/BRO-346.
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/commercial-rss-state.json
+          bash scripts/lib/stage-data-changes.sh
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "data: hourly poll — recoupment scan + BD breaker state
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+          fi
+          # BRO-3665: push whenever THIS JOB has outstanding commits, not only
+          # when this step itself just made one. The push used to live inside
+          # the `else` above, so a run where nothing staged here pushed
+          # NOTHING — stranding the "Commit poll output" and "Commit breaker
+          # state" commits made earlier in this job on the ephemeral runner
+          # disk. That mattered most for the two files that exist ONLY here
+          # until committed: data/audit/alert-ledger.json and
+          # data/audit/breaker-transitions.jsonl (the sole per-day record of
+          # which guards tripped). BRO-2524's soft-fail on the breaker push
+          # means "its push failed" is now an ordinary, silent outcome, so
+          # this step is the only thing that gets those commits to main.
+          #
+          # Fails OPEN by design: `if` suppresses set -e, so a missing or
+          # unreadable origin/main inside a command substitution would yield
+          # an empty/zero count and silently skip the push — the exact class
+          # of silent loss being fixed. Verify the ref explicitly first and
+          # push anyway when it cannot be read (push-with-retry.sh guards
+          # origin/$PULL_BRANCH the same way at ~L774). A stale origin/main is
+          # harmless here: it can only over-report outstanding commits, which
+          # costs a no-op push, never a skipped one.
+          if git rev-parse --verify --quiet origin/main >/dev/null 2>&1; then
+            OUTSTANDING=$(git rev-list --count origin/main..HEAD 2>/dev/null || echo unknown)
+          else
+            echo "::warning::origin/main not readable — pushing unconditionally rather than risk stranding commits"
+            OUTSTANDING=unknown
+          fi
+          if [ "$OUTSTANDING" = "0" ]; then
+            echo "Nothing to push — HEAD matches origin/main"
+          else
+            echo "Pushing $OUTSTANDING outstanding commit(s) from this job"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Push core data to private repo
+        if: always() && inputs.dry_run != true
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: RSS poller commercial update'
+
+      - name: Dispatch deploy
+        if: always() && inputs.dry_run != true
+        uses: ./.github/actions/dispatch-deploy
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Commercial RSS Poll Failed'
+          severity: 'warning'

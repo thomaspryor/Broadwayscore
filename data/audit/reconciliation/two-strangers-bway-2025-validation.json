@@ -1,0 +1,57 @@
+{
+  "_meta": {
+    "generatedAt": "2026-01-24T12:00:00Z",
+    "source": "dtli-validation"
+  },
+  "showId": "two-strangers-bway-2025",
+  "dtli": {
+    "sourceUrl": "https://didtheylikeit.com/shows/two-strangers-carry-a-cake-across-new-york/",
+    "archiveDate": "2026-01-22T19:49:07.890Z",
+    "totalReviews": 13,
+    "thumbsUp": 6,
+    "thumbsFlat": 5,
+    "thumbsDown": 2
+  },
+  "ourData": {
+    "totalReviews": 16,
+    "thumbsUp": 9,
+    "thumbsFlat": 6,
+    "thumbsDown": 1
+  },
+  "validation": {
+    "matched": 13,
+    "allDtliInOurs": true,
+    "missingFromUs": [],
+    "onlyInUs": [
+      {"outlet": "Cititour", "critic": "Brian Scott Lipton", "thumb": "Up"},
+      {"outlet": "Culture Sauce", "critic": "Thom Geier", "thumb": "Up"},
+      {"outlet": "One Minute Critic", "critic": "Matthew Wexler", "thumb": "Down"}
+    ],
+    "thumbMismatches": [
+      {
+        "outlet": "TheaterMania",
+        "critic": "Dan Rubins",
+        "dtliThumb": "Down",
+        "ourThumb": "Flat",
+        "status": "ALIGNED - dtliThumb field correct"
+      },
+      {
+        "outlet": "The Wrap",
+        "critic": "Robert Hofler",
+        "dtliThumb": "Down",
+        "ourThumb": "Flat",
+        "status": "ALIGNED - dtliThumb field correct"
+      },
+      {
+        "outlet": "New York Theater",
+        "critic": "Jonathan Mandell",
+        "dtliThumb": "Flat",
+        "ourDtliThumbField": "Up",
+        "status": "MISMATCH - needs correction"
+      }
+    ]
+  },
+  "issues": [
+    "New York Theater (Jonathan Mandell): Our dtliThumb field says 'Up' but DTLI shows 'Flat'"
+  ]
+}

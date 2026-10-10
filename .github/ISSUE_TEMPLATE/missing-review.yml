@@ -1,0 +1,76 @@
+name: Submit Missing Review
+description: Submit a Broadway review that's missing from our database
+title: "[Review Submission] "
+labels: ["review-submission", "needs-validation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Submit a Missing Review
+
+        Help us expand our database by submitting a missing Broadway review!
+
+        Our automated system will validate the submission and add it to our review collection if it's approved.
+
+        **What we're looking for:**
+        - Professional critic reviews from established outlets
+        - Reviews of Broadway shows (not Off-Broadway, touring, or regional productions)
+        - Original reviews (not aggregator pages or roundups)
+
+  - type: input
+    id: review_url
+    attributes:
+      label: Review URL
+      description: The full URL of the review article
+      placeholder: https://www.nytimes.com/2024/04/25/theater/...
+    validations:
+      required: true
+
+  - type: input
+    id: show_name
+    attributes:
+      label: Show Name
+      description: Name of the Broadway show (optional - we'll auto-detect)
+      placeholder: Hamilton, Wicked, Stereophonic, etc.
+    validations:
+      required: false
+
+  - type: input
+    id: outlet_name
+    attributes:
+      label: Outlet Name
+      description: Publication name (optional - we'll auto-detect)
+      placeholder: The New York Times, Variety, Vulture, etc.
+    validations:
+      required: false
+
+  - type: input
+    id: critic_name
+    attributes:
+      label: Critic Name
+      description: Name of the critic/author (optional - we'll auto-detect)
+      placeholder: Jesse Green, Naveen Kumar, etc.
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional_notes
+    attributes:
+      label: Additional Notes
+      description: Any other context that might be helpful (optional)
+      placeholder: This review was published after opening night but before we gathered reviews...
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+
+        **What happens next?**
+        1. Our automated system validates the submission (usually within minutes)
+        2. If approved, the review is automatically scraped and added to our database
+        3. You'll receive updates via comments on this issue
+        4. The issue will be closed automatically once processed
+
+        Thank you for contributing to Broadway Scorecard!

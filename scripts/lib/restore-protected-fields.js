@@ -1,0 +1,598 @@
+#!/usr/bin/env node
+/**
+ * Restore manually-set protected fields after a git rebase/merge.
+ *
+ * When push-with-retry.sh rebases with -X theirs, conflicts are resolved
+ * by keeping the CI's version. This silently drops manual corrections
+ * (humanReviewScore, manualContentTier, etc.) that were pushed to origin.
+ *
+ * This script compares each JSON file between the remote ref and HEAD, and
+ * (when available) against ORIG_HEAD (the pre-rebase local commit). If either
+ * source had manual correction fields that are now missing, it restores them
+ * into the local file. The ORIG_HEAD source (#1916) covers the case where a
+ * content-length tie-break discarded our whole commit for a file, dropping a
+ * freshly-set MANUAL_FIELDS value that remote never had either.
+ *
+ * Usage: node scripts/lib/restore-protected-fields.js <remote-ref>
+ *
+ * Exit codes:
+ *   0 = no changes needed (or changes applied successfully)
+ *   Prints count of restored files to stdout (for caller to check).
+ */
+
+const fs = require('fs');
+const path = require('path');
+const { execSync } = require('child_process');
+// Generalized intentional-clear breadcrumbs — single source of truth. When the
+// LOCAL record deliberately cleared a field (durable breadcrumb present), we
+// must NOT restore the remote value, or a CI rebase silently re-flags a
+// human-verified review. See review-write-guard.js. (2026-06-05)
+const { isIntentionalClear, CLEARABLE_VERDICT_FLAGS } = require(path.join(__dirname, 'review-write-guard.js'));
+const { carryNewerScoring } = require(path.join(__dirname, 'scoring-recency.js'));
+
+// Fields that must be preserved across rebases. Two categories:
+//   (a) MANUAL human corrections CI should never touch — see DoaS Apr 9-10
+//       postmortem (humanReviewedWrongProduction: false was dropped and
+//       CV-promotion re-flagged human-verified files as wrongProduction).
+//   (b) DURABLE CI state that must survive rebase even when the content-aware
+//       merge in push-review-texts/action.yml picks "theirs" on the file. The
+//       SERP retry tracking fields are in this category — the backfill marked
+//       ~10,466 wrong_content files as abandoned, and dropping those flags via
+//       rebase resurrects them into the retry pool and burns BD credits we
+//       just committed to not spending. See sprint-plan-serp-cost-reduction.md.
+// If the remote has these and local doesn't, always restore from remote.
+const MANUAL_FIELDS = [
+  // (a) Human-only corrections
+  // Identity fields — added to protect opera outlet review files (bachtrack,
+  // parterre-box, operawire, new-york-classical-review, classical-voice-america)
+  // from having their outletId/outlet silently cleared on rebase. Without this,
+  // a CI rebase that wins on an opera review file could wipe outlet attribution,
+  // causing the rebuild to lose the review's outlet association.
+  'outletId',
+  'outlet',
+  'humanReviewScore',
+  'humanReviewNote',
+  'manualContentTier',
+  'wrongProductionManualClear',
+  'wrongArticleManualClear',
+  'wrongShowManualClear',
+  'wrongProductionOverride',
+  'wrongProductionOverrideReason',
+  'wrongProductionOverrideSetAt',
+  'wrongProductionOverrideSetBy',
+  'wrongShowOverride',
+  'wrongShowOverrideReason',
+  'wrongShowOverrideAt',
+  'humanReviewedWrongProduction',
+  'humanReviewedWrongArticle',
+  // Anticipatory-gate operator opt-out — third leg of the PROTECTED_FIELDS
+  // three-way sync (write-guard + push action + this restore). See the
+  // matching comment in review-write-guard.js (BRO-2828).
+  'humanReviewedEarlyPublish',
+  // Manual "this file is not a review at all" exclusion + its provenance and its
+  // intentional-unset breadcrumb. Nothing in the repo WRITES these (zero producers
+  // as of 2026-08-14) — they only ever arrive by hand, which is precisely the class
+  // this list exists for. The rebuild gate and review-guards both exclude on the
+  // boolean, so losing it on a rebase re-includes a non-review and reddens Data
+  // Validation. isIntentionalClear() (CLEAR_BREADCRUMBS in review-write-guard.js)
+  // keys on isNotReviewManualClear / isNotReview:false so a legitimate unset is not
+  // trapped by this restore. See the PROTECTED_FIELDS comment there for why
+  // rejectionReason/rejectedAt/rejectedBy are deliberately NOT in this family.
+  'isNotReview',
+  'isNotReviewReason',
+  'isNotReviewSetAt',
+  'isNotReviewSetBy',
+  'isNotReviewManualClear',
+  // The wrongProduction / wrongShow flags themselves. Added 2026-05-17 alongside
+  // the review-file-writer.js human-override guard. A human's manual
+  // `wrongProduction: false` (i.e. "this IS the right production, don't exclude")
+  // must survive rebase — otherwise CI's `true` from a remote classifier run
+  // silently re-excludes the review. The ORIG_HEAD recovery below handles the
+  // -X theirs case (post-rebase local matches remote); the MANUAL_FIELDS
+  // restoration only handles the simpler local-lost-field case.
+  'wrongProduction',
+  'wrongShow',
+  // Opening-night manual-ingest overrides (Beaches 2026-04-22 postmortem #6)
+  'allowEarlyDate',
+  'allowLateDate',
+  'allowCrossMarket',
+  'mergedDuplicateUrls', // BRO-4414 merged-away duplicate URL tombstone
+  'allowTourSignal',
+  'allowTourSignalReason',
+  'allowFilmSignal',
+  'allowFilmSignalReason',
+  'routedFromShowId',
+  // Added in Rocky Horror 2026-04-23 postmortem (Session 2 #7)
+  'humanReviewedTour',
+  'humanReviewScoreProvisional',
+  'humanReviewScoreClearedForLlm',
+  'isTourReview',
+  'isLikelyTourReview',
+  // Aggregator thumb signals used by thumb-validated-LLM scoring path
+  'dtliThumb',
+  'bwwThumb',
+  // Per-file protection array lock
+  'protectedFields',
+  // (b) Durable url-change-invariant breadcrumb (Notion 399637c5) — records
+  // fields deliberately cleared when a file's url moved to a different
+  // canonical article. isIntentionalClear() keys on it; losing it on rebase
+  // would let this very script resurrect the cleared old-URL flags/scores.
+  '_urlChangedClear',
+  // (b) Durable SERP retry state — must survive rebase
+  'serpDiscoveryAbandoned',
+  'serpAbandonmentReason',
+  'serpAbandonmentDate',
+  'serpRetryCount',
+  'serpRetryAfter',
+  'wrongShowRetryAt',
+  // (b) Durable fetch retry lifecycle gate state (BRO-787) — same reasoning
+  // as the SERP fields above, applied to failed-fetches.json retries. Losing
+  // fetchDiscoveryAbandoned on rebase resurrects a closed-old show's
+  // confirmed-dead URL into the retry pool and burns the exact spend this
+  // guard exists to stop.
+  'fetchDiscoveryAbandoned',
+  'fetchAbandonmentReason',
+  'fetchAbandonmentDate',
+  'fetchRetryAfter',
+  // Pre-publication retry tallies (BRO-4281) — subtracted from the retry
+  // counts before the max check; losing one on rebase charges opening-eve
+  // failures to the post-publication budget.
+  'fetchPrePubFailures',
+  'serpPrePubCount',
+];
+
+// Nested fields under contentVerification that are manually set, mapped to the
+// TOP-LEVEL field whose intentional-clear breadcrumb governs them. The rebuild
+// pre-pass promotes contentVerification flags to top-level every run
+// (scripts/rebuild-all-reviews.js ~1320), so resurrecting a stale CV flag here
+// silently re-excludes a review whose top-level flag was deliberately cleared
+// (e.g. a human wrongProductionManualClear, or a URL-replace reset in
+// review-normalization.js that deletes contentVerification). Honor the clear.
+const MANUAL_CV_FIELDS = [
+  'wrongProduction',
+  'wrongArticle',
+  'isFilmTv',
+];
+// CV flags are promoted to a top-level flag by the rebuild pre-pass; the mapping
+// is to whatever flag that promotion SETS, because that is the flag a human clear
+// would target. cv.wrongProduction → wrongProduction; cv.wrongArticle → wrongShow
+// (rebuild-all-reviews.js ~1393 sets d.wrongShow = true on cv.wrongArticle, NOT
+// wrongFullText); cv.isFilmTv → wrongShow (rebuild-all-reviews.js ~1407). Mapping
+// to the wrong top-level field would make the skip a no-op.
+// NOTE: this nested per-subfield restore is the -X theirs path only. The action.yml
+// push restore protects the WHOLE contentVerification object (it is in
+// PROTECTED_FIELDS) at the flat top level, not per sub-key. A breadcrumb-less
+// reset that deletes the whole object (e.g. sweep-revival-wrong-production.js's
+// case C) can still get rehydrated wholesale there. Task #97 audit considered a
+// 'contentVerification' CLEAR_BREADCRUMBS entry gated on the union of the
+// governing top-level predicates (mirroring CV_FIELD_TO_TOPLEVEL below) but
+// rejected it on adversarial review (codex, 2026-08-10): those predicates check
+// CURRENT record state, not whether they were the reason contentVerification
+// specifically went empty — a file with e.g. a YEARS-old humanReviewedWrongProduction:
+// false would permanently suppress restoring contentVerification even for an
+// unrelated FUTURE bug that wipes it. Left as a documented gap, not a card, per
+// CLAUDE.md §16: fixing it needs a real per-clear-event breadcrumb (a "this
+// clear happened HERE" stamp, not "was ever cleared"), which is more invasive
+// than the size of the residual risk (this only loses an audit/staleness
+// signal, not a user-facing score/exclusion — see contentVerification's
+// consumer at rebuild-all-reviews.js ~1671, which no-ops on a falsy cv).
+const CV_FIELD_TO_TOPLEVEL = {
+  wrongProduction: 'wrongProduction',
+  wrongArticle: 'wrongShow',
+  isFilmTv: 'wrongShow',
+};
+
+// Content fields that travel WITH fullText — when a richer body is restored
+// from another version, these describe that body and must move together or
+// the file ends up franken-stated (new text, old tier/verification).
+const CONTENT_FIELDS = [
+  'fullText',
+  'isFullReview',
+  'textWordCount',
+  'textStatus',
+  'textQuality',
+  'truncationSignals',
+  'textFetchedAt',
+  'archivePath',
+  'sourceMethod',
+  'fetchMethod',
+  'fetchTier',
+  'contentTier',
+  'tierReason',
+  'contentTierReason',
+];
+
+// Scoring fields that describe a specific fullText. Only restored when the
+// local body is (or becomes) the same body those scores were computed on.
+// contentVerification / flaggedForReview / flagReason are deliberately NOT
+// here: restoring the whole CV object wholesale would bypass the
+// intentional-clear guard in the nested CV block below — a remote
+// cv.wrongProduction:true copied onto a human-cleared local gets re-promoted
+// to top-level by the rebuild pre-pass and silently re-excludes the review
+// (ship-check 2026-07-23, Claude reviewer). The nested block restores CV
+// per-key with the proper isIntentionalClear check.
+const SCORE_FIELDS = [
+  'llmScore',
+  'llmMetadata',
+  'ensembleData',
+  'assignedScore',
+  'scoreSource',
+  'originalScore',
+  'originalScoreNormalized',
+  'originalScoreSource',
+  'originalScoreType',
+];
+
+/**
+ * Pure reconciliation for one review file after a `-X theirs` rebase.
+ * Mutates and returns `local`.
+ *
+ * @param {object} local  post-rebase working-tree version (mutated in place)
+ * @param {object} remote the remote ref's version (what origin had)
+ * @param {object|null} ours pre-rebase HEAD version (ORIG_HEAD), if available
+ * @param {object} [opts]
+ * @param {boolean} [opts.staleCheckoutGuard=false] enable the remote-richer
+ *   content/score restore. Only valid when `remote` is a genuine REMOTE ref
+ *   (origin/*) — a caller passing a local ref (batch-correct-reviews.js passes
+ *   ORIG_HEAD) would make "remote" the pre-correction state and this guard
+ *   would resurrect exactly what the correction removed (ship-check 2026-07-23,
+ *   Codex finding). The CLI sets this automatically from the ref name.
+ * @returns {{ modified: boolean, notes: string[] }}
+ */
+function reconcileProtectedFields(local, remote, ours, opts = {}) {
+  const staleCheckoutGuard = opts.staleCheckoutGuard === true;
+  let modified = false;
+  const notes = [];
+
+  // Restore top-level manual fields. Two independent sources, checked in
+  // order, because either side can be the one that had the field and lost it:
+  //   1. remote — the original case (e.g. a `-X theirs` rebase dropped a
+  //      local value origin already had).
+  //   2. ours (pre-rebase HEAD) — #1916: push-review-texts' action.yml
+  //      tie-break resolves a JSON conflict by fullText length and keeps
+  //      "theirs" (remote) whenever OUR_LEN <= THEIR_LEN, discarding our
+  //      whole commit for that file — including a MANUAL_FIELDS value (e.g.
+  //      wrongShowOverride/wrongShowManualClear from clear-stale-wrong-show-
+  //      flags.js) that the tie-break's fullText-only comparison never looks
+  //      at. Since local now equals remote for that file, the remote-vs-local
+  //      check above is a no-op even though our own field just got dropped;
+  //      ours (ORIG_HEAD) is the only place it still exists.
+  for (const field of MANUAL_FIELDS) {
+    if (local[field] !== undefined && local[field] !== null) continue;
+
+    let source = null;
+    if (remote[field] !== undefined && remote[field] !== null) {
+      source = remote;
+    } else if (ours && ours[field] !== undefined && ours[field] !== null) {
+      source = ours;
+    }
+    if (!source) continue;
+
+    // Intentional-clear exception: if the LOCAL record deliberately
+    // cleared this field and carries the canonical breadcrumb (e.g. a
+    // human wrongProductionManualClear / humanReviewedWrongProduction:false,
+    // wrongShowCleared signals, originalScoreCleared, or duplicateClearReason),
+    // the empty value is not data-loss — honor it instead of resurrecting
+    // the remote flag. Without this guard the remote's stale `true` comes
+    // right back on every rebase. Mirrors the action.yml restore skip and
+    // review-guards.js is-cleared semantics. (2026-06-05)
+    //
+    // Caveat when source===ours (adversarial review, #1916): the
+    // _urlChangeCleared "same era" un-suppress inside isIntentionalClear
+    // assumes its committedData argument can be FRESHER than localData (a
+    // legitimate newer write re-derived the value after a URL change). ours
+    // is the pre-rebase commit, i.e. OLDER than local by construction, so
+    // that assumption is inverted here — it only misfires if both local and
+    // ours carry a matching _urlChangedClear breadcrumb, a compound edge
+    // case with no known instance. Left as-is; not a #1916 blocker.
+    if (isIntentionalClear(field, local, source)) continue;
+    local[field] = source[field];
+    modified = true;
+    notes.push(`Restored ${field}${source === ours ? ' (from pre-rebase HEAD)' : ''}`);
+  }
+
+  // A live flag's reason/note travel with it. The loop above restores
+  // wrongProduction/wrongShow but not their reasons, so a rebase that dropped
+  // a manual flag brought it back reason-less, and the rebuild's UK-URL
+  // auto-clear (which only spares flags carrying a reason) stripped it
+  // (BRO-4851: oedipus-west-end-2024 Independent review). Only filled while
+  // the local flag is true and the source's own flag is true, so a cleared
+  // flag never gets a dangling reason back. The *ReasonAt stamp rides along.
+  for (const [flag, companions] of Object.entries(CLEARABLE_VERDICT_FLAGS)) {
+    if (local[flag] !== true || companions.length === 0) continue;
+    for (const field of companions) {
+      if (local[field] !== undefined && local[field] !== null) continue;
+      const source = [remote, ours].find(s => s && s[flag] === true
+        && s[field] !== undefined && s[field] !== null);
+      if (!source || isIntentionalClear(field, local, source)) continue;
+      local[field] = source[field];
+      const at = `${field}At`;
+      if (field.endsWith('Reason') && source[at] != null && local[at] == null) local[at] = source[at];
+      modified = true;
+      notes.push(`Restored ${field} (companion of ${flag})${source === ours ? ' (from pre-rebase HEAD)' : ''}`);
+    }
+  }
+
+  // Restore richer content from OURS (pre-rebase HEAD). Titanique postmortem:
+  // a push rebase re-applied old empty fullText over newly collected 5000+ char
+  // text. After `-X theirs` the working tree matches the replayed local commit,
+  // so freshly-collected text lives only in ORIG_HEAD.
+  if (ours) {
+    const oursText = ours.fullText || '';
+    // isIntentionalClear: an empty local fullText behind a _urlChangedClear
+    // breadcrumb is a deliberate clear (the text belongs to the file's OLD
+    // url) — restoring it would re-contaminate the new URL era.
+    if (oursText.length > 100 && oursText.length > (local.fullText || '').length
+        && !isIntentionalClear('fullText', local, ours)) {
+      local.fullText = oursText;
+      modified = true;
+      notes.push(`Restored fullText (${oursText.length} chars) from pre-rebase HEAD`);
+    }
+    // Restore manual `wrongProduction: false` / `wrongShow: false` from
+    // pre-rebase HEAD. After `-X theirs`, local matches remote so the
+    // simple MANUAL_FIELDS restoration (which only fills missing locals)
+    // doesn't help. If OURS explicitly had `false` (the human-cleared
+    // sentinel) and remote has `true`, prefer OURS — otherwise CI's
+    // classifier output silently re-excludes a human-verified review.
+    for (const flagField of ['wrongProduction', 'wrongShow']) {
+      if (ours[flagField] === false && local[flagField] === true) {
+        local[flagField] = false;
+        modified = true;
+        notes.push(`Restored ${flagField}=false from pre-rebase HEAD`);
+      }
+    }
+  }
+
+  // Stale-checkout guard — the REMOTE-richer direction (Trainspotting The Stage,
+  // 2026-07-23, review-texts commit 7f3cac6c75b): a checkpoint job running on a
+  // pre-collection checkout rebased with `-X theirs` and its stale stub beat
+  // origin's fully-collected, LLM-scored file (751-word review + score 38 wiped
+  // 14 minutes after they landed). The ORIG_HEAD restore above cannot help —
+  // the stale version IS ours. When origin's version is strictly richer, pull
+  // its content back, unless the local emptiness is an intentional clear.
+  let contentRestoredFromRemote = false;
+  if (staleCheckoutGuard) {
+    const remoteText = remote.fullText || '';
+    const localTextNow = local.fullText || '';
+    if (remoteText.length > 100 && remoteText.length > localTextNow.length
+        && !isIntentionalClear('fullText', local, remote)) {
+      for (const field of CONTENT_FIELDS) {
+        if (remote[field] !== undefined) local[field] = remote[field];
+      }
+      contentRestoredFromRemote = true;
+      modified = true;
+      notes.push(`Restored fullText (${remoteText.length} chars) + content fields from remote (stale-checkout guard)`);
+    }
+  }
+
+  // Scores travel with the body they were computed on. Restore remote scoring
+  // only when the local body IS the remote body (either because we just
+  // restored it, or the texts already match) and the local has no score of its
+  // own. A local humanReviewScore always wins (it is in MANUAL_FIELDS and never
+  // removed here).
+  if (staleCheckoutGuard) {
+    const bodiesMatch = contentRestoredFromRemote
+      || (local.fullText || '') === (remote.fullText || '');
+    const localHasScore = local.assignedScore != null || local.llmScore != null;
+    const remoteHasScore = remote.assignedScore != null || remote.llmScore != null;
+    if (bodiesMatch && !localHasScore && remoteHasScore
+        && !isIntentionalClear('assignedScore', local, remote)
+        && !isIntentionalClear('originalScore', local, remote)) {
+      for (const field of SCORE_FIELDS) {
+        if (remote[field] !== undefined && (local[field] === undefined || local[field] === null)) {
+          local[field] = remote[field];
+        }
+      }
+      modified = true;
+      notes.push('Restored scoring fields from remote (stale-checkout guard)');
+    }
+  }
+
+  // Newer scoring wins (BRO-4770): a stale whole-file winner (e.g. the longer
+  // fullText side of a conflict) must not revert a newer rescore. Candidates:
+  // the remote ref and the pre-rebase commit.
+  if (staleCheckoutGuard) {
+    for (const [label, src] of [['remote', remote], ['pre-rebase HEAD', ours]]) {
+      if (!src) continue;
+      const r = carryNewerScoring(local, src);
+      if (r.changed) {
+        modified = true;
+        notes.push(`Restored newer scoring group from ${label}`);
+      }
+    }
+  }
+
+  // Restore nested contentVerification manual fields. Same two-source
+  // fallback as the top-level MANUAL_FIELDS loop above (#1916 cousin): a
+  // tie-break that discards our whole commit for a file drops a freshly-set
+  // nested CV flag too, and remote alone can't see it if remote never had it.
+  for (const key of MANUAL_CV_FIELDS) {
+    const localVal = local.contentVerification && local.contentVerification[key];
+    if (localVal !== undefined && localVal !== null) continue;
+
+    let cvSource = null;
+    if (remote.contentVerification && remote.contentVerification[key] !== undefined && remote.contentVerification[key] !== null) {
+      cvSource = remote.contentVerification;
+    } else if (ours && ours.contentVerification && ours.contentVerification[key] !== undefined && ours.contentVerification[key] !== null) {
+      cvSource = ours.contentVerification;
+    }
+    if (!cvSource) continue;
+
+    // Intentional-clear exception (mirrors the top-level loop): if the
+    // governing top-level field was deliberately cleared, do NOT resurrect
+    // the nested CV flag — the rebuild pre-pass would re-promote it and
+    // silently re-exclude the review.
+    if (isIntentionalClear(CV_FIELD_TO_TOPLEVEL[key], local, cvSource === remote.contentVerification ? remote : ours)) continue;
+
+    if (!local.contentVerification) local.contentVerification = {};
+    local.contentVerification[key] = cvSource[key];
+    modified = true;
+    notes.push(`Restored contentVerification.${key}${cvSource === (ours && ours.contentVerification) ? ' (from pre-rebase HEAD)' : ''}`);
+  }
+
+  return { modified, notes };
+}
+
+// Fields within data/outlet-registry.json's `outlets[id]` objects that are
+// human-curated (byline-attribution corrections, critic overrides, alias
+// additions) and must survive a CI rebase the same way MANUAL_FIELDS does
+// for review files. Task #989: two multiAuthor:true corrections were
+// silently reverted by same-day RSS-poller commits before this existed.
+//
+// SCOPE (confirmed by adversarial review): the actual #989 incidents were
+// clean fast-forward pushes with no conflict at all — push-with-retry.sh
+// only calls restore_protected_fields() (which routes here) inside its
+// rebase/merge conflict branches, never on a successful first-try `git
+// push`. The real fix for that path is stage-data-changes.sh excluding
+// untouched dual-tracked core files at STAGE time. This reconciler is a
+// narrower second layer: it only helps if a registry-touching commit
+// genuinely conflicts with a concurrent one and reaches a rebase.
+const REGISTRY_SCALAR_FIELDS = ['multiAuthor', 'defaultCritic'];
+
+/**
+ * Pure reconciliation for data/outlet-registry.json after a rebase. Mutates
+ * and returns `local`. Scalar fields (multiAuthor, defaultCritic) restore
+ * only when local is missing the value (never override an explicit local
+ * edit); aliases union both sides so a rebase can't drop an alias either
+ * side added.
+ *
+ * Deliberately does NOT restore an outlet id that exists only on `remote`
+ * (only on `local`): outlet deletion is itself a legitimate manual op here
+ * (duplicate-outlet merges cascade-delete the loser id — see
+ * memory/feedback_outlet_merge_no_flag_and_keep.md), so blindly re-adding a
+ * remote-only outlet on rebase could resurrect one a human just removed.
+ *
+ * @param {object} local  post-rebase working-tree registry (mutated)
+ * @param {object} remote the remote ref's registry
+ * @returns {{ modified: boolean, notes: string[] }}
+ */
+function reconcileOutletRegistry(local, remote) {
+  let modified = false;
+  const notes = [];
+  if (!remote || !remote.outlets || !local || !local.outlets) return { modified, notes };
+
+  for (const [id, remoteOutlet] of Object.entries(remote.outlets)) {
+    const localOutlet = local.outlets[id];
+    if (!localOutlet || !remoteOutlet) continue; // see doc comment above — no cross-add
+
+    for (const field of REGISTRY_SCALAR_FIELDS) {
+      const remoteVal = remoteOutlet[field];
+      if (remoteVal === undefined || remoteVal === null) continue;
+      if (localOutlet[field] === undefined || localOutlet[field] === null) {
+        localOutlet[field] = remoteVal;
+        modified = true;
+        notes.push(`Restored outlets.${id}.${field}`);
+      }
+    }
+
+    if (Array.isArray(remoteOutlet.aliases)) {
+      const localAliases = Array.isArray(localOutlet.aliases) ? localOutlet.aliases : [];
+      const missing = remoteOutlet.aliases.filter((a) => !localAliases.includes(a));
+      if (missing.length > 0) {
+        localOutlet.aliases = [...localAliases, ...missing];
+        modified = true;
+        notes.push(`Restored ${missing.length} alias(es) for outlets.${id}`);
+      }
+    }
+  }
+
+  return { modified, notes };
+}
+
+module.exports = {
+  reconcileProtectedFields,
+  reconcileOutletRegistry,
+  MANUAL_FIELDS,
+  CONTENT_FIELDS,
+  SCORE_FIELDS,
+};
+
+if (require.main === module) {
+  const remoteRef = process.argv[2];
+  if (!remoteRef) {
+    console.log('0');
+    process.exit(0);
+  }
+
+  try {
+    // Get JSON files that differ between remote and HEAD
+    const diffOutput = execSync(
+      `git diff --name-only ${remoteRef}..HEAD -- '*.json'`,
+      { encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] }
+    ).trim();
+
+    if (!diffOutput) {
+      console.log('0');
+      process.exit(0);
+    }
+
+    const files = diffOutput.split('\n').filter(f =>
+      f.endsWith('.json') &&
+      !f.includes('package') &&
+      !f.includes('tsconfig') &&
+      !f.includes('node_modules') &&
+      !f.includes('failed-fetches')
+    );
+
+    let restoredCount = 0;
+
+    for (const f of files) {
+      try {
+        // Read local version
+        if (!fs.existsSync(f)) continue;
+        const local = JSON.parse(fs.readFileSync(f, 'utf8'));
+
+        // Read remote version
+        let remoteContent;
+        try {
+          remoteContent = execSync(`git show ${remoteRef}:${f}`, {
+            encoding: 'utf8',
+            stdio: ['pipe', 'pipe', 'pipe'],
+          });
+        } catch {
+          continue; // File doesn't exist in remote — new file, skip
+        }
+        const remote = JSON.parse(remoteContent);
+
+        // data/outlet-registry.json isn't shaped like a review file (no
+        // top-level MANUAL_FIELDS, no fullText) — it's { outlets: { id: {} } }.
+        // Route it through the dedicated per-outlet reconciler instead.
+        let modified, notes;
+        if (/(^|\/)outlet-registry\.json$/.test(f)) {
+          ({ modified, notes } = reconcileOutletRegistry(local, remote));
+        } else {
+          // Pre-rebase HEAD version, when available
+          let ours = null;
+          try {
+            ours = JSON.parse(execSync(`git show ORIG_HEAD:${f}`, {
+              encoding: 'utf8',
+              stdio: ['pipe', 'pipe', 'pipe'],
+            }));
+          } catch {
+            // ORIG_HEAD not available or file didn't exist — skip
+          }
+
+          // The remote-richer (stale-checkout) direction is only meaningful
+          // when the diff ref is a genuine remote-tracking ref. batch-correct-
+          // reviews.js passes ORIG_HEAD — there "remote" is the pre-correction
+          // local state and the guard would resurrect what the correction removed.
+          const staleCheckoutGuard = /^(origin|refs\/remotes)\//.test(remoteRef);
+          ({ modified, notes } = reconcileProtectedFields(local, remote, ours, { staleCheckoutGuard }));
+        }
+        for (const n of notes) process.stderr.write(`  ${n} in ${f}\n`);
+
+        if (modified) {
+          fs.writeFileSync(f, JSON.stringify(local, null, 2) + '\n');
+          restoredCount++;
+        }
+      } catch {
+        // Parse error or other issue — skip this file
+      }
+    }
+
+    console.log(String(restoredCount));
+  } catch (e) {
+    // If git diff fails (e.g., remote ref doesn't exist), just exit cleanly
+    console.log('0');
+  }
+}

@@ -1,0 +1,796 @@
+name: Deploy to Vercel
+
+on:
+  # 5-min cron coordinator (replaced per-push trigger on 2026-05-16). With 10+
+  # parallel sessions pushing to main, the per-push trigger produced cascading
+  # deploy cancellations — Vercel server-side dedup killed older builds
+  # mid-prerender before any could complete, and even the "latest" deploy
+  # could be cancelled mid-build by the next push. The cron batches pushes:
+  # at most one deploy per 5-min window, and the should-deploy preflight job
+  # below skips ticks with no site-relevant change vs the live deploy
+  # (scripts/lib/should-deploy-gate.js). See
+  # memory/feedback_workflow_cascade_prevention.md. The demo workflow solved
+  # the same cascade with the same fix in 2026-04 (see vercel-demo.yml L17-19).
+  schedule:
+    - cron: '*/5 * * * *'
+  # Deploy-before-rebuild race fix (Beaches 2026-04-22 postmortem #9):
+  # When a rebuild finishes successfully, refresh production so the newly-rebuilt
+  # reviews.json actually ships. Without this, the next cron tick may run
+  # before main HEAD changes (private-repo push), and production serves stale
+  # counts. Rebuild Reviews (Fast) is the path used for opening-night corrections.
+  # Job-level guard (see should-deploy.if) skips failures. Part of P1 redesign
+  # card 34b637c5-416f-8126-bb13-e12fb737bed2.
+  workflow_run:
+    workflows: ["Rebuild Reviews Data", "Rebuild Reviews (Fast)"]
+    types: [completed]
+  workflow_dispatch: # Manual trigger — "ship NOW" path (opening night, broken page)
+
+permissions:
+  contents: write
+  actions: write   # needed for gh workflow run (watermark dispatch)
+
+jobs:
+  # Preflight: decide whether to actually deploy. Runs on every trigger
+  # (~15s). All skip/proceed logic lives in scripts/lib/should-deploy-gate.js
+  # (pure decide() + colocated test — see its header for the full rules):
+  #   - Baseline = latest READY Vercel production deployment (via
+  #     check-prod-deploy.js --json), NOT GitHub run conclusions — a run can
+  #     report success while its Vercel deploy was CANCELED (2026-06-26), and
+  #     skipped preflights also conclude "success" (stale-baseline bug in the
+  #     old gh-run-list lookup).
+  #   - Scheduled ticks skip only on positive proof: HEAD already live AND
+  #     core data unchanged, or no site-path diff vs the live SHA AND core
+  #     data unchanged while the live deploy is <6h old (content-aware gate,
+  #     2026-07-19 cost fix: ~93% of main commits are bookkeeping that
+  #     rebuilt an identical site ~139x/day).
+  #   - Core-data awareness (BRO-3149, 2026-09-16): reviews.json/shows.json
+  #     live in the private data repo and never touch this repo's tree — the
+  #     Deploy step below stamps a blob SHA of reviews.json onto each Vercel
+  #     deployment (`--meta reviewsBlobSha=... --meta showsBlobSha=...`), and
+  #     the gate compares that
+  #     against the private repo's current blob SHA to catch a core-data-only
+  #     change without waiting on the 6h backstop.
+  #   - workflow_dispatch / workflow_run stay "ship NOW" lanes, deduped only
+  #     when HEAD is already live AND core data hasn't advanced. Any
+  #     gate-input failure fails OPEN (deploy).
+  # Kill switch: set repo variable DEPLOY_GATE_DISABLED=true to force every
+  # trigger through (phone-operable; no code change).
+  # Carries the Beaches #9 race guard (workflow_run conclusion check).
+  should-deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    timeout-minutes: 3
+    outputs:
+      proceed: ${{ steps.check.outputs.proceed }}
+    steps:
+      - name: Checkout (shallow — the gate fetches the live baseline commit itself)
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 1
+      - name: Content-aware deploy gate
+        id: check
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          # BRO-3149: single GitHub Contents API call (no clone) to read the
+          # current blob SHA of reviews.json in the private core-data repo —
+          # see should-deploy-gate.js header comment.
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          GATE_EVENT_NAME: ${{ github.event_name }}
+          GATE_DISABLED: ${{ vars.DEPLOY_GATE_DISABLED }}
+        run: |
+          # The gate script fails OPEN internally (API/fetch/diff errors →
+          # proceed=true). If the script itself crashes, fail this step LOUDLY
+          # rather than leaving `proceed` unset — an empty output makes the
+          # deploy job's `if:` silently false on every trigger (green runs,
+          # zero deploys, no alerts — the worst failure mode).
+          node scripts/lib/should-deploy-gate.js
+          grep -q '^proceed=' "$GITHUB_OUTPUT" || { echo "::error::[content-gate] gate exited without setting proceed"; exit 1; }
+
+  deploy:
+    needs: should-deploy
+    if: needs.should-deploy.outputs.proceed == 'true'
+    runs-on: ubuntu-latest
+    # 25-minute job timeout (raised from 15 on 2026-05-20, when the build took
+    # ~10-12 min and the then-inline stage-latency push-retry loop consumed the
+    # rest, making jobs show "cancelled" even after a successful Vercel deploy.
+    # The should-deploy SHA check ignores "cancelled" runs, so the cron kept
+    # re-deploying in a self-reinforcing loop — the "1hr+ to go live" pattern.)
+    # Since then the build dropped to ~2-3 min (.next/cache persistence,
+    # 2026-05-23) and the stage-latency push moved to the async watermark
+    # workflow (2026-07-13). Raised 25->35 (BRO-451, 2026-09-11) to fit the
+    # Deploy to Production step's retry-on-transient-failure worst case
+    # (~16.5 min, see that step's comment) alongside Build's own 720s worst
+    # case — normal runs still finish in ~3 min either way, so this only
+    # widens the window before a genuinely hung run is caught.
+    # BRO-2067: 35->45. Worst case is now (upload 240s + wait 480s) + 2x(240+240)
+    # + 30s backoff = ~28.5 min, plus Build's 720s. Normal runs still ~3 min.
+    timeout-minutes: 45
+    concurrency:
+      # per-run group intended: GH concurrency queue depth is 1, so a shared
+      # "vercel-production-deploy" group cancelled 5+ queued deploys on Beaches
+      # and Rocky Horror opening nights. Vercel itself queues deploys server-side
+      # (latest wins), so letting multiple runs proceed in parallel is safe.
+      # See memory/feedback_gha_concurrency_queue_limit.md. With the cron change
+      # (2026-05-16, see on: schedule above), simultaneous deploys are now rare —
+      # most cron ticks self-skip in the should-deploy preflight.
+      # (task #922 audit, 2026-08-03)
+      group: vercel-production-deploy-${{ github.run_id }}
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Validate core data JSON
+        run: |
+          # Defense-in-depth: catch conflict markers or corrupt JSON before build.
+          # Prevents cryptic Node crashes (e.g. compute-gold-lists.js require() failing).
+          # Root cause fix is the pre-commit hook on the private data repo.
+          INVALID=0
+          for f in data/*.json; do
+            if [ ! -f "$f" ]; then continue; fi
+            if grep -qE '(<{7}|={7}|>{7})' "$f" 2>/dev/null; then
+              echo "::error::$f contains merge conflict markers"
+              INVALID=1
+            elif ! node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))" 2>/dev/null; then
+              echo "::error::$f is not valid JSON"
+              INVALID=1
+            fi
+          done
+          if [ "$INVALID" -ne 0 ]; then
+            echo "::error::Core data validation failed — check the private data repo for corrupt files"
+            exit 1
+          fi
+          echo "All data/*.json files valid"
+
+      - name: Compute core data blob SHAs
+        # BRO-3149: stamped onto the Vercel deployment below (`--meta
+        # reviewsBlobSha=... --meta showsBlobSha=...`) so should-deploy-gate.js
+        # can detect core-data-only changes on future ticks. `git hash-object`
+        # computes the exact same value GitHub's Contents API reports as a
+        # file's `sha` (verified live) — no need to reference the private
+        # repo's own clone directory. Both files (not just reviews.json) so a
+        # shows.json-only change (e.g. a status flip) isn't a blind spot.
+        id: data_sha
+        run: |
+          REVIEWS_SHA=$(git hash-object data/reviews.json)
+          SHOWS_SHA=$(git hash-object data/shows.json)
+          echo "reviews_sha=$REVIEWS_SHA" >> "$GITHUB_OUTPUT"
+          echo "shows_sha=$SHOWS_SHA" >> "$GITHUB_OUTPUT"
+          echo "Core data blob SHAs — reviews.json: $REVIEWS_SHA  shows.json: $SHOWS_SHA"
+
+      - name: Verify Vercel build guard is active
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          SETTING=$(curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v9/projects/prj_wmBnDUrCQCwabIAYPbnMiIP3wg15" \
+            | node -e "const d=JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')); console.log(d.commandForIgnoringBuildStep || 'NOT SET')")
+          echo "commandForIgnoringBuildStep: $SETTING"
+          if [ "$SETTING" != "exit 0" ]; then
+            echo "::warning::Build guard is NOT set to 'exit 0' — fixing now..."
+            curl -s -X PATCH -H "Authorization: Bearer $VERCEL_TOKEN" -H "Content-Type: application/json" \
+              "https://api.vercel.com/v9/projects/prj_wmBnDUrCQCwabIAYPbnMiIP3wg15" \
+              -d '{"commandForIgnoringBuildStep":"exit 0"}'
+            echo "::warning::Build guard restored to 'exit 0'. Git-triggered builds were unblocked — check Vercel billing."
+          fi
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        # --prefer-offline uses the restored npm cache; --no-audit/--no-fund skip
+        # post-install registry calls. Matches test.yml:508 pattern. Saves 3-8s.
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      - name: Pre-deploy data integrity check
+        run: node scripts/pre-deploy-check.js
+
+      - name: Pull Vercel Environment
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: npx vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+
+      - name: Guard — no demo-only flags in production
+        run: |
+          # Extract DEMO_FEATURES from source code (single source of truth)
+          DEMO_FLAGS=$(node -e "
+            const src = require('fs').readFileSync('src/config/feature-flags.ts','utf8');
+            const m = src.match(/DEMO_FEATURES\s*=\s*new\s+Set\(\[([^\]]+)\]/);
+            if (!m) { console.error('Could not parse DEMO_FEATURES from feature-flags.ts'); process.exit(1); }
+            const flags = m[1].match(/'([^']+)'/g).map(s => s.replace(/'/g,''));
+            console.log(flags.join(','));
+          ")
+          echo "Demo-only flags: $DEMO_FLAGS"
+
+          # Read production NEXT_PUBLIC_FEATURES from the pulled .vercel/.env.production.local
+          # with the held-features guard's parser, so duplicate lines, `export`, or an
+          # escaped \n can't hide a demo flag. An unreadable file fails the step.
+          LEAKED=$(node -e "
+            const g = require('./scripts/lib/prod-held-flags-guard');
+            let value;
+            try {
+              value = g.featuresFromEnvFile(require('fs').readFileSync('.vercel/.env.production.local', 'utf8'));
+            } catch (e) {
+              console.error('::error::.env.production.local: ' + e.message);
+              process.exit(1);
+            }
+            console.log(g.heldFeaturesEnabled(value, process.argv[1].split(',')).join(' '));
+          " "$DEMO_FLAGS")
+
+          if [ -n "$LEAKED" ]; then
+            echo "::error::Demo-only feature flags found in production NEXT_PUBLIC_FEATURES: $LEAKED"
+            echo "::error::Remove them from Vercel production env vars before deploying."
+            echo "::error::Demo flags should only be enabled on demo.broadwayscorecard.com (auto-enabled via DEMO_FEATURES set in feature-flags.ts)"
+            exit 1
+          fi
+          echo "✓ No demo-only flags leaked to production"
+          echo "DEMO_FLAGS=$DEMO_FLAGS" >> "$GITHUB_ENV"
+
+      - name: Guard — no owner-held features in production
+        # PROD_HELD_FEATURES in src/config/feature-flags.ts lists features the owner
+        # has not released (BRO-4525: commercial). Fails before the build when the
+        # pulled production env enables one; an empty list passes.
+        run: node scripts/lib/prod-held-flags-guard.js .vercel/.env.production.local
+
+      - name: Guard — Supabase public env present once accounts are live
+        run: |
+          # Once userAccounts leaves DEMO_FEATURES it is on for every prod visitor, and
+          # the client bundle bakes in these two values at build time. Without them the
+          # sign-in modal and rating editor still render, but every action fails
+          # (BRO-4525). Fail the deploy instead of shipping that.
+          if [[ ",$DEMO_FLAGS," == *",userAccounts,"* ]]; then
+            echo "userAccounts is demo-only; Supabase env not required on prod"
+            exit 0
+          fi
+          MISSING=""
+          for v in NEXT_PUBLIC_SUPABASE_URL NEXT_PUBLIC_SUPABASE_ANON_KEY; do
+            grep -Eq "^${v}=\"?[^\"[:space:]]" .vercel/.env.production.local 2>/dev/null || MISSING="$MISSING $v"
+          done
+          if [ -n "$MISSING" ]; then
+            echo "::error::userAccounts is live on prod but these are empty in the Vercel production env:$MISSING"
+            echo "::error::Add them in Vercel (Production) or put userAccounts back in DEMO_FEATURES."
+            exit 1
+          fi
+          echo "✓ Supabase public env present for live accounts"
+
+      - name: Restore Next.js build + prebuild artifacts cache
+        uses: actions/cache/restore@v5
+        with:
+          # .next/cache: Next.js webpack/module incremental cache (kept across
+          # deploys after 2026-05-23 workflow fix — see 3191971fd5).
+          # data/cache/: prebuild hash gates (e.g. mobile-show-details/last-hash.json)
+          # that skip regen when inputs unchanged.
+          #
+          # hygiene-cache-runid-ok: deliberate — the run_id is required for the
+          # reason the "Save" step below gives, not an oversight.
+          # NOT exempt on size anymore (BRO-4146, corrects the prior "tens of MB"
+          # note): measured 2026-09-25 at 24 live entries / 5.3 GiB (~221 MB/entry)
+          # — the SAME failure mode BRO-3887 fixed in checkout-core-data, from a
+          # different cache. Past the repo's 10 GiB cap, GitHub LRU-evicts the
+          # WHOLE namespace, including the unrelated ~KB-sized bd-serp-cache-*
+          # entries gather-reviews.js depends on for cross-run SERP dedup — that
+          # eviction reproduced BRO-3887's exact symptom
+          # (tests/unit/bro3887-cache-fix-acceptance.test.mjs went red again).
+          # Unlike checkout-core-data this cache has a measured build-time win
+          # (~2-3 min with .next/cache persisted, see 3191971fd5), so instead of
+          # dropping it, the explicit "Save"/"Prune" steps below (placed after
+          # Build, not before it) keep only the newest 2 entries for this key
+          # prefix after every deploy.
+          #
+          # Split into restore/save (was the combined actions/cache@v5 action,
+          # ship-check correction 2026-09-25): that action's save step is a
+          # POST hook that runs at job end, AFTER every later step including a
+          # prune placed right here — so a prune step immediately following the
+          # combined action would run BEFORE this run's own entry even exists,
+          # leaving 3 live entries per run instead of the claimed 2 (worse
+          # under overlapping concurrent deploys). Explicit save + prune,
+          # ordered after Build, makes "keep newest 2" true as written.
+          path: |
+            .next/cache
+            data/cache
+          key: nextjs-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.run_id }}
+          restore-keys: |
+            nextjs-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
+            nextjs-cache-${{ runner.os }}-
+
+      - name: Check if data changed
+        id: check-data
+        run: |
+          # NOTE: this path regex answers "fast vs FULL prebuild" (HOW to build),
+          # not "deploy or not" — that's the should-deploy gate's SITE_PATHS in
+          # scripts/lib/should-deploy-gate.js. The two lists differ on purpose:
+          # this one is data-only; the gate's covers every build-shaping path.
+          # For manual triggers or missing before-sha, assume data changed (full build)
+          BEFORE="${{ github.event.before }}"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            echo "data_changed=true" >> "$GITHUB_OUTPUT"
+            echo "Full prebuild (manual trigger or no prior commit)"
+            exit 0
+          fi
+          # Fetch the before commit so diff works (shallow clone only has HEAD)
+          git fetch --depth=2 origin "$BEFORE" 2>/dev/null || true
+          CHANGED=$(git diff --name-only "$BEFORE"..HEAD 2>/dev/null)
+          if [ -z "$CHANGED" ] || echo "$CHANGED" | grep -qE '^(data/|public/data/|content/reviews/)'; then
+            echo "data_changed=true" >> "$GITHUB_OUTPUT"
+            echo "Data files changed (or diff unavailable) — full prebuild"
+          else
+            echo "data_changed=false" >> "$GITHUB_OUTPUT"
+            echo "Code-only change — fast prebuild"
+          fi
+
+      - name: Clear build cache
+        # Clears .vercel/output only — keeps .next/cache restored by the Cache Next.js build
+        # step above so webpack/module compilation can be incremental.
+        # .vercel/output is cleared to prevent EEXIST symlink errors (commit 6c20768ead).
+        run: rm -rf .vercel/output
+
+      - name: Build
+        id: build
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          SKIP_HEAVY_PREBUILD: ${{ steps.check-data.outputs.data_changed == 'false' && 'true' || '' }}
+        run: |
+          # Card #90 (2026-08-14): under a burst of concurrent pushes, Vercel's
+          # server-side "latest wins" dedup can CANCEL this run's deployment
+          # mid-build while the `vercel` CLI keeps waiting on it, hanging in
+          # place instead of exiting — the job then sat "in_progress" for 15+
+          # min with no signal until the 25-min job ceiling. Normal full-prebuild
+          # runs finish in ~2m40s-3m35s (sampled 2026-08-22); the "Check build
+          # duration" step below already treats >600s as its own "something is
+          # very wrong" error threshold but deliberately doesn't fail the job.
+          # 720s (12 min) sits above that watermark (a merely slow build isn't
+          # killed here) while cutting a genuine hang's stuck window from 25
+          # min to ~12. Uses inline `timeout` + explicit exit, NOT step-level
+          # `timeout-minutes` — a step-level timeout reports conclusion
+          # "cancelled", which the "Notify on failure"/"Trigger investigation"
+          # steps below (gated on if: failure()) would silently skip, exactly
+          # backwards from what this fix needs. This is a partial fix — see
+          # card #90 for the unresolved half (no newer cron run starting
+          # during the burst).
+          BUILD_START=$(date +%s)
+          status=0
+          timeout 720 npx vercel build --prod --token=$VERCEL_TOKEN || status=$?
+          BUILD_SECS=$(( $(date +%s) - BUILD_START ))
+          echo "build_seconds=$BUILD_SECS" >> "$GITHUB_OUTPUT"
+          if [ "$status" -ne 0 ]; then
+            if [ "$status" -eq 124 ]; then
+              echo "::error::vercel build timed out after 12m (card #90 — possible Vercel-side cancellation hang)"
+            else
+              echo "::error::vercel build failed (exit $status)"
+            fi
+            exit 1
+          fi
+          echo "Build completed in ${BUILD_SECS}s"
+
+      - name: Save Next.js build + prebuild artifacts cache
+        # hygiene-cache-runid-ok: deliberate, see the "Restore" step earlier
+        # in this job for the full BRO-4146 reasoning — the run_id is
+        # required so every deploy saves (a primary-key hit would skip this
+        # step), and the "Prune stale Next.js cache entries" step right after
+        # this one bounds the resulting entry count.
+        # Explicit save (paired with the explicit restore step above), placed
+        # after Build so it captures the same post-build .next/cache and
+        # data/cache contents the old combined actions/cache@v5 action's
+        # post-job save hook used to — nothing after Build writes into either
+        # path. if: always() so a failed build still persists whatever
+        # prebuild artifacts were produced (matches the old action's
+        # behavior, which saved regardless of later step outcomes).
+        if: always()
+        uses: actions/cache/save@v5
+        with:
+          path: |
+            .next/cache
+            data/cache
+          key: nextjs-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.run_id }}
+
+      - name: Prune stale Next.js cache entries
+        # BRO-4146: the key above carries github.run_id, so the save step
+        # just above mints a brand-new immutable entry every deploy and never
+        # deletes the old ones on its own — see the incident notes on the
+        # restore step earlier in this job. Runs AFTER the save step (not
+        # before, see that step's comment) so "keep newest 2" is accurate.
+        # Prefix omits the lockfile hash — restore-keys above falls back
+        # across hash families (`nextjs-cache-${{ runner.os }}-`), so a
+        # package-lock.json bump must not strand the old hash's entries
+        # unpruned; this targets the same broader family restore-keys does.
+        # --ref is REQUIRED (ship-check correction, BRO-4146): this prefix is
+        # generic enough to collide with vercel-preview.yml's own (differently
+        # scoped) `nextjs-cache-...` key on the `staging` ref — GH Actions
+        # caches are per-ref, and an unscoped `gh cache list`/`delete` search
+        # all refs. `${{ github.ref }}` pins this to only the ref THIS run
+        # triggered on, never a sibling workflow's branch.
+        # Selection logic is a pure, unit-tested function
+        # (scripts/lib/actions-cache-prune.js); this just wires it to `gh cache`.
+        # if: always() so a failed/skipped build still trims the backlog
+        # rather than compounding it; continue-on-error so a prune failure
+        # never fails a deploy — worst case is a return to today's status
+        # quo, not a regression.
+        if: always()
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/prune-github-actions-cache.js "nextjs-cache-${{ runner.os }}-" --ref="${{ github.ref }}" --keep=2
+
+      - name: Deploy to Production
+        id: deploy
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          REVIEWS_BLOB_SHA: ${{ steps.data_sha.outputs.reviews_sha }}
+          SHOWS_BLOB_SHA: ${{ steps.data_sha.outputs.shows_sha }}
+        run: |
+          # --archive=split-tgz: Vercel's split-tarball format (Jan 2025 changelog)
+          # uploads up to 30% faster than single --archive=tgz for prebuilt
+          # deployments with many files (.vercel/output has ~15k files).
+          # If this flag ever becomes unrecognized after a Vercel CLI downgrade,
+          # fall back to --archive=tgz (the previous default).
+          # Source: https://vercel.com/changelog/cli-archive-deployments-are-now-up-to-30-faster-with-split-tgz-archive
+          #
+          # Card #90: same hang risk + inline-timeout rationale as the Build
+          # step above. 480s (8 min) is ~4-5x the observed 1m28s-1m41s normal
+          # duration (sampled 2026-08-22).
+          #
+          # BRO-451: 2026-09-11 failure was a transient network write EPIPE
+          # mid-upload ("request to https://api.vercel.com/v2/files ... failed,
+          # reason: write EPIPE") — the CLI doesn't retry its own upload socket
+          # errors. Retry up to 3 attempts to absorb that class of one-off
+          # network blip. Attempt 1 keeps the full 480s (card #90's calibrated
+          # hang budget, unchanged); retries use a shorter 240s cap so the
+          # worst case (480+240+240+30s backoff=990s=16.5min) plus Build's own
+          # 720s worst case fits inside the job's timeout-minutes (raised
+          # 25->35 below for this same reason).
+          #
+          # The `A && B || C` form (not `URL=$(...); status=$?`) is required
+          # under this step's `bash -e`: an unguarded command-substitution
+          # assignment trips errexit and kills the script before `status=$?`
+          # ever runs, silently disabling the loop on attempt 1 — the exact
+          # bug task #1911 fixed the same way in checkout-core-data/action.yml
+          # (see that file's "Guarded with `|| DECISION=...`" comment).
+          #
+          # BRO-2067: deploy with --no-wait and poll the deployment state
+          # ourselves (scripts/vercel-wait-deployment.js). A Vercel-side
+          # CANCELED (burst of pushes, "latest wins") is seen within ~10s
+          # instead of hanging to the attempt timeout. CANCELED + a newer live
+          # production deployment => superseded: exit 0. CANCELED alone => retry.
+          MAX_RETRIES=3
+          SUPERSEDED=false
+          for ATTEMPT in $(seq 1 $MAX_RETRIES); do
+            ATTEMPT_TIMEOUT=480
+            if [ "$ATTEMPT" -gt 1 ]; then
+              ATTEMPT_TIMEOUT=240
+            fi
+            URL=$(timeout 240 npx vercel deploy --prebuilt --prod --no-wait --archive=split-tgz --meta "reviewsBlobSha=$REVIEWS_BLOB_SHA" --meta "showsBlobSha=$SHOWS_BLOB_SHA" --token=$VERCEL_TOKEN) && status=0 || status=$?
+            if [ "$status" -eq 0 ]; then
+              node scripts/vercel-wait-deployment.js "$URL" --timeout="$ATTEMPT_TIMEOUT" && status=0 || status=$?
+            fi
+            if [ "$status" -eq 0 ]; then
+              break
+            fi
+            if [ "$status" -eq 5 ]; then
+              # Canceled AND Vercel has a newer non-canceled production deployment
+              # (checked by the wait script). Deliberately NOT "main moved": CI
+              # bookkeeping commits move main every few minutes, which would mask
+              # a loop that never deploys. A lone cancel (exit 3) retries below.
+              echo "::notice::Vercel canceled this deployment in favor of a newer production deployment — superseded (BRO-2067)"
+              SUPERSEDED=true
+              status=0
+              break
+            elif [ "$status" -eq 3 ]; then
+              echo "::warning::vercel deployment CANCELED on attempt $ATTEMPT/$MAX_RETRIES with no newer deployment — retrying (BRO-2067)"
+            elif [ "$status" -eq 4 ] || [ "$status" -eq 124 ]; then
+              echo "::warning::vercel deploy timed out after ${ATTEMPT_TIMEOUT}s on attempt $ATTEMPT/$MAX_RETRIES (card #90 — possible Vercel-side cancellation hang)"
+            else
+              echo "::warning::vercel deploy failed (exit $status) on attempt $ATTEMPT/$MAX_RETRIES"
+            fi
+            if [ "$ATTEMPT" -lt "$MAX_RETRIES" ]; then
+              sleep $(( 10 * ATTEMPT ))
+            fi
+          done
+          if [ "$status" -ne 0 ]; then
+            echo "::error::vercel deploy did not reach READY on all $MAX_RETRIES attempts (last exit $status)"
+            exit 1
+          fi
+          if [ "$SUPERSEDED" = "true" ]; then
+            echo "superseded=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "Deployed to production: $URL"
+          echo "deployed_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
+
+      - name: Check build duration
+        if: always() && steps.build.outputs.build_seconds
+        env:
+          BUILD_SECS: ${{ steps.build.outputs.build_seconds }}
+        run: |
+          echo "Build took ${BUILD_SECS}s"
+          # Warn if build step exceeds 5 minutes (300s) — typical is ~2 min
+          if [ "$BUILD_SECS" -gt 300 ]; then
+            echo "::warning::Build took ${BUILD_SECS}s (>5 min) — investigate for regressions"
+          fi
+          # Fail-loud if build step exceeds 10 minutes — something is very wrong
+          if [ "$BUILD_SECS" -gt 600 ]; then
+            echo "::error::Build took ${BUILD_SECS}s (>10 min) — likely regression in build pipeline"
+          fi
+
+      - name: Determine recently-opened show for dynamic smoke test
+        id: recent_show
+        run: |
+          # Pick a show that opened within the last 14 days (or is still in previews).
+          # These are the highest-risk pages — stale data, new reviews, edge cases.
+          # Falls back to no dynamic URL if none found.
+          RECENT_SLUG=$(node -e "
+            try {
+              const shows = require('./data/shows.json').shows;
+              const now = new Date();
+              const cutoff = new Date(now - 14 * 86400000).toISOString().slice(0,10);
+              const candidates = shows.filter(s =>
+                s.slug && s.openingDate && s.openingDate >= cutoff && s.openingDate <= now.toISOString().slice(0,10)
+              ).sort((a, b) => b.openingDate.localeCompare(a.openingDate));
+              if (candidates[0]) process.stdout.write(candidates[0].slug);
+            } catch {}
+          " 2>/dev/null || echo "")
+          echo "slug=$RECENT_SLUG" >> $GITHUB_OUTPUT
+          if [ -n "$RECENT_SLUG" ]; then
+            echo "Dynamic smoke test will check recently-opened show: $RECENT_SLUG"
+          else
+            echo "No recently-opened show found — smoke test uses static URLs only"
+          fi
+
+      - name: Smoke test production
+        if: steps.deploy.outputs.superseded != 'true'
+        run: |
+          # Poll until pages return 200, up to 60s (typically <10s)
+          check_url() {
+            local URL="$1" NAME="$2"
+            for attempt in $(seq 1 12); do
+              # -L: follow redirects and judge the FINAL response. Non-show types
+              # (opera, etc.) 307 from /show/<slug> to /opera/<slug> via vercel.json;
+              # without -L the dynamic recent-opening check failed every deploy for
+              # 14 days after an opera opened (cosi-fan-tutte, 2026-09-23). A loop
+              # (max-redirs hit) or a redirect to a 404 still fails, and so does a
+              # chain that leaves our site (e.g. a Vercel login/protection page
+              # answering 200): the final host must be broadwayscorecard.com.
+              RESULT=$(curl -s -L --max-redirs 5 --proto-redir =https -o /dev/null -w "%{http_code} %{url_effective}" "$URL")
+              STATUS="${RESULT%% *}"
+              FINAL_HOST=$(echo "${RESULT#* }" | sed -E 's#^https?://([^/:]+).*#\1#')
+              if [ "$STATUS" = "200" ] && { [ "$FINAL_HOST" = "broadwayscorecard.com" ] || [ "$FINAL_HOST" = "www.broadwayscorecard.com" ]; }; then
+                echo "${NAME} returned HTTP 200 (attempt ${attempt})"
+                return 0
+              fi
+              echo "${NAME} returned HTTP ${STATUS} at ${FINAL_HOST} — retrying (attempt ${attempt}/12)"
+              sleep 5
+            done
+            echo "::error::Production smoke test failed — ${NAME} never returned HTTP 200 after 60s"
+            return 1
+          }
+          check_url "https://broadwayscorecard.com/" "Homepage" & PID1=$!
+          check_url "https://broadwayscorecard.com/show/wicked" "Show page" & PID2=$!
+          check_url "https://broadwayscorecard.com/tony-awards" "Tony Awards hub" & PID3=$!
+          FAIL=0
+          wait $PID1 || FAIL=1
+          wait $PID2 || FAIL=1
+          wait $PID3 || FAIL=1
+          # Dynamic: check the most-recently-opened show's page — catches opening-night
+          # deploys where the newly-live show page is broken (composite=null, missing data).
+          RECENT_SLUG="${{ steps.recent_show.outputs.slug }}"
+          if [ -n "$RECENT_SLUG" ]; then
+            check_url "https://broadwayscorecard.com/show/$RECENT_SLUG" "Recent opening ($RECENT_SLUG)" & PID4=$!
+            wait $PID4 || FAIL=1
+          fi
+          [ $FAIL -eq 0 ] && echo "Smoke test passed — production is live" || exit 1
+
+      - name: Setup Playwright
+        if: steps.deploy.outputs.superseded != 'true'
+        uses: ./.github/actions/setup-playwright
+
+      - name: Content smoke test (Playwright)
+        if: steps.deploy.outputs.superseded != 'true'
+        run: npx playwright test --project=chromium tests/e2e/smoke.spec.ts
+
+      - name: Dispatch async watermark + stage-latency update
+        if: success() && steps.deploy.outputs.superseded != 'true'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # The deployed-live stage-latency emit rides along with the watermark
+          # workflow (2026-07-13). It used to be an inline commit+push step here,
+          # but push-with-retry lost the race against busy main and burned its
+          # full 3-min timeout on most deploys (~5 CI-hours/day) — often losing
+          # the event anyway. The watermark run appends the event with the
+          # deployed_at timestamp captured above and commits it in one push.
+          #
+          # BRO-2983: always dispatches (deliberately NOT throttled here). This
+          # job's own checkout can be up to ~20min stale by the time this step
+          # runs (25-min job timeout), and multiple deploy jobs' checkouts are
+          # independent — a throttle read here races and can't enforce "at
+          # most once". The throttle decision lives inside
+          # update-deploy-watermark.yml instead, checked immediately before
+          # its write, serialized by that workflow's own concurrency group
+          # (deploy-watermark-update, cancel-in-progress: false) — see that
+          # file's "Check watermark throttle" step.
+          gh workflow run update-deploy-watermark.yml \
+            -f deployed_at='${{ steps.deploy.outputs.deployed_at }}' \
+            -f deploy_sha='${{ github.sha }}' \
+            -f deploy_run_id='${{ github.run_id }}' \
+            || echo "::warning::Watermark dispatch failed (non-critical)"
+
+      - name: Notify search engines of updated sitemap
+        if: success() && steps.deploy.outputs.superseded != 'true'
+        continue-on-error: true
+        env:
+          GOOGLE_INDEXING_KEY: ${{ secrets.GOOGLE_INDEXING_KEY }}
+        run: |
+          # Bing ping — sitemap is sharded (/sitemap/0.xml …); /sitemap.xml is a
+          # 404. Bing ping is largely deprecated in favour of IndexNow
+          # (submit-indexnow.js), but ping shard 0 rather than the dead index.
+          curl -s "https://www.bing.com/ping?sitemap=https://broadwayscorecard.com/sitemap/0.xml" || true
+          # Google: re-submit sitemap via Search Console Sitemaps API
+          if [ -n "$GOOGLE_INDEXING_KEY" ]; then
+            node scripts/submit-google-indexing.js --submit-sitemap || true
+          fi
+
+      - name: Check if newer deploy is already queued
+        if: failure()
+        id: check-newer
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // If a newer deploy is already queued/running, skip the alert —
+            // that run will either succeed (fix landed) or fail and alert then.
+            const { data } = await github.rest.actions.listWorkflowRuns({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'vercel-deploy.yml',
+              per_page: 10
+            });
+            const newerRuns = data.workflow_runs.filter(r =>
+              r.id > context.runId && r.status !== 'completed'
+            );
+            if (newerRuns.length > 0) {
+              console.log(`Skipping alert — ${newerRuns.length} newer deploy(s) already queued/running`);
+              core.setOutput('skip_alert', 'true');
+              return;
+            }
+
+            // Confirm-before-page (card #608, 2026-07-28): the 5-min cron means an
+            // isolated blip pages immediately, then self-heals 2-3 ticks later —
+            // exactly what happened 2026-07-28 (run failed 12:53 UTC, next TWO runs
+            // at 13:06/13:11 succeeded). Only page if the most recently COMPLETED
+            // run before this one ALSO failed — i.e. this is at least the 2nd
+            // consecutive real failure (~5-10min of broken deploys), not a
+            // one-off. check-streak (below) still escalates further at streak 3.
+            const completedRuns = data.workflow_runs
+              .filter(r => r.id < context.runId && r.status === 'completed'
+                && r.conclusion !== 'skipped' && r.conclusion !== 'cancelled')
+              .sort((a, b) => b.id - a.id);
+            const previous = completedRuns[0];
+            if (!previous || previous.conclusion !== 'failure') {
+              console.log(`Skipping alert — previous completed run ${previous ? previous.id : '(none)'} was '${previous ? previous.conclusion : 'n/a'}', not a confirmed repeat failure. Will page if the NEXT run also fails.`);
+              core.setOutput('skip_alert', 'true');
+            } else {
+              console.log(`Previous completed run ${previous.id} also failed — confirmed repeat failure, sending alert`);
+              core.setOutput('skip_alert', 'false');
+            }
+
+      - name: Notify on failure
+        id: notify
+        if: failure() && steps.check-newer.outputs.skip_alert != 'true'
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Deploy to Vercel Failed'
+          # BRO-4603: not on the owner's page-worthy list (scripts/lib/page-worthy-alerts.js
+          # PAGE_WORTHY_WORKFLOWS) — failures reach the morning digest, never email.
+          severity: 'warning'
+          email: 'false'
+          # BRO-4141: one-off failures of this job are not owner-actionable; email
+          # only when it keeps failing (streak mode re-pages every 4th failure after).
+          min_consecutive_failures: '3'
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+      - name: Trigger investigation
+        # Share the notify step's 2h cooldown. investigate-alert.yml has no dedup
+        # of its own and always emails, so without this every consecutive failed
+        # deploy (one per cron tick) sent another "[Investigation] Deploy to
+        # Vercel Failed" email while the plain alert was correctly suppressed
+        # (00:18 and 00:32 on 2026-09-23). The 3rd-consecutive-failure
+        # escalation in check-streak below is unaffected.
+        if: failure() && steps.check-newer.outputs.skip_alert != 'true' && steps.notify.outputs.suppressed != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          gh workflow run investigate-alert.yml \
+            -f alert_type=vercel_deploy_fail \
+            -f alert_title="Deploy to Vercel Failed" \
+            -f alert_context='{}' \
+            -f run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+  # Fires only when the deploy job fails AND this is the 3rd consecutive failure.
+  # Sends a second "still broken" alert (~15 min into the outage) so parallel sessions
+  # notice without polling. First-failure alert comes from the deploy job above.
+  # Uses streak == 3 exactly (not >= 3) to fire once per outage, not every cron tick.
+  check-streak:
+    needs: [deploy]
+    if: failure()
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Count consecutive failures and re-alert at streak 3
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          # Count leading consecutive failures in the last 20 completed deploy runs.
+          # Exclude null conclusions (in-progress), skipped, and cancelled runs —
+          # those are workflow_run triggers for failed rebuilds and don't represent
+          # real deploy attempts.
+          #
+          # BRO-2771: this is a LEADING-consecutive-failure scan, so it is the most
+          # order-sensitive run query in the repo — a stale or mis-ordered page does not
+          # just shift a number, it reports a streak that never happened (or hides a real
+          # one). `gh run list --limit=N` returns arbitrary, sometimes months-stale result
+          # SETS on this repo (BRO-2767), so this reads the Actions REST endpoint and sorts
+          # newest-first explicitly rather than trusting the transport.
+          #
+          # This is the bash body of scripts/lib/gh-runs-query.sh, inlined: the
+          # `check-streak` job has no actions/checkout step, so it cannot source the helper.
+          # Keep the two in sync.
+          # A failed query used to collapse to STREAK=0, which reads as "no escalation
+          # needed" — so an API error during a real outage would silently suppress the
+          # streak-3 page. Capture the failure separately and say so loudly.
+          if ! STREAK=$(gh api \
+            "repos/$GITHUB_REPOSITORY/actions/workflows/vercel-deploy.yml/runs?per_page=20" \
+            --jq '[.workflow_runs[] | {conclusion: .conclusion, createdAt: .created_at}] |
+                  sort_by(if (.createdAt | type) == "string" and (.createdAt | test("^[0-9]{4}-")) then .createdAt else "" end) | reverse |
+                  [.[] | select(.conclusion != null and .conclusion != "skipped" and .conclusion != "cancelled")] |
+                  reduce .[] as $r (
+                    {"streak": 0, "done": false};
+                    if .done then .
+                    elif $r.conclusion == "failure" then {"streak": (.streak + 1), "done": false}
+                    else {"streak": .streak, "done": true}
+                    end
+                  ) | .streak' 2>/dev/null); then
+            echo "::warning::deploy failure-streak query FAILED (auth/rate-limit/network) — cannot tell whether this is the 3rd consecutive failure, so no escalation was dispatched. Check the Actions tab manually."
+            exit 0
+          fi
+
+          # An empty or non-numeric result is also not a zero-streak. Treat it the
+          # same way rather than letting `[ "$STREAK" -eq 3 ]` error out under set -e.
+          case "$STREAK" in
+            ''|*[!0-9]*)
+              echo "::warning::deploy failure-streak query returned a non-numeric result ('${STREAK}') — no escalation dispatched. Check the Actions tab manually."
+              exit 0
+              ;;
+          esac
+
+          echo "Consecutive failure streak: $STREAK"
+
+          # Fire exactly at 3 — the first-failure alert covers streak 1.
+          # Streak 3 = ~15 min of broken deploys on the 5-min cron.
+          # BRO-4603: vercel-deploy is not on the owner's page-worthy list
+          # (scripts/lib/page-worthy-alerts.js PAGE_WORTHY_WORKFLOWS), so the
+          # streak-6 escalation no longer dispatches investigate-alert.yml (which
+          # always emails). The site keeps serving the last good deploy; a broken
+          # deploy pipeline is fixed by a session, not the owner, and
+          # check-cron-health.yml's vercel-deploy check puts it in the digest.
+          if [ "$STREAK" -ge 6 ]; then
+            echo "::warning::Deploy failure streak is $STREAK (~$((STREAK * 5)) min) — not paging (BRO-4603); see check-cron-health.yml / the morning digest."
+          else
+            echo "Streak is $STREAK — no escalation needed"
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Deploy Streak Check Failed'
+          severity: 'warning'

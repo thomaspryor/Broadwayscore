@@ -1,0 +1,294 @@
+name: Scrape BWW Reviews
+
+on:
+  schedule:
+    - cron: '0 13 * * 0'  # Weekly Sundays 1 PM UTC (after existing scrapers)
+  workflow_dispatch:
+    inputs:
+      type:
+        description: 'Page type to scrape'
+        required: true
+        type: choice
+        options:
+          - all
+          - reviews
+          - roundup
+        default: all
+      shows:
+        description: 'Comma-separated show IDs (empty = all shows)'
+        required: false
+        type: string
+      limit:
+        description: 'Max shows to process'
+        required: false
+        type: string
+        default: '200'
+      force:
+        description: 'Override cache freshness check'
+        required: false
+        type: boolean
+        default: false
+      roundup_url:
+        description: 'Direct BWW roundup URL — skips SERP discovery, fetches via plain HTTPS'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: scrape-bww-reviews
+  cancel-in-progress: false
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-2388 (task #466 class): depth 1000 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 360-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 1000
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure git for checkpointing
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Pre-fetch roundup URL (plain HTTPS, no SB needed)
+        if: inputs.roundup_url != ''
+        run: |
+          SHOW="${{ inputs.shows }}"
+          URL="${{ inputs.roundup_url }}"
+          ARCHIVE_DIR="data/aggregator-archive/bww-roundups"
+          mkdir -p "$ARCHIVE_DIR"
+          echo "Fetching: $URL"
+          node -e "
+            const https = require('https');
+            const fs = require('fs');
+            let html = '';
+            https.get('$URL', {
+              headers: {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'}
+            }, (res) => {
+              res.on('data', c => html += c);
+              res.on('end', () => {
+                if (html.length < 5000) { console.error('Suspiciously short response:', html.length, 'bytes'); process.exit(1); }
+                fs.writeFileSync('$ARCHIVE_DIR/$SHOW.html', html);
+                console.log('Saved', html.length, 'bytes to $ARCHIVE_DIR/$SHOW.html');
+              });
+            }).on('error', e => { console.error('Fetch failed:', e.message); process.exit(1); });
+          "
+
+      - name: Scrape BWW reviews
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: |
+          FLAGS="--type=${{ inputs.type || 'all' }}"
+          if [ -n "${{ inputs.shows }}" ]; then
+            FLAGS="$FLAGS --shows=${{ inputs.shows }}"
+          fi
+          if [ -n "${{ inputs.limit }}" ]; then
+            FLAGS="$FLAGS --limit=${{ inputs.limit }}"
+          fi
+          # Skip --force when roundup_url was pre-fetched so the cache is used
+          if [ "${{ inputs.force }}" = "true" ] && [ -z "${{ inputs.roundup_url }}" ]; then
+            FLAGS="$FLAGS --force"
+          fi
+          echo "Running: node scripts/scrape-bww-reviews.js $FLAGS"
+          node scripts/scrape-bww-reviews.js $FLAGS
+
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Scrape BWW Reviews — Final commit and push"
+      - name: Push aggregator-archive to private repo
+        if: always()
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: BWW reviews scrape (aggregator archive)"
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: scrape-bww-reviews
+
+  rebuild:
+    needs: [scrape]
+    if: always() && needs.scrape.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Rebuild reviews.json
+        run: node scripts/rebuild-all-reviews.js
+
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Scrape BWW Reviews — Commit and push rebuilt reviews.json"
+      - name: Commit and push rebuilt reviews.json
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/
+          git diff --staged --quiet || git commit -m "data: Auto-rebuild reviews.json after BWW scrape"
+
+          bash scripts/lib/push-with-retry.sh
+
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from scrape-bww-reviews'
+      - name: Auto-trigger text collection if needed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          NEEDS_COLLECTION=$(node -e '
+            const fs = require("fs"), path = require("path");
+            const base = "data/review-texts";
+            let n = 0;
+            const dirs = fs.readdirSync(base).filter(d => {
+              try { return fs.statSync(path.join(base, d)).isDirectory(); } catch { return false; }
+            });
+            dirs.forEach(d => {
+              fs.readdirSync(path.join(base, d)).filter(f => f.endsWith(".json") && f !== "failed-fetches.json").forEach(f => {
+                try {
+                  const r = JSON.parse(fs.readFileSync(path.join(base, d, f), "utf8"));
+                  if (r.wrongProduction || r.wrongShow || r.wrongAttribution) return;
+                  if (r.url && (!r.fullText || r.fullText.length < 50)) n++;
+                } catch {}
+              });
+            });
+            console.log(n);
+          ')
+
+          echo "Reviews needing text collection: $NEEDS_COLLECTION"
+
+          THRESHOLD=20
+          if [ "$NEEDS_COLLECTION" -lt "$THRESHOLD" ]; then
+            echo "Below threshold ($THRESHOLD). Skipping."
+            exit 0
+          fi
+
+          # Jitter (#312 cousin fix): spreads out this check-then-dispatch guard
+          # so overlapping triggers don't all read RUNNING=0 before any of them
+          # start. See gather-reviews.yml for the incident this was copied from.
+          sleep $((RANDOM % 20 + 1))
+
+          RUNNING=$(gh run list --workflow=collect-review-texts.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          if [ "$RUNNING" -gt 0 ]; then
+            echo "Text collection already running. Skipping."
+            exit 0
+          fi
+
+          # Wrap `gh workflow run` in retry-on-rate-limit. The bare command
+          # under `set -e` aborts the step on HTTP 403, silently losing the
+          # dispatch (2026-05-16 incident on run 25977592444). See
+          # scripts/lib/dispatch-with-retry.sh.
+          # shellcheck source=scripts/lib/dispatch-with-retry.sh
+          source scripts/lib/dispatch-with-retry.sh
+
+          SHOWS="${{ inputs.shows }}"
+          if [ -n "$SHOWS" ]; then
+            echo "Triggering targeted text collection for shows: $SHOWS ($NEEDS_COLLECTION reviews)..."
+            dispatch_with_retry collect-review-texts.yml \
+              -f show_filter="$SHOWS" \
+              -f max_reviews=300 \
+              -f browserbase_enabled=true \
+              -f retry_failed=true \
+              -f archive_first=true \
+              || true
+          else
+            echo "Triggering text collection for $NEEDS_COLLECTION reviews..."
+            dispatch_with_retry collect-review-texts.yml \
+              -f max_reviews=300 \
+              -f browserbase_enabled=true \
+              -f retry_failed=true \
+              -f archive_first=true \
+              || true
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'BWW Reviews Scraper Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

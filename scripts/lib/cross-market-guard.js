@@ -1,0 +1,794 @@
+'use strict';
+
+/**
+ * outlet-registry.json `region` values that mean "this outlet is UK-side, not
+ * a London-city outlet specifically" — e.g. New Statesman and Morning Star
+ * are real UK nationals but not registered `region: 'london'`. `'dual'`
+ * outlets (Observer, NY Theatre Guide, Musical Theatre Review) already carry
+ * `isDualMarket: true` and get skipped earlier by dedicated checks in most
+ * callers, but are included here too so any guard consulting this set alone
+ * doesn't have to know that.
+ *
+ * Single source of truth for "which regions are exempt from the US-outlet
+ * cross-market flag" — classifyUsOnWeCrossMarket() and
+ * evaluateForwardCrossMarketGuard() previously each hardcoded this list
+ * separately and silently drifted apart (evaluateForwardCrossMarketGuard only
+ * checked 'london', false-flagging every 'uk'/'dual'-region outlet — BRO-591).
+ * A future UK-adjacent region string only needs to be added here once.
+ */
+const UK_SIDE_REGIONS = new Set(['london', 'uk', 'dual']);
+
+/**
+ * Regions whose wrongProduction flag may SELF-HEAL via the rebuild's
+ * UK/dual-market auto-clear (rebuild-all-reviews.js).
+ *
+ * Derived from UK_SIDE_REGIONS rather than hardcoded: BRO-591 synced the
+ * FLAGGING side to UK_SIDE_REGIONS and left the CLEARING side on a bare
+ * `region === 'london'`, so a 'uk'-region outlet (New Statesman) could be
+ * flagged "US outlet reviewing London show" and then never clear. 'dual' is
+ * deliberately excluded — a dual-market outlet's wrongProduction flag can be
+ * a genuine same-title other-market review.
+ */
+const UK_MARKET_REGIONS = new Set([...UK_SIDE_REGIONS].filter((r) => r !== 'dual'));
+
+/**
+ * Alias kept for the auto-clear call site, which reads this set as "regions whose
+ * wrongProduction flag may self-heal". Same set, two intents: a UK-market outlet
+ * is one whose flag can clear on a London show (auto-clear) AND one that should be
+ * flagged when it turns up on a Broadway show (reverse guard). Defining it once
+ * is the point — three separate hardcoded `=== 'london'` tests is how BRO-591's
+ * fix ended up covering only one of them.
+ */
+const UK_SELF_HEAL_REGIONS = UK_MARKET_REGIONS;
+
+/**
+ * Does this outlet sit in a UK-side region that may SELF-HEAL a wrongProduction
+ * flag? Extracted from rebuild-all-reviews.js's inline auto-clear block so the
+ * wiring is unit-testable (CLAUDE.md rule 15) rather than only the predicate it
+ * feeds — the BRO-591 drift was in this computation, not in the predicate.
+ *
+ * Tests BOTH map keys: the canonical id and the raw id are independent entries
+ * in outletRegionMap, and a truthy non-UK value on the first would otherwise
+ * mask a UK value on the second.
+ *
+ * @param {Record<string,string>} outletRegionMap - from buildOutletRegionMap()
+ * @param {string} canonicalOutlet
+ * @param {string} rawOutlet
+ * @returns {boolean}
+ */
+/**
+ * Reverse-guard-facing name for the same computation: is this outlet UK-market?
+ * The reverse guard previously re-derived `map[canonical] || map[raw]` inline,
+ * which lets a truthy non-UK value on the canonical key MASK a UK value on the
+ * raw key — the defect the helper below was extracted to remove. Sharing it means
+ * both directions get the fix, and the call sites stay one-liners over a tested
+ * function (CLAUDE.md rule 15).
+ */
+const outletIsUkMarketRegion = (map, canonical, raw) =>
+  outletIsUkSideSelfHealRegion(map, canonical, raw);
+
+function outletIsUkSideSelfHealRegion(outletRegionMap, canonicalOutlet, rawOutlet) {
+  if (!outletRegionMap) return false;
+  return UK_SELF_HEAL_REGIONS.has(outletRegionMap[canonicalOutlet])
+    || UK_SELF_HEAL_REGIONS.has(outletRegionMap[rawOutlet]);
+}
+
+/**
+ * Reverse cross-market classification.
+ *
+ * A "reverse cross-market" review is a non-West-End (NYC: Broadway / off-Broadway)
+ * review that carries a London-region outlet. This decides how loudly
+ * validate-data.js should complain about it.
+ *
+ * Levels:
+ *   'skip'     — an isDualMarket outlet (legit by definition) or a non-London
+ *                outlet. Nothing to flag.
+ *   'advisory' — Tier 3 / untiered London outlet on a *Broadway* show. This is the
+ *                plays-to-see / The Arts Desk class: niche London aggregators that
+ *                legitimately cover Broadway transfers and slowly accumulate NYC
+ *                reviews. We surface them as isDualMarket candidates but do NOT
+ *                block the build — that's the whole point of this guard. Before
+ *                2026-06-15 these hit the hard error below and turned CI red
+ *                (plays-to-see: oslo-2017, the-father-2016, long-days-journey-2016),
+ *                forcing a reactive isDualMarket fix after the build was already
+ *                broken. See memory/feedback_plays_to_see_dual_market.md.
+ *   'warning'  — London outlet on an off-Broadway/other NYC show (Met opera cinema
+ *                transmissions, London-to-NYC transfers, festival co-productions).
+ *                Already-tolerated coverage; advisory by long-standing convention.
+ *   'error'    — Tier 1/2 London *prestige* paper (Evening Standard, Times UK, etc.)
+ *                on a mainstage *Broadway* show. These never legitimately cover
+ *                Broadway, so a non-dualMarket Tier 1/2 hit is a genuine
+ *                contamination signal worth blocking the build over.
+ *
+ * Pure function — no I/O, no globals. validate-data.js feeds it the flags it
+ * already computes (outletRegionMap / dualMarket / tier12Outlets / category).
+ *
+ * @param {object} args
+ * @param {string|null|undefined} args.region    - outlet region ('london' | other)
+ * @param {boolean} args.isDualMarket            - outlet has isDualMarket:true
+ * @param {boolean} args.isTier12                - outlet is Tier 1 or Tier 2
+ * @param {boolean} args.isBroadway             - the reviewed show is Broadway category
+ * @returns {{ level: 'skip'|'advisory'|'warning'|'error', reason: string }}
+ */
+function classifyReverseCrossMarket({ region, isDualMarket, isTier12, isBroadway }) {
+  if (isDualMarket) {
+    return { level: 'skip', reason: 'dual-market outlet (legit by definition)' };
+  }
+  // UK_MARKET_REGIONS, not `!== 'london'`: validate-data.js reports on this
+  // classifier while rebuild-all-reviews.js applies the actual reverse guard. When
+  // the guard widened to the UK-market bucket and this did not, the rebuild flagged
+  // region:'uk' outlets on Broadway shows while CI stayed silent about them — a
+  // Tier 1/2 'uk' paper could never reach the `error` tier. The two must move together.
+  if (!UK_MARKET_REGIONS.has(region)) {
+    return { level: 'skip', reason: 'not a UK-market outlet' };
+  }
+  if (!isBroadway) {
+    return {
+      level: 'warning',
+      reason: 'London outlet on off-Broadway/other NYC show (opera transmissions, transfers)',
+    };
+  }
+  if (isTier12) {
+    return {
+      level: 'error',
+      reason: 'Tier 1/2 London prestige outlet on Broadway — never legitimately covers it',
+    };
+  }
+  return {
+    level: 'advisory',
+    reason: 'Tier 3/untiered London outlet accumulating Broadway reviews — isDualMarket candidate',
+  };
+}
+
+/**
+ * Same-title cross-market contamination classifier (date-cluster + corroboration).
+ *
+ * A review filed under show X can actually be reviewing a same-title sibling
+ * production Y in a different market (West End ⟷ NYC). The pre-existing Category-A
+ * detector in audit-review-contamination.js only caught these when the review was
+ * >180 days from X's opening — so same-SEASON siblings (e.g. West End R&J opened
+ * 2026-03-31 vs Delacorte R&J opened 2026-06-11, ~72d apart) slipped through and
+ * inflated the wrong show's score (user report #382, 2026-06-26).
+ *
+ * This adds a RELATIVE date-cluster test: the review clusters tightly with a
+ * sibling's opening AND is materially farther from this show's opening. To avoid
+ * false-positives on legitimate dual-market coverage (Guardian/Times-UK/Telegraph
+ * review the Broadway opening on its actual date), a date cluster ALONE is never
+ * enough to flag — it must be CORROBORATED by either:
+ *   • region mismatch  — outlet's region belongs to the sibling's market, not this
+ *                        show's (London outlet on a US show whose sibling is WE), or
+ *   • url-token match  — the review URL contains the sibling's cast/venue tokens.
+ * An uncorroborated date cluster returns level 'review' (surface for a human),
+ * never 'contamination'. The legacy >180d path is preserved as 'contamination'
+ * with no corroboration required (unchanged behavior).
+ *
+ * Pure function — caller supplies parsed dates, markets, region and the url-token
+ * boolean (the audit computes those from shows.json + the registry maps).
+ *
+ * @param {object} a
+ * @param {Date}   a.reviewDate            - review publishDate (parsed)
+ * @param {string|null} a.reviewUrl        - review URL (checked against the best sibling's tokens)
+ * @param {{opening: Date|null, market: 'us'|'uk'}} a.thisShow
+ * @param {Array<{id:string, opening: Date, market:'us'|'uk', tokens?: string[]}>} a.siblings - same-title other productions; tokens = cast/venue slugs
+ * @param {string|null} a.outletRegion     - outlet region ('london'|'us'|'new-york'|'dual'|null)
+ * @param {boolean} a.isDualMarket         - outlet flagged isDualMarket
+ * @param {number} [a.margin=45]           - min extra days the review must be farther from this show than the sibling
+ * @returns {{ level: 'contamination'|'review'|'clear', confidence: 'high'|null, reason: string, sibId: string|null, thisDiff: number|null, sibDiff: number|null }}
+ */
+// A slug token matches a URL only when delimited by non-alphanumerics or string
+// ends — so 'sink' matches '…-sadie-sink-review…' but NOT 'sinking', and 'globe'
+// does not match 'theglobeandmail'. Tokens are already lowercase slugs.
+function tokenInUrl(token, url) {
+  const i = url.indexOf(token);
+  if (i < 0) return false;
+  const before = i === 0 ? '' : url[i - 1];
+  const after = i + token.length >= url.length ? '' : url[i + token.length];
+  const boundary = (ch) => ch === '' || !/[a-z0-9]/.test(ch);
+  return boundary(before) && boundary(after);
+}
+
+function classifyCrossMarketContamination({
+  reviewDate, reviewUrl, thisShow, siblings, outletRegion, isDualMarket, margin = 45,
+}) {
+  const clear = { level: 'clear', confidence: null, reason: '', sibId: null, thisDiff: null, sibDiff: null };
+  if (!reviewDate || !thisShow || !thisShow.opening || !Array.isArray(siblings) || !siblings.length) return clear;
+
+  const DAY = 86400000;
+  const thisDiff = Math.abs(reviewDate - thisShow.opening) / DAY;
+  let best = null;
+  for (const s of siblings) {
+    if (!s.opening) continue;
+    const diff = Math.abs(reviewDate - s.opening) / DAY;
+    if (!best || diff < best.diff) best = { ...s, diff };
+  }
+  if (!best) return clear;
+  const out = { sibId: best.id, thisDiff: Math.round(thisDiff), sibDiff: Math.round(best.diff) };
+
+  // URL corroboration: does the review URL contain a distinctive cast/venue token of
+  // the best (date-closest) sibling? Tokens are precomputed by the caller from shows.json.
+  // Match on SLUG BOUNDARIES (token delimited by non-alphanumeric or string ends), not raw
+  // substring — otherwise 'hall' matches 'marshall', 'globe' matches 'theglobeandmail', etc.
+  const url = (reviewUrl || '').toLowerCase();
+  const urlMatchesSibling = !!(url && Array.isArray(best.tokens) && best.tokens.some(t => t && tokenInUrl(t, url)));
+
+  // Legacy always-on path: tight sibling cluster AND very far from this show.
+  // Preserved unchanged (no corroboration required) so existing strict behavior holds.
+  if (best.diff <= 30 && thisDiff > 180) {
+    return { ...out, level: 'contamination', confidence: 'high', reason: `clusters with sibling ${best.id} (${out.sibDiff}d) and is ${out.thisDiff}d from this show (>180d)` };
+  }
+
+  // Relative same-season path: clusters with a sibling AND materially farther from this show.
+  const dateCluster = best.diff <= 30 && thisDiff >= best.diff + margin;
+  if (!dateCluster) return { ...clear, ...out };
+
+  // Corroboration — required before we flag (avoids FP on legit dual-market coverage).
+  // Region mismatch only corroborates for NON-dual-market outlets: a dual-market
+  // outlet (Times UK/Telegraph/Guardian) legitimately covers both markets, so its
+  // region tells us nothing about which production it reviewed — those need the
+  // url-token signal instead.
+  const regionMismatch = !isDualMarket && (
+    (outletRegion === 'london' && thisShow.market === 'us' && best.market === 'uk') ||
+    (outletRegion && outletRegion !== 'london' && outletRegion !== 'dual' && thisShow.market === 'uk' && best.market === 'us')
+  );
+
+  if (regionMismatch || urlMatchesSibling) {
+    const why = regionMismatch
+      ? `outlet region '${outletRegion}' matches sibling market '${best.market}', not this show '${thisShow.market}'`
+      : `url contains sibling ${best.id} cast/venue token`;
+    return { ...out, level: 'contamination', confidence: 'high', reason: `clusters with sibling ${best.id} (${out.sibDiff}d, this ${out.thisDiff}d); ${why}` };
+  }
+
+  // Date cluster but no corroboration → surface for a human, never auto-flag.
+  return { ...out, level: 'review', confidence: null, reason: `date-clusters with sibling ${best.id} (${out.sibDiff}d, this ${out.thisDiff}d) but no region/url corroboration${isDualMarket ? ' (dual-market outlet)' : ''}` };
+}
+
+/**
+ * Forward cross-market classification: a US-region outlet review on a
+ * West End / off-West End show — the reverse of classifyReverseCrossMarket.
+ *
+ * History (card 386637c5): validate-data.js only WARNED on US-outlet-on-WE, so
+ * Broadway reviews leaking onto WE revivals (Glengarry WE 2026 carrying the
+ * Culkin/Odenkirk Broadway-2025 EW/NYDailyNews/Yahoo reviews) never failed CI.
+ * A domain-only error tier was rejected in 2026-06-21's pass — NYT/Variety
+ * legitimately review the West End near opening — so the error tier requires
+ * BOTH signals: an explicitly US-region outlet AND a pre-window publish date
+ * (>PRE_WINDOW_DAYS before the show's earliest date, outside any priorRun —
+ * the caller computes that via evaluatePreWindowInclusion).
+ *
+ * Levels:
+ *   'skip'    — dual-market outlet, Tier 1/2 outlet (prestige papers cover both
+ *               markets), or a UK-side region ('london'/'uk'/'dual').
+ *   'error'   — explicitly US-region outlet AND pre-window date. Both signals
+ *               present = genuine cross-production contamination; block the build.
+ *   'warning' — any other non-London outlet on a WE show (unknown region, or
+ *               US region with an in-window date — legitimate transfer coverage
+ *               and dual-market candidates surface here without blocking).
+ *
+ * Pure function — validate-data.js feeds it flags it already computes.
+ *
+ * @param {object} args
+ * @param {string|null|undefined} args.region - outlet region from the registry
+ * @param {boolean} args.isDualMarket
+ * @param {boolean} args.isTier12
+ * @param {boolean} args.isPreWindowDate - review publishDate falls before the
+ *   show's pre-window threshold and outside every declared priorRun
+ * @returns {{ level: 'skip'|'error'|'warning', reason: string }}
+ */
+function classifyUsOnWeCrossMarket({ region, isDualMarket, isTier12, isPreWindowDate }) {
+  if (isDualMarket) {
+    return { level: 'skip', reason: 'dual-market outlet (legit by definition)' };
+  }
+  if (isTier12) {
+    return { level: 'skip', reason: 'Tier 1/2 outlet — prestige papers legitimately review the West End' };
+  }
+  if (UK_SIDE_REGIONS.has(region)) {
+    return { level: 'skip', reason: 'UK-side outlet' };
+  }
+  // Registry regions other than london/uk/dual are all US-side ('us' or a US
+  // city). An absent region means the outlet is unknown to the registry — not
+  // enough signal to block a build on.
+  if (region && isPreWindowDate) {
+    return {
+      level: 'error',
+      reason: `US-region outlet ('${region}') with pre-window publish date on West End show — cross-production contamination`,
+    };
+  }
+  return { level: 'warning', reason: 'non-London outlet on West End show' };
+}
+
+/**
+ * Forward cross-market GUARD: decides whether a review filed under a West
+ * End / Off-West-End show is actually a Broadway leak — a US-market outlet
+ * with no legitimate reason to be reviewing a London production. This is
+ * the rebuild-all-reviews.js flagging decision (sets wrongProduction on the
+ * review file), distinct from classifyUsOnWeCrossMarket() above (a CI
+ * validate-data.js severity classifier that only warns/errors, never writes).
+ *
+ * Extracted from rebuild-all-reviews.js (BRO-254) so the outlet-region
+ * lookup can be unit tested directly against the real outlet-registry.json,
+ * instead of only being exercisable by running the full rebuild.
+ */
+
+/**
+ * outletId -> region (e.g. 'london'), built from the outlet registry.
+ * Registered ids AND their (lowercased) aliases map to the same region.
+ *
+ * Delegates to lib/outlet-region-map.js's buildOutletMaps() — the
+ * pre-existing single source of truth shared by validate-data.js and
+ * audit-review-contamination.js — instead of re-deriving this map, so this
+ * guard can't drift from that implementation (it previously did: this
+ * function used to build its own copy that didn't lowercase alias keys,
+ * the exact bug a 2026-06-15 ship-check already had to fix once upstream).
+ */
+function buildOutletRegionMap(outletRegistry) {
+  return require('./outlet-region-map').buildOutletMaps(outletRegistry).outletRegionMap;
+}
+
+/**
+ * Lowercased set of every registered outlet id + alias. Lets the guard
+ * distinguish "registered but region-less" (US nationals; keep flagging)
+ * from "not in the registry at all" (brand-new outlet; bootstrap
+ * exemption, task #817).
+ */
+function buildRegisteredOutletIds(outletRegistry) {
+  const registeredOutletIds = new Set();
+  for (const [id, info] of Object.entries(outletRegistry.outlets)) {
+    registeredOutletIds.add(id.toLowerCase());
+    if (info.aliases) for (const a of info.aliases) registeredOutletIds.add(String(a).toLowerCase());
+  }
+  return registeredOutletIds;
+}
+
+/**
+ * URL-domain fallback: used when an outlet has no region in the registry,
+ * so unknown UK outlets (blogs, small reviewers) aren't flagged as US.
+ */
+function isUkUrl(url) {
+  if (!url) return false;
+  try {
+    const hostname = new URL(url).hostname || '';
+    return hostname.endsWith('.co.uk') || hostname.endsWith('.org.uk')
+      || hostname.includes('london') || (hostname.includes('theatre') && !hostname.includes('newyork'));
+  } catch (e) {
+    return false;
+  }
+}
+
+/**
+ * @param {object} params
+ * @param {object} params.outletRegionMap - from buildOutletRegionMap()
+ * @param {Set<string>} params.registeredOutletIds - from buildRegisteredOutletIds()
+ * @param {string} params.canonicalOutlet - normalizeOutletCanonical(rawOutlet)
+ * @param {string} params.rawOutlet - lowercased data.outletId || data.outlet
+ * @param {string} params.url - data.url
+ * @param {object} [params.contentVerification] - data.contentVerification
+ * @param {Date|string|null} [params.reviewDate] - parsed/parseable review publish date
+ * @param {Array|null|undefined} [params.priorRuns] - show.priorRuns
+ * @returns {{ shouldFlag: boolean, reason: string|null, exemptedByPriorRun: boolean }}
+ */
+function evaluateForwardCrossMarketGuard({
+  outletRegionMap,
+  registeredOutletIds,
+  canonicalOutlet,
+  rawOutlet,
+  url,
+  contentVerification,
+  reviewDate,
+  priorRuns,
+}) {
+  const outletRegion = outletRegionMap[canonicalOutlet] || outletRegionMap[rawOutlet];
+  // Was `outletRegion === 'london'` only — every 'uk'/'dual'-region outlet
+  // (e.g. New Statesman) got treated as US-side and false-flagged as
+  // cross-market contamination on a real WE review (found via BRO-591's
+  // ground-truth coverage check). classifyUsOnWeCrossMarket() above already
+  // exempts all of UK_SIDE_REGIONS; this brings the two guards back in sync.
+  if (UK_SIDE_REGIONS.has(outletRegion)) {
+    return { shouldFlag: false, reason: null, exemptedByPriorRun: false };
+  }
+  if (isUkUrl(url)) return { shouldFlag: false, reason: null, exemptedByPriorRun: false };
+
+  // Production-continuity exemption (BRO-222 cousin, opposite direction): a
+  // review whose publishDate falls inside a declared priorRuns window is
+  // coverage of THAT run, not the current (West End) one — its market must be
+  // judged against the prior run's own venue, not the current show's market.
+  // E.g. a US critic's in-window coverage of a declared Off-Broadway/regional
+  // run before a West End transfer. Same structural gap as the reverse guard
+  // (evaluateReverseLondonCrossMarketGuard, BRO-222) — this guard consulted
+  // show.priorRuns nowhere at all before this fix.
+  const { findMatchingPriorRun } = require('./wrong-production-autoclear');
+  const matchedPriorRun = findMatchingPriorRun(reviewDate, priorRuns);
+  if (matchedPriorRun && isUsVenueString(matchedPriorRun.venue)) {
+    return { shouldFlag: false, reason: null, exemptedByPriorRun: true };
+  }
+
+  // Don't flag when contentVerification has already affirmatively verified
+  // the production is correct with high confidence. [GUARD:CROSS-MARKET-CV-OVERRIDE]
+  const cv = contentVerification;
+  const cvSaysCorrect = cv && cv.isValid === true
+    && cv.wrongProduction === false && cv.confidence === 'high';
+
+  // Bootstrap exemption for COMPLETELY unregistered outlets (task #817).
+  const outletIsUnregistered = !registeredOutletIds.has(canonicalOutlet)
+    && !registeredOutletIds.has(rawOutlet);
+
+  if (cvSaysCorrect || outletIsUnregistered) {
+    return { shouldFlag: false, reason: null, exemptedByPriorRun: false };
+  }
+
+  return { shouldFlag: true, reason: `Cross-market: US outlet "${rawOutlet}" reviewing London show`, exemptedByPriorRun: false };
+}
+
+/**
+ * UK-market signal in a free-text venue string (show.priorRuns[].venue).
+ *
+ * priorRuns entries carry a human-written venue string (e.g. "Edinburgh
+ * Festival Fringe (Assembly)"), not a structured market/region field —
+ * this is a lightweight keyword classifier over that string, matching the
+ * same "does the text say UK" approach the codebase already uses for URL
+ * hostnames (isUkUrl above) and festival-venue detection
+ * (review-guards.js's FESTIVAL_VENUE_SHOW_RE).
+ *
+ * Deliberately excludes bare "fringe" and "england" — both collide with
+ * genuine US venue text (FringeNYC / New York International Fringe
+ * Festival; "New England ..." theaters/venue names) and a false match here
+ * wrongly EXEMPTS a cross-market review from a real contamination flag,
+ * which is a worse failure than under-matching (ship-check finding,
+ * BRO-222). "edinburgh" alone already covers the Edinburgh Fringe case this
+ * guard exists for.
+ *
+ * @param {string|null|undefined} venue
+ * @returns {boolean}
+ */
+const UK_VENUE_RE = /\b(?:london|west end|off[- ]?west end|edinburgh|glasgow|manchester|birmingham|leeds|liverpool|bristol|cardiff|scotland|wales|u\.?k\.?|united kingdom)\b/i;
+
+function isUkVenueString(venue) {
+  return !!(venue && UK_VENUE_RE.test(String(venue)));
+}
+
+/**
+ * US-market signal in a free-text venue string (show.priorRuns[].venue),
+ * used by the forward guard's own priorRuns exemption (BRO-222 cousin,
+ * opposite direction).
+ *
+ * Deliberately a POSITIVE keyword match (same shape as isUkVenueString),
+ * NOT "not UK" — an earlier version defined this as `!isUkVenueString(venue)`
+ * and ship-check adversarial review caught the resulting failure-open hole:
+ * plenty of genuine UK regional venues (Chichester Festival Theatre, Sheffield
+ * Crucible, Bath Theatre Royal, Nottingham Playhouse, York Theatre Royal,
+ * Newcastle Theatre Royal, Belfast Grand Opera House, ...) carry no keyword
+ * from UK_VENUE_RE's necessarily-partial city list, so "not UK" silently
+ * became "US" and would wrongly EXEMPT a real cross-market Broadway leak
+ * whose declared priorRun was actually a UK regional tryout before the West
+ * End transfer — worse than under-matching, same principle isUkVenueString's
+ * own docstring states. Requiring an explicit US signal instead means an
+ * unrecognized venue string fails CLOSED (guard still flags), not open.
+ *
+ * @param {string|null|undefined} venue
+ * @returns {boolean}
+ */
+const US_VENUE_RE = /\b(?:off[- ]?broadway|off[- ]?off[- ]?broadway|broadway|new york|nyc|brooklyn|manhattan|chicago|los angeles|san francisco|berkeley|boston|philadelphia|washington(?:,?\s*d\.?c\.?)?|atlanta|seattle|denver|minneapolis|dallas|houston|connecticut|massachusetts|california|u\.?s\.?a?\.?|united states)\b/i;
+
+function isUsVenueString(venue) {
+  return !!(venue && US_VENUE_RE.test(String(venue)));
+}
+
+/**
+ * Reverse cross-market guard (London outlet reviewing a Broadway/off-Broadway
+ * show), priorRuns-aware.
+ *
+ * Background (BRO-222): a review whose publishDate falls inside a show's
+ * declared priorRuns window is coverage of THAT run, not the current one —
+ * its market must be judged against the prior run's own venue, not the
+ * current show's market. Before this fix, the rebuild's reverse cross-market
+ * block (rebuild-all-reviews.js "GUARD:CROSS-MARKET-LONDON-ON-OTHER")
+ * consulted show.priorRuns nowhere at all, so a UK critic's in-window
+ * coverage of a declared Edinburgh Fringe run got excluded from a live NYC
+ * transfer show as "Cross-market: London outlet reviewing off-broadway show"
+ * (rosie-odonnell-common-knowledge-off-broadway-2026 /
+ * neurodiversereview--simon-jay.json, live newsletter incident).
+ *
+ * Pure — the caller resolves reviewDate/priorRuns and the raw "is this a
+ * London outlet" signal (outletRegion === 'london' or a UK-hosted URL); this
+ * function only decides whether a declared prior run exempts the review.
+ *
+ * @param {object} args
+ * @param {boolean} args.outletIsLondon - outletRegion === 'london', or the review URL is UK-hosted
+ * @param {Date|string|null} args.reviewDate - parsed/parseable review publish date
+ * @param {Array|null|undefined} args.priorRuns - show.priorRuns
+ * @returns {{ shouldFlag: boolean, exemptedByPriorRun: boolean, matchedVenue: string|null }}
+ */
+function evaluateReverseLondonCrossMarketGuard({ outletIsLondon, reviewDate, priorRuns }) {
+  if (!outletIsLondon) return { shouldFlag: false, exemptedByPriorRun: false, matchedVenue: null };
+  const { findMatchingPriorRun } = require('./wrong-production-autoclear');
+  const match = findMatchingPriorRun(reviewDate, priorRuns);
+  if (match && isUkVenueString(match.venue)) {
+    return { shouldFlag: false, exemptedByPriorRun: true, matchedVenue: match.venue };
+  }
+  return { shouldFlag: true, exemptedByPriorRun: false, matchedVenue: null };
+}
+
+/**
+ * URL-path cross-market guard, priorRuns-aware.
+ *
+ * Third sibling of evaluateForwardCrossMarketGuard (#1528, outlet-region-based)
+ * and evaluateReverseLondonCrossMarketGuard (BRO-222, outlet-region-based):
+ * rebuild-all-reviews.js's [GUARD:URL-PATH-CROSS-MARKET] block flags
+ * wrongProduction from the review URL's PATH TEXT instead of the outlet's
+ * region (e.g. '/broadway-review/', '/chicago-', '/national-tour/' on a WE
+ * show; '/west-end-review/', '/london-review/', '/london/' on a Broadway/OB
+ * show) and, same as the other two guards before their fixes, never
+ * consulted show.priorRuns at all — a review whose URL-path legitimately
+ * describes a declared prior run in the OPPOSITE market of the current show
+ * (a Chicago pre-Broadway tryout before a West End transfer; a West End run
+ * before an Off-Broadway transfer) was flagged as cross-market contamination
+ * even though it's valid in-window coverage of that declared run.
+ *
+ * Pure — the caller has already evaluated the URL-path regex and tells this
+ * function which market that path text implies is being reviewed
+ * (oppositeMarket), plus the review's parsed publishDate and show.priorRuns.
+ *
+ * @param {object} args
+ * @param {boolean} args.urlPathImpliesOppositeMarket - the guard's URL-path regex already matched
+ * @param {'us'|'uk'} args.oppositeMarket - market the matched URL-path text implies (US indicators on a WE show → 'us'; London indicators on a Broadway/OB show → 'uk')
+ * @param {Date|string|null} args.reviewDate - parsed/parseable review publish date
+ * @param {Array|null|undefined} args.priorRuns - show.priorRuns
+ * @returns {{ shouldFlag: boolean, exemptedByPriorRun: boolean, matchedVenue: string|null }}
+ */
+function evaluateUrlPathCrossMarketGuard({ urlPathImpliesOppositeMarket, oppositeMarket, reviewDate, priorRuns }) {
+  if (!urlPathImpliesOppositeMarket) return { shouldFlag: false, exemptedByPriorRun: false, matchedVenue: null };
+  const { findMatchingPriorRun } = require('./wrong-production-autoclear');
+  const match = findMatchingPriorRun(reviewDate, priorRuns);
+  const venueMatches = match && (oppositeMarket === 'us' ? isUsVenueString(match.venue) : isUkVenueString(match.venue));
+  if (venueMatches) {
+    return { shouldFlag: false, exemptedByPriorRun: true, matchedVenue: match.venue };
+  }
+  return { shouldFlag: true, exemptedByPriorRun: false, matchedVenue: null };
+}
+
+// ---------------------------------------------------------------------------
+// Null-URL aggregator-relay guard (2026 data audit S6-T1, BRO-4204)
+// ---------------------------------------------------------------------------
+//
+// Dual-market outlets (everything `isDualMarket: true` in the registry —
+// Variety, FT, The Times, Guardian, Daily Mail, The Stage, WhatsOnStage …)
+// are exempt from BOTH region guards above by design: they legitimately
+// review both markets, so their region says nothing about which production
+// a file covers. The URL-based guards (URL-path cross-market, cross-show URL
+// dedup, isUkUrl) then carry the load — and every one of them is a no-op
+// when the file has NO URL. Theatre Record relays are exactly that shape:
+// source 'theatre-record', url null, text + critic + date only. The 2026-04
+// relays of the London Harold Pinter "Romeo and Juliet" (Marmion, Hemming,
+// Saville, Davis, Clapp, Marlowe, Crompton, Shafer, Marcolina) were rerouted
+// onto romeo-and-juliet-off-broadway-2026 (the Delacorte production) by a
+// same-title/same-year reroute and no guard could see them: nine West End
+// reviews scored a NYC show.
+//
+// The signal that IS available with no URL: the same critic has a review of
+// the same-title production in the OTHER market within days of this file's
+// publishDate, and that other show's run window contains the date while
+// this show's does not. A critic does not review two productions of one
+// title in two cities in the same week; the copy sitting outside its own
+// run window is the relay of the other city's review.
+//
+// Symmetry matters (corpus scan 2026-09-28: 283 dual-market null-URL relay
+// files with a same-critic other-market sibling; the 23 unflagged ones were
+// ALL the legitimate West End side of a pair, e.g. the-playboy-of-the-
+// western-world-west-end-2025/daily-mail--robert-gore-langton.json, whose
+// sibling sits in the already-flagged 1971 NYC folder). "A sibling exists in
+// the other market" is true of BOTH copies; without the run-window test the
+// rule would exclude the real review along with the relay. Hence
+// findSiblingInOtherMarket only returns a sibling when THIS show's run
+// window excludes the date and the sibling's run window includes it.
+
+/**
+ * `source` values that mean the file was created from an aggregator's relay
+ * of another outlet's review (often with no URL of its own). Kept
+ * self-contained — this file has no top-level requires so scoring-delta's
+ * per-side sandbox can load it standalone — and pinned by
+ * tests/unit/cross-market-null-url.test.mjs to stay a superset of
+ * aggregator-domains.js's isAggregatorReviewSource so the two cannot drift.
+ * Prefix semantics (startsWith) mirror that function: 'lbo' also covers
+ * 'lbo-roundup', 'show-score' also covers 'show-score-playwright'.
+ */
+const AGGREGATOR_RELAY_SOURCE_PREFIXES = [
+  'theatre-record',
+  'westendtheatre', 'theatre-reviews', 'stagedoor', 'thestage-roundup', 'lbo',
+  'show-score', 'dtli', 'bww-roundup', 'bww-reviews', 'nyc-theatre', 'playbill-verdict',
+];
+
+function isAggregatorRelaySource(source) {
+  if (!source || typeof source !== 'string') return false;
+  const s = source.toLowerCase();
+  return AGGREGATOR_RELAY_SOURCE_PREFIXES.some((p) => s.startsWith(p));
+}
+
+// Fold diacritics BEFORE stripping to [a-z0-9] (tests/unit/sibling-matchers-
+// diacritics.test.mjs): "Les Misérables" must key as lesmiserables, not lesmisrables.
+const { foldDiacritics } = require('./title-match');
+
+/** Title key for same-title matching: lowercase alphanumerics only, diacritics folded. */
+function normalizeTitleKey(title) {
+  return foldDiacritics(String(title || '')).toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
+/** Critic key; null for the unknown/unnamed placeholders (never a match). */
+function normalizeCriticKey(name) {
+  const k = foldDiacritics(String(name || '')).toLowerCase().replace(/[^a-z0-9]/g, '');
+  if (!k || k === 'unknown' || k === 'unnamed' || k === 'staff') return null;
+  return k;
+}
+
+/**
+ * The two markets this guard reasons about. Regional / tour / other
+ * categories return null — they are neither side of a West End ⟷ NYC pair.
+ */
+function crossMarketOfCategory(category) {
+  const cat = String(category || 'broadway').toLowerCase();
+  if (cat === 'west-end' || cat === 'off-west-end') return 'uk';
+  if (cat === 'broadway' || cat === 'off-broadway') return 'us';
+  return null;
+}
+
+const RELAY_RUN_WINDOW_GRACE_DAYS = 14;
+const RELAY_RUN_WINDOW_NO_CLOSING_DAYS = 365;
+const RELAY_SIBLING_TOLERANCE_DAYS = 3;
+
+/**
+ * A production's run window for the relay guard: [earliest of previews /
+ * opening − 14d, end + 14d], where end is closingDate, or "now" for a show
+ * still open / in previews (a 2021 Times review of the 1986 West End Phantom
+ * is inside that show's run), or opening + 365d for a closed show with no
+ * closingDate. Returns null when the show carries no start date at all —
+ * unknown, which the caller must never read as "outside".
+ */
+function relayRunWindow(show, nowMs = Date.now()) {
+  if (!show) return null;
+  const starts = [show.previewsStartDate, show.previewDate, show.openingDate]
+    .map((v) => (v ? new Date(v).getTime() : NaN))
+    .filter((v) => !isNaN(v));
+  if (!starts.length) return null;
+  const startMs = Math.min(...starts);
+  const latestStartMs = Math.max(...starts);
+  const closeMs = show.closingDate ? new Date(show.closingDate).getTime() : NaN;
+  const status = String(show.status || '').toLowerCase();
+  let endMs;
+  if (!isNaN(closeMs)) endMs = Math.max(closeMs, latestStartMs);
+  else if (status === 'open' || status === 'previews') endMs = Math.max(nowMs, latestStartMs);
+  else endMs = latestStartMs + RELAY_RUN_WINDOW_NO_CLOSING_DAYS * 86400000;
+  const grace = RELAY_RUN_WINDOW_GRACE_DAYS * 86400000;
+  return { startMs: startMs - grace, endMs: endMs + grace };
+}
+
+/** true / false, or null when the show's window is unknown. */
+function relayRunWindowContains(show, publishMs, nowMs = Date.now()) {
+  const w = relayRunWindow(show, nowMs);
+  if (!w || !Number.isFinite(publishMs)) return null;
+  return publishMs >= w.startMs && publishMs <= w.endMs;
+}
+
+/**
+ * (normalized title → market → critic) index of every review file's
+ * publishDate, built once per rebuild from ALL show directories (flagged
+ * files included — a flagged sibling still fails the run-window test below,
+ * and the legitimate side of a pair is usually unflagged).
+ *
+ * @param {Array<{showId:string, file?:string, criticName?:string, publishDate?:string, show:object}>} entries
+ *   `show` is the shows.json entry (title, category, dates, status).
+ * @param {(v:any)=>Date|null} [parseDateFn] - date-utils parseDate; falls back to new Date()
+ * @returns {Map<string, Array<{showId:string, file:string|null, publishMs:number, show:object}>>}
+ */
+function buildCrossMarketCriticIndex(entries, parseDateFn) {
+  const index = new Map();
+  for (const e of entries || []) {
+    if (!e || !e.show) continue;
+    const market = crossMarketOfCategory(e.show.category);
+    if (!market) continue;
+    const titleKey = normalizeTitleKey(e.show.title);
+    const criticKey = normalizeCriticKey(e.criticName);
+    if (!titleKey || !criticKey) continue;
+    const parsed = parseDateFn ? parseDateFn(e.publishDate) : (e.publishDate ? new Date(require('./date-utils').toDateMs(e.publishDate)) : null);
+    const publishMs = parsed ? new Date(parsed).getTime() : NaN;
+    if (isNaN(publishMs)) continue;
+    const key = `${titleKey}|${market}|${criticKey}`;
+    if (!index.has(key)) index.set(key, []);
+    index.get(key).push({ showId: e.showId, file: e.file || null, publishMs, show: e.show });
+  }
+  return index;
+}
+
+/**
+ * The same critic's review of the same-title production in the OTHER
+ * market, published within RELAY_SIBLING_TOLERANCE_DAYS of this file — but
+ * only when this show's own run window EXCLUDES the publishDate and the
+ * sibling show's run window INCLUDES it (the symmetry breaker described in
+ * the section comment). Returns null otherwise, including when either
+ * window is unknown.
+ *
+ * @param {Map} index - from buildCrossMarketCriticIndex
+ * @param {{ show: object, criticName?: string, publishDate?: string }} file
+ * @param {{ parseDate?: Function, toleranceDays?: number, nowMs?: number }} [opts]
+ * @returns {{ showId: string, file: string|null, publishMs: number, diffDays: number }|null}
+ */
+function findSiblingInOtherMarket(index, { show, criticName, publishDate } = {}, opts = {}) {
+  if (!index || !show) return null;
+  const market = crossMarketOfCategory(show.category);
+  if (!market) return null;
+  const titleKey = normalizeTitleKey(show.title);
+  const criticKey = normalizeCriticKey(criticName);
+  if (!titleKey || !criticKey) return null;
+  const parsed = opts.parseDate ? opts.parseDate(publishDate) : (publishDate ? new Date(require('./date-utils').toDateMs(publishDate)) : null);
+  const publishMs = parsed ? new Date(parsed).getTime() : NaN;
+  if (isNaN(publishMs)) return null;
+  const nowMs = Number.isFinite(opts.nowMs) ? opts.nowMs : Date.now();
+  if (relayRunWindowContains(show, publishMs, nowMs) !== false) return null;
+  const tolMs = (Number.isFinite(opts.toleranceDays) ? opts.toleranceDays : RELAY_SIBLING_TOLERANCE_DAYS) * 86400000;
+  const other = market === 'us' ? 'uk' : 'us';
+  let best = null;
+  for (const c of index.get(`${titleKey}|${other}|${criticKey}`) || []) {
+    if (c.showId === show.id) continue;
+    const diffMs = Math.abs(c.publishMs - publishMs);
+    if (diffMs > tolMs) continue;
+    if (relayRunWindowContains(c.show, c.publishMs, nowMs) !== true) continue;
+    if (!best || diffMs < best.diffMs) {
+      best = { showId: c.showId, file: c.file, publishMs: c.publishMs, diffMs, diffDays: Math.round(diffMs / 86400000) };
+    }
+  }
+  return best;
+}
+
+/**
+ * Pure classifier: should a URL-less review on a dual-market outlet be
+ * excluded as the relay of the other market's review?
+ *
+ * @param {object} a
+ * @param {boolean} a.hasUrl - the file carries a URL (the URL guards apply instead)
+ * @param {boolean} a.outletIsDualMarket - registry isDualMarket (the region guards apply otherwise)
+ * @param {object|boolean|null} a.siblingInOtherMarket - findSiblingInOtherMarket()'s result (or a boolean)
+ * @param {string|null|undefined} a.source - the file's `source`
+ * @returns {{ shouldFlag: boolean, reason: string }}
+ */
+function classifyDualMarketNullUrl({ hasUrl, outletIsDualMarket, siblingInOtherMarket, source } = {}) {
+  if (hasUrl) return { shouldFlag: false, reason: 'has-url: the URL-based cross-market guards apply' };
+  if (!outletIsDualMarket) return { shouldFlag: false, reason: 'not-dual-market: the region-based cross-market guards apply' };
+  if (!isAggregatorRelaySource(source)) return { shouldFlag: false, reason: `not-an-aggregator-relay: source "${source || ''}"` };
+  if (!siblingInOtherMarket) return { shouldFlag: false, reason: 'no-cross-market-sibling' };
+  const sib = typeof siblingInOtherMarket === 'object' && siblingInOtherMarket ? siblingInOtherMarket : null;
+  const where = sib ? ` (${sib.showId}${sib.file ? '/' + sib.file : ''}, ${sib.diffDays ?? 0}d apart)` : '';
+  return {
+    shouldFlag: true,
+    reason: `Cross-market null-URL relay: "${source}" relay with no URL; the same critic reviewed the same-title production in the other market${where} and this show's run window does not contain the publish date`,
+  };
+}
+
+module.exports = {
+  UK_SIDE_REGIONS,
+  UK_SELF_HEAL_REGIONS,
+  UK_MARKET_REGIONS,
+  outletIsUkSideSelfHealRegion,
+  outletIsUkMarketRegion,
+  classifyReverseCrossMarket,
+  classifyCrossMarketContamination,
+  classifyUsOnWeCrossMarket,
+  buildOutletRegionMap,
+  buildRegisteredOutletIds,
+  isUkUrl,
+  isUkVenueString,
+  isUsVenueString,
+  evaluateForwardCrossMarketGuard,
+  evaluateReverseLondonCrossMarketGuard,
+  evaluateUrlPathCrossMarketGuard,
+  // Null-URL aggregator-relay guard (audit S6-T1)
+  AGGREGATOR_RELAY_SOURCE_PREFIXES,
+  RELAY_RUN_WINDOW_GRACE_DAYS,
+  RELAY_RUN_WINDOW_NO_CLOSING_DAYS,
+  RELAY_SIBLING_TOLERANCE_DAYS,
+  isAggregatorRelaySource,
+  normalizeTitleKey,
+  normalizeCriticKey,
+  crossMarketOfCategory,
+  relayRunWindow,
+  relayRunWindowContains,
+  buildCrossMarketCriticIndex,
+  findSiblingInOtherMarket,
+  classifyDualMarketNullUrl,
+};

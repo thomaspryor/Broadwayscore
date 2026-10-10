@@ -1,0 +1,321 @@
+{
+  "issueNumber": "bro-4430",
+  "planId": "cd3c013e-41dc-4839-b255-b5d687aa55be",
+  "status": "applied",
+  "createdAt": "2026-09-30T12:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4430: repair eight real reviews dropped by a wrong date, url or byline, or a stale file in the outlet's slot (Golden Boy BWW, Anansi The Stage, An American Daughter NY Sun + NYSR Finkle, How the Other Half Loves FT, The Pass NYTG, The Body of Mary TheaterMania, Garry Starr NYSR Sommers/Torre, Tru London Theatre). Code fixes for each cause land in the same change.",
+    "steps": [
+      "Holds BWW's Feb 2026 'Man and Boy' review text served for the Golden Boy URL; flagged wrongProduction on that text. Deleted so the review is re-gathered (Theatre Record has Gary Naylor's text).",
+      "The 2026 Regent's Park review at this URL is by Oliver Jones (Anna James wrote the 2023 Unicorn review).",
+      "Date on thestage.co.uk for this URL (aos-ArticleDate Aug 19, 2026); 2023 came from Show Score's 2023 row.",
+      "The Stage rates this review 4/5 (80); the stored 83 was scored on the 2023 review excerpt.",
+      "Provenance for the score override",
+      "NY Sun review date (BRO-4428 audit); releases the dateless-revival hold.",
+      "Theatre Record FT text; the url was backfilled with the westendtheatre.com round-up, which the rebuild blocks. Restores the no-url Theatre Record shape.",
+      "Stored url is the NYTG show page; the real review is Amelia Merrill, Aug 6.",
+      "Byline on the NYTG review page (JSON-LD author).",
+      "NYTG datePublished 2026-08-06.",
+      "Stored url is a cast announcement; the real review is Zachary Stewart, 2026-09-16.",
+      "TheaterMania review author (zach).",
+      "article:published_time 2026-09-16.",
+      "The file was repointed onto Frank Scheck's review (nysr--frank-scheck.json holds it). David Finkle's review is revival-falters.",
+      "NYSR published_time 2026-08-11.",
+      "Stale duplicate: Frank Scheck's url and text under David Finkle's name, flagged.",
+      "Pure duplicate of nysr--michael-sommers.json (same url and text), replaced by the rename below.",
+      "This file holds Roma Torre's review (much-ado-about-nothing-on, JSON-LD author Roma Torre).",
+      "Byline of the review at this url.",
+      "This file holds Michael Sommers' review (naked-laughter, JSON-LD author Michael Sommers).",
+      "Byline of the review at this url.",
+      "London Theatre review author (JSON-LD)."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "golden-boy-off-west-end-2026/broadwayworld--gary-naylor.json",
+        "description": "Holds BWW's Feb 2026 'Man and Boy' review text served for the Golden Boy URL; flagged wrongProduction on that text. Deleted so the review is re-gathered (Theatre Record has Gary Naylor's text)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anansi-the-spider-west-end-2026/thestage--anna-james.json",
+        "field": "criticName",
+        "oldValue": "Anna James",
+        "newValue": "Oliver Jones",
+        "description": "The 2026 Regent's Park review at this URL is by Oliver Jones (Anna James wrote the 2023 Unicorn review)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anansi-the-spider-west-end-2026/thestage--anna-james.json",
+        "field": "publishDate",
+        "oldValue": "January 26th, 2023",
+        "newValue": "2026-08-19",
+        "description": "Date on thestage.co.uk for this URL (aos-ArticleDate Aug 19, 2026); 2023 came from Show Score's 2023 row."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anansi-the-spider-west-end-2026/thestage--anna-james.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 80,
+        "description": "The Stage rates this review 4/5 (80); the stored 83 was scored on the 2023 review excerpt."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anansi-the-spider-west-end-2026/thestage--anna-james.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "The Stage 4/5 by Oliver Jones, 2026-08-19 (Regent's Park). The stored LLM score came from the 2023 Unicorn review's Show Score excerpt. BRO-4430.",
+        "description": "Provenance for the score override"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
+        "field": "publishDate",
+        "oldValue": null,
+        "newValue": "2026-08-11",
+        "description": "NY Sun review date (BRO-4428 audit); releases the dateless-revival hold."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "how-the-other-half-loves-west-end-2026/financialtimes--sarah-hemming.json",
+        "field": "url",
+        "oldValue": "https://www.westendtheatre.com/362643/news/how-the-other-half-loves-reviews-round-up/",
+        "newValue": "",
+        "description": "Theatre Record FT text; the url was backfilled with the westendtheatre.com round-up, which the rebuild blocks. Restores the no-url Theatre Record shape."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-pass-off-broadway-2026/nytg--unknown.json",
+        "field": "url",
+        "oldValue": "https://www.newyorktheatreguide.com/show/47271-the-pass",
+        "newValue": "https://www.newyorktheatreguide.com/reviews/the-pass-off-broadway-review",
+        "description": "Stored url is the NYTG show page; the real review is Amelia Merrill, Aug 6."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-pass-off-broadway-2026/nytg--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Amelia Merrill",
+        "description": "Byline on the NYTG review page (JSON-LD author)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-pass-off-broadway-2026/nytg--unknown.json",
+        "field": "publishDate",
+        "oldValue": null,
+        "newValue": "2026-08-06",
+        "description": "NYTG datePublished 2026-08-06."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/theatermania--unknown.json",
+        "field": "url",
+        "oldValue": "https://www.theatermania.com/news/cast-announced-for-the-body-of-mary-a-play-in-three-acts-of-god_1848241/",
+        "newValue": "https://www.theatermania.com/news/review-the-body-of-mary-a-play-in-three-acts-of-god_1853803/",
+        "description": "Stored url is a cast announcement; the real review is Zachary Stewart, 2026-09-16."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/theatermania--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Zachary Stewart",
+        "description": "TheaterMania review author (zach)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/theatermania--unknown.json",
+        "field": "publishDate",
+        "oldValue": null,
+        "newValue": "2026-09-16",
+        "description": "article:published_time 2026-09-16."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-american-daughter-off-broadway-2026/nysr--david-finkle.json",
+        "field": "url",
+        "oldValue": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wassersteins-play-shows-its-age/",
+        "newValue": "https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wasserstein-revival-falters/",
+        "description": "The file was repointed onto Frank Scheck's review (nysr--frank-scheck.json holds it). David Finkle's review is revival-falters."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-american-daughter-off-broadway-2026/nysr--david-finkle.json",
+        "field": "publishDate",
+        "oldValue": null,
+        "newValue": "2026-08-11",
+        "description": "NYSR published_time 2026-08-11."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "an-american-daughter-off-broadway-2026/nysr--unknown.json",
+        "description": "Stale duplicate: Frank Scheck's url and text under David Finkle's name, flagged."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "garry-starr-classic-penguins-off-broadway-2026/nysr--roma-torre.json",
+        "description": "Pure duplicate of nysr--michael-sommers.json (same url and text), replaced by the rename below."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "garry-starr-classic-penguins-off-broadway-2026/nysr--michael-sommers.json",
+        "destPath": "garry-starr-classic-penguins-off-broadway-2026/nysr--roma-torre.json",
+        "description": "This file holds Roma Torre's review (much-ado-about-nothing-on, JSON-LD author Roma Torre)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "garry-starr-classic-penguins-off-broadway-2026/nysr--roma-torre.json",
+        "field": "criticName",
+        "oldValue": "Michael Sommers",
+        "newValue": "Roma Torre",
+        "description": "Byline of the review at this url."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "garry-starr-classic-penguins-off-broadway-2026/nysr--unknown.json",
+        "destPath": "garry-starr-classic-penguins-off-broadway-2026/nysr--michael-sommers.json",
+        "description": "This file holds Michael Sommers' review (naked-laughter, JSON-LD author Michael Sommers)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "garry-starr-classic-penguins-off-broadway-2026/nysr--michael-sommers.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Michael Sommers",
+        "description": "Byline of the review at this url."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tru-off-west-end-2026/london-theatre--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Aliya Al-Hassan",
+        "description": "London Theatre review author (JSON-LD)."
+      }
+    ]
+  },
+  "executedAt": "2026-09-30T19:34:29.165Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted golden-boy-off-west-end-2026/broadwayworld--gary-naylor.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anansi-the-spider-west-end-2026/thestage--anna-james.json criticName: \"Anna James\" -> \"Oliver Jones\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anansi-the-spider-west-end-2026/thestage--anna-james.json publishDate: \"January 26th, 2023\" -> \"2026-08-19\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anansi-the-spider-west-end-2026/thestage--anna-james.json humanReviewScore: null -> 80"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anansi-the-spider-west-end-2026/thestage--anna-james.json humanReviewNote: null -> \"The Stage 4/5 by Oliver Jones, 2026-08-19 (Regent's Park). The stored LLM score came from the 2023 Unicorn review's Show Score excerpt. BRO-4430.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json publishDate: null -> \"2026-08-11\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "how-the-other-half-loves-west-end-2026/financialtimes--sarah-hemming.json url: \"https://www.westendtheatre.com/362643/news/how-the-other-half-loves-reviews-round-up/\" -> \"\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-pass-off-broadway-2026/nytg--unknown.json url: \"https://www.newyorktheatreguide.com/show/47271-the-pass\" -> \"https://www.newyorktheatreguide.com/reviews/the-pass-off-broadway-review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-pass-off-broadway-2026/nytg--unknown.json criticName: \"Unknown\" -> \"Amelia Merrill\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-pass-off-broadway-2026/nytg--unknown.json publishDate: null -> \"2026-08-06\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/theatermania--unknown.json url: \"https://www.theatermania.com/news/cast-announced-for-the-body-of-mary-a-play-in-three-acts-of-god_1848241/\" -> \"https://www.theatermania.com/news/review-the-body-of-mary-a-play-in-three-acts-of-god_1853803/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/theatermania--unknown.json criticName: \"Unknown\" -> \"Zachary Stewart\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/theatermania--unknown.json publishDate: null -> \"2026-09-16\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-american-daughter-off-broadway-2026/nysr--david-finkle.json url: \"https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wassersteins-play-shows-its-age/\" -> \"https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wasserstein-revival-falters/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-american-daughter-off-broadway-2026/nysr--david-finkle.json publishDate: null -> \"2026-08-11\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted an-american-daughter-off-broadway-2026/nysr--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted garry-starr-classic-penguins-off-broadway-2026/nysr--roma-torre.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved garry-starr-classic-penguins-off-broadway-2026/nysr--michael-sommers.json → garry-starr-classic-penguins-off-broadway-2026/nysr--roma-torre.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "garry-starr-classic-penguins-off-broadway-2026/nysr--roma-torre.json criticName: \"Michael Sommers\" -> \"Roma Torre\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved garry-starr-classic-penguins-off-broadway-2026/nysr--unknown.json → garry-starr-classic-penguins-off-broadway-2026/nysr--michael-sommers.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "garry-starr-classic-penguins-off-broadway-2026/nysr--michael-sommers.json criticName: \"Unknown\" -> \"Michael Sommers\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tru-off-west-end-2026/london-theatre--unknown.json criticName: \"Unknown\" -> \"Aliya Al-Hassan\""
+    }
+  ]
+}

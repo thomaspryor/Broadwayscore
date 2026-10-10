@@ -1,0 +1,661 @@
+/**
+ * LLM Scorer Module
+ *
+ * Handles API calls to Claude for review scoring with:
+ * - Retry logic with exponential backoff
+ * - Structured output parsing
+ * - Token usage tracking
+ */
+
+import Anthropic from '@anthropic-ai/sdk';
+import { LLMScoringResult, ScoredReviewFile, ReviewTextFile, SimplifiedLLMResult, Bucket } from './types';
+import { SYSTEM_PROMPT, SYSTEM_PROMPT_V5, buildPrompt, buildPromptV5, scoreToBucket, scoreToThumb, PROMPT_VERSION, BUCKET_RANGES } from './config';
+
+// Import text quality assessment module
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { getBestTextForScoring } = require('../lib/text-quality');
+
+// ========================================
+// TYPES
+// ========================================
+
+interface ScoringOptions {
+  model: 'claude-sonnet-4-6' | 'claude-3-5-haiku-20241022' | 'claude-haiku-4-5-20251001';
+  maxRetries: number;
+  verbose: boolean;
+}
+
+interface ScoringOutcome {
+  success: boolean;
+  result?: LLMScoringResult;
+  error?: string;
+  inputTokens: number;
+  outputTokens: number;
+}
+
+// ========================================
+// DEFAULT RESULT
+// ========================================
+
+/**
+ * Create a default LLM result for when parsing fails but we have a basic score
+ */
+function createDefaultResult(score: number, confidence: 'high' | 'medium' | 'low' = 'low'): LLMScoringResult {
+  return {
+    score,
+    confidence,
+    range: { low: Math.max(0, score - 10), high: Math.min(100, score + 10) },
+    bucket: scoreToBucket(score),
+    thumb: scoreToThumb(score),
+    components: {
+      book: null,
+      music: null,
+      performances: null,
+      direction: null
+    },
+    keyPhrases: [],
+    reasoning: 'Score extracted from partial response',
+    flags: {
+      hasExplicitRecommendation: false,
+      focusedOnPerformances: false,
+      comparesToPrevious: false,
+      mixedSignals: false
+    }
+  };
+}
+
+// ========================================
+// RESPONSE PARSING
+// ========================================
+
+/**
+ * Parse the LLM response into a structured result
+ * Handles partial responses and malformed JSON gracefully
+ */
+function parseResponse(responseText: string): LLMScoringResult | null {
+  // Try to extract JSON from the response
+  const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+  if (!jsonMatch) {
+    // Try to extract just a score
+    const scoreMatch = responseText.match(/"?score"?\s*:\s*(\d+)/i);
+    if (scoreMatch) {
+      return createDefaultResult(parseInt(scoreMatch[1]));
+    }
+    return null;
+  }
+
+  try {
+    const parsed = JSON.parse(jsonMatch[0]);
+
+    // Validate required fields
+    if (typeof parsed.score !== 'number' || parsed.score < 0 || parsed.score > 100) {
+      if (typeof parsed.score === 'string') {
+        parsed.score = parseInt(parsed.score);
+        if (isNaN(parsed.score)) return null;
+      } else {
+        return null;
+      }
+    }
+
+    // Normalize and fill defaults
+    const result: LLMScoringResult = {
+      score: Math.round(parsed.score),
+      confidence: ['high', 'medium', 'low'].includes(parsed.confidence) ? parsed.confidence : 'medium',
+      range: {
+        low: parsed.range?.low ?? Math.max(0, parsed.score - 10),
+        high: parsed.range?.high ?? Math.min(100, parsed.score + 10)
+      },
+      bucket: parsed.bucket || scoreToBucket(parsed.score),
+      thumb: parsed.thumb || scoreToThumb(parsed.score),
+      components: {
+        book: parsed.components?.book ?? null,
+        music: parsed.components?.music ?? null,
+        performances: parsed.components?.performances ?? null,
+        direction: parsed.components?.direction ?? null
+      },
+      keyPhrases: Array.isArray(parsed.keyPhrases)
+        ? parsed.keyPhrases.slice(0, 3).map((kp: any) => ({
+            quote: String(kp.quote || kp || ''),
+            sentiment: ['positive', 'negative', 'neutral'].includes(kp.sentiment) ? kp.sentiment : 'neutral',
+            strength: typeof kp.strength === 'number' ? Math.min(5, Math.max(1, kp.strength)) : 3
+          }))
+        : [],
+      reasoning: String(parsed.reasoning || 'No reasoning provided'),
+      flags: {
+        hasExplicitRecommendation: Boolean(parsed.flags?.hasExplicitRecommendation),
+        focusedOnPerformances: Boolean(parsed.flags?.focusedOnPerformances),
+        comparesToPrevious: Boolean(parsed.flags?.comparesToPrevious),
+        mixedSignals: Boolean(parsed.flags?.mixedSignals)
+      }
+    };
+
+    // Ensure bucket and thumb are consistent with score
+    result.bucket = scoreToBucket(result.score);
+    result.thumb = scoreToThumb(result.score);
+
+    return result;
+  } catch (e) {
+    // JSON parse failed, try to extract score
+    const scoreMatch = responseText.match(/"?score"?\s*:\s*(\d+)/i);
+    if (scoreMatch) {
+      return createDefaultResult(parseInt(scoreMatch[1]));
+    }
+    return null;
+  }
+}
+
+// ========================================
+// MAIN SCORER CLASS
+// ========================================
+
+export class ReviewScorer {
+  private client: Anthropic;
+  private options: ScoringOptions;
+  private totalInputTokens: number = 0;
+  private totalOutputTokens: number = 0;
+  private totalCacheWriteTokens: number = 0;
+  private totalCacheReadTokens: number = 0;
+
+  constructor(apiKey: string, options: Partial<ScoringOptions> = {}) {
+    this.client = new Anthropic({ apiKey });
+    this.options = {
+      model: options.model || 'claude-sonnet-4-6',
+      maxRetries: options.maxRetries ?? 5,
+      verbose: options.verbose ?? false
+    };
+  }
+
+  /**
+   * Score a single review text
+   */
+  async scoreReview(reviewText: string): Promise<ScoringOutcome> {
+    const prompt = buildPrompt(reviewText);
+
+    let lastError: string = '';
+    let inputTokens = 0;
+    let outputTokens = 0;
+
+    for (let attempt = 1; attempt <= this.options.maxRetries; attempt++) {
+      try {
+        if (this.options.verbose && attempt > 1) {
+          console.log(`  Retry attempt ${attempt}/${this.options.maxRetries}...`);
+        }
+
+        const response = await this.client.messages.create({
+          model: this.options.model,
+          max_tokens: 1000,
+          system: SYSTEM_PROMPT,
+          messages: [
+            { role: 'user', content: prompt }
+          ]
+        });
+
+        // Track tokens
+        inputTokens = response.usage.input_tokens;
+        outputTokens = response.usage.output_tokens;
+        this.totalInputTokens += inputTokens;
+        this.totalOutputTokens += outputTokens;
+
+        // Extract text content
+        const textContent = response.content.find(c => c.type === 'text');
+        if (!textContent || textContent.type !== 'text') {
+          lastError = 'No text content in response';
+          continue;
+        }
+
+        const result = parseResponse(textContent.text);
+        if (!result) {
+          lastError = 'Failed to parse response JSON';
+          if (this.options.verbose) {
+            console.log(`  Parse error. Response: ${textContent.text.substring(0, 200)}...`);
+          }
+          continue;
+        }
+
+        return {
+          success: true,
+          result,
+          inputTokens,
+          outputTokens
+        };
+      } catch (error: any) {
+        lastError = error.message || String(error);
+
+        // Retry all errors with backoff (rate limits, spending limits, server errors, network errors)
+        const isRateLimit = error.status === 429;
+        const isServerError = error.status >= 500;
+        const waitTime = isRateLimit
+          ? Math.pow(2, attempt) * 1000          // 429: 2s, 4s, 8s, 16s, 32s
+          : isServerError
+            ? Math.pow(2, attempt) * 500          // 5xx: 1s, 2s, 4s, 8s, 16s
+            : Math.pow(2, attempt) * 15000;       // spending limit/other: 30s, 60s, 120s, 240s, 480s
+        if (this.options.verbose) {
+          console.log(`  Error (${error.status || 'network'}): ${lastError.substring(0, 100)}. Retrying in ${waitTime / 1000}s...`);
+        }
+        await new Promise(r => setTimeout(r, waitTime));
+      }
+    }
+
+    return {
+      success: false,
+      error: lastError,
+      inputTokens,
+      outputTokens
+    };
+  }
+
+  /**
+   * Score a review file and return the updated file content
+   * Uses intelligent text quality assessment to select the best text source
+   */
+  async scoreReviewFile(reviewFile: ReviewTextFile): Promise<{
+    success: boolean;
+    scoredFile?: ScoredReviewFile;
+    error?: string;
+    inputValidationFailed?: boolean;
+  }> {
+    // Use text quality assessment to get the best text for scoring
+    const textSelection = getBestTextForScoring(reviewFile);
+
+    if (!textSelection.text || textSelection.confidence === 'none') {
+      return {
+        success: false,
+        error: textSelection.reasoning || 'No usable text found for scoring'
+      };
+    }
+
+    if (this.options.verbose) {
+      console.log(`  Text source: ${textSelection.type} (${textSelection.status})`);
+      console.log(`  Confidence: ${textSelection.confidence}`);
+      console.log(`  Reasoning: ${textSelection.reasoning}`);
+    }
+
+    // Pre-scoring input validation: reject nav chrome and garbage before sending to LLM.
+    const { validateScoreableText } = require('../lib/score-input-validator.js');
+    const { isCapsuleReview } = require('../lib/scorable-text.js');
+    // Theatre Record print capsules are complete short reviews — exempt from
+    // the body-length gate like excerpts (see scorable-text.js).
+    const isExcerpt = textSelection.type === 'excerpt' || isCapsuleReview(reviewFile);
+    const inputValidation = validateScoreableText(textSelection.text, reviewFile.showTitle, { isExcerpt });
+    if (!inputValidation.ok) {
+      return {
+        success: false,
+        error: `input_validation_failed:${inputValidation.reason}`,
+        inputValidationFailed: true,
+      };
+    }
+    if (inputValidation.warnings && inputValidation.warnings.length > 0) {
+      console.log(`  ::warning::Input validator warnings: ${inputValidation.warnings.join(', ')}`);
+    }
+
+    const outcome = await this.scoreReview(textSelection.text);
+
+    if (!outcome.success || !outcome.result) {
+      return {
+        success: false,
+        error: outcome.error || 'Unknown error'
+      };
+    }
+
+    // 2D: Cap LLM result confidence when input confidence is low
+    if (textSelection.confidence === 'low' && outcome.result.confidence === 'high') {
+      outcome.result.confidence = 'medium';
+    }
+
+    const scoredFile: ScoredReviewFile = {
+      ...reviewFile,
+      scoreStatus: 'SCORED',
+      assignedScore: outcome.result.score,
+      llmScore: outcome.result,
+      llmMetadata: {
+        model: this.options.model,
+        scoredAt: new Date().toISOString(),
+        promptVersion: PROMPT_VERSION,
+        inputTokens: outcome.inputTokens,
+        outputTokens: outcome.outputTokens,
+        textSource: {
+          type: textSelection.type,
+          status: textSelection.status,
+          field: textSelection.field || textSelection.type,
+          confidence: textSelection.confidence,
+          reasoning: textSelection.reasoning
+        }
+      }
+    };
+
+    return {
+      success: true,
+      scoredFile
+    };
+  }
+
+  /**
+   * Score a review using V5 simplified prompt (bucket-first approach).
+   * Optional `systemPromptOverride` lets the A/B harness swap in a candidate
+   * prompt while leaving the live SYSTEM_PROMPT_V5 untouched.
+   */
+  async scoreReviewV5(reviewText: string, context: string = '', systemPromptOverride?: string): Promise<{
+    success: boolean;
+    result?: SimplifiedLLMResult;
+    rejected?: boolean;
+    rejection?: string;
+    rejectionReasoning?: string;
+    error?: string;
+    inputTokens: number;
+    outputTokens: number;
+  }> {
+    const prompt = buildPromptV5(reviewText, context);
+    const systemPrompt = systemPromptOverride || SYSTEM_PROMPT_V5;
+
+    let lastError: string = '';
+    let inputTokens = 0;
+    let outputTokens = 0;
+    let parseFailureCount = 0;
+
+    for (let attempt = 1; attempt <= this.options.maxRetries; attempt++) {
+      try {
+        if (this.options.verbose && attempt > 1) {
+          console.log(`  Claude V5 retry attempt ${attempt}/${this.options.maxRetries}...`);
+        }
+
+        const response = await this.client.messages.create({
+          model: this.options.model,
+          max_tokens: 500,
+          // Pin temperature so A/B reruns on the same input give the same score.
+          // Without this, Anthropic SDK defaults to ~1.0 — re-scoring the same
+          // review with the same prompt produces non-zero drift, contaminating
+          // the rule-13 A/B baseline (ship-check P0, Claude reviewer 2026-04-27).
+          // Matches OpenAI/Gemini defaults of 0.3 for ensemble consistency.
+          temperature: 0.3,
+          // Prompt caching: the system prompt repeats across every review in a
+          // run (V5 is fully static; V6 varies only by (band, starsRaw), a
+          // small set), so mark it as a cache breakpoint. A single text block
+          // is byte-identical to the plain-string form — no prompt change.
+          // Cached reads bill at ~10% of input price; silently no-ops below
+          // the model's cache minimum (e.g. haiku-4.5's 4096 tokens).
+          system: [
+            { type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } }
+          ],
+          messages: [
+            { role: 'user', content: prompt }
+          ]
+        });
+
+        // Track tokens. With caching on, input_tokens EXCLUDES cached tokens —
+        // the cache fields must be tracked separately or cost math undercounts.
+        inputTokens = response.usage.input_tokens;
+        outputTokens = response.usage.output_tokens;
+        this.totalInputTokens += inputTokens;
+        this.totalOutputTokens += outputTokens;
+        this.totalCacheWriteTokens += Number(response.usage.cache_creation_input_tokens) || 0;
+        this.totalCacheReadTokens += Number(response.usage.cache_read_input_tokens) || 0;
+
+        // Extract text content
+        const textContent = response.content.find(c => c.type === 'text');
+        if (!textContent || textContent.type !== 'text') {
+          lastError = 'No text content in response';
+          continue;
+        }
+
+        // Check for scoreability rejection (v5.2+)
+        const rejection = this.parseRejection(textContent.text);
+        if (rejection) {
+          return {
+            success: true,
+            rejected: true,
+            rejection: rejection.rejection,
+            rejectionReasoning: rejection.reasoning,
+            inputTokens,
+            outputTokens
+          };
+        }
+
+        const result = this.parseV5Response(textContent.text);
+        if (!result) {
+          lastError = 'Failed to parse V5 response JSON';
+          parseFailureCount++;
+          if (this.options.verbose) {
+            console.log(`  Parse error (${parseFailureCount}x). Response: ${textContent.text.substring(0, 200)}...`);
+          }
+          // Same input produces same unparseable output — don't waste more API calls
+          if (parseFailureCount >= 2) break;
+          continue;
+        }
+
+        return {
+          success: true,
+          result,
+          inputTokens,
+          outputTokens
+        };
+      } catch (error: any) {
+        lastError = error.message || String(error);
+
+        // Retry all errors with backoff (rate limits, spending limits, server errors, network errors)
+        const isRateLimit = error.status === 429;
+        const isServerError = error.status >= 500;
+        const waitTime = isRateLimit
+          ? Math.pow(2, attempt) * 1000
+          : isServerError
+            ? Math.pow(2, attempt) * 500
+            : Math.pow(2, attempt) * 15000;
+        if (this.options.verbose) {
+          console.log(`  Claude error (${error.status || 'network'}): ${lastError.substring(0, 100)}. Retrying in ${waitTime / 1000}s...`);
+        }
+        await new Promise(r => setTimeout(r, waitTime));
+      }
+    }
+
+    return {
+      success: false,
+      error: lastError,
+      inputTokens,
+      outputTokens
+    };
+  }
+
+  /**
+   * Parse an already-fetched V5 response body (e.g. a Batch API result line)
+   * through the same rejection-check + parse pipeline scoreReviewV5's live
+   * path uses, so sync and --batch mode (task #505) stay byte-identical.
+   * Makes no network call.
+   */
+  parseBatchResponseV5(responseText: string): {
+    success: boolean;
+    result?: SimplifiedLLMResult;
+    rejected?: boolean;
+    rejection?: string;
+    rejectionReasoning?: string;
+    error?: string;
+  } {
+    const rejection = this.parseRejection(responseText);
+    if (rejection) {
+      return { success: true, rejected: true, rejection: rejection.rejection, rejectionReasoning: rejection.reasoning };
+    }
+    const result = this.parseV5Response(responseText);
+    if (!result) {
+      return { success: false, error: 'Failed to parse V5 response JSON' };
+    }
+    return { success: true, result };
+  }
+
+  /**
+   * Parse V5 simplified response format
+   */
+  private parseV5Response(responseText: string): SimplifiedLLMResult | null {
+    let cleaned = responseText.trim();
+
+    // Remove markdown code fences if present
+    if (cleaned.startsWith('```json')) {
+      cleaned = cleaned.slice(7);
+    } else if (cleaned.startsWith('```')) {
+      cleaned = cleaned.slice(3);
+    }
+    if (cleaned.endsWith('```')) {
+      cleaned = cleaned.slice(0, -3);
+    }
+    cleaned = cleaned.trim();
+
+    try {
+      const parsed = JSON.parse(cleaned);
+      return this.validateAndNormalizeV5(parsed);
+    } catch (e) {
+      // Try to extract from malformed response
+      return this.extractFromMalformedV5(responseText);
+    }
+  }
+
+  /**
+   * Validate and normalize V5 parsed response
+   */
+  private validateAndNormalizeV5(parsed: any): SimplifiedLLMResult | null {
+    const validBuckets: Bucket[] = ['Rave', 'Positive', 'Mixed', 'Negative', 'Pan'];
+    let bucket: Bucket = parsed.bucket;
+
+    if (!validBuckets.includes(bucket)) {
+      const bucketMap: Record<string, Bucket> = {
+        'RAVE': 'Rave', 'rave': 'Rave',
+        'POSITIVE': 'Positive', 'positive': 'Positive',
+        'MIXED': 'Mixed', 'mixed': 'Mixed',
+        'NEGATIVE': 'Negative', 'negative': 'Negative',
+        'PAN': 'Pan', 'pan': 'Pan'
+      };
+      bucket = bucketMap[parsed.bucket] || 'Mixed';
+    }
+
+    let score = typeof parsed.score === 'number' ? parsed.score : parseInt(parsed.score);
+    if (isNaN(score)) {
+      const range = BUCKET_RANGES[bucket];
+      score = Math.floor((range.min + range.max) / 2);
+    }
+
+    score = Math.max(0, Math.min(100, score));
+
+    const validConfidences = ['high', 'medium', 'low'];
+    const confidence = validConfidences.includes(parsed.confidence)
+      ? parsed.confidence as 'high' | 'medium' | 'low'
+      : 'medium';
+
+    // Validate publishDate if provided
+    let publishDate: string | null = null;
+    if (parsed.publishDate && typeof parsed.publishDate === 'string') {
+      const dm = parsed.publishDate.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if (dm) {
+        const [, ys, ms, ds] = dm;
+        const y = parseInt(ys), m = parseInt(ms), d = parseInt(ds);
+        const dt = new Date(y, m - 1, d);
+        if (y >= 1970 && y <= 2027 && dt.getFullYear() === y && dt.getMonth() === m - 1 && dt.getDate() === d) {
+          publishDate = parsed.publishDate;
+        }
+      }
+    }
+
+    return {
+      bucket,
+      score: Math.round(score),
+      confidence,
+      verdict: String(parsed.verdict || ''),
+      keyQuote: String(parsed.keyQuote || ''),
+      reasoning: String(parsed.reasoning || ''),
+      publishDate,
+    };
+  }
+
+  /**
+   * Try to extract from malformed V5 response
+   */
+  private extractFromMalformedV5(response: string): SimplifiedLLMResult | null {
+    const bucketMatch = response.match(/"bucket"\s*:\s*"(Rave|Positive|Mixed|Negative|Pan)"/i);
+    const scoreMatch = response.match(/"score"\s*:\s*(\d+)/);
+
+    if (bucketMatch && scoreMatch) {
+      const bucket = bucketMatch[1] as Bucket;
+      let score = parseInt(scoreMatch[1]);
+      score = Math.max(0, Math.min(100, score));
+
+      return {
+        bucket,
+        score: Math.round(score),
+        confidence: 'low',
+        verdict: '',
+        keyQuote: '',
+        reasoning: 'Extracted from malformed response'
+      };
+    }
+
+    return null;
+  }
+
+  /**
+   * Check if the response is a scoreability rejection (v5.2+)
+   */
+  private parseRejection(responseText: string): { rejection: string; reasoning: string } | null {
+    let cleaned = responseText.trim();
+    if (cleaned.startsWith('```json')) cleaned = cleaned.slice(7);
+    else if (cleaned.startsWith('```')) cleaned = cleaned.slice(3);
+    if (cleaned.endsWith('```')) cleaned = cleaned.slice(0, -3);
+    cleaned = cleaned.trim();
+
+    try {
+      const parsed = JSON.parse(cleaned);
+      if (parsed.scoreable === false) {
+        return {
+          rejection: String(parsed.rejection || 'unknown'),
+          reasoning: String(parsed.reasoning || '')
+        };
+      }
+    } catch {
+      // Try regex fallback for malformed rejection responses
+      if (responseText.includes('"scoreable"') && responseText.includes('false')) {
+        const rejMatch = responseText.match(/"rejection"\s*:\s*"([^"]+)"/);
+        const resMatch = responseText.match(/"reasoning"\s*:\s*"([^"]+)"/);
+        if (rejMatch) {
+          return {
+            rejection: rejMatch[1],
+            reasoning: resMatch ? resMatch[1] : ''
+          };
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Get total token usage
+   */
+  getTokenUsage(): { input: number; output: number; cacheWrite: number; cacheRead: number; total: number } {
+    return {
+      input: this.totalInputTokens,
+      output: this.totalOutputTokens,
+      // Anthropic prompt-cache tokens. input excludes these once caching is
+      // on, so total = input + output + cacheWrite + cacheRead is the real
+      // volume processed. cacheWrite bills at 1.25x input price, cacheRead
+      // at 0.1x — see cost.ts.
+      cacheWrite: this.totalCacheWriteTokens,
+      cacheRead: this.totalCacheReadTokens,
+      total: this.totalInputTokens + this.totalOutputTokens + this.totalCacheWriteTokens + this.totalCacheReadTokens
+    };
+  }
+
+  /**
+   * Fold Batch API usage into the same counters the live path accumulates,
+   * so --batch runs report tokens/cost through the identical getTokenUsage()
+   * → cost.ts path as sync runs (task #516).
+   */
+  recordBatchUsage(usage: { input?: number; output?: number; cacheWrite?: number; cacheRead?: number }): void {
+    this.totalInputTokens += usage.input || 0;
+    this.totalOutputTokens += usage.output || 0;
+    this.totalCacheWriteTokens += usage.cacheWrite || 0;
+    this.totalCacheReadTokens += usage.cacheRead || 0;
+  }
+
+  /**
+   * Reset token counter
+   */
+  resetTokenUsage(): void {
+    this.totalInputTokens = 0;
+    this.totalOutputTokens = 0;
+    this.totalCacheWriteTokens = 0;
+    this.totalCacheReadTokens = 0;
+  }
+}

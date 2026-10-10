@@ -1,0 +1,851 @@
+# Scrape Playbill Verdict and NYC Theatre roundups
+name: Scrape New Aggregators
+
+on:
+  schedule:
+    # Mon-Sat 14:00 UTC (10am ET) — category-page discovery only (Steps 1-3
+    # of PV: fetch the Verdict category page, match articles, fetch matched
+    # articles). The per-show Google fallback (Step 4, ~135 SERP calls /
+    # ~35min) is SKIPPED via --skip-google-fallback on these runs. Daily
+    # catches new mid-week OB roundup articles (The Maids, Heated Rivalry)
+    # inside 24h, cheaply (~1-5 SB credits/run).
+    - cron: '0 14 * * 1-6'
+    # Sunday 14:00 UTC — weekly DEEP run WITH the full per-show Google
+    # fallback, for the long tail of shows not on the category page. This
+    # restores the original (pre-2026-05-27) weekly fallback cadence.
+    - cron: '0 14 * * 0'
+  workflow_dispatch:
+    inputs:
+      aggregator:
+        description: 'Which aggregator to scrape'
+        required: true
+        type: choice
+        options:
+          - all
+          - playbill-verdict
+          - nyc-theatre
+          - lbo-roundups
+          - bww-landing
+      shows:
+        description: 'Comma-separated show IDs to target (empty = all shows)'
+        required: false
+        type: string
+      time_budget_min:
+        description: 'BWW landing-discover wall-clock budget in minutes (0 = unlimited)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  actions: write
+
+# Serialize runs of this workflow. GitHub occasionally double-fires a
+# heavily-delayed cron (observed 2026-05-29: '0 14 * * 1-6' produced two
+# runs 1 min apart). Two concurrent runs each scrape + commit + rebuild,
+# racing on the same private-repo pushes. Queue the duplicate behind the
+# first instead of cancelling — cancel-in-progress would kill a run
+# mid-commit and leave partial state (same reasoning as vercel-demo.yml).
+concurrency:
+  group: scrape-new-aggregators
+  cancel-in-progress: false
+
+jobs:
+  scrape-playbill-verdict:
+    if: ${{ github.event_name == 'schedule' || inputs.aggregator == 'all' || inputs.aggregator == 'playbill-verdict' }}
+    runs-on: ubuntu-latest
+    # 60->75 (task investigating card: "Benevolent"/IATI Theater discovery
+    # miss, 2026-08-22). Runs #112-118 (2026-08-15..21, one per scheduled day)
+    # all failed on the "Commit Playbill Verdict unmatched-articles audit"
+    # step alone — push-with-retry.sh's own 240s PUSH_DEADLINE_SEC exhausted
+    # after 3 attempts, "Current branch main is up to date" on the early
+    # attempts (genuine push contention against main's high commit volume,
+    # NOT the task-#394 stale-ref NOOP-abort, confirmed from run 32492185882's
+    # log). That step now overrides PUSH_DEADLINE_SEC=900 below. On the Mon-Sat
+    # cron (no Google fallback) the commit step observed starting ~11min in;
+    # the Sunday deep run adds ~35min of per-show Google fallback ahead of it,
+    # so worst case ~46min-in + 900s(15min) deadline = ~61min — over the old
+    # 60min budget. 75min leaves ~14min of headroom for that worst case.
+    timeout-minutes: 75
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 75-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Scrape Playbill Verdict
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          echo "Scraping Playbill Verdict review links..."
+          SHOWS_FLAG=""
+          # Default: skip the expensive per-show Google fallback (Step 4).
+          SKIP_FLAG="--skip-google-fallback"
+          if [ -n "${{ inputs.shows }}" ]; then
+            SHOWS_FLAG="--shows=${{ inputs.shows }}"
+            SKIP_FLAG=""   # targeted runs go straight to Google by design
+            echo "Targeted mode: ${{ inputs.shows }}"
+          fi
+          # Sunday weekly deep cron OR any manual dispatch → run the full
+          # Google fallback. Mon-Sat daily cron keeps SKIP_FLAG set.
+          if [ "${{ github.event.schedule }}" = "0 14 * * 0" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            SKIP_FLAG=""
+            echo "Deep run: per-show Google fallback ENABLED"
+          else
+            echo "Daily run: per-show Google fallback skipped (category-page discovery only)"
+          fi
+          node scripts/scrape-playbill-verdict.js $SHOWS_FLAG $SKIP_FLAG
+
+      # ── Regional auto-promotion chain (daily, single owner) ──────────────
+      # A PV Verdict / BWW Review Roundup page at a Broadway-feeder regional
+      # venue IS the go-live signal (user rule 2026-07-08): stage the
+      # candidate, auto-promote it into shows.json (promote --regional-only),
+      # then re-scrape its roundups in the SAME run so reviews ingest before
+      # the push-review-texts steps below. This is the ONLY scheduled
+      # extraction/promotion path (removed from audit-cross-production-weekly
+      # 2026-07-08 — dual owners raced the staging file on Sundays).
+      # Safety: feeder-venue allowlist + bot-shell guard upstream; jaccard/slug
+      # /id dedup + atomic write + shrink gate in the promoter; validate-data
+      # gates the private-repo push (sentinel) and a failure rolls back the
+      # staging consumption so tomorrow retries clean. Failures email the owner
+      # (promote --email) — continue-on-error keeps the downstream rebuild
+      # gate alive, so without that email a break here would be silent.
+      - name: Discover + auto-promote regional roundup candidates
+        if: always()
+        continue-on-error: true
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set +e  # every failure below is handled explicitly
+          # Core data missing (checkout-core-data failed but if:always() ran us):
+          # bail — the slug-collision guard would be blind and stage garbage.
+          if [ ! -f data/shows.json ]; then
+            echo "::warning::core data missing — skipping regional discovery this run"
+            exit 0
+          fi
+          node scripts/extract-aggregator-candidates.js --limit=20
+          node scripts/promote-ob-venue-candidates.js --regional-only --email
+          PROMOTE_RC=$?
+          [ "$PROMOTE_RC" -ne 0 ] && echo "::error::promotion script exited $PROMOTE_RC (failure email sent by the script)"
+          IDS=$(node -e "const d=require('./data/audit/last-promotion-ids.json'); console.log(d.promoted.map(p=>p.id).join(','))" 2>/dev/null)
+          [ -n "$IDS" ] && echo "Auto-promoted: $IDS"
+          # ALWAYS validate before the push-core-data step below — promotion may
+          # have modified shows.json even on a non-zero exit, and validate-data
+          # arms the push-refusal sentinel on failure so a bad shows.json can
+          # never reach the private repo.
+          if node scripts/validate-data.js; then
+            if [ -n "$IDS" ]; then
+              echo "validate-data passed — same-run targeted review scrape"
+              node scripts/scrape-playbill-verdict.js --shows="$IDS" || true
+              # BWW: the staged candidate's sourceUrl IS the roundup — pass it
+              # directly (--roundup-url) so ingestion doesn't depend on SERP
+              # re-discovery of a slug-parsed title (Millions E2E gap, 2026-07-10).
+              node -e "const d=require('./data/audit/last-promotion-ids.json');for(const p of d.promoted)console.log(p.id+'|'+(p.sourceUrl||''))" | while IFS='|' read -r pid purl; do
+                if [ -n "$purl" ] && echo "$purl" | grep -q "broadwayworld.com"; then
+                  node scripts/scrape-bww-reviews.js --shows="$pid" --roundup-url="$purl" || true
+                else
+                  node scripts/scrape-bww-reviews.js --shows="$pid" || true
+                fi
+              done
+              # Audience data — the last go-live gap (reddit + mezzanine are
+              # already regional-aware; dispatch keeps their runtime out of
+              # this job). Neither workflow dispatches back — no cascade.
+              gh workflow run update-reddit-sentiment.yml -f shows="$IDS" || echo "::warning::reddit-sentiment dispatch failed"
+              gh workflow run update-mezzanine.yml -f shows="$IDS" || echo "::warning::mezzanine dispatch failed"
+            fi
+          else
+            # Push is refused via the sentinel. Roll back the staging consumption
+            # (tracked file) and blank the promotion record (may be untracked on
+            # the first runs — git checkout would silently no-op) so tomorrow
+            # retries clean, and email — this branch loops daily until a human
+            # looks, and silence would hide it forever.
+            echo "::error::validate-data FAILED after regional promotion — rolling back staging consumption"
+            git checkout -- data/audit/ob-venue-candidates.json || true
+            # Retract the go-live digest line the promote script already queued.
+            # Without this the owner is told "<show> live and scoring" for a show
+            # whose push was just sentinel-refused, AND the per-show ledger entry
+            # (7-day cooldown) silences tomorrow's real promotion of the same
+            # show — reintroducing the silent-miss bug this chain exists to fix.
+            PROMOTED_IDS="$IDS" node -e "
+              const {removeDigestLines, deleteCondition} = require('./scripts/lib/owner-alert-router.js');
+              const ids = (process.env.PROMOTED_IDS || '').split(',').map(s => s.trim()).filter(Boolean);
+              if (!ids.length) { console.log('No promoted ids to retract.'); process.exit(0); }
+              const keys = ids.map(id => 'regional-go-live:' + id);
+              const removed = removeDigestLines(keys);
+              for (const k of keys) { try { deleteCondition(k); } catch (e) { console.warn('deleteCondition failed for ' + k + ': ' + e.message); } }
+              console.log('Retracted ' + removed + ' queued go-live line(s) + cleared ' + keys.length + ' ledger condition(s) after validate-data failure.');
+            " || echo "::warning::go-live retraction failed — owner may see a false 'went live' line in tomorrow's digest"
+            node -e "require('fs').writeFileSync('data/audit/last-promotion-ids.json', JSON.stringify({generatedAt:new Date().toISOString(),promoted:[]},null,2)+'\n')" || true
+            # Alert ONLY when this run actually promoted something. With zero
+            # promotions, a validate-data failure here is pre-existing corpus
+            # drift this job merely tripped over — it emailed the owner
+            # "Promoting [?] produced a bad shows.json" daily (Aug 1-2 2026)
+            # for 4 data errors on shows this workflow never touched. Corpus
+            # drift has its own owned channels (Data Validation CI gate,
+            # check-corpus-drift.yml, morning digest health section). When a
+            # REAL promotion fails validation, route through the alert router
+            # (auto-dispatch card, per-condition dedup) instead of a raw
+            # daily email.
+            if [ -n "$IDS" ]; then
+              PROMOTED_IDS="$IDS" node -e "
+                const {routeAlert}=require('./scripts/lib/owner-alert-router.js');
+                const ids=(process.env.PROMOTED_IDS||'').trim();
+                routeAlert({
+                  conditionKey:'regional-promotion:validate-failed:'+ids,
+                  title:'Regional auto-promotion: validate-data FAILED for '+ids,
+                  description:'Promoting ['+ids+'] produced a shows.json that failed validate-data. The private-repo push was refused (sentinel) and staging was rolled back; the run log has the exact validation errors. This retries daily until the data error is fixed.',
+                  hint:'Read the failing validate-data output in this run, fix the show entry (or the staged candidate), then re-run the workflow.',
+                  severity:'error',
+                  disposition:'auto',
+                  cooldownHours:72,
+                }).then(r=>{console.log('routeAlert ->',r.action);process.exit(0);}).catch(e=>{console.error('routeAlert failed:',e.message);process.exit(0);});
+              " || true
+              git add data/audit/alert-ledger.json 2>/dev/null || true
+              # BRO-3662: logDispatchAttempt() rewrites this TRACKED file on
+              # every dispatch attempt (this call is disposition:'auto'); left
+              # unstaged it makes every later rebase refuse pre-flight and
+              # forces the clobber-prone merge path.
+              git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+            else
+              echo "::warning::validate-data failed with ZERO promotions this run — pre-existing corpus drift, not this job's doing. No owner email (covered by the Data Validation CI gate + morning digest)."
+            fi
+          fi
+          exit 0
+
+      - name: Push core data (regional auto-promotion)
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: auto-promote regional shows from aggregator roundups"
+
+      # Images — card #1456: this promotion path is a go-live event like
+      # previews->open in update-show-status.yml, but it never dispatched
+      # image fetch, so a regional show sat scored with images:{} until the
+      # next twice-weekly cron caught it (up to 3.5 days). MUST run AFTER
+      # the core-data push above — fetch-all-image-formats.yml's own
+      # checkout-core-data pulls from the private repo, so dispatching
+      # earlier (still inside the promotion step) races the show ID against
+      # its own not-yet-pushed shows.json entry and silently no-ops
+      # (adversarial review, 2026-08-14). data/audit/last-promotion-ids.json
+      # is untouched by the push step, so it's still readable here.
+      - name: Dispatch image fetch for newly promoted shows
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/dispatch-new-show-images.js || echo "::warning::image-fetch dispatch failed — will still be picked up by the next fetch-all-image-formats.yml sweep"
+
+      - name: Push review-texts to private repo (PV)
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Playbill Verdict scrape"
+      - name: Push aggregator-archive to private repo (PV)
+        if: always()
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Playbill Verdict aggregator archive"
+
+      # Commit the unmatched-articles audit log to the public repo. The
+      # downstream rebuild job re-checks out main and would lose this file
+      # otherwise. data/audit/ is the established public-repo audit location
+      # (see audit-aggregator-coverage.yml for the same pattern).
+      - name: Commit Playbill Verdict unmatched-articles audit + candidate staging
+        if: always()
+        env:
+          # PUSH_DEADLINE_SEC override: this step's push was the confirmed
+          # failure point on 7 straight scheduled runs (2026-08-15..21) — see
+          # the job-level timeout-minutes comment above for the full incident
+          # + headroom math. Per push-with-retry.sh's own sizing comment
+          # ("DO NOT raise this SHARED default... override at their own call
+          # site, after confirming their OWN job-timeout headroom"), 900s
+          # matches the value already proven live elsewhere in this repo for
+          # the same failure class (data-health-check.yml, audit-aggregator-
+          # gap.yml, task #1791/#1842) rather than picking a new untested
+          # number.
+          PUSH_DEADLINE_SEC: '900'
+          # PUSH_API_FALLBACK_DISABLE=1: the FIRST fix attempt here (raising
+          # only PUSH_DEADLINE_SEC) still failed live (run 32568897952,
+          # 2026-08-22) — the deadline was never the binding constraint.
+          # push-with-retry.sh's real break point is PUSH_API_FALLBACK_AFTER_
+          # ATTEMPTS (default ~4): after that many failed local attempts it
+          # abandons the local retry loop early to try the faster Git Data
+          # API fallback instead of using the rest of PUSH_DEADLINE_SEC. But
+          # that fallback unconditionally REFUSES any data/audit/ path (see
+          # its own disqualifier check + error text) — so for this file the
+          # early break-out throws away the local loop's remaining budget in
+          # exchange for a fallback attempt that is guaranteed to fail.
+          # Disabling the fallback here means every attempt up to
+          # MAX_RETRIES/PUSH_DEADLINE_SEC is a genuine local retry, giving
+          # this step an actual chance to win the race against main's
+          # concurrent commit traffic instead of surrendering after ~4.
+          PUSH_API_FALLBACK_DISABLE: '1'
+          # BRO-158: data/audit/ob-venue-candidates.json is now a union-merged
+          # registry file (scripts/lib/core-data-merge-registry.js) — the
+          # default `-X theirs` rebase resolves a non-overlapping hunk (two
+          # producers adding different candidates) silently, without ever
+          # reaching resolve_conflicts()'s case-arm merge. This flag routes
+          # that path through reconcile-merged-json.js instead.
+          PUSH_RECONCILE_MERGED_JSON: '1'
+          # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
+          # its 90s default to 30s — a pre-transfer connection stall burns the
+          # whole 90s cap with zero transfer progress, so only ~4-6 retries fit
+          # inside the 900s deadline above. Matches BRO-334/BRO-346.
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # alert-digest-queue.json + alert-ledger.json MUST be staged here:
+          # promote-ob-venue-candidates.js routes its regional go-live through
+          # routeAlert(disposition:'digest'), which WRITES both on this runner.
+          # Omit them and the queued line dies with the runner — the owner is
+          # never told a regional show went live (same silent-drop class as
+          # card #475). Precedent: data-health-check.yml:125, test.yml:2658,
+          # opening-night-checklist.yml:96 all stage these.
+          # alert-router-attempts.jsonl (BRO-3662): logDispatchAttempt() rewrites
+          # this TRACKED file on every dispatch attempt; left unstaged it makes
+          # every later rebase refuse pre-flight and forces the clobber-prone
+          # merge path in push-with-retry.sh.
+          bash scripts/lib/git-add-existing.sh data/audit/playbill-verdict-unmatched.json data/audit/playbill-verdict-sitemap-seen.json data/audit/ob-venue-candidates.json data/audit/ob-aggregator-rejections.json data/audit/last-promotion-ids.json data/audit/ob-promotion-log.jsonl data/audit/alert-digest-queue.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl data/audit/lortel-last-success.json
+          if ! git diff --staged --quiet; then
+            git commit -m "data: Playbill Verdict unmatched audit + candidate staging [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          else
+            echo "No audit/staging changes to commit"
+          fi
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: scrape-new-aggregators-scrape-playbill-verdict
+
+  scrape-nyc-theatre:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    needs: [scrape-playbill-verdict]
+    if: ${{ always() && (github.event_name == 'schedule' || inputs.aggregator == 'all' || inputs.aggregator == 'nyc-theatre') }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 60-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Scrape NYC Theatre roundups
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: |
+          echo "Scraping NYC Theatre review roundups..."
+          SHOWS_FLAG=""
+          if [ -n "${{ inputs.shows }}" ]; then
+            SHOWS_FLAG="--shows=${{ inputs.shows }}"
+            echo "Targeted mode: ${{ inputs.shows }}"
+          fi
+          node scripts/scrape-nyc-theatre-roundups.js $SHOWS_FLAG
+
+      - name: Push review-texts to private repo (NYC)
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: NYC Theatre roundup scrape"
+      - name: Push aggregator-archive to private repo (NYC)
+        if: always()
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: NYC Theatre aggregator archive"
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: scrape-new-aggregators-scrape-nyc-theatre
+
+  scrape-lbo-roundups:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    needs: [scrape-nyc-theatre]
+    if: ${{ always() && (github.event_name == 'schedule' || inputs.aggregator == 'all' || inputs.aggregator == 'lbo-roundups') }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 60-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Scrape LBO roundups
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: |
+          echo "Scraping London Box Office review roundups..."
+          SHOWS_FLAG=""
+          if [ -n "${{ inputs.shows }}" ]; then
+            SHOWS_FLAG="--shows=${{ inputs.shows }}"
+            echo "Targeted mode: ${{ inputs.shows }}"
+          fi
+          node scripts/scrape-london-box-office-roundups.js $SHOWS_FLAG
+
+      - name: Push review-texts to private repo (LBO)
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: LBO roundup scrape"
+      - name: Push aggregator-archive to private repo (LBO)
+        if: always()
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: LBO roundup aggregator archive"
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: scrape-new-aggregators-scrape-lbo-roundups
+
+  # BWW /reviews/ landing-page discovery: scrape the visible REVIEW ROUNDUPS
+  # section, match URLs to shows.json, dispatch matched shows through the
+  # existing per-show BWW roundup pipeline. Catches roundups the per-show
+  # Google search misses (e.g., Heated Rivalry 2026-05-26).
+  scrape-bww-landing:
+    runs-on: ubuntu-latest
+    # 30->45 (task investigating card: "Benevolent"/IATI Theater discovery
+    # miss, 2026-08-22). Runs #112-118 (2026-08-15..21) all failed on the
+    # "Commit BWW unmatched-roundups audit" step alone — push-with-retry.sh's
+    # own 240s PUSH_DEADLINE_SEC exhausted after 3 attempts against genuine
+    # push contention on main (confirmed from run 32492185882's log: "up to
+    # date" on early attempts, not the task-#394 stale-ref NOOP-abort). That
+    # step now overrides PUSH_DEADLINE_SEC=900 below. Worst-case headroom: the
+    # discovery step's own time-budget defaults to 22min on a scheduled run
+    # (no `time_budget_min` input) + ~3min checkout/npm-ci overhead observed
+    # = ~25min before the commit step can even start, + 900s(15min) new
+    # deadline = ~40min. 45min leaves ~5min of margin over that worst case.
+    # 45->60 (BRO-4262): the tour auto-create, its core-data push and the
+    # gather dispatch add up to ~12 min ahead of the audit commit step.
+    timeout-minutes: 60
+    needs: [scrape-lbo-roundups]
+    if: ${{ always() && (github.event_name == 'schedule' || inputs.aggregator == 'all' || inputs.aggregator == 'bww-landing') }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 60-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: BWW landing-page roundup discovery
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: |
+          TB="${{ inputs.time_budget_min }}"
+          [ -z "$TB" ] && TB=22
+          node scripts/scrape-bww-reviews.js --landing-discover --time-budget-min=$TB
+
+      # BRO-4262: a recorded national-tour roundup becomes a tour entry when
+      # Tours To You lists the tour and Wikipedia names its launch
+      # (create-tour-entries.js). Report-only until 2026-10-06 unless the
+      # TOUR_AUTOCREATE repo variable says otherwise (off|report|write).
+      - name: Create national-tour entries from roundups
+        # lint-allow-swallow: best-effort; an uncreated candidate stays a digest suggestion (next step), details in data/audit/tour-autocreate.json
+        id: create_tours
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 10
+        env:
+          TOUR_AUTOCREATE: ${{ vars.TOUR_AUTOCREATE }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: node scripts/create-tour-entries.js --write --time-budget-min=8
+
+      # Also when it only reopened a closed tour back from a layoff (BRO-4724).
+      - name: Push core data (new tour entries)
+        if: always() && (steps.create_tours.outputs.created != '' || steps.create_tours.outputs.reopened != '')
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: add national tour entries (create-tour-entries, BRO-4262)'
+
+      # After the push above, so the dispatched run checks out the new ids.
+      - name: Gather reviews for new tour entries
+        if: always() && steps.create_tours.outputs.created != ''
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CREATED: ${{ steps.create_tours.outputs.created }}
+        run: gh workflow run gather-reviews.yml -f shows="$CREATED" || echo "::warning::gather-reviews dispatch failed for $CREATED"
+
+      # BRO-4211: national-tour roundups for a Broadway show with no tour entry,
+      # recorded by the step above, become owner digest suggestions. Before the
+      # commit step below, which stages the files routeAlert writes. Candidates
+      # create-tour-entries.js turned into entries are no longer open.
+      - name: Suggest national tours to add
+        if: always()
+        continue-on-error: true
+        run: node scripts/route-tour-candidates.js
+
+      - name: Push review-texts to private repo (BWW landing)
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: BWW landing-page roundup scrape"
+      - name: Push aggregator-archive to private repo (BWW landing)
+        if: always()
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: BWW landing-page roundup archive"
+
+      - name: Commit BWW unmatched-roundups audit
+        if: always()
+        env:
+          # PUSH_DEADLINE_SEC override: this step's push was the confirmed
+          # failure point on 7 straight scheduled runs (2026-08-15..21) — see
+          # the job-level timeout-minutes comment above for the full incident
+          # + headroom math. Per push-with-retry.sh's own sizing comment
+          # ("DO NOT raise this SHARED default... override at their own call
+          # site, after confirming their OWN job-timeout headroom"), 900s
+          # matches the value already proven live elsewhere in this repo for
+          # the same failure class (data-health-check.yml, audit-aggregator-
+          # gap.yml, task #1791/#1842) rather than picking a new untested
+          # number.
+          PUSH_DEADLINE_SEC: '900'
+          # PUSH_API_FALLBACK_DISABLE=1: the FIRST fix attempt here (raising
+          # only PUSH_DEADLINE_SEC) still failed live (run 32568897952,
+          # 2026-08-22) — the deadline was never the binding constraint.
+          # push-with-retry.sh's real break point is PUSH_API_FALLBACK_AFTER_
+          # ATTEMPTS (default ~4): after that many failed local attempts it
+          # abandons the local retry loop early to try the faster Git Data
+          # API fallback instead of using the rest of PUSH_DEADLINE_SEC. But
+          # that fallback unconditionally REFUSES any data/audit/ path (see
+          # its own disqualifier check + error text) — so for this file the
+          # early break-out throws away the local loop's remaining budget in
+          # exchange for a fallback attempt that is guaranteed to fail.
+          # Disabling the fallback here means every attempt up to
+          # MAX_RETRIES/PUSH_DEADLINE_SEC is a genuine local retry, giving
+          # this step an actual chance to win the race against main's
+          # concurrent commit traffic instead of surrendering after ~4.
+          PUSH_API_FALLBACK_DISABLE: '1'
+          # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
+          # its 90s default to 30s — a pre-transfer connection stall burns the
+          # whole 90s cap with zero transfer progress, so only ~4-6 retries fit
+          # inside the 900s deadline above. Matches BRO-334/BRO-346.
+          GIT_NET_TIMEOUT_SEC: '30'
+          # The alert files below are merged JSON other jobs also write; same
+          # setting as the scrape-playbill-verdict commit step.
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # tour-roundup-candidates.json + alert-digest-queue.json + alert-ledger.json
+          # + alert-router-attempts.jsonl: route-tour-candidates.js (step above)
+          # routes national-tour roundups for a Broadway show with no tour entry
+          # through routeAlert(disposition:'digest') as an "add this tour?"
+          # decision (BRO-4211). routeAlert writes these on this runner; unstaged,
+          # the digest line dies with it (same reason as the Playbill Verdict
+          # commit step above).
+          bash scripts/lib/git-add-existing.sh data/audit/bww-roundup-unmatched.json data/audit/tour-roundup-candidates.json data/audit/tour-autocreate.json data/audit/alert-digest-queue.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl
+          if ! git diff --staged --quiet; then
+            git commit -m "data: BWW landing-page unmatched roundups audit [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          else
+            echo "No BWW unmatched-roundups changes to commit"
+          fi
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: scrape-new-aggregators-scrape-bww-landing
+
+  # Rebuild reviews.json after aggregator data is committed
+  rebuild:
+    needs: [scrape-playbill-verdict, scrape-nyc-theatre, scrape-lbo-roundups, scrape-bww-landing]
+    if: always() && (needs.scrape-playbill-verdict.result == 'success' || needs.scrape-nyc-theatre.result == 'success' || needs.scrape-lbo-roundups.result == 'success' || needs.scrape-bww-landing.result == 'success')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Rebuild reviews.json
+        run: node scripts/rebuild-all-reviews.js
+
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Scrape New Aggregators — Commit and push rebuilt reviews.json"
+      - name: Commit and push rebuilt reviews.json
+        if: always()
+        env:
+          # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
+          # its 90s default to 30s — a pre-transfer connection stall burns the
+          # whole 90s cap with zero transfer progress. Matches BRO-334/BRO-346.
+          # This call site is otherwise unchanged (default MAX_RETRIES=7,
+          # PUSH_DEADLINE_SEC=240) — per push-with-retry.sh's own backoff-sum
+          # math, MAX_RETRIES is usually the binding constraint at the default
+          # deadline, not the deadline itself, so this alone may buy less than
+          # at the sites elsewhere in this repo that also raised the deadline.
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/
+          git diff --staged --quiet || git commit -m "data: Auto-rebuild reviews.json after aggregator scrape"
+
+          bash scripts/lib/push-with-retry.sh
+
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from scrape-new-aggregators'
+      - name: Auto-trigger text collection if needed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          NEEDS_COLLECTION=$(node -e '
+            const fs = require("fs"), path = require("path");
+            const base = "data/review-texts";
+            let n = 0;
+            const dirs = fs.readdirSync(base).filter(d => {
+              try { return fs.statSync(path.join(base, d)).isDirectory(); } catch { return false; }
+            });
+            dirs.forEach(d => {
+              fs.readdirSync(path.join(base, d)).filter(f => f.endsWith(".json") && f !== "failed-fetches.json").forEach(f => {
+                try {
+                  const r = JSON.parse(fs.readFileSync(path.join(base, d, f), "utf8"));
+                  if (r.wrongProduction || r.wrongShow || r.wrongAttribution) return;
+                  if (r.url && (!r.fullText || r.fullText.length < 50)) n++;
+                } catch {}
+              });
+            });
+            console.log(n);
+          ')
+
+          echo "Reviews needing text collection: $NEEDS_COLLECTION"
+
+          # For targeted show runs, always trigger collection (even for 1 review)
+          # For broad runs, use higher threshold to avoid noise
+          if [ -n "${{ inputs.shows }}" ]; then
+            THRESHOLD=1
+          else
+            THRESHOLD=20
+          fi
+          if [ "$NEEDS_COLLECTION" -lt "$THRESHOLD" ]; then
+            echo "Below threshold ($THRESHOLD). Skipping."
+            exit 0
+          fi
+
+          # Jitter (#312 cousin fix): spreads out this check-then-dispatch guard
+          # so overlapping triggers don't all read RUNNING=0 before any of them
+          # start. See gather-reviews.yml for the incident this was copied from.
+          sleep $((RANDOM % 20 + 1))
+
+          RUNNING=$(gh run list --workflow=collect-review-texts.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          QUEUED=$(gh run list --workflow=collect-review-texts.yml --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          WAITING=$(gh run list --workflow=collect-review-texts.yml --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          ACTIVE=$((RUNNING + QUEUED + WAITING))
+          if [ "$ACTIVE" -gt 0 ]; then
+            echo "Text collection already active ($RUNNING running, $QUEUED queued). Skipping."
+            exit 0
+          fi
+
+          SHOWS="${{ inputs.shows }}"
+          if [ -n "$SHOWS" ]; then
+            echo "Triggering targeted text collection for shows: $SHOWS ($NEEDS_COLLECTION reviews)..."
+            gh workflow run collect-review-texts.yml \
+              -f show_filter="$SHOWS" \
+              -f max_reviews=300 \
+              -f browserbase_enabled=true \
+              -f retry_failed=true \
+              -f archive_first=true
+          else
+            echo "Triggering text collection for $NEEDS_COLLECTION reviews..."
+            gh workflow run collect-review-texts.yml \
+              -f max_reviews=300 \
+              -f browserbase_enabled=true \
+              -f retry_failed=true \
+              -f archive_first=true
+          fi
+
+          echo "Text collection auto-triggered."
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Playbill/NYC Theatre Scraper Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

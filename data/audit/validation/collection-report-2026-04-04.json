@@ -1,0 +1,169 @@
+{
+  "runDate": "2026-04-04T21:27:30.035Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 100,
+    "priority": "all",
+    "showFilter": "stranger-things-the-first-shadow-west-end-2023,the-holy-rosenbergs-west-end-2026,the-phantom-of-the-opera-west-end-1986,all-my-sons-west-end-2025,dracula-west-end-2025,oliver-west-end-2024,paddington-the-musical-west-end-2025,back-to-the-future-west-end-2021",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 25,
+    "failed": 12,
+    "skipped": 0,
+    "successRate": "67.6%"
+  },
+  "tierBreakdown": {
+    "playwright": 17,
+    "amp": 0,
+    "browserbase": 2,
+    "directCookies": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 7,
+    "archive": 7
+  },
+  "statistics": {
+    "tier1Attempts": 28,
+    "tier1Success": 24,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier2Attempts": 5,
+    "tier2Success": 1,
+    "tier3Attempts": 7,
+    "tier3Success": 0,
+    "tier3_6Attempts": 7,
+    "tier3_6Success": 7,
+    "tier4Attempts": 3,
+    "tier4Success": 0,
+    "totalFailed": 12,
+    "scrapingBeePageCredits": 40,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
+    "urlDiscoveryAttempts": 9,
+    "urlDiscoverySuccess": 5,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "dracula-west-end-2025/nytg--kyle-turner.json",
+    "dracula-west-end-2025/variety--unknown.json",
+    "dracula-west-end-2025/bbc-news--unknown.json",
+    "dracula-west-end-2025/all-that-dazzles-uk--unknown.json",
+    "dracula-west-end-2025/telegraph--unknown.json",
+    "paddington-the-musical-west-end-2025/city-am--unknown.json",
+    "paddington-the-musical-west-end-2025/independent--unknown.json",
+    "all-my-sons-west-end-2025/theatre-weekly--unknown.json",
+    "all-my-sons-west-end-2025/whatsonstage--sarah-crompton.json",
+    "oliver-west-end-2024/i-paper--unknown.json",
+    "oliver-west-end-2024/whatsonstage--gareth-carr.json",
+    "oliver-west-end-2024/whatsonstage--rachel-agyekum.json",
+    "stranger-things-the-first-shadow-west-end-2023/all-that-dazzles-uk--unknown.json",
+    "stranger-things-the-first-shadow-west-end-2023/broadwayworld--alexander-cohen.json",
+    "stranger-things-the-first-shadow-west-end-2023/i-paper--fiona-mountford.json",
+    "stranger-things-the-first-shadow-west-end-2023/plays-international--unknown.json",
+    "back-to-the-future-west-end-2021/guardian--unknown.json",
+    "back-to-the-future-west-end-2021/daily-mail--unknown.json",
+    "back-to-the-future-west-end-2021/i-paper--unknown.json",
+    "back-to-the-future-west-end-2021/london-theatre--unknown.json",
+    "back-to-the-future-west-end-2021/standard--unknown.json",
+    "back-to-the-future-west-end-2021/daily-mail--patrick-marmion.json",
+    "back-to-the-future-west-end-2021/i-paper--fiona-mountford.json",
+    "back-to-the-future-west-end-2021/london-theatre--matt-wolf.json",
+    "back-to-the-future-west-end-2021/standard--simone-noakes.json"
+  ],
+  "failed": [
+    "the-holy-rosenbergs-west-end-2026/theatre-weekly--unknown.json",
+    "dracula-west-end-2025/times-uk--clive-davis.json",
+    "paddington-the-musical-west-end-2025/broadwayworld--christiana-rose.json",
+    "paddington-the-musical-west-end-2025/times-uk--olivia-garrett.json",
+    "oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
+    "oliver-west-end-2024/the-sun--unknown.json",
+    "oliver-west-end-2024/the-sun--dominic-maxwell.json",
+    "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
+    "back-to-the-future-west-end-2021/british-theatre--unknown.json",
+    "back-to-the-future-west-end-2021/broadwayworld--unknown.json",
+    "back-to-the-future-west-end-2021/whatsonstage--unknown.json",
+    "back-to-the-future-west-end-2021/whatsonstage--rachel-agyekum.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "dracula-west-end-2025/nytg--kyle-turner.json",
+      "dracula-west-end-2025/bbc-news--unknown.json",
+      "dracula-west-end-2025/all-that-dazzles-uk--unknown.json",
+      "dracula-west-end-2025/telegraph--unknown.json",
+      "paddington-the-musical-west-end-2025/city-am--unknown.json",
+      "paddington-the-musical-west-end-2025/independent--unknown.json",
+      "all-my-sons-west-end-2025/theatre-weekly--unknown.json",
+      "oliver-west-end-2024/i-paper--unknown.json",
+      "stranger-things-the-first-shadow-west-end-2023/all-that-dazzles-uk--unknown.json",
+      "stranger-things-the-first-shadow-west-end-2023/i-paper--fiona-mountford.json",
+      "stranger-things-the-first-shadow-west-end-2023/plays-international--unknown.json",
+      "back-to-the-future-west-end-2021/guardian--unknown.json",
+      "back-to-the-future-west-end-2021/i-paper--unknown.json",
+      "back-to-the-future-west-end-2021/london-theatre--unknown.json",
+      "back-to-the-future-west-end-2021/standard--unknown.json",
+      "back-to-the-future-west-end-2021/i-paper--fiona-mountford.json",
+      "back-to-the-future-west-end-2021/standard--simone-noakes.json"
+    ],
+    "amp": [],
+    "browserbase": [
+      "data/review-texts/dracula-west-end-2025/variety--unknown.json",
+      "dracula-west-end-2025/variety--unknown.json"
+    ],
+    "directCookies": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [
+      "data/review-texts/paddington-the-musical-west-end-2025/broadwayworld--christiana-rose.json",
+      "data/review-texts/oliver-west-end-2024/all-that-dazzles-uk--unknown.json",
+      "data/review-texts/oliver-west-end-2024/the-sun--unknown.json",
+      "data/review-texts/back-to-the-future-west-end-2021/british-theatre--unknown.json",
+      "data/review-texts/back-to-the-future-west-end-2021/broadwayworld--unknown.json",
+      "data/review-texts/back-to-the-future-west-end-2021/whatsonstage--unknown.json",
+      "data/review-texts/back-to-the-future-west-end-2021/whatsonstage--rachel-agyekum.json"
+    ],
+    "archive": [
+      "all-my-sons-west-end-2025/whatsonstage--sarah-crompton.json",
+      "oliver-west-end-2024/whatsonstage--gareth-carr.json",
+      "oliver-west-end-2024/whatsonstage--rachel-agyekum.json",
+      "stranger-things-the-first-shadow-west-end-2023/broadwayworld--alexander-cohen.json",
+      "back-to-the-future-west-end-2021/daily-mail--unknown.json",
+      "back-to-the-future-west-end-2021/daily-mail--patrick-marmion.json",
+      "back-to-the-future-west-end-2021/london-theatre--matt-wolf.json"
+    ]
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": [
+    {
+      "reviewId": "back-to-the-future-west-end-2021/daily-mail--patrick-marmion.json",
+      "oldUrl": "https://www.dailymail.co.uk/news/article-13922685/Redlands-review-Stones-drugs-bust-saga.html",
+      "newUrl": "https://www.dailymail.co.uk/home/event/article-10045185/Back-Future-review-Provides-whacking-great-hit-spectacle-entertainment-nostalgia.html"
+    },
+    {
+      "reviewId": "back-to-the-future-west-end-2021/i-paper--fiona-mountford.json",
+      "oldUrl": "https://inews.co.uk/culture/arts/roots-look-back-in-anger-review-3304520",
+      "newUrl": "https://inews.co.uk/culture/back-to-the-future-the-musical-adelphi-theatre-london-review-an-eye-popping-gen-x-nostalgia-trip-1196192?srsltid=AfmBOoo7cjtcbZyhaY0u-mUwsqwRncBSYv9hm6A_E9E7he90U7RYWY-U"
+    },
+    {
+      "reviewId": "back-to-the-future-west-end-2021/london-theatre--matt-wolf.json",
+      "oldUrl": "https://www.londontheatre.co.uk/reviews/roots-look-back-in-anger-review-almeida-theatre",
+      "newUrl": "https://www.londontheatrereviews.co.uk/post.cfm?p=9979"
+    },
+    {
+      "reviewId": "back-to-the-future-west-end-2021/standard--simone-noakes.json",
+      "oldUrl": "https://www.standard.co.uk/culture/theatre/roots-look-back-in-anger-almeida-review-billy-howle-b1185456.html",
+      "newUrl": "https://www.standard.co.uk/culture/theatre/back-to-the-future-the-musical-review-b954981.html"
+    },
+    {
+      "reviewId": "back-to-the-future-west-end-2021/whatsonstage--rachel-agyekum.json",
+      "oldUrl": "https://www.whatsonstage.com/news/marie-and-rosetta-on-tour-review_1676746/",
+      "newUrl": "https://www.whatsonstage.com/news/back-to-the-future-the-musical-review-the-iconic-movie-makes-its-way-to-the-west-end-stage_54896/"
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "issueNumber": "bro-4666",
+  "planId": "eec586ed-1998-41c5-9a6f-9e13dbcfdc60",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4666: weekly running costs that disagree with or lack their citation. Gatsby's cited producer interview says more than $900,000 a week but the record holds $850,000. Two Strangers ($480,577) and Harry Potter ($1M) are labeled trade-reported with no source text, so /biz now shows them as estimates; cite the articles already in each record's sources.",
+    "steps": [
+      "The Great Gatsby: weeklyRunningCost 850000 -> 900000, matching its own cited source (Gordon Cox interview with Chunsoo Shin). It stays flagged as an estimate because the source says 'more than'.",
+      "Two Strangers: cite Forbes (Marc Hershberg, Nov 17, 2025), already in its sources, for the $480,577 weekly cost.",
+      "Harry Potter and the Cursed Child: cite Broadway Journal (Philip Boroff, Dec 16, 2025), already in its sources, for weekly operating expenses exceeding $1 million."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-great-gatsby",
+        "showId": "the-great-gatsby",
+        "field": "weeklyRunningCost",
+        "oldValue": 850000,
+        "newValue": 900000,
+        "description": "the-great-gatsby: weeklyRunningCost to match its cited producer interview (more than $900,000)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "two-strangers",
+        "showId": "two-strangers",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "Forbes (Nov 17, 2025): fixed weekly operating costs of $480,577",
+        "description": "two-strangers: cite the Forbes report for the weekly cost"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "harry-potter",
+        "showId": "harry-potter",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (Dec 16, 2025): weekly operating expenses exceeding $1 million",
+        "description": "harry-potter: cite the Broadway Journal report for the weekly cost"
+      }
+    ],
+    "changes": []
+  },
+  "executedAt": "2026-10-05T06:29:19.609Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for the-great-gatsby"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for two-strangers"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for harry-potter"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "issueNumber": "bro-4973-b",
+  "planId": "eab82397-ce62-4f4c-8a87-bb539b6763b0",
+  "status": "applied",
+  "createdAt": "2026-10-10T11:36:27.383Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4973: Good Time Charlie Culture Sauce slot held a serp-discovered record with critic Unknown, no text, and the New York Theatre Guide roundup excerpt (so it scored 73 off the wrong critic words and went live as a duplicate of NYTG). The real article is Thom Geier, Oct 9, a rave. Move the bad record aside and re-ingest from the url.",
+    "steps": [
+      "Move the misattributed record aside",
+      "Re-ingest the Thom Geier review from its url"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "good-time-charlie-off-broadway-2026/culturesauce--unknown.json",
+        "destPath": "_superseded-misattributed/good-time-charlie-off-broadway-2026--culturesauce--unknown--nytg-excerpt-2026-10-10.json",
+        "description": "Record carries the NYTG roundup excerpt and no critic or text; re-ingested below"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=good-time-charlie-off-broadway-2026 --url=\"https://culturesauce.com/good-time-charlie-off-broadway-review/\" --critic=\"Thom Geier\"",
+        "description": "Culture Sauce, Thom Geier, Oct 9 2026"
+      }
+    ]
+  },
+  "executedAt": "2026-10-10T12:13:34.328Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved good-time-charlie-off-broadway-2026/culturesauce--unknown.json → _superseded-misattributed/good-time-charlie-off-broadway-2026--culturesauce--unknown--nytg-excerpt-2026-10-10.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ]
+}

@@ -1,0 +1,151 @@
+# Scrape review data from aggregator sites (DTLI, BWW)
+# Replaces previous version that had stale GitHub Actions index
+name: Scrape Aggregators
+
+on:
+  workflow_dispatch:
+    inputs:
+      shows:
+        description: 'Comma-separated show IDs (e.g., merrily-we-roll-along-2023,doubt-2024)'
+        required: false
+      aggregator:
+        description: 'Which aggregator to scrape'
+        required: true
+        type: choice
+        options:
+          - all
+          - dtli
+          - bww
+
+# BRO-934: per-workflow group: stops overlapping runs of the same job racing on the private-repo push. Not a shared class group (GH pending-queue depth is 1; see rebuild-fast.yml).
+concurrency:
+  group: scrape-aggregators
+  cancel-in-progress: false
+
+jobs:
+  scrape-dtli:
+    if: ${{ inputs.aggregator == 'all' || inputs.aggregator == 'dtli' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Scrape DTLI reviews
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SHOWS: ${{ inputs.shows }}
+        run: |
+          echo "Scraping Did They Like It reviews..."
+          node scripts/extract-dtli-reviews.js ${{ inputs.shows && format('--shows {0}', inputs.shows) || '' }}
+
+      - name: Commit and push changes
+        if: always()
+        # Task #574: bare stage-data-changes.sh stages all of data/, so a
+        # managed union-merged file (commercial.json et al.) could be swept
+        # in even though this step never names one — see push-with-retry.sh's
+        # reconcile_merged_json().
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          bash scripts/lib/stage-data-changes.sh
+          git diff --staged --quiet || git commit -m "chore: Update DTLI review data"
+
+          bash scripts/lib/push-with-retry.sh
+
+  scrape-bww:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    needs: [scrape-dtli]
+    # Allow this to run even if dtli is skipped
+    if: ${{ always() && (inputs.aggregator == 'all' || inputs.aggregator == 'bww') }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Scrape BWW Review Roundups
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SHOWS: ${{ inputs.shows }}
+        run: |
+          echo "Scraping BroadwayWorld Review Roundups..."
+          node scripts/extract-bww-reviews.js ${{ inputs.shows && format('--shows {0}', inputs.shows) || '' }}
+
+      - name: Commit and push changes
+        if: always()
+        # Task #574: bare stage-data-changes.sh stages all of data/, so a
+        # managed union-merged file (commercial.json et al.) could be swept
+        # in even though this step never names one — see push-with-retry.sh's
+        # reconcile_merged_json().
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          bash scripts/lib/stage-data-changes.sh
+          git diff --staged --quiet || git commit -m "chore: Update BWW Review Roundup data"
+
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Scrape Aggregators Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

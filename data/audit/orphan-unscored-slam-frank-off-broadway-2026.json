@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "showId": "slam-frank-off-broadway-2026",
+  "openingDate": "2026-10-04",
+  "detectedAt": "2026-10-10T19:08:40.564Z",
+  "windowDays": 7,
+  "orphans": [
+    {
+      "file": "timeout--unknown.json",
+      "outletId": "timeout",
+      "criticName": "Unknown",
+      "url": "https://www.timeout.com/newyork/theater/slam-frank",
+      "fullTextLen": 660,
+      "dispatchActionable": false,
+      "skipReason": "terminal_text_gate_block",
+      "rescoreBlockedReason": "input_validation_failed:body_too_short",
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
+    }
+  ],
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
+  "blockedOrphanCount": 1,
+  "blockBroadcast": true,
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
+}

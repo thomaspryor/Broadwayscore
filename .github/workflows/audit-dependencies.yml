@@ -1,0 +1,166 @@
+name: Audit Dependencies
+
+# Daily card-filing run of scripts/audit-dependencies.js — the critical-severity
+# npm advisory gate with an expiring allowlist (BRO-4434, 2026-09-30).
+#
+# Why this is its own workflow and not a test.yml job: main's Test Suite color
+# means "the code is healthy". The advisory feed and the allowlist's expiry
+# dates are OUTSIDE state — a new GHSA published overnight, or an entry hitting
+# its expiry date, turned main red with no code change (run 36712608792 on
+# 2026-09-30: GHSA-hrh2-vp3x-79xf, published the day before, unallowlisted).
+# Here a finding is a Linear card, never a red badge:
+#   - unallowlisted critical / expired or disqualified entry → a card dispatched
+#     at filing (conditionKey `dependency-audit:<ghsa>`);
+#   - an entry expiring within --warn-days → a PARKED reminder two weeks early
+#     (`dependency-audit:expiring:<ghsa>`), so the expiry date is a reminder,
+#     not a red day.
+#
+# Exit contract (same as audit-time-bomb-tests.yml): 0 = ran, findings (if
+# any) were filed → job GREEN; 2 = the audit could not run (registry outage /
+# no JSON); 3 = --alert did not produce a tracker for at least one finding.
+# owner-alert-router.js never throws on a dispatch failure (it returns
+# { dispatchOk:false }), so the script counts that itself — a rotated
+# LINEAR_API_KEY is a red run here, not a green run with phantom cards.
+# 2 and 3 fail the job; notify-failure with severity 'warning' is a no-op by
+# design, so the job's own health is watched by check-cron-health.yml's
+# CRITICAL_CRONS entry (36h band, keyed on the last SUCCESSFUL run): a daily
+# red run, a disabled workflow (`vars.DEPENDENCY_AUDIT_DISABLED=true` → green
+# "skipped"), or a dead cron all trip staleness → digest row.
+#
+# routeAlert()'s cooldown ledger (data/audit/alert-ledger.json) and attempt
+# log are written to the runner's checkout; "Persist alert-router state"
+# commits them back (PUSH_RECONCILE_MERGED_JSON=1 → the ledger's union merge
+# runs on a lost push race; 12 workflows write this file).
+#
+# No `npm ci`: `npm audit --json` reads package-lock.json, and the script's
+# whole require chain (owner-alert-router.js, linear-client.js, …) is Node
+# built-ins only — a missing node_modules would surface as exit 2/3, red.
+#
+# Kill switch: repo Actions variable DEPENDENCY_AUDIT_DISABLED=true.
+
+on:
+  schedule:
+    # 06:35 UTC — off test.yml's 06:00 and check-corpus-drift's 06:20 ledger
+    # pushes (the union merge handles a race; spacing just makes it rare).
+    - cron: '35 6 * * *'
+  workflow_dispatch:
+    inputs:
+      alert:
+        description: 'File a Linear card per finding / expiring-soon entry'
+        required: false
+        type: boolean
+        default: true
+      warn_days:
+        description: 'Warn about allowlist entries expiring within N days'
+        required: false
+        default: '14'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: audit-dependencies
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    name: npm audit (critical only, expiring allowlist) → cards
+    if: ${{ vars.DEPENDENCY_AUDIT_DISABLED != 'true' }}
+    runs-on: ubuntu-latest
+    # The audit itself is ~45s (npm audit against the registry); checkout
+    # variance on this runner pool has hit 5 min (lint-workflows precedent),
+    # push-with-retry's deadline is 4 min, and a Linear 429 retry loop has no
+    # wall-clock cap — 10 could kill the persist push mid-rebase. 20, like
+    # audit-time-bomb-tests.yml (ship-check).
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Run dependency audit
+        id: audit
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: |
+          WARN_DAYS="${{ github.event.inputs.warn_days || '14' }}"
+          ALERT_FLAG=""
+          # NOT `inputs.alert || 'true'`: a boolean input rendered false is the
+          # expression value `false`, and `false || 'true'` is 'true' — the
+          # dispatch-with-alert=false case would still file cards. Schedule
+          # runs have no inputs and always alert.
+          if [ "${{ github.event_name == 'schedule' || inputs.alert == true }}" = "true" ]; then
+            ALERT_FLAG="--alert"
+          fi
+          # --out (not `--json > file`): --alert makes routeAlert() write its
+          # own informational lines to stdout, which would corrupt a redirect.
+          set +e
+          node scripts/audit-dependencies.js --warn-days="$WARN_DAYS" --out=/tmp/dep-audit.json $ALERT_FLAG
+          EC=$?
+          set -e
+          case "$EC" in
+            0) ;;
+            2) echo "::error::audit-dependencies.js could not run (exit 2: npm audit produced no usable report) — see log above"; exit 1 ;;
+            3) echo "::error::audit-dependencies.js found something but --alert did not produce a tracker for every finding (exit 3) — see log above; check LINEAR_API_KEY"; exit 1 ;;
+            *) echo "::error::audit-dependencies.js exited $EC (unexpected)"; exit 1 ;;
+          esac
+          node -e "
+            const r = require('/tmp/dep-audit.json');
+            const lines = ['## Dependency Audit', '', 'Today: ' + r.today + '   Warn window: ' + r.warnDays + 'd', ''];
+            if (r.findings.length === 0 && r.expiringSoon.length === 0) lines.push('PASS — nothing to file.');
+            if (r.findings.length) {
+              lines.push(r.findings.length + ' finding(s):');
+              for (const f of r.findings) lines.push('- [' + f.kind + '] ' + f.ghsa + ' (' + f.module + ')');
+            }
+            if (r.expiringSoon.length) {
+              lines.push(r.expiringSoon.length + ' exemption(s) expiring soon:');
+              for (const e of r.expiringSoon) lines.push('- ' + e.ghsa + ' (' + e.module + ') expires ' + e.expires + ' (' + e.daysLeft + 'd)');
+            }
+            if (r.alerts.length) {
+              lines.push('', 'Cards:');
+              for (const a of r.alerts) lines.push('- ' + a.conditionKey + ' → ' + a.action + (a.linearIdentifier ? ' (' + a.linearIdentifier + ')' : '') + (a.dispatchOk ? '' : ' — DISPATCH FAILED'));
+            }
+            console.log(lines.join('\n'));
+          " >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "$ALERT_FLAG" ]; then
+            FOUND=$(node -e "const r=require('/tmp/dep-audit.json');console.log(r.findings.length+r.expiringSoon.length)")
+            if [ "$FOUND" != "0" ]; then
+              echo "::warning::dependency audit filed/refreshed cards for $FOUND item(s) — see the run summary"
+            fi
+          fi
+
+      # See the header: without this commit every run starts from a cold
+      # ledger and the 7-day cooldown never holds across days. `if: always()`
+      # + continue-on-error: a failed persist degrades to the router's
+      # Linear-search dedupe for one day; it must never fail the audit itself.
+      - name: Persist alert-router state
+        if: always()
+        continue-on-error: true
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          for f in data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl data/audit/alert-digest-queue.json; do
+            if [ -e "$f" ]; then git add "$f"; else echo "skip (absent): $f"; fi
+          done
+          if git diff --cached --quiet; then
+            echo "No alert-router state changes to commit"
+          else
+            git commit -m "chore: persist audit-dependencies alert-router state [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Dependency Audit could not run or could not file its cards'
+          description: 'Exit 2 = npm audit produced no report; exit 3 = a finding has no Linear tracker (check LINEAR_API_KEY). Findings themselves never fail this job.'
+          severity: 'warning'

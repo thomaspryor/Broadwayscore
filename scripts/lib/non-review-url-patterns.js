@@ -1,0 +1,591 @@
+'use strict';
+
+/**
+ * non-review-url-patterns.js — canonical "this URL is never a review" host
+ * and path patterns.
+ *
+ * Single source of truth shared by two callers that used to hand-maintain
+ * their own copies:
+ *   - audit-show-review-gap.js's isReviewUrl() — the discovery-time gate that
+ *     runs BEFORE a URL is even considered a candidate (S1 recall harness,
+ *     opening-night discovery, the S5 adversarial probe's own naive query).
+ *   - coverage-adversarial-probe.js's classifyNonReviewUrl() — the S5 probe's
+ *     post-lookup fallback classifier, which runs AFTER an on-disk match
+ *     attempt fails, right before a candidate would otherwise read as a gap.
+ *
+ * Extracted 2026-08 (task #907 ship-check finding, Codex adversarial review):
+ * the probe originally carried its own hand-written duplicate of a subset of
+ * these patterns. Two independently-maintained copies of the same "is this a
+ * review" policy WILL drift — a future ticketing host added to one and not
+ * the other either leaves the probe reporting false gaps, or lets a
+ * probe-only exclusion hide a real review from the discovery-time filter.
+ * (Same lesson as memory: includability predicates must be canonical.)
+ *
+ * Zero heavy deps (no fs/network) — safe for coverage-adversarial-probe.js's
+ * "pure, fixture-testable" pure-decision-layer contract to require directly.
+ */
+
+// Ticket-seller hosts are owned by the WRITE PATH's list, not duplicated here
+// — see the note in classifyReviewUrl. domain-filters.js is dependency-free
+// (no fs, no network), so this preserves this module's "safe for the S5 probe's
+// pure decision layer" load contract.
+const { TICKET_DOMAINS, LOOKALIKE_CONTENT_FARM_DOMAINS, CENSUS_JUNK_DOMAINS, matchesDomainSet } = require('./domain-filters');
+const { platformSuffixOf, multipartSuffixOf, stripCosmeticPrefixes } = require('./host-suffix-lists');
+
+// Non-review domains ignored inside aggregator articles (platform widgets,
+// social, navigation, store links, internal Playbill/BWW article navigation).
+const NON_REVIEW_HOST_PATTERNS = [
+  /^facebook\.com$/, /^instagram\.com$/, /^twitter\.com$/, /^x\.com$/,
+  /^youtube\.com$/, /^tiktok\.com$/, /^threads\.net$/, /^bsky\.app$/, /^linkedin\.com$/,
+  /^pinterest\./, /^reddit\.com$/, /^t\.me$/, /^whatsapp\./,
+  /^playbillder\.com$/, /^playbillstore\.com$/, /^playbilltravel\.com$/,
+  /^stagemag\.broadwayworld\.com$/, /^broadwayworldshop\.com$/,
+  /^forum\.broadwayworld\.com$/, /^data\.broadwayworld\.com$/,
+  /^wisdomdigital\.com$/, /^cur8\.com$/, /^jt-pr-dot-yamm-track\.appspot\.com$/,
+  // venue & box-office (not reviews)
+  /\.org$/, // catches many venue domains; allow-list known critic .orgs below
+  /^ci\.ovationtix\.com$/,
+  // ticketing / box-office hosts — aggregator "Get Tickets" links, never reviews.
+  // Before 2026-06-05 these were skipped only because their unknown outlet was
+  // skipped; with auto-onboard they would be ingested as bogus "telecharge" /
+  // "todaytix" provisional outlets, so they must be filtered at the source.
+  /^telecharge\.com$/, /^ticketmaster\.com$/, /(^|\.)todaytix\.com$/,
+  /^seatgeek\.com$/, /^stubhub\.com$/, /^broadwaydirect\.com$/,
+  /(^|\.)ticketmaster\./, /^ovationtix\.com$/, /^web\.ovationtix\.com$/,
+  /^tickets\./, /^boxoffice\./,
+  // Second wave, measured 2026-08-02 (task #872): the naive un-scoped census
+  // arm reaches deeper into the SERP than the site:-scoped arms ever did, so
+  // it surfaces the ticketing/listing/reference layer that sits between the
+  // real reviews. Every host here was an accepted "gap" in the recall harness
+  // on The Car Man / Brainiac Live / Tao of Glass and is never a review.
+  // (londontheatre.co.uk is deliberately NOT here — it publishes real reviews
+  // under /reviews/.)
+  /^seatplan\.com$/, /^lovetheatre\.com$/, /^lovetovisit\.com$/,
+  /^comparetheticketprice\.com$/, /^skiddle\.com$/, /^ticketsource\./,
+  /^nimaxtheatres\.com$/, /(^|\.)londontheatres\.co\.uk$/,
+  /^sadlerswells\.com$/, /^improbable\.co\.uk$/,
+  /^imdb\.com$/, /(^|\.)wikipedia\.org$/, /(^|\.)tripadvisor\./,
+  /^theatreboard\.com$/, /^officiallondontheatre\.com$/,
+  /(^|\.)london-theatreland\.co\.uk$/, /^ma\.to$/,
+  // Our own site is never a source for our own gap list.
+  /(^|\.)broadwayscorecard\.com$/,
+  // Book/consumer-review sites: a naive "<title> review" for a title that is
+  // also a book ("The Gruffalo") pulls these in wholesale.
+  // (hostOf/registrableHost strips "www." before these run — never add a
+  // www-prefixed pattern, it can only ever be dead.)
+  /(^|\.)goodreads\.com$/, /(^|\.)thebookbag\.co\.uk$/,
+  /(^|\.)fantasybookreview\.co\.uk$/,
+  // Remaining chaff measured in the first full recall run's newFromNaive
+  // (data/audit/serp-census-recall.json, 2026-08-02): social, resellers,
+  // experience marketplaces and venue own-sites.
+  /^threads\.com$/, /(^|\.)atgtickets\.com$/, /(^|\.)getyourguide\./,
+  /(^|\.)klook\.com$/, /(^|\.)headout\.com$/, /(^|\.)yelp\./,
+  /(^|\.)justluxe\.com$/, /(^|\.)whichmuseum\./, /(^|\.)theotherpalace\.co\.uk$/,
+  // Fourth wave (task #71 residual-gap triage, 2026-08-05): page-asset
+  // chaff measured in data/audit/show-review-gap.json's "missing" lists
+  // across ~150 audited shows — fonts/CDN/maps/forms embedded in an
+  // aggregator article's HTML. show-score.com is DELIBERATELY NOT added
+  // here despite its own catalog/nav links leaking through the same way —
+  // ship-check adversarial review caught that coverage-adversarial-probe.js's
+  // onDiskByUrlFor() relies on isReviewUrl() to index legitimately-captured
+  // Show Score star-stub review files by URL (aggregator-domains.js's
+  // AGGREGATOR_DOMAINS carries show-score.com as a valid outlet-URL pair);
+  // blocking the whole host here would make the S5 probe stop recognizing
+  // those on-disk records and misreport them as gaps. See the header comment
+  // on classifyNonReviewUrl() in coverage-adversarial-probe.js.
+  /(^|\.)cloudfront\.net$/, /(^|\.)gstatic\.com$/, /(^|\.)googleapis\.com$/,
+  /(^|\.)google\.com$/, /(^|\.)todaytixgroup\.com$/,
+  // Fifth wave (task #71): UK ticketing/tourism-listing platforms and ad-tech,
+  // measured on WE family/kids shows (Dog Man - The Musical, A Midsummer
+  // Night's Dream) — never review outlets, unlike londontheatredirect.com
+  // (deliberately NOT added here — it also publishes /news/*-review posts).
+  // southlondon.co.uk is ALSO deliberately excluded from this wave — ship-check
+  // adversarial review caught that it's a registered Tier 4 outlet
+  // ("south-london" in outlet-registry.json) with 7 real scored reviews under
+  // /lifestyle/review-*; the sampled dog-man URL was its unrelated /area/
+  // listing section, not evidence the whole host is non-review.
+  /^doubleclick\.net$/, /^showify\.uk$/, /^showpass\.com$/,
+  /^showtours\.co\.uk$/, /^bookitplease\.com$/, /^visitlondon\.com$/,
+];
+
+const ALLOWED_ORG_HOSTS = new Set([
+  'artsfuse.org', 'npr.org', 'exeuntnyc.org', // edge cases that ARE review outlets
+]);
+
+const NON_REVIEW_PATH_PATTERNS = [
+  // NOTE: `/^\/article(\/|$)/` was here, commented "playbill article nav", but
+  // these patterns are matched HOST-AGNOSTICALLY against every URL — and
+  // /article/ is where several major critic outlets publish. It dropped 736 of
+  // 18841 existing reviews when measured against reviews.json, including 144
+  // Vulture, 88 Entertainment Weekly, 33 Wall Street Journal, 106 New York Sun.
+  // Vulture's review URLs are literally vulture.com/article/theater-review-*.
+  //
+  // The intended case is already covered, correctly and host-scoped, by the
+  // playbill.com/broadwayworld.com 'aggregator-internal-nav' check in
+  // classifyReviewUrl() below. Do not re-add a bare /article/ rule here; scope
+  // any aggregator-nav rule to the aggregator's host.
+  /^\/reviews\/?$/,   // BWW landing
+  /^\/industry-/, /^\/theatre-auditions/, /^\/youth-theater/,
+  /^\/newsroom/, /^\/newsletter/,
+  /\/tickets?(\/|$|-)/i, // "Get Tickets" / box-office links, not reviews
+  // NOTE (OWE opening audit 2026-08-06): do NOT add host-agnostic "-tickets"
+  // or "/whats-on/" rules here — same trap as the removed bare /article/ rule
+  // above. Full-corpus check found real reviews at BOTH shapes: Express UK and
+  // Digital Spy review slugs end in "-tickets" (Operation Mincemeat scored
+  // 100), and Manchester Evening News / Liverpool Echo / London Mums publish
+  // reviews under /whats-on/ sections. The ticket-page cases are host-scoped
+  // in NAMED_NON_REVIEW_URL_PATTERNS below (westendtheatre.com show pages,
+  // londonboxoffice.co.uk root ticket slugs).
+  //
+  // News-announcement slugs (2026-09-25): a West Wales Chronicle
+  // "dog-man-the-musical-releases-production-photos-and-announces-new-tour-dates"
+  // post sat in dog-man-the-musical-west-end-2026 as an includable, forever-
+  // unscored "review". Measured against all 21,083 reviews.json URLs: 0 hits
+  // for each of these three shapes (bare "first-look" had 1 real review, so it
+  // is deliberately NOT here).
+  /(^|[-/])announc(es|ed|ement)([-/]|$)/i,
+  /production-photos/i,
+  /new-tour-dates/i,
+  // Photo galleries: openingnight.online/photos-becoming-hamlet-celebrates-
+  // opening-night-off-broadway/ was Becoming Hamlet's residual census "gap".
+  // 0 of 21,083 reviews.json URLs have a path segment starting "photo(s)-".
+  /(^|\/)photos?-/i,
+];
+
+/**
+ * Third wave, measured task #907 (day-one live triage of the S5 probe's
+ * first CI run — 6 of 9 first-run "gaps" were exactly this class) plus its
+ * own fix's live --sample re-run (broadway.com, theatermania.com/shows/).
+ * Unlike NON_REVIEW_HOST_PATTERNS above, some entries are host+path pairs:
+ * a host that DOES publish real reviews under one path (theatermania.com's
+ * /news/review-.../, londontheatre.co.uk's /reviews/) but never under
+ * another (their own ticketing/show-info page) — so only the specific path
+ * is excluded, not the whole host. `reason` is a stable label surfaced by
+ * the S5 probe's classifyNonReviewUrl() when a candidate is named-excluded.
+ */
+const NAMED_NON_REVIEW_URL_PATTERNS = [
+  { host: /(^|\.)newyorkcitytheatre\.com$/, reason: 'ticketing-reseller' },
+  { host: /(^|\.)newbrunswicktheater\.com$/, reason: 'ticketing-reseller' },
+  { host: /(^|\.)nationaltheatre\.org\.uk$/, path: /^\/productions\//, reason: 'venue-production-page' },
+  { host: /(^|\.)middlesexcountyculture\.com$/, path: /^\/event\//, reason: 'event-listing' },
+  { host: /(^|\.)londontheatre\.co\.uk$/, path: /^\/show\/\d+/, reason: 'ticketing-listing' },
+  { host: /(^|\.)broadway\.com$/, reason: 'ticketing-reseller' },
+  { host: /(^|\.)theatermania\.com$/, path: /^\/shows\//, reason: 'venue-production-page' },
+  // Cast announcements live under /news/ beside real reviews (/news/review-...),
+  // so only the announcement slug is blocked. One submitted via the review form
+  // held The Body of Mary's TheaterMania slot and blocked the real review
+  // (BRO-4430).
+  { host: /(^|\.)theatermania\.com$/, path: /^\/news\/(?:cast-announced|casting-announced|full-cast-announced)-/i, reason: 'cast-announcement' },
+  // Sixth wave (task #1073, 2026-08-05 — Pass/Disruption/Vessel coverage audit):
+  // BWW /shows/{id}/... (cast/synopsis/videos) pages are listing pages, never
+  // reviews — the-vessel had one ingested via SERP as a "review" whose 920-char
+  // synopsis blurb then host-masked the real coverage check. Mirrors the
+  // theatermania.com/shows/ entry above and rebuild-all-reviews.js's
+  // isShowListingUrl (which already names broadwayworld.com/shows/ a listing).
+  // BWW /reviews/{slug} critics-HUB pages are handled by review-guards
+  // isRoundupUrl (composed in classifyReviewUrl below), not duplicated here.
+  // Sub-path REQUIRED (/shows/{id}/cast etc.) — the bare /shows/Title-123.html
+  // shape hosts 3 currently-scored real reviews (Oliver!, Something Rotten!,
+  // Titanique — QA ship-check 2026-08-06), so only the listing sub-pages are
+  // blocked, never the bare page.
+  { host: /(^|\.)broadwayworld\.com$/, path: /^\/shows?\/[^/]+\/.+/, reason: 'venue-production-page' },
+  { host: /(^|\.)borninthecity\.com$/, reason: 'merch-store' },
+  // Ticket-seller PRODUCT pages (BRO-4386, 2026-09-29): both hosts also publish
+  // real /blog/ posts, so only the product-page shapes are blocked, never the
+  // host. theatrebookings.com/play/<slug> and bestoftheatre.co.uk/<slug> (one
+  // top-level segment; reviews/roundups live under /blog/post/) were scored
+  // off promo copy (The Standard of Living: 50 Negative and 85 Rave, no critic,
+  // no publishDate). Measured on the review-texts repo: every top-level
+  // bestoftheatre.co.uk/<slug> file is house copy; 45 /blog/ URLs unaffected.
+  { host: /(^|\.)theatrebookings\.com$/, path: /^\/play\//i, reason: 'ticket-seller-product-page', allSources: true },
+  { host: /(^|\.)bestoftheatre\.co\.uk$/, path: /^\/(?!blog(\/|$))[^/]+\/?$/i, reason: 'ticket-seller-product-page', allSources: true },
+  { host: /(^|\.)eventticketscenter\.com$/, reason: 'ticketing-reseller' },
+  // Stagebuddy publishes real reviews under /theater/reviews/…; its
+  // theater-feature section is previews/features, not reviews (Disruption
+  // census counted one as a missing review, 2026-08-05).
+  { host: /(^|\.)stagebuddy\.com$/, path: /^\/theater\/theater-feature\//, reason: 'feature-not-review' },
+  // MyReviewer's /DVD/ and /Blu-ray/ sections review home-video releases — for
+  // theatre, a filmed earlier production (the Globe's As You Like It DVD was
+  // ingested onto the 2026 Globe run, 2026-08-15). Never a live-run review.
+  { host: /(^|\.)myreviewer\.com$/, path: /^\/(dvd|blu-?ray|4k)\//i, reason: 'home-video-review' },
+  // The Stage's /news/ section is news; its reviews live under /reviews/.
+  // Found 2026-09-25: three live "reviews" carried /news/ URLs (serp-discovery
+  // star stubs on kiss-of-the-spider-woman-1993 and mamma-mia-2001 pointing at
+  // news of later revivals; a westendtheatre-sourced Mousetrap stub) plus a
+  // Disruption file holding an Edinburgh Fringe "travel disruption" news item.
+  { host: /(^|\.)thestage\.co\.uk$/, path: /^\/news\//, reason: 'news-article' },
+  // Census auto-ingest junk, 2026-09-25 backlog pass (each read at file level):
+  // NYTG /show/<id>-<slug> is a ticket listing ("La Traviata Tickets ... 90%") —
+  // three were LIVE scored "reviews" (la-traviata-off-broadway-2026 90,
+  // the-infinite-wrench-off-broadway-2025 82, the-house-of-the-negro-insane 49);
+  // its reviews live under /reviews/. The rest: 0 live reviews each.
+  { host: /(^|\.)newyorktheatreguide\.com$/, path: /^\/show\//, reason: 'ticketing-listing' },
+  // NYTG /theatre-news/ is news (cast announcements); its reviews live under /reviews/.
+  // creation-stories-off-broadway-2026: a flagged nytg--unknown.json holding a
+  // /theatre-news/news/cast-set-for-... url blocked Caroline Cao's real review
+  // (stale-flag-on-existing-file) for hours on opening night, 2026-10-01.
+  { host: /(^|\.)newyorktheatreguide\.com$/, path: /^\/theatre-news\//, reason: 'news-article' },
+  { host: /(^|\.)gigantic\.com$/, reason: 'ticketing-reseller' },
+  { host: /(^|\.)concordtheatricals\.com$/, reason: 'licensing-listing' },
+  { host: /(^|\.)abouttheartists\.com$/, reason: 'production-database-listing' },
+  { host: /(^|\.)traverse\.co\.uk$/, path: /^\/whats-on\//, reason: 'venue-production-page' },
+  { host: /(^|\.)artsatmarblearch\.com$/, path: /^\/events\//, reason: 'venue-production-page' },
+  // Seventh wave (2026-08-06 — Cats/NYSM/I'm Every Woman OWE opening audit,
+  // first live exercise of #1073): ticketing/listing hosts that reached the
+  // census "missing" lists — groupon deal pages and one was auto-INGESTED as a
+  // provisional "groupon" outlet before downstream guards flagged it. All
+  // measured zero hits across the 18,860 scored review URLs in reviews.json.
+  // No $ anchor on purpose: groupon sells under many ccTLDs (groupon.com,
+  // groupon.co.uk, groupon.de, …) — unlike the single-domain siblings below.
+  { host: /(^|\.)groupon\./, reason: 'ticketing-reseller' },
+  { host: /(^|\.)officialtheatre\.com$/, reason: 'ticketing-listing' },
+  { host: /(^|\.)kxtickets\.com$/, reason: 'ticketing-listing' },
+  { host: /(^|\.)westend\.com$/, reason: 'ticketing-listing' },
+  // Producer's own what's-on page (mischiefcomedy.com listed as a Comedy About
+  // Spies census "missing review"). Host-wide: a producer site never reviews
+  // its own show.
+  { host: /(^|\.)mischiefcomedy\.com$/, reason: 'venue-production-page' },
+  // WET's own /NNNNNN/shows/… show/ticket pages (e.g. /317407/shows/cats-tickets/)
+  // are listings; its real roundups live at /reviews/. Host+path scoped — a
+  // host-agnostic "-tickets" rule would eat Express UK / Digital Spy review
+  // slugs (see NON_REVIEW_PATH_PATTERNS note above).
+  { host: /(^|\.)westendtheatre\.com$/, path: /^\/\d+\/shows\//, reason: 'ticketing-listing' },
+  // LBO root ticket slugs (/now-you-see-me-tickets); its reviews live under
+  // /news/ (e.g. /news/post/cats-review — a real captured review).
+  { host: /(^|\.)londonboxoffice\.co\.uk$/, path: /^\/[^/]*-tickets\/?$/, reason: 'ticketing-listing' },
+  // task #1756 (main-red incident): audit-aggregator-gap auto-ingested all
+  // three of these as "reviews" for jeeves-takes-charge-west-end-2026 —
+  // box-office pricing text, a broken map widget, and a hotel-break booking
+  // affiliate page, 0 usable words, never scored. Same producer's-own-site
+  // shape as mischiefcomedy.com above: a venue/hotel-package reseller never
+  // reviews the show it's hosting/selling. Deleting the ingested files alone
+  // didn't stick — the next Gather Review Data run re-ingested hoteldirect
+  // within the hour — so these are excluded at discovery time, host-wide.
+  // londontopia.net is scoped to its /london-events/ listing path, not
+  // host-wide — unconfirmed whether it publishes real coverage elsewhere.
+  { host: /(^|\.)charingcrosstheatre\.co\.uk$/, reason: 'venue-production-page' },
+  { host: /(^|\.)londontopia\.net$/, path: /^\/london-events\//, reason: 'event-listing' },
+  { host: /(^|\.)hoteldirect\.co\.uk$/, reason: 'ticketing-reseller' },
+  // BRO-2712 (main-red audit-outlet-registry incident): both ingested via the
+  // public /submit-review form after validate-review-submission.js's LLM gate
+  // wrongly approved them. domain-filters.js's isBlockedReviewUrl (the
+  // write-path/scoring gate) already blocks these two hosts; mirrored here so
+  // this module's discovery-time gate agrees — without this, a future SERP
+  // census could still report either host as a "missing review" gap for the
+  // shows they were mistakenly ingested for.
+  { host: /(^|\.)southbank\.london$/, reason: 'venue-production-page' },
+  // Hampstead Theatre's own /whats-on/ box-office pages (domain-filters.js
+  // VENUE_DOMAINS, 2026-09-26).
+  { host: /(^|\.)hampsteadtheatre\.com$/, reason: 'venue-production-page' },
+  { host: /(^|\.)spincyclenyc\.com$/, reason: 'pr-firm-press-release' },
+  // Mirrors PR_FIRM_DOMAINS' nyu.edu. Required by the write-path/discovery-path
+  // parity test in non-review-url-patterns.test.mjs: without it a SERP census
+  // reports tisch.nyu.edu as an UNCOVERED review gap for
+  // masticate-off-broadway-2026, which is a phantom gap of exactly the kind
+  // that got real openings dropped from the 2026-08-03 newsletter.
+  { host: /(^|\.)nyu\.edu$/, reason: 'institutional-press-release' },
+  // Mirrors AGGREGATOR_DOMAINS' vocaleyes.co.uk, for the same phantom-gap
+  // reason. This one was missed on the first pass because the parity test only
+  // enumerated VENUE/PR_FIRM/UGC — see the test, which now covers all seven
+  // sets so an AGGREGATOR/REFERENCE/SOCIAL entry can never slip through again.
+  { host: /(^|\.)vocaleyes\.co\.uk$/, reason: 'access-listings-page' },
+  // Same venue family as southbank.london, different domain — see the
+  // matching comment in domain-filters.js's VENUE_DOMAINS.
+  { host: /(^|\.)southbankcentre\.co\.uk$/, reason: 'venue-production-page' },
+  // UGC publishing platform — mirrored from domain-filters.js UGC_PLATFORM_DOMAINS
+  // for the SAME reason the two venue/PR hosts above are mirrored: the write-path
+  // gate alone is not enough. classifyReviewUrl() is what the discovery side reads
+  // (audit-show-review-gap.js, show-score-discover.js), so without this entry a SERP
+  // census reports vocal.media as an UNCOVERED review gap while the write path
+  // silently discards it — a phantom gap, and the harvester keeps re-fetching it.
+  // Caught by /code-review on 2026-09-01: ticketline.co.uk was safe only because
+  // classifyReviewUrl borrows TICKET_DOMAINS, and nothing borrows UGC_PLATFORM_DOMAINS.
+  { host: /(^|\.)vocal\.media$/, reason: 'ugc-platform' },
+  // Customer-review platforms, mirrored from UGC_PLATFORM_DOMAINS (BRO-4838:
+  // a Trustpilot review of a ticket seller was submitted as an Affluenza review).
+  { host: /(^|\.)trustpilot\.com$/, reason: 'ugc-platform' },
+  { host: /(^|\.)reviews\.io$/, reason: 'ugc-platform' },
+  { host: /(^|\.)feefo\.com$/, reason: 'ugc-platform' },
+  { host: /(^|\.)sitejabber\.com$/, reason: 'ugc-platform' },
+  // BRO-2774. Mirrors the two entries added to domain-filters.js that
+  // classifyReviewUrl does NOT get for free: it borrows TICKET_DOMAINS only
+  // (see the matchesDomainSet call below), so BRO-2774's ents24.com and
+  // tickpick.com are already covered, while a VENUE_DOMAINS or
+  // PR_FIRM_DOMAINS entry needs a hand-written mirror here. Without these two
+  // a SERP census reports each host as an UNCOVERED review gap for the show it
+  // was wrongly ingested for, while the write path silently discards it —
+  // the phantom-gap shape the parity test in non-review-url-patterns.test.mjs
+  // exists to catch, and which it did catch on this change.
+  { host: /(^|\.)studioseaview\.com$/, reason: 'venue-production-page' },
+  { host: /(^|\.)anthearepresents\.com$/, reason: 'talent-agency-credit-page' },
+  // BRO-3092 — same phantom-gap reasoning as the two entries above: both hosts
+  // are blocked by domain-filters (VENUE_DOMAINS / AGGREGATOR_DOMAINS) and
+  // neither is a TICKET_DOMAIN, so without these mirrors a SERP census would
+  // keep reporting each as an uncovered review gap for the show it was
+  // wrongly ingested for.
+  { host: /(^|\.)schwarzmancentre\.ox\.ac\.uk$/, reason: 'venue-production-page' },
+  { host: /(^|\.)culturecity\.london$/, reason: 'event-listings-page' },
+  // BRO-3374 sweep added these three to domain-filters.js's VENUE_DOMAINS
+  // without mirroring them here — the parity test in
+  // non-review-url-patterns.test.mjs caught the drift (found live during a
+  // ship-check review of an unrelated fix, BRO-3373). Whole-host, matching
+  // domain-filters.js's own scope; see that file's VENUE_DOMAINS comments for
+  // why each is a venue listing/marketing page, never a review.
+  { host: /(^|\.)stratfordeast\.com$/, reason: 'venue-production-page' },
+  { host: /(^|\.)ntlive\.com$/, reason: 'venue-production-page' },
+  { host: /(^|\.)royalcourttheatre\.com$/, reason: 'venue-production-page' },
+  // BRO-3515: mirror of domain-filters.js's REFERENCE_DOMAINS entry — see
+  // that file for why rexfeatures.com (UK stock-photo agency) is not a
+  // review source. Required by the parity test in
+  // non-review-url-patterns.test.mjs so a SERP census doesn't count it as
+  // an uncovered review gap.
+  { host: /(^|\.)rexfeatures\.com$/, reason: 'photo-agency-page' },
+  // BRO-3794 (main-red incident). Mirrors domain-filters.js's AGGREGATOR_DOMAINS
+  // entry — see that file for why southasianheritage.org.uk (South Asian
+  // Heritage Month events-calendar site) is not a review source.
+  { host: /(^|\.)southasianheritage\.org\.uk$/, reason: 'event-listing' },
+];
+
+// BRO-4419: mirror the two domain-filters.js sets classifyReviewUrl() does not
+// borrow (same phantom-census-gap reason as vocal.media / vocaleyes above).
+// Generated from the sets so the mirror cannot drift; the parity test walks them.
+const _hostRegex = (d) => new RegExp('(^|\\.)' + d.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '$');
+for (const d of LOOKALIKE_CONTENT_FARM_DOMAINS) NAMED_NON_REVIEW_URL_PATTERNS.push({ host: _hostRegex(d), reason: 'content-farm-lookalike' });
+for (const d of CENSUS_JUNK_DOMAINS) NAMED_NON_REVIEW_URL_PATTERNS.push({ host: _hostRegex(d), reason: 'census-junk-host' });
+
+/**
+ * Does this URL match one of the NAMED_NON_REVIEW_URL_PATTERNS above?
+ * @param {string} url
+ * @param {{allSourcesOnly?: boolean}} [opts] allSourcesOnly: only entries flagged
+ *   allSources (unambiguous shapes that are non-reviews whatever wrote them)
+ * @returns {string|null} the pattern's reason label, or null
+ */
+function namedNonReviewReason(url, opts) {
+  let u;
+  try { u = new URL(url); } catch { return null; }
+  const host = u.hostname.replace(/^www\./, '').toLowerCase();
+  for (const p of NAMED_NON_REVIEW_URL_PATTERNS) {
+    if (!p.host.test(host)) continue;
+    if (p.path && !p.path.test(u.pathname)) continue;
+    if (opts && opts.allSourcesOnly && !p.allSources) continue;
+    return p.reason;
+  }
+  return null;
+}
+
+/**
+ * Listing pages scored as reviews (2026 data audit, S1-T0).
+ *
+ * URL SHAPES that are never an article, whoever discovered them: a review
+ * INDEX, an aggregator/listing site's own SHOW page, a bare homepage. Found
+ * live on the site: talkinbroadway.com/page/world/index.html (Talkin'
+ * Broadway's review index, scored on 3 shows), londontheatrehub.co.uk/shows/
+ * equus/ and /shows/heathers-the-musical/ (show pages with an "Editorial
+ * Team" byline), whatsonstage.com/shows/london-theatre/west-end-theatre/
+ * war-horse_1712421/ (WOS reviews live under /reviews/), broadwayworld.com/
+ * shows/Grangeville-334944.html (BWW reviews live under /article/).
+ *
+ * HOST-SPECIFIC on purpose — a host-agnostic /shows/ rule would eat real
+ * reviews: didtheylikeit.com/shows/<show>/<review-slug>/ and
+ * broadwaybaby.com/shows/<slug>/<id> are genuine review URLs. Same trap as
+ * the removed bare /article/ rule in NON_REVIEW_PATH_PATTERNS above.
+ *
+ * Kept separate from NAMED_NON_REVIEW_URL_PATTERNS: that list is a
+ * discovery-time reject that review-guards.js only applies at scoring time
+ * for unvetted-SERP sources (several of its entries are host-wide). Every
+ * entry here is a path-scoped listing shape that is safe to exclude at
+ * scoring time regardless of source, so review-guards.js's explainExclusion
+ * reads it unconditionally ('listingPageUrl', escape hatch
+ * listingPageUrlManualClear).
+ */
+const LISTING_PAGE_URL_PATTERNS = [
+  // Talkin' Broadway's review index pages (/page/world/index.html and any
+  // other .../index.html). Its reviews are /page/<section>/<slug>.html.
+  { host: /(^|\.)talkinbroadway\.com$/, path: /\/index\.html$/i, reason: 'review-index-page' },
+  // London Theatre Hub /shows/<slug>/ show pages ("Editorial Team" byline).
+  { host: /(^|\.)londontheatrehub\.co\.uk$/, path: /^\/shows\//i, reason: 'show-listing-page' },
+  // WhatsOnStage /shows/<region>/<area>/<slug>_<id>/ show pages; reviews /reviews/.
+  { host: /(^|\.)whatsonstage\.com$/, path: /^\/shows\//i, reason: 'show-listing-page' },
+  // BWW /shows/<Title>-<id>.html show pages; reviews live under /article/.
+  // Broader than the NAMED_NON_REVIEW_URL_PATTERNS entry above (which needs a
+  // /shows/<id>/<sub-page> segment): the bare show page is a listing too.
+  { host: /(^|\.)broadwayworld\.com$/, path: /^\/shows\//i, reason: 'show-listing-page' },
+  // TheaterMania /shows/ show pages; reviews live under /news/review-…/.
+  { host: /(^|\.)theatermania\.com$/, path: /^\/shows\//i, reason: 'show-listing-page' },
+  // Show Score catalog/show pages (its per-critic review records are captured
+  // from the aggregator page itself, never cited at these paths).
+  { host: /(^|\.)show-score\.com$/, path: /^\/(broadway-shows|off-broadway-shows|shows)\//i, reason: 'show-listing-page' },  // Express UK section index (BRO-4596): four Neil Norman rows carried this URL
+  // and a score read off a text-pattern star. Real Express reviews sit under
+  // /entertainment/theatre/<id>/<slug>, so anchor the path to the bare section.
+  { host: /(^|\.)express\.co\.uk$/, path: /^\/entertainment\/theatre\/?$/i, reason: 'section-index-page' },
+  // Any host (BRO-4956): a path that ENDS in a reviews/press hub segment is a
+  // page collecting many critics, never one critic's review. Found scored live:
+  // timcrouchtheatre.co.uk/shows-2/an-oak-tree/reviews (the playwright's quote
+  // page, scored 93 as "Lyn Gardner"), letterboxd.com/film/<film>/reviews/,
+  // designmynight.com/<city>/whats-on/<show>/review. Corpus check 2026-10-10: every
+  // review-text file (52,663) matching this is a hub, listing or film page. Real reviews carry a slug
+  // or id after the segment (/reviews/<slug>), which this never matches.
+  // At least one segment before the hub word: a bare host/review is too
+  // ambiguous to call (and is every test fixture's placeholder review url).
+  { host: /./, path: /\/[^/]+\/(?:reviews?|press|press-quotes|critics-say|what-the-critics-say)\/?$/i, reason: 'review-hub-page' },
+  // Blogger label search (theaterinthenow.com/search/label/Review).
+  { host: /./, path: /\/search\/label\//i, reason: 'blog-label-index' },
+];
+
+/**
+ * Is this URL a listing page (see LISTING_PAGE_URL_PATTERNS) or a bare host?
+ *
+ * Bare host = empty or "/" path AND no query string. The query-string
+ * condition matters: WordPress "?p=<id>" permalinks on critics' own sites
+ * (susangranger.com/?p=10339, starwatchbyline.com/?p=15756 — real scored
+ * reviews) have a "/" path but are articles, not homepages.
+ *
+ * @param {string} url
+ * @returns {string|null} short reason label, or null (including unparsable input)
+ */
+function listingPageUrlReason(url) {
+  if (typeof url !== 'string') return null;
+  let u;
+  try { u = new URL(url); } catch { return null; }
+  const host = u.hostname.replace(/^www\./, '').toLowerCase();
+  const pathname = u.pathname || '';
+  for (const p of LISTING_PAGE_URL_PATTERNS) {
+    if (!p.host.test(host)) continue;
+    if (!p.path.test(pathname)) continue;
+    return p.reason;
+  }
+  if ((pathname === '' || pathname === '/') && !u.search) return 'bare-host';
+  return null;
+}
+
+// Host normalization, moved VERBATIM from audit-show-review-gap.js (task
+// #1073) so classifyReviewUrl and every caller share ONE implementation.
+// The audit now imports these instead of carrying its own copy.
+
+// Mirror/format subdomains that are never a distinct outlet — a publisher's AMP
+// or mobile host is the same outlet as its bare domain.
+// (mirror/format subdomain stripping now lives in host-suffix-lists.js's
+// stripCosmeticPrefixes, so all three host-identity functions strip the same
+// prefixes under the same "don't eat the publication label" guard.)
+// Which suffix a host sits on comes from host-suffix-lists.js — the SHARED
+// source of truth, also used by outlet-canonicalize.js (provisionalOutletIdFromHost)
+// and silent-exclusion-detectors.js (normalizeHostSlug). This file used to carry
+// a third literal copy whose comments read "Mirrors PROVISIONAL_BLOG_PLATFORMS
+// in outlet-canonicalize.js" — and it had already fallen out of sync: it lacked
+// any Blogger country mirror, so registrableHost('showshowdown.blogspot.co.id')
+// returned the bare public suffix 'co.id' as if that were a registrable domain.
+// Three functions that must agree cannot each keep a private list.
+
+// Collapse a hostname to its registrable domain so section subdomains
+// (theater.nytimes.com) and mirror hosts (amp.theguardian.com) look up the same
+// registry entry as the bare domain. Leaves blog-platform publication subdomains
+// intact so they keep their per-publication provisional identity.
+function registrableHost(host) {
+  if (!host || typeof host !== 'string') return host;
+  const h = stripCosmeticPrefixes(host);
+  if (!h) return host;
+  if (platformSuffixOf(h)) return h;
+  const parts = h.split('.').filter(Boolean);
+  const keep = multipartSuffixOf(h) ? 3 : 2;
+  return parts.length > keep ? parts.slice(-keep).join('.') : h;
+}
+
+function hostOf(u) {
+  try { return registrableHost(new URL(u).hostname); }
+  catch { return null; }
+}
+
+const STATIC_ASSET_EXT_RE = /\.(css|js|json|xml|png|jpe?g|gif|svg|webp|ico|woff2?|ttf|mp4|pdf)$/i;
+
+/**
+ * classifyReviewUrl — THE canonical "may this URL be a review candidate"
+ * decision (task #1073). Composes every URL-shape policy in one place:
+ * host denylist, named host+path pairs, roundup-hub shapes (write-path policy
+ * via review-guards.isRoundupUrl), aggregator internal nav, static assets.
+ *
+ * Rejects by URL/host SHAPE only — never by "outlet not registered", so
+ * unknown-but-real outlets still flow to the unknown-outlets onboarding
+ * report (Codex review finding, plan W3.B).
+ *
+ * @param {string} url
+ * @returns {{ok: boolean, reason: string|null}}
+ */
+function classifyReviewUrl(url) {
+  if (!url || typeof url !== 'string' || !url.startsWith('http')) {
+    return { ok: false, reason: 'not-http-url' };
+  }
+  const h = hostOf(url);
+  if (!h) return { ok: false, reason: 'unparseable-url' };
+  if (NON_REVIEW_HOST_PATTERNS.some(rx => rx.test(h)) && !ALLOWED_ORG_HOSTS.has(h)) {
+    return { ok: false, reason: 'non-review-host' };
+  }
+  // Ticket sellers: read the WRITE PATH's list rather than keeping a parallel
+  // one here. domain-filters.js TICKET_DOMAINS is what isBlockedReviewUrl uses
+  // to refuse an ingest; before this, the census kept its own copy, so a host
+  // added to one list still counted as a "missing review" in the other. That
+  // divergence is how ticketluck.com and etickets.com became two of the
+  // phantom gaps that got Disruption deleted from the 2026-08-03 newsletter.
+  // One list now covers discovery AND ingest.
+  //
+  // Only TICKET_DOMAINS is borrowed, deliberately — domain-filters' aggregator
+  // and reference sets are broader than this classifier wants (show-score.com
+  // in particular must stay classifiable here, see the note above on
+  // NON_REVIEW_HOST_PATTERNS).
+  if (matchesDomainSet(h, TICKET_DOMAINS)) {
+    return { ok: false, reason: 'ticketing-reseller' };
+  }
+  const named = namedNonReviewReason(url);
+  if (named) return { ok: false, reason: named };
+  // Roundup hubs/articles: same policy the write path enforces
+  // (review-guards.isRoundupUrl). Lazy require: keeps this module's
+  // zero-heavy-deps load contract for the S5 probe and avoids any
+  // load-order cycle with review-guards.
+  const { isRoundupUrl } = require('./review-guards');
+  const roundup = isRoundupUrl(url);
+  if (roundup && roundup.isRoundup) return { ok: false, reason: 'roundup-page' };
+  // Lighting & Sound America: bare /news/story.asp with no ?ID= is the news
+  // index, not a review (moved from audit-show-review-gap.js isReviewUrl).
+  if (h === 'lightingandsoundamerica.com') {
+    try {
+      const u = new URL(url);
+      if (/\/news\/story\.asp$/i.test(u.pathname) && !u.searchParams.get('ID')) {
+        return { ok: false, reason: 'lsa-news-index' };
+      }
+    } catch { return { ok: false, reason: 'unparseable-url' }; }
+  }
+  // Playbill/BWW internal navigation (we want outlet URLs, not aggregator nav).
+  // Also require at least 2 path segments so bare section roots like
+  // playbill.com/news or broadwayworld.com/theater are rejected too (they're
+  // category pages, not reviews, but the keyword regex alone matches them —
+  // task #361 gap-audit finding).
+  if (h === 'playbill.com' || h === 'broadwayworld.com') {
+    if (!/\/(review|reviews|theater|theatre|news|stage|culture|arts)/i.test(url)) {
+      return { ok: false, reason: 'aggregator-internal-nav' };
+    }
+    try {
+      const segments = new URL(url).pathname.split('/').filter(Boolean);
+      if (segments.length < 2) return { ok: false, reason: 'aggregator-section-root' };
+    } catch { return { ok: false, reason: 'unparseable-url' }; }
+  }
+  try {
+    const p = new URL(url).pathname;
+    if (NON_REVIEW_PATH_PATTERNS.some(rx => rx.test(p))) {
+      return { ok: false, reason: 'non-review-path' };
+    }
+    if (STATIC_ASSET_EXT_RE.test(p)) return { ok: false, reason: 'static-asset' };
+  } catch { return { ok: false, reason: 'unparseable-url' }; }
+  return { ok: true, reason: null };
+}
+
+module.exports = {
+  NON_REVIEW_HOST_PATTERNS,
+  ALLOWED_ORG_HOSTS,
+  NON_REVIEW_PATH_PATTERNS,
+  NAMED_NON_REVIEW_URL_PATTERNS,
+  namedNonReviewReason,
+  LISTING_PAGE_URL_PATTERNS,
+  listingPageUrlReason,
+  registrableHost,
+  hostOf,
+  classifyReviewUrl,
+};

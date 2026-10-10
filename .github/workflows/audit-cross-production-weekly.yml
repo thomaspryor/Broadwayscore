@@ -1,0 +1,194 @@
+# Weekly cross-production misattribution audit.
+#
+# Runs audit-cross-production.js --dry-run, commits same-title-confusion.json
+# if findings changed, and emits a ::warning:: annotation when delta > 3.
+#
+# Schedule: Sundays 14:00 UTC — after BWW scrape (13:00) before DTLI (15:00).
+# READ-ONLY: never modifies review-texts files.
+name: Audit Cross-Production (Weekly)
+
+on:
+  schedule:
+    - cron: '0 14 * * 0'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Share `shows-json-writer` with update-show-status + enrich-off-broadway-dates:
+# the aggregator-candidate extract step below does a read-mutate-write on
+# data/audit/ob-venue-candidates.json via writeStagingCandidates(), same as
+# discover-new-shows.js. Serializing prevents a lost-update race on that file.
+concurrency:
+  group: shows-json-writer
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    name: Run cross-production audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Capture previous finding counts
+        id: prev
+        run: |
+          if [ -f data/audit/same-title-confusion.json ]; then
+            CP=$(node -e "const d=require('./data/audit/same-title-confusion.json'); console.log(d.findings ? d.findings.length : 0)")
+            echo "cp_count=$CP" >> $GITHUB_OUTPUT
+          else
+            echo "cp_count=0" >> $GITHUB_OUTPUT
+          fi
+          if [ -f data/audit/slug-misroute-audit.json ]; then
+            SM=$(node -e "const d=require('./data/audit/slug-misroute-audit.json'); console.log(d.findings ? d.findings.length : 0)")
+            echo "sm_count=$SM" >> $GITHUB_OUTPUT
+          else
+            echo "sm_count=0" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run cross-production audit
+        run: node scripts/audit-cross-production.js --dry-run
+
+      - name: Run slug-routing audit
+        # Catches Class-A slug misroutes (e.g. FUN-HOME article routed to
+        # closed home-1970). Initial audit found 228 historical cases
+        # 2026-05-27. This step warns if >5 new ones appear week-over-week,
+        # signaling matcher/data drift. Read-only — never moves files.
+        run: node scripts/audit-slug-match-routing.js
+        env:
+          REVIEW_TEXTS_DIR: ${{ github.workspace }}/data/review-texts
+
+      - name: Report new slug misroutes
+        # Subtracts the committed disposition list (data/audit/slug-misroute-
+        # dispositioned.json — leave-as-is findings already triaged) from the
+        # fresh audit. APPLIED/DELETED misroutes self-drop from the audit, so
+        # what's left after subtraction is genuinely NEW + un-triaged. Emails the
+        # operator (only if >0) with the LOCAL verify+apply commands. READ-ONLY:
+        # writes nothing, moves nothing, no LLM calls in CI (operator verifies
+        # locally where keys live in .env). continue-on-error so a transient
+        # email failure never skips the non-if:always() commit step below.
+        # audit-secret-gap-ok: LINEAR_API_KEY — disposition-misroute.js's only
+        # routeAlert() call uses disposition:'digest' (see its report() fn),
+        # which never reaches dispatchCard()/linear-client.js. False positive
+        # from audit-workflow-secret-gaps.js's known text-based-not-control-
+        # flow-aware limitation (see workflow-secret-scan.js's header).
+        continue-on-error: true
+        run: node scripts/disposition-misroute.js report --email
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+
+      # Aggregator-candidate extraction MOVED to scrape-new-aggregators.yml
+      # (daily, right after the PV scrape) 2026-07-08 — single owner for the
+      # extract → auto-promote → targeted-rescrape chain. Running it here too
+      # raced the same staging file on Sundays (both crons are 14:00 UTC).
+
+      - name: Check for changes
+        id: changes
+        run: |
+          # alert-ledger.json / alert-digest-queue.json: "Report new slug
+          # misroutes" (disposition-misroute.js) calls routeAlert(disposition:
+          # 'digest'), which writes only these two files on a NEW finding — if
+          # neither of the other audit outputs also changed that run, has_changes
+          # stayed 'false' and the whole commit step below was skipped, silently
+          # dropping the digest queue entry / ledger cooldown state (same bug
+          # class as check-cron-health.yml's alert-ledger.json comment).
+          if git diff --quiet data/audit/same-title-confusion.json data/audit/slug-misroute-audit.json data/audit/ob-venue-candidates.json data/audit/ob-aggregator-rejections.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check for large files
+        if: steps.changes.outputs.has_changes == 'true'
+        uses: ./.github/actions/check-file-sizes
+
+      - name: Commit and push
+        if: always() && steps.changes.outputs.has_changes == 'true'
+        env:
+          # BRO-158: data/audit/ob-venue-candidates.json is now a union-merged
+          # registry file (scripts/lib/core-data-merge-registry.js) — the
+          # default `-X theirs` rebase resolves a non-overlapping hunk (two
+          # producers adding different candidates) silently, without ever
+          # reaching resolve_conflicts()'s case-arm merge. This flag routes
+          # that path through reconcile-merged-json.js instead.
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/same-title-confusion.json data/audit/slug-misroute-audit.json
+          # alert-ledger.json / alert-digest-queue.json: routeAlert()'s cooldown
+          # ledger + digest queue (see the "Check for changes" step comment
+          # above) — must be committed here or the per-condition cooldown and
+          # any queued digest line never persist across runs. alert-router-
+          # attempts.jsonl (BRO-3671/BRO-3662): logDispatchAttempt() rewrites
+          # this TRACKED file on every dispatch attempt; unstaged, it makes a
+          # rebase refuse pre-flight and forces the clobber-prone merge path.
+          bash scripts/lib/git-add-existing.sh data/audit/ob-venue-candidates.json data/audit/ob-aggregator-rejections.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl
+          CP=$(node -e "const d=require('./data/audit/same-title-confusion.json'); console.log(d.findings ? d.findings.length : 0)" 2>/dev/null || echo "?")
+          SM=$(node -e "const d=require('./data/audit/slug-misroute-audit.json'); console.log(d.findings ? d.findings.length : 0)" 2>/dev/null || echo "?")
+          AGG=$(node -e "const d=require('./data/audit/ob-aggregator-rejections.json'); console.log((d.counts&&d.counts.accepted||0)+' new, '+(d.counts&&d.counts.rejected||0)+' rejected')" 2>/dev/null || echo "0 new")
+          git commit -m "audit: Weekly cross-production ($CP) + slug-routing ($SM) + aggregator ($AGG) [skip ci]
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Annotate finding deltas
+        if: always()
+        run: |
+          CP_PREV=${{ steps.prev.outputs.cp_count }}
+          CP_CURR=$(node -e "const d=require('./data/audit/same-title-confusion.json'); console.log(d.findings ? d.findings.length : 0)" 2>/dev/null || echo "0")
+          CP_DELTA=$((CP_CURR - CP_PREV))
+          if [ "$CP_DELTA" -gt 3 ]; then
+            echo "::warning::cross-production audit: +${CP_DELTA} new findings (${CP_PREV} → ${CP_CURR}). Check data/audit/same-title-confusion.json."
+          fi
+          SM_PREV=${{ steps.prev.outputs.sm_count }}
+          SM_CURR=$(node -e "const d=require('./data/audit/slug-misroute-audit.json'); console.log(d.findings ? d.findings.length : 0)" 2>/dev/null || echo "0")
+          SM_DELTA=$((SM_CURR - SM_PREV))
+          if [ "$SM_DELTA" -gt 5 ]; then
+            echo "::warning::slug-routing audit: +${SM_DELTA} new misroutes (${SM_PREV} → ${SM_CURR}). Check data/audit/slug-misroute-audit.json."
+          fi
+
+      - name: Summary
+        run: |
+          echo "## Cross-Production Audit" >> $GITHUB_STEP_SUMMARY
+          node -e "
+            const d = require('./data/audit/same-title-confusion.json');
+            const findings = d.findings || [];
+            console.log('**Total findings:** ' + findings.length);
+            if (findings.length > 0) {
+              console.log('');
+              console.log('| Review File | Filed Under | Closer To | Days Delta |');
+              console.log('|-------------|-------------|-----------|------------|');
+              for (const f of findings.slice(0, 10)) {
+                const delta = Math.round(f.signals?.find(s => s.startsWith('days-from-own:'))?.split(':')[1] || 0) - Math.round(f.signals?.find(s => s.startsWith('days-from-closer:'))?.split(':')[1] || 0);
+                console.log('| ' + (f.reviewFile || '?') + ' | ' + (f.currentShowId || '?') + ' | ' + (f.suggestedShowId || '?') + ' | ' + delta + ' |');
+              }
+              if (findings.length > 10) console.log('_…and ' + (findings.length - 10) + ' more_');
+            }
+          " >> $GITHUB_STEP_SUMMARY
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Audit Cross-Production Weekly Failed'
+          severity: 'warning'

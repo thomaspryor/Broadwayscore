@@ -1,0 +1,23 @@
+17:13:38.887930 common-init.c:57             | d0 | main                     | version      |     |           |           |              | 2.50.1 (Apple Git-155)
+17:13:38.888277 common-init.c:58             | d0 | main                     | start        |     |  0.000891 |           |              | /Library/Developer/CommandLineTools/usr/bin/git ls-remote 'https://***@github.com/octocat/Hello-World.git'
+17:13:38.888802 git.c:477                    | d0 | main                     | cmd_name     |     |           |           |              | ls-remote (ls-remote)
+17:13:38.888928 run-command.c:740            | d0 | main                     | child_start  |     |  0.001552 |           |              | [ch0] class:remote-https argv:[git remote-https 'https://***@github.com/octocat/Hello-World.git' 'https://***@github.com/octocat/Hello-World.git']
+17:13:38.893475 common-init.c:57             | d1 | main                     | version      |     |           |           |              | 2.50.1 (Apple Git-155)
+17:13:38.893790 common-init.c:58             | d1 | main                     | start        |     |  0.000982 |           |              | /Library/Developer/CommandLineTools/usr/libexec/git-core/git remote-https 'https://***@github.com/octocat/Hello-World.git' 'https://***@github.com/octocat/Hello-World.git'
+17:13:38.893968 git.c:767                    | d1 | main                     | cmd_name     |     |           |           |              | _run_dashed_ (ls-remote/_run_dashed_)
+17:13:38.893981 run-command.c:740            | d1 | main                     | child_start  |     |  0.001176 |           |              | [ch0] class:dashed argv:[git-remote-https 'https://***@github.com/octocat/Hello-World.git' 'https://***@github.com/octocat/Hello-World.git']
+17:13:38.902487 common-init.c:57             | d2 | main                     | version      |     |           |           |              | 2.50.1 (Apple Git-155)
+17:13:38.902687 common-init.c:58             | d2 | main                     | start        |     |  0.002695 |           |              | /Library/Developer/CommandLineTools/usr/libexec/git-core/git-remote-https 'https://***@github.com/octocat/Hello-World.git' 'https://***@github.com/octocat/Hello-World.git'
+17:13:38.902786 remote-curl.c:1573           | d2 | main                     | cmd_name     |     |           |           |              | remote-curl (ls-remote/_run_dashed_/remote-curl)
+17:13:39.014142 run-command.c:740            | d2 | main                     | child_start  |     |  0.114154 |           |              | [ch0] class:? argv:['/opt/homebrew/bin/gh auth git-credential store']
+17:13:39.050317 run-command.c:996            | d2 | main                     | child_exit   |     |  0.150310 |  0.036156 |              | [ch0] pid:50609 code:0
+17:13:39.050398 connect.c:178                | d2 | main                     | data         |     |  0.150411 |  0.150411 | transfer     | negotiated-version:2
+17:13:39.050468 connect.c:178                | d0 | main                     | data         |     |  0.163093 |  0.163093 | transfer     | negotiated-version:2
+17:13:39.310439 common-main.c:12             | d2 | main                     | exit         |     |  0.410449 |           |              | code:0
+17:13:39.310469 trace2/tr2_tgt_perf.c:219    | d2 | main                     | atexit       |     |  0.410482 |           |              | code:0
+17:13:39.311931 run-command.c:996            | d1 | main                     | child_exit   |     |  0.419111 |  0.417935 |              | [ch0] pid:50605 code:0
+17:13:39.311996 git.c:789                    | d1 | main                     | exit         |     |  0.419192 |           |              | code:0
+17:13:39.312005 trace2/tr2_tgt_perf.c:219    | d1 | main                     | atexit       |     |  0.419201 |           |              | code:0
+17:13:39.312466 run-command.c:996            | d0 | main                     | child_exit   |     |  0.425088 |  0.423536 |              | [ch0] pid:50604 code:0
+17:13:39.312690 git.c:747                    | d0 | main                     | exit         |     |  0.425315 |           |              | code:0
+17:13:39.312711 trace2/tr2_tgt_perf.c:219    | d0 | main                     | atexit       |     |  0.425336 |           |              | code:0

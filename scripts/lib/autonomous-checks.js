@@ -1,0 +1,519 @@
+/**
+ * autonomous-checks.js — the ONE check gauntlet the autonomous loop runs,
+ * shared verbatim by the Mac-side executor (scripts/autonomous-run.js) and
+ * the CI-side approve tap (scripts/autonomous-merge.js).
+ *
+ * Why this module exists (plan v2 Sprint 2, owner-approved 2026-07-25): the
+ * two paths each carried their own copy of checksEnv() and their own call
+ * shape around decideChecks(), so the approve tap's re-verification could
+ * silently drift WEAKER than the overnight run that produced the evidence.
+ * The owner taps Approve on the strength of the checks named in the email —
+ * if the tap re-runs a different (smaller) set, that tap means less than it
+ * says. One module, one env, one plan, one runner: parity by identity, not by
+ * two implementations agreeing today.
+ *
+ * DEPENDENCY RULE: node built-ins only. Anything the runner needs from the
+ * rest of the loop (isSafeCheckCommand, the file-exists probe) is INJECTED by
+ * the caller, so this module can never pull the executor's world into the CI
+ * merge process or vice versa.
+ *
+ * Tier-aware plan (S2-T4):
+ *   every tier   colocated *.test.mjs for each changed file, then tsc if any
+ *                .ts/.tsx changed
+ *   tier 3 only  node --check on every changed scripts/**.js (syntax floor
+ *                for files with no colocated test), and for any src/ change:
+ *                `npx next lint` + a production `npx next build`. src/ is
+ *                site code — a type error is not the failure mode that
+ *                matters there, a page that no longer builds is.
+ *
+ * The build gets its OWN (much longer) timeout and its own env: checksEnv()
+ * strips secrets, but a Next production build legitimately needs the
+ * NEXT_PUBLIC_* feature flags, so those are explicitly whitelisted — never
+ * inherited wholesale (autonomous-merge.js:238 P0 history: this CI-side path
+ * once inherited the full secret env).
+ */
+
+'use strict';
+
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
+const v8 = require('v8');
+const { execFileSync } = require('child_process');
+
+// Per-check wall clock. The build is minutes, not seconds — a shared 5min cap
+// would fail every src/ card on time rather than on merit.
+const CHECK_TIMEOUT_MS = 5 * 60 * 1000;
+const BUILD_TIMEOUT_MS = 20 * 60 * 1000;
+
+// Checks execute implementer-AUTHORED code (a planted tests/x.test.mjs runs
+// under node --test; a src/ change runs through the build). They must never
+// see the session's secret-bearing environment: on the Mac side .env is
+// loaded into process.env (Notion/Resend/HMAC/Vercel tokens), and in CI the
+// workflow env carries NOTION_API_KEY / RESEND_API_KEY / a contents:write
+// token. HOME points at a fresh empty temp dir so the git osxkeychain
+// credential helper is unreachable (a malicious check can't push with the
+// owner's credentials) and git prompting is disabled so it fails fast.
+const KEEP_ENV = ['PATH', 'HOME', 'TERM', 'LANG', 'LC_ALL', 'NODE_ENV'];
+
+// The feature-flag set a production build needs to compile every route the
+// live site serves. Mirrors package.json's build:ugc script (the auth-aware
+// build test.yml/Vercel use); an explicit constant, not `NEXT_PUBLIC_*`
+// inheritance from the ambient env, so a stray local flag can never change
+// what the loop verifies.
+// The Sanity trio is REQUIRED, not optional: /blog throws "Missing
+// environment variable: NEXT_PUBLIC_SANITY_PROJECT_ID" during page-data
+// collection and fails the whole build without it (confirmed live in a
+// prepared worktree, 2026-07-25). Values are the public ones already
+// hardcoded in .github/workflows/vercel-demo.yml — not secrets.
+const BUILD_ENV = Object.freeze({
+  NEXT_PUBLIC_FEATURES: 'criticPages,castPages,westEnd,offBroadway,tonyPeople,tonyPredictions,userAccounts',
+  NEXT_PUBLIC_SANITY_PROJECT_ID: 'fp1ft8k8',
+  NEXT_PUBLIC_SANITY_DATASET: 'production',
+  NEXT_PUBLIC_SANITY_API_VERSION: '2024-10-01',
+  SKIP_HEAVY_PREBUILD: 'true',
+});
+
+// Heap floor for every check. A full-repo `npx tsc --noEmit` uses ~2.7GB
+// (measured 2026-10-05), so a box whose V8 default is 2GB crashed it with a
+// Mark-Compact OOM and refused an innocent Linear close (BRO-4757). A floor,
+// never a cap: max(this, the machine's own default), so a bigger box keeps
+// its headroom. NODE_OPTIONS is not inherited (see KEEP_ENV: `--require`
+// would be an injection path), so the value is set here, not passed in.
+const CHECK_HEAP_MB = 6144;
+
+function checkHeapMb() {
+  return Math.max(CHECK_HEAP_MB, Math.floor(v8.getHeapStatistics().heap_size_limit / (1024 * 1024)));
+}
+
+const CHECKS_GITCONFIG ='[gc]\n\tauto = 0\n\tautoDetach = false\n[maintenance]\n\tauto = false\n[receive]\n\tautogc = false\n';
+
+// `home` lets a caller create ONE throwaway HOME for a whole run and delete it
+// afterwards. Without it every call minted a new temp dir and never removed
+// it — 64 were sitting on the Mac when ship-check looked (2026-07-25).
+function checksEnv({ env = process.env, build = false, home = null } = {}) {
+  const out = {};
+  for (const k of KEEP_ENV) if (env[k] !== undefined) out[k] = env[k];
+  out.HOME = home || fs.mkdtempSync(path.join(os.tmpdir(), 'auto-checks-home-'));
+  // The checks' temp-git-repo tests rm their repos in teardown; git's detached
+  // auto-maintenance (spawned by receive-pack in local bare remotes, which
+  // ignores GIT_CONFIG_COUNT env) writing into them makes that ENOTEMPTY. The
+  // fresh HOME has no global config, so set it here (BRO-4749).
+  const gitconfig = path.join(out.HOME, '.gitconfig');
+  if (!fs.existsSync(gitconfig)) fs.writeFileSync(gitconfig, CHECKS_GITCONFIG);
+  out.GIT_TERMINAL_PROMPT = '0';
+  out.NODE_OPTIONS = `--max-old-space-size=${checkHeapMb()}`;
+  if (build) Object.assign(out, BUILD_ENV);
+  return out;
+}
+
+// ── The plan ────────────────────────────────────────────────────────────────
+
+// The ONE tier reader. Works on either carrier of the tier — the triage
+// queue item (executor side) or the Notion evidence comment (approve-tap
+// side) — because the executor copies item.tier straight into the evidence.
+// One function, both callers: the tap cannot resolve a different tier than
+// the run did. Anything that isn't literally 3 reads as Tier 1 (fail closed).
+function tierOf(carrier) {
+  return carrier && carrier.tier === 3 ? 3 : 1;
+}
+
+// A UI diff is one a human should LOOK at, not just one that compiles — the
+// approve tap for these carries screenshot evidence or no approve link at all
+// (S2-T6). Deliberately WIDER than "components": an image swapped under
+// public/ changes the page as surely as a class name does, and the first cut
+// of this predicate would have handed out a normal approve link for it
+// (ship-check finding). Over-matching costs a screenshot run; under-matching
+// costs the whole point of the gate.
+const UI_PATH_RES = [
+  /^src\/.*\.(tsx|jsx|css|scss)$/,           // components, pages, styles
+  /^tailwind\.config\.(js|ts|cjs|mjs)$/,     // site-wide styling
+  /^public\/.*\.(png|jpe?g|svg|webp|avif|gif|ico)$/i, // images the pages render
+  /^src\/.*\/(opengraph|twitter)-image\./,   // generated social images
+];
+
+function isUiDiff(files) {
+  return (files || []).some(f => UI_PATH_RES.some(re => re.test(String(f))));
+}
+
+function hasSrcChange(files) {
+  return (files || []).some(f => String(f).startsWith('src/'));
+}
+
+/**
+ * changedFiles → ordered check commands (argv arrays, ALWAYS exec'd with
+ * shell=false). existsFn is injected for testability; it gates both colocated
+ * test lookups AND the changed path itself, so it must answer against the
+ * post-change tree (a path the branch deleted yields no check).
+ *
+ * @param {string[]} changedFiles
+ * @param {(relPath:string)=>boolean} existsFn
+ * @param {{tier?:number, buildCheck?:boolean, tsxManifest?:Set<string>}} [opts]
+ *   tsxManifest: repo-relative paths listed in tests/unit-test-manifest-tsx.txt
+ *   (see readTsxManifest); a `.test.mjs` in it runs under tsx.
+ * @returns {{name:string, argv:string[], timeoutMs?:number, build?:boolean}[]}
+ */
+// Paths whose content cannot change site or data behavior. A diff made only of
+// these legitimately has nothing to run; anything else must produce a check.
+const INERT_RE = /^(tests|docs|memory)\/|\.test\.m?js$/;
+
+function decideChecks(changedFiles, existsFn, opts = {}) {
+  const { tier = 1, buildCheck = true, tsxManifest = new Set() } = opts;
+  const files = (changedFiles || []).map(String);
+  const checks = [];
+  const seen = new Set();
+  const add = (name, argv, extra = {}) => {
+    if (seen.has(name)) return;
+    seen.add(name);
+    checks.push({ name, argv, ...extra });
+  };
+
+  // BRO-2247: a colocated `.test.ts` needs `npx tsx --test`, not plain `node
+  // --test` — same TS-resolution trap BRO-2218 fixed in isSafeCheckCommand,
+  // here at the auto-derivation call site instead. Plain node's ESM resolver
+  // isn't TS-aware, so it can neither run a `.test.ts` file's own TS syntax
+  // nor resolve a `.ts` module's extensionless internal imports. Two separate
+  // batches (mirrors test.yml's own unit-test-manifest.txt vs
+  // unit-test-manifest-tsx.txt split) so a diff mixing `.test.mjs` and
+  // `.test.ts` colocated tests runs each under the loader that understands it.
+  // BRO-4525: a `.test.mjs` that imports a `.ts` module is listed in
+  // unit-test-manifest-tsx.txt and test.yml runs it under tsx; plain node 20
+  // dies on it with ERR_UNKNOWN_FILE_EXTENSION, so the manifest decides.
+  const testFiles = new Set();
+  const tsxTestFiles = new Set();
+  const addMjs = f => (tsxManifest.has(f) ? tsxTestFiles : testFiles).add(f);
+  // Every caller builds changedFiles from `git diff --name-only`, which also
+  // lists paths the branch DELETED. A deleted test or script must not become
+  // a check: `node --test`/`node --check` on a missing path exits 1, which
+  // refuses a branch whose only sin is removing a dead file.
+  for (const f of files) {
+    if (/\.test\.mjs$/.test(f)) { if (existsFn(f)) addMjs(f); continue; }
+    if (/\.test\.ts$/.test(f)) { if (existsFn(f)) tsxTestFiles.add(f); continue; }
+    // Colocated test convention: scripts/lib/x.js → scripts/lib/x.test.mjs
+    // (or scripts/lib/x.ts → scripts/lib/x.test.ts, checked first — a .ts
+    // source is exactly the case whose colocated test needs tsx to run).
+    const colocatedTs = f.replace(/\.(js|mjs|ts|tsx)$/, '.test.ts');
+    const colocatedMjs = f.replace(/\.(js|mjs|ts|tsx)$/, '.test.mjs');
+    if (colocatedTs !== f && existsFn(colocatedTs)) tsxTestFiles.add(colocatedTs);
+    else if (colocatedMjs !== f && existsFn(colocatedMjs)) addMjs(colocatedMjs);
+  }
+  if (testFiles.size) add('colocated-tests', ['node', '--test', ...[...testFiles].sort()]);
+  if (tsxTestFiles.size) add('colocated-tests-tsx', ['npx', 'tsx', '--test', ...[...tsxTestFiles].sort()]);
+
+  // Syntax floor for tier-3 script edits: most scripts/ files have no
+  // colocated test, and "it parses" is the cheapest true statement we can
+  // make about one. Never a substitute for a test — an addition to it.
+  if (tier === 3) {
+    for (const f of files.filter(f => /^scripts\/.*\.(js|mjs|cjs)$/.test(f) && !/\.test\.m?js$/.test(f) && existsFn(f)).sort()) {
+      add(`node --check ${f}`, ['node', '--check', f]);
+    }
+  }
+
+  if (files.some(f => /\.(ts|tsx)$/.test(f))) add('tsc', ['npx', 'tsc', '--noEmit']);
+
+  if (tier === 3 && hasSrcChange(files)) {
+    add('next lint', ['npx', 'next', 'lint']);
+    // The build is the check that actually describes the live site. Skippable
+    // by config (tier3BuildCheck:false) for an owner who wants the loop
+    // cheaper, never by an implementer or a card.
+    if (buildCheck) add('next build', ['npx', 'next', 'build'], { timeoutMs: BUILD_TIMEOUT_MS, build: true });
+  }
+
+  return checks;
+}
+
+// BRO-2208: a naive `cmd.split(/\s+/)` mis-tokenizes any quoted value
+// containing whitespace — `gh run list --workflow="Deploy to Vercel"` split
+// this way becomes FIVE broken argv entries (`--workflow="Deploy`, `to`,
+// `Vercel"`, …), which `gh` then receives as literal, nonsensical positional
+// args. This is a correctness bug, not a shell-injection one — argv is
+// exec'd via execFileSync (no shell), so nothing here is ever re-interpreted
+// — but a card author's well-formed, quoted acceptance command must still
+// actually run as written. Minimal shlex-style tokenizer: single/double
+// quotes group a run of characters (including spaces) into one token and are
+// stripped from the output; no backslash-escape handling, no nesting — the
+// repo's own card-authored commands never need more than that.
+function tokenizeCheckCommand(cmd) {
+  const s = String(cmd || '');
+  const tokens = [];
+  let i = 0;
+  while (i < s.length) {
+    while (i < s.length && /\s/.test(s[i])) i++;
+    if (i >= s.length) break;
+    let token = '';
+    while (i < s.length && !/\s/.test(s[i])) {
+      const ch = s[i];
+      if (ch === '"' || ch === "'") {
+        const quote = ch;
+        i++;
+        while (i < s.length && s[i] !== quote) { token += s[i]; i++; }
+        if (i < s.length) i++; // skip closing quote
+      } else {
+        token += ch;
+        i++;
+      }
+    }
+    tokens.push(token);
+  }
+  return tokens;
+}
+
+// The card's own checkableDone command, revalidated at EXECUTION time (the
+// queue file is not trusted either) and split into argv for shell-free exec.
+function cardCheckArgv(checkableDone, isSafeCheckCommand) {
+  const cmd = String(checkableDone || '').trim();
+  if (!cmd) return null;
+  if (!isSafeCheckCommand(cmd)) return null;
+  return tokenizeCheckCommand(cmd);
+}
+
+// ── Workdir preparation ─────────────────────────────────────────────────────
+
+// BRO-3907 (found while landing an unrelated fix, not this ticket's own
+// change): a `repo` that is itself a git WORKTREE nested under the main
+// checkout (e.g. .claude/worktrees/<branch>/, the layout CLAUDE.md's
+// worktree-first rule mandates for every code edit) has no literal
+// `node_modules` of its own — Node's own module resolution finds the main
+// checkout's node_modules by walking up parent directories, which works fine
+// for that worktree directly, but NOT for a caller that later symlinks
+// `<repo>/node_modules` into a THIRD, unrelated location (land-branch.js's
+// disposable /tmp check worktree): fs.existsSync(path.join(repo,
+// 'node_modules')) is false, prepareCheckWorkdir's link() silently no-ops,
+// and the check worktree ends up with no node_modules reachable by ANY
+// ancestor walk (it lives under /tmp, nowhere near the main checkout) —
+// surfaced as `Cannot find module 'jsdom'` (and cascading false positives in
+// unrelated tests whose own scan loop aborts on that same uncaught
+// MODULE_NOT_FOUND) inside land.js's merged-tree-tests gate, deterministically,
+// on every land attempt from a worktree, regardless of what the branch
+// actually changed.
+//
+// scripts/lib/acceptance-check-core.js already solved this for its own
+// caller (a from-scratch checkout, same worktree-vs-main-repo shape) via
+// `git rev-parse --git-common-dir`: a worktree's common dir is always
+// `<main-repo>/.git`, so its dirname is the main repo root regardless of how
+// deeply the worktree is nested or named. Promoted here (not left duplicated
+// — CLAUDE.md rule 15) so land-branch.js's callers get the same fix instead
+// of a second, harder-to-find copy of the same one-liner.
+// Matches acceptance-check-core.js's own GIT_TIMEOUT_MS ("generous enough
+// for a cold fetch on a large repo") — this call isn't a fetch, but it can
+// still stall behind lock contention or a cold FS cache under this repo's
+// heavy parallel-worktree usage, and a too-short timeout here fails closed to
+// `repo` (the node_modules-less worktree), silently reintroducing the exact
+// bug this function exists to fix. Named separately rather than importing
+// acceptance-check-core.js's constant: that file is a leaf CALLER of this
+// one (require()s it via land-branch.js's chain), so importing back would
+// create a cycle.
+const GIT_COMMON_DIR_TIMEOUT_MS = 120000;
+
+function resolveInstallRoot(repo) {
+  if (fs.existsSync(path.join(repo, 'node_modules'))) return repo;
+  try {
+    const common = execFileSync('git', ['rev-parse', '--path-format=absolute', '--git-common-dir'],
+      { cwd: repo, encoding: 'utf8', timeout: GIT_COMMON_DIR_TIMEOUT_MS }).trim();
+    const mainRoot = path.dirname(common);
+    if (mainRoot && fs.existsSync(path.join(mainRoot, 'node_modules'))) return mainRoot;
+  } catch { /* not a worktree, or old git — fall through */ }
+  return repo;
+}
+
+// A fresh `git worktree add` has NO node_modules and none of the gitignored
+// core-data symlinks (data/shows.json et al are symlinks into the private
+// repo). Without them `npx tsc --noEmit` fails TS2307 on every JSON import
+// and `npx next build` cannot run at all — so a tier-3 src/ card would fail
+// its checks on environment, not on merit, every single night.
+//
+// Fills GAPS ONLY: a path that already exists in the workdir (i.e. is tracked
+// in git) is never touched, so this can't shadow the implementer's own work.
+// Everything it links is gitignored, so nothing it creates can reach a diff.
+//
+// `repoRoot` is run through resolveInstallRoot() HERE, once, for the
+// node_modules link only — every caller (land-branch.js's two call sites,
+// runSafeChecks' own prepareFrom below, and any future one) gets the fix
+// for free instead of each having to remember to resolve first (BRO-3907
+// ship-check finding: two call sites had already drifted — one resolved,
+// one didn't — after the fix first landed with the resolution done at each
+// call site instead of here). Core data is NOT run through it: a worktree's
+// own gitignored data/*.json (populated by setup-local-data.sh) is the
+// fresher copy for that worktree's own session, and should never be
+// silently swapped for the main checkout's.
+function prepareCheckWorkdir(workdir, repoRoot) {
+  const linked = [];
+  const link = (from, to) => {
+    if (fs.existsSync(to) || !fs.existsSync(from)) return;
+    try {
+      fs.mkdirSync(path.dirname(to), { recursive: true });
+      fs.symlinkSync(fs.realpathSync(from), to);
+      linked.push(path.relative(workdir, to));
+    } catch { /* best effort — a missing link surfaces as a failed check */ }
+  };
+
+  // node_modules stays a symlink: 1.3GB is not copyable per card, and it is
+  // already writable by anything running as this user in the main checkout,
+  // so the symlink adds no blast radius.
+  link(path.join(resolveInstallRoot(repoRoot), 'node_modules'), path.join(workdir, 'node_modules'));
+
+  // Core data is COPIED, not linked. data/shows.json et al are symlinks into
+  // the owner's PRIVATE data repo; linking them would hand implementer-written
+  // check code (a planted x.test.mjs runs under node --test) a writable handle
+  // on the real corpus (ship-check finding). ~46MB worst case, once per run,
+  // against a run that already spends minutes on a production build.
+  const copy = (from, to) => {
+    if (fs.existsSync(to) || !fs.existsSync(from)) return;
+    try {
+      fs.mkdirSync(path.dirname(to), { recursive: true });
+      fs.copyFileSync(fs.realpathSync(from), to);
+      linked.push(path.relative(workdir, to));
+    } catch { /* best effort — a missing file surfaces as a failed check */ }
+  };
+  for (const dir of ['data', path.join('public', 'data'), path.join('data', 'cast')]) {
+    const src = path.join(repoRoot, dir);
+    let names;
+    try { names = fs.readdirSync(src); } catch { continue; }
+    for (const name of names) {
+      if (!name.endsWith('.json')) continue;
+      copy(path.join(src, name), path.join(workdir, dir, name));
+    }
+  }
+  return linked;
+}
+
+/**
+ * The tsx unit-test manifest under `cwd` as a Set of repo-relative paths
+ * (empty when the file is missing). test.yml and land-gauntlet.sh run every
+ * file it lists with `npx tsx --test`; decideChecks follows the same split.
+ */
+function readTsxManifest(cwd) {
+  let text;
+  try { text = fs.readFileSync(path.join(cwd, 'tests/unit-test-manifest-tsx.txt'), 'utf8'); }
+  catch { return new Set(); }
+  return new Set(text.split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('#')));
+}
+
+/**
+ * Every test file test.yml runs under `npx tsx --test`, as a Set of
+ * repo-relative paths: the union of TSX_MANIFESTS (the tsx unit batch AND the
+ * E2E batch), each tolerated when missing. runSafeChecks uses this so an
+ * edited e2e-listed test that imports .ts runs under tsx in Land, as in CI
+ * (BRO-4930, Land run 37989385716). merge-post-merge-test-gate.js keeps
+ * readTsxManifest: it SKIPS manifest-listed tests, and widening that skip
+ * would drop the tests/unit/<base>.test.mjs files it reaches from a source
+ * edit, which decideChecks never runs.
+ */
+// Mirrors test-manifest.js TSX_MANIFESTS; kept local because this runner stays
+// builtins-only. autonomous-checks.test.mjs pins the two lists equal.
+const TSX_RUN_MANIFESTS = ['tests/unit-test-manifest-tsx.txt', 'tests/e2e-unit-test-manifest.txt'];
+
+function readTsxRunTests(cwd) {
+  const out = new Set();
+  for (const rel of TSX_RUN_MANIFESTS) {
+    let text;
+    try { text = fs.readFileSync(path.join(cwd, rel), 'utf8'); }
+    catch { continue; }
+    for (const l of text.split('\n')) { const t = l.trim(); if (t && !t.startsWith('#')) out.add(t); }
+  }
+  return out;
+}
+
+// ── The runner ──────────────────────────────────────────────────────────────
+
+/**
+ * Run the full gauntlet for a diff. The ONE implementation both the executor
+ * and the approve tap call — see this file's header.
+ *
+ * @param {object} o
+ * @param {string} o.cwd - worktree (executor) or repo checkout (merge)
+ * @param {string[]} o.changedFiles
+ * @param {string|null} [o.checkableDone] - the card's own LLM-authored check
+ * @param {(cmd:string)=>boolean} o.isSafeCheckCommand - injected validator
+ * @param {number} [o.tier]
+ * @param {boolean} [o.buildCheck]
+ * @param {(relPath:string)=>boolean} [o.existsFn]
+ * @param {Set<string>} [o.tsxManifest] - defaults to readTsxRunTests(cwd)
+ * @param {string|null} [o.prepareFrom] - repo root to fill node_modules/data from
+ * @returns {{name:string, pass:boolean, detail?:string}[]}
+ */
+function runSafeChecks(o) {
+  const {
+    cwd, changedFiles, checkableDone = null, isSafeCheckCommand,
+    tier = 1, buildCheck = true, prepareFrom = null,
+  } = o;
+  const existsFn = o.existsFn || (f => fs.existsSync(path.join(cwd, f)));
+  const results = [];
+
+  const tsxManifest = o.tsxManifest || readTsxRunTests(cwd);
+  const checks = decideChecks(changedFiles, existsFn, { tier, buildCheck, tsxManifest });
+  if (checkableDone) {
+    const cardArgv = cardCheckArgv(checkableDone, isSafeCheckCommand);
+    if (cardArgv) checks.push({ name: `card-check (${checkableDone})`, argv: cardArgv });
+    // An unsafe/invalid checkableDone FAILS CLOSED — it must never silently
+    // vanish from the gauntlet (the merge path used to drop it).
+    else results.push({ name: 'card-check', pass: false, detail: `checkableDone failed safe-form validation: ${String(checkableDone).slice(0, 120)}` });
+  }
+  if (!checks.length) {
+    // A tier-3 diff that produced NO runnable check is unverified, not
+    // verified: a card touching only e.g. scripts/lib/foo.json has no
+    // colocated test, no type/lint/build trigger, and used to reach the
+    // owner's inbox wearing a green PASS badge with an empty check list
+    // (ship-check finding). Tier 1 is unaffected — a docs-only diff having
+    // nothing to run is the normal, correct case there. A tier-3 diff that
+    // only DELETES scripts lands here too (deleted paths get no check): land's
+    // merged-tree test floor clears it, but with LAND_SKIP_MERGED_TREE_TESTS=1
+    // or on the autonomous run/merge paths it stays refused, by design.
+    const substantive = (changedFiles || []).map(String).filter(f => !INERT_RE.test(f));
+    if (tier === 3 && substantive.length) {
+      results.push({
+        name: 'no-checks', pass: false,
+        detail: `tier-3 diff produced no runnable check (${substantive.slice(0, 5).join(', ')}) — nothing here proves the change works, so it is not marked verified`,
+      });
+    }
+    return results;
+  }
+
+  if (prepareFrom) {
+    const linked = prepareCheckWorkdir(cwd, prepareFrom);
+    if (linked.length) console.error(`[checks] linked ${linked.length} gitignored path(s) into the check workdir (node_modules/core data)`);
+  }
+
+  const home = fs.mkdtempSync(path.join(os.tmpdir(), 'auto-checks-home-'));
+  try {
+    const plainEnv = checksEnv({ home });
+    const buildEnv = checks.some(c => c.build) ? checksEnv({ home, build: true }) : null;
+    for (const c of checks) {
+      try {
+        execFileSync(c.argv[0], c.argv.slice(1), {
+          cwd, stdio: ['ignore', 'pipe', 'pipe'], encoding: 'utf8',
+          timeout: c.timeoutMs || CHECK_TIMEOUT_MS,
+          env: c.build ? buildEnv : plainEnv,
+        });
+        results.push({ name: c.name, pass: true });
+      } catch (err) {
+        results.push({ name: c.name, pass: false, detail: String(err.stderr || err.stdout || err.message).slice(0, 400) });
+      }
+    }
+  } finally {
+    try { fs.rmSync(home, { recursive: true, force: true }); } catch { /* best effort */ }
+  }
+  return results;
+}
+
+module.exports = {
+  CHECK_TIMEOUT_MS,
+  BUILD_TIMEOUT_MS,
+  KEEP_ENV,
+  BUILD_ENV,
+  CHECK_HEAP_MB,
+  UI_PATH_RES,
+  checksEnv,
+  tierOf,
+  decideChecks,
+  readTsxManifest,
+  readTsxRunTests,
+  TSX_RUN_MANIFESTS,
+  cardCheckArgv,
+  tokenizeCheckCommand,
+  isUiDiff,
+  hasSrcChange,
+  resolveInstallRoot,
+  prepareCheckWorkdir,
+  runSafeChecks,
+};

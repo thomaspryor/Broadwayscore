@@ -1,0 +1,109 @@
+{
+  "generatedAt": "2026-10-10T16:50:06.212Z",
+  "base": "https://broadwayscorecard.com",
+  "daysChecked": 21,
+  "skippedForBudget": 0,
+  "checked": 232,
+  "clean": 227,
+  "defective": 5,
+  "byType": {
+    "missing-from-prod": 2,
+    "score-drift": 5
+  },
+  "shows": [
+    {
+      "showId": "fences-off-west-end-2026",
+      "title": "Fences",
+      "openingDate": "2026-10-09",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: guardian"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 81.34 vs local 78.1 (Δ3.24)"
+        }
+      ],
+      "missingFromProd": [
+        "guardian"
+      ],
+      "localCount": 6,
+      "deployedCount": 6,
+      "firstDefectAt": "2026-10-10T16:50:00.825Z"
+    },
+    {
+      "showId": "oh-mary-west-end-2025",
+      "title": "Oh, Mary!",
+      "openingDate": "2025-12-18",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: broadwayworld"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 75.78 vs local 75.35 (Δ0.43)"
+        }
+      ],
+      "missingFromProd": [
+        "broadwayworld"
+      ],
+      "localCount": 30,
+      "deployedCount": 29,
+      "firstDefectAt": "2026-10-10T16:50:00.825Z"
+    },
+    {
+      "showId": "good-time-charlie-off-broadway-2026",
+      "title": "Good Time Charlie",
+      "openingDate": "2026-10-09",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 76.74 vs local 77.7 (Δ0.96)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 9,
+      "deployedCount": 10,
+      "firstDefectAt": "2026-10-10T16:50:00.825Z"
+    },
+    {
+      "showId": "from-the-heart-west-end-2026",
+      "title": "From The Heart",
+      "openingDate": "2026-10-09",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 82.5 vs local 82.57 (Δ0.07)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 18,
+      "deployedCount": 19,
+      "firstDefectAt": "2026-10-10T16:50:00.825Z"
+    },
+    {
+      "showId": "all-male-as-you-like-it-regional-2026",
+      "title": "As You Like It",
+      "openingDate": "2026-10-07",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 82.51 vs local 82.74 (Δ0.23)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 12,
+      "deployedCount": 13,
+      "firstDefectAt": "2026-10-10T16:50:00.825Z"
+    }
+  ],
+  "persistentDefective": 0,
+  "staleGraceHours": 6
+}

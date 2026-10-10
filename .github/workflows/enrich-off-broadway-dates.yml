@@ -1,0 +1,148 @@
+name: Enrich Off-Broadway Dates
+
+# Sibling workflow to enrich-west-end-dates.yml. Same shape, OB-specific source.
+#
+# Runs daily 7:15 UTC (15-min offset from WE 7:00 UTC) — disjoint pushes to
+# shows.json. Concurrency-grouped against any other shows.json writer to
+# prevent rebase races (KENREX 2026-04-28 root cause was partly a discovery
+# gap, partly the absence of date fields in push-core-data's reconciliation
+# safelist; the safelist was fixed in PR #A0).
+#
+# See memory/feedback_off_broadway_opening_date_gap.md.
+
+on:
+  schedule:
+    # Weekly Monday 7:15 UTC — fix shows with unconfirmed press-night sources
+    # ahead of the week's opening-night orchestrator runs. Cut from daily
+    # 2026-05-08 to reduce Bright Data SERP spend; manually trigger via
+    # workflow_dispatch if a specific show needs fast date correction.
+    - cron: '15 7 * * 1'
+    # Weekly Thursday 8:15 UTC — full enrichment for newly announced OB shows.
+    - cron: '15 8 * * 4'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Mode: enrich (fill missing), verify (compare only), force (overwrite all), fix-unconfirmed (correct todaytix/ibdb/etc. dates), initial-backfill (bypass stability guard once)'
+        required: true
+        default: 'fix-unconfirmed'
+        type: choice
+        options:
+          - enrich
+          - verify
+          - force
+          - fix-unconfirmed
+          - initial-backfill
+      show:
+        description: 'Optional: specific show id or slug to process'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+# NOTE: this concurrency group is named so that future shows.json writers
+# (update-show-status.yml, enrich-ibdb-dates.yml, enrich-west-end-dates.yml,
+# fetch-todaytix-showtimes.yml, etc.) can opt in by adopting the same group.
+# As of 2026-04-29 only THIS workflow declares it, so the group serializes
+# only against itself. The actual rebase-race mitigation is in
+# .github/actions/push-core-data/action.yml's reconciliation safelist
+# (date fields added 2026-04-28). Adopting this group across other writers
+# is a follow-up. See memory/feedback_off_broadway_opening_date_gap.md.
+concurrency:
+  group: shows-json-writer
+  cancel-in-progress: false
+
+jobs:
+  enrich:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Determine mode flag
+        id: mode
+        run: |
+          MODE="${{ inputs.mode || 'fix-unconfirmed' }}"
+          case "$MODE" in
+            enrich) FLAGS="" ;;
+            verify) FLAGS="--verify" ;;
+            force) FLAGS="--force" ;;
+            fix-unconfirmed) FLAGS="--fix-unconfirmed" ;;
+            initial-backfill) FLAGS="--fix-unconfirmed --initial-backfill" ;;
+            *) FLAGS="--fix-unconfirmed" ;;
+          esac
+          if [ -n "${{ inputs.show }}" ]; then
+            FLAGS="$FLAGS --show=${{ inputs.show }}"
+          fi
+          echo "flags=$FLAGS" >> "$GITHUB_OUTPUT"
+          echo "Running with: $FLAGS"
+
+      - name: Run OB date enrichment
+        id: enrich
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+        run: node scripts/enrich-off-broadway-dates.js ${{ steps.mode.outputs.flags }} --time-budget-min=16
+
+      - name: Commit audit (always)
+        if: always()
+        run: |
+          # Audit-trail file is uniform across WE + OB scripts. Must be
+          # explicitly staged; rebuild workflows do NOT auto-include data/audit/.
+          # (memory/feedback_audit_trail_must_ship_via_workflow.md)
+          # Set git identity for the commit — actions/checkout doesn't set it
+          # by default, and the bare workspace inherits no global config.
+          # Caught by manual-fire smoke test 2026-04-29 (run 25143060961).
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+          git add data/audit/date-enrichment-corrections.json 2>/dev/null || true
+          git add data/audit/enrich-off-broadway-dates-aborted.json 2>/dev/null || true
+          # data/playbill-urls.json is the URL cache populated by Phase 3
+          # production-page discovery. Without staging it, every daily run
+          # re-pays the SERP cost for the same audit-only OB shows. Pattern
+          # mirrors update-show-status.yml:828-832. Caught by Codex
+          # adversarial review 2026-04-29.
+          git add data/playbill-urls.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No audit changes to commit"
+            exit 0
+          fi
+          git commit -m "data: enrich-off-broadway-dates audit trail"
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Push core data (shows.json)
+        if: steps.enrich.outcome == 'success'
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: enrich-off-broadway-dates ${{ steps.mode.outputs.flags }}"
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: enrich-off-broadway-dates
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Enrich Off-Broadway Dates failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

@@ -1,0 +1,134 @@
+name: Clear Stale Roundup Flags
+
+# Scheduled cleanup for stale `isRoundupArticle=true` flags in
+# data/review-texts/ — reviews that are actually individual critic reviews but
+# got tagged as roundup articles by older code paths (URL-pattern matching,
+# blanket KNOWN_ROUNDUP_OUTLETS auto-tag). Background (BRO-2323, Notion
+# 3c8637c5-416f-811b): scripts/clear-stale-roundup-flags.js has existed since
+# the JP Stuart King regression (Notion 34e637c5-416f-817b) but was never
+# scheduled — same gap shape as #1828 (clear-wrong-show-blockers) and #1909
+# (clear-stale-wrong-show-flags). A stale flag silently drops a real review
+# from LLM scoring and from reviews.json.
+#
+# Predicate-only (like clear-wrong-show-blockers.yml) — isLikelyStaleRoundupFlag
+# is whitelist-based on known individual-review URL patterns, no LLM second
+# opinion needed.
+#
+# Surge-guarded (script refuses >50 clears without --force-bulk) since this
+# writes unattended to the private review-texts corpus.
+#
+# review-refresh.yml also runs daily at 9 AM UTC (including Tuesdays) and
+# writes review-texts too — same latent exposure the existing siblings
+# (clear-stale-wrong-show-flags.yml, clear-stale-wrong-production-flags.yml)
+# already carry. push-review-texts' rebase+retry absorbs the ordinary case.
+on:
+  schedule:
+    # Tuesdays at 9 AM UTC — the only weekday slot in the 9-AM-UTC weekly
+    # review-texts stale-flag-clearing family (Wed: clear-stale-suspected-
+    # misattribution-flags, Thu: clear-wrong-show-blockers, Fri: clear-stale-
+    # wrong-show-flags, Sat: clear-stale-wrong-production-flags) not already
+    # taken.
+    - cron: '0 9 * * 2'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Report only, no fix'
+        required: false
+        default: 'false'
+        type: string
+      force_bulk:
+        description: 'Override the >50 surge guard (for a legitimate large backlog cleanup)'
+        required: false
+        default: 'false'
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: clear-stale-roundup-flags
+  cancel-in-progress: false
+
+jobs:
+  clear-stale:
+    name: Clear stale isRoundupArticle flags
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Run sweep
+        id: sweep
+        run: |
+          set +e
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            OUT=$(node scripts/clear-stale-roundup-flags.js 2>&1)
+          elif [ "${{ inputs.force_bulk }}" = "true" ]; then
+            OUT=$(node scripts/clear-stale-roundup-flags.js --apply --force-bulk 2>&1)
+          else
+            OUT=$(node scripts/clear-stale-roundup-flags.js --apply 2>&1)
+          fi
+          STATUS=$?
+          echo "$OUT"
+          COUNT=$(echo "$OUT" | grep -oE 'APPLIED — cleared [0-9]+' | head -1 | grep -oE '[0-9]+')
+          COUNT=${COUNT:-0}
+          WOULD=$(echo "$OUT" | grep -oE 'Stale \(would clear\): [0-9]+' | head -1 | grep -oE '[0-9]+')
+          WOULD=${WOULD:-0}
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+          echo "would=$WOULD" >> $GITHUB_OUTPUT
+          echo "status=$STATUS" >> $GITHUB_OUTPUT
+          exit 0
+
+      - name: Push to private repo
+        if: inputs.dry_run != 'true' && steps.sweep.outputs.status == '0'
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: |
+            fix: auto-clear ${{ steps.sweep.outputs.count }} stale isRoundupArticle flags [audit-fix]
+
+      - name: Summary
+        run: |
+          {
+            echo "## isRoundupArticle Stale-Flag Sweep"
+            echo ""
+            echo "**Would clear:** ${{ steps.sweep.outputs.would }}"
+            echo "**Cleared:** ${{ steps.sweep.outputs.count }}"
+            if [ "${{ inputs.dry_run }}" = "true" ]; then
+              echo "**Mode:** dry-run (no commit)"
+            elif [ "${{ steps.sweep.outputs.status }}" != "0" ]; then
+              echo "**Mode:** surge guard refused — investigate before re-running with force_bulk=true"
+            elif [ "${{ steps.sweep.outputs.count }}" = "0" ]; then
+              echo "**Mode:** no fix needed"
+            else
+              echo "**Mode:** auto-fixed + pushed"
+            fi
+          } >> $GITHUB_STEP_SUMMARY
+
+      - name: Fail on surge-guard refusal
+        if: steps.sweep.outputs.status != '0'
+        run: exit 1
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Clear Stale Roundup Flags Failed'
+          severity: 'warning'

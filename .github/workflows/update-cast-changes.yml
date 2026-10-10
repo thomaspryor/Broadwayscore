@@ -1,0 +1,215 @@
+name: Update Cast Changes
+
+on:
+  schedule:
+    # Run Wednesday + Saturday at 9 AM UTC (4 AM EST)
+    - cron: '0 9 * * 3,6'
+  workflow_dispatch:
+    inputs:
+      source:
+        description: 'Source to scrape (articles, reddit, official-sites, playbill-cast, all)'
+        required: false
+        type: choice
+        options:
+          - all
+          - articles
+          - reddit
+          - official-sites
+          - playbill-cast
+        default: all
+      shows:
+        description: 'Comma-separated show IDs (optional, e.g. just-in-time-2025,wicked-2003)'
+        required: false
+        type: string
+      high_freq_only:
+        description: 'Only check high-frequency rotation shows (Chicago, SIX, Hadestown, Gatsby)'
+        required: false
+        type: boolean
+        default: false
+
+# Serialize schedule + manual-dispatch runs against the same data/cast-changes.json.
+# Without this, an overlapping run reads a stale in-memory snapshot and its final
+# writeFileSync can silently clobber the other run's currentCast/upcoming/history
+# transitions (found during the 2026-07-21 Hargitay P0 review — this workflow fires
+# on both the Wed/Sat cron AND near-daily workflow_dispatch runs). Queued, not
+# cancelled: a cancel mid-writeFileSync risks a partially-written currentCast.
+concurrency:
+  group: update-cast-changes
+  cancel-in-progress: false
+
+jobs:
+  update-cast-changes:
+    runs-on: ubuntu-latest
+    # timeout-minutes raised 80 -> 95 (task #1813 follow-up, same day as
+    # the fetch-depth fix below): a full fetch-depth:0 checkout was
+    # directly measured at ~22-23 min TWICE today in other workflows
+    # fixed the same way (runs 32226150541, plus two sweep-we-
+    # aggregators.yml dispatches), not the ~15-20s this comment
+    # originally assumed. Historical max runtime under the OLD fast
+    # shallow checkout was 52 min; 52 + ~23 checkout ≈ 75 min, leaving
+    # only ~5 min under the old 80-min cap. Mirrors the identical fix
+    # applied the same day to update-show-status.yml (Notion
+    # 3c1637c5-416f-8190) for the same reason.
+    timeout-minutes: 95
+
+    steps:
+      # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
+      # on the checkout below), so rebase/diff/show fetch missing blobs over the
+      # network outside push-with-retry.sh's per-op timeout wrappers. Set git's
+      # low-speed abort (1 KB/s for 45 s, the bound the helper applies to its own
+      # fetch/push) for EVERY git transfer in this job: --global, and before the
+      # checkout, so actions/checkout's own first lazy blob batch and the depth-1
+      # private-repo clones (checkout-core-data / checkout-review-texts, no
+      # timeout of their own; their retry loop catches the abort) are bounded
+      # too. A stalled transfer fails fast instead of hanging to the job timeout.
+      # lowSpeed cannot catch a pre-transfer stall. Runner $HOME is ephemeral.
+      - name: Set git low-speed abort for this job
+        run: |
+          git config --global http.lowSpeedLimit 1000
+          git config --global http.lowSpeedTime 45
+
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # fetch-depth: 0 (task #1813 — same class as task #1810's
+          # update-show-status.yml fix): observed runs go as long as
+          # 52+ min before this job's push-with-retry.sh step, well into
+          # the window where a shallow (fetch-depth 1, the default) local
+          # history makes git's push-pack build against a since-drifted
+          # origin/main pathologically slow (silent 90s+ local-compute
+          # hang, no network activity, until GIT_NET_TIMEOUT_SEC kills it
+          # — see #1810's GIT_TRACE_CURL trace). fetch-depth: 0 removes
+          # the shallow ambiguity.
+          #
+          # Headroom note (corrected 2026-08-19, same day): a full
+          # checkout of this repo's ~2GB packed object DB was directly
+          # measured at ~22-23 min in real dispatches today, not the
+          # ~15-20s this comment previously assumed. timeout-minutes was
+          # raised above (80->95) to restore real margin instead of
+          # leaving a stale "25+ min headroom" claim that no longer held.
+          fetch-depth: 0
+          # BRO-4231: filter: blob:none keeps the full commit graph fetch-depth: 0 is
+          # here for (a resolvable merge-base for push-with-retry.sh; #209 parentless
+          # root) but stops downloading every historical blob of this repo's data/*.json
+          # rewrites: ~24 min -> ~30 s per checkout (llm-ensemble-score runs 36523767401
+          # -> 36672742657). Full rationale: opening-night-poller.yml's Checkout step.
+          filter: blob:none
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Scrape cast changes
+        timeout-minutes: 60
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          ARGS="--verbose"
+          # Scheduled runs: playbill-cast only (fast, reliable). Manual dispatch can override.
+          if [ -n "${{ github.event.inputs.source }}" ]; then
+            ARGS="$ARGS --source=${{ github.event.inputs.source }}"
+          elif [ "${{ github.event_name }}" = "schedule" ]; then
+            ARGS="$ARGS --source=playbill-cast"
+          fi
+          if [ -n "${{ github.event.inputs.shows }}" ]; then
+            ARGS="$ARGS --shows=${{ github.event.inputs.shows }}"
+          fi
+          if [ "${{ github.event.inputs.high_freq_only }}" == "true" ]; then
+            ARGS="$ARGS --high-freq-only"
+          fi
+          node scripts/scrape-cast-changes.js $ARGS
+
+      # Validation gate: auto-heal (reconcile stale closure dates vs shows.json,
+      # dedupe closures, reclassify departure-as-closure) then verify clean.
+      # Runs ONLY if the scrape succeeded — a crashed/partial scrape must never
+      # reach the commit step. --strict exits non-zero on any residual issue,
+      # failing the job before commit. This is the gate that was missing while
+      # bad cast-changes data shipped straight to main (direct pushes aren't
+      # gated by branch-protection status checks).
+      - name: Audit and validate cast changes
+        if: success()
+        run: |
+          node scripts/audit-cast-changes.js --write
+          node scripts/audit-cast-changes.js --strict
+
+      - name: Check for changes
+        if: success()
+        id: check_changes
+        run: |
+          if [[ -n $(git status --porcelain data/cast-changes.json data/audit/cast-changes-diff.json) ]]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Changes detected in cast changes data"
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No changes detected"
+          fi
+
+      - name: Commit and push changes
+        if: success() && steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/cast-changes.json data/audit/cast-changes-diff.json
+          git commit -m "chore: Update cast changes data
+
+          Automated weekly cast change tracking from Playbill, BWW, Reddit, and official sites.
+
+          Co-Authored-By: GitHub Action <action@github.com>"
+          bash scripts/lib/push-with-retry.sh
+
+      # scrape-cast-changes.js's serpQuery calls write attribution rows to
+      # data/audit/scraper-spend-ledger.jsonl on the runner's local disk (task
+      # #752/#784), independent of whether cast-changes.json itself changed —
+      # never staged before this twice-weekly cron (Sprint 3, card 3b1637c5).
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true  # telemetry-only commit (Sprint 3, card 3b1637c5) — push contention under concurrent scheduled runs must never fail an otherwise-successful job
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/audit/scraper-spend-ledger.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No ledger changes to commit"
+          else
+            git commit -m "chore: Record scraper-spend ledger (update-cast-changes)"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Update Cast Changes Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+      - name: Summary
+        run: |
+          echo "## Cast Changes Update" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [[ "${{ steps.check_changes.outputs.has_changes }}" == "true" ]]; then
+            echo "Updated cast changes data" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "No changes detected - data is already up to date" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Sources: Playbill, BroadwayWorld, Reddit r/Broadway, Official show websites" >> $GITHUB_STEP_SUMMARY

@@ -1,0 +1,157 @@
+name: Ingest Review URLs
+
+on:
+  workflow_dispatch:
+    inputs:
+      show_id:
+        description: 'Show ID (e.g., dog-day-afternoon-2026)'
+        required: true
+        type: string
+      urls:
+        description: 'Review URLs, one per line. Optional: append outlet ID after space.'
+        required: true
+        type: string
+      no_fetch:
+        description: 'Skip text fetching (create stub files for later collection)'
+        required: false
+        type: boolean
+        default: false
+      no_rebuild:
+        description: 'Skip triggering scoring/rebuild/deploy'
+        required: false
+        type: boolean
+        default: false
+      dry_run:
+        # Smoke-test lane (task #737): this workflow shipped and sat
+        # dispatched ZERO times (checkout/core-data/review-texts/npm/scraper
+        # path entirely unproven — same class as #657/#688). dry_run=true
+        # passes --dry-run to ingest-urls.js, which runs the full
+        # resolve/(optionally fetch)/write path and returns before writing
+        # any review-text file, so nothing lands in data/review-texts and
+        # there is nothing for the commit step to push. Combine with
+        # no_fetch=true for a smoke run that doesn't touch the scraper stack.
+        description: 'Resolve + (optionally fetch) only — skip writing review files and the commit/push (CI smoke test)'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  # dry_run gets its OWN fixed lane (add-requested-show.yml precedent, task
+  # #722), not a per-show suffix — ship-check finding (task #737): a suffix
+  # pattern (`ingest-urls-${show_id}-dry-run`) collides whenever one
+  # dispatch's real show_id equals another's `${show_id}-dry-run`, e.g. a
+  # dry run for show "foo" shares a group with a real run for show
+  # "foo-dry-run". A single fixed string can only collide with a real show
+  # literally titled "dry-run", which push-with-retry's dedicated group
+  # naming elsewhere in this repo already accepts as an acceptable residual
+  # risk for operator-only, manually-dispatched workflows.
+  group: ${{ inputs.dry_run == true && 'ingest-urls-dry-run' || format('ingest-urls-{0}', inputs.show_id) }}
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 30-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Write URL file
+        env:
+          INPUT_URLS: ${{ inputs.urls }}
+        run: |
+          # Write URLs to file — GitHub Actions preserves newlines in string inputs
+          # when dispatched via API/CLI. The UI textarea may collapse them to spaces,
+          # so a line is split before each further http(s):// token. Splitting on
+          # every space (the old `tr ' ' '\n'`) broke the documented "URL outlet-id"
+          # form into two lines that both failed as unknown outlets (BRO-4185).
+          # Comment lines are left whole so a commented-out URL stays commented.
+          printf '%s\n' "$INPUT_URLS" \
+            | sed -E '/^[[:space:]]*#/!s/[[:space:]]+(https?:\/\/)/\n\1/gI' \
+            | sed 's/^[[:space:]]*//' | grep -v '^\s*$' > /tmp/ingest-urls.txt
+          echo "URLs to ingest:"
+          cat /tmp/ingest-urls.txt
+          echo "---"
+          LINES=$(grep -cv '^\s*$\|^\s*#' /tmp/ingest-urls.txt || echo "0")
+          echo "Non-empty, non-comment lines: $LINES"
+
+      - name: Run ingestion
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          FLAGS=""
+          if [ "${{ inputs.no_fetch }}" = "true" ]; then
+            FLAGS="$FLAGS --no-fetch"
+          fi
+          if [ "${{ inputs.no_rebuild }}" = "true" ]; then
+            FLAGS="$FLAGS --no-rebuild"
+          fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            FLAGS="$FLAGS --dry-run"
+          fi
+
+          node scripts/ingest-urls.js \
+            --show="${{ inputs.show_id }}" \
+            --urls=/tmp/ingest-urls.txt \
+            --verbose \
+            $FLAGS
+
+      - name: Commit new review files
+        # Skipped on dry_run: --dry-run never writes a review-text file, so
+        # there is nothing to commit — and skipping keeps the smoke test
+        # provably incapable of pushing even if a future edit changed that.
+        if: always() && inputs.dry_run != true
+        run: |
+          cd data/review-texts
+          if git diff --quiet && git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "data: Ingest URLs for ${{ inputs.show_id }}"
+            bash ../../scripts/lib/push-with-retry.sh 5 main
+          fi
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: ingest-urls
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'URL Ingestion Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

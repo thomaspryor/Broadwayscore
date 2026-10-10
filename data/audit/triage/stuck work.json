@@ -1,0 +1,25 @@
+{
+  "system": "stuck work",
+  "status": "warn",
+  "lastChecked": "2026-10-10T13:07:35.986Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Stuck work: paused P0/P1 cards",
+      "status": "warn",
+      "message": "30 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: BRO-235: The Stage + pages-on-stages stub extraction (54d); P1: ~20% of cmux dispatches die silently — chronic week-long (54d); Bright Data SSL cert + port 44445 migration — deadline 2026- (54d) [31 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
+    },
+    {
+      "name": "Stuck work: orphaned in-progress cards",
+      "status": "warn",
+      "message": "35 In-progress card(s) untouched >48h — owning session likely dead. Oldest: P1: cmux new-workspace terminals spawn NO shell process — al (78d); P1: headless-claude fallback for the opening-night monitor l (78d); BRO-406: CANARY touch data/audit/canary-2026-08-17.marker (54d) [27 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
+    },
+    {
+      "name": "Stuck work: paused P2/other cards",
+      "status": "warn",
+      "message": "6 lower-priority card(s) Paused >7d (FYI — close or re-queue when triaging) [20 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
+    }
+  ]
+}

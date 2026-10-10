@@ -1,0 +1,122 @@
+# Daily historical review backfill (BRO-4146): dispatches the next slice of
+# scripts/backfill-batches.json (1,182 older shows) to gather-reviews.yml.
+#
+# Moved here from a Mac launchd job (scripts/backfill-gather-batch.sh, 04:00 ET)
+# that kept its cursor in /tmp (reset on reboot, so it restarted from batch 0
+# repeatedly), sent 100 shows a day when a run finishes ~25, and landed on the
+# 08:00 UTC opening-night pass. Owner decision 2026-10-07: keep the backfill daily.
+#
+# 06:37 UTC: after the 05:00 and before the 08:00 opening-night-reviews passes,
+# before review-refresh (09:00) and outside opening-night-broadcast's hourly
+# 13:41-23:41 window, so the backfill rarely competes with time-sensitive
+# opening-night gathers for gather-reviews' run slots (BRO-4859 FIFO gate).
+name: Historical Review Backfill
+
+on:
+  schedule:
+    - cron: '37 6 * * *'
+    # Backup slot: GitHub dropped the first 06:37 run (2026-10-09). The script
+    # does nothing if today's slice already started, so this only fills a gap.
+    - cron: '17 7 * * *'
+  workflow_dispatch:
+    inputs:
+      count:
+        description: 'Shows to dispatch this run (default 24; each gather shard takes up to 4)'
+        required: false
+        default: '24'
+      force:
+        description: 'Run even if today''s slice was already dispatched'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: historical-backfill
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 300
+
+      - name: Pick next slice
+        id: pick
+        run: |
+          COUNT="${{ github.event.inputs.count || '24' }}"
+          [[ "$COUNT" =~ ^[1-9][0-9]*$ ]] || COUNT=24
+          FORCE=""
+          [ "${{ github.event.inputs.force }}" = "true" ] && FORCE="--force"
+          node scripts/historical-backfill-next.js --count="$COUNT" $FORCE
+
+      - name: Dispatch gather-reviews
+        id: dispatch
+        if: steps.pick.outputs.shows != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "since=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
+          gh workflow run gather-reviews.yml \
+            -f shows="${{ steps.pick.outputs.shows }}" \
+            -f parallel_jobs=10 \
+            -f max_tier=2 \
+            -f no_sb_serp=true \
+            -f spend_purpose=historical-backfill
+
+      # Advance the cursor only once our run has actually started; if it is
+      # cancelled before starting, leave the cursor so tomorrow re-sends the same
+      # slice. (Since BRO-4859 gather-reviews uses a per-run group and waits for a
+      # FIFO slot inside its prepare job, so a queued run is no longer evicted and
+      # shows in_progress while it waits.)
+      - name: Wait for the gather run to start
+        id: started
+        if: steps.pick.outputs.shows != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SINCE: ${{ steps.dispatch.outputs.since }}
+          FIRST: ${{ steps.pick.outputs.first }}
+        run: |
+          for i in $(seq 1 100); do
+            STATE=$(gh api "repos/${{ github.repository }}/actions/workflows/gather-reviews.yml/runs?event=workflow_dispatch&per_page=20&created=>=$SINCE" \
+              --jq "[.workflow_runs[] | select(.display_title | contains(\"$FIRST\"))][0] | (.status + \" \" + (.conclusion // \"\"))" 2>/dev/null || true)
+            echo "attempt $i: ${STATE:-not found yet}"
+            case "$STATE" in
+              in_progress*|"completed success"*|"completed failure"*) echo "ok=true" >> "$GITHUB_OUTPUT"; exit 0 ;;
+              "completed cancelled"*|"completed skipped"*) echo "::warning::gather run cancelled while queued; cursor not advanced, slice retried tomorrow"; echo "ok=false" >> "$GITHUB_OUTPUT"; exit 0 ;;
+            esac
+            sleep 60
+          done
+          echo "::warning::gather run did not start within 100 min; cursor not advanced"
+          echo "ok=false" >> "$GITHUB_OUTPUT"
+
+      - name: Commit cursor
+        if: steps.started.outputs.ok == 'true'
+        env:
+          PUSH_DEADLINE_SEC: '420'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/historical-backfill-cursor.json
+          if git diff --staged --quiet; then
+            echo "Cursor unchanged"
+          else
+            git commit -m "data: advance historical backfill cursor [skip ci]"
+            bash scripts/lib/push-with-retry.sh 3 main
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Historical review backfill failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

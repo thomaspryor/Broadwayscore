@@ -1,0 +1,294 @@
+# Scheduled workflows intentionally NOT in check-cron-health.yml CRITICAL_CRONS.
+#
+# A scheduled (cron) workflow must be EITHER in CRITICAL_CRONS (real-time paging for
+# user-facing staleness) OR listed here (covered by the daily digest / low-stakes /
+# self-healing). audit-cron-health-coverage.js fails CI if a scheduled workflow is in
+# neither — so a new cron cannot silently ship with zero monitoring (the gap that hid
+# process-feedback.yml being disabled for 15 days, 2026-06-11..26).
+#
+# To PROMOTE one of these to real-time paging, move it to CRITICAL_CRONS in
+# check-cron-health.yml and delete the line here. One filename per line; # = comment.
+# Seeded 2026-06-28 with the then-current uncovered set (status quo — no behavior change).
+# Header note (BRO-2818): the 2026-06-28 bulk seed left most entries below with no reason
+# (listed in .cron-health-exempt-unjustified.txt). New entries MUST carry one; the audit
+# fails otherwise. A comment block is consumed by the single entry right after it.
+# Claims of daily-digest coverage must be tagged [digest] and are verified by the audit.
+
+adjudicate-review-queue.yml
+# Weekly affiliate link probe (BRO-4951: split out of weekly-affiliate-report.yml so
+# the revenue email can sit in CRITICAL_CRONS). Not paged: a red week means broken
+# links, which owner-alert-router already reports, so a CRITICAL_CRONS "dead cron"
+# page plus auto-redispatch would be the wrong alarm.
+# [digest] stale-run coverage: scripts/lib/health-digest-crons.js (192h).
+affiliate-link-integrity.yml
+aggregator-url-watcher.yml
+# Self-healing image-fetch backstop (card #1456): a stale run means at-worst
+# a slower drain of the imageless-scored-shows backlog, not user-facing
+# staleness worth paging on — its own routeAlert escalation already alerts
+# the owner directly when self-heal isn't landing an image after 3 attempts.
+audit-imageless-scored-shows.yml
+audit-aggregator-coverage.yml
+# Provisional venue/date cross-validation against Playbill (BRO-2984 — moved out
+# of test.yml's data-validation job, where it spent real ScrapingBee/Bright Data
+# credits on every push to main). Deliberately EXEMPT rather than CRITICAL_CRONS:
+# it reddens itself on a real mismatch, and CRITICAL_CRONS keys on the last
+# SUCCESSFUL run — so a genuine, un-remediated venue mismatch would ALSO page as
+# "this cron is dead", which is the wrong alarm. Its own notify-failure step
+# carries a real mismatch into the daily digest; a stale run means at-worst a
+# 1-day-late detection of provisional drift, with no user-facing staleness.
+audit-provisional-venues.yml
+audit-bww-rr-attributions.yml
+# Digest-noise regression monitor (card #510): self-contained daily check
+# that alerts the owner directly via routeAlert() when it finds a violation.
+# A stale run means at-worst a 1-day-late detection of a noise regression —
+# no user-facing staleness, no paging value.
+monitor-scheduled-email-count.yml
+# Reverse discovery (missing-show detector): candidates surface in the daily
+# digest via health-check.js; a stale run means at-worst 1-day-late candidates.
+# [digest] stale-run coverage: scripts/lib/health-digest-crons.js (24h).
+audit-reverse-discovery.yml
+audit-critic-coverage.yml
+audit-cross-production-weekly.yml
+audit-cross-production.yml
+audit-review-quality.yml
+audit-touring-contamination.yml
+backfill-cast.yml
+brand-mention-monitor.yml
+check-cookie-health.yml
+check-corpus-drift.yml
+# BRO-2818: the watchdog itself cannot page on its own absence, so it is exempt from
+# CRITICAL_CRONS. [digest] stale-run coverage instead: scripts/lib/health-digest-crons.js
+# (36h), read by data-health-check.yml, which check-cron-health.yml pages on. The two
+# watch each other.
+check-cron-health.yml
+check-cwv-health.yml
+check-review-count-drift.yml
+check-secrets-health.yml
+check-seo-health.yml
+check-show-freshness.yml
+check-url-health.yml
+clear-stale-duplicate-of.yml
+collect-outlet-reviews.yml
+collection-coverage-report.yml
+commercial-stale-closures.yml
+daily-digest.yml
+demo-alias-watchdog.yml
+detect-ob-closings.yml
+detect-revivals-ibdb.yml
+discover-regional-serp-reviews.yml
+discover-tour-stop-reviews.yml
+drain-not-attempted.yml
+enrich-ibdb-dates.yml
+enrich-reviews.yml
+enrich-runtimes.yml
+fantasy-weekly.yml
+fetch-guardian-reviews.yml
+finance-ingest.yml
+fix-circular-duplicate-pairs.yml
+fix-platform-ticket-links.yml
+fix-todaytix-links.yml
+generate-guide-editorials.yml
+generate-related-shows.yml
+generate-theater-tips.yml
+lighthouse-post-deploy.yml
+mirror-data-to-gitlab.yml
+mirror-review-texts-to-gitlab.yml
+mirror-to-gitlab.yml
+newsletter-draft.yml
+newsletter-draft-refresh.yml
+newsletter-state-reconcile.yml
+opening-digest.yml
+opening-night-completeness-check.yml
+opening-night-stage-alert.yml
+poll-loureviews.yml
+posthog-monday.yml
+# WE aggregator auto-promotion backstop (task #1466): a stale run means at-worst
+# a slower discovery of new West End shows we don't have entries for yet — same
+# digest-only, self-healing shape as OB's regional promotion (which runs
+# unmonitored inside scrape-new-aggregators.yml), not user-facing staleness
+# worth paging on. Failures alert via notify-failure (warning severity).
+promote-we-aggregator.yml
+# Off-West End venue-page promotion (BRO-4204 S4-T12): the OWE sibling of the
+# entry above — a stale run means staged venue-page candidates wait a day
+# longer to become rows, not user-facing staleness. Failures alert via
+# notify-failure (warning severity); the daily digest covers the rest.
+promote-owe-venue-candidates.yml
+process-review-formspree.yml
+purge-archives-history.yml
+rebuild-fast.yml
+recollect-for-scores.yml
+reconcile-broadcast-state.yml
+recover-wsj-subscriber.yml
+reddit-engagement-digest.yml
+rediscover-urls.yml
+regenerate-tier-configs.yml
+review-refresh.yml
+rotate-apple-secret.yml
+rotate-gitlab-token.yml
+scoring-audit.yml
+scrape-alltime-grosses.yml
+scrape-bww-reviews.yml
+scrape-dtli-show-score.yml
+scrape-new-aggregators.yml
+scrape-nysr.yml
+scrape-theatre-reviews.yml
+scrape-thestage-roundups.yml
+scrape-waltz-costs.yml
+scrape-wp-blogs.yml
+send-follow-notifications.yml
+sentry-triage.yml
+# Self-heal for orphan slim show files (BRO-3507), same low-stakes shape as
+# fix-circular-duplicate-pairs.yml/dedupe-same-url-bylines.yml above: a stale
+# run means the "Audit orphan slim show files" gate in test.yml sits red
+# longer, not user-facing staleness worth paging on.
+self-heal-orphan-show-files.yml
+snapshot-audience-grades.yml
+snapshot-audience-history.yml
+snapshot-award-scores.yml
+social-post.yml
+submit-indexnow.yml
+sync-followers.yml
+test-ugc-roundtrip.yml
+update-broadway-com.yml
+update-critic-consensus.yml
+update-lbo.yml
+update-ltd.yml
+update-precursor-awards.yml
+update-reddit-sentiment.yml
+update-seatplan.yml
+update-tony-odds.yml
+ux-walkthrough.yml
+vercel-build-guard.yml
+vercel-demo.yml
+vercel-deploy.yml
+weekly-geo-audit.yml
+weekly-integrity.yml
+weekly-stubhub-validate.yml
+# 2026-07-12: daily duplicateOf heal sweep — self-healing legacy backlog; the
+# test.yml same-URL-bylines gate reds if it stops working (digest coverage enough)
+dedupe-same-url-bylines.yml
+# 2026-07-12: weekly WE newsletter DRAFT dispatcher — human reviews before send;
+# a missed draft is noticed at send time, not user-facing staleness
+we-newsletter-draft.yml
+# 2026-07-13: weekly Show Score parser canary — drift surfaces in daily digest
+# via notify-failure; deploy job is push-triggered, not cron. Not user-facing latency.
+supabase-functions.yml
+# 2026-07-26: weekly newsletter DRAFT score-drift refresh (task #481) — same
+# class as we-newsletter-draft.yml above: it refreshes an UNSENT draft that the
+# owner reviews before sending, so a missed run is caught at send time and is
+# never user-facing. Digest-only; paging here would add noise, not safety.
+newsletter-draft-refresh.yml
+# 2026-07-31: CI-side delayed re-verification for push-with-retry.sh pushes
+# (task #677) — every 20min re-check of recently-pushed SHAs via gh api
+# compare. A missed run just means the #668/#619 revert-class detection
+# window widens slightly; it's a low-stakes safety net atop push-with-retry.sh's
+# own push-time verify, not user-facing staleness. Digest-only.
+check-push-ledger.yml
+# 2026-08-03: weekly SERP-census recall measurement (Coverage Verdict S1,
+# tasks #872/#898/#901). Pure measurement — it gates nothing and changes no
+# user-facing data, so a missed run costs a data point, not correctness. It
+# also monitors its own absence: health-check.js's "Coverage: SERP census
+# recall" check warns when data/audit/census-recall-status.json goes stale
+# (tests/unit/health-check-census-recall.test.mjs, "a stale weekly run warns
+# that the detector itself has gone blind"), which is strictly better cron
+# coverage than CRITICAL_CRONS' generic recency page. Digest-only.
+audit-census-recall.yml
+# 2026-08-03: weekly seeded adversarial coverage probe (Coverage Verdict S5,
+# task #903 — the final sprint). Pure measurement, same posture as
+# audit-census-recall.yml: gates nothing, changes no user-facing data, so a
+# missed run costs a data point. Also monitors its own absence: health-check.js's
+# "Coverage: adversarial probe" check warns when
+# data/audit/coverage-adversarial-probe-status.json goes stale
+# (tests/unit/health-check-coverage-probe.test.mjs), which is strictly better
+# cron coverage than CRITICAL_CRONS' generic recency page. Digest-only.
+coverage-adversarial-probe.yml
+
+# 2026-08-26 (BRO-2441): weekly clock-shift audit for tests that pass today
+# and fail purely from calendar drift. Gates nothing (schedule +
+# workflow_dispatch only, never push/pull_request) and changes no
+# user-facing data — a missed run just means a real bug (an armed but
+# undetected time bomb) surfaces a week later than it could have, not a
+# correctness regression right now. New findings file a Linear issue per
+# bomb directly (routeAlert disposition:'auto'), which is itself the
+# alerting channel — a silently-broken cron here degrades to "no new Linear
+# issues", the same shape as every other cron in this exempt list rather
+# than a unique risk that needs CRITICAL_CRONS' generic recency page.
+audit-time-bomb-tests.yml
+
+# 2026-08-09: fails loud on its own push trigger the moment a migration lands
+# without being applied (see the workflow's header comment); the weekly cron
+# is a secondary drift check for dashboard-side edits, not the primary signal
+# a user could notice missing — real-time paging on push already covers the
+# case that matters. Digest-only for the weekly leg.
+verify-schema.yml
+
+# Card #1766: a stale baseline just means test.yml's outlet-registry --strict
+# gate can flap red again on the next new critic outlet — visible immediately
+# via a red main build, not a silent staleness a user would notice. Digest-only.
+outlet-registry-baseline-maintenance.yml
+
+# Weekly stale-flag cleanup sweeps — a stale/missed run just means slower
+# backlog drain (files stay excluded from scoring a bit longer, same as
+# before this workflow existed), not user-facing staleness worth paging on.
+# Digest-only, matches the other weekly audit-*.yml entries above.
+clear-stale-suspected-misattribution-flags.yml
+clear-wrong-show-blockers.yml
+clear-stale-wrong-production-flags.yml
+clear-stale-wrong-show-flags.yml
+clear-stale-roundup-flags.yml
+
+# BRO-54: daily safety-net rotation for data/audit/stage-latency.jsonl.
+# emitStage() already self-rotates the log inline on every pipeline write;
+# this cron only matters if no pipeline writes for a while. A stale/missed
+# run just means the file grows a bit longer before the next rotation —
+# it's already on the ALLOW_LARGE allowlist + 90MiB hard cap in
+# check-file-sizes/action.yml, so there's no user-facing staleness or gate
+# risk to page on. Failures alert via notify-failure (warning severity).
+stage-latency-rotation.yml
+
+# BRO-3060: read-only backlog-health monitor for scripts/linear-drain-parked.js
+# (real dispatch runs on the Mac via launchd, disabled by default — see that
+# plist's header). A stale/missed run just means a slower-to-notice pileup of
+# undispatched automation-parked issues, not user-facing staleness — its own
+# job failure (>1 cap's worth idle) already surfaces via notify-failure
+# (warning severity) and the daily digest. Not real-time-paging material.
+check-linear-drain-health.yml
+
+# BRO-3092: daily drain of the zero-score-impact self-contradictory-clear
+# backlog. Exactly the shape of outlet-registry-baseline-maintenance.yml
+# above: a stale or missed run just means test.yml's Data Validation drain
+# acceptance test can go red again on the next new contradiction — visible
+# immediately as a red main build, which is the whole signal this cron
+# exists to prevent, not a silent staleness a user could notice. Its own
+# failures surface via notify-failure (warning severity) and the daily
+# digest. Digest-only, not real-time-paging material.
+drain-self-contradictory-clears.yml
+
+# analyze-traffic-sources.yml (BRO-3419): weekly Monday traffic-source report,
+# owner-facing on the run Summary page only. A missed week costs a report, not
+# a user-facing page; failures surface via notify-failure + the daily digest.
+analyze-traffic-sources.yml
+
+# land-retry-cancelled.yml (BRO-4653): cron is only a backstop; the sweep's real
+# trigger is every Land / Autonomous Merge completion. A missed cron costs a
+# delayed re-run of an evicted landing, which the next completion catches;
+# failures surface via notify-failure + the daily digest.
+land-retry-cancelled.yml
+
+# main-infra-rerun.yml (BRO-4754): re-runs the newest main test.yml run when
+# GitHub never gave its failed jobs a runner. A missed tick leaves that run red
+# until the next push or tick; no user-facing page goes stale. Failures surface
+# via notify-failure + the daily digest.
+main-infra-rerun.yml
+
+# detect-star-band-regressions.yml (BRO-4770): 6-hourly detector that flags needsRescore on
+# star-band drift and scoring clobbers in recently opened shows. Self-repairing (the normal
+# drain re-scores), failures surface via notify-failure + the daily digest.
+detect-star-band-regressions.yml
+# BRO-934: auto-expiry checker for the opening-night freeze; a no-op unless a freeze is active.
+automation-freeze.yml
+# BRO-4745: Codex card runner. Not user-facing; each run posts a summary on BRO-4745, failures reach the digest via notify-failure.
+codex-runner.yml
+# Daily historical review backfill (BRO-4146): low-stakes, re-sends the same
+# slice the next day if a run fails (cursor advances only once its gather run starts).
+historical-backfill.yml

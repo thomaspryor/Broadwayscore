@@ -1,0 +1,239 @@
+{
+  "_meta": {
+    "cohort": "data/audit/recovery-targets-2026-04-26.json",
+    "cohortTag": "outlier_safe-2026-04-26",
+    "startedAt": "2026-04-27T00:42:50Z",
+    "completedAt": "2026-04-27T00:58:15.718Z",
+    "interrupted": true,
+    "abortReason": "manual-kill (run was taking too long due to cross-product blow-up; wrapper since fixed to group-by-show)",
+    "durationSec": 800
+  },
+  "summary": {
+    "cohortSize": 1009,
+    "alreadyRecovered": 3,
+    "missing": 0,
+    "queued": 20,
+    "attempted": 12,
+    "succeeded": 1,
+    "failed": 19,
+    "successRate": 0.05,
+    "estimatedCostUsd": 0.0155
+  },
+  "tierBreakdown": {
+    "archive": 3,
+    "brightdata": 3,
+    "untouched": 13,
+    "scrapingbee": 1
+  },
+  "successes": [
+    {
+      "showId": "33-variations-2009",
+      "file": "about-entertainment--ben-brantley.json",
+      "outletId": "about-entertainment",
+      "url": "http://theater.nytimes.com/2009/03/10/theater/reviews/10thir.html",
+      "postChars": 8530,
+      "tier": "archive",
+      "success": true
+    }
+  ],
+  "failures": [
+    {
+      "showId": "33-variations-2009",
+      "file": "variety--charles-isherwood.json",
+      "outletId": "variety",
+      "url": "https://variety.com/2008/more/reviews/excerpt-tim-tom-an-american-comedy-in-black-and-white-1200471508/",
+      "postChars": 0,
+      "tier": "brightdata",
+      "success": false,
+      "reason": "no-text-recovered"
+    },
+    {
+      "showId": "a-behanding-in-spokane-2010",
+      "file": "about-entertainment--ben-brantley.json",
+      "outletId": "about-entertainment",
+      "url": "http://theater.nytimes.com/2010/03/05/theater/reviews/05behanding.html?ref=theater",
+      "postChars": 0,
+      "tier": "untouched",
+      "success": false,
+      "reason": "no-text-recovered"
+    },
+    {
+      "showId": "a-naked-girl-on-the-appian-way-2005",
+      "file": "about-entertainment--ben-brantley.json",
+      "outletId": "about-entertainment",
+      "url": "http://theater.nytimes.com/2005/10/07/theater/reviews/07nake.html?adxnnl=1&amp;adxnnlx=1308331216-FFQTU+/R121x5huxesWpZw",
+      "postChars": 0,
+      "tier": "untouched",
+      "success": false,
+      "reason": "no-text-recovered"
+    },
+    {
+      "showId": "110-in-the-shade-2007",
+      "file": "wsj--terry-teachout.json",
+      "outletId": "wsj",
+      "url": "https://www.wsj.com/articles/SB117961869834728582",
+      "postChars": 0,
+      "tier": "untouched",
+      "success": false,
+      "reason": "no-text-recovered"
+    },
+    {
+      "showId": "1984-2017",
+      "file": "wsj--terry-teachout.json",
+      "outletId": "wsj",
+      "url": "https://www.wsj.com/articles/1984-review-big-brother-is-watching-on-broadway-1497653400",
+      "postChars": 0,
+      "tier": "untouched",
+      "success": false,
+      "reason": "no-text-recovered"
+    },
+    {
+      "showId": "33-variations-2009",
+      "file": "wsj--terry-teachout.json",
+      "outletId": "wsj",
+      "url": "https://www.wsj.com/articles/SB123788676543210987",
+      "postChars": 0,
+      "tier": "untouched",
+      "success": false,
+      "reason": "no-text-recovered"
+    },
+    {
+      "showId": "a-delicate-balance-2014",
+      "file": "wsj--terry-teachout.json",
+      "outletId": "wsj",
+      "url": "http://online.wsj.com/articles/an-albee-revival-tries-again-on-a-delicate-balance-now-on-broadway-1416525961",
+      "postChars": 0,
+      "tier": "archive",
+      "success": false,
+      "reason": "no-text-recovered"
+    },
+    {
+      "showId": "33-variations-2009",
+      "file": "newsday--unknown.json",
+      "outletId": "newsday",
+      "url": "https://www.newsday.com/services/newspaper/printedition/exploreli/ny-etfonda106062128mar10,0,1469262.story",
+      "postChars": 0,
+      "tier": "scrapingbee",
+      "success": false,
+      "reason": "no-text-recovered"
+    },
+    {
+      "showId": "a-christmas-story-the-musical-2012",
+      "file": "huffpost--mark-kennedy.json",
+      "outletId": "huffpost",
+      "url": "https://www.huffpost.com/huff-wires/20121119/us-theater-review-a-christmas-story/?utm_hp_ref=green&amp;ir=green",
+      "postChars": 0,
+      "tier": "untouched",
+      "success": false,
+      "reason": "no-text-recovered"
+    },
+    {
+      "showId": "a-christmas-story-the-musical-2012",
+      "file": "vulture--scott-brown.json",
+      "outletId": "vulture",
+      "url": "https://Check%20back%20in%20the%20AM%20for%20additional%20reviews!",
+      "postChars": 0,
+      "tier": "untouched",
+      "success": false,
+      "reason": "no-text-recovered"
+    },
+    {
+      "showId": "american-buffalo-2008",
+      "file": "theatermania--andy-propst.json",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/new-york-city-theater/news/american-buffalo_18815.html",
+      "postChars": 0,
+      "tier": "untouched",
+      "success": false,
+      "reason": "no-text-recovered"
+    },
+    {
+      "showId": "700-sundays-2004",
+      "file": "ap--mark-kennedy.json",
+      "outletId": "ap",
+      "url": "https://www.therepublic.com/view/story/dd4810c8f87a4f079c06ed09a4b488fa/US-Theater-Review-700-Sundays",
+      "postChars": 0,
+      "tier": "untouched",
+      "success": false,
+      "reason": "no-text-recovered"
+    },
+    {
+      "showId": "9-to-5-2009",
+      "file": "country-stars-central--christian-scalise.json",
+      "outletId": "country-stars-central",
+      "url": "https://www.countrystarscentral.com/9to5musicalreview.htm",
+      "postChars": 0,
+      "tier": "archive",
+      "success": false,
+      "reason": "no-text-recovered"
+    },
+    {
+      "showId": "a-behanding-in-spokane-2010",
+      "file": "ap--michael-kuchwara.json",
+      "outletId": "ap",
+      "url": "https://www.sfexaminer.com/entertainment/a-creepy-christopher-walken-jump-starts-martin-mcdonaghs-a-behanding-in-spokane-86421027.html",
+      "postChars": 0,
+      "tier": "untouched",
+      "success": false,
+      "reason": "no-text-recovered"
+    },
+    {
+      "showId": "a-behanding-in-spokane-2010",
+      "file": "ap--unknown.json",
+      "outletId": "ap",
+      "url": "https://hosted.ap.org/dynamic/stories/U/US_THEATER_REVIEW_BEHANDING_IN_SPOKANE_GCLB-?SITE=MAHYC&amp;SECTION=HOME&amp;TEMPLATE=DEFAULT",
+      "postChars": 0,
+      "tier": "untouched",
+      "success": false,
+      "reason": "no-text-recovered"
+    },
+    {
+      "showId": "1984-2017",
+      "file": "talkinbroadway--matthew-murray.json",
+      "outletId": "talkinbroadway",
+      "url": "https://www.talkinbroadway.com/world/1984.html",
+      "postChars": 0,
+      "tier": "brightdata",
+      "success": false,
+      "reason": "no-text-recovered"
+    },
+    {
+      "showId": "700-sundays-2013",
+      "file": "northjerseycom--robert-feldberg.json",
+      "outletId": "northjerseycom",
+      "url": "https://www.northjersey.com/arts_entertainment/theater/231859841_Theater_review___700_Sundays_.html?page=all",
+      "postChars": 0,
+      "tier": "untouched",
+      "success": false,
+      "reason": "no-text-recovered"
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "file": "cleveland--glenn-anderson.json",
+      "outletId": "cleveland",
+      "url": "https://www.audacy.com/star102cleveland/latest/glenns-review-of-a-beautiful-noise-at-playhouse-square",
+      "postChars": 0,
+      "tier": "untouched",
+      "success": false,
+      "reason": "no-text-recovered"
+    },
+    {
+      "showId": "a-christmas-carol-2019",
+      "file": "talkinbroadway--matthew-murray.json",
+      "outletId": "talkinbroadway",
+      "url": "https://www.talkinbroadway.com/world/ChristmasCarol.html",
+      "postChars": 0,
+      "tier": "brightdata",
+      "success": false,
+      "reason": "no-text-recovered"
+    }
+  ],
+  "notes": [
+    "Canary was interrupted before completion due to cross-product blow-up in REVIEW_FILTER × SHOW_FILTER.",
+    "Of 20 picked diverse cohort entries, 12 were processed by collect-review-texts.js before kill.",
+    "BRIGHT DATA ZONE IS DISABLED (trial limit reached) — Tier 3 was dead during canary.",
+    "WSJ login flow timed out on Browserbase for all WSJ entries (tier 1.5 failure).",
+    "About-entertainment URLs point to old nytimes.com paths returning 404 — likely permanent URL rot.",
+    "Wrapper logic since fixed: now groups by showId before spawning collect-review-texts.js, eliminating cross-product."
+  ]
+}

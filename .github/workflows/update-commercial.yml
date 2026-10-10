@@ -1,0 +1,225 @@
+name: Update Commercial Data
+
+on:
+  # Cron disabled — Sunday deep research (commercial-weekly.yml) handles this.
+  # Manual dispatch still available as fallback.
+  # schedule:
+  #   - cron: '0 16 * * 3'  # Wednesday 4pm UTC / 11am ET
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (no changes committed)'
+        required: false
+        type: boolean
+        default: false
+      gather_only:
+        description: 'Gather data only (no AI analysis)'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: commercial-data-write
+  cancel-in-progress: false
+
+jobs:
+  update-commercial:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 30-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Run commercial data update
+        id: update
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Subscription credentials for paywalled trade press sites
+          NYT_EMAIL: ${{ secrets.NYT_EMAIL }}
+          NYTIMES_PASSWORD: ${{ secrets.NYTIMES_PASSWORD }}
+          VULTURE_EMAIL: ${{ secrets.VULTURE_EMAIL }}
+          VULTURE_PASSWORD: ${{ secrets.VULTURE_PASSWORD }}
+        run: |
+          ARGS="--gather-all --gather-trade-full"
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          if [ "${{ github.event.inputs.gather_only }}" = "true" ]; then
+            ARGS="$ARGS --gather-only"
+          fi
+          # SEC EDGAR gathering (S3-T1, 2026-07-19): the previous
+          # `[ -n "$SEC_EDGAR_ENABLED" ]` shell gate checked an env var never
+          # set anywhere in this workflow (no job/step env: block, no repo
+          # secret/variable) — --gather-sec has never fired since inception.
+          # The underlying script already gates SEC gathering behind its own
+          # module-availability feature flag (scripts/update-commercial-data.js
+          # SEC_EDGAR_ENABLED, sec-edgar-scraper.js require() success), so
+          # this CLI flag just needs to always be passed.
+          ARGS="$ARGS --gather-sec"
+          node scripts/update-commercial-data.js $ARGS
+        # Continue even if there are Deep Research conflicts (they're logged, not failures)
+        continue-on-error: true
+
+      - name: Run commercial audit
+        if: always()
+        run: node scripts/audit-commercial-data.js
+        continue-on-error: true
+
+      - name: Validate data
+        if: always()
+        run: npm run test:data
+
+      - name: Build site
+        id: build
+        if: always()
+        run: npm run build
+        env:
+          NODE_ENV: production
+          NEXT_PUBLIC_SANITY_PROJECT_ID: fp1ft8k8
+          NEXT_PUBLIC_SANITY_DATASET: production
+          NEXT_PUBLIC_SANITY_API_VERSION: '2024-10-01'
+
+      - name: Commit and push changes
+        if: always() && steps.build.outcome != 'failure'
+        run: |
+          bash scripts/lib/git-add-existing.sh data/commercial-changelog.json data/audit/commercial-data-audit.json
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            WEEK_ENDING=$(node -e "try{const d=require('./data/commercial-changelog.json');const e=d.entries;console.log(e.length?e[e.length-1].weekEnding:'unknown')}catch(e){console.log('unknown')}")
+            git commit -m "data: Update commercial data for week ending $WEEK_ENDING
+
+          Automated weekly update of commercial scorecard data.
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+
+      - name: Push core data to private repo
+        if: always() && steps.build.outcome != 'failure'
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from update-commercial'
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: update-commercial
+
+      - name: Dispatch deploy
+        if: always()
+        uses: ./.github/actions/dispatch-deploy
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Update Commercial Data Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Commercial Data Update Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f data/commercial-changelog.json ]; then
+            # Extract the latest entry's stats
+            node -e "
+              const changelog = require('./data/commercial-changelog.json');
+              const entries = changelog.entries || [];
+              const latest = entries[entries.length - 1];
+              if (latest) {
+                console.log('- **Date:** ' + (latest.date || latest.weekEnding || 'unknown'));
+                console.log('- **Changes Applied:** ' + (latest.changesApplied || 0));
+                console.log('- **Changes Flagged:** ' + (latest.changesFlagged || 0));
+                console.log('- **Deep Research Conflicts:** ' + (latest.deepResearchConflicts || 0));
+                if (latest.deepResearchConflicts > 0) {
+                  console.log('');
+                  console.log('### ⚠️ Deep Research Conflicts Blocked');
+                  console.log('');
+                  console.log('The following changes were blocked by Deep Research protection:');
+                  if (latest.blocked) {
+                    for (const b of latest.blocked) {
+                      console.log('- **' + b.slug + '.' + b.field + '**: ' + (b.discrepancy || 'conflict detected'));
+                    }
+                  }
+                }
+              } else {
+                console.log('No changelog entries found.');
+              }
+            " >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Create issue on failure
+        if: always() && steps.update.outcome == 'failure' && github.event_name == 'schedule'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = 'Commercial Data Update Failed';
+            const body = `## Commercial Data Update Failed
+
+            The weekly commercial data update encountered an error.
+
+            **Run:** [${context.runId}](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})
+            **Time:** ${new Date().toISOString()}
+
+            Please check the workflow logs for details.
+
+            ### Common Issues
+            - ScrapingBee API rate limit or key issue
+            - Reddit posts not found (u/Boring_Waltz_9545 may have skipped a week)
+            - Claude API error
+            - Data validation failure
+
+            ---
+            *This issue was automatically created by the commercial data workflow.*`;
+
+            // Check if similar issue already exists
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'automated,bug'
+            });
+
+            const existingIssue = issues.data.find(i => i.title === title);
+            if (!existingIssue) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+                body: body,
+                labels: ['automated', 'bug', 'commercial']
+              });
+            }

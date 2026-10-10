@@ -1,0 +1,393 @@
+#!/bin/bash
+# Pre-push hook (version-controlled — points here via core.hooksPath).
+#
+# Two responsibilities:
+#   1. CLAUDE.md critical-section protection: catch concurrent sessions
+#      that silently revert protected sections of the repo's project
+#      instructions. (Original 2026-03-27 implementation.)
+#   2. CI lint gates running locally so violations don't burn a CI cycle:
+#      - audit-tests-vs-derived-data.js
+#      - audit-playwright-evaluate-click.js
+#      - audit-orphan-tests.js
+#
+# Install (one-time, per clone):
+#   ./scripts/setup-git-hooks.sh
+# Or directly:
+#   git config --local core.hooksPath scripts/hooks
+#
+# Bypass for genuine emergencies:
+#   git push --no-verify
+# Don't make a habit of it — the gates exist because the bugs they catch
+# all shipped at least once.
+
+set -uo pipefail
+
+# Read stdin ONCE into an array — git invokes pre-push with push specs on
+# stdin and you only get to consume them once. Two separate `while read`
+# loops would silently make the second one a no-op (first attempt at this
+# hook had exactly that bug — 2026-05-26).
+PUSH_SPECS=()
+while read line; do
+  PUSH_SPECS+=("$line")
+done
+
+CRITICAL_PATTERNS=(
+  "Notion Brain"
+  "Test Extraction Pattern"
+  "Email Broadcast Safety"
+  "Opening Night Readiness"
+)
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "$REPO_ROOT"
+
+# Aggregate all changed paths across the push range, plus run the
+# CLAUDE.md guard in the same pass. Track whether ANY spec is a real
+# (non-deletion) push — if every spec is a delete, skip audits entirely.
+ALL_CHANGED_FILES=""
+HAVE_NON_DELETE_SPEC=0
+
+# ${arr[@]+...} guard: /bin/bash is 3.2, where expanding an EMPTY array under
+# `set -u` is a fatal "unbound variable" (fixed in bash 4.4). Git can invoke
+# this hook with empty stdin during push races — the hook must not crash then.
+for spec in ${PUSH_SPECS[@]+"${PUSH_SPECS[@]}"}; do
+  read local_ref local_oid remote_ref remote_oid <<<"$spec"
+  # Skip deletions (local_oid is all zeros for `git push --delete`)
+  [ "$local_oid" = "0000000000000000000000000000000000000000" ] && continue
+  HAVE_NON_DELETE_SPEC=1
+
+  # Non-fast-forward guard on protected branches: a push that isn't a
+  # fast-forward of the remote's current tip only succeeds as a FORCE push.
+  # 2026-07-19 incident: a worktree-merge session with a stale local main
+  # force-pushed over a concurrently-landed merge commit 17s after it landed,
+  # silently destroying it (origin allow_force_pushes=false but
+  # enforce_admins=false lets any admin-credentialed local session bypass
+  # that server-side rule). This client-side check makes that class of push
+  # impossible from any session that has this hook installed, regardless of
+  # what server-side branch protection allows. See card #208.
+  case "$remote_ref" in
+  refs/heads/main | refs/heads/master)
+    # BRO-3425 / BRO-3873 step 5: sessions do not push to main. They land
+    # via scripts/merge-worktree-to-main.sh → land/<branch> → land.yml
+    # (delta-vs-base gates, serialized fast-forward). Bots keep their direct
+    # push: CI ($GITHUB_ACTIONS/$CI) and scripts/lib/push-with-retry.sh
+    # (exports PUSH_WITH_RETRY_CALLER=bot). Rollback: LAND_ENFORCE_OFF=1
+    # (this hook) / LAND_LEGACY_DIRECT=1 (the merge script's legacy mode);
+    # both are allowed AND logged. Decision + ledger row live in
+    # scripts/lib/direct-push-guard.sh (colocated .test.mjs runs the real
+    # hook). Guarded on the lib existing so an older checkout behaves as
+    # before rather than refusing everything.
+    # The lib ships NEXT TO THIS HOOK (scripts/hooks/../lib) — resolved from
+    # the hook's own location first, so whichever checkout core.hooksPath
+    # names supplies both. Then the canonical checkout (git-common-dir's
+    # parent), then the pushing worktree. A worktree branched before this
+    # lib existed has no copy of its own — precisely the population the rule
+    # is for (live 2026-09-21: a probe from such a worktree, pushing through
+    # this hook, reached the remote because the lookup fell back to that
+    # worktree's lib-less scripts/lib and the guard silently skipped).
+    _dpg_root=""
+    _dpg_self=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." 2>/dev/null && pwd)
+    _dpg_common=$(git rev-parse --git-common-dir 2>/dev/null || true)
+    case "$_dpg_common" in
+      "") _dpg_canon="" ;;
+      /*) _dpg_canon=$(dirname "$_dpg_common") ;;
+      *)  _dpg_canon=$(cd "$REPO_ROOT/$_dpg_common/.." 2>/dev/null && pwd) ;;
+    esac
+    for _dpg_cand in "$_dpg_self" "$_dpg_canon" "$REPO_ROOT"; do
+      if [ -n "$_dpg_cand" ] && [ -f "$_dpg_cand/scripts/lib/direct-push-guard.sh" ]; then _dpg_root="$_dpg_cand"; break; fi
+    done
+    if [ -n "$_dpg_root" ]; then
+      # shellcheck source=scripts/lib/direct-push-guard.sh
+      source "$_dpg_root/scripts/lib/direct-push-guard.sh"
+      # The paths this push changes (remote tip..local tip): a push that
+      # touches no code path is data/memory automation and is allowed
+      # (allow:data-only). Unknown range (no remote tip) → judged as code.
+      _dpg_changed="/tmp/pre-push-direct-changed.$$.$RANDOM"
+      if [ "$remote_oid" != "0000000000000000000000000000000000000000" ]; then
+        git diff --name-only "$remote_oid..$local_oid" >"$_dpg_changed" 2>/dev/null || : >"$_dpg_changed"
+      else
+        : >"$_dpg_changed"
+      fi
+      dp_decision=$(direct_push_guard_decision "$remote_ref" "$_dpg_changed")
+      rm -f "$_dpg_changed"
+      direct_push_guard_log "$dp_decision" "$remote_ref" "$local_oid" "$REPO_ROOT"
+      if [ "$dp_decision" = "refuse" ]; then
+        echo ""
+        echo "=== PRE-PUSH BLOCKED: direct push to ${remote_ref#refs/heads/} ==="
+        echo ""
+        echo "  $DIRECT_PUSH_REFUSAL_MESSAGE"
+        echo "  (this push changes code paths — src/, scripts/, .github/workflows/, config;"
+        echo "   data/memory-only pushes are allowed and never reach this message)"
+        echo ""
+        echo "  From your worktree:  bash scripts/merge-worktree-to-main.sh"
+        echo "  It pushes land/<branch>, land.yml runs the gates against the rebased"
+        echo "  tree and fast-forwards main; the script prints LANDED with the sha."
+        echo ""
+        echo "  If this push came from an OLD copy of the merge script that already"
+        echo "  merged into the shared main checkout: nothing is lost — your branch"
+        echo "  still has the commits. Run origin/main's copy instead:"
+        echo "    git fetch origin main && git show origin/main:scripts/merge-worktree-to-main.sh > \"\${TMPDIR:-/tmp}/land-main.sh\" && bash \"\${TMPDIR:-/tmp}/land-main.sh\" <branch>"
+        echo ""
+        echo "  Rollback only (logged): LAND_ENFORCE_OFF=1 git push … / LAND_LEGACY_DIRECT=1 bash scripts/merge-worktree-to-main.sh"
+        echo ""
+        exit 1
+      fi
+    fi
+    # Shallow- and error-aware (task #1497, same false-negative class as
+    # #1489): a raw `merge-base --is-ancestor` on a shallow-truncated shared
+    # checkout can answer "not an ancestor" for a remote_oid that genuinely
+    # IS an ancestor, which would BLOCK a legitimate fast-forward push here.
+    # Route through landing-verify.js (exit 0=LANDED/ancestor,
+    # 1=NOT_LANDED/not-ancestor, 2=UNKNOWN) so a shallow or errored check
+    # never masquerades as a definitive "not an ancestor" — only exit 1
+    # blocks the push; UNKNOWN fails open (never NOT_LANDED) and lets the
+    # push proceed, same as a shallow checkout landing on this same commit.
+    non_ff=1
+    if [ "$remote_oid" != "0000000000000000000000000000000000000000" ]; then
+      if command -v node >/dev/null 2>&1 && [ -f "$REPO_ROOT/scripts/lib/landing-verify.js" ]; then
+        node "$REPO_ROOT/scripts/lib/landing-verify.js" --sha="$remote_oid" --ref="$local_oid" --cwd="$REPO_ROOT" >/dev/null 2>&1
+        verify_status=$?
+        [ "$verify_status" != "1" ] && non_ff=0
+      elif git merge-base --is-ancestor "$remote_oid" "$local_oid" 2>/dev/null; then
+        non_ff=0
+      fi
+    else
+      non_ff=0
+    fi
+    if [ "$non_ff" = "1" ]; then
+      branch_name="${remote_ref#refs/heads/}"
+      echo ""
+      echo "=== PRE-PUSH BLOCKED: non-fast-forward push to $branch_name ==="
+      echo ""
+      echo "  Local $local_oid does not build on remote's current tip $remote_oid."
+      echo "  This would only succeed as a FORCE push, which can silently destroy"
+      echo "  commits someone else just landed on $branch_name (2026-07-19 incident)."
+      echo ""
+      echo "  Fix: git fetch origin && git merge origin/$branch_name (never rebase a"
+      echo "  shared branch), then retry — or use scripts/merge-worktree-to-main.sh,"
+      echo "  which does exactly this with safe retry-via-merge."
+      echo ""
+      echo "  Bypass ONLY for a deliberate, approved history rewrite:"
+      echo "    git push --no-verify"
+      echo ""
+      exit 1
+    fi
+    ;;
+  esac
+
+  if [ "$remote_oid" = "0000000000000000000000000000000000000000" ]; then
+    # New branch — diff against the merge-base with origin/main if possible.
+    base=$(git merge-base "$local_oid" origin/main 2>/dev/null || true)
+    if [ -n "$base" ]; then
+      range_files=$(git diff --name-only "$base..$local_oid" 2>/dev/null || true)
+    else
+      # No upstream we can compare against — fall back to listing this commit's tree
+      range_files=$(git show --name-only --pretty=format: "$local_oid" 2>/dev/null || true)
+    fi
+  else
+    range_files=$(git diff --name-only "$remote_oid..$local_oid" 2>/dev/null || true)
+  fi
+  ALL_CHANGED_FILES="$ALL_CHANGED_FILES
+$range_files"
+
+  # CLAUDE.md guards: run whenever CLAUDE.md is part of this push.
+  if grep -q "^CLAUDE.md$" <<<"$range_files"; then
+    # 1. Critical-section revert guard (only meaningful when there's a
+    #    remote_oid to compare against).
+    if [ "$remote_oid" != "0000000000000000000000000000000000000000" ]; then
+      remote_content=$(git show "$remote_oid:CLAUDE.md" 2>/dev/null)
+      local_content=$(git show "$local_oid:CLAUDE.md" 2>/dev/null)
+      if [ -n "$remote_content" ]; then
+        for pattern in "${CRITICAL_PATTERNS[@]}"; do
+          if grep -q "$pattern" <<<"$remote_content" && \
+             ! grep -q "$pattern" <<<"$local_content"; then
+            echo ""
+            echo "=== PRE-PUSH BLOCKED: CLAUDE.md section reverted ==="
+            echo ""
+            echo "  The remote CLAUDE.md contains '$pattern'"
+            echo "  but your version removes it. Concurrent session conflict?"
+            echo "  Pull, re-apply, ensure both sections are present."
+            echo ""
+            echo "  Inspect: git diff $remote_oid..$local_oid -- CLAUDE.md"
+            echo ""
+            exit 1
+          fi
+        done
+      fi
+    fi
+
+    # 2. Byte cap guard (BRO-124): scripts/lib/claude-md-anchors.json's
+    #    byteLimit is enforced in CI (test.yml's Lint Workflows job) but,
+    #    before this, nowhere locally — an overage only surfaced after push,
+    #    once CI failed. Same config, same check, run here so it's caught
+    #    before the push leaves the machine. Git-plumbing + decision logic
+    #    live in scripts/lib/claude-md-byte-cap-gate.sh / check-claude-md-
+    #    byte-cap.js (required/invoked directly by scripts/pre-push.test.mjs
+    #    per CLAUDE.md rule 15) — this is a thin call, not a second copy.
+    if [ -f "$REPO_ROOT/scripts/lib/claude-md-byte-cap-gate.sh" ]; then
+      CAP_OUT="/tmp/pre-push-claude-md-cap.$$.$RANDOM.out"
+      if ! bash "$REPO_ROOT/scripts/lib/claude-md-byte-cap-gate.sh" "$REPO_ROOT" "$local_oid" >"$CAP_OUT" 2>&1; then
+        echo ""
+        echo "=== PRE-PUSH BLOCKED: CLAUDE.md exceeds byte cap ==="
+        echo ""
+        cat "$CAP_OUT"
+        echo ""
+        echo "  Same cap .github/workflows/test.yml's Lint Workflows job enforces in"
+        echo "  CI — trim CLAUDE.md or move detail to memory/ before pushing."
+        echo ""
+        echo "  (Bypass for emergencies: git push --no-verify)"
+        echo ""
+        rm -f "$CAP_OUT"
+        exit 1
+      fi
+      rm -f "$CAP_OUT"
+    fi
+  fi
+done
+
+run_audit() {
+  local label="$1"
+  local script="$2"
+  # PID+random-scoped, not a fixed filename: this repo commonly has many
+  # concurrent local `git push` invocations (parallel worktree sessions), and
+  # a shared /tmp/pre-push-audit.out let one process's rm -f race another's
+  # still-in-flight `cat`, corrupting/blanking the error output it prints.
+  local AUDIT_OUT="/tmp/pre-push-audit.$$.$RANDOM.out"
+  if ! node "$script" >"$AUDIT_OUT" 2>&1; then
+    echo ""
+    echo "=== PRE-PUSH BLOCKED: $label failed ==="
+    echo ""
+    cat "$AUDIT_OUT"
+    echo ""
+    echo "(Bypass for emergencies: git push --no-verify)"
+    rm -f "$AUDIT_OUT"
+    exit 1
+  fi
+  rm -f "$AUDIT_OUT"
+}
+
+# Pure-deletion push (every spec was a delete) — nothing to audit.
+if [ "$HAVE_NON_DELETE_SPEC" = "0" ]; then
+  exit 0
+fi
+
+# Non-delete specs exist but we couldn't determine the file list (rare:
+# truly first push, no upstream to diff against). Run all audits as a
+# safe default rather than skipping.
+if [ -z "$(echo "$ALL_CHANGED_FILES" | tr -d '[:space:]')" ]; then
+  run_audit "tests-vs-derived-data" "scripts/audit-tests-vs-derived-data.js"
+  run_audit "orphan-tests" "scripts/audit-orphan-tests.js"
+  run_audit "playwright-evaluate-click" "scripts/audit-playwright-evaluate-click.js"
+  exit 0
+fi
+
+# Range-scoped audits (unbounded-fetch, tests-vs-derived-data, orphan-tests,
+# playwright-evaluate-click, write-routing lint) — shared with
+# scripts/merge-worktree-to-main.sh via scripts/lib/run-push-audits.sh (card
+# #835). Previously duplicated inline here; the merge script ran NONE of
+# them, so a worktree branch could merge onto local main unaudited and the
+# violation only surfaced later when an unrelated session's `git push` hit
+# this hook and ate someone else's failure. Extracting to a shared runner
+# keeps both call sites from drifting apart on gate list or scoping.
+if ! echo "$ALL_CHANGED_FILES" | "$REPO_ROOT/scripts/lib/run-push-audits.sh"; then
+  echo ""
+  echo "(Bypass for emergencies: git push --no-verify)"
+  exit 1
+fi
+
+# Workflow-guard lints + workflow audits (same scripts CI runs in test.yml's
+# Lint Workflows job). Workflow-scoped guards fire when the push touches
+# .github/workflows/ (or the guard script / its inputs); demo-flags fires on
+# src/ TypeScript changes. All pure grep / file reads, a few seconds total.
+WF_CHECKS=""
+if grep -qE "^\.github/workflows/.*\.ya?ml$|^scripts/lint-workflow-guards\.sh$|^\.gitattributes$|^scripts/setup-local-data\.sh$" <<<"$ALL_CHANGED_FILES"; then
+  WF_CHECKS="workflows"
+fi
+if grep -qE "^src/.*\.(ts|tsx)$" <<<"$ALL_CHANGED_FILES"; then
+  WF_CHECKS="${WF_CHECKS:+$WF_CHECKS,}demo-flags"
+fi
+# BRO-3684: alert-ledger-commit now shells out to scan-alert-ledger-gaps.js,
+# which in turn requires alert-ledger-commit-check.js — neither file matched
+# any trigger above (the broad `^scripts/.*\.js$` one below only adds
+# ledger-coverage), so a scanner/checker-only edit that broke the check would
+# not re-run it locally before push.
+if grep -qE "^scripts/lib/(scan-alert-ledger-gaps|alert-ledger-commit-check)\.js$" <<<"$ALL_CHANGED_FILES"; then
+  WF_CHECKS="${WF_CHECKS:+$WF_CHECKS,}alert-ledger-commit"
+fi
+# reset-soft-partial-commit scans scripts/*.js content (not workflow YAML),
+# so it needs its own scripts/-scoped trigger — same class of gap
+# lint-write-routing.sh's checks fixed above (card #687).
+if grep -qE "^scripts/[^/]+\.js$|^scripts/lib/reset-soft-partial-commit-check\.js$" <<<"$ALL_CHANGED_FILES"; then
+  WF_CHECKS="${WF_CHECKS:+$WF_CHECKS,}reset-soft-partial-commit"
+fi
+# ledger-coverage's AST walk covers all of scripts/**/*.js (any file can add
+# or remove a serpQuery()/discoverCorrectUrl() call reachable from an
+# existing workflow entry point), so it needs its own scripts/-scoped
+# trigger — same class of gap as reset-soft-partial-commit above.
+if grep -qE "^scripts/.*\.js$" <<<"$ALL_CHANGED_FILES"; then
+  WF_CHECKS="${WF_CHECKS:+$WF_CHECKS,}ledger-coverage"
+fi
+if [ -n "$WF_CHECKS" ] && [ -f scripts/lint-workflow-guards.sh ]; then
+  GUARDS_OUT="/tmp/pre-push-wf-guards.$$.out"
+  if ! bash scripts/lint-workflow-guards.sh "$WF_CHECKS" >"$GUARDS_OUT" 2>&1; then
+    echo ""
+    echo "=== PRE-PUSH BLOCKED: workflow-guard lint failed (CI would go red) ==="
+    echo ""
+    cat "$GUARDS_OUT"
+    echo ""
+    echo "(Bypass for emergencies: git push --no-verify)"
+    rm -f "$GUARDS_OUT"
+    exit 1
+  fi
+  rm -f "$GUARDS_OUT"
+fi
+
+# Node workflow audits (concurrency groups, notify-failure/playwright/push-retry
+# hygiene, cron-health coverage) — only when the push touches workflow files.
+if grep -qE "^\.github/workflows/.*\.ya?ml$" <<<"$ALL_CHANGED_FILES"; then
+  run_audit "workflow-concurrency" "scripts/audit-workflow-concurrency.js"
+  run_audit "workflow-hygiene" "scripts/audit-workflow-hygiene.js"
+  run_audit "cron-health-coverage" "scripts/audit-cron-health-coverage.js"
+fi
+
+# TypeScript typecheck — the one diff-local code-correctness gate worth running
+# on push. Runs only when this push touches .ts/.tsx. tsc is project-wide (types
+# interconnect, so it can't be scoped to changed files), but CI keeps main green,
+# so a local failure almost always means THIS change broke types — catch it
+# before it lands on the ungated trunk (direct-push to main has no required
+# checks) instead of burning a CI cycle and reddening main for everyone.
+#
+# DATA GUARD: src/lib/data-*.ts import the gitignored data JSON as modules
+# (`import reviews from '../../data/reviews.json'`). A bare worktree doesn't have
+# those files (they're symlinked only in the primary checkout / fetched in CI),
+# so tsc would fail with TS2307 module-not-found for reasons unrelated to the
+# push — a false-block on the worktree workflow this repo runs on. So we run tsc
+# ONLY when the data is actually present: it gates real type errors from
+# data-equipped checkouts and safely no-ops in bare worktrees (never false-block).
+#
+# Deliberately NOT added here: `next lint` and the ~240-file no-data unit-test
+# batch. Both are whole-project gates that would block EVERY session's push the
+# moment main has any pre-existing lint/test failure (the same shared-red problem
+# as the corpus gates, just for code) and are slow enough (~1-2 min) to drive a
+# `--no-verify` habit that defeats the hook. tsc is the sweet spot: ~30-60s,
+# exit-code-clean, and near-zero false-blocks because CI already keeps main green.
+if grep -qE "\.(ts|tsx)$" <<<"$ALL_CHANGED_FILES"; then
+  if [ -f data/reviews.json ] && [ -f data/shows.json ]; then
+    echo "pre-push: tsc --noEmit (push touches TypeScript)…"
+    if ! npx tsc --noEmit >/tmp/pre-push-tsc.out 2>&1; then
+      echo ""
+      echo "=== PRE-PUSH BLOCKED: tsc --noEmit failed ==="
+      echo ""
+      cat /tmp/pre-push-tsc.out
+      echo ""
+      echo "(Bypass for emergencies: git push --no-verify)"
+      rm -f /tmp/pre-push-tsc.out
+      exit 1
+    fi
+    rm -f /tmp/pre-push-tsc.out
+  else
+    echo "pre-push: skipping tsc (data/*.json absent — bare worktree; tsc needs them)"
+  fi
+fi
+
+exit 0

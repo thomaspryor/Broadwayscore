@@ -1,0 +1,80 @@
+name: Opening-night lane rehearsal
+
+# BRO-4787 (epic BRO-4210 phase 4). Replays the lane's fixture through its full path in dry-run (discovery, trust-model
+# rows, merge-by-key publish, a local static server standing in for the live site, the ledger) and commits the verdict
+# record the arm gate reads (data/audit/lane-rehearsal.json). The lane arms for a real opening only if the last
+# rehearsal passed, is recent and was run against the current lane code (scripts/opening-night-lane-rehearse.js
+# --arm-check). A failure here leaves the lane disarmed: the old pipeline runs unchanged, which is the safe direction.
+#
+# No secrets, no network beyond npm: every page is a fixture and the "live site" is 127.0.0.1. The fixture is
+# synthetic until a real opening is recorded; latencies are modelled (see rehearsal.js DEFAULT_LATENCY).
+#
+# Schedule: Mondays 06:10 UTC, and on any push to main touching scripts/lib. In check-cron-health.yml's CRITICAL_CRONS at 184h: a rehearsal that silently stops
+# disarms the lane with nobody told. The first run needs a manual dispatch after landing (never-run monitor).
+
+on:
+  schedule:
+    - cron: '10 6 * * 1'
+  # The record vouches only for the lane code that passed it (a hash over the lane and everything it requires), so any
+  # change under scripts/lib re-rehearses at once instead of leaving the lane disarmed until Monday. The job is
+  # secret-free and takes ~2 minutes; the verdict commit touches data/audit only, which this filter excludes.
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/lib/**'
+      - 'scripts/opening-night-lane-rehearse.js'
+      - '.github/workflows/lane-rehearsal.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: lane-rehearsal
+  cancel-in-progress: false
+
+jobs:
+  rehearse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      # The script writes the record on pass, fail AND crash, so the previous pass can never stand in for a broken run.
+      - name: Rehearse
+        run: node scripts/opening-night-lane-rehearse.js --rehearse
+
+      - name: Commit verdict record
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/lane-rehearsal.json
+          if git diff --cached --quiet; then
+            echo "No state change to commit"
+            exit 0
+          fi
+          git commit -m "audit: lane rehearsal verdict [skip ci]"
+          bash scripts/lib/push-with-retry.sh 5 main
+
+      - name: Notify on failure
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Opening-night lane rehearsal failed'
+          description: 'The lane rehearsal failed or crashed, so the opening-night lane will NOT arm for the next opening and the old pipeline runs unchanged. Read data/audit/lane-rehearsal.json for the failing reviews (BRO-4787).'
+          severity: 'warning'
+          email: 'false'
+          min_consecutive_failures: '2'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

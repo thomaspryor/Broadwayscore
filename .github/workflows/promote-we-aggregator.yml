@@ -1,0 +1,173 @@
+# West End aggregator-listing auto-promotion (task #1466) — the WE analogue
+# of the OB regional-promotion step in scrape-new-aggregators.yml. Kept in
+# its own file rather than added to that already-large workflow: this script
+# has no functional dependency on PV/NYC/LBO/BWW scraping steps (it doesn't
+# re-scrape WET/LBO roundups for its own promotions — WE reviews ingest via
+# the existing per-show WET/TR/LBO discover libs on their own independent
+# cadence, same as any other show), so piggybacking on that file's triggers
+# would only add unwanted `needs:`/`if:` scoping surface for no benefit
+# (second-opinion review, 2026-08-14).
+name: Promote West End Aggregator Candidates
+
+on:
+  schedule:
+    # Daily, staggered 30 min after scrape-new-aggregators.yml's 14:00 UTC
+    # cron so both don't start core-data checkouts at the same instant.
+    - cron: '30 14 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (no writes)'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: promote-we-aggregator
+  cancel-in-progress: false
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node
+        uses: ./.github/actions/setup-node
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      # BRO-4204 S4-T10: this step used to wrap the run in `set +e … exit 0`
+      # and carry `continue-on-error: true`, so validate-data's exit code
+      # never failed the job — the same refused batch re-ran green every day
+      # (audit 2026-09-28: 9 "promoted" ids, none ever landed in shows.json).
+      # Now the promoter's exit code is captured so validate-data STILL runs
+      # afterwards (promotion may have modified shows.json even on a non-zero
+      # exit; validate-data.js arms push-core-data's sentinel refusal so a bad
+      # shows.json can never reach the private repo), and then validate-data's
+      # exit code fails the step — and the job. Safety valves unchanged: the
+      # script's MAX_PROMOTE_PER_RUN circuit breaker (writes NOTHING above 20
+      # promotions), the canonical-West-End-venue-only gate in
+      # decideWestEndAggregatorPromotion, and the push-core-data sentinel. No
+      # rollback logic is needed because, unlike the OB path, this script has
+      # no staging file (candidates are re-derived live from the WET/LBO
+      # listings each run). `cmd || RC=$?` is the load-bearing form under
+      # GHA's default `bash -eo pipefail` (.github/workflows/CLAUDE.md
+      # § Actionlint) — a bare `RC=$?` after a failing command is dead code.
+      - name: Discover + auto-promote West End aggregator-listing candidates
+        id: promote
+        if: always()
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ ! -f data/shows.json ]; then
+            echo "::warning::core data missing — skipping WE discovery this run"
+            exit 0
+          fi
+          DRY_FLAG=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then DRY_FLAG="--dry-run"; fi
+          PROMOTE_RC=0
+          node scripts/promote-we-aggregator-candidates.js --email --time-budget-min=25 $DRY_FLAG || PROMOTE_RC=$?
+          if [ "$PROMOTE_RC" -ne 0 ]; then
+            echo "::error::WE promotion script exited $PROMOTE_RC (failure email sent by the script)"
+          fi
+          # The log is tee'd for the job-summary step below, which lists the
+          # refused ids; `pipefail` makes `|| VALIDATE_RC=$?` see node's exit,
+          # not tee's.
+          VALIDATE_RC=0
+          node scripts/validate-data.js 2>&1 | tee "$RUNNER_TEMP/we-validate-data.log" || VALIDATE_RC=$?
+          if [ "$VALIDATE_RC" -ne 0 ]; then
+            echo "::error::validate-data FAILED after WE promotion (exit $VALIDATE_RC) — push-core-data will refuse the push (sentinel); the refused ids are in the job summary"
+            exit "$VALIDATE_RC"
+          fi
+          exit "$PROMOTE_RC"
+
+      # BRO-4204 S4-T10: what this run promoted, what it rejected (and now
+      # remembers in data/audit/we-rejected-candidates.json), and the ids
+      # validate-data refused, on the run's Summary page — reads the
+      # promoter's own state file plus the tee'd validate-data log above.
+      - name: Job summary — promoted / rejected / validate-data refusals
+        if: always()
+        run: |
+          {
+            echo "## West End aggregator promotion"
+            echo ""
+            node scripts/we-promotion-job-summary.js "$RUNNER_TEMP/we-validate-data.log"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Push core data (WE aggregator auto-promotion)
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: auto-promote West End shows from aggregator listings"
+
+      # Images — same reasoning as scrape-new-aggregators.yml's regional path
+      # (card #1456): a go-live event that never dispatched image fetch left
+      # shows scored with no artwork for up to 3.5 days. MUST run AFTER the
+      # core-data push above (fetch-all-image-formats.yml's own
+      # checkout-core-data pulls from the private repo — dispatching earlier
+      # races the show ID against its own not-yet-pushed shows.json entry).
+      # Uses ITS OWN promotion-ids file, not the OB script's shared
+      # data/audit/last-promotion-ids.json (two independent daily crons
+      # writing the same filename would race — see promote-we-aggregator-
+      # candidates.js's LAST_PROMOTION_FILE comment).
+      # Gated on the promote step (BRO-4204 S4-T10): now that a validate-data
+      # refusal fails that step, its promoted ids never reach the private
+      # repo — dispatching image fetch for them would race ghosts.
+      - name: Dispatch image fetch for newly promoted shows
+        if: always() && steps.promote.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          IDS=$(node -e "const d=require('./data/audit/we-last-promotion-ids.json'); console.log(d.promoted.map(p=>p.id).join(','))" 2>/dev/null)
+          if [ -n "$IDS" ]; then
+            node scripts/dispatch-new-show-images.js --ids="$IDS" || echo "::warning::image-fetch dispatch failed — will still be picked up by the next fetch-all-image-formats.yml sweep"
+          else
+            echo "No newly promoted shows this run — skipping image dispatch"
+          fi
+
+      # data/audit/we-promotion-log.jsonl + we-last-promotion-ids.json +
+      # we-rejected-candidates.json (BRO-4204 S4-T9: the promoter's remembered
+      # rejections — registered in scripts/lib/core-data-merge-registry.js so
+      # this step keeps its Git Data API push fallback) (+ alert-digest-
+      # queue.json / alert-ledger.json if --email queued a go-live digest line
+      # via owner-alert-router) live in the PUBLIC repo, not the private
+      # core-data repo — push-core-data above never touches them. Same
+      # precedent as scrape-new-aggregators.yml's "Commit Playbill Verdict
+      # unmatched-articles audit + candidate staging" step.
+      - name: Commit WE promotion audit log
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          bash scripts/lib/git-add-existing.sh data/audit/we-promotion-log.jsonl data/audit/we-last-promotion-ids.json data/audit/we-rejected-candidates.json data/audit/alert-digest-queue.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl
+          if ! git diff --staged --quiet; then
+            git commit -m "data: WE aggregator promotion audit log [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          else
+            echo "No audit log changes to commit"
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'WE Aggregator Auto-Promotion Failed'
+          severity: 'warning'

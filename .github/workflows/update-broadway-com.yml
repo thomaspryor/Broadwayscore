@@ -1,0 +1,137 @@
+name: Update Broadway.com Data
+
+on:
+  schedule:
+    # Weekly on Sundays at 4 PM UTC (11 AM EST), after DTLI/ShowScore at 3 PM
+    - cron: '0 16 * * 0'
+    # Monthly on 1st at 5 PM UTC — full run including closed shows via sitemap
+    - cron: '0 17 1 * *'
+  workflow_dispatch:
+    inputs:
+      show:
+        description: 'Single show ID to update (e.g., hamilton-2015)'
+        required: false
+        type: string
+      shows:
+        description: 'Comma-separated show IDs (e.g., hamilton-2015,wicked-2024)'
+        required: false
+        type: string
+      limit:
+        description: 'Max number of shows to process (when no show filter)'
+        required: false
+        type: number
+        default: 0
+      include_closed:
+        description: 'Include closed shows via sitemap discovery'
+        required: false
+        type: boolean
+        default: false
+      dry_run:
+        description: 'Dry run (no writes)'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  # per-run group intended: prevents back-to-back dispatches (orchestrator ticks,
+  # update-show-status opened-shows) from dropping each other at GitHub's
+  # 1-pending-queue limit. Since BRO-4242 the orchestrator sends ONE batched
+  # dispatch per tick (it used to loop once per show). See Cats 2026-04-07 postmortem.
+  # (task #922 audit, 2026-08-03)
+  group: broadway-com-${{ github.run_id }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  scrape-broadway-com:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 60-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Run Broadway.com scraper
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          BASE_ARGS="--verbose"
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            BASE_ARGS="$BASE_ARGS --dry-run"
+          fi
+          # Include closed shows on monthly cron (1st of month) or when explicitly requested
+          DAY=$(date -u +%d)
+          if [ "${{ inputs.include_closed }}" = "true" ] || ([ "${{ github.event_name }}" = "schedule" ] && [ "$DAY" = "01" ]); then
+            BASE_ARGS="$BASE_ARGS --include-closed"
+          fi
+
+          SHOWS_INPUT="${{ inputs.shows }}"
+          SHOW_INPUT="${{ inputs.show }}"
+
+          if [ -n "$SHOWS_INPUT" ]; then
+            # Multiple shows: ONE process (one listing fetch) for the whole batch
+            # (BRO-4242 — was one process per show, and the orchestrator used to
+            # dispatch one whole workflow run per show). Bounded well inside the
+            # job's 60-minute timeout.
+            timeout 2700 node scripts/scrape-broadway-com-audience.js $BASE_ARGS --shows="$SHOWS_INPUT" || echo "⚠ batch timed out or failed (exit $?), continuing..."
+          elif [ -n "$SHOW_INPUT" ]; then
+            timeout 300 node scripts/scrape-broadway-com-audience.js $BASE_ARGS --show="$SHOW_INPUT"
+          else
+            LIMIT_ARG=""
+            if [ "${{ inputs.limit }}" != "0" ] && [ -n "${{ inputs.limit }}" ]; then
+              LIMIT_ARG="--limit=${{ inputs.limit }}"
+            fi
+            node scripts/scrape-broadway-com-audience.js $BASE_ARGS $LIMIT_ARG
+          fi
+
+      - name: Push core data to private repo
+        if: always() && inputs.dry_run != true
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from update-broadway-com'
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: update-broadway-com
+
+      - name: Dispatch deploy
+        if: always() && inputs.dry_run != true
+        uses: ./.github/actions/dispatch-deploy
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Update Broadway.com Data Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

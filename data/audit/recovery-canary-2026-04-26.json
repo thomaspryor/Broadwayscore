@@ -1,0 +1,201 @@
+{
+  "_meta": {
+    "ranAt": "2026-04-26T22:05:47.442Z",
+    "totalAttempted": 10,
+    "totalSucceeded": 3,
+    "totalFailed": 7,
+    "successRatePct": 30,
+    "totalCost": {
+      "scrapingBeeCredits": "~50-150 credits used (3 SB attempts on canary; 1339390 remaining pre-run; full delta requires re-running check-secrets-health)",
+      "browserBaseSessionsUsed": "~5-7 sessions (limit 200/day, used 75/200 by end)",
+      "estimatedDollars": "minimal (<$1 — SB credits are abundant; BB sessions ~$0.05 each)"
+    }
+  },
+  "results": [
+    {
+      "tag": "NYT",
+      "showId": "king-kong-2018",
+      "file": "nytimes--jesse-green-and-ben-brantley.json",
+      "url": "https://www.nytimes.com/2018/11/08/theater/king-kong-review.html?action=click&amp;contentCollection=undefined&amp;region=stream&amp;module=stream_unit&amp;version=latest-stories&amp;contentPlacement=1&amp;pgtype=collection",
+      "outlet": "nytimes",
+      "tier": "ScrapingBee",
+      "success": true,
+      "fullTextChars": 6878,
+      "timeSec": 0,
+      "costNotes": "Recovered cleanly via ScrapingBee (6878 chars)",
+      "tiersAttempted": []
+    },
+    {
+      "tag": "Variety",
+      "showId": "33-variations-2009",
+      "file": "variety--charles-isherwood.json",
+      "url": "https://variety.com/2008/more/reviews/excerpt-tim-tom-an-american-comedy-in-black-and-white-1200471508/",
+      "outlet": "variety",
+      "tier": "-",
+      "success": false,
+      "fullTextChars": 0,
+      "timeSec": 91,
+      "costNotes": "SERP URL discovery failed (URL not in search results, original URL likely 404)",
+      "tiersAttempted": []
+    },
+    {
+      "tag": "WSJ",
+      "showId": "110-in-the-shade-2007",
+      "file": "wsj--terry-teachout.json",
+      "url": "https://www.wsj.com/articles/SB117961869834728582",
+      "outlet": "wsj",
+      "tier": "-",
+      "success": false,
+      "fullTextChars": 0,
+      "timeSec": 120,
+      "costNotes": "All tiers failed (paywall + 404 / bot-block)",
+      "tiersAttempted": [
+        "Browserbase",
+        "BrightData",
+        "Archive.org",
+        "ScrapingBee"
+      ]
+    },
+    {
+      "tag": "Vulture",
+      "showId": "gary-a-sequel-to-titus-andronicus-2019",
+      "file": "vulture--jesse-green.json",
+      "url": "https://www.vulture.com/2019/04/theater-review-gary-a-sequel-to-titus-andronicus.html",
+      "outlet": "vulture",
+      "tier": "-",
+      "success": false,
+      "fullTextChars": 0,
+      "timeSec": 91,
+      "costNotes": "Tiers returned text but flagged garbage (no theater keywords / show not mentioned / multi-show roundup)",
+      "tiersAttempted": [
+        "Archive.org",
+        "BrightData",
+        "ScrapingBee",
+        "AMP",
+        "Playwright"
+      ]
+    },
+    {
+      "tag": "Bloomberg",
+      "showId": "a-life-in-the-theatre-2010",
+      "file": "bloomberg--john-simon.json",
+      "url": "https://www.bloomberg.com/news/2010-10-13/patrick-stewart-t-r-knight-talk-nonsense-in-mamet-s-life-john-simon.html",
+      "outlet": "bloomberg",
+      "tier": "-",
+      "success": false,
+      "fullTextChars": 0,
+      "timeSec": 90,
+      "costNotes": "SERP URL discovery failed (URL not in search results, original URL likely 404)",
+      "tiersAttempted": []
+    },
+    {
+      "tag": "WashPost",
+      "showId": "all-my-sons-2019",
+      "file": "washpost--peter-marks.json",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-all-my-sons-on-broadway-is-a-solid-showcase-for-jeremy-irons/2019/05/09/8c4a4c5a-7267-11e9-8be0-ca575670e91c_story.html",
+      "outlet": "washpost",
+      "tier": "-",
+      "success": false,
+      "fullTextChars": 0,
+      "timeSec": 165,
+      "costNotes": "Tiers returned text but flagged garbage (no theater keywords / show not mentioned / multi-show roundup)",
+      "tiersAttempted": [
+        "Playwright",
+        "Archive.org",
+        "ScrapingBee",
+        "BrightData",
+        "Browserbase"
+      ]
+    },
+    {
+      "tag": "THR",
+      "showId": "significant-other-2017",
+      "file": "hollywood-reporter--david-rooney.json",
+      "url": "https://www.hollywoodreporter.com/review/significant-theater-review-982582",
+      "outlet": "hollywood-reporter",
+      "tier": "Browserbase",
+      "success": true,
+      "fullTextChars": 7615,
+      "timeSec": 0,
+      "costNotes": "Recovered cleanly via Browserbase (7615 chars)",
+      "tiersAttempted": []
+    },
+    {
+      "tag": "Blog",
+      "showId": "all-my-sons-2019",
+      "file": "gotham-playgoer--robert-sholiton.json",
+      "url": "https://gotham-playgoer.blogspot.com/2019/04/all-my-sons.html",
+      "outlet": "gotham-playgoer",
+      "tier": "-",
+      "success": false,
+      "fullTextChars": 0,
+      "timeSec": 91,
+      "costNotes": "Tiers returned text but flagged garbage (no theater keywords / show not mentioned / multi-show roundup)",
+      "tiersAttempted": [
+        "Playwright"
+      ]
+    },
+    {
+      "tag": "TalkinBroadway",
+      "showId": "1984-2017",
+      "file": "talkinbroadway--matthew-murray.json",
+      "url": "https://www.talkinbroadway.com/world/1984.html",
+      "outlet": "talkinbroadway",
+      "tier": "-",
+      "success": false,
+      "fullTextChars": 0,
+      "timeSec": 0,
+      "costNotes": "Tiers returned text but flagged garbage (no theater keywords / show not mentioned / multi-show roundup)",
+      "tiersAttempted": [
+        "BrightData",
+        "Archive.org",
+        "Playwright",
+        "Browserbase"
+      ]
+    },
+    {
+      "tag": "Pre-2011",
+      "showId": "33-variations-2009",
+      "file": "about-entertainment--ben-brantley.json",
+      "url": "http://theater.nytimes.com/2009/03/10/theater/reviews/10thir.html",
+      "outlet": "about-entertainment",
+      "tier": "Archive.org",
+      "success": true,
+      "fullTextChars": 8530,
+      "timeSec": 0,
+      "costNotes": "Recovered cleanly via Archive.org (8530 chars)",
+      "tiersAttempted": []
+    }
+  ],
+  "perTierSuccessRate": {
+    "Playwright": "0/4 (0%)",
+    "Browserbase": "1/4 (25%)",
+    "ScrapingBee": "1/4 (25%)",
+    "BrightData": "0/4 (0%)",
+    "Archive.org": "1/5 (20%)",
+    "AMP": "0/1 (0%)"
+  },
+  "extrapolatedBulkEstimate": {
+    "totalReviewsToRecover": 1009,
+    "estimatedSuccessRate": "30%",
+    "estimatedRecoveredFiles": 303,
+    "estimatedTotalCost": "<$30 (cohort=1009, per-file SB credit ~5-15, BB ~$0.05); SB has 1.34M credits, plenty",
+    "estimatedTimeHours": "25.2 hrs sequential @ 90s/file; 5.0 hrs at parallelism=5",
+    "note": "Extrapolation conservative: 30% canary rate. Failure modes seen — paywall outlets with stale or missing cookies (WSJ 401, WashPost paywall+404, Bloomberg bot-block); 404'd URLs (Vulture article slug rotated); bot-blocked outlets (TalkinBroadway 403); multi-show roundup index pages that fail garbage gate (gotham-playgoer). Refreshing paywall cookies (WSJ/WaPo/Bloomberg) before Phase B could lift rate to 45-55%."
+  },
+  "recommendation": {
+    "decision": "RECONSIDER",
+    "reasoning": [
+      "30% canary success — exactly the threshold the spec called out for reconsideration. Bulk run would recover ~300 of 1009 files at this rate.",
+      "Cohort dropped from 1582 to 1009 after filtering: 364 no-url, 166 fabricatedEntry, 43 gating flags. The 1551/1400-1600 figure in the spec was an estimate; actual targets are 1009 (still a meaningful catalog cleanup).",
+      "Successful pathways: ScrapingBee (NYT paywalled w/ cookies), Browserbase (THR), Archive.org (theater.nytimes.com legacy URL). All three tiers are working.",
+      "Failure pathways indicate fixable infrastructure gaps:",
+      "  - 3/7 fails are paywall outlets where cookies look fresh on disk but get 401/paywall blocks (cookies expired).",
+      "  - 2/7 fails are URL rot (Vulture 404, TalkinBroadway 403) — partial mitigation via Wayback fallback (worked for Pre-2011).",
+      "  - 1/7 fails is correct rejection of a multi-show index page (Blog) — accept this as data quality.",
+      "  - 1/7 fails is SERP fallback couldn't find URL (Bloomberg) — could try archive.today / Wayback first instead.",
+      "BEFORE Phase B: refresh WSJ/WaPo/Bloomberg cookies, then re-canary 5 of those domains. If rate >= 50% on re-canary, PROCEED. If still ~30%, accept the 300 yield (Phase B cost is <$30, very low ROI threshold to clear).",
+      "If proceeding now without cookie refresh: PROCEED at risk — total upside is small (~300 cleaned llmScores) but cost is also small. Phase B is a reasonable cleanup operation either way."
+    ]
+  }
+}

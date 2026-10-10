@@ -1,0 +1,165 @@
+{
+  "_comment_spend": "Spend efficiency (BRO spend review 2026-10-01, plan-review pass recorded). env: compact at 320k instead of running to 600-780k in the 1M variants (owner-approved 2026-10-03: the earlier 200k cap with 1M disabled left only ~80k of work room above ~85k of fixed setup, so autocompact thrashed); 71% of Sep cloud cost came from sessions past 400k, re-read on every step. effortLevel: Opus 5.5 default is medium; /effort or --effort still raises it per session (do NOT use CLAUDE_CODE_EFFORT_LEVEL, it would override /effort). This file is read by cloud sessions, Mac interactive sessions and Mac headless jobs (they run in repo worktrees; strippedEnv in scripts/lib/claude-cli.js never forwards shell vars), so it is the single source for these knobs. Revert = delete these two keys. Keep the window well above 2x the fixed setup cost or autocompact thrashes.",
+  "env": {
+    "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "320000"
+  },
+  "effortLevel": "medium",
+  "_comment": "Project-scoped Claude Code config. Loaded by cloud apps (iOS, Mac, web) that can't reach the user's ~/.claude/. Each project hook script begins with a self-skip preamble: if ~/.claude/hooks/<basename> exists (local CLI), the project copy exits 0 and the user-level master fires. On cloud sandboxes ~/.claude/hooks/ does not exist, so the project copy runs. See .claude/CLOUD.md.",
+  "_comment_permissions": "Server-level MCP allow: 'mcp__<server>' pre-approves the Claude_Code_Remote tools that are NOT marked requiresUserInteraction (get_session, list_triggers, delete_trigger, ...). Cloud sessions name the server 'Claude_Code_Remote' (tools are mcp__Claude_Code_Remote__*), so the old 'claude-code-remote' entry never matched and add_repo/send_later kept hitting the approval wall (BRO-4216); both spellings are listed. Harmless on local CLI where the server isn't connected. KNOWN LIMIT (BRO-4236): add_repo, send_later and create_trigger are marked requiresUserInteraction, which per code.claude.com/docs/en/permission-modes ('Actions no mode auto-approves') prompts even when an allow rule matches, in every mode. No allow rule or mode fixes that; don't re-add rules for them. Instead the PreToolUse hook block-prompting-remote-tools.sh denies the calls that have a prompt-free equivalent before the prompt appears. list_sessions and create_session prompt in practice too, Auto mode included (owner screenshots 2026-10-04, BRO-4635): the hook denies list_sessions (get_session by id is the prompt-free route); create_session is denied too (BRO-4664): the prompt-free route is a P0/P1 card with a START-NOW: line, which the hourly cloud worker takes first. list_events is unverified.",
+  "permissions": {
+    "allow": [
+      "mcp__claude-code-remote",
+      "mcp__Claude_Code_Remote"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Edit|Write|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/worktree-enforce.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; elif [ -n \"$R\" ]; then printf '{\"systemMessage\":\"Hook script missing, skipped (fail-open, BRO-4238): %s\"}\\n' \"$H\"; exit 0; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/pre-push-visual-gate.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; elif [ -n \"$R\" ]; then printf '{\"systemMessage\":\"Hook script missing, skipped (fail-open, BRO-4238): %s\"}\\n' \"$H\"; exit 0; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
+          },
+          {
+            "type": "command",
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/pre-push-review-gate.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; elif [ -n \"$R\" ]; then printf '{\"systemMessage\":\"Hook script missing, skipped (fail-open, BRO-4238): %s\"}\\n' \"$H\"; exit 0; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
+          },
+          {
+            "type": "command",
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/pre-push-land-preflight.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; elif [ -n \"$R\" ]; then printf '{\"systemMessage\":\"Hook script missing, skipped (fail-open, BRO-4238): %s\"}\\n' \"$H\"; exit 0; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi",
+            "timeout": 120
+          },
+          {
+            "type": "command",
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/check-skill-redaction.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; elif [ -n \"$R\" ]; then printf '{\"systemMessage\":\"Hook script missing, skipped (fail-open, BRO-4238): %s\"}\\n' \"$H\"; exit 0; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
+          },
+          {
+            "type": "command",
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/block-resend-broadcasts.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; elif [ -n \"$R\" ]; then printf '{\"systemMessage\":\"Hook script missing, skipped (fail-open, BRO-4238): %s\"}\\n' \"$H\"; exit 0; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/pre-merge-review-gate.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; elif [ -n \"$R\" ]; then printf '{\"systemMessage\":\"Hook script missing, skipped (fail-open, BRO-4238): %s\"}\\n' \"$H\"; exit 0; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__(Claude_Code_Remote|claude-code-remote)__(send_later|create_trigger|add_repo|list_sessions|create_session)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/block-prompting-remote-tools.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; elif [ -n \"$R\" ]; then printf '{\"systemMessage\":\"Hook script missing, skipped (fail-open, BRO-4238): %s\"}\\n' \"$H\"; exit 0; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__github__(create_or_update_file|push_files|delete_file|merge_pull_request|enable_pr_auto_merge)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/github-main-guard.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; elif [ -n \"$R\" ]; then printf '{\"systemMessage\":\"Hook script missing, skipped (fail-open, BRO-4238): %s\"}\\n' \"$H\"; exit 0; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
+          }
+        ]
+      },
+      {
+        "matcher": "EnterWorktree",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/enterworktree-guard.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; elif [ -n \"$R\" ]; then printf '{\"systemMessage\":\"Hook script missing, skipped (fail-open, BRO-4238): %s\"}\\n' \"$H\"; exit 0; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/infra-plan-review-gate.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; elif [ -n \"$R\" ]; then printf '{\"systemMessage\":\"Hook script missing, skipped (fail-open, BRO-4238): %s\"}\\n' \"$H\"; exit 0; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/whitespace-nowrap-lint.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; elif [ -n \"$R\" ]; then printf '{\"systemMessage\":\"Hook script missing, skipped (fail-open, BRO-4238): %s\"}\\n' \"$H\"; exit 0; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/infra-post-write-audit.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; elif [ -n \"$R\" ]; then printf '{\"systemMessage\":\"Hook script missing, skipped (fail-open, BRO-4238): %s\"}\\n' \"$H\"; exit 0; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+   {
+    "matcher": "compact",
+    "hooks": [
+     {
+      "type": "command",
+      "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/compact-state.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; elif [ -n \"$R\" ]; then printf '{\"systemMessage\":\"Hook script missing, skipped (fail-open, BRO-4238): %s\"}\\n' \"$H\"; exit 0; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
+     }
+    ]
+   },
+      {
+        "matcher": "startup|clear|compact|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/session-start.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; elif [ -n \"$R\" ]; then printf '{\"systemMessage\":\"Hook script missing, skipped (fail-open, BRO-4238): %s\"}\\n' \"$H\"; exit 0; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
+          },
+          {
+            "type": "command",
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/cloud-bootstrap.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; elif [ -n \"$R\" ]; then printf '{\"systemMessage\":\"Hook script missing, skipped (fail-open, BRO-4238): %s\"}\\n' \"$H\"; exit 0; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+   {
+    "matcher": "",
+    "hooks": [
+     {
+      "type": "command",
+      "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/compact-state.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; elif [ -n \"$R\" ]; then printf '{\"systemMessage\":\"Hook script missing, skipped (fail-open, BRO-4238): %s\"}\\n' \"$H\"; exit 0; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
+     }
+    ]
+   }
+  ],
+  "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/verify-edits.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; elif [ -n \"$R\" ]; then printf '{\"systemMessage\":\"Hook script missing, skipped (fail-open, BRO-4238): %s\"}\\n' \"$H\"; exit 0; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
+          }
+        ]
+      }
+    ]
+  }
+}

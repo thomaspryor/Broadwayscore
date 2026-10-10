@@ -1,0 +1,39 @@
+{
+  "_generated": "2026-02-27",
+  "_description": "Calibration data: LLM scores vs explicit/human ground truth (2,554 matched reviews)",
+  "overall": {
+    "matched": 2554,
+    "mae": 7.8,
+    "meanBias": -1.6,
+    "bucketAccuracy": 64.5
+  },
+  "perModel": {
+    "claude": { "mae": 7.7, "bias": -1.8, "bucketAccuracy": 62.6, "count": 2404 },
+    "openai": { "mae": 7.8, "bias": -1.9, "bucketAccuracy": 65.0, "count": 2308 },
+    "gemini": { "mae": 9.0, "bias": -1.4, "bucketAccuracy": 56.2, "count": 2509 }
+  },
+  "perBucket": {
+    "Rave": { "mae": 10.4, "bias": -10.3, "accuracy": 50.1, "count": 724, "note": "50% of true raves misclassified, mostly as Positive (307)" },
+    "Positive": { "mae": 4.9, "bias": -1.8, "accuracy": 75.3, "count": 914 },
+    "Mixed": { "mae": 7.5, "bias": 4.2, "accuracy": 65.7, "count": 612 },
+    "Negative": { "mae": 10.3, "bias": 8.0, "accuracy": 65.2, "count": 290 },
+    "Pan": { "mae": 15.8, "bias": 15.2, "accuracy": 42.9, "count": 14 }
+  },
+  "raveAnalysis": {
+    "totalMisclassified": 361,
+    "within5ptsOfBoundary": 223,
+    "allModelsBelow83": 339,
+    "geminiPlus5WouldFix": 85,
+    "conclusion": "All 3 models systematically under-score raves by ~10 points. Prompt/few-shot fix needed."
+  },
+  "outletBias": {
+    "deadline": { "bias": 11.0, "count": 7 },
+    "chicagotribune": { "bias": 8.8, "count": 5 },
+    "ew": { "bias": -8.7, "count": 404 },
+    "cititour": { "bias": 7.9, "count": 8 },
+    "dailybeast": { "bias": 6.5, "count": 6 },
+    "telegraph": { "bias": -6.3, "count": 6 },
+    "wsj": { "bias": -5.8, "count": 9 },
+    "digital-journal": { "bias": -5.3, "count": 19 }
+  }
+}

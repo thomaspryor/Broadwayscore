@@ -1,0 +1,285 @@
+name: Fetch Guardian Reviews via API
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'Max reviews to process (0 = all)'
+        required: false
+        default: '0'
+        type: string
+      shows:
+        description: 'Comma-separated show IDs to process (empty = all)'
+        required: false
+        default: ''
+        type: string
+      dry_run:
+        description: 'Dry run (do not save changes)'
+        required: false
+        default: false
+        type: boolean
+      backfill_ratings:
+        description: 'Re-query API for star ratings on reviews that already have text'
+        required: false
+        default: false
+        type: boolean
+
+# Run weekly to catch any new Guardian reviews
+  schedule:
+    - cron: '0 8 * * 3' # Wednesdays at 8 AM UTC
+
+# Per-shows group, not shared: two callers (opening-night-poller.yml,
+# opening-night-orchestrator.yml) dispatch this with DIFFERENT `shows` values
+# around the same time. GitHub cancels a PENDING run in a concurrency group
+# the moment a third run for that group arrives, regardless of
+# cancel-in-progress — a shared group could silently drop a distinct show-set
+# request (not idempotent/interchangeable with another). Keying by `shows`
+# means different show sets never collide; the rare cron (no inputs) falls
+# back to a stable 'scheduled' key.
+concurrency:
+  group: fetch-guardian-reviews-${{ inputs.shows || 'scheduled' }}
+  cancel-in-progress: false
+
+jobs:
+  fetch-guardian:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      # Stale-checkout race guard (P1), same pattern as rebuild-reviews.yml
+      # (BRO-3161): a review-texts push landing between THIS checkout and the
+      # "Rebuild reviews.json" step below is invisible to that step — it
+      # exits 0 with a stale checkout and no warning. Recording the
+      # checkout-time SHA here lets the rebuild step detect drift right
+      # before it runs. See scripts/lib/rebuild-staleness-guard.js +
+      # scripts/check-rebuild-staleness.js.
+      - name: Record review-texts checkout SHA
+        id: review_texts_checkout
+        run: echo "sha=$(git -C data/review-texts rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Fetch Guardian reviews
+        env:
+          GUARDIAN_API_KEY: ${{ secrets.GUARDIAN_API_KEY }}
+        run: |
+          ARGS=""
+
+          if [ "${{ github.event.inputs.limit }}" != "0" ] && [ -n "${{ github.event.inputs.limit }}" ]; then
+            ARGS="$ARGS --limit=${{ github.event.inputs.limit }}"
+          fi
+
+          if [ -n "${{ github.event.inputs.shows }}" ]; then
+            ARGS="$ARGS --shows=${{ github.event.inputs.shows }}"
+          fi
+
+          if [ "${{ github.event.inputs.dry_run }}" == "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+
+          if [ "${{ github.event.inputs.backfill_ratings }}" == "true" ]; then
+            ARGS="$ARGS --backfill-ratings"
+          fi
+
+          node scripts/fetch-guardian-reviews.js $ARGS
+
+      - name: Rebuild reviews.json
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        env:
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          # Stale-checkout race guard, part 2 (BRO-3161, ported from
+          # rebuild-reviews.yml): the Guardian API loop above took real
+          # wall-clock time since the checkout — re-check review-texts'
+          # upstream tip right before rebuilding. A `git fetch` + `rev-parse`
+          # is a few seconds; this runs every invocation but only pays for a
+          # re-sync when drift is actually detected (unchanged SHA = zero
+          # added cost).
+          #
+          # Explicit destination refspec (+main:refs/remotes/origin/main),
+          # not a bare `git fetch origin main` — the checkout-review-texts
+          # composite action's shallow checkout may not leave a fetch refspec
+          # configured that a later bare fetch would resolve into
+          # refs/remotes/origin/main, in which case the ref update would
+          # silently land only in FETCH_HEAD and the drift check below would
+          # never fire.
+          CHECKOUT_SHA="${{ steps.review_texts_checkout.outputs.sha }}"
+          git -C data/review-texts fetch origin +main:refs/remotes/origin/main --depth=1 --quiet
+          CURRENT_SHA=$(git -C data/review-texts rev-parse refs/remotes/origin/main)
+          echo "" > /tmp/stale-checkout-shows.txt
+          if node -e "
+            const { shouldRetryForStaleCheckout } = require('./scripts/lib/rebuild-staleness-guard.js');
+            process.exit(shouldRetryForStaleCheckout(process.argv[1], process.argv[2]) ? 0 : 1);
+          " "$CHECKOUT_SHA" "$CURRENT_SHA"; then
+            echo "⚠️  review-texts advanced during this job ($CHECKOUT_SHA -> $CURRENT_SHA) — syncing drifted files before rebuild"
+            # Record which SHOWS drifted (for the post-rebuild verify step below).
+            git -C data/review-texts diff --name-only "$CHECKOUT_SHA" "$CURRENT_SHA" \
+              | cut -d/ -f1 | sort -u > /tmp/stale-checkout-shows.txt
+            # Update ONLY files that still EXIST at the new tip (--diff-filter=d
+            # excludes deletions) from the fresh tip — a targeted checkout
+            # instead of a full rm -rf + re-clone, so this job's own local
+            # Guardian-fetched edits to OTHER files are not discarded.
+            # NUL-delimited so no filename can be mis-split.
+            git -C data/review-texts diff -z --name-only --diff-filter=d "$CHECKOUT_SHA" "$CURRENT_SHA" \
+              > /tmp/stale-checkout-files.txt
+            if [ -s /tmp/stale-checkout-files.txt ]; then
+              xargs -0 git -C data/review-texts checkout "$CURRENT_SHA" -- < /tmp/stale-checkout-files.txt
+            fi
+          fi
+
+          # First attempt
+          if node scripts/rebuild-all-reviews.js; then
+            echo "Rebuild succeeded on first attempt"
+            exit 0
+          fi
+
+          echo ""
+          echo "⚠️  Rebuild failed (likely stale checkout) — re-cloning review-texts and retrying..."
+          echo ""
+
+          # Re-clone review-texts fresh (fixes stale/partial checkout from concurrent pushes)
+          rm -rf data/review-texts
+          git clone --depth 1 "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" data/review-texts
+
+          # Retry rebuild
+          node scripts/rebuild-all-reviews.js
+
+      # Stale-checkout race guard, part 3 (BRO-3161, ported from
+      # rebuild-reviews.yml): verify every show that drifted during this job
+      # actually landed in reviews.json. NOT continue-on-error — this is the
+      # "fail the job loudly" backstop the incident (Kimberly Akimbo / The
+      # Times (UK) silently dropped here, 2026-09-10) needed. After 2
+      # consecutive failures it auto-recovers (exits 0) and escalates to an
+      # owner alert instead — see scripts/lib/guard-escalation.js.
+      - name: Verify no scoreable review vanished during checkout drift
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node scripts/check-rebuild-staleness.js --shows-file=/tmp/stale-checkout-shows.txt
+
+      - name: Opening-night drop + completeness check
+        # Complementary real-time alert (not a substitute for the blocking
+        # guard above): same non-blocking pattern as rebuild-fast.yml's
+        # identical step, specifically for shows in the ±7d opening-night
+        # window.
+        #
+        # BRO-3127 /what-else finding: this workflow ALSO calls
+        # check-rebuild-staleness.js (the guard above), so it was audited for
+        # the same blast-radius bug. It does NOT reproduce here — this file
+        # never regenerates public/data/shows/*.json, and its actual publish
+        # steps ("Push review-texts", "Commit changes", "Push core data")
+        # already carry if: always(). The ONE gap was this step: without
+        # always(), a guard failure silently skipped this redundant real-time
+        # alert (the guard's own alert still fires either way) — not a
+        # publish blocker, just a missed second signal. Fixed for
+        # consistency; `dry_run` still short-circuits a dry run correctly
+        # since always() only survives an EARLIER step's failure, not a
+        # false input check.
+        if: always() && github.event.inputs.dry_run != 'true'
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node scripts/check-opening-night-completeness.js
+        continue-on-error: true
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Fetch Guardian Reviews via API — Commit changes"
+      - name: Commit changes
+        if: always() && github.event.inputs.dry_run != 'true'
+        # PUSH_DEADLINE_SEC='600' + MAX_RETRIES=20 (BRO-440, 2026-09-11): this
+        # step was the only push-with-retry.sh caller left in this file on the
+        # shared 240s/7-retry default, and 10 consecutive runs in the 24h
+        # before this fix all failed at exactly this step with the same
+        # signature — "Pre/Post-resolution push FAILED in 90s ... rc=124,
+        # transport HANG", exhausting the 240s deadline after only 2 real
+        # fetch->rebase->push cycles (confirmed via run 34584002027's job log:
+        # every OTHER step, including the actual Guardian API fetch, succeeded
+        # every time — this is a shared push-contention symptom under main's
+        # commit churn, not a Guardian-API bug). Same class + same fix as
+        # rebuild-fast.yml's "Commit and push changes" step (card #1891):
+        # push-with-retry.sh's backoff sums to ~N^2+4N over N attempts, so
+        # MAX_RETRIES (not PUSH_DEADLINE_SEC alone) is usually the binding
+        # constraint — 20 retries sums to ~480s of backoff, fitting inside the
+        # 600s deadline with margin. No job-level timeout-minutes is set on
+        # this job, so GitHub's 360min default already has ample headroom.
+        env:
+          PUSH_DEADLINE_SEC: '600'
+        run: |
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+
+          # data/audit/*.json (rebuild-all-reviews.js's non-blocking guard
+          # ledgers) is NOT in push-core-data's CORE_FILES list, so it must be
+          # staged explicitly here — the prior comment claiming push-core-data
+          # covered it was wrong and made this step a permanent no-op
+          # (task #1460, same bug class as #1456).
+          git add data/audit/*.json 2>/dev/null || true
+          # alert-ledger.json is already covered by the glob above at
+          # runtime, but named explicitly here so the alert-ledger-commit-
+          # check.js CI gate can see it without depending on glob semantics.
+          # alert-router-attempts.jsonl (BRO-3671): the *.json glob misses it
+          # outright (.jsonl extension) — check-rebuild-staleness.js calls
+          # routeAlert()/resolveCondition(), and logDispatchAttempt() rewrites
+          # this TRACKED file on every dispatch attempt; left unstaged it
+          # makes a rebase refuse pre-flight and forces the clobber-prone
+          # merge path in push-with-retry.sh (BRO-3662).
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: Fetch Guardian reviews via API
+
+            Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>"
+
+            bash scripts/lib/push-with-retry.sh 20 main
+          fi
+
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from fetch-guardian-reviews'
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Guardian Reviews Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

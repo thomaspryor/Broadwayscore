@@ -1,0 +1,126 @@
+{
+  "issueNumber": "bro-4398-b",
+  "planId": "85f2807f-df1a-4652-9d82-de98226e2a80",
+  "status": "applied",
+  "createdAt": "2026-10-01T20:14:26.332Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Correct 7 musicals typed as plays. Discovery's title rule only matched 'Title: The Musical' / 'Title - The Musical', and the promoters ignored the venue's own genre label; both fixed in the same change (scripts/lib/title-says-musical.js).",
+    "steps": [
+      "Set type play -> musical on the-pianist-off-west-end-2026",
+      "Set type play -> musical on god-is-a-woman-the-musical-off-west-end-2026",
+      "Set type play -> musical on trainspotting-the-musical-west-end-2026",
+      "Set type play -> musical on weve-been-here-before-a-one-woman-musical-off-broadway-2026",
+      "Set type play -> musical on shamilton-the-improvised-hip-hop-musical-west-end-2026",
+      "Set type play -> musical on copperfield-the-new-musical-off-broadway-2026",
+      "Set type play -> musical on death-note-the-musical-west-end-2027"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-pianist-off-west-end-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "\"The Pianist\": Park Theatre lists it under Musicals in its Spektrix account (a studio cast album is on sale); it was typed play by a title rule that missed a suffix with no separator"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "god-is-a-woman-the-musical-off-west-end-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "\"GOD IS A WOMAN THE MUSICAL\": title names it a musical; it was typed play by a title rule that missed a suffix with no separator"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "trainspotting-the-musical-west-end-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "\"Trainspotting the musical\": title names it a musical; it was typed play by a title rule that missed a suffix with no separator"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "weve-been-here-before-a-one-woman-musical-off-broadway-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "\"We've Been Here Before: A One Woman Musical\": title names it a musical; it was typed play by a title rule that missed a suffix with no separator"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "shamilton-the-improvised-hip-hop-musical-west-end-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "\"Shamilton! The Improvised Hip-Hop Musical\": title names it an (improvised) musical; it was typed play by a title rule that missed a suffix with no separator"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "copperfield-the-new-musical-off-broadway-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "\"Copperfield! The New Musical\": title names it a musical; it was typed play by a title rule that missed a suffix with no separator"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "death-note-the-musical-west-end-2027",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "\"Death Note The Musical\": title names it a musical; it was typed play by a title rule that missed a suffix with no separator"
+      }
+    ]
+  },
+  "executedAt": "2026-10-01T20:52:22.673Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for the-pianist-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for god-is-a-woman-the-musical-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for trainspotting-the-musical-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for weve-been-here-before-a-one-woman-musical-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for shamilton-the-improvised-hip-hop-musical-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for copperfield-the-new-musical-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for death-note-the-musical-west-end-2027"
+    }
+  ]
+}

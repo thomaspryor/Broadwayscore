@@ -1,0 +1,92 @@
+name: Snapshot Audience History
+
+# Year-round weekly snapshot of the FULL audience-buzz corpus (all shows, all
+# sources). Complements snapshot-audience-grades.yml, which is Tony-season-only
+# (~161 shows, Apr-Jun). This builds the longitudinal record we use to analyse
+# how each source's audience scores move over time.
+#
+# PRIVACY: audience-buzz is competitive data — it is gitignored in the public
+# repo and lives only in the PRIVATE core-data repo (purge-archives-history.yml
+# scrubbed it from public history). These snapshots are the same data, so they
+# are written into the PRIVATE repo (thomaspryor/broadway-scorecard-data) via
+# the canonical push-core-data action, NOT committed to the public repo like
+# the Tony-only data/audience-snapshots/.
+
+on:
+  schedule:
+    # Mondays 09:00 UTC — after the Sunday audience scrapers land (Show Score
+    # 12:00, Mezzanine 13:00, Theatr 14:00 UTC), so each snapshot captures a
+    # stable post-weekend state of every source.
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Snapshot date YYYY-MM-DD (default: today UTC). Use to label a backfill.'
+        required: false
+        type: string
+
+concurrency:
+  group: snapshot-audience-history
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Write snapshot into the core-data checkout
+        id: snap
+        run: |
+          set -euo pipefail
+
+          SNAP_DATE="${{ inputs.date }}"
+          if [ -z "$SNAP_DATE" ]; then SNAP_DATE="$(date -u +%Y-%m-%d)"; fi
+
+          # checkout-core-data cloned the private repo to /tmp/core-data-checkout.
+          # Write the snapshot there; the push-core-data action below does
+          # `git add -A` in that dir, so it commits + pushes this new file
+          # through the canonical reconciliation-aware path (handles concurrent
+          # pushers from the other ~60 workflows that write the private repo).
+          CHECKOUT=/tmp/core-data-checkout
+          if [ ! -d "$CHECKOUT/.git" ]; then
+            echo "::error::private core-data checkout missing — checkout-core-data must run first"
+            exit 1
+          fi
+          mkdir -p "$CHECKOUT/audience-history"
+
+          DATE_ARG=""
+          if [ -n "${{ inputs.date }}" ]; then DATE_ARG="--date=${{ inputs.date }}"; fi
+          # Reads data/audience-buzz.json (the private copy materialised by
+          # checkout-core-data); freshness-guarded inside the script.
+          node scripts/snapshot-audience-full.js $DATE_ARG --out="$CHECKOUT/audience-history/${SNAP_DATE}.json"
+
+          echo "date=$SNAP_DATE" >> "$GITHUB_OUTPUT"
+
+      - name: Push snapshot to the private core-data repo
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Audience history snapshot ${{ steps.snap.outputs.date }}"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Snapshot Audience History Failed'
+          severity: 'warning'

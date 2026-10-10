@@ -1,0 +1,23 @@
+{
+  "_comment": "Common short names critics use instead of a show's full title (BRO-4584). Keyed by the shows.json title as written; every production with that title (Broadway, tour, West End, revival) gets the short names. Read by scripts/lib/show-title-variants.js. Add a short name only when reviews of THIS show routinely use it alone AND it is not an everyday word, idiom, first name or another work's name: rejected after review were 'Joseph' (matched Joseph Charlton's Anna X), 'Cats' (the original Cats), 'Funny Thing Happened', 'How to Succeed', 'Streetcar', 'Virginia Woolf', 'Priscilla', 'Superstar', 'Hedwig', 'Whorehouse', 'Little Shop'. No generic first-word or suffix rule: 'Phantom' counts for The Phantom of the Opera only because it is listed here. Keys and values are normalized with normalizeForMention, so punctuation and case do not matter. Values must be at least 4 characters.",
+  "shortNames": {
+    "The Phantom of the Opera": ["Phantom"],
+    "Les Misérables": ["Les Miz", "Les Mis"],
+    "Les Miserables": ["Les Miz", "Les Mis"],
+    "Joseph and the Amazing Technicolor Dreamcoat": ["Technicolor Dreamcoat"],
+    "Harry Potter and the Cursed Child": ["Cursed Child"],
+    "The Curious Incident of the Dog in the Night-Time": ["Curious Incident"],
+    "A Gentleman's Guide to Love & Murder": ["Gentleman's Guide"],
+    "Dr. Seuss' How the Grinch Stole Christmas!": ["Grinch"],
+    "Sunday in the Park with George": ["Sunday in the Park"],
+    "The Rocky Horror Show": ["Rocky Horror"],
+    "Long Day's Journey Into Night": ["Long Day's Journey"],
+    "Cat on a Hot Tin Roof": ["Hot Tin Roof"],
+    "Moulin Rouge! The Musical": ["Moulin Rouge"],
+    "Kinky Boots The Musical": ["Kinky Boots"],
+    "CATS: The Jellicle Ball": ["Jellicle Ball"],
+    "Fiddler on the Roof": ["Fiddler"]
+  },
+  "_properNounTitlesComment": "2-3 letter titles are too short for the normal mention check (it needs 4+ characters), so every review of them was flagged showNotMentioned. These count as mentioned when the exact title appears at least twice written as a proper noun ('Tru' or 'TRU', case-sensitive). Only titles that are not common words or first names: Art, Red, Six, Big, Ann, Act and Rex matched dozens of other shows' reviews in a corpus probe and are deliberately left out.",
+  "properNounTitles": ["Tru", "Ink", "Wit", "Bug", "Elf"]
+}

@@ -1,0 +1,297 @@
+#!/usr/bin/env node
+/**
+ * Daily Digest (score-drift)
+ *
+ * Compares current public/data/mobile-shows.json against yesterday's snapshot
+ * to detect: new shows, new reviews, score changes, audience grade changes.
+ *
+ * Card #497 (owner merge decision — one scheduled morning email, not three):
+ * this no longer emails on its own. It writes a structured snapshot to
+ * data/audit/daily-digest-snapshot.json instead; autonomous-email.js reads it
+ * and folds it into the single scheduled morning email, same pattern as
+ * card #364's health-check.js digest.
+ *
+ * Usage:
+ *   node scripts/send-daily-digest.js [--dry-run]
+ */
+
+const fs = require('fs');
+const path = require('path');
+const { buildDailyDigestHtml } = require('./lib/email-templates');
+const { computeExclusionTrend } = require('./lib/exclusion-trend');
+
+const MOBILE_DATA = path.join(__dirname, '..', 'public', 'data', 'mobile-shows.json');
+const SNAPSHOT_FILE = path.join(__dirname, '..', 'data', 'audit', 'daily-snapshot.json');
+const AUDIT_DIR = path.join(__dirname, '..', 'data', 'audit');
+const DIGEST_SNAPSHOT_FILE = path.join(AUDIT_DIR, 'daily-digest-snapshot.json');
+const DIGEST_ITEM_CAP = 8;
+const DRY_RUN = process.argv.includes('--dry-run');
+
+// Balusters postmortem follow-through: aggregate exclusion-logger JSONL
+// entries from today + last 7 days (baseline) and surface today's top
+// reasons, spikes (>2σ above the 7-day mean), and novel reasons (first seen
+// within 7 days). The Cote Notices regex bug went undetected for weeks
+// because no aggregation existed.
+//
+// BRO-2379: the spike/novel detection is cross-checked against the
+// generalized sticky-flag repeat-vs-new categorization (BRO-75's
+// wrong-production-exclusion-analysis.js, generalized to every reason) —
+// see scripts/lib/exclusion-trend.js for the full mechanism and rationale.
+
+function loadSnapshot() {
+  try {
+    return JSON.parse(fs.readFileSync(SNAPSHOT_FILE, 'utf8'));
+  } catch {
+    return null;
+  }
+}
+
+function buildSnapshot(mobileData) {
+  const snapshot = { date: new Date().toISOString().slice(0, 10), shows: {} };
+  for (const show of mobileData.shows) {
+    snapshot.shows[show.id] = {
+      t: show.t,
+      s: show.s,
+      cs: show.cs ?? null,
+      rc: show.cr?.rc ?? 0,
+      ag: show.ag?.g ?? null,
+      st: show.st,
+      ty: show.ty,
+      v: show.v,
+      mk: show.cat === 'west-end' ? 'west-end' : 'broadway',
+    };
+  }
+  return snapshot;
+}
+
+function diffSnapshots(prev, curr) {
+  const changes = { newShows: [], newReviews: [], scoreChanges: [], audienceChanges: [] };
+  const prevShows = prev.shows;
+  const currShows = curr.shows;
+
+  for (const [id, currShow] of Object.entries(currShows)) {
+    const prevShow = prevShows[id];
+
+    const market = currShow.mk || 'broadway';
+
+    // New show
+    if (!prevShow) {
+      changes.newShows.push({
+        id, slug: currShow.s, title: currShow.t, type: currShow.ty, status: currShow.st,
+        venue: currShow.v, market,
+      });
+      continue;
+    }
+
+    // New reviews
+    const prevRc = prevShow.rc ?? 0;
+    const currRc = currShow.rc ?? 0;
+    if (currRc > prevRc) {
+      changes.newReviews.push({
+        id, slug: currShow.s, title: currShow.t, added: currRc - prevRc, total: currRc,
+        prevCount: prevRc, market,
+      });
+    }
+
+    // Score changes — only surface when the *displayed* (rounded) score flips.
+    // cs is stored as a float but the site rounds to a whole number, so
+    // sub-integer wobble (78.17 → 78.57) is noise, not a real move. Each flip
+    // carries the net review change since yesterday (a flip can also come from
+    // a removal/reclassification, so this may be 0 or negative), which lets us
+    // drop the separate New Reviews section instead of repeating the show list.
+    if (currShow.cs != null && prevShow.cs != null && Math.round(currShow.cs) !== Math.round(prevShow.cs)) {
+      const from = Math.round(prevShow.cs);
+      const to = Math.round(currShow.cs);
+      changes.scoreChanges.push({
+        id, slug: currShow.s, title: currShow.t, from, to,
+        direction: to > from ? 'up' : 'down',
+        reviewsAdded: currRc - prevRc, reviewTotal: currRc, market,
+      });
+    } else if (currShow.cs != null && prevShow.cs == null) {
+      // First score assigned
+      changes.scoreChanges.push({
+        id, slug: currShow.s, title: currShow.t, from: null, to: Math.round(currShow.cs),
+        direction: 'new', reviewsAdded: currRc - prevRc, reviewTotal: currRc, market,
+      });
+    }
+
+    // Audience grade changes
+    if (currShow.ag && prevShow.ag && currShow.ag !== prevShow.ag) {
+      changes.audienceChanges.push({
+        id, slug: currShow.s, title: currShow.t, from: prevShow.ag, to: currShow.ag, market,
+      });
+    } else if (currShow.ag && !prevShow.ag) {
+      changes.audienceChanges.push({
+        id, slug: currShow.s, title: currShow.t, from: null, to: currShow.ag, market,
+      });
+    }
+  }
+
+  // Flag suspicious changes: >24 reviews added in a single day is abnormal.
+  // BUT only when there was a REAL prior count to spike from (prevCount > 0).
+  // A 0→N jump is a newly-tracked show's backfill landing at once, not a daily
+  // spike — those produced ~18 of the 20 false-alarm warnings on 2026-06-22.
+  const isRealSpike = r => r.added > 24 && (r.prevCount ?? 0) > 0;
+  changes.suspiciousChanges = changes.newReviews.filter(isRealSpike);
+  // Also flag shows with >10 new reviews — likely tour / wrong-show contamination
+  const spikeShows = changes.newReviews.filter(r => r.added > 10 && r.added <= 24 && (r.prevCount ?? 0) > 0);
+  if (spikeShows.length > 0) {
+    changes.reviewSpikes = spikeShows;
+  }
+  // Remove suspicious entries from newReviews so they aren't double-counted
+  if (changes.suspiciousChanges.length > 0) {
+    const flagged = new Set(changes.suspiciousChanges.map(r => r.id));
+    changes.newReviews = changes.newReviews.filter(r => !flagged.has(r.id));
+  }
+
+  return changes;
+}
+
+// Count only the sections the digest actually renders. Plain new-review
+// activity (review count up but no round-number score flip) is intentionally
+// not a standalone section anymore, so it must not trigger or size the digest
+// on its own — otherwise we'd send a "N changes" email with nothing to show.
+// Review spikes (>10/day) DO render their own warning section, so they count.
+function hasChanges(changes) {
+  return changes.newShows.length +
+    changes.scoreChanges.length + changes.audienceChanges.length +
+    (changes.suspiciousChanges || []).length +
+    (changes.reviewSpikes || []).length > 0;
+}
+
+// Card #497: same subject/bannerText + item-list shape as health-check.js's
+// snapshot (card #364), so autonomous-email.js can fold all the daily
+// scheduled digests through a shared render block.
+function buildDigestItems(changes) {
+  const items = [];
+  for (const s of changes.newShows) {
+    items.push({ title: s.title, detail: `New show added (${s.market})` });
+  }
+  for (const s of changes.scoreChanges) {
+    items.push({
+      title: s.title,
+      detail: s.direction === 'new' ? `New score: ${s.to}` : `Score ${s.from} → ${s.to}`,
+    });
+  }
+  for (const s of changes.audienceChanges) {
+    items.push({ title: s.title, detail: `Audience ${s.from ?? '—'} → ${s.to}` });
+  }
+  for (const s of (changes.suspiciousChanges || [])) {
+    items.push({ title: s.title, detail: `⚠️ +${s.added} reviews in a day (suspicious spike)` });
+  }
+  for (const s of (changes.reviewSpikes || [])) {
+    items.push({ title: s.title, detail: `+${s.added} reviews in a day` });
+  }
+  if (changes.exclusionTrend) {
+    for (const s of changes.exclusionTrend.spikes.slice(0, 3)) {
+      items.push({ title: `Exclusion spike: ${s.reason}`, detail: `${s.todayCount} today vs ~${s.mean} avg` });
+    }
+    for (const s of changes.exclusionTrend.novelReasons.slice(0, 3)) {
+      items.push({ title: `New exclusion reason: ${s.reason}`, detail: `${s.todayCount} today, first seen ${s.firstSeen}` });
+    }
+  }
+  return items;
+}
+
+function writeDigestSnapshot({ subject, bannerText, items }) {
+  const snapshot = {
+    generatedAt: new Date().toISOString(),
+    subject,
+    bannerText,
+    items: items.slice(0, DIGEST_ITEM_CAP),
+    moreCount: Math.max(0, items.length - DIGEST_ITEM_CAP),
+  };
+  fs.mkdirSync(path.dirname(DIGEST_SNAPSHOT_FILE), { recursive: true });
+  fs.writeFileSync(DIGEST_SNAPSHOT_FILE, JSON.stringify(snapshot, null, 2) + '\n');
+  console.log(`[Daily Digest] Snapshot written (${snapshot.items.length} item(s)) — folds into the morning email, not sent separately`);
+}
+
+async function main() {
+  const mobileData = JSON.parse(fs.readFileSync(MOBILE_DATA, 'utf8'));
+  const currSnapshot = buildSnapshot(mobileData);
+  const prevSnapshot = loadSnapshot();
+
+  // Compute exclusion trend (independent of show-snapshot changes).
+  // Emits a summary even if no show-level changes occurred — silent-drop trends
+  // still need to surface.
+  const exclusionTrend = computeExclusionTrend(new Date(), { auditDir: AUDIT_DIR, persistLedger: !DRY_RUN });
+
+  // First run — save snapshot, write an empty digest snapshot (no prior data
+  // to diff against yet). DRY_RUN never touches the real digest snapshot —
+  // it must stay a preview, not silently overwrite what the morning email
+  // will actually read (ship-check finding).
+  if (!prevSnapshot) {
+    console.log('No previous snapshot found — saving initial snapshot, no digest to report.');
+    fs.writeFileSync(SNAPSHOT_FILE, JSON.stringify(currSnapshot, null, 2));
+    if (!DRY_RUN) {
+      writeDigestSnapshot({
+        subject: `Daily Digest: initial snapshot on ${currSnapshot.date}`,
+        bannerText: 'First run — no comparison data yet',
+        items: [],
+      });
+    }
+    return;
+  }
+
+  const changes = diffSnapshots(prevSnapshot, currSnapshot);
+  const today = currSnapshot.date;
+  changes.exclusionTrend = exclusionTrend;
+
+  const hasExclusionSignal = exclusionTrend.spikes.length > 0 || exclusionTrend.novelReasons.length > 0;
+  if (!hasChanges(changes) && !hasExclusionSignal) {
+    console.log('No changes or exclusion signals detected.');
+    fs.writeFileSync(SNAPSHOT_FILE, JSON.stringify(currSnapshot, null, 2));
+    if (!DRY_RUN) {
+      writeDigestSnapshot({
+        subject: `Daily Digest: no changes on ${today}`,
+        bannerText: 'No changes',
+        items: [],
+      });
+    }
+    return;
+  }
+
+  // Build the digest snapshot (card #497 — no longer emails on its own).
+  const suspiciousCount = (changes.suspiciousChanges || []).length;
+  const spikeCount = (changes.reviewSpikes || []).length;
+  const totalChanges = changes.newShows.length +
+    changes.scoreChanges.length + changes.audienceChanges.length + suspiciousCount + spikeCount;
+  const warnings = suspiciousCount + spikeCount;
+  const subject = warnings > 0
+    ? `⚠️ Daily Digest: ${totalChanges} changes (${warnings} warning${warnings !== 1 ? 's' : ''}) on ${today}`
+    : `Daily Digest: ${totalChanges} change${totalChanges !== 1 ? 's' : ''} on ${today}`;
+  const bannerText = `${totalChanges} change${totalChanges !== 1 ? 's' : ''}${warnings ? ` (${warnings} warning${warnings !== 1 ? 's' : ''})` : ''}`;
+  const items = buildDigestItems(changes);
+
+  // DRY_RUN previews only — it must never overwrite the real digest snapshot
+  // that autonomous-email.js folds into the actual morning email (ship-check
+  // finding: the original draft wrote it unconditionally, so a local
+  // `--dry-run` test run would silently clobber production digest data).
+  if (DRY_RUN) {
+    const html = buildDailyDigestHtml(changes, today);
+    console.log('DRY RUN — would write digest snapshot:');
+    console.log(`  Subject: ${subject}`);
+    console.log(`  New shows: ${changes.newShows.length}`);
+    console.log(`  New reviews: ${changes.newReviews.length} shows`);
+    console.log(`  Score changes: ${changes.scoreChanges.length}`);
+    console.log(`  Audience changes: ${changes.audienceChanges.length}`);
+    console.log(`  Suspicious changes: ${suspiciousCount}`);
+    fs.writeFileSync('/tmp/daily-digest-preview.html', html);
+    console.log('  HTML preview: /tmp/daily-digest-preview.html');
+    return;
+  }
+
+  writeDigestSnapshot({ subject, bannerText, items });
+
+  // Save new snapshot
+  fs.writeFileSync(SNAPSHOT_FILE, JSON.stringify(currSnapshot, null, 2));
+  console.log('Snapshot updated.');
+}
+
+if (require.main === module) {
+  main().catch(err => { console.error(err); process.exit(1); });
+}
+
+module.exports = {
+  computeExclusionTrend, buildSnapshot, diffSnapshots, hasChanges, buildDigestItems,
+};

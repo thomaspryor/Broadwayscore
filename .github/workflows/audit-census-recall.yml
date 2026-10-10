@@ -1,0 +1,177 @@
+name: Audit Census Recall
+
+# Coverage Verdict S1 (tasks #872 + #898) — the cadence behind the SERP-census
+# recall metric.
+#
+# #872 measured recall ONCE, against a naive Google search, after four owner
+# spot-checks in a row found published reviews the census had reported absent.
+# A single measurement cannot see a regression: a regression is a change, and
+# one number has nothing to change from. That is #898 — and it is the shape of
+# every arm fix before it (#371/#444/#720/#767), each of which improved one arm
+# with nobody measuring the whole, so the next silent breakage stayed invisible
+# by construction.
+#
+# So: a small sample, weekly, appended to data/audit/census-recall-trend.jsonl,
+# with each arm judged against its OWN recent median (a global floor cannot
+# work — recall is denominator-driven, so a week where the naive arm digs up six
+# long-tail blogs mechanically lowers every other arm's recall with nothing
+# broken).
+#
+# Cost posture: --sample=5 --pages=2 is ~25 SERP calls/week through the shared
+# BD/SD/SB chain (24h disk cache). The full harness at --sample=20 is ~120 and
+# is deliberately NOT what runs here.
+#
+# The job exits 0 even when a regression is found. Alerts are the output
+# channel, not the exit status: a red run for as long as an arm stays broken
+# would make check-cron-health flag this detector as stale and redispatch it in
+# a loop — the same trap documented in check-arm-yield.yml. The verdict reaches
+# the owner through data/audit/census-recall-status.json, which health-check.js
+# renders as the daily-digest check "Coverage: SERP census recall".
+#
+# Kill switch: set the CENSUS_RECALL_DISABLED repo Actions VARIABLE to 1 —
+# the run then exits without spending a single SERP call.
+
+on:
+  schedule:
+    - cron: '40 11 * * 1'  # Mondays 11:40 UTC, before check-arm-yield's 12:25 slot
+  workflow_dispatch:
+    inputs:
+      sample:
+        description: 'Shows to measure (default 5; the full harness uses 20)'
+        required: false
+        type: string
+        default: '5'
+      pages:
+        description: 'Naive-arm pages to read'
+        required: false
+        type: string
+        default: '2'
+      days:
+        description: 'Pool = shows opened within the last N days'
+        required: false
+        type: string
+        default: '30'
+      no_trend:
+        description: 'Measure and print, but do not append to the trend ledger'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: audit-census-recall
+  cancel-in-progress: false
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      # onDisk is one of the measured arms — it is what the pipeline currently
+      # holds, the trend line the owner actually feels. Without review-texts it
+      # would read as a corpus-wide collapse to zero on every run.
+      - uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          fetch-depth: '1'
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Measure per-arm census recall
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          CENSUS_RECALL_DISABLED: ${{ vars.CENSUS_RECALL_DISABLED }}
+          # This is a MONITOR, not a pipeline — it must never be the reason
+          # opening night has no ScrapingBee credits left. url-discovery.js
+          # otherwise allows up to 40 SB SERP calls per run (~1,000 credits),
+          # and the SB monthly cap has been exhausted before (#224). Bright
+          # Data / ScrapingDog still serve the queries; if they are both down
+          # the run reports a provider outage and records nothing, which is the
+          # correct outcome for a measurement.
+          SERP_NO_SB: '1'
+        run: |
+          # pipefail: without it the step takes tee's exit code, so a crashed
+          # or empty-pool run still shows green (BRO-4139 review).
+          set -o pipefail
+          node scripts/audit-serp-census-recall.js \
+            --sample=${{ inputs.sample || '5' }} \
+            --pages=${{ inputs.pages || '2' }} \
+            --days=${{ inputs.days || '30' }} \
+            ${{ inputs.no_trend && ' ' || '--trend' }} \
+            | tee "$GITHUB_STEP_SUMMARY"
+
+      # The ledger IS the detector's memory — a run that measures and does not
+      # commit leaves the next run with the same two data points and the same
+      # 'blind' verdict forever.
+      #
+      # BRO-2296: this one commit was losing its push race on 2026-08-31 and
+      # 2026-09-07 ("overall deadline 240s exceeded") because two of its four
+      # files (census-recall-status.json, serp-census-recall.json) were
+      # unaudited data/audit/ paths — enough on their own to disqualify push-
+      # with-retry.sh's Git Data API fallback for the WHOLE commit, forcing
+      # the slow local fetch+rebase+push path against main's constant churn.
+      # Fixed by registering all four files in core-data-merge-registry.js:
+      # the two snapshots as apiFallbackSafe (single-writer, full overwrite
+      # each run), and the two append-only ledgers (already 'active' with a
+      # real union-merge fn for the local PUSH_RECONCILE_MERGED_JSON path) as
+      # apiFallbackMerge — the SAME merge fn also opts into the Data API fast
+      # path. Deliberately NOT split into two commit steps (an earlier
+      # revision of this fix tried that and a Codex adversarial review caught
+      # the hazard: when step 1's push lands via the Data API fallback,
+      # push-with-retry.sh does `git reset --hard origin/main` to resync the
+      # local tree to the API-built commit — which would silently discard
+      # step 2's not-yet-committed working-tree edits to the trend/ledger
+      # files). Keeping one atomic commit avoids that entirely.
+      - name: Commit recall report + trend ledger
+        if: ${{ always() && !inputs.no_trend }}
+        env:
+          # The trend ledger is a read-modify-write file that other data/audit
+          # writers race (task #784's class). `rebase -X theirs` resolves in our
+          # favour WITHOUT reporting a conflict, so a concurrent run's line would
+          # vanish silently. This opts into the post-rebase union re-merge; the
+          # merger is registered in scripts/lib/reconcile-merged-json.js.
+          PUSH_RECONCILE_MERGED_JSON: '1'
+          # scripts/audit-push-retry-budgets.js flagged the default 240s/5-
+          # retries budget as fallback-early-trigger-unreachable: at 240s only
+          # ~2 attempts fund (each git-push hard-caps at 2*GIT_NET_TIMEOUT_SEC
+          # per BRO-2373's measurement), but the default fallback trigger is
+          # floor(3,(5+1)/2)=3 — unreachable before the deadline exhausts, so
+          # the now-eligible Git Data API fallback would never actually get a
+          # chance to run. Same fix already applied to commercial-rss-poll.yml's
+          # "Commit data changes" step (BRO-2811): raise the deadline so 3
+          # local attempts fund, AND lower the trigger below that boundary so
+          # the fallback still gets real budget instead of firing right as the
+          # deadline would have hit anyway. This step has ~1560s of job-timeout
+          # margin to spend (weekly cron, not hourly) so 420s costs nothing.
+          PUSH_DEADLINE_SEC: '420'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '2'
+        run: |
+          bash scripts/lib/git-add-existing.sh data/audit/serp-census-recall.json data/audit/census-recall-trend.jsonl data/audit/census-recall-status.json data/audit/scraper-spend-ledger.jsonl
+          if git diff --cached --quiet; then
+            echo "No recall state to commit"
+            exit 0
+          fi
+          git commit -m "audit: census recall trend [skip ci]"
+          bash scripts/lib/push-with-retry.sh 5 main
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Audit Census Recall Failed (the recall detector itself is broken)'
+          severity: 'warning'

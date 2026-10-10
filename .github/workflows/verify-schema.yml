@@ -1,0 +1,53 @@
+name: Verify Supabase Schema
+
+# Fails loud when a committed migration has not been applied to the prod
+# database. Migrations are applied deliberately (apply-migration.yml, manual
+# dispatch) — this is the fast feedback that the deliberate step was skipped.
+# Before this existed, an unapplied migration surfaced only when the nightly
+# UGC roundtrip 400'd on the missing column and paged the owner as a CRITICAL
+# auth failure (2026-08-09, watchlist.curtain_time, run 31344422375).
+#
+# Checks are auto-derived from supabase/migrations/*.sql — no hand-maintained
+# list to forget (scripts/lib/supabase-schema-expectations.js). The weekly cron
+# additionally catches drift introduced outside git (dashboard edits, restores).
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/migrations/**'
+      - 'scripts/verify-supabase-schema.js'
+      - 'scripts/lib/supabase-schema-expectations.js'
+      - '.github/workflows/verify-schema.yml'
+  schedule:
+    - cron: '37 9 * * 1' # Mondays 09:37 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-schema
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Verify migrations applied to prod
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+        run: node scripts/verify-supabase-schema.js
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Supabase schema drift — committed migration not applied to prod'
+          severity: 'warning'

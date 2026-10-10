@@ -1,0 +1,928 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+import { readFileSync } from 'node:fs';
+
+const require = createRequire(import.meta.url);
+const {
+  computeBackoffSum,
+  parseWorkflow,
+  findPushRetryCalls,
+  evaluateStep,
+  auditWorkflowText,
+  estimateCronIntervalMinutes,
+  touchesManagedFile,
+  managedFileInfo,
+  classifyPushFallbackSafety,
+  extractStagedPaths,
+  stagedPathsPerCall,
+  DEFAULT_MAX_RETRIES,
+  DEFAULT_DEADLINE_SEC,
+  computeFundableAttempts,
+  computeEffectiveFallbackAfter,
+  backoffForAttempt,
+  GIT_NET_TIMEOUT_SEC,
+  MIN_TIMED_OUT_ATTEMPT_SEC,
+  MIN_FUNDABLE_ATTEMPTS,
+} = require('./audit-push-retry-budgets.js');
+
+// ── computeBackoffSum: N^2+4N, push-with-retry.sh's WAIT=3+i*2+jitter summed ──
+
+test('computeBackoffSum: default MAX_RETRIES=7 sums to 77s', () => {
+  assert.equal(computeBackoffSum(7), 77);
+});
+
+test('computeBackoffSum: card #1891\'s verified 20 and 25 attempt sizings', () => {
+  assert.equal(computeBackoffSum(20), 480);
+  assert.equal(computeBackoffSum(25), 725);
+});
+
+test('computeBackoffSum: N=0 sums to 0', () => {
+  assert.equal(computeBackoffSum(0), 0);
+});
+
+// ── findPushRetryCalls ──
+
+test('findPushRetryCalls: bare invocation defaults MAX_RETRIES to 7, not soft-fail', () => {
+  const calls = findPushRetryCalls('bash scripts/lib/push-with-retry.sh\n');
+  assert.deepEqual(calls, [{ inlineDeadlineSec: null, maxRetries: 7, softFail: false }]);
+});
+
+test('findPushRetryCalls: positional retries + branch arg', () => {
+  const calls = findPushRetryCalls('bash scripts/lib/push-with-retry.sh 25 main\n');
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].maxRetries, 25);
+});
+
+test('findPushRetryCalls: trailing || echo marks the call softFail (tolerated failure)', () => {
+  const calls = findPushRetryCalls('bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::failed"\n');
+  assert.equal(calls[0].maxRetries, 5);
+  assert.equal(calls[0].softFail, true);
+});
+
+test('findPushRetryCalls: trailing || true also marks softFail', () => {
+  const calls = findPushRetryCalls('bash scripts/lib/push-with-retry.sh 3 main || true\n');
+  assert.equal(calls[0].softFail, true);
+});
+
+test('findPushRetryCalls: a bash comment merely MENTIONING push-with-retry.sh is not a call (card #1910 review finding)', () => {
+  const runText = [
+    '# a `cd data` cwd would make it look for a nonexistent push-with-retry.sh',
+    '# caller; this comment is prose, not an invocation',
+    'echo "nothing to push here"',
+  ].join('\n');
+  assert.deepEqual(findPushRetryCalls(runText), []);
+});
+
+test('findPushRetryCalls: a real call is still found even when a misleading comment precedes it', () => {
+  const runText = [
+    '# see push-with-retry.sh docs for details',
+    'bash scripts/lib/push-with-retry.sh 5 main',
+  ].join('\n');
+  const calls = findPushRetryCalls(runText);
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].maxRetries, 5);
+});
+
+test('findPushRetryCalls: a prose mention of the bare filename inside a shell string is NOT a ghost call (ship-check regression, test.yml:4532 shape)', () => {
+  // Real bug found live: a step whose run: text has BOTH a real invocation
+  // AND, later, an error-message string mentioning the bare filename (no
+  // path prefix) used to be double-counted as 2 calls.
+  const runText = [
+    'if bash scripts/lib/push-with-retry.sh; then',
+    '  echo ok',
+    'else',
+    '  MSG="Check run for the push-with-retry.sh output."',
+    '  echo "$MSG"',
+    'fi',
+  ].join('\n');
+  const calls = findPushRetryCalls(runText);
+  assert.equal(calls.length, 1, 'the prose mention must not be counted as a second call');
+  assert.equal(calls[0].maxRetries, DEFAULT_MAX_RETRIES);
+});
+
+test('findPushRetryCalls: no call present returns empty', () => {
+  assert.deepEqual(findPushRetryCalls('git commit -m "no push here"\n'), []);
+});
+
+// ── evaluateStep: margin + retry/deadline flags ──
+
+test('evaluateStep: shared defaults (7 retries / 240s deadline) flag retries-undersized-vs-deadline', () => {
+  const r = evaluateStep({ maxRetries: DEFAULT_MAX_RETRIES, deadlineSec: DEFAULT_DEADLINE_SEC, jobTimeoutMinutes: 60 });
+  assert.ok(r.flags.includes('retries-undersized-vs-deadline'));
+  assert.equal(r.backoffSum, 77);
+});
+
+test('evaluateStep: card #1891 sizing (25 retries / 900s deadline) does not flag retries-undersized', () => {
+  const r = evaluateStep({ maxRetries: 25, deadlineSec: 900, jobTimeoutMinutes: 60 });
+  assert.ok(!r.flags.includes('retries-undersized-vs-deadline'));
+});
+
+test('evaluateStep: tight job timeout flags job-timeout-margin-undersized (rebuild-reviews.yml pre-follow-up-fix shape)', () => {
+  // 25 retries / 900s deadline, 30min (1800s) job, one other step with an
+  // explicit 12min (720s) timeout — the exact numbers from commit 6a4a47f40f3's
+  // description: 900+720=1620s of 1800s consumed, 180s (10%) margin.
+  const r = evaluateStep({ maxRetries: 25, deadlineSec: 900, jobTimeoutMinutes: 30, otherStepsBudgetSec: 720 });
+  assert.equal(r.marginSec, 180);
+  assert.equal(Math.round(r.marginRatio * 1000) / 1000, 0.1);
+  assert.ok(r.flags.includes('job-timeout-margin-undersized'));
+});
+
+test('evaluateStep: same shape at 40min job timeout (the actual #1891 follow-up fix) clears the flag', () => {
+  const r = evaluateStep({ maxRetries: 25, deadlineSec: 900, jobTimeoutMinutes: 40, otherStepsBudgetSec: 720 });
+  assert.equal(r.marginSec, 780);
+  assert.equal(r.marginRatio, 0.325);
+  assert.ok(!r.flags.includes('job-timeout-margin-undersized'));
+});
+
+test('evaluateStep: backoffSum exceeding deadlineSec becomes the step budget (misconfigured-high-retries case)', () => {
+  // 50 retries sums to 2700s, far past a 300s deadline — the loop would be cut
+  // by the deadline in practice, but stepBudgetSec should reflect the LARGER
+  // configured number since that's what a caller relying on retries completing
+  // would need job-timeout headroom for.
+  const r = evaluateStep({ maxRetries: 50, deadlineSec: 300, jobTimeoutMinutes: 60 });
+  assert.equal(r.stepBudgetSec, 2700);
+});
+
+// ── touchesManagedFile / managedFileInfo / estimateCronIntervalMinutes ──
+
+test('touchesManagedFile: detects a MANAGED core-data basename in run text', () => {
+  assert.equal(touchesManagedFile('git add -u data/audit/scraper-spend-ledger.jsonl'), true);
+  assert.equal(touchesManagedFile('git add -u data/some-unrelated-file.json'), false);
+});
+
+test('managedFileInfo: apiFallbackSafe reflects the registry\'s own claim for the exact file touched', () => {
+  // audit/imageless-scored-shows.json is registry-verified apiFallbackSafe: true;
+  // scraper-spend-ledger.jsonl is NOT (genuinely multi-writer, no safe fallback).
+  assert.deepEqual(managedFileInfo('git add data/audit/imageless-scored-shows.json'), { touches: true, apiFallbackSafe: true });
+  assert.deepEqual(managedFileInfo('git add data/audit/scraper-spend-ledger.jsonl'), { touches: true, apiFallbackSafe: false });
+});
+
+test('managedFileInfo: a basename that is a SUBSTRING of another managed basename does not false-positive-match the other (card #1910 review regression)', () => {
+  // 'shows.json' is a real managed basename and is also a literal substring of
+  // 'audit/imageless-scored-shows.json' — naive runText.includes(base) matching
+  // wrongly credited/blamed the wrong file's apiFallbackSafe value here.
+  const r = managedFileInfo('git add data/audit/imageless-scored-shows.json');
+  assert.equal(r.apiFallbackSafe, true, 'must reflect imageless-scored-shows.json\'s own true, not shows.json\'s false');
+});
+
+test('managedFileInfo: plain shows.json (not the imageless-scored variant) is correctly NOT apiFallbackSafe', () => {
+  assert.deepEqual(managedFileInfo('git add data/shows.json'), { touches: true, apiFallbackSafe: false });
+});
+
+test('estimateCronIntervalMinutes: */15 * * * * -> 15 minutes', () => {
+  const text = "on:\n  schedule:\n    - cron: '*/15 * * * *'\n";
+  assert.equal(estimateCronIntervalMinutes(text), 15);
+});
+
+test('estimateCronIntervalMinutes: fixed daily time treated as low-frequency', () => {
+  const text = "on:\n  schedule:\n    - cron: '30 6 * * *'\n";
+  assert.equal(estimateCronIntervalMinutes(text), 1440);
+});
+
+test('estimateCronIntervalMinutes: no schedule trigger returns null', () => {
+  assert.equal(estimateCronIntervalMinutes('on:\n  workflow_dispatch:\n'), null);
+});
+
+// ── parseWorkflow + auditWorkflowText end-to-end against a fixture ──
+
+const FIXTURE_UNDERSIZED = `
+name: Fixture Undersized
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Extract pull quotes for new reviews
+        timeout-minutes: 12
+        run: |
+          node scripts/extract-pull-quotes.js
+      - name: Commit and push changes
+        env:
+          PUSH_DEADLINE_SEC: '900'
+        run: |
+          git add -u data/audit/scraper-spend-ledger.jsonl
+          bash scripts/lib/push-with-retry.sh 25 main
+`;
+
+test('auditWorkflowText: end-to-end fixture reproduces the #1891 job-timeout-margin flag', () => {
+  const results = auditWorkflowText(FIXTURE_UNDERSIZED, 'fixture-undersized.yml');
+  assert.equal(results.length, 1);
+  const r = results[0];
+  assert.equal(r.job, 'fixture');
+  assert.equal(r.step, 'Commit and push changes');
+  assert.equal(r.maxRetries, 25);
+  assert.equal(r.deadlineSec, 900);
+  assert.equal(r.otherStepsBudgetSec, 720);
+  assert.equal(r.marginSec, 180);
+  assert.ok(r.flags.includes('job-timeout-margin-undersized'));
+  assert.equal(r.touchesManagedFile, true);
+  assert.equal(r.cronIntervalMinutes, 10);
+  assert.ok(r.contentionScore >= 4); // managed(+2) + frequent-cron(+2) + margin-flag(+2), retries not flagged here
+});
+
+const FIXTURE_BARE_DEFAULT = `
+name: Fixture Bare Default
+on:
+  workflow_dispatch: {}
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Commit and push changes
+        run: |
+          git add -u data/some-report.json
+          bash scripts/lib/push-with-retry.sh
+`;
+
+test('auditWorkflowText: bare invocation with no overrides flags retries-undersized-vs-deadline', () => {
+  const results = auditWorkflowText(FIXTURE_BARE_DEFAULT, 'fixture-bare-default.yml');
+  assert.equal(results.length, 1);
+  assert.equal(results[0].maxRetries, DEFAULT_MAX_RETRIES);
+  assert.equal(results[0].deadlineSec, DEFAULT_DEADLINE_SEC);
+  assert.ok(results[0].flags.includes('retries-undersized-vs-deadline'));
+  assert.equal(results[0].touchesManagedFile, false);
+});
+
+const FIXTURE_NO_PUSH_STEP = `
+name: Fixture No Push
+on:
+  workflow_dispatch: {}
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Just does something else
+        run: |
+          echo "nothing to push here"
+`;
+
+test('auditWorkflowText: workflow with no push-with-retry.sh call returns no results', () => {
+  assert.deepEqual(auditWorkflowText(FIXTURE_NO_PUSH_STEP, 'fixture-no-push.yml'), []);
+});
+
+test('parseWorkflow: malformed/no jobs: key returns empty jobs array instead of throwing', () => {
+  assert.deepEqual(parseWorkflow('name: not-a-real-workflow\n'), { jobs: [] });
+});
+
+test('parseWorkflow: job timeout-minutes defaults to GitHub Actions\' own 360 when omitted', () => {
+  const parsed = parseWorkflow(FIXTURE_BARE_DEFAULT);
+  assert.equal(parsed.jobs[0].timeoutMinutes, 360);
+});
+
+// ── sibling push-step margin aggregation (card #1910 review finding) ──
+// A job with SEVERAL push-with-retry.sh steps can exhaust its timeout on the
+// SUM of all of them even when none is individually flagged — the first
+// draft only summed explicit-timeout-minutes siblings into otherStepsBudgetSec,
+// missing every sibling push step's own (undeclared) budget.
+
+const FIXTURE_MULTI_PUSH_JOB = `
+name: Fixture Multi Push
+on:
+  workflow_dispatch: {}
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Commit A
+        env:
+          PUSH_DEADLINE_SEC: '600'
+        run: |
+          bash scripts/lib/push-with-retry.sh 25 main
+      - name: Commit B
+        env:
+          PUSH_DEADLINE_SEC: '600'
+        run: |
+          bash scripts/lib/push-with-retry.sh 25 main
+`;
+
+test('auditWorkflowText: sibling push steps in the same job are summed into each other\'s margin check', () => {
+  const results = auditWorkflowText(FIXTURE_MULTI_PUSH_JOB, 'fixture-multi-push.yml');
+  assert.equal(results.length, 2);
+  // Each step's own stepBudgetSec is max(600, 725)=725; the OTHER step's
+  // stepBudgetSec (725) must appear as otherStepsBudgetSec, not 0 — job
+  // timeout is 1200s, so 1200-(725+725) is deeply negative -> flagged.
+  for (const r of results) {
+    assert.equal(r.stepBudgetSec, 725);
+    assert.equal(r.otherStepsBudgetSec, 725);
+    assert.ok(r.marginRatio < 0, 'two 725s-budget push steps must blow a 1200s job timeout');
+    assert.ok(r.flags.includes('job-timeout-margin-undersized'));
+  }
+});
+
+// ── continue-on-error treated as soft-fail (card #1910 review finding) ──
+
+const FIXTURE_CONTINUE_ON_ERROR = `
+name: Fixture Continue On Error
+on:
+  workflow_dispatch: {}
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Commit optional state
+        continue-on-error: true
+        run: |
+          bash scripts/lib/push-with-retry.sh
+`;
+
+test('parseWorkflow: continue-on-error: true is captured on the step', () => {
+  const parsed = parseWorkflow(FIXTURE_CONTINUE_ON_ERROR);
+  assert.equal(parsed.jobs[0].steps[0].continueOnError, true);
+});
+
+test('auditWorkflowText: continue-on-error: true step is treated as softFail like a `|| echo` wrapper', () => {
+  const results = auditWorkflowText(FIXTURE_CONTINUE_ON_ERROR, 'fixture-continue-on-error.yml');
+  assert.equal(results[0].softFail, true);
+});
+
+test('auditWorkflowText: a step WITHOUT continue-on-error or || echo is NOT softFail', () => {
+  const results = auditWorkflowText(FIXTURE_BARE_DEFAULT, 'fixture-bare-default.yml');
+  assert.equal(results[0].softFail, false);
+});
+
+// ── mixed-safety-bundle (BRO-2446) ──────────────────────────────────────────
+// push-with-retry.sh's Git Data API fallback disqualifier checks the WHOLE
+// outgoing diff for a call — one unaudited data/audit/ file (or a genuinely
+// multi-writer MANAGED file) bundled alongside an apiFallbackSafe file
+// disqualifies the fallback for BOTH, not just the unsafe one. This is
+// exactly what made BRO-2435's single-writer orphan-rescore-requeue-state.json
+// hard-fail every run bundled with the 19-writer alert-ledger.json.
+
+test('classifyPushFallbackSafety: a registered apiFallbackSafe file is safe and does not disqualify', () => {
+  const r = classifyPushFallbackSafety('data/audit/imageless-scored-shows.json');
+  assert.equal(r.isApiFallbackSafe, true);
+  assert.equal(r.disqualifiesFallback, false);
+});
+
+test('classifyPushFallbackSafety: an unregistered data/audit/ path disqualifies (unaudited)', () => {
+  const r = classifyPushFallbackSafety('data/audit/some-totally-unregistered-file.json');
+  assert.equal(r.isApiFallbackSafe, false);
+  assert.equal(r.disqualifiesFallback, true);
+});
+
+test('classifyPushFallbackSafety: a MANAGED (multi-writer, active) file disqualifies even though it is not data/audit/', () => {
+  // Not commercial-pending-review.json — BRO-2795 gave that one real
+  // apiFallbackMerge coverage (mergePendingReview), so it no longer
+  // disqualifies. commercial-research-queue.json is the same family
+  // (MANAGED, 'active', no apiFallbackMerge) and still does.
+  const r = classifyPushFallbackSafety('data/commercial-research-queue.json');
+  assert.equal(r.isApiFallbackSafe, false);
+  assert.equal(r.disqualifiesFallback, true);
+});
+
+test('classifyPushFallbackSafety: shows.json/reviews.json always disqualify (NEVER_FALLBACK)', () => {
+  assert.equal(classifyPushFallbackSafety('data/shows.json').disqualifiesFallback, true);
+  assert.equal(classifyPushFallbackSafety('data/reviews.json').disqualifiesFallback, true);
+});
+
+test('classifyPushFallbackSafety: a file outside data/audit/ and not registered anywhere is a no-op (not disqualifying, not safe)', () => {
+  const r = classifyPushFallbackSafety('data/some-unrelated-report.json');
+  assert.equal(r.isApiFallbackSafe, false);
+  assert.equal(r.disqualifiesFallback, false);
+});
+
+// BRO-2413 (Codex adversarial ship-check P1 finding): the 3 alert-* ledgers
+// are BOTH MANAGED (status:'active', so they'd disqualify under the OLD
+// isManaged-alone check) AND apiFallbackMerge-registered (so push-with-
+// retry.sh's REAL disqualifier no longer blocks them) — this module's own
+// classifier must reflect that, not just the isManaged half.
+test('classifyPushFallbackSafety: an apiFallbackMerge-registered file does NOT disqualify, even though it is also MANAGED', () => {
+  const r = classifyPushFallbackSafety('data/audit/alert-ledger.json');
+  assert.equal(r.isApiFallbackMerge, true);
+  assert.equal(r.isApiFallbackSafe, false, 'apiFallbackSafe and apiFallbackMerge are distinct claims — this file needs real merging, not "no merge needed"');
+  assert.equal(r.disqualifiesFallback, false);
+});
+
+test('extractStagedPaths: git-add-existing.sh with multiple files', () => {
+  const paths = extractStagedPaths('bash scripts/lib/git-add-existing.sh --force data/audit/a.json data/audit/b.json\n');
+  assert.deepEqual(paths.sort(), ['data/audit/a.json', 'data/audit/b.json']);
+});
+
+test('extractStagedPaths: several plain `git add` lines across a step accumulate', () => {
+  const runText = [
+    'git add data/audit/opening-night-express-completed.json',
+    'git add data/audit/orphan-rescore-requeue-state.json',
+    'git add data/audit/alert-ledger.json',
+  ].join('\n');
+  assert.deepEqual(extractStagedPaths(runText).sort(), [
+    'data/audit/alert-ledger.json',
+    'data/audit/opening-night-express-completed.json',
+    'data/audit/orphan-rescore-requeue-state.json',
+  ]);
+});
+
+test('extractStagedPaths: skips flags, shell variables, and bare directory adds', () => {
+  const runText = [
+    'git add -u data/audit/real-file.json',
+    'git add "$f"',
+    'git add data/audit/',
+  ].join('\n');
+  assert.deepEqual(extractStagedPaths(runText), ['data/audit/real-file.json']);
+});
+
+test('stagedPathsPerCall: attributes each git-add-existing.sh file to its OWN push call, not every call in the step (BRO-2435 split pattern)', () => {
+  // Exact shape of opening-night-broadcast.yml's "Commit orphan-rescore-
+  // requeue state" step after the BRO-2435 fix: two independent
+  // add-one-file -> commit -> push blocks in the SAME step.
+  const runText = [
+    'bash scripts/lib/git-add-existing.sh data/audit/orphan-rescore-requeue-state.json',
+    'git commit -m "a"',
+    'bash scripts/lib/push-with-retry.sh 14 main || STATUS=1',
+    'bash scripts/lib/git-add-existing.sh data/audit/alert-ledger.json',
+    'git commit -m "b"',
+    'bash scripts/lib/push-with-retry.sh 14 main || STATUS=1',
+  ].join('\n');
+  const perCall = stagedPathsPerCall(runText);
+  assert.deepEqual(perCall, [
+    ['data/audit/orphan-rescore-requeue-state.json'],
+    ['data/audit/alert-ledger.json'],
+  ]);
+});
+
+const FIXTURE_MIXED_BUNDLE = `
+name: Fixture Mixed Bundle
+on:
+  workflow_dispatch: {}
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Commit data
+        run: |
+          git add data/audit/some-totally-unregistered-file.json
+          git add data/audit/imageless-scored-shows.json
+          git add data/commercial-research-queue.json
+          git commit -m "data: update"
+          bash scripts/lib/push-with-retry.sh 14 main
+`;
+
+test('auditWorkflowText: a single push call bundling an apiFallbackSafe file with unaudited/managed files flags mixed-safety-bundle', () => {
+  const results = auditWorkflowText(FIXTURE_MIXED_BUNDLE, 'fixture-mixed-bundle.yml');
+  assert.equal(results.length, 1);
+  const r = results[0];
+  assert.equal(r.mixedSafetyBundle, true);
+  assert.ok(r.flags.includes('mixed-safety-bundle'));
+  assert.deepEqual(r.mixedSafetyBundleSafeFiles, ['data/audit/imageless-scored-shows.json']);
+  assert.deepEqual(r.mixedSafetyBundleDisqualifyingFiles.sort(), [
+    'data/audit/some-totally-unregistered-file.json',
+    'data/commercial-research-queue.json',
+  ]);
+});
+
+// ── for-loop staged paths (second-opinion finding, BRO-2446: both the Codex
+// adversarial review and the Claude QA subagent independently flagged this
+// as a live blind spot in 9 real workflows) ─────────────────────────────────
+
+test('extractStagedPaths: `for f in <paths>; do git add "$f"; done` loop staging is recognized (real idiom, e.g. audit-census-recall.yml)', () => {
+  const runText = [
+    'for f in data/audit/imageless-scored-shows.json \\',
+    '         data/audit/alert-ledger.json; do',
+    '  [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"',
+    'done',
+  ].join('\n');
+  assert.deepEqual(extractStagedPaths(runText).sort(), [
+    'data/audit/alert-ledger.json',
+    'data/audit/imageless-scored-shows.json',
+  ]);
+});
+
+test('extractStagedPaths: single-line `for f in a b; do ... git add "$f" ...; done` is also recognized', () => {
+  const runText = 'for f in data/audit/a.json data/audit/b.json; do [ -e "$f" ] && git add "$f"; done\n';
+  assert.deepEqual(extractStagedPaths(runText).sort(), ['data/audit/a.json', 'data/audit/b.json']);
+});
+
+test('extractStagedPaths: a for-loop whose body does NOT git-add the loop variable is ignored (not every for-loop stages files)', () => {
+  const runText = 'for f in data/audit/a.json data/audit/b.json; do echo "checking $f"; done\n';
+  assert.deepEqual(extractStagedPaths(runText), []);
+});
+
+const FIXTURE_LOOP_MIXED_BUNDLE = `
+name: Fixture Loop Mixed Bundle
+on:
+  workflow_dispatch: {}
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Commit audit files
+        run: |
+          for f in data/audit/imageless-scored-shows.json \\
+                   data/audit/some-totally-unregistered-file.json; do
+            [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
+          done
+          git commit -m "data: update"
+          bash scripts/lib/push-with-retry.sh
+`;
+
+test('auditWorkflowText: a mixed bundle staged entirely via the for-loop idiom is flagged mixed-safety-bundle', () => {
+  const results = auditWorkflowText(FIXTURE_LOOP_MIXED_BUNDLE, 'fixture-loop-mixed-bundle.yml');
+  assert.equal(results.length, 1);
+  assert.equal(results[0].mixedSafetyBundle, true);
+  assert.deepEqual(results[0].mixedSafetyBundleSafeFiles, ['data/audit/imageless-scored-shows.json']);
+  assert.deepEqual(results[0].mixedSafetyBundleDisqualifyingFiles, ['data/audit/some-totally-unregistered-file.json']);
+});
+
+const FIXTURE_BRO_2435_SPLIT = `
+name: Fixture BRO-2435 Split
+on:
+  workflow_dispatch: {}
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Commit orphan-rescore-requeue state
+        run: |
+          STATUS=0
+          bash scripts/lib/git-add-existing.sh data/audit/imageless-scored-shows.json
+          if git diff --cached --quiet; then
+            echo "nothing to commit"
+          else
+            git commit -m "chore: update"
+            bash scripts/lib/push-with-retry.sh 14 main || STATUS=1
+          fi
+          bash scripts/lib/git-add-existing.sh data/audit/some-totally-unregistered-file.json
+          if git diff --cached --quiet; then
+            echo "nothing to commit"
+          else
+            git commit -m "chore: update"
+            bash scripts/lib/push-with-retry.sh 14 main || STATUS=1
+          fi
+          exit $STATUS
+`;
+
+test('auditWorkflowText: the BRO-2435 split-per-file pattern is NOT flagged mixed-safety-bundle (each call stages only its own file)', () => {
+  const results = auditWorkflowText(FIXTURE_BRO_2435_SPLIT, 'fixture-bro-2435-split.yml');
+  assert.equal(results.length, 2);
+  for (const r of results) {
+    assert.equal(r.mixedSafetyBundle, false, `${JSON.stringify(r.mixedSafetyBundleSafeFiles)} / ${JSON.stringify(r.mixedSafetyBundleDisqualifyingFiles)}`);
+    assert.ok(!r.flags.includes('mixed-safety-bundle'));
+  }
+});
+
+test('auditWorkflowText: a bundle with only disqualifying files (no apiFallbackSafe file) is not flagged mixed — nothing fixable is being wasted', () => {
+  const runText = `
+name: Fixture All Unsafe
+on:
+  workflow_dispatch: {}
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Commit
+        run: |
+          git add data/audit/some-totally-unregistered-file.json
+          git add data/audit/another-unregistered-file.json
+          bash scripts/lib/push-with-retry.sh
+`;
+  const results = auditWorkflowText(runText, 'fixture-all-unsafe.yml');
+  assert.equal(results[0].mixedSafetyBundle, false);
+});
+
+test('auditWorkflowText: mixed-safety-bundle contributes +2 to contentionScore, isolated from the (unchanged) managed-file weight', () => {
+  // Two calls in the SAME step (so managedFileInfo(step.runText) — computed
+  // over the whole step, touches/apiFallbackSafe identical for both calls —
+  // stays constant) that stage the exact same three files; the ONLY
+  // difference is whether they're staged together (one call, mixed) or one
+  // at a time (three calls, none mixed). Isolates the +2 mixed-bundle delta
+  // from managedFileInfo's own separate +1/+2 contentionScore weight.
+  const runText = `
+name: Fixture Isolate Mixed Delta
+on:
+  workflow_dispatch: {}
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Commit data
+        run: |
+          git add data/audit/some-totally-unregistered-file.json
+          git add data/audit/imageless-scored-shows.json
+          git add data/commercial-research-queue.json
+          git commit -m "data: update (bundled)"
+          bash scripts/lib/push-with-retry.sh 14 main
+          bash scripts/lib/git-add-existing.sh data/audit/some-totally-unregistered-file.json
+          git commit -m "data: unregistered alone"
+          bash scripts/lib/push-with-retry.sh 14 main
+`;
+  const [bundled, unbundled] = auditWorkflowText(runText, 'fixture-isolate-mixed-delta.yml');
+  assert.equal(bundled.mixedSafetyBundle, true);
+  assert.equal(unbundled.mixedSafetyBundle, false);
+  assert.equal(bundled.contentionScore, unbundled.contentionScore + 2);
+});
+
+
+// ── computeFundableAttempts / deadline-cannot-fund-retries (BRO-2373) ─────────
+// The two flags above model an attempt as costing only its backoff sleep. These
+// assert the third model: an attempt that hits GIT_NET_TIMEOUT_SEC costs
+// 2 * 90s of network cap, because ONE loop iteration can spend the cap twice
+// (loop-top git_push, then the post-resolution git_push after fetch+rebase).
+
+test('GIT_NET_TIMEOUT_SEC is READ from push-with-retry.sh, not copied', () => {
+  // Adversarial review finding: a hardcoded 90 here silently drifts the day the
+  // script's default changes. Assert both the value and that it really came
+  // from the script's own text.
+  const src = readFileSync(new URL('./push-with-retry.sh', import.meta.url), 'utf8');
+  const m = src.match(/^GIT_NET_TIMEOUT_SEC=\$\{GIT_NET_TIMEOUT_SEC:-(\d+)\}/m);
+  assert.ok(m, 'push-with-retry.sh no longer declares GIT_NET_TIMEOUT_SEC in the parsed shape');
+  assert.equal(GIT_NET_TIMEOUT_SEC, parseInt(m[1], 10));
+  assert.equal(MIN_TIMED_OUT_ATTEMPT_SEC, 2 * GIT_NET_TIMEOUT_SEC);
+  assert.equal(MIN_FUNDABLE_ATTEMPTS, 3);
+});
+
+test('backoffForAttempt is the single source of truth behind computeBackoffSum', () => {
+  // Adversarial review finding: the closed form N^2+4N and the per-attempt
+  // 3+2i were two independent copies. Assert they agree for every N a workflow
+  // could plausibly configure, so neither can drift alone.
+  for (let n = 0; n <= 30; n += 1) {
+    let sum = 0;
+    for (let i = 1; i <= n; i += 1) sum += backoffForAttempt(i);
+    assert.equal(sum, computeBackoffSum(n), `backoff sum diverges at N=${n}`);
+  }
+});
+
+test('computeFundableAttempts: reproduces run 33681436855 exactly — 240s/7 funds 2 attempts', () => {
+  // fetch-guardian-reviews.yml "Commit changes" on the shared 7/240 default.
+  // CI printed "overall deadline 240s exceeded after 2 attempt(s)".
+  assert.equal(computeFundableAttempts(7, 240), 2);
+});
+
+test('computeFundableAttempts: a big MAX_RETRIES cannot buy attempts the deadline will not fund', () => {
+  // opening-night-broadcast.yml's early commit step: 14 retries, 300s deadline.
+  assert.equal(computeFundableAttempts(14, 300), 2);
+  // rebuild-reviews.yml's 900s step gets materially more, but nowhere near 25.
+  const fundable = computeFundableAttempts(25, 900);
+  assert.ok(fundable >= 4 && fundable <= 6, `expected 4-6 fundable attempts, got ${fundable}`);
+});
+
+test('computeFundableAttempts: never exceeds MAX_RETRIES however large the deadline', () => {
+  assert.equal(computeFundableAttempts(3, 86400), 3);
+  assert.equal(computeFundableAttempts(1, 86400), 1);
+});
+
+test('computeFundableAttempts: the loop-top deadline check lets a started attempt finish', () => {
+  // push-with-retry.sh checks SECONDS >= PUSH_DEADLINE_SEC at the TOP of the
+  // iteration, so a 1s deadline still funds exactly one (over-running) attempt
+  // — modelling it as 0 would under-report the step's real wall time.
+  assert.equal(computeFundableAttempts(7, 1), 1);
+});
+
+test('computeFundableAttempts: degenerate inputs fund nothing rather than throwing', () => {
+  assert.equal(computeFundableAttempts(0, 900), 0);
+  assert.equal(computeFundableAttempts(7, 0), 0);
+  assert.equal(computeFundableAttempts(-1, 900), 0);
+});
+
+test('evaluateStep: flags deadline-cannot-fund-retries on the shared 7/240 default', () => {
+  const r = evaluateStep({ maxRetries: 7, deadlineSec: 240, jobTimeoutMinutes: 30 });
+  assert.equal(r.fundableAttempts, 2);
+  assert.ok(r.flags.includes('deadline-cannot-fund-retries'));
+});
+
+test('evaluateStep: a deadline that funds 3+ attempts is NOT flagged for underfunding', () => {
+  const r = evaluateStep({ maxRetries: 7, deadlineSec: 600, jobTimeoutMinutes: 60 });
+  assert.ok(r.fundableAttempts >= MIN_FUNDABLE_ATTEMPTS);
+  assert.ok(!r.flags.includes('deadline-cannot-fund-retries'));
+});
+
+test('evaluateStep: a deliberately single-attempt step is small, not underfunded', () => {
+  // MAX_RETRIES=1 funds its one attempt, so min(maxRetries, 3) is 1 and the
+  // flag must stay off — otherwise every intentionally-tiny push step reds.
+  const r = evaluateStep({ maxRetries: 1, deadlineSec: 240, jobTimeoutMinutes: 30 });
+  assert.equal(r.fundableAttempts, 1);
+  assert.ok(!r.flags.includes('deadline-cannot-fund-retries'));
+});
+
+test('evaluateStep: the new flag is independent of retries-undersized-vs-deadline', () => {
+  // 25 retries against 900s: backoffSum (725s) is 0.81 of the deadline so flag
+  // 1 stays off, yet only ~5 attempts are fundable. The two must not collapse
+  // into each other — that is the whole point of adding a third model.
+  const r = evaluateStep({ maxRetries: 25, deadlineSec: 900, jobTimeoutMinutes: 60 });
+  assert.ok(!r.flags.includes('retries-undersized-vs-deadline'));
+  assert.ok(r.fundableAttempts < r.maxRetries);
+});
+
+// ── computeEffectiveFallbackAfter / fallback-early-trigger-unreachable (BRO-2811,
+// same class as BRO-2370 DEFECT B made systemic) ────────────────────────────
+// push-with-retry.sh derives PUSH_API_FALLBACK_AFTER_ATTEMPTS as
+// max(3, floor((MAX_RETRIES+1)/2)) unless a caller overrides it, then breaks
+// out of the local retry loop early once that many failed attempts have run
+// (~L1952) to try the Git Data API fallback. The deadline-cannot-fund-retries
+// flag above only catches a step that can't fund MIN_FUNDABLE_ATTEMPTS (3) —
+// this catches the DISTINCT, higher bar of the derived/explicit fallback
+// threshold itself being unreachable, which is exactly what BRO-2370 found on
+// data-health-check.yml: fundable=5 (well above 3, so NOT deadline-cannot-
+// fund-retries) yet fallbackAfter=13 (unreachable).
+
+test('computeEffectiveFallbackAfter: derives push-with-retry.sh\'s own floor(3, (N+1)/2) formula with no override', () => {
+  assert.equal(computeEffectiveFallbackAfter(7, null), 4); // (7+1)/2=4
+  assert.equal(computeEffectiveFallbackAfter(25, null), 13); // (25+1)/2=13 — the exact BRO-2370 number
+  assert.equal(computeEffectiveFallbackAfter(1, null), 3); // floors at 3 even for tiny MAX_RETRIES
+  assert.equal(computeEffectiveFallbackAfter(3, null), 3); // (3+1)/2=2, floored up to 3
+});
+
+test('computeEffectiveFallbackAfter: an explicit override always wins over the derived default', () => {
+  assert.equal(computeEffectiveFallbackAfter(25, 3), 3); // data-health-check.yml's actual BRO-2370 fix
+  assert.equal(computeEffectiveFallbackAfter(7, 1), 1); // even a value the derived formula would never produce
+});
+
+test('evaluateStep: flags fallback-early-trigger-unreachable on the exact BRO-2370 data-health-check.yml pre-fix shape (25 retries / 900s deadline, no override)', () => {
+  const r = evaluateStep({ maxRetries: 25, deadlineSec: 900, jobTimeoutMinutes: 40 });
+  assert.equal(r.fallbackAfterAttempts, 13);
+  assert.ok(r.fundableAttempts >= 4 && r.fundableAttempts <= 6, `expected the same 4-6 fundable range as the existing computeFundableAttempts test, got ${r.fundableAttempts}`);
+  assert.equal(r.fallbackEarlyTriggerReachable, false);
+  assert.ok(r.flags.includes('fallback-early-trigger-unreachable'));
+  // and NOT deadline-cannot-fund-retries — that flag's own bar (3) is cleared
+  // here, which is precisely why this is a DIFFERENT failure this flag alone
+  // catches.
+  assert.ok(!r.flags.includes('deadline-cannot-fund-retries'));
+});
+
+test('evaluateStep: the actual BRO-2370 fix (PUSH_API_FALLBACK_AFTER_ATTEMPTS=3 override) clears the flag on the SAME 25/900 shape', () => {
+  const r = evaluateStep({ maxRetries: 25, deadlineSec: 900, jobTimeoutMinutes: 40, fallbackAfterAttemptsOverride: 3 });
+  assert.equal(r.fallbackAfterAttempts, 3);
+  assert.equal(r.fallbackEarlyTriggerReachable, true);
+  assert.ok(!r.flags.includes('fallback-early-trigger-unreachable'));
+});
+
+test('evaluateStep: fallbackDisabled short-circuits the check regardless of reachability', () => {
+  const r = evaluateStep({ maxRetries: 25, deadlineSec: 900, jobTimeoutMinutes: 40, fallbackDisabled: true });
+  assert.equal(r.fallbackEarlyTriggerReachable, true);
+  assert.ok(!r.flags.includes('fallback-early-trigger-unreachable'));
+});
+
+test('evaluateStep: a modest sizing where fundableAttempts already meets the derived fallback threshold is not flagged', () => {
+  // update-show-status.yml's real shape: 7 retries / 1200s deadline. Derived
+  // fallbackAfter = floor(8/2) = 4; fundableAttempts at 1200s comfortably
+  // clears that.
+  const r = evaluateStep({ maxRetries: 7, deadlineSec: 1200, jobTimeoutMinutes: 60 });
+  assert.equal(r.fallbackAfterAttempts, 4);
+  assert.ok(r.fundableAttempts >= 4);
+  assert.equal(r.fallbackEarlyTriggerReachable, true);
+  assert.ok(!r.flags.includes('fallback-early-trigger-unreachable'));
+});
+
+test('parseWorkflow: PUSH_API_FALLBACK_AFTER_ATTEMPTS and PUSH_API_FALLBACK_DISABLE are read from the step env block', () => {
+  const text = `
+name: Fixture Fallback Env
+on:
+  workflow_dispatch: {}
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Commit digest snapshot
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+        run: |
+          bash scripts/lib/push-with-retry.sh 25 main
+      - name: Commit disabled-fallback step
+        env:
+          PUSH_API_FALLBACK_DISABLE: '1'
+        run: |
+          bash scripts/lib/push-with-retry.sh 25 main
+`;
+  const parsed = parseWorkflow(text);
+  const [stepA, stepB] = parsed.jobs[0].steps;
+  assert.equal(stepA.envFallbackAfterAttempts, 3);
+  assert.equal(stepA.envFallbackDisabled, false);
+  assert.equal(stepB.envFallbackDisabled, true);
+  assert.equal(stepB.envFallbackAfterAttempts, null);
+});
+
+test('auditWorkflowText: end-to-end, an explicit PUSH_API_FALLBACK_AFTER_ATTEMPTS override is honored and clears the flag (real data-health-check.yml shape)', () => {
+  const text = `
+name: Fixture Data Health Check Shape
+on:
+  workflow_dispatch: {}
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Commit digest snapshot
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+        run: |
+          bash scripts/lib/push-with-retry.sh 25 main
+`;
+  const results = auditWorkflowText(text, 'fixture-data-health-check-shape.yml');
+  assert.equal(results.length, 1);
+  assert.equal(results[0].fallbackAfterAttempts, 3);
+  assert.ok(!results[0].flags.includes('fallback-early-trigger-unreachable'));
+});
+
+test('auditWorkflowText: end-to-end, the SAME shape WITHOUT the override is flagged (the exact bug BRO-2370 found and BRO-2811 makes systemic)', () => {
+  const text = `
+name: Fixture Data Health Check Shape No Override
+on:
+  workflow_dispatch: {}
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Commit health check + triage data
+        env:
+          PUSH_DEADLINE_SEC: '900'
+        run: |
+          bash scripts/lib/push-with-retry.sh 25 main
+`;
+  const results = auditWorkflowText(text, 'fixture-data-health-check-shape-no-override.yml');
+  assert.equal(results.length, 1);
+  assert.equal(results[0].fallbackAfterAttempts, 13);
+  assert.ok(results[0].flags.includes('fallback-early-trigger-unreachable'));
+});
+
+// ── fallback-early-trigger-unreachable gated off by staged-file disqualification
+// (Codex adversarial ship-check finding, 2026-09-07) ────────────────────────
+// An unreachable early-trigger threshold is moot when the call's own staged
+// files already disqualify the Git Data API fallback outright on file-safety
+// grounds (classifyPushFallbackSafety) — fixing PUSH_API_FALLBACK_AFTER_
+// ATTEMPTS would not make the fallback usable there, so flagging it is noise.
+// This is the SAME staged-path evidence mixed-safety-bundle already computes.
+
+test('auditWorkflowText: fallback-early-trigger-unreachable is suppressed when the call stages an outright-disqualifying file (shows.json, NEVER_FALLBACK)', () => {
+  const text = `
+name: Fixture Fallback Disqualified By Staged File
+on:
+  workflow_dispatch: {}
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Commit shows.json
+        env:
+          PUSH_DEADLINE_SEC: '900'
+        run: |
+          git add data/shows.json
+          bash scripts/lib/push-with-retry.sh 25 main
+`;
+  const results = auditWorkflowText(text, 'fixture-fallback-disqualified.yml');
+  assert.equal(results.length, 1);
+  // The underlying structural computation still says unreachable...
+  assert.equal(results[0].fallbackEarlyTriggerReachable, false);
+  // ...but the flag itself is suppressed because the fallback could never
+  // engage for this diff regardless of trigger timing.
+  assert.ok(!results[0].flags.includes('fallback-early-trigger-unreachable'));
+});
+
+test('auditWorkflowText: fallback-early-trigger-unreachable still fires when NO staged file is known to disqualify (stagedPaths empty or all safe/neutral)', () => {
+  const text = `
+name: Fixture Fallback Not Disqualified
+on:
+  workflow_dispatch: {}
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Commit unregistered report
+        env:
+          PUSH_DEADLINE_SEC: '900'
+        run: |
+          git add data/some-unregistered-report.json
+          bash scripts/lib/push-with-retry.sh 25 main
+`;
+  const results = auditWorkflowText(text, 'fixture-fallback-not-disqualified.yml');
+  assert.equal(results.length, 1);
+  assert.ok(results[0].flags.includes('fallback-early-trigger-unreachable'));
+});
+
+test('auditWorkflowText: real data-health-check.yml "Commit health check + triage data" shape (alert-ledger.json etc, all apiFallbackMerge-registered) is NOT suppressed — none of its known staged files disqualify the fallback', () => {
+  // This is the actual live shape (as of BRO-2413's apiFallbackMerge coverage
+  // for the 3 alert-* ledgers): the workflow's own inline comment claims this
+  // step's fallback is "disqualified on its own merits regardless", but that
+  // predates BRO-2413 — none of the 3 tracked staged files disqualify anymore
+  // (triage/ itself is an unresolvable bare-directory add, so it contributes
+  // no evidence either way). The flag correctly stays on.
+  const text = `
+name: Fixture Real Data Health Check Shape
+on:
+  workflow_dispatch: {}
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Commit health check + triage data
+        env:
+          PUSH_DEADLINE_SEC: '900'
+        run: |
+          git add data/audit/triage/ 2>/dev/null || true
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          bash scripts/lib/push-with-retry.sh 25 main
+`;
+  const results = auditWorkflowText(text, 'fixture-real-data-health-check-shape.yml');
+  assert.equal(results.length, 1);
+  assert.ok(results[0].flags.includes('fallback-early-trigger-unreachable'));
+});

@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-10-10T13:17:15.801Z",
+  "apply": true,
+  "auditGeneratedAt": "2026-10-10T13:10:14.487Z",
+  "counts": {
+    "skip:command-not-a-single-test-file": 5,
+    "skip:no-verify-command": 1,
+    "bounced": 1,
+    "recent-activity": 1,
+    "no-commit-naming-card-touched-test": 1
+  },
+  "rows": [
+    {
+      "id": "BRO-4895",
+      "state": "In Review",
+      "action": "bounced"
+    },
+    {
+      "id": "BRO-4963",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-3680",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "no-commit-naming-card-touched-test"
+    }
+  ]
+}

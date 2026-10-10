@@ -1,0 +1,1005 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+const { parseWorkspaces, parseWorkspacesJson, parseWorkspacesWithFailures, listWorkspaces, isDoneTitle, hasRunningClaude, hasLiveClaude, anyAgentAliveInTsv, hasClaudeChrome, isNotFoundError, isValidWorkspaceRef, assertValidWorkspaceRef, _resetRunWarnings } = require('./cmux-workspaces.js');
+
+// Captured from `cmux list-workspaces` 2026-07-12 (cmux 0.64.6)
+const LIST_SAMPLE = `  workspace:2  ⠂ Box office card improvements
+  workspace:36  Autonomous loop — Sprint 2
+* workspace:31  Build: Autonomous nightly loop (v4) — 5 sprints  [selected]
+  workspace:39  wrap-up skill: DEFERRED items should dispatch via
+  workspace:27  ✳ CC improvements
+  workspace:15  ✅ Backup check
+`;
+
+// Captured from `cmux workspace list --json` 2026-09-07 (card #1938 —
+// crown-duplicate-detector.js's only cwd/id source, and per adversarial
+// review, its only real-JSON test), trimmed to representative rows.
+const JSON_SAMPLE = JSON.stringify({
+  window_ref: 'window:1',
+  workspaces: [
+    {
+      id: '4647CB3E-3E38-402F-9743-6E136DCE8557', ref: 'workspace:1', index: 0,
+      current_directory: '/Users/tompryor', custom_title: null,
+      title: '✳ Write AI musical comedy for Edinburgh Fringe', selected: false, pinned: true,
+    },
+    {
+      id: 'A1B2C3D4-1111-2222-3333-444455556666', ref: 'workspace:111', index: 5,
+      current_directory: '/Users/tompryor/Broadwayscore', custom_title: null,
+      title: '👑 OWNER — Crown v46: BRO-343 P1 triage + dispatch loop', selected: true, pinned: false,
+    },
+    {
+      id: 'B2C3D4E5-2222-3333-4444-555566667777', ref: 'workspace:10', index: 9,
+      current_directory: '/Users/tompryor/Broadwayscore/.claude/worktrees/bro-525-dmarc-ingest',
+      custom_title: '❓ 👑 OWNER — Crown v45: BRO-343 P1 triage + dispatch loop', title: 'ignored when custom_title is set',
+      selected: false, pinned: false,
+    },
+  ],
+}, null, 2);
+
+test('parseWorkspacesJson: extracts ref, id, title (preferring custom_title), selected, cwd from real output', () => {
+  const ws = parseWorkspacesJson(JSON_SAMPLE);
+  assert.equal(ws.length, 3);
+  assert.deepEqual(ws[0], {
+    ref: 'workspace:1', id: '4647CB3E-3E38-402F-9743-6E136DCE8557',
+    title: '✳ Write AI musical comedy for Edinburgh Fringe', selected: false, cwd: '/Users/tompryor',
+  });
+  assert.equal(ws[1].selected, true);
+  assert.equal(ws[1].cwd, '/Users/tompryor/Broadwayscore');
+  // custom_title wins over title when both are present — matches the real
+  // cmux payload shape (title is the fallback, e.g. before a rename).
+  assert.equal(ws[2].title, '❓ 👑 OWNER — Crown v45: BRO-343 P1 triage + dispatch loop');
+  assert.equal(ws[2].cwd, '/Users/tompryor/Broadwayscore/.claude/worktrees/bro-525-dmarc-ingest');
+});
+
+test('parseWorkspacesJson: malformed/empty payload returns [] rather than throwing', () => {
+  assert.deepEqual(parseWorkspacesJson(''), []);
+  assert.deepEqual(parseWorkspacesJson('not json'), []);
+  assert.deepEqual(parseWorkspacesJson('{}'), []);
+  assert.deepEqual(parseWorkspacesJson('{"workspaces": "not an array"}'), []);
+});
+
+test('parseWorkspacesJson: a workspace with no id (older cmux payload shape) still parses, id is null', () => {
+  const ws = parseWorkspacesJson(JSON.stringify({ workspaces: [{ ref: 'workspace:5', title: 'no id here', selected: false }] }));
+  assert.equal(ws.length, 1);
+  assert.equal(ws[0].id, null);
+});
+
+test('parseWorkspaces extracts ref, title, selected from real output', () => {
+  const ws = parseWorkspaces(LIST_SAMPLE);
+  assert.equal(ws.length, 6);
+  assert.deepEqual(ws[0], { ref: 'workspace:2', title: '⠂ Box office card improvements', selected: false });
+  assert.equal(ws[2].ref, 'workspace:31');
+  assert.equal(ws[2].selected, true);
+  assert.equal(ws[2].title, 'Build: Autonomous nightly loop (v4) — 5 sprints');
+  assert.equal(ws[5].title, '✅ Backup check');
+});
+
+test('parseWorkspaces ignores non-workspace lines', () => {
+  assert.deepEqual(parseWorkspaces('no workspaces\n\n'), []);
+});
+
+// BRO-2995: a genuinely-empty cmux (0 non-blank lines) and a PARSE FAILURE
+// (cmux crashed mid-write, reworded its line format, or truncated output —
+// N non-blank lines, 0 of which match the regex) both used to collapse to
+// the same `[]` from parseWorkspaces, indistinguishable to any caller.
+// parseWorkspacesWithFailures separates the two cases without changing
+// parseWorkspaces()'s own contract (still tested above, unchanged).
+test('parseWorkspacesWithFailures: genuinely empty stdout — zero raw lines, zero parse failures', () => {
+  assert.deepEqual(parseWorkspacesWithFailures(''), { workspaces: [], rawLineCount: 0, parseFailures: 0 });
+  assert.deepEqual(parseWorkspacesWithFailures('\n\n'), { workspaces: [], rawLineCount: 0, parseFailures: 0 });
+});
+
+test('parseWorkspacesWithFailures: TOTAL parse failure — non-blank lines present but none parse', () => {
+  const garbled = 'Error: connection reset\nsegfault at 0x0\n';
+  const result = parseWorkspacesWithFailures(garbled);
+  assert.deepEqual(result.workspaces, []);
+  assert.equal(result.rawLineCount, 2);
+  assert.equal(result.parseFailures, 2, 'both raw lines failed to parse — this is a parse failure, NOT a genuinely empty list');
+});
+
+test('parseWorkspacesWithFailures: PARTIAL parse failure — some lines parse, some do not', () => {
+  const mixed = '  workspace:2  Box office card improvements\ngarbled truncated outp\n  workspace:5  Another show\n';
+  const result = parseWorkspacesWithFailures(mixed);
+  assert.equal(result.workspaces.length, 2);
+  assert.equal(result.rawLineCount, 3);
+  assert.equal(result.parseFailures, 1);
+});
+
+test('parseWorkspacesWithFailures: real healthy output has zero parse failures', () => {
+  const result = parseWorkspacesWithFailures(LIST_SAMPLE);
+  assert.equal(result.workspaces.length, 6);
+  assert.equal(result.parseFailures, 0);
+});
+
+// listWorkspaces() itself must NEVER throw on a parse failure — a throw here
+// would propagate uncaught through cmux-launch.js's launchCmuxSessionInner
+// (wrapped in try/**finally**, not try/catch, at its actual dispatch call
+// sites) and abort a live launch attempt. The fix for a silent-drop
+// diagnosability gap must not become a new fleet-wide availability outage.
+//
+// _resetRunWarnings() is required before each of these: the anomaly warning
+// goes through warnOnce(), which dedupes per PROCESS (module-level Set), and
+// node:test runs every test in this file in one process.
+test('listWorkspaces: total parse failure logs but does NOT throw, and still returns []', () => {
+  _resetRunWarnings();
+  const originalError = console.error;
+  const logged = [];
+  console.error = (msg) => logged.push(msg);
+  try {
+    const result = listWorkspaces({ runFn: () => 'Error: connection reset\nsegfault at 0x0\n' });
+    assert.deepEqual(result, []);
+    assert.equal(logged.length, 1);
+    assert.match(logged[0], /PARSE FAILURE/);
+  } finally {
+    console.error = originalError;
+  }
+});
+
+test('listWorkspaces: partial parse failure logs but returns the workspaces that DID parse', () => {
+  _resetRunWarnings();
+  const originalError = console.error;
+  const logged = [];
+  console.error = (msg) => logged.push(msg);
+  try {
+    const mixed = '  workspace:2  Box office card improvements\ngarbled truncated outp\n';
+    const result = listWorkspaces({ runFn: () => mixed });
+    assert.equal(result.length, 1);
+    assert.equal(result[0].ref, 'workspace:2');
+    assert.equal(logged.length, 1);
+    assert.match(logged[0], /1 of 2 raw line\(s\)/);
+  } finally {
+    console.error = originalError;
+  }
+});
+
+test('listWorkspaces: genuinely empty stdout logs nothing and returns []', () => {
+  _resetRunWarnings();
+  const originalError = console.error;
+  const logged = [];
+  console.error = (msg) => logged.push(msg);
+  try {
+    const result = listWorkspaces({ runFn: () => '' });
+    assert.deepEqual(result, []);
+    assert.deepEqual(logged, []);
+  } finally {
+    console.error = originalError;
+  }
+});
+
+test('listWorkspaces: healthy real output logs nothing and parses normally', () => {
+  _resetRunWarnings();
+  const originalError = console.error;
+  const logged = [];
+  console.error = (msg) => logged.push(msg);
+  try {
+    const result = listWorkspaces({ runFn: () => LIST_SAMPLE });
+    assert.equal(result.length, 6);
+    assert.deepEqual(logged, []);
+  } finally {
+    console.error = originalError;
+  }
+});
+
+test('listWorkspaces: a persistent parse failure warns only ONCE per process, not on every poll (log-flood guard)', () => {
+  _resetRunWarnings();
+  const originalError = console.error;
+  const logged = [];
+  console.error = (msg) => logged.push(msg);
+  try {
+    // Simulates cmux-launch.js's pollUntil re-listing every few seconds
+    // during launch verification while a persistent format regression is in
+    // effect — the raw line count changes each call (2, then 3) exactly as
+    // it would with real workspaces opening/closing, which is what defeats a
+    // naive dedupe-on-message-text approach.
+    listWorkspaces({ runFn: () => 'Error: connection reset\nsegfault at 0x0\n' });
+    listWorkspaces({ runFn: () => 'Error: connection reset\nsegfault at 0x0\nextra line\n' });
+    listWorkspaces({ runFn: () => 'Error: connection reset\nsegfault at 0x0\n' });
+    assert.equal(logged.length, 1, 'category-keyed dedupe should suppress the 2nd and 3rd warnings even though their exact counts differ');
+  } finally {
+    console.error = originalError;
+  }
+});
+
+test('isDoneTitle: leading ✅ (with or without activity glyph) is done', () => {
+  assert.equal(isDoneTitle('✅ Backup check'), true);
+  assert.equal(isDoneTitle('⠂ ✅ finished thing'), true);   // spinner prefix from cmux
+  assert.equal(isDoneTitle('✳ ✅ done'), true);
+});
+
+test('isDoneTitle: un-marked and mid-title ✅ are NOT done', () => {
+  assert.equal(isDoneTitle('Build: Autonomous nightly loop'), false);
+  assert.equal(isDoneTitle('⠂ Box office card improvements'), false);
+  assert.equal(isDoneTitle('Fix the ✅ checkmark rendering bug'), false);
+});
+
+// Captured from `cmux top --workspace workspace:39 --processes --format tsv`
+const TOP_RUNNING = `5.9\t532185088\t11\tworkspace\tworkspace:39\twindow:1\twrap-up skill
+5.8\t527663104\t7\ttag\tworkspace:366F394E:tag:claude_code\tworkspace:39\tRunning
+5.8\t432324608\t1\tprocess\t22146\tworkspace:366F394E:tag:claude_code\t2.1.207`;
+
+const TOP_IDLE = `0.1\t5321850\t2\tworkspace\tworkspace:12\twindow:1\tRedesign show pages
+0.0\t2605056\t1\tprocess\t47468\tworkspace:12\tzsh`;
+
+test('hasRunningClaude: detects the claude_code Running tag row', () => {
+  assert.equal(hasRunningClaude(TOP_RUNNING), true);
+  assert.equal(hasRunningClaude(TOP_IDLE), false);
+  assert.equal(hasRunningClaude(''), false);
+});
+
+// Captured from `cmux top --workspace workspace:194 --processes --format tsv`
+// 2026-07-21 (cmux 0.64.17): a claude WAITING at the prompt — tag row present,
+// status column empty. This is the shape prune wrongly closed as "idle".
+const TOP_WAITING = `2.7\t955809792\t6\tworkspace\tworkspace:194\twindow:1\tData·iOS design proposals
+2.7\t944504832\t3\ttag\tworkspace:CD32EC51-13AE-49DF-9921-4FF9F8382FB0:tag:claude_code\tworkspace:194\t
+2.7\t570261504\t1\tprocess\t78491\tworkspace:CD32EC51-13AE-49DF-9921-4FF9F8382FB0:tag:claude_code\t2.1.216`;
+
+test('hasLiveClaude: waiting-at-prompt claude (no status) counts as LIVE', () => {
+  assert.equal(hasLiveClaude(TOP_WAITING), true);
+  // 2026-07-21 incident guard: the Running-only check must NOT treat it as
+  // running — the two predicates intentionally diverge on this shape, and
+  // pruneDone must use the live one.
+  assert.equal(hasRunningClaude(TOP_WAITING), false);
+});
+
+test('hasLiveClaude: running claude is live; dead workspace is not', () => {
+  assert.equal(hasLiveClaude(TOP_RUNNING), true);
+  assert.equal(hasLiveClaude(TOP_IDLE), false);
+  assert.equal(hasLiveClaude(''), false);
+});
+
+test('hasLiveClaude: column-exact — title mentioning claude_code is not a tag row', () => {
+  const titleTrap = `5.9\t1\t2\tworkspace\tworkspace:9\twindow:1\tRunning tag:claude_code experiments`;
+  assert.equal(hasLiveClaude(titleTrap), false);
+});
+
+test('hasLiveClaude: stale tag row with NO process rows is NOT live (prunable)', () => {
+  // Hypothetical crash leftover: tag survives, processes gone. Prune must
+  // still be able to sweep it (codex ship-check finding, 2026-07-21).
+  const staleTag = `2.7\t1\t0\ttag\tworkspace:X:tag:claude_code\tworkspace:9\t`;
+  assert.equal(hasLiveClaude(staleTag), false);
+});
+
+test('hasLiveClaude: other agents (codex tag) do not count as a live claude', () => {
+  const codexOnly = `2.7\t1\t1\ttag\tworkspace:X:tag:codex\tworkspace:9\t
+2.7\t1\t1\tprocess\t123\tworkspace:X:tag:codex\tcodex`;
+  assert.equal(hasLiveClaude(codexOnly), false);
+});
+
+test('pruneDone: skips mid-turn tabs; closes only dead ones; throw = alive', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => [
+      { ref: 'workspace:1', title: '✅ 🤖 waiting tab' },
+      { ref: 'workspace:2', title: '✅ 🤖 dead tab' },
+      { ref: 'workspace:3', title: '✅ 🤖 cmux-error tab' },
+      { ref: 'workspace:4', title: 'unmarked live tab' },
+    ],
+    claudeAliveIn: ref => {
+      if (ref === 'workspace:1') return true;             // live
+      if (ref === 'workspace:2') return false;            // truly dead
+      throw new Error('socket busy');                     // transient error
+    },
+    // Second signal also confirms dead — isolates this test to the primary
+    // (claudeAliveIn) seam; the #559 disagreement case gets its own test below.
+    terminalSurfaceAliveIn: () => false,
+    claudeMidTurnIn: () => true, // workspace:1 is mid-turn → protected
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, ['workspace:2']);
+  assert.deepEqual(closed.map(w => w.ref), ['workspace:2']);
+  // the throw path must NOT close: seam throws → pruneDone must treat as alive
+  assert.deepEqual(skipped.map(w => w.ref).sort(), ['workspace:1', 'workspace:3']);
+});
+
+// Card #559: claudeAliveIn queries only cmux's tag/process registry. Card
+// #548 proved that registry can desync from cmux's separate terminal-surface
+// registry (list-panes/capture-pane/read-screen). #548 was the desync
+// showing up as a false POSITIVE on the launch-verify path; this is the same
+// desync on the close path, in the opposite (and more dangerous) direction —
+// the tag registry falsely reports "dead" while the surface registry (and
+// possibly a human) says the workspace is still there. pruneDone must not
+// close on the primary signal alone.
+test('pruneDone: does NOT close when the second independent signal says alive, even though claudeAliveIn alone said not-alive', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => [
+      { ref: 'workspace:1', title: '✅ 🤖 desynced tab (primary says dead, surface says alive)' },
+      { ref: 'workspace:2', title: '✅ 🤖 truly dead tab (both signals agree)' },
+    ],
+    claudeAliveIn: () => false, // primary registry: both look dead
+    terminalSurfaceAliveIn: ref => ref === 'workspace:1', // surface registry disagrees on workspace:1
+    // Seam added 2026-08-09. Without it this test read the REAL cmux socket for
+    // the fake refs below, so its result depended on whether cmux was installed:
+    // on CI (no cmux) claudeMidTurnIn throws and pruneDone's documented
+    // "any error defaults isRunning to true" fail-safe skipped workspace:1 —
+    // the behaviour under test. On a developer machine with cmux running it
+    // returned false for the nonexistent ref, workspace:1 read as live-and-idle,
+    // and pruneDone closed it, failing the assertion for an environmental
+    // reason. Injecting the throw pins the fail-safe path explicitly and makes
+    // the test deterministic in both environments; the assertions are unchanged.
+    claudeMidTurnIn: () => { throw new Error('no cmux socket'); },
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, ['workspace:2']);
+  assert.deepEqual(closed.map(w => w.ref), ['workspace:2']);
+  assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
+});
+
+// Captured from `cmux read-screen --workspace <ref>` on 4 different LIVE
+// workspaces, 2026-07-26 — the persistent status bar Claude Code renders
+// for the whole session (model glyph + ctx% + branch + repo).
+const SCREEN_ALIVE_BYPASS = `
+────────────────────────────────────────────────────────────────────
+❯
+────────────────────────────────────────────────────────────────────
+  🔮 OPUS │ ctx 54% │ main │ Broadwayscore
+  ⏵⏵ bypass permissions on (shift+tab to cycle) · ← for agents
+`;
+const SCREEN_ALIVE_UNANSWERED = `
+  🔮 OPUS │ ctx ? │ main │ Broadwayscore
+  ⏵⏵ bypass permissions on (shift+tab to cycle)
+`;
+const SCREEN_DEAD_BARE_SHELL = `
+tompryor@Mac-Studio Broadwayscore %
+`;
+// Captured live, 2026-07-26: cmux inserts a "⚠" high-context warning glyph
+// BEFORE the "│" once ctx crosses ~75% — 3 of 18 real workspaces on this
+// machine had this shape. An earlier regex version required "│" to
+// immediately follow the percentage and false-negatived on all 3 (caught by
+// a second-pass adversarial review). Anchoring on the separator BEFORE "ctx"
+// instead (stable across all samples) fixes it.
+const SCREEN_ALIVE_HIGH_CTX_WARNING = `
+  🔮 OPUS │ ctx 89%⚠ │ r2-cold-backup-setup │ buffer-token-leak-cleanup
+  ⏵⏵ bypass permissions on
+`;
+// "ctx" as the LAST status-bar field (no trailing "│ branch │ repo") — also
+// observed live.
+const SCREEN_ALIVE_CTX_LAST_FIELD = `
+  🔮 OPUS │ ctx 8%
+`;
+
+test('hasClaudeChrome: detects the persistent ctx status bar; a bare shell prompt is not alive', () => {
+  assert.equal(hasClaudeChrome(SCREEN_ALIVE_BYPASS), true);
+  assert.equal(hasClaudeChrome(SCREEN_ALIVE_UNANSWERED), true); // "ctx ?" before first response
+  assert.equal(hasClaudeChrome(SCREEN_ALIVE_HIGH_CTX_WARNING), true); // "⚠" glyph before the "│"
+  assert.equal(hasClaudeChrome(SCREEN_ALIVE_CTX_LAST_FIELD), true); // no trailing "│" at all
+  assert.equal(hasClaudeChrome(SCREEN_DEAD_BARE_SHELL), false);
+  assert.equal(hasClaudeChrome(''), false);
+});
+
+// Verified live against a genuinely closed workspace ref, 2026-07-26:
+// `cmux list-panes --workspace workspace:1` -> exit 1,
+// stderr "Error: not_found: Workspace not found"
+test('isNotFoundError: not_found confirms dead; any other message is uncertainty', () => {
+  assert.equal(isNotFoundError('Command failed: ...\nError: not_found: Workspace not found\n'), true);
+  assert.equal(isNotFoundError('Error: not_found: Pane or workspace not found'), true);
+  assert.equal(isNotFoundError('Command failed: socket timeout'), false);
+  assert.equal(isNotFoundError(''), false);
+  assert.equal(isNotFoundError(undefined), false);
+  // Card #1829: the shape actually thrown by a live cmux for a workspace
+  // whose pane never rendered — a DIFFERENT error-type prefix
+  // (internal_error, not not_found) with the confirmation only in the
+  // message text. The regex above (pre-fix) missed this and made
+  // terminalSurfaceAliveIn report "alive" for 7/7 dead cmux-tab dispatches
+  // on 2026-08-19 that this exact error came from.
+  assert.equal(isNotFoundError('Command failed: cmux read-screen --workspace workspace:866\nError: internal_error: ERROR: Terminal surface not found\n'), true);
+  assert.equal(isNotFoundError('internal_error: ERROR: Terminal surface not found'), true);
+  assert.equal(isNotFoundError('Error: internal_error: ERROR: Workspace not found'), true);
+});
+
+test('pruneDone: second-signal throw = alive (never close on uncertainty from either signal)', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => [{ ref: 'workspace:1', title: '✅ surface-check-errors tab' }],
+    claudeAliveIn: () => false,
+    terminalSurfaceAliveIn: () => { throw new Error('socket busy'); },
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, []);
+  assert.deepEqual(closed, []);
+  assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
+});
+
+// Card #567: opening-night-monitor-launch.js's claudeAlive computation must
+// go through checkLiveness (both signals), not claudeAliveIn alone — same
+// registry-desync false-negative class as #559/#564, here feeding
+// launchDecision's 'reclaim-and-launch' path (duplicate babysitter launch).
+test('computeClaudeAlive: no meta/workspaceRef → not alive', () => {
+  const cw = require('./cmux-workspaces.js');
+  assert.equal(cw.computeClaudeAlive(null), false);
+  assert.equal(cw.computeClaudeAlive({}), false);
+});
+
+test('computeClaudeAlive: both signals agree dead → not alive', () => {
+  const cw = require('./cmux-workspaces.js');
+  const alive = cw.computeClaudeAlive({ workspaceRef: 'workspace:1' }, {
+    claudeAliveIn: () => false,
+    terminalSurfaceAliveIn: () => false,
+  });
+  assert.equal(alive, false);
+});
+
+test('computeClaudeAlive: primary registry says dead but surface registry says alive → alive (the #559/#564/#567 desync)', () => {
+  const cw = require('./cmux-workspaces.js');
+  const alive = cw.computeClaudeAlive({ workspaceRef: 'workspace:1' }, {
+    claudeAliveIn: () => false,
+    terminalSurfaceAliveIn: () => true,
+  });
+  assert.equal(alive, true, 'a bare claudeAliveIn()-only check would wrongly report not-alive here');
+});
+
+test('computeClaudeAlive: primary registry says alive → alive without consulting surface signal', () => {
+  const cw = require('./cmux-workspaces.js');
+  const alive = cw.computeClaudeAlive({ workspaceRef: 'workspace:1' }, {
+    claudeAliveIn: () => true,
+    terminalSurfaceAliveIn: () => { throw new Error('should not be called'); },
+  });
+  assert.equal(alive, true);
+});
+
+// Card #709 (owner-approved 2026-07-31): pruneDone integration for the
+// auto-dispatch idle-close exception. See scripts/lib/prune-closeable.js
+// for the pure predicate these cases exercise.
+test('pruneDone: closes ✅🤖 tab idle at the prompt (live claude, not mid-turn)', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => [{ ref: 'workspace:1', title: '✅ 🤖⚡ Infra·bsc-prune fix' }],
+    claudeAliveIn: () => true, // live (waiting at prompt or running)
+    terminalSurfaceAliveIn: () => true,
+    claudeMidTurnIn: () => false, // idle at the prompt, not mid-turn
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, ['workspace:1']);
+  assert.deepEqual(closed.map(w => w.ref), ['workspace:1']);
+  assert.deepEqual(skipped, []);
+});
+
+// Owner escalation 2026-08-02 (scheduled auto-prune tick): the currently
+// SELECTED workspace is never closed, even when every other signal says
+// closeable — the owner is often selected on a ✅🤖 tab precisely to read
+// its final summary, and yanking it mid-read is the 2026-07-15 "closed
+// while typing" incident class. A later tick closes it once focus moves.
+test('pruneDone: never closes the selected workspace, even a closeable ✅🤖 idle one', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => [
+      { ref: 'workspace:1', title: '✅ 🤖⚡ Infra·selected tab', selected: true },
+      { ref: 'workspace:2', title: '✅ 🤖⚡ Infra·background tab', selected: false },
+    ],
+    claudeAliveIn: () => true,
+    terminalSurfaceAliveIn: () => true,
+    claudeMidTurnIn: () => false, // both idle at the prompt
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, ['workspace:2']);
+  assert.deepEqual(closed.map(w => w.ref), ['workspace:2']);
+  assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
+});
+
+// TOCTOU guard (adversarial review 2026-08-02): the top-of-sweep selected
+// flag is a snapshot; pruneDone must re-list immediately before the
+// destructive close and skip a workspace the owner has since clicked into.
+test('pruneDone: re-checks selection just before close — a workspace selected mid-sweep is not closed', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  let listCalls = 0;
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => {
+      listCalls++;
+      // First listing (sweep start): not selected. Later listings (pre-close
+      // re-check): the owner has clicked into it.
+      return [{ ref: 'workspace:1', title: '✅ 🤖⚡ Infra·tab', selected: listCalls > 1 }];
+    },
+    claudeAliveIn: () => true,
+    terminalSurfaceAliveIn: () => true,
+    claudeMidTurnIn: () => false,
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, []);
+  assert.deepEqual(closed, []);
+  assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
+});
+
+test('pruneDone: pre-close re-list error = uncertainty = skip, never close', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  let listCalls = 0;
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => {
+      listCalls++;
+      if (listCalls > 1) throw new Error('socket busy');
+      return [{ ref: 'workspace:1', title: '✅ 🤖⚡ Infra·tab', selected: false }];
+    },
+    claudeAliveIn: () => true,
+    terminalSurfaceAliveIn: () => true,
+    claudeMidTurnIn: () => false,
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, []);
+  assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
+});
+
+test('pruneDone: skips ✅🤖 tab that is mid-turn (running)', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => [{ ref: 'workspace:1', title: '✅ 🤖⚡ Infra·bsc-prune fix' }],
+    claudeAliveIn: () => true,
+    terminalSurfaceAliveIn: () => true,
+    claudeMidTurnIn: () => true, // mid-turn
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, []);
+  assert.deepEqual(closed, []);
+  assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
+});
+
+// ship-check catch (2026-07-31): a transient cmux error querying mid-turn
+// status must fail safe to "busy, don't close" — never silently read as
+// "idle" the way the legacy claudeRunningIn helper did (it swallowed errors
+// and returned false). This proves pruneDone's own catch treats a throw
+// from the seam as isRunning=true.
+test('pruneDone: skips ✅🤖 tab when claudeMidTurnIn throws (uncertainty must never look like idle)', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => [{ ref: 'workspace:1', title: '✅ 🤖⚡ Infra·bsc-prune fix' }],
+    claudeAliveIn: () => true,
+    terminalSurfaceAliveIn: () => true,
+    claudeMidTurnIn: () => { throw new Error('socket busy'); },
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, []);
+  assert.deepEqual(closed, []);
+  assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
+});
+
+// Owner rule #3 (2026-08-02, supersedes same-day escalation #2): auto-close
+// is limited to 🤖 auto-dispatched tabs. Owner-opened ✅ tabs are never
+// closed autonomously — idle, mid-turn, or dead.
+test('pruneDone: non-🤖 ✅ tab idle at the prompt is SKIPPED (owner rule 2026-08-02: 🤖-only)', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => [{ ref: 'workspace:1', title: '✅ Redesign show pages', selected: false }],
+    claudeAliveIn: () => true,
+    terminalSurfaceAliveIn: () => true,
+    claudeMidTurnIn: () => false,
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, []);
+  assert.deepEqual(closed, []);
+  assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
+});
+
+test('pruneDone: non-🤖 ✅ tab with a fully DEAD claude is still skipped (owner-opened tabs are hands-off)', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => [{ ref: 'workspace:1', title: '✅ Redesign show pages', selected: false }],
+    claudeAliveIn: () => false,
+    terminalSurfaceAliveIn: () => false,
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, []);
+  assert.deepEqual(closed, []);
+  assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
+});
+
+test('pruneDone: non-🤖 ✅ tab mid-turn stays skipped', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => [{ ref: 'workspace:1', title: '✅ Redesign show pages' }],
+    claudeAliveIn: () => true,
+    terminalSurfaceAliveIn: () => true,
+    claudeMidTurnIn: () => true,
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, []);
+  assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
+});
+
+// ── Ledger-trust fallback for a lost 🤖 glyph (card #971) ───────────────────
+// A dispatched session that renames its tab mid-work (common: status-
+// reflecting renames) drops the 🤖 marker. Before this fix, pruneDone read
+// isAutoDispatched from the title alone, so such a tab was misclassified as
+// owner-opened and never auto-closed even after it ✅-marked and went
+// idle/dead (owner incident 2026-08-03, task #950's workspace). pruneDone
+// must now also trust an unreconciled dispatch-ledger launch record.
+test('pruneDone: closes a ✅ tab with no 🤖 glyph when the dispatch ledger has an unreconciled launch for its ref', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => [{ ref: 'workspace:117', title: '✅⚡ Infra·visual-qa is feature-flag blind' }],
+    claudeAliveIn: () => true, // idle at the prompt
+    terminalSurfaceAliveIn: () => true,
+    claudeMidTurnIn: () => false,
+    readLedgerEntries: () => [
+      { event: 'launch', taskId: '950', subject: 'visual-qa is feature-flag blind', workspaceRef: 'workspace:117', ts: '2026-08-03T14:41:00.000Z' },
+    ],
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, ['workspace:117']);
+  assert.deepEqual(closed.map(w => w.ref), ['workspace:117']);
+  assert.deepEqual(skipped, []);
+});
+
+test('pruneDone: a ✅ tab with neither the 🤖 glyph nor a ledger launch stays hands-off', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => [{ ref: 'workspace:1', title: '✅ Redesign show pages' }],
+    claudeAliveIn: () => true,
+    terminalSurfaceAliveIn: () => true,
+    claudeMidTurnIn: () => false,
+    readLedgerEntries: () => [],
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, []);
+  assert.deepEqual(closed, []);
+  assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
+});
+
+// Recycled-ref safety (card 3b1637c5): a reconciled (terminal-event-closed)
+// launch record must NOT make an unrelated owner-opened tab under the same
+// recycled ref closeable.
+test('pruneDone: a reconciled ledger launch (terminal event recorded) does not make an un-glyphed ✅ tab closeable', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => [{ ref: 'workspace:5', title: '✅ Owner-opened after a ref recycle' }],
+    claudeAliveIn: () => true,
+    terminalSurfaceAliveIn: () => true,
+    claudeMidTurnIn: () => false,
+    readLedgerEntries: () => [
+      { event: 'launch', taskId: '1', subject: 'old task', workspaceRef: 'workspace:5', ts: '2026-08-01T00:00:00.000Z' },
+      { event: 'dead', taskId: '1', workspaceRef: 'workspace:5', ts: '2026-08-01T01:00:00.000Z' },
+    ],
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, []);
+  assert.deepEqual(closed, []);
+  assert.deepEqual(skipped.map(w => w.ref), ['workspace:5']);
+});
+
+// A ledger read failure must fail closed to title-only detection, never
+// throw the whole sweep.
+test('pruneDone: a readLedgerEntries failure fails closed (title-only detection, sweep still completes)', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  const { closed, skipped } = cw.pruneDone({
+    listWorkspaces: () => [{ ref: 'workspace:1', title: '✅ Redesign show pages' }],
+    claudeAliveIn: () => true,
+    terminalSurfaceAliveIn: () => true,
+    claudeMidTurnIn: () => false,
+    readLedgerEntries: () => { throw new Error('ledger file busy'); },
+    closeWorkspace: ref => calls.push(ref),
+  });
+  assert.deepEqual(calls, []);
+  assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
+});
+
+// ── BRO-4140: bare-number workspace refs must be rejected, not silently ────
+// resolved. Incident: sendToWorkspace('13', <crown handoff>) — cmux treated
+// '13' as a list INDEX (a different, unrelated live tab) instead of refusing,
+// so the handoff typed into the wrong workspace, and the sender's own
+// follow-up claudeMidTurnIn('13') check resolved to that SAME wrong tab and
+// "confirmed" a delivery that never happened.
+// UUID refs (listWorkspacesWithCwd's `w.id`) are deliberately NOT accepted
+// here (adversarial review, BRO-4140): nothing in this codebase has ever
+// verified cmux's CLI accepts a raw UUID as `--workspace`, and every real
+// lookup (dispatch-ledger.js's own WORKSPACE_REF_RE, sendToWorkspace's title
+// check) only ever indexes by `workspace:N`.
+test('isValidWorkspaceRef: accepts workspace:N; rejects bare numbers, indices, and UUIDs', () => {
+  assert.equal(isValidWorkspaceRef('workspace:13'), true);
+  assert.equal(isValidWorkspaceRef('workspace:0'), true);
+  assert.equal(isValidWorkspaceRef('13'), false, 'bare number — the exact BRO-4140 misdelivery shape');
+  assert.equal(isValidWorkspaceRef(13), false, 'bare number as a JS number, not just a string');
+  assert.equal(isValidWorkspaceRef('4647CB3E-3E38-402F-9743-6E136DCE8557'), false, 'a workspace UUID is not an accepted --workspace form here');
+  assert.equal(isValidWorkspaceRef('workspace:'), false);
+  assert.equal(isValidWorkspaceRef('workspace:abc'), false);
+  assert.equal(isValidWorkspaceRef(''), false);
+  assert.equal(isValidWorkspaceRef(null), false);
+  assert.equal(isValidWorkspaceRef(undefined), false);
+});
+
+test('assertValidWorkspaceRef: throws a clear, actionable error on a bare number; passes through a valid ref', () => {
+  assert.equal(assertValidWorkspaceRef('workspace:13'), 'workspace:13');
+  assert.throws(() => assertValidWorkspaceRef('13'), /invalid workspace ref/);
+  assert.throws(() => assertValidWorkspaceRef('13'), /BRO-4140/);
+  assert.throws(() => assertValidWorkspaceRef('13'), /list INDEX/);
+});
+
+test('closeWorkspace/sendToWorkspace/claudeMidTurnIn/claudeAliveIn/terminalSurfaceAliveIn/terminalSurfaceConfirmedMissing: all reject a bare-number ref before touching the socket', () => {
+  const cw = require('./cmux-workspaces.js');
+  // closeWorkspace has no injectable run seam, so this also proves the guard
+  // fires BEFORE the real (uninjectable) run() call — a missing guard here
+  // would attempt to spawn the real cmux binary and fail differently.
+  for (const [name, invoke] of [
+    ['closeWorkspace', () => cw.closeWorkspace('13')],
+    ['sendToWorkspace', () => cw.sendToWorkspace('13', 'hello')],
+    ['claudeMidTurnIn', () => cw.claudeMidTurnIn('13')],
+    ['claudeAliveIn', () => cw.claudeAliveIn('13')],
+    ['terminalSurfaceAliveIn', () => cw.terminalSurfaceAliveIn('13')],
+    ['terminalSurfaceConfirmedMissing', () => cw.terminalSurfaceConfirmedMissing('13')],
+  ]) {
+    assert.throws(invoke, /invalid workspace ref/, `${name} should reject bare "13"`);
+  }
+});
+
+test('claudeMidTurnIn/claudeAliveIn: an invalid ref throws — it is NOT swallowed by the fail-safe catch that treats transient cmux errors as alive/mid-turn', () => {
+  const cw = require('./cmux-workspaces.js');
+  assert.throws(() => cw.claudeAliveIn('13'), /invalid workspace ref/);
+  assert.throws(() => cw.claudeMidTurnIn('13'), /invalid workspace ref/);
+});
+
+// checkLiveness deliberately does NOT validate the ref itself (adversarial
+// review, BRO-4140): its pre-existing "any error = fail safe" contract must
+// stay intact for computeClaudeAlive(), whose meta.workspaceRef can
+// legitimately be dispatch-ledger.js's `headless:<taskId>` convention (a
+// real, non-cmux value) — the incident this ticket fixes was a DIRECT
+// claudeMidTurnIn/sendToWorkspace call with a hand-typed ref, not a
+// checkLiveness sweep, so those functions carry the throwing guard instead.
+test('checkLiveness: an aliveFn that throws (e.g. the real claudeAliveIn rejecting a bad ref) is absorbed as fail-safe alive, not rethrown', () => {
+  const cw = require('./cmux-workspaces.js');
+  const { dead, disagreement } = cw.checkLiveness('headless:1234', () => { throw new Error('invalid workspace ref'); }, () => false);
+  assert.equal(dead, false);
+  assert.equal(disagreement, false);
+});
+
+test('sendToWorkspace: expectedTitle mismatch refuses to send (BRO-4140 delivery confirmation)', () => {
+  const cw = require('./cmux-workspaces.js');
+  assert.throws(
+    () => cw.sendToWorkspace('workspace:15', 'crown handoff', {
+      expectedTitle: '👑 OWNER — every show has every review, scored right',
+      listWorkspacesFn: () => [{ ref: 'workspace:15', title: 'Stop making me hunt tabs', selected: false }],
+    }),
+    /does not match the expected title/,
+  );
+});
+
+// P2 adversarial-review catch: cmux's text listing prepends a changing
+// activity-glyph/spinner prefix (isDoneTitle's own header comment documents
+// this). A naive exact-string compare would misfire on that routine churn
+// instead of on an actual wrong tab.
+test('sendToWorkspace: expectedTitle tolerates a leading activity-glyph/spinner mismatch but still catches a real content mismatch', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  cw.sendToWorkspace('workspace:15', 'crown handoff', {
+    expectedTitle: '👑 OWNER — every show has every review, scored right',
+    listWorkspacesFn: () => [{ ref: 'workspace:15', title: '⠂ OWNER — every show has every review, scored right', selected: true }],
+    runFn: (args) => { calls.push(args); return ''; },
+  });
+  assert.deepEqual(calls, [
+    ['send', '--workspace', 'workspace:15', '--', 'crown handoff'],
+    ['send-key', '--workspace', 'workspace:15', 'Enter'],
+  ]);
+  assert.throws(
+    () => cw.sendToWorkspace('workspace:16', 'crown handoff', {
+      expectedTitle: '👑 OWNER — every show has every review, scored right',
+      listWorkspacesFn: () => [{ ref: 'workspace:16', title: '⠂ Stop making me hunt tabs', selected: true }],
+    }),
+    /does not match the expected title/,
+    'a differing glyph prefix must not mask a genuinely different title',
+  );
+});
+
+test('sendToWorkspace: expectedTitle match sends normally', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  cw.sendToWorkspace('workspace:15', 'crown handoff', {
+    expectedTitle: '👑 OWNER — every show has every review, scored right',
+    listWorkspacesFn: () => [{ ref: 'workspace:15', title: '👑 OWNER — every show has every review, scored right', selected: true }],
+    runFn: (args) => { calls.push(args); return ''; },
+  });
+  assert.deepEqual(calls, [
+    ['send', '--workspace', 'workspace:15', '--', 'crown handoff'],
+    ['send-key', '--workspace', 'workspace:15', 'Enter'],
+  ]);
+});
+
+test('sendToWorkspace: expectedTitle against a ref missing from the fresh listing refuses to send', () => {
+  const cw = require('./cmux-workspaces.js');
+  assert.throws(
+    () => cw.sendToWorkspace('workspace:999', 'text', {
+      expectedTitle: 'anything',
+      listWorkspacesFn: () => [],
+    }),
+    /not found in the current workspace listing/,
+  );
+});
+
+test('sendToWorkspace: no expectedTitle passed skips the title check but still sends (backward compatible)', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  let listCalled = false;
+  cw.sendToWorkspace('workspace:15', 'no title check', {
+    listWorkspacesFn: () => { listCalled = true; return []; },
+    runFn: (args) => { calls.push(args); return ''; },
+  });
+  assert.equal(listCalled, false, 'no expectedTitle means listWorkspaces is never consulted');
+  assert.deepEqual(calls, [
+    ['send', '--workspace', 'workspace:15', '--', 'no title check'],
+    ['send-key', '--workspace', 'workspace:15', 'Enter'],
+  ]);
+});
+
+test('hasRunningClaude: column-exact — no substring false positives', () => {
+  // Status other than exactly "Running" on the tag row
+  const notRunning = `5.8\t1\t1\ttag\tworkspace:X:tag:claude_code\tworkspace:9\tNotRunning`;
+  assert.equal(hasRunningClaude(notRunning), false);
+  // Workspace TITLE containing "Running" + claude_code elsewhere in line
+  const titleTrap = `5.9\t1\t2\tworkspace\tworkspace:9\twindow:1\tRunning tag:claude_code experiments`;
+  assert.equal(hasRunningClaude(titleTrap), false);
+  // Trailing whitespace after Running still matches (cmux pads tsv)
+  const padded = `5.8\t1\t1\ttag\tworkspace:X:tag:claude_code\tworkspace:9\tRunning\t\t`;
+  assert.equal(hasRunningClaude(padded), true);
+});
+
+// ── BRO-3413: opt-in timeout retry for read-only listings ──────────────────
+// Driven through run()'s real execFn seam; sleepFn is stubbed so the backoff
+// costs no wall time.
+{
+  const { run, LIST_RETRY_TIMEOUTS, RUN_RETRY_BUDGET_MS } = require('./cmux-workspaces.js');
+  const timeoutErr = () => Object.assign(new Error('spawnSync /x/cmux ETIMEDOUT'), { code: 'ETIMEDOUT', stderr: '' });
+  const cmuxTimeoutErr = () => Object.assign(new Error('Command failed'), { stderr: 'Error: Command timed out' });
+  const authErr = () => Object.assign(new Error('Command failed'), { stderr: 'Error: ERROR: Access denied - only processes started inside cmux can connect' });
+  const scripted = (outcomes) => {
+    const calls = [];
+    return { calls, execFn: (bin, args) => { calls.push(args); const o = outcomes[calls.length - 1]; if (o instanceof Error) throw o; return o; } };
+  };
+  const quiet = () => {};
+  const noSleep = () => {};
+
+  test('BRO-3413: ETIMEDOUT then success returns the successful result', () => {
+    _resetRunWarnings();
+    const { calls, execFn } = scripted([timeoutErr(), LIST_SAMPLE]);
+    const sleeps = [];
+    const out = run(['list-workspaces'], { retryTimeouts: LIST_RETRY_TIMEOUTS, execFn, logFn: quiet, sleepFn: (ms) => sleeps.push(ms) });
+    assert.equal(out, LIST_SAMPLE);
+    assert.equal(calls.length, 2);
+    assert.equal(sleeps.length, 1);
+    assert.ok(sleeps[0] >= 1000 && sleeps[0] < 2000, `jittered backoff, got ${sleeps[0]}`);
+  });
+
+  test('BRO-3413: cmux\'s own "Command timed out" is retried too', () => {
+    const { calls, execFn } = scripted([cmuxTimeoutErr(), cmuxTimeoutErr(), 'ok']);
+    assert.equal(run(['list-workspaces'], { retryTimeouts: LIST_RETRY_TIMEOUTS, execFn, logFn: quiet, sleepFn: noSleep }), 'ok');
+    assert.equal(calls.length, 3);
+  });
+
+  test('BRO-3413: auth-denied is NOT retried by the timeout path (ladder only)', () => {
+    // Every rung rejected: the existing auth ladder makes exactly 3 calls and
+    // the new timeout retry must add none on top.
+    const { calls, execFn } = scripted([authErr(), authErr(), authErr(), 'never']);
+    assert.throws(() => run(['list-workspaces'], { retryTimeouts: LIST_RETRY_TIMEOUTS, execFn, logFn: quiet, sleepFn: noSleep }), /Command failed/);
+    assert.equal(calls.length, 3);
+  });
+
+  test('BRO-3413: auth rejection followed by a timeout surfaces auth-denied, no outer retry', () => {
+    const { calls, execFn } = scripted([authErr(), timeoutErr(), 'never']);
+    assert.throws(() => run(['list-workspaces'], { retryTimeouts: LIST_RETRY_TIMEOUTS, execFn, logFn: quiet, sleepFn: noSleep }));
+    assert.equal(calls.length, 2);
+  });
+
+  test('BRO-3413: without opt-in (mutating commands) a timeout is never retried', () => {
+    const { calls, execFn } = scripted([timeoutErr(), 'ok']);
+    assert.throws(() => run(['respawn-pane', '--workspace', 'workspace:1'], { execFn, logFn: quiet, sleepFn: noSleep }));
+    assert.equal(calls.length, 1);
+  });
+
+  test('BRO-3413: exhaustion throws the last timeout after 1 + retryTimeouts attempts', () => {
+    _resetRunWarnings();
+    const last = cmuxTimeoutErr();
+    const { calls, execFn } = scripted([timeoutErr(), timeoutErr(), last, 'never']);
+    assert.throws(() => run(['list-workspaces'], { retryTimeouts: LIST_RETRY_TIMEOUTS, execFn, logFn: quiet, sleepFn: noSleep }), (e) => e === last);
+    assert.equal(calls.length, 1 + LIST_RETRY_TIMEOUTS);
+    _resetRunWarnings(); // exhaustion latches retries off for the process
+  });
+
+  test('BRO-3413: no new attempt starts once the total time budget is spent', () => {
+    _resetRunWarnings();
+    let now = 0;
+    let calls = 0;
+    // Wedged socket: every call burns the full Node-side timeout.
+    const execFn = () => { calls++; now += 30_000; throw timeoutErr(); };
+    assert.throws(() => run(['list-workspaces'], { retryTimeouts: 5, execFn, logFn: quiet, sleepFn: (ms) => { now += ms; }, nowFn: () => now }));
+    assert.equal(calls, 2, 'second attempt starts at ~31s (< budget); a third would start at ~62s (> budget)');
+    assert.ok(now < RUN_RETRY_BUDGET_MS + 30_000 + 3000);
+    _resetRunWarnings();
+  });
+
+  test('BRO-3413: a non-timeout failure on a listing is not retried', () => {
+    const down = Object.assign(new Error('Command failed'), { stderr: 'Error: Failed to connect to socket (Connection refused)' });
+    const { calls, execFn } = scripted([down, 'ok']);
+    assert.throws(() => run(['list-workspaces'], { retryTimeouts: LIST_RETRY_TIMEOUTS, execFn, logFn: quiet, sleepFn: noSleep }));
+    assert.equal(calls.length, 1);
+  });
+
+  test('BRO-3413: listWorkspaces opts in to the timeout retry', () => {
+    let seen;
+    listWorkspaces({ runFn: (args, opts) => { seen = opts; return LIST_SAMPLE; } });
+    assert.equal(seen?.retryTimeouts, LIST_RETRY_TIMEOUTS);
+  });
+}
+
+{
+  const { run, LIST_RETRY_TIMEOUTS, RUN_RETRY_BUDGET_MS } = require('./cmux-workspaces.js');
+  const timeoutErr = () => Object.assign(new Error('spawnSync /x/cmux ETIMEDOUT'), { code: 'ETIMEDOUT', stderr: '' });
+  const quiet = () => {};
+
+  test('BRO-3413: a retry never runs past the total budget (subprocess timeout capped to what is left)', () => {
+    _resetRunWarnings();
+    let now = 0;
+    const timeouts = [];
+    // First attempt burns 38s; the retry may only get what remains of 45s.
+    const execFn = (bin, args, opts) => { timeouts.push(opts.timeout); if (timeouts.length === 1) { now += 38_000; throw timeoutErr(); } return 'ok'; };
+    const out = run(['list-workspaces'], { retryTimeouts: LIST_RETRY_TIMEOUTS, execFn, logFn: quiet, sleepFn: (ms) => { now += ms; }, nowFn: () => now });
+    assert.equal(out, 'ok');
+    assert.equal(timeouts[0], 30_000);
+    assert.ok(timeouts[1] <= RUN_RETRY_BUDGET_MS - 38_000 && timeouts[1] >= 5_000, `retry timeout capped, got ${timeouts[1]}`);
+  });
+
+  test('BRO-3413: once a call exhausts its retries on timeouts, later calls in the process do not retry', () => {
+    _resetRunWarnings();
+    let calls = 0;
+    const alwaysTimeout = () => { calls++; throw timeoutErr(); };
+    assert.throws(() => run(['list-workspaces'], { retryTimeouts: LIST_RETRY_TIMEOUTS, execFn: alwaysTimeout, logFn: quiet, sleepFn: () => {} }));
+    assert.equal(calls, 1 + LIST_RETRY_TIMEOUTS);
+    calls = 0;
+    assert.throws(() => run(['list-workspaces'], { retryTimeouts: LIST_RETRY_TIMEOUTS, execFn: alwaysTimeout, logFn: quiet, sleepFn: () => {} }));
+    assert.equal(calls, 1, 'latched off: single attempt');
+    _resetRunWarnings();
+  });
+}
+
+// ── BRO-3044: a live non-Claude agent is alive and busy-aware ────────────────
+// Verbatim rows from `cmux top --processes --format tsv` on 2026-09-07 (live idle Codex session).
+const CODEX_IDLE = [
+  '0.0\t0\t0\ttag\tworkspace:AC086338-365E-49C4-AD65-64C906EB7781:tag:codex\tworkspace:100\tIdle',
+  '0.0\t17270752\t1\tprocess\t85714\tworkspace:AC086338-365E-49C4-AD65-64C906EB7781:tag:codex.01a055e0-8ac3-7c33-b4fa-6c12c2cf89ce\tnode',
+].join('\n');
+
+test('anyAgentAliveInTsv: a live Codex process is alive; hasLiveClaude stays claude-only', () => {
+  assert.equal(anyAgentAliveInTsv(CODEX_IDLE), true);
+  assert.equal(hasLiveClaude(CODEX_IDLE), false, 'hasLiveClaude is pinned claude-only; other callers rely on it');
+  assert.equal(anyAgentAliveInTsv(TOP_WAITING), true);
+  assert.equal(anyAgentAliveInTsv(TOP_RUNNING), true);
+});
+
+test('anyAgentAliveInTsv: dead stays dead (no process rows, stale tag, empty, title trap)', () => {
+  assert.equal(anyAgentAliveInTsv(''), false);
+  assert.equal(anyAgentAliveInTsv(TOP_IDLE), false);
+  assert.equal(anyAgentAliveInTsv('0.0\t0\t0\ttag\tworkspace:X:tag:codex\tworkspace:9\tIdle'), false, 'stale tag row, no process');
+  assert.equal(anyAgentAliveInTsv('0.0\t1\t1\tworkspace\tworkspace:9\twindow:1\tcodex tag:claude_code'), false);
+});
+
+test('anyAgentAliveInTsv: an unknown tag name with a process row counts as alive (documented, errs toward alive)', () => {
+  assert.equal(anyAgentAliveInTsv('0.0\t1\t1\tprocess\t5\tworkspace:X:tag:somenewcli\tnode'), true);
+});
+
+test('hasRunningClaude: non-claude agents are busy unless exactly Idle; suffixed tag ids work', () => {
+  const tag = (name, status) => `0.0\t0\t0\ttag\tworkspace:X:tag:${name}\tworkspace:9\t${status}`;
+  assert.equal(hasRunningClaude(CODEX_IDLE), false, 'the one observed real Codex row: Idle is idle');
+  assert.equal(hasRunningClaude(tag('codex', 'Running')), true);
+  assert.equal(hasRunningClaude(tag('codex', 'Working')), true, 'unseen status reads busy (fail-safe)');
+  assert.equal(hasRunningClaude(tag('codex', '')), true, 'empty status on a non-Claude agent reads busy');
+  assert.equal(hasRunningClaude(tag('codex.01a055e0-8ac3-7c33-b4fa-6c12c2cf89ce', 'Running')), true, 'uuid suffix');
+  assert.equal(hasRunningClaude(tag('claude_code.01a055e0-8ac3', 'Running')), true, 'suffixed claude_code Running');
+  assert.equal(hasRunningClaude(tag('claude_code', '')), false, 'an idle Claude has an EMPTY status and stays idle');
+  assert.equal(hasRunningClaude(tag('claude_code', 'NotRunning')), false, 'column-exact');
+});
+
+test('claudeAliveIn routes through anyAgentAliveInTsv (BRO-3044: not hasLiveClaude alone)', () => {
+  const src = require('./cmux-workspaces.js').claudeAliveIn.toString();
+  assert.match(src, /anyAgentAliveInTsv\(/);
+  assert.doesNotMatch(src, /return hasLiveClaude\(/);
+});

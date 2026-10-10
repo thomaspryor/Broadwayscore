@@ -1,0 +1,518 @@
+{
+  "issueNumber": "bro-4636",
+  "planId": "ffc76cec-eaea-4d65-b7de-0fe0ded2fa42",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4623 part 7: remove capitalization figures and recoupment dates for The Lion King and Aladdin that had no citable source (Disney does not disclose either), fix Boop's capitalization attribution and leftover merge text, use the reported 'up to $18M' for Cats: The Jellicle Ball and fix its venue note, remove Oedipus' unsourced figure and wrong closing date, update Chess' stale note, and drop a non-public staging URL from Here There Are Blueberries.",
+    "steps": [
+      "The Lion King / Aladdin: Disney never announces capitalization or recoupment (Broadway Journal, May 2023: a Disney rep declined to comment on finances). Recouped status stays (Lion King $2B+ gross; Aladdin $561M+ by May 2023) but the figures go and the source lines say the dates are estimates. Aladdin's date drops to year precision.",
+      "Boop: Variety and Deadline (Jun 2025) reported up to $26M; a July 2025 SEC Form D/A raised the maximum to $29M. The source line now says both.",
+      "Cats: The Jellicle Ball: The Hollywood Reporter: 'capitalized for up to $18 million, according to securities filings'; transferred from PAC NYC to the Broadhurst, closed Aug 8, 2026 after winning three Tonys.",
+      "Oedipus: final performance Feb 8, 2026 with a Studio 54 house record of $1,212,949 (Playbill). The $6.5M figure came from an AI research pass, not a cited filing.",
+      "Chess: closed early Jun 21, 2026 (Variety); producers said it will not recoup (Deadline, May 26, 2026). $15M per SEC Form D/A (Chess Champion LLC, Jan 5, 2026)."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lion-king",
+        "showId": "the-lion-king",
+        "field": "capitalization",
+        "oldValue": 25000000,
+        "newValue": null,
+        "description": "the-lion-king: capitalization (no citable figure or date)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lion-king",
+        "showId": "the-lion-king",
+        "field": "capitalizationSource",
+        "oldValue": "Various (estimates range $15-27.5M)",
+        "newValue": "Not disclosed by Disney.",
+        "description": "the-lion-king: capitalizationSource (no citable figure or date)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lion-king",
+        "showId": "the-lion-king",
+        "field": "recoupedSource",
+        "oldValue": "Vanity Fair / Industry reports",
+        "newValue": "Disney does not announce recoupments. Recouped status follows from more than $2B in Broadway grosses; the 1999 date is an estimate.",
+        "description": "the-lion-king: recoupedSource (no citable figure or date)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "aladdin",
+        "showId": "aladdin",
+        "field": "capitalization",
+        "oldValue": 16000000,
+        "newValue": null,
+        "description": "aladdin: capitalization (no citable figure or date)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "aladdin",
+        "showId": "aladdin",
+        "field": "capitalizationSource",
+        "oldValue": "Industry estimates ($15-17M range). Disney does not publicly disclose. LA Times reported $12M-$15M; some insiders estimated ~$20M. GPT DR Batch 3 consensus ~$15-17M.",
+        "newValue": "Not disclosed by Disney.",
+        "description": "aladdin: capitalizationSource (no citable figure or date)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "aladdin",
+        "showId": "aladdin",
+        "field": "recoupedDate",
+        "oldValue": "2014-12",
+        "newValue": "2014",
+        "description": "aladdin: recoupedDate (no citable figure or date)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "aladdin",
+        "showId": "aladdin",
+        "field": "recoupedSource",
+        "oldValue": "Industry analysis (Broadway grosses vs. cumulative costs). Disney never formally announces recoupment.",
+        "newValue": "Disney does not announce recoupments. Recouped status follows from more than $561M in grosses by May 2023 (Broadway Journal); the 2014 date is an estimate.",
+        "description": "aladdin: recoupedSource (no citable figure or date)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "aladdin",
+        "showId": "aladdin",
+        "field": "notes",
+        "oldValue": "Disney sole-funded production — no outside investors. Disney never announces recoupments: per insider, 'recoupment is not a concept that makes sense in the Disney model' since they handle many services in-house (marketing, ticketing, merchandise). $15-17M cap (Disney won't confirm). Recouped likely late 2014. Weekly nut ~$850K. Disney's unique New Amsterdam Theatre lease pays 2% of gross as rent (vs standard fixed rent of $50-100K/week), confirmed by GPT DR. Received $3M NY theater tax credit (2022-2023 fiscal year). By May 2023: $561M+ grossed, 3,100+ performances. NOT eligible for SVOG (Disney is a publicly traded company, per Variety Mar 2021). Multiple international productions. One of the most profitable Broadway shows of the 2010s.",
+        "newValue": "Disney Theatrical production, funded entirely by Disney with no outside investors. Disney does not disclose capitalization or announce recoupments. Received a $3M NY State theater tax credit (2022-23). Had grossed over $561M across 3,100+ performances by May 2023 (Broadway Journal). Not eligible for SVOG because Disney is publicly traded (Variety, Mar 2021).",
+        "description": "aladdin: notes (no citable figure or date)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "aladdin",
+        "showId": "aladdin",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://broadwayjournal.com/new-york-extends-3-million-broadway-tax-credit-disneys-aladdin-approved/",
+            "date": null
+          }
+        ],
+        "description": "aladdin: sources (no citable figure or date)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "boop",
+        "showId": "boop",
+        "field": "capitalizationSource",
+        "oldValue": "SEC Form D/A filing (Broadwayboop LLC, CIK 0001968496, amended Jul 9, 2025). Max increased from $26M to $29M, fully capitalized.",
+        "newValue": "SEC Form D/A (Broadwayboop LLC, Jul 9, 2025) raised the maximum to $29M; Variety and Deadline (Jun 2025) reported up to $26M.",
+        "description": "boop: capitalizationSource (attribute $29M to the SEC amendment; remove merge text)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "boop",
+        "showId": "boop",
+        "field": "notes",
+        "oldValue": "Capitalized at $29M (SEC D/A, up from $26M). Closed July 13, 2025 after 112 performances. Weekly nut ~$750K but previews grossed only ~$530K (weekly loss ~$300K). Rarely grossed above $700K — consistently below breakeven. Investors lost ~80-100% of capital. David Foster composed. Jerry Mitchell directed/choreographed. William Haber / Ostar Enterprises. c/o Foresight Theatrical. Low ATP (~$70 previews) from heavy discounting for family audiences. [Merged from duplicate boop-2025 entry: Closed after 112 performances, lost entire $26 million investment. Part of broader Broadway crisis where none of 18 new musicals from 2025 season made profit.]",
+        "newValue": "New musical directed and choreographed by Jerry Mitchell, music by David Foster. Closed Jul 13, 2025 after 112 performances without recouping (Variety, Deadline).",
+        "description": "boop: notes (attribute $29M to the SEC amendment; remove merge text)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "boop",
+        "showId": "boop",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://variety.com/2025/legit/news/broadway-boop-musical-closing-date-1236440762/",
+            "date": "2025-06-25"
+          },
+          {
+            "type": "trade",
+            "url": "http://www.steveumberger.com/p/notes_12.html",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2025/09/22/theater/broadway-musicals-finances.html",
+            "date": "2025-09-22"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.facebook.com/MusicalsDaily/posts/its-bleak-for-new-musicals-on-broadway-right-nownot-one-of-the-18-new-musicals-f/1413758824086742/",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://variety.com/2025/legit/news/broadway-boop-musical-closing-date-1236440762/",
+            "date": "2025-06-25"
+          },
+          {
+            "type": "trade",
+            "url": "http://www.steveumberger.com/p/notes_12.html",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2025/09/22/theater/broadway-musicals-finances.html",
+            "date": "2025-09-22"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.facebook.com/MusicalsDaily/posts/its-bleak-for-new-musicals-on-broadway-right-nownot-one-of-the-18-new-musicals-f/1413758824086742/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2025/06/boop-the-musical-broadway-closing-1236442740/",
+            "date": null
+          }
+        ],
+        "description": "boop: sources (attribute $29M to the SEC amendment; remove merge text)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "showId": "cats-the-jellicle-ball",
+        "field": "capitalization",
+        "oldValue": 16500000,
+        "newValue": 18000000,
+        "description": "cats-the-jellicle-ball: capitalization (reported figure is up to $18M; stale venue note)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "showId": "cats-the-jellicle-ball",
+        "field": "capitalizationSource",
+        "oldValue": "SEC Form D filing (Jellicles Can Ltd Liability Co, CIK 0002098419, filed Dec 9, 2025). Range: $15M-$18M.",
+        "newValue": "The Hollywood Reporter (2026): capitalized for up to $18M, according to securities filings",
+        "description": "cats-the-jellicle-ball: capitalizationSource (reported figure is up to $18M; stale venue note)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "showId": "cats-the-jellicle-ball",
+        "field": "recoupedSource",
+        "oldValue": "Inferred: closed 30 days ago, no trade-press recoupment found",
+        "newValue": "No recoupment announced (The Hollywood Reporter, Deadline, Jul 2026).",
+        "description": "cats-the-jellicle-ball: recoupedSource (reported figure is up to $18M; stale venue note)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "showId": "cats-the-jellicle-ball",
+        "field": "notes",
+        "oldValue": "Reimagined immersive production of Cats. Opening April 7, 2026 at PAC NYC. Transferred from sold-out Perelman Performing Arts Center run. SEC filing under 'Jellicles Can Ltd Liability Co' shows $15M-$18M offering range (midpoint $16.5M used).",
+        "newValue": "Reimagined ballroom-culture Cats that transferred from the Perelman Performing Arts Center to the Broadhurst. Won three Tony Awards and closed Aug 8, 2026 without announcing recoupment. Capitalized for up to $18M according to securities filings.",
+        "description": "cats-the-jellicle-ball: notes (reported figure is up to $18M; stale venue note)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-the-jellicle-ball",
+        "showId": "cats-the-jellicle-ball",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.hollywoodreporter.com/lifestyle/arts/cats-the-jellicle-ball-broadway-closing-date-1236643213/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2026/07/cats-jellicle-ball-broadway-closing-1236983195/",
+            "date": null
+          }
+        ],
+        "description": "cats-the-jellicle-ball: sources (reported figure is up to $18M; stale venue note)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oedipus",
+        "showId": "oedipus",
+        "field": "capitalization",
+        "oldValue": 6500000,
+        "newValue": null,
+        "description": "oedipus: capitalization (unsourced figure; wrong closing date in note)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oedipus",
+        "showId": "oedipus",
+        "field": "capitalizationSource",
+        "oldValue": "SEC filings (GPT Deep Research)",
+        "newValue": null,
+        "description": "oedipus: capitalizationSource (unsourced figure; wrong closing date in note)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oedipus",
+        "showId": "oedipus",
+        "field": "notes",
+        "oldValue": "Mark Strong London transfer. $6.5M capitalization (SEC filings). Weekly cost ~$900K-1M. Set Studio 54 house record with $1,212,949 final week gross (previous record $1,074,778). Closed Feb 16, 2026.",
+        "newValue": "Robert Icke's production with Mark Strong and Lesley Manville, transferred from London. Closed Feb 8, 2026, setting a Studio 54 house record of $1,212,949 in its final week (Playbill). No capitalization reported and no recoupment announced.",
+        "description": "oedipus: notes (unsourced figure; wrong closing date in note)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oedipus",
+        "showId": "oedipus",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/oedipus-sets-a-house-record-in-its-final-performances-and-more-from-last-weeks-broadway-grosses",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2026/02/oedipus-broadway-mark-strong-lesley-manville-1236713664/",
+            "date": null
+          }
+        ],
+        "description": "oedipus: sources (unsourced figure; wrong closing date in note)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "chess",
+        "showId": "chess",
+        "field": "recoupedSource",
+        "oldValue": "Inferred: closed 31 days ago, no trade-press recoupment found",
+        "newValue": "Deadline (May 26, 2026): producers said the production will not recoup the investment.",
+        "description": "chess: recoupedSource (stale note; inferred source line)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "chess",
+        "showId": "chess",
+        "field": "notes",
+        "oldValue": "Revival with Lea Michele and Aaron Tveit. Selling out regularly at ~$1.3-1.8M/week gross. Break-even ~$1.1M. Qualified for $3M NY theater tax credit (first preview Oct 15, 2025, just before Oct 20 deadline). At ~$500K weekly profit, could recoup by closing (June 14, 2026). Original 1988 production was $6M.",
+        "newValue": "Revival with Lea Michele and Aaron Tveit. Closed early on Jun 21, 2026, timed to Lea Michele's exit and about three months ahead of plan (Variety); producers said it will not recoup (Deadline). Capitalized at $15M per an SEC Form D/A. Qualified for the NY State theater tax credit.",
+        "description": "chess: notes (stale note; inferred source line)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "chess",
+        "showId": "chess",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://variety.com/2026/legit/news/chess-broadway-close-early-lea-michele-1236759038/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2026/05/chess-closing-broadway-lea-michele-1236921116/",
+            "date": "2026-05-26"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2074648/000207464826000001/xslFormDX01/primary_doc.xml",
+            "date": "2026-01-05"
+          }
+        ],
+        "description": "chess: sources (stale note; inferred source line)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "here-there-are-blueberries",
+        "showId": "here-there-are-blueberries",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://shubert.nyc/press/the-pulitzer-prize-finalist-here-there-are-blueberries-to-open-on-broadway-this-fall/",
+            "date": "2026-08-27"
+          },
+          {
+            "type": "trade",
+            "url": "https://monorepo-sample1.nyt.net/2026/08/27/theater/here-there-are-blueberries-broadway.html",
+            "date": "2026-08-27"
+          },
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Here_There_Are_Blueberries",
+            "date": "2026-09-17"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://shubert.nyc/press/the-pulitzer-prize-finalist-here-there-are-blueberries-to-open-on-broadway-this-fall/",
+            "date": "2026-08-27"
+          },
+          {
+            "type": "manual",
+            "url": "https://en.wikipedia.org/wiki/Here_There_Are_Blueberries",
+            "date": "2026-09-17"
+          }
+        ],
+        "description": "here-there-are-blueberries: sources (non-public staging URL in sources)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-05T01:05:21.802Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-lion-king"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-lion-king"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for the-lion-king"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for aladdin"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for aladdin"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedDate updated for aladdin"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for aladdin"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for aladdin"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for aladdin"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for boop"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for boop"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for boop"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for chess"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for chess"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for chess"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for here-there-are-blueberries"
+    }
+  ]
+}

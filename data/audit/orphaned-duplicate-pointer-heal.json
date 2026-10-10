@@ -1,0 +1,182 @@
+{
+  "generated": "2026-10-10T19:03:15.325Z",
+  "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
+  "count": 25,
+  "orphans": [
+    {
+      "showId": "33-variations-2009",
+      "loserFile": "usatoday--unknown.json",
+      "targetFile": "usatoday--usa-today-staff.json",
+      "reason": "orphaned-duplicate-heal: usatoday--usa-today-staff.json was flagged invalid after usatoday--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "all-my-sons-2019",
+      "loserFile": "vulture--jesse-green.json",
+      "targetFile": "vulture--sara-holdren.json",
+      "reason": "orphaned-duplicate-heal: vulture--sara-holdren.json was flagged invalid after vulture--jesse-green.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "an-enemy-of-the-people-2012",
+      "loserFile": "guardian--charles-isherwood.json",
+      "targetFile": "guardian--adrian-horton.json",
+      "reason": "orphaned-duplicate-heal: guardian--adrian-horton.json was flagged invalid after guardian--charles-isherwood.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "cat-on-a-hot-tin-roof-2013",
+      "loserFile": "about-entertainment--ben-brantley.json",
+      "targetFile": "nytimes--ben-brantley.json",
+      "reason": "orphaned-duplicate-heal: nytimes--ben-brantley.json was flagged invalid after about-entertainment--ben-brantley.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "catch-me-if-you-can-2011",
+      "loserFile": "ap--unknown.json",
+      "targetFile": "ap--mark-kennedy.json",
+      "reason": "orphaned-duplicate-heal: ap--mark-kennedy.json was flagged invalid after ap--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "end-of-the-rainbow-west-end-2026",
+      "loserFile": "guardian--unknown.json",
+      "targetFile": "guardian--emma-brockes.json",
+      "reason": "orphaned-duplicate-heal: guardian--emma-brockes.json was flagged invalid after guardian--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "loserFile": "nytimes--elisabeth-vincentelli.json",
+      "targetFile": "nytimes--ben-brantley.json",
+      "reason": "orphaned-duplicate-heal: nytimes--ben-brantley.json was flagged invalid after nytimes--elisabeth-vincentelli.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "kiss-me-kate-2019",
+      "loserFile": "guardian--jesse-oxfeld.json",
+      "targetFile": "guardian--david-jays.json",
+      "reason": "orphaned-duplicate-heal: guardian--david-jays.json was flagged invalid after guardian--jesse-oxfeld.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "macbeth-2013",
+      "loserFile": "newsday--unknown.json",
+      "targetFile": "newsday--linda-winer.json",
+      "reason": "orphaned-duplicate-heal: newsday--linda-winer.json was flagged invalid after newsday--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "mary-poppins-west-end-2019",
+      "loserFile": "london-theatre--unknown.json",
+      "targetFile": "london-theatre--mark-shenton.json",
+      "reason": "orphaned-duplicate-heal: london-theatre--mark-shenton.json was flagged invalid after london-theatre--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "mass-west-end-2026",
+      "loserFile": "times-uk--dominic-maxwell.json",
+      "targetFile": "times-uk--rachel-halliburton.json",
+      "reason": "orphaned-duplicate-heal: times-uk--rachel-halliburton.json was flagged invalid after times-uk--dominic-maxwell.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "matilda-the-musical-west-end-2021",
+      "loserFile": "timeout--sam-marlowe.json",
+      "targetFile": "timeout-london--sam-marlowe.json",
+      "reason": "orphaned-duplicate-heal: timeout-london--sam-marlowe.json was flagged invalid after timeout--sam-marlowe.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "midnight-at-the-never-get-west-end-2026",
+      "loserFile": "times-uk--will-hodgkinson.json",
+      "targetFile": "times-uk--unknown.json",
+      "reason": "orphaned-duplicate-heal: times-uk--unknown.json was flagged invalid after times-uk--will-hodgkinson.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "mr-saturday-night-2022",
+      "loserFile": "variety--frank-rizzo.json",
+      "targetFile": "variety--maya-phillips.json",
+      "reason": "orphaned-duplicate-heal: variety--maya-phillips.json was flagged invalid after variety--frank-rizzo.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "proof-2026",
+      "loserFile": "nytimes--sarah-bahr.json",
+      "targetFile": "nytimes--helen-shaw.json",
+      "reason": "orphaned-duplicate-heal: nytimes--helen-shaw.json was flagged invalid after nytimes--sarah-bahr.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "proof-2026",
+      "loserFile": "nytimes--unknown.json",
+      "targetFile": "nytimes--helen-shaw.json",
+      "reason": "orphaned-duplicate-heal: nytimes--helen-shaw.json was flagged invalid after nytimes--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "sweat-2017",
+      "loserFile": "guardian--jesse-green.json",
+      "targetFile": "guardian--alexis-soloski.json",
+      "reason": "orphaned-duplicate-heal: guardian--alexis-soloski.json was flagged invalid after guardian--jesse-green.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "the-car-man-west-end-2026",
+      "loserFile": "financialtimes--unknown.json",
+      "targetFile": "financialtimes--louise-levene.json",
+      "reason": "orphaned-duplicate-heal: financialtimes--louise-levene.json was flagged invalid after financialtimes--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "the-lieutenant-of-inishmore-2006",
+      "loserFile": "about-entertainment--ben-brantley.json",
+      "targetFile": "nytimes--ben-brantley.json",
+      "reason": "orphaned-duplicate-heal: nytimes--ben-brantley.json was flagged invalid after about-entertainment--ben-brantley.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "the-mousetrap-west-end-2021",
+      "loserFile": "metro-uk--unknown.json",
+      "targetFile": "metro-uk--tori-brazier.json",
+      "reason": "orphaned-duplicate-heal: metro-uk--tori-brazier.json was flagged invalid after metro-uk--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "the-piano-lesson-2022",
+      "loserFile": "variety--aramide-tinubu.json",
+      "targetFile": "variety--marilyn-stasio.json",
+      "reason": "orphaned-duplicate-heal: variety--marilyn-stasio.json was flagged invalid after variety--aramide-tinubu.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "the-price-off-west-end-2026",
+      "loserFile": "whatsonstage--tanyel-gumushan.json",
+      "targetFile": "whatsonstage--alun-hood.json",
+      "reason": "orphaned-duplicate-heal: whatsonstage--alun-hood.json was flagged invalid after whatsonstage--tanyel-gumushan.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "torch-song-2018",
+      "loserFile": "variety--matt-windman.json",
+      "targetFile": "variety--marilyn-stasio.json",
+      "reason": "orphaned-duplicate-heal: variety--marilyn-stasio.json was flagged invalid after variety--matt-windman.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "trainspotting-the-musical-west-end-2026",
+      "loserFile": "daily-mail--georgina-brown.json",
+      "targetFile": "daily-mail--joanna-crawley.json",
+      "reason": "orphaned-duplicate-heal: daily-mail--joanna-crawley.json was flagged invalid after daily-mail--georgina-brown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "translations-west-end-2019",
+      "loserFile": "timeout-london--unknown.json",
+      "targetFile": "timeout-london--tom-wicker.json",
+      "reason": "orphaned-duplicate-heal: timeout-london--tom-wicker.json was flagged invalid after timeout-london--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    }
+  ]
+}

@@ -1,0 +1,694 @@
+#!/usr/bin/env node
+/**
+ * Generate Opening Night Status Page
+ *
+ * Produces two files:
+ *   1. public/opening-night-status.json — machine-readable status data
+ *   2. public/status.html — self-contained status dashboard (mobile-friendly)
+ *
+ * Designed to be called by CI after each poller cycle, or manually.
+ * The HTML page auto-refreshes by re-fetching the JSON every 30s.
+ *
+ * Usage:
+ *   node scripts/generate-status-page.js
+ *   node scripts/generate-status-page.js --lookback=4
+ */
+
+const fs = require('fs');
+const path = require('path');
+const { findSentRecord } = require('./lib/missed-broadcasts');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+const { checkReadiness, getMissingT1T2Outlets, getThresholds } = require('./opening-night-poller');
+const { getTier, TIER_WEIGHTS } = require('./lib/outlet-tiers');
+const { computeCriticScore } = require('./lib/compute-critic-score');
+const { isLondonMarket } = require('./lib/venue-classification');
+
+const DATA_DIR = path.join(__dirname, '..', 'data');
+const PUBLIC_DIR = path.join(__dirname, '..', 'public');
+const SITE_SHOWS_DIR = path.join(PUBLIC_DIR, 'data', 'shows');
+const TIMELINE_DIR = path.join(DATA_DIR, 'opening-night-timeline');
+
+const LOOKBACK_ARG = process.argv.find(a => a.startsWith('--lookback='));
+const LOOKBACK_DAYS = LOOKBACK_ARG ? parseInt(LOOKBACK_ARG.split('=')[1], 10) : 3;
+
+function loadJSON(filePath) {
+  try { return JSON.parse(fs.readFileSync(filePath, 'utf8')); }
+  catch { return null; }
+}
+
+function getSiteScore(showId) {
+  const data = loadJSON(path.join(SITE_SHOWS_DIR, `${showId}.json`));
+  if (!data || data.cs == null) return null;
+  return { score: data.cs, reviewCount: data.rc, positive: data.bd?.positive || 0, mixed: data.bd?.mixed || 0, negative: data.bd?.negative || 0 };
+}
+
+// Whether the show has a published JSON in /public/data/shows (even below the score threshold).
+// Used to distinguish "show isn't on site yet" from "show is on site but awaiting more reviews".
+function siteFileExists(showId) {
+  try { return fs.existsSync(path.join(SITE_SHOWS_DIR, `${showId}.json`)); }
+  catch { return false; }
+}
+
+// Mirrors src/config/score-buckets.ts::reviewsRemainingForScore — keep in sync.
+// Returns 0 when the show already qualifies for score display.
+function reviewsRemainingForScore(reviewCount, category, tier1And2Count) {
+  const MIN = category === 'off-broadway' ? 3
+    : category === 'off-off-broadway' ? 3
+    : category === 'off-west-end' ? 3
+    : category === 'west-end' ? 5
+    : 5;
+  const T3_ONLY_EXTRA = 2;
+  const min = (tier1And2Count === 0) ? MIN + T3_ONLY_EXTRA : MIN;
+  return Math.max(0, min - reviewCount);
+}
+
+const USAGE = `generate-status-page.js — write public/opening-night-status.json + public/status.html
+  node scripts/generate-status-page.js                 generate both files
+  node scripts/generate-status-page.js --lookback=4    override lookback days
+  node scripts/generate-status-page.js --help, -h      print this usage and exit — no reads/writes
+`;
+
+function main() {
+  // --help/-h checked BEFORE any read/write (help-flag safety Rule B, task #498).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+  const showsData = loadJSON(path.join(DATA_DIR, 'shows.json'));
+  if (!showsData) { console.error('Cannot load shows.json'); process.exit(1); }
+  const showsList = Array.isArray(showsData.shows || showsData) ? (showsData.shows || showsData) : Object.values(showsData.shows || showsData);
+
+  // Use shared loader so status-page scores match data-core.ts / show-page scoring.
+  // Without this, any blog-reviewed show that appears on the opening night status
+  // page would show a different score here vs. on its /show/{slug} page — same
+  // class bug as Putnam County Spelling Bee on the OB Critical Gold List (fixed
+  // separately in Apr 2026 via `loadReviewsWithBlog`).
+  const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
+  const reviewsArr = loadReviewsWithBlog();
+
+  const outletRegistry = loadJSON(path.join(DATA_DIR, 'outlet-registry.json')) || {};
+  const outlets = outletRegistry.outlets || outletRegistry;
+  const sentData = loadJSON(path.join(DATA_DIR, 'opening-night-sent.json'));
+
+  // Find opening shows
+  const now = new Date();
+  const cutoff = new Date(now);
+  cutoff.setDate(cutoff.getDate() - LOOKBACK_DAYS);
+  cutoff.setHours(0, 0, 0, 0);
+
+  // Only include shows with openingDate within the lookback window
+  // (not future previews — those haven't opened yet)
+  const openingShows = showsList.filter(s => {
+    if (!s.openingDate) return false;
+    const d = new Date(s.openingDate);
+    d.setHours(0, 0, 0, 0);
+    if (d < cutoff) return false;
+    if (d > now) return false; // Only shows that have actually opened
+    if (s.status === 'closed') return false;
+    return true;
+  }).sort((a, b) => new Date(b.openingDate) - new Date(a.openingDate));
+
+  const shows = openingShows.map(show => {
+    const market = isLondonMarket(show.category) ? 'west-end' : 'broadway';
+    const showRevs = reviewsArr.filter(r => r.showId === show.id && r.assignedScore > 0);
+
+    let t1 = 0, t2 = 0, t3 = 0, positive = 0, mixed = 0, negative = 0;
+    for (const r of showRevs) {
+      const tier = getTier(r.outletId);
+      if (tier === 1) t1++;
+      else if (tier === 2) t2++;
+      else t3++;
+      if (r.assignedScore >= 75) positive++;
+      else if (r.assignedScore >= 55) mixed++;
+      else negative++;
+    }
+
+    const scoreResult = computeCriticScore(showRevs, outlets, show.category);
+    const siteData = getSiteScore(show.id);
+    const liveScore = scoreResult ? Math.round(scoreResult.s) : null;
+    const siteScore = siteData?.score ?? null;
+
+    const readiness = checkReadiness(show.id, market);
+    const missing = getMissingT1T2Outlets(show.id, market);
+    const thresholds = getThresholds(market);
+
+    // Broadcast status
+    let broadcastState = 'waiting';
+    let broadcastDetail = 'Not yet broadcast-ready';
+    if (sentData?.shows) {
+      // A real send, not `completed` (set at draft creation) (BRO-4474).
+      const completed = findSentRecord(sentData.shows, show.id, market);
+      if (completed) {
+        broadcastState = 'complete';
+        broadcastDetail = completed.sentAt ? `Sent ${new Date(completed.sentAt).toLocaleString()}` : 'Sent';
+      } else {
+        const today = now.toISOString().slice(0, 10);
+        const pk = `preview:${market}:${show.id}:${today}`;
+        if (sentData.shows[pk]) {
+          broadcastState = 'preview-sent';
+          broadcastDetail = `Preview sent (${sentData.shows[pk].reviewCount} reviews)`;
+        } else if (sentData.shows[`overdue-alert:${show.id}`]) {
+          broadcastState = 'overdue';
+          broadcastDetail = 'Overdue alert sent';
+        }
+      }
+    }
+
+    // Fix contradictory text: if readiness gates pass but broadcast hasn't sent, say "awaiting send"
+    if (readiness.ready && broadcastState === 'waiting') {
+      broadcastDetail = 'Ready — awaiting send';
+    }
+
+    // Score-display threshold (mirrors the public show page, which gates the numeric score
+     // behind a minimum review count). Without this, the status page shows a big "84" for a
+     // show the public page correctly displays as TBD, making the dashboard misleading.
+    const reviewsNeeded = reviewsRemainingForScore(showRevs.length, show.category, t1 + t2);
+    const belowThreshold = reviewsNeeded > 0;
+    const fileExists = siteFileExists(show.id);
+
+    return {
+      id: show.id, title: show.title, market, category: show.category || market, type: show.type || 'show',
+      openingDate: show.openingDate, status: show.status, slug: show.slug || show.id.replace(/-\d{4}$/, ''),
+      thumbnail: show.images?.thumbnail || null,
+      siteScore, liveScore, scoreDrift: (siteScore != null && liveScore != null) ? liveScore - siteScore : null,
+      belowThreshold, reviewsNeeded, siteFileExists: fileExists,
+      total: showRevs.length, t1, t2, t3, positive, mixed, negative,
+      readiness: {
+        ready: readiness.ready, reasons: readiness.reasons, highConfidence: readiness.highConfidence,
+        thresholds: { minReviews: thresholds.MIN_REVIEWS, minT1: thresholds.MIN_T1_REVIEWS, minT2: thresholds.MIN_T2_REVIEWS, minHiConf: thresholds.MIN_HIGH_CONFIDENCE },
+      },
+      broadcast: { state: broadcastState, detail: broadcastDetail },
+      missingT1: missing.filter(m => m.tier === 1).map(m => ({ name: m.name, isDualMarket: m.isDualMarket })),
+      missingT2: missing.filter(m => m.tier === 2).map(m => ({ name: m.name, isDualMarket: m.isDualMarket })),
+    };
+  });
+
+  // Upcoming: shows opening in the next 7 days
+  const upcomingCutoff = new Date(now);
+  upcomingCutoff.setDate(upcomingCutoff.getDate() + 7);
+  const upcoming = showsList.filter(s => {
+    if (!s.openingDate) return false;
+    const d = new Date(s.openingDate);
+    d.setHours(0, 0, 0, 0);
+    if (d <= now) return false;
+    if (d > upcomingCutoff) return false;
+    if (s.status === 'closed') return false;
+    return true;
+  }).sort((a, b) => new Date(a.openingDate) - new Date(b.openingDate))
+  .map(show => {
+    const market = isLondonMarket(show.category) ? 'west-end' : 'broadway';
+    const daysUntil = Math.ceil((new Date(show.openingDate) - now) / 86400000);
+    return {
+      id: show.id, title: show.title, market, category: show.category || market, type: show.type || 'show',
+      openingDate: show.openingDate, status: show.status, slug: show.slug || show.id.replace(/-\d{4}$/, ''),
+      thumbnail: show.images?.thumbnail || null,
+      daysUntil,
+    };
+  });
+
+  // ── Readiness checks for upcoming + today's shows ──
+  let readinessData = null;
+  try {
+    // Lazy require: opening-night-readiness executes its full readiness sweep
+    // at require time (no require.main guard), so a top-level require would run
+    // it even for --help. Same lazy pattern as loadReviewsWithBlog below.
+    const { runChecks } = require('./opening-night-readiness');
+    readinessData = runChecks();
+    // Merge per-show readiness into upcoming cards
+    if (readinessData?.checks) {
+      for (const u of upcoming) {
+        const rc = readinessData.checks.find(c => c.id === u.id);
+        if (rc) {
+          u.readinessChecks = rc.checks;
+          u.readinessSummary = rc.summary;
+          u.preflight = rc.ready;
+        }
+      }
+    }
+  } catch (e) {
+    console.error('Readiness checks failed (non-fatal):', e.message);
+  }
+
+  // ── Timeline: append-only JSONL per show ──
+  if (!fs.existsSync(TIMELINE_DIR)) fs.mkdirSync(TIMELINE_DIR, { recursive: true });
+  for (const s of shows) {
+    if (s.total === 0) continue; // Skip shows with no reviews yet
+    const entry = {
+      t: now.toISOString(),
+      rc: s.total, s: s.siteScore ?? s.liveScore,
+      t1: s.t1, t2: s.t2, t3: s.t3,
+      p: s.positive, m: s.mixed, n: s.negative,
+      bc: s.broadcast.state,
+    };
+    const tlPath = path.join(TIMELINE_DIR, `${s.id}.jsonl`);
+    // Deduplicate: skip if the last entry has the same review count + score
+    let skip = false;
+    if (fs.existsSync(tlPath)) {
+      const lines = fs.readFileSync(tlPath, 'utf8').trim().split('\n');
+      if (lines.length > 0) {
+        try {
+          const last = JSON.parse(lines[lines.length - 1]);
+          if (last.rc === entry.rc && last.s === entry.s) skip = true;
+        } catch {}
+      }
+    }
+    if (!skip) {
+      fs.appendFileSync(tlPath, JSON.stringify(entry) + '\n');
+    }
+  }
+
+  // Read timelines for shows that have them
+  for (const s of shows) {
+    const tlPath = path.join(TIMELINE_DIR, `${s.id}.jsonl`);
+    if (fs.existsSync(tlPath)) {
+      try {
+        const lines = fs.readFileSync(tlPath, 'utf8').trim().split('\n');
+        s.timeline = lines.map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+      } catch {}
+    }
+  }
+
+  const statusData = {
+    generatedAt: now.toISOString(), lookbackDays: LOOKBACK_DAYS, shows, upcoming,
+    infrastructure: readinessData?.global || null,
+  };
+
+  // Write JSON
+  fs.writeFileSync(path.join(PUBLIC_DIR, 'opening-night-status.json'), JSON.stringify(statusData, null, 2));
+  console.log(`Wrote opening-night-status.json (${shows.length} shows, ${upcoming.length} upcoming)`);
+
+  // Write HTML
+  fs.writeFileSync(path.join(PUBLIC_DIR, 'status.html'), generateHTML());
+  console.log('Wrote status.html');
+}
+
+function generateHTML() {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Opening Night Status — Broadway Scorecard</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0f172a">
+<style>
+  :root { --bg: #0f172a; --card: #1e293b; --border: #334155; --text: #e2e8f0; --dim: #94a3b8; --green: #22c55e; --yellow: #eab308; --red: #ef4444; --blue: #3b82f6; --cyan: #06b6d4; --gold: #FFD700; --teal: #14b8a6; --amber: #d97706; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 12px; max-width: 640px; margin: 0 auto; -webkit-text-size-adjust: 100%; }
+  h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .meta { color: var(--dim); font-size: 13px; margin-bottom: 12px; }
+  .filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .filter-btn { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; font-size: 13px; color: var(--dim); cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .filter-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+  /* Card: matches site's ShowListCard layout */
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 10px; }
+  .card-top { display: flex; gap: 12px; align-items: flex-start; }
+  .card-thumb { width: 72px; height: 72px; border-radius: 8px; object-fit: cover; flex-shrink: 0; background: #334155; }
+  .card-thumb-placeholder { width: 72px; height: 72px; border-radius: 8px; flex-shrink: 0; background: #334155; display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--dim); }
+  .card-info { flex: 1; min-width: 0; }
+  .show-title { font-size: 15px; font-weight: 700; line-height: 1.2; margin-bottom: 3px; display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+  .show-title a { color: inherit; text-decoration: none; }
+  .market-pill { font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0; white-space: nowrap; vertical-align: middle; }
+  .market-broadway { background: #2563eb; color: #fff; }
+  .market-off-broadway { background: #7c3aed; color: #fff; }
+  .market-west-end { background: #059669; color: #fff; }
+  .market-off-west-end { background: #0d9488; color: #fff; }
+  .show-meta { font-size: 11px; color: var(--dim); margin-bottom: 4px; }
+
+  /* Score badge: matches site's ScoreBadge */
+  .score-badge { width: 52px; height: 52px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 800; flex-shrink: 0; color: #000; }
+  .score-gold { background: var(--gold); box-shadow: 0 0 12px rgba(255,215,0,0.4); }
+  .score-green { background: var(--green); }
+  .score-teal { background: var(--teal); }
+  .score-amber { background: var(--amber); }
+  .score-red { background: var(--red); color: #fff; }
+  .score-none { background: var(--border); color: var(--dim); font-size: 14px; }
+  .score-sub { font-size: 10px; color: var(--dim); text-align: center; margin-top: 2px; width: 52px; flex-shrink: 0; }
+
+  .drift { font-size: 11px; color: var(--yellow); margin-bottom: 6px; padding-left: 84px; }
+  .review-summary { font-size: 11px; color: var(--dim); margin-bottom: 4px; }
+  .bar { display: flex; height: 6px; border-radius: 3px; overflow: hidden; margin-bottom: 6px; }
+  .bar-pos { background: var(--green); }
+  .bar-mix { background: var(--yellow); }
+  .bar-neg { background: var(--red); }
+
+  /* Details section (collapsible) */
+  .details-toggle { font-size: 11px; color: var(--blue); cursor: pointer; -webkit-tap-highlight-color: transparent; padding: 4px 0; display: inline-block; }
+  .details-body { overflow: hidden; transition: max-height 0.25s ease; }
+  .details-body.collapsed { max-height: 0 !important; }
+
+  .tiers { font-size: 12px; margin-bottom: 8px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .tier-badge { background: #0f172a; padding: 2px 7px; border-radius: 5px; font-weight: 600; font-size: 11px; }
+  .gates { margin-bottom: 8px; }
+  .gate { font-size: 12px; display: flex; align-items: center; gap: 5px; margin-bottom: 2px; }
+  .gate-icon { width: 14px; text-align: center; flex-shrink: 0; }
+  .gate-pass { color: var(--green); }
+  .gate-fail { color: var(--red); }
+  .ready-badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 5px; margin-bottom: 8px; }
+  .ready-yes { background: var(--green); color: #000; }
+  .ready-no { background: #422006; color: var(--yellow); border: 1px solid var(--yellow); }
+  .ready-reasons { font-size: 11px; color: var(--yellow); margin-bottom: 8px; }
+  .broadcast { font-size: 12px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .bc-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; flex-shrink: 0; }
+  .bc-complete { background: var(--green); color: #000; }
+  .bc-preview { background: var(--yellow); color: #000; }
+  .bc-overdue { background: var(--red); color: #fff; }
+  .bc-waiting { background: var(--border); color: var(--dim); }
+  .missing-section { margin-top: 6px; }
+  .missing-toggle { font-size: 11px; color: var(--dim); cursor: pointer; -webkit-tap-highlight-color: transparent; display: flex; align-items: center; gap: 4px; padding: 3px 0; }
+  .missing-toggle .chevron { transition: transform 0.2s; display: inline-block; font-size: 9px; }
+  .missing-toggle .chevron.open { transform: rotate(90deg); }
+  .missing-body { overflow: hidden; transition: max-height 0.25s ease; }
+  .missing-body.collapsed { max-height: 0 !important; }
+  .missing-group { font-size: 11px; padding: 3px 0 1px 0; }
+  .missing-label { font-weight: 600; }
+  .missing-t1 { color: var(--red); }
+  .missing-t2 { color: var(--yellow); }
+  .missing-cross { color: var(--dim); font-style: italic; }
+  .all-found { font-size: 11px; color: var(--green); margin-top: 4px; }
+  .section-header { font-size: 15px; font-weight: 700; color: var(--dim); margin: 20px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+  .card-upcoming { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; margin-bottom: 8px; opacity: 0.85; }
+  .card-upcoming .card-top { display: flex; gap: 10px; align-items: center; }
+  .card-upcoming .card-thumb, .card-upcoming .card-thumb-placeholder { width: 48px; height: 48px; border-radius: 6px; }
+  .card-upcoming .show-title { font-size: 14px; }
+  .card-upcoming .show-meta { font-size: 11px; margin-bottom: 0; }
+  .days-pill { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; background: #1e3a5f; color: var(--cyan); flex-shrink: 0; white-space: nowrap; }
+  .sparkline { margin: 6px 0 4px; }
+  .sparkline canvas { width: 100%; height: 36px; border-radius: 4px; }
+  .sparkline-label { font-size: 10px; color: var(--dim); display: flex; justify-content: space-between; }
+  .empty { text-align: center; color: var(--dim); padding: 40px 0; }
+  .refresh { font-size: 11px; color: var(--dim); text-align: center; margin-top: 8px; }
+  .footer { text-align: center; margin-top: 16px; }
+  .footer a { color: var(--blue); text-decoration: none; font-size: 13px; }
+  @media (max-width: 400px) {
+    .card-thumb, .card-thumb-placeholder { width: 60px; height: 60px; }
+    .score-badge { width: 46px; height: 46px; font-size: 19px; }
+    .score-sub { width: 46px; font-size: 9px; }
+    .show-title { font-size: 14px; }
+    .drift { padding-left: 72px; }
+    .filter-btn { padding: 8px 10px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+<h1>Opening Night Status</h1>
+<div class="meta" id="updated" role="status" aria-live="polite"></div>
+<div class="filters" id="filters" role="group" aria-label="Market filters"></div>
+<div id="shows" role="main"></div>
+<div id="upcoming"></div>
+<div class="refresh" id="refresh" role="status" aria-live="polite"></div>
+<div class="footer"><a href="https://broadwayscorecard.com">broadwayscorecard.com</a></div>
+<script>
+function scoreTier(s) {
+  if (s == null) return 'none';
+  if (s >= 83) return 'gold';
+  if (s >= 75) return 'green';
+  if (s >= 65) return 'teal';
+  if (s >= 55) return 'amber';
+  return 'red';
+}
+function bcClass(s) { return { complete:'bc-complete', 'preview-sent':'bc-preview', 'preview-sent-earlier':'bc-preview', overdue:'bc-overdue' }[s] || 'bc-waiting'; }
+function bcLabel(s) { return { complete:'SENT', 'preview-sent':'PREVIEW', 'preview-sent-earlier':'PREVIEW', overdue:'OVERDUE' }[s] || 'WAITING'; }
+function marketLabel(c) { return { broadway:'Broadway', 'off-broadway':'Off-Broadway', 'west-end':'West End', 'off-west-end':'Off-West End' }[c] || c; }
+function marketClass(c) { return 'market-' + (c || 'broadway'); }
+function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+let activeFilters = new Set(['broadway', 'off-broadway', 'west-end', 'off-west-end']);
+function loadFilters() {
+  const h = location.hash.replace('#','');
+  if (h) activeFilters = new Set(h.split(','));
+}
+function saveFilters() { location.hash = [...activeFilters].join(','); }
+loadFilters();
+
+let _data = null;
+
+function renderFilters(data) {
+  const cats = [...new Set(data.shows.map(s => s.category))];
+  const el = document.getElementById('filters');
+  if (!cats.length) { el.innerHTML = ''; return; }
+  el.innerHTML = cats.map(c =>
+    '<button class="filter-btn ' + (activeFilters.has(c) ? 'active' : '') + '" data-cat="' + c + '" aria-pressed="' + activeFilters.has(c) + '">' + marketLabel(c) + '</button>'
+  ).join('');
+  el.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.onclick = () => {
+      const c = btn.dataset.cat;
+      if (activeFilters.has(c)) activeFilters.delete(c); else activeFilters.add(c);
+      saveFilters();
+      renderShows(data);
+      renderFilters(data);
+    };
+  });
+}
+
+function renderMissing(missingT1, missingT2, showIdx) {
+  const coreT1 = missingT1.filter(m => !m.isDualMarket);
+  const coreT2 = missingT2.filter(m => !m.isDualMarket);
+  const cross = missingT1.filter(m => m.isDualMarket).concat(missingT2.filter(m => m.isDualMarket));
+  const totalMissing = missingT1.length + missingT2.length;
+  const coreMissing = coreT1.length + coreT2.length;
+
+  if (totalMissing === 0) return '<div class="all-found">All T1/T2 outlets found</div>';
+
+  const id = 'missing-' + showIdx;
+  let html = '<div class="missing-section">';
+  html += '<div class="missing-toggle" onclick="toggleMissing(\\'' + id + '\\')" role="button" tabindex="0" aria-expanded="false" aria-controls="' + id + '">';
+  html += '<span class="chevron" id="chev-' + id + '">&#9654;</span> ';
+  html += coreMissing + ' missing outlet' + (coreMissing !== 1 ? 's' : '');
+  if (cross.length > 0) html += ' + ' + cross.length + ' cross-market';
+  html += '</div>';
+  html += '<div class="missing-body collapsed" id="' + id + '">';
+
+  if (coreT1.length > 0) {
+    html += '<div class="missing-group"><span class="missing-label missing-t1">T1:</span> ' + coreT1.map(m => esc(m.name)).join(', ') + '</div>';
+  }
+  if (coreT2.length > 0) {
+    html += '<div class="missing-group"><span class="missing-label missing-t2">T2:</span> ' + coreT2.map(m => esc(m.name)).join(', ') + '</div>';
+  }
+  if (cross.length > 0) {
+    html += '<div class="missing-group missing-cross"><span class="missing-label">Cross-market:</span> ' + cross.map(m => esc(m.name)).join(', ') + '</div>';
+  }
+
+  html += '</div></div>';
+  return html;
+}
+
+function drawSparklines() {
+  document.querySelectorAll('[data-sparkline]').forEach(el => {
+    const data = JSON.parse(el.dataset.sparkline);
+    if (data.length < 2) { el.style.display = 'none'; return; }
+    const canvas = el.querySelector('canvas');
+    const ctx = canvas.getContext('2d');
+    const dpr = window.devicePixelRatio || 1;
+    const w = canvas.offsetWidth * dpr;
+    const h = canvas.offsetHeight * dpr;
+    canvas.width = w; canvas.height = h;
+    ctx.scale(dpr, dpr);
+    const cw = canvas.offsetWidth, ch = canvas.offsetHeight;
+
+    const scores = data.map(d => d.s).filter(s => s != null);
+    const counts = data.map(d => d.rc);
+    if (scores.length < 2) { el.style.display = 'none'; return; }
+
+    const minS = Math.min(...scores) - 3, maxS = Math.max(...scores) + 3;
+    const pad = 2;
+
+    // Score line
+    ctx.beginPath();
+    ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 2; ctx.lineJoin = 'round';
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].s == null) continue;
+      const x = pad + (i / (data.length - 1)) * (cw - pad * 2);
+      const y = pad + (1 - (data[i].s - minS) / (maxS - minS)) * (ch - pad * 2);
+      if (i === 0 || data[i-1]?.s == null) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    // Review count as filled area (subtle)
+    const maxC = Math.max(...counts);
+    ctx.beginPath();
+    ctx.fillStyle = 'rgba(59,130,246,0.1)';
+    for (let i = 0; i < data.length; i++) {
+      const x = pad + (i / (data.length - 1)) * (cw - pad * 2);
+      const y = ch - pad - (data[i].rc / maxC) * (ch - pad * 2) * 0.5;
+      if (i === 0) { ctx.moveTo(x, ch); ctx.lineTo(x, y); } else ctx.lineTo(x, y);
+    }
+    ctx.lineTo(pad + cw - pad * 2, ch); ctx.closePath(); ctx.fill();
+
+    // Dots for broadcast events
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].bc === 'complete' && (i === 0 || data[i-1].bc !== 'complete')) {
+        const x = pad + (i / (data.length - 1)) * (cw - pad * 2);
+        const y = pad + (1 - (data[i].s - minS) / (maxS - minS)) * (ch - pad * 2);
+        ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2);
+        ctx.fillStyle = '#22c55e'; ctx.fill();
+      }
+    }
+  });
+}
+
+function toggleDetails(id) {
+  const el = document.getElementById(id);
+  if (el.classList.contains('collapsed')) {
+    el.classList.remove('collapsed');
+    el.style.maxHeight = el.scrollHeight + 'px';
+  } else {
+    el.classList.add('collapsed');
+  }
+}
+function toggleMissing(id) {
+  const el = document.getElementById(id);
+  const chev = document.getElementById('chev-' + id);
+  const header = el.previousElementSibling;
+  if (el.classList.contains('collapsed')) {
+    el.classList.remove('collapsed');
+    el.style.maxHeight = el.scrollHeight + 'px';
+    chev.classList.add('open');
+    header.setAttribute('aria-expanded', 'true');
+  } else {
+    el.classList.add('collapsed');
+    chev.classList.remove('open');
+    header.setAttribute('aria-expanded', 'false');
+  }
+}
+
+function renderShows(data) {
+  document.getElementById('updated').textContent = 'Updated: ' + new Date(data.generatedAt).toLocaleString();
+  const el = document.getElementById('shows');
+  const filtered = data.shows.filter(s => activeFilters.has(s.category));
+  if (!filtered.length) { el.innerHTML = '<div class="empty">No shows match current filters.</div>'; return; }
+  el.innerHTML = filtered.map((s, idx) => {
+    // When the show has fewer reviews than the market threshold, the public site page
+    // shows "TBD" regardless of the computed score. Mirror that here so the dashboard
+    // doesn't flash a big "84" for a show the public page correctly hides.
+    const rawScore = s.siteScore != null ? s.siteScore : s.liveScore;
+    const score = s.belowThreshold ? null : rawScore;
+    const tier = scoreTier(score);
+    const th = s.readiness.thresholds || {};
+    const minR = th.minReviews || 12, minT1 = th.minT1 || 3, minT2 = th.minT2 || 3, minH = th.minHiConf || 8;
+    function gate(v, req, label) {
+      const ok = v >= req;
+      return '<div class="gate"><span class="gate-icon ' + (ok?'gate-pass':'gate-fail') + '">' + (ok?'\\u2713':'\\u2717') + '</span>' + label + ': <b>' + v + '</b>/' + req + '</div>';
+    }
+    // Drift badge:
+    //   - scoreDrift!=0 → live vs site delta (only meaningful once both scores exist)
+    //   - below threshold but show IS published → "Awaiting score (N more)"
+    //   - no site file at all → "Not yet on site"
+    const drift = (s.scoreDrift != null && s.scoreDrift !== 0)
+      ? '<div class="drift">Live: ' + s.liveScore + ' (' + (s.scoreDrift>0?'+':'') + s.scoreDrift + ' drift)</div>'
+      : (s.belowThreshold && s.siteFileExists ? '<div class="drift">Awaiting score (' + s.reviewsNeeded + ' more)</div>'
+      : (s.siteFileExists === false && s.liveScore != null ? '<div class="drift">Not yet on site</div>' : ''));
+
+    const imgEl = s.thumbnail
+      ? '<img class="card-thumb" src="' + s.thumbnail + '" alt="" loading="lazy">'
+      : '<div class="card-thumb-placeholder">\\u{1F3AD}</div>';
+    const badgeEl = '<div><div class="score-badge score-' + tier + '">' + (score != null ? score : 'TBD') + '</div>'
+      + '<div class="score-sub">' + s.total + ' review' + (s.total === 1 ? '' : 's') + '</div></div>';
+    const showUrl = 'https://broadwayscorecard.com/show/' + (s.slug || s.id);
+    const detId = 'det-' + idx;
+
+    return '<div class="card">' +
+      '<div class="card-top">' +
+        imgEl +
+        '<div class="card-info">' +
+          '<div class="show-title"><a href="' + showUrl + '">' + esc(s.title) + '</a> <span class="market-pill ' + marketClass(s.category) + '">' + marketLabel(s.category) + '</span></div>' +
+          '<div class="show-meta">' + esc(s.type) + ' \\u00b7 ' + s.openingDate + ' \\u00b7 ' + s.status + '</div>' +
+          '<div class="review-summary">' + s.positive + 'P \\u00b7 ' + s.mixed + 'M \\u00b7 ' + s.negative + 'N \\u00b7 T1:' + s.t1 + ' T2:' + s.t2 + ' T3:' + s.t3 + '</div>' +
+          '<div class="broadcast"><span class="bc-badge ' + bcClass(s.broadcast.state) + '">' + bcLabel(s.broadcast.state) + '</span><span>' + esc(s.broadcast.detail) + '</span></div>' +
+        '</div>' +
+        badgeEl +
+      '</div>' +
+      drift +
+      (s.total > 0 ? '<div class="bar"><div class="bar-pos" style="flex:' + s.positive + '"></div><div class="bar-mix" style="flex:' + s.mixed + '"></div><div class="bar-neg" style="flex:' + s.negative + '"></div></div>' : '') +
+      (s.timeline && s.timeline.length >= 2 ? '<div class="sparkline" data-sparkline=\\'' + JSON.stringify(s.timeline).replace(/'/g, '&#39;') + '\\'><canvas></canvas><div class="sparkline-label"><span>' + s.timeline.length + ' snapshots</span><span>' + new Date(s.timeline[0].t).toLocaleDateString() + ' \\u2192 ' + new Date(s.timeline[s.timeline.length-1].t).toLocaleDateString() + '</span></div></div>' : '') +
+      '<span class="details-toggle" onclick="toggleDetails(\\'' + detId + '\\')">' + (s.readiness.ready ? '\\u2705 Broadcast ready' : '\\u23F3 ' + esc(s.readiness.reasons.join(', '))) + ' \\u2014 details</span>' +
+      '<div class="details-body collapsed" id="' + detId + '">' +
+        '<div class="gates" style="margin-top:8px">' + gate(s.total, minR, 'Total') + gate(s.t1, minT1, 'T1') + gate(s.t2, minT2, 'T2') + gate(s.readiness.highConfidence, minH, 'Hi-Conf') + '</div>' +
+        renderMissing(s.missingT1, s.missingT2, idx) +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function checkIcon(c) {
+  if (!c) return '';
+  return c.pass === true ? (c.warn ? '<span style="color:var(--yellow)">!</span>' : '<span style="color:var(--green)">\\u2713</span>')
+    : c.pass === false ? '<span style="color:var(--red)">\\u2717</span>'
+    : '<span style="color:var(--dim)">?</span>';
+}
+function renderInfra(data) {
+  const g = data.infrastructure;
+  if (!g) return;
+  const el = document.getElementById('upcoming');
+  const items = [
+    g.orchestratorCron ? checkIcon(g.orchestratorCron) + ' Orchestrator: ' + esc(g.orchestratorCron.detail) : null,
+    g.scrapingBee ? checkIcon(g.scrapingBee) + ' ScrapingBee: ' + esc(g.scrapingBee.detail) : null,
+    g.brightData ? checkIcon(g.brightData) + ' Bright Data: ' + esc(g.brightData.detail) : null,
+  ].filter(Boolean);
+  if (!items.length) return;
+  const infraHtml = '<div class="section-header">Infrastructure</div>' +
+    '<div class="card-upcoming" style="opacity:1"><div style="font-size:12px;line-height:1.8">' +
+    items.join('<br>') + '</div></div>';
+  el.insertAdjacentHTML('afterbegin', infraHtml);
+}
+function renderUpcoming(data) {
+  const el = document.getElementById('upcoming');
+  const list = (data.upcoming || []).filter(s => activeFilters.has(s.category));
+  if (!list.length && !data.infrastructure) { el.innerHTML = ''; return; }
+  let html = list.length ? '<div class="section-header">Opening Soon</div>' : '';
+  html += list.map(s => {
+    const imgEl = s.thumbnail
+      ? '<img class="card-thumb" src="' + s.thumbnail + '" alt="" loading="lazy">'
+      : '<div class="card-thumb-placeholder">\\u{1F3AD}</div>';
+    const showUrl = 'https://broadwayscorecard.com/show/' + (s.slug || s.id);
+    const dayLabel = s.daysUntil === 0 ? 'today' : s.daysUntil === 1 ? 'tomorrow' : 'in ' + s.daysUntil + ' days';
+    // Readiness summary
+    let readinessHtml = '';
+    if (s.readinessSummary) {
+      const sm = s.readinessSummary;
+      if (sm.failures > 0) {
+        readinessHtml = '<div style="font-size:11px;margin-top:4px"><span style="color:var(--red)">\\u2717 ' + sm.failures + ' issue' + (sm.failures > 1 ? 's' : '') + '</span>';
+      } else if (sm.warnings > 0) {
+        readinessHtml = '<div style="font-size:11px;margin-top:4px"><span style="color:var(--yellow)">! ' + sm.warnings + ' warning' + (sm.warnings > 1 ? 's' : '') + '</span>';
+      } else {
+        readinessHtml = '<div style="font-size:11px;margin-top:4px"><span style="color:var(--green)">\\u2713 Pre-flight OK</span>';
+      }
+      // Show check details inline
+      if (s.readinessChecks) {
+        const details = Object.entries(s.readinessChecks)
+          .filter(([, v]) => v.pass === false || v.warn)
+          .map(([k, v]) => checkIcon(v) + ' ' + k + ': ' + esc(v.detail))
+          .join('<br>');
+        if (details) readinessHtml += '<br>' + details;
+      }
+      readinessHtml += '</div>';
+    }
+    return '<div class="card-upcoming">' +
+      '<div class="card-top">' +
+        imgEl +
+        '<div class="card-info" style="flex:1;min-width:0">' +
+          '<div class="show-title"><a href="' + showUrl + '">' + esc(s.title) + '</a> <span class="market-pill ' + marketClass(s.category) + '">' + marketLabel(s.category) + '</span></div>' +
+          '<div class="show-meta">' + esc(s.type) + ' \\u00b7 ' + s.openingDate + ' \\u00b7 ' + s.status + '</div>' +
+          readinessHtml +
+        '</div>' +
+        '<span class="days-pill">' + dayLabel + '</span>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+  el.innerHTML = html;
+  renderInfra(data);
+}
+
+async function fetchAndRender() {
+  try {
+    const r = await fetch('/opening-night-status.json?t=' + Date.now());
+    if (r.ok) { _data = await r.json(); renderFilters(_data); renderShows(_data); renderUpcoming(_data); drawSparklines(); }
+  } catch(e) { console.error('Failed to fetch status:', e); }
+  document.getElementById('refresh').textContent = 'Auto-refresh every 30s \\u00b7 Last check: ' + new Date().toLocaleTimeString();
+}
+fetchAndRender();
+setInterval(fetchAndRender, 30000);
+</script>
+</body>
+</html>`;
+}
+
+main();

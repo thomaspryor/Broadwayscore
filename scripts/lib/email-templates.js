@@ -1,0 +1,1034 @@
+/**
+ * email-templates.js
+ *
+ * Shared email template builders for both per-show follow notifications
+ * and opening-night broadcast emails.
+ *
+ * Extracted from send-follow-notifications.js (Sprint 2, S2-T1).
+ */
+
+const https = require('https');
+const { isLondonMarket } = require('./venue-classification');
+const BRAND = require('./brand-colors');
+const { showFormatTitle } = require('./show-format');
+
+// Canonical brand values — see scripts/lib/brand-colors.js for full palette.
+// The hardcoded hex throughout this file (#d4a574, #0f0f14, etc.) must match
+// BRAND. When adding new templates, use BRAND.* constants instead of hex literals.
+const FONT = BRAND.font.family;
+
+function postJSON(url, body, headers) {
+  return new Promise((resolve, reject) => {
+    const urlObj = new URL(url);
+    const data = JSON.stringify(body);
+    const options = {
+      hostname: urlObj.hostname,
+      path: urlObj.pathname + urlObj.search,
+      method: 'POST',
+      headers: {
+        ...headers,
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(data),
+      },
+    };
+
+    const req = https.request(options, (res) => {
+      let responseBody = '';
+      res.on('data', (chunk) => responseBody += chunk);
+      res.on('end', () => {
+        if (res.statusCode >= 200 && res.statusCode < 300) {
+          try { resolve(JSON.parse(responseBody)); } catch { resolve(responseBody); }
+        } else {
+          reject(new Error(`HTTP ${res.statusCode}: ${responseBody.slice(0, 300)}`));
+        }
+      });
+    });
+    req.on('error', reject);
+    req.write(data);
+    req.end();
+  });
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function escapeHtml(str) {
+  if (str == null) return '';
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function getScoreColor(score, market) {
+  if (score == null) return { bg: '#6b7280', text: '#ffffff', label: 'TBD' };
+  // Round before comparing — the badge displays Math.round(score) and the live
+  // site (ScoreBadge.getScoreTier) rounds before tiering, so a 64.69 must read
+  // "Worth Seeing" (displays 65), not "Mixed". Raw thresholds made the email
+  // disagree with both its own displayed score and the site (2026-06-30).
+  const s = Math.round(score);
+  // West End Critical Gold needs 85 (UK star ratings compress scores up), matching
+  // the site's getGoldThreshold(category). Broadway/default stays 83.
+  const goldThreshold = (market === 'west-end' || market === 'off-west-end') ? 85 : 83;
+  if (s >= goldThreshold) return { bg: '#FFD700', bgGradient: 'linear-gradient(135deg, #DAA520 0%, #FFD700 30%, #FFF0A0 50%, #FFD700 70%, #DAA520 100%)', text: '#1a1a1a', label: 'Critical Gold' };
+  if (s >= 75) return { bg: '#22c55e', text: '#ffffff', label: 'Recommended' };
+  if (s >= 65) return { bg: '#14b8a6', text: '#ffffff', label: 'Worth Seeing' };
+  if (s >= 55) return { bg: '#d97706', text: '#1a1a1a', label: 'Mixed' };
+  return { bg: '#ef4444', text: '#ffffff', label: 'Critical Miss' };
+}
+
+// Single source of truth for the 4-tier breakdown bar + label row.
+// Both buildOpeningNightHtml and buildBroadcastOpeningNightHtml call this so
+// the two templates can never silently diverge (as happened in Apr 2026).
+function buildBreakdownHtml(rave, positive, mixed, negative) {
+  const total = rave + positive + mixed + negative;
+  if (total === 0) return '';
+
+  // Hamilton largest-remainder method with min-1px guarantee for non-zero buckets.
+  // Simple residual math (100 - a - b - c) can produce a 0-width bar segment for
+  // a small bucket when larger ones round up — making the label row inconsistent
+  // with the visual bar (e.g. "1 Positive" label but no green segment visible).
+  const slots = [
+    { key: 'raveW', n: rave },
+    { key: 'posW',  n: positive },
+    { key: 'mixW',  n: mixed },
+    { key: 'negW',  n: negative },
+  ];
+  const active = slots.filter(s => s.n > 0);
+  active.forEach(s => { s.exact = s.n / total * 100; s.w = Math.max(1, Math.floor(s.exact)); });
+  let spare = 100 - active.reduce((sum, s) => sum + s.w, 0);
+  if (spare > 0) {
+    active.slice().sort((a, b) => (b.exact % 1) - (a.exact % 1))
+      .forEach((s, i) => { if (i < spare) s.w++; });
+  } else if (spare < 0) {
+    // min-1 over-allocated (very skewed distributions); trim from the largest buckets
+    active.slice().sort((a, b) => b.w - a.w)
+      .forEach(s => { if (spare < 0 && s.w > 1) { s.w--; spare++; } });
+  }
+  const widths = Object.fromEntries(slots.map(s => [s.key, active.find(a => a.key === s.key)?.w ?? 0]));
+  const { raveW, posW, mixW, negW } = widths;
+
+  return `
+  <tr><td style="padding:16px 24px 0;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="border-radius:6px;overflow:hidden;">
+      <tr>
+        ${raveW > 0 ? `<td style="width:${raveW}%;height:8px;background-color:#FFD700;"></td>` : ''}
+        ${posW > 0 ? `<td style="width:${posW}%;height:8px;background-color:#22c55e;"></td>` : ''}
+        ${mixW > 0 ? `<td style="width:${mixW}%;height:8px;background-color:#d97706;"></td>` : ''}
+        ${negW > 0 ? `<td style="width:${negW}%;height:8px;background-color:#ef4444;"></td>` : ''}
+      </tr>
+    </table>
+  </td></tr>
+  <tr><td style="padding:8px 24px 0;">
+    <table width="100%" cellpadding="0" cellspacing="0">
+      <tr>
+        ${[
+          rave > 0     ? { color: '#FFD700', count: rave,     label: 'Rave'     } : null,
+          positive > 0 ? { color: '#22c55e', count: positive, label: 'Positive' } : null,
+          mixed > 0    ? { color: '#d97706', count: mixed,    label: 'Mixed'    } : null,
+          negative > 0 ? { color: '#ef4444', count: negative, label: 'Negative' } : null,
+        ].filter(Boolean).map((seg, i, arr) => {
+          const align = i === 0 ? 'left' : i === arr.length - 1 ? 'right' : 'center';
+          return `<td align="${align}" style="font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};">
+            <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background-color:${seg.color};vertical-align:middle;margin-right:4px;"></span><span style="font-weight:600;color:${seg.color};">${seg.count}</span> ${seg.label}
+          </td>`;
+        }).join('')}
+      </tr>
+    </table>
+  </td></tr>`;
+}
+
+// Map change types to show page section anchors for deep linking
+function getChangeAnchor(changeType) {
+  switch (changeType) {
+    case 'lottery-added': return '#discount-tickets';
+    case 'cast-change': return '#cast-updates-heading';
+    case 'new-reviews':
+    case 'score-change': return '#critic-reviews';
+    case 'social-tier-buzzing':
+    case 'social-tier-troubled': return '#social-buzz';
+    default: return '';
+  }
+}
+
+function buildUnfollowUrl(showId, showTitle, email) {
+  return `https://broadwayscorecard.com/unfollow?email=${encodeURIComponent(email)}&show=${encodeURIComponent(showId)}&title=${encodeURIComponent(showTitle)}`;
+}
+
+function buildUnsubscribeUrl(email, market) {
+  const base = `https://broadwayscorecard.com/unsubscribe?email=${encodeURIComponent(email)}`;
+  return isLondonMarket(market) ? `${base}&market=west-end` : base;
+}
+
+// Canonical market → subscriber-visible brand name. Every audience-facing
+// email (weekly newsletter, opening-night broadcast, previews) must build its
+// sender through these — the 2026-07-12 WE weekly went out as "Broadway
+// Scorecard" because a script hardcoded the name instead.
+function siteNameForMarket(market) {
+  return isLondonMarket(market) ? 'West End Scorecard' : 'Broadway Scorecard';
+}
+
+// Full RFC-5322 from value. The address stays on broadwayscorecard.com for
+// every market — it's the only Resend-verified domain; only the display
+// name follows the market.
+function buildFromAddress(market) {
+  return `${siteNameForMarket(market)} <updates@broadwayscorecard.com>`;
+}
+
+// Reply-To for every audience-facing send. `updates@` is a Resend-verified
+// SENDER only — the domain's MX points at ImprovMX and `updates@` is not one of
+// its forwarding aliases, so a subscriber hitting Reply gets a bounce and the
+// owner never sees the message (cloud-memory/project_email_infrastructure.md).
+// `hi@` is an ImprovMX alias forwarding to the owner's Gmail, and is set up
+// there as a "Send mail as" identity, so replies land in the inbox AND can be
+// answered from the same address.
+const REPLY_TO_EMAIL = 'hi@broadwayscorecard.com';
+function buildReplyToAddress() {
+  return REPLY_TO_EMAIL;
+}
+
+// Derives the email-worker's +claude alias from any address by inserting
+// "+claude" before the "@" (standard plus-addressing — same mailbox, distinct
+// recipient the IMAP worker's search can match).
+//
+// NOTE (BRO-40 Phase 2, verified 2026-09-15): the owner still has to
+// explicitly forward the [DRAFT] preview to this alias with edits + "ship
+// it" — a "Reply-All" does NOT do it for them. Gmail treats a +alias of your
+// own account as receive-only and deliberately excludes it from Reply-All's
+// recipient list (it's YOUR address, not a third party's), so CC'ing +claude
+// on the original send does not make it ride along on a reply. What this
+// DOES buy: the alias's mailbox already holds the original [DRAFT] message
+// (Message-ID + full content) before the owner ever forwards anything, so a
+// later forward references a message the worker can already see in-thread
+// rather than depending entirely on quoted text.
+function buildClaudeAliasAddress(email) {
+  const at = email.indexOf('@');
+  if (at === -1) throw new Error(`Invalid email address: ${email}`);
+  return `${email.slice(0, at)}+claude${email.slice(at)}`;
+}
+
+// Recipient list for the [DRAFT] preview send: the owner's own address plus
+// the +claude alias (deduped — a caller who passes an address whose local
+// part already ends in "+claude" doesn't get a nonsensical "+claude+claude"
+// second recipient tacked on).
+function buildDraftPreviewRecipients(ownerEmail) {
+  const at = ownerEmail.indexOf('@');
+  const localPart = at === -1 ? ownerEmail : ownerEmail.slice(0, at);
+  if (localPart.endsWith('+claude')) return [ownerEmail];
+  return [ownerEmail, buildClaudeAliasAddress(ownerEmail)];
+}
+
+// Canonical NEWSLETTER_EDITION parser for the weekly-newsletter scripts
+// (generate.mjs, send-test.mjs, create-broadcast-draft.mjs). Throws on any
+// unknown value instead of degrading: 'westend', 'West-End' or 'off-west-end'
+// would otherwise route brand/audience/content THREE different ways — the
+// scripts compare `=== 'west-end'` but the brand helpers use isLondonMarket(),
+// which also accepts other London markets. Unset/empty stays Broadway (the
+// cron default).
+const NEWSLETTER_EDITIONS = ['broadway', 'west-end'];
+function resolveNewsletterEdition(raw) {
+  const edition = (raw || 'broadway').trim();
+  if (!NEWSLETTER_EDITIONS.includes(edition)) {
+    throw new Error(`Unknown NEWSLETTER_EDITION "${raw}" — valid: ${NEWSLETTER_EDITIONS.join(', ')}`);
+  }
+  return edition;
+}
+
+function buildFooterHtml(showTitle, showId, email, market) {
+  const unfollowUrl = buildUnfollowUrl(showId, showTitle, email);
+  const isWE = isLondonMarket(market);
+  const siteName = siteNameForMarket(market);
+  const siteUrl = isWE ? 'https://broadwayscorecard.com/west-end' : 'https://broadwayscorecard.com';
+  return `<tr><td style="padding-top:20px;border-top:1px solid rgba(255,255,255,0.06);">
+    <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.25);line-height:1.6;font-family:${FONT};">
+      You're receiving this because you asked for email updates about ${escapeHtml(showTitle)} on <a href="${siteUrl}" style="color:#d4a574;">${siteName}</a>.<br>
+      <a href="${escapeHtml(unfollowUrl)}" style="color:rgba(255,255,255,0.35);">Stop emails about this show</a>
+    </p>
+  </td></tr>`;
+}
+
+/**
+ * Follow-us row for the opening-night broadcast (Option C: above unsubscribe footer).
+ * Text-only by design: SVG renders inconsistently in Outlook Desktop / Gmail; PNG hotlinks
+ * add a dependency we don't need here. Upgrade to PNG icons later if CTR warrants it.
+ */
+const SOCIAL_ACCOUNTS_EMAIL = [
+  { label: 'Instagram', url: 'https://instagram.com/bwayscorecard' },
+  { label: 'Threads', url: 'https://threads.net/@bwayscorecard' },
+  { label: 'Bluesky', url: 'https://bsky.app/profile/bwayscorecard.bsky.social' },
+  { label: 'X', url: 'https://x.com/BwayScorecard' },
+  { label: 'Facebook', url: 'https://facebook.com/BroadwayScorecard' },
+];
+
+function buildSocialRowHtml(market) {
+  const isWE = isLondonMarket(market);
+  const brandColor = isWE ? '#f472b6' : '#d4a574';
+  const links = SOCIAL_ACCOUNTS_EMAIL.map(
+    (a) => `<a href="${escapeHtml(a.url)}" style="color:${brandColor};text-decoration:none;font-weight:600;" target="_blank" rel="noopener">${escapeHtml(a.label)}</a>`
+  ).join(`<span style="color:rgba(255,255,255,0.2);padding:0 8px;">&middot;</span>`);
+  return `<tr><td align="center" style="padding:16px 0 24px;">
+    <p style="margin:0 0 10px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1.2px;font-family:${FONT};">Follow Broadway Scorecard</p>
+    <p style="margin:0;font-size:13px;line-height:1.6;font-family:${FONT};">${links}</p>
+  </td></tr>`;
+}
+
+/**
+ * "Sign in or create a free account" line for the bottom of every list email
+ * (BRO-4893): list members kept assuming the email list was an account.
+ * Links to the market home with ?signin=1, which the site turns into the
+ * sign-in modal (src/lib/deferred-auth.ts takeSignInParam). Worded for
+ * account holders too, since signing in also joins the list.
+ * Returns a bare inline fragment so each footer can wrap it in its own markup.
+ */
+function buildAccountCtaHtml(market, utmSource, linkColor = '#d4a574') {
+  const siteUrl = isLondonMarket(market) ? 'https://broadwayscorecard.com/west-end' : 'https://broadwayscorecard.com';
+  const href = `${siteUrl}?signin=1&utm_source=${encodeURIComponent(utmSource)}&utm_medium=email`;
+  return `Save your ratings and build a watchlist: <a href="${escapeHtml(href)}" style="color:${linkColor};">sign in or create a free account</a>.`;
+}
+
+function buildBroadcastFooterHtml(email, market) {
+  // When email is null, use Resend's unsubscribe template variable (for drafts/broadcasts).
+  // When email is provided, use our custom unsubscribe URL (for transactional/preview sends).
+  // NOTE: Resend uses {{{RESEND_UNSUBSCRIBE_URL}}} (triple braces). The script targets
+  // Resend; if we ever switch back to Buttondown, this becomes {{ unsubscribe_url }}.
+  const unsubscribeUrl = email ? buildUnsubscribeUrl(email, market) : '{{{RESEND_UNSUBSCRIBE_URL}}}';
+  const isWE = isLondonMarket(market);
+  const siteName = siteNameForMarket(market);
+  const siteUrl = isWE ? 'https://broadwayscorecard.com/west-end' : 'https://broadwayscorecard.com';
+  return `<tr><td style="padding-top:20px;border-top:1px solid rgba(255,255,255,0.06);">
+    <p style="margin:0 0 12px;font-size:13px;color:rgba(255,255,255,0.6);line-height:1.6;font-family:${FONT};">
+      ${buildAccountCtaHtml(market, 'opening_night')}
+    </p>
+    <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.25);line-height:1.6;font-family:${FONT};">
+      You're receiving this because you joined the opening night email list at <a href="${siteUrl}" style="color:#d4a574;">${siteName}</a>.<br>
+      <a href="${escapeHtml(unsubscribeUrl)}" style="color:rgba(255,255,255,0.35);">Unsubscribe from opening night emails</a>
+    </p>
+  </td></tr>`;
+}
+
+function buildEmailHtml(showTitle, changes, showUrl, showId, email, market) {
+  market = market || 'broadway';
+  const isWE = isLondonMarket(market);
+  const siteNameFirst = isWE ? 'West End' : 'Broadway';
+  const brandColor = isWE ? '#f472b6' : '#d4a574';
+  const changesHtml = changes.map(c => {
+    const anchor = getChangeAnchor(c.type);
+    const linkUrl = `${showUrl}${anchor}`;
+    return `<tr><td style="padding:8px 20px;font-size:15px;color:rgba(255,255,255,0.85);line-height:1.5;font-family:${FONT};border-left:2px solid #d4a574;">&#8226;&nbsp; <a href="${escapeHtml(linkUrl)}" style="color:rgba(255,255,255,0.85);text-decoration:underline;text-decoration-color:rgba(255,255,255,0.2);text-underline-offset:2px;">${escapeHtml(c.message)}</a></td></tr>`;
+  }).join('');
+
+  return `<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"></head>
+<body bgcolor="#0f0f14" style="margin:0;padding:0;background-color:#0f0f14;background:#0f0f14;font-family:${FONT};">
+<table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0f0f14" style="background-color:#0f0f14;background:#0f0f14;padding:32px 16px;">
+<tr><td align="center" bgcolor="#0f0f14">
+<table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+  <tr><td style="padding-bottom:20px;border-bottom:1px solid rgba(212,165,116,0.2);">
+    <span style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.02em;font-family:${FONT};">${siteNameFirst}</span><span style="font-size:22px;font-weight:800;color:${brandColor};letter-spacing:-0.02em;font-family:${FONT};">Scorecard</span>
+  </td></tr>
+  <tr><td style="padding:28px 0 8px;">
+    <h1 style="margin:0;font-size:22px;font-weight:700;color:#ffffff;line-height:1.3;font-family:${FONT};">Updates for ${escapeHtml(showTitle)}</h1>
+  </td></tr>
+  <tr><td style="padding:16px 0;">
+    <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#1a1a24" style="background-color:#1a1a24;background:#1a1a24;border-radius:12px;border:1px solid rgba(212,165,116,0.12);">
+      <tr><td style="padding:16px 20px 4px;">
+        <p style="margin:0 0 8px;font-size:11px;font-weight:600;color:rgba(212,165,116,0.6);text-transform:uppercase;letter-spacing:0.8px;font-family:${FONT};">What's new</p>
+      </td></tr>
+      ${changesHtml}
+      <tr><td style="padding-bottom:12px;"></td></tr>
+    </table>
+  </td></tr>
+  <tr><td style="padding:8px 0 32px;" align="center">
+    <a href="${escapeHtml(showUrl)}" style="display:inline-block;padding:12px 32px;background-color:#d4a574;color:#0f0f14;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;font-family:${FONT};">View Full Details</a>
+  </td></tr>
+  ${buildFooterHtml(showTitle, showId, email, market)}
+</table>
+</td></tr></table>
+</body></html>`;
+}
+
+function buildOpeningNightHtml(showTitle, openingChange, otherChanges, showUrl, showId, email, imageUrl, market) {
+  market = market || 'broadway';
+  const isWE = isLondonMarket(market);
+  const siteNameFirst = isWE ? 'West End' : 'Broadway';
+  const brandColor = isWE ? '#f472b6' : '#d4a574';
+  const sc = getScoreColor(openingChange.score);
+  const scoreDisplay = openingChange.score != null ? Math.round(openingChange.score) : '?';
+  const reviewCount = openingChange.reviewCount || 0;
+  const rave = openingChange.rave || 0;
+  const positive = openingChange.positive || 0;
+  const mixed = openingChange.mixed || 0;
+  const negative = openingChange.negative || 0;
+  const total = rave + positive + mixed + negative;
+
+  // Review subtitle
+  const reviewSubtitle = reviewCount > 0
+    ? `Based on ${reviewCount} Critic Review${reviewCount !== 1 ? 's' : ''}`
+    : 'Reviews pending';
+
+  const breakdownHtml = buildBreakdownHtml(rave, positive, mixed, negative);
+
+  // Consensus block (only show if available)
+  const consensusHtml = openingChange.consensusText ? `
+  <tr><td style="padding:20px 24px 0;">
+    <p style="margin:0 0 6px;font-size:11px;font-weight:600;color:rgba(212,165,116,0.6);text-transform:uppercase;letter-spacing:0.8px;font-family:${FONT};">Critics' Take</p>
+    <p style="margin:0;font-size:14px;color:rgba(255,255,255,0.75);line-height:1.6;font-family:${FONT};">${escapeHtml(openingChange.consensusText)}</p>
+  </td></tr>` : '';
+
+  // Show type + venue line
+  const metaParts = [];
+  if (openingChange.showType) metaParts.push(openingChange.showType);
+  if (openingChange.venue) metaParts.push(openingChange.venue);
+  const metaHtml = metaParts.length > 0 ? `
+  <tr><td style="padding:16px 24px 0;">
+    <p style="margin:0;font-size:13px;color:rgba(255,255,255,0.35);font-family:${FONT};">${escapeHtml(metaParts.join(' \u00B7 '))}</p>
+  </td></tr>` : '';
+
+  // Other changes (lottery added, etc.) as bullet items below the card
+  const otherHtml = otherChanges.length > 0 ? `
+  <tr><td style="padding:20px 0 0;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#1a1a24;border-radius:12px;border:1px solid rgba(212,165,116,0.12);">
+      <tr><td style="padding:16px 20px 4px;">
+        <p style="margin:0 0 8px;font-size:11px;font-weight:600;color:rgba(212,165,116,0.6);text-transform:uppercase;letter-spacing:0.8px;font-family:${FONT};">Also new</p>
+      </td></tr>
+      ${otherChanges.map(c => {
+        const anchor = getChangeAnchor(c.type);
+        const linkUrl = `${showUrl}${anchor}`;
+        return `<tr><td style="padding:8px 20px;font-size:15px;color:rgba(255,255,255,0.85);line-height:1.5;font-family:${FONT};border-left:2px solid #d4a574;">&#8226;&nbsp; <a href="${escapeHtml(linkUrl)}" style="color:rgba(255,255,255,0.85);text-decoration:underline;text-decoration-color:rgba(255,255,255,0.2);text-underline-offset:2px;">${escapeHtml(c.message)}</a></td></tr>`;
+      }).join('')}
+      <tr><td style="padding-bottom:12px;"></td></tr>
+    </table>
+  </td></tr>` : '';
+
+  return `<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"></head>
+<body bgcolor="#0f0f14" style="margin:0;padding:0;background-color:#0f0f14;background:#0f0f14;font-family:${FONT};">
+<table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0f0f14" style="background-color:#0f0f14;background:#0f0f14;padding:32px 16px;">
+<tr><td align="center" bgcolor="#0f0f14">
+<table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+  <tr><td style="padding-bottom:20px;border-bottom:1px solid rgba(212,165,116,0.2);">
+    <span style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.02em;font-family:${FONT};">${siteNameFirst}</span><span style="font-size:22px;font-weight:800;color:${brandColor};letter-spacing:-0.02em;font-family:${FONT};">Scorecard</span>
+  </td></tr>
+  <tr><td style="padding:28px 0 8px;">
+    <h1 style="margin:0;font-size:24px;font-weight:700;color:#ffffff;line-height:1.3;font-family:${FONT};">${escapeHtml(showTitle)} Critic Reviews Are In${openingChange.score != null ? ` \u2014 Critic Score: ${Math.round(openingChange.score)}` : ''}</h1>
+  </td></tr>${imageUrl ? `
+  <tr><td style="padding:16px 0 0;">
+    <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(showTitle)}" width="560" style="display:block;width:100%;max-width:560px;height:auto;border-radius:12px;" />
+  </td></tr>` : ''}
+  <tr><td style="padding:16px 0;">
+    <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#1a1a24" style="background-color:#1a1a24;background:#1a1a24;border-radius:12px;border:1px solid rgba(212,165,116,0.12);">
+      <tr><td style="padding:24px;">
+        <table cellpadding="0" cellspacing="0">
+          <tr>
+            <td width="72" height="72" bgcolor="${sc.bg}" style="width:72px;height:72px;background-color:${sc.bg};background:${sc.bgGradient || sc.bg};border-radius:12px;text-align:center;vertical-align:middle;">
+              <font color="${sc.text}"><span style="font-size:32px;font-weight:800;color:${sc.text};font-family:${FONT};line-height:72px;">${scoreDisplay}</span></font>
+            </td>
+            <td style="padding-left:16px;vertical-align:middle;">
+              <p style="margin:0 0 4px;font-size:18px;font-weight:700;color:${sc.bg};font-family:${FONT};">${sc.label}</p>
+              <p style="margin:0;font-size:13px;color:rgba(255,255,255,0.5);font-family:${FONT};">${reviewSubtitle}</p>
+            </td>
+          </tr>
+        </table>
+      </td></tr>
+      ${breakdownHtml}
+      ${consensusHtml}
+      ${metaHtml}
+      ${reviewCount > 0 ? `<tr><td style="padding:20px 24px 0;" align="center">
+        <a href="${escapeHtml(showUrl)}#critic-reviews" style="display:inline-block;padding:12px 32px;background-color:#d4a574;color:#0f0f14;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;font-family:${FONT};">See The Reviews</a>
+      </td></tr>` : ''}
+      <tr><td style="padding-bottom:20px;"></td></tr>
+    </table>
+  </td></tr>
+  ${otherHtml}
+  <tr><td style="padding:8px 0 32px;" align="center">
+    <a href="${escapeHtml(showUrl)}" style="display:inline-block;padding:10px 24px;background-color:rgba(255,255,255,0.08);color:#d4a574;font-size:13px;font-weight:600;text-decoration:none;border-radius:6px;border:1px solid rgba(212,165,116,0.2);font-family:${FONT};">View Full Details</a>
+  </td></tr>
+  ${buildFooterHtml(showTitle, showId, email, market)}
+</table>
+</td></tr></table>
+</body></html>`;
+}
+
+/**
+ * Subject line for opening night broadcast emails.
+ * Extracted so it can be tested independently of the send script.
+ * @param {Array<{showTitle: string}>} shows
+ * @param {string} [market='broadway']
+ * @returns {string}
+ */
+function buildBroadcastSubjectLine(shows, market) {
+  market = market || 'broadway';
+  if (shows.length === 1) {
+    return `${shows[0].showTitle} is now open, and the critic reviews are in`;
+  }
+  const location = isLondonMarket(market) ? 'in the West End' : 'on Broadway';
+  return `${shows.length} shows opened ${location} \u2014 the reviews are in`;
+}
+
+/**
+ * Build opening-night broadcast email for general subscribers.
+ * Supports single or multiple shows in one email.
+ *
+ * @param {Array<{showTitle, score, reviewCount, newReviewCount, rave, positive, mixed, negative, consensusText, showType, venue, showUrl, imageUrl}>} shows
+ * @param {string} email - Subscriber email (for unsubscribe link)
+ * @param {string} [market='broadway'] - 'broadway' or 'west-end'
+ * @returns {string} HTML email
+ */
+/**
+ * Line under the score. A transfer or return carries its earlier run's reviews
+ * (BRO-4954), so it says how many are of this run; kept as short as the plain
+ * form so it stays on one line beside the score badge on a phone.
+ */
+function broadcastReviewSubtitle(reviewCount, newReviewCount) {
+  if (!(reviewCount > 0)) return 'Reviews pending';
+  const plural = `Critic Review${reviewCount !== 1 ? 's' : ''}`;
+  if (Number.isInteger(newReviewCount) && newReviewCount >= 0 && newReviewCount < reviewCount) {
+    return `${reviewCount} ${plural} (${newReviewCount} New)`;
+  }
+  return `Based on ${reviewCount} ${plural}`;
+}
+
+function buildBroadcastOpeningNightHtml(shows, email, market) {
+  market = market || 'broadway';
+  const isWE = isLondonMarket(market);
+  const siteNameFirst = isWE ? 'West End' : 'Broadway';
+  const brandColor = isWE ? '#f472b6' : '#d4a574';
+  const brandFaint = isWE ? 'rgba(244,114,182,0.12)' : 'rgba(212,165,116,0.12)';
+  const brandMuted = isWE ? 'rgba(244,114,182,0.6)' : 'rgba(212,165,116,0.6)';
+  const brandSubtle = isWE ? 'rgba(244,114,182,0.2)' : 'rgba(212,165,116,0.2)';
+  const browseUrl = isWE ? 'https://broadwayscorecard.com/west-end' : 'https://broadwayscorecard.com';
+  // Build a score card for each show
+  const showCards = shows.map(show => {
+    const sc = getScoreColor(show.score, market);
+    const scoreDisplay = show.score != null ? Math.round(show.score) : '?';
+    const reviewCount = show.reviewCount || 0;
+    const rave = show.rave || 0;
+    const positive = show.positive || 0;
+    const mixed = show.mixed || 0;
+    const negative = show.negative || 0;
+    const total = rave + positive + mixed + negative;
+
+    const reviewSubtitle = broadcastReviewSubtitle(reviewCount, show.newReviewCount);
+
+    const breakdownHtml = buildBreakdownHtml(rave, positive, mixed, negative);
+
+    const consensusHtml = show.consensusText ? `
+      <tr><td style="padding:20px 24px 0;">
+        <p style="margin:0 0 6px;font-size:11px;font-weight:600;color:${brandMuted};text-transform:uppercase;letter-spacing:0.8px;font-family:${FONT};">Critics' Take</p>
+        <p style="margin:0;font-size:14px;color:rgba(255,255,255,0.75);line-height:1.6;font-family:${FONT};">${escapeHtml(show.consensusText)}</p>
+      </td></tr>` : '';
+
+    const metaParts = [];
+    if (show.showType) metaParts.push(show.showType);
+    if (show.venue) metaParts.push(show.venue);
+    const metaHtml = metaParts.length > 0 ? `
+      <tr><td style="padding:16px 24px 0;">
+        <p style="margin:0;font-size:13px;color:rgba(255,255,255,0.35);font-family:${FONT};">${escapeHtml(metaParts.join(' \u00B7 '))}</p>
+      </td></tr>` : '';
+
+    const reviewsHref = `${escapeHtml(show.showUrl)}#critic-reviews`;
+    return `
+  ${shows.length > 1 ? `<tr><td style="padding:24px 0 8px;">
+    <h2 style="margin:0;font-size:20px;font-weight:700;color:#ffffff;line-height:1.3;font-family:${FONT};">${escapeHtml(show.showTitle)}</h2>
+  </td></tr>` : ''}${show.imageUrl ? `
+  <tr><td style="padding:${shows.length > 1 ? '8' : '16'}px 0 0;">
+    <a href="${reviewsHref}" style="display:block;text-decoration:none;"><img src="${escapeHtml(show.imageUrl)}" alt="${escapeHtml(show.showTitle)}" width="560" style="display:block;width:100%;max-width:560px;height:auto;border-radius:12px;border:0;" /></a>
+  </td></tr>` : ''}
+  <tr><td style="padding:16px 0;">
+    <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#1a1a24" style="background-color:#1a1a24;background:#1a1a24;border-radius:12px;border:1px solid ${brandFaint};">
+      <tr><td style="padding:24px;">
+        <table cellpadding="0" cellspacing="0">
+          <tr>
+            <td width="72" height="72" bgcolor="${sc.bg}" style="width:72px;height:72px;background-color:${sc.bg};background:${sc.bgGradient || sc.bg};border-radius:12px;text-align:center;vertical-align:middle;">
+              <a href="${reviewsHref}" style="text-decoration:none;display:block;line-height:72px;"><font color="${sc.text}"><span style="font-size:32px;font-weight:800;color:${sc.text};font-family:${FONT};line-height:72px;">${scoreDisplay}</span></font></a>
+            </td>
+            <td style="padding-left:16px;vertical-align:middle;">
+              <a href="${reviewsHref}" style="text-decoration:none;color:inherit;"><p style="margin:0 0 4px;font-size:18px;font-weight:700;color:${sc.bg};font-family:${FONT};">${sc.label}</p>
+              <p style="margin:0;font-size:13px;color:rgba(255,255,255,0.5);font-family:${FONT};">${reviewSubtitle}</p></a>
+            </td>
+          </tr>
+        </table>
+      </td></tr>
+      ${breakdownHtml}
+      ${consensusHtml}
+      ${metaHtml}
+      ${reviewCount > 0 ? `<tr><td style="padding:20px 24px 0;" align="center">
+        <a href="${escapeHtml(show.showUrl)}#critic-reviews" style="display:inline-block;padding:12px 32px;background-color:${brandColor};color:#0f0f14;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;font-family:${FONT};">See The Reviews</a>
+      </td></tr>` : ''}
+      <tr><td style="padding-bottom:20px;"></td></tr>
+    </table>
+  </td></tr>`;
+  });
+
+  // H1: single show or multi-show. Multi-show mirrors the subject line's
+  // location phrasing ("in the West End"/"on Broadway") and deliberately avoids
+  // "Tonight" \u2014 the broadcast can coalesce shows that opened across several days
+  // (a weekly roundup), so a same-night claim would be inaccurate (2026-06-29).
+  const h1Location = isWE ? 'in the West End' : 'on Broadway';
+  const h1 = shows.length === 1
+    ? `${escapeHtml(shows[0].showTitle)} Critic Reviews Are In${shows[0].score != null ? ` \u2014 Critic Score: ${Math.round(shows[0].score)}` : ''}`
+    : `${shows.length} Shows Opened ${h1Location} \u2014 The Reviews Are In`;
+
+  return `<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"></head>
+<body bgcolor="#0f0f14" style="margin:0;padding:0;background-color:#0f0f14;background:#0f0f14;font-family:${FONT};">
+<table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0f0f14" style="background-color:#0f0f14;background:#0f0f14;padding:32px 16px;">
+<tr><td align="center" bgcolor="#0f0f14">
+<table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+  <tr><td style="padding-bottom:20px;border-bottom:1px solid ${brandSubtle};">
+    <a href="${browseUrl}" style="text-decoration:none;"><span style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.02em;font-family:${FONT};">${siteNameFirst}</span><span style="font-size:22px;font-weight:800;color:${brandColor};letter-spacing:-0.02em;font-family:${FONT};">Scorecard</span></a>
+  </td></tr>
+  <tr><td style="padding:28px 0 8px;">
+    <h1 style="margin:0;font-size:24px;font-weight:700;color:#ffffff;line-height:1.3;font-family:${FONT};">${h1}</h1>
+  </td></tr>
+  ${showCards.join('')}
+  <tr><td style="padding:8px 0 8px;" align="center">
+    <a href="${browseUrl}" style="display:inline-block;padding:10px 24px;background-color:rgba(255,255,255,0.08);color:${brandColor};font-size:13px;font-weight:600;text-decoration:none;border-radius:6px;border:1px solid ${brandColor}33;font-family:${FONT};">Browse All Shows</a>
+  </td></tr>
+  ${buildSocialRowHtml(market)}
+  ${buildBroadcastFooterHtml(email, market)}
+</table>
+</td></tr></table>
+</body></html>`;
+}
+
+/**
+ * Build a feedback thank-you email — plain text style, personal, from Tom.
+ *
+ * @param {'fixed'|'acknowledged'|'praise'|'feature'|'content'} type
+ * @param {string} name - Submitter's first name (or falsy if unknown)
+ * @param {string} [showTitle] - Show name if applicable
+ * @returns {{ subject: string, html: string }}
+ */
+function buildFeedbackThankYouEmail(type, name, showTitle) {
+  const greeting = name && name !== 'Anonymous' ? name : null;
+  const showRef = showTitle ? escapeHtml(showTitle) : null;
+
+  let subject, body;
+
+  switch (type) {
+    case 'fixed':
+      subject = showRef ? `Re: ${showTitle}` : 'Re: your feedback';
+      body = greeting
+        ? `Hi ${escapeHtml(greeting)},\n\nI really appreciate you taking the time to write in${showRef ? ` about ${showRef}` : ''}. You were absolutely right. We looked into it and just pushed a fix. It should be live now.\n\nThanks again for helping us get this right. Feedback like yours makes the site better.\n\nTom\nBroadway Scorecard™`
+        : `Hi there,\n\nThank you so much for writing in${showRef ? ` about ${showRef}` : ''}. You were absolutely right. We looked into it and just pushed a fix. It should be live now.\n\nReally appreciate you taking the time. Feedback like yours makes the site better.\n\nTom\nBroadway Scorecard™`;
+      break;
+
+    case 'praise':
+      subject = greeting ? `Thanks ${greeting}!` : 'Thank you!';
+      body = greeting
+        ? `Hi ${escapeHtml(greeting)},\n\nThank you. Your kind words really made my day. I\u2019m so glad the site is useful to you.\n\nTom\nBroadway Scorecard™`
+        : `Hi there,\n\nThank you. Your kind words really made my day. I\u2019m so glad the site is useful to you.\n\nTom\nBroadway Scorecard™`;
+      break;
+
+    case 'content':
+      subject = showRef ? `Re: ${showTitle}` : 'Re: your request';
+      body = greeting
+        ? `Hi ${escapeHtml(greeting)},\n\nThanks for writing in${showRef ? ` about ${showRef}` : ''}. Requests like this are exactly how we find gaps in our coverage, and I’ll take a look at adding it.\n\nTom\nBroadway Scorecard™`
+        : `Hi there,\n\nThanks for writing in${showRef ? ` about ${showRef}` : ''}. Requests like this are exactly how we find gaps in our coverage, and I’ll take a look at adding it.\n\nTom\nBroadway Scorecard™`;
+      break;
+
+    case 'feature':
+      subject = greeting ? `Thanks ${greeting}!` : 'Thanks for the idea!';
+      body = greeting
+        ? `Hi ${escapeHtml(greeting)},\n\nReally appreciate you taking the time to share that idea. I\u2019ve added it to our list. It\u2019s helpful to hear what people want to see.\n\nTom\nBroadway Scorecard™`
+        : `Hi there,\n\nReally appreciate you taking the time to share that idea. I\u2019ve added it to our list. It\u2019s helpful to hear what people want to see.\n\nTom\nBroadway Scorecard™`;
+      break;
+
+    default: // 'acknowledged'
+      subject = showRef ? `Re: ${showTitle}` : 'Re: your feedback';
+      body = greeting
+        ? `Hi ${escapeHtml(greeting)},\n\nThank you so much for writing in${showRef ? ` about ${showRef}` : ''}. I really appreciate you taking the time. It means a lot that you\u2019d flag this for us.\n\nWe\u2019ve noted it and will keep it in mind as we keep improving the site.\n\nTom\nBroadway Scorecard™`
+        : `Hi there,\n\nThank you so much for writing in${showRef ? ` about ${showRef}` : ''}. I really appreciate you taking the time. It means a lot that someone would flag this for us.\n\nWe\u2019ve noted it and will keep it in mind as we keep improving the site.\n\nTom\nBroadway Scorecard™`;
+      break;
+  }
+
+  // Plain text email — minimal HTML, just styled like a normal email
+  const html = `<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="margin:0;padding:24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#333;">
+${body.split('\n').map(line => line === '' ? '<br>' : `<p style="margin:0;">${line}</p>`).join('\n')}
+</body></html>`;
+
+  return { subject, html };
+}
+
+/**
+ * Build a fix-approval email — plain text style, personal, from Tom's system.
+ * Includes Approve/Reject buttons as simple links.
+ *
+ * @param {object} opts
+ * @param {string} opts.submitterName - Who reported the bug
+ * @param {string} opts.showTitle - Show name if applicable
+ * @param {string} opts.originalMessage - What the user wrote
+ * @param {string} opts.planSummary - Plain-English summary of what Claude will do
+ * @param {Array<string>} opts.planSteps - List of concrete steps
+ * @param {string} opts.riskLevel - "Low" | "Medium" | "High"
+ * @param {string} opts.approveUrl - HMAC-signed approval URL
+ * @param {string} opts.rejectUrl - HMAC-signed rejection URL
+ * @param {number} opts.issueNumber - GitHub issue number
+ * @returns {{ subject: string, html: string }}
+ */
+function buildFixApprovalEmail(opts) {
+  const {
+    submitterName, submitterEmail, showTitle, originalMessage,
+    planSummary, planSteps, riskLevel,
+    currentState, verification,
+    approveUrl, rejectUrl, issueNumber,
+  } = opts;
+
+  const who = submitterName && submitterName !== 'Anonymous' ? submitterName : 'Someone';
+  const showRef = showTitle ? ` about ${escapeHtml(showTitle)}` : '';
+  const subject = showTitle
+    ? `Bug Fix Plan: ${showTitle} (#${issueNumber})`
+    : `Bug Fix Plan (#${issueNumber})`;
+
+  const stepsHtml = planSteps
+    .map((s, i) => `<p style="margin:0 0 6px;padding-left:20px;">${i + 1}. ${escapeHtml(s)}</p>`)
+    .join('\n');
+
+  // Build "current state" section so reviewer can verify the fix makes sense
+  let currentStateHtml = '';
+  if (currentState && currentState.length > 0) {
+    const rows = currentState.map(s => {
+      const verifyLink = s.ibdbUrl
+        ? ` <a href="${escapeHtml(s.ibdbUrl)}" style="color:#0066cc;font-size:12px;">[verify on IBDB]</a>`
+        : '';
+      return `<tr>
+        <td style="padding:8px 12px;border-bottom:1px solid #eee;">
+          <strong>${escapeHtml(s.showTitle)}</strong>${verifyLink}<br>
+          <span style="color:#555;font-size:13px;">${escapeHtml(s.field)}: currently ${escapeHtml(s.currentValue)}</span><br>
+          <span style="color:#0066cc;font-size:13px;">Change: ${escapeHtml(s.proposedChange)}</span>
+        </td>
+      </tr>`;
+    }).join('\n');
+
+    currentStateHtml = `
+<p style="margin:0;font-weight:600;">What the data looks like now:</p>
+<br>
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%;border:1px solid #ddd;border-radius:6px;margin:0;">
+${rows}
+</table>
+<br>`;
+  }
+
+  const messageHtml = originalMessage
+    ? `<p style="margin:0;padding-left:16px;border-left:3px solid #ddd;color:#555;font-style:italic;">${escapeHtml(originalMessage)}</p>`
+    : `<p style="margin:0;color:#999;font-style:italic;">(no message text available)</p>`;
+
+  const html = `<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="margin:0;padding:24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#333;">
+<p style="margin:0;">${escapeHtml(who)}${submitterEmail ? ` (<a href="mailto:${encodeURIComponent(submitterEmail).replace(/%40/g, '@')}">${escapeHtml(submitterEmail)}</a>)` : ''} wrote in${showRef}:</p>
+<br>
+${messageHtml}
+<br>
+${currentStateHtml}<p style="margin:0;font-weight:600;">Proposed fix:</p>
+<br>
+${stepsHtml}
+<br>
+<p style="margin:0;color:#555;">Risk: ${escapeHtml(riskLevel)}. ${escapeHtml(planSummary)}</p>
+<br>
+${verification && !verification.skipped ? (
+  verification.passed
+    ? `<p style="margin:0 0 12px;padding:8px 12px;background-color:#f0fdf4;border:1px solid #86efac;border-radius:6px;color:#166534;font-size:13px;">&#9989; <strong>Verified by second AI</strong> &mdash; Facts checked, no issues found</p>`
+    : `<p style="margin:0 0 12px;padding:8px 12px;background-color:#fef2f2;border:1px solid #fca5a5;border-radius:6px;color:#991b1b;font-size:13px;">&#9888;&#65039; <strong>Verification flagged issues:</strong> ${verification.issues.map(i => escapeHtml(i)).join('; ')}</p>`
+) : ''}
+<table cellpadding="0" cellspacing="0" border="0" style="margin:0;"><tr>
+  <td align="center" bgcolor="#22c55e" style="border-radius:6px;padding:0;"><a href="${escapeHtml(approveUrl)}" style="display:block;padding:12px 28px;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">Approve Fix</a></td>
+  <td style="width:12px;"></td>
+  <td align="center" bgcolor="#ef4444" style="border-radius:6px;padding:0;"><a href="${escapeHtml(rejectUrl)}" style="display:block;padding:12px 28px;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">Reject</a></td>
+</tr></table>
+<br>
+<p style="margin:0;color:#999;font-size:13px;">This link expires in 7 days. If you do nothing, no changes are made.</p>
+<p style="margin:0;color:#999;font-size:13px;">Issue: <a href="https://github.com/thomaspryor/Broadwayscore/issues/${issueNumber}" style="color:#999;">#${issueNumber}</a></p>
+</body></html>`;
+
+  return { subject, html };
+}
+
+/**
+ * Approval email for broadcast — sent to owner after preview, with "Approve & Send" button.
+ */
+function buildBroadcastApprovalHtml(shows, approvalUrl, market) {
+  market = market || 'broadway';
+  const isWE = isLondonMarket(market);
+  const marketLabel = isWE ? 'West End' : 'Broadway';
+  const brandColor = isWE ? '#f472b6' : '#d4a574';
+
+  const showRows = shows.map(show => {
+    const sc = getScoreColor(show.score, market);
+    const scoreDisplay = show.score != null ? Math.round(show.score) : '?';
+    return `
+      <tr>
+        <td style="padding:8px 0;font-family:${FONT};font-size:15px;color:#fff;border-bottom:1px solid rgba(255,255,255,0.1);">
+          ${escapeHtml(show.showTitle)}
+        </td>
+        <td align="right" style="padding:8px 0;font-family:${FONT};font-size:15px;font-weight:700;color:${sc.bg};border-bottom:1px solid rgba(255,255,255,0.1);">
+          ${scoreDisplay}
+        </td>
+        <td align="right" style="padding:8px 0;font-family:${FONT};font-size:13px;color:rgba(255,255,255,0.5);border-bottom:1px solid rgba(255,255,255,0.1);">
+          ${show.reviewCount} reviews
+        </td>
+      </tr>`;
+  }).join('');
+
+  return `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background-color:#0f0f14;font-family:${FONT};">
+<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#0f0f14;">
+<tr><td align="center" style="padding:32px 16px;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width:500px;">
+
+    <!-- Header -->
+    <tr><td style="padding:0 0 24px;text-align:center;">
+      <p style="margin:0;font-size:13px;color:rgba(255,255,255,0.5);font-family:${FONT};text-transform:uppercase;letter-spacing:1px;">
+        ${marketLabel} Broadcast Approval
+      </p>
+    </td></tr>
+
+    <!-- Title -->
+    <tr><td style="padding:0 0 8px;">
+      <h1 style="margin:0;font-size:22px;color:#fff;font-family:${FONT};text-align:center;">
+        Ready to send opening night ${shows.length === 1 ? 'email' : 'emails'}?
+      </h1>
+    </td></tr>
+
+    <tr><td style="padding:0 0 24px;">
+      <p style="margin:0;font-size:14px;color:rgba(255,255,255,0.6);font-family:${FONT};text-align:center;">
+        The following ${shows.length === 1 ? 'show is' : 'shows are'} ready for broadcast:
+      </p>
+    </td></tr>
+
+    <!-- Show list -->
+    <tr><td style="padding:0 0 24px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background:rgba(255,255,255,0.05);border-radius:8px;padding:12px 16px;">
+        ${showRows}
+      </table>
+    </td></tr>
+
+    <!-- CTA Button -->
+    <tr><td align="center" style="padding:0 0 24px;">
+      <a href="${approvalUrl}" style="display:inline-block;padding:16px 40px;background:${brandColor};color:#1a1a1a;font-size:16px;font-weight:700;font-family:${FONT};text-decoration:none;border-radius:8px;">
+        Approve &amp; Send to All Subscribers
+      </a>
+    </td></tr>
+
+    <!-- Footer -->
+    <tr><td style="padding:16px 0 0;text-align:center;border-top:1px solid rgba(255,255,255,0.1);">
+      <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.35);font-family:${FONT};">
+        This link is valid until end of day tomorrow (UTC). If you do nothing, no emails are sent.
+      </p>
+    </td></tr>
+
+  </table>
+</td></tr>
+</table>
+</body></html>`;
+}
+
+function buildDailyDigestHtml(changes, date) {
+  const brandColor = '#d4a574';
+  const siteUrl = 'https://broadwayscorecard.com';
+
+  function sectionHeader(title) {
+    return `<tr><td style="padding:20px 20px 8px;">
+      <p style="margin:0;font-size:11px;font-weight:600;color:rgba(212,165,116,0.6);text-transform:uppercase;letter-spacing:0.8px;font-family:${FONT};">${escapeHtml(title)}</p>
+    </td></tr>`;
+  }
+
+  function extractYear(id) {
+    const m = id && id.match(/-(\d{4})$/);
+    return m ? m[1] : null;
+  }
+
+  function displayTitle(title, item) {
+    let label = title;
+    const isWE = item && item.market === 'west-end';
+    const year = item && extractYear(item.id);
+    const suffix = [isWE ? 'WE' : null, year].filter(Boolean).join(' ');
+    if (suffix) label += ` (${suffix})`;
+    return label;
+  }
+
+  function showLink(title, slug, item) {
+    return `<a href="${siteUrl}/show/${slug}" style="color:rgba(255,255,255,0.85);text-decoration:underline;text-decoration-color:rgba(255,255,255,0.2);text-underline-offset:2px;">${escapeHtml(displayTitle(title, item))}</a>`;
+  }
+
+  function row(content) {
+    return `<tr><td style="padding:4px 20px;font-size:14px;color:rgba(255,255,255,0.85);line-height:1.5;font-family:${FONT};border-left:2px solid ${brandColor};">&#8226;&nbsp; ${content}</td></tr>`;
+  }
+
+  const sections = [];
+
+  // Suspicious Changes (shown first as a warning)
+  if (changes.suspiciousChanges && changes.suspiciousChanges.length > 0) {
+    let html = `<tr><td style="padding:20px 20px 8px;">
+      <p style="margin:0;font-size:11px;font-weight:600;color:#ef4444;text-transform:uppercase;letter-spacing:0.8px;font-family:${FONT};">&#9888;&#65039; Suspicious Changes (${changes.suspiciousChanges.length})</p>
+    </td></tr>`;
+    html += `<tr><td style="padding:4px 20px;font-size:13px;color:#f97316;line-height:1.5;font-family:${FONT};">Shows with &gt;24 new reviews in a single day &mdash; likely a data ingestion issue or wrong-production batch.</td></tr>`;
+    for (const r of changes.suspiciousChanges) {
+      html += `<tr><td style="padding:4px 20px;font-size:14px;color:#f97316;line-height:1.5;font-family:${FONT};border-left:2px solid #ef4444;">&#8226;&nbsp; ${showLink(r.title, r.slug, r)} &mdash; <strong>+${r.added}</strong> reviews (${r.prevCount || '?'} &rarr; ${r.total})</td></tr>`;
+    }
+    sections.push(html);
+  }
+
+  // Review Spikes (>10 new reviews — possible tour contamination)
+  if (changes.reviewSpikes && changes.reviewSpikes.length > 0) {
+    let html = `<tr><td style="padding:20px 20px 8px;">
+      <p style="margin:0;font-size:11px;font-weight:600;color:#d97706;text-transform:uppercase;letter-spacing:0.8px;font-family:${FONT};">&#9888; Review Spikes (${changes.reviewSpikes.length})</p>
+    </td></tr>`;
+    html += `<tr><td style="padding:4px 20px;font-size:13px;color:#d97706;line-height:1.5;font-family:${FONT};">Shows with &gt;10 new reviews in a single day &mdash; check for tour or wrong-production reviews.</td></tr>`;
+    for (const r of changes.reviewSpikes) {
+      html += `<tr><td style="padding:4px 20px;font-size:14px;color:#d97706;line-height:1.5;font-family:${FONT};border-left:2px solid #d97706;">&#8226;&nbsp; ${showLink(r.title, r.slug, r)} &mdash; <strong>+${r.added}</strong> reviews (${r.prevCount || '?'} &rarr; ${r.total})</td></tr>`;
+    }
+    sections.push(html);
+  }
+
+  // New Shows
+  if (changes.newShows.length > 0) {
+    let html = sectionHeader(`New Shows (${changes.newShows.length})`);
+    for (const s of changes.newShows) {
+      const typeLabel = showFormatTitle(s.type);
+      const statusLabel = s.status === 'previews' ? ' &middot; In Previews' : s.status === 'upcoming' ? ' &middot; Upcoming' : '';
+      html += row(`${showLink(s.title, s.slug, s)} &mdash; ${typeLabel}${statusLabel}${s.venue ? ` &middot; ${escapeHtml(s.venue)}` : ''}`);
+    }
+    sections.push(html);
+  }
+
+  // Score Changes — only round-number flips (e.g. 82 → 83). Each line carries
+  // the review delta that drove the move + the new total, so we don't repeat
+  // the show list in a separate New Reviews section. Sub-integer wobble is
+  // filtered out upstream in diffSnapshots.
+  if (changes.scoreChanges.length > 0) {
+    const sorted = [...changes.scoreChanges].sort((a, b) =>
+      Math.abs((b.to ?? 0) - (b.from ?? b.to ?? 0)) - Math.abs((a.to ?? 0) - (a.from ?? a.to ?? 0)));
+    let html = sectionHeader(`Score Changes (${changes.scoreChanges.length})`);
+    for (const s of sorted) {
+      const { bg: fromBg } = s.from != null ? getScoreColor(s.from) : { bg: '#6b7280' };
+      const { bg: toBg } = getScoreColor(s.to);
+      const arrow = s.direction === 'up' ? '&#9650;' : s.direction === 'down' ? '&#9660;' : '&#9733;';
+      const arrowColor = s.direction === 'up' ? '#22c55e' : s.direction === 'down' ? '#ef4444' : brandColor;
+      const fromLabel = s.from != null ? `<span style="color:${fromBg};font-weight:700;">${s.from}</span>` : '<span style="color:#6b7280;">—</span>';
+      const added = s.reviewsAdded || 0;
+      let reviewNote = '';
+      if (added !== 0) {
+        const n = Math.abs(added);
+        const sign = added > 0 ? '+' : '&minus;';
+        reviewNote = ` <span style="color:rgba(255,255,255,0.45);">(${sign}${n} review${n !== 1 ? 's' : ''}, ${s.reviewTotal} total)</span>`;
+      } else if (s.reviewTotal != null) {
+        reviewNote = ` <span style="color:rgba(255,255,255,0.45);">(${s.reviewTotal} review${s.reviewTotal !== 1 ? 's' : ''} total)</span>`;
+      }
+      html += row(`${showLink(s.title, s.slug, s)} &mdash; ${fromLabel} <span style="color:${arrowColor};font-size:10px;">${arrow}</span> <span style="color:${toBg};font-weight:700;">${s.to}</span>${reviewNote}`);
+    }
+    sections.push(html);
+  }
+
+  // Audience Grade Changes
+  if (changes.audienceChanges.length > 0) {
+    let html = sectionHeader(`Audience Grade Changes (${changes.audienceChanges.length})`);
+    for (const a of changes.audienceChanges) {
+      const fromLabel = a.from || '—';
+      html += row(`${showLink(a.title, a.slug, a)} &mdash; ${fromLabel} &rarr; <span style="font-weight:700;">${a.to}</span>`);
+    }
+    sections.push(html);
+  }
+
+  // Exclusion-trend section (Balusters follow-through). Surfaces silent-drop spikes
+  // and never-before-seen exclusion reasons so regressions don't accumulate unnoticed.
+  const trend = changes.exclusionTrend;
+  if (trend && (trend.spikes.length > 0 || trend.novelReasons.length > 0 || trend.todayTotal > 0)) {
+    let html = sectionHeader(`Pipeline Exclusions (today: ${trend.todayTotal})`);
+    if (trend.spikes.length > 0) {
+      html += row(`<strong style="color:#ef4444;">⚠️ Spike above 7-day baseline:</strong>`);
+      for (const s of trend.spikes.slice(0, 5)) {
+        html += row(`&nbsp;&nbsp;${escapeHtml(s.reason)} — <strong>${s.todayCount}</strong> today vs <span style="color:rgba(255,255,255,0.5);">7-day avg ${s.mean} ± ${s.stdev}</span>`);
+      }
+    }
+    if (trend.novelReasons.length > 0) {
+      html += row(`<strong style="color:${brandColor};">🆕 Novel reason (first seen within 7 days):</strong>`);
+      for (const n of trend.novelReasons.slice(0, 5)) {
+        html += row(`&nbsp;&nbsp;${escapeHtml(n.reason)} — <strong>${n.todayCount}</strong> today (first seen ${n.firstSeen})`);
+      }
+    }
+    if (trend.topToday.length > 0 && trend.spikes.length === 0 && trend.novelReasons.length === 0) {
+      html += row(`<span style="color:rgba(255,255,255,0.5);">Top reasons today:</span>`);
+      for (const t of trend.topToday.slice(0, 5)) {
+        html += row(`&nbsp;&nbsp;${escapeHtml(t.reason)}: ${t.todayCount}`);
+      }
+    }
+    sections.push(html);
+  }
+
+  // Match the subject line: count only rendered sections (new-review-only
+  // activity has no section, so it must not inflate the headline count).
+  const totalChanges = changes.newShows.length +
+    changes.scoreChanges.length + changes.audienceChanges.length +
+    (changes.suspiciousChanges || []).length + (changes.reviewSpikes || []).length;
+
+  return `<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"></head>
+<body bgcolor="#0f0f14" style="margin:0;padding:0;background-color:#0f0f14;background:#0f0f14;font-family:${FONT};">
+<table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0f0f14" style="background-color:#0f0f14;background:#0f0f14;padding:32px 16px;">
+<tr><td align="center" bgcolor="#0f0f14">
+<table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+
+  <tr><td style="padding-bottom:20px;border-bottom:1px solid rgba(212,165,116,0.2);">
+    <span style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.02em;font-family:${FONT};">Broadway</span><span style="font-size:22px;font-weight:800;color:${brandColor};letter-spacing:-0.02em;font-family:${FONT};">Scorecard</span>
+  </td></tr>
+
+  <tr><td style="padding:28px 0 8px;">
+    <h1 style="margin:0;font-size:22px;font-weight:700;color:#ffffff;line-height:1.3;font-family:${FONT};">Daily Digest &mdash; ${escapeHtml(date)}</h1>
+    <p style="margin:8px 0 0;font-size:14px;color:rgba(255,255,255,0.5);font-family:${FONT};">${totalChanges} change${totalChanges !== 1 ? 's' : ''} detected</p>
+  </td></tr>
+
+  <tr><td style="padding:16px 0;">
+    <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#1a1a24" style="background-color:#1a1a24;background:#1a1a24;border-radius:12px;border:1px solid rgba(212,165,116,0.12);">
+      ${sections.join('<tr><td style="padding:8px 0;"><hr style="border:none;border-top:1px solid rgba(255,255,255,0.06);margin:0 20px;"></td></tr>')}
+      <tr><td style="padding-bottom:12px;"></td></tr>
+    </table>
+  </td></tr>
+
+  <tr><td style="padding:12px 0;">
+    <a href="${siteUrl}" style="display:inline-block;padding:10px 24px;background:${brandColor};color:#1a1a1a;font-size:14px;font-weight:600;border-radius:8px;text-decoration:none;font-family:${FONT};">View Live Site</a>
+  </td></tr>
+
+  <tr><td style="padding-top:20px;border-top:1px solid rgba(255,255,255,0.06);">
+    <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.25);line-height:1.6;font-family:${FONT};">
+      Daily digest from <a href="${siteUrl}" style="color:${brandColor};">Broadway Scorecard</a>. Sent automatically each morning.
+    </p>
+  </td></tr>
+
+</table>
+</td></tr>
+</table>
+</body></html>`;
+}
+
+module.exports = {
+  broadcastReviewSubtitle,
+  FONT,
+  postJSON,
+  sleep,
+  escapeHtml,
+  getScoreColor,
+  getChangeAnchor,
+  buildUnfollowUrl,
+  buildUnsubscribeUrl,
+  siteNameForMarket,
+  buildFromAddress,
+  buildReplyToAddress,
+  REPLY_TO_EMAIL,
+  buildClaudeAliasAddress,
+  buildDraftPreviewRecipients,
+  resolveNewsletterEdition,
+  buildFooterHtml,
+  buildBroadcastFooterHtml,
+  buildAccountCtaHtml,
+  buildSocialRowHtml,
+  buildEmailHtml,
+  buildOpeningNightHtml,
+  buildBroadcastSubjectLine,
+  buildBroadcastOpeningNightHtml,
+  buildFeedbackThankYouEmail,
+  buildFixApprovalEmail,
+  buildBroadcastApprovalHtml,
+  buildDailyDigestHtml,
+};

@@ -1,0 +1,1114 @@
+/**
+ * Wrong-Production Auto-Clear Decision
+ *
+ * Pure decision functions for deciding whether the rebuild's auto-clear
+ * paths should strip wrongProduction / wrongShow flags from a review file.
+ *
+ * Background: rebuild-all-reviews.js has auto-clear paths that strip
+ * wrongProduction when allowEarlyDate or allowCrossMarket is true.
+ * Without guards, these paths strip flags even when the user/audit/CV
+ * explicitly set wrongProduction with a reason — re-introducing
+ * cross-market contamination on every rebuild.
+ *
+ * Used by:
+ * - scripts/rebuild-all-reviews.js (main rebuild loop, allowEarlyDate auto-clear)
+ * - scripts/flag-wrong-production-by-date.js (Date-guard pre-flag check)
+ * - tests/unit/wrong-production-autoclear.test.mjs
+ */
+
+const { parseDate } = require('./date-utils');
+
+// Review-lag grace on the CLOSE/END side of a declared priorRuns or tourLegs
+// window (BRO-2561). Critics routinely file 1-7 days after a run's final
+// performance — both windows were strictly inclusive of open..close with zero
+// grace, so a truthful closingDate/endDate caused legitimate late-filed
+// coverage to fail as "likely a different production" (Notion 386637c5 /
+// BRO-80: The Reviews Hub filed 2025-08-26 for a Summerhall Fringe run that
+// closed 2025-08-25 — worked around there by omitting closingDate entirely,
+// which is a per-show dodge, not a fix). Matches DAYS_AFTER_CLOSE in
+// date-guard.js — the same post-close lag grace already given to the CURRENT
+// run's own window — so neither window gets more benefit of the doubt than
+// the run it transferred from/toured to. No symmetric grace is added before
+// openingDate/startDate: the blast radius that motivated this (measured
+// 2026-08-30, BRO-2561) was entirely late reviews trailing a close, and a
+// run/leg's own start is already the earliest a review about it can
+// legitimately exist. Shared by isWithinPriorRun and isWithinTourLeg — both
+// are the same "grant grace after a declared run ends" decision, just for a
+// distinct-earlier-production window vs. a same-production touring-stop one.
+const REVIEW_LAG_GRACE_DAYS = 7;
+
+/**
+ * Decide whether a review's publishDate falls inside any of the show's
+ * prior-run windows (Phase 1 production-continuity model).
+ *
+ * Each priorRun describes a previous run of the same artistic production
+ * (workshop → mainstage transfer, return engagement, etc.). A review whose
+ * publishDate sits inside priorRun.openingDate..(closingDate + grace) is
+ * legitimate coverage of an earlier run of THIS production and must not be
+ * flagged wrongProduction by date-only guards.
+ *
+ * Defaults / edge cases:
+ *  - reviewDate / priorRuns missing or empty → false (caller falls back to
+ *    the existing 90-day pre-opening guard).
+ *  - openingDate missing / unparseable on a priorRun entry → that entry is
+ *    skipped (other entries still evaluated).
+ *  - closingDate missing on a priorRun → window extends 180 days past
+ *    openingDate (limited-run default; matches OB lab/showcase typical run).
+ *    The post-close grace does not additionally extend this default — 180
+ *    days already dwarfs any review-lag window.
+ *  - Comparison is inclusive of both bounds and date-only (UTC midnight);
+ *    the close bound gets REVIEW_LAG_GRACE_DAYS of grace, the
+ *    open bound does not.
+ *
+ * @param {Date|string|null} reviewDate - Review publish date (Date or ISO/parseable string)
+ * @param {Array<{openingDate?: string, closingDate?: string, venue?: string}>} priorRuns
+ * @returns {boolean}
+ */
+function isWithinPriorRun(reviewDate, priorRuns) {
+  return !!findMatchingPriorRun(reviewDate, priorRuns);
+}
+
+/**
+ * Same window logic as isWithinPriorRun, but returns the MATCHED priorRun
+ * entry (not just a boolean) — callers that need to know which run a review
+ * belongs to (e.g. to judge the review's market against that run's OWN venue
+ * rather than the current run's) use this instead of re-deriving the window
+ * math. isWithinPriorRun is defined in terms of this so the two can never
+ * drift apart.
+ *
+ * @param {Date|string|null} reviewDate
+ * @param {Array<{openingDate?: string, closingDate?: string, venue?: string}>} priorRuns
+ * @returns {{openingDate?: string, closingDate?: string, venue?: string}|null}
+ */
+function findMatchingPriorRun(reviewDate, priorRuns) {
+  if (!reviewDate || !Array.isArray(priorRuns) || priorRuns.length === 0) return null;
+  const rd = reviewDate instanceof Date ? reviewDate : parseDate(reviewDate);
+  if (!rd || isNaN(rd.getTime())) return null;
+  const rdMs = rd.getTime();
+
+  // Two passes so a run's OWN strict window always outranks another run's
+  // grace-extended tail (BRO-2561 ship-check finding): with grace, a review
+  // just past run A's close can now also fall in run A's grace tail AND run
+  // B's strict window if B opens shortly after A closes (multi-leg tours /
+  // festival runs). Array order alone would have let an earlier-declared A
+  // shadow the run the review actually belongs to. A strict match anywhere
+  // in the array always wins over a graced match anywhere else.
+  const strict = matchPriorRuns(rdMs, priorRuns, false);
+  if (strict) return strict;
+  return matchPriorRuns(rdMs, priorRuns, true);
+}
+
+function matchPriorRuns(rdMs, priorRuns, allowGrace) {
+  for (const run of priorRuns) {
+    if (!run || !run.openingDate) continue;
+    const open = parseDate(run.openingDate);
+    if (!open || isNaN(open.getTime())) continue;
+    let close;
+    let hasExplicitClose = false;
+    if (run.closingDate) {
+      close = parseDate(run.closingDate);
+      if (close && !isNaN(close.getTime())) hasExplicitClose = true;
+      else close = undefined;
+    }
+    if (!close) {
+      close = new Date(open.getTime());
+      close.setUTCDate(close.getUTCDate() + 180);
+    }
+    const graceMs = (allowGrace && hasExplicitClose) ? REVIEW_LAG_GRACE_DAYS * 86400000 : 0;
+    const closeMs = close.getTime() + graceMs;
+    if (rdMs >= open.getTime() && rdMs <= closeMs) return run;
+  }
+  return null;
+}
+
+/**
+ * Decide whether a review's publishDate falls inside any of the show's
+ * declared tourLegs windows (current-touring-production continuity model).
+ *
+ * Each tourLeg describes a venue stop of the CURRENT touring production —
+ * unlike priorRuns (a distinct EARLIER production), a tourLeg is part of the
+ * same ongoing run, just in a different city. A review whose publishDate sits
+ * inside tourLeg.startDate..(endDate + grace) is legitimate coverage of this
+ * production at that stop and must not be flagged wrongProduction by
+ * date-only guards.
+ *
+ * Same defaults/edge-cases as isWithinPriorRun (BRO-2561): missing endDate
+ * defaults to startDate + 180 days (not additionally extended by grace); the
+ * end bound gets REVIEW_LAG_GRACE_DAYS of review-lag grace, the
+ * start bound does not; comparison is inclusive of both bounds, date-only.
+ * A strict match anywhere in the array outranks a grace-extended match
+ * elsewhere — tour legs are sequential venue stops, so back-to-back legs are
+ * the norm, not the exception, making the ordering guard more load-bearing
+ * here than for priorRuns.
+ *
+ * @param {Date|string|null} reviewDate
+ * @param {Array<{startDate?: string, endDate?: string, venue?: string}>} tourLegs
+ * @returns {boolean}
+ */
+function isWithinTourLeg(reviewDate, tourLegs) {
+  if (!reviewDate || !Array.isArray(tourLegs) || tourLegs.length === 0) return false;
+  const rd = reviewDate instanceof Date ? reviewDate : parseDate(reviewDate);
+  if (!rd || isNaN(rd.getTime())) return false;
+  const rdMs = rd.getTime();
+
+  const strict = matchTourLegs(rdMs, tourLegs, false);
+  if (strict) return true;
+  return !!matchTourLegs(rdMs, tourLegs, true);
+}
+
+function matchTourLegs(rdMs, tourLegs, allowGrace) {
+  for (const leg of tourLegs) {
+    if (!leg || !leg.startDate) continue;
+    const start = parseDate(leg.startDate);
+    if (!start || isNaN(start.getTime())) continue;
+    let end;
+    let hasExplicitEnd = false;
+    if (leg.endDate) {
+      end = parseDate(leg.endDate);
+      if (end && !isNaN(end.getTime())) hasExplicitEnd = true;
+      else end = undefined;
+    }
+    if (!end) {
+      end = new Date(start.getTime());
+      end.setUTCDate(end.getUTCDate() + 180);
+    }
+    const graceMs = (allowGrace && hasExplicitEnd) ? REVIEW_LAG_GRACE_DAYS * 86400000 : 0;
+    const endMs = end.getTime() + graceMs;
+    if (rdMs >= start.getTime() && rdMs <= endMs) return leg;
+  }
+  return null;
+}
+
+/**
+ * True when a show declares at least one usable tourLegs window (a venue stop
+ * of the current touring production). "Usable" means at least one entry has
+ * a startDate. Mirrors hasDeclaredPriorRuns.
+ *
+ * @param {{ tourLegs?: Array<{startDate?: string}> }} show
+ * @returns {boolean}
+ */
+function hasDeclaredTourLegs(show) {
+  return !!(
+    show &&
+    Array.isArray(show.tourLegs) &&
+    show.tourLegs.some((l) => l && l.startDate)
+  );
+}
+
+/**
+ * True when a show declares at least one usable priorRuns window (a previous
+ * run of the same artistic production: workshop→mainstage, return engagement,
+ * or a venue transfer). "Usable" means at least one entry has an openingDate.
+ *
+ * Discovery callers use this to widen review-gathering for a show that is
+ * technically still in `previews` for its CURRENT engagement but was already
+ * reviewed during a declared prior run — otherwise the previews-skip drops
+ * legitimate transfer reviews on the floor (the off-Broadway transfer blind
+ * spot: a hit at a small house moves to a bigger one and the original-run
+ * reviews are never inherited). Per-review date gating still happens downstream
+ * via isWithinPriorRun().
+ *
+ * @param {{ priorRuns?: Array<{openingDate?: string}> }} show
+ * @returns {boolean}
+ */
+function hasDeclaredPriorRuns(show) {
+  return !!(
+    show &&
+    Array.isArray(show.priorRuns) &&
+    show.priorRuns.some((r) => r && r.openingDate)
+  );
+}
+
+/**
+ * Decide whether an existing wrongProduction flag — set by the date-only
+ * Pre-opening guard or Date guard — should be auto-cleared because the
+ * show now declares a priorRuns window that covers the review's date.
+ *
+ * Returns true ONLY if all conditions hold:
+ *  - data.wrongProduction === true
+ *  - data.wrongProductionNote starts with "Pre-opening guard" OR "Date guard"
+ *    (the auto-flagger family — never strips flags from manual / CV / cross-market)
+ *  - data.publishDate parses
+ *  - show.priorRuns covers data.publishDate
+ *  - No data.wrongProductionReason (manual / audit reason)
+ *  - No high-confidence CV wrongProduction or wrongArticle
+ *
+ * Mirrors the safety guards used by shouldAutoClearWrongProductionUrlYear.
+ *
+ * @param {object} data - The review JSON object
+ * @param {{ priorRuns?: Array<object> }} show - The show config
+ * @returns {boolean}
+ */
+// Auto-set wrongProductionReason values that are date-only (NOT operator-set).
+// These are written by date-based setters and are valid candidates for priorRuns
+// auto-clear. Anything not in this set (and not in the auto-prefix list below)
+// is treated as a manual reason and protected.
+//
+// ALSO CONSUMED by scripts/lib/flag-contradiction.js's detectCvFlagContradiction
+// (BRO-2244) as the set of wrongProductionReason values a content-only CV pass
+// cannot evaluate (temporal/production-context, not text content) — that
+// consumer exempts these reasons from the flag-vs-CV contradiction audit.
+// Adding a new value here also exempts it from that CI gate; confirm that's
+// intended (or split into a differently-scoped set) before adding one.
+const DATE_ONLY_AUTO_REASONS = new Set([
+  'anticipatory_pre_opening_post', // collect-review-texts.js anticipatory gate
+]);
+// Auto-set wrongProductionReason PREFIXES that priorRuns is allowed to override.
+// CV-promoted reasons specifically include "CV identifies a different venue/run"
+// — exactly what an operator-declared priorRun overrides. Operator-trust over CV
+// is the Phase 1 design (parent card 351637c5-416f-81fe).
+const AUTO_REASON_PREFIXES = [
+  'CV-promoted:',
+  'CV-low-but-strong-signal:',
+];
+// Auto-set wrongProductionReason PATTERNS (regex) that priorRuns may override.
+// These are pure date/year-mismatch reverifications — the review is flagged
+// SOLELY because its year doesn't match the current engagement's year, which
+// is exactly the false signal a declared priorRun corrects. Kept narrow (the
+// specific year-gap phrasing) so non-date Haiku verdicts stay protected.
+const AUTO_REASON_REGEXES = [
+  /^Haiku reverify: publishDate \d{4} vs showId year \d{4}/i,
+];
+// Date-only auto-flag NOTE/REASON prefixes that priorRuns is allowed to override:
+//  - "Pre-opening guard" (rebuild-all-reviews.js inclusion + flag pass)
+//  - "Date guard" (flag-wrong-production-by-date.js standalone)
+//  - "Auto-flagged" (gather-reviews.js Broadway-only ingest guard)
+//  - "Review published" (rebuild-all-reviews.js per-review skip-pre-opening writer)
+//  - "auto-flag: filled text dated" (audit-show-review-gap.js post-fill
+//    recovery guard, lib/flagged-recovery.js filledDateOutsideWindow). Date
+//    only; without it a filled review of a declared earlier run stayed
+//    excluded (My Son's a Queer's i-paper review of the 2023 Ambassadors run).
+const DATE_GUARD_PREFIXES = [
+  'Pre-opening guard',
+  'Date guard',
+  'Auto-flagged',
+  'Review published',
+  'auto-flag: filled text dated',
+];
+const startsWithAny = (s, prefixes) => prefixes.some((p) => s.startsWith(p));
+
+/**
+ * True when a wrongProductionReason was written by a DATE-ONLY pipeline guard
+ * (anticipatory pre-opening ingest gate, Haiku year-gap reverify). Those flags
+ * say nothing about content, so an operator's allowEarlyDate must be able to
+ * clear them. CV-promoted reasons are deliberately NOT included: they carry a
+ * content verdict that the cvConfirmedWrong check already adjudicates.
+ * BRO-720: previously ANY reason counted as manual, so a transferred
+ * production's reviews (allowEarlyDate:true) stayed excluded on every rebuild.
+ */
+function isDateOnlyAutoReason(reason) {
+  if (!reason) return false;
+  return DATE_ONLY_AUTO_REASONS.has(reason)
+    || AUTO_REASON_REGEXES.some((re) => re.test(reason));
+}
+
+/**
+ * Best effort to recover the date a date-guard flagger acted on. Premiere-era
+ * review files frequently carry a null or year-less `publishDate` (e.g.
+ * "October 20"), but the guard that flagged them embeds the real ISO date in
+ * its note/reason ("review dated 2022-10-19 is 90+ days before…"). Falling
+ * back to that recorded date lets a declared priorRuns window match.
+ *
+ * @param {object} data - review JSON
+ * @returns {Date|null}
+ */
+function effectiveFlagDate(data) {
+  if (data.publishDate) {
+    const pd = parseDate(data.publishDate);
+    if (pd && !isNaN(pd.getTime())) return pd;
+  }
+  const blob = `${data.wrongProductionNote || ''} ${data.wrongProductionReason || ''}`;
+  const m = blob.match(/\b(\d{4}-\d{2}-\d{2})\b/);
+  if (m) {
+    const d = parseDate(m[1]);
+    if (d && !isNaN(d.getTime())) return d;
+  }
+  return null;
+}
+
+/**
+ * True when the adjudicator's own verdict was a tour/regional production
+ * (note 'Auto-adjudicated: national-tour. ...' + reason
+ * 'contamination-adjudicated: national-tour'). BRO-2841: that verdict says the
+ * review is of a tour leg, so when the operator DECLARED the leg as a
+ * priorRuns/tourLegs window containing the review's date, the declared window
+ * outranks it. Any other adjudicated verdict (film-tv, other, a different
+ * production) stays a manual-grade reason the windows cannot override.
+ */
+function isAdjudicatedTourVerdict(data) {
+  return hasAdjudicatedNote(data)
+    && /^contamination-adjudicated: (?:national-tour|regional)$/.test(data.wrongProductionReason || '');
+}
+
+/**
+ * Strip the adjudicator's markers once a declared priorRuns/tourLegs window has
+ * superseded its tour verdict, and set allowTourSignal: the rebuild's fullText
+ * tour guard (excerpt-validation tourContextForShow) never reads priorRuns/
+ * tourLegs, so without it the review is re-queued 'possible-tour-fulltext', the
+ * adjudicator re-flags it, and the clear fires again forever. Call only when
+ * isAdjudicatedTourVerdict(d) was true BEFORE wrongProductionNote was deleted.
+ */
+function supersedeAdjudicatedTourVerdict(d) {
+  delete d.wrongProductionReason;
+  if (d.incompleteReason === 'wrong_content' && /^contamination-adjudicated:/.test(d.incompleteDetail || '')) {
+    delete d.incompleteReason;
+    delete d.incompleteDetail;
+  }
+  require('./contamination-allow-signal').applyContaminationAllow(d, 'tour',
+    `rebuild ${new Date().toISOString().slice(0, 10)}: declared priorRuns/tourLegs window covers publishDate`);
+}
+
+function shouldAutoClearWrongProductionPriorRun(data, show) {
+  if (!data || data.wrongProduction !== true) return false;
+  if (!show || !Array.isArray(show.priorRuns) || show.priorRuns.length === 0) return false;
+  const note = data.wrongProductionNote || '';
+  const reason = data.wrongProductionReason || '';
+  // Date-only auto-flag provenance can live in EITHER field — different setters
+  // write the guard text to wrongProductionNote (rebuild/date-guard) or to
+  // wrongProductionReason (some reverify paths). Honor both.
+  const isDateOnlyAutoFlag = startsWithAny(note, DATE_GUARD_PREFIXES)
+    || startsWithAny(reason, DATE_GUARD_PREFIXES);
+  // The anticipatory ingest gate + CV-promotion + year-gap reverify paths write
+  // ONLY wrongProductionReason. Recognize their auto-set values as override-eligible.
+  const isAutoReason = DATE_ONLY_AUTO_REASONS.has(reason)
+    || AUTO_REASON_PREFIXES.some((p) => reason.startsWith(p))
+    || AUTO_REASON_REGEXES.some((re) => re.test(reason))
+    || isAdjudicatedTourVerdict(data);
+  if (!isDateOnlyAutoFlag && !isAutoReason) return false;
+  const effDate = effectiveFlagDate(data);
+  if (!effDate || !isWithinPriorRun(effDate, show.priorRuns)) return false;
+  // A tour verdict only yields to a window that is itself a tour run: a
+  // sit-down prior run (earlier West End engagement) is not evidence for it.
+  if (isAdjudicatedTourVerdict(data)
+      && !/\btour\b/i.test((findMatchingPriorRun(effDate, show.priorRuns) || {}).venue || '')) return false;
+  // Treat reason as "manual" only when it's not a recognized auto signal AND
+  // not a date-guard-prefixed reason. Protects audit/operator reasons.
+  const reasonIsAuto = isAutoReason || startsWithAny(reason, DATE_GUARD_PREFIXES);
+  const hasManualReason = !!reason && !reasonIsAuto;
+  // CV-confirmed gate: still respect high-conf CV wrongArticle (entirely
+  // different show, not just different production). Phase 1 trusts priorRuns
+  // over CV's wrongProduction (venue/date match) but NOT over wrongArticle.
+  const cvConfirmedWrongArticle = data.contentVerification?.wrongArticle === true
+    && data.contentVerification?.confidence === 'high';
+  // Defense-in-depth (#1156 ship-check): structurally, ensemble rejections
+  // never populate wrongProductionNote/Reason with a DATE_GUARD_PREFIXES/
+  // AUTO_REASON value, so this can't currently overlap with an ensemble
+  // verdict — but check explicitly rather than relying on that coincidence.
+  if (hasEnsembleConsensus(data, 'wrong_production')) return false;
+  return !hasManualReason && !cvConfirmedWrongArticle;
+}
+
+/**
+ * Same decision as shouldAutoClearWrongProductionPriorRun, but for a declared
+ * tourLegs window (current-production continuity) instead of priorRuns (a
+ * distinct earlier production). Kept as a SEPARATE function — mirroring
+ * rather than merging with the priorRuns version — because the two fields
+ * describe different things and a future divergence (e.g. tourLegs someday
+ * gaining its own manual-reason vocabulary) should not require re-splitting
+ * a merged predicate.
+ */
+function shouldAutoClearWrongProductionTourLeg(data, show) {
+  if (!data || data.wrongProduction !== true) return false;
+  if (!show || !Array.isArray(show.tourLegs) || show.tourLegs.length === 0) return false;
+  const note = data.wrongProductionNote || '';
+  const reason = data.wrongProductionReason || '';
+  const isDateOnlyAutoFlag = startsWithAny(note, DATE_GUARD_PREFIXES)
+    || startsWithAny(reason, DATE_GUARD_PREFIXES);
+  const isAutoReason = DATE_ONLY_AUTO_REASONS.has(reason)
+    || AUTO_REASON_PREFIXES.some((p) => reason.startsWith(p))
+    || AUTO_REASON_REGEXES.some((re) => re.test(reason))
+    || isAdjudicatedTourVerdict(data);
+  if (!isDateOnlyAutoFlag && !isAutoReason) return false;
+  const effDate = effectiveFlagDate(data);
+  if (!effDate || !isWithinTourLeg(effDate, show.tourLegs)) return false;
+  const reasonIsAuto = isAutoReason || startsWithAny(reason, DATE_GUARD_PREFIXES);
+  const hasManualReason = !!reason && !reasonIsAuto;
+  const cvConfirmedWrongArticle = data.contentVerification?.wrongArticle === true
+    && data.contentVerification?.confidence === 'high';
+  // Defense-in-depth (#1156 ship-check) — see shouldAutoClearWrongProductionPriorRun.
+  if (hasEnsembleConsensus(data, 'wrong_production')) return false;
+  return !hasManualReason && !cvConfirmedWrongArticle;
+}
+
+/**
+ * Decide whether a wrongProduction/wrongShow-rejected file carries a
+ * strong-evidence ensemble verdict that no domain/market heuristic should be
+ * allowed to override.
+ *
+ * THE single definition of "the ensemble agreed", consulted by all six
+ * auto-clear predicates in this file plus audit-wrongshow-autoclear-conflicts.js
+ * and autoclear-vs-ensemble-scan.js. Two parallel #1146/#1156 sessions each
+ * landed a version of this predicate (hasEnsembleConsensus here,
+ * hasEnsembleRejection on the coverage-defects branch) with identical
+ * behaviour; they were collapsed into this one at merge (2026-08-09). Do not
+ * reintroduce a second copy — a divergence between them is exactly the kind of
+ * quiet inconsistency that lets an auto-clear overrule the models again.
+ *
+ * Background (Notion 3b7637c5-416f-810a, task #1146; generalized to
+ * wrongProduction under #1156): the rebuild's UK/major-outlet and
+ * allowCrossMarket/allowEarlyDate auto-clear paths strip wrongProduction/
+ * wrongShow unconditionally once their domain/market conditions match —
+ * including when scripts/llm-scoring/index.ts already ran 3 independent
+ * models (claude + openai + gemini) against the actual fetched text and >=2
+ * of them independently rejected it. ensemble-scorer.ts's combineOutcomes()
+ * only produces a top-level `rejected` verdict (and therefore only ever
+ * writes rejectionReason='wrong_production'|'wrong_show' + rejectedBy=
+ * 'ensemble-scoreability-check') when `rejections.length >= 2` — so the mere
+ * presence of that pairing on disk is itself the >=2/3-model-agreement
+ * receipt; rejectionReasoning's `model: reasoning; model: reasoning` shape
+ * is the paper trail, counted here defensively in case some other writer
+ * ever reuses rejectedBy='ensemble-scoreability-check' without going through
+ * combineOutcomes.
+ *
+ * A blanket "UK outlet URL on a London show can't be wrong-show" heuristic
+ * is a reasonable prior when nothing else is known, but it is weaker
+ * evidence than 2-3 models independently reading the fetched text and naming
+ * a specific different production (romeo-and-juliet-west-end-2026's
+ * london-theatre--holly-omahony.json: url pointed at the R&J page, all 3
+ * models identified the fetched text as a Noughts & Crosses review).
+ *
+ * @param {object} data - the review JSON object
+ * @param {'wrong_production'|'wrong_show'} reason
+ * @returns {boolean}
+ */
+// The 4 model tags ensemble-scorer.ts's combineOutcomes() ever writes
+// (results.find(r => r.model === 'claude' | 'openai' | 'gemini' | 'kimi')).
+// Anchoring to this literal set — instead of a generic `[\w-]+:` match after
+// splitting rejectionReasoning on ';' — matters because a single model's own
+// free-text reasoning can legitimately contain a ';' or a digit+colon
+// (e.g. "...mentions an 8:00pm curtain; not the same show"), which a naive
+// split+regex miscounts as a second model's segment. ship-check finding
+// (task #1146): verified `8:00pm` alone satisfied the old `[\w-]+\s*:` test.
+const ENSEMBLE_MODEL_TAG_RE = /(?:^|;\s*)(claude|openai|gemini|kimi)\s*:/gi;
+
+function hasEnsembleConsensus(data, reason) {
+  if (!data) return false;
+  if (data.rejectionReason !== reason) return false;
+  if (data.rejectedBy !== 'ensemble-scoreability-check') return false;
+  // Precise path (BRO-372 ship-check finding): rejectionAgreeCount is the
+  // number of rejecting models whose OWN `rejection` type actually matched
+  // data.rejectionReason. rejectionReasoning below joins EVERY rejecting
+  // model's free text regardless of which type each one picked — combineOutcomes()
+  // now resolves 1-vs-1 type disagreements via a priority order (favoring
+  // wrong_show/wrong_production/not_a_review over the generic garbage_text
+  // catch-all), so an editorial rejectionReason can win even when only ONE
+  // model actually named it. Counting model-name tags in rejectionReasoning
+  // (the fallback below) can't tell that case apart from real 2-model
+  // agreement; rejectionAgreeCount can.
+  if (typeof data.rejectionAgreeCount === 'number') {
+    return data.rejectionAgreeCount >= 2;
+  }
+  // Fallback for files written before rejectionAgreeCount existed.
+  const reasoning = data.rejectionReasoning;
+  if (!reasoning || typeof reasoning !== 'string') return false;
+  const models = new Set();
+  ENSEMBLE_MODEL_TAG_RE.lastIndex = 0;
+  let match;
+  while ((match = ENSEMBLE_MODEL_TAG_RE.exec(reasoning))) {
+    models.add(match[1].toLowerCase());
+  }
+  return models.size >= 2;
+}
+
+/**
+ * Decide whether a review's fetched text is too stale to vouch for a URL
+ * that was later corrected/rewritten onto a different article.
+ *
+ * Background (task #1146): a URL rewrite (urlCorrectedFrom / urlUpdatedFrom
+ * / _urlChangedClear) records that the file's `url` now points at a
+ * different article than when `fullText` was fetched. If `textFetchedAt`
+ * predates the rewrite, the on-disk text was never (re-)fetched from the
+ * corrected URL — it's still whatever the OLD url returned — so the file's
+ * content cannot be used as evidence that the NEW url's show is correct.
+ * (the-devil-wears-prada-west-end-2024's times-uk--clive-davis.json:
+ * urlCorrectedFrom + urlUpdatedFrom both present, textFetchedAt
+ * 2026-02-26 predates urlUpdatedAt 2026-04-03 — the text on disk is a
+ * Sondheim/Bridge Theatre review that was never re-fetched after the URL
+ * was corrected to the Devil Wears Prada page.)
+ *
+ * @param {object} data - the review JSON object
+ * @returns {boolean}
+ */
+function isTextStaleRelativeToUrlRewrite(data) {
+  if (!data) return false;
+  const hasUrlRewrite = !!(data.urlCorrectedFrom || data.urlUpdatedFrom || data._urlChangedClear);
+  if (!hasUrlRewrite) return false;
+  const rewriteAt = data.urlUpdatedAt || (data._urlChangedClear && data._urlChangedClear.at);
+  if (!rewriteAt || !data.textFetchedAt) return false;
+  // NOT parseDate() here — it truncates to UTC midnight (date-utils.js:
+  // `new Date(normalized + 'T00:00:00Z')`), which would silently collapse
+  // same-day fetch-before-rewrite gaps to equal timestamps. urlUpdatedAt /
+  // textFetchedAt are always full ISO instants (e.g.
+  // "2026-04-03T17:01:15.864Z"), so compare them directly. ship-check
+  // finding (task #1146).
+  const rewriteMs = new Date(rewriteAt).getTime();
+  const fetchedMs = new Date(data.textFetchedAt).getTime();
+  if (isNaN(rewriteMs) || isNaN(fetchedMs)) return false;
+  return fetchedMs < rewriteMs;
+}
+
+// The exact prefix adjudicate-review-queue.js's LLM contamination adjudicator
+// writes into wrongProductionNote for a high-confidence verdict (BRO-2841).
+// Exported so the writer requires this constant instead of duplicating the
+// literal — a future rewording there would otherwise silently reopen BRO-2841
+// with no test pointing at the cause, since a hand-typed duplicate can drift
+// without either side noticing.
+const ADJUDICATED_NOTE_PREFIX = 'Auto-adjudicated:';
+
+/**
+ * True when wrongProductionNote carries the adjudicator's own high-confidence
+ * verdict prefix. adjudicate-review-queue.js also sets wrongProductionReason
+ * on every write going forward (the systemic BRO-2841 fix — every auto-clear
+ * predicate here already gates on that field), so this exists specifically to
+ * protect files the adjudicator wrote BEFORE that fix landed, which carry the
+ * note but not the reason. Named and shared (rather than a local
+ * `wpNote.startsWith(...)` per call site) so every current and future
+ * auto-clear predicate gets this for free, not just the one BRO-2841 happened
+ * to name first.
+ *
+ * @param {object} data
+ * @returns {boolean}
+ */
+function hasAdjudicatedNote(data) {
+  return (data?.wrongProductionNote || '').startsWith(ADJUDICATED_NOTE_PREFIX);
+}
+
+/**
+ * Decide whether the allowEarlyDate/allowCrossMarket auto-clear should
+ * strip wrongProduction from a review file.
+ *
+ * Returns true ONLY if both conditions hold:
+ *   - One of allowEarlyDate / allowCrossMarket is true (user explicit override)
+ *   - There is NO explicit wrongProductionReason, NO high-confidence CV signal,
+ *     and NO unanimous ensemble wrong_production rejection (so the flag is
+ *     safe to clear)
+ *
+ * @param {object} data - The review JSON object
+ * @returns {boolean} - true if it's safe to delete wrongProduction
+ */
+function shouldAutoClearWrongProduction(data) {
+  if (data.wrongProduction !== true) return false;
+  if (!data.allowEarlyDate && !data.allowCrossMarket) return false;
+  const hasManualReason = !!data.wrongProductionReason
+    && !(data.allowEarlyDate && isDateOnlyAutoReason(data.wrongProductionReason));
+  const cvConfirmedWrong = data.contentVerification?.wrongProduction === true
+    && data.contentVerification?.confidence === 'high';
+  if (hasEnsembleConsensus(data, 'wrong_production')) return false;
+  if (isTextStaleRelativeToUrlRewrite(data)) return false;
+  // BRO-2841 sibling-path fix: this predicate runs in the same rebuild pass as
+  // shouldAutoClearWrongProductionUkDualMarket, on the same data, gated on
+  // allowEarlyDate/allowCrossMarket — plausible on exactly the cross-market
+  // shows the adjudicator handles — and previously read only
+  // wrongProductionReason, never the note. adjudicate-review-queue.js now sets
+  // wrongProductionReason on every adjudicated write (the systemic fix), so
+  // hasManualReason already covers new writes; hasAdjudicatedNote is the
+  // backward-compatible half, protecting files the adjudicator wrote BEFORE
+  // that fix landed, which carry the note but not the reason.
+  if (hasAdjudicatedNote(data)) return false;
+  return !hasManualReason && !cvConfirmedWrong;
+}
+
+/**
+ * Same logic for wrongShow flag (parallel auto-clear path).
+ *
+ * @param {object} data
+ * @returns {boolean}
+ */
+function shouldAutoClearWrongShow(data) {
+  if (data.wrongShow !== true) return false;
+  if (!data.allowEarlyDate && !data.allowCrossMarket) return false;
+  const hasManualReason = !!data.wrongShowReason;
+  const cvConfirmedWrong = data.contentVerification?.wrongArticle === true
+    && data.contentVerification?.confidence === 'high';
+  if (hasEnsembleConsensus(data, 'wrong_show')) return false;
+  if (isTextStaleRelativeToUrlRewrite(data)) return false;
+  return !hasManualReason && !cvConfirmedWrong;
+}
+
+/**
+ * Decide whether the WE/OB URL-year auto-clear path should strip wrongProduction.
+ *
+ * The URL-year guard sets wrongProduction=true when a review URL contains a year
+ * that doesn't match the show's season. For West End and off-Broadway shows this
+ * is a known false-positive source (transfers, unconventional year tags) and the
+ * rebuild exempts them — but only if the flag wasn't set for some OTHER explicit
+ * reason (manual audit, high-confidence CV, a show-listing/aggregate URL).
+ *
+ * Callers pass `isLondonOrOffBroadway` so this lib stays decoupled from
+ * isLondonMarket() / show-category imports. `cvBlocksClear` and
+ * `isShowListingUrl` are computed by the caller (rebuild-all-reviews.js) —
+ * same ctx shape as the sibling shouldAutoClearWrongProductionUkDualMarket —
+ * so this lib doesn't need to require review-guards.js / cross-production-guards.js.
+ *
+ * @param {object} data
+ * @param {object} ctx
+ * @param {boolean} ctx.isLondonOrOffBroadway - true if showCat is london/off-broadway
+ * @param {boolean} ctx.cvBlocksClear - cvBlocksUkWrongProductionAutoClear(data.contentVerification)
+ * @param {boolean} ctx.isShowListingUrl - true if data.url is a /shows/ aggregate/listing page
+ * @returns {boolean}
+ */
+function shouldAutoClearWrongProductionUrlYear(data, { isLondonOrOffBroadway, cvBlocksClear, isShowListingUrl } = {}) {
+  if (data.wrongProduction !== true) return false;
+  if (!data.wrongProductionNote || !data.wrongProductionNote.includes('URL contains year')) return false;
+  if (!isLondonOrOffBroadway) return false;
+  if (cvBlocksClear) return false;
+  if (isShowListingUrl) return false;
+  if (data.wrongProductionReason) return false;
+  if (hasEnsembleConsensus(data, 'wrong_production')) return false;
+  if (isTextStaleRelativeToUrlRewrite(data)) return false;
+  return true;
+}
+
+/**
+ * Decide whether the UK-URL wrongShow auto-clear path should strip wrongShow.
+ *
+ * When wrongShow was set on a London-market file whose URL is a UK outlet,
+ * it's almost always an LLM false-positive (UK outlets only cover London
+ * theatre). But: respect manual wrongShowReason, CV-confirmed wrongArticle,
+ * and date-mismatches (review >90 days before open = prior production).
+ *
+ * Callers pass `isLondonMarketShow`, `isUkOutletUrl`, `dateMismatchOver90d`
+ * so this lib stays decoupled from venue-classification / parseDate.
+ *
+ * @param {object} data
+ * @param {object} ctx
+ * @param {boolean} ctx.isLondonMarketShow
+ * @param {boolean} ctx.isUkOutletUrl
+ * @param {boolean} ctx.dateMismatchOver90d
+ * @returns {boolean}
+ */
+function shouldAutoClearWrongShowUkUrl(data, { isLondonMarketShow, isUkOutletUrl, dateMismatchOver90d, urlSlugNamesOtherShow } = {}) {
+  if (data.wrongShow !== true) return false;
+  if (!isLondonMarketShow) return false;
+  if (!isUkOutletUrl) return false;
+  if (dateMismatchOver90d) return false;
+  // "UK outlets rarely review anything but London shows" says nothing when
+  // the URL itself is another show's review (thestage.co.uk/reviews/the-
+  // other-place-review-... on Oliver!, auto-cleared into the live page).
+  if (urlSlugNamesOtherShow) return false;
+  const isWrongArticle = data.contentVerification?.wrongArticle === true;
+  const hasManualReason = !!data.wrongShowReason;
+  if (hasEnsembleConsensus(data, 'wrong_show')) return false;
+  if (isTextStaleRelativeToUrlRewrite(data)) return false;
+  return !isWrongArticle && !hasManualReason;
+}
+
+/**
+ * Decide whether a "Dateless revival guard" wrongProduction flag should be
+ * auto-cleared. That guard (scripts/lib/date-guard.js → evaluateDatelessRevivalGuard)
+ * holds a review that has NO usable date on a recent revival title. It is a
+ * provisional HOLD, not a verdict: the moment the review gains a usable date
+ * (backfill / re-scrape) the proper dated guard should own the decision, and an
+ * explicit human override must always win. This strips only our own flag —
+ * recognised by its note prefix or reason — never a manual/CV/cross-market flag.
+ *
+ * Defense-in-depth (#1156/BRO-3328): most sibling auto-clear predicates in
+ * this file defer to hasEnsembleConsensus — a unanimous ensemble
+ * wrong_production verdict on the fetched text outranks a domain/market
+ * heuristic. This path had never been given that same guard, so a review the
+ * ensemble had already rejected on content grounds could be silently
+ * restored the moment the show gained a usable date, even though a date
+ * proves nothing about whether the text is the right production
+ * (much-ado-about-nothing-2026's london-theatre--marianka-swain.json).
+ * humanOverride is checked FIRST and still always wins, per this function's
+ * original contract above.
+ * NOTE: shouldAutoClearStaleDateGuard below has the identical shape (a date
+ * moving back in-window releases a hold) and is STILL missing this guard —
+ * tracked as a separate follow-up (BRO-3328 ship-check finding) rather than
+ * folded into this fix, since no live corpus violation exists for it today.
+ *
+ * @param {object} data - the review JSON object
+ * @param {object} ctx
+ * @param {boolean} ctx.hasUsableDate - true if the review now has a usable date
+ *   (parsed publishDate or YYYYMMDD URL date)
+ * @returns {boolean}
+ */
+function shouldAutoClearDatelessRevival(data, { hasUsableDate } = {}) {
+  if (!data || data.wrongProduction !== true) return false;
+  const note = data.wrongProductionNote || '';
+  const reason = data.wrongProductionReason || '';
+  const isOurs = note.startsWith('Dateless revival guard') || reason === 'dateless-revival';
+  if (!isOurs) return false;
+  const humanOverride = !!data.allowEarlyDate
+    || !!data.wrongProductionManualClear
+    || data.humanReviewedWrongProduction === true;
+  if (humanOverride) return true;
+  if (hasEnsembleConsensus(data, 'wrong_production')) return false;
+  return !!hasUsableDate;
+}
+
+/**
+ * Decide whether a STALE dated pre-opening guard wrongProduction flag should be
+ * auto-cleared because the review's CURRENT date now falls inside the show's
+ * valid window.
+ *
+ * Background (2026-06-28): the rebuild's dated pre-opening guard sets
+ * wrongProduction + a `Pre-opening guard: ...` note when a review's date is 90+
+ * days before the show. Once flagged, the rebuild short-circuits on
+ * `d.wrongProduction` and NEVER re-evaluates the guard — so when the date is
+ * later corrected to an in-window date (adjudication / re-scrape), the stale
+ * flag silently keeps a genuine review out of the rebuild forever. 145 corpus-
+ * wide, including major-outlet reviews (all-my-sons-west-end-2025 Guardian/Arifa
+ * Akbar: a real 2025-11-22 review held by a long-gone 2025-07-01 date; Tina 2019
+ * WashPost/NYPost/NYDN; Torch Song 2018 Vulture/EW).
+ *
+ * SAFETY: only clears flags whose note proves the DATED guard set them
+ * (note begins `Pre-opening guard:`). Operator / CV / cross-market / dateless-
+ * revival / manual wrongProduction is never matched. The caller computes the
+ * in-window verdict via date-guard.evaluateDateGuard on the review's resolved
+ * date and passes it as `nowInWindow` — keeping this module free of a circular
+ * require on date-guard (which already requires isWithinPriorRun from here).
+ *
+ * @param {object} data - the review JSON object
+ * @param {object} ctx
+ * @param {boolean} ctx.nowInWindow - true if evaluateDateGuard(...).flag === false
+ *   for the review's current resolved date (date now inside the valid window)
+ * @returns {boolean}
+ */
+function shouldAutoClearStaleDateGuard(data, { nowInWindow } = {}) {
+  if (!data || data.wrongProduction !== true) return false;
+  if (!isDatedGuardNote(data.wrongProductionNote)) return false;
+  // `Date guard:` flags (added BRO-4185): a scoring-model date guess must not
+  // move a flag in either direction (same carve-out as date-plausibility.js /
+  // contradicted-flag-basis.js). Pre-opening behaviour is left unchanged.
+  if (String(data.wrongProductionNote).startsWith('Date guard:') && data.dateSource === 'llm-scoring') return false;
+  return nowInWindow === true;
+}
+
+/**
+ * Notes written by the two DATED guards, both computed by
+ * date-guard.evaluateDateGuard on publishDate alone:
+ *   - `Pre-opening guard:` — rebuild-all-reviews.js
+ *   - `Date guard:`        — flag-wrong-production-by-date.js
+ * The second prefix was missing (BRO-4185): a flag-wrong-production-by-date
+ * flag was never re-evaluated after its date was corrected, so the same
+ * date fix that released a `Pre-opening guard:` flag left this one stuck.
+ */
+function isDatedGuardNote(note) {
+  const n = String(note || '');
+  return n.startsWith('Pre-opening guard:') || n.startsWith('Date guard:');
+}
+
+/**
+ * Decide whether a STALE anticipatory_pre_opening_post wrongProduction flag
+ * should be auto-cleared because re-running isAnticipatoryPreviewPost on the
+ * review's CURRENT publishDate/showCategory/openingDate no longer rejects it.
+ *
+ * Background (BRO-39): the OB/OWE 14-day anticipatory grace
+ * (OFF_BROADWAY_GRACE_DAYS_BEFORE_OPENING, bumped from 2 days 2026-05-27 —
+ * see content-filters.js) only applies at ingest time. A file flagged when
+ * the show's category lookup fell through to the 2-day Broadway default (or
+ * before an openingDate correction landed) carries a permanently stale flag
+ * — collect-review-texts.js never re-runs the gate on an already-flagged
+ * file. Mirrors shouldAutoClearStaleDateGuard's re-evaluate-and-compare
+ * shape, but for the anticipatory gate instead of the dated pre-opening one.
+ *
+ * SAFETY: only touches flags the anticipatory ingest gate itself set
+ * (wrongProductionReason === 'anticipatory_pre_opening_post' — the exact
+ * value collect-review-texts.js writes, same value keyed in
+ * DATE_ONLY_AUTO_REASONS above). Manual / CV / cross-market / other auto-flag
+ * reasons are untouched. Still respects high-confidence CV wrongProduction/
+ * wrongArticle, ensemble consensus, and stale-relative-to-URL-rewrite text —
+ * same bar as every other predicate in this file.
+ *
+ * @param {object} data - the review JSON object
+ * @param {object} ctx
+ * @param {boolean} ctx.stillRejected - isAnticipatoryPreviewPost(...).rejected
+ *   recomputed on the review's CURRENT resolved publishDate, the show's
+ *   CURRENT category, and the show's CURRENT openingDate
+ * @returns {boolean}
+ */
+function shouldAutoClearAnticipatoryGrace(data, { stillRejected } = {}) {
+  if (!data || data.wrongProduction !== true) return false;
+  if (data.wrongProductionReason !== 'anticipatory_pre_opening_post') return false;
+  if (stillRejected !== false) return false;
+  const cvConfirmedWrongProduction = data.contentVerification?.wrongProduction === true
+    && data.contentVerification?.confidence === 'high';
+  const cvConfirmedWrongArticle = data.contentVerification?.wrongArticle === true
+    && data.contentVerification?.confidence === 'high';
+  if (cvConfirmedWrongProduction || cvConfirmedWrongArticle) return false;
+  if (hasEnsembleConsensus(data, 'wrong_production')) return false;
+  if (isTextStaleRelativeToUrlRewrite(data)) return false;
+  return true;
+}
+
+// BRO-2868: wrongShowReason prefixes a re-fetch from a corrected URL cannot
+// disprove. Both are one-shot operator/audit decisions about which show
+// directory a file belongs in (resolve-remaining-collisions.js,
+// audit-cross-show-url-collisions.js, which build their reason strings from
+// these constants so the writer and this registry cannot drift apart).
+// Deliberately NOT listed: the automatic "Cross-show URL collision: ..."
+// variants (derived from URL/score comparisons a corrected URL can invalidate)
+// and every LLM/content reason.
+const WRONG_SHOW_MANUAL_COLLISION_PREFIX = 'Cross-show URL collision (manual resolution): review belongs to ';
+const WRONG_SHOW_ORPHAN_DIR_PREFIX = 'Orphaned generic directory ';
+const WRONG_SHOW_URL_INDEPENDENT_REASON_PREFIXES = Object.freeze([
+  WRONG_SHOW_MANUAL_COLLISION_PREFIX,
+  WRONG_SHOW_ORPHAN_DIR_PREFIX,
+]);
+
+function isUrlIndependentWrongShowReason(reason) {
+  return typeof reason === 'string'
+    && WRONG_SHOW_URL_INDEPENDENT_REASON_PREFIXES.some((p) => reason.startsWith(p));
+}
+
+/**
+ * Decide whether collect-review-texts.js's "wrong_content recovered" cleanup
+ * must LEAVE an exclusion flag in place instead of deleting it.
+ *
+ * Background (BRO-2828, live incident 2026-09-05): that cleanup runs after a
+ * review is re-fetched from a corrected URL and blanket-deletes
+ * wrongProduction/wrongProductionReason regardless of what SET them. The
+ * anticipatory pre-opening gate in the SAME ingest pass sets
+ * wrongProduction=true / wrongProductionReason='anticipatory_pre_opening_post'
+ * from publishDate vs the show's openingDate alone — a verdict that has
+ * nothing to do with the URL or the article body, so re-fetching from a
+ * corrected URL is no evidence against it. On
+ * the-story-west-end-2026/monstagigz--unknown.json the URL change was a
+ * cosmetic /comment-page-1/ suffix strip on the SAME article; the flag was
+ * wiped, the review shipped with assignedScore 44, and the opening-night
+ * broadcast checklist gate blocked on it for days. The gate's own
+ * wrongProductionDetail / wrongProductionDetectedBy / anticipatoryGate*
+ * breadcrumbs survived the delete, which is how the cause was traced.
+ *
+ * Keyed off DATE_ONLY_AUTO_REASONS rather than the literal string so this
+ * does not become a third independent copy of the same policy — that Set
+ * already IS the repo's registry of content-independent wrongProduction
+ * reasons, and flag-contradiction.js joins on it for the same reason.
+ *
+ * CAVEAT if you add a member to that Set: it now has two consumers with
+ * different questions. flag-contradiction.js asks "can a content-only CV pass
+ * evaluate this reason?"; this predicate asks "can re-fetching the article
+ * from a corrected URL disprove this reason?". Those coincide for
+ * anticipatory_pre_opening_post and for any other pure date verdict, but a
+ * future reason that CV cannot judge yet a NEW URL genuinely does invalidate
+ * would be preserved here incorrectly, and would also be exempt from
+ * contradiction triage — so it would stay excluded silently. If you add such a
+ * reason, split the Set rather than widening this one (Codex review, BRO-2828).
+ *
+ * shouldSkipWrongProductionAudit() is deliberately NOT consulted: it gates
+ * whether the ingest gate stamps the flag at all (collect-review-texts.js),
+ * so a file carrying a DATE_ONLY_AUTO_REASONS reason already passed it — and
+ * importing review-guards.js here would close a require cycle (review-guards
+ * pulls isWithinPriorRun back out of this module).
+ *
+ * humanReviewedEarlyPublish IS consulted. It is the documented operator
+ * opt-out for the anticipatory gate (content-filters.js
+ * isAnticipatoryPreviewPost), and this cleanup was its only remaining exit:
+ * collect-review-texts.js never re-runs the gate on an already-flagged file,
+ * and the collect-side re-skip guard honors only humanReviewedWrongProduction
+ * === false / humanReviewScore. Ignoring it here would leave an operator with
+ * no way to clear the flag at all. The rebuild's re-derivation now passes the
+ * same opt through to isAnticipatoryPreviewPost so both exits agree.
+ *
+ * wrongShow half (BRO-2868): answered by WRONG_SHOW_URL_INDEPENDENT_REASON_PREFIXES,
+ * the wrongShow counterpart of DATE_ONLY_AUTO_REASONS. Preserving on ANY
+ * wrongShowReason would defeat the cleanup (content-mismatch flags carry
+ * reason strings too: "Collector LLM: ...", "CV-promoted: ...", "LLM: ..."), so
+ * the registry lists only one-shot operator/audit decisions that are a function
+ * of neither the article body nor the URL. It is an explicit allow-list: an
+ * unlisted reason keeps being cleared, which is the cleanup's default.
+ *
+ * @param {object} data - the review JSON object, read back after the re-fetch
+ * @returns {{ wrongProduction: boolean, wrongShow: boolean }}
+ */
+function shouldPreserveExclusionFlagsOnUrlRecovery(data) {
+  const d = data || {};
+  const reason = d.wrongProductionReason;
+  const wrongProduction = d.wrongProduction === true
+    && typeof reason === 'string'
+    && DATE_ONLY_AUTO_REASONS.has(reason)
+    && d.humanReviewedEarlyPublish !== true;
+  const wrongShow = d.wrongShow === true && isUrlIndependentWrongShowReason(d.wrongShowReason);
+  return { wrongProduction, wrongShow };
+}
+
+// BRO-4476: the UK-URL / UK-outlet auto-clear is a cross-market heuristic. It
+// must not outrank evidence that the review is about a different run or city:
+// an Edinburgh Fringe review on The Stage (UK URL) was cleared onto a London
+// entry and scored 80. PRE_WINDOW_DAYS (60) is too loose for this path, so it
+// uses its own tighter 14-day window before the show's earliest date.
+const UK_CLEAR_PRE_RUN_DAYS = 14;
+const NON_LONDON_CITY_RE = /(?:^|[^a-z])(?:edinburgh|fringe|assembly[- ]rooms|summerhall|pleasance|underbelly|gilded[- ]balloon|king'?s[- ]theatre[- ]edinburgh|glasgow|manchester|birmingham|liverpool|leeds|sheffield|newcastle|nottingham|cardiff|belfast|dublin|chichester)(?:[^a-z]|$)/i;
+
+function isPreRunForUkClear(publishDate, showEarliestDate) {
+  if (!publishDate || !showEarliestDate) return false;
+  const rd = parseDate(publishDate);
+  const sd = showEarliestDate instanceof Date ? showEarliestDate : new Date(showEarliestDate);
+  if (!rd || isNaN(rd.getTime()) || isNaN(sd.getTime())) return false;
+  return (sd.getTime() - rd.getTime()) > UK_CLEAR_PRE_RUN_DAYS * 86400000;
+}
+
+function namesNonLondonCity(data) {
+  let slug = '';
+  try { slug = new URL(data.url).pathname.replace(/[\/_-]+/g, ' '); } catch { slug = ''; }
+  // An explicit 'london' in the slug (london-fringe, brighton-rock-london) outranks the city token.
+  if (/(?:^|\s)london(?:\s|$)/i.test(slug)) return false;
+  return NON_LONDON_CITY_RE.test(slug);
+}
+
+/**
+ * Decide whether the rebuild's UK/dual-market outlet auto-clear path should
+ * strip wrongProduction from a London-market show reviewed by a UK or
+ * dual-market outlet.
+ *
+ * Background (task #1189): this was the largest wrongProduction auto-clear
+ * path (rebuild-all-reviews.js:2464-2534) but, unlike shouldAutoClearWrongProduction/
+ * shouldAutoClearWrongShowUkUrl/shouldAutoClearWrongShow, it was never
+ * extracted into a named, unit-testable predicate — leaving it invisible to
+ * scoring-delta.js's mandated inclusion replay (CLAUDE.md rule 12.7).
+ *
+ * A UK-outlet URL (or a dual-market/london-registry-region outlet) on a
+ * London-market show is a strong signal the wrongProduction flag is a
+ * cross-market false positive — but only when nothing else outranks that
+ * heuristic: a structural date/URL-year flag, a review that genuinely
+ * predates the show, explicit CV confirmation, a manual reason, a show-
+ * listing (not dated-review) URL, or a unanimous ensemble wrong_production
+ * verdict / stale-relative-to-URL-rewrite text (task #1156/#1162 generalized
+ * the ensemble-consensus guard — already used by shouldAutoClearWrongShowUkUrl
+ * — to this wrongProduction path too; landed on main while this extraction
+ * was in flight, reconciled here at merge time).
+ *
+ * Callers compute the URL/outlet/date classification (isUkUrl, outletIsDualOrUk,
+ * outletIsLondonRegion, isDateMismatch, isShowListingUrl, cvBlocksClear) so this
+ * module stays decoupled from venue-classification, review-normalization,
+ * cross-production-guards, and review-guards.js (which itself requires this
+ * module — see review-guards.js:598 — so importing back would be circular).
+ *
+ * @param {object} data - the review JSON object
+ * @param {object} ctx
+ * @param {boolean} ctx.isLondonMarketShow - isLondonMarket(showCat)
+ * @param {boolean} ctx.isUkUrl - venue-classification's isUkOutletUrl(data.url)
+ * @param {boolean} ctx.outletIsDualOrUk - outlet is in DUAL_MARKET_OUTLETS or a UK-side
+ *   registry region (cross-market-guard's UK_SELF_HEAL_REGIONS: 'london' or 'uk')
+ * @param {boolean} ctx.outletIsLondonRegion - UK-side registry region specifically, i.e.
+ *   UK_SELF_HEAL_REGIONS ('london' or 'uk'; 'dual' excluded). Subset of outletIsDualOrUk.
+ *   Name kept for call-site compatibility; it is no longer 'london'-only (BRO-591 follow-up).
+ * @param {boolean} ctx.isDateMismatch - review predates the show's earliest date by more than PRE_WINDOW_DAYS
+ * @param {boolean} ctx.isShowListingUrl - URL is a listing/aggregate page, not a dated review
+ * @param {boolean} ctx.cvBlocksClear - cvBlocksUkWrongProductionAutoClear(data.contentVerification)
+ * @param {string|Date} [ctx.showEarliestDate] - show's earliest date; a publishDate more than
+ *   UK_CLEAR_PRE_RUN_DAYS before it refuses the clear (BRO-4476)
+ * @returns {boolean}
+ */
+function shouldAutoClearWrongProductionUkDualMarket(data, ctx = {}) {
+  if (!data || data.wrongProduction !== true) return false;
+  if (data.wrongProductionOverride) return false;
+  if (!ctx.isLondonMarketShow) return false;
+  if (!data.url) return false;
+
+  const wpNote = data.wrongProductionNote || '';
+  const isStructuralFlag = wpNote.includes('Same URL exists') || wpNote.includes('Pre-opening guard')
+    || wpNote.includes('days before show opened') || wpNote.includes('URL contains year');
+  if (isStructuralFlag) return false;
+  // flag-wrong-production-by-date's AFTER-close note is a date fact, not a
+  // cross-market guess: a UK outlet reviewing a LATER London production of
+  // the same title still has a UK URL. Clearing it put the 2025 Old Vic
+  // Oedipus reviews back on the 2024 Wyndham's row (BRO-4851).
+  if (/^Date guard: .* after .*\(close\+/.test(wpNote)) return false;
+  // BRO-2841: backward-compat half of the fix — see hasAdjudicatedNote's
+  // docstring. Forward-looking protection now comes from the
+  // wrongProductionReason check a few lines below, which adjudicate-
+  // review-queue.js populates on every write since this fix.
+  // Concrete incident: the-car-man-west-end-2026/north-west-end--natalia-prucnal.json.
+  if (hasAdjudicatedNote(data)) return false;
+  if (ctx.isDateMismatch) return false;
+  if (isPreRunForUkClear(data.publishDate, ctx.showEarliestDate)) return false;
+  if (namesNonLondonCity(data)) return false;
+
+  // Outer gate: outlet must be UK-URL or dual/UK-market. Inner gate: UK URL
+  // or specifically registry-region 'london' (dual-market outlets alone are
+  // NOT enough here — their flags can be genuine same-title other-market
+  // reviews, see the inline comment this predicate replaces).
+  if (!ctx.isUkUrl && !ctx.outletIsDualOrUk) return false;
+  if (!ctx.isUkUrl && !ctx.outletIsLondonRegion) return false;
+
+  if (ctx.cvBlocksClear) return false;
+  if (data.wrongProductionReason) return false;
+  if (ctx.isShowListingUrl) return false;
+  if (hasEnsembleConsensus(data, 'wrong_production')) return false;
+  if (isTextStaleRelativeToUrlRewrite(data)) return false;
+
+  return true;
+}
+
+/**
+ * Reverse direction of shouldAutoClearWrongProductionUkDualMarket: a stale
+ * "Cross-market: London outlet ..." flag on a Broadway / off-Broadway show,
+ * written before the outlet was registered as dual-market.
+ *
+ * observer.com (NY Observer: Rex Reed, David Cote) carried 182 such flags on
+ * NYC shows although `observer` is now isDualMarket, and the reverse guard no
+ * longer fires for dual outlets, so nothing ever re-checked them (BRO-4185
+ * follow-up). The same outletId also holds UK Observer reviews (Susannah
+ * Clapp, Clare Brennan) with no URL or a theguardian.com URL; those flags are
+ * genuine, so the clear requires the review's own URL to be on the outlet's
+ * registered primary domain, and that domain must not be a UK one.
+ *
+ * Two more gates came from the corpus dry run: the same review URL is often
+ * copied onto older productions of the title (Hello, Dolly! 2017 review on the
+ * 1978 and 1995 entries, with a fabricated 1978 date), so the clear also needs
+ * the publish date inside this production's own run AND the URL filed under no
+ * other show.
+ *
+ * ctx: { isNycMarketShow, outletIsDualMarket, urlOnOutletPrimaryDomain,
+ *        isUkUrl, isDateMismatch, isShowListingUrl, cvBlocksClear,
+ *        inOwnProductionWindow, urlFiledUnderOtherShow }
+ */
+function shouldAutoClearStaleLondonOutletCrossMarket(data, ctx = {}) {
+  if (!data || data.wrongProduction !== true) return false;
+  if (data.wrongProductionOverride) return false;
+  if (!ctx.isNycMarketShow) return false;
+  if (!data.url) return false;
+  const wpNote = data.wrongProductionNote || '';
+  if (!wpNote.startsWith('Cross-market: London outlet')) return false;
+  if (hasAdjudicatedNote(data)) return false;
+  if (data.wrongProductionReason) return false;
+  if (ctx.isDateMismatch) return false;
+  if (!ctx.outletIsDualMarket) return false;
+  if (!ctx.urlOnOutletPrimaryDomain || ctx.isUkUrl) return false;
+  if (ctx.cvBlocksClear) return false;
+  if (ctx.isShowListingUrl) return false;
+  if (!ctx.inOwnProductionWindow) return false;
+  if (ctx.urlFiledUnderOtherShow) return false;
+  if (hasEnsembleConsensus(data, 'wrong_production')) return false;
+  if (isTextStaleRelativeToUrlRewrite(data)) return false;
+  return true;
+}
+
+module.exports = {
+  isDateOnlyAutoReason,
+  UK_CLEAR_PRE_RUN_DAYS,
+  isPreRunForUkClear,
+  namesNonLondonCity,
+  DATE_ONLY_AUTO_REASONS,
+  REVIEW_LAG_GRACE_DAYS,
+  ADJUDICATED_NOTE_PREFIX,
+  hasAdjudicatedNote,
+  isAdjudicatedTourVerdict,
+  supersedeAdjudicatedTourVerdict,
+  hasEnsembleConsensus,
+  shouldAutoClearWrongProduction,
+  shouldAutoClearWrongShow,
+  shouldAutoClearWrongProductionUrlYear,
+  shouldAutoClearWrongShowUkUrl,
+  isTextStaleRelativeToUrlRewrite,
+  isWithinPriorRun,
+  findMatchingPriorRun,
+  hasDeclaredPriorRuns,
+  isWithinTourLeg,
+  hasDeclaredTourLegs,
+  shouldAutoClearWrongProductionPriorRun,
+  shouldAutoClearWrongProductionTourLeg,
+  shouldAutoClearDatelessRevival,
+  shouldAutoClearStaleDateGuard,
+  isDatedGuardNote,
+  shouldAutoClearAnticipatoryGrace,
+  shouldPreserveExclusionFlagsOnUrlRecovery,
+  WRONG_SHOW_URL_INDEPENDENT_REASON_PREFIXES,
+  WRONG_SHOW_MANUAL_COLLISION_PREFIX,
+  WRONG_SHOW_ORPHAN_DIR_PREFIX,
+  isUrlIndependentWrongShowReason,
+  shouldAutoClearWrongProductionUkDualMarket,
+  shouldAutoClearStaleLondonOutletCrossMarket,
+};

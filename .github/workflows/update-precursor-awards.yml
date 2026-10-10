@@ -1,0 +1,231 @@
+name: Update Precursor Awards Data
+
+# Drama Desk / OCC / Drama League / NYDCC nominations are announced late April;
+# the Pulitzer Prize for Drama is announced mid-April. Run daily mid-April
+# through May to catch nominees + winners as Wikipedia is updated, plus a
+# weekly catch-up the rest of the year.
+#
+# Each scraper is idempotent — when there's no new data the workflow exits
+# without committing.
+
+on:
+  # All 5 precursor scrapers verified production-ready 2026-05-16:
+  #   - DD/OCC/DL use precursor-category-parser.js (multi-decade tables,
+  #     citation-suffixed year cells like `2024[94][95]`, light-cyan winner-
+  #     row highlights, both <b><i>/<i><b> orderings, bold-only winners).
+  #   - Pulitzer refactored to reuse the shared parser (replaces its own
+  #     bespoke logic that missed multi-table layouts).
+  #   - NYDCCC rewritten to walk H3 + UL lists for 2010+ winners (Wikipedia
+  #     switched from per-category tables to bulleted lists post-2009).
+  #     Pre-2010 still parsed from the combined wikitable as a fallback.
+  # writePrecursorJson merges with existing categories so scrapers no longer
+  # wipe person/direction/choreography baselines.
+  schedule:
+    - cron: '0 17 * 4-5 *'    # 17:00 UTC daily, April-May (precursor season)
+    - cron: '0 17 * * 1'      # 17:00 UTC every Monday (year-round catch-up)
+  workflow_dispatch:
+    inputs:
+      ceremony:
+        description: 'Which ceremony to scrape (default: all)'
+        required: false
+        type: choice
+        default: all
+        options:
+          - all
+          - drama-desk
+          - outer-critics
+          - drama-league
+          - nydcc
+          - pulitzer
+          - critics-circle
+          - lortel
+          - obie
+          - oba
+          - evening-standard
+          - whatsonstage
+      min_year:
+        description: 'Earliest ceremony year to scrape (default: 2014)'
+        required: false
+        default: '2014'
+      force:
+        description: 'Allow writes even if entry count shrunk >5%'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+# Serialize schedule + manual-dispatch runs against data/precursors/ and
+# data/awards.json. Both cron entries fire at 17:00 UTC, so on any Monday that
+# falls in April/May they trigger simultaneously — and a manual dispatch can
+# land in the same window during precursor season. Both files are pushed via
+# the plain public-repo push-with-retry.sh, whose generic conflict fallback is
+# "accept remote" (no per-ceremony merge across pushes — the writePrecursorJson
+# merge only covers a single run's local writes). A losing run's freshly-
+# scraped nominees/winners would be silently discarded — same class as the
+# update-cast-changes.yml incident (Notion 3a5637c5-416f-812a). Queued, not
+# cancelled, so neither run's scrape is lost.
+concurrency:
+  group: update-precursor-awards
+  cancel-in-progress: false
+
+jobs:
+  update-precursors:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Scrape precursor data
+        env:
+          CEREMONY: ${{ inputs.ceremony || 'all' }}
+          MIN_YEAR: ${{ inputs.min_year || '2014' }}
+          FORCE_FLAG: ${{ inputs.force == true && '--force' || '' }}
+        run: |
+          set -e
+          run_scraper() {
+            local script="$1"
+            echo "::group::$script"
+            node "$script" --write --min-year="$MIN_YEAR" $FORCE_FLAG
+            echo "::endgroup::"
+          }
+          # Year-page scrapers run AFTER their per-category counterparts so
+          # year-page data overrides for covered years (per-category scrapers
+          # store winner=person + adjacency-broken nominees; year-page has
+          # winner=show + winnerPersonName separately). Track B addition 2026-05-25.
+          run_year_page_scraper() {
+            local script="$1"
+            echo "::group::$script"
+            node "$script" --write $FORCE_FLAG || echo "::warning::$script failed — per-category data still applies"
+            echo "::endgroup::"
+          }
+          case "$CEREMONY" in
+            drama-desk)     run_scraper scripts/scrape-drama-desk.js
+                            run_year_page_scraper scripts/scrape-drama-desk-year-page.js ;;
+            outer-critics)  run_scraper scripts/scrape-outer-critics.js
+                            run_year_page_scraper scripts/scrape-occ-year-page.js ;;
+            drama-league)   run_scraper scripts/scrape-drama-league.js
+                            run_year_page_scraper scripts/scrape-drama-league-year-page.js ;;
+            nydcc)          run_scraper scripts/scrape-nydcc.js ;;
+            pulitzer)       run_scraper scripts/scrape-pulitzer.js ;;
+            critics-circle)   run_scraper scripts/scrape-critics-circle.js ;;
+            lortel)           run_scraper scripts/scrape-lortel.js ;;
+            obie)             run_scraper scripts/scrape-obie.js ;;
+            # OBA: Playbill SERP-discovery; does not honor --min-year flag.
+            # Source is one Playbill round-up article per ceremony year; merge-on-write preserves history.
+            oba)              echo "::group::scripts/scrape-off-broadway-alliance.js"
+                              node scripts/scrape-off-broadway-alliance.js --write $FORCE_FLAG
+                              echo "::endgroup::" ;;
+            evening-standard) run_scraper scripts/scrape-evening-standard.js ;;
+            whatsonstage)     run_scraper scripts/scrape-whatsonstage.js ;;
+            all|*)
+              run_scraper scripts/scrape-drama-desk.js
+              run_scraper scripts/scrape-outer-critics.js
+              run_scraper scripts/scrape-drama-league.js
+              run_scraper scripts/scrape-nydcc.js
+              run_scraper scripts/scrape-pulitzer.js
+              run_scraper scripts/scrape-critics-circle.js
+              run_scraper scripts/scrape-lortel.js
+              run_scraper scripts/scrape-obie.js
+              echo "::group::scripts/scrape-off-broadway-alliance.js"
+              node scripts/scrape-off-broadway-alliance.js --write $FORCE_FLAG
+              echo "::endgroup::"
+              run_scraper scripts/scrape-evening-standard.js
+              run_scraper scripts/scrape-whatsonstage.js
+              # Year-page scrapers — authoritative for covered years (override per-category).
+              run_year_page_scraper scripts/scrape-occ-year-page.js
+              run_year_page_scraper scripts/scrape-drama-desk-year-page.js
+              run_year_page_scraper scripts/scrape-drama-league-year-page.js
+              ;;
+          esac
+
+      - name: Check for precursor source changes
+        id: changes
+        run: |
+          if git diff --quiet data/precursors/; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No changes to precursor data"
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            git diff --stat data/precursors/ >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Re-enrich awards.json with refreshed precursor data
+        if: steps.changes.outputs.has_changes == 'true'
+        run: node scripts/enrich-awards-with-precursors.js
+
+      - name: Commit and push
+        if: steps.changes.outputs.has_changes == 'true'
+        env:
+          # BRO-76: see update-tony-awards.yml's identical env var comment —
+          # closes the non-conflicting-silent-drop gap for awards.json (the
+          # OTHER of its two writers). Reconciliation only touches registered
+          # files (scripts/lib/core-data-merge-registry.js), so this has no
+          # effect on the unrelated data/precursors/ files also staged here.
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/precursors/ data/awards.json
+          CEREMONY="${{ inputs.ceremony || 'all' }}"
+          git commit -m "chore: Update precursor awards data (${CEREMONY})
+
+          Refreshed from Wikipedia via scrape-{drama-desk,outer-critics,drama-league,nydcc,pulitzer}.js;
+          awards.json re-enriched via enrich-awards-with-precursors.js."
+          bash scripts/lib/push-with-retry.sh
+
+      # awards.json is dual-tracked (see update-tony-awards.yml): the public
+      # commit above feeds test.yml's staleness gate + vercel-preview's
+      # build-trigger path, but the private repo
+      # (thomaspryor/broadway-scorecard-data) is what checkout-core-data
+      # actually serves to every other workflow. enrich-awards-with-precursors.js
+      # writes data/awards.json above but nothing pushed that write to the
+      # private repo — card #1441 (same bug, sibling writer).
+      - name: Push core data to private repo
+        if: always() && steps.changes.outputs.has_changes == 'true'
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update awards.json from precursor data (private repo sync)'
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: update-precursor-awards
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Update Precursor Awards Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Precursor Awards Update" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.changes.outputs.has_changes }}" == "true" ]; then
+            echo "✅ Precursor data updated" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "ℹ️ No changes to precursor data" >> $GITHUB_STEP_SUMMARY
+          fi

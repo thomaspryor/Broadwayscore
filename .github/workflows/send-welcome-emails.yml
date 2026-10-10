@@ -1,0 +1,130 @@
+name: Send Welcome Emails
+
+# One-time welcome email for new accounts (BRO-4620). The script does the work
+# and holds every safety rule (once per account via public.welcome_emails,
+# per-run and daily caps, transactional sends only); see the header of
+# scripts/send-welcome-emails.js.
+#
+# ON/OFF lives in code, not here: WELCOME_EMAIL_SEND_FROM in
+# scripts/lib/welcome-email.js (ON since 2026-10-05). While it is null every
+# scheduled run exits in about a second without touching Supabase or Resend.
+#
+# Watched by check-cron-health.yml (CRITICAL_CRONS, 13h). Its self-heal
+# redispatches with no inputs, which is why the dispatch default is 'run':
+# the redispatch must do what the schedule does, not a dry run that would
+# only make a dead schedule look healthy. A run that exits 1 (Resend setup
+# error, halted) also counts against that health check.
+#
+# Manual modes (workflow_dispatch):
+#   run        same as the schedule (the default)
+#   dry-run    read-only; with preview_since (UTC, e.g. 2026-10-04T00:00:00Z),
+#              shows who WOULD get the email had sending been switched on then.
+#              Accounts older than MAX_ACCOUNT_AGE_HOURS (20h) are left out,
+#              as in a real run. Never sends, never claims.
+#   test-send  one email to delivered@resend.dev (Resend's test sink), no DB
+
+on:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'run | dry-run | test-send'
+        required: true
+        default: 'run'
+        type: choice
+        options: [run, dry-run, test-send]
+      preview_since:
+        description: 'dry-run only: ISO time to preview as if sending had been switched on then'
+        required: false
+        type: string
+
+# write: the job commits the alert router's ledger (see the last step).
+permissions:
+  contents: write
+
+# Overlapping runs are already safe (the claim is a primary-key insert), but
+# queueing keeps the daily-cap count from racing.
+concurrency:
+  group: send-welcome-emails
+  cancel-in-progress: false
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+
+      # Plain setup-node, not ./.github/actions/setup-node: that action runs
+      # npm ci, and this script needs only Node built-ins and in-repo files.
+      # Skipping the install keeps the every-15-min run to seconds.
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Send welcome emails
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # Inputs arrive via env, never interpolated into the script body.
+          MODE: ${{ inputs.mode || 'run' }}
+          PREVIEW_SINCE: ${{ inputs.preview_since }}
+        run: |
+          set -euo pipefail
+          # preview_since only means something to a dry run. With mode=run (the
+          # default) it would be ignored and a real send would go out to someone
+          # who meant to preview, so refuse instead.
+          if [ -n "$PREVIEW_SINCE" ] && [ "$MODE" != dry-run ]; then
+            echo "::error::preview_since needs mode=dry-run (got mode=$MODE); nothing was sent"
+            exit 1
+          fi
+          case "$MODE" in
+            run)       node scripts/send-welcome-emails.js ;;
+            test-send) node scripts/send-welcome-emails.js --test-send ;;
+            dry-run)
+              if [ -n "$PREVIEW_SINCE" ]; then
+                node scripts/send-welcome-emails.js --dry-run "--preview-since=$PREVIEW_SINCE"
+              else
+                node scripts/send-welcome-emails.js --dry-run
+              fi ;;
+            *) echo "::error::unknown mode $MODE"; exit 1 ;;
+          esac
+
+      # The script reports trouble through routeAlert() (Daily Digest lines,
+      # once per incident). The router's ledger and digest queue live only on
+      # this runner until committed, so commit them here or every run would
+      # look like a new incident and the digest would never see the line.
+      - name: Commit alert ledger
+        if: always()
+        run: |
+          echo "send-welcome-emails.js calls routeAlert( and resolveCondition( - staging the router ledger"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -m "data: Update welcome-email alert state [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          else
+            echo "No ledger changes to commit"
+          fi
+
+      - name: Notify on failure
+        # Scheduled runs only. The script reports its own failures to the
+        # Daily Digest. This step is severity 'warning', which notify-failure
+        # logs without emailing; it leaves a trace for checkout/setup failures
+        # the script never sees.
+        if: failure() && github.event_name == 'schedule'
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Send Welcome Emails Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

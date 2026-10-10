@@ -1,0 +1,209 @@
+name: Weekly Broadway Grosses
+
+on:
+  # Run every Tuesday at 3pm UTC (10am ET) - after grosses are released
+  # Also retry on Wednesday if Tuesday failed
+  schedule:
+    - cron: '0 15 * * 2'  # Tuesday
+    - cron: '0 15 * * 3'  # Wednesday (retry)
+
+  # Manual trigger
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Force update even if data exists for this week'
+        required: false
+        default: 'false'
+        type: boolean
+
+permissions:
+  contents: write
+  actions: write
+
+# Serialize against scrape-alltime-grosses.yml — both write data/grosses.json. The shared
+# push-with-retry helper's rebase fallback uses -X ours and can silently drop the other
+# writer's edits if they collide. The shared group name (not per-workflow) is the point.
+concurrency:
+  group: data-grosses-writers
+  cancel-in-progress: false
+
+jobs:
+  update-grosses:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - uses: ./.github/actions/setup-node
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Check if update needed (for Wednesday retry)
+        id: check
+        run: |
+          # Get the current week ending date (last Sunday), unpadded M/D/YYYY
+          # like grosses.json's weekEnding ("9/27/2026"); zero-padded never
+          # matched a single-digit month or day, so the skip rarely fired.
+          CURRENT_WEEK=$(date -d "last sunday" +%-m/%-d/%Y 2>/dev/null || date -v-sun +%-m/%-d/%Y)
+          echo "current_week=$CURRENT_WEEK" >> $GITHUB_OUTPUT
+
+          # Check if we already have this week's data
+          if [ -f data/grosses.json ]; then
+            LAST_WEEK=$(jq -r '.weekEnding // "none"' data/grosses.json)
+            echo "last_week=$LAST_WEEK" >> $GITHUB_OUTPUT
+
+            if [ "$LAST_WEEK" = "$CURRENT_WEEK" ] && [ "${{ github.event.inputs.force }}" != "true" ]; then
+              echo "skip=true" >> $GITHUB_OUTPUT
+              echo "Data already updated for week ending $CURRENT_WEEK"
+            else
+              echo "skip=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Scrape weekly grosses (Playbill, BroadwayWorld fallback)
+        if: steps.check.outputs.skip != 'true'
+        run: npx tsx scripts/scrape-grosses.ts
+        env:
+          NODE_ENV: production
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+
+      - name: Scrape BroadwayWorld all-time stats
+        if: steps.check.outputs.skip != 'true'
+        run: npx tsx scripts/scrape-alltime.ts
+        env:
+          NODE_ENV: production
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        continue-on-error: true  # Don't fail the whole job if BWW cumulative page is unavailable
+
+      - name: Check for changes
+        if: always() && steps.check.outputs.skip != 'true'
+        id: changes
+        run: |
+          if git diff --quiet data/grosses.json data/grosses-history.json 2>/dev/null; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Changes detected:"
+            git diff --stat data/grosses.json data/grosses-history.json
+          fi
+
+      - name: Validate data integrity
+        if: steps.check.outputs.skip != 'true' && steps.changes.outputs.has_changes == 'true'
+        run: node scripts/validate-data.js
+
+      - name: Build site (verify no breaking changes)
+        if: steps.check.outputs.skip != 'true' && steps.changes.outputs.has_changes == 'true'
+        run: npm run build
+        env:
+          NODE_ENV: production
+          NEXT_PUBLIC_SANITY_PROJECT_ID: fp1ft8k8
+          NEXT_PUBLIC_SANITY_DATASET: production
+          NEXT_PUBLIC_SANITY_API_VERSION: '2024-10-01'
+
+      - name: Commit and push changes
+        if: always() && steps.check.outputs.skip != 'true' && steps.changes.outputs.has_changes == 'true'
+        run: |
+          set -euo pipefail
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          WEEK_ENDING=$(jq -r '.weekEnding // "unknown"' data/grosses.json)
+
+          # Core data files pushed to private repo by push-core-data action
+          git commit -m "data: Update Broadway grosses for week ending $WEEK_ENDING
+
+          Automated weekly update of box office data.
+
+          Validated: Data integrity checked
+          Build: Site builds successfully"
+
+          bash scripts/lib/push-with-retry.sh
+
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from weekly-grosses'
+
+      - name: Trigger deploy (core data changed)
+        if: always() && steps.changes.outputs.has_changes == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Deploy dedup: skip if a deploy was ALREADY triggered after our rebuild started
+          OUR_RUN_START=$(gh run view ${{ github.run_id }} --json createdAt -q '.createdAt' 2>/dev/null || echo "")
+          RECENT=$(gh run list --workflow=vercel-deploy.yml --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
+
+          if [ -n "$RECENT" ] && [ -n "$OUR_RUN_START" ]; then
+            RECENT_TS=$(date -d "$RECENT" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$RECENT" +%s 2>/dev/null || echo "0")
+            OUR_TS=$(date -d "$OUR_RUN_START" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$OUR_RUN_START" +%s 2>/dev/null || echo "0")
+            NOW_TS=$(date +%s)
+            DIFF=$((NOW_TS - RECENT_TS))
+
+            if [ "$RECENT_TS" -gt "$OUR_TS" ] && [ "$DIFF" -lt 900 ]; then
+              echo "Skipping deploy — already triggered after this run started (${DIFF}s ago)"
+              exit 0
+            fi
+          fi
+
+          echo "Triggering deploy..."
+          gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — will deploy on next schedule"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Weekly Grosses Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+      - name: Summary
+        if: always()
+        run: |
+          if [ "${{ steps.check.outputs.skip }}" = "true" ]; then
+            echo "## Skipped" >> $GITHUB_STEP_SUMMARY
+            echo "Data already updated for this week." >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ steps.changes.outputs.has_changes }}" = "true" ]; then
+            echo "## Updated" >> $GITHUB_STEP_SUMMARY
+            SHOW_COUNT=$(jq '.shows | keys | length' data/grosses.json)
+            WEEK=$(jq -r '.weekEnding' data/grosses.json)
+            echo "Updated grosses data for **$SHOW_COUNT shows** (week ending $WEEK)" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## No Changes" >> $GITHUB_STEP_SUMMARY
+            echo "Scrape completed but no new data found." >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Record pipeline success
+        if: success()
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          mkdir -p data/audit/pipeline-health
+          date -u > data/audit/pipeline-health/weekly-grosses.last-success
+          git add data/audit/pipeline-health/
+          git diff --staged --quiet || git commit -m "health: Record weekly-grosses success" && bash scripts/lib/push-with-retry.sh || echo "::warning::Health recording push failed"

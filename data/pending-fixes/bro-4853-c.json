@@ -1,0 +1,374 @@
+{
+  "issueNumber": "bro-4853-c",
+  "planId": "84bfb2b3-9cb0-424c-a186-1fac909e37ee",
+  "status": "applied",
+  "createdAt": "2026-10-08T00:08:35.129Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Part 3 of 4. Synopsis sweep (BRO-4853, owner request 2026-10-07). Other Desert Cities carried a false Tony claim copied from Show Score; a site-wide audit (regex detectors plus a whole-corpus model sweep, every hit read by hand) found 70 more bad synopses: Fela! (1776 text), The Great Society (Great Comet text), 5 cookie-banner records, and 63 records holding another work's Wikipedia article, a person's biography, a disambiguation page, a song list or wiki markup.",
+    "steps": [
+      "Rewrite the Other Desert Cities (2026), Fela! and The Great Society synopses from sourced facts",
+      "Clear the 5 cookie-banner synopses",
+      "Clear the 63 wrong-article synopses so the production-verified enricher can refill them"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "legend-1976",
+        "field": "synopsis",
+        "oldValue": "John Roger Stephens (born December 28, 1978), known professionally as John Legend, is an American singer, songwriter, pianist, and record producer. He began his musical career working behind the scenes for other artists, playing piano on Lauryn Hill's \"Everything Is Everything\", and performing as an uncredited backing vocalist on Jay-Z's \"Encore\" and Alicia Keys' \"You Don't Know My Name\".",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is John Legend (singer biography). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fame-1974",
+        "field": "synopsis",
+        "oldValue": "Fame usually refers to the state of notability or celebrity.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is the dictionary definition of 'fame'. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "doctor-jazz-1975",
+        "field": "synopsis",
+        "oldValue": "\"Doctor Jazz\" is a popular tune and song written by Joe \"King\" Oliver in 1926. Publisher Walter Melrose got his name on it as co-composer, as was often his practice. It enjoyed its initial popularity in the 1920s. It continues to be played by Dixieland jazz groups. It has been performed by many notable acts, such as Jelly Roll Morton, Chris Barber, Harry Connick Jr.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a 1926 jazz song. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pacific-paradise-1972",
+        "field": "synopsis",
+        "oldValue": "Pacific Paradise is a 1955 Australian play by Dymphna Cusack. It was adapted on ABC radio in 1955, 1956 and 1957. By 1962 the play had been produced in New Zealand, the UK, Japan. Latin America, the USSR, Czechoslovakia, Poland, Hungary, Germany, China, India, Albania, North Korea, Rumania, Bulgaria, Cuba, Iceland.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a 1955 Australian play. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "don-juan-1972",
+        "field": "synopsis",
+        "oldValue": "= Songs not appearing in the show marked by *; songs not found in the soundtrack marked by ** ;Disc 1 (Act I) Ouverture. (Aren't you ashamed? The songs were composed by Félix Gray and the orchestra was conducted by Guy St-Onge. Singers included Guy St-Onge, Antoine Cortes, Chico Castillo, Dominique Faure, Jorge Heredia and released on Cloutier.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a soundtrack track listing. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-enemy-is-dead-1973",
+        "field": "synopsis",
+        "oldValue": "Killer Is Dead is a hack and slash video game developed by Grasshopper Manufacture. It was released for PlayStation 3 and Xbox 360 in August 2013 and for Windows in May 2014.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is the video game Killer Is Dead. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-swingers-1971",
+        "field": "synopsis",
+        "oldValue": "The Swingers were a New Zealand rock band who were together from 1979 to 1982 and whose biggest single was the song \"Counting the Beat\".",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a New Zealand rock band. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "frozen-2004",
+        "field": "synopsis",
+        "oldValue": "A Greek chorus introduces Princess Elsa of Arendelle, and her playful younger sister, Princess Anna (\"Vuelie\", \"Let the Sun Shine On\"). While the family knows about Elsa's magic, it is kept a secret from the people of Arendelle. One night at bedtime, Elsa and Anna build a magical snowman and name it Olaf (\"A Little Bit of You\"); Elsa creates snow in their room.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Disney's Frozen (not Bryony Lavery's play). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "contact-2000",
+        "field": "synopsis",
+        "oldValue": "com; Internet Broadway Database ;Act I ;Swinging My Heart Stood Still (Richard Rodgers and Lorenz Hart) – Stéphane Grappelli ;Did You Move? Anitra's Dance (Edvard Grieg) – New York Philharmonic Orchestra, cond. Leonard Bernstein Waltz from Eugene Onegin, Op. 24 (Pyotr Ilyich Tchaikovsky) – New York Philharmonic Orchestra, cond.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a list of songs. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jerome-robbins-broadway-1989",
+        "field": "synopsis",
+        "oldValue": "Sources: Internet Broadway Data Base; MasterWorks Broadway ;Act I Gotta Dance (from Look, Ma, I'm Dancin'! ) Papa, Won't You Dance With Me? (from High Button Shoes) Shall We Dance?",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a list of songs. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cyrano-de-bergerac-1984",
+        "field": "synopsis",
+        "oldValue": "Savinien de Cyrano de Bergerac ( , ; 6 March 1619 – 28 July 1655) was a French novelist, playwright, epistolarian, and duelist. A bold and innovative author, his work was part of the libertine literature of the first half of the 17th century. Today, he is best known as the inspiration for Edmond Rostand's most noted drama, Cyrano de Bergerac (1897), which, although it includes elements of his life, also contains invention and myth.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Cyrano de Bergerac (biography of the historical man). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "doubles-1985",
+        "field": "synopsis",
+        "oldValue": "Men's doubles, Women's doubles or Mixed doubles are sports having two players per side, including; * Beach volleyball * Doubles badminton * Doubles curling * Footvolley * Doubles pickleball * Doubles squash * Doubles table tennis * Doubles tennis Doubles may also refer to:",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is doubles in sports. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "edmund-kean-1983",
+        "field": "synopsis",
+        "oldValue": "Edmund Kean (4 November 178715 May 1833) was a British Shakespearean actor, who performed, among other places, in London, Belfast, New York, Quebec, and Paris. He was known for his short stature, tumultuous personal life, and controversial divorce.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Edmund Kean (actor biography). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "end-of-the-world-1984",
+        "field": "synopsis",
+        "oldValue": "It's Only the End of the World (French: Juste la fin du monde) is a 1990 French play by Jean-Luc Lagarce. It is about a character named Louis who returns to his family to announce his terminal illness.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is It's Only the End of the World (different play). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-queen-and-the-rebels-1982",
+        "field": "synopsis",
+        "oldValue": "The Queen, or The Excellency of Her Sex is a Caroline era tragicomedy. Though published anonymously in 1653, The play is now generally attributed to John Ford – making it a significant addition to the very limited canon of Ford's works.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is The Queen, a 1653 tragicomedy (different play). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "passion-1983",
+        "field": "synopsis",
+        "oldValue": "The musical is usually presented in one act. An intermission was added only for the London production. In Milan in 1863, two lovers are at the height of ecstasy (\"Happiness\"). The handsome captain, Giorgio, breaks their reverie by telling Clara that he is being transferred to a provincial military outpost.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Sondheim's musical Passion (different show). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "i-have-a-dream-1976",
+        "field": "synopsis",
+        "oldValue": "Mamma Mia! I Have a Dream is a British reality talent competition that began airing on 22 October 2023 on ITV. The show documented the search for two new, unknown musical theatre performers to play the roles of Sophie Sheridan and Sky Ramand in the West End production of the musical Mamma Mia!.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is the TV competition Mamma Mia! I Have a Dream. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-the-girls-came-out-to-play-1972",
+        "field": "synopsis",
+        "oldValue": "The Sun Came Out is a charity studio album released on 31 August 2009 by 7 Worlds Collide, a musical project of New Zealand singer/songwriter Neil Finn for the benefit of Oxfam.  The album was recorded at Finn's Roundhead Studios and is a follow-up to the 7 Worlds Collide live album of 2001.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a 2009 charity album. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ulysses-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "Ulysses is a 1705 tragedy by the British writer Nicholas Rowe. Rowe turned back to writing tragedies following his unsuccessful comedy The Biter of the previous year. The cast included Thomas Betterton as Ulysses, Barton Booth as Telemachus, Elizabeth Barry as Penelope and Anne Bracegirdle as Semanthe.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Nicholas Rowe's 1705 tragedy Ulysses. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "music-city-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "John Thomas Harding is an American country music songwriter. He has written songs for Uncle Kracker, Kenny Chesney, Keith Urban, Blake Shelton, Dierks Bentley, and Darius Rucker.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is songwriter John Thomas Harding (biography). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-llamada-off-broadway-2024",
+        "field": "synopsis",
+        "oldValue": "\"La Llamada\" () is a song recorded by American recording artist Selena for her first live album Live! It was composed by Selena y Los Dinos backup singer Pete Astudillo and Selena's brother and principal record producer A. Quintanilla III and produced by Quintanilla III and Argentine music producer Bebu Silvetti.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Selena's song La Llamada. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "beauty-and-the-beast-tour-2025",
+        "field": "synopsis",
+        "oldValue": "\"Beauty and the Beast\" is a fairy tale written by the French novelist Gabrielle-Suzanne Barbot de Villeneuve and published anonymously in 1740 in La Jeune Américaine et les contes marins (The Young American and Marine Tales).\nVilleneuve's original story was abridged, revised, and published by French novelist Jeanne-Marie Leprince de Beaumont in 1756 in Magasin des enfants (Children's Collection) which became the most commonly retold version.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is the Beauty and the Beast fairy tale article. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "starlight-express-west-end-2024",
+        "field": "synopsis",
+        "oldValue": "Starlight Express has been revised many times since it was first produced. These revisions range from tweaks to lyrics to adding or removing entire songs, characters and subplots. The fundamental story, however, has stayed the same. This synopsis reflects the show as it was first produced, in the West End in 1984.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is notes on Starlight Express revisions, not a synopsis. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "chess-1988",
+        "field": "synopsis",
+        "oldValue": "= The musical's American incarnation has noticeably different settings, lyrics, song orders, and a completely different Act 2 from the British version. In particular, in the American Chess the entire show is about one chess match, not two. Act 1 involves the first part of the match, which is held in Bangkok, Thailand, while Act 2 handles the conclusion, and is set in Budapest, Hungary.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a fragment about the musical's American settings, led by wiki markup. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "chess-2003",
+        "field": "synopsis",
+        "oldValue": "= The musical's American incarnation has noticeably different settings, lyrics, song orders, and a completely different Act 2 from the British version. In particular, in the American Chess the entire show is about one chess match, not two. Act 1 involves the first part of the match, which is held in Bangkok, Thailand, while Act 2 handles the conclusion, and is set in Budapest, Hungary.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a fragment about the musical's American settings, led by wiki markup. Cleared so the production-verified Wikipedia enricher can refill it."
+      }
+    ]
+  },
+  "executedAt": "2026-10-08T00:57:32.748Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for legend-1976"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for fame-1974"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for doctor-jazz-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for pacific-paradise-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for don-juan-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-enemy-is-dead-1973"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-swingers-1971"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for frozen-2004"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for contact-2000"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for jerome-robbins-broadway-1989"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for cyrano-de-bergerac-1984"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for doubles-1985"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for edmund-kean-1983"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for end-of-the-world-1984"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-queen-and-the-rebels-1982"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for passion-1983"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for i-have-a-dream-1976"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for all-the-girls-came-out-to-play-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for ulysses-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for music-city-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for la-llamada-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for beauty-and-the-beast-tour-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for starlight-express-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for chess-1988"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for chess-2003"
+    }
+  ]
+}

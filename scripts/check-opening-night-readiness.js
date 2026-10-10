@@ -1,0 +1,503 @@
+#!/usr/bin/env node
+/**
+ * Pre-Opening Night Health Check
+ *
+ * Runs the afternoon before a show opens. Automates CLAUDE.md §14 checks
+ * to catch issues BEFORE they become opening night emergencies.
+ *
+ * Usage:
+ *   node scripts/check-opening-night-readiness.js --show=SHOW_ID [--market=broadway|west-end]
+ *
+ * Env (optional — checks skip gracefully if missing):
+ *   ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY
+ *   SCRAPINGBEE_API_KEY, BRIGHTDATA_TOKEN, RESEND_API_KEY
+ *   FORMSPREE_SUBSCRIBER_API_KEY, FORMSPREE_SUBSCRIBER_FORM_ID
+ *   GH_TOKEN or GITHUB_TOKEN (for workflow run checks)
+ */
+const fs = require('fs');
+const path = require('path');
+const https = require('https');
+const { imagePresent } = require('./lib/show-image-presence');
+const { fetchSBCreditStatus } = require('./lib/check-sb-credits');
+const { sbCreditVerdict } = require('./lib/sb-credit-verdict');
+
+// --- CLI args ---
+const args = process.argv.slice(2);
+const SHOW_ID = (args.find(a => a.startsWith('--show=')) || '').split('=')[1];
+const MARKET = (args.find(a => a.startsWith('--market=')) || '').split('=')[1] || '';
+
+if (!SHOW_ID) {
+  console.error('Usage: node scripts/check-opening-night-readiness.js --show=SHOW_ID [--market=broadway|west-end]');
+  process.exit(1);
+}
+
+// --- Helpers ---
+function httpsGet(url, headers = {}) {
+  return new Promise((resolve) => {
+    try {
+      const parsed = new URL(url);
+      const req = https.request({
+        hostname: parsed.hostname,
+        path: parsed.pathname + parsed.search,
+        method: 'GET',
+        headers,
+        timeout: 15000,
+      }, (res) => {
+        let body = '';
+        res.on('data', (chunk) => body += chunk);
+        res.on('end', () => resolve({ status: res.statusCode, body, headers: res.headers }));
+      });
+      req.on('error', (err) => resolve({ status: 0, body: err.message, headers: {} }));
+      req.on('timeout', () => { req.destroy(); resolve({ status: 0, body: 'timeout', headers: {} }); });
+      req.end();
+    } catch (e) {
+      resolve({ status: 0, body: e.message, headers: {} });
+    }
+  });
+}
+
+const PASS = '✅', WARN = '⚠️', FAIL = '❌', SKIP = '⏭️';
+const results = [];
+
+function report(status, name, detail) {
+  results.push({ status, name, detail });
+  console.log(`${status} ${name}`);
+  if (detail) console.log(`   ${detail}`);
+}
+
+// --- Load show data ---
+const DATA_DIR = path.join(__dirname, '..');
+let showsData, show, market;
+try {
+  showsData = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'data', 'shows.json'), 'utf8'));
+  show = showsData.shows.find(s => s.id === SHOW_ID);
+} catch (e) {
+  console.error('Cannot load shows.json:', e.message);
+  process.exit(1);
+}
+
+if (!show) {
+  report(FAIL, 'Show exists', `${SHOW_ID} not found in shows.json`);
+  printSummary();
+  process.exit(1);
+}
+
+market = MARKET || show.category || 'broadway';
+const isBroadway = !market.includes('west-end') && !market.includes('off-west-end');
+const isWestEnd = market.includes('west-end') || market.includes('off-west-end');
+
+console.log(`\n${'═'.repeat(60)}`);
+console.log(`  Opening Night Readiness: ${show.title}`);
+console.log(`  Show ID: ${SHOW_ID} | Market: ${market}`);
+console.log(`  Opening: ${show.openingDate || 'NOT SET'}`);
+console.log(`${'═'.repeat(60)}\n`);
+
+// --- Checks ---
+async function runChecks() {
+  // 1. Show data basics
+  if (!show.openingDate) {
+    report(FAIL, 'Opening date', 'openingDate is null — show won\'t be detected by orchestrator');
+  } else {
+    report(PASS, 'Opening date', show.openingDate);
+  }
+
+  if (!show.status || show.status === 'closed') {
+    report(FAIL, 'Show status', `Status is "${show.status}" — should be "previews" or "open"`);
+  } else {
+    report(PASS, 'Show status', show.status);
+  }
+
+  // 1b. Category not-null (CLAUDE.md rule 14 item 5; Joe Turner 2026-04-19
+  // shipped with category=null and the orchestrator soft-warned + defaulted
+  // to broadway — fragile. Hard-fail if null.)
+  if (!show.category) {
+    report(FAIL, 'Show category',
+      `category is null — orchestrator will warn + default to broadway. ` +
+      `Fix in broadway-scorecard-data/shows.json: set category to 'broadway' or 'west-end'.`);
+  } else if (show.category === 'broadway' || show.category === 'west-end') {
+    report(PASS, 'Show category', show.category);
+  } else {
+    report(WARN, 'Show category',
+      `category="${show.category}" — orchestrator only special-cases broadway/west-end. ` +
+      `Confirm this is intentional (off-broadway / off-west-end shows don't get the broadcast pipeline).`);
+  }
+
+  // 2. Images
+  // Trust shows.json's images field (what the site actually renders) rather
+  // than hardcoding the .webp filename the standard pipeline produces — the
+  // SERP-fallback image path writes .jpg/.png instead, and a hardcoded-webp
+  // check flags those shows as "missing" even though the site displays them
+  // fine (found via a-month-in-the-country-west-end-2026, 2026-09-02: real
+  // poster.jpg + thumbnail.jpg on disk and wired into images.{poster,
+  // thumbnail}, reported as "Missing: hero, poster, thumbnail").
+  const images = show.images || {};
+  // A field being SET is not the same as the file EXISTING. An earlier pass
+  // here checked truthiness only, which fixed a false "missing" (the code
+  // used to hardcode a .webp extension) by introducing a false ALL-CLEAR,
+  // which on an opening-night gate is the worse direction. Real case at the
+  // time of writing: high-society-west-end-2026 has images.hero pointing at
+  // hero.webp, only poster.jpg and thumbnail.jpg are on disk, and the check
+  // printed "✅ Show images". Repo-wide there were 334 images.* refs pointing
+  // at files absent from public/.
+  //
+  // Predicate lives in scripts/lib/show-image-presence.js so the test exercises
+  // the real function instead of a copy (CLAUDE.md rule 15).
+  const hasHero = imagePresent(images.hero);
+  const hasPoster = imagePresent(images.poster);
+  const hasThumbnail = imagePresent(images.thumbnail);
+  if (hasHero && hasPoster && hasThumbnail) {
+    report(PASS, 'Show images', 'hero + poster + thumbnail all present');
+  } else {
+    const missing = [!hasHero && 'hero', !hasPoster && 'poster', !hasThumbnail && 'thumbnail'].filter(Boolean);
+    report(WARN, 'Show images', `Missing: ${missing.join(', ')}. Run: gh workflow run fetch-all-image-formats.yml -f show_id=${SHOW_ID}`);
+  }
+
+  // 3. DTLI slug (Broadway only)
+  if (isBroadway) {
+    try {
+      const slugMap = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'data', 'dtli-slug-map.json'), 'utf8'));
+      const dtliSlug = (slugMap.shows || slugMap)[SHOW_ID];
+      if (dtliSlug) {
+        report(PASS, 'DTLI slug', `Mapped to: ${dtliSlug}`);
+      } else {
+        report(WARN, 'DTLI slug', `No mapping found. Run: gh workflow run scrape-dtli-show-score.yml to discover. Broadcast gate needs at least 1 aggregator.`);
+      }
+    } catch {
+      report(WARN, 'DTLI slug map', 'Cannot read dtli-slug-map.json');
+    }
+  } else {
+    report(SKIP, 'DTLI slug', 'West End — DTLI is US-only');
+  }
+
+  // 4. DTLI reachability (Broadway only)
+  if (isBroadway) {
+    try {
+      const slugMap = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'data', 'dtli-slug-map.json'), 'utf8'));
+      const dtliSlug = (slugMap.shows || slugMap)[SHOW_ID];
+      if (dtliSlug) {
+        const url = `https://didtheylikeit.com/shows/${dtliSlug}/`;
+        const res = await httpsGet(url);
+        if (res.status === 200 && res.body.length > 5000 && (res.body.includes('review-item') || res.body.includes('poster-review-item'))) {
+          report(PASS, 'DTLI page reachable', `${url} — ${(res.body.length / 1024).toFixed(0)}KB`);
+        } else if (res.status === 200 && res.body.length < 2000) {
+          report(WARN, 'DTLI page blocked', `Got ${res.body.length} bytes — likely CDN challenge. fetchPage fallback will be used in CI.`);
+        } else if (res.status === 200) {
+          report(WARN, 'DTLI page loaded but no reviews', `Page exists but no review-item class found. DTLI may not have reviews yet.`);
+        } else {
+          report(WARN, 'DTLI page not found', `${url} returned ${res.status}. Page may not exist yet.`);
+        }
+      } else {
+        report(SKIP, 'DTLI reachability', 'No DTLI slug — skipping reachability check');
+      }
+    } catch (e) {
+      report(WARN, 'DTLI reachability', `Error: ${e.message}`);
+    }
+  } else {
+    report(SKIP, 'DTLI reachability', 'West End — DTLI is US-only');
+  }
+
+  // 5. BWW Review Roundup discovery
+  // URL pattern guessing was DELETED 2026-04-26 (commit eccdb3280f) — never
+  // caught what reviews.php missed and burned 17 min/cycle pre-publication.
+  // The current chain is: reviews.php Browserbase → homepage scan → SERP →
+  // fast-fail. Pre-opening 404s are EXPECTED — page doesn't exist until
+  // reviews start dropping. Manual --bww-roundup-url is only needed when
+  // reviews.php fails after publication.
+  if (isBroadway) {
+    report(PASS, 'BWW Roundup discovery',
+      `Chain: reviews.php → homepage scan → SERP → fast-fail. ` +
+      `Pre-opening 404 is normal; only intervene if reviews.php fails AFTER opening. ` +
+      `URL pattern guessing was removed 2026-04-26.`);
+  } else {
+    report(SKIP, 'BWW Roundup discovery', 'West End — BWW roundups are primarily Broadway');
+  }
+
+  // 6. Talkin' Broadway URL (Broadway only)
+  // TB pattern varies by show: Lost Boys 2026 used `TheLostBoys.html` (bare
+  // slug, no year), Giant 2026 used `giant2026.html` (year suffix). The
+  // poller's tryTbDirectUrl tries BOTH. Pre-opening, TB can publish early
+  // (Lost Boys' Howard Miller landed 24h pre-opening), so the bare-slug
+  // variant is worth checking now.
+  if (isBroadway) {
+    const baseSlug = show.title.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+    const baseSlugCamel = show.title.replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s+/g, ' ').trim()
+      .split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join('');
+    const tbYear = (show.openingDate || '').slice(0, 4);
+    const candidates = [
+      `https://www.talkinbroadway.com/page/world/${baseSlugCamel}.html`,           // Lost Boys pattern
+      `https://www.talkinbroadway.com/page/world/${baseSlug}${tbYear}.html`,       // Giant pattern (year)
+      `https://www.talkinbroadway.com/page/world/${baseSlug}.html`,                // bare lowercase
+    ];
+    let found = null;
+    for (const url of candidates) {
+      const res = await httpsGet(url);
+      if (res.status === 200 && res.body.length > 2000) {
+        found = url;
+        break;
+      }
+    }
+    if (found) {
+      report(PASS, 'Talkin\' Broadway URL', `Found: ${found}`);
+    } else {
+      report(WARN, 'Talkin\' Broadway URL',
+        `Not found yet across ${candidates.length} pattern variants. ` +
+        `TB can publish early (Lost Boys' Howard Miller landed 24h pre-opening) but typically publishes within ` +
+        `48h of opening. Poller will discover via tryTbDirectUrl.`);
+    }
+  } else {
+    report(SKIP, 'Talkin\' Broadway URL', 'West End — TB is Broadway-only');
+  }
+
+  // 7. Wrong-production pre-scores
+  const reviewTextsDir = path.join(require('./lib/review-texts-dir').resolveReviewTextsDir(), SHOW_ID);
+  if (fs.existsSync(reviewTextsDir)) {
+    const files = fs.readdirSync(reviewTextsDir).filter(f => f.endsWith('.json'));
+    const wrongProd = [];
+    for (const f of files) {
+      try {
+        const d = JSON.parse(fs.readFileSync(path.join(reviewTextsDir, f), 'utf8'));
+        if (d.wrongProduction) wrongProd.push(f);
+      } catch {}
+    }
+    if (wrongProd.length > 0) {
+      report(WARN, 'Wrong-production files', `${wrongProd.length} files flagged: ${wrongProd.slice(0, 3).join(', ')}${wrongProd.length > 3 ? '...' : ''}`);
+    } else if (files.length > 0) {
+      report(PASS, 'Pre-existing reviews', `${files.length} review files, none flagged as wrong production`);
+    } else {
+      report(PASS, 'Pre-existing reviews', 'No pre-existing review files (clean slate)');
+    }
+  } else {
+    report(PASS, 'Pre-existing reviews', 'No review-texts directory yet (clean slate)');
+  }
+
+  // 8. API keys (quick validation — no costly API calls)
+  const keyChecks = [
+    { name: 'ANTHROPIC_API_KEY', env: 'ANTHROPIC_API_KEY', test: 'https://api.anthropic.com/v1/models', headers: { 'x-api-key': '', 'anthropic-version': '2023-06-01' }, keyHeader: 'x-api-key' },
+    { name: 'OPENAI_API_KEY', env: 'OPENAI_API_KEY', test: 'https://api.openai.com/v1/models', headers: { 'Authorization': '' }, keyHeader: 'Authorization', keyPrefix: 'Bearer ' },
+    { name: 'GEMINI_API_KEY', env: 'GEMINI_API_KEY', test: null }, // just check existence
+    { name: 'SCRAPINGBEE_API_KEY', env: 'SCRAPINGBEE_API_KEY', test: null },
+    { name: 'BRIGHTDATA_TOKEN', env: 'BRIGHTDATA_TOKEN', test: null },
+    { name: 'RESEND_API_KEY', env: 'RESEND_API_KEY', test: 'https://api.resend.com/domains', headers: { 'Authorization': '' }, keyHeader: 'Authorization', keyPrefix: 'Bearer ' },
+  ];
+
+  for (const kc of keyChecks) {
+    const key = process.env[kc.env];
+    if (!key) {
+      report(WARN, `API key: ${kc.name}`, 'Not set in environment. Set in .env or GitHub secrets.');
+      continue;
+    }
+    if (kc.test) {
+      const headers = { ...kc.headers };
+      if (kc.keyHeader) headers[kc.keyHeader] = (kc.keyPrefix || '') + key;
+      const res = await httpsGet(kc.test, headers);
+      if (res.status >= 200 && res.status < 300) {
+        report(PASS, `API key: ${kc.name}`, 'Valid');
+      } else {
+        report(FAIL, `API key: ${kc.name}`, `Invalid (HTTP ${res.status})`);
+      }
+    } else {
+      report(PASS, `API key: ${kc.name}`, 'Set (not validated)');
+    }
+  }
+
+  // 9. Bright Data zone status
+  // Per memory/feedback_brightdata_zone_migration.md: `mcp_unlocker` is the
+  // OBSOLETE trial zone (always shows disabled with "trial limit reached" —
+  // ignore). The active zone is $BRIGHTDATA_ZONE (default web_unlocker2 as
+  // of 2026-04-25). Alternates: web_unlocker_mnewmsyo / mngwkvlo / mnn80138.
+  const bdToken = process.env.BRIGHTDATA_TOKEN;
+  const bdZone = process.env.BRIGHTDATA_ZONE || 'web_unlocker2';
+  if (bdToken) {
+    const bdRes = await httpsGet(`https://api.brightdata.com/zone?zone=${encodeURIComponent(bdZone)}`, {
+      'Authorization': `Bearer ${bdToken}`,
+    });
+    if (bdRes.status === 200) {
+      try {
+        const zone = JSON.parse(bdRes.body);
+        if (zone.disable) {
+          report(FAIL, 'Bright Data zone',
+            `${bdZone} is DISABLED ("${zone.disable}"). Recover in BD UI ` +
+            `(Configuration tab → Recover + enable toggle), or swap to alternate ` +
+            `via: printf 'NEW_ZONE' | gh secret set BRIGHTDATA_ZONE.`);
+        } else {
+          report(PASS, 'Bright Data zone', `${bdZone} active`);
+        }
+      } catch {
+        report(WARN, 'Bright Data zone', `Unexpected response: ${bdRes.body.slice(0, 100)}`);
+      }
+    } else {
+      report(WARN, 'Bright Data zone', `API returned ${bdRes.status} for zone ${bdZone}`);
+    }
+  } else {
+    report(SKIP, 'Bright Data zone', 'BRIGHTDATA_TOKEN not set');
+  }
+
+  // 9b. CRITICAL_CRONS membership (CLAUDE.md rule 14 item 2). Verify
+  // opening-night-orchestrator is in check-cron-health.yml's CRITICAL_CRONS
+  // list — without it, a missing/late orchestrator run won't page anyone.
+  try {
+    const cronHealthYml = fs.readFileSync(
+      path.join(DATA_DIR, '.github', 'workflows', 'check-cron-health.yml'),
+      'utf8',
+    );
+    if (cronHealthYml.includes('opening-night-orchestrator')) {
+      report(PASS, 'Orchestrator in CRITICAL_CRONS', 'opening-night-orchestrator listed in check-cron-health.yml');
+    } else {
+      report(FAIL, 'Orchestrator missing from CRITICAL_CRONS',
+        'opening-night-orchestrator NOT found in .github/workflows/check-cron-health.yml. ' +
+        'Late or missed runs won\'t page. Add to CRITICAL_CRONS list.');
+    }
+  } catch (e) {
+    report(WARN, 'Orchestrator CRITICAL_CRONS check', `Could not read check-cron-health.yml: ${e.message}`);
+  }
+
+  // 10. ScrapingBee credits
+  //
+  // BRO-3032: this block used to fetch /usage itself and read `usage.used` —
+  // a field that endpoint has never returned (it returns used_api_credit) —
+  // so the percentage was always 0 and this check reported PASS "0% used" at
+  // every real usage level, including an exhausted cycle. A dead alarm inside
+  // a MANDATORY readiness checklist (CLAUDE.md rule 14).
+  //
+  // Both halves now live where they can be tested and where the payload shape
+  // is already known: lib/check-sb-credits.js owns the fetch and classifies
+  // no-key / api-error / max_api_credit<=0, and lib/sb-credit-verdict.js owns
+  // the thresholds. Nothing here hand-reads a provider field name any more.
+  const sbVerdict = sbCreditVerdict(await fetchSBCreditStatus());
+  // `?? WARN`: an unmapped level would make report() push {status: undefined},
+  // which printSummary counts in none of its four buckets — the check would
+  // silently vanish from the summary, which is the exact failure mode this
+  // whole fix exists to remove. Degrade loudly instead.
+  const sbSymbol = { pass: PASS, warn: WARN, fail: FAIL, skip: SKIP }[sbVerdict.level] ?? WARN;
+  report(sbSymbol, 'ScrapingBee credits', sbVerdict.detail);
+
+  // 11. Subscriber sync (Formspree vs Resend)
+  const resendKey = process.env.RESEND_API_KEY;
+  const formspreeKey = process.env.FORMSPREE_SUBSCRIBER_API_KEY;
+  const formspreeForm = process.env.FORMSPREE_SUBSCRIBER_FORM_ID;
+  if (resendKey && formspreeKey && formspreeForm) {
+    const resendRes = await httpsGet('https://api.resend.com/audiences/472ec5ef-d7cc-4c48-8007-c0a6a302e7a4/contacts', {
+      'Authorization': `Bearer ${resendKey}`,
+    });
+    const formspreeRes = await httpsGet(`https://formspree.io/api/0/forms/${formspreeForm}/submissions`, {
+      'Authorization': `Bearer ${formspreeKey}`,
+    });
+
+    let resendCount = 0, formspreeCount = 0;
+    try {
+      resendCount = JSON.parse(resendRes.body).data?.length || 0;
+    } catch {}
+    try {
+      const subs = JSON.parse(formspreeRes.body).submissions || [];
+      // Deduplicate by email, only count subscribes (not unsubscribes)
+      const emails = new Set();
+      for (const s of subs) {
+        const email = (s.email || s._replyto || '').toLowerCase().trim();
+        const action = (s.action || 'subscribe').toLowerCase();
+        if (action === 'unsubscribe') emails.delete(email);
+        else if (email) emails.add(email);
+      }
+      formspreeCount = emails.size;
+    } catch {}
+
+    const diff = Math.abs(resendCount - formspreeCount);
+    if (diff > 10) {
+      report(WARN, 'Subscriber sync', `Resend: ${resendCount}, Formspree: ${formspreeCount} (Δ${diff}). Run sync-followers.js before broadcast.`);
+    } else {
+      report(PASS, 'Subscriber sync', `Resend: ${resendCount}, Formspree: ${formspreeCount} (Δ${diff})`);
+    }
+  } else {
+    report(SKIP, 'Subscriber sync', 'Missing RESEND_API_KEY or FORMSPREE keys');
+  }
+
+  // 11b. Resource budget headroom (single-show pre-flight).
+  // Soft-warns when any resource has less than 1.5× the per-show estimate
+  // available — i.e. enough to cover this show plus ~half another. Failures
+  // block. See scripts/lib/opening-night-budget.js.
+  try {
+    const { checkBudget } = require('./lib/opening-night-budget');
+    const budget = await checkBudget(1);
+    if (!budget.ok) {
+      const lines = budget.blockers.map(b => `${b.resource}: need ${b.needed} ${b.unit || ''}, ${b.available} available`);
+      report(FAIL, 'Resource budget (1 show)', lines.join('; '));
+    } else {
+      // Soft-warn at 1.5× per-show headroom (i.e. tight if we couldn't fit a second one)
+      const tight = [];
+      for (const [res, est] of Object.entries(budget.estimate)) {
+        const avail = budget.usage[res] && budget.usage[res].remaining;
+        if (avail == null) continue;
+        if (est.perShow > 0 && avail < est.perShow * 1.5) {
+          tight.push(`${res}: ${avail} remaining < 1.5× per-show (${est.perShow})`);
+        }
+      }
+      if (tight.length > 0) {
+        report(WARN, 'Resource budget (1 show)', `Tight headroom — ${tight.join('; ')}`);
+      } else {
+        const totals = Object.entries(budget.estimate).map(([k, v]) => `${k}=${v.total}`).join(', ');
+        report(PASS, 'Resource budget (1 show)', `Budget OK: ${totals}`);
+      }
+    }
+  } catch (e) {
+    report(WARN, 'Resource budget check', `Could not run budget check: ${e.message}`);
+  }
+
+  // 12. Orchestrator recent fire
+  const ghToken = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
+  if (ghToken) {
+    const orchRes = await httpsGet(
+      'https://api.github.com/repos/thomaspryor/Broadwayscore/actions/workflows/opening-night-orchestrator.yml/runs?per_page=5',
+      { 'Authorization': `Bearer ${ghToken}`, 'User-Agent': 'BWSC-Health-Check' }
+    );
+    if (orchRes.status === 200) {
+      try {
+        const runs = JSON.parse(orchRes.body).workflow_runs || [];
+        const recentRun = runs[0];
+        if (recentRun) {
+          const ageHours = (Date.now() - new Date(recentRun.created_at).getTime()) / 3600000;
+          if (ageHours < 48) {
+            report(PASS, 'Orchestrator recently fired', `${recentRun.conclusion || recentRun.status} ${Math.round(ageHours)}h ago`);
+          } else {
+            report(WARN, 'Orchestrator stale', `Last run was ${Math.round(ageHours)}h ago. Consider manual trigger before opening.`);
+          }
+        } else {
+          report(FAIL, 'Orchestrator never fired', 'No runs found. Trigger manually: gh workflow run opening-night-orchestrator.yml');
+        }
+      } catch {
+        report(WARN, 'Orchestrator check', 'Could not parse GitHub API response');
+      }
+    } else {
+      report(WARN, 'Orchestrator check', `GitHub API returned ${orchRes.status}. Set GH_TOKEN for this check.`);
+    }
+  } else {
+    report(SKIP, 'Orchestrator check', 'GH_TOKEN not set');
+  }
+
+  printSummary();
+}
+
+function printSummary() {
+  const passes = results.filter(r => r.status === PASS).length;
+  const warns = results.filter(r => r.status === WARN).length;
+  const fails = results.filter(r => r.status === FAIL).length;
+  const skips = results.filter(r => r.status === SKIP).length;
+
+  console.log(`\n${'═'.repeat(60)}`);
+  console.log(`  SUMMARY: ${passes} pass, ${warns} warn, ${fails} fail, ${skips} skip`);
+
+  if (fails > 0) {
+    console.log(`\n  ${FAIL} NOT READY — fix ${fails} failing check(s) before opening night`);
+    results.filter(r => r.status === FAIL).forEach(r => console.log(`     ${r.name}: ${r.detail}`));
+  } else if (warns > 0) {
+    console.log(`\n  ${WARN} MOSTLY READY — review ${warns} warning(s)`);
+  } else {
+    console.log(`\n  ${PASS} ALL CLEAR — ready for opening night!`);
+  }
+  console.log(`${'═'.repeat(60)}\n`);
+
+  process.exit(fails > 0 ? 1 : 0);
+}
+
+runChecks().catch(err => {
+  console.error('Fatal error:', err.message);
+  process.exit(1);
+});

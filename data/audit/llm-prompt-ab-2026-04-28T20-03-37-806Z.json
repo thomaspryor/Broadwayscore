@@ -1,0 +1,6819 @@
+{
+  "schemaVersion": 1,
+  "runAt": "2026-04-28T20:03:37.807Z",
+  "mode": "full",
+  "promptOld": {
+    "version": "5.3.0",
+    "label": "SYSTEM_PROMPT_V5"
+  },
+  "promptNew": {
+    "version": "5.4.0-structural",
+    "label": "SYSTEM_PROMPT_V5_STRUCTURAL"
+  },
+  "sampleSize": 150,
+  "scoredCount": 150,
+  "windowDays": 180,
+  "thresholds": {
+    "bucketShiftPp": 5,
+    "meanDriftPts": 5
+  },
+  "summary": {
+    "scoredCount": 133,
+    "meanDrift": 0.2857142857142857,
+    "meanAbsDrift": 1.2481203007518797,
+    "bucketChangeCount": 7,
+    "bucketChangePct": 5.263157894736842,
+    "oldBucketShare": {
+      "Rave": 22.55639097744361,
+      "Positive": 20.30075187969925,
+      "Mixed": 21.804511278195488,
+      "Negative": 19.548872180451127,
+      "Pan": 15.789473684210526
+    },
+    "newBucketShare": {
+      "Rave": 22.55639097744361,
+      "Positive": 23.308270676691727,
+      "Mixed": 18.045112781954884,
+      "Negative": 20.30075187969925,
+      "Pan": 15.789473684210526
+    },
+    "bucketShiftPp": {
+      "Rave": 0,
+      "Positive": 3.0075187969924784,
+      "Mixed": -3.7593984962406033,
+      "Negative": 0.7518796992481214,
+      "Pan": 0
+    },
+    "maxBucketShift": 3.7593984962406033,
+    "migrationMatrix": {
+      "Rave": {
+        "Rave": 30,
+        "Positive": 0,
+        "Mixed": 0,
+        "Negative": 0,
+        "Pan": 0
+      },
+      "Positive": {
+        "Rave": 0,
+        "Positive": 27,
+        "Mixed": 0,
+        "Negative": 0,
+        "Pan": 0
+      },
+      "Mixed": {
+        "Rave": 0,
+        "Positive": 4,
+        "Mixed": 24,
+        "Negative": 1,
+        "Pan": 0
+      },
+      "Negative": {
+        "Rave": 0,
+        "Positive": 0,
+        "Mixed": 0,
+        "Negative": 26,
+        "Pan": 0
+      },
+      "Pan": {
+        "Rave": 0,
+        "Positive": 0,
+        "Mixed": 0,
+        "Negative": 0,
+        "Pan": 21
+      }
+    },
+    "perOutletDrift": {
+      "deadline": {
+        "count": 2,
+        "meanDrift": -0.5
+      },
+      "nyt-theater": {
+        "count": 4,
+        "meanDrift": 0.75
+      },
+      "financialtimes": {
+        "count": 7,
+        "meanDrift": -0.7142857142857143
+      },
+      "broadway-and-me": {
+        "count": 2,
+        "meanDrift": 0.5
+      },
+      "nypost": {
+        "count": 2,
+        "meanDrift": 1
+      },
+      "theatermania": {
+        "count": 2,
+        "meanDrift": 0.5
+      },
+      "josh-at-the-movies": {
+        "count": 2,
+        "meanDrift": 0
+      },
+      "cititour": {
+        "count": 6,
+        "meanDrift": 0
+      },
+      "cote-notices": {
+        "count": 1,
+        "meanDrift": -1
+      },
+      "one-minute-critic": {
+        "count": 5,
+        "meanDrift": 1
+      },
+      "chicagotribune": {
+        "count": 3,
+        "meanDrift": 0
+      },
+      "talkinbroadway": {
+        "count": 2,
+        "meanDrift": 3.5
+      },
+      "purewow": {
+        "count": 1,
+        "meanDrift": -1
+      },
+      "artsdesk": {
+        "count": 2,
+        "meanDrift": 0.5
+      },
+      "broadwayworld": {
+        "count": 2,
+        "meanDrift": 0
+      },
+      "hollywood-reporter": {
+        "count": 2,
+        "meanDrift": 0
+      },
+      "timeout": {
+        "count": 5,
+        "meanDrift": 0.4
+      },
+      "thewrap": {
+        "count": 4,
+        "meanDrift": -0.5
+      },
+      "timeout-london": {
+        "count": 3,
+        "meanDrift": 4.666666666666667
+      },
+      "variety": {
+        "count": 2,
+        "meanDrift": 0
+      },
+      "guardian": {
+        "count": 4,
+        "meanDrift": -1
+      },
+      "theater-scene": {
+        "count": 3,
+        "meanDrift": -2.6666666666666665
+      },
+      "theatrecat": {
+        "count": 1,
+        "meanDrift": -1
+      },
+      "london-theatre": {
+        "count": 2,
+        "meanDrift": 1.5
+      },
+      "magical-misstari-tour": {
+        "count": 1,
+        "meanDrift": 2
+      },
+      "thereviewshub": {
+        "count": 3,
+        "meanDrift": -2.6666666666666665
+      },
+      "front-row-center": {
+        "count": 1,
+        "meanDrift": 0
+      },
+      "standard": {
+        "count": 3,
+        "meanDrift": 0
+      },
+      "ny1": {
+        "count": 1,
+        "meanDrift": 0
+      },
+      "nytimes": {
+        "count": 4,
+        "meanDrift": 3.25
+      },
+      "ew": {
+        "count": 1,
+        "meanDrift": 3
+      },
+      "off-off-online": {
+        "count": 1,
+        "meanDrift": 0
+      },
+      "times-uk": {
+        "count": 1,
+        "meanDrift": 0
+      },
+      "i-paper": {
+        "count": 1,
+        "meanDrift": 0
+      },
+      "theater-life": {
+        "count": 1,
+        "meanDrift": -1
+      },
+      "whatsonstage": {
+        "count": 4,
+        "meanDrift": 0.25
+      },
+      "nysr": {
+        "count": 2,
+        "meanDrift": 0
+      },
+      "vulture": {
+        "count": 3,
+        "meanDrift": 0.6666666666666666
+      },
+      "mashable": {
+        "count": 1,
+        "meanDrift": 0
+      },
+      "the-spectator-uk": {
+        "count": 2,
+        "meanDrift": -0.5
+      },
+      "telegraph": {
+        "count": 2,
+        "meanDrift": -0.5
+      },
+      "pages-on-stages": {
+        "count": 2,
+        "meanDrift": -0.5
+      },
+      "independent": {
+        "count": 2,
+        "meanDrift": -1.5
+      },
+      "london-box-office": {
+        "count": 3,
+        "meanDrift": 0
+      },
+      "wsj": {
+        "count": 1,
+        "meanDrift": 0
+      },
+      "northjerseycom": {
+        "count": 2,
+        "meanDrift": 0
+      },
+      "latimes": {
+        "count": 1,
+        "meanDrift": 1
+      },
+      "newyorker": {
+        "count": 1,
+        "meanDrift": 0
+      },
+      "cbsnews": {
+        "count": 1,
+        "meanDrift": 1
+      },
+      "huffpost": {
+        "count": 1,
+        "meanDrift": 4
+      },
+      "theater-pizzazz": {
+        "count": 2,
+        "meanDrift": 0
+      },
+      "new-york-sun": {
+        "count": 1,
+        "meanDrift": -1
+      },
+      "stageandcinema": {
+        "count": 2,
+        "meanDrift": 0.5
+      },
+      "culturesauce": {
+        "count": 1,
+        "meanDrift": -4
+      },
+      "on-off-broadway": {
+        "count": 1,
+        "meanDrift": 0
+      },
+      "nydailynews": {
+        "count": 3,
+        "meanDrift": 3.3333333333333335
+      },
+      "amny": {
+        "count": 2,
+        "meanDrift": 2
+      },
+      "la-voce-di-new-york": {
+        "count": 1,
+        "meanDrift": 0
+      },
+      "queerty": {
+        "count": 1,
+        "meanDrift": 0
+      },
+      "thestage": {
+        "count": 2,
+        "meanDrift": 0.5
+      },
+      "the-recs": {
+        "count": 1,
+        "meanDrift": 0
+      },
+      "nytg": {
+        "count": 1,
+        "meanDrift": -1
+      }
+    }
+  },
+  "helenShaw": {
+    "status": "pass",
+    "oldScore": 68,
+    "newScore": 78,
+    "target": "75-82",
+    "oldBucket": "Mixed",
+    "newBucket": "Positive"
+  },
+  "passed": true,
+  "perReview": [
+    {
+      "showId": "becky-shaw-2026",
+      "outletId": "deadline",
+      "publishDate": "April 6, 2026",
+      "oldStored": {
+        "score": 85,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": 89,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 88,
+          "openai": 88,
+          "gemini": 90
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 88,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 88,
+          "openai": 85,
+          "gemini": 90
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "drift": -1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "antigone-this-play-i-read-in-high-school-off-broadway-2026",
+      "outletId": "nyt-theater",
+      "publishDate": "2026-03-21",
+      "oldStored": {
+        "score": 73,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": 76,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 76,
+          "openai": 76,
+          "gemini": 75
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 75,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 76,
+          "openai": 74,
+          "gemini": 76
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "drift": -1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "a-life-in-the-theatre-2010",
+      "outletId": "newsday",
+      "publishDate": "2026-02-22T23:59:24.835Z",
+      "oldStored": {
+        "score": 85,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": -1,
+        "bucket": "Mixed",
+        "confidence": "low",
+        "source": "rejected",
+        "models": {
+          "claude": null,
+          "openai": null,
+          "gemini": null
+        },
+        "modelBuckets": {
+          "claude": null,
+          "openai": null,
+          "gemini": null
+        },
+        "rejected": true,
+        "rejection": "garbage_text"
+      },
+      "newPrompt": {
+        "score": -1,
+        "bucket": "Mixed",
+        "confidence": "low",
+        "source": "rejected",
+        "models": {
+          "claude": null,
+          "openai": null,
+          "gemini": null
+        },
+        "modelBuckets": {
+          "claude": null,
+          "openai": null,
+          "gemini": null
+        },
+        "rejected": true,
+        "rejection": "garbage_text"
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "outletId": "financialtimes",
+      "publishDate": "2025-12-12",
+      "oldStored": {
+        "score": 92,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": 93,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 90,
+          "openai": 95,
+          "gemini": 93
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 92,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 92,
+          "openai": 92,
+          "gemini": 92
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "drift": -1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "death-of-a-salesman-2026",
+      "outletId": "broadway-and-me",
+      "publishDate": "2026-04-11",
+      "oldStored": {
+        "score": 91,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": 91,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 90,
+          "openai": 90,
+          "gemini": 93
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 92,
+        "bucket": "Rave",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 89,
+          "openai": 95,
+          "gemini": 92
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "drift": 1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "proof-2026",
+      "outletId": "theatrely",
+      "publishDate": "2026-04-18T06:41:47.942Z",
+      "oldStored": {
+        "score": 45,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 41,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "two-model-fallback",
+        "models": {
+          "claude": 42,
+          "openai": null,
+          "gemini": 40
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": null,
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 42,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 45,
+          "gemini": 40
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "drift": 1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "robin-hood-and-the-merry-mandem-off-west-end-2026",
+      "outletId": "standard",
+      "publishDate": "2026-04-08T00:00:50.137Z",
+      "oldStored": {
+        "score": 80,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": -1,
+        "bucket": "Mixed",
+        "confidence": "low",
+        "source": "rejected",
+        "models": {
+          "claude": null,
+          "openai": null,
+          "gemini": null
+        },
+        "modelBuckets": {
+          "claude": null,
+          "openai": null,
+          "gemini": null
+        },
+        "rejected": true,
+        "rejection": "wrong_production"
+      },
+      "newPrompt": {
+        "score": 78,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "two-model-fallback",
+        "models": {
+          "claude": 76,
+          "openai": null,
+          "gemini": 79
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": null,
+          "gemini": "Positive"
+        }
+      },
+      "drift": 79,
+      "bucketChanged": true
+    },
+    {
+      "showId": "becky-shaw-2026",
+      "outletId": "nypost",
+      "publishDate": "April 6, 2026",
+      "oldStored": {
+        "score": 86,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": 88,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 88,
+          "openai": 85,
+          "gemini": 90
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 89,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 88,
+          "openai": 88,
+          "gemini": 90
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "drift": 1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "fallen-angels-2026",
+      "outletId": "theatermania",
+      "publishDate": "2026-04-19",
+      "oldStored": {
+        "score": 88,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": 89,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 88,
+          "openai": 88,
+          "gemini": 92
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 89,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 87,
+          "openai": 89,
+          "gemini": 92
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "beaches-2026",
+      "outletId": "josh-at-the-movies",
+      "publishDate": "2026-04-22",
+      "oldStored": {
+        "score": 78,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": 78,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 76,
+          "openai": 78,
+          "gemini": 79
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 78,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 76,
+          "openai": 78,
+          "gemini": 79
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "book-of-mormon-2011",
+      "outletId": "cititour",
+      "publishDate": "2026-03-02T06:09:27.481Z",
+      "oldStored": {
+        "score": 89,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": 89,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 88,
+          "openai": 88,
+          "gemini": 92
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 89,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 88,
+          "openai": 88,
+          "gemini": 92
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "death-of-a-salesman-2026",
+      "outletId": "cote-notices",
+      "publishDate": "2026-04-10T03:06:54.184Z",
+      "oldStored": {
+        "score": 79,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": 89,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 88,
+          "openai": 88,
+          "gemini": 90
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 88,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 88,
+          "openai": 86,
+          "gemini": 90
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "drift": -1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "bug-2026",
+      "outletId": "one-minute-critic",
+      "publishDate": "2026-01-08T20:31:45-05:00",
+      "oldStored": {
+        "score": 78,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": 78,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 78,
+          "openai": 78,
+          "gemini": 78
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 78,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 78,
+          "openai": 78,
+          "gemini": 79
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "becky-shaw-2026",
+      "outletId": "chicagotribune",
+      "publishDate": "2026-04-06",
+      "oldStored": {
+        "score": 85,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": 88,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 88,
+          "openai": 87,
+          "gemini": 88
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 84,
+        "bucket": "Rave",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 87,
+          "openai": 85,
+          "gemini": 79
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Positive"
+        }
+      },
+      "drift": -4,
+      "bucketChanged": false
+    },
+    {
+      "showId": "choir-boy-2019",
+      "outletId": "talkinbroadway",
+      "publishDate": "2026-03-05T01:23:00.392Z",
+      "oldStored": {
+        "score": 72,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": 64,
+        "bucket": "Mixed",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 62,
+          "openai": 67,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "newPrompt": {
+        "score": 72,
+        "bucket": "Positive",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 62,
+          "openai": 76,
+          "gemini": 75
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 8,
+      "bucketChanged": true
+    },
+    {
+      "showId": "liberation-2025",
+      "outletId": "purewow",
+      "publishDate": "2026-03-25T03:08:25.602Z",
+      "oldStored": {
+        "score": 85,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": 88,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 88,
+          "openai": 85,
+          "gemini": 90
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 87,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 88,
+          "openai": 85,
+          "gemini": 88
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "drift": -1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "arcadia-west-end-2026",
+      "outletId": "artsdesk",
+      "publishDate": "2026-01-24",
+      "oldStored": {
+        "score": 93,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": 95,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 95,
+          "openai": 95,
+          "gemini": 96
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 95,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 95,
+          "openai": 95,
+          "gemini": 95
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "high-noon-west-end-2025",
+      "outletId": "broadwayworld",
+      "publishDate": "2025-12-17",
+      "oldStored": {
+        "score": 91,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": 91,
+        "bucket": "Rave",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 95,
+          "openai": 85,
+          "gemini": 92
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 94,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 95,
+          "openai": 95,
+          "gemini": 92
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "drift": 3,
+      "bucketChanged": false
+    },
+    {
+      "showId": "fallen-angels-2026",
+      "outletId": "cititour",
+      "publishDate": "2026-04-19",
+      "oldStored": {
+        "score": 80,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": 85,
+        "bucket": "Rave",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 78,
+          "openai": 86,
+          "gemini": 88
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 84,
+        "bucket": "Rave",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 78,
+          "openai": 85,
+          "gemini": 88
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "drift": -1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
+      "outletId": "hollywood-reporter",
+      "publishDate": "2026-03-31",
+      "oldStored": {
+        "score": 26,
+        "bucket": "Pan"
+      },
+      "oldPrompt": {
+        "score": 19,
+        "bucket": "Pan",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 18,
+          "openai": 20,
+          "gemini": 18
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "newPrompt": {
+        "score": 19,
+        "bucket": "Pan",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 18,
+          "openai": 20,
+          "gemini": 18
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "frozen-2004",
+      "outletId": "epoch-times",
+      "publishDate": "2026-04-04T01:44:11.159Z",
+      "oldStored": {
+        "score": 45,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 46,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 45,
+          "openai": 45,
+          "gemini": 48
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 45,
+        "bucket": "Negative",
+        "confidence": "medium",
+        "source": "two-model-fallback",
+        "models": {
+          "claude": 42,
+          "openai": null,
+          "gemini": 48
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": null,
+          "gemini": "Negative"
+        }
+      },
+      "drift": -1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "the-nap-2018",
+      "outletId": "timeout",
+      "publishDate": "2026-03-25T06:32:15.308Z",
+      "oldStored": {
+        "score": 42,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 29,
+        "bucket": "Pan",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 42,
+          "openai": 30,
+          "gemini": 20
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "newPrompt": {
+        "score": 34,
+        "bucket": "Pan",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 38,
+          "openai": 40,
+          "gemini": 20
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Pan"
+        }
+      },
+      "drift": 5,
+      "bucketChanged": false
+    },
+    {
+      "showId": "tru-off-broadway-2026",
+      "outletId": "thewrap",
+      "publishDate": "2026-03-20",
+      "oldStored": {
+        "score": 34,
+        "bucket": "Pan"
+      },
+      "oldPrompt": {
+        "score": 24,
+        "bucket": "Pan",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 38,
+          "openai": 20,
+          "gemini": 18
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "newPrompt": {
+        "score": 24,
+        "bucket": "Pan",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 38,
+          "openai": 20,
+          "gemini": 18
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "burlesque-west-end-2026",
+      "outletId": "artsdesk",
+      "publishDate": "2026-03-16T23:47:41.367Z",
+      "oldStored": {
+        "score": 24,
+        "bucket": "Pan"
+      },
+      "oldPrompt": {
+        "score": 18,
+        "bucket": "Pan",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 18,
+          "openai": 20,
+          "gemini": 15
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "newPrompt": {
+        "score": 19,
+        "bucket": "Pan",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 18,
+          "openai": 20,
+          "gemini": 18
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "drift": 1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "moulin-rouge-the-musical-west-end-2021",
+      "outletId": "timeout-london",
+      "publishDate": "2026-01-14",
+      "oldStored": {
+        "score": 61,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 60,
+        "bucket": "Mixed",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 60,
+          "openai": 60,
+          "gemini": 60
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "newPrompt": {
+        "score": 60,
+        "bucket": "Mixed",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 60,
+          "openai": 60,
+          "gemini": 60
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
+      "outletId": "variety",
+      "publishDate": "2026-04-07",
+      "oldStored": {
+        "score": 85,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": 90,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 88,
+          "openai": 88,
+          "gemini": 93
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 90,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 88,
+          "openai": 90,
+          "gemini": 92
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
+      "outletId": "guardian",
+      "publishDate": "2026-04-16",
+      "oldStored": {
+        "score": 68,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 67,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 60,
+          "openai": 68,
+          "gemini": 75
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 67,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 60,
+          "openai": 68,
+          "gemini": 75
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "prince-of-broadway-2017",
+      "outletId": "broadway-and-me",
+      "publishDate": "2026-03-02T18:53:50.869Z",
+      "oldStored": {
+        "score": 66,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 63,
+        "bucket": "Mixed",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 62,
+          "openai": 65,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "newPrompt": {
+        "score": 63,
+        "bucket": "Mixed",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 62,
+          "openai": 65,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "hans-litten-the-jew-who-crossexamined-hitler-off-broadway-2026",
+      "outletId": "theater-scene",
+      "publishDate": "2026-02-12",
+      "oldStored": {
+        "score": 31,
+        "bucket": "Pan"
+      },
+      "oldPrompt": {
+        "score": 24,
+        "bucket": "Pan",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 38,
+          "openai": 20,
+          "gemini": 18
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "newPrompt": {
+        "score": 19,
+        "bucket": "Pan",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 18,
+          "openai": 20,
+          "gemini": 18
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "drift": -5,
+      "bucketChanged": false
+    },
+    {
+      "showId": "oh-mary-west-end-2025",
+      "outletId": "theatrecat",
+      "publishDate": "2025-12-19",
+      "oldStored": {
+        "score": 36,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 25,
+        "bucket": "Pan",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 38,
+          "openai": 20,
+          "gemini": 20
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "newPrompt": {
+        "score": 24,
+        "bucket": "Pan",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 38,
+          "openai": 20,
+          "gemini": 18
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "drift": -1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "dracula-west-end-2025",
+      "outletId": "london-theatre",
+      "publishDate": "2026-02-17",
+      "oldStored": {
+        "score": 65,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 57,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 45,
+          "openai": 60,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "newPrompt": {
+        "score": 59,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 45,
+          "openai": 65,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "drift": 2,
+      "bucketChanged": false
+    },
+    {
+      "showId": "the-crucible-2016",
+      "outletId": "magical-misstari-tour",
+      "publishDate": "2026-02-14T07:51:59.602Z",
+      "oldStored": {
+        "score": 24,
+        "bucket": "Pan"
+      },
+      "oldPrompt": {
+        "score": 17,
+        "bucket": "Pan",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 18,
+          "openai": 20,
+          "gemini": 12
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "newPrompt": {
+        "score": 19,
+        "bucket": "Pan",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 18,
+          "openai": 20,
+          "gemini": 18
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "drift": 2,
+      "bucketChanged": false
+    },
+    {
+      "showId": "high-noon-west-end-2025",
+      "outletId": "timeout-london",
+      "publishDate": "2026-01-10",
+      "oldStored": {
+        "score": 68,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 65,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 62,
+          "openai": 68,
+          "gemini": 65
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "newPrompt": {
+        "score": 74,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 72,
+          "openai": 76,
+          "gemini": 75
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 9,
+      "bucketChanged": true
+    },
+    {
+      "showId": "bughouse-off-broadway-2026",
+      "outletId": "one-minute-critic",
+      "publishDate": "2026-03-14",
+      "oldStored": {
+        "score": 41,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 41,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 40,
+          "gemini": 40
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 41,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 40,
+          "gemini": 40
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "my-joy-is-heavy-off-broadway-2025",
+      "outletId": "one-minute-critic",
+      "publishDate": "2026-03-17",
+      "oldStored": {
+        "score": 95,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": 94,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 92,
+          "openai": 95,
+          "gemini": 95
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 94,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 92,
+          "openai": 95,
+          "gemini": 95
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "the-uncontainable-nausea-of-alec-baldwin-off-west-end-2026",
+      "outletId": "guardian",
+      "publishDate": "2026-03-08",
+      "oldStored": {
+        "score": 16,
+        "bucket": "Pan"
+      },
+      "oldPrompt": {
+        "score": 18,
+        "bucket": "Pan",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 18,
+          "openai": 18,
+          "gemini": 18
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "newPrompt": {
+        "score": 17,
+        "bucket": "Pan",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 18,
+          "openai": 15,
+          "gemini": 18
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "drift": -1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "promises-promises-2010",
+      "outletId": "timeout",
+      "publishDate": "2026-03-04T14:13:46.028Z",
+      "oldStored": {
+        "score": 69,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 62,
+        "bucket": "Mixed",
+        "confidence": "high",
+        "source": "two-model-fallback",
+        "models": {
+          "claude": 62,
+          "openai": null,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": null,
+          "gemini": "Mixed"
+        }
+      },
+      "newPrompt": {
+        "score": 71,
+        "bucket": "Positive",
+        "confidence": "low",
+        "source": "two-model-fallback",
+        "models": {
+          "claude": 62,
+          "openai": null,
+          "gemini": 79
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": null,
+          "gemini": "Positive"
+        }
+      },
+      "drift": 9,
+      "bucketChanged": true
+    },
+    {
+      "showId": "becky-shaw-2026",
+      "outletId": "guardian",
+      "publishDate": "April 6, 2026",
+      "oldStored": {
+        "score": 75,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": 74,
+        "bucket": "Positive",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 78,
+          "openai": 68,
+          "gemini": 75
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Mixed",
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 74,
+        "bucket": "Positive",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 78,
+          "openai": 67,
+          "gemini": 75
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Mixed",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "the-playboy-of-the-western-world-west-end-2025",
+      "outletId": "thereviewshub",
+      "publishDate": "2025-12-12",
+      "oldStored": {
+        "score": 45,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 42,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 45,
+          "gemini": 40
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 39,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 38,
+          "gemini": 38
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "drift": -3,
+      "bucketChanged": false
+    },
+    {
+      "showId": "making-a-show-of-myself-off-broadway-2026",
+      "outletId": "front-row-center",
+      "publishDate": "2026-02-10T14:25:39",
+      "oldStored": {
+        "score": 85,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": 88,
+        "bucket": "Rave",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 88,
+          "openai": 85,
+          "gemini": 92
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 88,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 88,
+          "openai": 85,
+          "gemini": 90
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "cats-express-test-2026",
+      "outletId": "nyt-theater",
+      "publishDate": "April 7, 2026",
+      "oldStored": {
+        "score": 76,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": 76,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 76,
+          "openai": 76,
+          "gemini": 77
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 77,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 78,
+          "openai": 76,
+          "gemini": 77
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "arcadia-west-end-2026",
+      "outletId": "financialtimes",
+      "publishDate": "2026-02-05",
+      "oldStored": {
+        "score": 82,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": 79,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 78,
+          "openai": 78,
+          "gemini": 80
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 79,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 78,
+          "openai": 78,
+          "gemini": 80
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "la-cage-aux-folles-1983",
+      "outletId": "hollywood-reporter",
+      "publishDate": "2026-03-02T04:43:53.574Z",
+      "oldStored": {
+        "score": 87,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": 88,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 88,
+          "openai": 87,
+          "gemini": 90
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 88,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 88,
+          "openai": 87,
+          "gemini": 90
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "kinky-boots-the-musical-west-end-2026",
+      "outletId": "standard",
+      "publishDate": "2026-04-01",
+      "oldStored": {
+        "score": 39,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 41,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 40,
+          "gemini": 40
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 41,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 40,
+          "gemini": 40
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "a-life-in-the-theatre-2010",
+      "outletId": "ny1",
+      "publishDate": "2026-02-13T20:28:37.842Z",
+      "oldStored": {
+        "score": 72,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": 78,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 78,
+          "openai": 78,
+          "gemini": 78
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 78,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 78,
+          "openai": 78,
+          "gemini": 78
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "beaches-2026",
+      "outletId": "exeunt-magazine",
+      "publishDate": "2026-04-23",
+      "oldStored": {
+        "score": 18,
+        "bucket": "Pan"
+      },
+      "oldPrompt": {
+        "score": 15,
+        "bucket": "Pan",
+        "confidence": "medium",
+        "source": "two-model-fallback",
+        "models": {
+          "claude": 18,
+          "openai": null,
+          "gemini": 12
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": null,
+          "gemini": "Pan"
+        }
+      },
+      "newPrompt": {
+        "score": 19,
+        "bucket": "Pan",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 18,
+          "openai": 20,
+          "gemini": 18
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "drift": 4,
+      "bucketChanged": false
+    },
+    {
+      "showId": "gettin-the-band-back-together-2018",
+      "outletId": "chicagotribune",
+      "publishDate": "2026-03-14T23:52:26.558Z",
+      "oldStored": {
+        "score": 61,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 60,
+        "bucket": "Mixed",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 62,
+          "openai": 60,
+          "gemini": 58
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "newPrompt": {
+        "score": 63,
+        "bucket": "Mixed",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 62,
+          "openai": 65,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "drift": 3,
+      "bucketChanged": false
+    },
+    {
+      "showId": "bigfoot-off-broadway-2026",
+      "outletId": "nytimes",
+      "publishDate": "2026-03-02",
+      "oldStored": {
+        "score": 77,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": 78,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 78,
+          "openai": 78,
+          "gemini": 79
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 81,
+        "bucket": "Positive",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 78,
+          "openai": 79,
+          "gemini": 88
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Rave"
+        }
+      },
+      "drift": 3,
+      "bucketChanged": false
+    },
+    {
+      "showId": "women-on-the-verge-of-a-nervous-breakdown-2010",
+      "outletId": "ew",
+      "publishDate": "2026-02-08T04:25:42.585Z",
+      "oldStored": {
+        "score": 25,
+        "bucket": "Pan"
+      },
+      "oldPrompt": {
+        "score": 36,
+        "bucket": "Negative",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 42,
+          "openai": 40,
+          "gemini": 22
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Pan"
+        }
+      },
+      "newPrompt": {
+        "score": 39,
+        "bucket": "Negative",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 42,
+          "openai": 45,
+          "gemini": 25
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Pan"
+        }
+      },
+      "drift": 3,
+      "bucketChanged": false
+    },
+    {
+      "showId": "blackout-songs-off-broadway-2026",
+      "outletId": "off-off-online",
+      "publishDate": "January 23, 2026",
+      "oldStored": {
+        "score": 83,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": 85,
+        "bucket": "Rave",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 79,
+          "openai": 85,
+          "gemini": 88
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 85,
+        "bucket": "Rave",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 79,
+          "openai": 85,
+          "gemini": 88
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "broken-glass-west-end-2026",
+      "outletId": "guardian",
+      "publishDate": "2026-03-04",
+      "oldStored": {
+        "score": 78,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": 81,
+        "bucket": "Positive",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 78,
+          "openai": 78,
+          "gemini": 88
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 78,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 78,
+          "openai": 78,
+          "gemini": 79
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "drift": -3,
+      "bucketChanged": false
+    },
+    {
+      "showId": "oh-mary-west-end-2025",
+      "outletId": "broadwayworld",
+      "publishDate": "2025-12-19",
+      "oldStored": {
+        "score": 64,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 80,
+        "bucket": "Positive",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 78,
+          "openai": 85,
+          "gemini": 78
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Rave",
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 77,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 75,
+          "openai": 79,
+          "gemini": 78
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "drift": -3,
+      "bucketChanged": false
+    },
+    {
+      "showId": "encores-the-wild-party-off-broadway-2026",
+      "outletId": "nyt-theater",
+      "publishDate": "2026-03-20",
+      "oldStored": {
+        "score": 66,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 63,
+        "bucket": "Mixed",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 62,
+          "openai": 65,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "newPrompt": {
+        "score": 66,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 62,
+          "openai": 65,
+          "gemini": 75
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 3,
+      "bucketChanged": false
+    },
+    {
+      "showId": "les-liaisons-dangereuses-west-end-2026",
+      "outletId": "times-uk",
+      "publishDate": "2026-04-04",
+      "oldStored": {
+        "score": 49,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 41,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 42,
+          "gemini": 40
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 41,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 40,
+          "gemini": 40
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "bug-2026",
+      "outletId": "timeout",
+      "publishDate": "January 8, 2026",
+      "oldStored": {
+        "score": 84,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": 87,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 87,
+          "openai": 85,
+          "gemini": 88
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 87,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 87,
+          "openai": 85,
+          "gemini": 88
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "beaches-2026",
+      "outletId": "cititour",
+      "publishDate": "2026-04-27T13:39:35.431Z",
+      "oldStored": {
+        "score": 25,
+        "bucket": "Pan"
+      },
+      "oldPrompt": {
+        "score": 19,
+        "bucket": "Pan",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 18,
+          "openai": 20,
+          "gemini": 18
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "newPrompt": {
+        "score": 19,
+        "bucket": "Pan",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 18,
+          "openai": 20,
+          "gemini": 18
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "all-my-sons-west-end-2025",
+      "outletId": "i-paper",
+      "publishDate": "2025-11-22",
+      "oldStored": {
+        "score": 94,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": 96,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 95,
+          "openai": 95,
+          "gemini": 98
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 96,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 95,
+          "openai": 95,
+          "gemini": 98
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
+      "outletId": "cititour",
+      "publishDate": "2026-04-08T04:04:12.079Z",
+      "oldStored": {
+        "score": 81,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": 81,
+        "bucket": "Positive",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 78,
+          "openai": 85,
+          "gemini": 80
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Rave",
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 81,
+        "bucket": "Positive",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 78,
+          "openai": 85,
+          "gemini": 80
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Rave",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "beaches-2026",
+      "outletId": "timeout",
+      "publishDate": "2026-04-23",
+      "oldStored": {
+        "score": 43,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 42,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 45,
+          "gemini": 40
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 41,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 40,
+          "gemini": 40
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "drift": -1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "beaches-2026",
+      "outletId": "variety",
+      "publishDate": "2026-04-22",
+      "oldStored": {
+        "score": 34,
+        "bucket": "Pan"
+      },
+      "oldPrompt": {
+        "score": 25,
+        "bucket": "Pan",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 38,
+          "openai": 20,
+          "gemini": 20
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "newPrompt": {
+        "score": 25,
+        "bucket": "Pan",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 38,
+          "openai": 20,
+          "gemini": 20
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "dracula-west-end-2025",
+      "outletId": "nytimes",
+      "publishDate": "February 18, 2026",
+      "oldStored": {
+        "score": 62,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 64,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 62,
+          "openai": 68,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "newPrompt": {
+        "score": 63,
+        "bucket": "Mixed",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 62,
+          "openai": 65,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "drift": -1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "data-off-broadway-2026",
+      "outletId": "theater-life",
+      "publishDate": "2026-01-26T15:25:36",
+      "oldStored": {
+        "score": 80,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": 85,
+        "bucket": "Rave",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 87,
+          "openai": 78,
+          "gemini": 88
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Positive",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 84,
+        "bucket": "Rave",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 85,
+          "openai": 78,
+          "gemini": 88
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Positive",
+          "gemini": "Rave"
+        }
+      },
+      "drift": -1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "marcel-on-the-train-off-broadway-2026",
+      "outletId": "timeout",
+      "publishDate": "2026-02-22",
+      "oldStored": {
+        "score": 62,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 63,
+        "bucket": "Mixed",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 62,
+          "openai": 65,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "newPrompt": {
+        "score": 63,
+        "bucket": "Mixed",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 62,
+          "openai": 65,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "summerfolk-west-end-2026",
+      "outletId": "thereviewshub",
+      "publishDate": "2026-03-18",
+      "oldStored": {
+        "score": 49,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 56,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 55,
+          "openai": 50,
+          "gemini": 60
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Negative",
+          "gemini": "Mixed"
+        }
+      },
+      "newPrompt": {
+        "score": 51,
+        "bucket": "Negative",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 55,
+          "openai": 50,
+          "gemini": 48
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "drift": -5,
+      "bucketChanged": true
+    },
+    {
+      "showId": "deep-azure-globe-west-end-2026",
+      "outletId": "whatsonstage",
+      "publishDate": "2026-02-18",
+      "oldStored": {
+        "score": 79,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": 78,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 78,
+          "openai": 78,
+          "gemini": 79
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 78,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 78,
+          "openai": 78,
+          "gemini": 79
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "chess-2025",
+      "outletId": "nysr",
+      "publishDate": "2025-11-16T22:59:38",
+      "oldStored": {
+        "score": 42,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 41,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 40,
+          "gemini": 40
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 41,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 40,
+          "gemini": 40
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "proof-2026",
+      "outletId": "vulture",
+      "publishDate": "2026-04-16",
+      "oldStored": {
+        "score": 58,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 45,
+        "bucket": "Negative",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 45,
+          "gemini": 48
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 45,
+        "bucket": "Negative",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 45,
+          "gemini": 48
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "romeo-and-juliet-2013",
+      "outletId": "financialtimes",
+      "publishDate": "2026-03-05T13:44:34.562Z",
+      "oldStored": {
+        "score": 49,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 46,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 45,
+          "openai": 45,
+          "gemini": 48
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 43,
+        "bucket": "Negative",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 40,
+          "gemini": 48
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "drift": -3,
+      "bucketChanged": false
+    },
+    {
+      "showId": "beaches-2026",
+      "outletId": "thewrap",
+      "publishDate": "2026-04-23",
+      "oldStored": {
+        "score": 24,
+        "bucket": "Pan"
+      },
+      "oldPrompt": {
+        "score": 17,
+        "bucket": "Pan",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 18,
+          "openai": 20,
+          "gemini": 12
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "newPrompt": {
+        "score": 19,
+        "bucket": "Pan",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 18,
+          "openai": 20,
+          "gemini": 18
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "drift": 2,
+      "bucketChanged": false
+    },
+    {
+      "showId": "beaches-2026",
+      "outletId": "mashable",
+      "publishDate": "2026-04-22",
+      "oldStored": {
+        "score": 24,
+        "bucket": "Pan"
+      },
+      "oldPrompt": {
+        "score": 25,
+        "bucket": "Pan",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 38,
+          "openai": 20,
+          "gemini": 22
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "newPrompt": {
+        "score": 25,
+        "bucket": "Pan",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 38,
+          "openai": 20,
+          "gemini": 22
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "the-hunger-games-on-stage-west-end-2025",
+      "outletId": "the-spectator-uk",
+      "publishDate": "2025-11-20",
+      "oldStored": {
+        "score": 24,
+        "bucket": "Pan"
+      },
+      "oldPrompt": {
+        "score": 20,
+        "bucket": "Pan",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 22,
+          "openai": 20,
+          "gemini": 18
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "newPrompt": {
+        "score": 19,
+        "bucket": "Pan",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 18,
+          "openai": 20,
+          "gemini": 18
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "drift": -1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "queen-versailles-2025",
+      "outletId": "nysr",
+      "publishDate": "November 9, 2025",
+      "oldStored": {
+        "score": 42,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 41,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 40,
+          "gemini": 40
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 41,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 40,
+          "gemini": 40
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "outletId": "financialtimes",
+      "publishDate": "2026-03-27",
+      "oldStored": {
+        "score": 93,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": 95,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 95,
+          "openai": 95,
+          "gemini": 96
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 95,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 95,
+          "openai": 95,
+          "gemini": 95
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "teeth-n-smiles-west-end-2026",
+      "outletId": "telegraph",
+      "publishDate": "2026-03-26",
+      "oldStored": {
+        "score": 46,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 63,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 60,
+          "openai": 68,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "newPrompt": {
+        "score": 61,
+        "bucket": "Mixed",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 62,
+          "openai": 60,
+          "gemini": 60
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "drift": -2,
+      "bucketChanged": false
+    },
+    {
+      "showId": "cabaret-2014",
+      "outletId": "northjerseycom",
+      "publishDate": "2026-02-13T23:38:35.722Z",
+      "oldStored": {
+        "score": 88,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": 91,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 90,
+          "openai": 90,
+          "gemini": 92
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 91,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "two-model-fallback",
+        "models": {
+          "claude": 90,
+          "openai": null,
+          "gemini": 92
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": null,
+          "gemini": "Rave"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "bigfoot-off-broadway-2026",
+      "outletId": "pages-on-stages",
+      "publishDate": "2026-03-02",
+      "oldStored": {
+        "score": 88,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": 90,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 90,
+          "openai": 88,
+          "gemini": 92
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 90,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 88,
+          "openai": 90,
+          "gemini": 92
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "as-you-like-it-globe-west-end-2026",
+      "outletId": "whatsonstage",
+      "publishDate": "2026-04-06T03:24:56.170Z",
+      "oldStored": {
+        "score": 79,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": 78,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 78,
+          "openai": 78,
+          "gemini": 79
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 79,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 78,
+          "openai": 79,
+          "gemini": 79
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "back-to-the-future-west-end-2021",
+      "outletId": "timeout-london",
+      "publishDate": "2026-01-15",
+      "oldStored": {
+        "score": 73,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": 67,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 62,
+          "openai": 67,
+          "gemini": 75
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 72,
+        "bucket": "Positive",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 72,
+          "openai": 67,
+          "gemini": 75
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Mixed",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 5,
+      "bucketChanged": true
+    },
+    {
+      "showId": "shadowlands-west-end-2026",
+      "outletId": "independent",
+      "publishDate": "2026-02-14",
+      "oldStored": {
+        "score": 49,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 59,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 45,
+          "openai": 65,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "newPrompt": {
+        "score": 59,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 45,
+          "openai": 65,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "arcadia-west-end-2026",
+      "outletId": "london-box-office",
+      "publishDate": "2026-02-05",
+      "oldStored": {
+        "score": 88,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": 89,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 88,
+          "openai": 88,
+          "gemini": 92
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 89,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 88,
+          "openai": 88,
+          "gemini": 90
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "chess-2025",
+      "outletId": "wsj",
+      "publishDate": "2026-03-03T07:45:40.052Z",
+      "oldStored": {
+        "score": 49,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 45,
+        "bucket": "Negative",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 45,
+          "gemini": 48
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 45,
+        "bucket": "Negative",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 45,
+          "gemini": 48
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "fool-for-love-2015",
+      "outletId": "northjerseycom",
+      "publishDate": "2026-02-28T13:53:56.084Z",
+      "oldStored": {
+        "score": 61,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 56,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 58,
+          "openai": 60,
+          "gemini": 48
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 56,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 58,
+          "openai": 60,
+          "gemini": 48
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Negative"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "every-brilliant-thing-2026",
+      "outletId": "latimes",
+      "publishDate": "2026-03-13",
+      "oldStored": {
+        "score": 76,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": 77,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 78,
+          "openai": 78,
+          "gemini": 76
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 78,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 78,
+          "openai": 78,
+          "gemini": 79
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
+      "outletId": "newyorker",
+      "publishDate": "2026-04-02",
+      "oldStored": {
+        "score": 26,
+        "bucket": "Pan"
+      },
+      "oldPrompt": {
+        "score": 19,
+        "bucket": "Pan",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 18,
+          "openai": 20,
+          "gemini": 18
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "newPrompt": {
+        "score": 19,
+        "bucket": "Pan",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 18,
+          "openai": 20,
+          "gemini": 18
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
+      "outletId": "independent",
+      "publishDate": "2026-03-31",
+      "oldStored": {
+        "score": 30,
+        "bucket": "Pan"
+      },
+      "oldPrompt": {
+        "score": -1,
+        "bucket": "Mixed",
+        "confidence": "low",
+        "source": "rejected",
+        "models": {
+          "claude": null,
+          "openai": null,
+          "gemini": null
+        },
+        "modelBuckets": {
+          "claude": null,
+          "openai": null,
+          "gemini": null
+        },
+        "rejected": true,
+        "rejection": "not_a_review"
+      },
+      "newPrompt": {
+        "score": 19,
+        "bucket": "Pan",
+        "confidence": "high",
+        "source": "two-model-fallback",
+        "models": {
+          "claude": null,
+          "openai": 20,
+          "gemini": 18
+        },
+        "modelBuckets": {
+          "claude": null,
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "drift": 20,
+      "bucketChanged": true
+    },
+    {
+      "showId": "copenhagen-west-end-2026",
+      "outletId": "standard",
+      "publishDate": "2026-04-08",
+      "oldStored": {
+        "score": 63,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 63,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 60,
+          "openai": 68,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "newPrompt": {
+        "score": 63,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 60,
+          "openai": 68,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "the-disappear-off-broadway-2026",
+      "outletId": "timeout",
+      "publishDate": "January 16, 2026",
+      "oldStored": {
+        "score": 24,
+        "bucket": "Pan"
+      },
+      "oldPrompt": {
+        "score": 21,
+        "bucket": "Pan",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 18,
+          "openai": 20,
+          "gemini": 25
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "newPrompt": {
+        "score": 19,
+        "bucket": "Pan",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 18,
+          "openai": 20,
+          "gemini": 18
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "drift": -2,
+      "bucketChanged": false
+    },
+    {
+      "showId": "bug-2026",
+      "outletId": "cbsnews",
+      "publishDate": "2026-01-09",
+      "oldStored": {
+        "score": 78,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": 78,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 78,
+          "openai": 78,
+          "gemini": 79
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 79,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 78,
+          "openai": 79,
+          "gemini": 79
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "monte-cristo-the-york-theatre-company-off-broadway-2026",
+      "outletId": "front-row-center",
+      "publishDate": "2026-04-06T17:36:49.318Z",
+      "oldStored": {
+        "score": 20,
+        "bucket": "Pan"
+      },
+      "oldPrompt": {
+        "score": -1,
+        "bucket": "Mixed",
+        "confidence": "low",
+        "source": "rejected",
+        "models": {
+          "claude": null,
+          "openai": null,
+          "gemini": null
+        },
+        "modelBuckets": {
+          "claude": null,
+          "openai": null,
+          "gemini": null
+        },
+        "rejected": true,
+        "rejection": "garbage_text"
+      },
+      "newPrompt": {
+        "score": -1,
+        "bucket": "Mixed",
+        "confidence": "low",
+        "source": "rejected",
+        "models": {
+          "claude": null,
+          "openai": null,
+          "gemini": null
+        },
+        "modelBuckets": {
+          "claude": null,
+          "openai": null,
+          "gemini": null
+        },
+        "rejected": true,
+        "rejection": "garbage_text"
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "prince-of-broadway-2017",
+      "outletId": "huffpost",
+      "publishDate": "2026-02-17T21:28:17.141Z",
+      "oldStored": {
+        "score": 69,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 63,
+        "bucket": "Mixed",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 62,
+          "openai": 65,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "newPrompt": {
+        "score": 67,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 62,
+          "openai": 67,
+          "gemini": 75
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 4,
+      "bucketChanged": false
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
+      "outletId": "thewrap",
+      "publishDate": "2026-03-31",
+      "oldStored": {
+        "score": 77,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": 79,
+        "bucket": "Positive",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 78,
+          "openai": 85,
+          "gemini": 75
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Rave",
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 75,
+        "bucket": "Positive",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 78,
+          "openai": 78,
+          "gemini": 65
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Mixed"
+        }
+      },
+      "drift": -4,
+      "bucketChanged": false
+    },
+    {
+      "showId": "cats-express-test-2026",
+      "outletId": "newyorker",
+      "publishDate": "April 16, 2026",
+      "oldStored": {
+        "score": 91,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": 92,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "two-model-fallback",
+        "models": {
+          "claude": 92,
+          "openai": null,
+          "gemini": 92
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": null,
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 91,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "two-model-fallback",
+        "models": {
+          "claude": 89,
+          "openai": null,
+          "gemini": 92
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": null,
+          "gemini": "Rave"
+        }
+      },
+      "drift": -1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "bloodlove-off-broadway-2026",
+      "outletId": "one-minute-critic",
+      "publishDate": "2026-04-20T17:57:14.367Z",
+      "oldStored": {
+        "score": 25,
+        "bucket": "Pan"
+      },
+      "oldPrompt": {
+        "score": -1,
+        "bucket": "Mixed",
+        "confidence": "low",
+        "source": "rejected",
+        "models": {
+          "claude": null,
+          "openai": null,
+          "gemini": null
+        },
+        "modelBuckets": {
+          "claude": null,
+          "openai": null,
+          "gemini": null
+        },
+        "rejected": true,
+        "rejection": "garbage_text"
+      },
+      "newPrompt": {
+        "score": -1,
+        "bucket": "Mixed",
+        "confidence": "low",
+        "source": "rejected",
+        "models": {
+          "claude": null,
+          "openai": null,
+          "gemini": null
+        },
+        "modelBuckets": {
+          "claude": null,
+          "openai": null,
+          "gemini": null
+        },
+        "rejected": true,
+        "rejection": "garbage_text"
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "junk-2017",
+      "outletId": "theater-pizzazz",
+      "publishDate": "2026-03-02T17:34:09.078Z",
+      "oldStored": {
+        "score": 85,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": 88,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 88,
+          "openai": 85,
+          "gemini": 90
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 88,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 88,
+          "openai": 88,
+          "gemini": 88
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "the-hunger-games-on-stage-west-end-2025",
+      "outletId": "financialtimes",
+      "publishDate": "2025-11-12",
+      "oldStored": {
+        "score": 43,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 43,
+        "bucket": "Negative",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 40,
+          "gemini": 48
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 41,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 42,
+          "gemini": 40
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "drift": -2,
+      "bucketChanged": false
+    },
+    {
+      "showId": "queen-versailles-2025",
+      "outletId": "vulture",
+      "publishDate": "November 9, 2025",
+      "oldStored": {
+        "score": 26,
+        "bucket": "Pan"
+      },
+      "oldPrompt": {
+        "score": 18,
+        "bucket": "Pan",
+        "confidence": "high",
+        "source": "two-model-fallback",
+        "models": {
+          "claude": 18,
+          "openai": null,
+          "gemini": 18
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": null,
+          "gemini": "Pan"
+        }
+      },
+      "newPrompt": {
+        "score": 19,
+        "bucket": "Pan",
+        "confidence": "high",
+        "source": "two-model-fallback",
+        "models": {
+          "claude": 18,
+          "openai": null,
+          "gemini": 20
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": null,
+          "gemini": "Pan"
+        }
+      },
+      "drift": 1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "hans-litten-the-jew-who-crossexamined-hitler-off-broadway-2026",
+      "outletId": "theater-scene",
+      "publishDate": "2026-02-05",
+      "oldStored": {
+        "score": 85,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": 88,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 88,
+          "openai": 85,
+          "gemini": 90
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 87,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 88,
+          "openai": 85,
+          "gemini": 88
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "drift": -1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
+      "outletId": "one-minute-critic",
+      "publishDate": "2026-04-03T19:51:35.034Z",
+      "oldStored": {
+        "score": 64,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 63,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 60,
+          "openai": 68,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "newPrompt": {
+        "score": 63,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 60,
+          "openai": 67,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "evening-all-afternoon-west-end-2026",
+      "outletId": "standard",
+      "publishDate": "2026-02-25",
+      "oldStored": {
+        "score": 62,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 63,
+        "bucket": "Mixed",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 62,
+          "openai": 65,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "newPrompt": {
+        "score": 63,
+        "bucket": "Mixed",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 62,
+          "openai": 65,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "the-balusters-2026",
+      "outletId": "new-york-sun",
+      "publishDate": "2026-04-22",
+      "oldStored": {
+        "score": 45,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 46,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 45,
+          "openai": 45,
+          "gemini": 48
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 45,
+        "bucket": "Negative",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 45,
+          "gemini": 48
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "drift": -1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "encores-the-wild-party-off-broadway-2026",
+      "outletId": "vulture",
+      "publishDate": "2026-03-19",
+      "oldStored": {
+        "score": 68,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 64,
+        "bucket": "Mixed",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 62,
+          "openai": 65,
+          "gemini": 65
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "newPrompt": {
+        "score": 66,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 62,
+          "openai": 65,
+          "gemini": 75
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 2,
+      "bucketChanged": false
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
+      "outletId": "nyt-theater",
+      "publishDate": "2026-03-31",
+      "oldStored": {
+        "score": 57,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 50,
+        "bucket": "Negative",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 45,
+          "openai": 60,
+          "gemini": 48
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Mixed",
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 50,
+        "bucket": "Negative",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 45,
+          "openai": 66,
+          "gemini": 45
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Mixed",
+          "gemini": "Negative"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "summerfolk-west-end-2026",
+      "outletId": "guardian",
+      "publishDate": "2026-03-18",
+      "oldStored": {
+        "score": 66,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 69,
+        "bucket": "Mixed",
+        "confidence": "low",
+        "source": "two-model-fallback",
+        "models": {
+          "claude": 62,
+          "openai": null,
+          "gemini": 75
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": null,
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 75,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "two-model-fallback",
+        "models": {
+          "claude": 75,
+          "openai": null,
+          "gemini": 75
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": null,
+          "gemini": "Positive"
+        }
+      },
+      "drift": 6,
+      "bucketChanged": true
+    },
+    {
+      "showId": "every-brilliant-thing-2026",
+      "outletId": "thewrap",
+      "publishDate": "2026-03-13",
+      "oldStored": {
+        "score": 42,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 42,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 45,
+          "openai": 42,
+          "gemini": 40
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 42,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 40,
+          "gemini": 45
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "golden-boy-2012",
+      "outletId": "northjerseycom",
+      "publishDate": "2026-03-03T00:22:09.259Z",
+      "oldStored": {
+        "score": 42,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 42,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 45,
+          "gemini": 40
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 42,
+        "bucket": "Negative",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 45,
+          "gemini": 38
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "beaches-2026",
+      "outletId": "talkinbroadway",
+      "publishDate": "2026-04-22",
+      "oldStored": {
+        "score": 48,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 46,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 45,
+          "openai": 45,
+          "gemini": 48
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 45,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 45,
+          "openai": 45,
+          "gemini": 45
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "drift": -1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "public-charge-off-broadway-2026",
+      "outletId": "stageandcinema",
+      "publishDate": "2026-03-26",
+      "oldStored": {
+        "score": 69,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 63,
+        "bucket": "Mixed",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 62,
+          "openai": 65,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "newPrompt": {
+        "score": 66,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 62,
+          "openai": 65,
+          "gemini": 75
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 3,
+      "bucketChanged": false
+    },
+    {
+      "showId": "monte-cristo-the-york-theatre-company-off-broadway-2026",
+      "outletId": "culturesauce",
+      "publishDate": "2026-03-19",
+      "oldStored": {
+        "score": 30,
+        "bucket": "Pan"
+      },
+      "oldPrompt": {
+        "score": 41,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 40,
+          "gemini": 40
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 37,
+        "bucket": "Negative",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 42,
+          "openai": 40,
+          "gemini": 25
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Pan"
+        }
+      },
+      "drift": -4,
+      "bucketChanged": false
+    },
+    {
+      "showId": "falsettos-2016",
+      "outletId": "theater-pizzazz",
+      "publishDate": "2026-02-14T00:31:30.903Z",
+      "oldStored": {
+        "score": 92,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": 91,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 92,
+          "openai": 88,
+          "gemini": 92
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 91,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 92,
+          "openai": 88,
+          "gemini": 92
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "encores-the-wild-party-off-broadway-2026",
+      "outletId": "one-minute-critic",
+      "publishDate": "2026-04-20T17:59:10.238Z",
+      "oldStored": {
+        "score": 40,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 40,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "two-model-fallback",
+        "models": {
+          "claude": 40,
+          "openai": null,
+          "gemini": 40
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": null,
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 41,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "two-model-fallback",
+        "models": {
+          "claude": 42,
+          "openai": null,
+          "gemini": 40
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": null,
+          "gemini": "Negative"
+        }
+      },
+      "drift": 1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "outletId": "london-box-office",
+      "publishDate": "2025-12-12",
+      "oldStored": {
+        "score": 67,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 66,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 72,
+          "openai": 65,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "newPrompt": {
+        "score": 66,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 72,
+          "openai": 65,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "encores-the-wild-party-off-broadway-2026",
+      "outletId": "theater-scene",
+      "publishDate": "2026-03-24",
+      "oldStored": {
+        "score": 86,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": 90,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 89,
+          "openai": 88,
+          "gemini": 92
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 88,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 89,
+          "openai": 88,
+          "gemini": 88
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "drift": -2,
+      "bucketChanged": false
+    },
+    {
+      "showId": "high-noon-west-end-2025",
+      "outletId": "financialtimes",
+      "publishDate": "2026-01-12",
+      "oldStored": {
+        "score": 62,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 62,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 58,
+          "openai": 65,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "newPrompt": {
+        "score": 63,
+        "bucket": "Mixed",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 62,
+          "openai": 65,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "drift": 1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "a-behanding-in-spokane-2010",
+      "outletId": "on-off-broadway",
+      "publishDate": "2026-02-13T22:25:21.317Z",
+      "oldStored": {
+        "score": 42,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 46,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 45,
+          "openai": 45,
+          "gemini": 48
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 46,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 45,
+          "openai": 45,
+          "gemini": 48
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "private-lives-2025",
+      "outletId": "nydailynews",
+      "publishDate": "2026-03-03T00:46:29.737Z",
+      "oldStored": {
+        "score": 46,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 45,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 45,
+          "openai": 45,
+          "gemini": 45
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 46,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 45,
+          "openai": 45,
+          "gemini": 48
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "drift": 1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "the-adding-machine-off-broadway-2026",
+      "outletId": "stageandcinema",
+      "publishDate": "2026-04-14",
+      "oldStored": {
+        "score": 84,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": 89,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 87,
+          "openai": 87,
+          "gemini": 92
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 87,
+        "bucket": "Rave",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 79,
+          "openai": 88,
+          "gemini": 92
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "drift": -2,
+      "bucketChanged": false
+    },
+    {
+      "showId": "cats-express-test-2026",
+      "outletId": "deadline",
+      "publishDate": "April 7, 2026",
+      "oldStored": {
+        "score": 90,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": 91,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 90,
+          "openai": 90,
+          "gemini": 92
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 91,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 90,
+          "openai": 92,
+          "gemini": 92
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "queen-versailles-2025",
+      "outletId": "vulture",
+      "publishDate": "2025-11-11",
+      "oldStored": {
+        "score": 26,
+        "bucket": "Pan"
+      },
+      "oldPrompt": {
+        "score": 19,
+        "bucket": "Pan",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 18,
+          "openai": 20,
+          "gemini": 18
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "newPrompt": {
+        "score": 19,
+        "bucket": "Pan",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 18,
+          "openai": 20,
+          "gemini": 18
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "monte-cristo-the-york-theatre-company-off-broadway-2026",
+      "outletId": "theatermania",
+      "publishDate": "2026-03-19",
+      "oldStored": {
+        "score": 42,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 45,
+        "bucket": "Negative",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 45,
+          "gemini": 48
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 46,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 45,
+          "openai": 45,
+          "gemini": 48
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "drift": 1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "cat-on-a-hot-tin-roof-2008",
+      "outletId": "nydailynews",
+      "publishDate": "2026-02-10T08:02:51.998Z",
+      "oldStored": {
+        "score": 25,
+        "bucket": "Pan"
+      },
+      "oldPrompt": {
+        "score": 25,
+        "bucket": "Pan",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 38,
+          "openai": 20,
+          "gemini": 20
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "newPrompt": {
+        "score": 34,
+        "bucket": "Pan",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 38,
+          "openai": 20,
+          "gemini": 38
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Pan",
+          "gemini": "Negative"
+        }
+      },
+      "drift": 9,
+      "bucketChanged": false
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "outletId": "financialtimes",
+      "publishDate": "2026-04-17",
+      "oldStored": {
+        "score": 78,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": 78,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 78,
+          "openai": 78,
+          "gemini": 78
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 78,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 78,
+          "openai": 78,
+          "gemini": 79
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "copenhagen-west-end-2026",
+      "outletId": "thereviewshub",
+      "publishDate": "2026-04-08",
+      "oldStored": {
+        "score": 72,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": 74,
+        "bucket": "Positive",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 78,
+          "openai": 74,
+          "gemini": 70
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 74,
+        "bucket": "Positive",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 78,
+          "openai": 70,
+          "gemini": 75
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "in-the-print-off-west-end-2026",
+      "outletId": "london-box-office",
+      "publishDate": "2026-03-31",
+      "oldStored": {
+        "score": 42,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 42,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 45,
+          "gemini": 40
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 42,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 45,
+          "gemini": 40
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "women-on-the-verge-of-a-nervous-breakdown-2010",
+      "outletId": "amny",
+      "publishDate": "2026-02-22T23:36:28.859Z",
+      "oldStored": {
+        "score": 25,
+        "bucket": "Pan"
+      },
+      "oldPrompt": {
+        "score": 36,
+        "bucket": "Negative",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 40,
+          "openai": 25,
+          "gemini": 38
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Pan",
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 40,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 40,
+          "openai": 40,
+          "gemini": 40
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "drift": 4,
+      "bucketChanged": false
+    },
+    {
+      "showId": "every-brilliant-thing-2026",
+      "outletId": "one-minute-critic",
+      "publishDate": "2026-03-13",
+      "oldStored": {
+        "score": 65,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 63,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 60,
+          "openai": 67,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "newPrompt": {
+        "score": 68,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 62,
+          "openai": 68,
+          "gemini": 75
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 5,
+      "bucketChanged": false
+    },
+    {
+      "showId": "queen-versailles-2025",
+      "outletId": "vulture",
+      "publishDate": "2025-11-10",
+      "oldStored": {
+        "score": 26,
+        "bucket": "Pan"
+      },
+      "oldPrompt": {
+        "score": -1,
+        "bucket": "Mixed",
+        "confidence": "low",
+        "source": "rejected",
+        "models": {
+          "claude": null,
+          "openai": null,
+          "gemini": null
+        },
+        "modelBuckets": {
+          "claude": null,
+          "openai": null,
+          "gemini": null
+        },
+        "rejected": true,
+        "rejection": "wrong_production"
+      },
+      "newPrompt": {
+        "score": 28,
+        "bucket": "Pan",
+        "confidence": "low",
+        "source": "two-model-fallback",
+        "models": {
+          "claude": 38,
+          "openai": null,
+          "gemini": 18
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": null,
+          "gemini": "Pan"
+        }
+      },
+      "drift": 29,
+      "bucketChanged": true
+    },
+    {
+      "showId": "a-life-in-the-theatre-2010",
+      "outletId": "nypost",
+      "publishDate": "2026-02-05T06:02:20.461Z",
+      "oldStored": {
+        "score": 78,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": 77,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 76,
+          "openai": 78,
+          "gemini": 78
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 78,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 76,
+          "openai": 79,
+          "gemini": 78
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "death-of-a-salesman-2026",
+      "outletId": "amny",
+      "publishDate": "2026-04-09",
+      "oldStored": {
+        "score": 86,
+        "bucket": "Rave"
+      },
+      "oldPrompt": {
+        "score": 90,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 88,
+          "openai": 89,
+          "gemini": 92
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 90,
+        "bucket": "Rave",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 88,
+          "openai": 89,
+          "gemini": 92
+        },
+        "modelBuckets": {
+          "claude": "Rave",
+          "openai": "Rave",
+          "gemini": "Rave"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "the-velocity-of-autumn-2014",
+      "outletId": "nydailynews",
+      "publishDate": "2026-03-14T00:05:18.546Z",
+      "oldStored": {
+        "score": 24,
+        "bucket": "Pan"
+      },
+      "oldPrompt": {
+        "score": 19,
+        "bucket": "Pan",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 18,
+          "openai": 20,
+          "gemini": 18
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "newPrompt": {
+        "score": 19,
+        "bucket": "Pan",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 18,
+          "openai": 20,
+          "gemini": 18
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "back-to-the-future-west-end-2021",
+      "outletId": "whatsonstage",
+      "publishDate": "2026-04-06T03:20:52.400Z",
+      "oldStored": {
+        "score": 78,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": 78,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 78,
+          "openai": 78,
+          "gemini": 78
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 78,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 78,
+          "openai": 78,
+          "gemini": 79
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "king-lear-2019",
+      "outletId": "huffpost",
+      "publishDate": "2026-03-13T23:51:55.164Z",
+      "oldStored": {
+        "score": 64,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": -1,
+        "bucket": "Mixed",
+        "confidence": "low",
+        "source": "rejected",
+        "models": {
+          "claude": null,
+          "openai": null,
+          "gemini": null
+        },
+        "modelBuckets": {
+          "claude": null,
+          "openai": null,
+          "gemini": null
+        },
+        "rejected": true,
+        "rejection": "wrong_production"
+      },
+      "newPrompt": {
+        "score": -1,
+        "bucket": "Mixed",
+        "confidence": "low",
+        "source": "rejected",
+        "models": {
+          "claude": null,
+          "openai": null,
+          "gemini": null
+        },
+        "modelBuckets": {
+          "claude": null,
+          "openai": null,
+          "gemini": null
+        },
+        "rejected": true,
+        "rejection": "wrong_production"
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "antigone-this-play-i-read-in-high-school-off-broadway-2026",
+      "outletId": "la-voce-di-new-york",
+      "publishDate": "2026-03-28",
+      "oldStored": {
+        "score": 78,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": 78,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 78,
+          "openai": 78,
+          "gemini": 79
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 78,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 78,
+          "openai": 78,
+          "gemini": 79
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "flyby-off-west-end-2026",
+      "outletId": "london-theatre",
+      "publishDate": "2026-04-10",
+      "oldStored": {
+        "score": 13,
+        "bucket": "Pan"
+      },
+      "oldPrompt": {
+        "score": 13,
+        "bucket": "Pan",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 18,
+          "openai": 12,
+          "gemini": 10
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "newPrompt": {
+        "score": 14,
+        "bucket": "Pan",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 18,
+          "openai": 12,
+          "gemini": 12
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "drift": 1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "blackout-songs-off-broadway-2026",
+      "outletId": "josh-at-the-movies",
+      "publishDate": "January 27, 2026",
+      "oldStored": {
+        "score": 77,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": 78,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 76,
+          "openai": 79,
+          "gemini": 78
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 78,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 76,
+          "openai": 79,
+          "gemini": 78
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
+      "outletId": "pages-on-stages",
+      "publishDate": "2026-04-08",
+      "oldStored": {
+        "score": 36,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 26,
+        "bucket": "Pan",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 42,
+          "openai": 20,
+          "gemini": 20
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "newPrompt": {
+        "score": 25,
+        "bucket": "Pan",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 38,
+          "openai": 20,
+          "gemini": 20
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "drift": -1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "woman-in-mind-west-end-2025",
+      "outletId": "the-spectator-uk",
+      "publishDate": "2026-01-22",
+      "oldStored": {
+        "score": 27,
+        "bucket": "Pan"
+      },
+      "oldPrompt": {
+        "score": 19,
+        "bucket": "Pan",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 18,
+          "openai": 20,
+          "gemini": 18
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "newPrompt": {
+        "score": 19,
+        "bucket": "Pan",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 18,
+          "openai": 20,
+          "gemini": 18
+        },
+        "modelBuckets": {
+          "claude": "Pan",
+          "openai": "Pan",
+          "gemini": "Pan"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "the-playboy-of-the-western-world-west-end-2025",
+      "outletId": "telegraph",
+      "publishDate": "2025-12-12",
+      "oldStored": {
+        "score": 66,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 62,
+        "bucket": "Mixed",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 60,
+          "openai": 65,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "newPrompt": {
+        "score": 63,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 60,
+          "openai": 68,
+          "gemini": 62
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "drift": 1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "and-juliet-2022",
+      "outletId": "queerty",
+      "publishDate": "2026-02-11T01:29:10.384Z",
+      "oldStored": {
+        "score": 78,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": 78,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 76,
+          "openai": 78,
+          "gemini": 79
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 78,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 76,
+          "openai": 79,
+          "gemini": 79
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "antigone-this-play-i-read-in-high-school-off-broadway-2026",
+      "outletId": "cititour",
+      "publishDate": "2026-03-28T03:51:59.539Z",
+      "oldStored": {
+        "score": 75,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": 76,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 76,
+          "openai": 78,
+          "gemini": 75
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 77,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 76,
+          "openai": 78,
+          "gemini": 76
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "chinese-republicans-off-broadway-2026",
+      "outletId": "cititour",
+      "publishDate": "2026-03-02T01:10:22.977Z",
+      "oldStored": {
+        "score": 76,
+        "bucket": "Positive"
+      },
+      "oldPrompt": {
+        "score": 75,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 75,
+          "openai": 76,
+          "gemini": 75
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 75,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 75,
+          "openai": 76,
+          "gemini": 75
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "marie-and-rosetta-west-end-2026",
+      "outletId": "whatsonstage",
+      "publishDate": "2026-03-10",
+      "oldStored": {
+        "score": 62,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 65,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 62,
+          "openai": 60,
+          "gemini": 75
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 65,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 62,
+          "openai": 60,
+          "gemini": 75
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "equus-west-end-2026",
+      "outletId": "thestage",
+      "publishDate": "2026-04-03T20:56:01.927Z",
+      "oldStored": {
+        "score": 65,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 65,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 68,
+          "openai": 60,
+          "gemini": 67
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "newPrompt": {
+        "score": 65,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 78,
+          "openai": 60,
+          "gemini": 60
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "man-and-boy-west-end-2026",
+      "outletId": "times-uk",
+      "publishDate": "2026-02-11",
+      "oldStored": {
+        "score": 44,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 45,
+        "bucket": "Negative",
+        "confidence": "medium",
+        "source": "two-model-fallback",
+        "models": {
+          "claude": 42,
+          "openai": null,
+          "gemini": 48
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": null,
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 41,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "two-model-fallback",
+        "models": {
+          "claude": 42,
+          "openai": null,
+          "gemini": 40
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": null,
+          "gemini": "Negative"
+        }
+      },
+      "drift": -4,
+      "bucketChanged": false
+    },
+    {
+      "showId": "marjorie-prime-2025",
+      "outletId": "chicagotribune",
+      "publishDate": "2025-12-08",
+      "oldStored": {
+        "score": 25,
+        "bucket": "Pan"
+      },
+      "oldPrompt": {
+        "score": 77,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 78,
+          "openai": 74,
+          "gemini": 79
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 78,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 76,
+          "openai": 78,
+          "gemini": 79
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "outletId": "thestage",
+      "publishDate": "2026-04-08",
+      "oldStored": {
+        "score": 67,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 63,
+        "bucket": "Mixed",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 60,
+          "openai": 65,
+          "gemini": 65
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "newPrompt": {
+        "score": 64,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 60,
+          "openai": 68,
+          "gemini": 65
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Mixed"
+        }
+      },
+      "drift": 1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "beaches-2026",
+      "outletId": "the-recs",
+      "publishDate": "2026-04-23",
+      "oldStored": {
+        "score": 31,
+        "bucket": "Pan"
+      },
+      "oldPrompt": {
+        "score": 41,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 40,
+          "gemini": 40
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 41,
+        "bucket": "Negative",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 42,
+          "openai": 40,
+          "gemini": 40
+        },
+        "modelBuckets": {
+          "claude": "Negative",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "drift": 0,
+      "bucketChanged": false
+    },
+    {
+      "showId": "no-singing-in-the-navy-off-broadway-2026",
+      "outletId": "nytg",
+      "publishDate": "2026-03-30",
+      "oldStored": {
+        "score": 52,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 49,
+        "bucket": "Negative",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 58,
+          "openai": 45,
+          "gemini": 48
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 48,
+        "bucket": "Negative",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 58,
+          "openai": 45,
+          "gemini": 45
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "drift": -1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "monte-cristo-the-york-theatre-company-off-broadway-2026",
+      "outletId": "nytimes",
+      "publishDate": "2026-03-19",
+      "oldStored": {
+        "score": 50,
+        "bucket": "Negative"
+      },
+      "oldPrompt": {
+        "score": 49,
+        "bucket": "Negative",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 62,
+          "openai": 45,
+          "gemini": 45
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "newPrompt": {
+        "score": 50,
+        "bucket": "Negative",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 62,
+          "openai": 45,
+          "gemini": 48
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Negative",
+          "gemini": "Negative"
+        }
+      },
+      "drift": 1,
+      "bucketChanged": false
+    },
+    {
+      "showId": "oh-mary-west-end-2025",
+      "outletId": "independent",
+      "publishDate": "2025-12-19",
+      "oldStored": {
+        "score": 60,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 81,
+        "bucket": "Positive",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 78,
+          "openai": 78,
+          "gemini": 88
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Rave"
+        }
+      },
+      "newPrompt": {
+        "score": 78,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 78,
+          "openai": 78,
+          "gemini": 79
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "drift": -3,
+      "bucketChanged": false
+    },
+    {
+      "showId": "the-lost-boys-2026",
+      "outletId": "nytimes",
+      "publishDate": "2026-04-26",
+      "oldStored": {
+        "score": 68,
+        "bucket": "Mixed"
+      },
+      "oldPrompt": {
+        "score": 68,
+        "bucket": "Mixed",
+        "confidence": "medium",
+        "source": "ensemble-majority",
+        "models": {
+          "claude": 62,
+          "openai": 68,
+          "gemini": 75
+        },
+        "modelBuckets": {
+          "claude": "Mixed",
+          "openai": "Mixed",
+          "gemini": "Positive"
+        }
+      },
+      "newPrompt": {
+        "score": 78,
+        "bucket": "Positive",
+        "confidence": "high",
+        "source": "ensemble-unanimous",
+        "models": {
+          "claude": 78,
+          "openai": 78,
+          "gemini": 78
+        },
+        "modelBuckets": {
+          "claude": "Positive",
+          "openai": "Positive",
+          "gemini": "Positive"
+        }
+      },
+      "drift": 10,
+      "bucketChanged": true
+    }
+  ]
+}

@@ -1,0 +1,688 @@
+{
+  "issueNumber": "bro-4432-b",
+  "planId": "9b0e3c3a-6d0c-4a1d-8c56-2f4e1f7b4432",
+  "status": "applied",
+  "createdAt": "2026-09-30T16:33:36.601Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add 10 reviewed productions missing from shows.json (London: The World Is Full of Married Men, A World Elsewhere, for colored girls at the Yard, You're So Special, Chewing Gum Dreams, The Turn of the Screw at the Arcola, PalesTEENian; NYC: Falls for Jodie and Very Blue Light at The Tank, This Is Not Not a Drill) and fill the dates that kept Twenty Thousand Streets, Annie Wobbler Revisited and Here Comes J. Edgar! out of the recent window (BRO-4432).",
+    "steps": [
+      "Add 10 shows (add-show)",
+      "9 date/status edits on 3 existing entries",
+      "Then dispatch gather-reviews.yml for the new ids"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-world-is-full-of-married-men-off-west-end-2026",
+          "title": "The World Is Full of Married Men",
+          "slug": "the-world-is-full-of-married-men-off-west-end-2026",
+          "venue": "The Yard Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2026-07-21",
+          "closingDate": "2026-08-01",
+          "openingDateSource": "venue-first-performance",
+          "status": "closed",
+          "type": "play",
+          "isRevival": false,
+          "category": "off-west-end",
+          "market": "west-end",
+          "synopsis": "Malmö Dockteater and Malmö Stadsteater's puppet staging of Jackie Collins' novel, following David and Linda's collapsing Swinging Sixties marriage in dollhouse sets. Performed in Swedish with English surtitles.",
+          "cast": [
+            {
+              "name": "Erik Olsson",
+              "role": "Performer"
+            },
+            {
+              "name": "Kajsa Ericsson",
+              "role": "Performer"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Erik Holmström",
+              "role": "Director and Puppet Designer"
+            },
+            {
+              "name": "Lulu Raczka",
+              "role": "English Translation"
+            }
+          ],
+          "tags": [
+            "new"
+          ],
+          "ticketLinks": [],
+          "theaterAddress": null,
+          "discoverySource": "manual-user-request"
+        },
+        "description": "Reviewed production missing from shows.json (BRO-4432). Source: https://www.theyardtheatre.co.uk/events/the-world-is-full-of-married-men"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-world-elsewhere-off-west-end-2026",
+          "title": "A World Elsewhere",
+          "slug": "a-world-elsewhere-off-west-end-2026",
+          "venue": "Sam Wanamaker Playhouse",
+          "previewsStartDate": null,
+          "openingDate": "2026-07-25",
+          "closingDate": "2026-08-30",
+          "openingDateSource": "venue-first-performance",
+          "status": "closed",
+          "type": "play",
+          "isRevival": false,
+          "category": "off-west-end",
+          "market": "west-end",
+          "synopsis": "A family play with live music: a boy named Cass escapes into an imaginary world built from his grandmother's Shakespeare stories, and has to work out whether he is in a tragedy or a comedy to find his way home.",
+          "cast": [
+            {
+              "name": "Kyle Ndukuba",
+              "role": "Cass"
+            },
+            {
+              "name": "Kerry Frampton",
+              "role": "Sarah"
+            },
+            {
+              "name": "Tanvi Virmani",
+              "role": "Cobweb"
+            },
+            {
+              "name": "Zachary Willis",
+              "role": "Big Guy"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Kerry Frampton",
+              "role": "Writer"
+            },
+            {
+              "name": "Ben Hales",
+              "role": "Writer and Composer"
+            },
+            {
+              "name": "Lucy Cuthbertson",
+              "role": "Director"
+            }
+          ],
+          "tags": [
+            "new"
+          ],
+          "ticketLinks": [],
+          "theaterAddress": null,
+          "discoverySource": "manual-user-request"
+        },
+        "description": "Reviewed production missing from shows.json (BRO-4432). Source: https://officiallondontheatre.com/show/a-world-elsewhere-111473412/"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-off-west-end-2026",
+          "title": "for colored girls who have considered suicide / when the rainbow is enuf",
+          "slug": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-off-west-end-2026",
+          "venue": "The Yard Theatre",
+          "previewsStartDate": "2026-09-02",
+          "openingDate": "2026-09-02",
+          "closingDate": "2026-10-17",
+          "openingDateSource": "venue-first-performance",
+          "status": "open",
+          "type": "play",
+          "isRevival": true,
+          "category": "off-west-end",
+          "market": "west-end",
+          "synopsis": "Ntozake Shange's choreopoem, in its first UK revival, reopening the Yard: seven women share interwoven poems about love, loss, violence and survival.",
+          "cast": [
+            {
+              "name": "Tatenda Matsvai",
+              "role": "Lady in Green / Lady in Yellow"
+            },
+            {
+              "name": "Nadine Higgin",
+              "role": "Lady in Blue"
+            },
+            {
+              "name": "Cherrelle Skeete",
+              "role": "Lady in Red"
+            },
+            {
+              "name": "Alex Thomas-Smith",
+              "role": "Lady in Purple / Lady in Orange"
+            },
+            {
+              "name": "Ibilola Rossi",
+              "role": "Lady in Brown"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Ntozake Shange",
+              "role": "Playwright"
+            },
+            {
+              "name": "Diane Page",
+              "role": "Director"
+            },
+            {
+              "name": "Jammz",
+              "role": "Music"
+            }
+          ],
+          "tags": [
+            "new"
+          ],
+          "ticketLinks": [],
+          "theaterAddress": null,
+          "discoverySource": "manual-user-request"
+        },
+        "description": "Reviewed production missing from shows.json (BRO-4432). Source: https://www.theyardtheatre.co.uk/events/for-colored-girls"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "youre-so-special-off-west-end-2026",
+          "title": "You're So Special",
+          "slug": "youre-so-special-off-west-end-2026",
+          "venue": "Soho Theatre Upstairs",
+          "previewsStartDate": "2026-09-03",
+          "openingDate": "2026-09-08",
+          "closingDate": "2026-09-26",
+          "openingDateSource": "press-night-announced",
+          "status": "closed",
+          "type": "play",
+          "isRevival": false,
+          "category": "off-west-end",
+          "market": "west-end",
+          "synopsis": "Julia Grogan's solo comedy: when Miss June's shot at TV talent-show fame falls through, she pours her ambition into the village-hall baby-ballet end-of-term showcase.",
+          "cast": [
+            {
+              "name": "Julia Grogan",
+              "role": "Miss June"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Julia Grogan",
+              "role": "Playwright"
+            },
+            {
+              "name": "Rachel Lemon",
+              "role": "Director"
+            }
+          ],
+          "tags": [
+            "new"
+          ],
+          "ticketLinks": [],
+          "theaterAddress": null,
+          "discoverySource": "manual-user-request"
+        },
+        "description": "Reviewed production missing from shows.json (BRO-4432). Source: https://www.whatsonstage.com/news/julia-grogans-youre-so-special-to-have-london-run_1723866/"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "chewing-gum-dreams-off-west-end-2026",
+          "title": "Chewing Gum Dreams",
+          "slug": "chewing-gum-dreams-off-west-end-2026",
+          "venue": "Theatre503",
+          "previewsStartDate": null,
+          "openingDate": "2026-09-10",
+          "closingDate": null,
+          "openingDateSource": "venue-first-performance",
+          "status": "open",
+          "type": "play",
+          "isRevival": true,
+          "category": "off-west-end",
+          "market": "west-end",
+          "synopsis": "Michaela Coel's solo play, in its first UK revival: teenage Tracey Gordon faces first love, the last days of school and growing up on a London estate.",
+          "cast": [
+            {
+              "name": "Lauryn Ajufo",
+              "role": "Tracey Gordon"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Michaela Coel",
+              "role": "Playwright"
+            },
+            {
+              "name": "Anthony Simpson-Pike",
+              "role": "Director"
+            }
+          ],
+          "tags": [
+            "new"
+          ],
+          "ticketLinks": [],
+          "theaterAddress": null,
+          "discoverySource": "manual-user-request"
+        },
+        "description": "Reviewed production missing from shows.json (BRO-4432). Source: https://www.afridiziak.com/whatson/chewing-gum-dreams-at-theatre503-by-michaela-coel/ (closing 10 or 17 Oct: sources disagree, left null)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-turn-of-the-screw-off-west-end-2026",
+          "title": "The Turn of the Screw",
+          "slug": "the-turn-of-the-screw-off-west-end-2026",
+          "venue": "Arcola Theatre",
+          "previewsStartDate": null,
+          "openingDate": "2026-09-11",
+          "closingDate": "2026-10-10",
+          "openingDateSource": "venue-first-performance",
+          "status": "open",
+          "type": "play",
+          "isRevival": false,
+          "category": "off-west-end",
+          "market": "west-end",
+          "synopsis": "Morgan Lloyd Malcolm's new adaptation of Henry James: a young governess sent to care for two orphans at Bly comes to believe the children are haunted, or is she imagining it?",
+          "cast": [
+            {
+              "name": "Amy Tara",
+              "role": "Governess"
+            },
+            {
+              "name": "Toby Beynon",
+              "role": "Miles / Quint"
+            },
+            {
+              "name": "Kathleen McAuley Irvine",
+              "role": "Flora / Jessel"
+            },
+            {
+              "name": "Katy Slater",
+              "role": "Mrs Grose"
+            },
+            {
+              "name": "Jim Fish",
+              "role": "Man / Master"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Morgan Lloyd Malcolm",
+              "role": "Playwright"
+            },
+            {
+              "name": "Nicky Allpress",
+              "role": "Director"
+            }
+          ],
+          "tags": [
+            "new"
+          ],
+          "ticketLinks": [],
+          "theaterAddress": null,
+          "discoverySource": "manual-user-request"
+        },
+        "description": "Reviewed production missing from shows.json (BRO-4432). Source: https://www.arcolatheatre.com/event/the-turn-of-the-screw/"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "palesteenian-off-west-end-2026",
+          "title": "PalesTEENian",
+          "slug": "palesteenian-off-west-end-2026",
+          "venue": "Riverside Studios",
+          "previewsStartDate": null,
+          "openingDate": "2026-07-27",
+          "closingDate": "2026-08-02",
+          "openingDateSource": "venue-first-performance",
+          "status": "closed",
+          "type": "play",
+          "isRevival": false,
+          "category": "off-west-end",
+          "market": "west-end",
+          "synopsis": "Joe Haddad's semi-autobiographical solo show mixing stand-up and theatre: growing up Palestinian in South London, a trip back to Palestine, and a stand-up career overtaken by events after October 2023.",
+          "cast": [
+            {
+              "name": "Joe Haddad",
+              "role": "Performer"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Joe Haddad",
+              "role": "Writer"
+            }
+          ],
+          "tags": [
+            "new"
+          ],
+          "ticketLinks": [],
+          "theaterAddress": null,
+          "discoverySource": "manual-user-request"
+        },
+        "description": "Reviewed production missing from shows.json (BRO-4432). Source: https://westendwilma.com/palesteenian-riverside-studios/ (Bitesize Festival)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "falls-for-jodie-off-broadway-2026",
+          "title": "Falls for Jodie",
+          "slug": "falls-for-jodie-off-broadway-2026",
+          "venue": "The Tank",
+          "previewsStartDate": null,
+          "openingDate": "2026-09-24",
+          "closingDate": "2026-10-18",
+          "openingDateSource": "venue-first-performance",
+          "status": "open",
+          "type": "play",
+          "isRevival": false,
+          "category": "off-broadway",
+          "market": "broadway",
+          "synopsis": "Eric Micha Holmes' dark comedy: New Haven, 1980, months before the Reagan shooting. John Hinckley Jr. moves into the Colony Inn planning to win Jodie Foster and strikes up a friendship with the night concierge.",
+          "cast": [
+            {
+              "name": "Boone Sommers",
+              "role": "John Hinckley Jr."
+            },
+            {
+              "name": "Harry Thornton",
+              "role": "Eddie"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Eric Micha Holmes",
+              "role": "Playwright"
+            },
+            {
+              "name": "Terrence I Mosley",
+              "role": "Director"
+            }
+          ],
+          "tags": [
+            "new"
+          ],
+          "ticketLinks": [],
+          "theaterAddress": null,
+          "discoverySource": "manual-user-request"
+        },
+        "description": "Reviewed production missing from shows.json (BRO-4432). Source: https://thetanknyc.org/fall-2026"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "very-blue-light-off-broadway-2026",
+          "title": "Very Blue Light",
+          "slug": "very-blue-light-off-broadway-2026",
+          "venue": "The Tank",
+          "previewsStartDate": null,
+          "openingDate": "2026-09-10",
+          "closingDate": "2026-10-04",
+          "openingDateSource": "theatermania-opening-night",
+          "status": "open",
+          "type": "play",
+          "isRevival": false,
+          "category": "off-broadway",
+          "market": "broadway",
+          "synopsis": "Daphne Silbiger's play: two women reunite in Marfa, Texas, with a childhood friend who has taken on his big-tech bosses' politics. One is tempted by his life; the other looks for answers in the Marfa Lights.",
+          "cast": [
+            {
+              "name": "Dom Martello",
+              "role": "Magna"
+            },
+            {
+              "name": "Ellenor Riley-Condit",
+              "role": "Angela"
+            },
+            {
+              "name": "Samuel Im",
+              "role": "Coleman"
+            },
+            {
+              "name": "Anita Parrott",
+              "role": "Michigan"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Daphne Silbiger",
+              "role": "Playwright"
+            },
+            {
+              "name": "Emily Moler",
+              "role": "Director"
+            }
+          ],
+          "tags": [
+            "new"
+          ],
+          "ticketLinks": [],
+          "theaterAddress": null,
+          "discoverySource": "manual-user-request"
+        },
+        "description": "Reviewed production missing from shows.json (BRO-4432). Source: https://thetanknyc.org/calendar-1/verybluelight"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "this-is-not-not-a-drill-off-broadway-2026",
+          "title": "This Is Not Not a Drill",
+          "slug": "this-is-not-not-a-drill-off-broadway-2026",
+          "venue": "The Playwrights Realm (site-specific, Lower Manhattan)",
+          "previewsStartDate": null,
+          "openingDate": "2026-09-04",
+          "closingDate": "2026-10-04",
+          "openingDateSource": "venue-first-performance",
+          "status": "open",
+          "type": "special",
+          "isRevival": false,
+          "category": "off-broadway",
+          "market": "broadway",
+          "synopsis": "Daria Miyeko Marinelli's interactive audio walking tour through Lower Manhattan's history of activism, ending in a hands-on civic-organizing workshop.",
+          "cast": [
+            {
+              "name": "Brittany K. Allen",
+              "role": "Audio Tour Voice"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Daria Miyeko Marinelli",
+              "role": "Creator"
+            },
+            {
+              "name": "Dominique Rider",
+              "role": "Director"
+            }
+          ],
+          "tags": [
+            "new"
+          ],
+          "ticketLinks": [],
+          "theaterAddress": null,
+          "discoverySource": "manual-user-request"
+        },
+        "description": "Reviewed production missing from shows.json (BRO-4432). Source: https://www.playwrightsrealm.org/not-not"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "twenty-thousand-streets-off-west-end-2026",
+        "field": "previewsStartDate",
+        "oldValue": null,
+        "newValue": "2026-09-10",
+        "description": "First preview (southwarkplayhouse.co.uk/productions/twenty-thousand-streets/)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "twenty-thousand-streets-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-09-16",
+        "description": "Press night (theatreweekly.com casting announcement)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "twenty-thousand-streets-off-west-end-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-10-17",
+        "description": "Closing (southwarkplayhouse.co.uk)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "twenty-thousand-streets-off-west-end-2026",
+        "field": "status",
+        "oldValue": "announced",
+        "newValue": "open",
+        "description": "Running since 2026-09-10"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "annie-wobbler-revisited-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-09-02",
+        "description": "Opened 2 Sep 2026 (finboroughtheatre.co.uk; bestoftheatre.co.uk round-up)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "annie-wobbler-revisited-off-west-end-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-09-26",
+        "description": "Closing (finboroughtheatre.co.uk)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "annie-wobbler-revisited-off-west-end-2026",
+        "field": "status",
+        "oldValue": "announced",
+        "newValue": "closed",
+        "description": "Closed 2026-09-26"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "here-comes-j-edgar-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-07-16",
+        "description": "Opening night per Playbill (harry-shearer-tom-leopold-comedy-musical-here-comes-j-edgar-begins-london-world-premiere-july-11)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "here-comes-j-edgar-off-west-end-2026",
+        "field": "previewsStartDate",
+        "oldValue": "2026-07-10",
+        "newValue": "2026-07-11",
+        "description": "First preview per the same Playbill article (was 2026-07-10)"
+      }
+    ]
+  },
+  "executedAt": "2026-09-30T17:21:23.024Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-world-is-full-of-married-men-off-west-end-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-world-elsewhere-off-west-end-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-off-west-end-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added youre-so-special-off-west-end-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added chewing-gum-dreams-off-west-end-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-turn-of-the-screw-off-west-end-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added palesteenian-off-west-end-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added falls-for-jodie-off-broadway-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added very-blue-light-off-broadway-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added this-is-not-not-a-drill-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for twenty-thousand-streets-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for twenty-thousand-streets-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for twenty-thousand-streets-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for twenty-thousand-streets-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for annie-wobbler-revisited-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for annie-wobbler-revisited-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for annie-wobbler-revisited-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for here-comes-j-edgar-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for here-comes-j-edgar-off-west-end-2026"
+    }
+  ]
+}

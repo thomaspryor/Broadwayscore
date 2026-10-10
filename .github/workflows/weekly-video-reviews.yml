@@ -1,0 +1,310 @@
+name: Weekly Video Reviews
+
+# Scans all 10 registered theatre video creators (TikTok + YouTube) for new
+# reviews, collects transcripts, classifies + scores via Claude, and rebuilds
+# data/video-reviews.json. Only processes videos not yet in the transcript
+# directory — idempotent and cheap on steady-state runs (~5-15 new/week).
+#
+# Monday 4 AM UTC: Sunday is busy (rebuild 04:00, audience scrapers 12:00-16:00).
+# Monday is empty across all other weekly workflows.
+
+on:
+  schedule:
+    - cron: '0 4 * * 1'  # Mondays 4 AM UTC
+  workflow_dispatch:
+    inputs:
+      creator:
+        description: 'Single creator handle to process (e.g. tylernabinger). Leave blank for all.'
+        required: false
+        type: string
+      refresh:
+        description: 'Re-scan creator feeds even if data is recent (passes --refresh to discover-videos)'
+        required: false
+        type: boolean
+        default: false
+
+# Only one instance at a time. cancel-in-progress: false so a running
+# pipeline is never killed mid-flight.
+concurrency:
+  group: weekly-video-reviews
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  video-reviews:
+    name: Discover, collect, score and publish new video reviews
+    runs-on: ubuntu-latest
+    # Steady state (5-15 new videos): ~15 min.
+    # First run after adding a new creator (up to 300 videos × 10 creators
+    # at --sleep-interval 1 = ~50 min discovery alone). 180 min gives safe
+    # headroom — matches update-social-pulse.yml reasoning.
+    timeout-minutes: 180
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          # BRO-2388 (task #466 class): depth 1000 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 180-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 1000
+
+      - name: Setup Node.js and configure git
+        uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      # classify-reviews.js and select-best-reviews.js read data/shows.json
+      # (private core data) to match transcripts to productions. Without this
+      # checkout they silently no-op'd for months: classify crashed on ENOENT
+      # into a swallowed catch, exit 0, and no CI run ever published a review
+      # (the 488 on the site all came from manual local runs, 2026-07-05).
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      # fetchPage()'s Playwright tier is in the YouTube watch-page fallback
+      # chain; without browsers it died "Executable doesn't exist" (BRO-4665).
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      # YouTube extraction needs a JS runtime since yt-dlp 2026.08 (the
+      # [default] extra pulls in yt-dlp-ejs, which runs on deno).
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      # yt-dlp is not on ubuntu-latest by default.
+      # --break-system-packages required on Ubuntu 24.04+ (PEP 668).
+      # curl-cffi: TikTok needs browser impersonation since yt-dlp 2026.08.19;
+      # without it every TikTok fetch failed "Unexpected response from webpage
+      # request" and the pipeline extracted 0 transcripts for six weeks (BRO-4323).
+      - name: Install yt-dlp
+        run: |
+          pip install "yt-dlp[default,curl-cffi]" --break-system-packages --quiet
+          yt-dlp --version
+          python3 -c "import curl_cffi; print('curl_cffi', curl_cffi.__version__)"
+
+      # Step 1 of 8 — scan creator feeds for new review candidates.
+      # Writes to data/video-reviews-discovery/{handle}.json.
+      # Skips creators scanned < 24h ago unless --refresh.
+      - name: Discover videos
+        id: discover
+        run: |
+          set -euo pipefail
+          ARGS=()
+          if [ -n "${{ inputs.creator }}" ]; then
+            ARGS+=("--creator=${{ inputs.creator }}")
+          fi
+          if [ "${{ inputs.refresh }}" = "true" ]; then
+            ARGS+=("--refresh")
+          fi
+          # Exit 3 = a creator has gone unscanned for 2+ weeks; carry on for
+          # everyone else and fail the job at the end ("Fail on pipeline outage").
+          rc=0
+          node scripts/video-reviews/discover-videos.js "${ARGS[@]}" || rc=$?
+          if [ "$rc" -eq 3 ]; then
+            echo "outage=true" >> "$GITHUB_OUTPUT"
+          elif [ "$rc" -ne 0 ]; then
+            exit "$rc"
+          fi
+
+      # Step 2 of 8 — LLM pre-classification of TikTok titles (Haiku).
+      # TikTok captions rarely contain the word "review" ("This was pure magic!",
+      # "Show at Venue #hashtags"), so the regex in discover-videos.js misses
+      # most of them. This step flags llmFlagged=true in the discovery files;
+      # collect-transcripts.js picks up isReviewCandidate OR llmFlagged.
+      # Skips YouTube creators (title heuristics are sufficient there).
+      # Missing from the original pipeline — TikTok pickup silently died
+      # 2026-04 → 2026-06 without it.
+      - name: Pre-classify titles
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          set -euo pipefail
+          ARGS=()
+          if [ -n "${{ inputs.creator }}" ]; then
+            ARGS+=("--creator=${{ inputs.creator }}")
+          fi
+          node scripts/video-reviews/pre-classify-titles.js "${ARGS[@]}"
+
+      # Step 3 of 8 — extract transcripts for new candidates via yt-dlp.
+      # Writes to data/video-reviews-transcripts/raw/. Skips existing files.
+      - name: Collect transcripts
+        id: collect
+        # BRO-4343: YouTube bot-walls yt-dlp on runner IPs. BRO-4665:
+        # collect-transcripts.js falls back to Scrapingdog's /youtube/transcripts
+        # API (1 credit; +5 for /youtube/video when the upload date is unknown),
+        # then the watch page through fetchPage() (Bright Data, Playwright).
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          # fetchPage()'s cheapest tier, tried before Bright Data.
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          # 2 Bright Data requests per YouTube video; bounds a --refresh run.
+          BD_REQ_BUDGET: '400'
+          # Up to 6 Scrapingdog credits per YouTube video via the YouTube API
+          # (BRO-4665); shared with fetchPage's Scrapingdog tier in this step.
+          SD_CREDIT_BUDGET: '3000'
+        run: |
+          set -euo pipefail
+          ARGS=()
+          if [ -n "${{ inputs.creator }}" ]; then
+            ARGS+=("--creator=${{ inputs.creator }}")
+          fi
+          # Exit 3 = a platform extracted 0 transcripts with yt-dlp errors;
+          # still publish what the other platform produced, fail at the end.
+          rc=0
+          node scripts/video-reviews/collect-transcripts.js "${ARGS[@]}" || rc=$?
+          if [ "$rc" -eq 3 ]; then
+            echo "outage=true" >> "$GITHUB_OUTPUT"
+          elif [ "$rc" -ne 0 ]; then
+            exit "$rc"
+          fi
+
+      # Step 4 of 8 — LLM classification: genuine review vs casting news / commentary.
+      # Writes to data/video-reviews-transcripts/classified/.
+      - name: Classify reviews
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          set -euo pipefail
+          node scripts/video-reviews/classify-reviews.js
+
+      # Step 5 of 8 — picks best review per creator per show (by date proximity
+      # to opening + transcript length). Moves from classified/ to per-show dirs.
+      - name: Select best reviews
+        run: |
+          set -euo pipefail
+          node scripts/video-reviews/select-best-reviews.js
+
+      # Step 6 of 8 — LLM scoring: writes score/bucket/confidence/keyQuote
+      # into each transcript file. Skips already-scored files.
+      - name: Score video reviews
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          set -euo pipefail
+          node scripts/video-reviews/score-video-reviews.js
+
+      # BRO-4328: check each newly scored review is about the production it is
+      # filed under (West End/tour/tryout/earlier-run videos were landing on
+      # Broadway ids). Sets wrongProduction=true, which the build skips.
+      # GPT-4o proposes, Gemini must confirm; the date rule needs no model.
+      - name: Verify productions
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          set -euo pipefail
+          node scripts/video-reviews/verify-productions.js
+
+      # Step 7 of 8 — rebuild data/video-reviews.json from all scored transcripts.
+      # This file is in the Vercel deploy trigger path — pushing it kicks a deploy.
+      - name: Build video-reviews.json
+        run: |
+          set -euo pipefail
+          node scripts/video-reviews/build-video-reviews.js
+
+      # Step 8 of 8 — download thumbnails for any new reviews that lack one.
+      # Updates data/video-reviews.json in-place and writes JPGs to
+      # public/images/video-reviews/{handle}-{showId}.jpg.
+      - name: Backfill thumbnails
+        run: |
+          set -euo pipefail
+          node scripts/video-reviews/backfill-thumbnails.js
+
+      # The YouTube caption fallback goes through fetchPage(), which writes
+      # Bright Data rows to the tracked spend ledger. Commit them BEFORE the
+      # main commit so push-with-retry.sh never rebases over a dirty tree.
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: weekly-video-reviews
+
+      # Only commit if all 8 steps succeeded. Avoids shipping inconsistent state
+      # (e.g. transcripts collected but video-reviews.json not yet rebuilt).
+      - name: Commit and push
+        # BRO-2534: this step was the dominant failure shape behind the
+        # "cron-health-chronic:Weekly Video Reviews" alert — 13 of the last 20
+        # runs failed here (scripts/cron-health-chronic-orchestrator.js
+        # --workflow=weekly-video-reviews.yml), always push-contention against
+        # a busy main, never a script bug. The job carries a 180-min
+        # timeout-minutes (10800s) for exactly the discovery/transcript/scoring
+        # steps above it, but this step was still running on push-with-retry.sh's
+        # shared 240s/5-retry default — audit-push-retry-budgets.js confirmed
+        # 97.8% of the job's timeout margin (10560s) sat unused while the push
+        # gave up after only 2 fundable attempts. Same class of fix already
+        # applied to rebuild-fast.yml, opening-night-poller.yml and
+        # process-feedback.yml (600s/20 retries) and rebuild-reviews.yml /
+        # weekly-integrity.yml (900s) for the same "long job timeout, tiny push
+        # budget" mismatch — see push-with-retry.sh's PUSH_DEADLINE_SEC comment
+        # for why the shared default is never raised globally.
+        env:
+          PUSH_DEADLINE_SEC: '900'
+        run: |
+          set -euo pipefail
+
+          git add \
+            data/video-reviews.json \
+            data/video-reviews-discovery/ \
+            data/video-reviews-transcripts/ \
+            public/images/video-reviews/
+
+          if git diff --cached --quiet; then
+            echo "No changes — all videos already up to date."
+            exit 0
+          fi
+
+          TOTAL=$(node -e "
+            const d = require('./data/video-reviews.json');
+            const n = Object.entries(d)
+              .filter(([k]) => !k.startsWith('_'))
+              .reduce((s, [, v]) => s + (Array.isArray(v) ? v.length : 0), 0);
+            process.stdout.write(String(n));
+          " 2>/dev/null || echo "?")
+
+          git commit -m "chore(video-reviews): weekly update (${TOTAL} reviews total)"
+          bash scripts/lib/push-with-retry.sh 25 main
+
+      # BRO-4323: from 2026-08-19 to 2026-09-28 every run extracted 0 of 500+
+      # transcripts and still went green. Discover/collect exit 3 on an outage;
+      # this step turns the run red after the healthy work is committed, so
+      # "Notify on failure" below fires.
+      - name: Fail on pipeline outage
+        if: steps.discover.outputs.outage == 'true' || steps.collect.outputs.outage == 'true'
+        run: |
+          echo "::error::Video pipeline outage (discover=${{ steps.discover.outputs.outage || 'false' }}, collect=${{ steps.collect.outputs.outage || 'false' }}). See the Discover videos / Collect transcripts logs for the yt-dlp error."
+          exit 1
+
+      # Non-critical: weekly misses surface in the morning data-health-check digest.
+      # Escalate to 'critical' if same-day alerting becomes important.
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Weekly Video Reviews Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+      - name: Job summary
+        if: always()
+        run: |
+          echo "## Weekly Video Reviews" >> $GITHUB_STEP_SUMMARY
+          node -e "
+            try {
+              const d = require('./data/video-reviews.json');
+              const entries = Object.entries(d).filter(([k]) => !k.startsWith('_'));
+              const shows = entries.length;
+              const reviews = entries.reduce((s, [, v]) => s + (Array.isArray(v) ? v.length : 0), 0);
+              console.log('- **Shows with video reviews:** ' + shows);
+              console.log('- **Total video reviews:** ' + reviews);
+            } catch (e) { console.log('Could not parse video-reviews.json'); }
+          " >> $GITHUB_STEP_SUMMARY 2>/dev/null || true

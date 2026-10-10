@@ -1,0 +1,281 @@
+name: Check Push Ledger
+
+# Delayed re-verification for CI-side pushes (task #677). Companion to task
+# #668's merge-worktree-to-main.sh mitigation, which only covers LOCAL
+# Claude Code sessions (it spawns a background process that outlives the
+# invoking script — impossible on a GitHub Actions runner, which terminates
+# the instant its job ends). scripts/lib/push-with-retry.sh's own
+# content-survival check (task #619) only proves a push landed AT THE
+# INSTANT it ran, inside the same job — so a push verified there, then
+# silently reverted minutes later by a concurrent operation (the #668
+# failure class), is otherwise unmitigated for the ~130 workflows that push
+# through push-with-retry.sh.
+#
+# scripts/record-push-ledger.js records every successful push-with-retry.sh
+# push on the dedicated single-commit `push-ledger` branch (via
+# scripts/lib/push-ledger-store.js — NOT as commits to main; the old
+# data/audit/recent-pushes.jsonl design added ~1,000 bookkeeping commits/day
+# to main, 2026-08-02 commit-churn fix). This workflow runs on a cadence
+# long enough for that revert class to have already happened, re-checks
+# recent entries' reachability via the GitHub compare API, files an 'auto'
+# alert-router card for anything reverted, and prunes the ledger branch back
+# down through the same CAS write path.
+#
+# ALSO prunes the unrelated `push-retry-failures` branch (task: push-retry-
+# failure telemetry, 2026-08-23) on this same cron slot — no revert-checking
+# needed for that stream, just rotation so it doesn't grow forever. See
+# scripts/check-push-ledger.js's pruneFailureLedger() for why this rides
+# here instead of a dedicated workflow.
+
+on:
+  schedule:
+    - cron: '*/20 * * * *'
+  workflow_dispatch: {}
+
+concurrency:
+  group: check-push-ledger
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Check push ledger
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          # routeAlert(disposition:'auto') — files a Notion Action Queue card
+          # for any reverted push (see scripts/lib/owner-alert-router.js).
+        run: node scripts/check-push-ledger.js
+
+      - name: Commit alert state
+        if: always()
+        run: |
+          # The ledger itself lives on the push-ledger branch (pruned in-place
+          # by the check step above) — nothing ledger-related is committed to
+          # main anymore. Only routeAlert(disposition:'auto') cooldown state
+          # still lands here: callers must commit alert-ledger.json in the
+          # SAME job (card #618) — the dedup/cooldown state only exists on
+          # this job's ephemeral runner disk otherwise. This commits nothing
+          # at all unless an alert actually fired this run.
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          # alert-router-attempts.jsonl (BRO-3671/BRO-3662): logDispatchAttempt()
+          # rewrites this TRACKED file on every dispatch attempt; unstaged, it
+          # makes a rebase refuse pre-flight and forces the clobber-prone merge
+          # path in push-with-retry.sh.
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No alert-state changes to commit."
+          else
+            git commit -m "chore: push-ledger alert state [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::Alert state push failed after 5 attempts — next run re-derives from origin."
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Check Push Ledger Failed'
+          severity: 'warning'
+
+  # ── Diag — push latency (BRO-2373, reshaped by BRO-2827) ────────────────────
+  # TEMPORARY. Delete this job once BRO-2373 is closed.
+  #
+  # WHAT IT IS FOR. ~150 pushes/day exhaust their retries across 36 workflows;
+  # every failing attempt burns GIT_NET_TIMEOUT_SEC=90 with ZERO --progress output.
+  #
+  # WHY IT WAS RESHAPED (BRO-2827). The first version measured a depth-1 clone and
+  # `git push --dry-run`. Neither is the failing shape: --dry-run stops after the
+  # ref advertisement, and the failing workflows run DEEPENED shallow clones
+  # (depth-1 checkout + a bounded `--shallow-since` fetch, see
+  # scripts/lib/shallow-fetch-args.js). A depth-1 REAL push was measured at 1s
+  # off-runner, so the variable has to be the deepened shape, the runner, or both.
+  #
+  # WHAT IT MEASURES NOW, in this order:
+  #   1. COLD: the timed deepening fetch (first network op after checkout).
+  #   2. A/B x4 in ABBA order: a REAL push of one probe commit to a unique scratch
+  #      ref, with arm=nofetch (push straight away) or arm=fetched (bounded fetch
+  #      right before the push), then delete the scratch ref.
+  # The probe commit is made on FETCH_HEAD, like the real callers' rebased commit.
+  #
+  # ALREADY RETIRED BY MEASUREMENT, do not re-test: handshake/DNS/TLS, ref
+  # advertisement/count, pack CPU/transfer, depth-1 shallow-push negotiation.
+  #
+  # LIMITS, stated so nobody over-reads a green run: pushes go to a NEW
+  # refs/heads/probe/* ref, so main's branch-protection/update-hook path is not
+  # exercised. A fast result here exonerates the transport and the deepened
+  # shallow graft, not main-specific server-side checks.
+  #
+  # SAFETY. It writes only refs/heads/probe/push-latency-<run_id>-*, deleted inline
+  # and again by an `if: always()` sweep step (a push killed at the cap may already
+  # have created its ref). GITHUB_TOKEN pushes trigger no workflows, and every
+  # `on: push` workflow is filtered to main/staging/land/**. continue-on-error
+  # keeps a probe hiccup from reddening the ledger job.
+  push-latency-probe:
+    runs-on: ubuntu-latest
+    # Worst case: 3 fetches x 90s + 4 pushes x 90s + 4 deletes x 45s, plus
+    # `timeout -k 10` per op, plus the verify. Under 20 min; 25 for slack.
+    timeout-minutes: 25
+    continue-on-error: true
+    # Own group so a slow probe cannot delay or replace the ledger check cron.
+    concurrency:
+      group: push-latency-probe
+      cancel-in-progress: false
+    # `contents: read` would make the probe silently measure a 403 on
+    # git-receive-pack instead of the write path.
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout (depth-1, deepened below like the failing workflows)
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Measure deepened-shallow real push (A/B fetch)
+        run: |
+          # `set +e` is REQUIRED: `run:` is `bash -e` by default, and a slow
+          # rejection is the most valuable sample this job can take.
+          set +e
+
+          # Self-expiry: past the date the job no-ops until renewed deliberately.
+          if [ "$(date -u +%Y%m%d)" -gt "20261101" ]; then
+            echo "PROBE|expired — delete this job, or bump the date if BRO-2373 is still open"
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          CAP=90   # = prod GIT_NET_TIMEOUT_SEC
+          DEL_CAP=45
+          REF_PREFIX="refs/heads/probe/push-latency-${GITHUB_RUN_ID}"
+
+          # Classify rather than print a bare rc. 403/auth is NOT a measurement.
+          # Censoring keys on the timeout rc only: a push that finished at 90.5s is
+          # a real (slow) measurement.
+          # NB: classify() assigns _rc/_ms/_op/_tag/_log as globals; callers must not reuse those names.
+          classify() {
+            _rc="$1"; _ms="$2"; _op="$3"; _tag="$4"; _log="$5"
+            if [ "$_rc" = "124" ] || [ "$_rc" = "137" ]; then
+              echo "PROBE|op=$_op|$_tag|CENSORED|rc=$_rc|ms=$_ms"
+              sed 's/^/PROBE|stderr| /' "$_log" 2>/dev/null | head -12
+              return
+            fi
+            case "$_rc" in
+              0) echo "PROBE|op=$_op|$_tag|ms=$_ms|rc=0|verdict=ok" ;;
+              1) if grep -qiE 'denied|forbidden|403|authenticat|not authorized' "$_log" 2>/dev/null; then
+                   echo "PROBE|op=$_op|$_tag|ms=$_ms|rc=1|verdict=AUTH-NOT-A-MEASUREMENT"
+                 else
+                   echo "PROBE|op=$_op|$_tag|ms=$_ms|rc=1|verdict=rejected-valid-measurement"
+                 fi
+                 sed 's/^/PROBE|stderr| /' "$_log" 2>/dev/null | head -12 ;;
+              *) echo "PROBE|op=$_op|$_tag|ms=$_ms|rc=$_rc|verdict=ERROR-NOT-A-MEASUREMENT"
+                 sed 's/^/PROBE|stderr| /' "$_log" 2>/dev/null | head -12 ;;
+            esac
+          }
+
+          # Same derivation push-with-retry.sh uses, and the same fail-CLOSED
+          # fallback: repoDepthArgs() fails open to [], which on a shallow clone
+          # is a bare unbounded fetch (the 2 GB / 300s case).
+          # Computed ONCE, before COLD, and reused: repoDepthArgs anchors on the
+          # oldest local commit, so recomputing after each fetch would reach another
+          # 30 min further back every time and make the samples incomparable.
+          deepen_args() {
+            _a=$(node -e "const a=require('./scripts/lib/shallow-fetch-args.js').repoDepthArgs({repoRoot:process.cwd()});console.log(a.join(' '))" 2>/dev/null)
+            [ -n "$_a" ] && echo "$_a" || echo "--deepen=200"
+          }
+
+          DEEPEN="$(deepen_args)"
+
+          # Timed bounded fetch; leaves the new tip in FETCH_HEAD.
+          timed_fetch() {  # $1 = tag, $2 = log
+            s=$(date +%s%3N)
+            # shellcheck disable=SC2046
+            timeout -k 10 "$CAP" git fetch --progress $DEEPEN origin main >"$2" 2>&1
+            rc=$?; e=$(date +%s%3N)
+            classify "$rc" "$((e - s))" deepen-fetch "$1" "$2"
+            return $rc
+          }
+
+          # Probe commit on top of FETCH_HEAD (the callers push a commit rebased
+          # onto the freshly fetched tip).
+          mk_commit() {
+            git checkout -q --detach FETCH_HEAD || { echo "PROBE|abort|checkout FETCH_HEAD failed"; return 1; }
+            date -u +%FT%TZ > .push-latency-probe.txt
+            git add -f .push-latency-probe.txt
+            git commit -q -m "probe (scratch ref, deleted)"
+          }
+
+          probe_push() {  # $1 = n, $2 = arm
+            _ref="${REF_PREFIX}-$1"
+            if [ "$2" = "fetched" ]; then
+              timed_fetch "n=$1|arm=fetched-prefetch" "/tmp/pf.$1" || return
+              mk_commit || return
+            fi
+            # Tag AFTER the prefetch so commits= describes the clone being pushed from.
+            ptag="n=$1|arm=$2|commits=$(git rev-list --count HEAD)|shallow=$(git rev-parse --is-shallow-repository)"
+            s=$(date +%s%3N)
+            # hygiene-push-ok: scratch-ref push to time the real write path.
+            # Routing a measurement through push-with-retry.sh would measure
+            # push-with-retry.sh, not the wall. NOTE: this annotation is FILE-WIDE
+            # (audit-workflow-hygiene.js rule c), so any future `git push` added to
+            # the check job above will NOT be caught; route it through
+            # push-with-retry.sh by hand.
+            timeout -k 10 "$CAP" git push --progress origin "HEAD:${_ref}" >"/tmp/push.$1" 2>&1
+            rc=$?; e=$(date +%s%3N)
+            classify "$rc" "$((e - s))" push-real "$ptag" "/tmp/push.$1"
+            # Delete whatever the push rc was: a killed push may have created it.
+            timeout -k 10 "$DEL_CAP" git push origin --delete "${_ref}" >"/tmp/del.$1" 2>&1
+            echo "PROBE|op=delete|n=$1|rc=$?"
+          }
+
+          echo "PROBE|start|shallow=$(git rev-parse --is-shallow-repository)|commits=$(git rev-list --count HEAD)|args=$DEEPEN"
+
+          # COLD sample first: the deepening fetch is the first network op after
+          # checkout, so it is the one that sees a not-yet-warm path.
+          timed_fetch "sample=COLD" /tmp/cold.fetch || { echo "PROBE|abort|cold fetch failed, deepened shape not established"; exit 0; }
+          echo "PROBE|deepened|commits=$(git rev-list --count FETCH_HEAD)"
+          mk_commit || exit 0
+
+          # ABBA order cancels warm-up/order effects between the arms. The pause
+          # keeps n=1 (nofetch) from being a push one second after the COLD fetch;
+          # it is still the closest-to-fetch nofetch sample, so read n=1 and n=4
+          # separately rather than pooling them blindly.
+          sleep 30
+          probe_push 1 nofetch
+          probe_push 2 fetched
+          probe_push 3 fetched
+          probe_push 4 nofetch
+          exit 0
+
+      - name: Sweep scratch refs (always)
+        if: always()
+        run: |
+          set +e
+          # Capture ls-remote's rc before piping: a failed listing must not read as "clean".
+          timeout -k 10 90 git ls-remote --heads origin 'refs/heads/probe/push-latency-*' >/tmp/sweep.1 2>&1
+          if [ $? -ne 0 ]; then echo "PROBE|SWEEP-UNVERIFIED|listing failed"; exit 0; fi
+          for r in $(awk '{print $2}' /tmp/sweep.1); do
+            timeout -k 10 45 git push origin --delete "$r" >/dev/null 2>&1
+          done
+          timeout -k 10 90 git ls-remote --heads origin 'refs/heads/probe/push-latency-*' >/tmp/sweep.2 2>&1
+          if [ $? -ne 0 ]; then echo "PROBE|SWEEP-UNVERIFIED|re-listing failed"; exit 0; fi
+          left=$(wc -l < /tmp/sweep.2)
+          if [ "$left" != "0" ]; then echo "PROBE|LEAK|scratch refs remaining=$left"; else echo "PROBE|sweep clean"; fi
+          exit 0

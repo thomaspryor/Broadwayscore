@@ -1,0 +1,20 @@
+{
+  "system": "main",
+  "status": "pass",
+  "lastChecked": "2026-10-10T13:07:35.986Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Main: red streak",
+      "status": "pass",
+      "message": "Last run green"
+    },
+    {
+      "name": "Main: green rate",
+      "status": "pass",
+      "message": "rate 84.6% (green 422 / red 77, 499 runs, 1 hung (cancelled >= 10 min, counted red)), 7d trend from 57.7%, day 5 of 14 at ≥80% → PASS"
+    }
+  ]
+}

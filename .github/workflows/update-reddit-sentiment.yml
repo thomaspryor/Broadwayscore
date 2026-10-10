@@ -1,0 +1,266 @@
+name: Update Reddit Sentiment
+
+on:
+  # Run twice monthly: fresh data every ~2 weeks, with retry safety
+  schedule:
+    - cron: '0 10 1 * *'   # 1st of each month at 10am UTC
+    - cron: '0 10 4 * *'   # 4th — retry if 1st failed (skips if fresh)
+    - cron: '0 10 15 * *'  # 15th — mid-month refresh
+    - cron: '0 10 18 * *'  # 18th — retry if 15th failed (skips if fresh)
+    - cron: '0 12 8 * *'   # 8th — bounded refresh-stale drain of score-eligible
+                           #       CLOSED shows (open shows are covered by the 1st/15th
+                           #       ticks; closed shows otherwise never re-scrape and keep
+                           #       pre-fix contaminated Reddit forever). Offset day+time to
+                           #       avoid racing the open-show ticks on audience-buzz.json.
+  # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      show_id:
+        description: 'Specific show ID to process (optional)'
+        required: false
+        type: string
+      shows:
+        description: 'Comma-separated show IDs/slugs (for batch processing)'
+        required: false
+        type: string
+      limit:
+        description: 'Limit number of shows to process'
+        required: false
+        type: number
+        default: 50
+      refresh_stale:
+        description: 'Re-scrape score-eligible shows (incl. closed <3yr) with stale/missing Reddit, oldest first'
+        required: false
+        type: boolean
+        default: false
+      skip_fresh_hours:
+        # BRO-4215: the opening-night orchestrator dispatches the same shows ~7x/day;
+        # this run was ~71% of ScrapingBee spend (9/21-9/27). Set 0 to force a re-scrape.
+        description: 'With shows: skip shows whose Reddit was scraped/attempted within this many hours (0 = never skip)'
+        required: false
+        type: string
+        default: '20'
+
+concurrency:
+  # per-run group intended: prevents the orchestrator's back-to-back dispatches from
+  # dropping each other at GitHub's 1-pending-queue limit. See Cats 2026-04-07
+  # poller postmortem — shared groups silently discard the middle runs.
+  # (task #922 audit, 2026-08-03)
+  group: reddit-sentiment-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  scrape-reddit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240  # 4 hour timeout - 29 shows × ~8 min each
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-2388 (task #466 class): depth 1000 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 240-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 1000
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Check if retry run should skip (data already fresh)
+        id: freshness
+        if: github.event_name == 'schedule'
+        run: |
+          # On retry dates (4th, 18th), skip if data was updated in last 5 days
+          DAY=$(date -u +%d)
+          if [ "$DAY" = "04" ] || [ "$DAY" = "18" ]; then
+            SKIP_LINE=$(node -e "
+              const data = require('./data/audience-buzz.json');
+              const last = data._meta?.lastUpdated || '2000-01-01';
+              const daysAgo = Math.floor((Date.now() - new Date(last).getTime()) / 86400000);
+              console.error('Last updated: ' + last + ' (' + daysAgo + ' days ago)');
+              console.log(daysAgo < 5 ? 'true' : 'false');
+            ")
+            echo "skip=${SKIP_LINE}" >> "$GITHUB_OUTPUT"
+            if [ "${SKIP_LINE}" = "true" ]; then
+              echo "✓ Reddit data is fresh, skipping retry run"
+            else
+              echo "⚠ Reddit data is stale, running retry"
+            fi
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Backup audience-buzz.json
+        if: steps.freshness.outputs.skip != 'true'
+        run: cp data/audience-buzz.json data/audience-buzz.backup.json
+
+      - name: Run Reddit sentiment scraper
+        if: steps.freshness.outputs.skip != 'true'
+        id: scrape
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: |
+          ARGS=""
+          # refresh-stale: manual flag, or the 8th-of-month schedule tick. Drains
+          # score-eligible shows (incl. closed <3yr) with stale/missing Reddit,
+          # oldest-first, bounded by --limit so one run fits the CI timeout/budget.
+          DAY=$(date -u +%d)
+          REFRESH_STALE=""
+          if [ "${{ github.event.inputs.refresh_stale }}" = "true" ]; then
+            REFRESH_STALE="1"
+          elif [ "${{ github.event_name }}" = "schedule" ] && [ "$DAY" = "08" ]; then
+            REFRESH_STALE="1"
+          fi
+          if [ -n "$REFRESH_STALE" ]; then
+            # Always bound refresh-stale at 25/run (the documented drain budget).
+            # The `limit` input's default=50 makes a user-set value indistinguishable
+            # from the default, so honoring it risks an UNBOUNDED drain (240-min
+            # timeout) on a manual refresh_stale=true run — ignore it here.
+            ARGS="--refresh-stale --limit=25"
+            echo "refresh-stale mode: draining up to 25 stale score-eligible shows (oldest first)"
+          elif [ -n "${{ github.event.inputs.show_id }}" ]; then
+            ARGS="$ARGS --show=${{ github.event.inputs.show_id }}"
+          elif [ -n "${{ github.event.inputs.shows }}" ]; then
+            SKIP_FRESH_HOURS="${{ github.event.inputs.skip_fresh_hours || '20' }}"
+            # Numeric only (free-text dispatch input); anything else falls back to 20.
+            [[ "$SKIP_FRESH_HOURS" =~ ^[0-9]+(\.[0-9]+)?$ ]] || SKIP_FRESH_HOURS=20
+            ARGS="$ARGS --shows=${{ github.event.inputs.shows }} --skip-fresh-hours=$SKIP_FRESH_HOURS"
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            # Manual/API trigger without filter: default to recently opened shows (≤14 days)
+            # Prevents accidentally processing all open shows when only one is needed
+            RECENT=$(node -e "
+              const shows = require('./data/shows.json').shows;
+              const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 14);
+              const recent = shows.filter(s => s.status === 'open' && s.openingDate && new Date(s.openingDate) >= cutoff);
+              console.log(recent.map(s => s.id).join(','));
+            ")
+            if [ -n "$RECENT" ]; then
+              echo "No show filter provided — defaulting to recently opened: $RECENT"
+              ARGS="$ARGS --shows=$RECENT"
+            else
+              echo "No show filter and no recent openings — processing all open shows"
+            fi
+          fi
+          # Trailing limit append — skip in refresh-stale mode, which already sets
+          # its own bounded --limit=25 (the limit input defaults to 50, so without
+          # this guard a manual refresh_stale=true run would append --limit=50 and
+          # blow the documented refresh budget; script uses the first --limit only).
+          if [ -z "$REFRESH_STALE" ] && [ -n "${{ github.event.inputs.limit }}" ]; then
+            ARGS="$ARGS --limit=${{ github.event.inputs.limit }}"
+          fi
+          node scripts/scrape-reddit-sentiment.js $ARGS
+
+      - name: Validate output
+        if: steps.freshness.outputs.skip != 'true'
+        run: |
+          # Check for NaN, null scores, or corruption
+          node -e "
+            const data = require('./data/audience-buzz.json');
+            let errors = 0;
+            for (const [id, show] of Object.entries(data.shows)) {
+              if (show.combinedScore !== null && show.combinedScore !== undefined) {
+                if (isNaN(show.combinedScore) || show.combinedScore < 0 || show.combinedScore > 100) {
+                  console.error('Invalid score for', id, ':', show.combinedScore);
+                  errors++;
+                }
+              }
+            }
+            if (errors > 0) process.exit(1);
+            console.log('✓ Validation passed');
+          "
+
+      - name: Neutralize generic-title Reddit contamination
+        if: steps.freshness.outputs.skip != 'true'
+        # The scraper overwrites each show's reddit object, wiping any prior
+        # suppressed flag — and generic-phrase titles (Fear & Wonder, Mercury,
+        # Sukkot) re-inflate even with market-anchored queries (165 bad matches
+        # observed post-fix, 2026-07-11). Re-suppress before the recompute so
+        # contamination self-heals every scrape instead of resurfacing on the
+        # live site until someone runs neutralize by hand. Non-destructive.
+        # continue-on-error: a neutralize hiccup must NOT trip the job's
+        # "Restore backup on failure" step, which would discard this scrape's
+        # fresh Reddit data and push the old file. Worst case if it fails is
+        # the pre-fix status quo (contamination shows until the next scrape).
+        continue-on-error: true
+        run: node scripts/neutralize-contaminated-reddit-buzz.js --apply
+
+      - name: Recalculate all combined scores
+        if: steps.freshness.outputs.skip != 'true'
+        run: node scripts/recalculate-audience-buzz.js
+
+      - name: Guard — Reddit scrape drift (rule 13 catastrophe floor)
+        if: steps.freshness.outputs.skip != 'true'
+        # Compares the post-scrape file to the pre-scrape backup and FAILS on a
+        # catastrophe-floor aggregate drift (mass Reddit-loss / mass score shift)
+        # so a broken classifier or anchor can't commit + deploy a corpus-wide
+        # regression silently. Normal contamination cleanup stays well under the
+        # floor. On failure the next step restores the backup (whole run reverts).
+        run: |
+          if [ -f data/audience-buzz.backup.json ]; then
+            node scripts/audience-buzz-scrape-drift-guard.js \
+              --before=data/audience-buzz.backup.json \
+              --after=data/audience-buzz.json \
+              --strict
+          else
+            echo "No pre-scrape backup present — skipping drift guard"
+          fi
+
+      - name: Restore backup on failure
+        if: failure()
+        run: |
+          if [ -f data/audience-buzz.backup.json ]; then
+            mv data/audience-buzz.backup.json data/audience-buzz.json
+            echo "Restored from backup due to validation failure"
+          fi
+
+      - name: Push core data to private repo
+        if: always() && steps.freshness.outputs.skip != 'true'
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from update-reddit-sentiment'
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: update-reddit-sentiment
+
+      - name: Dispatch deploy
+        if: always() && steps.freshness.outputs.skip != 'true'
+        uses: ./.github/actions/dispatch-deploy
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Update Reddit Sentiment Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

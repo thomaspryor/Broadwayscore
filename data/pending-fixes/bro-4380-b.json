@@ -1,0 +1,111 @@
+{
+  "issueNumber": "bro-4380-b",
+  "planId": "7557e755-c792-4d94-9593-367997989c2a",
+  "status": "partial",
+  "createdAt": "2026-09-29T21:01:46.363Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4380 follow-on: 4 more shows got another show's image paths from the 19:34 image run, before the fix landed. Clear them.",
+    "steps": [
+      "Replace images on each listed show (compare-and-set)",
+      "Own image files showing other shows are deleted in the enforcement landing after this applies"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mortal-wounds-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-vortex-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/the-vortex-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "mortal-wounds-off-west-end-2026: stop showing The Vortex / Eggs Aren't That Easy to Make art (own files are a One Piece wanted poster and the Judgment video game)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "its-unlikely-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-vortex-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/the-vortex-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "its-unlikely-off-west-end-2026: stop showing The Vortex / Eggs Aren't That Easy to Make art (no own files)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-graddys-london-semi-finals-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-vortex-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/the-vortex-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-graddys-london-semi-finals-off-west-end-2026: stop showing The Vortex / Eggs Aren't That Easy to Make art (no own files)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "player-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/eggs-arent-that-easy-to-make-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/eggs-arent-that-easy-to-make-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "player-off-west-end-2026: stop showing The Vortex / Eggs Aren't That Easy to Make art (own files are a football recruitment flyer and Ready Player One)"
+      }
+    ]
+  },
+  "executedAt": "2026-09-29T21:41:54.458Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "images: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "images: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "images: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "images: current value doesn't match expected (data changed since plan was created)"
+    }
+  ]
+}

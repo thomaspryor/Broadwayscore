@@ -1,0 +1,780 @@
+name: Collect Soft-Paywall Reviews
+
+on:
+  workflow_dispatch:
+    inputs:
+      domain:
+        description: 'Target domain (or "all" for all soft-paywall outlets)'
+        required: true
+        type: choice
+        options:
+          - all
+          - theatermania.com
+          - timeout.com
+          - ew.com
+          - deadline.com
+          - observer.com
+          - chicagotribune.com
+      max_reviews:
+        description: 'Maximum reviews to process per domain (0 = all)'
+        required: false
+        default: '100'
+      dry_run:
+        description: 'Dry run — count eligible reviews without collecting'
+        required: false
+        type: boolean
+        default: false
+      retry_failed:
+        description: 'Retry previously failed reviews'
+        required: false
+        type: boolean
+        default: true
+      archive_first:
+        description: 'Try Archive.org first (recommended for these domains)'
+        required: false
+        type: boolean
+        default: true
+      max_rounds:
+        description: 'Max self-chaining rounds (0 = no chaining)'
+        required: false
+        default: '50'
+      current_round:
+        description: 'Current round (auto-set by chaining)'
+        required: false
+        default: '1'
+
+# Soft-paywall domains where our standard scraper chain works:
+#   theatermania.com (~546 reviews) - known-blocked for Playwright, ScrapingBee works
+#   timeout.com (~516 reviews) - CAPTCHA blocks Playwright, Archive.org works well
+#   ew.com (~445 reviews) - Archive.org first (in archiveFirstSites list)
+#   deadline.com (~326 reviews) - PMC site, CAPTCHA-blocks Playwright
+#   observer.com (~248 reviews) - known-blocked for Playwright, ScrapingBee works
+#   chicagotribune.com (~264 reviews) - known-blocked for Playwright, Archive.org works
+
+# Per-run group (not shared): same shape as collect-hard-paywall.yml —
+# domain-partitioned matrix + self-chaining rounds. A shared group would
+# only queue a second concurrent manual dispatch, never affect the chain
+# or the matrix. See docs/workflow-concurrency-audit.md.
+concurrency:
+  group: collect-soft-paywall-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  collect-single:
+    if: ${{ inputs.domain != 'all' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    permissions:
+      contents: write
+      actions: write
+
+    steps:
+      # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
+      # on the checkout below), so rebase/diff/show fetch missing blobs over the
+      # network outside push-with-retry.sh's per-op timeout wrappers. Set git's
+      # low-speed abort (1 KB/s for 45 s, the bound the helper applies to its own
+      # fetch/push) for EVERY git transfer in this job: --global, and before the
+      # checkout, so actions/checkout's own first lazy blob batch and the depth-1
+      # private-repo clones (checkout-core-data / checkout-review-texts, no
+      # timeout of their own; their retry loop catches the abort) are bounded
+      # too. A stalled transfer fails fast instead of hanging to the job timeout.
+      # lowSpeed cannot catch a pre-transfer stall. Runner $HOME is ephemeral.
+      - name: Set git low-speed abort for this job
+        run: |
+          git config --global http.lowSpeedLimit 1000
+          git config --global http.lowSpeedTime 45
+
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+          # BRO-4231: filter: blob:none keeps the full commit graph fetch-depth: 0 is
+          # here for (a resolvable merge-base for push-with-retry.sh; #209 parentless
+          # root) but stops downloading every historical blob of this repo's data/*.json
+          # rewrites: ~24 min -> ~30 s per checkout (llm-ensemble-score runs 36523767401
+          # -> 36672742657). Full rationale: opening-night-poller.yml's Checkout step.
+          filter: blob:none
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Create directories
+        run: |
+          mkdir -p data/archives/reviews
+          mkdir -p data/audit/validation
+          mkdir -p data/collection-state
+
+      - name: Clear progress state
+        run: rm -f data/collection-state/progress.json
+
+      - name: Configure git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Count eligible reviews
+        id: count
+        env:
+          DOMAIN_FILTER: ${{ inputs.domain }}
+          MAX_REVIEWS: '0'
+          RETRY_FAILED: ${{ inputs.retry_failed && 'true' || 'false' }}
+        run: |
+          COUNT=$(node -e "
+            const fs = require('fs'), path = require('path');
+            const base = 'data/review-texts';
+            const domains = (process.env.DOMAIN_FILTER || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+            let n = 0;
+            const dirs = fs.readdirSync(base).filter(d => {
+              try { return fs.statSync(path.join(base, d)).isDirectory(); } catch { return false; }
+            });
+            dirs.forEach(d => {
+              fs.readdirSync(path.join(base, d)).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json').forEach(f => {
+                try {
+                  const r = JSON.parse(fs.readFileSync(path.join(base, d, f), 'utf8'));
+                  if (r.wrongProduction || r.wrongShow || r.wrongAttribution) return;
+                  if (!r.url) return;
+                  const textLen = r.fullText ? r.fullText.length : 0;
+                  const isTruncated = r.textQuality === 'truncated' || r.textStatus === 'truncated'
+                    || r.contentTier === 'truncated' || r.contentTier === 'needs-rescrape';
+                  if (!isTruncated && (r.isFullReview === true || r.textQuality === 'full' || textLen > 1500)) return;
+                  try {
+                    const urlDomain = new URL(r.url).hostname.replace(/^www\./, '');
+                    if (domains.some(dd => urlDomain === dd || urlDomain.endsWith('.' + dd))) n++;
+                  } catch(e) {}
+                } catch(e) {}
+              });
+            });
+            console.log(n);
+          ")
+          echo "eligible=$COUNT" >> $GITHUB_OUTPUT
+          echo "Eligible reviews for ${{ inputs.domain }}: $COUNT"
+
+      - name: Collect review texts
+        if: ${{ inputs.dry_run != true && steps.count.outputs.eligible > 0 }}
+        id: collect
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
+          BROWSERBASE_ENABLED: 'false'
+          COOKIES_BUNDLE_1: ${{ secrets.COOKIES_BUNDLE_1 }}
+          COOKIES_BUNDLE_2: ${{ secrets.COOKIES_BUNDLE_2 }}
+          COOKIES_BUNDLE_3: ${{ secrets.COOKIES_BUNDLE_3 }}
+          COOKIES_BUNDLE_4: ${{ secrets.COOKIES_BUNDLE_4 }}
+          COOKIES_BUNDLE_5: ${{ secrets.COOKIES_BUNDLE_5 }}
+          COOKIES_BUNDLE_6: ${{ secrets.COOKIES_BUNDLE_6 }}
+          COOKIES_BUNDLE_7: ${{ secrets.COOKIES_BUNDLE_7 }}
+          COOKIES_BUNDLE_8: ${{ secrets.COOKIES_BUNDLE_8 }}
+          COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
+          COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
+          COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+          DOMAIN_FILTER: ${{ inputs.domain }}
+          BATCH_SIZE: '10'
+          MAX_REVIEWS: ${{ inputs.max_reviews }}
+          RETRY_FAILED: ${{ inputs.retry_failed && 'true' || 'false' }}
+          ARCHIVE_FIRST: ${{ inputs.archive_first && 'true' || 'false' }}
+          COMMIT_EVERY: '25'
+          # BRO-2381: without this, pushReviewTextsCheckpoint()'s mid-run
+          # checkpoint to the private review-texts repo silently no-ops for
+          # the whole run — a timeout/cancellation mid-run loses everything
+          # collected since the last checkpoint.
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: node scripts/collect-review-texts.js --aggressive
+
+      - name: Validate data
+        if: always()
+        run: node scripts/validate-data.js
+        continue-on-error: true
+
+      - name: Check for large files
+        if: always()
+        uses: ./.github/actions/check-file-sizes
+
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Collect Soft-Paywall Reviews — Final commit and push"
+      - name: Final commit and push
+        if: ${{ inputs.dry_run != true && always() }}
+        id: push
+        run: |
+          git add data/archives/reviews/ data/audit/ data/collection-state/ || true
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            git commit -m "feat: Collect soft-paywall review texts (${{ inputs.domain }})
+
+          Co-Authored-By: GitHub Action <action@github.com>"
+            bash scripts/lib/push-with-retry.sh
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Rebuild reviews.json
+        id: rebuild
+        if: always() && steps.push.outputs.has_changes == 'true'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/rebuild-all-reviews.js
+        continue-on-error: true
+
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Collect Soft-Paywall Reviews — Commit rebuilt reviews.json"
+      - name: Commit rebuilt reviews.json
+        if: always() && steps.push.outputs.has_changes == 'true' && steps.rebuild.outcome != 'failure'
+        run: |
+          git add data/audit/
+          if git diff --staged --quiet; then
+            echo "No changes to reviews.json"
+          else
+            git commit -m "data: Auto-rebuild reviews.json (soft-paywall collection)"
+            git pull --rebase origin main || {
+              git rebase --abort 2>/dev/null || true
+              git pull --no-rebase -X ours origin main
+            }
+            bash scripts/lib/push-with-retry.sh || echo "::warning::Push failed — collected data may not have synced"
+          fi
+
+
+      - name: Push core data to private repo
+        if: always() && steps.rebuild.outcome != 'failure'
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from collect-soft-paywall'
+      - name: Count remaining and chain
+        if: always()
+        id: chain
+        env:
+          DOMAIN_FILTER: ${{ inputs.domain }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          REMAINING=$(node -e "
+            const fs = require('fs'), path = require('path');
+            const base = 'data/review-texts';
+            const domains = (process.env.DOMAIN_FILTER || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+            // Load global failed-fetches to exclude permanently failed URLs
+            // (scripts/lib/failed-fetch-policy.js — single source of truth, BRO-2266)
+            const { isPermanentlyFailed } = require('./scripts/lib/failed-fetch-policy');
+            let failedUrls = new Set();
+            const globalFF = path.join(base, 'failed-fetches.json');
+            if (fs.existsSync(globalFF)) {
+              try {
+                const ff = JSON.parse(fs.readFileSync(globalFF, 'utf8'));
+                (Array.isArray(ff) ? ff : Object.values(ff)).forEach(e => {
+                  if (!e.url) return;
+                  if (isPermanentlyFailed(e)) failedUrls.add(e.url);
+                });
+              } catch {}
+            }
+            let n = 0;
+            const dirs = fs.readdirSync(base).filter(d => {
+              try { return fs.statSync(path.join(base, d)).isDirectory(); } catch { return false; }
+            });
+            dirs.forEach(d => {
+              fs.readdirSync(path.join(base, d)).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json').forEach(f => {
+                try {
+                  const r = JSON.parse(fs.readFileSync(path.join(base, d, f), 'utf8'));
+                  if (r.wrongProduction || r.wrongShow || r.wrongAttribution) return;
+                  if (!r.url) return;
+                  if (failedUrls.has(r.url)) return;
+                  const textLen = r.fullText ? r.fullText.length : 0;
+                  const isTruncated = r.textQuality === 'truncated' || r.textStatus === 'truncated'
+                    || r.contentTier === 'truncated' || r.contentTier === 'needs-rescrape';
+                  if (!isTruncated && (r.isFullReview === true || r.textQuality === 'full' || textLen > 1500)) return;
+                  try {
+                    const urlDomain = new URL(r.url).hostname.replace(/^www\\./, '');
+                    if (domains.some(dd => urlDomain === dd || urlDomain.endsWith('.' + dd))) n++;
+                  } catch(e) {}
+                } catch(e) {}
+              });
+            });
+            console.log(n);
+          ")
+          echo "remaining=$REMAINING" >> $GITHUB_OUTPUT
+          CURRENT=${{ inputs.current_round }}
+          MAX=${{ inputs.max_rounds }}
+          echo "Remaining: $REMAINING reviews for ${{ inputs.domain }}, round $CURRENT of $MAX"
+          if [ "$REMAINING" -gt 50 ] && [ "$CURRENT" -lt "$MAX" ]; then
+            NEXT=$((CURRENT + 1))
+            echo "Chaining round $NEXT..."
+            gh workflow run collect-soft-paywall.yml \
+              -f domain=${{ inputs.domain }} \
+              -f max_reviews=${{ inputs.max_reviews }} \
+              -f retry_failed=${{ inputs.retry_failed }} \
+              -f archive_first=${{ inputs.archive_first }} \
+              -f max_rounds=$MAX \
+              -f current_round=$NEXT
+            echo "chained=true" >> $GITHUB_OUTPUT
+          else
+            echo "No chaining needed (remaining=$REMAINING, round=$CURRENT/$MAX)"
+            echo "chained=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload collection report
+        uses: actions/upload-artifact@v5
+        if: always()
+        with:
+          name: soft-paywall-report-${{ inputs.domain }}
+          path: |
+            data/audit/validation/collection-report-*.json
+            data/collection-state/progress.json
+          retention-days: 30
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Collect Soft-Paywall Reviews Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Soft-Paywall Collection Round ${{ inputs.current_round }}: ${{ inputs.domain }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Eligible reviews:** ${{ steps.count.outputs.eligible }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Max reviews:** ${{ inputs.max_reviews }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Remaining:** ${{ steps.chain.outputs.remaining || 'N/A' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Chained next round:** ${{ steps.chain.outputs.chained || 'false' }}" >> $GITHUB_STEP_SUMMARY
+
+  # Parallel mode: run all 6 domains simultaneously when "all" is selected
+  prepare-all:
+    if: ${{ inputs.domain == 'all' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      matrix: ${{ steps.matrix.outputs.domains }}
+    steps:
+      - name: Build domain matrix
+        id: matrix
+        run: |
+          echo 'domains=["theatermania.com","timeout.com","ew.com","deadline.com","observer.com","chicagotribune.com"]' >> $GITHUB_OUTPUT
+
+  collect-all:
+    if: ${{ inputs.domain == 'all' }}
+    needs: prepare-all
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        domain: ${{ fromJson(needs.prepare-all.outputs.matrix) }}
+
+    steps:
+      # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
+      # on the checkout below), so rebase/diff/show fetch missing blobs over the
+      # network outside push-with-retry.sh's per-op timeout wrappers. Set git's
+      # low-speed abort (1 KB/s for 45 s, the bound the helper applies to its own
+      # fetch/push) for EVERY git transfer in this job: --global, and before the
+      # checkout, so actions/checkout's own first lazy blob batch and the depth-1
+      # private-repo clones (checkout-core-data / checkout-review-texts, no
+      # timeout of their own; their retry loop catches the abort) are bounded
+      # too. A stalled transfer fails fast instead of hanging to the job timeout.
+      # lowSpeed cannot catch a pre-transfer stall. Runner $HOME is ephemeral.
+      - name: Set git low-speed abort for this job
+        run: |
+          git config --global http.lowSpeedLimit 1000
+          git config --global http.lowSpeedTime 45
+
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+          # BRO-4231: filter: blob:none keeps the full commit graph fetch-depth: 0 is
+          # here for (a resolvable merge-base for push-with-retry.sh; #209 parentless
+          # root) but stops downloading every historical blob of this repo's data/*.json
+          # rewrites: ~24 min -> ~30 s per checkout (llm-ensemble-score runs 36523767401
+          # -> 36672742657). Full rationale: opening-night-poller.yml's Checkout step.
+          filter: blob:none
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Create directories
+        run: |
+          mkdir -p data/archives/reviews
+          mkdir -p data/audit/validation
+          mkdir -p data/collection-state
+
+      - name: Clear progress state
+        run: rm -f data/collection-state/progress.json
+
+      - name: Configure git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Count eligible reviews
+        id: count
+        env:
+          DOMAIN_FILTER: ${{ matrix.domain }}
+        run: |
+          COUNT=$(node -e "
+            const fs = require('fs'), path = require('path');
+            const base = 'data/review-texts';
+            const domains = (process.env.DOMAIN_FILTER || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+            let n = 0;
+            const dirs = fs.readdirSync(base).filter(d => {
+              try { return fs.statSync(path.join(base, d)).isDirectory(); } catch { return false; }
+            });
+            dirs.forEach(d => {
+              fs.readdirSync(path.join(base, d)).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json').forEach(f => {
+                try {
+                  const r = JSON.parse(fs.readFileSync(path.join(base, d, f), 'utf8'));
+                  if (r.wrongProduction || r.wrongShow || r.wrongAttribution) return;
+                  if (!r.url) return;
+                  const textLen = r.fullText ? r.fullText.length : 0;
+                  const isTruncated = r.textQuality === 'truncated' || r.textStatus === 'truncated'
+                    || r.contentTier === 'truncated' || r.contentTier === 'needs-rescrape';
+                  if (!isTruncated && (r.isFullReview === true || r.textQuality === 'full' || textLen > 1500)) return;
+                  try {
+                    const urlDomain = new URL(r.url).hostname.replace(/^www\\./, '');
+                    if (domains.some(dd => urlDomain === dd || urlDomain.endsWith('.' + dd))) n++;
+                  } catch(e) {}
+                } catch(e) {}
+              });
+            });
+            console.log(n);
+          ")
+          echo "eligible=$COUNT" >> $GITHUB_OUTPUT
+          echo "Eligible reviews for ${{ matrix.domain }}: $COUNT"
+
+      - name: Stagger start to avoid push conflicts
+        run: |
+          # Each domain gets a different delay (0-25s) to stagger initial pushes
+          DOMAINS=("theatermania.com" "timeout.com" "ew.com" "deadline.com" "observer.com" "chicagotribune.com")
+          for i in "${!DOMAINS[@]}"; do
+            if [ "${DOMAINS[$i]}" = "${{ matrix.domain }}" ]; then
+              DELAY=$((i * 5))
+              echo "Staggering start by ${DELAY}s for ${{ matrix.domain }}"
+              sleep $DELAY
+              break
+            fi
+          done
+
+      - name: Collect review texts for ${{ matrix.domain }}
+        if: ${{ inputs.dry_run != true }}
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
+          BROWSERBASE_ENABLED: 'false'
+          COOKIES_BUNDLE_1: ${{ secrets.COOKIES_BUNDLE_1 }}
+          COOKIES_BUNDLE_2: ${{ secrets.COOKIES_BUNDLE_2 }}
+          COOKIES_BUNDLE_3: ${{ secrets.COOKIES_BUNDLE_3 }}
+          COOKIES_BUNDLE_4: ${{ secrets.COOKIES_BUNDLE_4 }}
+          COOKIES_BUNDLE_5: ${{ secrets.COOKIES_BUNDLE_5 }}
+          COOKIES_BUNDLE_6: ${{ secrets.COOKIES_BUNDLE_6 }}
+          COOKIES_BUNDLE_7: ${{ secrets.COOKIES_BUNDLE_7 }}
+          COOKIES_BUNDLE_8: ${{ secrets.COOKIES_BUNDLE_8 }}
+          COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
+          COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
+          COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+          DOMAIN_FILTER: ${{ matrix.domain }}
+          BATCH_SIZE: '10'
+          MAX_REVIEWS: ${{ inputs.max_reviews }}
+          RETRY_FAILED: ${{ inputs.retry_failed && 'true' || 'false' }}
+          ARCHIVE_FIRST: ${{ inputs.archive_first && 'true' || 'false' }}
+          COMMIT_EVERY: '25'
+          # BRO-2381: without this, pushReviewTextsCheckpoint()'s mid-run
+          # checkpoint to the private review-texts repo silently no-ops for
+          # the whole run — a timeout/cancellation mid-run loses everything
+          # collected since the last checkpoint.
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: node scripts/collect-review-texts.js --aggressive
+
+      - name: Validate data
+        if: always()
+        run: node scripts/validate-data.js
+        continue-on-error: true
+
+      - name: Check for large files
+        if: always()
+        uses: ./.github/actions/check-file-sizes
+
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Collect Soft-Paywall Reviews — Commit and push changes for ${{ matrix.domain }}"
+      - name: Commit and push changes for ${{ matrix.domain }}
+        if: always()
+        run: |
+          git add data/archives/reviews/ data/audit/ data/collection-state/ || true
+          if git diff --staged --quiet; then
+            echo "No changes to commit for ${{ matrix.domain }}"
+          else
+            git commit -m "feat: Collect soft-paywall review texts (${{ matrix.domain }})
+
+          Co-Authored-By: GitHub Action <action@github.com>"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Upload collection report
+        uses: actions/upload-artifact@v5
+        if: always()
+        with:
+          name: soft-paywall-report-${{ matrix.domain }}
+          path: |
+            data/audit/validation/collection-report-*.json
+            data/collection-state/progress.json
+          retention-days: 30
+
+  # Trigger rebuild after all parallel jobs complete
+  rebuild-all:
+    if: ${{ inputs.domain == 'all' && !inputs.dry_run && always() }}
+    needs: collect-all
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      actions: write
+
+    env:
+      SOFT_PAYWALL_DOMAINS: 'theatermania.com,timeout.com,ew.com,deadline.com,observer.com,chicagotribune.com,nypost.com,variety.com,hollywoodreporter.com,nydailynews.com,newsday.com'
+
+    steps:
+      # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
+      # on the checkout below), so rebase/diff/show fetch missing blobs over the
+      # network outside push-with-retry.sh's per-op timeout wrappers. Set git's
+      # low-speed abort (1 KB/s for 45 s, the bound the helper applies to its own
+      # fetch/push) for EVERY git transfer in this job: --global, and before the
+      # checkout, so actions/checkout's own first lazy blob batch and the depth-1
+      # private-repo clones (checkout-core-data / checkout-review-texts, no
+      # timeout of their own; their retry loop catches the abort) are bounded
+      # too. A stalled transfer fails fast instead of hanging to the job timeout.
+      # lowSpeed cannot catch a pre-transfer stall. Runner $HOME is ephemeral.
+      - name: Set git low-speed abort for this job
+        run: |
+          git config --global http.lowSpeedLimit 1000
+          git config --global http.lowSpeedTime 45
+
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+          # BRO-4231: filter: blob:none keeps the full commit graph fetch-depth: 0 is
+          # here for (a resolvable merge-base for push-with-retry.sh; #209 parentless
+          # root) but stops downloading every historical blob of this repo's data/*.json
+          # rewrites: ~24 min -> ~30 s per checkout (llm-ensemble-score runs 36523767401
+          # -> 36672742657). Full rationale: opening-night-poller.yml's Checkout step.
+          filter: blob:none
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Configure git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Rebuild reviews.json
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/rebuild-all-reviews.js
+
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Collect Soft-Paywall Reviews — Commit rebuilt reviews.json"
+      - name: Commit rebuilt reviews.json
+        run: |
+          git add data/audit/
+          if git diff --staged --quiet; then
+            echo "No changes to reviews.json"
+          else
+            git commit -m "data: Auto-rebuild reviews.json (soft-paywall collection — all domains)"
+            git pull --rebase origin main || {
+              git rebase --abort 2>/dev/null || true
+              git pull --no-rebase -X ours origin main
+            }
+            bash scripts/lib/push-with-retry.sh || echo "::warning::Push failed — collected data may not have synced"
+          fi
+
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from collect-soft-paywall'
+      - name: Count remaining and chain
+        if: always()
+        id: chain
+        env:
+          DOMAIN_LIST: ${{ env.SOFT_PAYWALL_DOMAINS }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          REMAINING=$(node -e "
+            const fs = require('fs'), path = require('path');
+            const base = 'data/review-texts';
+            const domains = (process.env.DOMAIN_LIST || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+            // Load global failed-fetches to exclude permanently failed URLs
+            // (scripts/lib/failed-fetch-policy.js — single source of truth, BRO-2266)
+            const { isPermanentlyFailed } = require('./scripts/lib/failed-fetch-policy');
+            let failedUrls = new Set();
+            const globalFF = path.join(base, 'failed-fetches.json');
+            if (fs.existsSync(globalFF)) {
+              try {
+                const ff = JSON.parse(fs.readFileSync(globalFF, 'utf8'));
+                (Array.isArray(ff) ? ff : Object.values(ff)).forEach(e => {
+                  if (!e.url) return;
+                  if (isPermanentlyFailed(e)) failedUrls.add(e.url);
+                });
+              } catch {}
+            }
+            let n = 0;
+            const dirs = fs.readdirSync(base).filter(d => {
+              try { return fs.statSync(path.join(base, d)).isDirectory(); } catch { return false; }
+            });
+            dirs.forEach(d => {
+              fs.readdirSync(path.join(base, d)).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json').forEach(f => {
+                try {
+                  const r = JSON.parse(fs.readFileSync(path.join(base, d, f), 'utf8'));
+                  if (r.wrongProduction || r.wrongShow || r.wrongAttribution) return;
+                  if (!r.url) return;
+                  if (failedUrls.has(r.url)) return;
+                  const textLen = r.fullText ? r.fullText.length : 0;
+                  const isTruncated = r.textQuality === 'truncated' || r.textStatus === 'truncated'
+                    || r.contentTier === 'truncated' || r.contentTier === 'needs-rescrape';
+                  if (!isTruncated && (r.isFullReview === true || r.textQuality === 'full' || textLen > 1500)) return;
+                  try {
+                    const urlDomain = new URL(r.url).hostname.replace(/^www\\./, '');
+                    if (domains.some(dd => urlDomain === dd || urlDomain.endsWith('.' + dd))) n++;
+                  } catch(e) {}
+                } catch(e) {}
+              });
+            });
+            console.log(n);
+          ")
+          echo "remaining=$REMAINING" >> $GITHUB_OUTPUT
+          CURRENT=${{ inputs.current_round }}
+          MAX=${{ inputs.max_rounds }}
+          echo "Remaining: $REMAINING soft-paywall reviews, round $CURRENT of $MAX"
+          if [ "$REMAINING" -gt 50 ] && [ "$CURRENT" -lt "$MAX" ]; then
+            NEXT=$((CURRENT + 1))
+            echo "Chaining round $NEXT..."
+            gh workflow run collect-soft-paywall.yml \
+              -f domain=all \
+              -f max_reviews=${{ inputs.max_reviews }} \
+              -f retry_failed=${{ inputs.retry_failed }} \
+              -f archive_first=${{ inputs.archive_first }} \
+              -f max_rounds=$MAX \
+              -f current_round=$NEXT
+            echo "chained=true" >> $GITHUB_OUTPUT
+          else
+            echo "No chaining needed (remaining=$REMAINING, round=$CURRENT/$MAX)"
+            echo "chained=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Collect Soft-Paywall Reviews (All) Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+      - name: Summary
+        run: |
+          echo "## Soft-Paywall Collection Round ${{ inputs.current_round }}: All Domains" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Collected review texts from 6 soft-paywall domains." >> $GITHUB_STEP_SUMMARY
+          echo "- **Remaining:** ${{ steps.chain.outputs.remaining }} reviews" >> $GITHUB_STEP_SUMMARY
+          echo "- **Chained next round:** ${{ steps.chain.outputs.chained }}" >> $GITHUB_STEP_SUMMARY

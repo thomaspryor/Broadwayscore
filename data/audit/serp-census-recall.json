@@ -1,0 +1,830 @@
+{
+  "generatedAt": "2026-10-05T19:52:39.389Z",
+  "naivePages": 2,
+  "settlingHours": 24,
+  "totals": {
+    "shows": 1,
+    "excluded": [
+      {
+        "showId": "torera-off-broadway-2026",
+        "state": "settling",
+        "reason": "opened 20h ago (<24h) — SERP indexing still settling"
+      },
+      {
+        "showId": "soon-off-broadway-2026",
+        "state": "settling",
+        "reason": "opened 20h ago (<24h) — SERP indexing still settling"
+      },
+      {
+        "showId": "franz-and-marie-west-end-2026",
+        "state": "settling",
+        "reason": "opened 20h ago (<24h) — SERP indexing still settling"
+      },
+      {
+        "showId": "affluenza-off-west-end-2026",
+        "state": "settling",
+        "reason": "opened 20h ago (<24h) — SERP indexing still settling"
+      }
+    ],
+    "undatedCandidates": 6,
+    "truthUrls": 18,
+    "scopedUrls": 8,
+    "naiveUrls": 3,
+    "onDiskUrls": 17,
+    "newFromNaive": 1,
+    "perArm": {
+      "naive-p0": {
+        "found": 2,
+        "queries": 1,
+        "failed": 0,
+        "recall": 0.111
+      },
+      "naive-p1": {
+        "found": 1,
+        "queries": 1,
+        "failed": 0,
+        "recall": 0.056
+      },
+      "onDisk": {
+        "found": 17,
+        "queries": 1,
+        "failed": 0,
+        "recall": 0.944
+      },
+      "scoped-q0": {
+        "found": 4,
+        "queries": 1,
+        "failed": 0,
+        "recall": 0.222
+      },
+      "scoped-q1": {
+        "found": 6,
+        "queries": 1,
+        "failed": 0,
+        "recall": 0.333
+      },
+      "scoped-q2": {
+        "found": 6,
+        "queries": 1,
+        "failed": 0,
+        "recall": 0.333
+      }
+    },
+    "perFamily": {
+      "naive": {
+        "found": 3,
+        "arms": 2,
+        "failed": 0,
+        "recall": 0.167
+      },
+      "onDisk": {
+        "found": 17,
+        "arms": 1,
+        "failed": 0,
+        "recall": 0.944
+      },
+      "scoped": {
+        "found": 8,
+        "arms": 3,
+        "failed": 0,
+        "recall": 0.444
+      }
+    },
+    "byCategory": {
+      "off-broadway": {
+        "shows": 1,
+        "truthUrls": 18,
+        "families": {
+          "naive": {
+            "found": 3,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.167
+          },
+          "onDisk": {
+            "found": 17,
+            "arms": 1,
+            "failed": 0,
+            "recall": 0.944
+          },
+          "scoped": {
+            "found": 8,
+            "arms": 3,
+            "failed": 0,
+            "recall": 0.444
+          }
+        }
+      }
+    },
+    "scopedRecall": 0.444,
+    "naiveRecall": 0.167
+  },
+  "shows": [
+    {
+      "showId": "torera-off-broadway-2026",
+      "title": "Torera",
+      "market": "off-broadway",
+      "openingDate": "2026-10-05",
+      "sampleState": "settling",
+      "sampleReason": "opened 20h ago (<24h) — SERP indexing still settling",
+      "geo": "us",
+      "naiveQuery": "Torera WP Theater - McGinn/Cazale Theater review",
+      "counts": {
+        "truth": 4,
+        "scoped": 0,
+        "naive": 1,
+        "onDisk": 4
+      },
+      "recall": {
+        "scoped": 0,
+        "naive": 0.25,
+        "onDisk": 1,
+        "censusPlusDisk": 1
+      },
+      "newFromNaive": [],
+      "missedByCensus": [
+        "https://culturesauce.com/torera-off-broadway-review/",
+        "https://www.3viewstheater.com/views/performing-girlhood-in-torera",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=BMPHKW",
+        "https://www.theatermania.com/news/review-a-female-bullfighter-struggles-to-fully-realize-herself-in-torera_1806404/"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Torera\" Off-Broadway review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 9,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Torera\" review mcginn",
+          "page": 0,
+          "geo": null,
+          "raw": 3,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Torera WP Theater - McGinn/Cazale Theater review",
+          "page": 0,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Torera WP Theater - McGinn/Cazale Theater review",
+          "page": 1,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://culturesauce.com/torera-off-broadway-review/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 4,
+          "accepted": 4,
+          "urls": [
+            "https://www.3viewstheater.com/views/performing-girlhood-in-torera",
+            "https://culturesauce.com/torera-off-broadway-review/",
+            "http://www.lightingandsoundamerica.com/news/story.asp?ID=BMPHKW",
+            "https://www.theatermania.com/news/review-a-female-bullfighter-struggles-to-fully-realize-herself-in-torera_1806404/"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "soon-off-broadway-2026",
+      "title": "Soon",
+      "market": "off-broadway",
+      "openingDate": "2026-10-05",
+      "sampleState": "settling",
+      "sampleReason": "opened 20h ago (<24h) — SERP indexing still settling",
+      "geo": "us",
+      "naiveQuery": "Soon St. Luke's Theatre review",
+      "counts": {
+        "truth": 2,
+        "scoped": 0,
+        "naive": 1,
+        "onDisk": 2
+      },
+      "recall": {
+        "scoped": 0,
+        "naive": 0.5,
+        "onDisk": 1,
+        "censusPlusDisk": 1
+      },
+      "newFromNaive": [],
+      "missedByCensus": [
+        "https://www.ootbtheatrics.com/soon",
+        "https://www.indieshortsmag.com/reviews/2026/09/cancer-kid-a-tongue-in-cheek-comedy-about-dying-too-soon-too-alone/"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Soon\" Off-Broadway review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Soon\" review luke",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Soon St. Luke's Theatre review",
+          "page": 0,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://www.ootbtheatrics.com/soon"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Soon St. Luke's Theatre review",
+          "page": 1,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 2,
+          "accepted": 2,
+          "urls": [
+            "https://www.indieshortsmag.com/reviews/2026/09/cancer-kid-a-tongue-in-cheek-comedy-about-dying-too-soon-too-alone/",
+            "https://www.ootbtheatrics.com/soon"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "franz-and-marie-west-end-2026",
+      "title": "Franz & Marie",
+      "market": "off-west-end",
+      "openingDate": "2026-10-05",
+      "sampleState": "settling",
+      "sampleReason": "opened 20h ago (<24h) — SERP indexing still settling",
+      "geo": "gb",
+      "naiveQuery": "Franz and Marie Charing Cross Theatre review",
+      "counts": {
+        "truth": 9,
+        "scoped": 1,
+        "naive": 6,
+        "onDisk": 9
+      },
+      "recall": {
+        "scoped": 0.111,
+        "naive": 0.667,
+        "onDisk": 1,
+        "censusPlusDisk": 1
+      },
+      "newFromNaive": [],
+      "missedByCensus": [
+        "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-franz-marie",
+        "https://www.theatremonkey.com/show/franz-marie/",
+        "https://www.londonboxoffice.co.uk/news/post/new-musical-franz-and-marie-to-open-at-charing-cross-theatre",
+        "https://theatreweekly.com/new-musical-tragedy-franz-marie-to-make-its-debut-at-charing-cross-theatre-this-autumn/",
+        "https://broadwaybaby.com/shows/franz-and-marie-woyzeck-retold/742528",
+        "https://whatnightout.uk/london/events/franz-marie-8871320",
+        "https://fillinghamweston.com/franz-marie-to-open-charing-cross-theatre/",
+        "https://musicalzentrale.de/151240/franz-marie/"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Franz and Marie\" West End review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://www.theatrebookings.com/musical/franz-and-marie"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Franz and Marie\" review charing",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://www.theatrebookings.com/musical/franz-and-marie"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Franz and Marie Charing Cross Theatre review",
+          "page": 0,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 3,
+          "urls": [
+            "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-franz-marie",
+            "https://www.theatremonkey.com/show/franz-marie/",
+            "https://www.londonboxoffice.co.uk/news/post/new-musical-franz-and-marie-to-open-at-charing-cross-theatre"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Franz and Marie Charing Cross Theatre review",
+          "page": 1,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 3,
+          "urls": [
+            "https://theatreweekly.com/new-musical-tragedy-franz-marie-to-make-its-debut-at-charing-cross-theatre-this-autumn/",
+            "https://broadwaybaby.com/shows/franz-and-marie-woyzeck-retold/742528",
+            "https://whatnightout.uk/london/events/franz-marie-8871320"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 9,
+          "accepted": 9,
+          "urls": [
+            "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-franz-marie",
+            "https://broadwaybaby.com/shows/franz-and-marie-woyzeck-retold/742528",
+            "https://fillinghamweston.com/franz-marie-to-open-charing-cross-theatre/",
+            "https://www.londonboxoffice.co.uk/news/post/new-musical-franz-and-marie-to-open-at-charing-cross-theatre",
+            "https://musicalzentrale.de/151240/franz-marie/",
+            "https://theatreweekly.com/new-musical-tragedy-franz-marie-to-make-its-debut-at-charing-cross-theatre-this-autumn/",
+            "https://www.theatrebookings.com/musical/franz-and-marie",
+            "https://www.theatremonkey.com/show/franz-marie/",
+            "https://whatnightout.uk/london/events/franz-marie-8871320"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "affluenza-off-west-end-2026",
+      "title": "Affluenza",
+      "market": "off-west-end",
+      "openingDate": "2026-10-05",
+      "sampleState": "settling",
+      "sampleReason": "opened 20h ago (<24h) — SERP indexing still settling",
+      "geo": "gb",
+      "naiveQuery": "Affluenza Riverside Studios review",
+      "counts": {
+        "truth": 11,
+        "scoped": 6,
+        "naive": 6,
+        "onDisk": 8
+      },
+      "recall": {
+        "scoped": 0.545,
+        "naive": 0.545,
+        "onDisk": 0.727,
+        "censusPlusDisk": 0.727
+      },
+      "newFromNaive": [
+        "https://riversidestudios.co.uk/whats-on/uwQ-affluenza/",
+        "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/affluenza_1726919/",
+        "https://www.uktw.co.uk/London/Riverside-Studios/Play/Affluenza/L0509433874/"
+      ],
+      "missedByCensus": [
+        "https://riversidestudios.co.uk/whats-on/uwQ-affluenza/",
+        "https://www.westendbestfriend.co.uk/news/further-casting-affluenza-riverside-studios",
+        "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/affluenza_1726919/",
+        "https://www.uktw.co.uk/London/Riverside-Studios/Play/Affluenza/L0509433874/",
+        "https://www.trustpilot.com/review/www.londontheatredirect.com/product/affluenza-6abb807d62fab7e444d8b1f7"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Affluenza\" West End review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 6,
+          "urls": [
+            "https://monstagigz.com/2026/09/29/theatre-review-affluenza-starring-noah-schnapp-at-riverside-studios-hammersmith/",
+            "https://www.bestoftheatre.co.uk/blog/post/affluenza-adds-extra-dates-riverside-studios",
+            "https://www.timeout.com/london/theatre/affluenza",
+            "https://broadwaybaby.com/shows/affluenza/839217",
+            "https://theatreweekly.com/affluenza-extends-riverside-studios-run-following-strong-ticket-demand-as-new-rehearsal-images-are-released/",
+            "https://www.theatre-news.com/news/UK/129344/Affluenza-extends-run-following-early-ticket-demand-ahead-of-world-premiere"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Affluenza\" review riverside",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 2,
+          "urls": [
+            "https://monstagigz.com/2026/09/29/theatre-review-affluenza-starring-noah-schnapp-at-riverside-studios-hammersmith/",
+            "https://www.timeout.com/london/theatre/affluenza"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Affluenza Riverside Studios review",
+          "page": 0,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 5,
+          "urls": [
+            "https://riversidestudios.co.uk/whats-on/uwQ-affluenza/",
+            "https://monstagigz.com/2026/09/29/theatre-review-affluenza-starring-noah-schnapp-at-riverside-studios-hammersmith/",
+            "https://www.westendbestfriend.co.uk/news/further-casting-affluenza-riverside-studios",
+            "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/affluenza_1726919/",
+            "https://www.timeout.com/london/theatre/affluenza"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Affluenza Riverside Studios review",
+          "page": 1,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 3,
+          "urls": [
+            "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/affluenza_1726919/",
+            "https://www.westendbestfriend.co.uk/news/further-casting-affluenza-riverside-studios",
+            "https://www.uktw.co.uk/London/Riverside-Studios/Play/Affluenza/L0509433874/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 8,
+          "accepted": 8,
+          "urls": [
+            "https://www.bestoftheatre.co.uk/blog/post/affluenza-adds-extra-dates-riverside-studios",
+            "https://broadwaybaby.com/shows/affluenza/839217",
+            "https://monstagigz.com/2026/09/29/theatre-review-affluenza-starring-noah-schnapp-at-riverside-studios-hammersmith/",
+            "https://www.theatre-news.com/news/UK/129344/Affluenza-extends-run-following-early-ticket-demand-ahead-of-world-premiere",
+            "https://theatreweekly.com/affluenza-extends-riverside-studios-run-following-strong-ticket-demand-as-new-rehearsal-images-are-released/",
+            "https://www.timeout.com/london/theatre/affluenza",
+            "https://www.trustpilot.com/review/www.londontheatredirect.com/product/affluenza-6abb807d62fab7e444d8b1f7",
+            "https://www.westendbestfriend.co.uk/news/further-casting-affluenza-riverside-studios"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
+      "title": "The Hairy Ape",
+      "market": "off-broadway",
+      "openingDate": "2026-10-04",
+      "sampleState": "measured",
+      "sampleReason": "opened 2d ago",
+      "geo": "us",
+      "naiveQuery": "The Hairy Ape Irish Repertory Theatre review",
+      "counts": {
+        "truth": 18,
+        "scoped": 8,
+        "naive": 3,
+        "onDisk": 17
+      },
+      "recall": {
+        "scoped": 0.444,
+        "naive": 0.167,
+        "onDisk": 0.944,
+        "censusPlusDisk": 0.944
+      },
+      "newFromNaive": [
+        "https://www.show-score.com/off-broadway-shows/the-hairy-ape"
+      ],
+      "missedByCensus": [
+        "https://www.show-score.com/off-broadway-shows/the-hairy-ape",
+        "http://www.amny.com/entertainment/the-hairy-ape-review-a-stunning-staging-of-an-expressionist-classic-1.13351233",
+        "https://www.backstage.com/forums/callback-corner/hairy-ape-irish-repertory-theatre-nyc-epa-38881",
+        "http://www.hollywoodreporter.com/review/hairy-ape-review-990404",
+        "https://www.nysun.com/article/oneills-hairy-ape-still-speaks-to-an-age-of-inequality",
+        "https://pagesonstages.com/2026/10/04/hairy-ape/",
+        "https://stageagent.com/shows/play/22977/the-hairy-ape",
+        "https://theaterpizzazz.com/the-hairy-ape-fierce/",
+        "https://www.theatrereviews.com/tag/hairy-ape/",
+        "https://villagestar-revue.com/facing-a-changed-audience-hairy-ape-returns-to-irish-rep-this-fall/"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"The Hairy Ape\" Off-Broadway review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 9,
+          "accepted": 4,
+          "urls": [
+            "https://culturesauce.com/eugene-oneill-hairy-ape-off-broadway-review/",
+            "https://www.theatermania.com/news/review-the-hairy-ape-eugene-oneills-century-old-prophecy-of-americas-coming-identity-crisis_1855934/",
+            "https://nystagereview.com/2026/10/04/the-hairy-ape-hairier-would-be-scarier/",
+            "https://www.theatrely.com/post/excellent-stagings-of-our-basest-selves-degenerates-the-hairy-ape-review-roundup"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"The Hairy Ape\" review irish",
+          "page": 0,
+          "geo": null,
+          "raw": 9,
+          "accepted": 6,
+          "urls": [
+            "https://www.theatermania.com/news/review-the-hairy-ape-eugene-oneills-century-old-prophecy-of-americas-coming-identity-crisis_1855934/",
+            "https://culturesauce.com/eugene-oneill-hairy-ape-off-broadway-review/",
+            "https://nystagereview.com/2026/10/04/the-hairy-ape-the-first-zoo-story/",
+            "https://www.vulture.com/article/oneill-the-hairy-ape-irish-rep-oreilly.html",
+            "https://www.timeout.com/newyork/theater/hairy-ape-irish-rep-review",
+            "https://www.offoffonline.com/offoffonline/2026/9/30/the-hairy-ape"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q2",
+          "query": "\"The Hairy Ape\" O'Neill review",
+          "page": 0,
+          "geo": null,
+          "raw": 9,
+          "accepted": 6,
+          "urls": [
+            "https://www.theatermania.com/news/review-the-hairy-ape-eugene-oneills-century-old-prophecy-of-americas-coming-identity-crisis_1855934/",
+            "https://www.timeout.com/newyork/theater/hairy-ape-irish-rep-review",
+            "https://www.vulture.com/article/oneill-the-hairy-ape-irish-rep-oreilly.html",
+            "https://culturesauce.com/eugene-oneill-hairy-ape-off-broadway-review/",
+            "https://nystagereview.com/2026/10/04/the-hairy-ape-hairier-would-be-scarier/",
+            "https://www.theatrely.com/post/excellent-stagings-of-our-basest-selves-degenerates-the-hairy-ape-review-roundup"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "The Hairy Ape Irish Repertory Theatre review",
+          "page": 0,
+          "geo": "us",
+          "raw": 9,
+          "accepted": 2,
+          "urls": [
+            "https://nystagereview.com/2026/10/04/the-hairy-ape-hairier-would-be-scarier/",
+            "https://www.vulture.com/article/oneill-the-hairy-ape-irish-rep-oreilly.html"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "The Hairy Ape Irish Repertory Theatre review",
+          "page": 1,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://www.show-score.com/off-broadway-shows/the-hairy-ape"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 17,
+          "accepted": 17,
+          "urls": [
+            "http://www.amny.com/entertainment/the-hairy-ape-review-a-stunning-staging-of-an-expressionist-classic-1.13351233",
+            "https://www.backstage.com/forums/callback-corner/hairy-ape-irish-repertory-theatre-nyc-epa-38881",
+            "https://culturesauce.com/eugene-oneill-hairy-ape-off-broadway-review/",
+            "http://www.hollywoodreporter.com/review/hairy-ape-review-990404",
+            "https://www.nysun.com/article/oneills-hairy-ape-still-speaks-to-an-age-of-inequality",
+            "https://nystagereview.com/2026/10/04/the-hairy-ape-hairier-would-be-scarier/",
+            "https://nystagereview.com/2026/10/04/the-hairy-ape-the-first-zoo-story/",
+            "https://www.offoffonline.com/offoffonline/2026/9/30/the-hairy-ape",
+            "https://pagesonstages.com/2026/10/04/hairy-ape/",
+            "https://stageagent.com/shows/play/22977/the-hairy-ape",
+            "https://theaterpizzazz.com/the-hairy-ape-fierce/",
+            "https://www.theatermania.com/news/review-the-hairy-ape-eugene-oneills-century-old-prophecy-of-americas-coming-identity-crisis_1855934/",
+            "https://www.theatrereviews.com/tag/hairy-ape/",
+            "https://www.theatrely.com/post/excellent-stagings-of-our-basest-selves-degenerates-the-hairy-ape-review-roundup",
+            "https://www.timeout.com/newyork/theater/hairy-ape-irish-rep-review",
+            "https://villagestar-revue.com/facing-a-changed-audience-hairy-ape-returns-to-irish-rep-this-fall/",
+            "https://www.vulture.com/article/oneill-the-hairy-ape-irish-rep-oreilly.html"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    }
+  ],
+  "providerOutage": false,
+  "onDiskUnavailable": false,
+  "trend": {
+    "entry": {
+      "date": "2026-10-05",
+      "generatedAt": "2026-10-05T19:52:39.389Z",
+      "naivePages": 2,
+      "shows": 1,
+      "excluded": {
+        "settling": 4
+      },
+      "truthUrls": 18,
+      "onDiskUrls": 17,
+      "newFromNaive": 1,
+      "families": {
+        "naive": 0.167,
+        "onDisk": 0.944,
+        "scoped": 0.444
+      },
+      "arms": {
+        "naive-p0": 0.111,
+        "naive-p1": 0.056,
+        "onDisk": 0.944,
+        "scoped-q0": 0.222,
+        "scoped-q1": 0.333,
+        "scoped-q2": 0.333
+      },
+      "combinedRecall": 0.944,
+      "familyYield": {
+        "naive": 3,
+        "onDisk": 17,
+        "scoped": 8
+      },
+      "armYield": {
+        "naive-p0": 2,
+        "naive-p1": 1,
+        "onDisk": 17,
+        "scoped-q0": 4,
+        "scoped-q1": 6,
+        "scoped-q2": 6
+      },
+      "armsFailed": {
+        "naive-p0": 0,
+        "naive-p1": 0,
+        "onDisk": 0,
+        "scoped-q0": 0,
+        "scoped-q1": 0,
+        "scoped-q2": 0
+      },
+      "unavailableArms": [],
+      "byCategory": {
+        "off-broadway": {
+          "shows": 1,
+          "truthUrls": 18,
+          "families": {
+            "naive": 0.167,
+            "onDisk": 0.944,
+            "scoped": 0.444
+          }
+        }
+      },
+      "sampleIds": [
+        "the-hairy-ape-irish-repertory-theatre-off-broadway-2026"
+      ]
+    },
+    "judgement": {
+      "verdict": "regressed",
+      "reason": "naive: recall 0.167 vs 0.38 median over 4 prior run(s) — down 0.213 (threshold 0.15), yield 3 vs 6.367 URLs/show",
+      "regressions": [
+        {
+          "level": "families",
+          "arm": "naive",
+          "baseline": 0.38,
+          "current": 0.167,
+          "drop": 0.213,
+          "rule": "week-on-week",
+          "reason": "recall 0.167 vs 0.38 median over 4 prior run(s) — down 0.213 (threshold 0.15), yield 3 vs 6.367 URLs/show"
+        }
+      ],
+      "latest": {
+        "date": "2026-10-05",
+        "generatedAt": "2026-10-05T19:52:39.389Z",
+        "naivePages": 2,
+        "shows": 1,
+        "excluded": {
+          "settling": 4
+        },
+        "truthUrls": 18,
+        "onDiskUrls": 17,
+        "newFromNaive": 1,
+        "families": {
+          "naive": 0.167,
+          "onDisk": 0.944,
+          "scoped": 0.444
+        },
+        "arms": {
+          "naive-p0": 0.111,
+          "naive-p1": 0.056,
+          "onDisk": 0.944,
+          "scoped-q0": 0.222,
+          "scoped-q1": 0.333,
+          "scoped-q2": 0.333
+        },
+        "combinedRecall": 0.944,
+        "familyYield": {
+          "naive": 3,
+          "onDisk": 17,
+          "scoped": 8
+        },
+        "armYield": {
+          "naive-p0": 2,
+          "naive-p1": 1,
+          "onDisk": 17,
+          "scoped-q0": 4,
+          "scoped-q1": 6,
+          "scoped-q2": 6
+        },
+        "armsFailed": {
+          "naive-p0": 0,
+          "naive-p1": 0,
+          "onDisk": 0,
+          "scoped-q0": 0,
+          "scoped-q1": 0,
+          "scoped-q2": 0
+        },
+        "unavailableArms": [],
+        "byCategory": {
+          "off-broadway": {
+            "shows": 1,
+            "truthUrls": 18,
+            "families": {
+              "naive": 0.167,
+              "onDisk": 0.944,
+              "scoped": 0.444
+            }
+          }
+        },
+        "sampleIds": [
+          "the-hairy-ape-irish-repertory-theatre-off-broadway-2026"
+        ]
+      },
+      "comparedArms": 3,
+      "skipped": []
+    }
+  }
+}

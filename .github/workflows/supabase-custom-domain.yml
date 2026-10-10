@@ -1,0 +1,76 @@
+name: Supabase Custom Domain
+
+# Sets up and operates the custom auth domain for the Supabase project
+# (BRO-4894). Google's account chooser used to say "Sign in to continue to
+# <ref>.supabase.co" and about 40% of Google sign-ins backed out there; with
+# auth.broadwayscorecard.com it names our own domain.
+#
+# Everything runs through scripts/supabase-custom-domain.mjs with the
+# existing secrets (Supabase Management API + Vercel DNS API); the owner
+# never touches DNS by hand. Order of dispatches:
+#   1. action=create     CNAME in Vercel, register with Supabase, TXT records,
+#                        first verification. Exit 2 = still pending: run
+#                        create again (it is safe to repeat) or reverify;
+#                        certificates can take 30 min.
+#   2. action=reverify   until the run exits 0 (verified).
+#   3. Owner adds https://auth.broadwayscorecard.com/auth/v1/callback to the
+#      Google OAuth client (Google Cloud console; not automatable here).
+#   4. action=activate   with confirm=ACTIVATE. The run probes Google first
+#      and refuses on redirect_uri_mismatch, so step 3 cannot be skipped.
+#   action=status is read-only; action=delete (confirm=DELETE) undoes it all.
+#
+# Inputs reach the script ONLY through env (never interpolated into run:),
+# the same rule apply-migration.yml follows. No commits, no pushes, no email.
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'status | create | dns | initialize | reverify | activate | delete'
+        required: true
+        default: 'status'
+        type: choice
+        options: [status, create, dns, initialize, reverify, activate, delete]
+      hostname:
+        description: 'One label under broadwayscorecard.com'
+        required: false
+        default: 'auth.broadwayscorecard.com'
+        type: string
+      confirm:
+        description: 'Type ACTIVATE for activate, DELETE for delete; otherwise leave empty'
+        required: false
+        default: ''
+        type: string
+
+concurrency:
+  group: supabase-custom-domain
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  domain:
+    name: ${{ inputs.action }} ${{ inputs.hostname }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/setup-node
+
+      - name: Run the requested step
+        env:
+          ACTION: ${{ inputs.action }}
+          CUSTOM_HOSTNAME: ${{ inputs.hostname }}
+          CONFIRM: ${{ inputs.confirm }}
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: node scripts/supabase-custom-domain.mjs
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Supabase Custom Domain step failed'
+          severity: 'low'

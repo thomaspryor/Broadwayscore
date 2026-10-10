@@ -1,0 +1,29 @@
+---
+name: reference-paywall-subscriptions-status
+description: Which outlet subscriptions the owner pays for vs cancelled (Bloomberg/Telegraph/newspapers.com cancelled July 2026) — check before advising on paywall recovery or prompting re-login
+metadata: 
+  node_type: memory
+  type: reference
+  originSessionId: e02aeafc-deda-4880-86b6-03c60e59e534
+  modified: 2026-08-07T01:08:23.601Z
+---
+
+Owner's paywall subscription status (as of 2026-07-21):
+
+**Cancelled (do NOT prompt to re-login; expect cookies to die and stay dead):**
+- Bloomberg — cancelled 2026-07-21. Impact: ~1 theater review/yr (no critic since Jeremy Gerard left 2014; corpus: 40/yr 2010-2013 → 0-3/yr after). Scores for those shows come via aggregators; no free full-text path exists.
+- Telegraph — cancelled 2026-07-21. Non-breaking: pipeline fetches full text via Bright Data with no login (45 complete reviews May–Jul 2026).
+- newspapers.com — cancelled earlier; access ends 2026-08-27. Was never automatable (viewer blocks all tiers).
+
+**Active + verified working (functional body-length test 2026-07-19/20):**
+- WSJ UPDATE 2026-08-02 20:46 UTC: subscription ACTIVE (auto-renews 2026-08-08 at $20/4wk, 50% discount locked for 13 payments per Jul 18 renewal email), but the Safari login STILL did not fully establish even after the owner explicitly re-logged in this session (confirmed "i logged in", extraction re-run post-login). Evidence: (a) fresh `data/cookies/wsj.json`'s `sso` cookie is only 4 chars vs a real session's expected length (WaPo's equivalent auth cookie was 36-335 chars from the identical extraction process run seconds later — rules out a tooling/Tahoe-wide bug); (b) `fetchPage()` cookie-plain fetch returns HTTP 401; (c) even the Scrapingdog/Bright Data provider fallback — which bypasses WSJ's own auth check — returns only the free-preview paragraph, because WSJ's paywall is CSS-side (`.css-1579sa9-Container p:nth-of-type(n + 3){display:none}` hides everything after paragraph 2 regardless of who fetched the HTML). So provider fallback can NEVER recover full WSJ text; only a genuinely-authenticated cookie-plain fetch can. Conclusion: the WSJ login itself did not complete (likely stopped short at a CAPTCHA/2FA/"verify your email" interstitial) — this is a login-completion issue on the owner's end, not a script or Tahoe cookie-capture bug. Next attempt: have the owner explicitly confirm the WSJ *article page* renders as logged-in (paywall banner absent) in the Safari tab BEFORE running the extract script, not just that the login form was submitted.
+- WaPo FIXED 2026-08-02 20:46 UTC: after the owner's Safari re-login this session, fresh cookies verify `✅ logged-in` (body 8282, real auth cookie values 36-335 chars) via `node scripts/verify-cookie-login.js --outlets=wsj,wapo`. This was a pipeline-wide fix (WaPo was broken for every show's WaPo reviews, not just one) — confirms the extraction pipeline itself works correctly end-to-end when the source login is real, which is what makes the WSJ non-recovery diagnosable as login-specific rather than systemic.
+NYT, WSJ, New Yorker, WaPo, FT, Times UK, The Stage, Variety, Vulture, Standard, Independent — cookies refreshed from owner Safari 2026-07-20, pushed to COOKIES_BUNDLE_1-4 secrets. As of 2026-08-02 the wsj/wapo entries in that list are stale (see regressions above) — nytimes, variety, newyorker, ft, thetimes still verified logged-in.
+- The Stage NOT-ENTITLED (found 2026-08-06): verify-cookie-login.js's thestage probe is VACUOUS — its test article (2023 a-dolls-house) serves the full body with ZERO cookies, so "✅ logged-in thestage" proves nothing. Recent 2026 articles (e.g. now-you-see-me-live) serve a registration wall ("THIS IS NOT A PAYWALL … create a free account to read 5 free articles") with the body entirely absent from server HTML, identically with or without the Aug-2 cookie jar (VISITOR/USER/USERSECURE, unexpired). The extracted cookie session grants no article entitlement — subscription lapsed, session invalidated, or a missing httpOnly cookie (task #779 Tahoe class). Fix path = #876 real-browser/OTP login infra; #921 already cards the ~80-file Stage recent-gap backfill on it. Also: fix the verifier to probe a recent walled article, else it stays vacuous.
+  - **CORRECTION (2026-08-07): only the BODY is walled — the SCORE is not.** The registration-wall HTML still contains the article's own star rating (first `aos-StarRating` block, directly under the `aos-ReviewArticle` h1; related-article cards come later). `extractUKStarRating(html,'')` from `scripts/lib/score-extractors.js` returns the correct score from a zero-cookie plain fetch (verified on now-you-see-me-live: 5/5, source `stage-star-svg`). Stage scores are recoverable TODAY without #876 — only full text recovery is blocked on OTP login. Recovery tool: `recover-explicit-ratings.js --outlet=thestage --phase=3` (WARNING: its `--dry-run` flag is DEAD — parsed at line 68, never referenced; it fetches and writes regardless).
+
+**No subscription exists (never prompt for login):**
+- Backstage — jar is only a cf_clearance bot cookie; no credentials, no Gmail receipts in 2 years.
+- Newsday — not logged in per extractor; content arrives without auth. Task #280 (2026-07-22): "62 reviews in 2026" was a historical-backfill artifact (old 2005-2019 reviews reprocessed Jan-Jun 2026), not new coverage — Newsday's dedicated Broadway reviewing ended ~2019-2021 (2 exceptions in 2025); nothing published Jan-Jul 2026 for our pipeline to miss. Don't reopen as a "discovery gap" without a fresh site:newsday.com "Theater Review" SERP check first.
+
+**How to apply:** before recommending a cookie refresh, subscription, or Browserbase batch against a paywalled outlet, check this list — cancelled/nonexistent subs make those paths permanently dead ([[feedback_cookie_health_body_length_not_expiry]]).

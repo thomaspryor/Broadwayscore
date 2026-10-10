@@ -1,0 +1,1115 @@
+name: Gather Review Data
+
+# Per-show dispatch dedup (scripts/lib/gather-idempotency.js) keys off this
+# run-name's `— {shows}` suffix, mirroring opening-night-poller.yml's run-name.
+run-name: Gather Review Data — ${{ inputs.shows }}
+
+on:
+  # Triggered by update-shows workflow when new shows are discovered
+  workflow_dispatch:
+    inputs:
+      opening_night:
+        description: 'This run is part of the opening-night chain — exempt from the Bright Data daily breaker (Scraping cost v3)'
+        required: false
+        type: boolean
+        default: false
+      shows:
+        description: 'Comma-separated list of show slugs to gather reviews for'
+        required: true
+        type: string
+      parallel_jobs:
+        description: 'Number of parallel jobs to split shows across (1=sequential, 2-10=parallel)'
+        required: false
+        default: '1'
+        type: string
+      max_tier:
+        description: 'Max outlet tier for SERP discovery (2=T1+T2, 3=include T3 for opening nights)'
+        required: false
+        default: '2'
+        type: string
+      aggregators_only:
+        description: 'Skip SERP, use only aggregators + RSS + site-search (for opening night when SERP returns wrong URLs)'
+        required: false
+        type: boolean
+        default: false
+      validate_urls:
+        description: 'Content-check roundup-sourced URLs against target show (costs SB credits, use for opening nights)'
+        required: false
+        type: boolean
+        default: false
+      no_sb_serp:
+        description: 'Skip ScrapingBee SERP fallback (~25cr/query). Use for bulk/historical backfills where an empty SD+BD SERP result should be accepted, not re-asked on SB.'
+        required: false
+        type: boolean
+        default: false
+      spend_purpose:
+        description: "Tag for this run's scraper-spend ledger rows (e.g. historical-backfill); excluded from the daily gather-reviews credit probe"
+        required: false
+        type: string
+        default: ''
+
+permissions:
+  contents: write
+  issues: write
+  actions: write
+
+env:
+  # Opening-night provenance for the Bright Data daily breaker (Scraping cost
+  # v3 S2, ship-check finding). This workflow is dispatched BOTH by bulk crons
+  # and by the opening-night chain; by the time the chain reaches here,
+  # GITHUB_WORKFLOW no longer says "Opening Night", so the breaker's
+  # workflow-name exemption has already been lost. The explicit flag is what
+  # survives a dispatch hop — see scripts/lib/brightdata-caps.js isExemptCaller.
+  BD_OPENING_NIGHT: ${{ inputs.opening_night && '1' || '' }}
+  # BRO-4146: dispatch-level spend tag (historical-backfill.yml sets it), so the
+  # whole run's ledger rows are excluded from the gather-reviews credit probe.
+  SCRAPER_SPEND_PURPOSE: ${{ inputs.spend_purpose }}
+
+concurrency:
+  # per-run group intended (BRO-4859): the old shared `review-texts-backfill-write`
+  # group kept ONE pending run, so each dispatch arriving while a gather ran evicted
+  # the previous pending one, which ended 'cancelled' without starting (43 of 225
+  # dispatches in the 14 days to 2026-10-08). Writes are already parallel-safe (one
+  # run pushes from up to 10 shards via push-review-texts / push-with-retry.sh). The
+  # throttle now lives in prepare's "Wait for a gather slot" step: FIFO, at most
+  # 2 runs at once; after 180 min of waiting a run starts anyway, so none is dropped.
+  group: gather-reviews-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  # Step 1: Split shows into batches for parallel processing
+  # BRO-4146: the Mac launchd backfill (scripts/backfill-gather-batch.sh) was
+  # retired in favour of historical-backfill.yml, but a Mac whose checkout is
+  # stuck behind origin/main keeps running the old script every day at 08:00
+  # UTC. Its dispatch is the only one that sets no_sb_serp without a
+  # spend_purpose (historical-backfill.yml tags its runs), so those runs skip
+  # every job here instead of re-gathering shows the CI backfill already owns.
+  # Dispatching by hand with no_sb_serp? Set spend_purpose to anything.
+  retired-mac-backfill:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.no_sb_serp && inputs.spend_purpose == '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Skip retired Mac backfill dispatch
+        run: echo "::notice::Skipped. no_sb_serp=true with no spend_purpose is the retired Mac backfill (scripts/backfill-gather-batch.sh); the daily backfill now runs from historical-backfill.yml. Set spend_purpose to run this by hand."
+
+  prepare:
+    if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.no_sb_serp && inputs.spend_purpose == '') }}
+    runs-on: ubuntu-latest
+    # The slot wait below gives up and starts anyway at 180 min.
+    timeout-minutes: 200
+    outputs:
+      matrix: ${{ steps.split.outputs.matrix }}
+      job_count: ${{ steps.split.outputs.job_count }}
+    steps:
+      - name: Checkout (slot helper only)
+        uses: actions/checkout@v5
+        with:
+          sparse-checkout: scripts
+      - name: Wait for a gather slot (BRO-4859)
+        # FIFO: proceed once fewer than 2 OLDER gather runs are active.
+        # Kill switch: repo variable GATHER_SLOT_GATE_DISABLED=true.
+        if: ${{ vars.GATHER_SLOT_GATE_DISABLED != 'true' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/wait-for-gather-slot.js --run-id=${{ github.run_id }} --slots=2 --poll-sec=120 --max-wait-min=180
+      - name: Split shows into parallel batches
+        id: split
+        run: |
+          SHOWS="${{ inputs.shows }}"
+          JOBS=${{ inputs.parallel_jobs }}
+
+          # Validate parallel_jobs is 1-10
+          if [ "$JOBS" -lt 1 ] 2>/dev/null || [ "$JOBS" -gt 10 ] 2>/dev/null; then
+            JOBS=1
+          fi
+
+          # Split comma-separated shows into array
+          IFS=',' read -ra SHOW_ARRAY <<< "$SHOWS"
+          TOTAL=${#SHOW_ARRAY[@]}
+
+          # Don't use more jobs than shows
+          # BRO-4146: cap shows per shard. The daily historical backfill sends ~25
+          # closed shows with parallel_jobs=3 (8-9 per shard); at ~10 min per old
+          # show the shards ran past the job timeout and were cancelled on 10-05
+          # and 10-06. Raise the shard count so no shard gets more than
+          # MAX_PER_SHARD shows, up to the existing 10-job ceiling.
+          MAX_PER_SHARD=4
+          NEEDED=$(( (TOTAL + MAX_PER_SHARD - 1) / MAX_PER_SHARD ))
+          if [ "$NEEDED" -gt "$JOBS" ]; then
+            JOBS=$(( NEEDED > 10 ? 10 : NEEDED ))
+          fi
+
+          if [ "$JOBS" -gt "$TOTAL" ]; then
+            JOBS=$TOTAL
+          fi
+
+          echo "Total shows: $TOTAL, parallel jobs: $JOBS"
+
+          # Distribute shows across jobs round-robin
+          declare -a BATCHES
+          for i in $(seq 0 $((JOBS - 1))); do
+            BATCHES[$i]=""
+          done
+
+          for i in "${!SHOW_ARRAY[@]}"; do
+            BATCH_IDX=$((i % JOBS))
+            SHOW=$(echo "${SHOW_ARRAY[$i]}" | xargs)  # trim whitespace
+            if [ -n "${BATCHES[$BATCH_IDX]}" ]; then
+              BATCHES[$BATCH_IDX]="${BATCHES[$BATCH_IDX]},$SHOW"
+            else
+              BATCHES[$BATCH_IDX]="$SHOW"
+            fi
+          done
+
+          # Build JSON matrix
+          MATRIX='{"include":['
+          FIRST=true
+          for i in $(seq 0 $((JOBS - 1))); do
+            if [ -n "${BATCHES[$i]}" ]; then
+              if [ "$FIRST" = true ]; then
+                FIRST=false
+              else
+                MATRIX="$MATRIX,"
+              fi
+              # Stagger start: 30s between each job to avoid rate limiting aggregators
+              DELAY=$((i * 30))
+              MATRIX="$MATRIX{\"batch_id\":$i,\"shows\":\"${BATCHES[$i]}\",\"delay\":$DELAY}"
+            fi
+          done
+          MATRIX="$MATRIX]}"
+
+          echo "Matrix: $MATRIX"
+          echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
+          echo "job_count=$JOBS" >> $GITHUB_OUTPUT
+
+  # Step 1b: Outlet-first SERP discovery (runs before aggregator gathering)
+  outlet-serp:
+    needs: prepare
+    runs-on: ubuntu-latest
+    # 25 not 20 (BRO-3887): at 20 this job was cancelled at the cap in 3/3 runs
+    # sampled 2026-09-19..20 (35497194379, 35479720736, 35434766474 — all exactly
+    # 20m20s), which marks the ENTIRE run "cancelled" even though prepare,
+    # both gather-reviews matrix jobs, scrape-aggregators and rebuild all
+    # succeeded. Contrary to the earlier diagnosis this was NOT a push-transport
+    # hang: the "Push review texts" step completed fine (0d8bad4c..6839d88f
+    # HEAD -> main, "Push succeeded after conflict resolution (attempt 1)") ~20s
+    # before the kill. It was a plain wall-clock overrun — 3m03s setup + ~16m
+    # SERP + 1m15s push. The script-side --time-budget-min below is the real
+    # guard; this cap is the backstop behind it.
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 25-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
+
+      - uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Opening-night lease sync (BRO-4786)
+        uses: ./.github/actions/opening-night-lease-sync
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+
+      # Restore 24h SERP cache (scripts/lib/serp-cache.js). Cuts duplicate
+      # Bright Data SERP calls across gather-reviews / poller / orchestrator.
+      # hygiene-cache-runid-ok: the SERP cache payload is ~22 KB, not gigabytes,
+      # and the run-id in the SAVE key is load-bearing: actions/cache silently
+      # skips the save on an exact key hit, so a stable key would freeze the
+      # cache at its first contents and never absorb new queries. Cross-run
+      # reuse comes from the `restore-keys: bd-serp-cache-` prefix, not the key.
+      # This is the cache BRO-3887 was protecting, not the one that caused it.
+      - name: Restore SERP cache
+        uses: actions/cache@v5
+        with:
+          path: /tmp/bd-serp-cache
+          key: bd-serp-cache-${{ github.run_id }}
+          restore-keys: |
+            bd-serp-cache-
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Outlet-first SERP discovery
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          SERP_NO_SB: ${{ inputs.no_sb_serp == true && '1' || '' }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          MAX_TIER="${{ inputs.max_tier }}"
+          MAX_TIER="${MAX_TIER:-2}"
+          # Opening night (max_tier=3): 80 searches — empirically T1+T2 outlets resolve in <50; remaining
+          # gaps are picked up by the orchestrator polling loop. Routine: 30 (weekly run handles the rest).
+          MAX_SEARCHES=$([ "$MAX_TIER" = "3" ] && echo "80" || echo "30")
+          echo "Running outlet-first SERP discovery for: ${{ inputs.shows }} (max tier: $MAX_TIER, max searches: $MAX_SEARCHES)"
+          # --time-budget-min MUST use the equals form: scripts/lib/run-budget.js
+          # parseTimeBudgetMin() only matches `--flag=N`, so the space-separated
+          # style the rest of this script's flags use would parse as 0 and
+          # silently disable the budget (review finding, BRO-3887). The script
+          # now hard-errors on the space form rather than no-opping.
+          # 16 under the 25min cap: ~2min setup + 16min budget + at most one
+          # in-flight SERP call of overshoot + ~1.5min push.
+          node scripts/collect-outlet-reviews.js \
+            --shows "${{ inputs.shows }}" \
+            --max-tier "$MAX_TIER" \
+            --max-searches "$MAX_SEARCHES" \
+            --time-budget-min=16
+
+      - name: Push review texts
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Outlet-first SERP discovery for ${{ inputs.shows }}"
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: gather-reviews-outlet-serp
+
+  # Step 2: Gather reviews in parallel batches
+  gather-reviews:
+    needs: [prepare, outlet-serp]
+    if: always() && needs.prepare.result == 'success'
+    runs-on: ubuntu-latest
+    # 55 not 30: multi-show batches hit the 30m ceiling and GitHub cancels the
+    # job at timeout, dropping un-pushed progress (3 of 5 runs on 2026-07-13
+    # ended cancelled; if: always() steps do NOT run on timeout-cancel).
+    # 75 not 55 (BRO-4146): --time-budget-min=35 is only checked between shows
+    # and one historical show takes ~10-15 min, so the gather step ran 39-46 min
+    # and jobs ended at 52 of 55 on 2026-10-07. Shard cap (prepare) is the main
+    # fix; this is the margin for a slow last show plus setup and push.
+    timeout-minutes: 75
+    strategy:
+      matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
+      fail-fast: false  # Don't cancel other batches if one fails
+    env:
+      # BRO-4146: serp-cache.js writes a per-process hit/miss report here; it rides
+      # the shard artifact and merge-serp-cache prints it (shard logs are too long
+      # to read the per-query cache lines).
+      SERP_CACHE_REPORT_DIR: /tmp/serp-shard-out
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 75-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Opening-night lease sync (BRO-4786)
+        uses: ./.github/actions/opening-night-lease-sync
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      # Restore 24h SERP cache (scripts/lib/serp-cache.js), same restore-key
+      # prefix as the outlet-serp job above. Without this the gather job
+      # always missed the cache, so a same-day retry (budget deferral or the
+      # old timeout-and-redispatch cycle) re-paid every SERP query it already
+      # answered (BRO-3388). Save KEY is per-matrix-batch (unlike outlet-serp,
+      # which runs once) — actions/cache silently skips the save on an exact
+      # key hit, and outlet-serp already saves under plain
+      # bd-serp-cache-${{ github.run_id }} earlier in this same run, so reusing
+      # that exact key here would make every gather-reviews matrix job's own
+      # new SERP discoveries a no-op save (adversarial review finding).
+      # hygiene-cache-runid-ok: ~22 KB payload. The run-id is load-bearing in the
+      # SAVE key — actions/cache skips the save on an exact key hit, and the batch
+      # suffix keeps each matrix job's own discoveries from no-opping against the
+      # outlet-serp save earlier in this run. Cross-run reuse is via restore-keys.
+      # Needs its own marker: exemptions are step-scoped, not file-scoped (BRO-3887
+      # ship-check), so the comment on the outlet-serp cache above does not cover it.
+      - name: Restore SERP cache
+        uses: actions/cache@v5
+        with:
+          path: /tmp/bd-serp-cache
+          key: bd-serp-cache-${{ github.run_id }}-gather-${{ matrix.batch_id }}
+          restore-keys: |
+            bd-serp-cache-
+
+      - name: Stagger start to avoid rate limiting
+        if: matrix.delay > 0
+        run: |
+          echo "Waiting ${{ matrix.delay }}s before starting (batch ${{ matrix.batch_id }})"
+          sleep ${{ matrix.delay }}
+
+      - name: Display shows to process
+        run: |
+          echo "Batch ${{ matrix.batch_id }}: Gathering review data for shows: ${{ matrix.shows }}"
+
+      - name: Gather reviews
+        id: gather
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          SERP_NO_SB: ${{ inputs.no_sb_serp == true && '1' || '' }}
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
+          COOKIES_BUNDLE_1: ${{ secrets.COOKIES_BUNDLE_1 }}
+          COOKIES_BUNDLE_2: ${{ secrets.COOKIES_BUNDLE_2 }}
+          COOKIES_BUNDLE_3: ${{ secrets.COOKIES_BUNDLE_3 }}
+          COOKIES_BUNDLE_4: ${{ secrets.COOKIES_BUNDLE_4 }}
+          COOKIES_BUNDLE_5: ${{ secrets.COOKIES_BUNDLE_5 }}
+          COOKIES_BUNDLE_6: ${{ secrets.COOKIES_BUNDLE_6 }}
+          COOKIES_BUNDLE_7: ${{ secrets.COOKIES_BUNDLE_7 }}
+          COOKIES_BUNDLE_8: ${{ secrets.COOKIES_BUNDLE_8 }}
+          COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
+          COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
+          COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+          # BRO-4859: shows the time budget stops short of; the follow-up job re-dispatches them.
+          GATHER_DEFERRED_FILE: ${{ runner.temp }}/deferred-shows.txt
+        run: |
+          SHOWS="${{ matrix.shows }}"
+
+          echo "Processing shows: $SHOWS"
+          echo "ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:+SET}"
+
+          # Check if gather-reviews script exists
+          AGG_ONLY_FLAG=""
+          if [ "${{ inputs.aggregators_only }}" = "true" ]; then
+            AGG_ONLY_FLAG="--aggregators-only"
+            echo "ℹ️ Running in aggregators-only mode (SERP skipped)"
+          fi
+          VALIDATE_FLAG=""
+          if [ "${{ inputs.validate_urls }}" = "true" ]; then
+            VALIDATE_FLAG="--validate-urls"
+            echo "ℹ️ URL content validation enabled"
+          fi
+          OPENING_NIGHT_FLAG=""
+          if [ "${{ inputs.opening_night }}" = "true" ]; then
+            OPENING_NIGHT_FLAG="--opening-night"
+            echo "ℹ️ Opening-night mode: aggregators forced fresh, SERP hits with a mismatched embedded year rejected (BRO-736)"
+          fi
+          if [ -f scripts/gather-reviews.js ]; then
+            # BRO-3388: stop starting new shows at 35min so the script exits 0
+            # well inside the 75min job timeout above — a graceful exit lets
+            # the if: always() push steps run, instead of a timeout SIGKILL
+            # skipping them and discarding this run's SERP discovery. 20min
+            # margin (not just setup+push overhead) because gather-reviews.js
+            # itself calls the unbounded rebuildReviewsJson() after the loop
+            # when any show produced files — that inline rebuild isn't covered
+            # by the time budget (adversarial review finding).
+            node scripts/gather-reviews.js --shows="$SHOWS" $AGG_ONLY_FLAG $VALIDATE_FLAG $OPENING_NIGHT_FLAG --time-budget-min=35
+          else
+            echo "Note: scripts/gather-reviews.js not found"
+            echo "Review data will need to be gathered manually"
+            echo "shows_processed=0" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+      - name: Validate data before commit
+        continue-on-error: true
+        run: node scripts/validate-data.js
+
+      - name: Check for changes
+        id: git-check
+        run: |
+          # Check for changes in collection-state (aggregator-archive is now in private repo)
+          git diff --exit-code data/collection-state/ 2>/dev/null || echo "changes=true" >> $GITHUB_OUTPUT
+          if [ -n "$(git ls-files --others --exclude-standard data/collection-state/)" ]; then
+            echo "changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check for large files
+        if: steps.git-check.outputs.changes == 'true'
+        uses: ./.github/actions/check-file-sizes
+
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Gather Review Data — Commit review data"
+      - name: Push aggregator-archive to private repo
+        if: always()
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Gather Review Data — aggregator archive"
+      - name: Commit collection-state
+        if: always() && steps.git-check.outputs.changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add data/collection-state/
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          git commit -m "feat: Add review data for ${{ matrix.shows }}"
+
+          # Stagger push by batch_id to avoid parallel matrix jobs colliding
+          BATCH_PUSH_DELAY=$((${{ matrix.batch_id }} * 15))
+          if [ $BATCH_PUSH_DELAY -gt 0 ]; then
+            echo "Staggering push by ${BATCH_PUSH_DELAY}s (batch ${{ matrix.batch_id }})"
+            sleep $BATCH_PUSH_DELAY
+          fi
+
+          bash scripts/lib/push-with-retry.sh 8 main
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: gather-reviews
+          push-retry-args: "8 main"
+
+      # BRO-4146: each matrix shard saves its own bd-serp-cache-<run>-gather-<batch>
+      # key, and the next run's restore-keys prefix restores only the single newest
+      # entry, so every shard but the last to finish lost its SERP results (same 4
+      # shows re-paid ~174 Scrapingdog SERP calls 4h apart on 2026-10-01). Hand the
+      # cache dir to merge-serp-cache below as a tar (keeps the mtimes ttl-cache.js
+      # expires by; artifact zips may not).
+      - name: Upload SERP cache shard
+        if: always()
+        run: |
+          mkdir -p /tmp/serp-shard-out
+          [ -d /tmp/bd-serp-cache ] || { echo "No SERP cache dir"; exit 0; }
+          tar -C /tmp -cf /tmp/serp-shard-out/serp-cache.tar bd-serp-cache
+      - name: Upload SERP cache shard artifact
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: serp-cache-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.batch_id }}
+          path: /tmp/serp-shard-out/
+          retention-days: 1
+          if-no-files-found: ignore
+          overwrite: true
+      - name: Upload deferred shows (BRO-4859)
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: gather-deferred-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.batch_id }}
+          path: ${{ runner.temp }}/deferred-shows.txt
+          retention-days: 1
+          if-no-files-found: ignore
+          overwrite: true
+
+      - name: Notify on gather failure
+        # BRO-3707: a hang hitting the job's own timeout-minutes (75) reports
+        # conclusion "cancelled", not "failure" — a bare failure() here would
+        # silently drop this critical alert.
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Gather Reviews Failed (gather job)'
+          # BRO-4603: warning — never emailed (no email input) and not on the
+          # owner's page-worthy list (scripts/lib/page-worthy-alerts.js).
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+  # BRO-4146: fold every matrix shard's SERP cache into one entry saved AFTER all
+  # shards, so the next run's prefix restore gets all of them instead of only the
+  # last shard to finish. Also drops entries past the 24h TTL (ttl-cache.js never
+  # deletes them, so the dir only grew). Best-effort: never colours the run.
+  merge-serp-cache:
+    needs: [gather-reviews]
+    if: always() && needs.gather-reviews.result != 'skipped'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    continue-on-error: true
+    steps:
+      # hygiene-cache-runid-ok: ~2-3 MB payload. The run-id (+ attempt) in the key
+      # is load-bearing: an exact key hit skips the save, and this entry must be
+      # the newest so the next run's `restore-keys: bd-serp-cache-` prefix picks it.
+      - name: Restore newest SERP cache (fallback for a shard whose upload failed)
+        uses: actions/cache/restore@v5
+        with:
+          path: /tmp/bd-serp-cache
+          key: bd-serp-cache-${{ github.run_id }}-merged-${{ github.run_attempt }}
+          restore-keys: |
+            bd-serp-cache-
+      - name: Download shard caches
+        uses: actions/download-artifact@v5
+        with:
+          pattern: serp-cache-${{ github.run_id }}-${{ github.run_attempt }}-*
+          path: /tmp/serp-shards
+      - name: Merge shards and drop expired entries
+        run: |
+          mkdir -p /tmp/bd-serp-cache
+          shopt -s nullglob
+          n=0
+          # find, not a */ glob: download-artifact puts a lone matching artifact
+          # straight into the path with no per-artifact subdir ("Merged 0" on
+          # 2026-10-02 with one shard).
+          for t in $(find /tmp/serp-shards -name serp-cache.tar 2>/dev/null); do
+            d=$(mktemp -d)
+            tar -C "$d" -xf "$t"
+            if [ -d "$d/bd-serp-cache" ]; then
+              files=("$d"/bd-serp-cache/*)
+              [ ${#files[@]} -gt 0 ] && cp -p -u "${files[@]}" /tmp/bd-serp-cache/
+            fi
+            n=$((n+1))
+          done
+          expired=$(find /tmp/bd-serp-cache -type f -mmin +1440 | wc -l)
+          find /tmp/bd-serp-cache -type f -mmin +1440 -delete
+          echo "Merged $n shard cache(s); dropped $expired expired; $(find /tmp/bd-serp-cache -type f | wc -l) entries kept"
+          for r in $(find /tmp/serp-shards -name 'serp-report-*.json' 2>/dev/null); do
+            echo "== $(basename "$r")"; head -c 6000 "$r"; echo
+          done
+      # hygiene-cache-runid-ok: see the restore step above; same key, same reason.
+      - name: Save merged SERP cache
+        uses: actions/cache/save@v5
+        with:
+          path: /tmp/bd-serp-cache
+          key: bd-serp-cache-${{ github.run_id }}-merged-${{ github.run_attempt }}
+
+  # Step 3: Scrape supplementary aggregators (Playbill Verdict + NYC Theatre)
+  scrape-aggregators:
+    needs: [prepare, gather-reviews]
+    if: ${{ !cancelled() && needs.prepare.result == 'success' }}  # BRO-4146: one shard timing out (needs.result 'cancelled') must not skip rebuilding the other shards' results; a run-level cancel still skips
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    # 50 not 30 (BRO-4146): a 22-show historical backfill (2026-10-08) spent
+    # 17 min in NYC Theatre roundups and was killed during the archive push,
+    # losing that run's archive HTML and spend-ledger commit. The roundup step
+    # now has its own --time-budget-min; this is margin for the pushes.
+    timeout-minutes: 50
+
+    steps:
+      - name: Checkout (latest, after gather pushes)
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 50-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Opening-night lease sync (BRO-4786)
+        uses: ./.github/actions/opening-night-lease-sync
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Scrape Playbill Verdict for target shows
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: node scripts/scrape-playbill-verdict.js --shows=${{ inputs.shows }}
+
+      - name: Scrape NYC Theatre roundups for target shows
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: node scripts/scrape-nyc-theatre-roundups.js --shows=${{ inputs.shows }} --time-budget-min=20
+
+      - name: Scrape BWW Review Roundups for target shows
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: node scripts/scrape-bww-reviews.js --type=roundup --shows=${{ inputs.shows }}
+
+      - name: Scrape LBO roundups for West End target shows
+        continue-on-error: true
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: |
+          # Only run if any target shows are West End
+          WE_SHOWS=$(node -e "
+            const shows = require('./data/shows.json').shows;
+            const targets = '${{ inputs.shows }}'.split(',');
+            const we = targets.filter(id => {
+              const s = shows.find(x => x.id === id);
+              return s && s.category === 'west-end';
+            });
+            console.log(we.join(','));
+          ")
+          if [ -n "$WE_SHOWS" ]; then
+            echo "Running LBO roundups for WE shows: $WE_SHOWS"
+            node scripts/scrape-london-box-office-roundups.js --shows=$WE_SHOWS
+          else
+            echo "No WE shows in target list — skipping LBO"
+          fi
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Gather Review Data — Commit and push aggregator data"
+      - name: Push aggregator-archive to private repo
+        if: always()
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Add aggregator data (PV + NYC Theatre + BWW + LBO Roundups) for ${{ inputs.shows }}"
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: gather-reviews-scrape-aggregators
+
+  # Step 4: Rebuild reviews.json after all batches and aggregators complete
+  rebuild:
+    needs: [prepare, gather-reviews, scrape-aggregators]
+    if: ${{ !cancelled() && needs.prepare.result == 'success' }}  # BRO-4146: one shard timing out (needs.result 'cancelled') must not skip rebuilding the other shards' results; a run-level cancel still skips
+    runs-on: ubuntu-latest
+    concurrency:
+      group: rebuild-reviews
+      cancel-in-progress: false
+    steps:
+      - name: Checkout (latest, after all batches pushed)
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Opening-night lease sync (BRO-4786)
+        uses: ./.github/actions/opening-night-lease-sync
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Rebuild reviews.json
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/rebuild-all-reviews.js
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Gather Review Data — Commit rebuilt reviews.json"
+      # BRO-2736: this step lacked the PUSH_DEADLINE_SEC override its sibling
+      # rebuild-reviews.yml's equivalent "Commit and push changes" step
+      # already carries (card #1891/#1842 class). During a high-concurrency
+      # opening-night burst (many shows' Gather Review Data runs racing to
+      # push the same core-data repo, e.g. electra-persona-west-end-2026's
+      # 27 failures 2026-09-01→04, all "Commit rebuilt reviews.json") the
+      # shared 240s default only fits ~1-2 real fetch→rebase-conflict→merge
+      # cycles (task #458) before giving up — confirmed in those runs' logs
+      # (e.g. run 33910221902: 2 attempts, "overall deadline 240s exceeded").
+      # The `git add data/audit/` above routinely picks up per-show state
+      # files this repo has never registered for the Git Data API fallback
+      # (e.g. data/audit/poller-backoff/{show-id}.json, written by
+      # opening-night-poller.js for every show it's tracking) — any single
+      # unregistered data/audit/ path disqualifies the WHOLE commit from that
+      # fast path (scripts/lib/api-fallback-disqualifier-core.js's third
+      # condition), forcing the slow local fetch+rebase+push loop, which is
+      # exactly what needs more real cycles during an opening-night burst
+      # where several shows' pollers are all writing that directory at once.
+      # (NOT a data/reviews.json NEVER_FALLBACK case, despite this step's
+      # own name/commit message — verified against the actual failing runs'
+      # `git add`/commit content, which never touches data/reviews.json.)
+      # 900s/25 retries are task #1842's own live-verified data-health-
+      # check.yml numbers (~725s of backoff under a 900s deadline, ~175s
+      # margin), reused directly per that task's guidance. This job has no
+      # explicit timeout-minutes (360m GitHub default), so unlike rebuild-
+      # reviews.yml's job-timeout bump, there is already ample headroom for
+      # the extra worst-case runtime.
+      - name: Commit rebuilt reviews.json
+        env:
+          # Task #784: gather-reviews.js writes attribution rows to the shared
+          # data/audit/scraper-spend-ledger.jsonl via provider-telemetry.js.
+          # Other concurrent workflows (opening-night-poller, collect-review-texts
+          # matrix, sweep-we-aggregators, scrape-thestage-roundups) append to the
+          # same ledger — `git rebase -X theirs` resolves a conflicting hunk in
+          # favour of the replayed local commit WITHOUT reporting a conflict
+          # (#420/#698 class), so a losing run's rows can be silently dropped
+          # instead of unioned. Opts into the same post-rebase reconcile pass
+          # #698 built for bww-roundup-miss-ledger.jsonl.
+          PUSH_RECONCILE_MERGED_JSON: '1'
+          PUSH_DEADLINE_SEC: '900'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add data/audit/
+          if git diff --staged --quiet; then
+            echo "No changes to reviews.json"
+          else
+            git commit -m "data: Auto-rebuild reviews.json after gather (${{ inputs.shows }})"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
+
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from gather-reviews'
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Gather Reviews Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+      - name: Trigger deploy (data changed)
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Deploy dedup: skip only if a deploy was triggered AFTER this run started
+          OUR_RUN_START=$(gh run view ${{ github.run_id }} --json createdAt -q '.createdAt' 2>/dev/null || echo "")
+          RECENT=$(gh run list --workflow=vercel-deploy.yml --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
+
+          if [ -n "$RECENT" ] && [ -n "$OUR_RUN_START" ]; then
+            RECENT_TS=$(date -d "$RECENT" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$RECENT" +%s 2>/dev/null || echo "0")
+            OUR_TS=$(date -d "$OUR_RUN_START" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$OUR_RUN_START" +%s 2>/dev/null || echo "0")
+            NOW_TS=$(date +%s)
+            DIFF=$((NOW_TS - RECENT_TS))
+
+            if [ "$RECENT_TS" -gt "$OUR_TS" ] && [ "$DIFF" -lt 900 ]; then
+              echo "Skipping deploy — one was already triggered after this run started (${DIFF}s ago)"
+              exit 0
+            fi
+          fi
+
+          echo "Triggering deploy..."
+          gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — will deploy on next schedule"
+  # Per-run follow-ups (BRO-4859). These used to sit in the rebuild job, whose
+  # job-level `rebuild-reviews` group (shared with rebuild-reviews.yml and
+  # scoring-audit.yml) holds one pending job: an evicted rebuild is harmless (the
+  # surviving rebuild rebuilds everything from main) but it took this run's
+  # collection and scoring triggers with it. They read only data/review-texts,
+  # which the gather and aggregator jobs have already pushed.
+  follow-up:
+    needs: [prepare, gather-reviews, scrape-aggregators]
+    if: ${{ !cancelled() && needs.prepare.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Opening-night lease sync (BRO-4786)
+        uses: ./.github/actions/opening-night-lease-sync
+
+      - name: Auto-trigger text collection if needed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Count review stubs needing fullText
+          NEEDS_COLLECTION=$(node -e '
+            const fs = require("fs"), path = require("path");
+            const base = "data/review-texts";
+            let n = 0;
+            const dirs = fs.readdirSync(base).filter(d => {
+              try { return fs.statSync(path.join(base, d)).isDirectory(); } catch { return false; }
+            });
+            dirs.forEach(d => {
+              fs.readdirSync(path.join(base, d)).filter(f => f.endsWith(".json") && f !== "failed-fetches.json").forEach(f => {
+                try {
+                  const r = JSON.parse(fs.readFileSync(path.join(base, d, f), "utf8"));
+                  if (r.wrongProduction || r.wrongShow || r.wrongAttribution) return;
+                  if (r.url && (!r.fullText || r.fullText.length < 50)) n++;
+                } catch {}
+              });
+            });
+            console.log(n);
+          ')
+
+          echo "Reviews needing text collection: $NEEDS_COLLECTION"
+
+          # For targeted show runs, always trigger collection (even 1 review)
+          # For broad runs, use higher threshold to avoid noise
+          SHOW_INPUT="${{ inputs.shows }}"
+          if [ -n "$SHOW_INPUT" ]; then
+            THRESHOLD=1
+          else
+            THRESHOLD=20
+          fi
+          if [ "$NEEDS_COLLECTION" -lt "$THRESHOLD" ]; then
+            echo "Below threshold ($THRESHOLD). Skipping auto-trigger."
+            exit 0
+          fi
+
+          # Jitter (#312): when several single-show gather-reviews.yml runs are
+          # dispatched within seconds of each other (observed 2026-07-20/21:
+          # 12-13 near-simultaneous dispatches fanning out into that many
+          # independent Collect Review Texts runs, each burning its own
+          # Browserbase allowance blind to the others), this check-then-act
+          # guard races — every run reads RUNNING=0 before any of them start.
+          # A random pre-check delay spreads dispatches out so later runs in a
+          # burst actually observe the earlier ones as RUNNING/QUEUED. Doesn't
+          # fully eliminate the race (that's fixed at the cost-cap layer in
+          # collect-review-texts.js) but sharply cuts fan-out frequency.
+          sleep $((RANDOM % 20 + 1))
+
+          RUNNING=$(gh run list --workflow=collect-review-texts.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          QUEUED=$(gh run list --workflow=collect-review-texts.yml --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          WAITING=$(gh run list --workflow=collect-review-texts.yml --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          ACTIVE=$((RUNNING + QUEUED + WAITING))
+          if [ "$ACTIVE" -gt 0 ]; then
+            echo "Text collection already active ($RUNNING running, $QUEUED queued). Skipping."
+            exit 0
+          fi
+
+          # Target the specific gathered shows first for fast turnaround
+          SHOWS="${{ inputs.shows }}"
+          echo "Triggering targeted text collection for shows: $SHOWS"
+          gh workflow run collect-review-texts.yml \
+            -f show_filter="$SHOWS" \
+            -f max_reviews=100 \
+            -f browserbase_enabled=true \
+            -f retry_failed=true \
+            -f archive_first=true \
+            -f chain=false \
+            -f opening_night=${{ inputs.opening_night && 'true' || 'false' }}
+
+          echo "Text collection auto-triggered successfully."
+
+      - name: Auto-trigger LLM scoring if needed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Count unscored reviews for the gathered shows
+          SHOWS="${{ inputs.shows }}"
+          UNSCORED=$(node -e '
+            const fs = require("fs"), path = require("path");
+            const base = "data/review-texts";
+            const shows = process.argv[1] ? process.argv[1].split(",") : [];
+            let n = 0;
+            const dirs = shows.length > 0 ? shows : fs.readdirSync(base).filter(d => {
+              try { return fs.statSync(path.join(base, d)).isDirectory(); } catch { return false; }
+            });
+            dirs.forEach(d => {
+              const showDir = path.join(base, d);
+              if (!fs.existsSync(showDir)) return;
+              fs.readdirSync(showDir).filter(f => f.endsWith(".json") && f !== "failed-fetches.json").forEach(f => {
+                try {
+                  const r = JSON.parse(fs.readFileSync(path.join(showDir, f), "utf8"));
+                  if (r.wrongProduction || r.wrongShow || r.wrongAttribution) return;
+                  if (r.duplicateOf || r.rejectionReason || r.isRoundupArticle) return;
+                  if (r.contentTier === "invalid") return;
+                  const hasText = r.fullText && r.fullText.length > 100;
+                  const hasExcerpt = r.bwwExcerpt || r.dtliExcerpt || r.showScoreExcerpt || r.pvExcerpt || r.nycExcerpt || (r.excerpt && r.excerpt.length > 50);
+                  if (!hasText && !hasExcerpt) return;
+                  const needsScore = !r.assignedScore && !r.llmScore && !r.humanReviewScore;
+                  if (needsScore) n++;
+                } catch {}
+              });
+            });
+            console.log(n);
+          ' "$SHOWS")
+
+          echo "Unscored reviews for gathered shows: $UNSCORED"
+
+          if [ "$UNSCORED" -lt 1 ]; then
+            echo "No unscored reviews. Skipping scoring trigger."
+            exit 0
+          fi
+
+          RUNNING=$(gh run list --workflow=llm-ensemble-score.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          QUEUED=$(gh run list --workflow=llm-ensemble-score.yml --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          WAITING=$(gh run list --workflow=llm-ensemble-score.yml --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          ACTIVE=$((RUNNING + QUEUED + WAITING))
+          if [ "$ACTIVE" -gt 0 ]; then
+            echo "LLM scoring already active ($RUNNING running, $QUEUED queued). Skipping."
+            exit 0
+          fi
+
+          LIMIT=$UNSCORED
+          if [ "$LIMIT" -gt 400 ]; then LIMIT=400; fi
+
+          echo "Triggering LLM scoring for $UNSCORED reviews (limit=$LIMIT)..."
+          gh workflow run llm-ensemble-score.yml \
+            -f limit=$LIMIT \
+            -f run_calibration=false
+
+          echo "LLM scoring auto-triggered successfully."
+
+      # BRO-4859: gather-reviews.js stops starting shows once its time budget is
+      # spent; the shows it never reached were only logged and then dropped (run
+      # 37788158212: 24 of 48). Each shard uploads them; dispatch one new run
+      # for all of them with this run's settings. A run that deferred every
+      # show it was given is not re-dispatched (it would loop): it alerts.
+      - name: Download deferred show lists (BRO-4859)
+        if: ${{ !cancelled() }}
+        uses: actions/download-artifact@v5
+        with:
+          # This attempt's lists only. This step runs in every attempt that is not
+          # cancelled, so earlier attempts already re-dispatched their own lists;
+          # reading them again after "Re-run failed jobs" sent the same shows twice.
+          pattern: gather-deferred-${{ github.run_id }}-${{ github.run_attempt }}-*
+          path: ${{ runner.temp }}/gather-deferred
+      - name: Re-dispatch deferred shows (BRO-4859)
+        if: ${{ !cancelled() }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DEFERRED_DIR: ${{ runner.temp }}/gather-deferred
+          RUN_SHOWS: ${{ inputs.shows }}
+          IN_PARALLEL_JOBS: ${{ inputs.parallel_jobs }}
+          IN_MAX_TIER: ${{ inputs.max_tier }}
+          IN_AGG_ONLY: ${{ inputs.aggregators_only }}
+          IN_VALIDATE_URLS: ${{ inputs.validate_urls }}
+          IN_NO_SB_SERP: ${{ inputs.no_sb_serp }}
+          IN_OPENING_NIGHT: ${{ inputs.opening_night }}
+          IN_SPEND_PURPOSE: ${{ inputs.spend_purpose }}
+          REF: ${{ github.ref_name }}
+        run: |
+          SHOWS=$(node -e '
+            const fs = require("fs"), path = require("path");
+            const { collectDeferredShows, redispatchPlan } = require("./scripts/lib/gather-deferred");
+            const texts = [];
+            const walk = (d) => { try { for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+              const p = path.join(d, e.name);
+              if (e.isDirectory()) walk(p); else if (e.name === "deferred-shows.txt") texts.push(fs.readFileSync(p, "utf8"));
+            } } catch {} };
+            walk(process.env.DEFERRED_DIR);
+            const plan = redispatchPlan(collectDeferredShows(texts), process.env.RUN_SHOWS);
+            // Fail the step so Notify on failure alerts: these shows still need a gather.
+            if (plan.stalled) { console.error("::error::every show in this run was deferred (no progress); not re-dispatching: " + process.env.RUN_SHOWS); process.exitCode = 3; }
+            console.log(plan.shows.join(","));
+          ')
+          if [ -z "$SHOWS" ]; then echo "No deferred shows"; exit 0; fi
+          echo "::notice::Re-dispatching $(echo "$SHOWS" | tr ',' '\n' | wc -l) deferred show(s): $SHOWS"
+          gh workflow run gather-reviews.yml --ref "$REF" \
+            -f shows="$SHOWS" \
+            -f parallel_jobs="$IN_PARALLEL_JOBS" \
+            -f max_tier="$IN_MAX_TIER" \
+            -f aggregators_only="$IN_AGG_ONLY" \
+            -f validate_urls="$IN_VALIDATE_URLS" \
+            -f no_sb_serp="$IN_NO_SB_SERP" \
+            -f opening_night="$IN_OPENING_NIGHT" \
+            -f spend_purpose="$IN_SPEND_PURPOSE"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Gather Reviews follow-up triggers failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+  # Step 4: Update related issues
+  update-issues:
+    needs: [gather-reviews]
+    if: always() && needs.gather-reviews.result != 'skipped'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update issue (if exists)
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Find and comment on the related new-show issue
+            const shows = '${{ inputs.shows }}'.split(',');
+
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: 'new-show,needs-review-data',
+              state: 'open',
+            });
+
+            for (const issue of issues.data) {
+              // Check if this issue mentions any of our shows
+              const matchesShow = shows.some(slug =>
+                issue.body?.includes(slug)
+              );
+
+              if (matchesShow) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  body: `🤖 **Review Data Gathering Attempted**\n\nWorkflow run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\n\nShows processed: ${shows.join(', ')}`
+                });
+              }
+            }

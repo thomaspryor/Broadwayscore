@@ -1,0 +1,1001 @@
+# Rebuild reviews.json from review-texts source files
+# This is the PRIMARY sync mechanism - runs daily and can be triggered manually
+name: Rebuild Reviews Data
+
+# Only one rebuild at a time — prevents race conditions where concurrent rebuilds
+# overwrite each other (e.g., scoring shards + collection triggering simultaneously).
+# With cancel-in-progress: false, a second trigger queues rather than cancelling.
+# GitHub keeps at most 1 pending run, so rapid-fire triggers naturally debounce.
+concurrency:
+  group: rebuild-reviews
+  cancel-in-progress: false
+
+on:
+  schedule:
+    # Daily at 4 AM UTC (11 PM EST) - safety net if workflow_run misses
+    - cron: '0 4 * * *'
+  workflow_run:
+    workflows: ["Collect Review Texts"]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for manual rebuild (for commit message)'
+        required: false
+        default: 'Manual sync'
+        type: string
+      force_write:
+        description: 'Override regression guard (true/false)'
+        required: false
+        default: 'false'
+        type: string
+      skip_enrichment:
+        description: 'Skip slow enrichment steps (backfill critics, classify wrong-production, etc.) — use for corrections'
+        required: false
+        default: 'false'
+        type: string
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  rebuild:
+    name: Rebuild reviews.json
+    # For workflow_run triggers, only run if collection succeeded
+    if: >-
+      github.event_name != 'workflow_run'
+      || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    # 30->40 (card #1891 follow-up, 2026-08-26, adversarial ship-check
+    # finding): "Commit and push changes" below can now take up to 900s
+    # (15min) vs the OLD 240s (4min) worst case — an added ~11min of
+    # possible step duration. Stacked against this job's other explicit
+    # step budget ("Extract pull quotes for new reviews", timeout-minutes:
+    # 12 below) that alone is 12+15=27 of the OLD 30min ceiling, leaving
+    # near-zero room for checkout/rebuild/push-core-data/deploy-trigger and
+    # every other unbounded step in this ~35-step job. Raised the same way
+    # data-health-check.yml's job timeout was (task #1842): give real
+    # headroom past the new internal push-step deadline, not just past the
+    # old one.
+    timeout-minutes: 40
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Opening-night lease sync (BRO-4786)
+        uses: ./.github/actions/opening-night-lease-sync
+
+      # Stale-checkout race guard (P1): a review-texts push landing between
+      # THIS checkout and the "Rebuild reviews.json" step below is invisible
+      # to that step — it exits 0 with a stale checkout and no warning
+      # (rebuild-all-reviews.js has no reason to fail; the files simply
+      # aren't there yet). Recording the checkout-time SHA here lets the
+      # rebuild step detect drift right before it runs. See
+      # scripts/lib/rebuild-staleness-guard.js + scripts/check-rebuild-staleness.js.
+      - name: Record review-texts checkout SHA
+        id: review_texts_checkout
+        run: echo "sha=$(git -C data/review-texts rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Get current review count
+        id: before
+        run: |
+          if [ -f data/reviews.json ]; then
+            COUNT=$(node -e "console.log(require('./data/reviews.json').reviews.length)")
+            echo "count=$COUNT" >> $GITHUB_OUTPUT
+          else
+            echo "count=0" >> $GITHUB_OUTPUT
+          fi
+
+      # NOTE: Pull-quote extraction (`scripts/extract-pull-quotes.js`) was previously HERE
+      # (pre step-19 rebuild). It is an LLM enrichment step (~0.3 reviews/sec via Gemini)
+      # whose output is display-only metadata (`llmPullQuote`), NOT a scoring input. When
+      # the per-step or job-level deadline fired, the cancellation killed the rebuild
+      # before step 19 could run, so reviews.json went stale for hours. Moved AFTER step 19
+      # (Rebuild reviews.json) so cancellation cannot block the canonical rebuild output.
+      # Notion: 351637c5-416f-8177. Stuart King email 2026-04-27 surfaced the impact.
+
+      # ---- Pre-rebuild utility steps ----
+      # The 4 LLM/scraper enrichment steps that previously lived here
+      # (classify-non-reviews, classify-wrong-production, classify-wrong-show,
+      # backfill-unknown-critics --critics-only) MOVED OUT to enrich-reviews.yml.
+      # They were running for 20-40min combined and made the rebuild job a
+      # cancellation magnet — when the job got cancelled, step 18 Rebuild
+      # reviews.json was skipped and reviews.json went stale. See Notion
+      # 351637c5-416f-8177 for the architectural rationale.
+      #
+      # The fast utility steps below STAY pre-rebuild because:
+      # - flag-wrong-production-by-date: deterministic flag-setter, ~5s
+      # - audit-pre2005-reviews: writes data/audit/wrong-production-flags.json
+      #   which classify-wrong-production.js (now in enrich-reviews.yml) reads.
+      #   Keeping it here keeps the audit fresh for the enrichment workflow.
+      # - backfill-unknown-outlets: local-only, no network, ~5s
+      # - cleanup-phantom-outlets, strip-stale-single-model-scores,
+      #   detect-syndicated-duplicates, apply-audit-flags,
+      #   heal-orphaned-duplicate-pointers: utility steps, each <30s, shape
+      #   data the rebuild reads.
+
+      - name: Flag wrong-production reviews by date window
+        if: inputs.skip_enrichment != 'true'
+        run: node scripts/flag-wrong-production-by-date.js --apply 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+
+      - name: Audit pre-2005 wrong-production reviews
+        if: inputs.skip_enrichment != 'true'
+        run: node scripts/audit-pre2005-reviews.js 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+
+      - name: Backfill unknown outlets (local, free)
+        if: inputs.skip_enrichment != 'true'
+        run: node scripts/backfill-unknown-critics.js --outlets-only 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+
+      - name: Cleanup phantom outlet duplicates
+        if: inputs.skip_enrichment != 'true'
+        run: node scripts/cleanup-phantom-outlets.js --apply 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+
+      - name: Strip stale single-model scores from flagged reviews
+        if: inputs.skip_enrichment != 'true'
+        run: node scripts/strip-stale-single-model-scores.js --apply 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+
+      - name: Detect syndicated duplicates and author mismatches
+        if: inputs.skip_enrichment != 'true'
+        run: node scripts/detect-syndicated-duplicates.js 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+
+      - name: Apply audit flags to review-text files
+        if: inputs.skip_enrichment != 'true'
+        run: node scripts/apply-audit-flags.js
+        continue-on-error: true
+
+      # Sweep dormant stale duplicateOf flags. The review-write-guard self-heal
+      # only fires when a file is rewritten; a file whose duplicateOf sibling was
+      # swept/renamed but which is never re-gathered (closed shows, quiet WE runs)
+      # keeps a stale flag that fails the Data Validation gate (test.yml) on EVERY
+      # triggered run — the root cause of "main red every couple hours". Running
+      # --fix here clears them on each rebuild; push-review-texts ships the result.
+      - name: Sweep stale duplicateOf flags
+        if: inputs.skip_enrichment != 'true'
+        run: node scripts/audit-duplicate-of-url-mismatch.js --fix 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+
+      # Self-heal duplicateOf pointers whose TARGET was flagged invalid
+      # (wrongShow/wrongProduction/nonReviewFlag/rejectedBy) by a downstream
+      # classifier AFTER the pointer was set (BRO-3250). Different from the
+      # sweep above: the URL here still matches — the pointer was correct
+      # when set — but nothing re-evaluates it once the target is
+      # reclassified, so a genuinely valid review stays silently excluded
+      # (moulin-rouge-2019 WSJ Terry Teachout, confirmed missing).
+      - name: Sweep orphaned duplicateOf pointers (stale target invalidation)
+        if: inputs.skip_enrichment != 'true'
+        run: node scripts/heal-orphaned-duplicate-pointers.js --fix 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+
+      # BRO-2409: the TWO steps immediately above are independent self-heals
+      # that can each clear one half of an A<->B same-URL duplicateOf/
+      # duplicateTextOf pair with no knowledge of the other — leaving a
+      # cluster with ZERO duplicate pointer on either side, invisible to
+      # every OTHER dedup mechanism (they all require an existing pointer to
+      # find a pair), so both members silently double-score. Running this
+      # sweep immediately after both closes the race at its source, in the
+      # same run that creates it, rather than waiting for a separate cron to
+      # notice hours later. Confirmed live on 22 real same-URL clusters.
+      - name: Sweep fully-unsuppressed same-URL clusters (post cycle-clear)
+        if: inputs.skip_enrichment != 'true'
+        run: node scripts/fix-unflagged-same-url-clusters.js --fix 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+
+      # Coerce URL-shaped critic names (scraper grabbed the byline link href) to
+      # a clean personal name or Unknown. Save-time guard lives in
+      # review-file-writer.js; this sweeps files that predate it / bypassed it.
+      - name: Sweep URL-shaped critic names
+        if: inputs.skip_enrichment != 'true'
+        run: node scripts/gc-url-critic-names.js --fix
+        continue-on-error: true
+
+      # Decode undecoded HTML entities + drop JSON-LD pull-quotes in display
+      # fields. Save-time guard lives in review-file-writer.js; this sweeps files
+      # that predate it / bypassed it. Shares predicates via text-cleaning.js.
+      - name: Sweep display-field artifacts (html-entity + json-ld)
+        if: inputs.skip_enrichment != 'true'
+        run: node scripts/gc-display-field-artifacts.js --fix
+        continue-on-error: true
+
+      # National tours (BRO-4262): intake files tour-stop reviews on the tour
+      # directly; this mops up any that still land on the Broadway show. It
+      # holds (moves nothing, ::warning::) past 20 moves or 10% of a Broadway
+      # folder. push-review-texts ships the moves. Kill switch: repo variable
+      # TOUR_SWEEP=off (or =report to only log).
+      - name: Sweep national-tour reviews to their tour entries
+        # lint-allow-swallow: best-effort mop-up; a failure must not block the rebuild, holds print ::warning:: and land in data/audit/tour-sweep.json; digest surfacing is BRO-4262 follow-up
+        if: inputs.skip_enrichment != 'true'
+        env:
+          TOUR_SWEEP: ${{ vars.TOUR_SWEEP }}
+        run: node scripts/sweep-tour-reviews.js --auto 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+
+      - name: Rebuild reviews.json
+        id: rebuild
+        env:
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          FORCE_FLAG=""
+          if [ "${{ inputs.force_write || 'false' }}" = "true" ]; then
+            FORCE_FLAG="--force-write"
+            echo "⚠️  Force-write enabled — regression guard overridden"
+          fi
+
+          # Stale-checkout race guard, part 2: the pre-rebuild utility steps above
+          # took real wall-clock time since the checkout — re-check review-texts'
+          # upstream tip right before rebuilding. A `git fetch` + `rev-parse` is a
+          # few seconds; this runs on EVERY invocation but only pays for a re-sync
+          # when drift is actually detected (unchanged SHA = zero added cost).
+          #
+          # Explicit destination refspec (+main:refs/remotes/origin/main), not a
+          # bare `git fetch origin main` — the checkout-review-texts composite
+          # action's shallow checkout may not leave a fetch refspec configured
+          # that a later bare fetch would resolve into refs/remotes/origin/main,
+          # in which case the ref update would silently land only in FETCH_HEAD
+          # and the drift check below would never fire.
+          CHECKOUT_SHA="${{ steps.review_texts_checkout.outputs.sha }}"
+          git -C data/review-texts fetch origin +main:refs/remotes/origin/main --depth=1 --quiet
+          CURRENT_SHA=$(git -C data/review-texts rev-parse refs/remotes/origin/main)
+          echo "" > /tmp/stale-checkout-shows.txt
+          if node -e "
+            const { shouldRetryForStaleCheckout } = require('./scripts/lib/rebuild-staleness-guard.js');
+            process.exit(shouldRetryForStaleCheckout(process.argv[1], process.argv[2]) ? 0 : 1);
+          " "$CHECKOUT_SHA" "$CURRENT_SHA"; then
+            echo "⚠️  review-texts advanced during this job ($CHECKOUT_SHA -> $CURRENT_SHA) — syncing drifted files before rebuild"
+            # Record which SHOWS drifted (for the post-rebuild verify step below) —
+            # includes deletions, since a show can still have other scoreable
+            # content worth verifying even if one file was removed upstream.
+            git -C data/review-texts diff --name-only "$CHECKOUT_SHA" "$CURRENT_SHA" \
+              | cut -d/ -f1 | sort -u > /tmp/stale-checkout-shows.txt
+            # Then update ONLY files that still EXIST at the new tip (--diff-filter=d
+            # excludes deletions — `git checkout <sha> -- <deleted-path>` errors and
+            # would abort this whole step on an ordinary review-texts deletion, not
+            # just the staleness race this guard targets) from the fresh tip — a
+            # targeted checkout instead of a full rm -rf + re-clone, so the
+            # uncommitted local edits the pre-rebuild utility steps above just made
+            # to OTHER files are not discarded. NUL-delimited (`-z` / `xargs -0`) so
+            # no filename can be mis-split by whitespace or shell glob chars.
+            git -C data/review-texts diff -z --name-only --diff-filter=d "$CHECKOUT_SHA" "$CURRENT_SHA" \
+              > /tmp/stale-checkout-files.txt
+            if [ -s /tmp/stale-checkout-files.txt ]; then
+              xargs -0 git -C data/review-texts checkout "$CURRENT_SHA" -- < /tmp/stale-checkout-files.txt
+            fi
+          fi
+
+          # First attempt
+          if node scripts/rebuild-all-reviews.js $FORCE_FLAG; then
+            echo "Rebuild succeeded on first attempt"
+            exit 0
+          fi
+
+          echo ""
+          echo "⚠️  Rebuild failed (likely stale checkout) — re-cloning review-texts and retrying..."
+          echo ""
+
+          # Re-clone review-texts fresh (fixes stale/partial checkout from concurrent pushes)
+          rm -rf data/review-texts
+          git clone --depth 1 "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" data/review-texts
+
+          # Retry rebuild
+          node scripts/rebuild-all-reviews.js $FORCE_FLAG
+
+      # Stale-checkout race guard, part 3: even with the pre-emptive sync above,
+      # scope this to a bounded assertion rather than trusting the sync alone —
+      # verify every show that drifted during this job actually landed in
+      # reviews.json. NOT continue-on-error: this is the "fail the job loudly"
+      # backstop for the class of bug this guard exists for (see
+      # scripts/check-rebuild-staleness.js header for what it checks and why).
+      # BRO-545: fails loud on the first stale-checkout race, same as before.
+      # After 2 consecutive failures it auto-recovers (exits 0, job stays
+      # green) and routes an escalating owner-alert-router 'human' alert
+      # instead — see scripts/lib/guard-escalation.js. Needs RESEND/OWNER_EMAIL
+      # so that alert can actually deliver (not just log-and-skip locally).
+      # `force_write=true` (the same override the alert message quotes) also
+      # bypasses this guard immediately via --force — without it, the
+      # "override command" in the escalation alert would just be a plain
+      # re-run, not an actual way to unblock before the streak hits 2.
+      # BRO-3127: this step (and everything through "Get new review count"
+      # below) is gated on `always() && steps.rebuild.outcome == 'success' &&
+      # steps.staleness.outputs.safe_to_publish == 'true'` — the anchor
+      # pattern BRO-2906 established for the identical bug class (test.yml's
+      # lint-workflows job, id: deps +
+      # tests/unit/workflow-audit-steps-always.test.mjs, extended by
+      # tests/unit/rebuild-publish-fail-closed.test.mjs). Before this fix, a
+      # bare (no `if:`) step here meant this guard's failure skipped every
+      # subsequent step in this job, including "Regenerate mobile artifacts"
+      # — which writes public/data/shows/{id}.json, the file the live site
+      # reads — so ONE unrelated show's genuine drift blocked publishing for
+      # every other show in the run (rebuild-fast.yml run 34318929964,
+      # 2026-09-09, same underlying bug). The anchor means these steps still
+      # run after a genuine checkout/rebuild failure skips `rebuild` itself
+      # (steps.rebuild.outcome != 'success'), while no longer being at the
+      # mercy of every step in between remembering `if: always()` alone.
+      #
+      # safe_to_publish (ship-check/Codex adversarial finding, BRO-3127): only
+      # true when the guard exits 0, OR exits 1 with a populated
+      # missing-shows file (a SCOPED, known "show X is missing" detection —
+      # safe to publish everyone else and revert just that show below). An
+      # unexplained crash (can't read reviews.json, unhandled exception) sets
+      # it false instead, falling back to the pre-BRO-3127 block-everything
+      # behavior, since the actual scope of an unknown failure can't be
+      # bounded to one show.
+      - name: Verify no scoreable review vanished during checkout drift
+        id: staleness
+        if: always() && steps.rebuild.outcome == 'success'
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          FORCE_FLAG=""
+          if [ "${{ inputs.force_write || 'false' }}" = "true" ]; then
+            FORCE_FLAG="--force"
+          fi
+          set +e
+          node scripts/check-rebuild-staleness.js --shows-file=/tmp/stale-checkout-shows.txt $FORCE_FLAG
+          GUARD_EXIT=$?
+          set -e
+          if [ "$GUARD_EXIT" -eq 0 ]; then
+            echo "safe_to_publish=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          MISSING_FILE="${RUNNER_TEMP:-/tmp}/staleness-missing-shows.txt"
+          if [ -s "$MISSING_FILE" ]; then
+            echo "::error::check-rebuild-staleness.js flagged specific show(s) as missing (see log above) — downstream steps still publish every OTHER show; the flagged show's own public data reverts to last-known-good below."
+            echo "safe_to_publish=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::check-rebuild-staleness.js failed WITHOUT a scoped missing-shows list — an unexplained crash, not a normal single-show detection. Blocking downstream publish entirely (pre-BRO-3127 behavior) since the actual scope of the problem is unknown."
+            echo "safe_to_publish=false" >> "$GITHUB_OUTPUT"
+          fi
+          exit 1
+
+      # NOTE: do NOT overwrite /tmp/core-data-snapshot/ with rebuilt files. Since the
+      # 2026-07-12 push-core-data fix (2beb6617c58), the snapshot is the CHECKOUT-TIME
+      # baseline: push-core-data pushes exactly the data/ files that differ from it.
+      # Copying rebuilt files into the snapshot made them read as "untouched", so
+      # rebuilds silently stopped pushing reviews.json to the private repo unless a
+      # later enrichment step happened to re-modify it (2026-07-19 incident). The
+      # git-checkout-revert this step defended against is a no-op: reviews.json and
+      # audience-buzz.json are gitignored in this repo.
+
+      - name: Extract pull quotes for new reviews
+        # Moved AFTER Rebuild reviews.json + snapshot (Notion 351637c5-416f-8177).
+        # Display-only enrichment of llmPullQuote field — no scoring impact. If this
+        # step times out / cancels, reviews.json + the core-data snapshot are already
+        # in place and the next push step will publish them. Pull quotes drain over
+        # multiple runs at --limit=200/run; the prior 500/run was timing out at ~28min.
+        # BRO-3127: skip_enrichment check moved from `if:` into the run body so
+        # this step's `if:` stays the same fail-closed shape as every other
+        # step in this window (tests/unit/rebuild-publish-fail-closed.test.mjs
+        # only accepts `always() && steps.<id>.outcome == 'success'`, exactly).
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          if [ "${{ inputs.skip_enrichment }}" = "true" ]; then
+            echo "Skipping — skip_enrichment=true"
+            exit 0
+          fi
+          node scripts/extract-pull-quotes.js --limit=200
+        continue-on-error: true
+        timeout-minutes: 12
+
+      - name: Audit pull quotes for chrome / tag clouds / truncation
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
+        # Post-rebuild quality gate for the class the owner reported 2026-08-01
+        # (British Theatre Guide listing block shipped as the Tao of Glass pull
+        # quote). Re-runs every SHIPPED pullQuote through the hard guards in
+        # scripts/lib/pull-quote-guards.js, so a new outlet layout that defeats
+        # the in-pipeline guards surfaces here instead of on the live site.
+        #
+        # Advisory (continue-on-error) on purpose: a bad pull quote is a display
+        # defect, never a reason to block reviews.json from publishing.
+        #
+        # Deliberately writes NO file. An earlier version emitted a dated JSON
+        # into data/audit/, but that only reaches anyone if a later commit step
+        # happens to stage it — on a no-op rebuild it is written and thrown away,
+        # which is the write-only-signal anti-pattern this repo keeps hitting
+        # (#641/#689). The findings go to the job log AND the run summary, where
+        # they are read. Use `--json=` locally when you want the full report.
+        run: |
+          node scripts/audit-pull-quotes.js | tee /tmp/pull-quote-audit.txt
+          {
+            echo "### Pull-quote audit"
+            echo '```'
+            cat /tmp/pull-quote-audit.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+        continue-on-error: true
+
+      - name: Analyze review drops and route alert
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Owner-alert-router (#279): NEEDS_REVIEW/SUSPICIOUS verdicts now file
+          # an Action Queue card via scripts/lib/owner-alert-router.js instead
+          # of emailing directly (RESEND_API_KEY/OWNER_EMAIL no longer needed here).
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/analyze-rebuild-drops.js
+        continue-on-error: true
+
+      - name: Opening-night drop + completeness check
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
+        # Per-critic snapshot diff + per-show rebuild-regression alert path
+        # for shows in the ±7d opening-night window. Stricter threshold than
+        # analyze-rebuild-drops.js: any per-show drop fires here for opening
+        # shows. See scripts/check-opening-night-completeness.js + memory/feedback_admin_ingest_opening_night_2026-04-26.md (#A19/#A20).
+        env:
+          # discord-notify.js reads RESEND_API_KEY+OWNER_EMAIL for email delivery;
+          # DISCORD_WEBHOOK_ALERTS was never read (Discord removed) — alerts were log-only.
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node scripts/check-opening-night-completeness.js
+        continue-on-error: true
+
+      - name: Verify all eligible reviews scored (orphan-unscored guard)
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
+        # Lost Boys 2026-04-26 #8 defense: walks data/review-texts/ for every
+        # show in the ±7d opening-night window and asserts every includable
+        # review with substantial text/excerpt has assignedScore. Writes
+        # data/audit/orphan-unscored-{showId}.json marker files that
+        # opening-night-broadcast.yml reads as an early-exit gate. Dispatches
+        # llm-ensemble-score.yml (per-show) so the next rebuild has scores.
+        # Discord warning, 60-min cooldown per show. continue-on-error so a
+        # failure here never blocks the rebuild itself.
+        env:
+          # discord-notify.js reads RESEND_API_KEY+OWNER_EMAIL for email delivery;
+          # DISCORD_WEBHOOK_ALERTS was never read (Discord removed) — alerts were log-only.
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/verify-all-scored.js
+        continue-on-error: true
+
+      - name: Audit wrong-production reviews
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
+        run: node scripts/audit-wrong-production.js
+        continue-on-error: true
+
+      - name: Update critic registry
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
+        run: node scripts/audit-critic-outlets.js
+        continue-on-error: true
+
+      - name: Enrich cast from cast files
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
+        run: node scripts/enrich-cast-from-files.js
+        continue-on-error: true
+
+      # Regenerate BOTH mobile artifacts in lockstep via the shared wrapper. The
+      # committed mobile INDEX (public/data/mobile-shows.json) is git-tracked and
+      # served to the iOS app on SKIP_HEAVY_PREBUILD deploys; it was previously
+      # only refreshed by prebuild full-builds / hand commits, so it drifted from
+      # reviews.json and accumulated closed-no-score entries that reddened
+      # validate-mobile-shows.js. The wrapper guarantees detail+index never
+      # regenerate apart again.
+      # See cloud-memory/feedback_mobile_index_committed_artifact.md.
+      - name: Regenerate mobile artifacts (detail + index)
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
+        run: bash scripts/generate-mobile-artifacts.sh
+        continue-on-error: true
+
+      # BRO-3127: generate-mobile-show-details.js above does a full regenerate
+      # of EVERY show from the current (possibly incomplete) reviews.json —
+      # it has no concept of "this specific show is known-bad." Now that the
+      # steps in this window run even when the staleness guard fired, the
+      # GUARD-FLAGGED show's own public/data/shows/{id}.json would otherwise
+      # get rebuilt from the exact incomplete state the guard exists to catch
+      # — regressing already-published data for that one show, not just
+      # leaving it stale. check-rebuild-staleness.js writes the flagged show
+      # ids to $RUNNER_TEMP/staleness-missing-shows.txt whenever missing.length
+      # > 0; revert JUST those per-show files to last-committed HEAD so the
+      # flagged show keeps its last-known-good public data (still "folded" —
+      # not published wrong) while every other show's regenerated data below
+      # stages normally. Aggregate files (mobile-shows.json, stats-canon.json,
+      # stats-reviews.json) are intentionally NOT reverted here — they cover
+      # the whole corpus, and reverting them would also discard legitimate
+      # updates for every OTHER show in this run.
+      - name: Revert public data for shows flagged by staleness guard
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
+        run: |
+          FILE="${RUNNER_TEMP:-/tmp}/staleness-missing-shows.txt"
+          if [ -s "$FILE" ]; then
+            echo "Staleness guard flagged show(s) — reconciling their public/data/shows/*.json (BRO-3127):"
+            while IFS= read -r show_id; do
+              [ -z "$show_id" ] && continue
+              TARGET="public/data/shows/$show_id.json"
+              if git cat-file -e "HEAD:$TARGET" 2>/dev/null; then
+                git checkout HEAD -- "$TARGET" 2>/dev/null \
+                  && echo "  reverted to last-known-good: $show_id" \
+                  || echo "::warning::could not revert $TARGET for flagged show $show_id"
+              elif [ -f "$TARGET" ]; then
+                # ship-check/Codex adversarial finding: a BRAND-NEW show has no
+                # committed HEAD version to revert to — `git checkout HEAD --`
+                # would just fail on it and leave the freshly-regenerated,
+                # incomplete file in place to be staged and published as-is.
+                # Remove it instead; it publishes correctly once the drift
+                # resolves and this show is no longer flagged.
+                rm -f "$TARGET"
+                echo "  removed (newly-generated, no prior committed version to revert to): $show_id"
+              else
+                echo "  skip (no public JSON exists at all): $show_id"
+              fi
+            done < "$FILE"
+          fi
+
+      # Coverage Verdict S3 (task #905): stamps the first time each show's
+      # score goes public (public/data/shows/{id}.json's `cs` field, just
+      # regenerated above) into data/audit/score-public-since.json — the
+      # score-regression floor's clock. Append-only, fails open, cheap
+      # (local file read, no network) — safe on every rebuild.
+      - name: Score-public-since stamp
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
+        run: node scripts/audit-score-public-since.js
+        continue-on-error: true
+
+      - name: Generate opening night status page
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node scripts/generate-status-page.js
+        continue-on-error: true
+
+      - name: Aggregate locked-skip counts (S2-T4)
+        if: always()
+        run: |
+          # Joe Turner postmortem P0 #2 (2026-04-26): each enrichment script logs
+          # `[LOCKED-SKIP-COUNT] {script}: N` at exit. The pre-rebuild utility
+          # steps above tee their stdout to /tmp/locked-skip.log so we can
+          # aggregate here. The 4 LLM enrichment scripts moved to enrich-reviews.yml
+          # in 2026-04-30 (Notion 351637c5-416f-8177); their counts now aggregate
+          # in that workflow's separate run.
+          #
+          # BRO-4157 triage note: none of those tee'd steps (here or in
+          # enrich-reviews.yml/rebuild-fast.yml) need an explicit `set -o
+          # pipefail` — every one carries `continue-on-error: true`, so the
+          # step's own exit code (pipefail-corrected or not) never gates job
+          # success. This is a real, pre-existing gap, not one pipefail can
+          # close: a script that crashes BEFORE it logs its own
+          # [LOCKED-SKIP-COUNT] line contributes nothing here, so the
+          # aggregation below only catches an abnormal skip RATIO in scripts
+          # that ran to completion — not a step that died mid-run (confirmed
+          # via Codex adversarial review, which caught an earlier draft of
+          # this comment overclaiming crash coverage).
+          #
+          # Synthetic-test override: set LOCKED_SKIP_TEST_LOG_OVERRIDE in the env
+          # to a path with hand-crafted [LOCKED-SKIP-COUNT] lines for dry-run
+          # validation of the warning threshold.
+          LOG="${LOCKED_SKIP_TEST_LOG_OVERRIDE:-/tmp/locked-skip.log}"
+          if [ ! -f "$LOG" ]; then
+            echo "::notice::No locked-skip log produced — enrichment steps may have been skipped"
+            exit 0
+          fi
+          echo "## Locked-skip aggregation"
+          # Collapse to one entry per script (last value wins if a script logged twice).
+          declare -A counts
+          while IFS= read -r line; do
+            script=$(echo "$line" | sed -nE 's/.*\[LOCKED-SKIP-COUNT\] ([^:]+):.*/\1/p')
+            count=$(echo "$line" | sed -nE 's/.*: ([0-9]+)$/\1/p')
+            [ -z "$script" ] || [ -z "$count" ] && continue
+            counts["$script"]=$count
+          done < <(grep '\[LOCKED-SKIP-COUNT\]' "$LOG")
+          # Total files modified during enrichment (proxy: review-texts diff line count).
+          MODIFIED=$(git -C data/review-texts diff --name-only 2>/dev/null | wc -l | tr -d ' ' || echo 0)
+          [ "$MODIFIED" -lt 1 ] && MODIFIED=1  # avoid divide-by-zero
+          for script in "${!counts[@]}"; do
+            count=${counts[$script]}
+            echo "  $script: $count"
+            # Threshold: warn when this script's lockedSkip count exceeds 50% of
+            # files modified during enrichment. Tunable via LOCKED_SKIP_THRESHOLD_PCT.
+            PCT_THRESHOLD=${LOCKED_SKIP_THRESHOLD_PCT:-50}
+            ratio=$(( count * 100 / MODIFIED ))
+            if [ "$ratio" -gt "$PCT_THRESHOLD" ]; then
+              echo "::warning::High locked-skip ratio in $script: $count skipped vs $MODIFIED files modified ($ratio%) — likely something is wrong (stuck files? false positive in lock detection? aggressive --before-opening?)"
+            fi
+          done
+
+      - name: Get new review count
+        id: after
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
+        run: |
+          COUNT=$(node -e "console.log(require('./data/reviews.json').reviews.length)")
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+
+      - name: Check for changes
+        if: always()
+        id: changes
+        run: |
+          # Check both reviews.json AND public show JSONs (Fix E: rebuild "no changes" loop)
+          REVIEWS_CHANGED=false
+          PUBLIC_CHANGED=false
+          if ! git diff --quiet data/reviews.json 2>/dev/null; then
+            REVIEWS_CHANGED=true
+            echo "Changes detected in reviews.json"
+            git diff --stat data/reviews.json
+          fi
+          if ! git diff --quiet public/data/shows/ 2>/dev/null; then
+            PUBLIC_CHANGED=true
+            echo "Changes detected in public show JSONs"
+            git diff --stat public/data/shows/ | tail -5
+          fi
+          # Alert cooldown/dedup state (drop-analysis) must ride this commit even
+          # when the rebuild output itself is unchanged — otherwise a run that
+          # emailed but produced no diff never persists its cooldown and the
+          # next run re-emails (Codex review finding on the 2026-07-21 fix).
+          # --porcelain (not diff) so a brand-new untracked state file counts.
+          TRIAGE_CHANGED=false
+          if [ -n "$(git status --porcelain data/audit/triage/ 2>/dev/null)" ]; then
+            TRIAGE_CHANGED=true
+            echo "Changes detected in data/audit/triage/ (alert state)"
+          fi
+          # BRO-545 guard-escalation streak state must ride this commit even on
+          # a no-diff rebuild — same class of bug as the triage/ case above
+          # (Codex adversarial review finding): without this, a run where the
+          # stale-checkout guard blocks but reviews.json content happens not to
+          # differ from HEAD never persists its streak, so the next fresh
+          # checkout restarts the count at 0 and escalation can never fire.
+          GUARD_STATE_CHANGED=false
+          if [ -n "$(git status --porcelain data/audit/guard-escalation-state.json 2>/dev/null)" ]; then
+            GUARD_STATE_CHANGED=true
+            echo "Changes detected in data/audit/guard-escalation-state.json (guard-escalation state)"
+          fi
+          if [ "$REVIEWS_CHANGED" = "true" ] || [ "$PUBLIC_CHANGED" = "true" ] || [ "$TRIAGE_CHANGED" = "true" ] || [ "$GUARD_STATE_CHANGED" = "true" ]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No changes to reviews.json, public show JSONs, or alert state"
+          fi
+
+      - name: Check for large files
+        if: steps.changes.outputs.has_changes == 'true'
+        uses: ./.github/actions/check-file-sizes
+
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Rebuild Reviews Data — Commit and push changes"
+      # PUSH_DEADLINE_SEC='900' + MAX_RETRIES=25 (card #1891, 2026-08-26):
+      # same push-deadline-exhaustion class as rebuild-fast.yml's equivalent
+      # step (see its comment for the incident + backoff-math rationale).
+      # These exact numbers are NOT re-derived here — they're task #1842's
+      # own live-verified data-health-check.yml values (25 attempts sums to
+      # ~725s of backoff under a 900s deadline, ~175s margin), reused
+      # directly since this job's timeout-minutes is already 30 (more
+      # headroom than rebuild-fast.yml's 25, so no change needed there).
+      #
+      # PUSH_RECONCILE_MERGED_JSON='1': a separate, real correctness fix
+      # riding along — zero effect on the deadline incident above. See
+      # rebuild-fast.yml's equivalent step for the full rationale
+      # (data/audit/scraper-spend-ledger.jsonl is a registered MANAGED
+      # union-merge file this step also stages via `git add -u data/audit/`).
+      - name: Commit and push changes
+        if: always() && steps.changes.outputs.has_changes == 'true'
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_RECONCILE_MERGED_JSON: '1'
+          # BRO-346: 7 failures/24h, identical signature to BRO-334's same-day
+          # fix on the sibling rebuild-fast.yml step below — every attempt
+          # (pre- and post-rebase) burned the full 90s GIT_NET_TIMEOUT_SEC
+          # default and was killed (rc=124), with zero git --progress output
+          # (Enumerating/Writing objects never printed). That means the hang
+          # is in TCP/TLS connection setup, before any transfer starts — a
+          # stalled connection, not a slow-but-progressing push (fetch+rebase
+          # in the same failures completed in 0-2s every time). At 90s/attempt
+          # only ~6 attempts fit inside this step's 900s PUSH_DEADLINE_SEC
+          # before it gives up, nowhere near the MAX_RETRIES=25 budget below.
+          # Lowering the per-attempt cap to 30s roughly triples the realized
+          # attempts inside the same deadline without changing behavior for a
+          # healthy connection. Per-caller override (push-with-retry.sh
+          # already reads GIT_NET_TIMEOUT_SEC from env) — does not touch the
+          # shared 90s default other callers rely on. PUSH_DEADLINE_SEC is
+          # deliberately left unchanged, matching BRO-334's precedent.
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          # Core data files pushed to private repo by push-core-data action
+          # Stage all audit files modified by rebuild (not just critic-outlet-affinity)
+          git add data/audit/*.json 2>/dev/null || true
+          # Alert cooldown/dedup state — the *.json glob above does not descend
+          # into triage/, so the drop-analysis 48h cooldown never persisted and
+          # identical NEEDS_REVIEW emails fired every rebuild (2026-07-21: 4 in 2h).
+          git add data/audit/triage/*.json 2>/dev/null || true
+          # Stage deletions of orphan-unscored marker files. verify-all-scored.js
+          # deletes them when scores have filled in; without -u those deletions
+          # never make it back to main and the broadcast gate stays permanently
+          # blocked even after the LLM ensemble resolves the orphan(s).
+          git add -u data/audit/ 2>/dev/null || true
+          bash scripts/lib/git-add-existing.sh public/opening-night-status.json public/status.html
+          git add public/data/shows/ 2>/dev/null || true
+          # Mobile index — committed in lockstep with the detail JSONs (regenerated
+          # from this run's reviews.json). Staged only inside this has_changes==true
+          # commit so no-op rebuilds don't churn it on the _ts timestamp alone.
+          git add public/data/mobile-shows.json 2>/dev/null || true
+          # Show Stats artifacts — regenerated by the same wrapper; without this
+          # stage they'd silently go stale relative to the detail files above.
+          git add public/data/stats-canon.json public/data/stats-reviews.json 2>/dev/null || true
+          # Lock audit-trail snapshot (Lost Boys 2026-04-27 Gap #6).
+          git add public/data/admin/locks.json 2>/dev/null || true
+          # Critic-coverage admin digest (S4 — drives /admin/critic-coverage page).
+          git add public/data/admin/critic-coverage.json 2>/dev/null || true
+          git add data/opening-night-timeline/*.jsonl 2>/dev/null || true
+          # Reset any unstaged tracked files (e.g. core data overwritten by checkout-core-data)
+          git checkout -- data/reviews.json data/audience-buzz.json 2>/dev/null || true
+
+          BEFORE=${{ steps.before.outputs.count }}
+          AFTER=${{ steps.after.outputs.count }}
+          DIFF=$((AFTER - BEFORE))
+
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            REASON="${{ inputs.reason }}"
+            MSG="data: Rebuild reviews.json - $REASON"
+          else
+            MSG="data: Scheduled rebuild of reviews.json"
+          fi
+
+          if [ $DIFF -ne 0 ]; then
+            if [ $DIFF -gt 0 ]; then
+              MSG="$MSG (+$DIFF reviews)"
+            else
+              MSG="$MSG ($DIFF reviews)"
+            fi
+          fi
+
+          git commit -m "$MSG
+
+          Reviews: $BEFORE → $AFTER
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+          bash scripts/lib/push-with-retry.sh 25 main
+
+
+      - name: Push core data to private repo
+        id: push-core-data
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from rebuild-reviews'
+
+      # A #21 (2026-04-26): Dispatch deploy directly after push-core-data, instead
+      # of relying solely on vercel-deploy.yml's workflow_run listener. The listener
+      # gates on `conclusion == 'success'`, but post-push steps (Auto-trigger LLM
+      # scoring, Auto-trigger consensus, Record pipeline success) can fail and tip
+      # the overall job conclusion to 'failure' AFTER the data was already pushed
+      # to the private repo — leaving production stale. Pattern matches
+      # gather-reviews.yml:472, update-show-status.yml, weekly-grosses.yml,
+      # opening-night-poller.yml. Dedup window matches gather-reviews (15 min).
+      - name: Trigger deploy (core data changed)
+        if: always() && steps.push-core-data.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          OUR_RUN_START=$(gh run view ${{ github.run_id }} --json createdAt -q '.createdAt' 2>/dev/null || echo "")
+          RECENT=$(gh run list --workflow=vercel-deploy.yml --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
+          if [ -n "$RECENT" ] && [ -n "$OUR_RUN_START" ]; then
+            RECENT_TS=$(date -d "$RECENT" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$RECENT" +%s 2>/dev/null || echo "0")
+            OUR_TS=$(date -d "$OUR_RUN_START" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$OUR_RUN_START" +%s 2>/dev/null || echo "0")
+            NOW_TS=$(date +%s)
+            DIFF=$((NOW_TS - RECENT_TS))
+            if [ "$RECENT_TS" -gt "$OUR_TS" ] && [ "$DIFF" -lt 900 ]; then
+              echo "Skipping deploy — already triggered after this run started (${DIFF}s ago)"
+              exit 0
+            fi
+          fi
+          echo "Triggering deploy..."
+          gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — workflow_run will catch successful conclusions"
+
+      - name: Auto-trigger LLM scoring if needed
+        id: scoring-trigger
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          # Count reviews needing LLM scoring (have scorable text, no score)
+          # Excludes reviews the scorer will skip: roundups, garbage, no text, duplicates
+          # Returns "<total> <openingNightUnscored>" — opening-night count is the subset
+          # of unscored reviews that belong to shows in the ±7d opening window. The
+          # 5-review default threshold sat unscored excerpts for opening-night shows
+          # (Animal Wisdom 2026-05-19 ran 6 unscored excerpts in dir for 8d before
+          # the next batch tipped it over the threshold). Per-opening-night-show
+          # threshold of 1 fires scoring immediately for in-window shows.
+          read UNSCORED OPENING_NIGHT_UNSCORED <<< "$(node -e '
+            const fs = require("fs");
+            const path = require("path");
+            const base = "data/review-texts";
+            let garbageSuffix = new Set();
+            try {
+              const g = JSON.parse(fs.readFileSync("data/llm-scoring-garbage-skips.json","utf8"));
+              if (Array.isArray(g)) g.forEach(e => {
+                if (e.filePath) { const m = e.filePath.match(/data\/review-texts\/(.+)/); if (m) garbageSuffix.add(m[1]); }
+              });
+            } catch {}
+            // Build opening-night-window show set (±7d)
+            let openingNightShows = new Set();
+            try {
+              const showsData = JSON.parse(fs.readFileSync("data/shows.json", "utf8"));
+              const shows = Array.isArray(showsData) ? showsData : (showsData.shows || []);
+              const now = Date.now();
+              const sevenDays = 7 * 86400000;
+              for (const s of shows) {
+                if (!s.openingDate) continue;
+                const od = new Date(s.openingDate).getTime();
+                if (isNaN(od)) continue;
+                if (Math.abs(od - now) <= sevenDays) openingNightShows.add(s.id);
+              }
+            } catch {}
+            let n = 0, nOpening = 0;
+            const dirs = fs.readdirSync(base).filter(d => {
+              try { return fs.statSync(path.join(base, d)).isDirectory(); } catch { return false; }
+            });
+            dirs.forEach(d => {
+              const showDir = path.join(base, d);
+              fs.readdirSync(showDir).filter(f => f.endsWith(".json") && f !== "failed-fetches.json").forEach(f => {
+                try {
+                  const fp = path.join(showDir, f);
+                  const r = JSON.parse(fs.readFileSync(fp, "utf8"));
+                  if (r.wrongProduction || r.wrongShow || r.wrongAttribution) return;
+                  if (r.duplicateOf || r.isSyndicatedDuplicate || r.rejectionReason || r.isRoundupArticle) return;
+                  if (r.contentTier === "invalid") return;
+                  if (garbageSuffix.has(d + "/" + f)) return;
+                  const hasText = r.fullText && r.fullText.length > 100;
+                  const hasExcerpt = r.bwwExcerpt || r.dtliExcerpt || r.showScoreExcerpt || r.pvExcerpt || r.nycExcerpt || (r.excerpt && r.excerpt.length > 50);
+                  if (!hasText && !hasExcerpt) return;
+                  const needsScore = !r.assignedScore && !r.llmScore && !r.humanReviewScore;
+                  const needsRescore = !!r.rescoreReason;
+                  if (needsScore || needsRescore) {
+                    n++;
+                    if (openingNightShows.has(d)) nOpening++;
+                  }
+                } catch {}
+              });
+            });
+            console.log(n + " " + nOpening);
+          ')"
+
+          echo "Reviews needing LLM scoring: $UNSCORED (opening-night window: $OPENING_NIGHT_UNSCORED)"
+          echo "unscored=$UNSCORED" >> $GITHUB_OUTPUT
+          echo "opening_night_unscored=$OPENING_NIGHT_UNSCORED" >> $GITHUB_OUTPUT
+
+          # Two-tier trigger: standard 5+ total OR any opening-night-window show
+          # with 1+ unscored. Catches the Animal Wisdom 2026-05-19 case where
+          # 6 valid excerpts sat unscored for 8+ days under the 5-review threshold.
+          THRESHOLD=5
+          OPENING_THRESHOLD=1
+          if [ "$UNSCORED" -lt "$THRESHOLD" ] && [ "$OPENING_NIGHT_UNSCORED" -lt "$OPENING_THRESHOLD" ]; then
+            echo "Below both thresholds (total<$THRESHOLD AND opening-night<$OPENING_THRESHOLD). Skipping auto-trigger."
+            echo "scoring_triggered=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          if [ "$UNSCORED" -lt "$THRESHOLD" ] && [ "$OPENING_NIGHT_UNSCORED" -ge "$OPENING_THRESHOLD" ]; then
+            echo "Triggering on opening-night window threshold ($OPENING_NIGHT_UNSCORED unscored in ±7d window)"
+          fi
+
+          # Check if LLM scoring is already running or queued
+          RUNNING=$(gh run list --workflow=llm-ensemble-score.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          QUEUED=$(gh run list --workflow=llm-ensemble-score.yml --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          WAITING=$(gh run list --workflow=llm-ensemble-score.yml --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          ACTIVE=$((RUNNING + QUEUED + WAITING))
+          if [ "$ACTIVE" -gt 0 ]; then
+            echo "LLM scoring already active ($RUNNING running, $QUEUED queued). Skipping."
+            exit 0
+          fi
+
+          # Cap batch at 400 (safe under 6-hour timeout)
+          LIMIT=400
+          if [ "$UNSCORED" -lt "$LIMIT" ]; then
+            LIMIT=$UNSCORED
+          fi
+
+          echo "Triggering LLM scoring for $UNSCORED reviews (limit=$LIMIT)..."
+          gh workflow run llm-ensemble-score.yml \
+            -f limit=$LIMIT \
+            -f run_calibration=false \
+            -f chain=true \
+            -f remaining_batches=5
+
+          echo "LLM scoring auto-triggered successfully."
+          echo "scoring_triggered=true" >> $GITHUB_OUTPUT
+
+      - name: Auto-trigger consensus update if needed
+        if: always() && steps.changes.outputs.has_changes == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Skip if scoring was triggered — scoring chain dispatches consensus when done
+          if [ "${{ steps.scoring-trigger.outputs.scoring_triggered }}" = "true" ]; then
+            echo "Scoring was triggered — consensus will fire from scoring chain. Skipping."
+            exit 0
+          fi
+
+          # Dedup: skip if consensus ran within the last hour. Only a run that
+          # actually succeeded counts: the workflow's concurrency group cancels
+          # surplus dispatches (56 of 58 on 2026-10-04, BRO-4595), and a
+          # cancelled run must not look like fresh coverage. Running/queued
+          # runs are handled by the check below.
+          RECENT=$(gh run list --workflow=update-critic-consensus.yml --status=success --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
+          if [ -n "$RECENT" ]; then
+            RECENT_TS=$(date -d "$RECENT" +%s 2>/dev/null || date -jf "%Y-%m-%dT%H:%M:%SZ" "$RECENT" +%s 2>/dev/null || echo "0")
+            NOW_TS=$(date +%s)
+            DIFF=$((NOW_TS - RECENT_TS))
+            if [ "$DIFF" -lt 3600 ]; then
+              echo "Consensus ran ${DIFF}s ago (< 1 hour). Skipping."
+              exit 0
+            fi
+          fi
+
+          # Check if consensus is already running or queued
+          RUNNING=$(gh run list --workflow=update-critic-consensus.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          QUEUED=$(gh run list --workflow=update-critic-consensus.yml --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          if [ "$((RUNNING + QUEUED))" -gt 0 ]; then
+            echo "Consensus already active. Skipping."
+            exit 0
+          fi
+
+          echo "Dispatching consensus update (reviews changed, no scoring needed)..."
+          gh workflow run update-critic-consensus.yml
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Reviews Rebuild Failed'
+          description: 'Check run logs. If reviews dropped significantly, analyze-rebuild-drops.js will send a qualitative email analysis. To re-run manually: gh workflow run "Rebuild Reviews Data" -f reason="Manual recovery"'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Reviews Rebuild Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Before:** ${{ steps.before.outputs.count }} reviews" >> $GITHUB_STEP_SUMMARY
+          echo "**After:** ${{ steps.after.outputs.count }} reviews" >> $GITHUB_STEP_SUMMARY
+          echo "**Changes:** ${{ steps.changes.outputs.has_changes }}" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "**Trigger:** Manual (${{ inputs.reason }})" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "**Trigger:** Scheduled (daily 4 AM UTC)" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Record pipeline success
+        if: success()
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          mkdir -p data/audit/pipeline-health
+          date -u > data/audit/pipeline-health/rebuild-reviews.last-success
+          git add data/audit/pipeline-health/
+          git diff --staged --quiet || git commit -m "health: Record rebuild-reviews success" && bash scripts/lib/push-with-retry.sh || echo "::warning::Health recording push failed"

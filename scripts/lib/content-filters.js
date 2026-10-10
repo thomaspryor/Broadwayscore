@@ -1,0 +1,375 @@
+/**
+ * Shared content filters for Broadway/non-Broadway classification.
+ *
+ * Single source of truth — imported by scrape-playbill-verdict.js,
+ * scrape-bww-reviews.js, scrape-cast-changes.js, and any future scrapers.
+ *
+ * Superset of all patterns previously duplicated across 3 files.
+ */
+
+const { hasOnlyForwardTenseTourMention } = require('./excerpt-validation');
+
+/**
+ * Returns true if the text indicates non-Broadway content (tour, off-Broadway,
+ * regional, film/TV, streaming, West End, etc.)
+ *
+ * @param {string} text - Title, outlet name, or article text to check
+ * @param {Object} options - { allowOffBroadway: boolean, allowWestEnd: boolean }
+ * @returns {boolean}
+ */
+function isNotBroadway(text, options = {}) {
+  if (!text) return false;
+  const lower = text.toLowerCase();
+  // allowTour: the target is a national tour (BRO-4262), so tour language and
+  // tour-stop cities are its own coverage, not evidence of another production.
+  const { allowOffBroadway = false, allowWestEnd = false, allowOpera = false, allowRegional = false, allowTour = false } = options;
+
+  // Off-Broadway / regional — skip these checks if allowOffBroadway
+  // ("world premiere" also gets a pass under allowRegional: feeder-venue
+  // roundups are almost all world premieres — Iceboy!, CrazySexyCool 2026-07).
+  if (!allowOffBroadway) {
+    if (lower.includes('off-broadway') ||
+        lower.includes('off broadway') ||
+        // Off-Broadway venues
+        lower.includes('public theater') || lower.includes('at the public') ||
+        // World premieres — many off-Broadway shows ARE world premieres
+        (!allowRegional && lower.includes('world premiere'))) {
+      return true;
+    }
+  }
+
+  // West End / London — skip these checks if allowWestEnd
+  if (!allowWestEnd) {
+    if (lower.includes('west end') ||
+        lower.includes('london') ||
+        // UK venues that could appear in review text
+        lower.includes('playhouse theatre')) {
+      return true;
+    }
+  }
+
+  // Tour phrases: apply forward-tense carve-out. A Broadway review that mentions
+  // "a national tour is planned" is not a tour review. Postmortem #18 (2026-04).
+  const hasTourPhrase =
+    lower.includes('national tour') ||
+    lower.includes('north american tour') ||
+    lower.includes('touring production') ||
+    lower.includes('touring cast') ||
+    lower.includes('touring company');
+  if (!allowTour && hasTourPhrase && !hasOnlyForwardTenseTourMention(text)) {
+    return true;
+  }
+
+  return (
+    // Always rejected regardless of category — but allowOpera={true} for shows
+    // tagged type='opera' (Met Opera productions etc.)
+    (!allowOpera && lower.includes('opera')) ||
+    (!allowRegional && !allowTour && lower.includes('in chicago')) ||
+    // Film / movie
+    lower.includes('film review') ||
+    lower.includes('film adaptation') ||
+    lower.includes('filmed version') ||
+    lower.includes('movie') ||
+    lower.includes('on film') ||
+    lower.includes('on screen') ||
+    // Regional venues (NOT off-Broadway NYC venues, NOT West End).
+    // allowRegional={true} passes these through: category:'regional' shows
+    // (Broadway-feeder tryouts) live at exactly these venues, and the
+    // aggregator pre-match filters must let their articles reach the
+    // matcher / unmatched audit (auto-promotion chain, 2026-07-08).
+    (!allowRegional && (
+      lower.includes('chicago shakespeare') ||
+      lower.includes('old globe') || lower.includes('la jolla') ||
+      lower.includes('at the ahmanson')
+    )) ||
+    lower.includes('hollywood bowl') ||
+    // TV specials and streaming
+    (lower.includes(' live') && (lower.includes('nbc') || lower.includes('tv') || lower.includes('fox'))) ||
+    lower.includes('tv review') || lower.includes('tv series') || lower.includes('tv show') ||
+    lower.includes('apple tv') || lower.includes('netflix') ||
+    lower.includes('hulu') || lower.includes('disney+') ||
+    lower.includes('streaming') || lower.includes('amazon prime')
+  );
+}
+
+/**
+ * Check if a URL's embedded year falls outside a production's date window.
+ * Returns true if the URL year is clearly wrong (safe reject filter).
+ *
+ * Per CLAUDE.md §6, URL years are unreliable for positive matching
+ * but safe as a reject filter.
+ */
+function isUrlYearOutsideWindow(url, openingYear, closingYear) {
+  if (!url || !openingYear) return false;
+  const m = url.match(/\/((?:19|20)\d{2})\//);
+  if (!m) return false;
+  const urlYear = parseInt(m[1]);
+  // If show is still running (no closingYear), allow up to current year + 1
+  const currentYear = new Date().getFullYear();
+  const upper = closingYear
+    ? Math.max(closingYear + 1, openingYear + 2)
+    : currentYear + 1;
+  return urlYear < openingYear - 3 || urlYear > upper;
+}
+
+/**
+ * URL path markers indicating non-Broadway productions that share a show title.
+ * These are safe hard-rejects at SERP discovery time — if ANY of these strings
+ * appear in the URL (case-insensitive), the result is almost certainly a different
+ * production (tryout, TV, film, world premiere).
+ *
+ * Confirmed incidents:
+ *  - 2026-04-20 Schmigadoon opening: SERP returned Kennedy Center world-premiere
+ *    roundup (2025) instead of Broadway; 9 T1/T2 URLs scraped for Kennedy Center
+ *    tryout, 2021 Apple TV+ series, and an Off-Broadway Transfer.
+ *
+ * Used by:
+ *  - scripts/lib/url-discovery.js (general SERP prefilter, all outlets)
+ *  - scripts/lib/bww-roundup-validator.js (BWW RR slug validation)
+ *  - scripts/collect-review-texts.js (via url-discovery)
+ *
+ * Do NOT add generic words like "review" — this list is strictly for URL
+ * patterns that identify a DIFFERENT production of the same title.
+ */
+const TRYOUT_URL_MARKERS = [
+  'world-premiere',
+  'world_premiere',
+  'kennedy-center',
+  'kennedycenter',
+  'pre-broadway',
+  'prebroadway',
+  'out-of-town',
+  'tryout',
+  'try-out',
+  'tv-review',
+  'tv_review',
+  'television-review',
+  'film-review',
+  'film_review',
+  'movie-review',
+  'streaming-review',
+  'netflix-review',
+  'apple-tv',
+  'appletv',
+  'disney-plus',
+  'la-jolla',
+  'old-globe',
+  'old_globe',
+  'ahmanson',
+  'geffen-playhouse',
+  'national-tour',
+  'tour-review',
+  'on-tour',
+];
+
+/**
+ * Returns true if the URL contains any tryout/TV/film/pre-Broadway marker.
+ * Used as a SERP prefilter and BWW slug validator.
+ *
+ * @param {string} url - Full URL or URL slug
+ * @returns {{ rejected: boolean, marker?: string }}
+ */
+function hasTryoutUrlMarker(url) {
+  if (!url || typeof url !== 'string') return { rejected: false };
+  const lower = url.toLowerCase();
+  for (const marker of TRYOUT_URL_MARKERS) {
+    if (lower.includes(marker)) {
+      return { rejected: true, marker };
+    }
+  }
+  return { rejected: false };
+}
+
+/**
+ * Opera production disambiguation — Met opera URLs vs. all OTHER opera companies'
+ * productions of the same title. "Eugene Onegin" / "La Traviata" / "Tristan und
+ * Isolde" are performed by Met, Royal Opera, Paris Opera, Sydney, Bolshoi, etc.;
+ * Operawire/Bachtrack/NYCR/CVA review every major production. Without a filter,
+ * a search for the show title returns the wrong production's review.
+ *
+ * REJECT-list (not a Met-keep regex) by design: fails OPEN. Unknown opera houses'
+ * URLs pass through and get title-validated downstream. A keep-regex would silently
+ * return zero results when Operawire's slug format changes (caught in pre-mortem).
+ *
+ * Use opera-house slugs that appear in URL patterns of the major reviewers.
+ * Add new houses as you encounter them in the wild.
+ */
+const NON_MET_OPERA_URL_MARKERS = [
+  // Australia
+  'opera-australia', 'sydney-opera',
+  // UK
+  'royal-opera-house', 'royal-opera-', 'covent-garden', 'glyndebourne',
+  'london-coliseum', 'english-national-opera', '/eno-', '-eno-',
+  // France
+  'paris-opera', 'opera-bastille', 'opera-de-paris', 'opera-comique',
+  // Germany / Austria
+  'wiener-staatsoper', 'staatsoper-berlin', 'deutsche-oper-berlin',
+  'bayerische-staatsoper', 'munich-opera',
+  // Italy
+  'la-scala', 'teatro-alla-scala',
+  // Russia
+  'bolshoi', 'mariinsky',
+  // Spain
+  '-in-valencia', 'palau-de-les-arts',
+  // US (non-Met)
+  'lyric-opera-chicago', 'chicago-lyric-opera', 'houston-grand-opera',
+  'sf-opera', 'san-francisco-opera', 'seattle-opera', 'pittsburgh-opera',
+  'washington-national-opera', 'la-opera-', 'los-angeles-opera',
+  'santa-fe-opera', 'opera-philadelphia', 'wolf-trap',
+  // Festivals
+  'salzburg-festival', 'bayreuth', 'aix-festival',
+  'adelaide-festival', 'edinburgh-festival',
+];
+
+/**
+ * Returns true if the URL matches a known non-Met opera company slug.
+ * Used by opera outlet fetchAndParse callbacks (Operawire, Bachtrack, NYCR, CVA,
+ * Parterre) to filter out wrong-production URLs before returning to the discovery
+ * pipeline. Does NOT replace title/year filters — it complements them.
+ *
+ * @param {string} url - Full URL or URL slug
+ * @returns {{ rejected: boolean, marker?: string }}
+ */
+function hasNonMetOperaUrlMarker(url) {
+  if (!url || typeof url !== 'string') return { rejected: false };
+  const lower = url.toLowerCase();
+  for (const marker of NON_MET_OPERA_URL_MARKERS) {
+    if (lower.includes(marker)) {
+      return { rejected: true, marker };
+    }
+  }
+  return { rejected: false };
+}
+
+/**
+ * Outlets known to publish "anticipation" / preview / feature pieces well
+ * before opening night. For these outlets an ingest-time gate is tighter:
+ * anything published before openingDate is rejected unless manually cleared
+ * (humanReviewedEarlyPublish: true in the source review file).
+ *
+ * Confirmed incident:
+ *  - 2026-04-20 Schmigadoon opening: frontmezzjunkies post published 2026-04-04
+ *    (16 days pre-opening) got scored 76 and reached the review pool. Bug #5
+ *    in the Schmigadoon 2026 postmortem.
+ *
+ * Do NOT add T1 news outlets here (NYT, Variety, etc.) — their embargo-lift
+ * coverage is legitimately 48–72h pre-opening and the default 2-day grace
+ * already accommodates it.
+ */
+const PREVIEW_HEAVY_OUTLETS = new Set([
+  'frontmezzjunkies',
+  'broadwaydirect',
+  'broadway-direct',
+]);
+
+const MS_PER_DAY = 24 * 60 * 60 * 1000;
+
+/**
+ * Default: allow publishDate up to 2 days before openingDate for Broadway/WE
+ * (matches the post-broadcast audit check at scripts/lib/opening-night-checks/
+ * publish-date-pre-opening.check.js). Press embargoes routinely lift 24–48h
+ * early, so this grace is load-bearing for T1 outlets.
+ */
+const DEFAULT_GRACE_DAYS_BEFORE_OPENING = 2;
+
+/**
+ * Off-Broadway grace: bumped from 2 → 14 days 2026-05-27 after Bedlam's Othello
+ * incident (Notion 36d637c5-416f-81d4-9ead-e8b69574a25b). OB shows don't have
+ * press embargoes — critics legitimately review during the 14-21 day preview
+ * window. Example: Bedlam's Othello previews 2026-04-19, opens 2026-05-10;
+ * Helen Shaw's NYT review landed 2026-05-06 (4 days before opening), 17 days
+ * into previews — that's standard OB cadence and the 2-day default was
+ * silently flagging it as anticipatory. Same for off-west-end.
+ *
+ * Selection is by show category — see isAnticipatoryPreviewPost() for the
+ * dispatch.
+ */
+const OFF_BROADWAY_GRACE_DAYS_BEFORE_OPENING = 14;
+
+/**
+ * Preview-heavy outlets publish pre-opening feature pieces that read like
+ * reviews but aren't. For these outlets, require publishDate >= openingDate
+ * (grace = 0). Override via opts.gracePreviewHeavyOutlet in tests.
+ */
+const PREVIEW_HEAVY_GRACE_DAYS = 0;
+
+/**
+ * Returns whether a review is an anticipatory pre-opening-night post that
+ * should be rejected at ingest. Matches the semantics of the existing
+ * post-broadcast audit check (publish-date-pre-opening.check.js) but fires
+ * BEFORE the review reaches reviews.json / scoring.
+ *
+ * Bypass: opt-in via humanReviewedEarlyPublish=true on the source file.
+ * Curators may intentionally clear anticipatory posts they've verified as
+ * legitimate reviews (rare — typically only for T1 embargo-lift coverage).
+ *
+ * @param {string|null} publishDate - Review publish date (YYYY-MM-DD)
+ * @param {string|null} openingDate - Show opening date (YYYY-MM-DD)
+ * @param {string|null} outletId - Review outlet ID (normalized)
+ * @param {Object} [opts]
+ * @param {boolean} [opts.humanReviewedEarlyPublish] - Manual clear flag from source file
+ * @param {number} [opts.graceDays] - Override default 2-day grace (non-preview outlets)
+ * @param {number} [opts.gracePreviewHeavyOutlet] - Override 0-day grace for preview-heavy outlets
+ * @returns {{ rejected: boolean, reason?: string, daysBeforeOpening?: number, outletCategory?: 'preview-heavy'|'default' }}
+ */
+function isAnticipatoryPreviewPost(publishDate, openingDate, outletId, opts = {}) {
+  if (opts.humanReviewedEarlyPublish === true) {
+    return { rejected: false };
+  }
+  if (!publishDate || !openingDate) {
+    return { rejected: false };
+  }
+
+  const opening = new Date(openingDate);
+  const publish = new Date(require('./date-utils').toDateMs(publishDate));
+  if (Number.isNaN(opening.getTime()) || Number.isNaN(publish.getTime())) {
+    return { rejected: false };
+  }
+
+  const isPreviewHeavy = !!(outletId && PREVIEW_HEAVY_OUTLETS.has(String(outletId).toLowerCase()));
+  const isOffBroadway = opts.category === 'off-broadway' || opts.category === 'off-west-end';
+  // Selection precedence (most specific wins):
+  //   1. Explicit opts.graceDays override (used by tests + callers that know)
+  //   2. Preview-heavy outlet → 0-day grace (always tight, regardless of category)
+  //   3. Off-Broadway / Off-West-End → 14-day grace (no embargo cadence)
+  //   4. Broadway / West-End default → 2-day grace (embargo lift)
+  let graceDays;
+  if (opts.graceDays != null) {
+    graceDays = opts.graceDays;
+  } else if (isPreviewHeavy) {
+    graceDays = opts.gracePreviewHeavyOutlet != null ? opts.gracePreviewHeavyOutlet : PREVIEW_HEAVY_GRACE_DAYS;
+  } else if (isOffBroadway) {
+    graceDays = OFF_BROADWAY_GRACE_DAYS_BEFORE_OPENING;
+  } else {
+    graceDays = DEFAULT_GRACE_DAYS_BEFORE_OPENING;
+  }
+
+  const cutoff = new Date(opening.getTime() - graceDays * MS_PER_DAY);
+  if (publish >= cutoff) {
+    return { rejected: false };
+  }
+
+  const daysBeforeOpening = Math.round((opening.getTime() - publish.getTime()) / MS_PER_DAY);
+  return {
+    rejected: true,
+    reason: isPreviewHeavy
+      ? `preview-heavy outlet "${outletId}" published ${daysBeforeOpening}d before openingDate (${openingDate}); require publish on/after opening unless cleared`
+      : `published ${daysBeforeOpening}d before openingDate (${openingDate}); exceeds ${graceDays}-day grace`,
+    daysBeforeOpening,
+    outletCategory: isPreviewHeavy ? 'preview-heavy' : 'default',
+  };
+}
+
+module.exports = {
+  OFF_BROADWAY_GRACE_DAYS_BEFORE_OPENING,
+  isNotBroadway,
+  isUrlYearOutsideWindow,
+  TRYOUT_URL_MARKERS,
+  hasTryoutUrlMarker,
+  NON_MET_OPERA_URL_MARKERS,
+  hasNonMetOperaUrlMarker,
+  PREVIEW_HEAVY_OUTLETS,
+  DEFAULT_GRACE_DAYS_BEFORE_OPENING,
+  PREVIEW_HEAVY_GRACE_DAYS,
+  isAnticipatoryPreviewPost,
+};
