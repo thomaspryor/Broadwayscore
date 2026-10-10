@@ -108,13 +108,18 @@ export function getDisplayableModelRange(
 /**
  * Weekly break-even used everywhere (show card, /biz at-risk list): the
  * model's break-even when it clears the quality floor, else the recorded
- * weekly running cost, else null.
+ * weekly running cost, else null. A model break-even below the running cost
+ * is stale (the cost changed after the model ran; break-even = cost plus
+ * royalties and rent), so the cost is shown instead (BRO-4985).
  */
 export function getBreakEven(
   commercial: Pick<ShowCommercial, 'modelBreakeven' | 'weeklyRunningCost' | 'modelDataQuality' | 'modelMethod'>
 ): number | null {
-  if (commercial.modelBreakeven && meetsModelQualityFloor(commercial)) return commercial.modelBreakeven;
-  return commercial.weeklyRunningCost ?? null;
+  const cost = commercial.weeklyRunningCost ?? null;
+  if (commercial.modelBreakeven && meetsModelQualityFloor(commercial)) {
+    return cost != null && commercial.modelBreakeven < cost ? cost : commercial.modelBreakeven;
+  }
+  return cost;
 }
 
 type SourceList = ShowCommercial['sources'];

@@ -42,6 +42,13 @@ jobs:
           fi
           node scripts/scrape-boring-waltz-costs.js $ARGS
 
+      - name: Refresh recoupment model
+        if: inputs.dry_run != true
+        # A new weekly cost changes break-even and recoupment %. Without this
+        # the model kept the old cost until Friday (BRO-4985: three shows
+        # showed a break-even below their refreshed cost).
+        run: node scripts/merge-model-recoupment.js
+
       - name: Commit changes
         if: inputs.dry_run != true
         # Task #574: bare stage-data-changes.sh stages all of data/, so a

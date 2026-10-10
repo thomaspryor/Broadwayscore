@@ -108,7 +108,7 @@ test('row grosses add up to the page\'s Week\'s Total', () => {
   assert.ok(Math.abs(sum - parsed.weekTotalGross) <= parsed.rows.length);
 });
 
-test('seatsOffered is kept only when it reproduces the published % Cap', () => {
+test('seatsOffered always reproduces the published % Cap (Seats in Theatre, else derived)', () => {
   for (const r of parsed.rows) {
     if (r.seatsOffered == null) continue;
     const cap = (r.attendance / r.seatsOffered) * 100;
@@ -122,7 +122,11 @@ test('seatsOffered is kept only when it reproduces the published % Cap', () => {
   assert.notEqual(tampered, FIXTURE, 'fixture snippet for Hamilton seats not found');
   const h = parsePlaybillGrossesHtml(tampered).rows.find(r => r.show === 'Hamilton');
   assert.equal(h.seatsInTheatre, 1500);
-  assert.equal(h.seatsOffered, null);
+  // The wrong Seats in Theatre stays out; the seats offered the published
+  // attendance and % Cap imply take its place (BRO-4985).
+  assert.notEqual(h.seatsOffered, 1500 * h.performances);
+  assert.equal(h.seatsOffered, 1324 * h.performances);
+  assert.ok(Math.abs((h.attendance / h.seatsOffered) * 100 - h.capacityPct) < 0.05);
 });
 
 test('flags a page that shows a different week than requested (Playbill falls back to latest)', () => {

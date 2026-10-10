@@ -22,6 +22,7 @@ import * as path from 'path';
 
 // Use shared show-matching library (260+ aliases, market filtering, era preference)
 const { matchTitleToShow } = require('./lib/show-matching');
+const { weekKeyFor, repairGrossesHistory } = require('./lib/grosses-history-repair');
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
 const {
   playbillGrossesUrl,
@@ -107,7 +108,8 @@ function getWeekDates(numWeeks: number, startFrom?: string): string[] {
   let current: Date;
 
   if (startFrom) {
-    current = new Date(startFrom + 'T00:00:00Z');
+    // Weeks end on Sunday: a --start-from on any other day means its week.
+    current = new Date(weekKeyFor(startFrom) + 'T00:00:00Z');
   } else {
     // Start from the most recent Sunday
     current = new Date();
@@ -197,6 +199,7 @@ async function backfillHistory(): Promise<void> {
 
   const save = () => {
     if (dryRun) return;
+    repairGrossesHistory(history);
     history._meta.lastUpdated = new Date().toISOString();
     fs.writeFileSync(HISTORY_PATH, JSON.stringify(history, null, 2) + '\n');
   };

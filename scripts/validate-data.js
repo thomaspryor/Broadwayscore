@@ -34,6 +34,8 @@ const { checkIdYearDrift } = require('./lib/id-year-drift');
 // before the rest of the module has evaluated — everything the summary needs
 // must already exist at that point (no TDZ on a crash path).
 const { commercialFileErrors, commercialFileWarnings } = require('./lib/commercial-record-checks');
+const { breakevenBelowCost } = require('./lib/commercial-breakeven');
+const { nonSundayWeekKeys } = require('./lib/grosses-history-repair');
 const DRY_RUN = process.argv.includes('--dry-run');
 const dryRunLedger = { showsWrites: null, artifactWrites: [] };
 let dryRunSummaryPrinted = false;
@@ -3457,6 +3459,12 @@ function validateCommercialJson() {
   for (const msg of commercialFileWarnings(data, showsData?.shows)) {
     warn(msg);
   }
+  // Break-even is the weekly cost plus royalties and rent, so one below the
+  // cost means the cost changed after the model ran (BRO-4985). Warning: the
+  // write guard rescales it on the next save and Friday's model run rebuilds it.
+  for (const { slug, modelBreakeven, weeklyRunningCost } of breakevenBelowCost(data.shows)) {
+    warn(`commercial.json: "${slug}" modelBreakeven ${modelBreakeven} is below weeklyRunningCost ${weeklyRunningCost} (stale model; run scripts/merge-model-recoupment.js)`);
+  }
 
   if (issues === 0) {
     ok(`Commercial data valid for ${showKeys.length} shows`);
@@ -4442,6 +4450,13 @@ function validateCrossFileKeys(shows) {
   if (fs.existsSync(grossesHistFile)) {
     try {
       const history = JSON.parse(fs.readFileSync(grossesHistFile, 'utf8'));
+      // A Broadway week ends on Sunday. Every history writer repairs keys on
+      // save (scripts/lib/grosses-history-repair.js, BRO-4985).
+      const offSunday = nonSundayWeekKeys(history);
+      if (offSunday.length) {
+        warn(`grosses-history.json has week keys that are not Sundays: ${offSunday.join(', ')} (the next scrape-grosses.ts run moves them)`);
+        issues++;
+      }
       const historyKeys = Object.keys(history).filter(k => !k.startsWith('_') && k !== 'weeks');
 
       for (const key of historyKeys) {
