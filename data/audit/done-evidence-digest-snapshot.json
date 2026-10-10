@@ -1,21 +1,16 @@
 {
-  "generatedAt": "2026-10-09T13:56:54.303Z",
-  "bannerText": "90/104 Done(14d) verified on main · 3 FAILED · 3 vacuous · 14 stuck-but-done — PARTIAL RUN: 3 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-10-10T13:10:14.487Z",
+  "bannerText": "63/68 Done(14d) verified on main · 1 FAILED · 1 vacuous · 8 stuck-but-done",
   "items": [
     {
-      "title": "FAILED BRO-2810 — P2: data-health-check.yml Commit digest snapshot still fails post-BRO-2370 under heavy push contention; Git Data API fallback also failed for a non-race reason",
-      "detail": "TAP version 13 # Subtest: push-via-git-api.sh replays our own diff onto a tip that moved after our base, without a local rebase ok 1 - push-via-git-api.sh replays our own diff ont…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2810/p2-data-health-checkyml-commit-digest-snapshot-still-fails-post-bro"
-    },
-    {
       "title": "FAILED BRO-445 — BSC Daily: Stuck pipeline items",
-      "detail": "[check-health-row-absent] FAIL: \"Stuck pipeline items\" still listed in the 2026-10-09T13:52:41.624Z health snapshot",
+      "detail": "[check-health-row-absent] FAIL: \"Stuck pipeline items\" still listed in the 2026-10-10T13:07:38.125Z health snapshot",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-445/bsc-daily-stuck-pipeline-items"
     },
     {
-      "title": "FAILED BRO-4838 — P1: 1-2 star and space-separated star ratings never captured (Affluenza Theatre and Tonic 1-star scored 42)",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/capture-published-stars.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4838/p1-1-2-star-and-space-separated-star-ratings-never-captured-affluenza"
+      "title": "STUCK BRO-4963 — P1: tourContaminationInText silently excludes opening-night reviews that mention a DIFFERENT show's tour in the plot (GTC TheaterMania)",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4963/p1-tourcontaminationintext-silently-excludes-opening-night-reviews"
     },
     {
       "title": "STUCK BRO-4770 — Star-band follow-ups: backfill HTML-only ratings on submit-form files + flag out-of-band hand overrides at rebuild",
@@ -41,7 +36,12 @@
       "title": "STUCK BRO-3162 — Roll out stale-checkout race guard to remaining 20 rebuild-all-reviews.js workflows (BRO-3161 follow-up)",
       "detail": "its own evidence holds on main — looks finished",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-3162/roll-out-stale-checkout-race-guard-to-remaining-20-rebuild-all"
+    },
+    {
+      "title": "STUCK BRO-3021 — 👑 OWNER — Fleet cost and waste audit (every paid line, billing-first)",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3021/owner-fleet-cost-and-waste-audit-every-paid-line-billing-first"
     }
   ],
-  "moreCount": 12
+  "moreCount": 2
 }

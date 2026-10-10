@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-10T12:20:48.786Z",
+  "timestamp": "2026-10-10T13:25:50.325Z",
   "stats": {
-    "totalReviews": 53824,
+    "totalReviews": 53865,
     "alreadyFlagged": 19807,
     "dateGuardCatches": 268,
     "directorMismatch": 1668,
-    "tvFilmSignals": 1558,
+    "tvFilmSignals": 1559,
     "londonSignals": 1774,
     "offBroadwaySignals": 512,
     "yearMismatch": 128,
-    "noPublishDate": 5898
+    "noPublishDate": 5938
   },
   "findings": [
     {
@@ -23061,6 +23061,19 @@
     },
     {
       "showId": "little-shop-of-horrors-off-broadway-2019",
+      "file": "times-square-chronicles--suzanna-bowling.json",
+      "publishDate": "2026-08-04",
+      "url": "https://t2conline.com/theatre-news-little-shop-of-horrors-ragtime-the-whoopi-monologues-cats-the-jellicle-ball-hadestown-and-just-in-time/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "little-shop-of-horrors-off-broadway-2019",
       "file": "variety--ad-amorosi.json",
       "score": 88,
       "publishDate": "2019-10-18",
@@ -43455,7 +43468,7 @@
       "file": "artsdesk--tom-teodorczuk.json",
       "score": 75,
       "publishDate": "2021-08-11",
-      "url": null,
+      "url": "https://theartsdesk.com/theatre-tv/windsors-endgame-prince-wales-theatre-review-fitfully-pointed-fun",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -43469,7 +43482,7 @@
       "file": "guardian--arifa-akbar.json",
       "score": 44,
       "publishDate": "2021-08-11",
-      "url": null,
+      "url": "https://www.theguardian.com/stage/2021/aug/11/the-windsors-endgame-review-prince-of-wales-theatre-london",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -43497,7 +43510,7 @@
       "file": "thestage--paul-vale.json",
       "score": 63,
       "publishDate": "2021-08-11",
-      "url": null,
+      "url": "https://www.thestage.co.uk/long-reviews/the-windsors-endgame-harry-enfield-tracy-ann-oberman-prince-of-wales-theatre-london-2021",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -43525,7 +43538,7 @@
       "file": "whatsonstage--alex-wood.json",
       "score": 76,
       "publishDate": "2021-08-11",
-      "url": null,
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/the-windsors-endgame-prince-wales_54667.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -68917,6 +68930,7 @@
     {
       "showId": "tartuffe-remixed-off-west-end-2026",
       "file": "monstagigz--unknown.json",
+      "score": 79,
       "publishDate": "2026-10-09",
       "url": "https://monstagigz.com/2026/10/09/theatre-review-tartuffe-remixed-starring-mark-rylance-at-marylebone-theatre/",
       "findings": [
