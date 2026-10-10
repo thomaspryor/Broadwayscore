@@ -1009,5 +1009,34 @@
       }
     ],
     "queuedAt": "2026-10-10T23:31:05.765Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4996-selfsite",
+    "title": "Landing blocked: rebase red on land/bro-4996-selfsite",
+    "description": "land.yml did not land land/bro-4996-selfsite: the rebase gate went red at 9af558a24a. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4996-selfsite @ 9af558a24a (origin/land/bro-4996-selfsite) → origin/main @ 9ea56034b1 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 9ea56034b1: Rebasing (1/1) error: could not apply 697be958334... BRO-4996: block our own pages as a poster source; clean 12 wrong refills hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/rm <conflict Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38093867142",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4996-selfsite"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "9af558a24ad82870651dce1407ffb5e8af191e5b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38093867142"
+      }
+    ],
+    "queuedAt": "2026-10-10T23:41:21.795Z"
   }
 ]
