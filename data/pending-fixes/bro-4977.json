@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4977",
   "planId": "73942024-788d-4744-956f-3044f122e208",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-10T16:28:17.070Z",
   "submitter": {
     "name": null,
@@ -99,5 +99,63 @@
         "description": "Batch 3 (no-op if earlier batches finished)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-10T18:26:14.170Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "soon-off-broadway-2026/thestage--matt-barton.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "broadway-1987/cititour--brian-scott-lipton.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "broadway-1987/new-york-sun--elysa-gardner.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "broadway-1987/nytg--gillian-russo.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "broadway-1987/theatrely--joey-sims.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "broadway-1987/thewrap--robert-hofler.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "broadway-1987/timeout--regina-robbins.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "broadway-1987/vulture--unknown.json wrongShow applied, but the write guard also changed duplicateOf, duplicateReason; check the record before trusting it"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran repair-page-bleed.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran repair-page-bleed.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran repair-page-bleed.js successfully"
+    }
+  ]
 }
