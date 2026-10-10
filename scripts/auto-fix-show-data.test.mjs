@@ -329,14 +329,19 @@ test('generateCreativeTeamWithSerpVerification anchors directors to the venue', 
   const realRequest = https.request;
   const prevKey = process.env.ANTHROPIC_API_KEY;
   process.env.ANTHROPIC_API_KEY = 'test-key';
+  const grounded = [];
   https.request = (_opts, onRes) => {
     const req = new EventEmitter();
-    req.write = () => {};
+    let body = '';
+    req.write = chunk => { body += chunk; };
     req.end = () => {
       const res = new EventEmitter();
       res.statusCode = 200;
       onRes(res);
-      res.emit('data', JSON.stringify({ content: [{ text: '[{"name": "Dominic Cooke", "role": "Director"}, {"name": "Rupert Holmes", "role": "Book"}]' }] }));
+      // The credit-grounding judge (lib/credit-grounding.js) and the team proposal share callClaudeAPI.
+      const isJudge = /checking one theatre credit/.test(body);
+      if (isJudge) grounded.push(body);
+      res.emit('data', JSON.stringify({ content: [{ text: isJudge ? 'SUPPORTED: result 2 credits him' : '[{"name": "Dominic Cooke", "role": "Director"}, {"name": "Rupert Holmes", "role": "Book"}]' }] }));
       res.emit('end');
     };
     return req;
@@ -354,6 +359,8 @@ test('generateCreativeTeamWithSerpVerification anchors directors to the venue', 
     const team = await generateCreativeTeamWithSerpVerification({ id: 'curtains-west-end-2019', title: 'Curtains', type: 'musical', venue: "Wyndham's Theatre", openingDate: '2019-12-13' });
     assert.deepEqual((team || []).map(m => m.name), ['Rupert Holmes']);
     assert.ok(queries.some(q => /Wyndham's Theatre/.test(q)), queries.join('\n'));
+    assert.equal(grounded.length, 1, 'the surviving writer credit went through the production grounding check');
+    assert.match(grounded[0], /Rupert Holmes as Book/);
   } finally {
     https.request = realRequest;
     if (prevKey === undefined) delete process.env.ANTHROPIC_API_KEY; else process.env.ANTHROPIC_API_KEY = prevKey;
