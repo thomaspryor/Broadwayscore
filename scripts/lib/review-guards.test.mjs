@@ -5,6 +5,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   isRejectedNonReview,
+  isNonReviewDemotedByFreshCV,
   isRetrieved,
   blocksRediscovery,
   hasValidScore,
@@ -581,4 +582,17 @@ test('top-level wrongProduction gate: wrongProduction:true + wrongProductionManu
     wrongProductionManualClear: true,
   };
   assert.equal(isIncludableForRebuild(data), true);
+});
+
+test('isNonReviewDemotedByFreshCV: manual (not a review) flag is never demoted by a fresh high-confidence CV (BRO-3415)', () => {
+  const data = {
+    isNonReview: true,
+    isNonReviewReason: 'manual (not a review): forum thread',
+    manualReviewedBy: 'monitor',
+    contentVerification: { articleType: 'review', articleTypeConfidence: 'high', verifiedAt: '2026-09-15T17:00:00Z' },
+  };
+  assert.equal(isNonReviewDemotedByFreshCV(data), false);
+  const classifierSet = { ...data, isNonReviewReason: 'classifier: roundup' };
+  delete classifierSet.manualReviewedBy;
+  assert.equal(isNonReviewDemotedByFreshCV(classifierSet), true);
 });

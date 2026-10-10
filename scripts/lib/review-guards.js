@@ -2383,6 +2383,10 @@ function isStaleCvPromotedWrongShow(data, cvIsStale) {
  */
 function isNonReviewDemotedByFreshCV(data) {
   if (!data || data.isNonReview !== true) return false;
+  // A human/monitor-set flag is never demoted: the freshness checks below only
+  // make sense for LLM/CV-set flags (BRO-3415, a forum thread stayed scored).
+  if (typeof data.isNonReviewReason === 'string'
+    && /^manual \(not a review\)/i.test(data.isNonReviewReason)) return false;
   const cv = data.contentVerification;
   if (!cv) return false;
   if (cv.articleType !== 'review') return false;
