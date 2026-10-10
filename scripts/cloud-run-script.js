@@ -18,6 +18,9 @@
  * Exit code: the script's own exit code; 3 when the run could not be started or
  * read (dispatch refused, run never appeared, timeout).
  *
+ * The repo is public, so the output travels encrypted to a key pair made for
+ * this one run (scripts/lib/sealed-output.js); only this process can read it.
+ *
  * Limits: runs the script as it is on origin/main (land first), never pushes, and
  * discards any files it writes. No RESEND key (email goes through its dedicated
  * workflows, CLAUDE.md §17) and no outlet logins.
@@ -27,6 +30,7 @@ const { execFileSync } = require('child_process');
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
+const { generateKeyPair, open } = require('./lib/sealed-output');
 
 const REPO = process.env.RUN_SCRIPT_REPO || 'thomaspryor/Broadwayscore';
 const WORKFLOW = 'run-script.yml';
@@ -110,12 +114,15 @@ function main() {
   }
 
   const requestId = crypto.randomBytes(6).toString('hex');
+  const { publicKey, privateKey } = generateKeyPair();
   try {
     gh(['workflow', 'run', WORKFLOW, '--repo', REPO, '--ref', 'main',
       '-f', `script=${opts.script}`,
       '-f', `args_json=${JSON.stringify(opts.args)}`,
       '-f', `review_texts=${opts.reviewTexts}`,
-      '-f', `request_id=${requestId}`]);
+      '-f', `request_id=${requestId}`,
+      '-f', `timeout_minutes=${Math.min(opts.timeoutMin, 55)}`,
+      '-f', `pubkey_b64=${Buffer.from(publicKey).toString('base64')}`]);
   } catch (err) {
     console.error(`Could not dispatch ${WORKFLOW}: ${(err.stderr || err.message || '').trim()}`);
     return 3;
@@ -134,7 +141,7 @@ function main() {
       console.error(`[cloud-run-script] still ${status} after ${opts.timeoutMin} min; follow it at ${run.html_url}`);
       return 3;
     }
-    sleep(15000);
+    sleep(30000);
     const r = ghJson(`repos/${REPO}/actions/runs/${run.id}`);
     status = r.status;
     conclusion = r.conclusion;
@@ -152,7 +159,12 @@ function main() {
     console.error(`[cloud-run-script] run ended ${conclusion} before the script printed anything; see ${run.html_url}`);
     return 3;
   }
-  process.stdout.write(parsed.output + (parsed.output.endsWith('\n') ? '' : '\n'));
+  let text;
+  try { text = open(JSON.parse(parsed.output.trim()), privateKey); } catch (err) {
+    console.error(`[cloud-run-script] could not decrypt the output: ${err.message}`);
+    return 3;
+  }
+  process.stdout.write(text + (text.endsWith('\n') ? '' : '\n'));
   console.error(`[cloud-run-script] run ${conclusion}, script exit ${parsed.exitCode}`);
   return parsed.exitCode == null ? 3 : parsed.exitCode;
 }
