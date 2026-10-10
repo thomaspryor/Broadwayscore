@@ -832,5 +832,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-10T20:45:16.159Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4996-shared-posters",
+    "title": "Landing blocked: rebase red on land/bro-4996-shared-posters",
+    "description": "land.yml did not land land/bro-4996-shared-posters: the rebase gate went red at 13a74a3bc6. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4996-shared-posters @ 13a74a3bc6 (origin/land/bro-4996-shared-posters) → origin/main @ b8e9a90fdb REFUSED: rebase: branch would not rebase cleanly onto origin/main @ b8e9a90fdb: Rebasing (1/1) error: could not apply 13a74a3bc6d... BRO-4996: one poster source, one show hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/rm <conflicted_files>\", then run \"g Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38082772893",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4996-shared-posters"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "13a74a3bc6d7ec500a9e1cfd8c33ae93b086da35"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38082772893"
+      }
+    ],
+    "queuedAt": "2026-10-10T20:40:39.569Z"
   }
 ]
