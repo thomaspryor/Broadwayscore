@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-10T19:30:41.382Z",
+  "generatedAt": "2026-10-10T20:27:02.341Z",
   "shows": {
     "860": {
       "capitalization": null,
@@ -2193,6 +2193,812 @@
       "openingDate": "2021-12-05",
       "status": "closed",
       "researchedAt": "2026-10-10T19:30:41.382Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990",
+      "researchAttempts": 1
+    },
+    "company-2021": {
+      "capitalization": 13000000,
+      "capitalizationSource": "Broadway Journal, Aug. 23, 2022, Philip Boroff article 'WILL A NEW 'SWEENEY TODD' MAKE ITS INVESTORS A KILLING?'; it states Company would return about a third of its $13 million capitalization.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "Broadway Journal reported in Aug. 2022 that Company would return about a third of its $13 million capitalization and had closed at a loss.",
+      "estimatedRecoupmentPct": [
+        30,
+        35
+      ],
+      "designation": "Fizzle",
+      "notes": "Verified capitalization is $13 million. I could not verify a weekly nut. The best verified recoupment reporting says the production returned only about a third of capital and closed at a loss, so I classify it as a fizzle. A later NYC tax-credit list shows The Ladies Who Lunch LLC receiving $3 million, but I found no verified recoupment announcement.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/p/will-a-new-sweeney-todd-make-its-investors-a-killing-exclusive",
+          "date": "2022-08-23"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/p/insurance-keeps-company-come-from-away-alive-as-jujamcyn-fights-chubb-snub",
+          "date": "2021-02-05"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-10"
+        }
+      ],
+      "title": "Company",
+      "slug": "company-2021",
+      "openingDate": "2021-12-09",
+      "status": "closed",
+      "researchedAt": "2026-10-10T19:36:28.542Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990",
+      "researchAttempts": 1
+    },
+    "plaza-suite-2022": {
+      "capitalization": 8003548,
+      "capitalizationSource": "Broadway Investment Alliance listed a $2,000,887 NYC theater tax credit for Suite 719 LLC, and Broadway Journal identifies Suite 719 LLC as the company presenting Plaza Suite; 2,000,887 / 0.25 = 8,003,548. ([investmentbroadway.com](https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": true,
+      "recoupedDate": null,
+      "recoupedSource": "BroadwayWorld forum discussion on June 11, 2024 said Plaza Suite had definitely recouped, and Broadway Journal described it as the most commercially successful play of the 2021–22 season. ([forum.broadwayworld.com](https://forum.broadwayworld.com/thread/JULIET-Recoups-Its-Investment?utm_source=openai))",
+      "estimatedRecoupmentPct": null,
+      "designation": "Easy Winner",
+      "notes": "The only hard dollar figure I could verify publicly was the NYC tax credit for Suite 719 LLC, which implies about $8.0M of production cost. I could not verify a weekly nut. Recoupment appears to have happened, but I did not find an official producer announcement. ([investmentbroadway.com](https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit))",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/p/ambassador-theatre-group-its-productions-secured-79-million-in-u-s-aid-exclusive",
+          "date": "2022-06-03"
+        },
+        {
+          "type": "manual",
+          "url": "https://forum.broadwayworld.com/thread/JULIET-Recoups-Its-Investment",
+          "date": "2024-06-11"
+        }
+      ],
+      "_recoupedClaim": true,
+      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
+      "title": "Plaza Suite",
+      "slug": "plaza-suite-2022",
+      "openingDate": "2022-03-28",
+      "status": "closed",
+      "researchedAt": "2026-10-10T19:39:12.011Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990",
+      "researchAttempts": 1
+    },
+    "take-me-out-2022": {
+      "capitalization": null,
+      "capitalizationSource": "Not publicly verified in the sources checked.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Commercial limited return engagement at the Gerald Schoenfeld Theatre (Nov. 11, 2022-Feb. 5, 2023), produced by Barry & Fran Weissler with Second Stage presenting. Public sources I checked did not verify a capitalization, weekly nut, or recoupment announcement.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.ibdb.com/broadway-production/take-me-out-535174",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://shubert.nyc/press/tony-award-winning-revival-of-take-me-out-to-return-to-broadway-this-fall/",
+          "date": "2022-08-18"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/grossestheater/SCHOENFELD",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.playbill.com/article/broadway-grosses-analysis-take-me-out-hits-a-home-run-in-final-week-on-broadway",
+          "date": "2023-02-07"
+        }
+      ],
+      "title": "Take Me Out",
+      "slug": "take-me-out-2022",
+      "openingDate": "2022-04-04",
+      "status": "closed",
+      "researchedAt": "2026-10-10T19:43:06.172Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990",
+      "researchAttempts": 1
+    },
+    "beetlejuice-2022": {
+      "capitalization": 21000000,
+      "capitalizationSource": "Broadway News reported Beetlejuice was capitalized for up to $21 million from SEC documents, and the 2022 closure report repeated that figure. ([broadwaynews.com](https://www.broadwaynews.com/beetlejuice-to-end-its-run-at-the-winter-garden-in-june/))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "The New York Times closure report republished by ArtDaily said Beetlejuice had not recouped its $21 million investment by its January 8, 2023 Broadway closing. ([artdaily.cc](https://artdaily.cc/news/150113/-Beetlejuice--to-close-on-Broadway?utm_source=openai))",
+      "estimatedRecoupmentPct": [
+        50,
+        80
+      ],
+      "designation": "Fizzle",
+      "notes": "Broadway Investment Alliance's NYC tax-credit list shows Beetlejuice Broadway, LLC received a $3 million credit on 2023-09-05, which implies at least $12 million of qualified NYC production spend but does not establish the full budget. Playbill's production page logged $45,352,586.20 in cumulative gross by the Jan. 8, 2023 closing, but no exact weekly nut was publicly verified. ([investmentbroadway.com](https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit))",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        },
+        {
+          "type": "sec",
+          "url": "https://www.sec.gov/Archives/edgar/data/1739068/000114420418033436/xslFormDX08/primary_doc.xml",
+          "date": "2018-06-08"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwaynews.com/beetlejuice-to-end-its-run-at-the-winter-garden-in-june/",
+          "date": "2019-12-09"
+        },
+        {
+          "type": "trade",
+          "url": "https://artdaily.cc/news/150113/-Beetlejuice--to-close-on-Broadway",
+          "date": "2022-09-22"
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/production/beetlejuicemarquis-theatre-2021-2022",
+          "date": "2023-01-08"
+        }
+      ],
+      "title": "Beetlejuice",
+      "slug": "beetlejuice-2022",
+      "openingDate": "2022-04-08",
+      "status": "closed",
+      "researchedAt": "2026-10-10T19:46:03.589Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990",
+      "researchAttempts": 1
+    },
+    "american-buffalo-2022": {
+      "capitalization": null,
+      "capitalizationSource": "No public capitalization located; the NYC tax-credit list did not show a match, and trade coverage said the producers had not disclosed a figure.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "Trade-press summary of a Deadline report (via IMDb news) said the producers had not disclosed capitalization and that the production would not recoup its investment.",
+      "estimatedRecoupmentPct": null,
+      "designation": "Flop",
+      "notes": "2022 Broadway revival at Circle in the Square opened 2022-04-14 and closed 2022-07-10. Public grosses totalled $8,421,435 across 128 performances; no public weekly nut was found.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        },
+        {
+          "type": "manual",
+          "url": "https://www.ibdb.com/broadway-production/american-buffalo-525177",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://www.broadwayworld.com/grossescumulative.php?year=2022",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.imdb.com/name/nm2774166/news/",
+          "date": null
+        }
+      ],
+      "title": "American Buffalo",
+      "slug": "american-buffalo-2022",
+      "openingDate": "2022-04-14",
+      "status": "closed",
+      "researchedAt": "2026-10-10T19:49:28.642Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990",
+      "researchAttempts": 1
+    },
+    "the-minutes-2022": {
+      "capitalization": 7568644,
+      "capitalizationSource": "Estimated from BroadwayWorld's reported NYC tax credit for The Minutes ($1,892,161) and NY tax law's 25% credit rate.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "BroadwayWorld lists The Minutes at $1,892,161 in NYC tax credit receipts; at a 25% credit rate that implies about $7.57M capitalization. Playbill’s gross page shows total current gross of $5,857,380.30 as of Jul. 24, 2022, but I could not verify a public weekly nut or an explicit recoupment announcement.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/nys-theater-tax-credit-who-benefits-and-how-20240220",
+          "date": "2024-02-20"
+        },
+        {
+          "type": "manual",
+          "url": "https://www.tax.ny.gov/pit/credits/new-york-city-musical-and-theatrical-production-tax-credit.htm",
+          "date": "2024-12-10"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.playbill.com/production/the-minutesstudio-54-2021-2022",
+          "date": "2022-07-24"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.playbill.com/article/tracy-letts-the-minutes-completes-broadway-engagement-july-24",
+          "date": "2022-07-24"
+        }
+      ],
+      "title": "The Minutes",
+      "slug": "the-minutes-2022",
+      "openingDate": "2022-04-17",
+      "status": "closed",
+      "researchedAt": "2026-10-10T19:52:34.556Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990",
+      "researchAttempts": 1
+    },
+    "hangmen-2022": {
+      "capitalization": 5700220,
+      "capitalizationSource": "Broadway Investment Alliance NYC Musical and Theatrical Production Tax Credit list: Hangmen Broadway, LP received $1,425,055; implied capitalization = $5,700,220 by dividing by 25%.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Capitalization inferred from the NYC tax credit payment. I did not find a verified weekly nut or public recoupment announcement for this closed limited engagement.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwaynews.com/hangmen-announces-broadway-return-this-spring/",
+          "date": "2022-02-01"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwaynews.com/tony-awards-covid-19-impact-broadway-box-office/",
+          "date": "2022-06-23"
+        }
+      ],
+      "title": "Hangmen",
+      "slug": "hangmen-2022",
+      "openingDate": "2022-04-21",
+      "status": "closed",
+      "researchedAt": "2026-10-10T19:54:15.048Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990",
+      "researchAttempts": 1
+    },
+    "mr-saturday-night-2022": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "BroadwayWorld later described Mr. Saturday Night as having closed at a loss. ([broadwayworld.com](https://www.broadwayworld.com/article/The-Art-of-Recasting-20250801?utm_source=openai))",
+      "estimatedRecoupmentPct": null,
+      "designation": "Flop",
+      "notes": "Public sources I found confirm the Broadway run and that the production closed at a loss, but they do not reliably publish capitalization or weekly nut figures. Because it did not recoup and the run was short, I classify it as a Flop.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/shows/Mr.-Saturday-Night-333713/Mr.-Saturday-Night-333713.html",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/The-Art-of-Recasting-20250801",
+          "date": "2025-08-01"
+        }
+      ],
+      "title": "Mr. Saturday Night",
+      "slug": "mr-saturday-night-2022",
+      "openingDate": "2022-04-27",
+      "status": "closed",
+      "researchedAt": "2026-10-10T19:56:35.777Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990",
+      "researchAttempts": 1
+    },
+    "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022": {
+      "capitalization": 9641432,
+      "capitalizationSource": "BroadwayWorld tax-credit roundup lists POTUS at $2,410,358; at the NYC credit rate of 25%, that implies an estimated capitalization of $9,641,432.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "No public recoupment announcement was located; public tax-credit and grosses data suggest it did not recoup.",
+      "estimatedRecoupmentPct": [
+        0,
+        20
+      ],
+      "designation": "Flop",
+      "notes": "Best public proxy for capitalization is the NYC tax credit amount. Playbill reports total gross of $8.15M through closing on August 14, 2022. Weekly nut was not publicly verified.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20010101",
+          "date": "2025-09-04"
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/production/potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-broadway-sam-s-shubert-theatre-2022",
+          "date": "2022-08-14"
+        },
+        {
+          "type": "manual",
+          "url": "https://shubert.nyc/press/potus-arrives-at-broadways-shubert/",
+          "date": null
+        }
+      ],
+      "title": "POTUS: Or, Behind Every Great Dumbass are Seven Women Trying to Keep Him Alive",
+      "slug": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022",
+      "openingDate": "2022-04-27",
+      "status": "closed",
+      "researchedAt": "2026-10-10T19:59:35.605Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990",
+      "researchAttempts": 1
+    },
+    "macbeth-2022": {
+      "capitalization": 9875368,
+      "capitalizationSource": "BroadwayWorld tax-credit roundup lists Macbeth at $2,468,842; NY tax-credit rules say the credit is 25% of qualified production expenditures, so inferred capitalization is $9,875,368.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Public tax-credit data implies a ~$9.88M capitalization for the Longacre production. I found no verified public weekly nut or recoupment announcement.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway",
+          "date": "2025-09-04"
+        },
+        {
+          "type": "manual",
+          "url": "https://www.tax.ny.gov/pit/credits/new-york-city-musical-and-theatrical-production-tax-credit.htm",
+          "date": "2024-12-10"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.ibdb.com/broadway-production/macbeth-532512",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/production/macbethlongacre-theatre-2021-2022",
+          "date": null
+        }
+      ],
+      "title": "Macbeth",
+      "slug": "macbeth-2022",
+      "openingDate": "2022-04-28",
+      "status": "closed",
+      "researchedAt": "2026-10-10T20:02:40.392Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990",
+      "researchAttempts": 1
+    },
+    "death-of-a-salesman-2022": {
+      "capitalization": 9058744,
+      "capitalizationSource": "InvestmentBroadway NYC tax-credit recipient list: Salesman Production Services Corporation received $2,264,686 on 2024-04-24; implied capitalization calculated as $2,264,686 / 0.25.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Publicly available sources confirm the run dates and final gross, and a later NYC tax-credit payment strongly suggests a roughly $9.06M capitalization. I could not verify a public weekly nut or an official recoupment announcement for this specific Broadway revival.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/production/death-of-a-salesman-broadway-hudson-theatre",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.theatermania.com/shows/new-york-city-theater/broadway/death-of-a-salesman_385761/",
+          "date": null
+        }
+      ],
+      "title": "Death of a Salesman",
+      "slug": "death-of-a-salesman-2022",
+      "openingDate": "2022-10-09",
+      "status": "closed",
+      "researchedAt": "2026-10-10T20:06:01.870Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990",
+      "researchAttempts": 1
+    },
+    "the-piano-lesson-2022": {
+      "capitalization": 7000000,
+      "capitalizationSource": "BroadwayNews quoted lead producer Brian Anthony Moreland saying he capitalized The Piano Lesson for $7 million. ([broadwaynews.com](https://www.broadwaynews.com/heres-whats-going-on-with-the-downstate-tax-credit/))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": true,
+      "recoupedDate": "2024-03",
+      "recoupedSource": "BroadwayNews reported in March 2024 that The Piano Lesson had recouped, and later said the show recouped with the assistance of the NYC tax credit. ([broadwaynews.com](https://www.broadwaynews.com/the-piano-lesson-recoups/))",
+      "estimatedRecoupmentPct": null,
+      "designation": "Easy Winner",
+      "notes": "Public sources support a $7 million capitalization and recoupment, but no verified public weekly running cost surfaced. BroadwayWorld also listed a $2,824,745 NYC tax credit allocation for the show, which helps explain the recoupment outcome. ([broadwaynews.com](https://www.broadwaynews.com/heres-whats-going-on-with-the-downstate-tax-credit/))",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwaynews.com/the-piano-lesson-recoups/",
+          "date": "2024-03-21"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwaynews.com/heres-whats-going-on-with-the-downstate-tax-credit/",
+          "date": "2025-08-22"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway",
+          "date": "2025-09-04"
+        }
+      ],
+      "_recoupedClaim": true,
+      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
+      "title": "The Piano Lesson",
+      "slug": "the-piano-lesson-2022",
+      "openingDate": "2022-10-13",
+      "status": "closed",
+      "researchedAt": "2026-10-10T20:08:05.528Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990",
+      "researchAttempts": 1
+    },
+    "topdog-underdog-2022": {
+      "capitalization": 6001504,
+      "capitalizationSource": "Broadway Investment Alliance NYC tax-credit list: TopDog 20th Production Services Corp received $1,500,376 on 2024-02-02, implying ~25% of capitalization. ([investmentbroadway.com](https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit?utm_source=openai))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "No public recoupment announcement found; inference from ~$4.58M lifetime gross versus ~$6.00M inferred capitalization. ([playbill.com](https://playbill.com/production/topdog-underdog-broadway-john-golden-theatre-2022?utm_source=openai))",
+      "estimatedRecoupmentPct": [
+        0,
+        20
+      ],
+      "designation": "Flop",
+      "notes": "Opened 2022-10-20 and closed 2023-01-15. No public weekly nut surfaced in the sources I checked, so the recoupment call is inferred from tax-credit/cumulative-gross data. ([broadwayworld.com](https://www.broadwayworld.com/shows/Underdog-333924.html?utm_source=openai))",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/shows/Underdog-333924.html",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/grosses/TOPDOG-UNDERDOG",
+          "date": null
+        }
+      ],
+      "title": "Topdog / Underdog",
+      "slug": "topdog-underdog-2022",
+      "openingDate": "2022-10-20",
+      "status": "closed",
+      "researchedAt": "2026-10-10T20:10:39.495Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990",
+      "researchAttempts": 1
+    },
+    "pictures-from-home-2023": {
+      "capitalization": 8218052,
+      "capitalizationSource": "Broadway Investment Alliance NYC tax-credit list: Sultan Pictures Inc received $2,054,513 on 2024-04-24; inferred capitalization = $8,218,052 using the prompt's 25% rule. ([investmentbroadway.com](https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "BroadwayWorld reports total gross of $5,499,044 over 86 performances. That is below the inferred capitalization before expenses, but I could not verify a weekly nut or a public recoupment statement, so recoupment remains unconfirmed. ([broadwayworld.com](https://www.broadwayworld.com/grosses/PICTURES-FROM-HOME?utm_source=openai))",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-10"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/grosses/PICTURES-FROM-HOME",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/nathan-lane-danny-burstein-zo%C3%AB-wanamaker-take-final-bows-in-pictures-from-home-april-30",
+          "date": "2023-04-30"
+        }
+      ],
+      "title": "Pictures From Home",
+      "slug": "pictures-from-home-2023",
+      "openingDate": "2023-02-09",
+      "status": "closed",
+      "researchedAt": "2026-10-10T20:12:19.176Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990",
+      "researchAttempts": 1
+    },
+    "a-dolls-house-2023": {
+      "capitalization": null,
+      "capitalizationSource": "No verified public source found in the sources I checked.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Public sources I found confirm the run dates and grosses, but not a verified capitalization, weekly running cost, or recoupment announcement.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.playbill.com/production/a-dolls-house-broadway-hudson-theatre-2023",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        }
+      ],
+      "title": "A Doll's House",
+      "slug": "a-dolls-house-2023",
+      "openingDate": "2023-03-09",
+      "status": "closed",
+      "researchedAt": "2026-10-10T20:16:29.300Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990",
+      "researchAttempts": 1
+    },
+    "life-of-pi-2023": {
+      "capitalization": 9341464,
+      "capitalizationSource": "Pi Broadway Production Services Corp received a $2,335,366 NYC musical/theatrical production tax credit; New York says the credit is 25% of qualified production expenditures, implying about $9,341,464 in production spending / capitalization. ([investmentbroadway.com](https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Verified public data supports an implied ~$9.34M production budget via the NYC tax credit, but I could not verify a weekly nut. A later Broadway Journal report quoted court papers saying the New York run was not a success, yet that does not amount to a public Broadway recoupment announcement. ([investmentbroadway.com](https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit))",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-10"
+        },
+        {
+          "type": "manual",
+          "url": "https://www.tax.ny.gov/pit/credits/new-york-city-musical-and-theatrical-production-tax-credit.htm",
+          "date": "2024-12-10"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/p/luftig-wins-latest-round-in-kinky-boots-battle",
+          "date": "2025-03-10"
+        }
+      ],
+      "title": "Life of Pi",
+      "slug": "life-of-pi-2023",
+      "openingDate": "2023-03-30",
+      "status": "closed",
+      "researchedAt": "2026-10-10T20:18:44.619Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990",
+      "researchAttempts": 1
+    },
+    "peter-pan-goes-wrong-2023": {
+      "capitalization": 8362184,
+      "capitalizationSource": "BroadwayWorld tax-credit roundup: Peter Pan Goes Wrong listed at $2,090,546; estimated capitalization calculated as credit / 0.25.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Public sources support an estimated capitalization of $8,362,184 and show $11,049,438 in total Broadway grosses across the run. I could not verify a weekly running cost or a public recoupment announcement.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20010101",
+          "date": "2025-09-04"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/grossesbyyear.cfm?year=2023",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://www.ibdb.com/broadway-production/peter-pan-goes-wrong-536073",
+          "date": null
+        }
+      ],
+      "title": "Peter Pan Goes Wrong",
+      "slug": "peter-pan-goes-wrong-2023",
+      "openingDate": "2023-04-19",
+      "status": "closed",
+      "researchedAt": "2026-10-10T20:21:31.078Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990",
+      "researchAttempts": 1
+    },
+    "good-night-oscar-2023": {
+      "capitalization": 10665336,
+      "capitalizationSource": "Broadway Investment Alliance lists Goodnight Oscar, LLC at $2,666,334 in NYC tax-credit payouts; the state credit is 25% of qualified production costs, implying $10,665,336. ([investmentbroadway.com](https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Limited Broadway engagement; capitalization inferred from the NYC tax-credit payout, but I could not verify a weekly nut or a public recoupment announcement. ([playbill.com](https://playbill.com/article/good-night-oscar-closes-on-broadway-august-27?utm_source=openai))",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        },
+        {
+          "type": "manual",
+          "url": "https://www.nysenate.gov/sites/default/files/open-data/bluebook-2025.pdf",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/grosses/GOOD-NIGHTOSCAR",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/good-night-oscar-closes-on-broadway-august-27",
+          "date": "2023-08-27"
+        }
+      ],
+      "title": "Good Night, Oscar",
+      "slug": "good-night-oscar-2023",
+      "openingDate": "2023-04-24",
+      "status": "closed",
+      "researchedAt": "2026-10-10T20:23:27.535Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990",
+      "researchAttempts": 1
+    },
+    "the-sign-in-sidney-brusteins-window-2023": {
+      "capitalization": null,
+      "capitalizationSource": "No verified public capitalization figure found; the NYC tax-credit search did not surface this title, and TheaterMania noted a capitalization shortfall after a producer withdrawal. ([investmentbroadway.com](https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Verified box-office data exist ($5,297,888.12 total gross over 64 performances; average weekly gross $529,789), but I did not find a public capitalization, weekly nut, or recoupment statement. ([playbill.com](https://playbill.com/production/the-sign-in-sidney-brusteins-window-broadway-james-earl-jones-theatre-2023?utm_source=openai))",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/production/the-sign-in-sidney-brusteins-window-broadway-james-earl-jones-theatre-2023",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/grossestheater/JAMES-EARL-JONES?orderby=asc&sortby=showname",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.theatermania.com/news/story-of-the-week-a-last-minute-addition-to-the-broadway-season_1697047/",
+          "date": null
+        }
+      ],
+      "title": "The Sign in Sidney Brustein's Window",
+      "slug": "the-sign-in-sidney-brusteins-window-2023",
+      "openingDate": "2023-04-27",
+      "status": "closed",
+      "researchedAt": "2026-10-10T20:27:02.341Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual",
       "requiresHumanReview": true,
