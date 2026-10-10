@@ -13,6 +13,10 @@
  *
  * --strict exits 1 when any group gets worse (higher mean error or fewer
  * inside the reported range).
+ * --displayable-only keeps the rows the site would show a model bar for
+ * (display mode 'model' and at least 12 played weeks, as of the report date
+ * with --as-of-report); groups under 3 rows are listed but not gated there,
+ * and a set under 10 rows is printed in full.
  */
 
 const fs = require('fs');
@@ -21,10 +25,11 @@ const os = require('os');
 const { liveModelRun } = require('./lib/model-drift');
 const { makeGrossesLookup } = require('./lib/grosses-lookup');
 const { groundTruth, rangeError, category, summarize, worseGroups } = require('./lib/recoupment-ground-truth');
+const { displaysModel, playedWeeks, MIN_PLAYED_WEEKS } = require('./lib/model-display-guard');
 
 const KNOWN_OPTS = ['previewsFromWeekly', 'playedWeeksOnly', 'eraAdjust', 'taxCreditCitedOnly'];
 const args = process.argv.slice(2);
-const USAGE = `Usage: node scripts/backtest-recoupment-ground-truth.js --opt=${KNOWN_OPTS.join('|')} [--opt=...] [--as-of-report] [--displayed] [--json] [--strict]`;
+const USAGE = `Usage: node scripts/backtest-recoupment-ground-truth.js --opt=${KNOWN_OPTS.join('|')} [--opt=...] [--as-of-report] [--displayed] [--displayable-only] [--json] [--strict]`;
 if (require('./lib/cli-help').hasHelpFlag(args)) { console.log(USAGE); process.exit(0); }
 const names = args.filter((a) => a.startsWith('--opt=')).map((a) => a.slice(6));
 if (!names.length || names.some((n) => !KNOWN_OPTS.includes(n))) { console.error(USAGE); process.exit(2); }
@@ -33,6 +38,8 @@ const AS_OF_REPORT = args.includes('--as-of-report');
 // --displayed: score what an investor bar would show, which never goes below 0.
 const DISPLAYED = args.includes('--displayed');
 const shown = (pct) => (DISPLAYED ? Math.max(0, pct) : pct);
+const DISPLAYABLE_ONLY = args.includes('--displayable-only');
+const MIN_GROUP = DISPLAYABLE_ONLY ? 3 : 1;
 
 const DATA = path.join(__dirname, '..', 'data');
 const dataFile = (f) => (fs.existsSync(path.join(DATA, f)) ? path.join(DATA, f) : path.join(os.homedir(), 'broadway-scorecard-data', f));
@@ -45,7 +52,7 @@ const by = {};
 for (const s of shows) { if (s.slug) by[s.slug] = s; if (s.id) by[s.id] = s; }
 
 const rows = [];
-const skipped = { noShow: 0, noModel: 0 };
+const skipped = { noShow: 0, noModel: 0, notDisplayable: 0 };
 for (const [key, comm] of Object.entries(commercial)) {
   const show = by[key] || by[comm.slug] || by[key.replace(/-\d{4}$/, '')];
   if (!show) { skipped.noShow++; continue; }
@@ -54,6 +61,10 @@ for (const [key, comm] of Object.entries(commercial)) {
   // --as-of-report: score a dated reported range against the model as it
   // stood on that date (both sides), so later grosses don't count against it.
   const at = AS_OF_REPORT && truth.asOf ? { asOf: truth.asOf } : {};
+  if (DISPLAYABLE_ONLY && !(displaysModel(comm, show) && playedWeeks(show, at.asOf ? new Date(at.asOf) : new Date()) >= MIN_PLAYED_WEEKS)) {
+    skipped.notDisplayable++;
+    continue;
+  }
   const live = liveModelRun(show, comm, L, at);
   const fixed = liveModelRun(show, comm, L, { ...OPTS, ...at });
   if (at.asOf && live.tier !== 'weekly-model') { skipped.noModel++; continue; }
@@ -69,21 +80,23 @@ for (const [key, comm] of Object.entries(commercial)) {
 }
 
 const summary = summarize(rows);
-const worse = worseGroups(summary);
+const worse = worseGroups(summary, { minN: MIN_GROUP });
 if (args.includes('--json')) {
   console.log(JSON.stringify({ opts: OPTS, summary, worse, skipped, rows }, null, 2));
 } else {
-  console.log(`Ground-truth backtest, opts ${names.join(', ')}${AS_OF_REPORT ? ', dated ranges scored as of their report date' : ''}${DISPLAYED ? ', displayed value (floored at 0)' : ''}: ${rows.length} shows with a reported outcome and a model run (skipped ${skipped.noShow} unmatched, ${skipped.noModel} with no model run)`);
+  console.log(`Ground-truth backtest, opts ${names.join(', ')}${AS_OF_REPORT ? ', dated ranges scored as of their report date' : ''}${DISPLAYED ? ', displayed value (floored at 0)' : ''}${DISPLAYABLE_ONLY ? ', displayable rows only' : ''}: ${rows.length} shows with a reported outcome and a model run (skipped ${skipped.noShow} unmatched, ${skipped.noModel} with no model run${DISPLAYABLE_ONLY ? `, ${skipped.notDisplayable} not displayable` : ''})`);
   console.log('group                n   old MAE  new MAE  old median  new median  old inside  new inside');
   for (const [g, s] of Object.entries(summary)) {
     console.log(`${g.padEnd(20)} ${String(s.n).padStart(3)}  ${String(s.oldMae).padStart(7)}  ${String(s.newMae).padStart(7)}  ${String(s.oldMedian).padStart(10)}  ${String(s.newMedian).padStart(10)}  ${String(s.oldInside).padStart(10)}  ${String(s.newInside).padStart(10)}`);
   }
   const moved = rows.filter((r) => r.oldErr !== r.newErr).sort((a, b) => Math.abs(b.newErr - b.oldErr) - Math.abs(a.newErr - a.oldErr));
   console.log(`Error changed on ${moved.length}:`);
-  for (const r of moved.slice(0, 15)) {
+  const listed = DISPLAYABLE_ONLY && rows.length < 10 ? rows : moved.slice(0, 15);
+  if (listed === rows) console.log(`Under 10 displayable rows, so every row:`);
+  for (const r of listed) {
     const t = r.truth.map((v) => (Number.isFinite(v) ? v : (v > 0 ? '+inf' : '-inf'))).join('..');
     console.log(`  ${r.slug} [${r.kind}, truth ${t}]: ${r.oldPct} -> ${r.newPct} (error ${Math.round(r.oldErr * 10) / 10} -> ${Math.round(r.newErr * 10) / 10})`);
   }
-  console.log(worse.length ? `WORSE in: ${worse.join(', ')}` : 'No group got worse.');
+  console.log(worse.length ? `WORSE in: ${worse.join(', ')}` : `No group${MIN_GROUP > 1 ? ` of ${MIN_GROUP}+ rows` : ''} got worse.`);
 }
 if (args.includes('--strict') && worse.length) process.exit(1);

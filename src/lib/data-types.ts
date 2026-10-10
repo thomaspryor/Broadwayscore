@@ -476,6 +476,10 @@ export interface ShowCommercial {
 
   // Model-calculated recoupment fields (from merge-model-recoupment.js)
   modelRecoupmentPct?: [number, number, number] | null; // [pessimistic, central, optimistic]
+  /** Set when the display guard hid the model bar (BRO-4989): why. */
+  modelDisplayHold?: 'no-model' | 'few-weeks' | 'out-of-bounds' | 'off-report';
+  /** The model central is below 0: shown as 0% with "running below its costs". */
+  modelBelowCosts?: boolean;
   modelRecouped?: boolean | null;
   modelBreakeven?: number | null;
   modelCostBasis?: number | null;
@@ -563,6 +567,8 @@ export interface CommercialShowRow {
   nonprofitOrg: string | null;
   totalGross: number | null;
   modelRecoupmentPct: [number, number, number] | null;
+  /** ShowCommercial.modelBelowCosts: the bar reads 0% with "running below its costs". */
+  modelBelowCosts?: boolean;
   modelMethod: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
   modelDataQuality?: 'high' | 'medium' | 'low';
   /** Reported investor multiple from a cited record (getReportedInvestorMultiple); never modeled. */

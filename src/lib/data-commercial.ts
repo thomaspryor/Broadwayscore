@@ -33,6 +33,8 @@ import {
   DISPLAY_TREND_THRESHOLD_PCT,
 } from './commercial-metrics';
 import {
+  applyModelDisplayGuard,
+  getAtRiskModelRange,
   getDisplayableModelRange,
   getBreakEven,
   getReportedInvestorMultiple,
@@ -78,9 +80,22 @@ interface GrossesHistoryFile {
   weeks: Record<string, Record<string, GrossesHistoryWeek>>;
 }
 
-const commercial = commercialData as unknown as CommercialFile;
 const grossesHistory = grossesHistoryData as unknown as GrossesHistoryFile;
 const rawShows = showsData.shows as RawShow[];
+
+// Every page reads the model bar through this one guarded copy (BRO-4989):
+// hidden when too early, off its rails or far from a reported range, and
+// never negative.
+const commercial: CommercialFile = (() => {
+  const file = commercialData as unknown as CommercialFile;
+  const showBySlug = new Map(rawShows.map((s) => [s.slug, s]));
+  const now = new Date();
+  const shows: Record<string, ShowCommercial> = {};
+  for (const [slug, data] of Object.entries(file.shows)) {
+    shows[slug] = applyModelDisplayGuard(data, showBySlug.get(slug), now);
+  }
+  return { ...file, shows };
+})();
 
 /** Every reported week across Broadway, newest first. */
 const WEEK_KEYS_NEWEST_FIRST = Object.keys(grossesHistory.weeks).sort().reverse();
@@ -468,7 +483,7 @@ export function getShowsAtRisk(): AtRiskShow[] {
     const show = rawShows.find(s => s.slug === slug);
     if (!show) continue;
 
-    const range = getDisplayableModelRange({ ...data, status: show.status });
+    const range = getAtRiskModelRange({ ...data, status: show.status });
     const avgGross = trailingAverageGross(getRecentGrosses(slug, 4));
     const breakEven = getBreakEven(data);
 
@@ -630,6 +645,7 @@ function toCommercialShowRow(slug: string, show: RawShow, data: ShowCommercial):
     nonprofitOrg: getNonprofitProducer(data),
     totalGross: grossData?.allTime?.gross || null,
     modelRecoupmentPct: data.modelRecoupmentPct || null,
+    ...(data.modelBelowCosts ? { modelBelowCosts: true } : {}),
     modelMethod: data.modelMethod || null,
     modelDataQuality: data.modelDataQuality,
     reportedMultiple: getReportedInvestorMultiple(data),

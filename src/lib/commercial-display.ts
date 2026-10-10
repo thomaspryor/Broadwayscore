@@ -18,6 +18,7 @@
 
 import type { ShowCommercial } from './data-types';
 import { getDesignationBadgeStyle, UNDISCLOSED_DESIGNATION } from '@/config/commercial';
+import { modelDisplayGuard, playedWeeks, reportedRange } from '../../scripts/lib/model-display-guard';
 
 export type RecoupmentDisplayMode = 'announced' | 'model' | 'none';
 
@@ -97,12 +98,55 @@ export function getRecoupmentDisplayMode(
   return 'none';
 }
 
+/**
+ * The model display guard (BRO-4989, scripts/lib/model-display-guard.js),
+ * applied once where the site loads commercial.json. Hidden (fewer than 12
+ * played weeks, central outside [-25, 150], or more than 25 points outside a
+ * reported range): modelRecoupmentPct becomes null and modelDisplayHold says
+ * why. Shown: negative values become 0 and modelBelowCosts is set, so the
+ * negative number never reaches a page.
+ */
+export function applyModelDisplayGuard(
+  data: ShowCommercial,
+  show: { previewsStartDate?: string | null; openingDate?: string | null; closingDate?: string | null } | undefined,
+  now: Date = new Date()
+): ShowCommercial {
+  if (!data.modelRecoupmentPct) return data;
+  const g = modelDisplayGuard({
+    pct: data.modelRecoupmentPct,
+    playedWeeks: show ? playedWeeks(show, now) : 0,
+    reported: reportedRange(data),
+  });
+  if (!g.show) {
+    // Far below costs (Schmigadoon -169) hides the number, not the fact.
+    const below = g.reason === 'out-of-bounds' && data.modelRecoupmentPct[1] < 0;
+    return { ...data, modelRecoupmentPct: null, modelDisplayHold: g.reason ?? 'no-model', ...(below ? { modelBelowCosts: true } : {}) };
+  }
+  return { ...data, modelRecoupmentPct: g.shown as [number, number, number], ...(g.belowCosts ? { modelBelowCosts: true } : {}) };
+}
+
 /** The model range when getRecoupmentDisplayMode would render it, else null. */
 export function getDisplayableModelRange(
   commercial: RecoupmentSignals
 ): [number, number, number] | null {
   if (getRecoupmentDisplayMode(commercial) !== 'model') return null;
   return commercial.modelRecoupmentPct ?? null;
+}
+
+/**
+ * The range the At Risk list judges by: the displayable model range, or
+ * [0, 0, 0] when the guard hid a model that is far below its costs, so a
+ * show losing the most money does not drop off the list (BRO-4989).
+ */
+export function getAtRiskModelRange(
+  commercial: RecoupmentSignals & Pick<ShowCommercial, 'modelDisplayHold' | 'modelBelowCosts'>
+): [number, number, number] | null {
+  const range = getDisplayableModelRange(commercial);
+  if (range) return range;
+  const hiddenBelow = commercial.modelDisplayHold === 'out-of-bounds' && commercial.modelBelowCosts === true;
+  if (!hiddenBelow || commercial.recouped === true || isFinalClosedOutcome(commercial)) return null;
+  if (commercial.designation === 'Nonprofit' || !meetsModelQualityFloor(commercial)) return null;
+  return [0, 0, 0];
 }
 
 /**
@@ -411,6 +455,10 @@ function pctText(value: number): string {
   return value >= PCT_CAP ? '100%+' : `${value}%`;
 }
 
+// An investor cannot get back less than nothing (BRO-4989 checker #5).
+const BELOW_COSTS_VALUE = '0% returned';
+const BELOW_COSTS_NOTE = 'running below its costs';
+
 export interface ModelRecoupmentLabels {
   /** Rounded, clamped at 0. */
   low: number;
@@ -425,6 +473,8 @@ export interface ModelRecoupmentLabels {
   ariaLabel: string;
   /** Progress-bar fill, 0-100. */
   barWidth: number;
+  /** "running below its costs" when the model central is below 0, else null. */
+  belowCostsNote: string | null;
 }
 
 /**
@@ -434,7 +484,8 @@ export interface ModelRecoupmentLabels {
  * labelled as an estimate, with the range.
  */
 export function getModelRecoupmentLabels(
-  estimatedPct: [number, number] | [number, number, number]
+  estimatedPct: [number, number] | [number, number, number],
+  { belowCosts = false }: { belowCosts?: boolean } = {}
 ): ModelRecoupmentLabels {
   const isModel = estimatedPct.length === 3;
   // Clamp at 0: the model can emit negative percentages for deep flops
@@ -445,7 +496,9 @@ export function getModelRecoupmentLabels(
   const valueText = pctText(central);
 
   let label: string;
-  if (isModel) {
+  if (isModel && belowCosts) {
+    label = `${BELOW_COSTS_VALUE} · ${BELOW_COSTS_NOTE}`;
+  } else if (isModel) {
     label = `Est. ${valueText} recouped`;
   } else if (low === high || low >= PCT_CAP) {
     label = `Est. ~${pctText(low)} recouped`;
@@ -462,8 +515,13 @@ export function getModelRecoupmentLabels(
     else rangeLabel = `Range: ${low}–${high}%`;
   }
 
-  const ariaLabel = `Estimated ${valueText} recouped (range ${pctText(low)} to ${pctText(high)})`;
-  return { low, central, high, valueText, label, rangeLabel, ariaLabel, barWidth: Math.min(central, PCT_CAP) };
+  const ariaLabel = isModel && belowCosts
+    ? `Estimated ${BELOW_COSTS_VALUE}, ${BELOW_COSTS_NOTE} (range ${pctText(low)} to ${pctText(high)})`
+    : `Estimated ${valueText} recouped (range ${pctText(low)} to ${pctText(high)})`;
+  return {
+    low, central, high, valueText, label, rangeLabel, ariaLabel, barWidth: Math.min(central, PCT_CAP),
+    belowCostsNote: isModel && belowCosts ? BELOW_COSTS_NOTE : null,
+  };
 }
 
 const MONTHS = [

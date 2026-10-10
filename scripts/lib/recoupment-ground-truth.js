@@ -83,9 +83,10 @@ function summarize(rows) {
 }
 
 /** Groups where the change is less accurate (higher error or fewer inside). */
-function worseGroups(summary) {
+/** Groups with at least minN rows whose mean error rose or in-range count fell. */
+function worseGroups(summary, { minN = 1 } = {}) {
   return Object.entries(summary)
-    .filter(([, s]) => s.n > 0 && (s.newMae > s.oldMae || s.newInside < s.oldInside))
+    .filter(([, s]) => s.n >= Math.max(1, minN) && (s.newMae > s.oldMae || s.newInside < s.oldInside))
     .map(([name]) => name);
 }
 

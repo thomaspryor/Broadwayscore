@@ -62,5 +62,7 @@ describe('scoring', () => {
     assert.equal(s['kind:reported-pct'].newMedian, 5);
     // all: mean 10 -> 4 but inside 2 -> 1, so it counts as worse too.
     assert.deepEqual(worseGroups(s).sort(), ['all', 'era:pre-2020', 'kind:failed', 'type:play']);
+    // minN: one-row groups are not gated.
+    assert.deepEqual(worseGroups(s, { minN: 2 }).sort(), ['all']);
   });
 });

@@ -514,8 +514,9 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
     : (eligibleForTaxCredit
         ? Math.min(TAX_CREDIT_RATE * (capitalization + weeklyNut * Math.min(Math.max(totalRunWeeks, 0), 52)), TAX_CREDIT_MAX)
         : 0);
-  // Shadow (BRO-4989): count the credit only once a source says it was received.
-  const taxCreditExcluded = opts.taxCreditCitedOnly && !taxCreditCited(commercial).cited ? expectedTaxCredit : 0;
+  // Shadow (BRO-4989): a running show's credit counts only once a source says
+  // it was received. A closed show keeps it: the credit does get paid.
+  const taxCreditExcluded = opts.taxCreditCitedOnly && !isClosed && !taxCreditCited(commercial).cited ? expectedTaxCredit : 0;
   const taxCreditAmount = expectedTaxCredit - taxCreditExcluded;
   if (notesCredit === 0) {
     warnings.push(NO_TAX_CREDIT_FROM_NOTES_WARNING);
@@ -921,8 +922,8 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}
   const expectedTaxCredit = (closedBeforeCreditProgram || notesCredit === 0)
     ? 0
     : Math.min(TAX_CREDIT_RATE * (capitalization + weeklyNut * 52), TAX_CREDIT_MAX);
-  // Shadow (BRO-4989): same cited-only rule as the weekly model.
-  const taxCreditExcluded = opts.taxCreditCitedOnly && !taxCreditCited(commercial).cited ? expectedTaxCredit : 0;
+  // Shadow (BRO-4989): same running-only, cited-only rule as the weekly model.
+  const taxCreditExcluded = opts.taxCreditCitedOnly && !isClosedRun && !taxCreditCited(commercial).cited ? expectedTaxCredit : 0;
   const taxCredit = expectedTaxCredit - taxCreditExcluded;
 
   // Run duration

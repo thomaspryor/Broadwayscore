@@ -343,6 +343,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
           <RecoupmentProgressBar
             estimatedPct={commercial.modelRecoupmentPct}
             modelMethod={commercial.modelMethod}
+            belowCosts={commercial.modelBelowCosts}
             variant="headline"
           />
         )}

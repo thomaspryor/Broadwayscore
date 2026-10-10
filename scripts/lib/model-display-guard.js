@@ -24,19 +24,36 @@ const CENTRAL_MIN = -25;
 const CENTRAL_MAX = 150;
 const MAX_OFF_REPORT = 25;
 
+/**
+ * Does the site show the model bar for this record today? Mirrors
+ * getRecoupmentDisplayMode(...) === 'model' in src/lib/commercial-display.ts
+ * (a unit test pins the two together).
+ */
+function displaysModel(comm, show) {
+  if (!comm || !show) return false;
+  if (comm.recouped === true) return false;
+  if (show.status === 'closed' && comm.designation && comm.designation !== 'TBD') return false;
+  if (comm.designation === 'Nonprofit') return false;
+  if (!comm.modelRecoupmentPct) return false;
+  return comm.modelDataQuality !== 'low' && comm.modelMethod !== 'ai-estimated';
+}
+
 /** Weeks played so far (previews included, COVID dark weeks excluded). */
 function playedWeeks(show, now = new Date()) {
   if (!show || !(show.previewsStartDate || show.openingDate)) return 0;
   return Math.max(0, runWindow(show, { now, playedOnly: true }).totalRunWeeks);
 }
 
-/** The reported [lo, hi] when it comes from a report, else null. */
+/**
+ * The reported [lo, hi] when it comes from a report, else null.
+ * @returns {[number, number] | null}
+ */
 function reportedRange(comm) {
   const est = comm && comm.estimatedRecoupmentPct;
   const basis = comm && (comm.estimatedRecoupmentSource || comm.notes);
   if (!Array.isArray(est) || est.length !== 2 || !est.every((v) => typeof v === 'number' && Number.isFinite(v))) return null;
   if (!basis || OWN_INFERENCE.test(basis)) return null;
-  return [Math.min(...est), Math.max(...est)];
+  return /** @type {[number, number]} */ ([Math.min(...est), Math.max(...est)]);
 }
 
 /**
@@ -57,6 +74,6 @@ function modelDisplayGuard({ pct, playedWeeks: weeks, reported = null }) {
 }
 
 module.exports = {
-  modelDisplayGuard, playedWeeks, reportedRange,
+  modelDisplayGuard, displaysModel, playedWeeks, reportedRange,
   MIN_PLAYED_WEEKS, CENTRAL_MIN, CENTRAL_MAX, MAX_OFF_REPORT,
 };

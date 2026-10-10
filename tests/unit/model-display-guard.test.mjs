@@ -4,7 +4,7 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { modelDisplayGuard, playedWeeks, reportedRange } = require('../../scripts/lib/model-display-guard');
+const { modelDisplayGuard, displaysModel, playedWeeks, reportedRange } = require('../../scripts/lib/model-display-guard');
 
 describe('modelDisplayGuard', () => {
   test('Schmigadoon -169 is hidden, not printed', () => {
@@ -49,5 +49,22 @@ describe('inputs', () => {
     assert.equal(reportedRange({ estimatedRecoupmentPct: [70, 85] }), null);
     assert.equal(reportedRange({ estimatedRecoupmentPct: [70], estimatedRecoupmentSource: 'x' }), null);
     assert.equal(reportedRange(null), null);
+  });
+});
+
+describe('displaysModel (mirrors getRecoupmentDisplayMode === "model")', () => {
+  const pct = [10, 20, 30];
+  test('shows a running record with a good model', () => {
+    assert.equal(displaysModel({ modelRecoupmentPct: pct }, { status: 'open' }), true);
+  });
+  test('announced, final closed, nonprofit, low quality and ai-estimated do not', () => {
+    assert.equal(displaysModel({ modelRecoupmentPct: pct, recouped: true }, { status: 'open' }), false);
+    assert.equal(displaysModel({ modelRecoupmentPct: pct, designation: 'Flop' }, { status: 'closed' }), false);
+    assert.equal(displaysModel({ modelRecoupmentPct: pct, designation: 'TBD' }, { status: 'closed' }), true);
+    assert.equal(displaysModel({ modelRecoupmentPct: pct, designation: 'Nonprofit' }, { status: 'open' }), false);
+    assert.equal(displaysModel({ modelRecoupmentPct: pct, modelDataQuality: 'low' }, { status: 'open' }), false);
+    assert.equal(displaysModel({ modelRecoupmentPct: pct, modelMethod: 'ai-estimated' }, { status: 'open' }), false);
+    assert.equal(displaysModel({}, { status: 'open' }), false);
+    assert.equal(displaysModel(null, { status: 'open' }), false);
   });
 });

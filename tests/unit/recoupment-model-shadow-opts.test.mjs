@@ -37,6 +37,14 @@ describe('taxCreditCitedOnly', () => {
     assert.equal(r.taxCreditAmount, 3_000_000);
     assert.equal(r.taxCreditExcluded, 0);
   });
+  test('a closed show keeps an uncited credit (it does get paid)', () => {
+    const closedShow = { ...show, closingDate: iso(weeksFrom(now, -2)) };
+    const live = calculateRecoupment(closedShow, comm, null, weekly);
+    const cited = calculateRecoupment(closedShow, comm, null, weekly, { taxCreditCitedOnly: true });
+    assert.equal(cited.taxCreditExcluded, 0);
+    assert.equal(cited.taxCreditAmount, live.taxCreditAmount);
+    assert.equal(cited.recoupmentPctCentral, live.recoupmentPctCentral);
+  });
   test('lifetime model applies the same rule', () => {
     const allTime = { gross: 1_100_000 * 99, performances: 99 * 8, attendance: 99 * 8 * 1000 };
     const live = calculateLifetimeRecoupment(show, comm, allTime);
@@ -44,6 +52,8 @@ describe('taxCreditCitedOnly', () => {
     assert.ok(live.taxCreditAmount > 0);
     assert.equal(cited.taxCreditAmount, 0);
     assert.equal(cited.taxCreditExcluded, live.taxCreditAmount);
+    const closedShow = { ...show, closingDate: iso(weeksFrom(now, -2)) };
+    assert.equal(calculateLifetimeRecoupment(closedShow, comm, allTime, { taxCreditCitedOnly: true }).taxCreditExcluded, 0);
   });
 });
 

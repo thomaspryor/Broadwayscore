@@ -10,7 +10,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { modelDisplayGuard, playedWeeks, reportedRange } = require('./lib/model-display-guard');
+const { modelDisplayGuard, displaysModel, playedWeeks, reportedRange } = require('./lib/model-display-guard');
 
 const args = process.argv.slice(2);
 if (require('./lib/cli-help').hasHelpFlag(args)) {
@@ -26,21 +26,12 @@ const commercial = load('commercial.json').shows;
 const by = {};
 for (const s of shows) { if (s.slug) by[s.slug] = s; if (s.id && !by[s.id]) by[s.id] = s; }
 
-// Mirrors src/lib/commercial-display.ts getRecoupmentDisplayMode === 'model'.
-function displaysModelToday(comm, show) {
-  if (comm.recouped === true) return false;
-  if (show.status === 'closed' && comm.designation && comm.designation !== 'TBD') return false;
-  if (comm.designation === 'Nonprofit') return false;
-  if (!comm.modelRecoupmentPct) return false;
-  return comm.modelDataQuality !== 'low' && comm.modelMethod !== 'ai-estimated';
-}
-
 const rows = [];
 for (const [key, comm] of Object.entries(commercial)) {
   const show = by[key];
   if (!show) continue;
   if (!args.includes('--all-markets') && show.market && show.market !== 'broadway') continue;
-  if (!displaysModelToday(comm, show)) continue;
+  if (!displaysModel(comm, show)) continue;
   const weeks = playedWeeks(show);
   const reported = reportedRange(comm);
   const g = modelDisplayGuard({ pct: comm.modelRecoupmentPct, playedWeeks: weeks, reported });
