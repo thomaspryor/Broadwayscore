@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-10T16:43:41.744Z",
+  "timestamp": "2026-10-10T17:00:05.918Z",
   "stats": {
-    "totalReviews": 54101,
-    "alreadyFlagged": 19843,
+    "totalReviews": 54139,
+    "alreadyFlagged": 19852,
     "dateGuardCatches": 270,
     "directorMismatch": 1680,
     "tvFilmSignals": 1563,
-    "londonSignals": 1782,
+    "londonSignals": 1783,
     "offBroadwaySignals": 513,
     "yearMismatch": 132,
-    "noPublishDate": 6017
+    "noPublishDate": 6051
   },
   "findings": [
     {
@@ -19505,7 +19505,8 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "curtain-call-reviews--unknown.json",
-      "publishDate": null,
+      "score": 78,
+      "publishDate": "2026-10-07",
       "url": "https://www.curtaincallreviews.co.uk/into-the-woods",
       "findings": [
         {
@@ -23342,6 +23343,7 @@
     {
       "showId": "lost-in-del-valle-off-broadway-2026",
       "file": "the-knockturnal--karen-snyder.json",
+      "score": 71,
       "publishDate": "2026-04-20",
       "url": "https://theknockturnal.com/a-raw-journey-from-chaos-to-redemption-in-lost-in-del-valle/",
       "findings": [
@@ -27605,6 +27607,7 @@
     {
       "showId": "operation-mincemeat-tour-2026",
       "file": "around-the-town-chicago--unknown.json",
+      "score": 88,
       "publishDate": null,
       "url": "https://aroundthetownchicago.com/theatre-reviews/operation-mincemeat/",
       "findings": [
@@ -27646,6 +27649,7 @@
     {
       "showId": "operation-mincemeat-tour-2026",
       "file": "chicago-reader--kerry-reid.json",
+      "score": 91,
       "publishDate": "2026-10-02",
       "url": "https://chicagoreader.com/performing-arts/theater/theater-review/operation-mincemeat-broadway-in-chicago/",
       "findings": [
@@ -27659,7 +27663,8 @@
     {
       "showId": "operation-mincemeat-tour-2026",
       "file": "chicagoonstage--unknown.json",
-      "publishDate": null,
+      "score": 91,
+      "publishDate": "2026-10-02",
       "url": "https://www.chicagoonstage.com/operation-mincemeat-is-totally-worth-all-its-hype/",
       "findings": [
         {
@@ -32867,6 +32872,7 @@
     {
       "showId": "spamalot-tour-2025",
       "file": "around-the-town-chicago--unknown.json",
+      "score": 91,
       "publishDate": null,
       "url": "https://aroundthetownchicago.com/theatre-reviews/monty-pythons-spamalot-milwaukee-reviewed-by-ryan-kreiter/",
       "findings": [
@@ -32945,6 +32951,7 @@
     {
       "showId": "spamalot-tour-2025",
       "file": "ladue-news--mark-bretz.json",
+      "score": 87,
       "publishDate": "2026-05-11",
       "url": "https://www.laduenews.com/arts-and-culture/spamalot-fox-theatre-film-monty-python-and-the-holy-grail-stl-st-louis-performance-play/article_eb5232ee-3ed4-48f2-b56e-554bec8b0a1b.html",
       "findings": [
@@ -51091,7 +51098,7 @@
     {
       "showId": "blood-of-my-blood-west-end-2026",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2026-10-09",
       "url": "https://www.allthatdazzles.co.uk/post/review-blood-of-my-blood-royal-court-theatre",
       "findings": [
@@ -51118,6 +51125,7 @@
     {
       "showId": "blood-of-my-blood-west-end-2026",
       "file": "guardian--unknown.json",
+      "score": 82,
       "publishDate": "2026-10-10",
       "url": "https://www.theguardian.com/stage/2026/oct/10/blood-of-my-blood-review-royal-court-theatre-london",
       "findings": [
@@ -51130,8 +51138,21 @@
     },
     {
       "showId": "blood-of-my-blood-west-end-2026",
+      "file": "hitthetheatre--unknown.json",
+      "publishDate": null,
+      "url": "https://hitthetheatre.co.uk/london/shows/blood-of-my-blood",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "blood-of-my-blood-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 76,
+      "score": 81,
       "publishDate": "2026-10-08",
       "url": "https://www.londonboxoffice.co.uk/news/post/blood-of-my-blood-royal-court-theatre-review",
       "findings": [
@@ -75800,6 +75821,7 @@
     {
       "showId": "touching-the-void-west-end-2019",
       "file": "observer--susannah-clapp.json",
+      "score": 90,
       "publishDate": "2019-11-24",
       "url": null,
       "findings": [
