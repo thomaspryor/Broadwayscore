@@ -112,5 +112,10 @@ describe('health-check digest wiring', () => {
     const row = rows.find((r) => r.name === 'Commercial model: stored vs fresh run');
     assert.ok(row);
     assert.ok(['pass', 'warn'].includes(row.status), `${row.status}: ${row.message}`);
+    // With the data present the scan must actually run, not warn "Cannot check".
+    const fs = require('node:fs');
+    const have = ['shows', 'commercial', 'grosses', 'grosses-history']
+      .every((f) => fs.existsSync(new URL(`../../data/${f}.json`, import.meta.url)));
+    if (have) assert.ok(!/^Cannot check/.test(row.message), row.message);
   });
 });

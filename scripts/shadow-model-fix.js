@@ -71,9 +71,27 @@ if (!FIX) { console.error(USAGE); process.exit(2); }
 const OUT = args.find((a) => a.startsWith('--out='))?.split('=')[1];
 const ONLY = args.find((a) => a.startsWith('--show='))?.split('=')[1];
 
-// Thresholds the live /biz cards apply to modelRecoupmentPct (src/lib/commercial-metrics.ts).
+// Thresholds the live /biz cards apply to modelRecoupmentPct (src/lib/commercial-metrics.ts
+// AT_RISK_MAX_RECOUPED_PCT, APPROACHING_MIN_LOW_PCT, MIN_WEEKS_PER_WINDOW; a TS file, so copied).
 const AT_RISK_MAX = 30;
 const APPROACHING_MIN = 50;
+const MIN_WEEKS = 3;
+
+// The other half of isAtRisk: trailing 4-week average gross under break-even
+// (getBreakEven: modelBreakeven floored at weeklyRunningCost, else the cost).
+// It reads stored fields and grosses, so a model fix cannot change it; a pct
+// flip only matters when this half already holds. Approximate: skips the
+// model-quality floor, so it can only over-report.
+function grossUnderBreakEven(comm, weeklyRows) {
+  const recent = Object.keys(weeklyRows || {}).sort().slice(-4)
+    .map((k) => (typeof weeklyRows[k] === 'object' ? weeklyRows[k]?.gross : weeklyRows[k]))
+    .filter((g) => typeof g === 'number');
+  if (recent.length < MIN_WEEKS) return false;
+  const avg = recent.reduce((a, b) => a + b, 0) / recent.length;
+  const cost = comm.weeklyRunningCost ?? null;
+  const be = comm.modelBreakeven ? (cost != null && comm.modelBreakeven < cost ? cost : comm.modelBreakeven) : cost;
+  return be != null && be > 0 && avg < be;
+}
 
 const load = (p) => JSON.parse(fs.readFileSync(p, 'utf8'));
 const pcts = (r) => [r.recoupmentPctLow, r.recoupmentPctCentral, r.recoupmentPctHigh];
@@ -117,7 +135,11 @@ function main() {
     const effects = [];
     if (live.modelRecouped !== fixed.modelRecouped) effects.push(`model recouped ${live.modelRecouped} -> ${fixed.modelRecouped}`);
     if (running && comm.recouped !== true) {
-      if ((oldPct[2] < AT_RISK_MAX) !== (newPct[2] < AT_RISK_MAX)) effects.push(`At Risk test (optimistic < ${AT_RISK_MAX}%) ${oldPct[2]} -> ${newPct[2]}`);
+      if ((oldPct[2] < AT_RISK_MAX) !== (newPct[2] < AT_RISK_MAX)) {
+        effects.push(grossUnderBreakEven(comm, L.getWeeklyData(slug, show.id))
+          ? `At Risk test (optimistic < ${AT_RISK_MAX}%, gross under break-even) ${oldPct[2]} -> ${newPct[2]}`
+          : `at-risk pct only (gross at or over break-even, no listing change) ${oldPct[2]} -> ${newPct[2]}`);
+      }
       if ((oldPct[0] >= APPROACHING_MIN) !== (newPct[0] >= APPROACHING_MIN)) effects.push(`Approaching test (pessimistic >= ${APPROACHING_MIN}%) ${oldPct[0]} -> ${newPct[0]}`);
     }
     if (contradiction(oldPct[1], comm.designation) !== contradiction(newPct[1], comm.designation)) {
@@ -131,7 +153,9 @@ function main() {
     });
   }
 
-  const ratio = (r) => Math.abs(Math.log((Math.abs(r.newPct[1]) + 1) / (Math.abs(r.oldPct[1]) + 1)));
+  // A sign change (e.g. -50% -> +50%) is always a big move; otherwise log ratio of magnitudes.
+  const signFlip = (r) => Math.sign(r.newPct[1]) * Math.sign(r.oldPct[1]) < 0;
+  const ratio = (r) => (signFlip(r) ? 1e9 : Math.abs(Math.log((Math.abs(r.newPct[1]) + 1) / (Math.abs(r.oldPct[1]) + 1))));
   const has = (r, p) => r.effects.some((e) => e.startsWith(p));
   const changed = rows.filter((r) => r.newPct.some((v, i) => v !== r.oldPct[i]));
   const summary = {

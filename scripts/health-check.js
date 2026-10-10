@@ -1971,7 +1971,7 @@ function checkCommercialModelDrift() {
         name,
         status: 'warn',
         message: `${flagged.length} of ${summary.checked} records differ from a fresh run (${summary.sameDay} same-day, ${summary.drift} drift, ${summary.method} method): ${top}`,
-        hint: 'Run node scripts/check-model-drift.js; re-run merge-model-recoupment.js (commercial-friday.yml) to refresh',
+        hint: 'Run node scripts/check-model-drift.js. The model re-runs daily (commercial-stale-closures.yml, 08:00 UTC, after this digest), so a row that persists a second day means that run failed or was skipped',
       };
     }),
   ];

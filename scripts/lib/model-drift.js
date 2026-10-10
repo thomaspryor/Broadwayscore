@@ -3,8 +3,8 @@
 // Stored vs fresh recoupment model values (BRO-5004, BRO-4989).
 //
 // commercial.json keeps the model output from its last run
-// (merge-model-recoupment.js: Friday, Saturday, and after an approved fix or a
-// Waltz cost scrape). Any other writer that changes a model input in between
+// (merge-model-recoupment.js: daily in commercial-stale-closures.yml at 08:00
+// UTC, plus Friday, Saturday, and after an approved fix or a Waltz cost scrape). Any other writer that changes a model input in between
 // leaves the stored values on the old input until the next run. That is how
 // the-great-gatsby showed 83.1% while a fresh run gave 64.4%: its stored
 // break-even (912,195) is exactly what the model gives at the old $850k weekly

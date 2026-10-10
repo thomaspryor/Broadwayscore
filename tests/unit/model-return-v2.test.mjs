@@ -94,8 +94,14 @@ describe('classifyTier', () => {
   it('TIERS lists exactly the values it returns, and every tier name the scripts compare against', async () => {
     const fs = await import('node:fs');
     assert.deepStrictEqual([...TIERS].sort(), ['ai-estimated', 'simplified-lifetime', 'weekly-model']);
+    const seen = new Set([
+      classifyTier({}, {}, null),
+      classifyTier({ openingDate: '2000-01-01', closingDate: '2020-01-01' }, { capitalization: 1 }, { gross: 1 }),
+      classifyTier({ openingDate: '2000-01-01', closingDate: '2005-01-01' }, { capitalization: 1 }, { gross: 1 }),
+    ]);
+    assert.deepStrictEqual([...seen].sort(), [...TIERS].sort(), 'classifyTier returns every TIERS value and nothing else');
     // A misspelt tier silently skips a whole tier (shadow-model-fix once misnamed the lifetime tier).
-    for (const f of ['scripts/merge-model-recoupment.js', 'scripts/shadow-model-fix.js']) {
+    for (const f of ['scripts/merge-model-recoupment.js', 'scripts/shadow-model-fix.js', 'scripts/lib/model-drift.js']) {
       const src = fs.readFileSync(new URL(`../../${f}`, import.meta.url), 'utf8');
       for (const m of src.matchAll(/'([a-z]+-(?:model|lifetime|estimated))'/g)) {
         if (/^(alltime|gap|preview)-/.test(m[1])) continue; // gross-source labels, not tiers
