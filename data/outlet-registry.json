@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-10T06:54:18.708Z",
+    "lastUpdated": "2026-10-10T07:38:20.853Z",
     "version": "2.1.0",
     "lastChange": "task #1844 follow-up: move mislabeled sundayexpress alias from express-uk to sunday-express + repoint metro-source aliasIndex entry from metro-uk to metrosource (real routing bugs found by adversarial review, not registry duplicates)"
   },
@@ -12299,6 +12299,17 @@
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
       "regionInferredAt": "2026-10-10T06:54:18.708Z"
+    },
+    "maturetimes": {
+      "displayName": "Maturetimes",
+      "tier": 3,
+      "aliases": [
+        "maturetimes"
+      ],
+      "domain": "maturetimes.co.uk",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-10-10T07:38:20.853Z"
     }
   },
   "_aliasIndex": {
