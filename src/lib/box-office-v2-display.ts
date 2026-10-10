@@ -5,7 +5,7 @@
  * Unreleased: only reachable when featureFlags.commercial && boxOfficeV2.
  */
 import type { CostBand, Availability, MultiplePoint, CoverCosts, Streak, MultipleRange } from './box-office-status';
-import type { ShowBoxOfficeV2 } from './data-commercial';
+import type { ShowBoxOfficeV2, BoxOfficeV2Market } from './data-commercial';
 /** Weekly amounts in thousands ($821K, $1,084K): $1.1M hides the gap that matters week to week. */
 export function formatWeekly(n: number): string {
   return `$${Math.round(n / 1000).toLocaleString('en-US')}K`;
@@ -157,4 +157,128 @@ export function chartMode(series: MultiplePoint[]): 'multiple' | 'gross' | 'none
   if (series.some((p) => p.multiple != null)) return 'multiple';
   if (series.some((p) => p.gross != null)) return 'gross';
   return 'none';
+}
+
+// ---------------------------------------------------------------------------
+// /box-office (Phase 3): the market line, the status counts and the table's
+// two cost columns.
+
+/** Market totals in millions, one decimal ($27.7M). */
+export function formatMillions(n: number): string {
+  return `$${(n / 1_000_000).toFixed(1)}M`;
+}
+
+export interface MarketLine {
+  gross: string;
+  /** Whole-percent change vs the same week last year, null without that week. */
+  changePct: number | null;
+  direction: 'up' | 'down' | 'flat' | null;
+  lastYearGross: string | null;
+  shows: number;
+  lastYearShows: number | null;
+}
+
+export function marketLine(m: BoxOfficeV2Market): MarketLine {
+  const pct = m.lastYearGross ? Math.round(((m.gross - m.lastYearGross) / m.lastYearGross) * 100) : null;
+  return {
+    gross: formatMillions(m.gross),
+    changePct: pct == null ? null : Math.abs(pct),
+    direction: pct == null ? null : pct > 0 ? 'up' : pct < 0 ? 'down' : 'flat',
+    lastYearGross: m.lastYearGross != null ? formatMillions(m.lastYearGross) : null,
+    shows: m.shows,
+    lastYearShows: m.lastYearShows,
+  };
+}
+
+export type StatusCard = Pick<BoxOfficeV2Card, 'availability' | 'band' | 'closingDate' | 'multiple' | 'trend' | 'nonprofit' | 'title' | 'slug'>;
+
+export interface CostStatusCell {
+  label: string;
+  tone: PillTone;
+  /** 4-week status trend, null when unknown or the show has no status. */
+  arrow: '↑' | '→' | '↓' | null;
+  multiple: string | null;
+  range: string | null;
+  /** Sort key for "Vs. its cost": the multiple; null sorts last. */
+  sortValue: number | null;
+}
+
+const TREND_ARROW: Record<string, CostStatusCell['arrow']> = { improving: '↑', steady: '→', declining: '↓' };
+
+/** The Status and Vs. its cost cells for one table row. `card` undefined = no commercial record. */
+export function costStatusCell(card: StatusCard | undefined): CostStatusCell {
+  if (!card || card.availability === 'nocost') {
+    return {
+      label: card?.nonprofit ? 'Nonprofit · no estimate' : 'No estimate yet',
+      tone: 'pending', arrow: null, multiple: null, range: null, sortValue: null,
+    };
+  }
+  const pill = costPill(card);
+  const m = card.availability === 'ok' && card.band != null ? card.multiple : null;
+  return {
+    label: pill.label,
+    tone: pill.tone,
+    arrow: m ? TREND_ARROW[card.trend] ?? null : null,
+    multiple: m ? formatMultiple(m.mid) : null,
+    range: m ? `${m.lo.toFixed(2)}–${m.hi.toFixed(2)}` : null,
+    sortValue: m ? m.mid : null,
+  };
+}
+
+/**
+ * The This week table's cost cells, keyed by slug, plus its rows with
+ * "(nonprofit)" added to a rated nonprofit's title (the design's marker).
+ */
+export function costTable<R extends { show: { slug: string; title: string } }>(
+  rows: R[],
+  bySlug: Record<string, StatusCard>,
+): { cells: Record<string, CostStatusCell>; thisWeek: R[] } {
+  const cells: Record<string, CostStatusCell> = {};
+  const thisWeek = rows.map((row) => {
+    const card = bySlug[row.show.slug];
+    if (!card) return row;
+    cells[row.show.slug] = costStatusCell(card);
+    return card.nonprofit && card.availability === 'ok'
+      ? { ...row, show: { ...row.show, title: `${row.show.title} (nonprofit)` } }
+      : row;
+  });
+  return { cells, thisWeek };
+}
+
+export interface StatusGroup {
+  band: CostBand;
+  label: string;
+  tone: PillTone;
+  titles: string[];
+}
+
+export interface StatusCounts {
+  rated: number;
+  groups: StatusGroup[];
+  noEstimate: string[];
+  nonprofitNoEstimate: string[];
+  early: string[];
+  closing: string[];
+}
+
+const BAND_ORDER: CostBand[] = ['well-above', 'above', 'near', 'below'];
+
+/** "Who is covering their costs": running shows grouped by band, plus who is not rated and why. */
+export function statusCounts(cards: StatusCard[]): StatusCounts {
+  const byTitle = [...cards].sort((a, b) => a.title.localeCompare(b.title));
+  const pick = (f: (c: StatusCard) => boolean) => byTitle.filter(f).map((c) => c.title);
+  const groups = BAND_ORDER.map((band) => ({
+    band,
+    label: BAND_LABEL[band],
+    tone: BAND_TONE[band],
+    titles: pick((c) => c.availability === 'ok' && c.band === band),
+  }));
+  return {
+    rated: groups.reduce((n, g) => n + g.titles.length, 0),
+    groups,
+    noEstimate: pick((c) => c.availability === 'nocost' && !c.nonprofit),
+    nonprofitNoEstimate: pick((c) => c.availability === 'nocost' && c.nonprofit),
+    early: pick((c) => c.availability === 'early'),
+    closing: pick((c) => c.availability === 'closing' || c.availability === 'closed'),
+  };
 }

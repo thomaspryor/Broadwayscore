@@ -884,3 +884,64 @@ export function getRunningBoxOfficeV2(): ShowBoxOfficeV2[] {
   }
   return out;
 }
+
+/** The /box-office market line: this week's Broadway total vs the same week a year earlier. */
+export interface BoxOfficeV2Market {
+  week: string;
+  gross: number;
+  shows: number;
+  lastYearWeek: string | null;
+  lastYearGross: number | null;
+  lastYearShows: number | null;
+}
+
+function weekTotal(week: string): { gross: number; shows: number } | null {
+  const rows = grossesHistory.weeks[week];
+  if (!rows) return null;
+  let gross = 0;
+  let shows = 0;
+  for (const [slug, row] of Object.entries(rows)) {
+    if (!(row?.gross && row.gross > 0)) continue;
+    const show = rawShows.find((s) => s.slug === slug);
+    if (show && show.category !== 'broadway') continue;
+    gross += row.gross;
+    shows += 1;
+  }
+  return shows ? { gross, shows } : null;
+}
+
+/** Null when inputs are stale or the latest week has no grosses. */
+export function getBoxOfficeV2Market(): BoxOfficeV2Market | null {
+  if (getBoxOfficeV2StaleReasons().length) return null;
+  const week = WEEK_KEYS_NEWEST_FIRST[0];
+  const now = week ? weekTotal(week) : null;
+  if (!week || !now) return null;
+  const lastYearWeek = isoDayOffset(week, -364);
+  const prior = weekTotal(lastYearWeek);
+  return {
+    week,
+    gross: now.gross,
+    shows: now.shows,
+    lastYearWeek: prior ? lastYearWeek : null,
+    lastYearGross: prior?.gross ?? null,
+    lastYearShows: prior?.shows ?? null,
+  };
+}
+
+/** Everything /box-office needs, in one call the page gates on both flags. Null when nothing is rated (stale inputs). */
+export function getBoxOfficeV2Listing(tableSlugs: string[]): {
+  running: ShowBoxOfficeV2[];
+  bySlug: Record<string, ShowBoxOfficeV2>;
+  market: BoxOfficeV2Market | null;
+} | null {
+  const running = getRunningBoxOfficeV2();
+  if (!running.length) return null;
+  const bySlug: Record<string, ShowBoxOfficeV2> = {};
+  for (const r of running) bySlug[r.slug] = r;
+  for (const slug of tableSlugs) {
+    if (bySlug[slug]) continue;
+    const s = getShowBoxOfficeV2(slug);
+    if (s) bySlug[slug] = s;
+  }
+  return { running, bySlug, market: getBoxOfficeV2Market() };
+}

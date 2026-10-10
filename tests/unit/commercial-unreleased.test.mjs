@@ -122,7 +122,7 @@ test('the public demo build leaves prod-held flags off (boxOfficeV2 included)', 
 });
 
 test('v2 box-office data is computed only behind commercial AND boxOfficeV2', () => {
-  const v2Fns = ['getShowBoxOfficeV2', 'getRunningBoxOfficeV2'];
+  const v2Fns = ['getShowBoxOfficeV2', 'getRunningBoxOfficeV2', 'getBoxOfficeV2Listing', 'getBoxOfficeV2Market'];
   const call = new RegExp(`\\b(${v2Fns.join('|')})\\s*\\(`);
   const offenders = [];
   for (const file of ['src/app', 'src/components', 'src/lib'].flatMap((d) => walk(path.join(ROOT, d)))) {
@@ -141,12 +141,12 @@ test('v2 box-office data is computed only behind commercial AND boxOfficeV2', ()
 test('the v2 card is lazy-loaded, so its code stays out of every show page bundle', () => {
   // A static import puts the held feature's copy into the below-fold chunk
   // that every show page downloads, flag or no flag (BRO-5007 leak test).
-  const staticImport = /^\s*import\s+(?!type\b)[^;]*['"]@\/components\/BoxOfficeScorecardV2['"]/;
+  const staticImport = /^\s*import\s+(?!type\b)[^;]*['"]@\/components\/(BoxOfficeScorecardV2|BoxOfficeV2Tables)['"]/;
   const offenders = [];
   for (const file of ['src/app', 'src/components', 'src/lib'].flatMap((d) => walk(path.join(ROOT, d)))) {
     readFileSync(file, 'utf8').split('\n').forEach((line, i) => {
       if (staticImport.test(line)) offenders.push(`${path.relative(ROOT, file)}:${i + 1}`);
     });
   }
-  assert.deepEqual(offenders, [], `load BoxOfficeScorecardV2 with next/dynamic:\n${offenders.join('\n')}`);
+  assert.deepEqual(offenders, [], `load BoxOfficeScorecardV2 and BoxOfficeV2Tables with next/dynamic:\n${offenders.join('\n')}`);
 });

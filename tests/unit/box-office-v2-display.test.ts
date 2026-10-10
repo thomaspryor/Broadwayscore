@@ -8,14 +8,19 @@ import {
   basisLine,
   chartMode,
   costPill,
+  costStatusCell,
+  costTable,
   coverTiles,
+  formatMillions,
+  marketLine,
   multipleTicks,
+  statusCounts,
   shortSource,
   streakText,
   toBoxOfficeV2Card,
   trendText,
 } from '../../src/lib/box-office-v2-display';
-import { getRunningBoxOfficeV2 } from '../../src/lib/data-commercial';
+import { getRunningBoxOfficeV2, getBoxOfficeV2Listing, getBoxOfficeV2Market } from '../../src/lib/data-commercial';
 
 test('costPill: bands and special states', () => {
   assert.deepEqual(costPill({ availability: 'ok', band: 'below', closingDate: null }), { label: 'Below Cost', tone: 'below' });
@@ -90,4 +95,58 @@ test('real data: no card prints a banned source word, and the client card drops 
     const basis = basisLine(card) ?? '';
     assert.ok((basis.match(/\$/g) ?? []).length <= 1, `${r.slug}: two dollar figures in "${basis}"`);
   }
+});
+
+// ---- /box-office (Phase 3) ----
+
+type Card = NonNullable<Parameters<typeof costStatusCell>[0]>;
+const card = (over: Partial<Record<keyof Card, unknown>>): Card => ({
+  availability: 'ok', band: 'near', closingDate: null, multiple: { lo: 0.82, mid: 0.86, hi: 0.9 },
+  trend: 'declining', nonprofit: false, title: 'X', slug: 'x', ...over,
+}) as Card;
+
+test('marketLine: total, change vs same week last year, show counts', () => {
+  const m = marketLine({ week: '2026-10-04', gross: 27_740_000, shows: 28, lastYearWeek: '2025-10-05', lastYearGross: 31_430_000, lastYearShows: 27 });
+  assert.deepEqual(m, { gross: '$27.7M', changePct: 12, direction: 'down', lastYearGross: '$31.4M', shows: 28, lastYearShows: 27 });
+  assert.equal(marketLine({ week: 'w', gross: 1e6, shows: 3, lastYearWeek: null, lastYearGross: null, lastYearShows: null }).direction, null);
+  assert.equal(formatMillions(2_704_000), '$2.7M');
+});
+
+test('costStatusCell: rated rows get multiple, range and trend; others a dash', () => {
+  assert.deepEqual(costStatusCell(card({})), { label: 'Near Cost', tone: 'near', arrow: '↓', multiple: '0.86×', range: '0.82–0.90', sortValue: 0.86 });
+  assert.equal(costStatusCell(card({ trend: 'unknown' })).arrow, null);
+  assert.deepEqual(costStatusCell(undefined), { label: 'No estimate yet', tone: 'pending', arrow: null, multiple: null, range: null, sortValue: null });
+  assert.equal(costStatusCell(card({ availability: 'nocost', band: null, multiple: null, nonprofit: true })).label, 'Nonprofit · no estimate');
+  const early = costStatusCell(card({ availability: 'early', band: null }));
+  assert.equal(early.label, 'Too early');
+  assert.equal(early.multiple, null, 'no multiple without a status');
+});
+
+test('costTable: marks rated nonprofits, leaves unknown rows alone', () => {
+  const rows = [{ show: { slug: 'a', title: 'A' } }, { show: { slug: 'b', title: 'B' } }, { show: { slug: 'c', title: 'C' } }];
+  const t = costTable(rows, { a: card({ slug: 'a', nonprofit: true }), b: card({ slug: 'b', availability: 'nocost', band: null, multiple: null, nonprofit: true }) });
+  assert.deepEqual(t.thisWeek.map((r) => r.show.title), ['A (nonprofit)', 'B', 'C']);
+  assert.deepEqual(Object.keys(t.cells), ['a', 'b']);
+});
+
+test('statusCounts: four bands in order, unrated grouped by reason', () => {
+  const c = statusCounts([
+    card({ title: 'Ham', band: 'well-above' }), card({ title: 'MHE' }), card({ title: 'ST', band: 'below' }),
+    card({ title: 'TLK', availability: 'nocost', band: null }), card({ title: 'RH', availability: 'nocost', band: null, nonprofit: true }),
+    card({ title: 'ODC', availability: 'early', band: null }), card({ title: 'Fin', availability: 'closing', band: null }),
+  ]);
+  assert.deepEqual(c.groups.map((g) => [g.label, g.titles]), [['Well Above Cost', ['Ham']], ['Above Cost', []], ['Near Cost', ['MHE']], ['Below Cost', ['ST']]]);
+  assert.equal(c.rated, 3);
+  assert.deepEqual([c.noEstimate, c.nonprofitNoEstimate, c.early, c.closing], [['TLK'], ['RH'], ['ODC'], ['Fin']]);
+});
+
+test('real data: listing covers every running show, market matches the history file', () => {
+  const listing = getBoxOfficeV2Listing([]);
+  assert.ok(listing, 'listing is null (stale inputs?)');
+  const c = statusCounts(listing.running);
+  const total = c.rated + c.noEstimate.length + c.nonprofitNoEstimate.length + c.early.length + c.closing.length;
+  assert.equal(total, listing.running.length, 'every running show lands in exactly one bucket');
+  const m = getBoxOfficeV2Market();
+  assert.ok(m && m.gross > 5_000_000 && m.shows >= 10, `implausible market ${JSON.stringify(m)}`);
+  if (m.lastYearWeek) assert.equal(Date.parse(m.week) - Date.parse(m.lastYearWeek), 364 * 86_400_000);
 });
