@@ -467,5 +467,67 @@
       }
     ],
     "queuedAt": "2026-10-10T18:30:40.011Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4988-grosses-integrity",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4988-grosses-integrity",
+    "description": "land.yml did not land land/bro-4988-grosses-integrity: the unit-tests-node gate went red at 6515025c7c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38075037514",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4988-grosses-integrity"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "6515025c7c055f758fab8da61b3e30da11254ba4"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38075037514"
+      }
+    ],
+    "queuedAt": "2026-10-10T18:45:28.009Z"
+  },
+  {
+    "conditionKey": "opening-night-drift:into-the-woods-noel-coward-west-end-2026",
+    "title": "Opening night drift: Into the Woods (into-the-woods-noel-coward-west-end-2026)",
+    "description": "Review counts do not reconcile for Into the Woods (into-the-woods-noel-coward-west-end-2026): local review-texts=66, reviews.json aggregate=55, live production=55, drift=11 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38077127911",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Show",
+        "value": "Into the Woods (into-the-woods-noel-coward-west-end-2026)",
+        "inline": false
+      },
+      {
+        "name": "Counts",
+        "value": "local=66, aggregate=55, live=55, drift=11",
+        "inline": false
+      },
+      {
+        "name": "Opening",
+        "value": "2026-10-07",
+        "inline": false
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/38077127911)",
+        "inline": false
+      }
+    ],
+    "queuedAt": "2026-10-10T18:48:47.312Z"
   }
 ]

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-03T22:28:10.581Z",
+  "generatedAt": "2026-10-10T18:47:25.647Z",
   "shows": {
     "860": {
       "capitalization": null,
@@ -550,31 +550,31 @@
       "researchTrigger": "queued"
     },
     "death-of-a-salesman": {
-      "capitalization": 8900000,
-      "capitalizationSource": "trade-reported",
+      "capitalization": 8000000,
+      "capitalizationSource": "New York Times: Was Scott Rudin the Biggest Winner at This Year’s Tony Awards? ([monorepo-sample1.nyt.net](https://monorepo-sample1.nyt.net/2026/06/08/theater/scott-rudin-salesman-tony-awards.html?utm_source=openai))",
       "weeklyRunningCost": null,
       "costMethodology": null,
-      "recouped": null,
+      "recouped": false,
       "recoupedDate": null,
-      "recoupedSource": null,
+      "recoupedSource": "New York Times: Was Scott Rudin the Biggest Winner at This Year’s Tony Awards? ([monorepo-sample1.nyt.net](https://monorepo-sample1.nyt.net/2026/06/08/theater/scott-rudin-salesman-tony-awards.html?utm_source=openai))",
       "estimatedRecoupmentPct": null,
-      "designation": "TBD",
-      "notes": "Capitalized at $8.9 M; weekly operating costs and recoupment status not publicly reported.",
+      "designation": "Fizzle",
+      "notes": "Capitalized at $8 million and closed without recouping its capitalization after a 14-week limited run.",
       "confidence": "medium",
       "sources": [
         {
           "type": "trade",
-          "url": "https://uspropertymoves.com/broadway-box-office-death-of-a-salesman-cats-the-jellicle-ball-end-runs-on-a-high/",
-          "date": "2026-08-11"
+          "url": "https://monorepo-sample1.nyt.net/2026/06/08/theater/scott-rudin-salesman-tony-awards.html",
+          "date": "2026-06-08"
         }
       ],
       "title": "Death of a Salesman",
       "slug": "death-of-a-salesman",
       "openingDate": "2026-04-09",
       "status": "closed",
-      "researchedAt": "2026-10-03T21:57:54.189Z",
+      "researchedAt": "2026-10-10T18:40:36.819Z",
       "model": "o4-mini",
-      "researchTrigger": "backlog"
+      "researchTrigger": "manual"
     },
     "bug": {
       "recouped": true,
@@ -815,46 +815,41 @@
       "researchTrigger": "queued"
     },
     "dog-day-afternoon": {
-      "capitalization": null,
-      "capitalizationSource": "",
+      "capitalization": 9500000,
+      "capitalizationSource": "Broadway Journal investor docs cited in 'Easter Grosses Analysis - Week Ending April 5' reddit thread",
       "weeklyRunningCost": null,
       "costMethodology": null,
-      "recouped": null,
+      "recouped": false,
       "recoupedDate": null,
-      "recoupedSource": null,
+      "recoupedSource": "Reddit thread 'GROSSES ANALYSIS - Week Ending June 14'",
       "estimatedRecoupmentPct": null,
-      "designation": "TBD",
-      "notes": "No public information found on capitalization, weekly running cost or recoupment status.",
+      "designation": "Fizzle",
+      "notes": "Production budget was projected at $9.5M; show closed July 12, 2026 without recouping its capitalization.",
       "confidence": "low",
       "sources": [
         {
-          "type": "manual",
-          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
-          "date": "2025-08-09"
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/grosses/DOG-DAY-AFTERNOON",
+          "date": "2026-09-06"
         },
         {
           "type": "reddit",
-          "url": "https://www.reddit.com/r/Broadway/comments/1s8wz1w/im_an_investor_in_dog_day_afternoon/",
-          "date": "2026-03-31"
+          "url": "https://www.reddit.com/r/Broadway/comments/1u7m33w/grosses_analysis_week_ending_june_14_guest_fillin/",
+          "date": "2026-06-16"
         },
         {
-          "type": "sec",
-          "url": "https://app.edgar.tools/filing/1985790/0001985790-26-000002/formd",
-          "date": "2026-08-13"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadway.com/buzz/206214/dog-day-afternoon-starring-the-bears-jon-bernthal-ebon-moss-bachrach-announces-dates-and-theater/",
-          "date": "2025-10-01"
+          "type": "reddit",
+          "url": "https://www.reddit.com/r/Broadway/comments/1sf5swb/easter_grosses_analysis_week_ending_april_5/",
+          "date": "2026-04-05"
         }
       ],
       "title": "Dog Day Afternoon",
       "slug": "dog-day-afternoon",
       "openingDate": "2026-03-30",
       "status": "closed",
-      "researchedAt": "2026-10-03T22:11:40.161Z",
+      "researchedAt": "2026-10-10T18:43:13.206Z",
       "model": "o4-mini",
-      "researchTrigger": "backlog"
+      "researchTrigger": "manual"
     },
     "the-lost-boys": {
       "capitalization": 25000000,
@@ -901,7 +896,7 @@
       "recoupedSource": null,
       "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "No public data on capitalization, weekly nut, or recoupment status was found; insufficient information to evaluate financial outcome.",
+      "notes": "No public data found on capitalization or weekly running costs; show grossed $16.33M; recoupment status unknown.",
       "confidence": "low",
       "sources": [
         {
@@ -910,23 +905,18 @@
           "date": "2025-08-09"
         },
         {
-          "type": "reddit",
-          "url": "https://www.reddit.com/r/Broadway/comments/1udpbdv/grosses_analyses_week_ending_june_21/",
-          "date": "2026-06-21"
-        },
-        {
-          "type": "manual",
-          "url": "https://www.linkedin.com/pulse/investing-legacy-august-wilsons-joe-turners-come-gone-gayle-ufdne",
-          "date": "2026-05-06"
+          "type": "trade",
+          "url": "https://playbill.com/production/joe-turners-come-and-gone-broadway-ethel-barrymore-theatre-2026",
+          "date": "2026-07-26"
         }
       ],
       "title": "Joe Turner's Come and Gone",
       "slug": "joe-turners-come-and-gone",
       "openingDate": "2026-04-25",
       "status": "closed",
-      "researchedAt": "2026-10-03T22:00:09.560Z",
+      "researchedAt": "2026-10-10T18:41:29.169Z",
       "model": "o4-mini",
-      "researchTrigger": "backlog"
+      "researchTrigger": "manual"
     },
     "the-rocky-horror-show": {
       "capitalization": null,
@@ -999,67 +989,67 @@
       "costMethodology": null,
       "recouped": false,
       "recoupedDate": null,
-      "recoupedSource": null,
+      "recoupedSource": "r/Broadway GROSSES ANALYSIS Week Ending June 14, 2026",
       "estimatedRecoupmentPct": null,
-      "designation": "Flop",
-      "notes": "Closed June 28, 2026 after a 15-week run grossing $10M; did not recoup investment.",
+      "designation": "flop",
+      "notes": "Closed June 28, 2026 after a 15-week run grossing $10,008,153; no public data on capitalization or weekly cost; did not recoup.",
       "confidence": "low",
       "sources": [
         {
           "type": "trade",
           "url": "https://www.broadwayworld.com/grosses/THE-FEAR-OF-13",
-          "date": "2026-06-28"
+          "date": "2026-10-10"
+        },
+        {
+          "type": "reddit",
+          "url": "https://www.reddit.com/r/Broadway/comments/1u7m33w/grosses_analysis_week_ending_june_14_guest_fillin/",
+          "date": "2026-06-14"
         }
       ],
       "title": "The Fear of 13",
       "slug": "the-fear-of-13",
       "openingDate": "2026-04-15",
       "status": "closed",
-      "researchedAt": "2026-10-03T22:04:27.615Z",
+      "researchedAt": "2026-10-10T18:44:19.884Z",
       "model": "o4-mini",
-      "researchTrigger": "backlog"
+      "researchTrigger": "manual"
     },
     "celebrity-autobiography": {
       "capitalization": null,
-      "capitalizationSource": null,
+      "capitalizationSource": "Not publicly disclosed by production (Yahoo News Malaysia)",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": false,
       "recoupedDate": null,
-      "recoupedSource": null,
+      "recoupedSource": "Not publicly disclosed by production (Yahoo News Malaysia)",
       "estimatedRecoupmentPct": null,
-      "designation": "Flop",
-      "notes": "No public capitalization data; weekly gross peaked at $74,437; closed without recouping.",
-      "confidence": "medium",
+      "designation": "TBD",
+      "notes": "Closed early at Shubert, grossed ~$610,060, peaked at $111,087/week, did not recoup; no budget or weekly cost data available.",
+      "confidence": "low",
       "sources": [
         {
-          "type": "manual",
-          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "type": "trade",
+          "url": "https://malaysia.news.yahoo.com/struggling-celebrity-autobiography-announces-early-014344583.html",
           "date": null
         },
         {
-          "type": "reddit",
-          "url": "https://www.reddit.com/r/Broadway/comments/1u7m33w/grosses_analysis_week_ending_june_14_guest_fillin/",
-          "date": "2026-06-16"
+          "type": "trade",
+          "url": "https://www.broadway.com/buzz/207259/celebrity-autobiography-to-close-early-on-broadway/",
+          "date": "2026-06-15"
         },
         {
           "type": "trade",
-          "url": "https://www.amny.com/entertainment/broadway/ambroadway-celebrity-autobiography-to-close-early/",
-          "date": "2026-06-16"
-        },
-        {
-          "type": "trade",
-          "url": "https://nz.news.yahoo.com/struggling-celebrity-autobiography-announces-early-014344583.html",
-          "date": null
+          "url": "https://www.broadwayworld.com/grosses/celebrity-autobiography",
+          "date": "2026-06-21"
         }
       ],
       "title": "Celebrity Autobiography",
       "slug": "celebrity-autobiography",
       "openingDate": "2026-05-18",
       "status": "closed",
-      "researchedAt": "2026-09-26T22:18:36.923Z",
+      "researchedAt": "2026-10-10T18:45:43.302Z",
       "model": "o4-mini",
-      "researchTrigger": "backlog"
+      "researchTrigger": "manual"
     },
     "our-town": {
       "capitalization": null,
@@ -1945,6 +1935,46 @@
       "researchedAt": "2026-10-03T22:10:36.942Z",
       "model": "o4-mini",
       "researchTrigger": "backlog"
+    },
+    "beaches": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": 850000,
+      "costMethodology": "industry-estimate",
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": [
+        0,
+        0
+      ],
+      "designation": "Flop",
+      "notes": "No reliable public data on capitalization; weekly running cost estimated at $850k; show closed at a loss without recoupment.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-10"
+        },
+        {
+          "type": "reddit",
+          "url": "https://www.reddit.com/r/Broadway/comments/1sf5swb/easter_grosses_analysis_week_ending_april_5/",
+          "date": "2026-04-06"
+        },
+        {
+          "type": "trade",
+          "url": "https://broadwaydirect.com/beaches-to-close-on-broadway-this-month/",
+          "date": "2026-05-21"
+        }
+      ],
+      "title": "Beaches, A New Musical",
+      "slug": "beaches",
+      "openingDate": "2026-04-22",
+      "status": "closed",
+      "researchedAt": "2026-10-10T18:47:25.647Z",
+      "model": "o4-mini",
+      "researchTrigger": "manual"
     }
   },
   "lastUpdated": "2026-10-10T01:44:31.541Z"
