@@ -179,3 +179,24 @@ export const APPROACHING_MIN_LOW_PCT = 50;
 export function isApproachingRecoupment(range: [number, number, number] | null): boolean {
   return !!range && range[0] >= APPROACHING_MIN_LOW_PCT;
 }
+
+/**
+ * Broadway season for a given date
+ * Broadway seasons run July 1 - June 30
+ * Returns format: "2024-2025"
+ */
+export function getSeason(dateString: string | null | undefined): string | null {
+  if (!dateString) return null;
+
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return null;
+
+  const year = date.getFullYear();
+  const month = date.getMonth();
+
+  if (month >= 6) {
+    return `${year}-${year + 1}`;
+  } else {
+    return `${year - 1}-${year}`;
+  }
+}
