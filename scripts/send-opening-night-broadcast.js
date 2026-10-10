@@ -48,7 +48,7 @@ const {
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { showFormatTitle } = require('./lib/show-format');
-const { priorRunWindows, isCurrentRunReview } = require('./lib/prior-run-sibling');
+const { priorRunClassifier } = require('./lib/prior-run-sibling');
 
 const USAGE = `send-opening-night-broadcast.js — Creates a Resend DRAFT broadcast when a show opens and has enough reviews.
 
@@ -108,6 +108,10 @@ const SITE_NAME = siteNameForMarket(MARKET);
 const MIN_REVIEWS = isLondonMarket(MARKET) ? 8 : 12;
 const MIN_T1_REVIEWS = 3;
 const MIN_T2_REVIEWS = isLondonMarket(MARKET) ? 2 : 3;
+// BRO-4954: a transfer/return carries its earlier run's reviews, so it can clear the
+// gates above before anyone has reviewed THIS run. "The reviews are in" needs some
+// reviews of this run: half the total floor.
+const MIN_NEW_REVIEWS_RETURNING = Math.ceil(MIN_REVIEWS / 2);
 const MIN_HIGH_CONFIDENCE = isLondonMarket(MARKET) ? 6 : 8;
 
 
@@ -221,8 +225,8 @@ function getReviewStats(reviews, showId, market, show, shows) {
   const showReviews = (reviews || []).filter(r => r.showId === showId && Number.isFinite(r.assignedScore));
   // BRO-4954: a returning production carries its earlier run's reviews; count the
   // ones written about THIS run so the email can say how many are new.
-  const windows = show && Array.isArray(show.priorRuns) && show.priorRuns.length ? priorRunWindows(show, shows) : [];
-  const newReviewCount = windows.length ? showReviews.filter(r => isCurrentRunReview(r, windows)).length : null;
+  const runs = show && Array.isArray(show.priorRuns) && show.priorRuns.length ? priorRunClassifier(show, shows) : null;
+  const newReviewCount = runs && runs.windows.length ? showReviews.filter(runs.isCurrent).length : null;
   const goldThreshold = isLondonMarket(market) ? 85 : 83;
   let rave = 0, positive = 0, mixed = 0, negative = 0;
 
@@ -441,10 +445,11 @@ async function main() {
     const t1Ok = t1Count >= MIN_T1_REVIEWS;
     const t2Ok = t2Count >= MIN_T2_REVIEWS;
     const confOk = highConfCount >= MIN_HIGH_CONFIDENCE;
+    const newOk = stats.newReviewCount == null || stats.newReviewCount >= MIN_NEW_REVIEWS_RETURNING;
 
-    if (totalOk && t1Ok && t2Ok && confOk) {
+    if (totalOk && t1Ok && t2Ok && confOk && newOk) {
       readyShows.push({ show, stats, t1Count, t2Count, t3Count });
-      console.log(`  ✅ ${show.title}: ${stats.reviewCount} reviews (T1:${t1Count} T2:${t2Count} T3:${t3Count}, hi-conf:${highConfCount})`);
+      console.log(`  ✅ ${show.title}: ${stats.reviewCount} reviews${stats.newReviewCount != null ? ` (${stats.newReviewCount} of this run)` : ''} (T1:${t1Count} T2:${t2Count} T3:${t3Count}, hi-conf:${highConfCount})`);
     } else if (FORCE_CREATE_DRAFT) {
       readyShows.push({ show, stats, t1Count, t2Count, t3Count });
       const reasons = [];
@@ -452,6 +457,7 @@ async function main() {
       if (!t1Ok) reasons.push(`T1:${t1Count}/${MIN_T1_REVIEWS}`);
       if (!t2Ok) reasons.push(`T2:${t2Count}/${MIN_T2_REVIEWS}`);
       if (!confOk) reasons.push(`hi-conf:${highConfCount}/${MIN_HIGH_CONFIDENCE}`);
+      if (!newOk) reasons.push(`this-run:${stats.newReviewCount}/${MIN_NEW_REVIEWS_RETURNING}`);
       console.log(`  ⚠️  ${show.title}: gate failed (${reasons.join(', ')}) — bypassed by --force-create-draft. Draft will be created for manual review.`);
     } else {
       const reasons = [];
@@ -459,6 +465,7 @@ async function main() {
       if (!t1Ok) reasons.push(`T1:${t1Count}/${MIN_T1_REVIEWS}`);
       if (!t2Ok) reasons.push(`T2:${t2Count}/${MIN_T2_REVIEWS}`);
       if (!confOk) reasons.push(`hi-conf:${highConfCount}/${MIN_HIGH_CONFIDENCE}`);
+      if (!newOk) reasons.push(`this-run:${stats.newReviewCount}/${MIN_NEW_REVIEWS_RETURNING}`);
       console.log(`  ⏳ ${show.title}: Not ready — ${reasons.join(', ')} (T1:${t1Count} T2:${t2Count} T3:${t3Count}, hi-conf:${highConfCount})`);
     }
   }
