@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-10T09:35:51.312Z",
+  "timestamp": "2026-10-10T09:58:18.414Z",
   "stats": {
-    "totalReviews": 53774,
-    "alreadyFlagged": 19768,
-    "dateGuardCatches": 265,
-    "directorMismatch": 1670,
-    "tvFilmSignals": 1556,
-    "londonSignals": 1770,
+    "totalReviews": 53794,
+    "alreadyFlagged": 19784,
+    "dateGuardCatches": 264,
+    "directorMismatch": 1671,
+    "tvFilmSignals": 1557,
+    "londonSignals": 1772,
     "offBroadwaySignals": 512,
     "yearMismatch": 128,
-    "noPublishDate": 5933
+    "noPublishDate": 5922
   },
   "findings": [
     {
@@ -2800,6 +2800,20 @@
     },
     {
       "showId": "anna-x-west-end-2021",
+      "file": "a-younger-theatre--unknown.json",
+      "score": null,
+      "publishDate": "2021-07-18",
+      "url": "https://www.ayoungertheatre.com/review-anna-x-harold-pinter-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "anna-x-west-end-2021",
       "file": "daily-mail--patrick-marmion.json",
       "score": 63,
       "publishDate": "2021-07-19",
@@ -3501,6 +3515,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "be-more-chill-west-end-2021",
+      "file": "british-theatre--unknown.json",
+      "publishDate": "2021-08-10",
+      "url": "https://www.britishtheatre.com/shows/be-more-chill/articles",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen brackett\" from be-more-chill-2019"
         }
       ]
     },
@@ -43943,20 +43970,6 @@
       ]
     },
     {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 82,
-      "publishDate": "2023-02-07",
-      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
-        }
-      ]
-    },
-    {
       "showId": "tootsie-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 77,
@@ -65313,6 +65326,20 @@
     },
     {
       "showId": "paradise-west-end-2021",
+      "file": "a-younger-theatre--unknown.json",
+      "score": 90,
+      "publishDate": "2021-08-15",
+      "url": "https://www.ayoungertheatre.com/review-paradise-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "paradise-west-end-2021",
       "file": "london-theatre--matt-wolf.json",
       "score": 94,
       "publishDate": "2021-08-13",
@@ -66245,6 +66272,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "rockets-and-blue-lights-west-end-2021",
+      "file": "independent--paul-taylor.json",
+      "score": 96,
+      "publishDate": "2021-09-03",
+      "url": "https://www.independent.co.uk/independentpremium/culture/rockets-and-blue-lights-review-national-theatre-b1913865.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
