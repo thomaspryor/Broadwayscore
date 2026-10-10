@@ -1,39 +1,104 @@
 {
   "processed": [
-    "all-male-as-you-like-it-regional-2026/nytimes--helen-shaw.json",
-    "all-male-as-you-like-it-regional-2026/telegraph--unknown.json"
+    "the-comeback-west-end-2020/variety--unknown.json",
+    "the-comeback-west-end-2020/a-younger-theatre--unknown.json",
+    "the-comeback-west-end-2020/bestoftheatre--unknown.json",
+    "the-comeback-west-end-2020/i-paper--unknown.json",
+    "a-christmas-carol-west-end-2020/nytimes--unknown.json",
+    "a-christmas-carol-west-end-2020/variety--unknown.json",
+    "a-christmas-carol-west-end-2020/thereviewshub--unknown.json",
+    "a-christmas-carol-west-end-2020/a-younger-theatre--unknown.json",
+    "a-christmas-carol-west-end-2020/i-paper--unknown.json",
+    "a-christmas-carol-west-end-2020/london-theatre--unknown.json",
+    "a-christmas-carol-west-end-2020/the-spectator-uk--unknown.json",
+    "a-christmas-carol-west-end-2020/times-uk--unknown.json",
+    "death-drop-west-end-2020/thereviewshub--unknown.json",
+    "death-drop-west-end-2020/all-that-dazzles-uk--unknown.json",
+    "death-drop-west-end-2020/london-box-office--unknown.json",
+    "death-drop-west-end-2020/london-theatre--unknown.json",
+    "death-of-england-delroy-west-end-2020/fringereview--unknown.json",
+    "death-of-england-delroy-west-end-2020/thereviewshub--unknown.json",
+    "death-of-england-delroy-west-end-2020/a-younger-theatre--unknown.json",
+    "death-of-england-delroy-west-end-2020/all-that-dazzles-uk--unknown.json",
+    "death-of-england-delroy-west-end-2020/cultural-capital--unknown.json",
+    "death-of-england-delroy-west-end-2020/i-paper--unknown.json",
+    "death-of-england-delroy-west-end-2020/the-spectator-uk--unknown.json"
   ],
   "failed": [
-    "all-male-as-you-like-it-regional-2026/times-uk--clive-davis.json"
+    "the-comeback-west-end-2020/guardian--brian-logan.json",
+    "the-comeback-west-end-2020/londontheatre1--unknown.json",
+    "a-christmas-carol-west-end-2020/guardian--unknown.json",
+    "a-christmas-carol-west-end-2020/londontheatre1--unknown.json",
+    "a-christmas-carol-west-end-2020/sierz-co-uk--unknown.json",
+    "a-christmas-carol-west-end-2020/thestage--unknown.json",
+    "death-drop-west-end-2020/times-uk--unknown.json",
+    "death-of-england-delroy-west-end-2020/indiependent--unknown.json",
+    "death-of-england-delroy-west-end-2020/londontheatre1--unknown.json",
+    "death-of-england-delroy-west-end-2020/sierz-co-uk--unknown.json",
+    "death-of-england-delroy-west-end-2020/theatre-weekly--owain-rose.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
-    "amp": [],
+    "playwright": [
+      "the-comeback-west-end-2020/bestoftheatre--unknown.json",
+      "the-comeback-west-end-2020/i-paper--unknown.json",
+      "a-christmas-carol-west-end-2020/thereviewshub--unknown.json",
+      "a-christmas-carol-west-end-2020/i-paper--unknown.json",
+      "a-christmas-carol-west-end-2020/london-theatre--unknown.json",
+      "a-christmas-carol-west-end-2020/thestage--unknown.json",
+      "death-drop-west-end-2020/thereviewshub--unknown.json",
+      "death-drop-west-end-2020/all-that-dazzles-uk--unknown.json",
+      "death-drop-west-end-2020/london-box-office--unknown.json",
+      "death-drop-west-end-2020/london-theatre--unknown.json",
+      "death-of-england-delroy-west-end-2020/fringereview--unknown.json",
+      "death-of-england-delroy-west-end-2020/thereviewshub--unknown.json",
+      "death-of-england-delroy-west-end-2020/all-that-dazzles-uk--unknown.json",
+      "death-of-england-delroy-west-end-2020/cultural-capital--unknown.json",
+      "death-of-england-delroy-west-end-2020/i-paper--unknown.json"
+    ],
+    "amp": [
+      "data/review-texts/the-comeback-west-end-2020/variety--unknown.json",
+      "the-comeback-west-end-2020/variety--unknown.json",
+      "data/review-texts/a-christmas-carol-west-end-2020/variety--unknown.json",
+      "a-christmas-carol-west-end-2020/variety--unknown.json"
+    ],
     "browserbase": [
-      "data/review-texts/all-male-as-you-like-it-regional-2026/nytimes--helen-shaw.json",
-      "all-male-as-you-like-it-regional-2026/nytimes--helen-shaw.json"
+      "data/review-texts/a-christmas-carol-west-end-2020/nytimes--unknown.json",
+      "a-christmas-carol-west-end-2020/nytimes--unknown.json"
     ],
     "directCookies": [],
-    "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingdog": [
+      "the-comeback-west-end-2020/a-younger-theatre--unknown.json",
+      "the-comeback-west-end-2020/londontheatre1--unknown.json",
+      "a-christmas-carol-west-end-2020/a-younger-theatre--unknown.json",
+      "a-christmas-carol-west-end-2020/londontheatre1--unknown.json",
+      "a-christmas-carol-west-end-2020/sierz-co-uk--unknown.json",
+      "death-of-england-delroy-west-end-2020/a-younger-theatre--unknown.json",
+      "death-of-england-delroy-west-end-2020/londontheatre1--unknown.json",
+      "death-of-england-delroy-west-end-2020/sierz-co-uk--unknown.json"
+    ],
+    "scrapingbee": [
+      "a-christmas-carol-west-end-2020/times-uk--unknown.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "all-male-as-you-like-it-regional-2026/telegraph--unknown.json"
+      "a-christmas-carol-west-end-2020/the-spectator-uk--unknown.json",
+      "death-of-england-delroy-west-end-2020/indiependent--unknown.json",
+      "death-of-england-delroy-west-end-2020/the-spectator-uk--unknown.json"
     ]
   },
-  "startTime": "2026-10-10T06:36:20.283Z",
-  "lastProcessed": "all-male-as-you-like-it-regional-2026/times-uk--clive-davis.json",
+  "startTime": "2026-10-10T07:36:29.301Z",
+  "lastProcessed": "death-of-england-delroy-west-end-2020/theatre-weekly--owain-rose.json",
   "log": [
     {
-      "t": "2026-10-10T06:36:41.714Z",
+      "t": "2026-10-10T07:39:20.902Z",
       "event": "bb-session",
-      "session": "a7878a0e",
-      "url": "https://www.nytimes.com/2026/10/07/theater/as-you-like-it-review-jonathan-groff."
+      "session": "c4fc6e97",
+      "url": "https://www.nytimes.com/2020/12/18/theater/christmas-carol-review-andrew-lincoln"
     },
     {
-      "t": "2026-10-10T06:36:42.416Z",
+      "t": "2026-10-10T07:39:21.648Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
