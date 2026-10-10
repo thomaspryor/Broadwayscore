@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4956-h",
   "planId": "2332a056-d6d8-484b-ad8b-5fde9230b940",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-10T08:00:00.000Z",
   "submitter": {
     "name": null,
@@ -62,5 +62,43 @@
         "description": "Plays International & Europe, Louise Penn, 4 stars (listed in the Best of Theatre round-up)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-10T08:16:04.109Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved darkling-off-west-end-2026/london-theatre-reviews--unknown.json → _superseded-misattributed/darkling-off-west-end-2026--london-theatre-reviews--unknown--venue-false-positive-2026-10-10.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved man-to-man-west-end-2026/all-that-dazzles-uk--all-that-dazzles.json → _superseded-misattributed/man-to-man-west-end-2026--all-that-dazzles-uk--all-that-dazzles--preview-false-positive-2026-10-10.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved million-dollar-quartet-off-west-end-2026/whatsonstage--andy-plaice.json → _superseded-misattributed/million-dollar-quartet-off-west-end-2026--whatsonstage--andy-plaice--stale-tour-news-slot-2026-10-10.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved jane-eyre-off-west-end-2026/plays-international--unknown.json → _superseded-misattributed/jane-eyre-off-west-end-2026--plays-international--unknown--nonreview-false-positive-2026-10-10.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ]
 }
