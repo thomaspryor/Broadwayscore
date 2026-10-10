@@ -18,7 +18,7 @@
 const OWN_INFERENCE = /^\s*(inferred|estimated)\b/i;
 
 /**
- * @returns {null | { kind: 'reported-pct'|'recouped'|'failed', lo: number, hi: number, source: string }}
+ * @returns {null | { kind: 'reported-pct'|'recouped'|'failed', lo: number, hi: number, source: string, asOf?: string }}
  */
 function groundTruth(comm, show, now = new Date()) {
   if (!comm) return null;
@@ -27,7 +27,8 @@ function groundTruth(comm, show, now = new Date()) {
   const basis = comm.estimatedRecoupmentSource || comm.notes;
   if (Array.isArray(est) && est.length === 2 && est.every((v) => typeof v === 'number')
     && basis && !OWN_INFERENCE.test(basis)) {
-    return { kind: 'reported-pct', lo: Math.min(...est), hi: Math.max(...est), source: String(basis) };
+    const asOf = /^\d{4}-\d{2}-\d{2}$/.test(comm.estimatedRecoupmentDate || '') ? comm.estimatedRecoupmentDate : null;
+    return { kind: 'reported-pct', lo: Math.min(...est), hi: Math.max(...est), source: String(basis), ...(asOf ? { asOf } : {}) };
   }
   if (comm.recouped === true && comm.recoupedSource) {
     return { kind: 'recouped', lo: 100, hi: Infinity, source: String(comm.recoupedSource) };

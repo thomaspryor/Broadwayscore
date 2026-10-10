@@ -22,13 +22,17 @@ const { liveModelRun } = require('./lib/model-drift');
 const { makeGrossesLookup } = require('./lib/grosses-lookup');
 const { groundTruth, rangeError, category, summarize, worseGroups } = require('./lib/recoupment-ground-truth');
 
-const KNOWN_OPTS = ['previewsFromWeekly', 'playedWeeksOnly', 'eraAdjust'];
+const KNOWN_OPTS = ['previewsFromWeekly', 'playedWeeksOnly', 'eraAdjust', 'taxCreditCitedOnly'];
 const args = process.argv.slice(2);
-const USAGE = `Usage: node scripts/backtest-recoupment-ground-truth.js --opt=${KNOWN_OPTS.join('|')} [--opt=...] [--json] [--strict]`;
+const USAGE = `Usage: node scripts/backtest-recoupment-ground-truth.js --opt=${KNOWN_OPTS.join('|')} [--opt=...] [--as-of-report] [--displayed] [--json] [--strict]`;
 if (require('./lib/cli-help').hasHelpFlag(args)) { console.log(USAGE); process.exit(0); }
 const names = args.filter((a) => a.startsWith('--opt=')).map((a) => a.slice(6));
 if (!names.length || names.some((n) => !KNOWN_OPTS.includes(n))) { console.error(USAGE); process.exit(2); }
 const OPTS = Object.fromEntries(names.map((n) => [n, true]));
+const AS_OF_REPORT = args.includes('--as-of-report');
+// --displayed: score what an investor bar would show, which never goes below 0.
+const DISPLAYED = args.includes('--displayed');
+const shown = (pct) => (DISPLAYED ? Math.max(0, pct) : pct);
 
 const DATA = path.join(__dirname, '..', 'data');
 const dataFile = (f) => (fs.existsSync(path.join(DATA, f)) ? path.join(DATA, f) : path.join(os.homedir(), 'broadway-scorecard-data', f));
@@ -47,16 +51,20 @@ for (const [key, comm] of Object.entries(commercial)) {
   if (!show) { skipped.noShow++; continue; }
   const truth = groundTruth(comm, show);
   if (!truth) continue;
-  const live = liveModelRun(show, comm, L);
-  const fixed = liveModelRun(show, comm, L, OPTS);
+  // --as-of-report: score a dated reported range against the model as it
+  // stood on that date (both sides), so later grosses don't count against it.
+  const at = AS_OF_REPORT && truth.asOf ? { asOf: truth.asOf } : {};
+  const live = liveModelRun(show, comm, L, at);
+  const fixed = liveModelRun(show, comm, L, { ...OPTS, ...at });
+  if (at.asOf && live.tier !== 'weekly-model') { skipped.noModel++; continue; }
   if (!live.result || !fixed.result) { skipped.noModel++; continue; }
-  const oldPct = live.result.recoupmentPctCentral;
-  const newPct = fixed.result.recoupmentPctCentral;
+  const oldPct = shown(live.result.recoupmentPctCentral);
+  const newPct = shown(fixed.result.recoupmentPctCentral);
   rows.push({
     slug: key, kind: truth.kind, ...category(show),
     truth: [truth.lo, truth.hi], oldPct, newPct,
     oldErr: rangeError(oldPct, truth), newErr: rangeError(newPct, truth),
-    source: truth.source.slice(0, 80),
+    source: truth.source.slice(0, 80), ...(at.asOf ? { asOf: at.asOf } : {}),
   });
 }
 
@@ -65,7 +73,7 @@ const worse = worseGroups(summary);
 if (args.includes('--json')) {
   console.log(JSON.stringify({ opts: OPTS, summary, worse, skipped, rows }, null, 2));
 } else {
-  console.log(`Ground-truth backtest, opts ${names.join(', ')}: ${rows.length} shows with a reported outcome and a model run (skipped ${skipped.noShow} unmatched, ${skipped.noModel} with no model run)`);
+  console.log(`Ground-truth backtest, opts ${names.join(', ')}${AS_OF_REPORT ? ', dated ranges scored as of their report date' : ''}${DISPLAYED ? ', displayed value (floored at 0)' : ''}: ${rows.length} shows with a reported outcome and a model run (skipped ${skipped.noShow} unmatched, ${skipped.noModel} with no model run)`);
   console.log('group                n   old MAE  new MAE  old median  new median  old inside  new inside');
   for (const [g, s] of Object.entries(summary)) {
     console.log(`${g.padEnd(20)} ${String(s.n).padStart(3)}  ${String(s.oldMae).padStart(7)}  ${String(s.newMae).padStart(7)}  ${String(s.oldMedian).padStart(10)}  ${String(s.newMedian).padStart(10)}  ${String(s.oldInside).padStart(10)}  ${String(s.newInside).padStart(10)}`);

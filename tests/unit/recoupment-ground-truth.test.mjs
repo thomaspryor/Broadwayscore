@@ -17,6 +17,11 @@ describe('groundTruth', () => {
     assert.equal(groundTruth({ estimatedRecoupmentPct: [30, 45], estimatedRecoupmentSource: 'Inferred: ~9 months run' }, {}), null);
     assert.equal(groundTruth({ estimatedRecoupmentPct: [30, 45], notes: 'Estimated: weekly profit x weeks' }, {}), null);
   });
+  test('carries a dated report as asOf (for --as-of-report)', () => {
+    const c = { estimatedRecoupmentPct: [10, 30], estimatedRecoupmentSource: 'Reddit grosses analysis' };
+    assert.equal(groundTruth({ ...c, estimatedRecoupmentDate: '2026-02-18' }, closed).asOf, '2026-02-18');
+    assert.equal('asOf' in groundTruth({ ...c, estimatedRecoupmentDate: 'Feb 2026' }, closed), false);
+  });
   test('falls back to notes for the basis', () => {
     assert.equal(groundTruth({ estimatedRecoupmentPct: [10, 20], notes: 'Produced by X; NYT says part way' }, closed).kind, 'reported-pct');
   });

@@ -20,6 +20,7 @@
 const { isCitedReportedWeeklyCost, REPORTED_COST_METHODOLOGIES } = require('./waltz-cost-gap-fill');
 const { previewWeeksFromWeekly } = require('./preview-weeks');
 const { runWindow, COVID_DARK_START, COVID_DARK_END } = require('./run-window');
+const { taxCreditCited } = require('./tax-credit-cited');
 
 // ---------------------------------------------------------------------------
 // Constants & Defaults
@@ -426,6 +427,19 @@ function getPreviewGrossMultiplier(previewWeek) {
 function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, opts = {}) {
   const warnings = [];
 
+  // Backtest only (BRO-4989): run the model as it stood on a past date
+  // (a reported figure's as-of date): weekly rows after it are dropped, the
+  // run ends there, and a show still running then is treated as running.
+  const asOf = opts.asOf ? new Date(opts.asOf) : null;
+  if (asOf) {
+    if (Number.isNaN(asOf.getTime())) return { error: 'Bad asOf date', warnings: ['Bad asOf date'] };
+    const iso = asOf.toISOString().slice(0, 10);
+    grossesWeekly = Object.fromEntries(Object.entries(grossesWeekly || {}).filter(([d]) => d <= iso));
+    if (!Object.keys(grossesWeekly).length) return { error: 'No weekly grosses before asOf', warnings: ['No weekly grosses before asOf'] };
+    grossesAllTime = null; // a cumulative total cannot be cut at a date
+  }
+  const now = asOf || new Date();
+
   // --- Inputs ---
   const capitalization = commercial.capitalization;
   if (!capitalization) {
@@ -459,7 +473,7 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   // Credit = 25% of qualified production + operating costs (first year),
   // capped at $3M — Broadway-scale shows nearly always hit the cap.
   const notesCredit = parseTaxCreditFromNotes(commercial.notes);
-  const runEndForCredit = show.closingDate ? new Date(show.closingDate) : new Date();
+  const runEndForCredit = show.closingDate && new Date(show.closingDate) < now ? new Date(show.closingDate) : now;
   const runStartForCredit = show.openingDate ? new Date(show.openingDate) : null;
   // Undated shows can't prove eligibility — no credit rather than a $3M gift
   const eligibleForTaxCredit = !!runStartForCredit &&
@@ -476,7 +490,7 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   const effectiveCap = Math.max(capitalization - svogGrant + reserveFund, reserveFund);
   // Tax credit timing: for closed shows, apply at closing (credit is eventual certainty).
   // For running shows, lag 18 months from opening.
-  const isClosed = show.closingDate && new Date(show.closingDate) < new Date();
+  const isClosed = show.closingDate && new Date(show.closingDate) < now;
   const taxCreditWeek = isClosed ? Infinity : TAX_CREDIT_LAG_WEEKS; // Infinity = applied at end
 
   // The reserve delays WHEN recoupment is declared (recoup-week threshold) but
@@ -489,21 +503,26 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
     : effectiveCap;
 
   // --- Run window: preview weeks and weeks played (scripts/lib/run-window.js) ---
-  const { previewWeeks, totalRunWeeks, darkWeeks } = runWindow(show, { playedOnly: !!opts.playedWeeksOnly });
+  const { previewWeeks, totalRunWeeks, darkWeeks } = runWindow(show, { now, playedOnly: !!(opts.playedWeeksOnly || asOf) });
   if (darkWeeks > 0) warnings.push(`Excluded ${darkWeeks} COVID dark weeks`);
 
   // Tax credit amount (needs run length): 25% of cap + first-year running costs.
   // notesCredit is null when the notes say nothing usable, 0 when they say the
   // credit was NOT received (BRO-4623: All Out), or a parsed dollar amount.
-  const taxCreditAmount = notesCredit !== null
+  const expectedTaxCredit = notesCredit !== null
     ? notesCredit
     : (eligibleForTaxCredit
         ? Math.min(TAX_CREDIT_RATE * (capitalization + weeklyNut * Math.min(Math.max(totalRunWeeks, 0), 52)), TAX_CREDIT_MAX)
         : 0);
+  // Shadow (BRO-4989): count the credit only once a source says it was received.
+  const taxCreditExcluded = opts.taxCreditCitedOnly && !taxCreditCited(commercial).cited ? expectedTaxCredit : 0;
+  const taxCreditAmount = expectedTaxCredit - taxCreditExcluded;
   if (notesCredit === 0) {
     warnings.push(NO_TAX_CREDIT_FROM_NOTES_WARNING);
-  } else if (!taxCreditAmount) {
+  } else if (!expectedTaxCredit) {
     warnings.push('No NY tax credit (run outside 2021-2027 program window)');
+  } else if (taxCreditExcluded) {
+    warnings.push(`Not counting an expected NY tax credit of up to $${(taxCreditExcluded / 1e6).toFixed(1)}M (not cited as received)`);
   }
 
   // --- Build weekly gross schedule ---
@@ -615,6 +634,7 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
     capitalization,
     svogGrant,
     taxCreditAmount,
+    ...(opts.taxCreditCitedOnly ? { taxCreditExcluded } : {}),
     reserveFund: Math.round(reserveFund),
     effectiveCapitalization: Math.round(effectiveCap),
     weeklyFixedCosts: weeklyNut,
@@ -898,9 +918,12 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}
   // formula so long-runner estimates do not churn.
   const notesCredit = parseTaxCreditFromNotes(commercial.notes);
   if (notesCredit === 0) warnings.push(NO_TAX_CREDIT_FROM_NOTES_WARNING);
-  const taxCredit = (closedBeforeCreditProgram || notesCredit === 0)
+  const expectedTaxCredit = (closedBeforeCreditProgram || notesCredit === 0)
     ? 0
     : Math.min(TAX_CREDIT_RATE * (capitalization + weeklyNut * 52), TAX_CREDIT_MAX);
+  // Shadow (BRO-4989): same cited-only rule as the weekly model.
+  const taxCreditExcluded = opts.taxCreditCitedOnly && !taxCreditCited(commercial).cited ? expectedTaxCredit : 0;
+  const taxCredit = expectedTaxCredit - taxCreditExcluded;
 
   // Run duration
   const openDate = show.openingDate ? new Date(show.openingDate) : null;
@@ -974,6 +997,7 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}
     capitalization,
     svogGrant,
     taxCreditAmount: taxCredit,
+    ...(opts.taxCreditCitedOnly ? { taxCreditExcluded } : {}),
     reserveFund: Math.round(reserveFund),
     effectiveCapitalization: Math.round(effectiveCap),
     weeklyFixedCosts: weeklyNut,
