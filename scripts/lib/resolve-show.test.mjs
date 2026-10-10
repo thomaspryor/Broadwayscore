@@ -219,6 +219,19 @@ test('labelShowCandidates never renders a literal "(undefined)" for a missing ca
   assert.ok(labels.every((l) => !l.includes('undefined')), `labels leaked undefined: ${labels}`);
 });
 
+test("extractShowTitlesFromText reads 'n' as and and drops titles only nested in a longer match (BRO-4953)", () => {
+  const shows = [
+    { id: 'the-heart-off-broadway-2026', title: 'The Heart' },
+    { id: 'heart-of-rock-and-roll-2024', title: 'The Heart of Rock and Roll' },
+    { id: 'rock-n-roll-2007', title: "Rock 'n' Roll" },
+  ];
+  const msg = "The reviews on the page for The Heart are actually reviews for The Heart of Rock 'n' Roll";
+  assert.deepEqual(extractShowTitlesFromText(msg, shows).sort(), ['The Heart', 'The Heart of Rock and Roll']);
+  // A standalone mention of the nested title keeps it.
+  const both = "Rock 'n' Roll at the Royal Court, not The Heart of Rock and Roll";
+  assert.deepEqual(extractShowTitlesFromText(both, shows).sort(), ["Rock 'n' Roll", 'The Heart of Rock and Roll']);
+});
+
 test('labelShowCandidates appends category only when candidates span more than one', () => {
   const shows = [
     { id: 'tour-a', title: 'A', category: 'tour' },
