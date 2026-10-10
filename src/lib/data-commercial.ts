@@ -825,7 +825,7 @@ export function getRunningBoxOfficeV2(): ShowBoxOfficeV2[] {
     const historyKeys = new Set<string>();
     for (const w of Object.values(grossesHistory.weeks)) for (const k of Object.keys(w)) historyKeys.add(k);
     const noHistory = Object.keys(commercial.shows).filter((k) => !historyKeys.has(k));
-    console.log(`[box-office-v2] running shows: ${JSON.stringify(countStatuses(out))}; commercial records with no grosses history (${noHistory.length}): ${noHistory.join(', ')}`);
+    console.warn(`[box-office-v2] running shows: ${JSON.stringify(countStatuses(out))}; commercial records with no grosses history (${noHistory.length}): ${noHistory.join(', ')}`);
   }
   return out;
 }
