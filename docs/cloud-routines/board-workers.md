@@ -29,7 +29,11 @@ running from an earlier firing.
    each card, gates every result on a Claude check, lands what passes and
    returns the rest to Todo. Do not touch .claude/worktrees/codex-runner.
 
-## 2. Claude lane (up to 3 cards, in your own worktrees)
+## 2. Claude lane (up to 4 cards, in your own worktrees)
+
+Never sit idle while a landing is checked (about 15-30 minutes): push it, start
+its waiter in the background, and go straight to the next card. Step 6 runs
+for each card once its waiter reports.
 
 For each card:
 
@@ -39,9 +43,13 @@ For each card:
    `"action": "noop"` or a failure means the Codex lane or another worker has
    it: pick again once, then stop this lane.
 3. Read the full card. FIRST check it is still true on current main (run its
-   VERIFY, grep the code it names). Already fixed or obsolete: close it
-   (`node scripts/linear-brain.js update <id> --state Done --comment "Already fixed on main: <evidence> PR-EVIDENCE: merged deployed checked (<commit url>)"`,
-   or cancel with a reason) and move on.
+   VERIFY, grep the code it names). Already fixed: close it with a check the
+   Done gate re-runs on fresh main, either the card's own acceptance command
+   or a test that proves it:
+   `node scripts/linear-brain.js update <id> --state Done --comment "Already fixed on main: <evidence>` + a blank line + `VERIFY: <node --test command>"`
+   (or `PR-EVIDENCE: merged deployed checked (<commit url>)` when you have the
+   commit). A refusal saying the command did not pass means it is NOT fixed:
+   work it. Obsolete: cancel with a reason. Then move on.
 4. Otherwise fix it in a new worktree on a fresh branch from current
    origin/main, following CLAUDE.md: tsc/lint/tests for what you touched,
    scoring-delta checks if scoring files change, a review-panelist subagent
@@ -53,8 +61,9 @@ For each card:
 5. Land: a commit holding ONLY your files on a branch from current origin/main
    (never `git reset --soft` over a failed merge),
    `git push origin HEAD:refs/heads/land/bro-<N>-<short-name>`, then
-   `node scripts/lib/wait-for-land.js land/<name> 58` in the background. If
-   refused, read the run log, fix, push the same ref again.
+   `node scripts/lib/wait-for-land.js land/<name> 58` in the background, and
+   pick the next card now. When a waiter reports a refusal, read the run log,
+   fix, push the same ref again.
 6. After it lands, re-run the card's VERIFY on fresh main. Passes:
    `node scripts/linear-brain.js update <id> --state Done --comment "<Outcome + PR-EVIDENCE: merged deployed checked (<commit url>)>"`.
    Otherwise `node scripts/linear-session.js report --issue=<id> --status=paused --summary="<what is left and why>"`
@@ -63,7 +72,8 @@ For each card:
 
 ## 3. Finish
 
-Before replying, wait for the Codex lane to exit (check /tmp/codex-run.log
+Before replying, wait for every land waiter you started (finish step 6 for
+each) and for the Codex lane to exit (check /tmp/codex-run.log
 every few minutes, never in a tight loop) and read its "## Codex runner"
 summary.
 

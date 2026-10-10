@@ -519,16 +519,33 @@
     "queuedAt": "2026-10-10T19:45:00.536Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Run data validation, Audit review contamination",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38081279920",
-    "severity": "warning",
+    "conditionKey": "land:land/bro-4956-land-base-reuse",
+    "title": "Landing blocked: race red on land/bro-4956-land-base-reuse",
+    "description": "land.yml did not land land/bro-4956-land-base-reuse: the race gate went red at 8560b3fab4. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4956-land-base-reuse @ 8560b3fab4 (origin/land/bro-4956-land-base-reuse) → origin/main @ cb141243a4 [land] attempt 1/3: rebased onto cb141243a4, 3 file(s) changed — running checks [land] verified-base: main moved f1444eaceb → cb141243a4 across 106 file(s), substantive — running the full gauntlet [land] linked 21 gitignored path(s) into the worktree (node_modules/core data) [land] c Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38079312512",
+    "severity": "error",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-10T19:53:12.756Z"
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4956-land-base-reuse"
+      },
+      {
+        "name": "gate",
+        "value": "race"
+      },
+      {
+        "name": "tip",
+        "value": "8560b3fab46110d659df7df24cdb5f47265b2da2"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38079312512"
+      }
+    ],
+    "queuedAt": "2026-10-10T20:01:23.481Z"
   },
   {
     "conditionKey": "review-gap:blast-radius-refused",
