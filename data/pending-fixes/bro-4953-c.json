@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4953-c",
   "planId": "dc37d6da-367b-464e-8e08-c8a482f8b0b3",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-10T00:30:13.189Z",
   "submitter": {
     "name": null,
@@ -112,5 +112,78 @@
         "description": "Cached dtli page for \"The Pass\" is about a different, longer-titled show: \"Pass Over - Did They Like It?\". Deleting lets the scraper re-search; the BRO-4953 guard now rejects this page."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-10T01:45:20.898Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/bww-reviews/cinderella-lyric-hammersmith-off-west-end-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/bww-reviews/cinderella-west-end-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/bww-roundups/cinderella-lyric-hammersmith-off-west-end-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/bww-roundups/cinderella-west-end-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/bww-roundups/happy-ending-west-end-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/bww-roundups/home-1970.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/bww-roundups/les-miserables-2006.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/bww-roundups/midnight-off-broadway-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/bww-roundups/titus-andronicus-off-broadway-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/dtli/cabaret-2014.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/dtli/cats-west-end-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/dtli/fish-off-broadway-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/dtli/sea-wall-off-broadway-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/dtli/the-pass-off-broadway-2026.html"
+    }
+  ]
 }

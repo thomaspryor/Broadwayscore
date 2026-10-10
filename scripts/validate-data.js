@@ -4855,6 +4855,32 @@ function validateActorImages() {
   }
 }
 
+/**
+ * BRO-4954 invariant: on a returning production, each outlet counts once and its
+ * review of THIS run wins. The rebuild enforces it (supersededPriorRunReviews); this
+ * re-checks the built reviews.json so a later pass that re-adds an earlier-run row
+ * (or a rebuild that skipped the pass) is seen. Advisory (warn) while it beds in.
+ */
+function validatePriorRunOnePerOutlet() {
+  info('Checking returning shows count each outlet once (newest review wins)...');
+  const reviewsFile = path.join(DATA_DIR, 'reviews.json');
+  if (!fs.existsSync(reviewsFile)) return;
+  let reviews, shows;
+  try {
+    reviews = JSON.parse(fs.readFileSync(reviewsFile, 'utf8')).reviews || [];
+    const sd = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+    shows = sd.shows || sd;
+  } catch { return; }
+  const { supersededPriorRunReviews } = require('./lib/prior-run-sibling');
+  const stale = supersededPriorRunReviews(reviews, shows);
+  if (stale.size === 0) { ok('Returning shows: no outlet counted for both runs'); return; }
+  const byShow = {};
+  for (const r of stale) (byShow[r.showId] = byShow[r.showId] || []).push(r.outlet || r.outletId);
+  for (const [showId, outlets] of Object.entries(byShow)) {
+    warn(`Returning show "${showId}" still counts an earlier-run review from ${outlets.length} outlet(s) that reviewed this run: ${outlets.join(', ')}. Rebuild should supersede them (BRO-4954).`);
+  }
+}
+
 function validateCrossMarketContamination() {
   info('Checking for cross-market contamination...');
   const reviewsFile = path.join(DATA_DIR, 'reviews.json');
@@ -5239,6 +5265,7 @@ function runValidation() {
   validateOutletRegistryFields();
   console.log('');
   validateCrossMarketContamination();
+  validatePriorRunOnePerOutlet();
   console.log('');
   validateBlogReviews();
   console.log('');
