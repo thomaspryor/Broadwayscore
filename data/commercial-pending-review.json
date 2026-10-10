@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-10T20:27:02.341Z",
+  "generatedAt": "2026-10-10T23:10:03.113Z",
   "shows": {
     "860": {
       "capitalization": null,
-      "capitalizationSource": null,
+      "capitalizationSource": "No public figure verified in the sources checked.",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": null,
@@ -11,32 +11,32 @@
       "recoupedSource": null,
       "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "No public financial information available for the upcoming play 860; show begins previews Oct 1, 2026 and opens Oct 21, 2026 for a limited engagement; budget, weekly nut, and recoupment data not disclosed publicly.",
-      "confidence": "medium",
+      "notes": "Upcoming limited-run Broadway production; no verified public capitalization, weekly nut, or recoupment data found in the checked sources.",
+      "confidence": "low",
       "sources": [
         {
-          "type": "trade",
-          "url": "https://playbill.com/production/860-broadway-imperial-theatre-2026",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://www.ibdb.com/broadway-production/860-547321",
-          "date": null
+          "type": "manual",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-10"
         },
         {
           "type": "manual",
-          "url": "https://apnews.com/article/087dca8e7107b86fbe0310c7baffe92e",
+          "url": "https://shubert.nyc/press/billy-crystal-returns-to-broadway-this-fall-in-new-one-man-show-860/",
           "date": "2026-04-15"
+        },
+        {
+          "type": "manual",
+          "url": "https://www.ibdb.com/broadway-production/860-547321",
+          "date": null
         }
       ],
       "title": "860",
       "slug": "860",
       "openingDate": null,
       "status": "upcoming",
-      "researchedAt": "2026-10-03T21:55:59.735Z",
-      "model": "o4-mini",
-      "researchTrigger": "queued"
+      "researchedAt": "2026-10-10T21:48:10.731Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "new-show"
     },
     "the-lost-boys-2026": {
       "capitalization": 25000000,
@@ -623,15 +623,15 @@
     },
     "paranormal-activity": {
       "capitalization": 8000000,
-      "capitalizationSource": "SEC Form D for Paranormal Broadway Ltd Liability Co filed 2026-09-15",
+      "capitalizationSource": "SEC Form D for Paranormal Broadway Ltd Liability Co shows a $8,000,000 total offering amount and $7,910,000 sold. ([sec.gov](https://www.sec.gov/Archives/edgar/data/2153516/000215351626000001/xslFormDX01/primary_doc.xml))",
       "weeklyRunningCost": null,
       "costMethodology": null,
-      "recouped": false,
+      "recouped": null,
       "recoupedDate": null,
       "recoupedSource": null,
       "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "Raised $8 M in investor capital; weekly running cost not publicly disclosed; still early in its limited run through January 3, 2027, so too soon to have recouped.",
+      "notes": "Publicly verifiable financial data are limited to the $8.0M SEC offering and BroadwayWorld’s gross page, which lists the show as currently running with $5.15M lifetime grosses through Sept. 27, 2026. ([sec.gov](https://www.sec.gov/Archives/edgar/data/2153516/000215351626000001/xslFormDX01/primary_doc.xml))",
       "confidence": "medium",
       "sources": [
         {
@@ -640,18 +640,18 @@
           "date": "2026-09-15"
         },
         {
-          "type": "manual",
-          "url": "https://en.wikipedia.org/wiki/Paranormal_Activity_(play)",
-          "date": null
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/grosses/paranormal-activity",
+          "date": "2026-09-27"
         }
       ],
       "title": "Paranormal Activity",
       "slug": "paranormal-activity",
       "openingDate": "2026-08-25",
       "status": "open",
-      "researchedAt": "2026-10-03T22:26:43.245Z",
-      "model": "o4-mini",
-      "researchTrigger": "backlog"
+      "researchedAt": "2026-10-10T21:51:43.943Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "sweep-requeue-low-conf"
     },
     "chess": {
       "capitalization": 15000000,
@@ -853,37 +853,39 @@
     },
     "the-lost-boys": {
       "capitalization": 25000000,
-      "capitalizationSource": "Broadway News report by Ruthie Fierberg, May 26, 2026",
-      "weeklyRunningCost": 900000,
-      "costMethodology": "industry-estimate",
-      "recouped": false,
+      "capitalizationSource": "Broadway Journal (May 6, 2026) citing SEC filings; Washington Post also reported a $25 million capitalization.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
       "recoupedDate": null,
       "recoupedSource": null,
-      "estimatedRecoupmentPct": [
-        0,
-        0
-      ],
+      "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "Production budget estimated at $25M; weekly running cost ~$900k; show still open with no recoupment as of Oct 2026.",
+      "notes": "Best-verified capitalization is $25M. Broadway Journal said the show was running at a loss in May 2026, and the latest Broadway League grosses show it is still running as of October 4, 2026. I did not find a verified public weekly nut or recoupment announcement. ([broadwayjournal.com](https://www.broadwayjournal.com/p/broadways-missing-mojo?utm_source=openai))",
       "confidence": "medium",
       "sources": [
         {
           "type": "trade",
-          "url": "https://www.broadwaynews.com/why-michael-arden-and-dane-laffrey-say-the-spectacle-of-the-lost-boys-was-earned/",
-          "date": "2026-05-26"
+          "url": "https://www.broadwayjournal.com/p/broadways-missing-mojo",
+          "date": "2026-05-06"
         },
         {
-          "type": "reddit",
-          "url": "https://www.reddit.com/r/Broadway/comments/1thwqk4/grosses_analysis_week_ending_may_17/",
-          "date": "2026-05-23"
+          "type": "trade",
+          "url": "https://www.washingtonpost.com/entertainment/theater/2026/05/06/lost-boys-schmigadoon-beaches-broadway-review/?itid=ap_thomas-floyd_article-list_1_0",
+          "date": "2026-05-06"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayleague.com/research/grosses-broadway-nyc/?os=0",
+          "date": "2026-10-04"
         }
       ],
       "title": "The Lost Boys",
       "slug": "the-lost-boys",
       "openingDate": "2026-04-26",
       "status": "open",
-      "researchedAt": "2026-10-03T21:58:52.731Z",
-      "model": "o4-mini",
+      "researchedAt": "2026-10-10T21:56:01.359Z",
+      "model": "gpt-5.4-mini",
       "researchTrigger": "backlog"
     },
     "joe-turners-come-and-gone": {
@@ -951,35 +953,45 @@
       "researchTrigger": "backlog"
     },
     "schmigadoon": {
-      "capitalization": 12900000,
-      "capitalizationSource": "New York Times – publicist statement",
-      "weeklyRunningCost": 750000,
-      "costMethodology": "industry-estimate",
-      "recouped": false,
+      "capitalization": 11100000,
+      "capitalizationSource": "Forbes mirror report citing investor paperwork for initial capitalization; Broadway Journal separately said SEC paperwork put the capitalization as high as $15M. ([forbestodays.pages.dev](https://forbestodays.pages.dev/sites/marchershberg/2026/08/02/tony-triumph-meets-tough-economics-for-schmigadoon/))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
       "recoupedDate": null,
       "recoupedSource": null,
       "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "Capitalized at $12.9M; estimated weekly nut ~$750K; still running and too early to recoup",
+      "notes": "Latest reporting pegs initial capitalization at $11.1M, with a separate SEC-based trade mention of up to $15M; I found no verified weekly-nut figure or confirmed recoupment announcement. BroadwayWorld lists the show as extended through early April 2027 and reports $24.6M lifetime gross through Oct. 4, 2026. ([forbestodays.pages.dev](https://forbestodays.pages.dev/sites/marchershberg/2026/08/02/tony-triumph-meets-tough-economics-for-schmigadoon/))",
       "confidence": "medium",
       "sources": [
         {
           "type": "trade",
-          "url": "https://monorepo-sample2.nyt.net/2026/06/07/theater/schmigadoon-wins-best-musical-tony-award.html",
-          "date": "2026-06-07"
+          "url": "https://forbestodays.pages.dev/sites/marchershberg/2026/08/02/tony-triumph-meets-tough-economics-for-schmigadoon/",
+          "date": "2026-08-02"
         },
         {
-          "type": "manual",
-          "url": "https://www.reddit.com/r/Broadway/comments/1v2od62/grosses_analysis_week_ending_july_18",
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/p/broadways-missing-mojo",
+          "date": "2026-05-06"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/grosses/SCHMIGADOON-",
           "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/schmigadoon-extends-broadway-run-20260507",
+          "date": "2026-05-07"
         }
       ],
       "title": "Schmigadoon!",
       "slug": "schmigadoon",
       "openingDate": "2026-04-20",
       "status": "open",
-      "researchedAt": "2026-10-03T22:02:06.526Z",
-      "model": "o4-mini",
+      "researchedAt": "2026-10-10T21:59:30.272Z",
+      "model": "gpt-5.4-mini",
       "researchTrigger": "backlog"
     },
     "the-fear-of-13": {
@@ -1084,23 +1096,30 @@
       "researchTrigger": "backlog"
     },
     "stranger-things": {
-      "capitalizationSource": "Deadline report (via Bloody Disgusting)",
+      "capitalizationSource": "EDGE Media Network report (June 1, 2025) describing the Broadway production as capitalized at $50M.",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": false,
       "recoupedDate": null,
-      "recoupedSource": "Deadline report (via Bloody Disgusting)",
-      "estimatedRecoupmentPct": [
-        0,
-        0
-      ],
+      "recoupedSource": "June 9, 2026 trade coverage syndicated via Yahoo said the Broadway production had not recouped its capitalization.",
+      "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "Production cost over $20M, has not recouped; weekly cost undisclosed; still running.",
-      "confidence": "medium",
+      "notes": "The clearest public capitalization figure I found was $50M, but later coverage also referred to more than an estimated $20M to stage on Broadway. No public weekly nut was verified.",
+      "confidence": "low",
       "sources": [
         {
           "type": "trade",
-          "url": "https://bloody-disgusting.com/the-further/3955502/stranger-things-the-first-shadow-coming-to-a-close-in-early-2027",
+          "url": "https://www.edgemedianetwork.com/story/339437",
+          "date": "2025-06-01"
+        },
+        {
+          "type": "trade",
+          "url": "https://malaysia.news.yahoo.com/stranger-things-first-shadow-sets-180000680.html",
+          "date": "2026-06-09"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/STRANGER-THINGS-THE-FIRST-SHADOW-Sets-Closing-Dates-for-Broadway-and-West-End-20260609",
           "date": "2026-06-09"
         }
       ],
@@ -1108,13 +1127,13 @@
       "slug": "stranger-things",
       "openingDate": "2025-04-22",
       "status": "open",
-      "researchedAt": "2026-10-03T22:15:38.445Z",
-      "model": "o4-mini",
+      "researchedAt": "2026-10-10T22:06:08.874Z",
+      "model": "gpt-5.4-mini",
       "researchTrigger": "backlog"
     },
     "jerusalem-2011": {
-      "capitalization": null,
-      "capitalizationSource": null,
+      "capitalization": 3100000,
+      "capitalizationSource": "The Guardian reported the Broadway transfer as a '$3.1m' risk/cost in its May 3, 2011 article about Jerusalem's Tony nominations.",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": null,
@@ -1122,52 +1141,87 @@
       "recoupedSource": null,
       "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "No publicly available data on capitalization, weekly running cost, or recoupment status for Jerusalem; likely not disclosed.",
+      "notes": "Verified capitalization appears to have been about $3.1 million. I could not verify weekly running cost or an official recoupment announcement from public sources I checked.",
       "confidence": "low",
       "sources": [
         {
-          "type": "manual",
-          "url": "https://en.wikipedia.org/wiki/Jerusalem_(play)",
-          "date": "2026-10-03"
+          "type": "trade",
+          "url": "https://www.theguardian.com/stage/2011/may/03/tony-award-nominations-build-jerusalem",
+          "date": "2011-05-03"
         },
         {
-          "type": "manual",
+          "type": "trade",
+          "url": "https://www.ibdb.com/broadway-production/jerusalem-489533",
+          "date": null
+        },
+        {
+          "type": "trade",
           "url": "https://playbill.com/production/jerusalem-music-box-theatre-vault-0000013724",
-          "date": "2026-10-03"
+          "date": null
         }
       ],
       "title": "Jerusalem",
       "slug": "jerusalem-2011",
       "openingDate": "2011-04-21",
       "status": "closed",
-      "researchedAt": "2026-10-03T22:18:12.763Z",
-      "model": "o4-mini",
+      "researchedAt": "2026-10-10T22:21:08.177Z",
+      "model": "gpt-5.4-mini",
       "researchTrigger": "backlog"
     },
     "leopoldstadt-2022": {
-      "capitalizationSource": "NYC production tax credit report via Investment Broadway Alliance (3 000 000 credit implies 12 000 000 budget)",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": null,
+      "capitalization": 8000000,
+      "capitalizationSource": "Washington Post described Leopoldstadt as roughly an $8 million Broadway production and said it initially had to raise more than $8 million. ([washingtonpost.com](https://www.washingtonpost.com/theater-dance/2022/09/29/tom-stoppard-leopoldstadt-broadway/?utm_source=openai))",
+      "weeklyRunningCost": 580000,
+      "costMethodology": "trade-reported",
       "recoupedDate": null,
-      "recoupedSource": null,
-      "estimatedRecoupmentPct": null,
-      "designation": "TBD",
-      "notes": "Estimated production budget from 25% NYC tax credit; no public data on running costs or recoupment.",
+      "recoupedSource": "A 2026 profile/interview with producer Catherine Adler says Leopoldstadt recouped its investment. ([palmerpb.com](https://palmerpb.com/2026/06/04/nine-tonys-and-counting-a-conversation-with-catherine-adler/?utm_source=openai))",
+      "estimatedRecoupmentPct": [
+        100,
+        120
+      ],
+      "designation": "Easy Winner",
+      "notes": "I used the direct contemporaneous ~$8 million budget estimate rather than back-solving from the later $3 million NYC tax credit award, because the credit is a subsidy and does not map one-to-one onto original Broadway capitalization. New York tax rules say the credit equals 25% of qualified NYC production expenditures and was capped at $3 million for this opening date; Broadway Journal also reported weekly fixed costs of about $580,000 before royalties, and Playbill’s closing gross page puts total Broadway grosses at $32.7 million. Public sources confirm recoupment, but not the exact month it happened. ([tax.ny.gov](https://www.tax.ny.gov/data/stats/ter/fiscal-year27/cross-article-tax-credits.htm?utm_source=openai))",
       "confidence": "medium",
       "sources": [
         {
+          "type": "trade",
+          "url": "https://www.washingtonpost.com/theater-dance/2022/09/29/tom-stoppard-leopoldstadt-broadway/",
+          "date": "2022-09-29"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/p/kimberly-akimbo-leopoldstadt-david-stone-win-big-at-tonys",
+          "date": "2023-06-12"
+        },
+        {
           "type": "manual",
+          "url": "https://www.tax.ny.gov/data/stats/ter/fiscal-year27/cross-article-tax-credits.htm",
+          "date": null
+        },
+        {
+          "type": "trade",
           "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
-          "date": "2025-08-10"
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.playbill.com/production/leopoldstadt-broadway-longacre-theatre-2022",
+          "date": "2023-07-02"
+        },
+        {
+          "type": "trade",
+          "url": "https://palmerpb.com/2026/06/04/nine-tonys-and-counting-a-conversation-with-catherine-adler/",
+          "date": "2026-06-04"
         }
       ],
+      "_recoupedClaim": true,
+      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
       "title": "Leopoldstadt",
       "slug": "leopoldstadt-2022",
       "openingDate": "2022-10-02",
       "status": "closed",
-      "researchedAt": "2026-10-03T22:17:15.400Z",
-      "model": "o4-mini",
+      "researchedAt": "2026-10-10T23:06:49.604Z",
+      "model": "gpt-5.4-mini",
       "researchTrigger": "backlog"
     },
     "job-2024": {
@@ -1208,30 +1262,45 @@
       "researchTrigger": "backlog"
     },
     "the-great-gatsby": {
-      "capitalization": 12000000,
-      "capitalizationSource": "NYC production tax credit via Broadway Investment Alliance (Aug 9, 2025) – Gatsby Broadway LLC received $3,000,000 credit, implying $12,000,000 budget",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": null,
+      "capitalization": 25000000,
+      "capitalizationSource": "Korea Times (2024-04-30) reported the production budget as approximately $25 million; Washington Post (2024-06-19) also described the current Broadway show as capitalized at $25 million.",
+      "weeklyRunningCost": 900000,
+      "costMethodology": "trade-reported",
+      "recouped": false,
       "recoupedDate": null,
-      "recoupedSource": null,
+      "recoupedSource": "Asia Business Daily interview with Shin Chun-soo (2026-06-08) said he expected to recoup the $25 million advance production cost by 2028.",
       "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "Identified a $3M NYC tax credit for Gatsby Broadway LLC, implying a $12M budget; no verifiable weekly nut or recoupment data found.",
+      "notes": "Still running on Broadway as of October 2026. Producer reporting puts capitalization at about $25 million and weekly operating costs near $900,000. Public reporting says recoupment was still expected in the future rather than already achieved. ([koreatimes.co.kr](https://www.koreatimes.co.kr/lifestyle/arts-theater/20240430/shin-chun-soo-brings-fresh-vision-of-the-great-gatsby-to-broadway))",
       "confidence": "medium",
       "sources": [
         {
+          "type": "trade",
+          "url": "https://www.koreatimes.co.kr/lifestyle/arts-theater/20240430/shin-chun-soo-brings-fresh-vision-of-the-great-gatsby-to-broadway",
+          "date": "2024-04-30"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.washingtonpost.com/entertainment/theater/2024/06/19/great-gatsby-broadway/",
+          "date": "2024-06-19"
+        },
+        {
+          "type": "trade",
+          "url": "https://view.asiae.co.kr/en/article/2026060818131758788",
+          "date": "2026-06-08"
+        },
+        {
           "type": "manual",
-          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
-          "date": "2025-08-09"
+          "url": "https://www.broadway.org/shows/the-great-gatsby?l=1",
+          "date": null
         }
       ],
       "title": "The Great Gatsby",
       "slug": "the-great-gatsby",
       "openingDate": "2024-04-25",
       "status": "open",
-      "researchedAt": "2026-10-03T22:20:40.768Z",
-      "model": "o4-mini",
+      "researchedAt": "2026-10-10T22:10:36.020Z",
+      "model": "gpt-5.4-mini",
       "researchTrigger": "backlog"
     },
     "school-girls-or-the-african-mean-girls-play": {
@@ -1267,51 +1336,53 @@
     },
     "the-lyons-2012": {
       "capitalization": null,
-      "capitalizationSource": null,
-      "weeklyRunningCost": 250000,
-      "costMethodology": "industry-estimate",
-      "recouped": false,
+      "capitalizationSource": "No verified public capitalization located in the sources checked.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
       "recoupedDate": null,
       "recoupedSource": null,
-      "estimatedRecoupmentPct": [
-        0,
-        0
-      ],
-      "designation": "Flop",
-      "notes": "No public data on production budget; estimated weekly running cost ~$250K; ran 80 performances (incl. 21 previews) from April 23 to July 1, 2012, grossing ~$2.51 M and never covering weekly costs or recouping.",
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Verified public sources only showed run dates and grosses: the show opened April 23, 2012 and closed July 1, 2012, with total gross of $2,509,091, a peak week of $247,348, average capacity of 52.7%, and a closing-week gross of $243,525. No verified public capitalization, weekly nut, or recoupment notice surfaced in the sources checked. ([theatermania.com](https://www.theatermania.com/shows/new-york-city-theater/broadway/the-lyons_190051/?utm_source=openai))",
       "confidence": "low",
       "sources": [
         {
           "type": "trade",
-          "url": "https://erinrobertsperforming.wordpress.com/2015/01/09/2015-01-09-the-inner-workings-of-broadway-production-budgets/",
-          "date": "2015-01-09"
+          "url": "https://www.theatermania.com/shows/new-york-city-theater/broadway/the-lyons_190051/",
+          "date": null
         },
         {
           "type": "trade",
-          "url": "https://www.broadwayworld.com/grosses/THE-LYONS",
+          "url": "https://playbill.com/production/the-lyons-cort-theatre-vault-0000013876",
           "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/broadway-grosses-june-25-july-1-com-195287",
+          "date": "2012-07-02"
         }
       ],
       "title": "The Lyons",
       "slug": "the-lyons-2012",
       "openingDate": "2012-04-23",
       "status": "closed",
-      "researchedAt": "2026-10-03T22:19:45.007Z",
-      "model": "o4-mini",
+      "researchedAt": "2026-10-10T23:00:00.390Z",
+      "model": "gpt-5.4-mini",
       "researchTrigger": "backlog"
     },
     "a-christmas-carol-2019": {
       "capitalization": 6000000,
-      "capitalizationSource": "Forbes Europe article by Marc Hershberg, ‘Skyrocketing Broadway Show Budgets Scare Producers’, Oct 24, 2024",
+      "capitalizationSource": "Forbes article quoting producer Tom Smedes as saying he shepherded the $6 million stage adaptation of A Christmas Carol to Broadway.",
       "weeklyRunningCost": null,
       "costMethodology": null,
-      "recouped": false,
+      "recouped": null,
       "recoupedDate": null,
       "recoupedSource": null,
       "estimatedRecoupmentPct": null,
-      "designation": "Flop",
-      "notes": "The limited-run 2019 Broadway production at the Lyceum Theatre had a $6M capitalization but did not recoup its investment during its scheduled run and closed as planned.",
-      "confidence": "medium",
+      "designation": "TBD",
+      "notes": "Verified capitalization was $6 million. Playbill lists total gross of $5,296,633.83 and average capacity of 81.38%, but I could not verify a weekly nut or a public recoupment announcement. No NYC tax-credit match was found.",
+      "confidence": "low",
       "sources": [
         {
           "type": "trade",
@@ -1319,43 +1390,45 @@
           "date": "2024-10-24"
         },
         {
-          "type": "manual",
-          "url": "https://en.wikipedia.org/wiki/A_Christmas_Carol_(2017_play)",
+          "type": "trade",
+          "url": "https://playbill.com/production/a-christmas-carollyceum-theatre-2019-2020",
           "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
         }
       ],
       "title": "A Christmas Carol",
       "slug": "a-christmas-carol-2019",
       "openingDate": "2019-11-20",
       "status": "closed",
-      "researchedAt": "2026-10-03T22:14:33.290Z",
-      "model": "o4-mini",
+      "researchedAt": "2026-10-10T23:10:03.113Z",
+      "model": "gpt-5.4-mini",
       "researchTrigger": "backlog"
     },
     "buena-vista-social-club": {
-      "capitalization": 12000000,
-      "capitalizationSource": "BroadwayWorld.com: Exclusive: Inside the Numbers - Who Benefited and Why Broadway Still Needs a Tax Credit (Sep. 4, 2025), estimated Buena Vista Social Club to receive $3M credit",
-      "weeklyRunningCost": 700000,
-      "costMethodology": "industry-estimate",
-      "recouped": false,
+      "capitalization": 17000000,
+      "capitalizationSource": "Broadway Journal reporting on SEC filings; also echoed by San Juan Daily Star/AP coverage.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
       "recoupedDate": null,
       "recoupedSource": null,
-      "estimatedRecoupmentPct": [
-        20,
-        40
-      ],
+      "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "Production budget implied by $3M tax credit; weekly cost ~ $700K; recoupment at 20–40%; still open and not yet recouped.",
+      "notes": "Verified public reporting puts the Broadway production at $17M capitalization. Broadway Journal said in June 2025 that the show was earning operating profits but would take well over a year to recoup; I could not verify a public weekly nut or a recoupment announcement.",
       "confidence": "medium",
       "sources": [
         {
           "type": "trade",
-          "url": "https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20250904",
-          "date": "2025-09-04"
+          "url": "https://www.broadwayjournal.com/p/jukebox-prevails-in-tough-season-for-new-musicals",
+          "date": "2025-06-05"
         },
         {
-          "type": "reddit",
-          "url": "https://www.reddit.com/r/Broadway/comments/1wh8y33/broadway_week_grosses_analysis_part_1_week_ending",
+          "type": "trade",
+          "url": "https://www.sanjuandailystar.com/post/a-buena-vista-social-club-musical-will-open-on-broadway-next-year",
           "date": null
         }
       ],
@@ -1363,43 +1436,68 @@
       "slug": "buena-vista-social-club",
       "openingDate": "2025-03-19",
       "status": "open",
-      "researchedAt": "2026-10-03T22:07:25.623Z",
-      "model": "o4-mini",
+      "researchedAt": "2026-10-10T22:29:41.422Z",
+      "model": "gpt-5.4-mini",
       "researchTrigger": "backlog"
     },
     "operation-mincemeat": {
       "capitalization": 12200000,
-      "capitalizationSource": "Observer article 'Inside the Operation Mincemeat machine'",
-      "weeklyRunningCost": 525000,
+      "capitalizationSource": "The Observer described the Broadway budget as $12.2 million; earlier Broadway Journal reporting put the transfer at a minimum $11.5 million capitalization and a $14.5 million maximum. ([observer.co.uk](https://observer.co.uk/culture/theatre/article/inside-the-operation-mincemeat-machine?utm_source=openai))",
+      "weeklyRunningCost": 550000,
       "costMethodology": "industry-estimate",
       "recouped": false,
       "recoupedDate": null,
-      "recoupedSource": null,
+      "recoupedSource": "No official full-recoupment announcement found; The Observer said it was set to recoup 35-40% of funding by Christmas, and BroadwayWorld projected full recoupment around 2028. ([observer.co.uk](https://observer.co.uk/culture/theatre/article/inside-the-operation-mincemeat-machine?utm_source=openai))",
       "estimatedRecoupmentPct": [
         35,
         40
       ],
       "designation": "TBD",
-      "notes": "Broadway budget $12.2M, weekly operating cost ~500–550K, not yet recouped (projected 35–40% by Christmas 2026)",
+      "notes": "Still running through March 14, 2027. Public weekly-nut estimates cluster around roughly $500k-$550k, while one March 2025 article projected $950k/week; I used the midpoint estimate. ([broadway.com](https://www.broadway.com/buzz/207124/operation-mincemeat-extends-broadway-run-through-february-2027/))",
       "confidence": "medium",
       "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadway.com/buzz/207124/operation-mincemeat-extends-broadway-run-through-march-2027/",
+          "date": "2026-09-14"
+        },
         {
           "type": "trade",
           "url": "https://observer.co.uk/culture/theatre/article/inside-the-operation-mincemeat-machine",
           "date": "2026-03-06"
         },
         {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/p/operation-mincemeat-targets-golden-theatre",
+          "date": "2024-09-25"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/Whats-Behind-the-Rising-Costs-of-a-Broadway-Show-20250930",
+          "date": "2025-09-30"
+        },
+        {
+          "type": "manual",
+          "url": "https://www.mrcarlwoodward.com/blog1/broadway-is-your-journey-necessary/",
+          "date": "2025-03-21"
+        },
+        {
           "type": "manual",
           "url": "https://forum.broadwayworld.com/thread/OPERATION-MINCEMEAT-Reviews/12",
           "date": "2026-05-12"
+        },
+        {
+          "type": "reddit",
+          "url": "https://www.reddit.com/r/Broadway/comments/1vloonj/grosses_analysis_week_ending_august_9/",
+          "date": "2026-08-09"
         }
       ],
       "title": "Operation Mincemeat",
       "slug": "operation-mincemeat",
       "openingDate": "2025-03-20",
       "status": "open",
-      "researchedAt": "2026-10-03T22:23:22.280Z",
-      "model": "o4-mini",
+      "researchedAt": "2026-10-10T22:03:00.194Z",
+      "model": "gpt-5.4-mini",
       "researchTrigger": "backlog"
     },
     "blue-man-group-a-new-holiday-surprise": {
@@ -1436,34 +1534,49 @@
     },
     "torch-song-2018": {
       "capitalization": 3400000,
-      "capitalizationSource": "New York Times News Service (via WRAL)",
+      "capitalizationSource": "WRAL/New York Times News Service report citing an SEC filing",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": false,
       "recoupedDate": null,
-      "recoupedSource": "New York Times News Service (via WRAL)",
+      "recoupedSource": "WRAL/New York Times News Service report citing an SEC filing",
       "estimatedRecoupmentPct": null,
       "designation": "Flop",
-      "notes": "Capitalized for up to $3.4 M; closed after 13 weeks without recoupment.",
+      "notes": "Commercial Broadway revival at the Helen Hayes Theater opened Nov. 1, 2018 and closed Jan. 6, 2019 after 77 performances; public sources verified capitalization and non-recoupment, but not a weekly nut.",
       "confidence": "medium",
       "sources": [
         {
           "type": "trade",
           "url": "https://www.wral.com/story/broadway-s-torch-song-to-close-in-january/18040734/",
           "date": "2018-12-05"
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/production/torch-songhelen-hayes-theater-2018-2019",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://www.ibdb.com/broadway-production/torch-song-517943",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://forum.broadwayworld.com/thread/TORCH-SONG-at-the-Hayes-a-commercial-run",
+          "date": "2018-09-23"
         }
       ],
       "title": "Torch Song",
       "slug": "torch-song-2018",
       "openingDate": "2018-11-01",
       "status": "closed",
-      "researchedAt": "2026-10-03T22:28:10.581Z",
-      "model": "o4-mini",
+      "researchedAt": "2026-10-10T22:44:35.245Z",
+      "model": "gpt-5.4-mini",
       "researchTrigger": "backlog"
     },
     "its-a-wonderful-life-a-live-radio-play": {
       "capitalization": null,
-      "capitalizationSource": null,
+      "capitalizationSource": "No public capitalization found in the sources checked. ([shubert.nyc](https://shubert.nyc/press/its-a-wonderful-life-makes-its-broadway-premiere/?utm_source=openai))",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": null,
@@ -1471,31 +1584,41 @@
       "recoupedSource": null,
       "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "No public data on capitalization, weekly cost, or recoupment; upcoming limited run Nov 18, 2026–Jan 03, 2027.",
+      "notes": "Public material confirms the Broadway premiere, limited engagement, and dates/cast, but I found no verified public capitalization, weekly nut, or recoupment disclosure. ([shubert.nyc](https://shubert.nyc/press/its-a-wonderful-life-makes-its-broadway-premiere/?utm_source=openai))",
       "confidence": "low",
       "sources": [
         {
-          "type": "trade",
-          "url": "https://www.ibdb.com/broadway-production/its-a-wonderful-life-a-live-radio-play-548207",
-          "date": "2026-10-03"
+          "type": "manual",
+          "url": "https://shubert.nyc/press/its-a-wonderful-life-makes-its-broadway-premiere/",
+          "date": "2026-10-01"
         },
         {
-          "type": "trade",
+          "type": "manual",
+          "url": "https://www.broadway.com/shows/its-a-wonderful-life/frequently-asked-questions/",
+          "date": null
+        },
+        {
+          "type": "manual",
           "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
           "date": "2025-08-09"
+        },
+        {
+          "type": "manual",
+          "url": "https://forum.broadwayworld.com/thread/Its-A-Wonderful-Life-with-Megan-Hilty-coming-to-the-Broadhurst-",
+          "date": "2026-09-28"
         }
       ],
       "title": "It’s A Wonderful Life: A Live Radio Play",
       "slug": "its-a-wonderful-life-a-live-radio-play",
       "openingDate": "2026-11-18",
       "status": "upcoming",
-      "researchedAt": "2026-10-03T21:56:41.062Z",
-      "model": "o4-mini",
-      "researchTrigger": "queued"
+      "researchedAt": "2026-10-10T21:49:41.146Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "new-show"
     },
     "small-mouth-sounds": {
       "capitalization": null,
-      "capitalizationSource": null,
+      "capitalizationSource": "No verified public capitalization found in the requested sources; the NYC tax-credit roundup showed no matching recipient for this title and the official announcement only provided dates and cast.",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": null,
@@ -1503,15 +1626,36 @@
       "recoupedSource": null,
       "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "No public financial data available for this upcoming production; metrics undisclosed.",
-      "confidence": "medium",
-      "sources": [],
+      "notes": "Upcoming production; no verified capitalization, weekly running cost, or recoupment data located in the requested sources.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://shubert.nyc/press/2026-pulitzer-prize-and-2026-tony-award-winner-bess-wohl-returns-to-broadway-this-season-with-her-play-small-mouth-sounds/",
+          "date": "2026-09-08"
+        },
+        {
+          "type": "manual",
+          "url": "https://smallmouthsoundsbroadway.com/",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        },
+        {
+          "type": "manual",
+          "url": "https://www.broadway.com/shows/small-mouth-sounds-broadway/",
+          "date": null
+        }
+      ],
       "title": "Small Mouth Sounds",
       "slug": "small-mouth-sounds",
       "openingDate": "2027-03-18",
       "status": "upcoming",
-      "researchedAt": "2026-10-03T22:12:05.342Z",
-      "model": "o4-mini",
+      "researchedAt": "2026-10-10T22:27:25.915Z",
+      "model": "gpt-5.4-mini",
       "researchTrigger": "backlog"
     },
     "billy-crystal-860": {
@@ -1524,88 +1668,73 @@
       "recoupedSource": null,
       "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "No publicly available production budget, weekly running cost, or recoupment information for Billy Crystal 860; the show is in previews with a limited engagement.",
+      "notes": "No verified public capitalization, weekly running cost, or recoupment data found; the public record I checked only confirms the run dates and production credits. ([ibdb.com](https://www.ibdb.com/broadway-production/860-547321?utm_source=openai))",
       "confidence": "low",
       "sources": [
         {
-          "type": "manual",
-          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
-          "date": "2025-08-10"
-        },
-        {
-          "type": "reddit",
-          "url": "https://www.reddit.com/r/Broadway/comments/1ueffmh/going_to_be_in_nyc_for_a_couple_months_during_the/",
-          "date": "2026-06-24"
-        },
-        {
           "type": "trade",
-          "url": "https://www.broadwayworld.com/article/Up-on-the-Marquee-Bill-Crystal-Returns-to-Broadway-in-860-20260923",
-          "date": "2026-09-23"
-        },
-        {
-          "type": "trade",
-          "url": "https://shubert.nyc/press/billy-crystal-returns-to-broadway-this-fall-in-new-one-man-show-860/",
-          "date": "2026-04-15"
-        },
-        {
-          "type": "trade",
-          "url": "https://apnews.com/article/billy-crystal-broadway-fire-show-860-087dca8e7107b86fbe0310c7baffe92e",
+          "url": "https://playbill.com/production/860-broadway-imperial-theatre-2026",
           "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.ibdb.com/broadway-production/860-547321",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.playbill.com/article/billy-crystals-new-solo-show-860-sets-dates-at-broadways-imperial",
+          "date": "2026-06-15"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
         }
       ],
       "title": "Billy Crystal 860",
       "slug": "billy-crystal-860",
       "openingDate": "2026-10-21",
       "status": "previews",
-      "researchedAt": "2026-10-03T22:24:24.471Z",
-      "model": "o4-mini",
+      "researchedAt": "2026-10-10T22:34:06.523Z",
+      "model": "gpt-5.4-mini",
       "researchTrigger": "backlog"
     },
     "other-desert-cities": {
       "capitalization": null,
-      "capitalizationSource": "",
-      "weeklyRunningCost": 350000,
-      "costMethodology": "industry-estimate",
-      "recouped": false,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
       "recoupedDate": null,
       "recoupedSource": null,
       "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "No public data on capitalization; weekly running cost estimated at ~$350,000 per industry benchmarks; show in previews, too early to recoup.",
-      "confidence": "medium",
+      "notes": "No verified public capitalization or weekly nut was found in the sources I checked; the production is still in previews and no recoupment status can be confirmed.",
+      "confidence": "low",
       "sources": [
         {
-          "type": "manual",
-          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
-          "date": "2025-08-09"
-        },
-        {
-          "type": "reddit",
-          "url": "https://www.reddit.com/r/Broadway",
-          "date": null
-        },
-        {
-          "type": "manual",
-          "url": "https://forum.broadwayworld.com",
-          "date": null
-        },
-        {
-          "type": "sec",
-          "url": "https://www.sec.gov",
-          "date": null
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/equity-audition/OTHER-DESERT-CITIES-Terribly-Kind-PeopleLLC-2026-51177",
+          "date": "2026-06-04"
         },
         {
           "type": "trade",
-          "url": "https://www.strangeloopmedia.com/p/why-is-broadway-losing-to-londons",
-          "date": "2025-09-22"
+          "url": "https://www.broadwaynews.com/grosses-analysis-other-desert-cities-posts-boffo-numbers-in-first-week-of-previews/",
+          "date": "2026-10-06"
+        },
+        {
+          "type": "manual",
+          "url": "https://otherdesertcitiesbroadway.com/",
+          "date": null
         }
       ],
       "title": "Other Desert Cities",
       "slug": "other-desert-cities",
       "openingDate": "2026-10-18",
       "status": "previews",
-      "researchedAt": "2026-10-03T22:25:34.677Z",
-      "model": "o4-mini",
+      "researchedAt": "2026-10-10T22:15:57.041Z",
+      "model": "gpt-5.4-mini",
       "researchTrigger": "backlog"
     },
     "oh-mary-2024": {
@@ -3004,6 +3133,664 @@
       "requiresHumanReview": true,
       "backfill": "BRO-4990",
       "researchAttempts": 1
+    },
+    "titanique": {
+      "capitalization": 9500000,
+      "capitalizationSource": "Washington Post reporting said the Broadway production reportedly kept its capitalization at $9.5 million, echoed by Broadway Journal’s description of a maximum $9.5 million capitalization. ([washingtonpost.com](https://www.washingtonpost.com/entertainment/theater/2026/06/06/these-four-musicals-are-beating-odds-succeeding-broadway/))",
+      "weeklyRunningCost": 900000,
+      "costMethodology": "trade-reported",
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "No public Broadway recoupment announcement found; Broadway Journal reported about $900k/week operating costs, and BroadwayWorld’s cumulative grosses show $20,874,102 lifetime over 26 weeks, which is below roughly $23.4M of operating cost at that burn rate. ([broadwayjournal.com](https://www.broadwayjournal.com/p/titaniques-tangled-scandal))",
+      "estimatedRecoupmentPct": null,
+      "designation": "Flop",
+      "notes": "Trade reporting puts Titaníque’s Broadway capitalization at $9.5M and weekly nut around $900K. With $20.87M lifetime gross over the full St. James run and no public recoupment notice, the Broadway engagement appears to have closed below break-even, so I infer it did not recoup. ([broadwayjournal.com](https://www.broadwayjournal.com/p/titaniques-tangled-scandal))",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.washingtonpost.com/entertainment/theater/2026/06/06/these-four-musicals-are-beating-odds-succeeding-broadway/",
+          "date": "2026-06-06"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/p/titaniques-tangled-scandal",
+          "date": "2026-05-15"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/grosses/titan--que",
+          "date": "2026-10-04"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/titanque-plays-final-broadway-performance-20260920",
+          "date": "2026-09-20"
+        }
+      ],
+      "title": "Titanique",
+      "slug": "titanique",
+      "openingDate": "2026-04-12",
+      "status": "closed",
+      "researchedAt": "2026-10-10T21:46:08.731Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "closing"
+    },
+    "dirty-dancing": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Official launch materials confirm the Broadway limited engagement and tour stop dates, but do not disclose capitalization, weekly nut, or recoupment. An unverified forum post mentioned a $17 million capitalization, but I did not count it as verified data.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "turn14search0",
+          "date": "2026-10-06"
+        },
+        {
+          "type": "trade",
+          "url": "turn14search1",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "turn17view0",
+          "date": "2026-02-04"
+        }
+      ],
+      "title": "Dirty Dancing",
+      "slug": "dirty-dancing",
+      "openingDate": null,
+      "status": "announced",
+      "researchedAt": "2026-10-10T21:53:56.920Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "new-show"
+    },
+    "the-hills-of-california-2024": {
+      "capitalization": null,
+      "capitalizationSource": "No verified public source found",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "I could verify the show's Broadway close date and total lifetime Broadway gross, but not a public capitalization, weekly nut, or recoupment announcement. Public financial data appears to be limited or not published.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/grosses/THE-HILLS-OF-CALIFORNIA",
+          "date": "2024-12-22"
+        }
+      ],
+      "title": "The Hills of California",
+      "slug": "the-hills-of-california-2024",
+      "openingDate": "2024-09-29",
+      "status": "closed",
+      "researchedAt": "2026-10-10T22:09:16.896Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "just-for-us": {
+      "capitalization": 2250000,
+      "capitalizationSource": "Broadway Journal reported Just for Us was capitalized for $2.25 million. citeturn6view0",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": "Broadway News said on 2024-04-25 that Just for Us had not announced a recoupment. citeturn24view0",
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Broadway Journal also said the production made distributions to investors. BroadwayWorld later listed a $706,459 NYC tax credit for Just For Us, which would imply about $2.83 million of qualified costs under the program's 25% formula, but that does not match the directly reported $2.25 million capitalization, so I used the trade-reported cap. Theatrical Index lists $4,260,366 total gross over 64 performances. citeturn6view0turn18view0turn11search0",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/p/solo-shows-deliver-as-aspiring-blockbusters-struggle",
+          "date": "2023-08-25"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwaynews.com/alex-edelmans-just-for-us-will-not-be-eligible-in-best-play-category-at-the-2024-tony-awards/",
+          "date": "2024-04-25"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20250904",
+          "date": "2025-09-04"
+        },
+        {
+          "type": "manual",
+          "url": "https://theatricalindex.com/show/just-for-us/just-for-us-broadway-2023",
+          "date": null
+        }
+      ],
+      "title": "Just for Us",
+      "slug": "just-for-us",
+      "openingDate": "2023-06-26",
+      "status": "closed",
+      "researchedAt": "2026-10-10T22:13:17.582Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "grey-house": {
+      "capitalization": 8000000,
+      "capitalizationSource": "Broadway Journal reported the show was capitalized for a hefty $8 million. ([broadwayjournal.com](https://www.broadwayjournal.com/p/new-york-extends-3-million-broadway-tax-credit-disneys-aladdin-approved?utm_source=openai))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "Playbill listed total gross of $5,150,697.06, below the $8 million capitalization reported by Broadway Journal. ([playbill.com](https://playbill.com/production/grey-house-broadway-lyceum-theatre-2023?utm_source=openai))",
+      "estimatedRecoupmentPct": [
+        0,
+        20
+      ],
+      "designation": "Flop",
+      "notes": "The Broadway run closed on 2023-07-30 after 64 performances. I could confirm capitalization and total gross, but not a verified weekly nut. Because the total gross fell short of the reported production cost and capitalization, the production did not recoup. ([ibdb.com](https://www.ibdb.com/broadway-production/grey-house-536446?utm_source=openai))",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/p/new-york-extends-3-million-broadway-tax-credit-disneys-aladdin-approved",
+          "date": "2023-05-08"
+        },
+        {
+          "type": "manual",
+          "url": "https://www.ibdb.com/broadway-production/grey-house-536446",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/production/grey-house-broadway-lyceum-theatre-2023",
+          "date": null
+        }
+      ],
+      "title": "Grey House",
+      "slug": "grey-house",
+      "openingDate": "2023-06-06",
+      "status": "closed",
+      "researchedAt": "2026-10-10T22:17:56.287Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "damn-yankees": {
+      "capitalization": null,
+      "capitalizationSource": "No verified public source found.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Upcoming commercial Broadway revival at the Marquis Theatre (first preview March 24, 2027; opening April 20, 2027). No verified public capitalization, weekly nut, or recoupment data located.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://omdkc.com/damn-yankees-revival-to-open-on-broadway-this-spring-starring-neil-patrick-harris-julianne-hough-and-austin-scott/",
+          "date": "2026-09-27"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwaynews.com/neil-patrick-harris-julianne-hough-and-austin-scott-to-star-in-broadway-revival-of-damn-yankees/",
+          "date": "2026-09-27"
+        }
+      ],
+      "title": "Damn Yankees",
+      "slug": "damn-yankees",
+      "openingDate": "2027-04-20",
+      "status": "upcoming",
+      "researchedAt": "2026-10-10T22:23:20.995Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "two-strangers": {
+      "capitalization": 8000000,
+      "capitalizationSource": "The Musical Theatre Report (citing an SEC filing)",
+      "weeklyRunningCost": 480577,
+      "costMethodology": "trade-reported",
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Public reporting supports an $8 million capitalization and roughly $480,577 weekly operating cost. The show was still open at the time of this search, and I found no public recoupment announcement.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://themusicaltheatrereport.com/2025/09/13/a-brutal-take-on-the-fall-season/",
+          "date": "2025-09-13"
+        },
+        {
+          "type": "trade",
+          "url": "https://manifestrichesdaily.com/two-strangers-arrives-on-broadway-in-a-perfect-storm/",
+          "date": "2025-11-18"
+        },
+        {
+          "type": "manual",
+          "url": "https://www.ibdb.com/broadway-production/two-strangers-carry-a-cake-across-new-york-543518",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://podcastrex.com/shows/mickeyjotheatre/why-a-great-show-is-closing-on-broadway-thoughts-on-two-strangers-carry-a-cake-across-new-york",
+          "date": "2026-09-17"
+        }
+      ],
+      "title": "Two Strangers (Carry a Cake Across New York)",
+      "slug": "two-strangers",
+      "openingDate": "2025-11-20",
+      "status": "open",
+      "researchedAt": "2026-10-10T22:26:13.584Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "here-there-are-blueberries": {
+      "capitalization": 2000000,
+      "capitalizationSource": "Provath's SEC Form D aggregation for BLUEBERRIES DEVELOPMENT Ltd LIABILITY Co ($2.0M seed round), corroborated by a Reddit summary of a BroadwayWorld audition notice that said the commercial engagements would be capitalized at $1.4M-$2.0M.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Upcoming limited Broadway run; the only verified finance datum I found is about $2.0M capitalization, and I could not verify a public weekly nut or recoupment yet. ([reddit.com](https://www.reddit.com/r/Broadway/comments/1fwwrkr))",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "reddit",
+          "url": "https://www.reddit.com/r/Broadway/comments/1fwwrkr/here_there_are_blueberries_will_play_across_the/",
+          "date": "2024-10-05"
+        },
+        {
+          "type": "manual",
+          "url": "https://provath.com/companies/blueberries-development-ltd-liability-co",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadway.com/buzz/207772/here-there-are-blueberries-sets-broadway-cast-with-michael-cerveris-conrad-ricamora-and-more/",
+          "date": "2026-10-05"
+        }
+      ],
+      "title": "Here There Are Blueberries",
+      "slug": "here-there-are-blueberries",
+      "openingDate": "2026-11-09",
+      "status": "upcoming",
+      "researchedAt": "2026-10-10T22:32:17.128Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "dolly-an-original-musical": {
+      "capitalization": null,
+      "capitalizationSource": "No verified public capitalization located; NYC tax-credit list had no Dolly/St. James match, and trade coverage says producers have not revealed the amount.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Upcoming Broadway production; no verified public capitalization, weekly nut, or recoupment data found. The NYC tax-credit route does not appear available for this production, and the show is scheduled to open on January 19, 2027.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        },
+        {
+          "type": "trade",
+          "url": "https://malaysia.news.yahoo.com/dolly-parton-musical-still-planned-200549955.html",
+          "date": "2026-08-25"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.imdb.com/name/nm4367369/news/",
+          "date": "2026-08-25"
+        }
+      ],
+      "title": "Dolly: A True Original Musical",
+      "slug": "dolly-an-original-musical",
+      "openingDate": "2027-01-19",
+      "status": "upcoming",
+      "researchedAt": "2026-10-10T22:35:38.764Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "john-proctor-is-the-villain-2025": {
+      "capitalization": 6700000,
+      "capitalizationSource": "Washington Post interactive box-office graphic",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "Washington Post interactive box-office graphic",
+      "estimatedRecoupmentPct": null,
+      "designation": "Fizzle",
+      "notes": "Washington Post's 2026 celebrity-plays box-office graphic lists the production at a $6.7M capitalization and says it did not recoup, while BroadwayWorld's grosses page shows $17,121,925 lifetime gross across 25 weeks, peaking at $1,128,804. No verified public weekly nut surfaced in the sources I checked, so that field is null. Best-fit designation is Fizzle, as a limited engagement that closed without recouping but posted a strong commercial run. ([washingtonpost.com](https://www.washingtonpost.com/entertainment/theater/interactive/2026/broadway-celebrities-box-office/))",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.washingtonpost.com/entertainment/theater/interactive/2026/broadway-celebrities-box-office/",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/grosses/john-proctor-is-the-villain",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://www.ibdb.com/broadway-production/john-proctor-is-the-villain-540636",
+          "date": null
+        }
+      ],
+      "title": "John Proctor is the Villain",
+      "slug": "john-proctor-is-the-villain-2025",
+      "openingDate": "2025-04-14",
+      "status": "closed",
+      "researchedAt": "2026-10-10T22:39:06.101Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "sunset-boulevard-2017": {
+      "capitalization": null,
+      "capitalizationSource": "No public capitalization found; Broadway Journal reported that the revival's capitalization hadn't been disclosed.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "For the 2017 Palace Theatre revival, I could verify the limited engagement but not a public capitalization, weekly nut, or recoupment status. The available public trade coverage did not disclose the capitalization.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://news.cision.com/gate-ventures-plc/r/investment-in-sunset-boulevard--broadway,c2159542",
+          "date": "2017-01-03"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/p/sunset-boulevard-storms-the-palace-in-previews",
+          "date": "2017-02-07"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/glenn-close-revival-of-sunset-boulevard-confirmed-for-the-palace-theater-in-2017-20161013",
+          "date": "2016-10-13"
+        }
+      ],
+      "title": "Sunset Boulevard",
+      "slug": "sunset-boulevard-2017",
+      "openingDate": "2017-02-09",
+      "status": "closed",
+      "researchedAt": "2026-10-10T22:42:02.069Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "the-last-five-years-2025": {
+      "capitalization": null,
+      "capitalizationSource": "No verified public source found; NYC tax-credit list did not include this production, and I could not verify a public budget in trade press or SEC filings.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "BroadwayWorld later described last year's The Last Five Years as having closed at a significant loss.",
+      "estimatedRecoupmentPct": null,
+      "designation": "Flop",
+      "notes": "I found a verified Broadway run (Apr 6, 2025 to Jun 22, 2025) and lifetime gross of $8,941,190, but no public capitalization or weekly nut. No NYC tax-credit listing was found for the show. Recoupment was not announced and later trade coverage characterized the production as a significant loss.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-10"
+        },
+        {
+          "type": "manual",
+          "url": "https://www.broadwayworld.com/grosses/THE-LAST-FIVE-YEARS",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://www.ibdb.com/broadway-show/the-last-five-years-540013",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/what-lies-ahead-for-broadway-in-2026-20251219",
+          "date": "2025-12-19"
+        }
+      ],
+      "title": "The Last Five Years",
+      "slug": "the-last-five-years-2025",
+      "openingDate": "2025-04-06",
+      "status": "closed",
+      "researchedAt": "2026-10-10T22:47:23.080Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "the-shark-is-broken": {
+      "capitalization": 6384524,
+      "capitalizationSource": "NYC tax-credit records show AMITY ISLAND BROADWAY PRODUCTION SERVICES CORPORATION received $1,596,131, and the 25% credit rate implies $6,384,524 in capitalization. ([investmentbroadway.com](https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit?utm_source=openai))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "I did not find a Broadway recoupment notice in the BroadwayWorld pages I checked; those pages showed no 'recoup' match. ([broadwayworld.com](https://www.broadwayworld.com/shows/The-Shark-Is-Broken-334504.html))",
+      "estimatedRecoupmentPct": [
+        0,
+        25
+      ],
+      "designation": "Flop",
+      "notes": "The Broadway run grossed $4,495,731 over 116 performances and closed on 2023-11-19. Forum chatter floated a roughly $410,000 weekly break-even cost, but I left that unverified. ([broadwayworld.com](https://www.broadwayworld.com/grosses/THE-SHARK-IS-BROKEN))",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        },
+        {
+          "type": "manual",
+          "url": "https://www.nyc.gov/assets/finance/downloads/pdf/reports/issuers_allocation/2024/issuers-allocation-percentage-2024.pdf",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/grosses/THE-SHARK-IS-BROKEN",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://forum.broadwayworld.com/thread/THE-SHARK-IS-BROKEN-Previews/3",
+          "date": "2023-07-31"
+        }
+      ],
+      "title": "The Shark Is Broken",
+      "slug": "the-shark-is-broken",
+      "openingDate": "2023-08-10",
+      "status": "closed",
+      "researchedAt": "2026-10-10T22:50:58.309Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "elf-2024": {
+      "capitalization": null,
+      "capitalizationSource": "No verified public source found in the sources checked.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Public gross data is available for the 2024 Broadway revival, but I could not verify a public capitalization, weekly nut, or recoupment announcement.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.ibdb.com/broadway-production/elf-540332",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://theatricalindex.com/show/elf/elf-2024-bway",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://www.broadwayworld.com/grosses/ELF",
+          "date": null
+        },
+        {
+          "type": "reddit",
+          "url": "https://www.reddit.com/r/Broadway/comments/1hvz8kc",
+          "date": "2025-01-07"
+        }
+      ],
+      "title": "Elf",
+      "slug": "elf-2024",
+      "openingDate": "2024-11-17",
+      "status": "closed",
+      "researchedAt": "2026-10-10T22:54:49.601Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "maybe-happy-ending": {
+      "capitalization": 16000000,
+      "capitalizationSource": "Broadway Journal (2025-06-09) quoting producer Jeffrey Richards; corroborated by Jared Harbour's 2026-05-27 analysis citing NYT reporting.",
+      "weeklyRunningCost": 765000,
+      "costMethodology": "trade-reported",
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": "BroadwayWorld (2026-06-05) said the show was still playing and working toward recoupment.",
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Best public figures found: $16M capitalization and about $765K weekly running cost. Public reporting I found as of June 2026 still described the show as working toward recoupment.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/p/intimate-maybe-happy-ending-engineers-turnaround",
+          "date": "2025-06-09"
+        },
+        {
+          "type": "manual",
+          "url": "https://jharbour.substack.com/p/did-we-get-the-times",
+          "date": "2026-05-27"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/How-Much-Does-a-Tony-Award-Boost-Ticket-Sales-20260605",
+          "date": "2026-06-05"
+        }
+      ],
+      "title": "Maybe Happy Ending",
+      "slug": "maybe-happy-ending",
+      "openingDate": "2024-11-12",
+      "status": "open",
+      "researchedAt": "2026-10-10T22:58:06.438Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "left-on-tenth-2024": {
+      "capitalization": 5400000,
+      "capitalizationSource": "Provath profile for Left on Tenth Ltd Liability Co (SEC Form D aggregation)",
+      "weeklyRunningCost": 540000,
+      "costMethodology": "industry-estimate",
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": [
+        0,
+        0
+      ],
+      "designation": "Flop",
+      "notes": "Public evidence points to a $5.4M capitalization and an estimated $540k weekly operating cost. The show closed after 118 performances with no public recoupment announcement found, and the grosses/cost profile suggests it did not recoup.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "sec",
+          "url": "https://www.provath.com/companies/left-on-tenth-ltd-liability-co",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://forum.broadwayworld.com/thread/Broadway-GrossesWeek-Ending-11-24-24",
+          "date": "2024-11-26"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/grosses/LEFT-ON-TENTH",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://www.ibdb.com/broadway-production/left-on-tenth-539931",
+          "date": null
+        }
+      ],
+      "title": "Left on Tenth",
+      "slug": "left-on-tenth-2024",
+      "openingDate": "2024-10-23",
+      "status": "closed",
+      "researchedAt": "2026-10-10T23:01:59.588Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
+    },
+    "a-few-good-men": {
+      "capitalization": null,
+      "capitalizationSource": "No public show-specific capitalization found in the NYC tax-credit roundup or Broadway trade coverage; Lincoln Center Theater's 990 identifies it as a not-for-profit corporation. ([lct.org](https://www.lct.org/media/filer_public/10/aa/10aa2dfe-ae65-4213-817d-6af6fd971b0c/lincoln_center_theater_federal_form_990_fye_6-30-2023_public_disclosure.pdf?utm_source=openai))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "Lincoln Center Theater's *A Few Good Men* began previews on October 8, 2026 and is scheduled through January 10, 2027; because the NYC production tax credit stopped taking shows whose first paid performance falls after September 15, 2025, I infer this revival did not qualify for that credit. I found no verified capitalization or weekly nut. ([broadway.com](https://www.broadway.com/buzz/207643/bradley-whitford-tom-blyth-and-krysta-rodriguez-begin-a-few-good-men-on-broadway-tonight/?utm_source=openai))",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.lct.org/media/filer_public/10/aa/10aa2dfe-ae65-4213-817d-6af6fd971b0c/lincoln_center_theater_federal_form_990_fye_6-30-2023_public_disclosure.pdf",
+          "date": "2023-06-30"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadway.com/buzz/207643/bradley-whitford-tom-blyth-and-krysta-rodriguez-begin-a-few-good-men-on-broadway-tonight/",
+          "date": "2026-10-08"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        }
+      ],
+      "title": "A Few Good Men",
+      "slug": "a-few-good-men",
+      "openingDate": "2026-10-29",
+      "status": "previews",
+      "researchedAt": "2026-10-10T23:03:29.023Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog"
     }
   },
   "lastUpdated": "2026-10-10T01:44:31.541Z"
