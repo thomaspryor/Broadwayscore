@@ -1,84 +1,132 @@
 {
-  "updatedAt": "2026-10-10T16:30:32.663Z",
-  "processed": 111,
-  "failed": 39,
-  "successRate": "74.0%",
+  "updatedAt": "2026-10-10T16:39:03.057Z",
+  "processed": 348,
+  "failed": 198,
+  "successRate": "63.7%",
   "tierBreakdown": {
-    "playwright": 75,
-    "amp": 0,
-    "browserbase": 3,
+    "playwright": 227,
+    "amp": 7,
+    "browserbase": 13,
     "directCookies": 0,
-    "scrapingdog": 13,
-    "scrapingbee": 2,
+    "scrapingdog": 40,
+    "scrapingbee": 31,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 20
+    "archive": 49
   },
   "browserbaseSessions": 7,
   "recentActivity": [
     {
-      "t": "2026-10-10T15:59:43.183Z",
+      "t": "2026-10-10T12:59:59.451Z",
       "event": "bb-session",
-      "session": "1c4de342",
+      "session": "78f94721",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-10-10T13:00:04.560Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-10-10T13:00:23.643Z",
+      "event": "bb-session",
+      "session": "b04af3f5",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-10-10T13:00:28.061Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-10-10T13:24:19.547Z",
+      "event": "bb-session",
+      "session": "1530b3cd",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654250"
+    },
+    {
+      "t": "2026-10-10T13:24:19.911Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-10T13:24:36.914Z",
+      "event": "bb-session",
+      "session": "0ce0f12f",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654250"
+    },
+    {
+      "t": "2026-10-10T13:24:37.279Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-10T13:25:51.726Z",
+      "event": "bb-session",
+      "session": "ecf85c27",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654389"
+    },
+    {
+      "t": "2026-10-10T13:25:52.076Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-10T13:26:09.057Z",
+      "event": "bb-session",
+      "session": "162d779f",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654389"
+    },
+    {
+      "t": "2026-10-10T13:26:09.381Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-10T13:31:32.508Z",
+      "event": "bb-session",
+      "session": "1655f996",
       "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
     },
     {
-      "t": "2026-10-10T15:59:53.541Z",
+      "t": "2026-10-10T13:31:43.071Z",
       "event": "bb-session",
-      "session": "4a4c508d",
+      "session": "6e3c0827",
       "url": "https://deadline.com/2026/08/the-whisper-man-review-robert-de-niro-adam-scott-ne"
     },
     {
-      "t": "2026-10-10T16:22:43.108Z",
+      "t": "2026-10-10T13:40:44.242Z",
       "event": "bb-session",
-      "session": "5e6a3deb",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654485"
+      "session": "4668ec22",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
     },
     {
-      "t": "2026-10-10T16:22:43.787Z",
+      "t": "2026-10-10T13:40:44.586Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-10-10T16:23:02.242Z",
+      "t": "2026-10-10T13:40:56.152Z",
       "event": "bb-session",
-      "session": "cac9edef",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654485"
+      "session": "febe3d10",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
     },
     {
-      "t": "2026-10-10T16:23:02.891Z",
+      "t": "2026-10-10T13:40:56.498Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-10-10T16:25:15.377Z",
+      "t": "2026-10-10T13:41:06.471Z",
       "event": "bb-session",
-      "session": "f24033f4",
-      "url": "https://cherylmarkosky.com/2026/10/08/bww-review-into-the-woods-noel-coward-thea"
+      "session": "c6097ab2",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
     },
     {
-      "t": "2026-10-10T16:25:23.481Z",
+      "t": "2026-10-10T13:41:14.080Z",
       "event": "bb-session",
-      "session": "40404c9a",
-      "url": "https://cherylmarkosky.com/2026/10/08/bww-review-into-the-woods-noel-coward-thea"
-    },
-    {
-      "t": "2026-10-10T16:26:58.702Z",
-      "event": "bb-session",
-      "session": "00ce0056",
-      "url": "https://www.trustpilot.com/review/www.londontheatredirect.com/product/affluenza-"
-    },
-    {
-      "t": "2026-10-10T16:28:09.219Z",
-      "event": "bb-session",
-      "session": "421b032a",
-      "url": "https://whatnightout.uk/london/events/franz-marie-8871320"
-    },
-    {
-      "t": "2026-10-10T16:28:16.555Z",
-      "event": "bb-session",
-      "session": "d4ef5a9e",
-      "url": "https://whatnightout.uk/london/events/franz-marie-8871320"
+      "session": "c1354b57",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
     }
   ]
 }
