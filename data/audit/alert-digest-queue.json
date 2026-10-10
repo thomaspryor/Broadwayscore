@@ -94,5 +94,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-10T13:48:29.106Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4947-acceptance-test",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4947-acceptance-test",
+    "description": "land.yml did not land land/bro-4947-acceptance-test: the unit-tests-node gate went red at 3088cbc771. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38056226909",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4947-acceptance-test"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "3088cbc77194a341b979ac10995c0a56c529a1f3"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38056226909"
+      }
+    ],
+    "queuedAt": "2026-10-10T14:06:26.628Z"
   }
 ]
