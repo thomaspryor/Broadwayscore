@@ -16,6 +16,7 @@
  */
 
 const fs = require('fs');
+const { isShowScoreStatusEligible } = require('./lib/showscore-status-eligibility');
 const path = require('path');
 const https = require('https');
 const { extractStatusFromHtml } = require('./lib/show-score-status');
@@ -476,10 +477,8 @@ async function refreshShowScoreStatuses(data, updates, ttActiveIds) {
   const ssUrls = urlsData.shows || {};
 
   // Filter to active OB/WE/Broadway shows with ShowScore URLs
-  const targetShows = data.shows.filter(s =>
-    (s.status === 'open' || s.status === 'previews') &&
-    ssUrls[s.id]
-  );
+  // Tours excluded (BRO-4876): their ShowScore URL is another production's page.
+  const targetShows = data.shows.filter(s => isShowScoreStatusEligible(s, ssUrls));
 
   console.log(`  Checking ${targetShows.length} active shows against ShowScore...`);
 
