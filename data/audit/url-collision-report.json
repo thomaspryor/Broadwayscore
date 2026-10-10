@@ -1,39 +1,12 @@
 {
-  "generatedAt": "2026-10-10T04:30:06.416Z",
+  "generatedAt": "2026-10-10T05:11:49.436Z",
   "summary": {
-    "total": 19,
-    "high": 7,
-    "medium": 8,
+    "total": 17,
+    "high": 6,
+    "medium": 7,
     "low": 4
   },
   "collisions": [
-    {
-      "url": "https://www.standard.co.uk/culture/theatre/blood-of-my-blood-review-b1300132.html",
-      "normalizedUrl": "https://standard.co.uk/culture/theatre/blood-of-my-blood-review-b1300132.html",
-      "candidates": [
-        {
-          "showId": "_superseded-misattributed",
-          "file": "blood-of-my-blood-west-end-2026--standard--nick-curtis.json",
-          "publishDate": "2026-10-09",
-          "openingDate": null,
-          "hasScore": false,
-          "hasFullText": false,
-          "outletId": "standard"
-        },
-        {
-          "showId": "blood-of-my-blood-west-end-2026",
-          "file": "standard--nick-curtis.json",
-          "publishDate": "2026-10-09",
-          "openingDate": "2026-10-07",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "standard"
-        }
-      ],
-      "suggestedWinner": "blood-of-my-blood-west-end-2026",
-      "reason": "publishDate 2026-10-09 is 2 days from blood-of-my-blood-west-end-2026 opening (2026-10-07)",
-      "confidence": "high"
-    },
     {
       "url": "https://www.theguardian.com/stage/2026/oct/07/as-you-like-it-review-rsc",
       "normalizedUrl": "https://theguardian.com/stage/2026/oct/07/as-you-like-it-review-rsc",
@@ -168,33 +141,6 @@
       "suggestedWinner": "christmas-carol-goes-wrong-apollo-west-end-2025",
       "reason": "publishDate 2025-12-14 is 0 days from christmas-carol-goes-wrong-apollo-west-end-2025 opening (2025-12-14)",
       "confidence": "high"
-    },
-    {
-      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29339",
-      "normalizedUrl": "https://londontheatrereviews.co.uk/post.cfm",
-      "candidates": [
-        {
-          "showId": "from-the-heart-west-end-2026",
-          "file": "london-theatre-reviews--ltr.json",
-          "publishDate": "2026-10-09",
-          "openingDate": "2026-10-09",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "london-theatre-reviews"
-        },
-        {
-          "showId": "rent-west-end-2026",
-          "file": "london-theatre-reviews--ltr.json",
-          "publishDate": "2026-10-09",
-          "openingDate": "2026-10-08",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "london-theatre-reviews"
-        }
-      ],
-      "suggestedWinner": "from-the-heart-west-end-2026",
-      "reason": "publishDate 2026-10-09 is 0 days from from-the-heart-west-end-2026 but also 1 days from rent-west-end-2026",
-      "confidence": "medium"
     },
     {
       "url": "https://inews.co.uk/culture/arts/giant-review-john-lithgow-tyrant-roald-dahl-blistering-antisemitism-play-3298295",
@@ -511,7 +457,7 @@
           "file": "wsj--terry-teachout.json",
           "publishDate": "November 18th, 2021",
           "openingDate": "2021-12-02",
-          "hasScore": false,
+          "hasScore": true,
           "hasFullText": false,
           "outletId": "wsj"
         }
