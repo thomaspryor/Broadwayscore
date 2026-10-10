@@ -1,0 +1,362 @@
+{
+  "issueNumber": "bro-4996-d",
+  "planId": "0e44faf9-5038-43b1-8fd8-8e8c8cc14fc4",
+  "status": "pending",
+  "createdAt": "2026-10-10T20:00:10.352Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4996 (4/7): null wrong-production or wrong-show images on 12 rows whose served files were checked by eye, and add the wrong source URL to each row's rejectedImageUrls so no fetch takes it again. Rows: hay-fever-1970, little-women-the-musical-off-broadway-2026, the-wild-party-2000, the-devil-wears-prada-2-off-west-end-2026, 1000-millennia-off-west-end-2026, nt-connections-double-bill-cloud-busting-and-ride-or-die-off-west-end-2026, qawwali-live-with-hussain-brothers-off-west-end-2026, say-shava-shava-celebrating-25-ye-off-west-end-2026, soldiers-of-tomorrow-off-west-end-2026, the-old-ladies-off-west-end-2026, all-the-things-we-cant-explain-off-west-end-2026, andrew-doherty-sad-gay-aids-play-off-west-end-2026",
+    "steps": [
+      "Null the wrong image fields (compare-and-set); other fields stay",
+      "Add the wrong source URLs to rejectedImageUrls (add-only)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hay-fever-1970",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/hay-fever-1970/thumbnail.jpeg",
+          "poster": "/images/shows/hay-fever-1970/poster.jpeg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "hay-fever-1970: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hay-fever-1970",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://www.theaterdiary.com/parse/files/C7TsezAg3jnX9jHLsC9KFEteyKePkwLtB46dDpfh/5acafb62b2f071ea9d43f65afaee1056_file.jpeg"
+        ],
+        "description": "hay-fever-1970: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "little-women-the-musical-off-broadway-2026",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/little-women-the-musical-off-broadway-2026/hero.webp",
+          "thumbnail": "/images/shows/little-women-the-musical-off-broadway-2026/thumbnail.webp",
+          "poster": "/images/shows/little-women-the-musical-off-broadway-2026/poster.webp"
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "little-women-the-musical-off-broadway-2026: poster/thumbnail/hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "little-women-the-musical-off-broadway-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/3xhhpmquDOJksmWGKPaWQY/c044ad3266a474834824278b73d00fdf/LW_Poster.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/4bYiANf6R2yMjINfrYZZiR/4427fff29d0242f6a91a3c5ff2be09e4/LW_Square.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/7dOVCmPGrf556jUFgV99Ox/4b4533ad4abaf9b28afe532f71dceb65/LW_Hero.jpg?fm=webp&q=90"
+        ],
+        "description": "little-women-the-musical-off-broadway-2026: never re-take the wrong poster/thumbnail/hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-wild-party-2000",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/the-wild-party-2000/hero.webp",
+          "thumbnail": "/images/shows/the-wild-party-2000/thumbnail.webp",
+          "poster": "/images/shows/the-wild-party-2000/poster.webp"
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "the-wild-party-2000: poster/thumbnail/hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-wild-party-2000",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/38NkQmebsvahrHY8HNTTse/a318e2b089b37926a32114cf859889a4/Encores26_TodayTix_Assets_for_Encores__Shows_FINAL5.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1jKGFNRJkcojYHvcaCGvrX/df7498023868a100d1110caa234a2e40/Encores26_TodayTix_Assets_for_Encores__Shows_FINAL8.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/4525gSi5rmMUrNRNAFBee4/7c0c02eb5fffde614d8e175e8576bb3e/Encores26_TodayTix_Assets_for_Encores__Shows_FINAL2.png?fm=webp&q=90"
+        ],
+        "description": "the-wild-party-2000: never re-take the wrong poster/thumbnail/hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-devil-wears-prada-2-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/the-devil-wears-prada-2-off-west-end-2026/hero.webp",
+          "thumbnail": "/images/shows/the-devil-wears-prada-2-off-west-end-2026/thumbnail.webp",
+          "poster": "/images/shows/the-devil-wears-prada-2-off-west-end-2026/poster.webp"
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "the-devil-wears-prada-2-off-west-end-2026: poster/thumbnail/hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-devil-wears-prada-2-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/2eW4bQMQMjScpxWiRH1NFn/9854067e52140a612f66b06f37a0acac/DWP-2025-12-TTG-Logo-480x720px-57021SA.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1TZLaXarDBZLi6LduNnb2H/e8c045bacf3bb2217abcd7027c7fe2a2/DWP-2025-11-BBs-TTG-1080x1080.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1BoYQqFJnRkNjugN4gmI7R/eb382ea471e7f810bd5b0d59dc352e91/DWP-2025-11-BBs-TTG-PrimaryImage-1440x580.jpg?fm=webp&q=90"
+        ],
+        "description": "the-devil-wears-prada-2-off-west-end-2026: never re-take the wrong poster/thumbnail/hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "1000-millennia-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/1000-millennia-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/1000-millennia-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "1000-millennia-off-west-end-2026: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "1000-millennia-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/10361/medium_1775503382-01_RHEOLOGY_TodayTix_480_x_720__Poster_.jpg"
+        ],
+        "description": "1000-millennia-off-west-end-2026: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "nt-connections-double-bill-cloud-busting-and-ride-or-die-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/nt-connections-double-bill-cloud-busting-and-ride-or-die-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/nt-connections-double-bill-cloud-busting-and-ride-or-die-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "nt-connections-double-bill-cloud-busting-and-ride-or-die-off-west-end-2026: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "nt-connections-double-bill-cloud-busting-and-ride-or-die-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/10361/medium_1775503382-01_RHEOLOGY_TodayTix_480_x_720__Poster_.jpg"
+        ],
+        "description": "nt-connections-double-bill-cloud-busting-and-ride-or-die-off-west-end-2026: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "qawwali-live-with-hussain-brothers-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/qawwali-live-with-hussain-brothers-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/qawwali-live-with-hussain-brothers-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": "/images/shows/qawwali-live-with-hussain-brothers-off-west-end-2026/thumbnail.jpg",
+          "hero": null
+        },
+        "description": "qawwali-live-with-hussain-brothers-off-west-end-2026: poster show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "qawwali-live-with-hussain-brothers-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/10361/medium_1775503382-01_RHEOLOGY_TodayTix_480_x_720__Poster_.jpg"
+        ],
+        "description": "qawwali-live-with-hussain-brothers-off-west-end-2026: never re-take the wrong poster source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "say-shava-shava-celebrating-25-ye-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/say-shava-shava-celebrating-25-ye-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/say-shava-shava-celebrating-25-ye-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": "/images/shows/say-shava-shava-celebrating-25-ye-off-west-end-2026/thumbnail.jpg",
+          "hero": null
+        },
+        "description": "say-shava-shava-celebrating-25-ye-off-west-end-2026: poster show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "say-shava-shava-celebrating-25-ye-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/10361/medium_1775503382-01_RHEOLOGY_TodayTix_480_x_720__Poster_.jpg"
+        ],
+        "description": "say-shava-shava-celebrating-25-ye-off-west-end-2026: never re-take the wrong poster source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "soldiers-of-tomorrow-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/soldiers-of-tomorrow-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/soldiers-of-tomorrow-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "soldiers-of-tomorrow-off-west-end-2026: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "soldiers-of-tomorrow-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/10361/medium_1775503382-01_RHEOLOGY_TodayTix_480_x_720__Poster_.jpg"
+        ],
+        "description": "soldiers-of-tomorrow-off-west-end-2026: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-old-ladies-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-old-ladies-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/the-old-ladies-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "the-old-ladies-off-west-end-2026: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-old-ladies-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/10361/medium_1775503382-01_RHEOLOGY_TodayTix_480_x_720__Poster_.jpg"
+        ],
+        "description": "the-old-ladies-off-west-end-2026: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-the-things-we-cant-explain-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/all-the-things-we-cant-explain-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/all-the-things-we-cant-explain-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": "/images/shows/all-the-things-we-cant-explain-off-west-end-2026/thumbnail.jpg",
+          "hero": null
+        },
+        "description": "all-the-things-we-cant-explain-off-west-end-2026: poster show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-the-things-we-cant-explain-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/62/medium_1711643050-chicks_in_heaven_poster_graphic__2_.jpg"
+        ],
+        "description": "all-the-things-we-cant-explain-off-west-end-2026: never re-take the wrong poster source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "andrew-doherty-sad-gay-aids-play-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/andrew-doherty-sad-gay-aids-play-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/andrew-doherty-sad-gay-aids-play-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": "/images/shows/andrew-doherty-sad-gay-aids-play-off-west-end-2026/thumbnail.jpg",
+          "hero": null
+        },
+        "description": "andrew-doherty-sad-gay-aids-play-off-west-end-2026: poster show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "andrew-doherty-sad-gay-aids-play-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/62/medium_1711643050-chicks_in_heaven_poster_graphic__2_.jpg"
+        ],
+        "description": "andrew-doherty-sad-gay-aids-play-off-west-end-2026: never re-take the wrong poster source (BRO-4996)"
+      }
+    ]
+  }
+}

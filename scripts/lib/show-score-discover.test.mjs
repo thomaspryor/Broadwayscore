@@ -102,3 +102,22 @@ test('a curated London entry is still returned for a West End show', () => {
   const show = { id: 'hadestown-west-end-2024', title: 'Hadestown', category: 'west-end' };
   assert.equal(showScoreUrlForShow(show, { 'hadestown-west-end-2024': url }), url);
 });
+
+// BRO-4996: the show's own poster only, never a promoted show's.
+test('showScorePosterFromHtml takes the poster in the og:image folder, any CloudFront host', () => {
+  const { showScorePosterFromHtml } = require('./show-score-discover.js');
+  const promo = 'https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/62/medium_1711643050-chicks_in_heaven.jpg';
+  const own = 'https://dalyklerwhmui.cloudfront.net/uploads/show/poster_image/841/medium_Hughie180.jpg';
+  const html = `<meta property="og:image" content="https://www.show-score.com/fb-posts/image/show/841_1791609030.jpg"><img src="${promo}"><img src="${own}">`;
+  assert.deepEqual(showScorePosterFromHtml(html), { poster: own, thumbnail: own.replace('/medium_', '/preview_') });
+  const reversed = `<meta content="https://www.show-score.com/fb-posts/image/show/841_1.jpg" property="og:image"><img src="${promo}"><img src="${own}">`;
+  assert.equal(showScorePosterFromHtml(reversed).poster, own, 'attribute order does not matter');
+});
+
+test('showScorePosterFromHtml: no og:image or no poster in its folder means no poster', () => {
+  const { showScorePosterFromHtml } = require('./show-score-discover.js');
+  const promo = 'https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/62/medium_x.jpg';
+  assert.equal(showScorePosterFromHtml(`<img src="${promo}">`), null);
+  assert.equal(showScorePosterFromHtml(`<meta property="og:image" content="https://www.show-score.com/fb-posts/image/show/841_1.jpg"><img src="${promo}">`), null);
+  assert.equal(showScorePosterFromHtml(''), null);
+});
