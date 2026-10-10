@@ -1,0 +1,183 @@
+{
+  "issueNumber": "bro-4996-g",
+  "planId": "8a19d88b-9a5b-4405-acbc-c2174982554a",
+  "status": "pending",
+  "createdAt": "2026-10-10T20:00:10.352Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4996 (7/7): null wrong-production or wrong-show images on 6 rows whose served files were checked by eye, and add the wrong source URL to each row's rejectedImageUrls so no fetch takes it again. Rows: fiddler-on-the-roof-1990, on-the-town-1998, on-the-town-2014, love-letters-2014, anything-goes-2002, desire-under-the-elms-off-west-end-2026",
+    "steps": [
+      "Null the wrong image fields (compare-and-set); other fields stay",
+      "Add the wrong source URLs to rejectedImageUrls (add-only)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fiddler-on-the-roof-1990",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/fiddler-on-the-roof-1990/thumbnail.jpg",
+          "poster": "/images/shows/fiddler-on-the-roof-1990/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "fiddler-on-the-roof-1990: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fiddler-on-the-roof-1990",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/419/medium_FiddlerLogo.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/419/preview_FiddlerLogo.jpg"
+        ],
+        "description": "fiddler-on-the-roof-1990: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "on-the-town-1998",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/on-the-town-1998/thumbnail.jpg",
+          "poster": "/images/shows/on-the-town-1998/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "on-the-town-1998: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "on-the-town-1998",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/20/medium_on_the_town.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/20/preview_on_the_town.jpg"
+        ],
+        "description": "on-the-town-1998: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "on-the-town-2014",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/on-the-town-2014/thumbnail.jpg",
+          "poster": "/images/shows/on-the-town-2014/poster.webp",
+          "hero": "/images/shows/on-the-town-2014/hero.webp"
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": "/images/shows/on-the-town-2014/thumbnail.jpg",
+          "hero": null
+        },
+        "description": "on-the-town-2014: poster/hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "on-the-town-2014",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/6wk2gyDogzuDIiwAPmR7Pa/4d19b98c85dd28d6498d4a234ca0882c/TT-poster-tony_yazbeck.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/18bWVYwCWrgH40dNPHV0ZJ/74ebbfa67ec325eba297bf03174f597f/TT-production-tony_yazbeck.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "on-the-town-2014: never re-take the wrong poster/hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "love-letters-2014",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/love-letters-2014/hero.webp",
+          "thumbnail": "/images/shows/love-letters-2014/thumbnail.webp",
+          "poster": "/images/shows/love-letters-2014/poster.webp"
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "love-letters-2014: poster/thumbnail/hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "love-letters-2014",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/hLLYqZkgHWQOD9UK7BoDI/a88a522eb6d101314d4a8b32de582489/Love-Letters_TodayTixLL-Poster-Basci-image_-480px-x-720px-.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/hLLYqZkgHWQOD9UK7BoDI/a88a522eb6d101314d4a8b32de582489/Love-Letters_TodayTixLL-Poster-Basci-image_-480px-x-720px-.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/hLLYqZkgHWQOD9UK7BoDI/a88a522eb6d101314d4a8b32de582489/Love-Letters_TodayTixLL-Poster-Basci-image_-480px-x-720px-.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "love-letters-2014: never re-take the wrong poster/thumbnail/hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "anything-goes-2002",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/anything-goes-2002/thumbnail.jpg",
+          "poster": "/images/shows/anything-goes-2002/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "anything-goes-2002: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "anything-goes-2002",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/444/medium_anything_goes.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/444/preview_anything_goes.jpg"
+        ],
+        "description": "anything-goes-2002: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "desire-under-the-elms-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/desire-under-the-elms-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/desire-under-the-elms-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "desire-under-the-elms-off-west-end-2026: poster/thumbnail show another production's or show's art (BRO-4996)"
+      }
+    ]
+  }
+}

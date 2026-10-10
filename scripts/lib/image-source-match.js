@@ -158,7 +158,10 @@ function theatrEligible(show, candidate, allShows) {
 }
 
 /** A source URL without its query string, for comparing two image URLs. */
-const sourceBase = (u) => String(u || '').split('?')[0];
+// Show Score serves the same poster_image path from more than one CloudFront
+// host (d4ov6iqsvotvt, later dalyklerwhmui), so the host is not compared.
+const sourceBase = (u) => String(u || '').split('?')[0]
+  .replace(/^https?:\/\/(?:d4ov6iqsvotvt|dalyklerwhmui)\.cloudfront\.net\/uploads\/show\//i, 'showscore:/uploads/show/');
 
 /** Image source URLs a person rejected for this show (show.rejectedImageUrls). */
 function isRejectedImage(images, show) {
@@ -285,6 +288,7 @@ function ibdbEligible(show) {
 }
 
 module.exports = {
+  sourceBase,
   buildVenueCityIndex,
   normalizeVenueName,
   venuesMatch,

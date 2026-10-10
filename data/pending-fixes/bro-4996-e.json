@@ -1,0 +1,350 @@
+{
+  "issueNumber": "bro-4996-e",
+  "planId": "c8810672-87e2-43b4-9d1c-4b35f722177e",
+  "status": "pending",
+  "createdAt": "2026-10-10T20:00:10.352Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4996 (5/7): null wrong-production or wrong-show images on 12 rows whose served files were checked by eye, and add the wrong source URL to each row's rejectedImageUrls so no fetch takes it again. Rows: are-you-a-robot-off-west-end-2026, berlin2027-off-west-end-2026, fear-and-wonder-off-broadway-2026, local-off-west-end-2026, new-26-that-last-summer-off-west-end-2026, new-26-van-man-off-west-end-2026, prick-up-your-ears-off-west-end-2026, pride-a-creative-celebration-off-west-end-2026, rockers-off-west-end-2026, much-ado-about-nothing-off-west-end-2026, skylight-1996, the-little-foxes-1997",
+    "steps": [
+      "Null the wrong image fields (compare-and-set); other fields stay",
+      "Add the wrong source URLs to rejectedImageUrls (add-only)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "are-you-a-robot-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/are-you-a-robot-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/are-you-a-robot-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": "/images/shows/are-you-a-robot-off-west-end-2026/thumbnail.jpg",
+          "hero": null
+        },
+        "description": "are-you-a-robot-off-west-end-2026: poster show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "are-you-a-robot-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/62/medium_1711643050-chicks_in_heaven_poster_graphic__2_.jpg"
+        ],
+        "description": "are-you-a-robot-off-west-end-2026: never re-take the wrong poster source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "berlin2027-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/berlin2027-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/berlin2027-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "berlin2027-off-west-end-2026: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "berlin2027-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/62/medium_1711643050-chicks_in_heaven_poster_graphic__2_.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/62/preview_1711643050-chicks_in_heaven_poster_graphic__2_.jpg"
+        ],
+        "description": "berlin2027-off-west-end-2026: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fear-and-wonder-off-broadway-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/fear-and-wonder-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/fear-and-wonder-off-broadway-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/fear-and-wonder-off-broadway-2026/poster.jpg",
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "fear-and-wonder-off-broadway-2026: thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "local-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/local-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/local-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "local-off-west-end-2026: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "local-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/62/medium_1711643050-chicks_in_heaven_poster_graphic__2_.jpg"
+        ],
+        "description": "local-off-west-end-2026: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "new-26-that-last-summer-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/new-26-that-last-summer-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/new-26-that-last-summer-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "new-26-that-last-summer-off-west-end-2026: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "new-26-that-last-summer-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/62/medium_1711643050-chicks_in_heaven_poster_graphic__2_.jpg"
+        ],
+        "description": "new-26-that-last-summer-off-west-end-2026: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "new-26-van-man-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/new-26-van-man-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/new-26-van-man-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "new-26-van-man-off-west-end-2026: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "new-26-van-man-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/62/medium_1711643050-chicks_in_heaven_poster_graphic__2_.jpg"
+        ],
+        "description": "new-26-van-man-off-west-end-2026: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "prick-up-your-ears-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/prick-up-your-ears-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/prick-up-your-ears-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "prick-up-your-ears-off-west-end-2026: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "prick-up-your-ears-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/62/medium_1711643050-chicks_in_heaven_poster_graphic__2_.jpg"
+        ],
+        "description": "prick-up-your-ears-off-west-end-2026: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pride-a-creative-celebration-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/pride-a-creative-celebration-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/pride-a-creative-celebration-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "pride-a-creative-celebration-off-west-end-2026: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pride-a-creative-celebration-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/62/medium_1711643050-chicks_in_heaven_poster_graphic__2_.jpg"
+        ],
+        "description": "pride-a-creative-celebration-off-west-end-2026: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rockers-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/rockers-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/rockers-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": "/images/shows/rockers-off-west-end-2026/thumbnail.jpg",
+          "hero": null
+        },
+        "description": "rockers-off-west-end-2026: poster show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rockers-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/62/medium_1711643050-chicks_in_heaven_poster_graphic__2_.jpg"
+        ],
+        "description": "rockers-off-west-end-2026: never re-take the wrong poster source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "much-ado-about-nothing-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/much-ado-about-nothing-off-west-end-2026/hero.webp",
+          "thumbnail": "/images/shows/much-ado-about-nothing-off-west-end-2026/thumbnail.webp",
+          "poster": "/images/shows/much-ado-about-nothing-off-west-end-2026/poster.webp"
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "much-ado-about-nothing-off-west-end-2026: poster/thumbnail/hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "much-ado-about-nothing-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/54fGz3aG5CpQ7PFTyiEm9v/f9481fc6db7eac3c451c48fdee845fae/MAAN-ThirdPartyAssets-ThirdPartyAssets-TodayTix-480x720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/6s94R862e8JcpYiQJPOjcF/5d64d5a76d0c50abe0ae9d6c56d7da6b/MAAN-ThirdPartyAssets-ThirdPartyAssets-TodayTix-480x720__1_.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/2mdg9nlUsaTrksdLHMlefW/c23555a9484cbe99a0556a98313c0105/MAAN-ThirdPartyAssets-ThirdPartyAssets-TodayTix-1440x580.jpg?fm=webp&q=90"
+        ],
+        "description": "much-ado-about-nothing-off-west-end-2026: never re-take the wrong poster/thumbnail/hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "skylight-1996",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/skylight-1996/thumbnail.jpg",
+          "poster": "/images/shows/skylight-1996/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "skylight-1996: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "skylight-1996",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/164/medium_1655133157-Skylight200.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/164/preview_1655133157-Skylight200.jpg"
+        ],
+        "description": "skylight-1996: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-little-foxes-1997",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-little-foxes-1997/thumbnail.jpg",
+          "poster": "/images/shows/the-little-foxes-1997/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "the-little-foxes-1997: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-little-foxes-1997",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/1303/medium_LittleFoxes.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/1303/preview_LittleFoxes.jpg"
+        ],
+        "description": "the-little-foxes-1997: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      }
+    ]
+  }
+}

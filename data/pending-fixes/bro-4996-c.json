@@ -1,0 +1,369 @@
+{
+  "issueNumber": "bro-4996-c",
+  "planId": "cf198a2d-8e45-47d1-bf10-b769a04ab02a",
+  "status": "pending",
+  "createdAt": "2026-10-10T20:00:10.352Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4996 (3/7): null wrong-production or wrong-show images on 12 rows whose served files were checked by eye, and add the wrong source URL to each row's rejectedImageUrls so no fetch takes it again. Rows: guys-and-dolls-2009, private-lives-2025, hughie-1996, on-the-twentieth-century-1978, blithe-spirit-1987, dreamgirls-2001, mornings-at-seven-1980, mornings-at-seven-2002, the-tempest-1995, dracula-the-musical-2004, jumpers-1974, as-you-like-it-1986",
+    "steps": [
+      "Null the wrong image fields (compare-and-set); other fields stay",
+      "Add the wrong source URLs to rejectedImageUrls (add-only)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "guys-and-dolls-2009",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/guys-and-dolls-2009/thumbnail.jpg",
+          "poster": "/images/shows/guys-and-dolls-2009/poster.webp",
+          "hero": "/images/shows/guys-and-dolls-2009/hero.webp"
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": "/images/shows/guys-and-dolls-2009/thumbnail.jpg",
+          "hero": null
+        },
+        "description": "guys-and-dolls-2009: poster/hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "guys-and-dolls-2009",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/6abWX4KAaw94BhKBrocgfu/d26cf055ade5adaa4e5a4be79f2edc8e/CAB25_Q3_029_Remaining_Ticket_Agent_Buttons_New_Creative_TTG_480x720px_AW.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/9w4zeJBhCmJS0JSP6bXz3/a62bdf3d043c962a595a68d7e58eda0d/G_DHeader.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "guys-and-dolls-2009: never re-take the wrong poster/hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "private-lives-2025",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/private-lives-2025/thumbnail.jpg",
+          "poster": "/images/shows/private-lives-2025/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "private-lives-2025: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "private-lives-2025",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/6069/medium_1625317295-Private_Lives__Copy_.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/6069/preview_1625317295-Private_Lives__Copy_.jpg"
+        ],
+        "description": "private-lives-2025: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hughie-1996",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/hughie-1996/thumbnail.jpg",
+          "poster": "/images/shows/hughie-1996/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "hughie-1996: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hughie-1996",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/841/medium_Hughie180.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/841/preview_Hughie180.jpg"
+        ],
+        "description": "hughie-1996: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "on-the-twentieth-century-1978",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/on-the-twentieth-century-1978/thumbnail.jpg",
+          "poster": "/images/shows/on-the-twentieth-century-1978/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "on-the-twentieth-century-1978: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "on-the-twentieth-century-1978",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/185/medium_onthetwentiethcentury2.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/185/preview_onthetwentiethcentury2.jpg"
+        ],
+        "description": "on-the-twentieth-century-1978: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "blithe-spirit-1987",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/blithe-spirit-1987/thumbnail.jpg",
+          "poster": "/images/shows/blithe-spirit-1987/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "blithe-spirit-1987: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "blithe-spirit-1987",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/459/medium_blithe_spirit.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/459/preview_blithe_spirit.jpg"
+        ],
+        "description": "blithe-spirit-1987: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dreamgirls-2001",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/dreamgirls-2001/thumbnail.jpg",
+          "poster": "/images/shows/dreamgirls-2001/poster.jpg",
+          "hero": "/images/shows/dreamgirls-2001/hero.webp"
+        },
+        "newValue": {
+          "poster": "/images/shows/dreamgirls-2001/poster.jpg",
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "dreamgirls-2001: thumbnail/hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dreamgirls-2001",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://www.theaterdiary.com/parse/files/C7TsezAg3jnX9jHLsC9KFEteyKePkwLtB46dDpfh/4dcb369aa1e20bd4d5d973e75272d526_dreamgirls.jpg",
+          "https://images.ctfassets.net/6pezt69ih962/43xtLb8SftDaxeA1k5F2sk/5df3b6b60da48ff358351908b1b9fb8c/Hero_1440x580.png?fm=webp&q=90"
+        ],
+        "description": "dreamgirls-2001: never re-take the wrong thumbnail/hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mornings-at-seven-1980",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/mornings-at-seven-1980/thumbnail.jpg",
+          "poster": "/images/shows/mornings-at-seven-1980/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "mornings-at-seven-1980: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mornings-at-seven-1980",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/6877/medium_1634221412-mornings2.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/6877/preview_1634221412-mornings2.jpg"
+        ],
+        "description": "mornings-at-seven-1980: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mornings-at-seven-2002",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/mornings-at-seven-2002/thumbnail.jpg",
+          "poster": "/images/shows/mornings-at-seven-2002/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/mornings-at-seven-2002/poster.jpg",
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "mornings-at-seven-2002: thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mornings-at-seven-2002",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/6877/preview_1634221412-mornings2.jpg"
+        ],
+        "description": "mornings-at-seven-2002: never re-take the wrong thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-tempest-1995",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/the-tempest-1995/hero.webp",
+          "thumbnail": "/images/shows/the-tempest-1995/thumbnail.webp",
+          "poster": "/images/shows/the-tempest-1995/poster.webp"
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "the-tempest-1995: poster/thumbnail/hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-tempest-1995",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/BlG4YdgCvlaDvVoCfGVob/94aa3a348986ac5dd53af4d84bf21633/TheTempest_TodayTix_480x720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1nrUm3tmZLLgjDLyOsjg5m/cd1c32f0933b8c04df0cda300808d690/TheTempest_TodayTix_1080x1080.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/3qFgP0Ha3ob4jzAInb1BDu/224eb231f8c54dc72f213015f2ad5751/TheTempest_TodayTix_1440x580.jpg?fm=webp&q=90"
+        ],
+        "description": "the-tempest-1995: never re-take the wrong poster/thumbnail/hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dracula-the-musical-2004",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/dracula-the-musical-2004/hero.webp",
+          "thumbnail": "/images/shows/dracula-the-musical-2004/thumbnail.webp",
+          "poster": "/images/shows/dracula-the-musical-2004/poster.webp"
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "dracula-the-musical-2004: poster/thumbnail/hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dracula-the-musical-2004",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/722ewIYJqTvVvpkq0u8cmk/64a1cb1ab6dbe10935e2b4e1c3ad0b2a/480x720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/6vb7OdrnGx9ib7x96T2Cft/b1461b71c974e0e6da8fccc0d8520abb/1080x1080_-_SAFE.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/7yJ7aYY0gvi4BwAbpKZshR/a21b84794762a236b376926e6f5ca4e4/1440x580.jpg?fm=webp&q=90"
+        ],
+        "description": "dracula-the-musical-2004: never re-take the wrong poster/thumbnail/hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jumpers-1974",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/jumpers-1974/thumbnail.jpeg",
+          "poster": "/images/shows/jumpers-1974/poster.jpeg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "jumpers-1974: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jumpers-1974",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://www.theaterdiary.com/parse/files/C7TsezAg3jnX9jHLsC9KFEteyKePkwLtB46dDpfh/4f6915b5a0db7222f2a05f235b574f67_file.jpeg"
+        ],
+        "description": "jumpers-1974: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "as-you-like-it-1986",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/as-you-like-it-1986/hero.webp",
+          "thumbnail": "/images/shows/as-you-like-it-1986/thumbnail.webp",
+          "poster": "/images/shows/as-you-like-it-1986/poster.webp"
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "as-you-like-it-1986: poster/thumbnail/hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "as-you-like-it-1986",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/3U0tLhi9lUgxTwBviLa0Po/084336493d31ebe7d5e53b84048264d8/TodayTix_480x720_Globe_AsYouLikeIt__1_.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/3fSkIdMveCZ7sXbBfOJtq7/2049331717f90d827c7b73e7ca4022de/TodayTix_1080x1080_Globe_AsYouLikeIt.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/cJMHvDlpXm3YPIbB0QmT7/9ddfc6a8fa4739908b141b407292b69a/TodayTix_1440x580_Globe_AsYouLikeIt__1_.jpg?fm=webp&q=90"
+        ],
+        "description": "as-you-like-it-1986: never re-take the wrong poster/thumbnail/hero source (BRO-4996)"
+      }
+    ]
+  }
+}

@@ -14,6 +14,7 @@ const {
   pickEditableFields,
   buildShowSnapshot,
   castValueProblem,
+  rejectedUrlsValueProblem,
 } = require('../../scripts/lib/feedback-pipeline-fields.js');
 
 const __filename = fileURLToPath(import.meta.url);
@@ -29,7 +30,11 @@ describe('feedback-pipeline-fields', () => {
       for (const key of Object.keys(show)) realFieldNames.add(key);
     }
 
+    // Real fields that only the pipeline writes, so no row may have one yet:
+    // rejectedImageUrls is read by scripts/lib/image-source-match.js (BRO-4996).
+    const writtenByPipeline = new Set(['rejectedImageUrls']);
     for (const field of FEEDBACK_EDITABLE_FIELDS['shows.json']) {
+      if (writtenByPipeline.has(field)) continue;
       assert.ok(
         realFieldNames.has(field),
         `"${field}" in FEEDBACK_EDITABLE_FIELDS['shows.json'] doesn't exist on any show in data/shows.json`
@@ -123,7 +128,11 @@ describe('feedback-pipeline-fields', () => {
     assert.equal(snapshot.title, 'X');
     assert.equal(snapshot.slug, 'x');
     assert.equal(snapshot.venue, 'Some Theatre');
+    // Real fields that only the pipeline writes, so no row may have one yet:
+    // rejectedImageUrls is read by scripts/lib/image-source-match.js (BRO-4996).
+    const writtenByPipeline = new Set(['rejectedImageUrls']);
     for (const field of FEEDBACK_EDITABLE_FIELDS['shows.json']) {
+      if (writtenByPipeline.has(field)) continue;
       assert.ok(field in snapshot, `buildShowSnapshot() omits editable field "${field}"`);
     }
     assert.ok(!('extraneous' in snapshot));
@@ -134,7 +143,11 @@ describe('feedback-pipeline-fields', () => {
     const snapshot = buildShowSnapshot(show);
     const serialized = JSON.parse(JSON.stringify(snapshot));
 
+    // Real fields that only the pipeline writes, so no row may have one yet:
+    // rejectedImageUrls is read by scripts/lib/image-source-match.js (BRO-4996).
+    const writtenByPipeline = new Set(['rejectedImageUrls']);
     for (const field of FEEDBACK_EDITABLE_FIELDS['shows.json']) {
+      if (writtenByPipeline.has(field)) continue;
       assert.ok(field in serialized, `"${field}" was dropped by JSON.stringify (undefined value) — issue #582 regression`);
     }
     assert.deepEqual(serialized.creativeTeam, []);
@@ -154,5 +167,19 @@ describe('feedback-pipeline-fields', () => {
 
   test('buildShowSnapshot emits cast as [] when the show has none', () => {
     assert.deepEqual(buildShowSnapshot({ id: 'x', title: 'X', slug: 'x' }).cast, []);
+  });
+
+  test('rejectedUrlsValueProblem: http(s) URLs only, add-only (BRO-4996)', () => {
+    const a = 'https://x.test/a.jpg', b = 'https://x.test/b.jpg';
+    assert.equal(rejectedUrlsValueProblem([a], null), null);
+    assert.equal(rejectedUrlsValueProblem([a, b], [a]), null);
+    assert.match(rejectedUrlsValueProblem([b], [a]), /only add/);
+    assert.match(rejectedUrlsValueProblem(null, null), /must be an array/);
+    assert.match(rejectedUrlsValueProblem(['manual:x'], null), /http/);
+    assert.match(rejectedUrlsValueProblem([3], null), /http/);
+  });
+
+  test('buildShowSnapshot emits rejectedImageUrls as [] when the show has none', () => {
+    assert.deepEqual(buildShowSnapshot({ id: 'x', title: 'X', slug: 'x' }).rejectedImageUrls, []);
   });
 });

@@ -1,0 +1,369 @@
+{
+  "issueNumber": "bro-4996-f",
+  "planId": "66e14d7b-8522-453b-98ca-6749cc360024",
+  "status": "pending",
+  "createdAt": "2026-10-10T20:00:10.352Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4996 (6/7): null wrong-production or wrong-show images on 12 rows whose served files were checked by eye, and add the wrong source URL to each row's rejectedImageUrls so no fetch takes it again. Rows: present-laughter-1996, the-gin-game-1997, hello-dolly-1978, the-pajama-game-1973, hair-1977, pippin-1972, the-front-page-1986, fences-1987, macbeth-2008, the-crucible-2002, falsettos-1992, six-degrees-of-separation-1990",
+    "steps": [
+      "Null the wrong image fields (compare-and-set); other fields stay",
+      "Add the wrong source URLs to rejectedImageUrls (add-only)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "present-laughter-1996",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/present-laughter-1996/thumbnail.jpg",
+          "poster": "/images/shows/present-laughter-1996/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "present-laughter-1996: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "present-laughter-1996",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/1860/medium_Present_Laughter1.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/1860/preview_Present_Laughter1.jpg"
+        ],
+        "description": "present-laughter-1996: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-gin-game-1997",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-gin-game-1997/thumbnail.jpg",
+          "poster": "/images/shows/the-gin-game-1997/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "the-gin-game-1997: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-gin-game-1997",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/429/medium_GinGamenew180.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/429/preview_GinGamenew180.jpg"
+        ],
+        "description": "the-gin-game-1997: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hello-dolly-1978",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/hello-dolly-1978/thumbnail.jpg",
+          "poster": "/images/shows/hello-dolly-1978/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "hello-dolly-1978: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hello-dolly-1978",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/1317/medium_1004657715-FL_SAR_coljhandelm24b.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/1317/preview_1004657715-FL_SAR_coljhandelm24b.jpg"
+        ],
+        "description": "hello-dolly-1978: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-pajama-game-1973",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-pajama-game-1973/thumbnail.jpg",
+          "poster": "/images/shows/the-pajama-game-1973/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "the-pajama-game-1973: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-pajama-game-1973",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/473/medium_the_pajama_game.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/473/preview_the_pajama_game.jpg"
+        ],
+        "description": "the-pajama-game-1973: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hair-1977",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/hair-1977/thumbnail.jpg",
+          "poster": "/images/shows/hair-1977/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "hair-1977: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hair-1977",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/465/medium_hair_resized.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/465/preview_hair_resized.jpg"
+        ],
+        "description": "hair-1977: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pippin-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/pippin-1972/thumbnail.jpg",
+          "poster": "/images/shows/pippin-1972/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "pippin-1972: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pippin-1972",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/469/medium_pippin.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/469/preview_pippin.jpg"
+        ],
+        "description": "pippin-1972: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-front-page-1986",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-front-page-1986/thumbnail.jpg",
+          "poster": "/images/shows/the-front-page-1986/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "the-front-page-1986: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-front-page-1986",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/1304/medium_FrontPage.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/1304/preview_FrontPage.jpg"
+        ],
+        "description": "the-front-page-1986: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fences-1987",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/fences-1987/thumbnail.jpg",
+          "poster": "/images/shows/fences-1987/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "fences-1987: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fences-1987",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/464/medium_fences_resized.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/464/preview_fences_resized.jpg"
+        ],
+        "description": "fences-1987: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "macbeth-2008",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/macbeth-2008/hero.webp",
+          "thumbnail": "/images/shows/macbeth-2008/thumbnail.webp",
+          "poster": "/images/shows/macbeth-2008/poster.webp"
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "macbeth-2008: poster/thumbnail/hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "macbeth-2008",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/32CntqfbCjV88phwRmdNUO/c0d172c0b102a3fc5bfecf243d42627c/prod_1648052214958_480x720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/32CntqfbCjV88phwRmdNUO/c0d172c0b102a3fc5bfecf243d42627c/prod_1648052214958_480x720.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/3t3NxHUW7Nf5JfR2VyFZ3p/8ed318b580679d1a48e805dc80f9b88a/1440x580__1_.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "macbeth-2008: never re-take the wrong poster/thumbnail/hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-crucible-2002",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-crucible-2002/thumbnail.jpg",
+          "poster": "/images/shows/the-crucible-2002/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "the-crucible-2002: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-crucible-2002",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/885/medium_14095-3.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/885/preview_14095-3.jpg"
+        ],
+        "description": "the-crucible-2002: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "falsettos-1992",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/falsettos-1992/thumbnail.jpg",
+          "poster": "/images/shows/falsettos-1992/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "falsettos-1992: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "falsettos-1992",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/1271/medium_Falsettos1.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/1271/preview_Falsettos1.jpg"
+        ],
+        "description": "falsettos-1992: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "six-degrees-of-separation-1990",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/six-degrees-of-separation-1990/thumbnail.jpg",
+          "poster": "/images/shows/six-degrees-of-separation-1990/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "six-degrees-of-separation-1990: poster/thumbnail show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "six-degrees-of-separation-1990",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/1953/medium_six_degrees.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/1953/preview_six_degrees.jpg"
+        ],
+        "description": "six-degrees-of-separation-1990: never re-take the wrong poster/thumbnail source (BRO-4996)"
+      }
+    ]
+  }
+}

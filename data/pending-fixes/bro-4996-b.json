@@ -1,0 +1,374 @@
+{
+  "issueNumber": "bro-4996-b",
+  "planId": "3b93e1fb-a4fa-48c1-aa71-a785cdc079e3",
+  "status": "pending",
+  "createdAt": "2026-10-10T20:00:10.352Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4996 (2/7): null wrong-production or wrong-show images on 12 rows whose served files were checked by eye, and add the wrong source URL to each row's rejectedImageUrls so no fetch takes it again. Rows: a-dolls-house-play-off-west-end-2026, peter-pan-goes-wrong-2023, the-play-that-goes-wrong-off-broadway-2019, the-cripple-of-inishmaan-2014, bernhardthamlet-2018, gary-a-sequel-to-titus-andronicus-2019, the-price-off-west-end-2026, the-curious-incident-of-the-dog-in-the-night-time-off-broadway-2026, a-time-to-kill-2013, elling-2010, high-2011, la-cage-aux-folles-2010",
+    "steps": [
+      "Null the wrong image fields (compare-and-set); other fields stay",
+      "Add the wrong source URLs to rejectedImageUrls (add-only)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-dolls-house-play-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/a-dolls-house-play-off-west-end-2026/hero.webp",
+          "thumbnail": "/images/shows/a-dolls-house-play-off-west-end-2026/thumbnail.webp",
+          "poster": "/images/shows/a-dolls-house-play-off-west-end-2026/poster.webp"
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "a-dolls-house-play-off-west-end-2026: poster/thumbnail/hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-dolls-house-play-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/1WbbBgLll2zMmJpb43UznU/f7d7b0646862ff32c1783cd944a9c79b/Dolls_House_Tony_Noms_poster-silvery__3_.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1WbbBgLll2zMmJpb43UznU/f7d7b0646862ff32c1783cd944a9c79b/Dolls_House_Tony_Noms_poster-silvery__3_.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/1WbbBgLll2zMmJpb43UznU/f7d7b0646862ff32c1783cd944a9c79b/Dolls_House_Tony_Noms_poster-silvery__3_.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "a-dolls-house-play-off-west-end-2026: never re-take the wrong poster/thumbnail/hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peter-pan-goes-wrong-2023",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/peter-pan-goes-wrong-2023/thumbnail.jpg",
+          "poster": "/images/shows/peter-pan-goes-wrong-2023/poster.webp",
+          "hero": "/images/shows/peter-pan-goes-wrong-2023/hero.webp"
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": "/images/shows/peter-pan-goes-wrong-2023/thumbnail.jpg",
+          "hero": null
+        },
+        "description": "peter-pan-goes-wrong-2023: poster/hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peter-pan-goes-wrong-2023",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/RNsrhfpZ3YOZU8tPraXQ8/15562b3462f6b1f8702c6b7d2fc4bc5b/260106_TPTGW_GroupShot_480x720_RG.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/RNsrhfpZ3YOZU8tPraXQ8/15562b3462f6b1f8702c6b7d2fc4bc5b/260106_TPTGW_GroupShot_480x720_RG.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "peter-pan-goes-wrong-2023: never re-take the wrong poster/hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-play-that-goes-wrong-off-broadway-2019",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/the-play-that-goes-wrong-off-broadway-2019/hero.webp",
+          "thumbnail": "/images/shows/the-play-that-goes-wrong-off-broadway-2019/thumbnail.webp",
+          "poster": "/images/shows/the-play-that-goes-wrong-off-broadway-2019/poster.webp"
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "the-play-that-goes-wrong-off-broadway-2019: poster/thumbnail/hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-play-that-goes-wrong-off-broadway-2019",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/RNsrhfpZ3YOZU8tPraXQ8/15562b3462f6b1f8702c6b7d2fc4bc5b/260106_TPTGW_GroupShot_480x720_RG.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/3OmfEtwED83yA7oV07US4L/ae4f0f1da05a49d45bdbcfcb61c677cd/260108_TPTGW_GroupShot_1080x1080_RG.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5BcYbO8f7C9Mm3NvPnsTWk/5a9f02b50d07ccc0d1c95135342350ec/260106_TPTGW_GroupShot_1440x580_RG.jpg?fm=webp&q=90"
+        ],
+        "description": "the-play-that-goes-wrong-off-broadway-2019: never re-take the wrong poster/thumbnail/hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-cripple-of-inishmaan-2014",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-cripple-of-inishmaan-2014/thumbnail.webp",
+          "poster": "/images/shows/the-cripple-of-inishmaan-2014/poster.webp",
+          "hero": "/images/shows/the-cripple-of-inishmaan-2014/hero.webp"
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "the-cripple-of-inishmaan-2014: poster/thumbnail/hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-cripple-of-inishmaan-2014",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/3WCkQlFNoNs1Ii7V0xTqiO/b68ea0f021bcfdc5086b438fcb966daf/HANG_022_PA_FINALWEEKS_TICKETING_SITE_ASSETS_TODAY_TIX-480x720-v2.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/3WCkQlFNoNs1Ii7V0xTqiO/b68ea0f021bcfdc5086b438fcb966daf/HANG_022_PA_FINALWEEKS_TICKETING_SITE_ASSETS_TODAY_TIX-480x720-v2.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/3WCkQlFNoNs1Ii7V0xTqiO/b68ea0f021bcfdc5086b438fcb966daf/HANG_022_PA_FINALWEEKS_TICKETING_SITE_ASSETS_TODAY_TIX-480x720-v2.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "the-cripple-of-inishmaan-2014: never re-take the wrong poster/thumbnail/hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bernhardthamlet-2018",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/bernhardthamlet-2018/thumbnail.jpg",
+          "poster": "/images/shows/bernhardthamlet-2018/poster.webp",
+          "hero": "/images/shows/bernhardthamlet-2018/hero.webp"
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": "/images/shows/bernhardthamlet-2018/thumbnail.jpg",
+          "hero": null
+        },
+        "description": "bernhardthamlet-2018: poster/hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bernhardthamlet-2018",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/1b8bhQf56qPxiLhQyD1BsC/03ee86c382cd8d08a35edb59882b8660/26-1178150-RUSH-WS-today-tix-additional-assets-hamlet_480_x_720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/4Q0Kpx3nvj1Yorn32y0pmI/88fbd58cce8854a0a90e7fadcd506ca1/26-1178150-RUSH-WS-today-tix-additional-assets-hamlet_1440_x_580.jpg?fm=webp&q=90"
+        ],
+        "description": "bernhardthamlet-2018: never re-take the wrong poster/hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "gary-a-sequel-to-titus-andronicus-2019",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/gary-a-sequel-to-titus-andronicus-2019/thumbnail.jpg",
+          "poster": "/images/shows/gary-a-sequel-to-titus-andronicus-2019/poster.webp",
+          "hero": "/images/shows/gary-a-sequel-to-titus-andronicus-2019/hero.webp"
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": "/images/shows/gary-a-sequel-to-titus-andronicus-2019/thumbnail.jpg",
+          "hero": null
+        },
+        "description": "gary-a-sequel-to-titus-andronicus-2019: poster/hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "gary-a-sequel-to-titus-andronicus-2019",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/AIWQkhwRaTvlq1ApkkhrM/35d8d361b8c396fa12604d6108804c77/today-tix-480x720-v2.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/7EqNG2GaEIaq5O2IfQZhj1/267d64ada27256749d568ea51c2e84b2/today-tix-1440x580.jpg?fm=webp&q=90"
+        ],
+        "description": "gary-a-sequel-to-titus-andronicus-2019: never re-take the wrong poster/hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-price-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/the-price-off-west-end-2026/hero.webp",
+          "thumbnail": "/images/shows/the-price-off-west-end-2026/thumbnail.webp",
+          "poster": "/images/shows/the-price-off-west-end-2026/poster.webp"
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "the-price-off-west-end-2026: poster/thumbnail/hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-price-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/2VWzPBIuepROF3uwBaevO8/ed7486eac9eb8cb288dd10cc099891db/The_Price_-_Poster_480x720_Px.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/2VWzPBIuepROF3uwBaevO8/ed7486eac9eb8cb288dd10cc099891db/The_Price_-_Poster_480x720_Px.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/jEknsswclDhpyeQoy9Kax/3bac7f9e48f360f7e395f9d199cf6530/The_Price_-_Gallery_and_Header_Images_1600_x_1200_px.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "the-price-off-west-end-2026: never re-take the wrong poster/thumbnail/hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-curious-incident-of-the-dog-in-the-night-time-off-broadway-2026",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/the-curious-incident-of-the-dog-in-the-night-time-off-broadway-2026/hero.webp",
+          "thumbnail": "/images/shows/the-curious-incident-of-the-dog-in-the-night-time-off-broadway-2026/thumbnail.webp",
+          "poster": "/images/shows/the-curious-incident-of-the-dog-in-the-night-time-off-broadway-2026/poster.webp"
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "the-curious-incident-of-the-dog-in-the-night-time-off-broadway-2026: poster/thumbnail/hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-curious-incident-of-the-dog-in-the-night-time-off-broadway-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/57JLZnRe6WhCtPi4ZWeVGB/4f34bbc98171bcbb7ad5582a16ef19d5/1493236068286_The_Curious_Incident_Chicago_Poster_SHN_2.0__281_29.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/57JLZnRe6WhCtPi4ZWeVGB/4f34bbc98171bcbb7ad5582a16ef19d5/1493236068286_The_Curious_Incident_Chicago_Poster_SHN_2.0__281_29.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/57JLZnRe6WhCtPi4ZWeVGB/4f34bbc98171bcbb7ad5582a16ef19d5/1493236068286_The_Curious_Incident_Chicago_Poster_SHN_2.0__281_29.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "the-curious-incident-of-the-dog-in-the-night-time-off-broadway-2026: never re-take the wrong poster/thumbnail/hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-time-to-kill-2013",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/a-time-to-kill-2013/thumbnail.jpg",
+          "poster": "/images/shows/a-time-to-kill-2013/poster.webp",
+          "hero": "/images/shows/a-time-to-kill-2013/hero.webp"
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": "/images/shows/a-time-to-kill-2013/thumbnail.jpg",
+          "hero": null
+        },
+        "description": "a-time-to-kill-2013: poster/hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-time-to-kill-2013",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/2tN5rPYDNqgA77f6wiBwzP/ecd86a247f7e57d08c0f1065fe1da2b9/TKAM_poster.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5z60S2YywNMpqLlHriwz5Z/2532e4ff8c5ba2b7fcbfa5376f257caa/TKAM_004_M_TODAYTIX_UPDATE_091621_1600x1200_Photo_1.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "a-time-to-kill-2013: never re-take the wrong poster/hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "elling-2010",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/elling-2010/thumbnail.jpg",
+          "poster": "/images/shows/elling-2010/poster.webp",
+          "hero": "/images/shows/elling-2010/hero.webp"
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": "/images/shows/elling-2010/thumbnail.jpg",
+          "hero": null
+        },
+        "description": "elling-2010: poster/hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "elling-2010",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/5asBIfITFd8Am7Gs8HABlH/28af016128d8ccf7e4b5cdee25b16c87/480x720_Poster_Key_Art.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/6arHD84AMvMAgeqUnwjEIB/928c6576973b8ce177e84ee5548510d6/1440x580_Hero_Key_Art.jpg?fm=webp&q=90"
+        ],
+        "description": "elling-2010: never re-take the wrong poster/hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "high-2011",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/high-2011/thumbnail.jpg",
+          "poster": "/images/shows/high-2011/poster.webp",
+          "hero": "/images/shows/high-2011/hero.webp"
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": "/images/shows/high-2011/thumbnail.jpg",
+          "hero": null
+        },
+        "description": "high-2011: poster/hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "high-2011",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/76PRYAFFUDWrdLvFXwDPfa/5bd8e9b21f224d71e60744da05b35854/2526Public_ANTIGONE_todaytix_V1_480x720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/5qtHnG3TAn2sLE5r2go8hb/c8790041ac8777625422d611fbd44fef/2526Public_ANTIGONE_todaytix_V1_1440x580.jpg?fm=webp&q=90"
+        ],
+        "description": "high-2011: never re-take the wrong poster/hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-cage-aux-folles-2010",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/la-cage-aux-folles-2010/hero.webp",
+          "thumbnail": "/images/shows/la-cage-aux-folles-2010/thumbnail.webp",
+          "poster": "/images/shows/la-cage-aux-folles-2010/poster.webp"
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "la-cage-aux-folles-2010: poster/thumbnail/hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-cage-aux-folles-2010",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/2EZFyXbvRFnhbrXLTcgj8X/6c7df8d09d4f10d8e427a249b3f71d9c/Encores26_TodayTix_Assets_for_Encores__Shows_FINAL6.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/4xw4wVDTFMBVCjphpXClMH/43f8962ead7805d26abdeb494fd3dc39/Encores26_TodayTix_Assets_for_Encores__Shows_FINAL9.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/6BVueab3hyKzpoPmoJJtRO/f5818f4e10c8fe1daa855745048ce73d/Encores26_TodayTix_Assets_for_Encores__Shows_FINAL3.png?fm=webp&q=90"
+        ],
+        "description": "la-cage-aux-folles-2010: never re-take the wrong poster/thumbnail/hero source (BRO-4996)"
+      }
+    ]
+  }
+}

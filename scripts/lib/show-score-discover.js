@@ -195,7 +195,27 @@ function loadShowScoreUrlMap(root) {
   }
 }
 
+/**
+ * The show's own poster on a Show Score page: { poster, thumbnail } or null.
+ * The page's og:image (".../fb-posts/image/show/<id>_<n>.jpg", or a
+ * poster_image url) names the show's folder; only a medium_ poster in that
+ * folder counts. Without an og:image there is no answer: the first
+ * poster_image on a page can be a promoted show's (one "Chicks in Heaven" file
+ * went onto 18 London fringe rows, BRO-4996). Any of Show Score's CloudFront
+ * hosts (d4ov6iqsvotvt, later dalyklerwhmui).
+ */
+function showScorePosterFromHtml(html) {
+  const tag = (String(html || '').match(/<meta[^>]+og:image[^>]*>/i) || [])[0] || '';
+  const og = (tag.match(/content="([^"]+)"/i) || [])[1] || '';
+  const folder = (og.match(/\/(?:poster_image|image\/show)\/(\d+)[/_]/) || [])[1];
+  if (!folder) return null;
+  const re = new RegExp(`https://[a-z0-9]+\\.cloudfront\\.net/uploads/show/poster_image/${folder}/medium_[^"'<\\s]+\\.(?:jpg|jpeg|png)`, 'i');
+  const poster = (String(html).match(re) || [])[0];
+  return poster ? { poster, thumbnail: poster.replace('/medium_', '/preview_') } : null;
+}
+
 module.exports = {
+  showScorePosterFromHtml,
   showScoreUrlForShow,
   loadShowScoreUrlMap,
   extractShowScoreReviewUrls,

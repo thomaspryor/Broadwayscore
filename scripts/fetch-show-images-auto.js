@@ -36,6 +36,7 @@ const { getMarketSearchKeyword } = require('./lib/market-label');
 const { todaytixMarket, todaytixSearchUrl, extractTodaytixShowLink, todaytixSerpQuery, todaytixShowUrl } = require('./lib/todaytix-market');
 const { pickMezzanineCandidate, theatrEligible, isRejectedImage, ibdbEligible, venuesMatch, buildVenueCityIndex, keepExistingImage, fileSourceUrls, recordFileSources, recordedSourceFor, imagePathOwner } = require('./lib/image-source-match');
 const { loadImageSources, saveImageSources } = require('./lib/image-sources-store');
+const { buildSourceIndex, addToSourceIndex, sourceConflict, stripConflictingSources, showScoreArtEligible, todaytixIdOwner } = require('./lib/shared-image-source');
 const { findOtherSameTitleProduction } = require('./lib/canon-poster-art');
 const { imageOnDisk, isPlaceholderFile, PLACEHOLDER_FILE_HASHES } = require('./lib/show-images');
 const { resolveMarketSlug } = require('./lib/verify-image');
@@ -818,30 +819,26 @@ async function fetchFromShowScore(show) {
   // (a same-title revival's page). The old inline slug sent off-west-end and
   // regional shows to the NYC production's page, and west-end to a
   // non-existent /london-shows/ path.
-  const { showScoreUrlForShow, loadShowScoreUrlMap } = require('./lib/show-score-discover');
-  const ssUrl = showScoreUrlForShow(show, loadShowScoreUrlMap(path.join(__dirname, '..')));
+  const { showScoreUrlForShow, loadShowScoreUrlMap, showScorePosterFromHtml } = require('./lib/show-score-discover');
+  const ssMap = loadShowScoreUrlMap(path.join(__dirname, '..'));
+  const ssUrl = showScoreUrlForShow(show, ssMap);
   if (!ssUrl) return null;
+  // One page per title, showing its newest production (BRO-4996).
+  if (!showScoreArtEligible(show, ssUrl, allShowsData ? allShowsData.shows : [], (s) => showScoreUrlForShow(s, ssMap))) {
+    console.log(`   ✗ ShowScore: ${ssUrl} is a newer same-title production's page — skipping`);
+    return null;
+  }
   console.log(`   Trying ShowScore: ${ssUrl}`);
 
   try {
     const html = await fetchPageWithFallback(ssUrl);
 
-    // Extract poster image from CloudFront CDN
-    // Pattern: d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/NNNN/medium_...
-    const posterMatch = html.match(/https:\/\/d4ov6iqsvotvt\.cloudfront\.net\/uploads\/show\/poster_image\/\d+\/medium_[^"'<\s]+\.(jpg|jpeg|png)/i);
-    if (posterMatch) {
-      const posterUrl = posterMatch[0];
-      // Build thumbnail URL by replacing 'medium_' with 'preview_'
-      const thumbUrl = posterUrl.replace('/medium_', '/preview_');
+    // The page's own poster, never a promoted show's (BRO-4996). The old
+    // og:image fallback took fb-posts share cards and other shows' art.
+    const own = showScorePosterFromHtml(html);
+    if (own) {
       console.log(`   ✓ Found poster via ShowScore`);
-      return { thumbnail: thumbUrl, poster: posterUrl, hero: null };
-    }
-
-    // Fallback: try OG image meta tag
-    const ogMatch = html.match(/property="og:image"\s+content="([^"]+)"/i);
-    if (ogMatch && ogMatch[1] && ogMatch[1].includes('cloudfront.net')) {
-      console.log(`   ✓ Found OG image via ShowScore`);
-      return { thumbnail: ogMatch[1], poster: ogMatch[1], hero: null };
+      return { thumbnail: own.thumbnail, poster: own.poster, hero: null };
     }
 
     console.log(`   ✗ No poster image found on ShowScore page`);
@@ -1102,13 +1099,10 @@ async function discoverTodayTixId(show) {
       }
     }
 
-    // Try alternative pattern - JSON in page
-    const jsonMatch = html.match(/"showId":\s*(\d+)/);
-    if (jsonMatch) {
-      const id = parseInt(jsonMatch[1]);
-      console.log(`   ✓ Found TodayTix ID from JSON: ${id}`);
-      return { id, slug: null, market };
-    }
+    // No fallback to the first "showId" in the page: that is whichever show
+    // the search ranked first, with no title check. It cached the Off-Broadway
+    // Spelling Bee's id for Elling and & Juliet's for Romeo + Juliet, and both
+    // rows took that show's art (BRO-4996).
   } catch (err) {
     console.log(`   ⚠ Direct TodayTix search failed: ${err.message}`);
   }
@@ -1968,6 +1962,14 @@ async function verifyAndCollect(images, show, tierName, verifyCtx) {
     console.log(`   ✗ ${tierName}: image is in this show's rejectedImageUrls — skipping`);
     return null;
   }
+  // BRO-4996: a source another, unrelated show already owns is that show's
+  // art (or a placeholder). Refuse the whole candidate, so files it wrote are
+  // discarded with it rather than half-kept.
+  const shared = sharedSourceProblems(images, show);
+  if (shared.length) {
+    for (const d of shared) console.log(`   ✗ ${tierName}: ${describeSharedSource(d)}`);
+    return null;
+  }
   if (!verifyCtx) {
     delete images._verifyBuffer;
     delete images._remainingCandidates;
@@ -2448,8 +2450,26 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
     // If no API match, try page-scrape discovery
     todayTixInfo = todayTixIds.shows[show.id] || todayTixIds.shows[show.slug];
 
+    // One TodayTix page is one production: a cached id another unrelated row
+    // owns (todaytixIdOwner decides which) is a wrong match here. Drop it and
+    // re-discover rather than serve that show's art (BRO-4996).
+    if (todayTixInfo && !apiData) {
+      const owner = todaytixIdOwner(show, todayTixInfo.id, todayTixIds.shows, allShowsData.shows);
+      if (owner) {
+        console.log(`   Discarding cached TodayTix ID ${todayTixInfo.id} for ${show.id}: it is ${owner}'s page`);
+        delete todayTixIds.shows[show.id];
+        if (show.slug) delete todayTixIds.shows[show.slug];
+        todayTixInfo = null;
+      }
+    }
+
     if (!todayTixInfo && !apiData) {
       todayTixInfo = await discoverTodayTixId(show);
+      const owner = todayTixInfo && todaytixIdOwner(show, todayTixInfo.id, todayTixIds.shows, allShowsData.shows);
+      if (owner) {
+        console.log(`   ✗ Discovered TodayTix ID ${todayTixInfo.id} is already ${owner}'s — not using it`);
+        todayTixInfo = null;
+      }
       if (todayTixInfo) {
         todayTixIds.shows[show.id] = todayTixInfo;
       }
@@ -2606,6 +2626,30 @@ async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImages
 
 // Every show in the run, for applyImages' cross-show path guard (lineage links).
 let allShowsForImageGuard = [];
+// Source URL -> show ids recording it, from image-sources.json plus what this
+// run accepted (BRO-4996). Built on first use.
+let sharedSourceIndex = null;
+function sourceIndexForRun() {
+  if (!sharedSourceIndex) {
+    sharedSourceIndex = buildSourceIndex(imageSourcesForApply || loadImageSources(), allShowsForImageGuard);
+  }
+  return sharedSourceIndex;
+}
+
+// Formats of a fetch result whose source (a CDN URL, or the URL a local file
+// was downloaded from) another unrelated show owns, or that is a known
+// placeholder: [{ format, url, reason, owner?, path? }].
+function sharedSourceProblems(images, show) {
+  const index = sourceIndexForRun();
+  const { dropped } = stripConflictingSources(show.id, images, index, allShowsForImageGuard);
+  for (const [format, e] of Object.entries((images && images._fileSources) || {})) {
+    const c = e && sourceConflict(show.id, e.source, index, allShowsForImageGuard);
+    if (c && images[format] === e.path) dropped.push({ format, url: e.source, path: e.path, ...c });
+  }
+  return dropped;
+}
+
+const describeSharedSource = (d) => `${d.format} source is ${d.reason === 'placeholder' ? 'a known placeholder image' : `already ${d.owner}'s art`} — ${d.url}`;
 // data/image-sources.json, loaded by main for real runs (null in dry runs):
 // applyImages reads it to decide what to keep and records the files it writes.
 let imageSourcesForApply = null;
@@ -2617,6 +2661,7 @@ function applyImages(show, images) {
   // never kept over a re-fetch (BRO-4901: Kyoto and the West End Gatsby kept
   // their New York banners when a re-fetch found a poster but no hero).
   const sources = imageSourcesForApply || {};
+  const before = { ...(show.images || {}) };
   const existingThumb = show.images?.thumbnail;
   const hasLocalThumb = existingThumb && existingThumb.startsWith('/images/');
   const newThumbIsNative = isNativeSquareUrl(images.thumbnail);
@@ -2660,10 +2705,33 @@ function applyImages(show, images) {
   for (const d of dropped) {
     console.log(`   ✗ Refusing ${d.key} for ${show.id}: ${d.path} belongs to ${d.owner}`);
   }
+  // BRO-4996 backstop for every tier (the TodayTix API, Playbill and
+  // production-photo paths never pass verifyAndCollect): never persist a
+  // source another unrelated show owns, or a placeholder. A file this fetch
+  // wrote from such a source is deleted, not left for the orphan fix.
+  // The row's earlier local file stays when it is still intact (written to
+  // another path) and keepable, so a refusal never costs the owner its art.
+  for (const d of sharedSourceProblems({ ...safe, _fileSources: fileSources }, show)) {
+    console.log(`   ✗ Refusing ${describeSharedSource(d)} for ${show.id}`);
+    const prior = before[d.format];
+    const priorIntact = typeof prior === 'string' && prior.startsWith('/images/') && prior !== d.path;
+    safe[d.format] = priorIntact && keepExistingImage(show, d.format, sources) ? prior : null;
+    // d.path holds the bytes this fetch wrote from the refused source.
+    if (d.path) {
+      try { fs.unlinkSync(path.join(__dirname, '..', 'public', d.path)); } catch {}
+    }
+  }
   show.images = safe;
   // Files this fetch wrote and the row now serves: record where they came from,
   // so image-sources.json never describes bytes that were replaced (BRO-4901).
   if (imageSourcesForApply && fileSources) recordFileSources(imageSourcesForApply, { ...safe, _fileSources: fileSources });
+  // Later shows in this run may not take what this one now uses.
+  if (sharedSourceIndex) {
+    for (const f of ['poster', 'thumbnail', 'hero']) {
+      addToSourceIndex(sharedSourceIndex, show.id, safe[f]);
+      if (fileSources?.[f] && safe[f] === fileSources[f].path) addToSourceIndex(sharedSourceIndex, show.id, fileSources[f].source);
+    }
+  }
 }
 
 // Generate a phone-friendly HTML comparison page for dry-run results

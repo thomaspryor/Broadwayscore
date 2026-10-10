@@ -303,6 +303,12 @@ function executeDataEdit(action) {
       if (castProblem) return { ok: false, reason: castProblem };
     }
 
+    if (field === 'rejectedImageUrls') {
+      const { rejectedUrlsValueProblem } = require('./lib/feedback-pipeline-fields.js');
+      const problem = rejectedUrlsValueProblem(newValue, oldValue);
+      if (problem) return { ok: false, reason: problem };
+    }
+
     shows[idx][field] = newValue;
     // The site also reads tags:'revival', so the flag alone can't clear it (BRO-4436).
     if (field === 'isRevival') require('./lib/revival-tags.js').syncRevivalTags(shows[idx]);

@@ -25,6 +25,11 @@ const FEEDBACK_EDITABLE_FIELDS = {
     // a wrong-show IBDB match put The Century Girl's 1916 cast on a 2026 Globe
     // As You Like It). execute-approved-fix checks the {name, role} shape.
     'cast',
+    // Whole array, compare-and-set; human-approved plans only (BRO-4996: a
+    // wrong-production poster is nulled and its source rejected so no fetch
+    // takes it again). Add-only: rejectedUrlsValueProblem refuses a plan that
+    // drops a URL, so a wrongly added one is removed by a direct data commit.
+    'rejectedImageUrls',
   ],
   // recoupedDate/recoupedSource/sources: a recoupment correction needs all
   // three (validate-data.js requires recoupedDate when recouped=true). The
@@ -119,7 +124,7 @@ function buildShowSnapshot(show) {
     if (value !== undefined) {
       snapshot[field] = value;
     } else {
-      snapshot[field] = (field === 'creativeTeam' || field === 'cast') ? [] : null;
+      snapshot[field] = (field === 'creativeTeam' || field === 'cast' || field === 'rejectedImageUrls') ? [] : null;
     }
   }
   return snapshot;
@@ -138,6 +143,20 @@ function castValueProblem(v) {
   return null;
 }
 
+// shows.json rejectedImageUrls check for the human-approved data-edit path
+// (BRO-4996): an array of http(s) URLs that keeps every URL already there.
+// Returns an error string or null.
+function rejectedUrlsValueProblem(newValue, oldValue) {
+  if (!Array.isArray(newValue)) return 'rejectedImageUrls: newValue must be an array';
+  for (const [i, u] of newValue.entries()) {
+    if (typeof u !== 'string' || !/^https?:\/\/\S+$/i.test(u)) return `rejectedImageUrls[${i}]: must be an http(s) URL`;
+  }
+  const kept = new Set(newValue);
+  const lost = (Array.isArray(oldValue) ? oldValue : []).filter((u) => !kept.has(u));
+  if (lost.length) return `rejectedImageUrls: a plan may only add URLs (would drop ${lost[0]})`;
+  return null;
+}
+
 module.exports = {
   FEEDBACK_EDITABLE_FIELDS,
   AUTO_FIX_EDITABLE_FIELDS,
@@ -145,4 +164,5 @@ module.exports = {
   pickEditableFields,
   buildShowSnapshot,
   castValueProblem,
+  rejectedUrlsValueProblem,
 };

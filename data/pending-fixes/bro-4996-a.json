@@ -1,0 +1,347 @@
+{
+  "issueNumber": "bro-4996-a",
+  "planId": "42936e71-2a70-485b-bfb8-b5de1074c62b",
+  "status": "pending",
+  "createdAt": "2026-10-10T20:00:10.351Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4996 (1/7): null wrong-production or wrong-show images on 12 rows whose served files were checked by eye, and add the wrong source URL to each row's rejectedImageUrls so no fetch takes it again. Rows: illinoise-2024, here-lies-love-2023, once-upon-a-mattress-2024, the-minutes-2022, the-phantom-of-the-opera-1988, a-strange-loop-2022, come-from-away-2017, into-the-woods-2022, kimberly-akimbo-2022, cabaret-2014, the-pirates-of-penzance-1981, a-dolls-house-off-west-end-2026",
+    "steps": [
+      "Null the wrong image fields (compare-and-set); other fields stay",
+      "Add the wrong source URLs to rejectedImageUrls (add-only)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "illinoise-2024",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/illinoise-2024/thumbnail.jpg",
+          "poster": "/images/shows/illinoise-2024/poster.webp",
+          "hero": null
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": "/images/shows/illinoise-2024/thumbnail.jpg",
+          "hero": null
+        },
+        "description": "illinoise-2024: poster show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "illinoise-2024",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/7H2rchFbiiZfYLjQRjW120/624a00d0d304d6c4c28f6f4f8a8b2429/HK-112133-022895-2025Update-TodayTix-480x720.jpg?fm=webp&q=90"
+        ],
+        "description": "illinoise-2024: never re-take the wrong poster source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "here-lies-love-2023",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/here-lies-love-2023/hero.webp",
+          "thumbnail": "/images/shows/here-lies-love-2023/thumbnail.webp",
+          "poster": "/images/shows/here-lies-love-2023/poster.webp"
+        },
+        "newValue": {
+          "poster": "/images/shows/here-lies-love-2023/poster.webp",
+          "thumbnail": "/images/shows/here-lies-love-2023/thumbnail.webp",
+          "hero": null
+        },
+        "description": "here-lies-love-2023: hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "here-lies-love-2023",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/m6mAlKb1baWvN10y0OtwE/e09eeb3d0f6ab73b14521e3bc7c3b850/large-MR_065_Banner_Resizing_2022_heart-portal_v01_480x720.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "here-lies-love-2023: never re-take the wrong hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "once-upon-a-mattress-2024",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/once-upon-a-mattress-2024/hero.webp",
+          "thumbnail": "/images/shows/once-upon-a-mattress-2024/thumbnail.webp",
+          "poster": "/images/shows/once-upon-a-mattress-2024/poster.webp"
+        },
+        "newValue": {
+          "poster": "/images/shows/once-upon-a-mattress-2024/poster.webp",
+          "thumbnail": "/images/shows/once-upon-a-mattress-2024/thumbnail.webp",
+          "hero": null
+        },
+        "description": "once-upon-a-mattress-2024: hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "once-upon-a-mattress-2024",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/m6mAlKb1baWvN10y0OtwE/e09eeb3d0f6ab73b14521e3bc7c3b850/large-MR_065_Banner_Resizing_2022_heart-portal_v01_480x720.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "once-upon-a-mattress-2024: never re-take the wrong hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-minutes-2022",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/the-minutes-2022/hero.webp",
+          "thumbnail": "/images/shows/the-minutes-2022/thumbnail.webp",
+          "poster": "/images/shows/the-minutes-2022/poster.webp"
+        },
+        "newValue": {
+          "poster": "/images/shows/the-minutes-2022/poster.webp",
+          "thumbnail": "/images/shows/the-minutes-2022/thumbnail.webp",
+          "hero": null
+        },
+        "description": "the-minutes-2022: hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-minutes-2022",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/m6mAlKb1baWvN10y0OtwE/e09eeb3d0f6ab73b14521e3bc7c3b850/large-MR_065_Banner_Resizing_2022_heart-portal_v01_480x720.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "the-minutes-2022: never re-take the wrong hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-phantom-of-the-opera-1988",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/the-phantom-of-the-opera-1988/hero.webp",
+          "thumbnail": "/images/shows/the-phantom-of-the-opera-1988/thumbnail.webp",
+          "poster": "/images/shows/the-phantom-of-the-opera-1988/poster.webp"
+        },
+        "newValue": {
+          "poster": "/images/shows/the-phantom-of-the-opera-1988/poster.webp",
+          "thumbnail": "/images/shows/the-phantom-of-the-opera-1988/thumbnail.webp",
+          "hero": null
+        },
+        "description": "the-phantom-of-the-opera-1988: hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-phantom-of-the-opera-1988",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/m6mAlKb1baWvN10y0OtwE/e09eeb3d0f6ab73b14521e3bc7c3b850/large-MR_065_Banner_Resizing_2022_heart-portal_v01_480x720.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "the-phantom-of-the-opera-1988: never re-take the wrong hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-strange-loop-2022",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/a-strange-loop-2022/hero.webp",
+          "thumbnail": "/images/shows/a-strange-loop-2022/thumbnail.webp",
+          "poster": "/images/shows/a-strange-loop-2022/poster.webp"
+        },
+        "newValue": {
+          "poster": "/images/shows/a-strange-loop-2022/poster.webp",
+          "thumbnail": "/images/shows/a-strange-loop-2022/thumbnail.webp",
+          "hero": null
+        },
+        "description": "a-strange-loop-2022: hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-strange-loop-2022",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/7o6dlt54Z03M44qt25bZGo/f827a97fe42a4f683f82d8f1a9cb16ab/250505_SIX_ConcertBanners_480x720_RG3.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "a-strange-loop-2022: never re-take the wrong hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "come-from-away-2017",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/come-from-away-2017/hero.webp",
+          "thumbnail": "/images/shows/come-from-away-2017/thumbnail.jpg",
+          "poster": "/images/shows/come-from-away-2017/poster.webp"
+        },
+        "newValue": {
+          "poster": "/images/shows/come-from-away-2017/poster.webp",
+          "thumbnail": "/images/shows/come-from-away-2017/thumbnail.jpg",
+          "hero": null
+        },
+        "description": "come-from-away-2017: hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "come-from-away-2017",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/7o6dlt54Z03M44qt25bZGo/f827a97fe42a4f683f82d8f1a9cb16ab/250505_SIX_ConcertBanners_480x720_RG3.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "come-from-away-2017: never re-take the wrong hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "into-the-woods-2022",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/into-the-woods-2022/hero.webp",
+          "thumbnail": "/images/shows/into-the-woods-2022/thumbnail.webp",
+          "poster": "/images/shows/into-the-woods-2022/poster.webp"
+        },
+        "newValue": {
+          "poster": "/images/shows/into-the-woods-2022/poster.webp",
+          "thumbnail": "/images/shows/into-the-woods-2022/thumbnail.webp",
+          "hero": null
+        },
+        "description": "into-the-woods-2022: hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "into-the-woods-2022",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/7o6dlt54Z03M44qt25bZGo/f827a97fe42a4f683f82d8f1a9cb16ab/250505_SIX_ConcertBanners_480x720_RG3.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "into-the-woods-2022: never re-take the wrong hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kimberly-akimbo-2022",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/kimberly-akimbo-2022/hero.webp",
+          "thumbnail": "/images/shows/kimberly-akimbo-2022/thumbnail.webp",
+          "poster": "/images/shows/kimberly-akimbo-2022/poster.webp"
+        },
+        "newValue": {
+          "poster": "/images/shows/kimberly-akimbo-2022/poster.webp",
+          "thumbnail": "/images/shows/kimberly-akimbo-2022/thumbnail.webp",
+          "hero": null
+        },
+        "description": "kimberly-akimbo-2022: hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kimberly-akimbo-2022",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/7o6dlt54Z03M44qt25bZGo/f827a97fe42a4f683f82d8f1a9cb16ab/250505_SIX_ConcertBanners_480x720_RG3.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "kimberly-akimbo-2022: never re-take the wrong hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cabaret-2014",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/cabaret-2014/hero.webp",
+          "thumbnail": "/images/shows/cabaret-2014/thumbnail.jpg",
+          "poster": "/images/shows/cabaret-2014/poster.webp"
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": "/images/shows/cabaret-2014/thumbnail.jpg",
+          "hero": null
+        },
+        "description": "cabaret-2014: poster/hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cabaret-2014",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/5wlzdAiaIPpQufxOLrhUpy/2b7d391c1d9a997ac27d545195e66976/CAB-ThirdPartyAssets-Sept2025Update-TodayTix-480x720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/4ap4OXtnosZgDlrKU1o0KU/d829afa0b621122254b88a495a2e7004/CAB-ThirdPartyAssets-Sept2025Update-TodayTix-1600x1200.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "cabaret-2014: never re-take the wrong poster/hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-pirates-of-penzance-1981",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/the-pirates-of-penzance-1981/hero.webp",
+          "thumbnail": "/images/shows/the-pirates-of-penzance-1981/thumbnail.webp",
+          "poster": "/images/shows/the-pirates-of-penzance-1981/poster.webp"
+        },
+        "newValue": {
+          "poster": null,
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "the-pirates-of-penzance-1981: poster/thumbnail/hero show another production's or show's art (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-pirates-of-penzance-1981",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/3FxxlOD8lZB1kzNQrHoC2r/70921ec6255657e55dc522eed89d01c5/TodayTix_480x720_Title.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/7fUAcCnCaOfqA1zhrzRuBe/4831fe1d8cdef1d7324fa8ebd5f39f55/Pirates__1600x1200.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "the-pirates-of-penzance-1981: never re-take the wrong poster/thumbnail/hero source (BRO-4996)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-dolls-house-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/a-dolls-house-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/a-dolls-house-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/a-dolls-house-off-west-end-2026/poster.jpg",
+          "thumbnail": null,
+          "hero": null
+        },
+        "description": "a-dolls-house-off-west-end-2026: thumbnail/hero show another production's or show's art (BRO-4996)"
+      }
+    ]
+  }
+}
