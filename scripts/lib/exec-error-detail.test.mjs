@@ -31,3 +31,8 @@ test('empty stderr after the command echo falls back to the original message', (
   assert.equal(execErrorDetail(err), err.message);
   assert.notEqual(execErrorDetail(err), '');
 });
+
+test('registry domain-collision warnings do not hide the real failure (BRO-4956)', () => {
+  const err = new Error('Command failed: node scripts/ingest-review-from-url.js\n  ⚠️  Domain collision on "timeout.com": keeping timeout, ignoring timeout-london\nFetch failed: All scraping methods failed');
+  assert.equal(execErrorDetail(err, 100), 'Fetch failed: All scraping methods failed');
+});

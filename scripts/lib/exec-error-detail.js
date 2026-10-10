@@ -6,8 +6,15 @@
  * ship-check, 2026-07-14; same-shape bug also present in pause-rebuild.js,
  * ingest-urls.js, audit-show-review-gap.js before this fix).
  */
+// Lines every child prints while loading the outlet registry (review-normalization.js
+// domain-collision warnings). Left in, they fill the first 100 chars and hide the
+// real failure: run 38042379107 reported an LTR ingest as failing with
+// "Domain collision on timeout.com" (BRO-4956).
+const NOISE_LINE = /^\s*⚠️\s+Domain collision on /;
+
 function execErrorDetail(err, maxLen = 200) {
-  const detail = String(err && err.message || err).replace(/^Command failed:[^\n]*\n?/, '').trim() || String(err && err.message || err);
+  const raw = String(err && err.message || err).replace(/^Command failed:[^\n]*\n?/, '');
+  const detail = raw.split('\n').filter((l) => !NOISE_LINE.test(l)).join('\n').trim() || String(err && err.message || err);
   return maxLen ? detail.slice(0, maxLen) : detail;
 }
 
