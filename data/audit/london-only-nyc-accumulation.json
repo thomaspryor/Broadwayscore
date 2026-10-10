@@ -3,23 +3,6 @@
   "description": "London-region, non-isDualMarket outlets carrying NYC reviews. Tier 3/untiered Broadway hits are advisory isDualMarket candidates; Tier 1/2 Broadway hits are CI errors; off-Broadway hits are tolerated warnings.",
   "outlets": [
     {
-      "outletId": "artsdesk",
-      "displayName": "The Arts Desk",
-      "tier": 2,
-      "broadwayCount": 2,
-      "offBroadwayCount": 3,
-      "broadwayShows": [
-        "stephen-sondheims-old-friends-2025",
-        "tammy-faye-2024"
-      ],
-      "offBroadwayShows": [
-        "game-of-thrones-the-mad-king-regional-2026",
-        "the-score-regional-2026",
-        "tristan-und-isolde-off-broadway-2026"
-      ],
-      "disposition": "error"
-    },
-    {
       "outletId": "liamodell",
       "displayName": "Liam O'Dell",
       "tier": 3,
@@ -63,14 +46,41 @@
       "disposition": "tolerated-off-broadway"
     },
     {
+      "outletId": "artsdesk",
+      "displayName": "The Arts Desk",
+      "tier": 2,
+      "broadwayCount": 0,
+      "offBroadwayCount": 3,
+      "broadwayShows": [],
+      "offBroadwayShows": [
+        "game-of-thrones-the-mad-king-regional-2026",
+        "the-score-regional-2026",
+        "tristan-und-isolde-off-broadway-2026"
+      ],
+      "disposition": "tolerated-off-broadway"
+    },
+    {
       "outletId": "all-that-dazzles-uk",
       "displayName": "All That Dazzles (UK)",
+      "tier": 3,
+      "broadwayCount": 0,
+      "offBroadwayCount": 2,
+      "broadwayShows": [],
+      "offBroadwayShows": [
+        "all-male-as-you-like-it-regional-2026",
+        "game-of-thrones-the-mad-king-regional-2026"
+      ],
+      "disposition": "tolerated-off-broadway"
+    },
+    {
+      "outletId": "boycotting-trends",
+      "displayName": "Boycotting Trends",
       "tier": 3,
       "broadwayCount": 0,
       "offBroadwayCount": 1,
       "broadwayShows": [],
       "offBroadwayShows": [
-        "game-of-thrones-the-mad-king-regional-2026"
+        "all-male-as-you-like-it-regional-2026"
       ],
       "disposition": "tolerated-off-broadway"
     },
@@ -83,6 +93,18 @@
       "broadwayShows": [],
       "offBroadwayShows": [
         "game-of-thrones-the-mad-king-regional-2026"
+      ],
+      "disposition": "tolerated-off-broadway"
+    },
+    {
+      "outletId": "elementaltheatre",
+      "displayName": "Elementaltheatre",
+      "tier": 3,
+      "broadwayCount": 0,
+      "offBroadwayCount": 1,
+      "broadwayShows": [],
+      "offBroadwayShows": [
+        "all-male-as-you-like-it-regional-2026"
       ],
       "disposition": "tolerated-off-broadway"
     },
