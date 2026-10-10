@@ -1,0 +1,27 @@
+{
+  "issueNumber": "bro-4953-b",
+  "planId": "0be82c8c-1ce5-4653-9cb1-6f2523a17da7",
+  "status": "pending",
+  "createdAt": "2026-10-10T01:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "One more excerpt-only file from the poisoned BroadwayWorld roundup for Gary: A Sequel to Titus Andronicus, cached under titus-andronicus-off-broadway-2026. Found by the containing-title guard's archive sweep after bro-4953.json was built (that plan flagged Michael Dale's excerpt from the same page).",
+    "steps": [
+      "Set wrongShow=true on titus-andronicus-off-broadway-2026/nysr--jesse-oxfeld.json (bwwExcerpt is about Gary, the url is a BWW people page)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "titus-andronicus-off-broadway-2026/nysr--jesse-oxfeld.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Excerpt reads 'In Gary, his characters succeed. Gary pulls off his Fooling.': Jesse Oxfeld's 2019 review of gary-a-sequel-to-titus-andronicus-2019, scraped from that show's BWW roundup cached under the 2026 Titus Andronicus."
+      }
+    ]
+  }
+}
