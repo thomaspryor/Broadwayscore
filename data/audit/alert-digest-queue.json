@@ -1070,18 +1070,6 @@
     "queuedAt": "2026-10-10T07:14:29.295Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Audit outlet-registry gaps",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38048856844",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-10T11:40:07.011Z"
-  },
-  {
     "conditionKey": "opening-night-slug-mismatch-rent-west-end-2026",
     "title": "Review URL cross-show mismatch on Rent",
     "description": "Review URL for london-theatre-reviews/Ltr does not mention show slug (checked: rent-west-end, rent): https://www.londontheatrereviews.co.uk/post.cfm?p=29336",
@@ -1104,5 +1092,17 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-10T11:54:25.055Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Audit outlet-registry gaps",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38050646837",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-10T12:10:30.503Z"
   }
 ]
