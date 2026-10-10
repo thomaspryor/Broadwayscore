@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-10T03:18:43.041Z",
+  "timestamp": "2026-10-10T04:16:20.341Z",
   "stats": {
-    "totalReviews": 53129,
-    "alreadyFlagged": 19586,
+    "totalReviews": 53148,
+    "alreadyFlagged": 19585,
     "dateGuardCatches": 257,
-    "directorMismatch": 1633,
-    "tvFilmSignals": 1526,
-    "londonSignals": 1713,
+    "directorMismatch": 1634,
+    "tvFilmSignals": 1527,
+    "londonSignals": 1714,
     "offBroadwaySignals": 511,
     "yearMismatch": 127,
-    "noPublishDate": 5782
+    "noPublishDate": 5799
   },
   "findings": [
     {
@@ -14267,6 +14267,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "good-time-charlie-off-broadway-2026",
+      "file": "vulture--jackson-mchenry.json",
+      "score": 77,
+      "publishDate": "2026-10-09",
+      "url": "https://www.vulture.com/article/theater-review-public-good-time-charlie-haddad.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -40144,6 +40158,7 @@
     {
       "showId": "the-outsiders-tour-2025",
       "file": "the-daily-gazette--bill-kellert.json",
+      "score": 73,
       "publishDate": "2026-05-22",
       "url": "https://www.dailygazette.com/life_and_arts/the-outsiders-coming-of-age-story-in-1960s-oklahoma-plays-schenectady/article_6da5a5d4-1459-49d9-ad66-4990df3edfbe.html",
       "findings": [
@@ -41767,7 +41782,7 @@
       "file": "artsdesk--rachel-halliburton.json",
       "score": 77,
       "publishDate": "2021-10-23",
-      "url": null,
+      "url": "https://theartsdesk.com/theatre/shark-broken-new-ambassadors-theatre-review-how-spielbergs-first-blockbuster-almost-didnt",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -41848,10 +41863,24 @@
     },
     {
       "showId": "the-shark-is-broken-west-end-2021",
+      "file": "i-paper--unknown.json",
+      "score": 86,
+      "publishDate": null,
+      "url": "https://inews.co.uk/culture/the-shark-is-broken-ambassadors-theatre-london-review-jaws-robert-ian-shaw-1263368",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"guy masterson\" from the-shark-is-broken-2023"
+        }
+      ]
+    },
+    {
+      "showId": "the-shark-is-broken-west-end-2021",
       "file": "london-theatre--matt-wolf.json",
       "score": 67,
       "publishDate": "2021-10-23",
-      "url": null,
+      "url": "https://www.londontheatre.co.uk/reviews/the-shark-is-broken-review-ambassadors-theatre",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -49541,7 +49570,7 @@
     {
       "showId": "blood-of-my-blood-west-end-2026",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 82,
+      "score": 80,
       "publishDate": "2026-10-09",
       "url": "https://www.allthatdazzles.co.uk/post/review-blood-of-my-blood-royal-court-theatre",
       "findings": [
@@ -49557,6 +49586,20 @@
       "file": "eventslist--unknown.json",
       "publishDate": null,
       "url": "https://eventslist.co.uk/london/events/rct-blood-of-my-blood-2026-10-01",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "blood-of-my-blood-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 76,
+      "publishDate": "2026-10-08",
+      "url": "https://www.londonboxoffice.co.uk/news/post/blood-of-my-blood-royal-court-theatre-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
