@@ -162,3 +162,44 @@ test('isPreRunFile: prior run, human-reviewed, undated are exempt', () => {
 test('isPreRunFile: no previewsStartDate -> never hides a file (openingDate fallback removed)', () => {
   assert.equal(isPreRunFile({ data: { publishDate: '2026-09-09' } }, { openingDate: '2026-09-10' }), false);
 });
+
+// BRO-3359: 'The QR' (display) vs 'theqr' (provisional outletId, no hyphen)
+// made every lookup miss and report a live review as true-missed-discovery.
+const { outletIdCandidates } = require('./lib/review-gap-triage.js');
+
+test('outletIdCandidates covers the hyphenated, compact and canonical slugs', () => {
+  const ids = outletIdCandidates('The QR', 'the-qr');
+  assert.deepEqual(ids.sort(), ['the-qr', 'theqr']);
+  assert.deepEqual(outletIdCandidates('Variety', 'variety'), ['variety']);
+});
+
+function runWithReviewsJson(reviews, outlet) {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'triage-gap-rj-'));
+  fs.mkdirSync(path.join(root, 'data'), { recursive: true });
+  fs.writeFileSync(path.join(root, 'data', 'shows.json'), JSON.stringify({ shows: [show] }));
+  fs.writeFileSync(path.join(root, 'data', 'reviews.json'), JSON.stringify({ reviews }));
+  const rt = path.join(root, 'review-texts');
+  fs.mkdirSync(rt, { recursive: true });
+  const out = execFileSync('node', [CLI, `--show=${SHOW}`, `--outlet=${outlet}`, '--json'], {
+    cwd: root, encoding: 'utf8',
+    env: { ...process.env, REVIEW_TEXTS_DIR: rt, BSC_DATA_REPO: path.join(root, 'no-data-repo') },
+  });
+  fs.rmSync(root, { recursive: true, force: true });
+  return JSON.parse(out);
+}
+
+test('display name "The QR" finds a review ingested as outletId "theqr" in reviews.json', () => {
+  const r = runWithReviewsJson([{ showId: SHOW, outletId: 'theqr', outlet: 'Theqr', assignedScore: 63 }], 'The QR');
+  assert.notEqual(r.state, 'true-missed-discovery');
+  assert.equal(r.signals.reviewsJson.inLocal, true);
+});
+
+test('an unrelated outletId still reports true-missed-discovery', () => {
+  const r = runWithReviewsJson([{ showId: SHOW, outletId: 'variety', outlet: 'Variety', assignedScore: 80 }], 'The QR');
+  assert.equal(r.state, 'true-missed-discovery');
+});
+
+test('display name "The QR" finds a review-texts file named theqr--<critic>.json', () => {
+  const r = run({ [`${SHOW}/theqr--a-critic.json`]: { ...base, outletId: 'theqr', publishDate: '2026-09-12' } }, 'The QR');
+  assert.notEqual(r.state, 'true-missed-discovery');
+});
