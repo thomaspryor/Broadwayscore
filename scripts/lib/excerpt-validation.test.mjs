@@ -124,3 +124,19 @@ test('BRO-4563: a special engagement\'s own tour wording is exempt in every call
   assert.deepEqual(contaminationKindsNeeded({ fullText: intro }, special), []);
   assert.deepEqual(contaminationKindsNeeded({ fullText: intro }, plain), ['tour']);
 });
+
+test('BRO-4963: a plot mention of ANOTHER show\'s tour at a tour venue is not contamination', () => {
+  const { tourContextForShow } = require('./excerpt-validation.js');
+  const show = { id: 'good-time-charlie-off-broadway-2026', title: 'Good Time Charlie', venue: 'The Public Theater/Martinson Hall', category: 'off-broadway', status: 'open', openingDate: '2026-10-08' };
+  const gtc = "An early scene in Ryan J. Haddad's Good Time Charlie, now making its world premiere at the Public Theater, depicts just such a conversion. Uncle Charlie takes young Ryan to the touring production of The Phantom of the Opera at Playhouse Square.";
+  const r = isTourReviewExcerpt(gtc, tourContextForShow(show));
+  assert.equal(r.isTourReview, false);
+  // Venue-only variant (title before the venue) is covered by the same window.
+  assert.equal(isTourReviewExcerpt(gtc.replace('the touring production of ', ''), tourContextForShow(show)).isTourReview, false);
+  // Still a tour review when the tour named IS the show under review.
+  const phantom = { id: 'the-phantom-of-the-opera-1988', title: 'The Phantom of the Opera', venue: 'Majestic Theatre', category: 'broadway', status: 'open', openingDate: '1988-01-26' };
+  const own = 'The touring production of The Phantom of the Opera at Playhouse Square is a thrill for a new generation of fans.';
+  assert.equal(isTourReviewExcerpt(own, tourContextForShow(phantom)).isTourReview, true);
+  // And when no other show is named, a bare tour signal still flags.
+  assert.equal(isTourReviewExcerpt('The touring production at Playhouse Square is a thrill.', tourContextForShow(show)).isTourReview, true);
+});

@@ -597,6 +597,42 @@ function tourMatchIsAboutDifferentShow(excerpt, matchIndex, currentShowId, curre
     if (showId === currentShowId) continue;
     if (regex.test(window)) return { title, showId };
   }
+
+  // BRO-4963: "the touring production of The Phantom of the Opera" names the
+  // touring show AFTER the signal. Same tight rule: the title must start right
+  // after "of/for", and the current show's title must not.
+  const ahead = excerpt.slice(matchIndex, matchIndex + 80);
+  const lead = ahead.match(/^[^.;]{0,30}?\b(?:of|for)\s+/i);
+  if (lead) {
+    const rest = ahead.slice(lead[0].length);
+    if (currentRegex && currentRegex.test(rest.slice(0, 40))) return null;
+    for (const [showId, { title, regex }] of getMatchableTitles()) {
+      if (showId === currentShowId) continue;
+      const hit = regex.exec(rest);
+      if (hit && hit.index <= 2) return { title, showId };
+    }
+  }
+  return null;
+}
+
+/**
+ * Venue variant of tourMatchIsAboutDifferentShow: stricter, because a venue
+ * name (Fox Theatre, Orpheum) is itself the signal and ANY nearby title would
+ * otherwise swallow it (corpus parity: wicked-2003 ajc--wendell-brock, a real
+ * Fox Theatre tour review, lost its flag to a loose window). Only fires when
+ * another show's title sits DIRECTLY before the venue ("The Phantom of the
+ * Opera at Playhouse Square") and the current show's title does not.
+ */
+function tourVenueFollowsDifferentShow(excerpt, matchIndex, currentShowId, currentShowTitle) {
+  if (!currentShowId) return null;
+  const window = excerpt.slice(Math.max(0, matchIndex - TOUR_OTHER_SHOW_WINDOW_CHARS), matchIndex);
+  const titleForMatch = currentShowTitle ? currentShowTitle.replace(/[^\w]+$/, '') : null;
+  if (titleForMatch && new RegExp(`\\b${titleForMatch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i').test(window)) return null;
+  for (const [showId, { title, regex }] of getMatchableTitles()) {
+    if (showId === currentShowId) continue;
+    const adjacent = new RegExp(`${regex.source}[\\s,(]*(?:(?:at|in)\\s+)?(?:the\\s+)?$`, 'i');
+    if (adjacent.test(window)) return { title, showId };
+  }
   return null;
 }
 
@@ -700,7 +736,20 @@ function isTourReviewExcerpt(excerpt, context) {
     let m;
     while ((m = re.exec(excerpt))) {
       const why = tourMatchIsDiscounted(excerpt, m.index, m[0], context, true);
-      if (!why) return { isTourReview: true, signal: `venue: ${pattern.source}` };
+      if (!why) {
+        // BRO-4963: a plot mention of ANOTHER show at a tour venue ("takes young
+        // Ryan to the touring production of The Phantom of the Opera at
+        // Playhouse Square") is not this show touring. Same other-show window
+        // as the keyword patterns below.
+        const other = context
+          ? tourVenueFollowsDifferentShow(excerpt, m.index, context.currentShowId, context.currentShowTitle)
+          : null;
+        if (other) {
+          discounted = discounted || 'other-show-venue';
+          continue;
+        }
+        return { isTourReview: true, signal: `venue: ${pattern.source}` };
+      }
       discounted = discounted || why;
     }
   }
