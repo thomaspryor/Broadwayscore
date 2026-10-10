@@ -1,33 +1,21 @@
 {
-  "updatedAt": "2026-10-10T02:03:43.236Z",
-  "processed": 384,
-  "failed": 227,
-  "successRate": "62.8%",
+  "updatedAt": "2026-10-10T02:35:19.344Z",
+  "processed": 388,
+  "failed": 236,
+  "successRate": "62.2%",
   "tierBreakdown": {
-    "playwright": 232,
+    "playwright": 235,
     "amp": 1,
-    "browserbase": 7,
+    "browserbase": 9,
     "directCookies": 0,
-    "scrapingdog": 37,
+    "scrapingdog": 38,
     "scrapingbee": 35,
     "brightdata": 10,
     "archiveToday": 0,
     "archive": 70
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-10-10T01:05:35.744Z",
-      "event": "bb-session",
-      "session": "c16c89ee",
-      "url": "http://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker-"
-    },
-    {
-      "t": "2026-10-10T01:05:55.401Z",
-      "event": "bb-session",
-      "session": "a1797735",
-      "url": "http://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker-"
-    },
     {
       "t": "2026-10-10T01:07:44.701Z",
       "event": "bb-session",
@@ -95,6 +83,51 @@
       "t": "2026-10-10T01:23:47.078Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-10T02:27:37.402Z",
+      "event": "bb-session",
+      "session": "a90b7832",
+      "url": "https://www.wsj.com/articles/the-hairy-ape-review-a-drama-of-dehumanization-at-i"
+    },
+    {
+      "t": "2026-10-10T02:27:38.159Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-10T02:29:39.723Z",
+      "event": "bb-session",
+      "session": "f1777955",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-10T02:29:40.369Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-10T02:29:57.914Z",
+      "event": "bb-session",
+      "session": "ab41bda3",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-10T02:29:58.519Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-10T02:31:31.621Z",
+      "event": "bb-session",
+      "session": "4c8900a6",
+      "url": "https://broadwaylog.app/shows/how-shakespeare-saved-my-life-2026"
+    },
+    {
+      "t": "2026-10-10T02:31:49.958Z",
+      "event": "bb-session",
+      "session": "ab26fc1d",
+      "url": "https://broadwaylog.app/shows/how-shakespeare-saved-my-life-2026"
     }
   ]
 }
