@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4973",
   "planId": "3e5313bf-a5fb-439f-8672-5d135d5001bb",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-10T10:52:16.755Z",
   "submitter": {
     "name": null,
@@ -23,5 +23,13 @@
         "description": "Pull quote must be an evaluative verdict line"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-10T11:29:02.704Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "good-time-charlie-off-broadway-2026/nytg--joe-dziemianowicz.json llmPullQuote: \"The family play is a staple of American theatre.\" -> \"Good Time Charlie is a flawed but heartfelt family love letter.\""
+    }
+  ]
 }
