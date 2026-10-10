@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-10-10T13:25:50.325Z",
+  "timestamp": "2026-10-10T13:35:41.631Z",
   "stats": {
-    "totalReviews": 53865,
-    "alreadyFlagged": 19807,
-    "dateGuardCatches": 268,
+    "totalReviews": 53850,
+    "alreadyFlagged": 19794,
+    "dateGuardCatches": 269,
     "directorMismatch": 1668,
     "tvFilmSignals": 1559,
     "londonSignals": 1774,
@@ -1990,6 +1990,34 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "amelie-west-end-2021",
+      "file": "london-theatre--mark-shenton.json",
+      "score": null,
+      "publishDate": "December 5th, 2019",
+      "url": "https://www.londontheatre.co.uk/reviews/review-amelie-at-the-other-palace",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 560d before show (December 5th, 2019 vs 2021-06-17)"
+        }
+      ]
+    },
+    {
+      "showId": "amelie-west-end-2021",
+      "file": "standard--jessie-thompson.json",
+      "score": 78,
+      "publishDate": "December 4th, 2019",
+      "url": "https://www.standard.co.uk/culture/theatre/amelie-the-musical-review-a-charming-silly-delight-for-when-the-world-feels-merde-a4303876.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 561d before show (December 4th, 2019 vs 2021-06-17)"
         }
       ]
     },
@@ -7378,7 +7406,7 @@
     },
     {
       "showId": "charlie-and-the-chocolate-factory-2017",
-      "file": "dctheatrescene--richard-seff.json",
+      "file": "dc-theater-arts--richard-seff.json",
       "score": 61,
       "publishDate": "April 30th, 2017",
       "url": "https://dcmetrotheaterarts.com/2017/04/30/review-charlie-chocolate-factory-lunt-fontanne-theatre/",
@@ -12004,7 +12032,7 @@
     },
     {
       "showId": "falsettos-2016",
-      "file": "dctheatrescene--richard-seff.json",
+      "file": "dc-theater-arts--richard-seff.json",
       "score": 93,
       "publishDate": "November 8th, 2016",
       "url": "https://dcmetrotheaterarts.com/2016/11/08/review-falsettos-walter-kerr-theatre-nyc/",
@@ -24413,7 +24441,7 @@
     },
     {
       "showId": "misery-2015",
-      "file": "dctheatrescene--richard-seff.json",
+      "file": "dc-theater-arts--richard-seff.json",
       "score": 79,
       "publishDate": "November 20th, 2015",
       "url": "https://dcmetrotheaterarts.com/2015/11/20/misery-at-the-broadhurst-theatre-in-new-york-city/",
@@ -26362,7 +26390,7 @@
     },
     {
       "showId": "noises-off-2016",
-      "file": "dctheatrescene--richard-seff.json",
+      "file": "dc-theater-arts--richard-seff.json",
       "score": 88,
       "publishDate": "January 17th, 2016",
       "url": "https://dcmetrotheaterarts.com/2016/01/17/review-noises-off-nyc-roundabout/",
@@ -37793,6 +37821,20 @@
     },
     {
       "showId": "the-gin-game-2015",
+      "file": "dc-theater-arts--richard-seff.json",
+      "score": 93,
+      "publishDate": "October 17th, 2015",
+      "url": "https://dcmetrotheaterarts.com/2015/10/17/the-gin-game-at-the-john-golden-theatre-in-new-york-city/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike nichols\" from the-gin-game-1977"
+        }
+      ]
+    },
+    {
+      "showId": "the-gin-game-2015",
       "file": "dctheatrescene--jonathan-mandell.json",
       "score": 84,
       "publishDate": "October 14th, 2015",
@@ -37803,20 +37845,6 @@
           "severity": "HIGH",
           "detail": "Mentions director \"charles nelson reilly\" from the-gin-game-1997"
         },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"mike nichols\" from the-gin-game-1977"
-        }
-      ]
-    },
-    {
-      "showId": "the-gin-game-2015",
-      "file": "dctheatrescene--richard-seff.json",
-      "score": 93,
-      "publishDate": "October 17th, 2015",
-      "url": "https://dcmetrotheaterarts.com/2015/10/17/the-gin-game-at-the-john-golden-theatre-in-new-york-city/",
-      "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -44021,20 +44049,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1547d before show (2022-03-31 vs 2026-06-25)"
-        }
-      ]
-    },
-    {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 82,
-      "publishDate": "2023-02-07",
-      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
         }
       ]
     },
@@ -53560,7 +53574,7 @@
     },
     {
       "showId": "dear-evan-hansen-2016",
-      "file": "dctheatrescene--richard-seff.json",
+      "file": "dc-theater-arts--richard-seff.json",
       "score": 92,
       "publishDate": "December 10th, 2016",
       "url": "https://dcmetrotheaterarts.com/2016/12/10/review-dear-evan-hansen-music-box-nyc1/",
@@ -54504,7 +54518,7 @@
     },
     {
       "showId": "eclipsed-2016",
-      "file": "dc-metro-theater-arts--richard-seff.json",
+      "file": "dc-theater-arts--richard-seff.json",
       "score": 73,
       "publishDate": "March 14th, 2016",
       "url": "http://dcmetrotheaterarts.com/2016/03/14/review-eclipsed/",
@@ -72997,6 +73011,20 @@
     },
     {
       "showId": "the-parisian-woman-2017",
+      "file": "bobs-theater-blog--robert-sholiton.json",
+      "score": 66,
+      "publishDate": "November 30th, 2017",
+      "url": "https://gotham-playgoer.blogspot.com/2017/11/the-parisian-woman.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"nytw\""
+        }
+      ]
+    },
+    {
+      "showId": "the-parisian-woman-2017",
       "file": "curtainup--elyse-sommer.json",
       "score": 58,
       "publishDate": null,
@@ -73006,20 +73034,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"classic stage\""
-        }
-      ]
-    },
-    {
-      "showId": "the-parisian-woman-2017",
-      "file": "gotham-playgoer--robert-sholiton.json",
-      "score": 66,
-      "publishDate": "November 30th, 2017",
-      "url": "https://gotham-playgoer.blogspot.com/2017/11/the-parisian-woman.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"nytw\""
         }
       ]
     },
