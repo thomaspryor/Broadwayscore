@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-10-10T16:31:40.157Z",
+  "generatedAt": "2026-10-10T16:49:49.759Z",
   "windowDays": 21,
-  "targets": 22,
-  "auditedThisRun": 15,
-  "carriedForward": 636,
+  "targets": 9,
+  "auditedThisRun": 9,
+  "carriedForward": 637,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 381,
-    "missingCurrentRun": 866,
+    "withGap": 377,
+    "missingCurrentRun": 791,
     "totalCitedNoUrl": 3,
-    "totalFlaggedMisses": 909,
-    "totalRecoverable": 6,
-    "totalRecovered": 10,
-    "priorProductionCitations": 3426
+    "totalFlaggedMisses": 902,
+    "totalRecoverable": 5,
+    "totalRecovered": 9,
+    "priorProductionCitations": 3114
   },
   "results": [
     {
@@ -4090,8 +4090,8 @@
       "aggregatorListedUrls": [
         "https://www.londontheatre.co.uk/reviews/affluenza-review-riverside-studios",
         "https://theatreandtonic.co.uk/blog/affluenza-riverside-studios-london-review",
-        "https://www.theguardian.com/stage/2026/oct/06/affluenza-review-stranger-things-star-noah-schnapp-riverside-studios-london-andy-sandberg",
         "https://monstagigz.com/2026/09/29/theatre-review-affluenza-starring-noah-schnapp-at-riverside-studios-hammersmith/",
+        "https://www.theguardian.com/stage/2026/oct/06/affluenza-review-stranger-things-star-noah-schnapp-riverside-studios-london-andy-sandberg",
         "https://www.londontheatre1.com/reviews/affluenza-riverside-studios-review/",
         "https://lovelondonloveculture.com/2026/10/06/review-round-up-affluenza-riverside-studios/",
         "https://liamodell.com/2026/10/06/affluenza-review-riverside-studios-london-noah-schnapp-andy-sandberg-meaning/",
@@ -4103,14 +4103,14 @@
         "https://playsinternational.org.uk/affluenza-riverside-studios/",
         "https://www.westendbestfriend.co.uk/news/review-affluenza-riverside-studios",
         "https://www.timeout.com/london/theatre/affluenza",
-        "https://www.thestage.co.uk/reviews/affluenza-review-riverside-studios-london-noah-schnapp",
+        "https://www.theupcoming.co.uk/2026/10/06/affluenza-at-riverside-studios-theatre-review/",
         "https://chiswickcalendar.co.uk/affluenza-riverside-studios-theatre-review/",
-        "https://www.broadwayworld.com/westend/article/Review-AFFLUENZA-starring-Noah-Schnapp-20261006",
+        "https://www.thestage.co.uk/reviews/affluenza-review-riverside-studios-london-noah-schnapp",
         "https://www.standard.co.uk/culture/theatre/affluenza-review-b1299859.html",
+        "https://www.broadwayworld.com/westend/article/Review-AFFLUENZA-starring-Noah-Schnapp-20261006",
         "https://www.londonboxoffice.co.uk/news/post/affluenza-riverside-studios-review",
         "https://www.theartsdesk.com/theatre/affluenza-riverside-studios-review-too-rich-mix-rich-kids-tale",
         "https://thelivereview.co.uk/affluenza-review-riverside-studios/",
-        "https://www.theupcoming.co.uk/2026/10/06/affluenza-at-riverside-studios-theatre-review/",
         "https://www.artshub.co.uk/news/reviews/affluenza-puts-privilege-on-trial-2636778/",
         "https://thespyinthestalls.com/2026/10/affleunza/",
         "https://www.london-unattached.com/affluenza-riverside-studios/",
@@ -4120,7 +4120,7 @@
         "https://onceaweektheatre.com/affluenza-at-the-riverside-studios/"
       ],
       "dirFiles": 38,
-      "dirClean": 29,
+      "dirClean": 30,
       "inReviewsJson": 29,
       "missing": [
         {
@@ -4128,15 +4128,6 @@
           "host": "lovelondonloveculture.com",
           "knownOutletId": "lovelondonloveculture",
           "serpCensus": true
-        },
-        {
-          "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29281",
-          "host": "londontheatrereviews.co.uk",
-          "knownOutletId": "london-theatre-reviews",
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ]
         }
       ],
       "dirOnly": [
@@ -4162,7 +4153,7 @@
             "rows": 8,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 1
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": true,
@@ -4188,15 +4179,15 @@
         },
         "allSourcesFailed": false,
         "currentRunRows": 34,
-        "corroborated": 24,
+        "corroborated": 25,
         "perSource": {
           "theatre-reviews": {
             "cited": 8,
             "corroborated": 8
           },
           "bestoftheatre": {
-            "cited": 24,
-            "corroborated": 24
+            "cited": 25,
+            "corroborated": 25
           },
           "lbo-roundup": {
             "cited": 1,
@@ -4256,21 +4247,22 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 18,
+        "resultCount": 17,
         "error": null
       },
       "candidatesRejected": {
-        "count": 13,
+        "count": 16,
         "byReason": {
-          "non-review-host": 11,
+          "non-review-host": 13,
+          "roundup-page": 1,
           "ticketing-listing": 1,
-          "roundup-page": 1
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
@@ -4288,19 +4280,6 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "Refusing to ingest — https://lovelondonloveculture.com/2026/10/06/review-round-up-affluenza-riversid"
-        },
-        {
-          "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29281",
-          "host": "londontheatrereviews.co.uk",
-          "outletId": "london-theatre-reviews",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "❌ Stale merge: url still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/"
         }
       ],
       "ingestSkippedByCap": [],
@@ -4313,13 +4292,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://lovelondonloveculture.com/2026/10/06/review-round-up-affluenza-riverside-studios/"
-          },
-          {
-            "outletId": "london-theatre-reviews",
-            "outlet": "london-theatre-reviews",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29281"
           }
         ],
         "suppressedMissing": [],
@@ -4337,16 +4309,16 @@
             "firstSeenAt": "2026-10-06T22:14:07.067Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/2026/oct/06/affluenza-review-stranger-things-star-noah-schnapp-riverside-studios-london-andy-sandberg",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-06T22:14:07.067Z"
-          },
-          {
             "url": "https://monstagigz.com/2026/09/29/theatre-review-affluenza-starring-noah-schnapp-at-riverside-studios-hammersmith/",
             "outletId": "monstagigz.com",
             "state": "live",
             "firstSeenAt": "2026-10-05T01:35:25.861Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/oct/06/affluenza-review-stranger-things-star-noah-schnapp-riverside-studios-london-andy-sandberg",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-06T22:14:07.067Z"
           },
           {
             "url": "https://www.londontheatre1.com/reviews/affluenza-riverside-studios-review/",
@@ -4409,10 +4381,10 @@
             "firstSeenAt": "2026-10-07T15:42:41.979Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/affluenza-review-riverside-studios-london-noah-schnapp",
-            "outletId": "thestage.co.uk",
+            "url": "https://www.theupcoming.co.uk/2026/10/06/affluenza-at-riverside-studios-theatre-review/",
+            "outletId": "theupcoming.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-07T15:42:41.979Z"
+            "firstSeenAt": "2026-10-08T22:45:07.696Z"
           },
           {
             "url": "https://chiswickcalendar.co.uk/affluenza-riverside-studios-theatre-review/",
@@ -4421,14 +4393,20 @@
             "firstSeenAt": "2026-10-07T15:42:41.979Z"
           },
           {
-            "url": "https://www.broadwayworld.com/westend/article/Review-AFFLUENZA-starring-Noah-Schnapp-20261006",
-            "outletId": "broadwayworld.com",
+            "url": "https://www.thestage.co.uk/reviews/affluenza-review-riverside-studios-london-noah-schnapp",
+            "outletId": "thestage.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-07T22:35:00.711Z"
+            "firstSeenAt": "2026-10-07T15:42:41.979Z"
           },
           {
             "url": "https://www.standard.co.uk/culture/theatre/affluenza-review-b1299859.html",
             "outletId": "standard.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-07T22:35:00.711Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-AFFLUENZA-starring-Noah-Schnapp-20261006",
+            "outletId": "broadwayworld.com",
             "state": "live",
             "firstSeenAt": "2026-10-07T22:35:00.711Z"
           },
@@ -4449,12 +4427,6 @@
             "outletId": "thelivereview.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-09T21:34:59.683Z"
-          },
-          {
-            "url": "https://www.theupcoming.co.uk/2026/10/06/affluenza-at-riverside-studios-theatre-review/",
-            "outletId": "theupcoming.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-08T22:45:07.696Z"
           },
           {
             "url": "https://www.artshub.co.uk/news/reviews/affluenza-puts-privilege-on-trial-2636778/",
@@ -4487,6 +4459,12 @@
             "firstSeenAt": "2026-10-10T06:36:20.593Z"
           },
           {
+            "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29281",
+            "outletId": "londontheatrereviews.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-10T09:47:24.828Z"
+          },
+          {
             "url": "https://onceaweektheatre.com/affluenza-at-the-riverside-studios/",
             "outletId": "onceaweektheatre.com",
             "state": "live",
@@ -4498,20 +4476,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-08T09:47:49.209Z"
-          },
-          {
-            "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29281",
-            "outletId": "london-theatre-reviews",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-10T09:47:24.828Z"
           }
         ],
         "censusSchema": 2,
-        "liveCount": 27,
+        "liveCount": 28,
         "candidateCount": 29
       },
-      "computedAt": "2026-10-10T10:36:33.884Z"
+      "computedAt": "2026-10-10T16:49:49.759Z"
     },
     {
       "showId": "after-all-these-years-off-broadway-2026",
@@ -8393,21 +8364,20 @@
         "https://www.thetimes.com/article/32f09d9f-a927-4675-b5a5-aa1ad50d870f",
         "https://www.theguardian.com/stage/2025/may/07/an-oak-tree-review-young-vic-london-tim-crouch-jessie-buckley",
         "https://www.whatsonstage.com/news/tim-crouchs-an-oak-tree-at-the-young-vic-review_1676645/",
-        "https://theatreandtonic.co.uk/blog/an-oak-tree-the-other-palace-review",
         "https://www.londontheatre.co.uk/reviews/an-oak-tree-review-the-other-palace",
+        "https://theatreandtonic.co.uk/blog/an-oak-tree-the-other-palace-review",
         "https://www.thereviewshub.com/an-oak-tree-the-other-palace-london/",
-        "https://www.londontheatre1.com/reviews/an-oak-tree-at-the-other-palace/",
         "https://thespyinthestalls.com/2026/10/an-oak-tree/",
-        "https://www.thestage.co.uk/reviews/an-oak-tree-review-the-other-palace-tim-crouch-gwyneth-keyworth",
+        "https://www.londontheatre1.com/reviews/an-oak-tree-at-the-other-palace/",
         "https://www.westendbestfriend.co.uk/news/review-an-oak-tree-the-other-palace",
+        "https://www.thestage.co.uk/reviews/an-oak-tree-review-the-other-palace-tim-crouch-gwyneth-keyworth",
         "https://www.allthatdazzles.co.uk/post/review-an-oak-tree-the-other-palace",
-        "https://www.timcrouchtheatre.co.uk/shows-2/an-oak-tree/reviews",
-        "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/an-oak-tree_1727580/",
+        "https://www.timeout.com/london/theatre/an-oak-tree-review",
         "https://theatreweekly.com/review-an-oak-tree-at-the-other-palace/",
         "https://stagedtheatre.co.uk/blogs/theatre-reviews/an-oak-tree-the-other-palace",
+        "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/an-oak-tree_1727580/",
         "https://northwestend.com/an-oak-tree-the-other-palace/amp/",
         "https://matineemouse.substack.com/p/an-oak-tree-review",
-        "https://www.timeout.com/london/theatre/an-oak-tree-review",
         "https://www.ft.com/content/101d2241-eebe-463c-8707-3fcb8ec3b360",
         "https://www.thetimes.com/culture/theatre-dance/article/an-oak-tree-review-young-vic-london-x6ggkgldn",
         "https://inews.co.uk/culture/arts/tim-crouchs-improv-experiment-an-oak-tree-is-far-too-pleased-with-itself-3679784",
@@ -8416,11 +8386,11 @@
         "https://ayoungishperspective.co.uk/2026/10/10/review-an-oak-tree-2/",
         "https://northwestend.com/an-oak-tree-the-other-palace/",
         "https://onin.london/an-oak-tree-at-the-other-palace-review/",
-        "https://www.londontheatrereviews.co.uk/post.cfm"
+        "https://www.londontheatrereviews.co.uk/post.cfm?p=29317"
       ],
-      "dirFiles": 27,
-      "dirClean": 13,
-      "inReviewsJson": 13,
+      "dirFiles": 28,
+      "dirClean": 15,
+      "inReviewsJson": 14,
       "missing": [
         {
           "url": "https://www.thetimes.com/article/32f09d9f-a927-4675-b5a5-aa1ad50d870f",
@@ -8447,17 +8417,6 @@
           "host": "matineemouse.substack.com",
           "knownOutletId": "matineemouse",
           "serpCensus": true
-        },
-        {
-          "url": "https://ayoungishperspective.co.uk/2026/10/10/review-an-oak-tree-2/",
-          "host": "ayoungishperspective.co.uk",
-          "knownOutletId": "a-youngish-perspective",
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ],
-          "weRefStars": 4,
-          "weRefStarsSource": "bestoftheatre"
         }
       ],
       "dirOnly": [],
@@ -8479,26 +8438,6 @@
             }
           ],
           "serpCensus": true
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/an-oak-tree-review-young-vic-london-tim-crouch-jessie-buckley",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thestage--dave-fargnoli.json",
-              "flag": "clean",
-              "urlInDir": "https://www.thestage.co.uk/reviews/an-oak-tree-review-young-vic-london-tim-crouch-jessie-buckley"
-            }
-          ],
-          "weRef": true,
-          "weRefSources": [],
-          "priorRun": true
         },
         {
           "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/an-oak-tree-young-vic-review-tim-crouch-jessie-buckley-b2746376.html",
@@ -8538,24 +8477,6 @@
           ]
         },
         {
-          "url": "https://www.timcrouchtheatre.co.uk/shows-2/an-oak-tree/reviews",
-          "host": "timcrouchtheatre.co.uk",
-          "knownOutletId": "timcrouchtheatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timcrouchtheatre--lyn-gardner.json",
-              "flag": "clean",
-              "urlInDir": "https://www.timcrouchtheatre.co.uk/shows-2/an-oak-tree/reviews"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
           "url": "https://www.timeout.com/london/theatre/an-oak-tree-review",
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
@@ -8573,7 +8494,8 @@
           ],
           "weRef": true,
           "weRefSources": [],
-          "priorRun": true
+          "priorRun": true,
+          "serpCensus": true
         },
         {
           "url": "https://www.ft.com/content/101d2241-eebe-463c-8707-3fcb8ec3b360",
@@ -8695,7 +8617,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 2
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": true,
@@ -8721,15 +8643,15 @@
         },
         "allSourcesFailed": false,
         "currentRunRows": 15,
-        "corroborated": 13,
+        "corroborated": 14,
         "perSource": {
           "lbo-roundup": {
             "cited": 1,
             "corroborated": 0
           },
           "bestoftheatre": {
-            "cited": 13,
-            "corroborated": 13
+            "cited": 14,
+            "corroborated": 14
           }
         }
       },
@@ -8745,7 +8667,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 6,
+            "accepted": 7,
             "error": null
           },
           {
@@ -8755,7 +8677,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -8775,7 +8697,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -8795,7 +8717,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           }
         ],
@@ -8805,11 +8727,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 17,
+        "count": 18,
         "byReason": {
           "non-review-host": 10,
           "roundup-page": 2,
           "ticketing-listing": 4,
+          "non-review-path": 1,
           "event-listing": 1
         }
       },
@@ -8834,8 +8757,8 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "zeroChar": false,
-          "reason": "⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www"
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
         },
         {
           "url": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/an-oak-tree_1727580/",
@@ -8861,20 +8784,7 @@
           "conflictReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
-        },
-        {
-          "url": "https://ayoungishperspective.co.uk/2026/10/10/review-an-oak-tree-2/",
-          "host": "ayoungishperspective.co.uk",
-          "outletId": "a-youngish-perspective",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
+          "reason": "[review-write-guard] date-implausible: an-oak-tree-off-west-end-2026/matineemouse--megan-oneill.json"
         }
       ],
       "ingestSkippedByCap": [],
@@ -8888,7 +8798,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "ingest no-op (text landed elsewhere or unchanged)",
-          "recoveryCount": 2,
+          "recoveryCount": 3,
           "uncited": true
         }
       ],
@@ -8917,13 +8827,6 @@
             "url": "https://matineemouse.substack.com/p/an-oak-tree-review"
           },
           {
-            "outletId": "a-youngish-perspective",
-            "outlet": "a-youngish-perspective",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://ayoungishperspective.co.uk/2026/10/10/review-an-oak-tree-2/"
-          },
-          {
             "outletId": "london-theatre",
             "outlet": "london-theatre",
             "critic": "Unknown",
@@ -8938,13 +8841,6 @@
             "url": "https://www.whatsonstage.com/news/tim-crouchs-an-oak-tree-at-the-young-vic-review_1676645/"
           },
           {
-            "outletId": "timcrouchtheatre",
-            "outlet": "timcrouchtheatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timcrouchtheatre.co.uk/shows-2/an-oak-tree/reviews"
-          },
-          {
             "outletId": "london-box-office",
             "outlet": "london-box-office",
             "critic": "Unknown",
@@ -8955,14 +8851,20 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://theatreandtonic.co.uk/blog/an-oak-tree-the-other-palace-review",
-            "outletId": "theatreandtonic.co.uk",
+            "url": "https://www.thestage.co.uk/reviews/an-oak-tree-review-young-vic-london-tim-crouch-jessie-buckley",
+            "outletId": "thestage.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-08T22:45:07.696Z"
+            "firstSeenAt": "2026-10-10T16:49:49.759Z"
           },
           {
             "url": "https://www.londontheatre.co.uk/reviews/an-oak-tree-review-the-other-palace",
             "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-08T22:45:07.696Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/an-oak-tree-the-other-palace-review",
+            "outletId": "theatreandtonic.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-08T22:45:07.696Z"
           },
@@ -8973,26 +8875,26 @@
             "firstSeenAt": "2026-10-08T22:45:07.696Z"
           },
           {
-            "url": "https://www.londontheatre1.com/reviews/an-oak-tree-at-the-other-palace/",
-            "outletId": "londontheatre1.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-08T09:47:49.209Z"
-          },
-          {
             "url": "https://thespyinthestalls.com/2026/10/an-oak-tree/",
             "outletId": "thespyinthestalls.com",
             "state": "live",
             "firstSeenAt": "2026-10-08T22:45:07.696Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/an-oak-tree-review-the-other-palace-tim-crouch-gwyneth-keyworth",
-            "outletId": "thestage.co.uk",
+            "url": "https://www.londontheatre1.com/reviews/an-oak-tree-at-the-other-palace/",
+            "outletId": "londontheatre1.com",
             "state": "live",
-            "firstSeenAt": "2026-10-08T22:45:07.696Z"
+            "firstSeenAt": "2026-10-08T09:47:49.209Z"
           },
           {
             "url": "https://www.westendbestfriend.co.uk/news/review-an-oak-tree-the-other-palace",
             "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-08T22:45:07.696Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/an-oak-tree-review-the-other-palace-tim-crouch-gwyneth-keyworth",
+            "outletId": "thestage.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-08T22:45:07.696Z"
           },
@@ -9021,6 +8923,12 @@
             "firstSeenAt": "2026-10-10T09:05:38.747Z"
           },
           {
+            "url": "https://ayoungishperspective.co.uk/2026/10/10/review-an-oak-tree-2/",
+            "outletId": "ayoungishperspective.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-10T09:05:38.747Z"
+          },
+          {
             "url": "https://northwestend.com/an-oak-tree-the-other-palace/",
             "outletId": "northwestend.com",
             "state": "live",
@@ -9033,10 +8941,10 @@
             "firstSeenAt": "2026-10-08T22:45:07.696Z"
           },
           {
-            "url": "https://www.londontheatrereviews.co.uk/post.cfm",
+            "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29317",
             "outletId": "londontheatrereviews.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-10T08:06:08.996Z"
+            "firstSeenAt": "2026-10-10T16:49:49.759Z"
           },
           {
             "url": "https://www.thetimes.com/article/32f09d9f-a927-4675-b5a5-aa1ad50d870f",
@@ -9060,13 +8968,6 @@
             "firstSeenAt": "2026-10-09T09:56:11.612Z"
           },
           {
-            "url": "https://ayoungishperspective.co.uk/2026/10/10/review-an-oak-tree-2/",
-            "outletId": "a-youngish-perspective",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-10T09:05:38.747Z"
-          },
-          {
             "url": "https://www.londontheatre.co.uk/reviews/an-oak-tree-review-young-vic",
             "outletId": "london-theatre",
             "state": "GAP",
@@ -9081,13 +8982,6 @@
             "firstSeenAt": "2026-10-07T17:15:35.760Z"
           },
           {
-            "url": "https://www.timcrouchtheatre.co.uk/shows-2/an-oak-tree/reviews",
-            "outletId": "timcrouchtheatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-08T09:47:49.209Z"
-          },
-          {
             "url": "https://www.londonboxoffice.co.uk/news/post/an-oak-tree-young-vic-review",
             "outletId": "london-box-office",
             "state": "GAP",
@@ -9096,10 +8990,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 13,
-        "candidateCount": 20
+        "liveCount": 14,
+        "candidateCount": 19
       },
-      "computedAt": "2026-10-10T09:05:38.747Z"
+      "computedAt": "2026-10-10T16:49:49.759Z"
     },
     {
       "showId": "anansi-the-spider-west-end-2026",
@@ -19476,20 +19370,23 @@
         "https://www.westendbestfriend.co.uk/news/review-blood-of-my-blood-royal-court-theatre",
         "https://winteriscoming.net/outlander-blood-of-my-blood-season-2-episode-4-recap-review-portion-my-soul",
         "https://www.theatremonkey.com/show/blood-of-my-blood/",
+        "https://www.britishtheatreguide.info/reviews/blood-rev",
+        "https://hitthetheatre.co.uk/london/shows/blood-of-my-blood",
+        "https://www.curtisbrown.co.uk/client/joy-nesbitt-1/work/blood-of-my-blood-1",
+        "https://www.afridiziak.com/reviews/blood-of-my-blood-by-joy-nesbitt/",
+        "https://www.timeout.com/london/theatre/blood-of-my-blood",
         "https://www.standard.co.uk/culture/theatre/blood-of-my-blood-review-b1300132.html",
-        "https://omnivorous.substack.com/p/tv-review-outlander-blood-of-my-blood-90f",
-        "https://storiesfromthenewworld.com/outlander-blood-of-my-blood-episode-2-review/",
+        "https://eventslist.co.uk/london/events/rct-blood-of-my-blood-2026-10-01",
         "https://www.theguardian.com/stage/2026/sep/11/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east-london-michelle-dockery",
         "https://www.thestage.co.uk/reviews/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east-london-ava-pickett-michelle-dockery",
         "https://playsinternational.org.uk/bloodsport-after-helen-of-troy/",
         "https://www.londontheatre.co.uk/reviews/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east",
         "https://www.timeout.com/london/theatre/bloodsport-after-helen-of-troy-review",
         "https://www.standard.co.uk/culture/theatre/bloodsport-after-helen-of-troy-review-b1296572.html",
-        "https://www.broadwayworld.com/westend/article/Review-BLOODSPORT-AFTER-HELEN-OF-TROY-Stratford-East-20260911",
-        "https://www.afridiziak.com/reviews/blood-of-my-blood-by-joy-nesbitt/"
+        "https://www.broadwayworld.com/westend/article/Review-BLOODSPORT-AFTER-HELEN-OF-TROY-Stratford-East-20260911"
       ],
       "dirFiles": 35,
-      "dirClean": 9,
+      "dirClean": 11,
       "inReviewsJson": 9,
       "missing": [
         {
@@ -19514,14 +19411,14 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://winteriscoming.net/outlander-blood-of-my-blood-season-2-episode-4-recap-review-portion-my-soul",
-          "host": "winteriscoming.net",
-          "knownOutletId": "winteriscoming",
+          "url": "https://www.britishtheatreguide.info/reviews/blood-rev",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
           "serpCensus": true
         },
         {
-          "url": "https://storiesfromthenewworld.com/outlander-blood-of-my-blood-episode-2-review/",
-          "host": "storiesfromthenewworld.com",
+          "url": "https://hitthetheatre.co.uk/london/shows/blood-of-my-blood",
+          "host": "hitthetheatre.co.uk",
           "knownOutletId": null,
           "serpCensus": true
         },
@@ -19670,11 +19567,11 @@
         },
         "allSourcesFailed": false,
         "currentRunRows": 18,
-        "corroborated": 13,
+        "corroborated": 14,
         "perSource": {
           "theatre-reviews": {
             "cited": 5,
-            "corroborated": 4
+            "corroborated": 5
           },
           "lbo-roundup": {
             "cited": 1,
@@ -19728,7 +19625,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 5,
             "error": null
           },
           {
@@ -19744,19 +19641,21 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 13,
+        "resultCount": 17,
         "error": null
       },
       "candidatesRejected": {
         "count": 111,
         "byReason": {
-          "aggregator-internal-nav": 49,
+          "non-review-host": 28,
+          "aggregator-internal-nav": 50,
+          "roundup-page": 1,
+          "ticketing-listing": 1,
+          "venue-production-page": 4,
+          "non-review-path": 1,
           "not-http-url": 20,
           "aggregator-section-root": 5,
-          "non-review-host": 29,
-          "roundup-page": 3,
-          "ticketing-listing": 1,
-          "venue-production-page": 4
+          "ticketing-reseller": 1
         }
       },
       "dedupedVariants": [],
@@ -19766,7 +19665,15 @@
           "publishDate": "2026-03-04"
         }
       ],
-      "unextractable": [],
+      "unextractable": [
+        {
+          "url": "https://www.curtisbrown.co.uk/client/joy-nesbitt-1/work/blood-of-my-blood-1",
+          "host": "curtisbrown.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true,
+          "zeroCharAttempts": 3
+        }
+      ],
       "weIngestBlocked": [
         {
           "url": "https://www.newyorktheatreguide.com/reviews/blood-love-off-broadway-review",
@@ -19789,9 +19696,9 @@
       ],
       "ingestResults": [
         {
-          "url": "https://winteriscoming.net/outlander-blood-of-my-blood-season-2-episode-4-recap-review-portion-my-soul",
-          "host": "winteriscoming.net",
-          "outletId": "winteriscoming",
+          "url": "https://www.britishtheatreguide.info/reviews/blood-rev",
+          "host": "britishtheatreguide.info",
+          "outletId": "british-theatre",
           "provisional": false,
           "ok": true,
           "noop": false,
@@ -19812,7 +19719,20 @@
           "conflictReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  provisional outlet \"storiesfromthenewworld\" (not in registry) — onboard to outlet-registry.json "
+          "reason": "[review-write-guard] date-implausible: blood-of-my-blood-west-end-2026/british-theatre--philip-fishe"
+        },
+        {
+          "url": "https://hitthetheatre.co.uk/london/shows/blood-of-my-blood",
+          "host": "hitthetheatre.co.uk",
+          "outletId": "hitthetheatre",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
         },
         {
           "url": "https://playsinternational.org.uk/bloodsport-after-helen-of-troy/",
@@ -19866,18 +19786,18 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "winteriscoming",
-            "outlet": "winteriscoming",
+            "outletId": "british-theatre",
+            "outlet": "british-theatre",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://winteriscoming.net/outlander-blood-of-my-blood-season-2-episode-4-recap-review-portion-my-soul"
+            "url": "https://www.britishtheatreguide.info/reviews/blood-rev"
           },
           {
-            "outletId": "storiesfromthenewworld.com",
-            "outlet": "storiesfromthenewworld.com",
+            "outletId": "hitthetheatre.co.uk",
+            "outlet": "hitthetheatre.co.uk",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://storiesfromthenewworld.com/outlander-blood-of-my-blood-episode-2-review/"
+            "url": "https://hitthetheatre.co.uk/london/shows/blood-of-my-blood"
           },
           {
             "outletId": "plays-international",
@@ -19931,6 +19851,12 @@
             "firstSeenAt": "2026-10-08T22:45:07.696Z"
           },
           {
+            "url": "https://www.theguardian.com/stage/2026/oct/10/blood-of-my-blood-review-royal-court-theatre-london",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-10T16:49:49.759Z"
+          },
+          {
             "url": "https://www.timeout.com/london/theatre/blood-of-my-blood-review",
             "outletId": "timeout.com",
             "state": "live",
@@ -19967,10 +19893,46 @@
             "firstSeenAt": "2026-10-08T22:45:07.696Z"
           },
           {
+            "url": "https://winteriscoming.net/outlander-blood-of-my-blood-season-2-episode-4-recap-review-portion-my-soul",
+            "outletId": "winteriscoming.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-10T16:49:49.759Z"
+          },
+          {
+            "url": "https://www.afridiziak.com/reviews/blood-of-my-blood-by-joy-nesbitt/",
+            "outletId": "afridiziak.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-10T08:06:08.996Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/blood-of-my-blood",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-08T22:45:07.696Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-blood-of-my-blood-royal-court-theatre",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-08T22:45:07.696Z"
+          },
+          {
             "url": "https://www.standard.co.uk/culture/theatre/blood-of-my-blood-review-b1300132.html",
             "outletId": "standard.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-09T09:56:11.612Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/blood-of-my-blood-review-b1300132.html",
+            "outletId": "standard.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-09T09:56:11.612Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/sep/11/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east-london-michelle-dockery",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-07T02:08:49.830Z"
           },
           {
             "url": "https://www.thestage.co.uk/reviews/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east-london-ava-pickett-michelle-dockery",
@@ -19997,24 +19959,18 @@
             "firstSeenAt": "2026-10-07T02:08:49.830Z"
           },
           {
-            "url": "https://www.afridiziak.com/reviews/blood-of-my-blood-by-joy-nesbitt/",
-            "outletId": "afridiziak.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-10T08:06:08.996Z"
-          },
-          {
-            "url": "https://winteriscoming.net/outlander-blood-of-my-blood-season-2-episode-4-recap-review-portion-my-soul",
-            "outletId": "winteriscoming",
+            "url": "https://www.britishtheatreguide.info/reviews/blood-rev",
+            "outletId": "british-theatre",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-10T16:31:40.157Z"
+            "firstSeenAt": "2026-10-10T16:49:49.759Z"
           },
           {
-            "url": "https://storiesfromthenewworld.com/outlander-blood-of-my-blood-episode-2-review/",
-            "outletId": "storiesfromthenewworld.com",
+            "url": "https://hitthetheatre.co.uk/london/shows/blood-of-my-blood",
+            "outletId": "hitthetheatre.co.uk",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-10T16:31:40.157Z"
+            "firstSeenAt": "2026-10-10T16:49:49.759Z"
           },
           {
             "url": "https://playsinternational.org.uk/bloodsport-after-helen-of-troy/",
@@ -20060,10 +20016,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 9,
-        "candidateCount": 16
+        "liveCount": 11,
+        "candidateCount": 17
       },
-      "computedAt": "2026-10-10T16:31:40.157Z"
+      "computedAt": "2026-10-10T16:49:49.759Z"
     },
     {
       "showId": "bloodlove-off-broadway-2026",
@@ -47865,32 +47821,20 @@
         "https://oxfordshireguardian.co.uk/review-fences-delivered-a-powerful-night-of-theatre-at-oxford-playhouse/",
         "https://www.londontheatredirect.com/news/lyn-gardners-top-ten-reasons-to-see-fences-at-the-lyric-hammersmith",
         "https://ayoungishperspective.co.uk/2026/10/03/review-fences/",
+        "https://chiswickcalendar.co.uk/event/august-wilsons-fences-lyric-theatre/2026-10-08/",
+        "https://www.allthatdazzles.co.uk/post/review-fences-lyric-hammersmith",
         "https://www.headlong.co.uk/productions/fences",
         "https://northernartsreview.co.uk/central-north/review-august-wilsons-fences-at-leeds-playhouse/",
-        "https://www.timeout.com/london/theatre/fences-2",
-        "https://www.jackstage.co.uk/post/august-wilson-s-fences-review-a-searing-domestic-account-on-the-black-american-experience",
         "https://www.thetimes.com/culture/theatre-dance/article/fences-review-no-big-concepts-just-fizzing-drama-5hqjvz73j",
         "https://chathamlifeandstyle.com/features-%26-reviews/f/theatre-review-understanding-black-love-in-wilsons-fences",
         "https://www.thestage.co.uk/reviews/fences-review-leeds-playhouse",
         "https://www.theguardian.com/stage/2026/sep/17/fences-review-leeds-playhouse-august-wilson",
         "https://www.whatsonstage.com/news/fences-at-leeds-playhouse-and-on-tour-review_1731583/"
       ],
-      "dirFiles": 16,
-      "dirClean": 5,
-      "inReviewsJson": 5,
+      "dirFiles": 17,
+      "dirClean": 6,
+      "inReviewsJson": 6,
       "missing": [
-        {
-          "url": "https://www.londonboxoffice.co.uk/news/post/fences-lyric-hammersmith-review",
-          "host": "londonboxoffice.co.uk",
-          "knownOutletId": "london-box-office",
-          "weRef": true,
-          "weRefSources": [
-            "lbo-roundup"
-          ],
-          "weRefStars": 4,
-          "weRefStarsSource": "lbo-roundup",
-          "serpCensus": true
-        },
         {
           "url": "https://www.headlong.co.uk/productions/fences",
           "host": "headlong.co.uk",
@@ -47954,9 +47898,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.timeout.com/london/theatre/fences-2",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
+          "url": "https://chiswickcalendar.co.uk/event/august-wilsons-fences-lyric-theatre/2026-10-08/",
+          "host": "chiswickcalendar.co.uk",
+          "knownOutletId": "chiswickcalendar",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -47964,27 +47908,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "timeout-london--unknown.json",
+              "file": "chiswickcalendar--unknown.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/london/theatre/fences-2"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.jackstage.co.uk/post/august-wilson-s-fences-review-a-searing-domestic-account-on-the-black-american-experience",
-          "host": "jackstage.co.uk",
-          "knownOutletId": "jackstage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "jackstage--jack-davey.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.jackstage.co.uk/post/august-wilson-s-fences-review-a-searing-domestic-account-on-the-black-american-experience"
+              "urlInDir": "https://chiswickcalendar.co.uk/event/august-wilsons-fences-lyric-theatre/2026-10-08/"
             }
           ],
           "serpCensus": true
@@ -48021,6 +47947,29 @@
               "file": "thestage--matt-barton.json",
               "flag": "wrongShow",
               "urlInDir": "https://www.thestage.co.uk/reviews/fences-review-leeds-playhouse"
+            }
+          ],
+          "weRef": true,
+          "weRefSources": [
+            "westendtheatre"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "westendtheatre"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/sep/17/fences-review-leeds-playhouse-august-wilson",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "guardian--catherine-love.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theguardian.com/stage/2026/sep/17/fences-review-leeds-playhouse-august-wilson"
             }
           ],
           "weRef": true,
@@ -48077,6 +48026,10 @@
         "perSource": {
           "westendtheatre": {
             "cited": 2,
+            "corroborated": 0
+          },
+          "lbo-roundup": {
+            "cited": 1,
             "corroborated": 1
           }
         }
@@ -48103,7 +48056,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -48113,7 +48066,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -48143,7 +48096,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           }
         ],
@@ -48155,29 +48108,16 @@
       "candidatesRejected": {
         "count": 21,
         "byReason": {
+          "non-review-host": 16,
           "aggregator-internal-nav": 1,
-          "non-review-host": 17,
-          "roundup-page": 1,
           "census-junk-host": 1,
-          "ticketing-listing": 1
+          "roundup-page": 1,
+          "ticketing-listing": 2
         }
       },
       "dedupedVariants": [],
       "unextractable": [],
       "ingestResults": [
-        {
-          "url": "https://www.londonboxoffice.co.uk/news/post/fences-lyric-hammersmith-review",
-          "host": "londonboxoffice.co.uk",
-          "outletId": "london-box-office",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
         {
           "url": "https://www.headlong.co.uk/productions/fences",
           "host": "headlong.co.uk",
@@ -48237,13 +48177,6 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "london-box-office",
-            "outlet": "london-box-office",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londonboxoffice.co.uk/news/post/fences-lyric-hammersmith-review"
-          },
-          {
             "outletId": "headlong.co.uk",
             "outlet": "headlong.co.uk",
             "critic": "Unknown",
@@ -48279,18 +48212,11 @@
             "url": "https://www.londontheatredirect.com/news/lyn-gardners-top-ten-reasons-to-see-fences-at-the-lyric-hammersmith"
           },
           {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
+            "outletId": "chiswickcalendar",
+            "outlet": "chiswickcalendar",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.timeout.com/london/theatre/fences-2"
-          },
-          {
-            "outletId": "jackstage",
-            "outlet": "jackstage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.jackstage.co.uk/post/august-wilson-s-fences-review-a-searing-domestic-account-on-the-black-american-experience"
+            "url": "https://chiswickcalendar.co.uk/event/august-wilsons-fences-lyric-theatre/2026-10-08/"
           },
           {
             "outletId": "times-uk",
@@ -48305,6 +48231,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.thestage.co.uk/reviews/fences-review-leeds-playhouse"
+          },
+          {
+            "outletId": "guardian",
+            "outlet": "guardian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theguardian.com/stage/2026/sep/17/fences-review-leeds-playhouse-august-wilson"
           }
         ],
         "suppressedMissing": [],
@@ -48322,29 +48255,28 @@
             "firstSeenAt": "2026-10-08T17:15:22.095Z"
           },
           {
+            "url": "https://www.londonboxoffice.co.uk/news/post/fences-lyric-hammersmith-review",
+            "outletId": "londonboxoffice.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-10T16:49:49.759Z"
+          },
+          {
             "url": "https://ayoungishperspective.co.uk/2026/10/03/review-fences/",
             "outletId": "ayoungishperspective.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-09T16:54:53.545Z"
           },
           {
+            "url": "https://www.allthatdazzles.co.uk/post/review-fences-lyric-hammersmith",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-10T16:49:49.759Z"
+          },
+          {
             "url": "https://northernartsreview.co.uk/central-north/review-august-wilsons-fences-at-leeds-playhouse/",
             "outletId": "northernartsreview.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-09T02:53:30.879Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2026/sep/17/fences-review-leeds-playhouse-august-wilson",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-06T17:49:47.573Z"
-          },
-          {
-            "url": "https://www.londonboxoffice.co.uk/news/post/fences-lyric-hammersmith-review",
-            "outletId": "london-box-office",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-10T16:31:40.157Z"
           },
           {
             "url": "https://www.headlong.co.uk/productions/fences",
@@ -48382,15 +48314,8 @@
             "firstSeenAt": "2026-10-08T17:15:22.095Z"
           },
           {
-            "url": "https://www.timeout.com/london/theatre/fences-2",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-09T16:54:53.545Z"
-          },
-          {
-            "url": "https://www.jackstage.co.uk/post/august-wilson-s-fences-review-a-searing-domestic-account-on-the-black-american-experience",
-            "outletId": "jackstage",
+            "url": "https://chiswickcalendar.co.uk/event/august-wilsons-fences-lyric-theatre/2026-10-08/",
+            "outletId": "chiswickcalendar",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-08T17:15:22.095Z"
@@ -48408,13 +48333,20 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-06T17:49:47.573Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/sep/17/fences-review-leeds-playhouse-august-wilson",
+            "outletId": "guardian",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-06T17:49:47.573Z"
           }
         ],
         "censusSchema": 2,
-        "liveCount": 5,
+        "liveCount": 6,
         "candidateCount": 15
       },
-      "computedAt": "2026-10-10T16:31:40.157Z"
+      "computedAt": "2026-10-10T16:49:49.759Z"
     },
     {
       "showId": "firewing-off-west-end-2026",
@@ -50297,7 +50229,7 @@
         "https://rhombusrota.co.uk/2026/10/06/franz-marie-at-charing-cross-theatre-review/",
         "https://readaboutstuff.com/2026/10/06/review-franz-marie-charing-cross-theatre-london/",
         "https://firstnightmagazine.com/2026/10/06/review-of-franz-marie-tuneless-musical-misses-the-key-in-every-aspect/",
-        "http://www.stagetopage.co.uk/2026/10/franz-marie-review.html"
+        "https://www.timeout.com/london/theatre/franz-marie"
       ],
       "dirFiles": 33,
       "dirClean": 21,
@@ -50326,6 +50258,10 @@
         },
         {
           "host": "stagedtheatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "stagetopage.co.uk",
           "count": 1
         },
         {
@@ -50469,12 +50405,13 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 21,
+        "count": 20,
         "byReason": {
-          "non-review-host": 18,
+          "non-review-host": 16,
           "roundup-page": 1,
           "ticketing-listing": 1,
-          "venue-production-page": 1
+          "venue-production-page": 1,
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
@@ -50544,7 +50481,7 @@
             "url": "https://www.thestage.co.uk/reviews/franz-marie-review-charing-cross-theatre-london-woyzeck-singing-loins",
             "outletId": "thestage.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-10T16:31:40.157Z"
+            "firstSeenAt": "2026-10-10T16:49:49.759Z"
           },
           {
             "url": "https://rhombusrota.co.uk/2026/10/06/franz-marie-at-charing-cross-theatre-review/",
@@ -50562,13 +50499,7 @@
             "url": "https://firstnightmagazine.com/2026/10/06/review-of-franz-marie-tuneless-musical-misses-the-key-in-every-aspect/",
             "outletId": "firstnightmagazine.com",
             "state": "live",
-            "firstSeenAt": "2026-10-10T16:31:40.157Z"
-          },
-          {
-            "url": "http://www.stagetopage.co.uk/2026/10/franz-marie-review.html",
-            "outletId": "stagetopage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-09T09:56:11.612Z"
+            "firstSeenAt": "2026-10-10T16:49:49.759Z"
           },
           {
             "url": "https://www.whatsonstage.com/news/franz-marie-at-charing-cross-theatre-review_1734401/",
@@ -50579,10 +50510,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 13,
+        "liveCount": 12,
         "candidateCount": 14
       },
-      "computedAt": "2026-10-10T16:31:40.157Z"
+      "computedAt": "2026-10-10T16:49:49.759Z"
     },
     {
       "showId": "frieze-new-york-off-broadway-2026",
@@ -50631,26 +50562,41 @@
         "https://loureviews.blog/2026/10/09/concert-review-from-the-heart-at-garrick-theatre/",
         "https://thespyinthestalls.com/2026/10/from-the-heart/",
         "https://theatreandtonic.co.uk/blog/from-the-heart-at-the-garrick-theatre-review",
+        "https://seenandheard-international.com/2026/10/from-the-heart-a-truly-delightful-evening-hurry-up-and-go/",
         "https://www.thereviewshub.com/don-blacks-from-the-heart-garrick-theatre-london/",
-        "https://www.westendbestfriend.co.uk/news/review-from-the-heart-garrick-theatre",
         "https://www.london-unattached.com/from-the-heart-garrick-theatre/",
         "https://www.allthatdazzles.co.uk/post/review-don-black-s-from-the-heart-garrick-theatre",
-        "https://www.pinkprincetheatre.com/post/review-from-the-heart-garrick-theatre",
         "https://loureviews.blog/2026/10/09/concert-review-from-the-heart-at-garrick-theatre/amp/",
         "http://www.jonathanbaz.com/2026/10/don-blacks-from-heart-review.html",
-        "https://www.jackstage.co.uk/post/don-black-s-from-the-heart-review-a-musical-revue-celebrating-one-of-the-greatest-lyricists-of-our",
-        "https://www.londontheatre1.com/reviews/don-blacks-from-the-heart-garrick-theatre/",
         "https://theatreweekly.com/review-from-the-heart-at-garrick-theatre/",
-        "https://www.thestage.co.uk/reviews/don-black-from-the-heart-review-garrick-theatre-london",
+        "https://www.pinkprincetheatre.com/post/review-from-the-heart-garrick-theatre",
+        "https://www.jackstage.co.uk/post/don-black-s-from-the-heart-review-a-musical-revue-celebrating-one-of-the-greatest-lyricists-of-our",
+        "https://www.westendbestfriend.co.uk/news/review-from-the-heart-garrick-theatre",
+        "https://www.londontheatre1.com/reviews/don-blacks-from-the-heart-garrick-theatre/",
+        "https://www.britishtheatre.com/shows/from-the-heart",
         "https://www.theatre-news.com/review/UK/6665/Theatre/From-The-Heart-Garrick-Theatre",
         "https://www.jonathanbaz.com/2026/10/don-blacks-from-heart-review.html",
         "https://firstnightmagazine.com/2026/10/09/review-of-from-the-heart-don-black-musical-revue-has-many-aspects-to-love/",
-        "https://northwestend.com/don-blacks-from-the-heart-garrick-theatre/"
+        "https://northwestend.com/don-blacks-from-the-heart-garrick-theatre/",
+        "https://www.thestage.co.uk/reviews/don-black-from-the-heart-review-garrick-theatre-london"
       ],
-      "dirFiles": 25,
-      "dirClean": 18,
+      "dirFiles": 26,
+      "dirClean": 19,
       "inReviewsJson": 18,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://seenandheard-international.com/2026/10/from-the-heart-a-truly-delightful-evening-hurry-up-and-go/",
+          "host": "seenandheard-international.com",
+          "knownOutletId": "seen-and-heard-international",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.britishtheatre.com/shows/from-the-heart",
+          "host": "britishtheatre.com",
+          "knownOutletId": "british-theatre",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [
         {
           "host": "boxofficeradio.co.uk",
@@ -50658,6 +50604,10 @@
         },
         {
           "host": "londontheatrereviews.co.uk",
+          "count": 1
+        },
+        {
+          "host": "readaboutstuff.com",
           "count": 1
         }
       ],
@@ -50763,7 +50713,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -50783,7 +50733,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -50793,28 +50743,71 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 16,
+        "resultCount": 17,
         "error": null
       },
       "candidatesRejected": {
-        "count": 17,
+        "count": 15,
         "byReason": {
-          "non-review-host": 14,
-          "non-review-path": 1,
-          "roundup-page": 2
+          "non-review-host": 13,
+          "roundup-page": 1,
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://seenandheard-international.com/2026/10/from-the-heart-a-truly-delightful-evening-hurry-up-and-go/",
+          "host": "seenandheard-international.com",
+          "outletId": "seen-and-heard-international",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.britishtheatre.com/shows/from-the-heart",
+          "host": "britishtheatre.com",
+          "outletId": "british-theatre",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "❌ Refusing to ingest — collision with british-theatre--unknown.json\n   reason: stale-flag-on-existin"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "seen-and-heard-international",
+            "outlet": "seen-and-heard-international",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://seenandheard-international.com/2026/10/from-the-heart-a-truly-delightful-evening-hurry-up-and-go/"
+          },
+          {
+            "outletId": "british-theatre",
+            "outlet": "british-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.britishtheatre.com/shows/from-the-heart"
+          },
           {
             "outletId": "theatre-news",
             "outlet": "theatre-news",
@@ -50856,12 +50849,6 @@
             "firstSeenAt": "2026-10-10T01:33:56.739Z"
           },
           {
-            "url": "https://www.westendbestfriend.co.uk/news/review-from-the-heart-garrick-theatre",
-            "outletId": "westendbestfriend.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-10T01:33:56.739Z"
-          },
-          {
             "url": "https://www.london-unattached.com/from-the-heart-garrick-theatre/",
             "outletId": "london-unattached.com",
             "state": "live",
@@ -50870,12 +50857,6 @@
           {
             "url": "https://www.allthatdazzles.co.uk/post/review-don-black-s-from-the-heart-garrick-theatre",
             "outletId": "allthatdazzles.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-09T16:54:53.545Z"
-          },
-          {
-            "url": "https://www.pinkprincetheatre.com/post/review-from-the-heart-garrick-theatre",
-            "outletId": "pinkprincetheatre.com",
             "state": "live",
             "firstSeenAt": "2026-10-09T16:54:53.545Z"
           },
@@ -50892,26 +50873,32 @@
             "firstSeenAt": "2026-10-10T01:33:56.739Z"
           },
           {
-            "url": "https://www.jackstage.co.uk/post/don-black-s-from-the-heart-review-a-musical-revue-celebrating-one-of-the-greatest-lyricists-of-our",
-            "outletId": "jackstage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-09T16:54:53.545Z"
-          },
-          {
-            "url": "https://www.londontheatre1.com/reviews/don-blacks-from-the-heart-garrick-theatre/",
-            "outletId": "londontheatre1.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-10T01:33:56.739Z"
-          },
-          {
             "url": "https://theatreweekly.com/review-from-the-heart-at-garrick-theatre/",
             "outletId": "theatreweekly.com",
             "state": "live",
             "firstSeenAt": "2026-10-10T15:03:21.770Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/don-black-from-the-heart-review-garrick-theatre-london",
-            "outletId": "thestage.co.uk",
+            "url": "https://www.pinkprincetheatre.com/post/review-from-the-heart-garrick-theatre",
+            "outletId": "pinkprincetheatre.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-09T16:54:53.545Z"
+          },
+          {
+            "url": "https://www.jackstage.co.uk/post/don-black-s-from-the-heart-review-a-musical-revue-celebrating-one-of-the-greatest-lyricists-of-our",
+            "outletId": "jackstage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-09T16:54:53.545Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-from-the-heart-garrick-theatre",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-10T01:33:56.739Z"
+          },
+          {
+            "url": "https://www.londontheatre1.com/reviews/don-blacks-from-the-heart-garrick-theatre/",
+            "outletId": "londontheatre1.com",
             "state": "live",
             "firstSeenAt": "2026-10-10T01:33:56.739Z"
           },
@@ -50934,6 +50921,26 @@
             "firstSeenAt": "2026-10-10T15:03:21.770Z"
           },
           {
+            "url": "https://www.thestage.co.uk/reviews/don-black-from-the-heart-review-garrick-theatre-london",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-10T01:33:56.739Z"
+          },
+          {
+            "url": "https://seenandheard-international.com/2026/10/from-the-heart-a-truly-delightful-evening-hurry-up-and-go/",
+            "outletId": "seen-and-heard-international",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-10T16:49:49.759Z"
+          },
+          {
+            "url": "https://www.britishtheatre.com/shows/from-the-heart",
+            "outletId": "british-theatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-10T16:49:49.759Z"
+          },
+          {
             "url": "https://www.theatre-news.com/review/UK/6665/Theatre/From-The-Heart-Garrick-Theatre",
             "outletId": "theatre-news",
             "state": "GAP",
@@ -50943,9 +50950,9 @@
         ],
         "censusSchema": 2,
         "liveCount": 16,
-        "candidateCount": 17
+        "candidateCount": 19
       },
-      "computedAt": "2026-10-10T15:03:21.770Z"
+      "computedAt": "2026-10-10T16:49:49.759Z"
     },
     {
       "showId": "galileo-berkeley-rep-regional-2024",
@@ -78053,6 +78060,7 @@
         "https://westendwilma.com/review-into-the-woods-bridge-theatre-london-december-2025/",
         "https://www.adventuresintheatreland.com/post/into-the-woods-no%C3%ABl-coward-theatre",
         "https://cherylmarkosky.com/2026/10/08/bww-review-into-the-woods-noel-coward-theatre/",
+        "https://www.curtainsup.online/post/into-the-woods-noel-coward-theatre-review",
         "https://www.jolienstheatrediary.com/reviews/review-into-the-woods-noel-coward-theatre",
         "https://matineemouse.substack.com/p/into-the-woods-west-end-review",
         "https://www.londontheatre1.com/reviews/into-the-woods-noel-coward-theatre/",
@@ -78075,9 +78083,9 @@
         "https://southlondon.co.uk/uncategorised/review-into-the-woods-noel-coward-theatre/",
         "https://www.curtaincallreviews.co.uk/into-the-woods"
       ],
-      "dirFiles": 97,
-      "dirClean": 68,
-      "inReviewsJson": 55,
+      "dirFiles": 98,
+      "dirClean": 69,
+      "inReviewsJson": 54,
       "missing": [
         {
           "url": "https://www.amny.com/entertainment/broadway/into-the-woods-revival-review-july-2022/",
@@ -78343,24 +78351,11 @@
           "host": "theatrevibe.co.uk",
           "knownOutletId": "theatre-vibe",
           "serpCensus": true
-        },
-        {
-          "url": "https://www.curtaincallreviews.co.uk/into-the-woods",
-          "host": "curtaincallreviews.co.uk",
-          "knownOutletId": "curtain-call-reviews",
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ]
         }
       ],
       "dirOnly": [
         {
           "host": "cityam.com",
-          "count": 1
-        },
-        {
-          "host": "curtainsup.online",
           "count": 1
         },
         {
@@ -78615,7 +78610,7 @@
         },
         "allSourcesFailed": false,
         "currentRunRows": 38,
-        "corroborated": 31,
+        "corroborated": 32,
         "perSource": {
           "lbo-roundup": {
             "cited": 10,
@@ -78626,8 +78621,8 @@
             "corroborated": 5
           },
           "bestoftheatre": {
-            "cited": 21,
-            "corroborated": 21
+            "cited": 22,
+            "corroborated": 22
           }
         }
       },
@@ -78683,7 +78678,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -78693,25 +78688,25 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 5,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 22,
+        "resultCount": 23,
         "error": null
       },
       "candidatesRejected": {
-        "count": 1462,
+        "count": 1463,
         "byReason": {
-          "aggregator-internal-nav": 943,
-          "not-http-url": 196,
-          "aggregator-section-root": 28,
-          "non-review-host": 139,
-          "roundup-page": 152,
+          "non-review-host": 140,
+          "aggregator-internal-nav": 941,
           "census-junk-host": 1,
-          "ticketing-listing": 3
+          "roundup-page": 154,
+          "ticketing-listing": 3,
+          "not-http-url": 196,
+          "aggregator-section-root": 28
         }
       },
       "dedupedVariants": [
@@ -78998,19 +78993,6 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (no-changes)"
-        },
-        {
-          "url": "https://www.curtaincallreviews.co.uk/into-the-woods",
-          "host": "curtaincallreviews.co.uk",
-          "outletId": "curtain-call-reviews",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -79023,13 +79005,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://theatrevibe.co.uk/2026/04/23/review-into-the-woods-bridge-theatre-2026/"
-          },
-          {
-            "outletId": "curtain-call-reviews",
-            "outlet": "curtain-call-reviews",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.curtaincallreviews.co.uk/into-the-woods"
           },
           {
             "outletId": "counselmagazine.co.uk",
@@ -79079,7 +79054,7 @@
             "url": "https://www.timeout.com/newyork/theater/into-the-woods-broadway-review-revival-sara-bareilles-stephen-sondheim",
             "outletId": "timeout.com",
             "state": "live",
-            "firstSeenAt": "2026-10-10T16:31:40.157Z"
+            "firstSeenAt": "2026-10-10T16:49:49.759Z"
           },
           {
             "url": "https://www.thestage.co.uk/long-reviews/into-the-woods-directed-by-terry-gilliam-review-at-theatre-royal-bath",
@@ -79091,7 +79066,7 @@
             "url": "http://www.timeout.com/newyork/theater/into-the-woods-3",
             "outletId": "timeout.com",
             "state": "live",
-            "firstSeenAt": "2026-10-10T16:31:40.157Z"
+            "firstSeenAt": "2026-10-10T16:49:49.759Z"
           },
           {
             "url": "http://britishtheatre.com/review-into-the-woods-roundabout-at-laura-pels-theatre-4stars/",
@@ -79208,10 +79183,16 @@
             "firstSeenAt": "2026-10-10T08:06:08.996Z"
           },
           {
+            "url": "https://www.curtainsup.online/post/into-the-woods-noel-coward-theatre-review",
+            "outletId": "curtainsup.online",
+            "state": "live",
+            "firstSeenAt": "2026-10-10T08:06:08.996Z"
+          },
+          {
             "url": "https://www.jolienstheatrediary.com/reviews/review-into-the-woods-noel-coward-theatre",
             "outletId": "jolienstheatrediary.com",
             "state": "live",
-            "firstSeenAt": "2026-10-10T16:31:40.157Z"
+            "firstSeenAt": "2026-10-10T16:49:49.759Z"
           },
           {
             "url": "https://matineemouse.substack.com/p/into-the-woods-west-end-review",
@@ -79328,18 +79309,17 @@
             "firstSeenAt": "2026-10-10T08:06:08.996Z"
           },
           {
+            "url": "https://www.curtaincallreviews.co.uk/into-the-woods",
+            "outletId": "curtaincallreviews.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-10T16:49:49.759Z"
+          },
+          {
             "url": "https://theatrevibe.co.uk/2026/04/23/review-into-the-woods-bridge-theatre-2026/",
             "outletId": "theatre-vibe",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-07T02:08:49.830Z"
-          },
-          {
-            "url": "https://www.curtaincallreviews.co.uk/into-the-woods",
-            "outletId": "curtain-call-reviews",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-10T16:31:40.157Z"
           },
           {
             "url": "https://www.counselmagazine.co.uk/articles/into-the-woods",
@@ -79367,7 +79347,7 @@
             "outletId": "cherylmarkosky",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-10T16:31:40.157Z"
+            "firstSeenAt": "2026-10-10T16:49:49.759Z"
           },
           {
             "url": "",
@@ -79378,10 +79358,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 34,
-        "candidateCount": 41
+        "liveCount": 36,
+        "candidateCount": 42
       },
-      "computedAt": "2026-10-10T16:31:40.157Z"
+      "computedAt": "2026-10-10T16:49:49.759Z"
     },
     {
       "showId": "into-the-woods-west-end-2025",
@@ -129423,8 +129403,11 @@
         "https://theartsdesk.com/theatre/rent-tom-stoppard-theatre-review-roof-raising-reappraisal",
         "https://monstagigz.com/2026/10/01/theatre-review-rent-the-musical-starring-gaten-matarazzo-at-tom-stoppards-theatre/",
         "https://www.theatrebookings.com/musical/rent",
-        "https://www.broadwayworld.com/article/Review-RENT-Starring-Gaten-Matarazzo-The-Tom-Stoppard-Theatre-20261008",
+        "https://www.britishtheatre.com/de/posts/rent-tom-stoppard-theatre-reviews-roundup-2026",
         "https://www.britishtheatre.com/shows/rent",
+        "https://www.ft.com/content/793deb01-35f9-40f5-9ac4-36bcd4354dfa",
+        "https://www.broadwayworld.com/article/Review-RENT-Starring-Gaten-Matarazzo-The-Tom-Stoppard-Theatre-20261008",
+        "https://www.cityam.com/rent-musical-review-this-dated-show-is-admittedly-full-of-bangers/",
         "https://westendbestfriend.co.uk/news/review-rent-tom-stoppard-theatre",
         "https://www.broadwayworld.com/westend/article/Review-RENT-Starring-Gaten-Matarazzo-The-Tom-Stoppard-Theatre-20261008",
         "https://www.londonboxoffice.co.uk/news/post/rent-tom-stoppard-theatre-review",
@@ -129434,11 +129417,11 @@
         "https://playsinternational.org.uk/rent-tom-stoppard-theatre/",
         "https://westendwilma.com/review-rent-tom-stoppard-theatre/",
         "https://theatreweekly.com/review-rent-at-the-tom-stoppard-theatre/",
-        "https://www.londontheatrereviews.co.uk/post.cfm"
+        "https://www.londontheatrereviews.co.uk/post.cfm?p=29336"
       ],
-      "dirFiles": 34,
-      "dirClean": 27,
-      "inReviewsJson": 27,
+      "dirFiles": 37,
+      "dirClean": 29,
+      "inReviewsJson": 30,
       "missing": [
         {
           "url": "https://abcnews.go.com/beta-story-container/Entertainment/wireStory/tv-review-live-fox-rent-day-yesterday-60669594",
@@ -129560,15 +129543,10 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.thereviewshub.com/rent-tom-stoppard-theatre-london/",
-          "host": "thereviewshub.com",
-          "knownOutletId": "thereviewshub",
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ],
-          "weRefStars": 4,
-          "weRefStarsSource": "bestoftheatre"
+          "url": "https://www.britishtheatre.com/de/posts/rent-tom-stoppard-theatre-reviews-roundup-2026",
+          "host": "britishtheatre.com",
+          "knownOutletId": "british-theatre",
+          "serpCensus": true
         }
       ],
       "dirOnly": [],
@@ -129608,6 +129586,29 @@
             }
           ],
           "serpCensus": true
+        },
+        {
+          "url": "https://www.ft.com/content/793deb01-35f9-40f5-9ac4-36bcd4354dfa",
+          "host": "ft.com",
+          "knownOutletId": "financialtimes",
+          "recoverable": true,
+          "recoverableFile": "financialtimes--sarah-hemming.json",
+          "recoverableOutletId": "financialtimes",
+          "recoverableCritic": "Sarah Hemming",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "financialtimes--sarah-hemming.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.ft.com/content/793deb01-35f9-40f5-9ac4-36bcd4354dfa"
+            }
+          ],
+          "weRef": true,
+          "weRefSources": [
+            "theatre-reviews"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "theatre-reviews"
         }
       ],
       "citedNoUrl": [
@@ -129622,7 +129623,7 @@
         }
       ],
       "weReference": {
-        "rowCount": 39,
+        "rowCount": 49,
         "sources": {
           "westendtheatre": {
             "found": true,
@@ -129632,8 +129633,8 @@
             "fetchErrors": 0
           },
           "theatre-reviews": {
-            "found": false,
-            "rows": 0,
+            "found": true,
+            "rows": 10,
             "emptyParse": false,
             "error": null,
             "fetchErrors": 0
@@ -129661,16 +129662,20 @@
           }
         },
         "allSourcesFailed": false,
-        "currentRunRows": 39,
-        "corroborated": 25,
+        "currentRunRows": 49,
+        "corroborated": 29,
         "perSource": {
+          "theatre-reviews": {
+            "cited": 10,
+            "corroborated": 9
+          },
           "westendtheatre": {
             "cited": 6,
             "corroborated": 6
           },
           "bestoftheatre": {
-            "cited": 25,
-            "corroborated": 25
+            "cited": 26,
+            "corroborated": 26
           },
           "lbo-roundup": {
             "cited": 5,
@@ -129700,7 +129705,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 3,
+            "accepted": 5,
             "error": null
           },
           {
@@ -129736,20 +129741,20 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 10,
+        "resultCount": 12,
         "error": null
       },
       "candidatesRejected": {
-        "count": 1107,
+        "count": 1104,
         "byReason": {
-          "aggregator-internal-nav": 789,
-          "not-http-url": 188,
-          "aggregator-section-root": 23,
-          "non-review-host": 95,
-          "roundup-page": 7,
-          "ticket-seller-product-page": 2,
+          "non-review-host": 91,
+          "aggregator-internal-nav": 787,
+          "roundup-page": 9,
           "ticketing-listing": 1,
-          "non-review-path": 2
+          "non-review-path": 1,
+          "not-http-url": 190,
+          "aggregator-section-root": 23,
+          "ticket-seller-product-page": 2
         }
       },
       "dedupedVariants": [
@@ -129882,29 +129887,42 @@
       ],
       "ingestResults": [
         {
-          "url": "https://www.thereviewshub.com/rent-tom-stoppard-theatre-london/",
-          "host": "thereviewshub.com",
-          "outletId": "thereviewshub",
+          "url": "https://www.britishtheatre.com/de/posts/rent-tom-stoppard-theatre-reviews-roundup-2026",
+          "host": "britishtheatre.com",
+          "outletId": "british-theatre",
           "provisional": false,
-          "ok": true,
+          "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": null
+          "reason": "Fetch failed: All scraping methods failed"
         }
       ],
       "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.ft.com/content/793deb01-35f9-40f5-9ac4-36bcd4354dfa",
+          "host": "ft.com",
+          "file": "financialtimes--sarah-hemming.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "thereviewshub",
-            "outlet": "thereviewshub",
+            "outletId": "british-theatre",
+            "outlet": "british-theatre",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.thereviewshub.com/rent-tom-stoppard-theatre-london/"
+            "url": "https://www.britishtheatre.com/de/posts/rent-tom-stoppard-theatre-reviews-roundup-2026"
           },
           {
             "outletId": "theatrebookings",
@@ -129919,6 +129937,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.britishtheatre.com/shows/rent"
+          },
+          {
+            "outletId": "financialtimes",
+            "outlet": "financialtimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.ft.com/content/793deb01-35f9-40f5-9ac4-36bcd4354dfa"
           },
           {
             "outletId": "westendtheatre",
@@ -130057,6 +130082,12 @@
             "firstSeenAt": "2026-10-09T02:53:30.879Z"
           },
           {
+            "url": "https://www.cityam.com/rent-musical-review-this-dated-show-is-admittedly-full-of-bangers/",
+            "outletId": "cityam.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-10T16:49:49.759Z"
+          },
+          {
             "url": "https://westendbestfriend.co.uk/news/review-rent-tom-stoppard-theatre",
             "outletId": "westendbestfriend.co.uk",
             "state": "live",
@@ -130087,6 +130118,12 @@
             "firstSeenAt": "2026-10-10T08:06:08.996Z"
           },
           {
+            "url": "https://www.thereviewshub.com/rent-tom-stoppard-theatre-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-10T09:05:38.747Z"
+          },
+          {
             "url": "https://playsinternational.org.uk/rent-tom-stoppard-theatre/",
             "outletId": "playsinternational.org.uk",
             "state": "live",
@@ -130105,17 +130142,17 @@
             "firstSeenAt": "2026-10-10T08:06:08.996Z"
           },
           {
-            "url": "https://www.londontheatrereviews.co.uk/post.cfm",
+            "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29336",
             "outletId": "londontheatrereviews.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-10T08:06:08.996Z"
+            "firstSeenAt": "2026-10-10T16:49:49.759Z"
           },
           {
-            "url": "https://www.thereviewshub.com/rent-tom-stoppard-theatre-london/",
-            "outletId": "thereviewshub",
+            "url": "https://www.britishtheatre.com/de/posts/rent-tom-stoppard-theatre-reviews-roundup-2026",
+            "outletId": "british-theatre",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-10T09:05:38.747Z"
+            "firstSeenAt": "2026-10-10T16:49:49.759Z"
           },
           {
             "url": "https://www.theatrebookings.com/musical/rent",
@@ -130132,6 +130169,13 @@
             "firstSeenAt": "2026-10-08T02:35:40.501Z"
           },
           {
+            "url": "https://www.ft.com/content/793deb01-35f9-40f5-9ac4-36bcd4354dfa",
+            "outletId": "financialtimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-10T16:49:49.759Z"
+          },
+          {
             "url": "",
             "outletId": "westendtheatre",
             "state": "GAP",
@@ -130140,10 +130184,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 28,
-        "candidateCount": 32
+        "liveCount": 30,
+        "candidateCount": 34
       },
-      "computedAt": "2026-10-10T09:05:38.747Z"
+      "computedAt": "2026-10-10T16:49:49.759Z"
     },
     {
       "showId": "repro-eco-tomorrow-is-now-off-broadway-2026",
@@ -160149,59 +160193,34 @@
         "https://www.uktw.co.uk/London/Bush-Theatre/Play/The-Hungry-Ghost/L580074751/",
         "https://www.whatsonstage.com/news/the-hungry-ghost-at-bush-theatre-review_1734404/",
         "https://www.allthatdazzles.co.uk/post/review-the-hungry-ghost-bush-theatre",
-        "https://www.thereviewshub.com/tag/the-hungry-ghost/",
-        "https://www.newearththeatre.org.uk/events/the-hungry-ghost",
+        "https://theartsdesk.com/theatre/hungry-ghost-bush-theatre-review-enjoyable-gothicky-rom-com-if-bit-superficial",
         "https://liamodell.com/2026/10/07/the-hungry-ghost-review-bush-theatre-london-mei-mac-isabella-wei-mei-leng-yew/",
-        "https://seenanythinglately.wordpress.com/2026/10/07/the-hungry-ghost-review/",
         "https://theatreweekly.com/review-the-hungry-ghost-at-bush-theatre/",
         "https://www.broadwayworld.com/westend/article/Review-THE-HUNGRY-GHOST-Bush-Theatre-20261006",
         "https://ayoungishperspective.co.uk/2026/10/08/review-the-hungry-ghost/",
         "https://www.flickermagazine.art/post/the-hungry-ghost-review-bush-theatre",
-        "https://onceaweektheatre.com/the-hungry-ghost-at-the-bush-theatre/",
+        "https://www.adventuresintheatreland.com/post/the-hungry-ghost-bush-theatre",
         "https://readaboutstuff.com/2026/10/07/review-the-hungry-ghost-bush-theatre-london/",
-        "https://www.adventuresintheatreland.com/post/the-hungry-ghost-bush-theatre"
+        "https://onceaweektheatre.com/the-hungry-ghost-at-the-bush-theatre/"
       ],
       "dirFiles": 31,
-      "dirClean": 21,
-      "inReviewsJson": 21,
+      "dirClean": 20,
+      "inReviewsJson": 20,
       "missing": [],
       "dirOnly": [
-        {
-          "host": "theartsdesk.com",
-          "count": 1
-        },
         {
           "host": "revstanstheatreblog.co.uk",
           "count": 1
         },
         {
-          "host": "sierz.co.uk",
+          "host": "seenanythinglately.wordpress.com",
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.newearththeatre.org.uk/events/the-hungry-ghost",
-          "host": "newearththeatre.org.uk",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "newearththeatre--new-earth-theatre.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.newearththeatre.org.uk/events/the-hungry-ghost"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
-        "rowCount": 16,
+        "rowCount": 17,
         "sources": {
           "westendtheatre": {
             "found": false,
@@ -160226,7 +160245,7 @@
           },
           "bestoftheatre": {
             "found": true,
-            "rows": 16,
+            "rows": 17,
             "emptyParse": false,
             "error": null,
             "fetchErrors": 0
@@ -160240,12 +160259,12 @@
           }
         },
         "allSourcesFailed": false,
-        "currentRunRows": 16,
-        "corroborated": 16,
+        "currentRunRows": 17,
+        "corroborated": 17,
         "perSource": {
           "bestoftheatre": {
-            "cited": 16,
-            "corroborated": 16
+            "cited": 17,
+            "corroborated": 17
           }
         }
       },
@@ -160260,7 +160279,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 8,
             "error": null
           },
@@ -160270,8 +160289,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 1,
+            "results": 10,
+            "accepted": 2,
             "error": null
           },
           {
@@ -160280,8 +160299,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 1,
+            "results": 10,
+            "accepted": 0,
             "error": null
           },
           {
@@ -160301,22 +160320,22 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 19,
+        "resultCount": 17,
         "error": null
       },
       "candidatesRejected": {
-        "count": 12,
+        "count": 16,
         "byReason": {
-          "non-review-host": 9,
-          "roundup-page": 1,
-          "ticketing-listing": 1,
-          "census-junk-host": 1
+          "non-review-host": 11,
+          "census-junk-host": 1,
+          "roundup-page": 2,
+          "ticketing-listing": 2
         }
       },
       "dedupedVariants": [],
@@ -160330,16 +160349,8 @@
         }
       ],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "newearththeatre.org.uk",
-            "outlet": "newearththeatre.org.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.newearththeatre.org.uk/events/the-hungry-ghost"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -160397,22 +160408,16 @@
             "firstSeenAt": "2026-10-06T22:14:07.067Z"
           },
           {
-            "url": "https://www.thereviewshub.com/tag/the-hungry-ghost/",
-            "outletId": "thereviewshub.com",
+            "url": "https://theartsdesk.com/theatre/hungry-ghost-bush-theatre-review-enjoyable-gothicky-rom-com-if-bit-superficial",
+            "outletId": "theartsdesk.com",
             "state": "live",
-            "firstSeenAt": "2026-10-07T22:35:00.711Z"
+            "firstSeenAt": "2026-10-10T16:49:49.759Z"
           },
           {
             "url": "https://liamodell.com/2026/10/07/the-hungry-ghost-review-bush-theatre-london-mei-mac-isabella-wei-mei-leng-yew/",
             "outletId": "liamodell.com",
             "state": "live",
             "firstSeenAt": "2026-10-07T09:33:11.946Z"
-          },
-          {
-            "url": "https://seenanythinglately.wordpress.com/2026/10/07/the-hungry-ghost-review/",
-            "outletId": "seenanythinglately.wordpress.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-08T09:47:49.209Z"
           },
           {
             "url": "https://theatreweekly.com/review-the-hungry-ghost-at-bush-theatre/",
@@ -160439,10 +160444,10 @@
             "firstSeenAt": "2026-10-07T22:35:00.711Z"
           },
           {
-            "url": "https://onceaweektheatre.com/the-hungry-ghost-at-the-bush-theatre/",
-            "outletId": "onceaweektheatre.com",
+            "url": "https://www.adventuresintheatreland.com/post/the-hungry-ghost-bush-theatre",
+            "outletId": "adventuresintheatreland.com",
             "state": "live",
-            "firstSeenAt": "2026-10-08T22:45:07.696Z"
+            "firstSeenAt": "2026-10-09T09:56:11.612Z"
           },
           {
             "url": "https://readaboutstuff.com/2026/10/07/review-the-hungry-ghost-bush-theatre-london/",
@@ -160451,24 +160456,17 @@
             "firstSeenAt": "2026-10-09T21:34:59.683Z"
           },
           {
-            "url": "https://www.adventuresintheatreland.com/post/the-hungry-ghost-bush-theatre",
-            "outletId": "adventuresintheatreland.com",
+            "url": "https://onceaweektheatre.com/the-hungry-ghost-at-the-bush-theatre/",
+            "outletId": "onceaweektheatre.com",
             "state": "live",
-            "firstSeenAt": "2026-10-09T09:56:11.612Z"
-          },
-          {
-            "url": "https://www.newearththeatre.org.uk/events/the-hungry-ghost",
-            "outletId": "newearththeatre.org.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-09T09:56:11.612Z"
+            "firstSeenAt": "2026-10-08T22:45:07.696Z"
           }
         ],
         "censusSchema": 2,
         "liveCount": 18,
-        "candidateCount": 19
+        "candidateCount": 18
       },
-      "computedAt": "2026-10-10T08:06:08.996Z"
+      "computedAt": "2026-10-10T16:49:49.759Z"
     },
     {
       "showId": "the-importance-of-being-oscar-off-west-end-2026",
