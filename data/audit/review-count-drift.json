@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-09T12:14:38.495Z",
+  "generatedAt": "2026-10-10T11:32:07.219Z",
   "summary": {
-    "reviewsJsonLastUpdated": "2026-10-09T11:38:13.017Z",
+    "reviewsJsonLastUpdated": "2026-10-10T10:56:56.073Z",
     "reviewsJsonAgeHours": 0.6,
     "freshnessBreach": false,
-    "showsScanned": 20,
-    "allShowsScanned": 2440,
-    "filesScanned": 50901,
+    "showsScanned": 22,
+    "allShowsScanned": 2583,
+    "filesScanned": 54210,
     "showsOverThreshold": 0,
-    "newOffenders": 3,
+    "newOffenders": 1,
     "blindShows": 145,
     "orphanReviews": 6
   },
@@ -20,58 +20,30 @@
   "showsOverThreshold": [],
   "newOffenders": [
     {
-      "showDir": "my-sons-a-queer-but-what-can-you-do-west-end-2023",
+      "showDir": "standing-at-the-skys-edge-west-end-2023",
       "suppressed": 9,
-      "actual": 0,
+      "actual": 3,
       "files": [
-        "british-theatre--robert-tanitch.json",
-        "broadwayworld--abbie-grundy.json",
-        "daily-mail--libby-purves.json",
-        "i-paper--fiona-mountford.json",
-        "londontheatre1--chris-omaweng.json",
-        "theatre-weekly--greg-stewart.json",
-        "thereviewshub--scott-matthewman.json",
-        "thestage--paul-vale.json",
-        "whatsonstage--charlotte-vickers.json"
+        "artsdesk--gary-naylor.json",
+        "express-uk--neil-norman.json",
+        "financialtimes--sarah-hemming.json",
+        "guardian--arifa-akbar.json",
+        "london-theatre--marianka-swain.json",
+        "londontheatre1--alan-fitter.json",
+        "observer--susannah-clapp.json",
+        "the-jewish-chronicle--john-nathan.json",
+        "timeout-london--andrzej-lukowski.json"
       ],
       "newFiles": [
-        "british-theatre--robert-tanitch.json",
-        "broadwayworld--abbie-grundy.json",
-        "daily-mail--libby-purves.json",
-        "i-paper--fiona-mountford.json",
-        "londontheatre1--chris-omaweng.json",
-        "theatre-weekly--greg-stewart.json",
-        "thereviewshub--scott-matthewman.json",
-        "thestage--paul-vale.json",
-        "whatsonstage--charlotte-vickers.json"
-      ]
-    },
-    {
-      "showDir": "the-curious-incident-of-the-dog-in-the-nighttime-2014",
-      "suppressed": 4,
-      "actual": 26,
-      "files": [
-        "latimes--david-ng.json",
-        "slantmagazine--brian-schaefer.json",
-        "talkinbroadway--matthew-murray.json",
-        "time--richard-zoglin.json"
-      ],
-      "newFiles": [
-        "latimes--david-ng.json",
-        "slantmagazine--brian-schaefer.json",
-        "talkinbroadway--matthew-murray.json",
-        "time--richard-zoglin.json"
-      ]
-    },
-    {
-      "showDir": "ballet-shoes-west-end-2025",
-      "suppressed": 1,
-      "actual": 0,
-      "files": [
-        "london-box-office--stuart-king.json"
-      ],
-      "newFiles": [
-        "london-box-office--stuart-king.json"
+        "artsdesk--gary-naylor.json",
+        "express-uk--neil-norman.json",
+        "financialtimes--sarah-hemming.json",
+        "guardian--arifa-akbar.json",
+        "london-theatre--marianka-swain.json",
+        "londontheatre1--alan-fitter.json",
+        "observer--susannah-clapp.json",
+        "the-jewish-chronicle--john-nathan.json",
+        "timeout-london--andrzej-lukowski.json"
       ]
     }
   ],
@@ -105,152 +77,96 @@
   "perShow": [
     {
       "showDir": "affluenza-off-west-end-2026",
-      "actual": 24,
+      "actual": 29,
+      "scanned": 38,
+      "suppressedCount": 1,
+      "suppressed": [
+        {
+          "file": "timeout-london--unknown.json",
+          "outletId": "timeout-london",
+          "criticName": "Andrzej Lukowski",
+          "publishDate": "2026-10-08",
+          "url": "https://timeout.com/london/theatre/affluenza-review"
+        }
+      ],
+      "overThreshold": false
+    },
+    {
+      "showDir": "all-male-as-you-like-it-regional-2026",
+      "actual": 12,
+      "scanned": 15,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "an-oak-tree-off-west-end-2026",
+      "actual": 14,
+      "scanned": 28,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "blood-of-my-blood-west-end-2026",
+      "actual": 9,
       "scanned": 34,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
-      "showDir": "ballet-shoes-west-end-2025",
-      "actual": 0,
-      "scanned": 1,
-      "suppressedCount": 1,
-      "suppressed": [
-        {
-          "file": "london-box-office--stuart-king.json",
-          "outletId": "london-box-office",
-          "criticName": "Stuart King",
-          "publishDate": "2025-11-26",
-          "url": "https://www.londonboxoffice.co.uk/news/post/ballet-shoes-national-theatre-review"
-        }
-      ],
-      "overThreshold": false
-    },
-    {
-      "showDir": "blood-of-my-blood-west-end-2026",
-      "actual": 6,
+      "showDir": "franz-and-marie-west-end-2026",
+      "actual": 19,
       "scanned": 33,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
-      "showDir": "boop-tour-2026",
-      "actual": 1,
-      "scanned": 3,
+      "showDir": "from-the-heart-west-end-2026",
+      "actual": 18,
+      "scanned": 25,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
-      "showDir": "franz-and-marie-west-end-2026",
-      "actual": 18,
-      "scanned": 32,
+      "showDir": "good-time-charlie-off-broadway-2026",
+      "actual": 6,
+      "scanned": 9,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "into-the-woods-noel-coward-west-end-2026",
-      "actual": 63,
-      "scanned": 50,
+      "actual": 55,
+      "scanned": 57,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "kramerfauci-st-anns-off-broadway-2026",
-      "actual": 17,
+      "actual": 15,
       "scanned": 18,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
-      "showDir": "my-sons-a-queer-but-what-can-you-do-west-end-2023",
-      "actual": 0,
-      "scanned": 13,
-      "suppressedCount": 9,
-      "suppressed": [
-        {
-          "file": "british-theatre--robert-tanitch.json",
-          "outletId": "british-theatre",
-          "criticName": "Robert Tanitch",
-          "publishDate": "2023-02-10",
-          "url": null
-        },
-        {
-          "file": "broadwayworld--abbie-grundy.json",
-          "outletId": "broadwayworld",
-          "criticName": "Abbie Grundy",
-          "publishDate": "2023-02-02",
-          "url": "https://www.broadwayworld.com/westend/article/Review-MY-SONS-A-QUEER-BUT-WHAT-CAN-YOU-DO-Ambassadors-Theatre-20230202"
-        },
-        {
-          "file": "daily-mail--libby-purves.json",
-          "outletId": "daily-mail",
-          "criticName": "Libby Purves",
-          "publishDate": "2023-02-10",
-          "url": null
-        },
-        {
-          "file": "i-paper--fiona-mountford.json",
-          "outletId": "i-paper",
-          "criticName": "Fiona Mountford",
-          "publishDate": "2023-02-02",
-          "url": "https://inews.co.uk/culture/arts/my-sons-a-queer-but-what-can-you-do-ambassadors-theatre-review-a-bubbly-story-with-a-big-heart-2123963?srsltid=AU7gw4VFjlKyCLX7gE4D3lV4jNb7Qo-HtXPpIbMALtDTUI0ijAXKWBoP"
-        },
-        {
-          "file": "londontheatre1--chris-omaweng.json",
-          "outletId": "londontheatre1",
-          "criticName": "Chris Omaweng",
-          "publishDate": "2023-02-05",
-          "url": null
-        },
-        {
-          "file": "theatre-weekly--greg-stewart.json",
-          "outletId": "theatre-weekly",
-          "criticName": "Greg Stewart",
-          "publishDate": "2023-02-01",
-          "url": "https://theatreweekly.com/review-my-sons-a-queer-but-what-can-you-do-at-the-ambassadors-theatre-london/"
-        },
-        {
-          "file": "thereviewshub--scott-matthewman.json",
-          "outletId": "thereviewshub",
-          "criticName": "Scott Matthewman",
-          "publishDate": "2023-02-02",
-          "url": null
-        },
-        {
-          "file": "thestage--paul-vale.json",
-          "outletId": "thestage",
-          "criticName": "Paul Vale",
-          "publishDate": "February 2nd, 2023",
-          "url": "https://www.thestage.co.uk/reviews/my-sons-a-queer-but-what-can-you-do-review-at-ambassadors-london-by-rob-madge"
-        },
-        {
-          "file": "whatsonstage--charlotte-vickers.json",
-          "outletId": "whatsonstage",
-          "criticName": "Charlotte Vickers",
-          "publishDate": "February 2nd, 2023",
-          "url": "https://www.whatsonstage.com/london-theatre/reviews/my-sons-a-queer-but-what-can-you-do-ambassadors_58267.html"
-        }
-      ],
-      "overThreshold": false
-    },
-    {
       "showDir": "rent-west-end-2026",
-      "actual": 15,
-      "scanned": 21,
+      "actual": 28,
+      "scanned": 35,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "slam-frank-off-broadway-2026",
-      "actual": 16,
-      "scanned": 28,
+      "actual": 17,
+      "scanned": 29,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -264,54 +180,89 @@
       "overThreshold": false
     },
     {
-      "showDir": "the-curious-incident-of-the-dog-in-the-nighttime-2014",
-      "actual": 26,
-      "scanned": 38,
-      "suppressedCount": 4,
+      "showDir": "standing-at-the-skys-edge-west-end-2023",
+      "actual": 3,
+      "scanned": 20,
+      "suppressedCount": 9,
       "suppressed": [
         {
-          "file": "latimes--david-ng.json",
-          "outletId": "latimes",
-          "criticName": "David Ng",
-          "publishDate": "2014-10-06",
-          "url": "https://www.latimes.com/entertainment/arts/culture/la-et-cm-curious-incident-of-the-dog-in-the-nighttime-broadway-20141006-story.html"
+          "file": "artsdesk--gary-naylor.json",
+          "outletId": "artsdesk",
+          "criticName": "Gary Naylor",
+          "publishDate": "2023-02-21",
+          "url": "https://theartsdesk.com/theatre/standing-skys-edge-national-theatre-review-razor-sharp-musical-second-act-woes"
         },
         {
-          "file": "slantmagazine--brian-schaefer.json",
-          "outletId": "slantmagazine",
-          "criticName": "Brian Schaefer",
-          "publishDate": "2014-10-07",
-          "url": "https://www.slantmagazine.com/theater/review-the-curious-incident-of-the-dog-in-the-night-time-at-the-ethel-barrymore-theatre/"
+          "file": "express-uk--neil-norman.json",
+          "outletId": "express-uk",
+          "criticName": "Neil Norman",
+          "publishDate": "2023-02-23",
+          "url": null
         },
         {
-          "file": "talkinbroadway--matthew-murray.json",
-          "outletId": "talkinbroadway",
-          "criticName": "Matthew Murray",
-          "publishDate": "2014-10-05",
-          "url": "https://www.talkinbroadway.com/world/CuriousIncident2014.html"
+          "file": "financialtimes--sarah-hemming.json",
+          "outletId": "financialtimes",
+          "criticName": "Sarah Hemming",
+          "publishDate": "2023-02-16",
+          "url": null
         },
         {
-          "file": "time--richard-zoglin.json",
-          "outletId": "time",
-          "criticName": "Richard Zoglin",
-          "publishDate": "2014-10-06",
-          "url": "https://time.com/3475874/curious-incident-dog-night-time-theater-review/"
+          "file": "guardian--arifa-akbar.json",
+          "outletId": "guardian",
+          "criticName": "Arifa Akbar",
+          "publishDate": "2023-02-14",
+          "url": "https://www.theguardian.com/stage/2023/feb/14/standing-at-the-skys-edge-review-richard-hawley-pulls-on-the-heartstrings-in-his-sheffield-opus"
+        },
+        {
+          "file": "london-theatre--marianka-swain.json",
+          "outletId": "london-theatre",
+          "criticName": "Marianka Swain",
+          "publishDate": "2023-02-14",
+          "url": "https://www.londontheatre.co.uk/reviews/standing-at-the-skys-edge-review-gillian-lynne-theatre"
+        },
+        {
+          "file": "londontheatre1--alan-fitter.json",
+          "outletId": "londontheatre1",
+          "criticName": "Alan Fitter",
+          "publishDate": "2023-02-14",
+          "url": null
+        },
+        {
+          "file": "observer--susannah-clapp.json",
+          "outletId": "observer",
+          "criticName": "Susannah Clapp",
+          "publishDate": "2023-02-19",
+          "url": null
+        },
+        {
+          "file": "the-jewish-chronicle--john-nathan.json",
+          "outletId": "the-jewish-chronicle",
+          "criticName": "John Nathan",
+          "publishDate": "2023-02-16",
+          "url": null
+        },
+        {
+          "file": "timeout-london--andrzej-lukowski.json",
+          "outletId": "timeout-london",
+          "criticName": "Andrzej Lukowski",
+          "publishDate": "2023-02-14",
+          "url": null
         }
       ],
       "overThreshold": false
     },
     {
       "showDir": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
-      "actual": 14,
-      "scanned": 23,
+      "actual": 16,
+      "scanned": 27,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "the-hungry-ghost-off-west-end-2026",
-      "actual": 19,
-      "scanned": 29,
+      "actual": 21,
+      "scanned": 31,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
