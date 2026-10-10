@@ -1,64 +1,63 @@
 {
-  "runDate": "2026-10-10T10:34:54.681Z",
+  "runDate": "2026-10-10T10:43:25.789Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "that-is-not-who-i-am-west-end-2022,the-seagull-west-end-2022",
+    "showFilter": "from-the-heart-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 12,
-    "failed": 2,
+    "processed": 2,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "85.7%"
+    "successRate": "66.7%"
   },
   "tierBreakdown": {
-    "playwright": 9,
+    "playwright": 2,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 2
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 9,
-    "tier1Success": 9,
+    "tier1Attempts": 3,
+    "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
-    "tier1_5Success": 1,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
     "tier1_9Attempts": 0,
     "tier1_9Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 1,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 4,
-    "tier4Success": 3,
-    "totalFailed": 2,
-    "scrapingBeePageCredits": 10,
+    "tier4Attempts": 2,
+    "tier4Success": 0,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.2,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 12,
-    "failed": 2,
+    "processed": 2,
+    "failed": 1,
     "shows": [
-      "that-is-not-who-i-am-west-end-2022",
-      "the-seagull-west-end-2022"
+      "from-the-heart-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -67,78 +66,35 @@
     }
   },
   "processed": [
-    "the-seagull-west-end-2022/nytimes--unknown.json",
-    "the-seagull-west-end-2022/fringereview--unknown.json",
-    "the-seagull-west-end-2022/express-uk--unknown.json",
-    "the-seagull-west-end-2022/islingtontribune--unknown.json",
-    "the-seagull-west-end-2022/liamodell--unknown.json",
-    "the-seagull-west-end-2022/maturetimes--unknown.json",
-    "the-seagull-west-end-2022/standard--alice-saville.json",
-    "the-seagull-west-end-2022/standard--unknown.json",
-    "that-is-not-who-i-am-west-end-2022/independent--jessie-thompson.json",
-    "that-is-not-who-i-am-west-end-2022/liamodell--unknown.json",
-    "that-is-not-who-i-am-west-end-2022/sierz-co-uk--unknown.json",
-    "that-is-not-who-i-am-west-end-2022/theatre-bee-uk--theatre-bee-uk.json"
+    "from-the-heart-west-end-2026/theatre-news--unknown.json",
+    "from-the-heart-west-end-2026/north-west-end--alan-stuart-malin.json"
   ],
   "failed": [
-    "the-seagull-west-end-2022/guardian--arifa-akbar.json",
-    "the-seagull-west-end-2022/times-uk--clive-davis.json"
+    "from-the-heart-west-end-2026/timeout-london--unknown.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "the-seagull-west-end-2022/nytimes--unknown.json",
-      "the-seagull-west-end-2022/fringereview--unknown.json",
-      "the-seagull-west-end-2022/express-uk--unknown.json",
-      "the-seagull-west-end-2022/islingtontribune--unknown.json",
-      "the-seagull-west-end-2022/liamodell--unknown.json",
-      "the-seagull-west-end-2022/maturetimes--unknown.json",
-      "the-seagull-west-end-2022/standard--alice-saville.json",
-      "the-seagull-west-end-2022/standard--unknown.json",
-      "that-is-not-who-i-am-west-end-2022/independent--jessie-thompson.json",
-      "that-is-not-who-i-am-west-end-2022/liamodell--unknown.json",
-      "that-is-not-who-i-am-west-end-2022/sierz-co-uk--unknown.json",
-      "that-is-not-who-i-am-west-end-2022/theatre-bee-uk--theatre-bee-uk.json"
+      "from-the-heart-west-end-2026/theatre-news--unknown.json",
+      "from-the-heart-west-end-2026/north-west-end--alan-stuart-malin.json"
     ],
     "failed": [
-      "the-seagull-west-end-2022/guardian--arifa-akbar.json",
-      "the-seagull-west-end-2022/times-uk--clive-davis.json"
+      "from-the-heart-west-end-2026/timeout-london--unknown.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "the-seagull-west-end-2022/fringereview--unknown.json",
-      "the-seagull-west-end-2022/express-uk--unknown.json",
-      "the-seagull-west-end-2022/islingtontribune--unknown.json",
-      "the-seagull-west-end-2022/liamodell--unknown.json",
-      "the-seagull-west-end-2022/maturetimes--unknown.json",
-      "that-is-not-who-i-am-west-end-2022/independent--jessie-thompson.json",
-      "that-is-not-who-i-am-west-end-2022/liamodell--unknown.json",
-      "that-is-not-who-i-am-west-end-2022/sierz-co-uk--unknown.json",
-      "that-is-not-who-i-am-west-end-2022/theatre-bee-uk--theatre-bee-uk.json"
+      "from-the-heart-west-end-2026/theatre-news--unknown.json",
+      "from-the-heart-west-end-2026/north-west-end--alan-stuart-malin.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/the-seagull-west-end-2022/nytimes--unknown.json",
-      "the-seagull-west-end-2022/nytimes--unknown.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "the-seagull-west-end-2022/standard--alice-saville.json",
-      "the-seagull-west-end-2022/standard--unknown.json"
-    ]
+    "archive": []
   },
-  "failuresByOutlet": {
-    "The Guardian": {
-      "count": 1,
-      "domain": "theguardian.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
