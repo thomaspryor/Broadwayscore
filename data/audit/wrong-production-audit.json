@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-10T03:07:33.030Z",
+  "timestamp": "2026-10-10T03:18:43.041Z",
   "stats": {
-    "totalReviews": 53113,
+    "totalReviews": 53129,
     "alreadyFlagged": 19586,
     "dateGuardCatches": 257,
-    "directorMismatch": 1632,
+    "directorMismatch": 1633,
     "tvFilmSignals": 1526,
     "londonSignals": 1713,
     "offBroadwaySignals": 511,
     "yearMismatch": 127,
-    "noPublishDate": 5767
+    "noPublishDate": 5782
   },
   "findings": [
     {
@@ -8230,7 +8230,7 @@
     {
       "showId": "crazy-for-you-west-end-2023",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 100,
+      "score": 98,
       "publishDate": "2023-07-04",
       "url": "https://www.whatsonstage.com/news/crazy-for-you-in-the-west-end-review_1508472/",
       "findings": [
@@ -17664,7 +17664,7 @@
     {
       "showId": "inter-alia-west-end-2025",
       "file": "nytimes--houman-barekat.json",
-      "score": null,
+      "score": 62,
       "publishDate": "2025-07-24",
       "url": "https://www.nytimes.com/2025/07/24/theater/inter-alia-national-theatre-london-review.html?eafs_enabled=false",
       "findings": [
@@ -17692,7 +17692,7 @@
     {
       "showId": "inter-alia-west-end-2025",
       "file": "plays-international--maryam-philpott.json",
-      "score": null,
+      "score": 68,
       "publishDate": "2025-07-27",
       "url": "https://playsinternational.org.uk/inter-alia-lyttelton-national-theatre/",
       "findings": [
@@ -40143,6 +40143,19 @@
     },
     {
       "showId": "the-outsiders-tour-2025",
+      "file": "the-daily-gazette--bill-kellert.json",
+      "publishDate": "2026-05-22",
+      "url": "https://www.dailygazette.com/life_and_arts/the-outsiders-coming-of-age-story-in-1960s-oklahoma-plays-schenectady/article_6da5a5d4-1459-49d9-ad66-4990df3edfbe.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
       "file": "the-news-herald--mark-meszoros.json",
       "score": 91,
       "publishDate": "2026-04-30",
@@ -41906,6 +41919,7 @@
     {
       "showId": "the-shark-is-broken-west-end-2021",
       "file": "variety--david-benedict.json",
+      "score": 62,
       "publishDate": "2021-10-22",
       "url": null,
       "findings": [
@@ -41919,6 +41933,7 @@
     {
       "showId": "the-shark-is-broken-west-end-2021",
       "file": "whatsonstage--alun-hood.json",
+      "score": 91,
       "publishDate": "2021-10-22",
       "url": null,
       "findings": [
@@ -43187,6 +43202,7 @@
     {
       "showId": "trouble-in-mind-west-end-2021",
       "file": "wsj--terry-teachout.json",
+      "score": 83,
       "publishDate": "November 18th, 2021",
       "url": "https://www.wsj.com/articles/trouble-in-mind-alice-childress-roundabout-theater-company-lachanze-chuck-cooper-diana-princess-of-wales-david-bryan-joe-di-pietr-jeanne-de-waal-11637272134",
       "findings": [
@@ -58173,7 +58189,7 @@
     {
       "showId": "inter-alia-west-end-2025",
       "file": "1883magazine--franco-milazzo.json",
-      "score": null,
+      "score": 62,
       "publishDate": "2025-08-01",
       "url": "https://1883magazine.com/inter-alia-review-the-lyttelton-at-the-national-theatre/",
       "findings": [
@@ -61842,7 +61858,7 @@
     {
       "showId": "my-master-builder-west-end-2025",
       "file": "london-box-office--stuart-king.json",
-      "score": null,
+      "score": 58,
       "publishDate": "2025-05-01",
       "url": "https://www.londonboxoffice.co.uk/news/post/my-master-builder-review",
       "findings": [
@@ -61856,7 +61872,7 @@
     {
       "showId": "my-master-builder-west-end-2025",
       "file": "londontheatredirect--london-theatre-direct-limited.json",
-      "score": null,
+      "score": 96,
       "publishDate": "2025-04-30",
       "url": "https://www.londontheatredirect.com/news/my-master-builder-review?srsltid=AU7gw4Vgm6xWndEtLmSmY7pp_yFHLKhg_V8AHLYO7Pzy9tzsf0eb-Ako",
       "findings": [
@@ -64527,6 +64543,7 @@
     {
       "showId": "retrograde-west-end-2025",
       "file": "london-box-office--stuart-king.json",
+      "score": 82,
       "publishDate": "2025-03-20",
       "url": "https://www.londonboxoffice.co.uk/news/post/retrograde-review",
       "findings": [
@@ -68786,7 +68803,7 @@
     {
       "showId": "the-crown-jewels-west-end-2023",
       "file": "times-uk--quentin-letts.json",
-      "score": 37,
+      "score": 35,
       "publishDate": "2023-07-30",
       "url": "https://www.thetimes.co.uk/article/the-crown-jewels-and-the-empress-and-now-for-something-completely-different-5qx79q5rc",
       "findings": [
@@ -69518,7 +69535,7 @@
     {
       "showId": "the-fifth-step-west-end-2025",
       "file": "times-uk--clive-davis.json",
-      "score": 84,
+      "score": 83,
       "publishDate": "2025-05-20",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/the-fifth-step-review-jack-lowden-martin-freeman-jc0mcsqst",
       "findings": [
