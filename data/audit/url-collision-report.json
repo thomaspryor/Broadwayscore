@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-10T07:57:39.339Z",
+  "generatedAt": "2026-10-10T09:16:26.246Z",
   "summary": {
-    "total": 18,
-    "high": 6,
+    "total": 19,
+    "high": 7,
     "medium": 8,
     "low": 4
   },
@@ -143,6 +143,42 @@
       "confidence": "high"
     },
     {
+      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29032",
+      "normalizedUrl": "https://londontheatrereviews.co.uk/post.cfm",
+      "candidates": [
+        {
+          "showId": "darkling-off-west-end-2026",
+          "file": "london-theatre-reviews--kay-johal.json",
+          "publishDate": "2026-09-16",
+          "openingDate": "2026-09-16",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "london-theatre-reviews"
+        },
+        {
+          "showId": "night-city-off-west-end-2026",
+          "file": "london-theatre-reviews--cara-louise-scott-lapish.json",
+          "publishDate": "2026-09-13",
+          "openingDate": "2026-09-12",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "london-theatre-reviews"
+        },
+        {
+          "showId": "who-killed-marilyn-off-west-end-2026",
+          "file": "london-theatre-reviews--jason-lane.json",
+          "publishDate": "2026-08-22",
+          "openingDate": "2026-08-21",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "london-theatre-reviews"
+        }
+      ],
+      "suggestedWinner": "darkling-off-west-end-2026",
+      "reason": "publishDate 2026-09-16 is 0 days from darkling-off-west-end-2026 but also 1 days from night-city-off-west-end-2026",
+      "confidence": "medium"
+    },
+    {
       "url": "https://inews.co.uk/culture/arts/giant-review-john-lithgow-tyrant-roald-dahl-blistering-antisemitism-play-3298295",
       "normalizedUrl": "https://inews.co.uk/culture/arts/giant-review-john-lithgow-tyrant-roald-dahl-blistering-antisemitism-play-3298295",
       "candidates": [
@@ -249,33 +285,6 @@
       "suggestedWinner": "mamma-mia-2025",
       "reason": "publishDate August 14, 2025 is 0 days from mamma-mia-2025 opening (2025-08-14)",
       "confidence": "high"
-    },
-    {
-      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29022",
-      "normalizedUrl": "https://londontheatrereviews.co.uk/post.cfm",
-      "candidates": [
-        {
-          "showId": "night-city-off-west-end-2026",
-          "file": "london-theatre-reviews--cara-louise-scott-lapish.json",
-          "publishDate": "2026-09-13",
-          "openingDate": "2026-09-12",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "london-theatre-reviews"
-        },
-        {
-          "showId": "who-killed-marilyn-off-west-end-2026",
-          "file": "london-theatre-reviews--jason-lane.json",
-          "publishDate": "2026-08-22",
-          "openingDate": "2026-08-21",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "london-theatre-reviews"
-        }
-      ],
-      "suggestedWinner": "night-city-off-west-end-2026",
-      "reason": "publishDate 2026-09-13 is 1 days from night-city-off-west-end-2026 but also 1 days from who-killed-marilyn-off-west-end-2026",
-      "confidence": "medium"
     },
     {
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/othello-toby-jones-david-harewood-b2858391.html",
@@ -465,6 +474,33 @@
       "suggestedWinner": "the-score-regional-2026",
       "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
       "confidence": "low"
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "normalizedUrl": "https://timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "candidates": [
+        {
+          "showId": "to-kill-a-mockingbird-west-end-2022",
+          "file": "timeout-london--andrzej-lukowski.json",
+          "publishDate": "2022-03-31",
+          "openingDate": "2022-03-10",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        },
+        {
+          "showId": "to-kill-a-mockingbird-west-end-2026",
+          "file": "timeout-london--andrzej-lukowski.json",
+          "publishDate": "2023-02-07",
+          "openingDate": "2026-06-30",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        }
+      ],
+      "suggestedWinner": "to-kill-a-mockingbird-west-end-2022",
+      "reason": "publishDate 2022-03-31 is 21 days from to-kill-a-mockingbird-west-end-2022 opening (2022-03-10); next closest is 1239 days from to-kill-a-mockingbird-west-end-2026",
+      "confidence": "high"
     },
     {
       "url": "https://www.wsj.com/articles/trouble-in-mind-alice-childress-roundabout-theater-company-lachanze-chuck-cooper-diana-princess-of-wales-david-bryan-joe-di-pietr-jeanne-de-waal-11637272134",
