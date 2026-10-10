@@ -55,8 +55,8 @@ test('a hidden flop stays on At Risk: too few weeks or estimates disagree', () =
 });
 
 test('a small negative shows as 0% returned, losing money so far', () => {
-  const out = applyModelDisplayGuard(rec({ modelRecoupmentPct: [-42, -3, 33] }), running, now);
-  assert.deepEqual(out.modelRecoupmentPct, [0, 0, 33]);
+  const out = applyModelDisplayGuard(rec({ modelRecoupmentPct: [-20, -3, 15] }), running, now);
+  assert.deepEqual(out.modelRecoupmentPct, [0, 0, 15]);
   assert.equal(out.modelBelowCosts, true);
   const l = getModelRecoupmentLabels(out.modelRecoupmentPct, { belowCosts: true });
   assert.equal(l.label, '0% returned · losing money so far');
@@ -100,7 +100,7 @@ test('displaysModel mirrors getRecoupmentDisplayMode === "model"', () => {
 // whitelist): every guard output must survive it, or the show-page bar
 // shows "~0%" without "losing money so far" (found in visual QA).
 test('guard outputs survive the public field filter', () => {
-  const below = applyModelDisplayGuard(rec({ modelRecoupmentPct: [-55, -18, 16] }), running, now);
+  const below = applyModelDisplayGuard(rec({ modelRecoupmentPct: [-40, -18, 10] }), running, now);
   assert.equal(below.modelBelowCosts, true);
   const pub = toPublicShowCommercial(below);
   assert.equal(pub.modelBelowCosts, true);
@@ -114,6 +114,7 @@ test('held model says why, never on a settled or untrusted record', () => {
   const base = { recouped: null, designation: 'TBD', status: 'open', modelMethod: 'weekly-model', modelDataQuality: 'medium' };
   assert.equal(getModelHoldLabel({ ...base, modelDisplayHold: 'few-weeks' }), 'Too early to estimate');
   assert.equal(getModelHoldLabel({ ...base, modelDisplayHold: 'estimates-disagree' }), 'Estimates disagree');
+  assert.equal(getModelHoldLabel({ ...base, modelDisplayHold: 'too-uncertain' }), 'Too uncertain to estimate');
   assert.equal(getModelHoldLabel({ ...base, modelDisplayHold: 'out-of-bounds' }), 'Estimate unavailable');
   assert.equal(getModelHoldLabel({ ...base, modelDisplayHold: 'out-of-bounds', modelBelowCosts: true }), 'Losing money so far');
   assert.equal(getModelHoldLabel({ ...base }), null);

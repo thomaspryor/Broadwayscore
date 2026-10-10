@@ -19,8 +19,10 @@
 // when a trade outlet, the producers, an SEC filing, or the NYT / Deadline /
 // Variety / Broadway Journal stated it; Reddit, deep-research summaries and
 // our own synthesis are 'inference'. An explicit field on the record wins
-// (TRUTH_CLASS_FIELD); without one the source text (or, for failed rows, the
-// record's source types) is classified, defaulting to 'inference'.
+// (TRUTH_CLASS_FIELD); without one the source text is classified, defaulting
+// to 'inference'. A failed row is 'reported' only when a hard source states the
+// outcome (did not recoup, closed at a loss): a cited capitalization or budget
+// alone is inference about the outcome (checker, 2026-10-10).
 
 const OWN_INFERENCE = /^\s*(inferred|estimated)\b/i;
 
@@ -44,15 +46,22 @@ function classifySourceText(text) {
   return sentences(text).some((s) => HARD_SOURCE.test(s) && !INFERENCE_SOURCE.test(s)) ? 'reported' : 'inference';
 }
 
-const HARD_SOURCE_TYPES = new Set(['trade', 'sec', 'producer']);
+// A sentence that states the loss itself, not just the cost.
+const LOSS_OUTCOME = /\b(did not recoup|didn't recoup|never recoup|not recoup|failed to recoup|without recouping|unrecouped|lost (?:its|the|most|all|nearly|about|an estimated|\$)|loss(?:es)? (?:to|of|for)|at a loss|major losses|wiped out|investors (?:lost|got back))/i;
 
-/** @returns {{ truthClass: 'reported'|'inference', truthClassFrom: 'field'|'source-text'|'source-types' }} */
+/** 'reported' when one sentence names a hard source and states the loss. */
+function classifyFailedText(text) {
+  if (!text || NO_STATEMENT.test(text)) return 'inference';
+  return sentences(text).some((s) => LOSS_OUTCOME.test(s) && HARD_SOURCE.test(s) && !INFERENCE_SOURCE.test(s)) ? 'reported' : 'inference';
+}
+
+/** @returns {{ truthClass: 'reported'|'inference', truthClassFrom: 'field'|'source-text' }} */
 function truthClassOf(comm, kind, sourceText) {
   const explicit = comm && comm[TRUTH_CLASS_FIELD[kind]];
   if (explicit === 'reported' || explicit === 'inference') return { truthClass: explicit, truthClassFrom: 'field' };
   if (kind === 'failed') {
-    const types = ((comm && comm.sources) || []).map((s) => s && (s.type || s.sourceType));
-    return { truthClass: types.some((t) => HARD_SOURCE_TYPES.has(t)) ? 'reported' : 'inference', truthClassFrom: 'source-types' };
+    const text = [comm.notes, comm.recoupedSource, comm.classifiedReason].filter((v) => typeof v === 'string').join(' ');
+    return { truthClass: classifyFailedText(text), truthClassFrom: 'source-text' };
   }
   return { truthClass: classifySourceText(sourceText), truthClassFrom: 'source-text' };
 }
@@ -159,4 +168,4 @@ function formatMarkdown({ title, summary, rows, worse, limit = 15, aggregateOnly
   return out.join('\n');
 }
 
-module.exports = { groundTruth, truthClassOf, classifySourceText, TRUTH_CLASS_FIELD, rangeError, category, summarize, worseGroups, formatMarkdown, fmtTruth, OWN_INFERENCE };
+module.exports = { groundTruth, truthClassOf, classifySourceText, classifyFailedText, TRUTH_CLASS_FIELD, rangeError, category, summarize, worseGroups, formatMarkdown, fmtTruth, OWN_INFERENCE };
