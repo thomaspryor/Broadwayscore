@@ -18,7 +18,7 @@
 
 import type { ShowCommercial } from './data-types';
 import { getDesignationBadgeStyle, UNDISCLOSED_DESIGNATION } from '@/config/commercial';
-import { modelDisplayGuard, playedWeeks, independentEstimate } from '../../scripts/lib/model-display-guard';
+import { modelDisplayGuard, playedWeeks, independentEstimate, isRunning } from '../../scripts/lib/model-display-guard';
 
 export type RecoupmentDisplayMode = 'announced' | 'model' | 'none';
 
@@ -102,14 +102,15 @@ export function getRecoupmentDisplayMode(
  * The model display guard (BRO-4989, scripts/lib/model-display-guard.js),
  * applied once where the site loads commercial.json. Hidden (fewer than 12
  * played weeks, central outside [-25, 150], or two independent estimates
- * disagree by more than 25 points, or the range is more than 60 points wide):
+ * disagree by more than 25 points, the range is more than 60 points wide, or the
+ * show is running while RUNNING_MODEL_BAR_ENABLED is off):
  * modelRecoupmentPct becomes null and modelDisplayHold says
  * why. Shown: negative values become 0 and modelBelowCosts is set, so the
  * negative number never reaches a page.
  */
 export function applyModelDisplayGuard(
   data: ShowCommercial,
-  show: { previewsStartDate?: string | null; openingDate?: string | null; closingDate?: string | null } | undefined,
+  show: { previewsStartDate?: string | null; openingDate?: string | null; closingDate?: string | null; status?: string | null } | undefined,
   now: Date = new Date()
 ): ShowCommercial {
   if (!data.modelRecoupmentPct) return data;
@@ -117,6 +118,7 @@ export function applyModelDisplayGuard(
     pct: data.modelRecoupmentPct,
     playedWeeks: show ? playedWeeks(show, now) : 0,
     independent: independentEstimate(data),
+    running: isRunning(show, now),
   });
   if (!g.show) {
     // Far below 0 (Schmigadoon -169) hides the number, not the fact.
@@ -149,6 +151,7 @@ export function getModelHoldLabel(
   if (hold === 'few-weeks') return 'Too early to estimate';
   if (hold === 'estimates-disagree') return 'Estimates disagree';
   if (hold === 'too-uncertain') return 'Too uncertain to estimate';
+  if (hold === 'awaiting-truth') return 'Not enough reported data yet';
   return 'Estimate unavailable';
 }
 

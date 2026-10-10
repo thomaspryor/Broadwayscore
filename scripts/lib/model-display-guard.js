@@ -15,6 +15,7 @@
 //                   more than 25 points outside it (checker decision (c))
 //   too-uncertain   the model range is more than 60 points wide: one printed
 //                   number would overclaim (checker, 2026-10-10)
+//   awaiting-truth  a running show, while RUNNING_MODEL_BAR_ENABLED is off
 // Otherwise shown. An investor cannot get back less than nothing, so a
 // negative value displays as 0 with "losing money so far"; the negative
 // number stays internal.
@@ -28,6 +29,12 @@ const CENTRAL_MIN = -25;
 const CENTRAL_MAX = 150;
 const MAX_DISAGREEMENT = 25;
 const MAX_RANGE_WIDTH = 60;
+// Launch rule (BRO-4989 checker, 2026-10-10): no running show prints a model
+// "% returned" until the display backtest has at least 5 hard-truth
+// displayable rows and passes (node scripts/backtest-recoupment-ground-truth.js
+// --displayable-only --strict). Flip this only after that holds. Closed shows
+// are unaffected.
+const RUNNING_MODEL_BAR_ENABLED = false;
 // Notes stand in for a source only when they state a figure for the money
 // returned or lost ("$6M loss (~40% of cap)"); notes without one ("No trade
 // report of the capitalization") are no estimate (checker (c), 2026-10-10).
@@ -45,6 +52,12 @@ function displaysModel(comm, show) {
   if (comm.designation === 'Nonprofit') return false;
   if (!comm.modelRecoupmentPct) return false;
   return comm.modelDataQuality !== 'low' && comm.modelMethod !== 'ai-estimated';
+}
+
+/** Still running today: not closed and no closing date already past. */
+function isRunning(show, now = new Date()) {
+  if (!show || show.status === 'closed') return false;
+  return !(show.closingDate && new Date(show.closingDate) <= now);
 }
 
 /** Weeks played so far (previews included, COVID dark weeks excluded). */
@@ -67,10 +80,10 @@ function independentEstimate(comm) {
 }
 
 /**
- * @param {{ pct: [number, number, number] | null | undefined, playedWeeks: number, independent?: [number, number] | null }} input
- * @returns {{ show: boolean, reason: null | 'no-model' | 'few-weeks' | 'out-of-bounds' | 'estimates-disagree' | 'too-uncertain', shown: [number, number, number] | null, belowCosts: boolean }}
+ * @param {{ pct: [number, number, number] | null | undefined, playedWeeks: number, independent?: [number, number] | null, running?: boolean, runningEnabled?: boolean }} input
+ * @returns {{ show: boolean, reason: null | 'no-model' | 'few-weeks' | 'out-of-bounds' | 'estimates-disagree' | 'too-uncertain' | 'awaiting-truth', shown: [number, number, number] | null, belowCosts: boolean }}
  */
-function modelDisplayGuard({ pct, playedWeeks: weeks, independent = null }) {
+function modelDisplayGuard({ pct, playedWeeks: weeks, independent = null, running = false, runningEnabled = RUNNING_MODEL_BAR_ENABLED }) {
   const hide = (reason) => ({ show: false, reason, shown: null, belowCosts: false });
   if (!Array.isArray(pct) || pct.length !== 3 || !pct.every((v) => typeof v === 'number' && Number.isFinite(v))) return hide('no-model');
   const central = pct[1];
@@ -81,10 +94,11 @@ function modelDisplayGuard({ pct, playedWeeks: weeks, independent = null }) {
     if (off > MAX_DISAGREEMENT) return hide('estimates-disagree');
   }
   if (pct[2] - pct[0] > MAX_RANGE_WIDTH) return hide('too-uncertain');
+  if (running && !runningEnabled) return hide('awaiting-truth');
   return { show: true, reason: null, shown: pct.map((v) => Math.max(0, v)), belowCosts: central < 0 };
 }
 
 module.exports = {
-  modelDisplayGuard, displaysModel, playedWeeks, independentEstimate,
+  modelDisplayGuard, displaysModel, playedWeeks, independentEstimate, isRunning, RUNNING_MODEL_BAR_ENABLED,
   MIN_PLAYED_WEEKS, CENTRAL_MIN, CENTRAL_MAX, MAX_DISAGREEMENT, MAX_RANGE_WIDTH,
 };
