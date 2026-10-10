@@ -4074,6 +4074,38 @@ function isUnverifiableWebSearchRow(data) {
 }
 
 /**
+ * BRO-3126: a "first look" piece published while the show was still in previews, scored and
+ * shipped as a critic review (jane-eyre-off-west-end-2026, LBO, scored 79). Its own LLM
+ * content verification had already said preview / invalid at high confidence and nothing
+ * consulted it.
+ *
+ * DELIBERATELY NARROW. The verifier's articleType=preview verdict alone is NOT usable: on
+ * 2026-10-10, 34 counted files carried preview/high/isValid:false and almost all were genuine
+ * reviews the model mislabelled (NYT Waiting for Godot, Variety Scottsboro Boys, EW Fat Ham,
+ * TheaterMania Primary Trust...). The body text alone is not usable either: genuine reviews
+ * mention "still in previews" in passing. So this needs BOTH: the structured verdict AND the
+ * article's own statement that it is a preview-period first look rather than a review.
+ * A human clear on the content verification (cvNonReviewHumanCleared) always wins.
+ * @param {object} data review-text record
+ * @returns {boolean}
+ */
+function isPreviewFirstLookPiece(data) {
+  // Patterns live INSIDE the function on purpose: scoring-delta.js's "guards unchanged" check
+  // compares the function's toString(), which would not see module-level regex constants.
+  // Recall is narrow by design (London Box Office's boilerplate and its close paraphrases); the
+  // self-describing forms only, so a critic saying "I got a first look at the production" in a
+  // real review is not caught.
+  const FIRST_LOOK_SELF_DESCRIPTION = /(\bthis (piece|article) is a first look\b|\brather than a review of the finished production\b)/i;
+  const STILL_IN_PREVIEWS = /(\bstill in previews?\b|\bduring (its|the) preview period\b|\bdoes not (officially )?open until\b|\bhas not (yet )?(officially )?opened\b)/i;
+  const cv = data && data.contentVerification;
+  if (!cv || cv.isValid !== false || cv.articleType !== 'preview') return false;
+  if ((cv.articleTypeConfidence || cv.confidence) !== 'high') return false;
+  if (cvNonReviewHumanCleared(data)) return false;
+  const head = String(data.fullText || '').slice(0, 4000);
+  return FIRST_LOOK_SELF_DESCRIPTION.test(head) && STILL_IN_PREVIEWS.test(head);
+}
+
+/**
  * Named non-review URL rule (BRO-4101), as a pure predicate shared by
  * explainExclusion() AND rebuild-all-reviews.js's inline loop. Until
  * 2026-09-25 only explainExclusion had it, so the rule never reached
@@ -4171,6 +4203,7 @@ function explainExclusion(data, show, filePath) {
   // scoring-delta.js decideInclusion mirror them in the same order.
   if (isCancelledBeforeOpeningShow(show)) return 'cancelledBeforeOpening';
   if (isUnverifiableWebSearchRow(data)) return 'unverifiableWebSearchRow';
+  if (isPreviewFirstLookPiece(data)) return 'previewFirstLookPiece';
   // BRO-4806: opening-night lane reviews (provenance + productionVerified:"aggregator") are exempt from the guards in
   // trust-model LANE_BYPASSED_GUARDS and from nothing else. One predicate, called per guard; rebuild-all-reviews.js's
   // inline gates call the same one.
@@ -5475,6 +5508,7 @@ module.exports = {
   isNamedNonReviewUrlRecord,
   isCancelledBeforeOpeningShow,
   isUnverifiableWebSearchRow,
+  isPreviewFirstLookPiece,
   bodylessScoreProvenance,
   isBodylessAggregatorScoreUncorroborated,
   bodylessCorroboratedByProduction,

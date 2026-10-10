@@ -890,6 +890,10 @@ function decideInclusion(review, show, guards) {
   if (typeof guards.isUnverifiableWebSearchRow === 'function' && guards.isUnverifiableWebSearchRow(review)) {
     return { included: false, reason: 'unverifiableWebSearchRow' };
   }
+  // BRO-3126: preview-period first-look piece (reads contentVerification + the head of fullText).
+  if (typeof guards.isPreviewFirstLookPiece === 'function' && guards.isPreviewFirstLookPiece(review)) {
+    return { included: false, reason: 'previewFirstLookPiece' };
+  }
   // 1. Already-flagged top-level exclusions. A static wrongShow/wrongProduction
   // flag on disk does NOT mean rebuild-all-reviews.js excludes the review — the
   // rebuild's auto-clear paths (shouldAutoClearWrongShowUkUrl, shouldAutoClearWrongShow,
@@ -1497,6 +1501,8 @@ function main() {
         // BRO-4890: show-level never-opened exclusion and the unverifiable search-row rule.
         && (baseline.isCancelledBeforeOpeningShow?.toString() || '') === (working.isCancelledBeforeOpeningShow?.toString() || '')
         && (baseline.isUnverifiableWebSearchRow?.toString() || '') === (working.isUnverifiableWebSearchRow?.toString() || '')
+        // BRO-3126: preview first-look piece (patterns are inside the function body, so toString() covers them).
+        && (baseline.isPreviewFirstLookPiece?.toString() || '') === (working.isPreviewFirstLookPiece?.toString() || '')
         // BRO-3135 body-less aggregator-score gate: the predicate AND the two
         // helpers it delegates to (toString() of a caller misses callee edits).
         && (baseline.isBodylessAggregatorScoreUncorroborated?.toString() || '') === (working.isBodylessAggregatorScoreUncorroborated?.toString() || '')
