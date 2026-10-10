@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-10-10T16:49:49.759Z",
-  "windowDays": 21,
-  "targets": 9,
-  "auditedThisRun": 9,
-  "carriedForward": 637,
+  "generatedAt": "2026-10-10T19:50:52.203Z",
+  "windowDays": 1095,
+  "targets": 603,
+  "auditedThisRun": 4,
+  "carriedForward": 647,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 377,
-    "missingCurrentRun": 791,
+    "withGap": 380,
+    "missingCurrentRun": 864,
     "totalCitedNoUrl": 3,
-    "totalFlaggedMisses": 902,
-    "totalRecoverable": 5,
-    "totalRecovered": 9,
-    "priorProductionCitations": 3114
+    "totalFlaggedMisses": 908,
+    "totalRecoverable": 7,
+    "totalRecovered": 11,
+    "priorProductionCitations": 3425
   },
   "results": [
     {
@@ -758,7 +758,12 @@
         "liveCount": 0,
         "candidateCount": 7
       },
-      "computedAt": "2026-10-10T15:03:21.770Z"
+      "computedAt": "2026-10-10T15:03:21.770Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-10T19:50:52.253Z",
+        "lastAt": "2026-10-10T19:50:52.253Z"
+      }
     },
     {
       "showId": "a-life-in-four-seasons-west-end-2026",
@@ -5828,7 +5833,12 @@
         "liveCount": 9,
         "candidateCount": 16
       },
-      "computedAt": "2026-10-10T15:03:21.770Z"
+      "computedAt": "2026-10-10T15:03:21.770Z",
+      "quarantine": {
+        "nextState": "incomplete:5:6",
+        "since": "2026-10-10T19:50:52.253Z",
+        "lastAt": "2026-10-10T19:50:52.253Z"
+      }
     },
     {
       "showId": "all-my-sons-west-end-2025",
@@ -13562,7 +13572,6 @@
         "https://loureviews.blog/2026/09/30/show-preview-gurpreet-kaur-bhatti-on-baby-at-brixton-house/",
         "https://www.cleanbreak.org.uk/productions/baby/",
         "https://www.brixtonbuzz.com/2026/09/baby-a-new-play-by-gurpreet-kaur-bhatti-coming-to-brixton-house-in-october-2026/",
-        "https://www.afridiziak.com/whatson/baby/",
         "https://theatreandtonic.co.uk/blog/cry-baby-the-musical-arcola-theatre-review",
         "https://www.timeout.com/london/theatre/baby-3",
         "https://www.eventbrite.co.uk/e/home-girls-theatre-trip-watching-baby-tickets-2002959864874",
@@ -13654,12 +13663,6 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.afridiziak.com/whatson/baby/",
-          "host": "afridiziak.com",
-          "knownOutletId": "afridiziak-theatre-news",
-          "serpCensus": true
-        },
-        {
           "url": "https://theatreandtonic.co.uk/blog/cry-baby-the-musical-arcola-theatre-review",
           "host": "theatreandtonic.co.uk",
           "knownOutletId": "theatreandtonic",
@@ -13705,6 +13708,13 @@
             "fetchErrors": 0
           },
           "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "bestoftheatre": {
             "found": false,
             "rows": 0,
             "emptyParse": false,
@@ -13766,7 +13776,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -13782,16 +13792,16 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 11,
+        "resultCount": 10,
         "error": null
       },
       "candidatesRejected": {
-        "count": 129,
+        "count": 130,
         "byReason": {
-          "not-http-url": 5,
-          "non-review-host": 39,
           "aggregator-internal-nav": 77,
+          "not-http-url": 5,
           "aggregator-section-root": 4,
+          "non-review-host": 40,
           "roundup-page": 3,
           "event-listings-page": 1
         }
@@ -13836,7 +13846,7 @@
           "conflictReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+          "reason": "[review-write-guard] date-implausible: baby-off-west-end-2026/nysr--david-finkle.json → quarantined "
         },
         {
           "url": "https://newyorktheater.me/2024/02/20/sunset-baby-review/",
@@ -13915,11 +13925,6 @@
           "url": "https://www.brixtonbuzz.com/2026/09/baby-a-new-play-by-gurpreet-kaur-bhatti-coming-to-brixton-house-in-october-2026/",
           "host": "brixtonbuzz.com",
           "outletId": "brixtonbuzz"
-        },
-        {
-          "url": "https://www.afridiziak.com/whatson/baby/",
-          "host": "afridiziak.com",
-          "outletId": "afridiziak-theatre-news"
         },
         {
           "url": "https://theatreandtonic.co.uk/blog/cry-baby-the-musical-arcola-theatre-review",
@@ -14049,13 +14054,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.brixtonbuzz.com/2026/09/baby-a-new-play-by-gurpreet-kaur-bhatti-coming-to-brixton-house-in-october-2026/"
-          },
-          {
-            "outletId": "afridiziak-theatre-news",
-            "outlet": "afridiziak-theatre-news",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.afridiziak.com/whatson/baby/"
           },
           {
             "outletId": "theatreandtonic",
@@ -14194,13 +14192,6 @@
             "firstSeenAt": "2026-10-08T17:15:22.095Z"
           },
           {
-            "url": "https://www.afridiziak.com/whatson/baby/",
-            "outletId": "afridiziak-theatre-news",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-08T17:15:22.095Z"
-          },
-          {
             "url": "https://theatreandtonic.co.uk/blog/cry-baby-the-musical-arcola-theatre-review",
             "outletId": "theatreandtonic",
             "state": "IN_FLIGHT",
@@ -14233,7 +14224,7 @@
         "liveCount": 0,
         "candidateCount": 19
       },
-      "computedAt": "2026-10-10T01:33:56.739Z"
+      "computedAt": "2026-10-10T19:50:52.203Z"
     },
     {
       "showId": "barbarians-v-wales-double-header-off-west-end-2026",
@@ -18377,71 +18368,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Betty's Summer Vacation (The Heights Players)\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Betty's Summer Vacation (The Heights Players)\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Betty's Summer Vacation (The Heights Players)\" review john",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Betty's Summer Vacation (The Heights Players) The John Bourne Theatre review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Betty's Summer Vacation (The Heights Players) The John Bourne Theatre review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Betty's Summer Vacation (The Heights Players) The John Bourne Theatre review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 0,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 11,
-        "byReason": {
-          "non-review-host": 11
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -18454,7 +18386,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-10T15:03:21.770Z"
+      "computedAt": "2026-10-10T19:50:52.203Z"
     },
     {
       "showId": "between-two-knees-off-broadway-2024",
@@ -48346,7 +48278,12 @@
         "liveCount": 6,
         "candidateCount": 15
       },
-      "computedAt": "2026-10-10T16:49:49.759Z"
+      "computedAt": "2026-10-10T16:49:49.759Z",
+      "quarantine": {
+        "nextState": "incomplete:1:4",
+        "since": "2026-10-10T19:50:52.253Z",
+        "lastAt": "2026-10-10T19:50:52.253Z"
+      }
     },
     {
       "showId": "firewing-off-west-end-2026",
@@ -49062,10 +48999,10 @@
       "candidatesRejected": {
         "count": 1745,
         "byReason": {
-          "not-http-url": 307,
-          "non-review-host": 90,
           "aggregator-internal-nav": 1321,
+          "not-http-url": 307,
           "aggregator-section-root": 26,
+          "non-review-host": 90,
           "unparseable-url": 1
         }
       },
@@ -49498,7 +49435,7 @@
         "liveCount": 0,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-10T15:03:21.770Z"
+      "computedAt": "2026-10-10T19:50:52.203Z"
     },
     {
       "showId": "flamenc-oh-off-west-end-2026",
@@ -50952,7 +50889,12 @@
         "liveCount": 16,
         "candidateCount": 19
       },
-      "computedAt": "2026-10-10T16:49:49.759Z"
+      "computedAt": "2026-10-10T16:49:49.759Z",
+      "quarantine": {
+        "nextState": "complete:16:16",
+        "since": "2026-10-10T19:50:52.253Z",
+        "lastAt": "2026-10-10T19:50:52.253Z"
+      }
     },
     {
       "showId": "galileo-berkeley-rep-regional-2024",
@@ -58095,7 +58037,12 @@
         "liveCount": 6,
         "candidateCount": 9
       },
-      "computedAt": "2026-10-10T15:03:21.770Z"
+      "computedAt": "2026-10-10T15:03:21.770Z",
+      "quarantine": {
+        "nextState": "complete:3:3",
+        "since": "2026-10-10T19:50:52.253Z",
+        "lastAt": "2026-10-10T19:50:52.253Z"
+      }
     },
     {
       "showId": "gotta-dance-off-broadway-2026",
@@ -68415,7 +68362,12 @@
         "liveCount": 2,
         "candidateCount": 56
       },
-      "computedAt": "2026-10-10T15:03:21.770Z"
+      "computedAt": "2026-10-10T15:03:21.770Z",
+      "quarantine": {
+        "nextState": "incomplete:2:35",
+        "since": "2026-10-10T19:50:52.253Z",
+        "lastAt": "2026-10-10T19:50:52.253Z"
+      }
     },
     {
       "showId": "harry-potter-tour-2024",
@@ -74976,7 +74928,12 @@
         "liveCount": 0,
         "candidateCount": 12
       },
-      "computedAt": "2026-10-10T08:06:08.996Z"
+      "computedAt": "2026-10-10T08:06:08.996Z",
+      "quarantine": {
+        "nextState": "incomplete:0:10",
+        "since": "2026-10-10T19:50:52.253Z",
+        "lastAt": "2026-10-10T19:50:52.253Z"
+      }
     },
     {
       "showId": "how-shakespeare-saved-my-life-off-broadway-2026",
@@ -87848,7 +87805,12 @@
         "liveCount": 11,
         "candidateCount": 15
       },
-      "computedAt": "2026-10-10T16:31:40.157Z"
+      "computedAt": "2026-10-10T16:31:40.157Z",
+      "quarantine": {
+        "nextState": "complete:8:8",
+        "since": "2026-10-10T19:50:52.253Z",
+        "lastAt": "2026-10-10T19:50:52.253Z"
+      }
     },
     {
       "showId": "kyoto-off-broadway-2025",
@@ -110006,7 +109968,12 @@
         "liveCount": 0,
         "candidateCount": 6
       },
-      "computedAt": "2026-10-10T15:03:21.770Z"
+      "computedAt": "2026-10-10T15:03:21.770Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-10T19:50:52.253Z",
+        "lastAt": "2026-10-10T19:50:52.253Z"
+      }
     },
     {
       "showId": "night-side-songs-off-broadway-2026",
@@ -139550,7 +139517,12 @@
         "liveCount": 14,
         "candidateCount": 20
       },
-      "computedAt": "2026-10-10T16:31:40.157Z"
+      "computedAt": "2026-10-10T16:31:40.157Z",
+      "quarantine": {
+        "nextState": "incomplete:11:12",
+        "since": "2026-10-10T19:50:52.253Z",
+        "lastAt": "2026-10-10T19:50:52.253Z"
+      }
     },
     {
       "showId": "small-off-broadway-2026",
@@ -140421,7 +140393,12 @@
         "liveCount": 7,
         "candidateCount": 10
       },
-      "computedAt": "2026-10-10T16:31:40.157Z"
+      "computedAt": "2026-10-10T16:31:40.157Z",
+      "quarantine": {
+        "nextState": "incomplete:5:7",
+        "since": "2026-10-10T19:50:52.253Z",
+        "lastAt": "2026-10-10T19:50:52.253Z"
+      }
     },
     {
       "showId": "space-dogs-off-west-end-2026",
@@ -152002,7 +151979,12 @@
         "liveCount": 0,
         "candidateCount": 5
       },
-      "computedAt": "2026-10-10T15:03:21.770Z"
+      "computedAt": "2026-10-10T15:03:21.770Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-10T19:50:52.253Z",
+        "lastAt": "2026-10-10T19:50:52.253Z"
+      }
     },
     {
       "showId": "the-bathroom-attendant-off-broadway-2026",
@@ -157854,7 +157836,12 @@
         "liveCount": 14,
         "candidateCount": 16
       },
-      "computedAt": "2026-10-10T08:06:08.996Z"
+      "computedAt": "2026-10-10T08:06:08.996Z",
+      "quarantine": {
+        "nextState": "incomplete:13:15",
+        "since": "2026-10-10T19:50:52.253Z",
+        "lastAt": "2026-10-10T19:50:52.253Z"
+      }
     },
     {
       "showId": "the-harder-they-come-off-west-end-2026",
@@ -176256,23 +176243,32 @@
     {
       "showId": "the-virtuous-burglar-off-west-end-2026",
       "title": "The Virtuous Burglar",
-      "openingDate": null,
-      "status": "previews",
+      "openingDate": "2026-10-09",
+      "status": "open",
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://loureviews.blog/2026/10/10/play-review-the-virtuous-burglar-at-riverside-studios/",
         "https://ayoungishperspective.co.uk/2026/10/09/review-the-virtuous-burglar/",
+        "https://loureviews.blog/2026/10/10/play-review-the-virtuous-burglar-at-riverside-studios/amp/",
         "https://riversidestudios.co.uk/whats-on/u1x-the-virtuous-burglar/",
         "https://broadwaybaby.com/shows/the-virtuous-burglar/702098",
+        "https://www.nothingeverhappensinbrisbane.com/words/the-virtuous-burglar-xth-act",
         "https://www.whatsonstage.com/news/the-virtuous-burglar_12240/"
       ],
-      "dirFiles": 3,
-      "dirClean": 1,
-      "inReviewsJson": 1,
+      "dirFiles": 4,
+      "dirClean": 2,
+      "inReviewsJson": 2,
       "missing": [
         {
           "url": "https://riversidestudios.co.uk/whats-on/u1x-the-virtuous-burglar/",
           "host": "riversidestudios.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.nothingeverhappensinbrisbane.com/words/the-virtuous-burglar-xth-act",
+          "host": "nothingeverhappensinbrisbane.com",
           "knownOutletId": null,
           "serpCensus": true
         },
@@ -176320,7 +176316,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 1
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": false,
@@ -176352,16 +176348,16 @@
       "serpCensus": {
         "ran": true,
         "complete": true,
-        "query": "\"The Virtuous Burglar\" West End review",
+        "query": "\"The Virtuous Burglar\" West End review 2026",
         "queryStatus": [
           {
             "arm": "primary",
-            "query": "\"The Virtuous Burglar\" West End review",
+            "query": "\"The Virtuous Burglar\" West End review 2026",
             "page": 0,
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -176370,8 +176366,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 0,
+            "results": 9,
+            "accepted": 1,
             "error": null
           },
           {
@@ -176391,7 +176387,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -176407,13 +176403,14 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 4,
+        "resultCount": 7,
         "error": null
       },
       "candidatesRejected": {
-        "count": 21,
+        "count": 20,
         "byReason": {
-          "non-review-host": 21
+          "non-review-host": 19,
+          "roundup-page": 1
         }
       },
       "dedupedVariants": [],
@@ -176433,6 +176430,19 @@
           "reason": "Refusing to ingest — https://riversidestudios.co.uk/whats-on/u1x-the-virtuous-burglar/ matches a kno"
         },
         {
+          "url": "https://www.nothingeverhappensinbrisbane.com/words/the-virtuous-burglar-xth-act",
+          "host": "nothingeverhappensinbrisbane.com",
+          "outletId": "nothingeverhappensinbrisbane",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  provisional outlet \"nothingeverhappensinbrisbane\" (not in registry) — onboard to outlet-registry"
+        },
+        {
           "url": "https://www.whatsonstage.com/news/the-virtuous-burglar_12240/",
           "host": "whatsonstage.com",
           "outletId": "whatsonstage",
@@ -176443,7 +176453,7 @@
           "conflictReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+          "reason": "[review-write-guard] date-implausible: the-virtuous-burglar-off-west-end-2026/whatsonstage--theo-bos"
         }
       ],
       "ingestSkippedByCap": [],
@@ -176456,6 +176466,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://riversidestudios.co.uk/whats-on/u1x-the-virtuous-burglar/"
+          },
+          {
+            "outletId": "nothingeverhappensinbrisbane.com",
+            "outlet": "nothingeverhappensinbrisbane.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nothingeverhappensinbrisbane.com/words/the-virtuous-burglar-xth-act"
           },
           {
             "outletId": "whatsonstage",
@@ -176475,38 +176492,57 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://loureviews.blog/2026/10/10/play-review-the-virtuous-burglar-at-riverside-studios/",
+            "outletId": "loureviews.blog",
+            "state": "live",
+            "firstSeenAt": "2026-10-10T19:50:52.203Z"
+          },
+          {
             "url": "https://ayoungishperspective.co.uk/2026/10/09/review-the-virtuous-burglar/",
             "outletId": "ayoungishperspective.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-09T21:34:59.683Z"
           },
           {
+            "url": "https://loureviews.blog/2026/10/10/play-review-the-virtuous-burglar-at-riverside-studios/amp/",
+            "outletId": "loureviews.blog",
+            "state": "live",
+            "firstSeenAt": "2026-10-10T19:50:52.203Z"
+          },
+          {
             "url": "https://riversidestudios.co.uk/whats-on/u1x-the-virtuous-burglar/",
             "outletId": "riversidestudios.co.uk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-06T17:49:47.573Z"
+          },
+          {
+            "url": "https://www.nothingeverhappensinbrisbane.com/words/the-virtuous-burglar-xth-act",
+            "outletId": "nothingeverhappensinbrisbane.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-10T19:50:52.203Z"
           },
           {
             "url": "https://www.whatsonstage.com/news/the-virtuous-burglar_12240/",
             "outletId": "whatsonstage",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-06T17:49:47.573Z"
           },
           {
             "url": "https://broadwaybaby.com/shows/the-virtuous-burglar/702098",
             "outletId": "broadway-baby",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-10T08:06:08.996Z"
           }
         ],
         "censusSchema": 2,
-        "liveCount": 1,
-        "candidateCount": 4
+        "liveCount": 2,
+        "candidateCount": 6
       },
-      "computedAt": "2026-10-10T08:06:08.996Z"
+      "computedAt": "2026-10-10T19:50:52.203Z"
     },
     {
       "showId": "the-visit-regional-2026",
@@ -177723,7 +177759,12 @@
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-10-10T08:06:08.996Z"
+      "computedAt": "2026-10-10T08:06:08.996Z",
+      "quarantine": {
+        "nextState": "incomplete:0:2",
+        "since": "2026-10-10T19:50:52.253Z",
+        "lastAt": "2026-10-10T19:50:52.253Z"
+      }
     },
     {
       "showId": "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026",
@@ -183181,7 +183222,12 @@
         "liveCount": 0,
         "candidateCount": 8
       },
-      "computedAt": "2026-10-10T15:03:21.770Z"
+      "computedAt": "2026-10-10T15:03:21.770Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-10T19:50:52.253Z",
+        "lastAt": "2026-10-10T19:50:52.253Z"
+      }
     },
     {
       "showId": "topdog-underdog-regional-2026",
@@ -184473,7 +184519,12 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-10T15:03:21.770Z"
+      "computedAt": "2026-10-10T15:03:21.770Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-10T19:50:52.253Z",
+        "lastAt": "2026-10-10T19:50:52.253Z"
+      }
     },
     {
       "showId": "trophy-boys-off-broadway-2025",
