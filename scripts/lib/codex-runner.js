@@ -23,6 +23,10 @@ const AUTH_MARKER = '<!-- codex-auth-v1 -->';
 // the next day's run leaves that card to the Claude worker instead of looping.
 const BOUNCED_MARKER = '<!-- codex-runner-bounced -->';
 const BOUNCE_MEMORY_MS = 14 * 24 * 3600_000;
+// Opens every runner note about a landing that leaves card items undone, so whichever
+// path settles the landing (this run, reconcileLanded, recoverOrphans) returns the card
+// to Todo instead of closing it.
+const PARTIAL_MARKER = '<!-- codex-runner-partial -->';
 const HKDF_SALT = 'bsc-codex-runner-auth-v1';
 
 function deriveKey(keyMaterial) {
@@ -120,16 +124,71 @@ function findRateLimits(obj, depth = 0) {
   return null;
 }
 
+// Attempts a card may take: a plain REJECT gets one fix round (like before); a
+// SHIP-WITH-FIXES verdict (right approach, specific findings left) gets one more.
+const MAX_ATTEMPTS = 2;
+const MAX_ATTEMPTS_SHIP_WITH_FIXES = 3;
+
 /**
  * After a Codex attempt and its Claude check:
  *  - SHIP with a diff  -> 'land'
  *  - SHIP with no diff -> 'close-already-fixed' (Claude confirmed nothing was needed)
- *  - anything else on attempt 1 -> 'fix-round' (findings go back to Codex once)
- *  - anything else on attempt 2 -> 'bounce' (card back to Todo with the findings)
+ *  - no diff because the environment blocked Codex (its ENVIRONMENT-BLOCKED line), once per
+ *    card -> 'env-retry': the same attempt again with the findings; it does not use up a round
+ *  - SHIP-WITH-FIXES -> 'fix-round' until attempt 3
+ *  - anything else -> 'fix-round' on attempt 1, then 'bounce' (card back to Todo with the findings)
  */
-function nextStep({ verdict, hasDiff, attempt }) {
+function nextStep({ verdict, hasDiff, attempt, envBlocked = false, envRetryUsed = false }) {
   if (verdict === 'SHIP') return hasDiff ? 'land' : 'close-already-fixed';
-  return attempt >= 2 ? 'bounce' : 'fix-round';
+  if (!hasDiff && envBlocked && !envRetryUsed) return 'env-retry';
+  const cap = verdict === 'SHIP-WITH-FIXES' ? MAX_ATTEMPTS_SHIP_WITH_FIXES : MAX_ATTEMPTS;
+  return attempt >= cap ? 'bounce' : 'fix-round';
+}
+
+/** Codex's `ENVIRONMENT-BLOCKED: <what>` report line (runner-prompt.md asks for it), or null. */
+function parseEnvBlocked(report) {
+  const m = /^[\s>*_#-]*ENVIRONMENT-BLOCKED:\**\s*(.+)$/m.exec(String(report || ''));
+  if (!m) return null;
+  const what = m[1].trim();
+  return what && !/^(none|no|n\/a)\.?$/i.test(what) ? what.slice(0, 500) : null;
+}
+
+/**
+ * The reviewer's `REMAINING: <item>` lines: card items a correct change leaves undone (a
+ * backfill that needs the private data repos, a live scrape). `REMAINING: none` -> [].
+ * A SHIP with items lands, then the card goes back to Todo with them, not to Done.
+ */
+function parseRemaining(text) {
+  const out = [];
+  const re = /^[\s>*_#-]*REMAINING:\**\s*(.+)$/gm;
+  let m;
+  while ((m = re.exec(String(text || ''))) !== null) {
+    const item = m[1].trim();
+    if (item && !/^(none|nothing|n\/a)\.?$/i.test(item)) out.push(item.slice(0, 400));
+  }
+  return out;
+}
+
+/**
+ * Private data the runner gives each fresh worktree (after `git clean -x` wipes it), by
+ * explicit allow-list: never a blanket copy of every gitignored data/ entry (billing PII,
+ * subscriber lists and aggregator archives sit there too, and a symlinked directory slips
+ * past a trailing-slash .gitignore rule). Files are COPIED, so a test or Codex write never
+ * reaches the shared clone; the one directory, review-texts, is a symlink (too big to copy).
+ * The gitignored part of scripts/setup-local-data.sh's SYMLINK/COPY/GENERATED lists (tracked
+ * ones such as awards.json come with the checkout).
+ */
+const DATA_FILES = [
+  'shows.json', 'reviews.json', 'commercial.json', 'diary-shows.json', 'retired-show-ids.json', 'deleted-shows.json',
+  'critic-slug-aliases.json', 'audience-buzz.json', 'critic-consensus.json',
+  'critic-registry.json', 'grosses.json', 'grosses-history.json', 'mezzanine-productions-raw.json',
+  'cast-manifest.json', 'actor-slugs.json',
+];
+const DATA_DIRS = ['review-texts'];
+
+/** True when a git config text stores a credential in a remote URL (never hand that clone to Codex). */
+function hasCredentialRemote(gitConfigText) {
+  return /^\s*(?:url|pushurl)\s*=\s*\S*:\/\/[^/\s@]+@/m.test(String(gitConfigText || ''));
 }
 
 const SECRET_PATTERNS = [
@@ -210,13 +269,24 @@ function looksLikeSecretLeak(diffText) {
     .some((l) => SECRET_PATTERNS.some((re) => re.test(l)));
 }
 
-/** Fill {{ID}} {{TITLE}} {{BODY}} {{EXTRA}} in a prompt template. */
-function fillPrompt(template, { id, title, body, extra = '' }) {
-  return template
-    .replace(/\{\{ID\}\}/g, id)
-    .replace(/\{\{TITLE\}\}/g, title || '')
-    .replace(/\{\{BODY\}\}/g, body || '')
-    .replace(/\{\{EXTRA\}\}/g, extra || '');
+/**
+ * Fill {{ID}} {{TITLE}} {{DATA}} {{EXTRA}} {{BODY}} in a prompt template. One pass, so text
+ * inside a card body or report that looks like a placeholder is never expanded.
+ */
+function fillPrompt(template, { id, title, body, extra = '', data = '', worktree = '' }) {
+  const vals = { ID: id, TITLE: title || '', BODY: body || '', EXTRA: extra || '', DATA: data || '', WORKTREE: worktree || '' };
+  return template.replace(/\{\{(ID|TITLE|BODY|EXTRA|DATA|WORKTREE)\}\}/g, (_, k) => vals[k]);
+}
+
+/**
+ * True when the runner posted a partial-landing note (PARTIAL_MARKER) on the card since
+ * sinceMs (the claim's startedAt): that landing leaves card items undone, so whichever path
+ * settles it sends the card back to Todo, never to Done. No sinceMs: nothing counts.
+ */
+function landingIsPartial(comments, sinceMs) {
+  if (!Number.isFinite(sinceMs)) return false;
+  return (Array.isArray(comments) ? comments : []).some((c) => c && String(c.body || '').includes(PARTIAL_MARKER)
+    && Number.isFinite(Date.parse(c.createdAt)) && Date.parse(c.createdAt) >= sinceMs - ORPHAN_CLOCK_SKEW_MS);
 }
 
 /** True when the runner bounced this card within the last 14 days. */
@@ -299,6 +369,14 @@ module.exports = {
   cardBody,
   AUTH_MARKER,
   BOUNCED_MARKER,
+  PARTIAL_MARKER,
+  landingIsPartial,
+  parseEnvBlocked,
+  parseRemaining,
+  DATA_FILES,
+  DATA_DIRS,
+  hasCredentialRemote,
+  MAX_ATTEMPTS_SHIP_WITH_FIXES,
   codexBouncedRecently,
   encryptAuth,
   decryptAuth,

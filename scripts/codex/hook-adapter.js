@@ -316,6 +316,35 @@ function hookName(hook) {
   return m ? m[1] : hook.command.slice(0, 60);
 }
 
+// The unattended runner (scripts/codex/daily-runner.js) is not an interactive
+// session: it never lands, closes cards or ends a turn for the owner, and the
+// runner itself commits, tests and gets an independent review. So Claude's
+// session-lifecycle gates (Stop = verify-edits.sh, SessionStart bootstrap,
+// PreCompact, prompt hooks) and its push/merge landing gates do not run there.
+// verify-edits.sh blocked runner attempts and Codex answered with nested
+// ship-checks. Every tool guard not named here (broadcast, worktree, infra-plan
+// review, skill redaction, main guard, ...) still runs, and a new one applies
+// to the runner by default.
+const RUNNER_SKIPPED_TOOL_HOOKS = new Set([
+  'pre-push-visual-gate.sh', 'pre-push-review-gate.sh', 'pre-push-land-preflight.sh', 'pre-merge-review-gate.sh',
+]);
+const TOOL_EVENTS = new Set(['PreToolUse', 'PostToolUse']);
+
+// Runner profile: the runner's worktree is always <repo>/.claude/worktrees/codex-runner,
+// and Codex runs this adapter from the session's git toplevel, so the adapter's own
+// location says whether this is a runner attempt. Deliberately no env switch: nothing a
+// session exports can turn the gates off.
+function isRunnerProfile(repoRoot = REPO_ROOT) {
+  return path.basename(repoRoot) === 'codex-runner' && path.basename(path.dirname(repoRoot)) === 'worktrees'
+    && path.basename(path.dirname(path.dirname(repoRoot))) === '.claude';
+}
+
+/** True when a runner-profile Codex run skips this Claude hook. */
+function runnerSkipsHook(hookEvent, hook) {
+  if (!TOOL_EVENTS.has(hookEvent)) return true;
+  return RUNNER_SKIPPED_TOOL_HOOKS.has(hookName(hook));
+}
+
 function emitBlock(hookEvent, reason) {
   if (hookEvent === 'PreToolUse') {
     process.stdout.write(JSON.stringify({ hookSpecificOutput: { hookEventName: 'PreToolUse', permissionDecision: 'deny', permissionDecisionReason: reason } }) + '\n');
@@ -331,6 +360,9 @@ async function main() {
   try { payload = JSON.parse(fs.readFileSync(0, 'utf8') || '{}'); } catch { payload = {}; }
   const hookEvent = event || payload.hook_event_name;
   if (!hookEvent) process.exit(0);
+  const runner = isRunnerProfile();
+  // Nothing runs for a session event in the runner profile: skip before any I/O.
+  if (runner && !TOOL_EVENTS.has(hookEvent)) return;
   // Debug aid: CODEX_HOOK_ADAPTER_LOG=<file> records every raw Codex payload.
   if (process.env.CODEX_HOOK_ADAPTER_LOG) {
     try { fs.appendFileSync(process.env.CODEX_HOOK_ADAPTER_LOG, JSON.stringify(payload) + '\n'); } catch { /* debug only */ }
@@ -381,7 +413,7 @@ async function main() {
     for (const ce of claudeEvents) {
       const matchValue = isTool ? ce.tool_name : (hookEvent === 'SessionStart' ? (payload.source || 'startup') : undefined);
       const claudePayload = { ...payload, hook_event_name: hookEvent, transcript_path: transcriptPath, ...(ce || {}) };
-      const hooks = claudeHooksFor(settings, hookEvent, matchValue);
+      const hooks = claudeHooksFor(settings, hookEvent, matchValue).filter((h) => !(runner && runnerSkipsHook(hookEvent, h)));
       const results = await Promise.all(hooks.map((hook) => runHook(hook, claudePayload, env, cwd,
         Math.min((hook.timeout || 60) * 1000, deadline - Date.now()))));
       for (let i = 0; i < results.length; i++) {
@@ -414,4 +446,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { parseApplyPatch, toClaudeToolEvents, matcherMatches, loadSettings, claudeHooksFor, buildShadowLines, toolRows, callFailed, runHook, blockingOutput, contextText };
+module.exports = { parseApplyPatch, toClaudeToolEvents, matcherMatches, loadSettings, claudeHooksFor, buildShadowLines, toolRows, callFailed, runHook, blockingOutput, contextText, isRunnerProfile, runnerSkipsHook };
