@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { summarizeZeroPayout, renderMarkdown, isZeroPayout, isoWeek } = require('./impact-payout-readout.js');
+const { summarizeZeroPayout, renderMarkdown, isZeroPayout, isoWeek, classifyPromoCode } = require('./impact-payout-readout.js');
 
 const OWNER = 'owner-distinct-id-123';
 const BULK = 'bulk-visitor-abc';
@@ -66,4 +66,28 @@ test('an incomplete paging run is flagged, and a full single-page read says so',
   const full = renderMarkdown(s, { windowLabel: 't', pages: 1, incomplete: false, singlePageCount: 6 });
   assert.match(full, /returned all 6 actions in one request/);
   assert.doesNotMatch(full, /INCOMPLETE/);
+});
+
+test('classifyPromoCode names the blacklist entry without echoing the code', () => {
+  assert.equal(classifyPromoCode('TPHZRSXEKZYVUMY'), 'TP…');
+  assert.equal(classifyPromoCode('save'), 'SAVE (exact)');
+  assert.equal(classifyPromoCode(' nofee20 '), 'NOFEE…');
+  assert.equal(classifyPromoCode('BWAYLOVE10'), 'NOT ON LIST (starts BW…, 10 chars)');
+});
+
+test('promo codes are checked against the contract blacklist, off-list orders counted and not leaked', () => {
+  const rows = [
+    { Amount: '100', Payout: '0', SubId1: 'v1', EventDate: '2026-10-05', PromoCode: 'TPHZRSXEKZYVUMY' },
+    { Amount: '50', Payout: '0', SubId1: 'v2', EventDate: '2026-10-05', PromoCode: 'SAVE' },
+    { Amount: '75', Payout: '0', SubId1: 'v3', EventDate: '2026-10-05', PromoCode: 'BWAYLOVE10' },
+    { Amount: '60', Payout: '0', SubId1: 'v4', EventDate: '2026-10-05' },
+  ];
+  const s = summarizeZeroPayout(rows);
+  assert.deepEqual(s.zero.fields['PromoCode vs contract blacklist'], {
+    'TP…': 1, 'SAVE (exact)': 1, 'NOT ON LIST (starts BW…, 10 chars)': 1,
+  });
+  assert.deepEqual(s.zero.promoOffList, { orders: 1, sales: 75 });
+  const md = renderMarkdown(s, { windowLabel: 't', pages: 1, incomplete: false });
+  assert.match(md, /Promo codes NOT on the contract blacklist: 1 orders, \$75\.00 sales/);
+  for (const code of ['TPHZRSXEKZYVUMY', 'BWAYLOVE10']) assert.ok(!md.includes(code), `markdown leaked ${code}`);
 });
