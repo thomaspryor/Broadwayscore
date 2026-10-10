@@ -14,6 +14,8 @@ import {
   formatMillions,
   marketLine,
   multipleTicks,
+  nearNote,
+  outletAndMonth,
   statusCounts,
   shortSource,
   streakText,
@@ -34,7 +36,14 @@ test('costPill: bands and special states', () => {
 
 test('basisLine: reported names its source, an estimate never does', () => {
   assert.equal(basisLine({ costBasis: 'reported', breakEven: 1_083_717, costSourceText: 'Variety' }), 'Break-even $1,084K/week (Variety)');
-  assert.equal(basisLine({ costBasis: 'estimate', breakEven: 820_976, costSourceText: 'Variety' }), 'Est. break-even $821K/week');
+  assert.equal(basisLine({ costBasis: 'estimate', breakEven: 820_976, costSourceText: null }), 'Est. break-even $821K/week', 'model-only estimates stay uncited');
+  // A floor quote is an estimate from a named outlet: outlet and month, never the quote.
+  assert.equal(
+    basisLine({ costBasis: 'estimate', breakEven: 1_083_717, costSourceText: 'Broadway Journal (Nov 17, 2023): weekly costs exceeding $1 million' }),
+    'Est. break-even $1,084K/week · based on Broadway Journal (Nov 2023)',
+  );
+  assert.equal(outletAndMonth('Variety (2025-06-09): running costs top $900,000'), 'Variety (Jun 2025)');
+  assert.equal(outletAndMonth('Variety'), 'Variety');
   assert.equal(basisLine({ costBasis: null, breakEven: null, costSourceText: null }), null);
   // The quote's figure is an expense line, not the break-even: print outlet and date only.
   assert.equal(
@@ -42,6 +51,15 @@ test('basisLine: reported names its source, an estimate never does', () => {
     'Break-even $718K/week (Broadway Journal, Apr 25, 2018)',
   );
   assert.equal(shortSource('Forbes (Nov 17, 2025): fixed weekly operating costs of $480,577'), 'Forbes, Nov 17, 2025');
+});
+
+test('nearNote: explains a Near that comes only from the range crossing 1x', () => {
+  const n = (lo: number, mid: number, hi: number, band = 'near') => nearNote({ availability: 'ok', band: band as 'near', multiple: { lo, mid, hi } });
+  assert.match(n(0.71, 0.86, 1.07)!, /rather than Below/);
+  assert.match(n(0.9, 1.12, 1.3)!, /rather than Above/);
+  assert.equal(n(0.9, 1.0, 1.1), null, 'a multiple near 1x needs no explaining');
+  assert.equal(n(1.4, 1.6, 1.8), null, 'an at-risk demotion is not a range straddle');
+  assert.equal(n(0.6, 0.8, 1.1, 'below'), null);
 });
 
 test('streak, trend and chart mode text', () => {
@@ -91,6 +109,10 @@ test('real data: no card prints a banned source word, and the client card drops 
     // The story is built before the basis is known; the label and badge carry
     // reported vs estimate, so the story must not name either (Hamilton bug).
     assert.ok(!/estimated|reported/i.test(card.story ?? ''), `${r.slug}: story names a basis: "${card.story}"`);
+    // An estimate cites a source only for a floor quote from a named outlet.
+    if (card.costBasis === 'estimate' && card.costSourceText) {
+      assert.match(basisLine(card) ?? '', /· based on [A-Z]/, `${r.slug}: estimate citation format`);
+    }
     // A printed source never carries a second dollar figure next to the break-even.
     const basis = basisLine(card) ?? '';
     assert.ok((basis.match(/\$/g) ?? []).length <= 1, `${r.slug}: two dollar figures in "${basis}"`);

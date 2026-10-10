@@ -13,6 +13,7 @@ import {
   costPill,
   coverTiles,
   formatMultiple,
+  nearNote,
   rangeText,
   streakText,
   trendText,
@@ -135,6 +136,7 @@ function Headline({ card }: { card: BoxOfficeV2Card }) {
     );
   }
 
+  const near = nearNote(card);
   const ofCost = card.costBasis === 'reported' ? 'of its reported weekly cost' : 'of its estimated weekly cost';
   return (
     <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start">
@@ -153,6 +155,7 @@ function Headline({ card }: { card: BoxOfficeV2Card }) {
       </div>
       <div className="flex-1 flex flex-col gap-2.5">
         {card.story && <p className="m-0 text-[15px] leading-relaxed text-white">{card.story}</p>}
+        {near && <p className="m-0 text-sm leading-relaxed text-gray-300">{near}</p>}
         {card.nonprofit && (
           <p className="m-0 text-sm leading-relaxed text-gray-300">
             {card.nonprofitOrg ? `${card.nonprofitOrg} is a nonprofit` : 'This is a nonprofit production'}: there are no investors to pay back, and nonprofits often cover part of the cost with donations and subscriptions, so grossing below cost is less of a warning sign here.
@@ -163,7 +166,7 @@ function Headline({ card }: { card: BoxOfficeV2Card }) {
             <span className={`px-2 py-0.5 rounded-md border font-bold ${card.costBasis === 'reported' ? 'border-brand/45 text-brand-light' : 'border-white/20 text-gray-300'}`}>
               {card.costBasis === 'reported' ? 'Reported' : 'Estimate'}
             </span>
-            {card.costSourceUrl && card.costBasis === 'reported'
+            {card.costSourceUrl
               ? <a href={card.costSourceUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 underline decoration-white/20 hover:text-brand">{basis}</a>
               : <span>{basis}</span>}
           </div>

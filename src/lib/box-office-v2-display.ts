@@ -5,6 +5,7 @@
  * Unreleased: only reachable when featureFlags.commercial && boxOfficeV2.
  */
 import type { CostBand, Availability, MultiplePoint, CoverCosts, Streak, MultipleRange } from './box-office-status';
+import { costSourceDate } from './box-office-status';
 import type { ShowBoxOfficeV2, BoxOfficeV2Market } from './data-commercial';
 /** Weekly amounts in thousands ($821K, $1,084K): $1.1M hides the gap that matters week to week. */
 export function formatWeekly(n: number): string {
@@ -90,16 +91,42 @@ export function shortSource(text: string): string {
   return head.replace(/\s*\(([^)]*)\)\s*$/, ', $1');
 }
 
+/** "Broadway Journal (Nov 17, 2023): ..." → "Broadway Journal (Nov 2023)": outlet and month, no quote. */
+export function outletAndMonth(text: string): string {
+  const head = text.split(':')[0].trim();
+  const outlet = head.replace(/\s*\([^)]*\)\s*$/, '').trim();
+  const iso = costSourceDate(text);
+  if (!iso) return outlet;
+  const month = new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
+  return `${outlet} (${month})`;
+}
+
 /**
- * The basis line under the story. Prints only publishable source text; an
- * estimate never names where the estimate came from.
+ * The basis line under the story. Prints only publishable source text. An
+ * estimate is cited only when the data layer passed a source, which it does
+ * for a named outlet's floor quote; model-only estimates arrive with none.
  */
 export function basisLine(card: Pick<BoxOfficeV2Card, 'costBasis' | 'breakEven' | 'costSourceText'>): string | null {
   if (!card.costBasis || card.breakEven == null) return null;
   const be = `${formatWeekly(card.breakEven)}/week`;
-  const src = card.costSourceText ? shortSource(card.costSourceText) : '';
-  if (card.costBasis === 'reported') return src ? `Break-even ${be} (${src})` : `Break-even ${be}`;
-  return `Est. break-even ${be}`;
+  if (card.costBasis === 'reported') {
+    const src = card.costSourceText ? shortSource(card.costSourceText) : '';
+    return src ? `Break-even ${be} (${src})` : `Break-even ${be}`;
+  }
+  return card.costSourceText ? `Est. break-even ${be} · based on ${outletAndMonth(card.costSourceText)}` : `Est. break-even ${be}`;
+}
+
+/**
+ * Near Cost only because the cost figure's range crosses 1×: say so, so a
+ * 0.86× show labelled Near doesn't read as a mistake. Null when the multiple
+ * itself is near 1×, or when Near came from something other than the range.
+ */
+export function nearNote(card: Pick<BoxOfficeV2Card, 'availability' | 'band' | 'multiple'>): string | null {
+  const m = card.multiple;
+  if (card.availability !== 'ok' || card.band !== 'near' || !m || !(m.lo < 1 && m.hi > 1)) return null;
+  if (m.mid < 0.95) return 'Our cost figure is rough enough that it could be close to breaking even, so we call it Near Cost rather than Below.';
+  if (m.mid > 1.05) return 'Our cost figure is rough enough that it could be just covering costs, so we call it Near Cost rather than Above.';
+  return null;
 }
 
 export interface CoverTile {

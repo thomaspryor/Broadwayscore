@@ -846,14 +846,17 @@ export function getShowBoxOfficeV2(slug: string): ShowBoxOfficeV2 | null {
   });
   status.band = reconcileWithAtRisk(status.band, atRisk);
   const hasCost = status.breakEven != null;
-  const reportedCost = hasCost && !getV2CostBasis(data, ctx.latestWeek).estimated;
+  const basis = getV2CostBasis(data, ctx.latestWeek);
+  const reportedCost = hasCost && !basis.estimated;
+  // A floor quote is an estimate but comes from a named public outlet, so it keeps its citation.
+  const cited = reportedCost || (hasCost && basis.floorQuote);
   return {
     ...status,
     title: show.title,
     slug,
     costBasis: hasCost ? (reportedCost ? 'reported' : 'estimate') : null,
-    costSourceText: reportedCost ? publicSourceText(data.weeklyRunningCostSource) : null,
-    costSourceUrl: reportedCost ? getCitedSourceUrl(data.sources) : null,
+    costSourceText: cited ? publicSourceText(data.weeklyRunningCostSource) : null,
+    costSourceUrl: cited ? getCitedSourceUrl(data.sources) : null,
     nonprofitOrg: getNonprofitProducer(data),
     designation: show.status === 'closed' && data.designation && data.designation !== 'TBD' ? data.designation : null,
     noCostReason: status.availability === 'nocost' ? noCostReason(data) : null,
