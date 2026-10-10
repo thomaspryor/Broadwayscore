@@ -373,6 +373,7 @@ async function refreshTodayTixDates(data, updates, opts = {}) {
     if (!show.todaytixId) continue;
     const cat = showCategory(show);
     if (cat === 'broadway') continue; // Broadway has better closing date sources
+    if (cat === 'tour') continue; // BRO-4876: tour lifecycle comes from the tour schedule; auto-close here writes no closingDate
 
     if (seenTtIds.has(String(show.todaytixId))) {
       // Show seen on TodayTix — clear any staleness tracking

@@ -24,3 +24,9 @@ test('audit flags a closed tour that still has future stops', () => {
   const out = checkTourData({ show, parent: null, schedule, today: '2026-10-08' });
   assert.ok(out.some(f => f.code === 'closed-tour-has-future-stops'));
 });
+
+test('Show Score URL discovery skips tours (they only find the parent page)', () => {
+  const { canDiscoverShowScoreUrl } = require('./showscore-status-eligibility.js');
+  assert.equal(canDiscoverShowScoreUrl({ category: 'tour' }), false);
+  assert.equal(canDiscoverShowScoreUrl({ category: 'broadway' }), true);
+});
