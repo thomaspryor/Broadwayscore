@@ -424,12 +424,13 @@
       "title": "Scoring Audit has stopped updating (190 days)",
       "firstSeen": "2026-08-03T13:05:40.014Z",
       "incidentOpenedAt": "2026-08-03T13:05:40.014Z",
-      "lastSeen": "2026-10-09T18:26:49.470Z",
+      "lastSeen": "2026-10-10T17:24:32.972Z",
       "lastNotifiedAt": "2026-10-09T18:26:49.470Z",
       "lastSurfacedAt": "2026-10-09T18:26:49.470Z",
       "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "scheduled-email-count:2026-08-02": {
       "status": "open",
@@ -1627,12 +1628,13 @@
       "title": "Scrape WestEndTheatre has stopped updating (68 days)",
       "firstSeen": "2026-08-24T13:26:25.716Z",
       "incidentOpenedAt": "2026-08-24T13:26:25.716Z",
-      "lastSeen": "2026-10-09T18:26:49.479Z",
+      "lastSeen": "2026-10-10T17:24:32.985Z",
       "lastNotifiedAt": "2026-10-09T18:26:49.479Z",
       "lastSurfacedAt": "2026-10-09T18:26:49.479Z",
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "arm-yield:outlet:nysr": {
       "status": "resolved",
@@ -13149,6 +13151,19 @@
       "lastSeen": "2026-10-10T16:52:29.525Z",
       "lastNotifiedAt": "2026-10-10T16:52:29.525Z",
       "lastSurfacedAt": "2026-10-10T16:52:29.525Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "arm-yield:workflow:collect-we-ob-reviews": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Collect WE/OB Reviews has stopped updating (3 days)",
+      "firstSeen": "2026-10-10T17:24:32.977Z",
+      "incidentOpenedAt": "2026-10-10T17:24:32.977Z",
+      "lastSeen": "2026-10-10T17:24:32.977Z",
+      "lastNotifiedAt": "2026-10-10T17:24:32.977Z",
+      "lastSurfacedAt": "2026-10-10T17:24:32.977Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

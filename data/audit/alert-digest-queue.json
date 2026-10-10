@@ -318,5 +318,26 @@
       }
     ],
     "queuedAt": "2026-10-10T16:52:29.525Z"
+  },
+  {
+    "conditionKey": "arm-yield:workflow:collect-we-ob-reviews",
+    "title": "Collect WE/OB Reviews has stopped updating (3 days)",
+    "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since 2026-10-07, 3 days ago. It has never before gone quiet for more than 1 day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 3d, from 24 productive day(s) / 24 item(s) between 2026-09-08 and 2026-10-07.)",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Last yield",
+        "value": "2026-10-07"
+      },
+      {
+        "name": "Silent for",
+        "value": "3 days (threshold 3)"
+      }
+    ],
+    "queuedAt": "2026-10-10T17:24:32.977Z"
   }
 ]
