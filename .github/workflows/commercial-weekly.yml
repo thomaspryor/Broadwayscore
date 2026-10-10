@@ -30,7 +30,7 @@ on:
         type: boolean
         default: false
       max_shows:
-        description: 'Max shows for deep research (~102 Broadway shows in scope, ~$0.09/show)'
+        description: 'Max shows for deep research (~102 Broadway shows in scope, about $0.35/show measured on gpt-5.4-mini, BRO-4990)'
         required: false
         type: number
         default: 80
@@ -258,7 +258,7 @@ jobs:
           ARGS="--all-tbd --queue"
           # Default 80 covers the typical Broadway scope (~102 shows, priority-
           # sorted: queued > 6-month > recoup-window 56-182d > shuffled tail).
-          # At ~$0.09/show average, 80 shows ≈ $7 — well under the $50 cap.
+          # Measured ~$0.35/show on gpt-5.4-mini (BRO-4990 blind test); the $50 --budget cap stops a run before 80 shows if needed.
           ARGS="$ARGS --max-shows=${{ inputs.max_shows || '80' }}"
           ARGS="$ARGS --budget=${{ inputs.budget || '50' }}"
           # Default in bash, not a GHA || expression — the expression coerces
@@ -266,14 +266,9 @@ jobs:
           TB="${{ inputs.time_budget_min }}"
           [ -z "$TB" ] && TB=100
           ARGS="$ARGS --time-budget-min=$TB"
-          # BRO-123: o4-mini-deep-research (and the o3 variant) were shut down
-          # by OpenAI on 2026-07-23 — every call 404s ("Model not found"),
-          # verified live against /v1/models. No deep-research successor model
-          # exists in this account as of 2026-08-26. --model=o4-mini is the
-          # script's already-implemented non-deep fallback (web_search_preview
-          # + reasoning.effort=high, synchronous) — see researchShowWithOpenAI
-          # in deep-research-commercial.js.
-          ARGS="$ARGS --model=o4-mini"
+          # No --model: the script's DEFAULT_MODEL is the single source
+          # (BRO-4990; o4-mini shuts down 2026-10-23, the script fails
+          # loudly on a retired model and warns 30 days ahead).
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"
           fi
@@ -439,6 +434,14 @@ jobs:
         # continue-on-error: true — audit is read-only/informational; a failure
         # shouldn't block the deploy. Audit findings surface in the daily digest.
         run: node scripts/audit-commercial-data.js
+        continue-on-error: true
+
+      - name: Commercial coverage by season
+        # BRO-4990: read-only weekly health. Coverage % of 2020+ Broadway
+        # shows (8+ week runs) per season, plus researched shows awaiting
+        # human review. The script appends its own table to the step summary.
+        if: always()
+        run: node scripts/commercial-coverage-report.js
         continue-on-error: true
 
       - name: Update commercial model drift history

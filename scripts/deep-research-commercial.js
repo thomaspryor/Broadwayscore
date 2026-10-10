@@ -2,8 +2,8 @@
 /**
  * deep-research-commercial.js
  *
- * Uses OpenAI Deep Research models (o4-mini-deep-research) with background
- * polling to research Broadway show commercial/financial data. Outputs to
+ * Uses an OpenAI reasoning model with web search (default gpt-5.4-mini) to
+ * research Broadway show commercial/financial data. Outputs to
  * commercial-pending-review.json for auto-apply or human review.
  *
  * Lifecycle triggers: pre-opening, 6-month re-research, closing.
@@ -17,7 +17,7 @@
  *   --all-tbd            Research all TBD + uncovered open Broadway shows
  *   --max-shows=N        Max shows per run (default 10)
  *   --budget=N           Max spend in dollars (default 15)
- *   --model=MODEL        o4-mini-deep (default), o3-deep, o4-mini, o3
+ *   --model=MODEL        gpt-5.4-mini (default), o4-mini (shut down 2026-10-23), o3
  *   --dry-run            Preview without writing files
  *   --queue              Also consume data/commercial-research-queue.json
  *   --force              Reset attempt counter and re-research
@@ -31,6 +31,8 @@ const path = require('path');
 const { normalizeSources } = require('./lib/commercial-sources');
 const { createRunBudget } = require('./lib/run-budget');
 const { isCommercialScope, DESIGNATION_CRITERIA } = require('./lib/commercial-scope');
+const { filterUncoveredClosedShows, COMMERCIAL_RESEARCH_FLOOR } = require('./lib/commercial-queue');
+const { holdForBackfill, carryHumanReviewHold } = require('./lib/commercial-apply-gate');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
 const { buildShowKeyIndex, resolveCommercialSlug } = require('./lib/commercial-slug-key');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
@@ -60,7 +62,12 @@ for (const arg of args) {
   }
 }
 
-const DRY_RUN = flags['dry-run'] === true;
+// --out=FILE (BRO-4990): sandbox run. Calls the API exactly like a live run
+// but writes every result (with its cost) to FILE only; pending review,
+// commercial.json, progress, spend and cost logs are left untouched. Used
+// for blind accuracy tests against shows whose outcome is already known.
+const OUT_PATH = typeof flags['out'] === 'string' ? path.resolve(flags['out']) : null;
+const DRY_RUN = flags['dry-run'] === true || !!OUT_PATH;
 const SHOW_LIST = flags['shows'] ? flags['shows'].split(',') : null;
 const ALL_TBD = flags['all-tbd'] === true;
 const MAX_SHOWS = parseInt(flags['max-shows']) || 10;
@@ -82,7 +89,11 @@ const MODEL_MAP = {
   'o4-mini': 'o4-mini',
   'o3': 'o3',
 };
-const MODEL_INPUT = flags['model'] || 'o4-mini-deep';
+// The ONE default model: workflows omit --model so a model retirement is a
+// one-line change here (BRO-4990). o4-mini-deep and o3-deep were shut down
+// 2026-07-23 and o4-mini goes 2026-10-23 (see MODEL_SHUTDOWNS).
+const DEFAULT_MODEL = 'gpt-5.4-mini';
+const MODEL_INPUT = flags['model'] || DEFAULT_MODEL;
 const MODEL = MODEL_MAP[MODEL_INPUT] || MODEL_INPUT;
 const IS_DEEP_RESEARCH = MODEL.includes('deep-research');
 
@@ -179,20 +190,9 @@ function initializeMetadata() {
 // OpenAI Responses API with web search + Deep Research background polling
 // ---------------------------------------------------------------------------
 
-// Cost estimates per 1M tokens
-const COST_TABLE = {
-  'o4-mini': { input: 1.10, output: 4.40 },
-  'o3': { input: 2.00, output: 8.00 },
-  'o4-mini-deep-research': { input: 2.00, output: 8.00 },
-  'o3-deep-research': { input: 10.00, output: 40.00 },
-};
-
-function estimateCost(usage, model) {
-  const rates = COST_TABLE[model] || COST_TABLE['o4-mini-deep-research'];
-  const inputCost = (usage.input_tokens || 0) / 1e6 * rates.input;
-  const outputCost = (usage.output_tokens || 0) / 1e6 * rates.output;
-  return inputCost + outputCost;
-}
+// Cost from the response's usage fields + web search call fees (BRO-4990).
+const { researchCallCost, countSearchCalls, modelShutdownStatus } = require('./lib/research-cost');
+const { isSelfUrl, findSelfReferences } = require('./lib/commercial-self-cite');
 
 /**
  * Poll a background response until completed or timeout.
@@ -267,6 +267,7 @@ Try these in order. Move to the next source only if the previous didn't have wha
 - Only report verified data. Null for anything you can't confirm.
 - ${venue && /samuel j\. friedman|helen hayes|todd haimes|vivian beaumont/i.test(venue) ? 'This venue is a nonprofit theater — use "Nonprofit" designation.' : ''}
 - If this is a revival, only report data about THIS production, not prior ones.
+- Never use or cite broadwayscorecard.com: it publishes this same dataset, so citing it is circular.
 - Capitalization in dollars (15000000 not 15). Weekly costs in dollars (650000 not 650).
 
 ## ${DESIGNATION_CRITERIA}
@@ -296,7 +297,10 @@ Write a BRIEF summary (3-5 sentences max) of what you found, then a JSON block:
   const body = {
     model,
     input: prompt,
-    max_output_tokens: 16000,
+    // Includes reasoning tokens. At 16k, gpt-5.4-mini at high effort ran out
+    // mid-answer (status "incomplete", no JSON) after spending ~$0.32 on
+    // searches (BRO-4990 blind test); the extra headroom costs at most ~$0.07.
+    max_output_tokens: 32000,
   };
 
   if (isDeep) {
@@ -337,7 +341,6 @@ Write a BRIEF summary (3-5 sentences max) of what you found, then a JSON block:
   }
 
   const usage = result.usage || {};
-  const cost = estimateCost(usage, model);
 
   // Extract text output
   let outputText = '';
@@ -351,10 +354,9 @@ Write a BRIEF summary (3-5 sentences max) of what you found, then a JSON block:
     }
   }
 
-  // Count web searches performed
-  const searchCount = (result.output || []).filter(i =>
-    i.type === 'web_search_call' || i.type === 'web_search'
-  ).length;
+  // Count web searches performed; each one is billed on top of tokens.
+  const searchCount = countSearchCalls(result.output);
+  const cost = researchCallCost(usage, model, searchCount).total;
 
   // Parse JSON from output — try direct parse first, then extract from markdown
   let analysis = null;
@@ -383,7 +385,20 @@ Write a BRIEF summary (3-5 sentences max) of what you found, then a JSON block:
     }
   }
 
-  return { analysis, usage, cost, searchCount, status: result.status };
+  return { analysis, usage, cost, searchCount, status: result.status, selfRefs: findSelfReferences(result.output) };
+}
+
+/**
+ * --out mode: checkpoint one show's result into OUT_PATH (no-op otherwise).
+ * Rewritten after every show so a crash loses at most the call in flight.
+ */
+function writeOutResult(slug, record) {
+  if (!OUT_PATH) return;
+  let out = { model: MODEL, startedAt: new Date().toISOString(), shows: {} };
+  try { out = JSON.parse(fs.readFileSync(OUT_PATH, 'utf8')); } catch (e) { /* first write */ }
+  out.shows[slug] = { ...record, researchedAt: new Date().toISOString() };
+  out.updatedAt = new Date().toISOString();
+  fs.writeFileSync(OUT_PATH, JSON.stringify(out, null, 2) + '\n');
 }
 
 // ---------------------------------------------------------------------------
@@ -459,6 +474,18 @@ async function main() {
     process.exit(1);
   }
 
+  // BRO-4990: fail loudly on a retired model instead of logging 0 results.
+  const shutdown = modelShutdownStatus(MODEL, new Date().toISOString().slice(0, 10));
+  if (shutdown.status === 'dead') {
+    console.error(`ERROR: OpenAI shut down ${MODEL} on ${shutdown.shutdown}. Pick a live --model (see scripts/lib/research-cost.js MODEL_SHUTDOWNS).`);
+    process.exit(1);
+  }
+  if (shutdown.status === 'warn') {
+    const msg = `${MODEL} shuts down ${shutdown.shutdown} (${shutdown.daysLeft} days). Switch the research model before then.`;
+    console.warn(`::warning::${msg}`);
+    if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `\n> ⚠️ ${msg}\n`);
+  }
+
   // Step 1: Initialize metadata for existing entries (idempotent)
   initializeMetadata();
 
@@ -511,6 +538,17 @@ async function main() {
   const showKeyIndex = buildShowKeyIndex(allShows);
   const toSlug = (t) => resolveCommercialSlug(t, null, showKeyIndex).slug;
   const queuedTriggers = {};
+  // BRO-4990 backfill: closed shows (opened since the 2020 floor, ran 8+
+  // weeks) with no commercial.json record. However they get targeted (weekly
+  // sweep, --shows dispatch), their research goes to pending review ONLY,
+  // flagged requiresHumanReview: no TBD stub in commercial.json and no bulk
+  // auto-apply (owner plan 2026-10-10: no commercial.json writes alongside
+  // BRO-4989, launch freeze on /biz). Attempts are counted on the pending row.
+  const backfillSlugSet = new Set(
+    filterUncoveredClosedShows(allShows, commercial, new Date().toISOString().slice(0, 10)).map(toSlug)
+  );
+  let pendingAtStart = {};
+  try { pendingAtStart = JSON.parse(fs.readFileSync(PENDING_PATH, 'utf8')).shows || {}; } catch { /* none yet */ }
 
   // Consume queue file if requested (highest priority)
   if (USE_QUEUE) {
@@ -552,11 +590,19 @@ async function main() {
       .map(([k]) => k);
 
     // Open Broadway shows without any commercial data
-    const uncoveredSlugs = allShows
+    const uncoveredOpenSlugs = allShows
       .filter(s => s && s.status && ['open', 'previews'].includes(s.status)
         && isCommercialScope(s)
         && !commShows[s.slug])
       .map(s => s.slug);
+    // BRO-4990 self-healing sweep: closed shows that no event trigger ever
+    // queued. One research pass each; a show already in pending review waits
+    // for a human instead of being re-researched every Saturday.
+    const uncoveredClosedSlugs = [...backfillSlugSet].filter(slug => !pendingAtStart[slug]);
+    if (uncoveredClosedSlugs.length > 0) {
+      console.log(`Uncovered closed shows (since ${COMMERCIAL_RESEARCH_FLOOR}, 8+ weeks): ${uncoveredClosedSlugs.length}`);
+    }
+    const uncoveredSlugs = [...new Set([...uncoveredOpenSlugs, ...uncoveredClosedSlugs])];
 
     // 6-month eligible shows (TBD, Broadway only, researched 6+ months ago, still open)
     sixMonthSlugs = Object.entries(commShows)
@@ -692,7 +738,7 @@ async function main() {
 
   for (const slug of targetSlugs) {
     // Skip if already completed in this batch
-    if (progress.completed.includes(slug)) {
+    if (!OUT_PATH && progress.completed.includes(slug)) {
       console.log(`  ${slug} — already completed this batch`);
       continue;
     }
@@ -720,8 +766,15 @@ async function main() {
 
     // Check attempt limit (unless --force)
     const existingEntry = commShows[slug];
-    if (!FORCE && existingEntry && (existingEntry.researchAttempts || 0) >= MAX_RESEARCH_ATTEMPTS) {
+    if (!FORCE && !OUT_PATH && existingEntry && (existingEntry.researchAttempts || 0) >= MAX_RESEARCH_ATTEMPTS) {
       console.log(`  ${slug} — max research attempts (${existingEntry.researchAttempts}) reached, skipping`);
+      continue;
+    }
+
+    const isBackfill = backfillSlugSet.has(slug);
+    const priorPending = pendingAtStart[slug];
+    if (isBackfill && !FORCE && !OUT_PATH && priorPending && (priorPending.researchAttempts || 0) >= MAX_RESEARCH_ATTEMPTS) {
+      console.log(`  ${slug} — max backfill research attempts (${priorPending.researchAttempts}) reached, skipping`);
       continue;
     }
 
@@ -743,7 +796,7 @@ async function main() {
       const maxPollMs = timeBudget.enabled
         ? Math.min(1800000, Math.max(300000, timeBudget.remainingMs()))
         : 1800000;
-      const { analysis, usage, cost, searchCount, status } = await researchShowWithOpenAI(show, MODEL, maxPollMs);
+      const { analysis, usage, cost, searchCount, status, selfRefs = [] } = await researchShowWithOpenAI(show, MODEL, maxPollMs);
 
       // Handle timeout — don't count as attempt, don't record cost
       if (status === 'timeout') {
@@ -769,9 +822,36 @@ async function main() {
       });
 
       console.log(`    ${searchCount} web searches, $${cost.toFixed(4)}, status: ${status}`);
+      const costRecord = {
+        usd: cost,
+        searches: searchCount,
+        inputTokens: usage.input_tokens || 0,
+        cachedTokens: (usage.input_tokens_details && usage.input_tokens_details.cached_tokens) || 0,
+        outputTokens: usage.output_tokens || 0,
+      };
 
       if (!analysis) {
         console.log(`    No structured data returned`);
+        writeOutResult(slug, { _noData: true, _cost: costRecord, model: MODEL });
+        // BRO-4990: record a backfill no-data pass on the pending row so the
+        // Saturday sweep (which skips shows already in pending) does not pay
+        // to re-research it every week. noData rows are never appliable
+        // (gate.isReviewHold); delete the row to allow another pass.
+        if (isBackfill && !OUT_PATH) {
+          pending.shows[slug] = holdForBackfill({
+            title: show.title,
+            slug,
+            openingDate: show.openingDate || null,
+            noData: true,
+            confidence: 'low',
+            model: MODEL,
+            researchedAt: new Date().toISOString(),
+            notes: 'Backfill research found no usable commercial data. Delete this row to allow another research pass.',
+          }, priorPending, { reset: FORCE });
+          pending.generatedAt = new Date().toISOString();
+          if (!DRY_RUN) fs.writeFileSync(PENDING_PATH, JSON.stringify(pending, null, 2) + '\n');
+          console.log(`    Backfill: no data, recorded on the pending row (attempt ${pending.shows[slug].researchAttempts}) so the weekly sweep skips it`);
+        }
         continue;
       }
 
@@ -788,7 +868,23 @@ async function main() {
       // even when the prompt specifies allowed values. Normalize before storing in
       // pending so downstream apply steps receive valid data.
       if (Array.isArray(analysis.sources)) {
-        analysis.sources = normalizeSources(analysis.sources);
+        // Our own site republishes this dataset: a source pointing at it is
+        // circular, never evidence.
+        const selfCited = analysis.sources.filter(s => isSelfUrl(s && s.url));
+        if (selfCited.length > 0) {
+          console.log(`    Dropped ${selfCited.length} self-cited broadwayscorecard.com source(s)`);
+          analysis._selfCitedDropped = selfCited.length;
+        }
+        analysis.sources = normalizeSources(analysis.sources.filter(s => !selfCited.includes(s)));
+      }
+      // An answer that read or cited our own site may have copied our figures
+      // even where it lists other sources: it is not evidence, so it never
+      // auto-applies and a blind test counts it as contaminated.
+      if (selfRefs.length > 0 || analysis._selfCitedDropped) {
+        console.log(`    Self-reference: answer touched broadwayscorecard.com (${selfRefs.length} url(s)); confidence -> low, held for review`);
+        analysis._selfReferenced = selfRefs.length ? selfRefs.slice(0, 5) : true;
+        analysis.confidence = 'low';
+        analysis.requiresHumanReview = true;
       }
 
       // SAFETY: Never auto-set recouped:true — always flag for review
@@ -810,7 +906,7 @@ async function main() {
       // canonical source of "what's on disk right now" — a stray raw read
       // here would silently diverge from the `commercial` object this loop
       // is about to save back.
-      if (guardian) {
+      if (guardian && !OUT_PATH) { // sandbox: keep raw answers so a blind test scores the model, not the guardian
         const freshCommercial = loadCommercial();
         const existingShow = (freshCommercial.shows || {})[slug];
         if (existingShow) {
@@ -841,15 +937,27 @@ async function main() {
 
       console.log(`    ${analysis.designation || 'TBD'} | cap: ${analysis.capitalization ? '$' + (analysis.capitalization / 1e6).toFixed(1) + 'M' : '?'} | confidence: ${analysis.confidence}`);
 
+      if (OUT_PATH) {
+        writeOutResult(slug, { ...analysis, _cost: costRecord });
+        progress.completed.push(slug);
+        continue;
+      }
+
+      if (isBackfill) {
+        holdForBackfill(analysis, priorPending, { reset: FORCE });
+        console.log(`    Backfill: pending review only (attempt ${analysis.researchAttempts}), held for human review; commercial.json untouched`);
+      }
+
       // Merge into pending (don't overwrite existing entries from other research runs)
-      pending.shows[slug] = analysis;
+      pending.shows[slug] = carryHumanReviewHold(pending.shows[slug], analysis);
       pending.generatedAt = new Date().toISOString();
 
       // Update research tracking in commercial.json AFTER successful write
       // Only increment after confirmed file write (per plan: increment after success AND confirmed write)
       if (!DRY_RUN) {
         fs.writeFileSync(PENDING_PATH, JSON.stringify(pending, null, 2) + '\n');
-
+      }
+      if (!DRY_RUN && !isBackfill) {
         // Now increment attempt counter in commercial.json — mutate the SAME
         // `commercial` object loaded via loadCommercial() above (not a fresh
         // re-read into a new object) so saveCommercial()'s per-call snapshot
@@ -877,6 +985,7 @@ async function main() {
     } catch (e) {
       console.error(`    Error: ${e.message}`);
       costLog.push({ slug, error: e.message, timestamp: new Date().toISOString() });
+      writeOutResult(slug, { _error: e.message.slice(0, 300), model: MODEL });
     }
 
     // Rate limit between shows (longer for deep research)

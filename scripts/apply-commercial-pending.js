@@ -184,6 +184,12 @@ async function main() {
       continue;
     }
 
+    if (gate.requiresHumanReview(entry) && !SINGLE_SHOW) {
+      console.log(`  👀 "${showId}" — backfill research, needs human review (use --show=${showId})`);
+      skipped++;
+      continue;
+    }
+
     // Confidence filter
     if (!meetsConfidenceThreshold(entry)) {
       console.log(`  ⏭️  "${showId}" — confidence ${entry.confidence || 'unknown'} below threshold ${MIN_CONFIDENCE}`);

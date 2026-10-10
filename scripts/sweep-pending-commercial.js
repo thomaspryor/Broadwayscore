@@ -88,7 +88,7 @@ function daysAgo(isoString) {
 
 // Shared with apply-commercial-pending.js — same `_recoupedClaim || recouped`
 // semantics. Don't redefine inline; reuse so the rules stay in lockstep.
-const { hasRecoupedClaim } = require('./lib/commercial-apply-gate');
+const { hasRecoupedClaim, requiresHumanReview } = require('./lib/commercial-apply-gate');
 const { isCommercialScope, resolveScopeShow } = require('./lib/commercial-scope');
 
 function classifyEntry(slug, entry, showsBySlug) {
@@ -103,6 +103,13 @@ function classifyEntry(slug, entry, showsBySlug) {
 
   if (hasRecoupedClaim(entry)) {
     return { action: 'report', reason: 'recouped-claim — needs human review' };
+  }
+
+  // BRO-4990: held backfill rows (and their noData attempt records) wait for
+  // a human. Archiving one would drop its attempt count and the Saturday
+  // sweep would re-research the show at full price every ~180 days.
+  if (requiresHumanReview(entry)) {
+    return { action: 'keep', reason: 'held for human review (backfill)' };
   }
 
   const ageDays = daysAgo(entry.researchedAt);
@@ -261,4 +268,6 @@ function main() {
   }
 }
 
-main();
+if (require.main === module) main();
+
+module.exports = { classifyEntry };

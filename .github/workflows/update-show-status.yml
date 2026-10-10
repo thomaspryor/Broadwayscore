@@ -1670,7 +1670,6 @@ jobs:
                 ref: 'main',
                 inputs: {
                   shows: '${{ steps.filter.outputs.opened_shows }}',
-                  model: 'o4-mini',
                   budget: '20',
                   max_shows: '3'
                 }

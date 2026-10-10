@@ -2027,6 +2027,9 @@ on:
       - 'scripts/scrape-westendtheatre-roundups.js'
       - 'scripts/recover-explicit-ratings.js'
       - 'scripts/deep-research-commercial.js'
+      # BRO-4990: unit-tested commercial backfill scripts (tests/unit/*.test.mjs)
+      - 'scripts/score-commercial-blind-test.js'
+      - 'scripts/sweep-pending-commercial.js'
       - 'scripts/sweep-we-aggregators.js'
       - 'scripts/sweep-we-aggregators-outlet-edition.test.mjs'
       # BRO-3887: outlet-serp's --time-budget-min guard + the run-id-keyed-cache

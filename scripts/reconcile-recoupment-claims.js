@@ -234,7 +234,7 @@ async function main() {
   pending.shows = pending.shows || {};
   commercial.shows = commercial.shows || {};
 
-  let entries = Object.entries(pending.shows).filter(([, e]) => gate.hasRecoupedClaim(e) && !gate.isReviewHold(e));
+  let entries = Object.entries(pending.shows).filter(([, e]) => gate.hasRecoupedClaim(e) && !gate.isReviewHold(e) && !gate.requiresHumanReview(e)); // BRO-4990: backfill waits for a human
   if (SINGLE_SHOW) {
     entries = entries.filter(([key, e]) => key === SINGLE_SHOW || resolveSlug(key, e) === SINGLE_SHOW);
   }

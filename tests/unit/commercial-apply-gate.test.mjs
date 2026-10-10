@@ -9,6 +9,14 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 
 const gate = require('../../scripts/lib/commercial-apply-gate');
+
+describe('requiresHumanReview (BRO-4990 backfill hold)', () => {
+  it('holds only entries flagged by the backfill', () => {
+    assert.equal(gate.requiresHumanReview({ requiresHumanReview: true, confidence: 'high' }), true);
+    assert.equal(gate.requiresHumanReview({ confidence: 'high' }), false);
+    assert.equal(gate.requiresHumanReview({ requiresHumanReview: 'yes' }), false);
+  });
+});
 const { TRUSTED_RECOUPMENT_HOSTS } = require('../../scripts/lib/trusted-recoupment-domains');
 
 const SCRAPER = 'recoupment-announcement-scraper';
@@ -409,5 +417,29 @@ describe('commercial-apply-gate', () => {
       const result = gate.buildCommercialEntry(claim, { designation: 'Windfall', recouped: false }, { isClaimAutoApply: true });
       assert.equal(result.designation, 'Windfall');
     });
+  });
+});
+
+describe('backfill hold helpers (BRO-4990)', () => {
+  it('holdForBackfill flags the row and counts attempts from the prior row', () => {
+    const e = gate.holdForBackfill({ designation: 'Flop' }, { researchAttempts: 2 });
+    assert.deepEqual([e.requiresHumanReview, e.backfill, e.researchAttempts], [true, gate.BACKFILL_TAG, 3]);
+    assert.equal(gate.holdForBackfill({}, undefined).researchAttempts, 1);
+    assert.equal(gate.holdForBackfill({}, { researchAttempts: 3 }, { reset: true }).researchAttempts, 1);
+  });
+
+  it('carryHumanReviewHold keeps a held row held when a writer replaces it', () => {
+    const prev = { requiresHumanReview: true, backfill: 'BRO-4990', researchAttempts: 2 };
+    const next = gate.carryHumanReviewHold(prev, { designation: 'Flop', confidence: 'high' });
+    assert.deepEqual([next.requiresHumanReview, next.backfill, next.researchAttempts], [true, 'BRO-4990', 2]);
+    assert.equal(gate.requiresHumanReview(next), true);
+    // An unheld prior row adds nothing.
+    assert.equal(gate.carryHumanReviewHold({ confidence: 'low' }, { designation: 'Flop' }).requiresHumanReview, undefined);
+    assert.equal(gate.carryHumanReviewHold(undefined, { designation: 'Flop' }).requiresHumanReview, undefined);
+  });
+
+  it('a noData attempt record is never appliable', () => {
+    assert.equal(gate.isReviewHold({ noData: true, requiresHumanReview: true }), true);
+    assert.equal(gate.isReviewHold({ designation: 'Flop' }), false);
   });
 });

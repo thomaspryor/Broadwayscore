@@ -9,15 +9,13 @@ on:
         type: string
         default: 'all-tbd'
       model:
-        description: 'Model: o4-mini (default; deep-research variants shut down by OpenAI 2026-07-23), o4-mini-deep, o3-deep, o3'
+        description: 'Model (default gpt-5.4-mini; retired models are refused by the script)'
         required: false
         type: choice
         options:
-          - 'o4-mini-deep'
-          - 'o3-deep'
-          - 'o4-mini'
+          - 'gpt-5.4-mini'
           - 'o3'
-        default: 'o4-mini'
+        default: 'gpt-5.4-mini'
       budget:
         description: 'Max spend in dollars'
         required: false
@@ -40,9 +38,10 @@ on:
         type: string
         default: 'all-tbd'
       model:
+        description: 'Empty = the script default (DEFAULT_MODEL)'
         required: false
         type: string
-        default: 'o4-mini'
+        default: ''
       budget:
         required: false
         type: number
@@ -98,7 +97,11 @@ jobs:
             ARGS="$ARGS --shows=$INPUT_SHOWS"
           fi
 
-          ARGS="$ARGS --model=${{ inputs.model || 'o4-mini' }}"
+          # Empty model = the script's DEFAULT_MODEL (single source, BRO-4990)
+          INPUT_MODEL="${{ inputs.model }}"
+          if [ -n "$INPUT_MODEL" ]; then
+            ARGS="$ARGS --model=$INPUT_MODEL"
+          fi
           ARGS="$ARGS --budget=${{ inputs.budget || '50' }}"
           ARGS="$ARGS --max-shows=${{ inputs.max_shows || '10' }}"
 
@@ -128,7 +131,7 @@ jobs:
           else
             git commit -m "data: Deep Research commercial results (pending review)
 
-          Model: ${{ inputs.model || 'o4-mini' }}
+          Model: ${{ inputs.model || 'script default' }}
           Shows: ${{ inputs.shows }}
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
@@ -141,7 +144,7 @@ jobs:
         run: |
           echo "## Deep Research Commercial Results" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Model:** ${{ inputs.model || 'o4-mini' }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Model:** ${{ inputs.model || 'script default' }}" >> $GITHUB_STEP_SUMMARY
           echo "**Budget:** \$${{ inputs.budget || '50' }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           if [ -f data/commercial-pending-review.json ]; then
@@ -163,7 +166,7 @@ jobs:
                 console.log('| ' + (s.title || id) + ' | ' + (s.designation || 'TBD') + ' | ' + cap + ' | ' + rec + ' | ' + (s.confidence || '?') + ' |');
               }
               console.log('');
-              console.log('> Review pending file, then apply: node scripts/deep-research-commercial.js --apply');
+              console.log('> Review pending file, then apply one show at a time: node scripts/apply-commercial-pending.js --show=SLUG');
             " >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo "Could not generate summary" >> $GITHUB_STEP_SUMMARY
           else
             echo "No pending results file generated." >> $GITHUB_STEP_SUMMARY

@@ -20,6 +20,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { isCommercialScope, DESIGNATION_CRITERIA } = require('./lib/commercial-scope');
+const { carryHumanReviewHold } = require('./lib/commercial-apply-gate');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
@@ -337,14 +338,14 @@ async function main() {
     if (!DRY_RUN) {
       // Use slug as key (not id) — commercial.json is keyed by slug
       const pendingKey = show.slug || show.id;
-      pending.shows[pendingKey] = {
+      pending.shows[pendingKey] = carryHumanReviewHold(pending.shows[pendingKey], {
         title: show.title,
         slug: show.slug,
         openingDate: show.openingDate,
         status: show.status,
         ...result,
         researchedAt: new Date().toISOString(),
-      };
+      });
       pending.generatedAt = new Date().toISOString();
       fs.writeFileSync(PENDING_PATH, JSON.stringify(pending, null, 2));
 

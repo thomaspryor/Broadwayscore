@@ -391,6 +391,7 @@ tests/unit/autonomous-acceptance-recheck.test.mjs
 tests/unit/award-category-canonical.test.mjs
 tests/unit/award-score-link-slug.test.mjs
 tests/unit/awards-person-winner-pairing.test.mjs
+tests/unit/backfill-hold-coverage.test.mjs
 tests/unit/backfill-html-override-rename.test.mjs
 tests/unit/backfill-lbo-help-safety.test.mjs
 tests/unit/backfill-unknown-critics-locked.test.mjs
@@ -507,6 +508,7 @@ tests/unit/commercial-queue.test.mjs
 tests/unit/commercial-rss-poll-data-commit.test.mjs
 tests/unit/commercial-rss-poll-push-timeout.test.mjs
 tests/unit/commercial-rss-poll.test.mjs
+tests/unit/commercial-self-cite.test.mjs
 tests/unit/commercial-source-verify.test.mjs
 tests/unit/commercial-strict-gate-dedupe-order.test.mjs
 tests/unit/commercial-weekly-push-timeout.test.mjs
@@ -1012,6 +1014,7 @@ tests/unit/rescore-actionable-depth.test.mjs
 tests/unit/rescore-flagging.test.mjs
 tests/unit/rescore-lifecycle.test.mjs
 tests/unit/rescore-queue-depth.test.mjs
+tests/unit/research-cost.test.mjs
 tests/unit/resend-we-audience-routing.test.mjs
 tests/unit/restore-protected-fields-cv-clear.test.mjs
 tests/unit/restore-protected-fields-outlet-registry.test.mjs
@@ -1069,6 +1072,7 @@ tests/unit/same-url-byline-dedup.test.mjs
 tests/unit/sample.test.mjs
 tests/unit/sanitize-venue-guard.test.mjs
 tests/unit/sanity.test.mjs
+tests/unit/score-commercial-blind-test.test.mjs
 tests/unit/score-conversion-rules.test.mjs
 tests/unit/score-extractor-prepass.test.mjs
 tests/unit/score-extractors.test.mjs
@@ -1169,6 +1173,7 @@ tests/unit/submit-review-form-validation.test.mjs
 tests/unit/supabase-schema-expectations.test.mjs
 tests/unit/suppression-logic.test.mjs
 tests/unit/sweep-false-positive-wrong-production.test.mjs
+tests/unit/sweep-pending-commercial.test.mjs
 tests/unit/sync-changed-files.test.mjs
 tests/unit/syndication-pairs-shared.test.mjs
 tests/unit/t1t2-gap-card-terminal-states.test.mjs

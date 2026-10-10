@@ -43,8 +43,43 @@ function hasRecoupedClaim(entry) {
 // existing entry with the hold's sparse placeholder fields. The reviewer
 // verifies per entry.notes, edits commercial.json directly, then deletes
 // the hold. (Sprint 2 ship-check, 2026-07-13.)
+// BRO-4990: a backfill pass that found nothing (noData) is the same: a
+// record of the attempt with no figures, never appliable.
 function isReviewHold(entry) {
-  return entry._reviewHold === true;
+  return entry._reviewHold === true || entry.noData === true;
+}
+
+// BRO-4990: backfilled research (older closed shows the event triggers never
+// queued) is unreviewed LLM output about shows that never had a record. It
+// must not reach live /biz in bulk (launch freeze, owner plan 2026-10-10), so
+// it applies only one show at a time via --show=SLUG, after a human checks it.
+function requiresHumanReview(entry) {
+  return entry.requiresHumanReview === true;
+}
+
+const BACKFILL_TAG = 'BRO-4990';
+
+// Mark a fresh research result as held backfill and count the attempt on the
+// pending row (backfill shows have no commercial.json record to count on).
+// `reset` mirrors --force, which restarts the count like the non-backfill path.
+function holdForBackfill(entry, prior, { reset = false } = {}) {
+  entry.requiresHumanReview = true;
+  entry.backfill = BACKFILL_TAG;
+  entry.researchAttempts = reset ? 1 : ((prior && prior.researchAttempts) || 0) + 1;
+  return entry;
+}
+
+// Every writer that REPLACES a pending row (instead of spreading the old one)
+// must pass it through here, so a re-research never silently drops the hold
+// and lets the weekly bulk apply publish unreviewed backfill.
+// tests/unit/backfill-hold-coverage.test.mjs enforces this.
+function carryHumanReviewHold(prev, next) {
+  if (prev && prev.requiresHumanReview === true && next.requiresHumanReview !== true) {
+    next.requiresHumanReview = true;
+    if (prev.backfill && !next.backfill) next.backfill = prev.backfill;
+    if (prev.researchAttempts && !next.researchAttempts) next.researchAttempts = prev.researchAttempts;
+  }
+  return next;
 }
 
 // Recouped-claim entries normally require manual --show=SLUG. This bypass lets
@@ -202,6 +237,10 @@ function buildCommercialEntry(entry, existing, opts = {}) {
 }
 
 module.exports = {
+  requiresHumanReview,
+  BACKFILL_TAG,
+  holdForBackfill,
+  carryHumanReviewHold,
   applyFigureEvidence,
   CONFIDENCE_ORDER,
   cleanNullish,

@@ -154,3 +154,77 @@ describe('addToQueue', () => {
     assert.equal(next.triggers.a, 'new-show');
   });
 });
+
+// BRO-4990: self-healing sweep + weekly coverage report.
+const {
+  COMMERCIAL_RESEARCH_FLOOR,
+  weeksRun,
+  filterUncoveredClosedShows,
+  computeCoverageBySeason,
+} = require('../../scripts/lib/commercial-queue');
+
+const bw = (o) => ({ category: 'broadway', status: 'closed', ...o });
+
+describe('filterUncoveredClosedShows (BRO-4990 sweep)', () => {
+  const TODAY = '2026-10-10';
+
+  it('selects a closed 2021 show with no record that ran 8+ weeks', () => {
+    const shows = [bw({ slug: 'company-2021', id: 'company-2021', openingDate: '2021-12-09', closingDate: '2022-07-31' })];
+    assert.deepEqual(filterUncoveredClosedShows(shows, { shows: {} }, TODAY), ['company-2021']);
+  });
+
+  it('never selects a show that opened before the owner-approved 2020 floor', () => {
+    assert.equal(COMMERCIAL_RESEARCH_FLOOR, '2020-01-01');
+    const shows = [bw({ slug: 'old', openingDate: '2019-12-31', closingDate: '2021-01-01' })];
+    assert.deepEqual(filterUncoveredClosedShows(shows, { shows: {} }, TODAY), []);
+  });
+
+  it('skips runs under 8 weeks, shows with any record (slug or id key), non-Broadway, and running shows', () => {
+    const shows = [
+      bw({ slug: 'short', openingDate: '2022-01-01', closingDate: '2022-02-01' }),
+      bw({ slug: 'has-slug', openingDate: '2022-01-01', closingDate: '2022-12-01' }),
+      bw({ slug: 'slug-x', id: 'has-id-2022', openingDate: '2022-01-01', closingDate: '2022-12-01' }),
+      bw({ slug: 'ob', category: 'off-broadway', openingDate: '2022-01-01', closingDate: '2022-12-01' }),
+      bw({ slug: 'running', status: 'open', openingDate: '2022-01-01' }),
+    ];
+    const commercial = { shows: { 'has-slug': { designation: 'TBD' }, 'has-id-2022': { designation: 'Flop' } } };
+    assert.deepEqual(filterUncoveredClosedShows(shows, commercial, TODAY), []);
+  });
+});
+
+describe('weeksRun', () => {
+  it('measures opening to closing, or to today while running; null before opening', () => {
+    assert.equal(weeksRun({ openingDate: '2022-01-01', closingDate: '2022-01-15' }, '2026-01-01'), 2);
+    assert.equal(weeksRun({ openingDate: '2026-01-01' }, '2026-01-29'), 4);
+    assert.equal(weeksRun({ openingDate: '2026-02-01' }, '2026-01-29'), null);
+  });
+});
+
+describe('computeCoverageBySeason (BRO-4990 weekly health)', () => {
+  it('buckets by opening-date season and counts eligible / covered / resolved', () => {
+    const shows = [
+      bw({ slug: 'a', openingDate: '2021-10-01', closingDate: '2022-06-01' }), // 2021-2022, uncovered
+      bw({ slug: 'b', openingDate: '2021-11-01', closingDate: '2022-06-01' }), // covered, TBD
+      bw({ slug: 'c', openingDate: '2022-08-01', closingDate: '2023-06-01' }), // 2022-2023, resolved
+      bw({ slug: 'd', openingDate: '2022-08-01', closingDate: '2022-08-20' }), // too short: in scope, not eligible
+    ];
+    const commercial = { shows: { b: { designation: 'TBD' }, c: { designation: 'Flop' } } };
+    const rows = computeCoverageBySeason(shows, commercial, '2026-10-10');
+    assert.deepEqual(rows.map(r => [r.season, r.inScope, r.eligible, r.covered, r.resolved, r.uncovered]), [
+      ['2021-2022', 2, 2, 1, 0, ['a']],
+      ['2022-2023', 2, 1, 1, 1, []],
+    ]);
+  });
+
+  it('counts a researched show waiting in pending review separately from uncovered', () => {
+    const shows = [bw({ slug: 'a', openingDate: '2021-10-01', closingDate: '2022-06-01' })];
+    const [row] = computeCoverageBySeason(shows, { shows: {} }, '2026-10-10', { pendingShows: { a: { requiresHumanReview: true } } });
+    assert.deepEqual([row.covered, row.pendingReview, row.uncovered], [0, ['a'], []]);
+  });
+
+  it('counts a noData pass as still uncovered', () => {
+    const shows = [bw({ slug: 'a', openingDate: '2021-10-01', closingDate: '2022-06-01' })];
+    const [row] = computeCoverageBySeason(shows, { shows: {} }, '2026-10-10', { pendingShows: { a: { requiresHumanReview: true, noData: true } } });
+    assert.deepEqual([row.pendingReview, row.uncovered], [[], ['a']]);
+  });
+});

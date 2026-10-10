@@ -130,6 +130,8 @@ try {
 }
 const { runMain } = require('./lib/run-main');
 const { buildShowKeyIndex, resolveCommercialSlug } = require('./lib/commercial-slug-key');
+const { holdForBackfill, carryHumanReviewHold } = require('./lib/commercial-apply-gate');
+const { filterUncoveredClosedShows } = require('./lib/commercial-queue');
 
 // ---------------------------------------------------------------------------
 // Utility
@@ -523,6 +525,11 @@ function applyPending() {
     if (!resolved) {
       console.warn(`  ⚠️ "${showId}" — no slug resolvable from shows.json; keying by "${commercialKey}" (validate-data will flag)`);
     }
+    if (require('./lib/commercial-apply-gate').requiresHumanReview(entry)) {
+      console.log(`  👀 "${showId}" — backfill research, needs human review (apply-commercial-pending.js --show=${showId})`);
+      skipped++;
+      continue;
+    }
     if (commercial.shows[commercialKey]) {
       console.log(`  ⏭️  "${showId}" already in commercial.json as "${commercialKey}" — skipping`);
       skipped++;
@@ -665,6 +672,16 @@ async function main() {
   }
 
   console.log(`  Targets: ${targets.length} shows`);
+  // BRO-4990 launch freeze: a closed 2020+ show with no commercial.json record
+  // is backfill. Its research is held for human review (apply --show=SLUG),
+  // whichever script found it, so the weekly bulk apply cannot publish it.
+  const backfillIds = new Set();
+  for (const s of filterUncoveredClosedShows(shows, commercial, new Date().toISOString().slice(0, 10))) {
+    if (s.id) backfillIds.add(s.id);
+    if (s.slug) backfillIds.add(s.slug);
+  }
+  let sharedPendingAtStart = {};
+  try { sharedPendingAtStart = JSON.parse(fs.readFileSync(PENDING_PATH, 'utf8')).shows || {}; } catch { /* none yet */ }
   if (SHOW_LIST) console.log(`  Shows: ${SHOW_LIST.join(', ')}`);
   if (TOP_HISTORICAL) console.log(`  Top ${TOP_HISTORICAL} by all-time gross`);
   if (SKIP_SEC) console.log(`  SEC EDGAR: SKIPPED`);
@@ -713,14 +730,19 @@ async function main() {
     const result = await researchShow(show, grosses);
 
     if (result) {
-      pending.shows[show.id] = {
+      const prior = sharedPendingAtStart[show.id] || sharedPendingAtStart[show.slug];
+      pending.shows[show.id] = carryHumanReviewHold(prior, {
         title: show.title,
         slug: show.slug,
         openingDate: show.openingDate,
         status: show.status,
         ...result,
         researchedAt: new Date().toISOString(),
-      };
+      });
+      if (backfillIds.has(show.id) || backfillIds.has(show.slug)) {
+        holdForBackfill(pending.shows[show.id], prior);
+        console.log(`  👀 ${show.title}: backfill (no commercial record), held for human review`);
+      }
       succeeded++;
 
       // Log result
@@ -756,7 +778,15 @@ async function main() {
 
   // Write pending file
   if (!DRY_RUN && Object.keys(pending.shows).length > 0) {
-    fs.writeFileSync(PENDING_PATH, JSON.stringify(pending, null, 2) + '\n');
+    // Merge into the shared pending file. Writing this run's progress file
+    // over it wiped every other script's rows (held backfill included);
+    // push-core-data's per-slug merge only restored them when a concurrent
+    // push happened to conflict (BRO-4990 ship-check).
+    let shared = { shows: {} };
+    try { shared = JSON.parse(fs.readFileSync(PENDING_PATH, 'utf8')); } catch { /* none yet */ }
+    shared.shows = { ...(shared.shows || {}), ...pending.shows };
+    shared.generatedAt = new Date().toISOString();
+    fs.writeFileSync(PENDING_PATH, JSON.stringify(shared, null, 2) + '\n');
     console.log(`\n📋 Pending review file written to ${PENDING_PATH}`);
     console.log(`   Review the data, then run: node scripts/batch-commercial-research.js --apply`);
 
