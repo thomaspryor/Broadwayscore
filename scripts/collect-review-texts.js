@@ -99,7 +99,7 @@ process.on('unhandledRejection', (reason, promise) => {
 });
 
 // Score extraction for original scores
-const { extractScore, extractDesignation, extractNYTCriticsPick, OUTLET_VERIFIED_SOURCES, OUTLET_EXTRACTORS } = require('./lib/score-extractors');
+const { extractScore, extractDesignation, extractNYTCriticsPick, OUTLET_VERIFIED_SOURCES, OUTLET_EXTRACTORS, publishesNoCriticRating } = require('./lib/score-extractors');
 const { findBoldHeaderAnchors, loadShows: loadSplitterShows } = require('./lib/multi-show-splitter');
 const { applyMultiShowFanoutToFile } = require('./lib/multi-show-review-fanout');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
@@ -4863,7 +4863,10 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       // Don't mark pending if we were trying to replace an SS score (keep SS as fallback)
       // Don't mark pending for noScoreExtractor outlets (text-only, no star ratings to find)
       const outletExtractor = OUTLET_EXTRACTORS[(data.outletId || review.outletId || '').toLowerCase()];
-      if (!outletExtractor || outletExtractor.name !== 'noScoreExtractor') {
+      // BRO-3139: london-theatre now has a dedicated extractor, but a page without a rating (about
+      // 7% of reviews, plus non-review pages) is still text-only: nothing for a retry to find.
+      if ((!outletExtractor || outletExtractor.name !== 'noScoreExtractor')
+          && !publishesNoCriticRating(data.outletId || review.outletId || '')) {
         data.scoreExtractionPending = true;
       }
     }

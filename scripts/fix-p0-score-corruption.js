@@ -100,7 +100,7 @@ for (const show of shows) {
       // it is something else wearing a critic score's clothes (londontheatre.co.uk
       // relays a Show-Score audience aggregate in its JSON-LD). Checked first
       // because the outlet verdict beats every source-shaped heuristic below.
-      if (publishesNoCriticRating(data.outletId)) {
+      if (publishesNoCriticRating(data.outletId, data)) {
         tier = '1d';
         stats.tier1d++;
       }
