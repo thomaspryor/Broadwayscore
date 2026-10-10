@@ -1,12 +1,39 @@
 {
-  "generatedAt": "2026-10-10T00:56:59.436Z",
+  "generatedAt": "2026-10-10T02:47:37.295Z",
   "summary": {
-    "total": 16,
-    "high": 6,
-    "medium": 6,
+    "total": 20,
+    "high": 8,
+    "medium": 8,
     "low": 4
   },
   "collisions": [
+    {
+      "url": "https://www.standard.co.uk/culture/theatre/blood-of-my-blood-review-b1300132.html",
+      "normalizedUrl": "https://standard.co.uk/culture/theatre/blood-of-my-blood-review-b1300132.html",
+      "candidates": [
+        {
+          "showId": "_superseded-misattributed",
+          "file": "blood-of-my-blood-west-end-2026--standard--nick-curtis.json",
+          "publishDate": "2026-10-09",
+          "openingDate": null,
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "standard"
+        },
+        {
+          "showId": "blood-of-my-blood-west-end-2026",
+          "file": "standard--nick-curtis.json",
+          "publishDate": "2026-10-09",
+          "openingDate": "2026-10-07",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "standard"
+        }
+      ],
+      "suggestedWinner": "blood-of-my-blood-west-end-2026",
+      "reason": "publishDate 2026-10-09 is 2 days from blood-of-my-blood-west-end-2026 opening (2026-10-07)",
+      "confidence": "high"
+    },
     {
       "url": "https://www.theguardian.com/stage/2026/oct/07/as-you-like-it-review-rsc",
       "normalizedUrl": "https://theguardian.com/stage/2026/oct/07/as-you-like-it-review-rsc",
@@ -141,6 +168,33 @@
       "suggestedWinner": "christmas-carol-goes-wrong-apollo-west-end-2025",
       "reason": "publishDate 2025-12-14 is 0 days from christmas-carol-goes-wrong-apollo-west-end-2025 opening (2025-12-14)",
       "confidence": "high"
+    },
+    {
+      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29339",
+      "normalizedUrl": "https://londontheatrereviews.co.uk/post.cfm",
+      "candidates": [
+        {
+          "showId": "from-the-heart-west-end-2026",
+          "file": "london-theatre-reviews--ltr.json",
+          "publishDate": "2026-10-09",
+          "openingDate": "2026-10-09",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "london-theatre-reviews"
+        },
+        {
+          "showId": "rent-west-end-2026",
+          "file": "london-theatre-reviews--ltr.json",
+          "publishDate": "2026-10-09",
+          "openingDate": "2026-10-08",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "london-theatre-reviews"
+        }
+      ],
+      "suggestedWinner": "from-the-heart-west-end-2026",
+      "reason": "publishDate 2026-10-09 is 0 days from from-the-heart-west-end-2026 but also 1 days from rent-west-end-2026",
+      "confidence": "medium"
     },
     {
       "url": "https://inews.co.uk/culture/arts/giant-review-john-lithgow-tyrant-roald-dahl-blistering-antisemitism-play-3298295",
@@ -438,6 +492,60 @@
       "suggestedWinner": "the-score-regional-2026",
       "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
       "confidence": "low"
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "normalizedUrl": "https://timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "candidates": [
+        {
+          "showId": "to-kill-a-mockingbird-west-end-2022",
+          "file": "timeout-london--andrzej-lukowski.json",
+          "publishDate": "2022-03-31",
+          "openingDate": "2022-03-10",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        },
+        {
+          "showId": "to-kill-a-mockingbird-west-end-2026",
+          "file": "timeout-london--andrzej-lukowski.json",
+          "publishDate": "2023-02-07",
+          "openingDate": "2026-06-30",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        }
+      ],
+      "suggestedWinner": "to-kill-a-mockingbird-west-end-2022",
+      "reason": "publishDate 2022-03-31 is 21 days from to-kill-a-mockingbird-west-end-2022 opening (2022-03-10); next closest is 1239 days from to-kill-a-mockingbird-west-end-2026",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.wsj.com/articles/trouble-in-mind-alice-childress-roundabout-theater-company-lachanze-chuck-cooper-diana-princess-of-wales-david-bryan-joe-di-pietr-jeanne-de-waal-11637272134",
+      "normalizedUrl": "https://wsj.com/articles/trouble-in-mind-alice-childress-roundabout-theater-company-lachanze-chuck-cooper-diana-princess-of-wales-david-bryan-joe-di-pietr-jeanne-de-waal-11637272134",
+      "candidates": [
+        {
+          "showId": "trouble-in-mind-2021",
+          "file": "wsj--terry-teachout.json",
+          "publishDate": "November 18th, 2021",
+          "openingDate": "2021-11-18",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "wsj"
+        },
+        {
+          "showId": "trouble-in-mind-west-end-2021",
+          "file": "wsj--terry-teachout.json",
+          "publishDate": "November 18th, 2021",
+          "openingDate": "2021-12-02",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "wsj"
+        }
+      ],
+      "suggestedWinner": "trouble-in-mind-2021",
+      "reason": "publishDate November 18th, 2021 is 0 days from trouble-in-mind-2021 but also 14 days from trouble-in-mind-west-end-2021",
+      "confidence": "medium"
     }
   ]
 }
