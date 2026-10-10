@@ -102,7 +102,8 @@ export function getRecoupmentDisplayMode(
  * The model display guard (BRO-4989, scripts/lib/model-display-guard.js),
  * applied once where the site loads commercial.json. Hidden (fewer than 12
  * played weeks, central outside [-25, 150], or two independent estimates
- * disagree by more than 25 points): modelRecoupmentPct becomes null and modelDisplayHold says
+ * disagree by more than 25 points, or the range is more than 60 points wide):
+ * modelRecoupmentPct becomes null and modelDisplayHold says
  * why. Shown: negative values become 0 and modelBelowCosts is set, so the
  * negative number never reaches a page.
  */
@@ -147,6 +148,7 @@ export function getModelHoldLabel(
   if (commercial.modelBelowCosts) return 'Losing money so far';
   if (hold === 'few-weeks') return 'Too early to estimate';
   if (hold === 'estimates-disagree') return 'Estimates disagree';
+  if (hold === 'too-uncertain') return 'Too uncertain to estimate';
   return 'Estimate unavailable';
 }
 

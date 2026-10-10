@@ -33,12 +33,16 @@ describe('truthClass', () => {
   test('an estimated date beside a reported recoupment stays reported', () => {
     assert.equal(cls({ recouped: true, recoupedSource: 'New York Theatre Guide: earned back its cost "faster than any other musical in history." No public report gives the date; March 1997 is our estimate.' }), 'reported');
   });
-  test('failed rows use the record source types', () => {
-    const flop = (types) => ({ recouped: false, designation: 'Flop', sources: types.map((type) => ({ type })) });
-    assert.equal(cls(flop(['reddit', 'trade'])), 'reported');
-    assert.equal(cls(flop(['sec'])), 'reported');
-    assert.equal(cls(flop(['reddit', 'manual'])), 'inference');
-    assert.equal(cls(flop([])), 'inference');
+  test('a failed row is reported only when a hard source states the loss', () => {
+    const flop = (notes, types = ['trade', 'sec']) => ({ recouped: false, designation: 'Flop', notes, sources: types.map((type) => ({ type })) });
+    assert.equal(cls(flop("NYT article explicitly stated show 'will not recoup its producers' $15 million investment'")), 'reported');
+    assert.equal(cls(flop('Closed without recouping its $19.5M capitalization (Broadway Journal).')), 'reported');
+    assert.equal(cls(flop('Forbes reported it among shows with major losses.')), 'reported');
+    // A cited capitalization is not a cited outcome, whatever the source types.
+    assert.equal(cls(flop('$25M capitalization per SEC filing. Closed after 3 months.')), 'inference');
+    assert.equal(cls(flop('Closed without recouping (Reddit grosses analysis).')), 'inference');
+    assert.equal(cls(flop('Likely lost most of its money.')), 'inference');
+    assert.equal(cls(flop(undefined)), 'inference');
   });
   test('an explicit field on the record wins over the classifier', () => {
     const t = groundTruth({ ...pct('Reddit grosses analysis'), estimatedRecoupmentTruthClass: 'reported' }, closed);

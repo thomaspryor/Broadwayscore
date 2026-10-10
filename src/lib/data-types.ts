@@ -477,7 +477,7 @@ export interface ShowCommercial {
   // Model-calculated recoupment fields (from merge-model-recoupment.js)
   modelRecoupmentPct?: [number, number, number] | null; // [pessimistic, central, optimistic]
   /** Set when the display guard hid the model bar (BRO-4989): why. */
-  modelDisplayHold?: 'no-model' | 'few-weeks' | 'out-of-bounds' | 'estimates-disagree';
+  modelDisplayHold?: 'no-model' | 'few-weeks' | 'out-of-bounds' | 'estimates-disagree' | 'too-uncertain';
   /** The model central is below 0 (lost money running so far): shown as 0% with "losing money so far". */
   modelBelowCosts?: boolean;
   /** Server-only: the range the display guard hid, for the At Risk rule. toPublicShowCommercial drops it. */
