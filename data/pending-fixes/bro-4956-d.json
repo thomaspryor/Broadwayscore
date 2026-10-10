@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4956-d",
   "planId": "b7e1c4a9-2f63-4d58-9a0e-6c8d3f1e7b25",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-10T04:05:00.000Z",
   "submitter": {
     "name": null,
@@ -63,5 +63,38 @@
         "description": "Clear the venue-name false positive"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-10T04:47:54.343Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rent-west-end-2026/londontheatre1--terry-eastham.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rent-west-end-2026/londontheatre1--terry-eastham.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rent-west-end-2026/londontheatre1--terry-eastham.json rejectionReason: \"wrong_production\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rent-west-end-2026/musical-theatre-review--unknown.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rent-west-end-2026/musical-theatre-review--unknown.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rent-west-end-2026/musical-theatre-review--unknown.json rejectionReason: \"wrong_production\" -> null"
+    }
+  ]
 }
