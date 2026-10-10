@@ -22,7 +22,7 @@ const https = require('https');
 const { extractStatusFromHtml } = require('./lib/show-score-status');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 const { hasBookableEvidence } = require('./lib/todaytix-reopen-guard');
-const { countByShow, isStuckInPreviews, reviewsPredateRun, openSignalFromReviews, openSignalFromDiscovery, chooseOpeningDateBackfill, estimatePressNight } = require('./lib/opening-signal');
+const { countByShow, isStuckInPreviews, reviewsPredateRun, openingDateStillAhead, openSignalFromReviews, openSignalFromDiscovery, chooseOpeningDateBackfill, estimatePressNight } = require('./lib/opening-signal');
 const { previewsFallbackOpening, PREVIEWS_FALLBACK_GRACE_DAYS } = require('./lib/opening-date-fallback');
 const { openingDateSourceHint } = require('./lib/opening-date-sources');
 const { decideAnnouncedPromotion, blockAnnouncedCatchUp, typeForListedShow } = require('./lib/announced-promotion');
@@ -834,8 +834,9 @@ async function updateShowStatuses() {
     // openingDate is null and there's no ShowScore URL (rodeo/the-last-man/small,
     // 2026-06). The threshold equals the site's score-display threshold, so this
     // only ever flips shows that are already past the "enough reviews" bar.
-    // Runs only when the earlier date-based checks didn't already change status.
-    if (!changes.status) {
+    // Runs only when the earlier date-based checks didn't already change status,
+    // and never before a known future openingDate (Check 2c would revert it).
+    if (!changes.status && !openingDateStillAhead(show, isDateReached)) {
       const entry = reviewCounts[show.id];
       // Two independent open-signals, in priority order:
       //  - score-threshold: enough scored reviews to display a score

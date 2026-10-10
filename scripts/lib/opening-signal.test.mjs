@@ -11,6 +11,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
+  openingDateStillAhead,
   MIN_REVIEWS_BY_CATEGORY,
   MIN_REVIEWS_CURATED_HISTORICAL,
   T3_ONLY_EXTRA_REVIEWS,
@@ -402,4 +403,14 @@ test('press night ignores reviews dated before previews (mixed old + new run)', 
   assert.deepEqual(chooseOpeningDateBackfill(show, dates, reached('2026-10-20')), { date: '2026-10-15', source: 'review-derived-press-night' });
   assert.equal(chooseOpeningDateBackfill(show, Array(5).fill('2016-07-31'), reached('2026-10-20')), null);
   assert.deepEqual(openSignalFromReviews(show, { count: 8, dates }, reached('2026-10-20')), { date: '2026-10-15', source: 'review-open-signal' });
+});
+
+test('openingDateStillAhead: a known future opening blocks review-driven open (BRO-4953)', () => {
+  const isReached = (d) => d <= '2026-10-10';
+  // The Heart: previews 2026-10-08, opening 2026-10-29, four dateless wrong-show reviews.
+  assert.equal(openingDateStillAhead({ openingDate: '2026-10-29', previewsStartDate: '2026-10-08' }, isReached), true);
+  assert.equal(openingDateStillAhead({ openingDate: '2026-10-10' }, isReached), false);
+  // Null openingDate is exactly the case Check 2d exists for: never blocked.
+  assert.equal(openingDateStillAhead({ openingDate: null }, isReached), false);
+  assert.equal(openingDateStillAhead(null, isReached), false);
 });
