@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-10T08:06:44.799Z",
+  "timestamp": "2026-10-10T08:14:40.680Z",
   "stats": {
-    "totalReviews": 53672,
-    "alreadyFlagged": 19748,
-    "dateGuardCatches": 265,
-    "directorMismatch": 1662,
+    "totalReviews": 53677,
+    "alreadyFlagged": 19753,
+    "dateGuardCatches": 264,
+    "directorMismatch": 1669,
     "tvFilmSignals": 1556,
-    "londonSignals": 1772,
+    "londonSignals": 1770,
     "offBroadwaySignals": 512,
     "yearMismatch": 128,
     "noPublishDate": 5856
@@ -515,20 +515,6 @@
       "score": 77,
       "publishDate": "2022-11-21",
       "url": "https://www.nytimes.com/2022/11/21/theater/christmas-carol-review.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
-        }
-      ]
-    },
-    {
-      "showId": "a-christmas-carol-west-end-2020",
-      "file": "nytimes--maya-phillips.json",
-      "score": 78,
-      "publishDate": "2020-12-18",
-      "url": "https://www.nytimes.com/2020/12/18/theater/christmas-carol-review-andrew-lincoln.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -10133,15 +10119,201 @@
     },
     {
       "showId": "death-of-england-closing-time-west-end-2023",
+      "file": "artsdesk--aleks-sierz.json",
+      "score": 91,
+      "publishDate": "2023-10-10",
+      "url": "https://theartsdesk.com/theatre/death-england-national-theatre-review-furious-fabulous",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"clint dyer\" from death-of-england-delroy-west-end-2020"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-england-closing-time-west-end-2023",
+      "file": "british-theatre--howard-loxton.json",
+      "score": 79,
+      "publishDate": "2023-10-11",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"clint dyer\" from death-of-england-delroy-west-end-2020"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-england-closing-time-west-end-2023",
+      "file": "financialtimes--sarah-hemming.json",
+      "score": 76,
+      "publishDate": "2023-11-01",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"clint dyer\" from death-of-england-delroy-west-end-2020"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-england-closing-time-west-end-2023",
+      "file": "guardian--arifa-akbar.json",
+      "score": 56,
+      "publishDate": "2023-10-10",
+      "url": "https://www.theguardian.com/stage/article/2024/aug/29/death-of-england-closing-time-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"clint dyer\" from death-of-england-delroy-west-end-2020"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-england-closing-time-west-end-2023",
       "file": "london-theatre--matt-wolf.json",
       "score": 79,
       "publishDate": "2023-10-10",
       "url": null,
       "findings": [
         {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"clint dyer\" from death-of-england-delroy-west-end-2020"
+        },
+        {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "death-of-england-closing-time-west-end-2023",
+      "file": "londontheatre1--peter-yates.json",
+      "score": 71,
+      "publishDate": "2023-10-10",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"clint dyer\" from death-of-england-delroy-west-end-2020"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-england-closing-time-west-end-2023",
+      "file": "observer--susannah-clapp.json",
+      "score": 90,
+      "publishDate": "2023-10-15",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"clint dyer\" from death-of-england-delroy-west-end-2020"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-england-closing-time-west-end-2023",
+      "file": "standard--nick-curtis.json",
+      "score": 85,
+      "publishDate": "2023-10-10",
+      "url": "https://www.standard.co.uk/culture/theatre/death-of-england-closing-time-national-theatre-review-b1112452.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"clint dyer\" from death-of-england-delroy-west-end-2020"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-england-closing-time-west-end-2023",
+      "file": "telegraph--marianka-swain.json",
+      "score": 65,
+      "publishDate": "2023-10-10",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"clint dyer\" from death-of-england-delroy-west-end-2020"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-england-closing-time-west-end-2023",
+      "file": "thereviewshub--maryam-philpott.json",
+      "score": 91,
+      "publishDate": "2023-10-10",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"clint dyer\" from death-of-england-delroy-west-end-2020"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-england-closing-time-west-end-2023",
+      "file": "thestage--siobhan-murphy.json",
+      "score": 77,
+      "publishDate": "2023-10-10",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"clint dyer\" from death-of-england-delroy-west-end-2020"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-england-closing-time-west-end-2023",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 67,
+      "publishDate": "2023-10-12",
+      "url": "https://www.timeout.com/london/theatre/death-of-england-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"clint dyer\" from death-of-england-delroy-west-end-2020"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-england-closing-time-west-end-2023",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": "2023-10-10",
+      "url": "https://www.thetimes.co.uk/edition/times2/death-of-england-review-rafe-spall-delivers-a-monologue-of-passion-humour-and-fury-jtbdbnrwq",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"clint dyer\" from death-of-england-delroy-west-end-2020"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-england-closing-time-west-end-2023",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 84,
+      "publishDate": "2023-10-16",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"clint dyer\" from death-of-england-delroy-west-end-2020"
         }
       ]
     },
@@ -19121,6 +19293,20 @@
     },
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
+      "file": "city-am--adam-bloodworth.json",
+      "score": null,
+      "publishDate": "2026-10-09",
+      "url": "https://www.cityam.com/into-the-woods-london-review-magical-overwhelming-meta-musical/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "jolienstheatrediary--jolien.json",
       "score": 79,
       "publishDate": "2026-10-08",
@@ -19263,6 +19449,19 @@
           "severity": "MEDIUM",
           "detail": "Published 277d before show (2025-12-19 vs 2026-09-22)"
         },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
+      "file": "plays-international--unknown.json",
+      "publishDate": "2026-10-09",
+      "url": "https://playsinternational.org.uk/into-the-woods-noel-coward-theatre/",
+      "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -20192,118 +20391,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "jersey-boys-west-end-2021",
-      "file": "british-theatre--vera-liber.json",
-      "score": 89,
-      "publishDate": "2021-08-19",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"des mcanuff\" from jersey-boys-2005"
-        }
-      ]
-    },
-    {
-      "showId": "jersey-boys-west-end-2021",
-      "file": "london-theatre--marianka-swain.json",
-      "score": 80,
-      "publishDate": "2021-08-18",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"des mcanuff\" from jersey-boys-2005"
-        }
-      ]
-    },
-    {
-      "showId": "jersey-boys-west-end-2021",
-      "file": "standard--lizzie-akita.json",
-      "score": 85,
-      "publishDate": "2021-08-18",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"des mcanuff\" from jersey-boys-2005"
-        }
-      ]
-    },
-    {
-      "showId": "jersey-boys-west-end-2021",
-      "file": "telegraph--claire-allfree.json",
-      "score": 76,
-      "publishDate": "2021-08-18",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"des mcanuff\" from jersey-boys-2005"
-        }
-      ]
-    },
-    {
-      "showId": "jersey-boys-west-end-2021",
-      "file": "theatre-weekly--catherine-whitehouse.json",
-      "score": 90,
-      "publishDate": "2021-08-17",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"des mcanuff\" from jersey-boys-2005"
-        }
-      ]
-    },
-    {
-      "showId": "jersey-boys-west-end-2021",
-      "file": "thestage--paul-vale.json",
-      "score": 45,
-      "publishDate": "2021-08-18",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"des mcanuff\" from jersey-boys-2005"
-        }
-      ]
-    },
-    {
-      "showId": "jersey-boys-west-end-2021",
-      "file": "times-uk--clive-davis.json",
-      "score": 56,
-      "publishDate": "2021-08-18",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"des mcanuff\" from jersey-boys-2005"
-        }
-      ]
-    },
-    {
-      "showId": "jersey-boys-west-end-2021",
-      "file": "whatsonstage--alun-hood.json",
-      "score": 91,
-      "publishDate": "2021-08-18",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"des mcanuff\" from jersey-boys-2005"
         }
       ]
     },
@@ -53496,20 +53583,6 @@
       ]
     },
     {
-      "showId": "death-drop-west-end-2022",
-      "file": "london-theatre--ava-wong-davies.json",
-      "score": 63,
-      "publishDate": "2022-01-25",
-      "url": "https://www.londontheatre.co.uk/reviews/death-drop-is-playful-and-delightfully-silly-oozing-with-natural-charisma",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 38d before show (2022-01-25 vs 2022-03-04)"
-        }
-      ]
-    },
-    {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "artsdesk--unknown.json",
       "score": 61,
@@ -53912,20 +53985,6 @@
     },
     {
       "showId": "death-of-england-delroy-west-end-2020",
-      "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 85,
-      "publishDate": "2024-07-31",
-      "url": "https://www.allthatdazzles.co.uk/post/review-death-of-england-michael-delroy-sohoplace",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "death-of-england-delroy-west-end-2020",
       "file": "artsdesk--matt-wolf.json",
       "score": 78,
       "publishDate": "2020-11-05",
@@ -53949,20 +54008,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "death-of-england-delroy-west-end-2020",
-      "file": "indiependent--unknown.json",
-      "score": 83,
-      "publishDate": "2020-12-02",
-      "url": "https://www.indiependent.co.uk/theatre-review-death-of-england-delroy-national-theatre/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },

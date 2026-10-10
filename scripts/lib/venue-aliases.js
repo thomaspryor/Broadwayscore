@@ -73,6 +73,17 @@ const VENUE_ALIASES = {
     aliases: ['Trafalgar Studios', 'Whitehall Theatre'],
     note: 'Whitehall until 2004, then Trafalgar Studios; restored to single auditorium as Trafalgar Theatre in 2021.',
   },
+  'Tom Stoppard Theatre': {
+    region: 'london',
+    aliases: ["Duke of York's Theatre"],
+    note: 'Renamed 2026 for Tom Stoppard. Duke of York\'s Theatre until 2026 — reviews of the same run use either name (BRO-4956: Rent 2026).',
+  },
+  'Bush Theatre': {
+    region: 'london',
+    aliases: ['Holloway Theatre'],
+    label: 'its main auditorium is the',
+    note: 'The Holloway Theatre is the Bush Theatre\'s main house in Shepherd\'s Bush, not a different venue (BRO-4956: a Darkling review naming "the Holloway Theatre" was excluded as wrong production).',
+  },
   '@sohoplace': {
     region: 'london',
     aliases: ['Soho Place'],
@@ -225,9 +236,41 @@ function hasAliases(venue) {
 function buildVenueContext(venue, market) {
   if (!venue) return '';
   const entry = getVenueAliases(venue, market);
-  if (!entry) return venue;
-  const aliasList = entry.aliases.join(', ');
-  return `${venue} (formerly known as: ${aliasList}. ${entry.note})`;
+  if (entry) {
+    const aliasList = entry.aliases.join(', ');
+    return `${venue} (${entry.label || 'formerly known as:'} ${aliasList}. ${entry.note})`;
+  }
+  // shows.json can carry the OLD name while reviews use the new one (Rent 2026
+  // is filed at the Duke of York's, reviewed at the Tom Stoppard): name the
+  // building's other names from the alias side too.
+  const hit = _entryForAnyName(venue, market);
+  if (!hit) return venue;
+  return `${venue} (same building as ${otherVenueNames(venue, market).join(', ')}. ${hit[1].note})`;
+}
+
+function _entryForAnyName(venue, market) {
+  if (!venue) return null;
+  const region = _marketToRegion(market);
+  const n = _normalize(venue);
+  for (const [canonical, e] of Object.entries(VENUE_ALIASES)) {
+    if (region && e.region && e.region !== region) continue;
+    if (_normalize(canonical) === n || e.aliases.some((a) => _normalize(a) === n)) return [canonical, e];
+  }
+  return null;
+}
+
+/**
+ * Every OTHER name the building has (current name and aliases, minus the one
+ * given), region-filtered by market. Empty when none are known.
+ * @param {string} venue  any name of the venue
+ * @param {string} [market]
+ * @returns {string[]}
+ */
+function otherVenueNames(venue, market) {
+  const hit = _entryForAnyName(venue, market);
+  if (!hit) return [];
+  const n = _normalize(venue);
+  return [hit[0], ...hit[1].aliases].filter((x) => _normalize(x) !== n);
 }
 
 function _normalize(s) {
@@ -245,4 +288,5 @@ module.exports = {
   findCanonical,
   hasAliases,
   buildVenueContext,
+  otherVenueNames,
 };

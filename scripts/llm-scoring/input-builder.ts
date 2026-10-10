@@ -19,7 +19,7 @@ const { isOperaShow } = require('../lib/opera-prompt-context');
 const { getMarketLabel, isNonMetroMarket, getRegionalPromptContext, isTourMarket, getTourPromptContext } = require('../lib/market-label');
 // A renamed house is the same venue (BRO-4956: Rent at the Duke of York's,
 // reviewed as the Tom Stoppard Theatre, was rejected as wrong_production).
-const { otherVenueNames } = require('../lib/venue-renames');
+const { otherVenueNames } = require('../lib/venue-aliases');
 
 // ========================================
 // TYPES
@@ -191,7 +191,7 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
     // A tour's venue is "North American Tour", not a theater; the tour note
     // below says every stop counts (BRO-4211).
     const isTour = !isOpera && isTourMarket(review.category);
-    const formerly = review.venue && !isTour ? otherVenueNames(review.venue) : [];
+    const formerly = review.venue && !isTour ? otherVenueNames(review.venue, review.category) : [];
     const venueInfo = review.venue && !isTour
       ? ` at ${review.venue}${formerly.length ? ` (same building, also called ${formerly.join(' / ')})` : ''}`
       : '';

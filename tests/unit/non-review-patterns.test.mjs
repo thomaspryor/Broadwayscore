@@ -58,3 +58,15 @@ test('does NOT hard-flag a real review carrying browser-update boilerplate', () 
   const r = heuristicClassify('Please upgrade your browser. BROWSER UPDATE. The production, directed by Mike Nichols, is thrilling; the staging feels brisk and the performances riveting, earning a standing ovation.');
   assert.ok(!r || r.confidence !== 'high', 'real review with boilerplate must not be high-confidence');
 });
+
+// BRO-4956: a star rating printed under the headline is the critic's verdict.
+test('a lead star-glyph rating is a review, even when it recalls the show\'s Tony nominations', () => {
+  const text = '"Jane Eyre: A Musical" at Southwark Playhouse Elephant Louise Penn in South London ★★★★☆ 9 September 2026 This musical adaptation makes its long-awaited British premiere 30 years after its Tony nominations on Broadway.';
+  assert.equal(heuristicClassify(text), null);
+  assert.ok(heuristicClassify(text.replace('★★★★☆', '')), 'without the stars the awards signal still fires');
+});
+
+test('quoted stars in a press release do not veto it (BRO-4956 review)', () => {
+  const r = heuristicClassify('★★★★★ The Times. Press release: the producers are delighted to announce the West End transfer, for immediate release.');
+  assert.ok(r, 'press release with quoted stars still flagged');
+});
