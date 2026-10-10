@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-10T11:47:55.180Z",
-  "processed": 64,
-  "failed": 34,
-  "successRate": "65.3%",
+  "updatedAt": "2026-10-10T11:50:32.661Z",
+  "processed": 105,
+  "failed": 39,
+  "successRate": "72.9%",
   "tierBreakdown": {
-    "playwright": 50,
+    "playwright": 75,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 7,
-    "scrapingbee": 1,
+    "scrapingdog": 12,
+    "scrapingbee": 5,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 6
+    "archive": 12
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
       "t": "2026-10-10T10:30:08.144Z",
@@ -28,38 +28,72 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-10T11:40:00.162Z",
+      "t": "2026-10-10T11:23:26.108Z",
       "event": "bb-session",
-      "session": "561a1acf",
-      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+      "session": "1e1b61ad",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654250"
     },
     {
-      "t": "2026-10-10T11:40:07.736Z",
-      "event": "bb-session",
-      "session": "7089b013",
-      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
-    },
-    {
-      "t": "2026-10-10T11:42:38.289Z",
-      "event": "bb-session",
-      "session": "db08e577",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
-    },
-    {
-      "t": "2026-10-10T11:42:38.759Z",
+      "t": "2026-10-10T11:23:26.451Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-10-10T11:42:56.117Z",
+      "t": "2026-10-10T11:23:43.451Z",
       "event": "bb-session",
-      "session": "484b0850",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+      "session": "4f5d14e5",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654250"
     },
     {
-      "t": "2026-10-10T11:42:56.611Z",
+      "t": "2026-10-10T11:23:43.773Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-10T11:26:54.292Z",
+      "event": "bb-session",
+      "session": "0f51986d",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654389"
+    },
+    {
+      "t": "2026-10-10T11:26:54.684Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-10T11:27:11.661Z",
+      "event": "bb-session",
+      "session": "410eacc6",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654389"
+    },
+    {
+      "t": "2026-10-10T11:27:11.985Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-10T11:37:24.030Z",
+      "event": "bb-session",
+      "session": "4f1dc53b",
+      "url": "https://www.jonathanbaz.com/2026/09/thelma-louise-review.html"
+    },
+    {
+      "t": "2026-10-10T11:37:43.397Z",
+      "event": "bb-session",
+      "session": "b8958c38",
+      "url": "https://www.jonathanbaz.com/2026/09/thelma-louise-review.html"
+    },
+    {
+      "t": "2026-10-10T11:50:11.223Z",
+      "event": "bb-session",
+      "session": "1e3dd69e",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-10-10T11:50:19.936Z",
+      "event": "bb-session",
+      "session": "649322b7",
+      "url": "https://deadline.com/2026/08/the-whisper-man-review-robert-de-niro-adam-scott-ne"
     }
   ]
 }
