@@ -150,3 +150,19 @@ test('the v2 card is lazy-loaded, so its code stays out of every show page bundl
   }
   assert.deepEqual(offenders, [], `load BoxOfficeScorecardV2 and BoxOfficeV2Tables with next/dynamic:\n${offenders.join('\n')}`);
 });
+
+test('the held components are dynamic() from client modules only', () => {
+  // dynamic() in a server component still bundles the module into that page's
+  // chunk (the flag-off /box-office build shipped "Vs. its cost" this way).
+  const lazyImport = /dynamic\(\s*\(\)\s*=>\s*import\(\s*['"]@\/components\/(BoxOfficeScorecardV2|BoxOfficeV2Tables)['"]/;
+  const offenders = [];
+  let found = 0;
+  for (const file of ['src/app', 'src/components', 'src/lib'].flatMap((d) => walk(path.join(ROOT, d)))) {
+    const src = readFileSync(file, 'utf8');
+    if (!lazyImport.test(src)) continue;
+    found++;
+    if (!/^\s*['"]use client['"]/.test(src)) offenders.push(path.relative(ROOT, file));
+  }
+  assert.ok(found >= 2, 'expected the card and the tables to be lazy-loaded somewhere');
+  assert.deepEqual(offenders, [], `move these dynamic() calls into a 'use client' module:\n${offenders.join('\n')}`);
+});

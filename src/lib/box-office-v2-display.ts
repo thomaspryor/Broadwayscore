@@ -195,12 +195,14 @@ export type StatusCard = Pick<BoxOfficeV2Card, 'availability' | 'band' | 'closin
 export interface CostStatusCell {
   label: string;
   tone: PillTone;
-  /** 4-week status trend, null when unknown or the show has no status. */
+  /** 4-week gross trend (not the multiple's), null when unknown or the show has no status. */
   arrow: '↑' | '→' | '↓' | null;
   multiple: string | null;
   range: string | null;
   /** Sort key for "Vs. its cost": the multiple; null sorts last. */
   sortValue: number | null;
+  /** Sort key for Status: band rank, then the multiple within the band. */
+  statusSort: number;
 }
 
 const TREND_ARROW: Record<string, CostStatusCell['arrow']> = { improving: '↑', steady: '→', declining: '↓' };
@@ -210,7 +212,7 @@ export function costStatusCell(card: StatusCard | undefined): CostStatusCell {
   if (!card || card.availability === 'nocost') {
     return {
       label: card?.nonprofit ? 'Nonprofit · no estimate' : 'No estimate yet',
-      tone: 'pending', arrow: null, multiple: null, range: null, sortValue: null,
+      tone: 'pending', arrow: null, multiple: null, range: null, sortValue: null, statusSort: STATUS_SORT.nocost,
     };
   }
   const pill = costPill(card);
@@ -222,21 +224,29 @@ export function costStatusCell(card: StatusCard | undefined): CostStatusCell {
     multiple: m ? formatMultiple(m.mid) : null,
     range: m ? `${m.lo.toFixed(2)}–${m.hi.toFixed(2)}` : null,
     sortValue: m ? m.mid : null,
+    statusSort: (STATUS_SORT[card.availability === 'ok' && card.band ? card.band : card.availability] ?? 0) + (m ? Math.min(m.mid, 9.99) / 10 : 0),
   };
 }
+
+/** Status column order: the band first (a demoted at-risk show stays with its band), then the multiple breaks ties. */
+const STATUS_SORT: Record<string, number> = { 'well-above': 40, above: 30, near: 20, below: 10, closing: 3, early: 2, nocost: 1, closed: 0 };
 
 /**
  * The This week table's cost cells, keyed by slug, plus its rows with
  * "(nonprofit)" added to a rated nonprofit's title (the design's marker).
  */
-export function costTable<R extends { show: { slug: string; title: string } }>(
+export function costTable<R extends { show: { slug: string; title: string; status?: string } }>(
   rows: R[],
   bySlug: Record<string, StatusCard>,
 ): { cells: Record<string, CostStatusCell>; thisWeek: R[] } {
   const cells: Record<string, CostStatusCell> = {};
   const thisWeek = rows.map((row) => {
     const card = bySlug[row.show.slug];
-    if (!card) return row;
+    if (!card) {
+      // No commercial record: a closed show will never get an estimate, so don't promise one.
+      if (row.show.status === 'closed') cells[row.show.slug] = { ...costStatusCell(undefined), label: 'Closed', tone: 'muted', statusSort: STATUS_SORT.closed };
+      return row;
+    }
     cells[row.show.slug] = costStatusCell(card);
     return card.nonprofit && card.availability === 'ok'
       ? { ...row, show: { ...row.show, title: `${row.show.title} (nonprofit)` } }
@@ -264,8 +274,16 @@ export interface StatusCounts {
 const BAND_ORDER: CostBand[] = ['well-above', 'above', 'near', 'below'];
 
 /** "Who is covering their costs": running shows grouped by band, plus who is not rated and why. */
-export function statusCounts(cards: StatusCard[]): StatusCounts {
-  const byTitle = [...cards].sort((a, b) => a.title.localeCompare(b.title));
+export function statusCounts(
+  cards: StatusCard[],
+  unrecorded: { title: string; inPreviews: boolean }[] = [],
+): StatusCounts {
+  // Shows with no commercial record at all: in previews they are too early, otherwise unestimated.
+  const extra = unrecorded.map((u) => ({
+    availability: u.inPreviews ? 'early' : 'nocost', band: null, closingDate: null, multiple: null,
+    trend: 'unknown', nonprofit: false, title: u.title, slug: '',
+  }) as StatusCard);
+  const byTitle = [...cards, ...extra].sort((a, b) => a.title.localeCompare(b.title));
   const pick = (f: (c: StatusCard) => boolean) => byTitle.filter(f).map((c) => c.title);
   const groups = BAND_ORDER.map((band) => ({
     band,

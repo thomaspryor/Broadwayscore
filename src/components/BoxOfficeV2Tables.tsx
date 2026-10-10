@@ -20,6 +20,8 @@ const TONE_TEXT: Record<PillTone, string> = {
   pending: 'text-gray-500',
 };
 
+const TABS: ReadonlyArray<readonly ['week' | 'all', string]> = [['week', 'This week'], ['all', 'All time']];
+
 interface Props {
   thisWeek: Rows;
   allTime: Parameters<typeof AllTimeTable>[0]['data'];
@@ -37,13 +39,18 @@ export default function BoxOfficeV2Tables({ thisWeek, allTime, cells, noEstimate
       header: 'Status',
       headerClassName: 'text-left',
       cellClassName: 'text-left whitespace-nowrap',
-      sortValue: (slug) => cells[slug]?.sortValue ?? null,
+      sortValue: (slug) => (cells[slug] ?? noEstimate).statusSort,
       render: (slug) => {
         const c = cells[slug] ?? noEstimate;
         return (
           <span className={`text-sm font-bold ${TONE_TEXT[c.tone]}`}>
             {c.label}
-            {c.arrow && <span className="ml-1" aria-label={c.arrow === '↑' ? 'improving' : c.arrow === '↓' ? 'declining' : 'steady'}>{c.arrow}</span>}
+            {c.arrow && (
+              <>
+                <span className="ml-1" aria-hidden="true">{c.arrow}</span>
+                <span className="sr-only">{c.arrow === '↑' ? ', grosses rising' : c.arrow === '↓' ? ', grosses falling' : ', grosses steady'}</span>
+              </>
+            )}
           </span>
         );
       },
@@ -76,14 +83,30 @@ export default function BoxOfficeV2Tables({ thisWeek, allTime, cells, noEstimate
           {tab === 'week' ? 'This Week' : 'All-Time Box Office Leaders'}
         </h2>
         <div className="inline-flex bg-surface-overlay border border-white/5 rounded-lg p-0.5 gap-0.5" role="tablist" aria-label="Box office view">
-          <button type="button" role="tab" aria-selected={tab === 'week'} onClick={() => setTab('week')} className={tabClass(tab === 'week')}>
-            This week
-          </button>
-          <button type="button" role="tab" aria-selected={tab === 'all'} onClick={() => setTab('all')} className={tabClass(tab === 'all')}>
-            All time
-          </button>
+          {TABS.map(([key, label]) => (
+            <button
+              key={key}
+              type="button"
+              role="tab"
+              id={`box-office-tab-${key}`}
+              aria-controls="box-office-tabpanel"
+              aria-selected={tab === key}
+              tabIndex={tab === key ? 0 : -1}
+              onClick={() => setTab(key)}
+              onKeyDown={(e) => {
+                if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+                const next = key === 'week' ? 'all' : 'week';
+                setTab(next);
+                document.getElementById(`box-office-tab-${next}`)?.focus();
+              }}
+              className={tabClass(tab === key)}
+            >
+              {label}
+            </button>
+          ))}
         </div>
       </div>
+      <div role="tabpanel" id="box-office-tabpanel" aria-labelledby={`box-office-tab-${tab}`}>
       {tab === 'week' ? (
         <>
           <p className="text-gray-400 text-sm mb-4">
@@ -106,7 +129,7 @@ export default function BoxOfficeV2Tables({ thisWeek, allTime, cells, noEstimate
           />
           <p className="text-xs text-gray-500 mt-3">
             Status uses each show&apos;s average over the last 4 weeks against its weekly cost; the small range reflects how solid
-            that cost figure is. &ldquo;Below Cost&rdquo; only when the whole range is under 1×. The arrow is the 4-week trend.
+            that cost figure is. &ldquo;Below Cost&rdquo; only when the whole range is under 1×. The arrow is the 4-week trend in grosses.
           </p>
           <p className="text-xs text-gray-500 mt-1">
             <span aria-hidden="true">*</span> Capacity above 100% reflects extra performances or premium pricing reported by The Broadway League.
@@ -120,6 +143,7 @@ export default function BoxOfficeV2Tables({ thisWeek, allTime, cells, noEstimate
           <AllTimeTable data={allTime} />
         </>
       )}
+      </div>
     </section>
   );
 }

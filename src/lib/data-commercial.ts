@@ -917,7 +917,10 @@ export function getBoxOfficeV2Market(): BoxOfficeV2Market | null {
   const now = week ? weekTotal(week) : null;
   if (!week || !now) return null;
   const lastYearWeek = isoDayOffset(week, -364);
-  const prior = weekTotal(lastYearWeek);
+  // A partly backfilled year-ago week would print a confident, wrong change; Broadway's
+  // show count swings seasonally but never halves in a year, so fewer than half means incomplete.
+  const found = weekTotal(lastYearWeek);
+  const prior = found && found.shows * 2 >= now.shows ? found : null;
   return {
     week,
     gross: now.gross,
@@ -931,6 +934,8 @@ export function getBoxOfficeV2Market(): BoxOfficeV2Market | null {
 /** Everything /box-office needs, in one call the page gates on both flags. Null when nothing is rated (stale inputs). */
 export function getBoxOfficeV2Listing(tableSlugs: string[]): {
   running: ShowBoxOfficeV2[];
+  /** Running Broadway shows with no commercial record at all, so "Not rated" still names them. */
+  unrecorded: { title: string; inPreviews: boolean }[];
   bySlug: Record<string, ShowBoxOfficeV2>;
   market: BoxOfficeV2Market | null;
 } | null {
@@ -938,10 +943,13 @@ export function getBoxOfficeV2Listing(tableSlugs: string[]): {
   if (!running.length) return null;
   const bySlug: Record<string, ShowBoxOfficeV2> = {};
   for (const r of running) bySlug[r.slug] = r;
+  const unrecorded = rawShows
+    .filter((show) => show.category === 'broadway' && isRunningStatus(show.status) && !bySlug[show.slug])
+    .map((show) => ({ title: show.title, inPreviews: show.status === 'previews' }));
   for (const slug of tableSlugs) {
     if (bySlug[slug]) continue;
     const s = getShowBoxOfficeV2(slug);
     if (s) bySlug[slug] = s;
   }
-  return { running, bySlug, market: getBoxOfficeV2Market() };
+  return { running, unrecorded, bySlug, market: getBoxOfficeV2Market() };
 }

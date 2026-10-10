@@ -113,20 +113,30 @@ test('marketLine: total, change vs same week last year, show counts', () => {
 });
 
 test('costStatusCell: rated rows get multiple, range and trend; others a dash', () => {
-  assert.deepEqual(costStatusCell(card({})), { label: 'Near Cost', tone: 'near', arrow: '↓', multiple: '0.86×', range: '0.82–0.90', sortValue: 0.86 });
+  assert.deepEqual(costStatusCell(card({})), { label: 'Near Cost', tone: 'near', arrow: '↓', multiple: '0.86×', range: '0.82–0.90', sortValue: 0.86, statusSort: 20.086 });
   assert.equal(costStatusCell(card({ trend: 'unknown' })).arrow, null);
-  assert.deepEqual(costStatusCell(undefined), { label: 'No estimate yet', tone: 'pending', arrow: null, multiple: null, range: null, sortValue: null });
+  assert.deepEqual(costStatusCell(undefined), { label: 'No estimate yet', tone: 'pending', arrow: null, multiple: null, range: null, sortValue: null, statusSort: 1 });
   assert.equal(costStatusCell(card({ availability: 'nocost', band: null, multiple: null, nonprofit: true })).label, 'Nonprofit · no estimate');
   const early = costStatusCell(card({ availability: 'early', band: null }));
   assert.equal(early.label, 'Too early');
   assert.equal(early.multiple, null, 'no multiple without a status');
 });
 
-test('costTable: marks rated nonprofits, leaves unknown rows alone', () => {
-  const rows = [{ show: { slug: 'a', title: 'A' } }, { show: { slug: 'b', title: 'B' } }, { show: { slug: 'c', title: 'C' } }];
+test('costTable: marks rated nonprofits, leaves unknown rows alone, a closed unknown row says Closed', () => {
+  const rows = [{ show: { slug: 'a', title: 'A' } }, { show: { slug: 'b', title: 'B' } }, { show: { slug: 'c', title: 'C' } }, { show: { slug: 'd', title: 'D', status: 'closed' } }];
   const t = costTable(rows, { a: card({ slug: 'a', nonprofit: true }), b: card({ slug: 'b', availability: 'nocost', band: null, multiple: null, nonprofit: true }) });
-  assert.deepEqual(t.thisWeek.map((r) => r.show.title), ['A (nonprofit)', 'B', 'C']);
-  assert.deepEqual(Object.keys(t.cells), ['a', 'b']);
+  assert.deepEqual(t.thisWeek.map((r) => r.show.title), ['A (nonprofit)', 'B', 'C', 'D']);
+  assert.deepEqual(Object.keys(t.cells), ['a', 'b', 'd']);
+  assert.equal(t.cells.d.label, 'Closed', 'a closed show never gets an estimate, so it must not say "yet"');
+});
+
+test('Status sorts by band first: a demoted at-risk show stays with Near Cost whatever its multiple', () => {
+  const s = (over: Partial<Record<keyof Card, unknown>>) => costStatusCell(card(over)).statusSort;
+  const demoted = s({ band: 'near', multiple: { lo: 1.4, mid: 1.6, hi: 1.8 } });
+  assert.ok(s({ band: 'above', multiple: { lo: 1.05, mid: 1.1, hi: 1.2 } }) > demoted);
+  assert.ok(demoted > s({ band: 'near', multiple: { lo: 0.7, mid: 0.86, hi: 1.07 } }), 'multiple breaks ties inside a band');
+  assert.ok(s({ band: 'below', multiple: { lo: 0.5, mid: 0.6, hi: 0.7 } }) > s({ availability: 'early', band: null }));
+  assert.ok(s({ band: 'well-above', multiple: { lo: 9, mid: 12, hi: 15 } }) < 50, 'a huge multiple cannot jump a band');
 });
 
 test('statusCounts: four bands in order, unrated grouped by reason', () => {
@@ -138,14 +148,17 @@ test('statusCounts: four bands in order, unrated grouped by reason', () => {
   assert.deepEqual(c.groups.map((g) => [g.label, g.titles]), [['Well Above Cost', ['Ham']], ['Above Cost', []], ['Near Cost', ['MHE']], ['Below Cost', ['ST']]]);
   assert.equal(c.rated, 3);
   assert.deepEqual([c.noEstimate, c.nonprofitNoEstimate, c.early, c.closing], [['TLK'], ['RH'], ['ODC'], ['Fin']]);
+  // Shows with no commercial record at all still get named under "Not rated".
+  const u = statusCounts([card({ title: 'Ham', band: 'well-above' })], [{ title: 'AFGM', inPreviews: true }, { title: 'Open', inPreviews: false }]);
+  assert.deepEqual([u.rated, u.early, u.noEstimate], [1, ['AFGM'], ['Open']]);
 });
 
 test('real data: listing covers every running show, market matches the history file', () => {
   const listing = getBoxOfficeV2Listing([]);
   assert.ok(listing, 'listing is null (stale inputs?)');
-  const c = statusCounts(listing.running);
+  const c = statusCounts(listing.running, listing.unrecorded);
   const total = c.rated + c.noEstimate.length + c.nonprofitNoEstimate.length + c.early.length + c.closing.length;
-  assert.equal(total, listing.running.length, 'every running show lands in exactly one bucket');
+  assert.equal(total, listing.running.length + listing.unrecorded.length, 'every running show lands in exactly one bucket');
   const m = getBoxOfficeV2Market();
   assert.ok(m && m.gross > 5_000_000 && m.shows >= 10, `implausible market ${JSON.stringify(m)}`);
   if (m.lastYearWeek) assert.equal(Date.parse(m.week) - Date.parse(m.lastYearWeek), 364 * 86_400_000);

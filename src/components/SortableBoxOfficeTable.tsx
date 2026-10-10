@@ -150,7 +150,11 @@ interface ThisWeekTableProps {
   titleNote?: (slug: string) => React.ReactNode;
 }
 
-export function ThisWeekTable({ data, extraColumns = [], hideColumns = [], titleNote }: ThisWeekTableProps) {
+// Stable defaults so the live page's sort memo doesn't rerun every render.
+const NO_EXTRA_COLUMNS: ExtraColumn[] = [];
+const NO_HIDDEN_COLUMNS: BaseColumn[] = [];
+
+export function ThisWeekTable({ data, extraColumns = NO_EXTRA_COLUMNS, hideColumns = NO_HIDDEN_COLUMNS, titleNote }: ThisWeekTableProps) {
   const [sortColumn, setSortColumn] = useState<ThisWeekColumn>('gross');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const shown = (c: BaseColumn) => !hideColumns.includes(c);
@@ -287,12 +291,18 @@ export function ThisWeekTable({ data, extraColumns = [], hideColumns = [], title
                 <td className="py-3 px-2 sm:px-4 min-w-0 align-middle">
                   <Link href={`/show/${item.show.slug}`} className="flex items-center gap-3 group">
                     <ShowThumbnail show={item.show} />
-                    <span className="block min-w-0">
+                    {titleNote ? (
+                      <span className="block min-w-0">
+                        <span className="text-white group-hover:text-brand transition-colors font-medium text-sm sm:text-base leading-tight line-clamp-2">
+                          {item.show.title}
+                        </span>
+                        {titleNote(item.show.slug)}
+                      </span>
+                    ) : (
                       <span className="text-white group-hover:text-brand transition-colors font-medium text-sm sm:text-base leading-tight line-clamp-2">
                         {item.show.title}
                       </span>
-                      {titleNote?.(item.show.slug)}
-                    </span>
+                    )}
                   </Link>
                 </td>
                 <td className="py-3 px-2 sm:px-4 text-right text-white font-medium whitespace-nowrap align-middle">

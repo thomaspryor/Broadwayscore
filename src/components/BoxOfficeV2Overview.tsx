@@ -56,7 +56,7 @@ export default function BoxOfficeV2Overview({ market, counts }: { market: Market
       {counts.rated > 0 && (
         <div className={market ? 'mt-5 pt-5 border-t border-white/10' : ''}>
           <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">
-            Who is covering their costs · {counts.rated} shows with a cost estimate · last 4 weeks
+            Who is covering their costs · {counts.rated} shows rated · last 4 weeks
           </p>
           <div className="mt-3 grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-4">
             {counts.groups.map((g) => (

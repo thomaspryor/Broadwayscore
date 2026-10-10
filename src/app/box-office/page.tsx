@@ -4,14 +4,13 @@ import { getBroadwayShows } from '@/lib/data-core';
 import { getShowGrosses, getGrossesWeekEnding, getGrossesLastUpdated } from '@/lib/data-grosses';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { ThisWeekTable, AllTimeTable } from '@/components/SortableBoxOfficeTable';
-import dynamic from 'next/dynamic';
 import { featureFlags } from '@/config/feature-flags';
 import { getBoxOfficeV2Listing } from '@/lib/data-commercial';
 import { costStatusCell, costTable, marketLine, statusCounts } from '@/lib/box-office-v2-display';
 import BoxOfficeV2Overview from '@/components/BoxOfficeV2Overview';
+// Unreleased (BRO-5007): a client loader, so the tables are their own chunk and a flag-off page never fetches them.
+import BoxOfficeV2Tables from '@/components/BoxOfficeV2TablesLazy';
 
-// Unreleased (BRO-5007): its own chunk, so a flag-off page never references it.
-const BoxOfficeV2Tables = dynamic(() => import('@/components/BoxOfficeV2Tables'));
 
 export const metadata: Metadata = {
   title: 'Box Office Scorecard - Broadway Weekly Grosses & Stats',
@@ -91,7 +90,7 @@ export default function BoxOfficePage() {
   const v2 = listing
     ? {
         ...costTable(showsWithGrosses, listing.bySlug),
-        counts: statusCounts(listing.running),
+        counts: statusCounts(listing.running, listing.unrecorded),
         market: listing.market ? marketLine(listing.market) : null,
       }
     : null;
