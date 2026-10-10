@@ -35,6 +35,7 @@ const { checkIdYearDrift } = require('./lib/id-year-drift');
 // must already exist at that point (no TDZ on a crash path).
 const { commercialFileErrors, commercialFileWarnings } = require('./lib/commercial-record-checks');
 const { breakevenBelowCost } = require('./lib/commercial-breakeven');
+const { closedStillTbd, recoupedModelDisagreements } = require('./lib/commercial-consistency');
 const { nonSundayWeekKeys } = require('./lib/grosses-history-repair');
 const DRY_RUN = process.argv.includes('--dry-run');
 const dryRunLedger = { showsWrites: null, artifactWrites: [] };
@@ -3464,6 +3465,18 @@ function validateCommercialJson() {
   // write guard rescales it on the next save and Friday's model run rebuilds it.
   for (const { slug, modelBreakeven, weeklyRunningCost } of breakevenBelowCost(data.shows)) {
     warn(`commercial.json: "${slug}" modelBreakeven ${modelBreakeven} is below weeklyRunningCost ${weeklyRunningCost} (stale model; run scripts/merge-model-recoupment.js)`);
+  }
+
+  // Report-only (BRO-4985): neither blocks, both list rows for a person.
+  if (showsData && Array.isArray(showsData.shows)) {
+    const tbd = closedStillTbd(data.shows, showsData.shows);
+    if (tbd.length) {
+      warn(`commercial.json: ${tbd.length} show(s) closed 60+ days ago still designated TBD (scripts/classify-stale-closures.js settles researched ones): ${tbd.map(t => t.slug).join(', ')}`);
+    }
+  }
+  const disagree = recoupedModelDisagreements(data.shows);
+  if (disagree.length) {
+    warn(`commercial.json: ${disagree.length} show(s) where the recouped flag and the model disagree (reported flag stays; review): ${disagree.map(d => `${d.slug} (recouped=${d.recouped}, model=${d.modelRecouped}, ${d.modelDataQuality || 'n/a'} quality)`).join('; ')}`);
   }
 
   if (issues === 0) {

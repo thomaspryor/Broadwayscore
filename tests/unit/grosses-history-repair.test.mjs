@@ -32,8 +32,17 @@ test('weekKeyFor snaps a date to its week-ending Sunday', () => {
 test('deriveSeatsOffered matches Playbill (Wicked 2026-08-09, 2023-07-16)', () => {
   assert.equal(deriveSeatsOffered({ attendance: 13428, capacity: 92.89, performances: 8 }), 14456);
   assert.equal(deriveSeatsOffered({ attendance: 13831, capacity: 95.68, performances: 8 }), 14456);
-  // Sold out at exactly 100% (Wicked 2025-07-13: 1,926 seats x 8).
-  assert.equal(deriveSeatsOffered({ attendance: 15408, capacity: 100, performances: 8 }), 15408);
+  // A flat 100% is rounded and capped by Playbill, so it fits dozens of seat
+  // counts: no answer alone, the house size when known (Wicked 2025-07-13:
+  // 1,926 seats x 8).
+  assert.equal(deriveSeatsOffered({ attendance: 15408, capacity: 100, performances: 8 }), null);
+  assert.equal(deriveSeatsOffered({ attendance: 15408, capacity: 100, performances: 8 }, { seatsPerPerfHint: 1926 }), 15408);
+  // every-brilliant-thing 2026-03-15: 7,887 at 100 over 4. The old 0.05-point
+  // check accepted 1,972 a performance; the house is 986.
+  assert.equal(deriveSeatsOffered({ attendance: 7887, capacity: 100, performances: 4 }), null);
+  assert.equal(deriveSeatsOffered({ attendance: 7887, capacity: 100, performances: 4 }, { seatsPerPerfHint: 1972 }), 7888);
+  // A hint that is not one of the candidates is ignored.
+  assert.equal(deriveSeatsOffered({ attendance: 7887, capacity: 100, performances: 4 }, { seatsPerPerfHint: 986 }), null);
   // Over 100% (Sweeney Todd 2023-07-16: 1,498 x 7 = 10,486 offered, 10,561 sold).
   assert.equal(deriveSeatsOffered({ attendance: 10561, capacity: 100.72, performances: 7 }), 10486);
   assert.equal(deriveSeatsOffered({ attendance: null, capacity: 90, performances: 8 }), null);
@@ -77,6 +86,20 @@ test('repairGrossesHistory moves off-Sunday keys, fills seatsOffered and preview
   // Idempotent.
   const again = repairGrossesHistory(history);
   assert.deepEqual(again, { renamedKeys: [], seatsOfferedFilled: 0, performancesFilled: 0 });
+});
+
+test('mergeGrossesHistory folds a remote Monday key back onto our Sunday', () => {
+  const { mergeGrossesHistory } = require('../../scripts/lib/merge-grosses-history.js');
+  const ours = { weeks: { '2026-06-21': { wicked: { gross: 1, attendance: 2 } } } };
+  const remote = { weeks: {
+    '2026-06-22': { wicked: { gross: 9, attendance: 9 }, chicago: { gross: 5 } },
+    '2026-06-28': { wicked: { gross: 3 } },
+  } };
+  const { merged, stats } = mergeGrossesHistory(ours, remote);
+  assert.deepEqual(Object.keys(merged.weeks), ['2026-06-21', '2026-06-28']);
+  assert.equal(merged.weeks['2026-06-21'].wicked.gross, 1); // ours wins
+  assert.equal(merged.weeks['2026-06-21'].chicago.gross, 5);
+  assert.equal(stats.weeksRekeyed, 1);
 });
 
 test('repairGrossesHistory leaves an unprovable preview week alone', () => {

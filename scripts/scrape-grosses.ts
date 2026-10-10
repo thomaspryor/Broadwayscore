@@ -882,8 +882,13 @@ function matchRows(rows: BWWRowData[], pastWeekISO?: string, quiet: boolean = fa
 // day or two off its Sunday; never a second key beside the week (BRO-4985).
 function putHistoryWeek(history: GrossesHistory, weekISO: string, snapshot: Record<string, HistoryEntry>): string {
   repairHistory(history);
-  const key: string = findHistoryKey(Object.keys(history.weeks), weekKeyFor(weekISO)) || weekKeyFor(weekISO);
-  if (key !== weekISO) console.log(`  History already holds week ${weekISO} as ${key}; replacing that entry.`);
+  const sunday: string = weekKeyFor(weekISO);
+  const key: string = findHistoryKey(Object.keys(history.weeks), sunday) || sunday;
+  if (key !== weekISO) {
+    console.log(history.weeks[key]
+      ? `  History already holds week ${weekISO} as ${key}; replacing that entry.`
+      : `  Source dated week ${weekISO}; stored under its Sunday ${key}.`);
+  }
   history.weeks[key] = snapshot;
   return key;
 }

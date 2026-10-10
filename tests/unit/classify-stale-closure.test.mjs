@@ -62,6 +62,17 @@ describe('classifyStaleClosure', () => {
     assert.ok(r.reason.includes('too-old'));
   });
 
+  it('still classifies a researched TBD record past the age cap (BRO-4985)', () => {
+    // our-town closed 629 days before deep-research finished; the age cap
+    // left it TBD forever.
+    const r = classifyStaleClosure({
+      show: { status: 'closed', closingDate: daysBefore(629) },
+      entry: { designation: 'TBD', researchAttempts: 1, lastResearchedAt: daysBefore(20) },
+      pending: null, archive: null, now: NOW,
+    });
+    assert.equal(r.action, 'classify-fizzle');
+  });
+
   it('honors humanReviewedDesignation lock', () => {
     const r = classifyStaleClosure({
       show: { status: 'closed', closingDate: daysBefore(45) },

@@ -2,10 +2,14 @@
  * Keeps a commercial.json record's modelBreakeven in step with its
  * weeklyRunningCost between recoupment-model runs (BRO-4985).
  *
- * Break-even is linear in the weekly cost in both model tiers
- * (recoupment-model.js: nut x (1 - rentPct) / (1 - varRate - theaterPct),
- * and nut / (1 - costRate)), so when a writer changes the cost the
- * break-even scales by the same factor. merge-model-recoupment.js records the
+ * Break-even is linear in the weekly cost in the weekly tier
+ * (recoupment-model.js: nut x (1 - rentPct) / (1 - varRate - theaterPct)) and
+ * close to linear in the long-run tier (nut / (1 - costRate), where costRate
+ * itself moves a little with the nut), so scaling by the cost ratio is an
+ * interim figure, never below the new cost, that the next model run replaces
+ * (the daily stale-closures job and the Friday run both re-run it). It
+ * rescales break-even only; recoupment % waits for that run.
+ * merge-model-recoupment.js records the
  * cost it used as modelCostBasis; the commercial write guard calls
  * syncBreakevenToCost() on every save, so a cost refresh (the Reddit cost
  * gap-fill, an approved fix, the weekly LLM update) can no longer leave a

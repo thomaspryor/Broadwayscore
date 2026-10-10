@@ -22,7 +22,7 @@ import * as path from 'path';
 
 // Use shared show-matching library (260+ aliases, market filtering, era preference)
 const { matchTitleToShow } = require('./lib/show-matching');
-const { weekKeyFor, repairGrossesHistory } = require('./lib/grosses-history-repair');
+const { repairGrossesHistory } = require('./lib/grosses-history-repair');
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
 const {
   playbillGrossesUrl,
@@ -108,8 +108,10 @@ function getWeekDates(numWeeks: number, startFrom?: string): string[] {
   let current: Date;
 
   if (startFrom) {
-    // Weeks end on Sunday: a --start-from on any other day means its week.
-    current = new Date(weekKeyFor(startFrom) + 'T00:00:00Z');
+    // Weeks end on Sunday and this walks backward, so start at the Sunday on
+    // or before --start-from (a later Sunday may not be published yet).
+    current = new Date(startFrom + 'T00:00:00Z');
+    current.setUTCDate(current.getUTCDate() - current.getUTCDay());
   } else {
     // Start from the most recent Sunday
     current = new Date();

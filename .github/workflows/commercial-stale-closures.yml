@@ -75,6 +75,14 @@ jobs:
           fi
           node scripts/classify-stale-closures.js $ARGS
 
+      - name: Refresh recoupment model
+        # Daily catch-all (BRO-4985): any writer that changed a weekly cost
+        # since the last model run (Reddit gap-fill, RSS poll, deep research,
+        # status updates) gets its break-even and recoupment % recomputed
+        # within a day instead of waiting for Friday. Local math, no API spend.
+        if: inputs.dry_run != true
+        run: node scripts/merge-model-recoupment.js
+
       - name: Validate post-classification
         # No continue-on-error: ship-check CDX-P0-4. If validate-data rejects
         # the new Fizzle entries, abort before any push/deploy.
