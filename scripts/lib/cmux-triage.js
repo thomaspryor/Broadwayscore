@@ -228,63 +228,8 @@ function isWatchdogDashboardTitle(title) {
     .startsWith(`${WATCHDOG_TAB_PREFIX} ${WATCHDOG_TAB_MARKER}`);
 }
 
-// A `process` row parented to ANY agent tag, not just claude_code. The tag id
-// carries the agent name and an optional session uuid:
-//   workspace:<uuid>:tag:claude_code
-//   workspace:<uuid>:tag:codex.01a055e0-8ac3-7c33-b4fa-6c12c2cf89ce
-const AGENT_TAG_RE = /:tag:([A-Za-z][A-Za-z0-9_-]*)(?:\.[0-9a-fA-F-]+)?$/;
-
-/**
- * Which agent CLI, if any, is ALIVE in this workspace — read from cmux's
- * process table (`cmux top --processes --format tsv`).
- *
- * WHY THIS EXISTS (verified live 2026-09-07, the sharpest finding of BRO-2623).
- * Every liveness check in this repo is hard-coded to Claude:
- *   cmux-workspaces.hasLiveClaude       matches only /:tag:claude_code$/
- *   cmux-workspaces.hasClaudeChrome     matches only Claude's "│ ctx NN%" bar
- * A live Codex session satisfies NEITHER, so checkLiveness reports it dead.
- * workspace:100 on this machine was a Codex session sitting idle at its prompt
- * with live `codex` (pid 87249) and `codex-code-mode` processes and an
- * `Idle`-status `:tag:codex` row — holding an UNMERGED commit (547cf4c1192,
- * branch fix-compareshow-tests) — and bsc-prune had been listing it under
- * "Dead but un-marked" indefinitely. It survived only because it is a 👑 tab
- * and crown tabs are exempt from auto-close: had it carried the 🤖 marker,
- * zombie-tab-sweep/isReclaimable would have closed a live session mid-turn.
- * A triage tool that inherited that blind spot would recommend exactly that.
- *
- * Matching on the tag NAME (any agent) rather than adding "codex" to a
- * hard-coded list deliberately: the next CLI cmux tags is unknown, and the
- * failure this guards is "we did not know about that one".
- *
- * Uses the same column layout as cmux-workspaces.hasLiveClaude — a process
- * row is col[3]==='process' with its parent tag in col[5] — and returns the
- * agent name so the report can say WHICH one is alive, not just that
- * something is. Sharing that layout with hasLiveClaude is deliberate: if cmux
- * changes its TSV schema, both break together and the existing sweep's tests
- * catch it, which is strictly better than this module quietly disagreeing
- * with the predicate it is extending.
- *
- * ACCEPTED LIMITATIONS, both erring toward "alive", which is the safe
- * direction for a tool whose output is a recommendation to a human:
- *   - a lingering child process under a matching tag reads as a live agent,
- *     so a genuine corpse can be withheld from triage. The cost is one tab
- *     the owner has to close by hand; the inverse — reporting a live session
- *     as safe to close — is what this whole module exists to prevent.
- *   - it requires a PROCESS row, not just a tag row, so a crashed agent that
- *     left a stale tag behind stays prunable (the same rule
- *     cmux-workspaces.hasLiveClaude states for itself).
- * @param {string} tsvText
- * @returns {string|null} agent tag name, or null when no agent process is live
- */
-function liveAgentIn(tsvText) {
-  for (const line of String(tsvText || '').split('\n')) {
-    const c = line.split('\t');
-    if (c[3] !== 'process') continue;
-    const m = AGENT_TAG_RE.exec(c[5] || '');
-    if (m) return m[1];
-  }
-  return null;
-}
+// AGENT_TAG_RE and liveAgentIn live in cmux-workspaces.js (BRO-3044) so the close paths share them.
+const { liveAgentIn, AGENT_TAG_RE } = require('./cmux-workspaces.js');
 
 /**
  * Grouping key for "is another tab doing this same work". Crown tabs use the
