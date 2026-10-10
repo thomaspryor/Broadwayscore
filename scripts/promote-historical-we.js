@@ -143,7 +143,10 @@ function inferShowType(candidate, musicalTitles = new Set()) {
   if (candidate.type === 'musical' || candidate.type === 'play') return { type: candidate.type, guessed: false };
   const genres = candidate.genres || [];
   if (genres.includes('musical') || titleSaysMusical(candidate.title)) return { type: 'musical', guessed: false };
-  if (musicalTitles.has(normalizeTitle(candidate.title))) return { type: 'musical', guessed: false };
+  // Only when WOS gave no genre: an explicit 'play' wins. The 2019 Lyttelton
+  // Three Sisters (Inua Ellams' play) went in as a musical because a 1996
+  // musical "The Three Sisters" is in shows.json (BRO-4884).
+  if (!genres.length && musicalTitles.has(normalizeTitle(candidate.title))) return { type: 'musical', guessed: false };
   return { type: 'play', guessed: !genres.length };
 }
 
