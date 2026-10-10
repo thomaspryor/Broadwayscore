@@ -149,7 +149,7 @@ function castValueProblem(v) {
 function rejectedUrlsValueProblem(newValue, oldValue) {
   if (!Array.isArray(newValue)) return 'rejectedImageUrls: newValue must be an array';
   for (const [i, u] of newValue.entries()) {
-    if (typeof u !== 'string' || !/^https?:\/\/\S+$/i.test(u)) return `rejectedImageUrls[${i}]: must be an http(s) URL`;
+    if (typeof u !== 'string' || !/^(google-images:)?https?:\/\/\S+$/i.test(u)) return `rejectedImageUrls[${i}]: must be an http(s) URL (a Google Images page as recorded: google-images:https://...)`;
   }
   const kept = new Set(newValue);
   const lost = (Array.isArray(oldValue) ? oldValue : []).filter((u) => !kept.has(u));

@@ -8,7 +8,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   sourceBase, isPlaceholderSource, mayShareSource, buildSourceIndex, addToSourceIndex,
-  sourceConflict, stripConflictingSources, findSharedSources, showScoreArtEligible, todaytixIdOwner, titleMatchesSlug,
+  sourceConflict, stripConflictingSources, findSharedSources, showScoreArtEligible, todaytixIdOwner, titleMatchesSlug, isOwnSiteSource,
 } = require('./shared-image-source.js');
 
 const SS_OLD = 'https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/841/medium_Hughie180.jpg';
@@ -218,4 +218,17 @@ test('todaytixIdOwner: a one-word title is related only as a main title before a
 test('titleMatchesSlug: repeated title words count once', () => {
   assert.equal(titleMatchesSlug('Big Man, Little Man', 'the-music-man'), false);
   assert.equal(titleMatchesSlug('The Ocean at the End of the Lane', 'the-end'), false);
+});
+
+test('isOwnSiteSource: our own pages are never a poster source', () => {
+  assert.equal(isOwnSiteSource('google-images:https://broadwayscorecard.com/show/hamilton'), true);
+  assert.equal(isOwnSiteSource('https://www.broadwayscorecard.com/images/shows/x/poster.webp'), true);
+  assert.equal(isOwnSiteSource(null, 'broadwayscorecard.com'), true);
+  assert.equal(isOwnSiteSource('https://westendscorecard.com/show/x'), true);
+  assert.equal(isOwnSiteSource('google-images:https://broadwayscore.vercel.app/show/x'), true);
+  assert.equal(isOwnSiteSource('https://www.instagram.com/bwayscorecard/p/x'), true);
+  assert.equal(isOwnSiteSource('https://playbill.com/article/broadwayscorecard.com-review'), false);
+  assert.equal(isOwnSiteSource('https://playbill.com/x?u=https://broadwayscorecard.com/show/y'), false);
+  assert.equal(isOwnSiteSource('https://notbroadwayscorecard.com/x'), false);
+  assert.equal(isOwnSiteSource(undefined, ''), false);
 });

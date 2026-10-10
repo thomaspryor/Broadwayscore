@@ -26,6 +26,7 @@ const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { recordImageSource } = require('./lib/image-sources-store');
+const { isOwnSiteSource } = require('./lib/shared-image-source');
 
 const USAGE = `fetch-square-images.js — Fetches native square (1080x1080) promotional images from Google Images.
 
@@ -257,6 +258,7 @@ async function processShow(show) {
 
         // Skip eBay, Etsy (merchandise), Pinterest (low quality)
         if (/ebay|etsy|pinterest|redbubble|teepublic|amazon\.com\/dp/i.test(sourceUrl)) continue;
+        if (isOwnSiteSource(sourceUrl)) continue; // our own pages show the art a row already has (BRO-4996)
 
         // First try: decode the base64 thumbnail and check if it's square
         if (result.image && result.image.startsWith('data:image/')) {
