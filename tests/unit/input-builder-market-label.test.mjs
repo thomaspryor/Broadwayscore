@@ -152,3 +152,14 @@ describe('input-builder — market label derivation from category', () => {
     }
   });
 });
+
+describe('input-builder — renamed venues (BRO-4956)', () => {
+  test('a renamed house names its other name, so a review using either is the same venue', () => {
+    const input = buildScoringInput(baseReview({ category: 'west-end', venue: "Duke of York's Theatre" }));
+    assert.ok(input.context.includes("at Duke of York's Theatre (same building, also called Tom Stoppard Theatre)"), input.context);
+  });
+  test('an unrenamed house is unchanged', () => {
+    const input = buildScoringInput(baseReview({ category: 'west-end', venue: 'Lyric Theatre' }));
+    assert.ok(input.context.includes('at Lyric Theatre (West End)'), input.context);
+  });
+});

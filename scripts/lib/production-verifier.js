@@ -83,7 +83,7 @@ const WEST_END_VENUES = [
   'Wyndham\'s Theatre', 'Noël Coward Theatre', 'Harold Pinter Theatre',
   'Vaudeville Theatre', 'Playhouse Theatre', 'Criterion Theatre',
   'Fortune Theatre', 'Garrick Theatre', 'Novello Theatre',
-  'Duchess Theatre', 'Duke of York\'s Theatre', 'Ambassadors Theatre',
+  'Duchess Theatre', 'Duke of York\'s Theatre', 'Tom Stoppard Theatre', 'Ambassadors Theatre',
   'Trafalgar Theatre', 'Gillian Lynne Theatre', '@sohoplace',
   // National/subsidized
   'National Theatre', 'Old Vic', 'Young Vic', 'Barbican',

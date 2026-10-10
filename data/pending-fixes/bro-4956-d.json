@@ -1,0 +1,67 @@
+{
+  "issueNumber": "bro-4956-d",
+  "planId": "b7e1c4a9-2f63-4d58-9a0e-6c8d3f1e7b25",
+  "status": "pending",
+  "createdAt": "2026-10-10T04:05:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4956: Rent's house, the Duke of York's Theatre, was renamed the Tom Stoppard Theatre before this production opened, and every review uses the new name. The ensemble scoreability check, told 'Rent at Duke of York's Theatre', rejected two real reviews (LondonTheatre1 Terry Eastham, Musical Theatre Review) as wrong_production. Clear those two rejections. shows.json keeps the Duke of York's name so the venue page does not split; the scoring prompt now lists a renamed house's other name (scripts/lib/venue-renames.js), so a rename cannot cause this again.",
+    "steps": [
+      "Clear the venue-name wrong_production rejection on LondonTheatre1 and Musical Theatre Review"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "rent-west-end-2026/londontheatre1--terry-eastham.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Rejected only for naming the renamed house; it reviews this production (Gaten Matarazzo, 9 Oct 2026)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rent-west-end-2026/londontheatre1--terry-eastham.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear the venue-name false positive"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rent-west-end-2026/londontheatre1--terry-eastham.json",
+        "field": "rejectionReason",
+        "oldValue": "wrong_production",
+        "newValue": null,
+        "description": "Clear the venue-name false positive"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rent-west-end-2026/musical-theatre-review--unknown.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Rejected only for naming the renamed house (its own reasoning says 'formerly Duke of York's Theatre')"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rent-west-end-2026/musical-theatre-review--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear the venue-name false positive"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rent-west-end-2026/musical-theatre-review--unknown.json",
+        "field": "rejectionReason",
+        "oldValue": "wrong_production",
+        "newValue": null,
+        "description": "Clear the venue-name false positive"
+      }
+    ]
+  }
+}
