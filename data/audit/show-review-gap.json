@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-10T09:05:38.747Z",
+  "generatedAt": "2026-10-10T09:47:24.828Z",
   "windowDays": 21,
-  "targets": 5,
-  "auditedThisRun": 5,
-  "carriedForward": 641,
+  "targets": 1,
+  "auditedThisRun": 1,
+  "carriedForward": 645,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 378,
-    "missingCurrentRun": 802,
+    "missingCurrentRun": 801,
     "totalCitedNoUrl": 3,
     "totalFlaggedMisses": 903,
     "totalRecoverable": 5,
@@ -4074,6 +4074,7 @@
         "https://monstagigz.com/2026/09/29/theatre-review-affluenza-starring-noah-schnapp-at-riverside-studios-hammersmith/",
         "https://www.londontheatre1.com/reviews/affluenza-riverside-studios-review/",
         "https://lovelondonloveculture.com/2026/10/06/review-round-up-affluenza-riverside-studios/",
+        "https://www.timeout.com/london/theatre/affluenza",
         "https://liamodell.com/2026/10/06/affluenza-review-riverside-studios-london-noah-schnapp-andy-sandberg-meaning/",
         "https://www.thereviewshub.com/affluenza-riverside-studios-london/",
         "https://www.thetimes.com/culture/theatre-dance/article/affluenza-review-riverside-studios-f36n6c99g",
@@ -4082,26 +4083,25 @@
         "https://www.allthatdazzles.co.uk/post/review-affluenza-riverside-studios",
         "https://playsinternational.org.uk/affluenza-riverside-studios/",
         "https://www.westendbestfriend.co.uk/news/review-affluenza-riverside-studios",
-        "https://www.timeout.com/london/theatre/affluenza",
         "https://www.thestage.co.uk/reviews/affluenza-review-riverside-studios-london-noah-schnapp",
-        "https://www.theupcoming.co.uk/2026/10/06/affluenza-at-riverside-studios-theatre-review/",
         "https://chiswickcalendar.co.uk/affluenza-riverside-studios-theatre-review/",
         "https://www.standard.co.uk/culture/theatre/affluenza-review-b1299859.html",
         "https://www.broadwayworld.com/westend/article/Review-AFFLUENZA-starring-Noah-Schnapp-20261006",
         "https://www.londonboxoffice.co.uk/news/post/affluenza-riverside-studios-review",
         "https://www.theartsdesk.com/theatre/affluenza-riverside-studios-review-too-rich-mix-rich-kids-tale",
         "https://thelivereview.co.uk/affluenza-review-riverside-studios/",
+        "https://www.theupcoming.co.uk/2026/10/06/affluenza-at-riverside-studios-theatre-review/",
         "https://www.artshub.co.uk/news/reviews/affluenza-puts-privilege-on-trial-2636778/",
         "https://thespyinthestalls.com/2026/10/affleunza/",
         "https://www.london-unattached.com/affluenza-riverside-studios/",
         "https://www.timeout.com/london/theatre/affluenza-review",
         "https://theatreweekly.com/review-affluenza-at-riverside-studios/",
-        "https://www.londontheatrereviews.co.uk/post.cfm",
+        "https://www.londontheatrereviews.co.uk/post.cfm?p=29281",
         "https://onceaweektheatre.com/affluenza-at-the-riverside-studios/"
       ],
-      "dirFiles": 37,
-      "dirClean": 28,
-      "inReviewsJson": 27,
+      "dirFiles": 38,
+      "dirClean": 29,
+      "inReviewsJson": 28,
       "missing": [
         {
           "url": "https://lovelondonloveculture.com/2026/10/06/review-round-up-affluenza-riverside-studios/",
@@ -4110,18 +4110,7 @@
           "serpCensus": true
         },
         {
-          "url": "https://thespyinthestalls.com/2026/10/affleunza/",
-          "host": "thespyinthestalls.com",
-          "knownOutletId": "the-spy-in-the-stalls",
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ],
-          "weRefStars": 2,
-          "weRefStarsSource": "bestoftheatre"
-        },
-        {
-          "url": "https://www.londontheatrereviews.co.uk/post.cfm",
+          "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29281",
           "host": "londontheatrereviews.co.uk",
           "knownOutletId": "london-theatre-reviews",
           "weRef": true,
@@ -4153,7 +4142,7 @@
             "rows": 8,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 2
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": true,
@@ -4179,15 +4168,15 @@
         },
         "allSourcesFailed": false,
         "currentRunRows": 34,
-        "corroborated": 23,
+        "corroborated": 24,
         "perSource": {
           "theatre-reviews": {
             "cited": 8,
             "corroborated": 8
           },
           "bestoftheatre": {
-            "cited": 23,
-            "corroborated": 23
+            "cited": 24,
+            "corroborated": 24
           },
           "lbo-roundup": {
             "cited": 1,
@@ -4207,7 +4196,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 6,
+            "accepted": 7,
             "error": null
           },
           {
@@ -4237,7 +4226,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 4,
             "error": null
           },
           {
@@ -4247,21 +4236,21 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 18,
+        "resultCount": 17,
         "error": null
       },
       "candidatesRejected": {
         "count": 14,
         "byReason": {
           "non-review-host": 11,
-          "roundup-page": 1,
           "ticketing-listing": 1,
+          "roundup-page": 1,
           "non-review-path": 1
         }
       },
@@ -4282,20 +4271,7 @@
           "reason": "Refusing to ingest — https://lovelondonloveculture.com/2026/10/06/review-round-up-affluenza-riversid"
         },
         {
-          "url": "https://thespyinthestalls.com/2026/10/affleunza/",
-          "host": "thespyinthestalls.com",
-          "outletId": "the-spy-in-the-stalls",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.londontheatrereviews.co.uk/post.cfm",
+          "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29281",
           "host": "londontheatrereviews.co.uk",
           "outletId": "london-theatre-reviews",
           "provisional": false,
@@ -4304,8 +4280,8 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "zeroChar": true,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+          "zeroChar": false,
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
         }
       ],
       "ingestSkippedByCap": [],
@@ -4320,18 +4296,11 @@
             "url": "https://lovelondonloveculture.com/2026/10/06/review-round-up-affluenza-riverside-studios/"
           },
           {
-            "outletId": "the-spy-in-the-stalls",
-            "outlet": "the-spy-in-the-stalls",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thespyinthestalls.com/2026/10/affleunza/"
-          },
-          {
             "outletId": "london-theatre-reviews",
             "outlet": "london-theatre-reviews",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.londontheatrereviews.co.uk/post.cfm"
+            "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29281"
           }
         ],
         "suppressedMissing": [],
@@ -4365,6 +4334,12 @@
             "outletId": "londontheatre1.com",
             "state": "live",
             "firstSeenAt": "2026-10-07T22:35:00.711Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/affluenza",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-07T15:42:41.979Z"
           },
           {
             "url": "https://liamodell.com/2026/10/06/affluenza-review-riverside-studios-london-noah-schnapp-andy-sandberg-meaning/",
@@ -4415,22 +4390,10 @@
             "firstSeenAt": "2026-10-10T06:36:20.593Z"
           },
           {
-            "url": "https://www.timeout.com/london/theatre/affluenza",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-07T15:42:41.979Z"
-          },
-          {
             "url": "https://www.thestage.co.uk/reviews/affluenza-review-riverside-studios-london-noah-schnapp",
             "outletId": "thestage.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-07T15:42:41.979Z"
-          },
-          {
-            "url": "https://www.theupcoming.co.uk/2026/10/06/affluenza-at-riverside-studios-theatre-review/",
-            "outletId": "theupcoming.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-08T22:45:07.696Z"
           },
           {
             "url": "https://chiswickcalendar.co.uk/affluenza-riverside-studios-theatre-review/",
@@ -4469,8 +4432,20 @@
             "firstSeenAt": "2026-10-09T21:34:59.683Z"
           },
           {
+            "url": "https://www.theupcoming.co.uk/2026/10/06/affluenza-at-riverside-studios-theatre-review/",
+            "outletId": "theupcoming.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-08T22:45:07.696Z"
+          },
+          {
             "url": "https://www.artshub.co.uk/news/reviews/affluenza-puts-privilege-on-trial-2636778/",
             "outletId": "artshub.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-10T06:36:20.593Z"
+          },
+          {
+            "url": "https://thespyinthestalls.com/2026/10/affleunza/",
+            "outletId": "thespyinthestalls.com",
             "state": "live",
             "firstSeenAt": "2026-10-10T06:36:20.593Z"
           },
@@ -4506,25 +4481,18 @@
             "firstSeenAt": "2026-10-08T09:47:49.209Z"
           },
           {
-            "url": "https://thespyinthestalls.com/2026/10/affleunza/",
-            "outletId": "the-spy-in-the-stalls",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-10T06:36:20.593Z"
-          },
-          {
-            "url": "https://www.londontheatrereviews.co.uk/post.cfm",
+            "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29281",
             "outletId": "london-theatre-reviews",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-10T06:36:20.593Z"
+            "firstSeenAt": "2026-10-10T09:47:24.828Z"
           }
         ],
         "censusSchema": 2,
-        "liveCount": 26,
+        "liveCount": 27,
         "candidateCount": 29
       },
-      "computedAt": "2026-10-10T09:05:38.747Z"
+      "computedAt": "2026-10-10T09:47:24.828Z"
     },
     {
       "showId": "after-all-these-years-off-broadway-2026",
