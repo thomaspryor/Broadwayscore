@@ -18,6 +18,7 @@
  */
 
 const { isCitedReportedWeeklyCost, REPORTED_COST_METHODOLOGIES } = require('./waltz-cost-gap-fill');
+const { previewWeeksFromWeekly } = require('./preview-weeks');
 
 // ---------------------------------------------------------------------------
 // Constants & Defaults
@@ -414,9 +415,13 @@ function getPreviewGrossMultiplier(previewWeek) {
  * @param {object} commercial - Commercial data from commercial.json
  * @param {object} grossesAllTime - From grosses.json { gross, performances, attendance }
  * @param {object} grossesWeekly - From grosses-history.json { [weekDate]: { gross, capacity, atp, attendance, performances } }
+ * @param {object} [opts]
+ * @param {boolean} [opts.previewsFromWeekly] - shadow only (BRO-5002): estimate
+ *   only the preview weeks the weekly history does not already cover. Off
+ *   (live behavior) by default.
  * @returns {object} RecoupmentModelResult
  */
-function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly) {
+function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, opts = {}) {
   const warnings = [];
 
   // --- Inputs ---
@@ -530,7 +535,7 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly) {
 
   // --- Build weekly gross schedule ---
   const weeklySchedule = buildWeeklySchedule(
-    show, grossesAllTime, grossesWeekly, previewWeeks, totalRunWeeks, warnings
+    show, grossesAllTime, grossesWeekly, previewWeeks, totalRunWeeks, warnings, opts
   );
 
   if (weeklySchedule.length === 0) {
@@ -671,7 +676,7 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly) {
 // Helper: Build Weekly Gross Schedule
 // ---------------------------------------------------------------------------
 
-function buildWeeklySchedule(show, grossesAllTime, grossesWeekly, previewWeeks, totalRunWeeks, warnings) {
+function buildWeeklySchedule(show, grossesAllTime, grossesWeekly, previewWeeks, totalRunWeeks, warnings, opts = {}) {
   const schedule = [];
 
   // Check for weekly history data
@@ -692,8 +697,15 @@ function buildWeeklySchedule(show, grossesAllTime, grossesWeekly, previewWeeks, 
     // Tier 1: Weekly data covers most of the run
     const avgGross = weekDates.reduce((sum, d) => sum + (weeklyData[d]?.gross || 0), 0) / weekDates.length;
 
+    // Weekly grosses start at first preview, so rows before opening already
+    // are the previews. Live still estimates all of them on top (counted
+    // twice); the shadow option estimates only the uncovered ones (BRO-5002).
+    const covers = opts.previewsFromWeekly
+      ? previewWeeksFromWeekly(weekDates, show.openingDate, previewWeeks)
+      : { toEstimate: previewWeeks, previewRowDates: new Set() };
+
     // Add preview weeks (estimated) before the weekly data
-    for (let pw = 1; pw <= previewWeeks; pw++) {
+    for (let pw = 1; pw <= covers.toEstimate; pw++) {
       const mult = getPreviewGrossMultiplier(pw);
       schedule.push({
         gross: avgGross * mult,
@@ -703,7 +715,7 @@ function buildWeeklySchedule(show, grossesAllTime, grossesWeekly, previewWeeks, 
     }
 
     // Estimate weeks before weekly data starts (Tier 2 gap-fill)
-    const gapWeeks = Math.max(totalRunWeeks - previewWeeks - weekDates.length, 0);
+    const gapWeeks = Math.max(totalRunWeeks - covers.toEstimate - weekDates.length, 0);
     for (let w = 0; w < gapWeeks; w++) {
       schedule.push({
         gross: avgGross, // Best estimate for pre-history weeks
@@ -716,7 +728,7 @@ function buildWeeklySchedule(show, grossesAllTime, grossesWeekly, previewWeeks, 
     for (const date of weekDates) {
       schedule.push({
         gross: weeklyData[date].gross,
-        isPreview: false,
+        isPreview: covers.previewRowDates.has(date),
         _source: 'weekly-history',
       });
     }
