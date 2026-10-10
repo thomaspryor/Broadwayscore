@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4956-g",
   "planId": "ee8dd46e-3f22-474f-bc9c-e1643e4a3bdd",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-10T07:00:00.000Z",
   "submitter": {
     "name": null,
@@ -33,5 +33,23 @@
         "description": "theQR, Franco Milazzo on how-the-other-half-loves-west-end-2026 (listed in the Best of Theatre round-up)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-10T07:35:05.159Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ]
 }
