@@ -155,6 +155,7 @@ Because :00 / :17 / :37 fire every hour, the largest possible distance from a su
 | 13:00 | daily | reddit-engagement-digest.yml | Reddit engagement (morning run) |
 | 13:00 | daily | opening-night-stage-alert.yml | Stage alert, 48h lookback (9 AM ET) |
 | 13:00 | Mon | weekly-affiliate-report.yml | affiliate report |
+| 13:00 | Mon | affiliate-link-integrity.yml | affiliate link probe (data-health-check concurrency group) |
 | 13:00 | Sun | update-mezzanine.yml | Mezzanine update |
 | 13:00 | Sun | scrape-bww-reviews.yml | BWW reviews scrape |
 | 13:17 | daily | brand-mention-monitor.yml | brand mention monitor |

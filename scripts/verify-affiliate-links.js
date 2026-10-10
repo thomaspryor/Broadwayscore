@@ -22,13 +22,16 @@
  * directly (no Impact involvement).
  *
  * Destination checks are best-effort: TodayTix may bot-block CI, so a block
- * reads as SKIP (never PASS — scraper memory: challenge pages return 200);
- * the caller-visible skip streak is watched by check-affiliate-health's
- * digest wiring via the result file.
+ * reads as SKIP (never PASS — scraper memory: challenge pages return 200).
+ * Nothing reads data/audit/affiliate-link-probe.json yet; a skip streak is
+ * visible only in that file and the run logs. (This header used to claim
+ * check-affiliate-health watched it; it never did. BRO-4951.)
  *
  * Runs: locally any time (node scripts/verify-affiliate-links.js), and weekly
- * as an ISOLATED job in weekly-affiliate-report.yml (its failure cannot block
- * the Monday report email).
+ * in its own workflow, affiliate-link-integrity.yml (split from
+ * weekly-affiliate-report.yml, BRO-4951, so its failure cannot block or
+ * recolour the Monday report email). A probe that fails or stops running
+ * shows in the daily digest via scripts/lib/health-digest-crons.js.
  *
  * Usage:
  *   node scripts/verify-affiliate-links.js [--json] [--skip-destinations]
@@ -293,8 +296,8 @@ async function main() {
   }
 
   console.log(`\n${failed.length} page failure(s), ${brokenDest.length} broken destination(s), ${skippedDest.length} skipped.`);
-  // Exit non-zero on real failures so the isolated CI job goes red (its
-  // redness cannot block the report job — separate job, no `needs`).
+  // Exit non-zero on real failures so affiliate-link-integrity.yml goes red
+  // (its own workflow since BRO-4951, so it cannot affect the report email).
   return hasFailure ? 1 : 0;
 }
 
