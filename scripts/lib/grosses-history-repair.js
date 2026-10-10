@@ -178,6 +178,27 @@ function rekeyRowsToRuns(history, shows, nowMs = Date.now()) {
   if (!history || typeof history.weeks !== 'object' || history.weeks === null || !Array.isArray(shows)) return stats;
   const bySlug = new Map();
   for (const s of shows) if (s && s.slug && !bySlug.has(s.slug)) bySlug.set(s.slug, s);
+  // Parked rows go back once shows.json can place them (the missing production
+  // was added, or a date was corrected): their own slug if the week is now in
+  // its run, else the production that holds the week. The main pass below
+  // re-checks the latter and re-parks nothing it cannot place.
+  const parked = history._unplacedRows;
+  if (parked && typeof parked === 'object') {
+    for (const week of Object.keys(parked)) {
+      for (const slug of Object.keys(parked[week] || {})) {
+        const show = bySlug.get(slug);
+        const home = show && weekInRun(show, week, nowMs) !== false ? show : show && productionForWeek(show, week, shows, nowMs);
+        if (!home) continue;
+        if (!history.weeks[week]) history.weeks[week] = {};
+        if (home.slug in history.weeks[week]) continue;
+        history.weeks[week][home.slug] = parked[week][slug];
+        delete parked[week][slug];
+        stats.moved.push({ week, from: `_unplacedRows.${slug}`, to: home.slug });
+      }
+      if (!Object.keys(parked[week] || {}).length) delete parked[week];
+    }
+    if (!Object.keys(parked).length) delete history._unplacedRows;
+  }
   for (const week of Object.keys(history.weeks)) {
     const rows = history.weeks[week];
     if (!rows || typeof rows !== 'object') continue;

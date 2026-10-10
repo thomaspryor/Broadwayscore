@@ -78,6 +78,15 @@ test('rekeyRowsToRuns: Cabaret weeks move to their own run, weeks no listed run 
   assert.equal(again.moved.length + again.unplaced.length, 0);
 });
 
+test('rekeyRowsToRuns: a parked row returns once shows.json lists the production that ran that week', () => {
+  const h = { weeks: { '2002-01-06': {} }, _unplacedRows: { '2002-01-06': { 'cabaret-2014': { gross: 1 } } } };
+  const cabaret1998 = { id: 'cabaret-1998', slug: 'cabaret-1998', title: 'Cabaret', category: 'broadway', previewsStartDate: '1998-02-13', openingDate: '1998-03-19', closingDate: '2004-01-04' };
+  const st = rekeyRowsToRuns(h, [...SHOWS, cabaret1998], NOW);
+  assert.deepEqual(st.moved, [{ week: '2002-01-06', from: '_unplacedRows.cabaret-2014', to: 'cabaret-1998' }]);
+  assert.deepEqual(h.weeks['2002-01-06'], { 'cabaret-1998': { gross: 1 } });
+  assert.equal(h._unplacedRows, undefined);
+});
+
 test('repairGrossesHistory re-keys only when given shows (every history writer passes them)', () => {
   const mk = () => ({ weeks: { '2025-01-05': { 'cabaret-2014': { gross: 3 } } } });
   const without = mk();
