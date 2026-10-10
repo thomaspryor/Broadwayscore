@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { parseWorkspaces, parseWorkspacesJson, parseWorkspacesWithFailures, listWorkspaces, isDoneTitle, hasRunningClaude, hasLiveClaude, hasClaudeChrome, isNotFoundError, isValidWorkspaceRef, assertValidWorkspaceRef, _resetRunWarnings } = require('./cmux-workspaces.js');
+const { parseWorkspaces, parseWorkspacesJson, parseWorkspacesWithFailures, listWorkspaces, isDoneTitle, hasRunningClaude, hasLiveClaude, anyAgentAliveInTsv, hasClaudeChrome, isNotFoundError, isValidWorkspaceRef, assertValidWorkspaceRef, _resetRunWarnings } = require('./cmux-workspaces.js');
 
 // Captured from `cmux list-workspaces` 2026-07-12 (cmux 0.64.6)
 const LIST_SAMPLE = `  workspace:2  ⠂ Box office card improvements
@@ -960,3 +960,46 @@ test('hasRunningClaude: column-exact — no substring false positives', () => {
     _resetRunWarnings();
   });
 }
+
+// ── BRO-3044: a live non-Claude agent is alive and busy-aware ────────────────
+// Verbatim rows from `cmux top --processes --format tsv` on 2026-09-07 (live idle Codex session).
+const CODEX_IDLE = [
+  '0.0\t0\t0\ttag\tworkspace:AC086338-365E-49C4-AD65-64C906EB7781:tag:codex\tworkspace:100\tIdle',
+  '0.0\t17270752\t1\tprocess\t85714\tworkspace:AC086338-365E-49C4-AD65-64C906EB7781:tag:codex.01a055e0-8ac3-7c33-b4fa-6c12c2cf89ce\tnode',
+].join('\n');
+
+test('anyAgentAliveInTsv: a live Codex process is alive; hasLiveClaude stays claude-only', () => {
+  assert.equal(anyAgentAliveInTsv(CODEX_IDLE), true);
+  assert.equal(hasLiveClaude(CODEX_IDLE), false, 'hasLiveClaude is pinned claude-only; other callers rely on it');
+  assert.equal(anyAgentAliveInTsv(TOP_WAITING), true);
+  assert.equal(anyAgentAliveInTsv(TOP_RUNNING), true);
+});
+
+test('anyAgentAliveInTsv: dead stays dead (no process rows, stale tag, empty, title trap)', () => {
+  assert.equal(anyAgentAliveInTsv(''), false);
+  assert.equal(anyAgentAliveInTsv(TOP_IDLE), false);
+  assert.equal(anyAgentAliveInTsv('0.0\t0\t0\ttag\tworkspace:X:tag:codex\tworkspace:9\tIdle'), false, 'stale tag row, no process');
+  assert.equal(anyAgentAliveInTsv('0.0\t1\t1\tworkspace\tworkspace:9\twindow:1\tcodex tag:claude_code'), false);
+});
+
+test('anyAgentAliveInTsv: an unknown tag name with a process row counts as alive (documented, errs toward alive)', () => {
+  assert.equal(anyAgentAliveInTsv('0.0\t1\t1\tprocess\t5\tworkspace:X:tag:somenewcli\tnode'), true);
+});
+
+test('hasRunningClaude: non-claude agents are busy unless exactly Idle; suffixed tag ids work', () => {
+  const tag = (name, status) => `0.0\t0\t0\ttag\tworkspace:X:tag:${name}\tworkspace:9\t${status}`;
+  assert.equal(hasRunningClaude(CODEX_IDLE), false, 'the one observed real Codex row: Idle is idle');
+  assert.equal(hasRunningClaude(tag('codex', 'Running')), true);
+  assert.equal(hasRunningClaude(tag('codex', 'Working')), true, 'unseen status reads busy (fail-safe)');
+  assert.equal(hasRunningClaude(tag('codex', '')), true, 'empty status on a non-Claude agent reads busy');
+  assert.equal(hasRunningClaude(tag('codex.01a055e0-8ac3-7c33-b4fa-6c12c2cf89ce', 'Running')), true, 'uuid suffix');
+  assert.equal(hasRunningClaude(tag('claude_code.01a055e0-8ac3', 'Running')), true, 'suffixed claude_code Running');
+  assert.equal(hasRunningClaude(tag('claude_code', '')), false, 'an idle Claude has an EMPTY status and stays idle');
+  assert.equal(hasRunningClaude(tag('claude_code', 'NotRunning')), false, 'column-exact');
+});
+
+test('claudeAliveIn routes through anyAgentAliveInTsv (BRO-3044: not hasLiveClaude alone)', () => {
+  const src = require('./cmux-workspaces.js').claudeAliveIn.toString();
+  assert.match(src, /anyAgentAliveInTsv\(/);
+  assert.doesNotMatch(src, /return hasLiveClaude\(/);
+});
