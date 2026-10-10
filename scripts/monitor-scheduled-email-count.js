@@ -182,6 +182,19 @@ async function main() {
   const missingDecision = yesterdayKey < todayKey ? decideDayMissing(days.get(yesterdayKey), yesterdayKey) : { missing: false, missingExpected: [] };
   const missingExpected = missingDecision.missingExpected || [];
 
+  // BRO-4956: count alerts used to be keyed per day (`scheduled-email-count:
+  // YYYY-MM-DD`), so each day's repeat filed a new card and nothing ever
+  // resolved the old keys. Resolve those legacy entries once the run is live;
+  // sweep-resolved-alert-cards.js then closes their cards.
+  if (!DRY_RUN) {
+    const router = require('./lib/owner-alert-router');
+    for (const key of Object.keys(router.loadLedger().conditions || {})) {
+      if (/^scheduled-email-count:\d{4}-\d{2}-\d{2}$/.test(key) && router.resolveCondition(key, { reason: 'BRO-4956: superseded by the per-sender condition key' })) {
+        console.log(`resolved legacy per-day condition ${key}`);
+      }
+    }
+  }
+
   if (completeViolations.length === 0 && missingExpected.length === 0) {
     console.log('No violations on complete days in window (and both expected senders fired yesterday).');
     return;
@@ -225,12 +238,16 @@ async function main() {
   for (const { dayKey, decision } of completeViolations) {
     const subjectLines = decision.senders.map((s) => `- ${s.label}: ${s.subjects.join('; ')}`).join('\n');
     const result = await routeAlert({
-      conditionKey: `scheduled-email-count:${dayKey}`,
+      // Keyed by WHAT broke, not the day (BRO-4956): a per-day key filed a new
+      // card every day the same sender misbehaved (8 open twins on
+      // 2026-10-10). The day goes in the description; repeats within the
+      // cooldown stay on one ledger entry and its card.
+      conditionKey: `scheduled-email-count:${[...(decision.unexpectedKeys || []).map((k) => `unexpected-${k}`), ...(decision.duplicateKeys || []).map((k) => `dup-${k}`)].sort().join(',')}`,
       title: [
-        (decision.unexpectedKeys || []).length ? `Unexpected scheduled digest sender fired on ${dayKey}: ${decision.unexpectedKeys.join(', ')}` : null,
-        (decision.duplicateKeys || []).length ? `Scheduled sender delivered MORE THAN ONCE on ${dayKey}: ${decision.duplicateKeys.join(', ')}` : null,
+        (decision.unexpectedKeys || []).length ? `Unexpected scheduled digest sender fired: ${decision.unexpectedKeys.join(', ')}` : null,
+        (decision.duplicateKeys || []).length ? `Scheduled sender delivered MORE THAN ONCE in a day: ${decision.duplicateKeys.join(', ')}` : null,
       ].filter(Boolean).join(' · '),
-      description: `Scheduled-email policy violation on ${dayKey} (expected: each daily sender exactly once — morning-digest + opening-digest, cards #364/#497 + owner restore 2026-07-30):\n${subjectLines}${(decision.duplicateKeys || []).length ? `\nDuplicate sender(s): ${decision.duplicateKeys.join(', ')} — check for a manual/test send bypassing the send-once-per-day guard in send-morning-digest.js.` : ''}`,
+      description: `Scheduled-email policy violation on ${dayKey} (expected: each daily sender exactly once — morning-digest + opening-digest, cards #364/#497 + owner restore 2026-07-30):\n${subjectLines}${(decision.duplicateKeys || []).length ? `\nDuplicate sender(s): ${decision.duplicateKeys.join(', ')} — check for a manual/test send bypassing that sender's send-once guard (send-morning-digest.js for the digest; the emailedAt/reminderAt stamps in scripts/lib/reddit-post-email.js for reddit-post-ready, where an owner --resend on the same day also repeats the subject).` : ''}`,
       hint: 'Fold the extra sender(s) onto the autonomous-email.js snapshot pattern (see cards #364/#497/#511 for the established fix shape).',
       severity: 'warning',
       disposition: 'auto',
