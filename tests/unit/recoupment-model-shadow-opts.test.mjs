@@ -57,6 +57,31 @@ describe('taxCreditCitedOnly', () => {
   });
 });
 
+describe('datedCosts (checker #3, shadow)', () => {
+  const anchored = (amount) => ({
+    ...comm,
+    costHistory: [{ asOf: iso(first), amount, kind: 'running-cost', sourceType: 'trade', sourceUrl: 'https://example.com/a' }],
+  });
+  test('weekly: each week priced by costForWeek; default unchanged', () => {
+    const live = calculateRecoupment(show, anchored(800_000), null, weekly);
+    const dated = calculateRecoupment(show, anchored(800_000), null, weekly, { datedCosts: true });
+    assert.deepEqual(calculateRecoupment(show, anchored(800_000), null, weekly, {}), live);
+    assert.notEqual(dated.recoupmentPctCentral, live.recoupmentPctCentral);
+    // The anchor drives each week's cost: a higher one returns less.
+    const pricier = calculateRecoupment(show, anchored(900_000), null, weekly, { datedCosts: true });
+    assert.ok(pricier.recoupmentPctCentral < dated.recoupmentPctCentral);
+  });
+  test('lifetime: run-average dated cost; default unchanged', () => {
+    const long = { ...show, previewsStartDate: '2015-01-01', openingDate: '2015-02-01' };
+    const all = { gross: 400_000_000, performances: 3000 };
+    const live = calculateLifetimeRecoupment(long, anchored(800_000), all);
+    const dated = calculateLifetimeRecoupment(long, anchored(800_000), all, { datedCosts: true });
+    assert.deepEqual(calculateLifetimeRecoupment(long, anchored(800_000), all, {}), live);
+    assert.ok(Number.isFinite(dated.recoupmentPctCentral));
+    assert.notEqual(dated.recoupmentPctCentral, live.recoupmentPctCentral);
+  });
+});
+
 describe('asOf (backtest only)', () => {
   test('drops later weekly rows, ends the run at the date, keeps a later-closing show running', () => {
     const closing = { ...show, closingDate: iso(weeksFrom(now, -5)) };

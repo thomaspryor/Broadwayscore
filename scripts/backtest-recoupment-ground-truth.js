@@ -27,7 +27,7 @@ const { makeGrossesLookup } = require('./lib/grosses-lookup');
 const { groundTruth, rangeError, category, summarize, worseGroups } = require('./lib/recoupment-ground-truth');
 const { displaysModel, playedWeeks, MIN_PLAYED_WEEKS } = require('./lib/model-display-guard');
 
-const KNOWN_OPTS = ['previewsFromWeekly', 'playedWeeksOnly', 'eraAdjust', 'taxCreditCitedOnly'];
+const KNOWN_OPTS = ['previewsFromWeekly', 'playedWeeksOnly', 'eraAdjust', 'taxCreditCitedOnly', 'datedCosts'];
 const args = process.argv.slice(2);
 const USAGE = `Usage: node scripts/backtest-recoupment-ground-truth.js --opt=${KNOWN_OPTS.join('|')} [--opt=...] [--as-of-report] [--displayed] [--displayable-only] [--json] [--strict]`;
 if (require('./lib/cli-help').hasHelpFlag(args)) { console.log(USAGE); process.exit(0); }
