@@ -795,6 +795,31 @@
     "queuedAt": "2026-10-10T02:44:33.127Z"
   },
   {
+    "conditionKey": "llm-scoring:cost-breach",
+    "title": "LLM scoring spend over budget",
+    "description": "GitHub run 38016367624: cumulative LLM scoring cost $8.11 exceeds the $6.00 alarm line (scripts/config/provider-spend-thresholds.json's llmScoringRunUsd). Cost basis: cost.ts's costBreakdown() applied to Claude/OpenAI/Gemini token usage across this run's index.ts AND comparative-rescore.ts invocations (BRO-3392). This is an alarm, not an enforcement cap — see BRO-3381 for why a --max-cost default was rejected.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "GitHub run",
+        "value": "38016367624"
+      },
+      {
+        "name": "Cost",
+        "value": "$8.11"
+      },
+      {
+        "name": "Threshold",
+        "value": "$6.00"
+      }
+    ],
+    "queuedAt": "2026-10-10T02:57:21.175Z"
+  },
+  {
     "conditionKey": "bd-circuit-breaker-web_unlocker2",
     "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (568/250 reqs) (still open — BRO-3030)",
     "description": "Still firing after 24 notifications since it was filed. Tracked at BRO-3030.\n\nZone web_unlocker2 billed 568 requests today against a ceiling of 250.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n14 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: gather-reviews.js (336), opening-night-poller.js (242), replay-pending-bylines.js (33).",
