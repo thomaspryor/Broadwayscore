@@ -265,5 +265,17 @@
       }
     ],
     "queuedAt": "2026-10-10T16:05:20.698Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:fences-off-west-end-2026",
+    "title": "Review gap — \"Fences\" missing 3 cited review(s)",
+    "description": "Fences (fences-off-west-end-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=fences-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-10T16:31:40.351Z"
   }
 ]
