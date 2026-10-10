@@ -28,6 +28,7 @@ const fs = require('fs');
 const path = require('path');
 const { createJsonWriteGuard } = require('./json-write-guard');
 const { canonicalDesignation } = require('./commercial-designations');
+const { syncBreakevenToCost } = require('./commercial-breakeven');
 const { buildShowKeyIndex, canonicalizeCommercialKeys } = require('./commercial-slug-key');
 
 const COMMERCIAL_PATH = path.join(__dirname, '..', '..', 'data', 'commercial.json');
@@ -66,6 +67,9 @@ function createCommercialWriteGuard(commercialPath) {
       for (const rec of Object.values(finalData.shows || {})) {
         const canon = rec && canonicalDesignation(rec.designation);
         if (canon) rec.designation = canon;
+        // A weekly cost changed since the last model run: scale the model's
+        // break-even with it, never leave it below the cost (BRO-4985).
+        syncBreakevenToCost(rec);
       }
       // BRO-4623: commercial.json is keyed by slug. A record keyed by a show
       // ID (from any writer that skipped scripts/lib/commercial-slug-key.js)

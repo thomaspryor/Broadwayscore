@@ -87,6 +87,20 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
         run: node scripts/execute-approved-fix.js
 
+      - name: Refresh recoupment model after a commercial.json fix
+        # A fixed weekly cost or capitalization changes break-even and
+        # recoupment %; re-run the model so they never trail the new figure
+        # until Friday (BRO-4985).
+        if: steps.exec.outputs.result == 'fixed'
+        env:
+          ISSUE_NUMBER: ${{ inputs.issue_number }}
+        run: |
+          PLAN="data/pending-fixes/${ISSUE_NUMBER}.json"
+          if [ -f "$PLAN" ] && grep -q 'commercial.json' "$PLAN"; then
+            node scripts/merge-model-recoupment.js
+          else
+            echo "Plan does not touch commercial.json; model refresh skipped"
+          fi
 
       - name: Push review-texts to private repo
         if: always()

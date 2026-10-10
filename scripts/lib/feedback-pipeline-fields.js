@@ -37,12 +37,16 @@ const FEEDBACK_EDITABLE_FIELDS = {
   // checks the shape) marks a figure or recoupment as ours, not reported:
   // isEstimate.recouped prints "Not publicly announced" (BRO-4623).
   // weeklyRunningCostSource: /biz shows an uncited weekly cost as an estimate,
-  // so citing a reported cost needs this field (BRO-4666).
+  // so citing a reported cost needs this field (BRO-4666). costMethodology
+  // goes with it: a cost is printed as reported only under a reported
+  // methodology (isCitedReportedWeeklyCost), and it also stops the Reddit
+  // gap-fill replacing a cited figure (BRO-4985). Values are checked by
+  // commercial-record-checks.js.
   'commercial.json': [
     'designation', 'capitalization', 'weeklyRunningCost',
     'capitalizationSource', 'notes', 'recouped', 'recoupedDate',
     'recoupedSource', 'sources', 'humanReviewedDesignation', 'nonprofitOrg',
-    'isEstimate', 'weeklyRunningCostSource',
+    'isEstimate', 'weeklyRunningCostSource', 'costMethodology',
   ],
   'audience-buzz.json': ['title'],
   // Only auto-fix-feedback-bug.js's append-winner path handles this file —

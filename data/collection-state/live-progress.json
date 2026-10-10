@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-10-10T17:46:18.776Z",
-  "processed": 111,
-  "failed": 39,
-  "successRate": "74.0%",
+  "updatedAt": "2026-10-10T18:12:23.347Z",
+  "processed": 114,
+  "failed": 51,
+  "successRate": "69.1%",
   "tierBreakdown": {
-    "playwright": 76,
+    "playwright": 79,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 3,
     "directCookies": 0,
     "scrapingdog": 14,
     "scrapingbee": 3,
@@ -14,7 +14,7 @@
     "archiveToday": 0,
     "archive": 17
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-10-10T17:17:30.395Z",
@@ -49,6 +49,46 @@
       "t": "2026-10-10T17:29:34.732Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-10-10T18:05:29.110Z",
+      "event": "bb-session",
+      "session": "268f4742",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654485"
+    },
+    {
+      "t": "2026-10-10T18:05:29.654Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-10T18:05:46.993Z",
+      "event": "bb-session",
+      "session": "d9578e2d",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654485"
+    },
+    {
+      "t": "2026-10-10T18:05:47.502Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-10T18:09:51.515Z",
+      "event": "bb-session",
+      "session": "8469e361",
+      "url": "https://www.trustpilot.com/review/www.londontheatredirect.com/product/affluenza-"
+    },
+    {
+      "t": "2026-10-10T18:11:09.075Z",
+      "event": "bb-session",
+      "session": "e9bd5868",
+      "url": "https://whatnightout.uk/london/events/franz-marie-8871320"
+    },
+    {
+      "t": "2026-10-10T18:11:15.763Z",
+      "event": "bb-session",
+      "session": "bb2cdb43",
+      "url": "https://whatnightout.uk/london/events/franz-marie-8871320"
     }
   ]
 }

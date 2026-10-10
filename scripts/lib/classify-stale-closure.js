@@ -64,6 +64,16 @@ function daysAgo(isoString, now = Date.now()) {
  *   { action: 'classify-fizzle', reason, designation: 'Fizzle', confidence } — auto-apply
  *   { action: 'human-review',   reason } — late recoupment signal, escalate
  */
+/** True when deep-research has actually tried this record. */
+function hasBeenResearched(entry) {
+  return Boolean(entry && (
+    (typeof entry.researchAttempts === 'number' && entry.researchAttempts > 0) ||
+    entry.lastResearchedAt ||
+    entry.researchedAt ||
+    (entry.deepResearch && entry.deepResearch.verifiedDate)
+  ));
+}
+
 function classifyStaleClosure({ show, entry, pending, archive, now, thresholds }) {
   const t = thresholds || {};
   const graceDays = t.graceDays ?? GRACE_DAYS_DEFAULT;
@@ -79,7 +89,12 @@ function classifyStaleClosure({ show, entry, pending, archive, now, thresholds }
 
   const daysClosed = daysAgo(closingDate, nowMs);
   if (daysClosed < graceDays) return { action: 'wait', reason: `grace-period (${Math.floor(daysClosed)}d < ${graceDays}d)` };
-  if (daysClosed > maxAgeDays) return { action: 'no-change', reason: `too-old (${Math.floor(daysClosed)}d > ${maxAgeDays}d)` };
+  // The age cap keeps historical shows we never researched out of the scan.
+  // A TBD record that WAS deep-researched is exempt: otherwise a show that
+  // aged past the cap before its research landed stays TBD forever
+  // (our-town, job-2024; BRO-4985).
+  const researchedTbd = entry?.designation === 'TBD' && hasBeenResearched(entry);
+  if (daysClosed > maxAgeDays && !researchedTbd) return { action: 'no-change', reason: `too-old (${Math.floor(daysClosed)}d > ${maxAgeDays}d)` };
 
   // Honor manual review locks
   if (entry?.humanReviewedDesignation === true) {
@@ -128,13 +143,7 @@ function classifyStaleClosure({ show, entry, pending, archive, now, thresholds }
   // > 0 OR a researchedAt timestamp). Otherwise escalate to human review so
   // an operator can backfill. This is the User Impact reviewer's
   // producer-reputation risk mitigation.
-  const wasResearched = entry && (
-    (typeof entry.researchAttempts === 'number' && entry.researchAttempts > 0) ||
-    entry.lastResearchedAt ||
-    entry.researchedAt ||
-    (entry.deepResearch && entry.deepResearch.verifiedDate)
-  );
-  if (!wasResearched) {
+  if (!hasBeenResearched(entry)) {
     return {
       action: 'human-review',
       reason: `closed ${Math.floor(daysClosed)}d ago but deep-research never ran — needs operator backfill before any auto-classification`,

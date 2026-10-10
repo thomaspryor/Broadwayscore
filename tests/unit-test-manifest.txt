@@ -497,7 +497,9 @@ tests/unit/collection-phase.test.mjs
 tests/unit/collection-starvation.test.mjs
 tests/unit/combined-review-pipeline.test.mjs
 tests/unit/commercial-apply-gate.test.mjs
+tests/unit/commercial-breakeven.test.mjs
 tests/unit/commercial-citation-guards.test.mjs
+tests/unit/commercial-consistency.test.mjs
 tests/unit/commercial-friday-push-timeout.test.mjs
 tests/unit/commercial-friday-refresh-cron-health.test.mjs
 tests/unit/commercial-publish-gate.test.mjs
@@ -675,6 +677,7 @@ tests/unit/generic-star-corroboration.test.mjs
 tests/unit/generic-title-matching.test.mjs
 tests/unit/gh-runs-query.test.mjs
 tests/unit/git-add-existing.test.mjs
+tests/unit/grosses-history-repair.test.mjs
 tests/unit/grosses-post-resolver.test.mjs
 tests/unit/guardian-stale-slug-guard.test.mjs
 tests/unit/gun-and-powder-show.test.mjs
