@@ -17,7 +17,7 @@
 const day = (d) => String(d || '').slice(0, 10);
 
 /**
- * @param {string[]} weekDates - sorted week-ending dates (YYYY-MM-DD) with gross rows
+ * @param {string[]} weekDates - week-ending dates (YYYY-MM-DD) with gross rows, any order
  * @param {string|null} openingDate - YYYY-MM-DD
  * @param {number} previewWeeks - preview weeks the model assumes (already capped at 8)
  * @param {string|null} [previewsStartDate] - YYYY-MM-DD; rows before it are not this run's previews
