@@ -1,0 +1,27 @@
+{
+  "issueNumber": "bro-4973",
+  "planId": "3e5313bf-a5fb-439f-8672-5d135d5001bb",
+  "status": "pending",
+  "createdAt": "2026-10-10T10:52:16.755Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4973: Good Time Charlie, New York Theatre Guide (Joe Dziemianowicz) pull quote was a generic line from the Who-should-see-it boilerplate (\"The family play is a staple of American theatre.\"), not an evaluative verdict. Replace with the review verdict sentence.",
+    "steps": [
+      "Replace NYTG llmPullQuote with the verbatim verdict line"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "good-time-charlie-off-broadway-2026/nytg--joe-dziemianowicz.json",
+        "field": "llmPullQuote",
+        "oldValue": "The family play is a staple of American theatre.",
+        "newValue": "Good Time Charlie is a flawed but heartfelt family love letter.",
+        "description": "Pull quote must be an evaluative verdict line"
+      }
+    ]
+  }
+}
