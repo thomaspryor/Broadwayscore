@@ -299,3 +299,23 @@ test('hook wrapper: runs (and still blocks) with no `timeout` on PATH, like stoc
   const r = hook('git push origin HEAD:refs/heads/land/feat', wt, { PATH: bin });
   assert.equal(r.status, 2, r.stderr);
 });
+
+test('bot-owned rewrite: a squash over a failed merge (reverting main\'s bot data) blocks; a small data edit does not (BRO-4956)', async () => {
+  const { checkBotOwnedRewrite, judgeLand } = await import('../../scripts/lib/land-preflight.mjs');
+  const d = baseRepo();
+  // main gains 12 bot-owned files after the branch point
+  sh(d, 'git checkout -qb feat main~0 && git checkout -q main');
+  for (let i = 0; i < 12; i++) write(d, `data/audit/a${i}.json`, `{"v":${i}}\n`);
+  sh(d, 'git add -A && git commit -qm bots');
+  // the broken squash: tree of the old branch point committed on top of main
+  sh(d, 'git checkout -q feat && echo fix >> g.txt && git commit -qam fix && git reset -q --soft main && git commit -qm squash');
+  const bad = checkBotOwnedRewrite({ base: 'main', tip: 'HEAD', cwd: d });
+  assert.equal(bad.status, 'fail');
+  assert.equal(bad.count, 12);
+  const v = judgeLand({ cwd: d, src: 'HEAD', target: 'land/x', base: 'main', fetch: false, checkTests: false });
+  assert.equal(v.decision, 'block');
+  assert.match(v.message, /bot-owned data files/);
+  // a deliberate edit of one audit file is fine
+  sh(d, 'git checkout -qB ok main && echo \'{"v":99}\' > data/audit/a1.json && git commit -qam one');
+  assert.equal(checkBotOwnedRewrite({ base: 'main', tip: 'HEAD', cwd: d }).status, 'pass');
+});
