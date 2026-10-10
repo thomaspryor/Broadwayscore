@@ -349,7 +349,7 @@ jobs:
 
       # BRO-4487: cancel auto-filed alert cards whose condition has cleared in
       # the ledger (untouched backlog cards filed for exactly that condition
-      # only; see scripts/lib/resolved-alert-card-sweep.js). Max 25 per run.
+      # only; see scripts/lib/resolved-alert-card-sweep.js). Also cancels finished opening-night watch/audit log cards (3+ days after the night). Max 50 per run.
       - name: Cancel alert cards whose condition cleared
         # lint-allow-swallow: optional board cleanup; a failure only leaves stale cards open for the next run and must not block the health snapshot commit below
         if: always()

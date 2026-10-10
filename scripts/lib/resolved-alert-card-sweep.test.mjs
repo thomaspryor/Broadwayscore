@@ -48,3 +48,20 @@ test('cancelReason satisfies the 20-character cancel gate and names the conditio
   assert.ok(r.length >= 20);
   assert.match(r, /gap:a/);
 });
+
+test('routine log cards close once the night and the last touch are 3+ days old (BRO-4956)', () => {
+  const { routineLogCancelReason } = require('./resolved-alert-card-sweep.js');
+  const now = Date.parse('2026-10-10T12:00:00Z');
+  const card = (title, updatedAt, type = 'backlog') => ({ title, updatedAt, state: { type } });
+  assert.match(routineLogCancelReason(card('Opening-night watch 2026-10-05', '2026-10-06T08:00:00Z'), now), /night is over/);
+  assert.equal(routineLogCancelReason(card('Opening-night audit 2026-10-09', '2026-10-09T08:00:00Z'), now), null);
+  assert.equal(routineLogCancelReason(card('Opening-night watch 2026-10-01', '2026-10-09T08:00:00Z'), now), null, 'touched recently');
+  assert.equal(routineLogCancelReason(card('Opening-night watch 2026-10-01', '2026-10-02T08:00:00Z', 'started'), now), null);
+  assert.equal(routineLogCancelReason(card('Opening-night watch notes', '2026-10-02T08:00:00Z'), now), null);
+});
+
+test('a repeat-filing note does not count as activity on an alert card (BRO-4956)', () => {
+  const { skipReason, AUTO_FILED_LINE } = require('./resolved-alert-card-sweep.js');
+  const issue = { state: { type: 'backlog' }, description: `PARKED: ${AUTO_FILED_LINE}k)`, comments: { nodes: [{ body: 'Filed again on 2026-10-10T10:00Z with the same title; added here' }] } };
+  assert.equal(skipReason(issue, 'k'), null);
+});

@@ -140,7 +140,7 @@ function effectiveCreatePriority({ priority, mode, title }) {
  *   retry-aware graphql() (BRO-374/BRO-375).
  * @returns {Promise<{issue: object, mode: 'dispatch'|'park', stateName: string}>}
  */
-async function createLinearIssue({ title, description, dispatch, park, priority, projectId, model, client }) {
+async function createLinearIssue({ title, description, dispatch, park, priority, projectId, model, client, reuseTwin = false }) {
   const disposition = resolveDisposition({ dispatch, park });
   if (!disposition.ok) {
     const err = new Error(disposition.message);
@@ -169,6 +169,17 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
       err.intakeBreaker = breaker;
       throw err;
     }
+  }
+
+  // Same title already open: note it on that card instead of filing a copy
+  // (BRO-4956, 2026-10-10: 52 groups of open cards shared an exact title, 58
+  // extra cards). Opt-in (linear-brain.js create, i.e. sessions and routines):
+  // the alert router and digest-autofix have their own condition-keyed dedupe
+  // and act on the returned card (dispatch markers, linear-next), so they must
+  // always get the card they asked for. Fail open on lookup errors.
+  if (reuseTwin) {
+    const reused = await reuseOpenTwin({ title, body, client, mode: disposition.mode });
+    if (reused) return reused;
   }
 
   const team = await linear.getTeam();
@@ -221,7 +232,52 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
   return { issue, mode: disposition.mode, stateName: state.name };
 }
 
+const OPEN_TWIN_QUERY = `query($teamKey: String!, $title: String!) {
+  issues(first: 5, filter: {
+    team: { key: { eq: $teamKey } },
+    title: { eqIgnoreCase: $title },
+    state: { type: { nin: ["completed", "canceled", "duplicate"] } }
+  }) { nodes { id identifier title url state { name type } } }
+}`;
+
+async function defaultFindOpenIssueByTitle(title) {
+  const data = await linear.graphql(OPEN_TWIN_QUERY, { teamKey: linear.TEAM_KEY, title: String(title).trim() });
+  const nodes = (data && data.issues && data.issues.nodes) || [];
+  return nodes[0] || null;
+}
+
+// A twin is reused only when it is waiting in a state that serves the caller:
+// never a started card (someone holds it), and a parked (backlog) twin only
+// for a parked request, so a --dispatch is never swallowed by a parked card.
+function twinServes(twin, mode) {
+  const type = twin && twin.state && twin.state.type;
+  if (type === 'unstarted') return true;
+  if (type === 'backlog') return mode === 'park';
+  return false;
+}
+
+async function reuseOpenTwin({ title, body, client, mode = 'park' }) {
+  if (process.env.LINEAR_TITLE_DEDUPE_DISABLED === '1') return null;
+  const find = client ? (client.findOpenIssueByTitle && client.findOpenIssueByTitle.bind(client)) : defaultFindOpenIssueByTitle;
+  if (!find) return null;
+  let twin = null;
+  try { twin = await find(title); } catch (e) {
+    console.warn(`[linear-issue-create] open-twin lookup failed, filing anyway: ${e.message}`);
+    return null;
+  }
+  if (!twin || !twin.identifier || !twinServes(twin, mode)) return null;
+  const note = `Filed again on ${new Date().toISOString().slice(0, 16)}Z with the same title; added here instead of opening a duplicate card.${body ? `\n\n${String(body).slice(0, 6000)}` : ''}`;
+  try {
+    if (client && client.addComment) await client.addComment(twin.id, note);
+    else await new LinearClient({ graphql: linear.graphql, teamKey: linear.TEAM_KEY }).addComment(twin.id, note);
+  } catch (e) {
+    console.warn(`[linear-issue-create] could not note the repeat on ${twin.identifier}: ${e.message}`);
+  }
+  console.warn(`[linear-issue-create] "${title}" is already open as ${twin.identifier}; noted there, no new card`);
+  return { issue: twin, mode: 'reused', stateName: twin.state ? twin.state.name : '', reused: true };
+}
+
 module.exports = {
-  createLinearIssue, pickStateForMode, isUsageLimitExceeded, USAGE_LIMIT_MESSAGE,
+  createLinearIssue, reuseOpenTwin, defaultFindOpenIssueByTitle, twinServes, pickStateForMode, isUsageLimitExceeded, USAGE_LIMIT_MESSAGE,
   effectiveCreatePriority, PARKED_MAX_PRIORITY, PARKED_CLAMP_MARKER,
 };

@@ -424,12 +424,13 @@
       "title": "Scoring Audit has stopped updating (190 days)",
       "firstSeen": "2026-08-03T13:05:40.014Z",
       "incidentOpenedAt": "2026-08-03T13:05:40.014Z",
-      "lastSeen": "2026-10-09T18:26:49.470Z",
+      "lastSeen": "2026-10-10T17:24:32.972Z",
       "lastNotifiedAt": "2026-10-09T18:26:49.470Z",
       "lastSurfacedAt": "2026-10-09T18:26:49.470Z",
       "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "scheduled-email-count:2026-08-02": {
       "status": "open",
@@ -1627,12 +1628,13 @@
       "title": "Scrape WestEndTheatre has stopped updating (68 days)",
       "firstSeen": "2026-08-24T13:26:25.716Z",
       "incidentOpenedAt": "2026-08-24T13:26:25.716Z",
-      "lastSeen": "2026-10-09T18:26:49.479Z",
+      "lastSeen": "2026-10-10T17:24:32.985Z",
       "lastNotifiedAt": "2026-10-09T18:26:49.479Z",
       "lastSurfacedAt": "2026-10-09T18:26:49.479Z",
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "arm-yield:outlet:nysr": {
       "status": "resolved",
@@ -12333,13 +12335,13 @@
       "title": "Unhandled CV.wrongProduction on Rent",
       "firstSeen": "2026-10-09T09:12:56.270Z",
       "incidentOpenedAt": "2026-10-09T09:12:56.270Z",
-      "lastSeen": "2026-10-10T16:25:56.035Z",
+      "lastSeen": "2026-10-10T17:28:27.843Z",
       "lastNotifiedAt": "2026-10-09T09:12:56.270Z",
       "lastSurfacedAt": "2026-10-09T09:12:56.270Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 23
+      "silentRefires": 25
     },
     "opening-night-stale-upcoming-tag-triumph-off-broadway-2026": {
       "status": "open",
@@ -12445,13 +12447,13 @@
       "title": "Opening Night Broadcast Blocked — Checklist Errors",
       "firstSeen": "2026-10-09T11:43:17.542Z",
       "incidentOpenedAt": "2026-10-09T11:43:17.542Z",
-      "lastSeen": "2026-10-10T16:25:56.170Z",
+      "lastSeen": "2026-10-10T17:28:27.976Z",
       "lastNotifiedAt": "2026-10-10T15:47:39.486Z",
       "lastSurfacedAt": "2026-10-10T15:47:39.486Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 3
     },
     "land:land/bro-4923-uk-regional-trigger": {
       "status": "open",
@@ -12647,13 +12649,13 @@
       "title": "Shipped review missing publishDate on Rent",
       "firstSeen": "2026-10-09T16:18:24.209Z",
       "incidentOpenedAt": "2026-10-09T16:18:24.209Z",
-      "lastSeen": "2026-10-10T16:25:56.042Z",
+      "lastSeen": "2026-10-10T17:28:27.850Z",
       "lastNotifiedAt": "2026-10-09T16:18:24.209Z",
       "lastSurfacedAt": "2026-10-09T16:18:24.209Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 16
+      "silentRefires": 18
     },
     "opening-night-publish-date-pre-opening:an-oak-tree-off-west-end-2026": {
       "status": "open",
@@ -13027,13 +13029,13 @@
       "title": "Review URL cross-show mismatch on Rent",
       "firstSeen": "2026-10-10T11:54:24.143Z",
       "incidentOpenedAt": "2026-10-10T11:54:24.143Z",
-      "lastSeen": "2026-10-10T16:25:56.048Z",
+      "lastSeen": "2026-10-10T17:28:27.855Z",
       "lastNotifiedAt": "2026-10-10T11:54:24.143Z",
       "lastSurfacedAt": "2026-10-10T11:54:24.143Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 6
     },
     "opening-night-remediation-exhausted-t1-missing:from-the-heart-west-end-2026": {
       "status": "open",
@@ -13146,9 +13148,36 @@
       "title": "Landing blocked: rebase red on land/bro-4977-wrong-show-and-page-bleed",
       "firstSeen": "2026-10-10T16:52:29.525Z",
       "incidentOpenedAt": "2026-10-10T16:52:29.525Z",
-      "lastSeen": "2026-10-10T16:52:29.525Z",
+      "lastSeen": "2026-10-10T17:26:03.453Z",
       "lastNotifiedAt": "2026-10-10T16:52:29.525Z",
       "lastSurfacedAt": "2026-10-10T16:52:29.525Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "silentRefires": 1
+    },
+    "arm-yield:workflow:collect-we-ob-reviews": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Collect WE/OB Reviews has stopped updating (3 days)",
+      "firstSeen": "2026-10-10T17:24:32.977Z",
+      "incidentOpenedAt": "2026-10-10T17:24:32.977Z",
+      "lastSeen": "2026-10-10T17:24:32.977Z",
+      "lastNotifiedAt": "2026-10-10T17:24:32.977Z",
+      "lastSurfacedAt": "2026-10-10T17:24:32.977Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-4985-box-office-data": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-4985-box-office-data",
+      "firstSeen": "2026-10-10T17:27:56.327Z",
+      "incidentOpenedAt": "2026-10-10T17:27:56.327Z",
+      "lastSeen": "2026-10-10T17:27:56.327Z",
+      "lastNotifiedAt": "2026-10-10T17:27:56.327Z",
+      "lastSurfacedAt": "2026-10-10T17:27:56.327Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
