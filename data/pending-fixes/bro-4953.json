@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4953",
   "planId": "b11bf9aa-573b-4068-8d37-7322689b3364",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-10T00:40:00.000Z",
   "submitter": {
     "name": null,
@@ -65,5 +65,38 @@
         "description": "Excerpt names 'Gary: A Sequel to Titus Andronicus' (gary-a-sequel-to-titus-andronicus-2019): Michael Dale's 2019 review of that show, not the 2026 Titus Andronicus. Excerpt-only file, url is a BWW people page."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-10T00:56:33.634Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-heart-off-broadway-2026/nytimes--unknown.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-heart-off-broadway-2026/nydailynews--unknown.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-heart-off-broadway-2026/nytg--unknown.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-heart-off-broadway-2026/theatermania--unknown.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "home-1970/hollywood-reporter--david-rooney.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "titus-andronicus-off-broadway-2026/broadwayworld--michael-dale.json wrongShow: null -> true"
+    }
+  ]
 }
