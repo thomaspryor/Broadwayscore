@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-10T08:05:11.175Z",
+    "lastUpdated": "2026-10-10T08:23:27.367Z",
     "version": "2.1.0",
     "lastChange": "task #1844 follow-up: move mislabeled sundayexpress alias from express-uk to sunday-express + repoint metro-source aliasIndex entry from metro-uk to metrosource (real routing bugs found by adversarial review, not registry duplicates)"
   },
@@ -12321,6 +12321,17 @@
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
       "regionInferredAt": "2026-10-10T08:05:11.175Z"
+    },
+    "curtainsup": {
+      "displayName": "Curtainsup",
+      "tier": 3,
+      "aliases": [
+        "curtainsup"
+      ],
+      "domain": "curtainsup.online",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-10-10T08:23:27.367Z"
     }
   },
   "_aliasIndex": {
