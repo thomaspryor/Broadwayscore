@@ -293,6 +293,8 @@ test('inferShowType: no WOS genre inherits a same-titled musical, else play flag
   assert.deepEqual(inferShowType({ title: 'Sunset Boulevard', genres: [] }, musicals), { type: 'musical', guessed: false });
   assert.deepEqual(inferShowType({ title: 'The Witches', genres: [] }, musicals), { type: 'play', guessed: true });
   assert.deepEqual(inferShowType({ title: 'King Lear', genres: ['play'] }, musicals), { type: 'play', guessed: false });
+  // An explicit WOS 'play' beats a same-titled musical (1996 "The Three Sisters" vs the 2019 Lyttelton play).
+  assert.deepEqual(inferShowType({ title: 'Three Sisters', genres: ['play'] }, new Set(['three sisters'])), { type: 'play', guessed: false });
   assert.deepEqual(inferShowType({ title: 'Mean Girls', genres: ['musical'] }), { type: 'musical', guessed: false });
   assert.deepEqual(inferShowType({ title: 'The Witches', genres: [], type: 'musical' }), { type: 'musical', guessed: false });
 });
