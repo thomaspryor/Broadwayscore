@@ -1,51 +1,51 @@
 {
-  "runDate": "2026-10-10T05:25:04.531Z",
+  "runDate": "2026-10-10T05:42:52.444Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "cruise-west-end-2022",
+    "showFilter": "small-island-west-end-2022,death-drop-west-end-2022",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 13,
-    "failed": 4,
+    "processed": 3,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "76.5%"
+    "successRate": "75.0%"
   },
   "tierBreakdown": {
-    "playwright": 9,
+    "playwright": 3,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 2,
-    "scrapingbee": 1,
+    "scrapingdog": 0,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 15,
-    "tier1Success": 12,
+    "tier1Attempts": 3,
+    "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 2,
-    "tier1_9Success": 2,
-    "tier2Attempts": 1,
-    "tier2Success": 1,
+    "tier1_9Attempts": 0,
+    "tier1_9Success": 0,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 3,
+    "tier4Attempts": 1,
     "tier4Success": 1,
-    "totalFailed": 4,
-    "scrapingBeePageCredits": 10,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -54,10 +54,10 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 13,
-    "failed": 4,
+    "processed": 3,
+    "failed": 1,
     "shows": [
-      "cruise-west-end-2022"
+      "small-island-west-end-2022"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,85 +66,38 @@
     }
   },
   "processed": [
-    "cruise-west-end-2022/observer--unknown.json",
-    "cruise-west-end-2022/all-that-dazzles-uk--unknown.json",
-    "cruise-west-end-2022/british-theatre--paul-t-davies.json",
-    "cruise-west-end-2022/consequence--unknown.json",
-    "cruise-west-end-2022/everything-theatre--unknown.json",
-    "cruise-west-end-2022/london-box-office--stuart-king.json",
-    "cruise-west-end-2022/london-theatre--matt-wolf.json",
-    "cruise-west-end-2022/micablackwell--unknown.json",
-    "cruise-west-end-2022/shy-strange-manic--kariss-ainsworth.json",
-    "cruise-west-end-2022/thestage--paul-vale.json",
-    "cruise-west-end-2022/times-uk--unknown.json",
-    "cruise-west-end-2022/whatsonstage--sarah-crompton.json",
-    "cruise-west-end-2022/whatsonstage--unknown.json"
+    "small-island-west-end-2022/all-that-dazzles-uk--unknown.json",
+    "small-island-west-end-2022/city-am--adam-bloodworth.json",
+    "small-island-west-end-2022/london-box-office--stuart-king.json"
   ],
   "failed": [
-    "cruise-west-end-2022/city-am--adam-bloodworth.json",
-    "cruise-west-end-2022/liamodell--unknown.json",
-    "cruise-west-end-2022/standard--nick-curtis.json",
-    "cruise-west-end-2022/telegraph--dominic-cavendish.json"
+    "small-island-west-end-2022/times-uk--clive-davis.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "cruise-west-end-2022/observer--unknown.json",
-      "cruise-west-end-2022/all-that-dazzles-uk--unknown.json",
-      "cruise-west-end-2022/british-theatre--paul-t-davies.json",
-      "cruise-west-end-2022/consequence--unknown.json",
-      "cruise-west-end-2022/everything-theatre--unknown.json",
-      "cruise-west-end-2022/london-box-office--stuart-king.json",
-      "cruise-west-end-2022/london-theatre--matt-wolf.json",
-      "cruise-west-end-2022/micablackwell--unknown.json",
-      "cruise-west-end-2022/shy-strange-manic--kariss-ainsworth.json",
-      "cruise-west-end-2022/thestage--paul-vale.json",
-      "cruise-west-end-2022/times-uk--unknown.json",
-      "cruise-west-end-2022/whatsonstage--sarah-crompton.json",
-      "cruise-west-end-2022/whatsonstage--unknown.json"
+      "small-island-west-end-2022/all-that-dazzles-uk--unknown.json",
+      "small-island-west-end-2022/city-am--adam-bloodworth.json",
+      "small-island-west-end-2022/london-box-office--stuart-king.json"
     ],
     "failed": [
-      "cruise-west-end-2022/city-am--adam-bloodworth.json",
-      "cruise-west-end-2022/liamodell--unknown.json",
-      "cruise-west-end-2022/standard--nick-curtis.json",
-      "cruise-west-end-2022/telegraph--dominic-cavendish.json"
+      "small-island-west-end-2022/times-uk--clive-davis.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "cruise-west-end-2022/observer--unknown.json",
-      "cruise-west-end-2022/all-that-dazzles-uk--unknown.json",
-      "cruise-west-end-2022/consequence--unknown.json",
-      "cruise-west-end-2022/everything-theatre--unknown.json",
-      "cruise-west-end-2022/london-box-office--stuart-king.json",
-      "cruise-west-end-2022/london-theatre--matt-wolf.json",
-      "cruise-west-end-2022/thestage--paul-vale.json",
-      "cruise-west-end-2022/whatsonstage--sarah-crompton.json",
-      "cruise-west-end-2022/whatsonstage--unknown.json"
+      "small-island-west-end-2022/all-that-dazzles-uk--unknown.json",
+      "small-island-west-end-2022/city-am--adam-bloodworth.json",
+      "small-island-west-end-2022/london-box-office--stuart-king.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [
-      "cruise-west-end-2022/micablackwell--unknown.json",
-      "cruise-west-end-2022/shy-strange-manic--kariss-ainsworth.json"
-    ],
-    "scrapingbee": [
-      "cruise-west-end-2022/times-uk--unknown.json"
-    ],
+    "scrapingdog": [],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "cruise-west-end-2022/british-theatre--paul-t-davies.json"
-    ]
+    "archive": []
   },
-  "failuresByOutlet": {
-    "The Telegraph": {
-      "count": 1,
-      "domain": "telegraph.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
