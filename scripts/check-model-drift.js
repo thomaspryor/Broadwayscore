@@ -14,14 +14,17 @@
  *             input the same day). --strict fails on these.
  *   drift     inputs moved since the last run (a cost or capital edit, new
  *             grosses, a closing date) by 5+ points and 10%+.
- *   method    the stored tier differs from the one a run would use now.
+ *   method    the stored tier differs from the one a run would store now
+ *             (including a fall back to ai-estimated).
+ * The daily digest runs the same scan (health-check.js, "Commercial model:
+ * stored vs fresh run").
  */
 
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const { makeGrossesLookup } = require('./lib/grosses-lookup');
-const { liveModelRun, modelDrift } = require('./lib/model-drift');
+const { scanModelDrift } = require('./lib/model-drift');
 
 const args = process.argv.slice(2);
 const USAGE = 'Usage: node scripts/check-model-drift.js [--json] [--strict]  (read-only; see header)';
@@ -39,28 +42,13 @@ function main() {
   const shows = Object.values(load(path.join(DATA, 'shows.json')).shows);
   const commercial = load(COMMERCIAL_PATH).shows;
   const lookup = makeGrossesLookup(load(path.join(DATA, 'grosses.json')), load(path.join(DATA, 'grosses-history.json')));
-  const by = {};
-  for (const s of shows) { if (s.slug) by[s.slug] = s; if (s.id) by[s.id] = s; }
   const today = new Date().toISOString().split('T')[0];
-
-  let checked = 0;
-  const flagged = [];
-  for (const [key, comm] of Object.entries(commercial)) {
-    const show = by[key] || by[comm.slug] || by[key.replace(/-\d{4}$/, '')];
-    if (!show) continue;
-    const fresh = liveModelRun(show, comm, lookup);
-    if (!fresh.result) continue;
-    checked++;
-    const d = modelDrift(comm, fresh, today);
-    if (d) flagged.push({ slug: key, ...d });
-  }
-  const count = (k) => flagged.filter((f) => f.kind === k).length;
-  const summary = { checked, sameDay: count('same-day'), drift: count('drift'), method: count('method') };
+  const { checked, flagged, summary } = scanModelDrift(shows, commercial, lookup, today);
 
   if (JSON_OUT) {
     console.log(JSON.stringify({ today, summary, flagged }, null, 2));
   } else {
-    console.log(`Model drift: ${checked} modelled records; ${summary.sameDay} same-day, ${summary.drift} drift, ${summary.method} method`);
+    console.log(`Model drift: ${checked} records with a model run; ${summary.sameDay} same-day, ${summary.drift} drift, ${summary.method} method`);
     for (const f of flagged) console.log(`  [${f.kind}] ${f.slug}: ${f.detail}`);
     if (flagged.length) console.log('Stored values refresh on the next merge-model-recoupment.js run.');
   }

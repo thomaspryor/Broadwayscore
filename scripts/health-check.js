@@ -296,6 +296,10 @@ const AUTO_FIX_PLAYBOOK = [
   { match: /^Quality: outlet stub rate$/, urgency: 'this-week',
     humanAction: 'An outlet has a spike in stub-tier (0-char extraction) reviews collected in the last 30 days — the signature of a site redesign breaking its article-extractor.js pattern (this is exactly what happened with TheaterMania in 2026). Open Claude Code and say: "Check the outlet stub-rate flag named in this check, confirm the extractor is broken, and fix the article-extractor.js pattern for that outlet."' },
 
+  // BRO-5004. Without an entry this falls to urgency 'low' and never shows.
+  { match: /^Commercial model: stored vs fresh run$/, urgency: 'this-week',
+    humanAction: 'Some recoupment percentages on the site were computed before a cost or capital figure changed, so they are out of date until the model re-runs. Open Claude Code and say: "Check the stored-vs-fresh model drift and re-run the recoupment model."' },
+
   { match: /^Quality:/, urgency: 'this-week',
     humanAction: 'The percentage of scored reviews has dropped. Open Claude Code and say: "Check why the scored review percentage dropped and fix it."' },
 
@@ -1941,6 +1945,34 @@ function checkCommercialModelDrift() {
       }
       const result = computeCommercialModelDriftStatus(history);
       return { name: 'Commercial model drift', status: result.status, message: result.message, hint: result.hint };
+    }),
+    // BRO-5004: stored model values a fresh run no longer reproduces. A writer
+    // that changes a model input (cost, capital, closing date) after the model
+    // ran leaves the stored range on the old input until the next run
+    // (the-great-gatsby showed 83.1% against a fresh 64.4%). Read-only, ~2s;
+    // the same scan as scripts/check-model-drift.js.
+    runCheck('Commercial model: stored vs fresh run', () => {
+      const name = 'Commercial model: stored vs fresh run';
+      const { makeGrossesLookup } = require('./lib/grosses-lookup');
+      const { scanModelDrift } = require('./lib/model-drift');
+      const files = ['shows.json', 'commercial.json', 'grosses.json', 'grosses-history.json'];
+      const missing = files.filter((f) => !fs.existsSync(path.join(DATA_DIR, f)));
+      if (missing.length) return { name, status: 'warn', message: `Cannot check: missing ${missing.join(', ')}` };
+      const today = new Date().toISOString().split('T')[0];
+      const { flagged, summary } = scanModelDrift(
+        Object.values(readJSON(path.join(DATA_DIR, 'shows.json')).shows),
+        readJSON(path.join(DATA_DIR, 'commercial.json')).shows,
+        makeGrossesLookup(readJSON(path.join(DATA_DIR, 'grosses.json')), readJSON(path.join(DATA_DIR, 'grosses-history.json'))),
+        today,
+      );
+      if (!flagged.length) return { name, status: 'pass', message: `${summary.checked} records match a fresh run` };
+      const top = flagged.slice(0, 5).map((f) => `${f.slug} [${f.kind}] ${f.detail}`).join('; ');
+      return {
+        name,
+        status: 'warn',
+        message: `${flagged.length} of ${summary.checked} records differ from a fresh run (${summary.sameDay} same-day, ${summary.drift} drift, ${summary.method} method): ${top}`,
+        hint: 'Run node scripts/check-model-drift.js; re-run merge-model-recoupment.js (commercial-friday.yml) to refresh',
+      };
     }),
   ];
 }
@@ -5542,4 +5574,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkAutofixCanary, checkAutofixThroughput, checkDigestInvariantFail, checkAlertRouterDeadman };
+module.exports = { providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkAutofixCanary, checkAutofixThroughput, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift };

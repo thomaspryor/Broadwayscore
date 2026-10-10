@@ -4,7 +4,8 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { liveModelRun, modelDrift } = require('../../scripts/lib/model-drift');
+const { liveModelRun, modelDrift, scanModelDrift } = require('../../scripts/lib/model-drift');
+const healthCheck = require('../../scripts/health-check');
 const { makeGrossesLookup } = require('../../scripts/lib/grosses-lookup');
 
 // A running musical, two years of weekly grosses, closing date announced.
@@ -71,5 +72,45 @@ describe('modelDrift', () => {
   test('records never modelled, or that a run would not model, are skipped', () => {
     assert.equal(modelDrift({ ...base }, liveModelRun(show, base, lookup), '2026-10-09'), null);
     assert.equal(liveModelRun(show, { weeklyRunningCost: 1 }, lookup).result, null);
+  });
+
+  test('a record that would now fall back to ai-estimated is flagged as a method change', () => {
+    const stored = storedAfterRun(base, '2026-10-05');
+    // Grosses gone (or zero): a run would store ai-estimated, as fela-2012
+    // showed on the 2026-10-06 snapshot.
+    for (const allTimeShows of [{}, { x: { allTime: { gross: 0, performances: 0, attendance: 0 } } }]) {
+      const fresh = liveModelRun(show, stored, makeGrossesLookup({ shows: allTimeShows }, { weeks: {} }));
+      assert.deepEqual(fresh, { tier: 'ai-estimated', result: null });
+      assert.equal(modelDrift(stored, fresh, '2026-10-09').kind, 'method');
+    }
+    // A record stored as ai-estimated that stays ai-estimated is not flagged.
+    const ai = { ...base, modelMethod: 'ai-estimated', modelLastRun: '2026-10-05' };
+    assert.equal(modelDrift(ai, liveModelRun(show, ai, makeGrossesLookup({ shows: {} }, { weeks: {} })), '2026-10-09'), null);
+  });
+});
+
+describe('scanModelDrift', () => {
+  const base = { capitalization: 25_000_000, weeklyRunningCost: 850_000 };
+  test('matches records to shows like merge-model-recoupment and counts by kind', () => {
+    const ok = storedAfterRun(base, '2026-10-05');
+    const edited = { ...storedAfterRun(base, '2026-10-05'), weeklyRunningCost: 1_000_000 };
+    const out = scanModelDrift([show], { x: ok, 'x-2024': edited, orphan: ok, never: { ...base } }, lookup, '2026-10-09');
+    assert.equal(out.checked, 2); // orphan has no show, never has no run
+    assert.deepEqual(out.summary, { checked: 2, sameDay: 0, drift: 1, method: 0 });
+    assert.equal(out.flagged[0].slug, 'x-2024');
+  });
+});
+
+describe('health-check digest wiring', () => {
+  test('the check is routed this-week, not dropped as low urgency', () => {
+    const entry = healthCheck.getPlaybookEntry('Commercial model: stored vs fresh run');
+    assert.ok(entry, 'playbook entry exists');
+    assert.equal(entry.urgency, 'this-week');
+  });
+  test('the check runs and is part of the commercial group', () => {
+    const rows = healthCheck.checkCommercialModelDrift();
+    const row = rows.find((r) => r.name === 'Commercial model: stored vs fresh run');
+    assert.ok(row);
+    assert.ok(['pass', 'warn'].includes(row.status), `${row.status}: ${row.message}`);
   });
 });
