@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "franz-and-marie-west-end-2026",
   "openingDate": "2026-10-05",
-  "detectedAt": "2026-10-10T11:34:48.862Z",
+  "detectedAt": "2026-10-10T11:46:12.888Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -14,23 +14,6 @@
       "dispatchActionable": false,
       "skipReason": "terminal_text_gate_block",
       "rescoreBlockedReason": "input_validation_failed:body_too_short",
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "truncated",
-      "eligibilityReason": null
-    },
-    {
-      "file": "timeout-london--unknown.json",
-      "outletId": "timeout-london",
-      "criticName": "Unknown",
-      "url": "https://www.timeout.com/london/theatre/franz-marie",
-      "fullTextLen": 1570,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
       "humanReviewScore": null,
       "adjudicatedScore": null,
       "originalScore": null,
@@ -57,10 +40,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 3,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 2,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-10-10T11:34:48.862Z"
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
 }
