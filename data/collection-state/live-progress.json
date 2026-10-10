@@ -1,60 +1,132 @@
 {
-  "updatedAt": "2026-10-10T15:18:48.521Z",
-  "processed": 106,
-  "failed": 44,
-  "successRate": "70.7%",
+  "updatedAt": "2026-10-10T15:22:14.322Z",
+  "processed": 326,
+  "failed": 179,
+  "successRate": "64.6%",
   "tierBreakdown": {
-    "playwright": 68,
-    "amp": 2,
-    "browserbase": 2,
+    "playwright": 215,
+    "amp": 5,
+    "browserbase": 13,
     "directCookies": 0,
-    "scrapingdog": 32,
-    "scrapingbee": 28,
+    "scrapingdog": 38,
+    "scrapingbee": 31,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 24
+    "archive": 40
   },
   "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-10-10T14:40:54.480Z",
+      "t": "2026-10-10T12:59:59.451Z",
       "event": "bb-session",
-      "session": "1cfb0901",
-      "url": "https://www.thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh"
+      "session": "78f94721",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
     },
     {
-      "t": "2026-10-10T14:40:55.423Z",
+      "t": "2026-10-10T13:00:04.560Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-10-10T13:00:23.643Z",
+      "event": "bb-session",
+      "session": "b04af3f5",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-10-10T13:00:28.061Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-10-10T13:24:19.547Z",
+      "event": "bb-session",
+      "session": "1530b3cd",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654250"
+    },
+    {
+      "t": "2026-10-10T13:24:19.911Z",
       "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
+      "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-10-10T14:41:16.196Z",
+      "t": "2026-10-10T13:24:36.914Z",
       "event": "bb-session",
-      "session": "d15fab86",
-      "url": "https://www.thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh"
+      "session": "0ce0f12f",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654250"
     },
     {
-      "t": "2026-10-10T14:41:17.069Z",
+      "t": "2026-10-10T13:24:37.279Z",
       "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
+      "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-10-10T15:12:39.628Z",
+      "t": "2026-10-10T13:25:51.726Z",
       "event": "bb-session",
-      "session": "191a81d5",
-      "url": "https://www.trustpilot.com/review/www.londontheatredirect.com/product/affluenza-"
+      "session": "ecf85c27",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654389"
     },
     {
-      "t": "2026-10-10T15:13:51.101Z",
-      "event": "bb-session",
-      "session": "0189de5d",
-      "url": "https://whatnightout.uk/london/events/franz-marie-8871320"
+      "t": "2026-10-10T13:25:52.076Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-10-10T15:13:58.173Z",
+      "t": "2026-10-10T13:26:09.057Z",
       "event": "bb-session",
-      "session": "84d5d89e",
-      "url": "https://whatnightout.uk/london/events/franz-marie-8871320"
+      "session": "162d779f",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654389"
+    },
+    {
+      "t": "2026-10-10T13:26:09.381Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-10T13:31:32.508Z",
+      "event": "bb-session",
+      "session": "1655f996",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-10-10T13:31:43.071Z",
+      "event": "bb-session",
+      "session": "6e3c0827",
+      "url": "https://deadline.com/2026/08/the-whisper-man-review-robert-de-niro-adam-scott-ne"
+    },
+    {
+      "t": "2026-10-10T13:40:44.242Z",
+      "event": "bb-session",
+      "session": "4668ec22",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-10-10T13:40:44.586Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-10T13:40:56.152Z",
+      "event": "bb-session",
+      "session": "febe3d10",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-10-10T13:40:56.498Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-10T13:41:06.471Z",
+      "event": "bb-session",
+      "session": "c6097ab2",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-10-10T13:41:14.080Z",
+      "event": "bb-session",
+      "session": "c1354b57",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
     }
   ]
 }
