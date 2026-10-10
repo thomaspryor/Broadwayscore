@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "error",
-  "lastChecked": "2026-10-09T13:52:36.111Z",
+  "lastChecked": "2026-10-10T13:07:35.985Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -9,7 +9,12 @@
     {
       "name": "Data: OB closing candidates awaiting review",
       "status": "warn",
-      "message": "3 open Off-Broadway show(s) look closed per the weekly detector. Oldest: pied-a-terre-off-broadway-2026 (missing 18d)"
+      "message": "3 open Off-Broadway show(s) look closed per the weekly detector. Oldest: pied-a-terre-off-broadway-2026 (missing 19d)"
+    },
+    {
+      "name": "Data: tour dates need a look",
+      "status": "warn",
+      "message": "1 tour(s) could not be dated automatically: spamilton-an-american-parody-tour-2018 (no schedule segment matches this tour)"
     },
     {
       "name": "Data: closed national tour lists new dates",
@@ -18,23 +23,23 @@
     },
     {
       "name": "Data: T1/T2 silent review gaps",
-      "status": "warn",
-      "message": "10 discovered review(s) not reaching the composite score (2 T1). Oldest: human-things-off-broadway-2026 — talkinbroadway (empty-body)"
+      "status": "error",
+      "message": "12 discovered review(s) not reaching the composite score (4 T1). Oldest: million-dollar-quartet-off-west-end-2026 — broadwayworld (unscored)"
     },
     {
       "name": "Data: uncollected live review strands",
       "status": "warn",
-      "message": "28 discovered review URL(s) across 20 live show(s) were never fetched. First: kimberly-akimbo-off-west-end-2026 (3 stranded)"
+      "message": "31 discovered review URL(s) across 22 live show(s) were never fetched. First: kimberly-akimbo-off-west-end-2026 (3 stranded)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
       "status": "error",
-      "message": "5 aggregator-reviewed show(s) not in the catalogue. Oldest: \"De Profundis\" (guardian-review — missing 3d) — 2 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
+      "message": "5 aggregator-reviewed show(s) not in the catalogue. Oldest: \"De Profundis\" (guardian-review — missing 4d) — 2 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
     },
     {
       "name": "Data: undispatchable backlog cards",
       "status": "warn",
-      "message": "17 of 300 pending/in-progress card(s) have no runnable acceptance-criteria command (bsc-next would refuse them). First: [P2 Later] [Review Submission] Theaterly review of Human Things Refusal causes: no-section=17."
+      "message": "17 of 300 pending/in-progress card(s) have no runnable acceptance-criteria command (bsc-next would refuse them). First: [P2 Later] [Review Submission] 100 Word Review review of Human Things Refusal causes: no-section=17."
     },
     {
       "name": "Data: armed-but-vacuous backlog cards",
@@ -44,7 +49,7 @@
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "464 of 1407 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-4929 BWW roundups for short-titled shows (Oh Mary, Six, Boop, The Wiz, MJ) never match by slug, so tour roundups are dropped"
+      "message": "478 of 1413 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-4973 Opening-night audit 2026-10-10"
     }
   ]
 }

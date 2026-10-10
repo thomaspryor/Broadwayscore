@@ -113,13 +113,11 @@ describe('findUndeclaredDomainCollisions', () => {
     assert.deepStrictEqual(collisions, []);
   });
 
-  test('DECLARED_ALIAS_OVERLAPS is exactly the three known domain/domainAlias overlaps', () => {
+  test('DECLARED_ALIAS_OVERLAPS is exactly the one known domain/domainAlias overlap', () => {
     // Was four until 2026-09-07 (BRO-2921), when chicago-sun-times/suntimes was
     // MERGED rather than declared and suntimes was deleted from the registry.
     assert.deepStrictEqual(DECLARED_ALIAS_OVERLAPS.map((p) => [...p].sort()), [
       ['abc-news', 'ap'],
-      ['bobs-theater-blog', 'gotham-playgoer'],
-      ['dc-metro-theater-arts', 'dctheatrescene'],
     ]);
   });
 

@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-09T14:08:26.717Z",
+  "generatedAt": "2026-10-10T13:17:54.325Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 3518,
-  "flaggedShows": 65,
-  "flaggedFiles": 225,
+  "scannedShows": 3608,
+  "flaggedShows": 63,
+  "flaggedFiles": 223,
   "readmissionRiskFiles": 0,
   "readmissionRisks": [],
   "unevaluatedFiles": 0,
@@ -11,8 +11,7 @@
   "unreadableFiles": 0,
   "byVerdict": {
     "likely-contamination": 35,
-    "needs-human-review": 29,
-    "likely-single-prior-run": 1
+    "needs-human-review": 28
   },
   "shows": [
     {
@@ -3859,42 +3858,6 @@
       ]
     },
     {
-      "showId": "an-oak-tree-off-west-end-2026",
-      "title": "An Oak Tree",
-      "market": "west-end",
-      "status": "previews",
-      "venue": "The Other Palace - Main Theatre",
-      "previewsStartDate": "2026-10-07",
-      "openingDate": null,
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"The Other Palace - Main Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2025
-        ],
-        "spanDays": 0,
-        "flaggedCount": 1,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "london-box-office--stuart-king.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Stuart King",
-          "publishDate": "2025-05-07",
-          "url": "https://www.londonboxoffice.co.uk/news/post/an-oak-tree-young-vic-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
       "showId": "the-pianist-off-west-end-2026",
       "title": "The Pianist",
       "market": "west-end",
@@ -4177,47 +4140,6 @@
           "publishDate": "2019-05-15",
           "url": "https://www.londonboxoffice.co.uk/news/post/review-death-of-a-salesman",
           "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "an-evening-with-an-immigrant-off-west-end-2026",
-      "title": "An Evening With An Immigrant",
-      "market": "west-end",
-      "status": "previews",
-      "venue": "The Maria Theatre",
-      "previewsStartDate": "2026-10-06",
-      "openingDate": null,
-      "verdict": "likely-single-prior-run",
-      "reasoning": "1 premature-scored review(s) cluster within a 0-day window (single run pattern), 0 already flagged. 1/1 review texts mention the show's own venue (\"The Maria Theatre\") — supports same-venue return.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2020
-        ],
-        "spanDays": 0,
-        "flaggedCount": 0,
-        "venueMentionCount": 1
-      },
-      "suggestedPriorRun": {
-        "venue": "The Maria Theatre",
-        "reviewDateRangeStart": "2020-09-25",
-        "reviewDateRangeEnd": "2020-09-25",
-        "note": "reviewDateRange is derived from review publish dates, NOT the run's real opening/closing dates — confirm actual dates via Playbill/IBDB before declaring show.priorRuns."
-      },
-      "reviews": [
-        {
-          "file": "artsdesk--unknown.json",
-          "readmissionRisk": "still-excluded-after-open",
-          "beforeReason": "prematureForUnopenedShow",
-          "afterReason": "preWindowDate",
-          "outletId": "artsdesk",
-          "criticName": "Unknown",
-          "publishDate": "2020-09-25",
-          "url": "https://theartsdesk.com/theatre/evening-immigrant-bridge-theatre-review-poetic-and-engaging",
-          "wrongProduction": false,
           "wrongShow": false,
           "evaluationError": null
         }

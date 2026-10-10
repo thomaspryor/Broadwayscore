@@ -1,7 +1,7 @@
 {
   "system": "cron",
   "status": "warn",
-  "lastChecked": "2026-10-09T13:52:36.112Z",
+  "lastChecked": "2026-10-10T13:07:35.985Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,27 +9,27 @@
     {
       "name": "Cron: Update Show Status",
       "status": "pass",
-      "message": "23h ago, success"
+      "message": "22h ago, success"
     },
     {
       "name": "Cron: Rebuild Reviews",
       "status": "pass",
-      "message": "0h ago, success (newest run skipped — superseded, not a failure)"
+      "message": "1h ago, success"
     },
     {
       "name": "Cron: Collect Review Texts",
       "status": "warn",
-      "message": "Last run still running (started 0h ago)"
+      "message": "Last run still running (started 2h ago)"
     },
     {
       "name": "Cron: LLM Ensemble Score",
       "status": "pass",
-      "message": "0h ago, success"
+      "message": "1h ago, success"
     },
     {
       "name": "Cron: Test Suite",
       "status": "pass",
-      "message": "0h ago, success"
+      "message": "1h ago, success"
     },
     {
       "name": "Cron: Opening Night Broadcast",
@@ -39,12 +39,12 @@
     {
       "name": "Cron: Update Lottery/Rush",
       "status": "pass",
-      "message": "21h ago, success"
+      "message": "2d ago, success"
     },
     {
       "name": "Cron: Weekly Grosses",
       "status": "pass",
-      "message": "2d ago, success"
+      "message": "3d ago, success"
     },
     {
       "name": "Cron: Update Show Score",
@@ -54,7 +54,7 @@
     {
       "name": "Cron: Update Cast Changes",
       "status": "pass",
-      "message": "2d ago, success"
+      "message": "3d ago, success"
     },
     {
       "name": "Cron: NYT Critics Picks",
@@ -64,12 +64,22 @@
     {
       "name": "Cron: Weekly Video Reviews",
       "status": "pass",
-      "message": "4d ago, success"
+      "message": "5d ago, success"
     },
     {
       "name": "Cron: Reverse Discovery",
       "status": "pass",
       "message": "2h ago, success"
+    },
+    {
+      "name": "Cron: Cron Health Watchdog",
+      "status": "pass",
+      "message": "19h ago, ran (failure; liveness-only check)"
+    },
+    {
+      "name": "Cron: Affiliate Link Integrity",
+      "status": "pass",
+      "message": "11h ago, success"
     }
   ]
 }

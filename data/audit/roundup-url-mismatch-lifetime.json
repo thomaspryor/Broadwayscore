@@ -1,10 +1,15 @@
 {
-  "updatedAt": "2026-10-09T14:10:09.338Z",
-  "scanned": 2452,
-  "showsWithViolations": 14,
-  "totalViolations": 45,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "updatedAt": "2026-10-10T13:19:42.542Z",
+  "scanned": 2585,
+  "showsWithViolations": 15,
+  "totalViolations": 49,
+  "newSinceLastRun": 4,
+  "newViolationKeys": [
+    "the-47th-west-end-2022::guardian--arifa-akbar.json",
+    "the-47th-west-end-2022::hollywood-reporter--demetrios-matheou.json",
+    "the-47th-west-end-2022::open-letters-review--christopher-day.json",
+    "the-47th-west-end-2022::standard--nick-curtis.json"
+  ],
   "violationKeys": [
     "joe-turners-come-and-gone-2026::nysr--frank-scheck.json",
     "schmigadoon-2026::amny--matt-windman.json",
@@ -50,7 +55,11 @@
     "les-miserables-west-end-2021::timeout-london--andrzej-lukowski.json",
     "les-miserables-west-end-2021::times-uk--clive-davis.json",
     "what-happened-was-off-broadway-2026::nysr--frank-scheck.json",
-    "42-balloons-regional-2025::chicagotribune--chris-jones.json"
+    "42-balloons-regional-2025::chicagotribune--chris-jones.json",
+    "the-47th-west-end-2022::guardian--arifa-akbar.json",
+    "the-47th-west-end-2022::hollywood-reporter--demetrios-matheou.json",
+    "the-47th-west-end-2022::open-letters-review--christopher-day.json",
+    "the-47th-west-end-2022::standard--nick-curtis.json"
   ],
   "hits": [
     {
@@ -432,6 +441,38 @@
           "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-42-BALOONS-at-Chicago-Shakespeare-Theater-20250611",
           "url": "https://www.chicagotribune.com/2025/06/11/review-42-balloons-chicago-shakes/",
           "shipped": true
+        }
+      ]
+    },
+    {
+      "showId": "the-47th-west-end-2022",
+      "title": "The 47th",
+      "openingDate": "2022-03-29",
+      "message": "[excluded] guardian--arifa-akbar.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-Mike-Bartletts-THE-47TH-at-the-Old-Vic-20220411\n[excluded] hollywood-reporter--demetrios-matheou.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-Mike-Bartletts-THE-47TH-at-the-Old-Vic-20220411\n[SHIPPED] open-letters-review--christopher-day.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-Mike-Bartletts-THE-47TH-at-the-Old-Vic-20220411\n[excluded] standard--nick-curtis.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-Mike-Bartletts-THE-47TH-at-the-Old-Vic-20220411",
+      "violations": [
+        {
+          "filename": "guardian--arifa-akbar.json",
+          "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Mike-Bartletts-THE-47TH-at-the-Old-Vic-20220411",
+          "url": "https://www.theguardian.com/stage/2022/apr/10/the-47th-review-old-vic-theatre-mike-bartlett-trumpian-satire",
+          "shipped": false
+        },
+        {
+          "filename": "hollywood-reporter--demetrios-matheou.json",
+          "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Mike-Bartletts-THE-47TH-at-the-Old-Vic-20220411",
+          "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-47th-theater-review-donald-trump-election-play-1235127763/",
+          "shipped": false
+        },
+        {
+          "filename": "open-letters-review--christopher-day.json",
+          "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Mike-Bartletts-THE-47TH-at-the-Old-Vic-20220411",
+          "url": "https://openlettersreview.com/posts/theater-review-the-47th",
+          "shipped": true
+        },
+        {
+          "filename": "standard--nick-curtis.json",
+          "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Mike-Bartletts-THE-47TH-at-the-Old-Vic-20220411",
+          "url": "https://www.standard.co.uk/culture/theatre/the-47th-theatre-review-old-vic-bertie-carvel-trump-b993628.html",
+          "shipped": false
         }
       ]
     }
