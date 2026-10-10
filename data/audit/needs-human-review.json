@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-10T06:35:56.030Z",
-    "totalFlagged": 83,
+    "generatedAt": "2026-10-10T06:47:47.020Z",
+    "totalFlagged": 84,
     "reasons": {
+      "venue-url-mismatch": 57,
       "originalScore-llm-conflict": 13,
-      "venue-url-mismatch": 56,
       "possible-tour-fulltext": 5,
       "aggregator-thumb-contradicts-llm": 5,
       "aggregatorStars-excerpt-mismatch": 3,
@@ -12,6 +12,20 @@
     }
   },
   "reviews": [
+    {
+      "showId": "a-christmas-carol-west-end-2020",
+      "outletId": "thestage",
+      "criticName": "Unknown",
+      "reason": "venue-url-mismatch",
+      "detail": "URL mentions Bridge Theatre but show venue is Dominion Theatre",
+      "llmScore": null,
+      "llmBucket": null,
+      "llmConfidence": null,
+      "dtliThumb": null,
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-10-10T06:44:56.568Z"
+    },
     {
       "showId": "a-life-in-the-theatre-2010",
       "outletId": "backstage",
@@ -24,7 +38,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:32:37.591Z"
+      "flaggedAt": "2026-10-10T06:44:57.873Z"
     },
     {
       "showId": "a-number-west-end-2022",
@@ -38,7 +52,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:32:39.285Z"
+      "flaggedAt": "2026-10-10T06:44:59.236Z"
     },
     {
       "showId": "a-small-and-quiet-light-off-west-end-2026",
@@ -52,7 +66,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:32:39.640Z"
+      "flaggedAt": "2026-10-10T06:44:59.535Z"
     },
     {
       "showId": "a-streetcar-named-desire-west-end-2023",
@@ -66,7 +80,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:32:40.314Z"
+      "flaggedAt": "2026-10-10T06:45:00.111Z"
     },
     {
       "showId": "a-streetcar-named-desire-west-end-2023",
@@ -80,7 +94,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:32:40.316Z"
+      "flaggedAt": "2026-10-10T06:45:00.112Z"
     },
     {
       "showId": "a-view-from-the-bridge-west-end-2024",
@@ -94,7 +108,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:32:40.904Z"
+      "flaggedAt": "2026-10-10T06:45:00.577Z"
     },
     {
       "showId": "a-view-from-the-bridge-west-end-2024",
@@ -108,7 +122,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:32:40.928Z"
+      "flaggedAt": "2026-10-10T06:45:00.598Z"
     },
     {
       "showId": "a-view-from-the-bridge-west-end-2024",
@@ -122,7 +136,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:32:40.958Z"
+      "flaggedAt": "2026-10-10T06:45:00.617Z"
     },
     {
       "showId": "an-enemy-of-the-people-west-end-2024",
@@ -136,7 +150,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:32:47.863Z"
+      "flaggedAt": "2026-10-10T06:45:06.639Z"
     },
     {
       "showId": "an-evening-with-an-immigrant-off-west-end-2026",
@@ -150,7 +164,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:32:48.082Z"
+      "flaggedAt": "2026-10-10T06:45:06.804Z"
     },
     {
       "showId": "as-you-like-it-west-end-2022",
@@ -164,7 +178,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:32:52.347Z"
+      "flaggedAt": "2026-10-10T06:45:10.243Z"
     },
     {
       "showId": "blackbird-2016",
@@ -178,7 +192,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:32:59.170Z"
+      "flaggedAt": "2026-10-10T06:45:15.853Z"
     },
     {
       "showId": "blithe-spirit-west-end-2021",
@@ -192,7 +206,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:32:59.452Z"
+      "flaggedAt": "2026-10-10T06:45:16.078Z"
     },
     {
       "showId": "brokeback-mountain-west-end-2023",
@@ -206,7 +220,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:33:02.743Z"
+      "flaggedAt": "2026-10-10T06:45:18.771Z"
     },
     {
       "showId": "catch-me-if-you-can-2011",
@@ -220,7 +234,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 6,
-      "flaggedAt": "2026-10-10T06:33:07.660Z"
+      "flaggedAt": "2026-10-10T06:45:22.882Z"
     },
     {
       "showId": "catch-me-if-you-can-2011",
@@ -234,7 +248,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 6,
-      "flaggedAt": "2026-10-10T06:33:07.705Z"
+      "flaggedAt": "2026-10-10T06:45:22.923Z"
     },
     {
       "showId": "come-from-away-2017",
@@ -248,7 +262,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:33:12.363Z"
+      "flaggedAt": "2026-10-10T06:45:26.898Z"
     },
     {
       "showId": "cyrano-de-bergerac-2012",
@@ -262,7 +276,7 @@
       "dtliThumb": "Down",
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:33:14.433Z"
+      "flaggedAt": "2026-10-10T06:45:28.628Z"
     },
     {
       "showId": "dear-england-west-end-2023",
@@ -276,7 +290,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:33:16.474Z"
+      "flaggedAt": "2026-10-10T06:45:30.325Z"
     },
     {
       "showId": "death-of-a-salesman-2026",
@@ -290,7 +304,7 @@
       "dtliThumb": "Up",
       "bwwThumb": "Up",
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:33:18.462Z"
+      "flaggedAt": "2026-10-10T06:45:31.949Z"
     },
     {
       "showId": "dr-semmelweis-west-end-2023",
@@ -304,7 +318,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:33:21.864Z"
+      "flaggedAt": "2026-10-10T06:45:34.716Z"
     },
     {
       "showId": "east-is-east-west-end-2021",
@@ -318,7 +332,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:33:22.488Z"
+      "flaggedAt": "2026-10-10T06:45:35.232Z"
     },
     {
       "showId": "fela-2012",
@@ -332,7 +346,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:33:28.443Z"
+      "flaggedAt": "2026-10-10T06:45:40.107Z"
     },
     {
       "showId": "fela-2012",
@@ -346,7 +360,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:33:28.449Z"
+      "flaggedAt": "2026-10-10T06:45:40.113Z"
     },
     {
       "showId": "fences-off-west-end-2026",
@@ -360,7 +374,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:33:28.806Z"
+      "flaggedAt": "2026-10-10T06:45:40.386Z"
     },
     {
       "showId": "grenfell-in-the-words-of-survivors-west-end-2023",
@@ -374,7 +388,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:33:38.399Z"
+      "flaggedAt": "2026-10-10T06:45:48.381Z"
     },
     {
       "showId": "hadestown-west-end-2024",
@@ -388,7 +402,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:33:41.253Z"
+      "flaggedAt": "2026-10-10T06:45:50.762Z"
     },
     {
       "showId": "hello-dolly-west-end-2024",
@@ -402,7 +416,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:33:45.946Z"
+      "flaggedAt": "2026-10-10T06:45:55.084Z"
     },
     {
       "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
@@ -416,7 +430,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:33:47.028Z"
+      "flaggedAt": "2026-10-10T06:45:55.992Z"
     },
     {
       "showId": "infinite-life-west-end-2023",
@@ -430,7 +444,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:33:53.411Z"
+      "flaggedAt": "2026-10-10T06:46:01.403Z"
     },
     {
       "showId": "juno-and-the-paycock-west-end-2024",
@@ -444,7 +458,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:00.372Z"
+      "flaggedAt": "2026-10-10T06:46:07.390Z"
     },
     {
       "showId": "king-kong-2018",
@@ -458,7 +472,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:02.239Z"
+      "flaggedAt": "2026-10-10T06:46:09.069Z"
     },
     {
       "showId": "lemons-lemons-lemons-lemons-lemons-west-end-2023",
@@ -472,7 +486,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:05.355Z"
+      "flaggedAt": "2026-10-10T06:46:11.767Z"
     },
     {
       "showId": "machinal-west-end-2024",
@@ -486,7 +500,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:10.726Z"
+      "flaggedAt": "2026-10-10T06:46:16.650Z"
     },
     {
       "showId": "marie-and-rosetta-west-end-2026",
@@ -500,7 +514,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:13.021Z"
+      "flaggedAt": "2026-10-10T06:46:18.512Z"
     },
     {
       "showId": "marie-and-rosetta-west-end-2026",
@@ -514,7 +528,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:13.063Z"
+      "flaggedAt": "2026-10-10T06:46:18.546Z"
     },
     {
       "showId": "much-ado-about-nothing-west-end-2022",
@@ -528,7 +542,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:21.828Z"
+      "flaggedAt": "2026-10-10T06:46:25.857Z"
     },
     {
       "showId": "oliver-west-end-2024",
@@ -542,7 +556,7 @@
       "dtliThumb": null,
       "bwwThumb": "Up",
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:28.900Z"
+      "flaggedAt": "2026-10-10T06:46:31.743Z"
     },
     {
       "showId": "opening-night-west-end-2024",
@@ -556,7 +570,7 @@
       "dtliThumb": null,
       "bwwThumb": "Down",
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:30.708Z"
+      "flaggedAt": "2026-10-10T06:46:33.311Z"
     },
     {
       "showId": "othello-west-end-2022",
@@ -570,7 +584,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:32.048Z"
+      "flaggedAt": "2026-10-10T06:46:34.444Z"
     },
     {
       "showId": "paranormal-activity-2026",
@@ -584,7 +598,7 @@
       "dtliThumb": null,
       "bwwThumb": "Up",
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:34.000Z"
+      "flaggedAt": "2026-10-10T06:46:36.089Z"
     },
     {
       "showId": "patriots-west-end-2023",
@@ -598,7 +612,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:34.913Z"
+      "flaggedAt": "2026-10-10T06:46:36.862Z"
     },
     {
       "showId": "people-places-and-things-west-end-2024",
@@ -612,7 +626,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:35.040Z"
+      "flaggedAt": "2026-10-10T06:46:36.963Z"
     },
     {
       "showId": "plaza-suite-west-end-2024",
@@ -626,7 +640,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:36.453Z"
+      "flaggedAt": "2026-10-10T06:46:38.232Z"
     },
     {
       "showId": "red-pitch-west-end-2024",
@@ -640,7 +654,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:41.931Z"
+      "flaggedAt": "2026-10-10T06:46:42.958Z"
     },
     {
       "showId": "romeo-and-juliet-west-end-2026",
@@ -654,7 +668,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:44.162Z"
+      "flaggedAt": "2026-10-10T06:46:44.862Z"
     },
     {
       "showId": "something-rotten-2015",
@@ -668,7 +682,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:51.812Z"
+      "flaggedAt": "2026-10-10T06:46:51.467Z"
     },
     {
       "showId": "standing-at-the-skys-edge-west-end-2024",
@@ -682,7 +696,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:54.618Z"
+      "flaggedAt": "2026-10-10T06:46:53.772Z"
     },
     {
       "showId": "standing-at-the-skys-edge-west-end-2024",
@@ -696,7 +710,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:54.629Z"
+      "flaggedAt": "2026-10-10T06:46:53.781Z"
     },
     {
       "showId": "standing-at-the-skys-edge-west-end-2024",
@@ -710,7 +724,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:54.634Z"
+      "flaggedAt": "2026-10-10T06:46:53.785Z"
     },
     {
       "showId": "standing-at-the-skys-edge-west-end-2024",
@@ -724,7 +738,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:54.636Z"
+      "flaggedAt": "2026-10-10T06:46:53.787Z"
     },
     {
       "showId": "standing-at-the-skys-edge-west-end-2024",
@@ -738,7 +752,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:54.642Z"
+      "flaggedAt": "2026-10-10T06:46:53.791Z"
     },
     {
       "showId": "sting-west-end-2026",
@@ -752,7 +766,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:55.743Z"
+      "flaggedAt": "2026-10-10T06:46:54.764Z"
     },
     {
       "showId": "sting-west-end-2026",
@@ -766,7 +780,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:55.747Z"
+      "flaggedAt": "2026-10-10T06:46:54.768Z"
     },
     {
       "showId": "sting-west-end-2026",
@@ -780,7 +794,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:55.753Z"
+      "flaggedAt": "2026-10-10T06:46:54.773Z"
     },
     {
       "showId": "sting-west-end-2026",
@@ -794,7 +808,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:55.758Z"
+      "flaggedAt": "2026-10-10T06:46:54.777Z"
     },
     {
       "showId": "sting-west-end-2026",
@@ -808,7 +822,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:55.762Z"
+      "flaggedAt": "2026-10-10T06:46:54.781Z"
     },
     {
       "showId": "sting-west-end-2026",
@@ -822,7 +836,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:55.767Z"
+      "flaggedAt": "2026-10-10T06:46:54.785Z"
     },
     {
       "showId": "sting-west-end-2026",
@@ -836,7 +850,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:55.778Z"
+      "flaggedAt": "2026-10-10T06:46:54.795Z"
     },
     {
       "showId": "sting-west-end-2026",
@@ -850,7 +864,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:55.782Z"
+      "flaggedAt": "2026-10-10T06:46:54.799Z"
     },
     {
       "showId": "sting-west-end-2026",
@@ -864,7 +878,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:55.785Z"
+      "flaggedAt": "2026-10-10T06:46:54.802Z"
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
@@ -878,7 +892,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:56.421Z"
+      "flaggedAt": "2026-10-10T06:46:55.381Z"
     },
     {
       "showId": "suffs-2024",
@@ -892,7 +906,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:56.754Z"
+      "flaggedAt": "2026-10-10T06:46:55.677Z"
     },
     {
       "showId": "summer-2018",
@@ -906,7 +920,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:57.428Z"
+      "flaggedAt": "2026-10-10T06:46:56.225Z"
     },
     {
       "showId": "sylvia-west-end-2023",
@@ -920,7 +934,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:34:59.501Z"
+      "flaggedAt": "2026-10-10T06:46:58.029Z"
     },
     {
       "showId": "the-boy-with-two-hearts-west-end-2022",
@@ -934,7 +948,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:35:03.790Z"
+      "flaggedAt": "2026-10-10T06:47:01.758Z"
     },
     {
       "showId": "the-devil-wears-prada-west-end-2024",
@@ -948,7 +962,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:35:08.668Z"
+      "flaggedAt": "2026-10-10T06:47:05.849Z"
     },
     {
       "showId": "the-devil-wears-prada-west-end-2024",
@@ -962,7 +976,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:35:08.668Z"
+      "flaggedAt": "2026-10-10T06:47:05.849Z"
     },
     {
       "showId": "the-heiress-2012",
@@ -976,7 +990,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-10-10T06:35:15.018Z"
+      "flaggedAt": "2026-10-10T06:47:11.258Z"
     },
     {
       "showId": "the-importance-of-being-earnest-west-end-2025",
@@ -990,7 +1004,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:35:18.018Z"
+      "flaggedAt": "2026-10-10T06:47:13.754Z"
     },
     {
       "showId": "the-lehman-trilogy-west-end-2023",
@@ -1004,7 +1018,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:35:20.854Z"
+      "flaggedAt": "2026-10-10T06:47:16.151Z"
     },
     {
       "showId": "the-maids-off-broadway-2026",
@@ -1018,7 +1032,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:35:22.872Z"
+      "flaggedAt": "2026-10-10T06:47:17.883Z"
     },
     {
       "showId": "the-motive-and-the-cue-west-end-2023",
@@ -1032,7 +1046,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:35:23.651Z"
+      "flaggedAt": "2026-10-10T06:47:18.522Z"
     },
     {
       "showId": "the-motive-and-the-cue-west-end-2023",
@@ -1046,7 +1060,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:35:23.689Z"
+      "flaggedAt": "2026-10-10T06:47:18.554Z"
     },
     {
       "showId": "the-mousetrap-west-end-2021",
@@ -1060,7 +1074,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:35:23.807Z"
+      "flaggedAt": "2026-10-10T06:47:18.657Z"
     },
     {
       "showId": "the-phantom-of-the-opera-west-end-1986",
@@ -1074,7 +1088,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:35:27.222Z"
+      "flaggedAt": "2026-10-10T06:47:21.659Z"
     },
     {
       "showId": "the-phantom-of-the-opera-west-end-1986",
@@ -1088,7 +1102,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:35:27.230Z"
+      "flaggedAt": "2026-10-10T06:47:21.667Z"
     },
     {
       "showId": "the-producers-west-end-2025",
@@ -1102,7 +1116,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:35:28.990Z"
+      "flaggedAt": "2026-10-10T06:47:23.254Z"
     },
     {
       "showId": "the-real-thing-2014",
@@ -1116,7 +1130,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-10-10T06:35:29.533Z"
+      "flaggedAt": "2026-10-10T06:47:23.757Z"
     },
     {
       "showId": "the-scottsboro-boys-2010",
@@ -1130,7 +1144,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 5,
-      "flaggedAt": "2026-10-10T06:35:31.237Z"
+      "flaggedAt": "2026-10-10T06:47:25.293Z"
     },
     {
       "showId": "the-story-west-end-2026",
@@ -1144,7 +1158,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:35:33.885Z"
+      "flaggedAt": "2026-10-10T06:47:27.504Z"
     },
     {
       "showId": "the-tempest-west-end-2024",
@@ -1158,7 +1172,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-10-10T06:35:34.072Z"
+      "flaggedAt": "2026-10-10T06:47:27.668Z"
     },
     {
       "showId": "wit-2012",
@@ -1172,7 +1186,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-10-10T06:35:50.291Z"
+      "flaggedAt": "2026-10-10T06:47:42.147Z"
     }
   ]
 }
