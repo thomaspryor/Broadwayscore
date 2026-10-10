@@ -292,7 +292,95 @@ function collectCarriedFiles(show, shows, deps) {
   return out;
 }
 
+/** Date windows of every earlier run `show` declares, including dateless id links resolved through the sibling entry. */
+function priorRunWindows(show, shows) {
+  const windows = Array.isArray(show && show.priorRuns) ? show.priorRuns.filter(r => r && r.openingDate) : [];
+  for (const { window } of findPriorRunSiblings(show, shows || [])) {
+    if (window && window.openingDate) windows.push(window);
+  }
+  return windows;
+}
+
+/** Earliest of the show's first preview and opening, as ms (NaN when neither is set). */
+function runStartMs(show) {
+  const starts = [show && show.previewsStartDate, show && show.openingDate]
+    .map(toDateMs).filter(Number.isFinite);
+  return starts.length ? Math.min(...starts) : NaN;
+}
+
+/**
+ * Sorts a returning show's reviews into earlier-run and this-run. A review dated
+ * on or after this run's first preview/opening is this run's, whatever the prior
+ * window's 7-day review-lag grace says: a tour that closes the day before the
+ * West End previews would otherwise claim the opening-night reviews (The Car Man,
+ * Allegra). A dated review that is neither in a prior window nor after this run
+ * started (an announcement-era piece) is neither, like an undated one.
+ *
+ * @returns {{windows: Array<object>, isPrior: function(object): boolean, isCurrent: function(object): boolean}}
+ */
+function priorRunClassifier(show, shows) {
+  const windows = priorRunWindows(show, shows);
+  const startMs = runStartMs(show);
+  const afterStart = ms => Number.isFinite(startMs) && ms >= startMs;
+  const isPrior = (review) => {
+    if (!review) return false;
+    if (review.inheritedFromShowId) return true;
+    const ms = toDateMs(review.publishDate);
+    if (!Number.isFinite(ms) || afterStart(ms)) return false;
+    return !!findMatchingPriorRun(review.publishDate, windows);
+  };
+  const isCurrent = (review) => {
+    if (!review || review.inheritedFromShowId) return false;
+    const ms = toDateMs(review.publishDate);
+    if (!Number.isFinite(ms)) return false;
+    if (Number.isFinite(startMs)) return ms >= startMs;
+    return !findMatchingPriorRun(review.publishDate, windows);
+  };
+  return { windows, isPrior, isCurrent };
+}
+
+/**
+ * BRO-4954: one review per outlet on a returning production, newest wins. When an
+ * outlet reviewed the return, its earlier-run reviews (carried, or filed on this
+ * entry and dated inside a prior-run window) are superseded. Without this an outlet
+ * that re-reviewed with a different critic counted twice: Into the Woods at the Noel
+ * Coward showed 63 reviews, 12 of them second copies from outlets that also reviewed
+ * the Bridge run. Shows without priorRuns are untouched.
+ *
+ * @param {Array<object>} reviews the rebuild's included reviews (inherited rows included)
+ * @param {Array<object>} shows shows.json entries
+ * @returns {Set<object>} the superseded review rows
+ */
+function supersededPriorRunReviews(reviews, shows) {
+  const superseded = new Set();
+  if (!Array.isArray(reviews) || !Array.isArray(shows)) return superseded;
+  const showById = new Map(shows.map(s => [s.id, s]));
+  const byShow = new Map();
+  for (const r of reviews) {
+    const show = showById.get(r.showId);
+    if (!show || !Array.isArray(show.priorRuns) || show.priorRuns.length === 0) continue;
+    if (!byShow.has(r.showId)) byShow.set(r.showId, []);
+    byShow.get(r.showId).push(r);
+  }
+  const outletKey = r => String(r.outletId || r.outlet || '').trim().toLowerCase();
+  for (const [showId, rows] of byShow) {
+    const { windows, isPrior, isCurrent } = priorRunClassifier(showById.get(showId), shows);
+    if (windows.length === 0) continue;
+    const currentOutlets = new Set();
+    for (const r of rows) {
+      if (outletKey(r) && isCurrent(r)) currentOutlets.add(outletKey(r));
+    }
+    for (const r of rows) {
+      if (currentOutlets.has(outletKey(r)) && isPrior(r)) superseded.add(r);
+    }
+  }
+  return superseded;
+}
+
 module.exports = {
+  priorRunWindows,
+  priorRunClassifier,
+  supersededPriorRunReviews,
   isReturnOfProduction,
   matchingPriorRunFor,
   buildMultiProdDirectorGuard,

@@ -467,11 +467,25 @@ function buildBroadcastSubjectLine(shows, market) {
  * Build opening-night broadcast email for general subscribers.
  * Supports single or multiple shows in one email.
  *
- * @param {Array<{showTitle, score, reviewCount, rave, positive, mixed, negative, consensusText, showType, venue, showUrl, imageUrl}>} shows
+ * @param {Array<{showTitle, score, reviewCount, newReviewCount, rave, positive, mixed, negative, consensusText, showType, venue, showUrl, imageUrl}>} shows
  * @param {string} email - Subscriber email (for unsubscribe link)
  * @param {string} [market='broadway'] - 'broadway' or 'west-end'
  * @returns {string} HTML email
  */
+/**
+ * Line under the score. A transfer or return carries its earlier run's reviews
+ * (BRO-4954), so it says how many are of this run; kept as short as the plain
+ * form so it stays on one line beside the score badge on a phone.
+ */
+function broadcastReviewSubtitle(reviewCount, newReviewCount) {
+  if (!(reviewCount > 0)) return 'Reviews pending';
+  const plural = `Critic Review${reviewCount !== 1 ? 's' : ''}`;
+  if (Number.isInteger(newReviewCount) && newReviewCount >= 0 && newReviewCount < reviewCount) {
+    return `${reviewCount} ${plural} (${newReviewCount} New)`;
+  }
+  return `Based on ${reviewCount} ${plural}`;
+}
+
 function buildBroadcastOpeningNightHtml(shows, email, market) {
   market = market || 'broadway';
   const isWE = isLondonMarket(market);
@@ -492,9 +506,7 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
     const negative = show.negative || 0;
     const total = rave + positive + mixed + negative;
 
-    const reviewSubtitle = reviewCount > 0
-      ? `Based on ${reviewCount} Critic Review${reviewCount !== 1 ? 's' : ''}`
-      : 'Reviews pending';
+    const reviewSubtitle = broadcastReviewSubtitle(reviewCount, show.newReviewCount);
 
     const breakdownHtml = buildBreakdownHtml(rave, positive, mixed, negative);
 
@@ -991,6 +1003,7 @@ function buildDailyDigestHtml(changes, date) {
 }
 
 module.exports = {
+  broadcastReviewSubtitle,
   FONT,
   postJSON,
   sleep,
