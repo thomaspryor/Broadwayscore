@@ -1,42 +1,19 @@
 {
-  "updatedAt": "2026-10-10T18:16:35.119Z",
-  "processed": 30,
-  "failed": 9,
-  "successRate": "76.9%",
+  "updatedAt": "2026-10-10T18:41:42.588Z",
+  "processed": 29,
+  "failed": 15,
+  "successRate": "65.9%",
   "tierBreakdown": {
     "playwright": 26,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 2,
-    "scrapingbee": 1,
-    "brightdata": 0,
+    "scrapingbee": 2,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 2
   },
-  "browserbaseSessions": 2,
-  "recentActivity": [
-    {
-      "t": "2026-10-10T18:10:01.817Z",
-      "event": "bb-session",
-      "session": "37379d85",
-      "url": "https://www.nytimes.com/2019/11/07/theater/lungs-old-vic-claire-foy-matt-smith.h"
-    },
-    {
-      "t": "2026-10-10T18:10:02.562Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-10T18:10:20.270Z",
-      "event": "bb-session",
-      "session": "b91bff96",
-      "url": "https://www.nytimes.com/2019/11/07/theater/lungs-old-vic-claire-foy-matt-smith.h"
-    },
-    {
-      "t": "2026-10-10T18:10:20.916Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }
