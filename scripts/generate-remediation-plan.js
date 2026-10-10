@@ -27,6 +27,10 @@ import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
+if (require('./lib/cli-help').hasHelpFlag(process.argv.slice(2))) {
+  console.log('Usage: node scripts/generate-remediation-plan.js (driven by ISSUE_BODY, ISSUE_NUMBER, FIX_ACTION env vars; see the header comment)');
+  process.exit(0);
+}
 const { buildFixApprovalEmail } = require('./lib/email-templates.js');
 const { GPT4O_MINI, CLAUDE_SONNET } = require('./lib/models');
 const { detectSystematicIssue } = require('./lib/systematic-fix-detection.js');

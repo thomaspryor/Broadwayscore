@@ -125,6 +125,22 @@ function costAnchors(record, show, category) {
   }));
 }
 
+// Sources that report a show's own cost. Reddit "standard" figures and our
+// industry estimates are category guesses (often dated to when we wrote them),
+// so they never count as an anchor (BRO-4989 checker: anchors are trade or
+// producer sourced).
+const REPORTED_ANCHOR_SOURCES = new Set(['producer-confirmed', 'sec', 'trade']);
+
+/**
+ * Does the record hold a reported cost figure for this show (producer, SEC or
+ * trade)? Without one there is nothing real to carry across the run, and the
+ * model keeps the live flat era deflator (BRO-4989 checker: a 2025 category
+ * estimate carried back by the index made Cinderella 2013 a false recoup).
+ */
+function hasCostAnchor(record, show) {
+  return costAnchors(record, show, 'musical').some((a) => REPORTED_ANCHOR_SOURCES.has(a.sourceType));
+}
+
 /**
  * @param {object} record - commercial.json record (costHistory, weeklyRunningCost...)
  * @param {string|Date} weekEnding
@@ -224,6 +240,7 @@ function weeklyCostStatus(gross, cw) {
 
 module.exports = {
   costForWeek,
+  hasCostAnchor,
   weeklyCostStatus,
   costIndexAt,
   carry,

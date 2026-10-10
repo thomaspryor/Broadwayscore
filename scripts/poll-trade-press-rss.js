@@ -34,6 +34,7 @@
  *   node scripts/poll-trade-press-rss.js --dry-run
  */
 
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 

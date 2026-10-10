@@ -22,6 +22,7 @@
  *   2 — bad usage (missing --show, or invalid slug format)
  */
 
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const { createCommercialWriteGuard } = require('./lib/commercial-write-guard');

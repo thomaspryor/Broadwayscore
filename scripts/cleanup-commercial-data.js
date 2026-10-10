@@ -19,6 +19,7 @@
  * Usage: node scripts/cleanup-commercial-data.js [--dry-run]
  */
 
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');

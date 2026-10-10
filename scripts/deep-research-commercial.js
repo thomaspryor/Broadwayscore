@@ -26,6 +26,7 @@
  *                        loses nothing; unfinished targets re-enter next run.
  */
 
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const { normalizeSources } = require('./lib/commercial-sources');

@@ -6,6 +6,7 @@ import type { ShowCommercial, RecoupmentTrend } from '@/lib/data-types';
 import { getTrendColor, getTrendIcon } from '@/config/commercial';
 import {
   getRecoupmentDisplayMode,
+  getModelHoldLabel,
   meetsModelQualityFloor,
   getBreakEven,
   getRecoupmentAttribution,
@@ -135,6 +136,8 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
   //    no model %, range, break-even or model confidence (BRO-4623 P0-4).
   //  - otherwise model output above the quality floor, labelled as an estimate.
   const displayMode = getRecoupmentDisplayMode({ ...commercial, status: showStatus });
+  // A model the display guard held back says why instead of vanishing (BRO-4989).
+  const holdLabel = displayMode === 'none' ? getModelHoldLabel({ ...commercial, status: showStatus }) : null;
   const attribution = displayMode === 'announced' ? getRecoupmentAttribution(commercial) : null;
 
   // Source lines print only publishable text: records can carry internal
@@ -343,8 +346,14 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
           <RecoupmentProgressBar
             estimatedPct={commercial.modelRecoupmentPct}
             modelMethod={commercial.modelMethod}
+            belowCosts={commercial.modelBelowCosts}
             variant="headline"
           />
+        )}
+        {holdLabel && (
+          <p className="text-xs text-gray-400" data-testid="model-hold">
+            Recoupment estimate: {holdLabel}
+          </p>
         )}
 
         {/* Latest week's gross vs estimated break-even */}
