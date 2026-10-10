@@ -25,7 +25,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { shouldRejectAsReservation, isPromoTeaser, isBadCandidateLength, MIN_QUOTE_LENGTH, MAX_QUOTE_LENGTH } = require('./lib/pull-quote-guards');
+const { shouldRejectAsReservation, isPromoTeaser, isInServiceSection, isBadCandidateLength, MIN_QUOTE_LENGTH, MAX_QUOTE_LENGTH } = require('./lib/pull-quote-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./lib/models');
@@ -424,6 +424,20 @@ async function processReview(entry) {
       }
       stats.promoTeaserRejected = (stats.promoTeaserRejected || 0) + 1;
       if (VERBOSE) console.log(`  PROMO-TEASER rejected after retry: ${path.basename(filePath)}`);
+      return;
+    }
+
+    // Service-section check: a sentence from "Who should see X" / "What to
+    // expect" boilerplate is genre filler, not a verdict (BRO-4973).
+    if (isInServiceSection(quote, data.fullText)) {
+      if (attempt === 1) {
+        stats.serviceSectionRetried = (stats.serviceSectionRetried || 0) + 1;
+        if (VERBOSE) console.log(`  SERVICE-SECTION: "${quote.slice(0, 80)}..." — retrying`);
+        hint = 'Your previous attempt came from a "Who should see it" / "What to expect" service section, which is generic boilerplate. Pick a sentence of the critic\'s own evaluative verdict from the review body.';
+        continue;
+      }
+      stats.serviceSectionRejected = (stats.serviceSectionRejected || 0) + 1;
+      if (VERBOSE) console.log(`  SERVICE-SECTION rejected after retry: ${path.basename(filePath)}`);
       return;
     }
 

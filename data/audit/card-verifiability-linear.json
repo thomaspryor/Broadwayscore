@@ -1,23 +1,159 @@
 {
-  "generatedAt": "2026-10-09T12:07:46.857Z",
-  "total": 1407,
-  "armedCount": 943,
-  "refusedCount": 464,
+  "generatedAt": "2026-10-10T11:23:33.657Z",
+  "total": 1413,
+  "armedCount": 935,
+  "refusedCount": 478,
   "byKind": {
-    "no-section": 140,
-    "no-command": 168,
+    "no-section": 145,
+    "shape": 147,
+    "no-command": 176,
     "path-prefix": 2,
-    "shape": 146,
     "basename": 8
   },
   "refused": [
     {
-      "id": "BRO-4929",
-      "name": "BWW roundups for short-titled shows (Oh Mary, Six, Boop, The Wiz, MJ) never match by slug, so tour roundups are dropped",
+      "id": "BRO-4973",
+      "name": "Opening-night audit 2026-10-10",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4929/bww-roundups-for-short-titled-shows-oh-mary-six-boop-the-wiz-mj-never",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4973/opening-night-audit-2026-10-10",
       "reason": "card has no acceptance-criteria section or VERIFY line",
       "kind": "no-section"
+    },
+    {
+      "id": "BRO-4972",
+      "name": "push-core-data dropped a whole backfill-historical-metadata commit as 'patch contents already upstream'",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4972/push-core-data-dropped-a-whole-backfill-historical-metadata-commit-as",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node --test scripts/lib/\\*.test.mjs)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-4970",
+      "name": "Review gap — \"Tru\" missing 3 cited review(s)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4970/review-gap-tru-missing-3-cited-reviews",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-4969",
+      "name": "Review gap — \"The Holes\" missing 1 cited review(s)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4969/review-gap-the-holes-missing-1-cited-reviews",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-4968",
+      "name": "Review gap — \"Table 17\" missing 3 cited review(s)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4968/review-gap-table-17-missing-3-cited-reviews",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-4965",
+      "name": "Opening-night watch 2026-10-09",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4965/opening-night-watch-2026-10-09",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-4964",
+      "name": "Opening-night watch 2026-10-09",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4964/opening-night-watch-2026-10-09",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-4962",
+      "name": "T1/T2 review stuck >24h: Così fan tutte — talkinbroadway",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4962/t1t2-review-stuck-24h-cosi-fan-tutte-talkinbroadway",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-4959",
+      "name": "Relay Best of Theatre star ratings onto paywalled WE stubs (The Stage, FT, Times)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4959/relay-best-of-theatre-star-ratings-onto-paywalled-we-stubs-the-stage",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"const d=require('./data/review-texts/an-oak-tree-off-west-end-2026/thestage--unknown.json'); process.exit(d.agg)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-4950",
+      "name": "Alert-ledger acceptance check reads cardId, which is always null; use linearIdentifier (and resolve stale-open spend breakers)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4950/alert-ledger-acceptance-check-reads-cardid-which-is-always-null-use",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-4948",
+      "name": "Scheduled sender delivered MORE THAN ONCE on 2026-10-08: reddit-post-ready",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4948/scheduled-sender-delivered-more-than-once-on-2026-10-08-reddit-post",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-4944",
+      "name": "UX audit: Impossible action implied. 'Add date' button on 'desktop__watchlist_list' for 'The Outsiders' not yet booked.",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4944/ux-audit-impossible-action-implied-add-date-button-on-desktop",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-4943",
+      "name": "Triumph: 1 roundup-listed review(s) still not captured",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4943/triumph-1-roundup-listed-reviews-still-not-captured",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-show-review-gap.js --show=triumph-off-broadway-2026 --dry-run --verbose)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-4942",
+      "name": "Review gap — \"The Secret Circus Musical\" missing 1 cited review(s)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4942/review-gap-the-secret-circus-musical-missing-1-cited-reviews",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-4941",
+      "name": "Write a reason for each of the 104 unjustified cron-exempt entries (and promote the ones that should page)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4941/write-a-reason-for-each-of-the-104-unjustified-cron-exempt-entries-and",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-4939",
+      "name": "Tours follow-ups after the BRO-4931 launch (reviews to confirm, five open tour decisions, wiring)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4939/tours-follow-ups-after-the-bro-4931-launch-reviews-to-confirm-five",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-tour-pages.js --data-only)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-4937",
+      "name": "Triage the last 20 baselined orphaned-wrongProduction files (missing date, no url, pre-opening, already excluded)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4937/triage-the-last-20-baselined-orphaned-wrongproduction-files-missing",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-4932",
+      "name": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4932/corpus-drift-exclusion-flag-contradicted-by-its-own-content",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
     },
     {
       "id": "BRO-4928",
@@ -194,14 +330,6 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-4885/tier-display-consistency-outlet-page-tierbadge-colors-ios-app-tier",
       "reason": "acceptance criteria names no runnable command (prose only)",
       "kind": "no-command"
-    },
-    {
-      "id": "BRO-4884",
-      "name": "WE historical Phase C: 2023-24 to 2018-19",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4884/we-historical-phase-c-2023-24-to-2018-19",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-we-historical-season.js --season=2018-2019)",
-      "kind": "shape"
     },
     {
       "id": "BRO-4880",
@@ -3508,14 +3636,6 @@
       "kind": "shape"
     },
     {
-      "id": "BRO-3126",
-      "name": "P1: contentVerification isValid:false + articleType=preview does not gate contentTier or scoring — preview first-look scored 79 and shipped to prod",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3126/p1-contentverification-isvalidfalse-articletypepreview-does-not-gate",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"const fs=require('fs');const d=JSON.parse(fs.readFileSync('data/review-texts/jane-eyre-off-west-end-2026/london)",
-      "kind": "shape"
-    },
-    {
       "id": "BRO-3125",
       "name": "push-with-retry.sh's PUSH_DEADLINE_SEC doesn't bound the Git Data API fallback's own time — audit callers, consider self-wrapping the script",
       "priority": null,
@@ -3602,14 +3722,6 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-3037/systemic-dispatch-fleet-reliability-gaps-found-during-manual-p0-triage",
       "reason": "acceptance criteria names no runnable command (prose only)",
       "kind": "no-command"
-    },
-    {
-      "id": "BRO-3030",
-      "name": "P2: Alert router is 86% noise — 179 of 208 conditions open, only 36 carded, 8 alarms have fired on most days for a month",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3030/p2-alert-router-is-86percent-noise-179-of-208-conditions-open-only-36",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"const a=require('./data/audit/alert-ledger.json').conditions;const k=Object.keys(a);const open=k.filter(x=>a\\[x)",
-      "kind": "shape"
     },
     {
       "id": "BRO-3028",
