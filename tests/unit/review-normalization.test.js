@@ -807,18 +807,22 @@ describe('getOutletTier', () => {
     assert.strictEqual(getOutletTier('ap'), 1);
     assert.strictEqual(getOutletTier('timeout'), 1);
     assert.strictEqual(getOutletTier('guardian'), 1);
+    assert.strictEqual(getOutletTier('deadline'), 1);
   });
 
   test('returns correct tier for tier 2 outlets', () => {
     assert.strictEqual(getOutletTier('nypost'), 2);
     assert.strictEqual(getOutletTier('theatermania'), 2);
     assert.strictEqual(getOutletTier('ew'), 2);
-    assert.strictEqual(getOutletTier('deadline'), 2);
+    // Tiers follow src/config/outlet-tiers.json (BRO-4930 moved deadline to T1,
+    // broadwayworld and cititour to T2).
+    assert.strictEqual(getOutletTier('broadwayworld'), 2);
+    assert.strictEqual(getOutletTier('cititour'), 2);
   });
 
   test('returns correct tier for tier 3 outlets', () => {
-    assert.strictEqual(getOutletTier('cititour'), 3);
-    assert.strictEqual(getOutletTier('broadwayworld'), 3);
+    assert.strictEqual(getOutletTier('frontmezzjunkies'), 3);
+    assert.strictEqual(getOutletTier('stageandcinema'), 3);
   });
 
   test('returns 3 (default) for unknown outlets', () => {
@@ -831,9 +835,12 @@ describe('getOutletTier', () => {
     assert.strictEqual(getOutletTier('New York Times'), 1);
     assert.strictEqual(getOutletTier('nyt'), 1);
     assert.strictEqual(getOutletTier('The Wall Street Journal'), 1);
+    // Tier 2
+    assert.strictEqual(getOutletTier('Broadway World'), 2);
+    assert.strictEqual(getOutletTier('bww'), 2);
     // Tier 3
-    assert.strictEqual(getOutletTier('Broadway World'), 3);
-    assert.strictEqual(getOutletTier('bww'), 3);
+    assert.strictEqual(getOutletTier('Front Mezz Junkies'), 3);
+    assert.strictEqual(getOutletTier('stage and cinema'), 3);
   });
 });
 
