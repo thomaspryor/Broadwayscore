@@ -655,18 +655,6 @@
     "queuedAt": "2026-10-09T21:35:00.189Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Audit outlet-registry gaps",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38002582234",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-09T23:11:09.983Z"
-  },
-  {
     "conditionKey": "opening-night-publish-date-pre-opening:from-the-heart-west-end-2026",
     "title": "Pre-opening publishDate on From The Heart",
     "description": "boxofficeradio/null SHIPPED with publishDate 2024-07-09 (822d before openingDate 2026-10-09): https://boxofficeradio.co.uk/review-don-blacks-from-the-heart-garrick-theatre-london\n⚠️  jonathan-baz/null also missing publishDate: https://www.jonathanbaz.com/2026/10/don-blacks-from-heart-review.html",
@@ -694,5 +682,17 @@
       }
     ],
     "queuedAt": "2026-10-09T23:25:53.351Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Run data validation, Audit review contamination, Audit outlet-registry gaps",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38005993523",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-09T23:49:56.011Z"
   }
 ]
