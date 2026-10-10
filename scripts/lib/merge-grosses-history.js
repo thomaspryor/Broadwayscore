@@ -54,6 +54,13 @@ function mergeGrossesHistory(ours, remote) {
   // off-Sunday key (2026-06-22) would bring it back beside the Sunday our
   // side moved it to, and every reader that sums weeks would count it
   // twice. Fold such keys onto their Sunday, ours winning (BRO-4985).
+  // Rows the repair could not place on any production (rekeyRowsToRuns, BRO-5016).
+  const unplacedWeeks = new Set([...Object.keys(remote._unplacedRows || {}), ...Object.keys(ours._unplacedRows || {})]);
+  if (unplacedWeeks.size) {
+    merged._unplacedRows = {};
+    for (const w of unplacedWeeks) merged._unplacedRows[w] = { ...(remote._unplacedRows?.[w] || {}), ...(ours._unplacedRows?.[w] || {}) };
+  }
+
   const weeksRekeyed = normalizeWeekKeys(merged).length;
 
   return { merged, stats: { weeksAdded, slugsAdded, weeksRekeyed, totalWeeks: Object.keys(merged.weeks).length } };

@@ -191,7 +191,7 @@ test('audit-grosses-data.js uses the shared rules, not its own copies', async ()
   assert.doesNotMatch(src, /showsData\.shows\.filter\(s => s\.status/);
 });
 
-test('gross before run: the League "860" row landed on a duplicate that starts after the week (BRO-5014)', () => {
+test('gross outside run: the League "860" row landed on a duplicate that starts after the week (BRO-5014)', () => {
   const h = { weeks: { '2026-10-04': { '860': row(854_574, { performances: 5 }), 'billy-crystal-860': row(1), early: row(2), nostart: row(3) } } };
   const shows = [
     { id: '860-2026', slug: '860', previewsStartDate: '2026-10-21' },
@@ -199,10 +199,28 @@ test('gross before run: the League "860" row landed on a duplicate that starts a
     { id: 'early-2026', slug: 'early', openingDate: '2026-10-04' },
     { id: 'nostart-2026', slug: 'nostart' },
   ];
-  const f = L.checkGrossBeforeRun(h, shows, '2026-10-04');
+  const now = Date.parse('2026-10-10');
+  const f = L.checkGrossOutsideRun(h, shows, '2026-10-04', now);
   assert.deepEqual(f.map((x) => x.slug), ['860']);
-  assert.match(f[0].detail, /860-2026 starts 2026-10-21/);
-  assert.ok(ALERT_RULES.has('gross-before-run'));
-  const all = L.checkGrossesIntegrity(h, shows, { weeks: ['2026-10-04'] });
-  assert.equal(rules(all).filter((r) => r === 'gross-before-run').length, 1);
+  assert.match(f[0].detail, /860-2026 runs 2026-10-21\.\.running/);
+  assert.ok(ALERT_RULES.has('gross-outside-run'));
+  const all = L.checkGrossesIntegrity(h, shows, { weeks: ['2026-10-04'], now });
+  assert.equal(rules(all).filter((r) => r === 'gross-outside-run').length, 1);
+});
+
+test('gross outside run: weeks after closing and years before previews are flagged; a week inside the 7-day slack is not (BRO-5016)', () => {
+  const shows = [
+    { id: 'cabaret-2014', slug: 'cabaret-2014', previewsStartDate: '2014-03-21', openingDate: '2014-04-24', closingDate: '2015-03-29' },
+    { id: 'running-2026', slug: 'running', previewsStartDate: '2026-09-01' },
+  ];
+  const h = { weeks: {
+    '2002-01-06': { 'cabaret-2014': row(1) },
+    '2014-03-16': { 'cabaret-2014': row(2) },
+    '2015-04-05': { 'cabaret-2014': row(3) },
+    '2025-01-05': { 'cabaret-2014': row(4), running: row(5) },
+    '2026-10-04': { running: row(6) },
+  } };
+  const now = Date.parse('2026-10-10');
+  const flagged = Object.keys(h.weeks).flatMap((w) => L.checkGrossOutsideRun(h, shows, w, now)).map((x) => `${x.week} ${x.slug}`);
+  assert.deepEqual(flagged, ['2002-01-06 cabaret-2014', '2025-01-05 cabaret-2014', '2025-01-05 running']);
 });

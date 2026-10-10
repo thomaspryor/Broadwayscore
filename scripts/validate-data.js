@@ -39,6 +39,7 @@ const { commercialFileErrors, commercialFileWarnings } = require('./lib/commerci
 const { breakevenBelowCost } = require('./lib/commercial-breakeven');
 const { closedStillTbd, recoupedModelDisagreements } = require('./lib/commercial-consistency');
 const { nonSundayWeekKeys } = require('./lib/grosses-history-repair');
+const { checkGrossOutsideRun } = require('./lib/grosses-integrity');
 const DRY_RUN = process.argv.includes('--dry-run');
 const dryRunLedger = { showsWrites: null, artifactWrites: [] };
 let dryRunSummaryPrinted = false;
@@ -4492,6 +4493,15 @@ function validateCrossFileKeys(shows) {
       const offSunday = nonSundayWeekKeys(history);
       if (offSunday.length) {
         warn(`grosses-history.json has week keys that are not Sundays: ${offSunday.join(', ')} (the next scrape-grosses.ts run moves them)`);
+        issues++;
+      }
+      // Every row inside its production's run (BRO-5016): Cabaret 2024's weeks
+      // sat on cabaret-2014 and the live card summed 24 years of Cabaret.
+      // Writers move such rows on save (grosses-history-repair.js rekeyRowsToRuns).
+      const outsideRun = Object.keys(history.weeks || {}).flatMap((w) => checkGrossOutsideRun(history, shows, w));
+      if (outsideRun.length) {
+        const slugs = [...new Set(outsideRun.map((f) => f.slug))];
+        warn(`grosses-history.json has ${outsideRun.length} rows outside their show's run, on ${slugs.length} shows (${slugs.slice(0, 8).join(', ')}${slugs.length > 8 ? ', ...' : ''}). The next scrape-grosses.ts run moves them; details: node scripts/check-grosses-integrity.js --all --rule=gross-outside-run`);
         issues++;
       }
       const historyKeys = Object.keys(history).filter(k => !k.startsWith('_') && k !== 'weeks');

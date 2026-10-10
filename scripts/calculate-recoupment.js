@@ -19,6 +19,7 @@
 const fs = require('fs');
 const path = require('path');
 const { calculateRecoupment } = require('./lib/recoupment-model');
+const { makeGrossesLookup } = require('./lib/grosses-lookup');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
@@ -71,45 +72,9 @@ try {
 // Build weekly data lookup by show slug
 // ---------------------------------------------------------------------------
 
-// Build a map of all slugs in weekly history for fuzzy matching
-const weeklyHistorySlugs = new Set();
-for (const shows of Object.values(grossesHistory.weeks || {})) {
-  for (const slug of Object.keys(shows)) weeklyHistorySlugs.add(slug);
-}
-
-function resolveWeeklySlug(showSlug, showId) {
-  // Exact match first
-  if (weeklyHistorySlugs.has(showSlug)) return showSlug;
-  if (showId && weeklyHistorySlugs.has(showId)) return showId;
-
-  // Try without year suffix: "appropriate-2023" → "appropriate"
-  const base = showSlug.replace(/-\d{4}$/, '');
-  if (weeklyHistorySlugs.has(base)) return base;
-  if (showId) {
-    const baseId = showId.replace(/-\d{4}$/, '');
-    if (weeklyHistorySlugs.has(baseId)) return baseId;
-  }
-
-  // Try with year suffix if we have the base: "appropriate" → "appropriate-2023"
-  for (const s of weeklyHistorySlugs) {
-    if (s.startsWith(base + '-') || s === base) return s;
-  }
-
-  return null;
-}
-
-function getWeeklyData(slug, showId) {
-  const resolvedSlug = resolveWeeklySlug(slug, showId);
-  if (!resolvedSlug) return null;
-
-  const weekly = {};
-  for (const [weekDate, shows] of Object.entries(grossesHistory.weeks || {})) {
-    if (shows[resolvedSlug]) {
-      weekly[weekDate] = shows[resolvedSlug];
-    }
-  }
-  return Object.keys(weekly).length > 0 ? weekly : null;
-}
+// Exact slug keys only: a fuzzy fallback handed one production another's
+// weeks (cabaret-2024 read cabaret-2014's, BRO-5016). scripts/lib/grosses-lookup.js.
+const { getWeeklyData, getGrossesAllTime } = makeGrossesLookup(grosses, grossesHistory);
 
 // ---------------------------------------------------------------------------
 // Main
@@ -137,12 +102,7 @@ function main() {
   for (const show of targetShows) {
     const slug = show.slug || show.id;
     const comm = commercial.shows[slug] || commercial.shows[show.id] || {};
-    // Grosses lookup: try slug, then id, then base slug without year
-    const baseSlug = slug.replace(/-\d{4}$/, '');
-    const grossesAllTime = grosses.shows?.[slug]?.allTime
-      || grosses.shows?.[show.id]?.allTime
-      || grosses.shows?.[baseSlug]?.allTime
-      || null;
+    const grossesAllTime = getGrossesAllTime(slug, show.id);
     const weeklyData = getWeeklyData(slug, show.id);
 
     const result = calculateRecoupment(show, comm, grossesAllTime, weeklyData);
