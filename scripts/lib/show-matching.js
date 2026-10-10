@@ -16,6 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isLondonMarket } = require('./venue-classification');
+const { findContainingTitleSibling, distinctTitleKey } = require('./title-containment');
 
 // ---------------------------------------------------------------------------
 // Known Aliases: External show titles → slugs in shows.json
@@ -717,11 +718,36 @@ function matchTitleToShow(externalTitle, shows, options) {
   for (const variant of titleVariants) {
     if (variant.length > 2) {
       const wordMatches = [];
+      const containingSiblings = new Set();
       for (const show of shows) {
         const showTitle = (show.title || '').trim();
         if (showTitle.length > 2 && titleWordsMatch(showTitle, variant)) {
+          // BRO-4953: every word of "The Heart" is in "The Heart of Rock 'n'
+          // Roll", so the word match filed that show's titles under The Heart.
+          // When the external title names a longer catalogued show containing
+          // this one, it is about that show, not this one.
+          // Caller's list first, then the full catalogue: single-show callers
+          // (matchTitleToShow(t, [show])) have no longer titles of their own.
+          const containing = findContainingTitleSibling(variant, showTitle, { shows })
+            || findContainingTitleSibling(variant, showTitle);
+          if (containing) { containingSiblings.add(distinctTitleKey(containing.sibling)); continue; }
           wordMatches.push(show);
         }
+      }
+      if (containingSiblings.size > 0) {
+        // The external title names that longer show outright, so it is the
+        // answer, not whatever generic word matches remain ("The News", "The
+        // Score"). It may also have failed titleWordsMatch only on spelling
+        // ("'n'" vs "and"), so look it up directly.
+        // distinctTitleKey: "Little Women" and "Little Women the Musical" are
+        // productions of one show; let pickBestProduction choose between them.
+        const named = shows.filter(show => containingSiblings.has(distinctTitleKey(show.title || '')));
+        if (named.length > 0) {
+          return { show: pickBestProduction(named, targetYear, preferredMarket, prefer, activeDate), confidence: 'medium' };
+        }
+        // The named show isn't in the caller's list: none of the remaining
+        // word matches is the show the title is about.
+        return null;
       }
       if (wordMatches.length > 0) {
         return { show: pickBestProduction(wordMatches, targetYear, preferredMarket, prefer, activeDate), confidence: 'medium' };
@@ -1181,6 +1207,19 @@ function validateRoundupPageTitle(html, showTitle, showCategory, siblingCategori
   const pageTitle = m[1].trim();
   const conf = titleWordsMatchWithConfidence(showTitle, pageTitle);
   if (conf.matched) {
+    // BRO-4953: the word match also accepts a DIFFERENT, longer show whose
+    // title contains this one ("The Heart of Rock and Roll" for "The Heart",
+    // "Fun Home" for "Home"). Same guard as page-validator.js Layer 0d.
+    const containing = findContainingTitleSibling(pageTitle, showTitle);
+    if (containing) {
+      return {
+        ok: false,
+        reason: 'containing-title-sibling',
+        pageTitle,
+        confidence: conf.confidence,
+        sibling: containing.sibling,
+      };
+    }
     if (showCategory === 'regional' && Array.isArray(siblingCategories) && siblingCategories.length) {
       const qualifier = detectPageMarketQualifier(html, pageTitle);
       if (qualifier && qualifier !== showCategory && siblingCategories.includes(qualifier)) {

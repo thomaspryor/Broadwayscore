@@ -1,0 +1,189 @@
+{
+  "issueNumber": "bro-4953-c",
+  "planId": "dc37d6da-367b-464e-8e08-c8a482f8b0b3",
+  "status": "applied",
+  "createdAt": "2026-10-10T00:30:13.189Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Delete 27 poisoned aggregator-archive caches that the new containing-title guard (BRO-4953) flags: each is a roundup for a different show whose title contains the target's (The Heart of Rock and Roll for The Heart, Fun Home for Home, Once Upon a Mattress for Once, ...). Built from data/audit/aggregator-archive-integrity.json (reason containing-title-sibling), not hand-listed. Without this, check-corpus-drift's --strict integrity audit alerts daily until a scraper happens to re-read each file. Part 1 of 2 (MAX_PLAN_ACTIONS is 25).",
+    "steps": [
+      "Delete aggregator-archive/bww-reviews/cinderella-lyric-hammersmith-off-west-end-2026.html",
+      "Delete aggregator-archive/bww-reviews/cinderella-west-end-2026.html",
+      "Delete aggregator-archive/bww-roundups/cinderella-lyric-hammersmith-off-west-end-2026.html",
+      "Delete aggregator-archive/bww-roundups/cinderella-west-end-2026.html",
+      "Delete aggregator-archive/bww-roundups/happy-ending-west-end-2026.html",
+      "Delete aggregator-archive/bww-roundups/home-1970.html",
+      "Delete aggregator-archive/bww-roundups/les-miserables-2006.html",
+      "Delete aggregator-archive/bww-roundups/midnight-off-broadway-2026.html",
+      "Delete aggregator-archive/bww-roundups/titus-andronicus-off-broadway-2026.html",
+      "Delete aggregator-archive/dtli/cabaret-2014.html",
+      "Delete aggregator-archive/dtli/cats-west-end-2026.html",
+      "Delete aggregator-archive/dtli/fish-off-broadway-2026.html",
+      "Delete aggregator-archive/dtli/sea-wall-off-broadway-2026.html",
+      "Delete aggregator-archive/dtli/the-pass-off-broadway-2026.html"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "aggregator-archive/bww-reviews/cinderella-lyric-hammersmith-off-west-end-2026.html",
+        "description": "Cached bww-reviews page for \"Cinderella\" is about a different, longer-titled show: \"RODGERS + HAMMERSTEIN'S CINDERELLA Broadway Reviews\". Deleting lets the scraper re-search; the BRO-4953 guard now rejects this page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "aggregator-archive/bww-reviews/cinderella-west-end-2026.html",
+        "description": "Cached bww-reviews page for \"Cinderella\" is about a different, longer-titled show: \"RODGERS + HAMMERSTEIN'S CINDERELLA Broadway Reviews | BroadwayWorld\". Deleting lets the scraper re-search; the BRO-4953 guard now rejects this page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "aggregator-archive/bww-roundups/cinderella-lyric-hammersmith-off-west-end-2026.html",
+        "description": "Cached bww-roundups page for \"Cinderella\" is about a different, longer-titled show: \"Review Roundup: Critics React To BAD CINDERELLA On Broadway\". Deleting lets the scraper re-search; the BRO-4953 guard now rejects this page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "aggregator-archive/bww-roundups/cinderella-west-end-2026.html",
+        "description": "Cached bww-roundups page for \"Cinderella\" is about a different, longer-titled show: \"Review Roundup: Critics React To BAD CINDERELLA On Broadway\". Deleting lets the scraper re-search; the BRO-4953 guard now rejects this page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "aggregator-archive/bww-roundups/happy-ending-west-end-2026.html",
+        "description": "Cached bww-roundups page for \"Happy Ending\" is about a different, longer-titled show: \"Review Roundup: MAYBE HAPPY ENDING, Starring Darren Criss and Helen J Shen.\". Deleting lets the scraper re-search; the BRO-4953 guard now rejects this page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "aggregator-archive/bww-roundups/home-1970.html",
+        "description": "Cached bww-roundups page for \"Home\" is about a different, longer-titled show: \"Review Roundup: FUN HOME Opens on Broadway- ALL the Reviews!\". Deleting lets the scraper re-search; the BRO-4953 guard now rejects this page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "aggregator-archive/bww-roundups/les-miserables-2006.html",
+        "description": "Cached bww-roundups page for \"Les Misérables\" is about a different, longer-titled show: \"Review Roundup: LES MISERABLES: THE ARENA CONCERT SPECTACULAR Opens At Radio City Music Hall\". Deleting lets the scraper re-search; the BRO-4953 guard now rejects this page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "aggregator-archive/bww-roundups/midnight-off-broadway-2026.html",
+        "description": "Cached bww-roundups page for \"Midnight\" is about a different, longer-titled show: \"Review Roundup: Ben Platt in MIDNIGHT AT THE NEVER GET at The Menier Chocolate Factory | BroadwayWor\". Deleting lets the scraper re-search; the BRO-4953 guard now rejects this page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "aggregator-archive/bww-roundups/titus-andronicus-off-broadway-2026.html",
+        "description": "Cached bww-roundups page for \"Titus Andronicus\" is about a different, longer-titled show: \"Review Roundup: GARY: A SEQUEL TO TITUS ANDRONICUS - What Do The Critics Think?\". Deleting lets the scraper re-search; the BRO-4953 guard now rejects this page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "aggregator-archive/dtli/cabaret-2014.html",
+        "description": "Cached dtli page for \"Cabaret\" is about a different, longer-titled show: \"Cabaret at the Kit Kat Club - Did They Like It?\". Deleting lets the scraper re-search; the BRO-4953 guard now rejects this page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "aggregator-archive/dtli/cats-west-end-2026.html",
+        "description": "Cached dtli page for \"Cats\" is about a different, longer-titled show: \"Cats: The Jellicle Ball - Did They Like It?\". Deleting lets the scraper re-search; the BRO-4953 guard now rejects this page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "aggregator-archive/dtli/fish-off-broadway-2026.html",
+        "description": "Cached dtli page for \"Fish\" is about a different, longer-titled show: \"'Fish in the Dark' is prett-ay, prett-ay, prett-ay good - Did They Like It?\". Deleting lets the scraper re-search; the BRO-4953 guard now rejects this page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "aggregator-archive/dtli/sea-wall-off-broadway-2026.html",
+        "description": "Cached dtli page for \"Sea Wall\" is about a different, longer-titled show: \"Sea Wall / A Life - Did They Like It?\". Deleting lets the scraper re-search; the BRO-4953 guard now rejects this page."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "aggregator-archive/dtli/the-pass-off-broadway-2026.html",
+        "description": "Cached dtli page for \"The Pass\" is about a different, longer-titled show: \"Pass Over - Did They Like It?\". Deleting lets the scraper re-search; the BRO-4953 guard now rejects this page."
+      }
+    ]
+  },
+  "executedAt": "2026-10-10T01:45:20.898Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/bww-reviews/cinderella-lyric-hammersmith-off-west-end-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/bww-reviews/cinderella-west-end-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/bww-roundups/cinderella-lyric-hammersmith-off-west-end-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/bww-roundups/cinderella-west-end-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/bww-roundups/happy-ending-west-end-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/bww-roundups/home-1970.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/bww-roundups/les-miserables-2006.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/bww-roundups/midnight-off-broadway-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/bww-roundups/titus-andronicus-off-broadway-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/dtli/cabaret-2014.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/dtli/cats-west-end-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/dtli/fish-off-broadway-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/dtli/sea-wall-off-broadway-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/dtli/the-pass-off-broadway-2026.html"
+    }
+  ]
+}
