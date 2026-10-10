@@ -14,13 +14,59 @@
 // A model central inside the truth range scores 0; outside, the distance to
 // the nearest edge in points. Pure functions; the CLI is
 // scripts/backtest-recoupment-ground-truth.js.
+//
+// Every row also carries truthClass (checker, 2026-10-10): 'reported' only
+// when a trade outlet, the producers, an SEC filing, or the NYT / Deadline /
+// Variety / Broadway Journal stated it; Reddit, deep-research summaries and
+// our own synthesis are 'inference'. An explicit field on the record wins
+// (TRUTH_CLASS_FIELD); without one the source text (or, for failed rows, the
+// record's source types) is classified, defaulting to 'inference'.
 
 const OWN_INFERENCE = /^\s*(inferred|estimated)\b/i;
 
+const TRUTH_CLASS_FIELD = {
+  'reported-pct': 'estimatedRecoupmentTruthClass',
+  recouped: 'recoupedTruthClass',
+  failed: 'designationTruthClass',
+};
+// Anywhere in the text: an admission that nobody stated it.
+const NO_STATEMENT = /\b(does not announce|no public announcement|no producer announcement|no recoupment was announced|no trade report|editorial judg)/i;
+// Per sentence: a hard source, unless the same sentence leans on inference.
+const HARD_SOURCE = /\b(deadline|variety|new york times|nyt|broadway journal|broadway news|playbill|broadwayworld|theatermania|hollywood reporter|forbes|wall street journal|wsj|new york theatre guide|trade publications|spokesperson|sec filing|edgar)\b|\bproducers?\b.{0,40}?\b(announced|announcement|confirmed|said|told|reported)\b/i;
+const INFERENCE_SOURCE = /\b(reddit|deep research|gpt|dr|grosses analysis|post-mortem|inferred|estimated?|projected|likely)\b/i;
+// Split on sentence ends (a closing quote may follow), but not after
+// initials ("J.J. Powell"): the character before the stop is lower case.
+const sentences = (text) => String(text).split(/(?<=[a-z0-9)%][.!?]["']?)\s+(?=[A-Z"'])/);
+
+/** 'reported' | 'inference' for a source text. */
+function classifySourceText(text) {
+  if (!text || NO_STATEMENT.test(text)) return 'inference';
+  return sentences(text).some((s) => HARD_SOURCE.test(s) && !INFERENCE_SOURCE.test(s)) ? 'reported' : 'inference';
+}
+
+const HARD_SOURCE_TYPES = new Set(['trade', 'sec', 'producer']);
+
+/** @returns {{ truthClass: 'reported'|'inference', truthClassFrom: 'field'|'source-text'|'source-types' }} */
+function truthClassOf(comm, kind, sourceText) {
+  const explicit = comm && comm[TRUTH_CLASS_FIELD[kind]];
+  if (explicit === 'reported' || explicit === 'inference') return { truthClass: explicit, truthClassFrom: 'field' };
+  if (kind === 'failed') {
+    const types = ((comm && comm.sources) || []).map((s) => s && (s.type || s.sourceType));
+    return { truthClass: types.some((t) => HARD_SOURCE_TYPES.has(t)) ? 'reported' : 'inference', truthClassFrom: 'source-types' };
+  }
+  return { truthClass: classifySourceText(sourceText), truthClassFrom: 'source-text' };
+}
+
 /**
- * @returns {null | { kind: 'reported-pct'|'recouped'|'failed', lo: number, hi: number, source: string, asOf?: string }}
+ * @returns {null | { kind: 'reported-pct'|'recouped'|'failed', lo: number, hi: number, source: string, asOf?: string,
+ *   truthClass: 'reported'|'inference', truthClassFrom: string }}
  */
 function groundTruth(comm, show, now = new Date()) {
+  const t = rawGroundTruth(comm, show, now);
+  return t && { ...t, ...truthClassOf(comm, t.kind, t.source) };
+}
+
+function rawGroundTruth(comm, show, now) {
   if (!comm) return null;
   const est = comm.estimatedRecoupmentPct;
   // Older records keep the range's basis in notes, not estimatedRecoupmentSource.
@@ -111,4 +157,4 @@ function formatMarkdown({ title, summary, rows, worse, limit = 15 }) {
   return out.join('\n');
 }
 
-module.exports = { groundTruth, rangeError, category, summarize, worseGroups, formatMarkdown, fmtTruth, OWN_INFERENCE };
+module.exports = { groundTruth, truthClassOf, classifySourceText, TRUTH_CLASS_FIELD, rangeError, category, summarize, worseGroups, formatMarkdown, fmtTruth, OWN_INFERENCE };

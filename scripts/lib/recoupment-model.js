@@ -19,7 +19,7 @@
 
 const { isCitedReportedWeeklyCost, REPORTED_COST_METHODOLOGIES } = require('./waltz-cost-gap-fill');
 const { previewWeeksFromWeekly } = require('./preview-weeks');
-const { runWindow, COVID_DARK_START, COVID_DARK_END } = require('./run-window');
+const { runWindow, weeksInOwnRun, COVID_DARK_START, COVID_DARK_END } = require('./run-window');
 const { taxCreditCited } = require('./tax-credit-cited');
 
 // ---------------------------------------------------------------------------
@@ -422,10 +422,19 @@ function getPreviewGrossMultiplier(previewWeek) {
  * @param {boolean} [opts.playedWeeksOnly] - shadow only (BRO-5003): count a
  *   running show's weeks to today, not to an announced closing date. Off
  *   (live behavior) by default.
+ * @param {boolean} [opts.ownRunOnly] - shadow only (BRO-4989): drop weekly
+ *   rows from outside this production's previews..closing window, which an
+ *   earlier production sharing the grosses key leaves behind (Cabaret 2024
+ *   ran on 239 weeks back to 2001). Off (live behavior) by default.
  * @returns {object} RecoupmentModelResult
  */
 function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, opts = {}) {
   const warnings = [];
+  if (opts.ownRunOnly) {
+    const own = weeksInOwnRun(grossesWeekly, show);
+    if (own.dropped.length) warnings.push(`Dropped ${own.dropped.length} weekly rows from outside this production's run (${own.dropped[0]}..${own.dropped[own.dropped.length - 1]})`);
+    grossesWeekly = own.weekly;
+  }
 
   // Backtest only (BRO-4989): run the model as it stood on a past date
   // (a reported figure's as-of date): weekly rows after it are dropped, the

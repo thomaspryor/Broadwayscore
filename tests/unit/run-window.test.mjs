@@ -4,7 +4,7 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { runWindow } = require('../../scripts/lib/run-window');
+const { runWindow, weeksInOwnRun } = require('../../scripts/lib/run-window');
 const { calculateRecoupment, calculateLifetimeRecoupment } = require('../../scripts/lib/recoupment-model');
 
 const WEEK = 7 * 86400000;
@@ -66,5 +66,39 @@ describe('models with playedWeeksOnly', () => {
     assert.equal(live.totalRunWeeks, 36);
     assert.equal(played.totalRunWeeks, 26);
     assert.deepEqual(calculateLifetimeRecoupment(show, comm, allTime, {}), live);
+  });
+});
+
+describe('weeksInOwnRun (BRO-4989 ownRunOnly)', () => {
+  const rows = { '2001-03-04': { gross: 1 }, '2014-04-06': { gross: 2 }, '2024-04-07': { gross: 3 }, '2024-04-14': { gross: 4 }, '2025-01-05': { gross: 5 } };
+
+  test('drops an earlier production sharing the key, keeps a week inside the 7-day margin', () => {
+    const r = weeksInOwnRun(rows, { previewsStartDate: '2024-04-01', closingDate: '2024-12-31' });
+    assert.deepEqual(Object.keys(r.weekly), ['2024-04-07', '2024-04-14', '2025-01-05']);
+    assert.deepEqual(r.dropped, ['2001-03-04', '2014-04-06']);
+  });
+
+  test('open run has no upper bound; opening date is the fallback start', () => {
+    const r = weeksInOwnRun(rows, { openingDate: '2014-04-01' });
+    assert.deepEqual(r.dropped, ['2001-03-04']);
+  });
+
+  test('no start date keeps every row', () => {
+    const r = weeksInOwnRun(rows, { closingDate: '2024-12-31' });
+    assert.equal(r.weekly, rows);
+    assert.deepEqual(r.dropped, []);
+  });
+
+  test('model: ownRunOnly ignores the earlier run, live default unchanged', () => {
+    const show = { slug: 'x', title: 'X', type: 'musical', previewsStartDate: '2024-03-20', openingDate: '2024-04-10', closingDate: '2024-09-30' };
+    const comm = { capitalization: 10_000_000, weeklyRunningCost: 700_000 };
+    const weekly = {};
+    for (let i = 0; i < 26; i++) weekly[iso(weeksFrom(new Date("2024-03-24"), i))] = { gross: 1_000_000, performances: 8 };
+    for (let i = 0; i < 20; i++) weekly[iso(weeksFrom(new Date('2014-03-23'), i))] = { gross: 1_500_000, performances: 8 };
+    const live = calculateRecoupment(show, comm, null, weekly);
+    const own = calculateRecoupment(show, comm, null, weekly, { ownRunOnly: true });
+    assert.ok(own.totalRunWeeks < live.totalRunWeeks, `${own.totalRunWeeks} < ${live.totalRunWeeks}`);
+    assert.ok(own.warnings.some((w) => /Dropped 20 weekly rows/.test(w)));
+    assert.deepEqual(calculateRecoupment(show, comm, null, weekly, {}), live);
   });
 });
