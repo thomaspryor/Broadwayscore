@@ -9,6 +9,7 @@ import {
   chartMode,
   costPill,
   coverTiles,
+  shortSource,
   streakText,
   toBoxOfficeV2Card,
   trendText,
@@ -29,6 +30,12 @@ test('basisLine: reported names its source, an estimate never does', () => {
   assert.equal(basisLine({ costBasis: 'reported', breakEven: 1_083_717, costSourceText: 'Variety' }), 'Break-even $1,084K/week (Variety)');
   assert.equal(basisLine({ costBasis: 'estimate', breakEven: 820_976, costSourceText: 'Variety' }), 'Est. break-even $821K/week');
   assert.equal(basisLine({ costBasis: null, breakEven: null, costSourceText: null }), null);
+  // The quote's figure is an expense line, not the break-even: print outlet and date only.
+  assert.equal(
+    basisLine({ costBasis: 'reported', breakEven: 718_000, costSourceText: 'Broadway Journal (Apr 25, 2018): fixed expenses averaged $643,000 a week' }),
+    'Break-even $718K/week (Broadway Journal, Apr 25, 2018)',
+  );
+  assert.equal(shortSource('Forbes (Nov 17, 2025): fixed weekly operating costs of $480,577'), 'Forbes, Nov 17, 2025');
 });
 
 test('streak, trend and chart mode text', () => {
@@ -59,5 +66,11 @@ test('real data: no card prints a banned source word, and the client card drops 
     assert.ok(!('noCostReason' in card) && !('quality' in card), `${r.slug}: report-only fields reached the client`);
     const printed = [basisLine(card), card.story, costPill(card).label].filter(Boolean).join(' ').toLowerCase();
     assert.ok(!/reddit|industry estimate|industry-estimate|deep-research/.test(printed), `${r.slug}: "${printed}"`);
+    // The story is built before the basis is known; the label and badge carry
+    // reported vs estimate, so the story must not name either (Hamilton bug).
+    assert.ok(!/estimated|reported/i.test(card.story ?? ''), `${r.slug}: story names a basis: "${card.story}"`);
+    // A printed source never carries a second dollar figure next to the break-even.
+    const basis = basisLine(card) ?? '';
+    assert.ok((basis.match(/\$/g) ?? []).length <= 1, `${r.slug}: two dollar figures in "${basis}"`);
   }
 });

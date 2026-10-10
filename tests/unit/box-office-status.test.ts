@@ -234,7 +234,7 @@ test('computeShowStatus: ok with band, cover costs and a story', () => {
   assert.equal(s.cover?.shortBy, 200_000);
   assert.ok(s.cover?.ticketNeeded && Math.abs(s.cover.ticketNeeded - 1_000_000 / 7000) < 1e-6);
   assert.ok(s.cover?.capacityNeeded && s.cover.capacityNeeded > 100, 'needs more than full at today\'s prices');
-  assert.match(s.story ?? '', /below its estimated weekly cost/);
+  assert.match(s.story ?? '', /below its weekly cost\./);
   assert.equal(s.series.length, 10);
 });
 

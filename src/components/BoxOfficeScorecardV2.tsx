@@ -146,7 +146,7 @@ function Headline({ card }: { card: BoxOfficeV2Card }) {
         <div className="flex sm:flex-col items-baseline sm:items-start gap-2.5 sm:gap-2">
           <span className="text-[46px] sm:text-[52px] font-extrabold leading-none tracking-tight tabular-nums">{formatMultiple(card.multiple.mid)}</span>
           <span className="text-xs text-gray-400 leading-snug">
-            {ofCost}<br />last 4 weeks · range {rangeText(card.multiple)}
+            {ofCost}<br />last 4 weeks · <span className="whitespace-nowrap">range {rangeText(card.multiple)}</span>
           </span>
         </div>
         {streak && <div className={`text-[13px] font-semibold ${streakTone}`}>{streak}</div>}
@@ -155,7 +155,7 @@ function Headline({ card }: { card: BoxOfficeV2Card }) {
         {card.story && <p className="m-0 text-[15px] leading-relaxed text-white">{card.story}</p>}
         {card.nonprofit && (
           <p className="m-0 text-sm leading-relaxed text-gray-300">
-            {card.nonprofitOrg ? `${card.nonprofitOrg} is a nonprofit` : 'This is a nonprofit production'}: there are no investors to pay back, and nonprofits often cover part of the cost with donations and subscriptions, so Below Cost is less of a warning sign here.
+            {card.nonprofitOrg ? `${card.nonprofitOrg} is a nonprofit` : 'This is a nonprofit production'}: there are no investors to pay back, and nonprofits often cover part of the cost with donations and subscriptions, so grossing below cost is less of a warning sign here.
           </p>
         )}
         {basis && (

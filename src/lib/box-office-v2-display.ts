@@ -80,13 +80,25 @@ export function trendText(trend: string): string | null {
 }
 
 /**
+ * "Broadway Journal (Apr 25, 2018): fixed expenses averaged $643,000…" →
+ * "Broadway Journal, Apr 25, 2018". The quote's dollar figure is an expense
+ * line, not the break-even printed beside it, so the card shows only outlet and
+ * date; the link carries the quote.
+ */
+export function shortSource(text: string): string {
+  const head = text.split(':')[0].trim();
+  return head.replace(/\s*\(([^)]*)\)\s*$/, ', $1');
+}
+
+/**
  * The basis line under the story. Prints only publishable source text; an
  * estimate never names where the estimate came from.
  */
 export function basisLine(card: Pick<BoxOfficeV2Card, 'costBasis' | 'breakEven' | 'costSourceText'>): string | null {
   if (!card.costBasis || card.breakEven == null) return null;
   const be = `${formatWeekly(card.breakEven)}/week`;
-  if (card.costBasis === 'reported') return card.costSourceText ? `Break-even ${be} (${card.costSourceText})` : `Break-even ${be}`;
+  const src = card.costSourceText ? shortSource(card.costSourceText) : '';
+  if (card.costBasis === 'reported') return src ? `Break-even ${be} (${src})` : `Break-even ${be}`;
   return `Est. break-even ${be}`;
 }
 

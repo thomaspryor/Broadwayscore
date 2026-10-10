@@ -440,10 +440,10 @@ export function computeCoverCosts(windowRows: WeekRow[], avgGross: number, break
 }
 
 const BAND_PHRASE: Record<CostBand, string> = {
-  'well-above': 'more than double its estimated weekly cost',
-  above: 'above its estimated weekly cost',
-  near: 'close to its estimated weekly cost',
-  below: 'below its estimated weekly cost',
+  'well-above': 'more than double its weekly cost',
+  above: 'above its weekly cost',
+  near: 'close to its weekly cost',
+  below: 'below its weekly cost',
 };
 
 /**
