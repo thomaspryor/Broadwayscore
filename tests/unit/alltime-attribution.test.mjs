@@ -94,13 +94,41 @@ test('a move takes one whole row, never fields mixed from two scrapes; no previe
   assert.equal(runCapacity(opensOnly, NOW.getTime()), 5 * 8);
 });
 
-test('an impossible count with no same-title run that fits is left alone; an undated or open-ended sibling is not a fit', () => {
+test('an impossible count with no same-title run that fits is not moved but cleared; an undated or open-ended sibling is not a fit', () => {
   const shows = [
     { id: 'x-2024', slug: 'x-2024', title: 'X', category: 'broadway', previewsStartDate: '2024-03-01', closingDate: '2024-04-01' },
     { id: 'x-1970', slug: 'x-1970', title: 'X', category: 'broadway', previewsStartDate: '1970-01-01', closingDate: null },
     { id: 'x-1990', slug: 'x-1990', title: 'X', category: 'broadway' },
   ];
-  assert.deepEqual(misplacedAllTimeMoves({ 'x-2024': at(1, 500) }, shows, { now: NOW }), []);
+  const g = { 'x-2024': at(1, 500) };
+  assert.deepEqual(misplacedAllTimeMoves(g, shows, { now: NOW }), []);
+  const r = applyAllTimeAttribution(g, shows, { now: NOW });
+  assert.deepEqual(r.clears.map((c) => c.slug), ['x-2024']);
+  assert.equal(g['x-2024'].allTime.gross, null);
+});
+
+test('BRO-5016 Beetlejuice: a total over three runs that none could play alone is cleared from all three', () => {
+  const shows = [
+    { id: 'beetlejuice-2019', slug: 'beetlejuice-2019', title: 'Beetlejuice', category: 'broadway', previewsStartDate: '2019-03-28', closingDate: '2020-03-10' },
+    { id: 'beetlejuice-2022', slug: 'beetlejuice-2022', title: 'Beetlejuice', category: 'broadway', openingDate: '2022-04-08', closingDate: '2023-01-08' },
+    { id: 'beetlejuice-2025', slug: 'beetlejuice-2025', title: 'Beetlejuice', category: 'broadway', openingDate: '2025-10-08', closingDate: '2026-01-03' },
+  ];
+  const row = () => at(109_051_116, 806);
+  const g = { 'beetlejuice-2019': row(), 'beetlejuice-2022': row(), 'beetlejuice-2025': row() };
+  applyAllTimeAttribution(g, shows, { now: NOW });
+  for (const s of shows) assert.equal(g[s.slug].allTime.gross, null, s.slug);
+});
+
+test('BRO-5016 Fela!: a closed run keeps its own row; the two-run total on the 2012 return is cleared, not moved onto it', () => {
+  const shows = [
+    { id: 'fela-2009', slug: 'fela-2009', title: 'Fela!', category: 'broadway', previewsStartDate: '2009-10-19', closingDate: '2011-01-02' },
+    { id: 'fela-2012', slug: 'fela-2012', title: 'Fela!', category: 'broadway', previewsStartDate: '2012-07-09', closingDate: '2012-08-04' },
+  ];
+  const g = { 'fela-2009': at(27_110_350, 416), 'fela-2012': at(33_452_773, 529) };
+  const r = applyAllTimeAttribution(g, shows, { now: NOW });
+  assert.equal(r.moves.length, 0);
+  assert.deepEqual(g['fela-2009'].allTime, { gross: 27_110_350, performances: 416, attendance: 1 });
+  assert.equal(g['fela-2012'].allTime.gross, null);
 });
 
 test('apply on Mamma Mia!: the identical 2025 copy is gone and the 2001 row is untouched', () => {

@@ -13,14 +13,20 @@
  * production whose run length matches that many performances; when several
  * could, the one whose run length is closest to the count. Off-Broadway and
  * West End slugs never own (the table is Broadway-only).
- * When no Broadway production fits, nothing in the group is cleared.
+ * When no Broadway production fits, unholdableAllTimeClears handles it.
  *
  * misplacedAllTimeMoves handles the other half: prefer:'original' sends the
  * current row to the oldest production of a title even when only a revival
  * could have played it (Chicago's 11,711 performances on the 1975 original,
  * which ran two years), so Chicago was also listed twice. A Broadway slug
  * whose run cannot hold its count hands the row to the same-title Broadway
- * production that can (closest run length), and is cleared.
+ * production that can (closest run length), and is cleared. A closed
+ * production that already has a different row of its own keeps it: the larger
+ * row is the title's total over several runs (holdsOwnFinalRow).
+ *
+ * unholdableAllTimeClears: BroadwayWorld totals a title over all its Broadway
+ * runs, so a revived title's row can belong to no single production. A copy
+ * still on a run that cannot hold its count is cleared (BRO-5016).
  */
 
 const { normalizeTitle } = require('./title-match');
@@ -142,6 +148,7 @@ function misplacedAllTimeMoves(grossesShows, shows, { now = new Date() } = {}) {
       if (sib === s) continue;
       const sibCap = runCapacity(sib, nowMs);
       if (!fits(perfs, sibCap)) continue;
+      if (holdsOwnFinalRow(grossesShows, sib, s, nowMs)) continue;
       const dist = Math.abs(Math.log(Math.max(sibCap, 1) / perfs));
       if (dist < toDist) { to = sib.slug || sib.id; toDist = dist; }
     }
@@ -170,9 +177,47 @@ function applyAllTimeAttribution(grossesShows, shows, opts = {}) {
     else grossesShows[m.to] = { allTime: moved };
     grossesShows[m.slug].allTime = EMPTY();
   }
-  const clears = sharedAllTimeClears(grossesShows, shows, opts);
+  const shared = sharedAllTimeClears(grossesShows, shows, opts);
+  const sharedSlugs = new Set(shared.map((c) => c.slug));
+  const clears = [...shared, ...unholdableAllTimeClears(grossesShows, shows, opts).filter((c) => !sharedSlugs.has(c.slug))];
   for (const c of clears) grossesShows[c.slug].allTime = EMPTY();
   return { moves, clears };
 }
 
-module.exports = { applyAllTimeAttribution, sharedAllTimeClears, misplacedAllTimeMoves, runCapacity, constants: { PERFS_PER_WEEK, FIT_SLACK_RATIO, FIT_SLACK_PERFS, FIT_MIN_SHARE } };
+/**
+ * A closed production's own row is final. A larger row for the same title is
+ * BroadwayWorld's total over several runs (Fela! 2009 + 2012 = 529 shows), not
+ * a newer copy of that production's, so it must not overwrite it. A running
+ * target (Chicago 1996) does take the larger, fresher row.
+ */
+function holdsOwnFinalRow(grossesShows, target, source, nowMs) {
+  const own = grossesShows?.[target.slug || target.id]?.allTime;
+  const incoming = grossesShows?.[source.slug || source.id]?.allTime;
+  if (!own || !own.gross || own.gross === incoming?.gross) return false;
+  const closed = toMs(target.closingDate);
+  return closed != null && closed < nowMs;
+}
+
+/**
+ * Rows still on a Broadway run that cannot hold their count after the moves:
+ * a total over several runs that no single production played (Beetlejuice
+ * 2019 + 2022 + 2025 = 806 shows on all three slugs). It is no production's
+ * figure, so each such copy is cleared rather than shown as one run's.
+ * @returns {Array<{slug:string, owner:null, reason:string}>}
+ */
+function unholdableAllTimeClears(grossesShows, shows, { now = new Date() } = {}) {
+  const nowMs = now.getTime();
+  const clears = [];
+  for (const s of shows || []) {
+    if (!s || !isBroadway(s)) continue;
+    const slug = s.slug || s.id;
+    const a = grossesShows?.[slug]?.allTime;
+    if (!a || !a.gross || !a.performances) continue;
+    const cap = runCapacity(s, nowMs);
+    if (cap == null || canHold(a.performances, cap)) continue;
+    clears.push({ slug, owner: null, reason: `run ${s.previewsStartDate || s.openingDate}..${s.closingDate || 'now'} cannot hold ${a.performances} performances and no other run takes the row; a total over several runs` });
+  }
+  return clears.sort((x, y) => x.slug.localeCompare(y.slug));
+}
+
+module.exports = { applyAllTimeAttribution, sharedAllTimeClears, misplacedAllTimeMoves, unholdableAllTimeClears, runCapacity, constants: { PERFS_PER_WEEK, FIT_SLACK_RATIO, FIT_SLACK_PERFS, FIT_MIN_SHARE } };
