@@ -85,6 +85,7 @@ scripts/check-workflow-run-status.test.mjs
 scripts/clear-stale-roundup-flags.test.mjs
 scripts/clear-stale-wrong-show-flags.test.mjs
 scripts/cloud-memory-sync.test.mjs
+scripts/cloud-run-script.test.mjs
 scripts/cmux-auth-stall-watchdog.test.mjs
 scripts/collect-review-texts.test.mjs
 scripts/critical-workflow-alert-conditions.test.mjs
@@ -224,6 +225,7 @@ scripts/reconcile-dead-completions.test.mjs
 scripts/recover-serp-text.test.mjs
 scripts/red-first-dispatch.test.mjs
 scripts/refresh-nyt-critics-picks.test.mjs
+scripts/run-script-sealed.test.mjs
 scripts/score-reviews-calibrated.test.mjs
 scripts/scoring-delta-autoclear-coverage.test.mjs
 scripts/scoring-delta-data-inputs.test.mjs

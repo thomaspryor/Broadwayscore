@@ -88,6 +88,11 @@ if [ "$LINK_ONLY" = 1 ]; then
     echo "ERROR: --link-only needs an existing $CORE_DATA_DIR (run this script once without flags first)."
     exit 1
   fi
+elif [ -n "${REVIEW_TEXTS_SOURCE:-}" ] && [ -d "$CORE_DATA_DIR/.git" ]; then
+  # BRO-5008: review-texts-from-attached-clone mode. The caller (cloud bootstrap)
+  # already refreshed core data only when that clone was clean; never fetch or
+  # reset it here, and never let a failed fetch stop the review-texts copy.
+  echo "Keeping the existing core-data clone at $CORE_DATA_DIR (REVIEW_TEXTS_SOURCE mode)."
 elif [ -d "$CORE_DATA_DIR/.git" ]; then
   echo "Updating existing core-data clone at $CORE_DATA_DIR..."
   # Retry with backoff: this clone is shared across parallel local sessions, so
@@ -255,7 +260,21 @@ if [ "${1:-}" = "--all" ]; then
 
   mkdir -p "$DATA_DIR/review-texts"
 
-  if [ "$AUTH_METHOD" = "gh" ]; then
+  if [ -n "${REVIEW_TEXTS_SOURCE:-}" ] && [ -d "$REVIEW_TEXTS_SOURCE/.git" ]; then
+    # BRO-5008: a cloud session with broadway-review-texts attached already has a
+    # fresh clone next to this repo. Clone it locally (hardlinked objects, no
+    # network, no token) and check out its origin/main, so a working branch or
+    # uncommitted edits in that clone never leak into data/.
+    if ! git clone -q "$REVIEW_TEXTS_SOURCE" "$TEMP_DIR/review-texts"; then
+      echo "ERROR: Local clone of $REVIEW_TEXTS_SOURCE failed."
+      exit 1
+    fi
+    RT_SHA="$(git -C "$REVIEW_TEXTS_SOURCE" rev-parse -q --verify refs/remotes/origin/main || git -C "$REVIEW_TEXTS_SOURCE" rev-parse HEAD)"
+    if ! git -C "$TEMP_DIR/review-texts" checkout -q --detach "$RT_SHA"; then
+      echo "ERROR: Could not check out $RT_SHA from $REVIEW_TEXTS_SOURCE."
+      exit 1
+    fi
+  elif [ "$AUTH_METHOD" = "gh" ]; then
     if ! gh repo clone thomaspryor/broadway-review-texts "$TEMP_DIR/review-texts" -- --depth 1 2>/dev/null; then
       echo "ERROR: Failed to clone broadway-review-texts. Check your access permissions."
       exit 1
