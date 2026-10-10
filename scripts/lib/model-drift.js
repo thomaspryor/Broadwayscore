@@ -24,13 +24,14 @@ const { classifyTier } = require('./model-return-v2');
  *   run would store: a model error falls back to 'ai-estimated' (result null),
  *   as it does there.
  */
-function liveModelRun(show, comm, lookup) {
+function liveModelRun(show, comm, lookup, opts = {}) {
   const slug = show.slug || show.id;
   const allTime = lookup.getGrossesAllTime(slug, show.id);
   const tier = classifyTier(show, comm, allTime);
   let result = null;
-  if (tier === 'weekly-model') result = calculateRecoupment(show, comm, allTime, lookup.getWeeklyData(slug, show.id));
-  else if (tier === 'simplified-lifetime') result = calculateLifetimeRecoupment(show, comm, allTime);
+  // opts is for shadow runs only (backtest-recoupment-ground-truth.js); live passes none.
+  if (tier === 'weekly-model') result = calculateRecoupment(show, comm, allTime, lookup.getWeeklyData(slug, show.id), opts);
+  else if (tier === 'simplified-lifetime') result = calculateLifetimeRecoupment(show, comm, allTime, opts);
   if (result && result.error) return { tier: 'ai-estimated', result: null };
   return { tier, result };
 }

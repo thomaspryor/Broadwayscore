@@ -1,0 +1,81 @@
+#!/usr/bin/env node
+'use strict';
+
+/**
+ * backtest-recoupment-ground-truth.js — scores a recoupment-model change
+ * against independently reported outcomes (scripts/lib/recoupment-ground-truth.js).
+ * Runs the live model exactly as merge-model-recoupment.js does, then with
+ * the given shadow options, and reports mean error and in-range counts,
+ * overall and by kind, type (play/musical) and era (pre-2020/2020+).
+ * Read-only. Run it for every model change before a live switch.
+ *
+ *   node scripts/backtest-recoupment-ground-truth.js --opt=previewsFromWeekly [--opt=...] [--json] [--strict]
+ *
+ * --strict exits 1 when any group gets worse (higher mean error or fewer
+ * inside the reported range).
+ */
+
+const fs = require('fs');
+const path = require('path');
+const os = require('os');
+const { liveModelRun } = require('./lib/model-drift');
+const { makeGrossesLookup } = require('./lib/grosses-lookup');
+const { groundTruth, rangeError, category, summarize, worseGroups } = require('./lib/recoupment-ground-truth');
+
+const KNOWN_OPTS = ['previewsFromWeekly', 'playedWeeksOnly', 'eraAdjust'];
+const args = process.argv.slice(2);
+const USAGE = `Usage: node scripts/backtest-recoupment-ground-truth.js --opt=${KNOWN_OPTS.join('|')} [--opt=...] [--json] [--strict]`;
+if (require('./lib/cli-help').hasHelpFlag(args)) { console.log(USAGE); process.exit(0); }
+const names = args.filter((a) => a.startsWith('--opt=')).map((a) => a.slice(6));
+if (!names.length || names.some((n) => !KNOWN_OPTS.includes(n))) { console.error(USAGE); process.exit(2); }
+const OPTS = Object.fromEntries(names.map((n) => [n, true]));
+
+const DATA = path.join(__dirname, '..', 'data');
+const dataFile = (f) => (fs.existsSync(path.join(DATA, f)) ? path.join(DATA, f) : path.join(os.homedir(), 'broadway-scorecard-data', f));
+const load = (f) => JSON.parse(fs.readFileSync(dataFile(f), 'utf8'));
+
+const shows = Object.values(load('shows.json').shows);
+const commercial = load('commercial.json').shows;
+const L = makeGrossesLookup(load('grosses.json'), load('grosses-history.json'));
+const by = {};
+for (const s of shows) { if (s.slug) by[s.slug] = s; if (s.id) by[s.id] = s; }
+
+const rows = [];
+const skipped = { noShow: 0, noModel: 0 };
+for (const [key, comm] of Object.entries(commercial)) {
+  const show = by[key] || by[comm.slug] || by[key.replace(/-\d{4}$/, '')];
+  if (!show) { skipped.noShow++; continue; }
+  const truth = groundTruth(comm, show);
+  if (!truth) continue;
+  const live = liveModelRun(show, comm, L);
+  const fixed = liveModelRun(show, comm, L, OPTS);
+  if (!live.result || !fixed.result) { skipped.noModel++; continue; }
+  const oldPct = live.result.recoupmentPctCentral;
+  const newPct = fixed.result.recoupmentPctCentral;
+  rows.push({
+    slug: key, kind: truth.kind, ...category(show),
+    truth: [truth.lo, truth.hi], oldPct, newPct,
+    oldErr: rangeError(oldPct, truth), newErr: rangeError(newPct, truth),
+    source: truth.source.slice(0, 80),
+  });
+}
+
+const summary = summarize(rows);
+const worse = worseGroups(summary);
+if (args.includes('--json')) {
+  console.log(JSON.stringify({ opts: OPTS, summary, worse, skipped, rows }, null, 2));
+} else {
+  console.log(`Ground-truth backtest, opts ${names.join(', ')}: ${rows.length} shows with a reported outcome and a model run (skipped ${skipped.noShow} unmatched, ${skipped.noModel} with no model run)`);
+  console.log('group                n   old MAE  new MAE  old median  new median  old inside  new inside');
+  for (const [g, s] of Object.entries(summary)) {
+    console.log(`${g.padEnd(20)} ${String(s.n).padStart(3)}  ${String(s.oldMae).padStart(7)}  ${String(s.newMae).padStart(7)}  ${String(s.oldMedian).padStart(10)}  ${String(s.newMedian).padStart(10)}  ${String(s.oldInside).padStart(10)}  ${String(s.newInside).padStart(10)}`);
+  }
+  const moved = rows.filter((r) => r.oldErr !== r.newErr).sort((a, b) => Math.abs(b.newErr - b.oldErr) - Math.abs(a.newErr - a.oldErr));
+  console.log(`Error changed on ${moved.length}:`);
+  for (const r of moved.slice(0, 15)) {
+    const t = r.truth.map((v) => (Number.isFinite(v) ? v : (v > 0 ? '+inf' : '-inf'))).join('..');
+    console.log(`  ${r.slug} [${r.kind}, truth ${t}]: ${r.oldPct} -> ${r.newPct} (error ${Math.round(r.oldErr * 10) / 10} -> ${Math.round(r.newErr * 10) / 10})`);
+  }
+  console.log(worse.length ? `WORSE in: ${worse.join(', ')}` : 'No group got worse.');
+}
+if (args.includes('--strict') && worse.length) process.exit(1);
