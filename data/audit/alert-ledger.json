@@ -12328,13 +12328,13 @@
       "title": "Unhandled CV.wrongProduction on Rent",
       "firstSeen": "2026-10-09T09:12:56.270Z",
       "incidentOpenedAt": "2026-10-09T09:12:56.270Z",
-      "lastSeen": "2026-10-10T23:08:13.711Z",
+      "lastSeen": "2026-10-10T23:58:28.155Z",
       "lastNotifiedAt": "2026-10-09T09:12:56.270Z",
       "lastSurfacedAt": "2026-10-09T09:12:56.270Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 31
+      "silentRefires": 32
     },
     "opening-night-stale-upcoming-tag-triumph-off-broadway-2026": {
       "status": "open",
@@ -12440,13 +12440,13 @@
       "title": "Opening Night Broadcast Blocked — Checklist Errors",
       "firstSeen": "2026-10-09T11:43:17.542Z",
       "incidentOpenedAt": "2026-10-09T11:43:17.542Z",
-      "lastSeen": "2026-10-10T23:08:13.851Z",
+      "lastSeen": "2026-10-10T23:58:28.300Z",
       "lastNotifiedAt": "2026-10-10T15:47:39.486Z",
       "lastSurfacedAt": "2026-10-10T15:47:39.486Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "land:land/bro-4923-uk-regional-trigger": {
       "status": "open",
@@ -12642,13 +12642,13 @@
       "title": "Shipped review missing publishDate on Rent",
       "firstSeen": "2026-10-09T16:18:24.209Z",
       "incidentOpenedAt": "2026-10-09T16:18:24.209Z",
-      "lastSeen": "2026-10-10T23:08:13.718Z",
+      "lastSeen": "2026-10-10T23:58:28.163Z",
       "lastNotifiedAt": "2026-10-09T16:18:24.209Z",
       "lastSurfacedAt": "2026-10-09T16:18:24.209Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 24
+      "silentRefires": 25
     },
     "opening-night-publish-date-pre-opening:an-oak-tree-off-west-end-2026": {
       "status": "open",
@@ -13023,13 +13023,13 @@
       "title": "Review URL cross-show mismatch on Rent",
       "firstSeen": "2026-10-10T11:54:24.143Z",
       "incidentOpenedAt": "2026-10-10T11:54:24.143Z",
-      "lastSeen": "2026-10-10T23:08:13.724Z",
+      "lastSeen": "2026-10-10T23:58:28.169Z",
       "lastNotifiedAt": "2026-10-10T11:54:24.143Z",
       "lastSurfacedAt": "2026-10-10T11:54:24.143Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 12
+      "silentRefires": 13
     },
     "opening-night-remediation-exhausted-t1-missing:from-the-heart-west-end-2026": {
       "status": "open",
@@ -13358,7 +13358,7 @@
       "resolvedAt": "2026-10-10T22:54:28.856Z"
     },
     "land:land/bro-3195-lsa-discovery": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-3195-lsa-discovery",
       "firstSeen": "2026-10-10T23:31:05.764Z",
@@ -13368,7 +13368,8 @@
       "lastSurfacedAt": "2026-10-10T23:31:05.764Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-10T23:53:22.759Z"
     },
     "land:land/bro-4996-selfsite": {
       "status": "open",
@@ -13379,6 +13380,19 @@
       "lastSeen": "2026-10-10T23:41:21.795Z",
       "lastNotifiedAt": "2026-10-10T23:41:21.795Z",
       "lastSurfacedAt": "2026-10-10T23:41:21.795Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-4989-returned": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-4989-returned",
+      "firstSeen": "2026-10-10T23:56:40.215Z",
+      "incidentOpenedAt": "2026-10-10T23:56:40.215Z",
+      "lastSeen": "2026-10-10T23:56:40.215Z",
+      "lastNotifiedAt": "2026-10-10T23:56:40.215Z",
+      "lastSurfacedAt": "2026-10-10T23:56:40.215Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

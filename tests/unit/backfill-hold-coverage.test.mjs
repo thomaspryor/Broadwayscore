@@ -7,6 +7,8 @@ import assert from 'node:assert';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const SCRIPTS = path.join(ROOT, 'scripts');
@@ -74,5 +76,25 @@ describe('--hold-for-review', () => {
     const wf = fs.readFileSync(path.join(ROOT, '.github', 'workflows', 'deep-research-commercial.yml'), 'utf8');
     assert.match(wf, /hold_for_review:/);
     assert.match(wf, /inputs\.hold_for_review \}\}" = "true" \]; then\s+ARGS="\$ARGS --hold-for-review"/);
+  });
+});
+
+// Every registered merge for the pending file must keep a hold that only one
+// side carries, whichever side is newer (2026-10-10: whole-row pickNewer
+// dropped 13 holds when a pre-hold CI checkout pushed newer rows).
+describe('pending-file merges keep the human-review hold', () => {
+  it('every registry merge fn for commercial-pending-review.json keeps a one-sided hold', () => {
+    const { CORE_DATA_MERGE_REGISTRY } = require('../../scripts/lib/core-data-merge-registry.js');
+    const entries = CORE_DATA_MERGE_REGISTRY.filter(e => e.file === 'commercial-pending-review.json' && typeof e.merge === 'function');
+    assert.ok(entries.length > 0, 'expected a registered merge for commercial-pending-review.json');
+    const held = { researchedAt: '2026-10-10T20:00:00Z', requiresHumanReview: true, backfill: 'BRO-4990' };
+    const plain = { researchedAt: '2026-10-10T23:00:00Z', designation: 'Flop' };
+    for (const e of entries) {
+      for (const [ours, remote] of [[plain, held], [held, plain]]) {
+        const out = e.merge({ shows: { x: { ...ours } } }, { shows: { x: { ...remote } } });
+        const merged = out.merged || out;
+        assert.equal(merged.shows.x.requiresHumanReview, true, `${e.surface} merge dropped the hold`);
+      }
+    }
   });
 });
