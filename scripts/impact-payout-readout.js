@@ -3,7 +3,7 @@
  * impact-payout-readout.js — why do some TodayTix orders pay $0 commission?
  * (BRO-4967). Read-only: pulls Impact Actions for the last N days (paging
  * through every page), marks which visitor IDs belong to the owner (PostHog
- * persons with is_owner=true), and prints aggregate breakdowns of $0-payout
+ * visitor IDs whose events carry is_owner=true), and prints aggregate breakdowns of $0-payout
  * vs paid orders as markdown (stdout + GITHUB_STEP_SUMMARY when set).
  *
  * The repo's Actions logs are public: no customer, order or visitor
@@ -68,9 +68,12 @@ async function fetchOwnerIds() {
   if (!process.env.POSTHOG_PERSONAL_API_KEY) return { ids: new Set(), note: 'POSTHOG_PERSONAL_API_KEY not set, owner match skipped' };
   try {
     const { phQuery } = require('./lib/posthog-query');
+    // is_owner is an event super-property (no person profile), so collect
+    // the distinct_ids that sent owner-stamped events.
     const rows = await phQuery(`
-      SELECT distinct_id FROM person_distinct_ids
-      WHERE JSONExtractString(person.properties, 'is_owner') = 'true'
+      SELECT DISTINCT distinct_id FROM events
+      WHERE JSONExtractString(properties, 'is_owner') = 'true'
+        AND timestamp >= now() - INTERVAL 90 DAY
       LIMIT 10000`);
     return { ids: new Set(rows.map((r) => String(r[0]))), note: `${rows.length} owner visitor IDs in PostHog` };
   } catch (err) {

@@ -200,7 +200,7 @@ async function fetchPosthogDailyClicks(days, opts = {}) {
     WHERE event = 'ticket_click'
       AND timestamp >= toDateTime('${start.toISOString()}')
       AND timestamp <= toDateTime('${now.toISOString()}')
-      AND coalesce(JSONExtractString(person.properties, 'is_owner'), '') != 'true'
+      AND coalesce(JSONExtractString(properties, 'is_owner'), '') != 'true'
       AND properties.$geoip_country_code NOT IN ('SG', 'CN', 'VN', 'HK')
     GROUP BY d ORDER BY d
   `;

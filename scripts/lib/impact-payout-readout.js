@@ -61,7 +61,7 @@ function isoWeek(dateStr) {
 
 /**
  * @param {object[]} actions Impact Actions.json rows
- * @param {Set<string>} ownerIds PostHog distinct_ids whose person has is_owner=true
+ * @param {Set<string>} ownerIds PostHog distinct_ids that sent is_owner=true events
  */
 function summarizeZeroPayout(actions, ownerIds = new Set()) {
   const rows = actions || [];

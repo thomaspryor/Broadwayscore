@@ -50,7 +50,11 @@ async function phQuery(hogql) {
 
 // Real Users lens (memory/feedback_analytics_real_users_lens.md): drop the
 // owner (is_owner super-property, set via ?bwsc-owner=1) and the geos that are
-// almost entirely bot traffic. The ONE definition — analyze-gate-cold-start.js,
+// almost entirely bot traffic. is_owner is an EVENT property (posthog.register
+// in AnalyticsWrapper.tsx creates no person profile): this read
+// person.properties until BRO-4967 and so excluded nothing (2026-10-10: 56
+// owner-stamped events in 30 days, 0 persons with the property).
+// The ONE definition — analyze-gate-cold-start.js,
 // analyze-email-gate-funnel.js and analyze-traffic-sources.js import it; append
 // to a WHERE clause on `events`. Keep data/audit/known-bot-geos.json in step.
 //   SG/CN/VN: original lens (2026-04).
@@ -60,7 +64,7 @@ async function phQuery(hogql) {
 const REAL_USERS_WHERE = `
   (JSONExtractString(properties,'$geoip_country_code') NOT IN ('SG','CN','VN','HK')
    OR JSONExtractString(properties,'$geoip_country_code') = '')
-  AND coalesce(JSONExtractString(person.properties,'is_owner'),'') != 'true'`;
+  AND coalesce(JSONExtractString(properties,'is_owner'),'') != 'true'`;
 
 async function authCheck() {
   const res = await fetch(`${API_BASE}/api/projects/${PROJECT_ID}/`, {
