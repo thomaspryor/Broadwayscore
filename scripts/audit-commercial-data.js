@@ -33,7 +33,7 @@ const HISTORY_MAX_ENTRIES = 52;
 // Constants
 // ============================================
 
-const { VALID_DESIGNATIONS } = require('./lib/commercial-designations');
+const { VALID_DESIGNATIONS, FIZZLE_MIN_RETURNED_PCT } = require('./lib/commercial-designations');
 
 const VALID_COST_METHODOLOGIES = [
   'reddit-standard', 'trade-reported', 'sec-filing',
@@ -832,7 +832,7 @@ function checkEstimatedRecoupmentPct() {
         'recoupment-pct',
         'low',
         key,
-        `Designation is "Fizzle" but estimatedRecoupmentPct is [${low}, ${high}]%. Fizzle typically implies 30%+ recovery. Consider "Flop" if <30%.`
+        `Designation is "Fizzle" but estimatedRecoupmentPct is [${low}, ${high}]%. Fizzle typically implies ${FIZZLE_MIN_RETURNED_PCT}%+ recovery. Consider "Flop" if <${FIZZLE_MIN_RETURNED_PCT}%.`
       );
     }
 
@@ -841,7 +841,7 @@ function checkEstimatedRecoupmentPct() {
         'recoupment-pct',
         'low',
         key,
-        `Designation is "Flop" but estimatedRecoupmentPct is [${low}, ${high}]%. Flop typically implies <30% recovery. Consider "Fizzle" if 30%+.`
+        `Designation is "Flop" but estimatedRecoupmentPct is [${low}, ${high}]%. Flop typically implies <${FIZZLE_MIN_RETURNED_PCT}% recovery. Consider "Fizzle" if ${FIZZLE_MIN_RETURNED_PCT}%+.`
       );
     }
   }

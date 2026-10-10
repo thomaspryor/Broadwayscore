@@ -22,12 +22,12 @@
  * returned evidence; nothing here writes a designation.
  */
 
-const TRICKLE_MAX_MULTIPLE = 1.5;
-const MIRACLE_MIN_YEARS = 10;
-const FIZZLE_MIN_RETURNED_PCT = 30;
+const {
+  TRICKLE_MAX_MULTIPLE, MIRACLE_MIN_YEARS, FIZZLE_MIN_RETURNED_PCT, DESIGNATIONS_OUTSIDE_RULE,
+} = require('./commercial-designations');
+const UNCHANGED = new Set(DESIGNATIONS_OUTSIDE_RULE);
 /** Off until the model is explained against reported returns (see header). */
 const MODEL_TIEBREAKER = false;
-const UNCHANGED = new Set(['Easy Winner', 'Nonprofit', 'Tour Stop']);
 const YEAR_MS = 365.25 * 86400000;
 
 function runYears(show, now) {

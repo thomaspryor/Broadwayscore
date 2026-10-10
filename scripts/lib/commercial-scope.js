@@ -1,6 +1,7 @@
 'use strict';
 
 const { isBroadwayCategory } = require('./venue-classification');
+const { MIRACLE_MIN_YEARS, FIZZLE_MIN_RETURNED_PCT } = require('./commercial-designations');
 
 /**
  * commercial-scope.js — canonical scope + designation rules for the
@@ -42,12 +43,12 @@ function isCommercialScope(show) {
  * a "Miracle" (2026-04-12). Definitions mirror src/config/commercial.ts.
  */
 const DESIGNATION_CRITERIA = `Designation — pick EXACTLY one, using these criteria:
-- Miracle: long-running mega-hit with extraordinary returns — recouped AND has run (or clearly will run) roughly 10+ years with massive profit multiples (Hamilton, Wicked, The Lion King). Recouping fast is NOT enough; a limited run can NEVER be a Miracle.
+- Miracle: long-running mega-hit with extraordinary returns — recouped AND has run (or clearly will run) roughly ${MIRACLE_MIN_YEARS}+ years with massive profit multiples (Hamilton, Wicked, The Lion King). Recouping fast is NOT enough; a limited run can NEVER be a Miracle.
 - Windfall: open-ended commercial run that recouped and turned a solid profit, but is not a decade-defining phenomenon.
 - Easy Winner: LIMITED engagement (planned closing date, often a star-driven play) that recouped during its run — even if it recouped very fast or broke house records.
 - Trickle: roughly broke even or made a modest profit.
-- Fizzle: closed without recouping, returned roughly 30% or more of its capitalization.
-- Flop: closed without recouping, returned less than 30% of its capitalization.
+- Fizzle: closed without recouping, returned roughly ${FIZZLE_MIN_RETURNED_PCT}% or more of its capitalization.
+- Flop: closed without recouping, returned less than ${FIZZLE_MIN_RETURNED_PCT}% of its capitalization.
 - Nonprofit: produced by a nonprofit theater (Lincoln Center, Roundabout, MTC, Second Stage) — subscriber-funded, no traditional investor recoupment.
 - TBD: still running and too early to tell, or insufficient data to judge.`;
 

@@ -4,6 +4,9 @@
  * colors, sort orders, or descriptions elsewhere.
  */
 
+// Thresholds have one definition, shared with the data pipeline (BRO-4989 C).
+import { FIZZLE_MIN_RETURNED_PCT } from '../../scripts/lib/commercial-designations';
+
 export type CommercialDesignation =
   | 'Miracle'
   | 'Windfall'
@@ -91,7 +94,7 @@ export const DESIGNATIONS: DesignationConfig[] = [
   {
     name: 'Fizzle',
     color: 'text-orange-400',
-    description: 'Closed without recouping; an estimated 30% or more returned',
+    description: `Closed without recouping; an estimated ${FIZZLE_MIN_RETURNED_PCT}% or more returned`,
     sortOrder: 6,
     showInLegend: true,
     icon: '📉',
@@ -101,7 +104,7 @@ export const DESIGNATIONS: DesignationConfig[] = [
   {
     name: 'Flop',
     color: 'text-red-400',
-    description: 'Closed without recouping; an estimated under 30% returned',
+    description: `Closed without recouping; an estimated under ${FIZZLE_MIN_RETURNED_PCT}% returned`,
     sortOrder: 7,
     showInLegend: true,
     icon: '💸',

@@ -43,6 +43,7 @@ const { parseGrossesAnalysisPost } = require('./lib/parse-grosses');
 const { CLAUDE_SONNET } = require('./lib/models');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
 const { buildShowKeyIndex, resolveCommercialSlug } = require('./lib/commercial-slug-key');
+const { proposeDesignation } = require('./lib/designation-rule');
 
 // Universal scraper with Bright Data → ScrapingBee → Playwright fallback
 let universalScraper;
@@ -1810,124 +1811,28 @@ function applyChanges(applied, newEntries, commercial, showKeyIndex) {
 // ---------------------------------------------------------------------------
 
 /**
- * Heuristic designation validator.
- *
- * For each show (skip Nonprofit, Tour Stop):
- *   - Calculate all-time gross / capitalization ratio
- *   - Apply heuristic rules to predict a designation
- *   - Compare with actual designation
- *   - Report disagreements
- *
- * Rules:
- *   - recouped && ratio >= 20x = Miracle
- *   - recouped && ratio >= 5x = Windfall
- *   - recouped && ratio >= 2x = Windfall
- *   - recouped && ratio >= 1x = Trickle or Easy Winner
- *   - closed && not recouped && recoupmentPct < 30% = Flop
- *   - closed && not recouped && recoupmentPct >= 30% = Fizzle
- *   - still running && not recouped = TBD
+ * Designation check against the owner-approved rule (BRO-4989 C:
+ * scripts/lib/designation-rule.js, thresholds in commercial-designations.js).
+ * Log only: reports records whose reported figures point to another
+ * designation. It never writes; designation changes go through pending review.
  *
  * @param {Object} commercial - commercial.json data
- * @param {Object} grosses - grosses.json data
+ * @param {Object} _grosses - unused (kept for the call signature)
  * @param {Object[]} shows - shows.json shows array
+ * @param {number} [now]
  * @returns {Object[]} Disagreements: { slug, current, predicted, reason }
  */
-function shadowClassifier(commercial, grosses, shows) {
+function shadowClassifier(commercial, _grosses, shows, now = Date.now()) {
+  const { bySlug, byId } = buildShowKeyIndex(shows);
+  const find = (k) => (k ? bySlug.get(k) || byId.get(k) : undefined);
   const disagreements = [];
-  const skipDesignations = new Set(['Nonprofit', 'Tour Stop']);
-
-  const showStatusMap = {};
-  for (const s of shows) {
-    showStatusMap[s.slug || s.id] = s.status;
-  }
-
   for (const [slug, entry] of Object.entries(commercial.shows || {})) {
-    if (skipDesignations.has(entry.designation)) continue;
-
-    const cap = entry.capitalization;
-    const recouped = entry.recouped;
-    const status = showStatusMap[slug] || 'unknown';
-    const allTimeGross = grosses?.shows?.[slug]?.allTime?.gross;
-
-    // Calculate gross-to-cap ratio
-    let ratio = null;
-    if (cap && cap > 0 && allTimeGross) {
-      ratio = allTimeGross / cap;
-    }
-
-    // Predict designation
-    let predicted = null;
-    let reason = '';
-
-    if (recouped === true) {
-      if (ratio !== null) {
-        if (ratio >= 20) {
-          predicted = 'Miracle';
-          reason = `Recouped + ${ratio.toFixed(1)}x gross-to-cap ratio (>= 20x)`;
-        } else if (ratio >= 5) {
-          predicted = 'Windfall';
-          reason = `Recouped + ${ratio.toFixed(1)}x gross-to-cap ratio (>= 5x)`;
-        } else if (ratio >= 2) {
-          predicted = 'Windfall';
-          reason = `Recouped + ${ratio.toFixed(1)}x gross-to-cap ratio (>= 2x)`;
-        } else {
-          predicted = 'Trickle';
-          reason = `Recouped but only ${ratio.toFixed(1)}x gross-to-cap ratio`;
-        }
-      } else {
-        predicted = 'Windfall';
-        reason = 'Recouped (no cap data for ratio)';
-      }
-    } else if (recouped === false && status === 'closed') {
-      // Closed without recouping
-      const recoupPct = entry.estimatedRecoupmentPct;
-      if (recoupPct) {
-        const midpoint = (recoupPct[0] + recoupPct[1]) / 2;
-        if (midpoint < 30) {
-          predicted = 'Flop';
-          reason = `Closed, est. ${recoupPct.join('-')}% recouped (< 30%)`;
-        } else {
-          predicted = 'Fizzle';
-          reason = `Closed, est. ${recoupPct.join('-')}% recouped (>= 30%)`;
-        }
-      } else if (ratio !== null) {
-        if (ratio < 0.3) {
-          predicted = 'Flop';
-          reason = `Closed, ratio ${ratio.toFixed(2)}x (< 0.3x)`;
-        } else {
-          predicted = 'Fizzle';
-          reason = `Closed, ratio ${ratio.toFixed(2)}x (>= 0.3x)`;
-        }
-      } else {
-        predicted = 'Fizzle';
-        reason = 'Closed without recouping (insufficient data for Flop/Fizzle)';
-      }
-    } else if (recouped === false && (status === 'open' || status === 'previews')) {
-      predicted = 'TBD';
-      reason = 'Still running, not yet recouped';
-    } else {
-      // recouped === null or unknown status
-      predicted = 'TBD';
-      reason = 'Insufficient data';
-    }
-
-    // Compare with actual
-    if (predicted && predicted !== entry.designation) {
-      // Don't flag Easy Winner since it's hard to predict heuristically
-      if (entry.designation === 'Easy Winner') continue;
-      // Don't flag Trickle vs Windfall -- close enough
-      if ((entry.designation === 'Trickle' && predicted === 'Windfall') ||
-          (entry.designation === 'Windfall' && predicted === 'Trickle')) continue;
-
-      disagreements.push({
-        slug,
-        current: entry.designation,
-        predicted,
-        reason
-      });
-    }
+    // Same key match as merge-model-recoupment.js.
+    const show = find(slug) || find(entry.slug) || find(slug.replace(/-\d{4}$/, ''));
+    if (!show) continue;
+    const p = proposeDesignation({ record: entry, show, model: null, now });
+    if (p.changed) disagreements.push({ slug, current: entry.designation, predicted: p.designation, reason: p.reason });
   }
-
   return disagreements;
 }
 

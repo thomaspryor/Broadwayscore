@@ -331,8 +331,11 @@ describe('mergeCommercialJson: model-run fields and cost (BRO-4989 Step 0)', () 
 
   it('every model field merge-model-recoupment.js writes is in MODEL_RUN_FIELDS', async () => {
     const fs = await import('node:fs');
-    const src = fs.readFileSync(new URL('../../scripts/merge-model-recoupment.js', import.meta.url), 'utf8');
+    // The run writes some fields through scripts/lib/model-run-fields.js (BRO-4989 G).
+    const src = ['../../scripts/merge-model-recoupment.js', '../../scripts/lib/model-run-fields.js']
+      .map((p) => fs.readFileSync(new URL(p, import.meta.url), 'utf8')).join('\n');
     const written = [...new Set([...src.matchAll(/comm\.(model[A-Za-z0-9]+)\s*=[^=]/g)].map((x) => x[1]))];
+    assert.ok(written.includes('modelRecoupmentPctV2') && written.includes('modelInvestorMultiple'), 'shadow writes found');
     assert.ok(written.length >= 8, 'pattern still finds the writes');
     assert.deepEqual(written.filter((f) => !MODEL_RUN_FIELDS.includes(f)), []);
   });
