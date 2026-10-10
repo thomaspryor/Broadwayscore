@@ -1,0 +1,120 @@
+{
+  "issueNumber": "bro-5006",
+  "planId": "0509b9d3-3109-4b4f-b04b-38e91ea7e3ca",
+  "status": "pending",
+  "createdAt": "2026-10-10T20:16:23.631Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add capitalization for four current or upcoming Broadway productions (rounded to the nearest $1M): Paranormal Activity $8M, Dolly $30M, Damn Yankees $19M, A Few Good Men $7M.",
+    "steps": [
+      "Paranormal Activity: capitalization null -> 8000000, source label, notes",
+      "Dolly, Damn Yankees, A Few Good Men: new TBD commercial records with capitalization"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "paranormal-activity",
+        "showId": "paranormal-activity",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 8000000,
+        "description": "Capitalization about $8M (rounded)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "paranormal-activity",
+        "showId": "paranormal-activity",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Industry sources",
+        "description": "Neutral source label."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "paranormal-activity",
+        "showId": "paranormal-activity",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://broadwayscorecard.com",
+            "date": "2026-10-10"
+          }
+        ],
+        "description": "Source record."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "paranormal-activity",
+        "showId": "paranormal-activity",
+        "field": "notes",
+        "oldValue": "Stage adaptation at the August Wilson; opened Aug 25, 2026 for a limited run through Jan 3, 2027. No capitalization reported.",
+        "newValue": "Stage adaptation at the August Wilson; opened Aug 25, 2026 for a limited run through Jan 3, 2027. Capitalization about $8M.",
+        "description": "Notes match the new figure."
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "dolly-an-original-musical",
+        "entry": {
+          "designation": "TBD",
+          "recouped": false,
+          "capitalization": 30000000,
+          "capitalizationSource": "Industry sources",
+          "notes": "Capitalization about $30M.",
+          "sources": [
+            {
+              "type": "manual",
+              "url": "https://broadwayscorecard.com",
+              "date": "2026-10-10"
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "damn-yankees",
+        "entry": {
+          "designation": "TBD",
+          "recouped": false,
+          "capitalization": 19000000,
+          "capitalizationSource": "Industry sources",
+          "notes": "Capitalization about $19M.",
+          "sources": [
+            {
+              "type": "manual",
+              "url": "https://broadwayscorecard.com",
+              "date": "2026-10-10"
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "a-few-good-men",
+        "entry": {
+          "designation": "TBD",
+          "recouped": false,
+          "capitalization": 7000000,
+          "capitalizationSource": "Industry sources",
+          "notes": "Capitalization about $7M.",
+          "sources": [
+            {
+              "type": "manual",
+              "url": "https://broadwayscorecard.com",
+              "date": "2026-10-10"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
