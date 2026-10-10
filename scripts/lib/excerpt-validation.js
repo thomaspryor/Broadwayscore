@@ -564,6 +564,17 @@ function hasOnlyForwardTenseTourMention(excerpt) {
 // revival" — title sits ~14 chars before the match) without that surface.
 const TOUR_OTHER_SHOW_WINDOW_CHARS = 70;
 
+// Same show under another spelling ("Les Misérables"/"Les Miserables",
+// "Disney's Beauty and the Beast") is not a DIFFERENT show (BRO-4963 review).
+function normTitleKey(t) {
+  return String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+    .replace(/[’']s\b/g, '').replace(/^disney\s+/, '').replace(/^the\s+/, '').replace(/[^a-z0-9]+/g, '');
+}
+function isSameTitleAsCurrent(title, currentShowTitle) {
+  const a = normTitleKey(title), b = normTitleKey(currentShowTitle);
+  return !!a && !!b && (a === b || a.endsWith(b) || b.endsWith(a));
+}
+
 /**
  * True when a DIFFERENT, known show's title sits immediately before a
  * tour-pattern match (within TOUR_OTHER_SHOW_WINDOW_CHARS) — not the current
@@ -594,7 +605,7 @@ function tourMatchIsAboutDifferentShow(excerpt, matchIndex, currentShowId, curre
   if (currentRegex && currentRegex.test(window)) return null;
 
   for (const [showId, { title, regex }] of getMatchableTitles()) {
-    if (showId === currentShowId) continue;
+    if (showId === currentShowId || isSameTitleAsCurrent(title, currentShowTitle)) continue;
     if (regex.test(window)) return { title, showId };
   }
 
@@ -605,9 +616,9 @@ function tourMatchIsAboutDifferentShow(excerpt, matchIndex, currentShowId, curre
   const lead = ahead.match(/^[^.;]{0,30}?\b(?:of|for)\s+/i);
   if (lead) {
     const rest = ahead.slice(lead[0].length);
-    if (currentRegex && currentRegex.test(rest.slice(0, 40))) return null;
+    if (currentRegex && currentRegex.test(rest)) return null;
     for (const [showId, { title, regex }] of getMatchableTitles()) {
-      if (showId === currentShowId) continue;
+      if (showId === currentShowId || isSameTitleAsCurrent(title, currentShowTitle)) continue;
       const hit = regex.exec(rest);
       if (hit && hit.index <= 2) return { title, showId };
     }
@@ -629,7 +640,7 @@ function tourVenueFollowsDifferentShow(excerpt, matchIndex, currentShowId, curre
   const titleForMatch = currentShowTitle ? currentShowTitle.replace(/[^\w]+$/, '') : null;
   if (titleForMatch && new RegExp(`\\b${titleForMatch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i').test(window)) return null;
   for (const [showId, { title, regex }] of getMatchableTitles()) {
-    if (showId === currentShowId) continue;
+    if (showId === currentShowId || isSameTitleAsCurrent(title, currentShowTitle)) continue;
     const adjacent = new RegExp(`${regex.source}[\\s,(]*(?:(?:at|in)\\s+)?(?:the\\s+)?$`, 'i');
     if (adjacent.test(window)) return { title, showId };
   }
