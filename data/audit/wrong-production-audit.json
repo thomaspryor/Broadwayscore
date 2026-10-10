@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-10T10:47:15.291Z",
+  "timestamp": "2026-10-10T11:43:25.841Z",
   "stats": {
-    "totalReviews": 53806,
-    "alreadyFlagged": 19805,
-    "dateGuardCatches": 268,
-    "directorMismatch": 1671,
-    "tvFilmSignals": 1557,
+    "totalReviews": 53821,
+    "alreadyFlagged": 19808,
+    "dateGuardCatches": 267,
+    "directorMismatch": 1673,
+    "tvFilmSignals": 1558,
     "londonSignals": 1773,
     "offBroadwaySignals": 512,
     "yearMismatch": 128,
-    "noPublishDate": 5880
+    "noPublishDate": 5895
   },
   "findings": [
     {
@@ -8139,7 +8139,7 @@
     },
     {
       "showId": "clue-tour-2025",
-      "file": "calgary-herald--unknown.json",
+      "file": "calgary-herald--louis-b-hobson.json",
       "publishDate": "2026-07-10",
       "url": "https://calgaryherald.com/entertainment/theatre/broadway-across-canada-brings-campy-energetic-whodunnit-clue-to-jubilee-auditorium",
       "findings": [
@@ -44012,20 +44012,6 @@
       ]
     },
     {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 82,
-      "publishDate": "2023-02-07",
-      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
-        }
-      ]
-    },
-    {
       "showId": "tootsie-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 77,
@@ -44443,6 +44429,30 @@
       "score": 75,
       "publishDate": "2026-09-29",
       "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay presson allen\" from tru-1989"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rob ashford\" from tru-off-broadway-2026"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "tru-off-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "score": 67,
+      "publishDate": "2026-09-29",
+      "url": "https://theartsdesk.com/theatre/tru-menier-chocolate-factory-review-gem-turn-superlative-set",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -52884,7 +52894,7 @@
     },
     {
       "showId": "cock-west-end-2022",
-      "file": "variety--unknown.json",
+      "file": "variety--david-benedict.json",
       "score": 92,
       "publishDate": null,
       "url": "https://variety.com/2022/legit/reviews/cock-review-taron-edgerton-jonathan-bailey-west-end-1235207033/",
