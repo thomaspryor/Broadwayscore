@@ -713,6 +713,18 @@
     "queuedAt": "2026-10-10T01:09:17.831Z"
   },
   {
+    "conditionKey": "outlet-ground-truth:good-time-charlie-off-broadway-2026:https://www.theatermania.com/news/review-good-time-charlie-ryan-j-haddads-tribute-to-a-favorite-gay-uncle_1856609/",
+    "title": "Missing review from a tracked outlet: good-time-charlie-off-broadway-2026 — theatermania",
+    "description": "theatermania lists a review we don't hold (https://www.theatermania.com/news/review-good-time-charlie-ryan-j-haddads-tribute-to-a-favorite-gay-uncle_1856609/), and automatic ingest did not recover it.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-10T01:37:51.317Z"
+  },
+  {
     "conditionKey": "land:land/bro-4951-affiliate-report-watch",
     "title": "Landing blocked: race red on land/bro-4951-affiliate-report-watch",
     "description": "land.yml did not land land/bro-4951-affiliate-report-watch: the race gate went red at f3c167e058. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4951-affiliate-report-watch @ f3c167e058 (origin/land/bro-4951-affiliate-report-watch) → origin/main @ ed33a66fa8 [land] attempt 1/3: rebased onto ed33a66fa8, 11 file(s) changed — running checks [land] verified-base: main moved 8b31e9a563 → ed33a66fa8 across 132 file(s), substantive — running the full gauntlet [land] linked 21 gitignored path(s) into the worktree (node_modules/core Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38008330072",
@@ -740,5 +752,34 @@
       }
     ],
     "queuedAt": "2026-10-10T01:24:17.051Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4956-we-coverage",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4956-we-coverage",
+    "description": "land.yml did not land land/bro-4956-we-coverage: the unit-tests-node gate went red at 57dd90286e. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38011983077",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4956-we-coverage"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "57dd90286ea7c449f12d065febf283ea7a30d5a0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38011983077"
+      }
+    ],
+    "queuedAt": "2026-10-10T01:41:06.311Z"
   }
 ]

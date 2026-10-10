@@ -20,6 +20,8 @@
  *    ("Ma", "Six") from swallowing longer names
  */
 
+const { maskLongerTitles } = require('./title-containment');
+
 const MIN_FUZZY_LEN = 4;
 
 /** Lowercase + fold diacritics so "Misérables" == "Miserables". */
@@ -30,11 +32,15 @@ function foldCase(s) {
     .replace(/[\u0300-\u036f]/g, '');
 }
 
-/** foldCase, then "&"->"and", strip punctuation, collapse whitespace. */
+/** foldCase, then "&"/"'n'"->"and", strip punctuation, collapse whitespace.
+ * "'n'" matters for "The Heart of Rock 'n' Roll" vs shows.json's "The Heart
+ * of Rock and Roll" (BRO-4953: the diagnosis never loaded that show). */
 function normalizeShowName(s) {
   return foldCase(s)
     .replace(/&/g, ' and ')
+    .replace(/['’‘]n['’‘]/g, ' and ')
     .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/(^| )n(?= |$)/g, '$1and')
     .trim();
 }
 
@@ -197,7 +203,16 @@ function extractShowTitlesFromText(message, shows) {
       matched.add(show.title);
     }
   }
-  return Array.from(matched);
+  // Drop a title whose every mention sits inside a longer matched title:
+  // "The Heart of Rock and Roll" also contains the play "Rock 'n' Roll"
+  // (BRO-4953). A standalone mention elsewhere keeps it.
+  const cores = new Map(Array.from(matched, t => [t, normalizeTitleCore(t)]));
+  return Array.from(matched).filter((title) => {
+    const core = cores.get(title);
+    const longer = Array.from(cores.values()).filter(c => c !== core && c.length > core.length && tokenSequenceIncludes(c, core));
+    if (longer.length === 0) return true;
+    return tokenSequenceIncludes(maskLongerTitles(msgNorm, core, longer, normalizeShowName), core);
+  });
 }
 
 /**

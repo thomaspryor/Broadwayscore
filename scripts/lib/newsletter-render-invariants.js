@@ -36,57 +36,19 @@ function textOf(html) {
     .replace(/\s+/g, ' ');
 }
 
-/**
- * Normalise for comparison: lowercase, straighten curly quotes, collapse space.
- */
-function norm(s) {
-  return String(s || '')
-    .toLowerCase()
-    .replace(/[’‘]/g, "'")
-    .replace(/[“”]/g, '"')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
+// norm / containsTitle / maskLongerTitles moved to title-containment.js
+// (BRO-4953) so the aggregator page validators share one containment
+// implementation. The docs on why containsTitle is not a substring test, and
+// why longer titles are masked first (321 real pairs: "Giant" inside "The
+// Smartest Giant in Town", "Home" inside "Fun Home"), live there.
+const containment = require('./title-containment');
 
-/**
- * Whole-title containment — NOT a substring test.
- *
- * data/shows.json carries 448 single-word titles, many of them ordinary
- * English: "Art", "Home", "Elf", "Bug", "Chess", "Job", "English". A plain
- * `includes()` breaks in BOTH directions, and a reviewer caught both with real
- * data before this shipped:
- *   - false POSITIVE: an editorial subject containing "smart" matches the show
- *     "Art", hard-failing the gate and blocking a correct Sunday send. A gate
- *     that blocks good sends gets deleted, and then protects nothing.
- *   - false NEGATIVE: "Art" genuinely dropped from the body still "matches"
- *     the word "smart" elsewhere in the copy, so the gate stays silent on the
- *     exact incident class it exists to catch.
- *
- * \b is not usable here: titles end in punctuation and apostrophes
- * ("Schmigadoon!", "I'm Every Woman", "Rosie O'Donnell: Common Knowledge"), and
- * \b after "!" behaves the opposite of what you want. This repo has already
- * paid for that lesson (memory: feedback_word_boundary_punct_titles). Use
- * explicit non-alphanumeric boundary checks on the raw normalised strings.
- */
+/** Normalise for comparison: lowercase, straighten curly quotes, collapse space. */
+const norm = containment.basicNorm;
+
+/** Whole-title containment, NOT a substring test (see title-containment.js). */
 function containsTitle(haystack, title) {
-  const hay = norm(haystack);
-  const needle = norm(title);
-  if (!hay || !needle) return false;
-  const isWordChar = (ch) => !!ch && /[a-z0-9]/.test(ch);
-  let from = 0;
-  for (;;) {
-    const idx = hay.indexOf(needle, from);
-    if (idx === -1) return false;
-    const before = idx > 0 ? hay[idx - 1] : '';
-    const after = idx + needle.length < hay.length ? hay[idx + needle.length] : '';
-    // A match is real unless it is glued to a word character on a side where
-    // the title itself starts/ends with a word character. "Art" inside "smart"
-    // fails (word char before); "Art," or "(Art)" or "Art." all pass.
-    const leftOK = !isWordChar(before) || !isWordChar(needle[0]);
-    const rightOK = !isWordChar(after) || !isWordChar(needle[needle.length - 1]);
-    if (leftOK && rightOK) return true;
-    from = idx + 1;
-  }
+  return containment.containsTitle(haystack, title, norm);
 }
 
 /**
@@ -116,36 +78,13 @@ function collectKnownTitles(meta) {
 /**
  * Blank out occurrences of OTHER, LONGER titles that wholly contain `title`.
  *
- * Word boundaries alone are not enough. A reviewer swept the live corpus and
- * found 321 real pairs where one show title is a whole phrase inside another:
- * "Giant" ⊂ "The Smartest Giant in Town", "Home" ⊂ "Fun Home", "SIX" ⊂ "Six
- * Degrees of Separation", "English" ⊂ five "... - English National Opera"
- * titles. These are concurrently-tracked shows that legitimately co-occur
- * across sections of one email.
- *
  * Without this, a genuinely DROPPED "Giant" is reported as rendered because
- * "The Smartest Giant in Town" appears down in Closing this Week — the gate
- * silently passes a bad send, which is worse than not having the gate at all.
- * So: erase the longer titles first, then ask whether the short one survives
- * anywhere on its own.
+ * "The Smartest Giant in Town" appears down in Closing this Week, and the gate
+ * silently passes a bad send. So: erase the longer titles first, then ask
+ * whether the short one survives anywhere on its own.
  */
 function maskLongerTitles(text, title, knownTitles) {
-  const target = norm(title);
-  let masked = norm(text);
-  const longer = (Array.isArray(knownTitles) ? knownTitles : [])
-    .map((t) => norm(t))
-    .filter((t) => t && t !== target && t.length > target.length && containsTitle(t, target))
-    .sort((a, b) => b.length - a.length);
-  for (const other of longer) {
-    let from = 0;
-    for (;;) {
-      const idx = masked.indexOf(other, from);
-      if (idx === -1) break;
-      masked = masked.slice(0, idx) + ' '.repeat(other.length) + masked.slice(idx + other.length);
-      from = idx + other.length;
-    }
-  }
-  return masked;
+  return containment.maskLongerTitles(text, title, knownTitles, norm);
 }
 
 /** Section headings with their byte offsets, in document order. */

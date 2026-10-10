@@ -1,91 +1,15 @@
 {
-  "generatedAt": "2026-10-09T21:35:25.691Z",
+  "generatedAt": "2026-10-10T01:38:06.250Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 232,
-  "clean": 225,
-  "defective": 7,
+  "clean": 230,
+  "defective": 2,
   "byType": {
-    "score-drift": 3,
-    "unreachable": 4
+    "score-drift": 2
   },
   "shows": [
-    {
-      "showId": "alice-in-wonderland-off-broadway-2026",
-      "title": "Alice in Wonderland",
-      "openingDate": "2026-09-26",
-      "ok": false,
-      "defects": [
-        {
-          "type": "unreachable",
-          "detail": "HTTP 404"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 0,
-      "deployedCount": null
-    },
-    {
-      "showId": "savage-and-simon-says-a-double-bill-off-west-end-2026",
-      "title": "Savage & Simon Says: A Double Bill",
-      "openingDate": "2026-09-24",
-      "ok": false,
-      "defects": [
-        {
-          "type": "unreachable",
-          "detail": "HTTP 404"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 0,
-      "deployedCount": null
-    },
-    {
-      "showId": "september-l-davis-the-apology-tour-off-broadway-2026",
-      "title": "September L. Davis: The Apology Tour",
-      "openingDate": "2026-09-20",
-      "ok": false,
-      "defects": [
-        {
-          "type": "unreachable",
-          "detail": "HTTP 404"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 0,
-      "deployedCount": null
-    },
-    {
-      "showId": "spandex-off-broadway-2026",
-      "title": "Spandex",
-      "openingDate": "2026-09-19",
-      "ok": false,
-      "defects": [
-        {
-          "type": "unreachable",
-          "detail": "HTTP 404"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 0,
-      "deployedCount": null
-    },
-    {
-      "showId": "rent-west-end-2026",
-      "title": "Rent",
-      "openingDate": "2026-10-08",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 79.62 vs local 79.71 (Δ0.09)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 22,
-      "deployedCount": 22
-    },
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "title": "Into the Woods",
@@ -94,27 +18,31 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 85.48 vs local 85.59 (Δ0.11)"
+          "detail": "deployed cs 85.97 vs local 85.33 (Δ0.64)"
         }
       ],
       "missingFromProd": [],
       "localCount": 52,
-      "deployedCount": 52
+      "deployedCount": 52,
+      "firstDefectAt": "2026-10-10T01:38:00.434Z"
     },
     {
-      "showId": "hay-fever-west-end-2026",
-      "title": "Hay Fever",
-      "openingDate": "2026-10-01",
+      "showId": "kramerfauci-st-anns-off-broadway-2026",
+      "title": "Kramer/Fauci",
+      "openingDate": "2026-10-04",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 66.67 vs local 66.38 (Δ0.29)"
+          "detail": "deployed cs 80.05 vs local 77.73 (Δ2.32)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 33,
-      "deployedCount": 34
+      "localCount": 15,
+      "deployedCount": 15,
+      "firstDefectAt": "2026-10-10T01:38:00.434Z"
     }
-  ]
+  ],
+  "persistentDefective": 0,
+  "staleGraceHours": 6
 }
