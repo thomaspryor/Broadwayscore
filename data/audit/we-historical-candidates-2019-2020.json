@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T00:10:06.555Z",
+  "generatedAt": "2026-10-10T14:25:02.082Z",
   "season": "2019-2020",
   "sources": [
     "wos-listing",
@@ -9,14 +9,15 @@
   ],
   "counts": {
     "listings": 232,
-    "promotable": 36,
+    "promotable": 34,
     "notPromotable": {
       "non-theatre genre": 116,
-      "no review signal": 40,
+      "no review signal": 41,
       "run of 5 days < 14": 1,
       "run of 0 days < 14": 27,
       "run of 3 days < 14": 1,
       "no closing date": 1,
+      "already in shows.json": 1,
       "run of 7 days < 14": 1,
       "run of 8 days < 14": 1,
       "run of 13 days < 14": 1,
@@ -1510,7 +1511,7 @@
     },
     {
       "title": "Touching the Void",
-      "venue": "Duke of York's Theatre",
+      "venue": "Tom Stoppard Theatre",
       "previewsStartDate": null,
       "openingDate": "2019-11-09",
       "closingDate": "2020-02-29",
@@ -1518,17 +1519,15 @@
         "play"
       ],
       "season": "2019-2020",
-      "signals": [
-        "olivier-2020"
-      ],
+      "signals": [],
       "sourceUrls": {
         "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/touching-the-void_198509/"
       },
       "inShowsJson": null,
       "decision": {
-        "promotable": true,
-        "persistent": true,
-        "reason": "signals: olivier-2020"
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
       }
     },
     {
@@ -1983,7 +1982,7 @@
     },
     {
       "title": "Peppa Pig – Peppa Pigs Best Day Ever",
-      "venue": "Duke of York's Theatre",
+      "venue": "Tom Stoppard Theatre",
       "previewsStartDate": null,
       "openingDate": "2019-11-29",
       "closingDate": "2020-01-05",
@@ -2897,16 +2896,16 @@
         "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/death-of-england_208625/",
         "wosReview": "https://www.whatsonstage.com/news/review-death-of-england-national-theatre_50871/"
       },
-      "inShowsJson": null,
+      "inShowsJson": "Death of England: Delroy",
       "decision": {
-        "promotable": true,
+        "promotable": false,
         "persistent": true,
-        "reason": "signals: wos-review, olivier-2020"
+        "reason": "already in shows.json: Death of England: Delroy"
       }
     },
     {
       "title": "Eric & Ern",
-      "venue": "Duke of York's Theatre",
+      "venue": "Tom Stoppard Theatre",
       "previewsStartDate": null,
       "openingDate": "2020-02-02",
       "closingDate": "2020-02-09",
@@ -3398,7 +3397,7 @@
     },
     {
       "title": "Blithe Spirit",
-      "venue": "Duke of York's Theatre",
+      "venue": "Tom Stoppard Theatre",
       "previewsStartDate": null,
       "openingDate": "2020-03-05",
       "closingDate": "2020-03-16",
@@ -4663,7 +4662,7 @@
     },
     {
       "title": "The Doctor",
-      "venue": "Duke of York's Theatre",
+      "venue": "Tom Stoppard Theatre",
       "previewsStartDate": null,
       "openingDate": "2020-06-01",
       "closingDate": "2020-07-18",
@@ -5020,7 +5019,7 @@
     },
     {
       "title": "The Pillowman",
-      "venue": "Duke of York's Theatre",
+      "venue": "Tom Stoppard Theatre",
       "previewsStartDate": null,
       "openingDate": "2020-07-24",
       "closingDate": "2020-10-17",
