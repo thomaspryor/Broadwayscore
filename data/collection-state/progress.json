@@ -59,7 +59,11 @@
     "elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json",
     "how-shakespeare-saved-my-life-off-broadway-2026/showify--unknown.json",
     "tru-off-west-end-2026/artsdesk--unknown.json",
-    "tru-off-west-end-2026/west-end-best-friend--unknown.json"
+    "tru-off-west-end-2026/west-end-best-friend--unknown.json",
+    "good-time-charlie-off-broadway-2026/culturesauce--thom-geier.json",
+    "good-time-charlie-off-broadway-2026/culturesauce--unknown.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
   ],
   "failed": [
     "the-seagull-west-end-2022/guardian--arifa-akbar.json",
@@ -85,7 +89,17 @@
     "tru-off-west-end-2026/guardian--mark-lawson.json",
     "a-small-and-quiet-light-off-west-end-2026/londonlivinglarge--london-living-large.json",
     "elf-lyons-the-woman-on-the-edge-off-broadway-2026/chortle--unknown.json",
-    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/the-scotsman--david-hepburn.json"
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/the-scotsman--david-hepburn.json",
+    "soon-off-broadway-2026/nick-blaemire--unknown.json",
+    "soon-off-broadway-2026/playbill--unknown.json",
+    "soon-off-broadway-2026/thestage--matt-barton.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--unknown.json",
+    "toc-toc-off-broadway-2026/laguiacultural--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/broadwaylog--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/theater-life--unknown.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -135,7 +149,11 @@
       "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json",
       "elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json",
       "tru-off-west-end-2026/artsdesk--unknown.json",
-      "tru-off-west-end-2026/west-end-best-friend--unknown.json"
+      "tru-off-west-end-2026/west-end-best-friend--unknown.json",
+      "good-time-charlie-off-broadway-2026/culturesauce--thom-geier.json",
+      "good-time-charlie-off-broadway-2026/culturesauce--unknown.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -146,7 +164,8 @@
       "whos-afraid-of-virginia-woolf-west-end-2026/ground--unknown.json",
       "whos-afraid-of-virginia-woolf-west-end-2026/theartsdispatch--the-arts-dispatch.json",
       "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
-      "how-shakespeare-saved-my-life-off-broadway-2026/showify--unknown.json"
+      "how-shakespeare-saved-my-life-off-broadway-2026/showify--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/theater-life--unknown.json"
     ],
     "scrapingbee": [
       "bull-off-west-end-2026/broadwayworld--cindy-marcolina.json"
@@ -163,7 +182,7 @@
     ]
   },
   "startTime": "2026-10-10T10:29:50.337Z",
-  "lastProcessed": "tru-off-west-end-2026/west-end-best-friend--unknown.json",
+  "lastProcessed": "midnight-off-broadway-2026/eventsfy--unknown.json",
   "log": [
     {
       "t": "2026-10-10T10:30:08.144Z",
@@ -175,6 +194,40 @@
       "t": "2026-10-10T10:30:08.855Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-10T11:40:00.162Z",
+      "event": "bb-session",
+      "session": "561a1acf",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-10T11:40:07.736Z",
+      "event": "bb-session",
+      "session": "7089b013",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-10T11:42:38.289Z",
+      "event": "bb-session",
+      "session": "db08e577",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-10T11:42:38.759Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-10T11:42:56.117Z",
+      "event": "bb-session",
+      "session": "484b0850",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-10T11:42:56.611Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }

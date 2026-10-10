@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-10T11:18:05.232Z",
-  "processed": 60,
-  "failed": 24,
-  "successRate": "71.4%",
+  "updatedAt": "2026-10-10T11:47:55.180Z",
+  "processed": 64,
+  "failed": 34,
+  "successRate": "65.3%",
   "tierBreakdown": {
-    "playwright": 46,
+    "playwright": 50,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 6,
+    "scrapingdog": 7,
     "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 6
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-10-10T10:30:08.144Z",
@@ -26,6 +26,40 @@
       "t": "2026-10-10T10:30:08.855Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-10T11:40:00.162Z",
+      "event": "bb-session",
+      "session": "561a1acf",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-10T11:40:07.736Z",
+      "event": "bb-session",
+      "session": "7089b013",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-10T11:42:38.289Z",
+      "event": "bb-session",
+      "session": "db08e577",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-10T11:42:38.759Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-10T11:42:56.117Z",
+      "event": "bb-session",
+      "session": "484b0850",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-10T11:42:56.611Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
