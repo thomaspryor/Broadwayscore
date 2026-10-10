@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-10T03:17:10.950Z",
+    "lastUpdated": "2026-10-10T06:54:18.708Z",
     "version": "2.1.0",
     "lastChange": "task #1844 follow-up: move mislabeled sundayexpress alias from express-uk to sunday-express + repoint metro-source aliasIndex entry from metro-uk to metrosource (real routing bugs found by adversarial review, not registry duplicates)"
   },
@@ -12288,6 +12288,17 @@
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
       "regionInferredAt": "2026-10-10T03:17:10.950Z"
+    },
+    "artshub": {
+      "displayName": "Artshub",
+      "tier": 3,
+      "aliases": [
+        "artshub"
+      ],
+      "domain": "artshub.co.uk",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-10-10T06:54:18.708Z"
     }
   },
   "_aliasIndex": {
