@@ -18,6 +18,10 @@
  *                         scraper in history._meta.weekTotals
  *   show-dropout          a show in last week's data absent this week while
  *                         shows.json does not say it closed
+ *   gross-before-run      a row for a week ending before the show's first
+ *                         preview (or opening, when previews are unset):
+ *                         the League row matched the wrong shows.json entry,
+ *                         usually a duplicate (860 vs Billy Crystal 860)
  *   duplicate-gross       the same show's gross identical to the dollar in
  *                         two weeks
  *   flat-gross-run        3+ consecutive weeks within 0.5% of each other
@@ -228,6 +232,24 @@ function checkDropouts(history, shows, week) {
   return out;
 }
 
+/**
+ * Rows in `week` for a slug whose shows.json run starts after the week ends
+ * (the League week ends on the Sunday key, so a first preview inside the week
+ * is fine). Slugs missing from shows.json or without a start date are skipped.
+ */
+function checkGrossBeforeRun(history, shows, week) {
+  const bySlug = new Map((shows || []).map((s) => [s.slug, s]));
+  const out = [];
+  for (const [slug, entry] of Object.entries(history.weeks[week] || {})) {
+    if (!isRow(entry)) continue;
+    const show = bySlug.get(slug);
+    const start = String(show?.previewsStartDate || show?.openingDate || '').slice(0, 10);
+    if (!ISO_DATE_RE.test(start) || start <= week) continue;
+    out.push({ rule: 'gross-before-run', week, slug, detail: `row for week ending ${week} but shows.json ${show.id} starts ${start}` });
+  }
+  return out;
+}
+
 /** Per-slug rows in week order: [{ week, entry }]. */
 function rowsBySlug(history) {
   const map = new Map();
@@ -376,6 +398,7 @@ function checkGrossesIntegrity(history, shows, { weeks, missingSince, now } = {}
     ...checkWeekTotals(history),
     ...checkTotalRecorded(history, keys[keys.length - 1]),
     ...scope.flatMap((w) => checkDropouts(history, shows, w)),
+    ...scope.flatMap((w) => checkGrossBeforeRun(history, shows, w)),
     ...checkRepeatedGrosses(history),
     ...checkCappedCapacity(history),
     ...checkRowShape(history, scope),
@@ -396,6 +419,7 @@ module.exports = {
   checkWeekTotals,
   checkTotalRecorded,
   checkDropouts,
+  checkGrossBeforeRun,
   checkRepeatedGrosses,
   checkCappedCapacity,
   checkRowShape,

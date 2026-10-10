@@ -27,6 +27,7 @@ const { assertTableSchema, TableSchemaError, findColumnIndex } = require('./lib/
 // parseAllTimeHtml lives here (not inline) so it's require()-able from a
 // plain node --test file — see scripts/lib/alltime-table-parser.js header.
 const { parseAllTimeHtml, TABLE_SCHEMA } = require('./lib/alltime-table-parser');
+const { applyAllTimeAttribution } = require('./lib/alltime-attribution');
 
 const BASE_URL = 'https://www.broadwayworld.com/grossescumulative.cfm';
 const GROSSES_PATH = path.join(__dirname, '../data/grosses.json');
@@ -455,6 +456,18 @@ async function scrapeAllTime(): Promise<void> {
       console.log(`  ${hadData ? 'UPDATE' : 'NEW'}: ${slug} → ${grossStr} gross, ${perfStr} perfs${note}`);
     }
   }
+
+  // A title's row that landed on two productions over the years left a copy
+  // on each (the merge above never removes one). Move a count the run could
+  // not have played to the same-title production whose run fits it, then keep
+  // identical copies only on the production whose run fits (BRO-5012).
+  const { moves, clears }: {
+    moves: { slug: string; to: string; reason: string }[];
+    clears: { slug: string; owner: string | null; reason: string }[];
+  } = applyAllTimeAttribution(grossesData.shows, shows);
+  for (const m of moves) console.log(`  [attribution] moved ${m.slug} -> ${m.to}: ${m.reason}`);
+  for (const c of clears) console.log(`  [attribution] cleared ${c.slug}: ${c.reason}`);
+  console.log(`All-time attribution: moved ${moves.length} rows off runs that could not hold them, cleared ${clears.length} shared copies`);
 
   console.log(`\nNew entries: ${newCount}`);
   console.log(`Updated entries: ${updateCount}`);

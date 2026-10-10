@@ -89,10 +89,21 @@ function isColonSegmentTitle(a, b) {
   const [short, long] = (a.title || '').length <= (b.title || '').length ? [a, b] : [b, a];
   const longTitle = long.title || '';
   const idx = longTitle.indexOf(':');
-  if (idx < 0) return false;
   const shortKey = titleKey(short.title);
+  if (idx < 0) return isPerformerPrefixTitle(shortKey, titleKey(longTitle));
   if (shortKey.length < 4 || shortKey === titleKey(longTitle)) return false;
   return shortKey === titleKey(longTitle.slice(0, idx)) || shortKey === titleKey(longTitle.slice(idx + 1));
+}
+
+// "Billy Crystal 860" vs "860" (BRO-5014): a performer's name put in front of
+// the title with no colon. The long title must be at least two words of prefix
+// plus the exact short title, and the short title must be a real title, not a
+// common word: four or more characters, or a number-bearing title like "860".
+function isPerformerPrefixTitle(shortKey, longKey) {
+  if (!shortKey || shortKey === longKey || !longKey.endsWith(` ${shortKey}`)) return false;
+  if (shortKey.length < 4 && !(shortKey.length >= 3 && /\d/.test(shortKey))) return false;
+  const prefix = longKey.slice(0, longKey.length - shortKey.length).trim();
+  return prefix.split(' ').filter(Boolean).length >= 2;
 }
 
 // True when one show's significant raw-title tokens are a STRICT subset of the
@@ -250,7 +261,7 @@ function titlesAgree(a, b) {
   const ta = slugifyTitle(a.title);
   const tb = slugifyTitle(b.title);
   if (!ta || !tb) return false; // a title-less entry cannot corroborate an id
-  return ta.startsWith(tb) || tb.startsWith(ta);
+  return ta.startsWith(tb) || tb.startsWith(ta) || isColonSegmentTitle(a, b);
 }
 
 /**

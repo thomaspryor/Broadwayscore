@@ -29,6 +29,7 @@
 const ID_RE = /^[a-z0-9][a-z0-9-]*$/;
 const { normalizeVenueName } = require('./venue-classification');
 const { normalizeTitle } = require('./title-match');
+const { isStrictTitleSubset } = require('./show-duplicate-detection');
 
 // Same building: normalized names equal, or one is the other plus only a
 // generic building/room word ("Barbican" / "Barbican Centre"). Never a
@@ -67,7 +68,8 @@ function sameRun(kept, row) {
 /**
  * Why `row` may NOT be retired as a duplicate of `duplicateOf`, or null when
  * it may: the kept row exists and is another row, the two share a title
- * (normalizeTitle) at the same house and market, the retired row's run sits
+ * (normalizeTitle, or one title is the other's strict subset, e.g. "860" vs
+ * "Billy Crystal 860") at the same house and market, the retired row's run sits
  * inside the kept row's run, and the retired row has no reviews (scored or
  * collected review texts).
  */
@@ -75,7 +77,7 @@ function duplicateRefusal(row, duplicateOf, shows, reviewCount) {
   if (typeof duplicateOf !== 'string' || !ID_RE.test(duplicateOf) || duplicateOf === row.id) return 'duplicateOf must name another show id';
   const kept = shows.find(s => s && s.id === duplicateOf);
   if (!kept) return `duplicateOf "${duplicateOf}" is not in shows.json`;
-  if (normalizeTitle(kept.title) !== normalizeTitle(row.title)) return `title "${row.title}" does not match "${kept.title}"`;
+  if (normalizeTitle(kept.title) !== normalizeTitle(row.title) && !isStrictTitleSubset(kept, row)) return `title "${row.title}" does not match "${kept.title}"`;
   if (!sameHouse(kept.venue, row.venue)) return `venue "${row.venue}" is not the same house as "${kept.venue}"`;
   if ((kept.market || null) !== (row.market || null)) return `market ${row.market} differs from ${kept.market}`;
   if (!sameRun(kept, row)) return `run dates do not fall inside ${duplicateOf}'s run (a revival or return run is not a duplicate)`;

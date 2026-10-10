@@ -190,3 +190,19 @@ test('audit-grosses-data.js uses the shared rules, not its own copies', async ()
   // League grosses are Broadway-only: an Off-Broadway or West End show is never "missing".
   assert.doesNotMatch(src, /showsData\.shows\.filter\(s => s\.status/);
 });
+
+test('gross before run: the League "860" row landed on a duplicate that starts after the week (BRO-5014)', () => {
+  const h = { weeks: { '2026-10-04': { '860': row(854_574, { performances: 5 }), 'billy-crystal-860': row(1), early: row(2), nostart: row(3) } } };
+  const shows = [
+    { id: '860-2026', slug: '860', previewsStartDate: '2026-10-21' },
+    { id: 'billy-crystal-860-2026', slug: 'billy-crystal-860', previewsStartDate: '2026-10-01' },
+    { id: 'early-2026', slug: 'early', openingDate: '2026-10-04' },
+    { id: 'nostart-2026', slug: 'nostart' },
+  ];
+  const f = L.checkGrossBeforeRun(h, shows, '2026-10-04');
+  assert.deepEqual(f.map((x) => x.slug), ['860']);
+  assert.match(f[0].detail, /860-2026 starts 2026-10-21/);
+  assert.ok(ALERT_RULES.has('gross-before-run'));
+  const all = L.checkGrossesIntegrity(h, shows, { weeks: ['2026-10-04'] });
+  assert.equal(rules(all).filter((r) => r === 'gross-before-run').length, 1);
+});

@@ -86,3 +86,15 @@ test('colon variant does NOT flag a partial segment ("Hamlet" vs "Hamlet Unbound
   ];
   assert.equal(findTitleFragmentDupes(shows).length, 0);
 });
+
+test('flags a performer-prefix title without a colon ("Billy Crystal 860" ~ "860", BRO-5014)', () => {
+  const { isStrictTitleSubset } = require('./show-duplicate-detection.js');
+  const kept = show({ id: 'billy-crystal-860-2026', title: 'Billy Crystal 860', venue: 'Imperial Theatre', openingDate: '2026-10-21', closingDate: '2027-01-03' });
+  const dup = show({ id: '860-2026', title: '860', venue: 'Imperial Theatre', openingDate: '2026-10-21', closingDate: undefined });
+  assert.equal(isStrictTitleSubset(kept, dup), true);
+  assert.equal(findTitleFragmentDupes([kept, dup]).length, 1);
+  // A one-word prefix, a short non-numeric tail, or a non-suffix are not performer prefixes.
+  assert.equal(isStrictTitleSubset({ title: 'Crystal 860' }, { title: '860' }), false);
+  assert.equal(isStrictTitleSubset({ title: 'Billy Crystal Act' }, { title: 'Act' }), false);
+  assert.equal(isStrictTitleSubset({ title: '860 Billy Crystal' }, { title: '860' }), false);
+});
