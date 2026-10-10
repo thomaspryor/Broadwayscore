@@ -16,6 +16,7 @@
  *   --coverage           Show data coverage statistics
  */
 
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const { calculateRecoupment } = require('./lib/recoupment-model');

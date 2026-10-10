@@ -8,6 +8,7 @@
  * Usage: node scripts/migrate-add-core-data-push.js [--dry-run]
  */
 
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 

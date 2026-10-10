@@ -16,6 +16,7 @@
  *   --resume           Skip shows already in pending review
  */
 
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const https = require('https');

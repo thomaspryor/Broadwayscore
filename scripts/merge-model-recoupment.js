@@ -13,13 +13,14 @@
  *   node scripts/merge-model-recoupment.js [--dry-run] [--show=SLUG]
  */
 
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const { calculateRecoupment, calculateLifetimeRecoupment, classifyShow } = require('./lib/recoupment-model');
 const { createCommercialWriteGuard } = require('./lib/commercial-write-guard');
 const { classifyTier } = require('./lib/model-return-v2');
-const { clearStaleModelFields, applyShadowReturnFields } = require('./lib/model-run-fields');
+const { clearStaleModelFields, applyShadowReturnFields, applyReturnedSoFarFields, RETURNED_SO_FAR_OPTS } = require('./lib/model-run-fields');
 const { modelContradictsDesignation } = require('./lib/commercial-designations');
 
 // ---------------------------------------------------------------------------
@@ -142,8 +143,9 @@ function main() {
     const tier = classifyTier(show, comm, grossAllTime);
 
     let result;
+    let weeklyData = null;
     if (tier === 'weekly-model') {
-      const weeklyData = getWeeklyData(slug, show.id);
+      weeklyData = getWeeklyData(slug, show.id);
       result = calculateRecoupment(show, comm, grossAllTime, weeklyData);
       if (result.error) {
         // Fall back to ai-estimated
@@ -192,6 +194,9 @@ function main() {
     // Shadow fields (BRO-4989 G): SVOG-denominator fix + investor multiple.
     // Nothing reads them yet; modelRecoupmentPct above stays the live value.
     applyShadowReturnFields(comm, result, show);
+    applyReturnedSoFarFields(comm, tier === 'weekly-model'
+      ? calculateRecoupment(show, comm, grossAllTime, weeklyData, RETURNED_SO_FAR_OPTS)
+      : calculateLifetimeRecoupment(show, comm, grossAllTime, RETURNED_SO_FAR_OPTS));
 
     // Flag designation contradictions
     if (comm.designation && result.recoupmentPctCentral != null) {

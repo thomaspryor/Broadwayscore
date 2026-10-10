@@ -476,6 +476,12 @@ export interface ShowCommercial {
 
   // Model-calculated recoupment fields (from merge-model-recoupment.js)
   modelRecoupmentPct?: [number, number, number] | null; // [pessimistic, central, optimistic]
+  /** Set when the display guard hid the model bar (BRO-4989): why. */
+  modelDisplayHold?: 'no-model' | 'few-weeks' | 'out-of-bounds' | 'estimates-disagree';
+  /** The model central is below 0 (lost money running so far): shown as 0% with "losing money so far". */
+  modelBelowCosts?: boolean;
+  /** Server-only: the range the display guard hid, for the At Risk rule. toPublicShowCommercial drops it. */
+  modelHeldRange?: [number, number, number] | null;
   modelRecouped?: boolean | null;
   modelBreakeven?: number | null;
   modelCostBasis?: number | null;
@@ -525,6 +531,8 @@ export interface AtRiskShow {
   breakEven: number;
   /** Model [pessimistic, central, optimistic]; optimistic < 30. */
   modelRecoupmentPct: [number, number, number];
+  /** getModelHoldLabel(): set when the guard hid the model; the card prints it instead of the %. */
+  modelHoldLabel: string | null;
   trend: import('@/config/commercial').RecoupmentTrend;
 }
 
@@ -563,6 +571,10 @@ export interface CommercialShowRow {
   nonprofitOrg: string | null;
   totalGross: number | null;
   modelRecoupmentPct: [number, number, number] | null;
+  /** ShowCommercial.modelBelowCosts: the bar reads 0% with "losing money so far". */
+  modelBelowCosts?: boolean;
+  /** ShowCommercial.modelDisplayHold: why the guard hid the bar (getModelHoldLabel). */
+  modelDisplayHold?: ShowCommercial['modelDisplayHold'];
   modelMethod: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
   modelDataQuality?: 'high' | 'medium' | 'low';
   /** Reported investor multiple from a cited record (getReportedInvestorMultiple); never modeled. */

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 'use strict';
+require('./lib/cli-help').exitOnHelp(module);
 
 /**
  * CLI wrapper for data/commercial-research-queue.json writers. Replaces the

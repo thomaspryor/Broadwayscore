@@ -46,6 +46,7 @@
  *   node scripts/reconcile-recoupment-claims.js --time-budget-min=25
  */
 
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 
