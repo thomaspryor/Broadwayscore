@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-10T21:46:01.766Z",
+  "timestamp": "2026-10-10T22:58:10.354Z",
   "stats": {
-    "totalReviews": 54617,
-    "alreadyFlagged": 19941,
+    "totalReviews": 54641,
+    "alreadyFlagged": 19995,
     "dateGuardCatches": 272,
     "directorMismatch": 1659,
-    "tvFilmSignals": 1522,
-    "londonSignals": 1798,
+    "tvFilmSignals": 1521,
+    "londonSignals": 1811,
     "offBroadwaySignals": 504,
     "yearMismatch": 129,
-    "noPublishDate": 6228
+    "noPublishDate": 6168
   },
   "findings": [
     {
@@ -1365,7 +1365,7 @@
     {
       "showId": "affluenza-off-west-end-2026",
       "file": "london-theatre--aliya-al-hassan.json",
-      "score": 41,
+      "score": 36,
       "publishDate": "2026-10-06",
       "url": "https://www.londontheatre.co.uk/reviews/affluenza-review-riverside-studios",
       "findings": [
@@ -1426,7 +1426,7 @@
     {
       "showId": "affluenza-off-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 37,
+      "score": 39,
       "publishDate": "2026-10-07",
       "url": "https://www.standard.co.uk/culture/theatre/affluenza-review-b1299859.html",
       "findings": [
@@ -2676,7 +2676,7 @@
     {
       "showId": "an-oak-tree-off-west-end-2026",
       "file": "thestage--dave-fargnoli.json",
-      "score": 85,
+      "score": 86,
       "publishDate": "May 7th, 2025",
       "url": "https://www.thestage.co.uk/reviews/an-oak-tree-review-young-vic-london-tim-crouch-jessie-buckley",
       "findings": [
@@ -19419,7 +19419,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "adventuresintheatreland--oviya-thirumalai-sheher.json",
-      "score": 93,
+      "score": 94,
       "publishDate": "2026-10-08",
       "url": "https://www.adventuresintheatreland.com/post/into-the-woods-no%C3%ABl-coward-theatre",
       "findings": [
@@ -19573,7 +19573,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "london-theatre--julia-rank.json",
-      "score": 92,
+      "score": 97,
       "publishDate": "2026-10-07",
       "url": "https://www.londontheatre.co.uk/reviews/into-the-woods-review-noel-coward-theatre",
       "findings": [
@@ -19733,7 +19733,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "the-jewish-chronicle--john-nathan.json",
-      "score": 92,
+      "score": 91,
       "publishDate": "2026-01-06",
       "url": "https://www.thejc.com/life/theatre/into-the-woods-review-goyishe-brothers-grimm-gloriously-reinvented-by-a-jewish-creative-team-lq75z9fy",
       "findings": [
@@ -19785,7 +19785,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "theatreandtonic--penny-walshe.json",
-      "score": 97,
+      "score": 96,
       "publishDate": "2026-10-08",
       "url": "https://theatreandtonic.co.uk/blog/into-the-woods-at-noel-coward-theatre-review",
       "findings": [
@@ -19874,7 +19874,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "whatsonstage--alex-wood.json",
-      "score": 97,
+      "score": 98,
       "publishDate": "2026-10-07",
       "url": "https://www.whatsonstage.com/news/into-the-woods-moves-to-the-west-end-review_1734570/",
       "findings": [
@@ -44073,7 +44073,7 @@
     {
       "showId": "tru-off-west-end-2026",
       "file": "broadwayworld--clementine-scott.json",
-      "score": 79,
+      "score": 81,
       "publishDate": "2026-09-27",
       "url": "https://www.broadwayworld.com/westend/article/Review-TRU-Starring-Jesse-Tyler-Ferguson-Menier-Chocolate-Factory-20260927",
       "findings": [
@@ -44217,7 +44217,7 @@
     {
       "showId": "tru-off-west-end-2026",
       "file": "london-theatre--aliya-al-hassan.json",
-      "score": 85,
+      "score": 82,
       "publishDate": "2026-09-27",
       "url": "https://www.londontheatre.co.uk/reviews/tru-review-menier-chocolate-factory",
       "findings": [
@@ -44250,7 +44250,7 @@
     {
       "showId": "tru-off-west-end-2026",
       "file": "plays-international--unknown.json",
-      "score": 80,
+      "score": 78,
       "publishDate": "2026-09-28",
       "url": "https://playsinternational.org.uk/tru-menier-chocolate-factory/",
       "findings": [
@@ -44514,7 +44514,7 @@
     {
       "showId": "tru-off-west-end-2026",
       "file": "whatsonstage--sonny-waheed.json",
-      "score": 81,
+      "score": 78,
       "publishDate": "2026-09-27",
       "url": "https://www.whatsonstage.com/news/tru-with-jesse-tyler-ferguson-and-charlotte-damboise-at-menier-chocolate-factory-review_1732697/",
       "findings": [
@@ -44694,20 +44694,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"tim jackson\" from two-strangers-bway-2025"
-        }
-      ]
-    },
-    {
-      "showId": "uncle-vanya-west-end-2020",
-      "file": "telegraph--dominic-cavendish.json",
-      "score": 90,
-      "publishDate": "2020-01-23",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/uncle-vanya-review-harold-pinter-theatre-toby-jones-stunning/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -50236,6 +50222,19 @@
     },
     {
       "showId": "blood-of-my-blood-west-end-2026",
+      "file": "bestoftheatre--nick-curtis.json",
+      "publishDate": "2026-10-09",
+      "url": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-blood-of-my-blood-royal-court-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "blood-of-my-blood-west-end-2026",
       "file": "eventslist--unknown.json",
       "publishDate": null,
       "url": "https://eventslist.co.uk/london/events/rct-blood-of-my-blood-2026-10-01",
@@ -50277,7 +50276,7 @@
     {
       "showId": "blood-of-my-blood-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 81,
+      "score": 78,
       "publishDate": "2026-10-08",
       "url": "https://www.londonboxoffice.co.uk/news/post/blood-of-my-blood-royal-court-theatre-review",
       "findings": [
@@ -51492,7 +51491,7 @@
     {
       "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
       "file": "artsdesk--aleks-sierz.json",
-      "score": 58,
+      "score": 56,
       "publishDate": "2026-09-22",
       "url": "https://theartsdesk.com/theatre/catarina-and-beauty-killing-fascists-national-theatre-review-thoroughly-uncomfortable-watch",
       "findings": [
@@ -51561,7 +51560,7 @@
     {
       "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 57,
+      "score": 55,
       "publishDate": "2026-09-22",
       "url": "https://www.theguardian.com/stage/2026/sep/22/catarina-and-the-beauty-of-killing-fascists-review-fury-europe",
       "findings": [
@@ -51616,7 +51615,7 @@
     {
       "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
       "file": "london-theatre--anya-ryan.json",
-      "score": 74,
+      "score": 62,
       "publishDate": "2026-09-22",
       "url": "https://www.londontheatre.co.uk/reviews/catarina-and-the-beauty-of-killing-fascists-review-national-theatre",
       "findings": [
@@ -52689,6 +52688,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "curtains-west-end-2019",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 55,
+      "publishDate": "2019-12-18",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/curtains-review-wyndhams-theatre-much-filler-not-enough-killer/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
@@ -54406,6 +54419,20 @@
       ]
     },
     {
+      "showId": "endgame-west-end-2020",
+      "file": "independent--paul-taylor.json",
+      "score": 88,
+      "publishDate": "2020-02-12",
+      "url": "https://www.independent.co.uk/independentpremium/culture/endgame-daniel-radcliffe-alan-cumming-review-old-vic-samuel-beckett-a9319357.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
       "showId": "enron-2010",
       "file": "hollywood-reporter--frank-scheck.json",
       "score": 49,
@@ -55524,6 +55551,20 @@
       ]
     },
     {
+      "showId": "glass-kill-bluebeard-and-imp-west-end-2019",
+      "file": "a-younger-theatre--unknown.json",
+      "score": 91,
+      "publishDate": "2019-10-03",
+      "url": "https://www.ayoungertheatre.com/review-glass-kill-bluebeard-imp-royal-court-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "godspell-2011",
       "file": "wsj--terry-teachout.json",
       "score": 90,
@@ -56161,6 +56202,33 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "groan-ups-west-end-2019",
+      "file": "daily-mail--robert-gore-langton.json",
+      "publishDate": "2019-10-19",
+      "url": "https://www.dailymail.com/home/event/article-7583541/Groan-Ups-review-material-crumpled-mess-director-Kirsty-Patrick-Ward-iron-out.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "groan-ups-west-end-2019",
+      "file": "whatsonstage--alex-wood.json",
+      "score": 82,
+      "publishDate": "October 11th, 2019",
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/groan-ups-vaudeville-mischief_50105.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -57322,7 +57390,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "london-theatre--olivia-rook.json",
-      "score": 78,
+      "score": 81,
       "publishDate": "2026-10-02",
       "url": "https://www.londontheatre.co.uk/reviews/hay-fever-review-christine-baranski-richard-e-grant-noel-coward",
       "findings": [
@@ -57364,7 +57432,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "readaboutstuff--unknown.json",
-      "score": 81,
+      "score": 80,
       "publishDate": "2026-10-04",
       "url": "https://readaboutstuff.com/2026/10/04/review-hay-fever-wyndhams-theatre-london/",
       "findings": [
@@ -57447,7 +57515,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "west-end-wilma--unknown.json",
-      "score": 73,
+      "score": 76,
       "publishDate": "2026-10-02",
       "url": "https://westendwilma.com/review-hay-fever-wyndhams-theatre/?utm_source=rss&utm_medium=rss&utm_campaign=review-hay-fever-wyndhams-theatre",
       "findings": [
@@ -62303,6 +62371,76 @@
       ]
     },
     {
+      "showId": "master-harold-and-the-boys-west-end-2019",
+      "file": "british-theatre--mark-ludmon.json",
+      "score": 79,
+      "publishDate": "2019-10-07",
+      "url": "https://www.britishtheatre.com/posts/review-master-harold-and-the-boys-national-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "master-harold-and-the-boys-west-end-2019",
+      "file": "london-box-office--john-yap.json",
+      "score": 51,
+      "publishDate": "2019-10-03",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-master-harold-and-the-boys",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "master-harold-and-the-boys-west-end-2019",
+      "file": "london-theatre--mark-shenton.json",
+      "score": 84,
+      "publishDate": "October 8th, 2019",
+      "url": "https://www.londontheatre.co.uk/reviews/review-master-harold-and-the-boys-at-the-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "master-harold-and-the-boys-west-end-2019",
+      "file": "maturetimes--unknown.json",
+      "score": null,
+      "publishDate": "2019-10-10",
+      "url": "http://www.maturetimes.co.uk/robert-tanitch-reviews-master-harold-and-the-boys/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "master-harold-and-the-boys-west-end-2019",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 82,
+      "publishDate": "October 2nd, 2019",
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/master-harold-and-the-boys-national-msamati_50024.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "mates-in-chelsea-west-end-2023",
       "file": "financialtimes--sarah-hemming.json",
       "score": 49,
@@ -62970,6 +63108,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "my-brilliant-friend-part-1-part-2-west-end-2019",
+      "file": "british-theatre--paul-t-davies.json",
+      "score": 61,
+      "publishDate": "2019-11-27",
+      "url": "https://www.britishtheatre.com/posts/review-my-brilliant-friend-national-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -71337,7 +71489,7 @@
     {
       "showId": "the-hungry-ghost-off-west-end-2026",
       "file": "revstanstheatreblog--unknown.json",
-      "score": 79,
+      "score": 82,
       "publishDate": "2026-10-06",
       "url": "https://revstanstheatreblog.co.uk/2026/10/06/review-the-hungry-ghost-bush-theatre/",
       "findings": [
@@ -72497,6 +72649,20 @@
       ]
     },
     {
+      "showId": "the-ocean-at-the-end-of-the-lane-west-end-2019",
+      "file": "i-paper--rachel-halliburton.json",
+      "score": 82,
+      "publishDate": "2019-12-17",
+      "url": "https://inews.co.uk/culture/arts/the-ocean-at-the-end-of-the-lane-nationals-dorfman-theatre-review-376057?srsltid=AU7gw4Ufx3S4pn7F9h_WXYVx1epbHJlU90zpZajPXEQ96PqiKZRbnv0h",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
       "showId": "the-old-ladies-off-west-end-2026",
       "file": "thereviewshub--susan-elkin.json",
       "score": 77,
@@ -73519,7 +73685,7 @@
     {
       "showId": "the-standard-of-living-west-end-2026",
       "file": "london-theatre--marianka-swain.json",
-      "score": 86,
+      "score": 82,
       "publishDate": "2026-09-30",
       "url": "https://www.londontheatre.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket",
       "findings": [
