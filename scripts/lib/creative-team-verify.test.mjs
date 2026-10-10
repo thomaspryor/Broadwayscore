@@ -148,6 +148,31 @@ test('venueTokens: core venue name, apostrophes dropped, NT stages also match "n
   assert.deepEqual(venueTokens('Lyttelton Theatre'), ['lyttelton', 'national theatre']);
   assert.deepEqual(venueTokens('Royal Court'), ['royal court']);
   assert.deepEqual(venueTokens(''), []);
+  // Generic one-word names anchor only with "theatre"; compound names split.
+  assert.deepEqual(venueTokens('Lyric Theatre'), ['lyric theatre']);
+  assert.deepEqual(venueTokens('Theatre Royal, Haymarket'), ['haymarket']);
+  assert.deepEqual(venueTokens('Lyttelton Theatre (National Theatre)'), ['lyttelton', 'national theatre']);
+  assert.deepEqual(venueTokens('Lincoln Center Theater - Mitzi E. Newhouse'), ['lincoln center', 'mitzi e. newhouse']);
+  assert.deepEqual(venueTokens('MCC Theater'), ['mcc theater']);
+});
+
+test('serpTextConfirmsProduction: venue tokens match whole words only', () => {
+  const { serpTextConfirmsProduction } = require('./creative-team-verify.js');
+  const lyric = { title: 'Curtains', venue: 'Lyric Theatre' };
+  const lyricsBy = [{ title: 'Curtains', snippet: 'Curtains, directed by Dominic Cooke, music by Kander, lyrics by Ebb.' }];
+  assert.equal(serpTextConfirmsProduction(lyricsBy, ['directed by'], 'Dominic Cooke', lyric), false, '"lyrics by" is not the Lyric Theatre');
+  const nt = { title: 'Curtains', venue: 'National Theatre' };
+  const tour = [{ title: 'Curtains', snippet: 'The international tour of Curtains, directed by Dominic Cooke.' }];
+  assert.equal(serpTextConfirmsProduction(tour, ['directed by'], 'Dominic Cooke', nt), false);
+});
+
+test('serpTextConfirmsProduction: venue in the same snippet segment, choreographer role', async () => {
+  const { serpTextConfirmsProduction, verifyCreativeTeamViaSerp } = require('./creative-team-verify.js');
+  const seg = [{ title: 'Review roundup', snippet: "At Wyndham's, Curtains, directed by Paul Foster, is a delight." }];
+  assert.equal(serpTextConfirmsProduction(seg, ['directed by'], 'Paul Foster', curtains), true);
+  const serpQuery = async () => [{ title: 'Curtains', snippet: 'Curtains, choreographed by Alistair David on tour.' }];
+  const out = await verifyCreativeTeamViaSerp(curtains, [{ name: 'Alistair David', role: 'Choreographer' }], '2019', 'serp-verified-llm', { productionAnchor: true, serpQuery, sleep: async () => {} });
+  assert.equal(out.length, 0, 'choreographer is production-specific too');
 });
 
 // The real failure: the title-anchored check confirms a director of ANY

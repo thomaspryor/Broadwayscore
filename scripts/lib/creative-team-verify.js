@@ -172,24 +172,49 @@ function serpTextConfirms(serpResults, phrases, name, opts = {}) {
 const PRODUCTION_SPECIFIC_ROLES = new Set(['director', 'choreographer']);
 
 /**
+ * One-word venue names that are ordinary words or shared with other venues
+ * ("lyric" is in every "lyrics by" credit, "national" in "national tour",
+ * "palace" in Palace Theatre Manchester). These anchor only as "<word>
+ * theatre".
+ */
+const GENERIC_VENUE_WORDS = new Set([
+  'lyric', 'national', 'playhouse', 'apollo', 'palace', 'arts', 'park', 'globe',
+  'hope', 'rose', 'shed', 'yard', 'soho', 'cell', 'new', 'old', 'royal', 'little',
+  'union', 'studio', 'courtyard', 'bridge', 'gate', 'orange', 'tabard', 'kiln',
+  'main', 'space', 'chain', 'tank', 'bush', 'booth', 'axis', 'public',
+]);
+
+/**
  * Lowercase tokens that name a production's venue in published coverage:
  * "Wyndham's Theatre" -> "wyndhams", "Theatre Royal Haymarket" -> "haymarket",
- * and a National Theatre stage also matches "national theatre". Apostrophes
- * are dropped (snippets write both "Wyndham's" and "Wyndhams"); tokens under
- * four characters are too common to anchor anything.
+ * "Lyric Theatre" -> "lyric theatre", and a National Theatre stage also
+ * matches "national theatre". Compound names ("Laura Pels Theatre at the ...",
+ * "Lincoln Center Theater - Mitzi E. Newhouse") give one token per part.
+ * Apostrophes are dropped (snippets write both "Wyndham's" and "Wyndhams").
  */
 function venueTokens(venue) {
   const v = normalizeForMatch(venue).replace(/'/g, '');
-  if (!v) return [];
-  const core = v
-    .replace(/^the\s+/, '')
-    .replace(/^theatre royal,?\s+/, '')
-    .replace(/[,(].*$/, '')
-    .replace(/\s+(theatre|theater|playhouse)$/, '')
-    .replace(/^@/, '')
-    .trim();
-  const tokens = core.length >= 4 ? [core] : [];
-  if (/^(lyttelton|olivier|dorfman)\b/.test(core) || /national theatre/.test(v)) tokens.push('national theatre');
+  if (!v || /^(tba|tbc|unknown)$/.test(v)) return [];
+  const tokens = [];
+  const parts = v.split(/\s+[-–]\s+|\s+at\s+(?:the\s+)?|\/|\(|\)|,/).map(x => x.trim()).filter(Boolean);
+  for (const part of parts) {
+    const full = part.replace(/^the\s+/, '');
+    if (/^(theatre royal|theatre|theater)$/.test(full)) continue; // "Theatre Royal, Haymarket"
+    const core = full
+      .replace(/^theatre royal\s+/, '')
+      .replace(/\s+(theatre|theater|playhouse)$/, '')
+      .replace(/^@/, '')
+      .trim();
+    if (!core) continue;
+    const oneWord = !/\s/.test(core);
+    if (core.length < 4 || (oneWord && GENERIC_VENUE_WORDS.has(core))) {
+      // "MCC Theater", "Lyric Theatre": only the full name is specific enough.
+      if (full !== core && full.length >= 6) tokens.push(full);
+    } else {
+      tokens.push(core);
+    }
+  }
+  if (/\b(lyttelton|olivier|dorfman)\b/.test(v) || /national theatre/.test(v)) tokens.push('national theatre');
   return [...new Set(tokens)];
 }
 
@@ -218,7 +243,7 @@ function serpTextConfirmsProduction(serpResults, phrases, name, { title, venue }
       if (!wanted.some(w => seg.includes(w))) return false;
       const namesShow = anchors.some(a => containsToken(seg, a) || containsToken(pageTitle, a));
       const segNoApos = seg.replace(/'/g, '');
-      const namesVenue = venues.some(t => segNoApos.includes(t) || pageTitleNoApos.includes(t));
+      const namesVenue = venues.some(t => containsToken(segNoApos, t) || containsToken(pageTitleNoApos, t));
       return namesShow && namesVenue;
     });
   });
@@ -278,7 +303,7 @@ async function verifyCreativeTeamViaSerp(show, proposed, year, sourceTag, opts =
     }
 
     const query = anchored
-      ? `"${show.title}" ${show.venue} "${verb} ${name}"`
+      ? `"${show.title}" ${show.venue} ${year} "${verb} ${name}"`
       : `"${show.title}" ${year} "${verb} ${name}"`;
     console.log(`    🔍 Verifying: ${name} (${member.role}) via SERP...`);
     try {
