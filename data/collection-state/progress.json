@@ -509,7 +509,9 @@
     "a-good-house-west-end-2025/london-box-office--stuart-king.json",
     "kyoto-west-end-2025/variety--david-benedict.json",
     "kyoto-west-end-2025/london-box-office--stuart-king.json",
-    "kyoto-west-end-2025/times-uk--unknown.json"
+    "kyoto-west-end-2025/times-uk--unknown.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
   ],
   "failed": [
     "sting-west-end-2026/ew--unknown.json",
@@ -792,7 +794,17 @@
     "a-good-house-west-end-2025/guardian--arifa-akbar.json",
     "a-good-house-west-end-2025/thestage--dave-fargnoli.json",
     "a-good-house-west-end-2025/times-uk--clive-davis.json",
-    "pen-pals-off-broadway-2025/theater-life--paulanne-simmons.json"
+    "pen-pals-off-broadway-2025/theater-life--paulanne-simmons.json",
+    "soon-off-broadway-2026/nick-blaemire--unknown.json",
+    "soon-off-broadway-2026/playbill--unknown.json",
+    "soon-off-broadway-2026/thestage--matt-barton.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--unknown.json",
+    "toc-toc-off-broadway-2026/laguiacultural--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/broadwaylog--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/theater-life--unknown.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1120,7 +1132,9 @@
       "the-years-west-end-2025/londontheatredirect--unknown.json",
       "a-good-house-west-end-2025/all-that-dazzles-uk--unknown.json",
       "a-good-house-west-end-2025/london-box-office--stuart-king.json",
-      "kyoto-west-end-2025/london-box-office--stuart-king.json"
+      "kyoto-west-end-2025/london-box-office--stuart-king.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json",
@@ -1342,7 +1356,7 @@
     ]
   },
   "startTime": "2026-10-09T20:15:34.857Z",
-  "lastProcessed": "pen-pals-off-broadway-2025/theater-life--paulanne-simmons.json",
+  "lastProcessed": "midnight-off-broadway-2026/eventsfy--unknown.json",
   "log": [
     {
       "t": "2026-10-10T01:05:35.744Z",
@@ -1423,6 +1437,28 @@
       "t": "2026-10-10T01:23:47.078Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-10T04:55:46.231Z",
+      "event": "bb-session",
+      "session": "808a6a6c",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-10T04:55:46.720Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-10T04:55:58.761Z",
+      "event": "bb-session",
+      "session": "5d9e78a2",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-10T04:55:59.230Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
