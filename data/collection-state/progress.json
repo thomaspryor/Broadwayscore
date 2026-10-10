@@ -451,7 +451,11 @@
     "into-the-woods-noel-coward-west-end-2026/theatrebookings--unknown.json",
     "mamma-mia-tour-2026/edmonton-journal--unknown.json",
     "the-music-man-tour-2026/media-mikes--ben-ryland.json",
-    "the-outsiders-tour-2025/the-daily-gazette--bill-kellert.json"
+    "the-outsiders-tour-2025/the-daily-gazette--bill-kellert.json",
+    "good-time-charlie-off-broadway-2026/nytg--joe-dziemianowicz.json",
+    "good-time-charlie-off-broadway-2026/vulture--jackson-mchenry.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
   ],
   "failed": [
     "sting-west-end-2026/ew--unknown.json",
@@ -711,7 +715,16 @@
     "mamma-mia-tour-2026/calgary-herald--unknown.json",
     "paddington-the-musical-west-end-2025/theupcoming--unknown.json",
     "clue-tour-2025/calgary-herald--unknown.json",
-    "clue-tour-2025/edmonton-journal--unknown.json"
+    "clue-tour-2025/edmonton-journal--unknown.json",
+    "soon-off-broadway-2026/nick-blaemire--unknown.json",
+    "soon-off-broadway-2026/playbill--unknown.json",
+    "soon-off-broadway-2026/thestage--matt-barton.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--unknown.json",
+    "toc-toc-off-broadway-2026/laguiacultural--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/broadwaylog--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/theater-life--unknown.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -994,7 +1007,10 @@
       "blood-of-my-blood-west-end-2026/london-box-office--unknown.json",
       "into-the-woods-noel-coward-west-end-2026/bestoftheatre--unknown.json",
       "into-the-woods-noel-coward-west-end-2026/theatrebookings--unknown.json",
-      "the-music-man-tour-2026/media-mikes--ben-ryland.json"
+      "the-music-man-tour-2026/media-mikes--ben-ryland.json",
+      "good-time-charlie-off-broadway-2026/nytg--joe-dziemianowicz.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
@@ -1105,7 +1121,8 @@
       "inter-alia-west-end-2025/nytimes--unknown.json",
       "inter-alia-west-end-2025/variety--unknown.json",
       "manhunt-west-end-2025/broadwayworld--gary-naylor.json",
-      "all-male-as-you-like-it-regional-2026/times-uk--clive-davis.json"
+      "all-male-as-you-like-it-regional-2026/times-uk--clive-davis.json",
+      "good-time-charlie-off-broadway-2026/vulture--jackson-mchenry.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -1196,7 +1213,7 @@
     ]
   },
   "startTime": "2026-10-09T20:15:34.857Z",
-  "lastProcessed": "the-phantom-of-the-opera-west-end-1986/whatsonstage--sarah-crompton.json",
+  "lastProcessed": "midnight-off-broadway-2026/chicagotribune--unknown.json",
   "log": [
     {
       "t": "2026-10-10T01:05:35.744Z",
@@ -1277,6 +1294,52 @@
       "t": "2026-10-10T01:23:47.078Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-10T03:45:37.598Z",
+      "event": "bb-session",
+      "session": "d4d70ab1",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-10T03:45:45.579Z",
+      "event": "bb-session",
+      "session": "bb3d34f1",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-10T03:48:04.025Z",
+      "event": "bb-session",
+      "session": "781aa41a",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-10T03:48:04.780Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-10T03:48:22.583Z",
+      "event": "bb-session",
+      "session": "b5acc3dc",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-10T03:48:23.199Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-10T03:49:31.489Z",
+      "event": "bb-session",
+      "session": "2724e192",
+      "url": "https://broadwaylog.app/shows/how-shakespeare-saved-my-life-2026"
+    },
+    {
+      "t": "2026-10-10T03:49:48.187Z",
+      "event": "bb-session",
+      "session": "f96276e1",
+      "url": "https://broadwaylog.app/shows/how-shakespeare-saved-my-life-2026"
     }
   ],
   "recoveredAfterFailure": [
