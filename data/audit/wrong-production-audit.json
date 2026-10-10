@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-10T11:43:25.841Z",
+  "timestamp": "2026-10-10T12:20:48.786Z",
   "stats": {
-    "totalReviews": 53821,
-    "alreadyFlagged": 19808,
-    "dateGuardCatches": 267,
-    "directorMismatch": 1673,
+    "totalReviews": 53824,
+    "alreadyFlagged": 19807,
+    "dateGuardCatches": 268,
+    "directorMismatch": 1668,
     "tvFilmSignals": 1558,
-    "londonSignals": 1773,
+    "londonSignals": 1774,
     "offBroadwaySignals": 512,
     "yearMismatch": 128,
-    "noPublishDate": 5895
+    "noPublishDate": 5898
   },
   "findings": [
     {
@@ -44012,6 +44012,20 @@
       ]
     },
     {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 82,
+      "publishDate": "2023-02-07",
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
       "showId": "tootsie-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 77,
@@ -47215,76 +47229,15 @@
     },
     {
       "showId": "wicked-tour-2021",
-      "file": "boston-globe--don-aucoin.json",
-      "score": 88,
-      "publishDate": "2022-06-10",
-      "url": "https://www.bostonglobe.com/2022/06/10/arts/opera-house-wicked-still-casts-spell/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"joe mantello\" from wicked-2003"
-        }
-      ]
-    },
-    {
-      "showId": "wicked-tour-2021",
-      "file": "dc-theater-arts--constance-beulah.json",
-      "score": 90,
-      "publishDate": "2025-12-22",
-      "url": "https://dctheaterarts.org/2025/12/22/spectacular-wicked-soars-on-honesty-at-the-hippodrome/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"joe mantello\" from wicked-2003"
-        }
-      ]
-    },
-    {
-      "showId": "wicked-tour-2021",
-      "file": "hartford-courant--christopher-arnott.json",
-      "score": 89,
-      "publishDate": "2024-04-27",
-      "url": "https://www.courant.com/2024/04/27/theater-review-wicked-is-as-great-and-powerful-as-ever-in-three-week-return-to-the-bushnell/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"joe mantello\" from wicked-2003"
-        }
-      ]
-    },
-    {
-      "showId": "wicked-tour-2021",
       "file": "playoffthepage--mary-aalgaard.json",
       "score": 88,
       "publishDate": "2026-07-11",
       "url": "https://playoffthepage.com/2026/07/review-of-wicked-on-tour-at-the-orpheum-in-mpls-2026/",
       "findings": [
         {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"joe mantello\" from wicked-2003"
-        },
-        {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "wicked-tour-2021",
-      "file": "we-are-green-bay--warren-gerds.json",
-      "score": 87,
-      "publishDate": "2021-10-28",
-      "url": "https://www.wearegreenbay.com/critic-at-large/warren-gerds-critic-at-large-review-wicked-luster-radiates-big-time-again-in-appleton/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"joe mantello\" from wicked-2003"
         }
       ]
     },
@@ -68958,6 +68911,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "tartuffe-remixed-off-west-end-2026",
+      "file": "monstagigz--unknown.json",
+      "publishDate": "2026-10-09",
+      "url": "https://monstagigz.com/2026/10/09/theatre-review-tartuffe-remixed-starring-mark-rylance-at-marylebone-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },
