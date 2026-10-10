@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4954",
   "planId": "0775f51a-e208-4ba7-a588-02cd1d8fb09b",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-10T01:00:00.000Z",
   "submitter": {
     "name": null,
@@ -28,5 +28,18 @@
         "description": "London 2022 Almeida review on the 2024 Broadway entry. Duplicate of tammy-faye-2024/artsdesk--gary-naylor.json (same URL, already wrongProduction)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-10T01:10:00.430Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted stephen-sondheims-old-friends-2025/artsdesk--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted tammy-faye-2024/artsdesk--unknown.json"
+    }
+  ]
 }
