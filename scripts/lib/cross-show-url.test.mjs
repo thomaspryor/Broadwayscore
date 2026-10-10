@@ -59,3 +59,25 @@ test('flags when URL clearly names a different distinctive show', () => {
   assert.ok(r);
   assert.equal(r.matchedShowId, 'every-brilliant-thing-2026');
 });
+
+// BRO-4977: a show titled with a bare URL word ("Broadway", 1987) was left out
+// of the slug index, which switched this guard off for it: seven reviews of
+// The Heart of Rock and Roll sat live on it. Fixture shows file, not the real
+// data/shows.json (worktree + CI safe).
+test('BRO-4977: a "Broadway"-titled show is still guarded, and its title cannot vouch', async () => {
+  const fs = require('fs');
+  const os = require('os');
+  const path = require('path');
+  const showsPath = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'xshow-')), 'shows.json');
+  fs.writeFileSync(showsPath, JSON.stringify({ shows: [
+    { id: 'broadway-1987', title: 'Broadway' },
+    { id: 'heart-of-rock-and-roll-2024', title: 'The Heart of Rock and Roll' },
+    { id: 'the-visit-2015', title: 'The Visit' },
+    { id: 'chita-rivera-the-dancers-life-2005', title: "Chita Rivera: The Dancer's Life" },
+  ] }));
+  const hit = detectCrossShowUrlMismatch('broadway-1987', 'https://www.thewrap.com/the-heart-of-rock-and-roll-broadway-review/', { showsPath });
+  assert.ok(hit && hit.matchedShowId === 'heart-of-rock-and-roll-2024', JSON.stringify(hit));
+  assert.equal(detectCrossShowUrlMismatch('broadway-1987', 'https://www.nytimes.com/1987/06/26/theater/stage-broadway-revival.html', { showsPath }), null);
+  // Other excluded titles keep the old behaviour (no new flags on The Visit).
+  assert.equal(detectCrossShowUrlMismatch('the-visit-2015', 'https://variety.com/2015/legit/reviews/visit-review-broadway-chita-rivera-1201478/', { showsPath }), null);
+});

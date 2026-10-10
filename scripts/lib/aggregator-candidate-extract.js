@@ -1244,6 +1244,7 @@ function classifyCandidate({ source, record, html, shows }) {
 }
 
 module.exports = {
+  sanitizeBwwJsonLd,
   cleanCandidateTitle,
   INFRASTRUCTURE_SLUG_RE,
   REGIONAL_FEEDER_VENUES,

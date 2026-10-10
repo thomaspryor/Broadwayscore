@@ -110,6 +110,7 @@ const { isSerpUrlWrongProductionForOpeningNight, computeSerpShare, exceedsOpenin
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { recordDeferredShows } = require('./lib/gather-deferred');
 const { detectCrossShowUrlMismatch, getShowSlugIndex } = require('./lib/cross-show-url');
+const { detectForeignTitlePosting, foreignTitleEntriesFromHtml, isForeignTitleReview } = require('./lib/bww-foreign-title');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { checkReviewTextsPreflight } = require('./lib/review-texts-preflight');
 const { isRunningInCI } = require('./lib/regression-guard');
@@ -2460,6 +2461,12 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
         const outletId = normalizeOutlet(outletRaw);
         const outletName = getOutletDisplayName(outletId);
         const quote = posting.articleBody || posting.description || '';
+        // BWW occasionally lists a review of ANOTHER show whose title contains
+        // this one ("The Stage - How Soon is Now? review" in the Soon roundup,
+        // BRO-4977). Kept in the array until the end so the positional thumb
+        // pairing below stays aligned and Method 2/3 see the outlet as taken,
+        // then dropped before return.
+        const foreignTitle = detectForeignTitlePosting(posting, showTitle);
 
         // Fix mis-attributions BWW occasionally introduces when parsing their
         // "Critic, Outlet" strings — e.g. "David Finkle, Cote Notices" for a
@@ -2495,10 +2502,13 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
           outletId,
           outlet: outletName,
           criticName,
-          url: null,
+          // A foreign entry keeps its own url so it never takes a real
+          // entry's slot in the shared anchor queue below.
+          url: foreignTitle ? (posting.url || null) : null,
           bwwExcerpt: quote.substring(0, 300) + (quote.length > 300 ? '...' : ''),
           bwwRoundupUrl: bwwUrl,
           source: 'bww-roundup',
+          ...(foreignTitle ? { _foreignTitle: foreignTitle.subjectTitle, _foreignTitleUrl: posting.url || null } : {}),
         });
       }
     } catch (e) {
@@ -2760,7 +2770,12 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
   for (const { phantom, twin } of dropped) {
     console.log(`    [BWW RR] dropped phantom outlet "${phantom.outletId}" (critic name) — same review as ${twin.outletId} / ${twin.criticName}`);
   }
-  return kept;
+  return kept.filter(r => {
+    if (!r._foreignTitle) return true;
+    console.log(`    [BWW RR] dropped ${r.outletId}: headline reviews "${r._foreignTitle}", not "${showTitle}" (BRO-4977)`);
+    logExclusion({ script: 'gather-reviews', showId, file: '-', reason: 'skippedBwwForeignTitle', details: { outletId: r.outletId, subjectTitle: r._foreignTitle, url: r._foreignTitleUrl || r.url } });
+    return false;
+  });
 }
 
 /**
@@ -4526,6 +4541,10 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
         bwwReviews = mergeAggregatorReviews(bwwReviews, llmReviews);
         console.log(`    ✓ BWW partial merge: ${before} regex + ${llmReviews.length} LLM → ${bwwReviews.length} after dedup`);
       }
+      // The LLM fallback reads the page text and can bring back an entry the
+      // JSON-LD pass dropped as another show's review (BRO-4977).
+      const bwwForeign = foreignTitleEntriesFromHtml(bwwResult.html, show.title);
+      if (bwwForeign.length) bwwReviews = bwwReviews.filter(r => !isForeignTitleReview(r, bwwForeign));
       // Validate geographic accuracy — filter non-local outlets, reject if majority are wrong
       bwwReviews = validateBWWRoundupGeography(bwwReviews, bwwResult.html, showId, isWestEnd);
       // Validate publish year — reject roundups from older productions of the same title

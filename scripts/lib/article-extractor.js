@@ -136,6 +136,42 @@ function extractBalancedDivByClass(html, classNeedle) {
 }
 
 /**
+ * Zox News WordPress theme (t2conline.com / Times Square Chronicles, BRO-4977):
+ * the review body is <div id="mvp-content-main">; the author box, prev/next
+ * titles, related posts and auto-loaded next stories all follow it inside the
+ * same <article>, so the generic <article> fallback glued other reviews on.
+ * Returns the stripped body, or null when the page is not this theme.
+ */
+function extractZoxNewsBody(html) {
+  const openM = html.match(/<div[^>]*\bid=["']mvp-content-main["'][^>]*>/i);
+  if (!openM) return null;
+  const start = openM.index + openM[0].length;
+  // The theme's own footer blocks mark where the body ends. Cutting there (not
+  // at the balanced close) means a stray unbalanced </div> in the body (an ad
+  // slot, an embed) can never end the review early.
+  const endRe = /<div[^>]*\bid=["']mvp-(?:content-bot|author-box-wrap|prev-next-wrap|related-posts)["']/ig;
+  endRe.lastIndex = start;
+  const endM = endRe.exec(html);
+  if (endM) return stripHtml(html.slice(start, endM.index));
+  const tagRe = /<div\b[^>]*>|<\/div>/g;
+  tagRe.lastIndex = start;
+  let depth = 1;
+  let m;
+  while ((m = tagRe.exec(html))) {
+    if (m[0] === '</div>') {
+      depth--;
+      if (depth === 0) {
+        const inner = html.slice(start, m.index).split(/<div[^>]*\bid=["']mvp-(?:content-bot|author-box-wrap|prev-next-wrap|related-posts)["']/i)[0];
+        return stripHtml(inner);
+      }
+    } else {
+      depth++;
+    }
+  }
+  return null;
+}
+
+/**
  * Every balanced <div class="…needle…"> body on the page, in document order.
  */
 function extractAllBalancedDivsByClass(html, classNeedle) {
@@ -861,6 +897,11 @@ function extractArticleTextUnchecked(html, hostname, criticHint) {
     }
   }
 
+  // Zox News theme, detected by markup rather than host (any site on it has
+  // the same auto-loaded-next-story bleed). See extractZoxNewsBody.
+  const zoxText = extractZoxNewsBody(html);
+  if (zoxText && zoxText.length >= 300) return zoxText;
+
   let matchedDedicatedPattern = false;
   for (const [hostMatch, re, minLen] of PATTERNS) {
     if (hostMatch && !host.includes(hostMatch)) continue;
@@ -1104,4 +1145,4 @@ function extractWsjNextData(html) {
   return text.trim() || null;
 }
 
-module.exports = { extractArticleText, extractArticleTextFromUrl, extractPublishDate, stripHtml, extractLsaByline };
+module.exports = { extractArticleText, extractArticleTextFromUrl, extractPublishDate, stripHtml, extractLsaByline, extractZoxNewsBody };
