@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "showId": "rent-west-end-2026",
+  "openingDate": "2026-10-08",
+  "detectedAt": "2026-10-10T02:51:09.305Z",
+  "windowDays": 7,
+  "orphans": [
+    {
+      "file": "london-theatre-reviews--ltr.json",
+      "outletId": "london-theatre-reviews",
+      "criticName": "LTR",
+      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29336",
+      "fullTextLen": 6621,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
+    {
+      "file": "londontheatre1--terry-eastham.json",
+      "outletId": "londontheatre1",
+      "criticName": "Terry Eastham",
+      "url": "https://www.londontheatre1.com/reviews/rent-at-tom-stoppard-theatre-review/",
+      "fullTextLen": 8048,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    }
+  ],
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 2,
+  "blockedOrphanCount": 0,
+  "blockBroadcast": true,
+  "lastDispatch": "ok",
+  "lastDispatchAt": "2026-10-10T02:51:09.305Z"
+}
