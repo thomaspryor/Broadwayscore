@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-10T02:14:50.739Z",
+  "generatedAt": "2026-10-10T02:51:35.621Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,28 +12,27 @@
       "status": "open",
       "slug": "good-time-charlie-off-broadway",
       "thumbnail": "/images/shows/good-time-charlie-off-broadway-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": 60,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "siteScore": 71.67,
+      "liveScore": 72,
+      "scoreDrift": 0.3299999999999983,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 1,
+      "total": 3,
       "t1": 0,
-      "t2": 1,
+      "t2": 3,
       "t3": 0,
-      "positive": 0,
+      "positive": 2,
       "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/12 total",
+          "3/12 total",
           "T1:0/3",
-          "T2:1/3",
-          "hi-conf:0/8"
+          "hi-conf:3/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 3,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -155,10 +154,6 @@
         {
           "name": "New York Theatre Guide",
           "isDualMarket": true
-        },
-        {
-          "name": "New York Theater",
-          "isDualMarket": false
         },
         {
           "name": "Theatrely",
@@ -366,6 +361,18 @@
           "t2": 1,
           "t3": 0,
           "p": 0,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-10T02:51:35.621Z",
+          "rc": 3,
+          "s": 71.67,
+          "t1": 0,
+          "t2": 3,
+          "t3": 0,
+          "p": 2,
           "m": 1,
           "n": 0,
           "bc": "waiting"
@@ -647,10 +654,6 @@
         },
         {
           "name": "New York Post",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheaterMania",
           "isDualMarket": false
         },
         {
@@ -1273,18 +1276,18 @@
       "status": "open",
       "slug": "rent-west-end",
       "thumbnail": "/images/shows/rent-west-end-2026/thumbnail.jpg",
-      "siteScore": 79.45,
+      "siteScore": 78.67,
       "liveScore": 79,
-      "scoreDrift": -0.45000000000000284,
+      "scoreDrift": 0.3299999999999983,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 22,
+      "total": 25,
       "t1": 7,
       "t2": 5,
-      "t3": 10,
-      "positive": 19,
-      "mixed": 3,
+      "t3": 13,
+      "positive": 20,
+      "mixed": 5,
       "negative": 0,
       "readiness": {
         "ready": true,
@@ -1589,6 +1592,18 @@
           "m": 3,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-10T02:51:35.621Z",
+          "rc": 25,
+          "s": 78.67,
+          "t1": 7,
+          "t2": 5,
+          "t3": 13,
+          "p": 20,
+          "m": 5,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -1602,16 +1617,16 @@
       "status": "open",
       "slug": "an-oak-tree-off-west-end",
       "thumbnail": "/images/shows/an-oak-tree-off-west-end-2026/thumbnail.webp",
-      "siteScore": 78.72,
-      "liveScore": 79,
-      "scoreDrift": 0.28000000000000114,
+      "siteScore": 76.06,
+      "liveScore": 76,
+      "scoreDrift": -0.060000000000002274,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
       "total": 12,
       "t1": 1,
-      "t2": 2,
-      "t3": 9,
+      "t2": 3,
+      "t3": 8,
       "positive": 8,
       "mixed": 4,
       "negative": 0,
@@ -1620,7 +1635,7 @@
         "reasons": [
           "T1:1/3"
         ],
-        "highConfidence": 10,
+        "highConfidence": 9,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1776,6 +1791,18 @@
           "t1": 1,
           "t2": 2,
           "t3": 9,
+          "p": 8,
+          "m": 4,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-10T02:51:35.621Z",
+          "rc": 12,
+          "s": 76.06,
+          "t1": 1,
+          "t2": 3,
+          "t3": 8,
           "p": 8,
           "m": 4,
           "n": 0,
@@ -2157,24 +2184,22 @@
       "status": "open",
       "slug": "blood-of-my-blood-west-end",
       "thumbnail": "/images/shows/blood-of-my-blood-west-end-2026/thumbnail.webp",
-      "siteScore": 80.81,
+      "siteScore": 80.65,
       "liveScore": 81,
-      "scoreDrift": 0.18999999999999773,
+      "scoreDrift": 0.3499999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 7,
-      "t1": 2,
+      "total": 8,
+      "t1": 3,
       "t2": 1,
       "t3": 4,
-      "positive": 7,
+      "positive": 8,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "7/8 total",
-          "T1:2/3",
           "T2:1/2"
         ],
         "highConfidence": 6,
@@ -2378,6 +2403,18 @@
           "t2": 1,
           "t3": 4,
           "p": 7,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-10T02:51:35.621Z",
+          "rc": 8,
+          "s": 80.65,
+          "t1": 3,
+          "t2": 1,
+          "t3": 4,
+          "p": 8,
           "m": 0,
           "n": 0,
           "bc": "waiting"
