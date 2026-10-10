@@ -29,3 +29,22 @@ test('pending bro-* plans are applicable by execute-approved-fix', () => {
   }
   assert.deepEqual(bad, []);
 });
+
+// BRO-5007: a notes edit carrying "[Plausibility warning: ...]" passed review and
+// was rolled back at apply time by the commercial rules validator. Run the same
+// public-text rule on every pending plan's commercial.json edits up front.
+const { internalWordingIn, PUBLIC_TEXT_FIELDS } = require('../../scripts/lib/commercial-record-checks.js');
+
+test('pending bro-* plans write no internal wording into public commercial fields', () => {
+  const bad = [];
+  for (const f of fs.readdirSync(dir).filter(n => /^bro-.*\.json$/.test(n))) {
+    const plan = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+    if (plan.status !== 'pending') continue;
+    for (const a of (plan.plan && plan.plan.actions) || []) {
+      if (a.file !== 'commercial.json' || !PUBLIC_TEXT_FIELDS.includes(a.field) || typeof a.newValue !== 'string') continue;
+      const wording = internalWordingIn(a.newValue);
+      if (wording) bad.push(`${f}: ${a.showSlug}.${a.field} contains "${wording}" (the validator rolls this back; keep research notes in Linear)`);
+    }
+  }
+  assert.deepEqual(bad, []);
+});
