@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4973-b",
   "planId": "eab82397-ce62-4f4c-8a87-bb539b6763b0",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-10T11:36:27.383Z",
   "submitter": {
     "name": null,
@@ -29,5 +29,18 @@
         "description": "Culture Sauce, Thom Geier, Oct 9 2026"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-10T12:13:34.328Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved good-time-charlie-off-broadway-2026/culturesauce--unknown.json → _superseded-misattributed/good-time-charlie-off-broadway-2026--culturesauce--unknown--nytg-excerpt-2026-10-10.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ]
 }
