@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-10T06:42:18.763Z",
+  "timestamp": "2026-10-10T06:51:38.265Z",
   "stats": {
-    "totalReviews": 53566,
-    "alreadyFlagged": 19721,
-    "dateGuardCatches": 263,
+    "totalReviews": 53569,
+    "alreadyFlagged": 19720,
+    "dateGuardCatches": 264,
     "directorMismatch": 1661,
     "tvFilmSignals": 1554,
     "londonSignals": 1764,
     "offBroadwaySignals": 512,
     "yearMismatch": 128,
-    "noPublishDate": 5828
+    "noPublishDate": 5830
   },
   "findings": [
     {
@@ -20165,6 +20165,7 @@
     {
       "showId": "jersey-boys-west-end-2021",
       "file": "british-theatre--vera-liber.json",
+      "score": 89,
       "publishDate": "2021-08-19",
       "url": null,
       "findings": [
@@ -20178,6 +20179,7 @@
     {
       "showId": "jersey-boys-west-end-2021",
       "file": "london-theatre--marianka-swain.json",
+      "score": 80,
       "publishDate": "2021-08-18",
       "url": null,
       "findings": [
@@ -20191,6 +20193,7 @@
     {
       "showId": "jersey-boys-west-end-2021",
       "file": "standard--lizzie-akita.json",
+      "score": 85,
       "publishDate": "2021-08-18",
       "url": null,
       "findings": [
@@ -20204,6 +20207,7 @@
     {
       "showId": "jersey-boys-west-end-2021",
       "file": "telegraph--claire-allfree.json",
+      "score": 76,
       "publishDate": "2021-08-18",
       "url": null,
       "findings": [
@@ -20217,6 +20221,7 @@
     {
       "showId": "jersey-boys-west-end-2021",
       "file": "theatre-weekly--catherine-whitehouse.json",
+      "score": 90,
       "publishDate": "2021-08-17",
       "url": null,
       "findings": [
@@ -20230,6 +20235,7 @@
     {
       "showId": "jersey-boys-west-end-2021",
       "file": "thestage--paul-vale.json",
+      "score": 45,
       "publishDate": "2021-08-18",
       "url": null,
       "findings": [
@@ -20243,6 +20249,7 @@
     {
       "showId": "jersey-boys-west-end-2021",
       "file": "times-uk--clive-davis.json",
+      "score": 56,
       "publishDate": "2021-08-18",
       "url": null,
       "findings": [
@@ -20256,6 +20263,7 @@
     {
       "showId": "jersey-boys-west-end-2021",
       "file": "whatsonstage--alun-hood.json",
+      "score": 91,
       "publishDate": "2021-08-18",
       "url": null,
       "findings": [
@@ -43254,6 +43262,7 @@
     {
       "showId": "the-windsors-endgame-west-end-2021",
       "file": "artsdesk--tom-teodorczuk.json",
+      "score": 75,
       "publishDate": "2021-08-11",
       "url": null,
       "findings": [
@@ -43267,6 +43276,7 @@
     {
       "showId": "the-windsors-endgame-west-end-2021",
       "file": "guardian--arifa-akbar.json",
+      "score": 44,
       "publishDate": "2021-08-11",
       "url": null,
       "findings": [
@@ -43280,6 +43290,7 @@
     {
       "showId": "the-windsors-endgame-west-end-2021",
       "file": "theatre-weekly--greg-stewart.json",
+      "score": 84,
       "publishDate": "2021-08-10",
       "url": null,
       "findings": [
@@ -43293,6 +43304,7 @@
     {
       "showId": "the-windsors-endgame-west-end-2021",
       "file": "thestage--paul-vale.json",
+      "score": 63,
       "publishDate": "2021-08-11",
       "url": null,
       "findings": [
@@ -43306,6 +43318,7 @@
     {
       "showId": "the-windsors-endgame-west-end-2021",
       "file": "times-uk--clive-davis.json",
+      "score": 60,
       "publishDate": "2021-08-11",
       "url": null,
       "findings": [
@@ -43319,6 +43332,7 @@
     {
       "showId": "the-windsors-endgame-west-end-2021",
       "file": "whatsonstage--alex-wood.json",
+      "score": 76,
       "publishDate": "2021-08-11",
       "url": null,
       "findings": [
@@ -43803,6 +43817,20 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1547d before show (2022-03-31 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 82,
+      "publishDate": "2023-02-07",
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
         }
       ]
     },
@@ -47328,7 +47356,7 @@
     {
       "showId": "2-22-a-ghost-story-west-end-2021",
       "file": "everything-theatre--gabriel-wilding.json",
-      "score": null,
+      "score": 77,
       "publishDate": "2021-12-12",
       "url": "https://everything-theatre.co.uk/2021/12/review-222-a-ghost-story-gielgud-theatre/",
       "findings": [
@@ -50522,7 +50550,7 @@
     {
       "showId": "blithe-spirit-west-end-2021",
       "file": "daily-mail--holly-williams.json",
-      "score": null,
+      "score": 80,
       "publishDate": "2021-09-25",
       "url": "https://www.dailymail.com/home/event/article-10021781/Blithe-Spirit-review-evening-belongs-Jennifer-Saunders.html",
       "findings": [
@@ -59493,7 +59521,7 @@
     {
       "showId": "is-god-is-west-end-2021",
       "file": "fringereview--simon-jenner.json",
-      "score": null,
+      "score": 88,
       "publishDate": "2021-10-02",
       "url": "https://fringereview.co.uk/review/fringereview-uk/2021/is-god-is/",
       "findings": [
@@ -64377,6 +64405,7 @@
     {
       "showId": "oleanna-west-end-2021",
       "file": "london-theatre--matt-wolf.json",
+      "score": 74,
       "publishDate": "2021-07-30",
       "url": null,
       "findings": [
@@ -65085,6 +65114,7 @@
     {
       "showId": "paradise-west-end-2021",
       "file": "london-theatre--matt-wolf.json",
+      "score": 94,
       "publishDate": "2021-08-13",
       "url": null,
       "findings": [
@@ -65098,6 +65128,7 @@
     {
       "showId": "paradise-west-end-2021",
       "file": "the-spectator-uk--lloyd-evans.json",
+      "score": 14,
       "publishDate": "2021-08-21",
       "url": null,
       "findings": [
