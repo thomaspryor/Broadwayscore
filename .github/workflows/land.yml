@@ -431,6 +431,49 @@ jobs:
             exit 1
           fi
 
+      # ── Next landing's base: this branch's result, published under its tree ──
+      # When this lands as a fast-forward, main BECOMES the rebased tip, and the
+      # next land/** run's base key is the code-tree hash of that tip. Nobody
+      # had measured that tree, so every landing paid ~14 min for a fresh base
+      # gauntlet. The branch gauntlet above measured exactly it, with the same
+      # harness and writer (land-gauntlet.sh), so publish that result under the
+      # tip's base key for the artifact lookup above to find (BRO-4956).
+      # GREEN verdicts only (success() — the step above exits 1 on red): a
+      # refused branch can be redder than the main it never became, and a
+      # redder cached base would forgive failures; a cached base is trusted for
+      # a PASS only, so a greener one just costs a fresh confirm run. Skipped
+      # when the key equals this run's base key (a branch that changes no
+      # verification-relevant file): the base result already covers that tree
+      # and a second upload under the name would clash. Both steps are
+      # continue-on-error and stay out of the verdict list above: publishing
+      # is an optimisation and never fails a landing.
+      - name: Next-base key (the rebased tip's tree)
+        id: tipkey
+        if: success() && vars.LAND_STRICT_GATES != '1'
+        continue-on-error: true
+        env:
+          REBASED: ${{ steps.rebase.outputs.rebased }}
+          BASE_KEY: ${{ steps.basekey.outputs.key }}
+        run: |
+          HASH=$(node scripts/lib/land-gate-delta.js --code-hash "$REBASED")
+          KEY="land-base-gauntlet-v1-${HASH:0:32}-$(date -u +%Y%m%d)"
+          if [ "$KEY" = "$BASE_KEY" ]; then
+            echo "rebased tip ${REBASED:0:10} has the base's code tree — nothing new to publish"
+            exit 0
+          fi
+          echo "key=$KEY" >> "$GITHUB_OUTPUT"
+          echo "rebased tip ${REBASED:0:10} → next landing's base key $KEY"
+
+      - name: Publish the branch result as the next landing's base (artifact)
+        if: success() && steps.tipkey.outputs.key != ''
+        continue-on-error: true
+        uses: actions/upload-artifact@v5
+        with:
+          name: ${{ steps.tipkey.outputs.key }}
+          path: ${{ runner.temp }}/land-gauntlet/branch
+          retention-days: 7
+          if-no-files-found: warn
+
   land:
     name: Land
     needs: checks
