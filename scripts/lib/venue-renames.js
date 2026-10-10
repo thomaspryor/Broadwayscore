@@ -12,7 +12,6 @@
  */
 const VENUE_NAME_GROUPS = [
   ["Duke of York's Theatre", 'Tom Stoppard Theatre'],
-  ['Gielgud Theatre', 'Globe Theatre (Shaftesbury Avenue)'],
   ['Sondheim Theatre', "Queen's Theatre"],
   ['Noël Coward Theatre', 'Albery Theatre'],
   ['Harold Pinter Theatre', 'Comedy Theatre'],

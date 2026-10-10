@@ -171,6 +171,8 @@ const FRESHNESS_HOURS = parseInt(args.find(a => a.startsWith('--freshness-hours=
 const CHECKPOINT_PATH = path.join(ROOT, 'data', 'audit', 'gap-audit-checkpoint.json');
 // WE completeness gate (2026-07-10): reference rows from WE roundup aggregators.
 const { getWeReferenceRows, isWeShow, inOpeningWindow, missingSetHash } = require('./lib/gap-reference-sources');
+// How long after opening a London show is still checked against the WE round-ups (BRO-4956).
+const WE_REFERENCE_WINDOW_DAYS = 45;
 // The one predicate for "citation from an earlier production of this title".
 // Every count a human reads goes through it — see that module's docstring for
 // why five scattered `!m.priorRun` filters were not enough.
@@ -967,7 +969,10 @@ async function auditShow(show, opts = {}) {
     e.cited++;
     if (corroborated) e.corroborated++;
   };
-  if (process.env.WE_GAP_REFERENCE_DISABLED !== '1' && isWeShow(show) && inOpeningWindow(show)) {
+  // 45 days, not the 21-day opening window (BRO-4956): small-house London reviews
+  // and the round-ups that list them keep arriving for weeks. On 2026-10-10, 18
+  // shows that opened 3-8 weeks earlier still lacked 53 reviews a round-up linked.
+  if (process.env.WE_GAP_REFERENCE_DISABLED !== '1' && isWeShow(show) && inOpeningWindow(show, Date.now(), WE_REFERENCE_WINDOW_DAYS)) {
     try {
       const weRef = await getWeReferenceRows(show, { log: (m) => { if (verbose) console.log(m); } });
       weRefData = weRef;

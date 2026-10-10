@@ -118,10 +118,40 @@ function slugMatchesShow(url, show, londonTitleSlugs) {
       if (!(r && r.show && r.confidence === 'high')) continue;
       const keptLen = _phrase(kept.join(' ')).length;
       const longer = others.some((t) => t.length > keptLen && (`${_phrase(rest)}-`).startsWith(`${t}-`));
-      return !longer;
+      if (longer) return false;
+      // The words after the title name the house, and must name this show's
+      // venue (or a former name of it): "as-you-like-it-royal-shakespeare-theatre"
+      // is the RSC's production, not the Globe's.
+      return venueMatchesSlugTail(words.slice(words.length - drop), show);
     }
   }
   return false;
+}
+
+// Words many houses share ("Theatre Royal Bath" is not "Theatre Royal Haymarket",
+// "Lyric Hammersmith" is not "Lyric Theatre"): only a distinctive word identifies a house.
+const VENUE_STOP = new Set(['the', 'theatre', 'theater', 'london', 'main', 'house', 'studio', 'and', 'of', 'at',
+  'royal', 'park', 'playhouse', 'lyric', 'globe', 'new', 'old', 'arts', 'centre', 'center', 'opera', 'open', 'air',
+  'upstairs', 'downstairs', 'space', 'hall']);
+function _venueTokens(s) {
+  return _phrase(s).split('-').filter((w) => w && !VENUE_STOP.has(w));
+}
+
+/** True when the slug's trailing venue words share a token with the show's venue or a former name of it. */
+function venueMatchesSlugTail(tailWords, show) {
+  const tail = new Set(tailWords.flatMap((w) => _venueTokens(w)));
+  if (!tail.size) return true;
+  if (!show.venue || /^tba$/i.test(String(show.venue).trim())) return false;
+  const { otherVenueNames } = require('./venue-renames');
+  const names = [show.venue, ...otherVenueNames(show.venue)];
+  // Squashed too: the slug writes "Soho Place" as "sohoplace".
+  const tailJoined = [...tail].join('');
+  return names.some((n) => {
+    const toks = _venueTokens(n);
+    const joined = toks.join('');
+    return toks.some((t) => tail.has(t))
+      || (joined.length >= 6 && (tailJoined.includes(joined) || (tail.size > 1 && joined.includes(tailJoined))));
+  });
 }
 
 /**

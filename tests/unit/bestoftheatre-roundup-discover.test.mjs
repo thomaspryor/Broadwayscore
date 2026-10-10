@@ -66,10 +66,34 @@ test('sitemap lists only round-up posts; slugs match their show only', () => {
 test('a longer London title wins the slug; a one-word lead is not a possessive credit', () => {
   const titles = ['the-play-that-goes-wrong', 'the-play', 'hamlet', 'ghosts'];
   const PLAY = { id: 'the-play', title: 'The Play', venue: 'Somewhere', category: 'west-end' };
-  const HAMLET = { id: 'hamlet', title: 'Hamlet', venue: 'Somewhere', category: 'west-end' };
+  const HAMLET = { id: 'hamlet', title: 'Hamlet', venue: 'National Theatre', category: 'west-end' };
   assert.equal(slugMatchesShow('https://x/blog/post/review-roundup-the-play-that-goes-wrong-duchess-theatre', PLAY, titles), false);
   assert.equal(slugMatchesShow('https://x/blog/post/review-roundup-ghosts-hamlet-national-theatre', HAMLET, titles), false);
   assert.equal(slugMatchesShow('https://x/blog/post/review-roundup-hamlet-national-theatre', HAMLET, titles), true);
+});
+
+test('same title at another house is not this show; a renamed or squashed venue still is', () => {
+  const GLOBE = { id: 'aylil', title: 'As You Like It', venue: "Shakespeare's Globe", category: 'west-end' };
+  assert.equal(slugMatchesShow('https://x/blog/post/review-roundup-as-you-like-it-royal-shakespeare-theatre', GLOBE, []), false);
+  assert.equal(slugMatchesShow('https://x/blog/post/review-roundup-as-you-like-it-shakespeares-globe', GLOBE, []), true);
+  const MSND = { id: 'msnd', title: "A Midsummer Night's Dream", venue: "Regent's Park Open Air Theatre", category: 'west-end' };
+  assert.equal(slugMatchesShow('https://x/blog/post/review-roundup-a-midsummer-nights-dream-chichester-festival-theatre', MSND, []), false);
+  const RENT = { id: 'rent', title: 'Rent', venue: "Duke of York's Theatre", category: 'west-end' };
+  assert.equal(slugMatchesShow('https://x/blog/post/review-roundup-rent-tom-stoppard-theatre', RENT, []), true, 'former/new name of the same house');
+  const WOOLF = { id: 'woolf', title: "Who's Afraid of Virginia Woolf?", venue: 'Soho Place', category: 'west-end' };
+  assert.equal(slugMatchesShow('https://x/blog/post/review-roundup-whos-afraid-of-virginia-woolf-sohoplace', WOOLF, []), true);
+});
+
+test('a shared generic venue word is not the same house', () => {
+  const at = (venue) => ({ id: 'h', title: 'Hamlet', venue, category: 'west-end' });
+  const slug = (tail) => `https://x/blog/post/review-roundup-hamlet-${tail}`;
+  assert.equal(slugMatchesShow(slug('theatre-royal-bath'), at('Theatre Royal Haymarket'), []), false);
+  assert.equal(slugMatchesShow(slug('regents-park-open-air-theatre'), at('Park Theatre'), []), false);
+  assert.equal(slugMatchesShow(slug('lyric-hammersmith'), at('Lyric Theatre'), []), false);
+  assert.equal(slugMatchesShow(slug('southwark-playhouse-borough'), at('Playhouse Theatre'), []), false);
+  assert.equal(slugMatchesShow(slug('theatre-royal-haymarket'), at('Theatre Royal Haymarket'), []), true);
+  assert.equal(slugMatchesShow(slug('lyric-theatre'), at('Lyric Theatre'), []), true);
+  assert.equal(slugMatchesShow(slug('soho-place'), at('@sohoplace'), []), true);
 });
 
 test('discovery fetches the matched page and title-validates it', async () => {

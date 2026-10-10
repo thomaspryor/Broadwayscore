@@ -1,0 +1,169 @@
+{
+  "issueNumber": "bro-4956-e",
+  "planId": "69bc5005-9a1f-4b35-8350-12d2b770a10e",
+  "status": "pending",
+  "createdAt": "2026-10-10T07:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4956 backfill: 53 reviews that Best of Theatre round-ups link for London shows opened 2026-08-12..09-18 were never collected (the WE gap audit compared only WET/theatre.reviews/LBO and only for 21 days). Ingest each; the script's own production/date/cross-show guards still apply, so prior-production or wrong-show pages are refused. (batch 1 of 3, 25 reviews)",
+    "steps": [
+      "Ingest 25 round-up-listed reviews (batch 1 of 3)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-turn-of-the-screw-off-west-end-2026 --url=https://www.londontheatre1.com/reviews/the-turn-of-the-screw-arcola-theatre/ --critic=\"Sascha Cooper\"",
+        "description": "LondonTheatre1, Sascha Cooper on the-turn-of-the-screw-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-turn-of-the-screw-off-west-end-2026 --url=https://www.allthatdazzles.co.uk/post/review-the-turn-of-the-screw-arcola-theatre --critic=\"Phil McCullough\"",
+        "description": "All That Dazzles, Phil McCullough on the-turn-of-the-screw-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-turn-of-the-screw-off-west-end-2026 --url=https://theatreandtonic.co.uk/blog/turn-of-the-screw-at-arcola-theatre-review --critic=\"Eleanor Bywater\"",
+        "description": "Theatre and Tonic, Eleanor Bywater on the-turn-of-the-screw-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-turn-of-the-screw-off-west-end-2026 --url=https://thespyinthestalls.com/2026/09/the-turn-of-the-screw/ --critic=\"Jonathan Evans\"",
+        "description": "The Spy in the Stalls, Jonathan Evans on the-turn-of-the-screw-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-turn-of-the-screw-off-west-end-2026 --url=https://playsinternational.org.uk/the-turn-of-the-screw-arcola-theatre/ --critic=\"Maryam Philpott\"",
+        "description": "Plays International, Maryam Philpott on the-turn-of-the-screw-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-turn-of-the-screw-off-west-end-2026 --url=https://www.westendbestfriend.co.uk/news/review-the-turn-of-the-screw-arcola-theatre --critic=\"Kate Soper\"",
+        "description": "West End Best Friend, Kate Soper on the-turn-of-the-screw-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-turn-of-the-screw-off-west-end-2026 --url=https://www.londonpubtheatres.com/review-the-turn-of-the-screw-blackeyed-theatre-at-arcola-theatre-11-september-10-october-2026 --critic=\"Sebastian Gardiner\"",
+        "description": "London Pub Theatres, Sebastian Gardiner on the-turn-of-the-screw-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-turn-of-the-screw-off-west-end-2026 --url=https://curtaincallreviews.co.uk/the-turn-of-the-screw --critic=\"Mary Condon O’Connor\"",
+        "description": "Curtain Call Reviews, Mary Condon O’Connor on the-turn-of-the-screw-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-turn-of-the-screw-off-west-end-2026 --url=https://timeandleisure.co.uk/things-to-do/the-turn-of-the-screw-arcola-theatre/ --critic=\"Sara Colohan\"",
+        "description": "Time & Leisure, Sara Colohan on the-turn-of-the-screw-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-turn-of-the-screw-off-west-end-2026 --url=https://www.thestage.co.uk/reviews/the-turn-of-the-screw-review-arcola-theatre-london --critic=\"Neil Norman\"",
+        "description": "The Stage, Neil Norman on the-turn-of-the-screw-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=twenty-thousand-streets-off-west-end-2026 --url=https://www.westendbestfriend.co.uk/news/review-twenty-thousand-streets-under-the-sky-southwark-playhouse --critic=\"Chris Abbott\"",
+        "description": "West End Best Friend, Chris Abbott on twenty-thousand-streets-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=twenty-thousand-streets-off-west-end-2026 --url=https://playsinternational.org.uk/twenty-thousand-streets-under-the-sky-southwark-playhouse-borough/ --critic=\"David Wootton\"",
+        "description": "Plays International, David Wootton on twenty-thousand-streets-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=million-dollar-quartet-off-west-end-2026 --url=https://northwestend.com/million-dollar-quartet-arts-theatre-marble-arch/ --critic=\"Michelle Knight\"",
+        "description": "North West End, Michelle Knight on million-dollar-quartet-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=million-dollar-quartet-off-west-end-2026 --url=https://seatplan.com/london/news/million-dollar-quartet-review-the-arts-at-marble-arch/ --critic=\"Patrick Jeremy\"",
+        "description": "SeatPlan, Patrick Jeremy on million-dollar-quartet-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=million-dollar-quartet-off-west-end-2026 --url=https://www.jonathanbaz.com/2026/09/million-dollar-quartet-review.html --critic=\"Jonathan Baz\"",
+        "description": "Jonathan Baz Reviews, Jonathan Baz on million-dollar-quartet-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=darkling-off-west-end-2026 --url=https://lovelondonloveculture.com/2026/09/16/review-darkling-bush-theatre/",
+        "description": "Love London Love Culture on darkling-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=golden-boy-off-west-end-2026 --url=https://www.hackneycitizen.co.uk/2026/09/22/golden-boy-almeida-review/ --critic=\"Gabriel Wilding\"",
+        "description": "Hackney Citizen, Gabriel Wilding on golden-boy-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=fire-fire-off-west-end-2026 --url=https://www.westendbestfriend.co.uk/news/review-fire-fire-arcola-theatre --critic=\"Heidi Downing\"",
+        "description": "West End Best Friend, Heidi Downing on fire-fire-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=fire-fire-off-west-end-2026 --url=https://northwestend.com/fire-fire-arcola-theatre/ --critic=\"Gaurav Singh Nijjer\"",
+        "description": "North West End, Gaurav Singh Nijjer on fire-fire-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=fire-fire-off-west-end-2026 --url=https://morningstaronline.co.uk/article/fire-fire-activism-face-climate-devastation --critic=\"Mary Conway\"",
+        "description": "Morning Star, Mary Conway on fire-fire-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=fire-fire-off-west-end-2026 --url=https://thespyinthestalls.com/2026/09/fire-fire/ --critic=\"Nasia Ntalla\"",
+        "description": "The Spy in the Stalls, Nasia Ntalla on fire-fire-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=fire-fire-off-west-end-2026 --url=https://theatreandtonic.co.uk/blog/fire-fire-at-arcola-theatre-review --critic=\"Brad\"",
+        "description": "Theatre and Tonic, Brad on fire-fire-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=fire-fire-off-west-end-2026 --url=https://www.londonpubtheatres.com/review-fire-fire-by-john-webber-at-arcola-theatre-9-september-3-october-2026 --critic=\"Paul Maidment\"",
+        "description": "London Pub Theatres, Paul Maidment on fire-fire-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=fire-fire-off-west-end-2026 --url=https://www.britishtheatreguide.info/reviews/fire-fire-arcola-theatre-26011 --critic=\"Keith Mckenna\"",
+        "description": "British Theatre Guide, Keith Mckenna on fire-fire-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=fire-fire-off-west-end-2026 --url=https://onin.london/fire-fire-at-arcola-theatre/ --critic=\"Caitlin Neal\"",
+        "description": "On In London, Caitlin Neal on fire-fire-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      }
+    ]
+  }
+}

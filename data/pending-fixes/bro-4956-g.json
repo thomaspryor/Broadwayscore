@@ -1,0 +1,37 @@
+{
+  "issueNumber": "bro-4956-g",
+  "planId": "ee8dd46e-3f22-474f-bc9c-e1643e4a3bdd",
+  "status": "pending",
+  "createdAt": "2026-10-10T07:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4956 backfill: 53 reviews that Best of Theatre round-ups link for London shows opened 2026-08-12..09-18 were never collected (the WE gap audit compared only WET/theatre.reviews/LBO and only for 21 days). Ingest each; the script's own production/date/cross-show guards still apply, so prior-production or wrong-show pages are refused. (batch 3 of 3, 3 reviews)",
+    "steps": [
+      "Ingest 3 round-up-listed reviews (batch 3 of 3)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=who-killed-marilyn-off-west-end-2026 --url=https://theatreandtonic.co.uk/blog/who-killed-marilyn-at-emerald-theatre-review --critic=\"Emmie Newitt\"",
+        "description": "Theatre and Tonic, Emmie Newitt on who-killed-marilyn-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=who-killed-marilyn-off-west-end-2026 --url=https://www.allthatdazzles.co.uk/post/review-who-killed-marilyn-emerald-theatre --critic=\"Daz Gale\"",
+        "description": "All That Dazzles, Daz Gale on who-killed-marilyn-off-west-end-2026 (listed in the Best of Theatre round-up)"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=how-the-other-half-loves-west-end-2026 --url=https://theqr.co.uk/2026/08/15/review-how-the-other-half-loves-the-old-vic/ --critic=\"Franco Milazzo\"",
+        "description": "theQR, Franco Milazzo on how-the-other-half-loves-west-end-2026 (listed in the Best of Theatre round-up)"
+      }
+    ]
+  }
+}
