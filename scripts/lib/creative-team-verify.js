@@ -314,6 +314,7 @@ async function verifyCreativeTeamViaSerp(show, proposed, year, sourceTag, opts =
         // the name — anchored to a segment naming this show (and, when
         // anchored, its venue).
         const confirmed = anchored
+          // venue-write-guard-ok: read-only, the venue is matched against snippets, never written
           ? serpTextConfirmsProduction(serpResults, phrases, name, { title: show.title, venue: show.venue })
           : serpTextConfirms(serpResults, phrases, name, { title: show.title });
         if (confirmed) {
