@@ -1,6 +1,7 @@
 'use strict';
 
 const cheerio = require('cheerio');
+const { cleanSearchTitle } = require('./title-normalization');
 const INDEX_URL = 'http://www.lightingandsoundamerica.com/news/';
 const normalize = text => String(text || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 
@@ -28,7 +29,8 @@ function parseLightingSoundAmericaIndex(html, showTitle, show = {}) {
     const headline = anchor.text().replace(/\s+/g, ' ').trim();
     if (!/^theat(?:re|er) in review:/i.test(headline)) return;
     // Match the title portion, not the parenthesized venue or story excerpt.
-    const subject = normalize(headline.replace(/^theat(?:re|er) in review:\s*/i, '').replace(/\s*\([^)]*\)\s*$/, ''));
+    const subject = normalize(cleanSearchTitle(headline.replace(/^theat(?:re|er) in review:\s*/i, '').replace(/\s*\([^)]*\)\s*$/, '')));
+    // Same cleaning as the search title (& -> and, Shakespeare's, : The Musical).
     if (subject !== title) return;
     let url;
     try { url = new URL(anchor.attr('href'), INDEX_URL); } catch { return; }
@@ -60,10 +62,12 @@ async function discoverLightingSoundAmerica(showTitle, show, fetchImpl) {
   const nextMonth = opening && Number.isFinite(Date.parse(opening))
     ? new Date(Date.UTC(Number(opening.slice(0, 4)), Number(opening.slice(5, 7)), 1)).toISOString().slice(0, 10)
     : null;
-  // Reviews can land across a month boundary. Include previews, opening,
-  // and the following month so archived backfills keep working.
+  // The rolling index covers the current month. Archive pages are fetched only
+  // for earlier months (previews/opening month, so a month-boundary review is
+  // not lost); the current or a future month would be a wasted paid fetch.
+  const thisMonth = new Date().toISOString().slice(0, 7);
   for (const date of [show.previewsStartDate, opening, nextMonth]) {
-    if (date && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    if (date && /^\d{4}-\d{2}-\d{2}$/.test(date) && date.slice(0, 7) < thisMonth) {
       urls.add(`${INDEX_URL}archive.asp?m=${Number(date.slice(5, 7))}&y=${date.slice(0, 4)}`);
     }
   }
@@ -86,7 +90,8 @@ async function discoverLightingSoundAmerica(showTitle, show, fetchImpl) {
 // last 60 days or the next 21. Older shows' reviews were found at the time.
 const DAY = 86400000;
 function appliesToShow(show, now = Date.now()) {
-  if (!show || show.type === 'opera') return false;
+  // LSA only reviews NYC productions: skip tours, regional, West End, opera.
+  if (!show || show.type === 'opera' || !['broadway', 'off-broadway'].includes(show.category)) return false;
   const opening = Date.parse(show.openingDate);
   if (!Number.isFinite(opening)) return false;
   const previews = Date.parse(show.previewsStartDate);
