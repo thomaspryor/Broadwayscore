@@ -886,5 +886,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-10T21:45:17.243Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5008-cloud-parity",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5008-cloud-parity",
+    "description": "land.yml did not land land/bro-5008-cloud-parity: the unit-tests-node gate went red at c8f8e12108. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38087472089",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5008-cloud-parity"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "c8f8e121082828998688bbf698bf30d28917adb0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38087472089"
+      }
+    ],
+    "queuedAt": "2026-10-10T21:57:47.779Z"
   }
 ]
