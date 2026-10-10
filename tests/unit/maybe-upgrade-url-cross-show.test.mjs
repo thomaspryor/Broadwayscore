@@ -96,3 +96,16 @@ describe('slugLooksLikeDifferentShow predicate', () => {
     assert.equal(slugLooksLikeDifferentShow(EQUUS_URL, {}), false);
   });
 });
+
+describe('query-ID urls carry no slug (BRO-4956)', () => {
+  test('LTR post.cfm?p=N, talkinbroadway d.php?id=N and LSA story.asp?ID=N never read as a different show', () => {
+    for (const u of [
+      'https://www.londontheatrereviews.co.uk/post.cfm?p=29281',
+      'https://www.talkinbroadway.com/page/ob/d.php?id=123',
+      'http://www.lightingandsoundamerica.com/news/story.asp?ID=GZKHRD',
+    ]) assert.equal(slugLooksLikeDifferentShow(u, { showTitle: 'Affluenza' }), false, u);
+  });
+  test('a titled slug still trips the guard', () => {
+    assert.equal(slugLooksLikeDifferentShow('https://www.londontheatre1.com/reviews/hamlet-national-theatre/', { showTitle: 'Affluenza' }), true);
+  });
+});
