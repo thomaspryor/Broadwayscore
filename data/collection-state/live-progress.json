@@ -1,19 +1,31 @@
 {
-  "updatedAt": "2026-10-10T09:50:46.989Z",
-  "processed": 11,
-  "failed": 8,
-  "successRate": "57.9%",
+  "updatedAt": "2026-10-10T10:33:24.448Z",
+  "processed": 12,
+  "failed": 2,
+  "successRate": "85.7%",
   "tierBreakdown": {
     "playwright": 9,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 1,
+    "scrapingdog": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 2
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-10-10T10:30:08.144Z",
+      "event": "bb-session",
+      "session": "57df968c",
+      "url": "https://www.nytimes.com/2022/07/24/theater/seagull-review-elevator-repair-servic"
+    },
+    {
+      "t": "2026-10-10T10:30:08.855Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }

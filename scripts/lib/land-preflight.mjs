@@ -183,6 +183,22 @@ export function checkTestRegistration({ base, tip, cwd }) {
   return problems.length ? { status: 'fail', problems } : { status: 'clean' };
 }
 
+// Paths only the pipeline bots write. A land commit that rewrites many of them is
+// almost always a squash taken over a failed or stale merge: `git reset --soft
+// origin/main` after a merge that never happened makes ONE commit that reverts
+// everything main gained since the branch point (BRO-4956, 2026-10-10: a 2-file
+// fix went up as 179 files, 47k/107k lines, cancelled by hand before it landed).
+export const BOT_OWNED_RE = /^(data\/audit\/|data\/collection-state\/|public\/data\/|data\/llm-scoring-runs\.json$)/;
+export const BOT_OWNED_MAX = 10;
+
+/** Does tip rewrite more bot-owned files than a deliberate change would? */
+export function checkBotOwnedRewrite({ base, tip, cwd, max = BOT_OWNED_MAX }) {
+  const r = git(cwd, ['diff', '--name-only', `${base}...${tip}`]);
+  if (!ok(r)) return { status: 'skip', reason: (r.stderr || 'git diff failed').trim().slice(0, 200) };
+  const files = out(r).split('\n').filter((f) => BOT_OWNED_RE.test(f));
+  return files.length > max ? { status: 'fail', count: files.length, sample: files.slice(0, 5) } : { status: 'pass', count: files.length };
+}
+
 function fetchBase(cwd) {
   const r = git(cwd, ['-c', 'gc.auto=0', '-c', 'maintenance.auto=false', 'fetch', '-q', 'origin', 'main'], { timeout: 20000 });
   return ok(r) ? null : r.timedOut ? 'fetch timed out' : `fetch failed: ${r.stderr.trim().slice(0, 120)}`;
@@ -203,7 +219,7 @@ function testTreeDirty(cwd) {
   return paths.filter((p) => TEST_FILE_RE.test(p) || MANIFEST_RE.test(p) || p.startsWith('.github/workflows/'));
 }
 
-export function blockMessage({ target, rebase, tests, base }) {
+export function blockMessage({ target, rebase, tests, base, botOwned }) {
   const lines = [`LAND PREFLIGHT: land.yml would refuse this push to ${target}. Fix it on the branch and push again (about 30 minutes saved).`];
   if (rebase?.status === 'conflict') {
     lines.push(
@@ -219,6 +235,16 @@ export function blockMessage({ target, rebase, tests, base }) {
   if (tests?.status === 'fail') {
     lines.push('', `${rebase?.status === 'conflict' ? '2' : '1'}) Test registration (audit-orphan-tests / test-yml-manifest-paths would go red):`);
     for (const p of tests.problems) lines.push(`   - ${p}`);
+  }
+  if (botOwned?.status === 'fail') {
+    lines.push(
+      '',
+      `* This push rewrites ${botOwned.count} bot-owned data files (${botOwned.sample.join(', ')}, ...).`,
+      '   That is the signature of `git reset --soft origin/main` after a merge that failed or never ran: the',
+      '   commit would REVERT everything main gained since your branch point. Rebuild it from current main:',
+      '     git fetch origin main && git checkout -B <branch> origin/main',
+      '     git checkout <old-tip> -- <only your files> && git commit',
+    );
   }
   lines.push(
     '',
@@ -255,8 +281,10 @@ export function judgeLand({ cwd, src, target, base = 'origin/main', fetch = true
   let tests = { status: 'skip', reason: 'not requested' };
   if (checkTests) tests = (seams.checkTests || checkTestRegistration)({ base, tip: src, cwd });
   detail.tests = tests;
-  if (rebase.status === 'conflict' || tests.status === 'fail') {
-    return { decision: 'block', message: blockMessage({ target, rebase, tests, base }), detail };
+  const botOwned = (seams.checkBotOwned || checkBotOwnedRewrite)({ base, tip: src, cwd });
+  detail.botOwned = botOwned;
+  if (rebase.status === 'conflict' || tests.status === 'fail' || botOwned.status === 'fail') {
+    return { decision: 'block', message: blockMessage({ target, rebase, tests, base, botOwned }), detail };
   }
   return { decision: rebase.status === 'skip' && tests.status === 'skip' ? 'skip' : 'allow', detail };
 }
