@@ -64,16 +64,17 @@ async function fetchAllActions(days) {
 }
 
 // Optional: a PostHog failure costs only the owner-match line, never the readout.
-async function fetchOwnerIds() {
+async function fetchOwnerIds(days) {
   if (!process.env.POSTHOG_PERSONAL_API_KEY) return { ids: new Set(), note: 'POSTHOG_PERSONAL_API_KEY not set, owner match skipped' };
   try {
     const { phQuery } = require('./lib/posthog-query');
     // is_owner is an event super-property (no person profile), so collect
-    // the distinct_ids that sent owner-stamped events.
+    // the distinct_ids that sent owner-stamped events, over the readout's own
+    // window (a 90-day scan hit PostHog's max execution time, run 38039845828).
     const rows = await phQuery(`
       SELECT DISTINCT distinct_id FROM events
       WHERE JSONExtractString(properties, 'is_owner') = 'true'
-        AND timestamp >= now() - INTERVAL 90 DAY
+        AND timestamp >= now() - INTERVAL ${Number(days) + 2} DAY
       LIMIT 10000`);
     return { ids: new Set(rows.map((r) => String(r[0]))), note: `${rows.length} owner visitor IDs in PostHog` };
   } catch (err) {
@@ -105,7 +106,7 @@ async function main() {
   const days = Math.min(Math.max(parseInt(arg('days', String(MAX_READOUT_DAYS)), 10) || MAX_READOUT_DAYS, 1), MAX_READOUT_DAYS);
   const [{ actions, pages, incomplete }, owner, single] = await Promise.all([
     fetchAllActions(days),
-    fetchOwnerIds(),
+    fetchOwnerIds(days),
     singlePageCount(days),
   ]);
   const summary = summarizeZeroPayout(actions, owner.ids);
