@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-10T07:53:49.497Z",
+  "timestamp": "2026-10-10T08:06:44.799Z",
   "stats": {
-    "totalReviews": 53661,
-    "alreadyFlagged": 19724,
-    "dateGuardCatches": 264,
-    "directorMismatch": 1661,
-    "tvFilmSignals": 1557,
-    "londonSignals": 1770,
+    "totalReviews": 53672,
+    "alreadyFlagged": 19748,
+    "dateGuardCatches": 265,
+    "directorMismatch": 1662,
+    "tvFilmSignals": 1556,
+    "londonSignals": 1772,
     "offBroadwaySignals": 512,
     "yearMismatch": 128,
-    "noPublishDate": 5875
+    "noPublishDate": 5856
   },
   "findings": [
     {
@@ -515,6 +515,20 @@
       "score": 77,
       "publishDate": "2022-11-21",
       "url": "https://www.nytimes.com/2022/11/21/theater/christmas-carol-review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2020",
+      "file": "nytimes--maya-phillips.json",
+      "score": 78,
+      "publishDate": "2020-12-18",
+      "url": "https://www.nytimes.com/2020/12/18/theater/christmas-carol-review-andrew-lincoln.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -20951,19 +20965,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021",
-      "file": "guardian--arifa-akbar.json",
-      "publishDate": "2021-07-17",
-      "url": "https://www.theguardian.com/stage/2021/jul/28/joseph-and-the-amazing-technicolor-dreamcoat-review-london-palladium",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -47291,6 +47292,7 @@
     {
       "showId": "youre-so-special-off-west-end-2026",
       "file": "theatreandtonic--chiara.json",
+      "score": 96,
       "publishDate": "2026-09-10",
       "url": "https://theatreandtonic.co.uk/blog/youre-so-special-at-soho-theatre-review",
       "findings": [
@@ -47309,6 +47311,7 @@
     {
       "showId": "youre-so-special-off-west-end-2026",
       "file": "thereviewshub--scott-matthewman.json",
+      "score": 80,
       "publishDate": "2026-09-09",
       "url": "https://www.thereviewshub.com/youre-so-special-soho-theatre-london/",
       "findings": [
@@ -47322,6 +47325,7 @@
     {
       "showId": "youre-so-special-off-west-end-2026",
       "file": "west-end-best-friend--oli-burgin.json",
+      "score": 79,
       "publishDate": "2026-09-09",
       "url": "https://www.westendbestfriend.co.uk/news/review-youre-so-special-soho-theatre",
       "findings": [
@@ -53492,6 +53496,20 @@
       ]
     },
     {
+      "showId": "death-drop-west-end-2022",
+      "file": "london-theatre--ava-wong-davies.json",
+      "score": 63,
+      "publishDate": "2022-01-25",
+      "url": "https://www.londontheatre.co.uk/reviews/death-drop-is-playful-and-delightfully-silly-oozing-with-natural-charisma",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 38d before show (2022-01-25 vs 2022-03-04)"
+        }
+      ]
+    },
+    {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "artsdesk--unknown.json",
       "score": 61,
@@ -53894,6 +53912,20 @@
     },
     {
       "showId": "death-of-england-delroy-west-end-2020",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": 85,
+      "publishDate": "2024-07-31",
+      "url": "https://www.allthatdazzles.co.uk/post/review-death-of-england-michael-delroy-sohoplace",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "death-of-england-delroy-west-end-2020",
       "file": "artsdesk--matt-wolf.json",
       "score": 78,
       "publishDate": "2020-11-05",
@@ -53917,6 +53949,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "death-of-england-delroy-west-end-2020",
+      "file": "indiependent--unknown.json",
+      "score": 83,
+      "publishDate": "2020-12-02",
+      "url": "https://www.indiependent.co.uk/theatre-review-death-of-england-delroy-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -55345,6 +55391,7 @@
     {
       "showId": "fire-fire-off-west-end-2026",
       "file": "north-west-end--gaurav-singh-nijjer.json",
+      "score": 79,
       "publishDate": "2026-09-14",
       "url": "https://northwestend.com/fire-fire-arcola-theatre/",
       "findings": [
@@ -56068,6 +56115,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "hackneycitizen--gabriel-wilding.json",
+      "score": 66,
       "publishDate": "2026-09-22",
       "url": "https://www.hackneycitizen.co.uk/2026/09/22/golden-boy-almeida-review/",
       "findings": [
@@ -59682,7 +59730,7 @@
     {
       "showId": "jane-eyre-off-west-end-2026",
       "file": "guardian--holly-omahony.json",
-      "score": 39,
+      "score": 35,
       "publishDate": "2026-09-09",
       "url": "https://www.theguardian.com/stage/2026/sep/09/jane-eyre-a-musical-review-southwark-playhouse-elephant-london-charlotte-bronte",
       "findings": [
@@ -61936,6 +61984,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "north-west-end--phil-meikle.json",
+      "score": 78,
       "publishDate": "2026-09-16",
       "url": "https://northwestend.com/man-to-man-the-royal-court/",
       "findings": [
@@ -74162,6 +74211,7 @@
     {
       "showId": "the-turn-of-the-screw-off-west-end-2026",
       "file": "theatreandtonic--eleanor-bywater.json",
+      "score": 77,
       "publishDate": "2026-09-19",
       "url": "https://theatreandtonic.co.uk/blog/turn-of-the-screw-at-arcola-theatre-review",
       "findings": [
@@ -76156,6 +76206,7 @@
     {
       "showId": "who-killed-marilyn-off-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
+      "score": 14,
       "publishDate": "2026-08-21",
       "url": "https://theatreandtonic.co.uk/blog/who-killed-marilyn-at-emerald-theatre-review",
       "findings": [
