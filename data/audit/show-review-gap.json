@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-10T09:47:24.828Z",
+  "generatedAt": "2026-10-10T10:36:33.884Z",
   "windowDays": 21,
-  "targets": 1,
-  "auditedThisRun": 1,
-  "carriedForward": 645,
+  "targets": 2,
+  "auditedThisRun": 2,
+  "carriedForward": 644,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
@@ -4074,7 +4074,6 @@
         "https://monstagigz.com/2026/09/29/theatre-review-affluenza-starring-noah-schnapp-at-riverside-studios-hammersmith/",
         "https://www.londontheatre1.com/reviews/affluenza-riverside-studios-review/",
         "https://lovelondonloveculture.com/2026/10/06/review-round-up-affluenza-riverside-studios/",
-        "https://www.timeout.com/london/theatre/affluenza",
         "https://liamodell.com/2026/10/06/affluenza-review-riverside-studios-london-noah-schnapp-andy-sandberg-meaning/",
         "https://www.thereviewshub.com/affluenza-riverside-studios-london/",
         "https://www.thetimes.com/culture/theatre-dance/article/affluenza-review-riverside-studios-f36n6c99g",
@@ -4083,10 +4082,11 @@
         "https://www.allthatdazzles.co.uk/post/review-affluenza-riverside-studios",
         "https://playsinternational.org.uk/affluenza-riverside-studios/",
         "https://www.westendbestfriend.co.uk/news/review-affluenza-riverside-studios",
+        "https://www.timeout.com/london/theatre/affluenza",
         "https://www.thestage.co.uk/reviews/affluenza-review-riverside-studios-london-noah-schnapp",
         "https://chiswickcalendar.co.uk/affluenza-riverside-studios-theatre-review/",
-        "https://www.standard.co.uk/culture/theatre/affluenza-review-b1299859.html",
         "https://www.broadwayworld.com/westend/article/Review-AFFLUENZA-starring-Noah-Schnapp-20261006",
+        "https://www.standard.co.uk/culture/theatre/affluenza-review-b1299859.html",
         "https://www.londonboxoffice.co.uk/news/post/affluenza-riverside-studios-review",
         "https://www.theartsdesk.com/theatre/affluenza-riverside-studios-review-too-rich-mix-rich-kids-tale",
         "https://thelivereview.co.uk/affluenza-review-riverside-studios/",
@@ -4101,7 +4101,7 @@
       ],
       "dirFiles": 38,
       "dirClean": 29,
-      "inReviewsJson": 28,
+      "inReviewsJson": 29,
       "missing": [
         {
           "url": "https://lovelondonloveculture.com/2026/10/06/review-round-up-affluenza-riverside-studios/",
@@ -4142,7 +4142,7 @@
             "rows": 8,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 0
+            "fetchErrors": 1
           },
           "lbo-roundup": {
             "found": true,
@@ -4196,7 +4196,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 7,
+            "accepted": 6,
             "error": null
           },
           {
@@ -4226,7 +4226,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 5,
             "error": null
           },
           {
@@ -4236,22 +4236,21 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 17,
+        "resultCount": 18,
         "error": null
       },
       "candidatesRejected": {
-        "count": 14,
+        "count": 13,
         "byReason": {
           "non-review-host": 11,
           "ticketing-listing": 1,
-          "roundup-page": 1,
-          "non-review-path": 1
+          "roundup-page": 1
         }
       },
       "dedupedVariants": [],
@@ -4281,7 +4280,7 @@
           "conflictReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+          "reason": "❌ Stale merge: url still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/"
         }
       ],
       "ingestSkippedByCap": [],
@@ -4336,12 +4335,6 @@
             "firstSeenAt": "2026-10-07T22:35:00.711Z"
           },
           {
-            "url": "https://www.timeout.com/london/theatre/affluenza",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-07T15:42:41.979Z"
-          },
-          {
             "url": "https://liamodell.com/2026/10/06/affluenza-review-riverside-studios-london-noah-schnapp-andy-sandberg-meaning/",
             "outletId": "liamodell.com",
             "state": "live",
@@ -4390,6 +4383,12 @@
             "firstSeenAt": "2026-10-10T06:36:20.593Z"
           },
           {
+            "url": "https://www.timeout.com/london/theatre/affluenza",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-07T15:42:41.979Z"
+          },
+          {
             "url": "https://www.thestage.co.uk/reviews/affluenza-review-riverside-studios-london-noah-schnapp",
             "outletId": "thestage.co.uk",
             "state": "live",
@@ -4402,14 +4401,14 @@
             "firstSeenAt": "2026-10-07T15:42:41.979Z"
           },
           {
-            "url": "https://www.standard.co.uk/culture/theatre/affluenza-review-b1299859.html",
-            "outletId": "standard.co.uk",
+            "url": "https://www.broadwayworld.com/westend/article/Review-AFFLUENZA-starring-Noah-Schnapp-20261006",
+            "outletId": "broadwayworld.com",
             "state": "live",
             "firstSeenAt": "2026-10-07T22:35:00.711Z"
           },
           {
-            "url": "https://www.broadwayworld.com/westend/article/Review-AFFLUENZA-starring-Noah-Schnapp-20261006",
-            "outletId": "broadwayworld.com",
+            "url": "https://www.standard.co.uk/culture/theatre/affluenza-review-b1299859.html",
+            "outletId": "standard.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-07T22:35:00.711Z"
           },
@@ -4492,7 +4491,7 @@
         "liveCount": 27,
         "candidateCount": 29
       },
-      "computedAt": "2026-10-10T09:47:24.828Z"
+      "computedAt": "2026-10-10T10:36:33.884Z"
     },
     {
       "showId": "after-all-these-years-off-broadway-2026",
@@ -188350,10 +188349,9 @@
         "https://theartsdispatch.substack.com/p/what-the-animals-say-review-finborough",
         "https://www.broadwayworld.com/westend/article/Review-WHAT-THE-ANIMALS-SAY-Finborough-Theatre-20261003",
         "https://www.thereviewshub.com/tag/what-the-animals-say/",
-        "https://thespyinthestalls.com/tag/what-the-animals-say/",
         "https://northwestend.com/what-the-animals-say-finborough-theatre/",
         "https://www.uktw.co.uk/news/What-The-Animals-Say/7599.html",
-        "https://theatreweekly.com/tag/what-the-animals-say/",
+        "https://theatrereviews.design/what-the-animals-say/",
         "https://thepegreview.com/2026/10/04/%E2%98%85%E2%98%85%E2%98%85%E2%98%85if-we-could-talk-to-the-animals/"
       ],
       "dirFiles": 24,
@@ -188384,12 +188382,7 @@
           "weRefStarsSource": "bestoftheatre"
         }
       ],
-      "dirOnly": [
-        {
-          "host": "theatrereviews.design",
-          "count": 1
-        }
-      ],
+      "dirOnly": [],
       "flaggedMisses": [
         {
           "url": "https://viewfromthegods.co.uk/2026/10/03/what-the-animals-say-finborough-theatre/",
@@ -188444,7 +188437,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 2
+            "fetchErrors": 1
           },
           "lbo-roundup": {
             "found": false,
@@ -188520,7 +188513,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -188530,33 +188523,25 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 20,
+        "resultCount": 19,
         "error": null
       },
       "candidatesRejected": {
         "count": 13,
         "byReason": {
-          "aggregator-internal-nav": 1,
           "non-review-host": 9,
-          "roundup-page": 3
+          "roundup-page": 3,
+          "aggregator-internal-nav": 1
         }
       },
       "dedupedVariants": [],
-      "unextractable": [
-        {
-          "url": "https://theatreweekly.com/tag/what-the-animals-say/",
-          "host": "theatreweekly.com",
-          "knownOutletId": "theatre-weekly",
-          "serpCensus": true,
-          "zeroCharAttempts": 3
-        }
-      ],
+      "unextractable": [],
       "ingestResults": [
         {
           "url": "https://theatreandartreviews.com/2026/10/04/what-the-animals-say-finborough-theatre/",
@@ -188570,19 +188555,6 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "Refusing to ingest — https://theatreandartreviews.com/2026/10/04/what-the-animals-say-finborough-the"
-        },
-        {
-          "url": "https://theatreweekly.com/tag/what-the-animals-say/",
-          "host": "theatreweekly.com",
-          "outletId": "theatre-weekly",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": true,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
         },
         {
           "url": "https://thepegreview.com/2026/10/04/%E2%98%85%E2%98%85%E2%98%85%E2%98%85if-we-could-talk-to-the-animals/",
@@ -188712,12 +188684,6 @@
             "firstSeenAt": "2026-10-06T11:06:11.373Z"
           },
           {
-            "url": "https://thespyinthestalls.com/tag/what-the-animals-say/",
-            "outletId": "thespyinthestalls.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-10T09:05:38.747Z"
-          },
-          {
             "url": "https://northwestend.com/what-the-animals-say-finborough-theatre/",
             "outletId": "northwestend.com",
             "state": "live",
@@ -188728,6 +188694,12 @@
             "outletId": "uktw.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-05T23:42:11.061Z"
+          },
+          {
+            "url": "https://theatrereviews.design/what-the-animals-say/",
+            "outletId": "theatrereviews.design",
+            "state": "live",
+            "firstSeenAt": "2026-10-10T10:36:33.884Z"
           },
           {
             "url": "https://theatreandartreviews.com/2026/10/04/what-the-animals-say-finborough-theatre/",
@@ -188759,10 +188731,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 14,
-        "candidateCount": 18
+        "liveCount": 15,
+        "candidateCount": 19
       },
-      "computedAt": "2026-10-10T09:05:38.747Z"
+      "computedAt": "2026-10-10T10:36:33.884Z"
     },
     {
       "showId": "white-rabbit-red-rabbit-west-end-2026",

@@ -1,54 +1,63 @@
 {
   "processed": [
-    "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/fife-today--allan-crow.json",
-    "anna-x-west-end-2021/a-younger-theatre--unknown.json",
-    "anna-x-west-end-2021/islingtontribune--unknown.json",
-    "anna-x-west-end-2021/quays-life--unknown.json",
-    "pretty-woman-the-musical-west-end-2021/west-end-best-friend--marina-holmes-smith.json",
-    "be-more-chill-west-end-2021/timeout-london--alice-saville.json",
-    "be-more-chill-west-end-2021/timeout-london--unknown.json",
-    "be-more-chill-west-end-2021/all-that-dazzles-uk--unknown.json",
-    "be-more-chill-west-end-2021/british-theatre--unknown.json",
-    "be-more-chill-west-end-2021/standard--jessie-thompson.json",
-    "be-more-chill-west-end-2021/whatsonstage--alex-wood.json"
+    "the-seagull-west-end-2022/nytimes--unknown.json",
+    "the-seagull-west-end-2022/fringereview--unknown.json",
+    "the-seagull-west-end-2022/express-uk--unknown.json",
+    "the-seagull-west-end-2022/islingtontribune--unknown.json",
+    "the-seagull-west-end-2022/liamodell--unknown.json",
+    "the-seagull-west-end-2022/maturetimes--unknown.json",
+    "the-seagull-west-end-2022/standard--alice-saville.json",
+    "the-seagull-west-end-2022/standard--unknown.json",
+    "that-is-not-who-i-am-west-end-2022/independent--jessie-thompson.json",
+    "that-is-not-who-i-am-west-end-2022/liamodell--unknown.json",
+    "that-is-not-who-i-am-west-end-2022/sierz-co-uk--unknown.json",
+    "that-is-not-who-i-am-west-end-2022/theatre-bee-uk--theatre-bee-uk.json"
   ],
   "failed": [
-    "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/herald--neil-cooper.json",
-    "anna-x-west-end-2021/open-letters-review--unknown.json",
-    "anna-x-west-end-2021/artshub--unknown.json",
-    "anna-x-west-end-2021/ground--unknown.json",
-    "anna-x-west-end-2021/liamodell--unknown.json",
-    "anna-x-west-end-2021/londonpubtheatres--unknown.json",
-    "anna-x-west-end-2021/whatsonstage--sarah-crompton.json",
-    "be-more-chill-west-end-2021/closeupculture--unknown.json"
+    "the-seagull-west-end-2022/guardian--arifa-akbar.json",
+    "the-seagull-west-end-2022/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/fife-today--allan-crow.json",
-      "anna-x-west-end-2021/islingtontribune--unknown.json",
-      "anna-x-west-end-2021/quays-life--unknown.json",
-      "pretty-woman-the-musical-west-end-2021/west-end-best-friend--marina-holmes-smith.json",
-      "be-more-chill-west-end-2021/timeout-london--alice-saville.json",
-      "be-more-chill-west-end-2021/timeout-london--unknown.json",
-      "be-more-chill-west-end-2021/all-that-dazzles-uk--unknown.json",
-      "be-more-chill-west-end-2021/british-theatre--unknown.json",
-      "be-more-chill-west-end-2021/whatsonstage--alex-wood.json"
+      "the-seagull-west-end-2022/fringereview--unknown.json",
+      "the-seagull-west-end-2022/express-uk--unknown.json",
+      "the-seagull-west-end-2022/islingtontribune--unknown.json",
+      "the-seagull-west-end-2022/liamodell--unknown.json",
+      "the-seagull-west-end-2022/maturetimes--unknown.json",
+      "that-is-not-who-i-am-west-end-2022/independent--jessie-thompson.json",
+      "that-is-not-who-i-am-west-end-2022/liamodell--unknown.json",
+      "that-is-not-who-i-am-west-end-2022/sierz-co-uk--unknown.json",
+      "that-is-not-who-i-am-west-end-2022/theatre-bee-uk--theatre-bee-uk.json"
     ],
     "amp": [],
-    "browserbase": [],
-    "directCookies": [],
-    "scrapingdog": [
-      "anna-x-west-end-2021/a-younger-theatre--unknown.json"
+    "browserbase": [
+      "data/review-texts/the-seagull-west-end-2022/nytimes--unknown.json",
+      "the-seagull-west-end-2022/nytimes--unknown.json"
     ],
+    "directCookies": [],
+    "scrapingdog": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "be-more-chill-west-end-2021/standard--jessie-thompson.json"
+      "the-seagull-west-end-2022/standard--alice-saville.json",
+      "the-seagull-west-end-2022/standard--unknown.json"
     ]
   },
-  "startTime": "2026-10-10T09:46:10.372Z",
-  "lastProcessed": "be-more-chill-west-end-2021/whatsonstage--alex-wood.json",
-  "log": []
+  "startTime": "2026-10-10T10:29:50.337Z",
+  "lastProcessed": "that-is-not-who-i-am-west-end-2022/theatre-bee-uk--theatre-bee-uk.json",
+  "log": [
+    {
+      "t": "2026-10-10T10:30:08.144Z",
+      "event": "bb-session",
+      "session": "57df968c",
+      "url": "https://www.nytimes.com/2022/07/24/theater/seagull-review-elevator-repair-servic"
+    },
+    {
+      "t": "2026-10-10T10:30:08.855Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
