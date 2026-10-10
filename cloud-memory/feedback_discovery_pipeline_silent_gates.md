@@ -1152,3 +1152,6 @@ flamenc-oh-off-west-end-2026 (Peacock, previews 9/30): The Stage's Aug 14 Edinbu
 
 ## ingest-urls.yml back-to-back dispatches silently drop URLs (2026-10-01, Hay Fever)
 Concurrency group `ingest-urls-<show_id>` with cancel-in-progress:false still keeps only ONE pending run: a 3rd dispatch while #1 runs and #2 pends CANCELS #2 (City AM run 36939848230 cancelled). **How to apply:** put every URL for a show in ONE dispatch (newline-separated); after multiple dispatches, check each conclusion, re-dispatch any `cancelled`.
+
+## Ingest merges a real review into a same-outlet flagged preview (BRO-3142)
+Unknown-critic slot (`<outlet>--unknown.json`) holding a flagged preview (wrongShow / isNonReview / invalid tier, different URL): the writer's superseded-slot path (BRO-4430/4956) retires the preview to `_superseded-misattributed/` and writes the review clean. Pinned by `scripts/ingest-review-from-url.test.mjs` (BRO-3142 block).
