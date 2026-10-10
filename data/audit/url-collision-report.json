@@ -1,12 +1,66 @@
 {
-  "generatedAt": "2026-10-09T22:47:27.492Z",
+  "generatedAt": "2026-10-10T00:56:59.436Z",
   "summary": {
-    "total": 14,
-    "high": 5,
-    "medium": 5,
+    "total": 16,
+    "high": 6,
+    "medium": 6,
     "low": 4
   },
   "collisions": [
+    {
+      "url": "https://www.theguardian.com/stage/2026/oct/07/as-you-like-it-review-rsc",
+      "normalizedUrl": "https://theguardian.com/stage/2026/oct/07/as-you-like-it-review-rsc",
+      "candidates": [
+        {
+          "showId": "all-male-as-you-like-it-regional-2026",
+          "file": "guardian--arifa-akbar.json",
+          "publishDate": "2026-10-07",
+          "openingDate": "2026-10-07",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "guardian"
+        },
+        {
+          "showId": "as-you-like-it-globe-west-end-2026",
+          "file": "guardian--unknown.json",
+          "publishDate": "2026-10-07",
+          "openingDate": "2026-08-21",
+          "hasScore": true,
+          "hasFullText": false,
+          "outletId": "guardian"
+        }
+      ],
+      "suggestedWinner": "all-male-as-you-like-it-regional-2026",
+      "reason": "publishDate 2026-10-07 is 0 days from all-male-as-you-like-it-regional-2026 but also 47 days from as-you-like-it-globe-west-end-2026",
+      "confidence": "medium"
+    },
+    {
+      "url": "https://www.thestage.co.uk/reviews/as-you-like-it-review-royal-shakespeare-theatre-stratford-upon-avon-daniel-evans-jonathan-groff",
+      "normalizedUrl": "https://thestage.co.uk/reviews/as-you-like-it-review-royal-shakespeare-theatre-stratford-upon-avon-daniel-evans-jonathan-groff",
+      "candidates": [
+        {
+          "showId": "all-male-as-you-like-it-regional-2026",
+          "file": "thestage--dave-fargnoli.json",
+          "publishDate": null,
+          "openingDate": "2026-10-07",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "thestage"
+        },
+        {
+          "showId": "as-you-like-it-globe-west-end-2026",
+          "file": "thestage--dave-fargnoli.json",
+          "publishDate": "2026-10-07",
+          "openingDate": "2026-08-21",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "thestage"
+        }
+      ],
+      "suggestedWinner": "as-you-like-it-globe-west-end-2026",
+      "reason": "publishDate 2026-10-07 is 47 days from as-you-like-it-globe-west-end-2026 opening (2026-08-21)",
+      "confidence": "high"
+    },
     {
       "url": "https://www.thetimes.co.uk/article/an-enemy-of-the-people-review-matt-smith-stumbles-in-agitprop-ibsen-jkxnnmvjc",
       "normalizedUrl": "https://thetimes.co.uk/article/an-enemy-of-the-people-review-matt-smith-stumbles-in-agitprop-ibsen-jkxnnmvjc",
