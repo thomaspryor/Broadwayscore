@@ -77,7 +77,7 @@ for (const show of shows) {
       }
 
       // Check 3: outlet that doesn't publish stars
-      if (d.outletId && publishesNoCriticRating(d.outletId)) {
+      if (d.outletId && publishesNoCriticRating(d.outletId, d)) {
         issues.noStarOutletWithScore.push(`${show}/${file} (${d.outletId}, orig=${d.originalScore})`);
       }
     } catch (e) { /* skip unreadable */ }

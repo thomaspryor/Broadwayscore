@@ -1,0 +1,37 @@
+{
+  "issueNumber": "bro-3139",
+  "planId": "390df248-8cb7-4874-8ac4-795d5a590449",
+  "status": "pending",
+  "createdAt": "2026-10-10T15:26:32.542Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-3139: londontheatre.co.uk prints no stars in the article body, but every review page carries the critic's rating in its embedded page data, so about 510 london-theatre reviews were scored by the LLM alone. The extractor now reads it; this refetches each review page once (plain GET, no scraping credits) and stores the stars as originalScore (n/5 -> n*20). Files with a human score are skipped.",
+    "steps": [
+      "Run backfill-london-theatre-stars.js --apply in three chunks of 200."
+    ],
+    "riskLevel": "Medium",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "backfill-london-theatre-stars.js",
+        "args": "--apply --limit=200",
+        "description": "BRO-3139: refetch londontheatre.co.uk review pages and store the critic star rating (pageContent.ourCriticsRating) as originalScore. Chunk 1 of 3; resumable, skips files already done."
+      },
+      {
+        "type": "run-script",
+        "script": "backfill-london-theatre-stars.js",
+        "args": "--apply --limit=200",
+        "description": "BRO-3139: refetch londontheatre.co.uk review pages and store the critic star rating (pageContent.ourCriticsRating) as originalScore. Chunk 2 of 3; resumable, skips files already done."
+      },
+      {
+        "type": "run-script",
+        "script": "backfill-london-theatre-stars.js",
+        "args": "--apply --limit=200",
+        "description": "BRO-3139: refetch londontheatre.co.uk review pages and store the critic star rating (pageContent.ourCriticsRating) as originalScore. Chunk 3 of 3; resumable, skips files already done."
+      }
+    ]
+  }
+}

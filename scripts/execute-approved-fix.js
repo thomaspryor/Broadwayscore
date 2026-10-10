@@ -93,6 +93,9 @@ const ALLOWED_SCRIPTS = [
   // BRO-4947: move review files from a wrong or duplicate outlet id to the canonical one
   // (rules are code, in scripts/lib/outlet-id-migrations.js; conflicts are left in place).
   'migrate-outlet-ids.js',
+  // BRO-3139: refetch londontheatre.co.uk review pages once and store the critic's stars
+  // (--limit chunks it inside the 5-minute run-script cap; it skips files already done).
+  'backfill-london-theatre-stars.js',
 ];
 
 // --- Helpers ---
