@@ -535,6 +535,14 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
     return { error: 'No gross data available', warnings: ['No grosses data'] };
   }
 
+  // Shadow only (BRO-4989 checker #3): each week's cost from its own date
+  // (dated anchors carried by the Broadway cost index, costForWeek) instead
+  // of one current figure for the whole run. Live passes no opts.
+  const nutByWeek = opts.datedCosts ? datedWeeklyNuts(show, commercial, category, weeklySchedule) : null;
+  if (opts.datedCosts && !nutByWeek) {
+    return { error: 'No dated cost for the run', warnings: ['No dated cost for the run'] };
+  }
+
   // --- Run the model (three scenarios) ---
   const results = {};
   for (const [scenario, mult] of Object.entries(SCENARIO_MULTIPLIERS)) {
@@ -557,7 +565,7 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
       }
 
       const weekResult = calcWeeklyProfit(
-        week.gross, weeklyNut, baseVarRate, isPostRecoup, weekNum, week.isPreview, mult, weeklySchedule.length, show.type || 'musical', category
+        week.gross, nutByWeek ? nutByWeek[i] : weeklyNut, baseVarRate, isPostRecoup, weekNum, week.isPreview, mult, weeklySchedule.length, show.type || 'musical', category
       );
 
       let weekProfit = weekResult.profit;
@@ -670,6 +678,51 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
 // Helper: Build Weekly Gross Schedule
 // ---------------------------------------------------------------------------
 
+/**
+ * Per-week running cost for the schedule, from each week's date. Weekly-
+ * history rows carry their own date; estimated rows before them are dated
+ * back from the first one, and an all-estimated schedule runs forward from
+ * the first preview (or opening). Null when there is no date to anchor to or
+ * no cost figure at all.
+ */
+function datedWeeklyNuts(show, commercial, category, schedule) {
+  // Lazy: cost-for-week requires this module.
+  const { costForWeek } = require('./cost-for-week');
+  const WEEK_MS = 7 * 86400000;
+  const first = schedule.findIndex((w) => w.date);
+  let t0;
+  if (first >= 0) t0 = Date.parse(schedule[first].date) - first * WEEK_MS;
+  else t0 = Date.parse(show.previewsStartDate || show.openingDate || '');
+  if (!Number.isFinite(t0)) return null;
+  const fallbackCost = estimateWeeklyNut(show, commercial, { eraAdjust: false });
+  const nuts = [];
+  for (let i = 0; i < schedule.length; i++) {
+    const date = schedule[i].date || new Date(t0 + i * WEEK_MS).toISOString().slice(0, 10);
+    const c = costForWeek(commercial, date, { show, category, fallbackCost });
+    if (!c) return null;
+    nuts.push(c.cost);
+  }
+  return nuts;
+}
+
+/** Mean dated weekly cost over the played weeks of [open, close), COVID dark excluded. */
+function averageDatedNut(show, commercial, category, openDate, closeDate) {
+  const { costForWeek } = require('./cost-for-week');
+  if (!openDate || !(closeDate > openDate)) return null;
+  const WEEK_MS = 7 * 86400000;
+  const fallbackCost = estimateWeeklyNut(show, commercial, { eraAdjust: false });
+  let sum = 0;
+  let n = 0;
+  for (let t = openDate.getTime(); t < closeDate.getTime(); t += WEEK_MS) {
+    if (t >= COVID_DARK_START.getTime() && t < COVID_DARK_END.getTime()) continue;
+    const c = costForWeek(commercial, new Date(t).toISOString().slice(0, 10), { show, category, fallbackCost });
+    if (!c) return null;
+    sum += c.cost;
+    n++;
+  }
+  return n ? sum / n : null;
+}
+
 function buildWeeklySchedule(show, grossesAllTime, grossesWeekly, previewWeeks, totalRunWeeks, warnings, opts = {}) {
   const schedule = [];
 
@@ -723,6 +776,7 @@ function buildWeeklySchedule(show, grossesAllTime, grossesWeekly, previewWeeks, 
       schedule.push({
         gross: weeklyData[date].gross,
         isPreview: covers.previewRowDates.has(date),
+        date,
         _source: 'weekly-history',
       });
     }
@@ -959,7 +1013,14 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}
   // Average weekly nut over the run — deflate current nut by 2%/year for historical average
   const runYears = totalWeeks / 52;
   const avgNutDeflator = runYears > 3 ? (1 - Math.pow(0.98, runYears)) / (runYears * 0.02) : 1;
-  const avgWeeklyNut = weeklyNut * avgNutDeflator * 0.88; // 0.88 = phase 4 mature run
+  let avgWeeklyNut = weeklyNut * avgNutDeflator * 0.88; // 0.88 = phase 4 mature run
+  // Shadow only (BRO-4989 checker #3): the run's average of each week's
+  // dated cost (costForWeek) replaces the flat 2%/year deflator.
+  if (opts.datedCosts) {
+    const avg = averageDatedNut(show, commercial, category, openDate, closeDate);
+    if (avg == null) return { error: 'No dated cost for the run', warnings: ['No dated cost for the run'] };
+    avgWeeklyNut = avg * 0.88;
+  }
 
   // Post-recoup royalty pool: 35% of operating profit after recoupment
   // Since most of the run is post-recoup, apply pool to ~90% of profit
