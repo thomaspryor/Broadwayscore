@@ -171,6 +171,8 @@ function main() {
     console.log(`✗ ${tier1Missing} Tier 1 secret(s) missing.`);
     console.log('  Set them at claude.ai/code → cloud icon (env name, top of input area) → hover env row → gear icon → Environment variables field (KEY=value, no quotes).');
     console.log('  Full guide: `.claude/CLOUD.md` step 1 (in this repo).');
+    console.log('  No paste needed to USE a missing key (BRO-5008): `node scripts/cloud-run-script.js scripts/<x>.js [args]`');
+    console.log('  runs a landed script in Actions with the production keys and prints its output here.');
     return 1;
   }
   // Never claim "cloud session is ready" off a disk-sourced pass. A .env hit

@@ -606,6 +606,12 @@ on:
       # it unregistered fails the blocking audit-orphan-tests.js gate below.
       - 'scripts/sync-memory-to-repo.sh'
       - 'scripts/cloud-memory-sync.test.mjs'
+      # BRO-5008: cloud run-script route (run-script.yml); top-level scripts and
+      # their tests are not reachable from the globs above.
+      - 'scripts/cloud-run-script.js'
+      - 'scripts/cloud-run-script.test.mjs'
+      - 'scripts/run-script-sealed.js'
+      - 'scripts/run-script-sealed.test.mjs'
       # BRO-544: root-level regression guard scanning scripts/**, src/**, and
       # .github/workflows|actions/** for the deleted mcp_browser/
       # scraping_browser Bright Data zone being sent through the HTTP

@@ -15,8 +15,8 @@ Global rules apply (worktree-first, branch check, commit frequently). Project ad
 ### 2. Vercel Deployment
 Git-triggered builds are BLOCKED. Deploys ONLY via `vercel-deploy.yml`.
 - **5-min cron + content-aware gate.** Deploys only when site-relevant paths changed vs live, or deploy is >6h old (`scripts/lib/should-deploy-gate.js`; kill switch: `DEPLOY_GATE_DISABLED=true`). Do NOT `gh workflow run "Deploy to Vercel"`; manual dispatch is emergency-only. Core-data-only changes ride the next rebuild/6h backstop.
-- **"Pushed" ≠ "Deployed" — verify against Vercel, not the GitHub run.** `node scripts/check-prod-deploy.js HEAD` exits 0 only when live on prod (`--wait` to poll; deploys lag 20-30 min in bursts). A cancel-cascade run reports success while its Vercel deploy is CANCELED — READY prod deployment is the only proof.
-- **CI monitoring:** see global CLAUDE.md (`wait-for-run.sh`, never `gh run watch`); project outcome checks: prod URL, check-prod-deploy.js, raw.githubusercontent.com, data-repo `git log`. Detail: `memory/feedback_github_polling_rate_limit.md`.
+- **"Pushed" ≠ "Deployed" — verify against Vercel, not the GitHub run.** `node scripts/check-prod-deploy.js HEAD` exits 0 only when live on prod (`--wait` to poll; deploys lag 20-30 min). A cancel-cascade run reports success while its Vercel deploy is CANCELED — READY prod deployment is the only proof.
+- **CI monitoring:** see global CLAUDE.md (`wait-for-run.sh`, never `gh run watch`). Detail: `memory/feedback_github_polling_rate_limit.md`.
 
 ### 3. Core Data Rules
 - **Never extract metadata from URLs** — URLs are inconsistent. Use publish dates and text content.
@@ -139,4 +139,5 @@ New topics → `memory/{topic}.md` + one-line pointer. Completed tasks → `memo
 
 ## Cloud sessions
 Cloud (iOS/Mac/web, no `~/.claude/`): read `.claude/CLOUD.md`, then `cloud-memory/MEMORY.md`.
+**Multi-repo cloud session:** no repo hooks load; first run `bash scripts/cloud-bootstrap-data.sh` (CLOUD.md § Multi-repo).
 **Owner never merges PRs:** land via `land/<name>`, follow the Land run (CLOUD.md § Landing). Overrides harness draft-PR default.
