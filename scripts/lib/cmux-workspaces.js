@@ -252,6 +252,30 @@ function stripLeadingGlyphs(title) {
   return String(title || '').trim().replace(/^[^\p{L}\p{N}]+/u, '').trim();
 }
 
+// BRO-3044: a tag id carries the agent name and an optional session uuid:
+//   workspace:<uuid>:tag:claude_code
+//   workspace:<uuid>:tag:codex.01a055e0-8ac3-7c33-b4fa-6c12c2cf89ce
+// Matching on the tag NAME (any agent) rather than a hard-coded list is deliberate: the
+// failure this guards is "we did not know about that one". Moved here from cmux-triage.js
+// (which now imports it) because every close path's liveness check lives in this file.
+const AGENT_TAG_RE = /:tag:([A-Za-z][A-Za-z0-9_-]*)(?:\.[0-9a-fA-F-]+)?$/;
+
+// Which agent CLI, if any, has a live PROCESS in this workspace (tag name, e.g. 'codex'),
+// from `cmux top --processes --format tsv`. Requires a process row, not just a tag row, so a
+// crashed agent's stale tag stays prunable. ACCEPTED LIMIT (erring toward alive): any tag
+// with a process row counts, so a future non-agent tag would read alive and never be pruned.
+// Live case 2026-09-07: workspace:100 was an idle Codex session holding an unmerged commit
+// and every claude-only check called it dead.
+function liveAgentIn(tsvText) {
+  for (const line of String(tsvText || '').split('\n')) {
+    const c = line.split('\t');
+    if (c[3] !== 'process') continue;
+    const m = AGENT_TAG_RE.exec(c[5] || '');
+    if (m) return m[1];
+  }
+  return null;
+}
+
 // `cmux top --workspace X --processes --format tsv` emits one row per node;
 // a live Claude Code session appears as a tag row whose columns are
 // cpu\trss\tproc\ttype\tid\tparent\tstatus. Column-exact match — a substring
@@ -260,8 +284,18 @@ function stripLeadingGlyphs(title) {
 function hasRunningClaude(tsvText) {
   return String(tsvText).split('\n').some(l => {
     const c = l.split('\t');
-    return c[3] === 'tag' && /:tag:claude_code$/.test(c[4] || '')
-      && (c[6] || '').trim() === 'Running';
+    if (c[3] !== 'tag') return false;
+    const m = AGENT_TAG_RE.exec(c[4] || '');
+    if (!m) return false;
+    const status = (c[6] || '').trim();
+    // claude_code: busy only when cmux says Running (an idle Claude has an EMPTY status).
+    if (m[1] === 'claude_code') return status === 'Running';
+    // BRO-3044: any OTHER agent (Codex, ...) is busy unless it says exactly Idle. The one
+    // Codex tag row seen live reported `Idle`; what it reports mid-turn was never observed,
+    // so "not Idle" is the fail-safe reading (a working tab must never look closable).
+    // Known limit: this reads the TAG row only, so a stale non-Claude tag with no process row
+    // beside an idle Claude reads busy and keeps that tab from auto-closing. Safe direction.
+    return status !== 'Idle';
   });
 }
 
@@ -495,10 +529,19 @@ function claudeMidTurnIn(ref) {
   }
 }
 
+// Pure core of claudeAliveIn (BRO-3044): Claude OR any other agent has a live process.
+function anyAgentAliveInTsv(tsvText) {
+  return hasLiveClaude(tsvText) || liveAgentIn(tsvText) !== null;
+}
+
 function claudeAliveIn(ref) {
   assertValidWorkspaceRef(ref);
   try {
-    return hasLiveClaude(run(['top', '--workspace', ref, '--processes', '--format', 'tsv']));
+    // BRO-3044: ANY live agent process counts (the name is historical). Every close path and
+    // launch guard asks "is something alive here"; asking only about Claude let bsc-prune's
+    // reclaim path close a live Codex session. One `cmux top` call serves both predicates.
+    const tsv = run(['top', '--workspace', ref, '--processes', '--format', 'tsv']);
+    return anyAgentAliveInTsv(tsv);
   } catch {
     // FAIL-SAFE for the close path: a transient cmux error (busy socket,
     // timeout) is indistinguishable from "vanished" here, and guessing
@@ -778,7 +821,7 @@ function pruneDone(opts = {}) {
 
 module.exports = {
   CMUX, cmuxAvailable, run, _resetRunWarnings, LIST_RETRY_TIMEOUTS, RUN_RETRY_BUDGET_MS,
-  parseWorkspaces, parseWorkspacesJson, parseWorkspacesWithFailures, isDoneTitle, hasRunningClaude, hasLiveClaude,
+  parseWorkspaces, parseWorkspacesJson, parseWorkspacesWithFailures, isDoneTitle, hasRunningClaude, hasLiveClaude, liveAgentIn, AGENT_TAG_RE, anyAgentAliveInTsv,
   hasClaudeChrome, isNotFoundError, isValidWorkspaceRef, assertValidWorkspaceRef,
   listWorkspaces, listWorkspacesWithCwd, closeWorkspace, sendToWorkspace, claudeMidTurnIn, claudeAliveIn,
   terminalSurfaceAliveIn, terminalSurfaceConfirmedMissing, checkLiveness, computeClaudeAlive, pruneDone,
