@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-10T11:50:32.661Z",
-  "processed": 105,
-  "failed": 39,
-  "successRate": "72.9%",
+  "updatedAt": "2026-10-10T12:25:16.199Z",
+  "processed": 163,
+  "failed": 51,
+  "successRate": "76.2%",
   "tierBreakdown": {
-    "playwright": 75,
-    "amp": 0,
-    "browserbase": 4,
+    "playwright": 107,
+    "amp": 2,
+    "browserbase": 12,
     "directCookies": 0,
-    "scrapingdog": 12,
-    "scrapingbee": 5,
+    "scrapingdog": 17,
+    "scrapingbee": 12,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 12
+    "archive": 21
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 12,
   "recentActivity": [
     {
       "t": "2026-10-10T10:30:08.144Z",
@@ -94,6 +94,40 @@
       "event": "bb-session",
       "session": "649322b7",
       "url": "https://deadline.com/2026/08/the-whisper-man-review-robert-de-niro-adam-scott-ne"
+    },
+    {
+      "t": "2026-10-10T12:03:08.610Z",
+      "event": "bb-session",
+      "session": "21c1dceb",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-10-10T12:03:08.977Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-10T12:05:39.762Z",
+      "event": "bb-session",
+      "session": "7e9d9a08",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/dirty-dancing-the-musical-comin"
+    },
+    {
+      "t": "2026-10-10T12:06:38.591Z",
+      "event": "bb-session",
+      "session": "0ee99024",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-10T12:06:38.978Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-10T12:07:07.232Z",
+      "event": "bb-session",
+      "session": "876946e5",
+      "url": "https://deadline.com/2026/10/dirty-dancing-musical-broadway-lionsgate-1237147780"
     }
   ]
 }
