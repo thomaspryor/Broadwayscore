@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-10T05:56:14.491Z",
+  "timestamp": "2026-10-10T06:42:18.763Z",
   "stats": {
-    "totalReviews": 53395,
-    "alreadyFlagged": 19636,
-    "dateGuardCatches": 258,
-    "directorMismatch": 1637,
-    "tvFilmSignals": 1538,
-    "londonSignals": 1754,
+    "totalReviews": 53566,
+    "alreadyFlagged": 19721,
+    "dateGuardCatches": 263,
+    "directorMismatch": 1661,
+    "tvFilmSignals": 1554,
+    "londonSignals": 1764,
     "offBroadwaySignals": 512,
     "yearMismatch": 128,
-    "noPublishDate": 5872
+    "noPublishDate": 5828
   },
   "findings": [
     {
@@ -728,6 +728,88 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "a-number-west-end-2022",
+      "file": "artsdesk--matt-wolf.json",
+      "score": 82,
+      "publishDate": "February 21st, 2020",
+      "url": "https://theartsdesk.com/theatre/number-bridge-theatre-review-dream-team-dazzles-anew",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 703d before show (February 21st, 2020 vs 2022-01-24)"
+        }
+      ]
+    },
+    {
+      "showId": "a-number-west-end-2022",
+      "file": "independent--arjun-neil-alim.json",
+      "publishDate": "February 20th, 2020",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/number-bridge-theatre-review-roger-allam-colin-morgan-caryl-churchill-a9345706.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 704d before show (February 20th, 2020 vs 2022-01-24)"
+        }
+      ]
+    },
+    {
+      "showId": "a-number-west-end-2022",
+      "file": "london-theatre--mark-shenton.json",
+      "publishDate": "February 20th, 2020",
+      "url": "https://www.londontheatre.co.uk/reviews/review-caryl-churchills-a-number-at-the-bridge-theatre",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 704d before show (February 20th, 2020 vs 2022-01-24)"
+        }
+      ]
+    },
+    {
+      "showId": "a-number-west-end-2022",
+      "file": "standard--nick-curtis.json",
+      "score": 81,
+      "publishDate": "February 19th, 2020",
+      "url": "https://www.standard.co.uk/culture/theatre/a-number-review-roger-allam-and-colin-morgan-give-fine-performances-in-caryl-churchills-nature-nurture-debate-a4366481.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 705d before show (February 19th, 2020 vs 2022-01-24)"
+        }
+      ]
+    },
+    {
+      "showId": "a-number-west-end-2022",
+      "file": "thestage--natasha-tripney.json",
+      "score": 57,
+      "publishDate": "February 19th, 2020",
+      "url": "https://www.thestage.co.uk/reviews/a-number-review-at-bridge-theatre-london--caryl-churchills-kaleidoscopic-play-diluted",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 705d before show (February 19th, 2020 vs 2022-01-24)"
+        }
+      ]
+    },
+    {
+      "showId": "a-number-west-end-2022",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 95,
+      "publishDate": "February 21st, 2020",
+      "url": "https://www.timeout.com/london/theatre/a-number-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 703d before show (February 21st, 2020 vs 2022-01-24)"
         }
       ]
     },
@@ -2717,6 +2799,76 @@
       ]
     },
     {
+      "showId": "anna-x-west-end-2021",
+      "file": "daily-mail--patrick-marmion.json",
+      "score": 63,
+      "publishDate": "2021-07-19",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "anna-x-west-end-2021",
+      "file": "daily-mail--robert-gore-langton.json",
+      "score": 74,
+      "publishDate": "2021-07-17",
+      "url": "https://www.dailymail.com/home/event/article-9791155/Anna-X-review-Emma-Corrin-amazingly-assured-stage-presence.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "anna-x-west-end-2021",
+      "file": "guardian--arifa-akbar.json",
+      "score": 85,
+      "publishDate": "2021-07-17",
+      "url": "https://www.theguardian.com/stage/2021/jul/17/anna-x-review-sound-and-vision-steal-the-show-in-fake-heiress-tale",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "anna-x-west-end-2021",
+      "file": "independent--paul-taylor.json",
+      "score": 86,
+      "publishDate": "2021-07-18",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/anna-x-play-emma-corrin-review-b1885373.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "anna-x-west-end-2021",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 90,
+      "publishDate": "2021-07-18",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "annie-2012",
       "file": "about-entertainment--ben-brantley.json",
       "score": 71,
@@ -3349,6 +3501,48 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "be-more-chill-west-end-2021",
+      "file": "london-theatre--sophie-thomas.json",
+      "score": 67,
+      "publishDate": "2021-07-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "be-more-chill-west-end-2021",
+      "file": "londontheatre1--olivia-jannesson.json",
+      "score": 77,
+      "publishDate": "2021-07-08",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen brackett\" from be-more-chill-2019"
+        }
+      ]
+    },
+    {
+      "showId": "be-more-chill-west-end-2021",
+      "file": "theatre-weekly--greg-stewart.json",
+      "score": 88,
+      "publishDate": "2021-07-06",
+      "url": "https://theatreweekly.com/review-be-more-chill-at-the-shaftesbury-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen brackett\" from be-more-chill-2019"
         }
       ]
     },
@@ -4410,20 +4604,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "blithe-spirit-west-end-2021",
-      "file": "times-uk--clive-davis.json",
-      "score": 75,
-      "publishDate": "March 11th, 2020",
-      "url": "https://www.thetimes.co.uk/article/blithe-spirit-review-saunders-kicks-ass-as-madame-arcati-2x7283qhj",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 554d before show (March 11th, 2020 vs 2021-09-16)"
         }
       ]
     },
@@ -8248,6 +8428,217 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "constellations-west-end-2021",
+      "file": "artsdesk--ismene-brown.json",
+      "score": 85,
+      "publishDate": "2021-08-13",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael longhurst\" from constellations-2015"
+        }
+      ]
+    },
+    {
+      "showId": "constellations-west-end-2021",
+      "file": "artsdesk--laura-de-lisle.json",
+      "score": 82,
+      "publishDate": "2021-07-02",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael longhurst\" from constellations-2015"
+        }
+      ]
+    },
+    {
+      "showId": "constellations-west-end-2021",
+      "file": "financialtimes--alice-saville.json",
+      "score": 75,
+      "publishDate": "2021-07-09",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael longhurst\" from constellations-2015"
+        }
+      ]
+    },
+    {
+      "showId": "constellations-west-end-2021",
+      "file": "financialtimes--sarah-hemming.json",
+      "score": 91,
+      "publishDate": "2021-08-19",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael longhurst\" from constellations-2015"
+        }
+      ]
+    },
+    {
+      "showId": "constellations-west-end-2021",
+      "file": "londontheatre1--mary-beer.json",
+      "score": 92,
+      "publishDate": "2021-07-04",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael longhurst\" from constellations-2015"
+        }
+      ]
+    },
+    {
+      "showId": "constellations-west-end-2021",
+      "file": "londontheatre1--terry-eastham.json",
+      "score": 89,
+      "publishDate": "2021-08-14",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael longhurst\" from constellations-2015"
+        }
+      ]
+    },
+    {
+      "showId": "constellations-west-end-2021",
+      "file": "observer--susannah-clapp.json",
+      "score": 91,
+      "publishDate": "2021-07-11",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael longhurst\" from constellations-2015"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "constellations-west-end-2021",
+      "file": "telegraph--dzifa-benson.json",
+      "score": 88,
+      "publishDate": "2021-08-13",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/constellations-review-subtly-profound-beautifully-designed-study/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael longhurst\" from constellations-2015"
+        }
+      ]
+    },
+    {
+      "showId": "constellations-west-end-2021",
+      "file": "telegraph--fiona-mountford.json",
+      "score": 78,
+      "publishDate": "2021-07-02",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael longhurst\" from constellations-2015"
+        }
+      ]
+    },
+    {
+      "showId": "constellations-west-end-2021",
+      "file": "the-jewish-chronicle--john-nathan.json",
+      "score": 74,
+      "publishDate": "2021-07-08",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael longhurst\" from constellations-2015"
+        }
+      ]
+    },
+    {
+      "showId": "constellations-west-end-2021",
+      "file": "theatre-weekly--greg-stewart.json",
+      "score": 88,
+      "publishDate": "2021-07-01",
+      "url": "https://theatreweekly.com/review-nick-paynes-constellations-at-the-vaudeville-theatre-with-sheila-atim-and-ivanno-jeremiah-and-zoe-wanamaker-and-peter-capaldi/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael longhurst\" from constellations-2015"
+        }
+      ]
+    },
+    {
+      "showId": "constellations-west-end-2021",
+      "file": "thestage--tom-wicker.json",
+      "score": 87,
+      "publishDate": "2021-08-13",
+      "url": "https://www.thestage.co.uk/long-reviews/constellations-vaudeville-theatre-omari-douglas-russell-tovey-anna-maxwell-martin-chris-odowd-2021",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael longhurst\" from constellations-2015"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "constellations-west-end-2021",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 79,
+      "publishDate": "2021-07-01",
+      "url": "https://www.timeout.com/london/theatre/constellations-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael longhurst\" from constellations-2015"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "constellations-west-end-2021",
+      "file": "whatsonstage--alun-hood.json",
+      "score": 94,
+      "publishDate": "2021-08-13",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael longhurst\" from constellations-2015"
         }
       ]
     },
@@ -15367,6 +15758,20 @@
       ]
     },
     {
+      "showId": "hairspray-the-musical-west-end-2021",
+      "file": "london-theatre--marianka-swain.json",
+      "score": 79,
+      "publishDate": "2021-06-30",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "hamilton-2015",
       "file": "vulture--jesse-green.json",
       "score": 91,
@@ -19758,6 +20163,110 @@
       ]
     },
     {
+      "showId": "jersey-boys-west-end-2021",
+      "file": "british-theatre--vera-liber.json",
+      "publishDate": "2021-08-19",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"des mcanuff\" from jersey-boys-2005"
+        }
+      ]
+    },
+    {
+      "showId": "jersey-boys-west-end-2021",
+      "file": "london-theatre--marianka-swain.json",
+      "publishDate": "2021-08-18",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"des mcanuff\" from jersey-boys-2005"
+        }
+      ]
+    },
+    {
+      "showId": "jersey-boys-west-end-2021",
+      "file": "standard--lizzie-akita.json",
+      "publishDate": "2021-08-18",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"des mcanuff\" from jersey-boys-2005"
+        }
+      ]
+    },
+    {
+      "showId": "jersey-boys-west-end-2021",
+      "file": "telegraph--claire-allfree.json",
+      "publishDate": "2021-08-18",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"des mcanuff\" from jersey-boys-2005"
+        }
+      ]
+    },
+    {
+      "showId": "jersey-boys-west-end-2021",
+      "file": "theatre-weekly--catherine-whitehouse.json",
+      "publishDate": "2021-08-17",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"des mcanuff\" from jersey-boys-2005"
+        }
+      ]
+    },
+    {
+      "showId": "jersey-boys-west-end-2021",
+      "file": "thestage--paul-vale.json",
+      "publishDate": "2021-08-18",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"des mcanuff\" from jersey-boys-2005"
+        }
+      ]
+    },
+    {
+      "showId": "jersey-boys-west-end-2021",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": "2021-08-18",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"des mcanuff\" from jersey-boys-2005"
+        }
+      ]
+    },
+    {
+      "showId": "jersey-boys-west-end-2021",
+      "file": "whatsonstage--alun-hood.json",
+      "publishDate": "2021-08-18",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"des mcanuff\" from jersey-boys-2005"
+        }
+      ]
+    },
+    {
       "showId": "jesa-off-broadway-2026",
       "file": "broadwayworld--unknown.json",
       "score": null,
@@ -20415,6 +20924,33 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": "2021-07-17",
+      "url": "https://www.theguardian.com/stage/2021/jul/28/joseph-and-the-amazing-technicolor-dreamcoat-review-london-palladium",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021",
+      "file": "telegraph--claire-allfree.json",
+      "score": 80,
+      "publishDate": "2021-07-28",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/joseph-amazing-technicolor-dreamcoat-london-palladium-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -42716,6 +43252,84 @@
       ]
     },
     {
+      "showId": "the-windsors-endgame-west-end-2021",
+      "file": "artsdesk--tom-teodorczuk.json",
+      "publishDate": "2021-08-11",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-windsors-endgame-west-end-2021",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": "2021-08-11",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-windsors-endgame-west-end-2021",
+      "file": "theatre-weekly--greg-stewart.json",
+      "publishDate": "2021-08-10",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-windsors-endgame-west-end-2021",
+      "file": "thestage--paul-vale.json",
+      "publishDate": "2021-08-11",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-windsors-endgame-west-end-2021",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": "2021-08-11",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv\nshow\""
+        }
+      ]
+    },
+    {
+      "showId": "the-windsors-endgame-west-end-2021",
+      "file": "whatsonstage--alex-wood.json",
+      "publishDate": "2021-08-11",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "the-witches-west-end-2023",
       "file": "monstagigz--unknown.json",
       "score": 75,
@@ -46712,6 +47326,20 @@
       ]
     },
     {
+      "showId": "2-22-a-ghost-story-west-end-2021",
+      "file": "everything-theatre--gabriel-wilding.json",
+      "score": null,
+      "publishDate": "2021-12-12",
+      "url": "https://everything-theatre.co.uk/2021/12/review-222-a-ghost-story-gielgud-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
       "file": "dailybeast--tim-teeman.json",
       "score": 62,
@@ -47524,6 +48152,7 @@
     {
       "showId": "after-life-west-end-2021",
       "file": "standard--nick-curtis.json",
+      "score": 61,
       "publishDate": "2021-06-11",
       "url": null,
       "findings": [
@@ -47537,6 +48166,7 @@
     {
       "showId": "after-life-west-end-2021",
       "file": "theatrecat--libby-purves.json",
+      "score": 77,
       "publishDate": "2021-07-07",
       "url": null,
       "findings": [
@@ -47550,6 +48180,7 @@
     {
       "showId": "after-life-west-end-2021",
       "file": "thereviewshub--maryam-philpott.json",
+      "score": 85,
       "publishDate": "2021-06-11",
       "url": null,
       "findings": [
@@ -47563,6 +48194,7 @@
     {
       "showId": "after-life-west-end-2021",
       "file": "thestage--ava-wong-davies.json",
+      "score": 87,
       "publishDate": "2021-06-11",
       "url": "https://www.thestage.co.uk/long-reviews/after-life",
       "findings": [
@@ -47576,6 +48208,7 @@
     {
       "showId": "after-life-west-end-2021",
       "file": "times-uk--quentin-letts.json",
+      "score": 76,
       "publishDate": "2021-06-20",
       "url": null,
       "findings": [
@@ -47589,6 +48222,7 @@
     {
       "showId": "after-life-west-end-2021",
       "file": "variety--david-benedict.json",
+      "score": 56,
       "publishDate": "2021-06-10",
       "url": null,
       "findings": [
@@ -49877,6 +50511,20 @@
       "file": "london-theatre--matt-wolf.json",
       "publishDate": "May 25th, 2023",
       "url": "https://www.londontheatre.co.uk/reviews/bleak-expectations-west-end-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "blithe-spirit-west-end-2021",
+      "file": "daily-mail--holly-williams.json",
+      "score": null,
+      "publishDate": "2021-09-25",
+      "url": "https://www.dailymail.com/home/event/article-10021781/Blithe-Spirit-review-evening-belongs-Jennifer-Saunders.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -53170,6 +53818,7 @@
     {
       "showId": "death-of-england-delroy-west-end-2020",
       "file": "artsdesk--matt-wolf.json",
+      "score": 78,
       "publishDate": "2020-11-05",
       "url": null,
       "findings": [
@@ -53183,6 +53832,7 @@
     {
       "showId": "death-of-england-delroy-west-end-2020",
       "file": "guardian--arifa-akbar.json",
+      "score": 90,
       "publishDate": "2020-11-05",
       "url": "https://www.theguardian.com/stage/2020/nov/05/death-of-england-delroy-review-olivier-national-theatre-london-roy-williams-clint-dyer",
       "findings": [
@@ -53196,6 +53846,7 @@
     {
       "showId": "death-of-england-delroy-west-end-2020",
       "file": "thestage--dave-fargnoli.json",
+      "score": 89,
       "publishDate": "2020-11-05",
       "url": "https://www.thestage.co.uk/long-reviews/death-of-england-delroy",
       "findings": [
@@ -53209,6 +53860,7 @@
     {
       "showId": "death-of-england-delroy-west-end-2020",
       "file": "times-uk--clive-davis.json",
+      "score": 63,
       "publishDate": "2020-11-05",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/death-of-england-delroy-review-a-commanding-physical-performance-9bl3ts3ln",
       "findings": [
@@ -53222,6 +53874,7 @@
     {
       "showId": "death-of-england-delroy-west-end-2020",
       "file": "variety--david-benedict.json",
+      "score": 85,
       "publishDate": "2020-11-05",
       "url": null,
       "findings": [
@@ -56801,6 +57454,19 @@
     },
     {
       "showId": "hay-fever-west-end-2026",
+      "file": "artshub--dr-diana-carroll.json",
+      "publishDate": "2026-10-07",
+      "url": "https://www.artshub.co.uk/news/reviews/richard-e-grant-and-christine-baranski-sparkle-in-noel-cowards-hay-fever-2636769/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "hay-fever-west-end-2026",
       "file": "broadwayworld--aliya-al-hassan.json",
       "score": 58,
       "publishDate": "2026-10-02",
@@ -56860,6 +57526,19 @@
       "score": 56,
       "publishDate": "2026-10-02",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/hay-fever-review-richard-e-grant-christine-baranski-b3060249.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "hay-fever-west-end-2026",
+      "file": "islingtontribune--unknown.json",
+      "publishDate": null,
+      "url": "https://www.islingtontribune.co.uk/article/review-hay-fever-at-wyndhams-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -58812,6 +59491,20 @@
       ]
     },
     {
+      "showId": "is-god-is-west-end-2021",
+      "file": "fringereview--simon-jenner.json",
+      "score": null,
+      "publishDate": "2021-10-02",
+      "url": "https://fringereview.co.uk/review/fringereview-uk/2021/is-god-is/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "is-this-a-room-2021",
       "file": "washpost--peter-marks.json",
       "score": 87,
@@ -60480,7 +61173,7 @@
       "showId": "life-of-pi-west-end-2021",
       "file": "shy-strange-manic--kariss-ainsworth.json",
       "score": 89,
-      "publishDate": "2022-10-07",
+      "publishDate": "October 7th, 2022",
       "url": "https://shystrangemanic.com/2022/10/life-of-pi-at-the-wyndhams-theatre.html",
       "findings": [
         {
@@ -63682,6 +64375,19 @@
       ]
     },
     {
+      "showId": "oleanna-west-end-2021",
+      "file": "london-theatre--matt-wolf.json",
+      "publishDate": "2021-07-30",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "oliver-west-end-2024",
       "file": "artsdesk--helen-hawkins.json",
       "score": 96,
@@ -64373,6 +65079,32 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "paradise-west-end-2021",
+      "file": "london-theatre--matt-wolf.json",
+      "publishDate": "2021-08-13",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "paradise-west-end-2021",
+      "file": "the-spectator-uk--lloyd-evans.json",
+      "publishDate": "2021-08-21",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -74564,6 +75296,7 @@
     {
       "showId": "under-milk-wood-west-end-2021",
       "file": "theatrecat--libby-purves.json",
+      "score": 89,
       "publishDate": "2021-07-03",
       "url": null,
       "findings": [
@@ -74577,6 +75310,7 @@
     {
       "showId": "under-milk-wood-west-end-2021",
       "file": "variety--david-benedict.json",
+      "score": 62,
       "publishDate": "2021-06-23",
       "url": null,
       "findings": [
@@ -74856,6 +75590,7 @@
     {
       "showId": "walden-west-end-2021",
       "file": "timeout-london--andrzej-lukowski.json",
+      "score": 77,
       "publishDate": "2021-05-29",
       "url": null,
       "findings": [
