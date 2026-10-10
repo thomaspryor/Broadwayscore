@@ -236,6 +236,7 @@ const PLAIN_HEALTH = [
   [/^Quality: star-vs-score mismatch/, () => 'A few review scores contradict the critic\u2019s own star rating'],
   [/^Quality: corpus drift/, () => 'Some data-quality checks are drifting from their baselines'],
   [/^Commercial model drift/, () => 'The commercial (recoupment) model\u2019s estimates shifted'],
+  [/^Commercial model: stored vs fresh run/, () => 'Some recoupment percentages are out of date until the model re-runs'],
   [/^Credits: (.+)/, (m) => `${m[1]} scraping credits are running low`],
   [/^Stuck work/, () => 'Some high-priority fix cards have sat paused too long'],
   [/^SEO/, () => 'Google page-speed/search health degraded'],
