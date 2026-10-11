@@ -80,6 +80,7 @@ async function main() {
   const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
   const breaker = require('./lib/refetch-circuit-breaker');
   const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
+  const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
   const showsData = JSON.parse(fs.readFileSync(SHOWS_JSON, 'utf8'));
   const showById = {};
@@ -144,7 +145,7 @@ async function main() {
           outletName: outlet || data.outlet || 'unknown',
           criticName: critic || data.criticName || 'unknown',
           openingDate: show.openingDate || null,
-          venue: show.venue || null,
+          venue: show.venue || null, // venue-write-guard-ok: read-only context passed to verifyContent, never written to a record
           market: resolveCvMarket(show) || marketFor(showId, show),
           isLongRunningProduction: isLongRunningProduction(show),
           publishDate: null, // the held date is the suspect; do not let it bias CV
@@ -182,6 +183,8 @@ async function main() {
         case 'wrong-production':
           // Opening-night lane reviews are never flagged (BRO-4807): leave the hold as is.
           if (laneBypasses(data, 'wrongProduction')) { console.log('  lane review: not flagging'); break; }
+          // A file a person cleared or overrode is left alone (manual-clear breadcrumb).
+          if (shouldSkipWrongProductionAudit(data)) { console.log('  manual clear/override on file: not flagging'); break; }
           data.wrongProduction = true;
           invalidateWrongProductionAutoClear(data);
           // Note only, prefixed "Date guard" so priorRuns auto-clear still applies.
