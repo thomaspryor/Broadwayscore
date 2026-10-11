@@ -3,6 +3,7 @@ import { getFantasyShowsSorted, getFantasyConfig } from '@/lib/data-fantasy';
 import { ELIGIBILITY_MARKERS, type FantasyShow } from '@/config/fantasy';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getScoreLabel } from '@/config/score-buckets';
+import FantasyOwnershipTag from '@/components/fantasy/FantasyOwnershipTag';
 
 export const metadata: Metadata = {
   title: 'Fantasy Draft Guide',
@@ -38,8 +39,9 @@ function ShowCard({ show, variant = 'default' }: { show: { id: string } & Fantas
     <div className={`flex items-start gap-3 rounded-lg p-3 transition-colors ${
       variant === 'muted' ? 'bg-surface-raised/30 hover:bg-surface-raised/50' : 'bg-surface-raised/50 hover:bg-surface-raised/80'
     }`}>
-      <div className="w-12 text-center shrink-0 pt-1">
+      <div className="w-14 text-center shrink-0 pt-1 flex flex-col items-center">
         <span className="text-lg font-bold text-emerald-400">${show.price}</span>
+        <FantasyOwnershipTag showId={show.id} className="text-[10px] leading-tight mt-0.5" />
       </div>
       {show.image && (
         /* eslint-disable-next-line @next/next/no-img-element */

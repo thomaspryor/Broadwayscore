@@ -5,6 +5,7 @@ import type { FantasyShow } from '@/config/fantasy';
 import { ELIGIBILITY_MARKERS } from '@/config/fantasy';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { showFormatTitle } from '@/lib/show-format';
+import FantasyOwnershipTag from './FantasyOwnershipTag';
 
 interface FantasyShowPickerProps {
   shows: Array<{ id: string } & FantasyShow>;
@@ -210,6 +211,7 @@ export default function FantasyShowPicker({
                       {!show.eligible.boxOffice && (
                         <span className="text-gray-500 whitespace-nowrap">† no box office</span>
                       )}
+                      <FantasyOwnershipTag showId={show.id} />
                     </div>
                   </div>
                   <span className={`font-bold shrink-0 ${affordable ? 'text-emerald-400' : 'text-gray-600'}`}>
