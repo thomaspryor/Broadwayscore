@@ -118,7 +118,7 @@ function hasWrongUrlSignal(f) {
  * @param {Date} [args.now]             clock for the unscored grace window
  * @returns {null | {type: string, recoverable: boolean}}
  */
-function classifySilentGap({ file, show, tier, outletScored, now }) {
+function classifySilentGap({ file, show, tier, outletScored, now, filePath }) {
   if (!file || typeof file !== 'object') return null;
   if (tier == null || tier > MAJOR_TIER_MAX) return null;
   if (outletScored) return null;
@@ -128,7 +128,11 @@ function classifySilentGap({ file, show, tier, outletScored, now }) {
   // (flag/context filters) AND hasValidScore (score-presence half). No filePath
   // here (pure classifier) → duplicateOf falls back to unconditional skip, which
   // matches the deleted mirror's passesFlagFilters behavior.
-  if (isIncludableForRebuild(file, show) && hasValidScore(file)) return null;
+  // filePath lets the includability check see sibling files (knownSyndicationSecondary,
+  // circular duplicateOf) exactly as the scorer and rebuild do; without it a
+  // deliberately-excluded secondary (nydailynews Chris Jones next to his
+  // chicagotribune primary) reads as 'unscored' forever.
+  if (isIncludableForRebuild(file, show, filePath) && hasValidScore(file)) return null;
 
   // Editorial verdicts and wrong-URL phantoms are correct absences regardless
   // of which branch below they'd land in.
@@ -141,7 +145,7 @@ function classifySilentGap({ file, show, tier, outletScored, now }) {
   // (2026-07-19: shifters playbill--unknown husk emailed a CRITICAL alert).
   if (isRoundupPageAsReview(file)) return null;
 
-  if (isIncludableForRebuild(file, show)) {
+  if (isIncludableForRebuild(file, show, filePath)) {
     // Includable content (flags + context clean), but no valid score yet.
     if (isEmptyBodyFile(file)) {
       return { type: 'empty-body', recoverable: isRecoverableFlaggedFile(file) };
@@ -160,6 +164,7 @@ function classifySilentGap({ file, show, tier, outletScored, now }) {
       dispatchable = unscoredSkipReason(file, {
         show,
         showTitle: show && show.title ? show.title : undefined,
+        filePath,
       }) === null;
     } catch {
       dispatchable = true;
@@ -354,14 +359,14 @@ function otherAlertPathKey(showId, file, thisPathPrefix) {
  *
  * @param {object} args same shape as classifySilentGap's args.
  */
-function classifyGapCardState({ file, show, tier, outletScored, now }) {
+function classifyGapCardState({ file, show, tier, outletScored, now, filePath }) {
   if (!file || typeof file !== 'object') return null;
   if (tier == null || tier > MAJOR_TIER_MAX) return null;
   if (outletScored) return GAP_CARD_STATE.COLLECTED;
-  if (isIncludableForRebuild(file, show) && hasValidScore(file)) return GAP_CARD_STATE.COLLECTED;
+  if (isIncludableForRebuild(file, show, filePath) && hasValidScore(file)) return GAP_CARD_STATE.COLLECTED;
   if (hasEditorialExclusion(file) || hasWrongUrlSignal(file)) return GAP_CARD_STATE.NO_REVIEW;
   if (isRoundupPageAsReview(file)) return GAP_CARD_STATE.NO_REVIEW;
-  const gap = classifySilentGap({ file, show, tier, outletScored, now });
+  const gap = classifySilentGap({ file, show, tier, outletScored, now, filePath });
   if (gap) return GAP_CARD_STATE.OPEN;
   // classifySilentGap's own final branch excludes contentTier:'invalid' from
   // ever counting as a recoverable empty-body gap — mirror that exclusion

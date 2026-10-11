@@ -326,7 +326,7 @@ async function main() {
         const mightBeOpen = ledgerSnapshot.conditions[gapKey]?.status === 'open'
           || ledgerSnapshot.conditions[backstopKey]?.status === 'open';
         if (!mightBeOpen) return;
-        const terminal = classifyGapCardState({ file: fileData, show, tier, outletScored: scoredOutlets.has(outletId), now: new Date() });
+        const terminal = classifyGapCardState({ file: fileData, show, tier, outletScored: scoredOutlets.has(outletId), now: new Date(), filePath: path.join(dir, f) });
         if (terminal !== GAP_CARD_STATE.COLLECTED && terminal !== GAP_CARD_STATE.NO_REVIEW) return;
         const closedGap = resolveCondition(gapKey);
         const closedBackstop = resolveCondition(backstopKey);
@@ -335,7 +335,7 @@ async function main() {
         }
       };
 
-      let gap = classifySilentGap({ file: d, show, tier, outletScored: scoredOutlets.has(outletId), now: new Date() });
+      let gap = classifySilentGap({ file: d, show, tier, outletScored: scoredOutlets.has(outletId), now: new Date(), filePath: path.join(dir, f) });
       if (!gap) {
         closeCardIfTerminal(d);
         continue;
@@ -379,6 +379,7 @@ async function main() {
           file: fresh, show, tier,
           outletScored: scoredOutlets.has(outletId),
           now: new Date(),
+          filePath: path.join(dir, f),
         });
           if (fresh && freshGap == null) {
             console.log(`  ♻️  recovered ${show.id}/${f} from its own URL`);
