@@ -1361,5 +1361,34 @@
       }
     ],
     "queuedAt": "2026-10-11T05:17:44.369Z"
+  },
+  {
+    "conditionKey": "land:land/bro-3401-forum-guard",
+    "title": "Landing blocked: unit-tests-node red on land/bro-3401-forum-guard",
+    "description": "land.yml did not land land/bro-3401-forum-guard: the unit-tests-node gate went red at 1fbc917155. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38113253909",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-3401-forum-guard"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "1fbc917155a2791ce3fbf98ad0875167002972d9"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38113253909"
+      }
+    ],
+    "queuedAt": "2026-10-11T05:24:54.559Z"
   }
 ]
