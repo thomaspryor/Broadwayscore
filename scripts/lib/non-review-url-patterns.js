@@ -399,6 +399,16 @@ function namedNonReviewReason(url, opts) {
  * listingPageUrlManualClear).
  */
 const LISTING_PAGE_URL_PATTERNS = [
+  // Discussion forums / message boards (BRO-3401). A user thread post is not a
+  // critic review: theatreboard.com (ProBoards) scored a preview punter 90/Rave.
+  // Host-scoped on purpose: a bare /topic/ path is also a real news topic page
+  // (britannica.com/topic/...), so it is only a forum on a forum-shaped host.
+  { host: /(^|\.)theatreboard\.com$/, path: /^\/(thread|board|user|forum)\b/i, reason: 'forum-thread' },
+  { host: /(^|\.)proboards\.com$/, path: /./, reason: 'forum-thread' },
+  { host: /^forum\.broadwayworld\.com$/, path: /^\/(thread|forum|newcsd)/i, reason: 'forum-thread' },
+  { host: /(^|\.)balletcoforum\.com$/, path: /^\/(topic|forum)\b/i, reason: 'forum-thread' },
+  { host: /(^|\.)yuku\.com$/, path: /^\/(topic|forum)\b/i, reason: 'forum-thread' },
+  { host: /^forums?\./i, path: /^\/(thread|topic|forum|t\/)/i, reason: 'forum-thread' },
   // Talkin' Broadway's review index pages (/page/world/index.html and any
   // other .../index.html). Its reviews are /page/<section>/<slug>.html.
   { host: /(^|\.)talkinbroadway\.com$/, path: /\/index\.html$/i, reason: 'review-index-page' },
