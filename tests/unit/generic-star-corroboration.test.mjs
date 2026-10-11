@@ -141,6 +141,39 @@ describe('adjudicationStarBasisGone (take-me-out-2022 Theater Life: adjudicated 
   });
 });
 
+describe('third pass: Diana (Time Out) and Theater Life title stars', () => {
+  const diana = (over = {}) => ({
+    outletId: 'timeout', fullText: 'x'.repeat(400), scoreSource: null,
+    originalScore: '1/5', originalScoreNormalized: 20, originalScoreSource: 'text-pattern',
+    llmScore: { score: 58, confidence: 'medium' }, ensembleData: { needsReview: false },
+    adjudicatedScore: 20,
+    adjudicationNote: 'Auto-adjudicated (high confidence, sided with thumbs): The 1/5 star rating is definitive and overrides any ambiguity',
+    adjudicationHistory: [{ sidedWith: 'thumbs' }], ...over,
+  });
+  test('sidedWith says thumbs but the reasoning rests on the star rating: still star-based', () => {
+    assert.equal(adjudicationSidedWithStars(diana()), true);
+  });
+  test('an adjudication that sided with the LLM is never star-based even if it mentions a star', () => {
+    assert.equal(adjudicationSidedWithStars(diana({
+      adjudicationHistory: [{ sidedWith: 'LLM' }],
+      adjudicationNote: 'Auto-adjudicated (high confidence, sided with LLM): despite the 1/5 star rating is definitive wording',
+    })), false);
+  });
+  test('thumbs-sided reasoning that never names a star rating is untouched', () => {
+    assert.equal(adjudicationSidedWithStars(diana({ adjudicationNote: 'Auto-adjudicated (high confidence, sided with thumbs): the critic is lukewarm' })), false);
+  });
+  test('getBestScore drops the junk-star adjudication on the Diana-shaped record', () => {
+    const r = getBestScore(diana(), { stats: {} });
+    assert.equal(r.score, 58);
+    assert.notEqual(r.source, 'adjudicated');
+  });
+  test('wp-api-title counts as a generic-pattern star source', () => {
+    assert.equal(isGenericPatternStar({ originalScoreSource: 'wp-api-title' }), true);
+    assert.equal(isGenericPatternStar({ scoreSource: 'wp-api-title' }), true);
+    assert.equal(isGenericPatternStar({ originalScoreSource: 'unicode-stars' }), false);
+  });
+});
+
 describe('adjudicationSidedWithStars', () => {
   test('covers the wording variants seen in the corpus', () => {
     for (const w of ['aggregatorStars', 'rating', 'aggregator', 'stars', 'originalScore']) {
