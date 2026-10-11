@@ -403,11 +403,37 @@ function redditSaveDecision(prevReddit, nextReddit, { fetchFailed = false } = {}
   return nextBelow ? 'save-below-floor' : 'save';
 }
 
+// Statuses the Reddit scraper will search. Earlier ones (upcoming, announced)
+// have no audience yet, and posts from before previews are filtered out anyway.
+const REDDIT_ACTIVE_STATUSES = new Set(['open', 'previews', 'closed']);
+
+/**
+ * Split a --shows id/slug list into shows to scrape, shows that exist but have
+ * not started previews, and ids that match nothing (BRO-5094). The new-show
+ * go-live step dispatches every auto-promoted show, most of them months from
+ * previews; that is routine and must not fail the run, while an unknown id
+ * (a typo) still should.
+ * @returns {{active: object[], notStarted: object[], unknown: string[]}}
+ */
+function partitionRequestedShows(requestedIds, allShows) {
+  const active = [];
+  const notStarted = [];
+  const unknown = [];
+  for (const id of requestedIds) {
+    const show = allShows.find(s => s.id === id || s.slug === id);
+    if (!show) unknown.push(id);
+    else if (REDDIT_ACTIVE_STATUSES.has(show.status)) { if (!active.includes(show)) active.push(show); }
+    else if (!notStarted.includes(show)) notStarted.push(show);
+  }
+  return { active, notStarted, unknown };
+}
+
 module.exports = {
   lastRedditTouchMs,
   isRedditFresh,
   redditBackoffReason,
   redditSaveDecision,
+  partitionRequestedShows,
   REDDIT_NO_DATA_BACKOFF_DAYS,
   isRoundupOrMegathread,
   isGenericTitle,
