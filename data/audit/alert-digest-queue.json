@@ -1438,18 +1438,6 @@
     "queuedAt": "2026-10-11T06:29:29.595Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Run data validation, Audit review contamination",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38118303742",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-11T06:36:46.936Z"
-  },
-  {
     "conditionKey": "star-band:regressions",
     "title": "Star-band detector: 28 review(s) flagged for anchored re-score",
     "description": "{\"unanchored\":18,\"false-truncation\":10} across the whole corpus, by market {\"west-end\":24,\"broadway\":3,\"regional\":1}. Each was flagged needsRescore and the normal drain repairs it, no action needed.\n- [unanchored] garry-starr-classic-penguins-garrick-west-end-2026/times-uk--donald-hutera.json 4/5 stars band 71-90\n- [unanchored] operation-mincemeat-west-end-2024/musical-theatre-review--rebecca-sinclair.json 5/5 stars band 91-100\n- [unanchored] operation-mincemeat-west-end-2024/broadwayworld--unknown.json 5/5 stars band 91-100\n- [unanchored] abba-voyage-off-west-end-2026/london-theatre--sophie-thomas.json 5/5 band 91-100\n- [unanchored] abba-voyage-off-west-end-2026/artsdesk--katie-colombus.json 100 band 91-100\n- [unanchored] everybodys-talking-about-jamie-west-end-2024/theatre-weekly--greg-stewart.json 4/5 stars band 71-90\n- [unanchored] everybodys-talking-about-jamie-west-end-2024/broadwayworld--niamh-jones.json 5/5 band 91-100\n- [unanchored] lost-atoms-off-west-end-2026/standard--nick-curtis.json 4/5 stars band 71-90\n- [unanchored] waiting-for-godot-west-end-2024/timeout-london--andrzej-lukowski.json 4/5 band 71-90\n- [unanchored] white-rabbit-red-rabbit-west-end-2024/broadwayworld--mica-blackwell.json 5/5 band 91-100",
@@ -1518,5 +1506,17 @@
       }
     ],
     "queuedAt": "2026-10-11T06:38:38.247Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38118935324",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-11T06:48:36.932Z"
   }
 ]
