@@ -48,12 +48,13 @@ const { displaysModel, playedWeeks, MIN_PLAYED_WEEKS } = require('./lib/model-di
 
 const KNOWN_OPTS = ['previewsFromWeekly', 'playedWeeksOnly', 'eraAdjust', 'taxCreditCitedOnly', 'datedCosts', 'ownRunOnly'];
 const args = process.argv.slice(2);
-const USAGE = `Usage: node scripts/backtest-recoupment-ground-truth.js (--opt=${KNOWN_OPTS.join('|')} [--opt=...] | --base=<git ref>) [--truth=reported|all] [--as-of-report] [--displayed] [--displayable-only] [--markdown] [--json] [--strict]`;
+const USAGE = `Usage: node scripts/backtest-recoupment-ground-truth.js (--opt=${KNOWN_OPTS.join('|')} [--opt=...] | --base=<git ref> | --timing) [--truth=reported|all] [--as-of-report] [--displayed] [--displayable-only] [--markdown] [--json] [--strict]`;
 if (require('./lib/cli-help').hasHelpFlag(args)) { console.log(USAGE); process.exit(0); }
 const names = args.filter((a) => a.startsWith('--opt=')).map((a) => a.slice(6));
 const BASE = (args.find((a) => a.startsWith('--base=')) || '').slice(7);
 const TRUTH = (args.find((a) => a.startsWith('--truth=')) || '--truth=reported').slice(8);
-if ((!names.length && !BASE) || names.some((n) => !KNOWN_OPTS.includes(n)) || !['reported', 'all'].includes(TRUTH)) { console.error(USAGE); process.exit(2); }
+const TIMING = args.includes('--timing');
+if ((!names.length && !BASE && !TIMING) || names.some((n) => !KNOWN_OPTS.includes(n)) || !['reported', 'all'].includes(TRUTH)) { console.error(USAGE); process.exit(2); }
 const OPTS = Object.fromEntries(names.map((n) => [n, true]));
 const AS_OF_REPORT = args.includes('--as-of-report');
 const MARKDOWN = args.includes('--markdown');
@@ -72,13 +73,15 @@ function loadBaseModelRun(ref) {
   if (!fs.existsSync(path.join(lib, 'model-drift.js'))) return { skip: `base ${ref} predates model-drift.js` };
   // A base model without asOf would score "now" against a new side scored as of the report.
   if (AS_OF_REPORT && !/\basOf\b/.test(fs.readFileSync(path.join(lib, 'recoupment-model.js'), 'utf8'))) return { skip: `base ${ref} model has no asOf option` };
-  return { run: require(path.join(lib, 'model-drift.js')).liveModelRun };
+  return { run: require(path.join(lib, 'model-drift.js')).liveModelRun, lib };
 }
 let baseRun = liveModelRun;
+let baseLib = path.join(__dirname, 'lib');
 if (BASE) {
   const b = loadBaseModelRun(BASE);
   if (b.skip) { console.log(`Recoupment backtest skipped: ${b.skip}.`); process.exit(0); }
   baseRun = b.run;
+  baseLib = b.lib;
 }
 // --displayed: score what an investor bar would show, which never goes below 0.
 const DISPLAYED = args.includes('--displayed');
@@ -99,6 +102,15 @@ const commercial = load('commercial.json').shows;
 const L = makeGrossesLookup(load('grosses.json'), load('grosses-history.json'));
 const by = {};
 for (const s of shows) { if (s.slug) by[s.slug] = s; if (s.id) by[s.id] = s; }
+
+if (TIMING) {
+  require('./lib/recoupment-timing-report').runTiming({
+    shows, commercial, lookup: L, by, baseLib, newLib: path.join(__dirname, 'lib'), base: BASE, truth: TRUTH,
+    displayableOnly: DISPLAYABLE_ONLY, displayed: DISPLAYED, json: args.includes('--json'), strict: args.includes('--strict'),
+    aggregateOnly: AGGREGATE_ONLY, markdown: MARKDOWN,
+  });
+  process.exit(process.exitCode || 0);
+}
 
 const rows = [];
 const skipped = { noShow: 0, noModel: 0, notDisplayable: 0, inference: 0, newOnly: 0 };
