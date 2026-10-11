@@ -156,7 +156,7 @@ function evaluateEvidence(refs, { isCommitOnMain, getPrMergeCommit, mentionsIssu
   }
   for (const n of prs) {
     const pr = typeof getPrMergeCommit === 'function' ? getPrMergeCommit(n) : null;
-    if (!pr) { checked.push({ kind: 'pr', ref: n, onMain: null, detail: getPrMergeCommit.lastError || 'lookup failed' }); continue; }
+    if (!pr) { checked.push({ kind: 'pr', ref: n, onMain: null, detail: (getPrMergeCommit && getPrMergeCommit.lastError) || 'lookup failed' }); continue; }
     if (!pr.sha) { checked.push({ kind: 'pr', ref: n, onMain: false, detail: `state ${pr.state || 'unknown'}, no merge commit` }); continue; }
     const r = isCommitOnMain(pr.sha);
     if (r === true && attributed('pr', n, pr.sha, n)) {
@@ -181,7 +181,7 @@ function evaluateEvidence(refs, { isCommitOnMain, getPrMergeCommit, mentionsIssu
         }
         checked.push({ kind: 'sibling', ref: `${repo}@${sha}`, onMain: true, attributed: named, detail: named === false ? `does not mention ${issueIdentifier}` : 'attribution unreadable' });
       } else {
-        checked.push({ kind: 'sibling', ref: `${repo}@${sha}`, onMain: null, detail: (rc && rc.status ? `compare says ${rc.status}` : (siblingCommit.lastError || 'lookup failed')) });
+        checked.push({ kind: 'sibling', ref: `${repo}@${sha}`, onMain: null, detail: (rc && rc.status ? `compare says ${rc.status}` : ((siblingCommit && siblingCommit.lastError) || 'lookup failed')) });
       }
     }
   }
@@ -278,6 +278,7 @@ function defaultHttpGetJson(url, { timeoutMs = 20000 } = {}) {
 function makeRemoteLookup({ originRepo = null, httpGetJson = defaultHttpGetJson, log = () => {} } = {}) {
   const commits = new Map();
   const pulls = new Map();
+  const errors = new Map();
   const base = originRepo ? `https://api.github.com/repos/${originRepo}` : null;
   const self = {
     enabled: Boolean(base),
@@ -285,10 +286,11 @@ function makeRemoteLookup({ originRepo = null, httpGetJson = defaultHttpGetJson,
     commit(sha) { return self.commitIn(originRepo, sha); },
     // `repo` is "owner/name"; the origin repo or a known sibling (BRO-3435).
     commitIn(repo, sha) {
+      self.lastError = null;
       if (!repo || !sha) return null;
       const key = `${repo}@${sha}`;
       const base = `https://api.github.com/repos/${repo}`;
-      if (commits.has(key)) return commits.get(key);
+      if (commits.has(key)) { const c = commits.get(key); if (!c) self.lastError = errors.get(key) || null; return c; }
       const j = httpGetJson(`${base}/compare/main...${encodeURIComponent(sha)}?per_page=1`);
       let r = null;
       if (j && typeof j.status === 'string') {
@@ -301,9 +303,11 @@ function makeRemoteLookup({ originRepo = null, httpGetJson = defaultHttpGetJson,
         log(`[done-evidence-verify] GitHub compare ${repo} main...${sha}: no answer${lastHttpError ? ` (${lastHttpError})` : ''}`);
       }
       commits.set(key, r);
+      if (!r) errors.set(key, lastHttpError);
       return r;
     },
     pull(n) {
+      self.lastError = null;
       if (!base || !n) return null;
       if (pulls.has(n)) return pulls.get(n);
       const j = httpGetJson(`${base}/pulls/${Number(n)}`);
