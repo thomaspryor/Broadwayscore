@@ -314,8 +314,14 @@ function buildReviewLedCandidates({ season, lookups, shows, today }) {
     if (!row.tr) { no(row.error || 'no Theatre Record production matched'); continue; }
     const dates = parseTrHeaderDates(row.header);
     if (!dates.previewsStartDate && !dates.openingDate) { no('no dates on the Theatre Record production page'); continue; }
+    if (isIssuePeriod(dates)) { no('Theatre Record issue period, not a run'); continue; }
     const c = { ...base, ...dates };
     const startDate = c.previewsStartDate || c.openingDate;
+    // A page link spans its whole volume year, so a same-title production
+    // that began after this review can tie on month distance (BRO-5031).
+    if (review.date && Date.parse(startDate) > Date.parse(review.date) + 14 * DAY_MS) {
+      no('Theatre Record production starts after the review'); continue;
+    }
     // A run that began in the late summer before its first review belongs to
     // the season it started in; no other season's lookups will ever see it.
     // Same date decideWeHistoricalPromotion() checks: press night first.
@@ -346,6 +352,20 @@ function buildReviewLedCandidates({ season, lookups, shows, today }) {
   return candidates;
 }
 
+/**
+ * True for a bare range that is exactly one calendar month (1st to last day)
+ * with no press night: the 2018 TR PDFs print "Issue 17-18 Openings
+ * 1-30 September 2018" beside each title, and that banner read as a run
+ * (Antony and Cleopatra, NT 2018, ran 18 Sep 2018 to 19 Jan 2019; BRO-5031).
+ */
+function isIssuePeriod(d) {
+  if (!d || d.openingDate || !d.previewsStartDate || !d.closingDate) return false;
+  const [y, m, day] = d.previewsStartDate.split('-').map(Number);
+  if (day !== 1) return false;
+  const last = new Date(Date.UTC(y, m, 0)).toISOString().slice(0, 10);
+  return d.closingDate === last;
+}
+
 /** Where the CI resolver saves TR lookups for a season. */
 function reviewLedPath(root, season) {
   return require('path').join(root, 'data', 'audit', `we-historical-review-led-${season}.json`);
@@ -358,6 +378,7 @@ module.exports = {
   selectLookups,
   trIssueMonth,
   trIssueMonthRange,
+  isIssuePeriod,
   trVenueName,
   pickTrForReview,
   parseTrHeaderDates,

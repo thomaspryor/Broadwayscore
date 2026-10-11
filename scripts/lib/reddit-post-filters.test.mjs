@@ -315,3 +315,21 @@ test('redditSaveDecision (BRO-4777): fetch errors never demote a counting Reddit
     'a stored sample with no score never counted');
   assert.equal(redditSaveDecision(small, { score: 70, reviewCount: 50 }), 'save', '50 is at the floor');
 });
+
+test('partitionRequestedShows (BRO-5094): not-yet-started shows are skipped, unknown ids reported', () => {
+  const { partitionRequestedShows } = require('./reddit-post-filters.js');
+  const all = [
+    { id: 'a-2026', slug: 'a', status: 'open' },
+    { id: 'b-2026', slug: 'b', status: 'previews' },
+    { id: 'c-2027', slug: 'c', status: 'upcoming' },
+    { id: 'd-2027', slug: 'd', status: 'announced' },
+    { id: 'e-2020', slug: 'e', status: 'closed' },
+  ];
+  const r = partitionRequestedShows(['a-2026', 'b', 'c-2027', 'd-2027', 'e-2020', 'nope', 'a'], all);
+  assert.deepEqual(r.active.map(s => s.id), ['a-2026', 'b-2026', 'e-2020'], 'id or slug, de-duplicated');
+  assert.deepEqual(r.notStarted.map(s => s.id), ['c-2027', 'd-2027']);
+  assert.deepEqual(r.unknown, ['nope']);
+  const onlyUpcoming = partitionRequestedShows(['c-2027'], all);
+  assert.equal(onlyUpcoming.active.length, 0);
+  assert.equal(onlyUpcoming.unknown.length, 0, 'an all-upcoming dispatch is not an error');
+});
