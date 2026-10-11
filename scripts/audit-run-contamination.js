@@ -32,7 +32,7 @@
 const fs = require('fs');
 const path = require('path');
 const { earliestShowDate } = require('./lib/date-guard');
-const { findMatchingPriorRun } = require('./lib/wrong-production-autoclear');
+const { isWithinPriorRun, isWithinTourLeg } = require('./lib/wrong-production-autoclear');
 const {
   republishMarker, evaluateRepublishedReview, wrongProductionFlagVsClear,
 } = require('./lib/run-contamination');
@@ -80,13 +80,14 @@ function indexFiles(shows, dir, needText) {
         wrongProduction: r.wrongProduction === true,
         wrongProductionManualClear: r.wrongProductionManualClear === true,
         wrongProductionOverride: r.wrongProductionOverride === true,
+        overrideSetBy: r.wrongProductionOverrideSetBy || null,
         allowEarlyDate: r.allowEarlyDate === true, routedFromShowId: r.routedFromShowId || null,
         humanReviewedWrongProduction: r.humanReviewedWrongProduction,
         flagVsClear: wrongProductionFlagVsClear(r),
         originalScore: r.originalScore, originalScoreSource: r.originalScoreSource,
         humanReviewScore: r.humanReviewScore,
       };
-      if (needText.republish) rec.republish = evaluateRepublishedReview({ fullText: text, show: s });
+      if (needText.republish) rec.republish = evaluateRepublishedReview({ fullText: text, show: s, publishDate: r.publishDate });
       if (needText.stars) rec.hasStarEvidence = /\b[0-5](?:\.5)?\s*(?:\/|out of|-)\s*5\b|\bstars?\b|★|☆|five-star|four-star|three-star/i.test(text);
       list.push(rec);
     }
@@ -146,8 +147,8 @@ function class2(ctx) {
     const days = daysBetween(earliest, r.publishDate);
     if (days <= 1) continue;
     const f = matchFile(r, files.get(r.showId));
-    const priorRun = !!findMatchingPriorRun(r.publishDate, (s.priorRuns || []).filter((p) => p && typeof p === 'object'));
-    const tourLeg = !!findMatchingPriorRun(r.publishDate, (s.tourLegs || []).filter((p) => p && typeof p === 'object'));
+    const priorRun = !!isWithinPriorRun(r.publishDate, (s.priorRuns || []).filter((p) => p && typeof p === 'object'));
+    const tourLeg = !!isWithinTourLeg(r.publishDate, (s.tourLegs || []).filter((p) => p && typeof p === 'object'));
     let why = 'undeclared';
     if (priorRun) why = 'declared-prior-run';
     else if (tourLeg) why = 'declared-tour-leg';
@@ -185,7 +186,9 @@ function class3(ctx) {
     const f = matchFile(r, files.get(r.showId));
     if (!f || seen.has(`${r.showId}/${f.file}`)) continue;
     seen.add(`${r.showId}/${f.file}`);
-    if (f.republish && f.republish.exclude) {
+    // A human clear (ManualClear without a script setBy) is a recorded verdict, not a miss.
+    const humanCleared = f.wrongProductionManualClear && !/\.js$/.test(String(f.overrideSetBy || ''));
+    if (f.republish && f.republish.exclude && !humanCleared) {
       hits.push({ showId: r.showId, file: f.file, outletId: r.outletId, markerYear: f.republish.markerYear, snippet: f.republish.snippet, pub: r.publishDate, inherited: !!r.inheritedFromShowId });
     }
   }

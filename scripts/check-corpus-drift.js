@@ -133,6 +133,17 @@ const AUDITS = [
     args: ['--full'],
     crashCodes: [2],           // 2 = scan failed (missing corpus / malformed)
   },
+  // BRO-5000/BRO-4998: reviews of another run, production or date counted toward a score.
+  // Advisory first (CLAUDE.md rule 19): the ceiling is the post-remediation count, so a
+  // NEW recent pre-window row, counted republished page, or human flag beaten by a script
+  // clear shows up in the digest. Classes 1/5/6/7 are reported in the audit's own output.
+  {
+    name: 'run-contamination',
+    label: 'reviews of another run/production/date counted (recent pre-window, republished page, flag beaten by clear)',
+    script: 'audit-run-contamination.js',
+    args: ['--max-actionable=44'],
+    crashCodes: [3],           // 0 under ceiling / 1 above (drift) / 3 = corpus unreadable
+  },
   {
     name: 'cross-show-url',
     label: 'cross-show URL contamination (review URL slug names a different show)',
