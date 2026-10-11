@@ -1,9 +1,12 @@
 {
   "issueNumber": "bro-4923",
   "planId": "7b2e9a14-5c3d-4f60-8a1b-4923c0de0002",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-11T21:50:00.000Z",
-  "submitter": { "name": null, "email": null },
+  "submitter": {
+    "name": null,
+    "email": null
+  },
   "plan": {
     "summary": "Fill in the RSC Stratford As You Like It (Daniel Evans, Jonathan Groff as Rosalind), which the BroadwayWorld roundup added with no cast, dates or director, and mark the truncated BWW excerpt of Helen Shaw's NYT review as a duplicate of her full review.",
     "steps": [
@@ -19,20 +22,62 @@
         "field": "cast",
         "oldValue": null,
         "newValue": [
-          { "name": "Jonathan Groff", "role": "Rosalind" },
-          { "name": "Fisayo Akinade", "role": "Celia" },
-          { "name": "Elliot Barnes-Worrell", "role": "Orlando" },
-          { "name": "Giles Cooper", "role": "Le Beau" },
-          { "name": "Greg Haiste", "role": "Touchstone" },
-          { "name": "Steffan Harri", "role": "Gwilym / Syr Osian" },
-          { "name": "Rhys Parry Jones", "role": "Corin / Hymen / a Lord at Court / a Lord in Arden" },
-          { "name": "Edward Judge", "role": "Charles the Wrestler / Silvius" },
-          { "name": "Richard McCabe", "role": "Jaques" },
-          { "name": "Luke McCall", "role": "Amiens" },
-          { "name": "Tim Preston", "role": "Phoebe" },
-          { "name": "Caleb Roberts", "role": "Oliver" },
-          { "name": "Gareth Snook", "role": "Adam / Audrey" },
-          { "name": "Gary Wilmot", "role": "Duke Frederick / Duke Senior" }
+          {
+            "name": "Jonathan Groff",
+            "role": "Rosalind"
+          },
+          {
+            "name": "Fisayo Akinade",
+            "role": "Celia"
+          },
+          {
+            "name": "Elliot Barnes-Worrell",
+            "role": "Orlando"
+          },
+          {
+            "name": "Giles Cooper",
+            "role": "Le Beau"
+          },
+          {
+            "name": "Greg Haiste",
+            "role": "Touchstone"
+          },
+          {
+            "name": "Steffan Harri",
+            "role": "Gwilym / Syr Osian"
+          },
+          {
+            "name": "Rhys Parry Jones",
+            "role": "Corin / Hymen / a Lord at Court / a Lord in Arden"
+          },
+          {
+            "name": "Edward Judge",
+            "role": "Charles the Wrestler / Silvius"
+          },
+          {
+            "name": "Richard McCabe",
+            "role": "Jaques"
+          },
+          {
+            "name": "Luke McCall",
+            "role": "Amiens"
+          },
+          {
+            "name": "Tim Preston",
+            "role": "Phoebe"
+          },
+          {
+            "name": "Caleb Roberts",
+            "role": "Oliver"
+          },
+          {
+            "name": "Gareth Snook",
+            "role": "Adam / Audrey"
+          },
+          {
+            "name": "Gary Wilmot",
+            "role": "Duke Frederick / Duke Senior"
+          }
         ],
         "description": "RSC production page (rsc.org.uk/as-you-like-it) and the company list already on the show's earlier mis-filed entry: Groff (Rosalind), Akinade (Celia), Barnes-Worrell (Orlando), Haiste (Touchstone), Wilmot (Dukes), McCabe (Jaques)."
       },
@@ -42,12 +87,26 @@
         "showId": "all-male-as-you-like-it-regional-2026",
         "field": "creativeTeam",
         "oldValue": [
-          { "name": "William Shakespeare", "role": "Playwright", "_source": "serp-verified-llm" }
+          {
+            "name": "William Shakespeare",
+            "role": "Playwright",
+            "_source": "serp-verified-llm"
+          }
         ],
         "newValue": [
-          { "name": "William Shakespeare", "role": "Playwright", "_source": "serp-verified-llm" },
-          { "name": "Daniel Evans", "role": "Director" },
-          { "name": "Anisha Fields", "role": "Designer" }
+          {
+            "name": "William Shakespeare",
+            "role": "Playwright",
+            "_source": "serp-verified-llm"
+          },
+          {
+            "name": "Daniel Evans",
+            "role": "Director"
+          },
+          {
+            "name": "Anisha Fields",
+            "role": "Designer"
+          }
         ],
         "description": "Director Daniel Evans (RSC page); designer Anisha Fields (WhatsOnStage review, 2026-10-07)."
       },
@@ -104,5 +163,48 @@
         "description": "Reason for the duplicate flag."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-11T22:28:12.586Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for all-male-as-you-like-it-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for all-male-as-you-like-it-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for all-male-as-you-like-it-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for all-male-as-you-like-it-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for all-male-as-you-like-it-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for all-male-as-you-like-it-regional-2026 (tags: [\"regional\",\"revival\"])"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "all-male-as-you-like-it-regional-2026/nytimes--brenner-helen-shaw.json duplicateOf: null -> \"nytimes--helen-shaw.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "all-male-as-you-like-it-regional-2026/nytimes--brenner-helen-shaw.json duplicateReason: null -> \"BRO-4923: truncated BroadwayWorld excerpt of the same NYT review as nytimes--helen-shaw.json\""
+    }
+  ]
 }
