@@ -153,5 +153,10 @@ test('creditBasis: post-credit only for a credit already in the figure (BRO-5073
   assert.equal(creditBasis({}, 'High end: ~65% if NY State tax credit is received'), 'pre-credit');
   assert.equal(creditBasis({}, 'Broadway News: recouped its $6.75M capitalization'), 'pre-credit');
   assert.equal(creditBasis({ taxCreditBasis: 'post-credit' }, 'no mention'), 'post-credit');
+  // Decimal amounts stay inside the clause; negations and future credits are pre.
+  assert.equal(creditBasis({}, 'recouped from profit plus a $2.5M NY State tax credit'), 'post-credit');
+  assert.equal(creditBasis({}, 'returned 60% including the $1.75M tax credit'), 'post-credit');
+  assert.equal(creditBasis({}, 'recouped, not including the tax credit'), 'pre-credit');
+  assert.equal(creditBasis({}, 'Recouped after a strong holiday season, the NY tax credit to follow'), 'pre-credit');
   assert.equal(groundTruth({ recouped: true, recoupedSource: 'Deadline: recouped' }, {}).creditBasis, 'pre-credit');
 });
