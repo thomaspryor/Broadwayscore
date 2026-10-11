@@ -78,19 +78,26 @@ function hideRecoupment(comm) {
  * Checkpoints for one recouped record, or null when it cannot be tested.
  * @returns {null | { truthClass: string, truthClassFrom: string, creditBasis: string, announcement: object, checkpoints: Array<{ label: string, from: string, to: string, lo: number, hi: number }> }}
  */
-function timingTruth(comm, show) {
+function timingTruth(comm, show, { lagWeeks = 0 } = {}) {
   if (!comm || comm.recouped !== true || !comm.recoupedSource) return null;
   const announcement = announcementDate(comm);
   const win = recoupWindow(announcement);
   if (!win) return null;
+  // lagWeeks (shadow, coordinator 2026-10-11): producers may announce after
+  // the show actually recouped. Truth becomes "crossed 100 somewhere in
+  // [window start - lag, window end]": at least 85 at the announcement, at
+  // most 115 at the lag start, and under 100 the 26/52 weeks before that.
+  const lagMs = lagWeeks * 7 * DAY_MS;
   // Recouped after closing (tax credit, tour profits): the announcement is
   // not a running-show test; earlier checkpoints inside the run still are.
   const close = show && show.closingDate ? Date.parse(show.closingDate) : Infinity;
   const afterClose = close < Date.parse(win[0]);
   const start = show && Date.parse(show.previewsStartDate || show.openingDate || '');
-  const checkpoints = afterClose ? [] : [{ label: 'at-recoup', from: win[0], to: win[1], lo: RECOUP_BAND[0], hi: RECOUP_BAND[1] }];
+  const checkpoints = afterClose ? [] : [{ label: 'at-recoup', from: win[0], to: win[1], lo: RECOUP_BAND[0], hi: lagWeeks > 0 ? Infinity : RECOUP_BAND[1] }];
+  const lagStart = Date.parse(win[0]) - lagMs;
+  if (lagWeeks > 0 && !afterClose && Number.isFinite(start) && lagStart > start) checkpoints.push({ label: 'lag-start', from: iso(lagStart), to: iso(lagStart), lo: -Infinity, hi: RECOUP_BAND[1] });
   for (const w of EARLIER_WEEKS) {
-    const at = Date.parse(win[0]) - w * 7 * DAY_MS;
+    const at = lagStart - w * 7 * DAY_MS;
     if (Number.isFinite(start) && at > start && at <= close) checkpoints.push({ label: `${w}w-before`, from: iso(at), to: iso(at), lo: -Infinity, hi: 99.99 });
   }
   if (!checkpoints.length) return null;

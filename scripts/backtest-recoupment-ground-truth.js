@@ -48,7 +48,7 @@ const { displaysModel, playedWeeks, MIN_PLAYED_WEEKS } = require('./lib/model-di
 
 const KNOWN_OPTS = ['previewsFromWeekly', 'playedWeeksOnly', 'eraAdjust', 'taxCreditCitedOnly', 'datedCosts', 'ownRunOnly', 'costSplit', 'stepSmall', 'stepLate', 'costGrowth', 'reserveLag', 'creditBasis', 'varBand', 'varOverage', 'varBandMusicals'];
 const args = process.argv.slice(2);
-const USAGE = `Usage: node scripts/backtest-recoupment-ground-truth.js (--opt=${KNOWN_OPTS.join('|')} [--opt=...] | --base=<git ref> | --timing) [--truth=reported|all] [--as-of-report] [--displayed] [--displayable-only] [--markdown] [--json] [--strict]`;
+const USAGE = `Usage: node scripts/backtest-recoupment-ground-truth.js (--opt=${KNOWN_OPTS.join('|')} [--opt=...] | --base=<git ref> | --timing [--lag=<weeks>] [--crossing]) [--truth=reported|all] [--as-of-report] [--displayed] [--displayable-only] [--markdown] [--json] [--strict]`;
 if (require('./lib/cli-help').hasHelpFlag(args)) { console.log(USAGE); process.exit(0); }
 const names = args.filter((a) => a.startsWith('--opt=')).map((a) => a.slice(6));
 const BASE = (args.find((a) => a.startsWith('--base=')) || '').slice(7);
@@ -108,6 +108,7 @@ if (TIMING) {
     shows, commercial, lookup: L, by, baseLib, newLib: path.join(__dirname, 'lib'), newOpts: OPTS, base: BASE, truth: TRUTH,
     displayableOnly: DISPLAYABLE_ONLY, displayed: DISPLAYED, json: args.includes('--json'), strict: args.includes('--strict'),
     aggregateOnly: AGGREGATE_ONLY, markdown: MARKDOWN,
+    lagWeeks: Number((args.find((a) => a.startsWith('--lag=')) || '--lag=0').slice(6)) || 0, crossing: args.includes('--crossing'),
   });
   process.exit(process.exitCode || 0);
 }
