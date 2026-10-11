@@ -16,16 +16,32 @@ const KNOWN_PAYWALL_DOMAINS = new Set([
   'telegraph.co.uk',
 ]);
 
+// Timestamp fields the manual-clear tooling has written over time (BRO-2890).
+const MANUAL_VERIFY_TS_FIELDS = [
+  'manualVerifiedAt', 'manualClearedAt', 'manualClearAt', 'manualVerificationDate', 'contentVerifiedAt',
+];
+// Reasons written by collectors, not derivable here; a human verification never erases them.
+const COLLECTOR_REASONS = new Set(['multi_show_section_not_found', 'non_review']);
+
+// Date-only strings ('2026-09-09') count as end of that UTC day.
+function parseVerifyTs(v) {
+  if (!v) return NaN;
+  const t = Date.parse(v);
+  if (Number.isNaN(t)) return NaN;
+  return /^\d{4}-\d{2}-\d{2}$/.test(String(v)) ? t + 86399999 : t;
+}
+
 /**
- * True when review.manuallyVerified is set AND manualVerifiedAt is newer than
- * textFetchedAt (a missing textFetchedAt counts as older). BRO-2890.
+ * True when review.manuallyVerified is set AND the newest manual timestamp is at
+ * or after textFetchedAt (a missing textFetchedAt counts as older). BRO-2890.
  */
 function isManuallyVerifiedAfterFetch(review) {
-  if (!review || review.manuallyVerified !== true || !review.manualVerifiedAt) return false;
-  const verified = Date.parse(review.manualVerifiedAt);
-  if (Number.isNaN(verified)) return false;
+  if (!review || review.manuallyVerified !== true) return false;
+  const stamps = MANUAL_VERIFY_TS_FIELDS.map(f => parseVerifyTs(review[f])).filter(t => !Number.isNaN(t));
+  if (!stamps.length) return false;
+  const verified = Math.max(...stamps);
   const fetched = review.textFetchedAt ? Date.parse(review.textFetchedAt) : NaN;
-  return Number.isNaN(fetched) || verified > fetched;
+  return Number.isNaN(fetched) || verified >= fetched;
 }
 
 /**
@@ -37,10 +53,14 @@ function isManuallyVerifiedAfterFetch(review) {
  *   Returns null if contentTier is 'complete'.
  */
 function classifyIncompleteReason(review, failedFetchEntry) {
-  // BRO-2890: a manual verification newer than the last fetch is durable. Keep
-  // whatever incompleteReason the human left (usually none) instead of re-stamping.
-  if (isManuallyVerifiedAfterFetch(review) && failedFetchEntry?.failureReason !== 'url_content_mismatch') {
-    return review.incompleteReason
+  // BRO-2890: a manual verification newer than the last fetch is durable: do not
+  // re-stamp a machine reason over it. Real wrong-content flags, dead URLs and
+  // content mismatches still surface, and collector-written reasons are kept.
+  const ffReason = failedFetchEntry?.failureReason;
+  if (isManuallyVerifiedAfterFetch(review)
+    && !review.wrongShow && !review.wrongProduction
+    && ffReason !== 'url_content_mismatch' && ffReason !== 'url_dead_404' && ffReason !== 'url_dead_410') {
+    return COLLECTOR_REASONS.has(review.incompleteReason)
       ? { incompleteReason: review.incompleteReason, incompleteDetail: review.incompleteDetail || '' }
       : null;
   }
