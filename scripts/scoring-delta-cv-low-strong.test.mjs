@@ -17,7 +17,7 @@ const mk = (cv) => ({
 test('low-confidence CV that names a different show is excluded (carve-out)', () => {
   const r = decideInclusion(mk({ confidence: 'low', reasoning: 'This is a review of a completely different show.' }), show, guards);
   assert.equal(r.included, false);
-  assert.match(r.reason, /low-but-strong-signal|cv-promoted/);
+  assert.match(r.reason, /low-but-strong-signal/);
 });
 
 test('low-confidence CV without a strong signal stays included', () => {
