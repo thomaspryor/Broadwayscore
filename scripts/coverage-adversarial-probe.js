@@ -54,7 +54,11 @@ const fs = require('fs');
 const path = require('path');
 const { serpQuery, calculateDateWindow, getShowInfo } = require('./lib/url-discovery');
 const { buildNaiveCensusQuery, censusGeoFor } = require('./lib/serp-review-census');
-const { acceptSerpCensusResult, normalizeReviewUrl, isReviewUrl } = require('./audit-show-review-gap.js');
+const { acceptSerpCensusResult, normalizeReviewUrl } = require('./audit-show-review-gap.js');
+// On-disk files are indexed by the base URL rule, not the gap-candidate gate
+// (BRO-4190): a stored Show Score star stub still identifies a covered URL.
+const { classifyReviewUrl } = require('./lib/non-review-url-patterns');
+const isReviewUrl = (u) => classifyReviewUrl(u).ok;
 const { isIncludableForRebuild, explainExclusion } = require('./lib/review-guards');
 const { classifySample } = require('./lib/census-recall.js');
 const { classifyCandidate, summarizeShow, summarizeRun, evaluateAcceptance } = require('./lib/coverage-adversarial-probe.js');

@@ -21,7 +21,7 @@
  * - tests/unit/gather-reviews-opening-night.test.mjs
  */
 
-const { isUrlYearInPriorRun, isUrlYearInTourLeg, urlYearOf } = require('./url-discovery');
+const { isUrlYearInPriorRun, isUrlYearInTourLeg, URL_YEAR_PATTERN } = require('./url-discovery');
 
 /**
  * Extract a 4-digit year embedded in a URL path, or null if none found.
@@ -29,7 +29,9 @@ const { isUrlYearInPriorRun, isUrlYearInTourLeg, urlYearOf } = require('./url-di
  * @returns {number|null}
  */
 function extractUrlYear(url) {
-  return urlYearOf(url);
+  if (!url) return null;
+  const m = String(url).match(URL_YEAR_PATTERN);
+  return m ? parseInt(m[1], 10) : null;
 }
 
 /**

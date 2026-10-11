@@ -497,6 +497,13 @@ test('acceptSerpCensusResult drops another production named by a London house or
   // company in its own reviews: not evidence of another production.
   const hamlet = { id: 'hamlet-off-broadway-2026', title: 'Hamlet', category: 'off-broadway', venue: 'BAM Harvey Theater', openingDate: '2026-05-01' };
   assert.equal(otherProductionUrlSignal('https://www.theatermania.com/news/review-ophelia-steals-the-show-in-the-national-theatres-out-of-joint-hamlet_1835514/', hamlet), null);
+  // A New York review of a London transfer names the house it came from.
+  const ferryman = { id: 'the-ferryman-2018', title: 'The Ferryman', category: 'broadway', venue: 'Bernard B. Jacobs Theatre', openingDate: '2018-10-21' };
+  assert.equal(otherProductionUrlSignal('https://www.nytimes.com/2018/10/21/theater/the-ferryman-review.html', ferryman, 'Review: The Ferryman, the Royal Court hit, arrives on Broadway'), null);
+  assert.equal(otherProductionUrlSignal('https://www.theatermania.com/news/review-the-ferryman-royal-court-transfer_1234/', ferryman), null);
+  // A declared prior run (here in London) makes the house name expected.
+  const withRun = { ...show, priorRuns: [{ venue: 'Hampstead Theatre', startDate: '2024-01-01', endDate: '2024-02-01' }] };
+  assert.equal(otherProductionUrlSignal(hampstead.url, withRun), null);
   // West End shows are out of scope for the London-house signal.
   const we = { id: 'darkling-off-west-end-2026', title: 'Darkling', category: 'off-west-end', venue: 'Bush Theatre', openingDate: '2026-09-10' };
   assert.equal(otherProductionUrlSignal('https://lovelondonloveculture.com/2026/09/16/review-darkling-bush-theatre/', we), null);

@@ -258,7 +258,11 @@ function riskStateMap(results) {
     const cv = usable ? stored : censusVerdictFor(r);
     const liveCount = Number.isFinite(cv.liveCount) ? cv.liveCount : 0;
     const candidateCount = Number.isFinite(cv.candidateCount) ? cv.candidateCount : 0;
-    out[r.showId] = `${cv.verdict}:${liveCount}:${candidateCount}`;
+    // `:prior-schema` marks a row an older candidate rule produced: the
+    // recompute above re-applies only the URL gate, not auditShow's own
+    // drops (SERP other-production, BWW dates), so its candidateCount is
+    // not comparable and only a liveCount drop is risky (BRO-4190).
+    out[r.showId] = `${cv.verdict}:${liveCount}:${candidateCount}${usable || !stored ? '' : ':prior-schema'}`;
   }
   return out;
 }
@@ -280,9 +284,10 @@ function riskStateMap(results) {
  * can consume — revisit only if a real incident ever shows this shape.
  */
 function isRiskyGapChange(prevState, nextState) {
-  const counts = (s) => String(s).split(':').slice(1).map(Number);
+  const counts = (s) => String(s).split(':').slice(1, 3).map(Number);
   const [prevLive, prevCandidates] = counts(prevState);
   const [nextLive, nextCandidates] = counts(nextState);
+  if (String(prevState).endsWith(':prior-schema')) return nextLive < prevLive;
   return nextLive < prevLive || nextCandidates < prevCandidates;
 }
 

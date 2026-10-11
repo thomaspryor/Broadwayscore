@@ -82,3 +82,14 @@ test('a 2024 BWW regional review is out of window for a 2026 production', () => 
   assert.strictEqual(isUrlYearOutOfWindow('https://www.broadwayworld.com/los-angeles/article/Review-THE-HOPE-THEORY-at-Geffen-Playhouse-20240507', show), true);
   assert.strictEqual(isUrlYearOutOfWindow('https://www.broadwayworld.com/off-broadway/article/Review-THE-HOPE-THEORY-at-MCC-20261001', show), false);
 });
+
+test('blast radius: a candidate drop against an older-rule row is not risky, a live drop still is', () => {
+  const { riskStateMap, isRiskyGapChange } = require('./gap-audit-merge.js');
+  const old = { showId: 's', aggregatorListedUrls: [], missing: [], censusVerdict: { verdict: 'incomplete', liveCount: 4, candidateCount: 9, censusSchema: 2 } };
+  assert.match(riskStateMap([old]).s, /:prior-schema$/);
+  assert.doesNotMatch(riskStateMap([{ ...old, censusVerdict: { ...old.censusVerdict, censusSchema: 3 } }]).s, /prior-schema/);
+  const prev = 'incomplete:4:9:prior-schema';
+  assert.strictEqual(isRiskyGapChange(prev, 'incomplete:4:6'), false);
+  assert.strictEqual(isRiskyGapChange(prev, 'incomplete:3:6'), true);
+  assert.strictEqual(isRiskyGapChange('incomplete:4:9', 'incomplete:4:6'), true);
+});

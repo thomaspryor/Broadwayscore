@@ -553,15 +553,24 @@ function isBookPageUrl(href) {
 // reviews). The outlet-market signal is left out: dual-market outlets review
 // both cities. The National Theatre and the RSC are also COMPANIES whose
 // productions transfer to New York (War Horse, Matilda, the 2026 BAM Hamlet),
-// so a URL naming them alone proves nothing. Returns the signal or null.
+// so a URL naming them alone proves nothing. A New York review of any London
+// transfer names the house it came from ("the Royal Court hit arrives on
+// Broadway"), so the house signal only counts on a UK-domain outlet, and never
+// for a show that declares prior runs. Returns the signal or null.
 const TRANSFERRING_COMPANIES = new Set(['national theatre', 'royal shakespeare company']);
 function otherProductionUrlSignal(u, show, serpTitle) {
   let slug = '';
-  try { slug = decodeURIComponent(new URL(u).pathname).replace(/[-_/.+]+/g, ' '); } catch { return null; }
+  let host = '';
+  try {
+    const parsed = new URL(u);
+    host = parsed.hostname.toLowerCase();
+    slug = decodeURIComponent(parsed.pathname).replace(/[-_/.+]+/g, ' ');
+  } catch { return null; }
+  const venueTextApplies = /\.uk$/.test(host) && !(Array.isArray(show.priorRuns) && show.priorRuns.length > 0);
   const sig = otherProductionSignal(
     { url: u, fullText: `${slug} ${serpTitle || ''}` },
     show,
-    { only: ['url-edition-market', 'venue-text'], useText: true },
+    { only: venueTextApplies ? ['url-edition-market', 'venue-text'] : ['url-edition-market'], useText: true },
   );
   if (sig && sig.signal === 'venue-text' && [...TRANSFERRING_COMPANIES].some((c) => sig.detail.includes(`"${c}"`))) return null;
   return sig;
