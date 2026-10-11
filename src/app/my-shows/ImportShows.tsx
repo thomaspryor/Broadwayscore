@@ -532,7 +532,9 @@ export default function ImportShows({
 
   // Seen shows rated only by a Theatr reaction, per reaction: one control
   // each in the preview. Changing one re-rates every row with that reaction.
-  const reactionCountsInPreview = useMemo(() => reactionCounts(entries.filter(e => e.type === 'diary')), [entries]);
+  // Counted over rows that will import (ticked and matched), so the box
+  // never shows for reactions whose shows are all skipped.
+  const reactionCountsInPreview = useMemo(() => reactionCounts(entries.filter(e => e.type === 'diary' && e.selected && e.match)), [entries]);
   const setReactionRating = (reaction: TheatrReaction, rating: number | null) => {
     const next = { ...reactionRatings, [reaction]: rating };
     setReactionRatings(next);
@@ -897,7 +899,8 @@ export default function ImportShows({
                 <div className="mb-3 rounded-lg border border-white/10 bg-white/5 p-3">
                   <p className="text-xs font-bold text-white mb-0.5">Your Theatr reactions</p>
                   <p className="text-xs text-gray-500 mb-2">
-                    Theatr has no star ratings, so choose what each reaction means. You can change any rating later.
+                    Theatr has no star ratings, so choose what each reaction means. Any review you wrote comes along too,
+                    and you can change any rating later.
                   </p>
                   {(['recommend', 'mixed', 'dislike'] as TheatrReaction[]).filter(r => reactionCountsInPreview[r]).map(r => (
                     <label key={r} className="flex items-center justify-between gap-3 py-1 text-sm">
@@ -908,7 +911,7 @@ export default function ImportShows({
                         value={reactionRatings[r] ?? ''}
                         onChange={(e) => setReactionRating(r, e.target.value === '' ? null : Number(e.target.value))}
                         aria-label={`Rating for shows marked ${REACTION_LABELS[r]}`}
-                        className="bg-white/5 border border-white/10 rounded-md px-2 py-1 text-base sm:text-sm text-white focus:outline-none focus:border-brand/50"
+                        className="bg-white/5 border border-white/10 rounded-md px-2 py-2 min-h-[44px] sm:min-h-0 sm:py-1 text-base sm:text-sm text-white focus:outline-none focus:border-brand/50"
                       >
                         {[5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1, 0.5].map(v => <option key={v} value={v}>★ {v}</option>)}
                         <option value="">Don&apos;t rate</option>
@@ -1112,7 +1115,7 @@ function ImportEntryRow({ entry, index, onToggle, liveResolve, onFindIt, onPickC
           <span className="text-xs text-white truncate">{entry.sourceTitle}</span>
           {entry.sourceRating ? (
             <span className="text-xs text-amber-400 flex-shrink-0">
-              {entry.sourceScore !== null ? `${entry.sourceScore} → ` : entry.reaction && entry.scoreRating === null ? `${REACTION_LABELS[entry.reaction]} → ` : ''}★ {entry.sourceRating}
+              {entry.sourceScore !== null && entry.scoreRating !== null ? `${entry.sourceScore} → ` : entry.reaction && entry.scoreRating === null ? `${REACTION_LABELS[entry.reaction]} → ` : ''}★ {entry.sourceRating}
             </span>
           ) : entry.type === 'diary' ? (
             // Unrated diary entries import into the watchlist, not the diary —
