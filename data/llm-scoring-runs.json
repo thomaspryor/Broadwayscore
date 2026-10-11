@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-10-10T14:47:34.778Z",
-    "completedAt": "2026-10-10T14:47:35.092Z",
-    "totalReviews": 54336,
-    "processed": 0,
-    "skipped": 54335,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "38060757880",
-    "errorDetails": [
-      {
-        "showId": "diana-the-musical-2021",
-        "outletId": "nytimes",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-10-10T14:47:37.204Z",
-    "completedAt": "2026-10-10T14:47:40.696Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "38060757880",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-10T15:07:03.125Z",
     "completedAt": "2026-10-10T15:07:03.143Z",
     "totalReviews": 0,
@@ -571467,6 +571429,49 @@
     },
     "costUsd": 0,
     "runId": "38105200680",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-11T02:37:21.379Z",
+    "completedAt": "2026-10-11T02:37:51.810Z",
+    "totalReviews": 55148,
+    "processed": 5,
+    "skipped": 55139,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 36834,
+      "output": 1788,
+      "total": 95775
+    },
+    "costUsd": 0.1763338,
+    "runId": "38105516211",
+    "errorDetails": [
+      {
+        "showId": "an-oak-tree-off-west-end-2026",
+        "outletId": "timcrouchtheatre",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "diana-the-musical-2021",
+        "outletId": "nytimes",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-11T02:37:53.985Z",
+    "completedAt": "2026-10-11T02:38:32.263Z",
+    "totalReviews": 16,
+    "processed": 16,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 43387,
+      "output": 4083,
+      "total": 47470
+    },
+    "costUsd": 0.1209349,
+    "runId": "38105516211",
     "errorDetails": []
   }
 ]
