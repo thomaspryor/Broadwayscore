@@ -26,7 +26,7 @@ const { PLOT_SIGNAL_RE, isAudiencePitch } = require('./synopsis-validation');
 // Sentences in product.about that are not story: selling, star quotes, age /
 // running-time / content notes, cast and team lists (the junk class that run
 // 37818726628 saved from the scraped-paragraph path).
-const NON_STORY_SENTENCE_RE = /todaytix|\btickets?\b|\bbook (now|your|tickets|today|early)\b|★|☆|\bstars?\b.*(guardian|times|telegraph|stage|standard|whatsonstage)|age guidance|\bages? \d|running time|\bcontent warning|\bcast\b.*\b(includes?|including|are|is|features?)\b|\bcreative team\b|\bdirected by\b.*,.*,/i;
+const NON_STORY_SENTENCE_RE = /\bsubject matters?\b|(?:^|\s)•\s|todaytix|\btickets?\b|\bbook (now|your|tickets|today|early)\b|★|☆|\bstars?\b.*(guardian|times|telegraph|stage|standard|whatsonstage)|age guidance|\bages? \d|running time|\bcontent warning|\bcast\b.*\b(includes?|including|are|is|features?)\b|\bcreative team\b|\bdirected by\b.*,.*,/i;
 // Production news and billing, not story (WE historical 2023-24, BRO-4884:
 // "currently playing at Wyndham's ... has just won rave reviews", "Sheridan
 // Smith stars in ...", "one of nine shows in the theatre's 2024 season",
@@ -55,6 +55,8 @@ const BILLING_RE = /\)\s+as\s+(the\s+)?[A-Z]|\btakes? (on )?the (title|lead|lead
 // A contraction is not a quote mark: "It's the future." is story.
 function isFragment(s) {
   if (/^[,;:)\]–—-]/.test(s)) return true;
+  // The tail of a sentence cut at an ellipsis ("... if you manage to get out.").
+  if (/^[a-z]/.test(s)) return true;
   if ((s.match(/\)/g) || []).length > (s.match(/\(/g) || []).length) return true;
   return s.split(/\s+/).length < 5 && /"|(?<![A-Za-z])'|'(?![A-Za-z])/.test(s);
 }
@@ -68,6 +70,7 @@ const ABBREV_DOT_RE = /\b(Mr|Mrs|Ms|Dr|St|Jr|Sr|Prof|Capt|Gen|Lt|[A-Z])\.(?=\s|[
 // influx of 7,000 visitors") has lost what it refers to.
 const ANAPHORIC_OPENER_RE = /^(That|This|These|Those|It|They)\b/;
 const PAREN_TITLE_RE = /\(\s*"[^"]*"(?:\s*\/\s*"[^"]*")*\s*\)/g;
+const TITLE_HOLD = { '.': '\u2024', '!': '\u01C3', '?': '\u0294' };
 const MAX_ABOUT_CHARS = 700;
 
 /**
@@ -113,8 +116,8 @@ function nonStoryReason(sentence) {
  * or no sentence reads as plot (PLOT_SIGNAL_RE), so the caller falls back to
  * the verified path.
  */
-function cleanTodaytixAbout(text) {
-  const plain = String(text || '')
+function cleanTodaytixAbout(text, title) {
+  let plain = String(text || '')
     .replace(/<[^>]+>/g, ' ')
     .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
     .replace(/^\s*(#+|[-*•])\s+/gm, '')
@@ -124,7 +127,13 @@ function cleanTodaytixAbout(text) {
     .replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#0?39;|&apos;/g, "'").replace(/&nbsp;/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
-  const sentences = (plain.replace(ABBREV_DOT_RE, '$1\u2024').match(/[^.!?]+[.!?]+["')\]]*(?=\s|$)/g) || []).map(x => x.replace(/\u2024/g, '.'));
+  // The show's own title is never a sentence end ("Get Schmigadoon! tickets",
+  // BRO-5063): its punctuation is held like an initial's full stop.
+  const name = String(title || '').trim();
+  if (name && /[.!?]/.test(name)) {
+    plain = plain.split(name).join(name.replace(/[.!?]/g, c => TITLE_HOLD[c]));
+  }
+  const sentences = (plain.replace(ABBREV_DOT_RE, '$1\u2024').match(/[^.!?]+[.!?]+["')\]]*(?=\s|$)/g) || []).map(x => x.replace(/[\u2024\u01C3\u0294]/g, c => (c === '\u2024' ? '.' : c === '\u01C3' ? '!' : '?')));
   const kept = [];
   let len = 0;
   let dropped = false;
@@ -164,7 +173,7 @@ function extractTodaytixPageIdentity(html) {
     venue: (p.venue && p.venue.name) || null,
     start: p.startingDate || null,
     end: p.closingDate || null,
-    about: cleanTodaytixAbout(p.about || p.shortDescription || ''),
+    about: cleanTodaytixAbout(p.about || p.shortDescription || '', p.displayName),
   };
 }
 

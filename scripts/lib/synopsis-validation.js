@@ -133,7 +133,7 @@ const WIKITEXT_DEBRIS_RE = /\bthumb(?:nail)?\s+(?:alt=|upright|left|right|centre
 // rows, 11 of them "Don’t miss" with a curly apostrophe the opener check below
 // never matched). Shared with the TodayTix cleaner's nonStoryReason. Test
 // it with isAudiencePitch: a song cue ("You'll Be Back") is plot.
-const AUDIENCE_PITCH_RE = /\b(?:join us|invites? you|you'll (?:find|love|be|see)|treat yourself)\b|^welcome to the\b|(?:^|[.!?]\s+)(?:Don't miss|Get (?:your )?tickets|Book (?:now|your|tickets|today))\b/i;
+const AUDIENCE_PITCH_RE = /\b(?:join us|invites? you|you'll (?:find|love|be|see)|treat yourself)\b|^welcome to the\b|(?:^|[.!?]\s+)(?:Don't miss|Get\s|Book (?:now|your|tickets|today))\b/i;
 
 // A quoted Title-Case span is a song or show title ("You'll Be Back"), not
 // copy addressed to the reader; a quoted tagline ("Join us for the party!")
@@ -251,6 +251,10 @@ function isValidSynopsis(text) {
 
   // Reject scraped page chrome (cookie banners, JS-required notices)
   if (SCRAPED_PAGE_CHROME_RE.test(trimmed)) return false;
+
+  // A bulleted list ("include : • Characters include ... • Physical abuse ..."),
+  // a content-warning block, not story (BRO-5063). "Label•less" (no spaces) is a title.
+  if (/\s•\s/.test(trimmed)) return false;
 
   // Reject Wikipedia markup / disambiguation scraps
   if (WIKI_ARTIFACT_RE.test(trimmed.slice(0, 300))) return false;

@@ -228,3 +228,8 @@ test('second review: quoted taglines still count as pitch, a stray inch mark doe
   assert.equal(isValidSynopsis('"Join us for the party of the year!" says the poster on the wall of the club.'), false);
   assert.equal(isValidSynopsis('Set in a hut near Bethlehem. Setting: A hut near Bethlehem Amahl tells tall tales to his mother.'), false);
 });
+
+test('a spaced bullet list is rejected, a title with a bullet is not (BRO-5063)', () => {
+  assert.equal(isValidSynopsis('Spies converge on a London hotel. Subject matters in the show include : • Physical and verbal abuse are depicted. • Characters are jump scared.'), false);
+  assert.equal(isValidSynopsis('*Label•less* is a new musical experience that gives voice to today\'s issues, sharing the resilience needed to overcome barriers.'), true);
+});

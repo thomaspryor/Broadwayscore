@@ -79,6 +79,7 @@ function synopsisStoryProblems(show, nonStoryReason) {
   const hard = [];
   if (WIKITEXT_DEBRIS_RE.test(text)) hard.push('wikitext-debris');
   if (isAudiencePitch(text)) hard.push('audience-pitch');
+  if (/\s•\s/.test(text)) hard.push('bullet-list');
   const soft = [];
   for (const sentence of storySentences(text, show.title).slice(0, 4)) {
     const reason = nonStoryReason(sentence);
