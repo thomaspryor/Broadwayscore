@@ -53,18 +53,6 @@
     "queuedAt": "2026-10-11T13:58:51.574Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Audit same-URL byline double-counts",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38146591727",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-11T14:23:53.376Z"
-  },
-  {
     "conditionKey": "bd-circuit-breaker-serp_api1",
     "title": "Bright Data daily breaker TRIPPED: serp_api1 (254/250 reqs) — already tracked at BRO-4950",
     "description": "This condition already has an open tracker (BRO-4950); not filing a duplicate. It will go quiet in the digest from here.\n\nZone serp_api1 billed 254 requests today against a ceiling of 250.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n13 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: opening-night-poller.js (844), gather-reviews.js (412), replay-pending-bylines.js (76).",
@@ -75,5 +63,17 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-11T14:27:24.242Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Audit same-URL byline double-counts",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38148488637",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-11T14:50:16.796Z"
   }
 ]
