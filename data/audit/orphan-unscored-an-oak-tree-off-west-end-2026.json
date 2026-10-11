@@ -2,35 +2,18 @@
   "version": 1,
   "showId": "an-oak-tree-off-west-end-2026",
   "openingDate": "2026-10-08",
-  "detectedAt": "2026-10-11T02:40:34.679Z",
+  "detectedAt": "2026-10-11T02:51:29.071Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "markaspen--markaspen.json",
-      "outletId": "markaspen",
-      "criticName": "Markaspen",
-      "url": "https://markaspen.com/2026/10/08/oak-tree/",
-      "fullTextLen": 5513,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
     {
       "file": "timcrouchtheatre--unknown.json",
       "outletId": "timcrouchtheatre",
       "criticName": "Unknown",
       "url": "https://www.timcrouchtheatre.co.uk/an-oak-tree",
       "fullTextLen": 304,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
+      "dispatchActionable": false,
+      "skipReason": "terminal_text_gate_block",
+      "rescoreBlockedReason": "input_validation_failed:body_too_short",
       "humanReviewScore": null,
       "adjudicatedScore": null,
       "originalScore": null,
@@ -40,10 +23,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 2,
-  "blockedOrphanCount": 0,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
+  "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-10-11T02:40:34.679Z"
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
 }
