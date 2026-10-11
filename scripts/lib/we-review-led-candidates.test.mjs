@@ -123,10 +123,10 @@ test('parseTrHeaderDates never reads a range across lines or guesses a year', ()
   assert.deepEqual(parseTrHeaderDates(null), { previewsStartDate: null, openingDate: null, closingDate: null });
 });
 
-test('headerFacts keeps the title lines and short date lines, never prose', () => {
+test('headerFacts keeps the title lines and date phrases, never the prose around them', () => {
   const prose = 'Marianne Elliott has transformed the show into something new and it opened on 17 October 2018 to tremendous acclaim from almost everyone who saw it';
   const h = headerFacts(`COMPANY\nby Stephen Sondheim\nGielgud Theatre\nCast: Rosalie Craig, Patti LuPone\n26 September 2018 – 30 March 2019\n${prose}`);
-  assert.equal(h, 'COMPANY\nby Stephen Sondheim\nGielgud Theatre\n26 September 2018 – 30 March 2019');
+  assert.equal(h, 'COMPANY\nby Stephen Sondheim\nGielgud Theatre\n26 September 2018 – 30 March 2019\nopened on 17 October 2018');
 });
 
 test('pdfHeaderFor ignores a contents line and a two-column heading', () => {
@@ -156,4 +156,39 @@ test('buildReviewLedCandidates dates from TR only and dedups against shows.json'
   const [none] = buildReviewLedCandidates({ season: '2018-2019', lookups: [{ review, tr: null, header: null }], shows: [], today: '2026-10-11' });
   assert.equal(none.decision.reason, 'no Theatre Record production matched');
   assert.equal(none.openingDate, null);
+});
+
+// Real 2019-20 lookup (we-historical-tr-resolve run 38123490290): PDF-era
+// search results put the city first, "London, Old Vic".
+test('pickTrForReview reads PDF-era "London, <venue>" results (A Very Expensive Poison, Upstart Crow)', () => {
+  const poison = { title: 'A Very Expensive Poison', venue: 'Old Vic', date: '2019-09-06' };
+  const r = [{ title: 'A VERY EXPENSIVE POISON', venue: 'London, Old Vic', link: 'https://www.theatrerecord.com/archive/volume/39/dest/17_a_very_expensive_poison' }];
+  assert.equal(trVenueName('London, Old Vic'), 'Old Vic');
+  assert.equal(pickTrForReview(r, poison, { isLondonVenue })?.link, r[0].link);
+  const crow = { title: 'The Upstart Crow', venue: 'Gielgud Theatre', date: '2020-02-18' };
+  const cr = [
+    { title: 'The Upstart Crow', venue: 'Apollo Theatre, London', link: 'https://www.theatrerecord.com/archive/2022/9/2636-the-upstart-crow' },
+    { title: 'UPSTART CROW', venue: 'London, Gielgud', link: 'https://www.theatrerecord.com/archive/volume/40/dest/04_upstart_crow' },
+  ];
+  assert.equal(pickTrForReview(cr, crow, { isLondonVenue })?.link, cr[1].link);
+});
+
+test('pdfHeaderFor skips the Reviews heading and takes the listing that carries run dates', () => {
+  // The first HANSARD heading sits above the reviews (outlet next); the second
+  // is the production listing, its venue/date line run into a second column.
+  const text = [
+    'Reviews', 'HANSARD', 'EVENING STANDARD', 'some review prose here',
+    '4 September 2019', 'more prose',
+    'HANSARD', 'by Simon Woods',
+    'Lyttelton, National Theatre 23 August 2019 – 25 November 2019     an advert in the next column with many many words',
+  ].join('\n');
+  const h = pdfHeaderFor(text, 'Hansard');
+  assert.equal(h, 'HANSARD\nby Simon Woods\n23 August 2019 – 25 November 2019');
+  assert.doesNotMatch(h, /advert|prose/);
+});
+
+test('headerFacts keeps only the date phrase from a long merged line', () => {
+  const h = headerFacts('MASTER HAROLD...AND THE BOYS\nRevival of play written by ATHOL FUGARD\nLyttelton, National Theatre\nExeunt Magazine gives critics the freedom to expand from the tight deadlines; previews from 24 September 2019, opened 1 October 2019, until 8 December 2019 and more words follow');
+  assert.equal(h, 'MASTER HAROLD...AND THE BOYS\nRevival of play written by ATHOL FUGARD\nLyttelton, National Theatre\npreviews from 24 September 2019\nopened 1 October 2019\nuntil 8 December 2019');
+  assert.deepEqual(parseTrHeaderDates(h), { previewsStartDate: '2019-09-24', openingDate: '2019-10-01', closingDate: '2019-12-08' });
 });
