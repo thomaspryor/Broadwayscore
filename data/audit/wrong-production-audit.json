@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-11T13:16:21.952Z",
+  "timestamp": "2026-10-11T13:36:54.532Z",
   "stats": {
-    "totalReviews": 55394,
-    "alreadyFlagged": 20340,
+    "totalReviews": 55434,
+    "alreadyFlagged": 20351,
     "dateGuardCatches": 266,
-    "directorMismatch": 1707,
-    "tvFilmSignals": 1550,
-    "londonSignals": 1970,
-    "offBroadwaySignals": 505,
+    "directorMismatch": 1711,
+    "tvFilmSignals": 1552,
+    "londonSignals": 1972,
+    "offBroadwaySignals": 506,
     "yearMismatch": 134,
-    "noPublishDate": 5994
+    "noPublishDate": 5976
   },
   "findings": [
     {
@@ -542,7 +542,7 @@
     {
       "showId": "a-christmas-carol-west-end-2022",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": null,
+      "score": 84,
       "publishDate": "2022-11-24",
       "url": "https://www.allthatdazzles.co.uk/post/review-a-christmas-carol-the-old-vic",
       "findings": [
@@ -556,7 +556,7 @@
     {
       "showId": "a-christmas-carol-west-end-2022",
       "file": "essentialsurrey--sophie-farrah.json",
-      "score": null,
+      "score": 97,
       "publishDate": "2022-11-25",
       "url": "https://www.essentialsurrey.co.uk/theatre-arts/a-christmas-carol-review/",
       "findings": [
@@ -570,6 +570,7 @@
     {
       "showId": "a-christmas-carol-west-end-2022",
       "file": "london-theatre--matt-wolf.json",
+      "score": 82,
       "publishDate": "2022-11-24",
       "url": "https://www.londontheatre.co.uk/reviews/a-christmas-carol-review-old-vic-owen-teale",
       "findings": [
@@ -588,7 +589,7 @@
     {
       "showId": "a-christmas-carol-west-end-2022",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": null,
+      "score": 83,
       "publishDate": "2022-11-24",
       "url": "https://www.whatsonstage.com/news/a-christmas-carol-at-the-old-vic-starring-owen-teale-review_57871/",
       "findings": [
@@ -8355,6 +8356,19 @@
     },
     {
       "showId": "cock-west-end-2022",
+      "file": "broadwayworld--marianka-swain.json",
+      "publishDate": "2022-03-16",
+      "url": "https://www.broadwayworld.com/westend/article/BWW-Review-COCK-Ambassadors-Theatre-20220316",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "cock-west-end-2022",
       "file": "nytimes--matt-wolf.json",
       "score": 68,
       "publishDate": null,
@@ -12138,7 +12152,7 @@
     {
       "showId": "eureka-day-west-end-2022",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": null,
+      "score": 98,
       "publishDate": "2022-09-25",
       "url": "https://www.allthatdazzles.co.uk/post/review-eureka-day-the-old-vic",
       "findings": [
@@ -16594,6 +16608,32 @@
       "score": null,
       "publishDate": "November 14th, 2018",
       "url": "https://www.ft.com/content/f13ff2c4-e7f9-11e8-8a85-04b8afea6ea3?syn-25a6b1a6=1",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rachel chavkin\" from hadestown-2019"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-west-end-2018",
+      "file": "nytimes--matt-wolf.json",
+      "publishDate": "2018-12-06",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rachel chavkin\" from hadestown-2019"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-west-end-2018",
+      "file": "observer--kate-kellaway.json",
+      "publishDate": "2018-11-18",
+      "url": null,
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -24003,7 +24043,7 @@
     {
       "showId": "mad-house-west-end-2022",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 57,
+      "score": 58,
       "publishDate": "June 27th, 2022",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/stranger-thingss-david-harbour-stars-darkly-comic-play-mental/",
       "findings": [
@@ -24017,7 +24057,7 @@
     {
       "showId": "mad-house-west-end-2022",
       "file": "times-uk--clive-davis.json",
-      "score": 62,
+      "score": 63,
       "publishDate": "June 27th, 2022",
       "url": "https://www.thetimes.co.uk/article/mad-house-review-bill-pullman-and-david-harbour-excel-in-a-twisty-family-drama-mshpt8pj5",
       "findings": [
@@ -39772,6 +39812,19 @@
       ]
     },
     {
+      "showId": "the-human-voice-west-end-2022",
+      "file": "londontheatre1--chris-omaweng.json",
+      "publishDate": "2022-03-22",
+      "url": "https://www.londontheatre1.com/reviews/the-human-voice-at-the-harold-pinter-theatre-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "the-humans-2016",
       "file": "dctheatrescene--jonathan-mandell.json",
       "score": 89,
@@ -46221,6 +46274,24 @@
       ]
     },
     {
+      "showId": "war-horse-west-end-2018",
+      "file": "standard--henry-hitchings.json",
+      "publishDate": "2018-11-09",
+      "url": "https://www.standard.co.uk/culture/theatre/war-horse-review-heart-tugging-visually-inventive-spectacle-is-back-in-the-saddle-a3985721.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from war-horse-2011"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"tom morris\" from war-horse-2011"
+        }
+      ]
+    },
+    {
       "showId": "war-horse-west-end-2026",
       "file": "artsdesk--rachel-halliburton.json",
       "score": 92,
@@ -48194,34 +48265,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"vineyard theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "a-christmas-carol-west-end-2022",
-      "file": "whatsonstage--michael-davies.json",
-      "score": null,
-      "publishDate": "2022-12-03",
-      "url": "https://www.whatsonstage.com/news/a-christmas-carol-at-shakespeare-north-playhouse-review_57940/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "a-christmas-carol-west-end-2022",
-      "file": "whatsonstage--whatsonstage-reviewer.json",
-      "score": null,
-      "publishDate": "2022-12-13",
-      "url": "https://www.whatsonstage.com/news/a-christmas-carol-at-the-rose-theatre-review_58006/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -51172,7 +51215,7 @@
     {
       "showId": "best-of-enemies-west-end-2022",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 74,
+      "score": 82,
       "publishDate": "November 30th, 2022",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/best-enemies-noel-coward-theatre-review-zachary-quinto-makes/",
       "findings": [
@@ -56859,6 +56902,19 @@
       ]
     },
     {
+      "showId": "foxfinder-west-end-2018",
+      "file": "timeout-london--tom-wicker.json",
+      "publishDate": "2018-09-14",
+      "url": "https://www.timeout.com/london/theatre/foxfinder-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "from-the-heart-west-end-2026",
       "file": "jonathan-baz--unknown.json",
       "score": 92,
@@ -57697,7 +57753,7 @@
     {
       "showId": "good-west-end-2022",
       "file": "i-paper--fiona-mountford.json",
-      "score": null,
+      "score": 82,
       "publishDate": "2022-10-13",
       "url": "https://inews.co.uk/culture/arts/good-harold-pinter-theatre-review-david-tennant-is-magnetic-as-a-nazi-professor-1909198?srsltid=AU7gw4UzLmzcwtcDV1wFEXH4pgA4ZpUROrAImXNCAZt3XLW1bqIlLnGM",
       "findings": [
@@ -57809,7 +57865,7 @@
     {
       "showId": "grease-west-end-2022",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 63,
+      "score": 67,
       "publishDate": "2022-05-18",
       "url": "https://www.timeout.com/london/theatre/grease-the-musical-review",
       "findings": [
@@ -61451,7 +61507,7 @@
     {
       "showId": "jerusalem-west-end-2022",
       "file": "plays-international--maryam-philpott.json",
-      "score": null,
+      "score": 92,
       "publishDate": "2022-05-10",
       "url": "https://playsinternational.org.uk/jerusalem-jez-butterworth-apollo-theatre/",
       "findings": [
@@ -61643,7 +61699,7 @@
     {
       "showId": "jitney-west-end-2022",
       "file": "express-uk--neil-norman.json",
-      "score": null,
+      "score": 75,
       "publishDate": "2022-06-24",
       "url": "https://www.express.co.uk/entertainment/theatre/1630664/jitney-review-theatre-august-wilson",
       "findings": [
@@ -63200,7 +63256,7 @@
     {
       "showId": "mad-house-west-end-2022",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": null,
+      "score": 97,
       "publishDate": "June 27th, 2022",
       "url": "https://www.allthatdazzles.co.uk/post/review-mad-house-ambassadors-theatre",
       "findings": [
@@ -64005,7 +64061,7 @@
     {
       "showId": "marvellous-west-end-2022",
       "file": "british-theatre--mark-ludmon.json",
-      "score": null,
+      "score": 74,
       "publishDate": "2022-10-29",
       "url": "https://www.britishtheatre.com/posts/review-marvellous-sohoplace",
       "findings": [
@@ -64710,7 +64766,7 @@
     {
       "showId": "middle-west-end-2022",
       "file": "british-theatre--paul-t-davies.json",
-      "score": null,
+      "score": 91,
       "publishDate": "2022-05-05",
       "url": "https://www.britishtheatre.com/posts/review-middle-national-theatre",
       "findings": [
@@ -65171,6 +65227,7 @@
     {
       "showId": "my-fair-lady-west-end-2022",
       "file": "london-box-office--stuart-king.json",
+      "score": 55,
       "publishDate": "2022-05-20",
       "url": "https://www.londonboxoffice.co.uk/news/post/my-fair-lady-review",
       "findings": [
@@ -67060,7 +67117,7 @@
     {
       "showId": "orlando-west-end-2022",
       "file": "revstanstheatreblog--unknown.json",
-      "score": null,
+      "score": 76,
       "publishDate": "2022-12-22",
       "url": "https://revstanstheatreblog.co.uk/2022/12/22/review-emma-corrin-in-orlando-garrick-theatre/",
       "findings": [
@@ -67144,6 +67201,7 @@
     {
       "showId": "othello-west-end-2022",
       "file": "i-paper--fiona-mountford.json",
+      "score": 82,
       "publishDate": "2022-12-01",
       "url": "https://inews.co.uk/culture/arts/othello-national-theatre-review-clint-dyer-gives-us-a-powerful-study-of-racism-and-misogyny-2003896?srsltid=AU7gw4UxbVwHVBetr57QS5AA0BpHAzW3_NDKdqjhtix1IeX4C4I8Pz_c",
       "findings": [
@@ -67157,7 +67215,7 @@
     {
       "showId": "othello-west-end-2022",
       "file": "liamodell--liam-odell.json",
-      "score": null,
+      "score": 96,
       "publishDate": "2022-12-01",
       "url": "https://liamodell.com/2022/12/01/othello-national-theatre-reviews-clint-dyer-giles-terera-paul-hilton-london-shakespeare/",
       "findings": [
@@ -67199,7 +67257,7 @@
     {
       "showId": "othello-west-end-2022",
       "file": "partially-obstructed-view--view-my-complete.json",
-      "score": null,
+      "score": 71,
       "publishDate": null,
       "url": "https://partially-obstructed-view.blogspot.com/2022/12/theatre-review-othello-national-theatre.html",
       "findings": [
@@ -67213,7 +67271,7 @@
     {
       "showId": "othello-west-end-2022",
       "file": "revstanstheatreblog--unknown.json",
-      "score": null,
+      "score": 77,
       "publishDate": "2022-11-27",
       "url": "https://revstanstheatreblog.co.uk/2022/11/27/review-giles-terera-in-othello-national-theatre/",
       "findings": [
@@ -72939,7 +72997,7 @@
     {
       "showId": "the-corn-is-green-west-end-2022",
       "file": "london-box-office--phil-willmott.json",
-      "score": null,
+      "score": 79,
       "publishDate": "2022-04-25",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-the-corn-is-green-nt",
       "findings": [
@@ -73009,7 +73067,7 @@
     {
       "showId": "the-crucible-west-end-2022",
       "file": "hampstead-highgate-express--charlotte-l-rose.json",
-      "score": null,
+      "score": 88,
       "publishDate": "2022-10-25",
       "url": "https://www.hamhigh.co.uk/news/national/uk-today/23075571.crucible-review-national-theatre-brought-life-unsettling-new-show/",
       "findings": [
@@ -73628,7 +73686,7 @@
     {
       "showId": "the-father-and-the-assassin-west-end-2022",
       "file": "boycotting-trends--view-my-complete.json",
-      "score": null,
+      "score": 80,
       "publishDate": null,
       "url": "https://boycottingtrends.blogspot.com/2022/05/theatre-review-father-and-assassin.html",
       "findings": [
@@ -73656,7 +73714,7 @@
     {
       "showId": "the-father-and-the-assassin-west-end-2022",
       "file": "theatre-bee-uk--theatre-bee-uk.json",
-      "score": null,
+      "score": 58,
       "publishDate": "May 27th, 2022",
       "url": "https://www.theatrebee.com/post/review-the-father-and-the-assassin-eerily-topical-but-lacks-ambition",
       "findings": [
@@ -74653,6 +74711,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-inheritance-west-end-2018",
+      "file": "timeout-london--alice-saville.json",
+      "publishDate": "2018-10-17",
+      "url": "https://www.timeout.com/london/theatre/the-inheritance-review",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"brooklyn academy\""
         }
       ]
     },
@@ -78079,6 +78150,33 @@
     },
     {
       "showId": "to-kill-a-mockingbird-west-end-2022",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": null,
+      "publishDate": "2022-04-01",
+      "url": "https://www.allthatdazzles.co.uk/post/review-to-kill-a-mockingbird-gielgud-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2022",
+      "file": "daily-mail--neil-armstrong.json",
+      "publishDate": "2022-04-09",
+      "url": "https://www.dailymail.com/home/event/article-10699737/To-Kill-Mockingbird-review-unforgettable-powerfully-moving-evening.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2022",
       "file": "guardian--arifa-akbar.json",
       "score": 82,
       "publishDate": "2022-04-01",
@@ -79500,6 +79598,19 @@
       ]
     },
     {
+      "showId": "wise-children-west-end-2018",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2018-10-09",
+      "url": "https://www.timeout.com/london/theatre/wise-children-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
       "showId": "woman-in-mind-west-end-2025",
       "file": "british-theatre--vera-liber.json",
       "score": 77,
@@ -79614,7 +79725,7 @@
     {
       "showId": "word-play-west-end-2023",
       "file": "standard--nick-curtis.json",
-      "score": null,
+      "score": 81,
       "publishDate": "July 27th, 2023",
       "url": "https://www.standard.co.uk/culture/theatre/wordplay-royal-court-theatre-upstairs-review-kosar-ali-b1097052.html",
       "findings": [
