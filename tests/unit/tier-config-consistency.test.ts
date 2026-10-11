@@ -205,9 +205,10 @@ test('tier chip bars and "Counts" key follow the weights (BRO-4905)', () => {
     assert.ok(TIER_DISPLAY[hi].weight > TIER_DISPLAY[lo].weight && tierBarsLit(hi) > tierBarsLit(lo), `T${hi} must outrank T${lo}`);
   }
   // The chip and the key both draw bars from the helper, not a hardcoded count.
-  const src: string = require('node:fs').readFileSync(require('node:path').join(__dirname, '../../src/components/ReviewsList.tsx'), 'utf8');
-  assert.match(src, /i < tierBarsLit\(tier\)/, 'TierBars must use tierBarsLit');
-  assert.match(src, /\{tierPercent\(t\)\}%/, 'Counts key must use tierPercent');
+  const read = (rel: string): string => require('node:fs').readFileSync(require('node:path').join(__dirname, '../../src/components', rel), 'utf8');
+  // TierBars lives with the shared chip that outlet pages also use (BRO-4885).
+  assert.match(read('show-cards/OutletTierChip.tsx'), /i < tierBarsLit\(tier\)/, 'TierBars must use tierBarsLit');
+  assert.match(read('ReviewsList.tsx'), /\{tierPercent\(t\)\}%/, 'Counts key must use tierPercent');
 });
 
 test('methodology pages list each outlet under its real tier for that market (BRO-4925)', () => {
