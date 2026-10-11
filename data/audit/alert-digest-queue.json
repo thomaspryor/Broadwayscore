@@ -679,24 +679,15 @@
     "queuedAt": "2026-10-11T19:07:11.360Z"
   },
   {
-    "conditionKey": "mezzanine:session-token-expired",
-    "title": "Mezzanine Scraper Failed — Session Token Expired",
-    "description": "The Mezzanine audience data update failed with an authentication error (401/403). **The session token has expired.** To fix: set up mitmproxy on your Mac, proxy iPhone traffic through it, open the Mezzanine app, then update the `MEZZANINE_SESSION_TOKEN` GitHub Secret with the new token.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38167320385",
+    "conditionKey": "ob-venue-go-live:montgomery-an-american-musical-off-broadway-2026",
+    "title": "Montgomery: An American Musical @ A.R.T./New York Theatres — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2026-12-11 to 2026-12-19). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/montgomery-an-american-musical-off-broadway-2026",
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "fields": [
-      {
-        "name": "Action Required",
-        "value": "Re-intercept Mezzanine iOS app via mitmproxy"
-      },
-      {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/38167320385)"
-      }
-    ],
-    "queuedAt": "2026-10-11T19:17:11.510Z"
+    "fields": [],
+    "queuedAt": "2026-10-11T19:09:16.553Z"
   }
 ]
