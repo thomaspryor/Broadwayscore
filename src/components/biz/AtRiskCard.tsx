@@ -23,6 +23,8 @@ interface AtRiskCardProps {
   breakEven: number;
   /** Model [pessimistic, central, optimistic]. */
   modelRecoupmentPct: [number, number, number];
+  /** Set when the display guard hid the model: printed instead of the %. */
+  modelHoldLabel: string | null;
   trend: RecoupmentTrend;
 }
 
@@ -42,6 +44,7 @@ export default function AtRiskCard({
   avgWeeklyGross,
   breakEven,
   modelRecoupmentPct,
+  modelHoldLabel,
   trend,
 }: AtRiskCardProps) {
   const trendLabel = TREND_LABELS[trend];
@@ -78,7 +81,7 @@ export default function AtRiskCard({
       </div>
       <div className="flex justify-between text-sm mt-1">
         <span className="text-gray-500">Est. recouped (best case)</span>
-        <span className="text-white">~{optimistic}%</span>
+        <span className="text-white">{modelHoldLabel ?? `~${optimistic}%`}</span>
       </div>
       <div className="flex justify-between text-sm mt-1">
         <span className="text-gray-500">Trend (4 wks)</span>

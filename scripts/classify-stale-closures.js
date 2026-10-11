@@ -21,6 +21,7 @@
  *   node scripts/classify-stale-closures.js --grace-days=45 --max-age-days=180
  */
 
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const { classifyStaleClosure, undoAutoFizzleOnRunningShow } = require('./lib/classify-stale-closure');

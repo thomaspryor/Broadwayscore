@@ -28,6 +28,7 @@
  *   --gather-only   Stop after gathering, don't run AI analysis
  */
 
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const https = require('https');

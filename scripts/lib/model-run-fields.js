@@ -7,13 +7,20 @@
  *
  *   modelRecoupmentPctV2  - SVOG-denominator fix, [pessimistic, central, optimistic] %
  *   modelInvestorMultiple - investor return multiple after the 50/50 split, same order
+ *   modelReturnedExCreditPct - "% returned so far": played weeks only, and a
+ *                           running show's NY tax credit only once cited as
+ *                           received (checker decisions #1/#2, B2), same order
+ *   modelTaxCreditExcluded - the uncited credit left out of it ($), for the
+ *                           "Not counting an expected NY State tax credit" line
  *
  * modelRecoupmentPct is never touched here.
  */
 
 const { modelReturnV2 } = require('./model-return-v2');
 
-const SHADOW_RETURN_FIELDS = ['modelRecoupmentPctV2', 'modelInvestorMultiple'];
+const SHADOW_RETURN_FIELDS = ['modelRecoupmentPctV2', 'modelInvestorMultiple', 'modelReturnedExCreditPct', 'modelTaxCreditExcluded'];
+/** Model options for the "% returned so far" shadow run. */
+const RETURNED_SO_FAR_OPTS = Object.freeze({ playedWeeksOnly: true, taxCreditCitedOnly: true });
 
 /**
  * On any fall-back to ai-estimated, fields from a prior weekly/lifetime run
@@ -46,4 +53,21 @@ function applyShadowReturnFields(comm, result, show, now = Date.now()) {
   return v2;
 }
 
-module.exports = { clearStaleModelFields, applyShadowReturnFields, SHADOW_RETURN_FIELDS };
+/**
+ * Write the "% returned so far" shadow fields from a run with
+ * RETURNED_SO_FAR_OPTS. A missing or failed run clears them.
+ */
+function applyReturnedSoFarFields(comm, returned) {
+  if (!returned || returned.error || !Number.isFinite(returned.recoupmentPctCentral)) {
+    delete comm.modelReturnedExCreditPct;
+    delete comm.modelTaxCreditExcluded;
+    return;
+  }
+  comm.modelReturnedExCreditPct = [returned.recoupmentPctLow, returned.recoupmentPctCentral, returned.recoupmentPctHigh];
+  comm.modelTaxCreditExcluded = returned.taxCreditExcluded || 0;
+}
+
+module.exports = {
+  clearStaleModelFields, applyShadowReturnFields, applyReturnedSoFarFields,
+  SHADOW_RETURN_FIELDS, RETURNED_SO_FAR_OPTS,
+};
