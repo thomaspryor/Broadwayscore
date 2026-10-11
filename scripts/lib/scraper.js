@@ -1786,6 +1786,23 @@ const TRAILING_ID_EXTRACTORS = {
 // "-offline-productions") but eliminates that false-accept class entirely.
 const CATEGORY_DRIFT_HOSTS = new Set(['show-score.com']);
 
+// BRO-3501: nypost.com's pre-2013 CMS URLs (/p/entertainment/theater/<slug>_<22-char
+// opaque id>) are 301-redirected BY NYPOST ITSELF to a dated article
+// (/YYYY/MM/DD/<new-slug>/) whose slug often shares nothing with the old one
+// (gotta_hand_it_to_him -> christopher-walken-the-best-part-of-a-behanding-in),
+// so no slug comparison can work. The safety is the server's id-keyed redirect:
+// checked by hand 2026-10-11, a mangled or made-up id 301s to a lowercased /p/
+// path that 404s, never to a dated article. Audit of url-mismatch-suspects.json:
+// 72 of 73 NY Post suspects match; the 73rd (modern URL -> /contributor-content)
+// stays rejected. Before this, every legacy review failed url_mismatch after two
+// paid fetches, every week, in recollect-for-scores.
+const LEGACY_ID_REDIRECTS = {
+  'nypost.com': {
+    expected: /^\/p\/(?:entertainment\/)?(?:theater\/)?(?:reviews\/)?[a-z0-9_]+_[A-Za-z0-9]{22}\/?$/,
+    actual: /^\/\d{4}\/\d{2}\/\d{2}\/[a-z0-9-]+\/?$/,
+  },
+};
+
 /**
  * Verify that fetched HTML actually corresponds to the requested URL.
  * Detects Cloudflare redirects, homepage returns, and canonical URL mismatches.
@@ -1958,6 +1975,16 @@ function verifyFetchedUrl(html, expectedUrl) {
       // deliberately left unmatched — see comment above).
       if (CATEGORY_DRIFT_HOSTS.has(expHost) && expLast && actLast && expLast === actLast) {
         return { verified: true, reason: 'category_redirect' };
+      }
+
+      // BRO-3501: legacy opaque-id URL redirected to a dated article. See
+      // LEGACY_ID_REDIRECTS (module scope, above). Paths only: query strings and
+      // #ixzz fragments on the legacy URL are ignored.
+      const legacyCfg = LEGACY_ID_REDIRECTS[expHost];
+      if (legacyCfg
+        && legacyCfg.expected.test(new URL(stripInvisibleUnicode(expectedUrl)).pathname)
+        && legacyCfg.actual.test(new URL(stripInvisibleUnicode(actualUrl)).pathname)) {
+        return { verified: true, reason: 'legacy_id_redirect' };
       }
     }
   } catch { /* fall through */ }
