@@ -1677,17 +1677,22 @@ assert(
 // ============================================================
 console.log('\n--- Fix B: publishDate fallback enables temporal override for fresh stubs ---');
 
+// BRO-4884 moved the chain into lib/verification-publish-date.js, which keeps
+// the today fallback only for a current show. Check the behavior, not the
+// source text.
+const { verificationPublishDate } = require('./lib/verification-publish-date');
 const collectSrc = require('fs').readFileSync(require('path').join(__dirname, 'collect-review-texts.js'), 'utf8');
 assert(
-  collectSrc.includes("new Date().toISOString().slice(0, 10)"),
-  'Fix B: collect-review-texts.js has today-fallback for publishDate'
+  /publishDate: verificationPublishDate\(\{[\s\S]{0,800}?today: new Date\(\)\.toISOString\(\)\.slice\(0, 10\)/.test(collectSrc),
+  'Fix B: collect-review-texts.js passes today to verificationPublishDate for the verifier'
 );
-
-// The specific pattern: publishDate || textFetchedAt || today
-assert(
-  collectSrc.includes("reviewData.publishDate || reviewData.textFetchedAt || new Date().toISOString().slice(0, 10)"),
-  'Fix B: publishDate fallback chain is publishDate || textFetchedAt || today'
-);
+{
+  const today = new Date().toISOString().slice(0, 10);
+  const freshStub = verificationPublishDate({ storedDate: null, derivedDate: null, textFetchedAt: null, show: { status: 'open', closingDate: null }, today });
+  assert(freshStub === today, `Fix B: fresh stub of a current show gets today's date (got ${freshStub})`);
+  const fetched = verificationPublishDate({ storedDate: null, derivedDate: null, textFetchedAt: '2026-04-18T09:00:00Z', show: { status: 'open' }, today });
+  assert(fetched === '2026-04-18', `Fix B: textFetchedAt is used before today (got ${fetched})`);
+}
 
 // Logic test: with null publishDate (old behavior) → no temporal override
 {
