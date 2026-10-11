@@ -167,6 +167,13 @@ jobs:
           fi
           node scripts/update-show-status.js $SS_FLAG
 
+      # BRO-5071: persist the closed flip for shows past closingDate. The
+      # test.yml step of the same name only mutated its CI checkout, and
+      # update-show-status.js holds a 7-day grace, so shows sat status=open for
+      # days. Runs before Validate data, so the commit below carries it.
+      - name: Auto-close expired shows
+        run: node scripts/auto-close-expired-shows.js
+
       # BRO-3428: the previews->open transition the step above just applied is
       # exactly what leaves a show status=open while its tags array still
       # carries 'upcoming' from before it opened. stale-upcoming-tag.check.js

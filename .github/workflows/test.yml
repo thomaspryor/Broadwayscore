@@ -5781,8 +5781,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Auto-close expired shows
-        run: node scripts/auto-close-expired-shows.js
+      # BRO-5071: check only. A real write here mutates the CI checkout and is
+      # discarded; the persisted flip lives in update-show-status.yml.
+      - name: Auto-close expired shows (dry-run check)
+        run: node scripts/auto-close-expired-shows.js --dry-run
+
+      - name: Auto-close expired shows tests (BRO-5071)
+        run: node --test scripts/auto-close-expired-shows.test.mjs
 
       # --- Independent data-check steps below all carry `if: always()` ---------
       # Each is a SEPARATE assertion (validation, contamination, integrity).
