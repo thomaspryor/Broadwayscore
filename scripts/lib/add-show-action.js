@@ -21,7 +21,7 @@ const ALLOWED = new Set([
   'tags', 'images', 'synopsis', 'theaterAddress', 'ticketLinks', 'cast', 'creativeTeam',
   'ibdbRevivalChecked', 'runtime', 'intermissions', 'ageRecommendation', 'discoverySource',
   'provisional', 'tourOf', 'tourScheduleSlug', 'tourLaunchEvidence', 'statusSource',
-  'closingDateSource', 'closingDateUpdatedAt', 'discoveredAt',
+  'closingDateSource', 'closingDateUpdatedAt', 'discoveredAt', 'season', 'evidenceUrls',
 ]);
 const ID_RE = /^[a-z0-9][a-z0-9-]*$/;
 const STATUSES = ['upcoming', 'announced', 'previews', 'open', 'closed'];
