@@ -238,6 +238,17 @@ const AUDITS = [
   // warns, incl. the sub-floor drift the gate lets pass) lives HERE so it still
   // surfaces daily in the digest.
   {
+    name: 'synopsis-story',
+    label: 'shows.json synopses holding wikitext debris or audience pitch copy',
+    // BRO-5063: 60+ live synopses carried Wikipedia scrape debris ("thumb
+    // alt=", ";Act I") or producer pitch ("Don't miss", "Join us").
+    // isValidSynopsis now rejects both at write time; this reports rows saved
+    // before that or by a writer that skips it. Read-only, never writes.
+    script: 'audit-synopsis-story.js',
+    args: ['--fail-on-hit'],
+    crashCodes: [2],           // 0 clean / 1 = hard rows (drift) / 2 = shows.json missing
+  },
+  {
     name: 'cast-contamination',
     label: 'data/cast/*.json wrong-show contamination — full report (gate = wrong-show class only)',
     script: 'audit-cast-contamination.js',
