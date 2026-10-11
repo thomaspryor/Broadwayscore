@@ -155,9 +155,9 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-11T06:18:07.922Z",
-      "lastSeen": "2026-10-11T06:18:07.922Z",
-      "lastNotifiedAt": "2026-10-11T06:18:07.922Z",
+      "incidentOpenedAt": "2026-10-11T06:36:08.383Z",
+      "lastSeen": "2026-10-11T06:36:08.383Z",
+      "lastNotifiedAt": "2026-10-11T06:36:08.383Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 129,
       "cardId": null,
@@ -13578,40 +13578,34 @@
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"classify-market-routing parity vs committed baseline (95 samples)\"",
-      "firstSeen": "2026-10-11T06:18:07.617Z",
-      "incidentOpenedAt": "2026-10-11T06:18:07.617Z",
-      "lastSeen": "2026-10-11T06:18:07.617Z",
-      "lastNotifiedAt": "2026-10-11T06:18:07.617Z",
+      "firstSeen": "2026-10-11T06:16:18.103Z",
+      "incidentOpenedAt": "2026-10-11T06:16:18.103Z",
+      "lastSeen": "2026-10-11T06:36:05.641Z",
+      "lastNotifiedAt": "2026-10-11T06:16:18.103Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5035"
+      "linearIdentifier": "BRO-5035",
+      "silentRefires": 1
     },
-    "land:land/bro-5031-tr-lookup": {
+    "test-yml:red:Design Token Drift Guard:621920d2": {
       "status": "open",
-      "disposition": "digest",
-      "title": "Landing blocked: unit-tests-node red on land/bro-5031-tr-lookup",
-      "firstSeen": "2026-10-11T06:29:29.594Z",
-      "incidentOpenedAt": "2026-10-11T06:29:29.594Z",
-      "lastSeen": "2026-10-11T06:29:29.594Z",
-      "lastNotifiedAt": "2026-10-11T06:29:29.594Z",
-      "lastSurfacedAt": "2026-10-11T06:29:29.594Z",
+      "disposition": "auto",
+      "title": "main test.yml red: Design Token Drift Guard / Lint design tokens",
+      "firstSeen": "2026-10-11T06:36:05.649Z",
+      "incidentOpenedAt": "2026-10-11T06:36:05.649Z",
+      "lastSeen": "2026-10-11T06:36:05.649Z",
+      "lastNotifiedAt": "2026-10-11T06:36:05.649Z",
+      "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
-    },
-    "land:land/bro-5020-review": {
-      "status": "open",
-      "disposition": "digest",
-      "title": "Landing blocked: rebase red on land/bro-5020-review",
-      "firstSeen": "2026-10-11T06:33:57.077Z",
-      "incidentOpenedAt": "2026-10-11T06:33:57.077Z",
-      "lastSeen": "2026-10-11T06:33:57.077Z",
-      "lastNotifiedAt": "2026-10-11T06:33:57.077Z",
-      "lastSurfacedAt": "2026-10-11T06:33:57.077Z",
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": "BRO-5037",
+      "dispatch": {
+        "requestedAt": "2026-10-11T06:36:05.649Z",
+        "mode": "dispatch-at-filing",
+        "runId": "38117583888",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38117583888"
+      }
     }
   }
 }
