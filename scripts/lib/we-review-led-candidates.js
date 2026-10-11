@@ -254,13 +254,14 @@ function findContinuingRun(shows, title, startDate) {
   })()) || null;
 }
 
+/** London theatres went dark the evening of 16 March 2020. */
+const LONDON_COVID_DARK = '2020-03-16';
+
 /**
  * Lookup rows (from the CI resolver) → candidates with decisions.
  * @param {{season: string, lookups: Array<{review: object, tr?: object|null, header?: string|null, error?: string}>,
  *          shows: Array, today?: string}} input
  */
-const LONDON_COVID_DARK = '2020-03-16';
-
 function buildReviewLedCandidates({ season, lookups, shows, today }) {
   const pool = buildVenueTitlePool(shows);
   const westEndIds = new Set(shows.filter(s => s.market === 'west-end').map(s => s.id));
