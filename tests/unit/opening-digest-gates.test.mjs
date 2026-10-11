@@ -71,3 +71,20 @@ test('digest critic score matches canonical scorer on a multi-critic outlet (The
   assert.equal(digestScore, Math.round(canonical.s), 'digest score must equal the canonical (live-site) score, not a locally re-derived one');
   assert.equal(digestScore, 70, 'The Pass\'s real 7-review set canonically rounds to 70, not the 73 the pre-fix digest showed');
 });
+
+test('overdue broadcast lands in needsHelp with the gap, even when otherwise fine', async () => {
+  const { isBroadcastOverdue, classifyRows } = require('../../scripts/send-opening-digest.js');
+  const sentData = { shows: { 'overdue-alert:a': { sentAt: '2026-10-10T11:54:25Z' } } };
+  assert.equal(isBroadcastOverdue(sentData, 'a'), true);
+  assert.equal(isBroadcastOverdue(sentData, 'b'), false);
+  assert.equal(isBroadcastOverdue(undefined, 'a'), false);
+  const base = { daysFromToday: -2, excluded: false, important: true, broadcastEligible: true,
+    qualifies: false, broadcastSent: false, broadcastDiscarded: false, reviewCount: 19, expected: 20, t1Count: 1 };
+  const out = classifyRows([
+    { ...base, id: 'a', broadcastOverdue: true, qualifyGap: 'T1 1/3' },
+    { ...base, id: 'b', broadcastOverdue: false },
+  ]);
+  assert.deepEqual(out.needsHelp.map(r => r.id), ['a']);
+  assert.deepEqual(out.needsHelp[0].helpReasons, ['broadcast overdue', 'short: T1 1/3']);
+  assert.ok(!out.needsHelp.some(r => r.id === 'b'));
+});

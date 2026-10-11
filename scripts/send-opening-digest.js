@@ -187,6 +187,13 @@ function isBroadcastDiscarded(sentData, market, showId) {
     classifyBroadcastState(sent[`${market}:${showId}`]) === 'discarded';
 }
 
+// The broadcast workflow stamps 'overdue-alert:<id>' once a show is past
+// opening with no broadcast sent. Surfacing it here keeps the digest the one
+// email for opening-night state (the standalone status email is Discord-only).
+function isBroadcastOverdue(sentData, showId) {
+  return Boolean(sentData?.shows?.[`overdue-alert:${showId}`]);
+}
+
 // ---------------------------------------------------------------------------
 // Importance / broadcast eligibility
 // ---------------------------------------------------------------------------
@@ -317,6 +324,8 @@ function buildRows(shows, reviewMap, audienceBuzz, sentData, importantSet, exclu
       const broadcastSent = broadcastEligible ? isBroadcastSent(sentData, market, s.id) : null;
       // BRO-2935: a draft deleted unsent on purpose is settled, not "ready to send".
       const broadcastDiscarded = broadcastEligible ? isBroadcastDiscarded(sentData, market, s.id) : false;
+      const broadcastOverdue = broadcastEligible && !broadcastSent && !broadcastDiscarded &&
+        isBroadcastOverdue(sentData, s.id);
       const daysFromToday = daysBetween(s.openingDate, today);
       return {
         id: s.id,
@@ -343,6 +352,7 @@ function buildRows(shows, reviewMap, audienceBuzz, sentData, importantSet, exclu
         audience,
         broadcastSent,
         broadcastDiscarded,
+        broadcastOverdue,
         expected: prediction.expected,
         expectedRange: prediction.expected ? `${prediction.p25}–${prediction.p75}` : null,
       };
@@ -369,6 +379,13 @@ function classifyRows(rows) {
       // Excluded shows: just appear in "other recent" without action signals
       if (r.excluded) {
         otherRecent.push(r);
+        continue;
+      }
+
+      // Overdue broadcast: always needs help, whatever else is true of the row.
+      if (r.broadcastOverdue) {
+        r.helpReasons = ['broadcast overdue', ...(r.qualifyGap ? [`short: ${r.qualifyGap}`] : [])];
+        needsHelp.push(r);
         continue;
       }
 
@@ -891,6 +908,8 @@ async function main() {
 // drive the real function instead of a reimplementation.
 module.exports = {
   minReviewsToShowScore,
+  isBroadcastOverdue,
+  classifyRows,
   getAudience,
   MIN_AUDIENCE_REVIEWS,
   buildSubject,
