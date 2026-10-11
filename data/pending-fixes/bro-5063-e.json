@@ -2,15 +2,15 @@
   "issueNumber": "bro-5063-e",
   "planId": "c373b6b5-3c17-4c9b-8c83-0ce37a2d4165",
   "status": "pending",
-  "createdAt": "2026-10-11T18:14:52.666Z",
+  "createdAt": "2026-10-11T18:19:18.198Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "Part 5 of 5. Synopsis cleanup (BRO-5063). Checking the live data after parts 1-4 found two rows the backfill saved from TodayTix pages the cleaner mis-split (Schmigadoon!, The Comedy About Spies; cleaner fixed in the same change) and two more \"Get ...\" pitch openers the widened pitch rule now catches.",
+    "summary": "Part 5 of 5. Synopsis cleanup (BRO-5063). Checking the live data after parts 1-4 found two rows the backfill saved from TodayTix pages the cleaner mis-split (Schmigadoon!, The Comedy About Spies; cleaner fixed in the same change) and three more \"Get ...\" pitch openers the widened pitch rule now catches.",
     "steps": [
-      "Rewrite 3 synopses from each production’s own text",
+      "Rewrite 4 synopses from each production’s own text",
       "Clear Dirty Dancing for the verified writer"
     ],
     "riskLevel": "Low",
@@ -50,6 +50,15 @@
         "oldValue": "Get Ready for the ‘Time of Your Life’ as the record-breaking Dirty Dancing the Classic Story on Stage becomes the opening production at the Capital Theatre, Westfield London from 16 October 2026.",
         "newValue": null,
         "description": "Pitch copy only (\"Get Ready for the ‘Time of Your Life’ ...\"). Cleared so the verified writer (backfill-historical-metadata.yml) refills it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "no-excuses-no-limits-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "Get ready for a dance party! The b-boys of ILL-Abilities™ are flying in from four continents to bust expectations with moves so sick your head will spin. After wowing the world at the Olympics and Paralympics in Paris, nothing can stop this international all-star crew! Upending stereotypes and flipping disability into pure power, their boisterous blend of breaking and biographical storytelling centers self-determination and proves that there are No Excuses, No Limits to what they are capable of.",
+        "newValue": "The b-boys of ILL-Abilities™ fly in from four continents, fresh from performing at the Olympics and Paralympics in Paris. Their blend of breaking and biographical storytelling upends stereotypes about disability and centers self-determination.",
+        "description": "Pitch opener (\"Get ready for a dance party!\"). Rewritten from the row’s own text without the sales lines (oldValue from the 2026-10-06 core-data snapshot; closed show, not in public data)."
       }
     ]
   }

@@ -215,7 +215,7 @@ async function fetchSynopsisFromTodayTix(show, todayTixInfo) {
     // The meta/JSON-LD description is the same producer copy as product.about
     // (pull quotes, "currently playing at", cut mid-sentence), so it goes
     // through the same story-sentence filter; '' means fall back to the LLM.
-    return { text: cleanTodaytixAbout(extractSynopsisFromHtml(html)) || null, trusted: false };
+    return { text: cleanTodaytixAbout(extractSynopsisFromHtml(html), show.title) || null, trusted: false };
   } catch {
     return { text: null, trusted: false };
   }
