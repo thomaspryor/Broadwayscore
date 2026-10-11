@@ -108,11 +108,31 @@ function stratifiedSample(rows, stratumOf, n, seed) {
   return out;
 }
 
+/**
+ * "we-historical" or a season-scoped key "we-historical-2024-2025" ->
+ * {base, season}. A season key samples that season only, for the season
+ * audit (scripts/audit-we-historical-season.js), whatever WE_SEASONS lists.
+ */
+function parseCohortKey(key) {
+  const m = String(key || '').match(/^(.*?)-(\d{4}-\d{4})$/);
+  const base = m ? m[1] : String(key || '');
+  if (!COHORTS[base]) throw new Error(`unknown cohort ${key} (have: ${Object.keys(COHORTS).join(', ')}, optionally -YYYY-YYYY)`);
+  return { base, season: m ? m[2] : null };
+}
+
+function cohortRows(shows, key) {
+  const { base, season } = parseCohortKey(key);
+  const c = COHORTS[base];
+  if (!season) return shows.filter(c.filter);
+  // A season key widens the WE cohort past WE_SEASONS: keep the source test, swap the season test.
+  const sourceOk = base === 'we-historical' ? (s) => s.discoverySource === 'we-historical:wos' : c.filter;
+  return shows.filter((s) => sourceOk(s) && s.season === season);
+}
+
 /** The cohort's rows and the seeded sample (ids + strata), ready to save. */
 function drawSample(shows, cohortName, n, seed) {
-  const cohort = COHORTS[cohortName];
-  if (!cohort) throw new Error(`unknown cohort ${cohortName} (have: ${Object.keys(COHORTS).join(', ')})`);
-  const rows = shows.filter(cohort.filter);
+  const cohort = COHORTS[parseCohortKey(cohortName).base];
+  const rows = cohortRows(shows, cohortName);
   const sample = stratifiedSample(rows, cohort.stratum, n, seed);
   const strata = {};
   for (const r of rows) { const k = cohort.stratum(r); strata[k] = strata[k] || { population: 0, sampled: 0 }; strata[k].population++; }
@@ -131,7 +151,7 @@ function seasonPhrase(season) {
  * stored venue, date, credit or type, so the answer is the checker's own.
  */
 function buildFactPrompt(show, cohortName) {
-  const market = COHORTS[cohortName].market;
+  const market = COHORTS[parseCohortKey(cohortName).base].market;
   return `Use web search. I need facts about one specific theatre production: "${show.title}" in the ${market} market, the production that played during ${seasonPhrase(show.season)}. If this title had several productions, answer only about the one in that market and season.
 
 Return JSON only, no prose, in this exact shape. Every non-null value needs the URL of a web page that states it (a page you actually found, not a guess). Never use broadwayscorecard.com as a source: it is the site being checked. Use null when you cannot find a page that states the fact.
@@ -381,9 +401,22 @@ function errorTable(verdicts) {
   return t;
 }
 
+/**
+ * Advisory line for a season audit: the sourced sample's verdicts for this
+ * season's rows. verdicts: [{id, field, verdict}] over every checked cohort.
+ * Returns {sampled, table, wrong} or {sampled: 0} when no sampled row is in the season.
+ */
+function seasonSummary(verdicts, seasonIds) {
+  const ids = new Set(seasonIds);
+  const mine = (verdicts || []).filter((v) => ids.has(v.id));
+  const sampled = new Set(mine.map((v) => v.id)).size;
+  if (!sampled) return { sampled: 0 };
+  return { sampled, table: errorTable(mine), wrong: mine.filter((v) => v.verdict === 'wrong') };
+}
+
 module.exports = {
   COHORTS, WE_SEASONS, FACT_FIELDS, FIELD_KIND,
-  prng, seededShuffle, stratifiedSample, drawSample,
+  prng, seededShuffle, stratifiedSample, drawSample, parseCohortKey, cohortRows, seasonSummary,
   seasonPhrase, buildFactPrompt, parseJsonReply,
   normalizePerson, samePerson, dateSpellings, pageSupports, sameVenue,
   storedCredits, storedValue, isSelfSource, compareField, triageField, wilson, errorTable,

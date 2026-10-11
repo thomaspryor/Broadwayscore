@@ -186,7 +186,7 @@ function buildShowEntry(candidate, venueVocabulary, venueSpellings = new Map(), 
     season: candidate.season,
     discoverySource: reviewLed ? REVIEW_LED_DISCOVERY_SOURCE : DISCOVERY_SOURCE,
     discoveredAt: new Date().toISOString(),
-    ...(candidate.openingDate ? { openingDateSource: dateSource } : {}),
+    ...(candidate.openingDate ? { openingDateSource: candidate.openingDateSource || dateSource } : {}),
     closingDateSource: dateSource,
     ...(evidenceUrls.length ? { evidenceUrls } : {}),
   };

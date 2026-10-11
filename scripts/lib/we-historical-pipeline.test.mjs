@@ -160,7 +160,9 @@ test('plausibleOpeningDate: rejects placeholder and implausibly late press night
   assert.equal(plausibleOpeningDate({ previewsStartDate: '2024-10-01', openingDate: '2024-12-08' }), null);
   assert.equal(plausibleOpeningDate({ previewsStartDate: '2025-02-15', openingDate: '2025-02-15' }), null);
   assert.equal(plausibleOpeningDate({ previewsStartDate: '2024-10-04', openingDate: '2024-10-15' }), '2024-10-15');
-  assert.equal(plausibleOpeningDate({ previewsStartDate: null, openingDate: '2024-10-15' }), '2024-10-15');
+  // No preview date: WOS opening_date is the first performance, not a press
+  // night (BRO-5080); wosStartDates() writes it as previewsStartDate instead.
+  assert.equal(plausibleOpeningDate({ previewsStartDate: null, openingDate: '2024-10-15' }), null);
 });
 
 test('buildCandidates: a same-title BROADWAY show starting the same week is not a West End duplicate', () => {

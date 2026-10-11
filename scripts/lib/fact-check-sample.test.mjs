@@ -124,3 +124,30 @@ test('a checker citing broadwayscorecard.com is never a source for our own value
   assert.equal(fc.triageField('openingNight', show, c, 'west-end').status, 'unsourced');
   assert.ok(fc.buildFactPrompt({ title: 'X', season: '2019-2020' }, 'we-historical').includes('Never use broadwayscorecard.com'));
 });
+
+test('a season key samples that season only, even outside WE_SEASONS', () => {
+  const shows = [
+    { id: 'a', discoverySource: 'we-historical:wos', season: '2024-2025' },
+    { id: 'b', discoverySource: 'we-historical:wos', season: '2019-2020' },
+    { id: 'c', discoverySource: 'manual-user-request', season: '2024-2025' },
+  ];
+  assert.deepEqual(fc.parseCohortKey('we-historical-2024-2025'), { base: 'we-historical', season: '2024-2025' });
+  assert.deepEqual(fc.drawSample(shows, 'we-historical-2024-2025', 10, 1).ids.map((r) => r.id), ['a']);
+  assert.throws(() => fc.parseCohortKey('nope'));
+});
+
+test('the season audit carries the sourced sample as an advisory check', () => {
+  const { auditSeason } = require('../audit-we-historical-season.js');
+  const shows = [{ id: 'x-west-end-2019', title: 'X', discoverySource: 'we-historical:wos', season: '2019-2020', openingDate: '2019-10-01', closingDate: '2019-12-01' }];
+  const verdicts = [
+    { id: 'x-west-end-2019', field: 'openingNight', verdict: 'wrong', url: 'https://example.org', note: 'opening=first-preview' },
+    { id: 'x-west-end-2019', field: 'type', verdict: 'correct' },
+    { id: 'other', field: 'type', verdict: 'wrong' },
+  ];
+  const r = auditSeason({ shows, reviews: [], season: '2019-2020', factCheckVerdicts: verdicts });
+  assert.equal(r.checks.factCheck.pass, null);
+  assert.equal(r.checks.factCheck.sampled, 1);
+  assert.equal(r.checks.factCheck.table.openingNight.wrong, 1);
+  assert.equal(r.checks.factCheck.wrong.length, 1);
+  assert.equal(auditSeason({ shows, reviews: [], season: '2019-2020' }).checks.factCheck.sampled, 0);
+});

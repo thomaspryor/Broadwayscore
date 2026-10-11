@@ -14,6 +14,8 @@
  *
  * Usage:
  *   node scripts/fact-check-historical-sample.js sample --cohort=we-historical --n=100 --seed=5080
+ *   node scripts/fact-check-historical-sample.js sample --cohort=we-historical --season=2024-2025 --n=30
+ *     (a season sample is cohort "we-historical-2024-2025" for check/report)
  *   node scripts/fact-check-historical-sample.js check  --cohort=we-historical [--limit=N] [--ids=a,b] [--max-usd=12] [--concurrency=4]
  *   node scripts/fact-check-historical-sample.js report --cohort=we-historical [--json] [--triage]
  *
@@ -29,6 +31,7 @@ const path = require('path');
 const fc = require('./lib/fact-check-sample');
 const { synopsisStoryProblems } = require('./lib/synopsis-story-audit');
 const { nonStoryReason } = require('./lib/todaytix-page-identity');
+const { foldDiacritics } = require('./lib/title-match');
 
 const ROOT = path.join(__dirname, '..');
 const OUT_DIR = path.join(ROOT, 'data', 'audit', 'fact-check');
@@ -227,7 +230,7 @@ async function checkShow(show, cohort) {
 // ---------- commands ----------
 
 function cmdSample() {
-  const cohort = arg('cohort');
+  const cohort = arg('season') ? `${arg('cohort')}-${arg('season')}` : arg('cohort');
   const n = Number(arg('n', 100));
   const seed = Number(arg('seed', 5080));
   const s = fc.drawSample(loadShows(), cohort, n, seed);
@@ -276,7 +279,7 @@ function triage(cohort) {
   const sample = JSON.parse(fs.readFileSync(f.sample, 'utf8'));
   const byId = new Map(loadShows().map((s) => [s.id, s]));
   const checks = readChecks(f.checks);
-  const market = cohort === 'we-historical' ? 'west-end' : 'broadway';
+  const market = fc.parseCohortKey(cohort).base === 'we-historical' ? 'west-end' : 'broadway';
   const rows = [];
   for (const { id } of sample.ids) {
     const show = byId.get(id); const c = checks.get(id);
@@ -306,7 +309,7 @@ function triage(cohort) {
     } else rows.push({ id, title: show.title, field: 'synopsis', status: 'not-stored' });
     if (c.poster && c.poster.file) {
       const flags = [];
-      const tnorm = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
+      const tnorm = (s) => foldDiacritics(String(s || '')).toLowerCase().replace(/[^a-z0-9]+/g, '');
       for (const k of ['gemini', 'openai']) {
         const j = c.poster[k];
         if (!j || j.error) continue;
@@ -327,9 +330,22 @@ function triage(cohort) {
   return rows;
 }
 
+/** Final per-field verdicts for a cohort: adjudication first, then triage. */
+function verdictsFor(cohort) {
+  const f = files(cohort);
+  if (!fs.existsSync(f.sample) || !fs.existsSync(f.checks)) return [];
+  const adj = fs.existsSync(f.adjudications) ? JSON.parse(fs.readFileSync(f.adjudications, 'utf8')) : {};
+  return triage(cohort).map((r) => {
+    const a = adj[`${r.id}|${r.field}`];
+    if (a) return { id: r.id, field: r.field, verdict: a.verdict, url: a.url, note: a.note };
+    if (r.status === 'ok' || r.status === 'ok-cited') return { id: r.id, field: r.field, verdict: 'correct', weak: r.status === 'ok-cited' };
+    if (r.status === 'not-stored') return { id: r.id, field: r.field, verdict: 'not-stored' };
+    return { id: r.id, field: r.field, verdict: r.status === 'adjudicate' || r.status === 'people-check' ? 'pending' : 'unverifiable' };
+  });
+}
+
 function cmdReport() {
   const cohort = arg('cohort');
-  const f = files(cohort);
   const rows = triage(cohort);
   if (arg('triage')) {
     const want = String(arg('status', 'adjudicate')).split(',');
@@ -337,14 +353,7 @@ function cmdReport() {
     for (const r of rows.filter((x) => want.includes(x.status) && (!fld || x.field === fld))) console.log(JSON.stringify(r));
     return;
   }
-  const adj = fs.existsSync(f.adjudications) ? JSON.parse(fs.readFileSync(f.adjudications, 'utf8')) : {};
-  const verdicts = rows.map((r) => {
-    const a = adj[`${r.id}|${r.field}`];
-    if (a) return { id: r.id, field: r.field, verdict: a.verdict, url: a.url, note: a.note };
-    if (r.status === 'ok' || r.status === 'ok-cited') return { id: r.id, field: r.field, verdict: 'correct', weak: r.status === 'ok-cited' };
-    if (r.status === 'not-stored') return { id: r.id, field: r.field, verdict: 'not-stored' };
-    return { id: r.id, field: r.field, verdict: r.status === 'adjudicate' || r.status === 'people-check' ? 'pending' : 'unverifiable' };
-  });
+  const verdicts = verdictsFor(cohort);
   const table = fc.errorTable(verdicts.map((v) => (v.verdict === 'pending' ? { ...v, verdict: 'unverifiable' } : v)));
   const pending = verdicts.filter((v) => v.verdict === 'pending').length;
   if (arg('json')) { console.log(JSON.stringify({ cohort, table, pending, wrong: verdicts.filter((v) => v.verdict === 'wrong') }, null, 2)); return; }
@@ -363,4 +372,4 @@ if (require.main === module) {
   Promise.resolve(run()).catch((e) => { console.error(e.stack || e.message); process.exit(1); });
 }
 
-module.exports = { triage, checkShow };
+module.exports = { triage, checkShow, verdictsFor, files };
