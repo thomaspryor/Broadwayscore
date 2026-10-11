@@ -135,7 +135,7 @@ export default function BoxOfficePage() {
             <PerSeatRanking perSeat={market.perSeat} />
             <Standouts page={market} />
             <PriceMapSection dots={market.priceMap.length}>
-              <PriceMapLazy dots={market.priceMap} />
+              <PriceMapLazy dots={market.priceMap} groups={market.priceMapPhone} />
             </PriceMapSection>
             <NewMusicalsChart cohort={market.cohort} />
             <BoxOfficeV2Tables thisWeek={marketWeekRows} allTime={allTimeLeaders} extra={market.table} />
