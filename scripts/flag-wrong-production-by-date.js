@@ -22,7 +22,7 @@ const { isWithinPriorRun, isWithinTourLeg, isPreRunForUkClear, namesNonLondonCit
 const { evaluateDateGuard, evaluateDatelessRevivalGuard, evaluateShowScorePreviousProduction, evaluateLlmYearMisdate, guardPublishDate, earliestShowDate, DAYS_AFTER_CLOSE } = require('./lib/date-guard');
 const { detectPriorRunRepublish } = require('./lib/prior-run-republish-guard');
 const { evaluateCurrentRunCorroboration, shouldHoldDateGuardFlag } = require('./lib/wrong-production-corroboration');
-const { applyDateGuardHold, clearDateGuardHold, holdMarkerNeedsWrite } = require('./lib/date-guard-hold');
+const { applyDateGuardHold, clearDateGuardHold, holdMarkerNeedsWrite, rebuildExcludesHeld } = require('./lib/date-guard-hold');
 const { isAwaitingUrlCorrectionRefetch } = require('./lib/stale-flag-after-url-correction');
 const { evaluateDatePlausibility } = require('./lib/date-plausibility');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
@@ -302,7 +302,8 @@ function run() {
           // as a review-queue warning instead of an error that refuses every
           // validate-gated core-data push. Rewritten only when the marker is
           // missing or stale (date/signals changed), so reruns don't churn it.
-          if (!DRY_RUN && holdMarkerNeedsWrite(data, corrob.signals)) {
+          // Skipped when rebuild scores the file anyway (cv-affirms override etc.).
+          if (!DRY_RUN && rebuildExcludesHeld({ review: data, show, corrob }) && holdMarkerNeedsWrite(data, corrob.signals)) {
             applyDateGuardHold(data, { signals: corrob.signals, issue, diffDays });
             const r = safeWriteReview(filePath, data);
             if (r.lockedSkipped) lockedSkipCount++;

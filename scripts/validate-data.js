@@ -4064,7 +4064,7 @@ function validateReviewTextQuality(shows) {
         if (kind === 'held') {
           heldDateGuard++;
           warn(`[date-guard-held] ${showDir}/${file}: review dated ${data.publishDate} is ${verdict.daysBefore}d before the show's earliest date ${verdict.earliestDate}, HELD by flag-wrong-production-by-date (${(data.dateGuardHeld.signals || []).join(', ')}) — needs a human: verify the live page date, then correct publishDate, set wrongProduction:true, or declare a priorRun`);
-          continue;
+          // No continue: CHECK 1+ still run on a held file.
         }
         if (kind === 'error') {
           error(`[wrong-production-by-date] ${showDir}/${file}: review dated ${data.publishDate} is ${verdict.daysBefore}d before the show's earliest date ${verdict.earliestDate} and not within any declared priorRun — likely a different production leaked onto this entry (set wrongProduction:true, or declare a priorRun)`);

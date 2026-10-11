@@ -15,9 +15,10 @@
  *     (skip the flag write, warn) but still EXCLUDE from scoring until a human
  *     corrects the date — never auto-include on this signal (a mis-attached
  *     current-run TR URL on a genuine prior-run review would otherwise ship
- *     into scores silently). validate-data.js CHECK 0 hard-errors unflagged
- *     reviews >180d early, so held misparses surface red in CI with an
- *     actionable message; recovery is just fixing publishDate (no 8-field
+ *     into scores silently). The flagger stamps a dateGuardHeld marker and
+ *     validate-data.js CHECK 0 reports a held >180d-early review as a
+ *     [date-guard-held] warning (BRO-5030, ./date-guard-hold.js); unheld
+ *     ones still hard-error. Recovery is just fixing publishDate (no 8-field
  *     manual-clear ceremony, because no flag was written).
  *     Scope: before_preview flags only — an after_close date is more likely a
  *     successor production mislinked back (which can share the TR month near

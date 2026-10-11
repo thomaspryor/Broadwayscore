@@ -23,6 +23,7 @@
 
 const { evaluateCurrentRunCorroboration, shouldHoldDateGuardFlag } = require('./wrong-production-corroboration');
 const { evaluateDatePlausibility } = require('./date-plausibility');
+const { isLongRunningProduction } = require('./long-runner-registry');
 
 const MARKER_FIELD = 'dateGuardHeld';
 
@@ -59,12 +60,15 @@ function holdMarkerNeedsWrite(data, signals) {
 }
 
 /**
- * Remove the marker (the flagger calls this when it stamps wrongProduction,
+ * Clear the marker (the flagger calls this when it stamps wrongProduction,
  * so a resolved file does not carry a stale hold). Returns true if removed.
  */
 function clearDateGuardHold(data) {
-  if (data && Object.prototype.hasOwnProperty.call(data, MARKER_FIELD)) {
-    delete data[MARKER_FIELD];
+  // Set null, never delete: safeWriteReview's merge pass copies any key that
+  // is undefined on the incoming record back from disk, so a deleted marker
+  // would survive the write.
+  if (data && data[MARKER_FIELD]) {
+    data[MARKER_FIELD] = null;
     return true;
   }
   return false;
@@ -80,7 +84,23 @@ function isDateGuardHeld({ review, show, implausible }) {
   if (!m || typeof m !== 'object') return false;
   if (!review.publishDate || m.publishDate !== review.publishDate) return false;
   const corrob = evaluateCurrentRunCorroboration({ review, show });
-  return shouldHoldDateGuardFlag({ corrob, implausible: implausible !== false });
+  if (!shouldHoldDateGuardFlag({ corrob, implausible: implausible !== false })) return false;
+  return rebuildExcludesHeld({ review, show, corrob });
+}
+
+/**
+ * A hold only earns the warning when rebuild-all-reviews.js really EXCLUDES the
+ * file from scores (its [PRE-OPENING-HELD] branch). Rebuild instead INCLUDES a
+ * pre-window file when contentVerification affirms the production
+ * ([PRE-OPENING-CV-OVERRIDE]), and skips its pre-window guard entirely for
+ * allowEarlyDate, routedFromShowId and long-running WE productions. A scored
+ * file dated far outside the run must stay a CHECK 0 error, marker or not.
+ */
+function rebuildExcludesHeld({ review, show, corrob }) {
+  if (review.allowEarlyDate || review.routedFromShowId) return false;
+  if (show && isLongRunningProduction(show)) return false;
+  const signals = (corrob && corrob.signals) || [];
+  return !signals.includes('cv-affirms-production');
 }
 
 /**
@@ -104,5 +124,6 @@ module.exports = {
   holdMarkerNeedsWrite,
   clearDateGuardHold,
   isDateGuardHeld,
+  rebuildExcludesHeld,
   classifyDateGuardBackstop,
 };

@@ -21,6 +21,7 @@ const {
   applyDateGuardHold,
   holdMarkerNeedsWrite,
   clearDateGuardHold,
+  rebuildExcludesHeld,
   classifyDateGuardBackstop,
 } = require('../../scripts/lib/date-guard-hold.js');
 const { evaluateCurrentRunCorroboration, shouldHoldDateGuardFlag } = require('../../scripts/lib/wrong-production-corroboration.js');
@@ -101,6 +102,18 @@ describe('classifyDateGuardBackstop (validate-data CHECK 0)', () => {
     assert.equal(classifyDateGuardBackstop({ review: r, show: SHOW }).kind, 'error');
   });
 
+  // Rebuild SCORES these despite the pre-window date, so a marker must not hide them.
+  test('cv-affirms-production alongside the TR month (rebuild CV override, scored) → error', () => {
+    const r = heldReview({ contentVerification: { isValid: true, confidence: 'high' } });
+    assert.equal(rebuildExcludesHeld({ review: r, show: SHOW, corrob: evaluateCurrentRunCorroboration({ review: r, show: SHOW }) }), false);
+    assert.equal(classifyDateGuardBackstop({ review: r, show: SHOW }).kind, 'error');
+  });
+
+  test('allowEarlyDate / routedFromShowId (rebuild skips its guard, scored) → error', () => {
+    assert.equal(classifyDateGuardBackstop({ review: heldReview({ allowEarlyDate: true }), show: SHOW }).kind, 'error');
+    assert.equal(classifyDateGuardBackstop({ review: heldReview({ routedFromShowId: 'x-2020' }), show: SHOW }).kind, 'error');
+  });
+
   test('non-object marker is ignored', () => {
     const r = review();
     r[MARKER_FIELD] = true;
@@ -137,11 +150,25 @@ describe('flagger writes the marker', () => {
     }
   });
 
-  test('clearDateGuardHold removes the marker', () => {
-    const r = heldReview();
-    assert.equal(clearDateGuardHold(r), true);
-    assert.equal(r[MARKER_FIELD], undefined);
-    assert.equal(clearDateGuardHold(r), false);
+  test('clearDateGuardHold clears the marker and the clear survives safeWriteReview merge', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro5030-clear-'));
+    try {
+      const showDir = path.join(dir, SHOW.id);
+      fs.mkdirSync(showDir);
+      const fp = path.join(showDir, 'thestage--dave-fargnoli.json');
+      fs.writeFileSync(fp, JSON.stringify(heldReview(), null, 2));
+      const data = JSON.parse(fs.readFileSync(fp, 'utf8'));
+      data.wrongProduction = true;
+      assert.equal(clearDateGuardHold(data), true);
+      safeWriteReview(fp, data);
+      const written = JSON.parse(fs.readFileSync(fp, 'utf8'));
+      assert.ok(!written[MARKER_FIELD], 'merge must not restore the cleared marker');
+      assert.equal(written.wrongProduction, true);
+      assert.equal(clearDateGuardHold(written), false);
+      assert.equal(holdMarkerNeedsWrite(written, ['theatre-record-month:2026/10']), true);
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
   });
 });
 
@@ -153,6 +180,8 @@ describe('wiring (real sources)', () => {
     assert.match(vd, /require\('\.\/lib\/date-guard-hold'\)/);
     assert.match(vd, /classifyDateGuardBackstop\(\{ review: data, show: wfShow \}\)/);
     assert.match(vd, /kind === 'held'[\s\S]{0,200}warn\(`\[date-guard-held\]/);
+    const heldBranch = vd.slice(vd.indexOf("kind === 'held'"), vd.indexOf("kind === 'error'"));
+    assert.doesNotMatch(heldBranch, /\bcontinue;/, 'held files must still run CHECK 1+');
     assert.match(vd, /kind === 'error'[\s\S]{0,80}error\(`\[wrong-production-by-date\]/);
   });
 
@@ -160,5 +189,6 @@ describe('wiring (real sources)', () => {
     assert.match(fl, /require\('\.\/lib\/date-guard-hold'\)/);
     assert.match(fl, /shouldHoldDateGuardFlag\(\{ corrob, implausible \}\)[\s\S]{0,1200}applyDateGuardHold\(data,[\s\S]{0,200}safeWriteReview\(filePath, data\)/);
     assert.match(fl, /data\.wrongProduction = true;\s*\n\s*invalidateWrongProductionAutoClear\(data\);\s*\n\s*clearDateGuardHold\(data\);/);
+    assert.match(fl, /rebuildExcludesHeld\(\{ review: data, show, corrob \}\) && holdMarkerNeedsWrite/);
   });
 });

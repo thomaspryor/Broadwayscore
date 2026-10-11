@@ -3922,7 +3922,9 @@ showDirs.forEach(showId => {
           // no 8-field manual-clear ceremony) but still EXCLUDE from this
           // rebuild — a mis-attached TR URL on a genuine prior-run review must
           // not ship into scores silently. Surfacing: exclusion log here +
-          // validate-data CHECK 0 hard-errors unflagged >180d-early reviews.
+          // validate-data CHECK 0 hard-errors unflagged >180d-early reviews,
+          // except a flagger-held one, which warns (BRO-5030; the CV-override
+          // branch below is scored, so it stays an error).
           const corrobIncl = evaluateCurrentRunCorroboration({ review: data, show: showById[showId] });
           if (corrobIncl.strength === 'strong') {
             // cv-affirms-production is a direct read of the fetched fullText
