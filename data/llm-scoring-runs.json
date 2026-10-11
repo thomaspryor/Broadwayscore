@@ -1,53 +1,5 @@
 [
   {
-    "startedAt": "2026-10-10T16:38:18.123Z",
-    "completedAt": "2026-10-10T16:41:55.417Z",
-    "totalReviews": 54556,
-    "processed": 29,
-    "skipped": 54497,
-    "errors": 3,
-    "tokensUsed": {
-      "input": 279826,
-      "output": 13151,
-      "total": 742888
-    },
-    "costUsd": 1.0975945,
-    "runId": "38068204433",
-    "errorDetails": [
-      {
-        "showId": "the-lion-king-tour-2021",
-        "outletId": "oklahoman",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "wicked-tour-2021",
-        "outletId": "cleveland-jewish-news",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "diana-the-musical-2021",
-        "outletId": "nytimes",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-10-10T16:41:57.506Z",
-    "completedAt": "2026-10-10T16:42:15.339Z",
-    "totalReviews": 8,
-    "processed": 8,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 17474,
-      "output": 2114,
-      "total": 19588
-    },
-    "costUsd": 0.0511464,
-    "runId": "38068204433",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-10T16:47:33.948Z",
     "completedAt": "2026-10-10T16:47:33.974Z",
     "totalReviews": 0,
@@ -629335,6 +629287,44 @@
     },
     "costUsd": 0,
     "runId": "38125130209",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-11T08:42:13.615Z",
+    "completedAt": "2026-10-11T08:43:12.627Z",
+    "totalReviews": 55409,
+    "processed": 2,
+    "skipped": 55391,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 73248,
+      "output": 3195,
+      "total": 206598
+    },
+    "costUsd": 0.3358877,
+    "runId": "38125466597",
+    "errorDetails": [
+      {
+        "showId": "diana-the-musical-2021",
+        "outletId": "nytimes",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-11T08:43:14.713Z",
+    "completedAt": "2026-10-11T08:43:18.253Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "38125466597",
     "errorDetails": []
   }
 ]
