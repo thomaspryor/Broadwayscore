@@ -103,6 +103,7 @@ on:
       # (all covered by the scripts/lib/** glob above). A solo edit to the
       # orchestrator itself — e.g. the classify-action switch statement — would
       # otherwise trigger ZERO CI, the same gap task #1745 documents.
+      - 'scripts/audit-flat-git-add.js'
       - 'scripts/audit-we-closing-dates.js'
       # scripts/audit-coverage-holes.js (BRO-4849) is the CLI over scripts/lib/coverage-holes.js; its test runs the CLI.
       - 'scripts/audit-coverage-holes.js'

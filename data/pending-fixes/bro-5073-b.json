@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5073-b",
   "planId": "2239d47c-6f8e-4088-b1bc-55b097f35d4f",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-11T20:08:54.672Z",
   "submitter": {
     "name": null,
@@ -48,5 +48,23 @@
         "description": "great-comet: reported \"returned 15%\" figure, quote checked on the page (BRO-5073)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-11T22:17:05.151Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentPct updated for natasha-pierre-and-the-great-comet-of-1812-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentSource updated for natasha-pierre-and-the-great-comet-of-1812-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentDate updated for natasha-pierre-and-the-great-comet-of-1812-2016"
+    }
+  ]
 }
