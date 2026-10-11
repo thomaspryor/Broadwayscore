@@ -51,8 +51,11 @@ function outsideRun(publishDate, show) {
 const OTHER_CITIES = [
   'sheffield', 'manchester', 'salford', 'birmingham', 'leeds', 'liverpool', 'edinburgh', 'glasgow',
   'aberdeen', 'dundee', 'bristol', 'bath', 'cardiff', 'swansea', 'belfast', 'dublin', 'nottingham',
-  'leicester', 'newcastle', 'sunderland', 'york', 'hull', 'bradford', 'blackpool', 'brighton',
-  'southampton', 'plymouth', 'norwich', 'oxford', 'cambridge', 'milton keynes', 'stoke', 'wolverhampton',
+  // Bare words that are also London names are given as the out-of-town
+  // house instead: "york" is in "Duke of York's", "stoke" in Stoke Newington,
+  // "cambridge" in the Cambridge Theatre, "oxford" in Oxford Street.
+  'leicester', 'newcastle', 'sunderland', 'york theatre royal', 'grand opera house york', 'hull', 'bradford', 'blackpool', 'brighton',
+  'southampton', 'plymouth', 'norwich', 'oxford playhouse', 'new theatre oxford', 'cambridge arts', 'milton keynes', 'stoke-on-trent', 'stoke on trent', 'wolverhampton',
   'coventry', 'canterbury', 'chichester', 'cheltenham', 'woking', 'wimbledon', 'richmond', 'bromley',
   'new york', 'broadway', 'chicago', 'toronto', 'sydney', 'melbourne', 'los angeles', 'boston',
 ];
@@ -67,7 +70,11 @@ function reviewedAtOwnVenue(reviewedVenue, show) {
   const own = plain(show.venue);
   if (OTHER_CITIES.some(c => containsToken(text, c) && !containsToken(own, c))) return false;
   const textNoApos = normalizeForMatch(reviewedVenue).replace(/'/g, '');
-  return venueTokens(show.venue).some(t => containsToken(text, t) || containsToken(textNoApos, t));
+  // The building's other names count too: reviews of a 2019 run say "Duke
+  // of York's" for a record filed under its 2026 name, the Tom Stoppard
+  // Theatre; "Trafalgar Studios" for the Trafalgar Theatre (lib/venue-aliases).
+  const names = [show.venue, ...require('./venue-aliases').otherVenueNames(show.venue, show.category)];
+  return names.some(n => venueTokens(n).some(t => containsToken(text, t) || containsToken(textNoApos, t)));
 }
 
 /**

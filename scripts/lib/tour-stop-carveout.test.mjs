@@ -72,3 +72,14 @@ test('venue-taxonomy objections at the record\'s own theatre are cleared too', (
   const glass = { venue: 'Royal Court', openingDate: '2019-09-18', closingDate: '2019-10-12' };
   assert.equal(applyOwnVenueTourCarveout({ wrongProduction: true, reasoning: 'reviews the Royal Court (pre-West End tryout) production, not the West End one', reviewedVenue: 'Royal Court Theatre' }, glass, { publishDate: '2019-09-30' }).wrongProduction, false);
 });
+
+test('reviewedAtOwnVenue accepts the building\'s other names (venue-aliases)', () => {
+  assert.equal(reviewedAtOwnVenue("Duke of York's Theatre", { venue: 'Tom Stoppard Theatre', category: 'west-end' }), true);
+  assert.equal(reviewedAtOwnVenue('Trafalgar Studios', { venue: 'Trafalgar Theatre', category: 'west-end' }), true);
+  assert.equal(reviewedAtOwnVenue('Comedy Theatre', { venue: 'Harold Pinter Theatre', category: 'west-end' }), true);
+  assert.equal(reviewedAtOwnVenue("Wyndham's Theatre", { venue: 'Tom Stoppard Theatre', category: 'west-end' }), false);
+  // City words that are also London names do not reject London houses.
+  assert.equal(reviewedAtOwnVenue("Duke of York's Theatre", { venue: "Duke of York's Theatre" }), true);
+  assert.equal(reviewedAtOwnVenue('Cambridge Theatre', { venue: 'Cambridge Theatre' }), true);
+  assert.equal(reviewedAtOwnVenue('York Theatre Royal', { venue: 'Theatre Royal Haymarket' }), false);
+});
