@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-11T16:35:36.370Z",
-  "processed": 97,
-  "failed": 53,
-  "successRate": "64.7%",
+  "updatedAt": "2026-10-11T16:40:09.755Z",
+  "processed": 1432,
+  "failed": 566,
+  "successRate": "71.7%",
   "tierBreakdown": {
-    "playwright": 69,
-    "amp": 1,
-    "browserbase": 2,
+    "playwright": 1070,
+    "amp": 0,
+    "browserbase": 3,
     "directCookies": 0,
-    "scrapingdog": 15,
-    "scrapingbee": 9,
+    "scrapingdog": 149,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 10
+    "archive": 155
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-10-11T16:02:02.710Z",
@@ -69,36 +69,47 @@
     {
       "t": "2026-10-11T15:51:39.862Z",
       "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-11T15:51:58.862Z",
+      "t": "2026-10-11T16:34:12.576Z",
       "event": "bb-session",
-      "session": "d07ab850",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654389"
+      "session": "34c902a0",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
     },
     {
-      "t": "2026-10-11T15:51:59.456Z",
+      "t": "2026-10-11T16:34:38.605Z",
+      "event": "bb-session",
+      "session": "7fe11629",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654485"
+    },
+    {
+      "t": "2026-10-11T16:34:39.080Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-10-11T15:54:42.488Z",
+      "t": "2026-10-11T16:34:56.622Z",
       "event": "bb-session",
-      "session": "90451b87",
-      "url": "https://deadline.com/2026/06/emmys-heated-rivalry-lord-of-the-flies-rivals-eligi"
+      "session": "0cff31b6",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654485"
     },
     {
-      "t": "2026-10-11T16:11:37.133Z",
-      "event": "bb-session",
-      "session": "9ca1c3ea",
-      "url": "http://www.publictheater.org/"
+      "t": "2026-10-11T16:34:57.069Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-10-11T16:11:55.621Z",
+      "t": "2026-10-11T16:39:36.151Z",
       "event": "bb-session",
-      "session": "2328082e",
-      "url": "http://www.publictheater.org/"
+      "session": "47cc9ac8",
+      "url": "https://www.broadwayworld.com/shows/Blood-of-My-Blood-336245/photos"
+    },
+    {
+      "t": "2026-10-11T16:39:52.798Z",
+      "event": "bb-session",
+      "session": "a60cd20b",
+      "url": "https://www.broadwayworld.com/shows/Blood-of-My-Blood-336245/photos"
     }
   ]
 }
