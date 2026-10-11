@@ -63,7 +63,7 @@ test('an ordinary 48h-old DISABLED is still stale; the same age with RETIRED is 
     assert.equal(readRetiredMarker(retired), 'RETIRED: 2026-10-11 BRO-4638');
     assert.equal(readRetiredMarker(path.join(dir, 'missing')), null);
   } finally {
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
   }
 });
 
