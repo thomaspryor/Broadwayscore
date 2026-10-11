@@ -38,7 +38,7 @@ test('extractEvidenceRefs: commit URL, PR URL and bare SHA are all found; foreig
 test('extractEvidenceRefs: URL path segments, dates and run ids never read as SHAs', () => {
   const body = 'merged deployed checked (https://linear.app/broadway-scorecard/issue/BRO-3378/abcdef1234) run 34843981603 on 2026-09-15';
   const refs = extractEvidenceRefs(body, { originRepo: LOCAL });
-  assert.deepEqual(refs, { commits: [], prs: [], foreign: [] });
+  assert.deepEqual(refs, { commits: [], prs: [], foreign: [], siblings: [] });
 });
 
 test('extractEvidenceRefs: with the origin unidentified, every GitHub URL is foreign — an unknown checkout never claims someone else\'s PR #7', () => {
