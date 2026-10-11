@@ -248,7 +248,7 @@ const outletRegionMap = buildOutletRegionMap(outletRegistry);  // outletId -> re
 // (the exact bug this backfill fixes) would otherwise never accumulate the category
 // evidence needed to backfill its own region: allReviews (the included-only set) can't
 // prove an outlet's market when that outlet's only reviews are the ones being excluded.
-const { canonicalOutletId: OUTLET_CANONICAL_ID_MAP } = require('./lib/outlet-region-map').buildOutletMaps(outletRegistry);
+const { canonicalOutletId: OUTLET_CANONICAL_ID_MAP, internationalTradeOutlets } = require('./lib/outlet-region-map').buildOutletMaps(outletRegistry);
 const outletShowCategoriesRaw = {};
 // All registered outlet ids + aliases (lowercased) — lets the cross-market guard
 // distinguish "registered but region-less" (US nationals; keep flagging) from
@@ -3720,6 +3720,7 @@ showDirs.forEach(showId => {
         const crossMarketVerdict = evaluateForwardCrossMarketGuard({
           outletRegionMap,
           registeredOutletIds: REGISTERED_OUTLET_IDS,
+          internationalTradeOutlets,
           canonicalOutlet,
           rawOutlet,
           url: data.url,
