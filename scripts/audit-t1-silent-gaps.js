@@ -211,10 +211,13 @@ function recoverForumThread(showId, fileName) {
   } catch { /* best-effort */ }
   let ok = true; let reason = null;
   try {
-    execFileSync('node', [path.join(ROOT, 'scripts', 'recover-talkinbroadway-forum-links.js'),
-      `--show=${showId}`, `--data-dir=${REVIEW_TEXTS_DIR}`], { stdio: 'pipe', timeout: 300000 });
+    const out = execFileSync('node', [path.join(ROOT, 'scripts', 'recover-talkinbroadway-forum-links.js'),
+      `--show=${showId}`, `--data-dir=${REVIEW_TEXTS_DIR}`], { encoding: 'utf8', stdio: 'pipe', timeout: 300000 });
+    // The script exits 0 even when a candidate failed (forum fetch blocked, no
+    // "Link" anchor, ingest refused); keep the tail so the report says WHY.
+    reason = String(out || '').trim().split('\n').slice(-6).join(' | ').slice(-400) || null;
   } catch (e) {
-    ok = false; reason = execErrorDetail(e, 100);
+    ok = false; reason = execErrorDetail(e, 400);
   }
   return { attempted: true, ok, reason };
 }
