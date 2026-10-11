@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-11T15:17:01.296Z",
+  "timestamp": "2026-10-11T15:32:34.876Z",
   "stats": {
-    "totalReviews": 55565,
-    "alreadyFlagged": 20482,
+    "totalReviews": 55586,
+    "alreadyFlagged": 20485,
     "dateGuardCatches": 262,
     "directorMismatch": 1719,
-    "tvFilmSignals": 1564,
-    "londonSignals": 2006,
+    "tvFilmSignals": 1565,
+    "londonSignals": 2010,
     "offBroadwaySignals": 506,
     "yearMismatch": 135,
-    "noPublishDate": 5830
+    "noPublishDate": 5827
   },
   "findings": [
     {
@@ -8602,7 +8602,7 @@
     {
       "showId": "constellations-west-end-2021",
       "file": "guardian--arifa-akbar.json",
-      "score": 83,
+      "score": 84,
       "publishDate": "July 2nd, 2021",
       "url": "https://www.theguardian.com/stage/2021/jul/02/constellations-review-a-stellar-revival-for-nick-paynes-high-concept-romance",
       "findings": [
@@ -8616,6 +8616,7 @@
     {
       "showId": "constellations-west-end-2021",
       "file": "i-paper--sam-marlowe.json",
+      "score": 82,
       "publishDate": "2021-08-17",
       "url": "https://inews.co.uk/culture/constellations-vaudeville-theatre-review-russell-tovey-and-omari-douglas-same-sex-take-is-the-richest-yet-1154356?srsltid=AU7gw4Wm88PAMbttz4_Grhar8UCRoEfPYKqm-gfn8A3nnQjsjg1v4h1P",
       "findings": [
@@ -30550,6 +30551,19 @@
       ]
     },
     {
+      "showId": "present-laughter-west-end-2019",
+      "file": "variety--matt-trueman.json",
+      "publishDate": "2019-06-28",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
       "showId": "pretty-woman-the-musical-2018",
       "file": "vulture--sara-holdren.json",
       "score": 18,
@@ -44199,6 +44213,7 @@
     {
       "showId": "the-windsors-endgame-west-end-2021",
       "file": "timeout-london--andrzej-lukowski.json",
+      "score": 74,
       "publishDate": "2021-08-10",
       "url": "https://www.timeout.com/london/theatre/the-windsors-endgame-review",
       "findings": [
@@ -51684,6 +51699,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "bitter-wheat-west-end-2019",
+      "file": "nytimes--matt-wolf.json",
+      "publishDate": "2019-06-20",
+      "url": "https://www.nytimes.com/2019/06/20/theater/bitter-wheat-london-david-mamet.html?",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -68336,6 +68364,19 @@
       ]
     },
     {
+      "showId": "present-laughter-west-end-2019",
+      "file": "nytimes--matt-wolf.json",
+      "publishDate": "2019-07-25",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
       "showId": "pretty-woman-the-musical-west-end-2020",
       "file": "british-theatre--philip-fisher.json",
       "score": 71,
@@ -69240,6 +69281,19 @@
       ]
     },
     {
+      "showId": "rutherford-and-son-west-end-2019",
+      "file": "times-uk--quentin-letts.json",
+      "publishDate": "2019-06-02",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
       "showId": "sabrage-off-west-end-2026",
       "file": "londontheatre1--ryan-collins.json",
       "score": 96,
@@ -69278,6 +69332,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"brooklyn academy\""
+        }
+      ]
+    },
+    {
+      "showId": "salt-west-end-2019",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2019-05-20",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
