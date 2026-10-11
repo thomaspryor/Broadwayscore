@@ -24,11 +24,13 @@ import reviewNormalization from './lib/review-normalization.js';
 
 import reviewGuards from './lib/review-guards.js';
 import submissionShowMatch from './lib/submission-show-match.js';
+import reviewSubmissionIssue from './lib/review-submission-issue.js';
 
 const { lookupOutletForHost } = outletCanonicalize;
 const { resolveOutletFromUrlIfPathInformed } = reviewNormalization;
 const { canonicalizeUrlForDedup } = reviewGuards;
 const { findMatchingShows: findMatchingShowsIn } = submissionShowMatch;
+const { parseIssueBody } = reviewSubmissionIssue;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -102,43 +104,6 @@ function findMatchingCritic(criticName) {
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
-
-/**
- * Extract issue data from GitHub issue body
- */
-function parseIssueBody(issueBody) {
-  const data = {};
-
-  // Extract review URL
-  const urlMatch = issueBody.match(/### Review URL\s*\n\s*(.+)/);
-  if (urlMatch) data.reviewUrl = urlMatch[1].trim();
-
-  // Extract show name
-  const showMatch = issueBody.match(/### Show Name\s*\n\s*(.+)/);
-  if (showMatch && showMatch[1].trim() !== '_No response_') {
-    data.showName = showMatch[1].trim();
-  }
-
-  // Extract outlet name
-  const outletMatch = issueBody.match(/### Outlet Name\s*\n\s*(.+)/);
-  if (outletMatch && outletMatch[1].trim() !== '_No response_') {
-    data.outletName = outletMatch[1].trim();
-  }
-
-  // Extract critic name
-  const criticMatch = issueBody.match(/### Critic Name\s*\n\s*(.+)/);
-  if (criticMatch && criticMatch[1].trim() !== '_No response_') {
-    data.criticName = criticMatch[1].trim();
-  }
-
-  // Extract additional notes
-  const notesMatch = issueBody.match(/### Additional Notes\s*\n\s*(.+)/s);
-  if (notesMatch && notesMatch[1].trim() !== '_No response_') {
-    data.additionalNotes = notesMatch[1].trim();
-  }
-
-  return data;
-}
 
 /**
  * Check if review already exists in our database
