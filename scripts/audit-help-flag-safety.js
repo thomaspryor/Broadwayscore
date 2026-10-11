@@ -73,7 +73,7 @@ const EXEMPTION = 'hygiene-help-flag-ok';
 
 // exitOnHelp(module) is cli-help.js's own documented one-liner (it calls
 // hasHelpFlag internally), so it counts as a help check too.
-const HELP_CHECK_RE = /hasHelpFlag\s*\(|exitOnHelp\s*\(|(['"])--help\1|(['"])-h\2(?=\s*[),;]|\s*===|\.includes)/;
+const HELP_CHECK_RE = /hasHelpFlag\s*\(|exitOnHelp\s*\(\s*module\s*\)|(['"])--help\1|(['"])-h\2(?=\s*[),;]|\s*===|\.includes)/;
 // Real, consequential side effects: shelling out, the two corpus-write
 // guards, destructive fs deletes, and bare network calls — NOT generic
 // fs.writeFileSync/appendFileSync, which are also used for harmless

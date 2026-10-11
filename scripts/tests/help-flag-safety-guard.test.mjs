@@ -47,7 +47,7 @@ test('predicate catches an unguarded destructive script and passes a guarded one
 // earlier usage-exit. Actually run --help on the retrofitted scripts.
 import { spawnSync } from 'node:child_process';
 const RETROFITTED = [
-  'discover-outlet-reviews-serp', 'fix-canonical-duplicate-backpointer', 'fix-duplicates-and-zeros',
+  'discard-stuck-broadcast-drafts', 'discover-outlet-reviews-serp', 'fix-canonical-duplicate-backpointer', 'fix-duplicates-and-zeros',
   'fix-outlet-case', 'gather-reviews', 'health-check', 'ingest-review-from-url', 'recovery-marker',
   'rollback-reroute-backlog', 'scrape-london-box-office-roundups', 'scrape-theatre-reviews',
 ];
