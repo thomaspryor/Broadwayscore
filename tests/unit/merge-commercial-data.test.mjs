@@ -5,6 +5,10 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
+import { execFileSync } from 'node:child_process';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 
 const {
   mergeCommercialJson,
@@ -444,6 +448,129 @@ describe('mergePendingReview', () => {
     it('a held row that remote applied and removed is still released', () => {
       const { merged } = mergePendingReview({ shows: { x: held('2026-10-10T20:00:00Z') } }, { shows: {}, lastUpdated: '2026-10-10T21:00:00Z' });
       assert.equal(merged.shows.x, undefined);
+    });
+  });
+
+  // BRO-5049: commercial-release-held.yml deleted released rows, a concurrent
+  // writer stamped truthReview on them, and the two-way merge resurrected all
+  // of them as "remote added". With the fork point as base, a slug in base and
+  // missing on one side is a deletion.
+  describe('three-way with base (BRO-5049)', () => {
+    const row = (extra = {}) => ({ designation: 'TBD', researchedAt: '2026-10-01T00:00:00Z', detectedAt: '2026-09-30T00:00:00Z', requiresHumanReview: true, ...extra });
+    const stamp = { truthReview: { verdict: 'confirmed', at: '2026-10-11T09:00:00Z' }, lastUpdated: '2026-10-11T09:00:00Z' };
+
+    it('ours deleted, remote annotated (truthReview + lastUpdated bump): dropped, counted as held', () => {
+      const base = { shows: { a: row(), b: row(), keep: row() }, lastUpdated: '2026-10-10T00:00:00Z' };
+      const ours = { shows: { keep: row() }, lastUpdated: '2026-10-11T08:00:00Z' };
+      const remote = { shows: { a: row(stamp), b: row(stamp), keep: row() }, lastUpdated: '2026-10-11T09:00:00Z' };
+      const { merged, stats } = mergePendingReview(ours, remote, base);
+      assert.deepEqual(Object.keys(merged.shows), ['keep']);
+      assert.equal(stats.resolvedAsDeletion, 2);
+      assert.equal(stats.heldRowsDropped, 2);
+      assert.deepEqual(stats.heldDroppedSlugs.sort(), ['a', 'b']);
+      assert.equal(stats.added, 0);
+      assert.equal(stats.threeWay, true);
+    });
+
+    it('same incident with the two-way call resurrects (documents the old bug the base fixes)', () => {
+      const ours = { shows: {}, lastUpdated: '2026-10-11T08:00:00Z' };
+      const remote = { shows: { a: row(stamp) }, lastUpdated: '2026-10-11T09:00:00Z' };
+      assert.ok(mergePendingReview(ours, remote).merged.shows.a);
+      assert.equal(mergePendingReview(ours, remote, { shows: { a: row() } }).merged.shows.a, undefined);
+    });
+
+    it('ours deleted, remote re-researched since base: kept (newer research outvotes the delete)', () => {
+      const base = { shows: { a: row() } };
+      const remote = { shows: { a: row({ designation: 'Flop', researchedAt: '2026-10-11T09:00:00Z' }) } };
+      const { merged, stats } = mergePendingReview({ shows: {} }, remote, base);
+      assert.equal(merged.shows.a.designation, 'Flop');
+      assert.equal(stats.keptOverDeletion, 1);
+      assert.equal(stats.resolvedAsDeletion, 0);
+    });
+
+    it('re-research detected on detectedAt alone when researchedAt is unchanged', () => {
+      const base = { shows: { a: row() } };
+      const remote = { shows: { a: row({ detectedAt: '2026-10-11T09:00:00Z' }) } };
+      assert.ok(mergePendingReview({ shows: {} }, remote, base).merged.shows.a);
+    });
+
+    it('same researchedAt as base is NOT re-research (strictly newer required)', () => {
+      const base = { shows: { a: row() } };
+      const remote = { shows: { a: row({ note: 'touched' }) } };
+      assert.equal(mergePendingReview({ shows: {} }, remote, base).merged.shows.a, undefined);
+    });
+
+    it('remote deleted, ours annotated: dropped', () => {
+      const base = { shows: { a: row() } };
+      const ours = { shows: { a: row(stamp) }, lastUpdated: '2026-10-11T09:00:00Z' };
+      // remote file lastUpdated is OLDER than ours' stamp: the legacy logical
+      // clock alone would have kept it.
+      const remote = { shows: {}, lastUpdated: '2026-10-05T00:00:00Z' };
+      const { merged, stats } = mergePendingReview(ours, remote, base);
+      assert.equal(merged.shows.a, undefined);
+      assert.equal(stats.heldRowsDropped, 1);
+    });
+
+    it('remote deleted, ours re-researched: kept', () => {
+      const base = { shows: { a: row() } };
+      const ours = { shows: { a: row({ researchedAt: '2026-10-11T09:00:00Z' }) } };
+      const { merged } = mergePendingReview(ours, { shows: {}, lastUpdated: '2026-10-11T10:00:00Z' }, base);
+      assert.ok(merged.shows.a);
+    });
+
+    it('remote added a slug not in base: kept; ours added a slug not in base: kept', () => {
+      const base = { shows: { old: row() } };
+      const ours = { shows: { old: row(), mine: row() } };
+      const remote = { shows: { old: row(), theirs: row() }, lastUpdated: '2026-12-01T00:00:00Z' };
+      const { merged, stats } = mergePendingReview(ours, remote, base);
+      assert.deepEqual(Object.keys(merged.shows).sort(), ['mine', 'old', 'theirs']);
+      assert.equal(stats.added, 1);
+      assert.equal(stats.resolvedAsDeletion, 0);
+    });
+
+    it('both sides still have the slug: unchanged pickNewer + sticky hold', () => {
+      const base = { shows: { x: row() } };
+      const ours = { shows: { x: { designation: 'Flop', researchedAt: '2026-10-11T00:00:00Z' } } };
+      const remote = { shows: { x: row() } };
+      const { merged } = mergePendingReview(ours, remote, base);
+      assert.equal(merged.shows.x.designation, 'Flop');
+      assert.equal(merged.shows.x.requiresHumanReview, true);
+    });
+
+    it('no base / null base (empty base blob) / malformed base: identical to the two-way result', () => {
+      const ours = { shows: { g: { researchedAt: '2026-07-19T11:00:00Z' }, s: { researchedAt: '2026-07-19T08:00:00Z' } } };
+      const remote = { shows: { r: row(stamp) }, lastUpdated: '2026-07-19T09:00:00Z' };
+      const twoWay = mergePendingReview(ours, remote);
+      assert.deepEqual(Object.keys(twoWay.merged.shows).sort(), ['g', 'r']);
+      for (const b of [undefined, null, {}, { shows: [] }, 'x']) {
+        const res = mergePendingReview(ours, remote, b);
+        assert.deepEqual(res.merged, twoWay.merged, `base=${JSON.stringify(b)}`);
+        assert.equal(res.stats.threeWay, false);
+      }
+    });
+
+    // push-via-git-api.sh writes `git show BASE_SHA:path` to a temp file
+    // (empty when the path is absent there); the CLI parses empty as null.
+    it('push-via-git-api-merge.js CLI: real base drops the deleted row, empty base file falls back to two-way', () => {
+      const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro5049-'));
+      const w = (n, v) => { const f = path.join(dir, n); fs.writeFileSync(f, v); return f; };
+      const ours = w('ours.json', JSON.stringify({ shows: {}, lastUpdated: '2026-10-11T08:00:00Z' }));
+      const remote = w('remote.json', JSON.stringify({ shows: { a: row(stamp) }, lastUpdated: '2026-10-11T09:00:00Z' }));
+      const base = w('base.json', JSON.stringify({ shows: { a: row() } }));
+      const empty = w('empty.json', '');
+      const cli = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../../scripts/lib/push-via-git-api-merge.js');
+      const run = (b) => JSON.parse(execFileSync('node', [cli, 'data/commercial-pending-review.json', ours, remote, b], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }));
+      try {
+        assert.equal(run(base).shows.a, undefined, 'three-way: our delete wins over their annotation');
+        assert.ok(run(empty).shows.a, 'empty base -> null -> two-way union, as before');
+      } finally {
+        fs.rmSync(dir, { recursive: true, force: true });
+      }
+    });
+
+    it('declares requiresTrueBase and three-argument arity (reconcile/conflict dispatch)', () => {
+      assert.equal(mergePendingReview.requiresTrueBase, true);
+      assert.equal(mergePendingReview.length, 3);
     });
   });
 });

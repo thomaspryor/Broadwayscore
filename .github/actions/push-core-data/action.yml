@@ -341,6 +341,14 @@ runs:
           fi
           git show origin/main:commercial-pending-review.json > /tmp/remote-commercial-pending.json 2>/dev/null || true
           [ -f "commercial-pending-review.json" ] && cp commercial-pending-review.json /tmp/our-commercial-pending.json
+          # BRO-5049: same checkout-snapshot base as commercial.json above, so
+          # the merge can tell a row one side DELETED (release/apply/sweep)
+          # from one the other side added. Snapshot only, never merge-base.
+          if [ -f /tmp/core-data-snapshot/commercial-pending-review.json ]; then
+            cp -f /tmp/core-data-snapshot/commercial-pending-review.json /tmp/base-commercial-pending.json
+          else
+            rm -f /tmp/base-commercial-pending.json
+          fi
 
           # Save remote's diary-shows.json + our pre-rebase copy. diary-shows.json
           # is an array-of-shows with THREE independent writers (import-mezzanine-
@@ -692,9 +700,18 @@ runs:
                 const { mergePendingReview } = require(path.join(ws, "scripts/lib/merge-commercial-data"));
                 const ours = JSON.parse(fs.readFileSync("/tmp/our-commercial-pending.json", "utf8"));
                 const remote = JSON.parse(fs.readFileSync("/tmp/remote-commercial-pending.json", "utf8"));
-                const { merged, stats } = mergePendingReview(ours, remote);
+                // BRO-5049: three-way with the checkout snapshot; no readable
+                // base -> two-way, as before.
+                let base;
+                try { base = JSON.parse(fs.readFileSync("/tmp/base-commercial-pending.json", "utf8")); } catch { base = undefined; }
+                const { merged, stats } = mergePendingReview(ours, remote, base);
                 fs.writeFileSync("commercial-pending-review.json", JSON.stringify(merged, null, 2) + "\n");
                 console.log("Reconciled commercial-pending-review.json: " + JSON.stringify(stats));
+                if (stats.heldRowsDropped) {
+                  const msg = "commercial-pending-review.json merge: dropped " + stats.heldRowsDropped + " held/truth-reviewed row(s) another writer deleted: " + stats.heldDroppedSlugs.slice(0, 20).join(", ");
+                  console.log("::warning::" + msg);
+                  if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, "- " + msg + "\n");
+                }
               } catch (e) {
                 console.error("commercial-pending-review.json reconciliation failed (non-fatal):", e.message);
               }
