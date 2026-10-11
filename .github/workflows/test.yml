@@ -312,6 +312,9 @@ on:
       - 'scripts/audit-url-validation.js'
       # tests/unit/backfill-html-override-rename.test.mjs
       - 'scripts/backfill-html-override-rename.js'
+      # tests/unit/review-factcheck-bro5081.test.mjs (BRO-5081)
+      - 'scripts/backfill-html-only-ratings.js'
+      - 'scripts/review-factcheck/**'
       # tests/unit/backfill-lbo-help-safety.test.mjs
       - 'scripts/backfill-lbo-individual-stars.js'
       # tests/unit/backfill-unknown-critics-locked.test.mjs

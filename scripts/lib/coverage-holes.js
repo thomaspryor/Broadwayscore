@@ -24,6 +24,8 @@
  *                         The rebuild drops these at runtime (blockedReviewUrl), so the HARM is only when one is
  *                         published (the audit joins reviews.json); the rest is hygiene. `kind` separates a
  *                         relayed-rating carrier (leave alone) from junk (exclude)
+ *   E uncapturedStar      (BRO-4838) a star printed in the text but never stored as the rating
+ *   F scoreOutsideBand    (BRO-4838) the published score sits outside the critic's own rating band
  */
 const { hasExcerpt } = require('./excerpt-fields');
 
@@ -81,13 +83,38 @@ function blockedUrlUnflagged(d) {
   return { kind: has(d.aggregatorStars) || has(d.originalScore) || has(d.bwwThumb) || has(d.dtliThumb) ? 'relay-star' : 'junk' };
 }
 
-/** Which classes a record falls in, for the audit. */
-function classify(d, show, filePath) {
+/**
+ * E (BRO-4838): a star printed in the review's own text that was never stored as its rating, so the review scored
+ * unanchored (Affluenza, Theatre and Tonic "★" scored 42). Same predicate the capture pass uses
+ * (capture-published-stars.js in enrich-reviews.yml), so a row here means that pass has not run since, or cannot.
+ */
+function uncapturedStar(d, show, filePath) {
+  if (!d || typeof d !== 'object') return null;
+  if (guards().explainExclusion(d, show, filePath)) return null;
+  let found = null;
+  try { found = require('./published-star-capture').findPublishedStarInText(d, { show, filePath }); } catch { found = null; }
+  return found ? { star: found.originalScore } : null;
+}
+
+/**
+ * F (BRO-4838): the PUBLISHED score sits outside the critic's own rating band (a high-reliability rating; a relay
+ * alone does not bind). Judged on the reviews.json row the site shows, not the file, so the audit passes it in.
+ */
+function scoreOutsideBand(d, publishedScore) {
+  if (!d || typeof publishedScore !== 'number') return null;
+  const v = require('./published-score-star-band').publishedScoreViolation(d, publishedScore);
+  return v && v.kind === 'star-band' ? { score: publishedScore, band: `${v.floor}-${v.ceiling}`, rating: v.detail, queued: d.needsRescore === true } : null;
+}
+
+/** Which classes a record falls in, for the audit. `publishedScore`: the reviews.json score for this file, if any. */
+function classify(d, show, filePath, publishedScore) {
   const out = {};
   const a = noUsableText(d, show, filePath); if (a) out.A = { bucket: a };
   const b = rejectedYetVerified(d, show, filePath); if (b) out.B = b;
   const c = neverScored(d, show, filePath); if (c) out.C = c;
   const e = blockedUrlUnflagged(d); if (e) out.D = e;
+  const s = uncapturedStar(d, show, filePath); if (s) out.E = s;
+  const f = scoreOutsideBand(d, publishedScore); if (f) out.F = f;
   return out;
 }
 
@@ -101,4 +128,4 @@ function isCurrentShow(show, now = Date.now(), days = 120) {
   return Number.isFinite(opened) && opened <= now + 30 * 864e5 && now - opened < days * 864e5;
 }
 
-module.exports = { EXCLUSION_FLAGS, NO_TEXT_REASONS, NO_SIGNAL_RULES, hasExcerpt, noUsableText, cvSaysReview, rejectedYetVerified, neverScored, blockedUrlUnflagged, classify, isCurrentShow };
+module.exports = { EXCLUSION_FLAGS, NO_TEXT_REASONS, NO_SIGNAL_RULES, hasExcerpt, noUsableText, cvSaysReview, rejectedYetVerified, neverScored, blockedUrlUnflagged, uncapturedStar, scoreOutsideBand, classify, isCurrentShow };

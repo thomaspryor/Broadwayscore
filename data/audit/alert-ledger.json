@@ -156,13 +156,13 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-11T14:14:07.486Z",
-      "lastSeen": "2026-10-11T22:46:55.423Z",
+      "lastSeen": "2026-10-11T23:03:41.406Z",
       "lastNotifiedAt": "2026-10-11T14:14:07.486Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 132,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 11
+      "silentRefires": 12
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -13970,13 +13970,13 @@
       "title": "main test.yml red: Unit Tests / Run review-guards regression tests — \"foo returns the contracted value\"",
       "firstSeen": "2026-10-11T20:22:09.425Z",
       "incidentOpenedAt": "2026-10-11T20:22:09.425Z",
-      "lastSeen": "2026-10-11T22:46:55.416Z",
+      "lastSeen": "2026-10-11T23:03:41.396Z",
       "lastNotifiedAt": "2026-10-11T20:22:09.425Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-5078",
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "review-gap:opening-window:mystic-pizza-tour-2026": {
       "status": "open",
@@ -14087,7 +14087,7 @@
       "silentRefires": 1
     },
     "land:land/bro-5081-review-factcheck": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-5081-review-factcheck",
       "firstSeen": "2026-10-11T22:19:06.351Z",
@@ -14097,7 +14097,8 @@
       "lastSurfacedAt": "2026-10-11T22:19:06.351Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-11T23:00:12.752Z"
     },
     "land:land/bro-5080-fact-check": {
       "status": "open",
