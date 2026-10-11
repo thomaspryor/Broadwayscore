@@ -27,6 +27,11 @@ const KNOWN_ALIASES = {
   'harry potter': 'harry-potter',
   'cursed child': 'harry-potter',
 
+  // Playbill grosses titles (an unspaced em dash is not split: it would turn
+  // review headlines like "Broadway—..." into high-confidence matches)
+  'michael moore: the terms of my surrender': 'the-terms-of-my-surrender',
+  'aint too proud—the life and times of the temptations': 'aint-too-proud',
+
   // Lion King variations
   'the lion king': 'the-lion-king',
   'lion king': 'the-lion-king',

@@ -28,7 +28,7 @@ import * as path from 'path';
 const { matchTitleToShow } = require('./lib/show-matching');
 const { repairGrossesHistory } = require('./lib/grosses-history-repair');
 const { recordPublishedTotal } = require('./lib/grosses-integrity');
-const { grossesProductionFor } = require('./lib/grosses-run-window');
+const { historicalGrossesProduction } = require('./lib/grosses-run-window');
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
 const {
   playbillGrossesUrl,
@@ -39,6 +39,7 @@ const {
   toHistoryEntry,
   historyHasWeek,
   findShortHistoryWeeks,
+  findUnstoredRunWeeks,
   addMissingRows,
 } = require('./lib/parse-playbill-grosses');
 
@@ -85,18 +86,7 @@ function loadShows(): void {
 function findMatchingSlug(title: string, weekDateStr: string): string | null {
   const weekYear = new Date(weekDateStr + 'T00:00:00Z').getFullYear();
   const result = matchTitleToShow(title, allShows, { market: 'broadway', prefer: 'open', year: weekYear, date: weekDateStr });
-  if (!result?.show) return null;
-  // Require high confidence — medium (word-based fuzzy) causes wrong-show contamination
-  if (result.confidence !== 'high') return null;
-  const show = result.show;
-  // Double-check: reject WE/OB matches (safety net)
-  if (show.id?.includes('west-end') || show.id?.includes('off-broadway') || show.id?.includes('off-west-end')) {
-    return null;
-  }
-  // The matcher's window check only sees productions with the exact title, so
-  // a revival under a longer one ("Cabaret at the Kit Kat Club") lost its weeks
-  // to an older run (BRO-5016). Re-pick by run window across the same work.
-  return grossesProductionFor(show, weekDateStr, allShows)?.slug ?? null;
+  return historicalGrossesProduction(title, result, weekDateStr, allShows)?.slug ?? null;
 }
 
 // Load or initialize grosses history
@@ -201,9 +191,11 @@ async function backfillHistory(): Promise<void> {
   // Refill mode: the shows each stored week is missing, by week key.
   const holeSlugs = new Map<string, string[]>();
   if (refillGaps) {
-    for (const { week, slugs } of findShortHistoryWeeks(history)) holeSlugs.set(week, slugs);
-    weeksToDo = [...holeSlugs.keys()];
-    console.log(`Refilling ${weeksToDo.length} stored weeks that miss a show held the weeks either side...${dryRun ? ' (DRY RUN)' : ''}`);
+    const short = findShortHistoryWeeks(history);
+    const unstored = findUnstoredRunWeeks(history, allShows);
+    for (const { week, slugs } of [...short, ...unstored]) holeSlugs.set(week, [...new Set([...(holeSlugs.get(week) || []), ...slugs])]);
+    weeksToDo = [...holeSlugs.keys()].sort();
+    console.log(`Refilling ${weeksToDo.length} stored weeks: ${short.length} miss a show held the weeks either side, ${unstored.length} fall in a run with no stored row...${dryRun ? ' (DRY RUN)' : ''}`);
   } else {
     console.log(`Backfilling ${numWeeks} weeks of grosses history from Playbill...${dryRun ? ' (DRY RUN)' : ''}`);
     const weekDates = getWeekDates(numWeeks, startFrom);

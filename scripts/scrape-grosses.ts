@@ -59,7 +59,7 @@ const {
   isoWeekToMDY,
 } = require('./lib/parse-playbill-grosses');
 const { weekKeyFor, repairGrossesHistory } = require('./lib/grosses-history-repair');
-const { grossesProductionFor, weekInRun } = require('./lib/grosses-run-window');
+const { grossesProductionFor, weekInRun, mediumMatchProduction, isBroadway } = require('./lib/grosses-run-window');
 
 const GROSSES_URL = 'https://www.broadwayworld.com/grosses.php';
 const GROSSES_PATH = path.join(__dirname, '../data/grosses.json');
@@ -336,12 +336,15 @@ function findMatchingSlug(bwwTitle: string, market: string = 'broadway', pastWee
     }
     const slug = picked.slug;
     // BWW only covers Broadway — never write to West End / Off-Broadway slugs
-    if (slug.includes('west-end') || slug.includes('off-broadway') || slug.includes('off-west-end')) {
+    if (!isBroadway(picked) || slug.includes('west-end') || slug.includes('off-broadway') || slug.includes('off-west-end')) {
       return null;
     }
     return slug;
   }
   if (match && match.confidence === 'medium') {
+    // Fuzzy alone filed rows on the wrong show; see mediumMatchProduction.
+    const ran = runWeekISO ? mediumMatchProduction(bwwTitle, match.show, runWeekISO, allShows) : null;
+    if (ran) return ran.slug;
     console.warn(`  ⚠ Medium-confidence match: "${bwwTitle}" → ${match.show.slug} (rejected for financial data)`);
   }
   return null;
