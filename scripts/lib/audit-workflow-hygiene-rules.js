@@ -767,7 +767,64 @@ function findFullBlobFullHistoryCheckouts(raw) {
   return hits;
 }
 
+/**
+ * Rule (q) (BRO-5033): `git diff` / `git status` / `git show` on a path git
+ * ignores. Core data (data/shows.json, reviews.json, grosses*.json, ...) is
+ * gitignored here and synced through checkout-core-data/push-core-data, so
+ * `git diff --quiet data/shows.json` always says "no change" and every step
+ * it gates is dead code. weekly-grosses.yml skipped validate/build/commit/
+ * deploy on every run this way. Use scripts/lib/core-data-changed.js, which
+ * compares against the checkout-core-data snapshot.
+ *
+ * Scans run-block lines (comments skipped). For each git diff/status/show
+ * command on the line, the literal arguments up to the next `|`, `;`, `&&`,
+ * `||` or `)` are path candidates when they contain `/` or end in `.json`
+ * and hold no `$` (expansions can't be resolved statically). For `git show
+ * REF:path` the part after the colon is the path. `isIgnored(path)` decides;
+ * the CLI passes a `git check-ignore` probe, so a tracked file that happens
+ * to match an ignore pattern is (correctly) not flagged.
+ *
+ * ADVISORY at introduction (CLAUDE.md §19): the CLI prints these and does
+ * not count them toward its blocking total. Exempt one line with
+ * `# hygiene-ignored-diff-ok: <reason>` on that line.
+ *
+ * Returns [{ lineNum, text, path }].
+ */
+// Allows git's global options before the subcommand (`git --no-pager diff`,
+// `git -C dir diff`, `git -c k=v diff`).
+const GIT_INSPECT_SRC = String.raw`\bgit(?:\s+(?:--no-pager|-[Cc]\s+\S+))*\s+(?:diff|status|show)\b`;
+const GIT_INSPECT_RE = new RegExp(GIT_INSPECT_SRC, 'g');
+function findGitDiffOnIgnoredPaths(raw, isIgnored) {
+  const hits = [];
+  const lines = raw.split('\n');
+  for (const { lineNum, text: first } of runLineMatches(raw, new RegExp(GIT_INSPECT_SRC))) {
+    if (first.includes('hygiene-ignored-diff-ok:')) continue;
+    // Join backslash continuations so `git diff --quiet \` + next-line path is seen.
+    let text = first;
+    for (let j = lineNum; text.endsWith('\\') && j < lines.length; j++) {
+      text = text.slice(0, -1) + ' ' + lines[j].trim();
+    }
+    const seen = new Set();
+    GIT_INSPECT_RE.lastIndex = 0;
+    let m;
+    while ((m = GIT_INSPECT_RE.exec(text))) {
+      const rest = text.slice(m.index + m[0].length).split(/\|\||&&|[|;)#]/)[0];
+      for (let tok of rest.trim().split(/\s+/)) {
+        tok = tok.replace(/^["']+|["']+$/g, '');
+        if (!tok || tok.startsWith('-') || tok.includes('$')) continue;
+        if (tok.includes(':')) tok = tok.slice(tok.indexOf(':') + 1);
+        if (!tok || !(tok.includes('/') || tok.endsWith('.json'))) continue;
+        if (seen.has(tok)) continue;
+        seen.add(tok);
+        if (isIgnored(tok)) hits.push({ lineNum, text, path: tok });
+      }
+    }
+  }
+  return hits;
+}
+
 module.exports = {
+  findGitDiffOnIgnoredPaths,
   indentOf,
   RUN_LINE_RE,
   findFullBlobFullHistoryCheckouts,

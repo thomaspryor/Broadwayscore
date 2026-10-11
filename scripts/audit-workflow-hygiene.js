@@ -226,6 +226,7 @@ const {
   extractSingleQuotedEvalBodies,
   findBareAuditDirectoryGlobs,
   findFullBlobFullHistoryCheckouts,
+  findGitDiffOnIgnoredPaths,
 } = require('./lib/audit-workflow-hygiene-rules');
 const { scanWorkflow: scanPaidProviders } = require('./lib/paid-provider-push-scan');
 const { execFileSync } = require('child_process');
@@ -811,6 +812,34 @@ async function main() {
   const bareAuditGlobFindings = [];
   // Rule (o) is advisory too (same posture; see its doc comment).
   const fullBlobCheckoutFindings = [];
+  // Rule (q) (BRO-5033) is advisory too: git diff/status/show on an ignored
+  // path. Scans workflows and composite actions; `git check-ignore` decides.
+  const ignoredDiffFindings = [];
+  {
+    const cache = new Map();
+    const isIgnored = (p) => {
+      if (!cache.has(p)) {
+        let ignored = false;
+        try {
+          execFileSync('git', ['check-ignore', '-q', '--', p], { cwd: path.join(__dirname, '..'), stdio: 'ignore' });
+          ignored = true;
+        } catch { /* exit 1 = not ignored; anything else: don't flag */ }
+        cache.set(p, ignored);
+      }
+      return cache.get(p);
+    };
+    const targets = files.map((f) => ({ label: f, full: path.join(WORKFLOW_DIR, f) }));
+    if (fs.existsSync(ACTIONS_DIR)) {
+      for (const dir of fs.readdirSync(ACTIONS_DIR)) {
+        const full = path.join(ACTIONS_DIR, dir, 'action.yml');
+        if (fs.existsSync(full)) targets.push({ label: `actions/${dir}/action.yml`, full });
+      }
+    }
+    for (const { label, full } of targets) {
+      const hits = findGitDiffOnIgnoredPaths(fs.readFileSync(full, 'utf8'), isIgnored);
+      if (hits.length) ignoredDiffFindings.push({ file: label, hits });
+    }
+  }
 
   for (const file of files) {
     const raw = fs.readFileSync(path.join(WORKFLOW_DIR, file), 'utf8');
@@ -983,6 +1012,19 @@ async function main() {
       console.log(`   • ${file}`);
       for (const h of hits) console.log(`       line ${h.lineNum}: ${h.text.trim()}`);
     }
+  }
+
+  if (ignoredDiffFindings.length > 0) {
+    const n = ignoredDiffFindings.reduce((acc, { hits }) => acc + hits.length, 0);
+    console.log(
+      `::warning::git diff/status/show on a gitignored path: ${n} line(s) across ${ignoredDiffFindings.length} file(s). The path never shows a change, so whatever it gates never runs (BRO-5033). For core data use \`node scripts/lib/core-data-changed.js <file>\`; exempt a line with \`# hygiene-ignored-diff-ok: <reason>\`.`,
+    );
+    for (const { file, hits } of ignoredDiffFindings) {
+      console.log(`   • ${file}`);
+      for (const h of hits) console.log(`       line ${h.lineNum} (${h.path}): ${h.text.trim()}`);
+    }
+  } else {
+    console.log('✅ Rule (q): no git diff/status/show on gitignored paths');
   }
 
   const total =

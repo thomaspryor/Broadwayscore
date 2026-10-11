@@ -185,7 +185,11 @@ jobs:
         id: git-check
         if: inputs.dry_run != 'true' && steps.commit-gate.outcome != 'failure'
         run: |
-          git diff --exit-code data/shows.json || echo "changes=true" >> $GITHUB_OUTPUT
+          # BRO-5033: shows.json is gitignored core data; `git diff` on it is always
+          # empty. Compare to the checkout-core-data snapshot instead.
+          if node scripts/lib/core-data-changed.js shows.json; then
+            echo "changes=true" >> $GITHUB_OUTPUT
+          fi
           if [ -f data/historical-shows-pending.json ]; then
             echo "has_pending=true" >> $GITHUB_OUTPUT
           fi
@@ -217,6 +221,11 @@ jobs:
           # Core data files pushed to private repo by push-core-data action
           if [ -f data/historical-shows-pending.json ]; then
             git add data/historical-shows-pending.json
+          fi
+          # shows.json itself ships via push-core-data (BRO-5033).
+          if git diff --cached --quiet; then
+            echo "No tracked changes to commit."
+            exit 0
           fi
 
           # Create commit message

@@ -92,7 +92,11 @@ jobs:
         id: changes
         if: always()
         run: |
-          if git diff --quiet data/; then
+          # `git diff data/` only sees tracked files. shows.json (what
+          # auto-fix-show-data.js edits) is gitignored core data, so also
+          # compare it to the checkout-core-data snapshot (BRO-5033): the core
+          # push below is gated on has_changes.
+          if git diff --quiet data/ && ! node scripts/lib/core-data-changed.js shows.json; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else
             echo "has_changes=true" >> $GITHUB_OUTPUT
