@@ -2,7 +2,7 @@
 // Run: node --test scripts/supabase-custom-domain.test.mjs
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { validateHostname, relativeName, collectTxtRecords, judgeStatus, exitCodeFor, judgeGoogleRedirectProbe, redact, wantedRecords, nextStep, googleCallbackUrl, isNotConfigured, ACTIONS } from './supabase-custom-domain.mjs';
+import { validateHostname, relativeName, collectTxtRecords, judgeStatus, exitCodeFor, judgeGoogleRedirectProbe, redact, wantedRecords, nextStep, googleCallbackUrl, isNotConfigured, ACTIONS, GOOGLE_PAGE_LIMIT } from './supabase-custom-domain.mjs';
 
 test('only one label under broadwayscorecard.com is accepted', () => {
   assert.equal(validateHostname('auth.broadwayscorecard.com'), 'auth');
@@ -80,9 +80,16 @@ test('the Google probe refuses a redirect_uri_mismatch even on HTTP 200, and nev
   const dead = judgeGoogleRedirectProbe({ status: 200, body: '<a href="https://accounts.google.com/signin/oauth/error?authError=x">Error 401: invalid_client</a>' });
   assert.equal(dead.ok, false);
   assert.equal(dead.inconclusive, undefined);
-  const blank = judgeGoogleRedirectProbe({ status: 200, body: '<html>Your browser is not supported</html>' });
+  const blank = judgeGoogleRedirectProbe({ status: 200, body: '<html><title>Something else</title>Your browser is not supported</html>' });
   assert.equal(blank.ok, false);
   assert.equal(blank.inconclusive, true, 'an unreadable page must not activate');
+  assert.match(blank.reason, /HTTP 200, \d+ chars, title "Something else"/, 'a refusal says what it saw, so the next one is diagnosable');
+  // Live 2026-10-11: the real sign-in page is ~1.3 MB with its markers past 900 KB; a 300 KB read saw none of them.
+  assert.ok(GOOGLE_PAGE_LIMIT >= 2_000_000, `the probe must read the whole sign-in page (limit ${GOOGLE_PAGE_LIMIT})`);
+  const deepMarkers = { status: 200, body: '<html>' + 'x'.repeat(950_000) + '<title>Sign in - Google Accounts</title>' + '<input id="identifierId">' };
+  assert.equal(judgeGoogleRedirectProbe(deepMarkers).ok, true, 'markers deep in a big page still count');
+  // Other Google pages ("Couldn't sign you in", unsupported browser) share the sign-in title: the title alone is not evidence.
+  assert.equal(judgeGoogleRedirectProbe({ status: 200, body: '<title>Sign in - Google Accounts</title><p>Couldn\'t sign you in</p>' }).inconclusive, true);
   assert.equal(judgeGoogleRedirectProbe({ status: 503, body: '' }).inconclusive, true);
   assert.equal(judgeGoogleRedirectProbe(null).inconclusive, true);
   assert.equal(judgeGoogleRedirectProbe({ status: 403, body: 'blocked' }).ok, false);
