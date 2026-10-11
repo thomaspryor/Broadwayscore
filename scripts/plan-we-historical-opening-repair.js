@@ -105,13 +105,16 @@ function main() {
   }
 
   const actions = [];
-  const tally = { rows: 0, sourced: 0, inferred: 0, collapsed: 0, rekeyed: 0 };
+  const tally = { rows: 0, sourced: 0, inferred: 0, collapsed: 0, noPreviews: 0, rekeyed: 0 };
   for (const show of shows) {
     const a = rowActions(show, byShow.get(show.id) || [], sourced);
     if (!a.length) continue;
     tally.rows++;
     const src = (a.find((x) => x.field === 'openingDateSource') || {}).newValue;
-    if (src === SOURCED) tally.sourced++; else if (src === 'inferred-from-reviews-mode') tally.inferred++; else tally.collapsed++;
+    if (src === SOURCED) tally.sourced++;
+    else if (src === 'inferred-from-reviews-mode') tally.inferred++;
+    else if (src === 'whatsonstage-first-performance') tally.collapsed++;
+    else tally.noPreviews++; // press night = first performance: keeps 'whatsonstage'
     if (a.some((x) => x.field === 'noReliableArt')) tally.rekeyed++;
     actions.push(...a);
   }
@@ -121,16 +124,20 @@ function main() {
     const data = showsWriteGuard.loadShows();
     const list = Array.isArray(data) ? data : data.shows;
     const byId = new Map(list.map((s) => [s.id, s]));
-    let applied = 0;
-    for (const a of actions) {
-      const row = byId.get(a.showId);
-      const cur = row && row[a.field] !== undefined ? row[a.field] : null;
-      if (!row || JSON.stringify(cur) !== JSON.stringify(a.oldValue)) { console.log(`  skip ${a.showId}.${a.field}: changed since planned`); continue; }
-      row[a.field] = a.newValue;
+    // All of a row's edits or none: a half-applied row (previews set, opening
+    // not) leaves the class and no re-run would finish it.
+    const perRow = new Map();
+    for (const a of actions) { if (!perRow.has(a.showId)) perRow.set(a.showId, []); perRow.get(a.showId).push(a); }
+    let applied = 0; let skipped = 0;
+    for (const [id, rowActs] of perRow) {
+      const row = byId.get(id);
+      const stale = !row || rowActs.some((a) => JSON.stringify(row[a.field] === undefined ? null : row[a.field]) !== JSON.stringify(a.oldValue));
+      if (stale) { skipped++; console.log(`  skip ${id}: changed since planned`); continue; }
+      for (const a of rowActs) row[a.field] = a.newValue;
       applied++;
     }
-    showsWriteGuard.saveShows(data);
-    console.log(`applied ${applied}/${actions.length} edits to data/shows.json`);
+    if (applied) showsWriteGuard.saveShows(data);
+    console.log(`applied ${applied} row(s), skipped ${skipped}`);
     return;
   }
   if (arg('dry-run') || !arg('out')) return;
@@ -141,7 +148,7 @@ function main() {
     createdAt: new Date().toISOString(),
     submitter: { name: null, email: null },
     plan: {
-      summary: `BRO-5080: ${tally.rows} West End historical rows store a WhatsOnStage first-performance date as opening night (sourced sample: 61 of 85 wrong). Move it to previewsStartDate; set the press night from a sourced page (${tally.sourced}) or the review-date mode (${tally.inferred}); mark the rest unconfirmed (${tally.collapsed}).`,
+      summary: `BRO-5080: ${tally.rows} West End historical rows store a WhatsOnStage first-performance date as opening night (sourced sample: 61 of 85 wrong). Move it to previewsStartDate; set the press night from a sourced page (${tally.sourced}) or the review-date mode (${tally.inferred}); mark the rest unconfirmed (${tally.collapsed}); ${tally.noPreviews} opened on their first performance.`,
       steps: [
         'previewsStartDate null -> the WOS first-performance date',
         'openingDate -> sourced press night or most common review date minus one day, when a clear cluster exists',

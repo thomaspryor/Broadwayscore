@@ -151,3 +151,29 @@ test('the season audit carries the sourced sample as an advisory check', () => {
   assert.equal(r.checks.factCheck.wrong.length, 1);
   assert.equal(auditSeason({ shows, reviews: [], season: '2019-2020' }).checks.factCheck.sampled, 0);
 });
+
+test('a day-month swap is not a supporting date (09/05/2019 is ambiguous)', () => {
+  assert.ok(!fc.pageSupports('Booking period 09/05/2019 to 01/06/2019', '2019-09-05', 'date'));
+  assert.ok(fc.pageSupports('Opening 25/09/2019', '2019-09-25', 'date'));
+});
+
+test('different auditoria of one house are different venues', () => {
+  assert.equal(fc.sameVenue('Jerwood Theatre Upstairs, Royal Court Theatre', 'Jerwood Theatre Downstairs (Royal Court)'), false);
+  assert.equal(fc.sameVenue('Trafalgar Studios 1', 'Trafalgar Studios 2'), false);
+  assert.equal(fc.sameVenue('Royal Court', 'Jerwood Theatre Upstairs, Royal Court Theatre'), true);
+});
+
+test('bare-array and bare-string checker fields are kept, not dropped', () => {
+  const a = fc.normalizeAnswer({ writers: [{ name: 'Sam Shepard', role: 'playwright', source: 'https://x' }], type: 'play' });
+  assert.deepEqual(a.writers, { value: [{ name: 'Sam Shepard', role: 'playwright' }], source: 'https://x' });
+  assert.deepEqual(a.type, { value: 'play', source: null });
+  const show = { creativeTeam: [{ name: 'Sam Shepard', role: 'Playwright' }] };
+  const t = fc.triageField('writers', show, [{ checker: 'g', answer: { writers: [{ name: 'Sam Shepard', source: 'https://x' }] }, support: { writers: true } }], 'west-end');
+  assert.equal(t.status, 'ok');
+});
+
+test('seasonSummary counts a row sampled twice once', () => {
+  const v = { id: 'a', field: 'type', verdict: 'wrong' };
+  const s = fc.seasonSummary([v, v], ['a']);
+  assert.equal(s.table.type.checked, 1);
+});

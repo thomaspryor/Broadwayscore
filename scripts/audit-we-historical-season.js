@@ -171,7 +171,10 @@ function main() {
   try {
     const { verdictsFor } = require('./fact-check-historical-sample');
     factCheckVerdicts = [...verdictsFor('we-historical'), ...verdictsFor(`we-historical-${season}`)];
-  } catch { /* no sample files: the advisory line says so */ }
+  } catch (e) {
+    // Missing files read as "no sample"; anything else (a corrupt adjudications file, a bug) must not hide verdicts.
+    if (e.code !== 'ENOENT' && e.code !== 'MODULE_NOT_FOUND') throw e;
+  }
   const result = auditSeason({ shows, reviews, season, ids, imageSources, factCheckVerdicts });
 
   if (args.includes('--json')) { console.log(JSON.stringify(result, null, 2)); }

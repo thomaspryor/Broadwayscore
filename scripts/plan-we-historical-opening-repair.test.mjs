@@ -26,3 +26,12 @@ test('changing the opening date re-keys an active no-reliable-art marker', () =>
   assert.equal(m.newValue.key, 'betrayal|harold pinter theatre|2019-03-13');
   assert.equal(m.newValue.at, '2026-10-11');
 });
+
+test('the review-mode source can be overwritten by an authoritative source but is never re-inferred', () => {
+  const { isUnconfirmedDateSource } = require('./lib/date-source-confidence.js');
+  const { inferPressNightFromReviews } = require('./lib/infer-press-night-from-reviews.js');
+  const row = { id: 'x', category: 'west-end', previewsStartDate: '2019-10-01', openingDate: '2019-10-08', openingDateSource: 'inferred-from-reviews-mode' };
+  assert.equal(isUnconfirmedDateSource(row), true);
+  const reviews = ['2019-10-30', '2019-10-30', '2019-10-31'].map((publishDate) => ({ showId: 'x', publishDate }));
+  assert.deepEqual(inferPressNightFromReviews({ candidateShows: [row], reviews }), []);
+});

@@ -207,10 +207,11 @@ function dateSpellings(iso) {
   const mon = month.slice(0, 3);
   const day = String(Number(d));
   const ord = day + (/1[123]$/.test(day) ? 'th' : ({ 1: 'st', 2: 'nd', 3: 'rd' }[day.slice(-1)] || 'th'));
-  return [
-    `${y}-${mo}-${d}`, `${day} ${month} ${y}`, `${ord} ${month} ${y}`, `${month} ${day} ${y}`, `${month} ${ord} ${y}`,
-    `${day} ${mon} ${y}`, `${mon} ${day} ${y}`, `${d}/${mo}/${y}`, `${mo}/${d}/${y}`, `${Number(mo)}/${day}/${y}`, `${day}/${Number(mo)}/${y}`,
-  ].map(foldText);
+  const words = [`${y}-${mo}-${d}`, `${day} ${month} ${y}`, `${ord} ${month} ${y}`, `${month} ${day} ${y}`, `${month} ${ord} ${y}`, `${day} ${mon} ${y}`, `${mon} ${day} ${y}`];
+  // 09/05/2019 is 9 May in London and 5 September in New York: numeric forms
+  // only when the day cannot be read as a month (or both read the same).
+  const numeric = Number(d) > 12 || d === mo ? [`${d}/${mo}/${y}`, `${mo}/${d}/${y}`, `${Number(mo)}/${day}/${y}`, `${day}/${Number(mo)}/${y}`] : [];
+  return [...words, ...numeric].map(foldText);
 }
 
 /** Does fetched page text state this value? kind: date | venue | person | type | text. */
@@ -245,11 +246,17 @@ function pageSupports(pageText, value, kind) {
  */
 function sameVenue(a, b, market) {
   if (!a || !b) return false;
+  // Both name an auditorium and they differ (Upstairs vs Downstairs, Studio 1 vs 2): not the same room.
+  const aa = auditoria(a); const ab = auditoria(b);
+  if (aa.length && ab.length && !aa.some((x) => ab.includes(x))) return false;
   const parts = (s) => [s, ...String(s).split(/\s*[,()\u2013\u2014]\s*|\s+-\s+/)].map((x) => x.trim()).filter(Boolean);
   const pa = parts(a); const pb = parts(b);
   if (pa.length > 1 || pb.length > 1) return pa.some((x) => pb.some((y) => sameVenueOne(x, y, market)));
   return sameVenueOne(a, b, market);
 }
+
+const AUDITORIUM_RE = /\b(upstairs|downstairs|main house|studio [12]|studios? (?:1|2|one|two)|theatre (?:1|2)|[12])\b/g;
+function auditoria(s) { return (String(s).toLowerCase().match(AUDITORIUM_RE) || []).map((x) => x.replace(/\bone\b/, '1').replace(/\btwo\b/, '2').replace(/\D*(\d)$/, '$1')); }
 
 function sameVenueOne(a, b, market) {
   const na = normalizeVenueName(a); const nb = normalizeVenueName(b);
@@ -277,6 +284,24 @@ function storedCredits(show) {
 /** Our own site (or a copy of its data) cannot confirm itself. */
 const SELF_SOURCE_RE = /(^|[/.])broadwayscorecard\.com/i;
 function isSelfSource(url) { return SELF_SOURCE_RE.test(String(url || '')); }
+
+/**
+ * Checkers do not always keep the {value, source} shape: Gemini often returns
+ * a credit field as a bare array ("writers": [{name, role, source}]) or a bare
+ * string. Fold those into {value, source} so the answer is not dropped.
+ */
+function normalizeAnswer(ans) {
+  if (!ans || typeof ans !== 'object') return ans;
+  const out = {};
+  for (const [k, f] of Object.entries(ans)) {
+    if (Array.isArray(f)) {
+      const src = f.map((x) => x && typeof x === 'object' && x.source).find(Boolean) || null;
+      out[k] = { value: f.map((x) => (x && typeof x === 'object' ? (x.name ? { name: x.name, role: x.role } : x.value) : x)).filter((x) => x != null), source: src };
+    } else if (f != null && typeof f !== 'object') out[k] = { value: f, source: null };
+    else out[k] = f;
+  }
+  return out;
+}
 
 /** Value of one checker field, or null. */
 function answerValue(ans, field) {
@@ -349,7 +374,8 @@ const FIELD_KIND = { theatre: 'venue', previewsStart: 'date', openingNight: 'dat
 function triageField(field, show, checks, market) {
   const sourced = [];
   const loose = [];
-  for (const c of checks) {
+  for (const raw of checks) {
+    const c = { ...raw, answer: normalizeAnswer(raw.answer) };
     const v = answerValue(c.answer, field);
     const cmp = compareField(field, show, v, market);
     const source = c.answer && c.answer[field] && c.answer[field].source;
@@ -408,7 +434,10 @@ function errorTable(verdicts) {
  */
 function seasonSummary(verdicts, seasonIds) {
   const ids = new Set(seasonIds);
-  const mine = (verdicts || []).filter((v) => ids.has(v.id));
+  // A row in two samples (cross-season and season) counts once; the later verdict list wins.
+  const byKey = new Map();
+  for (const v of verdicts || []) if (ids.has(v.id)) byKey.set(`${v.id}|${v.field}`, v);
+  const mine = [...byKey.values()];
   const sampled = new Set(mine.map((v) => v.id)).size;
   if (!sampled) return { sampled: 0 };
   return { sampled, table: errorTable(mine), wrong: mine.filter((v) => v.verdict === 'wrong') };
@@ -419,5 +448,5 @@ module.exports = {
   prng, seededShuffle, stratifiedSample, drawSample, parseCohortKey, cohortRows, seasonSummary,
   seasonPhrase, buildFactPrompt, parseJsonReply,
   normalizePerson, samePerson, dateSpellings, pageSupports, sameVenue,
-  storedCredits, storedValue, isSelfSource, compareField, triageField, wilson, errorTable,
+  storedCredits, storedValue, isSelfSource, normalizeAnswer, compareField, triageField, wilson, errorTable,
 };

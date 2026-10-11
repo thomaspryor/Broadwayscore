@@ -150,7 +150,8 @@ async function fetchPage(url) {
 }
 
 /** For each fact field: does the cited page state the answered value? */
-async function supportFor(answer) {
+async function supportFor(rawAnswer) {
+  const answer = fc.normalizeAnswer(rawAnswer);
   const support = {}; const resolved = {};
   for (const field of fc.FACT_FIELDS) {
     const f = answer && answer[field];
@@ -164,7 +165,7 @@ async function supportFor(answer) {
     const values = Array.isArray(f.value) ? f.value.map((v) => (v && typeof v === 'object' ? v.name : v)) : [f.value];
     support[field] = values.filter(Boolean).every((v) => fc.pageSupports(page.text, v, kind));
   }
-  return { support, resolved };
+  return { support, resolved, answer };
 }
 
 // ---------- per-show checks ----------
@@ -195,8 +196,7 @@ async function checkShow(show, cohort) {
   for (const [i, name] of [[0, 'gemini'], [1, 'openai']]) {
     const r = runs[i];
     if (r.status !== 'fulfilled') { out.facts[name] = { error: String(r.reason && r.reason.message || r.reason).slice(0, 200) }; continue; }
-    const answer = fc.parseJsonReply(r.value.text);
-    const { support, resolved } = await supportFor(answer);
+    const { support, resolved, answer } = await supportFor(fc.parseJsonReply(r.value.text));
     out.facts[name] = { answer, support, resolved, citations: [...new Set(r.value.chunks)].slice(0, 8) };
   }
 
@@ -228,6 +228,24 @@ async function checkShow(show, cohort) {
 }
 
 // ---------- commands ----------
+
+/** Re-normalize cached answers and re-fetch cited pages (no model calls). */
+async function cmdResupport() {
+  const f = files(arg('cohort'));
+  const checks = readChecks(f.checks);
+  const out = [];
+  for (const r of checks.values()) {
+    for (const k of ['gemini', 'openai']) {
+      const x = r.facts[k];
+      if (!x || !x.answer) continue;
+      const { support, resolved, answer } = await supportFor(x.answer);
+      Object.assign(x, { answer, support, resolved });
+    }
+    out.push(JSON.stringify(r));
+  }
+  fs.writeFileSync(f.checks, out.join('\n') + '\n');
+  console.log(`re-supported ${out.length} rows`);
+}
 
 function cmdSample() {
   const cohort = arg('season') ? `${arg('cohort')}-${arg('season')}` : arg('cohort');
@@ -337,6 +355,14 @@ function verdictsFor(cohort) {
   const adj = fs.existsSync(f.adjudications) ? JSON.parse(fs.readFileSync(f.adjudications, 'utf8')) : {};
   return triage(cohort).map((r) => {
     const a = adj[`${r.id}|${r.field}`];
+    // An adjudication judged the value stored THEN (judgedStored). Once the row
+    // changes, a fix that matches correctValue counts correct; anything else
+    // needs a fresh look rather than the old verdict.
+    if (a && 'judgedStored' in a && JSON.stringify(a.judgedStored) !== JSON.stringify(r.stored)) {
+      if (r.status === 'not-stored') return { id: r.id, field: r.field, verdict: 'not-stored' };
+      const fixed = a.correctValue != null && JSON.stringify(a.correctValue) === JSON.stringify(r.stored);
+      return { id: r.id, field: r.field, verdict: fixed ? 'correct' : 'pending', url: a.url, note: fixed ? `fixed: ${a.note || ''}` : 'stored value changed since adjudication' };
+    }
     if (a) return { id: r.id, field: r.field, verdict: a.verdict, url: a.url, note: a.note };
     if (r.status === 'ok' || r.status === 'ok-cited') return { id: r.id, field: r.field, verdict: 'correct', weak: r.status === 'ok-cited' };
     if (r.status === 'not-stored') return { id: r.id, field: r.field, verdict: 'not-stored' };
@@ -367,7 +393,7 @@ function cmdReport() {
 if (require.main === module) {
   const cmd = process.argv[2];
   if (!cmd || cmd === '--help' || cmd === '-h') { console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(2, 24).join('\n')); process.exit(0); }
-  const run = { sample: cmdSample, check: cmdCheck, report: cmdReport }[cmd];
+  const run = { sample: cmdSample, check: cmdCheck, report: cmdReport, resupport: cmdResupport }[cmd];
   if (!run) { console.error(`unknown command ${cmd}`); process.exit(2); }
   Promise.resolve(run()).catch((e) => { console.error(e.stack || e.message); process.exit(1); });
 }

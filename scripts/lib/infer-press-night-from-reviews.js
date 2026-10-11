@@ -269,6 +269,9 @@ function inferPressNightFromReviews({ candidateShows, reviews, enabled = true, s
     // list, making that wrong date permanent. Only Phase 3's authoritative
     // sources may revise a reverse inference.
     if (show.openingDateSource === REVERSE_SOURCE) continue;
+    // Same for the BRO-5080 review-mode repair (scripts/lib/we-historical-dates.js):
+    // a non-collapsed row whose forward re-run would chase straggler waves.
+    if (show.openingDateSource === 'inferred-from-reviews-mode') continue;
 
     const openingMs = new Date(show.openingDate).getTime();
     if (Number.isNaN(openingMs)) continue;
