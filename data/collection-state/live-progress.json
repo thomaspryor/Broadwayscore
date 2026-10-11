@@ -1,29 +1,23 @@
 {
-  "updatedAt": "2026-10-11T18:01:09.389Z",
-  "processed": 191,
-  "failed": 79,
-  "successRate": "70.7%",
+  "updatedAt": "2026-10-11T18:00:55.286Z",
+  "processed": 1452,
+  "failed": 579,
+  "successRate": "71.5%",
   "tierBreakdown": {
-    "playwright": 148,
-    "amp": 10,
-    "browserbase": 4,
-    "directCookies": 2,
-    "scrapingdog": 14,
-    "scrapingbee": 10,
+    "playwright": 1120,
+    "amp": 5,
+    "browserbase": 5,
+    "directCookies": 0,
+    "scrapingdog": 151,
+    "scrapingbee": 15,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 18
+    "archive": 149
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-10-11T16:26:41.252Z",
-      "event": "bb-session",
-      "session": "e55b6233",
-      "url": "https://www.nytimes.com/2019/03/07/theater/tartuffe-national-theater-equus-strat"
-    },
-    {
-      "t": "2026-10-11T16:26:41.651Z",
+      "t": "2026-10-11T17:11:26.291Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
@@ -105,16 +99,32 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-11T17:43:56.980Z",
+      "t": "2026-10-11T17:56:14.598Z",
       "event": "bb-session",
-      "session": "b6e74d36",
-      "url": "https://bachtrack.com/review-don-quixote-scala-ballet-queensland-performing-arts"
+      "session": "ea4ac9a7",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
     },
     {
-      "t": "2026-10-11T17:44:14.538Z",
+      "t": "2026-10-11T17:56:16.495Z",
       "event": "bb-session",
-      "session": "aadfda03",
-      "url": "https://bachtrack.com/review-don-quixote-scala-ballet-queensland-performing-arts"
+      "session": "031173d9",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654485"
+    },
+    {
+      "t": "2026-10-11T17:56:17.118Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-11T17:56:35.589Z",
+      "event": "bb-session",
+      "session": "c60bf14c",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654485"
+    },
+    {
+      "t": "2026-10-11T17:56:36.234Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
