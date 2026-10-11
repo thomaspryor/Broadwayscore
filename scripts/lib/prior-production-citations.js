@@ -58,7 +58,7 @@
  * possibly be inside a persisted candidate pool). Bump it whenever candidate
  * SELECTION changes, never for formatting.
  */
-const CENSUS_SCHEMA = 2;
+const CENSUS_SCHEMA = 3; // 3: BRO-4190 candidate gate (classifyGapCandidateUrl)
 
 /**
  * True when a gap entry is a citation from an earlier production of the title.

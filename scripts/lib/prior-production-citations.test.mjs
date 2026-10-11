@@ -189,7 +189,8 @@ test('the schema bump does not read as coverage LOSS to the blast-radius guard',
   const v2Row = { ...REVIVAL, censusVerdict: censusVerdictFor(REVIVAL) };
   const prev = riskStateMap([v1Row]);
   const next = riskStateMap([v2Row]);
-  assert.equal(prev['revival-2026'], next['revival-2026'],
+  // The older-rule side carries a :prior-schema marker (BRO-4190); the counts match.
+  assert.equal(prev['revival-2026'].replace(/:prior-schema$/, ''), next['revival-2026'],
     'both sides normalise to the current rule, so a rule change is not a diff');
   assert.equal(isRiskyGapChange(prev['revival-2026'], next['revival-2026']), false);
 });

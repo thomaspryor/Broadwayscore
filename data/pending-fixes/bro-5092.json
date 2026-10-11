@@ -1,0 +1,52 @@
+{
+  "issueNumber": "bro-5092",
+  "planId": "b5cb6d28-b6af-4c14-942c-504de31ebeb9",
+  "status": "partial",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5092: publish The Piano Lesson (2022) as Easy Winner. Owner approved the Easy Winner verdict on the held-verdicts review page; recoupment is cited by Broadway News (Mar 21, 2024).",
+    "steps": [
+      "The held-release path refuses win labels by design (they need a person-confirmed cited recoupment). The owner confirmed it and the Broadway News recoupment article was fetched and checked, so it is added through add-commercial-entry, which stamps humanReviewedDesignation."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-commercial-entry",
+        "slug": "the-piano-lesson-2022",
+        "entry": {
+          "designation": "Easy Winner",
+          "recouped": true,
+          "recoupedDate": "2024-03",
+          "recoupedSource": "Broadway News (Mar 21, 2024): The Piano Lesson recouped its investment, with help from the NYC musical and theatrical tax credit.",
+          "capitalization": 7000000,
+          "capitalizationSource": "Broadway News quoting lead producer Brian Anthony Moreland ($7M capitalization)",
+          "notes": "Commercial limited-run revival of August Wilson's play at the Ethel Barrymore (opened Oct 13, 2022; closed Jan 29, 2023), starring Samuel L. Jackson, Danielle Brooks and John David Washington. Capitalized at $7M; recouped, with the help of a NYC tax credit allocation.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/the-piano-lesson-recoups/",
+              "date": "2024-03-21"
+            },
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/heres-whats-going-on-with-the-downstate-tax-credit/",
+              "date": "2025-08-22"
+            }
+          ]
+        },
+        "description": "the-piano-lesson-2022: add commercial entry (Easy Winner, recouped Mar 2024)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T23:50:52.938Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": false,
+      "reason": "add-commercial-entry: \"the-piano-lesson-2022\" already has a commercial entry (use data-edit)"
+    }
+  ]
+}

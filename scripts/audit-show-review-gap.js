@@ -197,6 +197,7 @@ const { normalizeOutlet: normalizeOutletId } = require('./lib/review-normalizati
 // aggregator articles are date-gated against the show's opening window, and
 // prior-run URLs are ingest-blocked on EVERY path (see lib/gap-ingest-policy.js).
 const { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow } = require('./lib/gap-ingest-policy');
+const { otherProductionSignal } = require('./lib/other-production-signal');
 const { classifyIngestSkip, describeSkip } = require('./lib/ingest-skip-classify');
 // WE reference schema version — bump to invalidate WE checkpoint entries (59 shows
 // recorded gaps:0 from vacuous Broadway-only-reference runs and closed-clean shows
@@ -254,7 +255,7 @@ const { auditExitDecision } = require('./lib/aggregator-gap-audit-exit');
 // Host normalization + URL classification live in lib/non-review-url-patterns.js
 // (task #1073): registrableHost/hostOf moved there VERBATIM so the canonical
 // classifyReviewUrl and this audit share one implementation.
-const { classifyReviewUrl, registrableHost, hostOf } = require('./lib/non-review-url-patterns');
+const { classifyReviewUrl, classifyGapCandidateUrl, registrableHost, hostOf } = require('./lib/non-review-url-patterns');
 const { parseHistoricalDate } = require('./lib/date-utils');
 
 // provisionalOutletIdFromHost lives in scripts/lib/outlet-canonicalize.js so the
@@ -301,8 +302,11 @@ function tallyRejections(result, startCount, startByReason) {
     if (delta > 0) result.candidatesRejected.byReason[reason] = delta;
   }
 }
+// BRO-4190: the candidate gate also drops listing-page shapes and anything the
+// ingest path refuses (isBlockedReviewUrl), so a URL that can never be
+// collected never counts as a missing review.
 function isReviewUrl(href) {
-  const verdict = classifyReviewUrl(href);
+  const verdict = classifyGapCandidateUrl(href);
   if (!verdict.ok) {
     candidateRejections.count++;
     candidateRejections.byReason[verdict.reason] =
@@ -537,8 +541,39 @@ const BOOK_HOST_RE = /(^|\.)(amazon\.[a-z.]+|goodreads\.com|bookbrowse\.com|hard
 function isBookPageUrl(href) {
   try {
     const x = new URL(href);
-    return BOOK_HOST_RE.test(x.hostname) || /(^|[\/\-_])(book-review|books?|novel)([\/\-_]|$)/i.test(x.pathname);
+    return BOOK_HOST_RE.test(x.hostname) || /(^|[\/\-_])(book-?review|books?|novel)([\/\-_]|$)/i.test(x.pathname);
   } catch { return false; }
+}
+
+// BRO-4190: does a candidate URL (with its SERP title, when there is one) say
+// it reviews another production of the same title? Reuses the two URL-level
+// signals of lib/other-production-signal.js: a Time Out edition of the other
+// market, and a London house named in the slug or title of a New York show's
+// candidate (Invention of Love 2026 was "missing" Hampstead Theatre's 2024
+// reviews). The outlet-market signal is left out: dual-market outlets review
+// both cities. The National Theatre and the RSC are also COMPANIES whose
+// productions transfer to New York (War Horse, Matilda, the 2026 BAM Hamlet),
+// so a URL naming them alone proves nothing. A New York review of any London
+// transfer names the house it came from ("the Royal Court hit arrives on
+// Broadway"), so the house signal only counts on a UK-domain outlet, and never
+// for a show that declares prior runs. Returns the signal or null.
+const TRANSFERRING_COMPANIES = new Set(['national theatre', 'royal shakespeare company']);
+function otherProductionUrlSignal(u, show, serpTitle) {
+  let slug = '';
+  let host = '';
+  try {
+    const parsed = new URL(u);
+    host = parsed.hostname.toLowerCase();
+    slug = decodeURIComponent(parsed.pathname).replace(/[-_/.+]+/g, ' ');
+  } catch { return null; }
+  const venueTextApplies = /\.uk$/.test(host) && !(Array.isArray(show.priorRuns) && show.priorRuns.length > 0);
+  const sig = otherProductionSignal(
+    { url: u, fullText: `${slug} ${serpTitle || ''}` },
+    show,
+    { only: venueTextApplies ? ['url-edition-market', 'venue-text'] : ['url-edition-market'], useText: true },
+  );
+  if (sig && sig.signal === 'venue-text' && [...TRANSFERRING_COMPANIES].some((c) => sig.detail.includes(`"${c}"`))) return null;
+  return sig;
 }
 
 // Pure per-result acceptance decision for the SERP review census (#371 —
@@ -584,6 +619,9 @@ function acceptSerpCensusResult(sr, { show, showInfo }) {
   // check — a second, drifted copy is how a dash-form URL trips one guard
   // while staying invisible to the priorRuns escape hatch in the other.
   if (isUrlYearOutOfWindow(u, show)) return null;
+  // Same-title production elsewhere (BRO-4190): the URL or SERP title names
+  // another market's edition or a London house on a New York show.
+  if (otherProductionUrlSignal(u, show, sr.title)) return null;
   // Weak-specificity gate (ship-check 2026-07-24): isGenericShowTitle's raw
   // word-count test misses titles that are 2+ words on paper but reduce to a
   // SINGLE significant token once titleTokens() strips stopwords/short words
@@ -828,7 +866,7 @@ async function auditShow(show, opts = {}) {
   // the URL-embedded-year signal (same one the SERP census applies) so a
   // stale-year Show Score URL is tagged priorRun and permanently ingest-
   // blocked rather than silently treated as current-run.
-  const ssPriorRunUrls = new Set();
+  const ssPriorRunUrls = new Map(); // url -> priorRunSource
   try {
     const { showScoreUrlForShow, fetchAllShowScoreReviewUrls } = require('./lib/show-score-discover');
     const ssUrl = showScoreUrlForShow(show, getShowScoreUrlMap());
@@ -841,7 +879,11 @@ async function auditShow(show, opts = {}) {
         if (!isReviewUrl(u)) continue;
         const norm = normalizeReviewUrl(u);
         aggUrls.add(norm);
-        if (isUrlYearOutOfWindow(norm, show)) ssPriorRunUrls.add(norm);
+        if (isUrlYearOutOfWindow(norm, show)) ssPriorRunUrls.set(norm, 'show-score-url-year');
+        else {
+          const sig = otherProductionUrlSignal(norm, show);
+          if (sig) ssPriorRunUrls.set(norm, `show-score-${sig.signal}`);
+        }
       }
     }
   } catch (e) {
@@ -1184,7 +1226,7 @@ async function auditShow(show, opts = {}) {
       // higher-confidence signal and should win when both apply.
       if (ssPriorRunUrls.has(m.url)) {
         m.priorRun = true;
-        if (!m.priorRunSource) m.priorRunSource = 'show-score-url-year';
+        if (!m.priorRunSource) m.priorRunSource = ssPriorRunUrls.get(m.url);
       }
       // SERP census provenance (report/debug only — ingest eligibility for
       // these follows the same rules as any other missing URL: blocked on WE
@@ -2764,4 +2806,4 @@ if (require.main === module) {
 // REVIEW_TEXTS_DIR before requiring this module.
 // main + USAGE are exported so scripts/audit-show-review-gap.test.mjs can
 // prove --help never falls through to a real gh call (task #266).
-module.exports = { planRoundupGapAlerts, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, computeResidualCounts, currentRunUncollected, main, USAGE };
+module.exports = { planRoundupGapAlerts, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, otherProductionUrlSignal, computeResidualCounts, currentRunUncollected, main, USAGE };

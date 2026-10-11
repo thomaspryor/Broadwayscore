@@ -29,7 +29,7 @@
 // — see the note in classifyReviewUrl. domain-filters.js is dependency-free
 // (no fs, no network), so this preserves this module's "safe for the S5 probe's
 // pure decision layer" load contract.
-const { TICKET_DOMAINS, LOOKALIKE_CONTENT_FARM_DOMAINS, CENSUS_JUNK_DOMAINS, matchesDomainSet } = require('./domain-filters');
+const { TICKET_DOMAINS, LOOKALIKE_CONTENT_FARM_DOMAINS, CENSUS_JUNK_DOMAINS, matchesDomainSet, isBlockedReviewUrl } = require('./domain-filters');
 const { platformSuffixOf, multipartSuffixOf, stripCosmeticPrefixes } = require('./host-suffix-lists');
 
 // Non-review domains ignored inside aggregator articles (platform widgets,
@@ -356,6 +356,12 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // entry — see that file for why southasianheritage.org.uk (South Asian
   // Heritage Month events-calendar site) is not a review source.
   { host: /(^|\.)southasianheritage\.org\.uk$/, reason: 'event-listing' },
+  // BRO-4190: Bachtrack performance listings (date, cast, ticket link). Its
+  // reviews live under /review-..., which this path never matches.
+  { host: /(^|\.)bachtrack\.com$/, path: /^\/(?:opera|concert|dance)-event\//i, reason: 'event-listing' },
+  // SoHo Playhouse is a registered outlet, so only its show pages are listed:
+  // seven /see-a-show/ pages were ingested as "reviews" and later rejected.
+  { host: /(^|\.)sohoplayhouse\.com$/, path: /^\/see-a-show\//i, reason: 'venue-production-page' },
 ];
 
 // BRO-4419: mirror the two domain-filters.js sets classifyReviewUrl() does not
@@ -637,7 +643,33 @@ function submissionNonReviewReason(url) {
   return classifyReviewUrl(url).reason === 'ticketing-reseller' ? 'ticketing-reseller' : null;
 }
 
+/**
+ * Should the review-gap census count this URL as a candidate review at all?
+ * (BRO-4190 / BRO-4540 / BRO-4583: show hubs, venue /whats-on/ pages, ticket
+ * listings, interviews and features were alerting as "missing reviews".)
+ *
+ * classifyReviewUrl, then the listing-page shapes scoring already excludes,
+ * then the write path's own refusal (domain-filters isBlockedReviewUrl): a URL
+ * the ingest path will never accept can never close a gap, so counting it only
+ * makes noise. Measured 2026-10-11: of 26,399 reviews.json rows, the last two
+ * steps reject one (a WhatsOnStage /shows/ listing page). Kept apart from
+ * classifyReviewUrl because show-score.com must stay classifiable there (see
+ * the note on NON_REVIEW_HOST_PATTERNS).
+ *
+ * @param {string} url
+ * @returns {{ok: boolean, reason: string|null}}
+ */
+function classifyGapCandidateUrl(url) {
+  const base = classifyReviewUrl(url);
+  if (!base.ok) return base;
+  const listing = listingPageUrlReason(url);
+  if (listing) return { ok: false, reason: listing };
+  if (isBlockedReviewUrl(url)) return { ok: false, reason: 'write-path-blocked' };
+  return { ok: true, reason: null };
+}
+
 module.exports = {
+  classifyGapCandidateUrl,
   submissionNonReviewReason,
   NON_REVIEW_HOST_PATTERNS,
   ALLOWED_ORG_HOSTS,

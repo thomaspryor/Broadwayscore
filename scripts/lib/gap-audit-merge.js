@@ -41,6 +41,7 @@
 // drift apart silently.
 const { MAX_FRESHNESS_SKIP_MS } = require('./gap-audit-freshness');
 const { censusVerdict, CI_UNFETCHABLE_OUTLETS } = require('./review-census');
+const { classifyGapCandidateUrl } = require('./non-review-url-patterns');
 const {
   CENSUS_SCHEMA,
   isPriorProductionCitation,
@@ -105,8 +106,14 @@ function censusVerdictFor(result, opts = {}) {
   // tao-of-glass, nystagereview on les-miserables-arena). Identical repeated URLs
   // still collapse.
   const seenUrls = new Set();
+  // BRO-4190: a URL the audit's candidate gate now refuses (show hub, venue
+  // listing, interview, write-path-blocked host) is not a candidate in either
+  // direction. Rows written before CENSUS_SCHEMA 3 still carry such URLs, and
+  // without this skip an unmissed one would count as covered (a vacuous live).
+  const isCandidate = (url) => !url || classifyGapCandidateUrl(url).ok;
   for (const url of (result.aggregatorListedUrls || [])) {
     if (missingUrls.has(url) || flaggedUrls.has(url) || unextractableUrls.has(url)) continue;
+    if (!isCandidate(url)) continue;
     const id = hostOf(url);
     if (!id || seenUrls.has(url)) continue;
     seenUrls.add(url);
@@ -156,12 +163,14 @@ function censusVerdictFor(result, opts = {}) {
   // dropped from the census, not from the file.
   for (const m of (result.missing || [])) {
     if (isPriorProductionCitation(m)) continue;
+    if (!isCandidate(m.url)) continue;
     const id = identityFor(m);
     if (!id) continue;
     entries.push({ outletId: id, outlet: m.knownOutletId || m.host || id, critic: 'Unknown', stars: null, url: m.url || '' });
   }
   for (const m of (result.flaggedMisses || [])) {
     if (isPriorProductionCitation(m)) continue;
+    if (!isCandidate(m.url)) continue;
     const id = identityFor(m);
     if (!id) continue;
     entries.push({ outletId: id, outlet: m.knownOutletId || m.host || id, critic: 'Unknown', stars: null, url: m.url || '' });
@@ -249,7 +258,11 @@ function riskStateMap(results) {
     const cv = usable ? stored : censusVerdictFor(r);
     const liveCount = Number.isFinite(cv.liveCount) ? cv.liveCount : 0;
     const candidateCount = Number.isFinite(cv.candidateCount) ? cv.candidateCount : 0;
-    out[r.showId] = `${cv.verdict}:${liveCount}:${candidateCount}`;
+    // `:prior-schema` marks a row an older candidate rule produced: the
+    // recompute above re-applies only the URL gate, not auditShow's own
+    // drops (SERP other-production, BWW dates), so its candidateCount is
+    // not comparable and only a liveCount drop is risky (BRO-4190).
+    out[r.showId] = `${cv.verdict}:${liveCount}:${candidateCount}${usable || !stored ? '' : ':prior-schema'}`;
   }
   return out;
 }
@@ -271,9 +284,10 @@ function riskStateMap(results) {
  * can consume — revisit only if a real incident ever shows this shape.
  */
 function isRiskyGapChange(prevState, nextState) {
-  const counts = (s) => String(s).split(':').slice(1).map(Number);
+  const counts = (s) => String(s).split(':').slice(1, 3).map(Number);
   const [prevLive, prevCandidates] = counts(prevState);
   const [nextLive, nextCandidates] = counts(nextState);
+  if (String(prevState).endsWith(':prior-schema')) return nextLive < prevLive;
   return nextLive < prevLive || nextCandidates < prevCandidates;
 }
 

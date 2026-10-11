@@ -478,3 +478,40 @@ test('a show whose only blocker is an unextractable URL is no longer held incomp
   const vacuous = censusVerdictForUnx({ ...base, missing: [] }, { now: NOW });
   assert.ok(vacuous.candidates.some((c) => c.url === NEWS_URL && c.state === 'live'), 'control: with no unextractable list the URL reads as covered');
 });
+
+// BRO-4190: the SERP census counted the 2024 Hampstead Theatre (London)
+// reviews as "missing" for the 2026 Off-Broadway Invention of Love.
+test('acceptSerpCensusResult drops another production named by a London house or Time Out edition', () => {
+  const { otherProductionUrlSignal } = require('./audit-show-review-gap.js');
+  const show = { id: 'the-invention-of-love-off-broadway-2026', title: 'The Invention of Love', category: 'off-broadway', venue: 'Theaterlab', openingDate: '2026-09-21' };
+  const info = { title: show.title, cast: [], creativeNames: [] };
+  const hampstead = { url: 'https://www.londontheatre.co.uk/reviews/the-invention-of-love-review-hampstead-theatre', title: 'The Invention of Love review' };
+  const timeoutLondon = { url: 'https://www.timeout.com/london/theatre/the-invention-of-love-review', title: 'The Invention of Love review' };
+  const titleOnly = { url: 'https://www.telegraph.co.uk/theatre/what-to-see/the-invention-of-love-review/', title: 'The Invention of Love, Hampstead Theatre review' };
+  const nyc = { url: 'https://www.nytimes.com/2026/09/22/theater/the-invention-of-love-review.html', title: 'The Invention of Love review: Stoppard at Theaterlab' };
+  assert.equal(acceptSerpCensusResult(hampstead, { show, showInfo: info }), null);
+  assert.equal(acceptSerpCensusResult(timeoutLondon, { show, showInfo: info }), null);
+  assert.equal(acceptSerpCensusResult(titleOnly, { show, showInfo: info }), null);
+  assert.ok(acceptSerpCensusResult(nyc, { show, showInfo: info }));
+  // A National Theatre or RSC production transferring to New York names the
+  // company in its own reviews: not evidence of another production.
+  const hamlet = { id: 'hamlet-off-broadway-2026', title: 'Hamlet', category: 'off-broadway', venue: 'BAM Harvey Theater', openingDate: '2026-05-01' };
+  assert.equal(otherProductionUrlSignal('https://www.theatermania.com/news/review-ophelia-steals-the-show-in-the-national-theatres-out-of-joint-hamlet_1835514/', hamlet), null);
+  // A New York review of a London transfer names the house it came from.
+  const ferryman = { id: 'the-ferryman-2018', title: 'The Ferryman', category: 'broadway', venue: 'Bernard B. Jacobs Theatre', openingDate: '2018-10-21' };
+  assert.equal(otherProductionUrlSignal('https://www.nytimes.com/2018/10/21/theater/the-ferryman-review.html', ferryman, 'Review: The Ferryman, the Royal Court hit, arrives on Broadway'), null);
+  assert.equal(otherProductionUrlSignal('https://www.theatermania.com/news/review-the-ferryman-royal-court-transfer_1234/', ferryman), null);
+  // A declared prior run (here in London) makes the house name expected.
+  const withRun = { ...show, priorRuns: [{ venue: 'Hampstead Theatre', startDate: '2024-01-01', endDate: '2024-02-01' }] };
+  assert.equal(otherProductionUrlSignal(hampstead.url, withRun), null);
+  // West End shows are out of scope for the London-house signal.
+  const we = { id: 'darkling-off-west-end-2026', title: 'Darkling', category: 'off-west-end', venue: 'Bush Theatre', openingDate: '2026-09-10' };
+  assert.equal(otherProductionUrlSignal('https://lovelondonloveculture.com/2026/09/16/review-darkling-bush-theatre/', we), null);
+});
+
+test('acceptSerpCensusResult drops a novel review whose slug spells "bookreview" (BRO-4540)', () => {
+  const show = { id: 'a-thousand-natural-shocks-off-broadway-2026', title: 'A Thousand Natural Shocks', category: 'off-broadway', venue: 'The Tank', openingDate: '2026-10-01' };
+  const info = { title: show.title, cast: [], creativeNames: [] };
+  const sr = { url: 'https://whatsbetterthanbooks.com/bookreview-natural-shocks-ohussain/', title: 'A Thousand Natural Shocks by Omar Hussain' };
+  assert.equal(acceptSerpCensusResult(sr, { show, showInfo: info }), null);
+});
