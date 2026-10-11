@@ -192,3 +192,11 @@ test('definition-list handling keeps plot on heading lines and drops setting lab
   // An unclosed File link is left for hasWikiMarkup instead of swallowing the plot after it.
   assert.match(stripFileLinks('The story begins. [[File:x.jpg|thumb|caption\nThe hero sets off on a quest.'), /The hero sets off on a quest/);
 });
+
+test('second review: unclosed captions, long headings, setting lines with plot, times in labels', async () => {
+  const { stripWikiMarkup } = (await import('./lib/wiki-utils.js')).default;
+  assert.equal(stripWikiMarkup('The story begins in a quiet town. [[File:x.jpg|thumb|Smith as Bob in the 1990 production\nThe hero sets off to find [[Gabrielle]] there.'), 'The story begins in a quiet town. The hero sets off to find Gabrielle there.');
+  assert.equal(stripWikiMarkup(';Act One — The Ballroom of the Grand Hotel, Paris, 1890\nCount Danilo meets Hanna at the embassy ball.'), 'Count Danilo meets Hanna at the embassy ball.');
+  assert.match(stripWikiMarkup(':Setting: A drawing room in Mayfair. Lady Bracknell arrives and interrogates Jack about his parents.\nJack proposes.'), /^A drawing room in Mayfair\. Lady Bracknell arrives/);
+  assert.match(stripWikiMarkup(';Act I, 10:30 p.m.: The bar is full and the band plays a slow number for the lovers.\nThey dance.'), /^The bar is full/);
+});

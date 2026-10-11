@@ -222,3 +222,9 @@ test('song cues are plot, not pitch, and a setting label is debris (BRO-5063 rev
   assert.equal(isValidSynopsis('Time: The first century, just after the birth of Christ Amahl, a disabled boy, has a problem with telling tall tales.'), false);
   assert.equal(isValidSynopsis('Set in 1925, the play begins at a time when the family is at its lowest ebb and nobody visits.'), true);
 });
+
+test('second review: quoted taglines still count as pitch, a stray inch mark does not hide it', () => {
+  assert.equal(isValidSynopsis('A 12" vinyl spins all night long. Join us tonight for the party! She says "hi" to everyone.'), false);
+  assert.equal(isValidSynopsis('"Join us for the party of the year!" says the poster on the wall of the club.'), false);
+  assert.equal(isValidSynopsis('Set in a hut near Bethlehem. Setting: A hut near Bethlehem Amahl tells tall tales to his mother.'), false);
+});

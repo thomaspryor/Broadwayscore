@@ -26,6 +26,7 @@ const { ABBREV_DOT_RE } = require('./todaytix-page-identity');
 const HOLD = { '.': '\u2024', '!': '\u01C3', '?': '\u0294' };
 const RESTORE = new Map(Object.entries(HOLD).map(([k, v]) => [v, k]));
 const SOFT_EXEMPT = new Set(['production-news']);
+const MAX_REJOIN = 3;
 
 function escapeRe(s) {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -50,12 +51,19 @@ function storySentences(text, title) {
     .map(x => x.replace(/[\u2024\u01C3\u0294]/g, c => RESTORE.get(c)).trim())
     .filter(Boolean);
   // Dialogue ('exclaims, "Alright! I understand!" before hurrying off') is
-  // one sentence: rejoin pieces while a double quote is still open.
+  // one sentence: rejoin pieces while a double quote is still open, at most
+  // MAX_REJOIN times, so a stray inch mark (12" record) cannot swallow the rest.
   const out = [];
+  let joined = 0;
   for (const p of pieces) {
     const prev = out[out.length - 1];
-    if (prev !== undefined && (prev.match(/["\u201C\u201D]/g) || []).length % 2 === 1) out[out.length - 1] = `${prev} ${p}`;
-    else out.push(p);
+    if (prev !== undefined && joined < MAX_REJOIN && (prev.match(/["\u201C\u201D]/g) || []).length % 2 === 1) {
+      out[out.length - 1] = `${prev} ${p}`;
+      joined++;
+    } else {
+      out.push(p);
+      joined = 0;
+    }
   }
   return out;
 }

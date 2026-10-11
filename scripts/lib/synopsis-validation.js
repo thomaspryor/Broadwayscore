@@ -126,7 +126,7 @@ const WIKI_ARTIFACT_RE = /^\s*=|\b(?:characters|genre|setting|composer|language|
 // sentence ("Act I Belle Poitrine writes ..."), or a "Place:"/"Time:" setting
 // label opening a sentence. Prose says "Act I ends" or "In Act II, ...",
 // which never matches.
-const WIKITEXT_DEBRIS_RE = /\bthumb(?:nail)?\s+(?:alt=|upright|left|right|centre|center|\d+px)|\balt=|\b\d+px\b|(?:^|\s)[;:](?=[A-Za-z0-9'"(])|(?:^|[.!?]\s+)(?:Act (?:I{1,3}|IV|V|One|Two|Three|[1-5])\s+(?=[A-Z])|(?:Time|Place):\s)/;
+const WIKITEXT_DEBRIS_RE = /\bthumb(?:nail)?\s+(?:alt=|upright|left|right|centre|center|\d+px)|\balt=|\b\d+px\b|(?:^|\s)[;:](?=[A-Za-z0-9'"(])|(?:^|[.!?]\s+)(?:Act (?:I{1,3}|IV|V|One|Two|Three|[1-5])\s+(?=[A-Z])|(?:Time|Place|Setting):\s)/;
 
 // Copy that sells to the reader instead of telling the story: "Don't miss",
 // "Join us", "invites you", "You'll find your heart growing" (BRO-5063: 18 live
@@ -135,10 +135,18 @@ const WIKITEXT_DEBRIS_RE = /\bthumb(?:nail)?\s+(?:alt=|upright|left|right|centre
 // it with isAudiencePitch: a song cue ("You'll Be Back") is plot.
 const AUDIENCE_PITCH_RE = /\b(?:join us|invites? you|you'll (?:find|love|be|see)|treat yourself)\b|^welcome to the\b|(?:^|[.!?]\s+)(?:Don't miss|Get (?:your )?tickets|Book (?:now|your|tickets|today))\b/i;
 
-/** Pitch copy after folding curly quotes and dropping quoted titles. */
+// A quoted Title-Case span is a song or show title ("You'll Be Back"), not
+// copy addressed to the reader; a quoted tagline ("Join us for the party!")
+// is not Title Case and stays in.
+const QUOTED_TITLE_RE = /"((?:[^"\s]+\s?){1,8})"/g;
+function isTitleCase(span) {
+  return span.split(/\s+/).filter(w => /^[a-z]/i.test(w) && w.length > 3).every(w => /^[A-Z]/.test(w));
+}
+
+/** Pitch copy, after folding curly quotes and dropping quoted titles. */
 function isAudiencePitch(text) {
   const plain = String(text || '').replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"');
-  return AUDIENCE_PITCH_RE.test(plain.replace(/"[^"]*"/g, '""'));
+  return AUDIENCE_PITCH_RE.test(plain.replace(QUOTED_TITLE_RE, (m, span) => (isTitleCase(span) ? '""' : m)));
 }
 
 const LIVE_STATUSES = new Set(['open', 'now-playing', 'closed']);
@@ -287,7 +295,6 @@ module.exports = {
   SCRAPED_PAGE_CHROME_RE,
   WIKI_ARTIFACT_RE,
   WIKITEXT_DEBRIS_RE,
-  AUDIENCE_PITCH_RE,
   isAudiencePitch,
   detectRefusalPattern,
   isLlmRefusal,

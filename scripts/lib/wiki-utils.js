@@ -65,9 +65,12 @@ function stripFileLinks(text) {
     while (i < text.length && depth > 0) {
       if (text.startsWith('[[', i)) { depth++; i += 2; } else if (text.startsWith(']]', i)) { depth--; i += 2; } else i++;
     }
-    // Never closed (malformed, or a section cut inside the caption): leave
-    // it for hasWikiMarkup to reject rather than swallowing the plot after it.
-    if (depth > 0) return out + text.slice(m.index);
+    // Never closed (malformed, or a section cut inside the caption): drop
+    // the caption to the end of its line instead of swallowing the plot after.
+    if (depth > 0) {
+      const eol = text.indexOf('\n', m.index);
+      i = eol === -1 ? text.length : eol;
+    }
     pos = i;
     open.lastIndex = i;
   }
@@ -84,25 +87,26 @@ function stripFileLinks(text) {
  * (";Act I: Belle Poitrine writes her autobiography with Patrick Dennis.")
  * keeps the sentence; a bare heading is dropped.
  */
-const HEADING_LINE_RE = /^(?:;+|\*+(?=\s*(?:'{2,3})?\s*(?:Act|Scene)\b))([^\n]*)$/gim;
-const SETTING_LABEL_RE = /^[;:]*\s*(?:'{2,3})?(?:Time|Place|Setting)(?:'{2,3})?\s*:[^\n]*$/gim;
+const HEADING_LINE_RE = /^(?:;+|\*+(?=\s*(?:'{2,3})?\s*(?:Act|Scene)\b)|:+(?=\s*(?:'{2,3})?\s*(?:Time|Place|Setting)(?:'{2,3})?\s*:))([^\n]*)$/gim;
 const MIN_SENTENCE_WORDS = 6;
 
-function headingLineContent(body) {
+function headingLineContent(body, singleLine) {
   const plain = body.replace(/'{2,3}/g, '').trim();
-  const colon = plain.indexOf(':');
-  const rest = colon === -1 ? '' : plain.slice(colon + 1).trim();
+  // Label ends at the first ": " so a time in it ("Act I, 10:30 p.m.: The bar") is not the cut.
+  const colon = plain.indexOf(': ');
+  const rest = colon === -1 ? '' : plain.slice(colon + 2).trim();
   if (rest.split(/\s+/).length >= MIN_SENTENCE_WORDS && /[.!?]["')]?$/.test(rest)) return rest;
-  // No label, just a long line: a one-line stored synopsis that opens with
-  // ";" (clean-synopsis-markup.js input) keeps its text, minus the marker.
-  if (colon === -1 && plain.split(/\s+/).length > MIN_SENTENCE_WORDS) return plain;
+  // A one-line stored synopsis that opens with ";" (clean-synopsis-markup.js
+  // input) keeps its text minus the marker; in multi-line wikitext a long
+  // line is still a heading ("Act One — The Ballroom of the Grand Hotel").
+  if (singleLine && colon === -1 && plain.split(/\s+/).length > MIN_SENTENCE_WORDS) return plain;
   return '';
 }
 
 function stripDefinitionListMarkup(text) {
+  const singleLine = !String(text).includes('\n');
   return text
-    .replace(SETTING_LABEL_RE, '')
-    .replace(HEADING_LINE_RE, (_, body) => headingLineContent(body))
+    .replace(HEADING_LINE_RE, (_, body) => headingLineContent(body, singleLine))
     .replace(/^:+\s*/gm, '');
 }
 

@@ -1,16 +1,16 @@
 {
   "issueNumber": "bro-5063",
-  "planId": "0dee7c38-75c6-4da7-a9cc-fc6b323be8f0",
+  "planId": "77ec06ce-87bf-4844-a03c-3982b31ecee6",
   "status": "pending",
-  "createdAt": "2026-10-11T15:09:39.003Z",
+  "createdAt": "2026-10-11T15:12:44.153Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "Synopsis cleanup (BRO-5063). 70 live synopses carried Wikipedia scrape debris (image captions, \";Act I\" headings, cut-off song lists) or producer pitch copy (\"Don’t miss\", \"Join us\", \"invites you\", press quotes, cast billing). 42 are trimmed to their story text; 28 with no usable story are cleared so the verified writer refills them (backfill-historical-metadata.yml, shows= the cleared ids).",
+    "summary": "Synopsis cleanup (BRO-5063). 71 live synopses carried Wikipedia scrape debris (image captions, \";Act I\" headings, cut-off song lists) or producer pitch copy (\"Don’t miss\", \"Join us\", \"invites you\", press quotes, cast billing). 43 are trimmed to their story text; 28 with no usable story are cleared so the verified writer refills them (backfill-historical-metadata.yml, shows= the cleared ids).",
     "steps": [
-      "Trim 42 synopses to their story text",
+      "Trim 43 synopses to their story text",
       "Clear 28 pitch/billing/song-list synopses",
       "Dispatch backfill-historical-metadata.yml for the cleared ids"
     ],
@@ -645,6 +645,15 @@
         "oldValue": "Act 1 In the Golden Gate Restaurant in San Francisco in 1927, tired and harassed young waitress Cleo commiserates with her friend. Cleo's feet hurt (\"Ooh My Feet\") and her friend has had to fend off the cashier's advances (\"I Know How It Is\"). As they clean up (\"Seven Million Crumbs\"), Cleo's friend finds a jeweled tie pin and a note addressed to the friend as \"Rosabella\", written in odd broken English (\"I Don't Know (The Letter)\").",
         "newValue": "In the Golden Gate Restaurant in San Francisco in 1927, tired and harassed young waitress Cleo commiserates with her friend. Cleo's feet hurt (\"Ooh My Feet\") and her friend has had to fend off the cashier's advances (\"I Know How It Is\"). As they clean up (\"Seven Million Crumbs\"), Cleo's friend finds a jeweled tie pin and a note addressed to the friend as \"Rosabella\", written in odd broken English (\"I Don't Know (The Letter)\").",
         "description": "Trimmed to the story text: leading act heading (oldValue from the 2026-10-06 core-data snapshot)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-addams-family-2010",
+        "field": "synopsis",
+        "oldValue": "Setting: The Addams Family Mansion, Central Park, New York City The ghoulish Addams family are visiting the graveyard for an annual gathering of all family members (living, dead, and undecided) to celebrate what it is to be an Addams (\"When You're an Addams\").",
+        "newValue": "In their mansion in Central Park, New York City, the ghoulish Addams family are visiting the graveyard for an annual gathering of all family members (living, dead, and undecided) to celebrate what it is to be an Addams (\"When You're an Addams\").",
+        "description": "Trimmed to the story text: Wikipedia \"Setting:\" label glued to the first sentence"
       }
     ]
   }

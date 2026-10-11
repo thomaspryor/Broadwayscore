@@ -60,7 +60,7 @@ function isFragment(s) {
 }
 // Initials and titles end in a full stop that does not end the sentence
 // ("F. Murray Abraham", "Dr. Seuss").
-const ABBREV_DOT_RE = /\b(Mr|Mrs|Ms|Dr|St|Jr|Sr|Prof|[A-Z])\.(?=\s)/g;
+const ABBREV_DOT_RE = /\b(Mr|Mrs|Ms|Dr|St|Jr|Sr|Prof|Capt|Gen|Lt|[A-Z])\.(?=\s)/g;
 // After a dropped sentence, a sentence leaning on it ("That meant a sudden
 // influx of 7,000 visitors") has lost what it refers to.
 const ANAPHORIC_OPENER_RE = /^(That|This|These|Those|It|They)\b/;

@@ -37,10 +37,11 @@ const CARD_ROWS = [
 const readJson = (rel) => JSON.parse(fs.readFileSync(path.join(ROOT, rel), 'utf8'));
 const planPath = path.join(ROOT, 'data', 'pending-fixes', 'bro-5063.json');
 const NO_DATA = fs.existsSync(path.join(ROOT, 'data', 'shows.json')) ? false : 'no core-data checkout here';
-// 'partial' (some actions refused) must run the checks too, so only the
-// untouched states skip.
-const PENDING = NO_DATA || (!fs.existsSync(planPath) || ['pending', 'approved'].includes(readJson('data/pending-fixes/bro-5063.json').status)
-  ? 'waits for execute-approved-fix.yml to apply data/pending-fixes/bro-5063.json' : false);
+// Runs once the executor wrote to shows.json: 'applied', or 'partial' when
+// some actions were refused. Pending, rejected or rolled-back plans skip.
+const RAN = new Set(['applied', 'partial']);
+const PENDING = NO_DATA || (fs.existsSync(planPath) && RAN.has(readJson('data/pending-fixes/bro-5063.json').status)
+  ? false : 'waits for execute-approved-fix.yml to apply data/pending-fixes/bro-5063.json');
 
 const showsById = () => {
   const data = readJson('data/shows.json');

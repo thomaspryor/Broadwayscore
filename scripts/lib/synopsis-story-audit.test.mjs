@@ -48,3 +48,8 @@ test('dialogue with inner exclamations stays one sentence (BRO-5063 review)', ()
   const steel = { title: 'Steel Pier', synopsis: 'He manages to stand up and exclaims, "Alright! I understand! I\'ve got three weeks! Three weeks! " before hurrying off. He asks if she has a partner yet.' };
   assert.deepEqual(synopsisStoryProblems(steel, nonStoryReason).soft.filter(s => s.reason === 'fragment'), []);
 });
+
+test('second review: a stray inch mark rejoins at most three pieces; Capt. is not a sentence end', () => {
+  assert.equal(storySentences('He buys a 12" record. Then he sleeps. She cries. Joe sells tickets. Fin.').length, 2);
+  assert.deepEqual(storySentences('Capt. Hook kidnaps Wendy. Peter flies after them.'), ['Capt. Hook kidnaps Wendy.', 'Peter flies after them.']);
+});
