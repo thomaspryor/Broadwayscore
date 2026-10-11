@@ -14,12 +14,11 @@
  * @returns {string} Clean plaintext
  */
 function stripWikiMarkup(text) {
-  let cleaned = text
+  let cleaned = stripFileLinks(stripDefinitionListMarkup(text))
     .replace(/<!--.*?-->/gs, '')                           // HTML comments
     .replace(/<ref[^>]*>.*?<\/ref>/gis, '')                // <ref>...</ref>
     .replace(/<ref[^>]*\/>/gi, '')                         // <ref />
     .replace(/<\/?(?:br|small|nowiki|sup|sub|blockquote)[^>]*>/gi, ' ') // HTML tags
-    .replace(/\[\[(?:File|Image|Category):[^\]]*\]\]/gi, '') // File/Image/Category links
     .replace(/\[\[([^\]|]*\|)?([^\]]*)\]\]/g, '$2')       // [[link|text]] → text
     .replace(/'{2,3}/g, '')                                // Bold/italic markup
     .replace(/={2,5}\s*[^=\n]+\s*={2,5}/g, ' ')           // === Section Headers ===
@@ -45,6 +44,45 @@ function stripWikiMarkup(text) {
     .trim();
 
   return cleaned;
+}
+
+/**
+ * Remove [[File:...]] / [[Image:...]] / [[Category:...]] links, captions and
+ * all. A caption holding its own links ("[[File:X.jpg|thumb|alt=...|[[Judith
+ * Bliss]] strikes a pose, 1925]]") ends at the matching "]]", not the first
+ * one; the old single regex stopped early and left "thumb alt=middle aged
+ * white woman ... strikes a pose" in Hay Fever's synopsis (BRO-5063).
+ */
+function stripFileLinks(text) {
+  const open = /\[\[(?:File|Image|Category):/gi;
+  let out = '';
+  let pos = 0;
+  let m;
+  while ((m = open.exec(text)) !== null) {
+    out += text.slice(pos, m.index);
+    let depth = 1;
+    let i = m.index + 2;
+    while (i < text.length && depth > 0) {
+      if (text.startsWith('[[', i)) { depth++; i += 2; } else if (text.startsWith(']]', i)) { depth--; i += 2; } else i++;
+    }
+    pos = i;
+    open.lastIndex = i;
+  }
+  return out + text.slice(pos);
+}
+
+/**
+ * Definition-list markup used for act and scene headings: ";'''Act I'''" and
+ * ";'''1977'''" term lines are headings, "*Scene One: Pub." lines are scene
+ * labels, and ":" opens an indented paragraph. Once newlines collapse, the
+ * headings read as ";Act I Belle Poitrine ..." mid-synopsis (Little Me,
+ * Lestat, Betrayal; BRO-5063). Drop the heading lines, keep the paragraphs.
+ */
+function stripDefinitionListMarkup(text) {
+  return text
+    .replace(/^;[^\n]*$/gm, '')
+    .replace(/^\*+\s*(?:'{2,3})?(?:Scene|Act)\b[^\n]*$/gim, '')
+    .replace(/^:+\s*/gm, '');
 }
 
 /**
@@ -140,6 +178,8 @@ function stripLeadingJunk(text) {
 
 module.exports = {
   stripWikiMarkup,
+  stripFileLinks,
+  stripDefinitionListMarkup,
   hasWikiMarkup,
   stripLeadingJunk,
 };

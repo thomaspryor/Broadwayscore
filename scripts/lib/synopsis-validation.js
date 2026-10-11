@@ -120,6 +120,19 @@ const SCRAPED_PAGE_CHROME_RE = /\b(we use cookies|this (web)?site uses cookies|a
 // Sweep of 2,082 synopses on 2026-10-07 (BRO-4853) found each of these live on prod.
 const WIKI_ARTIFACT_RE = /^\s*=|\b(?:characters|genre|setting|composer|language|executive_producer|premiere|place premiered) = |\b(?:most commonly|commonly|usually|may|can) refers? to\b/i;
 
+// Wikitext debris anywhere in the text (BRO-5063): image-caption parameters
+// ("thumb alt=middle aged white woman", "250px"), definition-list markers
+// left mid-text (" ;Act I", " :Time:") and an act heading glued to the next
+// sentence ("Act I Belle Poitrine writes ..."). Prose says "Act I ends" or
+// "In Act II, ...", which never matches.
+const WIKITEXT_DEBRIS_RE = /\bthumb(?:nail)?\s+(?:alt=|upright|left|right|centre|center|\d+px)|\balt=|\b\d+px\b|(?:^|\s)[;:](?=[A-Za-z0-9'"(])|(?:^|[.!?]\s+)Act (?:I{1,3}|IV|V|One|Two|Three|[1-5])\s+(?=[A-Z])/;
+
+// Copy that sells to the reader instead of telling the story: "Don't miss",
+// "Join us", "invites you", "You'll find your heart growing" (BRO-5063: 18 live
+// rows, 11 of them "Don’t miss" with a curly apostrophe the opener check below
+// never matched). Run on text with curly quotes folded to straight.
+const AUDIENCE_PITCH_RE = /\b(?:join us|invites? you|you'll (?:find|love|be|see)|treat yourself)\b|^welcome to the\b|(?:^|[.!?]\s+)(?:Don't miss|Get (?:your )?tickets|Book (?:now|your|tickets|today))\b/i;
+
 const LIVE_STATUSES = new Set(['open', 'now-playing', 'closed']);
 
 /**
@@ -225,9 +238,12 @@ function isValidSynopsis(text) {
 
   // Reject Wikipedia markup / disambiguation scraps
   if (WIKI_ARTIFACT_RE.test(trimmed.slice(0, 300))) return false;
+  if (WIKITEXT_DEBRIS_RE.test(trimmed)) return false;
 
-  // Reject marketing openers
-  if (/^(See |Get tickets|Don't miss|Experience the|Come discover)/i.test(trimmed)) return false;
+  // Reject marketing openers and audience-address pitch copy
+  const straight = trimmed.replace(/[‘’]/g, "'");
+  if (/^(See |Get tickets|Don't miss|Experience the|Come discover)/i.test(straight)) return false;
+  if (AUDIENCE_PITCH_RE.test(straight)) return false;
 
   // Reject text that ends mid-sentence (ends with comma, or ends with lowercase letter without period)
   if (/,\s*$/.test(trimmed)) return false;
@@ -262,6 +278,8 @@ module.exports = {
   STALE_COMING_TO_VENUE_RE,
   SCRAPED_PAGE_CHROME_RE,
   WIKI_ARTIFACT_RE,
+  WIKITEXT_DEBRIS_RE,
+  AUDIENCE_PITCH_RE,
   detectRefusalPattern,
   isLlmRefusal,
   isPlaceholderSynopsis,

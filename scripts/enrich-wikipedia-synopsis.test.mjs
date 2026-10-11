@@ -143,3 +143,41 @@ test('a wrong-show synopsis (same title, different production) does not trip has
   const wrongShowSynopsis = 'All of Me follows a bickering couple who reconcile after a comedic mix-up involving a psychic.';
   assert.equal(hasBadSynopsisContent(wrongShowSynopsis), false);
 });
+
+// BRO-5063: wikitext debris saved as live synopses. Fixtures are the real
+// Wikipedia markup (fetched 2026-10-11) that produced Taking Sides' photo
+// caption, Little Me's ";Act I" and Betrayal's ";1977 Scene One: Pub. :Emma".
+const LITTLE_ME_PLOT = `{{Infobox musical}}\n== Plot ==\nNote: This summary is based on the original Broadway production. The libretto was revised heavily for both of the subsequent revivals, with songs cut, added, or moved (most notably "Little Me").\n\n;'''Act I'''\nBelle Poitrine (née Schlumpfert) writes her autobiography with the help of Patrick Dennis ("The Truth"). As a child from Venezuela, Illinois, she lived in Drifter's Row, the poor side of town.\n== Productions ==\nx`;
+const BETRAYAL_PLOT = `{{Infobox play}}\n==Synopsis==\nThe years between 1968 and 1977 occur in reverse order; scenes within years 1977 and 1973 move forward.<ref name=Quigley/>\n\n;'''1977'''\n*Scene One: '''Pub. 1977. Spring.'''\n:Emma and Jerry meet for the first time in two years. For seven years they had an affair and a secret flat, and Jerry says no one else knew.\n*Scene Two: '''Jerry's House. Later the same day.'''\n:Jerry meets Robert to talk about the affair.\n== Productions ==\nx`;
+const TAKING_SIDES_LEAD = `{{Short description|1995 play by Ronald Harwood}}\n{{italic title}}\n[[File:Lenka Pichlikova in Taking Sides.jpg|thumb|[[Lenka Pichlíková-Burke|Lenka Pichlíková]] (at center) as Tamara Sachs in ''Taking Sides'' (Stamford Theatre Works, Connecticut, 1999).]]\n\n'''''Taking Sides''''' is a 1995 play by [[United Kingdom|British]] [[playwright]] [[Ronald Harwood]], about the post-war United States [[denazification]] investigation of the German conductor [[Wilhelm Furtwängler]].\n== Productions ==\nx`;
+const HAY_FEVER_IMAGE = `== Plot ==\nThe action is set in the Hall of David Bliss's house at Cookham, Berkshire.\n[[File:Hay Fever 1925.jpg|thumb|upright|alt=middle aged white woman, extravagantly dressed, striking a theatrical pose|[[Marie Tempest]] as Judith Bliss strikes a pose, 1925]]\nSorel and Simon Bliss, a brother and sister, exchange artistic and bohemian dialogue.\n== Productions ==\nx`;
+
+test('extractPlotSection drops definition-list act headings (Little Me ";Act I")', () => {
+  const plot = extractPlotSection(LITTLE_ME_PLOT);
+  assert.doesNotMatch(plot, /;|Act I/);
+  assert.match(plot, /"Little Me"\)\. Belle Poitrine/);
+});
+
+test('extractPlotSection drops scene labels and keeps indented paragraphs (Betrayal)', () => {
+  const plot = extractPlotSection(BETRAYAL_PLOT);
+  assert.doesNotMatch(plot, /\s;|Scene One|(^|\s):/);
+  assert.match(plot, /move forward\. Emma and Jerry meet/);
+});
+
+test('extractPlotSection removes a File caption that holds its own links (Taking Sides, Hay Fever)', () => {
+  const lead = extractPlotSection(TAKING_SIDES_LEAD);
+  assert.doesNotMatch(lead, /at center|Tamara Sachs|thumb/);
+  assert.match(lead, /^Taking Sides is a 1995 play/);
+  const plot = extractPlotSection(HAY_FEVER_IMAGE);
+  assert.doesNotMatch(plot, /thumb|alt=|strikes a pose|Marie Tempest/);
+  assert.match(plot, /Berkshire\. Sorel and Simon Bliss/);
+});
+
+test('the enricher pipeline output for each fixture passes isValidSynopsis', async () => {
+  const { isValidSynopsis } = (await import('./lib/synopsis-validation.js')).default;
+  const { stripLeadingJunk } = (await import('./lib/wiki-utils.js')).default;
+  for (const content of [LITTLE_ME_PLOT, BETRAYAL_PLOT, TAKING_SIDES_LEAD, HAY_FEVER_IMAGE]) {
+    const synopsis = trimToSynopsis(stripLeadingJunk(extractPlotSection(content)));
+    assert.equal(isValidSynopsis(synopsis), true, synopsis);
+  }
+});
