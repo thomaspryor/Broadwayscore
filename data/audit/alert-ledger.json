@@ -12070,7 +12070,7 @@
       "title": "National tour pages show wrong information: 1 page problem(s) (poster-missing)",
       "firstSeen": "2026-10-08T18:00:17.152Z",
       "incidentOpenedAt": "2026-10-08T18:00:17.152Z",
-      "lastSeen": "2026-10-10T16:21:44.185Z",
+      "lastSeen": "2026-10-11T16:44:47.399Z",
       "lastNotifiedAt": "2026-10-08T18:00:17.152Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
@@ -12082,10 +12082,10 @@
         "runId": "37820206082",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37820206082"
       },
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "tour-page-audit:schedule-orphan": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "National tour pages show wrong information: 1 page problem(s) (schedule-orphan)",
       "firstSeen": "2026-10-08T18:00:24.104Z",
@@ -12102,7 +12102,9 @@
         "runId": "37820206082",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37820206082"
       },
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-10-11T16:44:43.731Z",
+      "resolveReason": "audit-tour-pages: no longer reported"
     },
     "cron-health-chronic:Weekly A/B Monitors": {
       "status": "open",
@@ -13799,6 +13801,116 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "tour-page-audit:stops-overlap": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "National tour pages show wrong information: 1 page problem(s) (stops-overlap)",
+      "firstSeen": "2026-10-11T16:44:43.739Z",
+      "incidentOpenedAt": "2026-10-11T16:44:43.739Z",
+      "lastSeen": "2026-10-11T16:44:43.739Z",
+      "lastNotifiedAt": "2026-10-11T16:44:43.739Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-5066",
+      "dispatch": {
+        "requestedAt": "2026-10-11T16:44:43.739Z",
+        "mode": "dispatch-at-filing",
+        "runId": "38156450197",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38156450197"
+      }
+    },
+    "tour-page-audit:stops-before-opening": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "National tour pages show wrong information: 1 page problem(s) (stops-before-opening)",
+      "firstSeen": "2026-10-11T16:44:47.139Z",
+      "incidentOpenedAt": "2026-10-11T16:44:47.139Z",
+      "lastSeen": "2026-10-11T16:44:47.139Z",
+      "lastNotifiedAt": "2026-10-11T16:44:47.139Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4978"
+    },
+    "tour-page-audit:list-city-missing": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "National tour pages show wrong information: 42 page problem(s) (list-city-missing)",
+      "firstSeen": "2026-10-11T16:44:47.406Z",
+      "incidentOpenedAt": "2026-10-11T16:44:47.406Z",
+      "lastSeen": "2026-10-11T16:44:47.406Z",
+      "lastNotifiedAt": "2026-10-11T16:44:47.406Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4979"
+    },
+    "tour-page-audit:schedule-city-unlinked": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "National tour pages show wrong information: 217 page problem(s) (schedule-city-unlinked)",
+      "firstSeen": "2026-10-11T16:44:47.716Z",
+      "incidentOpenedAt": "2026-10-11T16:44:47.716Z",
+      "lastSeen": "2026-10-11T16:44:47.716Z",
+      "lastNotifiedAt": "2026-10-11T16:44:47.716Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4980"
+    },
+    "tour-page-audit:review-count-mismatch": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "National tour pages show wrong information: 14 page problem(s) (review-count-mismatch)",
+      "firstSeen": "2026-10-11T16:44:47.912Z",
+      "incidentOpenedAt": "2026-10-11T16:44:47.912Z",
+      "lastSeen": "2026-10-11T16:44:47.912Z",
+      "lastNotifiedAt": "2026-10-11T16:44:47.912Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4981"
+    },
+    "tour-page-audit:city-should-index": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "National tour pages show wrong information: 70 page problem(s) (city-should-index)",
+      "firstSeen": "2026-10-11T16:44:48.088Z",
+      "incidentOpenedAt": "2026-10-11T16:44:48.088Z",
+      "lastSeen": "2026-10-11T16:44:48.088Z",
+      "lastNotifiedAt": "2026-10-11T16:44:48.088Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4982"
+    },
+    "tour-page-audit:city-missing-from-sitemap": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "National tour pages show wrong information: 70 page problem(s) (city-missing-from-sitemap)",
+      "firstSeen": "2026-10-11T16:44:48.261Z",
+      "incidentOpenedAt": "2026-10-11T16:44:48.261Z",
+      "lastSeen": "2026-10-11T16:44:48.261Z",
+      "lastNotifiedAt": "2026-10-11T16:44:48.261Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4983"
+    },
+    "tour-page-audit:city-page-status": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "National tour pages show wrong information: 42 page problem(s) (city-page-status)",
+      "firstSeen": "2026-10-11T16:44:48.477Z",
+      "incidentOpenedAt": "2026-10-11T16:44:48.477Z",
+      "lastSeen": "2026-10-11T16:44:48.477Z",
+      "lastNotifiedAt": "2026-10-11T16:44:48.477Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4984"
     }
   }
 }
