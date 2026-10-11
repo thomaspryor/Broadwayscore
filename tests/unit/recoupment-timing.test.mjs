@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const T = require('../../scripts/lib/recoupment-timing');
-const { buildTimingRows, recoupBias } = require('../../scripts/lib/recoupment-timing-report');
+const { buildTimingRows, recoupBias, crossingPass } = require('../../scripts/lib/recoupment-timing-report');
 const { calculateRecoupment } = require('../../scripts/lib/recoupment-model');
 
 describe('announcementDate', () => {
@@ -38,6 +38,16 @@ describe('timingTruth', () => {
     assert.deepEqual([t.checkpoints[0].lo, t.checkpoints[0].hi], T.RECOUP_BAND);
     assert.equal(t.checkpoints[1].hi, 99.99);
     assert.equal(t.checkpoints[1].from, '2017-01-02');
+  });
+  test('announcement lag: open-topped band at the announcement, <= 115 at the lag start, earlier checkpoints shift back', () => {
+    const t = T.timingTruth(comm, show, { lagWeeks: 13 });
+    assert.deepEqual(t.checkpoints.map((c) => c.label), ['at-recoup', 'lag-start']);
+    assert.deepEqual([t.checkpoints[0].lo, t.checkpoints[0].hi], [85, Infinity]);
+    assert.deepEqual([t.checkpoints[1].from, t.checkpoints[1].hi], ['2017-04-03', 115]);
+    // 26 weeks before a lag start that falls before the first preview: dropped.
+    assert.ok(!T.timingTruth(comm, show, { lagWeeks: 13 }).checkpoints.some((c) => c.label === '26w-before'));
+    // A lag start before the first preview: only the announcement decides.
+    assert.deepEqual(T.timingTruth(comm, show, { lagWeeks: 52 }).checkpoints.map((c) => c.label), ['at-recoup']);
   });
   test('not recouped or no source: no timing truth', () => {
     assert.equal(T.timingTruth({ ...comm, recouped: false }, show), null);
@@ -146,4 +156,19 @@ test('revisitBarStatus: warn when the bar is met, pass while it is not (BRO-5073
   assert.match(revisitBarStatus({ revisitBar: { met: false, play: g(3, 1), musical: g(2, 2) } }).message, /plays 1\/3 inside, musicals 2\/2/);
   assert.equal(revisitBarStatus({ revisitBar: { met: true, play: g(10, 9), musical: g(11, 10) } }).status, 'warn');
   assert.equal(revisitBarStatus(null).status, 'warn');
+});
+
+describe('crossingPass', () => {
+  test('a show passes only when every crossing checkpoint is inside', () => {
+    const rows = [
+      { slug: 'a', type: 'play', kind: 'timing:at-recoup', newErr: 0, displayable: true },
+      { slug: 'a', type: 'play', kind: 'timing:lag-start', newErr: 0 },
+      { slug: 'b', type: 'musical', kind: 'timing:at-recoup', newErr: 0 },
+      { slug: 'b', type: 'musical', kind: 'timing:lag-start', newErr: 30 },
+      { slug: 'b', type: 'musical', kind: 'timing:26w-before', newErr: 0 },
+    ];
+    const out = Object.fromEntries(crossingPass(rows).map((e) => [e.slug, e]));
+    assert.deepEqual([out.a.ok, out.a.strong, out.a.play], [true, true, true]);
+    assert.deepEqual([out.b.ok, out.b.strong], [false, false]);
+  });
 });
