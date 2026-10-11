@@ -816,18 +816,6 @@
     "queuedAt": "2026-10-11T19:53:55.221Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Validate market expansion, Audit outlet-registry gaps",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38171006542",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-11T20:15:43.904Z"
-  },
-  {
     "conditionKey": "land:land/bro-5074-cloud-memory-reconcile",
     "title": "Landing blocked: rebase red on land/bro-5074-cloud-memory-reconcile",
     "description": "land.yml did not land land/bro-5074-cloud-memory-reconcile: the rebase gate went red at 1392f8d186. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5074-cloud-memory-reconcile @ 1392f8d186 (origin/land/bro-5074-cloud-memory-reconcile) → origin/main @ 6c8d87a2e9 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 6c8d87a2e9: Rebasing (1/1) error: could not apply 1392f8d1864... feat: reconcile cloud-memory from claude-config in CI (BRO-5074) hint: Resolve all conflicts manually, mark them as resolved with hint: \" Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38169277627",
@@ -884,5 +872,17 @@
       }
     ],
     "queuedAt": "2026-10-11T20:15:13.790Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Validate market expansion, Audit outlet-registry gaps",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38171901497",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-11T20:28:23.083Z"
   }
 ]
