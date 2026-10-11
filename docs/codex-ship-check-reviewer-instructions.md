@@ -9,7 +9,7 @@ this repo controls Codex's behavior. There is no separate `.codex/` config; `AGE
 
 ## The bug
 
-`AGENTS.md`'s "Before You Start" section previously said, unconditionally:
+`AGENTS.md`'s "Before You Start" section (now "Data preflight") previously said, unconditionally:
 
 > Run `npm run data:check` — if data files are missing, stop and report it; do not proceed
 > without data.
