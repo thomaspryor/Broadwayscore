@@ -13602,7 +13602,7 @@
       "resolvedAt": "2026-10-11T07:40:23.943Z"
     },
     "land:land/bro-5040-session-workers": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-5040-session-workers",
       "firstSeen": "2026-10-11T08:08:10.990Z",
@@ -13612,7 +13612,8 @@
       "lastSurfacedAt": "2026-10-11T08:08:10.990Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-11T10:10:07.125Z"
     },
     "land:land/bro-5007-v8-map-compare": {
       "status": "open",
@@ -13686,9 +13687,23 @@
       "title": "Landing blocked: lint-workflows red on land/bro-3512-scoring-delta-cv-low",
       "firstSeen": "2026-10-11T09:44:17.334Z",
       "incidentOpenedAt": "2026-10-11T09:44:17.334Z",
-      "lastSeen": "2026-10-11T09:44:17.334Z",
+      "lastSeen": "2026-10-11T10:13:42.553Z",
       "lastNotifiedAt": "2026-10-11T09:44:17.334Z",
       "lastSurfacedAt": "2026-10-11T09:44:17.334Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "silentRefires": 1
+    },
+    "land:land/bro-5032-date-guard-resolver": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-5032-date-guard-resolver",
+      "firstSeen": "2026-10-11T10:11:34.441Z",
+      "incidentOpenedAt": "2026-10-11T10:11:34.441Z",
+      "lastSeen": "2026-10-11T10:11:34.441Z",
+      "lastNotifiedAt": "2026-10-11T10:11:34.441Z",
+      "lastSurfacedAt": "2026-10-11T10:11:34.441Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
