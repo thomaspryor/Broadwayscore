@@ -221,6 +221,31 @@ test('P1-10: a closed TBD reads "Undisclosed", a running TBD stays TBD', () => {
   assert.equal(getDesignationDisplay('Flop', 'closed').label, 'Flop');
 });
 
+test('BRO-5020: a closed TBD that announced recoupment does not say "outcome not announced"', async () => {
+  const d = getDesignationDisplay('TBD', 'closed', true);
+  assert.equal(d.label, 'Recouped · return undisclosed');
+  assert.doesNotMatch(d.description, /outcome not announced/);
+  // Recouped styling, not the grey unknown-outcome styling, and in the legend.
+  assert.equal(d.isUndisclosed, false);
+  assert.notEqual(d.textClass, getDesignationDisplay('TBD', 'closed', null).textClass);
+  const { getLegendEntries } = await import('../../src/config/commercial.ts');
+  assert.ok(getLegendEntries().some((e) => e.name === d.label && e.description === d.description));
+  assert.equal(getDesignationDisplay('TBD', 'closed', false).label, 'Undisclosed');
+  assert.equal(getDesignationDisplay('TBD', 'closed', null).label, 'Undisclosed');
+  assert.equal(getDesignationDisplay('TBD', 'open', true).label, 'TBD');
+  assert.equal(getDesignationDisplay('Windfall', 'closed', true).label, 'Windfall');
+});
+
+test('BRO-5020: a closed TBD never shows a model %, whatever its quality', () => {
+  const closedTbd = { designation: 'TBD', status: 'closed', recouped: null, modelRecoupmentPct: [0, 0, 8.2], modelDataQuality: 'medium', modelMethod: 'weekly-model' };
+  assert.equal(getRecoupmentDisplayMode(closedTbd), 'none');
+  assert.equal(getDisplayableModelRange(closedTbd), null);
+  assert.equal(getRecoupmentDisplayMode({ ...closedTbd, designation: undefined }), 'none');
+  // Running TBD with the same model still shows it; a recouped closed TBD shows the announcement.
+  assert.equal(getRecoupmentDisplayMode({ ...closedTbd, status: 'open' }), 'model');
+  assert.equal(getRecoupmentDisplayMode({ ...closedTbd, recouped: true }), 'announced');
+});
+
 const tradeSource = { type: 'trade', url: 'https://variety.com/2014/legit/news/example', date: '2014-12-10' };
 const secSource = { type: 'sec', url: 'https://www.sec.gov/Archives/edgar/data/0000000/example.htm', date: '2015-01-01' };
 

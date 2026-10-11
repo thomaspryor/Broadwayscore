@@ -135,7 +135,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
   if (!hasCommercialCard(commercial)) return null;
 
   // Closed + TBD reads "Undisclosed" (display only; the record keeps TBD).
-  const designation = getDesignationDisplay(commercial.designation, showStatus);
+  const designation = getDesignationDisplay(commercial.designation, showStatus, commercial.recouped);
   const running = isRunningStatus(showStatus);
   const producerLine = getNonprofitProducerLine(commercial);
   const isNonprofit = commercial.designation === 'Nonprofit';
