@@ -367,6 +367,11 @@ async function alertStaleDrafts(pageable, allStale) {
       ],
     });
     console.log(`[alert-router] draft ${d.draftId.slice(0, 8)}: ${result.action}`);
+    // Same guard as the never-sent alert above: 'digest' means the page-worthy
+    // gate downgraded a 'human' alert, so the owner only hears tomorrow.
+    if (result.action === 'digest') {
+      console.log(`::warning::draft ${d.draftId.slice(0, 8)}: unsent-draft alert was downgraded to the morning digest — check that 'broadcast:draft-unsent:' is still in scripts/lib/page-worthy-alerts.js`);
+    }
   }
 }
 

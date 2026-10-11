@@ -71,7 +71,9 @@ const SCRIPTS_DIR = __dirname;
 const BASELINE_PATH = path.join(SCRIPTS_DIR, '.help-flag-safety-baseline.json');
 const EXEMPTION = 'hygiene-help-flag-ok';
 
-const HELP_CHECK_RE = /hasHelpFlag\s*\(|(['"])--help\1|(['"])-h\2(?=\s*[),;]|\s*===|\.includes)/;
+// exitOnHelp(module) is cli-help.js's own documented one-liner (it calls
+// hasHelpFlag internally), so it counts as a help check too.
+const HELP_CHECK_RE = /hasHelpFlag\s*\(|exitOnHelp\s*\(|(['"])--help\1|(['"])-h\2(?=\s*[),;]|\s*===|\.includes)/;
 // Real, consequential side effects: shelling out, the two corpus-write
 // guards, destructive fs deletes, and bare network calls — NOT generic
 // fs.writeFileSync/appendFileSync, which are also used for harmless

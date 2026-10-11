@@ -36,6 +36,11 @@ test('predicate catches an unguarded destructive script and passes a guarded one
     checkFile('y.js', "const fs=require('fs');\nconst { hasHelpFlag } = require('./lib/cli-help.js');\nif (hasHelpFlag(process.argv.slice(2))) { process.exit(0); }\nfs.rmSync('a');\n"),
     null,
   );
+  assert.equal(
+    checkFile('z.js', "require('./lib/cli-help').exitOnHelp(module);\nconst fs=require('fs');\nfs.rmSync('a');\n"),
+    null,
+    'exitOnHelp(module), the convention cli-help.js documents, is a help check',
+  );
 });
 
 // Behavioural check (BRO-1711 review): text greps missed a guard sitting AFTER an
