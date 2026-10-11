@@ -25,12 +25,22 @@ import { fileURLToPath } from 'node:url';
 const require = createRequire(import.meta.url);
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const contact = require(path.join(ROOT, 'scripts/lib/submitter-contact.js'));
+// The CLI also refuses a token that decrypts to an address it will not send to
+// without claiming a decrypt failure (exit 0, not 3).
 const { firstRealEmail } = require(path.join(ROOT, 'scripts/lib/pii-scan.js'));
 const yaml = require('js-yaml');
 
+const tmpDirs = [];
+function tmpDir(prefix) {
+  const d = fs.mkdtempSync(path.join(os.tmpdir(), prefix));
+  tmpDirs.push(d);
+  return d;
+}
+process.on('exit', () => { for (const d of tmpDirs) fs.rmSync(d, { recursive: true, force: true }); });
+
 const SECRET = 'test-approval-hmac-secret';
 const EMAIL = 'jane.doe+bsc@example.org';
-const CLI = path.join(ROOT, 'scripts/lib/submitter-contact.js');
+const CLI = path.join(ROOT, 'scripts/lib/submitter-contact-cli.js');
 
 function issueBody(contactLines) {
   return [
@@ -78,6 +88,13 @@ test('legacy plaintext issues (filed before BRO-4454) still resolve so their out
   assert.equal(contact.extractSubmitterEmail(issueBody([contact.LEGACY_EMAIL_HEADING, '_No response_']), SECRET), null);
 });
 
+test('a contact heading pasted into the notes cannot redirect the outcome email', () => {
+  const other = contact.encryptContact('victim@example.com', SECRET);
+  const spoof = issueBody(contact.formatContactSection(EMAIL, SECRET))
+    .replace('Great review.', `${contact.CONTACT_HEADING}\n${other}`);
+  assert.equal(contact.extractSubmitterEmail(spoof, SECRET), EMAIL);
+});
+
 test('an address that could break the notify JSON payload is refused', () => {
   for (const bad of ['x@example.com", "bcc": ["evil@example.com', 'a b@example.com', '<x@example.com>', 'x@example', '']) {
     const body = issueBody(contact.formatContactSection(bad, SECRET));
@@ -96,10 +113,15 @@ test('validate-review-submission parser no longer swallows the contact section i
   assert.equal(empty.additionalNotes, undefined);
   const multi = parseIssueBody(issueBody([]).replace('Great review.', 'line one\nline two'));
   assert.equal(multi.additionalNotes, 'line one\nline two');
+  // Empty notes section must not swallow the next section (hand-edited issues).
+  const blank = parseIssueBody(`### Additional Notes\n\n${contact.LEGACY_EMAIL_HEADING}\n${EMAIL}`);
+  assert.equal(blank.additionalNotes, undefined);
+  const crlf = parseIssueBody(issueBody([contact.LEGACY_EMAIL_HEADING, EMAIL]).replace(/\n/g, '\r\n'));
+  assert.equal(crlf.additionalNotes, 'Great review.');
 });
 
 test('CLI prints the address only with the right secret and never errors loudly', () => {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4454-'));
+  const dir = tmpDir('bro4454-');
   const file = path.join(dir, 'body.txt');
   fs.writeFileSync(file, issueBody(contact.formatContactSection(EMAIL, SECRET)));
   const ok = spawnSync(process.execPath, [CLI, 'extract', file], { env: { ...process.env, APPROVAL_HMAC_SECRET: SECRET }, encoding: 'utf8' });
@@ -116,6 +138,10 @@ test('CLI prints the address only with the right secret and never errors loudly'
   const none = spawnSync(process.execPath, [CLI, 'extract', file], { env: { ...process.env, APPROVAL_HMAC_SECRET: SECRET }, encoding: 'utf8' });
   assert.equal(none.status, 0, 'no email given is not an error');
   assert.equal(none.stdout, '');
+  fs.writeFileSync(file, issueBody(contact.formatContactSection('a b@example.com', SECRET)));
+  const refused = spawnSync(process.execPath, [CLI, 'extract', file], { env: { ...process.env, APPROVAL_HMAC_SECRET: SECRET }, encoding: 'utf8' });
+  assert.equal(refused.status, 0, 'a refused address is not reported as a decrypt failure');
+  assert.equal(refused.stdout, '');
 });
 
 // Dry run of the real workflow notify steps: curl is a recorder on PATH, so
@@ -125,9 +151,10 @@ const steps = Object.values(workflow.jobs).flatMap((j) => j.steps || []);
 
 function runNotifyStep(name, body, secret) {
   const step = steps.find((s) => s.name === name);
+  assert.match(step.run, /node scripts\/lib\/submitter-contact-cli\.js extract \.issue-body\.txt/);
   assert.ok(step, `workflow step "${name}" exists`);
   assert.equal(step.env.APPROVAL_HMAC_SECRET, '${{ secrets.APPROVAL_HMAC_SECRET }}');
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4454-wf-'));
+  const dir = tmpDir('bro4454-wf-');
   fs.symlinkSync(path.join(ROOT, 'scripts'), path.join(dir, 'scripts'));
   fs.writeFileSync(path.join(dir, '.issue-body.txt'), body);
   const bin = path.join(dir, 'bin');

@@ -39,7 +39,7 @@ function parseIssueBody(issueBody) {
   // the end of the body, so the submitter's email section was logged to the
   // public Actions log by validate-review-submission.js and sent to the model
   // as "notes".
-  const notesMatch = issueBody.match(/### Additional Notes\s*\n\s*([\s\S]*?)(?=\n###\s|\n---\s*(?:\n|$)|$)/);
+  const notesMatch = issueBody.match(/### Additional Notes[ \t]*\r?\n[ \t]*([\s\S]*?)(?=\n###\s|\n---\s*(?:\n|$)|$)/);
   if (notesMatch && notesMatch[1].trim() && notesMatch[1].trim() !== '_No response_') {
     data.additionalNotes = notesMatch[1].trim();
   }

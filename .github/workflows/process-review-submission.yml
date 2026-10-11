@@ -147,7 +147,7 @@ jobs:
           APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
         run: |
           # Prints the address or nothing. Never echo it: this repo's logs are public.
-          EMAIL=$(node scripts/lib/submitter-contact.js extract .issue-body.txt) || {
+          EMAIL=$(node scripts/lib/submitter-contact-cli.js extract .issue-body.txt) || {
             echo "::warning::Sealed submitter contact did not decrypt (APPROVAL_HMAC_SECRET missing or rotated?); submitter not notified"
             EMAIL=""
           }
@@ -206,7 +206,7 @@ jobs:
           APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
         run: |
           # Prints the address or nothing. Never echo it: this repo's logs are public.
-          EMAIL=$(node scripts/lib/submitter-contact.js extract .issue-body.txt) || {
+          EMAIL=$(node scripts/lib/submitter-contact-cli.js extract .issue-body.txt) || {
             echo "::warning::Sealed submitter contact did not decrypt (APPROVAL_HMAC_SECRET missing or rotated?); submitter not notified"
             EMAIL=""
           }

@@ -23,7 +23,6 @@
  */
 
 const crypto = require('crypto');
-const fs = require('fs');
 
 const CONTACT_HEADING = '### Submitter Contact (encrypted)';
 const LEGACY_EMAIL_HEADING = '### Submitter Email';
@@ -82,10 +81,14 @@ function formatContactSection(email, secret) {
   return [CONTACT_HEADING, value];
 }
 
-/** First non-empty line under `heading`, or null. */
+/**
+ * First non-empty line under the LAST `heading`, or null. Last, because the
+ * contact section comes after the free-text notes, so a heading pasted into
+ * the notes cannot stand in for the real one.
+ */
 function readSectionLine(issueBody, heading) {
   const lines = String(issueBody || '').split(/\r?\n/);
-  const i = lines.findIndex((l) => l.trim() === heading);
+  const i = lines.map((l) => l.trim()).lastIndexOf(heading);
   if (i === -1) return null;
   for (let j = i + 1; j < lines.length; j++) {
     const l = lines[j].trim();
@@ -108,10 +111,13 @@ function extractSubmitterEmail(issueBody, secret) {
   return candidate && isDeliverableEmail(candidate.trim()) ? candidate.trim() : null;
 }
 
-/** True when the body carries a sealed token (whether or not it decrypts). */
-function hasSealedContact(issueBody) {
+/**
+ * True when the body carries a sealed token that does not decrypt with
+ * `secret` (missing or rotated secret, or a tampered body).
+ */
+function sealedContactUndecryptable(issueBody, secret) {
   const token = readSectionLine(issueBody, CONTACT_HEADING);
-  return token !== null && token.startsWith(TOKEN_PREFIX);
+  return token !== null && token.startsWith(TOKEN_PREFIX) && decryptContact(token, secret) === null;
 }
 
 module.exports = {
@@ -124,28 +130,5 @@ module.exports = {
   decryptContact,
   formatContactSection,
   extractSubmitterEmail,
-  hasSealedContact,
+  sealedContactUndecryptable,
 };
-
-// CLI for process-review-submission.yml:
-//   node scripts/lib/submitter-contact.js extract <issue-body-file>
-// Prints the address or nothing and never prints an error that could carry
-// the token or the address. Exit 0, except exit 3 when a sealed token is
-// present but does not decrypt (wrong/rotated APPROVAL_HMAC_SECRET or a
-// tampered body), so the workflow can warn instead of skipping silently.
-if (require.main === module) {
-  const [cmd, file] = process.argv.slice(2);
-  if (cmd !== 'extract' || !file) {
-    process.stderr.write('usage: submitter-contact.js extract <issue-body-file>\n');
-    process.exit(2);
-  }
-  let body = '';
-  try {
-    body = fs.readFileSync(file, 'utf8');
-  } catch {
-    body = '';
-  }
-  const email = extractSubmitterEmail(body, process.env.APPROVAL_HMAC_SECRET);
-  if (email) process.stdout.write(email);
-  else if (hasSealedContact(body)) process.exit(3);
-}
