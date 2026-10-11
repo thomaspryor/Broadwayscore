@@ -559,6 +559,7 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
         articleTypeConfidence: parsed.articleTypeConfidence || 'medium',
         wrongProduction: wpFlag,
         reviewedVenue: parsed.reviewedVenue || null,
+        tourStopCarveoutApplied: tourCarve.tourStopCarveoutApplied,
         isFilmTv: filmTvFlag,
         reasoning: wpFlag ? wpReasoning : (parsed.reasoning || ''),
         verifiedBy: `llm:${result.provider}`,
