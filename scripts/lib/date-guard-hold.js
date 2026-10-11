@@ -159,6 +159,10 @@ function resolveHoldDecision({ review, show, refetch, cv, attempts = 0 }) {
   const out = (action, reason, extra = {}) => ({ action, reason, countAttempt: false, ...extra });
   if (!review || review[RESOLVE_EXHAUSTED_FIELD]) return out('refuse', 'already-exhausted-or-missing');
   // A person's score exempts the file from the date check; never touch it.
+  if (review._locked === true || review.wrongProductionOverride || review.wrongProductionManualClear
+      || review.humanReviewedWrongProduction === false || review.publishDateVerified === true) {
+    return out('refuse', 'operator-decision-on-file');
+  }
   if (review.humanReviewScore !== undefined && review.humanReviewScore !== null) return out('refuse', 'human-review-score-set');
 
   if (!refetch || refetch.ok === false) return out('retry', 'fetch-failed');

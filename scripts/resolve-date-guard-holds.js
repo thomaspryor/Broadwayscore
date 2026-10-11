@@ -66,7 +66,7 @@ async function main() {
   if (hasHelpFlag(args)) { console.log(USAGE); return; }
   const dryRun = args.includes('--dry-run');
   const limitArg = args.find(a => a.startsWith('--limit='));
-  const limit = Math.min(10, limitArg ? Number(limitArg.split('=')[1]) || 10 : 10);
+  const limit = Math.max(1, Math.min(10, limitArg ? Number(limitArg.split('=')[1]) || 10 : 10));
 
   if (!fs.existsSync(REVIEW_TEXTS_DIR)) { console.error(`No review-texts corpus at ${REVIEW_TEXTS_DIR}.`); process.exit(1); }
 
@@ -96,11 +96,26 @@ async function main() {
     if (!show) { console.log(`  [NO SHOW] ${showId}/${file}`); continue; }
     if (fetches >= limit) { stats.skippedBudget++; continue; }
     const gate = breaker.decideRefetch(state, { showId, fileName: file });
-    if (!gate.allowed) { console.log(`  [BUDGET:${gate.reason}] ${showId}/${file}`); stats.skippedBudget++; continue; }
+    if (!gate.allowed) {
+      console.log(`  [BUDGET:${gate.reason}] ${showId}/${file}`);
+      if (gate.reason === 'per-file-cap' && !dryRun) {
+        // Dead URL: the breaker will never allow another fetch, so settle it.
+        data[RESOLVE_EXHAUSTED_FIELD] = { at: new Date().toISOString(), reason: 'refetch per-file cap reached without a resolution' };
+        safeWriteReview(filePath, data);
+        stats.exhausted++;
+      } else stats.skippedBudget++;
+      continue;
+    }
 
     console.log(`Resolving ${showId}/${file} (stored ${data.publishDate})`);
     try {
       let refetch = { ok: false };
+      if (!data.url && !dryRun) {
+        data[RESOLVE_EXHAUSTED_FIELD] = { at: new Date().toISOString(), reason: 'no url to refetch' };
+        safeWriteReview(filePath, data);
+        stats.exhausted++;
+        continue;
+      }
       if (data.url) {
         fetches++;
         state = breaker.recordRefetch(gate.state, { showId, fileName: file });
@@ -144,7 +159,14 @@ async function main() {
 
       const now = new Date().toISOString();
       if (decision.countAttempt) data[RESOLVE_ATTEMPTS_FIELD] = attempts + 1;
-      if (cvResult) data.contentVerification = { ...cvResult, verifiedAt: now, reverifiedFrom: 'date-guard-hold-resolver' };
+      if (cvResult) {
+        const stamped = { ...cvResult, verifiedAt: now, reverifiedFrom: 'date-guard-hold-resolver' };
+        // Only a settled verdict goes on contentVerification: an affirming CV on a
+        // file that stays held would add cv-affirms-production, flip the hold to a
+        // CHECK 0 error and let rebuild include it.
+        if (decision.action === 'cv-affirm' || decision.action === 'wrong-production') data.contentVerification = stamped;
+        else data.dateGuardResolveLastCv = stamped;
+      }
       switch (decision.action) {
         case 'correct-date':
           data.previousPublishDate = data.publishDate;
@@ -159,8 +181,8 @@ async function main() {
         case 'wrong-production':
           data.wrongProduction = true;
           invalidateWrongProductionAutoClear(data);
-          data.wrongProductionReason = 'date-guard-hold-resolved';
-          data.wrongProductionNote = `Date-guard hold resolver: ${decision.reason}`;
+          // Note only, prefixed "Date guard" so priorRuns auto-clear still applies.
+          data.wrongProductionNote = `Date guard hold resolver: ${decision.reason}`;
           clearDateGuardHold(data);
           break;
         case 'exhausted':
@@ -168,7 +190,8 @@ async function main() {
           break;
         default: break; // retry: attempt counter only
       }
-      safeWriteReview(filePath, data);
+      const w = safeWriteReview(filePath, data);
+      if (w && (w.wrote === false || w.lockedSkipped || w.preserved)) console.log(`  write did not fully land: ${JSON.stringify({ wrote: w.wrote, lockedSkipped: w.lockedSkipped, skipped: w.skipped })}`);
     } catch (e) {
       console.log(`  ERROR ${e.message}`);
       stats.errors++;
