@@ -71,8 +71,11 @@ function internalWordingIn(text) {
   const link = text.match(MARKDOWN_LINK_RE);
   if (link) return link[0];
   const prose = text.replace(URL_RE, ' ');
+  // A quoted line ('"I lost everything," the producer said') is a source
+  // speaking, not the researcher.
+  const unquoted = prose.replace(/"[^"]*"|“[^”]*”/g, ' ');
   const match = prose.match(INTERNAL_TEXT_RE) || prose.match(INTERNAL_TOKEN_RE) || prose.match(CONTEXT_SECTION_RE)
-    || prose.match(FIRST_PERSON_SEARCH_RE);
+    || unquoted.match(FIRST_PERSON_SEARCH_RE);
   return match ? match[0] : null;
 }
 

@@ -529,6 +529,8 @@ describe('first-person research notes never reach /biz (BRO-5041)', () => {
     assert.ok(checks.internalWordingIn('Best-fit designation is Fizzle.'));
     assert.ok(checks.internalWordingIn('Closed early. ([ibdb.com](https://www.ibdb.com/x?utm_source=openai))'));
     assert.equal(checks.internalWordingIn("Transferred from MTC's 2022 off-Broadway Stage I run."), null);
+    assert.equal(checks.internalWordingIn('"I lost everything," the lead producer told the Times.'), null);
+    assert.equal(checks.internalWordingIn('The producer said “we could not keep the lights on.”'), null);
     assert.equal(checks.internalWordingIn('Source: https://example.com/a-(b)'), null);
   });
   it('sanitize removes markdown citation links and leaves the sentence', () => {
