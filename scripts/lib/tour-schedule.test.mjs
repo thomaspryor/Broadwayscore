@@ -270,3 +270,21 @@ test('wikiNamesOtherLaunch: another city this season contradicts; old tours, a c
   assert.equal(wikiNamesOtherLaunch('In August 2026, it was announced a non-equity 2nd National tour would begin in January, 2027.', R('Fort Wayne, IN', '2027-01-12')), false);
   assert.equal(wikiNamesOtherLaunch('The tour launched in Cerritos in January 2027.', R('Cerritos, CA', '2027-01-19')), false, 'names this city');
 });
+
+// BRO-4878: a retired tour's saved schedule must be dropped, not left as an orphan.
+test('pruneOrphanSchedules drops schedules for ids not in shows', async () => {
+  const { createRequire } = await import('node:module');
+  const { pruneOrphanSchedules } = createRequire(import.meta.url)('./tour-schedule.js');
+  const tours = { 'live-tour': { stops: [1] }, 'liberation-tour-2026': { stops: [1] } };
+  const dropped = pruneOrphanSchedules(tours, [{ id: 'live-tour', category: 'tour' }]);
+  assert.deepEqual(dropped, ['liberation-tour-2026']);
+  assert.deepEqual(Object.keys(tours), ['live-tour']);
+});
+
+test('pruneOrphanSchedules keeps everything when shows has no tours', async () => {
+  const { createRequire } = await import('node:module');
+  const { pruneOrphanSchedules } = createRequire(import.meta.url)('./tour-schedule.js');
+  const tours = { a: { stops: [1] } };
+  assert.deepEqual(pruneOrphanSchedules(tours, []), []);
+  assert.deepEqual(Object.keys(tours), ['a']);
+});

@@ -9,7 +9,7 @@ import assert from 'node:assert';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 
-const { isRelevantPost, parseDollarAmount, extractCostsFromPost } = require('../../scripts/lib/reddit-grosses');
+const { isRelevantPost, parseDollarAmount, extractCostsFromPost, parseProfitRange, extractWeeklyFinancialsFromPost } = require('../../scripts/lib/reddit-grosses');
 
 describe('isRelevantPost', () => {
   it('matches a title containing "grosses"', () => {
@@ -106,5 +106,125 @@ describe('extractCostsFromPost', () => {
     assert.deepEqual(extractCostsFromPost(''), []);
     assert.deepEqual(extractCostsFromPost(undefined), []);
     assert.deepEqual(extractCostsFromPost('Weekly Operating Cost: $700k/week'), []);
+  });
+});
+
+// BRO-5027: his profit line, in every shape seen across 1,487 posted values.
+describe('parseProfitRange', () => {
+  const cases = [
+    ['$0k-$(100k)', { low: -100000, high: 0 }],
+    ['$0-($100k)', { low: -100000, high: 0 }],
+    ['($50k)-$50k', { low: -50000, high: 50000 }],
+    ['$50k-($50k)', { low: -50000, high: 50000 }],
+    ['$(100k)-$(50k)', { low: -100000, high: -50000 }],
+    ['($150k)-($100k)', { low: -150000, high: -100000 }],
+    ['$50-$100k', { low: 50000, high: 100000 }],
+    ['$(50k)', { low: -50000, high: -50000 }],
+    ['\\~$50k', { low: 50000, high: 50000 }],
+    ['$1.2 million', { low: 1200000, high: 1200000 }],
+    ['$100k+', { low: 100000, high: null }],
+    ['($100k+)', { low: null, high: -100000 }],
+    ['Even*', { low: 0, high: 0 }],
+    // Suffix or "+" outside the parentheses (real values).
+    ['$(68)k', { low: -68000, high: -68000 }],
+    ['($100k)+', { low: null, high: -100000 }],
+    ['$(100k)+', { low: null, high: -100000 }],
+    ['$0-$100k+', { low: 0, high: null }],
+    ['$100k+ (final week)', { low: 100000, high: null }],
+    ['$100k+ this week, vs 2023', { low: 100000, high: null }],
+    ['$(100k) to $0', { low: -100000, high: 0 }],
+  ];
+  for (const [input, want] of cases) {
+    it(`reads ${input}`, () => assert.deepEqual(parseProfitRange(input), want));
+  }
+  it('returns null for N/A, empty and prose', () => {
+    assert.equal(parseProfitRange('N/A'), null);
+    assert.equal(parseProfitRange(''), null);
+    assert.equal(parseProfitRange('(Twice their box office return)*'), null);
+    assert.equal(parseProfitRange('($300+)'), null, 'a nonzero figure under $1k is a missing suffix');
+  });
+  it('stays fast on whitespace-padded text (no catastrophic backtracking)', () => {
+    const t = Date.now();
+    parseProfitRange(' '.repeat(5000) + '#');
+    parseProfitRange('$' + ' '.repeat(5000) + '(' + ' '.repeat(5000) + '#');
+    extractWeeklyFinancialsFromPost('***X*** - $500k gross\nEstimated Profit (Loss): $' + ' '.repeat(5000) + '(' + ' '.repeat(5000) + '#');
+    assert.ok(Date.now() - t < 1000, `took ${Date.now() - t}ms`);
+  });
+});
+
+describe('extractWeeklyFinancialsFromPost', () => {
+  const post = [
+    '➡ ***The Great Gatsby*** \\- *$884k, 80% capacity, $93 atp (Up \\~$43k from last week).*',
+    '',
+    'Gross Less-Fees: $778k; Estimated Weekly Operating Cost: $850k/week; Estimated Profit (Loss): $0k-$(100k)',
+    '',
+    'Estimated percentage recouped: 10%-30%',
+    '',
+    '➡***️Chess***\\- *1.0 million gross, 71% capacity, $122 atp*',
+    '',
+    '*Gross Less-Fees: $893k; Estimated Weekly Operating Cost: $900k/week; Estimated Profit (Loss): N/A*',
+    '',
+    '***Ragtime*** \\- $*1.9 million gross, 99% capacity*',
+    'Gross Less-Fees: $1.6 million; Weekly Operating Cost: $1M/week; Estimated Profit (Loss): $100k+',
+    '',
+    '***Just A Heading*** with commentary and no figures',
+  ].join('\n');
+  const rows = extractWeeklyFinancialsFromPost(post);
+
+  it('returns one row per show with figures, dropping a bare heading', () => {
+    assert.deepEqual(rows.map((r) => r.showName), ['The Great Gatsby', 'Chess', 'Ragtime']);
+  });
+  it('reads gross, less-fees, cost, profit range and recouped range', () => {
+    assert.deepEqual(rows[0], {
+      showName: 'The Great Gatsby', gross: 884000, grossLessFees: 778000, costLow: 850000, costHigh: 850000,
+      profit: { low: -100000, high: 0 }, profitText: '$0k-$(100k)', recoupedLow: 10, recoupedHigh: 30, flags: [],
+    });
+  });
+  it('reads a "gross"-labelled figure with no "$" ahead of the atp figure', () => {
+    assert.equal(rows[1].gross, 1000000);
+    assert.equal(rows[1].profit, null);
+  });
+  it('reads "$*1.9 million" and an open profit bound', () => {
+    assert.equal(rows[2].gross, 1900000);
+    assert.equal(rows[2].grossLessFees, 1600000);
+    assert.deepEqual(rows[2].profit, { low: 100000, high: null });
+    assert.equal(rows[2].recoupedLow, null);
+  });
+  it('keeps the weekly profit when a post-mortem run total follows', () => {
+    const r = extractWeeklyFinancialsFromPost([
+      '***Elf*** - $1.2 million gross',
+      'Gross Less-Fees: $1.05 million; Weekly Operating Cost: $900k/week; Estimated Profit (Loss): $189k',
+      'Total Estimated Profit (Loss): \\~($6 million)',
+      '***Back to the Future*** - $1.0 million gross',
+      'Gross Less-Fees: 776k; Weekly Operating Cost: $950k/week; Estimated Profit (Loss): $(100k)-$0',
+      'Estimated Profit (Loss); $(15.5 million)',
+    ].join('\n'));
+    assert.deepEqual(r[0].profit, { low: 189000, high: 189000 });
+    assert.deepEqual(r[1].profit, { low: -100000, high: 0 });
+    assert.equal(r[1].grossLessFees, 776000, 'less-fees without a "$"');
+  });
+  it('reads "Gross Less-Fees- $1.050 million" and flags less-fees above gross', () => {
+    const r = extractWeeklyFinancialsFromPost('***X*** - $900k gross\nGross Less-Fees- $1.050 million; Estimated Profit (Loss): $0');
+    assert.equal(r[0].grossLessFees, 1050000);
+    assert.deepEqual(r[0].flags, ['lessFeesImplausible']);
+  });
+  it('reads an escaped "\\~$750k" cost and skips a Capitalization run total', () => {
+    const r = extractWeeklyFinancialsFromPost([
+      '***X*** - $900k gross',
+      'Capitalization: $22 million; Estimated Profit (Loss); $(15.5 million)-$(6.5 million)',
+      'Gross Less-Fees: $800k; Weekly Operating Cost: \\~$750k/week; Estimated Profit (Loss): $0-$50k',
+    ].join('\n'));
+    assert.equal(r[0].costLow, 750000);
+    assert.deepEqual(r[0].profit, { low: 0, high: 50000 });
+  });
+  it('allows a rounded heading gross and flags a profit above gross minus cost', () => {
+    const ok = extractWeeklyFinancialsFromPost('***X*** - $1.1 million gross\nGross Less-Fees: $1.122 million; Estimated Profit (Loss): $0');
+    assert.deepEqual(ok[0].flags, []);
+    const bad = extractWeeklyFinancialsFromPost('***X*** - $397k gross\nWeekly Operating Cost: $650k/week; Estimated Profit (Loss): $415k');
+    assert.deepEqual(bad[0].flags, ['profitAboveGrossLessCost']);
+  });
+  it('does not read profit text from the next line', () => {
+    const r = extractWeeklyFinancialsFromPost('***X*** - $500k gross\nEstimated Profit (Loss):\nLost $200k this week');
+    assert.equal(r.length, 0);
   });
 });

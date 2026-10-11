@@ -606,7 +606,20 @@ function tooFewStops(rows) {
   return Array.isArray(rows) && rows.length < MIN_TOUR_STOPS;
 }
 
+// Schedules saved for ids no longer in shows.json (retired/deleted tours) make
+// the tour page audit report schedule-orphan (BRO-4878). Mutates `tours`,
+// returns the dropped ids.
+function pruneOrphanSchedules(tours, shows) {
+  // A stub/empty shows list must never wipe every saved schedule.
+  if (!shows.some(s => s.category === 'tour')) return [];
+  const live = new Set(shows.map(s => s.id));
+  const dropped = Object.keys(tours).filter(id => !live.has(id));
+  for (const id of dropped) delete tours[id];
+  return dropped;
+}
+
 module.exports = {
+  pruneOrphanSchedules,
   MIN_TOUR_STOPS,
   tooFewStops,
   wikiNamesOtherLaunch,

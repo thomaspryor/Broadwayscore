@@ -26,7 +26,7 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { segmentTourRows, pickSegment, currentSegment, parseTourSchedule, duplicateScheduleOf, singleCompanyPath } = require('./lib/tour-schedule');
+const { segmentTourRows, pickSegment, currentSegment, parseTourSchedule, duplicateScheduleOf, singleCompanyPath, pruneOrphanSchedules } = require('./lib/tour-schedule');
 const { fetchSchedule } = require('./lib/tours-to-you');
 const { createRunBudget } = require('./lib/run-budget');
 
@@ -95,11 +95,15 @@ async function main() {
   // A closed tour is fetched until it has a schedule (BRO-4656): the review
   // sweep and stop-review discovery date reviews against its stops, and half
   // the tours (every closed one) had none.
+  let changed = 0;
+  for (const id of pruneOrphanSchedules(out.tours, shows)) {
+    console.log(`::warning::${id}: not in shows.json; saved schedule dropped`);
+    changed++;
+  }
   const targets = shows.filter(s => s.category === 'tour'
     && (only ? s.id === only : (s.status !== 'closed' || !(out.tours[s.id] && out.tours[s.id].stops && out.tours[s.id].stops.length))));
 
   let failed = 0;
-  let changed = 0;
   // The job's timeout is 30 min; 429 backoffs (tours-to-you.js) stop waiting
   // as this runs low, and tours not reached keep their saved stops.
   const budget = createRunBudget(22);
