@@ -99,10 +99,10 @@ import { PROMPT_VERSION, SYSTEM_PROMPT_V5, buildPromptV5, BUCKET_RANGES } from '
 import { isScoreable } from './is-scoreable';
 const { detectPreOpeningInterviewFeature } = require('../lib/preopening-interview-signal');
 const { emitStage } = require('../lib/stage-latency');
-const { decideBatchDrain, decideDrainFollowUp } = require('../lib/batch-drain-decision');
+const { decideBatchDrain, decideDrainFollowUp, mayStartNewBatch } = require('../lib/batch-drain-decision');
 const { clearFailureFlags } = require('../lib/clear-failure-flags');
 const { isInFallbackCooldown } = require('../lib/manual-clear-fallback-cooldown');
-const { markRescoreComplete, stampTerminalScoringFailure, isBlockedFromRescore, isDeterministicTextGateFailure } = require('../lib/rescore-lifecycle');
+const { markRescoreComplete, stampTerminalScoringFailure, isBlockedFromRescore, isDeterministicTextGateFailure, stampRejectedTextFingerprint, isBlockedByStickyRejection } = require('../lib/rescore-lifecycle');
 const { pushWithRetry } = require('../lib/push-with-retry.js');
 // venue-classification import removed — market context now passed via input-builder
 
@@ -1135,10 +1135,17 @@ async function main(): Promise<void> {
     // 0, Errors: 45", every one of them input_validation_failed:body_too_short
     // on text that had not changed since the previous run's identical failure.
     let unscoredBlockedSkipped = 0;
+    let stickyRejectionSkipped = 0;
     filesToProcess = allFiles.filter(f => {
       if ((f.data as any).llmScore) return false;
       if (isBlockedFromRescore(f.data as any)) {
         unscoredBlockedSkipped++;
+        return false;
+      }
+      // BRO-5047: already rejected as not_a_review on this exact text. The
+      // shared predicate below excludes it too; counted here only to log it.
+      if (isBlockedByStickyRejection(f.data as any, { promptVersion: PROMPT_VERSION })) {
+        stickyRejectionSkipped++;
         return false;
       }
       // Shared with the cascade gate's counter (task #652). Keeping the count
@@ -1146,6 +1153,9 @@ async function main(): Promise<void> {
       // looser counter is what starved phases 2-4 for months.
       return isActionableUnscored(f.data as any, queueCtx(f));
     });
+    if (stickyRejectionSkipped > 0) {
+      console.log(`Skipping ${stickyRejectionSkipped} unscored reviews already rejected as not_a_review on unchanged text\n`);
+    }
     if (unscoredBlockedSkipped > 0) {
       console.log(`Skipping ${unscoredBlockedSkipped} unscored reviews blocked by a prior terminal text-gate failure (fullText unchanged since)\n`);
     }
@@ -1627,6 +1637,7 @@ async function main(): Promise<void> {
           ? ensembleRejectionAgreeCount
           : null;
         fileData.promptVersion = PROMPT_VERSION;
+        stampRejectedTextFingerprint(fileData); // BRO-5047: skip until text/prompt change
         saveReviewFile(filePath, fileData, { skipRejectionReasonClear: true });
       }
 
@@ -2345,8 +2356,15 @@ async function main(): Promise<void> {
         `   Estimated cost (batch-discounted, upper bound): $${estCost.toFixed(4)} — vs $${syncCost.toFixed(4)} synchronous`
       );
 
+      const batchGate = mayStartNewBatch(readBatchState());
       if (options.dryRun) {
         console.log(`   --dry-run: not submitting.\n`);
+      } else if (!batchGate.allowed) {
+        // BRO-5047: writing a new state here would drop the in-flight batch's
+        // vendor IDs, and that paid batch could never be merged.
+        // ::warning:: so a run that queued work and scored nothing is visible
+        // in the Actions summary instead of reading as a quiet green.
+        console.log(`::warning::Batch not submitted: ${batchGate.reason}. ${pendingBatchItems.length} reviews stay unscored for the next run.`);
       } else {
         const ids = await submitBatches(requests, batchKeys, { geminiModel: cfg.geminiModel });
         // All-or-nothing across the ENABLED legs. A partial submit would run

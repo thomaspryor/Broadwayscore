@@ -180,9 +180,89 @@ function isBlockedFromRescore(data) {
   return true;
 }
 
+// ---------------------------------------------------------------------------
+// Sticky not_a_review rejections (BRO-5047)
+//
+// When the ensemble rejects a review as not_a_review, index.ts sets
+// contentTier='invalid'. For reviews that still count through an aggregator
+// thumb or star (hasIndependentExcerptScore), that tier is the ONLY thing
+// keeping isScoreable() false, and every rebuild recomputes contentTier from
+// the text (classifyContentTier ignores rejectionReason) and writes it back.
+// So the next scoring run paid all three vendors to reject the same unchanged
+// text again: ~17 files, about 3 times an hour (beetlejuice-tour-2022 Charleston
+// Scene was rejected ~20 times on 2026-10-10). classifyContentTier must NOT
+// learn rejectionReason: that would drop those thumb-scored reviews from
+// reviews.json. Instead the rejection records a fingerprint of the text it saw,
+// and the unscored selector skips the file until that text changes.
+//
+// Only not_a_review is sticky: wrong_show / wrong_production rejections set
+// their own durable flags, and manual clears route those to the Haiku
+// fallback, which this must never block. The block also lifts when the scoring
+// prompt changes (the rejection's promptVersion no longer matches): --outdated
+// only selects files with llmMetadata, which a never-scored rejected file does
+// not have, so the unscored path is the only one that would re-judge it.
+// Only the ensemble's own rejection is sticky. The pre-opening interview check
+// is free (no LLM call) and depends on the show's opening date, which this
+// fingerprint does not cover, so it keeps re-running.
+// ---------------------------------------------------------------------------
+const crypto = require('crypto');
+const { EXCERPT_FIELDS } = require('./excerpt-fields');
+const { readScoringPromptVersion } = require('./scoring-prompt-version');
+
+const STICKY_REJECTERS = new Set(['ensemble-scoreability-check']);
+
+/** sha1 over fullText plus every excerpt field: any text the scorer could be handed. */
+function rejectionTextFingerprint(data) {
+  const parts = [(data && data.fullText) || ''];
+  for (const f of EXCERPT_FIELDS) parts.push((data && data[f]) || '');
+  return crypto.createHash('sha1').update(JSON.stringify(parts)).digest('hex');
+}
+
+/** Write side: call wherever a sticky rejection is stamped. Mutates and returns fileData. */
+function stampRejectedTextFingerprint(fileData) {
+  if (!fileData || typeof fileData !== 'object') return fileData;
+  fileData.rejectedTextHash = rejectionTextFingerprint(fileData);
+  return fileData;
+}
+
+function isManuallyCleared(data) {
+  return data.wrongProductionManualClear === true ||
+    data.wrongProductionOverride === true ||
+    data.wrongShowManualClear === true ||
+    data.wrongShowOverride === true ||
+    data.humanReviewedWrongProduction === false ||
+    data.isCombinedReview === true ||
+    data.wrongProductionCleared === true ||
+    data.wrongShowCleared === true;
+}
+
+/**
+ * Read side: true when this file was rejected as not_a_review, its text is
+ * byte-identical to what the rejection saw, and the scoring prompt has not
+ * changed since, so scoring it again would only reproduce the rejection at
+ * full vendor cost.
+ *
+ * @param {Object} data review-text record
+ * @param {{promptVersion?: string}} [opts] current PROMPT_VERSION (index.ts
+ *   passes it; the JS counter reads it from config.ts)
+ */
+function isBlockedByStickyRejection(data, opts = {}) {
+  if (!data || typeof data !== 'object') return false;
+  const currentPrompt = opts.promptVersion || readScoringPromptVersion();
+  if (!currentPrompt || data.promptVersion !== currentPrompt) return false;
+  if (data.rejectionReason !== 'not_a_review') return false;
+  if (!STICKY_REJECTERS.has(data.rejectedBy)) return false;
+  if (!data.rejectedTextHash) return false; // pre-fingerprint rejections get one more pass, then carry it
+  if (data.needsRescore || isManuallyCleared(data)) return false;
+  return data.rejectedTextHash === rejectionTextFingerprint(data);
+}
+
 module.exports = {
   markRescoreComplete,
   stampTerminalScoringFailure,
   isBlockedFromRescore,
   isDeterministicTextGateFailure,
+  rejectionTextFingerprint,
+  stampRejectedTextFingerprint,
+  isBlockedByStickyRejection,
 };
