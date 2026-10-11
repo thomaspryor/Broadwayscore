@@ -122,7 +122,7 @@ function Chart({ dots, frame: f, phone, active, setActive }: ChartProps) {
       {ax.atpTicks.map((a) => (
         <g key={`a${a}`}>
           <line x1={f.left} x2={f.w - f.right} y1={y(a)} y2={y(a)} className="stroke-white/5" />
-          <text x={f.left - 4} y={y(a) + 4} fontSize={tickFont} textAnchor="end" className="fill-gray-500">${a}</text>
+          <text x={f.left - (phone ? 4 : 5)} y={y(a) + 4} fontSize={tickFont} textAnchor="end" className="fill-gray-500">${a}</text>
         </g>
       ))}
       {phone && medianAtp != null && (

@@ -165,13 +165,9 @@ function NewShowsCompare({ pace }: { pace: MarketPage['pace'] }) {
                 <span className="text-sm text-white truncate" title={p.title}>{shortTitle(p.title)}</span>
                 <span className="text-sm font-bold text-white tabular-nums shrink-0">Better than {p.beatsPct}%</span>
               </div>
-              <div
-                className="relative h-1.5 rounded-full bg-white/10"
-                role="img"
-                aria-label={`Better than ${p.beatsPct}% of shows at the same point`}
-              >
+              <div className="relative h-1.5 rounded-full bg-white/10" aria-hidden="true">
                 <div className="absolute inset-y-0 left-0 rounded-full bg-brand" style={{ width: `${Math.max(0, Math.min(100, p.beatsPct))}%` }} />
-                <div className="absolute -top-0.5 -bottom-0.5 left-1/2 w-px bg-white/60" aria-hidden="true" />
+                <div className="absolute -top-0.5 -bottom-0.5 left-1/2 w-px bg-white/60" />
               </div>
             </li>
           ))}
