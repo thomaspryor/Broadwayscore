@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-10T17:38:55.080Z",
+    "generatedAt": "2026-10-11T10:21:47.661Z",
     "description": "Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic."
   },
-  "totalGaps": 376,
+  "totalGaps": 378,
   "errorSeverity": 266,
-  "warningSeverity": 110,
+  "warningSeverity": 112,
   "gaps": [
     {
       "showId": "1776-2022",
@@ -1628,6 +1628,15 @@
       "severity": "error"
     },
     {
+      "showId": "magic-goes-wrong-west-end-2019",
+      "category": "west-end",
+      "expected": 9,
+      "extracted": 8,
+      "gap": 1,
+      "ratio": 0.89,
+      "severity": "warning"
+    },
+    {
       "showId": "mamma-mia-2001",
       "category": "broadway",
       "expected": 18,
@@ -3111,6 +3120,15 @@
       "gap": 54,
       "ratio": 0.13,
       "severity": "error"
+    },
+    {
+      "showId": "the-welkin-west-end-2020",
+      "category": "west-end",
+      "expected": 9,
+      "extracted": 8,
+      "gap": 1,
+      "ratio": 0.89,
+      "severity": "warning"
     },
     {
       "showId": "the-whos-tommy-2024",

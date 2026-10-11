@@ -9,6 +9,12 @@ name: Commercial Release Held Rows
 # record that already has a non-TBD or human-reviewed label or a recoupment
 # on file, merges onto the existing record, and never publishes the row's "recouped"
 # claim. The tail matches commercial-friday.yml.
+#
+# revert_core_commit undoes a release instead: each named record goes back to
+# what the core-data repo held just before that release commit (removed when
+# the release created it). Only a "data: release held commercial rows" commit
+# is accepted. The pending rows are not touched (a release deletes them; the
+# push merge may have kept them, and either way re-holding is separate).
 
 on:
   workflow_dispatch:
@@ -22,6 +28,11 @@ on:
         required: false
         type: boolean
         default: false
+      revert_core_commit:
+        description: 'Undo instead: core-data SHA of an earlier release commit (records restored for the named shows)'
+        required: false
+        type: string
+        default: ''
 
 concurrency:
   group: commercial-data-write
@@ -56,6 +67,7 @@ jobs:
         env:
           SHOWS: ${{ inputs.shows }}
           DRY_RUN: ${{ inputs.dry_run }}
+          REVERT: ${{ inputs.revert_core_commit }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
@@ -70,9 +82,38 @@ jobs:
             echo "::error::shows must be comma-separated slugs (a-z, 0-9, -)"
             exit 1
           fi
-          ARGS="--release-held=$LIST"
-          if [ "$DRY_RUN" = "true" ]; then ARGS="$ARGS --dry-run"; fi
-          node scripts/apply-commercial-pending.js $ARGS | tee "${RUNNER_TEMP}/release.log"
+          if [ -n "$REVERT" ]; then
+            if ! echo "$REVERT" | grep -Eq '^[0-9a-f]{7,40}$'; then
+              echo "::error::revert_core_commit must be a commit SHA"
+              exit 1
+            fi
+            CORE=/tmp/core-data-checkout
+            # blob:none keeps the deepen to commits and trees; git show fetches
+            # the two commercial.json blobs it needs on demand.
+            git -C "$CORE" fetch -q --filter=blob:none --deepen=2000 origin main
+            FULL=$(git -C "$CORE" rev-parse --verify "${REVERT}^{commit}")
+            SUBJECT=$(git -C "$CORE" log -1 --format=%s "$FULL")
+            if [ "$SUBJECT" != "data: release held commercial rows" ]; then
+              echo "::error::$FULL is \"$SUBJECT\", not a held-row release commit"
+              exit 1
+            fi
+            git -C "$CORE" show "${FULL}^:commercial.json" > "${RUNNER_TEMP}/commercial.before-release.json"
+            git -C "$CORE" show "${FULL}:commercial.json" > "${RUNNER_TEMP}/commercial.at-release.json"
+            ARGS="--previous=${RUNNER_TEMP}/commercial.before-release.json --released=${RUNNER_TEMP}/commercial.at-release.json --shows=$LIST"
+            if [ "$DRY_RUN" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+            node scripts/revert-commercial-release.js $ARGS | tee "${RUNNER_TEMP}/release.log"
+            # --dry-run: validate only; its audit/baseline writes would ride the
+            # blanket data/ sweep below (audit-blanket-sweep-audit-writes).
+            # blanket-sweep-audit-ok: data/audit/validation-baseline.json validate-data runs with --dry-run here, so it writes nothing
+            # blanket-sweep-audit-ok: data/audit/same-url-duplicate-baseline.json validate-data runs with --dry-run here, so it writes nothing
+            # blanket-sweep-audit-ok: data/audit/tony-coverage-gaps.json validate-data runs with --dry-run here, so it writes nothing
+            # blanket-sweep-audit-ok: data/audit/london-only-nyc-accumulation.json validate-data runs with --dry-run here, so it writes nothing
+            if [ "$DRY_RUN" != "true" ]; then node scripts/validate-data.js --dry-run > "${RUNNER_TEMP}/validate.log" 2>&1 || { tail -40 "${RUNNER_TEMP}/validate.log"; exit 1; }; fi
+          else
+            ARGS="--release-held=$LIST"
+            if [ "$DRY_RUN" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+            node scripts/apply-commercial-pending.js $ARGS | tee "${RUNNER_TEMP}/release.log"
+          fi
 
       - name: Self-heal resurrected duplicate key pairs
         if: inputs.dry_run != true
@@ -121,15 +162,21 @@ jobs:
           PUSH_DEADLINE_SEC: '600'
           GIT_NET_TIMEOUT_SEC: '30'
           SHOWS: ${{ inputs.shows }}
+          REVERT: ${{ inputs.revert_core_commit }}
         run: |
           git add data/commercial-pending-review.json 2>/dev/null || true
           bash scripts/lib/stage-data-changes.sh
           if git diff --staged --quiet; then
             echo "No changes to commit (nothing released)"
           else
-            git commit -m "data: release held commercial rows
+            if [ -n "$REVERT" ]; then
+              SUBJ="data: revert held commercial release $REVERT"
+            else
+              SUBJ="data: release held commercial rows"
+            fi
+            git commit -m "$SUBJ
 
-          Released by name via commercial-release-held.yml: $SHOWS
+          Named via commercial-release-held.yml: $SHOWS
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
             bash scripts/lib/push-with-retry.sh
@@ -140,7 +187,7 @@ jobs:
         uses: ./.github/actions/push-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-          message: 'data: release held commercial rows'
+          message: "${{ inputs.revert_core_commit != '' && format('data: revert held commercial release {0}', inputs.revert_core_commit) || 'data: release held commercial rows' }}"
 
       - name: Dispatch deploy
         if: inputs.dry_run != true
@@ -152,7 +199,7 @@ jobs:
           echo "## Commercial Release Held Rows" >> $GITHUB_STEP_SUMMARY
           if [ -f "${RUNNER_TEMP}/release.log" ]; then
             echo '```' >> $GITHUB_STEP_SUMMARY
-            grep -E '^  |Not in pending|would apply|Applied [0-9]' "${RUNNER_TEMP}/release.log" | cut -c1-300 >> $GITHUB_STEP_SUMMARY || true
+            grep -E '^  |Not in pending|would apply|Applied [0-9]|🏁' "${RUNNER_TEMP}/release.log" | cut -c1-300 >> $GITHUB_STEP_SUMMARY || true
             echo '```' >> $GITHUB_STEP_SUMMARY
           fi
 

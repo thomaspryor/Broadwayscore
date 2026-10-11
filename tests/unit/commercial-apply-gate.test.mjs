@@ -461,6 +461,15 @@ describe('held-row release (BRO-5041)', () => {
     assert.match(gate.heldReleaseRefusal({ designation: 'TBD' }, { designation: 'easy winner' }), /Easy Winner/);
     assert.equal(gate.heldReleaseRefusal({ designation: 'TBD' }, { designation: 'Flop', recouped: false }), null);
   });
+  it('refuses a row the truth review did not release, unless the owner approved it', () => {
+    const held = { designation: 'Flop', recouped: false, truthReview: { verdict: 'held' } };
+    assert.match(gate.heldReleaseRefusal(undefined, held), /truth review verdict is "held"/);
+    assert.match(gate.heldReleaseRefusal({ designation: 'TBD' }, { designation: 'TBD', truthReview: { verdict: 'cap-released' } }), /cap-released/);
+    assert.match(gate.heldReleaseRefusal(undefined, { truthReview: { verdict: 'rejected' } }), /rejected/);
+    assert.equal(gate.heldReleaseRefusal(undefined, { designation: 'TBD', truthReview: { verdict: 'released' } }), null);
+    assert.equal(gate.heldReleaseRefusal(undefined, { ...held, ownerApproved: true }), null);
+    assert.equal(gate.heldReleaseRefusal(undefined, { designation: 'TBD' }), null, 'no truth review stamp: unchanged');
+  });
   it('drops the research "_recoupedClaim" flag so the claim gate does not hold the row', () => {
     const out = gate.withoutRecoupmentClaim({ designation: 'Flop', recouped: false, _recoupedClaim: true });
     assert.deepEqual(out, { designation: 'Flop', recouped: false });
