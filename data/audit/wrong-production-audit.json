@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-11T16:27:59.058Z",
+  "timestamp": "2026-10-11T16:37:52.529Z",
   "stats": {
     "totalReviews": 55635,
-    "alreadyFlagged": 20539,
+    "alreadyFlagged": 20549,
     "dateGuardCatches": 262,
-    "directorMismatch": 1717,
-    "tvFilmSignals": 1573,
-    "londonSignals": 2033,
+    "directorMismatch": 1718,
+    "tvFilmSignals": 1576,
+    "londonSignals": 2040,
     "offBroadwaySignals": 506,
     "yearMismatch": 135,
-    "noPublishDate": 5746
+    "noPublishDate": 5729
   },
   "findings": [
     {
@@ -2837,6 +2837,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "and-juliet-west-end-2019",
+      "file": "thestage--tim-bano.json",
+      "score": null,
+      "publishDate": "November 20th, 2019",
+      "url": "https://www.thestage.co.uk/reviews/66785",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -9940,6 +9954,39 @@
     },
     {
       "showId": "dear-evan-hansen-west-end-2019",
+      "file": "artsdesk--marianka-swain.json",
+      "score": null,
+      "publishDate": "November 20th, 2019",
+      "url": "https://theartsdesk.com/theatre/dear-evan-hansen-no%C3%ABl-coward-theatre-review-social-outcast-will-steal-your-heart",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "dear-evan-hansen-west-end-2019",
+      "file": "i-paper--marianka-swain.json",
+      "score": 71,
+      "publishDate": "2019-11-19T23:40:38+00:00",
+      "url": "https://inews.co.uk/culture/arts/dear-evan-hansen-is-a-thoughtful-examination-of-mental-illness-family-and-class-difference-1311312",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "dear-evan-hansen-west-end-2019",
       "file": "london-box-office--john-yap.json",
       "score": 99,
       "publishDate": "2021-11-19",
@@ -14020,6 +14067,7 @@
     {
       "showId": "foxfinder-west-end-2018",
       "file": "london-box-office--hugh-wooldridge.json",
+      "score": 39,
       "publishDate": "2018-09-19",
       "url": "https://www.londonboxoffice.co.uk/news/post/foxfinder-review",
       "findings": [
@@ -16871,7 +16919,7 @@
     {
       "showId": "hansard-west-end-2019",
       "file": "nytimes--matt-wolf.json",
-      "score": null,
+      "score": 63,
       "publishDate": "2019-09-26",
       "url": "https://www.nytimes.com/2019/09/26/theater/hansard-a-very-expensive-poison.html",
       "findings": [
@@ -20323,6 +20371,30 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
+      "file": "variety--naman-ramachandran.json",
+      "score": null,
+      "publishDate": "2026-03-05",
+      "url": "https://variety.com/2026/theater/news/paddington-into-the-woods-2026-olivier-awards-nominations-1236680111/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 201d before show (2026-03-05 vs 2026-09-22)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
@@ -24166,7 +24238,7 @@
     {
       "showId": "magic-goes-wrong-west-end-2019",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 55,
+      "score": 58,
       "publishDate": "2020-01-10",
       "url": "https://www.timeout.com/london/theatre/magic-goes-wrong-review",
       "findings": [
@@ -24180,7 +24252,7 @@
     {
       "showId": "magic-goes-wrong-west-end-2019",
       "file": "whatsonstage--alex-wood.json",
-      "score": 58,
+      "score": 67,
       "publishDate": "2020-01-09",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/magic-goes-wrong-vaudeville-mischief_50661.html",
       "findings": [
@@ -44823,20 +44895,6 @@
       ]
     },
     {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 82,
-      "publishDate": "2023-02-07",
-      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
-        }
-      ]
-    },
-    {
       "showId": "tootsie-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 77,
@@ -50405,6 +50463,20 @@
       ]
     },
     {
+      "showId": "and-juliet-west-end-2019",
+      "file": "whatsonstage--alex-wood.json",
+      "score": 88,
+      "publishDate": "November 20th, 2019",
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/and-juliet-shaftesbury-max-martin-musical_50400.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "angels-in-america-2018",
       "file": "chicagotribune--chris-jones.json",
       "score": 77,
@@ -54741,6 +54813,20 @@
       ]
     },
     {
+      "showId": "cyrano-de-bergerac-west-end-2019",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 90,
+      "publishDate": "December 8th, 2019",
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/cyrano-de-bergerac-playhouse-james-mcavoy_50523.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 97,
@@ -55074,6 +55160,34 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "dear-evan-hansen-west-end-2019",
+      "file": "independent--paul-taylor.json",
+      "score": 77,
+      "publishDate": "2019-11-19T23:40:38+00:00",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/dear-evan-hansen-noel-coward-theatre-sam-tutty-review-a9209511.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "dear-evan-hansen-west-end-2019",
+      "file": "london-theatre--mark-shenton.json",
+      "score": 87,
+      "publishDate": "2019-11-19T23:40:38+00:00",
+      "url": "https://www.londontheatre.co.uk/reviews/review-dear-evan-hansen-at-the-noel-coward-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
         }
       ]
     },
@@ -57417,7 +57531,7 @@
     {
       "showId": "foxfinder-west-end-2018",
       "file": "sierz-co-uk--unknown.json",
-      "score": null,
+      "score": 49,
       "publishDate": "2018-09-17",
       "url": "https://sierz.co.uk/reviews/foxfinder-ambassadors-theatre/",
       "findings": [
@@ -59535,7 +59649,7 @@
     {
       "showId": "hansard-west-end-2019",
       "file": "cultural-capital--unknown.json",
-      "score": null,
+      "score": 91,
       "publishDate": "2019-09-02",
       "url": "https://maryamphilpottblog.wordpress.com/2019/09/02/hansard-national-theatre/",
       "findings": [
@@ -59549,7 +59663,7 @@
     {
       "showId": "hansard-west-end-2019",
       "file": "london-theatre--will-longman.json",
-      "score": null,
+      "score": 61,
       "publishDate": "2019-09-04",
       "url": "https://www.londontheatre.co.uk/reviews/review-hansard-at-the-national-theatre",
       "findings": [
@@ -59563,7 +59677,7 @@
     {
       "showId": "hansard-west-end-2019",
       "file": "londontheatre1--chris-omaweng.json",
-      "score": null,
+      "score": 77,
       "publishDate": "2019-09-03",
       "url": "https://www.londontheatre1.com/reviews/play/review-of-hansard-a-new-play-by-simon-woods-at-the-lyttelton-theatre/",
       "findings": [
@@ -61276,6 +61390,7 @@
     {
       "showId": "im-not-running-west-end-2018",
       "file": "london-box-office--phil-willmott.json",
+      "score": 14,
       "publishDate": "2018-10-15",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-im-not-running-nt",
       "findings": [
@@ -61289,7 +61404,7 @@
     {
       "showId": "im-not-running-west-end-2018",
       "file": "london-theatre--mark-shenton.json",
-      "score": null,
+      "score": 35,
       "publishDate": "2018-10-10",
       "url": "https://www.londontheatre.co.uk/reviews/review-im-not-running-at-the-national-theatre",
       "findings": [
@@ -61303,7 +61418,7 @@
     {
       "showId": "im-not-running-west-end-2018",
       "file": "sierz-co-uk--unknown.json",
-      "score": null,
+      "score": 61,
       "publishDate": "2018-10-09",
       "url": "https://sierz.co.uk/reviews/im-not-running-national-theatre/",
       "findings": [
@@ -63233,7 +63348,7 @@
     {
       "showId": "leopoldstadt-west-end-2020",
       "file": "the-spectator-uk--lloyd-evans.json",
-      "score": null,
+      "score": 89,
       "publishDate": "2020-02-15",
       "url": "https://www.spectator.co.uk/article/a-brilliant-unrevivable-undertaking-tom-stoppard-s-leopoldstadt-reviewed/",
       "findings": [
@@ -65593,6 +65708,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "midnight-movie-west-end-2019",
+      "file": "whatsonstage--alex-wood.json",
+      "score": 70,
+      "publishDate": "December 6th, 2019",
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/midnight-movie-royal-court_50515.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
