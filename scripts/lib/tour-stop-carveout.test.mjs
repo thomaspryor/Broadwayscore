@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { applyOwnVenueTourCarveout, reviewedAtOwnVenue, outsideRun } = require('./tour-stop-carveout.js');
+const { applyOwnVenueTourCarveout, reviewedAtOwnVenue, outsideRun, tourStopAllowFields } = require('./tour-stop-carveout.js');
 const { buildVerificationPrompt } = require('./content-verifier.js');
 
 const curtains = { id: 'curtains-west-end-2019', title: 'Curtains', venue: "Wyndham's Theatre", openingDate: '2019-12-13', closingDate: '2020-01-11' };
@@ -48,4 +48,27 @@ test('venue matching is whole-word and tolerant of "Park Theatre 200" style name
 test('the verification prompt asks for the attended venue', () => {
   const { prompt } = buildVerificationPrompt({ scrapedText: 'x'.repeat(400), showTitle: 'Curtains', outletName: 'The Arts Desk', criticName: 'Matt Wolf', openingDate: '2019-12-13', venue: "Wyndham's Theatre", market: 'west-end' });
   assert.match(prompt, /"reviewedVenue":/);
+});
+
+test('tourStopAllowFields: a carve-out verdict records the text-scan stand-down once', () => {
+  const cv = { tourStopCarveoutApplied: true, reviewedVenue: "Wyndham's Theatre" };
+  assert.deepEqual(tourStopAllowFields(cv, {}), { allowTourSignal: true, allowTourSignalReason: `own-venue tour stop: critic attended "Wyndham's Theatre"` });
+  assert.deepEqual(tourStopAllowFields(cv, { allowTourSignal: true }), {});
+  assert.deepEqual(tourStopAllowFields({ tourStopCarveoutApplied: false }, {}), {});
+  assert.deepEqual(tourStopAllowFields(null, {}), {});
+});
+
+test('venue-taxonomy objections at the record\'s own theatre are cleared too', () => {
+  const translations = { id: 'translations-west-end-2019', venue: 'Olivier Theatre', openingDate: '2019-10-15', closingDate: '2019-12-18' };
+  const nt = 'The scraped review evaluates a National Theatre production of Translations, not the West End Olivier Theatre production.';
+  assert.equal(applyOwnVenueTourCarveout({ wrongProduction: true, reasoning: nt, reviewedVenue: 'Olivier Theatre, National Theatre' }, translations, { publishDate: '2019-10-23' }).wrongProduction, false);
+  // Undated with a taxonomy objection: cleared (the objection is about the record, not the review).
+  assert.equal(applyOwnVenueTourCarveout({ wrongProduction: true, reasoning: nt, reviewedVenue: 'National Theatre' }, translations, {}).wrongProduction, false);
+  // Undated, same house, objection is a different staging: kept.
+  assert.equal(applyOwnVenueTourCarveout({ wrongProduction: true, reasoning: "reviews Ian Rickson's 2018 production", reviewedVenue: 'Olivier Theatre' }, translations, {}).wrongProduction, true);
+  // Dated in the earlier run at the same house: kept.
+  assert.equal(applyOwnVenueTourCarveout({ wrongProduction: true, reasoning: nt, reviewedVenue: 'Olivier Theatre' }, translations, { publishDate: '2018-06-01' }).wrongProduction, true);
+  // Royal Court record, Royal Court review called a pre-West End tryout.
+  const glass = { venue: 'Royal Court', openingDate: '2019-09-18', closingDate: '2019-10-12' };
+  assert.equal(applyOwnVenueTourCarveout({ wrongProduction: true, reasoning: 'reviews the Royal Court (pre-West End tryout) production, not the West End one', reviewedVenue: 'Royal Court Theatre' }, glass, { publishDate: '2019-09-30' }).wrongProduction, false);
 });

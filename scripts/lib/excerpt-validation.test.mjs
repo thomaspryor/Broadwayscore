@@ -171,3 +171,18 @@ test('BRO-4963: short critic name vs longer stored title still flags a real tour
     assert.equal(r.isTourReview, true, showId);
   }
 });
+
+// BRO-4884: a tour's stop at THIS record's venue is this production.
+test('isTourReviewExcerpt: touring production at the record\'s own venue is not contamination', () => {
+  const ctx = { currentShowId: 'curtains-west-end-2019', currentShowTitle: 'Curtains', currentShowVenue: "Wyndham's Theatre", currentShowYear: 2019 };
+  const own = isTourReviewExcerpt('Mark Ludmon reviews the UK touring production of John Kander and Fred Ebb’s musical comedy whodunnit Curtains at the Wyndham’s Theatre, London, starring Jason Manford.', ctx);
+  assert.equal(own.isTourReview, false);
+  assert.equal(own.discounted, 'own-venue-tour-stop');
+  // Another stop of the same tour, including a same-named house elsewhere, stays a tour review.
+  assert.equal(isTourReviewExcerpt('The UK touring production of Curtains arrives at Sheffield’s Lyceum Theatre this week.', ctx).isTourReview, true);
+  assert.equal(isTourReviewExcerpt('The UK touring production of Curtains plays the Lyceum Theatre in Sheffield.', { ...ctx, currentShowVenue: 'Lyceum Theatre' }).isTourReview, true);
+  // A tour leaving the record's venue is still a tour review (Matilda, The Stage).
+  assert.equal(isTourReviewExcerpt('A West End fixture at the Cambridge Theatre, Matilda now embarks on its first UK national tour.', { ...ctx, currentShowTitle: 'Matilda', currentShowVenue: 'Cambridge Theatre' }).isTourReview, true);
+  // Venue named in a different sentence does not discount the tour match.
+  assert.equal(isTourReviewExcerpt('Curtains, the UK touring production, plays Sheffield. It later visits Wyndham’s Theatre.', ctx).isTourReview, true);
+});
