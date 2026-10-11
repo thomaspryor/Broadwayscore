@@ -156,12 +156,13 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-11T06:56:42.700Z",
-      "lastSeen": "2026-10-11T06:56:42.700Z",
+      "lastSeen": "2026-10-11T07:31:55.308Z",
       "lastNotifiedAt": "2026-10-11T06:56:42.700Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 130,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -13596,12 +13597,13 @@
       "title": "main test.yml red: Design Token Drift Guard / Lint design tokens",
       "firstSeen": "2026-10-11T06:47:48.163Z",
       "incidentOpenedAt": "2026-10-11T06:47:48.163Z",
-      "lastSeen": "2026-10-11T06:47:48.163Z",
+      "lastSeen": "2026-10-11T07:31:55.279Z",
       "lastNotifiedAt": "2026-10-11T06:47:48.163Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5037"
+      "linearIdentifier": "BRO-5037",
+      "silentRefires": 1
     },
     "land:land/bro-5022-strict-google-images": {
       "status": "open",
@@ -13612,19 +13614,6 @@
       "lastSeen": "2026-10-11T06:38:38.246Z",
       "lastNotifiedAt": "2026-10-11T06:38:38.246Z",
       "lastSurfacedAt": "2026-10-11T06:38:38.246Z",
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": null
-    },
-    "land:land/bro-5031-tr-lookup": {
-      "status": "open",
-      "disposition": "digest",
-      "title": "Landing blocked: race red on land/bro-5031-tr-lookup",
-      "firstSeen": "2026-10-11T07:28:13.387Z",
-      "incidentOpenedAt": "2026-10-11T07:28:13.387Z",
-      "lastSeen": "2026-10-11T07:28:13.387Z",
-      "lastNotifiedAt": "2026-10-11T07:28:13.387Z",
-      "lastSurfacedAt": "2026-10-11T07:28:13.387Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
