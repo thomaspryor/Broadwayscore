@@ -57,8 +57,9 @@ try {
   // newline; match that so a no-op merge is byte-identical.
   const trailingNewline = entry ? entry.newline !== false : true;
 
-  // BRO-2955 ship-check: the three alert-* mergers take (local, remote, base)
-  // and need the base to tell "they added a row" from "we DELETED a row they
+  // BRO-2955 ship-check: the three-argument mergers (alert-* ledgers,
+  // mergeCommercialJson BRO-4657, mergePendingReview BRO-5049) take
+  // (local, remote, base) and need the base to tell "they added a row" from "we DELETED a row they
   // still have". During a conflict git keeps the common ancestor as stage 1,
   // so read it from there. Arity is the dispatch — every other registry merger
   // is two-argument and is called exactly as before. Without this, a drained

@@ -212,7 +212,8 @@ function readRemote(ref, file, format) {
  * is used whenever it names a readable commit. No ancestry check: on a
  * depth-1 checkout the bounded fetch may not connect HEAD back to it, and the
  * value comes from push-with-retry.sh itself, not from a user. Without it,
- * mergers marked `requiresTrueBase` (the venue-candidate staging merges) get
+ * mergers marked `requiresTrueBase` (the venue-candidate staging merges,
+ * mergeCommercialJson, mergePendingReview BRO-5049) get
  * no base (two-way union); the others keep the legacy merge-base fallback
  * they were built against.
  */
