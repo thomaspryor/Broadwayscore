@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { listingPageUrlReason } = require('../../scripts/lib/non-review-url-patterns.js');
+const { listingPageUrlReason } = require('./non-review-url-patterns.js');
 
 const FORUM = [
   'https://theatreboard.com/thread/13669/golden-boy-almeida-josh-oconnor?page=11',
