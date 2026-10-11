@@ -45,6 +45,17 @@ const CONTEXT_SECTION_RE = /\b[Ss]ections? [A-H](?:\s*(?:,|&|and|or|\/|-|–)\s*
 // "Based on a True story" never matches. Mirrors INTERNAL_TOKEN_RE in
 // src/lib/commercial-display.ts.
 const INTERNAL_TOKEN_RE = /\b[a-z][A-Za-z]*\s?[:=]\s?(?:true|false|null)\b|\b[a-z][A-Za-z]*=[A-Z]/;
+// A researcher talking about the search: first person ("I couldn't verify a
+// weekly nut", "I used the $17M AP figure", "we found no report"), the
+// record's own fields ("so that field is null", "best-fit designation"). The
+// BRO-4990 backfill wrote these into notes, and /biz would print them as the
+// site speaking (BRO-5041). Capital "I" only, and never a numeral ("Act I
+// could not", "Stage I run", "Henry I did").
+const FIRST_PERSON_SEARCH_RE = /(?<!\b(?:Act|Part|Book|Chapter|Volume|Stage|Phase|Season|Level|Henry|Richard|Elizabeth|Charles|James|George|Edward|William) )\bI (?:[a-z]+)\b|\b[Ww]e (?:couldn['’]t|could not|did not|didn['’]t|were unable|found no|cannot|can['’]t|weren['’]t able|used|classify|checked)\b|\b(?:[Tt]hat|[Tt]his) field\b|\b[Bb]est[- ]fit (?:designation|label)\b/;
+// A markdown link ("([ibdb.com](https://...?utm_source=openai))") is a research
+// tool's citation; /biz prints text, so it would show as raw brackets.
+const MARKDOWN_LINK_RE = /\[[^\]\n]*\]\(\s*https?:\/\/[^)\s]*\)/;
+const MARKDOWN_CITATION_RE = /\s*\(?\[[^\]\n]*\]\(\s*https?:\/\/[^)\s]*\)\)?/g;
 // Writers store article URLs as sources; a URL slug ("...-gpt-...") or query
 // string ("?type=D") is not wording a reader sees.
 const URL_RE = /\bhttps?:\/\/\S+/gi;
@@ -57,8 +68,11 @@ const LOSS_DESIGNATIONS = ['Flop', 'Fizzle'];
 /** The research wording in `text` outside any URL, or null. */
 function internalWordingIn(text) {
   if (typeof text !== 'string') return null;
+  const link = text.match(MARKDOWN_LINK_RE);
+  if (link) return link[0];
   const prose = text.replace(URL_RE, ' ');
-  const match = prose.match(INTERNAL_TEXT_RE) || prose.match(INTERNAL_TOKEN_RE) || prose.match(CONTEXT_SECTION_RE);
+  const match = prose.match(INTERNAL_TEXT_RE) || prose.match(INTERNAL_TOKEN_RE) || prose.match(CONTEXT_SECTION_RE)
+    || prose.match(FIRST_PERSON_SEARCH_RE);
   return match ? match[0] : null;
 }
 
@@ -337,7 +351,8 @@ const SENTENCE_BREAK_RE = /(?<=[.;!?])(?<!\b[A-Z]\.)(?<!\b(?:Jr|Sr|Mr|Mrs|Ms|Dr|
  */
 function stripInternalWording(text) {
   if (!internalWordingIn(text)) return text;
-  const noAsides = text.replace(/\s*[([][^()[\]]*[)\]]/g, (aside) => (internalWordingIn(aside) ? '' : aside));
+  const noLinks = text.replace(MARKDOWN_CITATION_RE, '');
+  const noAsides = noLinks.replace(/\s*[([][^()[\]]*[)\]]/g, (aside) => (internalWordingIn(aside) ? '' : aside));
   const kept = noAsides.split(SENTENCE_BREAK_RE).filter((sentence) => !internalWordingIn(sentence));
   const out = kept.join(' ').replace(/\s+/g, ' ').replace(/[\s;,:]+$/, '').trim();
   return out && /[A-Za-z0-9]/.test(out) ? out : null;

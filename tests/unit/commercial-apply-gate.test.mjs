@@ -456,6 +456,16 @@ describe('held-row release (BRO-5041)', () => {
     assert.match(gate.heldReleaseRefusal({ designation: 'TBD', recouped: true }), /recoupment/);
     assert.match(gate.heldReleaseRefusal({ designation: 'TBD', humanReviewedRecouped: true }), /recoupment/);
   });
+  it('refuses a row whose own label says it recouped (the release drops that claim)', () => {
+    assert.match(gate.heldReleaseRefusal(undefined, { designation: 'Windfall', recouped: true }), /Windfall/);
+    assert.match(gate.heldReleaseRefusal({ designation: 'TBD' }, { designation: 'easy winner' }), /Easy Winner/);
+    assert.equal(gate.heldReleaseRefusal({ designation: 'TBD' }, { designation: 'Flop', recouped: false }), null);
+  });
+  it('drops the research "_recoupedClaim" flag so the claim gate does not hold the row', () => {
+    const out = gate.withoutRecoupmentClaim({ designation: 'Flop', recouped: false, _recoupedClaim: true });
+    assert.deepEqual(out, { designation: 'Flop', recouped: false });
+    assert.equal(gate.hasRecoupedClaim(out), false);
+  });
   it('drops a "recouped" claim and nothing else; a cited loss stays', () => {
     const row = { designation: 'Easy Winner', capitalization: 5e6, recouped: true, recoupedDate: null, recoupedSource: 'forum thread', requiresHumanReview: true };
     const out = gate.withoutRecoupmentClaim(row);
@@ -504,5 +514,31 @@ describe('held-row release (BRO-5041)', () => {
       const all = execFileSync(process.execPath, [...base, '--all'], { encoding: 'utf8' });
       assert.match(all, /would apply 1, skip 3/);
     } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }); }
+  });
+});
+
+describe('first-person research notes never reach /biz (BRO-5041)', () => {
+  const checks = require('../../scripts/lib/commercial-record-checks.js');
+  it('flags a researcher describing the search', () => {
+    assert.ok(checks.internalWordingIn("I couldn't verify a production-specific weekly nut."));
+    assert.ok(checks.internalWordingIn('We found no recoupment report in the trades.'));
+    assert.equal(checks.internalWordingIn('Act I could not have been staged more cheaply, critics said.'), null);
+    assert.equal(checks.internalWordingIn('Closed after 12 weeks; capitalized at $14.5M.'), null);
+    assert.ok(checks.internalWordingIn('Reports vary; I used the $17M AP figure.'));
+    assert.ok(checks.internalWordingIn('No weekly nut surfaced, so that field is null.'));
+    assert.ok(checks.internalWordingIn('Best-fit designation is Fizzle.'));
+    assert.ok(checks.internalWordingIn('Closed early. ([ibdb.com](https://www.ibdb.com/x?utm_source=openai))'));
+    assert.equal(checks.internalWordingIn("Transferred from MTC's 2022 off-Broadway Stage I run."), null);
+    assert.equal(checks.internalWordingIn('Source: https://example.com/a-(b)'), null);
+  });
+  it('sanitize removes markdown citation links and leaves the sentence', () => {
+    const out = checks.sanitizeForPublicRecord({ notes: 'Ran at Studio 54. Not-for-profit producer. ([ibdb.com](https://www.ibdb.com/x?utm_source=openai))' }, 'closed');
+    assert.equal(out.entry.notes, 'Ran at Studio 54. Not-for-profit producer.');
+    const only = checks.sanitizeForPublicRecord({ notes: '([playbill.com](https://playbill.com/a?utm_source=openai))' }, 'closed');
+    assert.equal(only.entry.notes, null);
+  });
+  it('sanitize drops only the first-person sentence', () => {
+    const out = checks.sanitizeForPublicRecord({ notes: "Capitalized at $14.5M. I couldn't verify the weekly nut." }, 'closed');
+    assert.equal(out.entry.notes, 'Capitalized at $14.5M.');
   });
 });
