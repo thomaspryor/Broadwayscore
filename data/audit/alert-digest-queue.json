@@ -1146,5 +1146,34 @@
       }
     ],
     "queuedAt": "2026-10-11T01:20:35.915Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4963-tour-guard",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4963-tour-guard",
+    "description": "land.yml did not land land/bro-4963-tour-guard: the unit-tests-node gate went red at 7e66fb59e6. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38100268048",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4963-tour-guard"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "7e66fb59e6f21d9a99871a7f1153025b4f10b4a0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38100268048"
+      }
+    ],
+    "queuedAt": "2026-10-11T01:31:30.828Z"
   }
 ]
