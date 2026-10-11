@@ -1856,3 +1856,64 @@ test('INFLIGHT matches the lowercase server spelling too (BRO-5040)', skipNoRepo
   assertAllowed(runHook(writeTranscript(dir, [lower, del, LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'and its delete ends it');
   fs.rmSync(dir, { recursive: true, force: true });
 });
+
+// ─── BRO-5068: project commands that did not load ──────────────────────────
+// Real incident (session_01FWSvQMmC8bfhWqhXpn1z2G, 2026-10-11): a session
+// started with create_session came up without the repo's .claude/commands.
+// Skill('ship-check') failed "Unknown skill", and the session closed SAFE TO
+// EXIT with NO-WHAT-ELSE/NO-WRAP-UP "commands aren't loaded". The failed Skill
+// call used to count as a run.
+const unknownSkill = (sk) => ({ ...toolUse('Skill', { skill: sk }, `<tool_use_error>Unknown skill: ${sk}</tool_use_error>`), _isError: true });
+const readCmd = (sk) => toolUse('Read', { file_path: `/home/user/Broadwayscore/.claude/worktrees/bro-5065/.claude/commands/${sk}.md` }, '# instructions');
+
+test('BRO-5068: failed Skill calls (Unknown skill) do not count as the review, /what-else or /wrap-up → BLOCKED', skipNoRepoHook, () => {
+  const r = chain('cmd-unknown', [HOOK_EDIT, HOOK_RUN, unknownSkill('ship-check'), unknownSkill('what-else'), unknownSkill('wrap-up'), GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED);
+  assertBlocked(r, 'a failed skill call is not a run');
+  assert.match(r.stderr, /finish chain is incomplete.*ship-check.*what-else.*wrap-up/s, `got: ${r.stderr.slice(0, 400)}`);
+  assert.match(r.stderr, /Read \.claude\/commands\/<name>\.md/, 'the block names the by-hand fallback');
+});
+
+test('BRO-5068: after Unknown skill, reading the command file and following it counts → ALLOWED', skipNoRepoHook, () => {
+  const catWrap = toolUse('Bash', { command: 'cat /home/user/Broadwayscore/.claude/commands/wrap-up.md' }, '# wrap-up');
+  const r = chain('cmd-fallback', [HOOK_EDIT, HOOK_RUN, unknownSkill('ship-check'), readCmd('ship-check'),
+    unknownSkill('what-else'), readCmd('what-else'), unknownSkill('wrap-up'), catWrap, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED);
+  assertAllowed(r, 'the by-hand fallback runs each step');
+});
+
+test('BRO-5068: reading the file WITHOUT a failed Skill call first does not count (use the skill when it exists)', skipNoRepoHook, () => {
+  const r = chain('cmd-read-only', [HOOK_EDIT, HOOK_RUN, readCmd('ship-check'), readCmd('what-else'), readCmd('wrap-up'), GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED);
+  assertBlocked(r, 'reading alone is not running the skill');
+});
+
+test('BRO-5068: reading a DIFFERENT command after a failure does not count for the failed one', skipNoRepoHook, () => {
+  const r = chain('cmd-wrong-file', [HOOK_EDIT, HOOK_RUN, unknownSkill('ship-check'), readCmd('second-opinion'), WHAT_ELSE, WRAP_UP, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED);
+  assertBlocked(r, 'second-opinion.md is not ship-check.md');
+  assert.match(r.stderr, /ship-check/);
+});
+
+test('BRO-5068: "commands aren\'t loaded" is not a bypass reason; an honest reason still is', skipNoRepoHook, () => {
+  const calls = [HOOK_EDIT, HOOK_RUN, SHIP_CHECK, unknownSkill('what-else'), unknownSkill('wrap-up'), GIT_PUSH, LINEAR_CLOSEOUT_DONE];
+  const excuse = "Done.\nNO-WHAT-ELSE: the project's /what-else and /wrap-up commands aren't loaded in this cloud session.\nNO-WRAP-UP: same reason, the wrap-up command is not available here.\n\nSAFE TO EXIT";
+  assertBlocked(chain('cmd-excuse', calls, excuse), 'the real incident wording');
+  const honest = 'Done.\nNO-WHAT-ELSE: docs-only follow-up to a change already what-else checked today\nNO-WRAP-UP: Linear API not available, outcome posted on the PR instead\n\nSAFE TO EXIT';
+  assertAllowed(chain('cmd-honest', calls, honest), 'an unrelated "not available" reason is still a reason');
+});
+
+test('BRO-5068: a real Skill call still counts (unchanged)', skipNoRepoHook, () => {
+  assertAllowed(chain('cmd-real', [HOOK_EDIT, HOOK_RUN, SHIP_CHECK, WHAT_ELSE, WRAP_UP, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED), 'real runs');
+});
+
+test('BRO-5068: honest reasons that say "missing"/"unknown" pass; reworded "did not load" excuses do not', skipNoRepoHook, () => {
+  const calls = [HOOK_EDIT, HOOK_RUN, SHIP_CHECK, unknownSkill('what-else'), unknownSkill('wrap-up'), GIT_PUSH, LINEAR_CLOSEOUT_DONE];
+  const honest = 'Done.\nNO-WHAT-ELSE: what-else already ran on this branch today; nothing missing\nNO-WRAP-UP: doc-only commit, wrap-up outcome posted earlier, no unknowns\n\nSAFE TO EXIT';
+  assertAllowed(chain('cmd-honest2', calls, honest), 'missing/unknown in an honest reason');
+  for (const ex of ['the slash commands did not load here', 'skills unavailable in this session', 'wrap-up isnt available', 'no such skill: what-else']) {
+    const msg = `Done.\nNO-WHAT-ELSE: ${ex}\nNO-WRAP-UP: ${ex}\n\nSAFE TO EXIT`;
+    assertBlocked(chain('cmd-excuse2', calls, msg), ex);
+  }
+});
+
+test('BRO-5068: a fallback Read that itself failed does not count', skipNoRepoHook, () => {
+  const badRead = { ...readCmd('ship-check'), _result: '<tool_use_error>File does not exist.</tool_use_error>', _isError: true };
+  assertBlocked(chain('cmd-badread', [HOOK_EDIT, HOOK_RUN, unknownSkill('ship-check'), badRead, WHAT_ELSE, WRAP_UP, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED), 'an errored read ran nothing');
+});
