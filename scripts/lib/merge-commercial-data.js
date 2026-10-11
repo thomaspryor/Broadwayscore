@@ -286,6 +286,9 @@ function mergeCommercialJson(ours, remote, base) {
 mergeCommercialJson.requiresTrueBase = true;
 
 const PENDING_ENTRY_DATE_FIELDS = ['researchedAt', 'detectedAt', 'lastUpdated'];
+// Review marks on a pending row: a verdict or approval about the row's
+// figures, not part of them. Every other field is the researched claim.
+const PENDING_REVIEW_MARK_FIELDS = new Set(['ownerApproved', 'truthReview', 'requiresHumanReview', '_reviewHold']);
 // Re-research clock for delete-vs-edit (BRO-5049): lastUpdated is excluded
 // because annotations (truthReview stamps, holds) bump it without new
 // research, and an annotation must not resurrect a row the other side removed.
@@ -323,6 +326,7 @@ function mergePendingReview(ours, remote, base) {
   let resolvedAsDeletion = 0;
   let keptOverDeletion = 0;
   let heldRowsDropped = 0;
+  let fieldsTakenFromOther = 0;
   const heldDroppedSlugs = [];
   const inBase = (slug) => Object.prototype.hasOwnProperty.call(baseShows, slug);
   const allSlugs = new Set([...Object.keys(oursShows), ...Object.keys(remoteShows)]);
@@ -376,7 +380,38 @@ function mergePendingReview(ours, remote, base) {
       continue;
     }
     const winner = pickNewer(o, r, PENDING_ENTRY_DATE_FIELDS);
-    merged.shows[slug] = carryHumanReviewHold(winner === o ? r : o, { ...winner });
+    const loser = winner === o ? r : o;
+    const row = { ...winner };
+    if (baseShows && inBase(slug)) {
+      // BRO-5069: both kept the row. The researched claim moves as one unit
+      // (half of one research run plus half of another is a row nobody
+      // wrote): it comes from the winner unless only the loser changed it.
+      // Review marks are then merged field by field, but only when both
+      // sides hold that same claim, so an approval or verdict never lands
+      // on figures it was not made against.
+      const b = baseShows[slug] || {};
+      const same = (x, y) => JSON.stringify(x) === JSON.stringify(y);
+      const claimKeys = [...new Set([...Object.keys(o), ...Object.keys(r), ...Object.keys(b)])]
+        .filter((k) => k !== 'lastUpdated' && !PENDING_REVIEW_MARK_FIELDS.has(k));
+      const claimChanged = (x) => claimKeys.some((k) => !same(x[k], b[k]));
+      const take = (k) => { if (k in loser) { row[k] = loser[k]; } else { delete row[k]; } };
+      const sameClaim = claimKeys.every((k) => same(winner[k], loser[k]));
+      if (!sameClaim && !claimChanged(winner) && claimChanged(loser)) {
+        claimKeys.forEach(take);
+        PENDING_REVIEW_MARK_FIELDS.forEach(take);
+        fieldsTakenFromOther++;
+      } else if (sameClaim) {
+        for (const k of PENDING_REVIEW_MARK_FIELDS) {
+          if (same(loser[k], b[k]) || !same(winner[k], b[k])) continue;
+          take(k);
+          fieldsTakenFromOther++;
+        }
+      }
+      // A stamp bumps the row's lastUpdated without touching the claim; keep the later one.
+      const later = pickNewer(o, r, ['lastUpdated']);
+      if (later && later.lastUpdated) row.lastUpdated = later.lastUpdated;
+    }
+    merged.shows[slug] = carryHumanReviewHold(loser, row);
   }
 
   // Refresh top-level lastUpdated to whichever side is newer
@@ -385,7 +420,7 @@ function mergePendingReview(ours, remote, base) {
 
   return {
     merged,
-    stats: { added, resolvedAsDeletion, keptOverDeletion, heldRowsDropped, heldDroppedSlugs, threeWay: !!baseShows, totalSlugs: allSlugs.size },
+    stats: { added, resolvedAsDeletion, keptOverDeletion, heldRowsDropped, heldDroppedSlugs, fieldsTakenFromOther, threeWay: !!baseShows, totalSlugs: allSlugs.size },
   };
 }
 // reconcile-merged-json.js: without PUSH_RECONCILE_BASE, pass no base
