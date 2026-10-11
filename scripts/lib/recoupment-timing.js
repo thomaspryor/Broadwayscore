@@ -94,7 +94,7 @@ function timingTruth(comm, show) {
     if (Number.isFinite(start) && at > start && at <= close) checkpoints.push({ label: `${w}w-before`, from: iso(at), to: iso(at), lo: -Infinity, hi: 99.99 });
   }
   if (!checkpoints.length) return null;
-  return { ...truthClassOf(comm, 'recouped', comm.recoupedSource), creditBasis: creditBasis(comm, comm.recoupedSource), announcement, checkpoints };
+  return { ...truthClassOf(comm, 'recouped', comm.recoupedSource), creditBasis: creditBasis(comm, comm.recoupedSource, 'recouped'), announcement, checkpoints };
 }
 
 /** Points between the model interval [a, b] and the truth band; 0 when they touch. */

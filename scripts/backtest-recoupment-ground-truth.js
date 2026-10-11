@@ -43,7 +43,7 @@ const os = require('os');
 const { liveModelRun } = require('./lib/model-drift');
 const { makeGrossesLookup } = require('./lib/grosses-lookup');
 const { execFileSync } = require('child_process');
-const { groundTruth, rangeError, category, summarize, worseGroups, formatMarkdown, fmtTruth } = require('./lib/recoupment-ground-truth');
+const { groundTruth, eitherBasis, basisLine, rangeError, category, summarize, worseGroups, formatMarkdown, fmtTruth } = require('./lib/recoupment-ground-truth');
 const { displaysModel, playedWeeks, MIN_PLAYED_WEEKS } = require('./lib/model-display-guard');
 
 const KNOWN_OPTS = ['previewsFromWeekly', 'playedWeeksOnly', 'eraAdjust', 'taxCreditCitedOnly', 'datedCosts', 'ownRunOnly', 'costSplit', 'stepSmall', 'stepLate', 'costGrowth', 'reserveLag', 'creditBasis'];
@@ -133,9 +133,20 @@ for (const [key, comm] of Object.entries(commercial)) {
     continue;
   }
   const live = baseRun(show, comm, L, at);
-  // --opt=creditBasis: score the new side on the truth's tax-credit basis.
-  const basisOpts = OPTS.creditBasis ? { taxCreditPre: truth.creditBasis === 'pre-credit' } : {};
-  const fixed = liveModelRun(show, comm, L, { ...OPTS, ...basisOpts, ...at });
+  // --opt=creditBasis: score the new side on the truth's tax-credit basis;
+  // an unstated recoupment is scored on whichever basis fits (eitherBasis).
+  const runBasis = (pre) => liveModelRun(show, comm, L, { ...OPTS, ...(OPTS.creditBasis ? { taxCreditPre: pre } : {}), ...at });
+  let fixed = runBasis(truth.creditBasis === 'pre-credit');
+  let usedPost;
+  if (OPTS.creditBasis && truth.creditBasis === 'unstated' && fixed.result) {
+    const pre = runBasis(true);
+    if (pre.result) {
+      const err = (f) => rangeError(shown(f.result.recoupmentPctCentral), truth);
+      const pick = eitherBasis({ run: pre, err: err(pre) }, { run: fixed, err: err(fixed) });
+      fixed = pick.run;
+      usedPost = pick.usedPost;
+    }
+  }
   if (at.asOf && live.tier !== 'weekly-model') { skipped.noModel++; continue; }
   // A row only the new side fails is a regression, not a skip: counted and blocking.
   if (live.result && !fixed.result) { skipped.newOnly++; continue; }
@@ -144,7 +155,7 @@ for (const [key, comm] of Object.entries(commercial)) {
   const oldPct = shown(live.result.recoupmentPctCentral);
   const newPct = shown(fixed.result.recoupmentPctCentral);
   rows.push({
-    slug: key, kind: truth.kind, truthClass: truth.truthClass, creditBasis: truth.creditBasis, ...category(show),
+    slug: key, kind: truth.kind, truthClass: truth.truthClass, creditBasis: truth.creditBasis, ...(usedPost !== undefined ? { usedPost } : {}), ...category(show),
     truth: [truth.lo, truth.hi], oldPct, newPct,
     oldErr: rangeError(oldPct, truth), newErr: rangeError(newPct, truth),
     source: truth.source.slice(0, 80), ...(at.asOf ? { asOf: at.asOf } : {}),
@@ -185,9 +196,10 @@ if (args.includes('--json')) {
   console.log(JSON.stringify({ base: BASE || null, opts: OPTS, truth: TRUTH, summary, worse, skipped, ...detailOut }, null, 2));
 } else if (MARKDOWN) {
   console.log(formatMarkdown({ title: `Recoupment ground-truth backtest: ${label}${scope} (${rows.length} shows)`, summary, rows, worse, aggregateOnly: AGGREGATE_ONLY }));
-  console.log([truthLine, `**${falseRecoupedLine}**`, `**${newOnlyLine}**`, sanityLine, ''].join('\n\n'));
+  console.log([truthLine, ...(OPTS.creditBasis ? [basisLine(rows)] : []), `**${falseRecoupedLine}**`, `**${newOnlyLine}**`, sanityLine, ''].join('\n\n'));
 } else {
   console.log(truthLine);
+  if (OPTS.creditBasis) console.log(basisLine(rows));
   console.log(`Ground-truth backtest, ${label}${scope}: ${rows.length} shows with a reported outcome and a model run (skipped ${skipped.noShow} unmatched, ${skipped.noModel} with no model run${DISPLAYABLE_ONLY ? `, ${skipped.notDisplayable} not displayable` : ''})`);
   console.log('group                n   old MAE  new MAE  old median  new median  old inside  new inside');
   for (const [g, s] of Object.entries(summary)) {

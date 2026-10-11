@@ -7,7 +7,7 @@
 
 const path = require('path');
 const { timingTruth, windowError, historyCoverage, modelAt, displayableAt, hideRecoupment } = require('./recoupment-timing');
-const { category, summarize, worseGroups, formatMarkdown, fmtTruth } = require('./recoupment-ground-truth');
+const { category, summarize, worseGroups, formatMarkdown, fmtTruth, eitherBasis, basisLine } = require('./recoupment-ground-truth');
 const guard = require('./model-display-guard');
 
 // The replay needs weekly grosses for most of the run so far; the model
@@ -37,8 +37,11 @@ function buildTimingRows({ shows, commercial, lookup, by, oldLibs, newLibs, newO
     if (truth === 'reported' && t.truthClass !== 'reported') { skipped.inference++; continue; }
     const comm = hideRecoupment(rawComm);
     // --opt=creditBasis: the new side scores the model on the truth's own
-    // tax-credit basis (pre-credit: no credit in the model at all).
-    const rowOpts = newOpts.creditBasis ? { ...newOpts, taxCreditPre: t.creditBasis === 'pre-credit' } : newOpts;
+    // tax-credit basis (pre-credit: no credit in the model at all). An
+    // unstated recoupment is scored on whichever basis fits at the
+    // announcement; the earlier "< 100" checkpoints use the pre-credit
+    // figure a running show would display.
+    const basisOpts = (pre) => (newOpts.creditBasis ? { ...newOpts, taxCreditPre: pre } : newOpts);
     const weekly = lookup.getWeeklyData(show.slug || show.id, show.id);
     for (const cp of t.checkpoints) {
       const cov = historyCoverage(weekly, show, cp.to);
@@ -47,17 +50,28 @@ function buildTimingRows({ shows, commercial, lookup, by, oldLibs, newLibs, newO
       if (!(weeks > 0) || cov.own / weeks < MIN_COVERAGE) { skipped.thinHistory++; continue; }
       const run = (libs, d, opts) => modelAt(libs, show, comm, lookup, d, opts);
       const oldA = run(oldLibs, cp.from); const oldB = cp.from === cp.to ? oldA : run(oldLibs, cp.to);
-      const newA = run(newLibs, cp.from, rowOpts); const newB = cp.from === cp.to ? newA : run(newLibs, cp.to, rowOpts);
+      const range = { lo: cp.lo, hi: cp.hi };
+      const c = (r) => shown(r.result.recoupmentPctCentral);
+      const runNew = (opts) => { const a = run(newLibs, cp.from, opts); return [a, cp.from === cp.to ? a : run(newLibs, cp.to, opts)]; };
+      const unstatedAt = newOpts.creditBasis && t.creditBasis === 'unstated' && cp.label === 'at-recoup';
+      let [newA, newB] = runNew(basisOpts(t.creditBasis !== 'post-credit' && !unstatedAt));
+      let usedPost;
+      if (unstatedAt && newA.result && newB.result) {
+        const [preA, preB] = runNew(basisOpts(true));
+        if (preA.result && preB.result) {
+          const pick = eitherBasis({ ab: [preA, preB], err: windowError(c(preA), c(preB), range) }, { ab: [newA, newB], err: windowError(c(newA), c(newB), range) });
+          [newA, newB] = pick.ab;
+          usedPost = pick.usedPost;
+        }
+      }
       const okOld = oldA.result && oldB.result;
       const okNew = newA.result && newB.result;
       if (okOld && !okNew) { skipped.newOnly++; continue; }
       if (!okOld || !okNew) { skipped.noModel++; continue; }
       const disp = displayableAt({ comm, tier: newB.tier, result: newB.result, playedWeeks: weeks }, guard);
       if (displayableOnly && !disp) { skipped.notDisplayable++; continue; }
-      const c = (r) => shown(r.result.recoupmentPctCentral);
-      const range = { lo: cp.lo, hi: cp.hi };
       rows.push({
-        slug: key, kind: `timing:${cp.label}`, truthClass: t.truthClass, creditBasis: t.creditBasis, ...category(show),
+        slug: key, kind: `timing:${cp.label}`, truthClass: t.truthClass, creditBasis: t.creditBasis, ...(usedPost !== undefined ? { usedPost } : {}), ...category(show),
         truth: [cp.lo, cp.hi], from: cp.from, to: cp.to, precision: t.announcement.precision,
         oldPct: c(oldB), newPct: c(newB), oldFrom: c(oldA), newFrom: c(newA),
         oldErr: windowError(c(oldA), c(oldB), range), newErr: windowError(c(newA), c(newB), range),
@@ -86,13 +100,19 @@ function runTiming({ shows, commercial, lookup, by, baseLib, newLib, newOpts = {
   const worse = worseGroups(summary, { minN: MIN_GROUP });
   // A show the new side calls recouped 26 or 52 weeks before it did.
   const newEarly = rows.filter((r) => r.truth[1] < 100 && r.newPct >= 100 && !(r.oldPct >= 100));
-  const displayableHard = rows.filter((r) => r.displayable && r.truthClass === 'reported').length;
+  const hardRows = rows.filter((r) => r.displayable && r.truthClass === 'reported');
+  const displayableHard = hardRows.length;
+  // Strong rows test a band at the announcement; weak rows only test "< 100".
+  const split = (list) => `${list.length} rows, ${list.filter((r) => r.newErr === 0).length} inside, MAE ${list.length ? Math.round(list.reduce((a, r) => a + r.newErr, 0) / list.length * 10) / 10 : '-'}`;
+  const strongWeak = `Displayable hard-truth split: strong (at-recoup 85-115) ${split(hardRows.filter((r) => r.kind === 'timing:at-recoup'))}; weak (< 100 before) ${split(hardRows.filter((r) => r.kind !== 'timing:at-recoup'))}`;
   const optNames = Object.keys(newOpts);
   const label = `${base ? `${base} vs working tree` : 'working tree'}${optNames.length ? `, opts ${optNames.join(', ')}` : ''}, recoupment timing${displayableOnly ? ', displayable rows only' : ''}${displayed ? ', displayed value (floored at 0)' : ''}`;
   const lines = [
     `Truth set: ${truth === 'reported' ? `reported recoupment dates only, ${skipped.inference} inference records left out` : 'reported and inference'}`,
     `Recoupment-timing backtest, ${label}: ${rows.length} checkpoints (skipped ${Object.entries(skipped).filter(([, v]) => v).map(([k, v]) => `${v} ${k}`).join(', ') || 'none'})`,
     `Displayable hard-truth checkpoints (would show a bar with the launch flag on): ${displayableHard}`,
+    strongWeak,
+    ...(newOpts.creditBasis ? [basisLine(rows)] : []),
     `Bias at recoupment (mean central - 100): old ${recoupBias(rows, 'old')}, new ${recoupBias(rows, 'new')}`,
     `New early recouped (>= 100 at 26/52 weeks before): ${newEarly.length}${newEarly.length && !aggregateOnly ? ` (${newEarly.map((r) => `${r.slug} ${r.kind}`).join(', ')})` : ''}`,
   ];
