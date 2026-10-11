@@ -8,13 +8,16 @@
  * boxOfficeV2.
  *
  * Phones get their own chart that fits the screen width: smaller dots, names
- * only on the few outliers (mapOutliers), and the rest listed by corner
- * underneath (mapCorners). Wider screens keep the full labelled chart.
+ * only on the few outliers, and the rest listed by corner underneath. The
+ * outliers and corners come in as props (MarketPage.priceMapPhone, built on
+ * the server) so this client chart imports no held module. Wider screens keep
+ * the full labelled chart.
  */
 import { useState } from 'react';
-import { mapCorners, mapOutliers, MAP_FULL_PCT, type MarketPage } from '@/lib/box-office-display';
+import type { MarketPage } from '@/lib/box-office-display';
 
 type Dot = MarketPage['priceMap'][number];
+type PhoneGroups = MarketPage['priceMapPhone'];
 
 type Frame = { w: number; h: number; left: number; right: number; top: number; bottom: number; charW: number; labelH: number };
 
@@ -95,19 +98,20 @@ type ChartProps = {
   dots: Dot[];
   frame: Frame;
   phone: boolean;
+  groups: PhoneGroups;
   active: string | null;
   setActive: (fn: string | null | ((a: string | null) => string | null)) => void;
 };
 
-function Chart({ dots, frame: f, phone, active, setActive }: ChartProps) {
+function Chart({ dots, frame: f, phone, groups, active, setActive }: ChartProps) {
   const ax = axes(dots);
   const x = (c: number) => f.left + ((c - ax.capLo) / (ax.capHi - ax.capLo)) * (f.w - f.left - f.right);
   const y = (a: number) => f.top + (1 - (a - ax.atpLo) / (ax.atpHi - ax.atpLo || 1)) * (f.h - f.top - f.bottom);
   const pos = positions(dots, f, phone);
-  const labelled = placeLabels(pos, f, phone ? mapOutliers(dots) : undefined, phone);
+  const labelled = placeLabels(pos, f, phone ? new Set(groups.named) : undefined, phone);
   const tickFont = 12;
   const labelFont = 11;
-  const medianAtp = phone ? mapCorners(dots).medianAtp : null;
+  const medianAtp = phone ? groups.medianAtp : null;
   return (
     <svg
       viewBox={`0 0 ${f.w} ${f.h}`}
@@ -129,7 +133,7 @@ function Chart({ dots, frame: f, phone, active, setActive }: ChartProps) {
       ))}
       {phone && medianAtp != null && (
         <g className="stroke-white/25" strokeDasharray="3 3">
-          <line x1={x(MAP_FULL_PCT)} x2={x(MAP_FULL_PCT)} y1={f.top} y2={f.h - f.bottom} />
+          <line x1={x(groups.fullPct)} x2={x(groups.fullPct)} y1={f.top} y2={f.h - f.bottom} />
           <line x1={f.left} x2={f.w - f.right} y1={y(medianAtp)} y2={y(medianAtp)} />
         </g>
       )}
@@ -181,19 +185,20 @@ function Chart({ dots, frame: f, phone, active, setActive }: ChartProps) {
 }
 
 /** Under the phone chart: every show, grouped by the corner it sits in. */
-function CornerLists({ dots }: { dots: Dot[] }) {
-  const { medianAtp, corners } = mapCorners(dots);
+function CornerLists({ dots, groups }: { dots: Dot[]; groups: PhoneGroups }) {
+  const { medianAtp, corners, fullPct } = groups;
   if (medianAtp == null) return null;
+  const bySlug = new Map(dots.map((d) => [d.slug, d]));
   return (
     <div className="flex flex-col gap-3 sm:hidden">
       <p className="m-0 text-xs text-gray-400">
-        Full means {MAP_FULL_PCT}% of seats sold or more. Pricey means an average ticket of ${Math.round(medianAtp)} or more, the middle show this week. Tap any dot for its numbers.
+        Full means {fullPct}% of seats sold or more. Pricey means an average ticket of ${Math.round(medianAtp)} or more, the middle show this week. Tap any dot for its numbers.
       </p>
       {corners.map((c) => (
         <div key={c.key} className="flex flex-col gap-1">
           <h3 className="m-0 text-xs font-bold uppercase tracking-wide text-gray-300">{c.title}</h3>
           <ul className="m-0 p-0 list-none flex flex-col">
-            {c.shows.map((s) => (
+            {c.slugs.map((slug) => bySlug.get(slug)).filter((s): s is Dot => !!s).map((s) => (
               <li key={s.slug} className="flex items-baseline justify-between gap-3 py-0.5 text-sm">
                 <span className="text-white truncate" title={s.title}>{s.label}</span>
                 <span className="text-gray-400 tabular-nums shrink-0">{Math.round(s.capacity)}% · ${Math.round(s.atp)}</span>
@@ -206,7 +211,7 @@ function CornerLists({ dots }: { dots: Dot[] }) {
   );
 }
 
-export default function PriceMap({ dots }: { dots: Dot[] }) {
+export default function PriceMap({ dots, groups }: { dots: Dot[]; groups: PhoneGroups }) {
   const [active, setActive] = useState<string | null>(null);
   if (!dots.length) return null;
   const desktopLabelled = placeLabels(positions(dots, DESKTOP, false), DESKTOP);
@@ -216,10 +221,10 @@ export default function PriceMap({ dots }: { dots: Dot[] }) {
     <div className="flex flex-col gap-2">
       <div className="bg-surface-overlay/60 rounded-xl px-2 sm:px-3.5 pt-3 pb-2 relative">
         <div className="sm:hidden">
-          <Chart dots={dots} frame={PHONE} phone active={active} setActive={setActive} />
+          <Chart dots={dots} frame={PHONE} phone groups={groups} active={active} setActive={setActive} />
         </div>
         <div className="hidden sm:block overflow-x-auto">
-          <Chart dots={dots} frame={DESKTOP} phone={false} active={active} setActive={setActive} />
+          <Chart dots={dots} frame={DESKTOP} phone={false} groups={groups} active={active} setActive={setActive} />
         </div>
         {sel && (
           <div className="mt-2 sm:mt-0 sm:absolute sm:bottom-3 sm:right-4 sm:w-72 bg-surface-elevated border border-white/10 rounded-lg px-3 py-2 text-sm text-white flex items-center justify-between gap-3" role="status">
@@ -231,7 +236,7 @@ export default function PriceMap({ dots }: { dots: Dot[] }) {
           </div>
         )}
       </div>
-      <CornerLists dots={dots} />
+      <CornerLists dots={dots} groups={groups} />
       {unlabelled.length > 0 && (
         <p className="hidden sm:block m-0 text-xs text-gray-400">Not labelled, to keep the busy spots readable: {unlabelled.join(', ')}. Hover, tab to or tap any dot for its name and numbers.</p>
       )}

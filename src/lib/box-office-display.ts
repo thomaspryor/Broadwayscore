@@ -292,6 +292,8 @@ export interface MarketPage {
   premium: { median: number | null; rows: Array<{ title: string; over: number; isNew: boolean }> };
   pace: Array<{ title: string; beatsPct: number; week: number }>;
   priceMap: Array<{ slug: string; title: string; label: string; capacity: number; atp: number; seats: number }>;
+  /** The phone price map's named outliers and corner groups, worked out here so the client chart imports no held code. */
+  priceMapPhone: { named: string[]; fullPct: number; medianAtp: number | null; corners: Array<{ key: MapCornerKey; title: string; slugs: string[] }> };
   cohort: {
     musicals: number;
     fromYear: number;
@@ -371,6 +373,14 @@ export function buildMarketPage(
     .filter(([slug, r]) => isPaired(r) && r.capacity != null && r.atp != null && r.performances && (input.shows.get(slug)?.category ?? 'broadway') === 'broadway')
     .map(([slug, r]) => ({ slug, title: title(slug), label: shortTitle(title(slug)), capacity: r.capacity as number, atp: r.atp as number, seats: Math.round((r.seatsOffered as number) / (r.performances as number)) }));
 
+  const mapGroups = mapCorners(priceMap);
+  const priceMapPhone = {
+    named: Array.from(mapOutliers(priceMap)),
+    fullPct: MAP_FULL_PCT,
+    medianAtp: mapGroups.medianAtp,
+    corners: mapGroups.corners.map((c) => ({ key: c.key, title: c.title, slugs: c.shows.map((d) => d.slug) })),
+  };
+
   // Cohort: new musicals running now that are past week 4, against the middle half since 2016.
   const current = Array.from(input.shows.values())
     .filter((sh) => isComparableRun(sh) && sh.type === 'musical' && !sh.isRevival && isReported(input.weeks[week]?.[sh.slug]))
@@ -448,6 +458,7 @@ export function buildMarketPage(
     premium: { median: pp.median, rows: pp.above.map((x) => ({ title: title(x.slug), over: x.over, isNew: x.isNew })) },
     pace,
     priceMap,
+    priceMapPhone,
     cohort: {
       musicals: cohort.musicals,
       fromYear: cohort.fromYear,
