@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 /**
- * Backfill Commercial Data via o4-mini with web_search_preview
+ * Backfill Commercial Data via an OpenAI reasoning model with web_search_preview
  *
  * Researches commercial/financial data for closed Broadway shows missing
- * from commercial-pending-review.json. Uses OpenAI o4-mini with web search
+ * from commercial-pending-review.json. Uses OpenAI RESEARCH_MODEL (below; the
+ * file name predates the o4-mini retirement on 2026-10-23) with web search
  * to find capitalization, recoupment, and designation data.
  *
  * Usage:
@@ -22,6 +23,12 @@ const path = require('path');
 const https = require('https');
 const { isCommercialScope, DESIGNATION_CRITERIA } = require('./lib/commercial-scope');
 const { carryHumanReviewHold } = require('./lib/commercial-apply-gate');
+const { modelShutdownStatus } = require('./lib/research-cost');
+
+// Same model as deep-research-commercial.js DEFAULT_MODEL. o4-mini (this
+// script's original model) shuts down 2026-10-23; research-cost.test.mjs
+// fails if any script hardcodes a model listed in MODEL_SHUTDOWNS.
+const RESEARCH_MODEL = 'gpt-5.4-mini';
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
@@ -87,9 +94,9 @@ const REDDIT_SEED = {
 };
 
 /**
- * Call o4-mini with web_search_preview to research a show's commercial data
+ * Call RESEARCH_MODEL with web_search_preview to research a show's commercial data
  */
-async function researchShowWithO4Mini(show) {
+async function researchShow(show) {
   const openingYear = show.openingDate ? show.openingDate.split('-')[0] : 'unknown';
   const type = show.type || 'show';
   const isPlay = type === 'play' || type === 'solo' || type === 'play-revival';
@@ -141,7 +148,7 @@ Respond with ONLY valid JSON (no markdown, no explanation):
 }`;
 
   const body = JSON.stringify({
-    model: 'o4-mini',
+    model: RESEARCH_MODEL,
     input: [{ role: 'user', content: prompt }],
     tools: [{ type: 'web_search_preview' }],
     reasoning: { effort: 'high' },
@@ -163,7 +170,7 @@ Respond with ONLY valid JSON (no markdown, no explanation):
         try {
           const response = JSON.parse(data);
           if (response.error) {
-            reject(new Error(`o4-mini error: ${response.error.message}`));
+            reject(new Error(`${RESEARCH_MODEL} error: ${response.error.message}`));
             return;
           }
           // Extract text from response
@@ -177,7 +184,7 @@ Respond with ONLY valid JSON (no markdown, no explanation):
             }
           }
           if (!text) {
-            reject(new Error('No text in o4-mini response'));
+            reject(new Error(`No text in ${RESEARCH_MODEL} response`));
             return;
           }
           // Parse JSON from response
@@ -238,6 +245,12 @@ function checkPlausibility(data) {
 }
 
 async function main() {
+  const life = modelShutdownStatus(RESEARCH_MODEL, new Date().toISOString().slice(0, 10));
+  if (life.status === 'dead') {
+    console.error(`❌ ${RESEARCH_MODEL} was shut down ${life.shutdown}; update RESEARCH_MODEL.`);
+    process.exit(1);
+  }
+  if (life.status === 'warn') console.warn(`⚠️  ${RESEARCH_MODEL} shuts down ${life.shutdown} (${life.daysLeft} days).`);
   const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
   const allShows = Object.values(showsData.shows);
   const pending = JSON.parse(fs.readFileSync(PENDING_PATH, 'utf8'));
@@ -297,10 +310,10 @@ async function main() {
       result = { ...REDDIT_SEED[show.id] };
       redditSeeded++;
     } else {
-      // Research via o4-mini
-      console.log('  🔍 Researching via o4-mini web search...');
+      // Research via RESEARCH_MODEL
+      console.log(`  🔍 Researching via ${RESEARCH_MODEL} web search...`);
       try {
-        result = await researchShowWithO4Mini(show);
+        result = await researchShow(show);
         if (result) {
           result = normalizeValues(result);
           const issues = checkPlausibility(result);
