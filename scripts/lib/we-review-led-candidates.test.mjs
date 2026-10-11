@@ -7,7 +7,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  selectLookups, trIssueMonth, trVenueName, pickTrForReview, findContinuingRun, cleanReviewTitle,
+  selectLookups, trIssueMonth, trIssueMonthRange, trVenueName, pickTrForReview, findContinuingRun, cleanReviewTitle,
 } = require('./we-review-led-candidates.js');
 const { isLondonVenue } = require('./tr-london-venue.js');
 const { searchTitles, pdfHeaderFor, htmlHeaderFor, pairLabelLines } = require('../resolve-we-unlisted-tr.js');
@@ -72,6 +72,24 @@ test('pickTrForReview takes the London production near the review, not a tour or
   assert.equal(pick.link, results[0].link);
   // Same venue, review a year later: no TR issue in the window
   assert.equal(pickTrForReview(results, { ...COMPANY, date: '2019-10-17' }, { isLondonVenue }), null);
+});
+
+test('pickTrForReview dates 2018 page-numbered TR links by volume year (BRO-5031)', () => {
+  // we-historical-review-led-2018-2019.json trResults (verbatim): the 2018
+  // volume links by page, not issue, so these went unmatched before.
+  const m = (y, mo) => y * 12 + (mo - 1);
+  assert.deepEqual(trIssueMonthRange('https://www.theatrerecord.com/archive/volume/38/page/943'), { lo: m(2018, 1), hi: m(2018, 12) });
+  assert.equal(trIssueMonth('https://www.theatrerecord.com/archive/volume/38/page/943'), null);
+  const company = [{ title: 'Company', venue: 'Gielgud (Globe)', link: 'https://www.theatrerecord.com/archive/volume/38/page/943' }];
+  assert.equal(pickTrForReview(company, COMPANY, { isLondonVenue }).link, company[0].link);
+  const storm = [{ title: 'Height of the Storm (The)', venue: "Wyndham's", link: 'https://www.theatrerecord.com/archive/volume/38/page/924' }];
+  const STORM = { title: 'The Height of the Storm', venue: "Wyndham's Theatre", date: '2018-10-10' };
+  assert.equal(pickTrForReview(storm, STORM, { isLondonVenue }).link, storm[0].link);
+  // A 2018 page link never matches a review two years on
+  assert.equal(pickTrForReview(storm, { ...STORM, date: '2020-10-10' }, { isLondonVenue }), null);
+  // An issue-dated link in the review month beats a whole-year page link
+  const both = [storm[0], { ...storm[0], link: 'https://www.theatrerecord.com/archive/volume/38/dest/21_height' }];
+  assert.equal(pickTrForReview(both, STORM, { isLondonVenue }).link, both[1].link);
 });
 
 test('findContinuingRun matches a reopening of an open long-runner (Phantom 2021)', () => {

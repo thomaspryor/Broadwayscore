@@ -87,14 +87,34 @@ function selectLookups(unlistedReviews, season) {
  * is 39/22, A Taste of Honey (Trafalgar, 2019-10) 39/21-23.
  */
 function trIssueMonth(link) {
+  const r = trIssueMonthRange(link);
+  return r && r.lo === r.hi ? r.lo : null;
+}
+
+/**
+ * TR link → { lo, hi } month indices it can belong to, or null. Page-numbered
+ * PDF-era links (/archive/volume/38/page/924, the 2018 volume) carry only the
+ * volume year, so they span that whole year: The Height of the Storm
+ * (Wyndham's, Oct 2018) is 38/page/924 and The Cane (Royal Court, Dec 2018)
+ * 38/page/1132 (BRO-5031). The title + London venue family + year still pin
+ * the production; its dates come from the TR header, never from this.
+ */
+function trIssueMonthRange(link) {
   const html = archiveMonth(link);
-  if (html != null) return html;
-  const m = String(link || '').match(/\/archive\/volume\/(\d+)\/dest\/(\d+)_/);
-  if (!m) return null;
-  const year = 1980 + Number(m[1]);
-  const issue = Number(m[2]);
-  if (!(issue >= 1 && issue <= 27)) return null;
-  return year * 12 + Math.min(11, Math.floor(((issue - 1) * 12) / 26));
+  if (html != null) return { lo: html, hi: html };
+  const s = String(link || '');
+  const m = s.match(/\/archive\/volume\/(\d+)\/dest\/(\d+)_/);
+  if (m) {
+    const year = 1980 + Number(m[1]);
+    const issue = Number(m[2]);
+    if (!(issue >= 1 && issue <= 27)) return null;
+    const mi = year * 12 + Math.min(11, Math.floor(((issue - 1) * 12) / 26));
+    return { lo: mi, hi: mi };
+  }
+  const p = s.match(/\/archive\/volume\/(\d+)\/page\/\d+/);
+  if (!p) return null;
+  const year = 1980 + Number(p[1]);
+  return { lo: year * 12, hi: year * 12 + 11 };
 }
 
 
@@ -114,9 +134,10 @@ function pickTrForReview(results, review, opts = {}) {
   const hits = (results || [])
     .filter(r => r && titlesMatch(r.title, review.title))
     .filter(r => isLondonVenue(r.venue) && sameVenueFamily(trVenueName(r.venue), review.venue))
-    .map(r => ({ r, m: trIssueMonth(r.link) }))
-    .filter(x => x.m != null && x.m >= rm - 3 && x.m <= rm + 1)
-    .sort((a, b) => Math.abs(a.m - rm) - Math.abs(b.m - rm));
+    .map(r => ({ r, m: trIssueMonthRange(r.link) }))
+    .filter(x => x.m != null && x.m.hi >= rm - 3 && x.m.lo <= rm + 1)
+    .map(x => ({ r: x.r, d: rm < x.m.lo ? x.m.lo - rm : rm > x.m.hi ? rm - x.m.hi : 0, w: x.m.hi - x.m.lo }))
+    .sort((a, b) => a.d - b.d || a.w - b.w);
   return hits.length ? hits[0].r : null;
 }
 
@@ -336,6 +357,7 @@ module.exports = {
   cleanReviewTitle,
   selectLookups,
   trIssueMonth,
+  trIssueMonthRange,
   trVenueName,
   pickTrForReview,
   parseTrHeaderDates,
