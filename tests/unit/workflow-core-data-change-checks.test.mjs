@@ -94,6 +94,17 @@ describe('findGitDiffOnIgnoredPaths (rule q)', () => {
     assert.deepStrictEqual(paths, ['data/grosses.json', 'data/shows.json', 'data/reviews.json']);
   });
 
+  test('flags git global options and backslash continuations', () => {
+    const raw = wf([
+      'git --no-pager diff data/shows.json',
+      'git -C . diff --quiet data/reviews.json || true',
+      'if ! git diff --quiet \\',
+      '    data/grosses.json; then echo x; fi',
+    ].join('\n'));
+    const paths = findGitDiffOnIgnoredPaths(raw, isIgnored).map((h) => h.path);
+    assert.deepStrictEqual(paths, ['data/shows.json', 'data/reviews.json', 'data/grosses.json']);
+  });
+
   test('tracked paths, expansions, comments and exempt lines are not flagged', () => {
     const raw = wf([
       'if ! git diff --quiet public/data/shows/ 2>/dev/null; then',

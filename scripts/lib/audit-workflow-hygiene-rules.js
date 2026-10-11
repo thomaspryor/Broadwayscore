@@ -790,11 +790,20 @@ function findFullBlobFullHistoryCheckouts(raw) {
  *
  * Returns [{ lineNum, text, path }].
  */
-const GIT_INSPECT_RE = /\bgit\s+(?:diff|status|show)\b/g;
+// Allows git's global options before the subcommand (`git --no-pager diff`,
+// `git -C dir diff`, `git -c k=v diff`).
+const GIT_INSPECT_SRC = String.raw`\bgit(?:\s+(?:--no-pager|-[Cc]\s+\S+))*\s+(?:diff|status|show)\b`;
+const GIT_INSPECT_RE = new RegExp(GIT_INSPECT_SRC, 'g');
 function findGitDiffOnIgnoredPaths(raw, isIgnored) {
   const hits = [];
-  for (const { lineNum, text } of runLineMatches(raw, /\bgit\s+(?:diff|status|show)\b/)) {
-    if (text.includes('hygiene-ignored-diff-ok:')) continue;
+  const lines = raw.split('\n');
+  for (const { lineNum, text: first } of runLineMatches(raw, new RegExp(GIT_INSPECT_SRC))) {
+    if (first.includes('hygiene-ignored-diff-ok:')) continue;
+    // Join backslash continuations so `git diff --quiet \` + next-line path is seen.
+    let text = first;
+    for (let j = lineNum; text.endsWith('\\') && j < lines.length; j++) {
+      text = text.slice(0, -1) + ' ' + lines[j].trim();
+    }
     const seen = new Set();
     GIT_INSPECT_RE.lastIndex = 0;
     let m;

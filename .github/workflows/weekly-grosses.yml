@@ -103,6 +103,8 @@ jobs:
           # BRO-5033: grosses*.json are gitignored core data, so `git diff` on
           # them was always empty and every step below gated on has_changes
           # never ran. Compare to the checkout-core-data snapshot instead.
+          # The scrapers stamp lastUpdated on every write, so this is true on
+          # any run that scraped (the skip above already drops no-new-week runs).
           if node scripts/lib/core-data-changed.js grosses.json grosses-history.json; then
             echo "has_changes=true" >> $GITHUB_OUTPUT
           else
@@ -159,8 +161,9 @@ jobs:
       # BRO-5033: the "Trigger deploy (core data changed)" step that sat here
       # never ran (has_changes was always false) and, if revived, would skip
       # itself anyway: vercel-deploy.yml's 5-minute cron always has a run newer
-      # than this one inside its 15-minute dedup window. Deploys come from that
-      # cron (scripts/lib/should-deploy-gate.js).
+      # than this one inside its 15-minute dedup window. should-deploy-gate.js
+      # only fingerprints reviews.json and shows.json, so a grosses-only change
+      # goes live on the gate's 6-hour staleness backstop, as it always has.
 
       # The integrity check's routeAlert()/resolveCondition() state lives on
       # this runner's disk; commit it or every run re-alerts from a blank

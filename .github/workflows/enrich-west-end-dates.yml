@@ -99,16 +99,6 @@ jobs:
           echo "Running: node scripts/enrich-west-end-dates.js $FLAGS"
           node scripts/enrich-west-end-dates.js $FLAGS
 
-      - name: Check for changes
-        if: (inputs.mode || 'enrich') != 'verify'
-        id: git-check
-        run: |
-          # BRO-5033: shows.json is gitignored core data; `git diff` on it is always
-          # empty. Compare to the checkout-core-data snapshot instead.
-          if node scripts/lib/core-data-changed.js shows.json; then
-            echo "changes=true" >> $GITHUB_OUTPUT
-          fi
-
       # shows.json is gitignored in the public repo — see note in
       # enrich-ibdb-dates.yml. push-core-data below handles the sync.
 

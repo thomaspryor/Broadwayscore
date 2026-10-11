@@ -17,8 +17,8 @@
  *
  * Exit 0 = at least one file changed (or is new) vs /tmp/core-data-snapshot.
  * Exit 1 = none changed. Exit 2 = usage error.
- * Snapshot dir missing: ::warning:: and exit 0 (fail open, never silently skip
- * validation because the baseline is gone).
+ * Snapshot dir missing, or the compare throws: ::warning:: and exit 0 (fail
+ * open, never silently skip validation because the baseline is gone).
  * Env: CORE_DATA_SNAPSHOT_DIR, CORE_DATA_DIR (test seams).
  * Decision table: changedCoreFiles() in core-data-sync-decision.js, the same
  * table push-core-data applies.
@@ -38,10 +38,18 @@ if (!files.length) {
   process.exit(2);
 }
 
-const { snapshotMissing, changed } = changedCoreFiles(files, {
-  snapshotDir: process.env.CORE_DATA_SNAPSHOT_DIR,
-  dataDir: process.env.CORE_DATA_DIR,
-});
+let result;
+try {
+  result = changedCoreFiles(files, {
+    snapshotDir: process.env.CORE_DATA_SNAPSHOT_DIR,
+    dataDir: process.env.CORE_DATA_DIR,
+  });
+} catch (e) {
+  // Fail open: callers read any nonzero exit as "unchanged" and skip steps.
+  console.log(`::warning::core-data-changed.js failed (${e.message}); treating as changed`);
+  process.exit(0);
+}
+const { snapshotMissing, changed } = result;
 if (snapshotMissing) {
   console.log('::warning::core-data snapshot missing (did checkout-core-data run in this job?); treating as changed');
   process.exit(0);
