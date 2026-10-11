@@ -209,3 +209,21 @@ test('a reader tip that sets a loss label gets a designationBasis (BRO-5020 poli
   const r2 = buildTipRecord(commercial, showList, 'k', [{ field: 'designation', newValue: 'Flop' }, { field: 'recouped', newValue: false }, { field: 'designationBasis', newValue: 'reported-loss' }]);
   assert.equal(r2.record.designationBasis, 'reported-loss');
 });
+
+test('a silence-basis loss label on a show closed under LOSS_LABEL_MIN_DAYS waits as TBD + needsLossEvidence (BRO-5020)', () => {
+  const days = (n) => new Date(Date.now() - n * 86400000).toISOString().slice(0, 10);
+  const row = { designation: 'Flop', designationBasis: 'no-recoupment-announced', recouped: false };
+  const young = sanitizeForPublicRecord(row, { status: 'closed', closingDate: days(140) });
+  assert.equal(young.entry.designation, 'TBD');
+  assert.equal(young.entry.designationBasis, undefined);
+  assert.equal(young.entry.needsLossEvidence, true);
+  assert.equal(young.entry.recouped, null);
+  assert.ok(young.changed.includes('designation'));
+  // Aged in: the label stands.
+  assert.equal(sanitizeForPublicRecord(row, { status: 'closed', closingDate: days(200) }).entry.designation, 'Flop');
+  // A reported loss is published straight away, however recent the closing.
+  const reported = { ...row, designationBasis: 'reported-loss' };
+  assert.equal(sanitizeForPublicRecord(reported, { status: 'closed', closingDate: days(10) }).entry.designation, 'Flop');
+  // A bare status string (older callers) keeps the old behaviour.
+  assert.equal(sanitizeForPublicRecord(row, 'closed').entry.designation, 'Flop');
+});

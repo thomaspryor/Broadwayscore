@@ -43,7 +43,7 @@ function buildTipRecord(commercial, showList, slug, proposedChanges) {
   const proposedBasis = proposedChanges.find((c) => c.field === 'designationBasis');
   stampDesignationBasis(draft, { designationBasis: proposedBasis && proposedBasis.newValue }, existing);
   const show = (showList || []).find((s) => s && s.slug === slug);
-  const { entry, holdReason } = sanitizeForPublicRecord(draft, show && show.status);
+  const { entry, holdReason } = sanitizeForPublicRecord(draft, show);
   if (holdReason) return refuse(holdReason);
   const ctx = { showRecord: show, allRecords: commercial.shows };
   const problems = [...commercialRecordErrors(slug, entry, ctx), ...commercialRecordWarnings(slug, entry, ctx)];

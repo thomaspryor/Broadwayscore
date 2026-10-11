@@ -404,7 +404,10 @@ function stripInternalWording(text) {
  * @param {string} [showStatus] - status of the shows.json record whose slug is
  *   the commercial.json key the entry will be written under.
  */
-function sanitizeForPublicRecord(entry, showStatus) {
+// `show` is the shows.json record, or (older callers) just its status string.
+function sanitizeForPublicRecord(entry, show) {
+  const showRecord = show && typeof show === 'object' ? show : null;
+  const showStatus = showRecord ? showRecord.status : show;
   const out = { ...entry };
   const changed = [];
   let holdReason = null;
@@ -426,6 +429,18 @@ function sanitizeForPublicRecord(entry, showStatus) {
   if (LOSS_DESIGNATIONS.includes(out.designation) && showStatus && showStatus !== 'closed') {
     out.designation = 'TBD';
     delete out.designationBasis;
+    changed.push('designation');
+  }
+  // Policy B (BRO-5020): a loss label resting on silence waits
+  // LOSS_LABEL_MIN_DAYS after closing. Every writer passes through here, so a
+  // researched or released row cannot publish one early (beaches, 2026-10-11).
+  const closing = showRecord && Date.parse(showRecord.closingDate);
+  if (LOSS_DESIGNATIONS.includes(out.designation) && out.designationBasis === DESIGNATION_BASES.NO_RECOUPMENT_ANNOUNCED &&
+      Number.isFinite(closing) && (Date.now() - closing) / 86400000 < LOSS_LABEL_MIN_DAYS) {
+    out.designation = 'TBD';
+    delete out.designationBasis;
+    if (out.recouped === false) out.recouped = null;
+    out.needsLossEvidence = true;
     changed.push('designation');
   }
   return { entry: out, changed, holdReason };
