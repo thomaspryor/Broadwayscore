@@ -33,6 +33,7 @@
  */
 
 const fs = require('fs');
+const { verificationPublishDate } = require('./lib/verification-publish-date');
 const path = require('path');
 const { verifyContent, resolveCvMarket } = require('./lib/content-verifier');
 const { isLongRunningProduction } = require('./lib/long-runner-registry');
@@ -169,7 +170,8 @@ async function main() {
         venue: show?.venue || null,
         market: resolveCvMarket(show) || marketFor(f.showId, show),
         isLongRunningProduction: isLongRunningProduction(show),
-        publishDate: data.publishDate || data.textFetchedAt || null,
+        // BRO-4884: textFetchedAt is when we scraped it, not when it ran; never a date for a long-closed show.
+        publishDate: verificationPublishDate({ storedDate: data.publishDate, textFetchedAt: data.textFetchedAt, show, today: new Date().toISOString().slice(0, 10) }),
         url: data.url || null,
         show,
       });

@@ -502,6 +502,19 @@ dates from Theatre Record only, never from the review date:
   --season=X --plan=bro-5031-<season>` writes the rows as `add-show`
   actions in `data/pending-fixes/` (force-add, it is gitignored); land it,
   then dispatch `execute-approved-fix.yml` with that id and `mode=apply`.
+- **The verifier was told historical reviews were written today.**
+  collect-review-texts.js passed `publishDate || textFetchedAt || today` to
+  the content verifier and read the page's own date only afterwards, when
+  saving. For 2018-19's Theatre Record link-only stubs Haiku was told each
+  review was written in 2026 and flagged it ("8 years after the production
+  closed"), and the own-venue carve-out then refused it as dated outside the
+  run (Hadestown's National Theatre reviews, The End of History at the Royal
+  Court, The Inheritance's transfer reviews). lib/verification-publish-date.js
+  now reads the page date (HTML, URL, byline) before the call and keeps the
+  today fallback only for a show running or closed within 60 days; the two
+  reverify scripts that fell back to textFetchedAt use it too. The flags
+  written that way were re-verified with the stored date
+  (scripts/migrations/reverify-undated-cv-2026-10.js).
 
 ## Side benefit (separate card)
 
