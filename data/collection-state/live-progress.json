@@ -1,43 +1,21 @@
 {
-  "updatedAt": "2026-10-11T08:58:30.594Z",
-  "processed": 872,
-  "failed": 427,
-  "successRate": "67.1%",
+  "updatedAt": "2026-10-11T09:14:50.943Z",
+  "processed": 901,
+  "failed": 438,
+  "successRate": "67.3%",
   "tierBreakdown": {
-    "playwright": 588,
-    "amp": 16,
+    "playwright": 610,
+    "amp": 19,
     "browserbase": 11,
     "directCookies": 0,
-    "scrapingdog": 102,
-    "scrapingbee": 93,
+    "scrapingdog": 106,
+    "scrapingbee": 96,
     "brightdata": 16,
     "archiveToday": 0,
     "archive": 109
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-10-11T05:07:43.702Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-11T05:08:01.074Z",
-      "event": "bb-session",
-      "session": "7f2b8433",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654485"
-    },
-    {
-      "t": "2026-10-11T05:08:01.528Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-11T05:08:32.071Z",
-      "event": "bb-session",
-      "session": "3d895bd8",
-      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
-    },
     {
       "t": "2026-10-11T05:08:39.291Z",
       "event": "bb-session",
@@ -128,6 +106,28 @@
       "event": "bb-session",
       "session": "403f5756",
       "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/"
+    },
+    {
+      "t": "2026-10-11T09:13:40.249Z",
+      "event": "bb-session",
+      "session": "fddee288",
+      "url": "https://www.nytimes.com/2023/05/19/theater/brokeback-mountain.html"
+    },
+    {
+      "t": "2026-10-11T09:13:40.683Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-11T09:13:58.964Z",
+      "event": "bb-session",
+      "session": "35a247de",
+      "url": "https://www.nytimes.com/2023/05/19/theater/brokeback-mountain.html"
+    },
+    {
+      "t": "2026-10-11T09:13:59.297Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
