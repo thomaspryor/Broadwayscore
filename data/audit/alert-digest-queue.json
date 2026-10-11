@@ -65,27 +65,6 @@
     "queuedAt": "2026-10-11T14:27:24.242Z"
   },
   {
-    "conditionKey": "mezzanine:session-token-expired",
-    "title": "Mezzanine Scraper Failed — Session Token Expired",
-    "description": "The Mezzanine audience data update failed with an authentication error (401/403). **The session token has expired.** To fix: set up mitmproxy on your Mac, proxy iPhone traffic through it, open the Mezzanine app, then update the `MEZZANINE_SESSION_TOKEN` GitHub Secret with the new token.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38149792765",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "Action Required",
-        "value": "Re-intercept Mezzanine iOS app via mitmproxy"
-      },
-      {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/38149792765)"
-      }
-    ],
-    "queuedAt": "2026-10-11T15:05:39.169Z"
-  },
-  {
     "conditionKey": "land:land/bro-5063-synopses",
     "title": "Landing blocked: unit-tests-node red on land/bro-5063-synopses",
     "description": "land.yml did not land land/bro-5063-synopses: the unit-tests-node gate went red at 4919db3012. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38150355012",
@@ -698,5 +677,79 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-11T19:07:11.360Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:montgomery-an-american-musical-off-broadway-2026",
+    "title": "Montgomery: An American Musical @ A.R.T./New York Theatres — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2026-12-11 to 2026-12-19). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/montgomery-an-american-musical-off-broadway-2026",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-11T19:09:16.553Z"
+  },
+  {
+    "conditionKey": "opening-night-drift:into-the-woods-noel-coward-west-end-2026",
+    "title": "Opening night drift: Into the Woods (into-the-woods-noel-coward-west-end-2026)",
+    "description": "Review counts do not reconcile for Into the Woods (into-the-woods-noel-coward-west-end-2026): local review-texts=71, reviews.json aggregate=30, live production=30, drift=41 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38167646233",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Show",
+        "value": "Into the Woods (into-the-woods-noel-coward-west-end-2026)",
+        "inline": false
+      },
+      {
+        "name": "Counts",
+        "value": "local=71, aggregate=30, live=30, drift=41",
+        "inline": false
+      },
+      {
+        "name": "Opening",
+        "value": "2026-10-07",
+        "inline": false
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/38167646233)",
+        "inline": false
+      }
+    ],
+    "queuedAt": "2026-10-11T19:23:45.444Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5000-systemic-contamination",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5000-systemic-contamination",
+    "description": "land.yml did not land land/bro-5000-systemic-contamination: the unit-tests-node gate went red at 0fa8c3de7e. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38165359954",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5000-systemic-contamination"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "0fa8c3de7ebc5de7471e288bbfe630cec0b001e2"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38165359954"
+      }
+    ],
+    "queuedAt": "2026-10-11T19:23:35.243Z"
   }
 ]
