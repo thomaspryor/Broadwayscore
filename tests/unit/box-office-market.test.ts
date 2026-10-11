@@ -3,8 +3,8 @@
  * exported functions (CLAUDE.md rule 15) on small fixtures: market totals
  * from every history row, the half-count guard on comparisons, movers that
  * skip a first week and a tiny base, per-seat ranks with "too new", sell-out
- * streaks across a dark week, premium pull, historic pace's comparator floor
- * and the new-musical cohort's revival and n floors.
+ * streaks across a dark week, premium pull, each run's personal bests and
+ * the new-musical cohort's revival and n floors.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -23,9 +23,9 @@ import {
   weekEndingOnOrAfter,
   weekOfRun,
   isComparableRun,
-  historicPace,
+  personalBests,
+  BESTS_MIN_WEEKS,
   newMusicalCohort,
-  PACE_MIN_COMPARATORS,
   COHORT_MIN_N,
   type MarketInput,
   type MarketShow,
@@ -203,21 +203,37 @@ function runs(prefix: string, count: number, start: string, perSeat: (i: number)
   return out;
 }
 
-test('historicPace ranks a new run against runs at the same week, only with enough comparators', () => {
-  const weeks: HistoryWeeks = {};
-  // Comparators in an older market where everyone sells $100 a seat except their spread.
-  const old = runs('old', PACE_MIN_COMPARATORS, '2010-01-04', (i) => 50 + i * 2, weeks); // 50..148
-  const mine = runs('new', 1, '2026-08-01', () => 100, weeks)[0];
-  const latest = addDays(weekEndingOnOrAfter('2026-08-01'), 7 * 5);
-  const pace = historicPace(input(weeks, [...old, mine]), latest);
-  const row0 = pace.find((p) => p.slug === mine.slug)!;
-  assert.equal(row0.week, 6);
-  assert.equal(row0.comparators, PACE_MIN_COMPARATORS);
-  // Market-adjusted: both markets' medians are the runs' own medians, so it beats about half.
-  assert.ok(row0.beatsPct > 40 && row0.beatsPct < 60, String(row0.beatsPct));
-  // One comparator short: nothing shown.
-  const fewer = historicPace(input(weeks, [...old.slice(1), mine]), latest);
-  assert.equal(fewer.find((p) => p.slug === mine.slug), undefined);
+test('personalBests: records with their weeks, the latest week beside them, nulls skipped', () => {
+  const w = ['2026-09-06', '2026-09-13', '2026-09-20', '2026-09-27', '2026-10-04'];
+  const weeks: HistoryWeeks = {
+    [w[0]]: { s: row(900_000, { capacity: 70, atp: 90, performances: 5 }) }, // partial preview week still counts
+    [w[1]]: { s: row(1_400_000, { capacity: null, atp: null, attendance: null }) }, // no capacity or attendance
+    [w[2]]: { s: row(1_200_000, { capacity: 97, atp: 120 }) },
+    [w[3]]: { s: row(1_400_000, { capacity: 95, atp: 130 }) }, // ties the best gross later: the earlier week keeps it
+    [w[4]]: { s: row(1_100_000, { capacity: 92, atp: 135 }) },
+  };
+  const b = personalBests(input(weeks, [show('s', { previewsStartDate: '2026-09-01' })]), 's', w[4])!;
+  assert.equal(b.weeks, 5);
+  assert.equal(b.latestWeek, w[4]);
+  const by = Object.fromEntries(b.rows.map((r) => [r.key, r]));
+  assert.deepEqual([by.gross.value, by.gross.week, by.gross.latest, by.gross.latestIsRecord], [1_400_000, w[1], 1_100_000, false]);
+  assert.deepEqual([by.capacity.value, by.capacity.week, by.capacity.latest], [97, w[2], 92], 'a null capacity is skipped, never read as 0');
+  assert.deepEqual([by.atp.value, by.atp.week, by.atp.latestIsRecord], [135, w[4], true], 'the latest week can be the record');
+});
+
+test('personalBests: hidden under the minimum weeks, and a revival never inherits the original run', () => {
+  const few: HistoryWeeks = {};
+  for (let i = 0; i < BESTS_MIN_WEEKS - 1; i++) few[addDays('2026-09-06', 7 * i)] = { s: row(1_000_000) };
+  assert.equal(personalBests(input(few, [show('s')]), 's', '2026-10-04'), null);
+
+  // Rows filed under the revival's slug before its first preview belong to the old run.
+  const weeks: HistoryWeeks = { '2019-01-06': { r: row(3_000_000, { capacity: 102, atp: 300 }) } };
+  for (let i = 0; i < 4; i++) weeks[addDays('2026-09-13', 7 * i)] = { r: row(1_000_000 + i, { capacity: 80 + i, atp: 100 + i }) };
+  const b = personalBests(input(weeks, [show('r', { previewsStartDate: '2026-09-10', isRevival: true })]), 'r', '2026-10-04')!;
+  assert.equal(b.weeks, 4);
+  for (const r of b.rows) assert.ok(r.week >= '2026-09-13', `${r.key} record from ${r.week}`);
+  // Weeks after the show's latest week are ignored too.
+  assert.equal(personalBests(input(weeks, [show('r', { previewsStartDate: '2026-09-10' })]), 'r', '2026-09-27'), null);
 });
 
 test('newMusicalCohort leaves out revivals and draws the band only at n >= 15', () => {

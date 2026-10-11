@@ -15,14 +15,11 @@ import {
   perSeatTable,
   sellOutStreaks,
   premiumPull,
-  historicPace,
-  marketPerSeatByWeek,
   newMusicalCohort,
   runPerSeatSeries,
   isComparableRun,
   weekOfRun,
   PACE_MIN_WEEK,
-  PACE_MAX_WEEK,
 } from './box-office-market';
 import {
   addDays,
@@ -290,7 +287,6 @@ export interface MarketPage {
   };
   streaks: Array<{ title: string; weeks: number }>;
   premium: { median: number | null; rows: Array<{ title: string; over: number; isNew: boolean }> };
-  pace: Array<{ title: string; beatsPct: number; week: number }>;
   priceMap: Array<{ slug: string; title: string; label: string; capacity: number; atp: number; seats: number }>;
   /** The phone price map's named outliers and corner groups, worked out here so the client chart imports no held code. */
   priceMapPhone: { named: string[]; fullPct: number; medianAtp: number | null; corners: Array<{ key: MapCornerKey; title: string; slugs: string[] }> };
@@ -367,7 +363,6 @@ export function buildMarketPage(
   const perSeatRows = ps.ranked.map((r) => ({ slug: r.slug, title: title(r.slug), perSeat: r.perSeat, grossRank: r.grossRank, seats: r.seats }));
 
   const pp = premiumPull(input, week);
-  const pace = historicPace(input, week, marketPerSeatByWeek(input)).map((p) => ({ title: title(p.slug), beatsPct: p.beatsPct, week: p.week }));
 
   const priceMap = Object.entries(input.weeks[week] ?? {})
     .filter(([slug, r]) => isPaired(r) && r.capacity != null && r.atp != null && r.performances && (input.shows.get(slug)?.category ?? 'broadway') === 'broadway')
@@ -456,7 +451,6 @@ export function buildMarketPage(
     },
     streaks: sellOutStreaks(input, week).map((x) => ({ title: title(x.slug), weeks: x.weeks })),
     premium: { median: pp.median, rows: pp.above.map((x) => ({ title: title(x.slug), over: x.over, isNew: x.isNew })) },
-    pace,
     priceMap,
     priceMapPhone,
     cohort: {
@@ -471,4 +465,4 @@ export function buildMarketPage(
   };
 }
 
-export { PACE_MIN_WEEK, PACE_MAX_WEEK, seasonOfWeek };
+export { PACE_MIN_WEEK, seasonOfWeek };

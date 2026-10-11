@@ -18,7 +18,7 @@ import {
 } from '../../src/lib/box-office-display';
 import { placeLabels } from '../../src/components/box-office/PriceMap';
 import { getBoxOfficeMarketInput, getBoxOfficeMarketPage } from '../../src/lib/data-commercial';
-import { historicPace, marketPerSeatByWeek, MOVER_MIN_PCT } from '../../src/lib/box-office-market';
+import { MOVER_MIN_PCT } from '../../src/lib/box-office-market';
 
 test('seasonPaceSentence: behind last season but ahead of two back', () => {
   assert.equal(
@@ -141,9 +141,6 @@ test('real data: the market page builds with sane numbers', () => {
   for (const r of page.perSeat.rows) assert.ok(r.perSeat > 10 && r.perSeat < 600, `${r.title} per seat ${r.perSeat}`);
   assert.ok(page.cohort.musicals >= 20, `cohort of ${page.cohort.musicals}`);
   if (page.cohort.story) assert.doesNotMatch(page.cohort.story, /\([A-Za-z]/, 'the cohort story uses short titles');
-  // Historic pace lists every qualifying new show, slow starters included.
-  const input = getBoxOfficeMarketInput();
-  assert.equal(page.pace.length, historicPace(input, page.week, marketPerSeatByWeek(input)).length);
   // Movers never show a move that rounds to 0%.
   for (const m of [...page.movers.gains, ...page.movers.drops]) assert.ok(Math.abs(m.pct) >= MOVER_MIN_PCT, `${m.title} ${m.pct}`);
 });
