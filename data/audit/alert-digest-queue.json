@@ -1489,5 +1489,34 @@
       }
     ],
     "queuedAt": "2026-10-11T06:33:57.078Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5022-strict-google-images",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5022-strict-google-images",
+    "description": "land.yml did not land land/bro-5022-strict-google-images: the unit-tests-node gate went red at 6d14d725c7. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38116992222",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5022-strict-google-images"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "6d14d725c7022672c2efc72c6f1275a799f8536e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38116992222"
+      }
+    ],
+    "queuedAt": "2026-10-11T06:38:38.247Z"
   }
 ]
