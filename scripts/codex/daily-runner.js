@@ -168,6 +168,7 @@ function provideData(dest, { reviewTexts = true } = {}) {
     let cfg = '';
     try { cfg = fs.readFileSync(path.join(real, '.git', 'config'), 'utf8'); } catch { /* not a clone */ }
     if (R.hasCredentialRemote(cfg)) { log(`provideData: ${real} keeps a credential in its remote URL; not linked`); lines.push(`- data/${name}: not available in this run.`); continue; }
+    if (present(to) && !fs.lstatSync(to).isSymbolicLink()) R.dropDataDir(to, dest); // a dir a test made
     if (!present(to)) { fs.symlinkSync(real, to); provided.push(`data/${name}`); }
     dirs.push(real);
     lines.push(`- data/${name} -> ${real}: the private review-texts clone. Read it; never write there.`);
@@ -245,7 +246,7 @@ function runCheck(card, body, codexReport, tag, data) {
   const head = git(['rev-parse', 'HEAD']);
   // The reviewer runs tests unsandboxed: drop the review-texts link so no test writes into the
   // shared clone (land.yml runs without it too). It reads the texts through --add-dir instead.
-  for (const d of R.DATA_DIRS) fs.rmSync(path.join(WT, 'data', d), { force: true });
+  for (const d of R.DATA_DIRS) R.dropDataDir(path.join(WT, 'data', d), WT);
   // cwd is the worktree so plain git/node commands work; --setting-sources user keeps
   // the project's session hooks out of this one-shot reviewer (CLAUDE.md still loads).
   // Prompt on stdin: --allowedTools and --add-dir are variadic and swallow a positional.
@@ -328,7 +329,7 @@ function newLandFailures() {
   try { return landFailuresWith(D, gauntlet); } finally { fs.rmSync(gauntlet, { force: true }); }
 }
 function landFailuresWith(D, gauntlet) {
-  for (const d of R.DATA_DIRS) fs.rmSync(path.join(WT, 'data', d), { force: true }); // a symlink: removes the link only
+  for (const d of R.DATA_DIRS) R.dropDataDir(path.join(WT, 'data', d), WT); // the link, or a dir a test made
   const read = (f) => { try { return fs.readFileSync(path.join(WT, f), 'utf8').split('\n').map((l) => l.trim()).filter(Boolean); } catch { return []; } };
   const libTests = fs.readdirSync(path.join(WT, 'scripts/lib')).filter((f) => f.endsWith('.test.mjs')).map((f) => `scripts/lib/${f}`);
   const batches = [

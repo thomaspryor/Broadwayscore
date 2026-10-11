@@ -280,3 +280,31 @@ test('stopReason: Claude check run budget', () => {
   assert.match(r.stopReason({ ...base, checkSpentUsd: 30.5, checkBudgetUsd: 30 }), /Claude check spend \$30\.50/);
   assert.equal(r.stopReason({ ...base, checkSpentUsd: 99 }), null);
 });
+
+// 2026-10-10 22:47 run: a test created data/review-texts as a REAL directory while the link
+// was dropped, and fs.rmSync(..., {force:true}) threw EISDIR on the next card, bouncing all
+// seven. dropDataDir removes either shape, never follows a link, never leaves its root.
+test('dropDataDir: unlinks the symlink (target untouched), removes a test-made dir, skips outside root', async () => {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const path = await import('node:path');
+  const { dropDataDir } = require('../../scripts/lib/codex-runner.js');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'dropdata-'));
+  try {
+    const wt = path.join(root, 'wt'); const shared = path.join(root, 'shared');
+    fs.mkdirSync(path.join(wt, 'data'), { recursive: true });
+    fs.mkdirSync(path.join(shared, 'show-a'), { recursive: true });
+    fs.writeFileSync(path.join(shared, 'show-a', 'r.json'), '{}');
+    const link = path.join(wt, 'data', 'review-texts');
+    fs.symlinkSync(shared, link);
+    assert.equal(dropDataDir(link, wt), 'unlinked');
+    assert.ok(fs.existsSync(path.join(shared, 'show-a', 'r.json')), 'the shared clone is never touched');
+    fs.mkdirSync(path.join(link, 'show-b'), { recursive: true });
+    fs.writeFileSync(path.join(link, 'show-b', 'x.json'), '{}');
+    assert.equal(dropDataDir(link, wt), 'removed');
+    assert.equal(fs.existsSync(link), false);
+    assert.equal(dropDataDir(link, wt), 'none');
+    assert.equal(dropDataDir(shared, wt), 'skipped', 'a real dir outside the worktree is never removed');
+    assert.ok(fs.existsSync(shared));
+  } finally { fs.rmSync(root, { recursive: true, force: true }); }
+});
