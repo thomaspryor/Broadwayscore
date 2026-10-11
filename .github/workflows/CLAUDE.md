@@ -501,8 +501,10 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Script:** `scripts/process-commercial-tip.js`
 
 ## `commercial-release-held.yml`
-- **Runs:** Manual only (`shows` = comma-separated slugs, `dry_run`)
+- **Runs:** Manual only (`shows` = comma-separated slugs, `dry_run`, `revert_core_commit`)
 - **Does:** Releases named human-review-held pending rows (`requiresHumanReview`, e.g. the BRO-4990 backfill) into commercial.json via `apply-commercial-pending.js --release-held=...`, with page verification. Refuses records with a non-TBD or human-reviewed label or a recoupment on file, merges onto the existing record, never publishes the row's "recouped" claim (a cited "did not recoup" stays). Plain `--show`/`--all` never apply a held row. Tail (dedupe, strict gate, push, deploy) matches `commercial-friday.yml`; same `commercial-data-write` group, so dispatch one run at a time.
+- **Truth-review refusal (BRO-5041):** a row whose `truthReview.verdict` is anything but `released` is refused unless the pending row carries `ownerApproved: true` (run 38126158629 published 7 rows the BRO-5020 review had held or rejected).
+- **Revert mode:** `revert_core_commit=<core-data SHA>` restores each named record to the core-data `commercial.json` from just before that commit (or removes it if the release created it) via `scripts/revert-commercial-release.js`. Only a `data: release held commercial rows` commit is accepted. Pending rows are not touched.
 - **Requires:** REVIEW_TEXTS_TOKEN, scraper secrets (SCRAPINGBEE/SCRAPINGDOG/BRIGHTDATA)
 
 ## `collect-review-texts.yml`
