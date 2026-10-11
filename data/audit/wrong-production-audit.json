@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-10T23:47:07.838Z",
+  "timestamp": "2026-10-11T00:56:23.871Z",
   "stats": {
-    "totalReviews": 54656,
-    "alreadyFlagged": 19998,
-    "dateGuardCatches": 272,
-    "directorMismatch": 1659,
+    "totalReviews": 54657,
+    "alreadyFlagged": 20001,
+    "dateGuardCatches": 271,
+    "directorMismatch": 1660,
     "tvFilmSignals": 1521,
-    "londonSignals": 1811,
+    "londonSignals": 1813,
     "offBroadwaySignals": 504,
     "yearMismatch": 129,
-    "noPublishDate": 6180
+    "noPublishDate": 6178
   },
   "findings": [
     {
@@ -20438,6 +20438,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "whatsonstage--unknown.json",
+      "score": null,
+      "publishDate": "2025-12-14",
+      "url": "https://www.whatsonstage.com/news/were-the-critics-all-bark-and-no-bite-with-into-the-woods_1706386/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -43547,20 +43566,6 @@
       ]
     },
     {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 82,
-      "publishDate": "2023-02-07",
-      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
-        }
-      ]
-    },
-    {
       "showId": "tootsie-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 77,
@@ -52488,6 +52493,20 @@
       "score": 62,
       "publishDate": "2025-09-11",
       "url": "https://theartsdesk.com/theatre/cow-deer-royal-court-review-paradox-rich-account-non-human-life",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "cow-deer-west-end-2025",
+      "file": "broadwayworld--cindy-marcolina.json",
+      "score": 84,
+      "publishDate": "2025-09-14",
+      "url": "https://www.broadwayworld.com/westend/article/Review-COW-DEER-Royal-Court-Theatre-20250914",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
