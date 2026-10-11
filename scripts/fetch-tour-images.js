@@ -28,7 +28,7 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { isTourShow, tourImageProblems } = require('./lib/tour-family');
+const { isTourShow, tourImageProblems, tourFallbackArt } = require('./lib/tour-family');
 const { TOUR_LOCATIONS } = require('./lib/todaytix-tour-tickets');
 const { todaytixArt, stopEventPages, pageImageUrls, rolesForSize, rolesNeeded, archivedUnreferenced, attemptAction, landscapeCroppable, cropAllowed, descriptionNamesTitle, retryDue, RETRY_DAYS } = require('./lib/tour-art');
 const { fetchSchedule } = require('./lib/tours-to-you');
@@ -195,6 +195,13 @@ async function main() {
     else if (ctx.transient) console.log(`    ${id}: Gemini errors this run, no backoff`);
     saveAttempts();
   };
+  // Last resort for a tour whose search found nothing: the parent's archived key art.
+  const useParentArt = (tour) => {
+    const fb = tourFallbackArt(tour, shows.find(s => s.id === tour.tourOf));
+    if (!fb || tourImageProblems({ ...tour, images: fb }, shows).length) return false;
+    if (!dryRun) { tour.images = fb; saveShows(snapshot); }
+    return true;
+  };
   const deadline = Date.now() + maxMinutes * 60000;
   const report = [];
   let changed = 0;
@@ -202,7 +209,10 @@ async function main() {
     if (Date.now() > deadline) { report.push({ id: tour.id, result: 'later', why: `--max-minutes=${maxMinutes} reached` }); continue; }
     // A tour with nothing findable is searched again weekly, not daily: each
     // search is up to ~30 Gemini calls (code review).
-    if (!only && !retryDue(attempts[tour.id], now)) { report.push({ id: tour.id, result: 'backoff', why: `no art found ${attempts[tour.id].triedAt.slice(0, 10)}; next try after ${RETRY_DAYS} days` }); continue; }
+    if (!only && !retryDue(attempts[tour.id], now)) {
+      // Already searched with nothing found: it still gets the parent's art today, not after the backoff.
+      if (useParentArt(tour)) { report.push({ id: tour.id, result: 'parent-art', why: `backoff; using ${tour.tourOf} key art` }); changed++; continue; }
+      report.push({ id: tour.id, result: 'backoff', why: `no art found ${attempts[tour.id].triedAt.slice(0, 10)}; next try after ${RETRY_DAYS} days` }); continue; }
     const need = rolesNeeded(tour, exists);
     ctx.transient = false;
     console.log(`\n${tour.id}: needs ${need.join('+')}`);
@@ -238,6 +248,13 @@ async function main() {
       // Back off only after a real search: a tour with no stops yet is tried
       // again the day its schedule arrives (the new tours from 2026-10-06).
       settle(tour.id, { need, searched: stops.length > 0, result: 'none' });
+      // A real search found nothing: borrow the parent's key art rather than
+      // leave the tour page imageless (BRO-4877, tour-page-audit poster-missing).
+      if (stops.length > 0 && useParentArt(tour)) {
+        report.push({ id: tour.id, result: 'parent-art', why: `no verified own art; using ${tour.tourOf} key art` });
+        changed++;
+        continue;
+      }
       report.push({ id: tour.id, result: 'none', why: stops.length ? 'no verified art on its TodayTix listings or stop pages' : 'no stop schedule yet (data/tour-schedules.json)' });
       continue;
     }
