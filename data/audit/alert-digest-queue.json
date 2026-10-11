@@ -1150,5 +1150,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-11T22:18:46.943Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5081-review-factcheck",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5081-review-factcheck",
+    "description": "land.yml did not land land/bro-5081-review-factcheck: the unit-tests-node gate went red at 892d3b9a04. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38177569495",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5081-review-factcheck"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "892d3b9a0455ac3000213bcae3a1db0f729eb075"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38177569495"
+      }
+    ],
+    "queuedAt": "2026-10-11T22:19:06.352Z"
   }
 ]
