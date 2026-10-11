@@ -135,3 +135,24 @@ test('a quoted song cue in its own brackets is plot, a press quote is not (BRO-5
   assert.equal(nonStoryReason('A thriller that is "the best night out in years" (Evening Standard).'), 'pull-quote');
   assert.equal(nonStoryReason('"Utterly brilliant" – The Guardian.'), 'pull-quote');
 });
+
+// BRO-5063: three rows the backfill left empty although their pages had plot
+// (TodayTix about text, 2026-10-11).
+test('a run of initials does not swallow the sentence before it (P.T. Barnum)', () => {
+  const about = 'Book The Greatest Showman tickets on TodayTix. The Greatest Showman is a musical that follows P.T. Barnum, who absolutely refuses to settle for the status quo. Driven by great creative ambition, he begins assembling a rather unconventional group of performers.';
+  assert.match(cleanTodaytixAbout(about), /^The Greatest Showman is a musical that follows P\.T\. Barnum/);
+});
+
+test('half of a pull quote is dropped even after its opening mark is trimmed (Insane Asylum Seekers)', () => {
+  const about = '“At 27, my dad had escaped multiple bloodthirsty dictatorships. I’m 27, I had a panic attack watching the final episode of Succession,” Laith says. Laith has been keeping a secret for years, and he believes the reason lies with his parents leaving Iraq 30 years prior. This story explores a century of the British-Iraqi experience.';
+  const out = cleanTodaytixAbout(about);
+  assert.doesNotMatch(out, /At 27/);
+  assert.match(out, /^Laith has been keeping a secret/);
+});
+
+test('sentences ending in a quote or bracket are kept, quoted titles are story (BRO-5063 review)', () => {
+  assert.equal(cleanTodaytixAbout('Set in 1920s Paris, the play follows Anna. She is introduced to a stranger called "the Count." They fall in love when war comes.'),
+    'Set in 1920s Paris, the play follows Anna. She is introduced to a stranger called "the Count." They fall in love when war comes.');
+  assert.match(cleanTodaytixAbout('"Hamilton" is the story of America then, told by America now. It follows a founding father.'), /^"Hamilton" is the story/);
+  assert.match(cleanTodaytixAbout("'Tis the season for murder. A family gathers when a body is found in the snow."), /the season for murder\. A family gathers/);
+});

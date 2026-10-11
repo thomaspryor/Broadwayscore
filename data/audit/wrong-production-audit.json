@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-11T17:15:02.750Z",
+  "timestamp": "2026-10-11T17:48:35.872Z",
   "stats": {
-    "totalReviews": 55664,
-    "alreadyFlagged": 20627,
-    "dateGuardCatches": 262,
-    "directorMismatch": 1728,
-    "tvFilmSignals": 1586,
-    "londonSignals": 2084,
+    "totalReviews": 55723,
+    "alreadyFlagged": 20689,
+    "dateGuardCatches": 261,
+    "directorMismatch": 1731,
+    "tvFilmSignals": 1592,
+    "londonSignals": 2112,
     "offBroadwaySignals": 506,
     "yearMismatch": 135,
-    "noPublishDate": 5618
+    "noPublishDate": 5570
   },
   "findings": [
     {
@@ -517,6 +517,33 @@
       "score": 77,
       "publishDate": "2022-11-21",
       "url": "https://www.nytimes.com/2022/11/21/theater/christmas-carol-review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2018",
+      "file": "city-am--adam-bloodworth.json",
+      "score": null,
+      "publishDate": "2018-12-06",
+      "url": "https://www.cityam.com/christmas-carol-review-old-vics-revival-stars-stephen/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2018",
+      "file": "standard--henry-hitchings.json",
+      "publishDate": "2018-12-06",
+      "url": "https://www.standard.co.uk/culture/theatre/a-christmas-carol-review-old-vics-atmospheric-show-brings-joy-sadness-and-seasonal-magic-a4010361.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -1844,6 +1871,25 @@
       ]
     },
     {
+      "showId": "all-my-sons-west-end-2019",
+      "file": "british-theatre--mark-ludmon.json",
+      "score": null,
+      "publishDate": "2019-04-26",
+      "url": "https://www.britishtheatre.com/posts/review-all-my-sons-old-vic-theatre-london",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ivo van hove\" from all-my-sons-west-end-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "all-my-sons-west-end-2025",
       "file": "artsdesk--matt-wolf.json",
       "score": 80,
@@ -2843,7 +2889,7 @@
     {
       "showId": "and-juliet-west-end-2019",
       "file": "thestage--tim-bano.json",
-      "score": null,
+      "score": 97,
       "publishDate": "November 20th, 2019",
       "url": "https://www.thestage.co.uk/reviews/66785",
       "findings": [
@@ -9988,7 +10034,7 @@
     {
       "showId": "dear-evan-hansen-west-end-2019",
       "file": "london-box-office--john-yap.json",
-      "score": 99,
+      "score": 97,
       "publishDate": "2021-11-19",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-dear-evan-hansen",
       "findings": [
@@ -18998,6 +19044,96 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "inside-no-9-stage-fright-west-end-2025",
+      "file": "artsdesk--helen-hawkins.json",
+      "score": 72,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/inside-no-9-stage-fright-wyndham%E2%80%99s-review-uneven-fright-night-f%C3%AAted-duo",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "inside-no-9-stage-fright-west-end-2025",
+      "file": "independent--annabel-nugent.json",
+      "score": 82,
+      "publishDate": null,
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/inside-no-9-stage-fright-review-b2689116.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "inside-no-9-stage-fright-west-end-2025",
+      "file": "london-theatre--anya-ryan.json",
+      "score": 57,
+      "publishDate": null,
+      "url": "https://www.londontheatre.co.uk/reviews/inside-no-9-stage-fright-review-wyndhams-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "inside-no-9-stage-fright-west-end-2025",
+      "file": "thestage--sam-marlowe.json",
+      "score": 57,
+      "publishDate": null,
+      "url": "https://www.thestage.co.uk/reviews/inside-no-9-stagefright-review-wyndhams-theatre-london-reece-shearsmith-steve-pemberton-simon-evans",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "inside-no-9-stage-fright-west-end-2025",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.whatsonstage.com/news/inside-no-9-stage-fright-west-end-review-reece-shearsmith-and-steve-pemberton-deliver-an-all-encompassing-adaptation_1662635/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -28168,6 +28304,7 @@
     {
       "showId": "only-fools-and-horses-west-end-2019",
       "file": "british-theatre--paul-t-davies.json",
+      "score": 76,
       "publishDate": "2019-02-20",
       "url": "https://www.britishtheatre.com/posts/review-only-fools-and-horses-the-musical-theatre-royal-haymarket",
       "findings": [
@@ -28186,7 +28323,7 @@
     {
       "showId": "only-fools-and-horses-west-end-2019",
       "file": "guardian--mark-lawson.json",
-      "score": 59,
+      "score": 58,
       "publishDate": "February 20th, 2019",
       "url": "https://www.theguardian.com/stage/2019/feb/20/only-fools-and-horses-the-musical-review-vintage-gags-need-better-tunes",
       "findings": [
@@ -28241,7 +28378,7 @@
     {
       "showId": "only-fools-and-horses-west-end-2019",
       "file": "timeout-london--tom-wicker.json",
-      "score": 60,
+      "score": 59,
       "publishDate": "October 1st, 2021",
       "url": "https://www.timeout.com/london/theatre/only-fools-and-horses-the-musical-review",
       "findings": [
@@ -28288,6 +28425,7 @@
     {
       "showId": "only-fools-and-horses-west-end-2019",
       "file": "whatsonstage--unknown.json",
+      "score": 66,
       "publishDate": "2019-02-20",
       "url": "https://www.whatsonstage.com/news/review-only-fools-and-horses-the-musical-theatre-royal-haymarket_48539/",
       "findings": [
@@ -36005,7 +36143,7 @@
     {
       "showId": "the-antipodes-west-end-2019",
       "file": "london-theatre--mark-shenton.json",
-      "score": null,
+      "score": 60,
       "publishDate": "2019-10-30",
       "url": "https://www.londontheatre.co.uk/reviews/review-annie-bakers-the-antipodes-at-the-national-theatre",
       "findings": [
@@ -40878,7 +41016,7 @@
     {
       "showId": "the-night-of-the-iguana-west-end-2019",
       "file": "daily-mail--patrick-marmion.json",
-      "score": null,
+      "score": 76,
       "publishDate": "2019-07-19",
       "url": "https://www.dailymail.com/tvshowbiz/article-7263255/PATRICK-MARMION-reviews-Night-Iguana.html",
       "findings": [
@@ -44238,7 +44376,7 @@
     {
       "showId": "the-twilight-zone-west-end-2019",
       "file": "artsdesk--rachel-halliburton.json",
-      "score": null,
+      "score": 78,
       "publishDate": "March 13th, 2019",
       "url": "https://theartsdesk.com/theatre/twilight-zone-ambassadors-theatre-review-%E2%80%93-retro-wit-our-new-space-age-0",
       "findings": [
@@ -44294,7 +44432,7 @@
     {
       "showId": "the-twilight-zone-west-end-2019",
       "file": "whatsonstage--alun-hood.json",
-      "score": null,
+      "score": 82,
       "publishDate": "March 13th, 2019",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/twilight-zone-ambassadors-theatre_48688.html",
       "findings": [
@@ -46822,7 +46960,7 @@
     {
       "showId": "waitress-west-end-2019",
       "file": "onceaweektheatre--edward-lukes.json",
-      "score": null,
+      "score": 60,
       "publishDate": "2019-03-11",
       "url": "https://onceaweektheatre.com/waitress-at-the-adelphi-theatre-london-theatre-review-by-edward-lukes/",
       "findings": [
@@ -46836,7 +46974,7 @@
     {
       "showId": "waitress-west-end-2019",
       "file": "radio-times--tony-peters.json",
-      "score": null,
+      "score": 82,
       "publishDate": "2019-03-06",
       "url": "https://www.radiotimes.com/going-out/waitress-review-a-powerful-and-entertaining-message-about-friendship-and-self-empowerment/",
       "findings": [
@@ -46942,7 +47080,7 @@
     {
       "showId": "waitress-west-end-2019",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": null,
+      "score": 82,
       "publishDate": "March 7th, 2019",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/waitress-adelphi-katharine-mcphee_48658.html",
       "findings": [
@@ -48120,6 +48258,20 @@
       ]
     },
     {
+      "showId": "when-we-have-sufficiently-tortured-each-other-west-end-2019",
+      "file": "british-theatre--paul-t-davies.json",
+      "score": 57,
+      "publishDate": "2019-02-07T16:54:07+00:00",
+      "url": "https://britishtheatre.com/review-when-we-have-sufficiently-tortured-each-other-national-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "white-pearl-west-end-2019",
       "file": "timeout-london--ka-bradley.json",
       "score": 82,
@@ -48852,6 +49004,20 @@
       ]
     },
     {
+      "showId": "9-to-5-the-musical-west-end-2019",
+      "file": "financialtimes--harriet-fitch-little.json",
+      "score": null,
+      "publishDate": "February 18th, 2019",
+      "url": "https://www.ft.com/content/d46f7da8-3372-11e9-9be1-7dc6e2dfa65e",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
       "file": "dailybeast--tim-teeman.json",
       "score": 62,
@@ -49075,7 +49241,7 @@
     {
       "showId": "a-day-in-the-death-of-joe-egg-west-end-2019",
       "file": "sierz-co-uk--unknown.json",
-      "score": null,
+      "score": 90,
       "publishDate": "2019-10-02",
       "url": "https://sierz.co.uk/reviews/a-day-in-the-death-of-joe-egg-trafalgar-studios/",
       "findings": [
@@ -49256,6 +49422,7 @@
     {
       "showId": "a-history-of-water-in-the-middle-east-west-end-2019",
       "file": "whatsonstage--alun-hood.json",
+      "score": 82,
       "publishDate": "October 15th, 2019",
       "url": "https://www.whatsonstage.com/london-theatre/news/a-history-of-water-in-the-middle-east-royal-court_50125.html",
       "findings": [
@@ -49694,7 +49861,7 @@
     {
       "showId": "a-very-expensive-poison-west-end-2019",
       "file": "artsdesk--rachel-halliburton.json",
-      "score": null,
+      "score": 96,
       "publishDate": "September 6th, 2019",
       "url": "https://theartsdesk.com/theatre/very-expensive-poison-old-vic-review-%E2%80%93-bold-evocation-post-truth-world",
       "findings": [
@@ -49736,7 +49903,7 @@
     {
       "showId": "a-very-expensive-poison-west-end-2019",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": null,
+      "score": 97,
       "publishDate": "September 6th, 2019",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/very-expensive-poison-old-vic_49826.html",
       "findings": [
@@ -50166,6 +50333,7 @@
     {
       "showId": "all-about-eve-west-end-2019",
       "file": "broadwayworld--marianka-swain.json",
+      "score": 66,
       "publishDate": "2019-02-12",
       "url": "https://www.broadwayworld.com/westend/article/BWW-Review-ALL-ABOUT-EVE-Noel-Coward-Theatre-20190212",
       "findings": [
@@ -50247,15 +50415,15 @@
     },
     {
       "showId": "all-my-sons-west-end-2019",
-      "file": "standard--henry-hitchings.json",
+      "file": "london-theatre--will-longman.json",
       "score": 82,
-      "publishDate": "March 13th, 2019",
-      "url": "https://www.standard.co.uk/culture/theatre/all-my-sons-review-sally-field-brings-an-air-of-mystery-to-this-complex-and-devastating-production-at-the-old-vic-a4124636.html",
+      "publishDate": "April 24th, 2019",
+      "url": "https://www.londontheatre.co.uk/reviews/review-all-my-sons-starring-sally-field-and-bill-pullman-at-the-old-vic",
       "findings": [
         {
-          "type": "DATE_GUARD",
+          "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Published 33d before show (March 13th, 2019 vs 2019-04-15)"
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -52340,6 +52508,7 @@
     {
       "showId": "bitter-wheat-west-end-2019",
       "file": "nytimes--matt-wolf.json",
+      "score": 26,
       "publishDate": "2019-06-20",
       "url": "https://www.nytimes.com/2019/06/20/theater/bitter-wheat-london-david-mamet.html?",
       "findings": [
@@ -52353,6 +52522,7 @@
     {
       "showId": "bitter-wheat-west-end-2019",
       "file": "nytimes--unknown.json",
+      "score": 24,
       "publishDate": "2019-06-20",
       "url": "https://www.nytimes.com/2019/06/20/theater/bitter-wheat-london-david-mamet.html",
       "findings": [
@@ -53897,6 +54067,32 @@
       ]
     },
     {
+      "showId": "caroline-or-change-west-end-2018",
+      "file": "british-theatre--mark-ludmon.json",
+      "publishDate": "2018-12-21",
+      "url": "https://www.britishtheatre.com/fr/posts/review-caroline-or-change-playhouse-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "caroline-or-change-west-end-2018",
+      "file": "nytimes--ben-brantley.json",
+      "publishDate": "2019-02-25",
+      "url": "https://www.nytimes.com/2019/02/25/theater/company-caroline-or-change-reviews-london.html?eafs_enabled=false",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
       "showId": "carousel-2018",
       "file": "frontmezzjunkies--steven-ross.json",
       "score": 88,
@@ -54836,6 +55032,20 @@
       ]
     },
     {
+      "showId": "come-from-away-west-end-2019",
+      "file": "whatsonstage--james-fitzgerald.json",
+      "score": 86,
+      "publishDate": "February 18th, 2019",
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/come-from-away-phoenix-theatre_48529.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "company-2021",
       "file": "guardian--adrian-horton.json",
       "score": 87,
@@ -54944,6 +55154,34 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "coriolanus-west-end-2024",
+      "file": "london-box-office--stuart-king.json",
+      "score": null,
+      "publishDate": "2024-09-25",
+      "url": "https://www.londonboxoffice.co.uk/news/post/coriolanus-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "coriolanus-west-end-2024",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": null,
+      "publishDate": "2024-10-01",
+      "url": "https://www.timeout.com/london/theatre/coriolanus-4-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -55649,7 +55887,7 @@
     {
       "showId": "dear-evan-hansen-west-end-2019",
       "file": "whatsonstage--alex-wood.json",
-      "score": null,
+      "score": 94,
       "publishDate": "2019-11-19T23:40:38+00:00",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/dear-evan-hansen-west-end-sam-tutty_50391.html",
       "findings": [
@@ -64785,6 +65023,20 @@
       ]
     },
     {
+      "showId": "man-of-la-mancha-west-end-2019",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 25,
+      "publishDate": "May 1st, 2019",
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/man-of-la-mancha-london-coliseum_48976.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "man-to-man-west-end-2026",
       "file": "a-youngish-perspective--antonia-constantin.json",
       "score": 91,
@@ -66603,7 +66855,7 @@
     {
       "showId": "mr-gum-and-the-dancing-bear-the-musical-west-end-2019",
       "file": "whatsonstage--alun-hood.json",
-      "score": null,
+      "score": 82,
       "publishDate": "August 1st, 2019",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/mr-gum-dancing-bear-musical-national_49565.html",
       "findings": [
@@ -68286,7 +68538,7 @@
     {
       "showId": "on-your-feet-west-end-2019",
       "file": "whatsonstage--alun-hood.json",
-      "score": null,
+      "score": 82,
       "publishDate": "2019-06-27T19:45:03+00:00",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/on-your-feet-coliseum-gloria-estefan_49357.html",
       "findings": [
@@ -70335,6 +70587,34 @@
       ]
     },
     {
+      "showId": "rosmersholm-west-end-2019",
+      "file": "artsdesk--matt-wolf.json",
+      "score": 81,
+      "publishDate": "May 4th, 2019",
+      "url": "https://theartsdesk.com/theatre/rosmersholm-duke-yorks-theatre-review-little-known-ibsen-lands-force",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "rosmersholm-west-end-2019",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": null,
+      "publishDate": "May 3rd, 2019",
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/rosmersholm-duke-of-yorks-_49001.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "rutherford-and-son-west-end-2019",
       "file": "london-theatre--mark-shenton.json",
       "score": 82,
@@ -70365,7 +70645,7 @@
     {
       "showId": "rutherford-and-son-west-end-2019",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": null,
+      "score": 82,
       "publishDate": "May 29th, 2019",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/rutherford-and-son-national-theatre_49150.html",
       "findings": [
@@ -72971,7 +73251,7 @@
     {
       "showId": "tartuffe-west-end-2019",
       "file": "artsdesk--unknown.json",
-      "score": null,
+      "score": 39,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/tartuffe-national-theatre-review-morality-heavy-version-comedy-classic",
       "findings": [
@@ -73265,7 +73545,7 @@
     {
       "showId": "the-antipodes-west-end-2019",
       "file": "british-theatre--philip-fisher.json",
-      "score": null,
+      "score": 69,
       "publishDate": "2019-10-31",
       "url": "https://www.britishtheatreguide.info/reviews/the-antipodes-dorfman-theatre-18366",
       "findings": [
@@ -73293,7 +73573,7 @@
     {
       "showId": "the-antipodes-west-end-2019",
       "file": "loureviews--louise-penn.json",
-      "score": null,
+      "score": 61,
       "publishDate": "2019-11-06",
       "url": "https://loureviews.blog/2019/11/06/the-antipodes-national-theatre-dorfman/",
       "findings": [
@@ -77382,7 +77662,7 @@
     {
       "showId": "the-night-of-the-iguana-west-end-2019",
       "file": "independent--paul-taylor.json",
-      "score": null,
+      "score": 90,
       "publishDate": "July 17th, 2019",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/night-iguana-review-noel-coward-theatre-london-clive-owen-anna-gunn-a9008076.html",
       "findings": [
@@ -77590,6 +77870,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-other-place-west-end-2024",
+      "file": "liamodell--liam-odell.json",
+      "score": null,
+      "publishDate": "2024-10-07",
+      "url": "https://liamodell.com/2024/10/07/the-other-place-review-national-theatre-lyttelton-antigone-emma-darcy-tobias-menzies-nina-sosanya-alison-oliver-alexander-zeldin/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
@@ -78527,7 +78821,7 @@
     {
       "showId": "the-starry-messenger-west-end-2019",
       "file": "daily-mail--patrick-marmion.json",
-      "score": null,
+      "score": 82,
       "publishDate": "2019-05-30",
       "url": "https://www.dailymail.com/news/article-7084971/No-Sex-City-tea-cosy-heart-PATRICK-MARMION-reviews-Starry-Messenger.html",
       "findings": [
@@ -80267,6 +80561,33 @@
     },
     {
       "showId": "top-girls-west-end-2019",
+      "file": "fringereview--simon-jenner.json",
+      "score": null,
+      "publishDate": "2019-04-14",
+      "url": "https://fringereview.co.uk/review/fringereview-uk/2019/top-girls/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "top-girls-west-end-2019",
+      "file": "london-box-office--justin-murray.json",
+      "publishDate": "2019-04-08",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-top-girls-nt",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "top-girls-west-end-2019",
       "file": "observer--susannah-clapp.json",
       "score": 72,
       "publishDate": "2019-04-07",
@@ -80285,6 +80606,47 @@
       "score": 64,
       "publishDate": "2019-04-13",
       "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "top-girls-west-end-2019",
+      "file": "thestage--david-benedict.json",
+      "score": 42,
+      "publishDate": "April 4th, 2019",
+      "url": "https://www.thestage.co.uk/reviews/top-girls-review-at-national-theatre-london--underpowered-revival-of-caryl-churchills-masterpiece",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "top-girls-west-end-2019",
+      "file": "thestage--unknown.json",
+      "publishDate": null,
+      "url": "https://www.thestage.co.uk/reviews/top-girls-review-at-national-theatre-london--underpowered-revival-of-caryl-churchills-masterpiece",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "top-girls-west-end-2019",
+      "file": "whatsonstage--laura-barnett.json",
+      "score": null,
+      "publishDate": "April 4th, 2019",
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/top-girls-national-caryl-churchill_48825.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -80967,7 +81329,7 @@
     {
       "showId": "waitress-west-end-2019",
       "file": "a-younger-theatre--unknown.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2019-03-11",
       "url": "https://www.ayoungertheatre.com/review-waitress-adelphi-theatre/",
       "findings": [
@@ -80995,7 +81357,7 @@
     {
       "showId": "waitress-west-end-2019",
       "file": "express-uk--stefan-kyriazis.json",
-      "score": null,
+      "score": 98,
       "publishDate": "2019-03-09",
       "url": "https://www.express.co.uk/entertainment/theatre/1097679/Waitress-musical-review-theatre-tickets-cast-Sarah-Bareilles-music-katherine-mcphe",
       "findings": [
@@ -81468,6 +81830,48 @@
     },
     {
       "showId": "when-we-have-sufficiently-tortured-each-other-west-end-2019",
+      "file": "a-younger-theatre--unknown.json",
+      "score": null,
+      "publishDate": "2019-01-25",
+      "url": "https://www.ayoungertheatre.com/review-when-we-have-sufficiently-tortured-each-other-the-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "when-we-have-sufficiently-tortured-each-other-west-end-2019",
+      "file": "london-box-office--phil-willmott.json",
+      "score": null,
+      "publishDate": "2019-01-23",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-when-we-have-sufficiently-tortured-each-other",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "when-we-have-sufficiently-tortured-each-other-west-end-2019",
+      "file": "sierz-co-uk--unknown.json",
+      "score": null,
+      "publishDate": "2019-01-26",
+      "url": "https://sierz.co.uk/reviews/when-we-have-sufficiently-tortured-each-other-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "when-we-have-sufficiently-tortured-each-other-west-end-2019",
       "file": "thestage--natasha-tripney.json",
       "score": 70,
       "publishDate": "2019-02-07T16:54:07+00:00",
@@ -81477,6 +81881,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "when-we-have-sufficiently-tortured-each-other-west-end-2019",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 74,
+      "publishDate": "2019-02-07T16:54:07+00:00",
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/sufficiently-tortured-cate-blanchett-national_48373.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -81496,6 +81914,20 @@
     },
     {
       "showId": "white-pearl-west-end-2019",
+      "file": "thestage--ava-wong-davies.json",
+      "score": 65,
+      "publishDate": "May 20th, 2019",
+      "url": "https://www.thestage.co.uk/reviews/white-pearl-review-at-royal-court-london--a-scathing-gleefully-nasty-corporate-satire",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "white-pearl-west-end-2019",
       "file": "times-uk--quentin-letts.json",
       "score": 43,
       "publishDate": "2019-05-26",
@@ -81505,6 +81937,34 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "white-pearl-west-end-2019",
+      "file": "variety--unknown.json",
+      "score": null,
+      "publishDate": "2019-05-20",
+      "url": "https://variety.com/2019/legit/reviews/white-pearl-review-play-1203219925/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "white-pearl-west-end-2019",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 61,
+      "publishDate": "May 17th, 2019",
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/white-pearl-royal-court_49094.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
