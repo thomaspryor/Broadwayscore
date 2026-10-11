@@ -47,7 +47,8 @@ const { venuesMatch } = require('./lib/deduplication');
 const { sanitizeVenueForWrite, isWestEndVenue } = require('./lib/venue-classification');
 const { withMarketSuffix } = require('./lib/market-slug');
 const { productionIdYear } = require('./lib/todaytix-dates');
-const { venueFamily, decideWeHistoricalPromotion } = require('./lib/we-historical-corroboration');
+const { venueFamily, decideWeHistoricalPromotion, WE_HISTORICAL_DISCOVERY_SOURCES } = require('./lib/we-historical-corroboration');
+const { buildReviewLedCandidates, findContinuingRun, reviewLedPath } = require('./lib/we-review-led-candidates');
 const { candidatesPath } = require('./discover-historical-shows-we');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-normalize');
@@ -73,6 +74,9 @@ const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
 const REVIEWS_PATH = path.join(ROOT, 'data', 'reviews.json');
 const DAY_MS = 86400000;
 const DISCOVERY_SOURCE = 'we-historical:wos';
+// Review-led rows (BRO-5031): WOS reviewed, never listed; dated from the
+// Theatre Record production page saved by resolve-we-unlisted-tr.js.
+const REVIEW_LED_DISCOVERY_SOURCE = 'we-historical:tr';
 
 const SMALL_WORDS = new Set(['a', 'an', 'and', 'as', 'at', 'but', 'by', 'for', 'in', 'of', 'on', 'or', 'the', 'to', 'with']);
 
@@ -161,7 +165,9 @@ function buildShowEntry(candidate, venueVocabulary, venueSpellings = new Map(), 
   // Historical rows use the full id as the slug (Broadway/OB historical
   // precedent): same-title productions in different years stay distinct.
   const id = `${withMarketSuffix(slugify(normalizedTitle), 'west-end')}-${year}`;
-  const evidenceUrls = [candidate.sourceUrls?.wos, candidate.sourceUrls?.wosReview].filter(Boolean);
+  const reviewLed = candidate.origin === 'review-led';
+  const dateSource = reviewLed ? 'theatre-record' : 'whatsonstage';
+  const evidenceUrls = [candidate.sourceUrls?.wos, candidate.sourceUrls?.wosReview, candidate.sourceUrls?.theatreRecord].filter(Boolean);
   return {
     id,
     title: normalizedTitle,
@@ -178,10 +184,10 @@ function buildShowEntry(candidate, venueVocabulary, venueSpellings = new Map(), 
     type: inferShowType(candidate, musicalTitles).type,
     tags: ['historical'],
     season: candidate.season,
-    discoverySource: DISCOVERY_SOURCE,
+    discoverySource: reviewLed ? REVIEW_LED_DISCOVERY_SOURCE : DISCOVERY_SOURCE,
     discoveredAt: new Date().toISOString(),
-    ...(candidate.openingDate ? { openingDateSource: 'whatsonstage' } : {}),
-    closingDateSource: 'whatsonstage',
+    ...(candidate.openingDate ? { openingDateSource: dateSource } : {}),
+    closingDateSource: dateSource,
     ...(evidenceUrls.length ? { evidenceUrls } : {}),
   };
 }
@@ -226,7 +232,9 @@ function planPromotions({ candidates, shows, approvals, only, today }) {
     const dupOpts = { withinYears: 1, startDate, venueEquals: sameVenue };
     const dup = findExactDuplicate(pool, entry.title, entry.venue, dupOpts)
       || pool.find(s => s.startDate && westEndIds.has(s.id) && normalizeTitle(s.title) === normalizeTitle(entry.title)
-        && Math.abs(Date.parse(s.startDate) - Date.parse(startDate)) <= 7 * DAY_MS);
+        && Math.abs(Date.parse(s.startDate) - Date.parse(startDate)) <= 7 * DAY_MS)
+      // A review-led row can be a re-review of a continuing run (Phantom 2021).
+      || (c.origin === 'review-led' && findContinuingRun(shows, entry.title, startDate));
     if (dup) { skipped.push({ title: c.title, reason: `duplicate of ${dup.id || dup.title}` }); continue; }
     const subtitleDup = findSubtitleDuplicateTitle(pool, entry.title, entry.venue, dupOpts);
     if (subtitleDup) { skipped.push({ title: c.title, reason: `subtitle-variant duplicate of "${subtitleDup}"` }); continue; }
@@ -286,7 +294,7 @@ function revert(season, apply) {
   const showsData = loadShows();
   const reviewsJson = readJson(REVIEWS_PATH, []);
   const reviews = Array.isArray(reviewsJson) ? reviewsJson : (reviewsJson.reviews || []);
-  const removable = showsData.shows.filter(s => ids.has(s.id) && s.discoverySource === DISCOVERY_SOURCE && !hasAnyReviews(s.id, reviews));
+  const removable = showsData.shows.filter(s => ids.has(s.id) && WE_HISTORICAL_DISCOVERY_SOURCES.has(s.discoverySource) && !hasAnyReviews(s.id, reviews));
   const kept = [...ids].filter(id => !removable.some(s => s.id === id));
   console.log(`Season ${season}: ${ids.size} promoted by this script; removable (no reviews yet): ${removable.length}`);
   for (const s of removable) console.log(`  - ${s.id}`);
@@ -313,11 +321,19 @@ function main() {
   const audit = JSON.parse(fs.readFileSync(file, 'utf8'));
   const approvals = readJson(APPROVALS_PATH, {});
   const showsData = loadShows();
-  const { toPromote, skipped, typeGuessed } = planPromotions({ candidates: audit.candidates || [], shows: showsData.shows, approvals, only });
+  // Review-led candidates are rebuilt from the saved TR lookups against the
+  // CURRENT shows.json each run, so parser fixes need no new TR run.
+  const reviewLed = readJson(reviewLedPath(ROOT, season), null);
+  const reviewLedCandidates = reviewLed
+    ? buildReviewLedCandidates({ season, lookups: reviewLed.lookups, shows: showsData.shows })
+    : [];
+  const candidates = [...(audit.candidates || []), ...reviewLedCandidates];
+  const { toPromote, skipped, typeGuessed } = planPromotions({ candidates, shows: showsData.shows, approvals, only });
 
-  const unknownOnly = [...only].filter(t => !(audit.candidates || []).some(c => c.title === t));
+  const unknownOnly = [...only].filter(t => !candidates.some(c => c.title === t));
   if (unknownOnly.length) console.log(`--only titles not in the candidates file: ${unknownOnly.join(' | ')}`);
   console.log(`Candidates: ${audit.candidates?.length || 0} (file generated ${audit.generatedAt})`);
+  console.log(`Review-led candidates (Theatre Record): ${reviewLedCandidates.length}${reviewLed ? ` (lookups ${reviewLed.generatedAt})` : ' (no lookup file; run we-historical-tr-resolve.yml)'}`);
   console.log(`Will promote: ${toPromote.length}`);
   for (const e of toPromote) console.log(`  + ${e.id} | ${e.title} | ${e.venue} | ${e.previewsStartDate || '?'} / ${e.openingDate || '?'} → ${e.closingDate}`);
   if (typeGuessed.length) {

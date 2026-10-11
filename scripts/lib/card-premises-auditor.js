@@ -115,16 +115,28 @@ function pathExistsOnOriginMain(relPath, { repo = REPO, ref = 'origin/main', log
 // Depth-bound the fetch (same reasoning as autofix-canary.js's
 // markerExistsOnOriginMain): most CI checkouts are shallow, and an unbounded
 // `git fetch origin main` from one pulls the whole repo instead of the delta.
-function fetchOriginMain({ repo = REPO, log = () => {} } = {}) {
+function fetchOriginMain({ repo = REPO, log = () => {}, attempts = 3, sleepMs = (ms) => Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms) } = {}) {
   const depthArgs = repoDepthArgs({ repoRoot: repo });
-  try {
-    // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
-    execFileSync('git', ['fetch', ...depthArgs, '--quiet', 'origin', 'main'], { cwd: repo, timeout: 30000, stdio: 'pipe' });
-    return true;
-  } catch (err) {
-    log(`[card-premises-auditor] WARN could not fetch origin/main: ${String(err.message).slice(0, 120)}`);
-    return false;
+  // ~20 worktrees share one .git, so a concurrent fetch can hold
+  // refs/remotes/origin/main.lock; one collision must not become a spurious
+  // "unverified" refusal downstream (BRO-3435). Retry only lock collisions,
+  // with jitter; any other failure returns false at once.
+  for (let i = 1; i <= attempts; i++) {
+    try {
+      // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
+      execFileSync('git', ['fetch', ...depthArgs, '--quiet', 'origin', 'main'], { cwd: repo, timeout: 30000, stdio: 'pipe' });
+      return true;
+    } catch (err) {
+      const text = `${err.message || ''} ${err.stderr || ''}`;
+      if (i < attempts && /\.lock|cannot lock ref|Unable to create/i.test(text)) {
+        sleepMs(200 + Math.floor(Math.random() * 600));
+        continue;
+      }
+      log(`[card-premises-auditor] WARN could not fetch origin/main: ${String(err.message).slice(0, 120)}`);
+      return false;
+    }
   }
+  return false;
 }
 
 // ── Vacuous-check detection (BRO-3378) ──────────────────────────────────────
