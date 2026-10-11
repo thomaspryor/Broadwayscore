@@ -47,3 +47,16 @@ test('costPathFactor: shadow cost paths (stepSmall, stepLate, costGrowth)', () =
   assert.equal(costPathFactor(157, { stepLate: true }), 0.88);
   assert.ok(Math.abs(costPathFactor(53, { costGrowth: true }) - 1.035 * 0.93) < 1e-9);
 });
+
+test('extraVariableCost: shadow gross-band and overage deductions (BRO-5073)', () => {
+  const { extraVariableCost } = require('../../scripts/lib/recoupment-model');
+  const nut = 1e6;
+  assert.equal(extraVariableCost(1.5e6, nut, 0.11 * 1.5e6, null), 0, 'live path adds nothing');
+  // varBand: 12% below 0.9x cost, 23.5% at 1.5x and up, minus what live already deducts.
+  assert.equal(Math.round(extraVariableCost(0.8e6, nut, 0.11 * 0.8e6, { varBand: true })), Math.round(0.01 * 0.8e6));
+  assert.equal(Math.round(extraVariableCost(1.5e6, nut, 0.11 * 1.5e6, { varBand: true })), Math.round(0.125 * 1.5e6));
+  assert.equal(Math.round(extraVariableCost(1.2e6, nut, 0.11 * 1.2e6, { varBand: true })), Math.round((0.1775 - 0.11) * 1.2e6));
+  // varOverage: matches varBand at 1.5x, nothing at or below cost.
+  assert.equal(extraVariableCost(0.9e6, nut, 0, { varOverage: true }), 0);
+  assert.equal(Math.round(extraVariableCost(1.5e6, nut, 0, { varOverage: true })), Math.round(0.125 * 1.5e6));
+});
