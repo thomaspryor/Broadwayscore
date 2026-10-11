@@ -102,11 +102,12 @@ const {
   isDateOnlyAutoReason,
 } = require('./lib/wrong-production-autoclear');
 const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
+const { evaluateRepublishedReview, humanFlagOutranksScriptClear } = require('./lib/run-contamination');
 const { detectPriorRunRepublish, shouldReleasePriorRunRepublish } = require('./lib/prior-run-republish-guard');
 const { guardPublishDate, evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard, evaluatePreWindowInclusion, PRE_WINDOW_DAYS } = require('./lib/date-guard');
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
 const { isAwaitingUrlCorrectionRefetch, shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
-const { safeWriteReview, writeReviewOrThrow, invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
+const { safeWriteReview, writeReviewOrThrow, invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear, retractScriptWrongProductionClear } = require('./lib/review-write-guard');
 const { KNOWN_SYNDICATION_PAIRS, getSyndicationPrimaries, isPrimaryFileFor, isLiveSyndicationPrimary } = require('./lib/syndication-pairs');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
 const { writeShowExclusionsFile } = require('./lib/rebuild-exclusion-audit');
@@ -1549,6 +1550,8 @@ const crossShowFingerprints = new Map();
   let priorRunAutoCleared = 0;
   let datelessRevivalFlagged = 0;
   let priorRunRepublishFlagged = 0;
+  let republishedEarlierYearFlagged = 0;
+  let flagOutranksClearHealed = 0;
   let datelessRevivalAutoCleared = 0;
   let staleDateGuardAutoCleared = 0;
   let anticipatoryGraceAutoCleared = 0;
@@ -1565,6 +1568,18 @@ const crossShowFingerprints = new Map();
       try {
         const fp = path.join(sDir, f);
         const d = JSON.parse(fs.readFileSync(fp, 'utf8'));
+
+        // BRO-5000: a plan/human flag set AFTER a script's clear must take effect. The clear
+        // markers (ManualClear/Override*) otherwise keep the review counted (An Oak Tree, Time Out).
+        if (humanFlagOutranksScriptClear(d)) {
+          invalidateWrongProductionAutoClear(d);
+          const sc = retractScriptWrongProductionClear(d);
+          if (sc.retracted.length) {
+            console.log(`  [FLAG-OUTRANKS-CLEAR] ${sid}/${f}: retracted script clear (${sc.retracted.length} markers)`);
+            safeWriteReview(fp, d);
+            flagOutranksClearHealed++;
+          }
+        }
 
         // Resolve a usable review date once (parsed publishDate, else a precise
         // date in the URL). extractDateFromUrl handles /YYYY/MM/DD/, Guardian
@@ -1806,6 +1821,19 @@ const crossShowFingerprints = new Map();
             priorRunRepublishFlagged++;
             continue;
           }
+          // BRO-5000: a page that says outright it was written in an earlier year
+          // ("This review is from 2025") on a show with no declared run in that year.
+          const earlier = evaluateRepublishedReview({ fullText: d.fullText, show: showRecord, publishDate: d.publishDate });
+          if (earlier.exclude) {
+            console.log(`  [REPUBLISHED-EARLIER-YEAR] ${sid}/${f}: "${earlier.snippet}"`);
+            d.wrongProduction = true;
+            invalidateWrongProductionAutoClear(d);
+            d.wrongProductionReason = earlier.reason;
+            d.wrongProductionNote = `Republished-page guard: "${earlier.snippet}" names ${earlier.markerYear}, before this production's first date`;
+            safeWriteReview(fp, d);
+            republishedEarlierYearFlagged++;
+            continue;
+          }
         }
         // (reviewDate resolved above, shared with the dateless-revival auto-clear.
         // YYYY-only URL fallback intentionally omitted: a year alone defaults to
@@ -1884,6 +1912,12 @@ const crossShowFingerprints = new Map();
   }
   if (preOpenHeld > 0) {
     console.log(`Pre-opening guard: HELD ${preOpenHeld} reviews (current-run corroboration contradicts date — human review needed)\n`);
+  }
+  if (flagOutranksClearHealed > 0) {
+    console.log(`Flag-outranks-clear: retracted a script clear on ${flagOutranksClearHealed} reviews a later plan flagged\n`);
+  }
+  if (republishedEarlierYearFlagged > 0) {
+    console.log(`Republished-page guard: flagged ${republishedEarlierYearFlagged} reviews that name an earlier year\n`);
   }
   if (priorRunRepublishFlagged > 0) {
     console.log(`Prior-run republish guard: flagged ${priorRunRepublishFlagged} reviews of an earlier production\n`);

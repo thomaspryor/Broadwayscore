@@ -1,0 +1,109 @@
+{
+  "issueNumber": "bro-5000-c",
+  "planId": "342c0d81-eb5f-4ec2-bcdb-aab033a274e5",
+  "status": "applied",
+  "createdAt": "2026-10-11T19:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5000/BRO-4998 corpus remediation (1/1): remove 4 url-less duplicate rows, exclude one 2008 review counted on a 2026 show, fix two show dates.",
+    "steps": [
+      "Delete 4 empty or url-less duplicate review rows (burnt-up-love, punch, real-women-have-curves, the-cottage).",
+      "Flag the 2008 Don Shewey review on Arias With a Twist (2026) as another production.",
+      "Set A Ghost In Your Ear previews to 2026-10-03 and From The Heart press night to 2026-10-08."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "burnt-up-love-off-west-end-2026/thereviewshub--stephen-bates.json",
+        "description": "Url-less twin of thereviewshub--the-reviews-hub-london.json (same outlet, same 2024-11-01 date, url present); counted twice."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "punch-2025/nytg--unknown.json",
+        "description": "Url-less, empty-text score row beside two New York Theatre Guide files for the same review; counted three times."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "real-women-have-curves-2025/nytimes--unknown.json",
+        "description": "Url-less, empty-text score row beside the two NYT files (one already duplicateOf the other); counted again."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-cottage-2023/theatermania--unknown.json",
+        "description": "Url-less, empty-text score row beside the two TheaterMania files for the same review; counted again."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "arias-with-a-twist-off-broadway-2026/donshewey--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Don Shewey review of the 2008 HERE Center production (text: 'through December 31', page dated 2008); the 2026 production had no 2008 review. Counted only because the LLM-guessed date was replaced by the fetch date."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-ghost-in-your-ear-off-broadway-2026",
+        "field": "previewsStartDate",
+        "oldValue": "2026-09-29",
+        "newValue": "2026-10-03",
+        "description": "Broadway.com and New York Theatre Guide: performances start October 3 (the September 29 to October 2 dates were refunded after a cast change)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "from-the-heart-west-end-2026",
+        "field": "openingDate",
+        "oldValue": "2026-10-09",
+        "newValue": "2026-10-08",
+        "description": "Press night was 2026-10-08: four outlets (Reviews Gate, Theatre News, Theatre Village, Theatre Weekly) published that day and more the next morning."
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T21:55:32.362Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted burnt-up-love-off-west-end-2026/thereviewshub--stephen-bates.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted punch-2025/nytg--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted real-women-have-curves-2025/nytimes--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-cottage-2023/theatermania--unknown.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "arias-with-a-twist-off-broadway-2026/donshewey--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for a-ghost-in-your-ear-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for from-the-heart-west-end-2026"
+    }
+  ]
+}

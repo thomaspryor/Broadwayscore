@@ -35,6 +35,12 @@ const FEEDBACK_EDITABLE_FIELDS = {
     // stop refilling it with the next wrong hit. execute-approved-fix checks
     // the shape and the key (lib/no-reliable-art.js).
     'noReliableArt',
+    // BRO-5000: whole array, compare-and-set; human-approved plans only. The only
+    // change a plan may make is a boolean inheritReviews on an existing entry (carry
+    // or stop carrying that earlier run's reviews, lib/prior-run-sibling.js).
+    // priorRunsValueProblem refuses any other difference: priorRuns windows are
+    // scoring inputs and are not re-dated through a plan.
+    'priorRuns',
   ],
   // recoupedDate/recoupedSource/sources: a recoupment correction needs all
   // three (validate-data.js requires recoupedDate when recouped=true). The
@@ -134,7 +140,7 @@ function buildShowSnapshot(show) {
     if (value !== undefined) {
       snapshot[field] = value;
     } else {
-      snapshot[field] = (field === 'creativeTeam' || field === 'cast' || field === 'rejectedImageUrls') ? [] : null;
+      snapshot[field] = (field === 'creativeTeam' || field === 'cast' || field === 'rejectedImageUrls' || field === 'priorRuns') ? [] : null;
     }
   }
   return snapshot;
@@ -167,6 +173,25 @@ function rejectedUrlsValueProblem(newValue, oldValue) {
   return null;
 }
 
+// shows.json priorRuns check for the human-approved data-edit path (BRO-5000): same
+// entries in the same order, differing only in a boolean inheritReviews.
+// Returns an error string or null.
+function priorRunsValueProblem(newValue, oldValue) {
+  if (!Array.isArray(newValue)) return 'priorRuns: newValue must be an array';
+  const old = Array.isArray(oldValue) ? oldValue : [];
+  if (newValue.length !== old.length) return 'priorRuns: a plan may not add or remove runs, only set inheritReviews';
+  for (const [i, n] of newValue.entries()) {
+    const o = old[i];
+    if (!n || typeof n !== 'object' || Array.isArray(n) || !o || typeof o !== 'object' || Array.isArray(o)) {
+      return `priorRuns[${i}]: must be an existing run object`;
+    }
+    if (n.inheritReviews !== undefined && typeof n.inheritReviews !== 'boolean') return `priorRuns[${i}].inheritReviews: must be a boolean`;
+    const strip = (r) => { const { inheritReviews, ...rest } = r; return JSON.stringify(rest); };
+    if (strip(n) !== strip(o)) return `priorRuns[${i}]: only inheritReviews may change`;
+  }
+  return null;
+}
+
 module.exports = {
   FEEDBACK_EDITABLE_FIELDS,
   AUTO_FIX_EDITABLE_FIELDS,
@@ -175,4 +200,5 @@ module.exports = {
   buildShowSnapshot,
   castValueProblem,
   rejectedUrlsValueProblem,
+  priorRunsValueProblem,
 };

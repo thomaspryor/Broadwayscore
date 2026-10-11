@@ -146,7 +146,15 @@ function applyReviewFieldEdit(record, action, stamp, ctx = {}) {
   if (newValue === true && (field === 'wrongProduction' || field === 'wrongShow')) {
     const guard = require('./review-write-guard');
     const beforeRetract = { ...next };
-    if (field === 'wrongProduction') guard.invalidateWrongProductionAutoClear(next);
+    if (field === 'wrongProduction') {
+      guard.invalidateWrongProductionAutoClear(next);
+      // BRO-5000: a script-made clear (ManualClear/Override*) outranks nothing; a human
+      // clear is a verdict this plan must not overrule silently.
+      const sc = guard.retractScriptWrongProductionClear(next);
+      if (sc.blockedByHumanClear) {
+        return { ok: false, reason: `wrongProduction: record carries a human clear (${guard.WRONG_PRODUCTION_CLEAR_MARKERS.filter((k) => next[k] != null).join(', ')}); a flag plan will not overrule it` };
+      }
+    }
     else guard.invalidateWrongShowAutoClear(next);
     sideEffectKeys = unexpectedChanges(beforeRetract, next, field);
   }
@@ -158,7 +166,7 @@ function applyReviewFieldEdit(record, action, stamp, ctx = {}) {
     next.needsRefetch = true;
   }
   const prior = Array.isArray(record.approvedFixes) ? record.approvedFixes : [];
-  next.approvedFixes = [...prior, { fixId: stamp.fixId, field, at: stamp.at }];
+  next.approvedFixes = [...prior, { fixId: stamp.fixId, field, at: stamp.at, newValue }];
   const retractMsg = sideEffectKeys.length ? ` (retracted ${sideEffectKeys.join(', ')})` : '';
   return { ok: true, record: next, sideEffectKeys, msg: `${field}: ${JSON.stringify(expected)} -> ${JSON.stringify(newValue)}${retractMsg}` };
 }
