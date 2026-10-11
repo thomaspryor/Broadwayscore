@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-11T02:06:27.426Z",
+  "timestamp": "2026-10-11T02:40:49.138Z",
   "stats": {
-    "totalReviews": 54685,
-    "alreadyFlagged": 20018,
+    "totalReviews": 54692,
+    "alreadyFlagged": 20019,
     "dateGuardCatches": 272,
-    "directorMismatch": 1673,
+    "directorMismatch": 1674,
     "tvFilmSignals": 1526,
-    "londonSignals": 1816,
+    "londonSignals": 1817,
     "offBroadwaySignals": 504,
     "yearMismatch": 130,
     "noPublishDate": 6154
@@ -19637,6 +19637,19 @@
       "score": 78,
       "publishDate": "2026-10-07",
       "url": "https://www.curtaincallreviews.co.uk/into-the-woods",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
+      "file": "everything-theatre--alice-grahame.json",
+      "publishDate": "2026-10-10",
+      "url": "https://everything-theatre.co.uk/2026/10/review-into-the-woods-noel-coward-theatre/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -50514,6 +50527,19 @@
       "file": "eventslist--unknown.json",
       "publishDate": null,
       "url": "https://eventslist.co.uk/london/events/rct-blood-of-my-blood-2026-10-01",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "blood-of-my-blood-west-end-2026",
+      "file": "everything-theatre--zaida-zeb.json",
+      "publishDate": "2026-10-10",
+      "url": "https://everything-theatre.co.uk/2026/10/review-blood-of-my-blood-royal-court-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

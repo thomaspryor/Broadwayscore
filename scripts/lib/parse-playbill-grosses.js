@@ -448,7 +448,62 @@ function latestPublishableWeek(now) {
   return d.toISOString().slice(0, 10);
 }
 
+/**
+ * Weeks the history holds but that miss a show it holds the weeks either side
+ * of: a week scraped short (2026-03-29 has 26 of Playbill's 36 rows, so Death
+ * of a Salesman's own-run total came up three weeks short, BRO-5016). Holes
+ * are measured in calendar weeks, not stored keys, so a week missing from the
+ * history altogether never stretches a hole; only holes of at most
+ * `maxHoleWeeks` count, a longer one is a hiatus (Take Me Out went dark for
+ * four months in 2022), not a scrape gap. Weeks with no key at all are not
+ * listed here: a plain `--start-from` backfill fetches those.
+ *
+ * @param {{weeks: Record<string, Record<string, object>>}} history
+ * @param {{maxHoleWeeks?: number}} [opts]
+ * @returns {{week: string, slugs: string[]}[]} stored weeks to refill, oldest
+ *   first, with the shows each one is missing
+ */
+function findShortHistoryWeeks(history, { maxHoleWeeks = 4 } = {}) {
+  const weeks = Object.keys(history?.weeks || {}).filter(w => ISO_WEEK_RE.test(w)).sort();
+  const ms = w => Date.parse(`${w}T00:00:00Z`);
+  const seen = new Map();
+  const out = new Map();
+  weeks.forEach((w, i) => {
+    for (const slug of Object.keys(history.weeks[w] || {})) {
+      const prev = seen.get(slug);
+      seen.set(slug, i);
+      if (prev == null) continue;
+      const missing = Math.round((ms(w) - ms(weeks[prev])) / (7 * DAY_MS)) - 1;
+      if (missing < 1 || missing > maxHoleWeeks) continue;
+      for (let j = prev + 1; j < i; j++) {
+        if (!out.has(weeks[j])) out.set(weeks[j], new Set());
+        out.get(weeks[j]).add(slug);
+      }
+    }
+  });
+  return [...out.keys()].sort().map(week => ({ week, slugs: [...out.get(week)].sort() }));
+}
+
+/**
+ * Add to a stored week the rows a fresh scrape of it has for `onlySlugs`, the
+ * shows the week is known to be missing. A row the week already holds is never
+ * touched, and nothing else from the scrape is added (a show the resolver maps
+ * differently this time must not appear beside its stored twin).
+ * @returns {string[]} the slugs added
+ */
+function addMissingRows(weekRows, snapshot, onlySlugs) {
+  const added = [];
+  for (const slug of onlySlugs || []) {
+    if (weekRows[slug] || !snapshot?.[slug]) continue;
+    weekRows[slug] = snapshot[slug];
+    added.push(slug);
+  }
+  return added;
+}
+
 module.exports = {
+  findShortHistoryWeeks,
+  addMissingRows,
   PLAYBILL_GROSSES_URL,
   TABLE_SCHEMA,
   playbillGrossesUrl,

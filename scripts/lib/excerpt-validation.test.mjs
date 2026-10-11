@@ -125,6 +125,53 @@ test('BRO-4563: a special engagement\'s own tour wording is exempt in every call
   assert.deepEqual(contaminationKindsNeeded({ fullText: intro }, plain), ['tour']);
 });
 
+test('BRO-4963: a plot mention of ANOTHER show\'s tour at a tour venue is not contamination', () => {
+  const { tourContextForShow } = require('./excerpt-validation.js');
+  const show = { id: 'good-time-charlie-off-broadway-2026', title: 'Good Time Charlie', venue: 'The Public Theater/Martinson Hall', category: 'off-broadway', status: 'open', openingDate: '2026-10-08' };
+  const gtc = "An early scene in Ryan J. Haddad's Good Time Charlie, now making its world premiere at the Public Theater, depicts just such a conversion. Uncle Charlie takes young Ryan to the touring production of The Phantom of the Opera at Playhouse Square.";
+  const r = isTourReviewExcerpt(gtc, tourContextForShow(show));
+  assert.equal(r.isTourReview, false);
+  // Venue-only variant (title before the venue) is covered by the same window.
+  assert.equal(isTourReviewExcerpt(gtc.replace('the touring production of ', ''), tourContextForShow(show)).isTourReview, false);
+  // Still a tour review when the tour named IS the show under review.
+  const phantom = { id: 'the-phantom-of-the-opera-1988', title: 'The Phantom of the Opera', venue: 'Majestic Theatre', category: 'broadway', status: 'open', openingDate: '1988-01-26' };
+  const own = 'The touring production of The Phantom of the Opera at Playhouse Square is a thrill for a new generation of fans.';
+  assert.equal(isTourReviewExcerpt(own, tourContextForShow(phantom)).isTourReview, true);
+  // And when no other show is named, a bare tour signal still flags.
+  assert.equal(isTourReviewExcerpt('The touring production at Playhouse Square is a thrill.', tourContextForShow(show)).isTourReview, true);
+});
+
+test('BRO-4963: real tour reviews stay flagged when the title is long or spelled differently', () => {
+  const { tourContextForShow } = require('./excerpt-validation.js');
+  const cases = [
+    ['joseph-and-the-amazing-technicolor-dreamcoat-1993', 'This national tour of Joseph and the Amazing Technicolor Dreamcoat is a joy.'],
+    ['les-miserables-2014', 'This national tour of Les Miserables is a joy.'],
+    ['les-miserables-2014', 'Les Miserables at the Pantages is a joy.'],
+    ['priscilla-queen-of-the-desert-2011', 'This national tour of Priscilla, Queen of the Desert is a joy.'],
+  ];
+  const titles = {
+    'joseph-and-the-amazing-technicolor-dreamcoat-1993': 'Joseph and the Amazing Technicolor Dreamcoat',
+    'les-miserables-2014': 'Les Misérables',
+    'priscilla-queen-of-the-desert-2011': 'Priscilla Queen of the Desert',
+  };
+  for (const [id, text] of cases) {
+    const show = { id, title: titles[id] };
+    assert.equal(isTourReviewExcerpt(text, tourContextForShow(show)).isTourReview, true, `${id}: ${text}`);
+  }
+});
+
+test('BRO-4963: short critic name vs longer stored title still flags a real tour review', () => {
+  const cases = [
+    ['jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026', 'Jesus Christ Superstar - Theatre Royal Drury Lane', 'The national tour of Jesus Christ Superstar is a joy.'],
+    ['kinky-boots-the-musical-west-end-2026', 'Kinky Boots The Musical', 'The national tour of Kinky Boots is a joy.'],
+    ['back-to-the-future-2023', 'Back to the Future: The Musical', 'Back to the Future at the Pantages is a joy.'],
+  ];
+  for (const [showId, showTitle, excerpt] of cases) {
+    const r = isTourReviewExcerpt(excerpt, { currentShowId: showId, currentShowTitle: showTitle });
+    assert.equal(r.isTourReview, true, showId);
+  }
+});
+
 // BRO-4884: a tour's stop at THIS record's venue is this production.
 test('isTourReviewExcerpt: touring production at the record\'s own venue is not contamination', () => {
   const ctx = { currentShowId: 'curtains-west-end-2019', currentShowTitle: 'Curtains', currentShowVenue: "Wyndham's Theatre", currentShowYear: 2019 };

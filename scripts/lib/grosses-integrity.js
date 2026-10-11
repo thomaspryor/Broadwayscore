@@ -65,12 +65,11 @@ const CAPPED_RUN_WEEKS = 4;
 const WOW_RATIO = 2.5;
 const FULL_WEEK_PERFS = 7;
 
-// Weeks with no League figures, known and accepted: COVID shutdown, and two
-// weeks missing from the Playbill archive the history was backfilled from.
-// checkMissingWeeks() never reports a week inside these ranges.
+// Weeks with no League figures, known and accepted: the COVID shutdown.
+// checkMissingWeeks() never reports a week inside these ranges. 2014-03-02 and
+// 2018-04-01..15 were listed here as missing from the Playbill archive; they
+// are not (each parses 28-36 rows, BRO-5016), so a backfill fills them.
 const KNOWN_GAPS = [
-  ['2014-02-01', '2014-03-31'],
-  ['2018-03-01', '2018-04-30'],
   ['2020-03-08', '2021-08-22'],
 ];
 const inKnownGap = (week) => KNOWN_GAPS.some(([from, to]) => week >= from && week <= to);

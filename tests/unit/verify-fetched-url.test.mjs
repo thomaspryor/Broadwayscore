@@ -428,4 +428,40 @@ describe('verifyFetchedUrl', () => {
       assert.equal(verifyFetchedUrl('<html></html>', '').verified, false);
     });
   });
+
+  // BRO-3501: nypost.com 301s legacy opaque-id URLs to dated articles.
+  describe('nypost legacy id redirect', () => {
+    const page = (canon) => `<html><head><title>Review</title><link rel="canonical" href="${canon}"></head></html>`;
+    const ok = [
+      ['http://www.nypost.com/p/entertainment/theater/gotta_hand_it_to_him_cJlBeSaMypuz5p4VnveXuM', 'https://nypost.com/2010/03/05/christopher-walken-the-best-part-of-a-behanding-in/'],
+      ['http://www.nypost.com/p/entertainment/theater/green_with_frenzy_OYSVpKug8AOrKr86TGVZaL#ixzz0lkcuhoGS', 'https://nypost.com/2010/04/21/green-with-frenzy/'],
+      ['http://www.nypost.com/p/entertainment/theater/plenty_of_afro_heat_kQGx3P1vFBYrLx0bbPQ1VK?utm=x', 'https://nypost.com/2009/11/24/plenty-of-afro-heat/'],
+      ['http://www.nypost.com/p/entertainment/theater/reviews/no_winner_in_race_D8xYC0dU0DypH9J4BmvJ3L', 'https://nypost.com/2010/12/07/no-winner-in-race/'],
+      ['https://nypost.com/p/entertainment/trwrewqqw_AbCdEfGhIjKlMnOpQrStUv', 'https://nypost.com/2013/04/05/youll-get-a-kick-out-of-kinky-boots/'],
+    ];
+    for (const [exp, act] of ok) {
+      test(`verifies ${exp.slice(-30)}`, () => {
+        assert.deepEqual(verifyFetchedUrl(page(act), exp), { verified: true, reason: 'legacy_id_redirect' });
+      });
+    }
+    const legacy = 'http://www.nypost.com/p/entertainment/theater/gotta_hand_it_to_him_cJlBeSaMypuz5p4VnveXuM';
+    const rejected = [
+      ['legacy -> homepage', legacy, 'https://nypost.com/'],
+      ['legacy -> section', legacy, 'https://nypost.com/entertainment/'],
+      ['legacy -> contributor content', legacy, 'https://nypost.com/contributor-content/some-ad/'],
+      ['legacy -> lowercased /p/ 404 path', legacy, 'https://nypost.com/p/entertainment/theater/gotta_hand_it_to_him_cjlbesamypuz5p4vnvexum'],
+      ['modern -> different dated article', 'https://nypost.com/2024/04/25/entertainment/the-great-gatsby-review/', 'https://nypost.com/2024/04/26/entertainment/other-show-review/'],
+      ['modern -> contributor content', 'https://nypost.com/2024/04/25/entertainment/the-great-gatsby-review/', 'https://nypost.com/contributor-content/x/'],
+      ['other host with /p/ path', 'https://www.example.com/p/entertainment/theater/foo_cJlBeSaMypuz5p4VnveXuM', 'https://www.example.com/2010/03/05/foo/'],
+      ['id too short', 'http://www.nypost.com/p/entertainment/theater/foo_cJlBeSaMypuz5p4Vnve', 'https://nypost.com/2010/03/05/foo/'],
+    ];
+    for (const [name, exp, act] of rejected) {
+      test(`rejects ${name}`, () => {
+        const r = verifyFetchedUrl(page(act), exp);
+        assert.equal(r.verified, false);
+        assert.equal(r.reason, 'url_mismatch');
+      });
+    }
+  });
 });
+
