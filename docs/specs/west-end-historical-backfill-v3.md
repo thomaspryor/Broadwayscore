@@ -457,6 +457,13 @@ Lessons, each fixed in code:
   outside the run. Checked on 8 real files with Gemini and GPT-4o stand-ins:
   venue reported 14/16, the 4 genuine regional-tour reviews stay flagged, 3
   of the 4 false flags clear (A Taste of Honey's text never names the house).
+- **The thumbnail fallback re-attached rejected art.** A row with a poster
+  and no thumbnail gets the poster copied to thumbnail.jpg, but when an old
+  thumbnail.jpg was still on disk the copy was skipped and the row pointed at
+  the old file. That put get-up-stand-up's rejected Bob Marley concert photo
+  back hours after BRO-5022 removed it. The fallback now copies the poster
+  over a leftover file whose recorded source the row rejected
+  (thumbnailFallbackAction in lib/image-source-match.js).
 
 ## Side benefit (separate card)
 

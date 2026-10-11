@@ -34,7 +34,7 @@ const { isCrossMarketPlaybillUrl } = require('./lib/playbill-url-market');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { getMarketSearchKeyword } = require('./lib/market-label');
 const { todaytixMarket, todaytixSearchUrl, extractTodaytixShowLink, todaytixSerpQuery, todaytixShowUrl } = require('./lib/todaytix-market');
-const { pickMezzanineCandidate, theatrEligible, isRejectedImage, ibdbEligible, venuesMatch, buildVenueCityIndex, keepExistingImage, fileSourceUrls, recordFileSources, recordedSourceFor, imagePathOwner } = require('./lib/image-source-match');
+const { pickMezzanineCandidate, theatrEligible, isRejectedImage, thumbnailFallbackAction, ibdbEligible, venuesMatch, buildVenueCityIndex, keepExistingImage, fileSourceUrls, recordFileSources, recordedSourceFor, imagePathOwner } = require('./lib/image-source-match');
 const { isStrictGoogleShow, noArtOutcome, buildNoReliableArtMarker } = require('./lib/no-reliable-art');
 const { selectShowsToFetch } = require('./lib/image-fetch-selection');
 const { loadImageSources, saveImageSources } = require('./lib/image-sources-store');
@@ -3303,12 +3303,16 @@ async function main() {
       if (thumbMissing) {
         const targetThumb = poster.replace(/poster\.(jpg|png|webp)/, 'thumbnail.$1');
         const targetPath = path.join(__dirname, '..', 'public', targetThumb);
-        if (!fs.existsSync(targetPath)) {
+        const owner = imagePathOwner(targetThumb);
+        const action = thumbnailFallbackAction(s, {
+          targetExists: fs.existsSync(targetPath),
+          targetRecordedSource: imageSourcesForApply && owner && imageSourcesForApply[owner] ? imageSourcesForApply[owner].thumbnail : null,
+        });
+        if (action === 'copy') {
           fs.copyFileSync(posterPath, targetPath);
           // The copy is the poster's art, so it carries the poster's recorded source.
           // No recorded poster source: drop the old entry, which described the missing file.
           const src = imageSourcesForApply && recordedSourceFor(s, 'poster', imageSourcesForApply);
-          const owner = imagePathOwner(targetThumb);
           if (imageSourcesForApply && owner) {
             if (src) {
               imageSourcesForApply[owner] = imageSourcesForApply[owner] || {};
@@ -3320,7 +3324,7 @@ async function main() {
         }
         s.images.thumbnail = targetThumb;
         fallbackCount++;
-        console.log(`   📎 Thumbnail fallback: copied poster → thumbnail for ${s.id}`);
+        console.log(`   📎 Thumbnail fallback: ${action === 'copy' ? 'copied poster → thumbnail' : 'reused the thumbnail file on disk'} for ${s.id}`);
       }
     }
     if (fallbackCount > 0) {

@@ -196,6 +196,19 @@ function mayServeDiskImage(show, recordedSource) {
   return !isRejectedImage({ hero: recordedSource }, show);
 }
 
+/**
+ * A row has a poster but no thumbnail, and the fetcher derives one from the
+ * poster. May it point at a thumbnail file already on disk instead of copying?
+ * Not when that file's recorded source is rejected for this show: the leftover
+ * file is the art a person removed, and the fallback put get-up-stand-up's
+ * rejected Bob Marley concert photo back this way (BRO-4884).
+ * Returns 'copy' (write the poster over it) or 'reuse'.
+ */
+function thumbnailFallbackAction(show, { targetExists, targetRecordedSource }) {
+  if (!targetExists) return 'copy';
+  return mayServeDiskImage(show, targetRecordedSource) ? 'reuse' : 'copy';
+}
+
 /** A recorded source a downloader can fetch (not manual:<note> or a label). */
 const isDownloadableSource = (u) => typeof u === 'string' && /^https?:\/\//i.test(u);
 
@@ -297,6 +310,7 @@ module.exports = {
   isRejectedImage,
   canReuseArchivedFile,
   mayServeDiskImage,
+  thumbnailFallbackAction,
   ibdbEligible,
   isDownloadableSource,
   imagePathOwner,
