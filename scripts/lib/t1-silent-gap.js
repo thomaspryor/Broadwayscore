@@ -92,10 +92,13 @@ function hasEditorialExclusion(f) {
 const WRONG_URL_INCOMPLETE = new Set(['url_content_mismatch', 'wrong_content', 'scraper_garbage']);
 // The discovery-time URL classifier (video/news items, listing pages, ticket
 // sellers, aggregator navigation) already refuses these URLs, but it only ran
-// at discovery. A file filed before a pattern existed, or via a path that skips
-// it (BWW 'Video-...-Trailer-Released' as a serp-discovery file), then read as a
-// T1/T2 'unscored' gap forever. Missing/unparseable URLs are NOT judged here:
-// those stay real gaps (no automated path, page immediately).
+// at discovery. NOT a blanket exclusion: existing regression tests
+// (silent-gap-rejection-reason, coverage-gap-alerts, audit-t1-silent-gaps) keep
+// non-review pieces flagged until the scorer terminally classifies them
+// not_a_review. It applies only where that can never happen: the scorer will
+// skip the file for good (dispatchable === false) and no ensemble verdict was
+// ever recorded, so nothing is going to classify it. Missing/unparseable URLs
+// are never judged here.
 function hasNonReviewUrl(f) {
   if (!f || typeof f.url !== 'string' || !f.url.startsWith('http')) return false;
   const r = classifyReviewUrl(f.url);
@@ -105,8 +108,7 @@ function hasNonReviewUrl(f) {
 function hasWrongUrlSignal(f) {
   return WRONG_URL_INCOMPLETE.has(f.incompleteReason)
     || f.isBlockedReviewUrl === true
-    || f.bwwAggregatorAmbiguous === true
-    || hasNonReviewUrl(f);
+    || f.bwwAggregatorAmbiguous === true;
 }
 
 /**
@@ -184,6 +186,7 @@ function classifySilentGap({ file, show, tier, outletScored, now, filePath }) {
     } catch {
       dispatchable = true;
     }
+    if (dispatchable === false && !file.rejectionReason && hasNonReviewUrl(file)) return null;
     return { type: 'unscored', recoverable: false, dispatchable };
   }
 

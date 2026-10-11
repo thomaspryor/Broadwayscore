@@ -262,19 +262,26 @@ test('known-syndication secondary beside its live primary is not a gap when file
 });
 
 // Real incident shape (2026-10-11): a BWW 'Video-...-Trailer-Released' news item
-// filed as a T2 broadwayworld review sat as an 'unscored' gap although the
-// discovery URL classifier already rejects it.
-test('a URL the discovery classifier rejects is a correct absence, not an unscored gap', () => {
+// filed as a T2 broadwayworld review sat as an 'unscored' gap for good: the
+// scorer skips it (terminal text gate), so nothing would ever classify it.
+// Existing regression tests keep non-review pieces flagged while the scorer CAN
+// still classify them, so the exclusion is limited to the never-classifiable case.
+test('non-review URL the scorer will never take (and no verdict ever recorded) is a correct absence', () => {
   const body = Array.from({ length: 30 }, (_, i) => `Trailer note ${i}: the cast and creative team are announced for the new run.`).join(' ');
+  const LATER = { tier: 2, now: new Date('2026-10-11T12:00:00Z') };
   const video = {
     url: 'https://www.broadwayworld.com/westend/article/Video-MILLION-DOLLAR-QUARTET-Trailer-Released-20260908',
     outletId: 'broadwayworld', criticName: 'BWW News Desk', fullText: body, contentTier: 'complete',
     textStatus: 'complete', textFetchedAt: '2026-09-09T07:00:00.000Z', llmScore: null,
   };
-  assert.equal(classify(video, { tier: 2, now: new Date('2026-10-11T12:00:00Z') }), null);
-  // a real review URL with the same shape of file is still a gap
-  const real = { ...video, outletId: 'nydailynews', criticName: 'Jane Doe', url: 'https://www.nydailynews.com/2026/09/08/million-dollar-quartet-review-west-end/' };
-  assert.equal(classify(real, { tier: 2, now: new Date('2026-10-11T12:00:00Z') })?.type, 'unscored');
-  // no URL at all is never judged by this rule
-  assert.notEqual(classify({ ...video, url: '' }, { tier: 2, now: new Date('2026-10-11T12:00:00Z') })?.type, undefined);
+  const blocked = { rescoreBlockedReason: 'input_validation_failed:body_too_short',
+    rescoreBlockedTextLength: body.length, rescoreBlockedHadExcerpt: false };
+  // scorer can still take it: stays a gap (it will be classified not_a_review)
+  assert.equal(classify(video, LATER)?.type, 'unscored');
+  // scorer will never take it and nothing was ever judged: correct absence
+  assert.equal(classify({ ...video, ...blocked }, LATER), null);
+  // the same block on a real review URL is still a gap
+  const real = { ...video, ...blocked, outletId: 'nydailynews', criticName: 'Jane Doe',
+    url: 'https://www.nydailynews.com/2026/09/08/million-dollar-quartet-review-west-end/' };
+  assert.equal(classify(real, LATER)?.type, 'unscored');
 });
