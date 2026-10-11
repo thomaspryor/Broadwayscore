@@ -133,6 +133,15 @@ test('pdfHeaderFor ignores a contents line and a two-column heading', () => {
   assert.equal(pdfHeaderFor('COMPANY     THE STAGE\nprose', 'Company'), null);
 });
 
+test('buildReviewLedCandidates names the NT stage from the TR venue', () => {
+  const review = { title: 'Coriolanus', venue: 'National Theatre', date: '2024-09-25', url: 'https://www.whatsonstage.com/x' };
+  const header = 'Coriolanus\nPreviews 11 September 2024\nCloses 09 November 2024';
+  const at = v => buildReviewLedCandidates({ season: '2024-2025', lookups: [{ review, tr: { title: 'Coriolanus', venue: v, link: 'https://www.theatrerecord.com/archive/2024/9/20225-coriolanus' }, header }], shows: [], today: '2026-10-11' })[0].venue;
+  assert.equal(at('National Theatre - Olivier Theatre, London'), 'Olivier Theatre');
+  assert.equal(at('London, Lyttelton, National'), 'Lyttelton Theatre');
+  assert.equal(at('National Theatre, London'), 'National Theatre');
+});
+
 test('buildReviewLedCandidates ends a run straddling the March 2020 shutdown on 16 March', () => {
   const review = { title: 'The Upstart Crow', venue: 'Gielgud Theatre', date: '2020-02-18', url: 'https://www.whatsonstage.com/x' };
   const tr = { title: 'The Upstart Crow', venue: 'London, Gielgud', link: 'https://www.theatrerecord.com/archive/volume/40/dest/04_upstart_crow' };

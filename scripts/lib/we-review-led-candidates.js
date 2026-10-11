@@ -254,6 +254,17 @@ function findContinuingRun(shows, title, startDate) {
   })()) || null;
 }
 
+/**
+ * WOS files NT reviews under "National Theatre"; shows.json names the stage
+ * ("Lyttelton Theatre"), which TR's venue carries ("National Theatre -
+ * Lyttelton Theatre, London", "London, Olivier, National Theatre").
+ */
+function ntStageVenue(reviewVenue, trVenue) {
+  if (!/\bnational\b/i.test(reviewVenue || '')) return null;
+  const m = String(trVenue || '').match(/\b(Olivier|Lyttelton|Dorfman)\b/i);
+  return m ? `${m[1][0].toUpperCase()}${m[1].slice(1).toLowerCase()} Theatre` : null;
+}
+
 /** London theatres went dark the evening of 16 March 2020. */
 const LONDON_COVID_DARK = '2020-03-16';
 
@@ -270,7 +281,7 @@ function buildReviewLedCandidates({ season, lookups, shows, today }) {
     const review = row.review || {};
     const base = {
       title: cleanReviewTitle(row.tr?.title && /[a-z]/.test(row.tr.title) ? row.tr.title : review.title),
-      venue: review.venue,
+      venue: ntStageVenue(review.venue, row.tr?.venue) || review.venue,
       genres: [],
       season,
       signals: ['wos-review'],
