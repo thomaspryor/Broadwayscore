@@ -51,12 +51,15 @@ const FEEDBACK_EDITABLE_FIELDS = {
   // goes with it: a cost is printed as reported only under a reported
   // methodology (isCitedReportedWeeklyCost), and it also stops the Reddit
   // gap-fill replacing a cited figure (BRO-4985). Values are checked by
-  // commercial-record-checks.js.
+  // commercial-record-checks.js. needsLossEvidence is the stale-closure
+  // classifier's "no cited loss source yet" flag (BRO-5020); a plan clears it
+  // when a person sources or rules on the loss.
   'commercial.json': [
     'designation', 'capitalization', 'weeklyRunningCost',
     'capitalizationSource', 'notes', 'recouped', 'recoupedDate',
     'recoupedSource', 'sources', 'humanReviewedDesignation', 'nonprofitOrg',
     'isEstimate', 'weeklyRunningCostSource', 'costMethodology',
+    'needsLossEvidence',
   ],
   'audience-buzz.json': ['title'],
   // Only auto-fix-feedback-bug.js's append-winner path handles this file —
