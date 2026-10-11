@@ -79,6 +79,7 @@ async function main() {
   const { isLongRunningProduction } = require('./lib/long-runner-registry');
   const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
   const breaker = require('./lib/refetch-circuit-breaker');
+  const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 
   const showsData = JSON.parse(fs.readFileSync(SHOWS_JSON, 'utf8'));
   const showById = {};
@@ -179,6 +180,8 @@ async function main() {
           clearDateGuardHold(data);
           break;
         case 'wrong-production':
+          // Opening-night lane reviews are never flagged (BRO-4807): leave the hold as is.
+          if (laneBypasses(data, 'wrongProduction')) { console.log('  lane review: not flagging'); break; }
           data.wrongProduction = true;
           invalidateWrongProductionAutoClear(data);
           // Note only, prefixed "Date guard" so priorRuns auto-clear still applies.
