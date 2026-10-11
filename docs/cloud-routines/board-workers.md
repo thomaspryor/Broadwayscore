@@ -55,7 +55,11 @@ For each card:
 2. Claim: `node scripts/linear-session.js claim --issue=<pick.identifier>`. A
    `"action": "noop"` or a failure means the Codex lane or another worker has
    it: pick again once, then stop this lane.
-3. Read the full card. FIRST check it is still true on current main (run its
+3. Read the full card. If a comment starts "SAME ROOT CAUSE" and lists sibling
+   cards, take the group: claim each open sibling (skip any another worker
+   holds), fix them together in one branch and one landing, and close each
+   card with the same evidence. A group counts as one card toward the 4.
+   FIRST check it is still true on current main (run its
    VERIFY, grep the code it names). Already fixed: close it with a check the
    Done gate re-runs on fresh main, either the card's own acceptance command
    or a test that proves it:
