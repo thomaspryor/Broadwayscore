@@ -150,20 +150,18 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-09T15:38:20.550Z",
-      "lastSeen": "2026-10-09T16:25:53.426Z",
-      "lastNotifiedAt": "2026-10-09T15:38:20.550Z",
+      "incidentOpenedAt": "2026-10-11T03:11:08.799Z",
+      "lastSeen": "2026-10-11T03:11:08.799Z",
+      "lastNotifiedAt": "2026-10-11T03:11:08.799Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
-      "notifyCount": 127,
+      "notifyCount": 128,
       "cardId": null,
-      "linearIdentifier": "BRO-3030",
-      "silentRefires": 1,
-      "resolvedAt": "2026-10-09T20:54:10.655Z"
+      "linearIdentifier": "BRO-3030"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -13470,20 +13468,27 @@
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"ShowTrustLines: a parent whose tours have no score yet says reviews are coming in\"",
-      "firstSeen": "2026-10-11T02:54:28.137Z",
-      "incidentOpenedAt": "2026-10-11T02:54:28.137Z",
-      "lastSeen": "2026-10-11T02:54:28.137Z",
-      "lastNotifiedAt": "2026-10-11T02:54:28.137Z",
+      "firstSeen": "2026-10-11T03:11:08.408Z",
+      "incidentOpenedAt": "2026-10-11T03:11:08.408Z",
+      "lastSeen": "2026-10-11T03:11:08.408Z",
+      "lastNotifiedAt": "2026-10-11T03:11:08.408Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5025",
-      "dispatch": {
-        "requestedAt": "2026-10-11T02:54:28.137Z",
-        "mode": "dispatch-at-filing",
-        "runId": "38105768194",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38105768194"
-      }
+      "linearIdentifier": "BRO-5025"
+    },
+    "land:land/bro-4885-outlet-tier-chip": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-tsx red on land/bro-4885-outlet-tier-chip",
+      "firstSeen": "2026-10-11T03:26:13.269Z",
+      "incidentOpenedAt": "2026-10-11T03:26:13.269Z",
+      "lastSeen": "2026-10-11T03:26:13.269Z",
+      "lastNotifiedAt": "2026-10-11T03:26:13.269Z",
+      "lastSurfacedAt": "2026-10-11T03:26:13.269Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }

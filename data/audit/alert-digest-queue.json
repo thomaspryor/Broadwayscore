@@ -1177,15 +1177,73 @@
     "queuedAt": "2026-10-11T01:59:13.047Z"
   },
   {
+    "conditionKey": "land:land/bro-2935-stuck-drafts",
+    "title": "Landing blocked: unit-tests-node red on land/bro-2935-stuck-drafts",
+    "description": "land.yml did not land land/bro-2935-stuck-drafts: the unit-tests-node gate went red at f477e9b81e. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38105685363",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2935-stuck-drafts"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "f477e9b81e7de962a72a3708d44ef6e9e5daa165"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38105685363"
+      }
+    ],
+    "queuedAt": "2026-10-11T03:10:21.208Z"
+  },
+  {
     "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Run data validation, Audit review contamination, Audit outlet-registry gaps",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38105768194",
+    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Run data validation, Audit review contamination",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38107554326",
     "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-10-11T02:43:04.647Z"
+    "queuedAt": "2026-10-11T03:17:04.185Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4885-outlet-tier-chip",
+    "title": "Landing blocked: unit-tests-tsx red on land/bro-4885-outlet-tier-chip",
+    "description": "land.yml did not land land/bro-4885-outlet-tier-chip: the unit-tests-tsx gate went red at fc164ef45f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38106563024",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4885-outlet-tier-chip"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-tsx"
+      },
+      {
+        "name": "tip",
+        "value": "fc164ef45fef89ddfd76bd26d0248243d51cd980"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38106563024"
+      }
+    ],
+    "queuedAt": "2026-10-11T03:26:13.269Z"
   }
 ]
