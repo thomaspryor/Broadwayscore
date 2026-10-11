@@ -167,10 +167,23 @@ describe('third pass: Diana (Time Out) and Theater Life title stars', () => {
     assert.equal(r.score, 58);
     assert.notEqual(r.source, 'adjudicated');
   });
-  test('wp-api-title counts as a generic-pattern star source', () => {
-    assert.equal(isGenericPatternStar({ originalScoreSource: 'wp-api-title' }), true);
-    assert.equal(isGenericPatternStar({ scoreSource: 'wp-api-title' }), true);
-    assert.equal(isGenericPatternStar({ originalScoreSource: 'unicode-stars' }), false);
+  test('wp-api-title is dropped when the ensemble contradicts it, but is not a generic-pattern star', () => {
+    const tl = diana({ originalScoreSource: 'wp-api-title', scoreSource: 'wp-api-title' });
+    assert.equal(isGenericPatternStar(tl), false);
+    assert.equal(isUncorroboratedGenericStar(tl, 20), true);
+    assert.equal(isUncorroboratedGenericStar({ ...tl, llmScore: { score: 25, confidence: 'high' } }, 20), false);
+  });
+  test('the adjudication prompt still trusts a wp-api-title star on a known star outlet', () => {
+    const p = buildUserPrompt({ outletId: 'timeout', llmScore: 58, llmBucket: 'Mixed', llmConfidence: 'medium', reason: 'x' },
+      { outletId: 'timeout', originalScore: '4/5', originalScoreSource: 'wp-api-title', fullText: 'text' }, 'Show');
+    assert.match(p, /### Original Rating\n4\/5/);
+  });
+  test('wording variants: decimals, bare fractions, and a negation that must not match', () => {
+    const side = (note) => adjudicationSidedWithStars({ adjudicationNote: note, adjudicationHistory: [{ sidedWith: 'neither' }] });
+    assert.equal(side('Auto-adjudicated (high confidence, sided with neither): The 2.5/5 stars is definitive'), true);
+    assert.equal(side('Auto-adjudicated (high confidence, sided with neither): 10/10 rating is definitive'), true);
+    assert.equal(side('Auto-adjudicated (high confidence, sided with neither): the star rating is not definitive here'), false);
+    assert.equal(adjudicationSidedWithStars({ adjudicationNote: 'Auto-adjudicated (high confidence, sided with LLM): the star rating is definitive for most critics', adjudicationHistory: [] }), false);
   });
 });
 

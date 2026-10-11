@@ -44,10 +44,14 @@ function isHighReliabilityStar(data) {
 
 // Free-text regex star labels: no DOM/schema anchor, so pagination, dates and
 // gallery counters ("1/5") match as ratings. Subset of LOW_RELIABILITY_EXTRACTION.
-// wp-api-title: a rating read out of a WordPress post title. Theater Life's
-// combined multi-show columns made it grab the wrong show's star (card-396), so
-// it is as unreliable as the free-text patterns when nothing corroborates it.
-const GENERIC_PATTERN_STAR_SOURCES = new Set(['numeric-stars', 'text-pattern', 'wp-api-title']);
+const GENERIC_PATTERN_STAR_SOURCES = new Set(['numeric-stars', 'text-pattern']);
+
+// Sources whose star is dropped when the ensemble contradicts it: the generic
+// patterns plus wp-api-title, a rating read out of a WordPress post title.
+// Theater Life's combined multi-show columns made it grab the wrong show's star
+// (card-396). Kept apart from GENERIC_PATTERN_STAR_SOURCES so the adjudication
+// prompt does not down-rank wp-api-title stars the ensemble agrees with.
+const CORROBORATION_GATED_STAR_SOURCES = new Set([...GENERIC_PATTERN_STAR_SOURCES, 'wp-api-title']);
 
 /**
  * True when the star on this record came from a generic free-text pattern.
@@ -77,7 +81,9 @@ function isGenericPatternStar(data) {
  * @returns {boolean}
  */
 function isUncorroboratedGenericStar(data, starScore) {
-  if (!isGenericPatternStar(data) || !Number.isFinite(starScore)) return false;
+  const gated = data && (CORROBORATION_GATED_STAR_SOURCES.has(data.originalScoreSource)
+    || CORROBORATION_GATED_STAR_SOURCES.has(data.scoreSource));
+  if (!gated || !Number.isFinite(starScore)) return false;
   const llm = data.llmScore && data.llmScore.score;
   const conf = data.llmScore && data.llmScore.confidence;
   if (!llm || conf === 'low' || Math.abs(starScore - llm) <= 25) return false;
@@ -131,6 +137,13 @@ function adjudicationStarBasisGone(data) {
     || (has(data.previousOriginalScore) && data.originalScoreCleared !== true));
 }
 
+const STAR_SIDE_RE = /^(originalScore|stars?|aggregatorStars|original rating|rating|aggregator)$/i;
+const TEXT_SIDE_RE = /^(llm|text|model)$/i;
+const NOTE_STAR_SIDE_RE = new RegExp(`^Auto-adjudicated \\([^)]*sided with ${STAR_SIDE_RE.source.slice(1, -1)}\\)`, 'i');
+const DECISIVE = '(?:definitive|decisive|authoritative|conclusive)';
+const STAR_DECISIVE_RE = new RegExp(`\\b(?:star )?rating (?:is|was|remains) ${DECISIVE}\\b`, 'i');
+const FRACTION_DECISIVE_RE = new RegExp(`\\b\\d+(?:\\.\\d+)?\\s*/\\s*\\d+\\s*(?:stars?)?(?: rating)?,? (?:is|was|remains) ${DECISIVE}\\b`, 'i');
+
 /**
  * True when an auto-adjudication says it sided with the star rating. Reads the
  * structured sidedWith on the last adjudicationHistory entry first, and falls
@@ -138,23 +151,21 @@ function adjudicationStarBasisGone(data) {
  */
 function adjudicationSidedWithStars(data) {
   if (!data) return false;
-  const STAR_SIDE = /^(originalScore|stars?|aggregatorStars|original rating|rating|aggregator)$/i;
   const hist = Array.isArray(data.adjudicationHistory) ? data.adjudicationHistory : [];
   const last = hist.length ? hist[hist.length - 1] : null;
   const side = last && typeof last.sidedWith === 'string' ? last.sidedWith.trim() : null;
-  if (side && STAR_SIDE.test(side)) return true;
+  if (side && STAR_SIDE_RE.test(side)) return true;
   // The structured value is the adjudicator's own classification: an LLM-side
   // verdict is never star-based, whatever the note text says.
-  if (side && /^(llm|text|model)/i.test(side)) return false;
+  if (side && TEXT_SIDE_RE.test(side)) return false;
   const note = data.adjudicationNote || '';
-  if (/^Auto-adjudicated \([^)]*sided with (originalScore|stars?|aggregatorStars|original rating|rating|aggregator)\)/i.test(note)) return true;
-  // The structured sidedWith is free-form model output: Diana (Time Out) says
-  // 'thumbs' while its reasoning rests on "The 1/5 star rating is definitive".
-  // An adjudication that sided with the LLM is never star-based; anything else
-  // whose reasoning calls the star rating the deciding factor is.
+  if (NOTE_STAR_SIDE_RE.test(note)) return true;
   if (/sided with llm\)/i.test(note)) return false;
-  return /\bstar rating (is|was) (definitive|decisive|authoritative)\b/i.test(note)
-    || /\b\d(?:\.\d)?\s*\/\s*\d\s*(?:stars?\s*)?rating (is|was) (definitive|decisive)\b/i.test(note);
+  // sidedWith is free-form model output: Diana (Time Out) says 'thumbs' while
+  // its reasoning rests on "The 1/5 star rating is definitive". Fallback for
+  // verdicts classed thumbs/neither/missing; a durable fix is a structured
+  // star-reliance flag written by the adjudicator (BRO-4596 follow-up).
+  return STAR_DECISIVE_RE.test(note) || FRACTION_DECISIVE_RE.test(note);
 }
 
 /**
