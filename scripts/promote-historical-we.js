@@ -380,8 +380,8 @@ function main() {
     // Cloud sessions can't push the private data repo; execute-approved-fix.yml
     // applies this plan's add-show actions instead (.claude/CLOUD.md).
     const file = writeAddShowPlan(planName, season, toPromote);
-    console.log(`Wrote ${path.relative(ROOT, file)} (${toPromote.length} add-show). Land it, then dispatch execute-approved-fix.yml.`);
-    for (const e of toPromote) logEntry({ kind: 'promote-historical-we', id: e.id, title: e.title, venue: e.venue, season, plan: planName });
+    console.log(`Wrote ${path.relative(ROOT, file)} (${toPromote.length} add-show). git add -f it (pending-fixes is gitignored), land it, then dispatch execute-approved-fix.yml.`);
+    for (const e of toPromote) logEntry({ kind: 'promote-historical-we', id: e.id, title: e.title, venue: e.venue, season, plan: planName, planned: true });
     return;
   }
   showsData.shows.push(...toPromote);
