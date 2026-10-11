@@ -6,6 +6,8 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
+import path from 'node:path';
+import { execFileSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
 
 const gate = require('../../scripts/lib/commercial-apply-gate');
@@ -441,5 +443,130 @@ describe('backfill hold helpers (BRO-4990)', () => {
   it('a noData attempt record is never appliable', () => {
     assert.equal(gate.isReviewHold({ noData: true, requiresHumanReview: true }), true);
     assert.equal(gate.isReviewHold({ designation: 'Flop' }), false);
+  });
+});
+
+describe('held-row release (BRO-5041)', () => {
+  it('refuses records a person or a verified pass already settled', () => {
+    assert.equal(gate.heldReleaseRefusal(undefined), null);
+    assert.equal(gate.heldReleaseRefusal({ designation: 'TBD' }), null);
+    assert.equal(gate.heldReleaseRefusal({ designation: 'tbd', recouped: false }), null);
+    assert.match(gate.heldReleaseRefusal({ designation: 'TBD', humanReviewedDesignation: true }), /human review/);
+    assert.match(gate.heldReleaseRefusal({ designation: 'Windfall' }), /Windfall/);
+    assert.match(gate.heldReleaseRefusal({ designation: 'TBD', recouped: true }), /recoupment/);
+    assert.match(gate.heldReleaseRefusal({ designation: 'TBD', humanReviewedRecouped: true }), /recoupment/);
+  });
+  it('refuses a row whose own label says it recouped (the release drops that claim)', () => {
+    assert.match(gate.heldReleaseRefusal(undefined, { designation: 'Windfall', recouped: true }), /Windfall/);
+    assert.match(gate.heldReleaseRefusal({ designation: 'TBD' }, { designation: 'easy winner' }), /Easy Winner/);
+    assert.equal(gate.heldReleaseRefusal({ designation: 'TBD' }, { designation: 'Flop', recouped: false }), null);
+  });
+  it('drops the research "_recoupedClaim" flag so the claim gate does not hold the row', () => {
+    const out = gate.withoutRecoupmentClaim({ designation: 'Flop', recouped: false, _recoupedClaim: true });
+    assert.deepEqual(out, { designation: 'Flop', recouped: false });
+    assert.equal(gate.hasRecoupedClaim(out), false);
+  });
+  it('drops a "recouped" claim and nothing else; a cited loss stays', () => {
+    const row = { designation: 'Easy Winner', capitalization: 5e6, recouped: true, recoupedDate: null, recoupedSource: 'forum thread', requiresHumanReview: true };
+    const out = gate.withoutRecoupmentClaim(row);
+    assert.deepEqual(out, { designation: 'Easy Winner', capitalization: 5e6, requiresHumanReview: true });
+    assert.equal(row.recouped, true, 'input not mutated');
+    const loss = { designation: 'Flop', recouped: false, recoupedSource: 'Broadway Journal: closed at a loss' };
+    assert.deepEqual(gate.withoutRecoupmentClaim(loss), loss);
+  });
+  it('mergeExisting keeps the record fields the row does not carry and merges sources', () => {
+    const existing = { designation: 'TBD', capitalization: 4e6, capitalizationSource: 'SEC filing', modelRecouped: false, sources: [{ url: 'https://a.example/1' }] };
+    const row = { designation: 'Flop', sources: [{ url: 'https://b.example/2' }, { url: 'https://a.example/1' }] };
+    const merged = gate.buildCommercialEntry(row, existing, { mergeExisting: true });
+    assert.equal(merged.designation, 'Flop');
+    assert.equal(merged.capitalization, 4e6);
+    assert.equal(merged.capitalizationSource, 'SEC filing', 'a figure the row does not touch keeps its citation');
+    const refigured = gate.buildCommercialEntry({ ...row, capitalization: 9e6 }, existing, { mergeExisting: true });
+    assert.equal(refigured.capitalizationSource, undefined, 'a new unverified figure never inherits the old citation');
+    assert.equal(refigured.isEstimate.capitalization, true);
+    assert.equal(merged.modelRecouped, false);
+    assert.deepEqual(merged.sources.map(s => s.url), ['https://a.example/1', 'https://b.example/2']);
+    const rebuilt = gate.buildCommercialEntry(row, existing, {});
+    assert.equal(rebuilt.modelRecouped, undefined, 'default path still rebuilds from scratch');
+  });
+  it('CLI: --release-held applies only eligible held rows; plain --show and --all leave held rows pending', () => {
+    const dir = fs.mkdtempSync(path.resolve('tests/.bro5041-'));
+    try {
+      const held = (designation, recouped = false) => ({ designation, confidence: 'medium', requiresHumanReview: true, backfill: 'BRO-4990', recouped, recoupedSource: 'https://news.example/closing', sources: [] });
+      fs.writeFileSync(path.join(dir, 'pending.json'), JSON.stringify({ shows: {
+        fresh: held('Flop'), labelled: held('Fizzle'), tbd: held('Fizzle'), claimed: held('Flop', true),
+        unheld: { designation: 'Flop', confidence: 'high', recouped: false, recoupedSource: 'https://news.example/closing', sources: [] },
+      } }));
+      fs.writeFileSync(path.join(dir, 'commercial.json'), JSON.stringify({ shows: {
+        labelled: { designation: 'Windfall' }, tbd: { designation: 'TBD', modelRecouped: false },
+      } }));
+      const mk = (slug) => ({ id: `${slug}-2020`, slug, title: slug, category: 'broadway', status: 'closed' });
+      fs.writeFileSync(path.join(dir, 'shows.json'), JSON.stringify({ shows: ['fresh', 'labelled', 'tbd', 'claimed', 'unheld'].map(mk) }));
+      const base = ['scripts/apply-commercial-pending.js', '--dry-run', `--pending-file=${dir}/pending.json`, `--commercial-file=${dir}/commercial.json`, `--shows-file=${dir}/shows.json`];
+      const out = execFileSync(process.execPath, [...base, '--release-held=fresh,labelled,tbd,claimed,unheld,gone'], { encoding: 'utf8' });
+      assert.match(out, /Not in pending file[^\n]*gone/);
+      assert.match(out, /"labelled" — not released: record already has designation "Windfall"/);
+      assert.match(out, /"unheld" — not a held row/);
+      assert.match(out, /Would apply "tbd" → [^\n]*"modelRecouped":false/);
+      assert.doesNotMatch(out, /"recouped":true/);
+      // The release drops "claimed"'s recouped:true, which leaves a Flop with no
+      // recouped:false: the per-row check keeps it pending.
+      assert.match(out, /"claimed" — left pending for review: [^\n]*loss-designations require recouped=false/);
+      assert.match(out, /would apply 2, skip 3/);
+      const single = execFileSync(process.execPath, [...base, '--show=fresh'], { encoding: 'utf8' });
+      assert.match(single, /needs human review \(release with --release-held=fresh\)/);
+      const all = execFileSync(process.execPath, [...base, '--all'], { encoding: 'utf8' });
+      assert.match(all, /would apply 1, skip 4/);
+    } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }); }
+  });
+});
+
+describe('first-person research notes never reach /biz (BRO-5041)', () => {
+  const checks = require('../../scripts/lib/commercial-record-checks.js');
+  it('flags a researcher describing the search', () => {
+    assert.ok(checks.internalWordingIn("I couldn't verify a production-specific weekly nut."));
+    assert.ok(checks.internalWordingIn('We found no recoupment report in the trades.'));
+    assert.equal(checks.internalWordingIn('Act I could not have been staged more cheaply, critics said.'), null);
+    assert.equal(checks.internalWordingIn('Closed after 12 weeks; capitalized at $14.5M.'), null);
+    assert.ok(checks.internalWordingIn('Reports vary; I used the $17M AP figure.'));
+    assert.ok(checks.internalWordingIn('No weekly nut surfaced, so that field is null.'));
+    assert.ok(checks.internalWordingIn('Best-fit designation is Fizzle.'));
+    assert.ok(checks.internalWordingIn('Closed early. ([ibdb.com](https://www.ibdb.com/x?utm_source=openai))'));
+    assert.equal(checks.internalWordingIn("Transferred from MTC's 2022 off-Broadway Stage I run."), null);
+    assert.equal(checks.internalWordingIn('"I lost everything," the lead producer told the Times.'), null);
+    for (const prose of ['Aimed at World War I veterans.', 'Funded with Title I money.', 'A play about Mary I of England.', "Rajiv Joseph's I and You transferred."]) {
+      assert.equal(checks.internalWordingIn(prose), null, prose);
+    }
+    assert.equal(checks.internalWordingIn('The producer said “we could not keep the lights on.”'), null);
+    assert.equal(checks.internalWordingIn('Source: https://example.com/a-(b)'), null);
+  });
+  it('sanitize removes markdown citation links and leaves the sentence', () => {
+    const out = checks.sanitizeForPublicRecord({ notes: 'Ran at Studio 54. Not-for-profit producer. ([ibdb.com](https://www.ibdb.com/x?utm_source=openai))' }, 'closed');
+    assert.equal(out.entry.notes, 'Ran at Studio 54. Not-for-profit producer.');
+    const only = checks.sanitizeForPublicRecord({ notes: '([playbill.com](https://playbill.com/a?utm_source=openai))' }, 'closed');
+    assert.equal(only.entry.notes, null);
+  });
+  it('sanitize drops only the first-person sentence', () => {
+    const out = checks.sanitizeForPublicRecord({ notes: "Capitalized at $14.5M. I couldn't verify the weekly nut." }, 'closed');
+    assert.equal(out.entry.notes, 'Capitalized at $14.5M.');
+  });
+});
+
+describe('released rows keep the record\'s own text (BRO-5041 review)', () => {
+  const checks = require('../../scripts/lib/commercial-record-checks.js');
+  it('a markdown citation in a source field becomes the bare URL', () => {
+    const out = checks.sanitizeForPublicRecord({ recouped: false, recoupedSource: '([variety.com](https://variety.com/a/?utm_source=openai))' }, 'closed');
+    assert.equal(out.entry.recoupedSource, 'https://variety.com/a/');
+    const kept = checks.sanitizeForPublicRecord({ capitalizationSource: 'SEC Form D [sec.gov](https://sec.gov/x?id=1&utm_source=openai)' }, 'closed');
+    assert.equal(kept.entry.capitalizationSource, 'SEC Form D https://sec.gov/x?id=1');
+  });
+  it('keepExistingPublicText keeps notes and an unchanged recoupment citation', () => {
+    const entry = { notes: null, recouped: false, recoupedSource: 'https://row.example/' };
+    gate.keepExistingPublicText(entry, { notes: 'Capitalized at $5,976,500 per SEC Form D/A.', recouped: false, recoupedSource: 'https://record.example/' });
+    assert.equal(entry.notes, 'Capitalized at $5,976,500 per SEC Form D/A.');
+    assert.equal(entry.recoupedSource, 'https://record.example/');
+    const fresh = { notes: 'Row note.', recouped: false, recoupedSource: 'https://row.example/' };
+    gate.keepExistingPublicText(fresh, { notes: '  ', recoupedSource: 'https://old.example/' });
+    assert.deepEqual(fresh, { notes: 'Row note.', recouped: false, recoupedSource: 'https://row.example/' });
   });
 });

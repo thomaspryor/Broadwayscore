@@ -59,6 +59,46 @@ function requiresHumanReview(entry) {
 
 const BACKFILL_TAG = 'BRO-4990';
 
+// BRO-5041: a held row is released by name (--release-held). Refuse when the
+// record already carries something a person or a verified pass put there: a
+// human-reviewed or non-TBD label, or a recoupment on file. Also refuse a row
+// whose own label says the show recouped (Easy Winner/Windfall/Miracle): the
+// release drops the row's recoupment claim, and validation requires
+// recouped:true for those labels. Null = may release.
+const RECOUPED_LABELS = ['Easy Winner', 'Windfall', 'Miracle'];
+function heldReleaseRefusal(existing, row) {
+  const rowLabel = row && (canonicalDesignation(cleanNullish(row.designation)) || cleanNullish(row.designation));
+  if (rowLabel && RECOUPED_LABELS.includes(rowLabel)) return `row says "${rowLabel}", which needs a recoupment a person confirms`;
+  if (!existing) return null;
+  if (existing.humanReviewedDesignation === true) return 'designation was set by a human review';
+  const designation = canonicalDesignation(cleanNullish(existing.designation)) || cleanNullish(existing.designation);
+  if (designation && designation !== 'TBD') return `record already has designation "${designation}"`;
+  if (existing.recouped === true || existing.humanReviewedRecouped === true) return 'record already has a recoupment on file';
+  return null;
+}
+
+// A released row never publishes a "recouped" claim: research recoupment
+// calls cited to forums or other shows are settled by a person (BRO-5041).
+// A cited "did not recoup" stays, because a Flop/Fizzle label needs
+// recouped:false (commercial-record-checks.js loss-designation policy).
+// _recoupedClaim (the research's own "it recouped" flag) goes too, or the
+// recouped-claim gate would still hold the row.
+function withoutRecoupmentClaim(entry) {
+  const { _recoupedClaim, ...row } = entry;
+  if (row.recouped !== true) return row;
+  const { recouped, recoupedDate, recoupedSource, ...rest } = row;
+  return rest;
+}
+
+// A released row fills gaps; the record's own notes stay, and so does its
+// recoupment citation while the recoupment answer is unchanged (BRO-5041).
+function keepExistingPublicText(entry, existing) {
+  if (!existing) return entry;
+  if (typeof existing.notes === 'string' && existing.notes.trim()) entry.notes = existing.notes;
+  if (existing.recoupedSource && existing.recouped === entry.recouped) entry.recoupedSource = existing.recoupedSource;
+  return entry;
+}
+
 // Mark a fresh research result as held backfill and count the attempt on the
 // pending row (backfill shows have no commercial.json record to count on).
 // `reset` mirrors --force, which restarts the count like the non-backfill path.
@@ -175,8 +215,11 @@ function applyFigureEvidence(result, entry, figureEvidence = {}) {
 // sources) gets clobbered. Sources merge by URL dedupe so prior Reddit/SEC
 // citations survive alongside the new trade-press article.
 function buildCommercialEntry(entry, existing, opts = {}) {
-  const { isClaimAutoApply = false, normalizeSources = (x) => x, figureEvidence = {} } = opts;
-  const result = isClaimAutoApply && existing ? { ...existing } : {};
+  const { isClaimAutoApply = false, mergeExisting = false, normalizeSources = (x) => x, figureEvidence = {} } = opts;
+  // mergeExisting (held-row release, BRO-5041) also starts from the record so
+  // its sources, model* fields and figure sources survive the overlay.
+  const overlay = (isClaimAutoApply || mergeExisting) && existing;
+  const result = overlay ? { ...existing } : {};
   // cleanNullish() collapses "null"/"undefined"/"" sentinels to undefined so a
   // bad LLM field never overwrites an existing value or writes invalid data.
   const designation = canonicalDesignation(cleanNullish(entry.designation));
@@ -224,7 +267,7 @@ function buildCommercialEntry(entry, existing, opts = {}) {
   if (Array.isArray(entry.sources) && entry.sources.length > 0) {
     const normalized = normalizeSources(entry.sources);
     if (normalized.length > 0) {
-      if (isClaimAutoApply && Array.isArray(existing?.sources)) {
+      if (overlay && Array.isArray(existing?.sources)) {
         const existingUrls = new Set(existing.sources.map(s => s.url).filter(Boolean));
         result.sources = [...existing.sources, ...normalized.filter(s => !existingUrls.has(s.url))];
       } else {
@@ -239,6 +282,9 @@ function buildCommercialEntry(entry, existing, opts = {}) {
 module.exports = {
   requiresHumanReview,
   BACKFILL_TAG,
+  heldReleaseRefusal,
+  withoutRecoupmentClaim,
+  keepExistingPublicText,
   holdForBackfill,
   carryHumanReviewHold,
   applyFigureEvidence,

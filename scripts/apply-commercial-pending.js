@@ -49,6 +49,12 @@ if (flags['pending-file'] || flags['shows-file'] || flags['commercial-file']) {
 }
 const APPLY_ALL = flags['all'] === true;
 const SINGLE_SHOW = flags['show'] || null;
+// BRO-5041: comma-separated held (requiresHumanReview) rows to release in one run, with one validation and one
+// pending write. The only path that applies a held row: it refuses records a person or a verified pass already
+// labelled, merges onto the existing record and never publishes the row's "recouped" claim (gate.heldReleaseRefusal).
+const RELEASE_HELD = typeof flags['release-held'] === 'string'
+  ? flags['release-held'].split(',').map(s => s.trim()).filter(Boolean)
+  : null;
 const EXCLUDES = flags['exclude'] ? flags['exclude'].split(',') : [];
 const MIN_CONFIDENCE = flags['min-confidence'] || 'all';
 // Skip page verification and leave every entry that carries a capitalization or weekly cost pending for the
@@ -63,7 +69,7 @@ const AUTO_APPLY_CLAIMS_FROM = flags['auto-apply-claims-from']
   : [];
 
 const gate = require('./lib/commercial-apply-gate');
-const { sanitizeForPublicRecord } = require('./lib/commercial-record-checks');
+const { sanitizeForPublicRecord, commercialRecordErrors } = require('./lib/commercial-record-checks');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { createRunBudget } = require('./lib/run-budget');
 
@@ -71,6 +77,9 @@ const USAGE = `apply-commercial-pending.js — Apply Commercial Pending Data.
 
 Usage:
   node scripts/apply-commercial-pending.js [options]
+  node scripts/apply-commercial-pending.js --release-held=SLUG[,SLUG...] [--dry-run]
+      release held backfill rows by name (never overwrites a non-TBD or human-reviewed record;
+      never publishes the row's "recouped" claim)
   node scripts/apply-commercial-pending.js --help, -h    print this usage and exit
 `;
 const meetsConfidenceThreshold = (entry) => gate.meetsConfidenceThreshold(entry, MIN_CONFIDENCE);
@@ -112,7 +121,19 @@ async function main() {
 
   // Filter to target shows
   let showIds;
-  if (SINGLE_SHOW) {
+  if (flags['release-held'] !== undefined && (!RELEASE_HELD || RELEASE_HELD.length === 0)) {
+    console.log('❌ --release-held needs a comma-separated list of slugs');
+    process.exit(1);
+  }
+  if (RELEASE_HELD && (SINGLE_SHOW || APPLY_ALL)) {
+    console.log('❌ --release-held cannot be combined with --show or --all');
+    process.exit(1);
+  }
+  if (RELEASE_HELD) {
+    showIds = RELEASE_HELD.filter(id => pending.shows[id]);
+    const missing = RELEASE_HELD.filter(id => !pending.shows[id]);
+    if (missing.length) console.log(`⚠️  Not in pending file (already applied or never researched): ${missing.join(', ')}`);
+  } else if (SINGLE_SHOW) {
     showIds = [SINGLE_SHOW].filter(id => pending.shows[id]);
     if (showIds.length === 0) {
       console.log(`❌ Show "${SINGLE_SHOW}" not found in pending file`);
@@ -184,14 +205,22 @@ async function main() {
       continue;
     }
 
-    if (gate.requiresHumanReview(entry) && !SINGLE_SHOW) {
-      console.log(`  👀 "${showId}" — backfill research, needs human review (use --show=${showId})`);
+    if (gate.requiresHumanReview(entry) && !RELEASE_HELD) {
+      console.log(`  👀 "${showId}" — backfill research, needs human review (release with --release-held=${showId})`);
       skipped++;
       continue;
     }
+    if (RELEASE_HELD && !gate.requiresHumanReview(entry)) {
+      console.log(`  ⏭️  "${showId}" — not a held row; --release-held only releases held rows`);
+      skipped++;
+      continue;
+    }
+    // What gets applied: a released held row loses any "recouped" claim. `entry` stays the stored pending row
+    // (its verify-attempt counter is written back below).
+    const row = RELEASE_HELD ? gate.withoutRecoupmentClaim(entry) : entry;
 
     // Confidence filter
-    if (!meetsConfidenceThreshold(entry)) {
+    if (!meetsConfidenceThreshold(row)) {
       console.log(`  ⏭️  "${showId}" — confidence ${entry.confidence || 'unknown'} below threshold ${MIN_CONFIDENCE}`);
       skipped++;
       continue;
@@ -220,9 +249,9 @@ async function main() {
     // The production check runs against keyShow, the show whose commercial.json
     // key the claim is written to, not scopeShow (resolveScopeShow trusts
     // entry.slug and strips -YYYY, so it can name a different production).
-    const claimAutoApplyable = hasRecoupedClaim(entry) && isAutoApplyableClaim(entry, keyShow);
-    if (hasRecoupedClaim(entry) && !SINGLE_SHOW && !claimAutoApplyable) {
-      console.log(`  🛡️  "${showId}" — has recouped claim, requires manual review (use --show=${showId})`);
+    const claimAutoApplyable = hasRecoupedClaim(row) && isAutoApplyableClaim(row, keyShow);
+    if (hasRecoupedClaim(row) && !SINGLE_SHOW && !claimAutoApplyable) {
+      console.log(`  🛡️  "${showId}" — has recouped claim, requires manual review (${RELEASE_HELD ? 'settle it on the review page' : `use --show=${showId}`})`);
       skipped++;
       continue;
     }
@@ -243,6 +272,13 @@ async function main() {
     // clobbered the next Saturday when deep-research returns a 'low'-conf
     // contradicting result.
     const existing = commercial.shows[commercialKey];
+    const releaseRefusal = RELEASE_HELD ? gate.heldReleaseRefusal(existing, row) : null;
+    if (releaseRefusal) {
+      console.log(`  🔒 "${showId}" — not released: ${releaseRefusal}; left pending for review`);
+      skipped++;
+      continue;
+    }
+    const mergeExisting = Boolean(RELEASE_HELD);
     if (existing && existing.humanReviewedDesignation === true && !SINGLE_SHOW) {
       console.log(`  🔒 "${showId}" — humanReviewedDesignation:true, skipping auto-apply`);
       skipped++;
@@ -284,7 +320,7 @@ async function main() {
     // Entries that would be held for review are held before any page is fetched: an entry stuck on a hold would
     // otherwise be re-verified (up to the per-run fetch cap) on every run.
     const status = keyShow && keyShow.slug === commercialKey ? keyShow.status : undefined;
-    const heldBeforeFetch = sanitizeForPublicRecord(gate.buildCommercialEntry(entry, existing, { isClaimAutoApply, normalizeSources }), status).holdReason;
+    const heldBeforeFetch = sanitizeForPublicRecord(gate.buildCommercialEntry(row, existing, { isClaimAutoApply, mergeExisting, normalizeSources }), status).holdReason;
     if (heldBeforeFetch) {
       console.log(`  🛑 "${showId}" — left pending for review: ${heldBeforeFetch}`);
       skipped++;
@@ -300,7 +336,7 @@ async function main() {
       skipped++;
       continue;
     }
-    const figureEvidence = NO_SOURCE_VERIFY ? {} : await verifyEntry(entry, keyShow);
+    const figureEvidence = NO_SOURCE_VERIFY ? {} : await verifyEntry(row, keyShow);
     if (figureEvidence.capped) {
       console.log(`  ⏳ "${showId}" — cited pages not checked (per-run fetch cap reached); left pending for the next run`);
       skipped++;
@@ -319,7 +355,7 @@ async function main() {
       console.log(`  ⚠️  "${showId}" — a cited page could not be fetched on ${attempts} runs; applying its figures as estimates`);
     }
     const { entry: commercialEntry, changed, holdReason } = sanitizeForPublicRecord(
-      gate.buildCommercialEntry(entry, existing, { isClaimAutoApply, normalizeSources, figureEvidence }),
+      gate.buildCommercialEntry(row, existing, { isClaimAutoApply, mergeExisting, normalizeSources, figureEvidence }),
       keyShow && keyShow.slug === commercialKey ? keyShow.status : undefined,
     );
     if (holdReason) {
@@ -328,6 +364,22 @@ async function main() {
       continue;
     }
     if (changed.length) console.log(`  ✂️  "${showId}" — cleared for the public page: ${changed.join(', ')}`);
+    if (RELEASE_HELD) {
+      // A release fills gaps on the record; it never replaces the record's
+      // own public text with research prose (or with nothing, when the
+      // research notes were all stripped).
+      gate.keepExistingPublicText(commercialEntry, existing);
+      // One bad row must not fail validate-data for the whole batch.
+      const rowErrors = commercialRecordErrors(commercialKey, commercialEntry, {
+        showRecord: keyShow && keyShow.slug === commercialKey ? keyShow : undefined,
+        allRecords: commercial.shows,
+      });
+      if (rowErrors.length) {
+        console.log(`  🛑 "${showId}" — left pending for review: ${rowErrors[0]}`);
+        skipped++;
+        continue;
+      }
+    }
 
     commercialEntry.lastUpdated = new Date().toISOString();
     commercialEntry.firstAdded = existing?.firstAdded || new Date().toISOString();

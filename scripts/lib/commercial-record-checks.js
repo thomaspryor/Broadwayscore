@@ -45,6 +45,23 @@ const CONTEXT_SECTION_RE = /\b[Ss]ections? [A-H](?:\s*(?:,|&|and|or|\/|-|–)\s*
 // "Based on a True story" never matches. Mirrors INTERNAL_TOKEN_RE in
 // src/lib/commercial-display.ts.
 const INTERNAL_TOKEN_RE = /\b[a-z][A-Za-z]*\s?[:=]\s?(?:true|false|null)\b|\b[a-z][A-Za-z]*=[A-Z]/;
+// A researcher talking about the search: first person ("I couldn't verify a
+// weekly nut", "I used the $17M AP figure", "we found no report"), the
+// record's own fields ("so that field is null", "best-fit designation"). The
+// BRO-4990 backfill wrote these into notes, and /biz would print them as the
+// site speaking (BRO-5041). Capital "I" only, and never a numeral ("Act I
+// could not", "Stage I run", "Henry I did").
+const FIRST_PERSON_SEARCH_RE = /(?<!\b(?:Act|Part|Book|Chapter|Volume|Stage|Phase|Season|Level|War|Title|Henry|Richard|Elizabeth|Charles|James|George|Edward|William|Mary|Louis|Peter|Catherine|Alexander|Frederick|Philip|Napoleon) )\bI (?!and [Yy]ou\b)(?:[a-z]+)\b|\b[Ww]e (?:couldn['’]t|could not|did not|didn['’]t|were unable|found no|cannot|can['’]t|weren['’]t able|used|classify|checked)\b|\b(?:[Tt]hat|[Tt]his) field\b|\b[Bb]est[- ]fit (?:designation|label)\b/;
+// A markdown link ("([ibdb.com](https://...?utm_source=openai))") is a research
+// tool's citation; /biz prints text, so it would show as raw brackets.
+const MARKDOWN_LINK_RE = /\[[^\]\n]*\]\(\s*https?:\/\/[^)\s]*\)/;
+// In a citation field the link's URL is the citation: keep it, bare, without
+// the research tool's tracking parameter.
+const MARKDOWN_LINK_URL_RE = /\(?\[[^\]\n]*\]\(\s*(https?:\/\/[^)\s]*)\)\)?/g;
+function bareCitationUrls(text) {
+  return text.replace(MARKDOWN_LINK_URL_RE, (_m, url) => url.replace(/([?&])utm_source=openai(&|$)/, (_s, pre, post) => (post ? pre : '')).replace(/[?&]$/, ''));
+}
+const MARKDOWN_CITATION_RE = /\s*\(?\[[^\]\n]*\]\(\s*https?:\/\/[^)\s]*\)\)?/g;
 // Writers store article URLs as sources; a URL slug ("...-gpt-...") or query
 // string ("?type=D") is not wording a reader sees.
 const URL_RE = /\bhttps?:\/\/\S+/gi;
@@ -57,8 +74,14 @@ const LOSS_DESIGNATIONS = ['Flop', 'Fizzle'];
 /** The research wording in `text` outside any URL, or null. */
 function internalWordingIn(text) {
   if (typeof text !== 'string') return null;
+  const link = text.match(MARKDOWN_LINK_RE);
+  if (link) return link[0];
   const prose = text.replace(URL_RE, ' ');
-  const match = prose.match(INTERNAL_TEXT_RE) || prose.match(INTERNAL_TOKEN_RE) || prose.match(CONTEXT_SECTION_RE);
+  // A quoted line ('"I lost everything," the producer said') is a source
+  // speaking, not the researcher.
+  const unquoted = prose.replace(/"[^"]*"|“[^”]*”/g, ' ');
+  const match = prose.match(INTERNAL_TEXT_RE) || prose.match(INTERNAL_TOKEN_RE) || prose.match(CONTEXT_SECTION_RE)
+    || unquoted.match(FIRST_PERSON_SEARCH_RE);
   return match ? match[0] : null;
 }
 
@@ -337,7 +360,8 @@ const SENTENCE_BREAK_RE = /(?<=[.;!?])(?<!\b[A-Z]\.)(?<!\b(?:Jr|Sr|Mr|Mrs|Ms|Dr|
  */
 function stripInternalWording(text) {
   if (!internalWordingIn(text)) return text;
-  const noAsides = text.replace(/\s*[([][^()[\]]*[)\]]/g, (aside) => (internalWordingIn(aside) ? '' : aside));
+  const noLinks = text.replace(MARKDOWN_CITATION_RE, '');
+  const noAsides = noLinks.replace(/\s*[([][^()[\]]*[)\]]/g, (aside) => (internalWordingIn(aside) ? '' : aside));
   const kept = noAsides.split(SENTENCE_BREAK_RE).filter((sentence) => !internalWordingIn(sentence));
   const out = kept.join(' ').replace(/\s+/g, ' ').replace(/[\s;,:]+$/, '').trim();
   return out && /[A-Za-z0-9]/.test(out) ? out : null;
@@ -370,6 +394,11 @@ function sanitizeForPublicRecord(entry, showStatus) {
     holdReason = 'model figures failed the plausibility check; a person must confirm them';
   } else if (out.recouped === true && internalWordingIn(out.recoupedSource)) {
     holdReason = 'recoupment claim is cited to research output; it needs a public source';
+  }
+  for (const field of CITATION_FIELDS) {
+    if (typeof out[field] !== 'string' || !MARKDOWN_LINK_RE.test(out[field])) continue;
+    out[field] = bareCitationUrls(out[field]);
+    changed.push(field);
   }
   for (const field of PUBLIC_TEXT_FIELDS) {
     if (!internalWordingIn(out[field])) continue;
