@@ -44,3 +44,15 @@ test('predicate', () => {
   assert.equal(isUnresolvableRedirectUrl('mailto:a@b.c'), true);
   assert.equal(isUnresolvableRedirectUrl('https://www.nytimes.com/a'), false);
 });
+
+test('prefetch skips an unresolvable redirect without calling fetchPage', async () => {
+  const { prefetchDiscoveredArticle } = require('./discovery-prefetch.js');
+  let called = false;
+  const r = await prefetchDiscoveredArticle('/goto?url=CAE', { fetchPageFn: async () => { called = true; return {}; } });
+  assert.equal(called, false);
+  assert.equal(r.fullText, null);
+});
+
+test('www.google.com/amp wrapper is unresolvable', () => {
+  assert.equal(isUnresolvableRedirectUrl('https://www.google.com/amp/s/x.com/a'), true);
+});

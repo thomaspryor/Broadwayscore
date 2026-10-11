@@ -12,7 +12,7 @@ function isUnresolvableRedirectUrl(url) {
   if (!url) return true;
   const s = String(url);
   if (s.startsWith('/')) return true;
-  if (/^https?:\/\/(?:webcache\.googleusercontent\.com|google\.com\/amp)/i.test(s)) return true;
+  if (/^https?:\/\/(?:webcache\.googleusercontent\.com|(?:www\.)?google\.com\/amp)/i.test(s)) return true;
   try {
     const parsed = new URL(s);
     if (!['http:', 'https:'].includes(parsed.protocol)) return true;

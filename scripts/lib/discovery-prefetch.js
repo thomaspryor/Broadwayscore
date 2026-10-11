@@ -33,6 +33,8 @@ function outletEntryFor(outletId) {
  */
 async function prefetchDiscoveredArticle(url, opts = {}) {
   const empty = { fullText: null, publishDate: null, criticName: opts.criticName || null };
+  // BRO-4458: an unfetchable /goto redirect would burn every fetch tier for nothing.
+  if (require('./unresolvable-url').isUnresolvableRedirectUrl(url)) return empty;
   if (opts.outletId !== undefined) {
     let registry = {};
     try { registry = require('../../data/outlet-registry.json').outlets || {}; } catch { registry = {}; }
