@@ -445,3 +445,10 @@ test('BRO-4596: express.co.uk theatre section index is a listing page, real arti
   assert.equal(listingPageUrlReason('https://www.express.co.uk/entertainment/theatre/1769203/Operation-Mincemeat-musical-review-London-2023-Fortune-theatre-dates-tickets'), null);
   assert.equal(listingPageUrlReason('https://www.express.co.uk/entertainment/films'), null);
 });
+
+test('Theater Scene tag archives are not reviews; its review urls and other hosts\' /tag/ urls are (BRO-5097)', async () => {
+  const { classifyReviewUrl } = (await import('node:module')).createRequire(import.meta.url)('./non-review-url-patterns.js');
+  assert.deepEqual(classifyReviewUrl('https://www.theaterscene.net/tag/burning-leaves/'), { ok: false, reason: 'tag-index-page' });
+  assert.equal(classifyReviewUrl('https://www.theaterscene.net/plays/offbway-plays/burning-leaves/tony-marinelli/').ok, true);
+  assert.equal(classifyReviewUrl('https://twi-ny.com/tag/an-american-daughter/').ok, true);
+});
