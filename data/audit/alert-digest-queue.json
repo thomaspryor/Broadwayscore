@@ -65,27 +65,6 @@
     "queuedAt": "2026-10-11T14:27:24.242Z"
   },
   {
-    "conditionKey": "mezzanine:session-token-expired",
-    "title": "Mezzanine Scraper Failed — Session Token Expired",
-    "description": "The Mezzanine audience data update failed with an authentication error (401/403). **The session token has expired.** To fix: set up mitmproxy on your Mac, proxy iPhone traffic through it, open the Mezzanine app, then update the `MEZZANINE_SESSION_TOKEN` GitHub Secret with the new token.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38149792765",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "Action Required",
-        "value": "Re-intercept Mezzanine iOS app via mitmproxy"
-      },
-      {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/38149792765)"
-      }
-    ],
-    "queuedAt": "2026-10-11T15:05:39.169Z"
-  },
-  {
     "conditionKey": "land:land/bro-5063-synopses",
     "title": "Landing blocked: unit-tests-node red on land/bro-5063-synopses",
     "description": "land.yml did not land land/bro-5063-synopses: the unit-tests-node gate went red at 4919db3012. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38150355012",
@@ -497,18 +476,6 @@
     "queuedAt": "2026-10-11T17:31:24.081Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Audit outlet-registry gaps",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38164826934",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-11T18:46:10.308Z"
-  },
-  {
     "conditionKey": "slug-misroute:55cb490c16ac",
     "title": "92 new slug-misroute finding(s)",
     "description": "92 review file(s) appear misrouted and are not yet dispositioned. Nothing was changed automatically. To triage LOCALLY:\n1) node scripts/audit-slug-match-routing.js\n2) node scripts/verify-misroute-content.js --include-flagged --include-oos\n3) gated apply per scripts/apply-slug-misroute-whitelist.js header (snapshot → ff-only → --apply → rebuild → spot-check)\nTo silence a finding you've decided to leave: node scripts/disposition-misroute.js add --from=ID --file=F --reason=\"...\"",
@@ -640,5 +607,87 @@
       }
     ],
     "queuedAt": "2026-10-11T18:41:32.493Z"
+  },
+  {
+    "conditionKey": "land:land/bro-silent-gap-syndication-secondary",
+    "title": "Landing blocked: rebase red on land/bro-silent-gap-syndication-secondary",
+    "description": "land.yml did not land land/bro-silent-gap-syndication-secondary: the rebase gate went red at 69109424fd. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38165849885",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-silent-gap-syndication-secondary"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "69109424fdfcfb8c177296f7a7f1676e0b36514a"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38165849885"
+      }
+    ],
+    "queuedAt": "2026-10-11T18:57:24.115Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5031-head-to-pitch",
+    "title": "Landing blocked: rebase red on land/bro-5031-head-to-pitch",
+    "description": "land.yml did not land land/bro-5031-head-to-pitch: the rebase gate went red at a420661fd5. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5031-head-to-pitch @ a420661fd5 (origin/land/bro-5031-head-to-pitch) → origin/main @ f6ddc3bb65 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ f6ddc3bb65: Rebasing (1/1) error: could not apply a420661fd5b... fix(synopsis): \"Head to the <venue>\" opener is audience pitch; plan to trim The Real Thing 2024 (BRO-5031) hint: Resolve all conflicts manually, mark them  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38163285190",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5031-head-to-pitch"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "a420661fd5b6eb72c37ac4aa99837cbe10917629"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38163285190"
+      }
+    ],
+    "queuedAt": "2026-10-11T18:56:45.120Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Audit outlet-registry gaps",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38166329269",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-11T19:07:11.360Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:montgomery-an-american-musical-off-broadway-2026",
+    "title": "Montgomery: An American Musical @ A.R.T./New York Theatres — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2026-12-11 to 2026-12-19). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/montgomery-an-american-musical-off-broadway-2026",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-11T19:09:16.553Z"
   }
 ]

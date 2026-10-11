@@ -26,6 +26,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { recordBdCall } = require('./lib/provider-telemetry');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { buildLondonSlugVariants } = require('./lib/show-matching');
@@ -51,6 +52,7 @@ function fetchWithBrightData(url) {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
+        recordBdCall({ url, fn: 'web-unlocker', success: res.statusCode === 200, status: res.statusCode });
         if (res.statusCode === 200) resolve({ content: data });
         else reject(new Error(`BrightData HTTP ${res.statusCode}`));
       });
