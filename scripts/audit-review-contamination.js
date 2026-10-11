@@ -105,6 +105,7 @@ const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-sca
 const { countStrictHits, shouldBlockContaminationGate, isAlreadyExcludedFromScoring } = require('./lib/contamination-gate');
 const { buildLiveScoredIndex, isGenuineDoubleCount } = require('./lib/c2-live-scored-check');
 const { olderProductionLiveReason } = require('./lib/older-production-live-guard');
+const { urlNamesOtherShow } = require('./lib/url-names-other-show');
 
 // BRO-74: ground truth for "is this URL actually double-counted by the
 // scoring engine right now" — read directly from the rebuild's own output
@@ -351,7 +352,16 @@ const hits = {
   // publishDate and falls outside every run. REPORT-ONLY (not in
   // STRICT_CLASSES) until one corpus cycle shows its hit count.
   G_older_production_live: [],
+  // H: the URL slug names a DIFFERENT show than the directory it is filed in
+  // (BRO-2746: CARE's Stage review filed under A Month in the Country).
+  // REPORT-ONLY (not in STRICT_CLASSES) until one corpus cycle shows its hit
+  // count (CLAUDE.md rule 19).
+  H_url_names_other_show: [],
 };
+const hCandidates = shows.map(s => ({ id: s.id, title: s.title }));
+
+const excludedOtherwiseH = (d) => d.wrongShow || d.wrongProduction || d.isRoundupArticle || d.wrongAttribution
+  || d.contentVerification?.wrongArticle || d.isNonReview || d.nonReviewFlag || d.nonReviewContent || d.duplicateOf || d.rejectionReason;
 
 let filesScanned = 0;
 let showsScanned = 0;
@@ -603,6 +613,12 @@ for (const showId of showDirs) {
           }
         }
       }
+    }
+
+    // ─── H: URL slug names a different show (BRO-2746) ────
+    if (shouldRunClass('H') && !excludedOtherwiseH(d) && d.url) {
+      const other = urlNamesOtherShow(d.url, show, hCandidates);
+      if (other) hits.H_url_names_other_show.push({ showId, file: f, namesShow: other.showId, url: d.url, combined: !!d.isCombinedReview });
     }
 
     // ─── G: older/other production live on this show (BRO-4432) ────
