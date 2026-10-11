@@ -22,7 +22,8 @@
 // two weeks before a day (announcements refer to the books of the prior
 // week or two) and the whole month for a month. A year-only date is too
 // coarse to test. A show that closed before the window (it recouped
-// later, from a tax credit or tour profits) is not a running-show test. The model is scored on the interval between its values at
+// later, from a tax credit or tour profits) keeps only the earlier
+// checkpoints that fall inside its run. The model is scored on the interval between its values at
 // the window's two ends: inside when that interval touches the band.
 //
 // Pure functions; the CLI is scripts/backtest-recoupment-ground-truth.js --timing.
@@ -82,14 +83,17 @@ function timingTruth(comm, show) {
   const announcement = announcementDate(comm);
   const win = recoupWindow(announcement);
   if (!win) return null;
-  // Recouped after closing (tax credit, tour profits): not a running-show test.
-  if (show && show.closingDate && show.closingDate < win[0]) return null;
+  // Recouped after closing (tax credit, tour profits): the announcement is
+  // not a running-show test; earlier checkpoints inside the run still are.
+  const close = show && show.closingDate ? Date.parse(show.closingDate) : Infinity;
+  const afterClose = close < Date.parse(win[0]);
   const start = show && Date.parse(show.previewsStartDate || show.openingDate || '');
-  const checkpoints = [{ label: 'at-recoup', from: win[0], to: win[1], lo: RECOUP_BAND[0], hi: RECOUP_BAND[1] }];
+  const checkpoints = afterClose ? [] : [{ label: 'at-recoup', from: win[0], to: win[1], lo: RECOUP_BAND[0], hi: RECOUP_BAND[1] }];
   for (const w of EARLIER_WEEKS) {
     const at = Date.parse(win[0]) - w * 7 * DAY_MS;
-    if (Number.isFinite(start) && at > start) checkpoints.push({ label: `${w}w-before`, from: iso(at), to: iso(at), lo: -Infinity, hi: 99.99 });
+    if (Number.isFinite(start) && at > start && at <= close) checkpoints.push({ label: `${w}w-before`, from: iso(at), to: iso(at), lo: -Infinity, hi: 99.99 });
   }
+  if (!checkpoints.length) return null;
   return { ...truthClassOf(comm, 'recouped', comm.recoupedSource), announcement, checkpoints };
 }
 

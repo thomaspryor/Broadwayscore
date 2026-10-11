@@ -44,7 +44,8 @@ describe('timingTruth', () => {
     assert.equal(T.timingTruth({ ...comm, recoupedSource: '' }, show), null);
   });
   test('a recoupment announced after closing is not a running-show test', () => {
-    assert.equal(T.timingTruth(comm, { ...show, closingDate: '2017-05-01' }), null);
+    assert.deepEqual(T.timingTruth(comm, { ...show, closingDate: '2017-05-01' }).checkpoints.map((c) => c.label), ['26w-before']);
+    assert.equal(T.timingTruth(comm, { ...show, closingDate: '2016-12-20' }), null);
     assert.ok(T.timingTruth(comm, { ...show, closingDate: '2017-07-10' }));
   });
   test('an admission that nobody announced it stays inference', () => {
