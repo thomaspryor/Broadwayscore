@@ -51,7 +51,26 @@ function modelContradictsDesignation(pct, designation) {
     || (pct > c.TRICKLE_ABOVE_PCT && designation === 'Trickle');
 }
 
+// ---------------------------------------------------------------------------
+// designationBasis (owner policy B, BRO-5020 2026-10-11): what a Fizzle/Flop
+// rests on. Writers stamp it; only the display layer turns
+// 'no-recoupment-announced' into public words ("Based on no recoupment being
+// announced"). A label on silence waits LOSS_LABEL_MIN_DAYS after closing,
+// because some shows recoup after they close.
+// ---------------------------------------------------------------------------
+const DESIGNATION_BASES = Object.freeze({
+  /** A cited source or the producers state the loss / non-recoupment. */
+  REPORTED_LOSS: 'reported-loss',
+  /** Inference from silence: closed, researched, no recoupment ever announced. */
+  NO_RECOUPMENT_ANNOUNCED: 'no-recoupment-announced',
+  /** Our notes describe a loss but the cite is not a hard source. */
+  NOTES_STATED: 'notes-stated',
+});
+const VALID_DESIGNATION_BASES = Object.freeze(Object.values(DESIGNATION_BASES));
+const LOSS_LABEL_MIN_DAYS = 183;
+
 module.exports = {
+  DESIGNATION_BASES, VALID_DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS,
   VALID_DESIGNATIONS, canonicalDesignation,
   TRICKLE_MAX_MULTIPLE, MIRACLE_MIN_YEARS, FIZZLE_MIN_RETURNED_PCT, DESIGNATIONS_OUTSIDE_RULE,
   MODEL_CONTRADICTION, modelContradictsDesignation,

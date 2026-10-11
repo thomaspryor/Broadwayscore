@@ -24,6 +24,7 @@ import {
   getDesignationDisplay,
   publicSourceText,
   isClosedWithoutRecouping,
+  LOSS_ON_SILENCE_CAVEAT,
 } from '@/lib/commercial-display';
 import { isRunningStatus } from '@/lib/commercial-metrics';
 import RecoupmentProgressBar from '@/components/RecoupmentProgressBar';
@@ -303,6 +304,11 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                     </span>
                     {show.nonprofitOrg && (
                       <div className="text-xs text-gray-500">{show.nonprofitOrg}</div>
+                    )}
+                    {show.lossCaveat && (
+                      <div className="text-xs text-gray-500 whitespace-nowrap" title={LOSS_ON_SILENCE_CAVEAT} data-testid="loss-basis-tag">
+                        No recoupment announced
+                      </div>
                     )}
                   </td>
                   <td className="py-3 px-4">

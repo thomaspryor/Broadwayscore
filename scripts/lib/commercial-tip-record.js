@@ -17,6 +17,7 @@
  *   changelog and the issue comment.
  */
 const { sanitizeForPublicRecord, commercialRecordErrors, commercialRecordWarnings } = require('./commercial-record-checks');
+const { stampDesignationBasis } = require('./commercial-apply-gate');
 
 function changedFields(before, after) {
   const fields = new Set([...Object.keys(before), ...Object.keys(after)]);
@@ -37,6 +38,10 @@ function buildTipRecord(commercial, showList, slug, proposedChanges) {
       draft.isEstimate = { ...(draft.isEstimate || {}), [change.field]: true };
     }
   }
+  // Every loss label carries a basis (owner policy B, BRO-5020): the tip's
+  // own, else the unchanged label's, else the cautious silence basis.
+  const proposedBasis = proposedChanges.find((c) => c.field === 'designationBasis');
+  stampDesignationBasis(draft, { designationBasis: proposedBasis && proposedBasis.newValue }, existing);
   const show = (showList || []).find((s) => s && s.slug === slug);
   const { entry, holdReason } = sanitizeForPublicRecord(draft, show && show.status);
   if (holdReason) return refuse(holdReason);
