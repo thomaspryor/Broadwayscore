@@ -161,3 +161,12 @@ test('session-start.sh (real hook): a malformed mac-only marker is reported, and
   assert.doesNotMatch(ok.installed, /mac rule/);
   assert.doesNotMatch(ok.out, /WARNING/);
 });
+
+// BRO-5072: every cloud session reads .claude/CLOUD.md before any work. It
+// grew to 37KB of changelog narrative with no cap; trimmed to ~24KB. Keep
+// rules there, history in git and Linear.
+const CLOUD_MD_MAX_BYTES = 26 * 1024;
+test('.claude/CLOUD.md stays under its byte cap', () => {
+  const bytes = fs.statSync(path.join(REPO_ROOT, '.claude', 'CLOUD.md')).size;
+  assert.ok(bytes <= CLOUD_MD_MAX_BYTES, `.claude/CLOUD.md is ${bytes}B (cap ${CLOUD_MD_MAX_BYTES}B): trim narrative, keep rules`);
+});
