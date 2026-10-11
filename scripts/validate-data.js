@@ -3999,7 +3999,7 @@ function validateReviewTextQuality(shows) {
   // Show lookup + date helpers for the prior-production-by-date backstop (CHECK 0).
   const showById = {};
   for (const show of shows) if (show && show.id) showById[show.id] = show;
-  const { evaluateDatePlausibility } = require('./lib/date-plausibility');
+  const { classifyDateGuardBackstop } = require('./lib/date-guard-hold');
   const { buildShowPersonNameSets, classifyCriticAgainstSets } = require('./lib/creative-as-critic');
   for (const show of shows) {
     showNameSets[show.id] = buildShowPersonNameSets(show);
@@ -4012,6 +4012,7 @@ function validateReviewTextQuality(shows) {
   let headlineCritics = 0;
   let jsonLdPullQuotes = 0;
   let creativeAsCritic = 0;
+  let heldDateGuard = 0;
 
   const showDirs = fs.readdirSync(reviewTextsDir, { withFileTypes: true })
     .filter(d => d.isDirectory() && !d.name.startsWith('.'))
@@ -4051,10 +4052,21 @@ function validateReviewTextQuality(shows) {
       // operator-trust override fields (allowEarlyDate/allowCrossMarket) used to
       // hide these from every guard, so this check deliberately ignores them.
       // Escape hatch: declare a priorRun, or it's a genuine operator entry.
+      //
+      // BRO-5030: a file the date-guard flagger HELD for human review (current-
+      // run corroboration contradicts the date) carries a dateGuardHeld marker.
+      // classifyDateGuardBackstop re-checks the hold on the file as it is now
+      // and downgrades it to a warning, so one held review no longer refuses
+      // every validate-gated core-data push. Unheld files still error.
       const wfShow = showById[showDir];
       if (wfShow) {
-        const verdict = evaluateDatePlausibility({ review: data, show: wfShow });
-        if (verdict.implausible) {
+        const { kind, verdict } = classifyDateGuardBackstop({ review: data, show: wfShow });
+        if (kind === 'held') {
+          heldDateGuard++;
+          warn(`[date-guard-held] ${showDir}/${file}: review dated ${data.publishDate} is ${verdict.daysBefore}d before the show's earliest date ${verdict.earliestDate}, HELD by flag-wrong-production-by-date (${(data.dateGuardHeld.signals || []).join(', ')}) — needs a human: verify the live page date, then correct publishDate, set wrongProduction:true, or declare a priorRun`);
+          continue;
+        }
+        if (kind === 'error') {
           error(`[wrong-production-by-date] ${showDir}/${file}: review dated ${data.publishDate} is ${verdict.daysBefore}d before the show's earliest date ${verdict.earliestDate} and not within any declared priorRun — likely a different production leaked onto this entry (set wrongProduction:true, or declare a priorRun)`);
           issues++;
           continue;
@@ -4138,6 +4150,9 @@ function validateReviewTextQuality(shows) {
     }
   }
 
+  if (heldDateGuard > 0) {
+    info(`Review text quality: ${heldDateGuard} date-guard-held file(s) await human review (warnings above, not blocking)`);
+  }
   if (issues === 0) {
     ok(`Review text quality: ${filesChecked} files checked, no issues`);
   } else {

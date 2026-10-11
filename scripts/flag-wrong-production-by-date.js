@@ -22,6 +22,7 @@ const { isWithinPriorRun, isWithinTourLeg, isPreRunForUkClear, namesNonLondonCit
 const { evaluateDateGuard, evaluateDatelessRevivalGuard, evaluateShowScorePreviousProduction, evaluateLlmYearMisdate, guardPublishDate, earliestShowDate, DAYS_AFTER_CLOSE } = require('./lib/date-guard');
 const { detectPriorRunRepublish } = require('./lib/prior-run-republish-guard');
 const { evaluateCurrentRunCorroboration, shouldHoldDateGuardFlag } = require('./lib/wrong-production-corroboration');
+const { applyDateGuardHold, clearDateGuardHold, holdMarkerNeedsWrite } = require('./lib/date-guard-hold');
 const { isAwaitingUrlCorrectionRefetch } = require('./lib/stale-flag-after-url-correction');
 const { evaluateDatePlausibility } = require('./lib/date-plausibility');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
@@ -297,6 +298,15 @@ function run() {
         if (shouldHoldDateGuardFlag({ corrob, implausible })) {
           corroborationHeld++;
           heldDetails.push({ showId: showDir, file, date: data.publishDate, outlet: data.outlet || '?', signals: corrob.signals, issue, diffDays });
+          // BRO-5030: stamp the hold so validate-data CHECK 0 reports this file
+          // as a review-queue warning instead of an error that refuses every
+          // validate-gated core-data push. Rewritten only when the marker is
+          // missing or stale (date/signals changed), so reruns don't churn it.
+          if (!DRY_RUN && holdMarkerNeedsWrite(data, corrob.signals)) {
+            applyDateGuardHold(data, { signals: corrob.signals, issue, diffDays });
+            const r = safeWriteReview(filePath, data);
+            if (r.lockedSkipped) lockedSkipCount++;
+          }
           continue;
         }
         if (corrob.strength === 'weak') corroborationWarned++;
@@ -332,6 +342,7 @@ function run() {
         // lane-guarded: the per-file loop skips lane reviews via laneBypasses before any guard runs
         data.wrongProduction = true;
         invalidateWrongProductionAutoClear(data);
+        clearDateGuardHold(data); // BRO-5030: flagged now, so no longer held
         data.wrongProductionNote = note;
         // Not a dated-guard note, so rebuild's stale date-guard clear (which
         // re-evaluates at the 60d window) cannot release it; reason also blocks
