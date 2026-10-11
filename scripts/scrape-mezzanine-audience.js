@@ -75,7 +75,7 @@ const MEZZANINE_OVERRIDES = {
   // Subtitle differences vs Mezzanine's short title
   'beaches-2026': 'Beaches',
   // Reordered titles (Mezzanine puts disambiguator in parens, we put it leading)
-  'the-tragedy-of-coriolanus-off-broadway-2026': 'Coriolanus',
+  'the-tragedy-of-coriolanus-off-broadway-2026': { name: 'Coriolanus', venue: 'Polonsky' },
   // Censored vs uncensored title
   'meat-suit-or-the-stshow-of-motherhood-off-broadway-2026': 'Meat Suit, or the shitshow of motherhood',
   // We embed venue in title; Mezzanine uses bare title. A bare override was also
