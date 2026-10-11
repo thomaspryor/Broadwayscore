@@ -128,6 +128,12 @@ test('held model says why, never on a settled or untrusted record', () => {
   assert.equal(getModelHoldLabel({ ...base, modelDisplayHold: 'few-weeks', modelMethod: 'ai-estimated' }), null);
 });
 
+test('BRO-5020: a closed run is never "too early"', () => {
+  const closed = { recouped: null, designation: 'TBD', status: 'closed', modelMethod: 'weekly-model', modelDataQuality: 'medium' };
+  assert.equal(getModelHoldLabel({ ...closed, modelDisplayHold: 'few-weeks' }), 'Not enough data to estimate');
+  assert.equal(getModelHoldLabel({ ...closed, modelDisplayHold: 'too-uncertain' }), 'Too uncertain to estimate');
+});
+
 test('the guard output feeds the hold label end to end', () => {
   const held = applyModelDisplayGuard(
     { recouped: null, designation: 'TBD', modelMethod: 'weekly-model', modelDataQuality: 'medium', modelRecoupmentPct: [-200, -169, -140] },

@@ -279,7 +279,7 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
           </thead>
           <tbody className="text-gray-300">
             {displayShows.map((show) => {
-              const designation = getDesignationDisplay(show.designation, show.status);
+              const designation = getDesignationDisplay(show.designation, show.status, show.recouped);
               const running = isRunningStatus(show.status);
               return (
                 <tr

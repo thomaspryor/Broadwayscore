@@ -148,6 +148,18 @@ export const UNDISCLOSED_DESIGNATION = {
   borderClass: 'border-white/10',
 } as const;
 
+/**
+ * Display-only label for a CLOSED TBD show that announced recoupment but not
+ * the investor return (BRO-5020, The Piano Lesson). Recouped green, matching
+ * the card's Recouped pill, so it never reads as an unknown outcome.
+ */
+export const RECOUPED_UNDISCLOSED_DESIGNATION = {
+  name: 'Recouped · return undisclosed',
+  color: 'text-emerald-400',
+  description: 'Closed; recouped, investor return not announced',
+  icon: '✅',
+} as const;
+
 /** Quick lookup: designation name → config */
 export const DESIGNATION_MAP: Record<string, DesignationConfig> =
   Object.fromEntries(DESIGNATIONS.map(d => [d.name, d]));
@@ -201,8 +213,8 @@ export function getLegendDesignations(): DesignationConfig[] {
 
 /**
  * Legend rows for the /biz Designation Guide and the methodology page:
- * every legend designation plus the display-only "Undisclosed" label,
- * placed right after TBD.
+ * every legend designation plus the display-only "Undisclosed" and
+ * "Recouped · return undisclosed" labels, placed right after TBD.
  */
 export function getLegendEntries(): Array<{ name: string; color: string; description: string }> {
   const entries: Array<{ name: string; color: string; description: string }> = [];
@@ -213,6 +225,11 @@ export function getLegendEntries(): Array<{ name: string; color: string; descrip
         name: UNDISCLOSED_DESIGNATION.name,
         color: UNDISCLOSED_DESIGNATION.color,
         description: UNDISCLOSED_DESIGNATION.description,
+      });
+      entries.push({
+        name: RECOUPED_UNDISCLOSED_DESIGNATION.name,
+        color: RECOUPED_UNDISCLOSED_DESIGNATION.color,
+        description: RECOUPED_UNDISCLOSED_DESIGNATION.description,
       });
     }
   }
