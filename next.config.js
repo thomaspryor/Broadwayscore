@@ -1,8 +1,15 @@
 /** @type {import('next').NextConfig} */
 const isGitHubPages = process.env.GITHUB_PAGES === 'true';
 
+// BRO-5007: inlined as a literal, so `process.env.HELD_BOX_OFFICE_BUILD === 'true'`
+// folds at build time and a flag-off build never emits the held sections'
+// chunks (a dynamic() import still emits its chunk even when nothing renders it).
+const builtFeatures = (process.env.NEXT_PUBLIC_FEATURES || '').split(',').map((s) => s.trim());
+const heldBoxOfficeBuild = builtFeatures.includes('commercial') && builtFeatures.includes('boxOfficeV2');
+
 const nextConfig = {
   reactStrictMode: true,
+  env: { HELD_BOX_OFFICE_BUILD: heldBoxOfficeBuild ? 'true' : 'false' },
   trailingSlash: false,
   // Skip in-build lint+type-check; they run separately in
   // .github/workflows/test.yml (typescript-check job: tsc + next lint).

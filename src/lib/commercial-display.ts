@@ -455,6 +455,11 @@ export interface DesignationDisplay {
   isUndisclosed: boolean;
 }
 
+/** Whether the Commercial Scorecard has anything to show (it renders nothing otherwise). */
+export function hasCommercialCard(c: Pick<ShowCommercial, 'capitalization' | 'recouped' | 'designation'>): boolean {
+  return !!(c.capitalization || c.recouped !== null || c.designation !== 'TBD');
+}
+
 /**
  * What to call a designation on screen. A CLOSED show still stored as TBD
  * reads "Undisclosed: Closed; outcome not announced" instead of "TBD: still

@@ -9,10 +9,8 @@ import {
   chartMode,
   costPill,
   costStatusCell,
-  costTable,
   coverTiles,
   formatMillions,
-  marketLine,
   multipleTicks,
   nearNote,
   outletAndMonth,
@@ -22,12 +20,19 @@ import {
   toBoxOfficeV2Card,
   trendText,
 } from '../../src/lib/box-office-v2-display';
-import { getRunningBoxOfficeV2, getBoxOfficeV2Listing, getBoxOfficeV2Market } from '../../src/lib/data-commercial';
+import { getRunningBoxOfficeV2, getBoxOfficeCostCoverage } from '../../src/lib/data-commercial';
+import { formatShare } from '../../src/lib/box-office-v2-display';
+import CostCoverageCard from '../../src/components/box-office/CostCoverageCard';
+import React from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+
+// tsx compiles JSX with the classic runtime, which needs React in scope.
+(globalThis as unknown as { React: typeof React }).React = React;
 
 test('costPill: bands and special states', () => {
-  assert.deepEqual(costPill({ availability: 'ok', band: 'below', closingDate: null }), { label: 'Below Cost', tone: 'below' });
-  assert.deepEqual(costPill({ availability: 'ok', band: 'well-above', closingDate: null }), { label: 'Well Above Cost', tone: 'above' });
-  assert.deepEqual(costPill({ availability: 'ok', band: 'near', closingDate: null }), { label: 'Near Cost', tone: 'near' });
+  assert.deepEqual(costPill({ availability: 'ok', band: 'below', closingDate: null }), { label: 'Below Break-even', tone: 'below' });
+  assert.deepEqual(costPill({ availability: 'ok', band: 'well-above', closingDate: null }), { label: 'Well Above Break-even', tone: 'above' });
+  assert.deepEqual(costPill({ availability: 'ok', band: 'near', closingDate: null }), { label: 'Near Break-even', tone: 'near' });
   assert.equal(costPill({ availability: 'nocost', band: null, closingDate: null }).label, 'No cost estimate yet');
   assert.equal(costPill({ availability: 'early', band: null, closingDate: '2027-01-17' }).label, 'Too early');
   assert.equal(costPill({ availability: 'closed', band: null, closingDate: '2026-09-20' }).label, 'Closed Sep 20');
@@ -63,8 +68,8 @@ test('nearNote: explains a Near that comes only from the range crossing 1x', () 
 });
 
 test('streak, trend and chart mode text', () => {
-  assert.equal(streakText({ side: 'below', weeks: 19, atLeast: false }), '19 straight weeks below cost');
-  assert.equal(streakText({ side: 'above', weeks: 52, atLeast: true }), 'at least 52 straight weeks above cost');
+  assert.equal(streakText({ side: 'below', weeks: 19, atLeast: false }), '19 straight weeks below break-even');
+  assert.equal(streakText({ side: 'above', weeks: 52, atLeast: true }), 'at least 52 straight weeks above break-even');
   assert.equal(streakText({ side: 'above', weeks: 1, atLeast: false }), null, 'one week is not a streak');
   assert.equal(trendText('steady'), '→ steady');
   assert.equal(trendText('unknown'), null);
@@ -86,7 +91,7 @@ test('multipleTicks: evenly spaced for every chart max, 1x labeled', () => {
   }
 });
 
-test('coverTiles: only when short of cost', () => {
+test('coverTiles: only when short of break-even', () => {
   const base = { avgGross: 703_074, breakEven: 820_976, shortBy: 117_902, ticketNeeded: 125.97, ticketNow: 107.9, capacityNeeded: 97.8, capacityNow: 83.7 };
   const t = coverTiles(base);
   assert.deepEqual(t.map((x) => x.value), ['$118K', '$126 avg ticket', '98% full']);
@@ -127,15 +132,12 @@ const card = (over: Partial<Record<keyof Card, unknown>>): Card => ({
   trend: 'declining', nonprofit: false, title: 'X', slug: 'x', ...over,
 }) as Card;
 
-test('marketLine: total, change vs same week last year, show counts', () => {
-  const m = marketLine({ week: '2026-10-04', gross: 27_740_000, shows: 28, lastYearWeek: '2025-10-05', lastYearGross: 31_430_000, lastYearShows: 27 });
-  assert.deepEqual(m, { gross: '$27.7M', changePct: 12, direction: 'down', lastYearGross: '$31.4M', shows: 28, lastYearShows: 27 });
-  assert.equal(marketLine({ week: 'w', gross: 1e6, shows: 3, lastYearWeek: null, lastYearGross: null, lastYearShows: null }).direction, null);
+test('formatMillions: one decimal', () => {
   assert.equal(formatMillions(2_704_000), '$2.7M');
 });
 
 test('costStatusCell: rated rows get multiple, range and trend; others a dash', () => {
-  assert.deepEqual(costStatusCell(card({})), { label: 'Near Cost', tone: 'near', arrow: '↓', multiple: '0.86×', range: '0.82–0.90', sortValue: 0.86, statusSort: 20.086 });
+  assert.deepEqual(costStatusCell(card({})), { label: 'Near Break-even', tone: 'near', arrow: '↓', multiple: '0.86×', range: '0.82–0.90', sortValue: 0.86, statusSort: 20.086 });
   assert.equal(costStatusCell(card({ trend: 'unknown' })).arrow, null);
   assert.deepEqual(costStatusCell(undefined), { label: 'No estimate yet', tone: 'pending', arrow: null, multiple: null, range: null, sortValue: null, statusSort: 1 });
   assert.equal(costStatusCell(card({ availability: 'nocost', band: null, multiple: null, nonprofit: true })).label, 'Nonprofit · no estimate');
@@ -144,15 +146,7 @@ test('costStatusCell: rated rows get multiple, range and trend; others a dash', 
   assert.equal(early.multiple, null, 'no multiple without a status');
 });
 
-test('costTable: marks rated nonprofits, leaves unknown rows alone, a closed unknown row says Closed', () => {
-  const rows = [{ show: { slug: 'a', title: 'A' } }, { show: { slug: 'b', title: 'B' } }, { show: { slug: 'c', title: 'C' } }, { show: { slug: 'd', title: 'D', status: 'closed' } }];
-  const t = costTable(rows, { a: card({ slug: 'a', nonprofit: true }), b: card({ slug: 'b', availability: 'nocost', band: null, multiple: null, nonprofit: true }) });
-  assert.deepEqual(t.thisWeek.map((r) => r.show.title), ['A (nonprofit)', 'B', 'C', 'D']);
-  assert.deepEqual(Object.keys(t.cells), ['a', 'b', 'd']);
-  assert.equal(t.cells.d.label, 'Closed', 'a closed show never gets an estimate, so it must not say "yet"');
-});
-
-test('Status sorts by band first: a demoted at-risk show stays with Near Cost whatever its multiple', () => {
+test('Status sorts by band first: a demoted at-risk show stays with Near Break-even whatever its multiple', () => {
   const s = (over: Partial<Record<keyof Card, unknown>>) => costStatusCell(card(over)).statusSort;
   const demoted = s({ band: 'near', multiple: { lo: 1.4, mid: 1.6, hi: 1.8 } });
   assert.ok(s({ band: 'above', multiple: { lo: 1.05, mid: 1.1, hi: 1.2 } }) > demoted);
@@ -167,7 +161,7 @@ test('statusCounts: four bands in order, unrated grouped by reason', () => {
     card({ title: 'TLK', availability: 'nocost', band: null }), card({ title: 'RH', availability: 'nocost', band: null, nonprofit: true }),
     card({ title: 'ODC', availability: 'early', band: null }), card({ title: 'Fin', availability: 'closing', band: null }),
   ]);
-  assert.deepEqual(c.groups.map((g) => [g.label, g.titles]), [['Well Above Cost', ['Ham']], ['Above Cost', []], ['Near Cost', ['MHE']], ['Below Cost', ['ST']]]);
+  assert.deepEqual(c.groups.map((g) => [g.label, g.titles]), [['Well Above Break-even', ['Ham']], ['Above Break-even', []], ['Near Break-even', ['MHE']], ['Below Break-even', ['ST']]]);
   assert.equal(c.rated, 3);
   assert.deepEqual([c.noEstimate, c.nonprofitNoEstimate, c.early, c.closing], [['TLK'], ['RH'], ['ODC'], ['Fin']]);
   // Shows with no commercial record at all still get named under "Not rated".
@@ -175,13 +169,18 @@ test('statusCounts: four bands in order, unrated grouped by reason', () => {
   assert.deepEqual([u.rated, u.early, u.noEstimate], [1, ['AFGM'], ['Open']]);
 });
 
-test('real data: listing covers every running show, market matches the history file', () => {
-  const listing = getBoxOfficeV2Listing([]);
-  assert.ok(listing, 'listing is null (stale inputs?)');
-  const c = statusCounts(listing.running, listing.unrecorded);
-  const total = c.rated + c.noEstimate.length + c.nonprofitNoEstimate.length + c.early.length + c.closing.length;
-  assert.equal(total, listing.running.length + listing.unrecorded.length, 'every running show lands in exactly one bucket');
-  const m = getBoxOfficeV2Market();
-  assert.ok(m && m.gross > 5_000_000 && m.shows >= 10, `implausible market ${JSON.stringify(m)}`);
-  if (m.lastYearWeek) assert.equal(Date.parse(m.week) - Date.parse(m.lastYearWeek), 364 * 86_400_000);
+test('real data: cost coverage puts every running Broadway show in exactly one bucket', () => {
+  const cov = getBoxOfficeCostCoverage();
+  assert.ok(cov, 'coverage is null (stale inputs?)');
+  const c = cov.counts;
+  const all = [...c.groups.flatMap((g) => g.titles), ...c.noEstimate, ...c.nonprofitNoEstimate, ...c.early, ...c.closing];
+  assert.equal(new Set(all).size, all.length, 'a show sits in two buckets');
+  assert.ok(c.rated >= 5, `only ${c.rated} rated`);
+  for (const g of c.groups) for (const t of g.titles) assert.ok(cov.shares[t] > 0, `${t} is rated but has no share of break-even`);
+  // The card prints shares of break-even, never multiples.
+  const html = renderToStaticMarkup(React.createElement(CostCoverageCard, { counts: c, shares: cov.shares }));
+  assert.match(html, /100%\s+means just covering its costs/);
+  assert.doesNotMatch(html, /\d×/);
+  const first = c.groups.find((g) => g.titles.length)!.titles[0];
+  assert.ok(html.includes(`>${formatShare(cov.shares[first])}<`), `${first} shows its share`);
 });

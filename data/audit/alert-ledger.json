@@ -150,20 +150,18 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-11T03:27:20.299Z",
-      "lastSeen": "2026-10-11T03:47:21.877Z",
-      "lastNotifiedAt": "2026-10-11T03:27:20.299Z",
+      "incidentOpenedAt": "2026-10-11T06:18:07.922Z",
+      "lastSeen": "2026-10-11T06:18:07.922Z",
+      "lastNotifiedAt": "2026-10-11T06:18:07.922Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
-      "notifyCount": 128,
+      "notifyCount": 129,
       "cardId": null,
-      "linearIdentifier": "BRO-3030",
-      "silentRefires": 1,
-      "resolvedAt": "2026-10-11T05:07:52.440Z"
+      "linearIdentifier": "BRO-3030"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -13581,20 +13579,14 @@
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"classify-market-routing parity vs committed baseline (95 samples)\"",
-      "firstSeen": "2026-10-11T06:04:55.582Z",
-      "incidentOpenedAt": "2026-10-11T06:04:55.582Z",
-      "lastSeen": "2026-10-11T06:04:55.582Z",
-      "lastNotifiedAt": "2026-10-11T06:04:55.582Z",
+      "firstSeen": "2026-10-11T06:18:07.617Z",
+      "incidentOpenedAt": "2026-10-11T06:18:07.617Z",
+      "lastSeen": "2026-10-11T06:18:07.617Z",
+      "lastNotifiedAt": "2026-10-11T06:18:07.617Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5035",
-      "dispatch": {
-        "requestedAt": "2026-10-11T06:04:55.582Z",
-        "mode": "dispatch-at-filing",
-        "runId": "38115978835",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38115978835"
-      }
+      "linearIdentifier": "BRO-5035"
     }
   }
 }

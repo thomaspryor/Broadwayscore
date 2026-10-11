@@ -495,16 +495,16 @@ export function computeCoverCosts(windowRows: WeekRow[], avgGross: number, break
 }
 
 /**
- * How the window's gross compares with cost, from the multiple itself (the
+ * How the window's gross compares with break-even, from the multiple itself (the
  * band can be Near on a range that straddles 1.0 while the midpoint is 0.86,
- * and "close to" would then sit beside "19 straight weeks below cost").
+ * and "close to" would then sit beside "19 straight weeks below break-even").
  */
 export function multiplePhrase(mid: number): string {
-  if (mid > WELL_ABOVE_MIN + 0.005) return 'more than double its weekly cost';
-  if (mid >= 1.9) return 'about double its weekly cost';
-  if (mid >= NEAR_MIN && mid <= 1.05) return 'close to its weekly cost';
+  if (mid > WELL_ABOVE_MIN + 0.005) return 'more than double what it needs to break even';
+  if (mid >= 1.9) return 'about double what it needs to break even';
+  if (mid >= NEAR_MIN && mid <= 1.05) return 'close to what it needs to break even';
   const pct = Math.round(Math.abs(mid - 1) * 100);
-  return mid > 1 ? `about ${pct}% more than its weekly cost` : `about ${pct}% less than its weekly cost`;
+  return mid > 1 ? `about ${pct}% more than it needs to break even` : `about ${pct}% less than it needs to break even`;
 }
 
 /**
@@ -523,13 +523,10 @@ export function buildStory(s: Pick<ShowBoxOfficeStatus, 'availability' | 'band' 
     .filter((p) => p.multiple != null && !isShutdownWeek(p.week))
     .slice(0, streak.weeks);
   const withMarket = streakWeeks.filter((p) => p.market != null);
-  const sideText = streak.side === 'below' ? 'below' : 'at or above';
-  let second = `It has been ${sideText} its cost for ${streak.atLeast ? "at least " : ""}${streak.weeks} straight weeks`;
-  if (streakWeeks.length === streak.weeks && withMarket.length === streak.weeks) {
-    const marketAbove = withMarket.filter((p) => (p.market as number) >= 1).length;
-    second += `; the typical Broadway show was at or above its cost in ${marketAbove} of those weeks`;
-  }
-  return `${first} ${second}.`;
+  // The streak itself prints beside the story; the story adds how the typical show did.
+  if (streakWeeks.length !== streak.weeks || withMarket.length !== streak.weeks) return first;
+  const marketAbove = withMarket.filter((p) => (p.market as number) >= 1).length;
+  return `${first} The typical Broadway show was at or above break-even in ${marketAbove} of those ${streak.weeks} weeks.`;
 }
 
 export const CHART_WEEKS = 52;

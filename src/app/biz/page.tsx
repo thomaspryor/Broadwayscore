@@ -19,6 +19,7 @@ import {
   getAllOpenShowsWithCommercial,
   getCommercialLastUpdated,
   getCommercialModelLastRun,
+  getBoxOfficeCostCoverage,
 } from '@/lib/data-commercial';
 import { getGrossesWeekEnding } from '@/lib/data-grosses';
 import { formatDataDate, formatDevelopmentDate, sortNewestFirst } from '@/lib/biz-format';
@@ -31,6 +32,7 @@ import RecoupmentTable from '@/components/biz/RecoupmentTable';
 import AllShowsTable from '@/components/biz/AllShowsTable';
 import DesignationLegend from '@/components/biz/DesignationLegend';
 import BizPageTracker from '@/components/biz/BizPageTracker';
+import CostCoverageCard from '@/components/box-office/CostCoverageCard';
 import { BASE_URL, generateBreadcrumbSchema } from '@/lib/seo';
 
 export const metadata: Metadata = {
@@ -135,6 +137,9 @@ export default function BizDashboard() {
   // Show up to 4 most recent seasons
   const displaySeasons = allSeasons.slice(0, 4);
   const seasonStats = displaySeasons.map(season => getSeasonStats(season));
+
+  // Unreleased (BRO-5007): running shows by break-even band, moved here from /box-office.
+  const costCoverage = featureFlags.commercial && featureFlags.boxOfficeV2 ? getBoxOfficeCostCoverage() : null;
 
   const approachingRecoupment = getShowsApproachingRecoupment();
   const atRiskShows = getShowsAtRisk();
@@ -265,6 +270,8 @@ export default function BizDashboard() {
             ))}
           </div>
         </section>
+
+        {costCoverage && <CostCoverageCard counts={costCoverage.counts} shares={costCoverage.shares} />}
 
         {/* Recent Developments */}
         {recentDevelopments.length > 0 && (
