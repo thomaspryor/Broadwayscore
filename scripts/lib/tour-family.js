@@ -187,6 +187,29 @@ function tourInheritance(tour, parent, shows = null) {
   return Object.keys(patch).length ? patch : null;
 }
 
+/**
+ * Last resort for a tour whose own art search found nothing (BRO-4877): the
+ * parent's archived thumbnail/poster, even when the parent closed too long
+ * ago for sameProductionLikely (a 2007 Broadway Grinch for the 2026 tour of
+ * the same title). A tour page with the title's key art beats none. Only for
+ * a tour holding no art at all, so it never replaces anything.
+ * @returns {object|null} images patch, or null
+ */
+function tourFallbackArt(tour, parent) {
+  if (!isTourShow(tour) || !parent || isTourShow(parent)) return null;
+  if (normTitle(tour.title) !== normTitle(parent.title)) return null;
+  // A different performer on the road (Mark Twain Tonight!) must not wear the
+  // parent's star photo: such a tour sets noParentArtFallback: true.
+  if (tour.noParentArtFallback === true) return null;
+  const own = tour.images || {};
+  if (own.poster || own.thumbnail || own.hero) return null;
+  const theirs = parent.images || {};
+  const isArchived = v => typeof v === 'string' && v.startsWith('/images/shows/');
+  const images = {};
+  for (const k of ['thumbnail', 'poster']) if (isArchived(theirs[k])) images[k] = theirs[k];
+  return Object.keys(images).length ? { hero: null, ...images } : null;
+}
+
 /** Apply tourInheritance to every tour in place. Returns the ids changed. */
 function applyTourInheritance(shows) {
   const byId = new Map((shows || []).map(s => [s.id, s]));
@@ -280,6 +303,7 @@ function withoutTours(shows) {
 }
 
 module.exports = {
+  tourFallbackArt,
   TOUR_PARENT_CATEGORIES,
   AUTO_TOUR_PARENT_CATEGORIES,
   TOUR_PARENT_LABELS,

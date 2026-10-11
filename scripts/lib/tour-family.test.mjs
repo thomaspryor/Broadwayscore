@@ -204,3 +204,18 @@ test('toursOfTitle ignores apostrophe style: a straight-quote page title finds a
   assert.deepEqual(toursOfTitle("Dr. Seuss' The Cat in the Hat", shows).map(s => s.id), ['seuss-tour']);
   assert.deepEqual(toursOfTitle('Dr. Seuss The Grinch', shows), []);
 });
+
+test('tourFallbackArt: parent art for an imageless tour, however long ago the parent closed (BRO-4877)', () => {
+  const { tourFallbackArt } = require('./tour-family.js');
+  const parent = { id: 'grinch-2007', title: "Dr. Seuss' How the Grinch Stole Christmas!", category: 'broadway', status: 'closed', closingDate: '2008-01-06', images: { thumbnail: '/images/shows/grinch-2007/thumbnail.jpg', poster: '/images/shows/grinch-2007/poster.jpg', hero: null } };
+  const tour = { id: 'grinch-tour-2026', title: 'Dr. Seuss’ How the Grinch Stole Christmas!', category: 'tour', tourOf: 'grinch-2007', openingDate: '2026-11-06', images: { hero: null, thumbnail: null, poster: null } };
+  assert.equal(tourInheritance(tour, parent), null, 'the normal rule still refuses a 19-year gap');
+  const fb = tourFallbackArt(tour, parent);
+  assert.equal(fb.poster, parent.images.poster);
+  assert.equal(fb.thumbnail, parent.images.thumbnail);
+  assert.equal(tourImageProblems({ ...tour, images: fb }, [parent, tour]).length, 0);
+  assert.equal(tourFallbackArt({ ...tour, images: { poster: '/images/shows/grinch-tour-2026/poster.webp' } }, parent), null, 'never replaces own art');
+  assert.equal(tourFallbackArt({ ...tour, noParentArtFallback: true }, parent), null, 'one-performer tours opt out');
+  assert.equal(tourFallbackArt(tour, { ...parent, title: 'Other' }), null);
+  assert.equal(tourFallbackArt(tour, { ...parent, images: { poster: 'https://x/y.jpg' } }), null, 'remote URLs never spread');
+});
