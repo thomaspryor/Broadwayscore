@@ -150,7 +150,7 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -162,7 +162,8 @@
       "notifyCount": 130,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-11T08:39:22.003Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -13592,7 +13593,7 @@
       "resolveReason": "job-green"
     },
     "test-yml:red:Design Token Drift Guard:621920d2": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Design Token Drift Guard / Lint design tokens",
       "firstSeen": "2026-10-11T06:47:48.163Z",
@@ -13602,7 +13603,9 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5037"
+      "linearIdentifier": "BRO-5037",
+      "resolvedAt": "2026-10-11T08:39:21.885Z",
+      "resolveReason": "job-green"
     },
     "land:land/bro-5022-strict-google-images": {
       "status": "resolved",
