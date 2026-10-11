@@ -1150,31 +1150,15 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // (tickpick, eventticketscenter, stuborder), venue "what's on" pages,
   // listing pages, a DVD review and press releases; each became a review
   // file a human later had to flag (≈60 of 1,887 submission-created files on
-  // 2026-09-25). Deliberately narrow: the CURATED named patterns plus ticket
-  // resellers only. classifyReviewUrl's broader non-review-host /
-  // non-review-path rules would have refused real scored reviews (wbur.org
-  // /news/ reviews, blogcritics.org, theaterscene.org). NEW files only, like
+  // 2026-09-25), and a Theatricalia production page (BRO-5065). The rule is
+  // deliberately narrow; see submissionNonReviewReason. NEW files only, like
   // Guard F2 below, so a merge into an existing vetted file is never blocked
   // (the burn-this-2019 lesson noted at the named-non-review-url guard above).
   // Human escape hatch: fields.allowNonReviewUrl.
   if (input.source === 'submit-review-form' && input.url && fields.allowNonReviewUrl !== true) {
-    const nrp = require('./non-review-url-patterns');
-    // ugc-platform is excluded: a vocal.media "critique" submitted for
-    // the-bathroom-attendant-off-broadway-2026 is a real named critic's
-    // review (Robert M. Massimi), scored 64.
-    // newyorkcitytheatre.com sells tickets but its /reviews/NNNN pages are
-    // single reviews (burn-this-2019 Nicola Quinn). Scoped to that host and
-    // shape only: its /news/reviews/ pages are critic-quote roundups, and a
-    // generic /reviews/ exemption would admit reseller customer-review pages.
-    const named = nrp.namedNonReviewReason(input.url);
-    let reviewPath = false;
-    try {
-      const u = new URL(input.url);
-      reviewPath = /(^|\.)newyorkcitytheatre\.com$/i.test(u.hostname) && /^\/reviews\/\d+/.test(u.pathname);
-    } catch { /* unparseable: no exemption */ }
-    const submissionReason = reviewPath ? null
-      : ((named && named !== 'ugc-platform' ? named : null)
-        || (nrp.classifyReviewUrl(input.url).reason === 'ticketing-reseller' ? 'ticketing-reseller' : null));
+    // One shared decision with validate-review-submission.js (BRO-5065); its
+    // exemptions (ugc-platform, newyorkcitytheatre.com /reviews/NNNN) live there.
+    const submissionReason = require('./non-review-url-patterns').submissionNonReviewReason(input.url);
     if (submissionReason) {
       console.warn(`  ⛔ Refusing submitted non-review page: ${input.url} (${submissionReason})`);
       return { action: 'skipped', reason: `submitted-non-review-url: ${submissionReason}`, guardRefused: true };
