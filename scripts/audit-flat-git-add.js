@@ -20,7 +20,7 @@ function findFlatGitAdds(content) {
     while (/\\\s*$/.test(text) && i + 1 < lines.length) text = text.replace(/\\\s*$/, ' ') + lines[++i].trim();
     const m = text.match(/(?:^|[;&|]\s*|\s)git add\s+([^;&|#]*)/);
     if (!m || /^\s*#/.test(text)) continue;
-    const args = m[1].replace(/\s+\d?>\S*/g, '').trim().split(/\s+/).filter(Boolean);
+    const args = m[1].replace(/\s+\d*>&?\s*\S+/g, '').trim().split(/\s+/).filter(Boolean);
     const paths = args.filter(a => !a.startsWith('-') && a !== '--' && a !== '2>&1');
     if (paths.length < 2) continue;
     out.push({ line: start, text: text.trim(), paths, masked: /\|\|\s*true/.test(text) });

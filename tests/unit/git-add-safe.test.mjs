@@ -21,8 +21,7 @@ function repo() {
   return { d, git };
 }
 function run(d, args) {
-  const q = args.map(a => `'${a}'`).join(' ');
-  return spawnSync('bash', ['-c', `source '${HELPER}'; git_add_safe ${q}`], { cwd: d, encoding: 'utf8' });
+  return spawnSync('bash', ['-c', 'set -euo pipefail; source "$0"; git_add_safe "$@"', HELPER, ...args], { cwd: d, encoding: 'utf8' });
 }
 const staged = git => git('diff', '--cached', '--name-status').trim().split('\n').filter(Boolean);
 
@@ -78,4 +77,23 @@ test('real git errors surface as nonzero (no masking)', () => {
   assert.match(r.stderr, /ERROR git add failed/);
   fs.unlinkSync(path.join(d, '.git', 'index.lock'));
   assert.deepEqual(staged(git), []);
+});
+
+test('a quoted glob is a literal name: live tracked files are not untracked', () => {
+  const { d, git } = repo();
+  fs.mkdirSync(path.join(d, 'data'));
+  fs.writeFileSync(path.join(d, 'data/a.json'), '1');
+  fs.writeFileSync(path.join(d, 'data/b.json'), '2');
+  git('add', '.'); git('commit', '-qm', 'data');
+  run(d, ['data/*.json']);
+  run(d, [':(exclude)foo']);
+  assert.deepEqual(staged(git), []);
+});
+
+test('paths with spaces and a leading -- work', () => {
+  const { d, git } = repo();
+  fs.writeFileSync(path.join(d, 'my file.json'), '1');
+  const r = run(d, ['--', 'my file.json']);
+  assert.equal(r.status, 0);
+  assert.deepEqual(staged(git), ['A\tmy file.json']);
 });

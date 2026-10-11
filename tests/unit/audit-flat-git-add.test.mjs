@@ -23,7 +23,11 @@ test('flags flat multi-path, ignores single path, flags, comments', () => {
 });
 
 test('CLI exits 0 on the real workflows (advisory)', () => {
-  const r = spawnSync('node', ['scripts/audit-flat-git-add.js'], { encoding: 'utf8' });
+  const r = spawnSync('node', [new URL('../../scripts/audit-flat-git-add.js', import.meta.url).pathname], { encoding: 'utf8', cwd: new URL('../..', import.meta.url).pathname });
   assert.equal(r.status, 0);
   assert.match(r.stdout, /\[advisory\]/);
+});
+
+test('redirect targets are not paths', () => {
+  assert.equal(findFlatGitAdds('git add a.json 2> /dev/null').length, 0);
 });
