@@ -118,6 +118,7 @@ test('held model says why, never on a settled or untrusted record', () => {
   assert.equal(getModelHoldLabel({ ...base, modelDisplayHold: 'few-weeks' }), 'Too early to estimate');
   assert.equal(getModelHoldLabel({ ...base, modelDisplayHold: 'estimates-disagree' }), 'Estimates disagree');
   assert.equal(getModelHoldLabel({ ...base, modelDisplayHold: 'too-uncertain' }), 'Too uncertain to estimate');
+  assert.equal(getModelHoldLabel({ ...base, modelDisplayHold: 'past-100-unannounced' }), 'Recoupment not announced');
   assert.equal(getModelHoldLabel({ ...base, modelDisplayHold: 'out-of-bounds' }), 'Estimate unavailable');
   assert.equal(getModelHoldLabel({ ...base, modelDisplayHold: 'out-of-bounds', modelBelowCosts: true }), 'Losing money so far');
   assert.equal(getModelHoldLabel({ ...base }), null);

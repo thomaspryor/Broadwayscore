@@ -45,6 +45,15 @@ describe('modelDisplayGuard', () => {
     assert.equal(modelDisplayGuard({ pct: [-14, 1, 14], playedWeeks: 28, running: false }).show, true);
     assert.equal(modelDisplayGuard({ pct: [-14, 1, 14], playedWeeks: 5, running: true }).reason, 'few-weeks');
   });
+  test('a running show never prints 100%+ before it announces recoupment (BRO-5073)', () => {
+    const on = { playedWeeks: 69, running: true, runningEnabled: true };
+    assert.equal(modelDisplayGuard({ ...on, pct: [130, 144, 150] }).reason, 'past-100-unannounced');
+    assert.equal(modelDisplayGuard({ ...on, pct: [95, 100, 110] }).reason, 'past-100-unannounced');
+    assert.deepEqual(modelDisplayGuard({ ...on, pct: [80, 92, 110] }).shown, [80, 92, 99]);
+    // the launch switch still wins while it is off; a closed show is unaffected
+    assert.equal(modelDisplayGuard({ ...on, runningEnabled: false, pct: [130, 144, 150] }).reason, 'awaiting-truth');
+    assert.deepEqual(modelDisplayGuard({ ...on, running: false, pct: [80, 92, 110] }).shown, [80, 92, 110]);
+  });
   test('isRunning: open, or closing date still ahead', () => {
     const now = new Date('2026-10-10');
     assert.equal(isRunning({ status: 'open' }, now), true);
