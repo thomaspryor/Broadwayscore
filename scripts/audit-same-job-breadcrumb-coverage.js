@@ -109,6 +109,7 @@ const ACTION_EXTRA_PROTECTED = [
   'rescoreBlockedAt',
   'rescoreBlockedTextLength',
   'rescoreBlockedHadExcerpt',
+  'rejectedTextHash',
 ];
 
 const indentOf = (line) => line.length - line.replace(/^ +/, '').length;

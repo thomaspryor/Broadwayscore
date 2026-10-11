@@ -29,7 +29,7 @@ const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { selectLookups, pickTrForReview, reviewLedPath, headerFacts, parseTrHeaderDates } = require('./lib/we-review-led-candidates');
+const { selectLookups, pickTrForReview, reviewLedPath, headerFacts, parseTrHeaderDates, dateSnippets } = require('./lib/we-review-led-candidates');
 const { isLondonVenue } = require('./lib/tr-london-venue');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 
@@ -82,6 +82,53 @@ function pdfHeaderFor(text, title) {
     }
   }
   return null;
+}
+
+const LOG_DATE = /\b\d{1,2}(?:st|nd|rd|th)?\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?(?:\s+\d{4})?/gi;
+
+/**
+ * CI-log diagnostics for a PDF where no dated header was found: for each
+ * heading that matches the title, its line offset and, for the next 40
+ * lines, each date with at most 24 characters before it (enough to show a
+ * label like "Press Night" or "Closes", too little to carry review text).
+ * Goes to the Actions log only, never to the committed file.
+ */
+function logDateContext(text, title, mode) {
+  const want = capsKey(cleanSearchTitle(title)).replace(/^THE /, '');
+  const lines = String(text || '').split('\n');
+  let shown = 0;
+  for (let i = 0; i < lines.length && shown < 4; i++) {
+    const key = capsKey(lines[i].trim()).replace(/^THE /, '');
+    if (!key || key !== want) continue;
+    shown++;
+    const underReviews = lines.slice(Math.max(0, i - 5), i).some(l => l.trim() === 'Reviews');
+    console.log(`    [${mode}] heading at line ${i}${underReviews ? ' (under Reviews)' : ''}`);
+    for (let j = i + 1; j < lines.length && j <= i + 40; j++) {
+      const flat = lines[j].replace(/\s+/g, ' ');
+      for (const m of flat.matchAll(LOG_DATE)) {
+        console.log(`      +${j - i}: …${flat.slice(Math.max(0, m.index - 24), m.index).trim()} | ${m[0]}`);
+      }
+    }
+  }
+  if (!shown) console.log(`    [${mode}] no heading equal to "${want}"`);
+}
+
+const LABEL_LINE = /^(?:press night|first preview|previews?|opening night|opens|opened|closes|closing|until|runs until|final performance)\b/i;
+
+/**
+ * HTML-era production page: the title plus the date phrases from short lines
+ * that START with a run-date label ("Press Night 05 Sep 2019",
+ * "Closes 05 Oct 2019"). Lines elsewhere on the page (reviews) are ignored,
+ * so a date a critic mentions is never read as the run.
+ */
+function htmlHeaderFor(title, text) {
+  const facts = [];
+  for (const raw of String(text || '').split('\n')) {
+    const line = raw.replace(/\s+/g, ' ').trim();
+    if (!LABEL_LINE.test(line) || line.split(' ').length > 10) continue;
+    for (const sn of dateSnippets(line)) if (!facts.includes(sn)) facts.push(sn);
+  }
+  return facts.length ? [String(title || '').trim(), ...facts].join('\n') : null;
 }
 
 /**
@@ -184,6 +231,8 @@ async function main() {
         for (const mode of ['-layout', '-raw']) {
           const text = execFileSync('pdftotext', [mode, tmp, '-'], { maxBuffer: 50 * 1024 * 1024 }).toString();
           const h = pdfHeaderFor(text, title);
+          const d = parseTrHeaderDates(h);
+          if (!d.closingDate) logDateContext(text, title, mode);
           if (h) return h;
         }
         return null;
@@ -193,11 +242,14 @@ async function main() {
     }
     await page.goto(link, { waitUntil: 'domcontentloaded', timeout: 20000 });
     await page.waitForTimeout(1500);
-    const text = await page.evaluate(() => {
+    const { title: pageTitle, text } = await page.evaluate(() => {
       const first = document.querySelector('main article');
-      return first ? first.innerText : null;
+      const root = document.querySelector('main') || document.body;
+      return { title: first ? first.innerText.split('\n').map(l => l.trim()).find(Boolean) : null, text: root ? root.innerText : null };
     });
-    return text ? headerFacts(text) : null;
+    const h = htmlHeaderFor(pageTitle || title, text);
+    if (!parseTrHeaderDates(h).closingDate) logDateContext(`${capsKey(cleanSearchTitle(title))}\n${text || ''}`, title, 'html');
+    return h;
   }
 
   let failures = 0;
@@ -234,4 +286,4 @@ if (require.main === module) {
   main().catch(e => { console.error(e); process.exit(1); });
 }
 
-module.exports = { pdfHeaderFor, searchTitles };
+module.exports = { pdfHeaderFor, htmlHeaderFor, searchTitles, logDateContext };
