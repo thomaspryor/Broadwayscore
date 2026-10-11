@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5063-e",
   "planId": "c373b6b5-3c17-4c9b-8c83-0ce37a2d4165",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-11T18:19:18.198Z",
   "submitter": {
     "name": null,
@@ -61,5 +61,33 @@
         "description": "Pitch opener (\"Get ready for a dance party!\"). Rewritten from the row’s own text without the sales lines (oldValue from the 2026-10-06 core-data snapshot; closed show, not in public data)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-11T18:57:40.597Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for schmigadoon-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-comedy-about-spies-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for im-every-woman-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for dirty-dancing-the-classic-story-on-stage-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for no-excuses-no-limits-off-broadway-2026"
+    }
+  ]
 }
