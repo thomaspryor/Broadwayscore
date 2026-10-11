@@ -322,6 +322,30 @@ function evaluateLlmYearMisdate({ review, show, isMultiProductionTitle }) {
   return { corrected: new Date(shifted).toISOString().slice(0, 10), original: review.publishDate };
 }
 
+const DATELINE_MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+
+/**
+ * A full publication date printed at the top of the article text ("Tuesday, August 7
+ * 2018", "Oct 25, 2024", "11 August 2019"). Only the first 400 characters are read, and
+ * only a complete day-month-year, so a bare year or a run date ("until 6 September")
+ * cannot match. Returns YYYY-MM-DD or null. BRO-5000.
+ */
+function textDateline(text) {
+  if (typeof text !== 'string' || !text) return null;
+  const head = text.slice(0, 400);
+  const mon = '(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\\.?';
+  const a = new RegExp(`\\b${mon}\\s+(\\d{1,2})(?:st|nd|rd|th)?,?\\s+((?:19|20)\\d{2})\\b`, 'i').exec(head);
+  const b = new RegExp(`\\b(\\d{1,2})(?:st|nd|rd|th)?\\s+${mon},?\\s+((?:19|20)\\d{2})\\b`, 'i').exec(head);
+  let mo; let day; let year;
+  if (a && (!b || a.index <= b.index)) { mo = a[1]; day = +a[2]; year = +a[3]; }
+  else if (b) { day = +b[1]; mo = b[2]; year = +b[3]; }
+  else return null;
+  const m = DATELINE_MONTHS.indexOf(mo.toLowerCase()) + 1;
+  const t = Date.UTC(year, m - 1, day);
+  if (!m || day < 1 || new Date(t).getUTCDate() !== day) return null;
+  return new Date(t).toISOString().slice(0, 10);
+}
+
 /**
  * Date the wrongProduction date guards should read for a review (BRO-4473).
  *
@@ -355,10 +379,16 @@ function guardPublishDate(review, show) {
   const winEnd = show.closingDate ? Date.parse(show.closingDate) + DAYS_AFTER_CLOSE * DAY : Infinity;
   if (Number.isNaN(winStart) || pd >= winStart) return keep;
   if (fetched < winStart || fetched > winEnd) return keep;
+  // BRO-5000: the fetch date is only a stand-in when the page prints no date. A dateline
+  // before the run window (arias-with-a-twist, "through December 31" under a 2008 review;
+  // horrible-histories "Tuesday, August 7 2018") is the page's own evidence and wins.
+  const dateline = textDateline(review.fullText);
+  if (dateline && Date.parse(dateline) < winStart) return { publishDate: dateline, substituted: false, original: orig, datelineFromText: true };
   return { publishDate: new Date(fetched).toISOString().slice(0, 10), substituted: true, original: orig };
 }
 
 module.exports = {
+  textDateline,
   guardPublishDate,
   evaluateLlmYearMisdate,
   evaluateDateGuard,

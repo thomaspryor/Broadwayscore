@@ -309,6 +309,12 @@ function executeDataEdit(action) {
       if (problem) return { ok: false, reason: problem };
     }
 
+    if (field === 'priorRuns') {
+      const { priorRunsValueProblem } = require('./lib/feedback-pipeline-fields.js');
+      const problem = priorRunsValueProblem(newValue, oldValue);
+      if (problem) return { ok: false, reason: problem };
+    }
+
     if (field === 'noReliableArt') {
       const { validateNoReliableArtValue } = require('./lib/no-reliable-art.js');
       const problem = validateNoReliableArtValue(newValue, shows[idx]);
