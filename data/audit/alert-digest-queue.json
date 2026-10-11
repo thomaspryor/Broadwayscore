@@ -826,5 +826,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-11T20:15:43.904Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5047-backlog-batch",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-5047-backlog-batch",
+    "description": "land.yml did not land land/bro-5047-backlog-batch: the scripts-lib-tests gate went red at 4a52e70b7d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38168934649",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5047-backlog-batch"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "4a52e70b7d4a019b543294f0e4cdb963b521995f"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38168934649"
+      }
+    ],
+    "queuedAt": "2026-10-11T20:15:13.790Z"
   }
 ]

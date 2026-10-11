@@ -13818,9 +13818,9 @@
       "absentRunIds": [
         "38156539139",
         "38161313395",
-        "38169467183"
+        "38169816008"
       ],
-      "resolvedAt": "2026-10-11T20:04:41.609Z",
+      "resolvedAt": "2026-10-11T20:10:30.244Z",
       "resolveReason": "stale-signature"
     },
     "land:land/bro-5063-synopses": {
@@ -13885,7 +13885,7 @@
       },
       "silentRefires": 1,
       "absentRunIds": [
-        "38169467183"
+        "38169816008"
       ]
     },
     "land:land/bro-2730-we-late-cron": {
@@ -13934,12 +13934,13 @@
       "title": "Landing blocked: unit-tests-node red on land/bro-2945-git-add-safe",
       "firstSeen": "2026-10-11T19:37:22.237Z",
       "incidentOpenedAt": "2026-10-11T19:37:22.237Z",
-      "lastSeen": "2026-10-11T19:37:22.237Z",
+      "lastSeen": "2026-10-11T20:13:29.053Z",
       "lastNotifiedAt": "2026-10-11T19:37:22.237Z",
       "lastSurfacedAt": "2026-10-11T19:37:22.237Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "gap:good-time-charlie-off-broadway-2026/talkinbroadway--unknown.json": {
       "status": "open",
@@ -13958,20 +13959,27 @@
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run review-guards regression tests — \"foo returns the contracted value\"",
-      "firstSeen": "2026-10-11T20:04:41.621Z",
-      "incidentOpenedAt": "2026-10-11T20:04:41.621Z",
-      "lastSeen": "2026-10-11T20:04:41.621Z",
-      "lastNotifiedAt": "2026-10-11T20:04:41.621Z",
+      "firstSeen": "2026-10-11T20:10:30.258Z",
+      "incidentOpenedAt": "2026-10-11T20:10:30.258Z",
+      "lastSeen": "2026-10-11T20:10:30.258Z",
+      "lastNotifiedAt": "2026-10-11T20:10:30.258Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5078",
-      "dispatch": {
-        "requestedAt": "2026-10-11T20:04:41.621Z",
-        "mode": "dispatch-at-filing",
-        "runId": "38169467183",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38169467183"
-      }
+      "linearIdentifier": "BRO-5078"
+    },
+    "land:land/bro-5047-backlog-batch": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: scripts-lib-tests red on land/bro-5047-backlog-batch",
+      "firstSeen": "2026-10-11T20:15:13.790Z",
+      "incidentOpenedAt": "2026-10-11T20:15:13.790Z",
+      "lastSeen": "2026-10-11T20:15:13.790Z",
+      "lastNotifiedAt": "2026-10-11T20:15:13.790Z",
+      "lastSurfacedAt": "2026-10-11T20:15:13.790Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }
