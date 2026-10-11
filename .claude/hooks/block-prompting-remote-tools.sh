@@ -18,7 +18,8 @@
 #     cards, but the board worker takes one card per firing and its queue ran
 #     ~100-200 cards deep, so important work waited weeks. The owner accepts
 #     one approval tap per started session. How to start and follow one:
-#     .claude/CLOUD.md "Starting a worker session".
+#     .claude/CLOUD.md "Starting a worker session". Denied only for a misspelled Broadwayscore
+#     source_url: it starts in /home/user without project commands or hooks (BRO-5068).
 # Fails open (exit 0, no decision) on missing jq or unparseable input.
 # Kill switch: REMOTE_TOOL_BLOCKER_DISABLE=1.
 
@@ -37,6 +38,14 @@ deny() {
 }
 
 case "$tool" in
+  mcp__Claude_Code_Remote__create_session|mcp__claude-code-remote__create_session)
+    url="$(printf '%s' "$input" | jq -r '.tool_input.source_url // ""' 2>/dev/null)"
+    canon='https://github.com/thomaspryor/Broadwayscore'
+    names="$(printf '%s' "$url" | jq -Rr 'ascii_downcase | gsub("^\\s+|\\s+$"; "") | (capture("github\\.com[:/]+(?<o>[^/]+)/(?<r>[^/?#]+?)(\\.git)?(/.*)?$") | .o + "/" + .r) // ""' 2>/dev/null)"
+    if [ "$names" = "thomaspryor/broadwayscore" ] && [ "$url" != "$canon" ]; then
+      deny "Blocked: source_url must be exactly $canon (that spelling: https, capital B, no .git, no trailing slash). Any other form starts the new session in /home/user instead of the project, so it loads none of the project's commands (/ship-check, /what-else, /wrap-up) or Stop hooks (BRO-5068). Retry with source_url \"$canon\"."
+    fi
+    ;;
   mcp__Claude_Code_Remote__send_later|mcp__claude-code-remote__send_later|\
   mcp__Claude_Code_Remote__create_trigger|mcp__claude-code-remote__create_trigger)
     initiation="$(printf '%s' "$input" | jq -r '.tool_input.initiation // ""' 2>/dev/null)"
