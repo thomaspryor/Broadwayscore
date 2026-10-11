@@ -156,7 +156,7 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-11T14:14:07.486Z",
-      "lastSeen": "2026-10-11T20:39:27.240Z",
+      "lastSeen": "2026-10-11T20:40:22.255Z",
       "lastNotifiedAt": "2026-10-11T14:14:07.486Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 132,
@@ -13886,10 +13886,10 @@
       "silentRefires": 1,
       "absentRunIds": [
         "38169173157",
-        "38170511357",
-        "38171901497"
+        "38170655771",
+        "38172035855"
       ],
-      "resolvedAt": "2026-10-11T20:39:27.194Z",
+      "resolvedAt": "2026-10-11T20:40:22.236Z",
       "resolveReason": "stale-signature"
     },
     "land:land/bro-2730-we-late-cron": {
@@ -13963,28 +13963,15 @@
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run review-guards regression tests — \"foo returns the contracted value\"",
-      "firstSeen": "2026-10-11T20:18:23.367Z",
-      "incidentOpenedAt": "2026-10-11T20:18:23.367Z",
-      "lastSeen": "2026-10-11T20:39:27.233Z",
-      "lastNotifiedAt": "2026-10-11T20:18:23.367Z",
+      "firstSeen": "2026-10-11T20:22:09.425Z",
+      "incidentOpenedAt": "2026-10-11T20:22:09.425Z",
+      "lastSeen": "2026-10-11T20:40:22.249Z",
+      "lastNotifiedAt": "2026-10-11T20:22:09.425Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-5078",
       "silentRefires": 1
-    },
-    "land:land/bro-5074-cloud-memory-reconcile": {
-      "status": "open",
-      "disposition": "digest",
-      "title": "Landing blocked: rebase red on land/bro-5074-cloud-memory-reconcile",
-      "firstSeen": "2026-10-11T20:16:06.643Z",
-      "incidentOpenedAt": "2026-10-11T20:16:06.643Z",
-      "lastSeen": "2026-10-11T20:16:06.643Z",
-      "lastNotifiedAt": "2026-10-11T20:16:06.643Z",
-      "lastSurfacedAt": "2026-10-11T20:16:06.643Z",
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": null
     }
   }
 }
