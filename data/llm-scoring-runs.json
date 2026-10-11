@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-10-10T16:32:22.084Z",
-    "completedAt": "2026-10-10T16:33:31.547Z",
-    "totalReviews": 54502,
-    "processed": 12,
-    "skipped": 54485,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 72204,
-      "output": 4021,
-      "total": 201055
-    },
-    "costUsd": 0.29343054999999996,
-    "runId": "38067855314",
-    "errorDetails": [
-      {
-        "showId": "diana-the-musical-2021",
-        "outletId": "nytimes",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-10-10T16:33:32.865Z",
-    "completedAt": "2026-10-10T16:33:39.829Z",
-    "totalReviews": 2,
-    "processed": 2,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 6388,
-      "output": 464,
-      "total": 6852
-    },
-    "costUsd": 0.016911399999999997,
-    "runId": "38067855314",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-10T16:38:18.123Z",
     "completedAt": "2026-10-10T16:41:55.417Z",
     "totalReviews": 54556,
@@ -629335,6 +629297,44 @@
     },
     "costUsd": 0.018043299999999998,
     "runId": "38124776875",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-11T08:35:53.362Z",
+    "completedAt": "2026-10-11T08:36:50.339Z",
+    "totalReviews": 55392,
+    "processed": 13,
+    "skipped": 55377,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 54245,
+      "output": 3899,
+      "total": 163696
+    },
+    "costUsd": 0.23685925,
+    "runId": "38125130209",
+    "errorDetails": [
+      {
+        "showId": "diana-the-musical-2021",
+        "outletId": "nytimes",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-11T08:36:52.047Z",
+    "completedAt": "2026-10-11T08:36:55.010Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "38125130209",
     "errorDetails": []
   }
 ]
