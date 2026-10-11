@@ -306,5 +306,5 @@ test('dropDataDir: unlinks the symlink (target untouched), removes a test-made d
     assert.equal(dropDataDir(link, wt), 'none');
     assert.equal(dropDataDir(shared, wt), 'skipped', 'a real dir outside the worktree is never removed');
     assert.ok(fs.existsSync(shared));
-  } finally { fs.rmSync(root, { recursive: true, force: true }); }
+  } finally { fs.rmSync(root, { recursive: true, force: true, maxRetries: 3 }); }
 });
