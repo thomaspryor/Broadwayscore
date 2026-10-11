@@ -36,9 +36,11 @@ const readJson = (rel) => JSON.parse(fs.readFileSync(path.join(ROOT, rel), 'utf8
 // publishes one today.
 const KNOWN_NO_RUNTIME = new Map([]);
 // BRO-447: standalone tours (no tourOf) hand-added 2026-10-09 (BRO-4931). The
-// daily auto-fix-show-data.js run now targets them (selectDailyTargets); each
-// stays listed until a verified synopsis lands or is refused for good.
-const STANDALONE_AWAITING = 'BRO-447 — standalone tour, no parent to inherit from; daily auto-fix-show-data.js (check-show-freshness.yml) generates + verifies one';
+// daily auto-fix-show-data.js run now targets them (selectDailyTargets). An
+// AWAITING entry expires: past AWAITING_UNTIL with no synopsis, the daily
+// pipeline is not filling it, so fix that or give the tour a permanent reason.
+const AWAITING_UNTIL = '2026-10-25';
+const STANDALONE_AWAITING = `BRO-447 AWAITING — standalone tour, no parent to inherit from; daily auto-fix-show-data.js (check-show-freshness.yml) generates + verifies one by ${AWAITING_UNTIL}`;
 const KNOWN_NO_SYNOPSIS = new Map([
   ['dolly-partons-smoky-mountain-christmas-carol-tour-2026', STANDALONE_AWAITING],
   ['the-unauthorized-hallmark-ish-parody-musical-tour-2026', STANDALONE_AWAITING],
@@ -71,7 +73,9 @@ test('every national tour has a runtime, or is a documented gap', (t) => {
 
 test('every national tour has a synopsis, or is a documented gap', (t) => {
   if (needsData(t)) return;
-  const missing = tours.filter((s) => !hasSynopsis(s) && !KNOWN_NO_SYNOPSIS.has(s.id)).map((s) => s.id);
+  const today = new Date().toISOString().slice(0, 10);
+  const exempt = (id) => KNOWN_NO_SYNOPSIS.has(id) && !(KNOWN_NO_SYNOPSIS.get(id) === STANDALONE_AWAITING && today > AWAITING_UNTIL);
+  const missing = tours.filter((s) => !hasSynopsis(s) && !exempt(s.id)).map((s) => s.id);
   assert.deepEqual(missing, [], `tours with no synopsis (>= ${SYNOPSIS_MIN_CHARS} chars): ${missing.join(', ')}`);
 });
 

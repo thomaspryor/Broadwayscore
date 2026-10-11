@@ -696,30 +696,32 @@ function checkMissingImages(show) {
 
 /**
  * The daily run's targets: open/preview shows, plus any not-yet-closed
- * standalone national tour (no tourOf) whose synopsis is missing or bad.
- * A tour with a parent inherits the parent's synopsis (tour-family.js
- * tourInheritance) and Wikipedia enrichment skips tours (BRO-4262), so an
- * upcoming standalone tour had no synopsis path at all: five hand-added tours
- * (BRO-4931) sat empty and reddened check-corpus-drift (BRO-447).
+ * national tour whose synopsis is missing or bad and that cannot inherit one
+ * (standalone, or its tourOf parent has no good synopsis either). Inheritance
+ * (tour-family.js tourInheritance) fills the rest, and Wikipedia enrichment
+ * skips tours (BRO-4262), so these tours had no synopsis path at all: five
+ * hand-added standalone tours (BRO-4931) sat empty and reddened
+ * check-corpus-drift (BRO-447).
  */
 function isOpenOrPreviews(s) {
   return s.status === 'open' || s.status === 'previews';
 }
 
 function selectDailyTargets(shows) {
+  const byId = new Map((shows || []).map(s => [s.id, s]));
+  const cannotInherit = s => !s.tourOf || !byId.has(s.tourOf) || classifyBadSynopsis(byId.get(s.tourOf)).bad;
   return (shows || []).filter(s =>
     isOpenOrPreviews(s) ||
-    (isTourShow(s) && !s.tourOf && s.status !== 'closed' && classifyBadSynopsis(s).bad));
+    (isTourShow(s) && s.status !== 'closed' && classifyBadSynopsis(s).bad && cannotInherit(s)));
 }
 
 /**
- * A daily target picked only for its synopsis (an upcoming standalone tour):
- * the creative-team, ticket-link and image steps stay off it. Tours have their
- * own art pipeline, and the LLM creative-team path would credit a tour with
- * another production's director.
+ * A not-yet-open tour gets only the synopsis step, in every mode (daily and
+ * --show): tours have their own art pipeline, and the LLM creative-team path
+ * would credit a tour with another production's director.
  */
-function isSynopsisOnlyDailyTarget(show) {
-  return !isOpenOrPreviews(show);
+function isSynopsisOnlyTarget(show) {
+  return isTourShow(show) && !isOpenOrPreviews(show) && show.status !== 'closed';
 }
 
 async function main() {
@@ -787,7 +789,7 @@ async function main() {
       await sleep(1000); // Rate limit
     }
 
-    if (!backfillHistorical && !showIds && isSynopsisOnlyDailyTarget(show)) continue;
+    if (isSynopsisOnlyTarget(show)) continue;
 
     // 2. Fix creative team (auto-fetched or LLM-generated)
     const creativeFix = await fixCreativeTeam(show, todayTixIds);
@@ -901,5 +903,5 @@ module.exports = {
   generateSynopsisWithLLM,
   buildSynopsisPrompt,
   selectDailyTargets,
-  isSynopsisOnlyDailyTarget,
+  isSynopsisOnlyTarget,
 };
