@@ -1390,5 +1390,34 @@
       }
     ],
     "queuedAt": "2026-10-11T05:24:54.559Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5007-box-office-v3",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5007-box-office-v3",
+    "description": "land.yml did not land land/bro-5007-box-office-v3: the unit-tests-node gate went red at 577554b8ce. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38114414061",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5007-box-office-v3"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "577554b8ce96d98061c455f615bfd102445752f3"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38114414061"
+      }
+    ],
+    "queuedAt": "2026-10-11T05:50:13.447Z"
   }
 ]
