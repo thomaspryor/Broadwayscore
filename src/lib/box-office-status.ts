@@ -9,6 +9,7 @@
 
 import type { RecoupmentTrend } from '@/config/commercial';
 import { computeGrossTrend, getSeason, trailingAverageGross } from './commercial-metrics';
+import { isReported } from './box-office-weeks';
 
 // ---------------------------------------------------------------------------
 // Cost contract
@@ -221,15 +222,17 @@ export const FULL_WEEK_PERFORMANCES = 8;
 /** Partial weeks among a run's first this-many reported weeks are left out of the status window. */
 export const PREVIEW_WEEKS = 4;
 
+/** The shared reported-week rule (box-office-weeks isReported), never a local copy. */
 function reported(r: WeekRow | undefined): r is WeekRow & { gross: number } {
-  return !!r && typeof r.gross === 'number' && r.gross > 0 && r.performances !== 0;
+  return isReported(r);
 }
 
 /**
  * The 4-week window's grosses (newest first), with null for a week that does
- * not count: unreported, zero performances, or a partial preview week (fewer
- * than 8 performances among the run's first 4 reported weeks). Later short
- * weeks (a 7-show play schedule, a holiday) count as reported.
+ * not count: unreported, or a partial preview week (fewer than 8
+ * performances, a listed 0 included, among the run's first 4 reported
+ * weeks). Later short weeks (a 7-show play schedule, a holiday) count as
+ * reported.
  */
 export function statusWindowGrosses(weeksNewestFirst: WeekRow[]): Array<number | null> {
   const reportedOldestFirst = weeksNewestFirst.filter(reported).map((r) => r.week).reverse();

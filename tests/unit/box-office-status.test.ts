@@ -182,9 +182,15 @@ test('statusWindowGrosses: partial preview weeks and dark weeks leave the window
   // a later 7-show week (a play's schedule) counts
   const later = rows('2026-09-27', [700, 800, 800, 800, 800, 800], [7, 8, 8, 8, 8, 8]);
   assert.deepEqual(statusWindowGrosses(later), [700, 800, 800, 800]);
-  // 0 performances is not a reported week
-  const dark = rows('2026-09-27', [800, 5, 800, 800, 800], [8, 0, 8, 8, 8]);
+  // a 0-gross week is dark and leaves the window
+  const dark = rows('2026-09-27', [800, 0, 800, 800, 800], [8, 0, 8, 8, 8]);
   assert.deepEqual(statusWindowGrosses(dark), [800, null, 800, 800]);
+  // BRO-5057: a gross listed with 0 performances is a played week (the count was lost);
+  // among the run's first 4 weeks it is a partial preview week, later it counts
+  const preview = rows('2026-09-27', [800, 810, 820, 600], [8, 8, 8, 0]);
+  assert.deepEqual(statusWindowGrosses(preview), [800, 810, 820, null]);
+  const lostCount = rows('2026-09-27', [800, 790, 800, 800, 800, 800, 800, 800], [8, 0, 8, 8, 8, 8, 8, 8]);
+  assert.deepEqual(statusWindowGrosses(lostCount), [800, 790, 800, 800]);
 });
 
 test('shutdown weeks are a gap: never zero, never break a streak', () => {

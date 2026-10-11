@@ -17,6 +17,7 @@ import {
   priorSeason,
   isReported,
   isPaired,
+  isFullWeek,
   lastReportedWeeks,
   grossPerSeat,
   median,
@@ -92,7 +93,9 @@ test('reported and paired rows', () => {
   assert.equal(isReported({ gross: 1_000_000, performances: 8 }), true);
   assert.equal(isReported({ gross: 0, performances: 8 }), false);
   assert.equal(isReported({ gross: null }), false);
-  assert.equal(isReported({ gross: 50_000, performances: 0 }), false); // dark week with a stray gross
+  // BRO-5057: a gross with 0 performances is a preview week whose count the backfill lost, not a dark week
+  assert.equal(isReported({ gross: 1_302_511, capacity: 100.47, performances: 0 }), true);
+  assert.equal(isReported({ gross: 0, performances: 0 }), false); // dark
   assert.equal(isReported(null), false);
   assert.equal(isPaired({ gross: 1_000_000, seatsOffered: 8_000 }), true);
   assert.equal(isPaired({ gross: 1_000_000 }), false);
@@ -142,4 +145,19 @@ test('median and quantile', () => {
   assert.equal(quantile([10, 20, 30, 40, 50], 0.25), 20);
   assert.equal(quantile([10, 20, 30, 40], 0.5), 25);
   assert.equal(quantile([7], 0.9), 7);
+});
+
+test('BRO-5057: a 0-performance week with a gross is reported but never a full week', () => {
+  const preview = { gross: 1_302_511, capacity: 100.47, seatsOffered: 9_250, performances: 0 };
+  assert.equal(isReported(preview), true);
+  assert.equal(isPaired(preview), true);
+  assert.equal(isFullWeek(preview), false, 'unknown count: never a year-ago base');
+  assert.equal(isFullWeek({ gross: 1_000_000, performances: 8 }), true);
+  assert.equal(isFullWeek({ gross: 1_000_000 }), true, 'no count listed at all reads as full');
+  const rows: Record<string, HistoryRow> = {
+    '2015-08-02': { gross: 1_400_000, performances: 0 },
+    '2015-07-26': { gross: 1_300_000, performances: 0 },
+    '2015-07-19': { gross: 0, performances: 0 },
+  };
+  assert.deepEqual(lastReportedWeeks((w) => rows[w], '2015-08-02').map((r) => r.week), ['2015-08-02', '2015-07-26']);
 });

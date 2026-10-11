@@ -296,3 +296,21 @@ test('weeklyRecords: run-long records first, then the furthest-reaching "since";
   ]);
   assert.equal(got.find((r) => r.slug === 'since')!.since, addDays(latest, -7 * 11));
 });
+
+test('BRO-5057: season totals and market weeks count a preview week listed with 0 performances', () => {
+  // days-of-wine-and-roses 2024-01-07..01-21 shape: previews with a gross, 0 performances
+  const weeks: HistoryWeeks = {
+    '2024-01-07': { a: row(1_000_000), dowar: row(400_000, { performances: 0 }) },
+    '2024-01-14': { a: row(1_000_000), dowar: row(450_000, { performances: 0 }), shut: row(0, { performances: 0 }) },
+  };
+  const inp = input(weeks, [show('a'), show('dowar'), show('shut')]);
+  const m = marketWeek(inp, '2024-01-14')!;
+  assert.equal(m.shows, 2, 'the 0-gross row stays dark');
+  assert.equal(m.gross, 1_450_000);
+  // a 0-performance week is never a mover base (partial), so no "gain" from added previews
+  const { gains, drops } = movers(input({
+    '2024-01-14': { dowar: row(400_000, { performances: 0 }) },
+    '2024-01-21': { dowar: row(900_000) },
+  }, [show('dowar')]), '2024-01-21');
+  assert.equal(gains.length + drops.length, 0);
+});
