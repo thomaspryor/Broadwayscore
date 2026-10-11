@@ -34,7 +34,7 @@ const fs = require('fs');
 const path = require('path');
 const { searchAllPosts, collectCommentsFromPosts, getStats } = require('./lib/reddit-api');
 const { computeProductionWindow, isPostInProductionWindow } = require('./lib/production-window');
-const { isRoundupOrMegathread, buildAudienceSearchQueries, isRefreshStaleCandidate, refreshStaleSortKey, isOwnerComment, isRedditFresh, redditBackoffReason, redditSaveDecision } = require('./lib/reddit-post-filters');
+const { isRoundupOrMegathread, buildAudienceSearchQueries, isRefreshStaleCandidate, refreshStaleSortKey, isOwnerComment, isRedditFresh, redditBackoffReason, redditSaveDecision, partitionRequestedShows } = require('./lib/reddit-post-filters');
 
 // A single roundup/megathread can hold hundreds of comments about dozens of
 // shows. Even after excluding such posts by title, cap how many comments any
@@ -626,10 +626,19 @@ async function main() {
     }
   } else if (showsArg && showsArg !== 'missing') {
     const showIds = showsArg.split(',').map(s => s.trim()).filter(Boolean);
-    shows = allActiveShows.filter(s => showIds.includes(s.id) || showIds.includes(s.slug));
+    const { active, notStarted, unknown } = partitionRequestedShows(showIds, showsData.shows);
+    if (unknown.length > 0) console.warn(`No show matches: ${unknown.join(', ')}`);
+    if (notStarted.length > 0) {
+      console.log(`Skipping ${notStarted.length} show(s) not yet in previews: ${notStarted.map(s => `${s.id} (${s.status})`).join(', ')}`);
+    }
+    shows = active;
     if (shows.length === 0) {
-      console.error(`No shows found matching: ${showsArg}`);
-      process.exit(1);
+      if (unknown.length > 0) {
+        console.error(`No shows found matching: ${showsArg}`);
+        process.exit(1);
+      }
+      console.log('No requested show is in previews yet — nothing to scrape.');
+      process.exit(0);
     }
     console.log(`Processing specific shows: ${shows.map(s => s.title).join(', ')}`);
   } else if (refreshStale) {

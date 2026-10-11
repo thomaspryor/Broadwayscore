@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4838-c",
   "planId": "a22b014b-d38c-43e4-9885-758be903cd9f",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-11T20:57:04.713Z",
   "submitter": {
     "name": null,
@@ -120,5 +120,73 @@
         "description": "Genuine Arts Desk review by Helen Hawkins (5/5, /theatre/tao-glass-soho-place-review-...): the content verification misread it as a preview"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-11T23:12:52.816Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "amaze-magic-off-broadway-2025/cititour--brian-scott-lipton.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "amaze-magic-off-broadway-2025/cititour--brian-scott-lipton.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "that-math-show-off-broadway-2026/stageandcinema--paulanne-simmons.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "that-math-show-off-broadway-2026/stageandcinema--paulanne-simmons.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "from-the-heart-west-end-2026/theatre-news--unknown.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "from-the-heart-west-end-2026/theatre-news--unknown.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "rejectedAt: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "from-the-heart-west-end-2026/theatre-news--unknown.json rejectedBy: \"ensemble-scoreability-check\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-notebook-tour-2025/zebra--jordan-wright.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-notebook-tour-2025/zebra--jordan-wright.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-notebook-tour-2025/zebra--jordan-wright.json rejectedAt: \"2026-10-07T03:30:25.667Z\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-notebook-tour-2025/zebra--jordan-wright.json rejectedBy: \"ensemble-scoreability-check\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tao-of-glass-west-end-2026/artsdesk--helen-hawkins.json wrongArticleManualClear: null -> true"
+    }
+  ]
 }
