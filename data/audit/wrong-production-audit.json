@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-11T09:16:26.529Z",
+  "timestamp": "2026-10-11T09:51:23.752Z",
   "stats": {
-    "totalReviews": 55222,
-    "alreadyFlagged": 20135,
+    "totalReviews": 55298,
+    "alreadyFlagged": 20151,
     "dateGuardCatches": 267,
-    "directorMismatch": 1696,
+    "directorMismatch": 1699,
     "tvFilmSignals": 1539,
-    "londonSignals": 1896,
+    "londonSignals": 1897,
     "offBroadwaySignals": 505,
     "yearMismatch": 134,
-    "noPublishDate": 6447
+    "noPublishDate": 6483
   },
   "findings": [
     {
@@ -1788,6 +1788,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"simon mcburney\" from all-my-sons-2008"
+        }
+      ]
+    },
+    {
+      "showId": "all-my-sons-west-end-2019",
+      "file": "amny--matt-windman.json",
+      "publishDate": null,
+      "url": "/people/Matt-Windman/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jack o'brien\" from all-my-sons-2019"
         }
       ]
     },
@@ -27736,6 +27749,33 @@
       ]
     },
     {
+      "showId": "on-your-feet-west-end-2019",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": null,
+      "publishDate": "2019-06-27T19:45:03+00:00",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/feet-review-london-coliseum-should-sidestep-disposable-gloria/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from on-your-feet-2015"
+        }
+      ]
+    },
+    {
+      "showId": "on-your-feet-west-end-2019",
+      "file": "thestage--tim-bano.json",
+      "publishDate": "2019-06-27T19:45:03+00:00",
+      "url": "https://www.thestage.co.uk/reviews/2019/on-your-feet-gloria-estefan-review-at-london-coliseum/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from on-your-feet-2015"
+        }
+      ]
+    },
+    {
       "showId": "once-on-this-island-2017",
       "file": "deadline--jeremy-gerard.json",
       "score": 91,
@@ -51159,6 +51199,19 @@
       "score": 89,
       "publishDate": "2026-10-08",
       "url": "https://www.london-unattached.com/blood-of-my-blood-royal-court-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "blood-of-my-blood-west-end-2026",
+      "file": "readaboutstuff--dan-english.json",
+      "publishDate": "2026-10-11",
+      "url": "https://readaboutstuff.com/2026/10/11/review-blood-of-my-blood-royal-court-london/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

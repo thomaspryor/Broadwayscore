@@ -722,6 +722,15 @@ describe('Alias consistency checks', () => {
 });
 
 describe('normalizeOutlet: ambiguous-prefix guard (card #116, BRO-1084 regression)', () => {
+  test('smashed (no-hyphen) unregistered slug is not misattributed to vulture (BRO-3529)', () => {
+    assert.strictEqual(normalizeOutlet('New York Foo Review'), 'new-york-foo-review');
+    assert.strictEqual(normalizeOutlet('newyorkfooreview'), 'newyorkfooreview');
+  });
+
+  test('smashed guard leaves legitimate concatenated outlet+critic forms resolving (BRO-3529)', () => {
+    assert.strictEqual(normalizeOutlet('newyorkmagazinevulture'), 'vulture');
+  });
+
   test('New York Classical Review resolves to itself, not vulture (2026-04-27 incident)', () => {
     // NYCR was unregistered at rebuild time due to the outlet-registry
     // public/private sync gap (BRO-1084) and got fuzzy-matched to vulture's

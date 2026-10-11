@@ -2029,8 +2029,25 @@ function checkForCatastrophicChanges() {
   }
 
   try {
-    const { execSync } = require('child_process');
-    const diff = execSync('git diff --numstat data/shows.json 2>/dev/null || echo ""', { encoding: 'utf8' });
+    const { execSync, spawnSync } = require('child_process');
+    // BRO-5033: shows.json is gitignored core data, so `git diff` on it is
+    // always empty. In CI, diff against the checkout-core-data snapshot (the
+    // file as this job started with it). Advisory (warn) while this check is
+    // new (§19); it never fired before.
+    const snapshot = path.join(process.env.CORE_DATA_SNAPSHOT_DIR || '/tmp/core-data-snapshot', 'shows.json');
+    const useSnapshot = fs.existsSync(snapshot);
+    let diff;
+    if (useSnapshot) {
+      // realpath: --no-index diffs a symlink's target string, not its content
+      // (local data/ is symlinked by setup-local-data.sh --link-only).
+      const r = spawnSync('git', ['diff', '--no-index', '--numstat', '--',
+        fs.realpathSync(snapshot), fs.realpathSync(SHOWS_FILE)], { encoding: 'utf8' });
+      // 0 = same, 1 = differ; anything else is a git error, not "no changes".
+      if (r.status !== 0 && r.status !== 1) throw new Error(`git diff --no-index exited ${r.status}`);
+      diff = r.stdout;
+    } else {
+      diff = execSync('git diff --numstat data/shows.json 2>/dev/null || echo ""', { encoding: 'utf8' });
+    }
 
     if (diff.trim()) {
       const [additions, deletions] = diff.trim().split('\t');
@@ -2038,7 +2055,7 @@ function checkForCatastrophicChanges() {
       const dels = parseInt(deletions) || 0;
 
       if (dels > 500 && dels > adds * 2) {
-        error(`Suspicious deletion: ${dels} lines deleted vs ${adds} added`);
+        (useSnapshot ? warn : error)(`Suspicious deletion: ${dels} lines deleted vs ${adds} added`);
       } else {
         ok(`Changes look reasonable: +${adds} -${dels} lines`);
       }
@@ -2046,7 +2063,7 @@ function checkForCatastrophicChanges() {
       ok('No pending changes to shows.json');
     }
   } catch (e) {
-    ok('Skipped git diff check');
+    warn(`Skipped shows.json deletion check: ${e.message}`);
   }
 }
 
