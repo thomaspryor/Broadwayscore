@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-11T23:05:20.094Z",
+  "timestamp": "2026-10-11T23:22:34.777Z",
   "stats": {
-    "totalReviews": 55945,
-    "alreadyFlagged": 20856,
-    "dateGuardCatches": 254,
+    "totalReviews": 55943,
+    "alreadyFlagged": 20859,
+    "dateGuardCatches": 255,
     "directorMismatch": 1738,
-    "tvFilmSignals": 1604,
+    "tvFilmSignals": 1605,
     "londonSignals": 2197,
     "offBroadwaySignals": 507,
     "yearMismatch": 136,
-    "noPublishDate": 5359
+    "noPublishDate": 5345
   },
   "findings": [
     {
@@ -31559,6 +31559,20 @@
       ]
     },
     {
+      "showId": "race-2009",
+      "file": "sfgate--lily-janiak.json",
+      "score": null,
+      "publishDate": "2009-12-09",
+      "url": "https://www.sfgate.com/performance/article/Mamet-s-Race-stumbles-peters-out-3206973.php",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "ragtime-2025",
       "file": "chicagotribune--chris-jones.json",
       "score": 77,
@@ -45383,6 +45397,20 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1547d before show (2022-03-31 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 82,
+      "publishDate": "2023-02-07",
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
         }
       ]
     },
@@ -70999,7 +71027,7 @@
     {
       "showId": "rent-west-end-2026",
       "file": "ground--unknown.json",
-      "score": 61,
+      "score": 66,
       "publishDate": "2026-10-08",
       "url": "https://ground.news/article/rent-reborn-how-star-gaten-matarazzo-director-luke-sheppard-and-a-perfectly-cast-west-end-ensemble-are-giving-the-musical-its-biggest-revi",
       "findings": [

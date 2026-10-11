@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-11T22:59:30.493Z",
+  "generated": "2026-10-11T23:16:55.414Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 25,
+  "count": 26,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -11,10 +11,10 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "a-christmas-carol-west-end-2018",
-      "loserFile": "times-uk--unknown.json",
-      "targetFile": "times-uk--dominic-maxwell.json",
-      "reason": "orphaned-duplicate-heal: times-uk--dominic-maxwell.json was flagged invalid after times-uk--unknown.json was pointed at it",
+      "showId": "a-christmas-carol-2019",
+      "loserFile": "observer--rex-reed.json",
+      "targetFile": "observer--david-cote.json",
+      "reason": "orphaned-duplicate-heal: observer--david-cote.json was flagged invalid after observer--rex-reed.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -22,6 +22,13 @@
       "loserFile": "vulture--jesse-green.json",
       "targetFile": "vulture--sara-holdren.json",
       "reason": "orphaned-duplicate-heal: vulture--sara-holdren.json was flagged invalid after vulture--jesse-green.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "american-psycho-2016",
+      "loserFile": "guardian--jesse-green.json",
+      "targetFile": "guardian--alexis-soloski.json",
+      "reason": "orphaned-duplicate-heal: guardian--alexis-soloski.json was flagged invalid after guardian--jesse-green.json was pointed at it",
       "field": "duplicateOf"
     },
     {
