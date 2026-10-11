@@ -964,5 +964,34 @@
       }
     ],
     "queuedAt": "2026-10-11T20:48:33.191Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4923-uk-regional-trigger",
+    "title": "Landing blocked: rebase red on land/bro-4923-uk-regional-trigger",
+    "description": "land.yml did not land land/bro-4923-uk-regional-trigger: the rebase gate went red at 2110cbd49f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38174211574",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4923-uk-regional-trigger"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "2110cbd49fec549c160043f7e1c0690318640b97"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38174211574"
+      }
+    ],
+    "queuedAt": "2026-10-11T20:57:29.672Z"
   }
 ]
