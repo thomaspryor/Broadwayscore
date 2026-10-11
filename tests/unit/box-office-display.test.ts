@@ -95,6 +95,17 @@ test('placeLabels: `only` names just those dots, and the others still block labe
   assert.equal(placed.get('out'), 'left', 'the right side is blocked by the unlabelled big dot');
 });
 
+test('placeLabels: with vertical, a dot boxed in on both sides gets its label below', () => {
+  const dots = [
+    { slug: 'mid', label: 'Two Strangers', x: 300, y: 200, r: 5 },
+    { slug: 'l', label: 'L', x: 270, y: 200, r: 6 },
+    { slug: 'r', label: 'R', x: 330, y: 200, r: 6 },
+  ];
+  const only = new Set(['mid']);
+  assert.ok(!placeLabels(dots, undefined, only).has('mid'), 'sides only: no room');
+  assert.equal(placeLabels(dots, undefined, only, true).get('mid'), 'below');
+});
+
 test('mapOutliers: the dots farthest from the middle, each axis scaled by its spread', () => {
   const mid = [90, 92, 94, 95, 96].map((c, i) => ({ slug: `m${i}`, capacity: c, atp: 110 + i }));
   const dots = [...mid, { slug: 'pricey', capacity: 100, atp: 280 }, { slug: 'empty', capacity: 62, atp: 70 }];

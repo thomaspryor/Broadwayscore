@@ -5,7 +5,7 @@
  */
 import type { ReactNode } from 'react';
 import type { MarketPage, MoverRow } from '@/lib/box-office-display';
-import { money, PACE_MIN_WEEK, PACE_MAX_WEEK } from '@/lib/box-office-display';
+import { money, PACE_MIN_WEEK, PACE_MAX_WEEK, shortTitle } from '@/lib/box-office-display';
 import { EYEBROW } from './MarketOverview';
 
 const SECTION = 'card p-4 sm:p-6 mb-8 flex flex-col gap-4';
@@ -162,7 +162,7 @@ function NewShowsCompare({ pace }: { pace: MarketPage['pace'] }) {
           {pace.map((p) => (
             <li key={p.title} className="flex flex-col gap-1 py-2">
               <div className="flex items-baseline justify-between gap-3">
-                <span className="text-sm text-white truncate">{p.title}</span>
+                <span className="text-sm text-white truncate" title={p.title}>{shortTitle(p.title)}</span>
                 <span className="text-sm font-bold text-white tabular-nums shrink-0">Better than {p.beatsPct}%</span>
               </div>
               <div
