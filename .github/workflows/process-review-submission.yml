@@ -143,23 +143,27 @@ jobs:
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # BRO-4454: decrypts the sealed submitter contact (key derived from this secret).
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
         run: |
-          EMAIL=$(grep -A1 '### Submitter Email' .issue-body.txt | tail -1 | tr -d '[:space:]')
-          if [[ -z "$EMAIL" || "$EMAIL" == "_Noresponse_" ]]; then
-            echo "No submitter email — skipping notification"
+          # Prints the address or nothing. Never echo it: this repo's logs are public.
+          EMAIL=$(node scripts/lib/submitter-contact.js extract .issue-body.txt)
+          if [[ -z "$EMAIL" ]]; then
+            echo "No deliverable submitter email, skipping notification"
             exit 0
           fi
-          REVIEW_URL=$(grep -A1 '### Review URL' .issue-body.txt | tail -1 | tr -d '[:space:]')
+          echo "::add-mask::$EMAIL"
+          export EMAIL
+          export REVIEW_URL=$(grep -A1 '### Review URL' .issue-body.txt | tail -1 | tr -d '[:space:]')
+          # Payload built in node so a quote in the URL cannot break the JSON.
+          PAYLOAD=$(node -e 'const e=process.env;process.stdout.write(JSON.stringify({
+            from:"Broadway Scorecard <noreply@broadwayscorecard.com>",to:[e.EMAIL],reply_to:e.OWNER_EMAIL,
+            subject:"Your review submission was approved",
+            text:"Great news! The review you submitted to Broadway Scorecard has been approved and will be added to our database shortly.\n\nURL: "+e.REVIEW_URL+"\n\nThank you for helping expand our database!"}))')
           curl -s -o /dev/null -w "%{http_code}" -X POST https://api.resend.com/emails \
             -H "Authorization: Bearer $RESEND_API_KEY" \
             -H "Content-Type: application/json" \
-            -d "{
-              \"from\": \"Broadway Scorecard <noreply@broadwayscorecard.com>\",
-              \"to\": [\"$EMAIL\"],
-              \"reply_to\": \"$OWNER_EMAIL\",
-              \"subject\": \"Your review submission was approved\",
-              \"text\": \"Great news — the review you submitted to Broadway Scorecard has been approved and will be added to our database shortly.\n\nURL: $REVIEW_URL\n\nThank you for helping expand our database!\"
-            }" | grep -qE '^2' || echo "::warning::Resend approved notification failed"
+            -d "$PAYLOAD" | grep -qE '^2' || echo "::warning::Resend approved notification failed"
 
       - name: Add label - Rejected
         if: steps.validate.outputs.recommendation == 'reject'
@@ -195,23 +199,27 @@ jobs:
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # BRO-4454: decrypts the sealed submitter contact (key derived from this secret).
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
         run: |
-          EMAIL=$(grep -A1 '### Submitter Email' .issue-body.txt | tail -1 | tr -d '[:space:]')
-          if [[ -z "$EMAIL" || "$EMAIL" == "_Noresponse_" ]]; then
-            echo "No submitter email — skipping notification"
+          # Prints the address or nothing. Never echo it: this repo's logs are public.
+          EMAIL=$(node scripts/lib/submitter-contact.js extract .issue-body.txt)
+          if [[ -z "$EMAIL" ]]; then
+            echo "No deliverable submitter email, skipping notification"
             exit 0
           fi
-          REVIEW_URL=$(grep -A1 '### Review URL' .issue-body.txt | tail -1 | tr -d '[:space:]')
+          echo "::add-mask::$EMAIL"
+          export EMAIL
+          export REVIEW_URL=$(grep -A1 '### Review URL' .issue-body.txt | tail -1 | tr -d '[:space:]')
+          # Payload built in node so a quote in the URL cannot break the JSON.
+          PAYLOAD=$(node -e 'const e=process.env;process.stdout.write(JSON.stringify({
+            from:"Broadway Scorecard <noreply@broadwayscorecard.com>",to:[e.EMAIL],reply_to:e.OWNER_EMAIL,
+            subject:"Your review submission was not approved",
+            text:"We reviewed the URL you submitted to Broadway Scorecard but were unable to add it to our database.\n\nURL: "+e.REVIEW_URL+"\n\nCommon reasons: the review is from an outlet we do not currently track, the URL did not resolve to a review of a Broadway or West End production, or the content did not meet our scoring criteria. If you think this is an error, you can reply to this email.\n\nThanks for your submission."}))')
           curl -s -o /dev/null -w "%{http_code}" -X POST https://api.resend.com/emails \
             -H "Authorization: Bearer $RESEND_API_KEY" \
             -H "Content-Type: application/json" \
-            -d "{
-              \"from\": \"Broadway Scorecard <noreply@broadwayscorecard.com>\",
-              \"to\": [\"$EMAIL\"],
-              \"reply_to\": \"$OWNER_EMAIL\",
-              \"subject\": \"Your review submission was not approved\",
-              \"text\": \"We reviewed the URL you submitted to Broadway Scorecard but were unable to add it to our database.\n\nURL: $REVIEW_URL\n\nCommon reasons: the review is from an outlet we don't currently track, the URL didn't resolve to a review of a Broadway or West End production, or the content didn't meet our scoring criteria. If you think this is an error, you can reply to this email.\n\nThanks for your submission.\"
-            }" | grep -qE '^2' || echo "::warning::Resend rejected notification failed"
+            -d "$PAYLOAD" | grep -qE '^2' || echo "::warning::Resend rejected notification failed"
 
       - name: Add label - Needs Manual Review
         if: steps.validate.outputs.recommendation == 'needs-manual-review'
