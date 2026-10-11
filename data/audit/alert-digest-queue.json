@@ -1117,5 +1117,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-11T01:21:01.403Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4956-codex-eisdir",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4956-codex-eisdir",
+    "description": "land.yml did not land land/bro-4956-codex-eisdir: the unit-tests-node gate went red at c103c0895c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38099580353",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4956-codex-eisdir"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "c103c0895c4b7ab9bc4060ec3fb06ecfd68c17d3"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38099580353"
+      }
+    ],
+    "queuedAt": "2026-10-11T01:20:35.915Z"
   }
 ]
