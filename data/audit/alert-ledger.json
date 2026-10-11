@@ -155,11 +155,11 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-11T06:36:08.383Z",
-      "lastSeen": "2026-10-11T06:36:08.383Z",
-      "lastNotifiedAt": "2026-10-11T06:36:08.383Z",
+      "incidentOpenedAt": "2026-10-11T06:47:48.449Z",
+      "lastSeen": "2026-10-11T06:47:48.449Z",
+      "lastNotifiedAt": "2026-10-11T06:47:48.449Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
-      "notifyCount": 129,
+      "notifyCount": 130,
       "cardId": null,
       "linearIdentifier": "BRO-3030"
     },
@@ -13575,7 +13575,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:501c5e0a": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"classify-market-routing parity vs committed baseline (95 samples)\"",
       "firstSeen": "2026-10-11T06:16:18.103Z",
@@ -13586,7 +13586,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-5035",
-      "silentRefires": 1
+      "resolvedAt": "2026-10-11T06:47:48.154Z",
+      "resolveReason": "job-green"
     },
     "test-yml:red:Design Token Drift Guard:621920d2": {
       "status": "open",
@@ -13619,6 +13620,19 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "test-yml:red:Design Token Drift Guard:621920d2": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Design Token Drift Guard / Lint design tokens",
+      "firstSeen": "2026-10-11T06:47:48.163Z",
+      "incidentOpenedAt": "2026-10-11T06:47:48.163Z",
+      "lastSeen": "2026-10-11T06:47:48.163Z",
+      "lastNotifiedAt": "2026-10-11T06:47:48.163Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-5037"
     }
   }
 }
