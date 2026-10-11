@@ -76,8 +76,10 @@ function isNeverAttempted(review) {
  * blackout this alarm exists to catch):
  *  - the deterministic date guards (pre-window / URL date before the show's
  *    earliest date), which never judge content, and
- *  - any wrongProduction file on a tour: tour reviews come from local outlets,
- *    never from the NYC aggregators that surfaced these URLs.
+ *  - on a tour only, a wrongProduction file published >60d before the tour
+ *    opened, or whose verdict says it reviews the earlier NYC run. A bare
+ *    wrongProduction flag is NOT enough: real local tour reviews get that
+ *    flag too and must still page when they are all that was discovered.
  *
  * @param {object} show
  * @param {object} review
@@ -85,10 +87,18 @@ function isNeverAttempted(review) {
  */
 function isOtherProductionEvidence(show, review) {
   if (!review || review.wrongProduction !== true) return false;
-  if (show && (show.market === 'tour' || show.category === 'tour')) return true;
   const note = [review.wrongProductionNote, review.incompleteDetail, review.contentTierReason]
     .filter(Boolean).join(' ');
-  return /pre-window date|URL date .* days before show earliest date/i.test(note);
+  if (/pre-window date|URL date .* days before show earliest date/i.test(note)) return true;
+  if (!show || (show.market !== 'tour' && show.category !== 'tour')) return false;
+  // Tour only. Local tour reviews are also LLM-flagged wrongProduction at times
+  // (and-juliet-tour-2024, mrs-doubtfire-tour-2025), so a bare flag proves
+  // nothing; require positive evidence the file is about the earlier run.
+  const pub = Date.parse(review.publishDate || '');
+  const open = Date.parse(show.openingDate || '');
+  if (!Number.isNaN(pub) && !Number.isNaN(open) && pub < open - 60 * 86400000) return true;
+  return /\b(original|earlier|prior|previous|off-)?\s*(Broadway|Off-Broadway|New York|NYC)\b[^.]{0,40}\b(production|run)\b/i.test(note)
+    && /original|earlier|prior|previous|ran\b/i.test(note);
 }
 
 /**

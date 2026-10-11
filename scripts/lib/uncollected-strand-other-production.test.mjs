@@ -11,10 +11,22 @@ const files = (...rs) => rs.map((review, i) => ({ file: `f${i}.json`, review }))
 const tour = { id: 't', status: 'open', openingDate: '2024-10-12', market: 'tour', category: 'tour' };
 const bway = { id: 'b', status: 'open', openingDate: '2024-10-12', market: 'broadway', category: 'play' };
 
-test('tour: NYC-run URLs rejected as wrongProduction are not a blackout', () => {
-  const r = assessShow(tour, files(wp('Collector LLM: wrong production (high)'), wp('x'), wp('y')), { nowMs });
+test('tour: NYC-run URLs (dated before the tour, or verdict names the earlier run) are not a blackout', () => {
+  const r = assessShow(tour, files(
+    wp('anticipatory', { publishDate: '2023-10-17' }),
+    wp('Collector LLM: wrong production (high) — This review evaluates the original Broadway production at DR2 Theatre in New York, not the national tour'),
+  ), { nowMs });
   assert.equal(r.discovered, 0);
   assert.equal(r.totalBlackout, false);
+});
+
+test('tour: bare LLM wrongProduction on local reviews still pages (and-juliet / mrs-doubtfire shape)', () => {
+  const r = assessShow(tour, files(
+    wp('Collector LLM: wrong production (high) — different cast', { publishDate: '2025-02-01' }),
+    wp('Collector LLM: wrong production (high) — wrong venue', { publishDate: '2025-02-03' }),
+  ), { nowMs });
+  assert.equal(r.discovered, 2);
+  assert.equal(r.totalBlackout, true);
 });
 
 test('non-tour: deterministic date-guard rejections are discounted', () => {
