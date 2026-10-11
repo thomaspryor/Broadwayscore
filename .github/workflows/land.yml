@@ -501,7 +501,7 @@ jobs:
   land:
     name: Land
     needs: [checks, admit]
-    if: always() && needs.checks.result == 'success'
+    if: ${{ !cancelled() && needs.checks.result == 'success' }}
     runs-on: ubuntu-latest
     # ONE landing at a time, across this workflow AND autonomous-merge.yml
     # (same group name there): the fast-forward push must never be raced.

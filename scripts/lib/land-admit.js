@@ -16,6 +16,12 @@
  * error admits the lane (today's behaviour), so admit can never deadlock the
  * queue. The sweep (land-queue-backoff.decideSweep) reuses isMainRedBranch so
  * it never evicts a pending main-red lane with an ordinary re-run.
+ *
+ * Known limits (BRO-5096 review): a main-red lane started by workflow_dispatch
+ * lists under `main`, so admit cannot see it (name the push branch main-red);
+ * autonomous-merge.yml shares `landing` without an admit step; two main-red
+ * lanes can still evict each other (bounded by the retry budget); a dead
+ * main-red lane holds ordinary lanes at most PRIORITY_STALE_HOURS.
  */
 
 const POLL_SECONDS = 60;

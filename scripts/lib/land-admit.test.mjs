@@ -82,7 +82,7 @@ test('sweep: with a main-red lane pending, ordinary stranded runs wait', () => {
 test('workflow wiring: admit job precedes Land, which fails open', () => {
   const y = readFileSync(new URL('../../.github/workflows/land.yml', import.meta.url), 'utf8');
   assert.match(y, /\n  admit:\n    name: Admit\n    needs: checks/);
-  assert.match(y, /\n  land:\n    name: Land\n    needs: \[checks, admit\]\n    if: always\(\) && needs\.checks\.result == 'success'/);
+  assert.match(y, /\n  land:\n    name: Land\n    needs: \[checks, admit\]\n    if: \$\{\{ !cancelled\(\) && needs\.checks\.result == 'success' \}\}/);
   assert.match(y, /run: node scripts\/land-admit\.js/);
   assert.ok(!/\n  admit:[\s\S]*?concurrency:[\s\S]*?\n  land:/.test(y), 'admit must stay outside the landing group');
 });
