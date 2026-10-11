@@ -1,5 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createRequire } from 'module';
 import { createNotionPage } from '@/lib/notion-api';
+
+const cjsRequire = createRequire(import.meta.url);
+// BRO-4454: the submitter's email is sealed before it goes into the PUBLIC
+// issue tracker; process-review-submission.yml decrypts it to send the outcome.
+const { formatContactSection } = cjsRequire('../../../../scripts/lib/submitter-contact') as {
+  formatContactSection: (email: string, secret: string | undefined) => string[];
+};
+
+export const runtime = 'nodejs';
 
 const GITHUB_REPO = process.env.GITHUB_REPO || 'thomaspryor/Broadwayscore';
 const GH_DISPATCH_TOKEN = process.env.GH_DISPATCH_TOKEN || '';
@@ -67,8 +77,7 @@ function formatIssueBody(
     '### Additional Notes',
     notes || '_No response_',
     '',
-    '### Submitter Email',
-    submitterEmail || '_No response_',
+    ...formatContactSection(submitterEmail, process.env.APPROVAL_HMAC_SECRET),
     '',
     '---',
     '*Submitted via [broadwayscorecard.com/submit-review](https://broadwayscorecard.com/submit-review)*',
@@ -205,6 +214,9 @@ export async function POST(req: NextRequest) {
     const criticName = ((formData.get('critic_name') as string) || '').trim();
     const notes = ((formData.get('notes') as string) || '').trim();
     const submitterEmail = ((formData.get('submitter_email') as string) || '').trim();
+    if (submitterEmail && !process.env.APPROVAL_HMAC_SECRET) {
+      console.error('submit-review: APPROVAL_HMAC_SECRET not set; submitter email dropped (BRO-4454)');
+    }
 
     const title = formatIssueTitle(reviewUrl, showName, outletName);
     const body = formatIssueBody(reviewUrl, showName, outletName, criticName, notes, submitterEmail);
