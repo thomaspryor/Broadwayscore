@@ -441,7 +441,12 @@ jobs:
         run: |
           # git diff catches modified tracked files; git status --porcelain catches new untracked
           # files (e.g. data/audit/opening-night-express-completed.json on first Express run).
-          if ! git diff --quiet data/reviews.json public/data/shows/ 2>/dev/null || \
+          # BRO-5033: no reviews.json term here on purpose. reviews.json is
+          # gitignored core data, so `git diff` on it was always empty, and a
+          # snapshot compare would always say "changed": rebuild-all-reviews.js
+          # stamps _meta.lastUpdated on every run. public/data/shows/ (tracked,
+          # generated from reviews.json) is the real content signal.
+          if ! git diff --quiet public/data/shows/ 2>/dev/null || \
              git status --porcelain data/audit/ public/data/shows/ 2>/dev/null | grep -q .; then
             echo "has_changes=true" >> $GITHUB_OUTPUT
           else

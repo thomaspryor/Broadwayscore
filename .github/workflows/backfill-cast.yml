@@ -114,7 +114,10 @@ jobs:
         id: git-check
         run: |
           CAST_FILES=$(git status --porcelain data/cast/ | wc -l | tr -d ' ')
-          SHOWS_CHANGED=$(git diff --name-only data/shows.json | wc -l | tr -d ' ')
+          # BRO-5033: shows.json is gitignored core data (git diff is always
+          # empty); compare to the checkout-core-data snapshot instead.
+          SHOWS_CHANGED=0
+          if node scripts/lib/core-data-changed.js shows.json; then SHOWS_CHANGED=1; fi
           echo "Changed cast files: $CAST_FILES"
           echo "Shows.json changed: $SHOWS_CHANGED"
           if [ "$CAST_FILES" -gt "0" ] || [ "$SHOWS_CHANGED" -gt "0" ]; then
@@ -143,6 +146,11 @@ jobs:
           fi
 
           CAST_COUNT=$(git status --porcelain data/cast/ | wc -l | tr -d ' ')
+          # A shows.json-only change has nothing tracked to commit (BRO-5033).
+          if git diff --cached --quiet; then
+            echo "No cast file changes to commit."
+            exit 0
+          fi
           git commit -m "data: Backfill cast data${SHARD_MSG}${SHOW_MSG} [${CAST_COUNT} files]"
 
           bash scripts/lib/push-with-retry.sh 15

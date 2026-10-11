@@ -635,13 +635,12 @@ jobs:
         id: changes
         run: |
           # Check both reviews.json AND public show JSONs (Fix E: rebuild "no changes" loop)
-          REVIEWS_CHANGED=false
           PUBLIC_CHANGED=false
-          if ! git diff --quiet data/reviews.json 2>/dev/null; then
-            REVIEWS_CHANGED=true
-            echo "Changes detected in reviews.json"
-            git diff --stat data/reviews.json
-          fi
+          # BRO-5033: no reviews.json term here on purpose. reviews.json is
+          # gitignored core data, so `git diff` on it was always empty, and a
+          # snapshot compare would always say "changed": rebuild-all-reviews.js
+          # stamps _meta.lastUpdated on every run. public/data/shows/ (tracked,
+          # generated from reviews.json) is the real content signal.
           if ! git diff --quiet public/data/shows/ 2>/dev/null; then
             PUBLIC_CHANGED=true
             echo "Changes detected in public show JSONs"
@@ -668,7 +667,7 @@ jobs:
             GUARD_STATE_CHANGED=true
             echo "Changes detected in data/audit/guard-escalation-state.json (guard-escalation state)"
           fi
-          if [ "$REVIEWS_CHANGED" = "true" ] || [ "$PUBLIC_CHANGED" = "true" ] || [ "$TRIAGE_CHANGED" = "true" ] || [ "$GUARD_STATE_CHANGED" = "true" ]; then
+          if [ "$PUBLIC_CHANGED" = "true" ] || [ "$TRIAGE_CHANGED" = "true" ] || [ "$GUARD_STATE_CHANGED" = "true" ]; then
             echo "has_changes=true" >> $GITHUB_OUTPUT
           else
             echo "has_changes=false" >> $GITHUB_OUTPUT
