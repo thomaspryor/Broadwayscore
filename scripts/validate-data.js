@@ -206,15 +206,16 @@ try {
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const { BASELINE_NAME, createReviewValidationScope } = require('./lib/review-validation-scope');
-const reviewValidationScope = createReviewValidationScope(
-  path.join(DATA_DIR, 'review-texts'),
-  path.join(process.env.RUNNER_TEMP || '/tmp', BASELINE_NAME),
-  '/tmp/core-data-snapshot/reviews.json'
-);
 // Override lets tests point validate-data.js at a throwaway fixture instead of
 // the real data/shows.json (Notion — validate-data sentinel test corruption risk).
 // Every other data file still resolves under the real DATA_DIR.
 const SHOWS_FILE = process.env.VALIDATE_DATA_SHOWS_JSON || path.join(DATA_DIR, 'shows.json');
+const reviewValidationScope = createReviewValidationScope(
+  path.join(DATA_DIR, 'review-texts'),
+  path.join(process.env.RUNNER_TEMP || '/tmp', BASELINE_NAME),
+  '/tmp/core-data-snapshot/reviews.json',
+  { showsFile: SHOWS_FILE }
+);
 const GROSSES_FILE = path.join(DATA_DIR, 'grosses.json');
 const SCHEDULES_FILE = path.join(DATA_DIR, 'show-schedules.json');
 const COMMERCIAL_FILE = path.join(DATA_DIR, 'commercial.json');

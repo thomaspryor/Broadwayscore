@@ -1,5 +1,5 @@
-// BRO-5042: scope review-file errors to checkout-time bytes, including files
-// committed by the job before validation. Missing scope always fails closed.
+// BRO-5042: scope review errors to unchanged reviews AND show records at
+// checkout, including files committed by the job. Missing scope fails closed.
 const fs = require('fs');
 const path = require('path');
 const { createHash } = require('crypto');
@@ -7,6 +7,7 @@ const { isDeepStrictEqual } = require('util');
 const { listShowDirs } = require('./list-show-dirs');
 const { criticKey } = require('./manual-entry-merge');
 const { normalizeOutlet } = require('./review-normalization');
+const { DEFAULT_SNAPSHOT_PATH, loadBaselineShows, computeChangedShowIds } = require('./shows-since-checkout-diff');
 const BASELINE_NAME = '.review-validation-baseline.json';
 function fingerprint(file) {
   return createHash('sha256').update(fs.readFileSync(file)).digest('hex');
@@ -26,7 +27,10 @@ function reviewKey(showId, review) {
   return JSON.stringify([showId, normalizeOutlet(review.outletId || review.outlet),
     criticKey(review.criticName), review.url || null]);
 }
-function createReviewValidationScope(reviewDir, baselineFile, reviewsBaselineFile) {
+function createReviewValidationScope(reviewDir, baselineFile, reviewsBaselineFile, {
+  showsFile = path.join(reviewDir, '..', 'shows.json'),
+  showsBaselineFile = DEFAULT_SNAPSHOT_PATH,
+} = {}) {
   let baseline;
   try {
     const data = JSON.parse(fs.readFileSync(baselineFile, 'utf8'));
@@ -41,10 +45,31 @@ function createReviewValidationScope(reviewDir, baselineFile, reviewsBaselineFil
       baselineRows.set(key, rows);
     }
   } catch { baselineRows.clear(); /* unknown derived scope retains blocking errors */ }
+  let unchangedShowIds;
+  function showIsUnchanged(showId) {
+    // Read lazily: validate-data's show auto-fixes run before review checks.
+    // A changed date, credit or market can create errors in untouched reviews.
+    if (!unchangedShowIds) {
+      unchangedShowIds = new Set();
+      try {
+        const before = loadBaselineShows(showsBaselineFile);
+        const data = JSON.parse(fs.readFileSync(showsFile, 'utf8'));
+        const current = data.shows || data;
+        const validShows = rows => Array.isArray(rows) && rows.every(s => s && typeof s.id === 'string')
+          && new Set(rows.map(s => s.id)).size === rows.length;
+        if (validShows(before) && validShows(current)) {
+          const changed = new Set(computeChangedShowIds(before, current));
+          unchangedShowIds = new Set(before.filter(s => !changed.has(s.id)).map(s => s.id));
+        }
+      } catch { /* missing/unreadable show scope retains the blocking error */ }
+    }
+    return unchangedShowIds.has(showId);
+  }
   const quarantined = new Map();
   function reportRowError(message, review, { error, warn }) {
     const key = reviewKey(review.showId, review);
-    if (!(baselineRows.get(key) || []).some(row => isDeepStrictEqual(row, review))) {
+    if (!showIsUnchanged(review.showId)
+      || !(baselineRows.get(key) || []).some(row => isDeepStrictEqual(row, review))) {
       error(message);
       return;
     }
@@ -57,8 +82,9 @@ function createReviewValidationScope(reviewDir, baselineFile, reviewsBaselineFil
       try { unchanged = baseline[relativeFile] === fingerprint(path.join(reviewDir, relativeFile)); }
       catch { /* retain the blocking error */ }
     }
-    if (!unchanged) { error(message); return; }
-    quarantined.set(relativeFile, { showId: relativeFile.split('/')[0], review });
+    const showId = relativeFile?.split('/')[0];
+    if (!unchanged || !showIsUnchanged(showId)) { error(message); return; }
+    quarantined.set(relativeFile, { showId, review });
     warn(`[unchanged-review] ${message}; excluded from this core-data save, source file needs repair`);
   }
   function excludeQuarantinedReviews(data) {
