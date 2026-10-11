@@ -1,73 +1,29 @@
 {
-  "updatedAt": "2026-10-11T17:56:42.679Z",
-  "processed": 202,
-  "failed": 94,
-  "successRate": "68.2%",
+  "updatedAt": "2026-10-11T17:59:00.470Z",
+  "processed": 191,
+  "failed": 79,
+  "successRate": "70.7%",
   "tierBreakdown": {
-    "playwright": 154,
-    "amp": 16,
-    "browserbase": 2,
+    "playwright": 148,
+    "amp": 10,
+    "browserbase": 4,
     "directCookies": 2,
-    "scrapingdog": 12,
-    "scrapingbee": 9,
+    "scrapingdog": 14,
+    "scrapingbee": 10,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 23
+    "archive": 18
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
-      "t": "2026-10-11T16:55:29.879Z",
+      "t": "2026-10-11T16:26:41.252Z",
       "event": "bb-session",
-      "session": "5d17d220",
-      "url": "https://www.nytimes.com/2019/06/20/theater/bitter-wheat-london-david-mamet.html"
+      "session": "e55b6233",
+      "url": "https://www.nytimes.com/2019/03/07/theater/tartuffe-national-theater-equus-strat"
     },
     {
-      "t": "2026-10-11T16:55:30.391Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-11T17:03:30.199Z",
-      "event": "bb-session",
-      "session": "34991ec3",
-      "url": "https://www.nytimes.com/2019/05/21/theater/the-starry-messenger-matthew-broderic"
-    },
-    {
-      "t": "2026-10-11T17:03:30.704Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-11T17:03:48.127Z",
-      "event": "bb-session",
-      "session": "d45186ba",
-      "url": "https://www.nytimes.com/2019/05/21/theater/the-starry-messenger-matthew-broderic"
-    },
-    {
-      "t": "2026-10-11T17:03:48.577Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-11T17:11:08.006Z",
-      "event": "bb-session",
-      "session": "b23c8c27",
-      "url": "https://www.nytimes.com/2019/06/21/movies/anna-review.html"
-    },
-    {
-      "t": "2026-10-11T17:11:08.479Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-11T17:11:25.819Z",
-      "event": "bb-session",
-      "session": "1f062778",
-      "url": "https://www.nytimes.com/2019/06/21/movies/anna-review.html"
-    },
-    {
-      "t": "2026-10-11T17:11:26.291Z",
+      "t": "2026-10-11T16:26:41.651Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
@@ -92,6 +48,18 @@
       "t": "2026-10-11T17:47:31.592Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-11T17:43:56.980Z",
+      "event": "bb-session",
+      "session": "b6e74d36",
+      "url": "https://bachtrack.com/review-don-quixote-scala-ballet-queensland-performing-arts"
+    },
+    {
+      "t": "2026-10-11T17:44:14.538Z",
+      "event": "bb-session",
+      "session": "aadfda03",
+      "url": "https://bachtrack.com/review-don-quixote-scala-ballet-queensland-performing-arts"
     }
   ]
 }
