@@ -156,3 +156,14 @@ test('sentences ending in a quote or bracket are kept, quoted titles are story (
   assert.match(cleanTodaytixAbout('"Hamilton" is the story of America then, told by America now. It follows a founding father.'), /^"Hamilton" is the story/);
   assert.match(cleanTodaytixAbout("'Tis the season for murder. A family gathers when a body is found in the snow."), /the season for murder\. A family gathers/);
 });
+
+// BRO-5063: the backfill saved these two from "trusted" TodayTix pages.
+test('the show title\'s "!" is not a sentence end, and an ellipsis tail is a fragment (Schmigadoon!)', () => {
+  const about = 'Get *Schmigadoon!* tickets on TodayTix to see the 2026 Best Musical Tony Award winner! A love letter to Broadway’s Golden Age wrapped in a modern musical comedy, *Schmigadoon!* will leave you with a “song in your heart” (The New York Times)... if you manage to get out.';
+  assert.equal(cleanTodaytixAbout(about, 'Schmigadoon!'), '');
+});
+
+test('a content-warning bullet list is not story (The Comedy About Spies)', () => {
+  const about = 'When a rogue British agent pilfers plans for a top-secret weapon, CIA and KGB spies converge on London’s Piccadilly Hotel in pursuit of the elusive file.\n\nSubject matters in the show include : • Characters include Spies from the United States of America and the USSR. • Physical and verbal abuse are depicted throughout the show with violence in multiple scenes.';
+  assert.equal(cleanTodaytixAbout(about, 'The Comedy About Spies'), 'When a rogue British agent pilfers plans for a top-secret weapon, CIA and KGB spies converge on London\'s Piccadilly Hotel in pursuit of the elusive file.');
+});
