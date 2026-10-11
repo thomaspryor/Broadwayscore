@@ -71,7 +71,7 @@ const URL_RE = /\bhttps?:\/\/\S+/gi;
 const CITATION_FIELDS = ['capitalizationSource', 'recoupedSource'];
 const LOSS_DESIGNATIONS = ['Flop', 'Fizzle'];
 const { VALID_DESIGNATION_BASES, DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS, isPrematureSilenceLabel } = require('./commercial-designations');
-const { COST_BASES } = require('./cost-split');
+const { COST_BASES, BASIS_CUE_TEXT } = require('./cost-split');
 
 /** The research wording in `text` outside any URL, or null. */
 function internalWordingIn(text) {
@@ -352,6 +352,12 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
   const est = show.estimatedRecoupmentPct;
   if (show.recouped === true && Array.isArray(est) && est.length === 2 && est.every((v) => typeof v === 'number') && Math.max(...est) < 100) {
     out.push(`commercial.json: "${showId}" is recouped but carries estimatedRecoupmentPct [${est.join(', ')}] (an earlier share returned; ground truth reads it before the recoupment, so remove it)`);
+  }
+  // A hard-sourced cost whose quote says all-in or breakeven, with no
+  // explicit weeklyRunningCostBasis (BRO-5093): the costBasis model would
+  // read the text guess instead of a checked tag.
+  if (['trade-reported', 'sec-filing', 'producer-confirmed'].includes(show.costMethodology) && show.weeklyRunningCost && show.weeklyRunningCostBasis == null && BASIS_CUE_TEXT.test(String(show.weeklyRunningCostSource || ''))) {
+    out.push(`commercial.json: "${showId}" has a ${show.costMethodology} weeklyRunningCost whose source mentions all-in or breakeven but no weeklyRunningCostBasis (tag it running, breakeven or all-in)`);
   }
   if (isPrematureSilenceLabel(show, ctx.showRecord)) {
     out.push(`commercial.json: "${showId}" is "${show.designation}" on no recoupment announced but closed under ${LOSS_LABEL_MIN_DAYS} days ago (keep TBD + needsLossEvidence until it ages in)`);

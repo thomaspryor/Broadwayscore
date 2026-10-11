@@ -30,6 +30,8 @@ const EXTRA_VARIABLE = {
 };
 
 const ALL_IN_TEXT = /\ball[- ]in\b|\bincludes?\s+(?:royalt|amortiz)/i;
+// A cue that the figure includes gross-linked costs, or is a breakeven.
+const BASIS_CUE_TEXT = /\ball[- ]in\b|\bincludes?\s+(?:royalt|amortiz)|\bbreak[- ]?even\b/i;
 const RUNNING_TEXT = /\bexcl\w*\s+royalt|\bbefore royalt|\bpure operating\b/i;
 
 /** 'all-in' | 'running' for the record's weekly cost figure. */
@@ -113,4 +115,4 @@ function fixedNutFromBasis(commercial, weeklyNut, varRate, theater, weekly) {
   return nut > 0 ? { nut, basis, gross, fromPeriod: !!period } : { nut: weeklyNut, basis: 'running', rejected: 'all-in' };
 }
 
-module.exports = { splitCosts, costBasis, fixedNutFromBasis, periodGross, EXTRA_VARIABLE, COST_BASES: BASES };
+module.exports = { splitCosts, costBasis, fixedNutFromBasis, periodGross, EXTRA_VARIABLE, COST_BASES: BASES, BASIS_CUE_TEXT };
