@@ -34,7 +34,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { isScoreable } = require('./is-scoreable');
-const { isBlockedFromRescore } = require('./rescore-lifecycle');
+const { isBlockedFromRescore, isBlockedByStickyRejection } = require('./rescore-lifecycle');
 const { selectScorableText } = require('./scorable-text');
 const { hasExcerpt } = require('./excerpt-fields');
 const { isInFallbackCooldown } = require('./manual-clear-fallback-cooldown');
@@ -51,6 +51,7 @@ const UNSCORED_SKIP = {
   NO_SCORABLE_TEXT: 'no_scorable_text',
   STAR_RATING_AUTHORITATIVE: 'star_rating_authoritative',
   FALLBACK_COOLDOWN: 'manual_clear_fallback_cooldown',
+  STICKY_REJECTION: 'sticky_not_a_review_rejection',
 };
 
 /**
@@ -107,6 +108,10 @@ function unscoredSkipReason(data, ctx) {
   // reproduces identically until the text itself changes. Counting it forever
   // is exactly what pinned this cascade. See rescore-lifecycle.js.
   if (isBlockedFromRescore(data)) return UNSCORED_SKIP.TERMINAL_TEXT_GATE;
+  // An ensemble not_a_review rejection of this exact text (BRO-5047): a rebuild
+  // re-derives contentTier and makes it look scoreable again, but re-asking the
+  // models only re-pays for the same answer. See rescore-lifecycle.js.
+  if (isBlockedByStickyRejection(data)) return UNSCORED_SKIP.STICKY_REJECTION;
   return commonSelectionSkipReason(data, ctx, {});
 }
 
