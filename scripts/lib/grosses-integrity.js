@@ -16,6 +16,12 @@
  *   total-mismatch        stored rows' gross sum or show count differs from
  *                         the published League "Week's Total" saved by the
  *                         scraper in history._meta.weekTotals
+ *   total-matches-prev-week  a gross total-mismatch whose published total
+ *                         equals the rows stored for the week before: the
+ *                         page printed last week's total (some 2006-2021
+ *                         Playbill pages do, BRO-5038) or the rows were
+ *                         filed a week early. `backfill-grosses-history.ts
+ *                         --recheck-totals` refetches the week and settles it
  *   show-dropout          a show in last week's data absent this week while
  *                         shows.json does not say it closed
  *   gross-outside-run     a row for a week outside the show's run: more than
@@ -149,17 +155,19 @@ function historyKeyFor(history, sunday) {
  * Save the source's published "Week's Total" for a week into
  * history._meta.weekTotals, keyed by the week's Sunday. Called by the
  * scraper beside every history write; a source with no total writes nothing.
+ * `tableGross` is the sum of the page's own rows; pass it whenever the page
+ * may print a total its table does not add up to (see publishedTotalEntry).
  * @param {object} history
  * @param {string} week - YYYY-MM-DD (any day of the week)
- * @param {{ gross?: number|null, showCount?: number|null, source?: string }} total
+ * @param {{ gross?: number|null, showCount?: number|null, source?: string, tableGross?: number|null }} total
  * @returns {boolean} whether a total was recorded
  */
-function recordPublishedTotal(history, week, { gross = null, showCount = null, source = '' } = {}) {
+function recordPublishedTotal(history, week, { gross = null, showCount = null, source = '', tableGross = null } = {}) {
   if (!history || !ISO_DATE_RE.test(week || '')) return false;
   if (num(gross) == null && num(showCount) == null) return false;
   history._meta = history._meta || {};
   const totals = { ...(history._meta.weekTotals || {}) };
-  totals[sundayOf(week)] = { gross: num(gross), showCount: num(showCount), source, recordedAt: new Date().toISOString() };
+  totals[sundayOf(week)] = { ...publishedTotalEntry({ gross, showCount, source, tableGross }), recordedAt: new Date().toISOString() };
   const sorted = {};
   for (const k of Object.keys(totals).sort()) sorted[k] = totals[k];
   history._meta.weekTotals = sorted;
@@ -167,8 +175,68 @@ function recordPublishedTotal(history, week, { gross = null, showCount = null, s
 }
 
 /**
+ * The weekTotals entry for a page. A printed "Week's Total" its own table
+ * does not add up to ($1 per row of rounding allowed) is no checksum: 36
+ * pre-2022 Playbill weeks print the previous week's total or some other
+ * figure beside a table our rows match to the dollar (BRO-5038). Such a
+ * total is kept as printedGross with gross null, so checkWeekTotals checks
+ * only the show count and never reports rows that match the page.
+ */
+function publishedTotalEntry({ gross = null, showCount = null, source = '', tableGross = null } = {}) {
+  const g = num(gross);
+  const table = num(tableGross);
+  const count = num(showCount);
+  if (g != null && table != null && Math.abs(g - table) > Math.max(count || 0, 1)) {
+    return { gross: null, printedGross: g, tableGross: table, showCount: count, source };
+  }
+  return { gross: g, showCount: count, source };
+}
+
+/**
+ * Settle a total-mismatch week against a fresh fetch of its page (BRO-5038).
+ * `page` = { snapshot: the page's rows matched to shows ({slug: entry}),
+ * rowCount: rows the page lists, printedGross: its "Week's Total",
+ * tableGross: the sum of its rows, source }. Mutates history.
+ * The page's table (the sum of its rows) is the figure our rows must meet;
+ * its printed total counts only when the table agrees with it.
+ *   'printed-total-off'  stored rows meet the table, the printed total does
+ *                        not: the total is saved aside (gross null,
+ *                        printedGross, tableGross) and checked as tableGross
+ *   'total-saved'        stored rows meet a page that adds up (the saved
+ *                        total was stale): the total is saved again
+ *   'rows-replaced'      stored rows miss the table and every page row
+ *                        matched a show: the page's rows replace them
+ *   'unresolved'         stored rows miss the table but some page rows
+ *                        matched no show, so the page cannot stand in for
+ *                        the week; left alone
+ * @returns {{ action: string, before: number, after?: number }}
+ */
+function reconcilePublishedTotal(history, week, page) {
+  const key = historyKeyFor(history, week) || week;
+  const { snapshot = {}, rowCount = null, printedGross = null, tableGross = null, source = 'playbill' } = page || {};
+  const total = { gross: printedGross, showCount: rowCount, source, tableGross };
+  const stored = Object.values(history.weeks?.[key] || {}).filter(isRow);
+  const sumOf = (rows) => rows.reduce((s, r) => s + (num(r.gross) || 0), 0);
+  const before = sumOf(stored);
+  const entry = publishedTotalEntry(total);
+  const table = num(tableGross) ?? entry.gross;
+  if (table != null && stored.length === rowCount && Math.abs(before - table) <= table * TOTAL_REL_TOLERANCE + stored.length) {
+    recordPublishedTotal(history, key, total);
+    return { action: entry.gross == null ? 'printed-total-off' : 'total-saved', before };
+  }
+  const rows = Object.values(snapshot).filter(isRow);
+  if (!rowCount || rows.length !== rowCount) return { action: 'unresolved', before };
+  history.weeks[key] = { ...snapshot };
+  recordPublishedTotal(history, key, total);
+  return { action: 'rows-replaced', before, after: sumOf(rows) };
+}
+
+/**
  * Stored rows vs the published League "Week's Total" the scraper saved in
- * history._meta.weekTotals[sunday] = { gross, showCount, source }.
+ * history._meta.weekTotals[sunday] = { gross, showCount, source }. A total
+ * saved aside (gross null: the page's printed total missed its own table) is
+ * checked against tableGross instead, so a set-aside week is never silenced.
+ * Gross findings carry measure 'gross', show-count ones measure 'count'.
  * Weeks with no saved total are skipped (older weeks predate saving it).
  */
 function checkWeekTotals(history) {
@@ -185,16 +253,25 @@ function checkWeekTotals(history) {
     // keys still sees a total saved under its Sunday beside an off-Sunday key.
     week = key;
     const sum = rows.reduce((s, r) => s + (num(r.gross) || 0), 0);
-    const pubGross = num(t?.gross);
+    const pubGross = num(t?.gross) ?? num(t?.tableGross);
+    const what = num(t?.gross) != null ? 'published total' : 'published table';
     if (pubGross != null && pubGross > 0) {
       const diff = Math.abs(sum - pubGross);
       if (diff > pubGross * TOTAL_REL_TOLERANCE + rows.length) {
-        out.push({ rule: 'total-mismatch', week, detail: `rows sum to $${sum.toLocaleString('en-US')} but the published total is $${pubGross.toLocaleString('en-US')} (${((diff / pubGross) * 100).toFixed(1)}% off)` });
+        const detail = `rows sum to $${sum.toLocaleString('en-US')} but the ${what} is $${pubGross.toLocaleString('en-US')} (${((diff / pubGross) * 100).toFixed(1)}% off)`;
+        const prevKey = historyKeyFor(history, new Date(isoToMs(sundayOf(week)) - 7 * DAY_MS).toISOString().slice(0, 10));
+        const prevRows = Object.values(history?.weeks?.[prevKey] || {}).filter(isRow);
+        const prevSum = prevRows.reduce((s, r) => s + (num(r.gross) || 0), 0);
+        if (prevRows.length && Math.abs(prevSum - pubGross) <= pubGross * TOTAL_REL_TOLERANCE + prevRows.length) {
+          out.push({ rule: 'total-matches-prev-week', week, measure: 'gross', detail: `${detail}; it equals the rows stored for ${prevKey} (the page printed last week's total, or these rows sit a week early)` });
+        } else {
+          out.push({ rule: 'total-mismatch', week, measure: 'gross', detail });
+        }
       }
     }
     const pubCount = num(t?.showCount);
     if (pubCount != null && pubCount !== rows.length) {
-      out.push({ rule: 'total-mismatch', week, detail: `${rows.length} shows stored but the published list has ${pubCount}` });
+      out.push({ rule: 'total-mismatch', week, measure: 'count', detail: `${rows.length} shows stored but the published list has ${pubCount}` });
     }
   }
   return out;
@@ -434,6 +511,8 @@ module.exports = {
   isSunday,
   sundayOf,
   recordPublishedTotal,
+  publishedTotalEntry,
+  reconcilePublishedTotal,
   checkWeekKeys,
   checkMissingWeeks,
   checkWeekOverdue,

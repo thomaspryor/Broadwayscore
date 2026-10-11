@@ -30,7 +30,7 @@ const path = require('path');
 const { checkGrossesIntegrity } = require('./lib/grosses-integrity');
 
 const ALERT_RULES = new Set([
-  'week-key-not-sunday', 'week-missing', 'week-overdue', 'total-mismatch', 'show-dropout', 'gross-outside-run',
+  'week-key-not-sunday', 'week-missing', 'week-overdue', 'total-mismatch', 'total-matches-prev-week', 'show-dropout', 'gross-outside-run',
   'gross-unplaced', 'duplicate-gross', 'zero-perf-gross', 'negative-value', 'wow-jump',
 ]);
 const CONDITION_PREFIX = 'grosses-integrity:';
@@ -39,6 +39,7 @@ const RULE_HINTS = {
   'week-missing': 'Re-run weekly-grosses.yml (it backfills the 8 weeks before the current one from Playbill), or `npx tsx scripts/scrape-grosses.ts --week=YYYY-MM-DD`.',
   'week-overdue': 'The newest published week never reached grosses-history.json. Check this run\'s scrape step (a source still on the older week, or a write that stored nothing); re-run weekly-grosses.yml with force=true, or `npx tsx scripts/scrape-grosses.ts --week=YYYY-MM-DD`.',
   'total-mismatch': 'Stored rows do not add up to the League "Week\'s Total". Usually a show the scraper could not match to shows.json (see the run\'s "Unmatched" list) or a row dropped as implausible. Add the show / fix the matcher, then re-scrape that week with --week.',
+  'total-matches-prev-week': 'The saved League total equals the rows of the week before. Either the Playbill page printed last week\'s total beside a table that matches our rows (36 pre-2022 weeks did, BRO-5038), or the rows were filed a week early. Run backfill-grosses.yml with recheck_totals=true: it refetches the week, rewrites a total the page\'s own table disagrees with, and replaces the rows only when the page adds up and ours do not.',
   'show-dropout': 'A show in last week\'s data is missing this week and shows.json gives no closing date by then. Either it closed (set closingDate) or its row failed to match (fix the matcher and re-scrape).',
   'gross-outside-run': 'A League row sits on a show whose run does not include that week: the title matched the wrong shows.json entry (a duplicate row, or another production of the title). The history writers move such rows to the production whose run holds the week on their next save (grosses-history-repair.js rekeyRowsToRuns); a row that stays means that production is missing from shows.json or its dates are wrong. Fix the entry (or retire the duplicate with duplicateOf), then re-run weekly-grosses.yml with force=true.',
   'duplicate-gross': 'The same show grossed the same amount to the dollar in two weeks: one week was copied. Re-scrape the later week from Playbill with --week.',

@@ -68,6 +68,88 @@ test('totals: a mismatch is reported under the stored (Monday) key so the scoped
   assert.equal(f[0].week, '2026-06-22');
 });
 
+// BRO-5038: 2008-04-06 on Playbill lists 32 rows summing to $17,944,821 (our
+// stored rows to the dollar) under a "Week's Total" of $21,156,392, which is
+// the week before's figure. The refill saved that printed total as a checksum.
+test('totals: a total equal to the previous week\'s rows is named total-matches-prev-week, an alert rule', () => {
+  const h = { weeks: { '2008-03-30': { a: row(1_200_000), b: row(900_000) }, '2008-04-06': { a: row(1_000_000), b: row(800_000) } } };
+  L.recordPublishedTotal(h, '2008-04-06', { gross: 2_100_000, showCount: 2, source: 'playbill' });
+  const f = L.checkWeekTotals(h);
+  assert.deepEqual(rules(f), ['total-matches-prev-week']);
+  assert.match(f[0].detail, /equals the rows stored for 2008-03-30/);
+  assert.equal(ALERT_RULES.has('total-matches-prev-week'), true);
+  L.recordPublishedTotal(h, '2008-04-06', { gross: 2_500_000, showCount: 2, source: 'playbill' });
+  assert.deepEqual(rules(L.checkWeekTotals(h)), ['total-mismatch']);
+});
+
+test('totals: a printed total the page\'s own table misses is kept aside, never used as the checksum', () => {
+  const h = { weeks: { '2008-03-30': { a: row(1_200_000), b: row(900_000) }, '2008-04-06': { a: row(1_000_000), b: row(800_000) } } };
+  L.recordPublishedTotal(h, '2008-04-06', { gross: 2_100_000, showCount: 2, source: 'playbill', tableGross: 1_800_000 });
+  const t = h._meta.weekTotals['2008-04-06'];
+  assert.equal(t.gross, null);
+  assert.equal(t.printedGross, 2_100_000);
+  assert.equal(t.tableGross, 1_800_000);
+  assert.deepEqual(L.checkWeekTotals(h), []);
+  // the show count is still checked
+  L.recordPublishedTotal(h, '2008-04-06', { gross: 2_100_000, showCount: 3, source: 'playbill', tableGross: 1_800_000 });
+  assert.deepEqual(rules(L.checkWeekTotals(h)), ['total-mismatch']);
+  // a table off only by per-row rounding keeps the printed total
+  assert.equal(L.publishedTotalEntry({ gross: 1_800_001, showCount: 2, tableGross: 1_800_000 }).gross, 1_800_001);
+});
+
+test('reconcile: page total off its own table rewrites the total and leaves the rows', () => {
+  const h = { weeks: { '2008-03-30': { a: row(1_200_000), b: row(900_000) }, '2008-04-06': { a: row(1_000_000), b: row(800_000) } } };
+  L.recordPublishedTotal(h, '2008-04-06', { gross: 2_100_000, showCount: 2, source: 'playbill' });
+  const page = { snapshot: { a: row(1_000_000), b: row(800_000) }, rowCount: 2, printedGross: 2_100_000, tableGross: 1_800_000 };
+  assert.equal(L.reconcilePublishedTotal(h, '2008-04-06', page).action, 'printed-total-off');
+  assert.equal(h.weeks['2008-04-06'].a.gross, 1_000_000);
+  assert.deepEqual(L.checkWeekTotals(h), []);
+});
+
+test('totals: a set-aside total still checks the rows against the page table, so a shifted week is not silenced', () => {
+  const stale = { a: row(1_200_000), b: row(900_000) };
+  const h = { weeks: { '2008-03-30': { ...stale }, '2008-04-06': { ...stale } } };
+  L.recordPublishedTotal(h, '2008-04-06', { gross: 2_100_000, showCount: 2, source: 'playbill', tableGross: 1_800_000 });
+  const f = L.checkWeekTotals(h);
+  assert.deepEqual(rules(f), ['total-mismatch']);
+  assert.equal(f[0].measure, 'gross');
+  assert.match(f[0].detail, /published table is \$1,800,000/);
+  const page = { snapshot: { a: row(1_000_000), b: row(800_000) }, rowCount: 2, printedGross: 2_100_000, tableGross: 1_800_000 };
+  assert.equal(L.reconcilePublishedTotal(h, '2008-04-06', page).action, 'rows-replaced');
+  assert.equal(h._meta.weekTotals['2008-04-06'].gross, null);
+  assert.deepEqual(L.checkWeekTotals(h), []);
+});
+
+test('totals: a show-count gap is measure count, which the totals recheck leaves to the refill', () => {
+  const h = { weeks: { '2026-10-04': { a: row(1_000_000) } } };
+  L.recordPublishedTotal(h, '2026-10-04', { gross: 1_000_000, showCount: 2 });
+  assert.deepEqual(L.checkWeekTotals(h).map((x) => x.measure), ['count']);
+});
+
+test('reconcile: rows filed a week early are replaced when the page adds up and every row matched', () => {
+  const stale = { a: row(1_200_000), b: row(900_000) };
+  const h = { weeks: { '2008-03-30': { ...stale }, '2008-04-06': { ...stale } } };
+  L.recordPublishedTotal(h, '2008-04-06', { gross: 1_800_000, showCount: 2, source: 'playbill' });
+  const page = { snapshot: { a: row(1_000_000), b: row(800_000) }, rowCount: 2, printedGross: 1_800_000, tableGross: 1_800_000 };
+  const r = L.reconcilePublishedTotal(h, '2008-04-06', page);
+  assert.deepEqual(r, { action: 'rows-replaced', before: 2_100_000, after: 1_800_000 });
+  assert.equal(h.weeks['2008-04-06'].b.gross, 800_000);
+  assert.equal(h.weeks['2008-03-30'].b.gross, 900_000);
+  assert.deepEqual(L.checkWeekTotals(h), []);
+});
+
+test('reconcile: a page with an unmatched row never replaces stored rows; a stale total is resaved', () => {
+  const h = { weeks: { '2008-04-06': { a: row(1_200_000), b: row(900_000) } } };
+  L.recordPublishedTotal(h, '2008-04-06', { gross: 9, showCount: 2 });
+  const partial = { snapshot: { a: row(1_000_000) }, rowCount: 2, printedGross: 1_800_000, tableGross: 1_800_000 };
+  assert.equal(L.reconcilePublishedTotal(h, '2008-04-06', partial).action, 'unresolved');
+  assert.equal(h.weeks['2008-04-06'].a.gross, 1_200_000);
+  assert.equal(h._meta.weekTotals['2008-04-06'].gross, 9);
+  const same = { snapshot: { a: row(1_200_000), b: row(900_000) }, rowCount: 2, printedGross: 2_100_000, tableGross: 2_100_000 };
+  assert.equal(L.reconcilePublishedTotal(h, '2008-04-06', same).action, 'total-saved');
+  assert.deepEqual(L.checkWeekTotals(h), []);
+});
+
 test('dropouts: a show gone without a closing date is flagged; a closed one is not', () => {
   const h = { weeks: { '2026-09-27': { a: row(1), b: row(2), c: row(3) }, '2026-10-04': { a: row(1) } } };
   const shows = [{ slug: 'b', closingDate: '2026-09-28', status: 'closed' }, { slug: 'c', closingDate: '2027-01-03', status: 'open' }];

@@ -18,7 +18,14 @@
  * either side (a week scraped short) and adds only the rows they lack; it
  * never changes a stored row (BRO-5016).
  *
- * Usage: npx tsx scripts/backfill-grosses-history.ts [--weeks 55] [--start-from 2025-01-19] [--refill-gaps] [--dry-run]
+ * --recheck-totals re-fetches every week whose rows miss the saved League
+ * total (integrity rules total-mismatch / total-matches-prev-week) and settles
+ * it with reconcilePublishedTotal against the page's own table: rows that
+ * meet the table keep it (a printed total the table misses is set aside);
+ * rows that miss it are replaced when every page row matched a show
+ * (BRO-5038).
+ *
+ * Usage: npx tsx scripts/backfill-grosses-history.ts [--weeks 55] [--start-from 2025-01-19] [--refill-gaps] [--recheck-totals] [--dry-run]
  */
 
 import * as fs from 'fs';
@@ -27,7 +34,7 @@ import * as path from 'path';
 // Use shared show-matching library (260+ aliases, market filtering, era preference)
 const { matchTitleToShow } = require('./lib/show-matching');
 const { repairGrossesHistory } = require('./lib/grosses-history-repair');
-const { recordPublishedTotal } = require('./lib/grosses-integrity');
+const { recordPublishedTotal, reconcilePublishedTotal, checkWeekTotals, sundayOf } = require('./lib/grosses-integrity');
 const { historicalGrossesProduction } = require('./lib/grosses-run-window');
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
 const {
@@ -133,7 +140,7 @@ function getWeekDates(numWeeks: number, startFrom?: string): string[] {
 // sum that misses the Week's Total is logged, not fatal: some old Playbill
 // weeks print a total their own table does not add up to, and the rows are
 // still the best record of that week (see validatePlaybillGrosses).
-async function scrapeWeek(weekDate: string): Promise<{ snapshot: Record<string, HistoryEntry>; matched: number; rows: number; weekTotalGross: number | null }> {
+async function scrapeWeek(weekDate: string): Promise<{ snapshot: Record<string, HistoryEntry>; matched: number; rows: number; weekTotalGross: number | null; tableGross: number }> {
   const url = playbillGrossesUrl(weekDate);
   const page = await fetchPage(url);
   const parsed = parsePlaybillGrossesHtml(page?.content || '');
@@ -163,7 +170,8 @@ async function scrapeWeek(weekDate: string): Promise<{ snapshot: Record<string, 
     snapshot[slug] = toHistoryEntry(row);
     matched++;
   }
-  return { snapshot, matched, rows: parsed.rows.length, weekTotalGross: parsed.weekTotalGross ?? null };
+  const tableGross = parsed.rows.reduce((sum: number, row: { gross: number | null }) => sum + (row.gross || 0), 0);
+  return { snapshot, matched, rows: parsed.rows.length, weekTotalGross: parsed.weekTotalGross ?? null, tableGross };
 }
 
 async function backfillHistory(): Promise<void> {
@@ -173,6 +181,7 @@ async function backfillHistory(): Promise<void> {
   let startFrom: string | undefined;
   const dryRun = args.includes('--dry-run');
   const refillGaps = args.includes('--refill-gaps');
+  const recheckTotals = args.includes('--recheck-totals');
 
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--weeks' && args[i + 1]) {
@@ -190,7 +199,13 @@ async function backfillHistory(): Promise<void> {
   let weeksToDo: string[];
   // Refill mode: the shows each stored week is missing, by week key.
   const holeSlugs = new Map<string, string[]>();
-  if (refillGaps) {
+  if (recheckTotals) {
+    // Gross findings only: a week merely short a show is --refill-gaps' job.
+    // Fetched by Sunday; reconcile finds a BWW-era Monday key itself.
+    const findings: Array<{ rule: string; week: string; measure?: string }> = checkWeekTotals(history);
+    weeksToDo = [...new Set(findings.filter(f => f.measure === 'gross' && history.weeks[f.week]).map(f => sundayOf(f.week)))].sort();
+    console.log(`Rechecking ${weeksToDo.length} stored weeks whose rows miss the saved League total...${dryRun ? ' (DRY RUN)' : ''}`);
+  } else if (refillGaps) {
     const short = findShortHistoryWeeks(history);
     const unstored = findUnstoredRunWeeks(history, allShows);
     for (const { week, slugs } of [...short, ...unstored]) holeSlugs.set(week, [...new Set([...(holeSlugs.get(week) || []), ...slugs])]);
@@ -228,8 +243,20 @@ async function backfillHistory(): Promise<void> {
     for (let attempt = 1; attempt <= MAX_RETRIES && !succeeded; attempt++) {
       if (attempt > 1) console.log(`  Retry ${attempt}/${MAX_RETRIES} for week ${weekDate}...`);
       try {
-        const { snapshot, matched, rows, weekTotalGross } = await scrapeWeek(weekDate);
-        if (matched > 0 && refillGaps) {
+        const { snapshot, matched, rows, weekTotalGross, tableGross } = await scrapeWeek(weekDate);
+        if (recheckTotals) {
+          const { action, before, after } = reconcilePublishedTotal(history, weekDate, {
+            snapshot, rowCount: rows, printedGross: weekTotalGross, tableGross, source: 'playbill',
+          });
+          const detail = action === 'rows-replaced' ? ` (rows $${before} -> $${after})` : action === 'unresolved' ? ` (${matched}/${rows} rows matched a show)` : '';
+          console.log(`  ✓ ${weekDate}: ${action}; page total $${weekTotalGross}, page table $${tableGross}, stored rows $${before}${detail}`);
+          if (action === 'unresolved') {
+            console.warn(`::warning::backfill-grosses-history: week ${weekDate}: stored rows miss the Playbill table but not every page row matched a show; left as stored.`);
+            failCount++;
+          } else successCount++;
+          succeeded = true;
+          if (successCount % 3 === 0) save();
+        } else if (matched > 0 && refillGaps) {
           // weekDate is a stored key here, so the rows land beside the ones it holds.
           const weekRows = history.weeks[weekDate];
           const wanted = holeSlugs.get(weekDate) || [];
@@ -245,7 +272,7 @@ async function backfillHistory(): Promise<void> {
           // Only a week that now holds every published row gets the League
           // total recorded; a short one would trip checkWeekTotals forever.
           if (Object.keys(weekRows).length === rows) {
-            recordPublishedTotal(history, weekDate, { gross: weekTotalGross, showCount: rows, source: 'playbill' });
+            recordPublishedTotal(history, weekDate, { gross: weekTotalGross, showCount: rows, source: 'playbill', tableGross });
           }
           console.log(`  ✓ ${weekDate}: added ${added.length}/${wanted.length} missing rows${added.length ? ` (${added.join(', ')})` : ''}`);
           successCount++;
