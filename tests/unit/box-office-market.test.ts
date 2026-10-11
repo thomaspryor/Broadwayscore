@@ -232,6 +232,23 @@ test('personalBests: hidden under the minimum weeks, and a revival never inherit
   const b = personalBests(input(weeks, [show('r', { previewsStartDate: '2026-09-10', isRevival: true })]), 'r', '2026-10-04')!;
   assert.equal(b.weeks, 4);
   for (const r of b.rows) assert.ok(r.week >= '2026-09-13', `${r.key} record from ${r.week}`);
+  // No first-preview date: the run starts a few weeks before opening night, not at the slug's oldest row.
+  const noPreview = personalBests(input(weeks, [show('r', { openingDate: '2026-10-01' })]), 'r', '2026-10-04')!;
+  for (const r of noPreview.rows) assert.ok(r.week >= '2026-09-13', `${r.key} record from ${r.week}`);
+  // A long silence ends the engagement: weeks before it never set this run's records.
+  const gap: HistoryWeeks = {};
+  for (let i = 0; i < 4; i++) gap[addDays('2019-12-08', 7 * i)] = { m: row(2_000_000) };
+  for (let i = 0; i < 4; i++) gap[addDays('2025-11-02', 7 * i)] = { m: row(300_000 + i) };
+  const g = personalBests(input(gap, [show('m', { previewsStartDate: '1974-05-01' })]), 'm', '2025-11-23')!;
+  assert.equal(g.weeks, 4);
+  assert.equal(g.rows.find((r) => r.key === 'gross')!.week, '2025-11-23');
+  // The COVID shutdown is not a gap: a run that reopened keeps its pre-2020 records.
+  const covid: HistoryWeeks = {};
+  for (let i = 0; i < 3; i++) covid[addDays('2020-02-16', 7 * i)] = { h: row(3_000_000) };
+  for (let i = 0; i < 3; i++) covid[addDays('2021-09-19', 7 * i)] = { h: row(1_000_000) };
+  const c = personalBests(input(covid, [show('h', { previewsStartDate: '2015-07-13' })]), 'h', '2021-10-03')!;
+  assert.equal(c.weeks, 6);
+  assert.equal(c.rows.find((r) => r.key === 'gross')!.week, '2020-02-16');
   // Weeks after the show's latest week are ignored too.
   assert.equal(personalBests(input(weeks, [show('r', { previewsStartDate: '2026-09-10' })]), 'r', '2026-09-27'), null);
 });

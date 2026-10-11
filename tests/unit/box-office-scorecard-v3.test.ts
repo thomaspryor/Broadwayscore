@@ -222,8 +222,11 @@ test('bestLines: record, week ending, the latest week beside it, "New best this 
     ['Fullest week', '101% full', 'week ending Jan 5, 2025', null],
     ['Highest average ticket', '$252', 'week ending Oct 4, 2026', 'New best this week'],
   ]);
-  assert.equal(bestLines(b, false)![0].latest, 'final week $1.6M', 'a closed show says final week');
-  assert.equal(bestLines(b, false)![2].latest, 'Set in its final week');
+  assert.equal(bestLines(b, false, true)![0].latest, 'final week $1.6M', 'a closed show says final week');
+  assert.equal(bestLines(b, false, true)![2].latest, 'Set in its final week');
+  assert.equal(bestLines(b, false)![0].latest, 'latest week $1.6M', 'a running show that missed a week never says final');
+  const tie = { ...b, rows: [{ key: 'capacity' as const, value: 100.2, week: '2003-11-30', latest: 99.6, latestIsRecord: false }] };
+  assert.equal(bestLines(tie, true)![0].latest, 'this week matches it', 'a latest week that rounds to the record says so');
   assert.equal(bestLines(null, true), null);
   assert.equal(weekEndingText('2024-12-29'), 'Dec 29, 2024');
 });
