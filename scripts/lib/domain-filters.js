@@ -330,6 +330,9 @@ const CENSUS_JUNK_DOMAINS = new Set([
   // review-texts and 0 rows in reviews.json for each.
   'theatricalindex.com', 'broadwaylog.app', 'operabase.com', 'ticketswap.com',
   'zeffy.com', 'askonasholt.com',
+  // A novelist's blog: its "My Favorite Bit" author interviews share titles
+  // with plays (A Thousand Natural Shocks, BRO-4540).
+  'maryrobinettekowal.com',
 ]);
 
 /**

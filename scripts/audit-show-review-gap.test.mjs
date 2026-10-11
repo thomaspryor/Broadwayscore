@@ -501,3 +501,10 @@ test('acceptSerpCensusResult drops another production named by a London house or
   const we = { id: 'darkling-off-west-end-2026', title: 'Darkling', category: 'off-west-end', venue: 'Bush Theatre', openingDate: '2026-09-10' };
   assert.equal(otherProductionUrlSignal('https://lovelondonloveculture.com/2026/09/16/review-darkling-bush-theatre/', we), null);
 });
+
+test('acceptSerpCensusResult drops a novel review whose slug spells "bookreview" (BRO-4540)', () => {
+  const show = { id: 'a-thousand-natural-shocks-off-broadway-2026', title: 'A Thousand Natural Shocks', category: 'off-broadway', venue: 'The Tank', openingDate: '2026-10-01' };
+  const info = { title: show.title, cast: [], creativeNames: [] };
+  const sr = { url: 'https://whatsbetterthanbooks.com/bookreview-natural-shocks-ohussain/', title: 'A Thousand Natural Shocks by Omar Hussain' };
+  assert.equal(acceptSerpCensusResult(sr, { show, showInfo: info }), null);
+});

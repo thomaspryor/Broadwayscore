@@ -541,7 +541,7 @@ const BOOK_HOST_RE = /(^|\.)(amazon\.[a-z.]+|goodreads\.com|bookbrowse\.com|hard
 function isBookPageUrl(href) {
   try {
     const x = new URL(href);
-    return BOOK_HOST_RE.test(x.hostname) || /(^|[\/\-_])(book-review|books?|novel)([\/\-_]|$)/i.test(x.pathname);
+    return BOOK_HOST_RE.test(x.hostname) || /(^|[\/\-_])(book-?review|books?|novel)([\/\-_]|$)/i.test(x.pathname);
   } catch { return false; }
 }
 
