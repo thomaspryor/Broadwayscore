@@ -478,5 +478,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-11T16:47:24.720Z"
+  },
+  {
+    "conditionKey": "land:land/bro-2730-we-late-cron",
+    "title": "Landing blocked: unit-tests-node red on land/bro-2730-we-late-cron",
+    "description": "land.yml did not land land/bro-2730-we-late-cron: the unit-tests-node gate went red at e11398c58a. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38157648349",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2730-we-late-cron"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "e11398c58ac11a0efcdb806e960d7bf475118a68"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38157648349"
+      }
+    ],
+    "queuedAt": "2026-10-11T17:31:24.081Z"
   }
 ]
