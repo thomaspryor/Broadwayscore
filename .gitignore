@@ -85,6 +85,7 @@ data/followers.json
 # the dir stays ignored so a stray `git add -A` can't stage arbitrary files.
 data/pending-fixes/*
 !data/pending-fixes/[0-9]*.json
+!data/pending-fixes/bro-3986.json
 !data/pending-fixes/.gitkeep
 
 # Opening night broadcast dedup state (regenerated from Formspree sync + send receipts)
