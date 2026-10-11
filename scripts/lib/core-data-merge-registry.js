@@ -263,6 +263,15 @@ const CORE_DATA_MERGE_REGISTRY = [
     note: 'nightly open-backlog acceptance sweep report (BRO-4135). Its commit step is not the last push-with-retry step, so staging it unregistered failed push-with-retry.stranded-commit-cascade.test.sh Part B and turned main red (test.yml run 36083765218, BRO-4149).',
   },
   {
+    file: 'audit/waltz-model-fit.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'commercial-data-write',
+    verifiedBy: '2026-10-11: grepped .github/ and scripts/ for the literal filename — the only writer is scripts/scrape-boring-waltz-costs.js writeModelFit() (skipped on DRY_RUN), invoked only by scrape-waltz-costs.yml; scripts/health-check.js only READS it. That workflow declares concurrency: {group: commercial-data-write, cancel-in-progress: false}.',
+    note: 'weekly aggregate fit of our single-week profit model against u/Boring_Waltz_9545 posted profit ranges (BRO-5027): percentages by gross/cost band only, no per-show values. Read by health-check.js "Commercial model: Boring Waltz fit".',
+  },
+  {
     file: 'audit/imageless-scored-shows.json',
     surface: 'public-repo',
     status: 'single-writer',

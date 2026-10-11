@@ -58,6 +58,9 @@ jobs:
         env:
           PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
+          # Named explicitly (BRO-5027) so the apiFallbackSafe writer-drift
+          # check can see this workflow as its sole writer.
+          bash scripts/lib/git-add-existing.sh data/audit/waltz-model-fit.json
           bash scripts/lib/stage-data-changes.sh
           if git diff --staged --quiet; then
             echo "No changes to commit"
