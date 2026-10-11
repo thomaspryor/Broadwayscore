@@ -32,7 +32,7 @@ const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 const { fetchPage, isChallengeOrGarbage } = require('./lib/scraper');
 const { findConflictingShowId, isShowScoreNotFoundPage, decideDeadUrlAction } = require('./lib/show-score-url-map');
-const { recordSbCall } = require('./lib/provider-telemetry');
+const { recordSbCall, recordBdCall } = require('./lib/provider-telemetry');
 const { gateScrapedSynopsis } = require('./lib/synopsis-fact-check');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -268,6 +268,7 @@ function fetchViaBrightData(url) {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
+        recordBdCall({ url, fn: 'web-unlocker', success: res.statusCode === 200, status: res.statusCode });
         if (res.statusCode === 200) {
           resolve(data);
         } else {
