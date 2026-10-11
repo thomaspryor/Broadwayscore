@@ -35,7 +35,7 @@ const { titlesMatch } = require('./title-normalization');
 const { normalizeTitle } = require('./title-match');
 const { venuesMatch } = require('./deduplication');
 const { isWestEndVenue } = require('./venue-classification');
-const { isDateInSeason } = require('./we-seasons');
+const { isDateInSeason, getSeasonForDate } = require('./we-seasons');
 const { venueFamily, decideWeHistoricalPromotion } = require('./we-historical-corroboration');
 const { archiveMonth, monthIndex } = require('./tr-production-pick');
 const { buildVenueTitlePool, findExactDuplicate, findSubtitleDuplicateTitle } = require('./venue-title-dedup-pool');
@@ -295,6 +295,12 @@ function buildReviewLedCandidates({ season, lookups, shows, today }) {
     if (!dates.previewsStartDate && !dates.openingDate) { no('no dates on the Theatre Record production page'); continue; }
     const c = { ...base, ...dates };
     const startDate = c.previewsStartDate || c.openingDate;
+    // A run that began in the late summer before its first review belongs to
+    // the season it started in; no other season's lookups will ever see it.
+    if (!isDateInSeason(startDate, season)) {
+      const startSeason = getSeasonForDate(startDate);
+      if (startSeason && Number(startSeason.slice(0, 4)) === Number(season.slice(0, 4)) - 1) c.season = startSeason;
+    }
     // TR prints the scheduled close; London theatres went dark on 16 March
     // 2020, so a run that straddles it ended then (as the WE rows in
     // shows.json are dated).
