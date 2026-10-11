@@ -167,6 +167,12 @@ function main() {
   console.log(`wrote ${path.relative(ROOT, out)}: ${actions.length} actions`);
 }
 
-if (require.main === module) main();
+if (require.main === module) {
+  if (require('./lib/cli-help').hasHelpFlag(process.argv.slice(2))) {
+    console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(2, 31).join('\n'));
+    process.exit(0);
+  }
+  main();
+}
 
 module.exports = { sourcedPressNights, rowActions, SOURCED };

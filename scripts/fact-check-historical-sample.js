@@ -32,6 +32,12 @@ const fc = require('./lib/fact-check-sample');
 const { synopsisStoryProblems } = require('./lib/synopsis-story-audit');
 const { nonStoryReason } = require('./lib/todaytix-page-identity');
 const { foldDiacritics } = require('./lib/title-match');
+const { hasHelpFlag } = require('./lib/cli-help');
+
+if (require.main === module && (!process.argv[2] || hasHelpFlag(process.argv.slice(2)))) {
+  console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(2, 27).join('\n'));
+  process.exit(0);
+}
 
 const ROOT = path.join(__dirname, '..');
 const OUT_DIR = path.join(ROOT, 'data', 'audit', 'fact-check');
@@ -84,7 +90,9 @@ async function fetchWithTimeout(url, opts = {}, ms = 30000) {
 const spend = { usd: 0, gemini: 0, openai: 0, search: 0 };
 
 async function askGemini(parts, { grounded }) {
-  const body = { contents: [{ parts }] };
+  // A real thinking budget (grounded fact lookups reason over search results)
+  // with room left for the JSON answer; tests/unit/gemini-thinking-budget-guard.
+  const body = { contents: [{ parts }], generationConfig: { thinkingConfig: { thinkingBudget: 2048 }, maxOutputTokens: 8192 } };
   if (grounded) body.tools = [{ google_search: {} }];
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${process.env.GEMINI_API_KEY}`;
   for (let attempt = 0; attempt < 3; attempt++) {
@@ -402,7 +410,6 @@ function cmdReport() {
 
 if (require.main === module) {
   const cmd = process.argv[2];
-  if (!cmd || cmd === '--help' || cmd === '-h') { console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(2, 24).join('\n')); process.exit(0); }
   const run = { sample: cmdSample, check: cmdCheck, report: cmdReport, resupport: cmdResupport }[cmd];
   if (!run) { console.error(`unknown command ${cmd}`); process.exit(2); }
   Promise.resolve(run()).catch((e) => { console.error(e.stack || e.message); process.exit(1); });
