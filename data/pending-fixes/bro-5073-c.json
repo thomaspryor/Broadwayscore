@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5073-c",
   "planId": "442a2c27-2394-4264-87f1-e2f84f55ff1b",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-11T21:00:16.578Z",
   "submitter": {
     "name": null,
@@ -111,5 +111,53 @@
         "description": "matilda: reported weekly cost, quote checked on the page (BRO-5073)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-11T22:20:58.102Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for six"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for six"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for six"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for the-outsiders"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for the-outsiders"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for the-outsiders"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for the-outsiders"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for matilda-the-musical-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for matilda-the-musical-2013"
+    }
+  ]
 }
