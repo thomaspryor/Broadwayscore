@@ -88,9 +88,8 @@ test('searchTitles also searches each part of a double bill or season title', ()
 test('pdfHeaderFor keeps only the production block above the first review date', () => {
   const text = 'previous production\n  COMPANY\nby Stephen Sondheim\nGielgud Theatre\n26 September 2018 – 30 March 2019\nTHE STAGE\n17 October 2018\nreview body here';
   const h = pdfHeaderFor(text, 'Company');
-  assert.match(h, /^COMPANY/);
-  assert.match(h, /Gielgud Theatre/);
-  assert.doesNotMatch(h, /review body/);
+  assert.equal(h, 'COMPANY\n26 September 2018 – 30 March 2019');
+  assert.doesNotMatch(h, /review body|Gielgud/);
   assert.equal(pdfHeaderFor(text, 'Follies'), null);
 });
 
@@ -126,7 +125,7 @@ test('parseTrHeaderDates never reads a range across lines or guesses a year', ()
 test('headerFacts keeps the title lines and date phrases, never the prose around them', () => {
   const prose = 'Marianne Elliott has transformed the show into something new and it opened on 17 October 2018 to tremendous acclaim from almost everyone who saw it';
   const h = headerFacts(`COMPANY\nby Stephen Sondheim\nGielgud Theatre\nCast: Rosalie Craig, Patti LuPone\n26 September 2018 – 30 March 2019\n${prose}`);
-  assert.equal(h, 'COMPANY\nby Stephen Sondheim\nGielgud Theatre\n26 September 2018 – 30 March 2019\nopened on 17 October 2018');
+  assert.equal(h, 'COMPANY\n26 September 2018 – 30 March 2019\nopened on 17 October 2018');
 });
 
 test('pdfHeaderFor ignores a contents line and a two-column heading', () => {
@@ -183,12 +182,33 @@ test('pdfHeaderFor skips the Reviews heading and takes the listing that carries 
     'Lyttelton, National Theatre 23 August 2019 – 25 November 2019     an advert in the next column with many many words',
   ].join('\n');
   const h = pdfHeaderFor(text, 'Hansard');
-  assert.equal(h, 'HANSARD\nby Simon Woods\n23 August 2019 – 25 November 2019');
+  assert.equal(h, 'HANSARD\n23 August 2019 – 25 November 2019');
   assert.doesNotMatch(h, /advert|prose/);
 });
 
 test('headerFacts keeps only the date phrase from a long merged line', () => {
   const h = headerFacts('MASTER HAROLD...AND THE BOYS\nRevival of play written by ATHOL FUGARD\nLyttelton, National Theatre\nExeunt Magazine gives critics the freedom to expand from the tight deadlines; previews from 24 September 2019, opened 1 October 2019, until 8 December 2019 and more words follow');
-  assert.equal(h, 'MASTER HAROLD...AND THE BOYS\nRevival of play written by ATHOL FUGARD\nLyttelton, National Theatre\npreviews from 24 September 2019\nopened 1 October 2019\nuntil 8 December 2019');
+  assert.equal(h, 'MASTER HAROLD...AND THE BOYS\npreviews from 24 September 2019\nopened 1 October 2019\nuntil 8 December 2019');
   assert.deepEqual(parseTrHeaderDates(h), { previewsStartDate: '2019-09-24', openingDate: '2019-10-01', closingDate: '2019-12-08' });
+});
+
+test('a label running into a range keeps the range end (review of c7f7e1bd)', () => {
+  assert.deepEqual(parseTrHeaderDates(headerFacts('X\nOpened 17 Oct 2018 – 30 Mar 2019')),
+    { previewsStartDate: null, openingDate: '2018-10-17', closingDate: '2019-03-30' });
+  assert.deepEqual(parseTrHeaderDates(headerFacts('X\nPreviews from 26 Sep – 22 Dec 2018')),
+    { previewsStartDate: '2018-09-26', openingDate: null, closingDate: '2018-12-22' });
+});
+
+test('headerFacts never keeps a prose line, and pdfHeaderFor returns null for an undated block', () => {
+  const reviewsBlock = 'HANSARD\nMichael Billington, Guardian. The play opened on 12 Sep at the Lyttelton and\nit is a quiet portrait of a marriage\n26 September 2019';
+  assert.equal(headerFacts(reviewsBlock), 'HANSARD\nopened on 12 Sep');
+  assert.equal(pdfHeaderFor(reviewsBlock, 'Hansard'), null);
+  // Under a "Reviews" marker even a dated block is the reviews, not the listing
+  assert.equal(pdfHeaderFor('Reviews\nHANSARD\nthe run ends 30 November 2019, says one critic', 'Hansard'), null);
+});
+
+test('pdfHeaderFor tries the exact title before a THE-variant (Father vs The Father)', () => {
+  const text = 'THE FATHER\n6 October 2015 – 21 November 2015\nFATHER\n2 March 2016 – 9 April 2016';
+  assert.equal(pdfHeaderFor(text, 'Father'), 'FATHER\n2 March 2016 – 9 April 2016');
+  assert.equal(pdfHeaderFor('THE FATHER\n6 October 2015 – 21 November 2015', 'Father'), 'THE FATHER\n6 October 2015 – 21 November 2015');
 });
