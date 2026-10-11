@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5021",
   "planId": "613c4dc1-8792-455f-8d05-0b4a1a759dd3",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-11T01:20:26.860Z",
   "submitter": {
     "name": null,
@@ -76,5 +76,38 @@
         "description": "Notes match the new figure."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-11T01:58:53.188Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for proof"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for proof"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for proof"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for cats-the-jellicle-ball"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for cats-the-jellicle-ball"
+    }
+  ]
 }
