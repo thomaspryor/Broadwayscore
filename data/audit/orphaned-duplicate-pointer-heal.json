@@ -1,13 +1,20 @@
 {
-  "generated": "2026-10-11T21:16:28.432Z",
+  "generated": "2026-10-11T21:56:29.986Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 24,
+  "count": 25,
   "orphans": [
     {
       "showId": "33-variations-2009",
       "loserFile": "usatoday--unknown.json",
       "targetFile": "usatoday--usa-today-staff.json",
       "reason": "orphaned-duplicate-heal: usatoday--usa-today-staff.json was flagged invalid after usatoday--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2018",
+      "loserFile": "times-uk--unknown.json",
+      "targetFile": "times-uk--dominic-maxwell.json",
+      "reason": "orphaned-duplicate-heal: times-uk--dominic-maxwell.json was flagged invalid after times-uk--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {

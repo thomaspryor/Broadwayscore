@@ -4105,6 +4105,48 @@ function checkObClosingBacklog() {
   }
 }
 
+// Cloud-memory mirror drift (BRO-5074). cloud-memory-reconcile.yml keeps
+// cloud-memory/ current from claude-config every 6h and records in
+// data/audit/cloud-memory-drift.json what still differs (cloud-written or
+// cloud-edited notes the Mac's own sync has not picked up yet). A note
+// waiting more than 48h means the Mac is not receiving what cloud sessions
+// learn; a recorded error means the reconcile could not read claude-config.
+// The workflow's own staleness is a DIGEST_CRONS row (health-digest-crons.js).
+const CLOUD_MEMORY_DRIFT_MAX_HOURS = 48;
+function cloudMemoryDriftResults(report, now = new Date()) {
+  if (!report) return [];
+  const out = [];
+  if (report.error) {
+    out.push({
+      name: 'Memory: cloud mirror reconcile failing',
+      status: 'warn',
+      message: `cloud-memory/ is not being refreshed from claude-config: ${report.error}`,
+      hint: 'Check the latest Cloud Memory Reconcile run; REVIEW_TEXTS_TOKEN must be able to read thomaspryor/claude-config.',
+    });
+  }
+  const aged = (report.waitingForMac || [])
+    .map((d) => ({ ...d, hours: (now - new Date(d.firstSeenAt)) / 36e5 }))
+    .filter((d) => d.hours > CLOUD_MEMORY_DRIFT_MAX_HOURS)
+    .sort((a, b) => b.hours - a.hours);
+  if (aged.length) {
+    out.push({
+      name: 'Memory: cloud notes not reaching the Mac',
+      status: 'warn',
+      message: `${aged.length} cloud-memory note(s) differ from the Mac's memory for over ${CLOUD_MEMORY_DRIFT_MAX_HOURS}h. Oldest: ${aged[0].name} (${aged[0].reason}, ${Math.round(aged[0].hours)}h)`,
+      hint: "The Mac's session-stop sync (scripts/sync-memory-to-repo.sh --commit from ~/Broadwayscore) is not adopting them; check that checkout is on main and can pull. List: data/audit/cloud-memory-drift.json.",
+    });
+  }
+  return out;
+}
+
+function checkCloudMemoryDrift() {
+  try {
+    return cloudMemoryDriftResults(JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/cloud-memory-drift.json'), 'utf8')));
+  } catch {
+    return []; // reconcile has not run yet
+  }
+}
+
 // Daily-digest surfacing for reverse-discovery missing-show candidates
 // (data/audit/reverse-discovery-candidates.json, written daily by
 // audit-reverse-discovery.yml). This is the detector's ONLY human-facing
@@ -5323,6 +5365,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkBatchState(),
     ...checkQuality(),
     ...checkObClosingBacklog(),
+    ...checkCloudMemoryDrift(),
     ...checkTourAutomation(),
     ...checkOutletHealth(),
     ...checkCommercialModelDrift(),
@@ -5595,4 +5638,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkAutofixCanary, checkAutofixThroughput, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift };
+module.exports = { providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkAutofixCanary, checkAutofixThroughput, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift };

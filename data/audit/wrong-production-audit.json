@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-11T21:20:47.860Z",
+  "timestamp": "2026-10-11T22:02:40.566Z",
   "stats": {
-    "totalReviews": 55851,
-    "alreadyFlagged": 20823,
-    "dateGuardCatches": 261,
-    "directorMismatch": 1734,
-    "tvFilmSignals": 1602,
+    "totalReviews": 55946,
+    "alreadyFlagged": 20848,
+    "dateGuardCatches": 257,
+    "directorMismatch": 1736,
+    "tvFilmSignals": 1603,
     "londonSignals": 2194,
     "offBroadwaySignals": 506,
-    "yearMismatch": 135,
-    "noPublishDate": 5335
+    "yearMismatch": 136,
+    "noPublishDate": 5388
   },
   "findings": [
     {
@@ -3263,20 +3263,6 @@
     },
     {
       "showId": "arias-with-a-twist-off-broadway-2026",
-      "file": "donshewey--unknown.json",
-      "score": 90,
-      "publishDate": "2008-12-02",
-      "url": "https://donshewey.com/theater_reviews/arias_with_a_twist.html",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 6498d before show (2008-12-02 vs 2026-09-17)"
-        }
-      ]
-    },
-    {
-      "showId": "arias-with-a-twist-off-broadway-2026",
       "file": "vulture--sara-holdren.json",
       "score": 83,
       "publishDate": "2026-09-28",
@@ -3781,6 +3767,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "beauty-and-the-beast-tour-2025",
+      "file": "chicago-sun-times--catey-sullivan.json",
+      "publishDate": "2025-07-15",
+      "url": "https://chicago.suntimes.com/theater/2025/07/15/review-beauty-and-the-beast-chicago-cadillacc-palace-disney-touring-production",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -8287,6 +8286,19 @@
       "file": "minneapolis-star-tribune--star-tribune-staff.json",
       "publishDate": "2026-10-07",
       "url": "https://www.startribune.com/sting-buddy-guy-beck-muna-tiffany-chung-mystic-pizza-clue-ordway-zach-top-st-paul-chamber-orchestra/601889897",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "clue-tour-2025",
+      "file": "syracuse-herald-journal--len-fonte.json",
+      "publishDate": "2025-10-30",
+      "url": "https://www.syracuse.com/entertainment/2025/10/silly-and-fast-landmark-theatres-clue-leads-a-merry-chase-to-whodunnit-review.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -18104,49 +18116,6 @@
     },
     {
       "showId": "horrible-histories-barmy-britain-the-best-bits-west-end-2026",
-      "file": "london-box-office--isabella-james.json",
-      "score": 75,
-      "publishDate": "2019-08-11",
-      "url": "https://www.londonboxoffice.co.uk/news/post/review-horrible-histories-4",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 2545d before show (2019-08-11 vs 2026-07-30)"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "horrible-histories-barmy-britain-the-best-bits-west-end-2026",
-      "file": "london-box-office--nicole-acquah.json",
-      "score": 81,
-      "publishDate": "2018-08-07",
-      "url": "https://www.londonboxoffice.co.uk/news/post/review-horrible-histories-barmy-4",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 2914d before show (2018-08-07 vs 2026-07-30)"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "horrible-histories-barmy-britain-the-best-bits-west-end-2026",
       "file": "west-end-best-friend--anna-nichols.json",
       "score": 85,
       "publishDate": "2025-08-04",
@@ -26177,20 +26146,6 @@
       ]
     },
     {
-      "showId": "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026",
-      "file": "theater-pizzazz--carol-rocamora.json",
-      "score": 89,
-      "publishDate": "2024-10-25",
-      "url": "https://theaterpizzazz.com/the-wolf-at-the-door-of-history-mrs-stern-wanders-the-prussian-state-library/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 687d before show (2024-10-25 vs 2026-09-12)"
-        }
-      ]
-    },
-    {
       "showId": "much-ado-about-nothing-2026",
       "file": "express-uk--stefan-kyriazis.json",
       "score": 96,
@@ -26280,19 +26235,6 @@
       "score": 63,
       "publishDate": "2026-06-21",
       "url": "https://www.theguardian.com/stage/2026/jun/21/much-ado-about-nothing-review-shakespeare-globe-london",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
-        }
-      ]
-    },
-    {
-      "showId": "much-ado-about-nothing-globe-off-west-end-2026",
-      "file": "london-theatre--marianka-swain.json",
-      "publishDate": "2026-06-20",
-      "url": "https://www.londontheatre.co.uk/reviews/much-ado-about-nothing-review-shakespeares-globe-2026",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -28812,6 +28754,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "fairypoweredproductions--rachel-clark.json",
+      "publishDate": "2026-09-29",
+      "url": "https://fairypoweredproductions.com/operation-mincemeat-review-11/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (3x) more than 2023 (0x). 2026 matches production: operation-mincemeat-tour-2026"
         }
       ]
     },
@@ -32339,6 +32294,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "saint-joan-2018",
+      "file": "df-reviews--david-fox.json",
+      "score": 73,
+      "publishDate": "April 25th, 2018",
+      "url": "https://recliningstandards.org/2018/04/25/review-in-a-streamlined-saint-joan-the-grandeur-goes-up-in-smoke/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael langham\" from saint-joan-1993"
         }
       ]
     },
@@ -39572,6 +39541,19 @@
     },
     {
       "showId": "the-great-gatsby-tour-2026",
+      "file": "ourtheatrevoice--dave-rabjohn.json",
+      "publishDate": "2026-08-10",
+      "url": "https://ourtheatrevoice.com/a-dazzling-great-gatsby/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
       "file": "revue--josh.json",
       "score": 68,
       "publishDate": "2026-07-22",
@@ -39609,6 +39591,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
+      "file": "toronto-star--glenn-sumi.json",
+      "publishDate": null,
+      "url": "https://www.thestar.com/entertainment/stage/the-great-gatsby-musical-at-mirvish-is-a-sparkly-but-soulless-broadway-tour/article_88994544-e44d-4fef-ac44-bcd9f7be019b.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -79462,6 +79462,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-prisoner-west-end-2018",
+      "file": "a-younger-theatre--unknown.json",
+      "score": null,
+      "publishDate": "2018-09-20",
+      "url": "https://www.ayoungertheatre.com/review-the-prisoner-the-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
