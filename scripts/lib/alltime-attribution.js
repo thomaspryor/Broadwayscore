@@ -30,6 +30,7 @@
  */
 
 const { normalizeTitle } = require('./title-match');
+const { KNOWN_GAPS } = require('./grosses-integrity');
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const PERFS_PER_WEEK = 8;
@@ -194,6 +195,18 @@ function applyAllTimeAttribution(grossesShows, shows, opts = {}) {
 const OWN_RUN_START_SLACK_DAYS = 21;
 const OWN_RUN_END_SLACK_DAYS = 14;
 
+// Calendar weeks from `first` to `last` inclusive that Broadway played, so a
+// week missing from the history altogether counts as a hole, not just a stored
+// week that lacks the row (the history is keyed by week ending, a few BWW-era
+// keys by Monday, hence the rounding). Weeks inside a known gap (the COVID
+// shutdown: the history has no key between its two ends) are not expected.
+function expectedWeeks(first, last) {
+  const span = (a, b) => Math.round((toMs(b) - toMs(a)) / (7 * DAY_MS));
+  let dark = 0;
+  for (const [from, to] of KNOWN_GAPS) if (first <= from && last >= to) dark += span(from, to) - 1;
+  return span(first, last) + 1 - dark;
+}
+
 /**
  * A production's totals from its own weekly League rows. Only weeks inside
  * the run's dates count: a history not yet re-keyed per run (BRO-5016) still
@@ -205,20 +218,6 @@ const OWN_RUN_END_SLACK_DAYS = 14;
  * late but are whole after), gaps (a hole, a short end or a missing count) or
  * misfit (more performances than the run could play).
  */
-// Broadway was dark from March 2020 to August 2021: the history has no week
-// between these two keys, and a run spanning them missed nothing.
-const DARK_WEEKS = ['2020-03-08', '2021-08-22'];
-
-// Calendar weeks from `first` to `last` inclusive that Broadway played, so a
-// week missing from the history altogether counts as a hole, not just a stored
-// week that lacks the row (the history is keyed by week ending, a few BWW-era
-// keys by Monday, hence the rounding).
-function expectedWeeks(first, last) {
-  const span = (a, b) => Math.round((toMs(b) - toMs(a)) / (7 * DAY_MS));
-  const dark = first <= DARK_WEEKS[0] && last >= DARK_WEEKS[1] ? span(...DARK_WEEKS) - 1 : 0;
-  return span(first, last) + 1 - dark;
-}
-
 function ownRunTotals(history, show, { now = new Date() } = {}) {
   const slug = show.slug || show.id;
   // Without a first-preview date the opening is the latest the run can have

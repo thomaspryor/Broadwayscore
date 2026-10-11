@@ -243,10 +243,18 @@ async function backfillHistory(): Promise<void> {
           const wanted = holeSlugs.get(weekDate) || [];
           const after = Object.keys(weekRows).length + wanted.filter(slug => snapshot[slug] && !weekRows[slug]).length;
           if (after > rows) {
-            throw new Error(`week ${weekDate} would hold ${after} rows but Playbill lists ${rows}`);
+            // A refetch would give the same answer: refuse the week, no retry.
+            console.warn(`::warning::backfill-grosses-history: week ${weekDate} would hold ${after} rows but Playbill lists ${rows}; left as stored.`);
+            failCount++;
+            attempt = MAX_RETRIES;
+            continue;
           }
           const added: string[] = addMissingRows(weekRows, snapshot, wanted);
-          recordPublishedTotal(history, weekDate, { gross: weekTotalGross, showCount: rows, source: 'playbill' });
+          // Only a week that now holds every published row gets the League
+          // total recorded; a short one would trip checkWeekTotals forever.
+          if (Object.keys(weekRows).length === rows) {
+            recordPublishedTotal(history, weekDate, { gross: weekTotalGross, showCount: rows, source: 'playbill' });
+          }
           console.log(`  ✓ ${weekDate}: added ${added.length}/${wanted.length} missing rows${added.length ? ` (${added.join(', ')})` : ''}`);
           successCount++;
           succeeded = true;

@@ -249,6 +249,14 @@ test('holes are counted in calendar weeks: a week absent from the history is a g
   const run = bw('hadestown', '2019-03-22', '2021-10-03');
   const c = ownRunTotals(covid, run, { now: NOW });
   assert.deepEqual([c.status, c.gaps], ['complete', 0]);
+  // April 2018 is not a known gap: until the backfill stores those weeks, a
+  // run across them is three weeks short; once stored, it is complete.
+  const carousel = bw('carousel-2018', '2018-02-28', '2018-09-16');
+  const h18 = hist({ 'carousel-2018': ['2018-03-04', '2018-09-16', ROW] });
+  for (const w of ['2018-04-01', '2018-04-08', '2018-04-15']) delete h18.weeks[w];
+  assert.deepEqual([ownRunTotals(h18, carousel, { now: NOW }).status, ownRunTotals(h18, carousel, { now: NOW }).gaps], ['gaps', 3]);
+  for (const w of ['2018-04-01', '2018-04-08', '2018-04-15']) h18.weeks[w] = { 'carousel-2018': { ...ROW } };
+  assert.equal(ownRunTotals(h18, carousel, { now: NOW }).status, 'complete');
 });
 
 test('a run whose first row is late but after the history starts is a missed week, not a "since" partial', () => {
