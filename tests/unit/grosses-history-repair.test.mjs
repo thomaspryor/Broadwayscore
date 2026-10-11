@@ -85,7 +85,7 @@ test('repairGrossesHistory moves off-Sunday keys, fills seatsOffered and preview
   assert.equal(history.weeks['2026-07-05'].wicked.seatsOffered, 14456);
   // Idempotent.
   const again = repairGrossesHistory(history);
-  assert.deepEqual(again, { renamedKeys: [], seatsOfferedFilled: 0, performancesFilled: 0 });
+  assert.deepEqual(again, { renamedKeys: [], seatsOfferedFilled: 0, performancesFilled: 0, rowsMoved: 0, rowsUnplaced: 0 });
 });
 
 test('mergeGrossesHistory folds a remote Monday key back onto our Sunday', () => {

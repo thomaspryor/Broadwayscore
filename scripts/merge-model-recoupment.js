@@ -20,6 +20,7 @@ const { calculateRecoupment, calculateLifetimeRecoupment, classifyShow } = requi
 const { createCommercialWriteGuard } = require('./lib/commercial-write-guard');
 const { classifyTier } = require('./lib/model-return-v2');
 const { clearStaleModelFields, applyShadowReturnFields } = require('./lib/model-run-fields');
+const { makeGrossesLookup } = require('./lib/grosses-lookup');
 const { modelContradictsDesignation } = require('./lib/commercial-designations');
 
 // ---------------------------------------------------------------------------
@@ -60,43 +61,8 @@ try {
 // Slug Resolution (shared logic from calculate-recoupment.js)
 // ---------------------------------------------------------------------------
 
-const weeklyHistorySlugs = new Set();
-for (const shows of Object.values(grossesHistory.weeks || {})) {
-  for (const slug of Object.keys(shows)) weeklyHistorySlugs.add(slug);
-}
-
-function resolveWeeklySlug(showSlug, showId) {
-  if (weeklyHistorySlugs.has(showSlug)) return showSlug;
-  if (showId && weeklyHistorySlugs.has(showId)) return showId;
-  const base = showSlug.replace(/-\d{4}$/, '');
-  if (weeklyHistorySlugs.has(base)) return base;
-  if (showId) {
-    const baseId = showId.replace(/-\d{4}$/, '');
-    if (weeklyHistorySlugs.has(baseId)) return baseId;
-  }
-  for (const s of weeklyHistorySlugs) {
-    if (s.startsWith(base + '-') || s === base) return s;
-  }
-  return null;
-}
-
-function getWeeklyData(slug, showId) {
-  const resolved = resolveWeeklySlug(slug, showId);
-  if (!resolved) return null;
-  const weekly = {};
-  for (const [date, shows] of Object.entries(grossesHistory.weeks || {})) {
-    if (shows[resolved]) weekly[date] = shows[resolved];
-  }
-  return Object.keys(weekly).length > 0 ? weekly : null;
-}
-
-function getGrossesAllTime(slug, showId) {
-  const base = slug.replace(/-\d{4}$/, '');
-  return grosses.shows?.[slug]?.allTime
-    || grosses.shows?.[showId]?.allTime
-    || grosses.shows?.[base]?.allTime
-    || null;
-}
+// Exact slug keys only (scripts/lib/grosses-lookup.js, BRO-5016).
+const { getWeeklyData, getGrossesAllTime } = makeGrossesLookup(grosses, grossesHistory);
 
 // ---------------------------------------------------------------------------
 // Tier Classification

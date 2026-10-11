@@ -18,6 +18,17 @@
  *                         scraper in history._meta.weekTotals
  *   show-dropout          a show in last week's data absent this week while
  *                         shows.json does not say it closed
+ *   gross-outside-run     a row for a week outside the show's run: more than
+ *                         7 days before its first preview (opening less 4
+ *                         weeks when previews are unset) or after its closing
+ *                         (today for a running show). The League row matched
+ *                         the wrong production: a duplicate (860 vs Billy
+ *                         Crystal 860) or another run of the title (Cabaret
+ *                         2024 weeks on cabaret-2014, BRO-5016). Window:
+ *                         scripts/lib/grosses-run-window.js
+ *   gross-unplaced        a row for the checked week set aside in
+ *                         history._unplacedRows: no listed production ran
+ *                         then (usually a stale closing or previews date)
  *   duplicate-gross       the same show's gross identical to the dollar in
  *                         two weeks
  *   flat-gross-run        3+ consecutive weeks within 0.5% of each other
@@ -36,6 +47,8 @@
  *   wow-jump              gross moved more than WOW_RATIO either way week
  *                         over week on two full weeks
  */
+
+const { weekInRun } = require('./grosses-run-window');
 
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -228,6 +241,36 @@ function checkDropouts(history, shows, week) {
   return out;
 }
 
+/**
+ * Rows in `week` for a slug whose shows.json run starts after the week ends
+ * (the League week ends on the Sunday key, so a first preview inside the week
+ * is fine). Slugs missing from shows.json or without a start date are skipped.
+ */
+function checkGrossOutsideRun(history, shows, week, nowMs = Date.now()) {
+  const bySlug = new Map((shows || []).map((s) => [s.slug, s]));
+  const out = [];
+  for (const [slug, entry] of Object.entries(history.weeks[week] || {})) {
+    if (!isRow(entry)) continue;
+    const show = bySlug.get(slug);
+    if (weekInRun(show, week, nowMs) !== false) continue;
+    const run = `${show.previewsStartDate || show.openingDate}..${show.closingDate || 'running'}`;
+    out.push({ rule: 'gross-outside-run', week, slug, detail: `row for week ending ${week} but shows.json ${show.id} runs ${run}` });
+  }
+  return out;
+}
+
+/**
+ * Rows the writers set aside for `week` because no listed production's run
+ * held it (history._unplacedRows). For a recent week that is nearly always a
+ * stale shows.json date (an unrecorded extension, a provisional previews
+ * date); the row goes back on the next save once the date is fixed.
+ */
+function checkGrossUnplaced(history, week) {
+  return Object.entries((history._unplacedRows || {})[week] || {})
+    .filter(([, entry]) => isRow(entry))
+    .map(([slug]) => ({ rule: 'gross-unplaced', week, slug, detail: `row for week ending ${week} matched ${slug} but no listed production of it ran then; set aside in _unplacedRows` }));
+}
+
 /** Per-slug rows in week order: [{ week, entry }]. */
 function rowsBySlug(history) {
   const map = new Map();
@@ -376,6 +419,8 @@ function checkGrossesIntegrity(history, shows, { weeks, missingSince, now } = {}
     ...checkWeekTotals(history),
     ...checkTotalRecorded(history, keys[keys.length - 1]),
     ...scope.flatMap((w) => checkDropouts(history, shows, w)),
+    ...scope.flatMap((w) => checkGrossOutsideRun(history, shows, w, now ? new Date(now).getTime() : Date.now())),
+    ...scope.flatMap((w) => checkGrossUnplaced(history, w)),
     ...checkRepeatedGrosses(history),
     ...checkCappedCapacity(history),
     ...checkRowShape(history, scope),
@@ -396,6 +441,8 @@ module.exports = {
   checkWeekTotals,
   checkTotalRecorded,
   checkDropouts,
+  checkGrossOutsideRun,
+  checkGrossUnplaced,
   checkRepeatedGrosses,
   checkCappedCapacity,
   checkRowShape,

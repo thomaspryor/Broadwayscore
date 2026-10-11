@@ -1,9 +1,17 @@
 'use strict';
 
 /**
- * grosses-lookup.js — show -> grosses rows, the slug resolution
- * merge-model-recoupment.js and calculate-recoupment.js use, as a reusable
- * module for the BRO-4989 shadow model. Pure: callers pass the loaded files.
+ * grosses-lookup.js — show -> grosses rows, the one slug resolution
+ * calculate-recoupment.js, merge-model-recoupment.js and the BRO-4989 shadow
+ * model share. Pure: callers pass the loaded files.
+ *
+ * Exact keys only (BRO-5016). grosses-history.json and grosses.json are keyed
+ * by shows.json slug, one key per production (the history writers re-key rows
+ * to the run that holds their week; validate-data.js flags non-slug keys). The
+ * old fallbacks (strip the year, then any key with that prefix) handed one
+ * production another's figures: cabaret-2024 read cabaret-2014's 24 years of
+ * Cabaret weeks, doubt read doubt-2005, ragtime-2009 read the 2025 revival's
+ * all-time row. A show with no key of its own has no grosses.
  */
 
 function makeGrossesLookup(grosses, grossesHistory) {
@@ -11,16 +19,10 @@ function makeGrossesLookup(grosses, grossesHistory) {
   const slugs = new Set();
   for (const shows of Object.values(weeks)) for (const s of Object.keys(shows)) slugs.add(s);
 
+  // showId is accepted for callers that hold one; a few legacy rows were keyed by id.
   function resolveWeeklySlug(showSlug, showId) {
     if (slugs.has(showSlug)) return showSlug;
     if (showId && slugs.has(showId)) return showId;
-    const base = showSlug.replace(/-\d{4}$/, '');
-    if (slugs.has(base)) return base;
-    if (showId) {
-      const baseId = showId.replace(/-\d{4}$/, '');
-      if (slugs.has(baseId)) return baseId;
-    }
-    for (const s of slugs) if (s.startsWith(base + '-') || s === base) return s;
     return null;
   }
 
@@ -33,8 +35,7 @@ function makeGrossesLookup(grosses, grossesHistory) {
   }
 
   function getGrossesAllTime(slug, showId) {
-    const base = slug.replace(/-\d{4}$/, '');
-    return grosses?.shows?.[slug]?.allTime || grosses?.shows?.[showId]?.allTime || grosses?.shows?.[base]?.allTime || null;
+    return grosses?.shows?.[slug]?.allTime || (showId && grosses?.shows?.[showId]?.allTime) || null;
   }
 
   return { resolveWeeklySlug, getWeeklyData, getGrossesAllTime };

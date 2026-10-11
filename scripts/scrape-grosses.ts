@@ -59,6 +59,7 @@ const {
   isoWeekToMDY,
 } = require('./lib/parse-playbill-grosses');
 const { weekKeyFor, repairGrossesHistory } = require('./lib/grosses-history-repair');
+const { grossesProductionFor, weekInRun } = require('./lib/grosses-run-window');
 
 const GROSSES_URL = 'https://www.broadwayworld.com/grosses.php';
 const GROSSES_PATH = path.join(__dirname, '../data/grosses.json');
@@ -306,7 +307,7 @@ function splitShowTheater(text: string): { show: string; theater: string } | nul
 
 let allShows: any[] | null = null;
 
-function findMatchingSlug(bwwTitle: string, market: string = 'broadway', pastWeekISO?: string): string | null {
+function findMatchingSlug(bwwTitle: string, market: string = 'broadway', pastWeekISO?: string, runWeekISO: string | undefined = pastWeekISO): string | null {
   if (!allShows) {
     allShows = loadShowsFromMatching();
   }
@@ -322,7 +323,18 @@ function findMatchingSlug(bwwTitle: string, market: string = 'broadway', pastWee
   if (pastWeekISO) opts.date = pastWeekISO;
   const match = matchTitleToShow(bwwTitle, allShows, opts);
   if (match && match.confidence === 'high') {
-    const slug = match.show.slug;
+    // The matcher's window check only sees productions with the exact title,
+    // so a revival listed under a longer one ("Cabaret at the Kit Kat Club")
+    // lost its weeks to an older run (BRO-5016). Re-pick by run window across
+    // the same work. A week outside every run stays on the matcher's pick: the
+    // save-time repair parks it in _unplacedRows (alert gross-unplaced) and puts
+    // it back once shows.json's dates are fixed. Dropping it would lose a real
+    // week whenever a closing date is stale.
+    const picked = (runWeekISO && grossesProductionFor(match.show, runWeekISO, allShows)) || match.show;
+    if (picked === match.show && runWeekISO && weekInRun(match.show, runWeekISO) === false) {
+      console.warn(`  ⚠ "${bwwTitle}" matched ${match.show.slug}, whose shows.json run does not include week ${runWeekISO}; kept for the history repair to set aside until the dates are fixed.`);
+    }
+    const slug = picked.slug;
     // BWW only covers Broadway — never write to West End / Off-Broadway slugs
     if (slug.includes('west-end') || slug.includes('off-broadway') || slug.includes('off-west-end')) {
       return null;
@@ -871,11 +883,11 @@ function getYoYData(history: GrossesHistory, currentWeekISO: string, showSlug: s
 
 type MatchedRow = BWWRowData & { slug: string };
 
-function matchRows(rows: BWWRowData[], pastWeekISO?: string, quiet: boolean = false): { matched: MatchedRow[]; unmatched: string[] } {
+function matchRows(rows: BWWRowData[], pastWeekISO?: string, quiet: boolean = false, runWeekISO: string | undefined = pastWeekISO): { matched: MatchedRow[]; unmatched: string[] } {
   const matched: MatchedRow[] = [];
   const unmatched: string[] = [];
   for (const row of rows) {
-    const slug = findMatchingSlug(row.show, 'broadway', pastWeekISO);
+    const slug = findMatchingSlug(row.show, 'broadway', pastWeekISO, runWeekISO);
     if (slug) {
       matched.push({ ...row, slug });
       if (!quiet) console.log(`  ✓ ${row.show} → ${slug}`);
@@ -906,8 +918,12 @@ function putHistoryWeek(history: GrossesHistory, weekISO: string, snapshot: Reco
 // where the published figures fix them (scripts/lib/grosses-history-repair.js).
 // Runs before every history write, so the file heals on the next run.
 function repairHistory(history: GrossesHistory): void {
-  const stats = repairGrossesHistory(history);
+  if (!allShows) allShows = loadShowsFromMatching();
+  const stats = repairGrossesHistory(history, { shows: allShows });
   for (const [from, to] of stats.renamedKeys) console.log(`  History week key ${from} is not a Sunday; moved to ${to}.`);
+  if (stats.rowsMoved || stats.rowsUnplaced) {
+    console.log(`  History repair: ${stats.rowsMoved} rows moved to the production whose run holds their week, ${stats.rowsUnplaced} set aside in _unplacedRows (no listed production ran then).`);
+  }
   if (stats.seatsOfferedFilled || stats.performancesFilled) {
     console.log(`  History repair: seatsOffered filled on ${stats.seatsOfferedFilled} rows, preview-week performances on ${stats.performancesFilled}.`);
   }
@@ -1081,7 +1097,7 @@ async function scrapeGrosses(): Promise<void> {
   }
 
   // Match shows to our database
-  const { matched: matchedRows, unmatched: unmatchedShows } = matchRows(result.rows, historyOnly || WEEK_ARG ? weekISO : undefined);
+  const { matched: matchedRows, unmatched: unmatchedShows } = matchRows(result.rows, historyOnly || WEEK_ARG ? weekISO : undefined, false, weekISO);
   const matchedCount = matchedRows.length;
 
   console.log(`\nMatched ${matchedCount}/${result.rows.length} shows`);

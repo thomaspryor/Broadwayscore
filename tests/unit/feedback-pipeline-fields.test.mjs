@@ -177,6 +177,8 @@ describe('feedback-pipeline-fields', () => {
     assert.match(rejectedUrlsValueProblem(null, null), /must be an array/);
     assert.match(rejectedUrlsValueProblem(['manual:x'], null), /http/);
     assert.match(rejectedUrlsValueProblem([3], null), /http/);
+    assert.equal(rejectedUrlsValueProblem(['google-images:https://playbill.com/x'], null), null);
+    assert.match(rejectedUrlsValueProblem(['google-images:x'], null), /http/);
   });
 
   test('buildShowSnapshot emits rejectedImageUrls as [] when the show has none', () => {

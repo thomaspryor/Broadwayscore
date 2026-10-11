@@ -23,6 +23,8 @@
  * Pure: no I/O.
  */
 
+const { weekInRun, productionForWeek } = require('./grosses-run-window');
+
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const DAY_MS = 24 * 60 * 60 * 1000;
 // A regular week this many weeks either side may lend its seats per performance.
@@ -163,10 +165,77 @@ function normalizeWeekKeys(history) {
   return renamed;
 }
 
-function repairGrossesHistory(history) {
-  const stats = { renamedKeys: [], seatsOfferedFilled: 0, performancesFilled: 0 };
+/**
+ * Move each row to the production whose run contains its week (BRO-5016).
+ * A row outside its own slug's run goes to the one same-work Broadway
+ * production whose run holds the week; with none or several, it goes to
+ * history._unplacedRows[week][slug] (kept, but off every show). A row is
+ * never moved onto a slug that already has that week. Rows on slugs with no
+ * shows.json entry or no run dates stay where they are.
+ */
+function rekeyRowsToRuns(history, shows, nowMs = Date.now()) {
+  const stats = { moved: [], unplaced: [] };
+  if (!history || typeof history.weeks !== 'object' || history.weeks === null || !Array.isArray(shows)) return stats;
+  const bySlug = new Map();
+  for (const s of shows) if (s && s.slug && !bySlug.has(s.slug)) bySlug.set(s.slug, s);
+  // Parked rows go back once shows.json can place them (the missing production
+  // was added, or a date was corrected): their own slug if the week is now in
+  // its run, else the production that holds the week. The main pass below
+  // re-checks the latter and re-parks nothing it cannot place.
+  const parked = history._unplacedRows;
+  if (parked && typeof parked === 'object') {
+    for (const week of Object.keys(parked)) {
+      for (const slug of Object.keys(parked[week] || {})) {
+        const show = bySlug.get(slug);
+        const home = show && weekInRun(show, week, nowMs) !== false ? show : show && productionForWeek(show, week, shows, nowMs);
+        if (!home) continue;
+        if (!history.weeks[week]) history.weeks[week] = {};
+        if (home.slug in history.weeks[week]) continue;
+        history.weeks[week][home.slug] = parked[week][slug];
+        delete parked[week][slug];
+        stats.moved.push({ week, from: `_unplacedRows.${slug}`, to: home.slug });
+      }
+      if (!Object.keys(parked[week] || {}).length) delete parked[week];
+    }
+    if (!Object.keys(parked).length) delete history._unplacedRows;
+  }
+  for (const week of Object.keys(history.weeks)) {
+    const rows = history.weeks[week];
+    if (!rows || typeof rows !== 'object') continue;
+    for (const slug of Object.keys(rows)) {
+      const show = bySlug.get(slug);
+      if (!show || weekInRun(show, week, nowMs) !== false) continue;
+      const target = productionForWeek(show, week, shows, nowMs);
+      const entry = rows[slug];
+      delete rows[slug];
+      if (target && !(target.slug in rows)) {
+        rows[target.slug] = entry;
+        stats.moved.push({ week, from: slug, to: target.slug });
+      } else {
+        if (!history._unplacedRows || typeof history._unplacedRows !== 'object') history._unplacedRows = {};
+        if (!history._unplacedRows[week]) history._unplacedRows[week] = {};
+        history._unplacedRows[week][slug] = entry;
+        stats.unplaced.push({ week, slug });
+      }
+    }
+  }
+  return stats;
+}
+
+/**
+ * Shape repair every history writer runs before saving. With `shows`
+ * (shows.json entries), rows are first moved to the production whose run
+ * contains their week (rekeyRowsToRuns).
+ */
+function repairGrossesHistory(history, { shows = null, nowMs = Date.now() } = {}) {
+  const stats = { renamedKeys: [], seatsOfferedFilled: 0, performancesFilled: 0, rowsMoved: 0, rowsUnplaced: 0 };
   if (!history || typeof history.weeks !== 'object' || history.weeks === null) return stats;
   stats.renamedKeys = normalizeWeekKeys(history);
+  if (shows) {
+    const rk = rekeyRowsToRuns(history, shows, nowMs);
+    stats.rowsMoved = rk.moved.length;
+    stats.rowsUnplaced = rk.unplaced.length;
+  }
 
   const keys = Object.keys(history.weeks).sort();
   const bySlug = new Map();
@@ -233,6 +302,7 @@ module.exports = {
   weekKeyFor,
   nonSundayWeekKeys,
   normalizeWeekKeys,
+  rekeyRowsToRuns,
   deriveSeatsOffered,
   derivePreviewPerformances,
   repairGrossesHistory,

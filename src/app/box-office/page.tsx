@@ -75,7 +75,10 @@ export default function BoxOfficePage() {
     .filter(item => item.grosses?.thisWeek?.gross)
     .sort((a, b) => (b.grosses?.thisWeek?.gross || 0) - (a.grosses?.thisWeek?.gross || 0));
 
-  // Get all-time leaders (including closed shows)
+  // Get all-time leaders (including closed shows). The source table has one row
+  // per title, but a title's row can sit on two productions (Mamma Mia! 2001 and
+  // 2025, Chicago 1975 and 1996, BRO-5012); list each title once, highest first.
+  const seenAllTime = new Set<string>();
   const allTimeLeaders = allShows
     .map(show => ({
       show,
@@ -83,6 +86,12 @@ export default function BoxOfficePage() {
     }))
     .filter(item => item.grosses?.allTime?.gross)
     .sort((a, b) => (b.grosses?.allTime?.gross || 0) - (a.grosses?.allTime?.gross || 0))
+    .filter(item => {
+      const key = item.show.title.trim().toLowerCase();
+      if (seenAllTime.has(key)) return false;
+      seenAllTime.add(key);
+      return true;
+    })
     .slice(0, 10);
 
   // Box Office Scorecard v2 (unreleased): computed only when both flags are on.

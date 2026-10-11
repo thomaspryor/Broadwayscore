@@ -40,6 +40,15 @@ test('mergeGrossesHistory: keeps a local-only week untouched', () => {
   assert.deepEqual(merged.weeks['2026-01-04'], { a: { gross: 1 } });
 });
 
+test('mergeGrossesHistory: a parked row one side already returned to a production is not brought back (BRO-5016)', () => {
+  const ours = { weeks: { '2002-01-06': { 'cabaret-1998': { gross: 7 } } } };
+  const remote = { weeks: { '2002-01-06': {} }, _unplacedRows: { '2002-01-06': { 'cabaret-2014': { gross: 7 } }, '2023-05-07': { 'dancin-1978': { gross: 9 } } } };
+  const { merged } = mergeGrossesHistory(ours, remote);
+  assert.deepEqual(merged._unplacedRows, { '2023-05-07': { 'dancin-1978': { gross: 9 } } });
+  const { merged: clean } = mergeGrossesHistory(ours, { weeks: {}, _unplacedRows: { '2002-01-06': { 'cabaret-2014': { gross: 7 } } } });
+  assert.equal(clean._unplacedRows, undefined);
+});
+
 test('mergeGrossesHistory: handles missing weeks key on either side', () => {
   const { merged } = mergeGrossesHistory(undefined, { weeks: { '2026-01-04': { a: {} } } });
   assert.ok(merged.weeks['2026-01-04']);

@@ -36,7 +36,7 @@ const { getMarketSearchKeyword } = require('./lib/market-label');
 const { todaytixMarket, todaytixSearchUrl, extractTodaytixShowLink, todaytixSerpQuery, todaytixShowUrl } = require('./lib/todaytix-market');
 const { pickMezzanineCandidate, theatrEligible, isRejectedImage, ibdbEligible, venuesMatch, buildVenueCityIndex, keepExistingImage, fileSourceUrls, recordFileSources, recordedSourceFor, imagePathOwner } = require('./lib/image-source-match');
 const { loadImageSources, saveImageSources } = require('./lib/image-sources-store');
-const { buildSourceIndex, addToSourceIndex, sourceConflict, stripConflictingSources, showScoreArtEligible, todaytixIdOwner } = require('./lib/shared-image-source');
+const { buildSourceIndex, addToSourceIndex, sourceConflict, stripConflictingSources, showScoreArtEligible, todaytixIdOwner, isOwnSiteSource } = require('./lib/shared-image-source');
 const { findOtherSameTitleProduction } = require('./lib/canon-poster-art');
 const { imageOnDisk, isPlaceholderFile, PLACEHOLDER_FILE_HASHES } = require('./lib/show-images');
 const { resolveMarketSlug } = require('./lib/verify-image');
@@ -1604,6 +1604,7 @@ async function searchGoogleImagesBD(query) {
     let domain = '';
     try { domain = new URL(imgUrl).hostname; } catch {}
     if (/ebay|etsy|pinterest|redbubble|teepublic|amazon\.com\/dp/i.test(domain)) continue;
+    if (isOwnSiteSource(imgUrl)) continue;
     results.push({ image: null, imageUrl: imgUrl, url: imgUrl, title: '', domain, width, height, _brightdata: true });
     if (results.length >= 10) break;
   }
@@ -1685,6 +1686,7 @@ function filterGoogleCandidates(results, maxCount = 10, show = null) {
       if (!hasSBImage && !hasBDImage) return false;
       const domain = (r.domain || r.url || '').toLowerCase();
       if (/ebay|etsy|pinterest|redbubble|teepublic|amazon\.com\/dp/i.test(domain)) return false;
+      if (isOwnSiteSource(r.domain, r.url, r.imageUrl)) return false;
       return true;
     })
     .slice(0, maxCount);

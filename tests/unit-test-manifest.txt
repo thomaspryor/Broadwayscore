@@ -344,6 +344,7 @@ tests/unit/aggregator-thumb-check.test.mjs
 tests/unit/aggregator-url-latent.test.mjs
 tests/unit/alert-dispatch-streak.test.mjs
 tests/unit/alert-email-policy.test.mjs
+tests/unit/alltime-attribution.test.mjs
 tests/unit/amaze-review-flags.test.mjs
 tests/unit/anchored-precedence.test.mjs
 tests/unit/announced-promotion.test.mjs
@@ -687,7 +688,9 @@ tests/unit/gh-runs-query.test.mjs
 tests/unit/git-add-existing.test.mjs
 tests/unit/grosses-history-repair.test.mjs
 tests/unit/grosses-integrity.test.mjs
+tests/unit/grosses-lookup.test.mjs
 tests/unit/grosses-post-resolver.test.mjs
+tests/unit/grosses-run-window.test.mjs
 tests/unit/guardian-stale-slug-guard.test.mjs
 tests/unit/gun-and-powder-show.test.mjs
 tests/unit/hamlet-off-broadway-2026-wrongProduction.test.mjs

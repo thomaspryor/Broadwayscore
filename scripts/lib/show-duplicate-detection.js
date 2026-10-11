@@ -89,10 +89,30 @@ function isColonSegmentTitle(a, b) {
   const [short, long] = (a.title || '').length <= (b.title || '').length ? [a, b] : [b, a];
   const longTitle = long.title || '';
   const idx = longTitle.indexOf(':');
-  if (idx < 0) return false;
   const shortKey = titleKey(short.title);
+  if (idx < 0) return isPerformerPrefixTitle(short.title || '', longTitle);
   if (shortKey.length < 4 || shortKey === titleKey(longTitle)) return false;
   return shortKey === titleKey(longTitle.slice(0, idx)) || shortKey === titleKey(longTitle.slice(idx + 1));
+}
+
+// "Billy Crystal 860" vs "860" (BRO-5014): a performer's name put in front of
+// the title with no colon. The prefix must look like a person's name: exactly
+// two capitalized words and no joining words, so "Find Your Way Home", "Romeo
+// and Juliet", "Prince of Broadway" and "Sid Caesar & Company" do not match
+// "Home", "& Juliet", "Broadway" and "Company". The short title must be a real
+// title, not a common word: four or more characters, or a number-bearing title
+// like "860".
+const NAME_WORD_RE = /^\p{Lu}[\p{L}.'’-]*$/u;
+const NOT_NAME_WORDS = new Set(['the', 'a', 'an', 'and', 'of', 'in', 'on', 'at', 'to', 'for', 'with', 'my', 'your', 'our', 'his', 'her', 'their', 'new', 'all', 'one', 'two']);
+function isPerformerPrefixTitle(shortTitle, longTitle) {
+  const shortKey = titleKey(shortTitle);
+  const longWords = String(longTitle || '').trim().split(/\s+/);
+  // A short title that opens on a symbol ("& Juliet") is itself a fragment.
+  const opensOnWord = (s) => /^[\p{L}\p{N}]/u.test(String(s || '').trim());
+  if (!shortKey || longWords.length < 3 || !opensOnWord(shortTitle) || !opensOnWord(longWords[2])) return false;
+  if (shortKey.length < 4 && !(shortKey.length >= 3 && /\d/.test(shortKey))) return false;
+  if (titleKey(longWords.slice(2).join(' ')) !== shortKey) return false;
+  return longWords.slice(0, 2).every((w) => NAME_WORD_RE.test(w) && !NOT_NAME_WORDS.has(w.toLowerCase()));
 }
 
 // True when one show's significant raw-title tokens are a STRICT subset of the

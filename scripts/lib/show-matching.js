@@ -365,6 +365,9 @@ const KNOWN_ALIASES = {
   'angels in america': 'angels-in-america-millennium-approaches',
   'angels in america: millennium approaches': 'angels-in-america-millennium-approaches',
   'angels in america: perestroika': 'angels-in-america-perestroika',
+
+  // The League and Playbill title Billy Crystal's show "860" (BRO-5014)
+  '860': 'billy-crystal-860',
 };
 
 // ---------------------------------------------------------------------------

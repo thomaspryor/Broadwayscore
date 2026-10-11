@@ -23,6 +23,7 @@ import * as path from 'path';
 // Use shared show-matching library (260+ aliases, market filtering, era preference)
 const { matchTitleToShow } = require('./lib/show-matching');
 const { repairGrossesHistory } = require('./lib/grosses-history-repair');
+const { grossesProductionFor } = require('./lib/grosses-run-window');
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
 const {
   playbillGrossesUrl,
@@ -85,7 +86,10 @@ function findMatchingSlug(title: string, weekDateStr: string): string | null {
   if (show.id?.includes('west-end') || show.id?.includes('off-broadway') || show.id?.includes('off-west-end')) {
     return null;
   }
-  return show.slug;
+  // The matcher's window check only sees productions with the exact title, so
+  // a revival under a longer one ("Cabaret at the Kit Kat Club") lost its weeks
+  // to an older run (BRO-5016). Re-pick by run window across the same work.
+  return grossesProductionFor(show, weekDateStr, allShows)?.slug ?? null;
 }
 
 // Load or initialize grosses history
@@ -201,7 +205,7 @@ async function backfillHistory(): Promise<void> {
 
   const save = () => {
     if (dryRun) return;
-    repairGrossesHistory(history);
+    repairGrossesHistory(history, { shows: allShows });
     history._meta.lastUpdated = new Date().toISOString();
     fs.writeFileSync(HISTORY_PATH, JSON.stringify(history, null, 2) + '\n');
   };

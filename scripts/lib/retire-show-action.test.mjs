@@ -107,6 +107,17 @@ test('duplicateOf: a non-provisional duplicate with no reviews at the same house
   assert.deepEqual(shows.map(s => s.id), [kept.id]);
   const entry = loadRetiredIds({ listPath: paths.listPath }).find(e => e.id === dup.id);
   assert.deepEqual([entry.title, entry.venue], [null, null]);
+  // A strict title subset at the same house passes ("860" in "Billy Crystal 860",
+  // BRO-5014); an unrelated title at the same house still refuses.
+  const bc = { id: 'billy-crystal-860-2026', title: 'Billy Crystal 860', venue: 'Imperial Theatre', market: 'broadway', previewsStartDate: '2026-10-01', openingDate: '2026-10-21', closingDate: '2027-01-03' };
+  const t860 = { id: '860-2026', title: '860', venue: 'Imperial Theatre', market: 'broadway', previewsStartDate: '2026-10-21' };
+  const retire860 = { id: t860.id, expectTitle: '860', reason: 'duplicate', duplicateOf: bc.id };
+  const unrelated = [{ ...bc, title: 'Moulin Rouge!' }, { ...t860 }];
+  assert.match(applyRetireShow(unrelated, retire860, { retire, reviewCount: none }).reason, /does not match/);
+  const subsetShows = [{ ...bc }, { ...t860 }];
+  const sub = applyRetireShow(subsetShows, retire860, { retire, reviewCount: none });
+  assert.equal(sub.ok, true, sub.reason);
+  assert.deepEqual(subsetShows.map(s => s.id), [bc.id]);
   // Without duplicateOf, a non-provisional row still refuses.
   assert.match(applyRetireShow([{ ...dup }], { id: dup.id, expectTitle: dup.title, reason: 'x' }, { retire, reviewCount: none }).reason, /only provisional/);
 });
