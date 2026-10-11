@@ -65,27 +65,6 @@
     "queuedAt": "2026-10-11T14:27:24.242Z"
   },
   {
-    "conditionKey": "mezzanine:session-token-expired",
-    "title": "Mezzanine Scraper Failed — Session Token Expired",
-    "description": "The Mezzanine audience data update failed with an authentication error (401/403). **The session token has expired.** To fix: set up mitmproxy on your Mac, proxy iPhone traffic through it, open the Mezzanine app, then update the `MEZZANINE_SESSION_TOKEN` GitHub Secret with the new token.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38149792765",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "Action Required",
-        "value": "Re-intercept Mezzanine iOS app via mitmproxy"
-      },
-      {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/38149792765)"
-      }
-    ],
-    "queuedAt": "2026-10-11T15:05:39.169Z"
-  },
-  {
     "conditionKey": "land:land/bro-5063-synopses",
     "title": "Landing blocked: unit-tests-node red on land/bro-5063-synopses",
     "description": "land.yml did not land land/bro-5063-synopses: the unit-tests-node gate went red at 4919db3012. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38150355012",
@@ -698,5 +677,26 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-11T19:07:11.360Z"
+  },
+  {
+    "conditionKey": "mezzanine:session-token-expired",
+    "title": "Mezzanine Scraper Failed — Session Token Expired",
+    "description": "The Mezzanine audience data update failed with an authentication error (401/403). **The session token has expired.** To fix: set up mitmproxy on your Mac, proxy iPhone traffic through it, open the Mezzanine app, then update the `MEZZANINE_SESSION_TOKEN` GitHub Secret with the new token.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38167320385",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Action Required",
+        "value": "Re-intercept Mezzanine iOS app via mitmproxy"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/38167320385)"
+      }
+    ],
+    "queuedAt": "2026-10-11T19:17:11.510Z"
   }
 ]
