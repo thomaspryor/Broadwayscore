@@ -55,6 +55,10 @@ test('our own notes stay off a loss label no source reported', () => {
   assert.equal(publicNotesText({ designation: 'Fizzle', designationBasis: 'no-recoupment-announced', notes }), null);
   assert.equal(publicNotesText({ designation: 'Flop', designationBasis: 'reported-loss', notes }), notes);
   assert.equal(publicNotesText({ designation: 'TBD', notes }), notes);
+  // Not just hidden on screen: the client payload never carries them.
+  const base = { recouped: false, capitalization: null, capitalizationSource: null, weeklyRunningCost: null, recoupedDate: null, recoupedWeeks: null, notes };
+  assert.equal(toPublicShowCommercial({ ...base, designation: 'Fizzle', designationBasis: 'notes-stated' }).notes, undefined);
+  assert.equal(toPublicShowCommercial({ ...base, designation: 'Flop', designationBasis: 'reported-loss' }).notes, notes);
 });
 
 test('toPublicShowCommercial passes the basis through, and only when present', () => {

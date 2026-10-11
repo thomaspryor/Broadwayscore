@@ -282,7 +282,7 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
     recoupedSource,
     humanReviewedDesignation: commercial.humanReviewedDesignation,
     ...(commercial.designationBasis ? { designationBasis: commercial.designationBasis } : {}),
-    notes: publicSourceText(commercial.notes) ?? undefined,
+    notes: publicNotesText(commercial) ?? undefined,
     sources: commercial.sources?.map(({ type, url, date }) => ({ type, url, date })),
     investorMultiple: commercial.investorMultiple,
     nonprofitOrg: getNonprofitProducer(commercial) ?? undefined,
