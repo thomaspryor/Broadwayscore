@@ -1303,5 +1303,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-11T04:30:03.650Z"
+  },
+  {
+    "conditionKey": "land:land/codex-bro-3999",
+    "title": "Landing blocked: resolve red on land/codex-bro-3999",
+    "description": "land.yml did not land land/codex-bro-3999: the resolve gate went red at 551082eadb. The branch ref was left in place and nothing was pushed to main. First failure: REFUSED: resolve: branch \"land/codex-bro-3999\" is neither a local branch nor on origin (attempts 0, 0.6s) Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38110122945",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/codex-bro-3999"
+      },
+      {
+        "name": "gate",
+        "value": "resolve"
+      },
+      {
+        "name": "tip",
+        "value": "551082eadbca4b0280e2c67bd7f220f8afbf151c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38110122945"
+      }
+    ],
+    "queuedAt": "2026-10-11T04:34:05.027Z"
   }
 ]
