@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { OPENING_DATE_SOURCES, openingDateSourceHint } = require('./opening-date-sources.js');
+const { OPENING_DATE_SOURCES, openingDateSourceHint, venuePageDomainSourceProblem } = require('./opening-date-sources.js');
 
 test('every supported market maps to a source + enricher', () => {
   for (const market of ['broadway', 'off-broadway', 'west-end', 'off-west-end']) {
@@ -41,4 +41,15 @@ test('unknown/missing market falls back to a generic manual-lookup hint', () => 
   assert.match(openingDateSourceHint(undefined), /manual/i);
   // The fallback must never crash or return empty.
   assert.ok(openingDateSourceHint(null).length > 0);
+});
+
+// BRO-3793
+test('venue-page:<domain> opening-date source is flagged, code-written forms are not', () => {
+  for (const bad of ['venue-page:59e59.org', 'venue-page:https://59e59.org', 'venue-page: 59e59.org']) {
+    assert.match(venuePageDomainSourceProblem({ openingDateSource: bad }), /web domain/, bad);
+  }
+  for (const ok of ['venue-page', 'venue-page:soho-playhouse', 'venue-page:the-other-palace', "venue-page:st.-ann's-warehouse", 'venue-page:a.r.t./new-york-theatres', 't2conline.com']) {
+    assert.equal(venuePageDomainSourceProblem({ openingDateSource: ok }), null, ok);
+  }
+  assert.equal(venuePageDomainSourceProblem({}), null);
 });
