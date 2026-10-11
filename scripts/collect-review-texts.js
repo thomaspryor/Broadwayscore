@@ -579,6 +579,7 @@ const UNRELIABLE_TITLE_OUTLETS = new Set(['pages-on-stages']);
 
 // Domain alias matching — imported from shared lib (scraper.js)
 const { domainMatchesExpected, checkScrapingBeeCredits, getScraperStats, fetchWithScrapingdog } = require('./lib/scraper');
+const { isSoft404Body } = require('./lib/soft-404-body');
 const { shouldCountFailure, isPermanentlyFailed, shouldReopenStaleContentMismatch } = require('./lib/failed-fetch-policy');
 const { consultBrightData } = require('./lib/brightdata-caps');
 const { recordBdCall } = require('./lib/bd-telemetry');
@@ -6814,7 +6815,7 @@ function recordFailedFetch(review, reason, details = {}) {
     reviewData = null;
   }
   let fetchAttemptUpdates = {};
-  if (counts) {
+  if (counts || reason === 'soft_404') {
     try {
       if (!_showsJsonCache) _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
       const showMeta = _showsJsonCache.shows.find(s => s.id === review.showId) || null;
@@ -7097,6 +7098,15 @@ async function processReview(review) {
 
     // Content quality check - detect garbage/invalid content before saving
     const { showId: qualityShowId, showTitle } = resolveShowIdentity(review.showId);
+    // BRO-3116: a not-found template served as HTTP 200 is "not published
+    // yet", not a review. Write nothing; short cooldown, never abandoned.
+    if (isSoft404Body(result.text)) {
+      console.log(`  ✗ SOFT-404 body (${result.text.length} chars) — not saving, retry after cooldown`);
+      recordFailedFetch(review, 'soft_404', { method: result.method, textLength: result.text.length });
+      stats.totalFailed++;
+      return { success: false, error: 'soft_404' };
+    }
+
     const qualityCheck = assessTextQuality(result.text, qualityShowId, showTitle);
 
     if (qualityCheck.quality === 'garbage' && qualityCheck.confidence === 'high') {

@@ -9,7 +9,10 @@
  */
 
 const crypto = require('crypto');
-const { isNonEvidenceFailure, isStrictFailureReason } = require('./failed-fetch-policy');
+const { isNonEvidenceFailure, isStrictFailureReason, SOFT_404_REASON } = require('./failed-fetch-policy');
+
+// BRO-3116: a soft-404 means "not published yet": short cooldown, never abandoned.
+const SOFT_404_COOLDOWN_MS = 3 * 3600 * 1000;
 const { passesGenericTitleIdentity } = require('./generic-title-guard');
 
 /**
@@ -3595,6 +3598,14 @@ function shouldRetryFetch(show, review, failureEntry) {
 
   const failureReason = failureEntry.failureReason || '';
 
+  if (failureReason === SOFT_404_REASON) {
+    const after = new Date(review.fetchRetryAfter).getTime();
+    if (!isNaN(after) && Date.now() < after) {
+      return { shouldRetry: false, reason: 'cooldown', nextAttemptAt: review.fetchRetryAfter };
+    }
+    return { shouldRetry: true, reason: 'soft_404_retry' };
+  }
+
   // budget_capped etc. — we chose not to pay for that attempt; it is not
   // evidence the URL is dead, so it must not consume retry budget or gate
   // the next attempt (same reasoning as isPermanentlyFailed's carve-out).
@@ -3654,6 +3665,9 @@ function recordFetchAttempt(show, review, failureEntry) {
   if (!failureEntry) return {};
 
   const failureReason = failureEntry.failureReason || '';
+  if (failureReason === SOFT_404_REASON) {
+    return { fetchRetryAfter: new Date(Date.now() + SOFT_404_COOLDOWN_MS).toISOString() };
+  }
   if (isNonEvidenceFailure(failureReason)) return {};
 
   const isStrict = isStrictFailureReason(failureReason);

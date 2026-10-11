@@ -24,7 +24,8 @@
  * Failure reasons that reflect OUR spend decisions, not the URL's health.
  * These never increment failureCount and never contribute to retirement.
  */
-const NON_EVIDENCE_REASONS = Object.freeze(['budget_capped']);
+const SOFT_404_REASON = 'soft_404';
+const NON_EVIDENCE_REASONS = Object.freeze(['budget_capped', SOFT_404_REASON]);
 
 /** @param {string} reason */
 function isNonEvidenceFailure(reason) {
@@ -95,6 +96,7 @@ function shouldReopenStaleContentMismatch(entry, data, currentVersion) {
 }
 
 module.exports = {
+  SOFT_404_REASON,
   shouldReopenStaleContentMismatch,
   NON_EVIDENCE_REASONS,
   isNonEvidenceFailure,
