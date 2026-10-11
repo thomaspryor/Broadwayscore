@@ -13670,7 +13670,7 @@
       "linearIdentifier": null
     },
     "land:land/bro-5041-revert-truth-gate": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-5041-revert-truth-gate",
       "firstSeen": "2026-10-11T09:42:58.133Z",
@@ -13680,7 +13680,8 @@
       "lastSurfacedAt": "2026-10-11T09:42:58.133Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-11T10:27:01.482Z"
     },
     "land:land/bro-3512-scoring-delta-cv-low": {
       "status": "open",
@@ -13708,6 +13709,25 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "test-yml:red:E2E Tests:2af8bb74": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: E2E Tests / Run unit tests — \"operator input fuzzy-matches a registered outlet, but the URL host does not — falls back to a host-derived provisional, not the borrowed outlet\"",
+      "firstSeen": "2026-10-11T10:25:00.086Z",
+      "incidentOpenedAt": "2026-10-11T10:25:00.086Z",
+      "lastSeen": "2026-10-11T10:25:00.086Z",
+      "lastNotifiedAt": "2026-10-11T10:25:00.086Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-5054",
+      "dispatch": {
+        "requestedAt": "2026-10-11T10:25:00.086Z",
+        "mode": "dispatch-at-filing",
+        "runId": "38130968207",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38130968207"
+      }
     }
   }
 }

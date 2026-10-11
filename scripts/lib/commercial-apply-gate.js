@@ -64,9 +64,16 @@ const BACKFILL_TAG = 'BRO-4990';
 // human-reviewed or non-TBD label, or a recoupment on file. Also refuse a row
 // whose own label says the show recouped (Easy Winner/Windfall/Miracle): the
 // release drops the row's recoupment claim, and validation requires
-// recouped:true for those labels. Null = may release.
+// recouped:true for those labels. Also refuse a row the BRO-5020 truth
+// review stamped anything but "released" (held, cap-released, rejected): its
+// figures or label were not stated on a fetched page, and releasing it anyway
+// published a tax-credit back-solve and unsourced Flop/Fizzle labels
+// (run 38126158629). An owner approval (ownerApproved: true on the row) is the
+// only override. Null = may release.
 const RECOUPED_LABELS = ['Easy Winner', 'Windfall', 'Miracle'];
 function heldReleaseRefusal(existing, row) {
+  const verdict = row && row.truthReview && row.truthReview.verdict;
+  if (verdict && verdict !== 'released' && row.ownerApproved !== true) return `truth review verdict is "${verdict}", not "released"`;
   const rowLabel = row && (canonicalDesignation(cleanNullish(row.designation)) || cleanNullish(row.designation));
   if (rowLabel && RECOUPED_LABELS.includes(rowLabel)) return `row says "${rowLabel}", which needs a recoupment a person confirms`;
   if (!existing) return null;
