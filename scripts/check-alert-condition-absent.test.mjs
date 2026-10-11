@@ -57,8 +57,8 @@ test('exit 0 once resolveCondition marked it resolved', () => {
   assert.match(r.stdout, /PASS/);
 });
 
-test('exit 0 for an open condition that has not fired for a full quiet window', () => {
-  assert.equal(run(ledger, 'backstop:quiet').status, 0);
+test('exit 3 (not a pass) for an open condition that merely went quiet', () => {
+  assert.equal(run(ledger, 'backstop:quiet').status, 3);
 });
 
 test('a long multi-byte key still matches its full ledger entry through the clamp', () => {

@@ -16,9 +16,9 @@
  * status:'resolved' + resolvedAt):
  *   resolved, and not seen again since resolvedAt  -> not firing (exit 0)
  *   open, lastSeen within QUIET_WINDOW_H            -> firing     (exit 1)
- *   open, lastSeen older than QUIET_WINDOW_H        -> not firing (exit 0)
- *     (many families never call resolveCondition: the condition stops being
- *     routed instead; a week with no fire at all is the ledger's "gone quiet")
+ *   open, lastSeen older than QUIET_WINDOW_H        -> cannot tell (exit 3)
+ *     (many families never call resolveCondition and one-shot detectors just stop
+ *     looking, so quiet is not evidence of a fix)
  *   anything unparseable                            -> cannot tell (exit 3)
  *
  * Never a vacuous pass: a key that is in no ledger, an unreadable ledger, or a
@@ -28,11 +28,8 @@
  * Deliberately READ-ONLY: it never calls into owner-alert-router.js (whose
  * loadLedger/persist paths write), it only JSON.parses the files.
  *
- * Ledgers read: ALERT_LEDGER_PATH alone when set (the router's own override;
- * tests point it at a fixture). Otherwise the git-tracked CI ledger
- * data/audit/alert-ledger.json plus, when present, the machine-local
- * ~/.broadwayscore-state/alert-ledger.json (alerts routed on the Mac). For a
- * key present in both, the entry with the latest activity wins.
+ * Ledger read: ALERT_LEDGER_PATH when set (the router's own override; tests point
+ * it at a fixture), otherwise the git-tracked CI ledger data/audit/alert-ledger.json.
  *
  * The key travels as base64url (--key-b64) for the same reason as
  * check-health-row-absent.js: the check runner splits on whitespace with no
@@ -46,12 +43,10 @@
 'use strict';
 
 const fs = require('fs');
-const os = require('os');
 const path = require('path');
 const { rowMatchKey } = require('./lib/health-row-check-cmd.js');
 
 const TRACKED_LEDGER = path.join(__dirname, '..', 'data', 'audit', 'alert-ledger.json');
-const LOCAL_LEDGER = path.join(os.homedir(), '.broadwayscore-state', 'alert-ledger.json');
 // owner-alert-router.js DEFAULT_COOLDOWN_HOURS: a condition that has not fired
 // once in a full cooldown window is not currently firing.
 const QUIET_WINDOW_H = 168;
@@ -70,7 +65,10 @@ function activityOf(entry) {
 
 function ledgerPaths() {
   if (process.env.ALERT_LEDGER_PATH) return [process.env.ALERT_LEDGER_PATH];
-  return [TRACKED_LEDGER, LOCAL_LEDGER];
+  // Tracked CI ledger only: the verify runner replaces $HOME with a throwaway dir
+  // (autonomous-checks.js checksEnv), so a machine-local ledger is never visible
+  // there and reading it only in some runs would make the verdict depend on the caller.
+  return [TRACKED_LEDGER];
 }
 
 /** Loads every ledger that exists. Throws only if NONE is readable. */
@@ -108,7 +106,9 @@ function classifyEntry(entry, nowMs) {
     if (!Number.isFinite(lastSeen)) return { verdict: 'unknown', why: 'open without a parseable lastSeen' };
     const ageH = (nowMs - lastSeen) / 36e5;
     if (ageH <= QUIET_WINDOW_H) return { verdict: 'firing', why: `open, last fired ${entry.lastSeen} (${ageH.toFixed(1)}h ago, within ${QUIET_WINDOW_H}h)` };
-    return { verdict: 'absent', why: `open but quiet: last fired ${entry.lastSeen} (${ageH.toFixed(1)}h ago, > ${QUIET_WINDOW_H}h)` };
+    // Quiet is NOT proof of a fix: one-shot/windowed detectors simply stop looking
+    // (review of BRO-3889), so only an explicit resolve counts as absent.
+    return { verdict: 'unknown', why: `open but quiet: last fired ${entry.lastSeen} (${ageH.toFixed(1)}h ago, > ${QUIET_WINDOW_H}h); the condition was never resolved, so quiet proves nothing` };
   }
   return { verdict: 'unknown', why: `unrecognised status ${JSON.stringify(entry.status)}` };
 }
