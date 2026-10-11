@@ -98,7 +98,7 @@ function findExistingOperation(git, cwd, pathExists = fs.existsSync) {
  * @param {(path: string) => boolean} [opts.pathExists]
  * @param {(msg: string) => void} [opts.log] - stderr sink; never swallowed
  * @returns {{status: 'ok'|'fetch-failed'|'aborted'|'blocked-existing-residue',
- *            stderr: string, marker?: string, abortIssued?: boolean, abortOk?: boolean}}
+ *            stderr: string, resolved?: string[], marker?: string, abortIssued?: boolean, abortOk?: boolean}}
  */
 function syncMainSafely({
   cwd,
@@ -131,6 +131,24 @@ function syncMainSafely({
   const merge = git(['merge', '--no-edit', 'FETCH_HEAD'], cwd);
   if (merge.code === 0) {
     return { status: 'ok', stderr: '' };
+  }
+
+  // BRO-5074: CI (cloud-memory-reconcile.yml) now writes cloud-memory/ on
+  // origin from claude-config. When the only conflicts are mirror notes, take
+  // origin's copy: everything the Mac wrote there is its own memory, already in
+  // claude-config, and the next reconcile carries it over. Aborting instead
+  // would fail this push on every run and the Mac would never read a
+  // cloud-merged note.
+  const unmerged = git(['diff', '--name-only', '--diff-filter=U'], cwd);
+  const conflicted = unmerged.code === 0 ? unmerged.stdout.split('\n').filter(Boolean) : [];
+  if (conflicted.length && conflicted.every((f) => f.startsWith('cloud-memory/'))) {
+    const ok = git(['checkout', '--theirs', '--', ...conflicted], cwd).code === 0
+      && git(['add', '--', ...conflicted], cwd).code === 0
+      && git(['commit', '--no-edit'], cwd).code === 0;
+    if (ok) {
+      log(`memory-sync-pull: took origin's copy of ${conflicted.length} conflicted cloud-memory note(s): ${conflicted.join(', ')}`);
+      return { status: 'ok', stderr: '', resolved: conflicted };
+    }
   }
 
   log(
