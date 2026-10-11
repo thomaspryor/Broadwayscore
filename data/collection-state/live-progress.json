@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-10-11T00:11:47.389Z",
-  "processed": 394,
-  "failed": 235,
-  "successRate": "62.6%",
+  "updatedAt": "2026-10-11T00:38:36.431Z",
+  "processed": 396,
+  "failed": 249,
+  "successRate": "61.4%",
   "tierBreakdown": {
-    "playwright": 231,
+    "playwright": 233,
     "amp": 1,
-    "browserbase": 2,
+    "browserbase": 3,
     "directCookies": 0,
     "scrapingdog": 59,
     "scrapingbee": 36,
@@ -14,7 +14,7 @@
     "archiveToday": 0,
     "archive": 70
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-10-10T19:33:04.519Z",
@@ -54,6 +54,36 @@
       "t": "2026-10-10T20:05:56.444Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-11T00:30:58.001Z",
+      "event": "bb-session",
+      "session": "6734fa10",
+      "url": "https://www.broadwayworld.com/shows/Blood-of-My-Blood-336245/photos"
+    },
+    {
+      "t": "2026-10-11T00:31:17.490Z",
+      "event": "bb-session",
+      "session": "97cf1237",
+      "url": "https://www.broadwayworld.com/shows/Blood-of-My-Blood-336245/photos"
+    },
+    {
+      "t": "2026-10-11T00:34:00.783Z",
+      "event": "bb-session",
+      "session": "17b59848",
+      "url": "https://www.trustpilot.com/review/www.londontheatredirect.com/product/affluenza-"
+    },
+    {
+      "t": "2026-10-11T00:35:04.985Z",
+      "event": "bb-session",
+      "session": "94e029d0",
+      "url": "https://whatnightout.uk/london/events/franz-marie-8871320"
+    },
+    {
+      "t": "2026-10-11T00:35:11.681Z",
+      "event": "bb-session",
+      "session": "d9edd894",
+      "url": "https://whatnightout.uk/london/events/franz-marie-8871320"
     }
   ]
 }
