@@ -1277,6 +1277,64 @@ function extractLondonTheatreRating(html) {
 }
 
 // Map outlet IDs to their extractors
+// The Observer (UK) is published on theguardian.com. Its "The week in theatre"
+// column reviews several shows on one page and prints one rating per show in a
+// "Star ratings (out of five)" list ("Oedipus ★★★ Elektra ★★"), so the rating
+// must be the one next to THIS show's title; picking the first glyph group
+// would hand every show the first show's stars. A single-show Observer review
+// carries the Guardian headline stars. outletId 'observer' also covers the New
+// York Observer (observer.com), which prints no ratings: anything not served
+// from theguardian.com is skipped (BRO-5081: Theatre Record texts carry no
+// stars, so 187 live Observer reviews were scored unanchored).
+function _normShowTitle(t) {
+  return String(t || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[‘’'`]/g, '').replace(/&amp;/g, '&').replace(/[^a-z0-9&]+/g, ' ').replace(/^the /, '').trim();
+}
+// The page's own canonical/og:url host, never a domain mentioned anywhere in
+// the HTML (an observer.com page can link to theguardian.com).
+function _pageHost(html) {
+  const head = String(html || '').slice(0, 200000);
+  const tags = head.match(/<(?:link|meta)\b[^>]*>/gi) || [];
+  for (const t of tags) {
+    if (!/rel=["']?canonical\b|property=["']?og:url\b/i.test(t)) continue;
+    const m = t.match(/(?:href|content)=["']?(?:https?:)?\/\/([^/"'\s>]+)/i);
+    if (m) return m[1].toLowerCase().replace(/^www\./, '');
+  }
+  return '';
+}
+function extractObserverScore(html, text, showTitle) {
+  if (_pageHost(html) !== 'theguardian.com') return { __skipGeneric: true };
+  const plain = html.replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<style[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&#x27;|&#39;|&rsquo;/g, "'").replace(/&amp;/g, '&').replace(/\s+/g, ' ');
+  const at = plain.search(/star ratings \(out of (?:five|5)\)/i);
+  if (at !== -1) {
+    const want = _normShowTitle(showTitle);
+    if (!want) return { __skipGeneric: true };
+    const seg = plain.slice(at, at + 600).replace(/^star ratings \(out of (?:five|5)\)\s*/i, '');
+    const entries = [...seg.matchAll(/([^\u2605\u2606]{2,120}?)\s*(\u2605{1,5})(\u2606*)/g)]
+      .map(m => ({ name: _normShowTitle(m[1]), filled: m[2].length }));
+    // Exact title only: a suffix rule let "Lady Macbeth" lend its stars to
+    // "Macbeth" when the column never rated Macbeth.
+    const hit = entries.find(e => e.name === want);
+    if (hit) return { originalScore: `${hit.filled}/5 stars`, normalizedScore: starsToNumeric(hit.filled, 5), source: 'observer-column-stars' };
+    return { __skipGeneric: true }; // a multi-show column without this show: never guess
+  }
+  return extractGuardianScore(html, text) || { __skipGeneric: true };
+}
+
+// britishtheatre.com (BritishTheatre.com, Paul T. Davies, Julian Eaves...) prints
+// "<p>N Stars</p>" in the article header. It shares outletId 'british-theatre'
+// with britishtheatreguide.info, which prints no ratings, so only a page served
+// from britishtheatre.com is read (BRO-5081).
+function extractBritishTheatreScore(html) {
+  if (_pageHost(html) !== 'britishtheatre.com') return { __skipGeneric: true };
+  const head = html.slice(0, 120000);
+  const m = head.match(/<p>\s*([1-5])\s+Stars?\s*<\/p>/i);
+  if (!m) return { __skipGeneric: true };
+  const n = Number(m[1]);
+  return { originalScore: `${n}/5 stars`, normalizedScore: starsToNumeric(n, 5), source: 'britishtheatre-com-stars' };
+}
+
 const OUTLET_EXTRACTORS = {
   // Outlets WITH explicit score formats
   'timeout': extractTimeOutScore,
@@ -1358,7 +1416,7 @@ const OUTLET_EXTRACTORS = {
   'digital-journal': extractUKStarRating,
   'rollingstone': noScoreExtractor,    // RS theater reviews don't have star ratings
   'rolling-stone': noScoreExtractor,
-  'british-theatre': noScoreExtractor, // BTG doesn't publish star ratings
+  'british-theatre': extractBritishTheatreScore, // britishtheatre.com prints stars; britishtheatreguide.info does not
   'britishtheatreguide': noScoreExtractor,
   'rolling-stone': noScoreExtractor,
   'theater-life': extractUKStarRating,
@@ -1392,7 +1450,7 @@ const OUTLET_EXTRACTORS = {
   'daily-beast': noScoreExtractor,
   'broadwaynews': noScoreExtractor,
   'broadway-news': noScoreExtractor,
-  'observer': noScoreExtractor,
+  'observer': extractObserverScore,
   'thewrap': noScoreExtractor,
   'the-wrap': noScoreExtractor,
   'theater-news-online': noScoreExtractor,  // Site-wide 4.6/5, not per-review ratings
@@ -1487,7 +1545,7 @@ function extractScore(html, text, outletId, showTitle) {
   // Some outlets (Telegraph) have rating elements that cleanHtmlForScoring corrupts,
   // so try raw HTML first, then cleaned HTML as fallback
   if (OUTLET_EXTRACTORS[outletId]) {
-    const result = OUTLET_EXTRACTORS[outletId](html, text) || OUTLET_EXTRACTORS[outletId](cleanedHtml, text);
+    const result = OUTLET_EXTRACTORS[outletId](html, text, showTitle) || OUTLET_EXTRACTORS[outletId](cleanedHtml, text, showTitle);
     // Check for __skipGeneric marker (outlet explicitly doesn't have scores)
     if (result && result.__skipGeneric) {
       return null; // Don't use generic extractors for this outlet
@@ -1821,8 +1879,16 @@ function publishesNoCriticRating(outletId, data) {
   }
 }
 
+// Outlets whose extractor reads one specific host and skips the rest (outletId
+// shared by a star-printing and a star-less site). Not in KNOWN_STAR_OUTLETS, so
+// the generic glyph scan never runs for them (BRO-5081).
+const HOST_GATED_STAR_OUTLETS = new Set(['british-theatre']);
+
 module.exports = {
   extractScore,
+  HOST_GATED_STAR_OUTLETS,
+  extractObserverScore,
+  extractBritishTheatreScore,
   extractDesignation,
   NO_CRITIC_RATING_OUTLETS,
   publishesNoCriticRating,

@@ -249,6 +249,16 @@ function isTruncatedPreviewOf(text, otherText) {
   return false;
 }
 
+/**
+ * Was this record's byline set by the legacy LLM web-search step? Its creating
+ * `source` is 'web-search' (aggregator sources merged in later do not vouch for
+ * the name it chose). Deliberately not the SERP sources: those read the byline
+ * off the page, and the 355/896 evidence is about web-search alone. Pure.
+ */
+function isWebSearchByline(d) {
+  return !!d && d.source === 'web-search';
+}
+
 /** Count the distinct score signals present on a review record. */
 function scoreSignals(d) {
   if (!d) return [];
@@ -378,6 +388,23 @@ function chooseCanonical(aName, aData, bName, bData) {
   }
   if (bAttested && !aAttested && !aNameSeen) {
     return pick(bName, aName, 'byline: only this byline is printed in the article text');
+  }
+
+  // 2c'. Byline provenance (BRO-5081). Two different named critics on one url,
+  // and the article text settled nothing: the record whose byline was written
+  // by the legacy LLM web-search step loses to one created by any other source
+  // (an aggregator listing, Theatre Record, the outlet's own page). That step
+  // invented names: 355 of 896 checked live pages name someone else (Variety
+  // "Charles Isherwood" on David Rooney's reviews, Time Out "Adam Feldman" on
+  // Helen Shaw's), against 6 of 262 sampled rows from every other source.
+  // Ranked above text quality and score richness for the same reason as 2c:
+  // those measure processing, not whether the byline is real.
+  if (!aUnknown && !bUnknown && aSlug !== bSlug) {
+    // Same demotion bar as 2c: the loser's name must appear in NEITHER copy,
+    // so a real web-search byline the text prints is never suppressed.
+    const aWeb = isWebSearchByline(aData), bWeb = isWebSearchByline(bData);
+    if (aWeb && !bWeb && !aNameSeen) return pick(bName, aName, 'byline: web-search-invented byline loses to an independently sourced one');
+    if (bWeb && !aWeb && !bNameSeen) return pick(aName, bName, 'byline: web-search-invented byline loses to an independently sourced one');
   }
 
   // 2d. Text quality (BRO-3570) — empty fullText loses outright, and a
@@ -749,5 +776,5 @@ if (require.main === module) main();
 module.exports = {
   bylineSlug, outletSlug, isUnknownByline, levenshtein, scoreSignals,
   isScoreable, isTruncatedPreviewOf, chooseCanonical, chooseCanonicalForRebuild, wouldBeIncludableIfCleared,
-  isClassAContaminated, audit, fix, showsDataAvailable,
+  isClassAContaminated, audit, fix, showsDataAvailable, isWebSearchByline,
 };
