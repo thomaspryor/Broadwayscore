@@ -27,10 +27,12 @@ Skip this lane if `pgrep -f scripts/codex/daily-runner.js` finds one still
 running from an earlier firing.
 
 1. `codex --version` must print 0.160.0; otherwise `npm i -g --no-audit --no-fund @openai/codex@0.160.0`.
-2. Start `node scripts/codex/daily-runner.js --limit 3 > /tmp/codex-run.log 2>&1`
+2. Start `node scripts/codex/daily-runner.js --limit 6 --max-minutes 105 --card-max-minutes 60 > /tmp/codex-run.log 2>&1`
    with run_in_background AND timeout 7200000. The default background limit is
    30 minutes and it killed the runner mid-card on 2026-10-11, after Codex had
-   pushed a passing fix. It restores the owner's Codex login, has Codex fix
+   pushed a passing fix. Codex works on the owner's ChatGPT plan, so it takes
+   up to 6 cards a firing (owner decision 2026-10-11); --max-minutes stops it
+   starting a new card that could not finish inside the 2-hour limit. It restores the owner's Codex login, has Codex fix
    each card, gates every result on a Claude check, lands what passes and
    returns the rest to Todo. Do not touch .claude/worktrees/codex-runner.
 
@@ -62,7 +64,11 @@ For each card:
    commit). A refusal saying the command did not pass means it is NOT fixed:
    work it. Obsolete: cancel with a reason. Then move on.
 4. Otherwise fix it in a new worktree on a fresh branch from current
-   origin/main, following CLAUDE.md: tsc/lint/tests for what you touched,
+   origin/main. The pick names a `model`: when it is "opus" (urgent cards,
+   cards marked Model: Opus, retries after a failed attempt), hand steps 4 and 5
+   to a subagent with the Agent tool and model "opus", giving it the card id,
+   the worktree path and these steps, and check its result before step 6. Follow
+   CLAUDE.md: tsc/lint/tests for what you touched,
    scoring-delta checks if scoring files change, a review-panelist subagent
    review with its findings fixed, recorded with
    `node scripts/lib/review-gate.mjs --query=record --reviewer=second-opinion --result=pass`.
