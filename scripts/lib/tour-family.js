@@ -198,6 +198,9 @@ function tourInheritance(tour, parent, shows = null) {
 function tourFallbackArt(tour, parent) {
   if (!isTourShow(tour) || !parent || isTourShow(parent)) return null;
   if (normTitle(tour.title) !== normTitle(parent.title)) return null;
+  // A different performer on the road (Mark Twain Tonight!) must not wear the
+  // parent's star photo: such a tour sets noParentArtFallback: true.
+  if (tour.noParentArtFallback === true) return null;
   const own = tour.images || {};
   if (own.poster || own.thumbnail || own.hero) return null;
   const theirs = parent.images || {};

@@ -215,6 +215,7 @@ test('tourFallbackArt: parent art for an imageless tour, however long ago the pa
   assert.equal(fb.thumbnail, parent.images.thumbnail);
   assert.equal(tourImageProblems({ ...tour, images: fb }, [parent, tour]).length, 0);
   assert.equal(tourFallbackArt({ ...tour, images: { poster: '/images/shows/grinch-tour-2026/poster.webp' } }, parent), null, 'never replaces own art');
+  assert.equal(tourFallbackArt({ ...tour, noParentArtFallback: true }, parent), null, 'one-performer tours opt out');
   assert.equal(tourFallbackArt(tour, { ...parent, title: 'Other' }), null);
   assert.equal(tourFallbackArt(tour, { ...parent, images: { poster: 'https://x/y.jpg' } }), null, 'remote URLs never spread');
 });
