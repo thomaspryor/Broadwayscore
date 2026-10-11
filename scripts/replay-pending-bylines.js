@@ -26,7 +26,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { fetchPage } = require('./lib/scraper');
+const { fetchPage, cleanup } = require('./lib/scraper');
 const { extractAuthorFromHtml, extractHighConfidenceAuthor } = require('./lib/content-quality');
 const { normalizeCritic } = require('./lib/review-normalization');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
@@ -36,6 +36,8 @@ const { isArticleOutsideProductionWindow } = require('./lib/date-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { findExistingFileForUrl: findExistingFileForUrlShared } = require('./lib/review-url-clusters');
 const { isRecentlyLive } = require('./lib/show-liveness');
+const { markEmptyBodyForRetry } = require('./lib/empty-body-retry');
+const { retryEmptyBodyReviews } = require('./retry-empty-body-reviews');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -403,6 +405,7 @@ async function processShow(showId) {
     data.criticName = byline;
     data.bylineSource = 'replay-pending-bylines';
     data.bylineExtractedAt = new Date().toISOString();
+    markEmptyBodyForRetry(data);
     // Persist the extracted date. The pre-fix promoted files carried
     // publishDate:null, so the downstream date guards (flag-wrong-production-by-date)
     // could not re-catch a wrong-production leak post-promotion either. Writing it
@@ -441,6 +444,17 @@ module.exports = {
 if (require.main === module) {
   (async () => {
     const ids = showIds();
+    // BRO-3999: landed textless stubs are outside _pending, including shows
+    // with NO pending directory. The existing opening-night and 6-hourly /
+    // weekly enrichment callers persist these repairs in the private repo.
+    const showData = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/shows.json'), 'utf8'));
+    const shows = showData.shows || showData;
+    const retryIds = allPending ? undefined : allOpen
+      ? shows.filter(show => isPendingDrainEligible(show, closedWithinDays)).map(show => show.id)
+      : ids;
+    await retryEmptyBodyReviews({ root: REVIEW_TEXTS_ROOT, shows, showIds: retryIds, dryRun,
+      cooldownHours: showArg || showsArg ? 1 : 6,
+      budget: createRunBudget(Math.min(2, timeBudget.minutes || 2)) });
     const scopeNote = allOpen && closedWithinDays > 0 ? ` (open/previews + closed within ${closedWithinDays}d)` : '';
     console.log(`Processing ${ids.length} show(s)${scopeNote}${dryRun ? ' [DRY RUN]' : ''}\n`);
 
@@ -461,6 +475,6 @@ if (require.main === module) {
     console.log(`Kept in _pending: ${totalKept}`);
   })().catch(e => {
     console.error(e);
-    process.exit(1);
-  });
+    process.exitCode = 1;
+  }).finally(cleanup);
 }
