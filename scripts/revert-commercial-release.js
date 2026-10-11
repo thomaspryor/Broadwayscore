@@ -14,6 +14,8 @@
  * deleted from the pending file, and re-holding it is the caller's job.
  */
 
+require('./lib/cli-help').exitOnHelp(module);
+
 const fs = require('fs');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
 const { revertReleasedRecords } = require('./lib/commercial-release-revert');
@@ -25,10 +27,6 @@ for (const arg of process.argv.slice(2)) {
   flags[key] = rest.length ? rest.join('=') : true;
 }
 
-if (flags.help) {
-  console.log('Usage: node scripts/revert-commercial-release.js --previous=FILE [--released=FILE] --shows=a,b [--dry-run]');
-  process.exit(0);
-}
 if (typeof flags.previous !== 'string' || typeof flags.shows !== 'string') {
   console.error('--previous=FILE and --shows=a,b are both required');
   process.exit(2);

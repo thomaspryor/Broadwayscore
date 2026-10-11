@@ -102,7 +102,13 @@ jobs:
             ARGS="--previous=${RUNNER_TEMP}/commercial.before-release.json --released=${RUNNER_TEMP}/commercial.at-release.json --shows=$LIST"
             if [ "$DRY_RUN" = "true" ]; then ARGS="$ARGS --dry-run"; fi
             node scripts/revert-commercial-release.js $ARGS | tee "${RUNNER_TEMP}/release.log"
-            if [ "$DRY_RUN" != "true" ]; then node scripts/validate-data.js > "${RUNNER_TEMP}/validate.log" 2>&1 || { tail -40 "${RUNNER_TEMP}/validate.log"; exit 1; }; fi
+            # --dry-run: validate only; its audit/baseline writes would ride the
+            # blanket data/ sweep below (audit-blanket-sweep-audit-writes).
+            # blanket-sweep-audit-ok: data/audit/validation-baseline.json validate-data runs with --dry-run here, so it writes nothing
+            # blanket-sweep-audit-ok: data/audit/same-url-duplicate-baseline.json validate-data runs with --dry-run here, so it writes nothing
+            # blanket-sweep-audit-ok: data/audit/tony-coverage-gaps.json validate-data runs with --dry-run here, so it writes nothing
+            # blanket-sweep-audit-ok: data/audit/london-only-nyc-accumulation.json validate-data runs with --dry-run here, so it writes nothing
+            if [ "$DRY_RUN" != "true" ]; then node scripts/validate-data.js --dry-run > "${RUNNER_TEMP}/validate.log" 2>&1 || { tail -40 "${RUNNER_TEMP}/validate.log"; exit 1; }; fi
           else
             ARGS="--release-held=$LIST"
             if [ "$DRY_RUN" = "true" ]; then ARGS="$ARGS --dry-run"; fi
