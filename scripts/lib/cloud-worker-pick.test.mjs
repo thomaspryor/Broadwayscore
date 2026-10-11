@@ -401,3 +401,31 @@ test('BRO-2204: a card carrying the NO-DISPATCH marker is never picked or resume
   // Only the description counts: a comment quoting the marker is not a hold.
   assert.equal(skipReason(issue({ comments: { nodes: [{ body: 'NO-DISPATCH: quoted', createdAt: FRESH }] } }), NOW), null);
 });
+
+// BRO-5017: a START-NOW card filed with prose acceptance criteria was skipped
+// as no-safe-verify every hour and never started. Create now refuses it.
+test('startNowUnpickableReason: refuses a START-NOW card the picker would skip', () => {
+  const { startNowUnpickableReason } = require('./cloud-worker-pick.js');
+  const card = (over) => ({ title: 'Research hard cites', priority: 2, mode: 'dispatch', ...over });
+  const prose = 'START-NOW: research handoff\n\n## Acceptance criteria\nRows land in pending review with hard cites.';
+  assert.equal(startNowUnpickableReason(card({ description: prose })).reason, 'no-safe-verify');
+  assert.match(startNowUnpickableReason(card({ description: prose })).hint, /VERIFY/);
+  const safe = `START-NOW: research handoff\n\nVERIFY: ${SAFE_CMD.slice(1, -1)}`;
+  assert.equal(startNowUnpickableReason(card({ description: safe })), null);
+  assert.equal(startNowUnpickableReason(card({ description: safe, priority: 3 })).reason, 'not-p0-p1');
+  assert.equal(startNowUnpickableReason(card({ description: safe, priority: undefined })).reason, 'not-p0-p1');
+  assert.equal(startNowUnpickableReason(card({ description: safe, mode: 'park' })).reason, 'parked-or-backlog');
+  // No START-NOW line: never refused, whatever else is wrong with the card.
+  assert.equal(startNowUnpickableReason(card({ description: 'plain notes', priority: 4, mode: 'park' })), null);
+  // Agrees with the picker on the same card.
+  const issueLike = { identifier: 'BRO-1', title: 'Research hard cites', description: prose, priority: 2, state: { type: 'unstarted' }, updatedAt: OLD, createdAt: OLD };
+  assert.equal(skipReason(issueLike, NOW), 'no-safe-verify');
+});
+
+test('createLinearIssue refuses an unpickable START-NOW card before any API call', async () => {
+  const { createLinearIssue } = require('./linear-issue-create.js');
+  await assert.rejects(
+    createLinearIssue({ title: 'Research hard cites', description: 'START-NOW: go\n\nAcceptance: rows land.', dispatch: true, priority: 2, client: {}, reuseTwin: true }),
+    (err) => err.startNowUnpickable === 'no-safe-verify' && /Nothing was filed/.test(err.message),
+  );
+});

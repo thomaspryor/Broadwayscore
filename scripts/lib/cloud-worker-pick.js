@@ -171,6 +171,35 @@ function headlessUnfitReason(issue, { allowParkedSentinel = false } = {}) {
   return blocking.length ? `blocker-${blocking[0].code}` : null;
 }
 
+// What the filer should change for each reason a START-NOW card can't be picked.
+const START_NOW_FIX_HINTS = {
+  'parked-or-backlog': 'file it with --dispatch, not --park',
+  'not-p0-p1': 'file it with --priority 1 or 2',
+  'no-safe-verify': 'add a safe-form "VERIFY: <cmd>" line (node --test <path>.test.mjs, npx tsc --noEmit, npx next lint, test -f <path>)',
+  'verify-not-cloud-runnable': 'use a narrower VERIFY than the whole unit suite',
+  'no-dispatch-marker': 'drop NO-DISPATCH or drop START-NOW',
+  'ios-app-repo': 'the cloud worker cannot check out the app repo; drop START-NOW',
+};
+
+/**
+ * PURE. Why a card filed now with a START-NOW line would never be picked by the
+ * cloud worker, or null (BRO-5017: filed with prose acceptance criteria, it sat
+ * in Todo under startNowSkipped, which nobody reads). Same checks skipReason
+ * applies to a fresh unstarted card, on the description as it will be stored.
+ * @param {{title: string, description: string, priority: (number|undefined), mode: string}} card
+ * @returns {{reason: string, hint: string}|null}
+ */
+function startNowUnpickableReason({ title, description, priority, mode }) {
+  const issue = { title, description };
+  if (!hasStartNowLine(issue)) return null;
+  let reason = null;
+  if (mode !== 'dispatch') reason = 'parked-or-backlog';
+  else if (!PRIORITIES.has(Number(priority))) reason = 'not-p0-p1';
+  else reason = headlessUnfitReason(issue);
+  if (!reason) return null;
+  return { reason, hint: START_NOW_FIX_HINTS[reason] || 'remove what the reason names from the notes, or drop START-NOW' };
+}
+
 function skipReason(issue, nowMs) {
   const drain = require('./linear-drain-parked.js');
   if (!issue || !issue.identifier) return 'malformed';
@@ -330,6 +359,6 @@ function findResumeCard(issues, landRefs, opts) {
 
 module.exports = {
   IDLE_MS, STRANDED_MS, RESUME_WINDOW_MS, MAX_LAND_RUNS, RECENT_PAUSE_MS, AWAITING_OWNER_MAX_MS,
-  AUTOMATION_PARK_STALE_MS, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS, IOS_APP_CARD_RE, isStaleAutomationParked, isStartNow, hasStartNowLine, skipReason, pickCloudCard, pausedHistorySkipReason, landRefCardNumber, resumableCardsByNumber,
+  AUTOMATION_PARK_STALE_MS, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS, IOS_APP_CARD_RE, isStaleAutomationParked, isStartNow, hasStartNowLine, startNowUnpickableReason, skipReason, pickCloudCard, pausedHistorySkipReason, landRefCardNumber, resumableCardsByNumber,
   findResumeCandidates, findResumeCard,
 };
