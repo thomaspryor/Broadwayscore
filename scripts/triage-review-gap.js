@@ -50,7 +50,7 @@ const { execFileSync } = require('child_process');
 const { normalizeOutlet, normalizeUrl } = require('./lib/review-normalization');
 const { explainExclusion } = require('./lib/review-guards');
 const { resolveReviewTextsDir, mainWorktreeOf } = require('./lib/review-texts-dir');
-const { outletIdCandidates, classifyGap, justifiesUrlResolution, isOtherProductionFile, isPreRunFile, filterByUrl } = require('./lib/review-gap-triage');
+const { outletIdCandidates, classifyGap, justifiesUrlResolution, isOtherProductionFile, isPreRunFile, filterByUrl, isDifferentDay } = require('./lib/review-gap-triage');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = 'Usage: node scripts/triage-review-gap.js --show=SHOW_ID --outlet="Outlet Name" [--url=REVIEW_URL] [--publish-date=YYYY-MM-DD] [--json]';
@@ -73,6 +73,11 @@ for (const a of args) {
   } else {
     orphans.push(a);
   }
+}
+
+if (flags['publish-date'] !== undefined && !(typeof flags['publish-date'] === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(flags['publish-date']))) {
+  console.error('Usage error: --publish-date must be YYYY-MM-DD.');
+  process.exit(2);
 }
 
 // Require an actual STRING value, not just truthy — `--show` with no `=value`
@@ -410,13 +415,13 @@ function checkLiveProd(json, outletId, url) {
   // BRO-4036: with --publish-date, a same-outlet file dated on a different day
   // is a DIFFERENT article (e.g. a pre-adjudicated exclusion or a news item) and
   // must not mask a new publication. Undated files are kept (cannot disprove).
-  const gapDate = typeof flags['publish-date'] === 'string' ? flags['publish-date'].slice(0, 10) : null;
+  // Skipped when --url already narrowed the files (an exact url match wins).
+  const gapDate = flags['publish-date'] || null;
   const differentArticleFiles = [];
-  if (gapDate) {
+  if (gapDate && !reviewUrl) {
     const keep = [];
     for (const f of reviewText.files) {
-      const d = f.data && f.data.publishDate ? String(f.data.publishDate).slice(0, 10) : null;
-      (d && d !== gapDate ? differentArticleFiles : keep).push(f);
+      (f.data && isDifferentDay(f.data.publishDate, gapDate) ? differentArticleFiles : keep).push(f);
     }
     reviewText.files = keep;
     reviewText.anyPending = keep.some((f) => f.pending);
@@ -510,6 +515,7 @@ function checkLiveProd(json, outletId, url) {
     console.log(`  reviews.json: local=${reviewsJson.inLocal} origin/main=${reviewsJson.inOrigin}${reviewsJson.originError ? ` [origin/main check FAILED: ${reviewsJson.originError}]` : ''}`);
     console.log(`  live prod:    ${live.checked ? (live.showNotDeployed ? 'show not deployed at all (404)' : `present=${inLiveProd}`) : `unchecked (${live.err})`}`);
     if (otherProductionFiles.length > 0) console.log(`  other-production: ${otherProductionFiles.length} file(s) ignored (different production of this title): ${otherProductionFiles.map((f) => path.basename(f.path)).join(', ')}`);
+    if (differentArticleFiles.length > 0) console.log('  NOTE: --publish-date only filters review-texts files; the reviews.json and live-prod checks are outlet-wide and may still reflect the other article.');
     for (const w of fetchWarnings) console.log(`  WARNING: ${w}`);
     if (gitErrors.length > 0) {
       console.log(`  WARNING: ${gitErrors.length} check(s) could not be completed — this classification may be understating pipeline progress. Do not treat '${state}' as final until these are resolved.`);

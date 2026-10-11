@@ -232,3 +232,15 @@ test('--publish-date: an adjudicated exclusion for a different-day article does 
   assert.equal(r.state, 'true-missed-discovery');
   assert.equal(r.differentArticlePaths.length, 1);
 });
+
+test('--publish-date: non-ISO file dates are parsed, not string-sliced (same day stays a candidate)', () => {
+  const r = run({ [`${SHOW}/fixture-outlet--a-critic.json`]: { ...base, publishDate: 'September 20, 2026', wrongShow: true } }, 'Fixture Outlet', null, ['--publish-date=2026-09-20']);
+  assert.equal(r.differentArticlePaths.length, 0);
+  assert.equal(r.state, 'ingested-but-excluded');
+});
+
+test('--publish-date: unparseable file date is kept; malformed flag exits 2', () => {
+  const r = run({ [`${SHOW}/fixture-outlet--a-critic.json`]: { ...base, publishDate: 'sometime', wrongShow: true } }, 'Fixture Outlet', null, ['--publish-date=2026-09-20']);
+  assert.equal(r.differentArticlePaths.length, 0);
+  assert.throws(() => run({}, 'Fixture Outlet', null, ['--publish-date=Sep 20']), /status 2|Command failed/);
+});
