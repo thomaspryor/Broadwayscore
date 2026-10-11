@@ -1,22 +1,64 @@
 {
-  "generatedAt": "2026-10-10T13:19:58.317Z",
+  "generatedAt": "2026-10-11T13:50:47.467Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "306572efbc81d58d23cdd9efbb9d94d8dbe50aab",
-  "state": "GREEN",
-  "consecutiveFailures": 0,
-  "consecutiveSuccesses": 23,
-  "greenSince": "2026-10-10T00:55:20Z",
-  "greenForHours": 12.41064361111111,
+  "latestRunHeadSha": "7df6660cbe4b0fc46d44dd46ada109878a0fefbf",
+  "state": "RED",
+  "consecutiveFailures": 1,
+  "consecutiveSuccesses": 0,
+  "greenSince": null,
+  "greenForHours": null,
   "greenDurationIsFloor": false,
-  "redSince": null,
-  "redForHours": null,
+  "redSince": "2026-10-11T13:20:54Z",
+  "redForHours": 0.49818527777777777,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-10-10T12:04:32Z",
-  "latestFailedRunId": null,
-  "latestFailedRunUrl": null,
-  "decidedRuns": 99,
-  "failingJobs": [],
-  "failingPaths": [],
-  "topFailingJob": null
+  "lastSuccessAt": "2026-10-11T12:57:58Z",
+  "latestFailedRunId": "38142809925",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38142809925",
+  "decidedRuns": 98,
+  "failingJobs": [
+    {
+      "name": "Data Validation",
+      "steps": [
+        "Run autoclear-vs-ensemble corpus test (needs review-texts)",
+        "Run BRO-1397 prior-run former-cast sweep (needs review-texts)",
+        "Audit review contamination",
+        "Audit circular duplicateOf pairs",
+        "Audit same-URL byline double-counts"
+      ]
+    },
+    {
+      "name": "Unit Tests",
+      "steps": [
+        "Run unit tests (no-data-dependency)"
+      ]
+    },
+    {
+      "name": "Test Summary",
+      "steps": [
+        "Check results"
+      ]
+    }
+  ],
+  "failingPaths": [
+    {
+      "path": "scripts/lib/autoclear-vs-ensemble.test.mjs",
+      "job": "Data Validation",
+      "step": "Run autoclear-vs-ensemble corpus test (needs review-texts)",
+      "evidence": "not ok 6 - corpus: 0 files where an auto-clear overrode a live unanimous ensemble verdict (wrongProduction + wrongShow)"
+    },
+    {
+      "path": "scripts/verify-prior-run-former-cast-sweep.test.mjs",
+      "job": "Data Validation",
+      "step": "Run BRO-1397 prior-run former-cast sweep (needs review-texts)",
+      "evidence": "not ok 1 - excerptMentionsFormerCast flags exactly the known-good set across every priorRuns show"
+    },
+    {
+      "path": "tests/unit/commercial-bro5020-entries.test.mjs",
+      "job": "Unit Tests",
+      "step": "Run unit tests (no-data-dependency)",
+      "evidence": "not ok 5867 - grey-house carries the BRO-5020 values"
+    }
+  ],
+  "topFailingJob": "Unit Tests"
 }
