@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-10-10T16:27:14.955Z",
-    "completedAt": "2026-10-10T16:28:12.206Z",
-    "totalReviews": 54495,
-    "processed": 12,
-    "skipped": 54481,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 49504,
-      "output": 3695,
-      "total": 150129
-    },
-    "costUsd": 0.24461680000000002,
-    "runId": "38067459869",
-    "errorDetails": [
-      {
-        "showId": "diana-the-musical-2021",
-        "outletId": "nytimes",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-10-10T16:28:14.281Z",
-    "completedAt": "2026-10-10T16:28:27.070Z",
-    "totalReviews": 6,
-    "processed": 6,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 3639,
-      "output": 1153,
-      "total": 4792
-    },
-    "costUsd": 0.017769100000000003,
-    "runId": "38067459869",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-10T16:32:22.084Z",
     "completedAt": "2026-10-10T16:33:31.547Z",
     "totalReviews": 54502,
@@ -629335,6 +629297,44 @@
     },
     "costUsd": 0.1455626,
     "runId": "38124359945",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-11T08:29:37.617Z",
+    "completedAt": "2026-10-11T08:31:07.444Z",
+    "totalReviews": 55365,
+    "processed": 21,
+    "skipped": 55343,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 81315,
+      "output": 6285,
+      "total": 245619
+    },
+    "costUsd": 0.39264915,
+    "runId": "38124776875",
+    "errorDetails": [
+      {
+        "showId": "diana-the-musical-2021",
+        "outletId": "nytimes",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-11T08:31:08.820Z",
+    "completedAt": "2026-10-11T08:31:19.981Z",
+    "totalReviews": 5,
+    "processed": 5,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 4019,
+      "output": 1083,
+      "total": 5102
+    },
+    "costUsd": 0.018043299999999998,
+    "runId": "38124776875",
     "errorDetails": []
   }
 ]
