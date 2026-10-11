@@ -79,6 +79,7 @@ const { assessTextQuality, detectGarbageFromReasoning, hasBotStubTruncationSigna
 const { getBestTextForScoring } = require('../lib/text-quality');
 const { invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear } = require('../lib/review-write-guard');
 const { laneBypasses } = require('../lib/opening-night-lane/trust-model');
+const { humanClearOverridingRejection } = require('../lib/human-cleared-rejection');
 const { EXCERPT_FIELDS } = require('../lib/excerpt-fields');
 // Shared with the cascade gate's queue counter (scripts/count-scoring-queue.js)
 // so "would this review be scoreable?" has exactly one answer — see task #652.
@@ -1538,24 +1539,10 @@ async function main(): Promise<void> {
         // OTHER show. Treat them like manually-cleared so the Haiku fallback
         // scores the trimmed section instead of leaving the file in
         // "rejected but no score" limbo. Issue #316 ship-check (P0/B).
-        const manuallyCleared =
-          fileData.wrongProductionManualClear === true ||
-          fileData.wrongProductionOverride === true ||
-          fileData.wrongShowManualClear === true ||
-          fileData.wrongShowOverride === true ||
-          fileData.humanReviewedWrongProduction === false ||
-          fileData.isCombinedReview === true ||
-          // Aliases for sweep scripts that historically wrote the `Cleared`
-          // suffix instead of `ManualClear` — discovered 2026-05-01 when 4
-          // opera sweeps used the wrong field name and the gate silently
-          // re-flagged every cycle. Treating both suffixes as equivalent
-          // closes the gap without requiring every sweep to be migrated.
-          // Notion 362637c5-416f-8142-a088-f44f0cdaa98b.
-          fileData.wrongProductionCleared === true ||
-          fileData.wrongShowCleared === true ||
-          // BRO-4807: an opening-night lane review is rescued by the Haiku fallback, never excluded.
-          laneBypasses(fileData, 'wrongProduction');
-        if (manuallyCleared && (rejection === 'wrong_production' || rejection === 'wrong_show')) {
+        // BRO-4838: the same holds for a not_a_review verdict on a file a person has said IS a review
+        // (nonReviewManualClear / wrongArticle clear); the decision lives in scripts/lib/human-cleared-rejection.js.
+        const humanClear = humanClearOverridingRejection(fileData, rejection);
+        if (humanClear) {
           console.log(`SKIP-REJECT (${rejection} on manually-cleared file): ${rejectionReasoning?.substring(0, 80) || ''}`);
           // Fallback: a human has verified this file matches the show, but the
           // ensemble still rejected it — score the text directly with a single
@@ -1583,7 +1570,7 @@ async function main(): Promise<void> {
               }
               scoredAny.scoreSource = 'manual-cleared-haiku-fallback';
               scoredAny.scoreSourceReason =
-                `ensemble rejected as ${rejection} but file is human-cleared via wrongProductionManualClear/wrongShowManualClear; Haiku single-model scored the text directly`;
+                `ensemble rejected as ${rejection} but file is human-cleared (${humanClear}); Haiku single-model scored the text directly`;
               scoredAny.scoredAt = new Date().toISOString();
               // Retire the rescore queue entry here too. Without this the file
               // scores successfully but stays needsRescore:true and is re-scored
