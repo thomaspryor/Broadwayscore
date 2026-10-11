@@ -661,7 +661,10 @@
     "oh-mary-tour-2026/nytimes--laura-collins-hughes.json",
     "electra-persona-west-end-2026/vocaleyes--unknown.json",
     "as-you-like-it-globe-west-end-2026/guardian--unknown.json",
-    "hells-kitchen-tour-2025/sfgate--unknown.json"
+    "hells-kitchen-tour-2025/sfgate--unknown.json",
+    "fish-off-broadway-2026/timeout--unknown.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1140,7 +1143,7 @@
     ]
   },
   "startTime": "2026-10-10T18:51:30.955Z",
-  "lastProcessed": "evita-2026/thestage--sam-marlowe.json",
+  "lastProcessed": "midnight-off-broadway-2026/eventsfy--unknown.json",
   "log": [
     {
       "t": "2026-10-10T19:33:04.519Z",
@@ -1303,6 +1306,62 @@
       "t": "2026-10-11T01:42:56.466Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-11T02:43:29.721Z",
+      "event": "bb-session",
+      "session": "38e17b18",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654485"
+    },
+    {
+      "t": "2026-10-11T02:43:30.406Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-11T02:43:48.173Z",
+      "event": "bb-session",
+      "session": "fdad3562",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654485"
+    },
+    {
+      "t": "2026-10-11T02:43:48.819Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-11T02:46:01.815Z",
+      "event": "bb-session",
+      "session": "d754862e",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-11T02:46:02.542Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-11T02:46:20.460Z",
+      "event": "bb-session",
+      "session": "ed1d895e",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-11T02:46:21.087Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-11T02:47:10.217Z",
+      "event": "bb-session",
+      "session": "f5c8d2df",
+      "url": "https://broadwaylog.app/shows/how-shakespeare-saved-my-life-2026"
+    },
+    {
+      "t": "2026-10-11T02:47:26.841Z",
+      "event": "bb-session",
+      "session": "2854149b",
+      "url": "https://broadwaylog.app/shows/how-shakespeare-saved-my-life-2026"
     }
   ],
   "recoveredAfterFailure": [

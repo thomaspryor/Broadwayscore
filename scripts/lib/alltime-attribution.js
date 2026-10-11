@@ -30,6 +30,7 @@
  */
 
 const { normalizeTitle } = require('./title-match');
+const { KNOWN_GAPS } = require('./grosses-integrity');
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const PERFS_PER_WEEK = 8;
@@ -181,7 +182,129 @@ function applyAllTimeAttribution(grossesShows, shows, opts = {}) {
   const sharedSlugs = new Set(shared.map((c) => c.slug));
   const clears = [...shared, ...unholdableAllTimeClears(grossesShows, shows, opts).filter((c) => !sharedSlugs.has(c.slug))];
   for (const c of clears) grossesShows[c.slug].allTime = EMPTY();
-  return { moves, clears };
+  // A moved row's source is emptied too (the 2025 Mamma Mia! handed the
+  // title's total to the 2001 run), so it is refilled the same way.
+  const emptied = [...clears, ...moves.map((m) => ({ slug: m.slug }))];
+  const fills = opts.history ? fillClearedFromHistory(grossesShows, shows, opts.history, emptied, opts) : [];
+  return { moves, clears, fills };
+}
+
+// History rows start in December 2001. A run's own weeks count as its whole
+// run when they begin within three weeks of its first preview and end within
+// two of its closing (running shows: the newest week).
+const OWN_RUN_START_SLACK_DAYS = 21;
+const OWN_RUN_END_SLACK_DAYS = 14;
+
+// Calendar weeks from `first` to `last` inclusive that Broadway played, so a
+// week missing from the history altogether counts as a hole, not just a stored
+// week that lacks the row (the history is keyed by week ending, a few BWW-era
+// keys by Monday, hence the rounding). Weeks inside a known gap (the COVID
+// shutdown: the history has no key between its two ends) are not expected.
+function expectedWeeks(first, last) {
+  const span = (a, b) => Math.round((toMs(b) - toMs(a)) / (7 * DAY_MS));
+  let dark = 0;
+  for (const [from, to] of KNOWN_GAPS) if (first <= from && last >= to) dark += span(from, to) - 1;
+  return span(first, last) + 1 - dark;
+}
+
+/**
+ * A production's totals from its own weekly League rows. Only weeks inside
+ * the run's dates count: a history not yet re-keyed per run (BRO-5016) still
+ * files a title's earlier runs under one slug, and those must never be summed
+ * back into the production. `complete` when the rows cover first preview to
+ * closing with no missing week (a week the history has for other shows but not
+ * this one is a scrape gap, and the sum would come up short), every row has a
+ * count, and the count fits the run. `status`: complete, partial (rows start
+ * late but are whole after), gaps (a hole, a short end or a missing count) or
+ * misfit (more performances than the run could play).
+ */
+function ownRunTotals(history, show, { now = new Date() } = {}) {
+  const slug = show.slug || show.id;
+  // Without a first-preview date the opening is the latest the run can have
+  // begun (a return engagement like Beetlejuice 2025 has no previews).
+  const start = toMs(show.previewsStartDate) ?? toMs(show.openingDate);
+  if (start == null) return null;
+  const weeks = Object.keys(history?.weeks || {}).sort();
+  const closing = toMs(show.closingDate);
+  const end = closing != null && closing < now.getTime() ? closing : toMs(weeks[weeks.length - 1]);
+  if (end == null) return null;
+  const lo = start - OWN_RUN_START_SLACK_DAYS * DAY_MS;
+  const hi = end + OWN_RUN_END_SLACK_DAYS * DAY_MS;
+  const inRun = weeks.filter((w) => toMs(w) >= lo && toMs(w) <= hi);
+  const rows = [];
+  for (const w of inRun) {
+    const r = history.weeks[w]?.[slug];
+    if (r && typeof r === 'object' && r.gross != null) rows.push([w, r]);
+  }
+  if (!rows.length) return null;
+  const first = rows[0][0];
+  const last = rows[rows.length - 1][0];
+  const gaps = Math.max(0, expectedWeeks(first, last) - rows.length);
+  // Weekly grosses carry cents; round the sum so float drift never shows.
+  const sum = (k) => Math.round(rows.reduce((a, [, r]) => a + (Number(r[k]) || 0), 0) * 100) / 100;
+  const performances = sum('performances');
+  const startsLate = toMs(first) > start + OWN_RUN_START_SLACK_DAYS * DAY_MS;
+  const endsEarly = toMs(last) < end - OWN_RUN_END_SLACK_DAYS * DAY_MS;
+  const counted = rows.every(([, r]) => r.performances != null);
+  const fitsRun = canHold(performances, runCapacity(show, now.getTime()));
+  const complete = gaps === 0 && !startsLate && !endsEarly && counted && fitsRun;
+  // Short only at the start because the history itself starts then (December
+  // 2001): the card can say "since" that week. A late first row anywhere else
+  // is a missed week, and a hole, a short end or a missing count cannot be
+  // labeled either.
+  const beforeHistory = toMs(first) <= toMs(weeks[0]) + OWN_RUN_START_SLACK_DAYS * DAY_MS;
+  const status = !fitsRun ? 'misfit'
+    : complete ? 'complete'
+      : gaps === 0 && !endsEarly && counted && beforeHistory ? 'partial' : 'gaps';
+  return {
+    gross: sum('gross'),
+    performances,
+    attendance: rows.every(([, r]) => r.attendance != null) ? sum('attendance') : null,
+    weeks: rows.length,
+    gaps,
+    since: first,
+    complete,
+    status,
+  };
+}
+
+/**
+ * A cleared Broadway production gets its own run's totals back from the
+ * weekly rows instead of a blank (BRO-5016): as allTime when the rows cover
+ * the whole run, as partialRun (with `since`, the first week, which only the
+ * show's own card reads) when they only start late, and nothing when a week
+ * inside the run is missing. A history-filled allTime is marked
+ * `allTimeSource: 'history'` so the next run refreshes it from the weekly rows
+ * (a running show keeps growing) and the BWW merge never mixes it with a
+ * scraped row. A slug whose allTime came from BWW drops any partialRun.
+ * @returns {Array<{slug, status: 'complete'|'partial'|'gaps'|'misfit', weeks, gaps, since, gross}>} (only complete and partial are written)
+ */
+function fillClearedFromHistory(grossesShows, shows, history, clears, opts = {}) {
+  const bySlug = new Map(shows.map((s) => [s.slug || s.id, s]));
+  const cleared = new Set(clears.map((c) => c.slug));
+  const fills = [];
+  for (const [slug, entry] of Object.entries(grossesShows)) {
+    const show = bySlug.get(slug);
+    const at = entry && entry.allTime;
+    const fromHistory = entry && entry.allTimeSource === 'history';
+    const empty = !at || (at.gross == null && at.performances == null);
+    if (!empty && !fromHistory) { delete entry.partialRun; continue; }
+    if (!(cleared.has(slug) || entry.partialRun || fromHistory)) continue;
+    const own = show && isBroadway(show) ? ownRunTotals(history, show, opts) : null;
+    delete entry.partialRun;
+    if (fromHistory) { entry.allTime = EMPTY(); delete entry.allTimeSource; }
+    if (!own) continue;
+    const { status } = own;
+    fills.push({ slug, status, weeks: own.weeks, gaps: own.gaps, since: own.since, gross: own.gross });
+    const totals = { gross: own.gross, performances: own.performances, attendance: own.attendance };
+    if (status === 'complete') {
+      entry.allTime = totals;
+      entry.allTimeSource = 'history';
+    } else if (status === 'partial') {
+      entry.partialRun = { ...totals, since: own.since };
+    }
+  }
+  return fills;
 }
 
 /**
@@ -220,4 +343,4 @@ function unholdableAllTimeClears(grossesShows, shows, { now = new Date() } = {})
   return clears.sort((x, y) => x.slug.localeCompare(y.slug));
 }
 
-module.exports = { applyAllTimeAttribution, sharedAllTimeClears, misplacedAllTimeMoves, unholdableAllTimeClears, runCapacity, constants: { PERFS_PER_WEEK, FIT_SLACK_RATIO, FIT_SLACK_PERFS, FIT_MIN_SHARE } };
+module.exports = { applyAllTimeAttribution, sharedAllTimeClears, misplacedAllTimeMoves, unholdableAllTimeClears, ownRunTotals, fillClearedFromHistory, runCapacity, constants:{ PERFS_PER_WEEK, FIT_SLACK_RATIO, FIT_SLACK_PERFS, FIT_MIN_SHARE } };
