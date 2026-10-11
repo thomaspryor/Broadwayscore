@@ -65,6 +65,8 @@ const SENT_PATH = path.join(DATA_DIR, 'opening-night-sent.json');
 const IMPORTANT_PATH = path.join(DATA_DIR, 'digest-important-shows.json');
 const EXCLUDED_PATH = path.join(DATA_DIR, 'digest-excluded-shows.json');
 const OUTLET_REGISTRY_PATH = path.join(DATA_DIR, 'outlet-registry.json');
+const SILENT_GAPS_PATH = path.join(DATA_DIR, 'audit', 't1-silent-gaps.json');
+const BACKOFF_DIR = path.join(DATA_DIR, 'audit', 'poller-backoff');
 const SITE_URL = 'https://broadwayscorecard.com';
 
 // RULE 17 (email broadcast safety): transactional send to ONE explicit
@@ -359,12 +361,26 @@ function buildRows(shows, reviewMap, audienceBuzz, sentData, importantSet, exclu
     });
 }
 
-function classifyRows(rows) {
+function classifyRows(rows, diagnose = null) {
   const needsHelp = [];
   const broadcastReady = [];
   const comingUp = [];
   const otherRecent = [];
   const otherUpcoming = [];
+
+  // A behind-pace row only stays in Needs help when the diagnosis says a
+  // person has to act (reviews found but never scored, checker silent, ...).
+  // Merely waiting on critics drops to "other recent" with a note, because
+  // the daily poller is already re-checking it and there is nothing to do.
+  const settleWaiting = (r) => {
+    r.diagnosis = diagnose ? diagnose(r) : null;
+    if (r.diagnosis && r.diagnosis.state === 'waiting') {
+      r.waitingNote = r.diagnosis.reason;
+      otherRecent.push(r);
+      return true;
+    }
+    return false;
+  };
 
   for (const r of rows) {
     if (r.daysFromToday >= 0 && r.daysFromToday <= 7) {
@@ -384,7 +400,9 @@ function classifyRows(rows) {
 
       // Overdue broadcast: always needs help, whatever else is true of the row.
       if (r.broadcastOverdue) {
-        r.helpReasons = ['broadcast overdue', ...(r.qualifyGap ? [`short: ${r.qualifyGap}`] : [])];
+        if (settleWaiting(r)) continue;
+        r.helpReasons = r.diagnosis ? [r.diagnosis.reason]
+          : ['broadcast overdue', ...(r.qualifyGap ? [`short: ${r.qualifyGap}`] : [])];
         needsHelp.push(r);
         continue;
       }
@@ -397,7 +415,8 @@ function classifyRows(rows) {
         if (daysSinceOpen >= 2 && underCohort) helpReasons.push(`${r.reviewCount}/${r.expected} reviews`);
         if (daysSinceOpen >= 3 && t1Stalled) helpReasons.push(`only ${r.t1Count} T1`);
         if (helpReasons.length > 0) {
-          r.helpReasons = helpReasons;
+          if (settleWaiting(r)) continue;
+          r.helpReasons = r.diagnosis ? [r.diagnosis.reason] : helpReasons;
           needsHelp.push(r);
           continue;
         }
@@ -649,6 +668,7 @@ function renderCompactRow(row, kind) {
     else if (row.expected && row.reviewCount >= row.expected) status = `${n} · ✓ on track`;
     else if (row.expected) status = `${n} (expected ~${row.expected})`;
     else status = n;
+    if (row.waitingNote) status += ` · ${esc(row.waitingNote)}`;
   }
   return `
   <tr style="border-top:1px solid ${TOKENS.borderSubtle};">
@@ -864,7 +884,13 @@ async function main() {
   const reviewMap = buildShowReviewMap(reviewList);
 
   const rows = buildRows(showList, reviewMap, audience, sent, importantSet, excludedMap);
-  const sections = classifyRows(rows);
+  const { loadSilentGaps, loadBackoff, diagnoseShow } = require('./lib/digest-diagnosis.js');
+  const silentGaps = loadSilentGaps(loadJSON(SILENT_GAPS_PATH));
+  const backoffAvailable = fs.existsSync(BACKOFF_DIR);
+  const sections = classifyRows(rows, (row) => diagnoseShow({
+    row, silentGaps, backoffAvailable,
+    backoff: backoffAvailable ? loadBackoff(BACKOFF_DIR, row.id) : null,
+  }));
 
   const todayHuman = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
   const subject = buildSubject(sections);
