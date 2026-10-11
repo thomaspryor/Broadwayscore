@@ -16,6 +16,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { isValidSynopsis, classifyBadSynopsis, cutToLastSentence } = require('./lib/synopsis-validation');
+const { isTourShow } = require('./lib/tour-family');
 const { imageOnDisk } = require('./lib/show-images');
 const { verifyProductionMatch } = require('./lib/synopsis-production-match');
 const { groundSynopsis } = require('./lib/synopsis-grounding');
@@ -693,6 +694,20 @@ function checkMissingImages(show) {
   return missing;
 }
 
+/**
+ * The daily run's targets: open/preview shows, plus any not-yet-closed
+ * standalone national tour (no tourOf) whose synopsis is missing or bad.
+ * A tour with a parent inherits the parent's synopsis (tour-family.js
+ * tourInheritance) and Wikipedia enrichment skips tours (BRO-4262), so an
+ * upcoming standalone tour had no synopsis path at all: five hand-added tours
+ * (BRO-4931) sat empty and reddened check-corpus-drift (BRO-447).
+ */
+function selectDailyTargets(shows) {
+  return (shows || []).filter(s =>
+    s.status === 'open' || s.status === 'previews' ||
+    (isTourShow(s) && !s.tourOf && s.status !== 'closed' && classifyBadSynopsis(s).bad));
+}
+
 async function main() {
   const args = process.argv.slice(2);
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
@@ -733,8 +748,8 @@ async function main() {
     }
     console.log(`Found ${targetShows.length} shows with missing/bad synopsis${limit > 0 ? ` (limited to ${limit})` : ''}...\n`);
   } else {
-    targetShows = data.shows.filter(s => s.status === 'open' || s.status === 'previews');
-    console.log(`Checking ${targetShows.length} open/preview shows...\n`);
+    targetShows = selectDailyTargets(data.shows);
+    console.log(`Checking ${targetShows.length} open/preview shows (+ standalone tours missing a synopsis)...\n`);
   }
 
   let showsWithMissingImages = [];
@@ -869,4 +884,5 @@ module.exports = {
   extractSynopsisFromHtml,
   generateSynopsisWithLLM,
   buildSynopsisPrompt,
+  selectDailyTargets,
 };

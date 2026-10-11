@@ -366,3 +366,20 @@ test('generateCreativeTeamWithSerpVerification anchors directors to the venue', 
     if (prevKey === undefined) delete process.env.ANTHROPIC_API_KEY; else process.env.ANTHROPIC_API_KEY = prevKey;
   }
 });
+
+// BRO-447: an upcoming standalone tour had no synopsis path (tours inherit from
+// tourOf; Wikipedia enrichment skips tours), so five hand-added tours sat empty.
+test('daily targets include a not-closed standalone tour missing a synopsis', () => {
+  const { selectDailyTargets } = require('./auto-fix-show-data.js');
+  const synopsis = 'A bodyguard is hired to protect a superstar singer from a stalker, and the two fall in love.';
+  const shows = [
+    { id: 'open-show', status: 'open', category: 'broadway', synopsis },
+    { id: 'upcoming-broadway', status: 'upcoming', category: 'broadway' },
+    { id: 'standalone-upcoming', status: 'upcoming', category: 'tour' },
+    { id: 'standalone-open', status: 'open', category: 'tour' },
+    { id: 'standalone-closed', status: 'closed', category: 'tour' },
+    { id: 'standalone-has-synopsis', status: 'upcoming', category: 'tour', synopsis },
+    { id: 'child-tour', status: 'upcoming', category: 'tour', tourOf: 'some-broadway-2020' },
+  ];
+  assert.deepEqual(selectDailyTargets(shows).map(s => s.id), ['open-show', 'standalone-upcoming', 'standalone-open']);
+});
