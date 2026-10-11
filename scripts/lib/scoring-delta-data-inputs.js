@@ -24,7 +24,7 @@ const { execFileSync } = require('child_process');
 
 // Scoring-relevant per-outlet fields. Automation-written metadata
 // (regionInferredBy/At, lastUpdated, _aliasIndex, ...) is deliberately absent.
-const OUTLET_SCORING_FIELDS = ['tier', 'cvStyle', 'isDualMarket', 'region', 'market', 'starScale'];
+const OUTLET_SCORING_FIELDS = ['tier', 'cvStyle', 'isDualMarket', 'coversInternational', 'region', 'market', 'starScale'];
 // Resolution fields: a change re-routes raw outlet strings at rebuild without
 // touching any stored outletId, so review counts under-report them.
 const OUTLET_RESOLUTION_FIELDS = ['displayName', 'aliases', 'domain', 'domainAliases'];

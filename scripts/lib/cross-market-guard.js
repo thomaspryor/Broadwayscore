@@ -358,6 +358,7 @@ function isUkUrl(url) {
  * @param {object} params
  * @param {object} params.outletRegionMap - from buildOutletRegionMap()
  * @param {Set<string>} params.registeredOutletIds - from buildRegisteredOutletIds()
+ * @param {Set<string>} [params.internationalTradeOutlets] - from buildOutletMaps()
  * @param {string} params.canonicalOutlet - normalizeOutletCanonical(rawOutlet)
  * @param {string} params.rawOutlet - lowercased data.outletId || data.outlet
  * @param {string} params.url - data.url
@@ -369,6 +370,7 @@ function isUkUrl(url) {
 function evaluateForwardCrossMarketGuard({
   outletRegionMap,
   registeredOutletIds,
+  internationalTradeOutlets,
   canonicalOutlet,
   rawOutlet,
   url,
@@ -412,6 +414,12 @@ function evaluateForwardCrossMarketGuard({
     && !registeredOutletIds.has(rawOutlet);
 
   if (cvSaysCorrect || outletIsUnregistered) {
+    return { shouldFlag: false, reason: null, exemptedByPriorRun: false };
+  }
+
+  // International trades routinely review London openings. Registry coverage
+  // exempts only this region heuristic; production/date/content guards still run.
+  if (internationalTradeOutlets?.has(canonicalOutlet) || internationalTradeOutlets?.has(rawOutlet)) {
     return { shouldFlag: false, reason: null, exemptedByPriorRun: false };
   }
 
