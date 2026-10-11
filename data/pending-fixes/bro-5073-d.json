@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5073-d",
   "planId": "5b8e0d62-e253-4bb2-b446-db60d7374afb",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-11T21:10:52.310Z",
   "submitter": {
     "name": null,
@@ -49,5 +49,23 @@
         "description": "mj: weekly cost has no source, flag it as an estimate (BRO-5073)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-11T22:24:31.993Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for six"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for six"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for mj"
+    }
+  ]
 }

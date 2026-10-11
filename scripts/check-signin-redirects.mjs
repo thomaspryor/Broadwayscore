@@ -33,6 +33,7 @@
 import { writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { chromium } from 'playwright';
+import { GOOGLE_PAGE_LIMIT, GOOGLE_MISMATCH_MARKERS } from './supabase-custom-domain.mjs';
 
 const require = createRequire(import.meta.url);
 
@@ -71,7 +72,7 @@ export function judgeGoogle(authorizeUrl, hop, googlePage) {
     if (dead && googlePage.status >= 400) return { ok: false, reason: `Google rejects the OAuth client (${dead[0]})` };
     // Google's own error markers; the page can come with HTTP 200 when
     // redirects are followed (seen live 2026-10-09), so the status is no guide.
-    if (/Error 400: redirect_uri_mismatch|data-error-code="redirect_uri_mismatch"/i.test(googlePage.body || '')) return { ok: false, reason: 'Google rejects the callback (redirect_uri_mismatch): the OAuth client does not list the Supabase callback URL' };
+    if (GOOGLE_MISMATCH_MARKERS.test(googlePage.body || '')) return { ok: false, reason: 'Google rejects the callback (redirect_uri_mismatch): the OAuth client does not list the Supabase callback URL' };
   }
   return { ok: true, reason: 'Supabase redirects to accounts.google.com' };
 }
@@ -95,7 +96,8 @@ async function googlePageFor(hop) {
   if (!hop || !hop.location) return null;
   try {
     const res = await fetch(hop.location, { redirect: 'follow', headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(30000) });
-    return { status: res.status, body: (await res.text()).slice(0, 300000) };
+    // Google's sign-in page is ~1.3 MB; its markers sit past 900 KB (2026-10-11).
+    return { status: res.status, body: (await res.text()).slice(0, GOOGLE_PAGE_LIMIT) };
   } catch {
     return null;
   }
