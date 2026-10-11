@@ -320,6 +320,8 @@ jobs:
             const pending = shows.filter(id => {
               // Always skip if full broadcast already completed
               if (sent[id] && sent[id].completed) return false;
+              // Deleted unsent on purpose (BRO-2935): settled, never re-drafted or paged.
+              if (sent[id] && sent[id].discardedAt) return false;
               // Skip shows with 0 scored reviews — the broadcast script will exit early anyway,
               // and without this guard the failed attempt triggers gather → rebuild → score →
               // broadcast again (infinite feedback loop). Re-evaluated each scoring run.

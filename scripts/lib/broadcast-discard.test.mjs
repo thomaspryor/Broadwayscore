@@ -100,5 +100,15 @@ test('selectPageableStaleDrafts: age cap and no double page with never-sent', ()
     { draftId: 'y', showIds: ['b'], ageDays: 5 },
     { draftId: 'z', showIds: ['c'], ageDays: 31 },
   ];
-  assert.deepEqual(selectPageableStaleDrafts(s, ['a']).map((d) => d.draftId), ['y']);
+  assert.deepEqual(selectPageableStaleDrafts(s, { alertableMissedIds: ['a'] }).map((d) => d.draftId), ['y']);
+});
+
+test('selectPageableStaleDrafts: a draft the West End round-up fully covered does not page (BRO-3088)', () => {
+  const s = [
+    { draftId: 'x', showIds: ['a', 'b'], ageDays: 9 },
+    { draftId: 'y', showIds: ['c'], ageDays: 9 },
+  ];
+  assert.deepEqual(selectPageableStaleDrafts(s, { roundupCoveredIds: ['a', 'b'] }).map((d) => d.draftId), ['y']);
+  assert.deepEqual(selectPageableStaleDrafts(s, { roundupCoveredIds: ['a'] }).map((d) => d.draftId), ['x', 'y'],
+    'a combo with one uncovered show still pages');
 });

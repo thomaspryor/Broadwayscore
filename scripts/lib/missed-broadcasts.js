@@ -407,9 +407,17 @@ const STALE_DRAFT_MAX_ALERT_AGE_DAYS = 30;
  * that show's age bound) is left to it, so one stuck email is one page.
  * Pure.
  */
-function selectPageableStaleDrafts(staleDrafts, alertableMissedIds, maxAgeDays = STALE_DRAFT_MAX_ALERT_AGE_DAYS) {
-  const covered = new Set(alertableMissedIds || []);
-  return (staleDrafts || []).filter((d) => d.ageDays <= maxAgeDays && !d.showIds.some((id) => covered.has(id)));
+function selectPageableStaleDrafts(staleDrafts, {
+  alertableMissedIds = [], roundupCoveredIds = [], maxAgeDays = STALE_DRAFT_MAX_ALERT_AGE_DAYS,
+} = {}) {
+  const covered = new Set(alertableMissedIds);
+  // BRO-3088: the owner declined individual West End sends once the Weekly
+  // Round-up covered the show, so a draft whose shows all went out in the
+  // round-up is not something to press Send on.
+  const roundup = new Set(roundupCoveredIds);
+  return (staleDrafts || []).filter((d) => d.ageDays <= maxAgeDays
+    && !d.showIds.some((id) => covered.has(id))
+    && !d.showIds.every((id) => roundup.has(id)));
 }
 
 module.exports = {

@@ -26,7 +26,10 @@
 
 const fs = require('fs');
 const path = require('path');
-const { findMissedBroadcasts, applyLiveBroadcastStatus, selectPageableStaleDrafts } = require('./lib/missed-broadcasts');
+const {
+  findMissedBroadcasts, applyLiveBroadcastStatus, selectPageableStaleDrafts, wasCoveredByWeeklyRoundup,
+  STALE_DRAFT_MAX_ALERT_AGE_DAYS,
+} = require('./lib/missed-broadcasts');
 const { findStaleDrafts } = require('./lib/broadcast-state');
 
 const args = process.argv.slice(2);
@@ -174,8 +177,12 @@ async function main() {
   // above only sees shows that qualified and are inside their opening window,
   // so a draft for anything else used to sit in Resend unseen for months.
   const staleDrafts = findStaleDrafts(sentRaw.shows, Date.now());
-  const pageableDrafts = selectPageableStaleDrafts(
-    staleDrafts, alertable.filter((m) => m.state === 'draft-stuck').map((m) => m.id));
+  const pageableDrafts = selectPageableStaleDrafts(staleDrafts, {
+    alertableMissedIds: alertable.filter((m) => m.state === 'draft-stuck').map((m) => m.id),
+    roundupCoveredIds: (showsRaw.shows || [])
+      .filter((s) => s.category === 'west-end' && wasCoveredByWeeklyRoundup(newsletterIssues, s.id))
+      .map((s) => s.id),
+  });
 
   // The snapshot is UNBOUNDED by age on purpose. Alerting stops at
   // MAX_ALERT_AGE_DAYS, but dropping aged shows from the record entirely would
@@ -202,7 +209,13 @@ async function main() {
   if (AS_JSON) console.log(JSON.stringify(snapshot, null, 2));
 
   // Before the early returns below: those fire on every clean day.
-  await alertStaleDrafts(pageableDrafts, staleDrafts);
+  // Isolated: a Resend or ledger failure here must not cost the never-sent
+  // pages below.
+  try {
+    await alertStaleDrafts(pageableDrafts, staleDrafts);
+  } catch (err) {
+    console.error(`::warning::unsent-draft alert pass failed: ${err.message}`);
+  }
 
   if (!missed.length) {
     console.log('No missed opening-night broadcasts.');
@@ -309,15 +322,27 @@ async function alertStaleDrafts(pageable, allStale) {
   }
 
   const { routeAlert, resolveCondition } = require('./lib/owner-alert-router');
-  const open = new Set(toPage.map((d) => DRAFT_UNSENT_PREFIX + d.draftId));
+  // Resolve only drafts that are really gone (sent, deleted, discarded, or past
+  // the alert window). A draft merely held back this run (its show is in a
+  // never-sent page) stays open, so it does not re-page as new the day that
+  // page ages out.
+  const dropped = new Set(pageable.filter((d) => !toPage.includes(d)).map((d) => d.draftId));
+  const open = new Set(allStale
+    .filter((d) => d.ageDays <= STALE_DRAFT_MAX_ALERT_AGE_DAYS && !dropped.has(d.draftId))
+    .map((d) => DRAFT_UNSENT_PREFIX + d.draftId));
+  let ledger = null;
   try {
-    const ledger = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'audit', 'alert-ledger.json'), 'utf8'));
-    for (const [key, c] of Object.entries((ledger && ledger.conditions) || {})) {
-      if (!key.startsWith(DRAFT_UNSENT_PREFIX) || open.has(key) || !c || c.status !== 'open') continue;
+    ledger = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'audit', 'alert-ledger.json'), 'utf8'));
+  } catch { /* no ledger yet */ }
+  for (const [key, c] of Object.entries((ledger && ledger.conditions) || {})) {
+    if (!key.startsWith(DRAFT_UNSENT_PREFIX) || open.has(key) || !c || c.status !== 'open') continue;
+    try {
       resolveCondition(key);
       console.log(`[alert-router] resolved ${key}`);
+    } catch (err) {
+      console.error(`::warning::could not resolve ${key}: ${err.message}`);
     }
-  } catch { /* no ledger yet */ }
+  }
 
   for (const d of toPage) {
     const shows = d.showIds.join(', ');

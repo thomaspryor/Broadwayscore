@@ -73,6 +73,9 @@ async function main() {
       const live = await getBroadcastWithRetry(id);
       const why = recreateDraftBlockReason(live);
       if (why) refuse(`draft ${id}: ${why}`);
+      // Stricter than --recreate-draft (which also takes 'cancelled'): only a
+      // plain draft is discarded here.
+      if (live.data.status !== 'draft') refuse(`draft ${id}: live status ${live.data.status}, not draft`);
       console.log(`  ${id}: live status ${live.data.status} (unsent)`);
     }
   } else {
@@ -99,6 +102,26 @@ async function main() {
       if (shows[key] && shows[key].draftId === id) {
         shows[key] = markDraftDiscarded(shows[key], { nowIso, reason: REASON });
         touched[key] = shows[key];
+      }
+    }
+  }
+
+  if (!failure) {
+    // Records of these shows with no draftId (no Resend draft to delete) are
+    // stamped too, and a show tracked only under a market: key gets a per-show
+    // mirror, since the send filter reads the per-show record first.
+    for (const key of keys) {
+      if (shows[key] && !shows[key].draftId && !shows[key].discardedAt) {
+        shows[key] = markDraftDiscarded(shows[key], { nowIso, reason: REASON });
+        touched[key] = shows[key];
+      }
+    }
+    for (const id of SHOW_IDS) {
+      if (shows[id]) continue;
+      const src = keys.find((k) => touched[k] && k.endsWith(`:${id}`));
+      if (src) {
+        shows[id] = { ...touched[src], broadcastKey: src };
+        touched[id] = shows[id];
       }
     }
   }
