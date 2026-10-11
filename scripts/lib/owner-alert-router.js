@@ -82,7 +82,7 @@
  */
 
 const fs = require('fs');
-const { rowAbsentCheckCmd, healthRowNameFromConditionKey, sanitizeRowText } = require('./health-row-check-cmd.js');
+const { rowAbsentCheckCmd, alertAbsentCheckCmd, healthRowNameFromConditionKey, sanitizeRowText } = require('./health-row-check-cmd.js');
 const os = require('os');
 const path = require('path');
 const { sendAlert } = require('./discord-notify');
@@ -399,7 +399,16 @@ function buildCardNotes({ description, hint, fields, conditionKey, verify }) {
       // snapshot names); only the surrounding prose is sanitized — the same
       // split digest-autofix.js makes, for the same reason.
       ? `\`${rowAbsentCheckCmd(healthRowName)}\` passes — i.e. the daily health check no longer lists "${sanitizeRowText(healthRowName)}" among errors or warnings.`
-      : (verify && verify.line ? verify.line : null),
+      : (verify && verify.line
+        ? verify.line
+        // BRO-3889: every OTHER family (gap:, cron-health-chronic:, backstop:,
+        // land:, ... ~63% of router-filed conditions) used to stop at the prose
+        // line below, so linear-next.js refused them exactly as BRO-3881
+        // describes. The alert ledger this router writes is itself the
+        // machine-checkable answer: exit 0 once the condition is resolved or
+        // has gone quiet. The command encodes the RAW key (the checker
+        // compares against raw ledger keys).
+        : `\`${alertAbsentCheckCmd(conditionKey)}\` passes — i.e. the alert ledger shows this condition resolved or no longer firing.`),
     verify && verify.line && verify.note ? sanitizeRowText(verify.note) : null,
     // Sanitized in the PROSE copy only. The machine-readable
     // `[conditionKey:...]` anchor below stays raw — that is what

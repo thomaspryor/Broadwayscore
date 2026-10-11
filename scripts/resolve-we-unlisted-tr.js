@@ -69,7 +69,7 @@ const DATE_LINE = /^\s*\d{1,2}\s+[A-Z][a-z]+\s+\d{4}\s*$/;
 const LABEL_SYNONYMS = [
   [/^previews?\s*\/\s*opens?/i, 'Previews'],
   [/^first performance/i, 'First preview'],
-  [/^(?:first night|press (?:performance|date)|opening (?:performance|date))/i, 'Press night'],
+  [/^(?:opens?\s*\/\s*press night|first night|press (?:performance|date)|opening (?:performance|date))/i, 'Press night'],
   [/^(?:(?:last|final) (?:performance|night)|closing (?:date|night))/i, 'Closes'],
 ];
 const LABEL_ONLY = /^(?:press night|first preview|previews?|opening night|opening|opens|opened|closes|closing|until|runs until|final performance)\s*:?$/i;

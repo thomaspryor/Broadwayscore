@@ -78,6 +78,23 @@ function rowAbsentCheckCmd(name) {
 }
 
 /**
+ * Encode an owner-alert-router conditionKey into the
+ * check-alert-condition-absent.js safe-form command (BRO-3889). The fallback
+ * acceptance command for every router-filed card that has no more specific
+ * one (health-check rows use rowAbsentCheckCmd; test-yml:red cards pass a
+ * resolved `verify.line`). Same clamp as rowAbsentCheckCmd — rowMatchKey keeps
+ * the token inside SAFE_CHECK_FORMS' 200-character cap — and the checker
+ * re-applies rowMatchKey to every ledger key before comparing, so a clamped
+ * key still matches its full-length ledger entry.
+ *
+ * @param {string} conditionKey raw conditionKey, exactly as stored in the alert ledger
+ * @returns {string}
+ */
+function alertAbsentCheckCmd(conditionKey) {
+  return `node scripts/check-alert-condition-absent.js --key-b64 ${Buffer.from(rowMatchKey(conditionKey), 'utf8').toString('base64url')}`;
+}
+
+/**
  * The health-check conditionKey prefix owner-alert-router.js stamps on rows
  * that came from scripts/health-check.js. A key of
  * `health-check:Data quality: provider spend ledger` carries the row name
@@ -117,4 +134,4 @@ function sanitizeRowText(s) {
     .replace(/VERIFY\s*:/gi, 'VERIFY -');
 }
 
-module.exports = { rowAbsentCheckCmd, rowMatchKey, sanitizeRowText, healthRowNameFromConditionKey, HEALTH_CHECK_PREFIX, ROW_NAME_MATCH_LIMIT, SAFE_TOKEN_MAX_CHARS };
+module.exports = { rowAbsentCheckCmd, alertAbsentCheckCmd, rowMatchKey, sanitizeRowText, healthRowNameFromConditionKey, HEALTH_CHECK_PREFIX, ROW_NAME_MATCH_LIMIT, SAFE_TOKEN_MAX_CHARS };
