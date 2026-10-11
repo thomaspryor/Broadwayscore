@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const { splitCosts, costBasis, EXTRA_VARIABLE } = require('../../scripts/lib/cost-split');
-const { calculateRecoupment } = require('../../scripts/lib/recoupment-model');
+const { calculateRecoupment, costPathFactor } = require('../../scripts/lib/recoupment-model');
 
 test('costBasis: explicit field wins, then the source text, default running', () => {
   assert.equal(costBasis({ weeklyRunningCostBasis: 'all-in', weeklyRunningCostSource: 'excluding royalties' }), 'all-in');
@@ -35,4 +35,15 @@ test('calculateRecoupment ignores the split unless opts.costSplit is set', () =>
   assert.equal(live.recoupmentPctCentral, again.recoupmentPctCentral);
   assert.ok(shadow.recoupmentPctCentral < live.recoupmentPctCentral);
   assert.equal(shadow.weeklyFixedCosts, live.weeklyFixedCosts);
+});
+
+test('costPathFactor: shadow cost paths (stepSmall, stepLate, costGrowth)', () => {
+  const live = (w) => (w > 104 ? 0.88 : w > 52 ? 0.93 : 1);
+  for (const w of [1, 52, 53, 104, 105, 300]) assert.equal(costPathFactor(w, {}), live(w));
+  assert.equal(costPathFactor(60, { stepSmall: true }), 0.96);
+  assert.equal(costPathFactor(120, { stepSmall: true }), 0.93);
+  assert.equal(costPathFactor(60, { stepLate: true }), 1);
+  assert.equal(costPathFactor(100, { stepLate: true }), 0.93);
+  assert.equal(costPathFactor(157, { stepLate: true }), 0.88);
+  assert.ok(Math.abs(costPathFactor(53, { costGrowth: true }) - 1.035 * 0.93) < 1e-9);
 });

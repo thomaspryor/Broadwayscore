@@ -94,6 +94,7 @@ const PREVIEW_DEFAULTS = {
 /** Reserve fund: weeks of operating costs held before declaring recoupment.
  *  Industry standard: 3-4 weeks for open-ended, 1.5 for limited runs. */
 const RESERVE_FUND_WEEKS = 3;
+const RESERVE_LAG_WEEKS = 8; // shadow, BRO-5073 opts.reserveLag
 
 /** Tax credit lag in weeks from opening date */
 const TAX_CREDIT_LAG_WEEKS = 78; // ~18 months
@@ -329,6 +330,25 @@ function calcTheaterOverage(weeklyGross, weeklyNut) {
 }
 
 /**
+ * Shadow running-cost path (BRO-5073, --opt=stepSmall|stepLate|costGrowth).
+ * The live path is full cost to week 52, x0.93 to week 104, x0.88 after.
+ *   stepSmall   x0.96 / x0.93 instead of x0.93 / x0.88
+ *   stepLate    the same cuts a half-year later (after weeks 78 and 156)
+ *   costGrowth  costs rise COST_GROWTH_RATE a year from opening (union
+ *               escalators), on top of whichever step-downs apply
+ * @param {number} weekNumber
+ * @param {{ stepSmall?: boolean, stepLate?: boolean, costGrowth?: boolean }} path
+ */
+const COST_GROWTH_RATE = 0.035;
+function costPathFactor(weekNumber, path) {
+  const [y2, y3] = path.stepSmall ? [0.96, 0.93] : [0.93, 0.88];
+  const [w2, w3] = path.stepLate ? [78, 156] : [52, 104];
+  const step = weekNumber > w3 ? y3 : weekNumber > w2 ? y2 : 1;
+  const growth = path.costGrowth ? Math.pow(1 + COST_GROWTH_RATE, (weekNumber - 1) / 52) : 1;
+  return step * growth;
+}
+
+/**
  * Calculate weekly operating profit for ONE week.
  *
  * Pre-recoupment: variable costs = base rate × gross + theater deal
@@ -341,9 +361,10 @@ function calcTheaterOverage(weeklyGross, weeklyNut) {
  * @param {number} weekNumber - Week number from opening (for cost escalation)
  * @param {boolean} isPreview - Whether this is a preview week
  * @param {number} scenarioMult - Scenario multiplier object
+ * @param {object} [costPath] - shadow cost path (costPathFactor); live passes none
  * @returns {{ profit: number, variableCosts: number, theaterCost: number, fixedCosts: number }}
  */
-function calcWeeklyProfit(weeklyGross, weeklyNut, baseVarRate, isPostRecoup, weekNumber, isPreview, scenarioMult, totalWeeks, showType, showCategory) {
+function calcWeeklyProfit(weeklyGross, weeklyNut, baseVarRate, isPostRecoup, weekNumber, isPreview, scenarioMult, totalWeeks, showType, showCategory, costPath) {
   const mult = scenarioMult || SCENARIO_MULTIPLIERS.central;
   const adjGross = weeklyGross * mult.grossAdj;
 
@@ -367,7 +388,9 @@ function calcWeeklyProfit(weeklyGross, weeklyNut, baseVarRate, isPostRecoup, wee
   // Phase 3 (weeks 53-104): Nut × 0.93 (year 2+: cast replacements save ~7%, reduced marketing)
   // Phase 4 (weeks 105+): Nut × 0.88 (mature run: further optimization, but offset by union escalators)
   let fixedCosts = weeklyNut * mult.fixedCost;
-  if (weekNumber > 104) {
+  if (costPath) {
+    fixedCosts *= costPathFactor(weekNumber, costPath); // shadow, BRO-5073
+  } else if (weekNumber > 104) {
     fixedCosts *= 0.88; // Mature run cap — no further reduction
   } else if (weekNumber > 52) {
     fixedCosts *= 0.93;
@@ -473,6 +496,8 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   const split = opts.costSplit ? splitCosts(commercial, category, weeklyNut, getBaseVariableRate(category), THEATER_DEAL.pctOfGross) : null;
   const baseVarRate = split ? split.varRate : getBaseVariableRate(category);
   const runNut = split ? split.fixedNut : weeklyNut;
+  const costPath = opts.stepSmall || opts.stepLate || opts.costGrowth
+    ? { stepSmall: !!opts.stepSmall, stepLate: !!opts.stepLate, costGrowth: !!opts.costGrowth } : null; // shadow, BRO-5073
 
   // --- Star deal ---
   const slug = show.slug || show.id;
@@ -503,7 +528,9 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   // limited runs (< 6 months) need less because producers budget to the close date.
   const isLimitedRun = show.closingDate && show.openingDate &&
     (new Date(show.closingDate) - new Date(show.openingDate)) < 200 * 86400000;
-  const reserveWeeks = isLimitedRun ? 1.5 : RESERVE_FUND_WEEKS;
+  // Shadow (BRO-5073, opts.reserveLag): producers hold more than 3 weeks
+  // (bonds, working capital) and announce a few weeks after the books close.
+  const reserveWeeks = isLimitedRun ? 1.5 : (opts.reserveLag ? RESERVE_LAG_WEEKS : RESERVE_FUND_WEEKS);
   const reserveFund = weeklyNut * reserveWeeks;
   // Effective cap can't go below zero (SVOG can't make cap negative)
   const effectiveCap = Math.max(capitalization - svogGrant + reserveFund, reserveFund);
@@ -587,7 +614,7 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
       }
 
       const weekResult = calcWeeklyProfit(
-        week.gross, nutByWeek ? nutByWeek[i] : runNut, baseVarRate, isPostRecoup, weekNum, week.isPreview, mult, weeklySchedule.length, show.type || 'musical', category
+        week.gross, nutByWeek ? nutByWeek[i] : runNut, baseVarRate, isPostRecoup, weekNum, week.isPreview, mult, weeklySchedule.length, show.type || 'musical', category, costPath
       );
 
       let weekProfit = weekResult.profit;
@@ -1134,6 +1161,7 @@ module.exports = {
   PREVIEW_DEFAULTS,
   COST_COMPONENTS,
   RESERVE_FUND_WEEKS,
+  costPathFactor,
   TAX_CREDIT_PROGRAM_START,
   TAX_CREDIT_PROGRAM_END,
   TAX_CREDIT_MAX,
