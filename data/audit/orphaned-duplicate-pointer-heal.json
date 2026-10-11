@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-11T03:32:46.030Z",
+  "generated": "2026-10-11T07:33:15.910Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 24,
+  "count": 27,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -102,6 +102,13 @@
       "field": "duplicateOf"
     },
     {
+      "showId": "opening-night-west-end-2024",
+      "loserFile": "broadwayworld--unknown.json",
+      "targetFile": "broadwayworld--aliya-al-hassan.json",
+      "reason": "orphaned-duplicate-heal: broadwayworld--aliya-al-hassan.json was flagged invalid after broadwayworld--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
       "showId": "proof-2026",
       "loserFile": "nytimes--sarah-bahr.json",
       "targetFile": "nytimes--helen-shaw.json",
@@ -151,6 +158,13 @@
       "field": "duplicateOf"
     },
     {
+      "showId": "the-picture-of-dorian-gray-west-end-2024",
+      "loserFile": "daily-mail--unknown.json",
+      "targetFile": "daily-mail--patrick-marmion.json",
+      "reason": "orphaned-duplicate-heal: daily-mail--patrick-marmion.json was flagged invalid after daily-mail--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
       "showId": "the-price-off-west-end-2026",
       "loserFile": "whatsonstage--tanyel-gumushan.json",
       "targetFile": "whatsonstage--alun-hood.json",
@@ -170,6 +184,13 @@
       "targetFile": "daily-mail--joanna-crawley.json",
       "reason": "orphaned-duplicate-heal: daily-mail--joanna-crawley.json was flagged invalid after daily-mail--georgina-brown.json was pointed at it",
       "field": "duplicateOf"
+    },
+    {
+      "showId": "opening-night-west-end-2024",
+      "loserFile": "broadwayworld--unknown.json",
+      "targetFile": "broadwayworld--aliya-al-hassan.json",
+      "reason": "orphaned-duplicate-heal: broadwayworld--aliya-al-hassan.json was flagged invalid after broadwayworld--unknown.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
     }
   ]
 }
