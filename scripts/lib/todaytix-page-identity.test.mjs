@@ -102,3 +102,29 @@ test('billing (reprise, nominee) and "this ... production" pitch are not story',
   assert.equal(nonStoryReason('This groundbreaking new production expertly balances rhyme, spoken word, movement, and music to transport audiences to Thebes.'), 'production-news');
   assert.equal(nonStoryReason('Lackawanna Blues transports audiences to 1950s Buffalo, where a young boy grows up in a boarding house.'), null);
 });
+
+// BRO-4884 2018-19: real TodayTix copy the cleaner kept whole.
+test('UK single-quoted press quotes, audience address, billing and fragments are not story', () => {
+  const summerAndSmoke = "Trapped between desire and a life of obligation, Alma meets John and her world turns upside down. With 'spellbinding, stripped-back staging' (Financial Times), this intoxicating classic about love, loneliness and self-destruction evokes the simmering passions of a sweltering summer in small-town Mississippi. Patsy Ferran is a genuine marvel' as Alma (Independent) and Matthew Needham 'fires up the stage' (The Times) as John in this 'unmissable Tennessee Williams revival' (The Telegraph).";
+  assert.equal(cleanTodaytixAbout(summerAndSmoke), '');
+  const onYourFeet = "This 'exhilarating extravaganza' (Whatsonstage) is the inspiring true love story of Emilio and Gloria and charts their journey from its origins in Cuba, onto the streets of Miami and finally to international superstardom. Beat' and '1-2-3'. , An Officer and a Gentleman) as Emilio Estefan, Madalena Alberto (Evita, Cats, Les Misérables) as Gloria Fajardo and Karen Mann (Sister Act, Fiddler on the Roof, Sweeney Todd) as Consuelo.";
+  assert.equal(cleanTodaytixAbout(onYourFeet), '');
+  // The second sentence leans on the dropped one ("That meant"), so it goes too.
+  const comeFromAway = "Welcome to the Rock! The heart-warming musical Come From Away, based on an astonishing true story, invites you into the small town of Gander, Newfoundland, where you'll find the very best of humanity in the worst of times. That meant a sudden influx of 7,000 international visitors, who were taken in and cared for by the kindly locals.";
+  assert.equal(cleanTodaytixAbout(comeFromAway), '');
+  assert.equal(nonStoryReason('Join us on this emotional roller-coaster as this group of girls reunite after 25 years apart.'), 'pitch-opener');
+  assert.equal(nonStoryReason('The show features the spectacular music of TAKE THAT, whose songs include Never Forget.'), 'selling-or-list');
+  assert.equal(nonStoryReason('James McArdle takes the title role in this epic story of transformation.'), 'selling-or-list');
+  assert.equal(nonStoryReason("Beat' and '1-2-3'."), 'fragment');
+});
+
+test('contractions, initials and quoted titles stay story', () => {
+  assert.equal(nonStoryReason('It’s the future.'), null);
+  assert.equal(nonStoryReason("Mark doesn't believe in fate or divine intervention, but the universe has other ideas."), null);
+  assert.equal(nonStoryReason("It's 1992 and we meet five 16 year old girls for who 'the band' is everything."), null);
+  assert.equal(nonStoryReason('The Minstrel welcomes everyone ("Welcome to the Renaissance").'), null);
+  assert.equal(cleanTodaytixAbout('They are Johnny (originated by F. Murray Abraham), a short order cook, and Frankie, a waitress, who meet after a first date.'),
+    'They are Johnny (originated by F. Murray Abraham), a short order cook, and Frankie, a waitress, who meet after a first date.');
+  const follies = "New York, 1971. There's a party on the stage of the Weismann Theatre. Tomorrow the iconic building will be demolished. Thirty years after their final performance, the Follies girls gather to have a few drinks, sing a few songs and lie about themselves.";
+  assert.equal(cleanTodaytixAbout(follies), follies);
+});

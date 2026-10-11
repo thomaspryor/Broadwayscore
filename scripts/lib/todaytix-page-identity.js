@@ -37,6 +37,32 @@ const NON_STORY_SENTENCE_RE = /todaytix|\btickets?\b|\bbook (now|your|tickets|to
 const PRODUCTION_NEWS_RE = /\b(currently|now) (playing|performing|running)\b|\bis (playing|performing) at\b|\brave reviews\b|\b(award|olivier|tony|bafta)[- ]win|\bstar(s|ring)? (in|as)\b|\b(will be|is) directed\b|\bdirected by\b|\bartistic director\b|\breturns? to (london|the west end)\b|\b(transfers?|promoted) to the west end\b|\bwest end (debut|transfer|premiere)\b|\b(strictly )?limited (run|season|time|engagement)\b|\b\d+-week (run|season)\b|\bpremiered\b|\bgraced the stage\b|\bsold-out\b|\bmaking (her|his|their) .*debut\b|\breprises? (his|her|their) (\w+ )?roles?\b|\b(award|olivier|tony|bafta)[- ]nomin|\bthis (\w+ ){0,3}production\b/i;
 // isValidSynopsis rejects text opening this way; such sentences are pitch, not plot.
 const MARKETING_OPENER_RE = /^(See |Get tickets|Don't miss|Experience the|Come discover|Catch |Book |Have you ever|Immerse yourself|Audiences will|Fly to |Attend the )/i;
+// 2018-19 (BRO-4884): UK copy quotes critics in single quotes and names the
+// paper in brackets ("With 'spellbinding, stripped-back staging' (Financial
+// Times)"), which isPullQuote's double-quote check never saw.
+const PRESS_ATTRIBUTION_RE = /\((?:the )?(?:financial times|ft|independent|i|inews|times|sunday times|telegraph|daily telegraph|sunday telegraph|guardian|observer|evening standard|standard|stage|whatsonstage|what's on stage|time out|daily mail|mail on sunday|metro|daily express|express|sun|mirror|radio times|spectator|new statesman|arts desk|new york times|variety|chicago tribune|hollywood reporter|broadwayworld|broadway world)\)/i;
+const SINGLE_QUOTE_ATTRIBUTED_RE = /(?:^|[\s(])'[^']{3,}'\s*(?:\(|[–—-]\s*[A-Z])/;
+// Copy that talks to the audience ("Welcome to the Rock! ... invites you into",
+// "Join us on this emotional roller-coaster") is selling, not story.
+const AUDIENCE_ADDRESS_RE = /\b(join us|invites? you|you'll (find|love|be|see)|treat yourself)\b|^welcome to the\b/i;
+// Billing that the production-news list missed: "X (Evita, Cats) as Gloria",
+// "James McArdle takes the title role", "The show features the spectacular
+// music of TAKE THAT", "one of the most successful musical theatre tours ever".
+const BILLING_RE = /\)\s+as\s+(the\s+)?[A-Z]|\btakes? (on )?the (title|lead|leading) role\b|\bthe show features the (\w+ ){0,2}(music|songs|hits)\b|\bmost successful\b.*\b(tours?|musicals?|shows?|productions?)\b/i;
+// A sentence that starts on a scrap of the previous one, closes a bracket it
+// never opened, or is a few words around a quote mark ("Beat' and '1-2-3'.").
+// A contraction is not a quote mark: "It's the future." is story.
+function isFragment(s) {
+  if (/^[,;:)\]–—-]/.test(s)) return true;
+  if ((s.match(/\)/g) || []).length > (s.match(/\(/g) || []).length) return true;
+  return s.split(/\s+/).length < 5 && /"|(?<![A-Za-z])'|'(?![A-Za-z])/.test(s);
+}
+// Initials and titles end in a full stop that does not end the sentence
+// ("F. Murray Abraham", "Dr. Seuss").
+const ABBREV_DOT_RE = /\b(Mr|Mrs|Ms|Dr|St|Jr|Sr|Prof|[A-Z])\.(?=\s)/g;
+// After a dropped sentence, a sentence leaning on it ("That meant a sudden
+// influx of 7,000 visitors") has lost what it refers to.
+const ANAPHORIC_OPENER_RE = /^(That|This|These|Those|It|They)\b/;
 const MAX_ABOUT_CHARS = 700;
 
 /**
@@ -58,15 +84,16 @@ function isPullQuote(sentence) {
 /**
  * Why a sentence is not story, or null. Shared by cleanTodaytixAbout and the
  * season audit (scripts/audit-we-historical-season.js) so both apply one rule.
- * @returns {'pull-quote'|'selling-or-list'|'production-news'|'pitch-opener'|null}
+ * @returns {'pull-quote'|'selling-or-list'|'production-news'|'pitch-opener'|'fragment'|null}
  */
 function nonStoryReason(sentence) {
   const s = String(sentence || '').replace(/[\u201C\u201D]/g, '"').replace(/[\u2018\u2019]/g, "'").trim();
   if (!s) return null;
-  if (isPullQuote(s)) return 'pull-quote';
-  if (NON_STORY_SENTENCE_RE.test(s)) return 'selling-or-list';
+  if (isPullQuote(s) || PRESS_ATTRIBUTION_RE.test(s) || SINGLE_QUOTE_ATTRIBUTED_RE.test(s)) return 'pull-quote';
+  if (NON_STORY_SENTENCE_RE.test(s) || BILLING_RE.test(s)) return 'selling-or-list';
   if (PRODUCTION_NEWS_RE.test(s)) return 'production-news';
-  if (MARKETING_OPENER_RE.test(s)) return 'pitch-opener';
+  if (MARKETING_OPENER_RE.test(s) || AUDIENCE_ADDRESS_RE.test(s)) return 'pitch-opener';
+  if (isFragment(s)) return 'fragment';
   return null;
 }
 
@@ -87,14 +114,16 @@ function cleanTodaytixAbout(text) {
     .replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#0?39;|&apos;/g, "'").replace(/&nbsp;/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
-  const sentences = plain.match(/[^.!?]+[.!?]+(?=\s|$)/g) || [];
+  const sentences = (plain.replace(ABBREV_DOT_RE, '$1\u2024').match(/[^.!?]+[.!?]+(?=\s|$)/g) || []).map(x => x.replace(/\u2024/g, '.'));
   const kept = [];
   let len = 0;
+  let dropped = false;
   for (const raw of sentences) {
     const sentence = raw.trim().replace(/^["'\s]+/, '');
     // Pull quotes / soundbites (Unicorn: "...very, very funny," Nicola Walker
     // said), selling, billing and pitch openers are not plot.
-    if (!sentence || nonStoryReason(sentence)) continue;
+    if (!sentence || nonStoryReason(sentence) || (dropped && ANAPHORIC_OPENER_RE.test(sentence))) { dropped = true; continue; }
+    dropped = false;
     if (len + sentence.length + 1 > MAX_ABOUT_CHARS) break;
     kept.push(sentence);
     len += sentence.length + 1;

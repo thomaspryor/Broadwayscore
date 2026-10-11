@@ -464,6 +464,18 @@ Lessons, each fixed in code:
   back hours after BRO-5022 removed it. The fallback now copies the poster
   over a leftover file whose recorded source the row rejected
   (thumbnailFallbackAction in lib/image-source-match.js).
+- **UK producer copy the synopsis cleaner kept whole (2018-19).** British
+  blurbs quote critics in single quotes with the paper in brackets
+  ("'spellbinding, stripped-back staging' (Financial Times)"), talk to the
+  audience ("Welcome to the Rock! ... invites you into", "Join us on this
+  emotional roller-coaster") and bill the cast ("(Evita, Cats) as Gloria",
+  "takes the title role"). cleanTodaytixAbout kept all of it for Summer and
+  Smoke, On Your Feet!, Come From Away and The Band. nonStoryReason now also
+  drops bracketed press attributions, single-quoted attributed quotes,
+  audience address, cast billing and sentence scraps, and a sentence leaning
+  on a dropped one ("That meant ..."); initials no longer split sentences.
+  The same rules flag 29 synopses elsewhere on the site (handed to their own
+  card).
 
 ### Review-led rows (BRO-5031, from 2026-10-11)
 
