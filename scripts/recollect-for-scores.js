@@ -250,7 +250,11 @@ async function main() {
         try {
           const urlHost = new URL(data.url).hostname.replace(/^www\./, '');
           if (AGGREGATOR_DOMAINS.has(urlHost)) continue;
-        } catch {}
+        } catch {
+          // Not an absolute URL (e.g. a stored relative "/people/..." path):
+          // every provider rejects it, so fetching only burns credits (BRO-3501).
+          continue;
+        }
         if (data.wrongShow) continue; // Flagged as wrong content
         if (data.wrongProduction) continue; // URL is for a different production
         // Skip if already checked with current extractor version
