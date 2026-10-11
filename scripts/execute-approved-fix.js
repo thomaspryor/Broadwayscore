@@ -309,6 +309,12 @@ function executeDataEdit(action) {
       if (problem) return { ok: false, reason: problem };
     }
 
+    if (field === 'noReliableArt') {
+      const { validateNoReliableArtValue } = require('./lib/no-reliable-art.js');
+      const problem = validateNoReliableArtValue(newValue, shows[idx]);
+      if (problem) return { ok: false, reason: problem };
+    }
+
     shows[idx][field] = newValue;
     // The site also reads tags:'revival', so the flag alone can't clear it (BRO-4436).
     if (field === 'isRevival') require('./lib/revival-tags.js').syncRevivalTags(shows[idx]);

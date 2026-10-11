@@ -143,10 +143,20 @@ function resolveMarketSlug(category, market) {
  * @param {string} [opts.venue] the production's venue name, when known
  * @returns {string}
  */
-function buildVerificationPrompt({ market, venue } = {}) {
+function buildVerificationPrompt({ market, venue, creatives, strict } = {}) {
   const profile = getMarketProfile(market);
   const label = getMarketLabel(market, venue);
   const atVenue = venue ? ` at ${venue}` : '';
+  creatives = creativesForPrompt(creatives, strict);
+  const creativesLine = formatCreatives(creatives);
+  // BRO-5022: without the authors, Beckett's "Endgame" and the Marvel film are
+  // the same title to the model. Only a conflicting AUTHOR rejects: the list is
+  // partial, so a headliner in the title ("Jamie Allan's AMAZE") or a director
+  // the art doesn't name is no conflict.
+  const hasAuthor = (Array.isArray(creatives) ? creatives : []).some(c => c && !isDirectorRole(c.role));
+  const creativesBlock = creativesLine
+    ? `\n\nTHE WORK: ${creativesLine}.${hasAuthor ? ' A poster or cover that credits a DIFFERENT playwright, author or composer for this title is a different work with the same name: REJECT it (issues ["wrong_show"]).' : ''} Our list is incomplete: a name that is not on it (a star or headliner, a magician whose name is in the title, a producer, a designer) is NOT a conflict.`
+    : '';
 
   const venueRejectRule = `- The image names a THEATER or PRODUCING COMPANY belonging to a DIFFERENT market than this production. This is a ${label} production${atVenue}. Venue and company branding consistent with ${label} is EXPECTED on the poster and must be ACCEPTED — expected venues here are ${profile.expected}. Only reject on a genuine cross-market mismatch, e.g. ${profile.mismatch}.`;
 
@@ -166,10 +176,13 @@ REJECT (match=false) only when you see POSITIVE EVIDENCE of these problems:
   * Playwright/author credits: "Noel Coward's [Show]", "Edward Albee's [Show]", "August Wilson's [Show]", "Dr. Seuss' [Show]", "A New Play by [Author]"
   * Star names in marketing: "[Star] in [Show]"
   * Official subtitles that are part of the full title: "In the Next Room or the vibrator play" — the subtitle IS part of the official show name
+  * A SHORTER form of the title, without a generic word our listing adds ("AMAZE" or "Jamie Allan's AMAZE" for "AMAZE Magic", "Mamma Mia!" for "Mamma Mia! The Musical")
   * Marketing taglines or slogans (e.g., "Journey to the past", "Every Buddy's Favorite Holiday Musical", "A Great Big Broadway Show") — these are promotional text, not title changes
   Only reject when the added words create a genuinely DIFFERENT show (a separate production with different creative team, story, or concept).
 ${venueRejectRule}${tourRule}
 - Community theater markers: school names, "Community Players", "Youth Production", amateur company logos
+- A school, college or university production (a university theatre department, student company, campus news site or high-school drama club), even of the right play. Issue: community_theater
+- Artwork for a FILM, TV series, book cover, video game, album or any other NON-STAGE work that shares the title (e.g. the "Avengers: Endgame" movie poster when the show is Samuel Beckett's play "Endgame"; a novel's cover when the show is a stage adaptation with its own key art). Issue: non_theatre_work. (A filmed or streamed version OF this staging is not a different work: see ACCEPT.)
 - The image is clearly a "concert version" or "in concert" variant (visible text says "In Concert")
 - The image is a generic placeholder: "Coming soon", stock photo, blank/solid color, website logo, app icon
 - The image shows a yellow PLAYBILL program cover (physical program photo, not promotional art)
@@ -183,7 +196,9 @@ ACCEPT (match=true) in these cases:
 - Closing notice OVERLAID on the show's actual poster art (e.g., "FINAL WEEKS" banner on top of the real poster) — this is fine, the base image is still correct
 - Venue or company branding for THIS market: ${profile.acceptCompanies}.
 - The production's own theater name printed on the poster${venue ? ` — "${venue}" is this production's venue and is EXPECTED` : ''}. A correct venue name is never a reason to reject.
-- Originating company credits: "National Theatre", "Royal Shakespeare Company", "Donmar Warehouse", "Steppenwolf" on an otherwise correct poster — ACCEPT. Productions transfer between houses and the poster credits the original producer.
+- Originating company credits: "National Theatre", "Royal Shakespeare Company", "Donmar Warehouse", "Chichester Festival Theatre", "Steppenwolf" on an otherwise correct poster — ACCEPT. Productions transfer between houses and co-produce, and the poster credits the original producer.
+- A filmed, streamed, cinema-release or "studio audience" version of THIS staging (e.g. the film poster of a recorded West End musical, NT Live, a theatre's streamed performances): it is this production's art, even when the page is IMDb or its dates fall just after the run.
+- The published playtext cover of this play (Nick Hern Books, Methuen Drama, Oberon, Faber, Samuel French): it is the work's own art.
 - Promotional art that is clearly for the correct show even if the title text is small, stylized, or partially obscured — judge by the overall artwork/branding, not just readable text
 - You cannot determine whether the image is from this specific production year vs another year — ACCEPT (benefit of the doubt)
 
@@ -201,7 +216,7 @@ Reply with ONLY this JSON (no markdown fencing, no explanation):
 Or if there's a problem:
 {"match":false,"confidence":"high","description":"brief description of what the image actually shows","issues":["category"],"imageType":"other"}
 
-Issue categories: wrong_show, wrong_production, non_broadway, regional_production, community_theater, closing_ad, placeholder, playbill_cover, seating_chart, generic_image, social_media_logo, ticket_listing, venue_photo, production_photo
+Issue categories: wrong_show, wrong_production, non_theatre_work, non_broadway, regional_production, community_theater, closing_ad, placeholder, playbill_cover, seating_chart, generic_image, social_media_logo, ticket_listing, venue_photo, production_photo
 
 Also classify the image type. Add an "imageType" field to your JSON response:
 - "promotional_art" — Official poster, key art, logo treatment, title card with stylized design, marketing material
@@ -212,7 +227,86 @@ Also classify the image type. Add an "imageType" field to your JSON response:
 Confidence levels:
 - "high": You are very sure of your assessment
 - "medium": You think you're right but aren't certain
-- "low": You're guessing`;
+- "low": You're guessing${creativesBlock}${strict ? STRICT_BLOCK : ''}`;
+}
+
+// BRO-5022: the Google Images tier for a CLOSED show searches on the title
+// alone, so its hits are dominated by same-title films, other companies'
+// stagings and later revivals. Benefit of the doubt is what let those through.
+// This block overrides the "when in doubt, ACCEPT" rules above, and the caller
+// (applyStrictVerdict) refuses anything without positive evidence.
+const STRICT_BLOCK = `
+
+STRICT MODE (overrides "when in doubt, ACCEPT" and "benefit of the doubt" above): this image came from a web image search on the title alone. Results for a title search are often a same-title film, book or game, another company's staging of the same play (a school, a regional or foreign company), or a later revival. Do NOT give benefit of the doubt.
+Add two fields to your JSON:
+- "workConfirmed": true ONLY if the image or the source page positively shows it is THIS stage work: the author's or composer's name, this production's venue, a credited creative or cast member of this production, or a source page clearly about this production. A title alone is NOT confirmation. Otherwise false.
+- "productionMatch": "this" if the image or source page ties it to THIS production (its venue, its year, its creatives or cast); "other" if it ties it to a DIFFERENT production (another venue, company, city, school, country, or performance dates in a different year); "unknown" if nothing says either way. Dates a few weeks outside this run at the same venue or company (previews, an extension, a streamed or studio-audience performance) are still "this". An originating or co-producing theatre's logo, or a playtext cover, is not by itself "other".`;
+
+// Creative-team context for the prompt: "Samuel Beckett (playwright); ...".
+// Accepts strings or {name, role} objects (shows.json creativeTeam shape).
+function formatCreatives(creatives) {
+  if (!Array.isArray(creatives)) return '';
+  const parts = [];
+  for (const c of creatives) {
+    if (!c) continue;
+    const name = typeof c === 'string' ? c : c.name;
+    if (!name || typeof name !== 'string') continue;
+    const role = typeof c === 'object' && c.role ? ` (${String(c.role).toLowerCase()})` : '';
+    const entry = `${name.trim()}${role}`;
+    if (!parts.includes(entry)) parts.push(entry);
+    if (parts.length >= 6) break;
+  }
+  return parts.length ? `the stage work by ${parts.join('; ')}` : '';
+}
+
+// A director alone says nothing about which WORK this is, and naming only
+// the director primed the model to reject "Jamie Allan's AMAZE" on the AMAZE
+// row (BRO-5022 A/B). Strict mode keeps it: there a director credit is
+// positive evidence for this production.
+function creativesForPrompt(creatives, strict) {
+  if (!Array.isArray(creatives) || strict) return creatives;
+  return creatives.some(c => c && typeof c === 'object' && !isDirectorRole(c.role)) || creatives.some(c => typeof c === 'string')
+    ? creatives
+    : [];
+}
+
+const isDirectorRole = (role) => /director/i.test(String(role || '')) && !/music(al)? director/i.test(String(role || ''));
+
+// Roles that identify the WORK (authors) or THIS staging (director). Cast and
+// designers rarely appear on art and would only dilute the line.
+const WORK_ROLE_RE = /playwright|writer|book|music|lyric|composer|author|adapt|director/i;
+
+// shows.json creativeTeam -> the subset the verifier is told about.
+function creativesForVerify(show) {
+  const team = Array.isArray(show && show.creativeTeam) ? show.creativeTeam : [];
+  return team.filter(c => c && c.name && WORK_ROLE_RE.test(String(c.role || '')));
+}
+
+/**
+ * Final accept/reject for a verify result (pure; BRO-5022).
+ * Non-strict: unchanged legacy behaviour (low-confidence rejections and API
+ * errors fail open). Strict: accept only a match with positive evidence of the
+ * work and no evidence of another production; anything else is a rejection,
+ * EXCEPT a verifier error, which is reported as `errored` so callers never
+ * record "no reliable art" because Gemini was down.
+ * @returns {{accept: boolean, errored: boolean, reason: string}}
+ */
+function applyStrictVerdict(result, { strict = false } = {}) {
+  const r = result || {};
+  const errored = (r.issues || []).some(i => ['api_error', 'download_error', 'parse_error', 'invalid_input'].includes(i))
+    || r.confidence === 'error' || r.match === null || r.skipped === true;
+  if (!strict) {
+    if (r.match === true) return { accept: true, errored: false, reason: 'match' };
+    if (r.match === false && (r.confidence === 'high' || r.confidence === 'medium')) return { accept: false, errored: false, reason: 'rejected' };
+    return { accept: true, errored, reason: 'uncertain-fail-open' };
+  }
+  if (errored) return { accept: false, errored: true, reason: 'verifier-error' };
+  if (r.match !== true) return { accept: false, errored: false, reason: 'rejected' };
+  if (r.strictFieldsMissing === true) return { accept: false, errored: true, reason: 'strict-fields-missing' };
+  if (r.confidence === 'low') return { accept: false, errored: false, reason: 'low-confidence' };
+  if (r.productionMatch === 'other') return { accept: false, errored: false, reason: 'other-production' };
+  if (r.workConfirmed !== true) return { accept: false, errored: false, reason: 'work-not-confirmed' };
+  return { accept: true, errored: false, reason: 'confirmed' };
 }
 
 // ============================================================
@@ -292,6 +386,11 @@ function parseResponse(text) {
       description: parsed.description || '',
       issues: Array.isArray(parsed.issues) ? parsed.issues : [],
       imageType: parsed.imageType || 'other',
+      workConfirmed: parsed.workConfirmed === true,
+      // Strict fields absent (schema drift, truncated reply): applyStrictVerdict treats a
+      // match as an error, so a garbled answer never counts as a rejection.
+      strictFieldsMissing: typeof parsed.workConfirmed !== 'boolean',
+      productionMatch: ['this', 'other', 'unknown'].includes(parsed.productionMatch) ? parsed.productionMatch : 'unknown',
     };
   } catch {
     const matchResult = /\"match\"\s*:\s*(true|false)/i.exec(cleaned);
@@ -305,6 +404,7 @@ function parseResponse(text) {
         description: descResult?.[1] || 'Could not fully parse response',
         issues: [],
         imageType: typeResult?.[1] || 'other',
+        strictFieldsMissing: true,
       };
     }
     return {
@@ -334,6 +434,30 @@ function getMimeType(urlOrPath) {
 // MAIN VERIFICATION FUNCTION
 // ============================================================
 
+// The per-image half of the prompt. Pure, so tests can assert on it.
+// options.pageDomain / pageTitle / pageUrl: where a search hit was found (a
+// university news site or a film blog usually names the wrong work outright;
+// m.facebook.com alone hides that the page is the Old Vic's own).
+const pageRef = (url) => String(url).replace(/^google-images:/, '').replace(/^https?:\/\/(www\.)?/i, '').replace(/[?#].*$/, '').slice(0, 160);
+function buildUserPrompt(showTitle, options = {}) {
+  const year = options.year || (options.openingDate ? String(options.openingDate).substring(0, 4) : null);
+  const marketLabel = options.marketLabel || getMarketLabel(options.market, options.venue);
+  const venueSuffix = options.venueSuffix !== undefined ? options.venueSuffix : (options.venue ? ` at ${options.venue}` : '');
+  let prompt = year
+    ? `The ${marketLabel} production is: "${showTitle}" (${year})${venueSuffix}\nThe title is "${showTitle}". If the image shows a COMPLETELY DIFFERENT show name (e.g., "The Thanksgiving Play" instead of "Cult of Love"), REJECT it. But if the image shows "${showTitle}" with added marketing text, subtitles like "The Musical" or a biographical descriptor, playwright credits, or taglines — that is still the SAME show. Apply all REJECT/ACCEPT rules from the system prompt.`
+    : `The ${marketLabel} show is: "${showTitle}"${venueSuffix}\nThe title is "${showTitle}". If the image shows a COMPLETELY DIFFERENT show name, REJECT it. But if the image shows "${showTitle}" with added marketing text, subtitles, playwright credits, or taglines — that is still the SAME show. Apply all REJECT/ACCEPT rules.`;
+  const creativesLine = formatCreatives(creativesForPrompt(options.creatives, options.strict));
+  if (creativesLine) prompt += `\nCreative team: ${creativesLine.replace(/^the stage work by /, '')}.`;
+  if (options.closingDate) prompt += `\nThis production ran ${options.openingDate ? `from ${options.openingDate} ` : ''}to ${options.closingDate}.`;
+  if (options.pageDomain || options.pageTitle || options.pageUrl) {
+    prompt += `\nThe image was found on: ${[options.pageUrl ? pageRef(options.pageUrl) : options.pageDomain, options.pageTitle ? `"${String(options.pageTitle).slice(0, 160)}"` : null].filter(Boolean).join(' — ')}. Use the source page as evidence of which work and production the image is for.`;
+  }
+  prompt += year
+    ? `\nIs this image correct promotional art for this specific ${year} ${marketLabel} production?`
+    : `\nIs this image a correct promotional image for this show?`;
+  return prompt;
+}
+
 /**
  * Verify that an image matches a specific Broadway production.
  *
@@ -348,6 +472,13 @@ function getMimeType(urlOrPath) {
  *   Off-Broadway / regional key art.
  * @param {string} options.venue - The production's venue, so a correct venue name
  *   on the poster reads as confirmation instead of a mismatch.
+ * @param {Array} [options.creatives] - creativeTeam entries (or names) identifying the work (BRO-5022)
+ * @param {string} [options.pageDomain] - domain of the page a search hit came from
+ * @param {string} [options.pageTitle] - title of that page
+ * @param {string} [options.pageUrl] - that page's URL (shown without query string)
+ * @param {string} [options.closingDate] - run end, for closed productions
+ * @param {boolean} [options.strict] - title-only search hit: require positive
+ *   evidence (judge with applyStrictVerdict)
  * @param {RateLimiter} options.rateLimiter - Shared rate limiter instance
  * @returns {Promise<{match: boolean, confidence: string, description: string, issues: string[]}>}
  */
@@ -360,6 +491,7 @@ async function verifyImage(imageInput, showTitle, options = {}) {
       description: 'Verification skipped (no GEMINI_API_KEY)',
       issues: [],
       imageType: 'other',
+      skipped: true,
     };
   }
 
@@ -371,12 +503,11 @@ async function verifyImage(imageInput, showTitle, options = {}) {
   // rejects correct West End / Off-Broadway / regional key art (2026-08-02).
   const marketLabel = getMarketLabel(options.market, options.venue);
   const venueSuffix = options.venue ? ` at ${options.venue}` : '';
-  const systemPrompt = buildVerificationPrompt({ market: options.market, venue: options.venue });
-
-  // Build user prompt with year qualifier
-  const userPrompt = year
-    ? `The ${marketLabel} production is: "${showTitle}" (${year})${venueSuffix}\nThe title is "${showTitle}". If the image shows a COMPLETELY DIFFERENT show name (e.g., "The Thanksgiving Play" instead of "Cult of Love"), REJECT it. But if the image shows "${showTitle}" with added marketing text, subtitles like "The Musical" or a biographical descriptor, playwright credits, or taglines — that is still the SAME show. Apply all REJECT/ACCEPT rules from the system prompt.\nIs this image correct promotional art for this specific ${year} ${marketLabel} production?`
-    : `The ${marketLabel} show is: "${showTitle}"${venueSuffix}\nThe title is "${showTitle}". If the image shows a COMPLETELY DIFFERENT show name, REJECT it. But if the image shows "${showTitle}" with added marketing text, subtitles, playwright credits, or taglines — that is still the SAME show. Apply all REJECT/ACCEPT rules.\nIs this image a correct promotional image for this show?`;
+  // venue-write-guard-ok: venue only goes into the verifier prompt text, never written to data.
+  const systemPrompt = buildVerificationPrompt({
+    market: options.market, venue: options.venue, creatives: options.creatives, strict: options.strict,
+  });
+  const userPrompt = buildUserPrompt(showTitle, { ...options, year, marketLabel, venueSuffix });
 
   // Resolve image data
   let imageData;
@@ -570,6 +701,11 @@ module.exports = {
   createRateLimiter,
   classifyImageUrl,
   buildVerificationPrompt,
+  buildUserPrompt,
+  applyStrictVerdict,
+  parseResponse,
+  creativesForVerify,
+  formatCreatives,
   resolveMarketSlug,
   getMarketProfile,
   MARKET_PROFILES,
