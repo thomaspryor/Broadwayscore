@@ -205,6 +205,12 @@ try {
 }
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
+const { BASELINE_NAME, createReviewValidationScope } = require('./lib/review-validation-scope');
+const reviewValidationScope = createReviewValidationScope(
+  path.join(DATA_DIR, 'review-texts'),
+  path.join(process.env.RUNNER_TEMP || '/tmp', BASELINE_NAME),
+  '/tmp/core-data-snapshot/reviews.json'
+);
 // Override lets tests point validate-data.js at a throwaway fixture instead of
 // the real data/shows.json (Notion — validate-data sentinel test corruption risk).
 // Every other data file still resolves under the real DATA_DIR.
@@ -304,6 +310,14 @@ let warnings = [];
 function error(msg) {
   errors.push(msg);
   console.error(`❌ ERROR: ${msg}`);
+}
+
+function reviewFileError(msg, relativeFile, review) {
+  reviewValidationScope.reportError(msg, relativeFile, review, { error, warn });
+}
+
+function reviewRowError(msg, review) {
+  reviewValidationScope.reportRowError(msg, review, { error, warn });
 }
 
 function warn(msg) {
@@ -2464,8 +2478,7 @@ function validateReviewsJson() {
     (typeof r.assignedScore !== 'number' || !Number.isFinite(r.assignedScore))
   );
   if (badType.length) {
-    error(`${badType.length} reviews have non-numeric assignedScore (schema drift — must be null or finite number):`);
-    badType.slice(0, 10).forEach(r => error(`  ${r.showId}/${r.outletId}/${r.criticName}: ${typeof r.assignedScore} ${JSON.stringify(r.assignedScore)}`));
+    badType.forEach(r => reviewRowError(`${r.showId}/${r.outletId}/${r.criticName}: non-numeric assignedScore (must be null or finite number): ${JSON.stringify(r.assignedScore)}`, r));
   } else {
     ok('All assignedScore values are numeric or null (no schema drift)');
   }
@@ -2477,8 +2490,7 @@ function validateReviewsJson() {
     (r.assignedScore < 0 || r.assignedScore > 100)
   );
   if (outOfRange.length) {
-    error(`${outOfRange.length} reviews have assignedScore outside 0-100 range`);
-    outOfRange.slice(0, 5).forEach(r => error(`  ${r.showId}/${r.outletId}: ${r.assignedScore}`));
+    outOfRange.forEach(r => reviewRowError(`${r.showId}/${r.outletId}: assignedScore outside 0-100 range: ${r.assignedScore}`, r));
   } else {
     ok('All assignedScore values in 0-100 range');
   }
@@ -3265,6 +3277,7 @@ function validateAggregatorScoreContamination() {
         const data = JSON.parse(fs.readFileSync(path.join(showPath, f), 'utf8'));
         if (data.scoreSource && AGGREGATOR_SCORE_SOURCES.has(data.scoreSource) && data.originalScore != null) {
           contaminated++;
+          reviewFileError(`[aggregator-score] ${showDir}/${f}: aggregator scores as originalScore (should be aggregatorStars)`, `${showDir}/${f}`, data);
           if (examples.length < 5) examples.push(`${showDir}/${f}`);
         }
       } catch { /* skip */ }
@@ -3274,7 +3287,7 @@ function validateAggregatorScoreContamination() {
   if (contaminated === 0) {
     ok('No aggregator scores stored as originalScore');
   } else {
-    error(`${contaminated} review files have aggregator scores as originalScore (should be aggregatorStars). Examples: ${examples.join(', ')}`);
+    info(`${contaminated} review files have aggregator scores as originalScore (should be aggregatorStars). Examples: ${examples.join(', ')}`);
   }
 }
 
@@ -4084,7 +4097,7 @@ function validateReviewTextQuality(shows) {
           // No continue: CHECK 1+ still run on a held file.
         }
         if (kind === 'error') {
-          error(`[wrong-production-by-date] ${showDir}/${file}: review dated ${data.publishDate} is ${verdict.daysBefore}d before the show's earliest date ${verdict.earliestDate} and not within any declared priorRun — likely a different production leaked onto this entry (set wrongProduction:true, or declare a priorRun)`);
+          reviewFileError(`[wrong-production-by-date] ${showDir}/${file}: review dated ${data.publishDate} is ${verdict.daysBefore}d before the show's earliest date ${verdict.earliestDate} and not within any declared priorRun; likely a different production leaked onto this entry (set wrongProduction:true, or declare a priorRun)`, `${showDir}/${file}`, data);
           issues++;
           continue;
         }
@@ -4101,7 +4114,7 @@ function validateReviewTextQuality(shows) {
       // reviews. An unresolvable showDir yields reason 'no-show-record', not a bare false.
       const creditVerdict = classifyCriticAgainstSets(showNameSets[showDir], critic);
       if (creditVerdict.kind === 'creative') {
-        error(`[garbage-review] ${showDir}/${file}: critic "${critic}" is a creative team member of this show — likely not a real review`);
+        reviewFileError(`[garbage-review] ${showDir}/${file}: critic "${critic}" is a creative team member of this show; likely not a real review`, `${showDir}/${file}`, data);
         creativeAsCritic++;
         issues++;
       } else if (creditVerdict.kind === 'cast') {
@@ -4114,18 +4127,18 @@ function validateReviewTextQuality(shows) {
       // Skip for known outlets in the registry (e.g., "A Younger Theatre" starts with "A " but is legitimate)
       const isKnownOutlet = knownOutletNames.has(outlet.toLowerCase());
       if (!isKnownOutlet && outlet.length > 60) {
-        error(`[garbage-outlet] ${showDir}/${file}: outlet "${outlet.substring(0, 60)}..." is too long (${outlet.length} chars) — likely a headline or sentence fragment`);
+        reviewFileError(`[garbage-outlet] ${showDir}/${file}: outlet "${outlet.substring(0, 60)}..." is too long (${outlet.length} chars); likely a headline or sentence fragment`, `${showDir}/${file}`, data);
         garbageOutlets++;
         issues++;
       } else if (!isKnownOutlet && /^(is |has |the show (is|was|has|features|stars|boasts) |a |an |in her |in his |but |with )/i.test(outlet)) {
-        error(`[garbage-outlet] ${showDir}/${file}: outlet "${outlet}" starts with a sentence fragment`);
+        reviewFileError(`[garbage-outlet] ${showDir}/${file}: outlet "${outlet}" starts with a sentence fragment`, `${showDir}/${file}`, data);
         garbageOutlets++;
         issues++;
       }
 
       // CHECK 3: Critic name is too long (likely a headline)
       if (critic.length > 60) {
-        error(`[headline-critic] ${showDir}/${file}: critic name "${critic.substring(0, 60)}..." is too long (${critic.length} chars) — likely a headline`);
+        reviewFileError(`[headline-critic] ${showDir}/${file}: critic name "${critic.substring(0, 60)}..." is too long (${critic.length} chars); likely a headline`, `${showDir}/${file}`, data);
         headlineCritics++;
         issues++;
       } else if (looksLikeUrlCriticName(critic)) {
@@ -4134,7 +4147,7 @@ function validateReviewTextQuality(shows) {
         // Length-independent: the old >60 check missed the many sub-60 URL
         // bylines. The save-time mirror lives in review-file-writer.js via
         // sanitizeCriticName; both share looksLikeUrlCriticName (CLAUDE.md §15).
-        error(`[url-critic] ${showDir}/${file}: critic name "${critic.substring(0, 60)}" is URL-shaped — scraper captured the byline link, not the name (run scripts/gc-url-critic-names.js --fix)`);
+        reviewFileError(`[url-critic] ${showDir}/${file}: critic name "${critic.substring(0, 60)}" is URL-shaped; scraper captured the byline link, not the name (run scripts/gc-url-critic-names.js --fix)`, `${showDir}/${file}`, data);
         headlineCritics++;
         issues++;
       }
@@ -4145,7 +4158,7 @@ function validateReviewTextQuality(shows) {
       const textFields = [data.pullQuote, data.excerpt].filter(Boolean);
       for (const text of textFields) {
         if (hasJsonLdArtifact(text)) {
-          error(`[jsonld-artifact] ${showDir}/${file}: pullQuote/excerpt contains JSON-LD structured data (run scripts/gc-display-field-artifacts.js --fix)`);
+          reviewFileError(`[jsonld-artifact] ${showDir}/${file}: pullQuote/excerpt contains JSON-LD structured data (run scripts/gc-display-field-artifacts.js --fix)`, `${showDir}/${file}`, data);
           jsonLdPullQuotes++;
           issues++;
           break;
@@ -5048,9 +5061,7 @@ function validateCrossMarketContamination() {
     });
     if (level === 'error') {
       usOnWeErrors++;
-      if (usOnWeErrors <= 5) {
-        error(`Cross-market: WE show "${r.showId}" has review from US outlet "${r.outlet || oid}" dated ${r.publishDate} (${reason})`);
-      }
+      reviewRowError(`Cross-market: WE show "${r.showId}" has review from US outlet "${r.outlet || oid}" dated ${r.publishDate} (${reason})`, r);
     } else if (level === 'warning') {
       issues++;
       if (issues <= 5) {
@@ -5060,7 +5071,7 @@ function validateCrossMarketContamination() {
   }
 
   if (usOnWeErrors > 5) {
-    error(`... and ${usOnWeErrors - 5} more US-on-WE pre-window cross-market reviews`);
+    info(`${usOnWeErrors} US-on-WE pre-window cross-market reviews checked individually`);
   }
   if (issues > 5) {
     warn(`... and ${issues - 5} more US→WE cross-market reviews`);
@@ -5115,9 +5126,7 @@ function validateCrossMarketContamination() {
     if (level === 'error') {
       recordAccum(oid, r, category, 'broadway');
       reverseIssues++;
-      if (reverseIssues <= 5) {
-        error(`Cross-market: Broadway show "${r.showId}" has review from London Tier 1/2 outlet "${r.outlet || oid}" (${reason})`);
-      }
+      reviewRowError(`Cross-market: Broadway show "${r.showId}" has review from London Tier 1/2 outlet "${r.outlet || oid}" (${reason})`, r);
     } else if (level === 'advisory') {
       recordAccum(oid, r, category, 'broadway');
       reverseAdvisories++;
@@ -5130,7 +5139,7 @@ function validateCrossMarketContamination() {
     }
   }
   if (reverseIssues > 5) {
-    error(`... and ${reverseIssues - 5} more London Tier 1/2 → Broadway cross-market reviews`);
+    info(`${reverseIssues} London Tier 1/2 to Broadway cross-market reviews checked individually`);
   }
   if (reverseWarnings > 5) {
     warn(`... and ${reverseWarnings - 5} more London→off-Broadway/other cross-market reviews`);
@@ -5349,7 +5358,7 @@ function runValidation() {
   console.log('');
   validateReviewData(shows);
   console.log('');
-  const reviewCount = validateReviewsJson() || 0;
+  let reviewCount = validateReviewsJson() || 0;
   console.log('');
   validateOutletFragmentation();
   console.log('');
@@ -5433,6 +5442,26 @@ function runValidation() {
     // action so it refuses to push corrupt data even when its `if: always()` step
     // fires. Composite reads ${RUNNER_TEMP}/.skip-push-core-data and gates push.
     exitWithError(`${errors.length} validation error(s); first: ${errors[0]}`);
+  }
+
+  // Exclude untouched invalid sources from the derived payload. Never write
+  // to review-texts. Existing core-data sync and three-way review merging
+  // preserve these deletions relative to the checkout snapshot.
+  if (reviewValidationScope.quarantined.size > 0) {
+    const reviewsFile = path.join(DATA_DIR, 'reviews.json');
+    if (fs.existsSync(reviewsFile)) {
+      const data = JSON.parse(fs.readFileSync(reviewsFile, 'utf8'));
+      const filtered = reviewValidationScope.excludeQuarantinedReviews(data);
+      const removed = data.reviews.length - filtered.reviews.length;
+      info(`Review quarantine: ${reviewValidationScope.quarantined.size} unchanged review record(s), ${removed} derived review row(s) excluded`);
+      if (removed > 0) {
+        if (baseline?.totalReviews && filtered.reviews.length < Math.floor(baseline.totalReviews * (1 - MAX_REVIEW_DECLINE_PCT))) {
+          exitWithError(`Review quarantine would breach corpus-wide review count threshold: ${filtered.reviews.length} remaining (baseline: ${baseline.totalReviews})`);
+        }
+        writeAuditArtifact(reviewsFile, JSON.stringify(filtered, null, 2) + '\n', 'quarantined reviews.json');
+        reviewCount -= removed;
+      }
+    }
   }
 
   // Write baseline file on successful validation
