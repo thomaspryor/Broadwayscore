@@ -566,13 +566,15 @@ const TOUR_OTHER_SHOW_WINDOW_CHARS = 70;
 
 // Same show under another spelling ("Les Misérables"/"Les Miserables",
 // "Disney's Beauty and the Beast") is not a DIFFERENT show (BRO-4963 review).
+// Also prefix/suffix variants: stored titles carry subtitles ("Kinky Boots The
+// Musical", "Jesus Christ Superstar - Theatre Royal Drury Lane").
 function normTitleKey(t) {
   return String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
     .replace(/[’']s\b/g, '').replace(/^disney\s+/, '').replace(/^the\s+/, '').replace(/[^a-z0-9]+/g, '');
 }
 function isSameTitleAsCurrent(title, currentShowTitle) {
   const a = normTitleKey(title), b = normTitleKey(currentShowTitle);
-  return !!a && !!b && (a === b || a.endsWith(b) || b.endsWith(a));
+  return !!a && !!b && (a === b || a.endsWith(b) || b.endsWith(a) || a.startsWith(b) || b.startsWith(a));
 }
 
 /**

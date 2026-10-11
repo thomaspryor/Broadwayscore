@@ -156,3 +156,15 @@ test('BRO-4963: real tour reviews stay flagged when the title is long or spelled
     assert.equal(isTourReviewExcerpt(text, tourContextForShow(show)).isTourReview, true, `${id}: ${text}`);
   }
 });
+
+test('BRO-4963: short critic name vs longer stored title still flags a real tour review', () => {
+  const cases = [
+    ['jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026', 'Jesus Christ Superstar - Theatre Royal Drury Lane', 'The national tour of Jesus Christ Superstar is a joy.'],
+    ['kinky-boots-the-musical-west-end-2026', 'Kinky Boots The Musical', 'The national tour of Kinky Boots is a joy.'],
+    ['back-to-the-future-2023', 'Back to the Future: The Musical', 'Back to the Future at the Pantages is a joy.'],
+  ];
+  for (const [showId, showTitle, excerpt] of cases) {
+    const r = isTourReviewExcerpt(excerpt, { currentShowId: showId, currentShowTitle: showTitle });
+    assert.equal(r.isTourReview, true, showId);
+  }
+});
