@@ -217,6 +217,12 @@ test('isValidSynopsis rejects audience-address pitch copy, curly apostrophes inc
   assert.equal(isValidSynopsis("A young widow can't miss the last train home, so she spends one strange night in a stranger's house."), true);
 });
 
+test('"Head to the <venue>" opens pitch copy, a head-to-head contest is story (BRO-5031)', () => {
+  assert.equal(isValidSynopsis("Head to the Old Vic to experience one of Tom Stoppard's most famous plays, The Real Thing, in an exciting new revival. Together, the ensemble tells the story of Henry, a married playwright."), false);
+  assert.equal(isValidSynopsis('Two rival chefs go head to head in a cook-off that exposes old family secrets and a buried betrayal.'), true);
+  assert.equal(isValidSynopsis('The sisters fall out over the will. Head to toe in mourning black, Ruth refuses to speak to anyone at the funeral.'), true);
+});
+
 test('song cues are plot, not pitch, and a setting label is debris (BRO-5063 review)', () => {
   assert.equal(isValidSynopsis('King George III reminds the colonists that he still rules them and expects them to return ("You’ll Be Back").'), true);
   assert.equal(isValidSynopsis('Time: The first century, just after the birth of Christ Amahl, a disabled boy, has a problem with telling tall tales.'), false);
