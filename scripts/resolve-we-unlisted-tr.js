@@ -84,6 +84,35 @@ function pdfHeaderFor(text, title) {
   return null;
 }
 
+const LOG_DATE = /\b\d{1,2}(?:st|nd|rd|th)?\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?(?:\s+\d{4})?/gi;
+
+/**
+ * CI-log diagnostics for a PDF where no dated header was found: for each
+ * heading that matches the title, its line offset and, for the next 40
+ * lines, each date with at most 24 characters before it (enough to show a
+ * label like "Press Night" or "Closes", too little to carry review text).
+ * Goes to the Actions log only, never to the committed file.
+ */
+function logDateContext(text, title, mode) {
+  const want = capsKey(cleanSearchTitle(title)).replace(/^THE /, '');
+  const lines = String(text || '').split('\n');
+  let shown = 0;
+  for (let i = 0; i < lines.length && shown < 4; i++) {
+    const key = capsKey(lines[i].trim()).replace(/^THE /, '');
+    if (!key || key !== want) continue;
+    shown++;
+    const underReviews = lines.slice(Math.max(0, i - 5), i).some(l => l.trim() === 'Reviews');
+    console.log(`    [${mode}] heading at line ${i}${underReviews ? ' (under Reviews)' : ''}`);
+    for (let j = i + 1; j < lines.length && j <= i + 40; j++) {
+      const flat = lines[j].replace(/\s+/g, ' ');
+      for (const m of flat.matchAll(LOG_DATE)) {
+        console.log(`      +${j - i}: …${flat.slice(Math.max(0, m.index - 24), m.index).trim()} | ${m[0]}`);
+      }
+    }
+  }
+  if (!shown) console.log(`    [${mode}] no heading equal to "${want}"`);
+}
+
 /**
  * Search strings for a WOS review title. Double bills and seasons
  * ("Pinter Seven A Slight Ache / The Dumb Waiter", "Her Naked Skin/Votes for
@@ -184,6 +213,8 @@ async function main() {
         for (const mode of ['-layout', '-raw']) {
           const text = execFileSync('pdftotext', [mode, tmp, '-'], { maxBuffer: 50 * 1024 * 1024 }).toString();
           const h = pdfHeaderFor(text, title);
+          const d = parseTrHeaderDates(h);
+          if (!d.closingDate) logDateContext(text, title, mode);
           if (h) return h;
         }
         return null;
@@ -234,4 +265,4 @@ if (require.main === module) {
   main().catch(e => { console.error(e); process.exit(1); });
 }
 
-module.exports = { pdfHeaderFor, searchTitles };
+module.exports = { pdfHeaderFor, searchTitles, logDateContext };
