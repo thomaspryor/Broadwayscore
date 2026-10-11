@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// venue-write-guard-ok: reads venue from shows.json into verifier options; writes nothing.
 /**
  * A/B the show-image verifier: the prompt before BRO-5022 vs the current one.
  *

@@ -503,6 +503,7 @@ async function verifyImage(imageInput, showTitle, options = {}) {
   // rejects correct West End / Off-Broadway / regional key art (2026-08-02).
   const marketLabel = getMarketLabel(options.market, options.venue);
   const venueSuffix = options.venue ? ` at ${options.venue}` : '';
+  // venue-write-guard-ok: venue only goes into the verifier prompt text, never written to data.
   const systemPrompt = buildVerificationPrompt({
     market: options.market, venue: options.venue, creatives: options.creatives, strict: options.strict,
   });
