@@ -275,3 +275,28 @@ describe('BRO-3142: real review vs same-outlet flagged preview at the Unknown-cr
     assert.equal(kept.wrongShow, true);
   });
 });
+
+// BRO-4478: Così fan tutte independent--unknown.json was stuck >24h because its
+// URL was a Google /goto?url=CAE... stub. The CLI must refuse such a URL
+// before any fetch tier runs, and must not write a review file.
+describe('BRO-4478: unresolvable /goto redirect URL is refused before fetch', () => {
+  const { spawnSync } = require('node:child_process');
+  const script = path.join(path.dirname(new URL(import.meta.url).pathname), 'ingest-review-from-url.js');
+  const showId = JSON.parse(fs.readFileSync(path.join(path.dirname(script), '..', 'data', 'shows.json'), 'utf8')).shows[0].id;
+  for (const url of [
+    '/goto?url=CAESZwHrOzAVCX-UdB0BPVpxILU1p--M04NhSSNmWGF9CXhgwdpEIpkWRA',
+    'https://webcache.googleusercontent.com/search?q=cache:example.com/review',
+  ]) {
+    test(`exit 1, no fetch attempted: ${url.slice(0, 40)}`, () => {
+      const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4478-'));
+      try {
+        const r = spawnSync('node', [script, `--show=${showId}`, `--url=${url}`, '--outlet=independent', `--data-dir=${dir}`],
+          { encoding: 'utf8', timeout: 30000 });
+        assert.equal(r.status, 1);
+        assert.match(r.stderr, /unresolvable redirect/);
+        assert.doesNotMatch(r.stdout + r.stderr, /Playwright|scraping methods failed/);
+        assert.deepEqual(fs.readdirSync(dir), []);
+      } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+    });
+  }
+});

@@ -50,6 +50,7 @@ const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
 const { isolateMultiShowSection } = require('./lib/multi-show-section-extract');
 const { extractArticleTextFromUrl, extractPublishDate, extractLsaByline } = require('./lib/article-extractor');
 const { classifyReviewUrl } = require('./lib/non-review-url-patterns');
+const { isUnresolvableRedirectUrl } = require('./lib/unresolvable-url');
 const { recoverScoreFromHtml, existingHasScoreSignal } = require('./lib/ingest-html-score');
 // classifyReviewUrl reasons that never occur on a scored review in the corpus
 // (checked 2026-09-28); see the refusal below.
@@ -158,6 +159,15 @@ if (!show) {
   // (isBlockedReviewUrl is also the rebuild's canonical exclusion check) still
   // leaves a written-but-unscored review file and an approval email sent to
   // the submitter; refusing at ingest is the cheaper, earlier stop.
+  // BRO-4478: a Google /goto?url=CAE... redirect stub (or AMP/cache wrapper)
+  // has no fetchable article; without this every fetch tier burned credits
+  // and the run exited "fetch failed" with no actionable message. The writer
+  // (BRO-4458) already refuses to file such a URL, so stop before fetching.
+  if (isUnresolvableRedirectUrl(url)) {
+    console.error(`Refusing to ingest — ${url.slice(0, 80)} is an unresolvable redirect/cache URL, not an article. Find the real article URL (search the outlet) and re-run with it.`);
+    process.exit(1);
+  }
+
   if (isBlockedReviewUrl(url)) {
     console.error(`Refusing to ingest — ${url} matches a known non-review domain (ticket/listing/social/reference/venue/PR-firm). See scripts/lib/domain-filters.js.`);
     process.exit(1);
