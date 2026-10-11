@@ -181,3 +181,14 @@ test('the enricher pipeline output for each fixture passes isValidSynopsis', asy
     assert.equal(isValidSynopsis(synopsis), true, synopsis);
   }
 });
+
+test('definition-list handling keeps plot on heading lines and drops setting labels (BRO-5063 review)', async () => {
+  const { stripWikiMarkup, stripFileLinks } = (await import('./lib/wiki-utils.js')).default;
+  assert.equal(stripWikiMarkup(';Place: Near Bethlehem\n:Time: The first century, just after the birth of Christ\nAmahl, a disabled boy, tells tall tales.'), 'Amahl, a disabled boy, tells tall tales.');
+  assert.equal(stripWikiMarkup('; Act I: Belle Poitrine writes her autobiography with [[Patrick Dennis]].\nShe grew up poor.'), 'Belle Poitrine writes her autobiography with Patrick Dennis. She grew up poor.');
+  assert.equal(stripWikiMarkup('*Act I: The family gathers at the farm for the reading of the will.\n*Act II: Maria returns.'), 'The family gathers at the farm for the reading of the will.');
+  // A one-line stored synopsis opening with ";" (clean-synopsis-markup.js) is not erased.
+  assert.equal(stripWikiMarkup(';Act I Lestat leaves his mother [[Gabrielle]] to go to Paris.'), 'Act I Lestat leaves his mother Gabrielle to go to Paris.');
+  // An unclosed File link is left for hasWikiMarkup instead of swallowing the plot after it.
+  assert.match(stripFileLinks('The story begins. [[File:x.jpg|thumb|caption\nThe hero sets off on a quest.'), /The hero sets off on a quest/);
+});

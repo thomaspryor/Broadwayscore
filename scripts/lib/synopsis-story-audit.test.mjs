@@ -42,3 +42,9 @@ test('soft hits carry the reason and the sentence, and skip production news', ()
   const news = { title: 'X', synopsis: 'This 2026 revival is directed by Debbie Allen at the Ethel Barrymore Theatre.' };
   assert.deepEqual(synopsisStoryProblems(news, () => 'production-news').soft, []);
 });
+
+test('dialogue with inner exclamations stays one sentence (BRO-5063 review)', () => {
+  assert.deepEqual(storySentences('He shouts, "Stop! You fool!" and runs away. Then he sleeps.'), ['He shouts, "Stop! You fool!" and runs away.', 'Then he sleeps.']);
+  const steel = { title: 'Steel Pier', synopsis: 'He manages to stand up and exclaims, "Alright! I understand! I\'ve got three weeks! Three weeks! " before hurrying off. He asks if she has a partner yet.' };
+  assert.deepEqual(synopsisStoryProblems(steel, nonStoryReason).soft.filter(s => s.reason === 'fragment'), []);
+});

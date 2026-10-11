@@ -28,7 +28,7 @@ const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 if (hasHelpFlag(process.argv.slice(2))) {
-  console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(2, 23).join('\n').replace(/^ \* ?/gm, ''));
+  console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(2, 22).join('\n').replace(/^ \* ?/gm, ''));
   process.exit(0);
 }
 

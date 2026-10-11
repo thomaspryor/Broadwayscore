@@ -65,6 +65,9 @@ function stripFileLinks(text) {
     while (i < text.length && depth > 0) {
       if (text.startsWith('[[', i)) { depth++; i += 2; } else if (text.startsWith(']]', i)) { depth--; i += 2; } else i++;
     }
+    // Never closed (malformed, or a section cut inside the caption): leave
+    // it for hasWikiMarkup to reject rather than swallowing the plot after it.
+    if (depth > 0) return out + text.slice(m.index);
     pos = i;
     open.lastIndex = i;
   }
@@ -74,14 +77,32 @@ function stripFileLinks(text) {
 /**
  * Definition-list markup used for act and scene headings: ";'''Act I'''" and
  * ";'''1977'''" term lines are headings, "*Scene One: Pub." lines are scene
- * labels, and ":" opens an indented paragraph. Once newlines collapse, the
- * headings read as ";Act I Belle Poitrine ..." mid-synopsis (Little Me,
- * Lestat, Betrayal; BRO-5063). Drop the heading lines, keep the paragraphs.
+ * labels, ":Time: The first century" is a setting label, and ":" opens an
+ * indented paragraph. Once newlines collapse, the headings read as ";Act I
+ * Belle Poitrine ..." mid-synopsis (Little Me, Lestat, Betrayal, Amahl;
+ * BRO-5063). A heading line that also carries a sentence after its label
+ * (";Act I: Belle Poitrine writes her autobiography with Patrick Dennis.")
+ * keeps the sentence; a bare heading is dropped.
  */
+const HEADING_LINE_RE = /^(?:;+|\*+(?=\s*(?:'{2,3})?\s*(?:Act|Scene)\b))([^\n]*)$/gim;
+const SETTING_LABEL_RE = /^[;:]*\s*(?:'{2,3})?(?:Time|Place|Setting)(?:'{2,3})?\s*:[^\n]*$/gim;
+const MIN_SENTENCE_WORDS = 6;
+
+function headingLineContent(body) {
+  const plain = body.replace(/'{2,3}/g, '').trim();
+  const colon = plain.indexOf(':');
+  const rest = colon === -1 ? '' : plain.slice(colon + 1).trim();
+  if (rest.split(/\s+/).length >= MIN_SENTENCE_WORDS && /[.!?]["')]?$/.test(rest)) return rest;
+  // No label, just a long line: a one-line stored synopsis that opens with
+  // ";" (clean-synopsis-markup.js input) keeps its text, minus the marker.
+  if (colon === -1 && plain.split(/\s+/).length > MIN_SENTENCE_WORDS) return plain;
+  return '';
+}
+
 function stripDefinitionListMarkup(text) {
   return text
-    .replace(/^;[^\n]*$/gm, '')
-    .replace(/^\*+\s*(?:'{2,3})?(?:Scene|Act)\b[^\n]*$/gim, '')
+    .replace(SETTING_LABEL_RE, '')
+    .replace(HEADING_LINE_RE, (_, body) => headingLineContent(body))
     .replace(/^:+\s*/gm, '');
 }
 

@@ -216,3 +216,9 @@ test('isValidSynopsis rejects audience-address pitch copy, curly apostrophes inc
   for (const s of live) assert.equal(isValidSynopsis(s), false, s);
   assert.equal(isValidSynopsis("A young widow can't miss the last train home, so she spends one strange night in a stranger's house."), true);
 });
+
+test('song cues are plot, not pitch, and a setting label is debris (BRO-5063 review)', () => {
+  assert.equal(isValidSynopsis('King George III reminds the colonists that he still rules them and expects them to return ("You’ll Be Back").'), true);
+  assert.equal(isValidSynopsis('Time: The first century, just after the birth of Christ Amahl, a disabled boy, has a problem with telling tall tales.'), false);
+  assert.equal(isValidSynopsis('Set in 1925, the play begins at a time when the family is at its lowest ebb and nobody visits.'), true);
+});

@@ -21,7 +21,7 @@
 // venue-write-guard-ok: reads a TodayTix page's venue name for comparison only; nothing here writes shows.json.
 const { normalizeTitle } = require('./title-normalization');
 const { venuesMatch } = require('./image-source-match');
-const { PLOT_SIGNAL_RE } = require('./synopsis-validation');
+const { PLOT_SIGNAL_RE, isAudiencePitch } = require('./synopsis-validation');
 
 // Sentences in product.about that are not story: selling, star quotes, age /
 // running-time / content notes, cast and team lists (the junk class that run
@@ -43,8 +43,9 @@ const MARKETING_OPENER_RE = /^(See |Get tickets|Don't miss|Experience the|Come d
 const PRESS_ATTRIBUTION_RE = /\((?:the )?(?:financial times|ft|independent|i|inews|times|sunday times|telegraph|daily telegraph|sunday telegraph|guardian|observer|evening standard|standard|stage|whatsonstage|what's on stage|time out|daily mail|mail on sunday|metro|daily express|express|sun|mirror|radio times|spectator|new statesman|arts desk|new york times|variety|chicago tribune|hollywood reporter|broadwayworld|broadway world)\)/i;
 const SINGLE_QUOTE_ATTRIBUTED_RE = /(?:^|[\s(])'[^']{3,}'\s*(?:\(|[–—-]\s*[A-Z])/;
 // Copy that talks to the audience ("Welcome to the Rock! ... invites you into",
-// "Join us on this emotional roller-coaster") is selling, not story.
-const AUDIENCE_ADDRESS_RE = /\b(join us|invites? you|you'll (find|love|be|see)|treat yourself)\b|^welcome to the\b/i;
+// "Join us on this emotional roller-coaster") is selling, not story. The rule
+// lives in synopsis-validation.js (isAudiencePitch) so the write-time
+// validator and this cleaner cannot drift apart (BRO-5063).
 // Billing that the production-news list missed: "X (Evita, Cats) as Gloria",
 // "James McArdle takes the title role", "The show features the spectacular
 // music of TAKE THAT", "one of the most successful musical theatre tours ever".
@@ -98,7 +99,7 @@ function nonStoryReason(sentence) {
   if (isPullQuote(s) || PRESS_ATTRIBUTION_RE.test(s) || SINGLE_QUOTE_ATTRIBUTED_RE.test(s)) return 'pull-quote';
   if (NON_STORY_SENTENCE_RE.test(s) || BILLING_RE.test(s)) return 'selling-or-list';
   if (PRODUCTION_NEWS_RE.test(s)) return 'production-news';
-  if (MARKETING_OPENER_RE.test(s) || AUDIENCE_ADDRESS_RE.test(s)) return 'pitch-opener';
+  if (MARKETING_OPENER_RE.test(s) || isAudiencePitch(s)) return 'pitch-opener';
   if (isFragment(s)) return 'fragment';
   return null;
 }
@@ -179,4 +180,4 @@ function todaytixPageMatchesShow(identity, show, expectedId) {
   return true;
 }
 
-module.exports = { extractTodaytixPageIdentity, todaytixPageMatchesShow, cleanTodaytixAbout, nonStoryReason };
+module.exports = { extractTodaytixPageIdentity, todaytixPageMatchesShow, cleanTodaytixAbout, nonStoryReason, ABBREV_DOT_RE };

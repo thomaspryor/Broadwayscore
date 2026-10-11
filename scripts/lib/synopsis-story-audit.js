@@ -18,11 +18,10 @@
  * Pure, no I/O. scripts/lib/synopsis-story-audit.test.mjs.
  */
 
-const { WIKITEXT_DEBRIS_RE, AUDIENCE_PITCH_RE } = require('./synopsis-validation');
-
-// Initials and titles end in a full stop that does not end a sentence
-// ("Buddy Young Jr.", "F. Murray Abraham", "Mr. Saturday Night").
-const ABBREV_DOT_RE = /\b(Mr|Mrs|Ms|Dr|St|Jr|Sr|Prof|Capt|Gen|Lt|[A-Z])\.(?=\s)/g;
+const { WIKITEXT_DEBRIS_RE, isAudiencePitch } = require('./synopsis-validation');
+// Initials and titles ("Buddy Young Jr.", "F. Murray Abraham") end in a full
+// stop that does not end a sentence; same list the TodayTix cleaner uses.
+const { ABBREV_DOT_RE } = require('./todaytix-page-identity');
 // Stand-ins for end punctuation that must not split, restored afterwards.
 const HOLD = { '.': '\u2024', '!': '\u01C3', '?': '\u0294' };
 const RESTORE = new Map(Object.entries(HOLD).map(([k, v]) => [v, k]));
@@ -46,10 +45,19 @@ function storySentences(text, title) {
     s = s.replace(new RegExp(escapeRe(t), 'g'), m => m.replace(/[.!?]/g, c => HOLD[c]));
   }
   s = s.replace(ABBREV_DOT_RE, `$1${HOLD['.']}`);
-  return s
+  const pieces = s
     .split(/(?<=[.!?]["'”’)]?)\s+(?=["'“‘(]?[A-Z0-9])/)
     .map(x => x.replace(/[\u2024\u01C3\u0294]/g, c => RESTORE.get(c)).trim())
     .filter(Boolean);
+  // Dialogue ('exclaims, "Alright! I understand!" before hurrying off') is
+  // one sentence: rejoin pieces while a double quote is still open.
+  const out = [];
+  for (const p of pieces) {
+    const prev = out[out.length - 1];
+    if (prev !== undefined && (prev.match(/["\u201C\u201D]/g) || []).length % 2 === 1) out[out.length - 1] = `${prev} ${p}`;
+    else out.push(p);
+  }
+  return out;
 }
 
 /**
@@ -62,7 +70,7 @@ function synopsisStoryProblems(show, nonStoryReason) {
   if (typeof text !== 'string' || !text.trim()) return { hard: [], soft: [] };
   const hard = [];
   if (WIKITEXT_DEBRIS_RE.test(text)) hard.push('wikitext-debris');
-  if (AUDIENCE_PITCH_RE.test(text.replace(/[‘’]/g, "'"))) hard.push('audience-pitch');
+  if (isAudiencePitch(text)) hard.push('audience-pitch');
   const soft = [];
   for (const sentence of storySentences(text, show.title).slice(0, 4)) {
     const reason = nonStoryReason(sentence);

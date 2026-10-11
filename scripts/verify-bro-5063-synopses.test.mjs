@@ -4,7 +4,7 @@
  * LIVE data/shows.json, not fixtures: a red run means a listed row still
  * reads as debris, pitch or billing, or a cleared row was never refilled.
  *
- * Skips until data/pending-fixes/bro-5063.json has been applied by
+ * Skips until data/pending-fixes/bro-5063.json has been run by
  * execute-approved-fix.yml (land.js runs every changed *.test.mjs, before
  * the data fix exists).
  *
@@ -37,8 +37,10 @@ const CARD_ROWS = [
 const readJson = (rel) => JSON.parse(fs.readFileSync(path.join(ROOT, rel), 'utf8'));
 const planPath = path.join(ROOT, 'data', 'pending-fixes', 'bro-5063.json');
 const NO_DATA = fs.existsSync(path.join(ROOT, 'data', 'shows.json')) ? false : 'no core-data checkout here';
-const PENDING = NO_DATA || (fs.existsSync(planPath) && readJson('data/pending-fixes/bro-5063.json').status === 'applied'
-  ? false : 'waits for execute-approved-fix.yml to apply data/pending-fixes/bro-5063.json');
+// 'partial' (some actions refused) must run the checks too, so only the
+// untouched states skip.
+const PENDING = NO_DATA || (!fs.existsSync(planPath) || ['pending', 'approved'].includes(readJson('data/pending-fixes/bro-5063.json').status)
+  ? 'waits for execute-approved-fix.yml to apply data/pending-fixes/bro-5063.json' : false);
 
 const showsById = () => {
   const data = readJson('data/shows.json');
