@@ -63,6 +63,7 @@ const { emitStage } = require('./stage-latency');
 const { shouldSkipAggregatorUrlWrite, shouldRefuseAggregatorOutletRefinement, hasPreservableAggregatorScore, isAggregatorReviewSource } = require('./aggregator-domains');
 const { EXCERPT_FIELDS } = require('./excerpt-fields');
 const { isUrlSwapRegression } = require('./url-downgrade-guard');
+const { loadBlocklist, findBlockedEntry } = require('./poller-blocklist');
 
 // ── firstSeenAt: the immutable retrieval clock (S2-T4) ───────────────────────
 // firstSeenAt is stamped ONCE, at the moment a review file is first created, and
@@ -315,6 +316,18 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // --- Guard: normalize outlet ---
   let outletId = input.outletId || normalizeOutlet(input.outlet);
   if (!outletId) return { action: 'skipped', reason: 'no-outlet' };
+
+  // --- Guard: per-show URL blocklist (BRO-3410) ---
+  // _blocklist.json is what makes an operator's deletion stick. Only gather-reviews
+  // and ingest-review-from-url checked it, so every other writer (scrapers, fanout,
+  // recovery) could re-create a deleted file. Checking here covers all of them.
+  if (input.url) {
+    const blocked = findBlockedEntry(loadBlocklist(path.join(reviewTextsDir, showId)), input.url);
+    if (blocked) {
+      console.warn(`  ⛔ Refusing write for ${showId}: ${input.url} is blocklisted (${blocked.reason})`);
+      return { action: 'skipped', reason: 'blocklisted-url' };
+    }
+  }
 
   // --- Guard: unfetchable URL (BRO-4458) ---
   // SERP discovery can hand back Google's relative redirect (/goto?url=CAE...) or a

@@ -158,6 +158,8 @@ const EXPECTED_REJECTION_REASONS = [
   'listing-page-url',
   // BRO-4458: Google /goto redirect or cache/AMP wrapper, no fetchable article.
   'unresolvable-redirect-url',
+  // BRO-3410: URL is in the show's _blocklist.json; an operator deleted it on purpose.
+  'blocklisted-url',
   // A caller's onMerge hook aborted the merge (review-file-writer.js:752).
   // The caller decided not to write; that is its prerogative, not a data
   // disagreement. Lower-cased here because classifyIngestSkip lower-cases the
