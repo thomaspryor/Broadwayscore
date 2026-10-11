@@ -140,6 +140,10 @@ test('buildReviewLedCandidates files a run that started the season before under 
   const [c] = buildReviewLedCandidates({ season: '2024-2025', lookups: [{ review, tr, header }], shows: [], today: '2026-10-11' });
   assert.equal(c.season, '2023-2024');
   assert.equal(c.decision.promotable, true);
+  // August previews, September press night: stays in the season of the press night.
+  const [e] = buildReviewLedCandidates({ season: '2024-2025', lookups: [{ review, tr, header: header.replace('\nCloses', '\nPress night 03 September 2024\nCloses') }], shows: [], today: '2026-10-11' });
+  assert.equal(e.season, '2024-2025');
+  assert.equal(e.decision.promotable, true);
   const old = header.replace('22 August 2024', '22 August 2022');
   const [d] = buildReviewLedCandidates({ season: '2024-2025', lookups: [{ review, tr, header: old }], shows: [], today: '2026-10-11' });
   assert.equal(d.season, '2024-2025');

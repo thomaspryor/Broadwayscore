@@ -297,8 +297,10 @@ function buildReviewLedCandidates({ season, lookups, shows, today }) {
     const startDate = c.previewsStartDate || c.openingDate;
     // A run that began in the late summer before its first review belongs to
     // the season it started in; no other season's lookups will ever see it.
-    if (!isDateInSeason(startDate, season)) {
-      const startSeason = getSeasonForDate(startDate);
+    // Same date decideWeHistoricalPromotion() checks: press night first.
+    const seasonDate = c.openingDate || c.previewsStartDate;
+    if (!isDateInSeason(seasonDate, season)) {
+      const startSeason = getSeasonForDate(seasonDate);
       if (startSeason && Number(startSeason.slice(0, 4)) === Number(season.slice(0, 4)) - 1) c.season = startSeason;
     }
     // TR prints the scheduled close; London theatres went dark on 16 March
