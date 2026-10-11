@@ -1,12 +1,39 @@
 {
-  "generatedAt": "2026-10-11T03:29:00.086Z",
+  "generatedAt": "2026-10-11T07:19:33.666Z",
   "summary": {
-    "total": 18,
+    "total": 19,
     "high": 7,
     "medium": 7,
-    "low": 4
+    "low": 5
   },
   "collisions": [
+    {
+      "url": "https://www.google.com/sorry/index?continue=https://www.beyondthecurtain.co.uk/2023/05/222-ghost-story-apollo-theatre-review.html&q=EgQUqUigGOfhrNYGIi0gkCn-F_YkkEMUt_4gyiPWx6L3u_bzcRqXkl327GbuAQiUlHEcn7osIse1GJwyAnJSWgFD",
+      "normalizedUrl": "https://google.com/sorry/index",
+      "candidates": [
+        {
+          "showId": "2-22-a-ghost-story-west-end-2023",
+          "file": "beyondthecurtain--amelia-bascombe.json",
+          "publishDate": null,
+          "openingDate": "2023-01-21",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "beyondthecurtain"
+        },
+        {
+          "showId": "a-taste-of-honey-west-end-2019",
+          "file": "beyondthecurtain--unknown.json",
+          "publishDate": null,
+          "openingDate": "2019-12-05",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "beyondthecurtain"
+        }
+      ],
+      "suggestedWinner": "2-22-a-ghost-story-west-end-2023",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
+    },
     {
       "url": "https://www.theguardian.com/stage/2026/oct/07/as-you-like-it-review-rsc",
       "normalizedUrl": "https://theguardian.com/stage/2026/oct/07/as-you-like-it-review-rsc",
@@ -359,33 +386,6 @@
       "confidence": "medium"
     },
     {
-      "url": "https://www.standard.co.uk/culture/theatre/romeo-and-juliet-b1277295.html",
-      "normalizedUrl": "https://standard.co.uk/culture/theatre/romeo-and-juliet-b1277295.html",
-      "candidates": [
-        {
-          "showId": "romeo-and-juliet-west-end-2024",
-          "file": "standard--unknown.json",
-          "publishDate": null,
-          "openingDate": null,
-          "hasScore": false,
-          "hasFullText": false,
-          "outletId": "standard"
-        },
-        {
-          "showId": "romeo-and-juliet-west-end-2026",
-          "file": "standard--nick-curtis.json",
-          "publishDate": "2026-04-01",
-          "openingDate": "2026-03-31",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "standard"
-        }
-      ],
-      "suggestedWinner": "romeo-and-juliet-west-end-2026",
-      "reason": "publishDate 2026-04-01 is 1 days from romeo-and-juliet-west-end-2026 opening (2026-03-31)",
-      "confidence": "high"
-    },
-    {
       "url": "https://www.thedailybeast.com/review-stereophonic-makes-some-very-sweet-music-indeed/",
       "normalizedUrl": "https://thedailybeast.com/review-stereophonic-makes-some-very-sweet-music-indeed",
       "candidates": [
@@ -492,6 +492,33 @@
       "suggestedWinner": "trouble-in-mind-2021",
       "reason": "publishDate November 18th, 2021 is 0 days from trouble-in-mind-2021 but also 14 days from trouble-in-mind-west-end-2021",
       "confidence": "medium"
+    },
+    {
+      "url": "https://www.nytimes.com/2019/01/24/theater/true-west-review-ethan-hawke-paul-dano.html",
+      "normalizedUrl": "https://nytimes.com/2019/01/24/theater/true-west-review-ethan-hawke-paul-dano.html",
+      "candidates": [
+        {
+          "showId": "true-west-2019",
+          "file": "nytimes--ben-brantley.json",
+          "publishDate": "January 25, 2019",
+          "openingDate": "2019-01-24",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nytimes"
+        },
+        {
+          "showId": "true-west-west-end-2018",
+          "file": "nytimes--unknown.json",
+          "publishDate": null,
+          "openingDate": "2018-11-23",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "nytimes"
+        }
+      ],
+      "suggestedWinner": "true-west-2019",
+      "reason": "publishDate January 25, 2019 is 1 days from true-west-2019 opening (2019-01-24)",
+      "confidence": "high"
     }
   ]
 }
