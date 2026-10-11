@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { captureEvent } from '@/lib/posthog-events';
 
 /**
@@ -13,11 +13,24 @@ export default function FantasyShareButton({ picks, teamName }: { picks: string[
   const imageUrl = `/api/fantasy/share-image?${new URLSearchParams({ picks: picks.join(','), team: teamName.trim() })}`;
   const shareText = 'My Broadway Fantasy League team. Draft yours:';
   const pageUrl = 'https://broadwayscorecard.com/fantasy';
+  const image = useRef<Promise<Blob> | null>(null);
+
+  // Fetch the image as soon as the confirmation screen shows. iOS Safari only
+  // opens the share sheet while the tap's user activation is fresh, and a
+  // cold image render after the tap can outlast it.
+  const loadImage = () => {
+    if (!image.current) {
+      image.current = fetch(imageUrl).then((r) => (r.ok ? r.blob() : Promise.reject(new Error(String(r.status)))));
+      image.current.catch(() => { image.current = null; });
+    }
+    return image.current;
+  };
+  useEffect(() => { loadImage(); }, [imageUrl]); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function share() {
     setBusy(true);
     try {
-      const blob = await fetch(imageUrl).then((r) => (r.ok ? r.blob() : Promise.reject(new Error(String(r.status)))));
+      const blob = await loadImage();
       const file = new File([blob], 'my-fantasy-team.png', { type: 'image/png' });
       if (navigator.canShare?.({ files: [file] })) {
         await navigator.share({ files: [file], text: `${shareText} ${pageUrl}` });
@@ -32,7 +45,10 @@ export default function FantasyShareButton({ picks, teamName }: { picks: string[
       }
     } catch (err) {
       // Closing the share sheet rejects with AbortError: not a failure.
-      if (!(err instanceof DOMException && err.name === 'AbortError')) window.open(imageUrl, '_blank', 'noopener');
+      if (!(err instanceof DOMException && err.name === 'AbortError')) {
+        captureEvent('fantasy_team_share_failed', { reason: err instanceof Error ? err.name : 'unknown' });
+        window.open(imageUrl, '_blank', 'noopener');
+      }
     } finally {
       setBusy(false);
     }

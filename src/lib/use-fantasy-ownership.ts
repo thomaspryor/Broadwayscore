@@ -14,9 +14,12 @@ let pending: Promise<FantasyOwnership | null> | null = null;
 function loadOwnership(): Promise<FantasyOwnership | null> {
   if (!pending) {
     pending = fetch('/api/fantasy/ownership')
-      .then((r) => (r.ok ? r.json() : null))
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
       .then((d) => (d && d.published ? (d as FantasyOwnership) : null))
-      .catch(() => null);
+      .catch(() => {
+        pending = null; // a failed fetch is retried by the next mount
+        return null;
+      });
   }
   return pending;
 }

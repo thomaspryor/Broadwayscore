@@ -36,9 +36,14 @@ function computePickOwnership(entries, { minEntries = MIN_ENTRIES_TO_PUBLISH } =
   return { totalEntries, published: true, shows };
 }
 
-/** "<1%" for a show someone picked that rounds to zero; otherwise "N%". */
-function formatOwnershipPct(pct) {
-  return pct < 1 ? '<1%' : `${pct}%`;
+/**
+ * "0%" for a show on no roster, "<1%" for one picked by so few that it rounds
+ * to zero, otherwise "N%". Takes the show's entry from computePickOwnership
+ * (absent when nobody picked it).
+ */
+function formatOwnershipPct(entry) {
+  if (!entry || !(entry.count > 0)) return '0%';
+  return entry.pct < 1 ? '<1%' : `${entry.pct}%`;
 }
 
 module.exports = { computePickOwnership, formatOwnershipPct, MIN_ENTRIES_TO_PUBLISH };

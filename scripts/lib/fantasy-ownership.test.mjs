@@ -37,9 +37,10 @@ test('ignores malformed entries and pick values', () => {
   assert.deepEqual(computePickOwnership(undefined), { totalEntries: 0, published: false, shows: {} });
 });
 
-test('formatOwnershipPct shows <1% instead of 0%', () => {
+test('formatOwnershipPct: <1% for a rare pick, 0% for a show nobody picked', () => {
   const r = computePickOwnership([roster('a'), ...Array.from({ length: 299 }, () => roster('b'))]);
   assert.equal(r.shows.a.pct, 0);
-  assert.equal(formatOwnershipPct(r.shows.a.pct), '<1%');
-  assert.equal(formatOwnershipPct(42), '42%');
+  assert.equal(formatOwnershipPct(r.shows.a), '<1%');
+  assert.equal(formatOwnershipPct(r.shows.unpicked), '0%');
+  assert.equal(formatOwnershipPct({ count: 42, pct: 42 }), '42%');
 });

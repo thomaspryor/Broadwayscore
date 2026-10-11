@@ -10,14 +10,14 @@ import { formatOwnershipPct } from '../../../scripts/lib/fantasy-ownership';
 export default function FantasyOwnershipTag({ showId, className = '' }: { showId: string; className?: string }) {
   const ownership = useFantasyOwnership();
   if (!ownership) return null;
-  const pct = ownership.shows[showId]?.pct ?? 0;
+  const pct = formatOwnershipPct(ownership.shows[showId]);
   return (
     <span
       className={`whitespace-nowrap tabular-nums text-gray-400 ${className}`}
-      title={`On ${formatOwnershipPct(pct)} of ${ownership.totalEntries.toLocaleString()} rosters this season`}
+      title={`On ${pct} of ${ownership.totalEntries.toLocaleString()} rosters this season`}
       data-testid="fantasy-ownership"
     >
-      {formatOwnershipPct(pct)} picked
+      {pct} picked
     </span>
   );
 }

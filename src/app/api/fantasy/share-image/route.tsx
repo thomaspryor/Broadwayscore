@@ -27,7 +27,8 @@ export async function GET(request: NextRequest) {
   if (ids.length === 0) return new Response('No valid picks', { status: 400 });
 
   const rawTeam = (params.get('team') || '').replace(/\s+/g, ' ').trim();
-  const team = rawTeam.length > 40 ? `${rawTeam.slice(0, 39).trimEnd()}…` : rawTeam;
+  const chars = Array.from(rawTeam); // code points, so an emoji is never split
+  const team = chars.length > 40 ? `${chars.slice(0, 39).join('').trimEnd()}…` : rawTeam;
   const picks = ids.map((id) => shows[id]);
   const total = picks.reduce((s, p) => s + p.price, 0);
   // A full 8-show roster needs tighter rows to clear the footer.
