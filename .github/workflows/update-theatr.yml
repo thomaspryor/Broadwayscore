@@ -217,7 +217,9 @@ jobs:
         uses: ./.github/actions/dispatch-deploy
 
       - name: Notify on failure
-        if: failure()
+        # cancelled() so a job timeout (a hung scrape) still alerts, as in
+        # opening-digest.yml (critical-workflow-alert-conditions.test.mjs).
+        if: failure() || cancelled()
         uses: ./.github/actions/notify-failure
         with:
           # Owner 2026-10-11: "Theatr breaking should send me a direct email."
