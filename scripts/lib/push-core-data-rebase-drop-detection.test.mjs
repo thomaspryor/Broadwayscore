@@ -43,6 +43,8 @@ function setup(initialShows) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'pcd-drop-'));
   const origin = path.join(root, 'origin.git');
   git(root, 'init', '-q', '--bare', '-b', 'main', origin);
+  // Global config is nulled, so auto-maintenance must be off in the bare repo itself (BRO-4749).
+  for (const [k, v] of [['gc.auto', '0'], ['gc.autoDetach', 'false'], ['maintenance.auto', 'false'], ['receive.autogc', 'false']]) git(origin, 'config', k, v);
   const seed = path.join(root, 'seed');
   git(root, 'clone', '-q', origin, seed);
   writeJson(path.join(seed, 'shows.json'), { _meta: { v: 1 }, shows: initialShows });
