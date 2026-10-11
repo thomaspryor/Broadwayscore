@@ -341,7 +341,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   const boxOfficeV2Raw = featureFlags.commercial && featureFlags.boxOfficeV2 && show.category === 'broadway' ? getShowBoxOfficeV2(show.slug) : null;
   const breakEvenCard = boxOfficeV2Raw && showsBreakEven(boxOfficeV2Raw) ? toBoxOfficeV2Card(boxOfficeV2Raw) : null;
   const boxOfficeFactsRaw = featureFlags.commercial && featureFlags.boxOfficeV2 && show.category === 'broadway' ? getBoxOfficeFacts(show.slug) : null;
-  const boxOfficeFacts = boxOfficeFactsRaw ? toFactsCard(boxOfficeFactsRaw, !!commercial && hasCommercialCard(commercial)) : null;
+  const boxOfficeFacts = boxOfficeFactsRaw ? toFactsCard(boxOfficeFactsRaw, !!commercial && hasCommercialCard(commercial), show.status === 'closed') : null;
   // A tour with no ticket links of its own gets TodayTix's for the stop it
   // plays now or next (BRO-4601).
   const ticketLinks = show.ticketLinks?.length || show.category !== 'tour' ? show.ticketLinks : getTourTicketLinks(show);

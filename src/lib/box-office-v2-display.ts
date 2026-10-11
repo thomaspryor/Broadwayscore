@@ -321,8 +321,9 @@ export interface BoxOfficeFactsCard {
 export function toFactsCard(
   f: FactsStoryInput & { current: boolean; gross: number; rank: number; of: number; series: BoxOfficeFactsCard['series']; bests?: PersonalBests | null },
   hasCommercial: boolean,
+  closed = false,
 ): BoxOfficeFactsCard {
-  return { week: f.week, current: f.current, gross: f.gross, rank: f.rank, of: f.of, story: factsStory(f, hasCommercial), series: f.series, hasCommercial, bests: bestLines(f.bests ?? null, f.current) };
+  return { week: f.week, current: f.current, gross: f.gross, rank: f.rank, of: f.of, story: factsStory(f, hasCommercial), series: f.series, hasCommercial, bests: bestLines(f.bests ?? null, f.current, closed) };
 }
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -338,7 +339,7 @@ export interface BestLine {
   value: string;
   /** "week ending Dec 29, 2024" */
   when: string;
-  /** "this week $1.6M", "New best this week", or null when the latest week lacks the measure. */
+  /** "this week $1.6M", "New best this week", "this week matches it", or null when the latest week lacks the measure. */
   latest: string | null;
   isNew: boolean;
 }
@@ -357,21 +358,24 @@ function bestValue(key: PersonalBests['rows'][number]['key'], v: number): string
 
 /**
  * The personal-bests rows as printed. The latest week reads "this week" for a
- * running show and "final week" for a closed one; when it set the record the
- * row says so instead of repeating the value.
+ * show in the current week, "final week" for a closed show and "latest week"
+ * otherwise (a running show that missed a League week). When it set the
+ * record the row says so instead of repeating the value; when it only rounds
+ * to the record it says it matches.
  */
-export function bestLines(b: PersonalBests | null, current: boolean): BestLine[] | null {
+export function bestLines(b: PersonalBests | null, current: boolean, closed = false): BestLine[] | null {
   if (!b || !b.rows.length) return null;
-  const latestWord = current ? 'this week' : 'final week';
-  return b.rows.map((r) => ({
-    label: BEST_LABELS[r.key],
-    value: bestValue(r.key, r.value),
-    when: `week ending ${weekEndingText(r.week)}`,
-    latest: r.latestIsRecord
-      ? (current ? 'New best this week' : 'Set in its final week')
-      : r.latest == null ? null : `${latestWord} ${bestValue(r.key, r.latest)}`,
-    isNew: r.latestIsRecord,
-  }));
+  const latestWord = current ? 'this week' : closed ? 'final week' : 'latest week';
+  return b.rows.map((r) => {
+    const value = bestValue(r.key, r.value);
+    const latestValue = r.latest == null ? null : bestValue(r.key, r.latest);
+    let latest: string | null;
+    if (r.latestIsRecord) latest = current ? 'New best this week' : closed ? 'Set in its final week' : 'Set in its latest week';
+    else if (latestValue == null) latest = null;
+    else if (latestValue === value) latest = `${latestWord} matches it`;
+    else latest = `${latestWord} ${latestValue}`;
+    return { label: BEST_LABELS[r.key], value, when: `week ending ${weekEndingText(r.week)}`, latest, isNew: r.latestIsRecord };
+  });
 }
 
 /** A headline weekly gross: $676K under a million, $2.7M above (matches the This Week tile). */

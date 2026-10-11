@@ -25,6 +25,7 @@ import {
   type HistoryRow,
   type HistoryWeeks,
 } from './box-office-weeks';
+import { SHUTDOWN_START, SHUTDOWN_END } from './box-office-status';
 
 /** The show fields these functions read, indexed by production slug. */
 export interface MarketShow {
@@ -517,6 +518,22 @@ export function showFacts(input: MarketInput, slug: string, latestWeek: string):
 
 /** A run needs at least this many reported weeks before its records mean anything. */
 export const BESTS_MIN_WEEKS = 4;
+/** A silence longer than this (not counting the COVID shutdown) ends one engagement; earlier weeks belong to another. */
+export const BESTS_MAX_GAP_WEEKS = 26;
+/** Without a first-preview date, the run is taken to start this many weeks before opening night. */
+const BESTS_PREVIEW_WEEKS = 8;
+/** Below this attendance a gross/attendance average ticket is noise, not a record. */
+const BESTS_MIN_ATTENDANCE = 100;
+
+/** Weeks between two week endings, less any part of the COVID shutdown between them. */
+function gapWeeks(from: string, to: string): number {
+  const days = (a: string, b: string) => (Date.parse(`${b}T00:00:00Z`) - Date.parse(`${a}T00:00:00Z`)) / 86_400_000;
+  let d = days(from, to);
+  const lo = from > SHUTDOWN_START ? from : SHUTDOWN_START;
+  const hi = to < SHUTDOWN_END ? to : SHUTDOWN_END;
+  if (hi > lo) d -= days(lo, hi);
+  return d / 7;
+}
 
 export type BestKey = 'gross' | 'capacity' | 'atp';
 
@@ -541,24 +558,31 @@ export interface PersonalBests {
 /**
  * This run's best week, fullest week and highest average ticket, from the
  * production's own history rows up to `latestWeek`. History is keyed by
- * production, so a revival never inherits the original run's weeks; rows
- * dated before the run's first preview week are skipped too. Partial preview
- * weeks count. A week missing capacity or attendance is left out of that
- * measure (never read as 0). Null with fewer than BESTS_MIN_WEEKS reported weeks.
+ * production, so a revival never inherits the original run's weeks. Two
+ * guards catch rows filed under the wrong production anyway: rows before the
+ * run's first preview week (or BESTS_PREVIEW_WEEKS before opening when the
+ * preview date is unknown) are skipped, and only the weeks after the last
+ * silence longer than BESTS_MAX_GAP_WEEKS (shutdown excluded) count. Partial
+ * preview weeks count. A week missing capacity or attendance is left out of
+ * that measure (never read as 0). Null with fewer than BESTS_MIN_WEEKS weeks.
  */
 export function personalBests(input: MarketInput, slug: string, latestWeek: string): PersonalBests | null {
   const row = rowFor(input, slug);
-  const first = input.shows.get(slug)?.previewsStartDate;
+  const show = input.shows.get(slug);
+  const first = show?.previewsStartDate ?? (show?.openingDate ? addDays(show.openingDate, -7 * BESTS_PREVIEW_WEEKS) : null);
   const start = first ? weekEndingOnOrAfter(first) : null;
-  const weeks = Object.keys(input.weeks)
+  let weeks = Object.keys(input.weeks)
     .filter((w) => w <= latestWeek && (!start || w >= start) && isReported(row(w)))
     .sort();
+  for (let i = weeks.length - 1; i > 0; i--) {
+    if (gapWeeks(weeks[i - 1], weeks[i]) > BESTS_MAX_GAP_WEEKS) { weeks = weeks.slice(i); break; }
+  }
   if (weeks.length < BESTS_MIN_WEEKS) return null;
   const last = weeks[weeks.length - 1];
   const measures: Array<[BestKey, (r: HistoryRow) => number | null]> = [
     ['gross', (r) => r.gross ?? null],
     ['capacity', (r) => (r.capacity != null && r.capacity > 0 ? r.capacity : null)],
-    ['atp', (r) => avgTicket(r)],
+    ['atp', (r) => (r.atp != null && r.atp > 0 ? r.atp : r.gross != null && (r.attendance ?? 0) >= BESTS_MIN_ATTENDANCE ? r.gross / (r.attendance as number) : null)],
   ];
   const rows: BestRow[] = [];
   for (const [key, of] of measures) {
