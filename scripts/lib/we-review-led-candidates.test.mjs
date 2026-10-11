@@ -10,7 +10,7 @@ const {
   selectLookups, trIssueMonth, trVenueName, pickTrForReview, findContinuingRun, cleanReviewTitle,
 } = require('./we-review-led-candidates.js');
 const { isLondonVenue } = require('./tr-london-venue.js');
-const { searchTitles, pdfHeaderFor, htmlHeaderFor } = require('../resolve-we-unlisted-tr.js');
+const { searchTitles, pdfHeaderFor, htmlHeaderFor, pairLabelLines } = require('../resolve-we-unlisted-tr.js');
 
 // we-historical-candidates-2018-2019.json unlistedReviews (verbatim)
 const COMPANY = { title: 'Company', venue: 'Gielgud Theatre', date: '2018-10-17', url: 'https://www.whatsonstage.com/news/review-company-gielgud-theatre_47830/', rating: 5, market: [83, 98] };
@@ -224,4 +224,38 @@ test('htmlHeaderFor reads only lines that start with a run-date label', () => {
   const page = 'The Real Thing\nThe Old Vic Theatre, London\nPress Night 12 Sep 2024\nCloses 26 Oct 2024\nThe Guardian\nThe play opened on 4 September 2024 and runs until 9 November 2024 in a long review sentence.\nUntil the very end it charms';
   assert.equal(htmlHeaderFor('The Real Thing', page), 'The Real Thing\nPress Night 12 Sep 2024\nCloses 26 Oct 2024');
   assert.equal(htmlHeaderFor('X', 'The play opened on 4 September 2024 in a long review sentence that runs on'), null);
+});
+
+// Real TR layouts from the 2026-10-11 lookup log: an HTML page puts each label
+// on its own line above the date; a -raw PDF prints "Previews / Opens 22 Aug
+// 2019"; a -layout PDF prints a row of labels over a row of dates.
+test('pairLabelLines joins a label with the date on the next line', () => {
+  const page = 'Coriolanus\nNational Theatre - Olivier Theatre, London\n\nFirst Preview\n11 September 2024\nPress Night\n24 September 2024\nLast Performance\n09 November 2024\nReviews';
+  assert.equal(htmlHeaderFor('Coriolanus', page), 'Coriolanus\nFirst Preview 11 September 2024\nPress Night 24 September 2024\nCloses 09 November 2024');
+  assert.deepEqual(parseTrHeaderDates(htmlHeaderFor('Coriolanus', page)),
+    { previewsStartDate: '2024-09-11', openingDate: '2024-09-24', closingDate: '2024-11-09' });
+  // An unlabelled date (a review's) stays unpaired and unread.
+  assert.equal(htmlHeaderFor('X', 'X\nThe Guardian\n24 September 2024'), null);
+});
+
+test('pairLabelLines folds "Previews / Opens" and a -layout label row', () => {
+  assert.deepEqual(pairLabelLines(['Previews / Opens 22 Aug 2019']), ['Previews 22 Aug 2019']);
+  assert.deepEqual(pairLabelLines(['  First Preview     Press Night      Closes', '  07 February 2020   17 February 2020   25 April 2020']),
+    ['First Preview 07 February 2020', 'Press Night 17 February 2020', 'Closes 25 April 2020']);
+  const pdf = 'THE UPSTART CROW\nby Ben Elton\nGielgud\n\nFirst Preview     Press Night      Closes\n07 February 2020   17 February 2020   25 April 2020\n\n18 February 2020';
+  assert.deepEqual(parseTrHeaderDates(pdfHeaderFor(pdf, 'The Upstart Crow')),
+    { previewsStartDate: '2020-02-07', openingDate: '2020-02-17', closingDate: '2020-04-25' });
+});
+
+test('pairLabelLines zips a stack of labels over a stack of dates, never just the last label', () => {
+  const stacked = 'THE UPSTART CROW\nFirst Preview\nPress Night\nCloses\n07 February 2020\n17 February 2020\n25 April 2020\n\n18 February 2020';
+  assert.deepEqual(parseTrHeaderDates(pdfHeaderFor(stacked, 'The Upstart Crow')),
+    { previewsStartDate: '2020-02-07', openingDate: '2020-02-17', closingDate: '2020-04-25' });
+  // Three labels, one date: ambiguous, nothing paired, nothing read.
+  assert.equal(htmlHeaderFor('X', 'X\nFirst Preview\nPress Night\nCloses\n07 February 2020'), null);
+  // UK "First Night" is press night; a title heading equal to a label is not paired.
+  assert.deepEqual(pairLabelLines(['First Night', '12 March 2019']), ['Press night 12 March 2019']);
+  assert.deepEqual(pairLabelLines(['Last night I saw it']), ['Last night I saw it']);
+  const pdf = 'OPENING NIGHT\nGielgud\nPress Night\n06 March 2024\n\n07 March 2024';
+  assert.equal(parseTrHeaderDates(pdfHeaderFor(pdf, 'Opening Night')).openingDate, '2024-03-06');
 });

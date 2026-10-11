@@ -58,6 +58,86 @@ const DATE_LINE = /^\s*\d{1,2}\s+[A-Z][a-z]+\s+\d{4}\s*$/;
  * block that parses to a date is returned: an undated block has nothing the
  * promoter can use.
  */
+/**
+ * TR prints a run-date label and its date on separate lines ("Press Night"
+ * then "05 Sep 2019"), or, in a -layout PDF, as a row of labels over a row
+ * of dates. pairLabelLines() joins each into "Press Night 05 Sep 2019" so the
+ * label-led parsers can read it, and folds TR's synonyms onto the labels
+ * parseTrHeaderDates() knows ("Previews / Opens" -> "Previews",
+ * "Last Performance" -> "Closes").
+ */
+const LABEL_SYNONYMS = [
+  [/^previews?\s*\/\s*opens?/i, 'Previews'],
+  [/^first performance/i, 'First preview'],
+  [/^(?:first night|press (?:performance|date)|opening (?:performance|date))/i, 'Press night'],
+  [/^(?:(?:last|final) (?:performance|night)|closing (?:date|night))/i, 'Closes'],
+];
+const LABEL_ONLY = /^(?:press night|first preview|previews?|opening night|opening|opens|opened|closes|closing|until|runs until|final performance)\s*:?$/i;
+const DATE_ONLY = /^\s*(?:(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)[a-z]*\.?,?\s+)?\d{1,2}(?:st|nd|rd|th)?\s+[A-Z][a-z]+\.?\s+\d{4}\s*$/;
+
+/** A cell that is only a run-date label, folded onto a known label; else null. */
+function labelCell(s) {
+  let t = String(s || '').replace(/\s+/g, ' ').trim();
+  for (const [rx, to] of LABEL_SYNONYMS) {
+    const m = t.match(new RegExp(`${rx.source}\\s*:?$`, 'i'));
+    if (m) { t = to; break; }
+  }
+  return LABEL_ONLY.test(t) ? t.replace(/\s*:$/, '') : null;
+}
+
+/** "Previews / Opens 22 Aug 2019" -> "Previews 22 Aug 2019"; other lines unchanged. */
+function canonLabelLine(line) {
+  const t = String(line || '').replace(/\s+/g, ' ').trim();
+  for (const [rx, to] of LABEL_SYNONYMS) {
+    const m = t.match(rx);
+    if (m && DATE_ONLY.test(t.slice(m[0].length).replace(/^\s*:?/, ''))) return `${to} ${t.slice(m[0].length).replace(/^\s*:?\s*/, '')}`;
+  }
+  return line;
+}
+
+function pairLabelLines(lines) {
+  const out = [];
+  const nextFilled = k => { while (k < lines.length && !lines[k].trim()) k++; return k; };
+  for (let i = 0; i < lines.length; i++) {
+    // A stack of label lines followed by the same number of date lines, zipped
+    // in order (one label over one date is the common case). Any other count
+    // is ambiguous and left unpaired.
+    if (labelCell(lines[i])) {
+      const labels = [];
+      let k = i;
+      while (k < lines.length && labelCell(lines[k])) { labels.push(labelCell(lines[k])); k = nextFilled(k + 1); }
+      const dates = [];
+      let end = k;
+      while (k < lines.length && DATE_ONLY.test(lines[k]) && dates.length < labels.length) { dates.push(lines[k].trim()); end = k; k = nextFilled(k + 1); }
+      if (dates.length === labels.length) {
+        labels.forEach((l, n) => out.push(`${l} ${dates[n]}`));
+        i = end;
+        continue;
+      }
+      if (labels.length > 1) {
+        // Ambiguous stack: keep it whole so no tail label pairs on its own.
+        let last = i;
+        for (let n = 0, m = i; n < labels.length; n++, m = nextFilled(m + 1)) last = m;
+        out.push(...lines.slice(i, last + 1));
+        i = last;
+        continue;
+      }
+    }
+    // A -layout row of labels over a row of dates.
+    const j = nextFilled(i + 1);
+    const cells = lines[i].trim().split(/\s{2,}/);
+    const dateCells = j < lines.length ? lines[j].trim().split(/\s{2,}/) : [];
+    if (cells.length > 1 && cells.length === dateCells.length
+        && cells.every(c => labelCell(c)) && dateCells.every(d => DATE_ONLY.test(d))) {
+      cells.forEach((c, n) => out.push(`${labelCell(c)} ${dateCells[n]}`));
+      i = j;
+      continue;
+    }
+    out.push(canonLabelLine(lines[i]));
+  }
+  return out;
+}
+
 const capsKey = s => String(s || '').toUpperCase().replace(/[^A-Z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
 
 function pdfHeaderFor(text, title) {
@@ -71,10 +151,17 @@ function pdfHeaderFor(text, title) {
       if (!line || line !== line.toUpperCase() || !/[A-Z]/.test(line)) continue;
       if (!keys.has(capsKey(line))) continue;
       if (lines.slice(Math.max(0, i - 5), i).some(l => l.trim() === 'Reviews')) continue;
-      const block = [line];
+      // Pair labels inside the block only (a heading like OPENING NIGHT is
+      // matched raw), then stop at the first unpaired date line: a review's.
+      const raw = [];
       for (let j = i + 1; j < lines.length && j <= i + PDF_HEADER_MAX_LINES; j++) {
-        if (DATE_LINE.test(lines[j]) || lines[j].trim() === 'Reviews') break;
-        block.push(lines[j]);
+        if (lines[j].trim() === 'Reviews') break;
+        raw.push(lines[j]);
+      }
+      const block = [line];
+      for (const l of pairLabelLines(raw)) {
+        if (DATE_LINE.test(l)) break;
+        block.push(l);
       }
       const facts = headerFacts(block.join('\n'));
       const d = parseTrHeaderDates(facts);
@@ -106,7 +193,14 @@ function logDateContext(text, title, mode) {
     for (let j = i + 1; j < lines.length && j <= i + 40; j++) {
       const flat = lines[j].replace(/\s+/g, ' ');
       for (const m of flat.matchAll(LOG_DATE)) {
-        console.log(`      +${j - i}: …${flat.slice(Math.max(0, m.index - 24), m.index).trim()} | ${m[0]}`);
+        let before = flat.slice(Math.max(0, m.index - 24), m.index).trim();
+        if (!before) {
+          // A date alone on its line: its label is the line above (40 chars max).
+          let k = j - 1;
+          while (k > i && !lines[k].trim()) k--;
+          before = `[prev] ${lines[k].replace(/\s+/g, ' ').trim().slice(0, 40)}`;
+        }
+        console.log(`      +${j - i}: …${before} | ${m[0]}`);
       }
     }
   }
@@ -123,7 +217,7 @@ const LABEL_LINE = /^(?:press night|first preview|previews?|opening night|opens|
  */
 function htmlHeaderFor(title, text) {
   const facts = [];
-  for (const raw of String(text || '').split('\n')) {
+  for (const raw of pairLabelLines(String(text || '').split('\n'))) {
     const line = raw.replace(/\s+/g, ' ').trim();
     if (!LABEL_LINE.test(line) || line.split(' ').length > 10) continue;
     for (const sn of dateSnippets(line)) if (!facts.includes(sn)) facts.push(sn);
@@ -286,4 +380,4 @@ if (require.main === module) {
   main().catch(e => { console.error(e); process.exit(1); });
 }
 
-module.exports = { pdfHeaderFor, htmlHeaderFor, searchTitles, logDateContext };
+module.exports = { pdfHeaderFor, htmlHeaderFor, pairLabelLines, searchTitles, logDateContext };
