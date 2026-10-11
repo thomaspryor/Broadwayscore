@@ -91,9 +91,12 @@ function groundTruth(comm, show, now = new Date()) {
 // Pre- or post-NY-tax-credit basis of a truth figure (BRO-5073). Post only
 // when the source counts a credit already in hand ("operating profit plus the
 // NY State tax credit"); "eligible for", "would", "if received" and "will"
-// are a credit not yet in the figure. An explicit taxCreditBasis field wins.
-const CREDIT_IN = /\b(plus|including|includes|after)\b[^.;|]{0,40}\btax credits?\b/i;
-const CREDIT_HEDGE = /\b(eligible|would|if|will|expected|pending)\b[^.;|]{0,40}\btax credits?\b|\btax credits?\b[^.;|]{0,40}\b(would|if|will)\b/i;
+// are a credit not yet in the figure, as are "not including", "to follow" and
+// "once received". An explicit taxCreditBasis field wins.
+// W: up to 40 characters inside one clause; a decimal point ($2.5M) is not a clause end.
+const W = '(?:[^.;|]|\\.(?=\\d)){0,40}';
+const CREDIT_IN = new RegExp(`\\b(plus|including|includes|after)\\b${W}\\btax credits?\\b`, 'i');
+const CREDIT_HEDGE = new RegExp(`\\b(eligible|would|if|will|expected|pending|not|excluding|before|may|could|once|when)\\b${W}\\btax credits?\\b|\\btax credits?\\b${W}\\b(would|if|will|to follow|may|could|once|when)\\b`, 'i');
 /** @returns {'pre-credit'|'post-credit'} */
 function creditBasis(comm, sourceText) {
   const explicit = comm && comm.taxCreditBasis;
