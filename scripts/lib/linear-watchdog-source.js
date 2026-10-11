@@ -92,6 +92,13 @@ const LINEAR_PRIORITY_TO_LABEL = Object.freeze({ 1: 'P0', 2: 'P1' });
 // dispatch-watchdog-core.js's own subject fallback already accepts.
 const TITLE_PRIORITY_RE = /^\s*(P[01])\b/;
 
+// The full P0-P3 title prefix, for filing (linear-issue-create.js's
+// effectiveCreatePriority): a new card with no priority field takes it from
+// this prefix so the field, which the cloud worker reads, is never left unset.
+// Same shapes as TITLE_PRIORITY_RE and dispatch-watchdog-core.js's
+// subject fallback (/^(P[0-3])\b/).
+const TITLE_PRIORITY_TIER_RE = /^\s*P([0-3])\b/;
+
 const DEFAULT_PAGE_LIMIT = 100;
 const DEFAULT_MAX_PAGES = 30;
 
@@ -409,6 +416,7 @@ module.exports = {
   LINEAR_TASK_ID_RE,
   LINEAR_PRIORITY_TO_LABEL,
   TITLE_PRIORITY_RE,
+  TITLE_PRIORITY_TIER_RE,
   linearTaskId,
   parseLinearTaskId,
   isLinearTaskId,
