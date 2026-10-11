@@ -71,7 +71,7 @@ const { earliestShowDate, evaluatePreWindowInclusion } = require('./lib/date-gua
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { detectRefusalPattern, SCRAPED_PAGE_CHROME_RE } = require('./lib/synopsis-validation');
 const { checkAwardClaims, findSharedSentences, loadAwardsByShow, ledeTitleMismatch } = require('./lib/synopsis-fact-check');
-const { openingDateSourceHint } = require('./lib/opening-date-sources');
+const { openingDateSourceHint, venuePageDomainSourceProblem } = require('./lib/opening-date-sources');
 const { isNonTheatricalGenre, applyGenreCategoryOverride } = require('./lib/genre-classification');
 const { looksLikeUrlCriticName } = require('./lib/byline-normalization');
 const { hasUndecodedHtmlEntities, hasJsonLdArtifact } = require('./lib/text-cleaning');
@@ -892,6 +892,10 @@ function validateDates(shows) {
     ) {
       warn(`Show "${show.title}" (${show.id}) has openingDate === previewsStartDate (${show.openingDate}) with source "todaytix" — likely the first-preview date stored as press night. Run: node scripts/enrich-west-end-dates.js --fix-unconfirmed (Phase 4 infers press night from review dates).`);
     }
+
+    // BRO-3793: advisory (new gates land warn-only, CLAUDE.md rule 19).
+    const domainSourceProblem = venuePageDomainSourceProblem(show);
+    if (domainSourceProblem) warn(`Show "${show.title}" (${show.id}) ${domainSourceProblem}`);
 
     // (Non-theatrical genre on a west-end-category show is auto-fixed to
     // off-west-end in the venue/category cross-check below — genre overrides

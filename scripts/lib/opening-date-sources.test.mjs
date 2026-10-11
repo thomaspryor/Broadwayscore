@@ -42,3 +42,16 @@ test('unknown/missing market falls back to a generic manual-lookup hint', () => 
   // The fallback must never crash or return empty.
   assert.ok(openingDateSourceHint(null).length > 0);
 });
+
+// BRO-3793
+import { createRequire as __cr } from 'node:module';
+import { test as __t } from 'node:test';
+import __assert from 'node:assert/strict';
+const { venuePageDomainSourceProblem } = __cr(import.meta.url)('./opening-date-sources.js');
+__t('venue-page:<domain> opening-date source is flagged, code-written forms are not', () => {
+  __assert.match(venuePageDomainSourceProblem({ openingDateSource: 'venue-page:59e59.org' }), /59e59\.org/);
+  __assert.equal(venuePageDomainSourceProblem({ openingDateSource: 'venue-page' }), null);
+  __assert.equal(venuePageDomainSourceProblem({ openingDateSource: 'venue-page:soho-playhouse' }), null);
+  __assert.equal(venuePageDomainSourceProblem({ openingDateSource: 't2conline.com' }), null);
+  __assert.equal(venuePageDomainSourceProblem({}), null);
+});
