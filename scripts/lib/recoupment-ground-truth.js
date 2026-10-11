@@ -85,24 +85,44 @@ function truthClassOf(comm, kind, sourceText) {
  */
 function groundTruth(comm, show, now = new Date()) {
   const t = rawGroundTruth(comm, show, now);
-  return t && { ...t, ...truthClassOf(comm, t.kind, t.source), creditBasis: creditBasis(comm, t.source) };
+  return t && { ...t, ...truthClassOf(comm, t.kind, t.source), creditBasis: creditBasis(comm, t.source, t.kind) };
 }
 
 // Pre- or post-NY-tax-credit basis of a truth figure (BRO-5073). Post only
 // when the source counts a credit already in hand ("operating profit plus the
 // NY State tax credit"); "eligible for", "would", "if received" and "will"
 // are a credit not yet in the figure, as are "not including", "to follow" and
-// "once received". An explicit taxCreditBasis field wins.
+// "once received". An explicit taxCreditBasis field wins. A recoupment that
+// does not say is 'unstated': short runs often declare recoupment counting the
+// credit, and announcements rarely say which, so such a row is scored on
+// whichever basis fits (eitherBasis). An amount returned or lost with no
+// credit in it stays pre-credit.
 // W: up to 40 characters inside one clause; a decimal point ($2.5M) is not a clause end.
 const W = '(?:[^.;|]|\\.(?=\\d)){0,40}';
 const CREDIT_IN = new RegExp(`\\b(plus|including|includes|after)\\b${W}\\btax credits?\\b`, 'i');
 const CREDIT_HEDGE = new RegExp(`\\b(eligible|would|if|will|expected|pending|not|excluding|before|may|could|once|when)\\b${W}\\btax credits?\\b|\\btax credits?\\b${W}\\b(would|if|will|to follow|may|could|once|when)\\b`, 'i');
-/** @returns {'pre-credit'|'post-credit'} */
-function creditBasis(comm, sourceText) {
+/** @returns {'pre-credit'|'post-credit'|'unstated'} */
+function creditBasis(comm, sourceText, kind) {
   const explicit = comm && comm.taxCreditBasis;
   if (explicit === 'pre-credit' || explicit === 'post-credit') return explicit;
   const text = String(sourceText || '');
-  return CREDIT_IN.test(text) && !CREDIT_HEDGE.test(text) ? 'post-credit' : 'pre-credit';
+  if (CREDIT_IN.test(text) && !CREDIT_HEDGE.test(text)) return 'post-credit';
+  return kind === 'recouped' ? 'unstated' : 'pre-credit';
+}
+
+/**
+ * An 'unstated' row is inside when either the pre- or the post-credit model
+ * fits: the side with the smaller error is the one scored (pre on a tie).
+ * @param {{ err: number }} pre @param {{ err: number }} post
+ */
+function eitherBasis(pre, post) {
+  return post.err < pre.err ? { ...post, usedPost: true } : { ...pre, usedPost: false };
+}
+
+/** One line: rows per credit basis, and how many unstated rows the post-credit side carried. */
+function basisLine(rows) {
+  const n = (f) => rows.filter(f).length;
+  return `Credit basis: ${n((r) => r.creditBasis === 'pre-credit')} pre-credit, ${n((r) => r.creditBasis === 'post-credit')} post-credit, ${n((r) => r.creditBasis === 'unstated')} unstated (${n((r) => r.usedPost === true)} scored on the post-credit side)`;
 }
 
 // Recouped after the Broadway run closed, with the source crediting a tour
@@ -210,5 +230,5 @@ function formatMarkdown({ title, summary, rows, worse, limit = 15, aggregateOnly
 }
 
 module.exports = {
-  creditBasis,
+  creditBasis, eitherBasis, basisLine,
   recoupedFromTour, STATED_PCT, statesFigure, groundTruth, truthClassOf, classifySourceText, classifyFailedText, TRUTH_CLASS_FIELD, rangeError, category, summarize, worseGroups, formatMarkdown, fmtTruth, OWN_INFERENCE };

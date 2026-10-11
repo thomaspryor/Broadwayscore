@@ -4,7 +4,7 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { groundTruth, creditBasis, rangeError, category, summarize, worseGroups, formatMarkdown } = require('../../scripts/lib/recoupment-ground-truth');
+const { groundTruth, creditBasis, eitherBasis, basisLine, rangeError, category, summarize, worseGroups, formatMarkdown } = require('../../scripts/lib/recoupment-ground-truth');
 
 const closed = { closingDate: '2020-01-01', openingDate: '2019-01-01', type: 'musical' };
 
@@ -158,5 +158,16 @@ test('creditBasis: post-credit only for a credit already in the figure (BRO-5073
   assert.equal(creditBasis({}, 'returned 60% including the $1.75M tax credit'), 'post-credit');
   assert.equal(creditBasis({}, 'recouped, not including the tax credit'), 'pre-credit');
   assert.equal(creditBasis({}, 'Recouped after a strong holiday season, the NY tax credit to follow'), 'pre-credit');
-  assert.equal(groundTruth({ recouped: true, recoupedSource: 'Deadline: recouped' }, {}).creditBasis, 'pre-credit');
+  // A recoupment that does not say is unstated; an amount returned stays pre-credit.
+  assert.equal(groundTruth({ recouped: true, recoupedSource: 'Deadline: recouped' }, {}).creditBasis, 'unstated');
+  assert.equal(creditBasis({}, 'Broadway News: recouped its $6.75M capitalization', 'recouped'), 'unstated');
+  assert.equal(creditBasis({}, 'Playbill: recouped from operating profit plus the NY State tax credit', 'recouped'), 'post-credit');
+});
+
+test('eitherBasis scores an unstated row on the side that fits (BRO-5073)', () => {
+  assert.deepEqual(eitherBasis({ v: 55, err: 30 }, { v: 99, err: 0 }), { v: 99, err: 0, usedPost: true });
+  assert.deepEqual(eitherBasis({ v: 90, err: 0 }, { v: 120, err: 5 }), { v: 90, err: 0, usedPost: false });
+  assert.equal(eitherBasis({ err: 0 }, { err: 0 }).usedPost, false, 'pre on a tie');
+  assert.equal(basisLine([{ creditBasis: 'pre-credit' }, { creditBasis: 'unstated', usedPost: true }, { creditBasis: 'unstated', usedPost: false }]),
+    'Credit basis: 1 pre-credit, 0 post-credit, 2 unstated (1 scored on the post-credit side)');
 });
