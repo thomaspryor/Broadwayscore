@@ -663,15 +663,6 @@ jobs:
           '
           echo "audit_file=${AUDIT_FILE}" >> "$GITHUB_OUTPUT"
 
-      # Step 4: Check for any changes
-      - name: Check for changes
-        id: git-check
-        run: |
-          git diff --exit-code data/shows.json || echo "changes=true" >> $GITHUB_OUTPUT
-          if [ -f data/new-shows-pending.json ]; then
-            echo "has_pending=true" >> $GITHUB_OUTPUT
-          fi
-
       # Record pipeline health timestamp (always, even if no show changes)
       - name: Record pipeline success
         if: always() && steps.commit-gate.outcome == 'success'
@@ -979,35 +970,12 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from update-show-status'
 
-      # NOTE: this step has been `skipped` in 11/11 completed runs since at
-      # least 2026-08-27, because `git-check` computes `changes` with
-      # `git diff --exit-code data/shows.json` and that path is gitignored at
-      # .gitignore:200 — the diff is always empty, so `changes` is never set.
-      # Tracked separately as BRO-2936; the commit-public clause below is
-      # correct either way and does not depend on that being fixed first.
-      - name: Trigger deploy (core data changed)
-        if: always() && steps.git-check.outputs.changes == 'true' && steps.commit-gate.outcome == 'success' && steps.commit-public.outcome == 'success'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          # Deploy dedup: skip if a deploy was ALREADY triggered after our rebuild started
-          OUR_RUN_START=$(gh run view ${{ github.run_id }} --json createdAt -q '.createdAt' 2>/dev/null || echo "")
-          RECENT=$(gh run list --workflow=vercel-deploy.yml --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
-
-          if [ -n "$RECENT" ] && [ -n "$OUR_RUN_START" ]; then
-            RECENT_TS=$(date -d "$RECENT" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$RECENT" +%s 2>/dev/null || echo "0")
-            OUR_TS=$(date -d "$OUR_RUN_START" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$OUR_RUN_START" +%s 2>/dev/null || echo "0")
-            NOW_TS=$(date +%s)
-            DIFF=$((NOW_TS - RECENT_TS))
-
-            if [ "$RECENT_TS" -gt "$OUR_TS" ] && [ "$DIFF" -lt 900 ]; then
-              echo "Skipping deploy — already triggered after this run started (${DIFF}s ago)"
-              exit 0
-            fi
-          fi
-
-          echo "Triggering deploy..."
-          gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — will deploy on next schedule"
+      # BRO-5033: a "Trigger deploy (core data changed)" step sat here. It
+      # never ran (its `changes` output came from `git diff` on gitignored
+      # shows.json) and was removed rather than revived: vercel-deploy.yml's
+      # 5-minute cron is core-data aware for shows.json (BRO-3149,
+      # should-deploy-gate.js) and the step's own 15-minute dedup would have
+      # skipped it nearly every time.
 
   # S4-T3 (2026 data audit, BRO-4204): the workflow RUN turns red when a
   # discovery source is blind. Two signals were already WRITTEN every run but

@@ -84,7 +84,7 @@ test('the workflow parses and the update-shows job still publishes (guard agains
   assert.ok(
     publishers.length >= 4,
     `expected at least 4 publishing steps (public commit, aggregator-archive push, core-data push, ` +
-      `deploy dispatch), found ${publishers.length}. If publishing genuinely moved out of this job, ` +
+      `...), found ${publishers.length}. If publishing genuinely moved out of this job, ` +
       'retire this test deliberately rather than letting it pass on an empty set.',
   );
 });
@@ -227,11 +227,13 @@ test('every publishing step AFTER the public commit requires that commit to have
 
   // Vacuity guard. An empty set makes the rule below pass while asserting
   // nothing — the exact read-as-safe-while-nothing-ran shape this card was
-  // filed for. Two are expected: the core-data push and the deploy dispatch.
+  // filed for. One is expected: the core-data push. (The deploy dispatch that
+  // used to follow it never ran and was removed in BRO-5033; deploys come
+  // from vercel-deploy.yml's core-data-aware cron.)
   assert.ok(
-    downstream.length >= 2,
-    'expected at least 2 gated always()-reachable publishing steps after the public commit ' +
-      `(core-data push, deploy dispatch), found ${downstream.length}. If publishing genuinely ` +
+    downstream.length >= 1,
+    'expected at least 1 gated always()-reachable publishing step after the public commit ' +
+      `(core-data push), found ${downstream.length}. If publishing genuinely ` +
       'moved, retire this test deliberately.',
   );
 
