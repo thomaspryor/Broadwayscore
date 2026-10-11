@@ -55,6 +55,15 @@ const PR_URL_RE = /https?:\/\/github\.com\/([\w.-]+\/[\w.-]+)\/pull\/(\d+)\b/gi;
 // anything shorter.
 const BARE_SHA_RE = /\b(?=[0-9a-f]*[a-f])(?=[0-9a-f]*[0-9])[0-9a-f]{11,40}\b/gi;
 
+// Sibling private repos whose commits close data/review-text cards (BRO-3435).
+// A commit URL for one of these cannot be checked against THIS checkout, so it
+// is resolved through the GitHub compare API instead of being refused.
+const SIBLING_REPOS = [
+  'thomaspryor/broadway-scorecard-data',
+  'thomaspryor/broadway-review-texts',
+  'thomaspryor/broadwayscorecard-app',
+];
+
 function normalizeRepo(s) {
   return String(s || '').replace(/\.git$/, '').toLowerCase();
 }
@@ -68,7 +77,8 @@ function normalizeRepo(s) {
  *   identified (null), EVERY GitHub URL is foreign — an unknown checkout must
  *   not silently claim someone else's PR number as its own (fail closed).
  *   Bare SHAs are still checked against whatever origin/main is here.
- * @returns {{commits: string[], prs: number[], foreign: string[]}}
+ * @returns {{commits: string[], prs: number[], foreign: string[], siblings: {repo: string, sha: string}[]}}
+ *   siblings: the subset of `foreign` commit URLs in a known sibling data repo.
  */
 function extractEvidenceRefs(body, { originRepo = null } = {}) {
   const s = String(body || '');
@@ -76,11 +86,18 @@ function extractEvidenceRefs(body, { originRepo = null } = {}) {
   const commits = [];
   const prs = [];
   const foreign = [];
+  const siblings = [];
   const push = (arr, v) => { if (!arr.includes(v)) arr.push(v); };
 
   for (const m of s.matchAll(COMMIT_URL_RE)) {
     if (want && normalizeRepo(m[1]) === want) push(commits, m[2].toLowerCase());
-    else push(foreign, m[0]);
+    else {
+      push(foreign, m[0]);
+      const repo = normalizeRepo(m[1]);
+      if (SIBLING_REPOS.includes(repo) && !siblings.some(x => x.repo === repo && x.sha === m[2].toLowerCase())) {
+        siblings.push({ repo, sha: m[2].toLowerCase() });
+      }
+    }
   }
   for (const m of s.matchAll(PR_URL_RE)) {
     if (want && normalizeRepo(m[1]) === want) push(prs, Number(m[2]));
@@ -95,7 +112,7 @@ function extractEvidenceRefs(body, { originRepo = null } = {}) {
     .replace(/\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b/gi, ' ');
   for (const m of stripped.matchAll(BARE_SHA_RE)) push(commits, m[0].toLowerCase());
 
-  return { commits, prs, foreign };
+  return { commits, prs, foreign, siblings };
 }
 
 /**
@@ -110,7 +127,7 @@ function extractEvidenceRefs(body, { originRepo = null } = {}) {
  *   verified:false — every cited ref was definitively NOT on origin/main.
  *   verified:null  — nothing could be confirmed (no refs, foreign repo, lookup error, shallow clone).
  */
-function evaluateEvidence(refs, { isCommitOnMain, getPrMergeCommit, mentionsIssue, issueIdentifier }) {
+function evaluateEvidence(refs, { isCommitOnMain, getPrMergeCommit, mentionsIssue, issueIdentifier, siblingCommit }) {
   const checked = [];
   const commits = (refs && refs.commits) || [];
   const prs = (refs && refs.prs) || [];
@@ -139,7 +156,7 @@ function evaluateEvidence(refs, { isCommitOnMain, getPrMergeCommit, mentionsIssu
   }
   for (const n of prs) {
     const pr = typeof getPrMergeCommit === 'function' ? getPrMergeCommit(n) : null;
-    if (!pr) { checked.push({ kind: 'pr', ref: n, onMain: null, detail: 'lookup failed' }); continue; }
+    if (!pr) { checked.push({ kind: 'pr', ref: n, onMain: null, detail: (getPrMergeCommit && getPrMergeCommit.lastError) || 'lookup failed' }); continue; }
     if (!pr.sha) { checked.push({ kind: 'pr', ref: n, onMain: false, detail: `state ${pr.state || 'unknown'}, no merge commit` }); continue; }
     const r = isCommitOnMain(pr.sha);
     if (r === true && attributed('pr', n, pr.sha, n)) {
@@ -148,11 +165,31 @@ function evaluateEvidence(refs, { isCommitOnMain, getPrMergeCommit, mentionsIssu
     }
     if (r !== true) checked.push({ kind: 'pr', ref: n, mergeCommit: pr.sha, onMain: r });
   }
+  // Sibling data repos (BRO-3435): settled by the remote compare. Only a
+  // landed commit whose message names the issue verifies; anything else stays
+  // unknown (the remote can say "on main", never "definitively not").
+  const siblings = (refs && refs.siblings) || [];
+  if (typeof siblingCommit === 'function') {
+    for (const { repo, sha } of siblings) {
+      const rc = siblingCommit(repo, sha);
+      if (rc && rc.onMain === true) {
+        const re = issueIdentifier ? new RegExp(`(^|[^A-Za-z0-9])${String(issueIdentifier).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![0-9])`, 'i') : null;
+        const named = !re ? true : (rc.message === null ? null : re.test(rc.message));
+        if (named === true) {
+          checked.push({ kind: 'sibling', ref: `${repo}@${sha}`, onMain: true });
+          return { verified: true, reason: `commit ${sha} is on ${repo} main`, checked };
+        }
+        checked.push({ kind: 'sibling', ref: `${repo}@${sha}`, onMain: true, attributed: named, detail: named === false ? `does not mention ${issueIdentifier}` : 'attribution unreadable' });
+      } else {
+        checked.push({ kind: 'sibling', ref: `${repo}@${sha}`, onMain: null, detail: (rc && rc.status ? `compare says ${rc.status}` : ((siblingCommit && siblingCommit.lastError) || 'lookup failed')) });
+      }
+    }
+  }
   // Foreign URLs are deliberately NOT in `checked`: they are neither confirmed
   // nor denied, and must not turn a definitive "not on main" for a local
   // commit on the same line into a vague "could not confirm <other repo>".
 
-  if (!commits.length && !prs.length) {
+  if (!commits.length && !prs.length && !checked.length) {
     return {
       verified: null,
       reason: foreign.length
@@ -200,17 +237,23 @@ process.stdin.on('data', d => { url += d; }).on('end', async () => {
   try {
     const j = await fetchGitHubJSON(url.trim(), { caller: 'done-evidence-verify.js' });
     process.stdout.write(JSON.stringify(j));
-  } catch { process.exit(1); }
+  } catch (e) { process.stderr.write(e && e.status ? 'HTTP ' + e.status : 'error: ' + String((e && e.message) || e).slice(0, 80)); process.exit(1); }
 });`;
+// Why the last defaultHttpGetJson call returned null ("HTTP 401", "HTTP 403",
+// a timeout...), so a refusal can say more than "lookup failed" (BRO-3435).
+let lastHttpError = null;
 
 function defaultHttpGetJson(url, { timeoutMs = 20000 } = {}) {
   try {
     const out = execFileSync(process.execPath, ['-e', HTTP_CHILD_SRC], {
-      input: url, encoding: 'utf8', stdio: ['pipe', 'pipe', 'ignore'],
+      input: url, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'],
       timeout: timeoutMs, maxBuffer: 16 * 1024 * 1024,
     });
+    lastHttpError = null;
     return out ? JSON.parse(out) : null;
-  } catch {
+  } catch (err) {
+    const stderr = err && err.stderr ? String(err.stderr).trim() : '';
+    lastHttpError = stderr || (err && err.code === 'ETIMEDOUT' ? `timed out after ${timeoutMs}ms` : 'lookup failed');
     return null;
   }
 }
@@ -235,12 +278,19 @@ function defaultHttpGetJson(url, { timeoutMs = 20000 } = {}) {
 function makeRemoteLookup({ originRepo = null, httpGetJson = defaultHttpGetJson, log = () => {} } = {}) {
   const commits = new Map();
   const pulls = new Map();
+  const errors = new Map();
   const base = originRepo ? `https://api.github.com/repos/${originRepo}` : null;
-  return {
+  const self = {
     enabled: Boolean(base),
-    commit(sha) {
-      if (!base || !sha) return null;
-      if (commits.has(sha)) return commits.get(sha);
+    lastError: null,
+    commit(sha) { return self.commitIn(originRepo, sha); },
+    // `repo` is "owner/name"; the origin repo or a known sibling (BRO-3435).
+    commitIn(repo, sha) {
+      self.lastError = null;
+      if (!repo || !sha) return null;
+      const key = `${repo}@${sha}`;
+      const base = `https://api.github.com/repos/${repo}`;
+      if (commits.has(key)) { const c = commits.get(key); if (!c) self.lastError = errors.get(key) || null; return c; }
       const j = httpGetJson(`${base}/compare/main...${encodeURIComponent(sha)}?per_page=1`);
       let r = null;
       if (j && typeof j.status === 'string') {
@@ -249,12 +299,15 @@ function makeRemoteLookup({ originRepo = null, httpGetJson = defaultHttpGetJson,
         r = { onMain: landed ? true : null, status: j.status, message: mb && typeof mb.message === 'string' ? mb.message : null };
         log(`[done-evidence-verify] GitHub compare main...${sha}: ${j.status}`);
       } else {
-        log(`[done-evidence-verify] GitHub compare main...${sha}: no answer`);
+        self.lastError = lastHttpError;
+        log(`[done-evidence-verify] GitHub compare ${repo} main...${sha}: no answer${lastHttpError ? ` (${lastHttpError})` : ''}`);
       }
-      commits.set(sha, r);
+      commits.set(key, r);
+      if (!r) errors.set(key, lastHttpError);
       return r;
     },
     pull(n) {
+      self.lastError = null;
       if (!base || !n) return null;
       if (pulls.has(n)) return pulls.get(n);
       const j = httpGetJson(`${base}/pulls/${Number(n)}`);
@@ -267,12 +320,14 @@ function makeRemoteLookup({ originRepo = null, httpGetJson = defaultHttpGetJson,
           text: `${j.title || ''}\n${j.body || ''}`,
         };
       } else {
-        log(`[done-evidence-verify] GitHub pulls/${n}: no answer`);
+        self.lastError = lastHttpError;
+        log(`[done-evidence-verify] GitHub pulls/${n}: no answer${lastHttpError ? ` (${lastHttpError})` : ''}`);
       }
       pulls.set(n, r);
       return r;
     },
   };
+  return self;
 }
 
 /**
@@ -419,7 +474,8 @@ function makeLocalIsCommitOnMain({ cwd = process.cwd(), log = () => {} } = {}) {
  * rate-limited, no such PR) — the gate then refuses as unverified.
  */
 function makeGetPrMergeCommit({ cwd = process.cwd(), originRepo = null, timeoutMs = 15000, log = () => {}, remote = null } = {}) {
-  return function getPrMergeCommit(n) {
+  function getPrMergeCommit(n) {
+    getPrMergeCommit.lastError = null;
     if (!originRepo) return null;
     try {
       const out = execFileSync('gh', ['pr', 'view', String(n), '--repo', originRepo, '--json', 'state,mergeCommit'], {
@@ -431,9 +487,12 @@ function makeGetPrMergeCommit({ cwd = process.cwd(), originRepo = null, timeoutM
     } catch (err) {
       log(`[done-evidence-verify] gh pr view ${n} failed: ${String(err.message).slice(0, 120)}`);
       const rp = remote ? remote.pull(n) : null;
+      if (!rp && remote && remote.lastError) getPrMergeCommit.lastError = remote.lastError;
       return rp ? { sha: rp.mergeSha, state: rp.state } : null;
     }
-  };
+  }
+  getPrMergeCommit.lastError = null;
+  return getPrMergeCommit;
 }
 
 /**
@@ -449,13 +508,21 @@ function makeVerifyEvidence({ cwd = process.cwd(), issueIdentifier = null, log =
   const isCommitOnMain = makeIsCommitOnMain({ cwd, log, remote });
   const getPrMergeCommit = makeGetPrMergeCommit({ cwd, originRepo, log, remote });
   const mentionsIssue = makeMentionsIssue({ cwd, originRepo, log, remote });
+  const siblingCommit = (repo, sha) => {
+    siblingCommit.lastError = null;
+    const r = remote.commitIn(repo, sha);
+    if (!r) siblingCommit.lastError = remote.lastError;
+    return r;
+  };
+  siblingCommit.lastError = null;
   return function verifyEvidence(prRef) {
     const refs = extractEvidenceRefs(prRef && prRef.body, { originRepo });
-    return evaluateEvidence(refs, { isCommitOnMain, getPrMergeCommit, mentionsIssue, issueIdentifier });
+    return evaluateEvidence(refs, { isCommitOnMain, getPrMergeCommit, mentionsIssue, issueIdentifier, siblingCommit });
   };
 }
 
 module.exports = {
+  SIBLING_REPOS,
   extractEvidenceRefs,
   evaluateEvidence,
   detectOriginRepo,
