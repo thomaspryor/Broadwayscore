@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { getScoreClass } from '@/lib/critic-page-utils';
-import { ToggleBar, ColumnHeader } from '@/components/show-cards';
+import { ToggleBar, ColumnHeader, OutletTierChip } from '@/components/show-cards';
 import Breadcrumb from '@/components/Breadcrumb';
 
 type SortMode = 'reviews' | 'reviews-asc' | 'highest' | 'lowest' | 'alpha';

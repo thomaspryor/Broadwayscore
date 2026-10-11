@@ -5,7 +5,7 @@ import Link from 'next/link';
 import type { OutletProfile, ProfileReview } from '@/lib/data-types';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getScoreClass, getScoreTextColor, formatDate, ordinalSuffix } from '@/lib/critic-page-utils';
-import { ToggleBar, StatGrid } from '@/components/show-cards';
+import { ToggleBar, StatGrid, OutletTierChip } from '@/components/show-cards';
 import Breadcrumb from '@/components/Breadcrumb';
 import { getReviewKey } from '../../../../../scripts/lib/review-list-key';
 import { nestQuotes } from '@/lib/nest-quotes';
