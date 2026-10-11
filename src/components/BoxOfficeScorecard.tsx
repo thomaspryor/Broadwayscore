@@ -98,7 +98,7 @@ function PersonalBests({ lines }: { lines: BestLine[] }) {
           </li>
         ))}
       </ul>
-      <p className="m-0 text-xs text-gray-500">Dollars at the time, not adjusted for inflation.</p>
+      <p className="m-0 text-xs text-gray-500">This production only. Dollars at the time, not adjusted for inflation.</p>
     </section>
   );
 }
