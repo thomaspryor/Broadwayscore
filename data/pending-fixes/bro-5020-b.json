@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5020-b",
   "planId": "143da819-12ea-490a-9d3b-0611c26ad5fa",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -189,5 +189,53 @@
         "description": "grey-house: sources"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-11T08:01:09.526Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-lehman-trilogy-2021 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added mrs-doubtfire-2021 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added thoughts-of-a-colored-man-2021 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added the-piano-lesson-2022 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added caroline-or-change-2021 (Nonprofit)"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for grey-house"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for grey-house"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for grey-house"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for grey-house"
+    }
+  ]
 }
