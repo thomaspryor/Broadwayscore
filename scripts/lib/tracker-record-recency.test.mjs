@@ -52,5 +52,5 @@ test('recordRecencyMs: _migratedAt is deliberately excluded (stamps when a legac
 test('RECENCY_FIELDS excludes both observation-stamp fields (lastReconciledAt, _migratedAt)', () => {
   assert.equal(RECENCY_FIELDS.includes('lastReconciledAt'), false);
   assert.equal(RECENCY_FIELDS.includes('_migratedAt'), false);
-  assert.deepEqual(RECENCY_FIELDS, ['sentAt', 'draftCreatedAt']);
+  assert.deepEqual(RECENCY_FIELDS, ['sentAt', 'draftCreatedAt', 'discardedAt']);
 });

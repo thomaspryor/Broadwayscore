@@ -252,6 +252,11 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Does:** Replaces an opening-night Resend draft built from stale data via `send-opening-night-broadcast.js --recreate-draft`: regenerates consensus, refuses unless every tracker record for the shows is unsent AND a live Resend GET of each old draftId says `draft`/`cancelled` (a 404 is refused, Resend also reaps sent broadcasts), deletes the old draft (a failed DELETE aborts before the tracker is touched), creates a fresh draft and the owner's "draft ready" email, pushes core data. Never calls `/send`. Guard logic: `scripts/lib/recreate-draft-guard.js` (BRO-4875).
 - **Dispatch:** `gh workflow run recreate-broadcast-draft.yml -f market=west-end -f shows=<id> -f dry_run=false` (rehearse first with the default dry run).
 
+## `discard-broadcast-draft.yml`
+- **Runs:** Manual only. Inputs `shows` (every show of the draft), `reason`, `dry_run` (default **true**).
+- **Does:** Deletes an opening-night Resend draft that will never be sent, WITHOUT sending it (BRO-2935, owner decision 2026-10-11), via `scripts/discard-stuck-broadcast-drafts.js`. Refuses unless every tracker record is unsent, a combo draft's shows are all named, and a live GET says `draft` (404 refused). Stamps the tracker records `discardedAt` so nothing re-queues or reports them missed, then pushes core data. Shares `reconcile-broadcast-state`'s concurrency group. Never calls `/send`. Future unsent drafts page from `check-missed-broadcasts.js` (`broadcast:draft-unsent:<draftId>`, 3 to 30 days old).
+- **Dispatch:** `gh workflow run discard-broadcast-draft.yml -f shows=<id>[,<id>] -f dry_run=false` (rehearse with the default first).
+
 ## `gather-reviews.yml`
 - **Runs:** When new shows discovered (or manually triggered)
 - **Does:** Gathers review data by searching aggregators and outlets, then scrapes supplementary aggregators (Playbill Verdict + NYC Theatre), then rebuilds `reviews.json`

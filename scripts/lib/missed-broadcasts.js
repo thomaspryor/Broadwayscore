@@ -108,6 +108,8 @@ function daysSinceOpening(openingDate, now) {
  *                     alone — three West End shows sat in this state for two
  *                     months. Remediation is to press Send in Resend, NOT to
  *                     re-run the pipeline (which would create a second draft).
+ *   'discarded'     — the owner chose not to send; the unsent draft was
+ *                     deleted on purpose (BRO-2935). Resolved, not reported.
  *   'draft-unknown' — a draft existed and Resend now 404s it, with no observed
  *                     'sent' poll. Genuinely ambiguous: broadcast-state.js
  *                     documents that Resend reaps SENT broadcasts within hours,
@@ -123,6 +125,9 @@ function daysSinceOpening(openingDate, now) {
  */
 function classifyBroadcastState(record) {
   if (!record) return 'never-drafted';
+  // Deleted unsent on purpose (BRO-2935). Before the 'deleted' branch below,
+  // which would read it as an ambiguous draft-unknown.
+  if (record.discardedAt) return 'discarded';
   const m = migrateSentRecord(record);
 
   if (m.draftStatus === 'sent') return 'sent';
@@ -342,7 +347,7 @@ function findMissedBroadcasts({
     if (age === null || age < minAgeDays || age > maxReportAgeDays) continue;
 
     const state = classifyShowBroadcastState(sentShows, s.id);
-    if (state === 'sent') continue;
+    if (state === 'sent' || state === 'discarded') continue;
 
     // The real gate, not a copy of it: Broadway needs 15 AND a DTLI/BWW
     // aggregator, West End needs 12 and no aggregator. Reporting a Broadway
@@ -391,7 +396,25 @@ function findMissedBroadcasts({
   return missed.sort((a, b) => b.daysSinceOpening - a.daysSinceOpening || a.id.localeCompare(b.id));
 }
 
+// BRO-2935 (owner decision 2026-10-11): an unsent draft pages from 3 days old
+// (findStaleDrafts' minAgeDays) until this age. Past it the draft stays in the
+// snapshot/digest, and the remedy is discard-broadcast-draft.yml.
+const STALE_DRAFT_MAX_ALERT_AGE_DAYS = 30;
+
+/**
+ * Which stale drafts (broadcast-state.js findStaleDrafts) should page. A draft
+ * whose show already pages through the never-sent alert ('draft-stuck' within
+ * that show's age bound) is left to it, so one stuck email is one page.
+ * Pure.
+ */
+function selectPageableStaleDrafts(staleDrafts, alertableMissedIds, maxAgeDays = STALE_DRAFT_MAX_ALERT_AGE_DAYS) {
+  const covered = new Set(alertableMissedIds || []);
+  return (staleDrafts || []).filter((d) => d.ageDays <= maxAgeDays && !d.showIds.some((id) => covered.has(id)));
+}
+
 module.exports = {
+  STALE_DRAFT_MAX_ALERT_AGE_DAYS,
+  selectPageableStaleDrafts,
   findMissedBroadcasts,
   classifyBroadcastState,
   classifyShowBroadcastState,

@@ -369,7 +369,7 @@ async function main() {
   // Exception: reconcile-broadcast-state.js may set draftStatus='cancelled'|'deleted'. If
   // the drafting-cycle has aged past REQUEUE_AFTER_HOURS, shouldRequeueShow re-opens the
   // slot so the next run can create a fresh draft. See scripts/lib/broadcast-state.js.
-  const { shouldRequeueShow } = require('./lib/broadcast-state');
+  const { shouldRequeueShow, isDiscarded } = require('./lib/broadcast-state');
   const { sentOnSiblingRecord } = require('./lib/missed-broadcasts');
   const pendingShows = recentlyOpened.filter(s => {
     const showId = s.id || s.slug;
@@ -385,6 +385,13 @@ async function main() {
       return false;
     }
     if (RECREATE_DRAFT) return true;
+    // The owner deleted this show's unsent draft on purpose (BRO-2935). The
+    // record says completed:false, which the fall-through below reads as
+    // pending, so without this a lookback run would draft it again.
+    if (isDiscarded(individualSent)) {
+      console.log(`  Skipping ${s.title} — draft deliberately discarded unsent at ${individualSent.discardedAt}`);
+      return false;
+    }
     if (shouldRequeueShow(individualSent)) {
       if (individualSent.completed) {
         console.log(`  Re-queueing ${s.title} — draft ${individualSent.draftStatus} at ${individualSent.draftCreatedAt}`);
@@ -598,26 +605,11 @@ async function main() {
     if (DRY_RUN) {
       console.log(`\n[DRY RUN] Would delete old draft(s) ${draftIds.join(', ') || '(none)'} and clear records: ${keys.join(', ') || '(none)'}`);
     } else {
-      const { default: https } = await import('https');
+      const { deleteBroadcast } = require('./reconcile-broadcast-state');
       const deletedIds = new Set();
       for (const id of draftIds) {
         console.log(`--recreate-draft: deleting old draft ${id}...`);
-        const res = await new Promise((resolve) => {
-          const req = https.request({
-            hostname: 'api.resend.com',
-            path: `/broadcasts/${id}`,
-            method: 'DELETE',
-            headers: { 'Authorization': `Bearer ${RESEND_API_KEY}` },
-            timeout: 15000,
-          }, r => {
-            let body = '';
-            r.on('data', c => body += c);
-            r.on('end', () => resolve({ statusCode: r.statusCode, body }));
-          });
-          req.on('error', err => resolve({ statusCode: 0, body: err.message }));
-          req.on('timeout', () => { req.destroy(new Error('timeout')); });
-          req.end();
-        });
+        const res = await deleteBroadcast(id);
         if (!(res.statusCode >= 200 && res.statusCode < 300)) {
           // Drafts deleted earlier in this loop are gone from Resend: drop their
           // records now, or a rerun would GET a 404 for them and refuse forever.
