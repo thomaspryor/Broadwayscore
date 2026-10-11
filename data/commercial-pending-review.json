@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-10T23:25:04.059Z",
+  "generatedAt": "2026-10-11T01:22:54.529Z",
   "shows": {
     "860": {
       "capitalization": null,
@@ -3943,6 +3943,102 @@
       "researchedAt": "2026-10-03T22:10:36.942Z",
       "model": "o4-mini",
       "researchTrigger": "backlog"
+    },
+    "just-in-time": {
+      "slug": "just-in-time",
+      "title": "Just in Time",
+      "openingDate": "2025-04-26",
+      "status": "open",
+      "_reviewHold": true,
+      "requiresHumanReview": true,
+      "confidence": "medium",
+      "researchedAt": "2026-10-10T22:36:05.275Z",
+      "researchTrigger": "BRO-4989 checker #3: model 233% vs reported recoupment May 2026",
+      "field": "weeklyRunningCost",
+      "currentValue": 600000,
+      "proposedWeeklyRunningCost": [
+        800000,
+        850000
+      ],
+      "notes": "Review request about data already in commercial.json. Do not apply; verify, edit commercial.json by hand, then delete this row. Stored $600K/week is a Reddit estimate (u/Boring_Waltz_9545, 2026-05-19). No trade report of the running cost was found. Derived, not reported: with the $12.5M capitalization (Playbill/Variety) and the weekly grosses on file, the model recoups in mid-March to late March 2026 at $790K-$840K/week and has not recouped by now at $850K+. Playbill reported recoupment on 2026-05-18, which brackets the cost at about $800K-$850K/week (+33% to +42% over $600K). At $600K the model says 233% returned today; at $800K-$850K it says about 92-120% (credit counted) or 72-100% (credit not counted). Context: Broadway Journal (Philip Boroff, 2025-06-05) said a company chart showed recoupment of $9.4M production costs soon after Labor Day 2025 at a $1.2M weekly gross, including up to $3M state tax credit. Actual recoupment came about 8 months later, on a $12.5M figure, which also points to higher costs than $600K. Wanted: a cited weekly running cost or break-even (trade press, producer statement, or SEC/offering filing).",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/just-in-time-recoups-on-broadway",
+          "date": "2026-05-18",
+          "excerpt": "has recouped its initial $12.5 million investment"
+        },
+        {
+          "type": "trade",
+          "url": "https://broadwayjournal.com/jukebox-prevails-in-tough-season-for-new-musicals/",
+          "date": "2025-06-05",
+          "excerpt": "could recoup its $9.4 million of production costs soon after Labor Day"
+        }
+      ]
+    },
+    "proof": {
+      "capitalization": 6500000,
+      "capitalizationSource": "SEC Form D for Proof on Broadway Ltd Liability Co (total offering $6.5M; filing says minimum capitalization $5.5M and maximum capitalization $6.5M)",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Public Form D shows a $6.5M total offering (minimum capitalization $5.5M). Playbill's closing-week grosses story says Proof ended July 19, 2026 with a final-week gross of $934,472.69. I could not verify a public weekly nut or recoupment announcement.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "sec",
+          "url": "https://www.sec.gov/Archives/edgar/data/2098417/000209841725000001/xslFormDX01/primary_doc.xml",
+          "date": "2025-12-09"
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/proofs-final-week-was-standing-room-only-and-more-from-last-weeks-broadway-grosses",
+          "date": "2026-07-21"
+        }
+      ],
+      "title": "Proof",
+      "slug": "proof",
+      "openingDate": "2026-04-16",
+      "status": "closed",
+      "researchedAt": "2026-10-11T01:20:37.629Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual"
+    },
+    "the-music-man-2022": {
+      "capitalization": 24000000,
+      "capitalizationSource": "ArtsJournal quoting The New York Times reporting that the production had not yet recouped its $24 million capitalization costs.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Capitalization is publicly reported at $24M. BroadwayWorld also said the show received the full $3M NYC tax credit, but that does not by itself prove total capitalization. I could not verify a show-specific weekly running cost or a public recoupment confirmation before closing.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.artsjournal.com/calltime/2022/10/13/on-music-mans-closing-and-the-business-of-theatre/",
+          "date": "2022-10-13"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/NYS-Theater-Tax-Credit-Who-Benefits-and-How-20240220",
+          "date": "2024-02-20"
+        }
+      ],
+      "title": "The Music Man",
+      "slug": "the-music-man-2022",
+      "openingDate": "2022-02-10",
+      "status": "closed",
+      "researchedAt": "2026-10-11T01:22:54.529Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual"
     }
   },
   "lastUpdated": "2026-10-10T23:14:17.684Z"

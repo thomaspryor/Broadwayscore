@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-10-11T00:56:23.871Z",
+  "timestamp": "2026-10-11T01:24:43.873Z",
   "stats": {
-    "totalReviews": 54657,
+    "totalReviews": 54685,
     "alreadyFlagged": 20001,
-    "dateGuardCatches": 271,
-    "directorMismatch": 1660,
-    "tvFilmSignals": 1521,
-    "londonSignals": 1813,
+    "dateGuardCatches": 272,
+    "directorMismatch": 1667,
+    "tvFilmSignals": 1523,
+    "londonSignals": 1814,
     "offBroadwaySignals": 504,
-    "yearMismatch": 129,
+    "yearMismatch": 130,
     "noPublishDate": 6178
   },
   "findings": [
@@ -399,6 +399,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (2x) more than 2024 (0x). 2026 matches production: a-beautiful-noise-the-neil-diamond-musical-tour-2026"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "the-globe-and-mail--aisling-murphy.json",
+      "publishDate": "2026-05-03",
+      "url": "https://www.theglobeandmail.com/culture/stage/article-neil-diamond-musical-beautiful-noise-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
         }
       ]
     },
@@ -4744,6 +4757,45 @@
     },
     {
       "showId": "book-of-mormon-tour-2022",
+      "file": "dc-theater-arts--eric-colchamiro.json",
+      "publishDate": "2026-05-01",
+      "url": "https://dctheaterarts.org/2026/05/01/thank-goodness-for-the-book-of-mormon-on-tour-at-the-national/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
+      "file": "feature-presentation--patrick-j-regal.json",
+      "publishDate": "2026-04-30",
+      "url": "https://featurepresentationvideo.substack.com/p/tour-review-the-book-of-mormon",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
+      "file": "hotchka--unknown.json",
+      "publishDate": "2026-04-29",
+      "url": "https://hotchka.com/the-book-of-mormon-2026-tour-review-washington-dc-national-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
       "file": "jhpentertainment--jonathan-pinkerton.json",
       "score": 89,
       "publishDate": "2026-06-03",
@@ -4753,6 +4805,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
+      "file": "maryland-theatre-guide--unknown.json",
+      "publishDate": "2026-04-30",
+      "url": "https://mdtheatreguide.com/2026/04/theatre-review-the-book-of-mormon-at-the-national-theatre-2/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -31874,6 +31944,19 @@
     },
     {
       "showId": "six-tour-2022",
+      "file": "broadwayworld--amanda-theriot-greenwell.json",
+      "publishDate": "2026-05-03",
+      "url": "https://www.broadwayworld.com/atlanta/article/REVIEW-Radical-Royals-Dazzle-in-SIX-at-the-Fabulous-Fox-Theatre-20260503",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 9\""
+        }
+      ]
+    },
+    {
+      "showId": "six-tour-2022",
       "file": "hotchka--chuck-duncan.json",
       "score": 93,
       "publishDate": "2023-05-10",
@@ -33777,6 +33860,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-tour-2025",
+      "file": "outfrontmagazine--stephanie-kastler.json",
+      "publishDate": "2026-05-12",
+      "url": "https://outfrontmagazine.com/review-suffs-makes-a-splash-on-pbs/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 3\""
         }
       ]
     },
@@ -37947,6 +38043,24 @@
     },
     {
       "showId": "the-great-gatsby-tour-2026",
+      "file": "broadwayworld--jeffrey-kare.json",
+      "publishDate": "2026-05-06",
+      "url": "https://www.broadwayworld.com/raleigh/article/Review-THE-GREAT-GATSBY-National-Tour-at-Durham-Performing-Arts-Center-20260506",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2024 (2x) more than 2026 (1x). 2024 matches production: the-great-gatsby-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
       "file": "broadwayworld--r-scott-reedy.json",
       "score": 63,
       "publishDate": "2026-07-13",
@@ -40384,6 +40498,19 @@
       "score": 86,
       "publishDate": null,
       "url": "https://aroundthetownchicago.com/theatre-reviews/the-outsiders-even-better-the-second-time/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
+      "file": "arts-knoxville--alan-sherrod.json",
+      "publishDate": "2026-04-25",
+      "url": "https://artsknoxville.com/2026/04/25/review-the-outsiders-national-tour/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -43562,6 +43689,20 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1547d before show (2022-03-31 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 82,
+      "publishDate": "2023-02-07",
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
         }
       ]
     },

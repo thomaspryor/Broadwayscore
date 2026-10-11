@@ -10,6 +10,7 @@
  *   node scripts/export-model-detail.js --all --output=~/Desktop/model-export/
  */
 
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const os = require('os');

@@ -20,6 +20,7 @@ import type { CommercialShowRow } from '@/lib/data-types';
 import { formatCurrency, formatCapitalization } from '@/lib/biz-format';
 import {
   getRecoupmentDisplayMode,
+  getModelHoldLabel,
   getDesignationDisplay,
   publicSourceText,
   isClosedWithoutRecouping,
@@ -115,13 +116,18 @@ function RecoupedCell({ show }: { show: CommercialShowRow }) {
   if (displayMode === 'model' && show.modelRecoupmentPct) {
     return (
       <div className="w-36 sm:w-40" title="Model estimate, not a reported figure. See methodology.">
-        <RecoupmentProgressBar estimatedPct={show.modelRecoupmentPct} modelMethod={show.modelMethod} />
+        <RecoupmentProgressBar estimatedPct={show.modelRecoupmentPct} modelMethod={show.modelMethod} belowCosts={show.modelBelowCosts} />
       </div>
     );
   }
 
   if (isClosedWithoutRecouping(show)) {
     return <span className="text-gray-400 text-sm">Did not recoup</span>;
+  }
+
+  const held = getModelHoldLabel(show);
+  if (held) {
+    return <span className="text-gray-400 text-xs" data-testid="model-hold">{held}</span>;
   }
 
   return <span className="text-gray-500">—</span>;

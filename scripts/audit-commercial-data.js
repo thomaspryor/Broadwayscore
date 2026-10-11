@@ -11,6 +11,7 @@
  * Usage: node scripts/audit-commercial-data.js
  */
 
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 

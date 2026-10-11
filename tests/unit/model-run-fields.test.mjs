@@ -4,7 +4,7 @@ import assert from 'node:assert';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 
-const { clearStaleModelFields, applyShadowReturnFields, SHADOW_RETURN_FIELDS } = require('../../scripts/lib/model-run-fields');
+const { clearStaleModelFields, applyShadowReturnFields, applyReturnedSoFarFields, SHADOW_RETURN_FIELDS, RETURNED_SO_FAR_OPTS } = require('../../scripts/lib/model-run-fields');
 const { modelReturnV2 } = require('../../scripts/lib/model-return-v2');
 const { MODEL_RUN_FIELDS } = require('../../scripts/lib/merge-commercial-data');
 
@@ -47,5 +47,31 @@ describe('clearStaleModelFields', () => {
 
   it('shadow fields merge as part of the model run unit', () => {
     for (const f of SHADOW_RETURN_FIELDS) assert.ok(MODEL_RUN_FIELDS.includes(f), f);
+  });
+});
+
+describe('"% returned so far" shadow fields (checker #1/#2)', () => {
+  it('runs played weeks only with the cited-only credit', () => {
+    assert.deepStrictEqual({ ...RETURNED_SO_FAR_OPTS }, { playedWeeksOnly: true, taxCreditCitedOnly: true });
+    assert.ok(Object.isFrozen(RETURNED_SO_FAR_OPTS));
+  });
+  it('writes the triple and the excluded credit', () => {
+    const comm = { modelRecoupmentPct: [1, 2, 3] };
+    applyReturnedSoFarFields(comm, { recoupmentPctLow: -10, recoupmentPctCentral: 5, recoupmentPctHigh: 20, taxCreditExcluded: 3e6 });
+    assert.deepStrictEqual(comm.modelReturnedExCreditPct, [-10, 5, 20]);
+    assert.strictEqual(comm.modelTaxCreditExcluded, 3e6);
+    assert.deepStrictEqual(comm.modelRecoupmentPct, [1, 2, 3]);
+  });
+  it('a failed or missing run clears stale values', () => {
+    for (const bad of [null, { error: 'x' }, { recoupmentPctCentral: NaN }]) {
+      const comm = { modelReturnedExCreditPct: [1, 2, 3], modelTaxCreditExcluded: 1 };
+      applyReturnedSoFarFields(comm, bad);
+      assert.ok(!('modelReturnedExCreditPct' in comm) && !('modelTaxCreditExcluded' in comm));
+    }
+  });
+  it('clearStaleModelFields clears them on an ai-estimated fallback', () => {
+    const comm = { modelReturnedExCreditPct: [1, 2, 3], modelTaxCreditExcluded: 1 };
+    clearStaleModelFields(comm);
+    assert.deepStrictEqual(comm, {});
   });
 });
