@@ -39,6 +39,10 @@
  *
  * Kill switch: create data/opening-night-monitor/DISABLED (or set
  * ON_MONITOR_DISABLED=1) — next tick exits without launching.
+ * RETIRED (BRO-4638, 2026-10-11): DISABLED is committed with a "RETIRED:"
+ * first line. The cloud Routines "Opening night live watch" and "morning-after
+ * audit" replaced this job, so every tick exits 0 at once and the stale-kill-
+ * switch pager stays quiet (scripts/lib/retired-kill-switch.js).
  */
 
 const fs = require('fs');
@@ -64,6 +68,7 @@ const {
 const { runMonitorPass, buildMonitorPassEnv } = require('./lib/opening-night-monitor.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const { isShowCoverageComplete } = require('./lib/opening-night-readiness.js');
+const { readRetiredMarker } = require('./lib/retired-kill-switch.js');
 
 const MON_DIR = path.join(REPO, 'data', 'opening-night-monitor');
 const LOCK_DIR = path.join(MON_DIR, 'monitor.lock');
@@ -100,7 +105,9 @@ const HEADLESS_MAX_WALL_MIN = 15;
 const NIGHTLY_USD_CAP = 200;
 
 const USAGE = `opening-night-monitor-launch — launch the opening-night monitor session (see header comment)
-  --dry-run | --show <id> | --rehearsal | --active-shows | --heartbeat | --help`;
+  --dry-run | --show <id> | --rehearsal | --active-shows | --heartbeat | --help
+RETIRED (BRO-4638): while data/opening-night-monitor/DISABLED starts with "RETIRED:",
+every mode except --heartbeat/--help exits 0 without doing anything. Delete it to re-enable.`;
 
 function parseArgs(argv) {
   const a = { _: [] };
@@ -432,6 +439,11 @@ async function main(argv = process.argv.slice(2)) {
     fs.writeFileSync(HEARTBEAT, JSON.stringify({ at: now.toISOString() }));
     return 0;
   }
+
+  // Before any other work or the stale-kill-switch pager: a RETIRED marker is
+  // a deliberate permanent stop, not a switch left on by accident (BRO-4638).
+  const retired = readRetiredMarker(KILL_FILE);
+  if (retired) { log(`retired, not running: ${retired}`); return 0; }
 
   gcStateFiles();
   const shows = loadShows();
