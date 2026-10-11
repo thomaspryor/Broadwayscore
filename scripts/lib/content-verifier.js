@@ -19,6 +19,7 @@ const { GEMINI_FLASH, GPT4O_MINI, CLAUDE_HAIKU, CLAUDE_SONNET } = require('./mod
 const { foldDiacritics } = require('./title-match');
 const { isLondonMarket, isSpecialEngagementVenue } = require('./venue-classification');
 const { applyTemporalOverrides, applyVenueClassificationCarveout } = require('./review-guards');
+const { applyOwnVenueTourCarveout } = require('./tour-stop-carveout');
 const { buildVenueContext: _expandVenueContext } = require('./venue-aliases');
 const { getCvStyle } = require('./outlet-canonicalize');
 const { hasOpinionLanguage, stripLeadingJsonBlob } = require('./content-quality');
@@ -531,6 +532,19 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
         isValid = venueCarve.isValid;
       }
 
+      // Own-venue tour stop (BRO-4884): a touring production playing THIS
+      // record's venue is this production. Decided from the reported venue,
+      // not the model's reading of "touring" (lib/tour-stop-carveout.js).
+      const tourCarve = applyOwnVenueTourCarveout(
+        { wrongProduction: wpFlag, reasoning: wpReasoning, issues: parsed.issues || [], reviewedVenue: parsed.reviewedVenue },
+        show,
+        { publishDate }
+      );
+      if (tourCarve.tourStopCarveoutApplied) {
+        console.log(`    ✓ Own-venue tour-stop carve-out (${show && show.venue}): critic attended "${parsed.reviewedVenue}" — wrongProduction→false`);
+        wpFlag = false;
+      }
+
       if (urlYearConflict) {
         console.log(`    ⚠ URL-year/publishDate conflict: URL says ${urlYearConflict.urlYear}, publishDate says ${urlYearConflict.publishYear} (${urlYearConflict.gapYears}yr gap)`);
       }
@@ -544,6 +558,7 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
         articleType: parsed.articleType || 'review',
         articleTypeConfidence: parsed.articleTypeConfidence || 'medium',
         wrongProduction: wpFlag,
+        reviewedVenue: parsed.reviewedVenue || null,
         isFilmTv: filmTvFlag,
         reasoning: wpFlag ? wpReasoning : (parsed.reasoning || ''),
         verifiedBy: `llm:${result.provider}`,
@@ -791,6 +806,7 @@ Analyze the content and respond with ONLY valid JSON (no markdown fences):
   "wrongProduction": true/false,
   "isFilmTv": true/false,
   "truncated": true/false,
+  "reviewedVenue": "the theatre where the critic saw this performance, as named in the text, or null if the text does not say",
   "issues": ["list of issues found"],
   "reasoning": "1-2 sentence explanation"
 }
@@ -1100,6 +1116,7 @@ function isCvVerdictFromTruncatedFetch(cv, text, url) {
 }
 
 module.exports = {
+  buildVerificationPrompt,
   CV_WINDOW_CHARS,
   isCvVerdictFromPartialWindow,
   isCvVerdictFromTruncatedFetch,

@@ -445,6 +445,18 @@ Lessons, each fixed in code:
   model-path credits outside the London rows found 14 wrong (fixed) and 18
   directors to hand-check (BRO-4993). A random 100 of the 15,245 older
   untagged credits matched at about 98%, so those were left.
+- **Tour stops at this record's own venue were flagged wrong production.**
+  Many West End runs are a tour's stop (Curtains 2019 at Wyndham's, the NT
+  A Taste of Honey at Trafalgar Studios, Two Halves of Guinness at Park
+  Theatre). The content verifier lists "UK touring production" as a
+  wrong-production sign, so Haiku flagged real reviews of those runs and the
+  rebuild dropped them (2019-20 displayable stuck near 0.6). The verifier now
+  also reports the theatre the critic attended (reviewedVenue), and
+  lib/tour-stop-carveout.js clears a touring-based flag when that theatre is
+  this record's venue, not in another tour city, and the review is not dated
+  outside the run. Checked on 8 real files with Gemini and GPT-4o stand-ins:
+  venue reported 14/16, the 4 genuine regional-tour reviews stay flagged, 3
+  of the 4 false flags clear (A Taste of Honey's text never names the house).
 
 ## Side benefit (separate card)
 
