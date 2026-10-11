@@ -729,7 +729,11 @@ if os.environ.get('INFLIGHT_GATE_DISABLE', '0') != '1':
                             _trig[_did3]['done'] = _i3
                     elif _name3 == 'Agent':
                         _m3 = re.search(r'\bagentId:\s*([0-9a-z]{6,})', _res3)
-                        if _m3:
+                        # A foreground Agent's result also carries "agentId: X (use
+                        # SendMessage ...)" after its inline report, so only the async
+                        # launch receipt starts a live agent (BRO-5040: every
+                        # /second-opinion run read as in flight on a real transcript).
+                        if _m3 and re.search(r'Async agent launched|working in the background', _res3):
                             _agent_start[_m3.group(1)] = (_i3, 'Agent "%s"' % (_inp3.get('description') or '')[:50])
                     elif _name3 == 'SendMessage':
                         _to3 = str(_inp3.get('to') or '').strip()

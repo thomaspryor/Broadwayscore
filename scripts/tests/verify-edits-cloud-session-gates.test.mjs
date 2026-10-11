@@ -1195,6 +1195,9 @@ const AGENT_ID = 'a0ef4eb5c89b9f21b';
 const AGENT_BG = toolUse('Agent', { description: 'S4 agent A', prompt: 'do the thing', run_in_background: true },
   `Async agent launched successfully.\nagentId: ${AGENT_ID} (internal ID - do not mention to user.)\nThe agent is working in the background.`);
 const AGENT_FG = toolUse('Agent', { description: 'quick lookup', prompt: 'look' }, 'Here is the answer: 42.');
+// Real foreground result shape (2026-10-11 transcript): inline report, then the agentId line.
+const AGENT_FG_REAL = toolUse('Agent', { description: 'Second-opinion plan review', prompt: 'review', run_in_background: false },
+  '[Subagent hand-back] The report follows:\n  VERDICT: revise\nagentId: a81317ffd0f40b257 (use SendMessage with to: \'a81317ffd0f40b257\', summary: \'<5-10 word recap>\' to continue this agent)\n<usage>subagent_tokens: 60360</usage>');
 const AGENT_DONE = notice(`<task-notification>\n<task-id>${AGENT_ID}</task-id>\n<tool-use-id>toolu_x</tool-use-id>\n<status>completed</status>\n<summary>Agent "S4 agent A" finished</summary>\n</task-notification>`);
 const AGENT_FAILED = notice(`<task-notification>\n<task-id>${AGENT_ID}</task-id>\n<status>failed</status>\n<summary>Agent "S4 agent A" failed</summary>\n</task-notification>`);
 const AGENT_HANDBACK = notice(`Another Claude session sent a message:\n<agent-message from="${AGENT_ID}">\n[Subagent hand-back] The report follows:\n  done, nothing edited\n</agent-message>`);
@@ -1290,6 +1293,12 @@ test('INFLIGHT false-positive guard: a foreground Agent (report returned inline,
   const dir = makeTmpDir('inflight-agent-fg');
   const transcript = writeTranscript(dir, [AGENT_FG, LINEAR_CLOSEOUT_DONE]);
   assertAllowed(runHook(transcript, SAFE_MSG), 'foreground agents finish before the tool returns');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT false-positive guard: a real foreground Agent result that also prints its agentId is finished', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-agent-fg-real');
+  assertAllowed(runHook(writeTranscript(dir, [AGENT_FG_REAL, LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'the report came back inline');
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
