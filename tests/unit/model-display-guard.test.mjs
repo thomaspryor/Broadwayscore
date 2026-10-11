@@ -116,4 +116,6 @@ test('displayBasis: running shows use the pre-credit figure once running bars ar
   // Closed shows and records without the run keep the live figure.
   assert.deepEqual(displayBasis({ pct, exCreditPct: ex, running: false, runningEnabled: true }), { pct, creditBasis: null });
   assert.deepEqual(displayBasis({ pct, exCreditPct: null, running: true, runningEnabled: true }), { pct, creditBasis: null });
+  // A stale run without the counted field: pre-credit figure, basis not claimed.
+  assert.deepEqual(displayBasis({ pct, exCreditPct: ex, running: true, runningEnabled: true }), { pct: ex, creditBasis: null });
 });
