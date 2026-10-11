@@ -95,23 +95,31 @@ function summary(out) {
 async function alert(out) {
   const { routeAlert, resolveCondition } = require('./lib/owner-alert-router.js');
   let raised = 0;
+  let failed = 0;
   for (const showId of out.recentShows) {
     const key = `coverage-holes:${showId}`;
     const rows = needsPerson(out, showId);
-    if (!rows.length) { resolveCondition(key, { reason: 'no rejected-but-verified review and no unqueued out-of-band score' }); continue; }
-    raised++;
-    const lines = rows.map((r) => (r.cls === 'B'
-      ? `- rejected as not-a-review, verification says review: ${r.file}${r.urlOtherShow ? ' (stored URL looks like another show: repair the URL)' : ''}`
-      : `- published ${r.score} outside the critic's band ${r.band} (${r.rating}): ${r.file}`));
-    await routeAlert({
-      conditionKey: key,
-      title: `${showId}: ${rows.length} review(s) need a decision (rejected real review or score outside the critic's rating)`,
-      description: `${lines.join('\n')}\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.`,
-      severity: 'warning',
-      disposition: 'digest',
-      cooldownHours: 20,
-    });
+    // One show's router failure (Linear, Resend) must not skip the shows after it.
+    try {
+      if (!rows.length) { resolveCondition(key, { reason: 'no rejected-but-verified review and no unqueued out-of-band score' }); continue; }
+      const lines = rows.map((r) => (r.cls === 'B'
+        ? `- rejected as not-a-review, verification says review: ${r.file}${r.urlOtherShow ? ' (stored URL looks like another show: repair the URL)' : ''}`
+        : `- published ${r.score} outside the critic's band ${r.band} (${r.rating}): ${r.file}`));
+      await routeAlert({
+        conditionKey: key,
+        title: `${showId}: ${rows.length} review(s) need a decision (rejected real review or score outside the critic's rating)`,
+        description: `${lines.join('\n')}\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.`,
+        severity: 'warning',
+        disposition: 'digest',
+        cooldownHours: 20,
+      });
+      raised++;
+    } catch (err) {
+      failed++;
+      console.error(`[coverage-holes] alert for ${showId} failed: ${err.message}`);
+    }
   }
+  if (failed) process.exitCode = 1;
   return raised;
 }
 
@@ -131,5 +139,5 @@ if (require.main === module) {
     if (process.argv.includes('--alert')) console.log(`alert: ${await alert(out)} recently opened show(s) routed to the digest`);
     // D only counts when published: a blocked URL the rebuild already drops is hygiene, not a leak.
     if (process.argv.includes('--strict') && (out.A.length || out.B.length || out.C.length || out.D.some((r) => r.published) || out.unreadable)) process.exit(1);
-  })().catch((err) => { console.error(`[coverage-holes] ${err.stack || err.message}`); process.exitCode = 0; });
+  })().catch((err) => { console.error(`[coverage-holes] ${err.stack || err.message}`); process.exitCode = 1; });
 }
