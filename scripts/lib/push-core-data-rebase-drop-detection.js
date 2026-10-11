@@ -225,6 +225,9 @@ function reapplyLostChanges(base, ours, current, keyField = 'id') {
     if (setAt(current, l.path, l.ours, keyField)) reapplied.push(l);
     else failed.push(l);
   }
+  // A re-apply that cannot land because the parent row was deleted upstream is
+  // the remote's intent: report it as a conflict, never as a lost edit.
+  found.conflicts.push(...failed);
   const after = findLostChanges(base, ours, current, keyField);
   return {
     edits: found.edits,
@@ -232,7 +235,7 @@ function reapplyLostChanges(base, ours, current, keyField = 'id') {
     failed,
     conflicts: found.conflicts,
     unkeyable: found.unkeyable,
-    stillLost: after.lost.length + after.unkeyable.length,
+    stillLost: after.lost.filter((l) => !failed.includes(l) && !failed.some((f) => f.label === l.label)).length + after.unkeyable.length,
   };
 }
 

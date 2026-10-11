@@ -238,3 +238,13 @@ test('push-core-data/action.yml runs the drop check before the shows.json amend'
   assert.ok(check > rebase && check < amend, 'check must run after the rebase and before the shows.json amend');
   assert.match(yml, /\/tmp\/push-core-data-ours\/shows\.json/, 'the job intent copy must be captured');
 });
+
+test('edit to a show the remote deleted is a conflict, not stillLost (review finding)', async () => {
+  const { reapplyLostChanges } = await import('./push-core-data-rebase-drop-detection.js');
+  const base = { shows: [{ id: 'a', t: 1 }] };
+  const ours = { shows: [{ id: 'a', t: 1, synopsis: 'x' }] };
+  const current = { shows: [] };
+  const r = reapplyLostChanges(base, ours, current);
+  assert.equal(r.stillLost, 0);
+  assert.ok(r.conflicts.length >= 1);
+});
