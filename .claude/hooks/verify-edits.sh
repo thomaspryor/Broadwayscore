@@ -690,6 +690,10 @@ if os.environ.get('INFLIGHT_GATE_DISABLE', '0') != '1':
             for _i3, (_kind3, _payload3) in enumerate(events):
                 if _kind3 == 'tool':
                     _name3, _inp3, _tid3 = _payload3
+                    # Cloud exposes this server under both spellings (BRO-5040: this
+                    # gate matched only Claude_Code_Remote and missed every
+                    # mcp__claude-code-remote__* send_later / create_trigger).
+                    _name3 = (_name3 or '').replace('mcp__claude-code-remote__', 'mcp__Claude_Code_Remote__')
                     _inp3 = _inp3 if isinstance(_inp3, dict) else {}
                     _res3 = tool_results_by_id.get(_tid3, '') or ''
                     if _name3 in _TRIG_CREATE:
@@ -758,6 +762,85 @@ if os.environ.get('INFLIGHT_GATE_DISABLE', '0') != '1':
                 sys.stderr.write('   still in flight: ' + '; '.join(_live[:8])
                                  + ('; +%d more' % (len(_live) - 8) if len(_live) > 8 else '') + '\n')
                 _ve_block("INFLIGHT")
+    except Exception:
+        pass  # fail-open — never let this gate crash the rest of the script
+
+# ─── Open-work gate (OPENWORK, BRO-5040, 2026-10-11) ────────────────────────
+# Owner (2026-10-11, screenshot of a BRO-5007 session): sessions end on SAFE
+# TO EXIT after "I queued it for the automatic worker", but the board worker
+# takes one card per firing and its queue ran ~100-200 deep, so the work
+# waited weeks. Owner: "Trigger sessions yourself", and SAFE TO EXIT only when
+# all the work discussed is done. Two signals, both on a closing SAFE TO EXIT:
+#   - a session this one started (create_session) that no later get_session
+#     shows finished (status_bucket COMPLETED or REVIEW_READY) and that was
+#     not archived. A child does not die with this session (that is INFLIGHT's
+#     concern), but its work is not done until its result is checked. A
+#     FAILED or BLOCKED child is unfinished work, not a pass.
+#   - the closing message hands work to the worker queue ("the automatic /
+#     cloud / board worker", "the worker will pick it up", "queued it",
+#     START-NOW). A card that can honestly wait weeks passes with
+#     BACKLOG-OK: <why it can wait>.
+# Kill switch: OPENWORK_GATE_DISABLE=1. Bypass: NO-VERIFY: <reason>. Fail-open.
+# Hand-off phrasing only: naming the worker ("fixed the cloud worker's
+# picker") must not trip it (code-review, BRO-5040).
+_OW_WORKER = r'(?:automatic|cloud|board|card|hourly|background)[- ]workers?'
+_OPENWORK_HANDOFF_RE = re.compile(
+    r'\b(?:queued|handed|left|passed|sent|added|assigned|routed|gave)\b[^.\n]{0,60}?\b(?:for|to)\s+(?:the|an?)\s+' + _OW_WORKER
+    + r'|\b' + _OW_WORKER + r'\s+(?:will|should|can|would|is going to)\s+(?:pick|take|get|handle|grab|work|start|fix)'
+    + r'|\bworkers?\s+will\s+pick\s+(?:it|this|that|them)\s+up'
+    + r'|\b(?:filed|queued|added|made)\s+(?:it\s+as\s+)?an?\s+START-NOW\s+card',
+    re.IGNORECASE)
+if os.environ.get('OPENWORK_GATE_DISABLE', '0') != '1':
+    try:
+        _ow_stripped = re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL)
+        _ow_stripped = re.sub(r'`[^`\n]*`', '', _ow_stripped)
+        _ow_lines = [ln.strip() for ln in _ow_stripped.strip().splitlines() if ln.strip()]
+        _ow_divider_re = re.compile(r'^[\-=_*~─━│┃┌┐└┘•·\s]+$')
+        while _ow_lines and _ow_divider_re.match(_ow_lines[-1]):
+            _ow_lines.pop()
+        if (_ow_lines and re.match(r'^SAFE TO EXIT\b', _ow_lines[-1])
+                and 'NO-VERIFY:' not in (_last_msg or '') and not _ve_seen('OPENWORK')):
+            _ow_child = {}   # session id -> {'idx', 'label', 'done': idx, 'archived': bool}
+            _ow_sid_re = re.compile(r'\b((?:session|cse)_[0-9A-Za-z]{10,})\b')
+            # The new session's own "id" field first; a bare token only as fallback.
+            _ow_idfield_re = re.compile(r'"id"\s*:\s*"((?:session|cse)_[0-9A-Za-z]{10,})"')
+            _ow_bucket_re = re.compile(r'status_bucket\\?"?\s*[:=]\s*\\?"?(?:SESSION_STATUS_BUCKET_)?([A-Za-z_]+)', re.IGNORECASE)
+            for _i4, (_kind4, _payload4) in enumerate(events):
+                if _kind4 != 'tool':
+                    continue
+                _name4, _inp4, _tid4 = _payload4
+                _name4 = (_name4 or '').replace('mcp__claude-code-remote__', 'mcp__Claude_Code_Remote__')
+                _inp4 = _inp4 if isinstance(_inp4, dict) else {}
+                _res4 = tool_results_by_id.get(_tid4, '') or ''
+                if _name4 == 'mcp__Claude_Code_Remote__create_session':
+                    _m4 = _ow_idfield_re.search(_res4) or _ow_sid_re.search(_res4)
+                    if _m4:
+                        _ow_child[_m4.group(1)] = {'idx': _i4, 'done': -1, 'archived': False,
+                            'label': (_inp4.get('title') or re.sub(r'\s+', ' ', _inp4.get('prompt') or ''))[:60]}
+                elif _name4 in ('mcp__Claude_Code_Remote__get_session', 'mcp__Claude_Code_Remote__archive_session'):
+                    _sid4 = str(_inp4.get('session_id') or '')
+                    if _sid4 not in _ow_child:
+                        continue
+                    if _name4.endswith('archive_session'):
+                        if 'error' not in _res4[:200].lower():
+                            _ow_child[_sid4]['done'] = _i4
+                            _ow_child[_sid4]['archived'] = True
+                    elif not _ow_child[_sid4]['archived']:
+                        _bm = _ow_bucket_re.search(_res4)
+                        if not _bm:
+                            continue  # errored / unreadable result: keeps the last real reading
+                        _ow_child[_sid4]['done'] = _i4 if _bm.group(1).upper() in ('COMPLETED', 'REVIEW_READY') else -1
+            _ow_open = ['session %s "%s"' % (k, v['label']) for k, v in _ow_child.items() if v['done'] < v['idx']]
+            _ow_handoff = None
+            if not re.search(r'^\s*BACKLOG-OK:\s*\S', _ow_stripped, re.MULTILINE):
+                _hm = _OPENWORK_HANDOFF_RE.search(_ow_stripped)
+                _ow_handoff = _hm.group(0) if _hm else None
+            if _ow_open or _ow_handoff:
+                if _ow_open:
+                    sys.stderr.write('   started sessions not yet checked finished: ' + '; '.join(_ow_open[:6]) + '\n')
+                if _ow_handoff:
+                    sys.stderr.write('   work handed to the queue: "%s"\n' % _ow_handoff)
+                _ve_block("OPENWORK")
     except Exception:
         pass  # fail-open — never let this gate crash the rest of the script
 
@@ -1982,6 +2065,11 @@ fi
 
 if [[ "$result" == "INFLIGHT" ]]; then
   echo "🛑 BLOCKED: claiming SAFE TO EXIT while this session still has work in flight (listed above). SAFE TO EXIT tells the owner this session can be closed or killed right now; a background agent or a Routine scheduled to wake this session dies with it. Collect the agent's hand-back (or TaskStop it) and delete_trigger any check-in you no longer need, or end with: NOT SAFE TO EXIT — <what is still running and what happens when it finishes>. Bypass: NO-VERIFY: <reason>." >&2
+  exit 2
+fi
+
+if [[ "$result" == "OPENWORK" ]]; then
+  echo "🛑 BLOCKED: SAFE TO EXIT means every piece of work discussed in this session is finished and verified (BRO-5040, owner 2026-10-11). Listed above is work that is not: a session you started that you have not seen finish, or work handed to the board worker, whose queue is weeks deep. Important work gets its own session now: start it with create_session (see .claude/CLOUD.md 'Starting a worker session'), check it with get_session, and verify its landing yourself before SAFE TO EXIT. Until then end with: NOT SAFE TO EXIT — <which session is doing what, and how you will check it>. A card that can honestly wait weeks: add BACKLOG-OK: <why it can wait>. Bypass: NO-VERIFY: <reason>." >&2
   exit 2
 fi
 

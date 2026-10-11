@@ -121,6 +121,10 @@ if [ -n "$REPO_ROOT" ] && [ -f "$REPO_ROOT/CLAUDE.md" ]; then
     echo "🔶 WORKTREE REMINDER: this session is starting in the MAIN repo, not a worktree."
     echo "   If you'll be editing any tracked code file — src/, scripts/, .github/workflows/,"
     echo "   next.config.js, tsconfig.json, package.json — call EnterWorktree FIRST."
+    if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ]; then
+      echo "   Cloud: make it with Bash instead, EnterWorktree can wait on an approval nobody"
+      echo "   answers (BRO-5040): git worktree add -b <branch> .claude/worktrees/<name> origin/main"
+    fi
     echo "   Local git hooks and parallel CI commits silently revert uncommitted edits."
     echo "   A parallel session lost page.tsx/index.ts this way on 2026-04-11."
     echo "   Rule: memory/feedback_worktree_code_changes.md"

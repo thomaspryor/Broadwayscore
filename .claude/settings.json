@@ -59,7 +59,7 @@
         ]
       },
       {
-        "matcher": "mcp__(Claude_Code_Remote|claude-code-remote)__(send_later|create_trigger|add_repo|list_sessions|create_session)",
+        "matcher": "mcp__(Claude_Code_Remote|claude-code-remote)__(send_later|create_trigger|add_repo|list_sessions)",
         "hooks": [
           {
             "type": "command",

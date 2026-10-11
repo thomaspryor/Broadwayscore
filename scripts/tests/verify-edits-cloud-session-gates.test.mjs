@@ -1740,3 +1740,110 @@ test('loop guard: an unwritable ledger falls back to letting the Stop through (n
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
+
+// ─── Open-work gate (OPENWORK, BRO-5040, 2026-10-11) ───────────────────────
+// Owner: sessions closed on SAFE TO EXIT after handing work to the board
+// worker (queue weeks deep) or while a session they started was still
+// working. Result shapes below are copied from real get_session output
+// (status_bucket "SESSION_STATUS_BUCKET_WORKING", 2026-10-11).
+const CHILD_ID = 'session_01Qf9FhcvFq7B4CnFGDoNvnn';
+const childStatus = (bucket) => `{"ccr":{"id":"${CHILD_ID}","title":"BRO-5033: fix","session_status":"SESSION_STATUS_RUNNING","status_bucket":"SESSION_STATUS_BUCKET_${bucket}"}}`;
+const CREATE_CHILD = toolUse('mcp__claude-code-remote__create_session', { title: 'BRO-5033: fix workflow checks', prompt: 'Work BRO-5033 to a landed fix' },
+  `{"ccr":{"id":"${CHILD_ID}","title":"BRO-5033: fix workflow checks","session_status":"SESSION_STATUS_RUNNING"}}`);
+const GET_CHILD = (bucket) => toolUse('mcp__claude-code-remote__get_session', { session_id: CHILD_ID }, childStatus(bucket));
+const ARCHIVE_CHILD = toolUse('mcp__claude-code-remote__archive_session', { session_id: CHILD_ID }, '{"ccr":{"id":"' + CHILD_ID + '","session_status":"SESSION_STATUS_ARCHIVED"}}');
+
+function assertOpenwork(r, message) {
+  assertBlocked(r, message);
+  assert.match(r.stderr, /every piece of work discussed/i, `expected the OPENWORK message, got: ${r.stderr.slice(0, 400)}`);
+}
+
+test('OPENWORK: started a session, never checked it, SAFE TO EXIT → BLOCKED and names the session', skipNoRepoHook, () => {
+  const dir = makeTmpDir('openwork-child');
+  const r = runHook(writeTranscript(dir, [CREATE_CHILD, LINEAR_CLOSEOUT_DONE]), SAFE_MSG);
+  assertOpenwork(r, 'a started session is unfinished work');
+  assert.match(r.stderr, new RegExp(CHILD_ID));
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('OPENWORK: child last seen WORKING, BLOCKED or FAILED → BLOCKED; COMPLETED, REVIEW_READY or archived → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('openwork-child-status');
+  for (const b of ['WORKING', 'BLOCKED', 'FAILED']) {
+    assertOpenwork(runHook(writeTranscript(dir, [CREATE_CHILD, GET_CHILD(b), LINEAR_CLOSEOUT_DONE]), SAFE_MSG), `${b} is not finished`);
+  }
+  for (const b of ['COMPLETED', 'REVIEW_READY']) {
+    assertAllowed(runHook(writeTranscript(dir, [CREATE_CHILD, GET_CHILD(b), LINEAR_CLOSEOUT_DONE]), SAFE_MSG), `${b} is finished`);
+  }
+  assertAllowed(runHook(writeTranscript(dir, [CREATE_CHILD, ARCHIVE_CHILD, LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'archived ends it');
+  // The latest check wins: finished, then seen working again after a send_message.
+  assertOpenwork(runHook(writeTranscript(dir, [CREATE_CHILD, GET_CHILD('COMPLETED'), GET_CHILD('WORKING'), LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'latest status wins');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('OPENWORK: a running child with NOT SAFE TO EXIT → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('openwork-child-notsafe');
+  assertAllowed(runHook(writeTranscript(dir, [CREATE_CHILD, GET_CHILD('WORKING')]),
+    'Started the fix in its own session.\n\nNOT SAFE TO EXIT — the BRO-5033 session is still working; I check it before closing.'), 'the honest line');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('OPENWORK: handing work to the worker queue + SAFE TO EXIT → BLOCKED; BACKLOG-OK passes; NOT SAFE passes', skipNoRepoHook, () => {
+  const dir = makeTmpDir('openwork-handoff');
+  const t = writeTranscript(dir, [LINEAR_CLOSEOUT_DONE]);
+  for (const line of [
+    'A card for this was already open, so I queued it for an automatic worker.',
+    'The cloud worker will pick it up on its own.',
+    'I filed it as a START-NOW card.',
+    'The board worker should take it within a day.',
+    'Left the rest to the cloud worker.',
+  ]) {
+    assertOpenwork(runHook(t, `${line}\n\nSAFE TO EXIT`), line);
+  }
+  assertAllowed(runHook(t, 'Filed a low-priority card for the typo; the board worker can take it.\nBACKLOG-OK: cosmetic typo on an archive page, fine to wait weeks\n\nSAFE TO EXIT'), 'BACKLOG-OK is the escape for work that can wait');
+  assertAllowed(runHook(t, 'The automatic worker has the card.\n\nNOT SAFE TO EXIT — the fix is not done yet.'), 'NOT SAFE TO EXIT is honest');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('OPENWORK false-positive guards: ordinary closings, and phrases inside code', skipNoRepoHook, () => {
+  const dir = makeTmpDir('openwork-fp');
+  const t = writeTranscript(dir, [LINEAR_CLOSEOUT_DONE]);
+  for (const msg of [
+    'Fixed and landed; the site picks it up on the next rebuild.\n\nSAFE TO EXIT',
+    'The poller will pick up reviews tonight; nothing for you to do.\n\nSAFE TO EXIT',
+    'Updated `docs/cloud-routines/board-workers.md` wording.\n\nSAFE TO EXIT',
+    'Ran:\n```\nnode scripts/cloud-worker-pick.js  # START-NOW cards first\n```\nAll landed.\n\nSAFE TO EXIT',
+    "Fixed the cloud worker's START-NOW ordering; landed and verified on main.\n\nSAFE TO EXIT",
+    'I did not hand this to the board worker; it is landed and verified.\n\nSAFE TO EXIT',
+    'Explained the escape: add `BACKLOG-OK: <why>` only for real backlog. Everything landed.\n\nSAFE TO EXIT',
+  ]) {
+    assertAllowed(runHook(t, msg), msg.slice(0, 60));
+  }
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('OPENWORK: an errored get_session keeps the last real reading; archive is final', skipNoRepoHook, () => {
+  const dir = makeTmpDir('openwork-child-errors');
+  const err = toolUse('mcp__claude-code-remote__get_session', { session_id: CHILD_ID }, 'Error: 429 rate limited');
+  assertAllowed(runHook(writeTranscript(dir, [CREATE_CHILD, GET_CHILD('COMPLETED'), err, LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'a failed check does not reopen a finished child');
+  assertAllowed(runHook(writeTranscript(dir, [CREATE_CHILD, ARCHIVE_CHILD, GET_CHILD('WORKING'), LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'archived stays closed');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('OPENWORK: child id comes from the result\'s own "id" field, not another session token', skipNoRepoHook, () => {
+  const dir = makeTmpDir('openwork-child-id');
+  const create = toolUse('mcp__claude-code-remote__create_session', { title: 'x', prompt: 'y' },
+    `{"ccr":{"parent_session_id":"session_01PARENTPARENTPARENT","id":"${CHILD_ID}"}}`);
+  assertAllowed(runHook(writeTranscript(dir, [create, GET_CHILD('COMPLETED'), LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'keyed on the new id');
+  const plain = toolUse('mcp__claude-code-remote__get_session', { session_id: CHILD_ID }, 'status_bucket: completed');
+  assertAllowed(runHook(writeTranscript(dir, [CREATE_CHILD, plain, LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'a plain-text rendering is read too');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT matches the lowercase server spelling too (BRO-5040)', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-lowercase');
+  const lower = toolUse('mcp__claude-code-remote__send_later', { delay_minutes: 60, message: 'check' }, `{"fire_at":"${FAR}","trigger_id":"trig_01LOWER"}`);
+  assertInflight(runHook(writeTranscript(dir, [lower, LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'mcp__claude-code-remote__send_later is a live check-in');
+  const del = toolUse('mcp__claude-code-remote__delete_trigger', { trigger_id: 'trig_01LOWER' }, '{"trigger":{"id":"trig_01LOWER"}}');
+  assertAllowed(runHook(writeTranscript(dir, [lower, del, LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'and its delete ends it');
+  fs.rmSync(dir, { recursive: true, force: true });
+});

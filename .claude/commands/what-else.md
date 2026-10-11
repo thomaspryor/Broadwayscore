@@ -151,7 +151,7 @@ not file, so the restraint is visible rather than looking like an omission.
 ```bash
 node scripts/linear-next.js --id BRO-N            # launch a supervised worker NOW (`--dispatch` alone does not launch)
 ```
-Cloud sessions can't launch local workers and `create_session` is denied (it prompts the owner): add a `START-NOW:` line to the card's notes and the hourly cloud worker takes it first (.claude/CLOUD.md, Starting a worker session).
+Cloud sessions can't launch local workers: start the card in its own session with `create_session` and follow it to a verified landing (.claude/CLOUD.md, Starting a worker session). The board worker's queue is weeks deep, so a queued card is not a dispatch. Only a session with no human in it (routine, worker) files a `START-NOW:` card instead.
 Soft fan-out cap: more than ~8 auto-dispatches in one session → pause and confirm with the owner (each workspace is a paid session).
 Verify the launch output shows a workspace running, then report `DISPATCHED: workspace <name> — <card title>` as plain prose. Cards needing an owner decision stay undispated — say which decision blocks them. P2s stay backlog unless trivially dispatchable and clearly worth it.
 
