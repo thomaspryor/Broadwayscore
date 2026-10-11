@@ -1,0 +1,179 @@
+{
+  "issueNumber": "bro-5065",
+  "planId": "fbc75bd2-faf6-405e-8404-a4802f10bd62",
+  "status": "pending",
+  "createdAt": "2026-10-11T16:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Flag 10 submit-review-form files whose URL is a show listing/catalog page (Show Score, Showify, Recast, BroadwayWorld /shows/, localwineevents) as isNonReview. Found by sweeping review-texts with submissionNonReviewReason, the new shared submission decision. None is in reviews.json today.",
+    "steps": [
+      "Set isNonReview true and isNonReviewReason on each file"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "cat-cohen-broad-strokes-off-broadway-2026/show-score--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Submitted URL is a show catalog/listing page (show-listing-page), not a review (BRO-5065 sweep)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cat-cohen-broad-strokes-off-broadway-2026/show-score--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "show-listing-page: listing page submitted through the review form (BRO-5065)",
+        "description": "Reason for the flag above"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "disruption-off-broadway-2026/show-score--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Submitted URL is a show catalog/listing page (show-listing-page), not a review (BRO-5065 sweep)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "disruption-off-broadway-2026/show-score--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "show-listing-page: listing page submitted through the review form (BRO-5065)",
+        "description": "Reason for the flag above"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "how-shakespeare-saved-my-life-off-broadway-2026/showify--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Submitted URL is a show listing on a ticket/listing aggregator (census-junk-host), not a review (BRO-5065 sweep)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "how-shakespeare-saved-my-life-off-broadway-2026/showify--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "census-junk-host: listing page submitted through the review form (BRO-5065)",
+        "description": "Reason for the flag above"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hungry-women-off-broadway-2026/show-score--unknown.json",
+        "field": "isNonReview",
+        "oldValue": false,
+        "newValue": true,
+        "description": "Submitted URL is a show catalog/listing page (show-listing-page), not a review (BRO-5065 sweep)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hungry-women-off-broadway-2026/show-score--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "show-listing-page: listing page submitted through the review form (BRO-5065)",
+        "description": "Reason for the flag above"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "isla-off-broadway-2026/show-score--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Submitted URL is a show catalog/listing page (show-listing-page), not a review (BRO-5065 sweep)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "isla-off-broadway-2026/show-score--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "show-listing-page: listing page submitted through the review form (BRO-5065)",
+        "description": "Reason for the flag above"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "moonrise-a-theatrical-dinner-experience-at-paradise-club-off-broadway-2026/localwineevents--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Submitted URL is a show listing on a ticket/listing aggregator (census-junk-host), not a review (BRO-5065 sweep)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "moonrise-a-theatrical-dinner-experience-at-paradise-club-off-broadway-2026/localwineevents--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "census-junk-host: listing page submitted through the review form (BRO-5065)",
+        "description": "Reason for the flag above"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "othello-off-broadway-2026/broadwayworld--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Submitted URL is a show catalog/listing page (show-listing-page), not a review (BRO-5065 sweep)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "othello-off-broadway-2026/broadwayworld--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "show-listing-page: listing page submitted through the review form (BRO-5065)",
+        "description": "Reason for the flag above"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "red-riding-hood-off-broadway-2026/showify--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Submitted URL is a show listing on a ticket/listing aggregator (census-junk-host), not a review (BRO-5065 sweep)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "red-riding-hood-off-broadway-2026/showify--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "census-junk-host: listing page submitted through the review form (BRO-5065)",
+        "description": "Reason for the flag above"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rosie-odonnell-common-knowledge-off-broadway-2026/show-score--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Submitted URL is a show catalog/listing page (show-listing-page), not a review (BRO-5065 sweep)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rosie-odonnell-common-knowledge-off-broadway-2026/show-score--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "show-listing-page: listing page submitted through the review form (BRO-5065)",
+        "description": "Reason for the flag above"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Submitted URL is a show listing on a ticket/listing aggregator (census-junk-host), not a review (BRO-5065 sweep)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "census-junk-host: listing page submitted through the review form (BRO-5065)",
+        "description": "Reason for the flag above"
+      }
+    ]
+  }
+}

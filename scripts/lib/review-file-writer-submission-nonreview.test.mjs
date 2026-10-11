@@ -65,3 +65,56 @@ test('escape hatch and non-submission sources are unaffected', () => {
     assert.doesNotMatch(String(r2.reason || ''), /submitted-non-review-url/);
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
+
+// BRO-5065: a Theatricalia production page (the play's description) was filed
+// as a review for night-of-january-16th-off-broadway-2026. Production
+// databases and encyclopedias are refused at write AND at validation, through
+// the one shared decision both call.
+const { submissionNonReviewReason } = require('./non-review-url-patterns.js');
+const DATABASE_PAGES = [
+  ['theatricalia', 'https://theatricalia.com/play/39r/night-of-january-16th/production/1b3b'],
+  ['ibdb', 'https://www.ibdb.com/broadway-production/night-of-january-16th-11593'],
+  ['lortel', 'https://www.lortel.org/Archives/Production/6012'],
+  ['playbill', 'https://playbill.com/production/night-of-january-16th-theatre-row-2026'],
+  ['wikipedia', 'https://en.wikipedia.org/wiki/Night_of_January_16th'],
+];
+
+test('BRO-5065: production-database and encyclopedia pages are refused at write', () => {
+  const dir = tmp();
+  try {
+    for (const [outlet, url] of DATABASE_PAGES) {
+      assert.ok(submissionNonReviewReason(url), `shared decision refuses ${url}`);
+      const r = submit(dir, outlet, url);
+      assert.equal(r.guardRefused, true, url);
+      assert.match(r.reason, /^submitted-non-review-url: (production-database-listing|encyclopedia-page)$/, url);
+    }
+    assert.equal(fs.existsSync(path.join(dir, SHOW)), false, 'nothing written');
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('BRO-5065: Playbill articles and the exempt review hosts still pass the shared decision', () => {
+  for (const url of [
+    'https://playbill.com/article/review-night-of-january-16th-at-theatre-row',
+    'https://vocal.media/critique/bathroom-attendant',
+    'https://www.newyorkcitytheatre.com/reviews/22099',
+    'https://blogcritics.org/theater-review-nyc-the-real-ivanov-by-anton-chekhov/',
+    'https://susangranger.com/?p=10339',
+  ]) assert.equal(submissionNonReviewReason(url), null, url);
+  assert.equal(submissionNonReviewReason('https://www.newyorkcitytheatre.com/news/reviews/x'), 'ticketing-reseller');
+  assert.equal(submissionNonReviewReason('not a url'), null);
+  // Bare hosts are left to the read side (hash-routed SPAs, root-post blogs).
+  assert.equal(submissionNonReviewReason('https://example.com/#/review/1'), null);
+  assert.equal(submissionNonReviewReason('https://example.com/'), null);
+  for (const u of ['https://playbill.com/shows/broadway', 'https://playbill.com/venues', 'https://playbill.com/person/ayn-rand']) {
+    assert.equal(submissionNonReviewReason(u), 'production-database-listing', u);
+  }
+});
+
+// The scoring-time / validator-side list (domain-filters.js) covers the same
+// database hosts, so a row from any source is excluded, not only submissions.
+const { isBlockedReviewUrl } = require('./domain-filters.js');
+test('BRO-5065: isBlockedReviewUrl covers every production-database page too', () => {
+  for (const [, url] of DATABASE_PAGES) assert.equal(isBlockedReviewUrl(url), true, url);
+  assert.equal(isBlockedReviewUrl('https://www.lortel.org/news/2026-nominees'), false);
+  assert.equal(isBlockedReviewUrl('https://playbill.com/article/review-night-of-january-16th'), false);
+});

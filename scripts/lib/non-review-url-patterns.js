@@ -241,6 +241,18 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   { host: /(^|\.)officialtheatre\.com$/, reason: 'ticketing-listing' },
   { host: /(^|\.)kxtickets\.com$/, reason: 'ticketing-listing' },
   { host: /(^|\.)westend\.com$/, reason: 'ticketing-listing' },
+  // BRO-5065: production databases and encyclopedias. A Theatricalia
+  // /play/<id>/<slug>/production/<id> page (the play's description) was
+  // ingested as a submit-review-form "review" for
+  // night-of-january-16th-off-broadway-2026, its byline later read as the
+  // playwright. None of these hosts publishes criticism; measured 0 hits
+  // across the 23,068 scored review URLs in reviews.json (2026-10-11).
+  // Playbill is path-scoped: its /article/ pages are real content.
+  { host: /(^|\.)theatricalia\.com$/, reason: 'production-database-listing' },
+  { host: /(^|\.)ibdb\.com$/, reason: 'production-database-listing' },
+  { host: /(^|\.)lortel\.org$/, path: /^\/archives\//i, reason: 'production-database-listing' },
+  { host: /(^|\.)playbill\.com$/, path: /^\/(productions?|person|people|venues?|shows?)(\/|$)/i, reason: 'production-database-listing' },
+  { host: /(^|\.)(wikipedia|wikidata)\.org$/, reason: 'encyclopedia-page' },
   // Producer's own what's-on page (mischiefcomedy.com listed as a Comedy About
   // Spies census "missing review"). Host-wide: a producer site never reviews
   // its own show.
@@ -587,7 +599,46 @@ function classifyReviewUrl(url) {
   return { ok: true, reason: null };
 }
 
+
+/**
+ * Why a URL submitted through the review form (source submit-review-form) is
+ * not a review, or null. Shared by the write-path guard in
+ * review-file-writer.js and validate-review-submission.js's deterministic
+ * pre-filter (BRO-5065), so every page the writer refuses is also rejected,
+ * with a reply, at validation.
+ *
+ * Deliberately narrow: the CURATED named patterns, the path-scoped
+ * listing-page shapes (excluded at scoring time whatever the source, so
+ * refusing them at write loses nothing) and ticket resellers. The validator
+ * also runs domain-filters.js's isBlockedReviewUrl first, which is broader. classifyReviewUrl's broader
+ * non-review-host / non-review-path rules would refuse real scored reviews
+ * (wbur.org /news/ reviews, blogcritics.org, theaterscene.org).
+ *
+ * Exemptions: ugc-platform (a vocal.media "critique" by a named critic was a
+ * real review, scored 64), and newyorkcitytheatre.com /reviews/NNNN, which
+ * are single reviews on a ticket-selling host (burn-this-2019 Nicola Quinn);
+ * its /news/reviews/ roundups and every other path stay refused.
+ *
+ * @param {string} url
+ * @returns {string|null}
+ */
+function submissionNonReviewReason(url) {
+  if (typeof url !== 'string' || !url) return null;
+  let u;
+  try { u = new URL(url); } catch { return null; }
+  if (/(^|\.)newyorkcitytheatre\.com$/i.test(u.hostname) && /^\/reviews\/\d+/.test(u.pathname)) return null;
+  const named = namedNonReviewReason(url);
+  if (named && named !== 'ugc-platform') return named;
+  // Listing shapes only. A bare host ('/' path) is left to the read side, as
+  // the writer's BRO-4596 guard does: a hash-routed SPA review or a blog
+  // whose only post sits at the root would otherwise be refused outright.
+  const listing = listingPageUrlReason(url);
+  if (listing && listing !== 'bare-host') return listing;
+  return classifyReviewUrl(url).reason === 'ticketing-reseller' ? 'ticketing-reseller' : null;
+}
+
 module.exports = {
+  submissionNonReviewReason,
   NON_REVIEW_HOST_PATTERNS,
   ALLOWED_ORG_HOSTS,
   NON_REVIEW_PATH_PATTERNS,
