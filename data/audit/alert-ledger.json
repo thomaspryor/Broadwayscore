@@ -150,7 +150,7 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -162,7 +162,8 @@
       "notifyCount": 128,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-11T05:07:52.440Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -13466,7 +13467,7 @@
       "linearIdentifier": "BRO-5023"
     },
     "test-yml:red:Unit Tests:e6dd36bc": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"ShowTrustLines: a parent whose tours have no score yet says reviews are coming in\"",
       "firstSeen": "2026-10-11T03:06:31.623Z",
@@ -13477,7 +13478,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-5025",
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-10-11T05:07:52.235Z",
+      "resolveReason": "job-green"
     },
     "land:land/bro-4885-outlet-tier-chip": {
       "status": "resolved",
