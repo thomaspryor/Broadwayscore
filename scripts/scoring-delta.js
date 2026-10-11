@@ -1515,6 +1515,9 @@ function main() {
         && (baseline.isUnverifiableWebSearchRow?.toString() || '') === (working.isUnverifiableWebSearchRow?.toString() || '')
         // BRO-3126: preview first-look piece (patterns are inside the function body, so toString() covers them).
         && (baseline.isPreviewFirstLookPiece?.toString() || '') === (working.isPreviewFirstLookPiece?.toString() || '')
+        // cvLowButStrong carve-out (BRO-3512): the predicate and its marker regexes.
+        && (baseline.hasStrongDifferentShowSignal?.toString() || '') === (working.hasStrongDifferentShowSignal?.toString() || '')
+        && JSON.stringify((baseline.STRONG_DIFFERENT_SHOW_MARKERS || []).map(String)) === JSON.stringify((working.STRONG_DIFFERENT_SHOW_MARKERS || []).map(String))
         // BRO-3135 body-less aggregator-score gate: the predicate AND the two
         // helpers it delegates to (toString() of a caller misses callee edits).
         && (baseline.isBodylessAggregatorScoreUncorroborated?.toString() || '') === (working.isBodylessAggregatorScoreUncorroborated?.toString() || '')
