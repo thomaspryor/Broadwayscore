@@ -45,10 +45,12 @@ function runWindow(show, opts = {}) {
   const runEnd = closingDate || now;
   let totalRunWeeks = runStart ? Math.round((runEnd - runStart) / WEEK_MS) : 0;
 
+  // The dark weeks inside the counted window only: an open show counted as of
+  // a date before the shutdown (the timing backtest's as-of runs) has none.
   let darkWeeks = 0;
-  if (runStart && runStart < COVID_DARK_END && (!closingDate || closingDate > COVID_DARK_START)) {
+  if (runStart && runStart < COVID_DARK_END && runEnd > COVID_DARK_START) {
     const darkStart = runStart < COVID_DARK_START ? COVID_DARK_START : runStart;
-    const darkEnd = (!closingDate || closingDate > COVID_DARK_END) ? COVID_DARK_END : closingDate;
+    const darkEnd = runEnd > COVID_DARK_END ? COVID_DARK_END : runEnd;
     darkWeeks = Math.round((darkEnd - darkStart) / WEEK_MS);
     totalRunWeeks -= darkWeeks;
   }

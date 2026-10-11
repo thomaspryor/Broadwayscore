@@ -1,0 +1,73 @@
+{
+  "issueNumber": "bro-5091",
+  "planId": "7c309162-e7bd-45d8-91e2-ac1d1e3ccc84",
+  "status": "pending",
+  "createdAt": "2026-10-11T22:23:14.298Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Moulin Rouge: add the reported share of capitalization returned (70% as of May 31, 2022, from NY Attorney General filings) as a dated, cited range; Merrily We Roll Along: cite its weekly nut (about $950,000, Broadway Journal)",
+    "steps": [
+      "Set estimatedRecoupmentPct [65,75], its source and date on the Moulin Rouge record",
+      "Add the Broadway Journal citation and a trade-reported methodology to Merrily's existing $950,000 weekly running cost"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "moulin-rouge",
+        "showId": "moulin-rouge",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": null,
+        "newValue": [
+          65,
+          75
+        ],
+        "description": "moulin-rouge: AG-filing \"% returned\" figure reported by Broadway Journal, quote checked on the page (BRO-5091)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "moulin-rouge",
+        "showId": "moulin-rouge",
+        "field": "estimatedRecoupmentSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (Jun 11, 2022): \"The Moulin Rouge! Broadway production company, MRB Musical LLC, returned 70 percent of its $28 million capitalization to investors as of May 31, according to papers filed with the office of New York Attorney General Letitia James.\" https://broadwayjournal.com/moulin-rouge-strange-loop-test-tony-tradition-of-goosing-grosses",
+        "description": "moulin-rouge: AG-filing \"% returned\" figure reported by Broadway Journal, quote checked on the page (BRO-5091)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "moulin-rouge",
+        "showId": "moulin-rouge",
+        "field": "estimatedRecoupmentDate",
+        "oldValue": null,
+        "newValue": "2022-05-31",
+        "description": "moulin-rouge: AG-filing \"% returned\" figure reported by Broadway Journal, quote checked on the page (BRO-5091)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "merrily-we-roll-along",
+        "showId": "merrily-we-roll-along",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (Nov 6, 2023): \"Merrily We Roll Along -- produced by ATG subsidiary Sonia Friedman Productions -- has a weekly nut of about $950,000, according to a production estimate.\" All-in basis unstated. https://www.broadwayjournal.com/p/inside-broadways-1-million-nut-cases",
+        "description": "merrily: weekly nut cited from a production estimate reported by Broadway Journal, quote checked on the page (BRO-5091)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "merrily-we-roll-along",
+        "showId": "merrily-we-roll-along",
+        "field": "costMethodology",
+        "oldValue": "industry-estimate",
+        "newValue": "trade-reported",
+        "description": "merrily: weekly nut cited from a production estimate reported by Broadway Journal, quote checked on the page (BRO-5091)"
+      }
+    ]
+  }
+}

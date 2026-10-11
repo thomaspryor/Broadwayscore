@@ -363,10 +363,18 @@ function costPathFactor(weekNumber, path) {
  *               the weekly cost (theater and royalty steps on overages):
  *               OVERAGE_RATE = (0.235 - 0.11) x 1.5 / 0.5
  *   varBandMusicals  varBand for musicals only (his posts are mostly musicals)
+ *   varOverageMusicals  varOverage for musicals only (BRO-5091)
+ *   varBandMusicalsRamp varBand for musicals only, phased in from week 26
+ *               to week 78 (VAR_RAMP, BRO-5091): the timing test's fast
+ *               recoupers (under ~45 weeks) carry no such gap, the long-run
+ *               hits a steady $110-160K a week the live model leaves out.
+ *               Windows 0-52 and 30-60 pushed Hairspray, Jersey Boys,
+ *               Kinky Boots and Merrily out of band; 39-91 and 52-104 did less.
  * Returns the extra variable cost in dollars (0 when neither is set).
  */
 const VAR_BAND = { fromRatio: 0.9, toRatio: 1.5, low: 0.12, high: 0.235 };
 const OVERAGE_RATE = 0.375;
+const VAR_RAMP = { from: 26, to: 78 };
 function extraVariableCost(adjGross, nut, liveDeductions, path) {
   if (!path || !(nut > 0) || !(adjGross > 0)) return 0;
   if (path.varBand) {
@@ -428,8 +436,11 @@ function calcWeeklyProfit(weeklyGross, weeklyNut, baseVarRate, isPostRecoup, wee
   // The 0.88 floor already captures cast replacement savings and optimization.
 
   // Shadow variable-cost shape against this week's running cost (BRO-5073).
-  const bandPath = costPath && costPath.varBandMusicals && !/^play/.test(showCategory || '') ? { ...costPath, varBand: true } : costPath;
-  const extraVar = costPath ? extraVariableCost(adjGross, fixedCosts, variableCosts + theaterCost, bandPath) * mult.variableCost : 0;
+  const musical = !/^play/.test(showCategory || '');
+  const bandPath = costPath && musical && (costPath.varBandMusicals || costPath.varBandMusicalsRamp) ? { ...costPath, varBand: true }
+    : costPath && musical && costPath.varOverageMusicals ? { ...costPath, varOverage: true } : costPath;
+  const ramp = costPath && costPath.varBandMusicalsRamp ? Math.min(1, Math.max(0, weekNumber - VAR_RAMP.from) / (VAR_RAMP.to - VAR_RAMP.from)) : 1;
+  const extraVar = costPath ? extraVariableCost(adjGross, fixedCosts, variableCosts + theaterCost, bandPath) * mult.variableCost * ramp : 0;
 
   // Preview cost premium
   if (isPreview) {
@@ -533,8 +544,8 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   const split = opts.costSplit ? splitCosts(commercial, category, weeklyNut, getBaseVariableRate(category), THEATER_DEAL.pctOfGross) : null;
   const baseVarRate = split ? split.varRate : getBaseVariableRate(category);
   const runNut = split ? split.fixedNut : weeklyNut;
-  const costPath = opts.stepSmall || opts.stepLate || opts.costGrowth || opts.varBand || opts.varOverage || opts.varBandMusicals
-    ? { stepSmall: !!opts.stepSmall, stepLate: !!opts.stepLate, costGrowth: !!opts.costGrowth, varBand: !!opts.varBand, varOverage: !!opts.varOverage, varBandMusicals: !!opts.varBandMusicals } : null; // shadow, BRO-5073
+  const costPath = opts.stepSmall || opts.stepLate || opts.costGrowth || opts.varBand || opts.varOverage || opts.varBandMusicals || opts.varOverageMusicals || opts.varBandMusicalsRamp
+    ? { stepSmall: !!opts.stepSmall, stepLate: !!opts.stepLate, costGrowth: !!opts.costGrowth, varBand: !!opts.varBand, varOverage: !!opts.varOverage, varBandMusicals: !!opts.varBandMusicals, varOverageMusicals: !!opts.varOverageMusicals, varBandMusicalsRamp: !!opts.varBandMusicalsRamp } : null; // shadow, BRO-5073/5091
 
   // --- Star deal ---
   const slug = show.slug || show.id;
