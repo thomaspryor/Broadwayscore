@@ -18,6 +18,7 @@ import {
   getNonprofitProducerLine,
   hasCommercialCard,
   lossBasisCaveat,
+  publicNotesText,
 } from '@/lib/commercial-display';
 import { formatCapitalization } from '@/lib/biz-format';
 import { isRunningStatus } from '@/lib/commercial-metrics';
@@ -157,7 +158,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
   // publicSourceText drops. Estimated weekly costs read "Estimate".
   const capSourceText = publicSourceText(commercial.capitalizationSource);
   const weeklyCostSourceText = commercial.weeklyRunningCost ? getWeeklyCostSourceLabel(commercial) : null;
-  const notesText = publicSourceText(commercial.notes);
+  const notesText = publicNotesText(commercial);
   const hasDetails = !!(notesText || capSourceText || weeklyCostSourceText);
 
   // Trend only for running, unrecouped shows still waiting on an outcome.

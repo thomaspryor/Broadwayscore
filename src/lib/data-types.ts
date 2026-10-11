@@ -463,7 +463,7 @@ export interface ShowCommercial {
   recoupedSource?: string | null;
   /** Owner-reviewed editorial keep (Q3 policy) — survives CI merges. */
   humanReviewedDesignation?: boolean;
-  /** What a Fizzle/Flop rests on (owner policy B, BRO-5020). 'no-recoupment-announced' prints a caveat (lossBasisCaveat). */
+  /** What a Fizzle/Flop rests on (owner policy B, BRO-5020). Anything but 'reported-loss' prints a caveat (lossBasisCaveat). */
   designationBasis?: 'reported-loss' | 'no-recoupment-announced' | 'notes-stated';
   nonprofitOrg?: string;
   notes?: string;
@@ -603,8 +603,10 @@ export interface CommercialShowRow {
   /** isUnannouncedRecoupment(): recouped, but never announced (the table says so, like the show page). */
   recoupmentNotAnnounced: boolean;
   recoupedWeeks: number | null;
-  /** lossBasisCaveat(): "Based on no recoupment being announced" for a loss label on silence, else null. */
+  /** lossBasisCaveat(): "Based on no recoupment being announced" for a loss label no source reported, else null. */
   lossCaveat: string | null;
+  /** What a Fizzle/Flop rests on (lossOutcomePhrase reads it). */
+  designationBasis: ShowCommercial['designationBasis'] | null;
 }
 
 export interface RecentClosing {
@@ -612,6 +614,7 @@ export interface RecentClosing {
   title: string;
   closingDate: string;
   designation: import('@/config/commercial').CommercialDesignation;
+  designationBasis: ShowCommercial['designationBasis'] | null;
   wasFlop: boolean;
 }
 
