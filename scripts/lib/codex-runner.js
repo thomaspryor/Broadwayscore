@@ -186,6 +186,27 @@ const DATA_FILES = [
 ];
 const DATA_DIRS = ['review-texts'];
 
+/**
+ * Remove a worktree's data dir whether it is the symlink provideData() made or a real
+ * directory a test created while the link was dropped (land-check batches and the reviewer
+ * run without it). fs.rmSync(p, {force:true}) on a real directory throws EISDIR, which
+ * bounced every card of the 2026-10-10 22:47 run. A real directory is removed only when it
+ * resolves inside `root` (the disposable worktree); a symlink is unlinked, never followed,
+ * so the shared clone it points at is never touched. -> 'none'|'unlinked'|'removed'|'skipped'
+ */
+function dropDataDir(p, root) {
+  const fs = require('fs');
+  const path = require('path');
+  let st;
+  try { st = fs.lstatSync(p); } catch { return 'none'; }
+  if (st.isSymbolicLink() || !st.isDirectory()) { fs.unlinkSync(p); return 'unlinked'; }
+  const real = fs.realpathSync(p);
+  const base = fs.realpathSync(root) + path.sep;
+  if (!real.startsWith(base)) return 'skipped';
+  fs.rmSync(real, { recursive: true, force: true });
+  return 'removed';
+}
+
 /** True when a git config text stores a credential in a remote URL (never hand that clone to Codex). */
 function hasCredentialRemote(gitConfigText) {
   return /^\s*(?:url|pushurl)\s*=\s*\S*:\/\/[^/\s@]+@/m.test(String(gitConfigText || ''));
@@ -375,6 +396,7 @@ module.exports = {
   parseRemaining,
   DATA_FILES,
   DATA_DIRS,
+  dropDataDir,
   hasCredentialRemote,
   MAX_ATTEMPTS_SHIP_WITH_FIXES,
   codexBouncedRecently,
