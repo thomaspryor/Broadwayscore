@@ -34,6 +34,10 @@ const DAY_MS = 86400000;
 // routinely differ by a couple of weeks; a venue match inside this window is
 // the same run.
 const VENUE_MATCH_MAX_OPENING_GAP_DAYS = 45;
+// Owner rule 2026-10-11 (BRO-5000): once this many distinct outlets have reviewed the
+// return itself, it has its own critic base and the earlier run's reviews stop being
+// carried onto it. An explicit `inheritReviews: true` on the priorRuns entry overrides.
+const RERUN_SEPARATE_MIN_OUTLETS = 5;
 
 function ymd(value) {
   const m = /^(\d{4}-\d{2}-\d{2})/.exec(String(value || ''));
@@ -201,6 +205,13 @@ function findPriorRunSiblings(show, shows) {
   return out;
 }
 
+/** True when RERUN_SEPARATE_MIN_OUTLETS+ distinct outlets reviewed the return's own run. */
+function reReviewedByManyOutlets(show, shows, existing) {
+  const { isCurrent } = priorRunClassifier(show, shows);
+  const outlets = new Set(existing.filter(isCurrent).map(r => String(r.outletId || '').toLowerCase()).filter(Boolean));
+  return outlets.size >= RERUN_SEPARATE_MIN_OUTLETS;
+}
+
 /**
  * Copies of the earlier entry's published reviews that belong on the returning
  * entry. A review is carried only when it is dated inside the declared prior-run
@@ -237,9 +248,10 @@ function inheritPriorRunReviews(reviews, shows, opts = {}) {
   const inherited = [];
   const links = [];
   for (const show of shows) {
-    for (const { sibling, window, carryReviews } of findPriorRunSiblings(show, shows)) {
+    for (const { sibling, window, run, carryReviews } of findPriorRunSiblings(show, shows)) {
       if (!carryReviews) continue;
       const existing = byShow.get(show.id) || [];
+      if (!(run && typeof run === 'object' && run.inheritReviews === true) && reReviewedByManyOutlets(show, shows, existing)) continue;
       const haveUrl = new Set(existing.map(r => canonicalizeUrl(r.url)).filter(Boolean));
       const havePerson = new Set(existing.map(personKey));
       let count = 0;
@@ -386,5 +398,7 @@ module.exports = {
   buildMultiProdDirectorGuard,
   findPriorRunSiblings,
   inheritPriorRunReviews,
+  reReviewedByManyOutlets,
+  RERUN_SEPARATE_MIN_OUTLETS,
   collectCarriedFiles,
 };

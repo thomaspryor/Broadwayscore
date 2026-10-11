@@ -37,6 +37,7 @@ const {
   republishMarker, evaluateRepublishedReview, wrongProductionFlagVsClear,
 } = require('./lib/run-contamination');
 
+const { RERUN_SEPARATE_MIN_OUTLETS } = require('./lib/prior-run-sibling');
 const { foldDiacritics } = require('./lib/title-match.js');
 const { exitOnHelp } = require('./lib/cli-help.js');
 exitOnHelp(module);
@@ -134,13 +135,13 @@ function class1(ctx) {
     const newer = byId.get(newerId) || {};
     const link = (newer.priorRuns || []).find((p) => p && typeof p === 'object' && (p.id === olderId || p.showId === olderId || p.productionId === olderId))
       || (newer.priorRuns || []).find((p) => p && typeof p === 'object' && !p.id && p.openingDate);
-    const decision = link && typeof link.inheritReviews === 'boolean' ? (link.inheritReviews ? 'carry (recorded)' : 'no-carry (recorded)') : 'UNDECIDED (default carry)';
+    const decision = link && typeof link.inheritReviews === 'boolean' ? (link.inheritReviews ? 'carry (recorded)' : 'no-carry (recorded)') : `auto (carry until ${RERUN_SEPARATE_MIN_OUTLETS} outlets re-review)`;
     return { newerId, olderId, count, decision };
   }).sort((a, b) => b.count - a.count);
   return {
     count: list.reduce((n, p) => n + p.count, 0),
     shows: list.length,
-    undecided: list.filter((p) => p.decision.startsWith('UNDECIDED')).length,
+    undecided: list.filter((p) => p.decision.startsWith('auto')).length,
     pairs: list,
   };
 }
@@ -341,7 +342,7 @@ function main() {
 
   const c = result.classes;
   const L = [];
-  if (c.inherited) L.push(`1 inherited: ${c.inherited.count} rows on ${c.inherited.shows} shows; ${c.inherited.undecided} link(s) with no recorded carry/no-carry decision`);
+  if (c.inherited) L.push(`1 inherited: ${c.inherited.count} rows on ${c.inherited.shows} shows; ${c.inherited.undecided} link(s) on the automatic rule (no recorded carry/no-carry) decision`);
   if (c.preWindow) L.push(`2 pre-window: ${c.preWindow.count} rows dated >1d before earliest show date (${JSON.stringify(c.preWindow.byBucket)}); by cause ${JSON.stringify(c.preWindow.byWhy)}; unexplained ${c.preWindow.unexplained} rows on ${c.preWindow.unexplainedShows} shows, since ${RECENT_SINCE}: ${c.preWindow.recentUnexplained} rows on ${c.preWindow.recentUnexplainedShows} shows; worst ${c.preWindow.worst.slice(0, 5).join(', ')}`);
   if (c.republished) L.push(`3 republished-marker: ${c.republished.count} counted rows on ${c.republished.shows} shows name an earlier year; worst ${c.republished.worst.slice(0, 5).join(', ')}`);
   if (c.flagVsClear) L.push(`4 flag-vs-clear: ${c.flagVsClear.count} files carry wrongProduction=true AND a clear marker (${c.flagVsClear.flaggedAfterClear} flagged by a plan AFTER the clear)`);
