@@ -1,19 +1,31 @@
 {
-  "updatedAt": "2026-10-11T16:49:01.290Z",
-  "processed": 63,
-  "failed": 27,
-  "successRate": "70.0%",
+  "updatedAt": "2026-10-11T16:50:11.857Z",
+  "processed": 65,
+  "failed": 15,
+  "successRate": "81.3%",
   "tierBreakdown": {
-    "playwright": 48,
-    "amp": 4,
-    "browserbase": 0,
-    "directCookies": 0,
+    "playwright": 50,
+    "amp": 0,
+    "browserbase": 2,
+    "directCookies": 1,
     "scrapingdog": 5,
-    "scrapingbee": 1,
+    "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 10
+    "archive": 8
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-10-11T16:26:41.252Z",
+      "event": "bb-session",
+      "session": "e55b6233",
+      "url": "https://www.nytimes.com/2019/03/07/theater/tartuffe-national-theater-equus-strat"
+    },
+    {
+      "t": "2026-10-11T16:26:41.651Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
