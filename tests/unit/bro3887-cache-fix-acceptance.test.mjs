@@ -29,13 +29,13 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const LEDGER = path.join(ROOT, 'data', 'audit', 'scraper-spend-ledger.jsonl');
 
 // The landing. Only full UTC days strictly after this count.
 const LANDED_DAY = '2026-09-20';
-const CREDITS_PER_DAY_CEILING = 5000;
 
 function creditsByDay(script) {
   const out = new Map();
@@ -59,36 +59,52 @@ function creditsByDay(script) {
   return out;
 }
 
-test('BRO-3887: gather-reviews.js daily scraper credits are back under control', (t) => {
+// BRO-447: this used to assert credits/day < 5,000. That ceiling assumed flat
+// dispatch volume (60-90 show-runs/day in September); the October openings ran
+// ~70 gather-reviews dispatches/day and spend rose with them while the SERP
+// cache was healthy (repo cache 4.4 GiB, fresh bd-serp-cache-* hits), so the
+// probe went red on real demand and reddened check-corpus-drift daily. Both
+// regressions it ever caught (checkout-core-data in BRO-3887, the Vercel build
+// cache in BRO-4146) were the repo crossing GitHub's 10 GiB cache cap, which
+// LRU-evicts the whole namespace. That is now asserted directly below; the
+// daily credits are still printed for context. Overall spend is policed by
+// check-provider-spend.js (data-health-check.yml).
+const CACHE_EVICTION_CAP_BYTES = 10 * 1024 ** 3;
+const CACHE_USAGE_CEILING_BYTES = 8 * 1024 ** 3; // headroom before the cap
+
+test('BRO-3887: gather-reviews.js daily scraper credits (diagnostic)', (t) => {
   if (!fs.existsSync(LEDGER)) {
     t.skip('scraper-spend-ledger.jsonl absent (private core data not checked out)');
     return;
   }
   const byDay = creditsByDay('gather-reviews.js');
-
-  // Only full days after the landing are evidence. Today is excluded — a partial
-  // day always looks cheap and would make this probe pass for the wrong reason.
+  // Today is excluded: a partial day always looks cheap.
   const today = new Date().toISOString().slice(0, 10);
-  const days = [...byDay.keys()].filter((d) => d > LANDED_DAY && d < today).sort();
+  const days = [...byDay.keys()].filter((d) => d > LANDED_DAY && d < today).sort().slice(-3);
+  t.diagnostic(`gather-reviews.js credits/day, excluding historical-backfill: ${days.map((d) => `${d}=${byDay.get(d)}`).join(', ') || 'no complete day yet'}`);
+});
 
-  if (days.length === 0) {
-    t.skip(`no complete UTC day after ${LANDED_DAY} in the ledger yet — recheck later`);
+test('BRO-3887: repo Actions cache stays below the size that evicts the SERP cache', (t) => {
+  const token = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
+  if (!token) {
+    t.skip('no GH_TOKEN/GITHUB_TOKEN (check-corpus-drift.yml passes one)');
     return;
   }
-
-  const recent = days.slice(-3);
-  const offenders = recent.filter((d) => byDay.get(d) > CREDITS_PER_DAY_CEILING);
-  const detail = recent.map((d) => `${d}=${byDay.get(d)}`).join(', ');
-
-  assert.deepEqual(
-    offenders,
-    [],
-    `gather-reviews.js is still over ${CREDITS_PER_DAY_CEILING} credits/day (${detail}). ` +
-      'Pre-fix peak was 9,178-10,468/day; the 09-16 baseline was 2,026. If this fails, ' +
-      'check first whether the SERP cache is surviving between runs: ' +
-      '`gh cache list --json key,sizeInBytes | grep bd-serp-cache` should show an entry, ' +
-      'and a gather-reviews job log should report "Cache restored from key: bd-serp-cache-" ' +
-      'from a PREVIOUS run id, not the current one.',
+  const repo = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
+  // A token that is set but cannot read the usage fails here on purpose, so a
+  // missing `actions: read` permission cannot turn this into a silent skip.
+  const usage = JSON.parse(
+    execFileSync('gh', ['api', `repos/${repo}/actions/cache/usage`], { encoding: 'utf8', env: { ...process.env, GH_TOKEN: token } }),
+  );
+  const bytes = Number(usage.active_caches_size_in_bytes);
+  assert.ok(Number.isFinite(bytes), `unexpected cache usage payload: ${JSON.stringify(usage)}`);
+  const gib = (n) => (n / 1024 ** 3).toFixed(2);
+  t.diagnostic(`repo Actions cache: ${gib(bytes)} GiB across ${usage.active_caches_count} entries`);
+  assert.ok(
+    bytes < CACHE_USAGE_CEILING_BYTES,
+    `repo Actions cache is ${gib(bytes)} GiB; past ${gib(CACHE_EVICTION_CAP_BYTES)} GiB GitHub LRU-evicts every ` +
+      'entry, including the KB-sized bd-serp-cache-* that gather-reviews.js relies on, and SERP spend jumps ' +
+      '(BRO-3887, BRO-4146). Find the biggest keys: `gh cache list --sort size_in_bytes --limit 20`.',
   );
 });
 
