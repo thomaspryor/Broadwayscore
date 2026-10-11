@@ -1332,5 +1332,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-11T05:13:53.155Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5027-fit",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-5027-fit",
+    "description": "land.yml did not land land/bro-5027-fit: the scripts-lib-tests gate went red at 6f7ca658c2. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38112501765",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5027-fit"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "6f7ca658c2933098fd885194960ec6c496d4f5b2"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38112501765"
+      }
+    ],
+    "queuedAt": "2026-10-11T05:17:44.369Z"
   }
 ]
