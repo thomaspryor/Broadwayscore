@@ -366,7 +366,7 @@ describe('countScoringQueues — the full show record reaches isScoreable (BRO-4
     assert.match(src, /const showFor = \(d: any\)[^;]*showRecords\.get\(d\.showId\)/);
     assert.doesNotMatch(src, /return title \? \{ title \} : undefined;/);
     const cli = fs.readFileSync(new URL('../../scripts/count-scoring-queue.js', import.meta.url), 'utf8');
-    assert.match(cli, /countScoringQueues\(reviewTextsDir, \{ showTitles, showsById \}\)/);
+    assert.match(cli, /countScoringQueues\(reviewTextsDir, \{ showTitles, showsById(, \w+)* \}\)/); // BRO-5047 adds onlyShowIds
   });
 });
 

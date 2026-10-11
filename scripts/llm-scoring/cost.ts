@@ -172,3 +172,59 @@ export function costBreakdown(
     : 0;
   return { claude, openai, gemini, kimi, total: claude + openai + gemini + kimi };
 }
+
+/**
+ * BRO-5047: a --batch run also scores reviews for shows near opening night
+ * synchronously (they must not wait for a batch). costBreakdown(batch:true)
+ * would price those sync calls at the batch rate, so the run ledger
+ * (data/llm-scoring-runs.json) would understate them. This prices the sync
+ * share at full rate and the remainder at the batch rate.
+ *
+ * @param total    the run's whole token usage (sync calls + merged batch output)
+ * @param syncPart token usage of the calls made synchronously in this run
+ */
+export function mixedCostBreakdown(
+  total: AllModelUsage,
+  syncPart: AllModelUsage | null,
+  opts: { claudeModelName?: string; openaiModelName?: string } = {}
+): { claude: number; openai: number; gemini: number; kimi: number; total: number } {
+  const batchPart = subtractUsage(total, syncPart);
+  const b = costBreakdown(batchPart, { ...opts, batch: true });
+  const s = syncPart ? costBreakdown(syncPart, { ...opts, batch: false }) : { claude: 0, openai: 0, gemini: 0, kimi: 0, total: 0 };
+  return {
+    claude: b.claude + s.claude,
+    openai: b.openai + s.openai,
+    gemini: b.gemini + s.gemini,
+    kimi: b.kimi + s.kimi,
+    total: b.total + s.total,
+  };
+}
+
+/** Field-wise a - b over every numeric field of every leg, floored at 0. */
+export function subtractUsage(a: AllModelUsage, b: AllModelUsage | null): AllModelUsage {
+  const out: any = {};
+  for (const [leg, va] of Object.entries(a as any)) {
+    if (!va || typeof va !== 'object') { out[leg] = va; continue; }
+    const vb = (b as any)?.[leg] || {};
+    const legOut: any = {};
+    for (const [k, n] of Object.entries(va as any)) {
+      legOut[k] = typeof n === 'number' ? Math.max(0, n - (typeof vb[k] === 'number' ? vb[k] : 0)) : n;
+    }
+    out[leg] = legOut;
+  }
+  return out as AllModelUsage;
+}
+
+/** Field-wise a + b (b may be partial); used to accumulate per-call deltas. */
+export function addUsage(a: AllModelUsage | null, b: AllModelUsage): AllModelUsage {
+  if (!a) return JSON.parse(JSON.stringify(b));
+  const out: any = JSON.parse(JSON.stringify(a));
+  for (const [leg, vb] of Object.entries(b as any)) {
+    if (!vb || typeof vb !== 'object') continue;
+    out[leg] = out[leg] || {};
+    for (const [k, n] of Object.entries(vb as any)) {
+      if (typeof n === 'number') out[leg][k] = (typeof out[leg][k] === 'number' ? out[leg][k] : 0) + n;
+    }
+  }
+  return out as AllModelUsage;
+}

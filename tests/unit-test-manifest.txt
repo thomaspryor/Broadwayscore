@@ -191,6 +191,7 @@ scripts/lib/workspace-naming.test.mjs
 scripts/lib/zombie-tab-sweep.test.mjs
 scripts/llm-scoring/batch-mode.test.mjs
 scripts/llm-scoring/cost-recording.test.mjs
+scripts/llm-scoring/mixed-batch-cost.test.mjs
 scripts/llm-scoring/openai-leg-model.test.mjs
 scripts/newsletter/badge-render.test.mjs
 scripts/newsletter/bw-quiet-week-fallback.test.mjs
@@ -1115,6 +1116,7 @@ tests/unit/score-input-validator.test.mjs
 tests/unit/score-reviews-llm-skip.test.mjs
 tests/unit/score-routing.test.mjs
 tests/unit/scoring-concurrency-lane.test.mjs
+tests/unit/scoring-lane.test.mjs
 tests/unit/scoring-model-not-eol.test.mjs
 tests/unit/scoring-recency.test.mjs
 tests/unit/scrape-alltime-column-count.test.mjs
