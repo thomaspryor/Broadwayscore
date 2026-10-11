@@ -231,3 +231,47 @@ describe('BRO-4655: resolveCritic promotes first-name-only byline to outlet defa
     assert.equal(resolveCritic({ stageCritic: 'Anna James', outletEntry: nyt }), 'Anna James');
   });
 });
+
+// BRO-3142: an ingest with an unresolved critic ("Unknown") must not merge a real
+// press-night review into a same-outlet flagged PREVIEW file and inherit its
+// wrongShow / isNonReview / invalid-tier flags. The writer retires the flagged
+// preview to _superseded-misattributed/ and writes a clean new file.
+describe('BRO-3142: real review vs same-outlet flagged preview at the Unknown-critic slot', () => {
+  const { createOrMergeReviewFile } = require('./lib/review-file-writer.js');
+  const SHOW_ID = 'kimberly-akimbo-off-west-end-2026';
+  const PREVIEW_URL = 'https://theatreweekly.com/first-look-production-images-released-for-kimberly-akimbo/';
+  const REVIEW_URL = 'https://theatreweekly.com/review-kimberly-akimbo-at-hampstead-theatre/';
+  // Fixture show so the supersede decision does not depend on live data/shows.json.
+  const FIXTURE_SHOW = { id: SHOW_ID, title: 'Kimberly Akimbo', venue: 'Hampstead Theatre', openingDate: '2026-09-09' };
+  let dir;
+  before(() => {
+    dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro3142-'));
+    fs.mkdirSync(path.join(dir, SHOW_ID));
+    fs.writeFileSync(path.join(dir, SHOW_ID, 'theatre-weekly--unknown.json'), JSON.stringify({
+      showId: SHOW_ID, outletId: 'theatre-weekly', outlet: 'Theatre Weekly', criticName: 'Unknown',
+      url: PREVIEW_URL, publishDate: '2026-09-03', wrongShow: true, isNonReview: true, contentTier: 'invalid',
+    }));
+  });
+  after(() => fs.rmSync(dir, { recursive: true, force: true }));
+
+  test('real review lands clean; preview is preserved in _superseded-misattributed', () => {
+    const input = {
+      outletId: 'theatre-weekly', outlet: 'Theatre Weekly', criticName: 'Unknown', url: REVIEW_URL,
+      source: 'submit-review-form',
+      fields: { fullText: 'Kimberly Akimbo review text. '.repeat(60), publishDate: '2026-09-10' },
+    };
+    const dry = createOrMergeReviewFile(SHOW_ID, input, { dryRun: true, reviewTextsDir: dir, show: FIXTURE_SHOW });
+    assert.equal(dry.action, 'would-supersede');
+    assert.equal(dry.supersededUrl, PREVIEW_URL);
+
+    const res = createOrMergeReviewFile(SHOW_ID, input, { reviewTextsDir: dir, show: FIXTURE_SHOW });
+    assert.equal(res.action, 'new');
+    const written = JSON.parse(fs.readFileSync(res.filepath, 'utf8'));
+    assert.equal(written.url, REVIEW_URL);
+    for (const flag of ['wrongShow', 'wrongProduction', 'isNonReview']) assert.ok(!written[flag], `${flag} must not be inherited`);
+    assert.notEqual(written.contentTier, 'invalid');
+    const kept = JSON.parse(fs.readFileSync(res.supersededTo, 'utf8'));
+    assert.equal(kept.url, PREVIEW_URL);
+    assert.equal(kept.wrongShow, true);
+  });
+});
