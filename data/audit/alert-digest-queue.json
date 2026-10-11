@@ -34,5 +34,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-11T13:59:26.131Z"
+  },
+  {
+    "conditionKey": "land:land/bro-3889-alert-absent",
+    "title": "Landing blocked: unit-tests-node red on land/bro-3889-alert-absent",
+    "description": "land.yml did not land land/bro-3889-alert-absent: the unit-tests-node gate went red at e0c980f000. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38143246490",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-3889-alert-absent"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "e0c980f000cf9ce0a0e9ff1a2568d168a7f5febf"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38143246490"
+      }
+    ],
+    "queuedAt": "2026-10-11T13:58:51.574Z"
   }
 ]
