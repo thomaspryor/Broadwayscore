@@ -64,6 +64,8 @@ const KNOWN_SETTERS = [
   // wrongProduction=true and owes the same guard: a file a human explicitly
   // cleared or overrode is left alone. (added 2026-08-07, #1085)
   'repair-noteless-wrongprod-autoclear.js',
+  // BRO-5032: date-guard hold resolver; skips manual-clear/override files before flagging.
+  'resolve-date-guard-holds.js',
   // Backfill audit for same-title sibling misroutes (task #1617). Skips
   // shouldSkipWrongProductionAudit()-cleared files before ever computing a
   // hit, in addition to its own humanReviewedWrongProduction/manualClear/

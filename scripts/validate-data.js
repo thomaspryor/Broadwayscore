@@ -4094,7 +4094,8 @@ function validateReviewTextQuality(shows) {
         const { kind, verdict } = classifyDateGuardBackstop({ review: data, show: wfShow });
         if (kind === 'held') {
           heldDateGuard++;
-          warn(`[date-guard-held] ${showDir}/${file}: review dated ${data.publishDate} is ${verdict.daysBefore}d before the show's earliest date ${verdict.earliestDate}, HELD by flag-wrong-production-by-date (${(data.dateGuardHeld.signals || []).join(', ')}) — needs a human: verify the live page date, then correct publishDate, set wrongProduction:true, or declare a priorRun`);
+          // Exhausted by scripts/resolve-date-guard-holds.js (BRO-5032): counted, no per-file daily warning.
+          if (!data.dateGuardResolveExhausted) warn(`[date-guard-held] ${showDir}/${file}: review dated ${data.publishDate} is ${verdict.daysBefore}d before the show's earliest date ${verdict.earliestDate}, HELD by flag-wrong-production-by-date (${(data.dateGuardHeld.signals || []).join(', ')}) — needs a human: verify the live page date, then correct publishDate, set wrongProduction:true, or declare a priorRun`);
           // No continue: CHECK 1+ still run on a held file.
         }
         if (kind === 'error') {
