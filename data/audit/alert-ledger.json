@@ -156,13 +156,13 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-11T14:14:07.486Z",
-      "lastSeen": "2026-10-11T14:35:01.686Z",
+      "lastSeen": "2026-10-11T15:01:33.865Z",
       "lastNotifiedAt": "2026-10-11T14:14:07.486Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 132,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -11536,20 +11536,18 @@
       "silentRefires": 1
     },
     "mezzanine:session-token-expired": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "Mezzanine Scraper Failed — Session Token Expired",
       "firstSeen": "2026-10-07T13:48:53.393Z",
-      "incidentOpenedAt": "2026-10-11T01:01:23.249Z",
-      "lastSeen": "2026-10-11T11:19:39.256Z",
-      "lastNotifiedAt": "2026-10-11T01:01:23.249Z",
-      "lastSurfacedAt": "2026-10-11T01:01:23.249Z",
-      "notifyCount": 5,
+      "incidentOpenedAt": "2026-10-11T15:05:39.168Z",
+      "lastSeen": "2026-10-11T15:05:39.168Z",
+      "lastNotifiedAt": "2026-10-11T15:05:39.168Z",
+      "lastSurfacedAt": "2026-10-11T15:05:39.168Z",
+      "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 1,
-      "resolvedAt": "2026-10-11T14:59:40.458Z"
+      "linearIdentifier": null
     },
     "gap:the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--marc-miller.json": {
       "status": "resolved",
@@ -13752,13 +13750,13 @@
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"grey-house carries the BRO-5020 values\"",
       "firstSeen": "2026-10-11T14:14:07.210Z",
       "incidentOpenedAt": "2026-10-11T14:14:07.210Z",
-      "lastSeen": "2026-10-11T14:35:01.677Z",
+      "lastSeen": "2026-10-11T15:01:33.856Z",
       "lastNotifiedAt": "2026-10-11T14:14:07.210Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-5060",
-      "silentRefires": 1
+      "silentRefires": 2
     }
   }
 }

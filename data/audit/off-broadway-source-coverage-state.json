@@ -3,10 +3,10 @@
     "blind": false,
     "count": 0,
     "reason": "ok",
-    "at": "2026-10-10T14:13:20.711Z"
+    "at": "2026-10-11T14:42:30.283Z"
   },
   "venueReaders": {
-    "at": "2026-10-10T14:13:20.711Z",
+    "at": "2026-10-11T14:42:30.283Z",
     "readers": 54,
     "active": 165,
     "activeCovered": 101,
@@ -60,11 +60,6 @@
         "reason": "Wix pages are image-only; tickets are a VenueTix single-page app"
       },
       {
-        "venue": "Theaterlab",
-        "recentShows": 3,
-        "reason": "site returns an empty page to a plain fetch"
-      },
-      {
         "venue": "Urban Stages",
         "recentShows": 3,
         "reason": "site lists readings and a music festival, no production listing"
@@ -83,11 +78,16 @@
         "venue": "spit&vigor's Tiny Baby Blackbox Theatre",
         "recentShows": 2,
         "reason": "Wix events widget returns only the next ~8 dates"
+      },
+      {
+        "venue": "Theaterlab",
+        "recentShows": 2,
+        "reason": "site returns an empty page to a plain fetch"
       }
     ]
   },
   "venueReadersLondon": {
-    "at": "2026-10-10T14:13:20.711Z",
+    "at": "2026-10-11T14:42:30.283Z",
     "readers": 23,
     "active": 92,
     "activeCovered": 31,
