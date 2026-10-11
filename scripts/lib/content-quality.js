@@ -2852,8 +2852,22 @@ function extractCultureSauceInlineAuthor(text) {
 /**
  * Extract author name from HTML using multiple strategies.
  * Priority: meta tags → JSON-LD → byline CSS → text-based extractByline()
+ *
+ * options.excludeNames (the show's cast + creative team) applies to EVERY
+ * strategy's answer. It used to reach only the text-byline fallback, so a
+ * meta/JSON-LD author was returned unchecked: a Theatricalia production page
+ * credits the play's author, and the collector renamed
+ * night-of-january-16th-off-broadway-2026's --unknown file to the playwright
+ * "Ayn Rand" (BRO-5065). An excluded name yields null (the file stays
+ * Unknown) rather than a guess at the next strategy.
  */
 function extractAuthorFromHtml(html, text, options = {}) {
+  const name = extractAuthorFromHtmlUnfiltered(html, text, options);
+  if (name && options && isExcludedName(name, options.excludeNames)) return null;
+  return name;
+}
+
+function extractAuthorFromHtmlUnfiltered(html, text, options = {}) {
   if (!html) return null;
 
   // Outlet override: theaterlife.com's author vcard is the site owner "Barry
