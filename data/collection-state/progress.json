@@ -2020,7 +2020,8 @@
     "the-normal-heart-west-end-2021/the-jewish-chronicle--unknown.json",
     "the-mirror-and-the-light-west-end-2021/british-theatre--unknown.json",
     "the-normal-heart-west-end-2021/i-paper--unknown.json",
-    "the-normal-heart-west-end-2021/standard--unknown.json"
+    "the-normal-heart-west-end-2021/standard--unknown.json",
+    "triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -3104,7 +3105,8 @@
       "opening-night-west-end-2024/nytimes--houman-barekat.json",
       "data/review-texts/lyonesse-west-end-2023/nytimes--unknown.json",
       "lyonesse-west-end-2023/nytimes--unknown.json",
-      "data/review-texts/patriots-west-end-2023/deadline--greg-evans.json"
+      "data/review-texts/patriots-west-end-2023/deadline--greg-evans.json",
+      "data/review-texts/triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -3556,7 +3558,7 @@
     ]
   },
   "startTime": "2026-10-10T18:51:30.955Z",
-  "lastProcessed": "the-normal-heart-west-end-2021/the-spectator-uk--unknown.json",
+  "lastProcessed": "how-shakespeare-saved-my-life-off-broadway-2026/theater-life--unknown.json",
   "log": [
     {
       "t": "2026-10-10T19:33:04.519Z",
@@ -3916,6 +3918,56 @@
       "t": "2026-10-11T09:13:59.297Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-11T14:27:04.230Z",
+      "event": "bb-session",
+      "session": "ec73d3c4",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-11T14:27:44.021Z",
+      "event": "bb-session",
+      "session": "5eda63e7",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654485"
+    },
+    {
+      "t": "2026-10-11T14:27:44.614Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-11T14:28:01.649Z",
+      "event": "bb-session",
+      "session": "4c791d89",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654485"
+    },
+    {
+      "t": "2026-10-11T14:28:01.989Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-11T14:31:42.706Z",
+      "event": "bb-session",
+      "session": "72bbeaaa",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-11T14:31:43.045Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-11T14:32:00.225Z",
+      "event": "bb-session",
+      "session": "87845c59",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-11T14:32:00.565Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
