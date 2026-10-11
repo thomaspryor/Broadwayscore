@@ -45,6 +45,8 @@ const { CLAUDE_SONNET } = require('./lib/models');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
 const { buildShowKeyIndex, resolveCommercialSlug } = require('./lib/commercial-slug-key');
 const { proposeDesignation } = require('./lib/designation-rule');
+const { DESIGNATION_BASES } = require('./lib/commercial-designations');
+const { recoupClaimDesignationAction } = require('./lib/commercial-apply-gate');
 
 // Universal scraper with Bright Data → ScrapingBee → Playwright fallback
 let universalScraper;
@@ -1616,6 +1618,13 @@ function filterByConfidence(proposedChanges, commercialData) {
         continue;
       }
 
+      // A loss label needs a directly stated loss (BRO-5020): "strongly
+      // implied" (medium) goes to a person, like the stale-closure classifier.
+      if (oldValue === 'TBD' && (newValue === 'Fizzle' || newValue === 'Flop') && effectiveConfidence !== 'high') {
+        flagged.push({ ...change, flagReason: `TBD -> ${newValue} needs a cited loss source (high confidence); got ${effectiveConfidence}` });
+        continue;
+      }
+
       // TBD -> something with high/medium -> apply
       if (oldValue === 'TBD') {
         applied.push(change);
@@ -1733,6 +1742,28 @@ function applyChanges(applied, newEntries, commercial, showKeyIndex) {
     // A new figure carries its own label and citation (BRO-4666); the
     // record's old citation described the old figure.
     if (CITATION_FIELD[field]) labelFigure(commercial.shows[slug], field, change.source, change.citation || null);
+
+    // designationBasis (owner policy B, BRO-5020): a loss label this pass
+    // writes came from a high-confidence sourced article (filterByConfidence),
+    // so it is a reported loss; any other label drops the loss basis and flag.
+    if (field === 'designation') {
+      const row = commercial.shows[slug];
+      if (newValue === 'Fizzle' || newValue === 'Flop') {
+        row.designationBasis = DESIGNATION_BASES.REPORTED_LOSS;
+        delete row.needsLossEvidence;
+      } else {
+        delete row.designationBasis;
+        if (newValue !== 'TBD') delete row.needsLossEvidence;
+      }
+    }
+    // Recoupment news flips a silence-based loss label back to TBD (owner
+    // policy B, BRO-5020), the same rule the apply gate uses.
+    if (field === 'recouped' && newValue === true && recoupClaimDesignationAction(commercial.shows[slug]) === 'reset') {
+      const row = commercial.shows[slug];
+      console.log(`  [FLIP] ${slug}.designation: ${row.designation} (inferred) -> TBD on recoupment news`);
+      row.designation = 'TBD';
+      for (const k of ['designationBasis', 'needsLossEvidence', 'classifiedBy', 'classifiedAt', 'classifiedReason']) delete row[k];
+    }
 
     // For estimatedRecoupmentPct, add source + date
     if (field === 'estimatedRecoupmentPct') {

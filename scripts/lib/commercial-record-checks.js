@@ -70,6 +70,7 @@ const URL_RE = /\bhttps?:\/\/\S+/gi;
 // something that reads like a checked source.
 const CITATION_FIELDS = ['capitalizationSource', 'recoupedSource'];
 const LOSS_DESIGNATIONS = ['Flop', 'Fizzle'];
+const { VALID_DESIGNATION_BASES, DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS } = require('./commercial-designations');
 
 /** The research wording in `text` outside any URL, or null. */
 function internalWordingIn(text) {
@@ -173,6 +174,10 @@ function commercialRecordErrors(showId, show, ctx = {}) {
   }
   if (LOSS_DESIGNATIONS.includes(show.designation) && show.recouped !== false) {
     out.push(`commercial.json: "${showId}" has designation "${show.designation}" but recouped=${JSON.stringify(show.recouped)} (policy: loss-designations require recouped=false with hard citation; demote to "Nonprofit" or "TBD" if outcome unknown)`);
+  }
+  // designationBasis (owner policy B, BRO-5020): what a loss label rests on.
+  if (show.designationBasis != null && !VALID_DESIGNATION_BASES.includes(show.designationBasis)) {
+    out.push(`commercial.json: "${showId}" has invalid designationBasis "${show.designationBasis}" (valid: ${VALID_DESIGNATION_BASES.join(', ')})`);
   }
 
   // Public text must read as a citation, not as research-pipeline notes.
@@ -324,6 +329,19 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
   if (LOSS_DESIGNATIONS.includes(show.designation) && runStatus && runStatus !== 'closed') {
     out.push(`commercial.json: "${showId}" has designation "${show.designation}" but the show's status is "${runStatus}" (loss designations are for closed runs; use "TBD" until it closes)`);
   }
+  // Owner policy B (BRO-5020): every loss label says what it rests on, and a
+  // label resting on silence waits ~6 months after closing. Advisory (§19).
+  if (LOSS_DESIGNATIONS.includes(show.designation) && show.designationBasis == null) {
+    out.push(`commercial.json: "${showId}" has designation "${show.designation}" with no designationBasis (reported-loss, no-recoupment-announced or notes-stated)`);
+  }
+  if (show.designationBasis != null && !LOSS_DESIGNATIONS.includes(show.designation)) {
+    out.push(`commercial.json: "${showId}" has designationBasis "${show.designationBasis}" on a non-loss designation "${show.designation || 'missing'}" (remove it)`);
+  }
+  const closing = ctx.showRecord && Date.parse(ctx.showRecord.closingDate);
+  if (show.designationBasis === DESIGNATION_BASES.NO_RECOUPMENT_ANNOUNCED && LOSS_DESIGNATIONS.includes(show.designation) &&
+      Number.isFinite(closing) && (Date.now() - closing) / 86400000 < LOSS_LABEL_MIN_DAYS) {
+    out.push(`commercial.json: "${showId}" is "${show.designation}" on no recoupment announced but closed under ${LOSS_LABEL_MIN_DAYS} days ago (keep TBD + needsLossEvidence until it ages in)`);
+  }
   return out;
 }
 
@@ -407,6 +425,7 @@ function sanitizeForPublicRecord(entry, showStatus) {
   }
   if (LOSS_DESIGNATIONS.includes(out.designation) && showStatus && showStatus !== 'closed') {
     out.designation = 'TBD';
+    delete out.designationBasis;
     changed.push('designation');
   }
   return { entry: out, changed, holdReason };

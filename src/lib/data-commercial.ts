@@ -41,6 +41,7 @@ import {
   getBreakEven,
   getReportedInvestorMultiple,
   publicSourceText,
+  lossBasisCaveat,
   isEstimatedCapitalization,
   isUnannouncedRecoupment,
   isEstimatedRunningCost,
@@ -662,6 +663,7 @@ function toCommercialShowRow(slug: string, show: RawShow, data: ShowCommercial):
     recouped: data.recouped,
     recoupmentNotAnnounced: isUnannouncedRecoupment(data),
     recoupedWeeks: calculateWeeksToRecoup(show.openingDate, data.recoupedDate, show.closingDate),
+    lossCaveat: lossBasisCaveat(data),
   };
 }
 

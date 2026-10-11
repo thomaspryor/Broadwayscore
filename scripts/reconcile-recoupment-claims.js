@@ -341,7 +341,7 @@ async function main() {
         // repeats) and hands the reviewer the confirming URL.
         const why = existing.humanReviewedDesignation === true
           ? 'is human-reviewed'
-          : `was not inferred by classify-stale-closures (classifiedBy: ${existing.classifiedBy || 'none'})`;
+          : `rests on a reported loss, not on silence (classifiedBy: ${existing.classifiedBy || 'none'}, basis: ${existing.designationBasis || 'none'})`;
         log(`  🔒 verified via ${result.host}, but "${existing.designation}" ${why} — leaving for human review.`);
         stillUnverifiable++;
         if (!DRY_RUN) {
