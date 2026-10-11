@@ -566,12 +566,17 @@ const WRONG_PRODUCTION_CLEAR_MARKERS = [
 ];
 
 /**
- * A clear is script-made when wrongProductionOverrideSetBy names a script file
- * (`clear-stale-wrong-production-flags.js`). Anything else (a person, a plan, no setBy)
- * is a human verdict, and a later flag must not silently overrule it.
+ * A clear is a human verdict when a person stamped it: wrongProductionManualClear without a
+ * script setBy, or a setBy that is not a script file. Script clears carry a `.js` setBy
+ * (`clear-stale-wrong-production-flags.js`); an Override with no setBy and no ManualClear is
+ * a legacy machine stamp (The Car Man, Daily Echo). Only script/legacy-machine clears yield to
+ * a later flag.
  */
 function isScriptWrongProductionClear(d) {
-  return !!d && typeof d.wrongProductionOverrideSetBy === 'string' && /\.js$/.test(d.wrongProductionOverrideSetBy.trim());
+  if (!d) return false;
+  const by = typeof d.wrongProductionOverrideSetBy === 'string' ? d.wrongProductionOverrideSetBy.trim() : '';
+  if (by) return /\.js$/.test(by);
+  return d.wrongProductionManualClear !== true;
 }
 
 /**

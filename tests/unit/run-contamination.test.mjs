@@ -123,3 +123,13 @@ test('guardPublishDate prefers a printed dateline over the fetch-date stand-in',
   assert.equal(undated.publishDate, '2026-08-01');
   assert.equal(undated.substituted, true);
 });
+
+test('legacy Override with no setBy yields to a later plan flag (The Car Man, Daily Echo); a lone ManualClear does not', () => {
+  const carMan = {
+    wrongProduction: true, wrongProductionOverride: true,
+    approvedFixes: [{ field: 'wrongProduction', at: '2026-09-30T04:40:53.479Z' }],
+  };
+  assert.equal(rc.humanFlagOutranksScriptClear(carMan), true);
+  const dino = { wrongProduction: true, wrongProductionManualClear: true, approvedFixes: [{ field: 'wrongProduction', at: '2026-09-30T00:00:00Z' }] };
+  assert.equal(rc.humanFlagOutranksScriptClear(dino), false);
+});

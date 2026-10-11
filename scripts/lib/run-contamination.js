@@ -151,7 +151,7 @@ function wrongProductionFlagVsClear(d) {
  */
 function humanFlagOutranksScriptClear(d) {
   const r = wrongProductionFlagVsClear(d);
-  return r.conflict && r.flagLater && typeof d.wrongProductionOverrideSetBy === 'string' && /\.js$/.test(d.wrongProductionOverrideSetBy.trim());
+  return r.conflict && r.flagLater && require('./review-write-guard').isScriptWrongProductionClear(d);
 }
 
 module.exports = {

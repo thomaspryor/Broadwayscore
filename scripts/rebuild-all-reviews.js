@@ -1572,6 +1572,7 @@ const crossShowFingerprints = new Map();
         // BRO-5000: a plan/human flag set AFTER a script's clear must take effect. The clear
         // markers (ManualClear/Override*) otherwise keep the review counted (An Oak Tree, Time Out).
         if (humanFlagOutranksScriptClear(d)) {
+          invalidateWrongProductionAutoClear(d);
           const sc = retractScriptWrongProductionClear(d);
           if (sc.retracted.length) {
             console.log(`  [FLAG-OUTRANKS-CLEAR] ${sid}/${f}: retracted script clear (${sc.retracted.length} markers)`);
