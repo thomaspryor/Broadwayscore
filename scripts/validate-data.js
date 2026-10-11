@@ -894,7 +894,7 @@ function validateDates(shows) {
     }
 
     // BRO-3793: advisory (new gates land warn-only, CLAUDE.md rule 19).
-    const domainSourceProblem = venuePageDomainSourceProblem(show);
+    const domainSourceProblem = show.openingDate ? venuePageDomainSourceProblem(show) : null;
     if (domainSourceProblem) warn(`Show "${show.title}" (${show.id}) ${domainSourceProblem}`);
 
     // (Non-theatrical genre on a west-end-category show is auto-fixed to

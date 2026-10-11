@@ -52,7 +52,7 @@ function openingDateSourceHint(category) {
  */
 function venuePageDomainSourceProblem(show) {
   const src = show && show.openingDateSource;
-  if (typeof src !== 'string' || !/^venue-page:[^:\s]*\.[a-z]{2,}\b/i.test(src)) return null;
+  if (typeof src !== 'string' || !/^venue-page:\s*(?:https?:\/\/)?[^:\s\/]*\.[a-z]{2,}\b/i.test(src)) return null;
   return `openingDateSource "${src}" names a web domain: no extractor writes that form, so the date is unverified (a venue page that lists only a run window has no opening night). Re-source openingDate from a page that states the press night, or set it null.`;
 }
 
