@@ -642,6 +642,35 @@
     "queuedAt": "2026-10-11T18:54:00.590Z"
   },
   {
+    "conditionKey": "land:land/bro-silent-gap-syndication-secondary",
+    "title": "Landing blocked: rebase red on land/bro-silent-gap-syndication-secondary",
+    "description": "land.yml did not land land/bro-silent-gap-syndication-secondary: the rebase gate went red at 69109424fd. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38165849885",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-silent-gap-syndication-secondary"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "69109424fdfcfb8c177296f7a7f1676e0b36514a"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38165849885"
+      }
+    ],
+    "queuedAt": "2026-10-11T18:57:24.115Z"
+  },
+  {
     "conditionKey": "land:land/bro-5031-head-to-pitch",
     "title": "Landing blocked: rebase red on land/bro-5031-head-to-pitch",
     "description": "land.yml did not land land/bro-5031-head-to-pitch: the rebase gate went red at a420661fd5. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5031-head-to-pitch @ a420661fd5 (origin/land/bro-5031-head-to-pitch) → origin/main @ f6ddc3bb65 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ f6ddc3bb65: Rebasing (1/1) error: could not apply a420661fd5b... fix(synopsis): \"Head to the <venue>\" opener is audience pitch; plan to trim The Real Thing 2024 (BRO-5031) hint: Resolve all conflicts manually, mark them  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38163285190",
