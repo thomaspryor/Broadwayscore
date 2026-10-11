@@ -20,7 +20,7 @@
  * National Theatre production, not the West End production at the Olivier".
  */
 
-const { venueTokens, containsToken, normalizeForMatch } = require('./creative-team-verify');
+const { venueTokens, containsToken, normalizeForMatch } = require('./venue-tokens');
 
 const TOUR_BASIS = /\btour(s|ing|ed)?\b|\bon the road\b/i;
 const TAXONOMY_BASIS = /\b(off-)?west end\b|\bsubsidi[sz]ed\b|\bpre-transfer\b/i;

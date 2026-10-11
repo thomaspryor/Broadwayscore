@@ -55,7 +55,8 @@ for (const c of JSON.parse(fs.readFileSync(candPath, 'utf8'))) {
   if (d.wrongProduction !== true || d.wrongProductionOverride === true) { console.log(`[SKIP] ${c.show}/${c.file}: not flagged or already overridden`); skipped++; continue; }
   const reason = [d.wrongProductionReason, d.wrongProductionNote, d.contentTierReason].filter(Boolean).join(' ');
   if (/URL-path cross-market/i.test(reason)) { console.log(`[SKIP] ${c.show}/${c.file}: flag is a URL cross-market verdict, not a tour verdict`); skipped++; continue; }
-  const v = applyOwnVenueTourCarveout({ wrongProduction: true, reasoning: reason, reviewedVenue: c.reviewedVenue }, show, { publishDate: d.publishDate });
+  // Re-check the stored flag (true here, checked above) with the carve-out; nothing is set.
+  const v = applyOwnVenueTourCarveout({ wrongProduction: d.wrongProduction, reasoning: reason, reviewedVenue: c.reviewedVenue }, show, { publishDate: d.publishDate });
   if (!v.tourStopCarveoutApplied) { console.log(`[UPHELD] ${c.show}/${c.file}`); skipped++; continue; }
   let fresh = null;
   if (REVERIFY) {
