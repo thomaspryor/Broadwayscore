@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T00:07:20.099Z",
+  "generatedAt": "2026-10-11T04:53:00.049Z",
   "season": "2018-2019",
   "sources": [
     "wos-listing",
@@ -9,20 +9,20 @@
   ],
   "counts": {
     "listings": 292,
-    "promotable": 61,
+    "promotable": 56,
     "notPromotable": {
-      "no review signal": 40,
+      "no review signal": 44,
       "run of 0 days < 14": 19,
       "non-theatre genre": 160,
       "run of 3 days < 14": 3,
       "run of 2 days < 14": 2,
-      "already in shows.json": 2,
+      "already in shows.json": 3,
       "run of 5 days < 14": 2,
       "run of 4 days < 14": 1,
       "run of 10 days < 14": 1,
       "run of 11 days < 14": 1
     },
-    "unlistedReviews": 25
+    "unlistedReviews": 27
   },
   "candidates": [
     {
@@ -48,7 +48,7 @@
     },
     {
       "title": "Cry God for Harry, England, and St George",
-      "venue": "Duke of York's Theatre",
+      "venue": "Tom Stoppard Theatre",
       "previewsStartDate": null,
       "openingDate": "2018-09-03",
       "closingDate": "2018-09-03",
@@ -890,7 +890,7 @@
     },
     {
       "title": "The Merchant of Venice",
-      "venue": "Duke of York's Theatre",
+      "venue": "Tom Stoppard Theatre",
       "previewsStartDate": null,
       "openingDate": "2018-10-22",
       "closingDate": "2018-10-22",
@@ -1406,7 +1406,7 @@
     },
     {
       "title": "Summer and Smoke",
-      "venue": "Duke of York's Theatre",
+      "venue": "Tom Stoppard Theatre",
       "previewsStartDate": null,
       "openingDate": "2018-11-10",
       "closingDate": "2019-01-19",
@@ -1414,19 +1414,15 @@
         "play"
       ],
       "season": "2018-2019",
-      "signals": [
-        "wos-review",
-        "olivier-2019"
-      ],
+      "signals": [],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/summer-and-smoke_169176/",
-        "wosReview": "https://www.whatsonstage.com/news/review-summer-and-smoke-duke-of-yorks-theatre_48044/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/summer-and-smoke_169176/"
       },
       "inShowsJson": null,
       "decision": {
-        "promotable": true,
-        "persistent": true,
-        "reason": "signals: wos-review, olivier-2019"
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
       }
     },
     {
@@ -2467,11 +2463,11 @@
       "sourceUrls": {
         "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/coming-clean_172173/"
       },
-      "inShowsJson": null,
+      "inShowsJson": "coming-clean-west-end-2020",
       "decision": {
         "promotable": false,
-        "persistent": false,
-        "reason": "no review signal (WOS review, Olivier nomination)"
+        "persistent": true,
+        "reason": "already in shows.json: coming-clean-west-end-2020"
       }
     },
     {
@@ -2612,7 +2608,7 @@
     },
     {
       "title": "Home I’m Darling",
-      "venue": "Duke of York's Theatre",
+      "venue": "Tom Stoppard Theatre",
       "previewsStartDate": null,
       "openingDate": "2019-01-26",
       "closingDate": "2019-04-13",
@@ -2620,17 +2616,15 @@
         "play"
       ],
       "season": "2018-2019",
-      "signals": [
-        "olivier-2019"
-      ],
+      "signals": [],
       "sourceUrls": {
         "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/home-im-darling_180434/"
       },
       "inShowsJson": null,
       "decision": {
-        "promotable": true,
-        "persistent": true,
-        "reason": "signals: olivier-2019"
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
       }
     },
     {
@@ -3630,7 +3624,7 @@
     },
     {
       "title": "Ian McKellen on stage with Tolkien, Shakespeare, Others and You",
-      "venue": "Duke of York's Theatre",
+      "venue": "Tom Stoppard Theatre",
       "previewsStartDate": null,
       "openingDate": "2019-03-07",
       "closingDate": "2019-03-07",
@@ -4472,7 +4466,7 @@
     },
     {
       "title": "Rosmersholm",
-      "venue": "Duke of York's Theatre",
+      "venue": "Tom Stoppard Theatre",
       "previewsStartDate": null,
       "openingDate": "2019-04-24",
       "closingDate": "2019-07-20",
@@ -4480,19 +4474,15 @@
         "play"
       ],
       "season": "2018-2019",
-      "signals": [
-        "wos-review",
-        "olivier-2020"
-      ],
+      "signals": [],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/rosmersholm_188596/",
-        "wosReview": "https://www.whatsonstage.com/news/review-rosmersholm-duke-of-yorks-theatre_49001/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/rosmersholm_188596/"
       },
       "inShowsJson": null,
       "decision": {
-        "promotable": true,
-        "persistent": true,
-        "reason": "signals: wos-review, olivier-2020"
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
       }
     },
     {
@@ -6072,7 +6062,7 @@
     },
     {
       "title": "The Girl on the Train",
-      "venue": "Duke of York's Theatre",
+      "venue": "Tom Stoppard Theatre",
       "previewsStartDate": null,
       "openingDate": "2019-07-23",
       "closingDate": "2019-08-17",
@@ -6080,17 +6070,15 @@
         "play"
       ],
       "season": "2018-2019",
-      "signals": [
-        "olivier-2020"
-      ],
+      "signals": [],
       "sourceUrls": {
         "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-girl-on-the-train_199256/"
       },
       "inShowsJson": null,
       "decision": {
-        "promotable": true,
-        "persistent": true,
-        "reason": "signals: olivier-2020"
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
       }
     },
     {
@@ -6363,7 +6351,7 @@
     },
     {
       "title": "The Son",
-      "venue": "Duke of York's Theatre",
+      "venue": "Tom Stoppard Theatre",
       "previewsStartDate": null,
       "openingDate": "2019-08-24",
       "closingDate": "2019-11-02",
@@ -6371,17 +6359,15 @@
         "play"
       ],
       "season": "2018-2019",
-      "signals": [
-        "olivier-2020"
-      ],
+      "signals": [],
       "sourceUrls": {
         "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-son_198158/"
       },
       "inShowsJson": null,
       "decision": {
-        "promotable": true,
-        "persistent": true,
-        "reason": "signals: olivier-2020"
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
       }
     }
   ],
@@ -6433,6 +6419,17 @@
       "url": "https://www.whatsonstage.com/news/review-the-duchess-of-malfi-lyceum_49123/",
       "rating": 4,
       "market": []
+    },
+    {
+      "title": "Rosmersholm",
+      "venue": "Duke of York's Theatre",
+      "date": "2019-05-03",
+      "url": "https://www.whatsonstage.com/news/review-rosmersholm-duke-of-yorks-theatre_49001/",
+      "rating": 4,
+      "market": [
+        83,
+        98
+      ]
     },
     {
       "title": "Local Hero",
@@ -6511,6 +6508,17 @@
       "date": "2018-12-03",
       "url": "https://www.whatsonstage.com/news/review-room-on-the-broom-lyric-theatre_48107/",
       "rating": 4,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "Summer and Smoke",
+      "venue": "Duke of York's Theatre",
+      "date": "2018-11-21",
+      "url": "https://www.whatsonstage.com/news/review-summer-and-smoke-duke-of-yorks-theatre_48044/",
+      "rating": 5,
       "market": [
         83,
         98
