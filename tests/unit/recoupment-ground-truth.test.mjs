@@ -23,8 +23,14 @@ describe('truthClass', () => {
     ]) assert.equal(cls(pct(src)), 'inference', src);
   });
   test('a trade or producer statement is reported, even inside long notes', () => {
-    assert.equal(cls(pct("Deadline: 'among this season's largest investment losses.'")), 'reported');
+    assert.equal(cls(pct("Deadline: producers said the show lost 90% of its capitalization.")), 'reported');
     assert.equal(cls({ estimatedRecoupmentPct: [55, 65], notes: '$15M capitalization. Producer J.J. Powell confirmed $6M loss (~40% of cap). Lloyd likely recouped via royalties.' }), 'reported');
+  });
+  test('a range from a source that states no figure is our inference (BRO-5073)', () => {
+    const t = groundTruth(pct("Deadline: 'among this season's largest investment losses.' Grossed below nut nearly every week."), closed);
+    assert.deepEqual([t.kind, t.truthClass, t.truthClassFrom], ['reported-pct', 'inference', 'no-stated-figure']);
+    assert.equal(cls({ estimatedRecoupmentPct: [10, 20], notes: "Weekly nut ~$500K. NYT: 'has not recouped those costs, but with the help of a New York state tax credit will get part way there.'" }), 'inference');
+    assert.equal(cls(pct('Daily Mail (Aug 2025): producer JJ Powell said it lost $6 million.')), 'reported');
   });
   test('an admission that nobody announced it is inference wherever it sits', () => {
     assert.equal(cls({ recouped: true, recoupedSource: 'Disney does not announce recoupments. Grosses passed $561M (Broadway Journal).' }), 'inference');
@@ -55,8 +61,8 @@ describe('truthClass', () => {
 describe('groundTruth', () => {
   test('a reported range counts; our own inference does not', () => {
     assert.deepEqual(
-      groundTruth({ estimatedRecoupmentPct: [20, 10], estimatedRecoupmentSource: 'NYT: part way there' }, closed),
-      { kind: 'reported-pct', lo: 10, hi: 20, source: 'NYT: part way there', truthClass: 'reported', truthClassFrom: 'source-text' },
+      groundTruth({ estimatedRecoupmentPct: [20, 10], estimatedRecoupmentSource: 'NYT: returned about 15% of its investment' }, closed),
+      { kind: 'reported-pct', lo: 10, hi: 20, source: 'NYT: returned about 15% of its investment', truthClass: 'reported', truthClassFrom: 'source-text' },
     );
     assert.equal(groundTruth({ estimatedRecoupmentPct: [30, 45], estimatedRecoupmentSource: 'Inferred: ~9 months run' }, {}), null);
     assert.equal(groundTruth({ estimatedRecoupmentPct: [30, 45], notes: 'Estimated: weekly profit x weeks' }, {}), null);

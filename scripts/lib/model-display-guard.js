@@ -22,7 +22,7 @@
 
 const { runWindow } = require('./run-window');
 // Our own "Inferred:"/"Estimated:" figures are not a report.
-const { OWN_INFERENCE } = require('./recoupment-ground-truth');
+const { OWN_INFERENCE, STATED_PCT } = require('./recoupment-ground-truth');
 
 const MIN_PLAYED_WEEKS = 12;
 const CENTRAL_MIN = -25;
@@ -38,7 +38,6 @@ const RUNNING_MODEL_BAR_ENABLED = false;
 // Notes stand in for a source only when they state a figure for the money
 // returned or lost ("$6M loss (~40% of cap)"); notes without one ("No trade
 // report of the capitalization") are no estimate (checker (c), 2026-10-10).
-const STATED_PCT = /\b(recoup\w*|returned|paid back|earned back|loss|lost)\b[^.;]{0,60}?\d+(?:\.\d+)?\s*(?:%|percent)|\d+(?:\.\d+)?\s*(?:%|percent)\s*(?:of|on)\s*(?:its |the )?(?:cap|capitali[sz]ation|investment)\b/i;
 
 /**
  * Does the site show the model bar for this record today? Mirrors
