@@ -8,46 +8,12 @@
     "email": null
   },
   "plan": {
-    "summary": "Moulin Rouge: add the reported share of capitalization returned (70% as of May 31, 2022, from NY Attorney General filings) as a dated, cited range; Merrily We Roll Along: cite its weekly nut (about $950,000, Broadway Journal)",
+    "summary": "Merrily We Roll Along: cite its weekly nut (about $950,000, Broadway Journal)",
     "steps": [
-      "Set estimatedRecoupmentPct [65,75], its source and date on the Moulin Rouge record",
       "Add the Broadway Journal citation and a trade-reported methodology to Merrily's existing $950,000 weekly running cost"
     ],
     "riskLevel": "low",
     "actions": [
-      {
-        "type": "data-edit",
-        "file": "commercial.json",
-        "showSlug": "moulin-rouge",
-        "showId": "moulin-rouge",
-        "field": "estimatedRecoupmentPct",
-        "oldValue": null,
-        "newValue": [
-          65,
-          75
-        ],
-        "description": "moulin-rouge: AG-filing \"% returned\" figure reported by Broadway Journal, quote checked on the page (BRO-5091)"
-      },
-      {
-        "type": "data-edit",
-        "file": "commercial.json",
-        "showSlug": "moulin-rouge",
-        "showId": "moulin-rouge",
-        "field": "estimatedRecoupmentSource",
-        "oldValue": null,
-        "newValue": "Broadway Journal (Jun 11, 2022): \"The Moulin Rouge! Broadway production company, MRB Musical LLC, returned 70 percent of its $28 million capitalization to investors as of May 31, according to papers filed with the office of New York Attorney General Letitia James.\" https://broadwayjournal.com/moulin-rouge-strange-loop-test-tony-tradition-of-goosing-grosses",
-        "description": "moulin-rouge: AG-filing \"% returned\" figure reported by Broadway Journal, quote checked on the page (BRO-5091)"
-      },
-      {
-        "type": "data-edit",
-        "file": "commercial.json",
-        "showSlug": "moulin-rouge",
-        "showId": "moulin-rouge",
-        "field": "estimatedRecoupmentDate",
-        "oldValue": null,
-        "newValue": "2022-05-31",
-        "description": "moulin-rouge: AG-filing \"% returned\" figure reported by Broadway Journal, quote checked on the page (BRO-5091)"
-      },
       {
         "type": "data-edit",
         "file": "commercial.json",

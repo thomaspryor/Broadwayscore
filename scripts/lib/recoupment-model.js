@@ -370,6 +370,10 @@ function costPathFactor(weekNumber, path) {
  *               hits a steady $110-160K a week the live model leaves out.
  *               Windows 0-52 and 30-60 pushed Hairspray, Jersey Boys,
  *               Kinky Boots and Merrily out of band; 39-91 and 52-104 did less.
+ *               Weeks are the schedule index (estimated previews plus
+ *               gap-filled weeks), so a little ahead of weeks played. The
+ *               window was tuned on the rows it is scored on: promote only
+ *               after a holdout check. Plays are never ramped.
  * Returns the extra variable cost in dollars (0 when neither is set).
  */
 const VAR_BAND = { fromRatio: 0.9, toRatio: 1.5, low: 0.12, high: 0.235 };
@@ -439,7 +443,7 @@ function calcWeeklyProfit(weeklyGross, weeklyNut, baseVarRate, isPostRecoup, wee
   const musical = !/^play/.test(showCategory || '');
   const bandPath = costPath && musical && (costPath.varBandMusicals || costPath.varBandMusicalsRamp) ? { ...costPath, varBand: true }
     : costPath && musical && costPath.varOverageMusicals ? { ...costPath, varOverage: true } : costPath;
-  const ramp = costPath && costPath.varBandMusicalsRamp ? Math.min(1, Math.max(0, weekNumber - VAR_RAMP.from) / (VAR_RAMP.to - VAR_RAMP.from)) : 1;
+  const ramp = costPath && musical && costPath.varBandMusicalsRamp ? Math.min(1, Math.max(0, weekNumber - VAR_RAMP.from) / (VAR_RAMP.to - VAR_RAMP.from)) : 1;
   const extraVar = costPath ? extraVariableCost(adjGross, fixedCosts, variableCosts + theaterCost, bandPath) * mult.variableCost * ramp : 0;
 
   // Preview cost premium

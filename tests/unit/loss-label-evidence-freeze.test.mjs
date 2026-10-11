@@ -86,4 +86,10 @@ describe('commercial-record-checks designationBasis rules', () => {
     assert.ok(w(60).some(m => /ages in/.test(m)));
     assert.equal(w(400).filter(m => /ages in/.test(m)).length, 0);
   });
+  it('warns when a recouped show still carries an earlier share returned (BRO-5091)', () => {
+    const w = (est) => commercialRecordWarnings('x', { designation: 'Windfall', recouped: true, estimatedRecoupmentPct: est });
+    assert.ok(w([65, 75]).some(m => /earlier share returned/.test(m)));
+    assert.equal(w([100, 120]).filter(m => /earlier share returned/.test(m)).length, 0);
+    assert.equal(w(null).filter(m => /earlier share returned/.test(m)).length, 0);
+  });
 });

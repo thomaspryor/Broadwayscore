@@ -337,6 +337,13 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
   if (show.designationBasis != null && !LOSS_DESIGNATIONS.includes(show.designation)) {
     out.push(`commercial.json: "${showId}" has designationBasis "${show.designationBasis}" on a non-loss designation "${show.designation || 'missing'}" (remove it)`);
   }
+  // A dated "% returned" range below 100 on a show that later recouped
+  // (BRO-5091): ground truth, the designation rule and the display guard read
+  // the range first, so the stale share would outrank the recoupment.
+  const est = show.estimatedRecoupmentPct;
+  if (show.recouped === true && Array.isArray(est) && est.every((v) => typeof v === 'number') && Math.max(...est) < 100) {
+    out.push(`commercial.json: "${showId}" is recouped but carries estimatedRecoupmentPct [${est.join(', ')}] (an earlier share returned; ground truth reads it before the recoupment, so remove it)`);
+  }
   if (isPrematureSilenceLabel(show, ctx.showRecord)) {
     out.push(`commercial.json: "${showId}" is "${show.designation}" on no recoupment announced but closed under ${LOSS_LABEL_MIN_DAYS} days ago (keep TBD + needsLossEvidence until it ages in)`);
   }
