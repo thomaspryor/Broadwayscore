@@ -156,7 +156,7 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-11T14:14:07.486Z",
-      "lastSeen": "2026-10-11T21:04:01.924Z",
+      "lastSeen": "2026-10-11T21:20:00.287Z",
       "lastNotifiedAt": "2026-10-11T14:14:07.486Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 132,
@@ -13965,14 +13965,20 @@
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run review-guards regression tests — \"foo returns the contracted value\"",
-      "firstSeen": "2026-10-11T20:22:09.425Z",
-      "incidentOpenedAt": "2026-10-11T20:22:09.425Z",
-      "lastSeen": "2026-10-11T21:04:01.916Z",
-      "lastNotifiedAt": "2026-10-11T20:22:09.425Z",
+      "firstSeen": "2026-10-11T20:04:41.621Z",
+      "incidentOpenedAt": "2026-10-11T20:04:41.621Z",
+      "lastSeen": "2026-10-11T21:20:00.278Z",
+      "lastNotifiedAt": "2026-10-11T20:04:41.621Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-5078",
+      "dispatch": {
+        "requestedAt": "2026-10-11T20:04:41.621Z",
+        "mode": "dispatch-at-filing",
+        "runId": "38169467183",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38169467183"
+      },
       "silentRefires": 2
     },
     "review-gap:opening-window:mystic-pizza-tour-2026": {
