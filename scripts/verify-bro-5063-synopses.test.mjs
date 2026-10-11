@@ -4,7 +4,7 @@
  * LIVE data/shows.json, not fixtures: a red run means a listed row still
  * reads as debris, pitch or billing, or a cleared row was never refilled.
  *
- * Skips until data/pending-fixes/bro-5063.json has been run by
+ * Skips until every data/pending-fixes/bro-5063*.json part has been run by
  * execute-approved-fix.yml (land.js runs every changed *.test.mjs, before
  * the data fix exists).
  *
@@ -35,19 +35,23 @@ const CARD_ROWS = [
 ];
 
 const readJson = (rel) => JSON.parse(fs.readFileSync(path.join(ROOT, rel), 'utf8'));
-const planPath = path.join(ROOT, 'data', 'pending-fixes', 'bro-5063.json');
+// The plan is split into parts of at most 25 actions (bro-5063, -b, -c).
+const PLAN_DIR = path.join(ROOT, 'data', 'pending-fixes');
+const planFiles = () => (fs.existsSync(PLAN_DIR) ? fs.readdirSync(PLAN_DIR) : []).filter(f => /^bro-5063(-[a-z])?\.json$/.test(f));
+const plans = () => planFiles().map(f => readJson(`data/pending-fixes/${f}`));
 const NO_DATA = fs.existsSync(path.join(ROOT, 'data', 'shows.json')) ? false : 'no core-data checkout here';
 // Runs once the executor wrote to shows.json: 'applied', or 'partial' when
 // some actions were refused. Pending, rejected or rolled-back plans skip.
 const RAN = new Set(['applied', 'partial']);
-const PENDING = NO_DATA || (fs.existsSync(planPath) && RAN.has(readJson('data/pending-fixes/bro-5063.json').status)
-  ? false : 'waits for execute-approved-fix.yml to apply data/pending-fixes/bro-5063.json');
+const PENDING = NO_DATA || (planFiles().length && plans().every(p => RAN.has(p.status))
+  ? false : 'waits for execute-approved-fix.yml to apply every data/pending-fixes/bro-5063*.json part');
 
 const showsById = () => {
   const data = readJson('data/shows.json');
   return new Map((Array.isArray(data) ? data : data.shows).map(s => [s.id, s]));
 };
-const planRows = () => readJson('data/pending-fixes/bro-5063.json').plan.actions.map(a => a.showId);
+const planActions = () => plans().flatMap(p => p.plan.actions);
+const planRows = () => planActions().map(a => a.showId);
 
 test('no card or plan row still holds wikitext debris or audience pitch', { skip: PENDING }, () => {
   const byId = showsById();
@@ -69,7 +73,7 @@ test('no card row opens on a press quote, billing, pitch or fragment', { skip: P
 
 test('every row the plan cleared, and the Grinch tour, has a synopsis again', { skip: PENDING }, () => {
   const byId = showsById();
-  const cleared = readJson('data/pending-fixes/bro-5063.json').plan.actions.filter(a => a.newValue === null).map(a => a.showId);
+  const cleared = planActions().filter(a => a.newValue === null).map(a => a.showId);
   const empty = [...cleared, 'dr-seuss-how-the-grinch-stole-christmas-tour-2026']
     .filter(id => byId.has(id) && !(typeof byId.get(id).synopsis === 'string' && byId.get(id).synopsis.trim()));
   assert.deepEqual(empty, [], 'cleared and not refilled: dispatch backfill-historical-metadata.yml with shows=<these ids>');
