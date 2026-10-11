@@ -155,7 +155,7 @@ function NewShowsCompare({ pace }: { pace: MarketPage['pace'] }) {
         className="m-0 text-xs text-gray-400 leading-snug"
         title="Each week is first compared with how all of Broadway sold that week, so a busy holiday week does not flatter a new show."
       >
-        Sales per seat so far, compared with every Broadway show since 2001 at the same point in its run. 50% is an average show.
+        Sales per seat so far, compared with every Broadway play and musical since 2001 at the same point in its run. 50% is a middle-of-the-pack show.
       </p>
       {pace.length ? (
         <ul className="m-0 p-0 list-none flex flex-col divide-y divide-white/5">

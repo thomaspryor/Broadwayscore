@@ -19,7 +19,9 @@ type Dot = MarketPage['priceMap'][number];
 type Frame = { w: number; h: number; left: number; right: number; top: number; bottom: number; charW: number; labelH: number };
 
 const DESKTOP: Frame = { w: 720, h: 420, left: 46, right: 14, top: 14, bottom: 30, charW: 6.4, labelH: 14 };
-const PHONE: Frame = { w: 360, h: 300, left: 34, right: 8, top: 10, bottom: 24, charW: 5.4, labelH: 12 };
+const PHONE: Frame = { w: 360, h: 300, left: 38, right: 8, top: 10, bottom: 26, charW: 6.4, labelH: 14 };
+/** Phone tap target radius in chart units (about 22 px across on a 390 px screen). */
+const PHONE_HIT_R = 14;
 
 export type LabelSide = 'right' | 'left' | 'below' | 'above';
 
@@ -103,8 +105,8 @@ function Chart({ dots, frame: f, phone, active, setActive }: ChartProps) {
   const y = (a: number) => f.top + (1 - (a - ax.atpLo) / (ax.atpHi - ax.atpLo || 1)) * (f.h - f.top - f.bottom);
   const pos = positions(dots, f, phone);
   const labelled = placeLabels(pos, f, phone ? mapOutliers(dots) : undefined, phone);
-  const tickFont = phone ? 10 : 12;
-  const labelFont = phone ? 10 : 11;
+  const tickFont = 12;
+  const labelFont = 11;
   const medianAtp = phone ? mapCorners(dots).medianAtp : null;
   return (
     <svg
@@ -116,13 +118,13 @@ function Chart({ dots, frame: f, phone, active, setActive }: ChartProps) {
       {ax.capTicks.map((c) => (
         <g key={`c${c}`}>
           <line x1={x(c)} x2={x(c)} y1={f.top} y2={f.h - f.bottom} className="stroke-white/5" />
-          <text x={x(c)} y={f.h - (phone ? 8 : 10)} fontSize={tickFont} textAnchor="middle" className="fill-gray-500">{phone ? `${c}%` : `${c}% full`}</text>
+          <text x={x(c)} y={f.h - (phone ? 8 : 10)} fontSize={tickFont} textAnchor="middle" className={phone ? 'fill-gray-400' : 'fill-gray-500'}>{phone ? `${c}%` : `${c}% full`}</text>
         </g>
       ))}
       {ax.atpTicks.map((a) => (
         <g key={`a${a}`}>
           <line x1={f.left} x2={f.w - f.right} y1={y(a)} y2={y(a)} className="stroke-white/5" />
-          <text x={f.left - (phone ? 4 : 5)} y={y(a) + 4} fontSize={tickFont} textAnchor="end" className="fill-gray-500">${a}</text>
+          <text x={f.left - (phone ? 4 : 5)} y={y(a) + 4} fontSize={tickFont} textAnchor="end" className={phone ? 'fill-gray-400' : 'fill-gray-500'}>${a}</text>
         </g>
       ))}
       {phone && medianAtp != null && (
@@ -143,13 +145,21 @@ function Chart({ dots, frame: f, phone, active, setActive }: ChartProps) {
         <g key={d.slug}>
           <circle
             cx={d.x} cy={d.y} r={d.r}
-            className={`${active === d.slug ? 'fill-brand' : 'fill-brand/60'} stroke-surface cursor-pointer outline-none focus-visible:stroke-white`}
+            className={`${active === d.slug ? 'fill-brand' : 'fill-brand/60'} stroke-surface pointer-events-none`}
             strokeWidth={phone ? 1 : 1.5}
+          />
+          {/* The hit area: on phones it is larger than the dot so a finger can land on it. */}
+          <circle
+            cx={d.x} cy={d.y} r={phone ? Math.max(d.r, PHONE_HIT_R) : d.r}
+            className="fill-transparent stroke-transparent cursor-pointer outline-none focus-visible:stroke-white"
+            strokeWidth={1.5}
             tabIndex={0}
             role="button"
             aria-label={`${d.title}: ${Math.round(d.capacity)}% full, $${Math.round(d.atp)} avg ticket`}
             aria-pressed={active === d.slug}
-            onClick={() => setActive(active === d.slug ? null : d.slug)}
+            // A tap fires mouseenter and focus before click, which already select
+            // the dot, so click only ever selects; the ✕, Escape or another dot clear it.
+            onClick={() => setActive(d.slug)}
             onFocus={() => setActive(d.slug)}
             onMouseEnter={() => setActive(d.slug)}
             onMouseLeave={() => setActive((a) => (a === d.slug ? null : a))}
@@ -185,7 +195,7 @@ function CornerLists({ dots }: { dots: Dot[] }) {
           <ul className="m-0 p-0 list-none flex flex-col">
             {c.shows.map((s) => (
               <li key={s.slug} className="flex items-baseline justify-between gap-3 py-0.5 text-sm">
-                <span className="text-white truncate">{s.label}</span>
+                <span className="text-white truncate" title={s.title}>{s.label}</span>
                 <span className="text-gray-400 tabular-nums shrink-0">{Math.round(s.capacity)}% · ${Math.round(s.atp)}</span>
               </li>
             ))}
@@ -212,7 +222,7 @@ export default function PriceMap({ dots }: { dots: Dot[] }) {
           <Chart dots={dots} frame={DESKTOP} phone={false} active={active} setActive={setActive} />
         </div>
         {sel && (
-          <div className="absolute left-3 right-3 bottom-3 sm:left-auto sm:right-4 sm:w-72 bg-surface-elevated border border-white/10 rounded-lg px-3 py-2 text-sm text-white flex items-center justify-between gap-3" role="status">
+          <div className="mt-2 sm:mt-0 sm:absolute sm:bottom-3 sm:right-4 sm:w-72 bg-surface-elevated border border-white/10 rounded-lg px-3 py-2 text-sm text-white flex items-center justify-between gap-3" role="status">
             <span>
               <span className="font-semibold">{sel.title}</span>
               <span className="block text-xs text-gray-400">{Math.round(sel.capacity)}% full · ${Math.round(sel.atp)} avg ticket · {sel.seats.toLocaleString('en-US')} seats</span>
