@@ -156,6 +156,12 @@ export const GOOGLE_MISMATCH_MARKERS = /Error 400: redirect_uri_mismatch|data-er
 export const GOOGLE_ERROR_MARKERS = /Error \d{3}: [a-z_]+|\/signin\/oauth\/error|data-error-code=/i;
 /** What a real account chooser or sign-in page contains (error pages link to /signin/oauth/error, so that path is not evidence). */
 export const GOOGLE_SIGNIN_MARKERS = /Choose an account|identifierId|to continue to/i;
+/**
+ * How much of Google's page to read. The live sign-in page is ~1.3 MB and
+ * its markers sit past 900 KB (2026-10-11: a 300 KB cap read none of them,
+ * so a working callback was refused as "neither chooser nor error").
+ */
+export const GOOGLE_PAGE_LIMIT = 4_000_000;
 /** A real phone browser: Google serves other agents a different, uninformative page (the 2026-10-09 false pass). */
 export const GOOGLE_PROBE_UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1';
 
@@ -175,7 +181,10 @@ export function judgeGoogleRedirectProbe(page) {
   const other = body.match(GOOGLE_ERROR_MARKERS);
   if (other) return { ok: false, reason: `Google shows an error page (${other[0].slice(0, 60)})` };
   if (page.status >= 400) return { ok: false, reason: `Google answered HTTP ${page.status}` };
-  if (!GOOGLE_SIGNIN_MARKERS.test(body)) return { ok: false, inconclusive: true, reason: 'Google answered with a page that is neither the account chooser nor an error; not activating on a guess' };
+  if (!GOOGLE_SIGNIN_MARKERS.test(body)) {
+    const title = (body.match(/<title>([^<]{0,80})/i) || ['', '(no title)'])[1].trim();
+    return { ok: false, inconclusive: true, reason: `Google answered with a page that is neither the account chooser nor an error (HTTP ${page.status}, ${body.length} chars, title "${title}"); not activating on a guess` };
+  }
   return { ok: true, reason: 'Google shows its account chooser for the callback' };
 }
 
@@ -350,7 +359,7 @@ async function probeGoogle(ctx) {
   const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${encodeURIComponent(clientId)}&redirect_uri=${encodeURIComponent(redirect)}&response_type=code&scope=email%20profile`;
   try {
     const res = await fetch(url, { redirect: 'follow', headers: { 'User-Agent': GOOGLE_PROBE_UA, 'Accept-Language': 'en-US,en;q=0.9' }, signal: AbortSignal.timeout(30000) });
-    const body = (await res.text()).slice(0, 300000);
+    const body = (await res.text()).slice(0, GOOGLE_PAGE_LIMIT);
     return judgeGoogleRedirectProbe({ status: res.status, body });
   } catch (e) {
     return { ok: false, inconclusive: true, reason: `Google fetch failed: ${String(e && e.message || e).slice(0, 120)}` };

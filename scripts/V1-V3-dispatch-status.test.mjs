@@ -18,7 +18,7 @@ const HOOKS = path.join(ROOT, '.claude', 'hooks');
 
 // Measured on main 2026-10-06: 18 top-level hook scripts, 5049 lines across all hook files including lib/.
 const MAX_HOOK_FILES = 18;
-const MAX_HOOK_LINES = 5180; // BRO-5068: +failed-skill fallback in the finish chain (owner-reported gap 2026-10-11)
+const MAX_HOOK_LINES = 5190; // BRO-5068: +create_session source_url guard (lowercase url skipped every finish check)
 
 // Retired hooks whose script must STAY: old cloud snapshots still call them, so they are unregistered but never
 // deleted (scripts/tests/cloud-settings-guards.test.mjs asserts the same; .claude/CLOUD.md documents it).
