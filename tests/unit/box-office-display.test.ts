@@ -7,6 +7,9 @@ import assert from 'node:assert/strict';
 import {
   closingsSentence,
   cohortSentence,
+  mapCorners,
+  mapOutliers,
+  MAP_FULL_PCT,
   moverNote,
   partOfMonth,
   rankJumpSentence,
@@ -80,6 +83,40 @@ test('placeLabels: no label overlaps another label or a dot; right edge falls ba
   assert.equal(placed.get('a'), 'left', 'a dot at the right edge gets its label on the left');
   assert.equal(placed.get('b'), 'right');
   assert.ok(!placed.has('c'), 'a dot buried under a bigger one stays unlabelled');
+});
+
+test('placeLabels: `only` names just those dots, and the others still block labels', () => {
+  const dots = [
+    { slug: 'big', label: 'Big Show', x: 200, y: 100, r: 12 },
+    { slug: 'out', label: 'Outlier', x: 160, y: 100, r: 4 },
+  ];
+  const placed = placeLabels(dots, undefined, new Set(['out']));
+  assert.ok(!placed.has('big'), 'a dot outside `only` gets no label');
+  assert.equal(placed.get('out'), 'left', 'the right side is blocked by the unlabelled big dot');
+});
+
+test('mapOutliers: the dots farthest from the middle, each axis scaled by its spread', () => {
+  const mid = [90, 92, 94, 95, 96].map((c, i) => ({ slug: `m${i}`, capacity: c, atp: 110 + i }));
+  const dots = [...mid, { slug: 'pricey', capacity: 100, atp: 280 }, { slug: 'empty', capacity: 62, atp: 70 }];
+  assert.deepEqual(Array.from(mapOutliers(dots, 2)).sort(), ['empty', 'pricey']);
+  assert.equal(mapOutliers([], 3).size, 0);
+});
+
+test('mapCorners: median ticket and the full line split the shows; fullest first; empty corners dropped', () => {
+  const dots = [
+    { slug: 'a', capacity: 99, atp: 200 },
+    { slug: 'b', capacity: MAP_FULL_PCT, atp: 150 },
+    { slug: 'c', capacity: 95, atp: 80 },
+    { slug: 'd', capacity: 70, atp: 60 },
+  ];
+  const { medianAtp, corners } = mapCorners(dots);
+  assert.equal(medianAtp, 115);
+  assert.deepEqual(corners.map((c) => [c.title, c.shows.map((s) => s.slug)]), [
+    ['Full and pricey', ['a', 'b']],
+    ['Full but cheaper', ['c']],
+    ['Lower prices, empty seats', ['d']],
+  ]);
+  assert.deepEqual(mapCorners([]), { medianAtp: null, corners: [] });
 });
 
 test('real data: the market page builds with sane numbers', () => {
