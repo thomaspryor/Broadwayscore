@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5014",
   "planId": "d7a57bf7-c211-406f-b54e-ebe742573d0c",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-10T23:05:00.000Z",
   "submitter": {
     "name": null,
@@ -23,5 +23,13 @@
         "description": "Retire the duplicate 860 row"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-11T00:16:53.509Z",
+  "results": [
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired 860-2026 (\"860\" @ Imperial Theatre)"
+    }
+  ]
 }
