@@ -156,13 +156,13 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-11T14:14:07.486Z",
-      "lastSeen": "2026-10-11T15:29:42.712Z",
+      "lastSeen": "2026-10-11T18:09:02.961Z",
       "lastNotifiedAt": "2026-10-11T14:14:07.486Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 132,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -11539,19 +11539,20 @@
       "silentRefires": 1
     },
     "mezzanine:session-token-expired": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "Mezzanine Scraper Failed — Session Token Expired",
       "firstSeen": "2026-10-07T13:48:53.393Z",
       "incidentOpenedAt": "2026-10-11T15:05:39.168Z",
-      "lastSeen": "2026-10-11T15:35:23.457Z",
+      "lastSeen": "2026-10-11T17:55:40.751Z",
       "lastNotifiedAt": "2026-10-11T15:05:39.168Z",
       "lastSurfacedAt": "2026-10-11T15:05:39.168Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-11T17:56:36.371Z"
     },
     "gap:the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--marc-miller.json": {
       "status": "resolved",
@@ -13765,7 +13766,8 @@
       "linearIdentifier": "BRO-5060",
       "silentRefires": 3,
       "absentRunIds": [
-        "38156539139"
+        "38156539139",
+        "38161313395"
       ]
     },
     "land:land/bro-5063-synopses": {
@@ -13814,7 +13816,7 @@
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no bare-string override collides with another tracked show's own title\"",
       "firstSeen": "2026-10-11T16:58:24.088Z",
       "incidentOpenedAt": "2026-10-11T16:58:24.088Z",
-      "lastSeen": "2026-10-11T16:58:24.088Z",
+      "lastSeen": "2026-10-11T18:09:02.952Z",
       "lastNotifiedAt": "2026-10-11T16:58:24.088Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
@@ -13825,7 +13827,8 @@
         "mode": "dispatch-at-filing",
         "runId": "38156539139",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38156539139"
-      }
+      },
+      "silentRefires": 1
     },
     "land:land/bro-2730-we-late-cron": {
       "status": "open",

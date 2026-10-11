@@ -572,6 +572,60 @@ describe('mergePendingReview', () => {
       assert.equal(mergePendingReview.requiresTrueBase, true);
       assert.equal(mergePendingReview.length, 3);
     });
+
+    // BRO-5069: both sides kept the row; each side's own field changes land.
+    it('both kept: remote-only stamp and ours-only approval both survive', () => {
+      const base = { shows: { a: row() }, lastUpdated: '2026-10-10T00:00:00Z' };
+      const ours = { shows: { a: row({ ownerApproved: true }) }, lastUpdated: '2026-10-11T08:00:00Z' };
+      const remote = { shows: { a: row(stamp) }, lastUpdated: '2026-10-11T09:00:00Z' };
+      const { merged, stats } = mergePendingReview(ours, remote, base);
+      assert.equal(merged.shows.a.ownerApproved, true);
+      assert.deepEqual(merged.shows.a.truthReview, stamp.truthReview);
+      assert.ok(stats.fieldsTakenFromOther >= 1);
+    });
+
+    it('both kept: a field both changed goes to the newer side', () => {
+      const base = { shows: { a: row() } };
+      const ours = { shows: { a: row({ designation: 'Flop', researchedAt: '2026-10-11T07:00:00Z' }) } };
+      const remote = { shows: { a: row({ designation: 'Hit', researchedAt: '2026-10-11T09:00:00Z' }) } };
+      assert.equal(mergePendingReview(ours, remote, base).merged.shows.a.designation, 'Hit');
+    });
+
+    it('both kept: a field the other side removed since base is removed', () => {
+      const base = { shows: { a: row({ note: 'x' }) } };
+      const ours = { shows: { a: row({ note: 'x' }) } };
+      const { note, ...noNote } = row({ note: 'x' });
+      const remote = { shows: { a: noNote } };
+      assert.equal('note' in mergePendingReview(ours, remote, base).merged.shows.a, false);
+    });
+
+    it('both kept: an approval does not carry onto figures re-researched by the other side', () => {
+      const base = { shows: { a: row({ designation: 'TBD' }) } };
+      const ours = { shows: { a: row({ designation: 'TBD', ownerApproved: true, ...stamp }) } };
+      const remote = { shows: { a: row({ designation: 'Fizzle', recoupedDate: '2026-09', researchedAt: '2026-10-11T09:00:00Z' }) } };
+      const a = mergePendingReview(ours, remote, base).merged.shows.a;
+      assert.equal(a.designation, 'Fizzle');
+      assert.equal(a.ownerApproved, undefined);
+      assert.equal(a.truthReview, undefined);
+    });
+
+    it('both kept, both re-researched: the claim comes whole from one side, never mixed', () => {
+      const base = { shows: { a: row() } };
+      const ours = { shows: { a: row({ recoupedDate: '2026-09', confidence: 'high', designation: 'Easy Winner', researchedAt: '2026-10-11T09:00:00Z' }) } };
+      const remote = { shows: { a: row({ sourceHost: 'playbill.com', researchedAt: '2026-10-11T08:00:00Z' }) } };
+      const a = mergePendingReview(ours, remote, base).merged.shows.a;
+      assert.equal(a.designation, 'Easy Winner');
+      assert.equal(a.sourceHost, undefined);
+    });
+
+    it('both kept, no base: whole row from one side as before (tie keeps ours)', () => {
+      const ours = { shows: { a: row({ ownerApproved: true }) } };
+      const remote = { shows: { a: row(stamp) } };
+      const { merged, stats } = mergePendingReview(ours, remote);
+      assert.equal(merged.shows.a.ownerApproved, true);
+      assert.equal(merged.shows.a.truthReview, undefined);
+      assert.equal(stats.fieldsTakenFromOther, 0);
+    });
   });
 });
 

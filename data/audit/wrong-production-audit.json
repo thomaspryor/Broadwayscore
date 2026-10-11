@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-11T17:48:35.872Z",
+  "timestamp": "2026-10-11T17:58:59.934Z",
   "stats": {
-    "totalReviews": 55723,
-    "alreadyFlagged": 20689,
-    "dateGuardCatches": 261,
+    "totalReviews": 55731,
+    "alreadyFlagged": 20705,
+    "dateGuardCatches": 260,
     "directorMismatch": 1731,
     "tvFilmSignals": 1592,
-    "londonSignals": 2112,
+    "londonSignals": 2116,
     "offBroadwaySignals": 506,
     "yearMismatch": 135,
-    "noPublishDate": 5570
+    "noPublishDate": 5551
   },
   "findings": [
     {
@@ -45177,20 +45177,6 @@
       ]
     },
     {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 82,
-      "publishDate": "2023-02-07",
-      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
-        }
-      ]
-    },
-    {
       "showId": "tootsie-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 77,
@@ -72281,6 +72267,20 @@
       ]
     },
     {
+      "showId": "stories-west-end-2018",
+      "file": "thestage--rosemary-waugh.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.thestage.co.uk/reviews/stories-review-at-national-theatre-london--nina-raines-frustrating-new-play",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "straight-white-men-2018",
       "file": "amny--matt-windman.json",
       "score": 59,
@@ -82164,9 +82164,49 @@
     },
     {
       "showId": "wise-children-west-end-2018",
+      "file": "british-theatre--paul-t-davies.json",
+      "publishDate": "2018-10-19",
+      "url": "https://www.britishtheatre.com/ko/posts/review-wise-children-old-vic-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "wise-children-west-end-2018",
+      "file": "city-am--adam-bloodworth.json",
+      "score": null,
+      "publishDate": "2018-10-19",
+      "url": "https://www.cityam.com/wise-children-old-vic-review-emma-rices-latest-show/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "wise-children-west-end-2018",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 80,
       "publishDate": "2018-10-09",
+      "url": "https://www.timeout.com/london/theatre/wise-children-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "wise-children-west-end-2018",
+      "file": "timeout-london--unknown.json",
+      "publishDate": "2018-10-17",
       "url": "https://www.timeout.com/london/theatre/wise-children-review",
       "findings": [
         {
