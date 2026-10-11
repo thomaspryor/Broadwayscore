@@ -88,6 +88,16 @@ function groundTruth(comm, show, now = new Date()) {
   return t && { ...t, ...truthClassOf(comm, t.kind, t.source) };
 }
 
+// Recouped after the Broadway run closed, with the source crediting a tour
+// (Kimberly Akimbo, Playbill Apr 23, 2026): the Broadway-only model cannot
+// see tour profits, so this is not a test of it (BRO-5073).
+const TOUR_CREDIT = /\btour\b/i;
+function recoupedFromTour(comm, show) {
+  const close = show && show.closingDate;
+  return !!close && typeof comm.recoupedDate === 'string' && comm.recoupedDate.slice(0, 7) > close.slice(0, 7)
+    && TOUR_CREDIT.test(String(comm.recoupedSource) + ' ' + String(comm.notes || ''));
+}
+
 function rawGroundTruth(comm, show, now) {
   if (!comm) return null;
   const est = comm.estimatedRecoupmentPct;
@@ -99,6 +109,7 @@ function rawGroundTruth(comm, show, now) {
     return { kind: 'reported-pct', lo: Math.min(...est), hi: Math.max(...est), source: String(basis), ...(asOf ? { asOf } : {}) };
   }
   if (comm.recouped === true && comm.recoupedSource) {
+    if (recoupedFromTour(comm, show)) return null;
     return { kind: 'recouped', lo: 100, hi: Infinity, source: String(comm.recoupedSource) };
   }
   const closed = show && show.closingDate && new Date(show.closingDate) <= now;
@@ -181,4 +192,5 @@ function formatMarkdown({ title, summary, rows, worse, limit = 15, aggregateOnly
   return out.join('\n');
 }
 
-module.exports = { STATED_PCT, statesFigure, groundTruth, truthClassOf, classifySourceText, classifyFailedText, TRUTH_CLASS_FIELD, rangeError, category, summarize, worseGroups, formatMarkdown, fmtTruth, OWN_INFERENCE };
+module.exports = {
+  recoupedFromTour, STATED_PCT, statesFigure, groundTruth, truthClassOf, classifySourceText, classifyFailedText, TRUTH_CLASS_FIELD, rangeError, category, summarize, worseGroups, formatMarkdown, fmtTruth, OWN_INFERENCE };

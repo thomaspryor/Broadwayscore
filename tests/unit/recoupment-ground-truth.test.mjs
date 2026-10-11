@@ -59,6 +59,15 @@ describe('truthClass', () => {
 });
 
 describe('groundTruth', () => {
+  test('recouped after closing with tour profits is not a test of the Broadway model (BRO-5073)', () => {
+    const show = { closingDate: '2024-04-28' };
+    const comm = { recouped: true, recoupedDate: '2026-04', recoupedSource: 'Playbill (Apr 23, 2026): "Both the Broadway production and the national tour have now recouped their investments"' };
+    assert.equal(groundTruth(comm, show), null);
+    // after closing with a tax credit, no tour: still a test
+    assert.equal(groundTruth({ ...comm, recoupedDate: '2026-06', recoupedSource: 'Deadline (Jun 2026): recouped its $5.25M capitalization nine months after closing' }, show).kind, 'recouped');
+    // a tour mentioned on a show that recouped while running: still a test
+    assert.equal(groundTruth({ ...comm, recoupedDate: '2023-05' }, show).kind, 'recouped');
+  });
   test('a reported range counts; our own inference does not', () => {
     assert.deepEqual(
       groundTruth({ estimatedRecoupmentPct: [20, 10], estimatedRecoupmentSource: 'NYT: returned about 15% of its investment' }, closed),
