@@ -191,7 +191,7 @@ function main() {
     saveCommercial(commercial);
     console.log(`\n✓ Wrote ${applied} Fizzle classifications, ${flagged} needsLossEvidence flags and ${reopened.length} undos to commercial.json`);
   } else {
-    console.log('\nNo Fizzle classifications to apply.');
+    console.log('\nNothing to write (no new Fizzle, flag or undo).');
   }
 
   // Surface human-review cases as JSON for downstream Linear processing.
