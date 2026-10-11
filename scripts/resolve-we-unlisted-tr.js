@@ -29,7 +29,7 @@ const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { selectLookups, pickTrForReview, reviewLedPath, headerFacts, parseTrHeaderDates } = require('./lib/we-review-led-candidates');
+const { selectLookups, pickTrForReview, reviewLedPath, headerFacts, parseTrHeaderDates, dateSnippets } = require('./lib/we-review-led-candidates');
 const { isLondonVenue } = require('./lib/tr-london-venue');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 
@@ -111,6 +111,24 @@ function logDateContext(text, title, mode) {
     }
   }
   if (!shown) console.log(`    [${mode}] no heading equal to "${want}"`);
+}
+
+const LABEL_LINE = /^(?:press night|first preview|previews?|opening night|opens|opened|closes|closing|until|runs until|final performance)\b/i;
+
+/**
+ * HTML-era production page: the title plus the date phrases from short lines
+ * that START with a run-date label ("Press Night 05 Sep 2019",
+ * "Closes 05 Oct 2019"). Lines elsewhere on the page (reviews) are ignored,
+ * so a date a critic mentions is never read as the run.
+ */
+function htmlHeaderFor(title, text) {
+  const facts = [];
+  for (const raw of String(text || '').split('\n')) {
+    const line = raw.replace(/\s+/g, ' ').trim();
+    if (!LABEL_LINE.test(line) || line.split(' ').length > 10) continue;
+    for (const sn of dateSnippets(line)) if (!facts.includes(sn)) facts.push(sn);
+  }
+  return facts.length ? [String(title || '').trim(), ...facts].join('\n') : null;
 }
 
 /**
@@ -224,11 +242,14 @@ async function main() {
     }
     await page.goto(link, { waitUntil: 'domcontentloaded', timeout: 20000 });
     await page.waitForTimeout(1500);
-    const text = await page.evaluate(() => {
+    const { title: pageTitle, text } = await page.evaluate(() => {
       const first = document.querySelector('main article');
-      return first ? first.innerText : null;
+      const root = document.querySelector('main') || document.body;
+      return { title: first ? first.innerText.split('\n').map(l => l.trim()).find(Boolean) : null, text: root ? root.innerText : null };
     });
-    return text ? headerFacts(text) : null;
+    const h = htmlHeaderFor(pageTitle || title, text);
+    if (!parseTrHeaderDates(h).closingDate) logDateContext(`${capsKey(cleanSearchTitle(title))}\n${text || ''}`, title, 'html');
+    return h;
   }
 
   let failures = 0;
@@ -265,4 +286,4 @@ if (require.main === module) {
   main().catch(e => { console.error(e); process.exit(1); });
 }
 
-module.exports = { pdfHeaderFor, searchTitles, logDateContext };
+module.exports = { pdfHeaderFor, htmlHeaderFor, searchTitles, logDateContext };
