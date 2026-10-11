@@ -164,7 +164,8 @@ test('apply with history: the emptied 2025 Mamma Mia! (a move source) gets its o
   assert.equal(g['mamma-mia-2001'].allTime.performances, 5979);
   assert.deepEqual(g['mamma-mia'].allTime, { gross: 27_000_002.7, performances: 216, attendance: 216_000 });
   assert.equal(g['mamma-mia'].partialRun, undefined);
-  assert.deepEqual(r.fills, [{ slug: 'mamma-mia', complete: true, weeks: 27, since: '2025-08-03', gross: 27_000_002.7 }]);
+  assert.deepEqual(r.fills, [{ slug: 'mamma-mia', status: 'complete', weeks: 27, gaps: 0, since: '2025-08-03', gross: 27_000_002.7 }]);
+  assert.equal(g['mamma-mia'].allTimeSource, 'history');
 });
 
 test('history that starts after the first preview gives a partialRun with since, and allTime stays blank', () => {
@@ -172,7 +173,7 @@ test('history that starts after the first preview gives a partialRun with since,
   const g = { 'the-music-man-2000': at(null, null, null) };
   const history = hist({ 'the-music-man-2000': ['2001-12-16', '2001-12-30', ROW] });
   const fills = fillClearedFromHistory(g, [show], history, [{ slug: 'the-music-man-2000' }], { now: NOW });
-  assert.equal(fills[0].complete, false);
+  assert.equal(fills[0].status, 'partial');
   assert.equal(g['the-music-man-2000'].allTime.gross, null);
   assert.deepEqual(g['the-music-man-2000'].partialRun, { gross: 3_000_000.3, performances: 24, attendance: 24_000, since: '2001-12-16' });
 });
@@ -206,4 +207,68 @@ test('a running show counts to the newest week; a slug with a real allTime drops
   assert.equal(g.other.allTime.gross, null);
   const h2 = hist({ chicago: ['1996-10-27', '2026-10-04', ROW] });
   assert.equal(ownRunTotals(h2, running, { now: NOW }).complete, true);
+});
+
+test('rows filed under the slug from an earlier run of the title are never summed (history not yet re-keyed)', () => {
+  const show = { id: 'beetlejuice-2025', slug: 'beetlejuice-2025', category: 'broadway', openingDate: '2025-10-08', closingDate: '2026-01-03' };
+  const history = hist({ 'beetlejuice-2025': ['2019-03-31', '2020-03-08', ROW] });
+  for (const w of weeksFrom('2025-10-12', '2026-01-04')) (history.weeks[w] ||= {})['beetlejuice-2025'] = { ...ROW };
+  const own = ownRunTotals(history, show, { now: NOW });
+  assert.equal(own.weeks, 13);
+  assert.equal(own.since, '2025-10-12');
+  assert.equal(own.status, 'complete');
+  // A run with only another run's rows gets nothing.
+  assert.equal(ownRunTotals(hist({ 'porgy-1976': ['2011-12-18', '2012-09-30', ROW] }), bw('porgy-1976', '1976-09-10', '1977-01-09'), { now: NOW }), null);
+});
+
+test('a week missing inside the run, or a short end, leaves the production blank; a count over the run is a misfit', () => {
+  const show = bw('dos-2026', '2026-03-06', '2026-08-09');
+  const history = hist({ 'dos-2026': ['2026-03-08', '2026-08-09', ROW] });
+  history.weeks['2026-03-29'] = { other: { ...ROW } };
+  const g = { 'dos-2026': at(null, null, null) };
+  const fills = fillClearedFromHistory(g, [show], history, [{ slug: 'dos-2026' }], { now: NOW });
+  assert.deepEqual([fills[0].status, fills[0].gaps], ['gaps', 1]);
+  assert.equal(g['dos-2026'].allTime.gross, null);
+  assert.equal(g['dos-2026'].partialRun, undefined);
+  const shortEnd = hist({ 'dos-2026': ['2026-03-08', '2026-06-07', ROW] });
+  shortEnd.weeks['2026-08-09'] = { other: { ...ROW } };
+  assert.equal(ownRunTotals(shortEnd, show, { now: NOW }).status, 'gaps');
+  const heavy = hist({ 'dos-2026': ['2026-03-08', '2026-08-09', { ...ROW, performances: 40 }] });
+  assert.equal(ownRunTotals(heavy, show, { now: NOW }).status, 'misfit');
+});
+
+test('holes are counted in calendar weeks: a week absent from the history is a gap, Broadway going dark in 2020 is not', () => {
+  const show = bw('dos-2026', '2026-03-06', '2026-08-09');
+  const history = hist({ 'dos-2026': ['2026-03-08', '2026-08-09', ROW] });
+  delete history.weeks['2026-03-29'];
+  const own = ownRunTotals(history, show, { now: NOW });
+  assert.deepEqual([own.status, own.gaps], ['gaps', 1]);
+  // A run spanning the COVID shutdown (no week keys 2020-03-15..2021-08-15) is complete.
+  const covid = hist({ hadestown: ['2019-03-24', '2020-03-08', ROW] });
+  for (const w of weeksFrom('2021-08-22', '2021-10-03')) (covid.weeks[w] ||= {}).hadestown = { ...ROW };
+  const run = bw('hadestown', '2019-03-22', '2021-10-03');
+  const c = ownRunTotals(covid, run, { now: NOW });
+  assert.deepEqual([c.status, c.gaps], ['complete', 0]);
+});
+
+test('a run whose first row is late but after the history starts is a missed week, not a "since" partial', () => {
+  const show = bw('spring-2026', '2026-03-10', '2026-08-09');
+  const history = hist({ older: ['2001-12-16', '2001-12-30', ROW], 'spring-2026': ['2026-04-12', '2026-08-09', ROW] });
+  const own = ownRunTotals(history, show, { now: NOW });
+  assert.equal(own.status, 'gaps');
+});
+
+test('a history-filled allTime is refreshed from the weekly rows on the next run, and dropped when the rows no longer support it', () => {
+  const running = bw('revival-2026', '2026-05-01', null);
+  const g = { 'revival-2026': { allTime: { gross: 1, performances: 8, attendance: 1 }, allTimeSource: 'history' } };
+  const history = hist({ 'revival-2026': ['2026-05-03', '2026-10-04', ROW] });
+  const fills = fillClearedFromHistory(g, [running], history, [], { now: NOW });
+  assert.equal(fills[0].status, 'complete');
+  assert.equal(g['revival-2026'].allTime.performances, 8 * 23);
+  assert.equal(g['revival-2026'].allTimeSource, 'history');
+  delete history.weeks['2026-06-07']['revival-2026'];
+  history.weeks['2026-06-07'].other = { ...ROW };
+  fillClearedFromHistory(g, [running], history, [], { now: NOW });
+  assert.deepEqual(g['revival-2026'].allTime, { gross: null, performances: null, attendance: null });
+  assert.equal(g['revival-2026'].allTimeSource, undefined);
 });

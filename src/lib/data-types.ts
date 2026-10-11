@@ -213,6 +213,8 @@ export interface ShowGrosses {
     performances: number | null;
     attendance: number | null;
   };
+  /** 'history' when allTime is this production's weekly League rows summed (BRO-5016). */
+  allTimeSource?: 'history';
   /**
    * This production's own weekly League rows summed, when its all-time row
    * was a total over several runs (cleared) and the weekly history does not

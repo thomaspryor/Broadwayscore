@@ -26,6 +26,8 @@ const {
   latestPublishableWeek,
   isoWeekToMDY,
   playbillGrossesUrl,
+  findShortHistoryWeeks,
+  addMissingRows,
 } = require('../../scripts/lib/parse-playbill-grosses.js');
 const { isSaneGrossesRow } = require('../../scripts/lib/parse-bww-grosses-row.js');
 
@@ -304,4 +306,49 @@ test('week helpers', () => {
   assert.equal(playbillGrossesUrl(), 'https://playbill.com/grosses');
   assert.equal(playbillGrossesUrl('2026-09-20'), 'https://playbill.com/grosses?week=2026-09-20');
   assert.throws(() => playbillGrossesUrl('9/20/2026'));
+});
+
+test('findShortHistoryWeeks: a stored week missing a show held either side is refilled; a long hiatus and a run edge are not (BRO-5016)', () => {
+  const r = { gross: 1 };
+  const weeks = {};
+  const add = (w, ...slugs) => { weeks[w] = Object.fromEntries(slugs.map((s) => [s, r])); };
+  add('2026-03-15', 'dos', 'tmo', 'new');
+  add('2026-03-22', 'tmo', 'new');
+  add('2026-03-29', 'new');
+  add('2026-04-05', 'dos', 'new');
+  for (const w of ['2026-04-12', '2026-04-19', '2026-04-26', '2026-05-03', '2026-05-10']) add(w, 'dos', 'new');
+  add('2026-05-17', 'dos', 'tmo', 'new');
+  assert.deepEqual(findShortHistoryWeeks({ weeks }), [
+    { week: '2026-03-22', slugs: ['dos'] },
+    { week: '2026-03-29', slugs: ['dos'] },
+  ]);
+  const long = findShortHistoryWeeks({ weeks }, { maxHoleWeeks: 8 });
+  assert.deepEqual(long.map((x) => x.week), ['2026-03-22', '2026-03-29', '2026-04-05', '2026-04-12', '2026-04-19', '2026-04-26', '2026-05-03', '2026-05-10']);
+  assert.deepEqual(long[0].slugs, ['dos'], 'tmo is held on 03-22, so only dos is missing there');
+  assert.deepEqual(long[1].slugs, ['dos', 'tmo']);
+  assert.deepEqual(long[2].slugs, ['tmo']);
+});
+
+test('findShortHistoryWeeks measures holes in calendar weeks: an absent week key never stretches a hole into range (BRO-5016)', () => {
+  const r = { gross: 1 };
+  // 2018-03-25 -> 2018-04-22 has no keys in between; a show held on both
+  // sides of a stored week inside a 5-week calendar hole is a hiatus, not a gap.
+  const weeks = {
+    '2018-03-18': { a: r, b: r },
+    '2018-03-25': { b: r },
+    '2018-04-22': { b: r },
+    '2018-04-29': { a: r, b: r },
+  };
+  assert.deepEqual(findShortHistoryWeeks({ weeks }), []);
+  // The same pattern with every key stored and a one-week hole is refilled.
+  assert.deepEqual(findShortHistoryWeeks({ weeks: { '2018-03-18': { a: r }, '2018-03-25': { b: r }, '2018-04-01': { a: r } } }),
+    [{ week: '2018-03-25', slugs: ['a'] }]);
+});
+
+test('addMissingRows adds only the hole shows a stored week lacks and never touches one it holds', () => {
+  const week = { dos: { gross: 5 } };
+  const snap = { dos: { gross: 9 }, cats: { gross: 7 }, hair: { gross: 3 } };
+  assert.deepEqual(addMissingRows(week, snap, ['dos', 'cats', 'gone']), ['cats']);
+  assert.deepEqual(week, { dos: { gross: 5 }, cats: { gross: 7 } }, 'hair is not a hole slug, so it is not added');
+  assert.deepEqual(addMissingRows(week, snap), []);
 });

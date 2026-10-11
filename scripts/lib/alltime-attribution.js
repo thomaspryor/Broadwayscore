@@ -195,48 +195,90 @@ const OWN_RUN_START_SLACK_DAYS = 21;
 const OWN_RUN_END_SLACK_DAYS = 14;
 
 /**
- * A production's totals from its own weekly League rows (grosses-history.json
- * is keyed per run since BRO-5016). `complete` when the rows cover the run
- * from first preview to closing and every row has a gross and a count.
+ * A production's totals from its own weekly League rows. Only weeks inside
+ * the run's dates count: a history not yet re-keyed per run (BRO-5016) still
+ * files a title's earlier runs under one slug, and those must never be summed
+ * back into the production. `complete` when the rows cover first preview to
+ * closing with no missing week (a week the history has for other shows but not
+ * this one is a scrape gap, and the sum would come up short), every row has a
+ * count, and the count fits the run. `status`: complete, partial (rows start
+ * late but are whole after), gaps (a hole, a short end or a missing count) or
+ * misfit (more performances than the run could play).
  */
+// Broadway was dark from March 2020 to August 2021: the history has no week
+// between these two keys, and a run spanning them missed nothing.
+const DARK_WEEKS = ['2020-03-08', '2021-08-22'];
+
+// Calendar weeks from `first` to `last` inclusive that Broadway played, so a
+// week missing from the history altogether counts as a hole, not just a stored
+// week that lacks the row (the history is keyed by week ending, a few BWW-era
+// keys by Monday, hence the rounding).
+function expectedWeeks(first, last) {
+  const span = (a, b) => Math.round((toMs(b) - toMs(a)) / (7 * DAY_MS));
+  const dark = first <= DARK_WEEKS[0] && last >= DARK_WEEKS[1] ? span(...DARK_WEEKS) - 1 : 0;
+  return span(first, last) + 1 - dark;
+}
+
 function ownRunTotals(history, show, { now = new Date() } = {}) {
   const slug = show.slug || show.id;
+  // Without a first-preview date the opening is the latest the run can have
+  // begun (a return engagement like Beetlejuice 2025 has no previews).
+  const start = toMs(show.previewsStartDate) ?? toMs(show.openingDate);
+  if (start == null) return null;
   const weeks = Object.keys(history?.weeks || {}).sort();
+  const closing = toMs(show.closingDate);
+  const end = closing != null && closing < now.getTime() ? closing : toMs(weeks[weeks.length - 1]);
+  if (end == null) return null;
+  const lo = start - OWN_RUN_START_SLACK_DAYS * DAY_MS;
+  const hi = end + OWN_RUN_END_SLACK_DAYS * DAY_MS;
+  const inRun = weeks.filter((w) => toMs(w) >= lo && toMs(w) <= hi);
   const rows = [];
-  for (const w of weeks) {
+  for (const w of inRun) {
     const r = history.weeks[w]?.[slug];
     if (r && typeof r === 'object' && r.gross != null) rows.push([w, r]);
   }
   if (!rows.length) return null;
-  // Weekly grosses carry cents; round the sum so float drift never shows.
-  const sum = (k) => Math.round(rows.reduce((a, [, r]) => a + (Number(r[k]) || 0), 0) * 100) / 100;
   const first = rows[0][0];
   const last = rows[rows.length - 1][0];
-  // Without a first-preview date the opening is the latest the run can have
-  // begun (a return engagement like Beetlejuice 2025 has no previews).
-  const start = toMs(show.previewsStartDate) ?? toMs(show.openingDate);
-  const closing = toMs(show.closingDate);
-  const end = closing != null && closing < now.getTime() ? closing : toMs(weeks[weeks.length - 1]);
-  const complete = start != null && end != null
-    && toMs(first) <= start + OWN_RUN_START_SLACK_DAYS * DAY_MS
-    && toMs(last) >= end - OWN_RUN_END_SLACK_DAYS * DAY_MS
-    && rows.every(([, r]) => r.performances != null);
+  const gaps = Math.max(0, expectedWeeks(first, last) - rows.length);
+  // Weekly grosses carry cents; round the sum so float drift never shows.
+  const sum = (k) => Math.round(rows.reduce((a, [, r]) => a + (Number(r[k]) || 0), 0) * 100) / 100;
+  const performances = sum('performances');
+  const startsLate = toMs(first) > start + OWN_RUN_START_SLACK_DAYS * DAY_MS;
+  const endsEarly = toMs(last) < end - OWN_RUN_END_SLACK_DAYS * DAY_MS;
+  const counted = rows.every(([, r]) => r.performances != null);
+  const fitsRun = canHold(performances, runCapacity(show, now.getTime()));
+  const complete = gaps === 0 && !startsLate && !endsEarly && counted && fitsRun;
+  // Short only at the start because the history itself starts then (December
+  // 2001): the card can say "since" that week. A late first row anywhere else
+  // is a missed week, and a hole, a short end or a missing count cannot be
+  // labeled either.
+  const beforeHistory = toMs(first) <= toMs(weeks[0]) + OWN_RUN_START_SLACK_DAYS * DAY_MS;
+  const status = !fitsRun ? 'misfit'
+    : complete ? 'complete'
+      : gaps === 0 && !endsEarly && counted && beforeHistory ? 'partial' : 'gaps';
   return {
     gross: sum('gross'),
-    performances: sum('performances'),
+    performances,
     attendance: rows.every(([, r]) => r.attendance != null) ? sum('attendance') : null,
     weeks: rows.length,
+    gaps,
     since: first,
     complete,
+    status,
   };
 }
 
 /**
  * A cleared Broadway production gets its own run's totals back from the
  * weekly rows instead of a blank (BRO-5016): as allTime when the rows cover
- * the whole run, otherwise as partialRun (with `since`, the first week), which
- * only the show's own card reads. A slug whose allTime is set drops any
- * partialRun left from an earlier run.
+ * the whole run, as partialRun (with `since`, the first week, which only the
+ * show's own card reads) when they only start late, and nothing when a week
+ * inside the run is missing. A history-filled allTime is marked
+ * `allTimeSource: 'history'` so the next run refreshes it from the weekly rows
+ * (a running show keeps growing) and the BWW merge never mixes it with a
+ * scraped row. A slug whose allTime came from BWW drops any partialRun.
+ * @returns {Array<{slug, status: 'complete'|'partial'|'gaps'|'misfit', weeks, gaps, since, gross}>} (only complete and partial are written)
  */
 function fillClearedFromHistory(grossesShows, shows, history, clears, opts = {}) {
   const bySlug = new Map(shows.map((s) => [s.slug || s.id, s]));
@@ -245,19 +287,23 @@ function fillClearedFromHistory(grossesShows, shows, history, clears, opts = {})
   for (const [slug, entry] of Object.entries(grossesShows)) {
     const show = bySlug.get(slug);
     const at = entry && entry.allTime;
+    const fromHistory = entry && entry.allTimeSource === 'history';
     const empty = !at || (at.gross == null && at.performances == null);
-    if (!empty) { delete entry.partialRun; continue; }
-    if (!show || !isBroadway(show) || !(cleared.has(slug) || entry.partialRun)) continue;
-    const own = ownRunTotals(history, show, opts);
-    if (!own) { delete entry.partialRun; continue; }
+    if (!empty && !fromHistory) { delete entry.partialRun; continue; }
+    if (!(cleared.has(slug) || entry.partialRun || fromHistory)) continue;
+    const own = show && isBroadway(show) ? ownRunTotals(history, show, opts) : null;
+    delete entry.partialRun;
+    if (fromHistory) { entry.allTime = EMPTY(); delete entry.allTimeSource; }
+    if (!own) continue;
+    const { status } = own;
+    fills.push({ slug, status, weeks: own.weeks, gaps: own.gaps, since: own.since, gross: own.gross });
     const totals = { gross: own.gross, performances: own.performances, attendance: own.attendance };
-    if (own.complete) {
+    if (status === 'complete') {
       entry.allTime = totals;
-      delete entry.partialRun;
-    } else {
+      entry.allTimeSource = 'history';
+    } else if (status === 'partial') {
       entry.partialRun = { ...totals, since: own.since };
     }
-    fills.push({ slug, complete: own.complete, weeks: own.weeks, since: own.since, gross: own.gross });
   }
   return fills;
 }

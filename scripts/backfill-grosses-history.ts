@@ -14,7 +14,11 @@
  * last 8 weeks) are filled by scrape-grosses.ts on its own; this script is for
  * initial setup or extending the history range.
  *
- * Usage: npx tsx scripts/backfill-grosses-history.ts [--weeks 55] [--start-from 2025-01-19] [--dry-run]
+ * --refill-gaps re-fetches the stored weeks that miss a show held the weeks
+ * either side (a week scraped short) and adds only the rows they lack; it
+ * never changes a stored row (BRO-5016).
+ *
+ * Usage: npx tsx scripts/backfill-grosses-history.ts [--weeks 55] [--start-from 2025-01-19] [--refill-gaps] [--dry-run]
  */
 
 import * as fs from 'fs';
@@ -23,6 +27,7 @@ import * as path from 'path';
 // Use shared show-matching library (260+ aliases, market filtering, era preference)
 const { matchTitleToShow } = require('./lib/show-matching');
 const { repairGrossesHistory } = require('./lib/grosses-history-repair');
+const { recordPublishedTotal } = require('./lib/grosses-integrity');
 const { grossesProductionFor } = require('./lib/grosses-run-window');
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
 const {
@@ -33,6 +38,8 @@ const {
   isPlausibleRow,
   toHistoryEntry,
   historyHasWeek,
+  findShortHistoryWeeks,
+  addMissingRows,
 } = require('./lib/parse-playbill-grosses');
 
 const HISTORY_PATH = path.join(__dirname, '../data/grosses-history.json');
@@ -136,7 +143,7 @@ function getWeekDates(numWeeks: number, startFrom?: string): string[] {
 // sum that misses the Week's Total is logged, not fatal: some old Playbill
 // weeks print a total their own table does not add up to, and the rows are
 // still the best record of that week (see validatePlaybillGrosses).
-async function scrapeWeek(weekDate: string): Promise<{ snapshot: Record<string, HistoryEntry>; matched: number; rows: number }> {
+async function scrapeWeek(weekDate: string): Promise<{ snapshot: Record<string, HistoryEntry>; matched: number; rows: number; weekTotalGross: number | null }> {
   const url = playbillGrossesUrl(weekDate);
   const page = await fetchPage(url);
   const parsed = parsePlaybillGrossesHtml(page?.content || '');
@@ -166,7 +173,7 @@ async function scrapeWeek(weekDate: string): Promise<{ snapshot: Record<string, 
     snapshot[slug] = toHistoryEntry(row);
     matched++;
   }
-  return { snapshot, matched, rows: parsed.rows.length };
+  return { snapshot, matched, rows: parsed.rows.length, weekTotalGross: parsed.weekTotalGross ?? null };
 }
 
 async function backfillHistory(): Promise<void> {
@@ -175,6 +182,7 @@ async function backfillHistory(): Promise<void> {
   let numWeeks = 55; // Default: ~1 year of data
   let startFrom: string | undefined;
   const dryRun = args.includes('--dry-run');
+  const refillGaps = args.includes('--refill-gaps');
 
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--weeks' && args[i + 1]) {
@@ -186,17 +194,24 @@ async function backfillHistory(): Promise<void> {
     }
   }
 
-  console.log(`Backfilling ${numWeeks} weeks of grosses history from Playbill...${dryRun ? ' (DRY RUN)' : ''}`);
-
   loadShows();
   const history = loadHistory();
-  const weekDates = getWeekDates(numWeeks, startFrom);
-
-  // Filter out weeks we already have, including under a nearby key (the
-  // BWW-era Monday keys) so a Sunday duplicate is never written beside one.
   const historyKeys = Object.keys(history.weeks);
-  const weeksToDo = weekDates.filter(d => !historyHasWeek(historyKeys, d));
-  console.log(`${weekDates.length} total weeks, ${weeksToDo.length} need backfill (${weekDates.length - weeksToDo.length} already in history)`);
+  let weeksToDo: string[];
+  // Refill mode: the shows each stored week is missing, by week key.
+  const holeSlugs = new Map<string, string[]>();
+  if (refillGaps) {
+    for (const { week, slugs } of findShortHistoryWeeks(history)) holeSlugs.set(week, slugs);
+    weeksToDo = [...holeSlugs.keys()];
+    console.log(`Refilling ${weeksToDo.length} stored weeks that miss a show held the weeks either side...${dryRun ? ' (DRY RUN)' : ''}`);
+  } else {
+    console.log(`Backfilling ${numWeeks} weeks of grosses history from Playbill...${dryRun ? ' (DRY RUN)' : ''}`);
+    const weekDates = getWeekDates(numWeeks, startFrom);
+    // Filter out weeks we already have, including under a nearby key (the
+    // BWW-era Monday keys) so a Sunday duplicate is never written beside one.
+    weeksToDo = weekDates.filter(d => !historyHasWeek(historyKeys, d));
+    console.log(`${weekDates.length} total weeks, ${weeksToDo.length} need backfill (${weekDates.length - weeksToDo.length} already in history)`);
+  }
 
   if (weeksToDo.length === 0) {
     console.log('Nothing to backfill!');
@@ -221,8 +236,22 @@ async function backfillHistory(): Promise<void> {
     for (let attempt = 1; attempt <= MAX_RETRIES && !succeeded; attempt++) {
       if (attempt > 1) console.log(`  Retry ${attempt}/${MAX_RETRIES} for week ${weekDate}...`);
       try {
-        const { snapshot, matched, rows } = await scrapeWeek(weekDate);
-        if (matched > 0) {
+        const { snapshot, matched, rows, weekTotalGross } = await scrapeWeek(weekDate);
+        if (matched > 0 && refillGaps) {
+          // weekDate is a stored key here, so the rows land beside the ones it holds.
+          const weekRows = history.weeks[weekDate];
+          const wanted = holeSlugs.get(weekDate) || [];
+          const after = Object.keys(weekRows).length + wanted.filter(slug => snapshot[slug] && !weekRows[slug]).length;
+          if (after > rows) {
+            throw new Error(`week ${weekDate} would hold ${after} rows but Playbill lists ${rows}`);
+          }
+          const added: string[] = addMissingRows(weekRows, snapshot, wanted);
+          recordPublishedTotal(history, weekDate, { gross: weekTotalGross, showCount: rows, source: 'playbill' });
+          console.log(`  ✓ ${weekDate}: added ${added.length}/${wanted.length} missing rows${added.length ? ` (${added.join(', ')})` : ''}`);
+          successCount++;
+          succeeded = true;
+          if (successCount % 3 === 0) save();
+        } else if (matched > 0) {
           history.weeks[weekDate] = snapshot;
           console.log(`  ✓ ${matched}/${rows} shows matched for week ${weekDate}`);
           successCount++;

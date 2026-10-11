@@ -311,7 +311,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 ## `backfill-grosses.yml`
 - **Runs:** Manual trigger only
 - **Does:** Scrapes Playbill for historical weekly grosses to populate `grosses-history.json`
-- **Options:** `weeks` (default 55), `start_from` (YYYY-MM-DD)
+- **Options:** `weeks` (default 55), `start_from` (YYYY-MM-DD), `refill_gaps` (refetch stored weeks that miss a show held within 4 calendar weeks either side, add only those shows' rows, and record the League week total; BRO-5016)
 - **Reliability:** Fetches each week through `fetchPage()` and parses with the shared Playbill parser, 3 retries per week. Weeks already in history (or under a nearby Monday key) are skipped. A row sum that misses the page's Week's Total is a `::warning::` here (some pre-2022 Playbill weeks do this), not a failure as in the weekly run.
 - **Script:** `scripts/backfill-grosses-history.ts`
 - **Note:** Only for initial setup or extending history range. Recent gaps (last 8 weeks) are filled by `weekly-grosses.yml` itself.
