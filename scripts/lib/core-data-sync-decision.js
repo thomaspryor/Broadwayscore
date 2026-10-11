@@ -53,4 +53,42 @@ function syncDecision({ workingExists, snapshotExists, identical }) {
   return 'copy-changed';
 }
 
-module.exports = { syncDecision };
+/**
+ * Which of `files` did this workflow change? (BRO-5033)
+ *
+ * Core data files are gitignored in this repo, so `git diff data/<core>.json`
+ * in a workflow is always empty. This answers the question push-core-data
+ * answers, with the same table: a file counts as changed when syncDecision()
+ * would copy it ('copy-changed' or 'copy-new').
+ *
+ * @param {string[]} files  basenames or data/<basename> paths
+ * @param {object} [opts]
+ * @param {string} [opts.snapshotDir] defaults to /tmp/core-data-snapshot
+ * @param {string} [opts.dataDir]     defaults to data
+ * @returns {{snapshotMissing: boolean, changed: string[]}} changed holds
+ *   basenames. snapshotMissing: the whole snapshot dir is absent, so nothing
+ *   can be told apart; callers treat that as "changed" (fail open, like the
+ *   action's copy-all failsafe) rather than skip validation.
+ */
+function changedCoreFiles(files, opts = {}) {
+  const fs = require('fs');
+  const path = require('path');
+  const snapshotDir = opts.snapshotDir || '/tmp/core-data-snapshot';
+  const dataDir = opts.dataDir || 'data';
+  if (!fs.existsSync(snapshotDir)) return { snapshotMissing: true, changed: [] };
+  const changed = [];
+  for (const raw of files) {
+    const f = path.basename(raw);
+    const working = path.join(dataDir, f);
+    const snap = path.join(snapshotDir, f);
+    const workingExists = fs.existsSync(working);
+    const snapshotExists = fs.existsSync(snap);
+    const identical = workingExists && snapshotExists
+      && fs.readFileSync(working).equals(fs.readFileSync(snap));
+    const d = syncDecision({ workingExists, snapshotExists, identical });
+    if (d === 'copy-changed' || d === 'copy-new') changed.push(f);
+  }
+  return { snapshotMissing: false, changed };
+}
+
+module.exports = { syncDecision, changedCoreFiles };

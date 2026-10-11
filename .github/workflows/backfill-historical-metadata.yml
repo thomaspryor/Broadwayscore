@@ -81,12 +81,14 @@ jobs:
       - name: Check for changes
         id: changes
         run: |
-          if git diff --quiet data/shows.json; then
-            echo "changed=false" >> $GITHUB_OUTPUT
-          else
+          # BRO-5033: shows.json is gitignored core data; `git diff` on it is always
+          # empty. Compare to the checkout-core-data snapshot instead.
+          if node scripts/lib/core-data-changed.js shows.json; then
             echo "changed=true" >> $GITHUB_OUTPUT
             FIXED="${{ steps.backfill.outputs.fixed_count || 'unknown' }}"
             echo "fixed=$FIXED" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Commit and push
@@ -95,6 +97,12 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add data/auto-fix-results.json
+          # shows.json itself ships via push-core-data; only commit when the
+          # tracked results file actually changed (BRO-5033).
+          if git diff --cached --quiet; then
+            echo "No tracked changes to commit."
+            exit 0
+          fi
           git commit -m "chore: Backfill historical show metadata (synopsis + creative team)
 
           Fixed ${{ steps.changes.outputs.fixed }} issues via TodayTix + Claude API.

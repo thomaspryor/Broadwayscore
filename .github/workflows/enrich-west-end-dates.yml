@@ -99,12 +99,6 @@ jobs:
           echo "Running: node scripts/enrich-west-end-dates.js $FLAGS"
           node scripts/enrich-west-end-dates.js $FLAGS
 
-      - name: Check for changes
-        if: (inputs.mode || 'enrich') != 'verify'
-        id: git-check
-        run: |
-          git diff --exit-code data/shows.json || echo "changes=true" >> $GITHUB_OUTPUT
-
       # shows.json is gitignored in the public repo — see note in
       # enrich-ibdb-dates.yml. push-core-data below handles the sync.
 
