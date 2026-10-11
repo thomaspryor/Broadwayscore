@@ -102,3 +102,24 @@ test('priorRuns data-edit may only flip inheritReviews', () => {
   assert.match(priorRunsValueProblem([], old), /add or remove/);
   assert.match(priorRunsValueProblem([{ ...old[0], inheritReviews: 'no' }], old), /boolean/);
 });
+
+const dg = require('../../scripts/lib/date-guard.js');
+
+test('textDateline reads a full printed date only', () => {
+  assert.equal(dg.textDateline('By Nicole Acquah Tuesday, August 7 2018, 13:35 - Reviews'), '2018-08-07');
+  assert.equal(dg.textDateline('The Wolf at the Door  Oct 25, 2024 Theater Review'), '2024-10-25');
+  assert.equal(dg.textDateline('on 11 August 2019 we saw'), '2019-08-11');
+  assert.equal(dg.textDateline('through December 31. Adapted from a 2006 novel'), null);
+  assert.equal(dg.textDateline('until 6 September, then on tour'), null);
+});
+
+test('guardPublishDate prefers a printed dateline over the fetch-date stand-in', () => {
+  const show = { openingDate: '2026-07-30', previewsStartDate: '2026-07-20' };
+  const base = { dateSource: 'llm-scoring', publishDate: '2018-08-07', textFetchedAt: '2026-08-01T00:00:00Z' };
+  const dated = dg.guardPublishDate({ ...base, fullText: 'By N. A. Tuesday, August 7 2018, 13:35 - Reviews Looking for' }, show);
+  assert.equal(dated.publishDate, '2018-08-07');
+  assert.equal(dated.substituted, false);
+  const undated = dg.guardPublishDate({ ...base, fullText: 'Looking for a family afternoon out' }, show);
+  assert.equal(undated.publishDate, '2026-08-01');
+  assert.equal(undated.substituted, true);
+});
