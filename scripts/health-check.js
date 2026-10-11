@@ -34,6 +34,7 @@ const crypto = require('crypto');
 const { execSync, execFileSync } = require('child_process');
 const { getTodayJsonlPath } = require('./lib/exclusion-logger');
 const { computeCommercialModelDriftStatus } = require('./lib/commercial-model-drift');
+const { fitCheckStatus: waltzFitCheckStatus } = require('./lib/waltz-model-fit');
 const { routeAlert, readDispatchAttempts, peekDigestQueue, clearDigestQueue } = require('./lib/owner-alert-router.js');
 const { summarizeFailureStreak, deadmanShouldPage } = require('./lib/alert-dispatch-streak.js');
 const { readOwnerEmailLog } = require('./lib/discord-notify.js');
@@ -295,6 +296,10 @@ const AUTO_FIX_PLAYBOOK = [
     humanAction: 'An unregistered host name-matches a known outlet — probably that outlet moved to a new domain (e.g. a critic switching to Substack) and reviews on the new host are being silently dropped. Open Claude Code and say: "Check the probable outlet domain move named in this check, confirm it, and add the host to that outlet\'s domainAliases."' },
   { match: /^Quality: outlet stub rate$/, urgency: 'this-week',
     humanAction: 'An outlet has a spike in stub-tier (0-char extraction) reviews collected in the last 30 days — the signature of a site redesign breaking its article-extractor.js pattern (this is exactly what happened with TheaterMania in 2026). Open Claude Code and say: "Check the outlet stub-rate flag named in this check, confirm the extractor is broken, and fix the article-extractor.js pattern for that outlet."' },
+
+  // BRO-5027. Advisory: only stale/missing/drift warns reach the digest.
+  { match: /^Commercial model: Boring Waltz fit$/, urgency: 'this-week',
+    humanAction: 'Our profit model now lands inside the Reddit analyst\'s weekly profit ranges much less often than usual, or the weekly comparison stopped updating. Nothing on the site changes by itself. Open Claude Code and say: "Check the Boring Waltz fit warning in the health digest and find out what changed."' },
 
   // BRO-5004. Without an entry this falls to urgency 'low' and never shows.
   { match: /^Commercial model: stored vs fresh run$/, urgency: 'this-week',
@@ -1973,6 +1978,16 @@ function checkCommercialModelDrift() {
         message: `${flagged.length} of ${summary.checked} records differ from a fresh run (${summary.sameDay} same-day, ${summary.drift} drift, ${summary.method} method): ${top}`,
         hint: 'Run node scripts/check-model-drift.js. The model re-runs daily (commercial-stale-closures.yml, 08:00 UTC, after this digest), so a row that persists a second day means that run failed or was skipped',
       };
+    }),
+    // BRO-5027: advisory fit of our weekly profit structure against
+    // u/Boring_Waltz_9545's posted profit ranges, written each Monday by
+    // scrape-waltz-costs.yml. Aggregates only; never 'error'.
+    runCheck('Commercial model: Boring Waltz fit', () => {
+      const name = 'Commercial model: Boring Waltz fit';
+      let file = null;
+      try { file = readJSON(path.join(AUDIT_DIR, 'waltz-model-fit.json')); } catch { /* missing or corrupt: warn below */ }
+      const result = waltzFitCheckStatus(file);
+      return { name, ...result, hint: result.status === 'pass' ? undefined : 'Stale or missing: check the Monday scrape-waltz-costs.yml run. Drift: a model change or a shift in his numbers; compare with node scripts/backtest-recoupment-ground-truth.js before changing anything' };
     }),
   ];
 }

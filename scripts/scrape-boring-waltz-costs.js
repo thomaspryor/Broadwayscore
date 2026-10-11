@@ -36,6 +36,7 @@ const { decideWaltzCostWrite, waltzCostPatch, isPlausibleWeeklyCost } = require(
 const { commercialRecordErrors } = require('./lib/commercial-record-checks');
 const { hasHelpFlag } = require('./lib/cli-help');
 const { waltzAnchor, appendWaltzAnchors, waltzJumpFlags, castEventsFor, shouldAlertNoAnchors } = require('./lib/waltz-cost-history');
+const { buildFitRows, summarizeFit, recordFit } = require('./lib/waltz-model-fit');
 
 // Commercial-specific aliases (same as update-commercial-data.js)
 const COMMERCIAL_ALIASES = {
@@ -246,6 +247,32 @@ function matchShowName(showName, lookup) {
 const isBroadwayShow = isBroadwayCategory;
 
 // ---------------------------------------------------------------------------
+// Model fit (BRO-5027): advisory, aggregates only, never blocks the cost run
+// ---------------------------------------------------------------------------
+
+const MODEL_FIT_PATH = path.join(DATA_DIR, 'audit', 'waltz-model-fit.json');
+
+function writeModelFit(relevantPosts, lookup) {
+  try {
+    const rows = buildFitRows(relevantPosts, (name) => matchShowName(name, lookup));
+    const summary = summarizeFit(rows);
+    if (!summary.asOf) { console.log('Model fit: no usable closed-range rows'); return; }
+    const line = `Model fit: ${rows.length} usable rows (${summary.overall.n} in the trailing window), overall ${summary.overall.suppressed ? 'suppressed' : summary.overall.insidePct + '% inside'} (to ${summary.asOf})`;
+    if (DRY_RUN) { console.log(`${line} [dry run, not written]\n`); return; }
+    let prev = null;
+    try { prev = JSON.parse(fs.readFileSync(MODEL_FIT_PATH, 'utf8')); } catch { /* first run */ }
+    const history = recordFit(prev && prev.history, summary);
+    fs.writeFileSync(MODEL_FIT_PATH, JSON.stringify({
+      _meta: { source: 'scripts/scrape-boring-waltz-costs.js via scripts/lib/waltz-model-fit.js', note: 'Aggregates only. Our single-week profit at his posted cost vs his closed profit ranges.' },
+      history,
+    }, null, 2) + '\n');
+    console.log(`${line}\n`);
+  } catch (err) {
+    console.warn(`Model fit skipped: ${err.message}`);
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
 
@@ -274,6 +301,8 @@ async function main() {
     console.log('No relevant posts found. Exiting.');
     process.exit(0);
   }
+
+  writeModelFit(relevantPosts, lookup);
 
   // Posts are returned newest-first by Reddit.
   // Extract costs, keeping only the MOST RECENT estimate per show.
