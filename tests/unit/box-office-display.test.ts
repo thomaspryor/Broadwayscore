@@ -152,6 +152,8 @@ test('recordText: ever, early/mid/late Month within a year, Month YYYY before th
   assert.equal(recordText({ ever: false, since: '2026-01-04' }, week), 'best week since early January');
   assert.equal(recordText({ ever: false, since: '2026-03-15' }, week), 'best week since mid-March');
   assert.equal(recordText({ ever: false, since: '2025-09-28' }, week), 'best week since September 2025');
+  // The same week a year back never reads like last week.
+  assert.equal(recordText({ ever: false, since: '2024-12-29' }, '2025-12-28'), 'best week since December 2024');
 });
 
 test('real data: the personal-bests card lists at most six, with the rest counted', () => {
