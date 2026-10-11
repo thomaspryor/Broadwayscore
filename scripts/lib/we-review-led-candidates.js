@@ -317,6 +317,11 @@ function buildReviewLedCandidates({ season, lookups, shows, today }) {
     if (isIssuePeriod(dates)) { no('Theatre Record issue period, not a run'); continue; }
     const c = { ...base, ...dates };
     const startDate = c.previewsStartDate || c.openingDate;
+    // A page link spans its whole volume year, so a same-title production
+    // that began after this review can tie on month distance (BRO-5031).
+    if (review.date && Date.parse(startDate) > Date.parse(review.date) + 14 * DAY_MS) {
+      no('Theatre Record production starts after the review'); continue;
+    }
     // A run that began in the late summer before its first review belongs to
     // the season it started in; no other season's lookups will ever see it.
     // Same date decideWeHistoricalPromotion() checks: press night first.

@@ -102,6 +102,18 @@ test('a whole-month range with no press night is a TR issue period, not a run (B
   // The 2018 PDF running head is skipped, so no header comes from it
   const pdf = ['ANTONY AND CLEOPATRA', 'by William Shakespeare', 'Issue 17-18 Openings 1-30 September 2018', 'Reviews'].join('\n');
   assert.equal(pdfHeaderFor(pdf, 'Antony and Cleopatra'), null);
+  // -layout can print the banner beside a real label: keep the label's date
+  const side = ['ANTONY AND CLEOPATRA', 'Press Night 27 Sep 2018      Issue 17-18 Openings 1-30 September 2018', 'Reviews'].join('\n');
+  assert.equal(parseTrHeaderDates(pdfHeaderFor(side, 'Antony and Cleopatra')).openingDate, '2018-09-27');
+});
+
+test('a TR production that starts after the review is a later production (BRO-5031)', () => {
+  const row = { review: { title: 'A Christmas Carol', venue: 'Old Vic', date: '2018-01-10', url: 'u' },
+    tr: { title: 'A Christmas Carol', venue: 'Old Vic', link: 'https://www.theatrerecord.com/archive/volume/38/page/1100' },
+    header: 'A CHRISTMAS CAROL\nPreviews 24 Nov 2018\nPress Night 04 Dec 2018' };
+  const [c] = buildReviewLedCandidates({ season: '2017-2018', lookups: [row], shows: [], today: '2026-10-11' });
+  assert.equal(c.decision.promotable, false);
+  assert.match(c.decision.reason, /starts after the review/);
 });
 
 test('findContinuingRun matches a reopening of an open long-runner (Phantom 2021)', () => {
