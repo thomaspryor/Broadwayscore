@@ -86,10 +86,74 @@ test('searchTitles also searches each part of a double bill or season title', ()
 });
 
 test('pdfHeaderFor keeps only the production block above the first review date', () => {
-  const text = 'previous production\n  COMPANY            THE STAGE\nby Stephen Sondheim\nGielgud Theatre\n17 October 2018\nreview body here';
+  const text = 'previous production\n  COMPANY\nby Stephen Sondheim\nGielgud Theatre\n26 September 2018 – 30 March 2019\nTHE STAGE\n17 October 2018\nreview body here';
   const h = pdfHeaderFor(text, 'Company');
   assert.match(h, /^COMPANY/);
   assert.match(h, /Gielgud Theatre/);
   assert.doesNotMatch(h, /review body/);
   assert.equal(pdfHeaderFor(text, 'Follies'), null);
+});
+
+const { parseTrHeaderDates, headerFacts, buildReviewLedCandidates } = require('./we-review-led-candidates.js');
+
+test('parseTrHeaderDates: labelled previews and press night win over a range', () => {
+  assert.deepEqual(parseTrHeaderDates('Previews from 26 Sep 2018\nPress night: 17 Oct 2018\nUntil 22 Dec 2018'),
+    { previewsStartDate: '2018-09-26', openingDate: '2018-10-17', closingDate: '2018-12-22' });
+  // A range starting on press night is not the first preview
+  assert.deepEqual(parseTrHeaderDates('Opened 17 October 2018\n17 October 2018 – 30 March 2019'),
+    { previewsStartDate: null, openingDate: '2018-10-17', closingDate: '2019-03-30' });
+});
+
+test('parseTrHeaderDates reads the range shapes TR prints', () => {
+  assert.deepEqual(parseTrHeaderDates('Gielgud Theatre 26 September 2018 – 30 March 2019'),
+    { previewsStartDate: '2018-09-26', openingDate: null, closingDate: '2019-03-30' });
+  assert.deepEqual(parseTrHeaderDates('Wed 26 September to Sat 22 December 2018'),
+    { previewsStartDate: '2018-09-26', openingDate: null, closingDate: '2018-12-22' });
+  // Year given once, run over New Year
+  assert.deepEqual(parseTrHeaderDates('1 December – 23 February 2019'),
+    { previewsStartDate: '2018-12-01', openingDate: null, closingDate: '2019-02-23' });
+  assert.deepEqual(parseTrHeaderDates('1 – 22 December 2018'),
+    { previewsStartDate: '2018-12-01', openingDate: null, closingDate: '2018-12-22' });
+});
+
+test('parseTrHeaderDates never reads a range across lines or guesses a year', () => {
+  assert.deepEqual(parseTrHeaderDates('17 October 2018\nto be continued 3 May 2019'),
+    { previewsStartDate: null, openingDate: null, closingDate: null });
+  assert.deepEqual(parseTrHeaderDates('Opened 17 October'), { previewsStartDate: null, openingDate: null, closingDate: null });
+  assert.deepEqual(parseTrHeaderDates(null), { previewsStartDate: null, openingDate: null, closingDate: null });
+});
+
+test('headerFacts keeps the title lines and short date lines, never prose', () => {
+  const prose = 'Marianne Elliott has transformed the show into something new and it opened on 17 October 2018 to tremendous acclaim from almost everyone who saw it';
+  const h = headerFacts(`COMPANY\nby Stephen Sondheim\nGielgud Theatre\nCast: Rosalie Craig, Patti LuPone\n26 September 2018 – 30 March 2019\n${prose}`);
+  assert.equal(h, 'COMPANY\nby Stephen Sondheim\nGielgud Theatre\n26 September 2018 – 30 March 2019');
+});
+
+test('pdfHeaderFor ignores a contents line and a two-column heading', () => {
+  assert.equal(pdfHeaderFor('HANSARD 1234\nreview prose', 'Hansard'), null);
+  assert.equal(pdfHeaderFor('COMPANY     THE STAGE\nprose', 'Company'), null);
+});
+
+test('buildReviewLedCandidates dates from TR only and dedups against shows.json', () => {
+  const review = { title: 'Company', venue: 'Gielgud Theatre', date: '2018-10-17', url: COMPANY.url };
+  const tr = { title: 'Company', venue: 'Gielgud Theatre, London', link: 'https://www.theatrerecord.com/archive/volume/38/dest/21_company' };
+  const header = 'COMPANY\nGielgud Theatre\nPreviews from 26 September 2018\nPress night 17 October 2018\nUntil 30 March 2019';
+  const [c] = buildReviewLedCandidates({ season: '2018-2019', lookups: [{ review, tr, header }], shows: [], today: '2026-10-11' });
+  assert.equal(c.previewsStartDate, '2018-09-26');
+  assert.equal(c.openingDate, '2018-10-17');
+  assert.equal(c.closingDate, '2019-03-30');
+  assert.equal(c.decision.promotable, true);
+  assert.equal(c.sourceUrls.theatreRecord, tr.link);
+
+  const shows = [{ id: 'company-west-end-2018', title: 'Company', venue: 'Gielgud Theatre', market: 'west-end', previewsStartDate: '2018-09-26', openingDate: '2018-10-17', closingDate: '2019-03-30', status: 'closed' }];
+  const [dup] = buildReviewLedCandidates({ season: '2018-2019', lookups: [{ review, tr, header }], shows, today: '2026-10-11' });
+  assert.match(dup.decision.reason, /already in shows.json/);
+  // A same-titled Broadway row the same week is not a duplicate
+  const bway = [{ ...shows[0], id: 'company-2018', venue: 'Bernard B. Jacobs Theatre', market: 'broadway' }];
+  const [ok] = buildReviewLedCandidates({ season: '2018-2019', lookups: [{ review, tr, header }], shows: bway, today: '2026-10-11' });
+  assert.equal(ok.decision.promotable, true);
+
+  const [none] = buildReviewLedCandidates({ season: '2018-2019', lookups: [{ review, tr: null, header: null }], shows: [], today: '2026-10-11' });
+  assert.equal(none.decision.reason, 'no Theatre Record production matched');
+  assert.equal(none.openingDate, null);
 });

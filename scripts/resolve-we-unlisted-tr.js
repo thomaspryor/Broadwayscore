@@ -28,7 +28,7 @@ const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { selectLookups, pickTrForReview, reviewLedPath } = require('./lib/we-review-led-candidates');
+const { selectLookups, pickTrForReview, reviewLedPath, headerFacts } = require('./lib/we-review-led-candidates');
 const { isLondonVenue } = require('./lib/tr-london-venue');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 
@@ -41,14 +41,14 @@ Usage:
 Needs TR_EMAIL and TR_PASSWORD (GitHub Actions: we-historical-tr-resolve.yml).
 Writes data/audit/we-historical-review-led-<season>.json.`;
 
-const HEADER_MAX_CHARS = 1500;
-const PDF_HEADER_MAX_LINES = 30;
+const PDF_HEADER_MAX_LINES = 40;
 const DATE_LINE = /^\s*\d{1,2}\s+[A-Z][a-z]+\s+\d{4}\s*$/;
 
 /**
- * The production block of a PDF-era issue: from the ALL-CAPS title heading
- * to the first review's date line. Only the header lines are kept (title,
- * author, venue, run dates, cast); never review text.
+ * The production block of a PDF-era issue: from the ALL-CAPS heading that IS
+ * the title (a contents line "HANSARD 1234" or a two-column line does not
+ * count) to the first review's date line, reduced by headerFacts() to the
+ * title lines and short date lines. The file is public: never review prose.
  */
 const capsKey = s => String(s || '').toUpperCase().replace(/[^A-Z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
 
@@ -59,16 +59,13 @@ function pdfHeaderFor(text, title) {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
     if (!line || line !== line.toUpperCase() || !/[A-Z]/.test(line)) continue;
-    // -layout can put a second column on the same line: accept a heading
-    // that starts with the title.
-    const key = capsKey(line);
-    if (key !== want && !key.startsWith(`${want} `)) continue;
-    const out = [line];
-    for (let j = i + 1; j < lines.length && out.length < PDF_HEADER_MAX_LINES; j++) {
+    if (capsKey(line) !== want) continue;
+    const block = [line];
+    for (let j = i + 1; j < lines.length && j <= i + PDF_HEADER_MAX_LINES; j++) {
       if (DATE_LINE.test(lines[j])) break;
-      if (lines[j].trim()) out.push(lines[j].trim());
+      block.push(lines[j]);
     }
-    return out.join('\n').slice(0, HEADER_MAX_CHARS);
+    return headerFacts(block.join('\n'));
   }
   return null;
 }
@@ -186,7 +183,7 @@ async function main() {
       const first = document.querySelector('main article');
       return first ? first.innerText : null;
     });
-    return text ? text.slice(0, HEADER_MAX_CHARS) : null;
+    return text ? headerFacts(text) : null;
   }
 
   let failures = 0;

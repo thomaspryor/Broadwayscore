@@ -137,44 +137,78 @@ function iso(y, mon, d) {
   return Number.isNaN(Date.parse(s)) ? null : s;
 }
 
+const DATE_RX = new RegExp(`\\d{1,2}\\s+${MON}`, 'i');
+
+/**
+ * The factual lines of a TR production header: the first three non-empty
+ * lines (title, author, venue) and short lines carrying a date. The lookup
+ * file is public, so anything that could be review prose (long lines, lines
+ * without a date after the first three) is dropped.
+ */
+function headerFacts(text) {
+  const lines = String(text || '').split('\n').map(l => l.replace(/\s+/g, ' ').trim()).filter(Boolean);
+  const keep = [];
+  lines.forEach((l, i) => {
+    if (i < 3 && l.length <= 120) keep.push(l);
+    else if (i >= 3 && DATE_RX.test(l) && l.split(' ').length <= 14) keep.push(l.slice(0, 160));
+  });
+  return keep.slice(0, 12).join('\n') || null;
+}
+
 /**
  * Run dates from a TR production header (HTML page header or the PDF block
- * under the production's title). Recognises:
+ * under the production's title). Labelled dates win over a bare range:
+ *   "Previews from 26 Sep 2018" / "Opened 17 October 2018" / "Press night: …"
+ *   "Until 22 Dec 2018" / "Closes 5 Jan 2019"
  *   "26 September 2018 – 30 March 2019"   run (first → last performance)
  *   "26 September – 22 December 2018"     same, year given once
- *   "Opened 17 October 2018" / "Press night: 17 Oct 2018"
- *   "Previews from 26 Sep 2018"
- * Returns nulls for what it can't find; never guesses.
+ *   "1 – 22 December 2018"                same, month given once
+ * A range is read within one line only. Returns nulls for what it can't
+ * find; never guesses.
  * @returns {{previewsStartDate: string|null, openingDate: string|null, closingDate: string|null}}
  */
 function parseTrHeaderDates(text) {
   const t = String(text || '').replace(/ /g, ' ').replace(/(\d)(st|nd|rd|th)\b/g, '$1');
   const out = { previewsStartDate: null, openingDate: null, closingDate: null };
-  let m = t.match(new RegExp(`(\\d{1,2})\\s+${MON}\\s+(\\d{4})${DASH}(\\d{1,2})\\s+${MON}\\s+(\\d{4})`, 'i'));
-  if (m) {
-    out.previewsStartDate = iso(m[3], m[2], m[1]);
-    out.closingDate = iso(m[6], m[5], m[4]);
-  } else if ((m = t.match(new RegExp(`(\\d{1,2})\\s+${MON}${DASH}(\\d{1,2})\\s+${MON}\\s+(\\d{4})`, 'i')))) {
+  const D = `(\\d{1,2})[ \\t]+${MON}`;
+  const SEP = '[ \\t]*(?:[–—-]|to)[ \\t]*';
+  const DAY = '(?:(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)[a-z]*\\.?[ \\t]+)?';
+  let range = null;
+  let m;
+  if ((m = t.match(new RegExp(`${DAY}${D}[ \\t]+(\\d{4})${SEP}${DAY}${D}[ \\t]+(\\d{4})`, 'i')))) {
+    range = { start: iso(m[3], m[2], m[1]), end: iso(m[6], m[5], m[4]) };
+  } else if ((m = t.match(new RegExp(`${DAY}${D}${SEP}${DAY}${D}[ \\t]+(\\d{4})`, 'i')))) {
     const endYear = Number(m[5]);
     const startYear = MONTHS[m[2].slice(0, 3).toLowerCase()] > MONTHS[m[4].slice(0, 3).toLowerCase()] ? endYear - 1 : endYear;
-    out.previewsStartDate = iso(startYear, m[2], m[1]);
-    out.closingDate = iso(endYear, m[4], m[3]);
+    range = { start: iso(startYear, m[2], m[1]), end: iso(endYear, m[4], m[3]) };
+  } else if ((m = t.match(new RegExp(`(?:^|[^\\d])(\\d{1,2})${SEP}${D}[ \\t]+(\\d{4})`, 'i')))) {
+    range = { start: iso(m[4], m[3], m[1]), end: iso(m[4], m[3], m[2]) };
   }
-  const opened = t.match(new RegExp(`(?:opened|opening|press night|press)\\s*(?:on|:)?\\s*(\\d{1,2})\\s+${MON}\\s*(\\d{4})?`, 'i'));
-  if (opened) {
-    const year = opened[3] || (out.previewsStartDate || out.closingDate || '').slice(0, 4);
-    if (year) out.openingDate = iso(year, opened[2], opened[1]);
-    // "17 Oct" with no year, run spanning New Year: press night is after the first preview.
-    if (out.openingDate && out.previewsStartDate && out.openingDate < out.previewsStartDate && !opened[3]) {
-      out.openingDate = iso(Number(year) + 1, opened[2], opened[1]);
-    }
+  const label = (rx) => {
+    const x = t.match(new RegExp(`\\b(?:${rx})\\b[ \\t]*(?:on|from|:)?[ \\t]*${DAY}${D}(?:[ \\t]+(\\d{4}))?`, 'i'));
+    return x ? { d: x[1], mon: x[2], y: x[3] || null } : null;
+  };
+  const yearFor = (x, fallback) => x.y || fallback;
+  const fallbackYear = (range?.start || range?.end || '').slice(0, 4) || null;
+  const previews = label('previews?|first preview');
+  const opened = label('opened|opening night|opening|press night|press');
+  const closes = label('until|closes|closing|ends|final performance');
+  if (previews && yearFor(previews, fallbackYear)) out.previewsStartDate = iso(yearFor(previews, fallbackYear), previews.mon, previews.d);
+  if (opened && yearFor(opened, fallbackYear)) out.openingDate = iso(yearFor(opened, fallbackYear), opened.mon, opened.d);
+  if (closes && closes.y) out.closingDate = iso(closes.y, closes.mon, closes.d);
+  if (range) {
+    // A range starting on press night is the press-night-to-close run, not
+    // the first preview.
+    if (!out.previewsStartDate && range.start && range.start !== out.openingDate) out.previewsStartDate = range.start;
+    if (!out.closingDate) out.closingDate = range.end;
   }
-  const previews = t.match(new RegExp(`previews?\\s*(?:from|:)?\\s*(\\d{1,2})\\s+${MON}\\s+(\\d{4})`, 'i'));
-  if (previews && !out.previewsStartDate) out.previewsStartDate = iso(previews[3], previews[2], previews[1]);
-  // An "opening" outside the run is a misread; a closing before the start too.
-  if (out.closingDate && out.previewsStartDate && out.closingDate < out.previewsStartDate) out.closingDate = null;
+  // Yearless press night in a run spanning New Year falls after the first preview.
+  if (opened && !opened.y && out.openingDate && out.previewsStartDate && out.openingDate < out.previewsStartDate) {
+    out.openingDate = iso(Number(out.openingDate.slice(0, 4)) + 1, opened.mon, opened.d);
+  }
+  const start = out.previewsStartDate || out.openingDate;
+  if (out.closingDate && start && out.closingDate < start) out.closingDate = null;
   if (out.openingDate && ((out.previewsStartDate && out.openingDate < out.previewsStartDate) || (out.closingDate && out.openingDate > out.closingDate))) out.openingDate = null;
-  if (out.openingDate && out.previewsStartDate === out.openingDate) out.previewsStartDate = out.openingDate;
   return out;
 }
 
@@ -202,6 +236,7 @@ function findContinuingRun(shows, title, startDate) {
  */
 function buildReviewLedCandidates({ season, lookups, shows, today }) {
   const pool = buildVenueTitlePool(shows);
+  const westEndIds = new Set(shows.filter(s => s.market === 'west-end').map(s => s.id));
   const candidates = [];
   for (const row of lookups || []) {
     const review = row.review || {};
@@ -223,7 +258,7 @@ function buildReviewLedCandidates({ season, lookups, shows, today }) {
     const startDate = c.previewsStartDate || c.openingDate;
     const dupOpts = { withinYears: 1, startDate, venueEquals: sameVenueFamily };
     const existing = findExactDuplicate(pool, c.title, c.venue, dupOpts)
-      || pool.find(s => s.startDate && normalizeTitle(s.title) === normalizeTitle(c.title)
+      || pool.find(s => s.startDate && westEndIds.has(s.id) && normalizeTitle(s.title) === normalizeTitle(c.title)
         && Math.abs(Date.parse(s.startDate) - Date.parse(startDate)) <= 7 * DAY_MS)
       || findContinuingRun(shows, c.title, startDate);
     const subtitleOf = !existing && findSubtitleDuplicateTitle(pool, c.title, c.venue, dupOpts);
@@ -250,6 +285,7 @@ module.exports = {
   trVenueName,
   pickTrForReview,
   parseTrHeaderDates,
+  headerFacts,
   findContinuingRun,
   buildReviewLedCandidates,
 };

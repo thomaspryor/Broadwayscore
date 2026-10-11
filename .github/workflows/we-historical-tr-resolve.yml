@@ -57,7 +57,8 @@ jobs:
         env:
           SEASONS: ${{ inputs.seasons }}
         run: |
-          for s in ${SEASONS//,/ }; do
+          IFS=',' read -ra SEASON_LIST <<< "$SEASONS"
+          for s in "${SEASON_LIST[@]}"; do
             f="data/audit/we-historical-review-led-$s.json"
             if [ -f "$f" ]; then git add "$f"; fi
           done
