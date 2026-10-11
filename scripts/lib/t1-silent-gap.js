@@ -24,6 +24,7 @@
 
 const { isEmptyBodyFile, isRecoverableFlaggedFile } = require('./flagged-recovery');
 const { isRoundupPageAsReview, isIncludableForRebuild, hasValidScore, hasAggregatorExcerpt } = require('./review-guards');
+const { classifyReviewUrl } = require('./non-review-url-patterns');
 // BRO-2985: the scorer's own selector. An 'unscored' gap whose file the scorer
 // would skip cannot be self-healed by dispatching llm-ensemble-score.yml, so
 // the sweep must not keep dispatching for it (4x/day/show forever at
@@ -88,10 +89,23 @@ function hasEditorialExclusion(f) {
 // is the reference implementation, hardened after 2 rounds of adversarial
 // review caught exactly this).
 const WRONG_URL_INCOMPLETE = new Set(['url_content_mismatch', 'wrong_content', 'scraper_garbage']);
+// The discovery-time URL classifier (video/news items, listing pages, ticket
+// sellers, aggregator navigation) already refuses these URLs, but it only ran
+// at discovery. A file filed before a pattern existed, or via a path that skips
+// it (BWW 'Video-...-Trailer-Released' as a serp-discovery file), then read as a
+// T1/T2 'unscored' gap forever. Missing/unparseable URLs are NOT judged here:
+// those stay real gaps (no automated path, page immediately).
+function hasNonReviewUrl(f) {
+  if (!f || typeof f.url !== 'string' || !f.url.startsWith('http')) return false;
+  const r = classifyReviewUrl(f.url);
+  return r.ok === false && r.reason !== 'not-http-url' && r.reason !== 'unparseable-url';
+}
+
 function hasWrongUrlSignal(f) {
   return WRONG_URL_INCOMPLETE.has(f.incompleteReason)
     || f.isBlockedReviewUrl === true
-    || f.bwwAggregatorAmbiguous === true;
+    || f.bwwAggregatorAmbiguous === true
+    || hasNonReviewUrl(f);
 }
 
 /**

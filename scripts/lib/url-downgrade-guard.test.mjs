@@ -108,3 +108,18 @@ test('romeo-and-juliet-class regression: 2026 west end swapped to 2023 Almeida',
   });
   assert.equal(verdict.regression, true);
 });
+
+// 2026-10-11: the-whos-tommy-tour-2026's Deadline stub was swapped to a
+// /2024/03/ review of the 2024 Broadway production. /YYYY/MM/ paths give only a
+// year, which _urlPathDate ignored, so the guard never fired.
+test('year-only url path before the show window is refused; prior run / tour leg / same year are not', () => {
+  const show = { openingDate: '2026-10-20', previewsStartDate: '2026-10-01', category: 'tour' };
+  const old = 'https://deadline.com/2024/03/the-whos-tommy-broadway-review-1235869837/';
+  const r = isUrlSwapRegression({ newUrl: old, show, outletId: 'deadline' });
+  assert.equal(r.regression, true);
+  assert.equal(r.issue, 'year-before-window');
+  assert.equal(isUrlSwapRegression({ newUrl: old, show: { ...show, priorRuns: [{ openingDate: '2024-03-01', closingDate: '2024-08-31' }] }, outletId: 'deadline' }).regression, false);
+  assert.equal(isUrlSwapRegression({ newUrl: old, show: { ...show, tourLegs: [{ startDate: '2024-01-10', endDate: '2024-06-01' }] }, outletId: 'deadline' }).regression, false);
+  assert.equal(isUrlSwapRegression({ newUrl: 'https://deadline.com/2026/10/x-review-1/', show, outletId: 'deadline' }).regression, false);
+  assert.equal(isUrlSwapRegression({ newUrl: old, show: {}, outletId: 'deadline' }).regression, false);
+});
