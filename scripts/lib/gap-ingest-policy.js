@@ -39,7 +39,7 @@
 
 const { extractPublishDate } = require('./article-extractor');
 const { isCurrentRunRoundup } = require('./gap-reference-sources');
-const { isUrlYearInPriorRun, URL_YEAR_PATTERN } = require('./url-discovery');
+const { isUrlYearInPriorRun, urlYearOf } = require('./url-discovery');
 
 /**
  * Date an aggregator article against the show's current opening window.
@@ -68,7 +68,7 @@ function articleRunIdentity(html, show, url) {
  * date. This is the same signal the SERP census discovery path
  * (acceptSerpCensusResult) already applies to its own candidates; extracted
  * here so any URL-only discovery source can reuse it, importing the SAME
- * URL_YEAR_PATTERN isUrlYearInPriorRun already uses rather than a second,
+ * url-discovery urlYearOf isUrlYearInPriorRun already uses rather than a second,
  * drifted regex literal (a second copy is how a URL trips one guard while
  * staying invisible to the priorRuns readmission in the other).
  *
@@ -86,8 +86,8 @@ function articleRunIdentity(html, show, url) {
  * @returns {boolean} true when the embedded year predates this production's window
  */
 function isUrlYearOutOfWindow(url, show) {
-  const urlYear = (String(url).match(URL_YEAR_PATTERN) || [])[1];
-  if (!urlYear) return false;
+  const urlYear = urlYearOf(url);
+  if (urlYear === null) return false;
   if (isUrlYearInPriorRun(url, show && show.priorRuns)) return false;
   // A title that IS a year (e.g. "1984") slugs into review URLs as that same
   // 4-digit number with no way to distinguish it from a genuine publish year

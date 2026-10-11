@@ -1,6 +1,8 @@
 'use strict';
 
-const { CENSUS_SCHEMA } = require('./prior-production-citations');
+// Schema 2 is the version that first kept prior-production citations out of
+// the candidate pool; later bumps (3: BRO-4190 URL gate) keep that property.
+const PRIOR_RUN_OUTSIDE_POOL_SINCE_SCHEMA = 2;
 
 /**
  * coverage-digest.js — plain-English "N of M known reviews live" digest lines
@@ -87,7 +89,7 @@ function coverageStatus(result) {
   // legacy path is reachable only for rows the next merge has not migrated
   // yet, so the safe choice is the behaviour those rows were written under.
   const remaining = Math.max(0, candidateCount - liveCount);
-  const outsideByConstruction = cv.censusSchema >= CENSUS_SCHEMA;
+  const outsideByConstruction = cv.censusSchema >= PRIOR_RUN_OUTSIDE_POOL_SINCE_SCHEMA;
   const insidePool = (outsideByConstruction || excluded.length > remaining) ? [] : excluded;
   const outsidePool = insidePool.length ? [] : excluded;
   const pending = Math.max(0, remaining - insidePool.length);

@@ -324,6 +324,12 @@ const CENSUS_JUNK_DOMAINS = new Set([
   // forums / podcasts / archives / bare IP
   'zeno.fm', 'podcastrex.com', 'oocities.org', 'classical.net', 'talkclassical.com',
   'travelaol.yuku.com', 'opera.hu', 'opera-online.com', '205.229.215.203',
+  // BRO-4190 / BRO-4540 / BRO-4583 gap-alert cluster (2026-10-11): show
+  // databases, ticket and fundraiser pages and an artist agency's press page
+  // the census counted as missing reviews. 0 files in
+  // review-texts and 0 rows in reviews.json for each.
+  'theatricalindex.com', 'broadwaylog.app', 'operabase.com', 'ticketswap.com',
+  'zeffy.com', 'askonasholt.com',
 ]);
 
 /**

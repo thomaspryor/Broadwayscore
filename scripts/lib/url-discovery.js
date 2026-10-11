@@ -1468,6 +1468,36 @@ function earliestTourLegStart(show) {
 // share one pattern instead of a copy that can silently drift (BRO-736).
 const URL_YEAR_PATTERN = /[/-]((?:19|20)\d{2})(?:[/-]|$)/;
 
+// BroadwayWorld article slugs end in a compact publish date with no year
+// token: /los-angeles/article/Review-THE-HOPE-THEORY-at-Geffen-Playhouse-20240507.
+// URL_YEAR_PATTERN cannot see it, so a 2024 regional review read as current on
+// a 2026 show (BRO-4583). Valid month and day only, so a long numeric id is
+// not misread as a date.
+const BWW_COMPACT_DATE_PATTERN = /-((?:19|20)\d{2})(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])\/?$/;
+
+/**
+ * The publish year a URL carries: a /YYYY/ or -YYYY- token, else a
+ * BroadwayWorld trailing -YYYYMMDD. Every URL-year rule should read the year
+ * through this so the two shapes cannot drift apart.
+ * @param {string} url
+ * @returns {number|null}
+ */
+function urlYearOf(url) {
+  if (!url) return null;
+  const s = String(url);
+  const m = s.match(URL_YEAR_PATTERN);
+  if (m) return parseInt(m[1], 10);
+  let host = '';
+  let path = '';
+  try { const u = new URL(s); host = u.hostname.toLowerCase(); path = u.pathname; } catch { return null; }
+  if (!/(^|\.)broadwayworld\.com$/.test(host)) return null;
+  // -20010101 is BWW's placeholder for an undated article, not a date: a
+  // 2026 Dirty Dancing tour review carries it.
+  if (/-20010101\/?$/.test(path)) return null;
+  const c = path.match(BWW_COMPACT_DATE_PATTERN);
+  return c ? parseInt(c[1], 10) : null;
+}
+
 /**
  * Does a URL's embedded /YYYY/ fall inside a year a declared prior run spans?
  *
@@ -1483,9 +1513,8 @@ const URL_YEAR_PATTERN = /[/-]((?:19|20)\d{2})(?:[/-]|$)/;
  */
 function isUrlYearInPriorRun(url, priorRuns) {
   if (!url || !Array.isArray(priorRuns) || priorRuns.length === 0) return false;
-  const m = String(url).match(URL_YEAR_PATTERN);
-  if (!m) return false;
-  const urlYear = parseInt(m[1], 10);
+  const urlYear = urlYearOf(url);
+  if (urlYear === null) return false;
   for (const run of priorRuns) {
     if (!run || !run.openingDate) continue;
     const open = new Date(run.openingDate);
@@ -1508,9 +1537,8 @@ function isUrlYearInPriorRun(url, priorRuns) {
  */
 function isUrlYearInTourLeg(url, tourLegs) {
   if (!url || !Array.isArray(tourLegs) || tourLegs.length === 0) return false;
-  const m = String(url).match(URL_YEAR_PATTERN);
-  if (!m) return false;
-  const urlYear = parseInt(m[1], 10);
+  const urlYear = urlYearOf(url);
+  if (urlYear === null) return false;
   for (const leg of tourLegs) {
     if (!leg || !leg.startDate) continue;
     const start = new Date(leg.startDate);
@@ -1828,6 +1856,7 @@ module.exports = {
   earliestTourLegStart,
   isUrlYearInTourLeg,
   URL_YEAR_PATTERN,
+  urlYearOf,
   buildDateTbs,
   validateUrlDomain,
   getTryoutRejectionStats,

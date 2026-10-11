@@ -34,7 +34,7 @@ test('#893 repro: a single-show run no longer wipes the other shows', () => {
   assert.strictEqual(prev.results.length, 3);
 
   // now the send-day `--show=b-show` run
-  const after = mergeGapAudit(prev, runOf([result('b-show', { missing: [{ host: 'x.com', url: 'https://x.com/r' }] })]));
+  const after = mergeGapAudit(prev, runOf([result('b-show', { missing: [{ host: 'outlet-x.com', url: 'https://outlet-x.com/r' }] })]));
   assert.deepStrictEqual(after.results.map(r => r.showId), ['a-show', 'b-show', 'c-show']);
   assert.strictEqual(after.auditedThisRun, 1);
   assert.strictEqual(after.carriedForward, 2);
@@ -47,7 +47,7 @@ test('#893 repro: a single-show run no longer wipes the other shows', () => {
 
 test('counts describe the merged file, not just the run', () => {
   const prev = mergeGapAudit(null, runOf([
-    result('a-show', { missing: [{ host: 'x.com', url: 'https://x.com/1' }] }),
+    result('a-show', { missing: [{ host: 'outlet-x.com', url: 'https://outlet-x.com/1' }] }),
     result('b-show'),
   ], '2026-08-01T00:00:00.000Z'));
   assert.strictEqual(prev.counts.withGap, 1);
@@ -60,7 +60,7 @@ test('counts describe the merged file, not just the run', () => {
 });
 
 test('a re-audit that CLEARS a gap replaces the stale entry (no zombie gaps)', () => {
-  const prev = mergeGapAudit(null, runOf([result('a-show', { missing: [{ host: 'x.com', url: 'https://x.com/1' }] })], '2026-08-01T00:00:00.000Z'));
+  const prev = mergeGapAudit(null, runOf([result('a-show', { missing: [{ host: 'outlet-x.com', url: 'https://outlet-x.com/1' }] })], '2026-08-01T00:00:00.000Z'));
   assert.strictEqual(prev.counts.withGap, 1);
   const after = mergeGapAudit(prev, runOf([result('a-show')]));
   assert.strictEqual(after.results.length, 1);
@@ -116,7 +116,7 @@ test('duplicate showIds collapse to one row (ship-check: append list inflated co
   // merge and quietly double the gap counts.
   const dup = mergeGapAudit(null, runOf([
     result('a-show'),
-    result('a-show', { missing: [{ host: 'x.com', url: 'https://x.com/1' }] }),
+    result('a-show', { missing: [{ host: 'outlet-x.com', url: 'https://outlet-x.com/1' }] }),
   ]));
   assert.strictEqual(dup.results.length, 1);
   assert.strictEqual(dup.results[0].missing.length, 1, 'last row for a showId wins');
@@ -143,8 +143,8 @@ test('gapStateFor: empty census is never "complete" (task #906: now reuses censu
   // (which read this as "complete"): finding no URLs is ignorance, not proof.
   assert.strictEqual(gapStateFor(result('a')), 'no-census-yet');
   // at least one real, covered URL and zero gaps == genuinely complete
-  assert.strictEqual(gapStateFor(result('a', { aggregatorListedUrls: ['https://x.com/review'] })), 'complete');
-  assert.strictEqual(gapStateFor(result('a', { missing: [{ host: 'x.com', url: 'https://x.com/1' }] })), 'incomplete');
+  assert.strictEqual(gapStateFor(result('a', { aggregatorListedUrls: ['https://outlet-x.com/review'] })), 'complete');
+  assert.strictEqual(gapStateFor(result('a', { missing: [{ host: 'outlet-x.com', url: 'https://outlet-x.com/1' }] })), 'incomplete');
   assert.strictEqual(gapStateFor(result('a', { flaggedMisses: [{ host: 'y.com', url: 'https://y.com/1' }] })), 'incomplete');
   assert.strictEqual(gapStateFor(result('a', { citedNoUrl: [{ outletId: 'o' }] })), 'incomplete');
   // no aggregator reference at all == ignorance, not proof of coverage
@@ -154,8 +154,8 @@ test('gapStateFor: empty census is never "complete" (task #906: now reuses censu
 
 test('stateMap keys by showId and skips junk rows', () => {
   const m = stateMap([
-    result('a-show', { aggregatorListedUrls: ['https://x.com/review'] }),
-    result('b-show', { missing: [{ host: 'x', url: 'https://x.com/1' }] }),
+    result('a-show', { aggregatorListedUrls: ['https://outlet-x.com/review'] }),
+    result('b-show', { missing: [{ host: 'x', url: 'https://outlet-x.com/1' }] }),
     null,
     { title: 'no id' },
   ]);
@@ -168,11 +168,11 @@ test('stateMap keys by showId and skips junk rows', () => {
 // isRiskyGapChange are the real functions the guard call site uses (not
 // hand-rolled test doubles), exercised against realistic result() shapes.
 test('riskStateMap/isRiskyGapChange: a NEW aggregator-listed gap is not risky', () => {
-  const prev = result('a-show', { aggregatorListedUrls: ['https://x.com/review-a'] });
+  const prev = result('a-show', { aggregatorListedUrls: ['https://outlet-x.com/review-a'] });
   // Same covered URL still present, PLUS a brand-new URL the census just found
   // that we don't have yet — candidateCount grows, liveCount is unaffected.
   const next = result('a-show', {
-    aggregatorListedUrls: ['https://x.com/review-a'],
+    aggregatorListedUrls: ['https://outlet-x.com/review-a'],
     missing: [{ host: 'y.com', url: 'https://y.com/review-b' }],
   });
   const prevMap = riskStateMap([prev]);
@@ -188,10 +188,10 @@ test('riskStateMap/isRiskyGapChange: the SAME URL flipping from covered to missi
   // `missing` (loadDirFiles() returned [] this run) — liveCount drops even
   // though the verdict transition (complete -> incomplete) looks identical
   // to the benign new-gap case above.
-  const prev = result('a-show', { aggregatorListedUrls: ['https://x.com/review-a'] });
+  const prev = result('a-show', { aggregatorListedUrls: ['https://outlet-x.com/review-a'] });
   const next = result('a-show', {
-    aggregatorListedUrls: ['https://x.com/review-a'],
-    missing: [{ host: 'x.com', url: 'https://x.com/review-a' }],
+    aggregatorListedUrls: ['https://outlet-x.com/review-a'],
+    missing: [{ host: 'outlet-x.com', url: 'https://outlet-x.com/review-a' }],
   });
   const prevMap = riskStateMap([prev]);
   const nextMap = riskStateMap([next]);
