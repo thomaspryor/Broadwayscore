@@ -465,6 +465,32 @@ Lessons, each fixed in code:
   over a leftover file whose recorded source the row rejected
   (thumbnailFallbackAction in lib/image-source-match.js).
 
+### Review-led rows (BRO-5031, from 2026-10-11)
+
+Productions WOS reviewed but never listed (its listings page has no row)
+were reported in `unlistedReviews` and never promoted. They now get their
+dates from Theatre Record only, never from the review date:
+
+- `we-historical-tr-resolve.yml` (manual, `seasons` input, TR login from
+  Actions secrets) runs `scripts/resolve-we-unlisted-tr.js` and commits
+  `data/audit/we-historical-review-led-<season>.json`: TR production page,
+  venue and the header dates, no review text.
+- `scripts/lib/we-review-led-candidates.js` turns those lookups into
+  candidates: London houses only (non-London same-name venues dropped),
+  NT stages named as the stage (Lyttelton Theatre, not National Theatre),
+  runs open on 16 March 2020 capped there (`scheduledClosingDate` keeps the
+  printed date), and a run whose press night fell in the previous season is
+  re-filed to that season. `promote-historical-we.js` takes them with
+  `discoverySource: we-historical:tr`.
+- TR headers come in several layouts (PDF "Press Night 05 Sep 2019", a
+  label row over a date row, HTML label and date on separate lines, and
+  synonyms like "First Night", "Previews / Opens"). `pairLabelLines` zips
+  them; an ambiguous stack is left unread rather than guessed.
+- Cloud sessions cannot push shows.json. `promote-historical-we.js
+  --season=X --plan=bro-5031-<season>` writes the rows as `add-show`
+  actions in `data/pending-fixes/` (force-add, it is gitignored); land it,
+  then dispatch `execute-approved-fix.yml` with that id and `mode=apply`.
+
 ## Side benefit (separate card)
 
 321 London-market rows have no `openingDate`, but 275 of them are

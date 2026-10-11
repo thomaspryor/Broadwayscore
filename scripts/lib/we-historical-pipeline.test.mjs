@@ -308,3 +308,25 @@ test('planPromotions: approvals type override wins, and unguessable rows are lis
   assert.deepEqual(type, { 'Sunset Boulevard': 'musical', 'The Witches': 'musical', Nye: 'play' });
   assert.deepEqual(typeGuessed, ['nye-west-end-2024']);
 });
+
+// BRO-5031: a cloud session cannot push shows.json, so --plan writes the
+// promoted rows as add-show actions for execute-approved-fix.yml. Every row a
+// promoter builds must pass that action's field whitelist.
+test('buildAddShowPlan: each promoted row passes the add-show action', () => {
+  const { buildAddShowPlan } = require('../promote-historical-we.js');
+  const { applyAddShow } = require('./add-show-action.js');
+  const e = buildShowEntry({ title: 'The Upstart Crow', venue: 'Gielgud Theatre', previewsStartDate: '2020-02-07', openingDate: '2020-02-17', closingDate: '2020-03-16',
+    season: '2019-2020', discoverySource: 'we-historical:tr', evidenceUrls: ['https://www.theatrerecord.com/x'] }, new Set());
+  const plan = buildAddShowPlan('bro-5031-2019-20', '2019-2020', [e], 'pid');
+  assert.equal(plan.issueNumber, 'bro-5031-2019-20');
+  assert.equal(plan.status, 'pending');
+  assert.match(plan.plan.summary, /BRO-5031\)/);
+  const shows = [];
+  for (const a of plan.plan.actions) {
+    assert.equal(a.type, 'add-show');
+    const r = applyAddShow(shows, a);
+    assert.equal(r.ok, true, r.reason);
+  }
+  assert.equal(shows[0].season, '2019-2020');
+  assert.equal(shows[0].closingDate, '2020-03-16');
+});
