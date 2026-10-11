@@ -1,6 +1,7 @@
 'use client';
 
 import { memo } from 'react';
+import type { MouseEvent, KeyboardEvent } from 'react';
 import Link from 'next/link';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
@@ -113,7 +114,7 @@ const ShowListCard = memo(function ShowListCard({
   const isOpen = show.status === 'open' || show.status === 'previews' || show.status === 'upcoming';
   const badgeSize = isCompact ? 'md' as const : 'lg' as const;
 
-  // --- Ticket CTA (inline text, desktop only) ---
+  // --- Ticket CTA: inline text on sm+, a small .btn-primary button on phones (BRO-3604) ---
   // Rendered inside the card's <Link> — uses span+onClick+stopPropagation
   // since nested <a> tags are invalid HTML.
   //
@@ -139,19 +140,36 @@ const ShowListCard = memo(function ShowListCard({
     });
     window.open(affiliateUrl, '_blank', 'noopener');
   };
+  const ticketHandlers = {
+    role: 'link',
+    tabIndex: 0,
+    onClick: (e: MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      openAndTrackPrimaryTicket();
+    },
+    onKeyDown: (e: KeyboardEvent) => { if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); openAndTrackPrimaryTicket(); } },
+  };
+  const ticketLabel = canShowTicket && primaryTicket.priceFrom
+    ? `From ${isLondonMarket(category) ? '£' : '$'}${primaryTicket.priceFrom} ↗`
+    : 'Tickets ↗';
   const ticketCta = canShowTicket ? (
     <span
-      role="link"
-      tabIndex={0}
+      {...ticketHandlers}
       className="hidden sm:inline-flex items-center gap-1 text-amber-400/80 hover:text-amber-300 cursor-pointer text-[11px] font-medium"
-      onClick={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        openAndTrackPrimaryTicket();
-      }}
-      onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); openAndTrackPrimaryTicket(); } }}
     >
-      {primaryTicket.priceFrom ? `· From ${isLondonMarket(category) ? '£' : '$'}${primaryTicket.priceFrom} ↗` : '· Tickets ↗'}
+      · {ticketLabel}
+    </span>
+  ) : null;
+  // min-h-[32px] overrides the 48px mobile .btn floor in globals.css: the owner asked
+  // for a small button, and a mis-tap lands on the card's own show-page link.
+  const ticketCtaMobile = canShowTicket ? (
+    <span
+      {...ticketHandlers}
+      data-testid="ticket-cta-mobile"
+      className="sm:hidden btn-primary mt-2 min-h-[32px] px-3 py-1 text-xs cursor-pointer"
+    >
+      {ticketLabel}
     </span>
   ) : null;
 
@@ -220,6 +238,7 @@ const ShowListCard = memo(function ShowListCard({
         )}
         {ticketCta}
       </div>
+      {ticketCtaMobile}
       {tourLine}
     </div>
   ) : (

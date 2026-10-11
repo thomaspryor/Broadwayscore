@@ -15,6 +15,7 @@ import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import {
   isTourScored, isTourBrowsable, isTourIndexable, isLiveTour, getTourSection, tourSectionRank, TOUR_SECTIONS,
+  isTourScoreHidden,
 } from '../../src/lib/tour-listing';
 
 process.env.NEXT_PUBLIC_FEATURES = 'tour';
@@ -215,11 +216,15 @@ test('ShowTrustLines: copy follows the parent market; a standalone tour has no p
 test('ShowTrustLines: a parent whose tours have no score yet says reviews are coming in', async () => {
   const dc = await import('../../src/lib/data-core');
   const { default: ShowTrustLines } = await import('../../src/components/show-page/ShowTrustLines');
-  const t = dc.getAllShows().find(s => s.category === 'tour' && s.tourOf && !dc.isTourListed(s) && dc.isTourIndexableShow(s));
-  if (!t) return; // every live tour has a score: nothing to show
-  const parent = dc.getShowById(t.tourOf!)!;
-  const siblings = dc.getToursOf(parent);
-  if (siblings.some(x => dc.isTourListed(x))) return; // another tour of the title has a score
+  // "No score yet" means the tour page hides it too (isTourScoreHidden): a tour
+  // under the review minimum whose score has been public 24h+ keeps showing it
+  // through the coverage floor, and so does its parent's line (BRO-5026).
+  const noScoreYet = (x: any) => !dc.isTourListed(x) && isTourScoreHidden(x);
+  const parent = dc.getAllShows()
+    .filter(s => s.category === 'tour' && s.tourOf && dc.isTourIndexableShow(s) && noScoreYet(s))
+    .map(s => dc.getShowById(s.tourOf!)!)
+    .find(p => dc.getToursOf(p).every(noScoreYet));
+  if (!parent) return; // every live tour has a score: nothing to show
   const markup = renderToStaticMarkup(React.createElement(ShowTrustLines, { show: parent }));
   assert.match(markup, /reviews coming in/);
   assert.doesNotMatch(markup, /has its own critic score/);
