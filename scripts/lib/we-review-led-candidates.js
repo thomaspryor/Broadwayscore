@@ -149,7 +149,9 @@ const SNIP_D = `\\d{1,2}(?:st|nd|rd|th)?\\s+${MON}`;
 const SNIP_DAY = '(?:(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)[a-z]*\\.?\\s+)?';
 const SNIP_SEP = '\\s*(?:[–—-]|to)\\s*';
 const SNIP_RX = new RegExp([
-  `\\b(?:previews?|first preview|opened|opening night|opening|press night|press|until|closes|closing|ends|final performance)\\b\\s*(?:on|from|:)?\\s*${SNIP_DAY}${SNIP_D}(?:\\s+\\d{4})?`,
+  // A label may run straight into a range ("Opened 17 Oct 2018 – 30 Mar 2019"):
+  // keep the range end with it, or the close date is lost.
+  `\\b(?:previews?|first preview|opened|opening night|opening|press night|press|until|closes|closing|ends|final performance)\\b\\s*(?:on|from|:)?\\s*${SNIP_DAY}${SNIP_D}(?:\\s+\\d{4})?(?:${SNIP_SEP}${SNIP_DAY}${SNIP_D}\\s+\\d{4})?`,
   `${SNIP_DAY}${SNIP_D}(?:\\s+\\d{4})?${SNIP_SEP}${SNIP_DAY}${SNIP_D}\\s+\\d{4}`,
   `\\b\\d{1,2}${SNIP_SEP}${SNIP_D}\\s+\\d{4}`,
 ].join('|'), 'gi');
@@ -163,16 +165,16 @@ function dateSnippets(line) {
 }
 
 /**
- * The factual part of a TR production header: the first three non-empty
- * lines (title, author, venue) when short, then only the date phrases found
- * in later lines. The lookup file is public, so no surrounding text (which
- * on a two-column PDF page can be review prose) is ever kept.
+ * The factual part of a TR production header: the title line, then only the
+ * date phrases found in the lines after it. The lookup file is public, so no
+ * other text is kept: on a two-column PDF page any line can be review prose.
+ * Venue and author are not needed (the venue comes from the search result).
  */
 function headerFacts(text) {
   const lines = String(text || '').split('\n').map(l => l.replace(/\s+/g, ' ').trim()).filter(Boolean);
   const keep = [];
   lines.forEach((l, i) => {
-    if (i < 3 && l.length <= 120 && !DATE_RX.test(l)) keep.push(l);
+    if (i === 0 && l.length <= 120 && !DATE_RX.test(l)) keep.push(l);
     else for (const s of dateSnippets(l)) if (!keep.includes(s)) keep.push(s);
   });
   return keep.slice(0, 12).join('\n') || null;
