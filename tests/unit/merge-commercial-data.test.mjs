@@ -593,10 +593,29 @@ describe('mergePendingReview', () => {
 
     it('both kept: a field the other side removed since base is removed', () => {
       const base = { shows: { a: row({ note: 'x' }) } };
-      const ours = { shows: { a: row({ note: 'x', lastUpdated: '2026-10-11T09:00:00Z' }) } };
+      const ours = { shows: { a: row({ note: 'x' }) } };
       const { note, ...noNote } = row({ note: 'x' });
       const remote = { shows: { a: noNote } };
       assert.equal('note' in mergePendingReview(ours, remote, base).merged.shows.a, false);
+    });
+
+    it('both kept: an approval does not carry onto figures re-researched by the other side', () => {
+      const base = { shows: { a: row({ designation: 'TBD' }) } };
+      const ours = { shows: { a: row({ designation: 'TBD', ownerApproved: true, ...stamp }) } };
+      const remote = { shows: { a: row({ designation: 'Fizzle', recoupedDate: '2026-09', researchedAt: '2026-10-11T09:00:00Z' }) } };
+      const a = mergePendingReview(ours, remote, base).merged.shows.a;
+      assert.equal(a.designation, 'Fizzle');
+      assert.equal(a.ownerApproved, undefined);
+      assert.equal(a.truthReview, undefined);
+    });
+
+    it('both kept, both re-researched: the claim comes whole from one side, never mixed', () => {
+      const base = { shows: { a: row() } };
+      const ours = { shows: { a: row({ recoupedDate: '2026-09', confidence: 'high', designation: 'Easy Winner', researchedAt: '2026-10-11T09:00:00Z' }) } };
+      const remote = { shows: { a: row({ sourceHost: 'playbill.com', researchedAt: '2026-10-11T08:00:00Z' }) } };
+      const a = mergePendingReview(ours, remote, base).merged.shows.a;
+      assert.equal(a.designation, 'Easy Winner');
+      assert.equal(a.sourceHost, undefined);
     });
 
     it('both kept, no base: whole row from one side as before (tie keeps ours)', () => {
