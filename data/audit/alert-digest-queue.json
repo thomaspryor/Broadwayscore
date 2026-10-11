@@ -689,5 +689,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-11T19:09:16.553Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5000-systemic-contamination",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5000-systemic-contamination",
+    "description": "land.yml did not land land/bro-5000-systemic-contamination: the unit-tests-node gate went red at 0fa8c3de7e. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38165359954",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5000-systemic-contamination"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "0fa8c3de7ebc5de7471e288bbfe630cec0b001e2"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38165359954"
+      }
+    ],
+    "queuedAt": "2026-10-11T19:23:35.243Z"
   }
 ]
