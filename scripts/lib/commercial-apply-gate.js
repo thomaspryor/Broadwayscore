@@ -90,6 +90,15 @@ function withoutRecoupmentClaim(entry) {
   return rest;
 }
 
+// A released row fills gaps; the record's own notes stay, and so does its
+// recoupment citation while the recoupment answer is unchanged (BRO-5041).
+function keepExistingPublicText(entry, existing) {
+  if (!existing) return entry;
+  if (typeof existing.notes === 'string' && existing.notes.trim()) entry.notes = existing.notes;
+  if (existing.recoupedSource && existing.recouped === entry.recouped) entry.recoupedSource = existing.recoupedSource;
+  return entry;
+}
+
 // Mark a fresh research result as held backfill and count the attempt on the
 // pending row (backfill shows have no commercial.json record to count on).
 // `reset` mirrors --force, which restarts the count like the non-backfill path.
@@ -275,6 +284,7 @@ module.exports = {
   BACKFILL_TAG,
   heldReleaseRefusal,
   withoutRecoupmentClaim,
+  keepExistingPublicText,
   holdForBackfill,
   carryHumanReviewHold,
   applyFigureEvidence,

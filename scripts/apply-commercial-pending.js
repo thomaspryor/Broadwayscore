@@ -69,7 +69,7 @@ const AUTO_APPLY_CLAIMS_FROM = flags['auto-apply-claims-from']
   : [];
 
 const gate = require('./lib/commercial-apply-gate');
-const { sanitizeForPublicRecord } = require('./lib/commercial-record-checks');
+const { sanitizeForPublicRecord, commercialRecordErrors } = require('./lib/commercial-record-checks');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { createRunBudget } = require('./lib/run-budget');
 
@@ -364,6 +364,22 @@ async function main() {
       continue;
     }
     if (changed.length) console.log(`  ✂️  "${showId}" — cleared for the public page: ${changed.join(', ')}`);
+    if (RELEASE_HELD) {
+      // A release fills gaps on the record; it never replaces the record's
+      // own public text with research prose (or with nothing, when the
+      // research notes were all stripped).
+      gate.keepExistingPublicText(commercialEntry, existing);
+      // One bad row must not fail validate-data for the whole batch.
+      const rowErrors = commercialRecordErrors(commercialKey, commercialEntry, {
+        showRecord: keyShow && keyShow.slug === commercialKey ? keyShow : undefined,
+        allRecords: commercial.shows,
+      });
+      if (rowErrors.length) {
+        console.log(`  🛑 "${showId}" — left pending for review: ${rowErrors[0]}`);
+        skipped++;
+        continue;
+      }
+    }
 
     commercialEntry.lastUpdated = new Date().toISOString();
     commercialEntry.firstAdded = existing?.firstAdded || new Date().toISOString();

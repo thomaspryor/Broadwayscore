@@ -51,10 +51,16 @@ const INTERNAL_TOKEN_RE = /\b[a-z][A-Za-z]*\s?[:=]\s?(?:true|false|null)\b|\b[a-
 // BRO-4990 backfill wrote these into notes, and /biz would print them as the
 // site speaking (BRO-5041). Capital "I" only, and never a numeral ("Act I
 // could not", "Stage I run", "Henry I did").
-const FIRST_PERSON_SEARCH_RE = /(?<!\b(?:Act|Part|Book|Chapter|Volume|Stage|Phase|Season|Level|Henry|Richard|Elizabeth|Charles|James|George|Edward|William) )\bI (?:[a-z]+)\b|\b[Ww]e (?:couldn['’]t|could not|did not|didn['’]t|were unable|found no|cannot|can['’]t|weren['’]t able|used|classify|checked)\b|\b(?:[Tt]hat|[Tt]his) field\b|\b[Bb]est[- ]fit (?:designation|label)\b/;
+const FIRST_PERSON_SEARCH_RE = /(?<!\b(?:Act|Part|Book|Chapter|Volume|Stage|Phase|Season|Level|War|Title|Henry|Richard|Elizabeth|Charles|James|George|Edward|William|Mary|Louis|Peter|Catherine|Alexander|Frederick|Philip|Napoleon) )\bI (?!and [Yy]ou\b)(?:[a-z]+)\b|\b[Ww]e (?:couldn['’]t|could not|did not|didn['’]t|were unable|found no|cannot|can['’]t|weren['’]t able|used|classify|checked)\b|\b(?:[Tt]hat|[Tt]his) field\b|\b[Bb]est[- ]fit (?:designation|label)\b/;
 // A markdown link ("([ibdb.com](https://...?utm_source=openai))") is a research
 // tool's citation; /biz prints text, so it would show as raw brackets.
 const MARKDOWN_LINK_RE = /\[[^\]\n]*\]\(\s*https?:\/\/[^)\s]*\)/;
+// In a citation field the link's URL is the citation: keep it, bare, without
+// the research tool's tracking parameter.
+const MARKDOWN_LINK_URL_RE = /\(?\[[^\]\n]*\]\(\s*(https?:\/\/[^)\s]*)\)\)?/g;
+function bareCitationUrls(text) {
+  return text.replace(MARKDOWN_LINK_URL_RE, (_m, url) => url.replace(/([?&])utm_source=openai(&|$)/, (_s, pre, post) => (post ? pre : '')).replace(/[?&]$/, ''));
+}
 const MARKDOWN_CITATION_RE = /\s*\(?\[[^\]\n]*\]\(\s*https?:\/\/[^)\s]*\)\)?/g;
 // Writers store article URLs as sources; a URL slug ("...-gpt-...") or query
 // string ("?type=D") is not wording a reader sees.
@@ -388,6 +394,11 @@ function sanitizeForPublicRecord(entry, showStatus) {
     holdReason = 'model figures failed the plausibility check; a person must confirm them';
   } else if (out.recouped === true && internalWordingIn(out.recoupedSource)) {
     holdReason = 'recoupment claim is cited to research output; it needs a public source';
+  }
+  for (const field of CITATION_FIELDS) {
+    if (typeof out[field] !== 'string' || !MARKDOWN_LINK_RE.test(out[field])) continue;
+    out[field] = bareCitationUrls(out[field]);
+    changed.push(field);
   }
   for (const field of PUBLIC_TEXT_FIELDS) {
     if (!internalWordingIn(out[field])) continue;

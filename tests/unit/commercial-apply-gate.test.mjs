@@ -492,27 +492,31 @@ describe('held-row release (BRO-5041)', () => {
   it('CLI: --release-held applies only eligible held rows; plain --show and --all leave held rows pending', () => {
     const dir = fs.mkdtempSync(path.resolve('tests/.bro5041-'));
     try {
-      const held = (designation) => ({ designation, confidence: 'medium', requiresHumanReview: true, backfill: 'BRO-4990', recouped: true, recoupedSource: 'inference', sources: [] });
+      const held = (designation, recouped = false) => ({ designation, confidence: 'medium', requiresHumanReview: true, backfill: 'BRO-4990', recouped, recoupedSource: 'https://news.example/closing', sources: [] });
       fs.writeFileSync(path.join(dir, 'pending.json'), JSON.stringify({ shows: {
-        fresh: held('Flop'), labelled: held('Fizzle'), tbd: held('Fizzle'), unheld: { designation: 'Flop', confidence: 'high', sources: [] },
+        fresh: held('Flop'), labelled: held('Fizzle'), tbd: held('Fizzle'), claimed: held('Flop', true),
+        unheld: { designation: 'Flop', confidence: 'high', recouped: false, recoupedSource: 'https://news.example/closing', sources: [] },
       } }));
       fs.writeFileSync(path.join(dir, 'commercial.json'), JSON.stringify({ shows: {
         labelled: { designation: 'Windfall' }, tbd: { designation: 'TBD', modelRecouped: false },
       } }));
       const mk = (slug) => ({ id: `${slug}-2020`, slug, title: slug, category: 'broadway', status: 'closed' });
-      fs.writeFileSync(path.join(dir, 'shows.json'), JSON.stringify({ shows: ['fresh', 'labelled', 'tbd', 'unheld'].map(mk) }));
+      fs.writeFileSync(path.join(dir, 'shows.json'), JSON.stringify({ shows: ['fresh', 'labelled', 'tbd', 'claimed', 'unheld'].map(mk) }));
       const base = ['scripts/apply-commercial-pending.js', '--dry-run', `--pending-file=${dir}/pending.json`, `--commercial-file=${dir}/commercial.json`, `--shows-file=${dir}/shows.json`];
-      const out = execFileSync(process.execPath, [...base, '--release-held=fresh,labelled,tbd,unheld,gone'], { encoding: 'utf8' });
+      const out = execFileSync(process.execPath, [...base, '--release-held=fresh,labelled,tbd,claimed,unheld,gone'], { encoding: 'utf8' });
       assert.match(out, /Not in pending file[^\n]*gone/);
       assert.match(out, /"labelled" — not released: record already has designation "Windfall"/);
       assert.match(out, /"unheld" — not a held row/);
       assert.match(out, /Would apply "tbd" → [^\n]*"modelRecouped":false/);
       assert.doesNotMatch(out, /"recouped":true/);
-      assert.match(out, /would apply 2, skip 2/);
+      // The release drops "claimed"'s recouped:true, which leaves a Flop with no
+      // recouped:false: the per-row check keeps it pending.
+      assert.match(out, /"claimed" — left pending for review: [^\n]*loss-designations require recouped=false/);
+      assert.match(out, /would apply 2, skip 3/);
       const single = execFileSync(process.execPath, [...base, '--show=fresh'], { encoding: 'utf8' });
       assert.match(single, /needs human review \(release with --release-held=fresh\)/);
       const all = execFileSync(process.execPath, [...base, '--all'], { encoding: 'utf8' });
-      assert.match(all, /would apply 1, skip 3/);
+      assert.match(all, /would apply 1, skip 4/);
     } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }); }
   });
 });
@@ -530,6 +534,9 @@ describe('first-person research notes never reach /biz (BRO-5041)', () => {
     assert.ok(checks.internalWordingIn('Closed early. ([ibdb.com](https://www.ibdb.com/x?utm_source=openai))'));
     assert.equal(checks.internalWordingIn("Transferred from MTC's 2022 off-Broadway Stage I run."), null);
     assert.equal(checks.internalWordingIn('"I lost everything," the lead producer told the Times.'), null);
+    for (const prose of ['Aimed at World War I veterans.', 'Funded with Title I money.', 'A play about Mary I of England.', "Rajiv Joseph's I and You transferred."]) {
+      assert.equal(checks.internalWordingIn(prose), null, prose);
+    }
     assert.equal(checks.internalWordingIn('The producer said “we could not keep the lights on.”'), null);
     assert.equal(checks.internalWordingIn('Source: https://example.com/a-(b)'), null);
   });
@@ -542,5 +549,24 @@ describe('first-person research notes never reach /biz (BRO-5041)', () => {
   it('sanitize drops only the first-person sentence', () => {
     const out = checks.sanitizeForPublicRecord({ notes: "Capitalized at $14.5M. I couldn't verify the weekly nut." }, 'closed');
     assert.equal(out.entry.notes, 'Capitalized at $14.5M.');
+  });
+});
+
+describe('released rows keep the record\'s own text (BRO-5041 review)', () => {
+  const checks = require('../../scripts/lib/commercial-record-checks.js');
+  it('a markdown citation in a source field becomes the bare URL', () => {
+    const out = checks.sanitizeForPublicRecord({ recouped: false, recoupedSource: '([variety.com](https://variety.com/a/?utm_source=openai))' }, 'closed');
+    assert.equal(out.entry.recoupedSource, 'https://variety.com/a/');
+    const kept = checks.sanitizeForPublicRecord({ capitalizationSource: 'SEC Form D [sec.gov](https://sec.gov/x?id=1&utm_source=openai)' }, 'closed');
+    assert.equal(kept.entry.capitalizationSource, 'SEC Form D https://sec.gov/x?id=1');
+  });
+  it('keepExistingPublicText keeps notes and an unchanged recoupment citation', () => {
+    const entry = { notes: null, recouped: false, recoupedSource: 'https://row.example/' };
+    gate.keepExistingPublicText(entry, { notes: 'Capitalized at $5,976,500 per SEC Form D/A.', recouped: false, recoupedSource: 'https://record.example/' });
+    assert.equal(entry.notes, 'Capitalized at $5,976,500 per SEC Form D/A.');
+    assert.equal(entry.recoupedSource, 'https://record.example/');
+    const fresh = { notes: 'Row note.', recouped: false, recoupedSource: 'https://row.example/' };
+    gate.keepExistingPublicText(fresh, { notes: '  ', recoupedSource: 'https://old.example/' });
+    assert.deepEqual(fresh, { notes: 'Row note.', recouped: false, recoupedSource: 'https://row.example/' });
   });
 });
