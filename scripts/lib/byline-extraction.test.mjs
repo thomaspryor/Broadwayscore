@@ -110,3 +110,23 @@ test('JSON-LD author array: first valid Person in document order', () => {
   const html = `<script type="application/ld+json">{"author":[{"@type":"Person","name":"Jane Smith"},{"@type":"Person","name":"John Doe"}]}</script>`;
   assert.equal(extractByline(html), 'Jane Smith');
 });
+
+// BRO-5065: excludeNames (the show's cast + creative team) must veto a
+// meta/JSON-LD author too, not only the text-byline fallback. A Theatricalia
+// page's author meta is the playwright.
+test('BRO-5065: an excluded creative name from author meta or JSON-LD is not returned', () => {
+  const meta = '<html><head><meta name="author" content="Ayn Rand"></head><body>x</body></html>';
+  const ld = '<html><head><script type="application/ld+json">{"@type":"Article","author":{"@type":"Person","name":"Ayn Rand"}}</script></head><body>x</body></html>';
+  const opts = { url: 'https://theatricalia.com/play/39r/night-of-january-16th/production/1b3b', excludeNames: ['Ayn Rand'] };
+  assert.equal(extractAuthorFromHtml(meta, 'x', { url: opts.url }), 'Ayn Rand', 'control: extracted without the exclusion');
+  assert.equal(extractAuthorFromHtml(meta, 'x', opts), null);
+  assert.equal(extractAuthorFromHtml(ld, 'x', opts), null);
+  assert.equal(extractAuthorFromHtml(meta, 'x', { ...opts, excludeNames: ['Someone Else'] }), 'Ayn Rand');
+  // Exact match only: a critic who merely shares a last name and first-name
+  // prefix with a credited person keeps the attribution.
+  assert.equal(extractAuthorFromHtml(meta, 'x', { ...opts, excludeNames: ['Ayn Randall', 'Aynsley Rand'] }), 'Ayn Rand');
+  // A vetoed meta author falls through to the article's own text byline.
+  const body = 'By Jane Critic | October 10, 2026\n\nThe play is a courtroom drama staged at Theatre Row with real energy.';
+  assert.equal(extractAuthorFromHtml(meta, body, opts), 'Jane Critic');
+  assert.equal(extractAuthorFromHtml(meta, body.replace('Jane Critic', 'Ayn Rand'), opts), null);
+});
