@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-10-11T02:14:25.784Z",
-    "completedAt": "2026-10-11T02:14:29.331Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "38104112939",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-11T02:20:09.747Z",
-    "completedAt": "2026-10-11T02:20:46.578Z",
-    "totalReviews": 55141,
-    "processed": 6,
-    "skipped": 55133,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 39913,
-      "output": 2193,
-      "total": 100550
-    },
-    "costUsd": 0.20271445000000002,
-    "runId": "38104553201",
-    "errorDetails": [
-      {
-        "showId": "diana-the-musical-2021",
-        "outletId": "nytimes",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-10-11T02:20:48.753Z",
     "completedAt": "2026-10-11T02:20:52.271Z",
     "totalReviews": 0,
@@ -436988,6 +436950,44 @@
     },
     "costUsd": 0.08075829999999999,
     "runId": "38167264563",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-11T19:39:47.326Z",
+    "completedAt": "2026-10-11T19:41:14.285Z",
+    "totalReviews": 56276,
+    "processed": 17,
+    "skipped": 56258,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 100275,
+      "output": 5596,
+      "total": 249232
+    },
+    "costUsd": 0.43481190000000003,
+    "runId": "38168608722",
+    "errorDetails": [
+      {
+        "showId": "diana-the-musical-2021",
+        "outletId": "nytimes",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-11T19:41:16.416Z",
+    "completedAt": "2026-10-11T19:42:30.757Z",
+    "totalReviews": 34,
+    "processed": 34,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 80416,
+      "output": 7972,
+      "total": 88388
+    },
+    "costUsd": 0.23074830000000002,
+    "runId": "38168608722",
     "errorDetails": []
   }
 ]
