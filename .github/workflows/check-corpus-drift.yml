@@ -38,6 +38,9 @@ on:
 
 permissions:
   contents: write
+  # actions: read — the Live-data step's BRO-3887 probe reads the repo's
+  # Actions cache usage (BRO-447); notify-failure's listWorkflowRuns needs it too.
+  actions: read
 
 concurrency:
   group: check-corpus-drift
@@ -331,6 +334,11 @@ jobs:
       # BRO-4750: + tour-runtime-coverage (every national tour carries a runtime and
       # synopsis unless a documented gap) — shows.json changes daily and new tours
       # appear, so it would redden main with no code change.
+      # BRO-447: the bro3887 probe now asserts repo Actions cache usage (< 8 GiB,
+      # the cause of SERP-cache eviction) via the GitHub API instead of a fixed
+      # credits/day ceiling, hence GH_TOKEN here and actions: read above.
       - name: Live-data assertions (moved from test.yml unit batch)
         if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: node --test tests/unit/cast-changes-real-data.test.mjs tests/unit/bro3887-cache-fix-acceptance.test.mjs tests/unit/image-presence.test.mjs tests/unit/outlet-registry-live-data.test.mjs tests/unit/venue-complex-live-data.test.mjs tests/unit/tour-runtime-coverage.test.mjs
