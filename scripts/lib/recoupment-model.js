@@ -104,6 +104,11 @@ const TAX_CREDIT_LAG_WEEKS = 78; // ~18 months
  * COVID reopenings — NOT just shows that opened after 2021.
  */
 const TAX_CREDIT_PROGRAM_START = new Date('2021-08-01');
+// SVOG awards were first paid in late May 2021. A run replayed as of an
+// earlier date (backtest asOf) had not received one (BRO-5073: Dear Evan
+// Hansen replayed at its July 2017 recoupment read 937% with a 2021 grant
+// netted off its cap). Live runs are always past this date.
+const SVOG_FIRST_AWARDS = new Date('2021-05-25');
 const TAX_CREDIT_PROGRAM_END = new Date('2027-12-31');
 const TAX_CREDIT_MAX = 3000000;
 const TAX_CREDIT_RATE = 0.25;
@@ -475,7 +480,7 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   }
 
   // --- Effective capitalization ---
-  const svogGrant = KNOWN_SVOG[slug] || parseSvogFromNotes(commercial.notes) || 0;
+  const svogGrant = now < SVOG_FIRST_AWARDS ? 0 : (KNOWN_SVOG[slug] || parseSvogFromNotes(commercial.notes) || 0);
 
   // NY theater tax credit: eligible if the show's run overlaps the program
   // window (Aug 2021 – 2027), which includes COVID reopenings of older shows.
