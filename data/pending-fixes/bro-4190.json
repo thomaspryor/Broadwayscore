@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4190",
   "planId": "76fb67a5-83f6-45b6-aff4-245fccd98261",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-11T21:33:03.327Z",
   "submitter": {
     "name": null,
@@ -90,5 +90,63 @@
         "description": "BRO-4190: The American review, Sadler's Wells 2026"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-11T23:57:22.616Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "all-my-sons-2019/telegraph--serena-davies.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "all-my-sons-2019/telegraph--serena-davies.json wrongProductionReason: null -> \"BRO-4190: Old Vic London 2019 production (url slug names old-vic, Pullman/Field cast); show is the Broadway Roundabout revival\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "high-society-1998/whatsonstage--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "high-society-1998/whatsonstage--unknown.json wrongProductionReason: null -> \"BRO-4190: Old Vic London production (url slug high-society-old-vic); show is the 1998 Broadway run\""
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-last-ship-west-end-2026 --url=https://theatrevibe.co.uk/2026/09/25/review-the-last-ship-theatre-royal-drury-lane-2026/ --stub-on-failure"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=la-boheme-off-broadway-2026 --url=https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89 --stub-on-failure"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ]
 }
