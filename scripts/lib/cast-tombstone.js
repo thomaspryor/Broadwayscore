@@ -27,4 +27,20 @@ function shouldAbortMassWipe(populatedBefore, wipedCount, threshold = 0.3) {
   return (wipedCount / populatedBefore) > threshold;
 }
 
-module.exports = { shouldTombstone, shouldAbortMassWipe };
+// IBDB <title> reads "The Imaginary Invalid – Broadway Play – 1967 Revival | IBDB".
+// A stored ibdbUrl skips title validation, so a URL pointing at an earlier
+// production of the same title silently imports THAT cast (BRO-4171: the 2026
+// Roundabout revival got the 1967 cast — Denholm Elliott et al.).
+function parseIbdbProductionYear(docTitle) {
+  const m = /\b((?:18|19|20)\d{2})\s+(?:Revival|Original|Production)\b/i.exec(docTitle || '');
+  return m ? parseInt(m[1], 10) : null;
+}
+
+// True only when both years are known and the IBDB production is more than a
+// year away from the show's opening year (tryout/previews straddle New Year).
+function isProductionYearMismatch(productionYear, openingYear) {
+  if (!productionYear || !openingYear) return false;
+  return Math.abs(productionYear - openingYear) > 1;
+}
+
+module.exports = { shouldTombstone, shouldAbortMassWipe, parseIbdbProductionYear, isProductionYearMismatch };

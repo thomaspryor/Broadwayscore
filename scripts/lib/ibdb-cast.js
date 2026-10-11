@@ -31,6 +31,7 @@ const https = require('https');
 const { JSDOM } = require('jsdom');
 const { fetchPage } = require('./scraper');
 const { isBroadwayCategory } = require('./venue-classification');
+const { parseIbdbProductionYear, isProductionYearMismatch } = require('./cast-tombstone');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./models');
 
 const RATE_LIMIT_MS = 1500;
@@ -191,6 +192,7 @@ async function extractCastFromIBDBPage(url) {
   // Extract production title for validation
   const titleEl = doc.querySelector('h1.iblock');
   result.pageTitle = titleEl ? titleEl.textContent.trim() : null;
+  result.productionYear = parseIbdbProductionYear(doc.title);
 
   const oncSection = doc.getElementById('OpeningNightCast');
 
@@ -398,6 +400,13 @@ async function lookupIBDBCast(title, options = {}) {
       // Propagate fetchFailed so the caller can tell a transient scrape miss
       // (don't tombstone) from a genuinely cast-less production (tombstone OK).
       return { ...notFound, ibdbUrl: bestMatch.url, fetchFailed: castData.fetchFailed };
+    }
+
+    // Production-year validation: a stored/searched URL for an earlier run of
+    // the same title (1967 revival vs 2026 revival) must not supply the cast.
+    if (isProductionYearMismatch(castData.productionYear, options.openingYear)) {
+      console.log(`  ⚠️  IBDB production year ${castData.productionYear} != show opening year ${options.openingYear} — wrong production, skipping`);
+      return { ...notFound, ibdbUrl: null, titleMismatch: true };
     }
 
     // Title validation: skip when using a pre-known stored URL (already verified by prior lookup)

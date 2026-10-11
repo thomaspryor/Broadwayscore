@@ -6,7 +6,7 @@ import assert from 'node:assert';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 
-const { shouldTombstone, shouldAbortMassWipe } = require('../../scripts/lib/cast-tombstone');
+const { shouldTombstone, shouldAbortMassWipe, parseIbdbProductionYear, isProductionYearMismatch } = require('../../scripts/lib/cast-tombstone');
 
 describe('cast-tombstone shouldTombstone', () => {
   it('tombstones a GENUINE empty (page loaded, production has no IBDB cast)', () => {
@@ -58,5 +58,23 @@ describe('cast-tombstone shouldAbortMassWipe', () => {
   it('respects a custom threshold', () => {
     assert.equal(shouldAbortMassWipe(10, 2, 0.1), true); // 20% > 10%
     assert.equal(shouldAbortMassWipe(10, 1, 0.1), false); // 10% is not > 10%
+  });
+});
+
+describe('cast-tombstone production-year guard (BRO-4171)', () => {
+  it('parses the production year from an IBDB <title>', () => {
+    assert.equal(parseIbdbProductionYear('The Imaginary Invalid \u2013 Broadway Play \u2013 1967 Revival | IBDB'), 1967);
+    assert.equal(parseIbdbProductionYear('Hamilton \u2013 Broadway Musical \u2013 Original | IBDB'), null);
+    assert.equal(parseIbdbProductionYear(''), null);
+    assert.equal(parseIbdbProductionYear(undefined), null);
+  });
+  it('rejects the 1967 revival for a 2026 show (the real bug)', () => {
+    assert.equal(isProductionYearMismatch(1967, 2026), true);
+  });
+  it('accepts same/adjacent year and unknown years', () => {
+    assert.equal(isProductionYearMismatch(2026, 2026), false);
+    assert.equal(isProductionYearMismatch(2025, 2026), false);
+    assert.equal(isProductionYearMismatch(null, 2026), false);
+    assert.equal(isProductionYearMismatch(1967, null), false);
   });
 });
