@@ -5,9 +5,11 @@ import { getShowGrosses, getGrossesWeekEnding, getGrossesLastUpdated } from '@/l
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { ThisWeekTable, AllTimeTable } from '@/components/SortableBoxOfficeTable';
 import { featureFlags } from '@/config/feature-flags';
-import { getBoxOfficeV2Listing } from '@/lib/data-commercial';
-import { costStatusCell, costTable, marketLine, statusCounts } from '@/lib/box-office-v2-display';
-import BoxOfficeV2Overview from '@/components/BoxOfficeV2Overview';
+import { getBoxOfficeMarketPage } from '@/lib/data-commercial';
+import MarketOverview from '@/components/box-office/MarketOverview';
+import { MarketMovers, PerSeatRanking, Standouts, PriceMapSection } from '@/components/box-office/MarketStories';
+import NewMusicalsChart from '@/components/box-office/NewMusicalsChart';
+import PriceMapLazy from '@/components/box-office/PriceMapLazy';
 // Unreleased (BRO-5007): a client loader, so the tables are their own chunk and a flag-off page never fetches them.
 import BoxOfficeV2Tables from '@/components/BoxOfficeV2TablesLazy';
 
@@ -94,15 +96,8 @@ export default function BoxOfficePage() {
     })
     .slice(0, 10);
 
-  // Box Office Scorecard v2 (unreleased): computed only when both flags are on.
-  const listing = featureFlags.commercial && featureFlags.boxOfficeV2 ? getBoxOfficeV2Listing(showsWithGrosses.map((i) => i.show.slug)) : null;
-  const v2 = listing
-    ? {
-        ...costTable(showsWithGrosses, listing.bySlug),
-        counts: statusCounts(listing.running, listing.unrecorded),
-        market: listing.market ? marketLine(listing.market) : null,
-      }
-    : null;
+  // Box Office v3 market page (unreleased): computed only when both flags are on.
+  const market = featureFlags.commercial && featureFlags.boxOfficeV2 ? getBoxOfficeMarketPage() : null;
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
@@ -128,19 +123,26 @@ export default function BoxOfficePage() {
         <div className="mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold text-white">Broadway Box Office</h1>
           <p className="text-gray-400 mt-2">
-            {v2
-              ? 'Weekly grosses for every Broadway show, and how each one is doing against its own costs.'
+            {market
+              ? 'What Broadway sold this week, which shows are really in demand, and how the new ones compare.'
               : 'Weekly grosses and all-time statistics for every Broadway show.'}
           </p>
           <p className="text-sm text-gray-500 mt-1">
-            Week ending {weekEnding} · Updated {new Date(lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+            Week ending {weekEnding} · {market ? 'Broadway League figures' : <>Updated {new Date(lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</>}
           </p>
         </div>
 
-        {v2 ? (
+        {market ? (
           <>
-            <BoxOfficeV2Overview market={v2.market} counts={v2.counts} />
-            <BoxOfficeV2Tables thisWeek={v2.thisWeek} allTime={allTimeLeaders} cells={v2.cells} noEstimate={costStatusCell(undefined)} />
+            <MarketOverview page={market} />
+            <MarketMovers movers={market.movers} />
+            <PerSeatRanking perSeat={market.perSeat} />
+            <Standouts page={market} />
+            <PriceMapSection dots={market.priceMap.length}>
+              <PriceMapLazy dots={market.priceMap} />
+            </PriceMapSection>
+            <NewMusicalsChart cohort={market.cohort} />
+            <BoxOfficeV2Tables thisWeek={showsWithGrosses} allTime={allTimeLeaders} extra={market.table} />
           </>
         ) : (
           <>

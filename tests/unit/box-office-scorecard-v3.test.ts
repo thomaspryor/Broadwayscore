@@ -1,0 +1,151 @@
+/**
+ * Box Office / Commercial split (BRO-5007 v3). Calls the real functions and
+ * renders the real components (CLAUDE.md rule 15): the show's facts from
+ * history, the facts card's sentences, the facts card itself, the Commercial
+ * Scorecard's break-even section, and BizBuzzCard with and without it.
+ */
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import React from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { showFacts, STEADY_MIN_WEEKS, type MarketInput } from '../../src/lib/box-office-market';
+import { addDays, type HistoryRow, type HistoryWeeks } from '../../src/lib/box-office-weeks';
+import { factsStory, formatGross, yearAgoSentence, toFactsCard, showsBreakEven } from '../../src/lib/box-office-v2-display';
+import BoxOfficeScorecard from '../../src/components/BoxOfficeScorecard';
+import BreakEvenSection from '../../src/components/biz/BreakEvenSection';
+import BizBuzzCard from '../../src/components/BizBuzzCard';
+
+// tsx compiles JSX with the classic runtime, which needs React in scope.
+(globalThis as unknown as { React: typeof React }).React = React;
+
+const row = (gross: number): HistoryRow => ({ gross, performances: 8, seatsOffered: 8_000, capacity: 90, atp: 100 });
+const input = (weeks: HistoryWeeks): MarketInput => ({ weeks, shows: new Map() });
+const LATEST = '2026-10-04';
+
+test('showFacts: rank among reporting shows, both year-ago changes, and the steady stretch', () => {
+  const weeks: HistoryWeeks = {};
+  for (let i = 0; i < 60; i++) {
+    const w = addDays(LATEST, -7 * i);
+    // The show: $700K for the last 10 weeks, $1.2M before that.
+    weeks[w] = { mhe: row(i < 10 ? 700_000 : 1_200_000), big: row(2_000_000), other: row(1_000_000) };
+  }
+  const f = showFacts(input(weeks), 'mhe', LATEST)!;
+  assert.equal(f.week, LATEST);
+  assert.equal(f.current, true);
+  assert.deepEqual([f.rank, f.of], [3, 3]);
+  assert.equal(Math.round(f.yearAgoPct!), -42);
+  assert.equal(Math.round(f.marketYearAgoPct!), -12);
+  assert.equal(f.series.length, 52);
+  assert.deepEqual(f.steady, { low: 700_000, high: 700_000, since: addDays(LATEST, -63) });
+});
+
+test('showFacts: a closed show describes its last reported week; a short or broken run has no steady range', () => {
+  const weeks: HistoryWeeks = { [LATEST]: { other: row(1_000_000) } };
+  for (let i = 3; i < 3 + STEADY_MIN_WEEKS - 1; i++) weeks[addDays(LATEST, -7 * i)] = { gone: row(500_000), other: row(1_000_000) };
+  const f = showFacts(input(weeks), 'gone', LATEST)!;
+  assert.equal(f.week, addDays(LATEST, -21));
+  assert.equal(f.current, false);
+  assert.equal(f.steady, null, `${STEADY_MIN_WEEKS - 1} weeks is not a stretch`);
+  assert.equal(f.series[0].week, addDays(LATEST, -7 * (STEADY_MIN_WEEKS + 1)), 'the chart starts at its first reported week');
+  assert.equal(showFacts(input(weeks), 'never', LATEST), null);
+});
+
+test('yearAgoSentence: in line, slipping (both down / market up) and outpacing', () => {
+  assert.equal(yearAgoSentence(-42, -12), 'Its 42% drop from a year ago is far steeper than Broadway’s 12%, so this is the show slipping, not the season.');
+  assert.equal(yearAgoSentence(-9, -12), 'It is down 9% from a year ago, in line with Broadway as a whole (down 12%).');
+  assert.equal(yearAgoSentence(-15, 3), 'It is down 15% from a year ago while Broadway is up 3%, so this is the show slipping, not the season.');
+  assert.equal(yearAgoSentence(25, -5), 'It is up 25% from a year ago while Broadway is down 5%, so the show is outpacing the season.');
+  assert.equal(yearAgoSentence(0.2, 3), 'It is flat from a year ago, in line with Broadway as a whole (up 3%).');
+  assert.equal(yearAgoSentence(null, -12), null);
+  assert.equal(yearAgoSentence(-42, null), null);
+});
+
+test('factsStory: the mock’s three sentences, and the costs pointer only with a Commercial Scorecard', () => {
+  const f = { week: LATEST, yearAgoPct: -42, marketYearAgoPct: -12, steady: { low: 633_000, high: 792_000, since: '2026-05-31' } };
+  assert.equal(
+    factsStory(f, true),
+    'Its 42% drop from a year ago is far steeper than Broadway’s 12%, so this is the show slipping, not the season. ' +
+      'Weekly grosses have held between about $630K and $790K since May. ' +
+      'Strong sales don’t always mean profit; costs are on the Commercial Scorecard below.',
+  );
+  assert.ok(!/Commercial Scorecard/.test(factsStory(f, false)!));
+  assert.match(factsStory({ ...f, steady: { ...f.steady, since: '2025-12-28' } }, false)!, /since December 2025\.$/);
+  assert.equal(factsStory({ week: LATEST, yearAgoPct: null, marketYearAgoPct: null, steady: null }, true), null);
+});
+
+const factsCard = (over: Record<string, unknown> = {}) =>
+  toFactsCard({ week: LATEST, current: true, gross: 676_000, rank: 23, of: 28, yearAgoPct: -42, marketYearAgoPct: -12, steady: null,
+    series: Array.from({ length: 40 }, (_, i) => ({ week: addDays(LATEST, -7 * (39 - i)), gross: 700_000 })), ...over } as never, true);
+
+test('formatGross: thousands under a million, one-decimal millions above', () => {
+  assert.equal(formatGross(676_000), '$676K');
+  assert.equal(formatGross(999_400), '$999K');
+  assert.equal(formatGross(999_600), '$1.0M');
+  assert.equal(formatGross(2_705_000), '$2.7M');
+});
+
+test('BoxOfficeScorecard renders facts only: no status, no break-even, no estimates', () => {
+  const html = renderToStaticMarkup(React.createElement(BoxOfficeScorecard, { card: factsCard(), grosses: null, history: null }));
+  assert.match(html, /\$676K/);
+  assert.match(html, /#23 of 28 shows/);
+  assert.match(html, /week of 10\/4\/2026/);
+  assert.match(html, /Is it covering its costs\?/);
+  assert.match(html, /Show the full year/);
+  for (const banned of [/break-even/i, /Below Cost|Near Cost|Above Cost/, /estimate/i, /~\$/]) assert.doesNotMatch(html, banned);
+});
+
+test('BoxOfficeScorecard: a closed show says "last reported week"; no costs link without a Commercial Scorecard', () => {
+  const card = { ...factsCard({ current: false, series: [{ week: LATEST, gross: 1 }] }), hasCommercial: false };
+  const html = renderToStaticMarkup(React.createElement(BoxOfficeScorecard, { card, grosses: null, history: null }));
+  assert.match(html, /last reported week: 10\/4\/2026/);
+  assert.match(html, /gross that week/);
+  assert.doesNotMatch(html, /Is it covering its costs/);
+  assert.doesNotMatch(html, /Show the full year/, 'no toggle under 26 weeks');
+});
+
+// Maybe Happy Ending, week of 10/4/2026, as the approved mock draws it.
+const mhe = {
+  availability: 'ok', band: 'near', closingDate: null, multiple: { lo: 0.71, mid: 0.86, hi: 1.07 }, breakEven: 820_976,
+  costBasis: 'estimate', costSourceText: null, costSourceUrl: null, nonprofit: false, nonprofitOrg: null,
+  streak: { side: 'below', weeks: 19, atLeast: false }, story: 'Over the last 4 weeks it grossed about 14% less than it needs to break even.',
+  series: [{ week: LATEST, gross: 676_000, multiple: 0.82, market: 1.2 }], weeksReported: 40, trend: 'steady',
+  cover: { avgGross: 703_074, breakEven: 820_976, shortBy: 117_902, ticketNeeded: 125.97, ticketNow: 107.9, capacityNeeded: 97.8, capacityNow: 83.7 },
+} as never;
+
+test('BreakEvenSection: share of break-even with its range, streak, Near note and what it would take', () => {
+  assert.equal(showsBreakEven(mhe), true);
+  assert.equal(showsBreakEven({ availability: 'nocost', multiple: null } as never), false);
+  assert.equal(showsBreakEven({ availability: 'closed', multiple: null } as never), false);
+  const html = renderToStaticMarkup(React.createElement(BreakEvenSection, { card: mhe }));
+  assert.match(html, /Covering its weekly break-even\?/);
+  assert.match(html, /Near Break-even/);
+  assert.match(html, />86%</);
+  assert.match(html, /of the ~\$821K a week it needs to break even/);
+  assert.match(html, /could be 71% to 107%/);
+  assert.match(html, /19 straight weeks below break-even/);
+  assert.match(html, /rather than Below/);
+  assert.match(html, /Short of break-even by/);
+  assert.match(html, /\$118K/);
+});
+
+const commercial = {
+  designation: 'TBD', recouped: false, capitalization: 16_000_000, weeklyRunningCost: 765_000, notes: null,
+  capitalizationSource: null, weeklyRunningCostSource: null,
+} as never;
+
+test('BizBuzzCard without the v3 section is unchanged: trend chip and the one-week bar stay', () => {
+  const html = renderToStaticMarkup(React.createElement(BizBuzzCard, {
+    commercial, showTitle: 'MHE', trend: 'declining', weeklyGross: 676_000, showStatus: 'open',
+  }));
+  assert.match(html, /Grosses down/);
+  assert.doesNotMatch(html, /break-even-section/);
+});
+
+test('BizBuzzCard with the v3 section drops the trend chip and the one-week bar', () => {
+  const html = renderToStaticMarkup(React.createElement(BizBuzzCard, {
+    commercial, showTitle: 'MHE', trend: 'declining', weeklyGross: 676_000, showStatus: 'open', breakEvenCard: mhe,
+  }));
+  assert.doesNotMatch(html, /Grosses down/);
+  assert.doesNotMatch(html, /Latest week vs break-even/);
+  assert.doesNotMatch(html, /Under est\. break-even/);
+});

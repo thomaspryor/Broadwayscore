@@ -121,14 +121,39 @@ test('the public demo build leaves prod-held flags off (boxOfficeV2 included)', 
     'vercel-demo.yml must not extract flags inline (that path enables prod-held flags)');
 });
 
-test('v2 box-office data is computed only behind commercial AND boxOfficeV2', () => {
-  const v2Fns = ['getShowBoxOfficeV2', 'getRunningBoxOfficeV2', 'getBoxOfficeV2Listing', 'getBoxOfficeV2Market'];
-  const call = new RegExp(`\\b(${v2Fns.join('|')})\\s*\\(`);
+
+// Held-feature guards (BRO-5007 v3). Names are derived, never listed: getters
+// from data-commercial's /BoxOffice/ exports, components from
+// held-feature-leak.js's isHeldSource (path patterns plus the @held-feature
+// marker). The v2-only lists these replace let new names slip through.
+const { createRequire } = await import('node:module');
+const requireCjs = createRequire(import.meta.url);
+const { SENTINELS, isHeldSource, scanBuildOutput } = requireCjs('../../scripts/lib/held-feature-leak.js');
+
+const SRC_FILES = ['src/app', 'src/components', 'src/lib'].flatMap((d) => walk(path.join(ROOT, d)))
+  .map((file) => ({ file, rel: path.relative(ROOT, file).split(path.sep).join('/'), text: readFileSync(file, 'utf8') }));
+const byRel = new Map(SRC_FILES.map((f) => [f.rel, f]));
+const isClient = (text) => /^\s*['"]use client['"]/.test(text);
+
+function resolveImport(fromRel, spec) {
+  let base;
+  if (spec.startsWith('@/')) base = `src/${spec.slice(2)}`;
+  else if (spec.startsWith('.')) base = path.posix.join(path.posix.dirname(fromRel), spec);
+  else return null;
+  for (const ext of ['', '.tsx', '.ts', '/index.tsx', '/index.ts']) if (byRel.has(base + ext)) return base + ext;
+  return null;
+}
+
+test('held box-office data is computed only behind commercial AND boxOfficeV2', () => {
+  const src = readFileSync(path.join(ROOT, 'src/lib/data-commercial.ts'), 'utf8');
+  const heldFns = [...src.matchAll(/^export (?:async )?(?:function|const) (\w*BoxOffice\w*)/gm)].map((m) => m[1]);
+  assert.ok(heldFns.includes('getShowBoxOfficeV2') || heldFns.some((n) => /^getShowBoxOffice/.test(n)),
+    'data-commercial box-office getters not found; update this guard');
+  const call = new RegExp(`\\b(${heldFns.join('|')})\\s*\\(`);
   const offenders = [];
-  for (const file of ['src/app', 'src/components', 'src/lib'].flatMap((d) => walk(path.join(ROOT, d)))) {
-    const rel = path.relative(ROOT, file);
+  for (const { rel, text } of SRC_FILES) {
     if (rel === 'src/lib/data-commercial.ts') continue;
-    readFileSync(file, 'utf8').split('\n').forEach((line, i) => {
+    text.split('\n').forEach((line, i) => {
       if (call.test(line) && !/^\s*(\/\/|\*|import\b)/.test(line)
         && !(line.includes('featureFlags.commercial') && line.includes('featureFlags.boxOfficeV2'))) {
         offenders.push(`${rel}:${i + 1}: ${line.trim()}`);
@@ -138,31 +163,83 @@ test('v2 box-office data is computed only behind commercial AND boxOfficeV2', ()
   assert.deepEqual(offenders, [], `gate these on featureFlags.commercial && featureFlags.boxOfficeV2:\n${offenders.join('\n')}`);
 });
 
-test('the v2 card is lazy-loaded, so its code stays out of every show page bundle', () => {
-  // A static import puts the held feature's copy into the below-fold chunk
-  // that every show page downloads, flag or no flag (BRO-5007 leak test).
-  const staticImport = /^\s*import\s+(?!type\b)[^;]*['"]@\/components\/(BoxOfficeScorecardV2|BoxOfficeV2Tables)['"]/;
+test('held modules never reach a client bundle through a static import', () => {
+  // A static import of a 'use client' module puts its copy in the importing
+  // route's chunk whatever the flags say, and a client module bundles anything
+  // it imports. Allowed: a server module importing a held server module (no JS
+  // ships), and a held client module importing another held client module
+  // (both live in the lazily loaded chunk).
+  const staticImport = /^\s*import\s+(?!type\b)[^;]*?from\s+['"]([^'"]+)['"]/gm;
   const offenders = [];
-  for (const file of ['src/app', 'src/components', 'src/lib'].flatMap((d) => walk(path.join(ROOT, d)))) {
-    readFileSync(file, 'utf8').split('\n').forEach((line, i) => {
-      if (staticImport.test(line)) offenders.push(`${path.relative(ROOT, file)}:${i + 1}`);
-    });
+  for (const { rel, text } of SRC_FILES) {
+    const importerHeld = isHeldSource(rel, text);
+    const importerClient = isClient(text);
+    for (const m of text.matchAll(staticImport)) {
+      const target = resolveImport(rel, m[1]);
+      if (!target) continue;
+      const t = byRel.get(target);
+      if (!isHeldSource(target, t.text)) continue;
+      const targetClient = isClient(t.text);
+      const ok = (!importerClient && !targetClient) || (importerHeld && importerClient && targetClient);
+      if (!ok) offenders.push(`${rel} imports ${target}`);
+    }
   }
-  assert.deepEqual(offenders, [], `load BoxOfficeScorecardV2 and BoxOfficeV2Tables with next/dynamic:\n${offenders.join('\n')}`);
+  assert.deepEqual(offenders, [], `load these with next/dynamic from a 'use client' *Lazy module:\n${offenders.join('\n')}`);
 });
 
-test('the held components are dynamic() from client modules only', () => {
+test('held components are dynamic() from client modules only, behind the build-time check', () => {
   // dynamic() in a server component still bundles the module into that page's
   // chunk (the flag-off /box-office build shipped "Vs. its cost" this way).
-  const lazyImport = /dynamic\(\s*\(\)\s*=>\s*import\(\s*['"]@\/components\/(BoxOfficeScorecardV2|BoxOfficeV2Tables)['"]/;
+  // From a client module it is a separate chunk, but webpack still emits that
+  // chunk in a flag-off build unless the import sits in a branch the build
+  // folds away: `process.env.HELD_BOX_OFFICE_BUILD === 'true' ? dynamic(...) : ...`.
+  const lazyImport = /dynamic\(\s*\(\)\s*=>\s*import\(\s*['"]([^'"]+)['"]/g;
+  const buildCheck = /process\.env\.HELD_BOX_OFFICE_BUILD\s*===\s*'true'\s*\?\s*$/;
   const offenders = [];
+  const unguarded = [];
   let found = 0;
-  for (const file of ['src/app', 'src/components', 'src/lib'].flatMap((d) => walk(path.join(ROOT, d)))) {
-    const src = readFileSync(file, 'utf8');
-    if (!lazyImport.test(src)) continue;
-    found++;
-    if (!/^\s*['"]use client['"]/.test(src)) offenders.push(path.relative(ROOT, file));
+  for (const { rel, text } of SRC_FILES) {
+    for (const m of text.matchAll(lazyImport)) {
+      const target = resolveImport(rel, m[1]);
+      if (!target || !isHeldSource(target, byRel.get(target).text)) continue;
+      found++;
+      if (!isClient(text)) offenders.push(`${rel} -> ${target}`);
+      if (!buildCheck.test(text.slice(0, m.index))) unguarded.push(`${rel} -> ${target}`);
+    }
   }
-  assert.ok(found >= 2, 'expected the card and the tables to be lazy-loaded somewhere');
+  assert.ok(found >= 2, 'expected the held card and tables to be lazy-loaded somewhere');
   assert.deepEqual(offenders, [], `move these dynamic() calls into a 'use client' module:\n${offenders.join('\n')}`);
+  assert.deepEqual(unguarded, [],
+    `write these as process.env.HELD_BOX_OFFICE_BUILD === 'true' ? dynamic(...) : () => null:\n${unguarded.join('\n')}`);
+});
+
+test('next.config inlines HELD_BOX_OFFICE_BUILD from both held flags', () => {
+  const cfg = readFileSync(path.join(ROOT, 'next.config.js'), 'utf8');
+  assert.match(cfg, /HELD_BOX_OFFICE_BUILD:\s*heldBoxOfficeBuild/);
+  assert.match(cfg, /includes\('commercial'\)\s*&&\s*builtFeatures\.includes\('boxOfficeV2'\)/);
+});
+
+test('every leak sentinel is held-only copy', () => {
+  // The build scan is only meaningful if each sentinel appears in held source
+  // and nowhere public.
+  for (const s of SENTINELS) {
+    const where = SRC_FILES.filter((f) => f.text.includes(s));
+    assert.ok(where.some((f) => isHeldSource(f.rel, f.text)), `sentinel "${s}" is not in any held source file`);
+    const pub = where.filter((f) => !isHeldSource(f.rel, f.text)).map((f) => f.rel);
+    assert.deepEqual(pub, [], `sentinel "${s}" also appears in public source`);
+  }
+});
+
+test('the build scan reports held copy and passes clean output', async () => {
+  const { mkdtempSync, writeFileSync, mkdirSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const dir = mkdtempSync(path.join(tmpdir(), 'held-leak-'));
+  mkdirSync(path.join(dir, '_next/static/chunks'), { recursive: true });
+  writeFileSync(path.join(dir, 'index.html'), '<p>Broadway grosses</p>');
+  writeFileSync(path.join(dir, '_next/static/chunks/a.js'), 'x="ok"');
+  assert.deepEqual(scanBuildOutput(dir).hits, []);
+  writeFileSync(path.join(dir, '_next/static/chunks/b.js'), `x="${SENTINELS[0]}"`);
+  const { hits } = scanBuildOutput(dir);
+  assert.equal(hits.length, 1);
+  assert.equal(hits[0].sentinel, SENTINELS[0]);
 });
