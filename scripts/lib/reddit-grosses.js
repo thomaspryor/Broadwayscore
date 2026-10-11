@@ -93,10 +93,12 @@ function extractCostsFromPost(selftext) {
 // "$0", "\~$50k". Parentheses anywhere around it mean a loss; "+" means the
 // bound is open (at least this much profit, or at least this much loss).
 // The suffix and "+" may also sit outside the parentheses: "$(68)k", "($100k)+".
-const PROFIT_AMOUNT_RE = /(\()?\s*\\?~?\s*\$?\s*(\()?\s*\\?~?\s*\$?([\d.,]*\d)\s*(million|mil|m|k)?\b\s*(\+)?\s*(\))?\s*(?:(million|mil|m|k)\b)?\s*(\+)?/gi;
+// Matched on text with escapes removed and whitespace collapsed, so every gap
+// is at most one space: no run of optional whitespace to backtrack over.
+const PROFIT_AMOUNT_RE = /(\()? ?~? ?\$? ?(\()? ?~? ?\$? ?([\d.,]*\d) ?(million|mil|m|k)?\b ?(\+)? ?(\))? ?(?:(million|mil|m|k)\b)? ?(\+)?/gi;
 // Prose after the figures ("$100k+ this week, vs 2023") is cut at the first
-// word that is not a unit.
-const TRAILING_PROSE_RE = /\b(?!(?:million|mil|even)\b)[a-z]{2,}\b.*$/i;
+// word that is not a unit or "to" ("$(100k) to $0").
+const TRAILING_PROSE_RE = /\b(?!(?:million|mil|even|to)\b)[a-z]{2,}\b.*$/i;
 
 /**
  * "Estimated Profit (Loss): $0k-$(100k)" as a range in whole dollars.
@@ -108,7 +110,7 @@ const TRAILING_PROSE_RE = /\b(?!(?:million|mil|even)\b)[a-z]{2,}\b.*$/i;
 function parseProfitRange(value) {
   if (!value || /^\W*n\/?a\b/i.test(value)) return null;
   if (/^\W*(?:break[-\s]*)?even\b/i.test(value)) return { low: 0, high: 0 };
-  const figures = String(value).replace(TRAILING_PROSE_RE, '');
+  const figures = String(value).replace(/\\/g, '').replace(/\s+/g, ' ').replace(TRAILING_PROSE_RE, '');
   const amounts = [];
   for (const m of figures.matchAll(PROFIT_AMOUNT_RE)) {
     const [, open1, open2, num, suffix, plus, close, outerSuffix, outerPlus] = m;
@@ -146,9 +148,10 @@ const LABELLED_GROSS_RE = /\$?[\s*]*([\d.,]*\d)\s*(million|mil|m|k)\s*gross\b/i;
 const DOLLAR_RE = /\$[\s*]*([\d.,]*\d)\s*(million|mil|m|k)?\b/i;
 // "Gross Less-Fees: $778k", "Gross Less-Fees: 776k", "Gross Less-Fees- $1.050 million".
 const LESS_FEES_RE = /Gross\s+Less[-\s]*Fees\s*[:\-–]?\**\s*\$?\s*([\d.,]*\d)\s*(million|mil|m|k)?\b/i;
-// The weekly line only: a post-mortem's "Total Estimated Profit (Loss)" is a
-// run total, and is skipped.
+// The weekly line only: a post-mortem's "Total Estimated Profit (Loss)" and a
+// profit figure on a "Capitalization" line are run totals, and are skipped.
 const PROFIT_LINE_RE = /(?<!Total\s{1,3})Estimated\s+Profit\s*\(Loss\)[:;]?\**[ \t]*([^;\n]*)/i;
+const RUN_TOTAL_LINE_RE = /capitali[sz]ation/i;
 const RECOUPED_RE = /percentage\s+recouped\**:?\**\s*~?\s*([\d.]+)\s*%(?:\s*[-–]\s*([\d.]+)\s*%)?/i;
 
 /**
@@ -176,7 +179,7 @@ function extractWeeklyFinancialsFromPost(selftext) {
         const g = after.match(LABELLED_GROSS_RE) || after.match(DOLLAR_RE);
         cur = {
           showName: name, gross: g ? parseDollarAmount(g[1], g[2]) : null, grossLessFees: null,
-          costLow: null, costHigh: null, profit: null, recoupedLow: null, recoupedHigh: null,
+          costLow: null, costHigh: null, profit: null, profitText: null, recoupedLow: null, recoupedHigh: null,
         };
       }
     }
@@ -185,7 +188,9 @@ function extractWeeklyFinancialsFromPost(selftext) {
     // or a post-mortem's run totals.
     const lf = cur.grossLessFees == null && line.match(LESS_FEES_RE);
     if (lf) cur.grossLessFees = parseDollarAmount(lf[1], lf[2]);
-    const c = cur.costLow == null && line.match(COST_RE);
+    // Reddit escapes "~" as "\~" ("\~$750k"); COST_RE has no slot for the
+    // backslash. extractCostsFromPost keeps reading the raw line (BRO-5028).
+    const c = cur.costLow == null && line.replace(/\\~/g, '~').match(COST_RE);
     if (c) {
       const [, lowNum, lowSuffix, highNum, highSuffix] = c;
       const high = highNum ? parseDollarAmount(highNum, highSuffix) : null;
@@ -193,8 +198,8 @@ function extractWeeklyFinancialsFromPost(selftext) {
       cur.costLow = low || high;
       cur.costHigh = high || low;
     }
-    const p = !cur.profitSeen && line.match(PROFIT_LINE_RE);
-    if (p) { cur.profit = parseProfitRange(p[1]); cur.profitSeen = true; }
+    const p = !cur.profitSeen && !RUN_TOTAL_LINE_RE.test(line) && line.match(PROFIT_LINE_RE);
+    if (p) { cur.profitText = p[1].trim(); cur.profit = parseProfitRange(p[1]); cur.profitSeen = true; }
     const r = cur.recoupedLow == null && line.match(RECOUPED_RE);
     if (r) {
       cur.recoupedLow = parseFloat(r[1]);
@@ -203,12 +208,14 @@ function extractWeeklyFinancialsFromPost(selftext) {
   }
   flush();
   // Plausibility flags; filtering is the consumer's call. Less-fees should be
-  // 50-100% of gross; a figure outside that is a typo or a line copied
-  // forward from an earlier week.
+  // 50-100% of gross (5% slack over: the heading gross is rounded); a figure
+  // outside that is a typo or a line copied forward from an earlier week.
+  // A profit above gross minus cost cannot be a week's operating profit.
   for (const row of rows) {
     delete row.profitSeen;
     row.flags = [];
-    if (row.gross && row.grossLessFees && (row.grossLessFees > row.gross || row.grossLessFees < 0.5 * row.gross)) row.flags.push('lessFeesImplausible');
+    if (row.gross && row.grossLessFees && (row.grossLessFees > 1.05 * row.gross || row.grossLessFees < 0.5 * row.gross)) row.flags.push('lessFeesImplausible');
+    if (row.gross && row.costLow && row.profit && row.profit.low != null && row.profit.low > row.gross - row.costLow) row.flags.push('profitAboveGrossLessCost');
   }
   return rows;
 }
