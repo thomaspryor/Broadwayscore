@@ -69,7 +69,6 @@ scripts/bsc-prune.test.mjs
 scripts/bsc-reconcile-reopen-idempotency.test.mjs
 scripts/bsc-reconcile.test.mjs
 scripts/byline-attribution.test.mjs
-scripts/check-alert-condition-absent.test.mjs
 scripts/check-cron-health-config.test.mjs
 scripts/check-cross-outlet-attribution-drift.test.mjs
 scripts/check-header-overflow.test.mjs
@@ -464,6 +463,7 @@ tests/unit/cast-extraction-guards.test.mjs
 tests/unit/cast-tombstone.test.mjs
 tests/unit/ccusage-baseline.test.mjs
 tests/unit/census-ledger-outlet-ids.test.mjs
+tests/unit/check-alert-condition-absent.test.mjs
 tests/unit/check-claude-auth-health.test.mjs
 tests/unit/check-corpus-drift.test.mjs
 tests/unit/check-discovery-source-blind.test.mjs

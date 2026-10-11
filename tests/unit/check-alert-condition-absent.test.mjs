@@ -12,9 +12,9 @@ import os from 'node:os';
 import path from 'node:path';
 
 const require = createRequire(import.meta.url);
-const SCRIPT = path.join(path.dirname(new URL(import.meta.url).pathname), 'check-alert-condition-absent.js');
-const { alertAbsentCheckCmd } = require('./lib/health-row-check-cmd.js');
-const { QUIET_WINDOW_H } = require('./check-alert-condition-absent.js');
+const SCRIPT = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..', 'scripts', 'check-alert-condition-absent.js');
+const { alertAbsentCheckCmd } = require('../../scripts/lib/health-row-check-cmd.js');
+const { QUIET_WINDOW_H } = require('../../scripts/check-alert-condition-absent.js');
 
 const H = 36e5;
 const iso = (hoursAgo) => new Date(Date.now() - hoursAgo * H).toISOString();
