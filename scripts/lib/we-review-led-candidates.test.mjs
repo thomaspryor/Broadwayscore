@@ -7,7 +7,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  selectLookups, trIssueMonth, trIssueMonthRange, trVenueName, pickTrForReview, findContinuingRun, cleanReviewTitle,
+  selectLookups, trIssueMonth, trIssueMonthRange, isIssuePeriod, trVenueName, pickTrForReview, findContinuingRun, cleanReviewTitle,
 } = require('./we-review-led-candidates.js');
 const { isLondonVenue } = require('./tr-london-venue.js');
 const { searchTitles, pdfHeaderFor, htmlHeaderFor, pairLabelLines } = require('../resolve-we-unlisted-tr.js');
@@ -90,6 +90,18 @@ test('pickTrForReview dates 2018 page-numbered TR links by volume year (BRO-5031
   // An issue-dated link in the review month beats a whole-year page link
   const both = [storm[0], { ...storm[0], link: 'https://www.theatrerecord.com/archive/volume/38/dest/21_height' }];
   assert.equal(pickTrForReview(both, STORM, { isLondonVenue }).link, both[1].link);
+});
+
+test('a whole-month range with no press night is a TR issue period, not a run (BRO-5031)', () => {
+  // we-historical-review-led-2018-2019.json headers (verbatim)
+  assert.equal(isIssuePeriod(parseTrHeaderDates('ANTONY AND CLEOPATRA\n1-30 September 2018')), true);
+  assert.equal(isIssuePeriod(parseTrHeaderDates('SNOW WHITE\n01 – 31 December 2018')), true);
+  // Real runs stay runs
+  assert.equal(isIssuePeriod(parseTrHeaderDates('X\n1 – 22 December 2018')), false);
+  assert.equal(isIssuePeriod(parseTrHeaderDates('ROSMERSHOLM\nPreviews 24 Apr 2019\nPress Night 02 May 2019\nCloses 20 Jul 2019')), false);
+  // The 2018 PDF running head is skipped, so no header comes from it
+  const pdf = ['ANTONY AND CLEOPATRA', 'by William Shakespeare', 'Issue 17-18 Openings 1-30 September 2018', 'Reviews'].join('\n');
+  assert.equal(pdfHeaderFor(pdf, 'Antony and Cleopatra'), null);
 });
 
 test('findContinuingRun matches a reopening of an open long-runner (Phantom 2021)', () => {

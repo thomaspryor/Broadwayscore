@@ -140,6 +140,8 @@ function pairLabelLines(lines) {
 
 const capsKey = s => String(s || '').toUpperCase().replace(/[^A-Z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
 
+const TR_ISSUE_BANNER = /\bIssue\s+\d+(?:\s*[-–]\s*\d+)?\b/i;
+
 function pdfHeaderFor(text, title) {
   const want = capsKey(cleanSearchTitle(title));
   if (!want) return null;
@@ -160,6 +162,8 @@ function pdfHeaderFor(text, title) {
       }
       const block = [line];
       for (const l of pairLabelLines(raw)) {
+        // 2018 PDF running head, e.g. "Issue 17-18 Openings 1-30 September 2018"
+        if (TR_ISSUE_BANNER.test(l)) continue;
         if (DATE_LINE.test(l)) break;
         block.push(l);
       }
