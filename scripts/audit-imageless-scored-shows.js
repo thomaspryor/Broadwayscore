@@ -33,6 +33,7 @@ const {
   idsClearedSinceLastRun,
 } = require('./lib/image-trigger-guard.js');
 const { dispatchImageFetch } = require('./lib/dispatch-image-fetch.js');
+const { hasActiveNoArtMarker } = require('./lib/no-reliable-art.js');
 
 const USAGE = `Usage: node scripts/audit-imageless-scored-shows.js [--dry-run]
   --dry-run    Compute + print findings, skip dispatch/alert/write.
@@ -103,11 +104,16 @@ async function main() {
     id: s.id,
     title: s.title,
     hasImages: hasRealImage(s),
+    // BRO-5022: the fetcher found only wrong art and marked the row. Not a
+    // gap to self-heal: re-dispatching re-runs the search that already failed.
+    noReliableArt: hasActiveNoArtMarker(s),
     reviewCount: reviewCountByShow[s.id] || 0,
     sinceMs: resolveSinceMs(s),
   }));
 
-  const flagged = findImagelessScoredShows(normalized, { nowMs, thresholdHours: DEFAULT_THRESHOLD_HOURS });
+  const marked = normalized.filter((s) => s.noReliableArt && !s.hasImages);
+  if (marked.length) console.log(`${marked.length} imageless show(s) are marked noReliableArt and are not re-dispatched.`);
+  const flagged = findImagelessScoredShows(normalized.filter((s) => !s.noReliableArt), { nowMs, thresholdHours: DEFAULT_THRESHOLD_HOURS });
 
   console.log(`${flagged.length} show(s) have reviews but no image on disk after ${DEFAULT_THRESHOLD_HOURS}h.`);
   if (dryRun) {
@@ -131,6 +137,20 @@ async function main() {
       resolveCondition(`imageless-scored-show:dispatch-failed:${clearedId}`, { reason: 'image landed on disk' });
     } catch (err) {
       console.error(`resolveCondition (self-heal cleared) failed for ${clearedId}: ${err.message}`);
+    }
+  }
+
+  // BRO-5022: a previously tracked row the fetcher has since marked
+  // noReliableArt is settled (its search only finds wrong art), so its
+  // escalation closes rather than staying open with nothing left to clear it.
+  for (const m of marked) {
+    if (!prevById.has(m.id)) continue;
+    try {
+      const { resolveCondition } = require('./lib/owner-alert-router.js');
+      resolveCondition(`imageless-scored-show:still-imageless:${m.id}`, { reason: 'marked noReliableArt' });
+      resolveCondition(`imageless-scored-show:dispatch-failed:${m.id}`, { reason: 'marked noReliableArt' });
+    } catch (err) {
+      console.error(`resolveCondition (noReliableArt) failed for ${m.id}: ${err.message}`);
     }
   }
 

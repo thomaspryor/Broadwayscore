@@ -1479,18 +1479,6 @@
     "queuedAt": "2026-10-11T06:38:38.247Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38120726452",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-11T07:21:03.809Z"
-  },
-  {
     "conditionKey": "land:land/bro-5031-tr-lookup",
     "title": "Landing blocked: race red on land/bro-5031-tr-lookup",
     "description": "land.yml did not land land/bro-5031-tr-lookup: the race gate went red at f73df9043d. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5031-tr-lookup @ f73df9043d (origin/land/bro-5031-tr-lookup) → origin/main @ 8b742448b3 [land] attempt 1/3: rebased onto 8b742448b3, 11 file(s) changed — running checks [land] verified-base: main moved 9e9d87d6f6 → 8b742448b3 across 24 file(s), substantive — running the full gauntlet [land] linked 21 gitignored path(s) into the worktree (node_modules/core data) [land] checks: coloc Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38118411728",
@@ -1547,5 +1535,17 @@
       }
     ],
     "queuedAt": "2026-10-11T07:25:54.188Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Audit circular duplicateOf pairs",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38122154250",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-11T07:44:37.790Z"
   }
 ]

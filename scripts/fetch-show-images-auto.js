@@ -18,7 +18,7 @@
  *
  * No hardcoded IDs - works for any show!
  *
- * Usage: node scripts/fetch-show-images-auto.js [--show=show-id] [--missing|--missing-only] [--bad-images] [--dry-run] [--audit-existing] [--force-google]
+ * Usage: node scripts/fetch-show-images-auto.js [--show=show-id] [--missing|--missing-only] [--bad-images] [--dry-run] [--audit-existing] [--force-google] [--retry-no-art]
  */
 
 const { isTourShow, applyTourInheritance } = require('./lib/tour-family');
@@ -35,8 +35,10 @@ const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { getMarketSearchKeyword } = require('./lib/market-label');
 const { todaytixMarket, todaytixSearchUrl, extractTodaytixShowLink, todaytixSerpQuery, todaytixShowUrl } = require('./lib/todaytix-market');
 const { pickMezzanineCandidate, theatrEligible, isRejectedImage, ibdbEligible, venuesMatch, buildVenueCityIndex, keepExistingImage, fileSourceUrls, recordFileSources, recordedSourceFor, imagePathOwner } = require('./lib/image-source-match');
+const { isStrictGoogleShow, noArtOutcome, buildNoReliableArtMarker } = require('./lib/no-reliable-art');
+const { selectShowsToFetch } = require('./lib/image-fetch-selection');
 const { loadImageSources, saveImageSources } = require('./lib/image-sources-store');
-const { buildSourceIndex, addToSourceIndex, sourceConflict, stripConflictingSources, showScoreArtEligible, todaytixIdOwner, isOwnSiteSource } = require('./lib/shared-image-source');
+const { buildSourceIndex, addToSourceIndex, sourceConflict, stripConflictingSources, showScoreArtEligible, todaytixIdOwner, isOwnSiteSource, isShoppingSource } = require('./lib/shared-image-source');
 const { findOtherSameTitleProduction } = require('./lib/canon-poster-art');
 const { imageOnDisk, isPlaceholderFile, PLACEHOLDER_FILE_HASHES } = require('./lib/show-images');
 const { resolveMarketSlug } = require('./lib/verify-image');
@@ -63,6 +65,7 @@ Usage:
     [--bad-images] [--dry-run] [--audit-existing] [--concurrency=N] [--no-verify]
     [--flagged] [--max-runtime=MIN] [--force-google]
     --force-google  ignore the per-show Google Images backoff (data/audit/image-search-attempts.json)
+    --retry-no-art  also search rows marked noReliableArt (skipped by every mode otherwise; BRO-5022)
   node scripts/fetch-show-images-auto.js --help, -h   print this usage and exit — no fetches/writes
 `;
 
@@ -1603,7 +1606,7 @@ async function searchGoogleImagesBD(query) {
     if (imgUrl.includes('gstatic.com') || imgUrl.includes('google.com')) continue;
     let domain = '';
     try { domain = new URL(imgUrl).hostname; } catch {}
-    if (/ebay|etsy|pinterest|redbubble|teepublic|amazon\.com\/dp/i.test(domain)) continue;
+    if (isShoppingSource(imgUrl)) continue;
     if (isOwnSiteSource(imgUrl)) continue;
     results.push({ image: null, imageUrl: imgUrl, url: imgUrl, title: '', domain, width, height, _brightdata: true });
     if (results.length >= 10) break;
@@ -1668,6 +1671,15 @@ async function extractImageBuffer(result) {
 // A Google result's image URL (Bright Data), or the page it came from
 // (ScrapingBee base64), for image-sources.json. Not downloadable in the second
 // case, which archive-show-images.js knows not to re-fetch.
+// Where a Google hit was found, for the verifier (BRO-5022): a campus news
+// site or a film blog usually names the wrong work outright.
+function googleResultMeta(r) {
+  if (!r) return null;
+  let domain = r.domain || '';
+  if (!domain && (r.url || r.link)) { try { domain = new URL(r.url || r.link).hostname; } catch { /* keep empty */ } }
+  return { pageDomain: domain || null, pageTitle: r.title || null, pageUrl: r.url || r.link || null };
+}
+
 function googleResultSource(r) {
   if (r && r.imageUrl) return r.imageUrl;
   return `google-images:${(r && (r.url || r.link)) || 'unknown page'}`;
@@ -1684,8 +1696,7 @@ function filterGoogleCandidates(results, maxCount = 10, show = null) {
       // Bright Data: has direct URL
       const hasBDImage = r._brightdata && r.imageUrl;
       if (!hasSBImage && !hasBDImage) return false;
-      const domain = (r.domain || r.url || '').toLowerCase();
-      if (/ebay|etsy|pinterest|redbubble|teepublic|amazon\.com\/dp/i.test(domain)) return false;
+      if (isShoppingSource(r.domain, r.url, r.imageUrl)) return false;
       if (isOwnSiteSource(r.domain, r.url, r.imageUrl)) return false;
       return true;
     })
@@ -1878,6 +1889,10 @@ async function fetchFromGoogleImages(show) {
     poster: posterLocal,
     hero: null,
     _verifyBuffer: finalThumbnailBuffer,
+    _verifyMeta: googleResultMeta(thumbnailBuffer ? thumbnailResult : posterResult),
+    // The poster comes from its own search and verifyAndCollect only checks
+    // the thumbnail, so the caller checks this one separately (BRO-5022).
+    _posterVerify: posterLocal ? { buffer: posterBuffer, meta: googleResultMeta(posterResult) } : null,
     _remainingCandidates: allRemaining,
     _hasNativeSquare: !!thumbnailBuffer,
     _fileSources,
@@ -1919,6 +1934,7 @@ async function tryNextGoogleCandidate(show, remainingCandidates, previousPoster 
       return {
         ...images,
         _verifyBuffer: buffer,
+        _verifyMeta: googleResultMeta(result),
         _remainingCandidates: nextRemaining,
         _fileSources,
       };
@@ -1955,6 +1971,53 @@ function snapshotLocalImageFiles(images) {
   return out;
 }
 
+// Everything the verifier should know about the row (BRO-5022): its authors,
+// run and, for a search hit, the page the image came from.
+function verifyOptionsFor(show, meta, strict) {
+  const { creativesForVerify } = require('./lib/verify-image');
+  return {
+    year: show.openingDate ? show.openingDate.substring(0, 4) : null,
+    openingDate: show.openingDate,
+    closingDate: show.status === 'closed' ? show.closingDate || null : null,
+    market: resolveMarketSlug(show.category, show.market),
+    venue: show.venue,
+    creatives: creativesForVerify(show),
+    pageDomain: meta?.pageDomain || null,
+    pageUrl: meta?.pageUrl || null,
+    pageTitle: meta?.pageTitle || null,
+    strict: !!strict,
+  };
+}
+
+// Per-show strict-tier outcome counts, read by noteNoReliableArtOutcome().
+function strictTallyFor(verifyCtx, showId) {
+  verifyCtx.strictTally = verifyCtx.strictTally || {};
+  if (!verifyCtx.strictTally[showId]) verifyCtx.strictTally[showId] = { rejected: 0, errored: 0, accepted: 0, searchErrored: false };
+  return verifyCtx.strictTally[showId];
+}
+
+// The Google poster is a separate search hit from the thumbnail being checked.
+// Check it on its own; a rejected poster file is deleted and dropped.
+async function verifyGooglePoster(googleImages, show, verifyCtx) {
+  const pv = googleImages && googleImages._posterVerify;
+  if (!pv || !verifyCtx || !googleImages.poster || !pv.buffer) return;
+  delete googleImages._posterVerify;
+  const { verifyImage, applyStrictVerdict } = require('./lib/verify-image');
+  const strict = isStrictGoogleShow(show);
+  const result = await verifyImage(pv.buffer, show.title, { ...verifyOptionsFor(show, pv.meta, strict), rateLimiter: verifyCtx.rateLimiter });
+  const verdict = applyStrictVerdict(result, { strict });
+  if (verdict.accept && result.imageType !== 'production_still') {
+    if (strict) strictTallyFor(verifyCtx, show.id).accepted++;
+    return;
+  }
+  if (strict) { const t = strictTallyFor(verifyCtx, show.id); if (verdict.errored) t.errored++; else t.rejected++; }
+  console.log(`   ✗ Google poster rejected (${strict ? 'strict, ' : ''}${verdict.reason}): ${result.description} from ${pv.meta?.pageDomain || 'unknown page'}`);
+  const abs = path.join(dryRunMode ? DRY_RUN_DIR : IMAGES_DIR, googleImages.poster.slice('/images/shows/'.length));
+  try { fs.unlinkSync(abs); } catch { /* not written */ }
+  googleImages.poster = null;
+  if (googleImages._fileSources) delete googleImages._fileSources.poster;
+}
+
 // Verify images from a non-trusted tier.
 // Returns { images, verifyResult, url, tierName, score } for candidate collection,
 // or null if rejected.
@@ -1972,13 +2035,19 @@ async function verifyAndCollect(images, show, tierName, verifyCtx) {
     for (const d of shared) console.log(`   ✗ ${tierName}: ${describeSharedSource(d)}`);
     return null;
   }
+  const verifyMeta = images._verifyMeta || null;
+  delete images._verifyMeta;
+  delete images._posterVerify;
   if (!verifyCtx) {
     delete images._verifyBuffer;
     delete images._remainingCandidates;
     return { images, verifyResult: null, tierName, score: 0 };
   }
 
-  const { verifyImage } = require('./lib/verify-image');
+  const { verifyImage, applyStrictVerdict } = require('./lib/verify-image');
+  // BRO-5022: the title-only Google search for a closed show must prove the
+  // work (and where it can, the production). No benefit of the doubt.
+  const strict = tierName === 'Google Images' && isStrictGoogleShow(show);
 
   // Pick best image to verify: thumbnail > poster > hero
   const urlToVerify = images.thumbnail || images.poster || images.hero;
@@ -1994,12 +2063,38 @@ async function verifyAndCollect(images, show, tierName, verifyCtx) {
   console.log(`   🔍 Verifying ${tierName} image...`);
 
   const result = await verifyImage(imageInput, show.title, {
-    year,
-    openingDate: show.openingDate,
-    market: resolveMarketSlug(show.category, show.market),
-    venue: show.venue,
+    ...verifyOptionsFor(show, verifyMeta, strict),
     rateLimiter: verifyCtx.rateLimiter,
   });
+
+  if (strict) {
+    const tally = strictTallyFor(verifyCtx, show.id);
+    const verdict = applyStrictVerdict(result, { strict: true });
+    if (!verdict.accept) {
+      if (verdict.errored) tally.errored++; else tally.rejected++;
+      // A confirmed still of THIS production may still serve as the last resort.
+      if (!verdict.errored && result.imageType === 'production_still' && result.workConfirmed && result.productionMatch === 'this') {
+        verifyCtx.productionPhotoFallbacks = verifyCtx.productionPhotoFallbacks || [];
+        verifyCtx.productionPhotoFallbacks.push({ showId: show.id, images, files: snapshotLocalImageFiles(images), verifyResult: result, url: urlToVerify, tierName, score: -5, bufSize: Buffer.isBuffer(imageInput) ? imageInput.length : 0 });
+      }
+      console.log(`   ✗ REJECTED (strict, ${verdict.reason}): ${result.description} [${(result.issues || []).join(', ')}] from ${verifyMeta?.pageDomain || 'unknown page'}`);
+      verifyCtx.rejected = (verifyCtx.rejected || 0) + 1;
+      return null;
+    }
+    tally.accepted++;
+    // A confirmed still of this production is a last resort, never primary art
+    // (same as Fix 3 below and verifyGooglePoster).
+    if (result.imageType === 'production_still') {
+      console.log(`   ⚠ DEFERRED (strict, production photo): ${result.description} — fallback if no poster art`);
+      verifyCtx.productionPhotoFallbacks = verifyCtx.productionPhotoFallbacks || [];
+      verifyCtx.productionPhotoFallbacks.push({ showId: show.id, images, files: snapshotLocalImageFiles(images), verifyResult: result, url: urlToVerify, tierName, score: -5, bufSize: Buffer.isBuffer(imageInput) ? imageInput.length : 0 });
+      return null;
+    }
+    const score = scoreCandidate(result, urlToVerify);
+    console.log(`   ✓ VERIFIED (strict, ${result.confidence}, production=${result.productionMatch}): ${result.description} [score=${score}]`);
+    verifyCtx.verified = (verifyCtx.verified || 0) + 1;
+    return { images, verifyResult: result, url: urlToVerify, tierName, score };
+  }
 
   // Fix 2: Override non_broadway rejection for pre-Broadway venue shows
   // ONLY when non_broadway is the sole issue — if the image is also wrong_show
@@ -2307,6 +2402,8 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
   } else {
     googleImages = await fetchFromGoogleImages(show);
     if (googleImages && googleImages.searchErrored) { googleErrored = true; googleImages = null; }
+    if (googleErrored && verifyCtx) strictTallyFor(verifyCtx, show.id).searchErrored = true;
+    if (googleImages) await verifyGooglePoster(googleImages, show, verifyCtx);
   }
   while (googleImages && googleImages.thumbnail) {
     // Save remaining candidates, and any already-saved poster, before
@@ -2343,8 +2440,10 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
     if (candidate) {
       candidates.push(candidate);
       if (!verifyCtx) return candidate.images;
-    } else if (verifyCtx) {
-      // Even Playbill failed verification — treat as last resort candidate
+    } else if (verifyCtx && !isStrictGoogleShow(show)) {
+      // Even Playbill failed verification — treat as last resort candidate.
+      // Not for closed rows (BRO-5022): failed art there is how wrong
+      // productions reached the site; no art is the right answer.
       verifyCtx.lastResort = (verifyCtx.lastResort || 0) + 1;
       candidates.push({ images: playbillImages, verifyResult: null, tierName: 'Playbill (last resort)', score: -1 });
     }
@@ -2511,7 +2610,27 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
     }
   }
 
+  if (!dryRunMode) noteNoReliableArtOutcome(show, images, verifyCtx);
   return { show, images, apiSourced: !!apiData };
+}
+
+// BRO-5022: persist "no reliable art" when the strict tier rejected every
+// candidate and nothing else was found, so the --missing sweep and the
+// imageless self-heal stop re-running the same search and taking the next
+// wrong hit. A run that finds accepted art clears an old marker.
+function noteNoReliableArtOutcome(show, images, verifyCtx) {
+  const tally = verifyCtx?.strictTally?.[show.id];
+  const outcome = noArtOutcome(show, images, tally);
+  if (!outcome) return;
+  // Counted so the run saves shows.json even when no show got art.
+  if (verifyCtx) verifyCtx.noArtChanged = (verifyCtx.noArtChanged || 0) + 1;
+  if (outcome === 'clear') {
+    delete show.noReliableArt;
+    console.log(`   ✓ Cleared noReliableArt for ${show.id}`);
+    return;
+  }
+  show.noReliableArt = buildNoReliableArtMarker(show, { reason: `${tally.rejected} Google Images candidate(s) failed the work/production check` });
+  console.log(`   ⊘ Marked ${show.id} noReliableArt (${tally.rejected} candidate(s) rejected); sweeps skip it until title/venue/date change or --retry-no-art`);
 }
 
 // Process shows in batches with concurrency.
@@ -2604,7 +2723,7 @@ async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImages
     }
 
     // Checkpoint every 25 shows to save progress (protects against timeout)
-    if (!dryRunMode && checkpoint && processed % 25 < scrapeConcurrency && results.success.length > 0) {
+    if (!dryRunMode && checkpoint && processed % 25 < scrapeConcurrency && (results.success.length > 0 || verifyCtx?.noArtChanged > 0)) {
       console.log(`\n   💾 CHECKPOINT at ${processed}/${scrapeShows.length} — saving progress...`);
       saveTodayTixIds(todayTixIds);
       if (ibdbImageCache) saveIbdbImageCache(ibdbImageCache);
@@ -2807,6 +2926,9 @@ async function main() {
   // dispatches) always search: the backoff is for the recurring --missing sweep.
   forceGoogle = args.includes('--force-google') || !!showFilter;
   const badImagesOnly = args.includes('--bad-images');
+  // BRO-5022: rows marked noReliableArt are skipped by every selection mode
+  // (the sweep, the self-heal's --show= batches) unless asked for explicitly.
+  const retryNoArt = args.includes('--retry-no-art');
   const concurrency = parseInt(args.find(a => a.startsWith('--concurrency='))?.split('=')[1] || '5', 10);
   // Verification is ON by default — use --no-verify to skip (faster but less safe)
   const verifyEnabled = !args.includes('--no-verify');
@@ -3031,23 +3153,14 @@ async function main() {
     process.exit(0);
   }
 
-  if (onlyMissing) {
-    // Exclude closed shows by default — there are 2000+ and most will never
-    // have images online. Without this, --missing takes 3+ hours instead of ~25 min.
-    // Use --include-closed for explicit historical backfill runs.
-    const includeClosed = args.includes('--include-closed');
-    if (!includeClosed) {
-      const before = shows.length;
-      shows = shows.filter(s => s.status !== 'closed');
-      console.log(`Excluding ${before - shows.length} closed shows (use --include-closed to override)`);
-    }
-    // imageOnDisk() is the shared predicate (scripts/lib/show-images.js): a path
-    // in shows.json counts only when the file exists AND is not a known
-    // placeholder. The monitors use the same helper so "covered" means the same
-    // thing everywhere (the-gin-game-2026 phantom-path class, 2026-07-31).
-    shows = shows.filter(s => !imageOnDisk(s.images?.poster) || !imageOnDisk(s.images?.thumbnail));
-    console.log(`Processing only shows with missing images: ${shows.length}`);
-  }
+  // --missing filter + the noReliableArt skip (BRO-5022), in lib so tests run it.
+  ({ shows } = selectShowsToFetch(shows, {
+    onlyMissing,
+    includeClosed: args.includes('--include-closed'),
+    retryNoArt,
+    imageOnDisk,
+    log: (m) => console.log(m),
+  }));
 
   if (badImagesOnly) {
     const badShows = shows.filter(s => hasBadImages(s.id));
@@ -3216,7 +3329,8 @@ async function main() {
   }
 
   // Final save (skip in dry-run mode)
-  if (results.success.length > 0 && !dryRunMode) {
+  // BRO-5022: noReliableArt markers are written even when no show got art.
+  if ((results.success.length > 0 || verifyCtx?.noArtChanged > 0) && !dryRunMode) {
     saveShowsData();
   }
 

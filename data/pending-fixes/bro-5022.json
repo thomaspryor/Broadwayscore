@@ -1,0 +1,442 @@
+{
+  "issueNumber": "bro-5022",
+  "planId": "015b4f7e-13f7-416e-946d-5ab588500c32",
+  "status": "applied",
+  "createdAt": "2026-10-11T05:44:58.249Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5022: contact sheets of the closed West End historical rows filled from Google Images found 11 wrong images on 8 rows (films, Broadway and regional stagings, a college production, a different play). Null them, reject each Google source, and mark the 6 rows left with no art so the sweep and self-heal stop refilling them.",
+    "steps": [
+      "Null each wrong format (compare-and-set)",
+      "Add its recorded Google source to rejectedImageUrls (add-only)",
+      "Set noReliableArt on rows left with no art (fingerprint-checked)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "othello-west-end-2022",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/othello-west-end-2022/thumbnail.jpg",
+          "poster": "/images/shows/othello-west-end-2022/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "othello-west-end-2022: poster was print-shop design, not the National Theatre production; thumbnail was print-shop design, not the National Theatre production (BRO-5022 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "othello-west-end-2022",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.prints4u.net/product/othello-musical-theatre-west-end-broadway-poster-print/"
+        ],
+        "description": "othello-west-end-2022: never re-take those Google sources (BRO-5022)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "aint-too-proud-west-end-2023",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/aint-too-proud-west-end-2023/thumbnail.jpg",
+          "poster": "/images/shows/aint-too-proud-west-end-2023/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "aint-too-proud-west-end-2023: poster was Broadway (Shubert) art; thumbnail was Nashville regional tour art (BRO-5022 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "aint-too-proud-west-end-2023",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://shubert.nyc/press/aint-too-proud-the-life-and-times-of-the-temptations-at-the-imperial-theatre/",
+          "google-images:https://www.broadwayworld.com/nashville/regional/Ain-t-Too-Proud-4367171"
+        ],
+        "description": "aint-too-proud-west-end-2023: never re-take those Google sources (BRO-5022)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "what-if-if-only-west-end-2021",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/what-if-if-only-west-end-2021/thumbnail.jpg",
+          "poster": "/images/shows/what-if-if-only-west-end-2021/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "what-if-if-only-west-end-2021: poster was a college production (purchase.edu); thumbnail was a college production (purchase.edu) (BRO-5022 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "what-if-if-only-west-end-2021",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.purchase.edu/live/profiles/5831-what-if-if-only-by-caryl-churchill"
+        ],
+        "description": "what-if-if-only-west-end-2021: never re-take those Google sources (BRO-5022)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "get-up-stand-up-the-bob-marley-story-west-end-2021",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/get-up-stand-up-the-bob-marley-story-west-end-2021/thumbnail.jpg",
+          "poster": "/images/shows/get-up-stand-up-the-bob-marley-story-west-end-2021/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": "/images/shows/get-up-stand-up-the-bob-marley-story-west-end-2021/poster.jpg",
+          "hero": null
+        },
+        "description": "get-up-stand-up-the-bob-marley-story-west-end-2021: thumbnail was a concert photo of Bob Marley, not show art (BRO-5022 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "get-up-stand-up-the-bob-marley-story-west-end-2021",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.broadway.com/buzz/198456/bob-marley-musical-get-up-stand-up-to-open-in-londons-west-end-in-2021/"
+        ],
+        "description": "get-up-stand-up-the-bob-marley-story-west-end-2021: never re-take those Google sources (BRO-5022)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-christmas-carol-west-end-2020",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/a-christmas-carol-west-end-2020/thumbnail.jpg",
+          "poster": "/images/shows/a-christmas-carol-west-end-2020/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/a-christmas-carol-west-end-2020/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "a-christmas-carol-west-end-2020: poster was poster for a 2020 film (IMDb), not the Dominion concert staging (BRO-5022 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-christmas-carol-west-end-2020",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.imdb.com/title/tt13450510/"
+        ],
+        "description": "a-christmas-carol-west-end-2020: never re-take those Google sources (BRO-5022)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "seven-methods-of-killing-kylie-jenner-west-end-2021",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/seven-methods-of-killing-kylie-jenner-west-end-2021/thumbnail.jpg",
+          "poster": "/images/shows/seven-methods-of-killing-kylie-jenner-west-end-2021/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/seven-methods-of-killing-kylie-jenner-west-end-2021/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "seven-methods-of-killing-kylie-jenner-west-end-2021: poster was the later Royal Court film, not the stage production (BRO-5022 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "seven-methods-of-killing-kylie-jenner-west-end-2021",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "google-images:https://stories.malthousetheatre.com.au/shows/seven-methods-of-killing-kylie-jenner/",
+          "google-images:https://www.obsidiantheatre.com/show/7-methods/"
+        ],
+        "newValue": [
+          "google-images:https://stories.malthousetheatre.com.au/shows/seven-methods-of-killing-kylie-jenner/",
+          "google-images:https://www.obsidiantheatre.com/show/7-methods/",
+          "google-images:https://www.imdb.com/title/tt19299512/"
+        ],
+        "description": "seven-methods-of-killing-kylie-jenner-west-end-2021: never re-take those Google sources (BRO-5022)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cinderella-west-end-2021",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/cinderella-west-end-2021/thumbnail.jpg",
+          "poster": "/images/shows/cinderella-west-end-2021/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/cinderella-west-end-2021/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "cinderella-west-end-2021: poster was Rodgers + Hammerstein's Broadway Cinderella, not Lloyd Webber's (BRO-5022 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cinderella-west-end-2021",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.moviepostershop.com/cinderella-broadway-movie-poster-9999?srsltid=AU7gw4Vn2JSAq-BFziQy8oEVd696l0b1JViB2yvoL5BAEYB5qavF-SWR"
+        ],
+        "description": "cinderella-west-end-2021: never re-take those Google sources (BRO-5022)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "midnight-movie-west-end-2019",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/midnight-movie-west-end-2019/thumbnail.jpg",
+          "poster": "/images/shows/midnight-movie-west-end-2019/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/midnight-movie-west-end-2019/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "midnight-movie-west-end-2019: poster was \"Midnight!\" by David Epstein (Austin), a different play (BRO-5022 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "midnight-movie-west-end-2019",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.broadwayworld.com/austin/regional/Midnight-4384843"
+        ],
+        "description": "midnight-movie-west-end-2019: never re-take those Google sources (BRO-5022)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "othello-west-end-2022",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-11",
+          "reason": "BRO-5022: every Google Images hit for this title was another work or production (contact sheet)",
+          "key": "othello|lyttelton theatre|2022-11-23"
+        },
+        "description": "othello-west-end-2022: no reliable art; the image sweep and self-heal skip it until the row changes (BRO-5022)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "aint-too-proud-west-end-2023",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-11",
+          "reason": "BRO-5022: every Google Images hit for this title was another work or production (contact sheet)",
+          "key": "ain't too proud|prince edward theatre|"
+        },
+        "description": "aint-too-proud-west-end-2023: no reliable art; the image sweep and self-heal skip it until the row changes (BRO-5022)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "what-if-if-only-west-end-2021",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-11",
+          "reason": "BRO-5022: every Google Images hit for this title was another work or production (contact sheet)",
+          "key": "what if if only|royal court|2021-09-29"
+        },
+        "description": "what-if-if-only-west-end-2021: no reliable art; the image sweep and self-heal skip it until the row changes (BRO-5022)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "noises-off-west-end-2019",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-11",
+          "reason": "BRO-5022: every Google Images hit for this title was another work or production (contact sheet)",
+          "key": "noises off|garrick theatre|2019-09-27"
+        },
+        "description": "noises-off-west-end-2019: no reliable art; the image sweep and self-heal skip it until the row changes (BRO-5022)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-greatest-play-in-the-history-of-the-world-west-end-2019",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-11",
+          "reason": "BRO-5022: every Google Images hit for this title was another work or production (contact sheet)",
+          "key": "the greatest play in the history of the world|trafalgar theatre|2019-11-26"
+        },
+        "description": "the-greatest-play-in-the-history-of-the-world-west-end-2019: no reliable art; the image sweep and self-heal skip it until the row changes (BRO-5022)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "endgame-west-end-2020",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-11",
+          "reason": "BRO-5022: every Google Images hit for this title was another work or production (contact sheet)",
+          "key": "endgame|the old vic|2020-01-27"
+        },
+        "description": "endgame-west-end-2020: no reliable art; the image sweep and self-heal skip it until the row changes (BRO-5022)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T07:44:46.379Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for othello-west-end-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for othello-west-end-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for aint-too-proud-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for aint-too-proud-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for what-if-if-only-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for what-if-if-only-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for get-up-stand-up-the-bob-marley-story-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for get-up-stand-up-the-bob-marley-story-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for a-christmas-carol-west-end-2020"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for a-christmas-carol-west-end-2020"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for seven-methods-of-killing-kylie-jenner-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for seven-methods-of-killing-kylie-jenner-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for cinderella-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for cinderella-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for midnight-movie-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for midnight-movie-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for othello-west-end-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for aint-too-proud-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for what-if-if-only-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for noises-off-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for the-greatest-play-in-the-history-of-the-world-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for endgame-west-end-2020"
+    }
+  ]
+}
