@@ -86,7 +86,7 @@ function SeasonChart({ c, week }: { c: MarketPage['seasonChart']; week: string }
       </div>
       <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-400">
         <span className="inline-flex items-center gap-1.5"><span className="w-3 h-2.5 rounded-sm bg-white/10" />Range of the three seasons before ({c.rangeLabel})</span>
-        <span className="inline-flex items-center gap-1.5"><span className="w-3.5 border-t-2 border-dashed border-gray-400" />Last season ({c.lastLabel})</span>
+        <span className="inline-flex items-center gap-1.5"><span className="w-3.5 border-t-2 border-dashed border-current text-gray-400" />Last season ({c.lastLabel})</span>
         <span className="inline-flex items-center gap-1.5"><span className="w-3.5 h-0.5 bg-brand" />This season{nowGross != null ? ` · ${money(nowGross, 1)} this week` : ''}</span>
       </div>
       <span className="sr-only">Week ending {week}.</span>
