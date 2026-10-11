@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-10-11T13:41:30.911Z",
+  "generatedAt": "2026-10-11T14:31:40.649Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 100,
     "avgScoreDiff": 0
   },
   "syndicationPairs": [
@@ -96,7 +96,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "AP wire",
+      "showId": "mrs-doubtfire-2021",
+      "primaryOutlet": "ap",
+      "secondaryOutlet": "abc-news",
+      "primaryFile": "ap--mark-kennedy.json",
+      "secondaryFile": "abc-news--mark-kennedy.json",
+      "similarity": 100,
+      "primaryScore": null,
+      "secondaryScore": null,
+      "scoreDiff": 0
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",
