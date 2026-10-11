@@ -105,6 +105,32 @@ test('a whole-month range with no press night is a TR issue period, not a run (B
   // -layout can print the banner beside a real label: keep the label's date
   const side = ['ANTONY AND CLEOPATRA', 'Press Night 27 Sep 2018      Issue 17-18 Openings 1-30 September 2018', 'Reviews'].join('\n');
   assert.equal(parseTrHeaderDates(pdfHeaderFor(side, 'Antony and Cleopatra')).openingDate, '2018-09-27');
+  // ...or after it: the label to the right survives too
+  const right = ['ANTONY AND CLEOPATRA', 'Issue 17-18 Openings 1-30 September 2018      Closes 19 Jan 2019', 'Reviews'].join('\n');
+  assert.equal(parseTrHeaderDates(pdfHeaderFor(right, 'Antony and Cleopatra')).closingDate, '2019-01-19');
+  // Single issues cover half a month
+  assert.equal(isIssuePeriod(parseTrHeaderDates('X\n1-14 October 2018')), true);
+  assert.equal(isIssuePeriod(parseTrHeaderDates('X\n15-31 October 2018')), true);
+  assert.equal(isIssuePeriod(parseTrHeaderDates('X\n1-29 February 2024')), true);
+  assert.equal(isIssuePeriod(parseTrHeaderDates('X\n1-28 February 2024')), false);
+});
+
+test('two equally close page links in one volume year are ambiguous (BRO-5031)', () => {
+  const two = [
+    { title: 'Company', venue: 'Gielgud (Globe)', link: 'https://www.theatrerecord.com/archive/volume/38/page/100' },
+    { title: 'Company', venue: 'Gielgud (Globe)', link: 'https://www.theatrerecord.com/archive/volume/38/page/900' },
+  ];
+  assert.equal(pickTrForReview(two, { title: 'Company', venue: 'Gielgud Theatre', date: '2018-12-10' }), null);
+  assert.equal(pickTrForReview(two.slice(1), { title: 'Company', venue: 'Gielgud Theatre', date: '2018-12-10' })?.link, two[1].link);
+});
+
+test('a TR production that closed before the review is an earlier production (BRO-5031)', () => {
+  const row = { review: { title: 'A Christmas Carol', venue: 'Old Vic', date: '2018-12-10', url: 'u' },
+    tr: { title: 'A Christmas Carol', venue: 'Old Vic', link: 'https://www.theatrerecord.com/archive/volume/38/page/100' },
+    header: 'A CHRISTMAS CAROL\nPreviews 24 Nov 2017\nPress Night 04 Dec 2017\nCloses 20 Jan 2018' };
+  const [c] = buildReviewLedCandidates({ season: '2018-2019', lookups: [row], shows: [], today: '2026-10-11' });
+  assert.equal(c.decision.promotable, false);
+  assert.match(c.decision.reason, /closed before the review/);
 });
 
 test('a TR production that starts after the review is a later production (BRO-5031)', () => {

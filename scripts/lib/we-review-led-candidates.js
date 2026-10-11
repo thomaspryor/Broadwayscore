@@ -138,7 +138,11 @@ function pickTrForReview(results, review, opts = {}) {
     .filter(x => x.m != null && x.m.hi >= rm - 3 && x.m.lo <= rm + 1)
     .map(x => ({ r: x.r, d: rm < x.m.lo ? x.m.lo - rm : rm > x.m.hi ? rm - x.m.hi : 0, w: x.m.hi - x.m.lo }))
     .sort((a, b) => a.d - b.d || a.w - b.w);
-  return hits.length ? hits[0].r : null;
+  if (!hits.length) return null;
+  // Two different productions equally close (e.g. two page links in one
+  // volume year) cannot be told apart, so neither one's dates are used.
+  if (hits.length > 1 && hits[1].d === hits[0].d && hits[1].w === hits[0].w && hits[1].r.link !== hits[0].r.link) return null;
+  return hits[0].r;
 }
 
 /**
@@ -319,8 +323,15 @@ function buildReviewLedCandidates({ season, lookups, shows, today }) {
     const startDate = c.previewsStartDate || c.openingDate;
     // A page link spans its whole volume year, so a same-title production
     // that began after this review can tie on month distance (BRO-5031).
+    if (Number.isNaN(Date.parse(startDate)) || (c.closingDate && Number.isNaN(Date.parse(c.closingDate)))) {
+      no('unreadable Theatre Record date'); continue;
+    }
     if (review.date && Date.parse(startDate) > Date.parse(review.date) + 14 * DAY_MS) {
       no('Theatre Record production starts after the review'); continue;
+    }
+    // ...and one that had already closed is an earlier production.
+    if (review.date && c.closingDate && Date.parse(review.date) > Date.parse(c.closingDate) + 30 * DAY_MS) {
+      no('Theatre Record production closed before the review'); continue;
     }
     // A run that began in the late summer before its first review belongs to
     // the season it started in; no other season's lookups will ever see it.
@@ -353,17 +364,20 @@ function buildReviewLedCandidates({ season, lookups, shows, today }) {
 }
 
 /**
- * True for a bare range that is exactly one calendar month (1st to last day)
- * with no press night: the 2018 TR PDFs print "Issue 17-18 Openings
- * 1-30 September 2018" beside each title, and that banner read as a run
- * (Antony and Cleopatra, NT 2018, ran 18 Sep 2018 to 19 Jan 2019; BRO-5031).
+ * True for a bare range that is one TR issue (a whole calendar month, or its
+ * first or second half) with no press night: the 2018 TR PDFs print "Issue
+ * 17-18 Openings 1-30 September 2018" beside each title, and that banner read
+ * as a run (Antony and Cleopatra, NT 2018, ran 18 Sep 2018 to 19 Jan 2019;
+ * BRO-5031). Single issues cover half a month.
  */
 function isIssuePeriod(d) {
   if (!d || d.openingDate || !d.previewsStartDate || !d.closingDate) return false;
-  const [y, m, day] = d.previewsStartDate.split('-').map(Number);
-  if (day !== 1) return false;
-  const last = new Date(Date.UTC(y, m, 0)).toISOString().slice(0, 10);
-  return d.closingDate === last;
+  const [y, m, from] = d.previewsStartDate.split('-').map(Number);
+  const [y2, m2, to] = d.closingDate.split('-').map(Number);
+  if (y2 !== y || m2 !== m) return false;
+  const last = new Date(Date.UTC(y, m, 0)).getUTCDate();
+  return (from === 1 && (to === last || to === 14 || to === 15))
+    || ((from === 15 || from === 16) && to === last);
 }
 
 /** Where the CI resolver saves TR lookups for a season. */
