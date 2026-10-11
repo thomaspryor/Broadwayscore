@@ -161,11 +161,13 @@ const ShowListCard = memo(function ShowListCard({
       · {ticketLabel}
     </span>
   ) : null;
+  // min-h-[32px] overrides the 48px mobile .btn floor in globals.css: the owner asked
+  // for a small button, and a mis-tap lands on the card's own show-page link.
   const ticketCtaMobile = canShowTicket ? (
     <span
       {...ticketHandlers}
       data-testid="ticket-cta-mobile"
-      className="sm:hidden btn-primary mt-2 px-3 py-1.5 text-xs cursor-pointer"
+      className="sm:hidden btn-primary mt-2 min-h-[32px] px-3 py-1 text-xs cursor-pointer"
     >
       {ticketLabel}
     </span>
