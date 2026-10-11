@@ -105,7 +105,7 @@ for (const s of shows) { if (s.slug) by[s.slug] = s; if (s.id) by[s.id] = s; }
 
 if (TIMING) {
   require('./lib/recoupment-timing-report').runTiming({
-    shows, commercial, lookup: L, by, baseLib, newLib: path.join(__dirname, 'lib'), base: BASE, truth: TRUTH,
+    shows, commercial, lookup: L, by, baseLib, newLib: path.join(__dirname, 'lib'), newOpts: OPTS, base: BASE, truth: TRUTH,
     displayableOnly: DISPLAYABLE_ONLY, displayed: DISPLAYED, json: args.includes('--json'), strict: args.includes('--strict'),
     aggregateOnly: AGGREGATE_ONLY, markdown: MARKDOWN,
   });

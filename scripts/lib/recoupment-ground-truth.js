@@ -22,9 +22,17 @@
 // (TRUTH_CLASS_FIELD); without one the source text is classified, defaulting
 // to 'inference'. A failed row is 'reported' only when a hard source states the
 // outcome (did not recoup, closed at a loss): a cited capitalization or budget
-// alone is inference about the outcome (checker, 2026-10-10).
+// alone is inference about the outcome (checker, 2026-10-10). A reported-pct
+// row is 'reported' only when its source also states a figure (BRO-5073).
 
 const OWN_INFERENCE = /^\s*(inferred|estimated)\b/i;
+// A stated figure for the money returned or lost: a percentage beside
+// recoup/returned/loss, a percentage of the capitalization, or a dollar loss
+// ("$6M loss (~40% of cap)"). Shared with model-display-guard.js.
+const STATED_PCT = /\b(recoup\w*|returned|paid back|earned back|loss|lost)\b[^.;]{0,60}?\d+(?:\.\d+)?\s*(?:%|percent)|\d+(?:\.\d+)?\s*(?:%|percent)\s*(?:of|on)\s*(?:its |the )?(?:cap|capitali[sz]ation|investment)\b/i;
+const STATED_LOSS = /\b(loss|lost)\b[^.;]{0,30}?\$\s?\d|\$\s?\d+(?:\.\d+)?\s*(?:m|million)\b[^.;]{0,15}?\bloss/i;
+/** Does the text state a figure for the money returned or lost? */
+const statesFigure = (text) => STATED_PCT.test(String(text || '')) || STATED_LOSS.test(String(text || ''));
 
 const TRUTH_CLASS_FIELD = {
   'reported-pct': 'estimatedRecoupmentTruthClass',
@@ -59,6 +67,11 @@ function classifyFailedText(text) {
 function truthClassOf(comm, kind, sourceText) {
   const explicit = comm && comm[TRUTH_CLASS_FIELD[kind]];
   if (explicit === 'reported' || explicit === 'inference') return { truthClass: explicit, truthClassFrom: 'field' };
+  // A range is a point estimate only when the source states a figure; a
+  // quote like "among the season's largest losses" turned into 0..10 by us is
+  // our inference, whoever said the words (BRO-5073: Queen of Versailles,
+  // Little Bear Ridge Road).
+  if (kind === 'reported-pct' && !statesFigure(sourceText)) return { truthClass: 'inference', truthClassFrom: 'no-stated-figure' };
   if (kind === 'failed') {
     const text = [comm.notes, comm.recoupedSource, comm.classifiedReason].filter((v) => typeof v === 'string').join(' ');
     return { truthClass: classifyFailedText(text), truthClassFrom: 'source-text' };
@@ -168,4 +181,4 @@ function formatMarkdown({ title, summary, rows, worse, limit = 15, aggregateOnly
   return out.join('\n');
 }
 
-module.exports = { groundTruth, truthClassOf, classifySourceText, classifyFailedText, TRUTH_CLASS_FIELD, rangeError, category, summarize, worseGroups, formatMarkdown, fmtTruth, OWN_INFERENCE };
+module.exports = { STATED_PCT, statesFigure, groundTruth, truthClassOf, classifySourceText, classifyFailedText, TRUTH_CLASS_FIELD, rangeError, category, summarize, worseGroups, formatMarkdown, fmtTruth, OWN_INFERENCE };

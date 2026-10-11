@@ -120,16 +120,17 @@ function historyCoverage(weekly, show, asOf) {
 /**
  * The model as it stood on asOf, with the tier it would have had then (a
  * show's run so far, not its eventual length, decides long-run treatment).
- * libs: { classifyTier, calculateRecoupment } from the model under test.
+ * libs: { classifyTier, calculateRecoupment } from the model under test;
+ * opts: shadow options for the new side (--opt).
  * @returns {{ tier: string, result: object|null }}
  */
-function modelAt(libs, show, comm, lookup, asOf) {
+function modelAt(libs, show, comm, lookup, asOf, opts = {}) {
   const slug = show.slug || show.id;
   const allTime = lookup.getGrossesAllTime(slug, show.id);
   const closing = show.closingDate && show.closingDate < asOf ? show.closingDate : asOf;
   const tier = libs.classifyTier({ ...show, closingDate: closing }, comm, allTime);
   if (tier !== 'weekly-model') return { tier, result: null };
-  const result = libs.calculateRecoupment(show, comm, allTime, lookup.getWeeklyData(slug, show.id), { asOf });
+  const result = libs.calculateRecoupment(show, comm, allTime, lookup.getWeeklyData(slug, show.id), { ...opts, asOf });
   if (!result || result.error) return { tier: 'ai-estimated', result: null };
   return { tier, result };
 }

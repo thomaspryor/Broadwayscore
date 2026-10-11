@@ -24,7 +24,7 @@ function libsFrom(dir) {
 /**
  * @returns {{ rows: object[], skipped: Record<string, number> }}
  */
-function buildTimingRows({ shows, commercial, lookup, by, oldLibs, newLibs, truth = 'reported', displayableOnly = false, displayed = false }) {
+function buildTimingRows({ shows, commercial, lookup, by, oldLibs, newLibs, newOpts = {}, truth = 'reported', displayableOnly = false, displayed = false }) {
   const rows = [];
   const skipped = { noShow: 0, untestable: 0, inference: 0, sharedGrossesKey: 0, thinHistory: 0, noModel: 0, notDisplayable: 0, newOnly: 0 };
   const shown = (v) => (displayed ? Math.max(0, v) : v);
@@ -42,9 +42,9 @@ function buildTimingRows({ shows, commercial, lookup, by, oldLibs, newLibs, trut
       const weeks = guard.playedWeeks(show, new Date(cp.to));
       if (cov.before > 0) { skipped.sharedGrossesKey++; continue; }
       if (!(weeks > 0) || cov.own / weeks < MIN_COVERAGE) { skipped.thinHistory++; continue; }
-      const run = (libs, d) => modelAt(libs, show, comm, lookup, d);
+      const run = (libs, d, opts) => modelAt(libs, show, comm, lookup, d, opts);
       const oldA = run(oldLibs, cp.from); const oldB = cp.from === cp.to ? oldA : run(oldLibs, cp.to);
-      const newA = run(newLibs, cp.from); const newB = cp.from === cp.to ? newA : run(newLibs, cp.to);
+      const newA = run(newLibs, cp.from, newOpts); const newB = cp.from === cp.to ? newA : run(newLibs, cp.to, newOpts);
       const okOld = oldA.result && oldB.result;
       const okNew = newA.result && newB.result;
       if (okOld && !okNew) { skipped.newOnly++; continue; }
@@ -74,9 +74,9 @@ function recoupBias(rows, side = 'new') {
   return Math.round(at.reduce((a, r) => a + (r[`${side}Pct`] - 100), 0) / at.length * 10) / 10;
 }
 
-function runTiming({ shows, commercial, lookup, by, baseLib, newLib, base, truth, displayableOnly, displayed, json, strict, aggregateOnly, markdown }) {
+function runTiming({ shows, commercial, lookup, by, baseLib, newLib, newOpts = {}, base, truth, displayableOnly, displayed, json, strict, aggregateOnly, markdown }) {
   const { rows, skipped } = buildTimingRows({
-    shows, commercial, lookup, by, oldLibs: libsFrom(baseLib), newLibs: libsFrom(newLib), truth, displayableOnly, displayed,
+    shows, commercial, lookup, by, oldLibs: libsFrom(baseLib), newLibs: libsFrom(newLib), newOpts, truth, displayableOnly, displayed,
   });
   const MIN_GROUP = displayableOnly ? 3 : 1;
   const summary = summarize(rows);
@@ -84,7 +84,8 @@ function runTiming({ shows, commercial, lookup, by, baseLib, newLib, base, truth
   // A show the new side calls recouped 26 or 52 weeks before it did.
   const newEarly = rows.filter((r) => r.truth[1] < 100 && r.newPct >= 100 && !(r.oldPct >= 100));
   const displayableHard = rows.filter((r) => r.displayable && r.truthClass === 'reported').length;
-  const label = `${base ? `${base} vs working tree` : 'working tree'}, recoupment timing${displayableOnly ? ', displayable rows only' : ''}${displayed ? ', displayed value (floored at 0)' : ''}`;
+  const optNames = Object.keys(newOpts);
+  const label = `${base ? `${base} vs working tree` : 'working tree'}${optNames.length ? `, opts ${optNames.join(', ')}` : ''}, recoupment timing${displayableOnly ? ', displayable rows only' : ''}${displayed ? ', displayed value (floored at 0)' : ''}`;
   const lines = [
     `Truth set: ${truth === 'reported' ? `reported recoupment dates only, ${skipped.inference} inference records left out` : 'reported and inference'}`,
     `Recoupment-timing backtest, ${label}: ${rows.length} checkpoints (skipped ${Object.entries(skipped).filter(([, v]) => v).map(([k, v]) => `${v} ${k}`).join(', ') || 'none'})`,
