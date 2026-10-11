@@ -45,6 +45,7 @@ const DRAFT_TTL_DAYS = 4;
 // Per run caps: the email should hand over one or two posts, not a chore list.
 const MAX_DRAFTS_PER_RUN = 2;
 const MAX_OB_DRAFTS_PER_RUN = 1;
+const MAX_REFRESHES_PER_RUN = 5; // pre-reminder redrafts, outside the caps above (BRO-5083)
 
 const MIN_AUDIENCE_REVIEWS = 15; // parity with src/lib/audience-grade-utils.ts
 
@@ -256,6 +257,19 @@ function isRefreshable(d) {
 }
 
 /**
+ * Emailed, unposted, and its reminder can still go out (same TTL the sender's
+ * activeDrafts uses): the only drafts worth an out-of-cap, any-age refresh.
+ * Without the TTL bound a draft that never gets reminded (emailed late,
+ * posted under a title detection misses) would be redrafted daily for 60
+ * days (BRO-5083 review). nowMs is the start of `today`, so at worst one
+ * refresh lands on the day its reminder window closes.
+ */
+function awaitsReminder(d, nowMs) {
+  return isRefreshable(d) && !!d.emailedAt
+    && (nowMs - Date.parse(d.createdAt)) / 86400000 <= DRAFT_TTL_DAYS;
+}
+
+/**
  * A second, bigger audience worth a crosspost to r/Broadway (282k):
  *  - every Off-Broadway show (primary is the smaller r/offbroadwayNYC, and
  *    the owner's Off-Broadway posts did well on r/Broadway);
@@ -277,6 +291,7 @@ function crosspostSubreddit(show, broadwayTitles) {
  */
 function selectCandidates({ shows, slims, drafts, peersByMarket, today, seenLookup = () => null, forceShowId = null }) {
   const already = (drafts && drafts.drafts) || {};
+  const nowMs = Date.parse(`${String(today).slice(0, 10)}T00:00:00Z`);
   // One id, an array, or "a,b,c": the owner can ask for several redrafts at once.
   const forced = forceShowId ? new Set([].concat(forceShowId).flatMap(x => String(x).split(',')).map(x => x.trim()).filter(Boolean)) : null;
   // Broadway productions that are current, upcoming, or opened in the last
@@ -304,8 +319,7 @@ function selectCandidates({ shows, slims, drafts, peersByMarket, today, seenLook
       // The opening-age window decides which shows get a FIRST email; a
       // draft already emailed gets its pre-reminder refresh at any age
       // (one emailed on day 5 is reminded on day 6, BRO-5083).
-      const refreshing = !!(prev && prev.emailedAt && isRefreshable(prev));
-      if (!refreshing) {
+      if (!awaitsReminder(prev, nowMs)) {
         if (!show.openingDate) continue;
         const age = daysBetween(show.openingDate, today);
         if (age < MIN_AGE_DAYS || age > MAX_AGE_DAYS) continue;
@@ -321,7 +335,7 @@ function selectCandidates({ shows, slims, drafts, peersByMarket, today, seenLook
     if (!forceShowId && prev && !isRetryableDraft(prev) && prev.subreddit === facts.subreddit && lintDraft(prev, facts).ok) continue; // unsent but still accurate
     // Off-West End shows only when they'd carry a post on their own.
     if (!forceShowId && market === 'off-west-end' && notability(facts) < 25) continue;
-    out.push({ show, facts, notability: notability(facts), refresh: !!(prev && prev.emailedAt) });
+    out.push({ show, facts, notability: notability(facts), refresh: awaitsReminder(prev, nowMs) });
   }
   // New openings first. The per-run caps limit how many NEW posts the owner
   // gets a day; refreshes sit outside them, since each runs once (right
@@ -330,7 +344,7 @@ function selectCandidates({ shows, slims, drafts, peersByMarket, today, seenLook
   // live, BRO-5083).
   out.sort((a, b) => (a.refresh - b.refresh) || (b.notability - a.notability));
   if (forceShowId) return out;
-  const picked = out.filter(c => c.refresh);
+  const picked = [];
   let fresh = 0;
   let ob = 0;
   for (const c of out) {
@@ -343,7 +357,9 @@ function selectCandidates({ shows, slims, drafts, peersByMarket, today, seenLook
     fresh++;
     picked.push(c);
   }
-  return picked;
+  // Refreshes after the new openings (drafted in this order, so a slow run
+  // never holds up a first email); backstop cap since each is an LLM call.
+  return picked.concat(out.filter(c => c.refresh).slice(0, MAX_REFRESHES_PER_RUN));
 }
 
 // ── Owner's show history (data/shows-seen.json) ──────────────────────────────

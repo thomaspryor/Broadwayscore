@@ -390,7 +390,7 @@ test('a refresh never takes a new opening\'s slot, and is never starved by them 
   const mk = id => ({ ...show, id, slug: id, title: id });
   const shows = ['big', 'n1', 'n2', 'n3'].map(mk);
   const slims = new Map([['big', slim({ cs: 95, n: 30 })], ['n1', slim({ n: 9 })], ['n2', slim({ n: 9 })], ['n3', slim({ n: 9 })]]);
-  const stale = { status: 'ready', source: 'claude', subreddit: 'TheWestEnd', title: 'big 12/100', body: 'old', emailedAt: '2026-09-28T06:00:00Z' };
+  const stale = { status: 'ready', source: 'claude', subreddit: 'TheWestEnd', title: 'big 12/100', body: 'old', createdAt: '2026-09-28T06:00:00Z', emailedAt: '2026-09-28T06:00:00Z' };
   const picked = lib.selectCandidates({ shows, slims, drafts: { drafts: { big: stale } }, peersByMarket: {}, today: '2026-09-29' }).map(c => c.show.id);
   assert.deepEqual(picked.sort(), ['big', 'n1', 'n2'], 'two new openings fill the new-post cap; the due refresh runs as well');
   // Reminder already sent: nothing left to refresh for.
@@ -399,14 +399,27 @@ test('a refresh never takes a new opening\'s slot, and is never starved by them 
 });
 
 test('an emailed draft is refreshed before its reminder even past the opening-age window (BRO-5083)', () => {
-  const old = { ...show, id: 'old', slug: 'old', title: 'old' };
+  const old = { ...show, id: 'old', slug: 'old', title: 'old', openingDate: '2026-11-20' };
   const slims = new Map([['old', slim({ cs: 80, n: 30 })]]);
-  const stale = { status: 'ready', source: 'claude', subreddit: 'TheWestEnd', title: 'old 70/100', body: 'old', emailedAt: '2026-09-28T06:00:00Z' };
-  const today = '2026-12-01'; // far past MAX_AGE_DAYS for any fixture opening
-  const picked = lib.selectCandidates({ shows: [old], slims, drafts: { drafts: { old: stale } }, peersByMarket: {}, today }).map(c => c.show.id);
-  assert.deepEqual(picked, ['old']);
-  const never = lib.selectCandidates({ shows: [old], slims, drafts: { drafts: {} }, peersByMarket: {}, today }).map(c => c.show.id);
-  assert.deepEqual(never, [], 'a show past the window with no draft still gets no first email');
+  // First emailed on day 5 after opening; the reminder run is day 6, past MAX_AGE_DAYS.
+  const stale = { status: 'ready', source: 'claude', subreddit: 'TheWestEnd', title: 'old 70/100', body: 'old', createdAt: '2026-11-25T08:00:00Z', emailedAt: '2026-11-25T08:00:00Z' };
+  const sel = (drafts, today) => lib.selectCandidates({ shows: [old], slims, drafts: { drafts }, peersByMarket: {}, today }).map(c => c.show.id);
+  assert.deepEqual(sel({ old: stale }, '2026-11-26'), ['old']);
+  assert.deepEqual(sel({}, '2026-11-26'), [], 'a show past the window with no draft still gets no first email');
+  // Past the sender's TTL no reminder will ever go out: never redraft it again.
+  assert.deepEqual(sel({ old: stale }, '2026-12-01'), [], 'reminder window closed: no daily redraft');
+  // An emailed LLM-fallback draft whose reminder already went out is not a refresh either.
+  assert.deepEqual(sel({ old: { ...stale, source: 'template', lintProblems: ['llm error'], reminderAt: '2026-11-26T08:00:00Z' } }, '2026-11-27'), []);
+});
+
+test('refreshes per run are capped as a backstop (BRO-5083)', () => {
+  const ids = Array.from({ length: 8 }, (_, i) => `r${i}`);
+  const shows = ids.map(id => ({ ...show, id, slug: id, title: id }));
+  const slims = new Map(ids.map(id => [id, slim({ cs: 90, n: 30 })]));
+  const drafts = Object.fromEntries(ids.map(id => [id, { status: 'ready', source: 'claude', subreddit: 'TheWestEnd', title: `${id} 12/100`, body: 'old', createdAt: '2026-09-28T06:00:00Z', emailedAt: '2026-09-28T06:00:00Z' }]));
+  const picked = lib.selectCandidates({ shows, slims, drafts: { drafts }, peersByMarket: {}, today: '2026-09-29' });
+  assert.equal(picked.length, 5);
+  assert.ok(picked.every(c => c.refresh));
 });
 
 test('the style guide carries both of the owner\'s hand-edited posts', () => {
