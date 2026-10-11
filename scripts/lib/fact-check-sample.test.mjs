@@ -67,6 +67,11 @@ test('compareField: venue renames and studios count as the same house; a differe
   const show = { venue: 'Trafalgar Theatre' };
   assert.equal(fc.compareField('theatre', show, 'Trafalgar Studios 2', 'west-end'), 'agree');
   assert.equal(fc.compareField('theatre', { venue: 'Old Vic' }, 'Young Vic', 'west-end'), 'disagree');
+  assert.equal(fc.compareField('theatre', { venue: 'Royal Court' }, 'Jerwood Theatre Downstairs, Royal Court Theatre', 'west-end'), 'agree');
+  assert.equal(fc.compareField('theatre', { venue: 'Lyttelton Theatre' }, 'National Theatre (Lyttelton)', 'west-end'), 'agree');
+  assert.equal(fc.compareField('theatre', { venue: 'Olivier Theatre' }, 'National Theatre - Olivier Theatre', 'west-end'), 'agree');
+  assert.equal(fc.compareField('theatre', { venue: 'Apollo Theatre' }, 'Apollo Victoria Theatre', 'west-end'), 'disagree');
+  assert.equal(fc.compareField('theatre', { venue: 'Apollo Theatre' }, 'Duchess Theatre', 'west-end'), 'disagree');
 });
 
 test('compareField: a famous director from another production is a disagreement', () => {
@@ -74,6 +79,9 @@ test('compareField: a famous director from another production is a disagreement'
   assert.equal(fc.compareField('directors', show, ['Jack McNamara'], 'west-end'), 'disagree');
   assert.equal(fc.compareField('writers', show, [{ name: 'Jez Butterworth', role: 'playwright' }], 'west-end'), 'agree');
   assert.equal(fc.compareField('directors', show, null, 'west-end'), 'no-answer');
+  const team = { creativeTeam: [{ name: 'Moss Hart and George S. Kaufman', role: 'Playwright' }] };
+  assert.equal(fc.compareField('writers', team, [{ name: 'Moss Hart' }, { name: 'George S. Kaufman' }], 'broadway'), 'agree');
+  assert.equal(fc.compareField('writers', team, [{ name: 'Moss Hart' }], 'broadway'), 'disagree');
 });
 
 test('compareField: a play typed as musical disagrees', () => {
@@ -95,7 +103,8 @@ test('triageField: a sourced disagreement goes to adjudication, an unsourced agr
   const mk = (checker, value, supported) => ({ checker, answer: { openingNight: { value, source: 'https://x' } }, support: { openingNight: supported } });
   assert.equal(fc.triageField('openingNight', show, [mk('g', '2019-09-05', true), mk('o', '2019-09-03', false)], 'west-end').status, 'adjudicate');
   assert.equal(fc.triageField('openingNight', show, [mk('g', '2019-09-03', true), mk('o', null, false)], 'west-end').status, 'ok');
-  assert.equal(fc.triageField('openingNight', show, [mk('g', '2019-09-03', false), mk('o', '2019-09-03', false)], 'west-end').status, 'unsourced');
+  assert.equal(fc.triageField('openingNight', show, [mk('g', '2019-09-03', false), mk('o', '2019-09-03', false)], 'west-end').status, 'ok-cited');
+  assert.equal(fc.triageField('openingNight', show, [mk('g', '2019-09-03', false), mk('o', null, false)], 'west-end').status, 'unsourced');
   assert.equal(fc.triageField('openingNight', {}, [mk('g', '2019-09-03', true)], 'west-end').status, 'not-stored');
 });
 

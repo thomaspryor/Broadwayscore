@@ -341,7 +341,7 @@ function cmdReport() {
   const verdicts = rows.map((r) => {
     const a = adj[`${r.id}|${r.field}`];
     if (a) return { id: r.id, field: r.field, verdict: a.verdict, url: a.url, note: a.note };
-    if (r.status === 'ok') return { id: r.id, field: r.field, verdict: 'correct' };
+    if (r.status === 'ok' || r.status === 'ok-cited') return { id: r.id, field: r.field, verdict: 'correct', weak: r.status === 'ok-cited' };
     if (r.status === 'not-stored') return { id: r.id, field: r.field, verdict: 'not-stored' };
     return { id: r.id, field: r.field, verdict: r.status === 'adjudicate' || r.status === 'people-check' ? 'pending' : 'unverifiable' };
   });

@@ -216,9 +216,22 @@ function pageSupports(pageText, value, kind) {
   return page.includes(` ${foldText(value)} `);
 }
 
-/** Venue equality across renames ("Trafalgar Studios" is today's "Trafalgar Theatre"). */
+/**
+ * Venue equality across renames ("Trafalgar Studios" is today's "Trafalgar
+ * Theatre") and compound names: checkers write "Lyttelton Theatre, National
+ * Theatre" or "Jerwood Theatre Downstairs (Royal Court Theatre)", so each
+ * comma/parenthesis/dash part is compared on its own. Parts are compared for
+ * equality, never containment, so "Apollo" never matches "Apollo Victoria".
+ */
 function sameVenue(a, b, market) {
   if (!a || !b) return false;
+  const parts = (s) => [s, ...String(s).split(/\s*[,()\u2013\u2014]\s*|\s+-\s+/)].map((x) => x.trim()).filter(Boolean);
+  const pa = parts(a); const pb = parts(b);
+  if (pa.length > 1 || pb.length > 1) return pa.some((x) => pb.some((y) => sameVenueOne(x, y, market)));
+  return sameVenueOne(a, b, market);
+}
+
+function sameVenueOne(a, b, market) {
   const na = normalizeVenueName(a); const nb = normalizeVenueName(b);
   if (!na || !nb) return false;
   if (na === nb) return true;
@@ -276,6 +289,9 @@ function compareField(field, show, value, market) {
     }
     case 'directors': case 'writers': {
       const found = namesOf(value);
+      // IBDB-derived rows store one credit for a team ("Moss Hart and George S. Kaufman").
+      const people = stored.flatMap((p) => String(p).split(/\s*(?:,|&|\band\b)\s*/i)).map((p) => p.trim()).filter((p) => p.split(' ').length > 1);
+      if (people.length) return people.every((p) => found.some((f) => samePerson(p, f))) ? 'agree' : 'disagree';
       // Every stored person must be credited by the checker; extra people the
       // checker names are "missing on our side", not an error in what we show.
       return stored.every((p) => found.some((f) => samePerson(p, f))) ? 'agree' : 'disagree';
@@ -326,6 +342,10 @@ function triageField(field, show, checks, market) {
   if (sourced.some((r) => r.cmp === 'disagree')) return { status: 'adjudicate', detail: all };
   if (sourced.some((r) => r.cmp === 'agree')) return { status: loose.some((r) => r.cmp === 'disagree') ? 'adjudicate' : 'ok', detail: all };
   if (loose.some((r) => r.cmp === 'disagree')) return { status: 'adjudicate', detail: all };
+  // Both checkers independently agree, each citing a page we could not load
+  // (BroadwayWorld 403s every fetch): counted correct, reported as weaker.
+  const cited = loose.filter((r) => r.cmp === 'agree' && r.source && !isSelfSource(r.source));
+  if (new Set(cited.map((r) => r.checker)).size >= 2) return { status: 'ok-cited', detail: all };
   return { status: 'unsourced', detail: all };
 }
 
