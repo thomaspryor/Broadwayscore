@@ -301,9 +301,15 @@ function selectCandidates({ shows, slims, drafts, peersByMarket, today, seenLook
       // The owner posted the first two with stale counts (Woolf drafted at 21
       // reviews, 24 by the time they posted; BRO-4597).
       if (prev && !isRetryableDraft(prev) && !isRefreshable(prev)) continue;
-      if (!show.openingDate) continue;
-      const age = daysBetween(show.openingDate, today);
-      if (age < MIN_AGE_DAYS || age > MAX_AGE_DAYS) continue;
+      // The opening-age window decides which shows get a FIRST email; a
+      // draft already emailed gets its pre-reminder refresh at any age
+      // (one emailed on day 5 is reminded on day 6, BRO-5083).
+      const refreshing = !!(prev && prev.emailedAt && isRefreshable(prev));
+      if (!refreshing) {
+        if (!show.openingDate) continue;
+        const age = daysBetween(show.openingDate, today);
+        if (age < MIN_AGE_DAYS || age > MAX_AGE_DAYS) continue;
+      }
     }
     const slim = slims.get(show.id);
     if (!slim) continue;
@@ -317,18 +323,24 @@ function selectCandidates({ shows, slims, drafts, peersByMarket, today, seenLook
     if (!forceShowId && market === 'off-west-end' && notability(facts) < 25) continue;
     out.push({ show, facts, notability: notability(facts), refresh: !!(prev && prev.emailedAt) });
   }
-  // New openings first: a refresh of an already-emailed draft must never
-  // take a run's slot from a show the owner hasn't heard about yet.
+  // New openings first. The per-run caps limit how many NEW posts the owner
+  // gets a day; refreshes sit outside them, since each runs once (right
+  // before its reminder) and a starved refresh means the reminder goes out
+  // with the first email's numbers (Rent reminded at 15 reviews with 30
+  // live, BRO-5083).
   out.sort((a, b) => (a.refresh - b.refresh) || (b.notability - a.notability));
   if (forceShowId) return out;
-  const picked = [];
+  const picked = out.filter(c => c.refresh);
+  let fresh = 0;
   let ob = 0;
   for (const c of out) {
-    if (picked.length >= MAX_DRAFTS_PER_RUN) break;
+    if (c.refresh) continue;
+    if (fresh >= MAX_DRAFTS_PER_RUN) break;
     if (c.facts.market === 'off-broadway') {
       if (ob >= MAX_OB_DRAFTS_PER_RUN) continue;
       ob++;
     }
+    fresh++;
     picked.push(c);
   }
   return picked;

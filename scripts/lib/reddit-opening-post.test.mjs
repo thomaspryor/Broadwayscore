@@ -386,13 +386,27 @@ test('audienceSourceNames and ownerStance edge cases', () => {
   assert.equal(lib.ownerStance({ seen: false, upcomingDate: null }), 'not-seen');
 });
 
-test('a refresh never takes a new opening\'s slot', () => {
+test('a refresh never takes a new opening\'s slot, and is never starved by them (BRO-5083)', () => {
   const mk = id => ({ ...show, id, slug: id, title: id });
-  const shows = ['big', 'n1', 'n2'].map(mk);
-  const slims = new Map([['big', slim({ cs: 95, n: 30 })], ['n1', slim({ n: 9 })], ['n2', slim({ n: 9 })]]);
+  const shows = ['big', 'n1', 'n2', 'n3'].map(mk);
+  const slims = new Map([['big', slim({ cs: 95, n: 30 })], ['n1', slim({ n: 9 })], ['n2', slim({ n: 9 })], ['n3', slim({ n: 9 })]]);
   const stale = { status: 'ready', source: 'claude', subreddit: 'TheWestEnd', title: 'big 12/100', body: 'old', emailedAt: '2026-09-28T06:00:00Z' };
   const picked = lib.selectCandidates({ shows, slims, drafts: { drafts: { big: stale } }, peersByMarket: {}, today: '2026-09-29' }).map(c => c.show.id);
-  assert.deepEqual(picked.sort(), ['n1', 'n2'], 'two new openings fill the run; the refresh waits');
+  assert.deepEqual(picked.sort(), ['big', 'n1', 'n2'], 'two new openings fill the new-post cap; the due refresh runs as well');
+  // Reminder already sent: nothing left to refresh for.
+  const done = lib.selectCandidates({ shows, slims, drafts: { drafts: { big: { ...stale, reminderAt: '2026-09-29T06:00:00Z' } } }, peersByMarket: {}, today: '2026-09-29' }).map(c => c.show.id);
+  assert.ok(!done.includes('big'), 'reminded draft is not redrafted');
+});
+
+test('an emailed draft is refreshed before its reminder even past the opening-age window (BRO-5083)', () => {
+  const old = { ...show, id: 'old', slug: 'old', title: 'old' };
+  const slims = new Map([['old', slim({ cs: 80, n: 30 })]]);
+  const stale = { status: 'ready', source: 'claude', subreddit: 'TheWestEnd', title: 'old 70/100', body: 'old', emailedAt: '2026-09-28T06:00:00Z' };
+  const today = '2026-12-01'; // far past MAX_AGE_DAYS for any fixture opening
+  const picked = lib.selectCandidates({ shows: [old], slims, drafts: { drafts: { old: stale } }, peersByMarket: {}, today }).map(c => c.show.id);
+  assert.deepEqual(picked, ['old']);
+  const never = lib.selectCandidates({ shows: [old], slims, drafts: { drafts: {} }, peersByMarket: {}, today }).map(c => c.show.id);
+  assert.deepEqual(never, [], 'a show past the window with no draft still gets no first email');
 });
 
 test('the style guide carries both of the owner\'s hand-edited posts', () => {
