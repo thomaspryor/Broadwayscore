@@ -39,7 +39,7 @@ test('every script calling a paid Bright Data endpoint records scraper-spend tel
     const src = fs.readFileSync(file, 'utf8');
     // Only real call sites: a comment-only mention must not count.
     const code = src.split('\n').filter((l) => !/^\s*(\/\/|\*|\/\*)/.test(l)).join('\n');
-    if (!PAID_BD_RE.test(code) || TELEMETRY_RE.test(src)) continue;
+    if (!PAID_BD_RE.test(code) || TELEMETRY_RE.test(code)) continue;
     if (ALLOWED.has(rel)) { seenAllowed.add(rel); continue; }
     offenders.push(rel);
   }
