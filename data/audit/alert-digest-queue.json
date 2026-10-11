@@ -1057,18 +1057,6 @@
     "queuedAt": "2026-10-10T23:56:40.215Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Run data validation, Audit review contamination",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38097803778",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-11T00:21:20.567Z"
-  },
-  {
     "conditionKey": "land:land/bro-4989-returned-v2",
     "title": "Landing blocked: rebase red on land/bro-4989-returned-v2",
     "description": "land.yml did not land land/bro-4989-returned-v2: the rebase gate went red at 69efd8ef12. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4989-returned-v2 @ 69efd8ef12 (origin/land/bro-4989-returned-v2) → origin/main @ eb0c6d97d0 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ eb0c6d97d0: Rebasing (1/4) error: could not apply 4e36b49558d... BRO-4989: recoupment model shadow options, hard-truth backtest, model display guard (commercial held from prod) hint: Resolve all conflicts manually, mark them Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38096903806",
@@ -1096,5 +1084,17 @@
       }
     ],
     "queuedAt": "2026-10-11T00:35:33.716Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Run data validation, Audit review contamination",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38099293706",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-11T00:47:37.406Z"
   }
 ]
