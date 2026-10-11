@@ -18,7 +18,7 @@ test('sets a verdict flag when the old value matches, and stamps provenance', ()
   const res = applyReviewFieldEdit(rec, { field: 'wrongAttribution', oldValue: null, newValue: true }, stamp);
   assert.equal(res.ok, true);
   assert.equal(res.record.wrongAttribution, true);
-  assert.deepEqual(res.record.approvedFixes, [{ fixId: 'bro-4202', field: 'wrongAttribution', at: stamp.at }]);
+  assert.deepEqual(res.record.approvedFixes, [{ fixId: 'bro-4202', field: 'wrongAttribution', at: stamp.at, newValue: true }]);
   assert.equal(rec.wrongAttribution, undefined, 'input record is not mutated');
 });
 
