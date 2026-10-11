@@ -143,16 +143,19 @@ test('BRO-4963: a plot mention of ANOTHER show\'s tour at a tour venue is not co
 
 test('BRO-4963: real tour reviews stay flagged when the title is long or spelled differently', () => {
   const { tourContextForShow } = require('./excerpt-validation.js');
-  const shows = require('../../data/shows.json').shows;
   const cases = [
     ['joseph-and-the-amazing-technicolor-dreamcoat-1993', 'This national tour of Joseph and the Amazing Technicolor Dreamcoat is a joy.'],
     ['les-miserables-2014', 'This national tour of Les Miserables is a joy.'],
     ['les-miserables-2014', 'Les Miserables at the Pantages is a joy.'],
     ['priscilla-queen-of-the-desert-2011', 'This national tour of Priscilla, Queen of the Desert is a joy.'],
   ];
+  const titles = {
+    'joseph-and-the-amazing-technicolor-dreamcoat-1993': 'Joseph and the Amazing Technicolor Dreamcoat',
+    'les-miserables-2014': 'Les Misérables',
+    'priscilla-queen-of-the-desert-2011': 'Priscilla Queen of the Desert',
+  };
   for (const [id, text] of cases) {
-    const show = shows.find(s => s.id === id);
-    if (!show) continue;
+    const show = { id, title: titles[id] };
     assert.equal(isTourReviewExcerpt(text, tourContextForShow(show)).isTourReview, true, `${id}: ${text}`);
   }
 });
