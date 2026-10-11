@@ -24,7 +24,7 @@ const { buildCookieHeaderForUrl } = require('./lib/cookie-loader');
 const { extractArticleTextFromUrl } = require('./lib/article-extractor');
 const { checkWsjOtpFreshness } = require('./lib/wsj-otp-freshness');
 const { COOKIE_PROBES, classifyWalledProbe } = require('./lib/cookie-probes');
-const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
+const { recordSbCall, recordBdCall, sbBilledCredits } = require('./lib/provider-telemetry');
 
 // --- Outlet Configuration ---
 
@@ -511,6 +511,7 @@ async function fetchWithBrightDataCookies(url) {
       let data = '';
       res.on('data', (c) => { data += c; });
       res.on('end', () => {
+        recordBdCall({ url: bodyObj.url, fn: 'web-unlocker', success: res.statusCode === 200, status: res.statusCode });
         if (res.statusCode === 200) resolve({ ok: true, content: data });
         else resolve({ ok: false, error: `BD HTTP ${res.statusCode}: ${data.slice(0, 200)}` });
       });

@@ -30,7 +30,7 @@ const { cleanSearchTitle } = require('./lib/title-normalization');
 const { CLAUDE_SONNET } = require('./lib/models');
 const { fetchPage } = require('./lib/scraper');
 const { isBroadwayCategory } = require('./lib/venue-classification');
-const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
+const { recordSbCall, recordBdCall, sbBilledCredits } = require('./lib/provider-telemetry');
 
 // ==================== Configuration ====================
 
@@ -144,6 +144,7 @@ async function fetchJson(url) {
         },
         body: JSON.stringify({ zone: 'web_unlocker2', url, format: 'raw' }),
       });
+      recordBdCall({ url, fn: 'web-unlocker', success: !!result, status: result ? 200 : 'empty', purpose: 'lottery-rush' });
       if (result) {
         try {
           const json = JSON.parse(result);
@@ -154,6 +155,7 @@ async function fetchJson(url) {
         }
       }
     } catch (err) {
+      recordBdCall({ url, fn: 'web-unlocker', success: false, status: err.message?.slice(0, 80) || 'error', purpose: 'lottery-rush' });
       console.error(`  [Bright Data] JSON fetch failed: ${err.message}`);
     }
   }

@@ -2826,6 +2826,8 @@ async function fetchWithBrightData(url) {
     });
 
     const html = response.data;
+    // BRO-4936: the 200 is billed whether or not the body turns out blocked.
+    recordBdCall({ url, fn: 'collector-tier3', success: true, status: response.status });
 
     if (isBlocked(html)) {
       throw new Error('Access blocked in Bright Data response');
@@ -2843,6 +2845,7 @@ async function fetchWithBrightData(url) {
     if (error.response) {
       const status = error.response.status;
       const message = error.response.data?.message || error.response.data || error.message;
+      recordBdCall({ url, fn: 'collector-tier3', success: false, status });
       throw new Error(`Bright Data error (${status}): ${message}`);
     }
     throw error;
