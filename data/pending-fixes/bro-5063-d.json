@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5063-d",
   "planId": "733c70b8-cd45-4e25-a84f-b2a71b8b3247",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-11T17:02:15.253Z",
   "submitter": {
     "name": null,
@@ -78,5 +78,43 @@
         "description": "Refill after BRO-5063 cleared this row: written only from the facts in its previous Company XIV synopsis (which adaptation, which staging forms), with the second-person sales framing removed."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-11T17:37:57.426Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for tender-by-dave-harris-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for insane-asylum-seekers-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for ceilidh-the-musical-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for pinocchio-globe-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-greatest-showman-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-truth-a-comedy-by-florian-zeller-west-end-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for queen-of-hearts-off-broadway-2026"
+    }
+  ]
 }
