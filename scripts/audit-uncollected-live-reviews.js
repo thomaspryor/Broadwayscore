@@ -129,7 +129,8 @@ async function main() {
     const { routeAlert } = require('./lib/owner-alert-router');
     for (const f of blackouts.slice(0, ALERT_DISPATCH_CAP)) {
       const show = showsById.get(f.showId);
-      const market = show?.market || show?.category || 'broadway';
+      // Express only accepts broadway|west-end; a tour/regional id fails input validation.
+      const market = show?.market === 'west-end' ? 'west-end' : 'broadway';
       try {
         const result = await routeAlert({
           conditionKey: `uncollected-blackout:${f.showId}`,

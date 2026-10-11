@@ -65,6 +65,33 @@ function isNeverAttempted(review) {
 }
 
 /**
+ * True when a discovered file is a verdict about a DIFFERENT production than
+ * the one this show record tracks, so it can't be evidence of a blackout.
+ *
+ * BRO-5077: a touring production (All the Devils Are Here, tour 2024) inherits
+ * every Broadway-aggregator URL for the earlier NYC run; all were rejected as
+ * wrongProduction (correctly) and the alarm paged for 0 usable of 5 discovered.
+ * Two cases are safe to discount; the LLM-only verdict on a non-tour is NOT
+ * (it is fallible, and a wrongly flagged real review set is exactly the
+ * blackout this alarm exists to catch):
+ *  - the deterministic date guards (pre-window / URL date before the show's
+ *    earliest date), which never judge content, and
+ *  - any wrongProduction file on a tour: tour reviews come from local outlets,
+ *    never from the NYC aggregators that surfaced these URLs.
+ *
+ * @param {object} show
+ * @param {object} review
+ * @returns {boolean}
+ */
+function isOtherProductionEvidence(show, review) {
+  if (!review || review.wrongProduction !== true) return false;
+  if (show && (show.market === 'tour' || show.category === 'tour')) return true;
+  const note = [review.wrongProductionNote, review.incompleteDetail, review.contentTierReason]
+    .filter(Boolean).join(' ');
+  return /pre-window date|URL date .* days before show earliest date/i.test(note);
+}
+
+/**
  * Age in hours of a discovered-but-unfetched file, or null if undatable.
  *
  * @param {object} review
@@ -141,7 +168,7 @@ function assessShow(show, files, { nowMs, maxAgeHours = DEFAULT_MAX_AGE_HOURS } 
   const today = new Date(nowMs).toISOString().slice(0, 10);
 
   for (const { file, review } of files || []) {
-    if (review && review.url) discovered++;
+    if (review && review.url && !isOtherProductionEvidence(show, review)) discovered++;
     if (review && (review.fullText || '').length > 200) usable++;
     if (!isNeverAttempted(review)) continue;
     const ageHours = strandAgeHours(review, nowMs);
@@ -184,6 +211,7 @@ module.exports = {
   LIVE_STATUSES,
   DEFAULT_MAX_AGE_HOURS,
   isNeverAttempted,
+  isOtherProductionEvidence,
   strandAgeHours,
   assessShow,
 };
