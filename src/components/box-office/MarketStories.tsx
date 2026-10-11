@@ -95,7 +95,7 @@ export function PerSeatRanking({ perSeat }: { perSeat: MarketPage['perSeat'] }) 
   );
 }
 
-function StandoutList({ title, note, rows }: { title: string; note: string; rows: Array<{ key: string; name: string; isNew?: boolean; value: string }> }) {
+function StandoutList({ title, note, rows, footnote }: { title: string; note: string; rows: Array<{ key: string; name: string; isNew?: boolean; value: string }>; footnote?: string }) {
   return (
     <div className="bg-surface-overlay/60 rounded-xl p-3.5 flex flex-col gap-2 min-w-0">
       <div className={EYEBROW}>{title}</div>
@@ -115,6 +115,7 @@ function StandoutList({ title, note, rows }: { title: string; note: string; rows
       ) : (
         <p className="m-0 text-sm text-gray-400">None this week.</p>
       )}
+      {footnote && <p className="m-0 text-xs text-gray-400">{footnote}</p>}
     </div>
   );
 }
@@ -126,7 +127,7 @@ export function Standouts({ page }: { page: MarketPage }) {
   return (
     <section className={SECTION} aria-labelledby="standouts-heading">
       <h2 id="standouts-heading" className={H2}>Standouts</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+      <div className={`grid grid-cols-1 ${page.records.rows.length ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-2.5`}>
         <StandoutList
           title="Sell-out streaks"
           note="Straight weeks at 95% full or more"
@@ -137,6 +138,14 @@ export function Standouts({ page }: { page: MarketPage }) {
           note={median != null ? `Average ticket above the Broadway middle ($${Math.round(median)} this week)` : 'Average ticket above the Broadway middle'}
           rows={page.premium.rows.slice(0, STANDOUTS_SHOWN).map((p) => ({ key: p.title, name: p.title, isNew: p.isNew, value: `+$${Math.round(p.over)}` }))}
         />
+        {page.records.rows.length > 0 && (
+          <StandoutList
+            title="This week's personal bests"
+            note="Shows whose latest week was their best gross in a long time, judged only against their own run"
+            rows={page.records.rows.map((r) => ({ key: r.title, name: r.title, value: r.text }))}
+            footnote={page.records.more > 0 ? `and ${page.records.more} more` : undefined}
+          />
+        )}
       </div>
     </section>
   );
