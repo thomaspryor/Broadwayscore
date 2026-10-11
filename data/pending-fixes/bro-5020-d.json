@@ -1,0 +1,79 @@
+{
+  "issueNumber": "bro-5020-d",
+  "planId": "561afb35-3a22-4299-9bbd-8530146c1520",
+  "status": "pending",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5020 checker ruling: undo the stale-closure classifier auto-Fizzle of 2026-10-10 (run 38094523294) on torch-song-2018 and a-christmas-carol-2019, which had no cited loss. Both return to TBD and are locked with humanReviewedDesignation. torch-song keeps recouped=false because its source is a cited NYT report that it had not recouped; a-christmas-carol had only the inferred source, so recouped and recoupedSource are cleared.",
+    "steps": [
+      "torch-song-2018: designation Fizzle -> TBD, lock",
+      "a-christmas-carol-2019: designation Fizzle -> TBD, recouped false -> null, clear inferred recoupedSource, lock"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "torch-song-2018",
+        "showId": "torch-song-2018",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "TBD",
+        "description": "torch-song-2018: designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "torch-song-2018",
+        "showId": "torch-song-2018",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "torch-song-2018: humanReviewedDesignation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-christmas-carol-2019",
+        "showId": "a-christmas-carol-2019",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "TBD",
+        "description": "a-christmas-carol-2019: designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-christmas-carol-2019",
+        "showId": "a-christmas-carol-2019",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": null,
+        "description": "a-christmas-carol-2019: recouped"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-christmas-carol-2019",
+        "showId": "a-christmas-carol-2019",
+        "field": "recoupedSource",
+        "oldValue": "Inferred: closed 2470 days ago, no trade-press recoupment found",
+        "newValue": null,
+        "description": "a-christmas-carol-2019: recoupedSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-christmas-carol-2019",
+        "showId": "a-christmas-carol-2019",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "a-christmas-carol-2019: humanReviewedDesignation"
+      }
+    ]
+  }
+}
