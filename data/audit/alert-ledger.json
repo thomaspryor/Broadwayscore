@@ -156,7 +156,7 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-11T14:14:07.486Z",
-      "lastSeen": "2026-10-11T21:23:53.855Z",
+      "lastSeen": "2026-10-11T21:32:50.043Z",
       "lastNotifiedAt": "2026-10-11T14:14:07.486Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 132,
@@ -13940,13 +13940,13 @@
       "title": "Landing blocked: unit-tests-node red on land/bro-2945-git-add-safe",
       "firstSeen": "2026-10-11T19:37:22.237Z",
       "incidentOpenedAt": "2026-10-11T19:37:22.237Z",
-      "lastSeen": "2026-10-11T20:13:29.053Z",
+      "lastSeen": "2026-10-11T21:36:15.415Z",
       "lastNotifiedAt": "2026-10-11T19:37:22.237Z",
       "lastSurfacedAt": "2026-10-11T19:37:22.237Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "gap:good-time-charlie-off-broadway-2026/talkinbroadway--unknown.json": {
       "status": "open",
@@ -13967,7 +13967,7 @@
       "title": "main test.yml red: Unit Tests / Run review-guards regression tests — \"foo returns the contracted value\"",
       "firstSeen": "2026-10-11T20:22:09.425Z",
       "incidentOpenedAt": "2026-10-11T20:22:09.425Z",
-      "lastSeen": "2026-10-11T21:23:53.847Z",
+      "lastSeen": "2026-10-11T21:32:50.032Z",
       "lastNotifiedAt": "2026-10-11T20:22:09.425Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
@@ -14013,6 +14013,45 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-5077"
+    },
+    "land:land/bro-4838-coverage-daily": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-4838-coverage-daily",
+      "firstSeen": "2026-10-11T21:29:32.099Z",
+      "incidentOpenedAt": "2026-10-11T21:29:32.099Z",
+      "lastSeen": "2026-10-11T21:29:32.099Z",
+      "lastNotifiedAt": "2026-10-11T21:29:32.099Z",
+      "lastSurfacedAt": "2026-10-11T21:29:32.099Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-3116-soft-404": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-3116-soft-404",
+      "firstSeen": "2026-10-11T21:33:39.503Z",
+      "incidentOpenedAt": "2026-10-11T21:33:39.503Z",
+      "lastSeen": "2026-10-11T21:33:39.503Z",
+      "lastNotifiedAt": "2026-10-11T21:33:39.503Z",
+      "lastSurfacedAt": "2026-10-11T21:33:39.503Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-4638-retire-on-monitor": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-4638-retire-on-monitor",
+      "firstSeen": "2026-10-11T21:35:59.514Z",
+      "incidentOpenedAt": "2026-10-11T21:35:59.514Z",
+      "lastSeen": "2026-10-11T21:35:59.514Z",
+      "lastNotifiedAt": "2026-10-11T21:35:59.514Z",
+      "lastSurfacedAt": "2026-10-11T21:35:59.514Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }

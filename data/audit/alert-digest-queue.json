@@ -997,13 +997,100 @@
   {
     "conditionKey": "test-yml:data-validation-red",
     "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Validate market expansion, Audit outlet-registry gaps",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38175733150",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38176306710",
     "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-10-11T21:24:32.152Z"
+    "queuedAt": "2026-10-11T21:32:41.054Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4838-coverage-daily",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4838-coverage-daily",
+    "description": "land.yml did not land land/bro-4838-coverage-daily: the unit-tests-node gate went red at fffb9b2f9f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38174610234",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4838-coverage-daily"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "fffb9b2f9f1c3d14d8eab6d04520363ef6dc0304"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38174610234"
+      }
+    ],
+    "queuedAt": "2026-10-11T21:29:32.100Z"
+  },
+  {
+    "conditionKey": "land:land/bro-3116-soft-404",
+    "title": "Landing blocked: unit-tests-node red on land/bro-3116-soft-404",
+    "description": "land.yml did not land land/bro-3116-soft-404: the unit-tests-node gate went red at 04d8df5555. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38174596557",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-3116-soft-404"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "04d8df5555213c9c960562df73d22cfd5eda9e48"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38174596557"
+      }
+    ],
+    "queuedAt": "2026-10-11T21:33:39.504Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4638-retire-on-monitor",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4638-retire-on-monitor",
+    "description": "land.yml did not land land/bro-4638-retire-on-monitor: the unit-tests-node gate went red at cea41b578b. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38174841583",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4638-retire-on-monitor"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "cea41b578bcdbde9496b71839d682875142d20e0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38174841583"
+      }
+    ],
+    "queuedAt": "2026-10-11T21:35:59.514Z"
   }
 ]
