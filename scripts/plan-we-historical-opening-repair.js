@@ -33,7 +33,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { repairWosOpening } = require('./lib/we-historical-dates');
+const { repairWosOpening, MODE_INFERENCE_SOURCE, WOS_FIRST_PERFORMANCE_SOURCE } = require('./lib/we-historical-dates');
 const { hasActiveNoArtMarker, buildNoReliableArtMarker } = require('./lib/no-reliable-art');
 
 const ROOT = path.join(__dirname, '..');
@@ -51,10 +51,11 @@ function sourcedPressNights(adjudications) {
   for (const [key, v] of Object.entries(adjudications || {})) {
     const [id, field] = key.split('|');
     if (field !== 'openingNight' || !v.url) continue;
-    if (v.verdict === 'correct') { out.set(id, { date: null, url: v.url }); continue; }
+    const judged = 'judgedStored' in v ? v.judgedStored : undefined;
+    if (v.verdict === 'correct') { out.set(id, { date: null, url: v.url, judged }); continue; }
     if (v.verdict !== 'wrong') continue;
     const m = String(v.correctValue || '').match(/^\d{4}-\d{2}-\d{2}/);
-    if (m && /opening=first-preview/.test(String(v.note || ''))) out.set(id, { date: m[0], url: v.url });
+    if (m && /opening=first-preview/.test(String(v.note || ''))) out.set(id, { date: m[0], url: v.url, judged });
   }
   return out;
 }
@@ -63,7 +64,9 @@ function sourcedPressNights(adjudications) {
 function rowActions(show, reviews, sourced) {
   let changes = repairWosOpening(show, reviews);
   if (!changes.length) return [];
-  const s = sourced && sourced.get(show.id);
+  let s = sourced && sourced.get(show.id);
+  // An adjudication of a value the row no longer holds says nothing about it now.
+  if (s && s.judged !== undefined && s.judged !== show.openingDate) s = null;
   if (s && s.date === null) return [];
   if (s && s.date > show.openingDate) {
     changes = [
@@ -112,8 +115,8 @@ function main() {
     tally.rows++;
     const src = (a.find((x) => x.field === 'openingDateSource') || {}).newValue;
     if (src === SOURCED) tally.sourced++;
-    else if (src === 'inferred-from-reviews-mode') tally.inferred++;
-    else if (src === 'whatsonstage-first-performance') tally.collapsed++;
+    else if (src === MODE_INFERENCE_SOURCE) tally.inferred++;
+    else if (src === WOS_FIRST_PERFORMANCE_SOURCE) tally.collapsed++;
     else tally.noPreviews++; // press night = first performance: keeps 'whatsonstage'
     if (a.some((x) => x.field === 'noReliableArt')) tally.rekeyed++;
     actions.push(...a);

@@ -173,7 +173,7 @@ function main() {
     factCheckVerdicts = [...verdictsFor('we-historical'), ...verdictsFor(`we-historical-${season}`)];
   } catch (e) {
     // Missing files read as "no sample"; anything else (a corrupt adjudications file, a bug) must not hide verdicts.
-    if (e.code !== 'ENOENT' && e.code !== 'MODULE_NOT_FOUND') throw e;
+    if (e.code !== 'ENOENT' && !(e.code === 'MODULE_NOT_FOUND' && /fact-check-historical-sample/.test(e.message.split('\n')[0]))) throw e;
   }
   const result = auditSeason({ shows, reviews, season, ids, imageSources, factCheckVerdicts });
 

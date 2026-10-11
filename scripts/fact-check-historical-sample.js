@@ -163,7 +163,13 @@ async function supportFor(rawAnswer) {
     if (page.error || fc.isSelfSource(page.url)) { support[field] = false; continue; }
     const kind = fc.FIELD_KIND[field];
     const values = Array.isArray(f.value) ? f.value.map((v) => (v && typeof v === 'object' ? v.name : v)) : [f.value];
-    support[field] = values.filter(Boolean).every((v) => fc.pageSupports(page.text, v, kind));
+    let ok = true;
+    for (let i = 0; i < values.length; i++) {
+      if (!values[i]) continue;
+      const own = f.itemSources && f.itemSources[i] && f.itemSources[i] !== f.source ? await fetchPage(f.itemSources[i]) : page;
+      if (own.error || fc.isSelfSource(own.url) || !fc.pageSupports(own.text, values[i], kind)) { ok = false; break; }
+    }
+    support[field] = ok;
   }
   return { support, resolved, answer };
 }
@@ -239,11 +245,15 @@ async function cmdResupport() {
       const x = r.facts[k];
       if (!x || !x.answer) continue;
       const { support, resolved, answer } = await supportFor(x.answer);
-      Object.assign(x, { answer, support, resolved });
+      // Never downgrade: a page that supported the value at check time and
+      // fails now (throttled, moved) keeps its earlier support.
+      for (const [field, v] of Object.entries(x.support || {})) if (v) support[field] = true;
+      Object.assign(x, { answer, support, resolved: { ...(x.resolved || {}), ...resolved } });
     }
     out.push(JSON.stringify(r));
   }
-  fs.writeFileSync(f.checks, out.join('\n') + '\n');
+  fs.writeFileSync(`${f.checks}.tmp`, out.join('\n') + '\n');
+  fs.renameSync(`${f.checks}.tmp`, f.checks);
   console.log(`re-supported ${out.length} rows`);
 }
 
@@ -308,7 +318,7 @@ function triage(cohort) {
       rows.push({ id, title: show.title, field, stored: fc.storedValue(show, field), status: t.status, detail: t.detail });
     }
     // Category = market. Flag when a checker places the production outside it.
-    const cities = cs.map((x) => x.answer && x.answer.city && x.answer.city.value).filter(Boolean).map(String);
+    const cities = cs.map((x) => { const a = fc.normalizeAnswer(x.answer); return a && a.city && a.city.value; }).filter(Boolean).map(String);
     const wrongCity = cities.filter((x) => (market === 'west-end' ? !/london/i.test(x) : !/new york|manhattan|broadway/i.test(x)));
     rows.push({ id, title: show.title, field: 'category', stored: show.category, status: show.category ? (wrongCity.length ? 'adjudicate' : (cities.length ? 'ok' : 'unsourced')) : 'not-stored', detail: cities });
     if (show.synopsis) {
@@ -358,12 +368,12 @@ function verdictsFor(cohort) {
     // An adjudication judged the value stored THEN (judgedStored). Once the row
     // changes, a fix that matches correctValue counts correct; anything else
     // needs a fresh look rather than the old verdict.
-    if (a && 'judgedStored' in a && JSON.stringify(a.judgedStored) !== JSON.stringify(r.stored)) {
-      if (r.status === 'not-stored') return { id: r.id, field: r.field, verdict: 'not-stored' };
-      const fixed = a.correctValue != null && JSON.stringify(a.correctValue) === JSON.stringify(r.stored);
-      return { id: r.id, field: r.field, verdict: fixed ? 'correct' : 'pending', url: a.url, note: fixed ? `fixed: ${a.note || ''}` : 'stored value changed since adjudication' };
+    const stale = a && 'judgedStored' in a && JSON.stringify(a.judgedStored) !== JSON.stringify(r.stored);
+    if (stale && a.correctValue != null && JSON.stringify(a.correctValue) === JSON.stringify(r.stored)) {
+      return { id: r.id, field: r.field, verdict: 'correct', url: a.url, note: `fixed: ${a.note || ''}` };
     }
-    if (a) return { id: r.id, field: r.field, verdict: a.verdict, url: a.url, note: a.note };
+    // A stale adjudication says nothing about the new value: fall through to triage.
+    if (a && !stale) return { id: r.id, field: r.field, verdict: a.verdict, url: a.url, note: a.note };
     if (r.status === 'ok' || r.status === 'ok-cited') return { id: r.id, field: r.field, verdict: 'correct', weak: r.status === 'ok-cited' };
     if (r.status === 'not-stored') return { id: r.id, field: r.field, verdict: 'not-stored' };
     return { id: r.id, field: r.field, verdict: r.status === 'adjudicate' || r.status === 'people-check' ? 'pending' : 'unverifiable' };

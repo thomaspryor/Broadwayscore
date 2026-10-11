@@ -255,7 +255,9 @@ function sameVenue(a, b, market) {
   return sameVenueOne(a, b, market);
 }
 
-const AUDITORIUM_RE = /\b(upstairs|downstairs|main house|studio [12]|studios? (?:1|2|one|two)|theatre (?:1|2)|[12])\b/g;
+// Named rooms only: "Main House" is left out (the Royal Court's main house IS
+// Downstairs) and a bare digit is left out (street numbers).
+const AUDITORIUM_RE = /\b(upstairs|downstairs|studios? (?:1|2|one|two)|theatre (?:1|2))\b/g;
 function auditoria(s) { return (String(s).toLowerCase().match(AUDITORIUM_RE) || []).map((x) => x.replace(/\bone\b/, '1').replace(/\btwo\b/, '2').replace(/\D*(\d)$/, '$1')); }
 
 function sameVenueOne(a, b, market) {
@@ -296,8 +298,12 @@ function normalizeAnswer(ans) {
   for (const [k, f] of Object.entries(ans)) {
     if (Array.isArray(f)) {
       const src = f.map((x) => x && typeof x === 'object' && x.source).find(Boolean) || null;
-      out[k] = { value: f.map((x) => (x && typeof x === 'object' ? (x.name ? { name: x.name, role: x.role } : x.value) : x)).filter((x) => x != null), source: src };
+      const items = f.map((x) => (x && typeof x === 'object' ? (x.name ? { name: x.name, role: x.role } : x.value) : x));
+      // Each person may cite their own page: keep them so support checks each name against its source.
+      const itemSources = f.map((x) => (x && typeof x === 'object' && x.source) || null);
+      out[k] = { value: items.filter((x) => x != null), source: src, ...(itemSources.some((u) => u && u !== src) ? { itemSources: itemSources.filter((u, i) => items[i] != null) } : {}) };
     } else if (f != null && typeof f !== 'object') out[k] = { value: f, source: null };
+    else if (f && typeof f === 'object' && !('value' in f) && f.name) out[k] = { value: [{ name: f.name, role: f.role }], source: f.source || null };
     else out[k] = f;
   }
   return out;
@@ -435,8 +441,14 @@ function errorTable(verdicts) {
 function seasonSummary(verdicts, seasonIds) {
   const ids = new Set(seasonIds);
   // A row in two samples (cross-season and season) counts once; the later verdict list wins.
+  // A definitive verdict (wrong/correct/not-stored) is never replaced by a weaker one.
+  const rank = (v) => (v.verdict === 'wrong' || v.verdict === 'correct' || v.verdict === 'not-stored' ? 1 : 0);
   const byKey = new Map();
-  for (const v of verdicts || []) if (ids.has(v.id)) byKey.set(`${v.id}|${v.field}`, v);
+  for (const v of verdicts || []) {
+    if (!ids.has(v.id)) continue;
+    const k = `${v.id}|${v.field}`; const prev = byKey.get(k);
+    if (!prev || rank(v) >= rank(prev)) byKey.set(k, v);
+  }
   const mine = [...byKey.values()];
   const sampled = new Set(mine.map((v) => v.id)).size;
   if (!sampled) return { sampled: 0 };

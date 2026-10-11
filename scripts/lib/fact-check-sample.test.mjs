@@ -177,3 +177,16 @@ test('seasonSummary counts a row sampled twice once', () => {
   const s = fc.seasonSummary([v, v], ['a']);
   assert.equal(s.table.type.checked, 1);
 });
+
+test('a single bare person object and per-person sources are kept', () => {
+  assert.deepEqual(fc.normalizeAnswer({ directors: { name: 'Ian Rickson', role: 'director', source: 'https://x' } }).directors,
+    { value: [{ name: 'Ian Rickson', role: 'director' }], source: 'https://x' });
+  const w = fc.normalizeAnswer({ writers: [{ name: 'A', source: 'https://a' }, { name: 'B', source: 'https://b' }] }).writers;
+  assert.deepEqual(w.itemSources, ['https://a', 'https://b']);
+});
+
+test('a weaker season verdict never hides a definitive one; street numbers are not auditoria', () => {
+  const s = fc.seasonSummary([{ id: 'a', field: 'openingNight', verdict: 'wrong' }, { id: 'a', field: 'openingNight', verdict: 'unverifiable' }], ['a']);
+  assert.equal(s.table.openingNight.wrong, 1);
+  assert.equal(fc.sameVenue('Garrick Theatre, 2 Charing Cross Road', 'Garrick Theatre'), true);
+});
