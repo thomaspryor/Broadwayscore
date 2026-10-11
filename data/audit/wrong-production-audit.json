@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-11T20:48:33.143Z",
+  "timestamp": "2026-10-11T21:03:16.721Z",
   "stats": {
-    "totalReviews": 55842,
-    "alreadyFlagged": 20812,
-    "dateGuardCatches": 260,
+    "totalReviews": 55849,
+    "alreadyFlagged": 20813,
+    "dateGuardCatches": 261,
     "directorMismatch": 1734,
     "tvFilmSignals": 1602,
     "londonSignals": 2194,
     "offBroadwaySignals": 506,
     "yearMismatch": 135,
-    "noPublishDate": 5350
+    "noPublishDate": 5349
   },
   "findings": [
     {
@@ -8948,7 +8948,7 @@
     {
       "showId": "crazy-for-you-west-end-2023",
       "file": "i-paper--kate-maltby.json",
-      "score": 92,
+      "score": 93,
       "publishDate": "2023-07-04",
       "url": "https://inews.co.uk/culture/arts/crazy-for-you-gillian-lynne-theatre-review-joyous-2452485",
       "findings": [
@@ -8990,7 +8990,7 @@
     {
       "showId": "crazy-for-you-west-end-2023",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 97,
+      "score": 98,
       "publishDate": "2023-07-04",
       "url": "https://www.whatsonstage.com/news/crazy-for-you-in-the-west-end-review_1508472/",
       "findings": [
@@ -18086,7 +18086,7 @@
     {
       "showId": "hope-has-a-happy-meal-west-end-2023",
       "file": "liamodell--liam-odell.json",
-      "score": null,
+      "score": 55,
       "publishDate": "2023-06-10",
       "url": "https://liamodell.com/2023/06/10/hope-has-a-happy-meal-review-royal-court-theatre-tom-fowler-amaka-okafor-mary-malone-nima-taleghani-mcdonalds/",
       "findings": [
@@ -18687,7 +18687,7 @@
     {
       "showId": "idiots-assemble-spitting-image-the-musical-west-end-2023",
       "file": "firstnightmagazine--unknown.json",
-      "score": null,
+      "score": 76,
       "publishDate": "2023-06-15",
       "url": "https://firstnightmagazine.com/2023/06/15/review-of-spitting-image-idiots-assemble/",
       "findings": [
@@ -38240,7 +38240,7 @@
     {
       "showId": "the-crucible-west-end-2023",
       "file": "whatsonstage--daniella-harrison.json",
-      "score": 84,
+      "score": 87,
       "publishDate": "June 16th, 2023",
       "url": "https://www.whatsonstage.com/news/the-crucible-in-the-west-end-review-the-production-fares-even-better-in-a-smaller-venue_1363783/",
       "findings": [
@@ -44624,7 +44624,7 @@
     {
       "showId": "the-upstart-crow-west-end-2020",
       "file": "daily-mail--robert-gore-langton.json",
-      "score": null,
+      "score": 56,
       "publishDate": "2020-02-22",
       "url": "https://www.dailymail.com/home/event/article-8024547/The-Upstart-Crow-review-relentless.html",
       "findings": [
@@ -45370,6 +45370,20 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1547d before show (2022-03-31 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 82,
+      "publishDate": "2023-02-07",
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
         }
       ]
     },
@@ -64676,7 +64690,7 @@
     {
       "showId": "leopoldstadt-west-end-2020",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": null,
+      "score": 82,
       "publishDate": "February 12th, 2020",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/leopoldstadt-west-end-tom-stoppard-scarborough_50920.html",
       "findings": [
@@ -70796,7 +70810,7 @@
     {
       "showId": "pygmalion-west-end-2023",
       "file": "plays-international--maryam-philpott.json",
-      "score": null,
+      "score": 91,
       "publishDate": "2023-09-26",
       "url": "https://playsinternational.org.uk/pygmalion-at-the-old-vic/",
       "findings": [
@@ -71294,7 +71308,7 @@
     {
       "showId": "rose-west-end-2023",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 80,
+      "score": 79,
       "publishDate": "June 6th, 2023",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/rose-ambassadors-theatre-review-maureen-lipman/",
       "findings": [
@@ -75858,7 +75872,7 @@
     {
       "showId": "the-crown-jewels-west-end-2023",
       "file": "i-paper--anya-ryan.json",
-      "score": 8,
+      "score": 7,
       "publishDate": "2023-07-28",
       "url": "https://inews.co.uk/culture/arts/the-crown-jewels-garrick-theatre-review-despite-mel-giedroyc-and-al-murray-this-is-a-vulgar-tragic-mess-2510980",
       "findings": [
@@ -75872,7 +75886,7 @@
     {
       "showId": "the-crown-jewels-west-end-2023",
       "file": "times-uk--quentin-letts.json",
-      "score": 35,
+      "score": 37,
       "publishDate": "2023-07-30",
       "url": "https://www.thetimes.co.uk/article/the-crown-jewels-and-the-empress-and-now-for-something-completely-different-5qx79q5rc",
       "findings": [
@@ -75914,7 +75928,7 @@
     {
       "showId": "the-crucible-west-end-2023",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": null,
+      "score": 97,
       "publishDate": "June 20th, 2023",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-crucible-gielgud-theatre",
       "findings": [
@@ -75942,7 +75956,7 @@
     {
       "showId": "the-crucible-west-end-2023",
       "file": "standard--nick-curtis.json",
-      "score": 97,
+      "score": 94,
       "publishDate": "June 16th, 2023",
       "url": "https://www.standard.co.uk/culture/theatre/the-crucible-gielgud-theatre-review-milly-alcock-arthur-miller-b1088241.html",
       "findings": [
@@ -75956,7 +75970,7 @@
     {
       "showId": "the-crucible-west-end-2023",
       "file": "west-end-best-friend--callum-wallace.json",
-      "score": null,
+      "score": 58,
       "publishDate": "June 18th, 2023",
       "url": "https://www.westendbestfriend.co.uk/news/review-the-crucible-gielgud-theatre",
       "findings": [
@@ -78107,7 +78121,7 @@
     {
       "showId": "the-little-big-things-west-end-2023",
       "file": "monstagigz--unknown.json",
-      "score": null,
+      "score": 79,
       "publishDate": "2024-01-12",
       "url": "https://monstagigz.com/2024/01/12/theatre-review-the-little-big-things-a-new-musical-sohoplace-album-of-the-month-january-2024/",
       "findings": [
@@ -79038,7 +79052,7 @@
     {
       "showId": "the-pillowman-west-end-2023",
       "file": "financialtimes--sarah-hemming.json",
-      "score": 64,
+      "score": 65,
       "publishDate": "2023-07-05",
       "url": "https://www.ft.com/content/93d2651a-d28d-41e5-afe3-c6fa6fd29b10",
       "findings": [
@@ -79052,7 +79066,7 @@
     {
       "showId": "the-pillowman-west-end-2023",
       "file": "sierz-co-uk--unknown.json",
-      "score": null,
+      "score": 74,
       "publishDate": "2023-06-21",
       "url": "https://sierz.co.uk/reviews/the-pillowman-duke-of-yorks-theatre/",
       "findings": [
