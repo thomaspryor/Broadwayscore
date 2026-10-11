@@ -1187,5 +1187,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-11T03:00:19.399Z"
+  },
+  {
+    "conditionKey": "land:land/bro-2935-stuck-drafts",
+    "title": "Landing blocked: unit-tests-node red on land/bro-2935-stuck-drafts",
+    "description": "land.yml did not land land/bro-2935-stuck-drafts: the unit-tests-node gate went red at f477e9b81e. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38105685363",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2935-stuck-drafts"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "f477e9b81e7de962a72a3708d44ef6e9e5daa165"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38105685363"
+      }
+    ],
+    "queuedAt": "2026-10-11T03:10:21.208Z"
   }
 ]
