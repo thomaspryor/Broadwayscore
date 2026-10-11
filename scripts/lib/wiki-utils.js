@@ -14,12 +14,11 @@
  * @returns {string} Clean plaintext
  */
 function stripWikiMarkup(text) {
-  let cleaned = text
+  let cleaned = stripFileLinks(stripDefinitionListMarkup(text))
     .replace(/<!--.*?-->/gs, '')                           // HTML comments
     .replace(/<ref[^>]*>.*?<\/ref>/gis, '')                // <ref>...</ref>
     .replace(/<ref[^>]*\/>/gi, '')                         // <ref />
     .replace(/<\/?(?:br|small|nowiki|sup|sub|blockquote)[^>]*>/gi, ' ') // HTML tags
-    .replace(/\[\[(?:File|Image|Category):[^\]]*\]\]/gi, '') // File/Image/Category links
     .replace(/\[\[([^\]|]*\|)?([^\]]*)\]\]/g, '$2')       // [[link|text]] → text
     .replace(/'{2,3}/g, '')                                // Bold/italic markup
     .replace(/={2,5}\s*[^=\n]+\s*={2,5}/g, ' ')           // === Section Headers ===
@@ -45,6 +44,70 @@ function stripWikiMarkup(text) {
     .trim();
 
   return cleaned;
+}
+
+/**
+ * Remove [[File:...]] / [[Image:...]] / [[Category:...]] links, captions and
+ * all. A caption holding its own links ("[[File:X.jpg|thumb|alt=...|[[Judith
+ * Bliss]] strikes a pose, 1925]]") ends at the matching "]]", not the first
+ * one; the old single regex stopped early and left "thumb alt=middle aged
+ * white woman ... strikes a pose" in Hay Fever's synopsis (BRO-5063).
+ */
+function stripFileLinks(text) {
+  const open = /\[\[(?:File|Image|Category):/gi;
+  let out = '';
+  let pos = 0;
+  let m;
+  while ((m = open.exec(text)) !== null) {
+    out += text.slice(pos, m.index);
+    let depth = 1;
+    let i = m.index + 2;
+    while (i < text.length && depth > 0) {
+      if (text.startsWith('[[', i)) { depth++; i += 2; } else if (text.startsWith(']]', i)) { depth--; i += 2; } else i++;
+    }
+    // Never closed (malformed, or a section cut inside the caption): drop
+    // the caption to the end of its line instead of swallowing the plot after.
+    if (depth > 0) {
+      const eol = text.indexOf('\n', m.index);
+      i = eol === -1 ? text.length : eol;
+    }
+    pos = i;
+    open.lastIndex = i;
+  }
+  return out + text.slice(pos);
+}
+
+/**
+ * Definition-list markup used for act and scene headings: ";'''Act I'''" and
+ * ";'''1977'''" term lines are headings, "*Scene One: Pub." lines are scene
+ * labels, ":Time: The first century" is a setting label, and ":" opens an
+ * indented paragraph. Once newlines collapse, the headings read as ";Act I
+ * Belle Poitrine ..." mid-synopsis (Little Me, Lestat, Betrayal, Amahl;
+ * BRO-5063). A heading line that also carries a sentence after its label
+ * (";Act I: Belle Poitrine writes her autobiography with Patrick Dennis.")
+ * keeps the sentence; a bare heading is dropped.
+ */
+const HEADING_LINE_RE = /^(?:;+|\*+(?=\s*(?:'{2,3})?\s*(?:Act|Scene)\b)|:+(?=\s*(?:'{2,3})?\s*(?:Time|Place|Setting)(?:'{2,3})?\s*:))([^\n]*)$/gim;
+const MIN_SENTENCE_WORDS = 6;
+
+function headingLineContent(body, singleLine) {
+  const plain = body.replace(/'{2,3}/g, '').trim();
+  // Label ends at the first ": " so a time in it ("Act I, 10:30 p.m.: The bar") is not the cut.
+  const colon = plain.indexOf(': ');
+  const rest = colon === -1 ? '' : plain.slice(colon + 2).trim();
+  if (rest.split(/\s+/).length >= MIN_SENTENCE_WORDS && /[.!?]["')]?$/.test(rest)) return rest;
+  // A one-line stored synopsis that opens with ";" (clean-synopsis-markup.js
+  // input) keeps its text minus the marker; in multi-line wikitext a long
+  // line is still a heading ("Act One — The Ballroom of the Grand Hotel").
+  if (singleLine && colon === -1 && plain.split(/\s+/).length > MIN_SENTENCE_WORDS) return plain;
+  return '';
+}
+
+function stripDefinitionListMarkup(text) {
+  const singleLine = !String(text).includes('\n');
+  return text
+    .replace(HEADING_LINE_RE, (_, body) => headingLineContent(body, singleLine))
+    .replace(/^:+\s*/gm, '');
 }
 
 /**
@@ -140,6 +203,8 @@ function stripLeadingJunk(text) {
 
 module.exports = {
   stripWikiMarkup,
+  stripFileLinks,
+  stripDefinitionListMarkup,
   hasWikiMarkup,
   stripLeadingJunk,
 };
