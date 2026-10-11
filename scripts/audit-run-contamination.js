@@ -49,7 +49,14 @@ const DAY = 86400000;
 const want = (n) => !ONLY || ONLY.has(n);
 const norm = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 const critKey = (c) => { const n = norm(c); return n === 'unknown' ? '' : n; };
-const canon = (u) => String(u || '').trim().toLowerCase().replace(/^https?:\/\/(www\.)?/, '').replace(/[?#].*$/, '').replace(/\/+$/, '');
+const canon = (u) => {
+  // Keep the query string except tracking params: londontheatrereviews.co.uk/post.cfm?id=N
+  // and similar CMS URLs are distinct articles that differ only in the query.
+  let x = String(u || '').trim().toLowerCase().replace(/^https?:\/\/(www\.)?/, '').replace(/#.*$/, '');
+  const [base, q] = x.split('?');
+  const keep = (q || '').split('&').filter((kv) => kv && !/^(utm_[a-z]+|fbclid|gclid|mc_[a-z]+|ref|source)=/.test(kv)).sort().join('&');
+  return base.replace(/\/+$/, '') + (keep ? `?${keep}` : '');
+};
 const daysBetween = (a, b) => Math.round((Date.parse(a) - Date.parse(b)) / DAY);
 
 function loadCorpus() {
