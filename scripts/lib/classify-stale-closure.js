@@ -55,7 +55,7 @@ function daysAgo(isoString, now = Date.now()) {
  *   pending      — commercial-pending-review.json entries for the slug array
  *   archive      — commercial-pending-archive.json entries for the slug
  *   now          — Date.now() override for tests
- *   thresholds   — { graceDays, maxAgeDays, recentSignalDays }
+ *   thresholds   — { graceDays, maxAgeDays, recentSignalDays, allowInferredLoss }
  *
  * Returns one of:
  *   { action: 'wait',         reason }   — within grace period; do nothing
@@ -150,7 +150,18 @@ function classifyStaleClosure({ show, entry, pending, archive, now, thresholds }
     };
   }
 
-  // Researched + closed >graceDays + no recoupment news + no carve-out → Fizzle
+  // Researched + closed >graceDays + no recoupment news + no carve-out.
+  // "No recoupment news" is not evidence of a loss, so by default the row
+  // stays TBD and is flagged needsLossEvidence for a person to source
+  // (BRO-5020: 12 researched TBDs, 2 of them already ruled TBD by hand, became
+  // Fizzle on 2026-10-10 on this inference alone). allowInferredLoss restores
+  // the old auto-Fizzle while the owner settles the evidence policy.
+  if (!t.allowInferredLoss) {
+    return {
+      action: 'flag-needs-loss-evidence',
+      reason: `closed ${Math.floor(daysClosed)}d ago, deep-researched, no trade-press recoupment found; no cited loss source`,
+    };
+  }
   return {
     action: 'classify-fizzle',
     reason: `closed ${Math.floor(daysClosed)}d ago, deep-researched, no trade-press recoupment found`,
