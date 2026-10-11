@@ -100,6 +100,8 @@ import { isScoreable } from './is-scoreable';
 const { detectPreOpeningInterviewFeature } = require('../lib/preopening-interview-signal');
 const { emitStage } = require('../lib/stage-latency');
 const { decideBatchDrain, decideDrainFollowUp, mayStartNewBatch } = require('../lib/batch-drain-decision');
+const { urgentScoringShowIds } = require('../lib/scoring-lane');
+const { loadReviewEvidence } = require('../lib/review-evidence');
 const { clearFailureFlags } = require('../lib/clear-failure-flags');
 const { isInFallbackCooldown } = require('../lib/manual-clear-fallback-cooldown');
 const { markRescoreComplete, stampTerminalScoringFailure, isBlockedFromRescore, isDeterministicTextGateFailure, stampRejectedTextFingerprint, isBlockedByStickyRejection } = require('../lib/rescore-lifecycle');
@@ -276,6 +278,10 @@ const SHOWS_JSON_PATH = path.join(__dirname, '../../data/shows.json');
 const RUNS_LOG_PATH = path.join(__dirname, '../../data/llm-scoring-runs.json');
 const GARBAGE_SKIPS_PATH = path.join(__dirname, '../../data/llm-scoring-garbage-skips.json');
 const PROJECT_ROOT = path.join(__dirname, '../..');
+// Batch manifests store repo-relative paths (buildBatchState); selection uses
+// absolute ones. Compare only after resolving (BRO-5047: the in-flight hold
+// compared the two forms directly and never matched).
+const manifestAbsPath = (p: string): string => (path.isAbsolute(p) ? p : path.join(PROJECT_ROOT, p));
 const SCORING_PROGRESS_PATH = path.join(PROJECT_ROOT, 'data', 'collection-state', 'scoring-progress.json');
 // In-flight batch state lives in its OWN file, not inside scoring-progress.json.
 // scoring-progress.json is rewritten wholesale by every run (including parallel
@@ -668,6 +674,8 @@ function parseArgs(): ScoringPipelineOptions & {
   batch: boolean;
   // undefined = "no explicit --batch-poll-minutes"; resolved mode-aware at use.
   batchPollMinutes?: number;
+  /** BRO-5047: score only reviews for shows near opening night (plain catch-up dispatches). */
+  onlyUrgent?: boolean;
 } {
   const args = process.argv.slice(2);
 
@@ -750,6 +758,7 @@ function parseArgs(): ScoringPipelineOptions & {
 
   return {
     showId,
+    onlyUrgent: args.includes('--only-urgent'),
     unscoredOnly: !args.includes('--rescore') && !args.includes('--needs-rescore') && !outdated && !ensembleSource && !args.includes('--stale-scores') && !upgradeEnsemble && !retryEmergency,
     minTextLength: 50,
     model,
@@ -1313,11 +1322,34 @@ async function main(): Promise<void> {
   const fullTextCount = validFiles.filter(f => !!(f.data as any).fullText && (f.data as any).fullText.length >= 200).length;
   console.log(`Priority sort: ${fullTextCount} full-text reviews first, then ${validFiles.length - fullTextCount} excerpt-only\n`);
 
+  // BRO-5047 (owner decision 2026-10-11): reviews for shows in or near their
+  // opening-night window score immediately and are never batched; a plain
+  // catch-up dispatch (--only-urgent) scores only those and leaves the rest
+  // for the next half-price batch run.
+  const urgentShowIds: Set<string> = urgentScoringShowIds(Array.from(showRecords.values()), { evidence: loadReviewEvidence() });
+  // Files held by a batch still in flight are skipped later anyway; dropping
+  // them BEFORE the limit slice keeps them from filling the run's slots.
+  // A state the drain will discard (too old, or from an older prompt) holds nothing.
+  const stateBeforeSlice = readBatchState();
+  const stateWillBeDiscarded = !!stateBeforeSlice && (
+    batchStateAgeHours(stateBeforeSlice) > BATCH_STATE_MAX_AGE_HOURS ||
+    (!!stateBeforeSlice.promptVersion && stateBeforeSlice.promptVersion !== PROMPT_VERSION));
+  const heldBeforeSlice = new Set<string>(stateWillBeDiscarded ? [] : (stateBeforeSlice?.manifest || []).map((m: any) => manifestAbsPath(m.filePath)));
+  let laneFiles = validFiles.filter(f => !heldBeforeSlice.has(f.path));
+  if (laneFiles.length < validFiles.length) {
+    console.log(`Leaving ${validFiles.length - laneFiles.length} review(s) to the in-flight batch\n`);
+  }
+  if (options.onlyUrgent) {
+    const before = laneFiles.length;
+    laneFiles = laneFiles.filter(f => urgentShowIds.has((f.data as any).showId));
+    console.log(`Urgent only: ${laneFiles.length} review(s) for shows near opening night; ${before - laneFiles.length} catch-up review(s) left for the next half-price batch run\n`);
+  }
+
   // Apply sharding (split work across parallel runs)
-  let shardedFiles = validFiles;
+  let shardedFiles = laneFiles;
   if (options.shard !== undefined && options.totalShards && options.totalShards > 1) {
-    shardedFiles = validFiles.filter((_, i) => i % options.totalShards! === options.shard!);
-    console.log(`Shard ${options.shard}/${options.totalShards}: ${shardedFiles.length} files (from ${validFiles.length} valid)\n`);
+    shardedFiles = laneFiles.filter((_, i) => i % options.totalShards! === options.shard!);
+    console.log(`Shard ${options.shard}/${options.totalShards}: ${shardedFiles.length} files (from ${laneFiles.length} valid)\n`);
   }
 
   // Apply limit
@@ -1906,6 +1938,10 @@ async function main(): Promise<void> {
   // every OTHER file this run selected is fair game — see the "Still in flight"
   // branch below for why that distinction matters.
   let batchHeldPaths: Set<string> = new Set();
+  // BRO-5047: token usage of reviews scored synchronously inside a --batch run
+  // (urgent shows), so the run's cost line prices them at the full rate.
+  const { addUsage: __addUsage, subtractUsage: __subtractUsage } = require('./cost');
+  let syncUsageInBatchRun: any = null;
   let resumedFilePaths: Set<string> = new Set();
 
   if (batchMode) {
@@ -1992,11 +2028,11 @@ async function main(): Promise<void> {
           // than the timeout it replaced: a loud false failure became a silent
           // true one (2026-08-31 plan review, pre-mortem + devil's-advocate).
           //
-          // Only the batch's OWN manifest files are off limits. `filePath` here
-          // is the same value the scoring loop compares against (both come from
-          // `f.path` — see buildBatchState's `filePath: f.path`).
+          // Only the batch's OWN manifest files are off limits. The manifest
+          // stores repo-relative paths and the loop compares absolute ones, so
+          // resolve before comparing (BRO-5047: unresolved, nothing was held).
           const followUp = decideDrainFollowUp({ outcome: 'in-flight', manifest: existing.manifest });
-          batchHeldPaths = new Set(followUp.holdPaths);
+          batchHeldPaths = new Set(followUp.holdPaths.map(manifestAbsPath));
           skipNewWork = followUp.skipAllNewWork; // false — this is the whole fix
           console.log(
             `   ⏳ Still in flight (${poll.reason}). Keeping state; ` +
@@ -2231,8 +2267,9 @@ async function main(): Promise<void> {
       : null;
 
     // BATCH: run stage 1 only, queue the item, and move on. The models are
-    // called once for the whole run after this loop finishes.
-    if (batchMode) {
+    // called once for the whole run after this loop finishes. Reviews for
+    // shows near opening night skip the batch and score now (BRO-5047).
+    if (batchMode && !urgentShowIds.has(reviewFile.showId)) {
       const prepared = (scorer as EnsembleReviewScorer).prepareScoringInput(reviewFile);
       if (!prepared.ok || !prepared.prep) {
         const failure = prepared.failure || { success: false, error: 'prepare_scoring_input_failed' };
@@ -2277,6 +2314,10 @@ async function main(): Promise<void> {
         outletId: reviewFile.outletId || '',
         error: e.message
       });
+    }
+    // BRO-5047: in a --batch run, these sync calls bill at full rate.
+    if (batchMode && tokensBefore && (scorer as any).getTokenUsage) {
+      syncUsageInBatchRun = __addUsage(syncUsageInBatchRun, __subtractUsage((scorer as any).getTokenUsage(), tokensBefore));
     }
     if (skipLoopTail) continue;
 
@@ -2473,13 +2514,17 @@ async function main(): Promise<void> {
 
     // Estimate cost via cost.ts (single source of pricing coefficients —
     // includes prompt-cache write/read pricing on the claude leg).
-    const { costBreakdown: __costBreakdown } = require('./cost');
-    const breakdown = __costBreakdown({
+    const { costBreakdown: __costBreakdown, mixedCostBreakdown: __mixedCostBreakdown } = require('./cost');
+    const usageForCost = {
       claude: ensembleUsage.claude,
       openai: ensembleUsage.openai,
       gemini: ensembleUsage.gemini || undefined,
       kimi: ensembleUsage.kimi || undefined,
-    }, { claudeModelName: options.model, batch: batchMode });
+    };
+    // BRO-5047: a batch run's urgent reviews were scored synchronously, at full rate.
+    const breakdown = batchMode
+      ? __mixedCostBreakdown(usageForCost, syncUsageInBatchRun, { claudeModelName: options.model })
+      : __costBreakdown(usageForCost, { claudeModelName: options.model, batch: false });
     const costParts = [`Claude: $${breakdown.claude.toFixed(4)}`, `OpenAI: $${breakdown.openai.toFixed(4)}`];
     if (ensembleUsage.gemini) costParts.push(`Gemini: $${breakdown.gemini.toFixed(4)}`);
     if (ensembleUsage.kimi) costParts.push(`Kimi: $${breakdown.kimi.toFixed(4)}`);

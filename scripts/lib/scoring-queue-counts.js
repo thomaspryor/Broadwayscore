@@ -197,7 +197,11 @@ function countScoringQueues(baseDir, options) {
   // would turn a missing/failed review-texts checkout into "four zeroes, exit
   // 0, skip=true" — the scorer would silently stop running entirely and the
   // run would still be green (Codex adversarial review, task #652 ship-check).
+  // BRO-5047: a plain catch-up dispatch only acts on urgent (opening-window)
+  // shows, so its gate counts only those show directories.
+  const onlyShowIds = opts.onlyShowIds instanceof Set ? opts.onlyShowIds : null;
   const dirs = fs.readdirSync(baseDir).filter(d => {
+    if (onlyShowIds && !onlyShowIds.has(d)) return false;
     try {
       return fs.statSync(path.join(baseDir, d)).isDirectory();
     } catch {
