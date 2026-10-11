@@ -500,6 +500,11 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Issue template:** `.github/ISSUE_TEMPLATE/commercial-tip.yml`
 - **Script:** `scripts/process-commercial-tip.js`
 
+## `commercial-release-held.yml`
+- **Runs:** Manual only (`shows` = comma-separated slugs, `dry_run`)
+- **Does:** Releases named human-review-held pending rows (`requiresHumanReview`, e.g. the BRO-4990 backfill) into commercial.json via `apply-commercial-pending.js --release-held=...`, with page verification. Refuses records with a non-TBD or human-reviewed label or a recoupment on file, merges onto the existing record, never publishes the row's "recouped" claim (a cited "did not recoup" stays). Plain `--show`/`--all` never apply a held row. Tail (dedupe, strict gate, push, deploy) matches `commercial-friday.yml`; same `commercial-data-write` group, so dispatch one run at a time.
+- **Requires:** REVIEW_TEXTS_TOKEN, scraper secrets (SCRAPINGBEE/SCRAPINGDOG/BRIGHTDATA)
+
 ## `collect-review-texts.yml`
 - **Runs:** 3x daily at 4:30 AM, 10 AM, 6 PM UTC (150/batch + 2 chains for scheduled runs) + manual trigger
 - **Rebuild trigger:** Rebuild fires automatically via `workflow_run` when collection completes (no explicit dispatch needed)
