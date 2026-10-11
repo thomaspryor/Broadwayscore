@@ -48,7 +48,7 @@ const MAC_ONLY_CLOSE = '<!-- /mac-only -->';
 /**
  * Pure: drop Mac-only blocks. Markers count only as whole lines (CRLF and
  * surrounding whitespace tolerated), so prose that mentions the convention is
- * never mistaken for one. Any imbalance (nested open, stray close, unclosed
+ * never mistaken for one, nor is a marker inside a ``` fence. Any imbalance (nested open, stray close, unclosed
  * block) returns the text untouched with a warning: a bad marker must never
  * silently cut rules out of the cloud copy.
  * @returns {{text: string, removedLines: number, warning: string|null}}
@@ -58,8 +58,15 @@ function stripMacOnly(text) {
   const kept = [];
   let open = -1;
   let removed = 0;
+  let inFence = false;
   for (const [i, line] of lines.entries()) {
     const t = line.trim();
+    // A marker shown inside a ``` code example is text, not a marker.
+    if (t.startsWith('```')) inFence = !inFence;
+    if (inFence || t.startsWith('```')) {
+      if (open === -1) kept.push(line); else removed++;
+      continue;
+    }
     if (t === MAC_ONLY_OPEN) {
       if (open !== -1) return { text, removedLines: 0, warning: `nested mac-only open at line ${i + 1}; not stripped` };
       open = i;

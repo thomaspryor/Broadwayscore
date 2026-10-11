@@ -67,6 +67,13 @@ test('stripMacOnly: CRLF and indented markers count; markers inside prose do not
   assert.deepEqual(stripMacOnly(prose), { text: prose, removedLines: 0, warning: null });
 });
 
+test('stripMacOnly: markers inside a code fence are examples, not markers', () => {
+  const doc = ['a', '```', O, 'example', C, '```', 'b'].join('\n');
+  assert.deepEqual(stripMacOnly(doc), { text: doc, removedLines: 0, warning: null });
+  const mixed = [O, 'mac', '```', 'code', '```', C, 'b'].join('\n');
+  assert.equal(stripMacOnly(mixed).text, 'b');
+});
+
 test('stripMacOnly: any imbalance leaves the text whole and warns', () => {
   for (const [lines, re] of [
     [[O, 'x', O, 'y', C, C], /nested/],
