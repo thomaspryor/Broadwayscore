@@ -1216,5 +1216,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-11T03:17:04.185Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4885-outlet-tier-chip",
+    "title": "Landing blocked: unit-tests-tsx red on land/bro-4885-outlet-tier-chip",
+    "description": "land.yml did not land land/bro-4885-outlet-tier-chip: the unit-tests-tsx gate went red at fc164ef45f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38106563024",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4885-outlet-tier-chip"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-tsx"
+      },
+      {
+        "name": "tip",
+        "value": "fc164ef45fef89ddfd76bd26d0248243d51cd980"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38106563024"
+      }
+    ],
+    "queuedAt": "2026-10-11T03:26:13.269Z"
   }
 ]
