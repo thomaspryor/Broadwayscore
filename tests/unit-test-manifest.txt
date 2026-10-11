@@ -549,6 +549,7 @@ tests/unit/corpus-determinism.test.mjs
 tests/unit/corpus-scan-guard.test.mjs
 tests/unit/cost-for-week.test.mjs
 tests/unit/cost-history.test.mjs
+tests/unit/cost-split.test.mjs
 tests/unit/coverage-gap-alerts.test.mjs
 tests/unit/coverage-guard-wired.test.mjs
 tests/unit/coverage-holes-audit.test.mjs
@@ -1029,11 +1030,10 @@ tests/unit/reconcile-merged-json-jsonl-hardening.test.mjs
 tests/unit/reconcile-retired-ids.test.mjs
 tests/unit/recoupment-classify.test.mjs
 tests/unit/recoupment-ground-truth.test.mjs
-tests/unit/recoupment-timing.test.mjs
-tests/unit/cost-split.test.mjs
 tests/unit/recoupment-model-shadow-opts.test.mjs
 tests/unit/recoupment-model.test.mjs
 tests/unit/recoupment-reconcile-gate.test.mjs
+tests/unit/recoupment-timing.test.mjs
 tests/unit/recover-manual-review-score.test.mjs
 tests/unit/recover-talkinbroadway-forum-links.test.mjs
 tests/unit/recreate-draft-guard.test.mjs
