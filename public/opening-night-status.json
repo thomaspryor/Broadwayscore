@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-11T02:40:58.225Z",
+  "generatedAt": "2026-10-11T03:38:21.418Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -83,6 +83,10 @@
           "isDualMarket": false
         },
         {
+          "name": "Time Out New York",
+          "isDualMarket": false
+        },
+        {
           "name": "Los Angeles Times",
           "isDualMarket": false
         },
@@ -110,6 +114,10 @@
         },
         {
           "name": "New York Post",
+          "isDualMarket": false
+        },
+        {
+          "name": "TheaterMania",
           "isDualMarket": false
         },
         {
@@ -950,17 +958,17 @@
       "status": "open",
       "slug": "from-the-heart-west-end",
       "thumbnail": "/images/shows/from-the-heart-west-end-2026/thumbnail.jpg",
-      "siteScore": 82.45,
-      "liveScore": 82,
-      "scoreDrift": -0.45000000000000284,
+      "siteScore": 82.6,
+      "liveScore": 83,
+      "scoreDrift": 0.4000000000000057,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 19,
+      "total": 20,
       "t1": 1,
       "t2": 3,
-      "t3": 15,
-      "positive": 18,
+      "t3": 16,
+      "positive": 19,
       "mixed": 1,
       "negative": 0,
       "readiness": {
@@ -1121,6 +1129,18 @@
           "t2": 3,
           "t3": 15,
           "p": 18,
+          "m": 1,
+          "n": 0,
+          "bc": "overdue"
+        },
+        {
+          "t": "2026-10-11T03:38:21.418Z",
+          "rc": 20,
+          "s": 82.6,
+          "t1": 1,
+          "t2": 3,
+          "t3": 16,
+          "p": 19,
           "m": 1,
           "n": 0,
           "bc": "overdue"
@@ -2412,17 +2432,17 @@
       "status": "open",
       "slug": "an-oak-tree-off-west-end",
       "thumbnail": "/images/shows/an-oak-tree-off-west-end-2026/thumbnail.webp",
-      "siteScore": 75.31,
+      "siteScore": 75.23,
       "liveScore": 75,
-      "scoreDrift": -0.3100000000000023,
+      "scoreDrift": -0.23000000000000398,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 16,
+      "total": 17,
       "t1": 2,
       "t2": 3,
-      "t3": 11,
-      "positive": 10,
+      "t3": 12,
+      "positive": 11,
       "mixed": 6,
       "negative": 0,
       "readiness": {
@@ -2430,7 +2450,7 @@
         "reasons": [
           "T1:2/3"
         ],
-        "highConfidence": 12,
+        "highConfidence": 14,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2671,6 +2691,18 @@
           "t2": 3,
           "t3": 11,
           "p": 10,
+          "m": 6,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-11T03:38:21.418Z",
+          "rc": 17,
+          "s": 75.23,
+          "t1": 2,
+          "t2": 3,
+          "t3": 12,
+          "p": 11,
           "m": 6,
           "n": 0,
           "bc": "waiting"
