@@ -132,7 +132,7 @@ test('reconcile: rows filed a week early are replaced when the page adds up and 
   L.recordPublishedTotal(h, '2008-04-06', { gross: 1_800_000, showCount: 2, source: 'playbill' });
   const page = { snapshot: { a: row(1_000_000), b: row(800_000) }, rowCount: 2, printedGross: 1_800_000, tableGross: 1_800_000 };
   const r = L.reconcilePublishedTotal(h, '2008-04-06', page);
-  assert.deepEqual(r, { action: 'rows-replaced', before: 2_100_000, after: 1_800_000 });
+  assert.deepEqual(r, { action: 'rows-replaced', before: 2_100_000, after: 1_800_000, dropped: [] });
   assert.equal(h.weeks['2008-04-06'].b.gross, 800_000);
   assert.equal(h.weeks['2008-03-30'].b.gross, 900_000);
   assert.deepEqual(L.checkWeekTotals(h), []);
@@ -147,6 +147,34 @@ test('reconcile: a page with an unmatched row never replaces stored rows; a stal
   assert.equal(h._meta.weekTotals['2008-04-06'].gross, 9);
   const same = { snapshot: { a: row(1_200_000), b: row(900_000) }, rowCount: 2, printedGross: 2_100_000, tableGross: 2_100_000 };
   assert.equal(L.reconcilePublishedTotal(h, '2008-04-06', same).action, 'total-saved');
+  assert.deepEqual(L.checkWeekTotals(h), []);
+});
+
+test('reconcile: a page with no printed total keeps its table as the checksum, so the gross check survives', () => {
+  const h = { weeks: { '2008-04-06': { a: row(1_000_000), b: row(800_000) } } };
+  L.recordPublishedTotal(h, '2008-04-06', { gross: 1_800_000, showCount: 2 });
+  const page = { snapshot: { a: row(1_000_000), b: row(800_000) }, rowCount: 2, printedGross: null, tableGross: 1_800_000 };
+  assert.equal(L.reconcilePublishedTotal(h, '2008-04-06', page).action, 'printed-total-missing');
+  assert.equal(h._meta.weekTotals['2008-04-06'].tableGross, 1_800_000);
+  h.weeks['2008-04-06'].b.gross = 100;
+  assert.deepEqual(rules(L.checkWeekTotals(h)), ['total-mismatch']);
+});
+
+test('totals: a set-aside table of $0 beside rows that gross is reported, not skipped', () => {
+  const h = { weeks: { '2008-04-06': { a: row(1_000_000) } } };
+  L.recordPublishedTotal(h, '2008-04-06', { gross: 100, showCount: 1, tableGross: 0 });
+  assert.deepEqual(rules(L.checkWeekTotals(h)), ['total-mismatch']);
+});
+
+test('reconcile: a Monday key is replaced in place, the total lands under its Sunday, dropped slugs are named', () => {
+  const h = { weeks: { '2008-04-07': { a: row(1_200_000), b: row(900_000), z: row(5) } } };
+  L.recordPublishedTotal(h, '2008-04-06', { gross: 1_800_000, showCount: 2 });
+  const page = { snapshot: { a: row(1_000_000), b: row(800_000) }, rowCount: 2, printedGross: 1_800_000, tableGross: 1_800_000 };
+  const r = L.reconcilePublishedTotal(h, L.sundayOf('2008-04-07'), page);
+  assert.equal(r.action, 'rows-replaced');
+  assert.deepEqual(r.dropped, ['z']);
+  assert.deepEqual(Object.keys(h.weeks), ['2008-04-07']);
+  assert.deepEqual(Object.keys(h._meta.weekTotals), ['2008-04-06']);
   assert.deepEqual(L.checkWeekTotals(h), []);
 });
 

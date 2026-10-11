@@ -180,7 +180,8 @@ function recordPublishedTotal(history, week, { gross = null, showCount = null, s
  * pre-2022 Playbill weeks print the previous week's total or some other
  * figure beside a table our rows match to the dollar (BRO-5038). Such a
  * total is kept as printedGross with gross null, so checkWeekTotals checks
- * only the show count and never reports rows that match the page.
+ * only the show count and never reports rows that match the page. A page
+ * that prints no total keeps its table as the checksum the same way.
  */
 function publishedTotalEntry({ gross = null, showCount = null, source = '', tableGross = null } = {}) {
   const g = num(gross);
@@ -189,6 +190,7 @@ function publishedTotalEntry({ gross = null, showCount = null, source = '', tabl
   if (g != null && table != null && Math.abs(g - table) > Math.max(count || 0, 1)) {
     return { gross: null, printedGross: g, tableGross: table, showCount: count, source };
   }
+  if (g == null && table != null) return { gross: null, tableGross: table, showCount: count, source };
   return { gross: g, showCount: count, source };
 }
 
@@ -202,14 +204,17 @@ function publishedTotalEntry({ gross = null, showCount = null, source = '', tabl
  *   'printed-total-off'  stored rows meet the table, the printed total does
  *                        not: the total is saved aside (gross null,
  *                        printedGross, tableGross) and checked as tableGross
+ *   'printed-total-missing' stored rows meet the table, the page prints no
+ *                        total: the table is saved as the checksum
  *   'total-saved'        stored rows meet a page that adds up (the saved
  *                        total was stale): the total is saved again
  *   'rows-replaced'      stored rows miss the table and every page row
  *                        matched a show: the page's rows replace them
+ *                        (`dropped` lists stored slugs the page lacks)
  *   'unresolved'         stored rows miss the table but some page rows
  *                        matched no show, so the page cannot stand in for
  *                        the week; left alone
- * @returns {{ action: string, before: number, after?: number }}
+ * @returns {{ action: string, before: number, after?: number, dropped?: string[] }}
  */
 function reconcilePublishedTotal(history, week, page) {
   const key = historyKeyFor(history, week) || week;
@@ -222,13 +227,15 @@ function reconcilePublishedTotal(history, week, page) {
   const table = num(tableGross) ?? entry.gross;
   if (table != null && stored.length === rowCount && Math.abs(before - table) <= table * TOTAL_REL_TOLERANCE + stored.length) {
     recordPublishedTotal(history, key, total);
-    return { action: entry.gross == null ? 'printed-total-off' : 'total-saved', before };
+    const action = entry.gross != null ? 'total-saved' : entry.printedGross != null ? 'printed-total-off' : 'printed-total-missing';
+    return { action, before };
   }
   const rows = Object.values(snapshot).filter(isRow);
   if (!rowCount || rows.length !== rowCount) return { action: 'unresolved', before };
+  const dropped = Object.keys(history.weeks?.[key] || {}).filter((slug) => !(slug in snapshot));
   history.weeks[key] = { ...snapshot };
   recordPublishedTotal(history, key, total);
-  return { action: 'rows-replaced', before, after: sumOf(rows) };
+  return { action: 'rows-replaced', before, after: sumOf(rows), dropped };
 }
 
 /**
@@ -255,7 +262,8 @@ function checkWeekTotals(history) {
     const sum = rows.reduce((s, r) => s + (num(r.gross) || 0), 0);
     const pubGross = num(t?.gross) ?? num(t?.tableGross);
     const what = num(t?.gross) != null ? 'published total' : 'published table';
-    if (pubGross != null && pubGross > 0) {
+    // A set-aside table of $0 beside rows that gross is still a mismatch.
+    if (pubGross != null && (pubGross > 0 || (num(t?.gross) == null && sum > 0))) {
       const diff = Math.abs(sum - pubGross);
       if (diff > pubGross * TOTAL_REL_TOLERANCE + rows.length) {
         const detail = `rows sum to $${sum.toLocaleString('en-US')} but the ${what} is $${pubGross.toLocaleString('en-US')} (${((diff / pubGross) * 100).toFixed(1)}% off)`;

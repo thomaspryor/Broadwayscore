@@ -245,10 +245,11 @@ async function backfillHistory(): Promise<void> {
       try {
         const { snapshot, matched, rows, weekTotalGross, tableGross } = await scrapeWeek(weekDate);
         if (recheckTotals) {
-          const { action, before, after } = reconcilePublishedTotal(history, weekDate, {
+          const { action, before, after, dropped } = reconcilePublishedTotal(history, weekDate, {
             snapshot, rowCount: rows, printedGross: weekTotalGross, tableGross, source: 'playbill',
           });
-          const detail = action === 'rows-replaced' ? ` (rows $${before} -> $${after})` : action === 'unresolved' ? ` (${matched}/${rows} rows matched a show)` : '';
+          const droppedNote = dropped?.length ? `, dropped ${dropped.join(', ')}` : '';
+          const detail = action === 'rows-replaced' ? ` (rows $${before} -> $${after}${droppedNote})` : action === 'unresolved' ? ` (${matched}/${rows} rows matched a show)` : '';
           console.log(`  ✓ ${weekDate}: ${action}; page total $${weekTotalGross}, page table $${tableGross}, stored rows $${before}${detail}`);
           if (action === 'unresolved') {
             console.warn(`::warning::backfill-grosses-history: week ${weekDate}: stored rows miss the Playbill table but not every page row matched a show; left as stored.`);
