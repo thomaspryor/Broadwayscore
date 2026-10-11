@@ -13818,9 +13818,9 @@
       "absentRunIds": [
         "38156539139",
         "38161313395",
-        "38169173157"
+        "38169816008"
       ],
-      "resolvedAt": "2026-10-11T20:00:41.500Z",
+      "resolvedAt": "2026-10-11T20:10:30.244Z",
       "resolveReason": "stale-signature"
     },
     "land:land/bro-5063-synopses": {
@@ -13885,7 +13885,7 @@
       },
       "silentRefires": 1,
       "absentRunIds": [
-        "38169173157"
+        "38169816008"
       ]
     },
     "land:land/bro-2730-we-late-cron": {
@@ -13920,12 +13920,13 @@
       "title": "Landing blocked: unit-tests-node red on land/bro-5000-systemic-contamination",
       "firstSeen": "2026-10-11T19:23:35.242Z",
       "incidentOpenedAt": "2026-10-11T19:23:35.242Z",
-      "lastSeen": "2026-10-11T19:23:35.242Z",
+      "lastSeen": "2026-10-11T20:07:10.163Z",
       "lastNotifiedAt": "2026-10-11T19:23:35.242Z",
       "lastSurfacedAt": "2026-10-11T19:23:35.242Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-2945-git-add-safe": {
       "status": "open",
@@ -13951,20 +13952,20 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5076"
+      "linearIdentifier": null
     },
-    "uncollected-blackout:all-the-devils-are-here-how-shakespeare-invented-the-villain-tour-2024": {
+    "test-yml:red:Unit Tests:cd6784f6": {
       "status": "open",
       "disposition": "auto",
-      "title": "Live show has ZERO critic reviews on site: All the Devils Are Here: How Shakespeare Invented the Villain",
-      "firstSeen": "2026-10-11T20:02:36.924Z",
-      "incidentOpenedAt": "2026-10-11T20:02:36.924Z",
-      "lastSeen": "2026-10-11T20:02:36.924Z",
-      "lastNotifiedAt": "2026-10-11T20:02:36.924Z",
+      "title": "main test.yml red: Unit Tests / Run review-guards regression tests — \"foo returns the contracted value\"",
+      "firstSeen": "2026-10-11T20:10:30.258Z",
+      "incidentOpenedAt": "2026-10-11T20:10:30.258Z",
+      "lastSeen": "2026-10-11T20:10:30.258Z",
+      "lastNotifiedAt": "2026-10-11T20:10:30.258Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5077"
+      "linearIdentifier": "BRO-5078"
     }
   }
 }

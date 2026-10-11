@@ -134,13 +134,13 @@ const ALLOWLIST = [
   {
     ghsa: 'GHSA-mp2f-45pm-3cg9',
     module: 'decompress',
-    reason: 'No patched release exists (advisory range <=4.2.1; 4.2.1 is latest). '
-      + 'Removal requires the breaking sanity major upgrade.',
+    reason: 'No patched release exists (re-checked 2026-10-11: advisory range <=4.2.1; 4.2.1 is still latest on npm). '
+      + 'Removal requires the breaking sanity major upgrade (3.x to 6.x).',
     exposure: 'Not exposed: reached only via the sanity CLI toolchain (dev-time CMS tooling). '
       + 'It is never bundled into the site runtime, so no attacker-supplied archive ever '
       + 'reaches it — the extraction path only runs against files a developer already has.',
     issue: 'BRO-3202',
-    expires: '2026-10-15',
+    expires: '2027-01-13',
   },
   {
     // Published 2026-09-29 23:49Z (symlink-chain path traversal). Same package,
@@ -157,7 +157,7 @@ const ALLOWLIST = [
       + 'It is never bundled into the site runtime, so no attacker-supplied archive ever '
       + 'reaches it — the extraction path only runs against files a developer already has.',
     issue: 'BRO-3202',
-    expires: '2026-10-15',
+    expires: '2027-01-13',
   },
   // --- Next.js 14.2.35: both advisories' first patched release is 15.5.24 ---
   // 14.2.35 is the LAST 14.x release (npm view next versions, 2026-09-13) —
