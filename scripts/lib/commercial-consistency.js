@@ -10,6 +10,9 @@
  *   range, only a range wholly on the other side of 100% counts: gutenberg
  *   (trade-reported recoupment, range 67.7-129.4) and frozen-2018 (not
  *   recouped, 67.9-168.3) are consistent with what was reported (BRO-4995).
+ * - recoupedDateNoteConflicts: notes name a recoupment month that differs
+ *   from recoupedDate (BRO-5073: six notes "Dec 2021", field 2022-12). The
+ *   timing backtest reads the field, so a stale note hides a real dispute.
  *
  * Pure: no I/O.
  */
@@ -61,4 +64,20 @@ function recoupedModelDisagreements(records) {
   return out;
 }
 
-module.exports = { closedStillTbd, recoupedModelDisagreements };
+const MONTHS = { jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6, jul: 7, aug: 8, sep: 9, oct: 10, nov: 11, dec: 12 };
+const NOTE_RECOUP_MONTH = /\brecoup(?:ed|s|ment)?\b[^.;()]{0,25}?\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+(?:\d{1,2},?\s+)?((?:19|20)\d\d)\b/gi;
+
+/** Records whose notes date the recoupment to a different month than recoupedDate. */
+function recoupedDateNoteConflicts(records) {
+  const out = [];
+  for (const [slug, r] of Object.entries(records || {})) {
+    if (!r || typeof r.recoupedDate !== 'string' || typeof r.notes !== 'string') continue;
+    const [year, month] = r.recoupedDate.split('-').map(Number);
+    const hits = [...r.notes.matchAll(NOTE_RECOUP_MONTH)].map((m) => ({ year: Number(m[2]), month: MONTHS[m[1].toLowerCase()], text: m[0] }));
+    if (!hits.length || hits.some((h) => h.year === year && (!month || h.month === month))) continue;
+    out.push({ slug, recoupedDate: r.recoupedDate, note: hits.map((h) => h.text).join(' | ') });
+  }
+  return out;
+}
+
+module.exports = { closedStillTbd, recoupedModelDisagreements, recoupedDateNoteConflicts };

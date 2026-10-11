@@ -37,7 +37,7 @@ const { checkIdYearDrift } = require('./lib/id-year-drift');
 // must already exist at that point (no TDZ on a crash path).
 const { commercialFileErrors, commercialFileWarnings } = require('./lib/commercial-record-checks');
 const { breakevenBelowCost } = require('./lib/commercial-breakeven');
-const { closedStillTbd, recoupedModelDisagreements } = require('./lib/commercial-consistency');
+const { closedStillTbd, recoupedModelDisagreements, recoupedDateNoteConflicts } = require('./lib/commercial-consistency');
 const { nonSundayWeekKeys } = require('./lib/grosses-history-repair');
 const { checkGrossOutsideRun } = require('./lib/grosses-integrity');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -3533,6 +3533,10 @@ function validateCommercialJson() {
     if (tbd.length) {
       warn(`commercial.json: ${tbd.length} show(s) closed 60+ days ago still designated TBD (scripts/classify-stale-closures.js settles researched ones): ${tbd.map(t => t.slug).join(', ')}`);
     }
+  }
+  const dateConflicts = recoupedDateNoteConflicts(data.shows);
+  if (dateConflicts.length) {
+    warn(`commercial.json: ${dateConflicts.length} show(s) whose notes date the recoupment differently from recoupedDate (fix one via a pending-fix plan): ${dateConflicts.map(d => `${d.slug} (${d.recoupedDate} vs "${d.note}")`).join('; ')}`);
   }
   const disagree = recoupedModelDisagreements(data.shows);
   if (disagree.length) {

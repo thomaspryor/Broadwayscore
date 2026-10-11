@@ -109,14 +109,15 @@ export function getRecoupmentDisplayMode(
  * applied once where the site loads commercial.json. Hidden (fewer than 12
  * played weeks, central outside [-25, 150], or two independent estimates
  * disagree by more than 25 points, the range is more than 60 points wide, or the
- * show is running while RUNNING_MODEL_BAR_ENABLED is off):
+ * show is running while RUNNING_MODEL_BAR_ENABLED is off or its type is not
+ * in RUNNING_MODEL_BAR_TYPES):
  * modelRecoupmentPct becomes null and modelDisplayHold says
  * why. Shown: negative values become 0 and modelBelowCosts is set, so the
  * negative number never reaches a page.
  */
 export function applyModelDisplayGuard(
   data: ShowCommercial,
-  show: { previewsStartDate?: string | null; openingDate?: string | null; closingDate?: string | null; status?: string | null } | undefined,
+  show: { previewsStartDate?: string | null; openingDate?: string | null; closingDate?: string | null; status?: string | null; type?: string | null } | undefined,
   now: Date = new Date()
 ): ShowCommercial {
   if (!data.modelRecoupmentPct) return data;
@@ -130,6 +131,7 @@ export function applyModelDisplayGuard(
     playedWeeks: show ? playedWeeks(show, now) : 0,
     independent: independentEstimate(data),
     running,
+    showType: show ? show.type ?? null : undefined,
   });
   if (!g.show) {
     // Far below 0 (Schmigadoon -169) hides the number, not the fact.

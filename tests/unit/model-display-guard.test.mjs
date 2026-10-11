@@ -4,7 +4,7 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { modelDisplayGuard, displayBasis, displaysModel, playedWeeks, independentEstimate, isRunning } = require('../../scripts/lib/model-display-guard');
+const { modelDisplayGuard, displayBasis, displaysModel, playedWeeks, independentEstimate, isRunning, RUNNING_MODEL_BAR_ENABLED, RUNNING_MODEL_BAR_TYPES } = require('../../scripts/lib/model-display-guard');
 
 describe('modelDisplayGuard', () => {
   test('Schmigadoon -169 is hidden, not printed', () => {
@@ -53,6 +53,18 @@ describe('modelDisplayGuard', () => {
     // the launch switch still wins while it is off; a closed show is unaffected
     assert.equal(modelDisplayGuard({ ...on, runningEnabled: false, pct: [130, 144, 150] }).reason, 'awaiting-truth');
     assert.deepEqual(modelDisplayGuard({ ...on, running: false, pct: [80, 92, 110] }).shown, [80, 92, 110]);
+  });
+  test('per-type running switch: plays only once the flag is on, default off (BRO-5073)', () => {
+    assert.equal(RUNNING_MODEL_BAR_ENABLED, false);
+    assert.deepEqual(RUNNING_MODEL_BAR_TYPES, ['play']);
+    const on = { pct: [40, 55, 70], playedWeeks: 30, running: true, runningEnabled: true };
+    assert.equal(modelDisplayGuard({ ...on, showType: 'play' }).show, true);
+    assert.equal(modelDisplayGuard({ ...on, showType: 'musical' }).reason, 'awaiting-truth');
+    assert.equal(modelDisplayGuard({ ...on, showType: null }).reason, 'awaiting-truth');
+    assert.equal(modelDisplayGuard({ ...on, showType: 'musical', runningTypes: ['play', 'musical'] }).show, true);
+    // flag off: plays are held too; closed shows ignore the switch
+    assert.equal(modelDisplayGuard({ ...on, runningEnabled: false, showType: 'play' }).reason, 'awaiting-truth');
+    assert.equal(modelDisplayGuard({ ...on, running: false, showType: 'musical' }).show, true);
   });
   test('isRunning: open, or closing date still ahead', () => {
     const now = new Date('2026-10-10');
