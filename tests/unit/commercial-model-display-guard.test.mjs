@@ -166,3 +166,9 @@ test('launch switch off: a running show says "Not enough reported data yet"', ()
   assert.notEqual(getRecoupmentDisplayMode(applyModelDisplayGuard(recouped, running, now)), 'model');
   assert.equal(getModelHoldLabel({ ...applyModelDisplayGuard(recouped, running, now), status: 'open' }), null);
 });
+
+test('the pre-credit swap waits for the running bar: today nothing moves (BRO-5073)', () => {
+  const out = applyModelDisplayGuard(rec({ modelRecoupmentPct: [-12, 4, 18], modelReturnedExCreditPct: [-40, -20, -5] }), running, now);
+  assert.deepEqual(out.modelHeldRange, [-12, 4, 18]);
+  assert.equal(out.modelCreditBasis, undefined);
+});

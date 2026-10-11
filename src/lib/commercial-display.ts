@@ -18,7 +18,7 @@
 
 import type { ShowCommercial } from './data-types';
 import { getDesignationBadgeStyle, UNDISCLOSED_DESIGNATION, RECOUPED_UNDISCLOSED_DESIGNATION } from '@/config/commercial';
-import { modelDisplayGuard, playedWeeks, independentEstimate, isRunning } from '../../scripts/lib/model-display-guard';
+import { modelDisplayGuard, displayBasis, playedWeeks, independentEstimate, isRunning } from '../../scripts/lib/model-display-guard';
 
 export type RecoupmentDisplayMode = 'announced' | 'model' | 'none';
 
@@ -120,24 +120,30 @@ export function applyModelDisplayGuard(
   now: Date = new Date()
 ): ShowCommercial {
   if (!data.modelRecoupmentPct) return data;
+  const running = isRunning(show, now);
+  // Running shows: pre-credit unless the credit is cited (displayBasis, BRO-5073).
+  const basis = displayBasis({ pct: data.modelRecoupmentPct, exCreditPct: data.modelReturnedExCreditPct, creditCounted: data.modelTaxCreditCounted ?? 0, running });
+  const pct = basis.pct as [number, number, number];
+  const creditBasis = basis.creditBasis ? { modelCreditBasis: basis.creditBasis } : {};
   const g = modelDisplayGuard({
-    pct: data.modelRecoupmentPct,
+    pct,
     playedWeeks: show ? playedWeeks(show, now) : 0,
     independent: independentEstimate(data),
-    running: isRunning(show, now),
+    running,
   });
   if (!g.show) {
     // Far below 0 (Schmigadoon -169) hides the number, not the fact.
-    const below = g.reason === 'out-of-bounds' && data.modelRecoupmentPct[1] < 0;
+    const below = g.reason === 'out-of-bounds' && pct[1] < 0;
     return {
       ...data,
       modelRecoupmentPct: null,
-      modelHeldRange: data.modelRecoupmentPct,
+      modelHeldRange: pct,
       modelDisplayHold: g.reason ?? 'no-model',
+      ...creditBasis,
       ...(below ? { modelBelowCosts: true } : {}),
     };
   }
-  return { ...data, modelRecoupmentPct: g.shown as [number, number, number], ...(g.belowCosts ? { modelBelowCosts: true } : {}) };
+  return { ...data, modelRecoupmentPct: g.shown as [number, number, number], ...creditBasis, ...(g.belowCosts ? { modelBelowCosts: true } : {}) };
 }
 
 /**
@@ -292,6 +298,7 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
     // Display-guard outputs (applyModelDisplayGuard): the show-page bar reads these.
     ...(commercial.modelBelowCosts ? { modelBelowCosts: true } : {}),
     ...(commercial.modelDisplayHold ? { modelDisplayHold: commercial.modelDisplayHold } : {}),
+    ...(commercial.modelCreditBasis ? { modelCreditBasis: commercial.modelCreditBasis } : {}),
     modelBreakeven: commercial.modelBreakeven,
     modelDataQuality: commercial.modelDataQuality,
     modelMethod: commercial.modelMethod,

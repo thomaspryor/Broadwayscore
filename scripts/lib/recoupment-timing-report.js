@@ -36,6 +36,9 @@ function buildTimingRows({ shows, commercial, lookup, by, oldLibs, newLibs, newO
     if (!t) { skipped.untestable++; continue; }
     if (truth === 'reported' && t.truthClass !== 'reported') { skipped.inference++; continue; }
     const comm = hideRecoupment(rawComm);
+    // --opt=creditBasis: the new side scores the model on the truth's own
+    // tax-credit basis (pre-credit: no credit in the model at all).
+    const rowOpts = newOpts.creditBasis ? { ...newOpts, taxCreditPre: t.creditBasis === 'pre-credit' } : newOpts;
     const weekly = lookup.getWeeklyData(show.slug || show.id, show.id);
     for (const cp of t.checkpoints) {
       const cov = historyCoverage(weekly, show, cp.to);
@@ -44,7 +47,7 @@ function buildTimingRows({ shows, commercial, lookup, by, oldLibs, newLibs, newO
       if (!(weeks > 0) || cov.own / weeks < MIN_COVERAGE) { skipped.thinHistory++; continue; }
       const run = (libs, d, opts) => modelAt(libs, show, comm, lookup, d, opts);
       const oldA = run(oldLibs, cp.from); const oldB = cp.from === cp.to ? oldA : run(oldLibs, cp.to);
-      const newA = run(newLibs, cp.from, newOpts); const newB = cp.from === cp.to ? newA : run(newLibs, cp.to, newOpts);
+      const newA = run(newLibs, cp.from, rowOpts); const newB = cp.from === cp.to ? newA : run(newLibs, cp.to, rowOpts);
       const okOld = oldA.result && oldB.result;
       const okNew = newA.result && newB.result;
       if (okOld && !okNew) { skipped.newOnly++; continue; }
@@ -54,7 +57,7 @@ function buildTimingRows({ shows, commercial, lookup, by, oldLibs, newLibs, newO
       const c = (r) => shown(r.result.recoupmentPctCentral);
       const range = { lo: cp.lo, hi: cp.hi };
       rows.push({
-        slug: key, kind: `timing:${cp.label}`, truthClass: t.truthClass, ...category(show),
+        slug: key, kind: `timing:${cp.label}`, truthClass: t.truthClass, creditBasis: t.creditBasis, ...category(show),
         truth: [cp.lo, cp.hi], from: cp.from, to: cp.to, precision: t.announcement.precision,
         oldPct: c(oldB), newPct: c(newB), oldFrom: c(oldA), newFrom: c(newA),
         oldErr: windowError(c(oldA), c(oldB), range), newErr: windowError(c(newA), c(newB), range),
@@ -107,7 +110,7 @@ function runTiming({ shows, commercial, lookup, by, baseLib, newLib, newOpts = {
     if (!aggregateOnly) {
       console.log('Worst 10 (new side):');
       for (const r of [...rows].sort((a, b) => b.newErr - a.newErr).slice(0, 10)) {
-        console.log(`  ${r.slug} [${r.kind} ${r.from}..${r.to}, truth ${fmtTruth(r.truth)}]: ${r.newFrom}..${r.newPct} (error ${Math.round(r.newErr * 10) / 10}; cap ${r.capitalization}, cost ${r.weeklyCost} ${r.costSource}, ${r.playedWeeks} wk${r.displayable ? ', displayable' : ''})`);
+        console.log(`  ${r.slug} [${r.kind} ${r.from}..${r.to}, truth ${fmtTruth(r.truth)} ${r.creditBasis}]: ${r.newFrom}..${r.newPct} (error ${Math.round(r.newErr * 10) / 10}; cap ${r.capitalization}, cost ${r.weeklyCost} ${r.costSource}, ${r.playedWeeks} wk${r.displayable ? ', displayable' : ''})`);
       }
     }
     console.log(worse.length ? `WORSE in: ${worse.join(', ')}` : `No group${MIN_GROUP > 1 ? ` of ${MIN_GROUP}+ rows` : ''} got worse.`);

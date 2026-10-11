@@ -60,7 +60,10 @@ describe('"% returned so far" shadow fields (checker #1/#2)', () => {
     applyReturnedSoFarFields(comm, { recoupmentPctLow: -10, recoupmentPctCentral: 5, recoupmentPctHigh: 20, taxCreditExcluded: 3e6 });
     assert.deepStrictEqual(comm.modelReturnedExCreditPct, [-10, 5, 20]);
     assert.strictEqual(comm.modelTaxCreditExcluded, 3e6);
+    assert.strictEqual(comm.modelTaxCreditCounted, 0);
     assert.deepStrictEqual(comm.modelRecoupmentPct, [1, 2, 3]);
+    applyReturnedSoFarFields(comm, { recoupmentPctLow: 50, recoupmentPctCentral: 60, recoupmentPctHigh: 70, taxCreditApplied: 2.5e6 });
+    assert.strictEqual(comm.modelTaxCreditCounted, 2.5e6);
   });
   it('a failed or missing run clears stale values', () => {
     for (const bad of [null, { error: 'x' }, { recoupmentPctCentral: NaN }]) {

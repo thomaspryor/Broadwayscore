@@ -4,7 +4,7 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { modelDisplayGuard, displaysModel, playedWeeks, independentEstimate, isRunning } = require('../../scripts/lib/model-display-guard');
+const { modelDisplayGuard, displayBasis, displaysModel, playedWeeks, independentEstimate, isRunning } = require('../../scripts/lib/model-display-guard');
 
 describe('modelDisplayGuard', () => {
   test('Schmigadoon -169 is hidden, not printed', () => {
@@ -104,4 +104,16 @@ describe('displaysModel (mirrors getRecoupmentDisplayMode === "model")', () => {
     assert.equal(displaysModel({}, { status: 'open' }), false);
     assert.equal(displaysModel(null, { status: 'open' }), false);
   });
+});
+
+test('displayBasis: running shows use the pre-credit figure once running bars are on (BRO-5073)', () => {
+  const pct = [80, 90, 100];
+  const ex = [60, 70, 80];
+  // Bar off (today): live figure, no basis.
+  assert.deepEqual(displayBasis({ pct, exCreditPct: ex, creditCounted: 0, running: true }), { pct, creditBasis: null });
+  assert.deepEqual(displayBasis({ pct, exCreditPct: ex, creditCounted: 0, running: true, runningEnabled: true }), { pct: ex, creditBasis: 'pre-credit' });
+  assert.deepEqual(displayBasis({ pct, exCreditPct: ex, creditCounted: 3e6, running: true, runningEnabled: true }), { pct: ex, creditBasis: 'post-credit' });
+  // Closed shows and records without the run keep the live figure.
+  assert.deepEqual(displayBasis({ pct, exCreditPct: ex, running: false, runningEnabled: true }), { pct, creditBasis: null });
+  assert.deepEqual(displayBasis({ pct, exCreditPct: null, running: true, runningEnabled: true }), { pct, creditBasis: null });
 });

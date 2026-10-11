@@ -46,7 +46,7 @@ const { execFileSync } = require('child_process');
 const { groundTruth, rangeError, category, summarize, worseGroups, formatMarkdown, fmtTruth } = require('./lib/recoupment-ground-truth');
 const { displaysModel, playedWeeks, MIN_PLAYED_WEEKS } = require('./lib/model-display-guard');
 
-const KNOWN_OPTS = ['previewsFromWeekly', 'playedWeeksOnly', 'eraAdjust', 'taxCreditCitedOnly', 'datedCosts', 'ownRunOnly', 'costSplit', 'stepSmall', 'stepLate', 'costGrowth', 'reserveLag'];
+const KNOWN_OPTS = ['previewsFromWeekly', 'playedWeeksOnly', 'eraAdjust', 'taxCreditCitedOnly', 'datedCosts', 'ownRunOnly', 'costSplit', 'stepSmall', 'stepLate', 'costGrowth', 'reserveLag', 'creditBasis'];
 const args = process.argv.slice(2);
 const USAGE = `Usage: node scripts/backtest-recoupment-ground-truth.js (--opt=${KNOWN_OPTS.join('|')} [--opt=...] | --base=<git ref> | --timing) [--truth=reported|all] [--as-of-report] [--displayed] [--displayable-only] [--markdown] [--json] [--strict]`;
 if (require('./lib/cli-help').hasHelpFlag(args)) { console.log(USAGE); process.exit(0); }
@@ -133,7 +133,9 @@ for (const [key, comm] of Object.entries(commercial)) {
     continue;
   }
   const live = baseRun(show, comm, L, at);
-  const fixed = liveModelRun(show, comm, L, { ...OPTS, ...at });
+  // --opt=creditBasis: score the new side on the truth's tax-credit basis.
+  const basisOpts = OPTS.creditBasis ? { taxCreditPre: truth.creditBasis === 'pre-credit' } : {};
+  const fixed = liveModelRun(show, comm, L, { ...OPTS, ...basisOpts, ...at });
   if (at.asOf && live.tier !== 'weekly-model') { skipped.noModel++; continue; }
   // A row only the new side fails is a regression, not a skip: counted and blocking.
   if (live.result && !fixed.result) { skipped.newOnly++; continue; }
@@ -142,7 +144,7 @@ for (const [key, comm] of Object.entries(commercial)) {
   const oldPct = shown(live.result.recoupmentPctCentral);
   const newPct = shown(fixed.result.recoupmentPctCentral);
   rows.push({
-    slug: key, kind: truth.kind, truthClass: truth.truthClass, ...category(show),
+    slug: key, kind: truth.kind, truthClass: truth.truthClass, creditBasis: truth.creditBasis, ...category(show),
     truth: [truth.lo, truth.hi], oldPct, newPct,
     oldErr: rangeError(oldPct, truth), newErr: rangeError(newPct, truth),
     source: truth.source.slice(0, 80), ...(at.asOf ? { asOf: at.asOf } : {}),
@@ -197,7 +199,7 @@ if (args.includes('--json')) {
   if (listed === rows) console.log(`Under 10 displayable rows, so every row:`);
   for (const r of AGGREGATE_ONLY ? [] : listed) {
     const t = fmtTruth(r.truth);
-    console.log(`  ${r.slug} [${r.kind}, truth ${t}]: ${r.oldPct} -> ${r.newPct} (error ${Math.round(r.oldErr * 10) / 10} -> ${Math.round(r.newErr * 10) / 10})`);
+    console.log(`  ${r.slug} [${r.kind}, truth ${t} ${r.creditBasis}]: ${r.oldPct} -> ${r.newPct} (error ${Math.round(r.oldErr * 10) / 10} -> ${Math.round(r.newErr * 10) / 10})`);
   }
   console.log(worse.length ? `WORSE in: ${worse.join(', ')}` : `No group${MIN_GROUP > 1 ? ` of ${MIN_GROUP}+ rows` : ''} got worse.`);
   console.log(falseRecoupedLine);
