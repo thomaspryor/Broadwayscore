@@ -21,6 +21,7 @@ const { isCitedReportedWeeklyCost, REPORTED_COST_METHODOLOGIES } = require('./wa
 const { previewWeeksFromWeekly } = require('./preview-weeks');
 const { runWindow, weeksInOwnRun, COVID_DARK_START, COVID_DARK_END } = require('./run-window');
 const { taxCreditCited } = require('./tax-credit-cited');
+const { splitCosts } = require('./cost-split');
 
 // ---------------------------------------------------------------------------
 // Constants & Defaults
@@ -467,7 +468,11 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   }
 
   const category = classifyShow(show);
-  const baseVarRate = getBaseVariableRate(category);
+  // Shadow only (BRO-5073, opts.costSplit): fixed part of the cost and a
+  // larger gross-linked rate. The reserve and cap stay on the reported cost.
+  const split = opts.costSplit ? splitCosts(commercial, category, weeklyNut, getBaseVariableRate(category), THEATER_DEAL.pctOfGross) : null;
+  const baseVarRate = split ? split.varRate : getBaseVariableRate(category);
+  const runNut = split ? split.fixedNut : weeklyNut;
 
   // --- Star deal ---
   const slug = show.slug || show.id;
@@ -582,7 +587,7 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
       }
 
       const weekResult = calcWeeklyProfit(
-        week.gross, nutByWeek ? nutByWeek[i] : weeklyNut, baseVarRate, isPostRecoup, weekNum, week.isPreview, mult, weeklySchedule.length, show.type || 'musical', category
+        week.gross, nutByWeek ? nutByWeek[i] : runNut, baseVarRate, isPostRecoup, weekNum, week.isPreview, mult, weeklySchedule.length, show.type || 'musical', category
       );
 
       let weekProfit = weekResult.profit;
@@ -637,7 +642,7 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   // When gross is above theater breakpoint: gross × (1 - varRate - 0.07) + rentInNut = nut
   // → gross = (nut - rentInNut) / (1 - varRate - 0.07)
   // Simplified: gross = nut × (1 - rentPct) / (1 - varRate - theaterPct)
-  const breakeven = (weeklyNut * (1 - THEATER_DEAL.rentPctOfNut)) /
+  const breakeven = (runNut * (1 - THEATER_DEAL.rentPctOfNut)) /
     (1 - baseVarRate - THEATER_DEAL.pctOfGross);
 
   // --- Data quality ---
@@ -974,8 +979,10 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}
 
   const slug = show.slug || show.id;
   const category = classifyShow(show);
-  const baseVarRate = getBaseVariableRate(category);
   const weeklyNut = commercial.weeklyRunningCost || estimateWeeklyNut(show, commercial, { eraAdjust: false });
+  const split = opts.costSplit ? splitCosts(commercial, category, weeklyNut, getBaseVariableRate(category), THEATER_DEAL.pctOfGross) : null; // shadow, BRO-5073
+  const baseVarRate = split ? split.varRate : getBaseVariableRate(category);
+  const runNut = split ? split.fixedNut : weeklyNut;
 
   // Effective capitalization
   const svogGrant = KNOWN_SVOG[slug] || parseSvogFromNotes(commercial.notes) || 0;
@@ -1023,7 +1030,7 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}
   const totalGross = grossesAllTime.gross;
 
   // Theater overage as % of gross (simplified: flat rate since we don't have weekly data)
-  const theaterOverageRate = Math.max(0, THEATER_DEAL.pctOfGross - THEATER_DEAL.rentPctOfNut * weeklyNut / (totalGross / totalWeeks));
+  const theaterOverageRate = Math.max(0, THEATER_DEAL.pctOfGross - THEATER_DEAL.rentPctOfNut * runNut / (totalGross / totalWeeks));
 
   // Total variable cost rate (pre-recoup rate for most of the run is wrong —
   // long-runners recoup early, so most weeks are post-recoup with lower author royalties)
@@ -1038,7 +1045,7 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}
   // Average weekly nut over the run — deflate current nut by 2%/year for historical average
   const runYears = totalWeeks / 52;
   const avgNutDeflator = runYears > 3 ? (1 - Math.pow(0.98, runYears)) / (runYears * 0.02) : 1;
-  let avgWeeklyNut = weeklyNut * avgNutDeflator * 0.88; // 0.88 = phase 4 mature run
+  let avgWeeklyNut = runNut * avgNutDeflator * 0.88; // 0.88 = phase 4 mature run
   // Shadow only (BRO-4989 checker #3): the run's average of each week's
   // dated cost (costForWeek) replaces the flat 2%/year deflator.
   if (opts.datedCosts && datedCostsApply(show, commercial, warnings)) {

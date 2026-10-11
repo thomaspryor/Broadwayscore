@@ -1,0 +1,38 @@
+// Shadow cost split (BRO-5073, opts.costSplit). require()s the real helpers (§15).
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const { splitCosts, costBasis, EXTRA_VARIABLE } = require('../../scripts/lib/cost-split');
+const { calculateRecoupment } = require('../../scripts/lib/recoupment-model');
+
+test('costBasis: explicit field wins, then the source text, default running', () => {
+  assert.equal(costBasis({ weeklyRunningCostBasis: 'all-in', weeklyRunningCostSource: 'excluding royalties' }), 'all-in');
+  assert.equal(costBasis({ weeklyRunningCostSource: 'Variety: $1.3M a week all-in' }), 'all-in');
+  assert.equal(costBasis({ weeklyRunningCostSource: 'weekly cost, includes royalties' }), 'all-in');
+  assert.equal(costBasis({ weeklyRunningCostSource: 'pure operating nut ~$1.0-1.1M; earlier figure included amortization' }), 'running');
+  assert.equal(costBasis({ weeklyRunningCostSource: 'Early weeks roughly broke even at ~$944K net' }), 'running');
+  assert.equal(costBasis({}), 'running');
+});
+
+test('splitCosts: a running cost stays fixed; an all-in cost sheds its gross-linked share', () => {
+  const run = splitCosts({}, 'musical', 1e6, 0.11, 0.07);
+  assert.equal(run.varRate, 0.11 + EXTRA_VARIABLE.musical);
+  assert.equal(run.fixedNut, 1e6);
+  const allIn = splitCosts({ weeklyRunningCostBasis: 'all-in' }, 'musical', 1e6, 0.11, 0.07);
+  assert.ok(Math.abs(allIn.fixedNut - 1e6 * (1 - 0.16 - 0.07)) < 1e-6);
+  assert.equal(splitCosts({}, 'play', 5e5, 0.12, 0.07).varRate, 0.12);
+});
+
+test('calculateRecoupment ignores the split unless opts.costSplit is set', () => {
+  const weekly = {};
+  for (let i = 0; i < 60; i++) weekly[new Date(Date.UTC(2017, 0, 1 + 7 * i)).toISOString().slice(0, 10)] = { gross: 1600000 };
+  const show = { slug: 'x', type: 'musical', previewsStartDate: '2016-12-20', openingDate: '2017-01-10', closingDate: '2018-02-01' };
+  const comm = { capitalization: 12e6, weeklyRunningCost: 700000 };
+  const live = calculateRecoupment(show, comm, null, weekly);
+  const again = calculateRecoupment(show, comm, null, weekly, {});
+  const shadow = calculateRecoupment(show, comm, null, weekly, { costSplit: true });
+  assert.equal(live.recoupmentPctCentral, again.recoupmentPctCentral);
+  assert.ok(shadow.recoupmentPctCentral < live.recoupmentPctCentral);
+  assert.equal(shadow.weeklyFixedCosts, live.weeklyFixedCosts);
+});
