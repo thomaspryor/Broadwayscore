@@ -240,7 +240,7 @@ function buildAmbiguousSmashedPrefixSlugs() {
   const ambiguous = new Set();
   for (const [canonical, set] of ownByCanonical) {
     for (const prefix of set) {
-      if (prefix.length <= 5) continue; // the branch only considers aliases longer than 5
+      if (prefix.length < 3) continue; // the branch gates on the hyphenated length itself
       if (all.some(({ sm, canonical: other }) => other !== canonical && sm.length > prefix.length && sm.startsWith(prefix))) {
         ambiguous.add(prefix);
       }
