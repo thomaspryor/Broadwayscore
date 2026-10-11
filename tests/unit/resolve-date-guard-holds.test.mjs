@@ -63,3 +63,9 @@ test('CV affirm does not resolve a date past the 180-day backstop', () => {
   const d = resolveHoldDecision({ review: far, show, refetch: { ok: true, date: '2018-05-01' }, cv: { isValid: true, confidence: 'high' }, attempts: 2 });
   assert.equal(d.action, 'exhausted');
 });
+
+test('refuses files with an operator decision on them', () => {
+  for (const f of [{ _locked: true }, { wrongProductionOverride: true }, { wrongProductionManualClear: true }, { humanReviewedWrongProduction: false }, { publishDateVerified: true }]) {
+    assert.equal(resolveHoldDecision({ review: held(f), show, refetch: { ok: true, date: '2026-03-21' }, cv: null }).action, 'refuse');
+  }
+});
