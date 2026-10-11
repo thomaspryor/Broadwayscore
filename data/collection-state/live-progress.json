@@ -1,29 +1,131 @@
 {
-  "updatedAt": "2026-10-11T16:50:11.857Z",
-  "processed": 65,
-  "failed": 15,
-  "successRate": "81.3%",
+  "updatedAt": "2026-10-11T16:52:51.708Z",
+  "processed": 1484,
+  "failed": 586,
+  "successRate": "71.7%",
   "tierBreakdown": {
-    "playwright": 50,
-    "amp": 0,
-    "browserbase": 2,
-    "directCookies": 1,
-    "scrapingdog": 5,
-    "scrapingbee": 2,
+    "playwright": 1113,
+    "amp": 3,
+    "browserbase": 11,
+    "directCookies": 0,
+    "scrapingdog": 151,
+    "scrapingbee": 12,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 8
+    "archive": 161
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 0,
   "recentActivity": [
     {
-      "t": "2026-10-11T16:26:41.252Z",
+      "t": "2026-10-11T05:08:39.291Z",
       "event": "bb-session",
-      "session": "e55b6233",
-      "url": "https://www.nytimes.com/2019/03/07/theater/tartuffe-national-theater-equus-strat"
+      "session": "8b11b661",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
     },
     {
-      "t": "2026-10-11T16:26:41.651Z",
+      "t": "2026-10-11T05:10:46.890Z",
+      "event": "bb-session",
+      "session": "acb8286c",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-11T05:10:47.409Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-11T05:11:05.760Z",
+      "event": "bb-session",
+      "session": "2b0a6d28",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-11T05:11:06.214Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-11T05:36:50.030Z",
+      "event": "bb-session",
+      "session": "72f11a7b",
+      "url": "https://www.nytimes.com/2024/10/22/theater/dr-strangelove-armando-iannucci-veep."
+    },
+    {
+      "t": "2026-10-11T05:36:50.536Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-11T06:21:57.535Z",
+      "event": "bb-session",
+      "session": "39a29297",
+      "url": "https://bachtrack.com/review-romeo-and-juliet-macmillan-american-ballet-theatre-"
+    },
+    {
+      "t": "2026-10-11T06:22:15.445Z",
+      "event": "bb-session",
+      "session": "681185d5",
+      "url": "https://bachtrack.com/review-romeo-and-juliet-macmillan-american-ballet-theatre-"
+    },
+    {
+      "t": "2026-10-11T06:53:29.072Z",
+      "event": "bb-session",
+      "session": "7753f72c",
+      "url": "https://www.nytimes.com/2024/03/26/theater/opening-night-review-a-stylish-movie-"
+    },
+    {
+      "t": "2026-10-11T06:53:29.570Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-11T07:43:54.595Z",
+      "event": "bb-session",
+      "session": "b139ad84",
+      "url": "https://www.nytimes.com/2023/10/26/theater/lyonesse-review-lily-james-kristin-sc"
+    },
+    {
+      "t": "2026-10-11T07:43:54.932Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-11T08:43:30.834Z",
+      "event": "bb-session",
+      "session": "c5d95dd5",
+      "url": "https://bachtrack.com/review-the-crucible-helen-pickett-scottish-ballet-edinburg"
+    },
+    {
+      "t": "2026-10-11T08:43:49.016Z",
+      "event": "bb-session",
+      "session": "c7961db3",
+      "url": "https://bachtrack.com/review-the-crucible-helen-pickett-scottish-ballet-edinburg"
+    },
+    {
+      "t": "2026-10-11T08:51:41.096Z",
+      "event": "bb-session",
+      "session": "403f5756",
+      "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/"
+    },
+    {
+      "t": "2026-10-11T09:13:40.249Z",
+      "event": "bb-session",
+      "session": "fddee288",
+      "url": "https://www.nytimes.com/2023/05/19/theater/brokeback-mountain.html"
+    },
+    {
+      "t": "2026-10-11T09:13:40.683Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-11T09:13:58.964Z",
+      "event": "bb-session",
+      "session": "35a247de",
+      "url": "https://www.nytimes.com/2023/05/19/theater/brokeback-mountain.html"
+    },
+    {
+      "t": "2026-10-11T09:13:59.297Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
