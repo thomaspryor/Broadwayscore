@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-10T23:25:04.059Z",
+  "generatedAt": "2026-10-11T01:22:54.529Z",
   "shows": {
     "860": {
       "capitalization": null,
@@ -3975,6 +3975,70 @@
           "excerpt": "could recoup its $9.4 million of production costs soon after Labor Day"
         }
       ]
+    },
+    "proof": {
+      "capitalization": 6500000,
+      "capitalizationSource": "SEC Form D for Proof on Broadway Ltd Liability Co (total offering $6.5M; filing says minimum capitalization $5.5M and maximum capitalization $6.5M)",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Public Form D shows a $6.5M total offering (minimum capitalization $5.5M). Playbill's closing-week grosses story says Proof ended July 19, 2026 with a final-week gross of $934,472.69. I could not verify a public weekly nut or recoupment announcement.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "sec",
+          "url": "https://www.sec.gov/Archives/edgar/data/2098417/000209841725000001/xslFormDX01/primary_doc.xml",
+          "date": "2025-12-09"
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/proofs-final-week-was-standing-room-only-and-more-from-last-weeks-broadway-grosses",
+          "date": "2026-07-21"
+        }
+      ],
+      "title": "Proof",
+      "slug": "proof",
+      "openingDate": "2026-04-16",
+      "status": "closed",
+      "researchedAt": "2026-10-11T01:20:37.629Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual"
+    },
+    "the-music-man-2022": {
+      "capitalization": 24000000,
+      "capitalizationSource": "ArtsJournal quoting The New York Times reporting that the production had not yet recouped its $24 million capitalization costs.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Capitalization is publicly reported at $24M. BroadwayWorld also said the show received the full $3M NYC tax credit, but that does not by itself prove total capitalization. I could not verify a show-specific weekly running cost or a public recoupment confirmation before closing.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.artsjournal.com/calltime/2022/10/13/on-music-mans-closing-and-the-business-of-theatre/",
+          "date": "2022-10-13"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/NYS-Theater-Tax-Credit-Who-Benefits-and-How-20240220",
+          "date": "2024-02-20"
+        }
+      ],
+      "title": "The Music Man",
+      "slug": "the-music-man-2022",
+      "openingDate": "2022-02-10",
+      "status": "closed",
+      "researchedAt": "2026-10-11T01:22:54.529Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual"
     }
   },
   "lastUpdated": "2026-10-10T23:14:17.684Z"
