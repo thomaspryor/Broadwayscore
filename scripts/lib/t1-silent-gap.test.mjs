@@ -229,3 +229,34 @@ test('unscored email policy: never-dispatched never emails; fresh dispatch suppr
   assert.equal(shouldEmailUnscoredGap('2026-07-18T08:00:00Z', NOW), false); // 4h ago — scoring still in flight
   assert.equal(shouldEmailUnscoredGap('2026-07-18T05:00:00Z', NOW), true); // 7h ago and still gapped
 });
+
+// Real incident: School Girls nydailynews--chris-jones.json sat as a phantom
+// "unscored" gap for 12 days (and got an hourly scoring dispatch that found
+// nothing) because the classifier could not see the chicagotribune primary
+// next to it. The scorer and rebuild skip the secondary on purpose.
+test('known-syndication secondary beside its live primary is not a gap when filePath is given', async () => {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const path = await import('node:path');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'synd-'));
+  const body = Array.from({ length: 60 }, (_, i) => `Paragraph ${i}: the director shapes scene ${i} with a different comic rhythm and the ensemble answers each beat.`).join(' ');
+  const secondary = {
+    showId: 's', outletId: 'nydailynews', outlet: 'New York Daily News', criticName: 'Chris Jones',
+    url: 'https://www.nydailynews.com/2026/09/28/school-girls-african-mean-girls-play-review-broadway/', fullText: body, isFullReview: true,
+    contentTier: 'complete', textStatus: 'complete', textQuality: 'full', llmScore: null,
+    textFetchedAt: '2026-09-29T07:01:15.894Z',
+  };
+  const primary = { ...secondary, outletId: 'chicagotribune', outlet: 'Chicago Tribune',
+    url: 'https://www.chicagotribune.com/2026/09/28/school-girls-review-broadway/', llmScore: { score: 80 } };
+  fs.writeFileSync(path.join(dir, 'nydailynews--chris-jones.json'), JSON.stringify(secondary));
+  const fp = path.join(dir, 'nydailynews--chris-jones.json');
+  const args = { file: secondary, show: {}, tier: 2, outletScored: false, now: new Date('2026-10-11T12:00:00Z') };
+
+  // no primary on disk yet: still a real gap
+  assert.equal(classifySilentGap({ ...args, filePath: fp })?.type, 'unscored');
+  fs.writeFileSync(path.join(dir, 'chicagotribune--chris-jones.json'), JSON.stringify(primary));
+  assert.equal(classifySilentGap({ ...args, filePath: fp }), null);
+  // a primary that will not itself be scored must not hide the secondary
+  fs.writeFileSync(path.join(dir, 'chicagotribune--chris-jones.json'), JSON.stringify({ ...primary, wrongShow: true }));
+  assert.equal(classifySilentGap({ ...args, filePath: fp })?.type, 'unscored');
+});
