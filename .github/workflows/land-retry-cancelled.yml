@@ -21,6 +21,9 @@ name: Land retry on cancel
 # job walks every land/** ref: evicted ones get a full re-run, refused / red /
 # budget-spent ones are routed to the card they name. Logic + tests:
 # scripts/lib/land-stranded-refs{,.test}.
+# BRO-5100: the same hourly firing also runs the `reclaim` job: In Progress
+# cards whose claiming session died (no Linear activity for 48h, no live land
+# ref) go back to Todo. Logic + tests: scripts/lib/linear-reclaim-abandoned{,.test}.
 
 on:
   workflow_run:
@@ -35,11 +38,11 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'sweep (default) or stranded'
+        description: 'sweep (default), stranded, or reclaim'
         required: false
         default: 'sweep'
         type: choice
-        options: [sweep, stranded]
+        options: [sweep, stranded, reclaim]
 
 permissions:
   actions: write
@@ -48,7 +51,7 @@ permissions:
 jobs:
   sweep:
     name: Re-run one stranded Land job
-    if: github.event.schedule != '23 * * * *' && (github.event_name != 'workflow_dispatch' || inputs.mode != 'stranded')
+    if: github.event.schedule != '23 * * * *' && (github.event_name != 'workflow_dispatch' || inputs.mode == 'sweep')
     runs-on: ubuntu-latest
     timeout-minutes: 5
     concurrency:
@@ -117,4 +120,37 @@ jobs:
         with:
           title: 'Stranded land-ref pass failed'
           description: 'hourly pass could not read land refs or route stranded ones (BRO-4802)'
+          severity: 'warning'
+
+  reclaim:
+    name: Reclaim In Progress cards abandoned by dead sessions
+    if: github.event.schedule == '23 * * * *' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'reclaim')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      group: linear-reclaim-abandoned
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          sparse-checkout: |
+            scripts
+            .github/actions
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+      - name: Move abandoned In Progress cards back to Todo
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_FALLBACK_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          LINEAR_RECLAIM_KILL_SWITCH: ${{ vars.LINEAR_RECLAIM_KILL_SWITCH }}
+        run: node scripts/linear-reclaim-abandoned.js
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Abandoned-card reclaim failed'
+          description: 'hourly pass could not read Linear or land refs, or failed to move abandoned In Progress cards (BRO-5100)'
           severity: 'warning'
