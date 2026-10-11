@@ -28,7 +28,7 @@ const normalized = [];
 
 // Special cases where we want to keep the common name
 const KEEP_COMMON_NAME = {
-  'Harold and Miriam Steinberg Center for Theatre': 'Studio 54', // Everyone knows it as Studio 54
+  // (No Steinberg Center -> Studio 54 entry: different buildings, BRO-5080.)
 };
 
 data.shows.forEach(show => {

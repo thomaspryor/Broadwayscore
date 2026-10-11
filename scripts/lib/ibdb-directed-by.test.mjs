@@ -18,4 +18,8 @@ test('a plain "Directed by" credit anywhere in the list still counts', () => {
   assert.deepEqual(directors('Directed by Bartlett Sher'), ['Bartlett Sher']);
   assert.deepEqual(directors('Book by A Writer; Directed by Gedalia Besser; Choreographed by C Person'), ['Gedalia Besser']);
   assert.deepEqual(directors('Written by Sharr White\nDirected by Bartlett Sher'), ['Bartlett Sher']);
+  assert.deepEqual(directors('Music by Jule Styne Directed by Jerome Robbins'), ['Jerome Robbins']);
+  assert.deepEqual(directors('Entire production directed by George Abbott'), ['George Abbott']);
+  assert.deepEqual(directors('Original production directed by Moss Hart; Directed by Howard Davies'), ['Howard Davies']);
+  assert.deepEqual(directors('Fight directed by B. H. Barry; Directed by Jane Roe'), ['Jane Roe']);
 });

@@ -38,7 +38,8 @@ const COHORTS = {
   'broadway-historical': {
     label: 'Broadway historical backfill (tag "historical")',
     market: 'Broadway (New York)',
-    filter: (s) => isBroadwayCategory(s) && Array.isArray(s.tags) && s.tags.includes('historical')
+    // An explicit category only: isBroadwayCategory also admits a null one.
+    filter: (s) => !!s.category && isBroadwayCategory(s) && Array.isArray(s.tags) && s.tags.includes('historical')
       && !String(s.discoverySource || '').startsWith('we-historical'),
     stratum: (s) => {
       const y = parseInt(String(s.openingDate || s.previewsStartDate || '').slice(0, 4), 10);
