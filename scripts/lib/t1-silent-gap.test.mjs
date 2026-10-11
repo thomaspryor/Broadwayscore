@@ -260,3 +260,21 @@ test('known-syndication secondary beside its live primary is not a gap when file
   fs.writeFileSync(path.join(dir, 'chicagotribune--chris-jones.json'), JSON.stringify({ ...primary, wrongShow: true }));
   assert.equal(classifySilentGap({ ...args, filePath: fp })?.type, 'unscored');
 });
+
+// Real incident shape (2026-10-11): a BWW 'Video-...-Trailer-Released' news item
+// filed as a T2 broadwayworld review sat as an 'unscored' gap although the
+// discovery URL classifier already rejects it.
+test('a URL the discovery classifier rejects is a correct absence, not an unscored gap', () => {
+  const body = Array.from({ length: 30 }, (_, i) => `Trailer note ${i}: the cast and creative team are announced for the new run.`).join(' ');
+  const video = {
+    url: 'https://www.broadwayworld.com/westend/article/Video-MILLION-DOLLAR-QUARTET-Trailer-Released-20260908',
+    outletId: 'broadwayworld', criticName: 'BWW News Desk', fullText: body, contentTier: 'complete',
+    textStatus: 'complete', textFetchedAt: '2026-09-09T07:00:00.000Z', llmScore: null,
+  };
+  assert.equal(classify(video, { tier: 2, now: new Date('2026-10-11T12:00:00Z') }), null);
+  // a real review URL with the same shape of file is still a gap
+  const real = { ...video, outletId: 'nydailynews', criticName: 'Jane Doe', url: 'https://www.nydailynews.com/2026/09/08/million-dollar-quartet-review-west-end/' };
+  assert.equal(classify(real, { tier: 2, now: new Date('2026-10-11T12:00:00Z') })?.type, 'unscored');
+  // no URL at all is never judged by this rule
+  assert.notEqual(classify({ ...video, url: '' }, { tier: 2, now: new Date('2026-10-11T12:00:00Z') })?.type, undefined);
+});
