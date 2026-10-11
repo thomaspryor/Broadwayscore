@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-11T22:59:19.730Z",
+  "generatedAt": "2026-10-11T23:16:45.039Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 100,
+    "avgScoreDiff": 3
   },
   "syndicationPairs": [
     {
@@ -84,7 +84,7 @@
         "washington-times",
         "minneapolis-star-tribune"
       ],
-      "count": 0
+      "count": 1
     },
     {
       "critic": "jennifer farrar",
@@ -96,7 +96,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Mark Kennedy",
+      "showId": "gore-vidals-the-best-man-2012",
+      "primaryOutlet": "ap",
+      "secondaryOutlet": "sfgate",
+      "primaryFile": "ap--mark-kennedy.json",
+      "secondaryFile": "sfgate--mark-kennedy.json",
+      "similarity": 100,
+      "primaryScore": 89,
+      "secondaryScore": 86,
+      "scoreDiff": 3
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",
