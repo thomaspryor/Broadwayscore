@@ -1,33 +1,21 @@
 {
-  "updatedAt": "2026-10-11T06:38:28.141Z",
-  "processed": 596,
-  "failed": 336,
-  "successRate": "63.9%",
+  "updatedAt": "2026-10-11T07:11:02.886Z",
+  "processed": 671,
+  "failed": 361,
+  "successRate": "65.0%",
   "tierBreakdown": {
-    "playwright": 371,
-    "amp": 9,
-    "browserbase": 6,
+    "playwright": 434,
+    "amp": 12,
+    "browserbase": 8,
     "directCookies": 0,
-    "scrapingdog": 73,
-    "scrapingbee": 69,
+    "scrapingdog": 76,
+    "scrapingbee": 76,
     "brightdata": 16,
     "archiveToday": 0,
-    "archive": 96
+    "archive": 100
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-10-11T04:01:03.203Z",
-      "event": "bb-session",
-      "session": "7e1515e7",
-      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
-    },
-    {
-      "t": "2026-10-11T04:01:12.102Z",
-      "event": "bb-session",
-      "session": "9e41c06a",
-      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
-    },
     {
       "t": "2026-10-11T04:03:31.948Z",
       "event": "bb-session",
@@ -128,6 +116,17 @@
       "event": "bb-session",
       "session": "681185d5",
       "url": "https://bachtrack.com/review-romeo-and-juliet-macmillan-american-ballet-theatre-"
+    },
+    {
+      "t": "2026-10-11T06:53:29.072Z",
+      "event": "bb-session",
+      "session": "7753f72c",
+      "url": "https://www.nytimes.com/2024/03/26/theater/opening-night-review-a-stylish-movie-"
+    },
+    {
+      "t": "2026-10-11T06:53:29.570Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
