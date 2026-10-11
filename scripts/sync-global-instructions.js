@@ -37,7 +37,8 @@ function arg(name, fallback) {
     const skipped = r.skipped.map((s) => `${s.name} (${s.reason})`).join(', ');
     console.log(`global instructions: installed ${r.installed.join(', ') || 'none'}`
       + (r.unchanged.length ? `; unchanged ${r.unchanged.join(', ')}` : '')
-      + (skipped ? `; skipped ${skipped}` : ''));
+      + (skipped ? `; skipped ${skipped}` : '')
+      + (r.warnings.length ? `; WARNING ${r.warnings.join(', ')}` : ''));
   } catch (err) {
     console.log(`global instructions: install failed: ${String(err.message).split('\n')[0]}`);
   }
