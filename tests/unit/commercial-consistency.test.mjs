@@ -61,3 +61,18 @@ test('recoupedDateNoteConflicts flags a note month that differs from recoupedDat
   };
   assert.deepEqual(recoupedDateNoteConflicts(records), [{ slug: 'six', recoupedDate: '2022-12', note: 'Recouped as of Dec 2021' }]);
 });
+
+test('recoupedDateNoteConflicts reads real note phrasings and skips non-recoup dates (BRO-5073)', () => {
+  const flags = (notes, recoupedDate) => recoupedDateNoteConflicts({ x: { recoupedDate, notes } }).length;
+  // Parenthetical, decimal amount, long lead-in, "Month, year" and yearless "Month day" all parse.
+  assert.equal(flags('Recouped about 16 months after opening (May 2023).', '2023-09'), 1);
+  assert.equal(flags('Recouped about 16 months after opening (May 2023).', '2023-05'), 0);
+  assert.equal(flags('Recouped its $16 million investment in December 2014', '2015-06'), 1);
+  assert.equal(flags('Recouped its $1.5M investment in May, 2023', '2023-01'), 1);
+  assert.equal(flags('Recouped its $22M investment in the week ending Dec 28', '2025-03'), 1);
+  assert.equal(flags('Recouped its $22M investment in the week ending Dec 28', '2024-12'), 0);
+  // Opening dates, future tense and "decade" are not recoupment dates.
+  assert.equal(flags('Recouped 8 months after March 2017 opening', '2017-11'), 0);
+  assert.equal(flags('Expected to recoup by May 2024', '2024-09'), 0);
+  assert.equal(flags('Will recoup within a decade 2010', '2012-01'), 0);
+});

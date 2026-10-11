@@ -1,8 +1,8 @@
 // Guards the recoupment-estimate labels (task #41 "15926% recouped" bug;
 // BRO-4623 P0-1 removed the "~Nx returned to investors" regime).
 //
-// The model's modelRecoupmentPct is a percent of capitalization NET of SVOG
-// grants plus a reserve. It is not an investor return: Hamilton's 15926%
+// The model's modelRecoupmentPct is a percent of capitalization plus a reserve
+// (SVOG grants were netted off until BRO-5073). It is not an investor return: Hamilton's 15926%
 // rendered as "~159.3x returned to investors" and Chicago's as ~958x, neither
 // of which any source reports. Past 100% the label now only says "100%+",
 // always as an estimate, with the range.

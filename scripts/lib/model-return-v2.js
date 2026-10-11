@@ -64,6 +64,7 @@ function modelReturnV2(result, show, now = Date.now()) {
   if (!result || result.error) return null;
   const cap = result.capitalization;
   if (!(cap > 0)) return null;
+  // 0 unless the model ran with opts.svogCredit (BRO-5073: SVOG is off the cap by default).
   const svog = result.svogGrant || 0;
   const closed = isClosed(show, now);
   const reserve = closed ? 0 : (result.reserveFund || 0);

@@ -458,8 +458,8 @@ export function getRecoupmentAttribution(commercial: ShowCommercial): Recoupment
 /**
  * Investor multiple for the /biz Return column: only a figure the record
  * reports (investorMultiple) on a record with a trade/SEC source. The model's
- * percent-of-capitalization is NOT an investor return (its denominator nets
- * out SVOG grants and adds a reserve, which put Chicago at ~958x), so there is
+ * percent-of-capitalization is NOT an investor return (its denominator adds a
+ * reserve, and once netted out SVOG grants, which put Chicago at ~958x), so there is
  * no modeled fallback.
  */
 export function getReportedInvestorMultiple(

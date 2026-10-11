@@ -79,13 +79,23 @@ test('SVOG is off the cap unless svogCredit; costSourcedOnly is shadow (BRO-5073
   assert.equal(calculateRecoupment(show, cited, null, weekly, { asOf: new Date('2023-03-01'), costSourcedOnly: true }).dataQuality, 'high');
 });
 
-const commercialPath = new URL('../../data/commercial.json', import.meta.url);
+// The model looks its slug-keyed tables up by `show.slug || show.id` (recoupment-model.js), so check
+// keys against that namespace. public/data/search-shows.json is committed, so this runs in CI
+// (data/ is not checked out there); data/commercial.json is checked too when present.
 const fs = require('fs');
-test('every slug-keyed table in the recoupment model names a commercial.json record (BRO-5073)', { skip: !fs.existsSync(commercialPath) && 'data/commercial.json not available' }, () => {
+const searchShowsPath = new URL('../../public/data/search-shows.json', import.meta.url);
+const commercialPath = new URL('../../data/commercial.json', import.meta.url);
+test('every slug-keyed table in the recoupment model names a real show (BRO-5073)', () => {
   const { KNOWN_SVOG, KNOWN_STAR_DEALS } = require('../../scripts/lib/recoupment-model');
-  const records = JSON.parse(fs.readFileSync(commercialPath, 'utf8')).shows;
-  const unmatched = [...Object.keys(KNOWN_SVOG), ...Object.keys(KNOWN_STAR_DEALS)].filter((k) => !records[k]);
-  assert.deepEqual(unmatched, []);
+  const keys = [...Object.keys(KNOWN_SVOG), ...Object.keys(KNOWN_STAR_DEALS)];
+  assert.ok(keys.length > 0);
+  const shows = JSON.parse(fs.readFileSync(searchShowsPath, 'utf8'));
+  const names = new Set((Array.isArray(shows) ? shows : shows.shows).flatMap((s) => [s.slug, s.id]));
+  assert.deepEqual(keys.filter((k) => !names.has(k)), [], 'not a show slug or id');
+  if (fs.existsSync(commercialPath)) {
+    const records = JSON.parse(fs.readFileSync(commercialPath, 'utf8')).shows;
+    assert.deepEqual(keys.filter((k) => !records[k]), [], 'no commercial.json record');
+  }
 });
 
 test('fixedNutFromBasis: running unchanged, breakeven inverts the model breakeven, all-in sheds gross-linked costs (BRO-5093)', () => {
