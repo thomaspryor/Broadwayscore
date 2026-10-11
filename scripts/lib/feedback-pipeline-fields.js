@@ -30,6 +30,11 @@ const FEEDBACK_EDITABLE_FIELDS = {
     // takes it again). Add-only: rejectedUrlsValueProblem refuses a plan that
     // drops a URL, so a wrongly added one is removed by a direct data commit.
     'rejectedImageUrls',
+    // BRO-5022: {at, reason, key} or null. Marks a row whose art search found
+    // nothing reliable, so the --missing sweep and the imageless self-heal
+    // stop refilling it with the next wrong hit. execute-approved-fix checks
+    // the shape and the key (lib/no-reliable-art.js).
+    'noReliableArt',
   ],
   // recoupedDate/recoupedSource/sources: a recoupment correction needs all
   // three (validate-data.js requires recoupedDate when recouped=true). The

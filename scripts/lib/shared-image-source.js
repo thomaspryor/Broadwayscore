@@ -279,8 +279,27 @@ function isOwnSiteSource(...urls) {
   });
 }
 
+// Shops and pin boards sell or re-pin art for any production with the title
+// (a Broadway poster on Amazon got onto a closed London Noises Off, BRO-5022).
+// The old inline check tested only the hostname against "amazon.com/dp", so
+// Amazon never matched. Takes the URL, page or bare domain; any one matching
+// marks the hit as a shop.
+// Whole host labels only, so a theatre named "Betsy" or "WeeBay" is not a shop.
+const SHOP_HOST_RE = /(^|\.)(ebay|ebayimg|etsy|etsystatic|pinterest|pinimg|redbubble|teepublic|zazzle)\.|(^|\.)amazon\.[a-z.]+$/i;
+function isShoppingSource(...urls) {
+  return urls.some(u => {
+    if (typeof u !== 'string' || !u) return false;
+    const url = u.replace(/^google-images:/, '');
+    if (/amazon\.[a-z.]+\/(?:[^/?#]+\/)?(?:dp|gp\/product)\//i.test(url)) return true;
+    let host = url;
+    try { host = new URL(/^https?:\/\//i.test(url) ? url : `https://${url}`).hostname; } catch { /* bare text */ }
+    return SHOP_HOST_RE.test(host.toLowerCase());
+  });
+}
+
 module.exports = {
   isOwnSiteSource,
+  isShoppingSource,
   todaytixIdOwner,
   showScoreArtEligible,
   titleMatchesSlug,

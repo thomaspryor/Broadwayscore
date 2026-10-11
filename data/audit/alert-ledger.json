@@ -156,12 +156,13 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-11T06:56:42.700Z",
-      "lastSeen": "2026-10-11T06:56:42.700Z",
+      "lastSeen": "2026-10-11T07:31:55.308Z",
       "lastNotifiedAt": "2026-10-11T06:56:42.700Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 130,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -3212,13 +3213,13 @@
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
       "incidentOpenedAt": "2026-10-08T11:25:20.258Z",
-      "lastSeen": "2026-10-11T00:26:36.068Z",
+      "lastSeen": "2026-10-11T07:32:53.472Z",
       "lastNotifiedAt": "2026-10-10T12:50:04.202Z",
       "lastSurfacedAt": "2026-10-09T12:26:47.818Z",
       "notifyCount": 21,
       "cardId": null,
       "linearIdentifier": "BRO-4515",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
@@ -3226,13 +3227,13 @@
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
       "incidentOpenedAt": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-10-11T00:26:36.079Z",
+      "lastSeen": "2026-10-11T07:32:53.484Z",
       "lastNotifiedAt": "2026-10-10T12:50:04.220Z",
       "lastSurfacedAt": "2026-10-09T12:26:47.835Z",
       "notifyCount": 23,
       "cardId": null,
       "linearIdentifier": "BRO-4501",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3484,13 +3485,13 @@
       "title": "Corpus drift: maybeUpgradeUrl() swapped a review URL for a PRIOR production of the same revived show (#1416)",
       "firstSeen": "2026-09-17T11:13:02.794Z",
       "incidentOpenedAt": "2026-09-17T11:13:02.794Z",
-      "lastSeen": "2026-10-11T00:26:36.083Z",
+      "lastSeen": "2026-10-11T07:32:53.489Z",
       "lastNotifiedAt": "2026-10-10T22:36:40.025Z",
       "lastSurfacedAt": "2026-10-10T22:36:40.025Z",
       "notifyCount": 15,
       "cardId": null,
       "linearIdentifier": "BRO-5015",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-publish-date-pre-opening:missing:thelma-and-louise-a-new-musical-off-west-end-2026": {
       "status": "open",
@@ -3904,13 +3905,13 @@
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
       "incidentOpenedAt": "2026-10-05T11:20:30.123Z",
-      "lastSeen": "2026-10-11T00:26:36.059Z",
+      "lastSeen": "2026-10-11T07:32:53.463Z",
       "lastNotifiedAt": "2026-10-10T22:36:39.988Z",
       "lastSurfacedAt": "2026-10-06T13:33:30.414Z",
       "notifyCount": 19,
       "cardId": null,
       "linearIdentifier": "BRO-4795",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "resolved",
@@ -4277,13 +4278,13 @@
       "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
       "firstSeen": "2026-09-21T09:41:19.072Z",
       "incidentOpenedAt": "2026-10-09T12:26:41.876Z",
-      "lastSeen": "2026-10-11T00:26:36.053Z",
+      "lastSeen": "2026-10-11T07:32:53.457Z",
       "lastNotifiedAt": "2026-10-10T12:50:04.179Z",
       "lastSurfacedAt": "2026-10-09T12:26:41.876Z",
       "notifyCount": 16,
       "cardId": null,
       "linearIdentifier": "BRO-4932",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "test-yml:red:E2E Tests:c58b7c79": {
       "status": "resolved",
@@ -5861,13 +5862,13 @@
       "title": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
       "firstSeen": "2026-09-28T19:21:55.577Z",
       "incidentOpenedAt": "2026-10-07T01:51:51.676Z",
-      "lastSeen": "2026-10-11T00:26:36.036Z",
+      "lastSeen": "2026-10-11T07:32:53.440Z",
       "lastNotifiedAt": "2026-10-10T12:50:04.152Z",
       "lastSurfacedAt": "2026-10-10T12:50:04.152Z",
       "notifyCount": 10,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "test-yml:red:Unit Tests:ee08ae2a": {
       "status": "resolved",
@@ -5926,13 +5927,13 @@
       "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff)",
       "firstSeen": "2026-09-28T19:48:00.401Z",
       "incidentOpenedAt": "2026-09-28T19:48:00.401Z",
-      "lastSeen": "2026-10-11T00:26:36.044Z",
+      "lastSeen": "2026-10-11T07:32:53.449Z",
       "lastNotifiedAt": "2026-10-10T22:36:39.965Z",
       "lastSurfacedAt": "2026-10-10T22:36:39.965Z",
       "notifyCount": 12,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-4236-prompt-blocker": {
       "status": "resolved",
@@ -9155,13 +9156,13 @@
       "title": "Corpus drift: live reviews on look-alike/blocked hosts, look-alike registry aliases, or undecided provisional outlets",
       "firstSeen": "2026-10-03T11:51:42.151Z",
       "incidentOpenedAt": "2026-10-03T11:51:42.151Z",
-      "lastSeen": "2026-10-11T00:26:36.064Z",
+      "lastSeen": "2026-10-11T07:32:53.468Z",
       "lastNotifiedAt": "2026-10-10T22:36:39.995Z",
       "lastSurfacedAt": "2026-10-10T22:36:39.995Z",
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "broadcast-gate:checklist:hay-fever-west-end-2026": {
       "status": "open",
@@ -11932,13 +11933,13 @@
       "title": "Corpus drift: an auto-clear bypass silently overriding a unanimous LLM-ensemble content rejection",
       "firstSeen": "2026-10-08T11:25:20.264Z",
       "incidentOpenedAt": "2026-10-08T11:25:20.264Z",
-      "lastSeen": "2026-10-11T00:26:36.072Z",
+      "lastSeen": "2026-10-11T07:32:53.477Z",
       "lastNotifiedAt": "2026-10-10T12:50:04.209Z",
       "lastSurfacedAt": "2026-10-10T12:50:04.209Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "opening-night-remediation-exhausted-t1-missing:into-the-woods-noel-coward-west-end-2026": {
       "status": "open",
@@ -13594,24 +13595,17 @@
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Design Token Drift Guard / Lint design tokens",
-      "firstSeen": "2026-10-11T06:36:05.649Z",
-      "incidentOpenedAt": "2026-10-11T06:36:05.649Z",
-      "lastSeen": "2026-10-11T06:56:42.693Z",
-      "lastNotifiedAt": "2026-10-11T06:36:05.649Z",
+      "firstSeen": "2026-10-11T06:47:48.163Z",
+      "incidentOpenedAt": "2026-10-11T06:47:48.163Z",
+      "lastSeen": "2026-10-11T06:47:48.163Z",
+      "lastNotifiedAt": "2026-10-11T06:47:48.163Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5037",
-      "dispatch": {
-        "requestedAt": "2026-10-11T06:36:05.649Z",
-        "mode": "dispatch-at-filing",
-        "runId": "38117583888",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38117583888"
-      },
-      "silentRefires": 1
+      "linearIdentifier": "BRO-5037"
     },
     "land:land/bro-5022-strict-google-images": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-5022-strict-google-images",
       "firstSeen": "2026-10-11T06:38:38.246Z",
@@ -13621,20 +13615,8 @@
       "lastSurfacedAt": "2026-10-11T06:38:38.246Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
-    },
-    "test-yml:red:Design Token Drift Guard:621920d2": {
-      "status": "open",
-      "disposition": "auto",
-      "title": "main test.yml red: Design Token Drift Guard / Lint design tokens",
-      "firstSeen": "2026-10-11T06:47:48.163Z",
-      "incidentOpenedAt": "2026-10-11T06:47:48.163Z",
-      "lastSeen": "2026-10-11T06:47:48.163Z",
-      "lastNotifiedAt": "2026-10-11T06:47:48.163Z",
-      "lastSurfacedAt": null,
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": "BRO-5037"
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-11T07:40:23.943Z"
     }
   }
 }

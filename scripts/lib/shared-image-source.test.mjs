@@ -8,7 +8,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   sourceBase, isPlaceholderSource, mayShareSource, buildSourceIndex, addToSourceIndex,
-  sourceConflict, stripConflictingSources, findSharedSources, showScoreArtEligible, todaytixIdOwner, titleMatchesSlug, isOwnSiteSource,
+  sourceConflict, stripConflictingSources, findSharedSources, showScoreArtEligible, todaytixIdOwner, titleMatchesSlug, isOwnSiteSource, isShoppingSource,
 } = require('./shared-image-source.js');
 
 const SS_OLD = 'https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/841/medium_Hughie180.jpg';
@@ -231,4 +231,36 @@ test('isOwnSiteSource: our own pages are never a poster source', () => {
   assert.equal(isOwnSiteSource('https://playbill.com/x?u=https://broadwayscorecard.com/show/y'), false);
   assert.equal(isOwnSiteSource('https://notbroadwayscorecard.com/x'), false);
   assert.equal(isOwnSiteSource(undefined, ''), false);
+});
+
+test('isShoppingSource: shops match on the bare domain as well as the URL (BRO-5022)', () => {
+  // The Noises Off hit: Google gives domain "amazon.com", which the old
+  // "amazon\.com\/dp" domain test never matched.
+  assert.equal(isShoppingSource('amazon.com'), true);
+  assert.equal(isShoppingSource(null, 'https://www.amazon.co.uk/Noises-Off-Poster/dp/B01ABC'), true);
+  assert.equal(isShoppingSource('google-images:https://www.amazon.com/gp/product/B01ABC'), true);
+  assert.equal(isShoppingSource('https://i.ebayimg.com/images/g/x/s-l1600.jpg'), true);
+  assert.equal(isShoppingSource('www.etsy.com'), true);
+  assert.equal(isShoppingSource('https://i.pinimg.com/736x/a/b.jpg'), true);
+  assert.equal(isShoppingSource('redbubble.com', 'https://www.redbubble.com/i/poster/x'), true);
+  // IMDb's image CDN and ordinary theatre pages are not shops.
+  assert.equal(isShoppingSource('https://m.media-amazon.com/images/M/x.jpg'), false);
+  assert.equal(isShoppingSource('https://www.oldvictheatre.com/whats-on/2019/noises-off'), false);
+  assert.equal(isShoppingSource('playbill.com', 'https://playbill.com/article/amazon-review'), false);
+  assert.equal(isShoppingSource(undefined, ''), false);
+  // Whole host labels only: theatres whose names contain a shop name are not shops.
+  assert.equal(isShoppingSource('https://www.betsytheatre.org/poster.jpg'), false);
+  assert.equal(isShoppingSource('theetsytheatre.org'), false);
+  assert.equal(isShoppingSource('weebay-theatre.com'), false);
+  assert.equal(isShoppingSource('https://www.pinterest.co.uk/pin/123/'), true);
+  assert.equal(isShoppingSource('https://i.etsystatic.com/1/r/il/x.jpg'), true);
+});
+
+test('fetch scripts use the shared shop check, never an inline domain regex (BRO-5022)', async () => {
+  const fs = await import('node:fs');
+  for (const f of ['../fetch-show-images-auto.js', '../fetch-square-images.js']) {
+    const src = fs.readFileSync(new URL(f, import.meta.url), 'utf8');
+    assert.match(src, /isShoppingSource\(/, f);
+    assert.doesNotMatch(src, /ebay\|etsy/, `${f} still has an inline shop regex`);
+  }
 });
