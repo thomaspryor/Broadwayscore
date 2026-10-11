@@ -53,4 +53,20 @@ function extractCriticName(html) {
   return m ? m[1].trim() : null;
 }
 
-module.exports = { isForumThreadUrl, extractReviewPageUrl, extractCriticName, FORUM_URL_RE };
+// Own retry budget, separate from aggUrlRecoveryCount / the refetch breaker:
+// those were spent re-fetching the SAME forum-thread URL, which can never yield
+// the review (the thread only holds a teaser + a "Link" anchor). Good Time
+// Charlie, Cosi Fan Tutte, Human Things and Mystic Pizza all sat at the cap
+// after 3 pointless same-URL refetches, so the one tool that works
+// (recover-talkinbroadway-forum-links.js) was never reached.
+const FORUM_RECOVERY_CAP = 3;
+
+function isForumLinkRecoverable(file, cap = FORUM_RECOVERY_CAP) {
+  if (!file || !isForumThreadUrl(file.url)) return false;
+  if ((file.forumLinkRecoveryCount || 0) >= cap) return false;
+  // Same merge-safety / empty-body checks as the generic path, minus its
+  // same-URL retry counter (cap Infinity disables only that check).
+  return require('./flagged-recovery').isRecoverableFlaggedFile(file, Infinity);
+}
+
+module.exports = { isForumThreadUrl, isForumLinkRecoverable, FORUM_RECOVERY_CAP, extractReviewPageUrl, extractCriticName, FORUM_URL_RE };

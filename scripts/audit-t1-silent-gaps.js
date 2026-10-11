@@ -54,6 +54,7 @@ const {
   DEFAULT_REFETCH_CONFIG,
 } = require('./lib/refetch-circuit-breaker');
 const { dispatchRescore } = require('./lib/dispatch-rescore');
+const { isForumThreadUrl, isForumLinkRecoverable, FORUM_RECOVERY_CAP } = require('./lib/talkinbroadway-forum-link');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { routeAlert, resolveCondition, loadLedger } = require('./lib/owner-alert-router');
 const { execErrorDetail } = require('./lib/exec-error-detail');
@@ -92,6 +93,9 @@ const has = (name) => args.includes(`--${name}`);
 const WINDOW_DAYS = parseInt(opt('window', '45'), 10);
 const MIN_AGE_DAYS = parseInt(opt('min-age-days', '2'), 10);
 const FETCH_CAP = parseInt(opt('fetch-cap', '10'), 10);
+// Forum-thread recovery runs a whole-show script (several BD fetches each), so it
+// gets its own small per-run cap on top of the per-file lifetime cap.
+const FORUM_RECOVERY_PER_RUN = parseInt(opt('forum-recovery-per-run', '2'), 10);
 const ONLY_SHOW = opt('show', null);
 const DO_RECOVER = has('recover');
 const DO_ALERT = has('alert');
@@ -191,11 +195,39 @@ function recoverFromOwnUrl(showId, fileName, d, show) {
   return { attempted: true, ok, reason };
 }
 
+// Talkin' Broadway forum-thread stubs (allthatchat_new/d.php): the thread holds
+// only a teaser + a "Link" anchor to the real review page, so re-fetching the
+// stored URL (recoverFromOwnUrl) can never recover text. Run the script built
+// for it, once per show per run. The counter is bumped BEFORE the run so a
+// crash mid-fetch still spends the slot; on success the script deletes the
+// husk and writes the real review file.
+function recoverForumThread(showId, fileName) {
+  const fp = path.join(REVIEW_TEXTS_DIR, showId, fileName);
+  try {
+    const cur = JSON.parse(fs.readFileSync(fp, 'utf8'));
+    cur.forumLinkRecoveryCount = (cur.forumLinkRecoveryCount || 0) + 1;
+    cur.forumLinkRecoveryAt = new Date().toISOString();
+    safeWriteReview(fp, cur);
+  } catch { /* best-effort */ }
+  let ok = true; let reason = null;
+  try {
+    execFileSync('node', [path.join(ROOT, 'scripts', 'recover-talkinbroadway-forum-links.js'),
+      `--show=${showId}`, `--data-dir=${REVIEW_TEXTS_DIR}`], { stdio: 'pipe', timeout: 300000 });
+  } catch (e) {
+    ok = false; reason = execErrorDetail(e, 100);
+  }
+  return { attempted: true, ok, reason };
+}
+
 function fixCommand(showId, fileName, d, type) {
   if (type === 'unscored') {
     return `gh workflow run "LLM Ensemble Score Reviews" -f show_id=${showId}`;
   }
   const outletId = fileName.split('--')[0];
+  if (outletId === 'talkinbroadway' && isForumThreadUrl(d.url)) {
+    // The stored URL is a forum teaser; ingesting it again can never fill the text.
+    return `node scripts/recover-talkinbroadway-forum-links.js --show=${showId}   # follows the thread's Link to the real review page`;
+  }
   const critic = d.criticName && d.criticName !== 'Unknown' ? ` --critic="${d.criticName}"` : '';
   if (!d.url) {
     // No URL on file — an ingest command would be unrunnable (--url=null).
@@ -229,6 +261,8 @@ async function main() {
   // more than one fetch slot per URL per run (QA finding: 6 identical
   // whatsonstage stubs would starve the cap).
   const attemptedUrls = new Set();
+  const forumShowsTried = new Set();
+  let forumRuns = 0;
 
   // Circuit-breaker state (S3-T2): the GLOBAL daily refetch budget lives here,
   // spanning all hourly runs — the per-run --fetch-cap alone can't bound a day.
@@ -344,8 +378,22 @@ async function main() {
       let recovery = null;
       // A file is a refetch candidate when it's a recoverable empty-body gap
       // with a usable URL we haven't already spent a slot on this run.
+      const isForumFile = outletId === 'talkinbroadway' && isForumThreadUrl(d.url);
       const isRefetchCandidate = gap.type === 'empty-body' && gap.recoverable
-        && d.url && !attemptedUrls.has(d.url);
+        && d.url && !attemptedUrls.has(d.url) && !isForumFile;
+
+      if (isForumFile && gap.type === 'empty-body' && DO_RECOVER && !DRY_RUN
+        && isForumLinkRecoverable(d) && !forumShowsTried.has(show.id) && forumRuns < FORUM_RECOVERY_PER_RUN) {
+        forumShowsTried.add(show.id);
+        forumRuns++;
+        recovery = recoverForumThread(show.id, f);
+        const after = loadJson(path.join(dir, f), null);
+        if (!after && recovery.ok) {
+          // The script deleted the husk and ingested the real review page.
+          console.log(`  ♻️  recovered ${show.id}/${f} via its Talkin' Broadway review-page link`);
+          continue;
+        }
+      }
 
       if (isRefetchCandidate && DO_RECOVER && DRY_RUN) {
         // Dry-run: count what WOULD refetch (consult the breaker read-only so
@@ -405,6 +453,7 @@ async function main() {
         url: d.url || null,
         recovery,
         recoveryCount: d.aggUrlRecoveryCount || 0,
+        forumLinkRecoveryCount: d.forumLinkRecoveryCount || 0,
         fix: fixCommand(show.id, f, d, gap.type),
         // Immutable file-creation stamp (informational — the report shows how
         // long we have HAD the file). The S3-T6 backstop age is tracked
@@ -536,7 +585,12 @@ async function main() {
   //    there is no automated path
   const emailEligible = (g) => {
     if (g.type === 'unscored') return shouldEmailUnscoredGap(state[`dispatch:${g.showId}`] || null, now);
-    if (g.type === 'empty-body' && g.url) return (g.recoveryCount || 0) >= FLAGGED_RECOVERY_CAP;
+    if (g.type === 'empty-body' && g.url) {
+      // Talkin' Broadway forum stubs have their own recovery budget; do not page
+      // while the forum-link recovery still has attempts left.
+      if (isForumThreadUrl(g.url) && (g.forumLinkRecoveryCount || 0) < FORUM_RECOVERY_CAP) return false;
+      return (g.recoveryCount || 0) >= FLAGGED_RECOVERY_CAP;
+    }
     return true;
   };
 

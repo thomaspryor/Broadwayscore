@@ -34,6 +34,7 @@
 const { extractDateFromUrl } = require('./rebuild-helpers');
 const { evaluateDateGuard, earliestShowDate } = require('./date-guard');
 const { isWithinPriorRun, isWithinTourLeg } = require('./wrong-production-autoclear');
+const { isForumThreadUrl } = require('./talkinbroadway-forum-link');
 
 function _urlPathDate(url) {
   if (!url) return null;
@@ -96,6 +97,17 @@ function _yearOnlyRegression(url, show) {
  * @returns {{ regression: boolean, reason: string|null, urlDate?: string, issue?: string, diffDays?: number }}
  */
 function isUrlSwapRegression({ newUrl, show, outletId } = {}) {
+  // A Talkin' Broadway forum announcement thread (allthatchat_new/d.php) is a
+  // teaser + "Link" anchor, never the review. Good Time Charlie lost its real
+  // /page/ob/ review page to one of these via maybeUpgradeUrl and then sat as an
+  // empty stub that no re-fetch of the thread URL could ever fill.
+  if (newUrl && isForumThreadUrl(newUrl)) {
+    return {
+      regression: true,
+      reason: 'candidate url is a Talkin\' Broadway forum announcement thread, not a review page — refusing swap',
+      issue: 'forum-thread-url',
+    };
+  }
   if (!show || !newUrl) return { regression: false, reason: null };
   if (!earliestShowDate(show)) return { regression: false, reason: null };
 

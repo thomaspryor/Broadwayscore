@@ -123,3 +123,11 @@ test('year-only url path before the show window is refused; prior run / tour leg
   assert.equal(isUrlSwapRegression({ newUrl: 'https://deadline.com/2026/10/x-review-1/', show, outletId: 'deadline' }).regression, false);
   assert.equal(isUrlSwapRegression({ newUrl: old, show: {}, outletId: 'deadline' }).regression, false);
 });
+
+test('a Talkin\' Broadway forum announcement thread is never an upgrade target', () => {
+  const r = isUrlSwapRegression({ newUrl: 'https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654485', show: {}, outletId: 'talkinbroadway' });
+  assert.equal(r.regression, true);
+  assert.equal(r.issue, 'forum-thread-url');
+  // the real review page shape is fine
+  assert.equal(isUrlSwapRegression({ newUrl: 'https://www.talkinbroadway.com/page/ob/10_09_26.html', show: {}, outletId: 'talkinbroadway' }).regression, false);
+});

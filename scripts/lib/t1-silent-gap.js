@@ -25,6 +25,7 @@
 const { isEmptyBodyFile, isRecoverableFlaggedFile } = require('./flagged-recovery');
 const { isRoundupPageAsReview, isIncludableForRebuild, hasValidScore, hasAggregatorExcerpt } = require('./review-guards');
 const { classifyReviewUrl } = require('./non-review-url-patterns');
+const { isForumLinkRecoverable } = require('./talkinbroadway-forum-link');
 // BRO-2985: the scorer's own selector. An 'unscored' gap whose file the scorer
 // would skip cannot be self-healed by dispatching llm-ensemble-score.yml, so
 // the sweep must not keep dispatching for it (4x/day/show forever at
@@ -162,7 +163,7 @@ function classifySilentGap({ file, show, tier, outletScored, now, filePath }) {
   if (isIncludableForRebuild(file, show, filePath)) {
     // Includable content (flags + context clean), but no valid score yet.
     if (isEmptyBodyFile(file)) {
-      return { type: 'empty-body', recoverable: isRecoverableFlaggedFile(file) };
+      return { type: 'empty-body', recoverable: isRecoverableFlaggedFile(file) || isForumLinkRecoverable(file) };
     }
     const fetchedAt = Date.parse(file.textFetchedAt || '');
     if (!Number.isNaN(fetchedAt) && now instanceof Date
@@ -210,7 +211,7 @@ function classifySilentGap({ file, show, tier, outletScored, now, filePath }) {
   //    rebuild time and is NOT a gap; isEmptyBodyFile only checks fullText/
   //    aggregatorStars/assignedScore, so use the canonical score predicate.
   if (file.contentTier !== 'invalid' && isEmptyBodyFile(file) && !hasValidScore(file)) {
-    return { type: 'empty-body', recoverable: isRecoverableFlaggedFile(file) };
+    return { type: 'empty-body', recoverable: isRecoverableFlaggedFile(file) || isForumLinkRecoverable(file) };
   }
 
   return null;
