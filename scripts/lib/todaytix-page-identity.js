@@ -21,12 +21,12 @@
 // venue-write-guard-ok: reads a TodayTix page's venue name for comparison only; nothing here writes shows.json.
 const { normalizeTitle } = require('./title-normalization');
 const { venuesMatch } = require('./image-source-match');
-const { PLOT_SIGNAL_RE, isAudiencePitch } = require('./synopsis-validation');
+const { PLOT_SIGNAL_RE, isAudiencePitch, BULLET_LIST_RE } = require('./synopsis-validation');
 
 // Sentences in product.about that are not story: selling, star quotes, age /
 // running-time / content notes, cast and team lists (the junk class that run
 // 37818726628 saved from the scraped-paragraph path).
-const NON_STORY_SENTENCE_RE = /todaytix|\btickets?\b|\bbook (now|your|tickets|today|early)\b|★|☆|\bstars?\b.*(guardian|times|telegraph|stage|standard|whatsonstage)|age guidance|\bages? \d|running time|\bcontent warning|\bcast\b.*\b(includes?|including|are|is|features?)\b|\bcreative team\b|\bdirected by\b.*,.*,/i;
+const NON_STORY_SENTENCE_RE = /\bsubject matters? (?:in|of) (?:the|this) (?:show|production|play)\b|todaytix|\btickets?\b|\bbook (now|your|tickets|today|early)\b|★|☆|\bstars?\b.*(guardian|times|telegraph|stage|standard|whatsonstage)|age guidance|\bages? \d|running time|\bcontent warning|\bcast\b.*\b(includes?|including|are|is|features?)\b|\bcreative team\b|\bdirected by\b.*,.*,/i;
 // Production news and billing, not story (WE historical 2023-24, BRO-4884:
 // "currently playing at Wyndham's ... has just won rave reviews", "Sheridan
 // Smith stars in ...", "one of nine shows in the theatre's 2024 season",
@@ -68,6 +68,26 @@ const ABBREV_DOT_RE = /\b(Mr|Mrs|Ms|Dr|St|Jr|Sr|Prof|Capt|Gen|Lt|[A-Z])\.(?=\s|[
 // influx of 7,000 visitors") has lost what it refers to.
 const ANAPHORIC_OPENER_RE = /^(That|This|These|Those|It|They)\b/;
 const PAREN_TITLE_RE = /\(\s*"[^"]*"(?:\s*\/\s*"[^"]*")*\s*\)/g;
+// Private-use stand-ins for punctuation that must not end a sentence.
+const HOLD = { '.': '\uE000', '!': '\uE001', '?': '\uE002', '…': '\uE003' };
+const RESTORE = { '\uE000': '.', '\uE001': '!', '\uE002': '?', '\uE003': '...' };
+const HOLD_RE = /[\uE000-\uE003]/g;
+// Hold the title's punctuation wherever the title appears (any case) and the
+// sentence carries on after it: not at the end of the text, not before a
+// capitalised word.
+function holdTitle(text, name) {
+  const lower = text.toLowerCase();
+  const needle = name.toLowerCase();
+  let out = '';
+  let pos = 0;
+  for (let i = lower.indexOf(needle); i !== -1; i = lower.indexOf(needle, i + needle.length)) {
+    const end = i + needle.length;
+    if (/^(\s*$|\s+["'(]?[A-Z])/.test(text.slice(end))) continue;
+    out += text.slice(pos, i) + text.slice(i, end).replace(/[.!?]/g, c => HOLD[c]);
+    pos = end;
+  }
+  return out + text.slice(pos);
+}
 const MAX_ABOUT_CHARS = 700;
 
 /**
@@ -100,7 +120,7 @@ function nonStoryReason(sentence) {
   const s = String(sentence || '').replace(/[\u201C\u201D]/g, '"').replace(/[\u2018\u2019]/g, "'").trim();
   if (!s) return null;
   if (isPullQuote(s) || PRESS_ATTRIBUTION_RE.test(s) || SINGLE_QUOTE_ATTRIBUTED_RE.test(s)) return 'pull-quote';
-  if (NON_STORY_SENTENCE_RE.test(s) || BILLING_RE.test(s)) return 'selling-or-list';
+  if (NON_STORY_SENTENCE_RE.test(s) || BILLING_RE.test(s) || BULLET_LIST_RE.test(s)) return 'selling-or-list';
   if (PRODUCTION_NEWS_RE.test(s)) return 'production-news';
   if (MARKETING_OPENER_RE.test(s) || isAudiencePitch(s)) return 'pitch-opener';
   if (isFragment(s)) return 'fragment';
@@ -113,8 +133,8 @@ function nonStoryReason(sentence) {
  * or no sentence reads as plot (PLOT_SIGNAL_RE), so the caller falls back to
  * the verified path.
  */
-function cleanTodaytixAbout(text) {
-  const plain = String(text || '')
+function cleanTodaytixAbout(text, title) {
+  let plain = String(text || '')
     .replace(/<[^>]+>/g, ' ')
     .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
     .replace(/^\s*(#+|[-*•])\s+/gm, '')
@@ -124,7 +144,15 @@ function cleanTodaytixAbout(text) {
     .replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#0?39;|&apos;/g, "'").replace(/&nbsp;/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
-  const sentences = (plain.replace(ABBREV_DOT_RE, '$1\u2024').match(/[^.!?]+[.!?]+["')\]]*(?=\s|$)/g) || []).map(x => x.replace(/\u2024/g, '.'));
+  // The show's own title is not a sentence end when the sentence carries on
+  // ("Get Schmigadoon! tickets", BRO-5063); at a real sentence end ("... fall
+  // for Schmigadoon! They ...") its "!" still ends it.
+  const name = String(title || '').trim().replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"');
+  if (name && /[.!?]/.test(name)) plain = holdTitle(plain, name);
+  // An ellipsis followed by lowercase continues the sentence ("(The New York
+  // Times)... if you manage to get out." is one pull-quote sentence).
+  plain = plain.replace(/\.{3}(?=\s+[a-z])/g, HOLD['…']);
+  const sentences = (plain.replace(ABBREV_DOT_RE, `$1${HOLD['.']}`).match(/[^.!?]+[.!?]+["')\]]*(?=\s|$)/g) || []).map(x => x.replace(HOLD_RE, c => RESTORE[c]));
   const kept = [];
   let len = 0;
   let dropped = false;
@@ -164,7 +192,7 @@ function extractTodaytixPageIdentity(html) {
     venue: (p.venue && p.venue.name) || null,
     start: p.startingDate || null,
     end: p.closingDate || null,
-    about: cleanTodaytixAbout(p.about || p.shortDescription || ''),
+    about: cleanTodaytixAbout(p.about || p.shortDescription || '', p.displayName),
   };
 }
 
