@@ -91,8 +91,8 @@ function PersonalBests({ lines }: { lines: BestLine[] }) {
               <span className="text-gray-400"> · {l.when}</span>
               {l.latest && (
                 l.isNew
-                  ? <span className="ml-1.5 px-1.5 py-px rounded border border-white/20 text-[11px] font-bold text-gray-200 whitespace-nowrap">{l.latest}</span>
-                  : <span className="text-gray-400 tabular-nums"> · {l.latest}</span>
+                  ? <span className="block sm:inline mt-1 sm:mt-0 sm:ml-1.5"><span className="px-1.5 py-px rounded border border-white/20 text-[11px] font-bold text-gray-200 whitespace-nowrap">{l.latest}</span></span>
+                  : <span className="block sm:inline text-gray-400 tabular-nums"><span className="hidden sm:inline"> · </span>{l.latest}</span>
               )}
             </span>
           </li>
