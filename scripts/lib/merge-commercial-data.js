@@ -323,6 +323,7 @@ function mergePendingReview(ours, remote, base) {
   let resolvedAsDeletion = 0;
   let keptOverDeletion = 0;
   let heldRowsDropped = 0;
+  let fieldsTakenFromOther = 0;
   const heldDroppedSlugs = [];
   const inBase = (slug) => Object.prototype.hasOwnProperty.call(baseShows, slug);
   const allSlugs = new Set([...Object.keys(oursShows), ...Object.keys(remoteShows)]);
@@ -376,7 +377,21 @@ function mergePendingReview(ours, remote, base) {
       continue;
     }
     const winner = pickNewer(o, r, PENDING_ENTRY_DATE_FIELDS);
-    merged.shows[slug] = carryHumanReviewHold(winner === o ? r : o, { ...winner });
+    const loser = winner === o ? r : o;
+    const row = { ...winner };
+    if (baseShows && inBase(slug)) {
+      // BRO-5069: both kept the row. A field only the losing side changed
+      // since base (a truthReview stamp, ownerApproved) still lands; a field
+      // both changed goes to the winner.
+      const b = baseShows[slug] || {};
+      const same = (x, y) => JSON.stringify(x) === JSON.stringify(y);
+      for (const k of new Set([...Object.keys(loser), ...Object.keys(b)])) {
+        if (same(loser[k], b[k]) || !same(winner[k], b[k])) continue;
+        if (k in loser) { row[k] = loser[k]; } else { delete row[k]; }
+        fieldsTakenFromOther++;
+      }
+    }
+    merged.shows[slug] = carryHumanReviewHold(loser, row);
   }
 
   // Refresh top-level lastUpdated to whichever side is newer
@@ -385,7 +400,7 @@ function mergePendingReview(ours, remote, base) {
 
   return {
     merged,
-    stats: { added, resolvedAsDeletion, keptOverDeletion, heldRowsDropped, heldDroppedSlugs, threeWay: !!baseShows, totalSlugs: allSlugs.size },
+    stats: { added, resolvedAsDeletion, keptOverDeletion, heldRowsDropped, heldDroppedSlugs, fieldsTakenFromOther, threeWay: !!baseShows, totalSlugs: allSlugs.size },
   };
 }
 // reconcile-merged-json.js: without PUSH_RECONCILE_BASE, pass no base
