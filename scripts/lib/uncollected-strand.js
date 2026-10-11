@@ -65,6 +65,43 @@ function isNeverAttempted(review) {
 }
 
 /**
+ * True when a discovered file is a verdict about a DIFFERENT production than
+ * the one this show record tracks, so it can't be evidence of a blackout.
+ *
+ * BRO-5077: a touring production (All the Devils Are Here, tour 2024) inherits
+ * every Broadway-aggregator URL for the earlier NYC run; all were rejected as
+ * wrongProduction (correctly) and the alarm paged for 0 usable of 5 discovered.
+ * Two cases are safe to discount; the LLM-only verdict on a non-tour is NOT
+ * (it is fallible, and a wrongly flagged real review set is exactly the
+ * blackout this alarm exists to catch):
+ *  - the deterministic date guards (pre-window / URL date before the show's
+ *    earliest date), which never judge content, and
+ *  - on a tour only, a wrongProduction file published >60d before the tour
+ *    opened, or whose verdict says it reviews the earlier NYC run. A bare
+ *    wrongProduction flag is NOT enough: real local tour reviews get that
+ *    flag too and must still page when they are all that was discovered.
+ *
+ * @param {object} show
+ * @param {object} review
+ * @returns {boolean}
+ */
+function isOtherProductionEvidence(show, review) {
+  if (!review || review.wrongProduction !== true) return false;
+  const note = [review.wrongProductionNote, review.incompleteDetail, review.contentTierReason]
+    .filter(Boolean).join(' ');
+  if (/pre-window date|URL date .* days before show earliest date/i.test(note)) return true;
+  if (!show || (show.market !== 'tour' && show.category !== 'tour')) return false;
+  // Tour only. Local tour reviews are also LLM-flagged wrongProduction at times
+  // (and-juliet-tour-2024, mrs-doubtfire-tour-2025), so a bare flag proves
+  // nothing; require positive evidence the file is about the earlier run.
+  const pub = Date.parse(review.publishDate || '');
+  const open = Date.parse(show.openingDate || '');
+  if (!Number.isNaN(pub) && !Number.isNaN(open) && pub < open - 60 * 86400000) return true;
+  return /\b(original|earlier|prior|previous|off-)?\s*(Broadway|Off-Broadway|New York|NYC)\b[^.]{0,40}\b(production|run)\b/i.test(note)
+    && /original|earlier|prior|previous|ran\b/i.test(note);
+}
+
+/**
  * Age in hours of a discovered-but-unfetched file, or null if undatable.
  *
  * @param {object} review
@@ -141,7 +178,7 @@ function assessShow(show, files, { nowMs, maxAgeHours = DEFAULT_MAX_AGE_HOURS } 
   const today = new Date(nowMs).toISOString().slice(0, 10);
 
   for (const { file, review } of files || []) {
-    if (review && review.url) discovered++;
+    if (review && review.url && !isOtherProductionEvidence(show, review)) discovered++;
     if (review && (review.fullText || '').length > 200) usable++;
     if (!isNeverAttempted(review)) continue;
     const ageHours = strandAgeHours(review, nowMs);
@@ -184,6 +221,7 @@ module.exports = {
   LIVE_STATUSES,
   DEFAULT_MAX_AGE_HOURS,
   isNeverAttempted,
+  isOtherProductionEvidence,
   strandAgeHours,
   assessShow,
 };
