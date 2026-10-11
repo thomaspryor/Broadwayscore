@@ -12,7 +12,7 @@ import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-const { installForCloud, renderInstalled, MARKER, GLOBAL_FILES } = require('../lib/global-instructions.js');
+const { installForCloud, renderInstalled, stripMacOnly, MARKER, GLOBAL_FILES } = require('../lib/global-instructions.js');
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 const tmp = (tag) => fs.mkdtempSync(path.join(os.tmpdir(), `bro-4237-${tag}-`));
@@ -50,6 +50,56 @@ test('installForCloud: never overwrites a hand-written ~/.claude file (a real Ma
   assert.deepEqual(r.installed, ['anti-slop-rules.md']);
 });
 
+// BRO-5072: Mac-only blocks are dropped from the cloud copy, never anything else.
+const O = '<!-- mac-only -->';
+const C = '<!-- /mac-only -->';
+
+test('stripMacOnly: drops whole-line blocks, keeps everything else', () => {
+  const r = stripMacOnly(['# Rules', O, '## File Output', 'save to ~/Documents', C, '## Cloud sessions', '- keep me', O, 'cmux', C, 'end'].join('\n'));
+  assert.equal(r.text, ['# Rules', '## Cloud sessions', '- keep me', 'end'].join('\n'));
+  assert.equal(r.warning, null);
+  assert.equal(r.removedLines, 7);
+});
+
+test('stripMacOnly: CRLF and indented markers count; markers inside prose do not', () => {
+  assert.equal(stripMacOnly(['a', `  ${O}\r`, 'mac', `${C}\r`, 'b'].join('\n')).text, 'a\nb');
+  const prose = `blocks between ${O} and ${C} are stripped\nrule`;
+  assert.deepEqual(stripMacOnly(prose), { text: prose, removedLines: 0, warning: null });
+});
+
+test('stripMacOnly: markers inside a code fence are examples, not markers', () => {
+  const doc = ['a', '```', O, 'example', C, '```', 'b'].join('\n');
+  assert.deepEqual(stripMacOnly(doc), { text: doc, removedLines: 0, warning: null });
+  const mixed = [O, 'mac', '```', 'code', '```', C, 'b'].join('\n');
+  assert.equal(stripMacOnly(mixed).text, 'b');
+});
+
+test('stripMacOnly: any imbalance leaves the text whole and warns', () => {
+  for (const [lines, re] of [
+    [[O, 'x', O, 'y', C, C], /nested/],
+    [['x', C, 'y'], /stray/],
+    [['x', O, 'y'], /unclosed/],
+  ]) {
+    const text = lines.join('\n');
+    const r = stripMacOnly(text);
+    assert.equal(r.text, text);
+    assert.match(r.warning, re);
+  }
+});
+
+test('installForCloud: installs the stripped copy and reports a bad marker', async (t) => {
+  const home = tmp('home'); t.after(() => rm(home));
+  const src = { ...SOURCE, 'CLAUDE.md': `# Global\n${O}\nmac only rule\n${C}\n## Cloud sessions\n` };
+  const r = await installForCloud({ homeDir: home, fetchFn: fakeFetch(src) });
+  const body = fs.readFileSync(path.join(home, '.claude', 'CLAUDE.md'), 'utf8');
+  assert.ok(!body.includes('mac only rule') && body.includes('## Cloud sessions'));
+  assert.deepEqual(r.warnings, []);
+  assert.deepEqual((await installForCloud({ homeDir: home, fetchFn: fakeFetch(src) })).unchanged, GLOBAL_FILES);
+  const bad = await installForCloud({ homeDir: home, fetchFn: fakeFetch({ ...SOURCE, 'CLAUDE.md': `x\n${O}\nmac` }) });
+  assert.match(bad.warnings[0], /^CLAUDE\.md: unclosed/);
+  assert.match(fs.readFileSync(path.join(home, '.claude', 'CLAUDE.md'), 'utf8'), /mac$/);
+});
+
 test('installForCloud: a failed fetch installs nothing and says why (fail open)', async (t) => {
   const home = tmp('home'); t.after(() => rm(home));
   const r = await installForCloud({ homeDir: home, fetchFn: fakeFetch({}) });
@@ -59,11 +109,11 @@ test('installForCloud: a failed fetch installs nothing and says why (fail open)'
   assert.equal(fs.existsSync(path.join(home, '.claude', 'CLAUDE.md')), false);
 });
 
-function runHook(env) {
+function runHook(env, source = SOURCE) {
   const home = tmp('hookhome');
   const project = tmp('proj');
   const src = tmp('src');
-  for (const [n, c] of Object.entries(SOURCE)) fs.writeFileSync(path.join(src, n), c);
+  for (const [n, c] of Object.entries(source)) fs.writeFileSync(path.join(src, n), c);
   try {
     const full = { ...process.env, HOME: home, CLAUDE_PROJECT_DIR: REPO_ROOT, CODE_SYNC_DISABLED: '1', GLOBAL_INSTRUCTIONS_FROM_DIR: src, ...env };
     for (const [k, v] of Object.entries(full)) if (v === undefined) delete full[k];
@@ -101,4 +151,13 @@ test('session-start.sh (real hook): a failed install is never silent — it prin
   assert.match(out, /global instructions not installed \(.*fetch failed/);
   assert.match(out, /not technical/);
   assert.match(out, /never reviews or merges PRs/);
+});
+
+test('session-start.sh (real hook): a malformed mac-only marker is reported, and the rules still install whole (BRO-5072)', () => {
+  const { out, installed } = runHook({ CLAUDE_CODE_REMOTE: 'true' }, { ...SOURCE, 'CLAUDE.md': `${SOURCE['CLAUDE.md']}${O}\nmac rule\n` });
+  assert.match(installed, /mac rule/);
+  assert.match(out, /WARNING CLAUDE\.md: unclosed mac-only block/);
+  const ok = runHook({ CLAUDE_CODE_REMOTE: 'true' }, { ...SOURCE, 'CLAUDE.md': `${SOURCE['CLAUDE.md']}${O}\nmac rule\n${C}\n` });
+  assert.doesNotMatch(ok.installed, /mac rule/);
+  assert.doesNotMatch(ok.out, /WARNING/);
 });

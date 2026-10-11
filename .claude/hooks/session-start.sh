@@ -614,6 +614,9 @@ if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${CLOUD_GLOBAL_RULES_DISABLED:-}
   if [ -f "$GI_DIR/scripts/sync-global-instructions.js" ]; then
     GI_OUT=$(node "$GI_DIR/scripts/sync-global-instructions.js" install --home "$HOME" 2>&1 || true)
   fi
+  # A malformed mac-only marker installs the rules unstripped (BRO-5072):
+  # say so, or the cloud copy silently keeps every Mac-only block.
+  case "$GI_OUT" in *WARNING*) echo "⚠️  $GI_OUT (fix the mac-only markers in thomaspryor/claude-config CLAUDE.md)"; echo "" ;; esac
   # Never fail silently (second opinion): without the file the session knows
   # nothing about the owner, so print a short fallback plus the reason.
   if ! grep -q 'GENERATED from thomaspryor/claude-config' "$HOME/.claude/CLAUDE.md" 2>/dev/null; then
