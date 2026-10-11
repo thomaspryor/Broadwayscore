@@ -429,3 +429,154 @@ test('createLinearIssue refuses an unpickable START-NOW card before any API call
     (err) => err.startNowUnpickable === 'no-safe-verify' && /Nothing was filed/.test(err.message),
   );
 });
+
+// P2 fallback: once no P0/P1 card is eligible, P2 (Linear priority 3) Todo cards
+// are picked under the same rules, always after every P0/P1 card.
+const { TIER_P0P1, TIER_P2, isP2FallbackCandidate, pickModel, cloudPriorAttempts, mayTakeUnchecked, resumableCardsByNumber } = require('./cloud-worker-pick.js');
+
+test('P2 fallback: an eligible P0/P1 card wins, P2 cards queue after it', () => {
+  const res = pickCloudCard([
+    issue({ identifier: 'BRO-5', priority: 3 }),
+    issue({ identifier: 'BRO-900', priority: 2 }),
+    issue({ identifier: 'BRO-6', priority: 3 }),
+  ], { nowMs: NOW });
+  assert.equal(res.pick.identifier, 'BRO-900');
+  assert.equal(res.pickTier, TIER_P0P1);
+  assert.deepEqual(res.ordered.map((i) => i.identifier), ['BRO-900']);
+  assert.deepEqual(res.orderedP2.map((i) => i.identifier), ['BRO-5', 'BRO-6']);
+  // The P0/P1 counters keep their meaning: P2 cards still count as not-p0-p1 there.
+  assert.equal(res.eligible, 1);
+  assert.equal(res.skipped['not-p0-p1'], 2);
+  assert.equal(res.eligibleP2, 2);
+});
+
+test('P2 fallback: START-NOW does not apply to P2 (no idle skip, no queue jump)', () => {
+  // Fresh START-NOW P2: waits out IDLE_MS like any P2 card.
+  assert.equal(skipReason(startNowCard({ priority: 3 }), NOW, { tier: 'p2' }), 'recent-activity');
+  // An idle START-NOW P2 is ordinary P2: oldest first, never ahead of a P0/P1 card.
+  const res = pickCloudCard([
+    startNowCard({ identifier: 'BRO-70', priority: 3, updatedAt: OLD }),
+    issue({ identifier: 'BRO-60', priority: 3 }),
+    issue({ identifier: 'BRO-900', priority: 2 }),
+  ], { nowMs: NOW });
+  assert.equal(res.pick.identifier, 'BRO-900');
+  assert.deepEqual(res.orderedP2.map((i) => i.identifier), ['BRO-60', 'BRO-70']);
+});
+
+test('P2 fallback: past the history-check budget only P0/P1 entries are taken unchecked', () => {
+  assert.equal(mayTakeUnchecked({ tier: TIER_P0P1 }), true);
+  assert.equal(mayTakeUnchecked({ tier: TIER_P2 }), false);
+  assert.equal(mayTakeUnchecked(null), false);
+});
+
+test('P2 fallback: a refused P2 landing is resumable only with includeP2; P3 never', () => {
+  const p2 = startedCard({ priority: 3 });
+  assert.equal(findResumeCard([p2], [landRef()], { nowMs: NOW }), null);
+  assert.equal(findResumeCard([p2], [landRef()], { nowMs: NOW, includeP2: true }).issue.identifier, 'BRO-100');
+  assert.equal(findResumeCard([startedCard({ priority: 4 })], [landRef()], { nowMs: NOW, includeP2: true }), null);
+  assert.equal(resumableCardsByNumber([startedCard({ priority: 0 })], { includeP2: true }).size, 0);
+  // P0/P1 resumes still rank ahead of P2 ones.
+  const both = findResumeCandidates([p2, startedCard({ identifier: 'BRO-200', priority: 2 })],
+    [landRef(), landRef({ ref: 'land/bro-200-x' })], { nowMs: NOW, includeP2: true });
+  assert.deepEqual(both.map((c) => c.issue.identifier), ['BRO-200', 'BRO-100']);
+});
+
+test('P2 fallback: with no P0/P1 card eligible, the oldest P2 Todo card is picked', () => {
+  const res = pickCloudCard([
+    issue({ identifier: 'BRO-900', priority: 1, updatedAt: FRESH }), // recent-activity
+    issue({ identifier: 'BRO-901', priority: 2, state: STARTED_STATE }),
+    issue({ identifier: 'BRO-60', priority: 3 }),
+    issue({ identifier: 'BRO-40', priority: 3 }),
+  ], { nowMs: NOW });
+  assert.equal(res.pick.identifier, 'BRO-40');
+  assert.equal(res.pickTier, TIER_P2);
+  assert.equal(res.eligible, 0);
+  assert.deepEqual(res.orderedP2.map((i) => i.identifier), ['BRO-40', 'BRO-60']);
+});
+
+test('P2 fallback: P3 and no-priority cards are never picked', () => {
+  const res = pickCloudCard([issue({ identifier: 'BRO-1', priority: 4 }), issue({ identifier: 'BRO-2', priority: 0 }), issue({ identifier: 'BRO-3', priority: undefined })], { nowMs: NOW });
+  assert.equal(res.pick, null);
+  assert.equal(res.pickTier, null);
+  assert.deepEqual(res.ordered, []);
+  assert.deepEqual(res.orderedP2, []);
+  assert.equal(skipReason(issue({ priority: 4 }), NOW, { tier: 'p2' }), 'not-p2');
+  assert.equal(skipReason(issue({ priority: 0 }), NOW, { tier: 'p2' }), 'not-p2');
+  assert.equal(skipReason(issue({ priority: 2 }), NOW, { tier: 'p2' }), 'not-p2');
+  assert.equal(isP2FallbackCandidate(issue({ priority: 4 }), NOW), false);
+});
+
+test('P2 fallback: the same rules apply; owner-decision, parked and unfit P2 cards are skipped', () => {
+  const p2 = (over) => issue({ priority: 3, ...over });
+  assert.equal(skipReason(p2(), NOW, { tier: 'p2' }), null);
+  assert.equal(skipReason(p2({ description: `${BODY}\n\nDECISION NEEDED: owner picks the copy.` }), NOW, { tier: 'p2' }), 'blocker-OWNER_DECISION_GATE');
+  assert.equal(skipReason(p2({ description: `NO-DISPATCH: needs the owner first\n${BODY}` }), NOW, { tier: 'p2' }), 'no-dispatch-marker');
+  assert.equal(skipReason(p2({ updatedAt: FRESH }), NOW, { tier: 'p2' }), 'recent-activity');
+  assert.equal(skipReason(p2({ description: '## Acceptance criteria\nLooks right.' }), NOW, { tier: 'p2' }), 'no-safe-verify');
+  assert.equal(skipReason(p2({ state: STARTED_STATE }), NOW, { tier: 'p2' }), 'state-started');
+  // Todo only: a technically parked P2 card (drainable at P0/P1) stays parked.
+  const parked = p2({ state: { name: 'Backlog', type: 'backlog' }, description: `PARKED: needs a rule-18 second-opinion before the edit\n\n${BODY}` });
+  assert.equal(skipReason(parked, NOW, { tier: 'p2' }), 'parked-or-backlog');
+  assert.equal(isP2FallbackCandidate(parked, NOW), false);
+  const stale = new Date(NOW - AUTOMATION_PARK_STALE_MS - 60_000).toISOString();
+  const autofix = p2({ state: { name: 'Backlog', type: 'backlog' }, updatedAt: stale, description: `PARKED: Auto-filed by digest-autofix; runAutofix dispatches via linear-next separately in the same pass.\n\n${BODY}` });
+  assert.equal(skipReason(autofix, NOW, { tier: 'p2' }), 'parked-or-backlog');
+  const res = pickCloudCard([p2({ identifier: 'BRO-1', description: `${BODY}\n\nDECISION NEEDED: owner picks.` }), parked, autofix], { nowMs: NOW });
+  assert.equal(res.pick, null);
+  assert.equal(res.skippedP2['blocker-OWNER_DECISION_GATE'], 1);
+  assert.equal(res.skippedP2['parked-or-backlog'], 2);
+  // An owner-held pause in the comments still skips a P2 card (CLI history check).
+  const held = [report('paused', 'DECISION NEEDED: owner picks the copy.', 60_000)];
+  assert.equal(pausedHistorySkipReason(held, NOW), 'awaiting-owner');
+  // A P2 Todo card that only a comment VERIFY arms is still a prefetch candidate.
+  assert.equal(isP2FallbackCandidate(p2({ description: '## Acceptance criteria\nLooks right.' }), NOW), true);
+});
+
+test('model: same policy as linear-next (P0 and Model: Opus get Opus, the rest Sonnet)', () => {
+  const opts = { nowMs: NOW, readEntries: () => [], env: {} };
+  assert.equal(pickModel(issue({ priority: 1 }), opts).model, 'opus');
+  assert.equal(pickModel(issue({ priority: 2, description: `${BODY}\n\nModel: Opus` }), opts).model, 'opus');
+  assert.equal(pickModel(issue({ priority: 2 }), opts).model, 'sonnet');
+  assert.equal(pickModel(issue({ priority: 3 }), opts).model, 'sonnet');
+  assert.equal(pickModel(issue({ priority: 3, description: `${BODY}\n\nModel: Opus` }), opts).model, 'opus');
+  assert.equal(pickModel(issue({ priority: 1, description: `${BODY}\n\nModel: Sonnet` }), opts).model, 'sonnet');
+  // A retry (an earlier "Dispatched" comment) escalates whatever the card says.
+  const retried = issue({ priority: 3, description: `${BODY}\n\nModel: Sonnet`, comments: { nodes: [{ body: 'Dispatched to workspace 1', createdAt: at(60_000) }] } });
+  assert.equal(pickModel(retried, opts).model, 'opus');
+  // A cloud worker's pause, or a Codex bounce, is a prior attempt too: the retry escalates.
+  const paused = issue({ priority: 3, comments: { nodes: [report('paused', 'Ran out of time.', 60_000)] } });
+  assert.equal(cloudPriorAttempts(paused), 1);
+  assert.equal(pickModel(paused, opts).model, 'opus');
+  const bounced = issue({ priority: 2, comments: { nodes: [{ body: `${require('./codex-runner.js').BOUNCED_MARKER}\nCodex could not land it.`, createdAt: at(60_000) }] } });
+  assert.equal(pickModel(bounced, opts).model, 'opus');
+  assert.equal(cloudPriorAttempts(issue({ comments: { nodes: [report('done', 'Closed.', 60_000), { body: 'a note', createdAt: at(1) }] } })), 0);
+  // Over the 24h Opus cap, or with an unreadable ledger, it falls back to Sonnet (cloud attempts never count against the cap).
+  assert.equal(pickModel(issue({ priority: 1 }), { ...opts, env: { LINEAR_OPUS_DAILY_CAP: '0' } }).model, 'sonnet');
+  assert.equal(pickModel(issue({ priority: 1 }), { ...opts, readEntries: () => { throw new Error('EIO'); } }).model, 'sonnet');
+  assert.equal(pickModel(paused, { ...opts, env: { LINEAR_OPUS_DAILY_CAP: '1' } }).model, 'opus');
+  // No dispatch ledger at all (a cloud container): the real reader returns [], so a P0 still gets Opus.
+  assert.equal(pickModel(issue({ priority: 1 }), { nowMs: NOW, readEntries: () => require('./dispatch-ledger.js').readEntries('/nonexistent/dispatch-ledger.jsonl'), env: {} }).model, 'opus');
+});
+
+test('P2 fallback: comments are read for P2 Todo and resumable P2 cards, never P3 or parked P2', () => {
+  const { needsComments } = require('./cloud-worker-pick.js');
+  assert.equal(needsComments(issue({ priority: 2 }), NOW), true);
+  assert.equal(needsComments(issue({ priority: 3, description: '## Acceptance criteria\nLooks right.' }), NOW), true);
+  assert.equal(needsComments(startedCard({ priority: 3 }), NOW), true);
+  assert.equal(needsComments(issue({ priority: 3, state: { name: 'In Review', type: 'started' } }), NOW), false);
+  assert.equal(needsComments(issue({ priority: 3, state: { name: 'Backlog', type: 'backlog' } }), NOW), false);
+  assert.equal(needsComments(issue({ priority: 4 }), NOW), false);
+  assert.equal(needsComments(startedCard({ priority: 0 }), NOW), false);
+  // A started P2 card armed only by a comment VERIFY is resumable once comments are read.
+  const armed = startedCard({ priority: 3, description: '## Acceptance criteria\nLooks right.',
+    comments: { nodes: [{ body: `VERIFY: ${SAFE_CMD}`, createdAt: at(60_000) }] } });
+  assert.equal(findResumeCard([armed], [landRef()], { nowMs: NOW, includeP2: true }).issue.identifier, 'BRO-100');
+});
+
+test('P2 fallback: a pickable P2 card with a stale START-NOW line is not reported in startNowSkipped', () => {
+  const { startNowSkipped, orderedP2 } = pickCloudCard([startNowCard({ identifier: 'BRO-70', priority: 3, updatedAt: OLD })], { nowMs: NOW });
+  assert.deepEqual(orderedP2.map((i) => i.identifier), ['BRO-70']);
+  assert.deepEqual(startNowSkipped, {});
+  // One the fallback can't pick still says why.
+  assert.equal(pickCloudCard([startNowCard({ identifier: 'BRO-71', priority: 3 })], { nowMs: NOW }).startNowSkipped['BRO-71'], 'not-p0-p1');
+});

@@ -1,20 +1,26 @@
 #!/usr/bin/env node
 /**
  * cloud-worker-pick.js — print the one P0/P1 card a scheduled cloud worker
- * session should take on this firing (BRO-4535). Read-only: it claims
- * nothing. Selection rules and their reasons: scripts/lib/cloud-worker-pick.js.
+ * session should take on this firing (BRO-4535), or a P2 Todo card when no
+ * P0/P1 card is eligible after every rule (`tier: "p2-fallback"`). Read-only:
+ * it claims nothing. Selection rules and their reasons: scripts/lib/cloud-worker-pick.js.
  *
  * Usage:
- *   node scripts/cloud-worker-pick.js           JSON: { pick, eligible, skipped, historySkipped }
+ *   node scripts/cloud-worker-pick.js           JSON: { pick, tier, eligible, eligibleP2, skipped, skippedP2, historySkipped }
  *   node scripts/cloud-worker-pick.js --list=N  JSON: { picks: [up to N], eligible, ... } for the
  *                                               daily Codex runner (BRO-4745): same rules, no
  *                                               resume entries (those stay with the Claude worker).
  *
  * `pick` is null when nothing is eligible; the worker then ends with no
- * changes. Exit 0 on a completed pick (null or not), 1 when Linear can't be read.
+ * changes. Each pick carries `tier` ("p0p1" | "p2-fallback") and `model`
+ * ("opus" | "sonnet", the linear-next.js policy: pickLinearModel) with
+ * `modelReason`. `eligible`/`skipped` count the P0/P1 tier, `eligibleP2`/
+ * `skippedP2` the P2 fallback. Exit 0 on a completed pick (null or not), 1
+ * when Linear can't be read.
  *
  * Before a new pick, a card whose land/ ref Land refused and nobody came back
- * to is handed back with `pick.resume` (BRO-4565). The routine prompt can't be
+ * to is handed back with `pick.resume` (BRO-4565); a P2 card's only after every
+ * P0/P1 entry. The routine prompt can't be
  * edited from outside its own thread, so `pick.resume.instructions` carries
  * the steps. If git or the GitHub API can't be read, resume is skipped with a
  * warning on stderr and the normal pick runs.
@@ -82,19 +88,20 @@ function landDispatchInFlight() {
 function findResume(issues, nowMs) {
   const { findResumeCandidates, landRefCardNumber, resumableCardsByNumber } = require('./lib/cloud-worker-pick.js');
   try {
-    // Only refs naming a started P0/P1 card need a run lookup (one API call each).
-    const cards = resumableCardsByNumber(issues);
+    // Only refs naming a started P0/P1/P2 card need a run lookup (one API call each).
+    const cards = resumableCardsByNumber(issues, { includeP2: true });
     const refs = listLandRefs().filter((r) => cards.has(landRefCardNumber(r.ref)));
     for (const r of refs) r.lastRun = latestLandRun(r.ref);
     if (!refs.length) return [];
-    return findResumeCandidates(issues, refs, { nowMs, landDispatchInFlight: landDispatchInFlight() });
+    return findResumeCandidates(issues, refs, { nowMs, landDispatchInFlight: landDispatchInFlight(), includeP2: true });
   } catch (err) {
     console.error(`[cloud-worker-pick] resume check skipped: ${err && err.message ? err.message.split('\n')[0] : err}`);
     return [];
   }
 }
 
-// Comment reads per firing (one Linear call each). Past this, take the next card unchecked.
+// Comment reads per firing (one Linear call each). Past this, take the next P0/P1
+// card unchecked; P2 entries are always checked (mayTakeUnchecked).
 const MAX_HISTORY_CHECKS = 15;
 
 /**
@@ -103,9 +110,9 @@ const MAX_HISTORY_CHECKS = 15;
  */
 async function firstUnpaused(queue, nowMs, historySkipped) {
   const { getIssue } = require('./lib/linear-client.js');
-  const { pausedHistorySkipReason } = require('./lib/cloud-worker-pick.js');
+  const { pausedHistorySkipReason, mayTakeUnchecked } = require('./lib/cloud-worker-pick.js');
   for (let i = 0; i < queue.length; i++) {
-    if (i >= MAX_HISTORY_CHECKS) {
+    if (i >= MAX_HISTORY_CHECKS && mayTakeUnchecked(queue[i])) {
       console.error(`[cloud-worker-pick] ${MAX_HISTORY_CHECKS} history checks used; ${queue[i].issue.identifier} taken unchecked`);
       return queue[i];
     }
@@ -129,14 +136,15 @@ async function firstUnpaused(queue, nowMs, historySkipped) {
 async function main() {
   const { listOpenIssuesWithDescriptions, listIssueComments } = require('./lib/linear-client.js');
   const { verifyCommand } = require('./lib/linear-drain-parked.js');
-  const { pickCloudCard, skipReason, isStartNow } = require('./lib/cloud-worker-pick.js');
+  const { pickCloudCard, needsComments, isStartNow, P2_PRIORITY, TIER_P0P1, TIER_P2 } = require('./lib/cloud-worker-pick.js');
   const issues = await listOpenIssuesWithDescriptions();
   const nowMs = Date.now();
   // A VERIFY posted as a comment arms a card, and a newer one corrects the
   // description's (BRO-4642). The list query has no comments, so read them for
-  // every P0/P1 card, parked and started (resume) ones included: one request
-  // per 50 cards.
-  const candidates = issues.filter((iss) => !/^(malformed|not-p0-p1)$/.test(skipReason(iss, nowMs) || ''));
+  // every P0/P1 card, parked and started (resume) ones included, and every P2
+  // Todo or resumable card (the fallback tier; needsComments): one request per
+  // 50 cards.
+  const candidates = issues.filter((iss) => needsComments(iss, nowMs));
   let commentsRead = true;
   if (candidates.length) {
     try {
@@ -147,17 +155,25 @@ async function main() {
       console.error(`[cloud-worker-pick] comment VERIFY check skipped: ${err && err.message ? err.message.split('\n')[0] : err}`);
     }
   }
-  const { ordered, eligible, skipped, startNowSkipped } = pickCloudCard(issues, { nowMs });
+  const { ordered, eligible, skipped, startNowSkipped, orderedP2, eligibleP2, skippedP2 } = pickCloudCard(issues, { nowMs });
+  // P2 goes last: a P2 card (resume or new) is reached only when every P0/P1
+  // entry ahead of it was skipped for its history (or, for Codex, bounced).
+  const resumes = findResume(issues, nowMs);
+  const isP2 = (r) => Number(r.issue.priority) === P2_PRIORITY;
   const queue = [
-    ...findResume(issues, nowMs).map((r) => ({ issue: r.issue, resume: r })),
-    ...ordered.map((iss) => ({ issue: iss, resume: null })),
+    ...resumes.filter((r) => !isP2(r)).map((r) => ({ issue: r.issue, resume: r, tier: TIER_P0P1 })),
+    ...ordered.map((iss) => ({ issue: iss, resume: null, tier: TIER_P0P1 })),
+    ...resumes.filter(isP2).map((r) => ({ issue: r.issue, resume: r, tier: TIER_P2 })),
+    ...orderedP2.map((iss) => ({ issue: iss, resume: null, tier: TIER_P2 })),
   ];
+  const counts = { eligible, eligibleP2, open: issues.length, skipped, skippedP2, startNowSkipped };
+  const modelOf = modelPicker(nowMs);
   const historySkipped = {};
   const listN = listArg(process.argv);
   if (listN) {
     // Without comments the Codex bounce marker is invisible: hand Codex nothing this time.
     if (!commentsRead) {
-      console.log(JSON.stringify({ picks: [], eligible, open: issues.length, skipped, startNowSkipped, historySkipped, commentsUnavailable: true }, null, 2));
+      console.log(JSON.stringify({ picks: [], ...counts, historySkipped, commentsUnavailable: true }, null, 2));
       return;
     }
     // Same queue minus resume entries: a stranded landing is the Claude worker's to finish.
@@ -168,21 +184,19 @@ async function main() {
     while (picks.length < listN && rest.length) {
       const chosen = await firstUnpaused(rest, nowMs, historySkipped);
       if (!chosen) break;
-      picks.push(pickJson(chosen.issue, null, nowMs, verifyCommand, isStartNow));
+      picks.push(pickJson(chosen, nowMs, verifyCommand, isStartNow, modelOf));
       rest.splice(0, rest.indexOf(chosen) + 1);
     }
-    console.log(JSON.stringify({ picks, eligible, open: issues.length, skipped, startNowSkipped, historySkipped }, null, 2));
+    console.log(JSON.stringify({ picks, ...counts, historySkipped }, null, 2));
     return;
   }
   const chosen = await firstUnpaused(queue, nowMs, historySkipped);
   const pick = chosen && chosen.issue;
   const resume = chosen && chosen.resume;
   const out = {
-    pick: pickJson(pick, resume, nowMs, verifyCommand, isStartNow),
-    eligible,
-    open: issues.length,
-    skipped,
-    startNowSkipped,
+    pick: pickJson(chosen, nowMs, verifyCommand, isStartNow, modelOf),
+    tier: chosen ? chosen.tier : null,
+    ...counts,
     // Resume candidates and eligible cards passed over for an earlier pause.
     historySkipped,
   };
@@ -206,15 +220,42 @@ function listArg(argv) {
   return n;
 }
 
-function pickJson(pick, resume, nowMs, verifyCommand, isStartNow) {
-  return pick && {
+/**
+ * pickModel with the dispatch ledger read once per run. The ledger is the Mac's
+ * (gitignored); in a cloud container it is absent and reads as [], so the 24h
+ * Opus cap sees no launches. The reason says so rather than implying a check.
+ */
+function modelPicker(nowMs) {
+  const { pickModel } = require('./lib/cloud-worker-pick.js');
+  const ledger = require('./lib/dispatch-ledger.js');
+  const ledgerMissing = !require('fs').existsSync(ledger.LEDGER_PATH);
+  let entries;
+  const readEntries = () => {
+    if (entries === undefined) entries = ledger.readEntries();
+    return entries;
+  };
+  return (issue) => {
+    const m = pickModel(issue, { nowMs, readEntries });
+    return ledgerMissing && m.model === 'opus' ? { ...m, reason: `${m.reason} (no dispatch ledger here: the 24h Opus cap counts Mac launches only)` } : m;
+  };
+}
+
+function pickJson(chosen, nowMs, verifyCommand, isStartNow, modelOf) {
+  if (!chosen) return null;
+  const { issue: pick, resume, tier } = chosen;
+  const { model, reason: modelReason } = modelOf(pick);
+  return {
     identifier: pick.identifier,
     title: pick.title,
     priority: pick.priority,
     state: pick.state && pick.state.name,
     url: pick.url,
+    tier,
+    model,
+    modelReason,
     verify: verifyCommand(pick),
-    startNow: isStartNow(pick, nowMs),
+    // START-NOW is not applied to the P2 tier (the lib's skipReason), so never report it there.
+    startNow: tier === require('./lib/cloud-worker-pick.js').TIER_P0P1 && isStartNow(pick, nowMs),
     ...(resume && {
       resume: {
         landRef: resume.ref,
