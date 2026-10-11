@@ -12,13 +12,15 @@
  *                           received (checker decisions #1/#2, B2), same order
  *   modelTaxCreditExcluded - the uncited credit left out of it ($), for the
  *                           "Not counting an expected NY State tax credit" line
+ *   modelTaxCreditCounted - the credit inside it ($): above 0 means the figure
+ *                           is post-credit (displayBasis, BRO-5073)
  *
  * modelRecoupmentPct is never touched here.
  */
 
 const { modelReturnV2 } = require('./model-return-v2');
 
-const SHADOW_RETURN_FIELDS = ['modelRecoupmentPctV2', 'modelInvestorMultiple', 'modelReturnedExCreditPct', 'modelTaxCreditExcluded'];
+const SHADOW_RETURN_FIELDS = ['modelRecoupmentPctV2', 'modelInvestorMultiple', 'modelReturnedExCreditPct', 'modelTaxCreditExcluded', 'modelTaxCreditCounted'];
 /** Model options for the "% returned so far" shadow run. */
 const RETURNED_SO_FAR_OPTS = Object.freeze({ playedWeeksOnly: true, taxCreditCitedOnly: true });
 
@@ -61,10 +63,12 @@ function applyReturnedSoFarFields(comm, returned) {
   if (!returned || returned.error || !Number.isFinite(returned.recoupmentPctCentral)) {
     delete comm.modelReturnedExCreditPct;
     delete comm.modelTaxCreditExcluded;
+    delete comm.modelTaxCreditCounted;
     return;
   }
   comm.modelReturnedExCreditPct = [returned.recoupmentPctLow, returned.recoupmentPctCentral, returned.recoupmentPctHigh];
   comm.modelTaxCreditExcluded = returned.taxCreditExcluded || 0;
+  comm.modelTaxCreditCounted = returned.taxCreditApplied || 0;
 }
 
 module.exports = {

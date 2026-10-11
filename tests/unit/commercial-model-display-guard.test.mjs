@@ -118,6 +118,7 @@ test('held model says why, never on a settled or untrusted record', () => {
   assert.equal(getModelHoldLabel({ ...base, modelDisplayHold: 'few-weeks' }), 'Too early to estimate');
   assert.equal(getModelHoldLabel({ ...base, modelDisplayHold: 'estimates-disagree' }), 'Estimates disagree');
   assert.equal(getModelHoldLabel({ ...base, modelDisplayHold: 'too-uncertain' }), 'Too uncertain to estimate');
+  assert.equal(getModelHoldLabel({ ...base, modelDisplayHold: 'past-100-unannounced' }), 'Recoupment not announced');
   assert.equal(getModelHoldLabel({ ...base, modelDisplayHold: 'out-of-bounds' }), 'Estimate unavailable');
   assert.equal(getModelHoldLabel({ ...base, modelDisplayHold: 'out-of-bounds', modelBelowCosts: true }), 'Losing money so far');
   assert.equal(getModelHoldLabel({ ...base }), null);
@@ -164,4 +165,10 @@ test('launch switch off: a running show says "Not enough reported data yet"', ()
   const recouped = rec({ recouped: true, designation: 'Windfall', modelRecoupmentPct: [90, 110, 130] });
   assert.notEqual(getRecoupmentDisplayMode(applyModelDisplayGuard(recouped, running, now)), 'model');
   assert.equal(getModelHoldLabel({ ...applyModelDisplayGuard(recouped, running, now), status: 'open' }), null);
+});
+
+test('the pre-credit swap waits for the running bar: today nothing moves (BRO-5073)', () => {
+  const out = applyModelDisplayGuard(rec({ modelRecoupmentPct: [-12, 4, 18], modelReturnedExCreditPct: [-40, -20, -5] }), running, now);
+  assert.deepEqual(out.modelHeldRange, [-12, 4, 18]);
+  assert.equal(out.modelCreditBasis, undefined);
 });

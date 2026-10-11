@@ -4,7 +4,7 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { modelDisplayGuard, displaysModel, playedWeeks, independentEstimate, isRunning } = require('../../scripts/lib/model-display-guard');
+const { modelDisplayGuard, displayBasis, displaysModel, playedWeeks, independentEstimate, isRunning, RUNNING_MODEL_BAR_ENABLED, RUNNING_MODEL_BAR_TYPES } = require('../../scripts/lib/model-display-guard');
 
 describe('modelDisplayGuard', () => {
   test('Schmigadoon -169 is hidden, not printed', () => {
@@ -44,6 +44,27 @@ describe('modelDisplayGuard', () => {
     assert.equal(modelDisplayGuard({ pct: [-14, 1, 14], playedWeeks: 28, running: true, runningEnabled: true }).show, true);
     assert.equal(modelDisplayGuard({ pct: [-14, 1, 14], playedWeeks: 28, running: false }).show, true);
     assert.equal(modelDisplayGuard({ pct: [-14, 1, 14], playedWeeks: 5, running: true }).reason, 'few-weeks');
+  });
+  test('a running show never prints 100%+ before it announces recoupment (BRO-5073)', () => {
+    const on = { playedWeeks: 69, running: true, runningEnabled: true };
+    assert.equal(modelDisplayGuard({ ...on, pct: [130, 144, 150] }).reason, 'past-100-unannounced');
+    assert.equal(modelDisplayGuard({ ...on, pct: [95, 100, 110] }).reason, 'past-100-unannounced');
+    assert.deepEqual(modelDisplayGuard({ ...on, pct: [80, 92, 110] }).shown, [80, 92, 99]);
+    // the launch switch still wins while it is off; a closed show is unaffected
+    assert.equal(modelDisplayGuard({ ...on, runningEnabled: false, pct: [130, 144, 150] }).reason, 'awaiting-truth');
+    assert.deepEqual(modelDisplayGuard({ ...on, running: false, pct: [80, 92, 110] }).shown, [80, 92, 110]);
+  });
+  test('per-type running switch: plays only once the flag is on, default off (BRO-5073)', () => {
+    assert.equal(RUNNING_MODEL_BAR_ENABLED, false);
+    assert.deepEqual(RUNNING_MODEL_BAR_TYPES, ['play']);
+    const on = { pct: [40, 55, 70], playedWeeks: 30, running: true, runningEnabled: true };
+    assert.equal(modelDisplayGuard({ ...on, showType: 'play' }).show, true);
+    assert.equal(modelDisplayGuard({ ...on, showType: 'musical' }).reason, 'awaiting-truth');
+    assert.equal(modelDisplayGuard({ ...on, showType: null }).reason, 'awaiting-truth');
+    assert.equal(modelDisplayGuard({ ...on, showType: 'musical', runningTypes: ['play', 'musical'] }).show, true);
+    // flag off: plays are held too; closed shows ignore the switch
+    assert.equal(modelDisplayGuard({ ...on, runningEnabled: false, showType: 'play' }).reason, 'awaiting-truth');
+    assert.equal(modelDisplayGuard({ ...on, running: false, showType: 'musical' }).show, true);
   });
   test('isRunning: open, or closing date still ahead', () => {
     const now = new Date('2026-10-10');
@@ -95,4 +116,18 @@ describe('displaysModel (mirrors getRecoupmentDisplayMode === "model")', () => {
     assert.equal(displaysModel({}, { status: 'open' }), false);
     assert.equal(displaysModel(null, { status: 'open' }), false);
   });
+});
+
+test('displayBasis: running shows use the pre-credit figure once running bars are on (BRO-5073)', () => {
+  const pct = [80, 90, 100];
+  const ex = [60, 70, 80];
+  // Bar off (today): live figure, no basis.
+  assert.deepEqual(displayBasis({ pct, exCreditPct: ex, creditCounted: 0, running: true }), { pct, creditBasis: null });
+  assert.deepEqual(displayBasis({ pct, exCreditPct: ex, creditCounted: 0, running: true, runningEnabled: true }), { pct: ex, creditBasis: 'pre-credit' });
+  assert.deepEqual(displayBasis({ pct, exCreditPct: ex, creditCounted: 3e6, running: true, runningEnabled: true }), { pct: ex, creditBasis: 'post-credit' });
+  // Closed shows and records without the run keep the live figure.
+  assert.deepEqual(displayBasis({ pct, exCreditPct: ex, running: false, runningEnabled: true }), { pct, creditBasis: null });
+  assert.deepEqual(displayBasis({ pct, exCreditPct: null, running: true, runningEnabled: true }), { pct, creditBasis: null });
+  // A stale run without the counted field: pre-credit figure, basis not claimed.
+  assert.deepEqual(displayBasis({ pct, exCreditPct: ex, running: true, runningEnabled: true }), { pct: ex, creditBasis: null });
 });

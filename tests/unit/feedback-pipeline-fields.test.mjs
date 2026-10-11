@@ -188,3 +188,11 @@ describe('feedback-pipeline-fields', () => {
     assert.deepEqual(buildShowSnapshot({ id: 'x', title: 'X', slug: 'x' }).rejectedImageUrls, []);
   });
 });
+
+test('a reported "% returned" figure is editable only on the human-approved path (BRO-5073)', () => {
+  const { FEEDBACK_EDITABLE_FIELDS: human, AUTO_FIX_EDITABLE_FIELDS: auto } = require('../../scripts/lib/feedback-pipeline-fields');
+  for (const f of ['estimatedRecoupmentPct', 'estimatedRecoupmentSource', 'estimatedRecoupmentDate']) {
+    assert.ok(human['commercial.json'].includes(f), f);
+    assert.ok(!auto['commercial.json'].includes(f), f);
+  }
+});

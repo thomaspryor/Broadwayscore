@@ -22,9 +22,17 @@
 // (TRUTH_CLASS_FIELD); without one the source text is classified, defaulting
 // to 'inference'. A failed row is 'reported' only when a hard source states the
 // outcome (did not recoup, closed at a loss): a cited capitalization or budget
-// alone is inference about the outcome (checker, 2026-10-10).
+// alone is inference about the outcome (checker, 2026-10-10). A reported-pct
+// row is 'reported' only when its source also states a figure (BRO-5073).
 
 const OWN_INFERENCE = /^\s*(inferred|estimated)\b/i;
+// A stated figure for the money returned or lost: a percentage beside
+// recoup/returned/loss, a percentage of the capitalization, or a dollar loss
+// ("$6M loss (~40% of cap)"). Shared with model-display-guard.js.
+const STATED_PCT = /\b(recoup\w*|returned|paid back|earned back|loss|lost)\b[^.;]{0,60}?\d+(?:\.\d+)?\s*(?:%|percent)|\d+(?:\.\d+)?\s*(?:%|percent)\s*(?:of|on)\s*(?:its |the )?(?:cap|capitali[sz]ation|investment)\b/i;
+const STATED_LOSS = /\b(loss|lost)\b[^.;]{0,30}?\$\s?\d|\$\s?\d+(?:\.\d+)?\s*(?:m|million)\b[^.;]{0,15}?\bloss/i;
+/** Does the text state a figure for the money returned or lost? */
+const statesFigure = (text) => STATED_PCT.test(String(text || '')) || STATED_LOSS.test(String(text || ''));
 
 const TRUTH_CLASS_FIELD = {
   'reported-pct': 'estimatedRecoupmentTruthClass',
@@ -59,6 +67,11 @@ function classifyFailedText(text) {
 function truthClassOf(comm, kind, sourceText) {
   const explicit = comm && comm[TRUTH_CLASS_FIELD[kind]];
   if (explicit === 'reported' || explicit === 'inference') return { truthClass: explicit, truthClassFrom: 'field' };
+  // A range is a point estimate only when the source states a figure; a
+  // quote like "among the season's largest losses" turned into 0..10 by us is
+  // our inference, whoever said the words (BRO-5073: Queen of Versailles,
+  // Little Bear Ridge Road).
+  if (kind === 'reported-pct' && !statesFigure(sourceText)) return { truthClass: 'inference', truthClassFrom: 'no-stated-figure' };
   if (kind === 'failed') {
     const text = [comm.notes, comm.recoupedSource, comm.classifiedReason].filter((v) => typeof v === 'string').join(' ');
     return { truthClass: classifyFailedText(text), truthClassFrom: 'source-text' };
@@ -72,7 +85,54 @@ function truthClassOf(comm, kind, sourceText) {
  */
 function groundTruth(comm, show, now = new Date()) {
   const t = rawGroundTruth(comm, show, now);
-  return t && { ...t, ...truthClassOf(comm, t.kind, t.source) };
+  return t && { ...t, ...truthClassOf(comm, t.kind, t.source), creditBasis: creditBasis(comm, t.source, t.kind) };
+}
+
+// Pre- or post-NY-tax-credit basis of a truth figure (BRO-5073). Post only
+// when the source counts a credit already in hand ("operating profit plus the
+// NY State tax credit"); "eligible for", "would", "if received" and "will"
+// are a credit not yet in the figure, as are "not including", "to follow" and
+// "once received". An explicit taxCreditBasis field wins. A recoupment that
+// does not say is 'unstated': short runs often declare recoupment counting the
+// credit, and announcements rarely say which, so such a row is scored on
+// whichever basis fits (eitherBasis). An amount returned or lost with no
+// credit in it stays pre-credit.
+// W: up to 40 characters inside one clause; a decimal point ($2.5M) is not a clause end.
+const W = '(?:[^.;|]|\\.(?=\\d)){0,40}';
+const CREDIT_IN = new RegExp(`\\b(plus|including|includes|after)\\b${W}\\btax credits?\\b`, 'i');
+const CREDIT_HEDGE = new RegExp(`\\b(eligible|would|if|will|expected|pending|not|excluding|before|may|could|once|when)\\b${W}\\btax credits?\\b|\\btax credits?\\b${W}\\b(would|if|will|to follow|may|could|once|when)\\b`, 'i');
+/** @returns {'pre-credit'|'post-credit'|'unstated'} */
+function creditBasis(comm, sourceText, kind) {
+  const explicit = comm && comm.taxCreditBasis;
+  if (explicit === 'pre-credit' || explicit === 'post-credit') return explicit;
+  const text = String(sourceText || '');
+  if (CREDIT_IN.test(text) && !CREDIT_HEDGE.test(text)) return 'post-credit';
+  return kind === 'recouped' ? 'unstated' : 'pre-credit';
+}
+
+/**
+ * An 'unstated' row is inside when either the pre- or the post-credit model
+ * fits: the side with the smaller error is the one scored (pre on a tie).
+ * @param {{ err: number }} pre @param {{ err: number }} post
+ */
+function eitherBasis(pre, post) {
+  return post.err < pre.err ? { ...post, usedPost: true } : { ...pre, usedPost: false };
+}
+
+/** One line: rows per credit basis, and how many unstated rows the post-credit side carried. */
+function basisLine(rows) {
+  const n = (f) => rows.filter(f).length;
+  return `Credit basis: ${n((r) => r.creditBasis === 'pre-credit')} pre-credit, ${n((r) => r.creditBasis === 'post-credit')} post-credit, ${n((r) => r.creditBasis === 'unstated')} unstated (${n((r) => r.usedPost === true)} scored on the post-credit side)`;
+}
+
+// Recouped after the Broadway run closed, with the source crediting a tour
+// (Kimberly Akimbo, Playbill Apr 23, 2026): the Broadway-only model cannot
+// see tour profits, so this is not a test of it (BRO-5073).
+const TOUR_CREDIT = /\btour\b/i;
+function recoupedFromTour(comm, show) {
+  const close = show && show.closingDate;
+  return !!close && typeof comm.recoupedDate === 'string' && comm.recoupedDate.slice(0, 7) > close.slice(0, 7)
+    && TOUR_CREDIT.test(String(comm.recoupedSource) + ' ' + String(comm.notes || ''));
 }
 
 function rawGroundTruth(comm, show, now) {
@@ -86,6 +146,7 @@ function rawGroundTruth(comm, show, now) {
     return { kind: 'reported-pct', lo: Math.min(...est), hi: Math.max(...est), source: String(basis), ...(asOf ? { asOf } : {}) };
   }
   if (comm.recouped === true && comm.recoupedSource) {
+    if (recoupedFromTour(comm, show)) return null;
     return { kind: 'recouped', lo: 100, hi: Infinity, source: String(comm.recoupedSource) };
   }
   const closed = show && show.closingDate && new Date(show.closingDate) <= now;
@@ -168,4 +229,6 @@ function formatMarkdown({ title, summary, rows, worse, limit = 15, aggregateOnly
   return out.join('\n');
 }
 
-module.exports = { groundTruth, truthClassOf, classifySourceText, classifyFailedText, TRUTH_CLASS_FIELD, rangeError, category, summarize, worseGroups, formatMarkdown, fmtTruth, OWN_INFERENCE };
+module.exports = {
+  creditBasis, eitherBasis, basisLine,
+  recoupedFromTour, STATED_PCT, statesFigure, groundTruth, truthClassOf, classifySourceText, classifyFailedText, TRUTH_CLASS_FIELD, rangeError, category, summarize, worseGroups, formatMarkdown, fmtTruth, OWN_INFERENCE };

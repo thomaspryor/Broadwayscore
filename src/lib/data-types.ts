@@ -493,7 +493,13 @@ export interface ShowCommercial {
   // Model-calculated recoupment fields (from merge-model-recoupment.js)
   modelRecoupmentPct?: [number, number, number] | null; // [pessimistic, central, optimistic]
   /** Set when the display guard hid the model bar (BRO-4989): why. */
-  modelDisplayHold?: 'no-model' | 'few-weeks' | 'out-of-bounds' | 'estimates-disagree' | 'too-uncertain' | 'awaiting-truth';
+  modelDisplayHold?: 'no-model' | 'few-weeks' | 'out-of-bounds' | 'estimates-disagree' | 'too-uncertain' | 'awaiting-truth' | 'past-100-unannounced';
+  /** "% returned so far" run (scripts/lib/model-run-fields.js): a running show's NY tax credit only once cited. */
+  modelReturnedExCreditPct?: [number, number, number] | null;
+  /** NY tax credit inside modelReturnedExCreditPct ($); above 0 = post-credit. */
+  modelTaxCreditCounted?: number | null;
+  /** Tax-credit basis of the displayed model figure (displayBasis, BRO-5073); null/absent while running bars are off. */
+  modelCreditBasis?: 'pre-credit' | 'post-credit' | null;
   /** The model central is below 0 (lost money running so far): shown as 0% with "losing money so far". */
   modelBelowCosts?: boolean;
   /** Server-only: the range the display guard hid, for the At Risk rule. toPublicShowCommercial drops it. */

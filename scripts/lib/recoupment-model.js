@@ -21,6 +21,7 @@ const { isCitedReportedWeeklyCost, REPORTED_COST_METHODOLOGIES } = require('./wa
 const { previewWeeksFromWeekly } = require('./preview-weeks');
 const { runWindow, weeksInOwnRun, COVID_DARK_START, COVID_DARK_END } = require('./run-window');
 const { taxCreditCited } = require('./tax-credit-cited');
+const { splitCosts } = require('./cost-split');
 
 // ---------------------------------------------------------------------------
 // Constants & Defaults
@@ -93,6 +94,9 @@ const PREVIEW_DEFAULTS = {
 /** Reserve fund: weeks of operating costs held before declaring recoupment.
  *  Industry standard: 3-4 weeks for open-ended, 1.5 for limited runs. */
 const RESERVE_FUND_WEEKS = 3;
+const RESERVE_LAG_WEEKS = 8; // shadow, BRO-5073 opts.reserveLag
+// opts.reserveIfStated: "capitalization excludes the reserve", "plus a $1M reserve".
+const CAP_EXCLUDES_RESERVE = /\b(?:exclud\w*|not\s+includ\w*|plus|in\s+addition\s+to)\b[^.;]{0,40}\breserves?\b/i;
 
 /** Tax credit lag in weeks from opening date */
 const TAX_CREDIT_LAG_WEEKS = 78; // ~18 months
@@ -104,6 +108,11 @@ const TAX_CREDIT_LAG_WEEKS = 78; // ~18 months
  * COVID reopenings — NOT just shows that opened after 2021.
  */
 const TAX_CREDIT_PROGRAM_START = new Date('2021-08-01');
+// SVOG awards were first paid in late May 2021. A run replayed as of an
+// earlier date (backtest asOf) had not received one (BRO-5073: Dear Evan
+// Hansen replayed at its July 2017 recoupment read 937% with a 2021 grant
+// netted off its cap). Live runs are always past this date.
+const SVOG_FIRST_AWARDS = new Date('2021-05-25');
 const TAX_CREDIT_PROGRAM_END = new Date('2027-12-31');
 const TAX_CREDIT_MAX = 3000000;
 const TAX_CREDIT_RATE = 0.25;
@@ -174,7 +183,9 @@ const COVID_DARK_WEEKS = 78;
  * BRO-4623: wicked, the-lion-king and aladdin were removed. Disney is a
  * publicly traded company and was ineligible (commercial.json notes, per
  * Variety Mar 2021), and Wicked's research notes record no SVOG. Only add a
- * show here with a cited grant (news report or SBA award list).
+ * show here with a cited grant (news report or SBA award list). Keys are
+ * commercial.json slugs (tests/unit/cost-split.test.mjs checks). Since BRO-5073
+ * the grant is not netted off the cap unless opts.svogCredit is set.
  */
 const KNOWN_SVOG = {
   'hamilton': 10000000,
@@ -187,11 +198,11 @@ const KNOWN_SVOG = {
   'chicago': 10000000,
   'dear-evan-hansen-2016': 10000000,
   'come-from-away-2017': 10000000,
-  'mean-girls': 10000000,
+  'mean-girls-2018': 10000000,
   'harry-potter': 10000000,
   'frozen-2018': 10000000,
-  'jagged-little-pill': 10000000,
-  'tina': 10000000,
+  'jagged-little-pill-2019': 10000000,
+  'tina-2019': 10000000,
 };
 
 /** Known star deals — weekly premium + % of gross above threshold */
@@ -323,6 +334,50 @@ function calcTheaterOverage(weeklyGross, weeklyNut) {
 }
 
 /**
+ * Shadow running-cost path (BRO-5073, --opt=stepSmall|stepLate|costGrowth).
+ * The live path is full cost to week 52, x0.93 to week 104, x0.88 after.
+ *   stepSmall   x0.96 / x0.93 instead of x0.93 / x0.88
+ *   stepLate    the same cuts a half-year later (after weeks 78 and 156)
+ *   costGrowth  costs rise COST_GROWTH_RATE a year from opening (union
+ *               escalators), on top of whichever step-downs apply
+ * @param {number} weekNumber
+ * @param {{ stepSmall?: boolean, stepLate?: boolean, costGrowth?: boolean }} path
+ */
+const COST_GROWTH_RATE = 0.035;
+function costPathFactor(weekNumber, path) {
+  const [y2, y3] = path.stepSmall ? [0.96, 0.93] : [0.93, 0.88];
+  const [w2, w3] = path.stepLate ? [78, 156] : [52, 104];
+  const step = weekNumber > w3 ? y3 : weekNumber > w2 ? y2 : 1;
+  const growth = path.costGrowth ? Math.pow(1 + COST_GROWTH_RATE, (weekNumber - 1) / 52) : 1;
+  return step * growth;
+}
+
+/**
+ * Shadow variable-cost shape (BRO-5073, --opt=varBand|varOverage). Live
+ * deducts a flat ~11% of gross plus any theater overage. u/Boring_Waltz_9545's
+ * weekly posts deduct more as gross rises against cost: about 12% of gross
+ * below 0.9x cost, about 23.5% at 1.5x and up (inference, so shadow only).
+ *   varBand     total deductions ramp linearly from VAR_BAND.low at 0.9x
+ *               cost to VAR_BAND.high at 1.5x; the extra over live is added
+ *   varOverage  the same deduction at 1.5x, but charged only on gross above
+ *               the weekly cost (theater and royalty steps on overages):
+ *               OVERAGE_RATE = (0.235 - 0.11) x 1.5 / 0.5
+ *   varBandMusicals  varBand for musicals only (his posts are mostly musicals)
+ * Returns the extra variable cost in dollars (0 when neither is set).
+ */
+const VAR_BAND = { fromRatio: 0.9, toRatio: 1.5, low: 0.12, high: 0.235 };
+const OVERAGE_RATE = 0.375;
+function extraVariableCost(adjGross, nut, liveDeductions, path) {
+  if (!path || !(nut > 0) || !(adjGross > 0)) return 0;
+  if (path.varBand) {
+    const t = Math.min(1, Math.max(0, (adjGross / nut - VAR_BAND.fromRatio) / (VAR_BAND.toRatio - VAR_BAND.fromRatio)));
+    return Math.max(0, (VAR_BAND.low + (VAR_BAND.high - VAR_BAND.low) * t) * adjGross - liveDeductions);
+  }
+  if (path.varOverage) return OVERAGE_RATE * Math.max(0, adjGross - nut);
+  return 0;
+}
+
+/**
  * Calculate weekly operating profit for ONE week.
  *
  * Pre-recoupment: variable costs = base rate × gross + theater deal
@@ -335,9 +390,10 @@ function calcTheaterOverage(weeklyGross, weeklyNut) {
  * @param {number} weekNumber - Week number from opening (for cost escalation)
  * @param {boolean} isPreview - Whether this is a preview week
  * @param {number} scenarioMult - Scenario multiplier object
+ * @param {object} [costPath] - shadow cost path (costPathFactor); live passes none
  * @returns {{ profit: number, variableCosts: number, theaterCost: number, fixedCosts: number }}
  */
-function calcWeeklyProfit(weeklyGross, weeklyNut, baseVarRate, isPostRecoup, weekNumber, isPreview, scenarioMult, totalWeeks, showType, showCategory) {
+function calcWeeklyProfit(weeklyGross, weeklyNut, baseVarRate, isPostRecoup, weekNumber, isPreview, scenarioMult, totalWeeks, showType, showCategory, costPath) {
   const mult = scenarioMult || SCENARIO_MULTIPLIERS.central;
   const adjGross = weeklyGross * mult.grossAdj;
 
@@ -361,13 +417,19 @@ function calcWeeklyProfit(weeklyGross, weeklyNut, baseVarRate, isPostRecoup, wee
   // Phase 3 (weeks 53-104): Nut × 0.93 (year 2+: cast replacements save ~7%, reduced marketing)
   // Phase 4 (weeks 105+): Nut × 0.88 (mature run: further optimization, but offset by union escalators)
   let fixedCosts = weeklyNut * mult.fixedCost;
-  if (weekNumber > 104) {
+  if (costPath) {
+    fixedCosts *= costPathFactor(weekNumber, costPath); // shadow, BRO-5073
+  } else if (weekNumber > 104) {
     fixedCosts *= 0.88; // Mature run cap — no further reduction
   } else if (weekNumber > 52) {
     fixedCosts *= 0.93;
   }
   // No additional deflation for long runs — Broadway costs inflate over time.
   // The 0.88 floor already captures cast replacement savings and optimization.
+
+  // Shadow variable-cost shape against this week's running cost (BRO-5073).
+  const bandPath = costPath && costPath.varBandMusicals && !/^play/.test(showCategory || '') ? { ...costPath, varBand: true } : costPath;
+  const extraVar = costPath ? extraVariableCost(adjGross, fixedCosts, variableCosts + theaterCost, bandPath) * mult.variableCost : 0;
 
   // Preview cost premium
   if (isPreview) {
@@ -381,7 +443,7 @@ function calcWeeklyProfit(weeklyGross, weeklyNut, baseVarRate, isPostRecoup, wee
   }
 
   // Pre-recoupment operating profit
-  let operatingProfit = adjGross - variableCosts - theaterCost - fixedCosts;
+  let operatingProfit = adjGross - variableCosts - extraVar - theaterCost - fixedCosts;
 
   // Post-recoupment: royalty pool takes 35% of operating profit
   if (isPostRecoup && operatingProfit > 0) {
@@ -391,7 +453,7 @@ function calcWeeklyProfit(weeklyGross, weeklyNut, baseVarRate, isPostRecoup, wee
 
   return {
     profit: operatingProfit,
-    variableCosts,
+    variableCosts: variableCosts + extraVar,
     theaterCost,
     fixedCosts,
     adjGross,
@@ -456,13 +518,23 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   }
 
   const weeklyNut = commercial.weeklyRunningCost || estimateWeeklyNut(show, commercial);
-  const nutSource = commercial.weeklyRunningCost ? 'reported' : 'estimated';
+  // opts.costSourcedOnly (shadow, BRO-5073): a weekly cost with no cited
+  // source counts as 'unsourced', and only a cited cost lifts quality (a
+  // methodology label with no cost behind it does not).
+  const costUnsourced = !!(opts.costSourcedOnly && commercial.weeklyRunningCost && !isCitedReportedWeeklyCost(commercial));
+  const nutSource = costUnsourced ? 'unsourced' : commercial.weeklyRunningCost ? 'reported' : 'estimated';
   if (nutSource === 'estimated') {
     warnings.push('Weekly running cost estimated from show type');
   }
 
   const category = classifyShow(show);
-  const baseVarRate = getBaseVariableRate(category);
+  // Shadow only (BRO-5073, opts.costSplit): fixed part of the cost and a
+  // larger gross-linked rate. The reserve and cap stay on the reported cost.
+  const split = opts.costSplit ? splitCosts(commercial, category, weeklyNut, getBaseVariableRate(category), THEATER_DEAL.pctOfGross) : null;
+  const baseVarRate = split ? split.varRate : getBaseVariableRate(category);
+  const runNut = split ? split.fixedNut : weeklyNut;
+  const costPath = opts.stepSmall || opts.stepLate || opts.costGrowth || opts.varBand || opts.varOverage || opts.varBandMusicals
+    ? { stepSmall: !!opts.stepSmall, stepLate: !!opts.stepLate, costGrowth: !!opts.costGrowth, varBand: !!opts.varBand, varOverage: !!opts.varOverage, varBandMusicals: !!opts.varBandMusicals } : null; // shadow, BRO-5073
 
   // --- Star deal ---
   const slug = show.slug || show.id;
@@ -475,7 +547,11 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   }
 
   // --- Effective capitalization ---
-  const svogGrant = KNOWN_SVOG[slug] || parseSvogFromNotes(commercial.notes) || 0;
+  // SVOG is not netted off the cap (BRO-5073). The model counts played weeks
+  // only, and the grant mostly reimbursed shutdown costs it never charges, so
+  // subtracting it double-counted (Six: $10M grant on a $5M cap read 1879%).
+  // No record says a grant went to investors. opts.svogCredit replays the old rule.
+  const svogGrant = now < SVOG_FIRST_AWARDS || !opts.svogCredit ? 0 : (KNOWN_SVOG[slug] || parseSvogFromNotes(commercial.notes) || 0);
 
   // NY theater tax credit: eligible if the show's run overlaps the program
   // window (Aug 2021 – 2027), which includes COVID reopenings of older shows.
@@ -493,10 +569,18 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   // limited runs (< 6 months) need less because producers budget to the close date.
   const isLimitedRun = show.closingDate && show.openingDate &&
     (new Date(show.closingDate) - new Date(show.openingDate)) < 200 * 86400000;
-  const reserveWeeks = isLimitedRun ? 1.5 : RESERVE_FUND_WEEKS;
+  // Shadow (BRO-5073, opts.reserveLag): producers hold more than 3 weeks
+  // (bonds, working capital) and announce a few weeks after the books close.
+  // Shadow (BRO-5073): a Broadway capitalization usually already budgets the
+  // reserve and bonds, so adding one on top may double count. opts.noReserve
+  // drops it; opts.reserveIfStated keeps it only when the record says the
+  // capitalization excludes the reserve.
+  const reserveExcluded = !opts.reserveIfStated || CAP_EXCLUDES_RESERVE.test(`${commercial.capitalizationSource || ''} ${commercial.notes || ''}`);
+  const reserveWeeks = opts.noReserve || !reserveExcluded ? 0 : isLimitedRun ? 1.5 : (opts.reserveLag ? RESERVE_LAG_WEEKS : RESERVE_FUND_WEEKS);
   const reserveFund = weeklyNut * reserveWeeks;
-  // Effective cap can't go below zero (SVOG can't make cap negative)
-  const effectiveCap = Math.max(capitalization - svogGrant + reserveFund, reserveFund);
+  // Effective cap can't go below zero (SVOG can't make cap negative); with no
+  // reserve the floor is one week of nut, as for a closed run.
+  const effectiveCap = Math.max(capitalization - svogGrant + reserveFund, reserveFund || weeklyNut);
   // Tax credit timing: for closed shows, apply at closing (credit is eventual certainty).
   // For running shows, lag 18 months from opening.
   const isClosed = show.closingDate && new Date(show.closingDate) < now;
@@ -525,7 +609,9 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
         : 0);
   // Shadow (BRO-4989): a running show's credit counts only once a source says
   // it was received. A closed show keeps it: the credit does get paid.
-  const taxCreditExcluded = opts.taxCreditCitedOnly && !isClosed && !taxCreditCited(commercial).cited ? expectedTaxCredit : 0;
+  // opts.taxCreditPre (BRO-5073): pre-credit basis, no credit at all, so the
+  // backtest can score a pre-credit truth figure like with like.
+  const taxCreditExcluded = opts.taxCreditPre || (opts.taxCreditCitedOnly && !isClosed && !taxCreditCited(commercial).cited) ? expectedTaxCredit : 0;
   const taxCreditAmount = expectedTaxCredit - taxCreditExcluded;
   if (notesCredit === 0) {
     warnings.push(NO_TAX_CREDIT_FROM_NOTES_WARNING);
@@ -577,7 +663,7 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
       }
 
       const weekResult = calcWeeklyProfit(
-        week.gross, nutByWeek ? nutByWeek[i] : weeklyNut, baseVarRate, isPostRecoup, weekNum, week.isPreview, mult, weeklySchedule.length, show.type || 'musical', category
+        week.gross, nutByWeek ? nutByWeek[i] : runNut, baseVarRate, isPostRecoup, weekNum, week.isPreview, mult, weeklySchedule.length, show.type || 'musical', category, costPath
       );
 
       let weekProfit = weekResult.profit;
@@ -632,7 +718,7 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   // When gross is above theater breakpoint: gross × (1 - varRate - 0.07) + rentInNut = nut
   // → gross = (nut - rentInNut) / (1 - varRate - 0.07)
   // Simplified: gross = nut × (1 - rentPct) / (1 - varRate - theaterPct)
-  const breakeven = (weeklyNut * (1 - THEATER_DEAL.rentPctOfNut)) /
+  const breakeven = (runNut * (1 - THEATER_DEAL.rentPctOfNut)) /
     (1 - baseVarRate - THEATER_DEAL.pctOfGross);
 
   // --- Data quality ---
@@ -642,7 +728,7 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   let dataQuality = 'low';
   if (isCitedReportedWeeklyCost(commercial)) {
     dataQuality = 'high';
-  } else if (REPORTED_COST_METHODOLOGIES.has(commercial.costMethodology) || (commercial.weeklyRunningCost && grossesAllTime)) {
+  } else if (!opts.costSourcedOnly && (REPORTED_COST_METHODOLOGIES.has(commercial.costMethodology) || (commercial.weeklyRunningCost && grossesAllTime))) {
     dataQuality = 'medium';
   }
 
@@ -655,7 +741,9 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
     capitalization,
     svogGrant,
     taxCreditAmount,
-    ...(opts.taxCreditCitedOnly ? { taxCreditExcluded } : {}),
+    // The credit actually inside the % (a running show's lands at week TAX_CREDIT_LAG_WEEKS).
+    taxCreditApplied: taxCreditWeek === Infinity || Math.min(weeklySchedule.length, 520) >= taxCreditWeek ? taxCreditAmount : 0,
+    ...(opts.taxCreditCitedOnly || opts.taxCreditPre ? { taxCreditExcluded } : {}),
     reserveFund: Math.round(reserveFund),
     effectiveCapitalization: Math.round(effectiveCap),
     weeklyFixedCosts: weeklyNut,
@@ -969,11 +1057,13 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}
 
   const slug = show.slug || show.id;
   const category = classifyShow(show);
-  const baseVarRate = getBaseVariableRate(category);
   const weeklyNut = commercial.weeklyRunningCost || estimateWeeklyNut(show, commercial, { eraAdjust: false });
+  const split = opts.costSplit ? splitCosts(commercial, category, weeklyNut, getBaseVariableRate(category), THEATER_DEAL.pctOfGross) : null; // shadow, BRO-5073
+  const baseVarRate = split ? split.varRate : getBaseVariableRate(category);
+  const runNut = split ? split.fixedNut : weeklyNut;
 
   // Effective capitalization
-  const svogGrant = KNOWN_SVOG[slug] || parseSvogFromNotes(commercial.notes) || 0;
+  const svogGrant = opts.svogCredit ? (KNOWN_SVOG[slug] || parseSvogFromNotes(commercial.notes) || 0) : 0; // see calculateRecoupment (BRO-5073)
   const reserveFund = weeklyNut * 1.5; // Minimal for established long-runners
   const effectiveCap = Math.max(capitalization - svogGrant + reserveFund, reserveFund);
   // Same semantics as the weekly model: closed shows measure against cap net
@@ -997,7 +1087,7 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}
     ? 0
     : Math.min(TAX_CREDIT_RATE * (capitalization + weeklyNut * 52), TAX_CREDIT_MAX);
   // Shadow (BRO-4989): same running-only, cited-only rule as the weekly model.
-  const taxCreditExcluded = opts.taxCreditCitedOnly && !isClosedRun && !taxCreditCited(commercial).cited ? expectedTaxCredit : 0;
+  const taxCreditExcluded = opts.taxCreditPre || (opts.taxCreditCitedOnly && !isClosedRun && !taxCreditCited(commercial).cited) ? expectedTaxCredit : 0;
   const taxCredit = expectedTaxCredit - taxCreditExcluded;
 
   // Run duration
@@ -1018,7 +1108,7 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}
   const totalGross = grossesAllTime.gross;
 
   // Theater overage as % of gross (simplified: flat rate since we don't have weekly data)
-  const theaterOverageRate = Math.max(0, THEATER_DEAL.pctOfGross - THEATER_DEAL.rentPctOfNut * weeklyNut / (totalGross / totalWeeks));
+  const theaterOverageRate = Math.max(0, THEATER_DEAL.pctOfGross - THEATER_DEAL.rentPctOfNut * runNut / (totalGross / totalWeeks));
 
   // Total variable cost rate (pre-recoup rate for most of the run is wrong —
   // long-runners recoup early, so most weeks are post-recoup with lower author royalties)
@@ -1033,7 +1123,7 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}
   // Average weekly nut over the run — deflate current nut by 2%/year for historical average
   const runYears = totalWeeks / 52;
   const avgNutDeflator = runYears > 3 ? (1 - Math.pow(0.98, runYears)) / (runYears * 0.02) : 1;
-  let avgWeeklyNut = weeklyNut * avgNutDeflator * 0.88; // 0.88 = phase 4 mature run
+  let avgWeeklyNut = runNut * avgNutDeflator * 0.88; // 0.88 = phase 4 mature run
   // Shadow only (BRO-4989 checker #3): the run's average of each week's
   // dated cost (costForWeek) replaces the flat 2%/year deflator.
   if (opts.datedCosts && datedCostsApply(show, commercial, warnings)) {
@@ -1079,7 +1169,8 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}
     capitalization,
     svogGrant,
     taxCreditAmount: taxCredit,
-    ...(opts.taxCreditCitedOnly ? { taxCreditExcluded } : {}),
+    taxCreditApplied: taxCredit,
+    ...(opts.taxCreditCitedOnly || opts.taxCreditPre ? { taxCreditExcluded } : {}),
     reserveFund: Math.round(reserveFund),
     effectiveCapitalization: Math.round(effectiveCap),
     weeklyFixedCosts: weeklyNut,
@@ -1122,6 +1213,7 @@ module.exports = {
   PREVIEW_DEFAULTS,
   COST_COMPONENTS,
   RESERVE_FUND_WEEKS,
+  costPathFactor, extraVariableCost,
   TAX_CREDIT_PROGRAM_START,
   TAX_CREDIT_PROGRAM_END,
   TAX_CREDIT_MAX,
@@ -1140,6 +1232,7 @@ module.exports = {
   getTheaterSeats,
   // Exported for tests (BRO-4623)
   KNOWN_SVOG,
+  KNOWN_STAR_DEALS,
   parseSvogFromNotes,
   parseTaxCreditFromNotes,
   NO_TAX_CREDIT_FROM_NOTES_WARNING,

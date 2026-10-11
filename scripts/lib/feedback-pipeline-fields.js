@@ -62,12 +62,16 @@ const FEEDBACK_EDITABLE_FIELDS = {
   // when a person sources or rules on the loss. designationBasis says what a
   // Fizzle/Flop rests on (owner policy B, BRO-5020; values in
   // commercial-designations.js, checked by commercial-record-checks.js).
+  // estimatedRecoupmentPct/Source/Date: a reported "% returned" figure (the
+  // backtest's reported-pct truth) with its citation and date (BRO-5073);
+  // shape and range checked by commercial-record-checks.js.
   'commercial.json': [
     'designation', 'capitalization', 'weeklyRunningCost',
     'capitalizationSource', 'notes', 'recouped', 'recoupedDate',
     'recoupedSource', 'sources', 'humanReviewedDesignation', 'nonprofitOrg',
     'isEstimate', 'weeklyRunningCostSource', 'costMethodology',
     'needsLossEvidence', 'designationBasis',
+    'estimatedRecoupmentPct', 'estimatedRecoupmentSource', 'estimatedRecoupmentDate',
   ],
   'audience-buzz.json': ['title'],
   // Only auto-fix-feedback-bug.js's append-winner path handles this file —

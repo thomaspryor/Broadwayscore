@@ -18,7 +18,7 @@
 
 import type { ShowCommercial } from './data-types';
 import { getDesignationBadgeStyle, UNDISCLOSED_DESIGNATION, RECOUPED_UNDISCLOSED_DESIGNATION } from '@/config/commercial';
-import { modelDisplayGuard, playedWeeks, independentEstimate, isRunning } from '../../scripts/lib/model-display-guard';
+import { modelDisplayGuard, displayBasis, playedWeeks, independentEstimate, isRunning } from '../../scripts/lib/model-display-guard';
 
 export type RecoupmentDisplayMode = 'announced' | 'model' | 'none';
 
@@ -109,35 +109,43 @@ export function getRecoupmentDisplayMode(
  * applied once where the site loads commercial.json. Hidden (fewer than 12
  * played weeks, central outside [-25, 150], or two independent estimates
  * disagree by more than 25 points, the range is more than 60 points wide, or the
- * show is running while RUNNING_MODEL_BAR_ENABLED is off):
+ * show is running while RUNNING_MODEL_BAR_ENABLED is off or its type is not
+ * in RUNNING_MODEL_BAR_TYPES):
  * modelRecoupmentPct becomes null and modelDisplayHold says
  * why. Shown: negative values become 0 and modelBelowCosts is set, so the
  * negative number never reaches a page.
  */
 export function applyModelDisplayGuard(
   data: ShowCommercial,
-  show: { previewsStartDate?: string | null; openingDate?: string | null; closingDate?: string | null; status?: string | null } | undefined,
+  show: { previewsStartDate?: string | null; openingDate?: string | null; closingDate?: string | null; status?: string | null; type?: string | null } | undefined,
   now: Date = new Date()
 ): ShowCommercial {
   if (!data.modelRecoupmentPct) return data;
+  const running = isRunning(show, now);
+  // Running shows: pre-credit unless the credit is cited (displayBasis, BRO-5073).
+  const basis = displayBasis({ pct: data.modelRecoupmentPct, exCreditPct: data.modelReturnedExCreditPct, creditCounted: data.modelTaxCreditCounted, running });
+  const pct = basis.pct as [number, number, number];
+  const creditBasis = basis.creditBasis ? { modelCreditBasis: basis.creditBasis } : {};
   const g = modelDisplayGuard({
-    pct: data.modelRecoupmentPct,
+    pct,
     playedWeeks: show ? playedWeeks(show, now) : 0,
     independent: independentEstimate(data),
-    running: isRunning(show, now),
+    running,
+    showType: show ? show.type ?? null : undefined,
   });
   if (!g.show) {
     // Far below 0 (Schmigadoon -169) hides the number, not the fact.
-    const below = g.reason === 'out-of-bounds' && data.modelRecoupmentPct[1] < 0;
+    const below = g.reason === 'out-of-bounds' && pct[1] < 0;
     return {
       ...data,
       modelRecoupmentPct: null,
-      modelHeldRange: data.modelRecoupmentPct,
+      modelHeldRange: pct,
       modelDisplayHold: g.reason ?? 'no-model',
+      ...creditBasis,
       ...(below ? { modelBelowCosts: true } : {}),
     };
   }
-  return { ...data, modelRecoupmentPct: g.shown as [number, number, number], ...(g.belowCosts ? { modelBelowCosts: true } : {}) };
+  return { ...data, modelRecoupmentPct: g.shown as [number, number, number], ...creditBasis, ...(g.belowCosts ? { modelBelowCosts: true } : {}) };
 }
 
 /**
@@ -159,6 +167,8 @@ export function getModelHoldLabel(
   if (hold === 'estimates-disagree') return 'Estimates disagree';
   if (hold === 'too-uncertain') return 'Too uncertain to estimate';
   if (hold === 'awaiting-truth') return 'Not enough reported data yet';
+  // Never hint at a recoupment the producers have not announced (BRO-5073).
+  if (hold === 'past-100-unannounced') return 'Recoupment not announced';
   return 'Estimate unavailable';
 }
 
@@ -290,6 +300,7 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
     // Display-guard outputs (applyModelDisplayGuard): the show-page bar reads these.
     ...(commercial.modelBelowCosts ? { modelBelowCosts: true } : {}),
     ...(commercial.modelDisplayHold ? { modelDisplayHold: commercial.modelDisplayHold } : {}),
+    ...(commercial.modelCreditBasis ? { modelCreditBasis: commercial.modelCreditBasis } : {}),
     modelBreakeven: commercial.modelBreakeven,
     modelDataQuality: commercial.modelDataQuality,
     modelMethod: commercial.modelMethod,
