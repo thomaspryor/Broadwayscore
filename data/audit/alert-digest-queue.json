@@ -691,6 +691,39 @@
     "queuedAt": "2026-10-11T19:09:16.553Z"
   },
   {
+    "conditionKey": "opening-night-drift:into-the-woods-noel-coward-west-end-2026",
+    "title": "Opening night drift: Into the Woods (into-the-woods-noel-coward-west-end-2026)",
+    "description": "Review counts do not reconcile for Into the Woods (into-the-woods-noel-coward-west-end-2026): local review-texts=71, reviews.json aggregate=30, live production=30, drift=41 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38167646233",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Show",
+        "value": "Into the Woods (into-the-woods-noel-coward-west-end-2026)",
+        "inline": false
+      },
+      {
+        "name": "Counts",
+        "value": "local=71, aggregate=30, live=30, drift=41",
+        "inline": false
+      },
+      {
+        "name": "Opening",
+        "value": "2026-10-07",
+        "inline": false
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/38167646233)",
+        "inline": false
+      }
+    ],
+    "queuedAt": "2026-10-11T19:23:45.444Z"
+  },
+  {
     "conditionKey": "land:land/bro-5000-systemic-contamination",
     "title": "Landing blocked: unit-tests-node red on land/bro-5000-systemic-contamination",
     "description": "land.yml did not land land/bro-5000-systemic-contamination: the unit-tests-node gate went red at 0fa8c3de7e. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38165359954",
