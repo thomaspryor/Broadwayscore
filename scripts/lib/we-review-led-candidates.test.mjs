@@ -133,6 +133,19 @@ test('pdfHeaderFor ignores a contents line and a two-column heading', () => {
   assert.equal(pdfHeaderFor('COMPANY     THE STAGE\nprose', 'Company'), null);
 });
 
+test('buildReviewLedCandidates ends a run straddling the March 2020 shutdown on 16 March', () => {
+  const review = { title: 'The Upstart Crow', venue: 'Gielgud Theatre', date: '2020-02-18', url: 'https://www.whatsonstage.com/x' };
+  const tr = { title: 'The Upstart Crow', venue: 'London, Gielgud', link: 'https://www.theatrerecord.com/archive/volume/40/dest/04_upstart_crow' };
+  const header = 'THE UPSTART CROW\nFirst Preview 07 February 2020\nPress Night 17 February 2020\nCloses 25 April 2020';
+  const [c] = buildReviewLedCandidates({ season: '2019-2020', lookups: [{ review, tr, header }], shows: [], today: '2026-10-11' });
+  assert.equal(c.closingDate, '2020-03-16');
+  assert.equal(c.scheduledClosingDate, '2020-04-25');
+  const before = header.replace('25 April 2020', '05 March 2020');
+  const [d] = buildReviewLedCandidates({ season: '2019-2020', lookups: [{ review, tr, header: before }], shows: [], today: '2026-10-11' });
+  assert.equal(d.closingDate, '2020-03-05');
+  assert.equal(d.scheduledClosingDate, undefined);
+});
+
 test('buildReviewLedCandidates dates from TR only and dedups against shows.json', () => {
   const review = { title: 'Company', venue: 'Gielgud Theatre', date: '2018-10-17', url: COMPANY.url };
   const tr = { title: 'Company', venue: 'Gielgud Theatre, London', link: 'https://www.theatrerecord.com/archive/volume/38/dest/21_company' };
