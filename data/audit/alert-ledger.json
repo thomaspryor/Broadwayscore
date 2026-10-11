@@ -835,15 +835,16 @@
     },
     "bd-circuit-breaker-serp_api1": {
       "status": "open",
-      "disposition": "digest",
-      "requestedDisposition": "human",
-      "title": "Bright Data daily breaker TRIPPED: serp_api1 (252/250 reqs)",
+      "disposition": "auto",
+      "title": "Bright Data daily breaker TRIPPED: serp_api1 (254/250 reqs)",
       "firstSeen": "2026-08-12T18:43:27.740Z",
-      "lastSeen": "2026-09-11T21:24:26.813Z",
-      "lastNotifiedAt": "2026-09-11T21:24:26.813Z",
-      "notifyCount": 19,
+      "incidentOpenedAt": "2026-10-11T14:27:23.909Z",
+      "lastSeen": "2026-10-11T14:27:23.909Z",
+      "lastNotifiedAt": "2026-10-11T14:27:23.909Z",
+      "lastSurfacedAt": "2026-10-11T14:27:23.909Z",
+      "notifyCount": 20,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": "BRO-4950"
     },
     "test-yml:main-streak": {
       "status": "resolved",
@@ -13739,19 +13740,6 @@
       "lastSeen": "2026-10-11T13:36:38.759Z",
       "lastNotifiedAt": "2026-10-11T13:36:38.759Z",
       "lastSurfacedAt": "2026-10-11T13:36:38.759Z",
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": null
-    },
-    "test-yml:red:Unit Tests:c41fab62": {
-      "status": "open",
-      "disposition": "auto",
-      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"grey-house carries the BRO-5020 values\"",
-      "firstSeen": "2026-10-11T14:03:40.626Z",
-      "incidentOpenedAt": "2026-10-11T14:03:40.626Z",
-      "lastSeen": "2026-10-11T14:03:40.626Z",
-      "lastNotifiedAt": "2026-10-11T14:03:40.626Z",
-      "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
