@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import FantasyShowPicker from '@/components/fantasy/FantasyShowPicker';
+import FantasyShareButton from '@/components/fantasy/FantasyShareButton';
 import FantasyBudgetBar from '@/components/fantasy/FantasyBudgetBar';
 import {
   FANTASY_BUDGET,
@@ -207,16 +208,17 @@ function FantasyDraftInner() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <FantasyShareButton picks={selectedIds} teamName={teamName} />
             <a
               href="/fantasy/leaderboard"
-              className="px-6 py-3 bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors"
+              className="px-6 py-3 whitespace-nowrap bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors"
             >
               View Leaderboard
             </a>
             {!leagueName && (
               <a
                 href="/fantasy/create-league"
-                className="px-6 py-3 bg-surface-raised border border-white/10 text-white font-semibold rounded-lg hover:bg-surface-overlay transition-colors"
+                className="px-6 py-3 whitespace-nowrap bg-surface-raised border border-white/10 text-white font-semibold rounded-lg hover:bg-surface-overlay transition-colors"
               >
                 Start a league with friends
               </a>
@@ -238,7 +240,7 @@ function FantasyDraftInner() {
           </p>
           <a
             href="/fantasy/leaderboard"
-            className="px-6 py-3 bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors"
+            className="px-6 py-3 whitespace-nowrap bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors"
           >
             View Leaderboard
           </a>
@@ -263,7 +265,7 @@ function FantasyDraftInner() {
           </p>
           <a
             href="/fantasy/guide"
-            className="px-6 py-3 bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors"
+            className="px-6 py-3 whitespace-nowrap bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors"
           >
             Read the Draft Guide
           </a>
