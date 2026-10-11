@@ -3,7 +3,6 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { getScoreClass } from '@/lib/critic-page-utils';
-import { OutletTierChip } from '@/components/show-cards';
 import { ToggleBar, ColumnHeader } from '@/components/show-cards';
 import Breadcrumb from '@/components/Breadcrumb';
 
