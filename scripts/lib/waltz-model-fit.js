@@ -17,13 +17,18 @@
  */
 const { extractWeeklyFinancialsFromPost } = require('./reddit-grosses');
 const rm = require('./recoupment-model');
+const { isPlausibleWeeklyCost } = require('./waltz-cost-gap-fill');
 
 const WINDOW_DAYS = 84; // trailing 12 weeks of his posts
 const MIN_ROWS = 5;
 const MIN_SHOWS = 3;
 const HISTORY_KEEP = 12;
 const DRIFT_POINTS = 15;
-const STALE_DAYS = 10;
+// The Monday run writes his previous (usually Tuesday) post, so asOf is ~6
+// days old at write time. Staleness is judged on the run date; a separate,
+// looser bound catches him not posting.
+const RUN_STALE_DAYS = 9;
+const POSTS_STALE_DAYS = 16;
 const STEADY_WEEK = 27; // full nut, no opening surcharge, no mature-run discount
 
 const BANDS = [
@@ -56,7 +61,7 @@ function buildFitRows(posts, matchShow) {
   for (const post of posts) {
     const postDate = new Date((post.created_utc || 0) * 1000).toISOString().slice(0, 10);
     for (const r of extractWeeklyFinancialsFromPost(post.selftext || '')) {
-      if (!r.gross || !r.costLow || !r.profit || r.profit.low == null || r.profit.high == null) continue;
+      if (!r.gross || !isPlausibleWeeklyCost(r.costLow) || !r.profit || r.profit.low == null || r.profit.high == null) continue;
       if (r.flags && r.flags.length) continue;
       const show = matchShow(r.showName);
       if (!show) continue;
@@ -86,8 +91,8 @@ function groupStats(rows) {
 }
 
 /** Aggregate the trailing WINDOW_DAYS of rows ending at the newest post. */
-function summarizeFit(rows) {
-  if (!rows.length) return { asOf: null, weeks: 0, overall: { n: 0, suppressed: true }, bands: {} };
+function summarizeFit(rows, generatedAt = new Date().toISOString().slice(0, 10)) {
+  if (!rows.length) return { asOf: null, generatedAt, weeks: 0, overall: { n: 0, suppressed: true }, bands: {} };
   const asOf = rows.reduce((a, r) => (r.postDate > a ? r.postDate : a), rows[0].postDate);
   const cutoff = new Date(Date.parse(asOf) - WINDOW_DAYS * 864e5).toISOString().slice(0, 10);
   const inWindow = rows.filter((r) => r.postDate > cutoff);
@@ -96,7 +101,7 @@ function summarizeFit(rows) {
     const lo = BANDS[BANDS.indexOf(b) - 1]?.max ?? 0;
     bands[b.key] = groupStats(inWindow.filter((r) => r.ratio >= lo && r.ratio < b.max));
   }
-  return { asOf, windowDays: WINDOW_DAYS, weeks: new Set(inWindow.map((r) => r.postDate)).size, overall: groupStats(inWindow), bands };
+  return { asOf, generatedAt, windowDays: WINDOW_DAYS, weeks: new Set(inWindow.map((r) => r.postDate)).size, overall: groupStats(inWindow), bands };
 }
 
 /** Append (or replace the same-asOf entry), keeping the newest HISTORY_KEEP. */
@@ -121,10 +126,13 @@ function fitCheckStatus(file, now = new Date()) {
   if (!latest || !latest.asOf) {
     return { status: 'warn', message: 'No Boring Waltz fit summary yet (scrape-waltz-costs.yml writes it every Monday)' };
   }
-  const ageDays = (now.getTime() - Date.parse(latest.asOf)) / 864e5;
+  const days = (date) => Math.floor((now.getTime() - Date.parse(date)) / 864e5);
   const line = `${bandLine(latest)}; his posts to ${latest.asOf}, trailing ${latest.windowDays || WINDOW_DAYS} days`;
-  if (ageDays > STALE_DAYS) {
-    return { status: 'warn', message: `Fit summary is stale (newest post ${Math.floor(ageDays)} days old): ${line}` };
+  if (days(latest.generatedAt || latest.asOf) > RUN_STALE_DAYS) {
+    return { status: 'warn', message: `Fit summary not updated for ${days(latest.generatedAt || latest.asOf)} days (the Monday Waltz cost run may be failing): ${line}` };
+  }
+  if (days(latest.asOf) > POSTS_STALE_DAYS) {
+    return { status: 'warn', message: `No new Boring Waltz post in ${days(latest.asOf)} days: ${line}` };
   }
   const prior = history.slice(0, -1).filter((h) => h.overall && !h.overall.suppressed);
   if (latest.overall && !latest.overall.suppressed && prior.length >= 3) {

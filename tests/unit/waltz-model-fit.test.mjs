@@ -56,7 +56,7 @@ describe('summarizeFit', () => {
 });
 
 describe('recordFit and fitCheckStatus', () => {
-  const entry = (asOf, insidePct) => ({ asOf, windowDays: 84, overall: { n: 50, shows: 20, insidePct }, bands: {} });
+  const entry = (asOf, insidePct, generatedAt = asOf) => ({ asOf, generatedAt, windowDays: 84, overall: { n: 50, shows: 20, insidePct }, bands: {} });
 
   test('a re-run for the same week replaces, never duplicates', () => {
     const h = fit.recordFit([entry('2026-09-27', 40)], entry('2026-10-04', 41));
@@ -78,11 +78,34 @@ describe('recordFit and fitCheckStatus', () => {
   });
   test('missing, stale and drift warn; never error', () => {
     assert.equal(fit.fitCheckStatus(null, now).status, 'warn');
-    assert.match(fit.fitCheckStatus({ history: [entry('2026-09-20', 43)] }, now).message, /stale/);
+    assert.match(fit.fitCheckStatus({ history: [entry('2026-09-20', 43)] }, now).message, /not updated for 16 days/);
     const drift = [entry('2026-09-13', 44), entry('2026-09-20', 42), entry('2026-09-27', 43), entry('2026-10-04', 25)];
     assert.match(fit.fitCheckStatus({ history: drift }, now).message, /dropped 18 points below its usual 43%/);
     drift[3] = entry('2026-10-04', 30);
     assert.equal(fit.fitCheckStatus({ history: drift }, now).status, 'pass');
+  });
+});
+
+describe('staleness follows the Monday run, not his Tuesday post date', () => {
+  // Monday 2026-10-12 run writes his Tuesday 2026-10-06 post.
+  const file = { history: [{ asOf: '2026-10-06', generatedAt: '2026-10-12', windowDays: 84, overall: { n: 80, shows: 10, insidePct: 55 }, bands: {} }] };
+  test('passes all week until the next Monday run is overdue', () => {
+    for (const d of ['2026-10-13', '2026-10-16', '2026-10-19', '2026-10-21']) {
+      assert.equal(fit.fitCheckStatus(file, new Date(`${d}T09:00:00Z`)).status, 'pass', d);
+    }
+    assert.match(fit.fitCheckStatus(file, new Date('2026-10-22T09:00:00Z')).message, /not updated/);
+  });
+  test('a run that keeps going but finds no new post warns after 16 days', () => {
+    const f = { history: [{ ...file.history[0], generatedAt: '2026-10-19' }] };
+    assert.match(fit.fitCheckStatus(f, new Date('2026-10-23T09:00:00Z')).message, /No new Boring Waltz post in 17 days/);
+  });
+  test('summarizeFit stamps the run date', () => {
+    const rows = ['a', 'b', 'c', 'd', 'e'].map((s) => ({ showId: s, postDate: '2026-10-06', ratio: 1, errPctNut: 0 }));
+    assert.equal(fit.summarizeFit(rows, '2026-10-12').generatedAt, '2026-10-12');
+  });
+  test('an implausible cost is skipped', () => {
+    const body = block('Alpha', '$50k-$150k').replace('$800k/week', '$8k/week');
+    assert.equal(fit.buildFitRows([post('2026-10-05', body)], () => musical('alpha')).length, 0);
   });
 });
 

@@ -299,7 +299,7 @@ const AUTO_FIX_PLAYBOOK = [
 
   // BRO-5027. Advisory: only stale/missing/drift warns reach the digest.
   { match: /^Commercial model: Boring Waltz fit$/, urgency: 'this-week',
-    humanAction: 'Our profit model now lands inside the Reddit analyst\'s weekly profit ranges much less often than usual, or the weekly comparison stopped updating. Nothing on the site changes by itself. Open Claude Code and say: "Check the Boring Waltz fit warning in the health digest and find out what changed."' },
+    humanAction: 'Boring Waltz is a Reddit user who posts weekly profit estimates for each show. Our profit model now agrees with his estimates much less often than usual, or this weekly comparison stopped updating. Nothing on the site changes by itself. Open Claude Code and say: "Check the Boring Waltz fit warning in the health digest and find out what changed."' },
 
   // BRO-5004. Without an entry this falls to urgency 'low' and never shows.
   { match: /^Commercial model: stored vs fresh run$/, urgency: 'this-week',

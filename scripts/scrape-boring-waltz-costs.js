@@ -254,7 +254,10 @@ const MODEL_FIT_PATH = path.join(DATA_DIR, 'audit', 'waltz-model-fit.json');
 
 function writeModelFit(relevantPosts, lookup) {
   try {
-    const rows = buildFitRows(relevantPosts, (name) => matchShowName(name, lookup));
+    const rows = buildFitRows(relevantPosts, (name) => {
+      const show = matchShowName(name, lookup);
+      return isBroadwayShow(show) ? show : null;
+    });
     const summary = summarizeFit(rows);
     if (!summary.asOf) { console.log('Model fit: no usable closed-range rows'); return; }
     const line = `Model fit: ${rows.length} usable rows (${summary.overall.n} in the trailing window), overall ${summary.overall.suppressed ? 'suppressed' : summary.overall.insidePct + '% inside'} (to ${summary.asOf})`;
