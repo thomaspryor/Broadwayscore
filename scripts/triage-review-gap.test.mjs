@@ -15,7 +15,7 @@ const CLI = path.join(path.dirname(fileURLToPath(import.meta.url)), 'triage-revi
 const SHOW = 'fixture-show-west-end-2026';
 const show = { id: SHOW, title: 'Fixture Show', previewsStartDate: '2026-09-01', openingDate: '2026-09-10', market: 'west-end' };
 
-function run(files, outlet = 'Fixture Outlet', url = null) {
+function run(files, outlet = 'Fixture Outlet', url = null, extra = []) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'triage-gap-'));
   fs.mkdirSync(path.join(root, 'data'), { recursive: true });
   fs.writeFileSync(path.join(root, 'data', 'shows.json'), JSON.stringify({ shows: [show] }));
@@ -25,7 +25,7 @@ function run(files, outlet = 'Fixture Outlet', url = null) {
     fs.writeFileSync(path.join(rt, rel), JSON.stringify(data));
   }
   fs.mkdirSync(rt, { recursive: true });
-  const out = execFileSync('node', [CLI, `--show=${SHOW}`, `--outlet=${outlet}`, ...(url ? [`--url=${url}`] : []), '--json'], {
+  const out = execFileSync('node', [CLI, `--show=${SHOW}`, `--outlet=${outlet}`, ...(url ? [`--url=${url}`] : []), ...extra, '--json'], {
     cwd: root, encoding: 'utf8',
     env: { ...process.env, REVIEW_TEXTS_DIR: rt, BSC_DATA_REPO: path.join(root, 'no-data-repo') },
   });
@@ -206,4 +206,29 @@ test('display name "The QR" finds a review-texts file named theqr--<critic>.json
 
 test('outletIdCandidates folds diacritics before stripping', () => {
   assert.ok(outletIdCandidates('Théâtre Mag', 'theatre-mag').includes('theatremag'));
+});
+
+// BRO-4036: outlet matching is an exact prefix before '--', never a substring.
+test('outlet "The Stage" (thestage) does not match whatsonstage--*.json', () => {
+  const r = run({ [`${SHOW}/whatsonstage--sarah-crompton.json`]: { ...base, outletId: 'whatsonstage', publishDate: '2026-09-12', wrongProduction: true } }, 'The Stage');
+  assert.equal(r.state, 'true-missed-discovery');
+  assert.equal(r.signals.reviewTexts.candidateCount, 0);
+});
+
+test('outlet "The Stage" matches thestage--*.json and reports candidate details', () => {
+  const r = run({
+    [`${SHOW}/whatsonstage--sarah-crompton.json`]: { ...base, outletId: 'whatsonstage', publishDate: '2026-09-12' },
+    [`${SHOW}/thestage--neil-norman.json`]: { ...base, outletId: 'thestage', publishDate: '2026-09-12', url: 'https://thestage.example/r' },
+  }, 'The Stage');
+  assert.deepEqual(r.candidates.map((c) => path.basename(c.path)), ['thestage--neil-norman.json']);
+  assert.equal(r.candidates[0].url, 'https://thestage.example/r');
+});
+
+test('--publish-date: an adjudicated exclusion for a different-day article does not mask a new publication', () => {
+  const files = { [`${SHOW}/fixture-outlet--a-critic.json`]: { ...base, publishDate: '2026-09-12', wrongShow: true } };
+  const masked = run(files);
+  assert.notEqual(masked.state, 'true-missed-discovery');
+  const r = run(files, 'Fixture Outlet', null, ['--publish-date=2026-09-20']);
+  assert.equal(r.state, 'true-missed-discovery');
+  assert.equal(r.differentArticlePaths.length, 1);
 });

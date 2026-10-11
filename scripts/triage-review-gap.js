@@ -53,7 +53,7 @@ const { resolveReviewTextsDir, mainWorktreeOf } = require('./lib/review-texts-di
 const { outletIdCandidates, classifyGap, justifiesUrlResolution, isOtherProductionFile, isPreRunFile, filterByUrl } = require('./lib/review-gap-triage');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
-const USAGE = 'Usage: node scripts/triage-review-gap.js --show=SHOW_ID --outlet="Outlet Name" [--url=REVIEW_URL] [--json]';
+const USAGE = 'Usage: node scripts/triage-review-gap.js --show=SHOW_ID --outlet="Outlet Name" [--url=REVIEW_URL] [--publish-date=YYYY-MM-DD] [--json]';
 
 // ── Args ─────────────────────────────────────────────────────────────────
 
@@ -407,6 +407,20 @@ function checkLiveProd(json, outletId, url) {
     reviewText.files = reviewText.files.filter((f) => matched.has(f));
     reviewText.anyPending = reviewText.files.some((f) => f.pending);
   }
+  // BRO-4036: with --publish-date, a same-outlet file dated on a different day
+  // is a DIFFERENT article (e.g. a pre-adjudicated exclusion or a news item) and
+  // must not mask a new publication. Undated files are kept (cannot disprove).
+  const gapDate = typeof flags['publish-date'] === 'string' ? flags['publish-date'].slice(0, 10) : null;
+  const differentArticleFiles = [];
+  if (gapDate) {
+    const keep = [];
+    for (const f of reviewText.files) {
+      const d = f.data && f.data.publishDate ? String(f.data.publishDate).slice(0, 10) : null;
+      (d && d !== gapDate ? differentArticleFiles : keep).push(f);
+    }
+    reviewText.files = keep;
+    reviewText.anyPending = keep.some((f) => f.pending);
+  }
   const matchedBy = reviewUrl ? 'url' : 'outlet';
   const reviewsJson = checkReviewsJson(showId, outletIds, reviewUrl);
   const live = await fetchLiveShowJson(showId);
@@ -451,6 +465,8 @@ function checkLiveProd(json, outletId, url) {
     matchedBy,
     url: reviewUrl,
     outletOnlyIgnoredPaths: outletOnlyFiles.map((f) => f.path),
+    differentArticlePaths: differentArticleFiles.map((f) => f.path),
+    candidates: reviewText.files.map((f) => ({ path: f.path, publishDate: f.data && f.data.publishDate || null, url: f.data && f.data.url || null, pendingReason: f.data && f.data.pendingReason || null })),
     state,
     justifiesUrlResolution: justifiesUrlResolution(state),
     unverifiedOriginChecks,
@@ -487,7 +503,8 @@ function checkLiveProd(json, outletId, url) {
     console.log(`  show:    ${showId}`);
     console.log(`  outlet:  ${outletName} (outletId: ${outletId})`);
     console.log(`  matched by: ${matchedBy}${reviewUrl ? ` (${reviewUrl})` : ''}`);
-    for (const f of reviewText.files) console.log(`  matched file: ${f.path}`);
+    for (const f of reviewText.files) console.log(`  matched file: ${f.path}${f.data ? ` (publishDate=${f.data.publishDate || 'none'}, url=${f.data.url || 'none'}${f.data.pendingReason ? `, pendingReason=${f.data.pendingReason}` : ''})` : ''}`);
+    if (differentArticleFiles.length > 0) console.log(`  different-article files IGNORED (publishDate != ${gapDate}): ${differentArticleFiles.map((f) => path.basename(f.path)).join(', ')}`);
     if (outletOnlyFiles.length > 0) console.log(`  outlet-only look-alikes IGNORED (url differs): ${outletOnlyFiles.map((f) => path.basename(f.path)).join(', ')}`);
     console.log(`  review-texts: ${reviewText.files.length} candidate file(s)${reviewText.anyPending ? ' [includes _pending no-byline strand — run replay-pending-bylines.js]' : ''}${exclusionRule ? ` [EXCLUDED: ${exclusionRule}]` : ''}${reviewText.originError ? ` [origin/main check FAILED: ${reviewText.originError}]` : ''}`);
     console.log(`  reviews.json: local=${reviewsJson.inLocal} origin/main=${reviewsJson.inOrigin}${reviewsJson.originError ? ` [origin/main check FAILED: ${reviewsJson.originError}]` : ''}`);
