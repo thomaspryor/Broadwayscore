@@ -67,17 +67,19 @@ function ArrowDown({ className }: { className?: string }) {
 interface ChangeIndicatorProps {
   change: number | null;
   label: string;
+  /** Nearest whole percent, no arrow on a 0% (the v3 card, whose sentence quotes the same change). Default rounds up. */
+  roundNearest?: boolean;
 }
 
-function ChangeIndicator({ change, label }: ChangeIndicatorProps) {
+function ChangeIndicator({ change, label, roundNearest = false }: ChangeIndicatorProps) {
   if (change === null) return null;
 
-  const isPositive = change > 0;
-  const isNegative = change < 0;
   const absChange = Math.abs(change);
 
-  // Round UP using Math.ceil for display
-  const formattedChange = Math.ceil(absChange);
+  // Round UP using Math.ceil for display, unless the caller asks for nearest
+  const formattedChange = roundNearest ? Math.round(absChange) : Math.ceil(absChange);
+  const isPositive = change > 0 && formattedChange > 0;
+  const isNegative = change < 0 && formattedChange > 0;
 
   return (
     <div className="flex items-center justify-center gap-0.5 text-[10px]">
@@ -99,9 +101,10 @@ interface StatCardProps {
   yoyChange?: number | null;
   /** WoW above YoY in every tile, so a narrow tile never wraps one of them alone. */
   stackChanges?: boolean;
+  roundNearest?: boolean;
 }
 
-function StatCard({ value, valueTitle, label, wowChange, yoyChange, stackChanges = false }: StatCardProps) {
+function StatCard({ value, valueTitle, label, wowChange, yoyChange, stackChanges = false, roundNearest = false }: StatCardProps) {
   const hasChanges = wowChange !== undefined || yoyChange !== undefined;
 
   return (
@@ -114,8 +117,8 @@ function StatCard({ value, valueTitle, label, wowChange, yoyChange, stackChanges
       </div>
       {hasChanges && (
         <div className={stackChanges ? "flex flex-col items-center gap-0.5 mt-1 sm:mt-1.5" : "flex flex-row flex-wrap justify-center gap-2 mt-1 sm:mt-1.5"}>
-          <ChangeIndicator change={wowChange ?? null} label="WoW" />
-          <ChangeIndicator change={yoyChange ?? null} label="YoY" />
+          <ChangeIndicator change={wowChange ?? null} label="WoW" roundNearest={roundNearest} />
+          <ChangeIndicator change={yoyChange ?? null} label="YoY" roundNearest={roundNearest} />
         </div>
       )}
     </div>
@@ -177,7 +180,7 @@ function TrendSparkline({ points }: { points: { weekEnding: string; gross: numbe
 }
 
 /** The "This Week" tiles (gross, capacity, avg ticket, attendance), shared with Box Office Scorecard v2. */
-export function BoxOfficeThisWeek({ grosses, history, className = 'mb-4', stackChanges = false }: { grosses: ShowGrosses; history?: BoxOfficeHistoryStats | null; className?: string; stackChanges?: boolean }) {
+export function BoxOfficeThisWeek({ grosses, history, className = 'mb-4', stackChanges = false, roundNearest = false }: { grosses: ShowGrosses; history?: BoxOfficeHistoryStats | null; className?: string; stackChanges?: boolean; roundNearest?: boolean }) {
   const hasThisWeek = grosses.thisWeek && (grosses.thisWeek.gross !== null || grosses.thisWeek.capacity !== null);
   if (!hasThisWeek || !grosses.thisWeek) return null;
   // Calculate WoW and YoY changes for this week's stats
@@ -212,7 +215,7 @@ export function BoxOfficeThisWeek({ grosses, history, className = 'mb-4', stackC
           label="Gross"
           wowChange={grossWoW}
           yoyChange={grossYoY}
-          stackChanges={stackChanges}
+          stackChanges={stackChanges} roundNearest={roundNearest}
         />
         <StatCard
           value={
@@ -228,14 +231,14 @@ export function BoxOfficeThisWeek({ grosses, history, className = 'mb-4', stackC
           label="Capacity"
           wowChange={capacityWoW}
           yoyChange={capacityYoY}
-          stackChanges={stackChanges}
+          stackChanges={stackChanges} roundNearest={roundNearest}
         />
         <StatCard
           value={grosses.thisWeek.atp ? `$${grosses.thisWeek.atp.toFixed(0)}` : '—'}
           label="Avg Ticket"
           wowChange={atpWoW}
           yoyChange={atpYoY}
-          stackChanges={stackChanges}
+          stackChanges={stackChanges} roundNearest={roundNearest}
         />
         {hasAttendanceTile && (
           <StatCard
@@ -243,7 +246,7 @@ export function BoxOfficeThisWeek({ grosses, history, className = 'mb-4', stackC
             label="Attendance"
             wowChange={attendanceWoW}
             yoyChange={attendanceYoY}
-            stackChanges={stackChanges}
+            stackChanges={stackChanges} roundNearest={roundNearest}
           />
         )}
       </div>

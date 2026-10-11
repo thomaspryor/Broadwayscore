@@ -178,6 +178,12 @@ jobs:
             exit 1
           fi
 
+      - name: Guard — held-feature copy absent from the build (advisory)
+        # BRO-5007: the demo is public and leaves boxOfficeV2 off, so its held
+        # copy must not ship here either (see vercel-deploy.yml). Advisory first.
+        continue-on-error: true
+        run: node scripts/lib/held-feature-leak.js .vercel/output/static
+
       - name: Deploy
         id: deploy
         env:

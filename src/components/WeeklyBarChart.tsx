@@ -3,11 +3,11 @@ import { formatCurrency } from '@/lib/formatting';
 import { multipleTicks } from '@/lib/box-office-v2-display';
 
 /**
- * Box Office Scorecard v2 (BRO-5007): weekly gross as a multiple of the show's
- * weekly cost, one bar per week (green above 1×, amber below), a dashed 1×
- * line, and the typical Broadway show that week as a cream line. With no cost
- * (mode "gross") the bars are plain weekly grosses in dollars, with no cost line.
- * Unreported weeks are gaps, never zero.
+ * One bar per week (BRO-5007). Mode "multiple": gross as a share of the show's
+ * break-even (green at or above 100%, amber below), a dashed 100% line and the
+ * typical Broadway show that week as a cream line; the Commercial Scorecard's
+ * cost section. Mode "gross": plain weekly grosses in dollars; the Box Office
+ * Scorecard. Unreported weeks are gaps, never zero.
  */
 interface Props {
   /** Oldest first. */
@@ -20,7 +20,7 @@ interface Props {
 }
 
 const DEFAULT_W = 688;
-const LEFT_MULTIPLE = 36;
+const LEFT_MULTIPLE = 44;
 const LEFT_GROSS = 50;
 const RIGHT = 6;
 const TOP = 8;
@@ -36,7 +36,7 @@ function niceMax(v: number, steps: number[]): number {
   return steps.find((s) => s >= v) ?? Math.ceil(v / 2) * 2;
 }
 
-export default function BoxOfficeMultipleChart({ points, mode, width = DEFAULT_W, height = 190, label }: Props) {
+export default function WeeklyBarChart({ points, mode, width = DEFAULT_W, height = 190, label }: Props) {
   const W = width;
   const LEFT = mode === 'gross' ? LEFT_GROSS : LEFT_MULTIPLE;
   if (!points.length) return null;
@@ -53,7 +53,7 @@ export default function BoxOfficeMultipleChart({ points, mode, width = DEFAULT_W
   const x = (i: number) => LEFT + slot * i + (slot - barW) / 2;
 
   const ticks = mode === 'multiple' ? multipleTicks(max) : [0, max / 2, max];
-  const tickText = (t: number) => (mode === 'multiple' ? `${t}×` : formatCurrency(t));
+  const tickText = (t: number) => (mode === 'multiple' ? `${Math.round(t * 100)}%` : formatCurrency(t));
 
   const months: Array<{ i: number; text: string }> = [];
   let lastMonth = '';
@@ -85,7 +85,7 @@ export default function BoxOfficeMultipleChart({ points, mode, width = DEFAULT_W
         const tone = mode === 'gross' ? 'fill-brand/70' : v >= 1 ? 'fill-status-open' : 'fill-score-tepid';
         const top = y(Math.min(v, max));
         const title = mode === 'multiple'
-          ? `Week ending ${p.week}: ${v.toFixed(2)}× its cost (${formatCurrency(p.gross)})${p.market != null ? `. Typical Broadway show: ${p.market.toFixed(2)}×` : ''}`
+          ? `Week ending ${p.week}: ${Math.round(v * 100)}% of break-even (${formatCurrency(p.gross)})${p.market != null ? `. Typical Broadway show: ${Math.round(p.market * 100)}%` : ''}`
           : `Week ending ${p.week}: ${formatCurrency(p.gross)}`;
         return (
           <rect key={p.week} x={x(i)} y={top} width={barW} height={Math.max(0.5, bottom - top)} rx={1.5} className={tone}>

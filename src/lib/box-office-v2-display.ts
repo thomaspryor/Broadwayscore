@@ -6,7 +6,7 @@
  */
 import type { CostBand, Availability, MultiplePoint, CoverCosts, Streak, MultipleRange } from './box-office-status';
 import { costSourceDate } from './box-office-status';
-import type { ShowBoxOfficeV2, BoxOfficeV2Market } from './data-commercial';
+import type { ShowBoxOfficeV2 } from './data-commercial';
 /** Weekly amounts in thousands ($821K, $1,084K): $1.1M hides the gap that matters week to week. */
 export function formatWeekly(n: number): string {
   return `$${Math.round(n / 1000).toLocaleString('en-US')}K`;
@@ -30,10 +30,10 @@ export interface CostPill {
 }
 
 const BAND_LABEL: Record<CostBand, string> = {
-  'well-above': 'Well Above Cost',
-  above: 'Above Cost',
-  near: 'Near Cost',
-  below: 'Below Cost',
+  'well-above': 'Well Above Break-even',
+  above: 'Above Break-even',
+  near: 'Near Break-even',
+  below: 'Below Break-even',
 };
 
 const BAND_TONE: Record<CostBand, PillTone> = {
@@ -46,6 +46,11 @@ const BAND_TONE: Record<CostBand, PillTone> = {
 function shortDate(iso: string): string {
   const d = new Date(`${iso}T12:00:00Z`);
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+}
+
+/** Whether the Commercial Scorecard's break-even section has anything to say for this show. */
+export function showsBreakEven(card: Pick<BoxOfficeV2Card, 'availability' | 'multiple'>): boolean {
+  return (card.availability === 'ok' && !!card.multiple) || card.availability === 'early';
 }
 
 /** The status pill for a card or a table row. */
@@ -67,10 +72,19 @@ export function rangeText(m: MultipleRange): string {
   return `${m.lo.toFixed(2)}–${m.hi.toFixed(2)}×`;
 }
 
+/** A multiple as a share of break-even (0.86 → "86%"): the Commercial Scorecard's unit. */
+export function formatShare(x: number): string {
+  return `${Math.round(x * 100)}%`;
+}
+
+export function shareRangeText(m: MultipleRange): string {
+  return `${formatShare(m.lo)} to ${formatShare(m.hi)}`;
+}
+
 export function streakText(s: Streak | null): string | null {
   if (!s || s.weeks < 2) return null;
   const n = `${s.atLeast ? 'at least ' : ''}${s.weeks}`;
-  return `${n} straight weeks ${s.side} cost`;
+  return `${n} straight weeks ${s.side} break-even`;
 }
 
 export function trendText(trend: string): string | null {
@@ -124,8 +138,8 @@ export function basisLine(card: Pick<BoxOfficeV2Card, 'costBasis' | 'breakEven' 
 export function nearNote(card: Pick<BoxOfficeV2Card, 'availability' | 'band' | 'multiple'>): string | null {
   const m = card.multiple;
   if (card.availability !== 'ok' || card.band !== 'near' || !m || !(m.lo < 1 && m.hi > 1)) return null;
-  if (m.mid < 0.95) return 'Our cost figure is rough enough that it could be close to breaking even, so we call it Near Cost rather than Below.';
-  if (m.mid > 1.05) return 'Our cost figure is rough enough that it could be just covering costs, so we call it Near Cost rather than Above.';
+  if (m.mid < 0.95) return 'Our estimate is rough enough that it could be close, so we call it Near Break-even rather than Below.';
+  if (m.mid > 1.05) return 'Our estimate is rough enough that it could be just breaking even, so we call it Near Break-even rather than Above.';
   return null;
 }
 
@@ -139,13 +153,13 @@ export interface CoverTile {
   phoneValue: string;
 }
 
-/** "What it would take to cover costs": only when the show is short of its cost. */
+/** What it would take to break even: only when the show is short of it. */
 export function coverTiles(c: CoverCosts | null): CoverTile[] {
   if (!c || !(c.shortBy > 0)) return [];
-  const intake = `takes in ${formatWeekly(c.avgGross)} vs. ${formatWeekly(c.breakEven)} cost`;
+  const intake = `averages ${formatWeekly(c.avgGross)} vs. ${formatWeekly(c.breakEven)}`;
   const tiles: CoverTile[] = [
     {
-      label: 'Each week, it’s short by', value: formatWeekly(c.shortBy), detail: `Takes in ${formatWeekly(c.avgGross)} vs. ${formatWeekly(c.breakEven)} cost`,
+      label: 'Short of break-even by', value: formatWeekly(c.shortBy), detail: `Averages ${formatWeekly(c.avgGross)} a week (last 4 wks) vs. ${formatWeekly(c.breakEven)}`,
       phoneLabel: 'Short each week', phoneDetail: intake, phoneValue: formatWeekly(c.shortBy),
     },
   ];
@@ -190,31 +204,132 @@ export function chartMode(series: MultiplePoint[]): 'multiple' | 'gross' | 'none
 // /box-office (Phase 3): the market line, the status counts and the table's
 // two cost columns.
 
+// ---------------------------------------------------------------------------
+// Box Office Scorecard (v3): Broadway League facts only, no cost.
+
+/** Gaps under this many points read "in line with Broadway"; at or over, the show is out of step with the season. */
+export const YOY_GAP_POINTS = 10;
+
+/** "$633K" → "$630K", "$1,887K" → "$1.89M": the steady-range sentence says "about". */
+function aboutWeekly(n: number): string {
+  const tens = Math.round(n / 10_000);
+  if (tens >= 100) return `$${String(tens / 100)}M`;
+  return `$${tens * 10}K`;
+}
+
+function upDown(pct: number): string {
+  const n = Math.round(Math.abs(pct));
+  return n === 0 ? 'flat' : `${pct > 0 ? 'up' : 'down'} ${n}%`;
+}
+
+/** "since June", or "since December 2025" when the stretch began in an earlier year than `week`. */
+function sinceText(since: string, week: string): string {
+  const d = new Date(`${since}T12:00:00Z`);
+  const month = d.toLocaleDateString('en-US', { month: 'long', timeZone: 'UTC' });
+  return since.slice(0, 4) === week.slice(0, 4) ? `since ${month}` : `since ${month} ${since.slice(0, 4)}`;
+}
+
+/** A part of the year-ago change under this many percent counts as unchanged when splitting it into audience and price. */
+export const YOY_PART_STEADY_PCT = 5;
+
+export interface YearAgoParts {
+  show: number | null;
+  market: number | null;
+  /** Tickets sold and average ticket, each against the same week a year ago. */
+  attendance?: number | null;
+  atp?: number | null;
+  /** All of Broadway's tickets sold, same two weeks. */
+  marketAttendance?: number | null;
+}
+
+/** ", almost all from lower average ticket prices (attendance is down 1%)", or both parts when both moved. */
+function yoyParts(attendance: number, atp: number): string {
+  const attSteady = Math.abs(attendance) < YOY_PART_STEADY_PCT;
+  const atpSteady = Math.abs(atp) < YOY_PART_STEADY_PCT;
+  if (attSteady && !atpSteady) return `, almost all from ${atp < 0 ? 'lower' : 'higher'} average ticket prices (attendance is ${upDown(attendance)})`;
+  if (atpSteady && !attSteady) return `, almost all from ${attendance < 0 ? 'smaller' : 'bigger'} audiences (the average ticket is ${upDown(atp)})`;
+  return `: attendance is ${upDown(attendance)} and the average ticket is ${upDown(atp)}`;
+}
+
+/**
+ * How this show's year compares with Broadway's, or null without both gross
+ * changes. Out of line with Broadway, the change is split into audience and
+ * price; "slipping" (or "outpacing") is said only when the show's own
+ * attendance moved further than Broadway's, since a price cut alone is a
+ * pricing choice, not lost demand.
+ */
+export function yearAgoSentence(y: YearAgoParts): string | null {
+  const { show, market } = y;
+  if (show == null || market == null) return null;
+  if (Math.abs(show - market) < YOY_GAP_POINTS) return `It is ${upDown(show)} from a year ago, in line with Broadway as a whole (${upDown(market)}).`;
+  const att = y.attendance ?? null;
+  const atp = y.atp ?? null;
+  const first = `It is ${upDown(show)} from a year ago${att != null && atp != null ? yoyParts(att, atp) : ''}.`;
+  const mkt = y.marketAttendance ?? null;
+  if (att != null && mkt != null) {
+    if (att < 0 && att <= mkt - YOY_PART_STEADY_PCT) {
+      return `${first} Its audience fell more than Broadway’s (${upDown(mkt)}), so the show is slipping against the season.`;
+    }
+    if (att > 0 && att >= mkt + YOY_PART_STEADY_PCT) {
+      return `${first} Its audience grew more than Broadway’s (${upDown(mkt)}), so the show is outpacing the season.`;
+    }
+  }
+  return `${first} Broadway as a whole is ${upDown(market)}.`;
+}
+
+export interface FactsStoryInput {
+  week: string;
+  yearAgoPct: number | null;
+  marketYearAgoPct: number | null;
+  attendanceYoyPct?: number | null;
+  atpYoyPct?: number | null;
+  marketAttendanceYoyPct?: number | null;
+  steady: { low: number; high: number; since: string } | null;
+}
+
+/** The Box Office Scorecard's sentences: facts only. The pointer to costs prints only when the Commercial Scorecard is on the page. */
+export function factsStory(f: FactsStoryInput, hasCommercial: boolean): string | null {
+  const parts: string[] = [];
+  const yoy = yearAgoSentence({
+    show: f.yearAgoPct, market: f.marketYearAgoPct,
+    attendance: f.attendanceYoyPct, atp: f.atpYoyPct, marketAttendance: f.marketAttendanceYoyPct,
+  });
+  if (yoy) parts.push(yoy);
+  if (f.steady) parts.push(`Weekly grosses have held between about ${aboutWeekly(f.steady.low)} and ${aboutWeekly(f.steady.high)} ${sinceText(f.steady.since, f.week)}.`);
+  if (!parts.length) return null;
+  if (hasCommercial) parts.push('Strong sales don’t always mean profit; costs are on the Commercial Scorecard below.');
+  return parts.join(' ');
+}
+
+/** What the Box Office Scorecard receives: numbers already turned into its sentence. */
+export interface BoxOfficeFactsCard {
+  week: string;
+  /** False for a closed (or dark) show: the numbers are its last reported week. */
+  current: boolean;
+  gross: number;
+  rank: number;
+  of: number;
+  story: string | null;
+  series: Array<{ week: string; gross: number | null }>;
+  /** The Commercial Scorecard renders below, so the card may point to it. */
+  hasCommercial: boolean;
+}
+
+export function toFactsCard(
+  f: FactsStoryInput & { current: boolean; gross: number; rank: number; of: number; series: BoxOfficeFactsCard['series'] },
+  hasCommercial: boolean,
+): BoxOfficeFactsCard {
+  return { week: f.week, current: f.current, gross: f.gross, rank: f.rank, of: f.of, story: factsStory(f, hasCommercial), series: f.series, hasCommercial };
+}
+
+/** A headline weekly gross: $676K under a million, $2.7M above (matches the This Week tile). */
+export function formatGross(n: number): string {
+  return n >= 999_500 ? formatMillions(n) : formatWeekly(n);
+}
+
 /** Market totals in millions, one decimal ($27.7M). */
 export function formatMillions(n: number): string {
   return `$${(n / 1_000_000).toFixed(1)}M`;
-}
-
-export interface MarketLine {
-  gross: string;
-  /** Whole-percent change vs the same week last year, null without that week. */
-  changePct: number | null;
-  direction: 'up' | 'down' | 'flat' | null;
-  lastYearGross: string | null;
-  shows: number;
-  lastYearShows: number | null;
-}
-
-export function marketLine(m: BoxOfficeV2Market): MarketLine {
-  const pct = m.lastYearGross ? Math.round(((m.gross - m.lastYearGross) / m.lastYearGross) * 100) : null;
-  return {
-    gross: formatMillions(m.gross),
-    changePct: pct == null ? null : Math.abs(pct),
-    direction: pct == null ? null : pct > 0 ? 'up' : pct < 0 ? 'down' : 'flat',
-    lastYearGross: m.lastYearGross != null ? formatMillions(m.lastYearGross) : null,
-    shows: m.shows,
-    lastYearShows: m.lastYearShows,
-  };
 }
 
 export type StatusCard = Pick<BoxOfficeV2Card, 'availability' | 'band' | 'closingDate' | 'multiple' | 'trend' | 'nonprofit' | 'title' | 'slug'>;
@@ -257,30 +372,6 @@ export function costStatusCell(card: StatusCard | undefined): CostStatusCell {
 
 /** Status column order: the band first (a demoted at-risk show stays with its band), then the multiple breaks ties. */
 const STATUS_SORT: Record<string, number> = { 'well-above': 40, above: 30, near: 20, below: 10, closing: 3, early: 2, nocost: 1, closed: 0 };
-
-/**
- * The This week table's cost cells, keyed by slug, plus its rows with
- * "(nonprofit)" added to a rated nonprofit's title (the design's marker).
- */
-export function costTable<R extends { show: { slug: string; title: string; status?: string } }>(
-  rows: R[],
-  bySlug: Record<string, StatusCard>,
-): { cells: Record<string, CostStatusCell>; thisWeek: R[] } {
-  const cells: Record<string, CostStatusCell> = {};
-  const thisWeek = rows.map((row) => {
-    const card = bySlug[row.show.slug];
-    if (!card) {
-      // No commercial record: a closed show will never get an estimate, so don't promise one.
-      if (row.show.status === 'closed') cells[row.show.slug] = { ...costStatusCell(undefined), label: 'Closed', tone: 'muted', statusSort: STATUS_SORT.closed };
-      return row;
-    }
-    cells[row.show.slug] = costStatusCell(card);
-    return card.nonprofit && card.availability === 'ok'
-      ? { ...row, show: { ...row.show, title: `${row.show.title} (nonprofit)` } }
-      : row;
-  });
-  return { cells, thisWeek };
-}
 
 export interface StatusGroup {
   band: CostBand;

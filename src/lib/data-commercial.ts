@@ -64,6 +64,10 @@ import {
 import commercialData from '../../data/commercial.json';
 import grossesHistoryData from '../../data/grosses-history.json';
 import showsData from '../../data/shows.json';
+import { showFacts, type MarketInput, type MarketShow, type ShowFacts } from './box-office-market';
+import type { HistoryWeeks } from './box-office-weeks';
+import { buildMarketPage, type MarketPage } from './box-office-display';
+import { costStatusCell, statusCounts, type StatusCounts } from './box-office-v2-display';
 
 // Re-exported so existing imports from data-commercial / data.ts keep working.
 export { calculateWeeksToRecoup };
@@ -907,71 +911,57 @@ export function getRunningBoxOfficeV2(): ShowBoxOfficeV2[] {
   return out;
 }
 
-/** The /box-office market line: this week's Broadway total vs the same week a year earlier. */
-export interface BoxOfficeV2Market {
-  week: string;
-  gross: number;
-  shows: number;
-  lastYearWeek: string | null;
-  lastYearGross: number | null;
-  lastYearShows: number | null;
-}
-
-function weekTotal(week: string): { gross: number; shows: number } | null {
-  const rows = grossesHistory.weeks[week];
-  if (!rows) return null;
-  let gross = 0;
-  let shows = 0;
-  for (const [slug, row] of Object.entries(rows)) {
-    if (!(row?.gross && row.gross > 0)) continue;
-    const show = rawShows.find((s) => s.slug === slug);
-    if (show && show.category !== 'broadway') continue;
-    gross += row.gross;
-    shows += 1;
-  }
-  return shows ? { gross, shows } : null;
-}
-
-/** Null when inputs are stale or the latest week has no grosses. */
-export function getBoxOfficeV2Market(): BoxOfficeV2Market | null {
-  if (getBoxOfficeV2StaleReasons().length) return null;
-  const week = WEEK_KEYS_NEWEST_FIRST[0];
-  const now = week ? weekTotal(week) : null;
-  if (!week || !now) return null;
-  const lastYearWeek = isoDayOffset(week, -364);
-  // A partly backfilled year-ago week would print a confident, wrong change; Broadway's
-  // show count swings seasonally but never halves in a year, so fewer than half means incomplete.
-  const found = weekTotal(lastYearWeek);
-  const prior = found && found.shows * 2 >= now.shows ? found : null;
-  return {
-    week,
-    gross: now.gross,
-    shows: now.shows,
-    lastYearWeek: prior ? lastYearWeek : null,
-    lastYearGross: prior?.gross ?? null,
-    lastYearShows: prior?.shows ?? null,
-  };
-}
-
-/** Everything /box-office needs, in one call the page gates on both flags. Null when nothing is rated (stale inputs). */
-export function getBoxOfficeV2Listing(tableSlugs: string[]): {
-  running: ShowBoxOfficeV2[];
-  /** Running Broadway shows with no commercial record at all, so "Not rated" still names them. */
-  unrecorded: { title: string; inPreviews: boolean }[];
-  bySlug: Record<string, ShowBoxOfficeV2>;
-  market: BoxOfficeV2Market | null;
-} | null {
+/**
+ * /biz break-even bands (BRO-5007 v3): every running Broadway
+ * show by break-even band, with each rated show's gross as a share of its
+ * break-even (1.0 = covering costs). Null when nothing
+ * is rated (stale inputs). The page gates the call on both flags.
+ */
+export function getBoxOfficeCostCoverage(): { counts: StatusCounts; shares: Record<string, number> } | null {
   const running = getRunningBoxOfficeV2();
   if (!running.length) return null;
-  const bySlug: Record<string, ShowBoxOfficeV2> = {};
-  for (const r of running) bySlug[r.slug] = r;
+  const known = new Set(running.map((r) => r.slug));
   const unrecorded = rawShows
-    .filter((show) => show.category === 'broadway' && isRunningStatus(show.status) && !bySlug[show.slug])
+    .filter((show) => show.category === 'broadway' && isRunningStatus(show.status) && !known.has(show.slug))
     .map((show) => ({ title: show.title, inPreviews: show.status === 'previews' }));
-  for (const slug of tableSlugs) {
-    if (bySlug[slug]) continue;
-    const s = getShowBoxOfficeV2(slug);
-    if (s) bySlug[slug] = s;
+  const shares: Record<string, number> = {};
+  for (const r of running) {
+    const m = costStatusCell(r).sortValue;
+    if (m != null) shares[r.title] = m;
   }
-  return { running, unrecorded, bySlug, market: getBoxOfficeV2Market() };
+  return { counts: statusCounts(running, unrecorded), shares };
+}
+
+// Box Office v3 (BRO-5007): the market numbers read history through one input,
+// built once per build. Held like the rest: callers gate on both flags.
+let boxOfficeMarketInput: MarketInput | null = null;
+
+/** Every week of Broadway history plus its shows, for the pure maths in box-office-market. */
+export function getBoxOfficeMarketInput(): MarketInput {
+  if (!boxOfficeMarketInput) {
+    boxOfficeMarketInput = {
+      weeks: grossesHistory.weeks as unknown as HistoryWeeks,
+      shows: new Map(rawShows.filter((s) => s.category === 'broadway').map((s) => [s.slug, s as MarketShow])),
+    };
+  }
+  return boxOfficeMarketInput;
+}
+
+/** One show's Box Office Scorecard numbers (Broadway League facts only), or null with no reported week in the last year. */
+export function getBoxOfficeFacts(slug: string): ShowFacts | null {
+  const latest = WEEK_KEYS_NEWEST_FIRST[0];
+  return latest ? showFacts(getBoxOfficeMarketInput(), slug, latest) : null;
+}
+
+let boxOfficeMarketPage: MarketPage | null | undefined;
+
+/** The /box-office market page for the latest reported week, built once per build. */
+export function getBoxOfficeMarketPage(): MarketPage | null {
+  if (boxOfficeMarketPage === undefined) {
+    const latest = WEEK_KEYS_NEWEST_FIRST[0];
+    boxOfficeMarketPage = latest
+      ? buildMarketPage(getBoxOfficeMarketInput(), latest, { designationOf: (slug) => commercial.shows[slug]?.designation ?? null })
+      : null;
+  }
+  return boxOfficeMarketPage;
 }

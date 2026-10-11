@@ -265,7 +265,7 @@ test('computeShowStatus: ok with band, cover costs and a story', () => {
   assert.equal(s.cover?.shortBy, 200_000);
   assert.ok(s.cover?.ticketNeeded && Math.abs(s.cover.ticketNeeded - 1_000_000 / 7000) < 1e-6);
   assert.ok(s.cover?.capacityNeeded && s.cover.capacityNeeded > 100, 'needs more than full at today\'s prices');
-  assert.match(s.story ?? '', /about 20% less than its weekly cost\./);
+  assert.match(s.story ?? '', /about 20% less than it needs to break even\./);
   assert.equal(s.series.length, 10);
 });
 
@@ -289,23 +289,23 @@ test('computeShowStatus: closed, closing, early, nocost get no status chip', () 
 test('story is descriptive: no causal claims', () => {
   const market = new Map(weekKeys('2026-09-27', 30).map((w) => [w, 1.2]));
   const s = computeShowStatus({ ...base, status: 'open', marketMedianByWeek: market, weeks: rows('2026-09-27', Array(30).fill(700_000)) });
-  assert.match(s.story ?? '', /below its cost for 30 straight weeks; the typical Broadway show was at or above its cost in 30 of those weeks/);
+  assert.match(s.story ?? '', /The typical Broadway show was at or above break-even in 30 of those 30 weeks\./);
   assert.doesNotMatch(s.story ?? '', /\bbecause\b|\bslump\b|\bthe season's\b|\bthis show's\b|\bdue to\b/i);
   assert.equal(buildStory({ availability: 'early', band: null, multiple: null, streak: null, series: [] }), null);
 });
 
 test('story wording follows the multiple, not the band', () => {
-  assert.equal(multiplePhrase(0.86), 'about 14% less than its weekly cost', 'MHE: Near band, but the number is under cost');
-  assert.equal(multiplePhrase(0.95), 'close to its weekly cost');
-  assert.equal(multiplePhrase(1.05), 'close to its weekly cost');
-  assert.equal(multiplePhrase(1.32), 'about 32% more than its weekly cost');
-  assert.equal(multiplePhrase(2.4), 'more than double its weekly cost');
-  assert.equal(multiplePhrase(1.99), 'about double its weekly cost', 'not about 99% more');
-  assert.equal(multiplePhrase(2.0), 'about double its weekly cost', 'exactly 2x is not more than double');
+  assert.equal(multiplePhrase(0.86), 'about 14% less than it needs to break even', 'MHE: Near band, but the number is under cost');
+  assert.equal(multiplePhrase(0.95), 'close to what it needs to break even');
+  assert.equal(multiplePhrase(1.05), 'close to what it needs to break even');
+  assert.equal(multiplePhrase(1.32), 'about 32% more than it needs to break even');
+  assert.equal(multiplePhrase(2.4), 'more than double what it needs to break even');
+  assert.equal(multiplePhrase(1.99), 'about double what it needs to break even', 'not about 99% more');
+  assert.equal(multiplePhrase(2.0), 'about double what it needs to break even', 'exactly 2x is not more than double');
   // Real data: a story never says close to cost while the midpoint is outside 0.95-1.05.
   for (const r of getRunningBoxOfficeV2()) {
     if (!r.story || !r.multiple) continue;
-    const close = /close to its weekly cost/.test(r.story);
+    const close = /close to what it needs to break even/.test(r.story);
     assert.equal(close, r.multiple.mid >= 0.95 && r.multiple.mid <= 1.05, `${r.slug}: ${r.multiple.mid.toFixed(2)} "${r.story}"`);
   }
 });

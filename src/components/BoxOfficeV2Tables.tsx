@@ -1,77 +1,63 @@
 'use client';
 
 /**
- * /box-office tables with cost status (BRO-5007 Phase 3, unreleased): the
- * "This week" table gains Status and Vs. its cost; "All time" is today's
- * leaderboard behind a tab. Loaded with dynamic() only when
+ * /box-office tables (BRO-5007 v3, unreleased): "This week" gains gross per
+ * seat (4 weeks) and the change from the same week last year; "All time" is
+ * today's leaderboard behind a tab. Every number is published Broadway League
+ * data; the cost columns moved to /biz. Loaded with dynamic() only when
  * featureFlags.commercial && boxOfficeV2, so a flag-off page never ships it.
  */
 import { useMemo, useState } from 'react';
 import { ThisWeekTable, AllTimeTable, type ExtraColumn } from '@/components/SortableBoxOfficeTable';
-import type { CostStatusCell, PillTone } from '@/lib/box-office-v2-display';
+import type { MarketPage } from '@/lib/box-office-display';
 
 type Rows = Parameters<typeof ThisWeekTable>[0]['data'];
-
-const TONE_TEXT: Record<PillTone, string> = {
-  above: 'text-status-open',
-  near: 'text-gray-300',
-  below: 'text-score-tepid',
-  muted: 'text-gray-400',
-  pending: 'text-gray-500',
-};
 
 const TABS: ReadonlyArray<readonly ['week' | 'all', string]> = [['week', 'This week'], ['all', 'All time']];
 
 interface Props {
   thisWeek: Rows;
   allTime: Parameters<typeof AllTimeTable>[0]['data'];
-  /** Keyed by slug; a missing slug means no commercial record (no estimate). */
-  cells: Record<string, CostStatusCell>;
-  noEstimate: CostStatusCell;
+  /** Keyed by slug; a missing slug shows dashes. */
+  extra: MarketPage['table'];
 }
 
-export default function BoxOfficeV2Tables({ thisWeek, allTime, cells, noEstimate }: Props) {
+export default function BoxOfficeV2Tables({ thisWeek, allTime, extra }: Props) {
   const [tab, setTab] = useState<'week' | 'all'>('week');
 
   const columns = useMemo<ExtraColumn[]>(() => [
     {
-      key: 'status',
-      header: 'Status',
-      headerClassName: 'text-left',
-      cellClassName: 'text-left whitespace-nowrap',
-      sortValue: (slug) => (cells[slug] ?? noEstimate).statusSort,
+      key: 'per-seat',
+      header: <span>Per seat <span className="font-normal">(4 wk)</span></span>,
+      cellClassName: 'text-right whitespace-nowrap tabular-nums',
+      sortValue: (slug) => (extra[slug]?.isNew ? null : extra[slug]?.perSeat ?? null),
       render: (slug) => {
-        const c = cells[slug] ?? noEstimate;
-        return (
-          <span className={`text-sm font-bold ${TONE_TEXT[c.tone]}`}>
-            {c.label}
-            {c.arrow && (
-              <>
-                <span className="ml-1" aria-hidden="true">{c.arrow}</span>
-                <span className="sr-only">{c.arrow === '↑' ? ', grosses rising' : c.arrow === '↓' ? ', grosses falling' : ', grosses steady'}</span>
-              </>
-            )}
-          </span>
-        );
+        if (extra[slug]?.isNew) return <span className="text-xs font-bold uppercase text-gray-400">new</span>;
+        const v = extra[slug]?.perSeat;
+        return v == null ? <span className="text-gray-500">—</span> : <span className="text-white">${Math.round(v)}</span>;
       },
     },
     {
-      key: 'vs-cost',
-      header: <span className="text-accent-gold">Vs. its cost</span>,
-      cellClassName: 'text-right whitespace-nowrap',
-      sortValue: (slug) => cells[slug]?.sortValue ?? null,
+      key: 'yoy',
+      header: 'vs last yr',
+      cellClassName: 'text-right whitespace-nowrap tabular-nums',
+      sortValue: (slug) => extra[slug]?.yoyPct ?? null,
       render: (slug) => {
-        const c = cells[slug] ?? noEstimate;
-        if (!c.multiple) return <span className="text-gray-500">—</span>;
+        const e = extra[slug];
+        if (e?.isNew) return <span className="text-xs font-bold uppercase text-gray-400">new</span>;
+        if (e?.yoyPct == null) return <span className="text-gray-500">—</span>;
+        if (Math.round(e.yoyPct) === 0) return <span className="text-gray-400">flat</span>;
+        const up = e.yoyPct >= 0;
         return (
-          <span className="inline-flex flex-col items-end leading-tight">
-            <span className="text-white font-bold tabular-nums">{c.multiple}</span>
-            <span className="text-xs text-gray-500 tabular-nums">{c.range}</span>
+          <span className={up ? 'text-status-open' : 'text-score-tepid'}>
+            <span aria-hidden="true">{up ? '▲' : '▼'}</span>
+            <span className="sr-only">{up ? 'up ' : 'down '}</span>
+            {Math.round(Math.abs(e.yoyPct))}%
           </span>
         );
       },
     },
-  ], [cells, noEstimate]);
+  ], [extra]);
 
   const tabClass = (on: boolean) =>
     `text-xs font-semibold px-3 py-1 rounded-md transition-colors ${on ? 'bg-white/10 text-gray-50' : 'text-gray-400 hover:text-gray-200'}`;
@@ -110,27 +96,9 @@ export default function BoxOfficeV2Tables({ thisWeek, allTime, cells, noEstimate
       {tab === 'week' ? (
         <>
           <p className="text-gray-400 text-sm mb-4">
-            Ranked by gross. Click &ldquo;Vs. its cost&rdquo; to rank by how each show is doing against its own costs instead.
+            Ranked by gross. Per seat is the gross divided by every seat the show had to sell, averaged over its last 4 weeks.
           </p>
-          <ThisWeekTable
-            data={thisWeek}
-            extraColumns={columns}
-            hideColumns={['attendance']}
-            titleNote={(slug) => {
-              // Phone: Status scrolls off to the right, so repeat it under the title.
-              const c = cells[slug] ?? noEstimate;
-              return (
-                <span className={`sm:hidden block mt-0.5 text-xs font-semibold ${TONE_TEXT[c.tone]}`}>
-                  {c.label}
-                  {c.multiple && <span className="text-gray-400 font-normal"> · {c.multiple}</span>}
-                </span>
-              );
-            }}
-          />
-          <p className="text-xs text-gray-500 mt-3">
-            Status uses each show&apos;s average over the last 4 weeks against its weekly cost; the small range reflects how solid
-            that cost figure is. &ldquo;Below Cost&rdquo; only when the whole range is under 1×. The arrow is the 4-week trend in grosses.
-          </p>
+          <ThisWeekTable data={thisWeek} extraColumns={columns} hideColumns={['attendance']} />
           <p className="text-xs text-gray-500 mt-1">
             <span aria-hidden="true">*</span> Capacity above 100% reflects extra performances or premium pricing reported by The Broadway League.
           </p>

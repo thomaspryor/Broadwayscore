@@ -371,6 +371,14 @@ jobs:
           fi
           echo "Build completed in ${BUILD_SECS}s"
 
+      - name: Guard — held-feature copy absent from the build (advisory)
+        # BRO-5007: prod builds run with commercial/boxOfficeV2 off, so copy
+        # from those held sections must not be in any page or JS chunk. A
+        # static import of a held client module ships it regardless of flags,
+        # which the source-reading unit tests cannot see. Advisory first (§19).
+        continue-on-error: true
+        run: node scripts/lib/held-feature-leak.js .vercel/output/static
+
       - name: Save Next.js build + prebuild artifacts cache
         # hygiene-cache-runid-ok: deliberate, see the "Restore" step earlier
         # in this job for the full BRO-4146 reasoning — the run_id is

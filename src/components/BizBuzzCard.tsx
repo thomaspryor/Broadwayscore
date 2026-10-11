@@ -16,10 +16,19 @@ import {
   isEstimatedCapitalization,
   getWeeklyCostSourceLabel,
   getNonprofitProducerLine,
+  hasCommercialCard,
 } from '@/lib/commercial-display';
 import { formatCapitalization } from '@/lib/biz-format';
 import { isRunningStatus } from '@/lib/commercial-metrics';
 import RecoupmentProgressBar from './RecoupmentProgressBar';
+import dynamic from 'next/dynamic';
+import type { BoxOfficeV2Card } from '@/lib/box-office-v2-display';
+
+// BRO-5007 v3: unreleased. Its own chunk, fetched only when the section
+// renders; flag-off builds drop the import (HELD_BOX_OFFICE_BUILD, next.config.js).
+const BreakEvenSection = process.env.HELD_BOX_OFFICE_BUILD === 'true'
+  ? dynamic(() => import('@/components/biz/BreakEvenSection'))
+  : () => null;
 
 interface BizBuzzCardProps {
   commercial: ShowCommercial;
@@ -28,6 +37,8 @@ interface BizBuzzCardProps {
   weeklyGross?: number | null;
   showStatus?: 'open' | 'closed' | 'previews' | 'upcoming';
   allTimeGross?: number | null;
+  /** BRO-5007 v3 break-even section (unreleased): null unless commercial && boxOfficeV2 and it has something to show. */
+  breakEvenCard?: BoxOfficeV2Card | null;
 }
 
 function formatCurrency(value: number | null | undefined): string {
@@ -116,13 +127,12 @@ function TrendIndicator({ trend }: { trend: RecoupmentTrend }) {
   );
 }
 
-export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross, showStatus, allTimeGross }: BizBuzzCardProps) {
+export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross, showStatus, allTimeGross, breakEvenCard = null }: BizBuzzCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   void showTitle;
 
   // Don't render if we have no useful data
-  const hasData = commercial.capitalization || commercial.recouped !== null || commercial.designation !== 'TBD';
-  if (!hasData) return null;
+  if (!hasCommercialCard(commercial)) return null;
 
   // Closed + TBD reads "Undisclosed" (display only; the record keeps TBD).
   const designation = getDesignationDisplay(commercial.designation, showStatus);
@@ -149,7 +159,8 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
   const hasDetails = !!(notesText || capSourceText || weeklyCostSourceText);
 
   // Trend only for running, unrecouped shows still waiting on an outcome.
-  const showTrend = !!trend && trend !== 'unknown' && running && commercial.designation === 'TBD' && !commercial.recouped;
+  // The v3 break-even section covers the trend, so its chip goes when the section shows.
+  const showTrend = !breakEvenCard && !!trend && trend !== 'unknown' && running && commercial.designation === 'TBD' && !commercial.recouped;
 
   // One break-even figure everywhere (show card and /biz at-risk list):
   // model break-even above the quality floor, else the recorded weekly cost.
@@ -158,7 +169,8 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
     breakEven != null && breakEven === commercial.modelBreakeven && meetsModelQualityFloor(commercial);
 
   const breakevenComparison =
-    breakEven && weeklyGross != null && running
+    // One week against break-even: replaced by the v3 section's four-week view when it shows.
+    !breakEvenCard && breakEven && weeklyGross != null && running
       ? { gross: weeklyGross, breakeven: breakEven, above: weeklyGross >= breakEven }
       : null;
 
@@ -303,6 +315,8 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
             </div>
           )}
         </div>
+
+        {breakEvenCard && <BreakEvenSection card={breakEvenCard} />}
 
         {/* Recoupment record: neutral wording plus its source; the model is
             never quoted on these shows (Q1 sign-off) */}
