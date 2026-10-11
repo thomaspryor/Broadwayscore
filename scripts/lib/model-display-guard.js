@@ -48,7 +48,8 @@ const STATED_PCT = /\b(recoup\w*|returned|paid back|earned back|loss|lost)\b[^.;
 function displaysModel(comm, show) {
   if (!comm || !show) return false;
   if (comm.recouped === true) return false;
-  if (show.status === 'closed' && comm.designation && comm.designation !== 'TBD') return false;
+  // Closed: a final designation is settled, and a TBD reads "Undisclosed" (BRO-5020).
+  if (show.status === 'closed') return false;
   if (comm.designation === 'Nonprofit') return false;
   if (!comm.modelRecoupmentPct) return false;
   return comm.modelDataQuality !== 'low' && comm.modelMethod !== 'ai-estimated';

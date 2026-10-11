@@ -87,7 +87,8 @@ describe('displaysModel (mirrors getRecoupmentDisplayMode === "model")', () => {
   test('announced, final closed, nonprofit, low quality and ai-estimated do not', () => {
     assert.equal(displaysModel({ modelRecoupmentPct: pct, recouped: true }, { status: 'open' }), false);
     assert.equal(displaysModel({ modelRecoupmentPct: pct, designation: 'Flop' }, { status: 'closed' }), false);
-    assert.equal(displaysModel({ modelRecoupmentPct: pct, designation: 'TBD' }, { status: 'closed' }), true);
+    assert.equal(displaysModel({ modelRecoupmentPct: pct, designation: 'TBD' }, { status: 'closed' }), false); // BRO-5020
+    assert.equal(displaysModel({ modelRecoupmentPct: pct, designation: 'TBD' }, { status: 'open' }), true);
     assert.equal(displaysModel({ modelRecoupmentPct: pct, designation: 'Nonprofit' }, { status: 'open' }), false);
     assert.equal(displaysModel({ modelRecoupmentPct: pct, modelDataQuality: 'low' }, { status: 'open' }), false);
     assert.equal(displaysModel({ modelRecoupmentPct: pct, modelMethod: 'ai-estimated' }, { status: 'open' }), false);

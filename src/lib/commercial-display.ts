@@ -17,7 +17,7 @@
 // silently hide the feature everywhere.
 
 import type { ShowCommercial } from './data-types';
-import { getDesignationBadgeStyle, UNDISCLOSED_DESIGNATION } from '@/config/commercial';
+import { getDesignationBadgeStyle, UNDISCLOSED_DESIGNATION, RECOUPED_UNDISCLOSED_DESIGNATION } from '@/config/commercial';
 import { modelDisplayGuard, playedWeeks, independentEstimate, isRunning } from '../../scripts/lib/model-display-guard';
 
 export type RecoupmentDisplayMode = 'announced' | 'model' | 'none';
@@ -90,6 +90,12 @@ export function getRecoupmentDisplayMode(
 ): RecoupmentDisplayMode {
   if (commercial.recouped === true) return 'announced';
   if (isFinalClosedOutcome(commercial)) return 'none';
+  // Any closed show left here is TBD, which reads "Undisclosed"
+  // (getDesignationDisplay); a model % beside
+  // it would contradict the label. Structural, not left to the quality floor
+  // (BRO-5020: Mrs. Doubtfire's [0,0,8.2] passed the display guard and was kept
+  // off the page only by modelDataQuality 'low').
+  if (commercial.status === 'closed') return 'none';
   // Nonprofit productions raise no investor capital, so a modeled "% recouped" means nothing (BRO-4721).
   if (commercial.designation === 'Nonprofit') return 'none';
   if (commercial.modelRecoupmentPct && meetsModelQualityFloor(commercial)) {
@@ -148,7 +154,8 @@ export function getModelHoldLabel(
   if (commercial.recouped === true || isFinalClosedOutcome(commercial)) return null;
   if (commercial.designation === 'Nonprofit' || !meetsModelQualityFloor(commercial)) return null;
   if (commercial.modelBelowCosts) return 'Losing money so far';
-  if (hold === 'few-weeks') return 'Too early to estimate';
+  // "Too early" is wrong once the run is over (BRO-5020).
+  if (hold === 'few-weeks') return commercial.status === 'closed' ? 'Not enough data to estimate' : 'Too early to estimate';
   if (hold === 'estimates-disagree') return 'Estimates disagree';
   if (hold === 'too-uncertain') return 'Too uncertain to estimate';
   if (hold === 'awaiting-truth') return 'Not enough reported data yet';
@@ -463,19 +470,23 @@ export function hasCommercialCard(c: Pick<ShowCommercial, 'capitalization' | 're
 /**
  * What to call a designation on screen. A CLOSED show still stored as TBD
  * reads "Undisclosed: Closed; outcome not announced" instead of "TBD: still
- * running". Display only; commercial.json keeps TBD.
+ * running". Display only; commercial.json keeps TBD. One that announced
+ * recoupment reads "Recouped · return undisclosed": the outcome was announced,
+ * only the investor return was not (BRO-5020, The Piano Lesson).
  */
 export function getDesignationDisplay(
   designation: ShowCommercial['designation'],
-  status: string | null | undefined
+  status: string | null | undefined,
+  recouped?: boolean | null
 ): DesignationDisplay {
   if (designation === 'TBD' && status === 'closed') {
+    const d = recouped === true ? RECOUPED_UNDISCLOSED_DESIGNATION : UNDISCLOSED_DESIGNATION;
     return {
-      label: UNDISCLOSED_DESIGNATION.name,
-      description: UNDISCLOSED_DESIGNATION.description,
-      textClass: UNDISCLOSED_DESIGNATION.color,
-      icon: UNDISCLOSED_DESIGNATION.icon,
-      isUndisclosed: true,
+      label: d.name,
+      description: d.description,
+      textClass: d.color,
+      icon: d.icon,
+      isUndisclosed: d === UNDISCLOSED_DESIGNATION,
     };
   }
   const style = getDesignationBadgeStyle(designation);

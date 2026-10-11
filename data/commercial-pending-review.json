@@ -601,7 +601,16 @@
       "model": "o4-mini",
       "researchTrigger": "manual",
       "requiresHumanReview": true,
-      "backfill": "BRO-4990"
+      "backfill": "BRO-4990",
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "rejected",
+        "hardFields": [],
+        "rejectReasons": [
+          "only source is a fabricated host (monorepo-sample1.nyt.net)"
+        ]
+      }
     },
     "bug": {
       "recouped": true,
@@ -878,7 +887,16 @@
       "model": "o4-mini",
       "researchTrigger": "manual",
       "requiresHumanReview": true,
-      "backfill": "BRO-4990"
+      "backfill": "BRO-4990",
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "the-lost-boys": {
       "capitalization": 25000000,
@@ -949,7 +967,16 @@
       "model": "o4-mini",
       "researchTrigger": "manual",
       "requiresHumanReview": true,
-      "backfill": "BRO-4990"
+      "backfill": "BRO-4990",
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "the-rocky-horror-show": {
       "capitalization": null,
@@ -1057,7 +1084,16 @@
       "model": "o4-mini",
       "researchTrigger": "manual",
       "requiresHumanReview": true,
-      "backfill": "BRO-4990"
+      "backfill": "BRO-4990",
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "celebrity-autobiography": {
       "capitalization": null,
@@ -1096,7 +1132,16 @@
       "model": "o4-mini",
       "researchTrigger": "manual",
       "requiresHumanReview": true,
-      "backfill": "BRO-4990"
+      "backfill": "BRO-4990",
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "our-town": {
       "capitalization": null,
@@ -1130,7 +1175,16 @@
       "researchTrigger": "manual",
       "requiresHumanReview": true,
       "backfill": "BRO-4990",
-      "researchAttempts": 1
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "stranger-things": {
       "capitalizationSource": "EDGE Media Network report (June 1, 2025) describing the Broadway production as capitalized at $50M.",
@@ -1205,7 +1259,16 @@
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog",
       "requiresHumanReview": true,
-      "backfill": "BRO-4990"
+      "backfill": "BRO-4990",
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "leopoldstadt-2022": {
       "capitalization": 8000000,
@@ -1263,7 +1326,16 @@
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog",
       "requiresHumanReview": true,
-      "backfill": "BRO-4990"
+      "backfill": "BRO-4990",
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "rejected",
+        "hardFields": [],
+        "rejectReasons": [
+          "recoup quote refers to the producer's 2013 production, not Leopoldstadt"
+        ]
+      }
     },
     "job-2024": {
       "capitalization": null,
@@ -1302,7 +1374,16 @@
       "researchTrigger": "manual",
       "requiresHumanReview": true,
       "backfill": "BRO-4990",
-      "researchAttempts": 1
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "the-great-gatsby": {
       "capitalization": 25000000,
@@ -1414,7 +1495,16 @@
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog",
       "requiresHumanReview": true,
-      "backfill": "BRO-4990"
+      "backfill": "BRO-4990",
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "a-christmas-carol-2019": {
       "capitalization": 6000000,
@@ -1453,7 +1543,16 @@
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog",
       "requiresHumanReview": true,
-      "backfill": "BRO-4990"
+      "backfill": "BRO-4990",
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "cap $6M only from a forbeseurope.uk mirror, not the publisher"
+        ]
+      }
     },
     "buena-vista-social-club": {
       "capitalization": 17000000,
@@ -1621,7 +1720,19 @@
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog",
       "requiresHumanReview": true,
-      "backfill": "BRO-4990"
+      "backfill": "BRO-4990",
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "no-change",
+        "hardFields": [
+          "capitalization:3400000",
+          "recouped:false"
+        ],
+        "rejectReasons": [
+          "already in commercial.json; Flop vs Fizzle is a model split no source states; stays TBD (displays Undisclosed)"
+        ]
+      }
     },
     "its-a-wonderful-life-a-live-radio-play": {
       "capitalization": null,
@@ -1826,7 +1937,16 @@
       "model": "o4-mini",
       "researchTrigger": "manual",
       "requiresHumanReview": true,
-      "backfill": "BRO-4990"
+      "backfill": "BRO-4990",
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "waitress-2021": {
       "capitalization": 10111952,
@@ -1861,7 +1981,16 @@
       "researchTrigger": "manual",
       "requiresHumanReview": true,
       "backfill": "BRO-4990",
-      "researchAttempts": 1
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "thoughts-of-a-colored-man-2021": {
       "capitalization": 5558416,
@@ -1914,7 +2043,19 @@
       "researchTrigger": "manual",
       "requiresHumanReview": true,
       "backfill": "BRO-4990",
-      "researchAttempts": 1
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "cap-released",
+        "hardFields": [
+          "capitalization:5000000"
+        ],
+        "rejectReasons": [
+          "$5,558,416 was a tax-credit back-solve, replaced by the reported $5M",
+          "Fizzle not released: no source states the returned share"
+        ]
+      }
     },
     "the-lehman-trilogy-2021": {
       "capitalization": 5750000,
@@ -1959,7 +2100,18 @@
       "researchTrigger": "manual",
       "requiresHumanReview": true,
       "backfill": "BRO-4990",
-      "researchAttempts": 1
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "cap-released",
+        "hardFields": [
+          "capitalization:5750000"
+        ],
+        "rejectReasons": [
+          "outcome unsourced; designation TBD"
+        ]
+      }
     },
     "caroline-or-change-2021": {
       "capitalization": null,
@@ -2004,7 +2156,16 @@
       "researchTrigger": "manual",
       "requiresHumanReview": true,
       "backfill": "BRO-4990",
-      "researchAttempts": 1
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "released",
+        "hardFields": [
+          "designation:Nonprofit"
+        ],
+        "rejectReasons": []
+      }
     },
     "mrs-doubtfire-2021": {
       "capitalization": 17000000,
@@ -2049,7 +2210,19 @@
       "researchTrigger": "manual",
       "requiresHumanReview": true,
       "backfill": "BRO-4990",
-      "researchAttempts": 1
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "cap-released",
+        "hardFields": [
+          "capitalization:18000000"
+        ],
+        "rejectReasons": [
+          "recorded as the SEC filing ceiling (up to $18M); AP reported $17M",
+          "Flop not released: no source states the investor outcome"
+        ]
+      }
     },
     "company-2021": {
       "capitalization": 13000000,
@@ -2092,7 +2265,16 @@
       "researchTrigger": "manual",
       "requiresHumanReview": true,
       "backfill": "BRO-4990",
-      "researchAttempts": 1
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "plaza-suite-2022": {
       "capitalization": 8003548,
@@ -2134,7 +2316,16 @@
       "researchTrigger": "manual",
       "requiresHumanReview": true,
       "backfill": "BRO-4990",
-      "researchAttempts": 1
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "rejected",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched source states recoupment (cite is a forum thread)"
+        ]
+      }
     },
     "take-me-out-2022": {
       "capitalization": null,
@@ -2179,7 +2370,16 @@
       "researchTrigger": "manual",
       "requiresHumanReview": true,
       "backfill": "BRO-4990",
-      "researchAttempts": 1
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "no-change",
+        "hardFields": [],
+        "rejectReasons": [
+          "Shubert release: commercial transfer (Weisslers) of a Second Stage production; not Nonprofit; stays TBD"
+        ]
+      }
     },
     "beetlejuice-2022": {
       "capitalization": 21000000,
@@ -2232,7 +2432,16 @@
       "researchTrigger": "manual",
       "requiresHumanReview": true,
       "backfill": "BRO-4990",
-      "researchAttempts": 1
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "cited $21M source covers the 2020 Winter Garden run, not the 2022 Marquis run"
+        ]
+      }
     },
     "american-buffalo-2022": {
       "capitalization": null,
@@ -2277,7 +2486,16 @@
       "researchTrigger": "manual",
       "requiresHumanReview": true,
       "backfill": "BRO-4990",
-      "researchAttempts": 1
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "the-minutes-2022": {
       "capitalization": 7568644,
@@ -2322,7 +2540,16 @@
       "researchTrigger": "manual",
       "requiresHumanReview": true,
       "backfill": "BRO-4990",
-      "researchAttempts": 1
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "hangmen-2022": {
       "capitalization": 5700220,
@@ -2362,7 +2589,16 @@
       "researchTrigger": "manual",
       "requiresHumanReview": true,
       "backfill": "BRO-4990",
-      "researchAttempts": 1
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "mr-saturday-night-2022": {
       "capitalization": null,
@@ -2397,7 +2633,16 @@
       "researchTrigger": "manual",
       "requiresHumanReview": true,
       "backfill": "BRO-4990",
-      "researchAttempts": 1
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022": {
       "capitalization": 9641432,
@@ -2440,7 +2685,16 @@
       "researchTrigger": "manual",
       "requiresHumanReview": true,
       "backfill": "BRO-4990",
-      "researchAttempts": 1
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "macbeth-2022": {
       "capitalization": 9875368,
@@ -2485,7 +2739,16 @@
       "researchTrigger": "manual",
       "requiresHumanReview": true,
       "backfill": "BRO-4990",
-      "researchAttempts": 1
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "death-of-a-salesman-2022": {
       "capitalization": 9058744,
@@ -2525,7 +2788,16 @@
       "researchTrigger": "manual",
       "requiresHumanReview": true,
       "backfill": "BRO-4990",
-      "researchAttempts": 1
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "the-piano-lesson-2022": {
       "capitalization": 7000000,
@@ -2549,11 +2821,6 @@
           "type": "trade",
           "url": "https://www.broadwaynews.com/heres-whats-going-on-with-the-downstate-tax-credit/",
           "date": "2025-08-22"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway",
-          "date": "2025-09-04"
         }
       ],
       "_recoupedClaim": true,
@@ -2567,7 +2834,21 @@
       "researchTrigger": "manual",
       "requiresHumanReview": true,
       "backfill": "BRO-4990",
-      "researchAttempts": 1
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "released",
+        "hardFields": [
+          "capitalization:7000000",
+          "recouped:true",
+          "recoupedDate:2024-03"
+        ],
+        "rejectReasons": [
+          "designation Easy Winner not released: left to designation-rule.js (TBD, no reported return)",
+          "BroadwayWorld cite dropped (403 from cloud; not load-bearing)"
+        ]
+      }
     },
     "topdog-underdog-2022": {
       "capitalization": 6001504,
@@ -2610,7 +2891,16 @@
       "researchTrigger": "manual",
       "requiresHumanReview": true,
       "backfill": "BRO-4990",
-      "researchAttempts": 1
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "pictures-from-home-2023": {
       "capitalization": 8218052,
@@ -2650,7 +2940,16 @@
       "researchTrigger": "manual",
       "requiresHumanReview": true,
       "backfill": "BRO-4990",
-      "researchAttempts": 1
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "a-dolls-house-2023": {
       "capitalization": null,
@@ -2685,7 +2984,16 @@
       "researchTrigger": "manual",
       "requiresHumanReview": true,
       "backfill": "BRO-4990",
-      "researchAttempts": 1
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "life-of-pi-2023": {
       "capitalization": 9341464,
@@ -2725,7 +3033,16 @@
       "researchTrigger": "manual",
       "requiresHumanReview": true,
       "backfill": "BRO-4990",
-      "researchAttempts": 1
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "peter-pan-goes-wrong-2023": {
       "capitalization": 8362184,
@@ -2765,7 +3082,16 @@
       "researchTrigger": "manual",
       "requiresHumanReview": true,
       "backfill": "BRO-4990",
-      "researchAttempts": 1
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "good-night-oscar-2023": {
       "capitalization": 10665336,
@@ -2810,7 +3136,16 @@
       "researchTrigger": "manual",
       "requiresHumanReview": true,
       "backfill": "BRO-4990",
-      "researchAttempts": 1
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "the-sign-in-sidney-brusteins-window-2023": {
       "capitalization": null,
@@ -2855,7 +3190,16 @@
       "researchTrigger": "manual",
       "requiresHumanReview": true,
       "backfill": "BRO-4990",
-      "researchAttempts": 1
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "titanique": {
       "capitalization": 9500000,
@@ -2963,7 +3307,16 @@
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog",
       "requiresHumanReview": true,
-      "backfill": "BRO-4990"
+      "backfill": "BRO-4990",
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "just-for-us": {
       "capitalization": 2250000,
@@ -3007,7 +3360,18 @@
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog",
       "requiresHumanReview": true,
-      "backfill": "BRO-4990"
+      "backfill": "BRO-4990",
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "cap-released",
+        "hardFields": [
+          "capitalization:2250000"
+        ],
+        "rejectReasons": [
+          "outcome unsourced; designation TBD"
+        ]
+      }
     },
     "grey-house": {
       "capitalization": 8000000,
@@ -3049,7 +3413,18 @@
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog",
       "requiresHumanReview": true,
-      "backfill": "BRO-4990"
+      "backfill": "BRO-4990",
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "cap-released",
+        "hardFields": [
+          "capitalization:8000000"
+        ],
+        "rejectReasons": [
+          "Flop is a model inference (gross below cap), not a reported outcome; designation TBD"
+        ]
+      }
     },
     "damn-yankees": {
       "capitalization": null,
@@ -3236,7 +3611,16 @@
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog",
       "requiresHumanReview": true,
-      "backfill": "BRO-4990"
+      "backfill": "BRO-4990",
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "sunset-boulevard-2017": {
       "capitalization": null,
@@ -3275,7 +3659,16 @@
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog",
       "requiresHumanReview": true,
-      "backfill": "BRO-4990"
+      "backfill": "BRO-4990",
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "the-last-five-years-2025": {
       "capitalization": null,
@@ -3319,7 +3712,16 @@
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog",
       "requiresHumanReview": true,
-      "backfill": "BRO-4990"
+      "backfill": "BRO-4990",
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "the-shark-is-broken": {
       "capitalization": 6384524,
@@ -3366,7 +3768,16 @@
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog",
       "requiresHumanReview": true,
-      "backfill": "BRO-4990"
+      "backfill": "BRO-4990",
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "elf-2024": {
       "capitalization": null,
@@ -3410,7 +3821,16 @@
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog",
       "requiresHumanReview": true,
-      "backfill": "BRO-4990"
+      "backfill": "BRO-4990",
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "maybe-happy-ending": {
       "capitalization": 16000000,
@@ -3494,7 +3914,16 @@
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog",
       "requiresHumanReview": true,
-      "backfill": "BRO-4990"
+      "backfill": "BRO-4990",
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     },
     "a-few-good-men": {
       "capitalization": null,
@@ -3974,7 +4403,20 @@
           "date": "2025-06-05",
           "excerpt": "could recoup its $9.4 million of production costs soon after Labor Day"
         }
-      ]
+      ],
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "no-change",
+        "hardFields": [
+          "recouped:true",
+          "recoupedDate:2026-05",
+          "capitalization:12500000"
+        ],
+        "rejectReasons": [
+          "$600K weekly running cost is a Reddit estimate only; hold stays open"
+        ]
+      }
     },
     "proof": {
       "capitalization": 6500000,
