@@ -16,6 +16,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { isValidSynopsis, classifyBadSynopsis, cutToLastSentence } = require('./lib/synopsis-validation');
+const { isTourShow } = require('./lib/tour-family');
 const { imageOnDisk } = require('./lib/show-images');
 const { verifyProductionMatch } = require('./lib/synopsis-production-match');
 const { groundSynopsis } = require('./lib/synopsis-grounding');
@@ -693,6 +694,36 @@ function checkMissingImages(show) {
   return missing;
 }
 
+/**
+ * The daily run's targets: open/preview shows, plus any not-yet-closed
+ * national tour whose synopsis is missing or bad and that cannot inherit one
+ * (standalone, or its tourOf parent has no good synopsis either). Inheritance
+ * (tour-family.js tourInheritance) fills the rest, and Wikipedia enrichment
+ * skips tours (BRO-4262), so these tours had no synopsis path at all: five
+ * hand-added standalone tours (BRO-4931) sat empty and reddened
+ * check-corpus-drift (BRO-447).
+ */
+function isOpenOrPreviews(s) {
+  return s.status === 'open' || s.status === 'previews';
+}
+
+function selectDailyTargets(shows) {
+  const byId = new Map((shows || []).map(s => [s.id, s]));
+  const cannotInherit = s => !s.tourOf || !byId.has(s.tourOf) || classifyBadSynopsis(byId.get(s.tourOf)).bad;
+  return (shows || []).filter(s =>
+    isOpenOrPreviews(s) ||
+    (isTourShow(s) && s.status !== 'closed' && classifyBadSynopsis(s).bad && cannotInherit(s)));
+}
+
+/**
+ * A not-yet-open tour gets only the synopsis step, in every mode (daily and
+ * --show): tours have their own art pipeline, and the LLM creative-team path
+ * would credit a tour with another production's director.
+ */
+function isSynopsisOnlyTarget(show) {
+  return isTourShow(show) && !isOpenOrPreviews(show) && show.status !== 'closed';
+}
+
 async function main() {
   const args = process.argv.slice(2);
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
@@ -733,8 +764,8 @@ async function main() {
     }
     console.log(`Found ${targetShows.length} shows with missing/bad synopsis${limit > 0 ? ` (limited to ${limit})` : ''}...\n`);
   } else {
-    targetShows = data.shows.filter(s => s.status === 'open' || s.status === 'previews');
-    console.log(`Checking ${targetShows.length} open/preview shows...\n`);
+    targetShows = selectDailyTargets(data.shows);
+    console.log(`Checking ${targetShows.length} open/preview shows (+ standalone tours missing a synopsis)...\n`);
   }
 
   let showsWithMissingImages = [];
@@ -757,6 +788,8 @@ async function main() {
       changesMade = true;
       await sleep(1000); // Rate limit
     }
+
+    if (isSynopsisOnlyTarget(show)) continue;
 
     // 2. Fix creative team (auto-fetched or LLM-generated)
     const creativeFix = await fixCreativeTeam(show, todayTixIds);
@@ -869,4 +902,6 @@ module.exports = {
   extractSynopsisFromHtml,
   generateSynopsisWithLLM,
   buildSynopsisPrompt,
+  selectDailyTargets,
+  isSynopsisOnlyTarget,
 };
