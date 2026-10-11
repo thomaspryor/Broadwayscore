@@ -155,9 +155,9 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-11T06:47:48.449Z",
-      "lastSeen": "2026-10-11T06:47:48.449Z",
-      "lastNotifiedAt": "2026-10-11T06:47:48.449Z",
+      "incidentOpenedAt": "2026-10-11T06:56:42.700Z",
+      "lastSeen": "2026-10-11T06:56:42.700Z",
+      "lastNotifiedAt": "2026-10-11T06:56:42.700Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 130,
       "cardId": null,
@@ -13586,7 +13586,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-5035",
-      "resolvedAt": "2026-10-11T06:47:48.154Z",
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-11T06:56:42.683Z",
       "resolveReason": "job-green"
     },
     "test-yml:red:Design Token Drift Guard:621920d2": {
@@ -13595,7 +13596,7 @@
       "title": "main test.yml red: Design Token Drift Guard / Lint design tokens",
       "firstSeen": "2026-10-11T06:36:05.649Z",
       "incidentOpenedAt": "2026-10-11T06:36:05.649Z",
-      "lastSeen": "2026-10-11T06:36:05.649Z",
+      "lastSeen": "2026-10-11T06:56:42.693Z",
       "lastNotifiedAt": "2026-10-11T06:36:05.649Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
@@ -13606,7 +13607,8 @@
         "mode": "dispatch-at-filing",
         "runId": "38117583888",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38117583888"
-      }
+      },
+      "silentRefires": 1
     },
     "land:land/bro-5022-strict-google-images": {
       "status": "open",
