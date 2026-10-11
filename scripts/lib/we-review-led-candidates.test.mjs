@@ -10,7 +10,7 @@ const {
   selectLookups, trIssueMonth, trVenueName, pickTrForReview, findContinuingRun, cleanReviewTitle,
 } = require('./we-review-led-candidates.js');
 const { isLondonVenue } = require('./tr-london-venue.js');
-const { searchTitles, pdfHeaderFor } = require('../resolve-we-unlisted-tr.js');
+const { searchTitles, pdfHeaderFor, htmlHeaderFor, pairLabelLines } = require('../resolve-we-unlisted-tr.js');
 
 // we-historical-candidates-2018-2019.json unlistedReviews (verbatim)
 const COMPANY = { title: 'Company', venue: 'Gielgud Theatre', date: '2018-10-17', url: 'https://www.whatsonstage.com/news/review-company-gielgud-theatre_47830/', rating: 5, market: [83, 98] };
@@ -133,6 +133,45 @@ test('pdfHeaderFor ignores a contents line and a two-column heading', () => {
   assert.equal(pdfHeaderFor('COMPANY     THE STAGE\nprose', 'Company'), null);
 });
 
+test('buildReviewLedCandidates files a run that started the season before under that season', () => {
+  const review = { title: 'The Real Thing', venue: 'Old Vic', date: '2024-09-04', url: 'https://www.whatsonstage.com/x' };
+  const tr = { title: 'The Real Thing', venue: 'The Old Vic, London', link: 'https://www.theatrerecord.com/archive/2024/9/x' };
+  const header = 'The Real Thing\nPreviews 22 August 2024\nCloses 26 October 2024';
+  const [c] = buildReviewLedCandidates({ season: '2024-2025', lookups: [{ review, tr, header }], shows: [], today: '2026-10-11' });
+  assert.equal(c.season, '2023-2024');
+  assert.equal(c.decision.promotable, true);
+  // August previews, September press night: stays in the season of the press night.
+  const [e] = buildReviewLedCandidates({ season: '2024-2025', lookups: [{ review, tr, header: header.replace('\nCloses', '\nPress night 03 September 2024\nCloses') }], shows: [], today: '2026-10-11' });
+  assert.equal(e.season, '2024-2025');
+  assert.equal(e.decision.promotable, true);
+  const old = header.replace('22 August 2024', '22 August 2022');
+  const [d] = buildReviewLedCandidates({ season: '2024-2025', lookups: [{ review, tr, header: old }], shows: [], today: '2026-10-11' });
+  assert.equal(d.season, '2024-2025');
+  assert.equal(d.decision.promotable, false);
+});
+
+test('buildReviewLedCandidates names the NT stage from the TR venue', () => {
+  const review = { title: 'Coriolanus', venue: 'National Theatre', date: '2024-09-25', url: 'https://www.whatsonstage.com/x' };
+  const header = 'Coriolanus\nPreviews 11 September 2024\nCloses 09 November 2024';
+  const at = v => buildReviewLedCandidates({ season: '2024-2025', lookups: [{ review, tr: { title: 'Coriolanus', venue: v, link: 'https://www.theatrerecord.com/archive/2024/9/20225-coriolanus' }, header }], shows: [], today: '2026-10-11' })[0].venue;
+  assert.equal(at('National Theatre - Olivier Theatre, London'), 'Olivier Theatre');
+  assert.equal(at('London, Lyttelton, National'), 'Lyttelton Theatre');
+  assert.equal(at('National Theatre, London'), 'National Theatre');
+});
+
+test('buildReviewLedCandidates ends a run straddling the March 2020 shutdown on 16 March', () => {
+  const review = { title: 'The Upstart Crow', venue: 'Gielgud Theatre', date: '2020-02-18', url: 'https://www.whatsonstage.com/x' };
+  const tr = { title: 'The Upstart Crow', venue: 'London, Gielgud', link: 'https://www.theatrerecord.com/archive/volume/40/dest/04_upstart_crow' };
+  const header = 'THE UPSTART CROW\nFirst Preview 07 February 2020\nPress Night 17 February 2020\nCloses 25 April 2020';
+  const [c] = buildReviewLedCandidates({ season: '2019-2020', lookups: [{ review, tr, header }], shows: [], today: '2026-10-11' });
+  assert.equal(c.closingDate, '2020-03-16');
+  assert.equal(c.scheduledClosingDate, '2020-04-25');
+  const before = header.replace('25 April 2020', '05 March 2020');
+  const [d] = buildReviewLedCandidates({ season: '2019-2020', lookups: [{ review, tr, header: before }], shows: [], today: '2026-10-11' });
+  assert.equal(d.closingDate, '2020-03-05');
+  assert.equal(d.scheduledClosingDate, undefined);
+});
+
 test('buildReviewLedCandidates dates from TR only and dedups against shows.json', () => {
   const review = { title: 'Company', venue: 'Gielgud Theatre', date: '2018-10-17', url: COMPANY.url };
   const tr = { title: 'Company', venue: 'Gielgud Theatre, London', link: 'https://www.theatrerecord.com/archive/volume/38/dest/21_company' };
@@ -211,4 +250,62 @@ test('pdfHeaderFor tries the exact title before a THE-variant (Father vs The Fat
   const text = 'THE FATHER\n6 October 2015 – 21 November 2015\nFATHER\n2 March 2016 – 9 April 2016';
   assert.equal(pdfHeaderFor(text, 'Father'), 'FATHER\n2 March 2016 – 9 April 2016');
   assert.equal(pdfHeaderFor('THE FATHER\n6 October 2015 – 21 November 2015', 'Father'), 'THE FATHER\n6 October 2015 – 21 November 2015');
+});
+
+// Label format seen in the real 2019-20 TR header (A Very Expensive Poison):
+// "Press Night 05 Sep 2019" / "Closes 05 Oct 2019".
+test('parseTrHeaderDates reads the TR "Press Night" / "Closes" labels', () => {
+  assert.deepEqual(parseTrHeaderDates('A VERY EXPENSIVE POISON\nPress Night 05 Sep 2019\nCloses 05 Oct 2019'),
+    { previewsStartDate: null, openingDate: '2019-09-05', closingDate: '2019-10-05' });
+});
+
+test('htmlHeaderFor reads only lines that start with a run-date label', () => {
+  const page = 'The Real Thing\nThe Old Vic Theatre, London\nPress Night 12 Sep 2024\nCloses 26 Oct 2024\nThe Guardian\nThe play opened on 4 September 2024 and runs until 9 November 2024 in a long review sentence.\nUntil the very end it charms';
+  assert.equal(htmlHeaderFor('The Real Thing', page), 'The Real Thing\nPress Night 12 Sep 2024\nCloses 26 Oct 2024');
+  assert.equal(htmlHeaderFor('X', 'The play opened on 4 September 2024 in a long review sentence that runs on'), null);
+});
+
+// Real TR layouts from the 2026-10-11 lookup log: an HTML page puts each label
+// on its own line above the date; a -raw PDF prints "Previews / Opens 22 Aug
+// 2019"; a -layout PDF prints a row of labels over a row of dates.
+test('pairLabelLines joins a label with the date on the next line', () => {
+  const page = 'Coriolanus\nNational Theatre - Olivier Theatre, London\n\nFirst Preview\n11 September 2024\nPress Night\n24 September 2024\nLast Performance\n09 November 2024\nReviews';
+  assert.equal(htmlHeaderFor('Coriolanus', page), 'Coriolanus\nFirst Preview 11 September 2024\nPress Night 24 September 2024\nCloses 09 November 2024');
+  assert.deepEqual(parseTrHeaderDates(htmlHeaderFor('Coriolanus', page)),
+    { previewsStartDate: '2024-09-11', openingDate: '2024-09-24', closingDate: '2024-11-09' });
+  // An unlabelled date (a review's) stays unpaired and unread.
+  assert.equal(htmlHeaderFor('X', 'X\nThe Guardian\n24 September 2024'), null);
+});
+
+test('pairLabelLines folds "Previews / Opens" and a -layout label row', () => {
+  assert.deepEqual(pairLabelLines(['Previews / Opens 22 Aug 2019']), ['Previews 22 Aug 2019']);
+  assert.deepEqual(pairLabelLines(['  First Preview     Press Night      Closes', '  07 February 2020   17 February 2020   25 April 2020']),
+    ['First Preview 07 February 2020', 'Press Night 17 February 2020', 'Closes 25 April 2020']);
+  const pdf = 'THE UPSTART CROW\nby Ben Elton\nGielgud\n\nFirst Preview     Press Night      Closes\n07 February 2020   17 February 2020   25 April 2020\n\n18 February 2020';
+  assert.deepEqual(parseTrHeaderDates(pdfHeaderFor(pdf, 'The Upstart Crow')),
+    { previewsStartDate: '2020-02-07', openingDate: '2020-02-17', closingDate: '2020-04-25' });
+});
+
+test('pairLabelLines zips a stack of labels over a stack of dates, never just the last label', () => {
+  const stacked = 'THE UPSTART CROW\nFirst Preview\nPress Night\nCloses\n07 February 2020\n17 February 2020\n25 April 2020\n\n18 February 2020';
+  assert.deepEqual(parseTrHeaderDates(pdfHeaderFor(stacked, 'The Upstart Crow')),
+    { previewsStartDate: '2020-02-07', openingDate: '2020-02-17', closingDate: '2020-04-25' });
+  // Three labels, one date: ambiguous, nothing paired, nothing read.
+  assert.equal(htmlHeaderFor('X', 'X\nFirst Preview\nPress Night\nCloses\n07 February 2020'), null);
+  // UK "First Night" is press night; a title heading equal to a label is not paired.
+  assert.deepEqual(pairLabelLines(['First Night', '12 March 2019']), ['Press night 12 March 2019']);
+  assert.deepEqual(pairLabelLines(['Last night I saw it']), ['Last night I saw it']);
+  const pdf = 'OPENING NIGHT\nGielgud\nPress Night\n06 March 2024\n\n07 March 2024';
+  assert.equal(parseTrHeaderDates(pdfHeaderFor(pdf, 'Opening Night')).openingDate, '2024-03-06');
+});
+
+// The 2024-25 run of the lookup (2026-10-11) logged the real HTML labels:
+// "Previews", "Opens/Press Night", "Closes", each over its date. "Opens/Press
+// Night" is the press night; "Previews / Opens" stays the previews start.
+test('htmlHeaderFor reads the Opens/Press Night label as the press night', () => {
+  const page = 'The Importance of Being Earnest\nNational Theatre - Lyttelton Theatre, London\n\nPreviews\n20 November 2024\nOpens/Press Night\n28 November 2024\nCloses\n25 January 2025\nReviews';
+  assert.deepEqual(parseTrHeaderDates(htmlHeaderFor('The Importance of Being Earnest', page)),
+    { previewsStartDate: '2024-11-20', openingDate: '2024-11-28', closingDate: '2025-01-25' });
+  assert.deepEqual(pairLabelLines(['Opens / Press Night', '03 September 2024']), ['Press night 03 September 2024']);
+  assert.deepEqual(pairLabelLines(['Previews / Opens', '22 August 2019']), ['Previews 22 August 2019']);
 });

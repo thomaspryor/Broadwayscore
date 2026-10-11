@@ -135,7 +135,9 @@ jobs:
             echo "No audit changes to commit"
           else
             git commit -m "audit: weekly critic coverage report"
-            bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::push failed; will retry next week"
+            # No `|| echo`: a lost push must fail the run (BRO-2479: two weekly
+            # snapshots vanished behind a green check). notify-failure fires below.
+            bash scripts/lib/push-with-retry.sh 5 main
           fi
 
       - name: Notify on failure

@@ -57,7 +57,7 @@ export function isFinalClosedOutcome(signals: Pick<RecoupmentSignals, 'designati
 }
 
 /**
- * The /biz "Did not recoup" cell. recouped:false alone is not evidence: the
+ * The /biz loss cell (wording: lossOutcomePhrase). recouped:false alone is not evidence: the
  * stub enroller writes it on every new record, and nonprofit productions have
  * no investors to repay. Only a closed Fizzle or Flop (both defined as "closed
  * without recouping") makes the claim.
@@ -221,9 +221,11 @@ export function getCitedSourceUrl(sources: SourceList): string | null {
 // "Auto-enrolled stub; awaiting model + curation." is the placeholder note
 // scripts/initialize-commercial-stub.js writes on every new record.
 // "Per policy applied 2026-05-24: ..." and "Kept ... per owner review" are
-// hand-edit notes about our own process (BRO-4669).
+// hand-edit notes about our own process (BRO-4669). A blog or Reddit
+// characterisation ("Financing Broadway blog states it closed at a loss") is
+// not a citation the page may print (BRO-5020 Group C); the label still shows.
 const INTERNAL_SOURCE_RE =
-  /(?:chat)?gpt|deep[\s-]*research|\bDR\s*batch\b|\breddit\b|\bconsensus\b|\bsynthes[ie][sz]|\binferred\b|industry[\s-]*estimate|\bauto[\s-]*enroll?ed\b|\bawaiting\s+(?:the\s+)?(?:model|curation|research)\b|\bper\s+policy\b|\bowner\s+(?:review|decision|sign-?off)\b/i;
+  /(?:chat)?gpt|deep[\s-]*research|\bDR\s*batch\b|\breddit\b|\bblog(?:s|ger|post)?\b|\bconsensus\b|\bsynthes[ie][sz]|\binferred\b|industry[\s-]*estimate|\bauto[\s-]*enroll?ed\b|\bawaiting\s+(?:the\s+)?(?:model|curation|research)\b|\bper\s+policy\b|\bowner\s+(?:review|decision|sign-?off)\b/i;
 
 // Record field names written as code: "recouped:null because no public
 // citation", "designation=Nonprofit" (BRO-4669). Case-sensitive (a lowercase
@@ -279,7 +281,8 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
     recoupedWeeks: commercial.recoupedWeeks,
     recoupedSource,
     humanReviewedDesignation: commercial.humanReviewedDesignation,
-    notes: publicSourceText(commercial.notes) ?? undefined,
+    ...(commercial.designationBasis ? { designationBasis: commercial.designationBasis } : {}),
+    notes: publicNotesText(commercial) ?? undefined,
     sources: commercial.sources?.map(({ type, url, date }) => ({ type, url, date })),
     investorMultiple: commercial.investorMultiple,
     nonprofitOrg: getNonprofitProducer(commercial) ?? undefined,
@@ -465,6 +468,60 @@ export interface DesignationDisplay {
 /** Whether the Commercial Scorecard has anything to show (it renders nothing otherwise). */
 export function hasCommercialCard(c: Pick<ShowCommercial, 'capitalization' | 'recouped' | 'designation'>): boolean {
   return !!(c.capitalization || c.recouped !== null || c.designation !== 'TBD');
+}
+
+/** The public caveat for a loss label that rests on silence (owner policy B, BRO-5020). */
+export const LOSS_ON_SILENCE_CAVEAT = 'Based on no recoupment being announced';
+
+type LossBasisSignals = Pick<ShowCommercial, 'designation' | 'designationBasis'>;
+
+/**
+ * True only for a Fizzle/Flop whose loss a source reported
+ * (designationBasis 'reported-loss'). A label resting on silence, on our own
+ * notes ('notes-stated') or on nothing recorded is not a reported fact, so it
+ * never reads like one (checker, BRO-5020).
+ */
+export function isReportedLoss(c: LossBasisSignals | null | undefined): boolean {
+  return !!c && (c.designation === 'Fizzle' || c.designation === 'Flop') && c.designationBasis === 'reported-loss';
+}
+
+/**
+ * The caveat a Fizzle/Flop carries unless a source reported the loss. Null
+ * for a reported loss and for every other designation. Writers store only the
+ * basis; this file is the one place the public words live.
+ */
+export function lossBasisCaveat(c: LossBasisSignals | null | undefined): string | null {
+  if (!c || (c.designation !== 'Fizzle' && c.designation !== 'Flop')) return null;
+  return isReportedLoss(c) ? null : LOSS_ON_SILENCE_CAVEAT;
+}
+
+/**
+ * The research notes the show card prints under "Show details". On a loss
+ * label no source reported, our notes ("closed without recouping, investors
+ * got nothing") would read as a reported fact, so they stay off the page and
+ * the caveat speaks instead (checker, BRO-5020).
+ */
+export function publicNotesText(
+  c: LossBasisSignals & Pick<ShowCommercial, 'notes'>
+): string | null {
+  if (lossBasisCaveat(c)) return null;
+  return publicSourceText(c.notes);
+}
+
+/**
+ * Every public phrase that says a show lost money goes through here, so an
+ * unreported loss never reads as "did not recoup":
+ *  - 'cell'    the /biz table's % column ("Did not recoup" / "No recoupment announced")
+ *  - 'closing' the /biz timeline ("closed as a flop" / "closed without recouping" /
+ *              "closed with no recoupment announced"; "closed" for any other label)
+ */
+export function lossOutcomePhrase(c: LossBasisSignals, form: 'cell' | 'closing'): string {
+  const isLoss = c.designation === 'Fizzle' || c.designation === 'Flop';
+  const reported = isReportedLoss(c);
+  if (form === 'cell') return reported ? 'Did not recoup' : 'No recoupment announced';
+  if (!isLoss) return 'closed';
+  if (!reported) return 'closed with no recoupment announced';
+  return c.designation === 'Flop' ? 'closed as a flop' : 'closed without recouping';
 }
 
 /**

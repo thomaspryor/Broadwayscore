@@ -31,7 +31,7 @@ test('outcome policy: win needs recouped=true, loss needs recouped=false, recoup
 });
 
 test('loss designation on a show that is not closed is a warning, never an error', () => {
-  const rec = { designation: 'Flop', recouped: false };
+  const rec = { designation: 'Flop', recouped: false, designationBasis: 'reported-loss' };
   const w = (status) => commercialRecordWarnings('k', rec, { showRecord: { slug: 'k', status } }).length;
   assert.equal(w('open'), 1);
   assert.equal(w('previews'), 1);
@@ -136,7 +136,7 @@ test('sanitizeForPublicRecord yields a record the rules accept, and says what it
   const open = { slug: 'k', status: 'open' };
   const raw = { designation: 'Flop', recouped: false, capitalizationSource: 'Trade press / deep research synthesis', notes: 'Limited run (GPT summary).', recoupedSource: 'Variety (May 2026)' };
   assert.ok(commercialRecordErrors('k', raw, { showRecord: open }).length >= 2);
-  const { entry, changed, holdReason } = sanitizeForPublicRecord(raw, 'open');
+  const { entry, changed, holdReason } = sanitizeForPublicRecord(raw, { status: 'open' });
   assert.equal(holdReason, null);
   assert.deepEqual(commercialRecordErrors('k', entry, { showRecord: open }), []);
   assert.deepEqual(commercialRecordWarnings('k', entry, { showRecord: open }), []);
@@ -147,21 +147,21 @@ test('sanitizeForPublicRecord yields a record the rules accept, and says what it
   assert.equal(entry.recoupedSource, 'Variety (May 2026)');
   assert.equal(raw.designation, 'Flop', 'input is not mutated');
   // A closed show keeps its loss label; unknown status is left alone too.
-  assert.equal(sanitizeForPublicRecord({ designation: 'Fizzle', recouped: false }, 'closed').entry.designation, 'Fizzle');
+  assert.equal(sanitizeForPublicRecord({ designation: 'Fizzle', recouped: false }, { status: 'closed' }).entry.designation, 'Fizzle');
   assert.equal(sanitizeForPublicRecord({ designation: 'Fizzle', recouped: false }, undefined).entry.designation, 'Fizzle');
-  assert.deepEqual(sanitizeForPublicRecord(ok, 'open').changed, []);
+  assert.deepEqual(sanitizeForPublicRecord(ok, { status: 'open' }).changed, []);
   // A citation carrying research wording is research output: cleared, never
   // trimmed to something that reads like a checked source.
-  assert.equal(sanitizeForPublicRecord({ capitalizationSource: 'SEC filings (GPT Deep Research)' }, 'open').entry.capitalizationSource, null);
+  assert.equal(sanitizeForPublicRecord({ capitalizationSource: 'SEC filings (GPT Deep Research)' }, { status: 'open' }).entry.capitalizationSource, null);
 });
 
 test('sanitizeForPublicRecord holds what cleaning would hide', () => {
   // A recoupment claim must keep a public citation.
-  assert.match(sanitizeForPublicRecord({ recouped: true, recoupedDate: '2026-05', recoupedSource: 'GPT DR Batch 3 consensus' }, 'open').holdReason, /public source/);
-  assert.match(sanitizeForPublicRecord({ recouped: true, recoupedDate: '2026-05', recoupedSource: 'Variety (May 2026) (GPT check)' }, 'open').holdReason, /public source/);
-  assert.equal(sanitizeForPublicRecord({ recouped: true, recoupedDate: '2026-05', recoupedSource: 'Variety (May 2026)' }, 'open').holdReason, null);
+  assert.match(sanitizeForPublicRecord({ recouped: true, recoupedDate: '2026-05', recoupedSource: 'GPT DR Batch 3 consensus' }, { status: 'open' }).holdReason, /public source/);
+  assert.match(sanitizeForPublicRecord({ recouped: true, recoupedDate: '2026-05', recoupedSource: 'Variety (May 2026) (GPT check)' }, { status: 'open' }).holdReason, /public source/);
+  assert.equal(sanitizeForPublicRecord({ recouped: true, recoupedDate: '2026-05', recoupedSource: 'Variety (May 2026)' }, { status: 'open' }).holdReason, null);
   // A plausibility-flagged model answer waits for a person instead of landing with the flag erased.
-  assert.match(sanitizeForPublicRecord({ notes: '[PLAUSIBILITY WARNING: cap above $80M] Big musical.' }, 'open').holdReason, /plausibility/);
+  assert.match(sanitizeForPublicRecord({ notes: '[PLAUSIBILITY WARNING: cap above $80M] Big musical.' }, { status: 'open' }).holdReason, /plausibility/);
 });
 
 test('buildTipRecord cleans a tip, refuses one the rules reject, never mutates', () => {
@@ -198,4 +198,36 @@ test('sources, costMethodology, productionType and originalProductionId shapes',
   assert.equal(e({ productionType: 'weird' }).length, 1);
   assert.equal(e({ originalProductionId: 'nope' }, { allRecords: {} }).length, 1);
   assert.equal(e({ originalProductionId: 'a' }, { allRecords: { a: {} } }).length, 0);
+});
+
+test('a reader tip that sets a loss label gets a designationBasis (BRO-5020 policy B)', () => {
+  const commercial = { shows: { k: { designation: 'TBD', recouped: null } } };
+  const showList = [{ slug: 'k', status: 'closed', closingDate: '2020-01-05' }];
+  const r = buildTipRecord(commercial, showList, 'k', [{ field: 'designation', newValue: 'Fizzle' }, { field: 'recouped', newValue: false }]);
+  assert.equal(r.refusedReason, null);
+  assert.equal(r.record.designationBasis, 'no-recoupment-announced');
+  const r2 = buildTipRecord(commercial, showList, 'k', [{ field: 'designation', newValue: 'Flop' }, { field: 'recouped', newValue: false }, { field: 'designationBasis', newValue: 'reported-loss' }]);
+  assert.equal(r2.record.designationBasis, 'reported-loss');
+});
+
+test('a silence-basis loss label on a show closed under LOSS_LABEL_MIN_DAYS waits as TBD + needsLossEvidence (BRO-5020)', () => {
+  const days = (n) => new Date(Date.now() - n * 86400000).toISOString().slice(0, 10);
+  const row = { designation: 'Flop', designationBasis: 'no-recoupment-announced', recouped: false };
+  const young = sanitizeForPublicRecord(row, { status: 'closed', closingDate: days(140) });
+  assert.equal(young.entry.designation, 'TBD');
+  assert.equal(young.entry.designationBasis, undefined);
+  assert.equal(young.entry.needsLossEvidence, true);
+  assert.equal(young.entry.recouped, null);
+  assert.ok(young.changed.includes('designation'));
+  // Aged in: the label stands.
+  assert.equal(sanitizeForPublicRecord(row, { status: 'closed', closingDate: days(200) }).entry.designation, 'Flop');
+  // A reported loss is published straight away, however recent the closing.
+  const reported = { ...row, designationBasis: 'reported-loss' };
+  assert.equal(sanitizeForPublicRecord(reported, { status: 'closed', closingDate: days(10) }).entry.designation, 'Flop');
+  // An owner-locked label is left alone, as the classifier leaves it.
+  assert.equal(sanitizeForPublicRecord({ ...row, humanReviewedDesignation: true }, { status: 'closed', closingDate: days(10) }).entry.designation, 'Flop');
+  // An unknown closing date never counts as premature.
+  assert.equal(sanitizeForPublicRecord(row, { status: 'closed' }).entry.designation, 'Flop');
+  // A bare status string skipped this rule silently, so it is refused.
+  assert.throws(() => sanitizeForPublicRecord(row, 'closed'), /shows.json record/);
 });

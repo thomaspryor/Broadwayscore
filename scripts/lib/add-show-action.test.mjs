@@ -17,6 +17,15 @@ test('adds a show and stamps discoverySource', () => {
   assert.equal(r.ok, true);
   assert.equal(shows[0].discoverySource, 'manual-user-request');
 });
+// Historical promoters (promote-historical-we.js buildShowEntry) write season
+// and evidenceUrls; a cloud session adds their rows through this action.
+test('accepts the season and evidenceUrls a historical promoter writes', () => {
+  const shows = [];
+  const r = applyAddShow(shows, { show: { ...base(), season: '2019-2020', evidenceUrls: ['https://www.theatrerecord.com/x'], discoverySource: 'we-historical:review-led' } });
+  assert.equal(r.ok, true);
+  assert.equal(shows[0].season, '2019-2020');
+  assert.equal(shows[0].discoverySource, 'we-historical:review-led');
+});
 test('refuses duplicate id and slug', () => {
   assert.equal(applyAddShow([{ id: 'a', slug: 'x-off-broadway-2023' }], { show: base() }).ok, false);
   assert.equal(applyAddShow([{ id: 'x-off-broadway-2023', slug: 'q' }], { show: base() }).ok, false);

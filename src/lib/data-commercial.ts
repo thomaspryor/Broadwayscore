@@ -41,6 +41,7 @@ import {
   getBreakEven,
   getReportedInvestorMultiple,
   publicSourceText,
+  lossBasisCaveat,
   isEstimatedCapitalization,
   isUnannouncedRecoupment,
   isEstimatedRunningCost,
@@ -582,6 +583,7 @@ export function getRecentClosings(months: number = 6): RecentClosing[] {
       title: show.title,
       closingDate: show.closingDate,
       designation: data.designation,
+      designationBasis: data.designationBasis ?? null,
       wasFlop,
     });
   }
@@ -662,6 +664,8 @@ function toCommercialShowRow(slug: string, show: RawShow, data: ShowCommercial):
     recouped: data.recouped,
     recoupmentNotAnnounced: isUnannouncedRecoupment(data),
     recoupedWeeks: calculateWeeksToRecoup(show.openingDate, data.recoupedDate, show.closingDate),
+    lossCaveat: lossBasisCaveat(data),
+    designationBasis: data.designationBasis ?? null,
   };
 }
 

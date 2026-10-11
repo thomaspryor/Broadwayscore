@@ -51,6 +51,26 @@ function _ts(v) {
   return Number.isNaN(t) ? null : t;
 }
 
+// YYYY-MM-DD for ISO-prefixed strings; otherwise parse and read LOCAL date
+// parts (a non-ISO string like "September 20, 2026" parses as local midnight).
+function _calendarDay(v) {
+  if (!v) return null;
+  const m = String(v).match(/^\d{4}-\d{2}-\d{2}/);
+  if (m) return m[0];
+  const d = new Date(v);
+  if (Number.isNaN(d.getTime())) return null;
+  const pad = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
+
+// BRO-4036: true only when BOTH dates parse and fall on different days; an
+// unparseable/missing date can never disprove a match (keep the file).
+function isDifferentDay(publishDate, gapDate) {
+  const a = _calendarDay(publishDate);
+  const b = _calendarDay(gapDate);
+  return a !== null && b !== null && a !== b;
+}
+
 // Shared with the promote step's skip stamp (replay-pending-bylines.js,
 // fetch-guardian-reviews.js write this wording into promoteSkippedReason).
 const OUT_OF_WINDOW_REASON_RE = /outside this production's window/i;
@@ -166,4 +186,4 @@ function outletIdCandidates(outletName, canonicalId) {
   return [...ids];
 }
 
-module.exports = { outletIdCandidates, classifyGap, justifiesUrlResolution, isOtherProductionFile, isPreRunFile, filterByUrl };
+module.exports = { outletIdCandidates, classifyGap, justifiesUrlResolution, isOtherProductionFile, isPreRunFile, filterByUrl, isDifferentDay };

@@ -1,14 +1,17 @@
 #!/usr/bin/env node
 /**
- * Classify stale closures. A researched Broadway show closed 30+ days with no
- * recoupment news is flagged needsLossEvidence and stays TBD (BRO-5020); it is
- * labelled Fizzle only under --allow-inferred-loss. Writes DIRECTLY to
- * commercial.json (not pending-review): the flag claims nothing, it only
- * queues the row for a person to source.
+ * Classify stale closures (owner policy B, BRO-5020 2026-10-11). A researched
+ * Broadway show with no recoupment news:
+ *   - closed 30 to ~183 days: stays TBD, flagged needsLossEvidence;
+ *   - closed ~183+ days: labelled Fizzle/Flop (returned-% rule, Fizzle when no
+ *     estimate) with designationBasis 'no-recoupment-announced', which the
+ *     site shows as "Based on no recoupment being announced".
+ * Kill switch: --require-loss-evidence or STALE_CLOSURE_REQUIRE_LOSS_EVIDENCE=1
+ * flags every such row and labels none. Later recoupment news clears the
+ * label automatically (commercial-apply-gate.js recoupClaimDesignationAction).
  *
  * Side effects:
- *   - Updates data/commercial.json in place for flagged shows (and Fizzles
- *     under --allow-inferred-loss).
+ *   - Updates data/commercial.json in place (labels, flags, undos).
  *     The merge-commercial-data.js reconciler ensures concurrent writers
  *     don't lose entries on push.
  *   - Logs human-review escalations to stdout JSON for downstream Linear
@@ -28,6 +31,7 @@ const fs = require('fs');
 const path = require('path');
 const { classifyStaleClosure, undoAutoFizzleOnRunningShow } = require('./lib/classify-stale-closure');
 const { isCommercialScope } = require('./lib/commercial-scope');
+const { LOSS_LABEL_MIN_DAYS } = require('./lib/commercial-designations');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -58,10 +62,9 @@ const thresholds = {
   graceDays: intOr('grace-days', 30),
   maxAgeDays: intOr('max-age-days', 365),
   recentSignalDays: intOr('recent-signal-days', 30),
-  // Off by default (BRO-5020): a closed show with no recoupment news stays TBD
-  // with needsLossEvidence instead of becoming Fizzle. --allow-inferred-loss
-  // or STALE_CLOSURE_ALLOW_INFERRED_LOSS=1 restores the old auto-Fizzle.
-  allowInferredLoss: ['1', 'true'].includes(String(flags['allow-inferred-loss'])) || process.env.STALE_CLOSURE_ALLOW_INFERRED_LOSS === '1',
+  lossLabelMinDays: intOr('loss-label-min-days', LOSS_LABEL_MIN_DAYS),
+  // Kill switch for policy B: never label a loss on silence, only flag.
+  requireLossEvidence: ['1', 'true'].includes(String(flags['require-loss-evidence'])) || process.env.STALE_CLOSURE_REQUIRE_LOSS_EVIDENCE === '1',
 };
 
 function loadJSON(p, fallback) {
@@ -143,7 +146,7 @@ function main() {
     return;
   }
 
-  // Apply Fizzle directly to commercial.json
+  // Apply the loss label directly to commercial.json
   const now = new Date().toISOString();
   let applied = 0;
   for (const { show, entry, result } of toApply) {
@@ -152,9 +155,12 @@ function main() {
     // Build minimal update: preserve everything existing, overlay Fizzle fields.
     // Don't touch sources, capitalization, weeklyRunningCost etc. — the show
     // might have those from prior research, we're only adding a designation.
+    const { needsLossEvidence: _flag, ...rest } = existing;
     commercial.shows[slug] = {
-      ...existing,
-      designation: 'Fizzle',
+      ...rest,
+      designation: result.designation,
+      // What the label rests on; the site renders the caveat from this.
+      designationBasis: result.designationBasis,
       // recouped:false is the affirmative no-recoup statement that drives
       // newsletter copy. Distinct from null (unknown) and false (was-checked-
       // and-confirmed-no).
@@ -168,7 +174,7 @@ function main() {
       firstAdded: existing.firstAdded || now,
     };
     applied++;
-    console.log(`  ✓ ${slug}: ${result.reason}`);
+    console.log(`  ✓ ${slug}: ${result.designation} (${result.designationBasis}): ${result.reason}`);
   }
 
   // Flag (never relabel) researched closures with no cited loss source.
@@ -185,16 +191,16 @@ function main() {
 
   for (const { slug, undone, status } of reopened) {
     commercial.shows[slug] = { ...undone, lastUpdated: now };
-    console.log(`  ↩ ${slug}: Fizzle -> TBD (status is "${status}")`);
+    console.log(`  ↩ ${slug}: loss label -> TBD (status is "${status}")`);
   }
 
   if (applied > 0 || flagged > 0 || reopened.length > 0) {
     commercial._meta = commercial._meta || {};
     commercial._meta.lastUpdated = now.slice(0, 10);
     saveCommercial(commercial);
-    console.log(`\n✓ Wrote ${applied} Fizzle classifications, ${flagged} needsLossEvidence flags and ${reopened.length} undos to commercial.json`);
+    console.log(`\n✓ Wrote ${applied} loss labels, ${flagged} needsLossEvidence flags and ${reopened.length} undos to commercial.json`);
   } else {
-    console.log('\nNothing to write (no new Fizzle, flag or undo).');
+    console.log('\nNothing to write (no new loss label, flag or undo).');
   }
 
   // Surface human-review cases as JSON for downstream Linear processing.

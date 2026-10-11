@@ -863,7 +863,12 @@ function checkSync() {
         try {
           const cast = readJSON(castFile);
           if (!cast.openingNightCast || cast.openingNightCast.length === 0) {
-            empty.push(show.title);
+            // Pre-opening previews shows are often not on IBDB yet (or only
+            // under an earlier production's page, which the backfill rejects) —
+            // a confirmed-empty tombstone there is expected, not a coverage gap.
+            // Re-checked weekly by the backfill; counted once openingDate passes.
+            const preOpening = show.status === 'previews' && show.openingDate && show.openingDate > new Date().toISOString().slice(0, 10);
+            if (!preOpening) empty.push(show.title);
           }
         } catch {}
       }

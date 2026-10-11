@@ -1,20 +1,35 @@
 {
   "system": "workflow repeat-failure",
-  "status": "warn",
-  "lastChecked": "2026-10-10T13:07:35.987Z",
+  "status": "error",
+  "lastChecked": "2026-10-11T13:36:32.699Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
+    {
+      "name": "Workflow repeat-failure: Test Suite",
+      "status": "warn",
+      "message": "Test Suite failed 7 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+    },
+    {
+      "name": "Workflow repeat-failure: Check Performance Budget",
+      "status": "error",
+      "message": "Check Performance Budget failed 4 times in the last 24h — likely broken, not transient."
+    },
     {
       "name": "Workflow repeat-failure: Check Corpus Drift",
       "status": "warn",
       "message": "Check Corpus Drift failed 2 times in the last 24h — likely broken, not transient."
     },
     {
-      "name": "Workflow repeat-failure: Opening Night Broadcast",
+      "name": "Workflow repeat-failure: Rebuild Reviews (Fast)",
       "status": "warn",
-      "message": "Opening Night Broadcast failed 2 times in the last 24h — likely broken, not transient."
+      "message": "Rebuild Reviews (Fast) failed 2 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Land",
+      "status": "warn",
+      "message": "Land failed 2 times in the last 24h — likely broken, not transient."
     }
   ]
 }

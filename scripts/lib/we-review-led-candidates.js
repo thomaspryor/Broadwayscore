@@ -35,7 +35,7 @@ const { titlesMatch } = require('./title-normalization');
 const { normalizeTitle } = require('./title-match');
 const { venuesMatch } = require('./deduplication');
 const { isWestEndVenue } = require('./venue-classification');
-const { isDateInSeason } = require('./we-seasons');
+const { isDateInSeason, getSeasonForDate } = require('./we-seasons');
 const { venueFamily, decideWeHistoricalPromotion } = require('./we-historical-corroboration');
 const { archiveMonth, monthIndex } = require('./tr-production-pick');
 const { buildVenueTitlePool, findExactDuplicate, findSubtitleDuplicateTitle } = require('./venue-title-dedup-pool');
@@ -255,6 +255,20 @@ function findContinuingRun(shows, title, startDate) {
 }
 
 /**
+ * WOS files NT reviews under "National Theatre"; shows.json names the stage
+ * ("Lyttelton Theatre"), which TR's venue carries ("National Theatre -
+ * Lyttelton Theatre, London", "London, Olivier, National Theatre").
+ */
+function ntStageVenue(reviewVenue, trVenue) {
+  if (!/\bnational\b/i.test(reviewVenue || '')) return null;
+  const m = String(trVenue || '').match(/\b(Olivier|Lyttelton|Dorfman)\b/i);
+  return m ? `${m[1][0].toUpperCase()}${m[1].slice(1).toLowerCase()} Theatre` : null;
+}
+
+/** London theatres went dark the evening of 16 March 2020. */
+const LONDON_COVID_DARK = '2020-03-16';
+
+/**
  * Lookup rows (from the CI resolver) → candidates with decisions.
  * @param {{season: string, lookups: Array<{review: object, tr?: object|null, header?: string|null, error?: string}>,
  *          shows: Array, today?: string}} input
@@ -267,7 +281,7 @@ function buildReviewLedCandidates({ season, lookups, shows, today }) {
     const review = row.review || {};
     const base = {
       title: cleanReviewTitle(row.tr?.title && /[a-z]/.test(row.tr.title) ? row.tr.title : review.title),
-      venue: review.venue,
+      venue: ntStageVenue(review.venue, row.tr?.venue) || review.venue,
       genres: [],
       season,
       signals: ['wos-review'],
@@ -281,6 +295,21 @@ function buildReviewLedCandidates({ season, lookups, shows, today }) {
     if (!dates.previewsStartDate && !dates.openingDate) { no('no dates on the Theatre Record production page'); continue; }
     const c = { ...base, ...dates };
     const startDate = c.previewsStartDate || c.openingDate;
+    // A run that began in the late summer before its first review belongs to
+    // the season it started in; no other season's lookups will ever see it.
+    // Same date decideWeHistoricalPromotion() checks: press night first.
+    const seasonDate = c.openingDate || c.previewsStartDate;
+    if (!isDateInSeason(seasonDate, season)) {
+      const startSeason = getSeasonForDate(seasonDate);
+      if (startSeason && Number(startSeason.slice(0, 4)) === Number(season.slice(0, 4)) - 1) c.season = startSeason;
+    }
+    // TR prints the scheduled close; London theatres went dark on 16 March
+    // 2020, so a run that straddles it ended then (as the WE rows in
+    // shows.json are dated).
+    if (startDate < LONDON_COVID_DARK && c.closingDate > LONDON_COVID_DARK) {
+      c.scheduledClosingDate = c.closingDate;
+      c.closingDate = LONDON_COVID_DARK;
+    }
     const dupOpts = { withinYears: 1, startDate, venueEquals: sameVenueFamily };
     const existing = findExactDuplicate(pool, c.title, c.venue, dupOpts)
       || pool.find(s => s.startDate && westEndIds.has(s.id) && normalizeTitle(s.title) === normalizeTitle(c.title)

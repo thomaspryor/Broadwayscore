@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-11T10:36:50.593Z",
+  "generatedAt": "2026-10-11T17:59:10.414Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-10-11",
-      "status": "previews",
+      "status": "open",
       "slug": "fish-off-broadway",
       "thumbnail": "/images/shows/fish-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -367,6 +367,120 @@
       ]
     },
     {
+      "id": "hound-of-the-baskervilles-off-west-end-2026",
+      "title": "Hound of the Baskervilles",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-10-10",
+      "status": "open",
+      "slug": "hound-of-the-baskervilles-off-west-end",
+      "thumbnail": "/images/shows/hound-of-the-baskervilles-off-west-end-2026/thumbnail.jpg",
+      "siteScore": null,
+      "liveScore": 78,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 4,
+      "siteFileExists": true,
+      "total": 1,
+      "t1": 0,
+      "t2": 0,
+      "t3": 1,
+      "positive": 1,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "1/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:1/6"
+        ],
+        "highConfidence": 1,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-11T15:17:11.902Z",
+          "rc": 1,
+          "s": 78,
+          "t1": 0,
+          "t2": 0,
+          "t3": 1,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        }
+      ]
+    },
+    {
       "id": "good-time-charlie-off-broadway-2026",
       "title": "Good Time Charlie",
       "market": "broadway",
@@ -376,25 +490,25 @@
       "status": "open",
       "slug": "good-time-charlie-off-broadway",
       "thumbnail": "/images/shows/good-time-charlie-off-broadway-2026/thumbnail.webp",
-      "siteScore": 75.03,
+      "siteScore": 75.23,
       "liveScore": 75,
-      "scoreDrift": -0.030000000000001137,
+      "scoreDrift": -0.23000000000000398,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 12,
+      "total": 15,
       "t1": 1,
       "t2": 5,
-      "t3": 6,
-      "positive": 9,
-      "mixed": 2,
+      "t3": 9,
+      "positive": 11,
+      "mixed": 3,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
           "T1:1/3"
         ],
-        "highConfidence": 10,
+        "highConfidence": 13,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -802,6 +916,30 @@
           "m": 2,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-11T17:15:11.420Z",
+          "rc": 13,
+          "s": 75.39,
+          "t1": 1,
+          "t2": 5,
+          "t3": 7,
+          "p": 10,
+          "m": 2,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-11T17:48:46.320Z",
+          "rc": 15,
+          "s": 75.23,
+          "t1": 1,
+          "t2": 5,
+          "t3": 9,
+          "p": 11,
+          "m": 3,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
@@ -815,25 +953,27 @@
       "status": "open",
       "slug": "fences-off-west-end",
       "thumbnail": "/images/shows/fences-off-west-end-2026/thumbnail.webp",
-      "siteScore": 79.07,
-      "liveScore": 79,
-      "scoreDrift": -0.06999999999999318,
+      "siteScore": 75.18,
+      "liveScore": 75,
+      "scoreDrift": -0.18000000000000682,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 9,
+      "total": 6,
       "t1": 0,
-      "t2": 4,
-      "t3": 5,
-      "positive": 8,
+      "t2": 3,
+      "t3": 3,
+      "positive": 5,
       "mixed": 0,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "T1:0/3"
+          "6/8 total",
+          "T1:0/3",
+          "hi-conf:5/6"
         ],
-        "highConfidence": 8,
+        "highConfidence": 5,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -945,6 +1085,18 @@
           "m": 0,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-11T13:16:28.470Z",
+          "rc": 6,
+          "s": 75.18,
+          "t1": 0,
+          "t2": 3,
+          "t3": 3,
+          "p": 5,
+          "m": 0,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
@@ -958,17 +1110,17 @@
       "status": "open",
       "slug": "from-the-heart-west-end",
       "thumbnail": "/images/shows/from-the-heart-west-end-2026/thumbnail.jpg",
-      "siteScore": 82.6,
+      "siteScore": 83.05,
       "liveScore": 83,
-      "scoreDrift": 0.4000000000000057,
+      "scoreDrift": -0.04999999999999716,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 20,
+      "total": 22,
       "t1": 1,
       "t2": 3,
-      "t3": 16,
-      "positive": 19,
+      "t3": 18,
+      "positive": 21,
       "mixed": 1,
       "negative": 0,
       "readiness": {
@@ -976,7 +1128,7 @@
         "reasons": [
           "T1:1/3"
         ],
-        "highConfidence": 17,
+        "highConfidence": 19,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1141,6 +1293,18 @@
           "t2": 3,
           "t3": 16,
           "p": 19,
+          "m": 1,
+          "n": 0,
+          "bc": "overdue"
+        },
+        {
+          "t": "2026-10-11T16:38:02.839Z",
+          "rc": 22,
+          "s": 83.05,
+          "t1": 1,
+          "t2": 3,
+          "t3": 18,
+          "p": 21,
           "m": 1,
           "n": 0,
           "bc": "overdue"
@@ -1872,120 +2036,6 @@
       ]
     },
     {
-      "id": "the-virtuous-burglar-off-west-end-2026",
-      "title": "The Virtuous Burglar",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "play",
-      "openingDate": "2026-10-09",
-      "status": "open",
-      "slug": "the-virtuous-burglar-off-west-end",
-      "thumbnail": "/images/shows/the-virtuous-burglar-off-west-end-2026/thumbnail.jpg",
-      "siteScore": null,
-      "liveScore": 91,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 3,
-      "siteFileExists": true,
-      "total": 2,
-      "t1": 0,
-      "t2": 0,
-      "t3": 2,
-      "positive": 2,
-      "mixed": 0,
-      "negative": 0,
-      "readiness": {
-        "ready": false,
-        "reasons": [
-          "2/8 total",
-          "T1:0/3",
-          "T2:0/2",
-          "hi-conf:2/6"
-        ],
-        "highConfidence": 2,
-        "thresholds": {
-          "minReviews": 8,
-          "minT1": 3,
-          "minT2": 2,
-          "minHiConf": 6
-        }
-      },
-      "broadcast": {
-        "state": "waiting",
-        "detail": "Not yet broadcast-ready"
-      },
-      "missingT1": [
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
-        {
-          "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
-          "name": "Daily Mail",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
-          "isDualMarket": true
-        }
-      ],
-      "missingT2": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
-          "isDualMarket": true
-        }
-      ],
-      "timeline": [
-        {
-          "t": "2026-10-10T15:17:31.093Z",
-          "rc": 2,
-          "s": 91,
-          "t1": 0,
-          "t2": 0,
-          "t3": 2,
-          "p": 2,
-          "m": 0,
-          "n": 0,
-          "bc": "waiting"
-        }
-      ]
-    },
-    {
       "id": "rent-west-end-2026",
       "title": "Rent",
       "market": "west-end",
@@ -1995,23 +2045,23 @@
       "status": "open",
       "slug": "rent-west-end",
       "thumbnail": "/images/shows/rent-west-end-2026/thumbnail.jpg",
-      "siteScore": 79.05,
+      "siteScore": 78.99,
       "liveScore": 79,
-      "scoreDrift": -0.04999999999999716,
+      "scoreDrift": 0.010000000000005116,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
       "total": 30,
       "t1": 7,
-      "t2": 8,
-      "t3": 15,
-      "positive": 23,
-      "mixed": 6,
+      "t2": 7,
+      "t3": 16,
+      "positive": 24,
+      "mixed": 5,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 24,
+        "highConfidence": 22,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2419,6 +2469,30 @@
           "m": 6,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-11T13:16:28.470Z",
+          "rc": 29,
+          "s": 78.93,
+          "t1": 7,
+          "t2": 7,
+          "t3": 15,
+          "p": 23,
+          "m": 5,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-11T16:38:02.839Z",
+          "rc": 30,
+          "s": 78.99,
+          "t1": 7,
+          "t2": 7,
+          "t3": 16,
+          "p": 24,
+          "m": 5,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
@@ -2432,17 +2506,17 @@
       "status": "open",
       "slug": "an-oak-tree-off-west-end",
       "thumbnail": "/images/shows/an-oak-tree-off-west-end-2026/thumbnail.webp",
-      "siteScore": 75.23,
-      "liveScore": 75,
-      "scoreDrift": -0.23000000000000398,
+      "siteScore": 75.58,
+      "liveScore": 76,
+      "scoreDrift": 0.4200000000000017,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 17,
+      "total": 18,
       "t1": 2,
       "t2": 3,
-      "t3": 12,
-      "positive": 11,
+      "t3": 13,
+      "positive": 12,
       "mixed": 6,
       "negative": 0,
       "readiness": {
@@ -2706,6 +2780,30 @@
           "m": 6,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-11T17:48:46.320Z",
+          "rc": 18,
+          "s": 75.68,
+          "t1": 2,
+          "t2": 3,
+          "t3": 13,
+          "p": 12,
+          "m": 6,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-11T17:59:10.414Z",
+          "rc": 18,
+          "s": 75.58,
+          "t1": 2,
+          "t2": 3,
+          "t3": 13,
+          "p": 12,
+          "m": 6,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -2764,10 +2862,6 @@
         {
           "name": "Variety",
           "isDualMarket": true
-        },
-        {
-          "name": "The Hollywood Reporter",
-          "isDualMarket": false
         },
         {
           "name": "The New Yorker",
@@ -2870,10 +2964,6 @@
         {
           "name": "New York Theatre Guide",
           "isDualMarket": true
-        },
-        {
-          "name": "New York Theater",
-          "isDualMarket": false
         },
         {
           "name": "Theatrely",

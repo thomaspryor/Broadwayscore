@@ -10,7 +10,7 @@ import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { showFacts, STEADY_MIN_WEEKS, type MarketInput } from '../../src/lib/box-office-market';
 import { addDays, type HistoryRow, type HistoryWeeks } from '../../src/lib/box-office-weeks';
-import { factsStory, formatGross, yearAgoSentence, toFactsCard, showsBreakEven } from '../../src/lib/box-office-v2-display';
+import { factsStory, formatGross, yearAgoSentence, toFactsCard, showsBreakEven, bestLines, weekEndingText } from '../../src/lib/box-office-v2-display';
 import BoxOfficeScorecard from '../../src/components/BoxOfficeScorecard';
 import { BoxOfficeThisWeek } from '../../src/components/BoxOfficeStats';
 import BreakEvenSection from '../../src/components/biz/BreakEvenSection';
@@ -204,4 +204,40 @@ test('BoxOfficeThisWeek: the v3 card rounds tile changes to nearest (Hamilton\'s
   assert.match(v3, />0%<\/span><span[^>]*>YoY/);
   const live = attendanceTile(renderToStaticMarkup(React.createElement(BoxOfficeThisWeek, { grosses, history })));
   assert.match(live, />1%<\/span><span[^>]*>YoY/, 'flag-off rounding is unchanged');
+});
+
+test('bestLines: record, week ending, the latest week beside it, "New best this week" when the latest week set it', () => {
+  const b = {
+    latestWeek: '2026-10-04',
+    weeks: 30,
+    rows: [
+      { key: 'gross' as const, value: 2_100_000, week: '2024-12-29', latest: 1_600_000, latestIsRecord: false },
+      { key: 'capacity' as const, value: 101.4, week: '2025-01-05', latest: null, latestIsRecord: false },
+      { key: 'atp' as const, value: 252.4, week: '2026-10-04', latest: 252.4, latestIsRecord: true },
+    ],
+  };
+  const lines = bestLines(b, true)!;
+  assert.deepEqual(lines.map((l) => [l.label, l.value, l.when, l.latest]), [
+    ['Best week', '$2.1M', 'week ending Dec 29, 2024', 'this week $1.6M'],
+    ['Fullest week', '101% full', 'week ending Jan 5, 2025', null],
+    ['Highest average ticket', '$252', 'week ending Oct 4, 2026', 'New best this week'],
+  ]);
+  assert.equal(bestLines(b, false, true)![0].latest, 'final week $1.6M', 'a closed show says final week');
+  assert.equal(bestLines(b, false, true)![2].latest, 'Set in its final week');
+  assert.equal(bestLines(b, false)![0].latest, 'latest week $1.6M', 'a running show that missed a week never says final');
+  const tie = { ...b, rows: [{ key: 'capacity' as const, value: 100.2, week: '2003-11-30', latest: 99.6, latestIsRecord: false }] };
+  assert.equal(bestLines(tie, true)![0].latest, 'this week matches it', 'a latest week that rounds to the record says so');
+  assert.equal(bestLines(null, true), null);
+  assert.equal(weekEndingText('2024-12-29'), 'Dec 29, 2024');
+});
+
+test('the card prints personal bests only when there are records, with the dollars-at-the-time note', () => {
+  const base = { week: '2026-10-04', current: true, gross: 1_000_000, rank: 3, of: 28, series: [], yearAgoPct: null, marketYearAgoPct: null, steady: null };
+  const withBests = toFactsCard({ ...base, bests: { latestWeek: '2026-10-04', weeks: 6, rows: [{ key: 'gross', value: 1_500_000, week: '2026-09-06', latest: 1_000_000, latestIsRecord: false }] } }, false);
+  const html = renderToStaticMarkup(React.createElement(BoxOfficeScorecard, { card: withBests, grosses: null, history: null }));
+  assert.match(html, /Personal bests · this run/);
+  assert.match(html, /Dollars at the time/);
+  assert.doesNotMatch(html, /break-even|multiple|grade/i);
+  const without = toFactsCard({ ...base, bests: null }, false);
+  assert.doesNotMatch(renderToStaticMarkup(React.createElement(BoxOfficeScorecard, { card: without, grosses: null, history: null })), /Personal bests/);
 });

@@ -102,3 +102,57 @@ test('billing (reprise, nominee) and "this ... production" pitch are not story',
   assert.equal(nonStoryReason('This groundbreaking new production expertly balances rhyme, spoken word, movement, and music to transport audiences to Thebes.'), 'production-news');
   assert.equal(nonStoryReason('Lackawanna Blues transports audiences to 1950s Buffalo, where a young boy grows up in a boarding house.'), null);
 });
+
+// BRO-4884 2018-19: real TodayTix copy the cleaner kept whole.
+test('UK single-quoted press quotes, audience address, billing and fragments are not story', () => {
+  const summerAndSmoke = "Trapped between desire and a life of obligation, Alma meets John and her world turns upside down. With 'spellbinding, stripped-back staging' (Financial Times), this intoxicating classic about love, loneliness and self-destruction evokes the simmering passions of a sweltering summer in small-town Mississippi. Patsy Ferran is a genuine marvel' as Alma (Independent) and Matthew Needham 'fires up the stage' (The Times) as John in this 'unmissable Tennessee Williams revival' (The Telegraph).";
+  assert.equal(cleanTodaytixAbout(summerAndSmoke), '');
+  const onYourFeet = "This 'exhilarating extravaganza' (Whatsonstage) is the inspiring true love story of Emilio and Gloria and charts their journey from its origins in Cuba, onto the streets of Miami and finally to international superstardom. Beat' and '1-2-3'. , An Officer and a Gentleman) as Emilio Estefan, Madalena Alberto (Evita, Cats, Les Misérables) as Gloria Fajardo and Karen Mann (Sister Act, Fiddler on the Roof, Sweeney Todd) as Consuelo.";
+  assert.equal(cleanTodaytixAbout(onYourFeet), '');
+  // The second sentence leans on the dropped one ("That meant"), so it goes too.
+  const comeFromAway = "Welcome to the Rock! The heart-warming musical Come From Away, based on an astonishing true story, invites you into the small town of Gander, Newfoundland, where you'll find the very best of humanity in the worst of times. That meant a sudden influx of 7,000 international visitors, who were taken in and cared for by the kindly locals.";
+  assert.equal(cleanTodaytixAbout(comeFromAway), '');
+  assert.equal(nonStoryReason('Join us on this emotional roller-coaster as this group of girls reunite after 25 years apart.'), 'pitch-opener');
+  assert.equal(nonStoryReason('The show features the spectacular music of TAKE THAT, whose songs include Never Forget.'), 'selling-or-list');
+  assert.equal(nonStoryReason('James McArdle takes the title role in this epic story of transformation.'), 'selling-or-list');
+  assert.equal(nonStoryReason("Beat' and '1-2-3'."), 'fragment');
+});
+
+test('contractions, initials and quoted titles stay story', () => {
+  assert.equal(nonStoryReason('It’s the future.'), null);
+  assert.equal(nonStoryReason("Mark doesn't believe in fate or divine intervention, but the universe has other ideas."), null);
+  assert.equal(nonStoryReason("It's 1992 and we meet five 16 year old girls for who 'the band' is everything."), null);
+  assert.equal(nonStoryReason('The Minstrel welcomes everyone ("Welcome to the Renaissance").'), null);
+  assert.equal(cleanTodaytixAbout('They are Johnny (originated by F. Murray Abraham), a short order cook, and Frankie, a waitress, who meet after a first date.'),
+    'They are Johnny (originated by F. Murray Abraham), a short order cook, and Frankie, a waitress, who meet after a first date.');
+  const follies = "New York, 1971. There's a party on the stage of the Weismann Theatre. Tomorrow the iconic building will be demolished. Thirty years after their final performance, the Follies girls gather to have a few drinks, sing a few songs and lie about themselves.";
+  assert.equal(cleanTodaytixAbout(follies), follies);
+});
+
+test('a quoted song cue in its own brackets is plot, a press quote is not (BRO-5063)', () => {
+  assert.equal(nonStoryReason('A trio of dockyard workers mourns the start of a new workday ("I Feel Like I\'m Not Out of Bed Yet").'), null);
+  assert.equal(nonStoryReason('Bateman documents his morning routine before travelling to Wall Street ("Opening (Morning Routine)"/"Selling Out").'), null);
+  assert.equal(nonStoryReason('A thriller that is "the best night out in years" (Evening Standard).'), 'pull-quote');
+  assert.equal(nonStoryReason('"Utterly brilliant" – The Guardian.'), 'pull-quote');
+});
+
+// BRO-5063: three rows the backfill left empty although their pages had plot
+// (TodayTix about text, 2026-10-11).
+test('a run of initials does not swallow the sentence before it (P.T. Barnum)', () => {
+  const about = 'Book The Greatest Showman tickets on TodayTix. The Greatest Showman is a musical that follows P.T. Barnum, who absolutely refuses to settle for the status quo. Driven by great creative ambition, he begins assembling a rather unconventional group of performers.';
+  assert.match(cleanTodaytixAbout(about), /^The Greatest Showman is a musical that follows P\.T\. Barnum/);
+});
+
+test('half of a pull quote is dropped even after its opening mark is trimmed (Insane Asylum Seekers)', () => {
+  const about = '“At 27, my dad had escaped multiple bloodthirsty dictatorships. I’m 27, I had a panic attack watching the final episode of Succession,” Laith says. Laith has been keeping a secret for years, and he believes the reason lies with his parents leaving Iraq 30 years prior. This story explores a century of the British-Iraqi experience.';
+  const out = cleanTodaytixAbout(about);
+  assert.doesNotMatch(out, /At 27/);
+  assert.match(out, /^Laith has been keeping a secret/);
+});
+
+test('sentences ending in a quote or bracket are kept, quoted titles are story (BRO-5063 review)', () => {
+  assert.equal(cleanTodaytixAbout('Set in 1920s Paris, the play follows Anna. She is introduced to a stranger called "the Count." They fall in love when war comes.'),
+    'Set in 1920s Paris, the play follows Anna. She is introduced to a stranger called "the Count." They fall in love when war comes.');
+  assert.match(cleanTodaytixAbout('"Hamilton" is the story of America then, told by America now. It follows a founding father.'), /^"Hamilton" is the story/);
+  assert.match(cleanTodaytixAbout("'Tis the season for murder. A family gathers when a body is found in the snow."), /the season for murder\. A family gathers/);
+});

@@ -457,6 +457,51 @@ Lessons, each fixed in code:
   outside the run. Checked on 8 real files with Gemini and GPT-4o stand-ins:
   venue reported 14/16, the 4 genuine regional-tour reviews stay flagged, 3
   of the 4 false flags clear (A Taste of Honey's text never names the house).
+- **The thumbnail fallback re-attached rejected art.** A row with a poster
+  and no thumbnail gets the poster copied to thumbnail.jpg, but when an old
+  thumbnail.jpg was still on disk the copy was skipped and the row pointed at
+  the old file. That put get-up-stand-up's rejected Bob Marley concert photo
+  back hours after BRO-5022 removed it. The fallback now copies the poster
+  over a leftover file whose recorded source the row rejected
+  (thumbnailFallbackAction in lib/image-source-match.js).
+- **UK producer copy the synopsis cleaner kept whole (2018-19).** British
+  blurbs quote critics in single quotes with the paper in brackets
+  ("'spellbinding, stripped-back staging' (Financial Times)"), talk to the
+  audience ("Welcome to the Rock! ... invites you into", "Join us on this
+  emotional roller-coaster") and bill the cast ("(Evita, Cats) as Gloria",
+  "takes the title role"). cleanTodaytixAbout kept all of it for Summer and
+  Smoke, On Your Feet!, Come From Away and The Band. nonStoryReason now also
+  drops bracketed press attributions, single-quoted attributed quotes,
+  audience address, cast billing and sentence scraps, and a sentence leaning
+  on a dropped one ("That meant ..."); initials no longer split sentences.
+  The same rules flag 29 synopses elsewhere on the site (handed to their own
+  card).
+
+### Review-led rows (BRO-5031, from 2026-10-11)
+
+Productions WOS reviewed but never listed (its listings page has no row)
+were reported in `unlistedReviews` and never promoted. They now get their
+dates from Theatre Record only, never from the review date:
+
+- `we-historical-tr-resolve.yml` (manual, `seasons` input, TR login from
+  Actions secrets) runs `scripts/resolve-we-unlisted-tr.js` and commits
+  `data/audit/we-historical-review-led-<season>.json`: TR production page,
+  venue and the header dates, no review text.
+- `scripts/lib/we-review-led-candidates.js` turns those lookups into
+  candidates: London houses only (non-London same-name venues dropped),
+  NT stages named as the stage (Lyttelton Theatre, not National Theatre),
+  runs open on 16 March 2020 capped there (`scheduledClosingDate` keeps the
+  printed date), and a run whose press night fell in the previous season is
+  re-filed to that season. `promote-historical-we.js` takes them with
+  `discoverySource: we-historical:tr`.
+- TR headers come in several layouts (PDF "Press Night 05 Sep 2019", a
+  label row over a date row, HTML label and date on separate lines, and
+  synonyms like "First Night", "Previews / Opens"). `pairLabelLines` zips
+  them; an ambiguous stack is left unread rather than guessed.
+- Cloud sessions cannot push shows.json. `promote-historical-we.js
+  --season=X --plan=bro-5031-<season>` writes the rows as `add-show`
+  actions in `data/pending-fixes/` (force-add, it is gitignored); land it,
+  then dispatch `execute-approved-fix.yml` with that id and `mode=apply`.
 
 ## Side benefit (separate card)
 

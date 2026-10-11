@@ -135,4 +135,18 @@ describe('Mezzanine override collision auditor', () => {
     assert.deepStrictEqual(matches[0].prodIds, ['palace-uk'], `expected only the Palace production, got ${JSON.stringify(matches[0].prodIds)} (Broadway leak if lyric-broadway is included)`);
     assert.strictEqual(matches[0].ratingsCount, 40, `expected 40 ratings (Palace only), got ${matches[0].ratingsCount} (merge bug if 100)`);
   });
+
+  // BRO-5070: Mezzanine lists Coriolanus at 11 venues; the bare 'Coriolanus'
+  // override was flagged once coriolanus-west-end-2024 joined shows.json.
+  test('Coriolanus venue pin keeps only the TFANA production for the Off-Broadway show', () => {
+    const obShow = shows.find(s => s.id === 'the-tragedy-of-coriolanus-off-broadway-2026');
+    assert.ok(obShow, 'fixture show missing from shows.json');
+    const productions = [
+      { objectId: 'tfana', show: { name: 'Coriolanus (The Tragedy of)' }, ratingsCount: 12, averageRating: 2.8, theater: { name: 'TFANA - Polonsky Shakespeare Center' } },
+      { objectId: 'delacorte', show: { name: 'Coriolanus (The Tragedy of)' }, ratingsCount: 30, averageRating: 4.0, theater: { name: 'The Public - Delacorte Theater in Central Park' } },
+    ];
+    const matches = matchProductions(productions, [obShow]);
+    assert.strictEqual(matches.length, 1);
+    assert.deepStrictEqual(matches[0].prodIds, ['tfana'], `expected only the TFANA production, got ${JSON.stringify(matches[0].prodIds)}`);
+  });
 });

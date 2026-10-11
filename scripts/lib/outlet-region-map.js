@@ -14,6 +14,7 @@
  * @returns {{
  *   outletRegionMap: Record<string,string>,   // id + lowercased aliases -> region ('london'|'new-york'|'us'|'dual'|...)
  *   dualMarket: Set<string>,                   // ids + lowercased aliases with isDualMarket:true
+ *   internationalTradeOutlets: Set<string>,    // ids + lowercased aliases with coversInternational:true
  *   tier12Outlets: Set<string>,                // ids + lowercased aliases at tier 1 or 2
  *   outletTierMap: Record<string,number>,      // id + lowercased aliases -> numeric tier
  *   canonicalOutletId: Record<string,string>,  // id + lowercased aliases -> canonical id
@@ -22,6 +23,7 @@
 function buildOutletMaps(reg) {
   const outletRegionMap = {};
   const dualMarket = new Set();
+  const internationalTradeOutlets = new Set();
   const tier12Outlets = new Set();
   const outletTierMap = {};
   const canonicalOutletId = {};
@@ -42,6 +44,11 @@ function buildOutletMaps(reg) {
       if (info.aliases) for (const alias of info.aliases) dualMarket.add(alias.toLowerCase());
     }
 
+    if (info.coversInternational === true) {
+      internationalTradeOutlets.add(id.toLowerCase());
+      if (info.aliases) for (const alias of info.aliases) internationalTradeOutlets.add(alias.toLowerCase());
+    }
+
     canonicalOutletId[id] = id;
     if (info.aliases) for (const alias of info.aliases) canonicalOutletId[alias.toLowerCase()] = id;
 
@@ -55,7 +62,7 @@ function buildOutletMaps(reg) {
     }
   }
 
-  return { outletRegionMap, dualMarket, tier12Outlets, outletTierMap, canonicalOutletId };
+  return { outletRegionMap, dualMarket, internationalTradeOutlets, tier12Outlets, outletTierMap, canonicalOutletId };
 }
 
 /**

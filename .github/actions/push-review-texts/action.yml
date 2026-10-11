@@ -147,6 +147,10 @@ runs:
             'rescoreBlockedAt',
             'rescoreBlockedTextLength',
             'rescoreBlockedHadExcerpt',
+            // BRO-5047: the sticky not_a_review fingerprint. Losing it on
+            // rebase costs one extra paid rejection; a stale value is harmless
+            // (it compares against the current text and simply mismatches).
+            'rejectedTextHash',
           ];
           const PROTECTED = Array.from(new Set([...PROTECTED_FIELDS, ...ACTION_EXTRA]));
           const staged = execSync('git diff --cached --name-only', { encoding: 'utf8' }).trim().split('\n').filter(Boolean);

@@ -25,12 +25,14 @@ import reviewNormalization from './lib/review-normalization.js';
 import reviewGuards from './lib/review-guards.js';
 import submissionShowMatch from './lib/submission-show-match.js';
 import reviewSubmissionIssue from './lib/review-submission-issue.js';
+import nonReviewUrlPatterns from './lib/non-review-url-patterns.js';
 
 const { lookupOutletForHost } = outletCanonicalize;
 const { resolveOutletFromUrlIfPathInformed } = reviewNormalization;
 const { canonicalizeUrlForDedup } = reviewGuards;
 const { findMatchingShows: findMatchingShowsIn } = submissionShowMatch;
 const { parseIssueBody } = reviewSubmissionIssue;
+const { submissionNonReviewReason } = nonReviewUrlPatterns;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -279,6 +281,21 @@ async function validateSubmission(issueBody) {
     return {
       isValid: false,
       error: 'This URL is on a known non-review domain (ticket/listing/social/reference/venue/PR-firm site), not a theater review outlet.',
+      recommendation: 'reject',
+      submissionData,
+    };
+  }
+
+  // Same decision the write path enforces (review-file-writer.js), so a page
+  // the writer would refuse is rejected here, with a reply to the submitter,
+  // instead of being approved and then silently dropped at ingest. BRO-5065:
+  // production databases (Theatricalia, IBDB, Lortel archives, Playbill
+  // production pages) and listing-page shapes.
+  const nonReviewReason = submissionNonReviewReason(submissionData.reviewUrl);
+  if (nonReviewReason) {
+    return {
+      isValid: false,
+      error: `This URL is not a review page (${nonReviewReason}): it looks like a listing, database, ticketing or press page.`,
       recommendation: 'reject',
       submissionData,
     };

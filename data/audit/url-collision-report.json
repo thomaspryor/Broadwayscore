@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-10-11T09:18:11.223Z",
+  "generatedAt": "2026-10-11T18:51:41.444Z",
   "summary": {
-    "total": 19,
-    "high": 8,
-    "medium": 7,
-    "low": 4
+    "total": 18,
+    "high": 11,
+    "medium": 5,
+    "low": 2
   },
   "collisions": [
     {
@@ -197,6 +197,114 @@
       "confidence": "medium"
     },
     {
+      "url": "https://www.timeout.com/london/theatre/hadestown-review",
+      "normalizedUrl": "https://timeout.com/london/theatre/hadestown-review",
+      "candidates": [
+        {
+          "showId": "hadestown-west-end-2018",
+          "file": "timeout-london--unknown.json",
+          "publishDate": "November 14th, 2018",
+          "openingDate": "2018-11-02",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "timeout-london"
+        },
+        {
+          "showId": "hadestown-west-end-2024",
+          "file": "timeout-london--andrzej-lukowski.json",
+          "publishDate": "2025-04-14",
+          "openingDate": "2024-02-22",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        }
+      ],
+      "suggestedWinner": "hadestown-west-end-2018",
+      "reason": "publishDate November 14th, 2018 is 12 days from hadestown-west-end-2018 opening (2018-11-02); next closest is 417 days from hadestown-west-end-2024",
+      "confidence": "high"
+    },
+    {
+      "url": "https://theartsdesk.com/theatre/leopoldstadt-wyndhams-theatre-review-stoppard-once-personal-and-accessible",
+      "normalizedUrl": "https://theartsdesk.com/theatre/leopoldstadt-wyndhams-theatre-review-stoppard-once-personal-and-accessible",
+      "candidates": [
+        {
+          "showId": "leopoldstadt-west-end-2020",
+          "file": "artsdesk--matt-wolf.json",
+          "publishDate": "2020-02-13",
+          "openingDate": "2020-01-25",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "artsdesk"
+        },
+        {
+          "showId": "leopoldstadt-west-end-2021",
+          "file": "artsdesk--matt-wolf.json",
+          "publishDate": null,
+          "openingDate": "2021-08-07",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "artsdesk"
+        }
+      ],
+      "suggestedWinner": "leopoldstadt-west-end-2020",
+      "reason": "publishDate 2020-02-13 is 19 days from leopoldstadt-west-end-2020 opening (2020-01-25)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.standard.co.uk/culture/theatre/leopoldstadt-review-tom-stoppards-new-masterwork-is-an-early-contender-for-play-of-the-year-a4360871.html",
+      "normalizedUrl": "https://standard.co.uk/culture/theatre/leopoldstadt-review-tom-stoppards-new-masterwork-is-an-early-contender-for-play-of-the-year-a4360871.html",
+      "candidates": [
+        {
+          "showId": "leopoldstadt-west-end-2020",
+          "file": "standard--nick-curtis.json",
+          "publishDate": "2020-02-13",
+          "openingDate": "2020-01-25",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "standard"
+        },
+        {
+          "showId": "leopoldstadt-west-end-2021",
+          "file": "standard--nick-curtis.json",
+          "publishDate": null,
+          "openingDate": "2021-08-07",
+          "hasScore": true,
+          "hasFullText": false,
+          "outletId": "standard"
+        }
+      ],
+      "suggestedWinner": "leopoldstadt-west-end-2020",
+      "reason": "publishDate 2020-02-13 is 19 days from leopoldstadt-west-end-2020 opening (2020-01-25)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.thetimes.co.uk/article/theatre-review-leopoldstadt-wyndhams-theatre-g7nzn7tcv",
+      "normalizedUrl": "https://thetimes.co.uk/article/theatre-review-leopoldstadt-wyndhams-theatre-g7nzn7tcv",
+      "candidates": [
+        {
+          "showId": "leopoldstadt-west-end-2020",
+          "file": "times-uk--clive-davis.json",
+          "publishDate": "2020-02-13",
+          "openingDate": "2020-01-25",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "times-uk"
+        },
+        {
+          "showId": "leopoldstadt-west-end-2021",
+          "file": "times-uk--clive-davis.json",
+          "publishDate": null,
+          "openingDate": "2021-08-07",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "times-uk"
+        }
+      ],
+      "suggestedWinner": "leopoldstadt-west-end-2020",
+      "reason": "publishDate 2020-02-13 is 19 days from leopoldstadt-west-end-2020 opening (2020-01-25)",
+      "confidence": "high"
+    },
+    {
       "url": "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road/",
       "normalizedUrl": "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road",
       "candidates": [
@@ -221,60 +329,6 @@
       ],
       "suggestedWinner": "little-bear-ridge-road-2025",
       "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
-      "url": "https://ew.com/mamma-mia-review-broadway-homecoming-11790686?utm_source=chatgpt.com",
-      "normalizedUrl": "https://ew.com/mamma-mia-review-broadway-homecoming-11790686",
-      "candidates": [
-        {
-          "showId": "mamma-mia-2001",
-          "file": "ew--emlyn-travis.json",
-          "publishDate": null,
-          "openingDate": "2001-10-18",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "ew"
-        },
-        {
-          "showId": "mamma-mia-2025",
-          "file": "ew--emlyn-travis.json",
-          "publishDate": "August 14, 2025",
-          "openingDate": "2025-08-14",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ew"
-        }
-      ],
-      "suggestedWinner": "mamma-mia-2025",
-      "reason": "publishDate August 14, 2025 is 0 days from mamma-mia-2025 opening (2025-08-14)",
-      "confidence": "high"
-    },
-    {
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/othello-toby-jones-david-harewood-b2858391.html",
-      "normalizedUrl": "https://independent.co.uk/arts-entertainment/theatre-dance/reviews/othello-toby-jones-david-harewood-b2858391.html",
-      "candidates": [
-        {
-          "showId": "othello-west-end-2022",
-          "file": "independent--unknown.json",
-          "publishDate": "November 5th, 2025",
-          "openingDate": "2022-11-23",
-          "hasScore": false,
-          "hasFullText": false,
-          "outletId": "independent"
-        },
-        {
-          "showId": "othello-west-end-2025",
-          "file": "independent--alice-saville.json",
-          "publishDate": "2025-11-05",
-          "openingDate": null,
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "independent"
-        }
-      ],
-      "suggestedWinner": "othello-west-end-2022",
-      "reason": "publishDate November 5th, 2025 is 1078+ days from all openings; defaulting to most recent production",
       "confidence": "low"
     },
     {
@@ -303,60 +357,6 @@
       "suggestedWinner": "othello-west-end-2022",
       "reason": "publishDate 2022-12-01 is 8 days from othello-west-end-2022 opening (2022-11-23)",
       "confidence": "high"
-    },
-    {
-      "url": "https://www.whatsonstage.com/news/othello-starring-david-harewood-toby-jones-and-caitlin-fitzgerald-west-end-review_1701279/",
-      "normalizedUrl": "https://whatsonstage.com/news/othello-starring-david-harewood-toby-jones-and-caitlin-fitzgerald-west-end-review_1701279",
-      "candidates": [
-        {
-          "showId": "othello-west-end-2022",
-          "file": "whatsonstage--unknown.json",
-          "publishDate": "November 4th, 2025",
-          "openingDate": "2022-11-23",
-          "hasScore": false,
-          "hasFullText": false,
-          "outletId": "whatsonstage"
-        },
-        {
-          "showId": "othello-west-end-2025",
-          "file": "whatsonstage--sarah-crompton.json",
-          "publishDate": "2025-11-04",
-          "openingDate": null,
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "whatsonstage"
-        }
-      ],
-      "suggestedWinner": "othello-west-end-2022",
-      "reason": "publishDate November 4th, 2025 is 1077+ days from all openings; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
-      "url": "https://www.theatrely.com/post/punch-redemption-and-runarounds-review",
-      "normalizedUrl": "https://theatrely.com/post/punch-redemption-and-runarounds-review",
-      "candidates": [
-        {
-          "showId": "punch-2025",
-          "file": "theatrely--juan-a-ramirez.json",
-          "publishDate": "September 29, 2025",
-          "openingDate": "2025-09-29",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "theatrely"
-        },
-        {
-          "showId": "punch-west-end-2025",
-          "file": "theatrely--juan-a-ramirez.json",
-          "publishDate": "September 29, 2025",
-          "openingDate": "2025-09-26",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "theatrely"
-        }
-      ],
-      "suggestedWinner": "punch-2025",
-      "reason": "publishDate September 29, 2025 is 0 days from punch-2025 but also 3 days from punch-west-end-2025",
-      "confidence": "medium"
     },
     {
       "url": "https://www.thedailybeast.com/review-stereophonic-makes-some-very-sweet-music-indeed/",
@@ -440,58 +440,31 @@
       "confidence": "low"
     },
     {
-      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
-      "normalizedUrl": "https://timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "url": "https://theatreweekly.com/review-to-kill-a-mockingbird-at-the-gielgud-theatre-london/",
+      "normalizedUrl": "https://theatreweekly.com/review-to-kill-a-mockingbird-at-the-gielgud-theatre-london",
       "candidates": [
         {
           "showId": "to-kill-a-mockingbird-west-end-2022",
-          "file": "timeout-london--andrzej-lukowski.json",
+          "file": "theatre-weekly--greg-stewart.json",
           "publishDate": "2022-03-31",
           "openingDate": "2022-03-10",
           "hasScore": true,
           "hasFullText": true,
-          "outletId": "timeout-london"
+          "outletId": "theatre-weekly"
         },
         {
           "showId": "to-kill-a-mockingbird-west-end-2026",
-          "file": "timeout-london--andrzej-lukowski.json",
-          "publishDate": "2023-02-07",
+          "file": "theatre-weekly--greg-stewart.json",
+          "publishDate": "2022-03-31",
           "openingDate": "2026-06-30",
           "hasScore": true,
           "hasFullText": true,
-          "outletId": "timeout-london"
+          "outletId": "theatre-weekly"
         }
       ],
       "suggestedWinner": "to-kill-a-mockingbird-west-end-2022",
-      "reason": "publishDate 2022-03-31 is 21 days from to-kill-a-mockingbird-west-end-2022 opening (2022-03-10); next closest is 1239 days from to-kill-a-mockingbird-west-end-2026",
+      "reason": "publishDate 2022-03-31 is 21 days from to-kill-a-mockingbird-west-end-2022 opening (2022-03-10); next closest is 1552 days from to-kill-a-mockingbird-west-end-2026",
       "confidence": "high"
-    },
-    {
-      "url": "https://www.wsj.com/articles/trouble-in-mind-alice-childress-roundabout-theater-company-lachanze-chuck-cooper-diana-princess-of-wales-david-bryan-joe-di-pietr-jeanne-de-waal-11637272134",
-      "normalizedUrl": "https://wsj.com/articles/trouble-in-mind-alice-childress-roundabout-theater-company-lachanze-chuck-cooper-diana-princess-of-wales-david-bryan-joe-di-pietr-jeanne-de-waal-11637272134",
-      "candidates": [
-        {
-          "showId": "trouble-in-mind-2021",
-          "file": "wsj--terry-teachout.json",
-          "publishDate": "November 18th, 2021",
-          "openingDate": "2021-11-18",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "wsj"
-        },
-        {
-          "showId": "trouble-in-mind-west-end-2021",
-          "file": "wsj--terry-teachout.json",
-          "publishDate": "November 18th, 2021",
-          "openingDate": "2021-12-02",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "wsj"
-        }
-      ],
-      "suggestedWinner": "trouble-in-mind-2021",
-      "reason": "publishDate November 18th, 2021 is 0 days from trouble-in-mind-2021 but also 14 days from trouble-in-mind-west-end-2021",
-      "confidence": "medium"
     },
     {
       "url": "https://www.nytimes.com/2019/01/24/theater/true-west-review-ethan-hawke-paul-dano.html",

@@ -1,0 +1,157 @@
+{
+  "issueNumber": "bro-3565",
+  "planId": "1f88ef0b-53b8-4c96-bfd1-65d8eb8733c4",
+  "status": "applied",
+  "createdAt": "2026-10-11T13:11:04.153Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-3565: Cyrano de Bergerac (Noel Coward Theatre, 2026) carries a 1946 Broadway cast (Jacques Aubuchon etc.) from a wrong IBDB match. Replace it with the 2026 RSC/West End cast: Adrian Lester, Susannah Fielding, Levi Brown, Scott Handy and the Playbill cast list.",
+    "steps": [
+      "Compare-and-set shows.json cast for cyrano-de-bergerac-west-end-2026 to the 2026 cast (Playbill production page; roles from the West End Theatre cast article, only where stated)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cyrano-de-bergerac-west-end-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Carl Albertson",
+            "role": "A Musketeer"
+          },
+          {
+            "name": "Toby Allen",
+            "role": "Cadet of Gascoyne"
+          },
+          {
+            "name": "Carmen Alvarez",
+            "role": "A Flower Girl"
+          },
+          {
+            "name": "Jacques Aubuchon",
+            "role": "Ragueneau"
+          },
+          {
+            "name": "Leopold Badia",
+            "role": "Montfleury"
+          },
+          {
+            "name": "Betty Bartley",
+            "role": "Lise"
+          },
+          {
+            "name": "Linda Berlin",
+            "role": "Sister Claire"
+          },
+          {
+            "name": "Peter Brandon",
+            "role": "A Cavalier"
+          },
+          {
+            "name": "Peter Buchan",
+            "role": "A Cut Purse"
+          },
+          {
+            "name": "Bill Butler",
+            "role": "A Meddler"
+          },
+          {
+            "name": "Sandy Campbell",
+            "role": "Citizen's Son"
+          },
+          {
+            "name": "Stanley Carlson",
+            "role": "Bellerose"
+          },
+          {
+            "name": "Dean Cetrulo",
+            "role": "Vicomte de Valvert"
+          },
+          {
+            "name": "Ann Chisholm",
+            "role": "A Nun"
+          },
+          {
+            "name": "Ralph Clanton",
+            "role": "Comte de Guiche"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Adrian Lester",
+            "role": "Cyrano de Bergerac"
+          },
+          {
+            "name": "Susannah Fielding",
+            "role": "Roxane"
+          },
+          {
+            "name": "Levi Brown",
+            "role": "Christian"
+          },
+          {
+            "name": "Scott Handy",
+            "role": "Comte de Guiche"
+          },
+          {
+            "name": "Philip Cumbus",
+            "role": "Le Bret"
+          },
+          {
+            "name": "Joseph Christain",
+            "role": "Edmond"
+          },
+          {
+            "name": "Sunny Chung",
+            "role": "Sister Claire"
+          },
+          {
+            "name": "Rachel Dawson",
+            "role": "Ann-Sofie"
+          },
+          {
+            "name": "Greer Dale-Foulkes"
+          },
+          {
+            "name": "Oliver Grant"
+          },
+          {
+            "name": "Robert Jackson"
+          },
+          {
+            "name": "David Mildon"
+          },
+          {
+            "name": "Matt Mordak"
+          },
+          {
+            "name": "Daniel Norford"
+          },
+          {
+            "name": "Chris Nayak"
+          },
+          {
+            "name": "Christian Patterson"
+          },
+          {
+            "name": "Josh Sneesby"
+          }
+        ],
+        "description": "Replace the 1946 Broadway cast with the 2026 Noel Coward Theatre cast (BRO-3565)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T14:00:04.046Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for cyrano-de-bergerac-west-end-2026"
+    }
+  ]
+}

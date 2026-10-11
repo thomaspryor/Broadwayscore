@@ -415,6 +415,29 @@ describe('commercial-apply-gate', () => {
       assert.equal(result.classifiedReason, undefined);
     });
 
+    it('policy B: a hand-set loss resting on "no recoupment announced" flips on recoupment news (BRO-5020)', () => {
+      const silence = {
+        designation: 'Flop', recouped: false, notes: 'closed after 3 months',
+        designationBasis: 'no-recoupment-announced', needsLossEvidence: true,
+      };
+      assert.equal(gate.recoupClaimDesignationAction(silence), 'reset');
+      assert.equal(gate.recoupClaimDesignationAction({ ...silence, designationBasis: 'reported-loss' }), 'block', 'a reported loss is a human call');
+      assert.equal(gate.recoupClaimDesignationAction({ ...silence, designationBasis: 'notes-stated' }), 'block');
+      assert.equal(gate.recoupClaimDesignationAction({ ...silence, humanReviewedDesignation: true }), 'block', 'a lock still wins');
+      const result = gate.buildCommercialEntry(claim, silence, { isClaimAutoApply: true });
+      assert.equal(result.designation, 'TBD');
+      assert.equal(result.recouped, true);
+      assert.equal(result.recoupedSource, claim.recoupedSource);
+      assert.equal('designationBasis' in result, false, 'the silence basis is cleared');
+      assert.equal('needsLossEvidence' in result, false);
+    });
+
+    it('the reset of an inferred Fizzle also clears its basis stamp', () => {
+      const result = gate.buildCommercialEntry(claim, { ...PURPOSE_EXISTING, designationBasis: 'no-recoupment-announced' }, { isClaimAutoApply: true });
+      assert.equal(result.designation, 'TBD');
+      assert.equal('designationBasis' in result, false);
+    });
+
     it('a recoupment over an existing win designation keeps it', () => {
       const result = gate.buildCommercialEntry(claim, { designation: 'Windfall', recouped: false }, { isClaimAutoApply: true });
       assert.equal(result.designation, 'Windfall');
@@ -443,6 +466,34 @@ describe('backfill hold helpers (BRO-4990)', () => {
   it('a noData attempt record is never appliable', () => {
     assert.equal(gate.isReviewHold({ noData: true, requiresHumanReview: true }), true);
     assert.equal(gate.isReviewHold({ designation: 'Flop' }), false);
+  });
+});
+
+describe('designationBasis on every loss label (BRO-5020 policy B)', () => {
+  const checks = require('../../scripts/lib/commercial-record-checks');
+  it('a researched Fizzle with no basis gets the cautious silence basis', () => {
+    const r = gate.buildCommercialEntry({ designation: 'Fizzle', recouped: false }, { designation: 'TBD', needsLossEvidence: true });
+    assert.equal(r.designationBasis, 'no-recoupment-announced');
+    assert.equal(r.needsLossEvidence, undefined);
+  });
+  it('keeps a valid basis from the entry, else from an unchanged existing label', () => {
+    assert.equal(gate.buildCommercialEntry({ designation: 'Flop', designationBasis: 'reported-loss' }, null).designationBasis, 'reported-loss');
+    assert.equal(gate.buildCommercialEntry({ designation: 'Flop', designationBasis: 'bogus' }, null).designationBasis, 'no-recoupment-announced');
+    assert.equal(gate.buildCommercialEntry({ designation: 'Flop' }, { designation: 'Flop', designationBasis: 'reported-loss' }).designationBasis, 'reported-loss');
+    // A changed label does not inherit the old row's basis.
+    assert.equal(gate.buildCommercialEntry({ designation: 'Flop' }, { designation: 'Fizzle', designationBasis: 'reported-loss' }).designationBasis, 'no-recoupment-announced');
+  });
+  it('a non-loss label drops the basis; a settled label drops the evidence flag, TBD keeps it', () => {
+    const win = gate.buildCommercialEntry({ designation: 'Windfall', recouped: true }, { designation: 'Fizzle', designationBasis: 'reported-loss', needsLossEvidence: true }, { isClaimAutoApply: true });
+    assert.equal(win.designationBasis, undefined);
+    assert.equal(win.needsLossEvidence, undefined);
+    const tbd = gate.buildCommercialEntry({ notes: 'x' }, { designation: 'TBD', needsLossEvidence: true }, { isClaimAutoApply: true });
+    assert.equal(tbd.needsLossEvidence, true);
+  });
+  it('the public-record sanitizer drops the basis when it un-labels a running show', () => {
+    const { entry } = checks.sanitizeForPublicRecord({ designation: 'Fizzle', designationBasis: 'no-recoupment-announced' }, { status: 'open' });
+    assert.equal(entry.designation, 'TBD');
+    assert.equal(entry.designationBasis, undefined);
   });
 });
 
@@ -550,13 +601,13 @@ describe('first-person research notes never reach /biz (BRO-5041)', () => {
     assert.equal(checks.internalWordingIn('Source: https://example.com/a-(b)'), null);
   });
   it('sanitize removes markdown citation links and leaves the sentence', () => {
-    const out = checks.sanitizeForPublicRecord({ notes: 'Ran at Studio 54. Not-for-profit producer. ([ibdb.com](https://www.ibdb.com/x?utm_source=openai))' }, 'closed');
+    const out = checks.sanitizeForPublicRecord({ notes: 'Ran at Studio 54. Not-for-profit producer. ([ibdb.com](https://www.ibdb.com/x?utm_source=openai))' }, { status: 'closed' });
     assert.equal(out.entry.notes, 'Ran at Studio 54. Not-for-profit producer.');
-    const only = checks.sanitizeForPublicRecord({ notes: '([playbill.com](https://playbill.com/a?utm_source=openai))' }, 'closed');
+    const only = checks.sanitizeForPublicRecord({ notes: '([playbill.com](https://playbill.com/a?utm_source=openai))' }, { status: 'closed' });
     assert.equal(only.entry.notes, null);
   });
   it('sanitize drops only the first-person sentence', () => {
-    const out = checks.sanitizeForPublicRecord({ notes: "Capitalized at $14.5M. I couldn't verify the weekly nut." }, 'closed');
+    const out = checks.sanitizeForPublicRecord({ notes: "Capitalized at $14.5M. I couldn't verify the weekly nut." }, { status: 'closed' });
     assert.equal(out.entry.notes, 'Capitalized at $14.5M.');
   });
 });
@@ -564,9 +615,9 @@ describe('first-person research notes never reach /biz (BRO-5041)', () => {
 describe('released rows keep the record\'s own text (BRO-5041 review)', () => {
   const checks = require('../../scripts/lib/commercial-record-checks.js');
   it('a markdown citation in a source field becomes the bare URL', () => {
-    const out = checks.sanitizeForPublicRecord({ recouped: false, recoupedSource: '([variety.com](https://variety.com/a/?utm_source=openai))' }, 'closed');
+    const out = checks.sanitizeForPublicRecord({ recouped: false, recoupedSource: '([variety.com](https://variety.com/a/?utm_source=openai))' }, { status: 'closed' });
     assert.equal(out.entry.recoupedSource, 'https://variety.com/a/');
-    const kept = checks.sanitizeForPublicRecord({ capitalizationSource: 'SEC Form D [sec.gov](https://sec.gov/x?id=1&utm_source=openai)' }, 'closed');
+    const kept = checks.sanitizeForPublicRecord({ capitalizationSource: 'SEC Form D [sec.gov](https://sec.gov/x?id=1&utm_source=openai)' }, { status: 'closed' });
     assert.equal(kept.entry.capitalizationSource, 'SEC Form D https://sec.gov/x?id=1');
   });
   it('keepExistingPublicText keeps notes and an unchanged recoupment citation', () => {

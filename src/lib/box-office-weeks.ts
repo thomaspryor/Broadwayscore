@@ -85,9 +85,17 @@ export function priorSeason(season: string, n = 1): string {
   return `${y}-${y + 1}`;
 }
 
-/** A week counts as reported when it has a positive gross and was not dark. */
+/**
+ * A week counts as reported when it has a positive gross. A dark week has no
+ * gross (0 or null). Performances do not decide it: 2,600+ history rows
+ * (97% in a run's first 6 weeks, still arriving for new shows in 2026; the
+ * zero-perf-gross integrity rule) list 0 performances beside a real gross
+ * because the source dropped the Previews column, and
+ * grosses-history-repair.js can only fill the provable ones (BRO-5057).
+ * Treat a listed 0 as an unknown count wherever performances matter.
+ */
 export function isReported(r: HistoryRow | null | undefined): r is HistoryRow & { gross: number } {
-  return !!r && typeof r.gross === 'number' && r.gross > 0 && r.performances !== 0;
+  return !!r && typeof r.gross === 'number' && r.gross > 0;
 }
 
 /** Usable for per-seat and price maths: gross AND seatsOffered both present and positive. */
@@ -156,7 +164,11 @@ export function quantile(values: number[], q: number): number | null {
 /** A week with fewer performances than this is partial (first previews, a dark stretch). */
 export const MIN_FULL_WEEK_PERFORMANCES = 6;
 
-/** A reported week that is not partial, so it can be a year-ago base. */
+/**
+ * A reported week that is not partial, so it can be a year-ago base. A row
+ * listing 0 performances with a gross has an unknown count (see isReported),
+ * so it is never a full week.
+ */
 export function isFullWeek(r: HistoryRow | undefined | null): r is HistoryRow {
   return isReported(r) && (r.performances == null || r.performances >= MIN_FULL_WEEK_PERFORMANCES);
 }

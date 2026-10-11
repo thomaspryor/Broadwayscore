@@ -277,6 +277,34 @@ function hasAnyReviews(id, reviews) {
   return reviews.some(r => r.showId === id);
 }
 
+/** data/pending-fixes/<name>.json with one add-show action per promoted row. */
+function buildAddShowPlan(name, season, entries, planId) {
+  const card = (name.match(/^bro-\d+/i) || [name])[0].toUpperCase();
+  return {
+    issueNumber: name,
+    planId,
+    status: 'pending',
+    createdAt: new Date().toISOString(),
+    submitter: { name: null, email: null },
+    plan: {
+      summary: `Add ${entries.length} closed West End production(s) for ${season} found through Theatre Record (reviewed on WOS, never listed there; ${card}).`,
+      steps: entries.map(e => `Append ${e.id} (${e.venue}, ${e.previewsStartDate || e.openingDate} to ${e.closingDate})`),
+      riskLevel: 'Low',
+      actions: entries.map(show => ({ type: 'add-show', show })),
+    },
+  };
+}
+
+function writeAddShowPlan(name, season, entries) {
+  // execute-approved-fix.js takes the file stem as its plan id and refuses anything else.
+  if (!/^[a-z0-9][a-z0-9-]*$/i.test(name)) { console.error(`--plan=${name}: use letters, digits and dashes (e.g. bro-5031-2019-20).`); process.exit(1); }
+  const file = path.join(ROOT, 'data', 'pending-fixes', `${name}.json`);
+  if (fs.existsSync(file)) { console.error(`${path.relative(ROOT, file)} already exists; pick another --plan name.`); process.exit(1); }
+  const plan = buildAddShowPlan(name, season, entries, require('crypto').randomUUID());
+  fs.writeFileSync(file, JSON.stringify(plan, null, 2) + '\n');
+  return file;
+}
+
 function save(showsData, apply) {
   if (!apply) { console.log('\n[DRY RUN — pass --apply to write shows.json]'); return false; }
   try {
@@ -347,6 +375,15 @@ function main() {
   }
   if (!toPromote.length) { console.log('Nothing to promote.'); return; }
 
+  const planName = args.find(a => a.startsWith('--plan='))?.split('=')[1];
+  if (planName) {
+    // Cloud sessions can't push the private data repo; execute-approved-fix.yml
+    // applies this plan's add-show actions instead (.claude/CLOUD.md).
+    const file = writeAddShowPlan(planName, season, toPromote);
+    console.log(`Wrote ${path.relative(ROOT, file)} (${toPromote.length} add-show). git add -f it (pending-fixes is gitignored), land it, then dispatch execute-approved-fix.yml.`);
+    for (const e of toPromote) logEntry({ kind: 'promote-historical-we', id: e.id, title: e.title, venue: e.venue, season, plan: planName, planned: true });
+    return;
+  }
   showsData.shows.push(...toPromote);
   if (save(showsData, apply)) {
     for (const e of toPromote) logEntry({ kind: 'promote-historical-we', id: e.id, title: e.title, venue: e.venue, season });
@@ -358,4 +395,4 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { buildShowEntry, buildVenueSpellings, planPromotions, effectiveDecision, fixAllCapsTitle, inferShowType };
+module.exports = { buildAddShowPlan, buildShowEntry, buildVenueSpellings, planPromotions, effectiveDecision, fixAllCapsTitle, inferShowType };

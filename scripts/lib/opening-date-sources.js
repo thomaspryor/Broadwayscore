@@ -43,4 +43,17 @@ function openingDateSourceHint(category) {
   return `${entry.source} (${entry.enricher})`;
 }
 
-module.exports = { OPENING_DATE_SOURCES, openingDateSourceHint };
+/**
+ * BRO-3793: no code path writes `openingDateSource: "venue-page:<domain>"`.
+ * Code writes the bare "venue-page" (promote-owe-venue-candidates) or a venue-name
+ * slug ("venue-page:soho-playhouse"). A domain form ("venue-page:59e59.org") came
+ * from a hand/LLM edit and wrote a date its page did not contain (Crazy Mama
+ * 2026-09-18 vs press night 2026-09-22). Returns a warning string or null.
+ */
+function venuePageDomainSourceProblem(show) {
+  const src = show && show.openingDateSource;
+  if (typeof src !== 'string' || !/^venue-page:\s*(?:https?:\/\/)?[^:\s\/]*\.[a-z]{2,}\b/i.test(src)) return null;
+  return `openingDateSource "${src}" names a web domain: no extractor writes that form, so the date is unverified (a venue page that lists only a run window has no opening night). Re-source openingDate from a page that states the press night, or set it null.`;
+}
+
+module.exports = { OPENING_DATE_SOURCES, openingDateSourceHint, venuePageDomainSourceProblem };

@@ -8,7 +8,7 @@ const require = createRequire(import.meta.url);
 const {
   normalizeVenueName, venuesMatch, pickMezzanineCandidate, theatrEligible, isRejectedImage, ibdbEligible, buildVenueCityIndex,
   canReuseArchivedFile,
-  mayServeDiskImage,
+  mayServeDiskImage, thumbnailFallbackAction,
   keepExistingImage, findRejectedSourcesInUse, recordFileSources, fileSourceUrls, imagePathOwner, isDownloadableSource, recordedSourceFor,
 } = require('./image-source-match.js');
 
@@ -253,4 +253,18 @@ test('recordFileSources writes only entries whose path is still the field value'
   assert.deepEqual(recordFileSources(sources, images), ['poster']);
   assert.deepEqual(sources, { 'godot-west-end': { poster: 'https://cdn/a.jpg' } });
   assert.deepEqual(recordFileSources(null, images), []);
+});
+
+// BRO-4884: the poster -> thumbnail fallback reused a leftover thumbnail file
+// whose source the row had rejected (get-up-stand-up's Bob Marley concert photo).
+test('thumbnailFallbackAction copies the poster over a rejected leftover thumbnail', () => {
+  const rejected = 'google-images:https://www.broadway.com/buzz/198456/bob-marley-musical-get-up-stand-up-to-open-in-londons-west-end-in-2021/';
+  const row = { id: 'get-up-stand-up-the-bob-marley-story-west-end-2021', rejectedImageUrls: [rejected] };
+  assert.equal(thumbnailFallbackAction(row, { targetExists: true, targetRecordedSource: rejected }), 'copy');
+  // No file on disk: always copy.
+  assert.equal(thumbnailFallbackAction(row, { targetExists: false, targetRecordedSource: null }), 'copy');
+  // A leftover file nobody rejected (or of unknown source) is reused as before.
+  assert.equal(thumbnailFallbackAction(row, { targetExists: true, targetRecordedSource: 'google-images:https://example.com/other.jpg' }), 'reuse');
+  assert.equal(thumbnailFallbackAction({ id: 'x' }, { targetExists: true, targetRecordedSource: rejected }), 'reuse');
+  assert.equal(thumbnailFallbackAction(row, { targetExists: true, targetRecordedSource: undefined }), 'reuse');
 });

@@ -7,6 +7,7 @@
 import type { CostBand, Availability, MultiplePoint, CoverCosts, Streak, MultipleRange } from './box-office-status';
 import { costSourceDate } from './box-office-status';
 import type { ShowBoxOfficeV2 } from './data-commercial';
+import type { PersonalBests } from './box-office-market';
 /** Weekly amounts in thousands ($821K, $1,084K): $1.1M hides the gap that matters week to week. */
 export function formatWeekly(n: number): string {
   return `$${Math.round(n / 1000).toLocaleString('en-US')}K`;
@@ -313,13 +314,68 @@ export interface BoxOfficeFactsCard {
   series: Array<{ week: string; gross: number | null }>;
   /** The Commercial Scorecard renders below, so the card may point to it. */
   hasCommercial: boolean;
+  /** This run's records, ready to print; null under the minimum weeks. */
+  bests: BestLine[] | null;
 }
 
 export function toFactsCard(
-  f: FactsStoryInput & { current: boolean; gross: number; rank: number; of: number; series: BoxOfficeFactsCard['series'] },
+  f: FactsStoryInput & { current: boolean; gross: number; rank: number; of: number; series: BoxOfficeFactsCard['series']; bests?: PersonalBests | null },
   hasCommercial: boolean,
+  closed = false,
 ): BoxOfficeFactsCard {
-  return { week: f.week, current: f.current, gross: f.gross, rank: f.rank, of: f.of, story: factsStory(f, hasCommercial), series: f.series, hasCommercial };
+  return { week: f.week, current: f.current, gross: f.gross, rank: f.rank, of: f.of, story: factsStory(f, hasCommercial), series: f.series, hasCommercial, bests: bestLines(f.bests ?? null, f.current, closed) };
+}
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+/** "Dec 29, 2024" for a YYYY-MM-DD week ending. */
+export function weekEndingText(week: string): string {
+  const [y, m, d] = week.split('-').map(Number);
+  return `${MONTHS[m - 1]} ${d}, ${y}`;
+}
+
+export interface BestLine {
+  label: string;
+  value: string;
+  /** "week ending Dec 29, 2024" */
+  when: string;
+  /** "this week $1.6M", "New best this week", "this week matches it", or null when the latest week lacks the measure. */
+  latest: string | null;
+  isNew: boolean;
+}
+
+const BEST_LABELS: Record<PersonalBests['rows'][number]['key'], string> = {
+  gross: 'Best week',
+  capacity: 'Fullest week',
+  atp: 'Highest average ticket',
+};
+
+function bestValue(key: PersonalBests['rows'][number]['key'], v: number): string {
+  if (key === 'gross') return formatGross(v);
+  if (key === 'capacity') return `${Math.round(v)}% full`;
+  return `$${Math.round(v)}`;
+}
+
+/**
+ * The personal-bests rows as printed. The latest week reads "this week" for a
+ * show in the current week, "final week" for a closed show and "latest week"
+ * otherwise (a running show that missed a League week). When it set the
+ * record the row says so instead of repeating the value; when it only rounds
+ * to the record it says it matches.
+ */
+export function bestLines(b: PersonalBests | null, current: boolean, closed = false): BestLine[] | null {
+  if (!b || !b.rows.length) return null;
+  const latestWord = current ? 'this week' : closed ? 'final week' : 'latest week';
+  return b.rows.map((r) => {
+    const value = bestValue(r.key, r.value);
+    const latestValue = r.latest == null ? null : bestValue(r.key, r.latest);
+    let latest: string | null;
+    if (r.latestIsRecord) latest = current ? 'New best this week' : closed ? 'Set in its final week' : 'Set in its latest week';
+    else if (latestValue == null) latest = null;
+    else if (latestValue === value) latest = `${latestWord} matches it`;
+    else latest = `${latestWord} ${latestValue}`;
+    return { label: BEST_LABELS[r.key], value, when: `week ending ${weekEndingText(r.week)}`, latest, isNew: r.latestIsRecord };
+  });
 }
 
 /** A headline weekly gross: $676K under a million, $2.7M above (matches the This Week tile). */

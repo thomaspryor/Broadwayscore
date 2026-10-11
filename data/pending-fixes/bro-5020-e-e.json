@@ -1,0 +1,223 @@
+{
+  "issueNumber": "bro-5020-e-e",
+  "planId": "2444a488-8c51-4a83-a171-577eab7d66b0",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5020 owner policy B backfill, part 5 of 5 (8 shows): every Fizzle/Flop gets designationBasis; silence-based labels on shows closed under 6 months return to TBD with needsLossEvidence; grey-house regains its label on the silence basis (unlocked). Supersedes bro-5020-d, which never executed. Old values read from live commercial.json at 2026-10-11T11:51:28.223Z.",
+    "steps": [
+      "titanique: designation, recouped, needsLossEvidence",
+      "the-shark-is-broken: designationBasis",
+      "grey-house: humanReviewedDesignation, designation, recouped, designationBasis",
+      "the-hills-of-california-2024: designationBasis",
+      "left-on-tenth-2024: designationBasis",
+      "elf-2024: designationBasis",
+      "the-last-five-years-2025: designationBasis",
+      "john-proctor-is-the-villain-2025: designationBasis"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "titanique",
+        "showId": "titanique",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "TBD",
+        "description": "titanique: designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "titanique",
+        "showId": "titanique",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": null,
+        "description": "titanique: recouped"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "titanique",
+        "showId": "titanique",
+        "field": "needsLossEvidence",
+        "oldValue": null,
+        "newValue": true,
+        "description": "titanique: needsLossEvidence"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-shark-is-broken",
+        "showId": "the-shark-is-broken",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "the-shark-is-broken: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "grey-house",
+        "showId": "grey-house",
+        "field": "humanReviewedDesignation",
+        "oldValue": true,
+        "newValue": null,
+        "description": "grey-house: humanReviewedDesignation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "grey-house",
+        "showId": "grey-house",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Fizzle",
+        "description": "grey-house: designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "grey-house",
+        "showId": "grey-house",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "grey-house: recouped"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "grey-house",
+        "showId": "grey-house",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "grey-house: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-hills-of-california-2024",
+        "showId": "the-hills-of-california-2024",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "the-hills-of-california-2024: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "left-on-tenth-2024",
+        "showId": "left-on-tenth-2024",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "left-on-tenth-2024: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "elf-2024",
+        "showId": "elf-2024",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "elf-2024: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-last-five-years-2025",
+        "showId": "the-last-five-years-2025",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "the-last-five-years-2025: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "john-proctor-is-the-villain-2025",
+        "showId": "john-proctor-is-the-villain-2025",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "john-proctor-is-the-villain-2025: designationBasis"
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T12:58:48.940Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for titanique"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for titanique"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: needsLossEvidence updated for titanique"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-shark-is-broken"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for grey-house"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for grey-house"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for grey-house"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for grey-house"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-hills-of-california-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for left-on-tenth-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for elf-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-last-five-years-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for john-proctor-is-the-villain-2025"
+    }
+  ]
+}
