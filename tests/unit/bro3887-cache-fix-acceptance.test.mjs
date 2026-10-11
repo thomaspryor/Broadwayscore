@@ -70,7 +70,8 @@ function creditsByDay(script) {
 // daily credits are still printed for context. Overall spend is policed by
 // check-provider-spend.js (data-health-check.yml).
 const CACHE_EVICTION_CAP_BYTES = 10 * 1024 ** 3;
-const CACHE_USAGE_CEILING_BYTES = 8 * 1024 ** 3; // headroom before the cap
+// Unmeasured headroom: 2 GiB below the cap, chosen with usage at 4.4 GiB.
+const CACHE_USAGE_CEILING_BYTES = 8 * 1024 ** 3;
 
 test('BRO-3887: gather-reviews.js daily scraper credits (diagnostic)', (t) => {
   if (!fs.existsSync(LEDGER)) {
@@ -93,9 +94,14 @@ test('BRO-3887: repo Actions cache stays below the size that evicts the SERP cac
   const repo = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
   // A token that is set but cannot read the usage fails here on purpose, so a
   // missing `actions: read` permission cannot turn this into a silent skip.
-  const usage = JSON.parse(
-    execFileSync('gh', ['api', `repos/${repo}/actions/cache/usage`], { encoding: 'utf8', env: { ...process.env, GH_TOKEN: token } }),
-  );
+  let usage;
+  try {
+    usage = JSON.parse(
+      execFileSync('gh', ['api', `repos/${repo}/actions/cache/usage`], { encoding: 'utf8', env: { ...process.env, GH_TOKEN: token } }),
+    );
+  } catch (e) {
+    assert.fail(`could not read cache usage (not a cache-size finding; check the job's actions: read permission or GitHub API status): ${String(e.stderr || e.message).trim()}`);
+  }
   const bytes = Number(usage.active_caches_size_in_bytes);
   assert.ok(Number.isFinite(bytes), `unexpected cache usage payload: ${JSON.stringify(usage)}`);
   const gib = (n) => (n / 1024 ** 3).toFixed(2);
@@ -104,7 +110,7 @@ test('BRO-3887: repo Actions cache stays below the size that evicts the SERP cac
     bytes < CACHE_USAGE_CEILING_BYTES,
     `repo Actions cache is ${gib(bytes)} GiB; past ${gib(CACHE_EVICTION_CAP_BYTES)} GiB GitHub LRU-evicts every ` +
       'entry, including the KB-sized bd-serp-cache-* that gather-reviews.js relies on, and SERP spend jumps ' +
-      '(BRO-3887, BRO-4146). Find the biggest keys: `gh cache list --sort size_in_bytes --limit 20`.',
+      '(BRO-3887, BRO-4146). Find the biggest keys: `gh cache list --sort size_in_bytes --limit 20`; scripts/prune-github-actions-cache.js prunes by key prefix.',
   );
 });
 

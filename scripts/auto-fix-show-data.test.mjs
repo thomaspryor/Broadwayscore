@@ -382,4 +382,7 @@ test('daily targets include a not-closed standalone tour missing a synopsis', ()
     { id: 'child-tour', status: 'upcoming', category: 'tour', tourOf: 'some-broadway-2020' },
   ];
   assert.deepEqual(selectDailyTargets(shows).map(s => s.id), ['open-show', 'standalone-upcoming', 'standalone-open']);
+  const { isSynopsisOnlyDailyTarget } = require('./auto-fix-show-data.js');
+  assert.deepEqual(selectDailyTargets(shows).filter(isSynopsisOnlyDailyTarget).map(s => s.id), ['standalone-upcoming'],
+    'an upcoming tour gets only the synopsis step, never creative team / tickets / images');
 });

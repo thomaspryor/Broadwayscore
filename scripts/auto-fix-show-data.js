@@ -702,10 +702,24 @@ function checkMissingImages(show) {
  * upcoming standalone tour had no synopsis path at all: five hand-added tours
  * (BRO-4931) sat empty and reddened check-corpus-drift (BRO-447).
  */
+function isOpenOrPreviews(s) {
+  return s.status === 'open' || s.status === 'previews';
+}
+
 function selectDailyTargets(shows) {
   return (shows || []).filter(s =>
-    s.status === 'open' || s.status === 'previews' ||
+    isOpenOrPreviews(s) ||
     (isTourShow(s) && !s.tourOf && s.status !== 'closed' && classifyBadSynopsis(s).bad));
+}
+
+/**
+ * A daily target picked only for its synopsis (an upcoming standalone tour):
+ * the creative-team, ticket-link and image steps stay off it. Tours have their
+ * own art pipeline, and the LLM creative-team path would credit a tour with
+ * another production's director.
+ */
+function isSynopsisOnlyDailyTarget(show) {
+  return !isOpenOrPreviews(show);
 }
 
 async function main() {
@@ -772,6 +786,8 @@ async function main() {
       changesMade = true;
       await sleep(1000); // Rate limit
     }
+
+    if (!backfillHistorical && !showIds && isSynopsisOnlyDailyTarget(show)) continue;
 
     // 2. Fix creative team (auto-fetched or LLM-generated)
     const creativeFix = await fixCreativeTeam(show, todayTixIds);
@@ -885,4 +901,5 @@ module.exports = {
   generateSynopsisWithLLM,
   buildSynopsisPrompt,
   selectDailyTargets,
+  isSynopsisOnlyDailyTarget,
 };

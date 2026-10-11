@@ -152,7 +152,7 @@ const UNREGISTERED_TEST_QUARANTINE = new Map([
   ],
   [
     'tests/unit/bro3887-cache-fix-acceptance.test.mjs',
-    'BRO-3425 — runs in check-corpus-drift.yml (data-health), not test.yml: a deferred-effect probe on data/audit/scraper-spend-ledger.jsonl (gather-reviews credits/day). A live spend reading is not a code fact; in the unit batch it turned main red on 2026-09-24 (7,054 credits).',
+    'BRO-3425 — runs in check-corpus-drift.yml (data-health), not test.yml: a live probe of the repo's Actions cache usage via the GitHub API (BRO-447; was gather-reviews credits/day) plus a credits diagnostic from data/audit/scraper-spend-ledger.jsonl. Live readings are not code facts; in the unit batch it turned main red on 2026-09-24 (7,054 credits).',
   ],
   [
     'tests/unit/image-presence.test.mjs',
