@@ -1542,6 +1542,17 @@ async function main(): Promise<void> {
         // BRO-4838: the same holds for a not_a_review verdict on a file a person has said IS a review
         // (nonReviewManualClear / wrongArticle clear); the decision lives in scripts/lib/human-cleared-rejection.js.
         const humanClear = humanClearOverridingRejection(fileData, rejection);
+        if (humanClear === 'non-review') {
+          // A not_a_review verdict on a file a person read and called a review says the STORED text has no
+          // evaluation in it (a truncated page, a lede plus site chrome), so a Haiku score here would be a guess.
+          // Keep the person's verdict (no rejection stamp, any earlier score stands) and block re-scoring until the
+          // text changes, the same way as the lane branch above.
+          console.log(`SKIP-REJECT (not_a_review on a file a person cleared as a review; text too thin to score): ${rejectionReasoning?.substring(0, 80) || ''}`);
+          stampTerminalScoringFailure(fileData, 'human_cleared_review_text_unscoreable');
+          saveReviewFile(filePath, fileData);
+          skipped++;
+          return true;
+        }
         if (humanClear) {
           console.log(`SKIP-REJECT (${rejection} on manually-cleared file): ${rejectionReasoning?.substring(0, 80) || ''}`);
           // Fallback: a human has verified this file matches the show, but the

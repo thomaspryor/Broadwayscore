@@ -10,9 +10,9 @@ test('nonReviewManualClear overrules a not_a_review rejection', () => {
   assert.equal(humanClearOverridingRejection({ nonReviewManualClear: true }, 'not_a_review'), 'non-review');
 });
 
-test('a wrongArticle clear overrules not_a_review too (same test as the rebuild)', () => {
-  assert.equal(humanClearOverridingRejection({ wrongArticleManualClear: true }, 'not_a_review'), 'non-review');
-  assert.equal(humanClearOverridingRejection({ humanReviewedWrongArticle: false }, 'not_a_review'), 'non-review');
+test('a wrongArticle clear does not overrule not_a_review (right article, not necessarily a review)', () => {
+  assert.equal(humanClearOverridingRejection({ wrongArticleManualClear: true }, 'not_a_review'), null);
+  assert.equal(humanClearOverridingRejection({ humanReviewedWrongArticle: false }, 'not_a_review'), null);
 });
 
 test('a non-review clear does not overrule wrong_show, wrong_production or garbage_text', () => {

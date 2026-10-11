@@ -47,7 +47,9 @@ function detectPreOpeningInterviewFeature(data, show) {
   if (data.fullText.length < MIN_BODY_CHARS) return none('too_short');
   // A human decision (manual clear / human score) always wins over a heuristic.
   if (data.humanReviewScore != null || data.manuallyCleared || data.wrongShowManualClear || data.wrongProductionManualClear
-      || data.manualContentTier || data._locked || data.isNonReview === false) {
+      || data.manualContentTier || data._locked || data.isNonReview === false
+      // BRO-4838: a person said this file IS a review.
+      || data.nonReviewManualClear === true) {
     return none('human_override');
   }
   const opening = show && show.openingDate;
