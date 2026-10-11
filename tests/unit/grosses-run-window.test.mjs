@@ -36,7 +36,12 @@ test('sameWork: a revival under a longer title is the same work; a fragment or a
   assert.equal(W.sameWork({ title: 'SIX', id: 'six', isRevival: false }, { title: 'Six Degrees of Separation', id: 'six-degrees', isRevival: false }), false);
   assert.equal(W.sameWork({ title: 'Waitress', id: 'waitress-2016', isRevival: false }, { title: 'Waitress', id: 'waitress-2021', isRevival: false }), true);
   // A one-word title still matches when the other only adds a subtitle or the link says so.
-  assert.equal(W.sameWork(t("Dancin'"), t("Bob Fosse's Dancin'")), false);
+  // A possessive credit before it is not a different work ("Bob Fosse's Dancin'"
+  // parked every 2023 week); a possessive of the word itself still is.
+  assert.equal(W.sameWork(t("Dancin'"), t("Bob Fosse's Dancin'")), true);
+  assert.equal(W.sameWork(t('Cinderella'), t("Rodgers + Hammerstein's Cinderella")), true);
+  assert.equal(W.sameWork(t('Annie'), t("Annie's Song")), false);
+  assert.equal(W.sameWork(t('Cinderella'), t("Rodgers + Hammerstein's Cinderella Story")), false);
   assert.equal(W.sameWork({ title: 'Cabaret', id: 'cabaret-2014', originalProductionId: 'cabaret-1987' }, { title: 'Cabaret at the Kit Kat Club', id: 'cabaret-2024', originalProductionId: 'cabaret-1987' }), true);
 });
 
@@ -66,6 +71,18 @@ test('grossesProductionFor: the matcher\'s pick is replaced by the run that hold
   const undated = { slug: 'undated', title: 'Undated', category: 'broadway' };
   assert.equal(W.grossesProductionFor(undated, '2024-06-02', SHOWS, NOW), undated);
   assert.equal(W.grossesProductionFor(cabaret2014, null, SHOWS, NOW), cabaret2014);
+});
+
+test('historicalGrossesProduction: re-picks before the market check; medium needs a Broadway run of the work that week', () => {
+  // A West End first match is re-picked to the Broadway run (Back To The Future case).
+  assert.equal(W.historicalGrossesProduction({ show: cabaretWE, confidence: 'high' }, '2024-06-02', SHOWS, NOW).slug, 'cabaret-2024');
+  // Medium is kept only when a Broadway production of the work held the week (The Best Man case).
+  assert.equal(W.historicalGrossesProduction({ show: cabaret2014, confidence: 'medium' }, '2025-01-05', SHOWS, NOW).slug, 'cabaret-2024');
+  assert.equal(W.historicalGrossesProduction({ show: cabaret2014, confidence: 'medium' }, '2002-01-06', SHOWS, NOW), null);
+  assert.equal(W.historicalGrossesProduction({ show: cabaret2014, confidence: 'low' }, '2014-06-01', SHOWS, NOW), null);
+  assert.equal(W.historicalGrossesProduction(null, '2014-06-01', SHOWS, NOW), null);
+  const weOnly = { id: 'we-only', slug: 'we-only', title: 'West End Only', category: 'west-end', openingDate: '2020-01-01' };
+  assert.equal(W.historicalGrossesProduction({ show: weOnly, confidence: 'high' }, '2024-06-02', [...SHOWS, weOnly], NOW), null);
 });
 
 test('rekeyRowsToRuns: Cabaret weeks move to their own run, weeks no listed run held are set aside, a second pass is a no-op', () => {

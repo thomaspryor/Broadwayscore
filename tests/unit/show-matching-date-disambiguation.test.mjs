@@ -98,3 +98,21 @@ describe('matchTitleToShow date-containment disambiguation', () => {
     }
   });
 });
+
+// BRO-5016: Playbill titles the 2019 show "Ain't Too Proud—The Life and Times
+// of the Temptations" (an unspaced em dash), and lists Michael Moore's show
+// under his name; both had no stored week.
+describe('matchTitleToShow Playbill title variants', () => {
+  const SHOWS = [
+    { id: 'aint-too-proud-2019', slug: 'aint-too-proud-2019', title: "Ain't Too Proud", category: 'broadway', openingDate: '2019-03-21', closingDate: '2022-01-16', status: 'closed' },
+    { id: 'the-terms-of-my-surrender-2017', slug: 'the-terms-of-my-surrender-2017', title: 'The Terms of My Surrender', category: 'broadway', openingDate: '2017-08-10', closingDate: '2017-10-22', status: 'closed' },
+  ];
+  it('matches the title before an unspaced em dash', () => {
+    const r = matchTitleToShow("Ain't Too Proud—The Life and Times of the Temptations", SHOWS, { market: 'broadway', prefer: 'open', date: '2019-11-24' });
+    assert.equal(r?.show?.id, 'aint-too-proud-2019');
+  });
+  it('maps the credited Michael Moore title to its show', () => {
+    const r = matchTitleToShow('Michael Moore: The Terms of My Surrender', SHOWS, { market: 'broadway', prefer: 'open', date: '2017-09-10' });
+    assert.equal(r?.show?.id, 'the-terms-of-my-surrender-2017');
+  });
+});

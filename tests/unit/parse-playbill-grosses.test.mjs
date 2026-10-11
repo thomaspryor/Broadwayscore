@@ -28,6 +28,7 @@ const {
   playbillGrossesUrl,
   findShortHistoryWeeks,
   addMissingRows,
+  findUnstoredRunWeeks,
 } = require('../../scripts/lib/parse-playbill-grosses.js');
 const { isSaneGrossesRow } = require('../../scripts/lib/parse-bww-grosses-row.js');
 
@@ -351,4 +352,33 @@ test('addMissingRows adds only the hole shows a stored week lacks and never touc
   assert.deepEqual(addMissingRows(week, snap, ['dos', 'cats', 'gone']), ['cats']);
   assert.deepEqual(week, { dos: { gross: 5 }, cats: { gross: 7 } }, 'hair is not a hole slug, so it is not added');
   assert.deepEqual(addMissingRows(week, snap), []);
+});
+
+test('findUnstoredRunWeeks: a closed Broadway run inside the history with no stored row is listed; parked, partly-outside and one-night runs are not', () => {
+  const NOW = Date.parse('2026-10-10');
+  const weeks = {};
+  for (let t = Date.parse('2012-01-01'); t <= Date.parse('2012-12-30'); t += 7 * 86400000) weeks[new Date(t).toISOString().slice(0, 10)] = { other: { gross: 1 } };
+  const history = { weeks, _unplacedRows: { '2012-04-01': { 'cinderella-1957': { gross: 2 } } } };
+  const show = (id, title, previewsStartDate, openingDate, closingDate, extra = {}) => ({ id, slug: id, title, category: 'broadway', previewsStartDate, openingDate, closingDate, ...extra });
+  const shows = [
+    show('best-man-2012', 'The Best Man', '2012-03-06', '2012-04-01', '2012-04-22'),
+    show('cinderella-2012', 'Cinderella', '2012-03-25', '2012-04-08', '2012-04-29'),
+    show('cinderella-1957', 'Cinderella', null, '1957-03-31', '1957-04-01'),
+    show('outside-2012', 'Outside', '2012-11-20', '2012-12-10', '2013-02-01'),
+    show('one-night-2012', 'One Night', null, '2012-06-10', '2012-06-10'),
+    show('other', 'Other', '2012-01-01', '2012-01-10', '2012-12-01'),
+    show('we-2012', 'West End Run', '2012-05-01', '2012-05-10', '2012-06-01', { category: 'west-end' }),
+  ];
+  const out = findUnstoredRunWeeks(history, shows, NOW);
+  const bySlug = {};
+  for (const { week, slugs } of out) for (const s of slugs) (bySlug[s] = bySlug[s] || []).push(week);
+  assert.deepEqual(Object.keys(bySlug).sort(), ['best-man-2012', 'cinderella-2012']);
+  // Previews less 7 days (2012-02-28) to closing plus 7 (2012-04-29).
+  assert.equal(bySlug['best-man-2012'][0], '2012-03-04');
+  assert.equal(bySlug['best-man-2012'].at(-1), '2012-04-29');
+  // The week holding a parked row of the same work is left to the re-key, not refetched.
+  assert.ok(!bySlug['cinderella-2012'].includes('2012-04-01'));
+  assert.ok(bySlug['cinderella-2012'].includes('2012-04-08'));
+  assert.deepEqual(out.map((x) => x.week), [...out.map((x) => x.week)].sort());
+  assert.deepEqual(findUnstoredRunWeeks({ weeks: {} }, shows, NOW), []);
 });

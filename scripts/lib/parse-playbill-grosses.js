@@ -69,6 +69,7 @@ const {
   isSaneGrossesRow,
 } = require('./parse-bww-grosses-row');
 const { deriveSeatsOffered } = require('./grosses-history-repair');
+const { runWeekWindow, isBroadway, sameWork } = require('./grosses-run-window');
 
 const PLAYBILL_GROSSES_URL = 'https://playbill.com/grosses';
 
@@ -485,6 +486,44 @@ function findShortHistoryWeeks(history, { maxHoleWeeks = 4 } = {}) {
 }
 
 /**
+ * Stored weeks inside the run of a Broadway production the history holds no
+ * row for at all: its title never matched (Playbill's "Back To The Future"
+ * first matched the West End run, "The Best Man" only fuzzily), so every week
+ * of it was dropped. Only runs wholly inside the history and longer than one
+ * night count. A week where a parked row of the same work waits is left to
+ * the save-time repair, which re-homes it.
+ *
+ * @param {{weeks: Record<string, Record<string, object>>, _unplacedRows?: object}} history
+ * @param {object[]} shows shows.json entries
+ * @returns {{week: string, slugs: string[]}[]} oldest first
+ */
+function findUnstoredRunWeeks(history, shows, nowMs = Date.now()) {
+  const weeks = Object.keys(history?.weeks || {}).filter(w => ISO_WEEK_RE.test(w)).sort();
+  if (!weeks.length) return [];
+  const ms = w => Date.parse(`${w}T00:00:00Z`);
+  const stored = new Set();
+  for (const w of weeks) for (const slug of Object.keys(history.weeks[w] || {})) stored.add(slug);
+  const bySlug = new Map((shows || []).map(s => [s.slug || s.id, s]));
+  const parked = history._unplacedRows || {};
+  const [first, last] = [ms(weeks[0]), ms(weeks[weeks.length - 1])];
+  const out = new Map();
+  for (const show of shows || []) {
+    const slug = show && (show.slug || show.id);
+    if (!slug || stored.has(slug) || !isBroadway(show) || !show.closingDate || show.closingDate === show.openingDate) continue;
+    const win = runWeekWindow(show, nowMs);
+    if (!win || win.startMs < first || win.endMs > last) continue;
+    for (const w of weeks) {
+      const t = ms(w);
+      if (t < win.startMs || t > win.endMs) continue;
+      if (Object.keys(parked[w] || {}).some(p => sameWork(show, bySlug.get(p)))) continue;
+      if (!out.has(w)) out.set(w, new Set());
+      out.get(w).add(slug);
+    }
+  }
+  return [...out.keys()].sort().map(week => ({ week, slugs: [...out.get(week)].sort() }));
+}
+
+/**
  * Add to a stored week the rows a fresh scrape of it has for `onlySlugs`, the
  * shows the week is known to be missing. A row the week already holds is never
  * touched, and nothing else from the scrape is added (a show the resolver maps
@@ -503,6 +542,7 @@ function addMissingRows(weekRows, snapshot, onlySlugs) {
 
 module.exports = {
   findShortHistoryWeeks,
+  findUnstoredRunWeeks,
   addMissingRows,
   PLAYBILL_GROSSES_URL,
   TABLE_SCHEMA,
