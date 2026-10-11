@@ -1208,5 +1208,63 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-11T23:26:12.692Z"
+  },
+  {
+    "conditionKey": "land:land/bro-3475-drift-order-test",
+    "title": "Landing blocked: unit-tests-node red on land/bro-3475-drift-order-test",
+    "description": "land.yml did not land land/bro-3475-drift-order-test: the unit-tests-node gate went red at 1588ad9444. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38182403096",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-3475-drift-order-test"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "1588ad944439de98de8aae310ab2e4a1c5fcf84c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38182403096"
+      }
+    ],
+    "queuedAt": "2026-10-11T23:31:06.888Z"
+  },
+  {
+    "conditionKey": "land:land/bro-3410-writer-blocklist",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-3410-writer-blocklist",
+    "description": "land.yml did not land land/bro-3410-writer-blocklist: the scripts-lib-tests gate went red at 24be7ff4cf. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38182340477",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-3410-writer-blocklist"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "24be7ff4cf671343b10e15f167bfbc30527d51af"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38182340477"
+      }
+    ],
+    "queuedAt": "2026-10-11T23:30:20.257Z"
   }
 ]
