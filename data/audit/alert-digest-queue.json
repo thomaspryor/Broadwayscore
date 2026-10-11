@@ -1005,5 +1005,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-11T21:24:32.152Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4838-coverage-daily",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4838-coverage-daily",
+    "description": "land.yml did not land land/bro-4838-coverage-daily: the unit-tests-node gate went red at fffb9b2f9f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38174610234",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4838-coverage-daily"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "fffb9b2f9f1c3d14d8eab6d04520363ef6dc0304"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38174610234"
+      }
+    ],
+    "queuedAt": "2026-10-11T21:29:32.100Z"
   }
 ]
