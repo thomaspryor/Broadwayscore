@@ -92,3 +92,6 @@ runs:
           echo "::error::review-texts checkout FAILED — data/review-texts/.git missing"
           exit 1
         fi
+
+        # Preserve checkout-time bytes even if the job commits before validation.
+        node scripts/lib/review-validation-scope.js data/review-texts "${RUNNER_TEMP:-/tmp}/.review-validation-baseline.json"

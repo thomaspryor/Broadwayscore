@@ -127,3 +127,76 @@ module.exports = {
   rebuildExcludesHeld,
   classifyDateGuardBackstop,
 };
+
+// ---------------------------------------------------------------------------
+// Automatic resolution of a hold (BRO-5032). Pure decision, no I/O: the script
+// scripts/resolve-date-guard-holds.js feeds it the refetch + CV results and
+// applies the verdict.
+// ---------------------------------------------------------------------------
+
+const { isArticleOutsideProductionWindow } = require('./date-guard');
+const { detectPriorRunRepublish } = require('./prior-run-republish-guard');
+
+const RESOLVE_ATTEMPTS_FIELD = 'dateGuardResolveAttempts';
+const RESOLVE_EXHAUSTED_FIELD = 'dateGuardResolveExhausted';
+const MAX_RESOLVE_ATTEMPTS = 3;
+
+/**
+ * Decide what to do with one held review.
+ *
+ * @param {object} args
+ * @param {object} args.review - review-text record (carries the marker)
+ * @param {object} args.show - shows.json record
+ * @param {{ok: boolean, date?: string|null, text?: string|null}|null} args.refetch
+ *   result of refetching the live page (date from extractPublishDate, never dateModified)
+ * @param {{isValid?: boolean, wrongProduction?: boolean, wrongArticle?: boolean, confidence?: string}|null} args.cv
+ *   fresh content-verification verdict; null when it has not been run yet
+ * @param {number} [args.attempts] - dateGuardResolveAttempts already spent
+ * @returns {{action: 'refuse'|'retry'|'need-cv'|'correct-date'|'wrong-production'|'cv-affirm'|'exhausted',
+ *            reason: string, date?: string, countAttempt: boolean}}
+ */
+function resolveHoldDecision({ review, show, refetch, cv, attempts = 0 }) {
+  const out = (action, reason, extra = {}) => ({ action, reason, countAttempt: false, ...extra });
+  if (!review || review[RESOLVE_EXHAUSTED_FIELD]) return out('refuse', 'already-exhausted-or-missing');
+  // A person's score exempts the file from the date check; never touch it.
+  if (review._locked === true || review.wrongProductionOverride || review.wrongProductionManualClear
+      || review.humanReviewedWrongProduction === false || review.publishDateVerified === true) {
+    return out('refuse', 'operator-decision-on-file');
+  }
+  if (review.humanReviewScore !== undefined && review.humanReviewScore !== null) return out('refuse', 'human-review-score-set');
+
+  if (!refetch || refetch.ok === false) return out('retry', 'fetch-failed');
+
+  const stored = review.publishDate || null;
+  const live = refetch.date || null;
+  if (live && live !== stored && !isArticleOutsideProductionWindow(show, live)) {
+    const republish = detectPriorRunRepublish({ text: refetch.text || review.fullText, show });
+    if (republish.flag) {
+      return out('wrong-production', `in-run date ${live} but prior-run republish (${republish.reason})`, { countAttempt: true });
+    }
+    return out('correct-date', `live page date ${live} is inside the run`, { date: live, countAttempt: true });
+  }
+
+  // Same old date, or another out-of-run date: let the content decide.
+  if (!cv) return out('need-cv', live ? `live date ${live} not in run` : 'no date on live page');
+  const confident = cv.confidence === 'high';
+  if (confident && (cv.wrongProduction === true || cv.wrongArticle === true)) {
+    return out('wrong-production', 'content verification rejects this production', { countAttempt: true });
+  }
+  // A date past validate-data's 180-day backstop stays a CHECK 0 error even when
+  // CV affirms (rebuild includes it, the backstop still refuses it), so an affirm
+  // only resolves a hold whose date is not implausible.
+  const stillImplausible = evaluateDatePlausibility({ review, show }).implausible;
+  if (confident && cv.isValid === true && cv.wrongProduction !== true && cv.wrongArticle !== true && !stillImplausible) {
+    return out('cv-affirm', 'content verification affirms this production', { countAttempt: true });
+  }
+  if (attempts + 1 >= MAX_RESOLVE_ATTEMPTS) {
+    return out('exhausted', 'inconclusive after max attempts: staying excluded', { countAttempt: true });
+  }
+  return out('retry', 'content verification inconclusive', { countAttempt: true });
+}
+
+module.exports.resolveHoldDecision = resolveHoldDecision;
+module.exports.RESOLVE_ATTEMPTS_FIELD = RESOLVE_ATTEMPTS_FIELD;
+module.exports.RESOLVE_EXHAUSTED_FIELD = RESOLVE_EXHAUSTED_FIELD;
+module.exports.MAX_RESOLVE_ATTEMPTS = MAX_RESOLVE_ATTEMPTS;

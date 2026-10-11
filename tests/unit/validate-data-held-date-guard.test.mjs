@@ -182,7 +182,7 @@ describe('wiring (real sources)', () => {
     assert.match(vd, /kind === 'held'[\s\S]{0,200}warn\(`\[date-guard-held\]/);
     const heldBranch = vd.slice(vd.indexOf("kind === 'held'"), vd.indexOf("kind === 'error'"));
     assert.doesNotMatch(heldBranch, /\bcontinue;/, 'held files must still run CHECK 1+');
-    assert.match(vd, /kind === 'error'[\s\S]{0,80}error\(`\[wrong-production-by-date\]/);
+    assert.match(vd, /kind === 'error'[\s\S]{0,80}reviewFileError\(`\[wrong-production-by-date\]/);
   });
 
   test('flagger stamps the marker on its hold branch and clears it when it flags', () => {
