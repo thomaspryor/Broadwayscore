@@ -243,7 +243,9 @@ export function movers(input: MarketInput, week: string, n = 4): { gains: Mover[
     if (!isReported(prev)) continue;
     const pct = pctChange(row.gross, prev.gross);
     if (pct == null) continue;
-    const perfs = row.performances ?? null;
+    // A listed 0 beside a gross is an unknown count (isReported): never printed
+    // as "0 shows". Last week's 0 stays 0 so isScheduleMove rejects it as a base.
+    const perfs = row.performances || null;
     const prevPerfs = prev.performances ?? null;
     const perShowPct = perfs && prevPerfs && perfs !== prevPerfs ? pctChange(row.gross / perfs, prev.gross / prevPerfs, 0) : null;
     if (!isScheduleMove(pct, prevPerfs, perShowPct)) continue;
@@ -573,7 +575,7 @@ export function ownRunWeeks(input: MarketInput, slug: string, latestWeek: string
   const first = show?.previewsStartDate ?? (show?.openingDate ? addDays(show.openingDate, -7 * BESTS_PREVIEW_WEEKS) : null);
   const start = first ? weekEndingOnOrAfter(first) : null;
   const weeks = Object.keys(input.weeks)
-    .filter((w) => w <= latestWeek && (!start || w >= start) && (row(w)?.gross ?? 0) > 0)
+    .filter((w) => w <= latestWeek && (!start || w >= start) && isReported(row(w)))
     .sort();
   for (let i = weeks.length - 1; i > 0; i--) {
     if (gapWeeks(weeks[i - 1], weeks[i]) > BESTS_MAX_GAP_WEEKS) return weeks.slice(i);

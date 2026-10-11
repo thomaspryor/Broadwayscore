@@ -152,6 +152,8 @@ test('BRO-5057: a 0-performance week with a gross is reported but never a full w
   assert.equal(isReported(preview), true);
   assert.equal(isPaired(preview), true);
   assert.equal(isFullWeek(preview), false, 'unknown count: never a year-ago base');
+  // real rows of this shape carry no seatsOffered, so they stay out of per-seat maths
+  assert.equal(isPaired({ gross: 1_302_511, capacity: 100.47, attendance: 9_290, performances: 0 }), false);
   assert.equal(isFullWeek({ gross: 1_000_000, performances: 8 }), true);
   assert.equal(isFullWeek({ gross: 1_000_000 }), true, 'no count listed at all reads as full');
   const rows: Record<string, HistoryRow> = {

@@ -229,10 +229,11 @@ function reported(r: WeekRow | undefined): r is WeekRow & { gross: number } {
 
 /**
  * The 4-week window's grosses (newest first), with null for a week that does
- * not count: unreported, or a partial preview week (fewer than 8
- * performances, a listed 0 included, among the run's first 4 reported
- * weeks). Later short weeks (a 7-show play schedule, a holiday) count as
- * reported.
+ * not count: unreported, a partial preview week (fewer than 8 performances
+ * among the run's first 4 reported weeks), or a week listing 0 performances
+ * beside a gross anywhere in the run (an unknown count, usually a long
+ * preview period; BRO-5057). Later short weeks (a 7-show play schedule, a
+ * holiday) count as reported.
  */
 export function statusWindowGrosses(weeksNewestFirst: WeekRow[]): Array<number | null> {
   const reportedOldestFirst = weeksNewestFirst.filter(reported).map((r) => r.week).reverse();
@@ -240,6 +241,7 @@ export function statusWindowGrosses(weeksNewestFirst: WeekRow[]): Array<number |
   return weeksNewestFirst.slice(0, STATUS_WINDOW_WEEKS).map((r) => {
     if (!reported(r)) return null;
     const perfs = r.performances;
+    if (perfs === 0) return null;
     if (previewWeeks.has(r.week) && typeof perfs === 'number' && perfs < FULL_WEEK_PERFORMANCES) return null;
     return r.gross;
   });

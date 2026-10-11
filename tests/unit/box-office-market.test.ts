@@ -24,6 +24,7 @@ import {
   weekOfRun,
   isComparableRun,
   personalBests,
+  ownRunWeeks,
   weeklyRecords,
   RECORD_MIN_PRIOR_WEEKS,
   BESTS_MIN_WEEKS,
@@ -313,4 +314,19 @@ test('BRO-5057: season totals and market weeks count a preview week listed with 
     '2024-01-21': { dowar: row(900_000) },
   }, [show('dowar')]), '2024-01-21');
   assert.equal(gains.length + drops.length, 0);
+  // this week listing 0 after a full week: still a mover, but the count is unknown, never "0 shows"
+  const after = movers(input({
+    '2019-07-21': { s: row(1_000_000) },
+    '2019-07-28': { s: row(170_000, { performances: 0 }) },
+  }, [show('s')]), '2019-07-28');
+  assert.equal(after.drops.length, 1);
+  assert.equal(after.drops[0].performances, null);
+  assert.equal(after.drops[0].prevPerformances, 8);
+  // ownRunWeeks uses the same rule: the preview weeks are weeks of the run, the dark one is not
+  const run = input({
+    '2024-01-07': { d: row(400_000, { performances: 0 }) },
+    '2024-01-14': { d: row(0, { performances: 0 }) },
+    '2024-01-21': { d: row(500_000) },
+  }, [show('d', { previewsStartDate: '2024-01-02' })]);
+  assert.deepEqual(ownRunWeeks(run, 'd', '2024-01-21'), ['2024-01-07', '2024-01-21']);
 });

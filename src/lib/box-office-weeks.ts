@@ -87,11 +87,12 @@ export function priorSeason(season: string, n = 1): string {
 
 /**
  * A week counts as reported when it has a positive gross. A dark week has no
- * gross (0 or null). Performances do not decide it: 2,600+ older history rows
- * (mostly preview weeks from the BWW-era ingest, the zero-perf-gross
- * integrity rule) list 0 performances beside a real gross because the
- * backfill dropped Playbill's Previews column, and grosses-history-repair.js
- * can only fill the provable ones (BRO-5057). Same rule as ownRunWeeks.
+ * gross (0 or null). Performances do not decide it: 2,600+ history rows
+ * (97% in a run's first 6 weeks, still arriving for new shows in 2026; the
+ * zero-perf-gross integrity rule) list 0 performances beside a real gross
+ * because the source dropped the Previews column, and
+ * grosses-history-repair.js can only fill the provable ones (BRO-5057).
+ * Treat a listed 0 as an unknown count wherever performances matter.
  */
 export function isReported(r: HistoryRow | null | undefined): r is HistoryRow & { gross: number } {
   return !!r && typeof r.gross === 'number' && r.gross > 0;

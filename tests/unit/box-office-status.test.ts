@@ -189,8 +189,11 @@ test('statusWindowGrosses: partial preview weeks and dark weeks leave the window
   // among the run's first 4 weeks it is a partial preview week, later it counts
   const preview = rows('2026-09-27', [800, 810, 820, 600], [8, 8, 8, 0]);
   assert.deepEqual(statusWindowGrosses(preview), [800, 810, 820, null]);
+  // a 0 count past the first 4 weeks (a long preview period) is still unknown, so it leaves the window
+  const longPreviews = rows('2026-09-27', [800, 790, 700, 650, 600, 550], [0, 0, 0, 0, 0, 0]);
+  assert.deepEqual(statusWindowGrosses(longPreviews), [null, null, null, null]);
   const lostCount = rows('2026-09-27', [800, 790, 800, 800, 800, 800, 800, 800], [8, 0, 8, 8, 8, 8, 8, 8]);
-  assert.deepEqual(statusWindowGrosses(lostCount), [800, 790, 800, 800]);
+  assert.deepEqual(statusWindowGrosses(lostCount), [800, null, 800, 800]);
 });
 
 test('shutdown weeks are a gap: never zero, never break a streak', () => {
