@@ -21,32 +21,39 @@ type Frame = { w: number; h: number; left: number; right: number; top: number; b
 const DESKTOP: Frame = { w: 720, h: 420, left: 46, right: 14, top: 14, bottom: 30, charW: 6.4, labelH: 14 };
 const PHONE: Frame = { w: 360, h: 300, left: 34, right: 8, top: 10, bottom: 24, charW: 5.4, labelH: 12 };
 
-export type LabelSide = 'right' | 'left';
+export type LabelSide = 'right' | 'left' | 'below' | 'above';
 
 /**
  * Greedy label placement: biggest houses first. A label goes right of its dot,
  * or left when the right side runs off the chart or hits something; a label
  * with no clear side is skipped (the dot keeps its hover and tap). `only`
- * limits which dots get a label; every dot still counts as an obstacle.
+ * limits which dots get a label; every dot still counts as an obstacle. With
+ * `vertical`, a label that fits neither side may sit centred below or above.
  */
 export function placeLabels(
   dots: Array<{ x: number; y: number; r: number; label: string; slug: string }>,
   frame: Frame = DESKTOP,
   only?: Set<string>,
+  vertical = false,
 ): Map<string, LabelSide> {
   const placed: Array<{ x0: number; x1: number; y0: number; y1: number }> = [];
   const shown = new Map<string, LabelSide>();
   for (const d of [...dots].sort((a, b) => b.r - a.r)) {
     if (only && !only.has(d.slug)) continue;
     const w = d.label.length * frame.charW;
-    const y0 = d.y - frame.labelH / 2;
-    const y1 = d.y + frame.labelH / 2;
-    const sides: Array<[LabelSide, number, number]> = [
-      ['right', d.x + d.r + 3, d.x + d.r + 3 + w],
-      ['left', d.x - d.r - 3 - w, d.x - d.r - 3],
+    const mid = d.y - frame.labelH / 2;
+    const sides: Array<[LabelSide, number, number, number]> = [
+      ['right', d.x + d.r + 3, d.x + d.r + 3 + w, mid],
+      ['left', d.x - d.r - 3 - w, d.x - d.r - 3, mid],
     ];
-    for (const [side, x0, x1] of sides) {
+    if (vertical) {
+      sides.push(['below', d.x - w / 2, d.x + w / 2, d.y + d.r + 1]);
+      sides.push(['above', d.x - w / 2, d.x + w / 2, d.y - d.r - 1 - frame.labelH]);
+    }
+    for (const [side, x0, x1, y0] of sides) {
+      const y1 = y0 + frame.labelH;
       if (x1 > frame.w - frame.right || x0 < frame.left) continue;
+      if ((side === 'below' || side === 'above') && (y0 < frame.top || y1 > frame.h - frame.bottom)) continue;
       const hit = placed.some((p) => x0 < p.x1 && x1 > p.x0 && y0 < p.y1 && y1 > p.y0)
         || dots.some((o) => o.slug !== d.slug && o.x + o.r > x0 && o.x - o.r < x1 && o.y + o.r > y0 && o.y - o.r < y1);
       if (hit) continue;
@@ -95,7 +102,7 @@ function Chart({ dots, frame: f, phone, active, setActive }: ChartProps) {
   const x = (c: number) => f.left + ((c - ax.capLo) / (ax.capHi - ax.capLo)) * (f.w - f.left - f.right);
   const y = (a: number) => f.top + (1 - (a - ax.atpLo) / (ax.atpHi - ax.atpLo || 1)) * (f.h - f.top - f.bottom);
   const pos = positions(dots, f, phone);
-  const labelled = placeLabels(pos, f, phone ? mapOutliers(dots) : undefined);
+  const labelled = placeLabels(pos, f, phone ? mapOutliers(dots) : undefined, phone);
   const tickFont = phone ? 10 : 12;
   const labelFont = phone ? 10 : 11;
   const medianAtp = phone ? mapCorners(dots).medianAtp : null;
@@ -153,11 +160,10 @@ function Chart({ dots, frame: f, phone, active, setActive }: ChartProps) {
           >
             <title>{`${d.title}: ${Math.round(d.capacity)}% full, $${Math.round(d.atp)} avg ticket`}</title>
           </circle>
-          {labelled.has(d.slug) && (
-            labelled.get(d.slug) === 'left'
-              ? <text x={d.x - d.r - 3} y={d.y + 4} fontSize={labelFont} textAnchor="end" className="fill-gray-300 pointer-events-none">{d.label}</text>
-              : <text x={d.x + d.r + 3} y={d.y + 4} fontSize={labelFont} className="fill-gray-300 pointer-events-none">{d.label}</text>
-          )}
+          {labelled.get(d.slug) === 'left' && <text x={d.x - d.r - 3} y={d.y + 4} fontSize={labelFont} textAnchor="end" className="fill-gray-300 pointer-events-none">{d.label}</text>}
+          {labelled.get(d.slug) === 'right' && <text x={d.x + d.r + 3} y={d.y + 4} fontSize={labelFont} className="fill-gray-300 pointer-events-none">{d.label}</text>}
+          {labelled.get(d.slug) === 'below' && <text x={d.x} y={d.y + d.r + f.labelH - 2} fontSize={labelFont} textAnchor="middle" className="fill-gray-300 pointer-events-none">{d.label}</text>}
+          {labelled.get(d.slug) === 'above' && <text x={d.x} y={d.y - d.r - 4} fontSize={labelFont} textAnchor="middle" className="fill-gray-300 pointer-events-none">{d.label}</text>}
         </g>
       ))}
     </svg>
