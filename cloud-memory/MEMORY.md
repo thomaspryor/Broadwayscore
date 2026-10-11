@@ -23,9 +23,8 @@
 - [Show status before external comms](feedback_check_show_status_before_external_comms.md) — surface status/closingDate with show drafts; OB closings lag
 - [Polling + job liveness](feedback_liveness_needs_lsof_not_mtime.md) — no gh loops, never gh run watch; liveness = lsof+ledger not mtime/pgrep
 
-## 📇 Notion / brain
-- [Notion brain workflow](notion-brain-workflow.md) — IDs, schema, lifecycle; CLI only, never MCP ([[feedback_notion_cli_only.md]])
-- [Notion cards need context](feedback_notion_card_context.md) — paths, commands, root cause, repro; read FULL create output, avoid "rejected" ([[feedback_notion_create_verify.md]], [[feedback_notion_create_hook_false_rejection.md]])
+## 📇 Board (Linear)
+- [Linear board workflow](linear-board-workflow.md) — linear-brain.js create/update, Done gate, dispatch; Notion retired 2026-08-20, never file there ([[notion-brain-workflow.md]] is history only); cards need context: paths, commands, root cause, repro ([[feedback_notion_card_context.md]])
 
 ## 🌳 Worktrees & git
 - [Landing on main](CLAUDE-reference.md) — merge-worktree-to-main.sh → land/** + land.yml; direct push to main refused (BRO-3425)
@@ -63,7 +62,7 @@
 
 ## 📋 Open work
 - [Coverage Verdict APPROVED](project_coverage_verdict_plan.md) — FULL S0-S5 approved 2026-08-02, runs without owner; tasks #901-906; don't re-ask, dispatch stalled cards
-- [Linear migration decision](project_linear_migration_decision.md) — approved+underway since 8/12 (Phase 1 mid-flight); never pitch "one more fix" to Notion+cmux
+- [Linear migration decision](project_linear_migration_decision.md) — done: Linear is the board, Notion retired 2026-08-20
 - [Sprint plans must be durable](feedback_sprint_plans_must_be_durable.md) — cards point at claude-outputs/repo paths; scratchpad dies
 - [Autonomous loop schedule](autonomous-loop-schedule.md) — LOOP RETIRED 2026-07-27, do NOT re-enable; email lives on as send-morning-digest.js @ 7:30am ET; cron map valid
 - [Manual stubs bypass venue/date validation](feedback_manual_stub_bypasses_validation.md) — NEVER stub shows.json from memory; look up Playbill first
