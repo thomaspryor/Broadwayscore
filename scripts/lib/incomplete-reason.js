@@ -17,6 +17,18 @@ const KNOWN_PAYWALL_DOMAINS = new Set([
 ]);
 
 /**
+ * True when review.manuallyVerified is set AND manualVerifiedAt is newer than
+ * textFetchedAt (a missing textFetchedAt counts as older). BRO-2890.
+ */
+function isManuallyVerifiedAfterFetch(review) {
+  if (!review || review.manuallyVerified !== true || !review.manualVerifiedAt) return false;
+  const verified = Date.parse(review.manualVerifiedAt);
+  if (Number.isNaN(verified)) return false;
+  const fetched = review.textFetchedAt ? Date.parse(review.textFetchedAt) : NaN;
+  return Number.isNaN(fetched) || verified > fetched;
+}
+
+/**
  * Classify WHY a review is incomplete.
  *
  * @param {Object} review - Review data object from the JSON file
@@ -25,6 +37,14 @@ const KNOWN_PAYWALL_DOMAINS = new Set([
  *   Returns null if contentTier is 'complete'.
  */
 function classifyIncompleteReason(review, failedFetchEntry) {
+  // BRO-2890: a manual verification newer than the last fetch is durable. Keep
+  // whatever incompleteReason the human left (usually none) instead of re-stamping.
+  if (isManuallyVerifiedAfterFetch(review) && failedFetchEntry?.failureReason !== 'url_content_mismatch') {
+    return review.incompleteReason
+      ? { incompleteReason: review.incompleteReason, incompleteDetail: review.incompleteDetail || '' }
+      : null;
+  }
+
   const tier = review.contentTier;
   // url_content_mismatch can occur even on previously-complete reviews (CDN misroutes, content swaps).
   // Always surface it regardless of contentTier so Browserbase escalation fires on next run.
@@ -196,6 +216,7 @@ function classifyIncompleteReason(review, failedFetchEntry) {
 }
 
 module.exports = {
+  isManuallyVerifiedAfterFetch,
   classifyIncompleteReason,
   KNOWN_PAYWALL_DOMAINS,
 };
