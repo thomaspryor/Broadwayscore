@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-11T07:38:49.451Z",
+  "timestamp": "2026-10-11T09:16:26.529Z",
   "stats": {
-    "totalReviews": 54775,
-    "alreadyFlagged": 20096,
+    "totalReviews": 55222,
+    "alreadyFlagged": 20135,
     "dateGuardCatches": 267,
-    "directorMismatch": 1691,
+    "directorMismatch": 1696,
     "tvFilmSignals": 1539,
-    "londonSignals": 1890,
-    "offBroadwaySignals": 506,
+    "londonSignals": 1896,
+    "offBroadwaySignals": 505,
     "yearMismatch": 134,
-    "noPublishDate": 6094
+    "noPublishDate": 6447
   },
   "findings": [
     {
@@ -4481,6 +4481,48 @@
       ]
     },
     {
+      "showId": "betrayal-west-end-2019",
+      "file": "artsdesk--marianka-swain.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/betrayal-harold-pinter-theatre-review-tom-hiddleston-anchors-bold-brooding-revival",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from betrayal-2019"
+        }
+      ]
+    },
+    {
+      "showId": "betrayal-west-end-2019",
+      "file": "independent--paul-taylor.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/betrayal-harold-pinter-theatre-review-tom-hiddleston-zawe-ashton-charlie-cox-london-a8822471.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from betrayal-2019"
+        }
+      ]
+    },
+    {
+      "showId": "betrayal-west-end-2019",
+      "file": "times-uk--ann-treneman.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.thetimes.co.uk/article/review-betrayal-harold-pinter-theatre-sw1-2qnwwdlll",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from betrayal-2019"
+        }
+      ]
+    },
+    {
       "showId": "between-riverside-and-crazy-2022",
       "file": "broadway-and-me--janice-c-simpson.json",
       "score": 82,
@@ -4766,7 +4808,7 @@
     },
     {
       "showId": "book-of-mormon-tour-2022",
-      "file": "hotchka--unknown.json",
+      "file": "hotchka--jeremy-fogelman.json",
       "score": 85,
       "publishDate": "2026-04-29",
       "url": "https://hotchka.com/the-book-of-mormon-2026-tour-review-washington-dc-national-theatre",
@@ -4949,7 +4991,7 @@
     {
       "showId": "boys-from-the-blackstuff-west-end-2024",
       "file": "islingtontribune--unknown.json",
-      "score": null,
+      "score": 79,
       "publishDate": "2024-06-06",
       "url": "https://www.islingtontribune.co.uk/article/review-boys-from-the-blackstuff-at-national-olivier-theatre",
       "findings": [
@@ -8295,6 +8337,34 @@
       ]
     },
     {
+      "showId": "come-from-away-west-end-2019",
+      "file": "guardian--michael-billington.json",
+      "score": 65,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/2019/feb/18/come-from-away-review-phoenix-theatre-relentless-post-911-canadian-kindness",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher ashley\" from come-from-away-2017"
+        }
+      ]
+    },
+    {
+      "showId": "come-from-away-west-end-2019",
+      "file": "independent--unknown.json",
+      "score": 77,
+      "publishDate": null,
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/come-from-away-review-phoenix-theatre-london-9-11-attack-musical-new-york-a8784576.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher ashley\" from come-from-away-2017"
+        }
+      ]
+    },
+    {
       "showId": "company-2021",
       "file": "chicagotribune--chris-jones.json",
       "score": 75,
@@ -8677,7 +8747,7 @@
     {
       "showId": "crazy-for-you-west-end-2023",
       "file": "i-paper--kate-maltby.json",
-      "score": 94,
+      "score": 92,
       "publishDate": "2023-07-04",
       "url": "https://inews.co.uk/culture/arts/crazy-for-you-gillian-lynne-theatre-review-joyous-2452485",
       "findings": [
@@ -8691,8 +8761,8 @@
     {
       "showId": "crazy-for-you-west-end-2023",
       "file": "plays-international--maryam-philpott.json",
-      "score": null,
-      "publishDate": null,
+      "score": 92,
+      "publishDate": "2023-07-04",
       "url": "https://playsinternational.org.uk/crazy-for-you-gillian-lynne-theatre/",
       "findings": [
         {
@@ -8719,7 +8789,7 @@
     {
       "showId": "crazy-for-you-west-end-2023",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 98,
+      "score": 97,
       "publishDate": "2023-07-04",
       "url": "https://www.whatsonstage.com/news/crazy-for-you-in-the-west-end-review_1508472/",
       "findings": [
@@ -9018,7 +9088,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2022",
       "file": "thestage--natasha-tripney.json",
-      "score": 96,
+      "score": 97,
       "publishDate": "2022-02-13",
       "url": "https://www.thestage.co.uk/reviews/cyrano-de-bergerac-review-harold-pinter-theatre-london-james-mcavoy-martin-crimp-jamie-lloyd",
       "findings": [
@@ -12531,7 +12601,7 @@
     {
       "showId": "fawlty-towers-west-end-2024",
       "file": "jonathan-baz--unknown.json",
-      "score": null,
+      "score": 95,
       "publishDate": null,
       "url": "http://www.jonathanbaz.com/2024/05/fawlty-towers-play-review.html",
       "findings": [
@@ -12544,7 +12614,7 @@
     },
     {
       "showId": "fawlty-towers-west-end-2024",
-      "file": "london-box-office--unknown.json",
+      "file": "london-box-office--emmie-newitt.json",
       "score": null,
       "publishDate": null,
       "url": "https://www.londonboxoffice.co.uk/news/post/fawlty-towers-the-play-extends-2025",
@@ -12559,8 +12629,8 @@
     {
       "showId": "fawlty-towers-west-end-2024",
       "file": "monstagigz--unknown.json",
-      "score": null,
-      "publishDate": null,
+      "score": 88,
+      "publishDate": "2024-05-04",
       "url": "https://monstagigz.com/2024/05/05/theatre-review-john-cleeses-fawlty-towers-the-play-starring-adam-jackson-smith-anna-jayne-casey-at-the-apollo-theatre/",
       "findings": [
         {
@@ -12614,7 +12684,7 @@
     },
     {
       "showId": "fawlty-towers-west-end-2024",
-      "file": "variety--unknown.json",
+      "file": "variety--naman-ramachandran.json",
       "score": null,
       "publishDate": null,
       "url": "https://variety.com/2024/theater/global/fawlty-towers-john-cleese-stage-play-racial-slurs-1235989568/",
@@ -16574,7 +16644,7 @@
     {
       "showId": "harry-clarke-west-end-2024",
       "file": "times-uk--clive-davis.json",
-      "score": 95,
+      "score": 94,
       "publishDate": "March 14th, 2024",
       "url": "https://www.thetimes.co.uk/article/harry-clarke-theatre-review-billy-crudup-is-hypnotic-in-one-man-conman-tale-7h252pmmz",
       "findings": [
@@ -22340,7 +22410,7 @@
     {
       "showId": "lemons-lemons-lemons-lemons-lemons-west-end-2023",
       "file": "nytimes--unknown.json",
-      "score": null,
+      "score": 74,
       "publishDate": null,
       "url": "https://www.nytimes.com/2023/02/01/theater/lemons-lemons-lemons-lemons-lemons-review-aidan-turner.html",
       "findings": [
@@ -24248,6 +24318,11 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -27704,20 +27779,6 @@
     },
     {
       "showId": "once-upon-a-mattress-1996",
-      "file": "amny--matt-windman.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.amny.com/entertainment/theater/once-upon-a-mattress-through-the-decades/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"series finale\""
-        }
-      ]
-    },
-    {
-      "showId": "once-upon-a-mattress-1996",
       "file": "hollywood-reporter--unknown.json",
       "score": null,
       "publishDate": null,
@@ -27801,6 +27862,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "only-fools-and-horses-west-end-2019",
+      "file": "london-theatre--mark-shenton.json",
+      "publishDate": null,
+      "url": "https://www.londontheatre.co.uk/reviews/review-only-fools-and-horses-the-musical-at-the-theatre-royal-haymarket",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -29199,7 +29273,7 @@
     {
       "showId": "peter-pan-goes-wrong-west-end-2023",
       "file": "lost-in-theatreland--amy-rye.json",
-      "score": null,
+      "score": 99,
       "publishDate": "November 29th, 2023",
       "url": "https://lostintheatreland.co.uk/peter-pan-goes-wrong-review-lyric-theatre/",
       "findings": [
@@ -29227,7 +29301,7 @@
     {
       "showId": "peter-pan-goes-wrong-west-end-2023",
       "file": "west-end-best-friend--jack-francis.json",
-      "score": null,
+      "score": 94,
       "publishDate": "November 29th, 2023",
       "url": "https://www.westendbestfriend.co.uk/news/review-peter-pan-goes-wrong-lyric-theatre-west-end",
       "findings": [
@@ -33224,7 +33298,7 @@
     {
       "showId": "spirited-away-west-end-2024",
       "file": "getthechance--hannah-goslin.json",
-      "score": null,
+      "score": 90,
       "publishDate": "2024-05-09",
       "url": "https://getthechance.wales/2024/05/09/review-spirited-away-london-coliseum-by-hannah-goslin/",
       "findings": [
@@ -37313,7 +37387,7 @@
     {
       "showId": "the-crucible-west-end-2022",
       "file": "variety--unknown.json",
-      "score": null,
+      "score": 43,
       "publishDate": null,
       "url": "https://variety.com/2022/legit/reviews/the-crucible-review-national-theatre-1235388183/",
       "findings": [
@@ -37486,7 +37560,7 @@
     {
       "showId": "the-enfield-haunting-west-end-2023",
       "file": "thestage--sam-marlowe.json",
-      "score": 10,
+      "score": 15,
       "publishDate": "January 11th, 2024",
       "url": "https://www.thestage.co.uk/reviews/the-enfield-haunting-review-ambassadors-theatre-london-catherine-tate-david-threlfall-paul-unwin",
       "findings": [
@@ -37514,7 +37588,7 @@
     {
       "showId": "the-enfield-haunting-west-end-2023",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 20,
+      "score": 23,
       "publishDate": "January 11th, 2024",
       "url": "https://www.whatsonstage.com/news/the-enfield-haunting-review-a-shocker-in-all-the-wrong-ways_1562236/",
       "findings": [
@@ -38055,7 +38129,7 @@
     {
       "showId": "the-grapes-of-wrath-west-end-2024",
       "file": "daily-mail--patrick-marmion.json",
-      "score": 59,
+      "score": 61,
       "publishDate": "2024-08-02",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-13700699/The-Years-review-lot-woman-writes-PATRICK-MARMION.html",
       "findings": [
@@ -38210,7 +38284,7 @@
     {
       "showId": "the-grapes-of-wrath-west-end-2024",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 53,
+      "score": 54,
       "publishDate": "August 1st, 2024",
       "url": "https://www.timeout.com/london/theatre/the-grapes-of-wrath-review",
       "findings": [
@@ -41961,7 +42035,7 @@
     {
       "showId": "the-picture-of-dorian-gray-west-end-2024",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": null,
+      "score": 97,
       "publishDate": "2024-02-15",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-picture-of-dorian-gray-theatre-royal-haymarket",
       "findings": [
@@ -41989,7 +42063,7 @@
     {
       "showId": "the-picture-of-dorian-gray-west-end-2024",
       "file": "daily-mail--robert-gore-langton.json",
-      "score": 93,
+      "score": 92,
       "publishDate": "2024-02-18",
       "url": null,
       "findings": [
@@ -42008,7 +42082,7 @@
     {
       "showId": "the-picture-of-dorian-gray-west-end-2024",
       "file": "financialtimes--sarah-hemming.json",
-      "score": 96,
+      "score": 94,
       "publishDate": "2024-02-15",
       "url": "https://www.ft.com/content/9cfac1df-4313-465f-8ffb-8100a4fe6e0d",
       "findings": [
@@ -43265,7 +43339,7 @@
     {
       "showId": "the-time-travellers-wife-west-end-2023",
       "file": "all-that-dazzles-uk--daz-gale.json",
-      "score": 78,
+      "score": 76,
       "publishDate": "November 3rd, 2023",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-time-traveller-s-wife-apollo-theatre",
       "findings": [
@@ -43297,8 +43371,22 @@
     },
     {
       "showId": "the-time-travellers-wife-west-end-2023",
+      "file": "lost-in-theatreland--amy-rye.json",
+      "score": 70,
+      "publishDate": "November 3rd, 2023",
+      "url": "https://lostintheatreland.co.uk/the-time-travellers-wife-review-apollo-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-time-travellers-wife-west-end-2023",
       "file": "theatre-weekly--greg-stewart.json",
-      "score": 86,
+      "score": 83,
       "publishDate": "November 1st, 2023",
       "url": "https://theatreweekly.com/review-the-time-travellers-wife-the-musical-at-the-apollo-theatre-london/",
       "findings": [
@@ -43446,19 +43534,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "the-upstart-crow-west-end-2022",
-      "file": "timeout-london--unknown.json",
-      "publishDate": null,
-      "url": "https://www.timeout.com/london/theatre/the-upstart-crow-review",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"pilot episode\""
         }
       ]
     },
@@ -45232,7 +45307,7 @@
     {
       "showId": "two-strangers-carry-a-cake-across-new-york-west-end-2024",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": null,
+      "score": 95,
       "publishDate": "2024-04-24",
       "url": "https://www.allthatdazzles.co.uk/post/review-two-strangers-carry-a-cake-across-new-york-criterion-theatre",
       "findings": [
@@ -45246,7 +45321,7 @@
     {
       "showId": "two-strangers-carry-a-cake-across-new-york-west-end-2024",
       "file": "artsdesk--jane-edwardes.json",
-      "score": null,
+      "score": 94,
       "publishDate": "April 30th, 2024",
       "url": "https://theartsdesk.com/theatre/two-strangers-carry-cake-across-new-york-criterion-theatre-review-rueful-and-funny-musical",
       "findings": [
@@ -45260,7 +45335,7 @@
     {
       "showId": "two-strangers-carry-a-cake-across-new-york-west-end-2024",
       "file": "indiependent--jennifer-cartwright.json",
-      "score": null,
+      "score": 97,
       "publishDate": "2024-04-08",
       "url": "https://www.indiependent.co.uk/a-mastered-recipe-two-strangers-carry-a-cake-across-new-york-review/",
       "findings": [
@@ -45274,6 +45349,7 @@
     {
       "showId": "two-strangers-carry-a-cake-across-new-york-west-end-2024",
       "file": "london-box-office--stuart-king.json",
+      "score": 82,
       "publishDate": "2024-04-24",
       "url": "https://www.londonboxoffice.co.uk/news/post/two-strangers-review",
       "findings": [
@@ -45301,7 +45377,7 @@
     {
       "showId": "two-strangers-carry-a-cake-across-new-york-west-end-2024",
       "file": "mrcarlwoodward--carl-woodward.json",
-      "score": null,
+      "score": 77,
       "publishDate": "2024-05-11",
       "url": "https://www.mrcarlwoodward.com/frontpage-article/two-strangers-carry-a-cake-across-new-york/",
       "findings": [
@@ -45315,7 +45391,7 @@
     {
       "showId": "two-strangers-carry-a-cake-across-new-york-west-end-2024",
       "file": "theatre-weekly--greg-stewart.json",
-      "score": 97,
+      "score": 100,
       "publishDate": "April 23rd, 2024",
       "url": "https://theatreweekly.com/review-two-strangers-carry-a-cake-across-new-york-at-the-criterion-theatre/",
       "findings": [
@@ -45750,7 +45826,7 @@
     {
       "showId": "vanya-west-end-2023",
       "file": "nytimes--unknown.json",
-      "score": null,
+      "score": 56,
       "publishDate": null,
       "url": "https://www.nytimes.com/2023/09/22/theater/vanya-andrew-scott.html",
       "findings": [
@@ -45806,7 +45882,7 @@
     {
       "showId": "waiting-for-godot-west-end-2024",
       "file": "plays-international--maryam-philpott.json",
-      "score": null,
+      "score": 81,
       "publishDate": "2024-09-29",
       "url": "https://playsinternational.org.uk/waiting-for-godot-theatre-royal-haymarket/",
       "findings": [
@@ -47581,6 +47657,19 @@
     },
     {
       "showId": "1536-west-end-2026",
+      "file": "london-box-office--shehrazade-zafar-arif.json",
+      "publishDate": "2026-05-05",
+      "url": "https://www.londonboxoffice.co.uk/news/post/1536-ambassadors-theatre-photos",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "1536-west-end-2026",
       "file": "thestage--holly-omahony.json",
       "score": 82,
       "publishDate": "2026-05-13",
@@ -47792,7 +47881,7 @@
     {
       "showId": "a-christmas-carol-west-end-2023",
       "file": "i-paper--fiona-mountford.json",
-      "score": null,
+      "score": 97,
       "publishDate": "2023-11-23",
       "url": "https://inews.co.uk/culture/arts/christmas-carol-old-vic-review-christopher-eccleston-rendition-2772629?srsltid=AU7gw4XArmWXahT3eqZE2YomerhSFU_IpD-0zwg86WlztyCuEealHkfJ",
       "findings": [
@@ -47806,7 +47895,7 @@
     {
       "showId": "a-christmas-carol-west-end-2023",
       "file": "london-theatre--unknown.json",
-      "score": null,
+      "score": 82,
       "publishDate": null,
       "url": "https://www.londontheatre.co.uk/reviews/a-christmas-carol-review-old-vic",
       "findings": [
@@ -47834,7 +47923,7 @@
     {
       "showId": "a-christmas-carol-west-end-2023",
       "file": "thestage--tom-wicker.json",
-      "score": null,
+      "score": 82,
       "publishDate": "2023-11-23",
       "url": "https://www.thestage.co.uk/reviews/a-christmas-carol-review-at-the-old-vic-london-starring-christopher-eccleston",
       "findings": [
@@ -47853,20 +47942,6 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 351d before show (2025-11-26 vs 2026-11-12)"
-        }
-      ]
-    },
-    {
-      "showId": "a-day-in-the-death-of-joe-egg-west-end-2019",
-      "file": "all-that-dazzles-uk--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.allthatdazzles.co.uk/post/review-alterations-national-theatre-lyttleton",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -50091,19 +50166,6 @@
     },
     {
       "showId": "aspects-of-love-west-end-2023",
-      "file": "nytimes--houman-barekat.json",
-      "publishDate": null,
-      "url": "https://www.nytimes.com/2023/05/26/theater/aspects-of-love-lyric-theater-london.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "aspects-of-love-west-end-2023",
       "file": "theatre-weekly--greg-stewart.json",
       "score": 63,
       "publishDate": "2023-05-25",
@@ -51402,7 +51464,7 @@
     {
       "showId": "bluets-west-end-2024",
       "file": "nytimes--houman-barekat.json",
-      "score": null,
+      "score": 62,
       "publishDate": null,
       "url": "https://www.nytimes.com/2024/05/27/theater/bluets-royal-court-theater-ben-whishaw.html",
       "findings": [
@@ -56050,7 +56112,7 @@
     {
       "showId": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2024",
       "file": "all-that-dazzles-uk--sam-admin.json",
-      "score": null,
+      "score": 94,
       "publishDate": "March 8th, 2024",
       "url": "https://www.allthatdazzles.co.uk/post/review-for-black-boys-garrick-theatre",
       "findings": [
@@ -57844,7 +57906,7 @@
     {
       "showId": "hamlet-1995",
       "file": "nytimes--unknown.json",
-      "score": null,
+      "score": 86,
       "publishDate": null,
       "url": "https://www.nytimes.com/1995/05/03/theater/theater-review-ralph-fiennes-as-mod-hamlet.html",
       "findings": [
@@ -58680,6 +58742,7 @@
     {
       "showId": "hello-dolly-west-end-2024",
       "file": "london-box-office--stuart-king.json",
+      "score": 74,
       "publishDate": "2024-07-20",
       "url": "https://www.londonboxoffice.co.uk/news/post/hello-dolly-palladium-review",
       "findings": [
@@ -61308,6 +61371,34 @@
       ]
     },
     {
+      "showId": "king-lear-west-end-2023",
+      "file": "independent--alice-saville.json",
+      "score": 55,
+      "publishDate": "November 1st, 2023",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/king-lear-review-kenneth-branagh-wyndhams-b2439245.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "king-lear-west-end-2023",
+      "file": "lost-in-theatreland--anne-reimers.json",
+      "score": 86,
+      "publishDate": "November 1st, 2023",
+      "url": "https://lostintheatreland.co.uk/king-lear-review-wyndhams-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
       "showId": "kiss-me-kate-2019",
       "file": "guardian--jesse-oxfeld.json",
       "score": 82,
@@ -62113,7 +62204,7 @@
     {
       "showId": "london-tide-west-end-2024",
       "file": "musical-theatre-review--unknown.json",
-      "score": null,
+      "score": 69,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/london-tide-national-theatre/",
       "findings": [
@@ -62127,8 +62218,8 @@
     {
       "showId": "london-tide-west-end-2024",
       "file": "plays-international--maryam-philpott.json",
-      "score": null,
-      "publishDate": null,
+      "score": 58,
+      "publishDate": "2024-04-23",
       "url": "https://playsinternational.org.uk/london-tide-national-theatre/",
       "findings": [
         {
@@ -62183,6 +62274,7 @@
     {
       "showId": "long-days-journey-into-night-west-end-2024",
       "file": "daily-mail--joanna-crawley.json",
+      "score": 73,
       "publishDate": "2024-04-04",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-13271295/Long-Days-Journey-Night-reviews-Brian-Cox-Patricia-Clarkson-critics-West-End-production.html",
       "findings": [
@@ -62364,7 +62456,7 @@
     {
       "showId": "machinal-west-end-2024",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 82,
+      "score": 80,
       "publishDate": "2024-04-28",
       "url": "https://www.thetimes.co.uk/article/the-long-island-housewife-sent-to-the-electric-chair-7fdb9r0tk",
       "findings": [
@@ -63495,6 +63587,20 @@
     },
     {
       "showId": "mates-in-chelsea-west-end-2023",
+      "file": "all-that-dazzles-uk--sam-admin.json",
+      "score": 65,
+      "publishDate": "November 10th, 2023",
+      "url": "https://www.allthatdazzles.co.uk/post/review-mates-in-chelsea-royal-court",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "mates-in-chelsea-west-end-2023",
       "file": "financialtimes--sarah-hemming.json",
       "score": 49,
       "publishDate": "2023-11-15",
@@ -63560,6 +63666,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "mates-in-chelsea-west-end-2023",
+      "file": "west-end-best-friend--sophie-luck.json",
+      "score": 72,
+      "publishDate": "November 10th, 2023",
+      "url": "https://www.westendbestfriend.co.uk/news/review-mates-in-chelsea-royal-court-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -63664,7 +63784,7 @@
     {
       "showId": "mean-girls-west-end-2024",
       "file": "all-that-dazzles-uk--unknown.json",
-      "score": null,
+      "score": 88,
       "publishDate": null,
       "url": "https://www.allthatdazzles.co.uk/post/review-mean-girls-savoy-theatre",
       "findings": [
@@ -63714,19 +63834,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "medea-west-end-2023",
-      "file": "observer--david-cote.json",
-      "publishDate": null,
-      "url": "https://observer.com/2020/01/medea-bam-rose-byrne-bobby-cannavale-review/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"bam\""
         }
       ]
     },
@@ -64068,7 +64175,7 @@
     {
       "showId": "mnemonic-west-end-2024",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": null,
+      "score": 82,
       "publishDate": "2024-07-03",
       "url": "https://www.allthatdazzles.co.uk/post/review-mnemonic-olivier-theatre",
       "findings": [
@@ -64082,6 +64189,7 @@
     {
       "showId": "mnemonic-west-end-2024",
       "file": "london-box-office--stuart-king.json",
+      "score": 77,
       "publishDate": "2024-07-03",
       "url": "https://www.londonboxoffice.co.uk/news/post/mnemonic-review",
       "findings": [
@@ -64723,7 +64831,7 @@
     {
       "showId": "next-to-normal-west-end-2024",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": null,
+      "score": 99,
       "publishDate": "2024-06-28",
       "url": "https://www.allthatdazzles.co.uk/post/review-next-to-normal-wyndham-s-theatre",
       "findings": [
@@ -64737,8 +64845,8 @@
     {
       "showId": "next-to-normal-west-end-2024",
       "file": "beyondthecurtain--unknown.json",
-      "score": null,
-      "publishDate": null,
+      "score": 92,
+      "publishDate": "2024-07-19",
       "url": "https://www.beyondthecurtain.co.uk/2024/07/next-to-normal-review.html",
       "findings": [
         {
@@ -66515,6 +66623,7 @@
     {
       "showId": "people-places-and-things-west-end-2024",
       "file": "london-box-office--stuart-king.json",
+      "score": 92,
       "publishDate": "2024-05-15",
       "url": "https://www.londonboxoffice.co.uk/news/post/people-places-things-review",
       "findings": [
@@ -66952,8 +67061,8 @@
     {
       "showId": "private-lives-west-end-2023",
       "file": "plays-international--maryam-philpott.json",
-      "score": null,
-      "publishDate": null,
+      "score": 84,
+      "publishDate": "2023-09-14",
       "url": "https://playsinternational.org.uk/private-lives-at-ambassadors-theatre/",
       "findings": [
         {
@@ -67092,7 +67201,7 @@
     {
       "showId": "red-pitch-west-end-2024",
       "file": "thestage--sam-marlowe.json",
-      "score": null,
+      "score": 83,
       "publishDate": "March 21st, 2024",
       "url": "https://www.thestage.co.uk/reviews/red-pitch-review-at-sohoplace-london-by-tyrell-williams-and-daniel-bailey",
       "findings": [
@@ -68431,7 +68540,7 @@
     {
       "showId": "slave-play-west-end-2024",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": null,
+      "score": 94,
       "publishDate": "2024-07-11",
       "url": "https://www.allthatdazzles.co.uk/post/review-slave-play-no%C3%ABl-coward-theatre",
       "findings": [
@@ -68473,6 +68582,7 @@
     {
       "showId": "slave-play-west-end-2024",
       "file": "london-box-office--stuart-king.json",
+      "score": 97,
       "publishDate": "2024-07-11",
       "url": "https://www.londonboxoffice.co.uk/news/post/slave-play-review",
       "findings": [
@@ -68584,7 +68694,7 @@
     {
       "showId": "spirited-away-west-end-2024",
       "file": "1883magazine--nick-barr.json",
-      "score": null,
+      "score": 90,
       "publishDate": "2024-05-11",
       "url": "https://1883magazine.com/spirited-away-review-london-coliseum/",
       "findings": [
@@ -68612,7 +68722,7 @@
     {
       "showId": "spirited-away-west-end-2024",
       "file": "british-theatre--paul-t-davies.json",
-      "score": null,
+      "score": 62,
       "publishDate": "2024-06-06",
       "url": "https://www.britishtheatre.com/posts/review-spirited-away-london-coliseum",
       "findings": [
@@ -71640,14 +71750,42 @@
     {
       "showId": "the-confessions-west-end-2023",
       "file": "plays-international--maryam-philpott.json",
-      "score": null,
-      "publishDate": null,
+      "score": 60,
+      "publishDate": "2023-10-26",
       "url": "https://playsinternational.org.uk/the-confessions-at-national-theatre-lyttelton/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-confessions-west-end-2023",
+      "file": "west-end-best-friend--erifyli-gigante.json",
+      "score": 74,
+      "publishDate": "October 24th, 2023",
+      "url": "https://www.westendbestfriend.co.uk/news/review-the-confessions-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-confessions-west-end-2023",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 82,
+      "publishDate": "October 24th, 2023",
+      "url": "https://www.whatsonstage.com/news/the-confessions-at-the-national-theatre-review_1539506/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -71752,7 +71890,7 @@
     {
       "showId": "the-curious-case-of-benjamin-button-west-end-2024",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": null,
+      "score": 100,
       "publishDate": "2024-11-07",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-curious-case-of-benjamin-button-ambassador-s-theatre",
       "findings": [
@@ -72553,6 +72691,7 @@
     {
       "showId": "the-glow-west-end-2022",
       "file": "nytimes--unknown.json",
+      "score": 77,
       "publishDate": null,
       "url": "https://www.nytimes.com/2022/02/03/theater/dr-semmelweis-the-glow.html",
       "findings": [
@@ -72594,6 +72733,7 @@
     {
       "showId": "the-grapes-of-wrath-west-end-2024",
       "file": "londontheatre1--chris-omaweng.json",
+      "score": 58,
       "publishDate": "2024-08-01",
       "url": "https://www.londontheatre1.com/reviews/the-grapes-of-wrath-national-theatre-review/",
       "findings": [
@@ -75887,7 +76027,7 @@
     {
       "showId": "the-witches-west-end-2023",
       "file": "daily-mail--patrick-marmion.json",
-      "score": 95,
+      "score": 94,
       "publishDate": "2023-11-24",
       "url": "https://www.mailplus.co.uk/edition/showbiz/theatre/330664/dahls-witches-cast-a-spell-over-me",
       "findings": [
@@ -75901,7 +76041,7 @@
     {
       "showId": "the-witches-west-end-2023",
       "file": "hampstead-highgate-express--unknown.json",
-      "score": null,
+      "score": 90,
       "publishDate": null,
       "url": "https://www.hamhigh.co.uk/news/23939889.review-roald-dahls-witches-national-theatre/",
       "findings": [
@@ -75915,7 +76055,7 @@
     {
       "showId": "the-witches-west-end-2023",
       "file": "independent--alice-saville.json",
-      "score": 98,
+      "score": 99,
       "publishDate": "November 22nd, 2023",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-witches-musical-review-national-theatre-b2451592.html",
       "findings": [
@@ -75929,6 +76069,7 @@
     {
       "showId": "the-witches-west-end-2023",
       "file": "london-box-office--stuart-king.json",
+      "score": 97,
       "publishDate": null,
       "url": "https://www.londonboxoffice.co.uk/news/post/the-witches-review",
       "findings": [
@@ -75998,7 +76139,7 @@
     {
       "showId": "the-wizard-of-oz-west-end-2023",
       "file": "lost-in-theatreland--jill-johnson.json",
-      "score": null,
+      "score": 63,
       "publishDate": "July 7, 2023",
       "url": "https://lostintheatreland.co.uk/the-wizard-of-oz-reveiw-the-london-palladium/",
       "findings": [
@@ -76527,7 +76668,7 @@
     {
       "showId": "till-the-stars-come-down-west-end-2024",
       "file": "a-youngish-perspective--unknown.json",
-      "score": null,
+      "score": 95,
       "publishDate": null,
       "url": "https://ayoungishperspective.co.uk/2024/02/02/review-till-the-stars-come-down/",
       "findings": [
@@ -76541,7 +76682,7 @@
     {
       "showId": "till-the-stars-come-down-west-end-2024",
       "file": "all-that-dazzles-uk--unknown.json",
-      "score": null,
+      "score": 90,
       "publishDate": null,
       "url": "https://www.allthatdazzles.co.uk/post/review-till-the-stars-come-down-national-theatre",
       "findings": [
@@ -76569,7 +76710,7 @@
     {
       "showId": "till-the-stars-come-down-west-end-2024",
       "file": "cultural-capital--unknown.json",
-      "score": null,
+      "score": 88,
       "publishDate": "2024-01-29",
       "url": "https://maryamphilpottblog.wordpress.com/2024/01/29/till-the-stars-come-down-national-theatre/",
       "findings": [
@@ -77212,7 +77353,7 @@
     {
       "showId": "underdog-the-other-other-bronte-west-end-2024",
       "file": "liamodell--unknown.json",
-      "score": null,
+      "score": 63,
       "publishDate": null,
       "url": "https://liamodell.com/2024/04/07/underdog-the-other-other-bronte-review-national-theatre-dorfman-northern-stage-gemma-whelan/",
       "findings": [
@@ -77380,7 +77521,7 @@
     {
       "showId": "waiting-for-godot-west-end-2024",
       "file": "artsdesk--aleks-sierz.json",
-      "score": 94,
+      "score": 93,
       "publishDate": "September 24th, 2024",
       "url": "https://theartsdesk.com/theatre/waiting-godot-theatre-royal-haymarket-review-humanity-high-definition",
       "findings": [
@@ -77394,7 +77535,7 @@
     {
       "showId": "waiting-for-godot-west-end-2024",
       "file": "british-theatre--susan-novak.json",
-      "score": null,
+      "score": 90,
       "publishDate": "2024-09-27",
       "url": "https://www.britishtheatre.com/es/posts/waiting-for-godot-review-roundup",
       "findings": [
@@ -78020,7 +78161,7 @@
     {
       "showId": "why-am-i-so-single-west-end-2024",
       "file": "musical-theatre-review--unknown.json",
-      "score": null,
+      "score": 78,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/why-am-i-so-single-garrick-theatre/",
       "findings": [
@@ -78187,8 +78328,8 @@
     {
       "showId": "word-play-west-end-2023",
       "file": "fringereview--unknown.json",
-      "score": null,
-      "publishDate": null,
+      "score": 78,
+      "publishDate": "2023-07-28",
       "url": "http://fringereview.co.uk/review/fringereview-uk/2023/word-play/",
       "findings": [
         {
