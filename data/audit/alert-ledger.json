@@ -1506,7 +1506,7 @@
       "linearIdentifier": null
     },
     "cron-health:Commercial Weekly Orchestrator": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Commercial Weekly Orchestrator",
@@ -1515,7 +1515,8 @@
       "lastNotifiedAt": "2026-08-20T12:33:43.118Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-11T17:10:44.483Z"
     },
     "feedback-outcomes:2026-08-21T09:16:39.483773+00:00,2026-08-21T09:16:54.734718+00:00,2026-08-21T09:16:55.193718+00:00,2026-08-21T09:16:55.655401+00:00": {
       "status": "open",
@@ -1542,7 +1543,7 @@
       "resolvedAt": "2026-09-13T18:41:05.296Z"
     },
     "cron-health-chronic:Commercial Weekly Orchestrator": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
       "firstSeen": "2026-08-21T12:33:44.570Z",
@@ -1553,7 +1554,8 @@
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": "BRO-2285",
-      "silentRefires": 4
+      "silentRefires": 4,
+      "resolvedAt": "2026-10-11T17:10:44.490Z"
     },
     "opening-night-placeholder-synopsis-paranormal-activity-2026": {
       "status": "open",
@@ -1851,13 +1853,13 @@
       "title": "Cron stale 3+ consecutive days: Daily Data Health Check (digest snapshot carrier)",
       "firstSeen": "2026-08-28T21:38:46.942Z",
       "incidentOpenedAt": "2026-10-02T17:13:10.248Z",
-      "lastSeen": "2026-10-10T16:44:54.190Z",
+      "lastSeen": "2026-10-11T17:10:44.405Z",
       "lastNotifiedAt": "2026-10-09T17:50:00.408Z",
       "lastSurfacedAt": null,
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": "BRO-4521",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "cron-health-chronic:Opening Night Checklist": {
       "status": "resolved",
@@ -12112,13 +12114,13 @@
       "title": "Cron stale 3+ consecutive days: Weekly A/B Monitors",
       "firstSeen": "2026-10-08T18:17:10.037Z",
       "incidentOpenedAt": "2026-10-08T18:17:10.037Z",
-      "lastSeen": "2026-10-10T16:44:54.197Z",
+      "lastSeen": "2026-10-11T17:10:44.414Z",
       "lastNotifiedAt": "2026-10-08T18:17:10.037Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4879",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "we-aggregator-go-live:jfod-west-end-2025": {
       "status": "open",
@@ -13760,7 +13762,10 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-5060",
-      "silentRefires": 3
+      "silentRefires": 3,
+      "absentRunIds": [
+        "38156539139"
+      ]
     },
     "land:land/bro-5063-synopses": {
       "status": "resolved",
@@ -13802,115 +13807,24 @@
       "cardId": null,
       "linearIdentifier": null
     },
-    "tour-page-audit:stops-overlap": {
+    "test-yml:red:Unit Tests:fde8aaea": {
       "status": "open",
       "disposition": "auto",
-      "title": "National tour pages show wrong information: 1 page problem(s) (stops-overlap)",
-      "firstSeen": "2026-10-11T16:44:43.739Z",
-      "incidentOpenedAt": "2026-10-11T16:44:43.739Z",
-      "lastSeen": "2026-10-11T16:44:43.739Z",
-      "lastNotifiedAt": "2026-10-11T16:44:43.739Z",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no bare-string override collides with another tracked show's own title\"",
+      "firstSeen": "2026-10-11T16:58:24.088Z",
+      "incidentOpenedAt": "2026-10-11T16:58:24.088Z",
+      "lastSeen": "2026-10-11T16:58:24.088Z",
+      "lastNotifiedAt": "2026-10-11T16:58:24.088Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5066",
+      "linearIdentifier": "BRO-5067",
       "dispatch": {
-        "requestedAt": "2026-10-11T16:44:43.739Z",
+        "requestedAt": "2026-10-11T16:58:24.088Z",
         "mode": "dispatch-at-filing",
-        "runId": "38156450197",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38156450197"
+        "runId": "38156539139",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38156539139"
       }
-    },
-    "tour-page-audit:stops-before-opening": {
-      "status": "open",
-      "disposition": "auto",
-      "title": "National tour pages show wrong information: 1 page problem(s) (stops-before-opening)",
-      "firstSeen": "2026-10-11T16:44:47.139Z",
-      "incidentOpenedAt": "2026-10-11T16:44:47.139Z",
-      "lastSeen": "2026-10-11T16:44:47.139Z",
-      "lastNotifiedAt": "2026-10-11T16:44:47.139Z",
-      "lastSurfacedAt": null,
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": "BRO-4978"
-    },
-    "tour-page-audit:list-city-missing": {
-      "status": "open",
-      "disposition": "auto",
-      "title": "National tour pages show wrong information: 42 page problem(s) (list-city-missing)",
-      "firstSeen": "2026-10-11T16:44:47.406Z",
-      "incidentOpenedAt": "2026-10-11T16:44:47.406Z",
-      "lastSeen": "2026-10-11T16:44:47.406Z",
-      "lastNotifiedAt": "2026-10-11T16:44:47.406Z",
-      "lastSurfacedAt": null,
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": "BRO-4979"
-    },
-    "tour-page-audit:schedule-city-unlinked": {
-      "status": "open",
-      "disposition": "auto",
-      "title": "National tour pages show wrong information: 217 page problem(s) (schedule-city-unlinked)",
-      "firstSeen": "2026-10-11T16:44:47.716Z",
-      "incidentOpenedAt": "2026-10-11T16:44:47.716Z",
-      "lastSeen": "2026-10-11T16:44:47.716Z",
-      "lastNotifiedAt": "2026-10-11T16:44:47.716Z",
-      "lastSurfacedAt": null,
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": "BRO-4980"
-    },
-    "tour-page-audit:review-count-mismatch": {
-      "status": "open",
-      "disposition": "auto",
-      "title": "National tour pages show wrong information: 14 page problem(s) (review-count-mismatch)",
-      "firstSeen": "2026-10-11T16:44:47.912Z",
-      "incidentOpenedAt": "2026-10-11T16:44:47.912Z",
-      "lastSeen": "2026-10-11T16:44:47.912Z",
-      "lastNotifiedAt": "2026-10-11T16:44:47.912Z",
-      "lastSurfacedAt": null,
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": "BRO-4981"
-    },
-    "tour-page-audit:city-should-index": {
-      "status": "open",
-      "disposition": "auto",
-      "title": "National tour pages show wrong information: 70 page problem(s) (city-should-index)",
-      "firstSeen": "2026-10-11T16:44:48.088Z",
-      "incidentOpenedAt": "2026-10-11T16:44:48.088Z",
-      "lastSeen": "2026-10-11T16:44:48.088Z",
-      "lastNotifiedAt": "2026-10-11T16:44:48.088Z",
-      "lastSurfacedAt": null,
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": "BRO-4982"
-    },
-    "tour-page-audit:city-missing-from-sitemap": {
-      "status": "open",
-      "disposition": "auto",
-      "title": "National tour pages show wrong information: 70 page problem(s) (city-missing-from-sitemap)",
-      "firstSeen": "2026-10-11T16:44:48.261Z",
-      "incidentOpenedAt": "2026-10-11T16:44:48.261Z",
-      "lastSeen": "2026-10-11T16:44:48.261Z",
-      "lastNotifiedAt": "2026-10-11T16:44:48.261Z",
-      "lastSurfacedAt": null,
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": "BRO-4983"
-    },
-    "tour-page-audit:city-page-status": {
-      "status": "open",
-      "disposition": "auto",
-      "title": "National tour pages show wrong information: 42 page problem(s) (city-page-status)",
-      "firstSeen": "2026-10-11T16:44:48.477Z",
-      "incidentOpenedAt": "2026-10-11T16:44:48.477Z",
-      "lastSeen": "2026-10-11T16:44:48.477Z",
-      "lastNotifiedAt": "2026-10-11T16:44:48.477Z",
-      "lastSurfacedAt": null,
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": "BRO-4984"
     }
   }
 }
