@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-10-11T11:27:25.263Z",
+  "generatedAt": "2026-10-11T13:09:47.859Z",
   "summary": {
-    "total": 20,
-    "high": 11,
+    "total": 19,
+    "high": 12,
     "medium": 5,
-    "low": 4
+    "low": 2
   },
   "collisions": [
     {
@@ -359,33 +359,6 @@
       "confidence": "low"
     },
     {
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/othello-toby-jones-david-harewood-b2858391.html",
-      "normalizedUrl": "https://independent.co.uk/arts-entertainment/theatre-dance/reviews/othello-toby-jones-david-harewood-b2858391.html",
-      "candidates": [
-        {
-          "showId": "othello-west-end-2022",
-          "file": "independent--unknown.json",
-          "publishDate": "November 5th, 2025",
-          "openingDate": "2022-11-23",
-          "hasScore": false,
-          "hasFullText": false,
-          "outletId": "independent"
-        },
-        {
-          "showId": "othello-west-end-2025",
-          "file": "independent--alice-saville.json",
-          "publishDate": "2025-11-05",
-          "openingDate": null,
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "independent"
-        }
-      ],
-      "suggestedWinner": "othello-west-end-2022",
-      "reason": "publishDate November 5th, 2025 is 1078+ days from all openings; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
       "url": "https://www.timeout.com/london/theatre/othello-23-review",
       "normalizedUrl": "https://timeout.com/london/theatre/othello-23-review",
       "candidates": [
@@ -411,33 +384,6 @@
       "suggestedWinner": "othello-west-end-2022",
       "reason": "publishDate 2022-12-01 is 8 days from othello-west-end-2022 opening (2022-11-23)",
       "confidence": "high"
-    },
-    {
-      "url": "https://www.whatsonstage.com/news/othello-starring-david-harewood-toby-jones-and-caitlin-fitzgerald-west-end-review_1701279/",
-      "normalizedUrl": "https://whatsonstage.com/news/othello-starring-david-harewood-toby-jones-and-caitlin-fitzgerald-west-end-review_1701279",
-      "candidates": [
-        {
-          "showId": "othello-west-end-2022",
-          "file": "whatsonstage--unknown.json",
-          "publishDate": "November 4th, 2025",
-          "openingDate": "2022-11-23",
-          "hasScore": false,
-          "hasFullText": false,
-          "outletId": "whatsonstage"
-        },
-        {
-          "showId": "othello-west-end-2025",
-          "file": "whatsonstage--sarah-crompton.json",
-          "publishDate": "2025-11-04",
-          "openingDate": null,
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "whatsonstage"
-        }
-      ],
-      "suggestedWinner": "othello-west-end-2022",
-      "reason": "publishDate November 4th, 2025 is 1077+ days from all openings; defaulting to most recent production",
-      "confidence": "low"
     },
     {
       "url": "https://www.thedailybeast.com/review-stereophonic-makes-some-very-sweet-music-indeed/",
@@ -519,6 +465,33 @@
       "suggestedWinner": "the-score-regional-2026",
       "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
       "confidence": "low"
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "normalizedUrl": "https://timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "candidates": [
+        {
+          "showId": "to-kill-a-mockingbird-west-end-2022",
+          "file": "timeout-london--andrzej-lukowski.json",
+          "publishDate": "2022-03-31",
+          "openingDate": "2022-03-10",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        },
+        {
+          "showId": "to-kill-a-mockingbird-west-end-2026",
+          "file": "timeout-london--andrzej-lukowski.json",
+          "publishDate": "2023-02-07",
+          "openingDate": "2026-06-30",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        }
+      ],
+      "suggestedWinner": "to-kill-a-mockingbird-west-end-2022",
+      "reason": "publishDate 2022-03-31 is 21 days from to-kill-a-mockingbird-west-end-2022 opening (2022-03-10); next closest is 1239 days from to-kill-a-mockingbird-west-end-2026",
+      "confidence": "high"
     },
     {
       "url": "https://www.nytimes.com/2019/01/24/theater/true-west-review-ethan-hawke-paul-dano.html",
