@@ -5,15 +5,16 @@
  * One-time (rerunnable) cleanup of commercial.json data quality issues:
  * 1. Fix id-mismatch keys (rename to slug)
  * 2. Remove deprecated recoupedWeeks fields
- * 3. Auto-designate closed TBD shows as Fizzle
+ * 3. Closed TBD shows: Fizzle/Flop with designationBasis
+ *    'no-recoupment-announced' once closed ~6 months, else flag needsLossEvidence
  * 4. Add empty sources arrays where missing
  * 5. Remove orphaned entries (no matching show in shows.json)
  *
  * INTENTIONALLY NOT SCHEDULED (audit #982): unlike dedupe-commercial-id-keys.js
  * (self-healed weekly in commercial-weekly.yml), this script has no size cap
  * on how much it deletes/auto-designates per run — step 5 silently drops
- * every orphaned entry and step 3 auto-designates every closed-TBD show as
- * Fizzle with no citation, no --force gate. Run by hand, review the dry-run
+ * every orphaned entry and step 4 labels every closed-TBD show past six
+ * months (basis 'no-recoupment-announced'), no --force gate. Run by hand, review the dry-run
  * diff first: node scripts/cleanup-commercial-data.js --dry-run
  *
  * Usage: node scripts/cleanup-commercial-data.js [--dry-run]
@@ -24,6 +25,7 @@ const fs = require('fs');
 const path = require('path');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
 const { conflictingFields } = require('./lib/commercial-key-duplicates');
+const { closedTbdLossAction } = require('./lib/classify-stale-closure');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 
@@ -104,17 +106,27 @@ for (const [key, val] of Object.entries(shows)) {
   }
 }
 
-// 4. Closed TBD shows stay TBD: "no reported recoupment" is not a cited
-// loss (BRO-5020). Flag them for a person to source instead of labelling
-// them Fizzle, unless a person already ruled on the row.
+// 4. Closed TBD shows, owner policy B (BRO-5020): closed ~6+ months with no
+// recoupment ever announced -> Fizzle/Flop stamped designationBasis
+// 'no-recoupment-announced' (the site renders the caveat; no prose here);
+// closed more recently -> stays TBD, flagged needsLossEvidence. Locked or
+// recouped rows are left alone.
 for (const [key, val] of Object.entries(shows)) {
-  if (val && typeof val === 'object' && val.designation === 'TBD') {
-    // Find the show
-    const show = slugToShow[key] || idToShow[key];
-    if (show && show.status === 'closed' && val.humanReviewedDesignation !== true && !('needsLossEvidence' in val)) {
-      val.needsLossEvidence = true;
-      changes.designationFixed.push(`${key}: TBD, flagged needsLossEvidence (${show.title})`);
-    }
+  if (!val || typeof val !== 'object') continue;
+  const show = slugToShow[key] || idToShow[key];
+  const act = closedTbdLossAction(val, show, {
+    requireLossEvidence: process.env.STALE_CLOSURE_REQUIRE_LOSS_EVIDENCE === '1',
+  });
+  if (!act) continue;
+  if (act.action === 'flag') {
+    val.needsLossEvidence = true;
+    changes.designationFixed.push(`${key}: TBD, flagged needsLossEvidence (${show.title})`);
+  } else {
+    val.designation = act.designation;
+    val.designationBasis = act.designationBasis;
+    val.recouped = false;
+    delete val.needsLossEvidence;
+    changes.designationFixed.push(`${key}: TBD -> ${act.designation} (${act.designationBasis}) (${show.title})`);
   }
 }
 
@@ -145,7 +157,7 @@ if (changes.removedRecoupedWeeks) {
 }
 
 if (changes.designationFixed.length) {
-  console.log(`\nFlagged ${changes.designationFixed.length} closed TBD shows for a cited loss source:`);
+  console.log(`\nClosed TBD shows labelled or flagged (${changes.designationFixed.length}):`);
   for (const d of changes.designationFixed) console.log(`  ${d}`);
 }
 

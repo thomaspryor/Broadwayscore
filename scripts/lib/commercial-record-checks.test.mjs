@@ -31,7 +31,7 @@ test('outcome policy: win needs recouped=true, loss needs recouped=false, recoup
 });
 
 test('loss designation on a show that is not closed is a warning, never an error', () => {
-  const rec = { designation: 'Flop', recouped: false };
+  const rec = { designation: 'Flop', recouped: false, designationBasis: 'reported-loss' };
   const w = (status) => commercialRecordWarnings('k', rec, { showRecord: { slug: 'k', status } }).length;
   assert.equal(w('open'), 1);
   assert.equal(w('previews'), 1);
@@ -198,4 +198,14 @@ test('sources, costMethodology, productionType and originalProductionId shapes',
   assert.equal(e({ productionType: 'weird' }).length, 1);
   assert.equal(e({ originalProductionId: 'nope' }, { allRecords: {} }).length, 1);
   assert.equal(e({ originalProductionId: 'a' }, { allRecords: { a: {} } }).length, 0);
+});
+
+test('a reader tip that sets a loss label gets a designationBasis (BRO-5020 policy B)', () => {
+  const commercial = { shows: { k: { designation: 'TBD', recouped: null } } };
+  const showList = [{ slug: 'k', status: 'closed', closingDate: '2020-01-05' }];
+  const r = buildTipRecord(commercial, showList, 'k', [{ field: 'designation', newValue: 'Fizzle' }, { field: 'recouped', newValue: false }]);
+  assert.equal(r.refusedReason, null);
+  assert.equal(r.record.designationBasis, 'no-recoupment-announced');
+  const r2 = buildTipRecord(commercial, showList, 'k', [{ field: 'designation', newValue: 'Flop' }, { field: 'recouped', newValue: false }, { field: 'designationBasis', newValue: 'reported-loss' }]);
+  assert.equal(r2.record.designationBasis, 'reported-loss');
 });

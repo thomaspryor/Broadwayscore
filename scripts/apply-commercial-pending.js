@@ -288,12 +288,12 @@ async function main() {
     // classify-stale-closures Fizzle is reset to TBD by buildCommercialEntry;
     // any other Fizzle/Flop stays for a human (BRO-4623 item 5).
     if (isClaimAutoApply && gate.recoupClaimDesignationAction(existing) === 'block') {
-      console.log(`  🔒 "${showId}" — recoupment claim contradicts "${existing.designation}" (not an inferred stale-closure label), requires manual review`);
+      console.log(`  🔒 "${showId}" — recoupment claim contradicts "${existing.designation}" (not a label inferred from silence), requires manual review`);
       skipped++;
       continue;
     }
     if (isClaimAutoApply && gate.recoupClaimDesignationAction(existing) === 'reset') {
-      console.log(`  ↺ "${showId}" — inferred "${existing.designation}" (classify-stale-closures) contradicted by recoupment; resetting designation to TBD`);
+      console.log(`  ↺ "${showId}" — inferred "${existing.designation}" (no recoupment announced) contradicted by recoupment; resetting designation to TBD`);
     }
 
     // If already exists, update rather than skip (merge new findings).

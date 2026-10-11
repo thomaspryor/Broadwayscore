@@ -33,7 +33,7 @@ const ALLOWED = new Set([
   'designation', 'recouped', 'recoupedDate', 'recoupedSource',
   'capitalization', 'capitalizationSource', 'weeklyRunningCost',
   'weeklyRunningCostSource', 'costMethodology', 'notes', 'sources',
-  'nonprofitOrg', 'productionType',
+  'nonprofitOrg', 'productionType', 'designationBasis',
 ]);
 const WIN = new Set(['Miracle', 'Windfall', 'Easy Winner', 'Trickle']);
 const LOSS = new Set(['Fizzle', 'Flop']);
