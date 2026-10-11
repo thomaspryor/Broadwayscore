@@ -2,7 +2,7 @@
 // Tested by tests/unit/commercial-apply-gate.test.mjs.
 
 const { TRUSTED_RECOUPMENT_HOSTS } = require('./trusted-recoupment-domains');
-const { VALID_DESIGNATIONS, canonicalDesignation } = require('./commercial-designations');
+const { VALID_DESIGNATIONS, canonicalDesignation, DESIGNATION_BASES, VALID_DESIGNATION_BASES } = require('./commercial-designations');
 const { checkRecoupmentProduction } = require('./recoupment-production-guard');
 
 const CONFIDENCE_ORDER = { high: 3, medium: 2, low: 1 };
@@ -174,8 +174,10 @@ const LOSS_DESIGNATIONS = new Set(['Fizzle', 'Flop']);
  * then recouped ~9 months after closing via the revived NY State tax credit.
  *   'keep'  - no loss designation in the way; the claim overlays as before
  *   'reset' - an INFERRED Fizzle/Flop (classifiedBy classify-stale-closures,
- *             no human lock): the evidence it was inferred from is gone, so
- *             the designation goes back to TBD for research/model to set
+ *             or designationBasis 'no-recoupment-announced', no human lock):
+ *             the silence it was inferred from is gone, so the designation
+ *             goes back to TBD for research/model to set (owner policy B,
+ *             BRO-5020: a silence-based label must flip on recoupment news)
  *   'block' - a human-locked (humanReviewedDesignation) or otherwise
  *             non-inferred loss designation: a human decides, never auto
  */
@@ -185,6 +187,7 @@ function recoupClaimDesignationAction(existing) {
   if (!LOSS_DESIGNATIONS.has(designation)) return 'keep';
   if (existing.humanReviewedDesignation === true) return 'block';
   if (existing.classifiedBy === 'classify-stale-closures') return 'reset';
+  if (existing.designationBasis === DESIGNATION_BASES.NO_RECOUPMENT_ANNOUNCED) return 'reset';
   return 'block';
 }
 
@@ -267,6 +270,8 @@ function buildCommercialEntry(entry, existing, opts = {}) {
     // The inferred "closed, no recoupment found" Fizzle is contradicted by a
     // verified recoupment: drop it and its inference stamps.
     result.designation = designation || 'TBD';
+    delete result.designationBasis;
+    delete result.needsLossEvidence;
     delete result.classifiedBy;
     delete result.classifiedAt;
     delete result.classifiedReason;
@@ -282,8 +287,33 @@ function buildCommercialEntry(entry, existing, opts = {}) {
       }
     }
   }
+  stampDesignationBasis(result, entry, existing);
   applyFigureEvidence(result, entry, figureEvidence);
   return result;
+}
+
+/**
+ * Every Fizzle/Flop carries a designationBasis (owner policy B, BRO-5020).
+ * Order: the pending entry's own valid basis, then the existing record's basis
+ * when the label is unchanged, else 'no-recoupment-announced' (the cautious
+ * default: the page then says the label rests on silence). Any other label
+ * drops the basis; a label other than TBD also settles needsLossEvidence.
+ */
+function stampDesignationBasis(result, entry, existing) {
+  const d = result.designation;
+  if (d === 'Fizzle' || d === 'Flop') {
+    if (VALID_DESIGNATION_BASES.includes(entry && entry.designationBasis)) {
+      result.designationBasis = entry.designationBasis;
+    } else if (existing && existing.designation === d && VALID_DESIGNATION_BASES.includes(existing.designationBasis)) {
+      result.designationBasis = existing.designationBasis;
+    } else {
+      result.designationBasis = DESIGNATION_BASES.NO_RECOUPMENT_ANNOUNCED;
+    }
+    delete result.needsLossEvidence;
+  } else {
+    delete result.designationBasis;
+    if (d && d !== 'TBD') delete result.needsLossEvidence;
+  }
 }
 
 module.exports = {
@@ -305,4 +335,5 @@ module.exports = {
   isAutoApplyableClaim,
   recoupClaimDesignationAction,
   buildCommercialEntry,
+  stampDesignationBasis,
 };

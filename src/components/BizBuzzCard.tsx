@@ -17,6 +17,7 @@ import {
   getWeeklyCostSourceLabel,
   getNonprofitProducerLine,
   hasCommercialCard,
+  lossBasisCaveat,
 } from '@/lib/commercial-display';
 import { formatCapitalization } from '@/lib/biz-format';
 import { isRunningStatus } from '@/lib/commercial-metrics';
@@ -139,6 +140,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
   const running = isRunningStatus(showStatus);
   const producerLine = getNonprofitProducerLine(commercial);
   const isNonprofit = commercial.designation === 'Nonprofit';
+  const lossCaveat = lossBasisCaveat(commercial);
 
   // Display rules (src/lib/commercial-display.ts, unit-tested):
   //  - recouped:true → the recoupment record, never the model (Q1).
@@ -239,9 +241,19 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
             </span>
           </div>
           {/* A Nonprofit show names its company instead of the generic "(LCT, Roundabout, etc.)". */}
-          <p className="text-[13px] text-gray-400 mt-1.5 leading-[1.4]">
-            {isNonprofit && producerLine ? producerLine : designation.description}
-          </p>
+          {/* Owner policy B (BRO-5020): a loss label resting on silence says so,
+              in place of the generic description (which claims a return range
+              no source reported). */}
+          {!lossCaveat && (
+            <p className="text-[13px] text-gray-400 mt-1.5 leading-[1.4]">
+              {isNonprofit && producerLine ? producerLine : designation.description}
+            </p>
+          )}
+          {lossCaveat && (
+            <p className="text-[13px] text-gray-400 mt-1.5 leading-[1.4]" data-testid="loss-basis-caveat">
+              {lossCaveat}
+            </p>
+          )}
           {producerLine && !isNonprofit && (
             <p className="text-[13px] text-gray-300 mt-0.5 leading-[1.4]" data-testid="nonprofit-producer">
               {producerLine}

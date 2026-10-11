@@ -221,9 +221,11 @@ export function getCitedSourceUrl(sources: SourceList): string | null {
 // "Auto-enrolled stub; awaiting model + curation." is the placeholder note
 // scripts/initialize-commercial-stub.js writes on every new record.
 // "Per policy applied 2026-05-24: ..." and "Kept ... per owner review" are
-// hand-edit notes about our own process (BRO-4669).
+// hand-edit notes about our own process (BRO-4669). A blog or Reddit
+// characterisation ("Financing Broadway blog states it closed at a loss") is
+// not a citation the page may print (BRO-5020 Group C); the label still shows.
 const INTERNAL_SOURCE_RE =
-  /(?:chat)?gpt|deep[\s-]*research|\bDR\s*batch\b|\breddit\b|\bconsensus\b|\bsynthes[ie][sz]|\binferred\b|industry[\s-]*estimate|\bauto[\s-]*enroll?ed\b|\bawaiting\s+(?:the\s+)?(?:model|curation|research)\b|\bper\s+policy\b|\bowner\s+(?:review|decision|sign-?off)\b/i;
+  /(?:chat)?gpt|deep[\s-]*research|\bDR\s*batch\b|\breddit\b|\bblog(?:s|ger|post)?\b|\bconsensus\b|\bsynthes[ie][sz]|\binferred\b|industry[\s-]*estimate|\bauto[\s-]*enroll?ed\b|\bawaiting\s+(?:the\s+)?(?:model|curation|research)\b|\bper\s+policy\b|\bowner\s+(?:review|decision|sign-?off)\b/i;
 
 // Record field names written as code: "recouped:null because no public
 // citation", "designation=Nonprofit" (BRO-4669). Case-sensitive (a lowercase
@@ -279,6 +281,7 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
     recoupedWeeks: commercial.recoupedWeeks,
     recoupedSource,
     humanReviewedDesignation: commercial.humanReviewedDesignation,
+    ...(commercial.designationBasis ? { designationBasis: commercial.designationBasis } : {}),
     notes: publicSourceText(commercial.notes) ?? undefined,
     sources: commercial.sources?.map(({ type, url, date }) => ({ type, url, date })),
     investorMultiple: commercial.investorMultiple,
@@ -465,6 +468,23 @@ export interface DesignationDisplay {
 /** Whether the Commercial Scorecard has anything to show (it renders nothing otherwise). */
 export function hasCommercialCard(c: Pick<ShowCommercial, 'capitalization' | 'recouped' | 'designation'>): boolean {
   return !!(c.capitalization || c.recouped !== null || c.designation !== 'TBD');
+}
+
+/** The public caveat for a loss label that rests on silence (owner policy B, BRO-5020). */
+export const LOSS_ON_SILENCE_CAVEAT = 'Based on no recoupment being announced';
+
+/**
+ * The caveat a Fizzle/Flop carries when its designationBasis is
+ * 'no-recoupment-announced' (no source reported the loss; the show closed
+ * and no recoupment was ever announced). Null for a reported loss and for
+ * every other designation. Writers store only the basis; this is the one
+ * place the public words live.
+ */
+export function lossBasisCaveat(
+  c: Pick<ShowCommercial, 'designation' | 'designationBasis'> | null | undefined
+): string | null {
+  if (!c || (c.designation !== 'Fizzle' && c.designation !== 'Flop')) return null;
+  return c.designationBasis === 'no-recoupment-announced' ? LOSS_ON_SILENCE_CAVEAT : null;
 }
 
 /**
