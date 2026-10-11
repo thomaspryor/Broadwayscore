@@ -338,7 +338,9 @@ function landFailuresWith(D, gauntlet) {
     { gate: 'lint-workflows', run: (cwd) => lintWorkflows(cwd, gauntlet), files: null },
   ];
   const branch = new Map();
-  for (const b of batches) branch.set(b.gate, b.files && !b.files.length ? { exit: 0, text: '', root: WT } : b.run(WT, b.files));
+  // Re-stamp before every batch: each one blocks up to 40 min and the keep-alive interval
+  // cannot fire during spawnSync, so without this a live run outlives LOCK_STALE_MS here.
+  for (const b of batches) { keepLock(); branch.set(b.gate, b.files && !b.files.length ? { exit: 0, text: '', root: WT } : b.run(WT, b.files)); }
   // Some tests rewrite tracked files (data/audit/*.json). The attempt is already committed,
   // so put the tree back: otherwise the next commit sweeps them in and the reviewer's
   // dirty-tree guard throws its verdict away.
@@ -352,8 +354,10 @@ function landFailuresWith(D, gauntlet) {
   const red = batches.filter((b) => branch.get(b.gate).exit !== 0 && !onlyMissingActionlint(b));
   const report = [];
   if (red.length) {
+    keepLock();
     prepareBase();
     for (const b of red) {
+      keepLock();
       const br = branch.get(b.gate);
       let base;
       if (b.files) {
@@ -638,7 +642,10 @@ const LOCK_REF = process.env.CODEX_RUNNER_LOCK_REF || 'refs/heads/codex-runner-l
 // Refreshed before each blocking step of a card (Codex, unit batch, check; the longest is
 // Codex at 45 min) and every 30 min while landings wait, so a live run never looks stale.
 // A killed run (SIGKILL skips the release) blocks the next run only until it goes stale.
-const LOCK_STALE_MS = 5 * 3600_000;
+// 90 min: the longest gap between stamps is one blocking step (Codex 45 min, unit batch
+// 40 min), so a live run never reaches it. It was 5 h, and a routine session that ended
+// mid-run (container reclaimed, no release) idled every Codex runner for 5 h on 2026-10-11.
+const LOCK_STALE_MS = 90 * 60_000;
 let lockSha = null;
 // Cards this run claimed and has not finished (working or waiting on a landing); written
 // into every lock stamp. orphanCards: the ones a dead run left in the stale lock we took over.
@@ -710,7 +717,7 @@ function releaseLock() {
     try { if (lockPush(lockCommit(R.lockMessage(new Date().toISOString(), [...openCards], 'released')), lockSha)) lockSha = null; } catch { /* stale stamp still names them */ }
     return;
   }
-  try { if (lockPush(lockCommit('unlocked'), lockSha)) lockSha = null; } catch { /* stale after 11h anyway */ }
+  try { if (lockPush(lockCommit('unlocked'), lockSha)) lockSha = null; } catch { /* goes stale after LOCK_STALE_MS anyway */ }
 }
 
 // The card claimed right now, so a kill (routine timeout, container stop) can hand it back.
