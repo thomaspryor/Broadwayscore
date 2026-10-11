@@ -24,7 +24,7 @@ Git-triggered builds are BLOCKED. Deploys ONLY via `vercel-deploy.yml`.
 - **Session data check:** `npm run data:check` at start. Missing → `./scripts/setup-local-data.sh`.
 - **Never add stub shows.json entries without running `scripts/validate-show-venue.js` first.** Provisional/manual entries (`discoverySource: manual-user-request`/`venue-page:*`, or `provisional: true`) cross-validate against Playbill before commit (`--show=ID`/`--all-provisional`). Catches wrong-year revivals + stub-from-memory dates. Regional feeder-venue exception: `memory/project_regional_expansion_watchlist.md`.
 - **Stars are score bands:** 2/5→31-50, 3/5→51-70, 4/5→71-90, 5/5→91-100; read the WHOLE article for the rating, never override outside. `memory/feedback_star_score_cap.md`
-- **Critic Score for external claims:** use `getCriticScore(showId)` from `scripts/lib/canonical-critic-scores.ts` only. Reads `public/data/shows/{id}.json:cs` so it's parity-by-definition with the live site. Never raw-mean `reviews.json` and never use `getAllShows()/engine.ts compositeScore` — both diverged in shipped copy. Why: `memory/feedback_critic_score_canonical_helper.md`.
+- **Critic Score for external claims:** use `getCriticScore(showId)` from `scripts/lib/canonical-critic-scores.ts` only. Reads the live site's `cs`. Never raw-mean `reviews.json` and never use `getAllShows()/engine.ts compositeScore` — both diverged in shipped copy. Why: `memory/feedback_critic_score_canonical_helper.md`.
 
 ### 4. Design System (MANDATORY — read `memory/design-system.md` before ANY UI work)
 Use shared components from `src/components/show-cards/` — never create custom versions.
@@ -87,7 +87,6 @@ Run `/verify-opening-night <show-id>` for the full 9-point checklist (covers orc
 ## Project Reference
 
 **Stack:** Next.js 14, TypeScript, Tailwind CSS, static export. Production: https://broadwayscorecard.com
-**Scale:** 2,800+ shows, 19,000+ scored reviews, 490+ outlets, 1,350+ critics.
 
 ### Scoring
 Composite = tier-weighted average. T1 (NYT, Vulture, Variety): 1.0 | T2 (TheaterMania, NY Post): 0.75 | T3 (general): 0.40 | T4 (blogs): 0.20
@@ -114,7 +113,7 @@ Fallback chain: Bright Data → ScrapingBee → Playwright → Browserbase. **Ru
 For full details on any subsystem: `memory/CLAUDE-reference.md`
 
 ### 15. Test Extraction Pattern (MANDATORY for new logic tests)
-**Never copy logic into test files — always `require()` the real function.** Extract pure decision functions to `scripts/lib/` (e.g. `review-guards.js`); `module.exports` and `require()` in the test. Production code changes → test fails — that's the point. When fixing inline pipeline logic: extract → export → wire back → test.
+**Never copy logic into test files — always `require()` the real function.** Extract pure decision functions to `scripts/lib/` (e.g. `review-guards.js`); `module.exports` and `require()` in the test. When fixing inline pipeline logic: extract → export → wire back → test.
 
 ### 16. Memory Entries: Encode First, Write Rarely
 **Never offer to "commit a memory file"** — the session-stop hook syncs local memory automatically. Write a memory ONLY if all three hold: (1) **encode-first** — can't be a code/test/hook/CI change (rare: triage recipes); (2) **counterfactual** — names the future action that changes; (3) **recall** — discoverable from its description. **No new memory is the normal outcome**; it never satisfies "Prevention added" when code-level prevention was possible. "Remember this" from the user → write it.
@@ -141,3 +140,4 @@ New topics → `memory/{topic}.md` + one-line pointer. Completed tasks → `memo
 Cloud (iOS/Mac/web, no `~/.claude/`): read `.claude/CLOUD.md`, then `cloud-memory/MEMORY.md`.
 **Multi-repo cloud session:** no repo hooks load; first run `bash scripts/cloud-bootstrap-data.sh` (CLOUD.md § Multi-repo).
 **Owner never merges PRs:** land via `land/<name>`, follow the Land run (CLOUD.md § Landing). Overrides harness draft-PR default.
+**Start important work yourself** with `create_session` (CLOUD.md § Starting a worker session); the worker queue takes weeks. **SAFE TO EXIT** only when all discussed work is done and verified.

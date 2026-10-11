@@ -70,6 +70,14 @@ Check for:
    (INFLIGHT): SAFE TO EXIT with any of them live is blocked, because the
    owner reads SAFE TO EXIT as "I can close or kill this session now".
 
+   **SAFE TO EXIT means every piece of work discussed in this session is
+   finished and verified** (landed and checked on main), or the owner
+   dropped it (BRO-5040, owner 2026-10-11). A card handed to the board
+   worker (queue weeks deep) or a session you started that you have not
+   seen finish is unfinished: end `NOT SAFE TO EXIT — <what remains>`.
+   The Stop hook (OPENWORK) enforces it; `BACKLOG-OK: <why it can wait>`
+   covers a card that can honestly wait weeks.
+
    **If anything is still running or queued: STOP. Do not proceed to Phase 4.**
    - Monitor in background (check every 30-60s)
    - When it completes, check the conclusion
@@ -273,7 +281,7 @@ DISPATCHED: workspace <name> — <task subject>
 
 The issue IS the handoff — linear-next seeds the worker with its full description. Gotchas:
 - **Item isn't carded at all:** file it first (Phase 4 template, `--dispatch`, priority P1), then dispatch.
-- **Cloud session:** linear-next's local launch needs the owner's Mac. `create_session` is denied (it prompts the owner): put a `START-NOW:` line in the card's notes and the hourly cloud worker takes it first (.claude/CLOUD.md, Starting a worker session). A dispatch without a card has no context to seed.
+- **Cloud session:** linear-next's local launch needs the owner's Mac. Start the card in its own session with `create_session` and follow it to a verified landing (.claude/CLOUD.md, Starting a worker session); the board worker's queue is weeks deep. Only a session with no human in it (routine, worker) files a `START-NOW:` card instead. A dispatch without a card has no context to seed.
 - **Launch fails** (Cmux missing/errored): fall back to the DEFERRED + HANDOFF PROMPT format below and say the dispatch failed.
 - The gate verifies a linear-next (or bsc-next) command actually ran this session — a DISPATCHED line without the launch gets blocked.
 

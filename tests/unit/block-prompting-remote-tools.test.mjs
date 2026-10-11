@@ -110,12 +110,9 @@ test('list_sessions is denied for both server spellings (BRO-4635)', () => {
   assert.equal(run(remote('list_sessions', {}), { env: { REMOTE_TOOL_BLOCKER_DISABLE: '1' } }), 'pass');
 });
 
-test('create_session is denied for both server spellings and points at START-NOW (BRO-4664)', () => {
-  assert.equal(run(remote('create_session', { prompt: 'x', source_url: 'https://github.com/thomaspryor/Broadwayscore' })), 'deny');
-  assert.equal(run({ tool_name: 'mcp__claude-code-remote__create_session', tool_input: {} }), 'deny');
-  assert.equal(run(remote('create_session', {}), { env: { REMOTE_TOOL_BLOCKER_DISABLE: '1' } }), 'pass');
-  const hook = fs.readFileSync(path.join(REPO_ROOT, '.claude', 'hooks', 'block-prompting-remote-tools.sh'), 'utf8');
-  assert.match(hook, /START-NOW:/);
+test('create_session passes for both server spellings: the owner wants sessions started (BRO-5040, supersedes BRO-4664)', () => {
+  assert.equal(run(remote('create_session', { prompt: 'x', source_url: 'https://github.com/thomaspryor/Broadwayscore' })), 'pass');
+  assert.equal(run({ tool_name: 'mcp__claude-code-remote__create_session', tool_input: {} }), 'pass');
 });
 
 test('unrelated tools, malformed input and the kill switch all pass', () => {
@@ -127,16 +124,16 @@ test('unrelated tools, malformed input and the kill switch all pass', () => {
   assert.equal(run(remote('send_later', {}), { env: { REMOTE_TOOL_BLOCKER_DISABLE: '1' } }), 'pass');
 });
 
-test('settings.json routes exactly the five tools to this hook', () => {
+test('settings.json routes exactly the four tools to this hook', () => {
   const entries = SETTINGS.hooks.PreToolUse.filter((e) =>
     e.hooks.some((h) => h.command.includes('block-prompting-remote-tools.sh')));
   assert.equal(entries.length, 1);
   const re = new RegExp(`^(?:${entries[0].matcher})$`);
   for (const server of ['Claude_Code_Remote', 'claude-code-remote']) {
-    for (const tool of ['send_later', 'create_trigger', 'add_repo', 'list_sessions', 'create_session']) {
+    for (const tool of ['send_later', 'create_trigger', 'add_repo', 'list_sessions']) {
       assert.ok(re.test(`mcp__${server}__${tool}`), `${server}__${tool} should match`);
     }
-    for (const tool of ['update_trigger', 'delete_trigger', 'fire_trigger', 'subscribe_pr_activity', 'get_session', 'list_events']) {
+    for (const tool of ['create_session', 'update_trigger', 'delete_trigger', 'fire_trigger', 'subscribe_pr_activity', 'get_session', 'list_events']) {
       assert.ok(!re.test(`mcp__${server}__${tool}`), `${server}__${tool} should not match`);
     }
   }

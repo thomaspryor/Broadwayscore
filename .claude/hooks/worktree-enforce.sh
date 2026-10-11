@@ -95,7 +95,10 @@ edits made directly in the main checkout (real incident: 2026-04-11,
 page.tsx/index.ts lost this way).
 
 Call EnterWorktree first, then retry this edit inside the worktree path it
-gives you. (memory/, cloud-memory/, and data/ files are exempt -- this only
+gives you. In a cloud session make it with Bash instead (EnterWorktree can
+wait on an approval nobody answers, BRO-5040):
+  git fetch origin main && git worktree add -b <branch> .claude/worktrees/<name> origin/main
+then work under that path. (memory/, cloud-memory/, and data/ files are exempt -- this only
 fires for the tracked-code paths above.)
 
 Bypass for a genuine false positive: WORKTREE_ENFORCE_DISABLE=1

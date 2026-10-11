@@ -92,9 +92,10 @@
 
 const HOUR_MS = 60 * 60 * 1000;
 const IDLE_MS = 6 * HOUR_MS;
-// A session that would have started a worker session files the card with a
-// "START-NOW: <why>" line instead (create_session prompts the owner every time,
-// BRO-4664). Such a Todo card is a handoff, so it skips the idle wait and goes
+// A session with no human in it (routine, worker) that would have started a
+// worker session files the card with a "START-NOW: <why>" line instead
+// (create_session prompts the owner; sessions the owner is in start their own,
+// BRO-5040). Such a Todo card is a handoff, so it skips the idle wait and goes
 // to the front of the queue. Only for START_NOW_MAX_AGE_MS after filing, so a
 // card bounced back to Todo later, or an over-eager filer, can't hold the front
 // for good; and not in its first START_NOW_MIN_AGE_MS, so the filer can finish
