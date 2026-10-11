@@ -1,15 +1,17 @@
 name: Opening Night Orchestrator
 # Market in the run title so the Redundancy guard in OTHER runs can tell what a
 # dispatched run covers ("(broadway)" / "(west-end)"); "(auto)" = all markets.
-# Scheduled runs always render "(auto)" — the guard derives their market from
-# the cron hour instead.
-run-name: 'Opening Night Orchestrator (${{ inputs.market || ''auto'' }})'
+# Scheduled runs name their market from the cron string that fired them
+# (github.event.schedule), NOT from the clock hour: GitHub delays these crons
+# by 3-6h (measured 2026-10), which put the West End crons in the Broadway
+# hour window (BRO-2730). The hour maps below are only a fallback.
+run-name: 'Opening Night Orchestrator (${{ inputs.market || (contains(fromJSON(''["0 5 * * *","0 18 * * *","0 20 * * *","0 21 * * *"]''), github.event.schedule) && ''west-end'' || github.event.schedule && ''broadway'' || ''auto'') }})'
 
 # Sustained polling for opening nights. Dispatches the single-shot poller
 # every N minutes for up to M iterations. Each poller run gets a fresh
 # checkout — no stale git state issues.
 #
-# Five crons. GitHub Actions crons have CONSISTENT delays:
+# Seven crons. GitHub Actions crons have CONSISTENT delays:
 #   - 1 AM UTC crons: DROPPED entirely (never fires)
 #   - 2:30 AM UTC: fires ~4 AM UTC (1.5h late)
 #   - 7 AM: fires ~8:15 UTC (1.25h late)
@@ -32,6 +34,8 @@ on:
     - cron: '0 5 * * *'    # West End morning — fires ~6:30 AM UTC = 7:30 AM BST
     - cron: '0 8 * * *'    # Broadway morning — fires ~9 AM UTC = 4 AM ET
     - cron: '0 18 * * *'   # West End evening — fires ~19 UTC = 8 PM BST
+    - cron: '0 20 * * *'   # West End late evening (BRO-2730) — covers the 21-22Z press embargo lift
+    - cron: '0 21 * * *'   # West End late evening (BRO-2730) — covers the 21-22Z press embargo lift
   workflow_dispatch:
     inputs:
       show_id:
@@ -108,6 +112,13 @@ jobs:
           if [ "$INPUT_MARKET" != "" ] && [ "$INPUT_MARKET" != "auto" ]; then
             echo "market=$INPUT_MARKET" >> $GITHUB_OUTPUT
             echo "Using manual market: $INPUT_MARKET"
+          elif [ "${{ github.event_name }}" = "schedule" ] && [ -n "${{ github.event.schedule }}" ]; then
+            # BRO-2730: market from the cron string, immune to GitHub's delay.
+            case "${{ github.event.schedule }}" in
+              "0 5 * * *"|"0 18 * * *"|"0 20 * * *"|"0 21 * * *") echo "market=west-end" >> $GITHUB_OUTPUT ;;
+              *) echo "market=broadway" >> $GITHUB_OUTPUT ;;
+            esac
+            echo "Market from cron '${{ github.event.schedule }}'"
           elif [ "${{ github.event_name }}" = "schedule" ]; then
             # Hour ranges account for GitHub's consistent 1-2h cron delay.
             # Crons shifted 2h early → actual fire times shown in comments above.
@@ -200,15 +211,16 @@ jobs:
             # run id, so two runs can never both skip in each other's favor).
             if [[ "$START" > "$MY_START" ]]; then continue; fi
             if [ "$START" = "$MY_START" ] && [ "$ID" -gt "$MY_ID" ]; then continue; fi
-            if [ "$EVENT" = "schedule" ]; then
-              OTHER_MARKET=$(hour_to_market "${START:11:2}")
-            else
-              case "$TITLE" in
-                *"(broadway)"*) OTHER_MARKET=broadway ;;
-                *"(west-end)"*) OTHER_MARKET=west-end ;;
-                *) OTHER_MARKET=all ;;
-              esac
-            fi
+            # Title carries the market for dispatched AND scheduled runs
+            # (BRO-2730). Only a pre-change scheduled run still titled "(auto)"
+            # falls back to the clock-hour map.
+            case "$TITLE" in
+              *"(broadway)"*) OTHER_MARKET=broadway ;;
+              *"(west-end)"*) OTHER_MARKET=west-end ;;
+              *)
+                if [ "$EVENT" = "schedule" ]; then OTHER_MARKET=$(hour_to_market "${START:11:2}")
+                else OTHER_MARKET=all; fi ;;
+            esac
             if [ "$OTHER_MARKET" = "$MY_MARKET" ] || [ "$OTHER_MARKET" = "all" ]; then
               echo "Earlier orchestrator run $ID (started $START, market=$OTHER_MARKET) already covers market=$MY_MARKET."
               REDUNDANT=true
