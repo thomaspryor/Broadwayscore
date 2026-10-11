@@ -109,7 +109,8 @@ test('fixedNutFromBasis: running unchanged, breakeven inverts the model breakeve
   // no period: taken at a gross equal to the figure
   assert.equal(fixedNutFromBasis({ weeklyRunningCost: 963_000, weeklyRunningCostBasis: 'all-in' }, 963_000, v, T).gross, 963_000);
   // gross-linked part larger than the figure: keep the figure
-  assert.deepEqual(fixedNutFromBasis({ weeklyRunningCost: 100_000, weeklyRunningCostBasis: 'all-in', weeklyRunningCostSource: src }, 100_000, v, T, weekly), { nut: 100_000, basis: 'running' });
+  assert.deepEqual(fixedNutFromBasis({ weeklyRunningCost: 100_000, weeklyRunningCostBasis: 'all-in', weeklyRunningCostSource: src }, 100_000, v, T, weekly), { nut: 100_000, basis: 'running', rejected: 'all-in' });
+  assert.equal(ai.fromPeriod, true);
   assert.equal(costBasis({ weeklyRunningCostBasis: 'breakeven' }), 'all-in');
 });
 

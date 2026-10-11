@@ -98,18 +98,19 @@ function periodGross(source, weekly) {
  * @param {number} varRate - live gross-linked rate (author royalty, fees)
  * @param {{ pctOfGross: number, rentPctOfNut: number }} theater - THEATER_DEAL
  * @param {object} [weekly] - weekly grosses, uncut, for an all-in period
- * @returns {{ nut: number, basis: string, gross?: number }}
+ * @returns {{ nut: number, basis: string, gross?: number, fromPeriod?: boolean, rejected?: string }}
  */
 function fixedNutFromBasis(commercial, weeklyNut, varRate, theater, weekly) {
   const basis = commercial && commercial.weeklyRunningCost && BASES.includes(commercial.weeklyRunningCostBasis) ? commercial.weeklyRunningCostBasis : 'running';
   const keep = 1 - theater.rentPctOfNut;
   if (basis === 'breakeven') return { nut: weeklyNut * (1 - varRate - theater.pctOfGross) / keep, basis };
   if (basis !== 'all-in') return { nut: weeklyNut, basis };
-  const gross = periodGross(commercial.weeklyRunningCostSource, weekly) || weeklyNut;
+  const period = periodGross(commercial.weeklyRunningCostSource, weekly);
+  const gross = period || weeklyNut;
   // E = nut + varRate x G + max(0, pct x G - rent share x nut)
   let nut = (weeklyNut - (varRate + theater.pctOfGross) * gross) / keep;
   if (theater.pctOfGross * gross <= theater.rentPctOfNut * nut) nut = weeklyNut - varRate * gross;
-  return nut > 0 ? { nut, basis, gross } : { nut: weeklyNut, basis: 'running' };
+  return nut > 0 ? { nut, basis, gross, fromPeriod: !!period } : { nut: weeklyNut, basis: 'running', rejected: 'all-in' };
 }
 
 module.exports = { splitCosts, costBasis, fixedNutFromBasis, periodGross, EXTRA_VARIABLE, COST_BASES: BASES };

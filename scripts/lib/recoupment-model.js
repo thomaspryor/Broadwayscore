@@ -546,7 +546,8 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   if (nutSource === 'estimated') {
     warnings.push('Weekly running cost estimated from show type');
   }
-  if (basisNut && basisNut.basis !== 'running') warnings.push(`Weekly cost is ${basisNut.basis}: fixed nut ${Math.round(basisNut.nut)}${basisNut.gross ? ` at average gross ${Math.round(basisNut.gross)}` : ''}`);
+  if (basisNut && basisNut.basis !== 'running') warnings.push(`Weekly cost is ${basisNut.basis}: fixed nut ${Math.round(basisNut.nut)}${basisNut.gross ? ` at ${basisNut.fromPeriod ? 'the quoted period\'s average gross' : 'a gross equal to the figure (no period in the quote)'} ${Math.round(basisNut.gross)}` : ''}`);
+  if (basisNut && basisNut.rejected) warnings.push(`Weekly cost tagged ${basisNut.rejected} but its gross-linked share exceeds it: used as a fixed nut`);
 
   // Shadow only (BRO-5073, opts.costSplit): fixed part of the cost and a
   // larger gross-linked rate. The reserve and cap stay on the reported cost.
