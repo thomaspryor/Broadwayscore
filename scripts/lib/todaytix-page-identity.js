@@ -63,6 +63,7 @@ const ABBREV_DOT_RE = /\b(Mr|Mrs|Ms|Dr|St|Jr|Sr|Prof|[A-Z])\.(?=\s)/g;
 // After a dropped sentence, a sentence leaning on it ("That meant a sudden
 // influx of 7,000 visitors") has lost what it refers to.
 const ANAPHORIC_OPENER_RE = /^(That|This|These|Those|It|They)\b/;
+const PAREN_TITLE_RE = /\(\s*"[^"]*"(?:\s*\/\s*"[^"]*")*\s*\)/g;
 const MAX_ABOUT_CHARS = 700;
 
 /**
@@ -72,6 +73,11 @@ const MAX_ABOUT_CHARS = 700;
  * A quoted title ("After the Act" is a verbatim musical...) is story.
  */
 function isPullQuote(sentence) {
+  // A quoted title in its own brackets is a song or scene cue in plot text
+  // ('mourns the start of a new workday ("I Feel Like I'm Not Out of Bed
+  // Yet")', BRO-5063), never a press quote, which puts the outlet in the
+  // brackets after the quote instead.
+  sentence = sentence.replace(PAREN_TITLE_RE, '');
   const marks = (sentence.match(/"/g) || []).length;
   if (marks === 0) return false;
   if (marks % 2 === 1) return true;
