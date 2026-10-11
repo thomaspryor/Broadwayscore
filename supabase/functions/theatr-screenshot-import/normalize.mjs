@@ -56,67 +56,101 @@ function cleanText(v, maxLen) {
   return s.length > maxLen ? s.slice(0, maxLen).trim() : s;
 }
 
+/** Like cleanText but keeps paragraph breaks (a review's blank lines). */
+function cleanParagraphs(v, maxLen) {
+  if (typeof v !== 'string') return null;
+  const s = v
+    .split(/\n\s*\n/)
+    .map((p) => p.replace(/\s+/g, ' ').trim())
+    .filter(Boolean)
+    .join('\n\n');
+  if (!s) return null;
+  return s.length > maxLen ? s.slice(0, maxLen).trim() : s;
+}
+
+const SCORE_RE = /^\s*(\d{1,3}(?:\.\d+)?)\s*\/\s*(5|10|100)\s*\.?\s*$/;
+
 /**
- * Clean the model's extraction into client-ready entries.
+ * Turn a score the user wrote in a review ("84/100", "8.5/10", "4/5") into
+ * 0-100. Only an explicit number over 5, 10 or 100 counts: a reaction or a
+ * loose "loved it" is never turned into a score.
+ * @returns {number|null}
+ */
+export function parseScoreText(text) {
+  if (typeof text !== 'string') return null;
+  const m = text.match(SCORE_RE);
+  if (!m) return null;
+  const n = Number(m[1]);
+  const d = Number(m[2]);
+  if (!Number.isFinite(n) || n < 0 || n > d) return null;
+  return Math.round((n / d) * 1000) / 10;
+}
+
+/** 0-100 → nearest half-star, 0.5 floor. Same rule as show-score-proxy's
+ *  scoreToRating, so an 84 imports as 4 stars from either source. */
+export function scoreToRating(score) {
+  if (typeof score !== 'number' || !Number.isFinite(score) || score < 0 || score > 100) return null;
+  return Math.max(0.5, Math.min(5, Math.round((score / 20) * 2) / 2));
+}
+
+/** "MM-DD" that exists in a leap year (so 02-29 passes; the year is decided
+ *  later, client-side). */
+function isMonthDay(s) {
+  if (typeof s !== 'string' || !/^\d{2}-\d{2}$/.test(s)) return false;
+  return isIsoDate(`2024-${s}`);
+}
+
+const SCREENS = new Set(['activity', 'collection', 'other']);
+const REACTIONS = new Set(['recommend', 'mixed', 'dislike']);
+const MAX_REVIEW_LEN = 10000;
+
+/**
+ * Clean the model's extraction into client-ready rows, in screenshot order.
  * - drops rows with no readable title or an unknown list
  * - nulls dates that aren't real calendar dates, predate 1900, or sit more
  *   than two years out (a misread year must not file a show into 2099)
- * - dedupes rows repeated across overlapping screenshots (same list, title
- *   and date), keeping the first and filling a missing venue from the
- *   repeat; an undated Attended row folds into a dated one for the same title
- *   (its date was cropped off). Same rule as mergeTheatrRows on web
- *   (src/lib/show-import.ts) and in the iOS app (lib/theatr-import.ts).
+ * - Interested rows keep their feed position (monthDay/yearHint, which the
+ *   client's year walk needs) but never a date, score or review
+ * - parses the user's own written score into 0-100 and a half-star rating
+ *
+ * Merging repeats is the client's job (mergeTheatrRows on web and iOS): it
+ * has to run after the client resolves feed years across every screenshot.
  *
  * @param {unknown} extraction  parsed structured output
  * @param {string} today        YYYY-MM-DD, injected for testability
- * @returns {{ entries: { title: string, venue: string|null, date: string|null, list: 'attended'|'interested' }[], dropped: number }}
  */
 export function normalizeExtraction(extraction, today) {
   const rows = extraction && typeof extraction === 'object' && Array.isArray(/** @type {any} */ (extraction).entries)
     ? /** @type {any} */ (extraction).entries
     : [];
   const maxYear = Number(today.slice(0, 4)) + 2;
-  const cleaned = [];
+  const okYear = (y) => Number.isInteger(y) && y >= 1900 && y <= maxYear;
+  const entries = [];
   let dropped = 0;
   for (const row of rows) {
     const title = cleanText(row?.title, MAX_TITLE_LEN);
     const list = row?.list === 'attended' || row?.list === 'interested' ? row.list : null;
     if (!title || !list) { dropped++; continue; }
+    const attended = list === 'attended';
     let date = isIsoDate(row?.date) ? row.date : null;
-    if (date) {
-      const year = Number(date.slice(0, 4));
-      if (year < 1900 || year > maxYear) date = null;
-    }
-    // Interested rows are plans, not viewings: a date there is at most a
-    // planned date, and Theatr doesn't show one, so anything read is noise.
-    if (list === 'interested') date = null;
-    cleaned.push({ title, venue: cleanText(row?.venue, MAX_VENUE_LEN), date, list });
+    if (date && !okYear(Number(date.slice(0, 4)))) date = null;
+    const monthDay = isMonthDay(row?.month_day) ? row.month_day : null;
+    const yearHint = okYear(row?.year_hint) ? row.year_hint : null;
+    const score = attended ? parseScoreText(row?.score_text) : null;
+    entries.push({
+      title,
+      venue: cleanText(row?.venue, MAX_VENUE_LEN),
+      list,
+      screen: SCREENS.has(row?.screen) ? row.screen : 'other',
+      // Interested rows are plans, not viewings: never a date seen.
+      date: attended ? date : null,
+      monthDay,
+      yearHint,
+      score,
+      rating: scoreToRating(score),
+      review: attended ? cleanParagraphs(row?.review, MAX_REVIEW_LEN) : null,
+      reaction: attended && REACTIONS.has(row?.reaction) ? row.reaction : null,
+    });
   }
-  return { entries: mergeTheatrRows(cleaned), dropped };
-}
-
-/**
- * One row per list + title + date in first-seen order; an undated Attended
- * row folds into a dated row for the same title.
- * @param {{ title: string, venue: string|null, date: string|null, list: string }[]} rows
- */
-export function mergeTheatrRows(rows) {
-  const out = [];
-  const byKey = new Map();
-  const titleKey = (r) => `${r.list}|${r.title.toLowerCase()}`;
-  const datedTitles = new Set(rows.filter((r) => r.list === 'attended' && r.date).map(titleKey));
-  for (const r of rows) {
-    const undatedDup = r.list === 'attended' && !r.date && datedTitles.has(titleKey(r));
-    const key = undatedDup ? null : `${titleKey(r)}|${r.date || ''}`;
-    const prev = key ? byKey.get(key) : out.find((o) => titleKey(o) === titleKey(r) && o.date);
-    if (prev) {
-      if (!prev.venue && r.venue) prev.venue = r.venue;
-      continue;
-    }
-    if (!key) continue; // the dated copy comes later and carries this row
-    const copy = { ...r };
-    byKey.set(key, copy);
-    out.push(copy);
-  }
-  return out;
+  return { entries, dropped };
 }

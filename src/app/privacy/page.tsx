@@ -88,7 +88,7 @@ export default function PrivacyPage() {
                 If you import your theatre history, you either paste the address of your public Show Score
                 profile (we read the reviews shown on it), upload the export file from Mezzanine, or upload
                 screenshots from Theatr. Theatr screenshots are sent to our AI provider, Anthropic, to read the
-                show names and dates, and are not stored by us. We save the
+                show names, dates and your reviews, and are not stored by us. We save the
                 ratings and dates that match shows in our catalog. When a title doesn&apos;t match, we record
                 the title and our search for it so we can add missing shows. If you add a show that isn&apos;t
                 in our catalog, its title and details become part of our public catalog.

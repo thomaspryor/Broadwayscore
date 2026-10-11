@@ -805,9 +805,9 @@ export default function ImportShows({
                   <span className="text-sm font-bold text-white">Theatr</span>
                 </div>
                 <p className="text-xs text-gray-500 mb-2">
-                  Theatr has no export, so upload screenshots instead. In the app: Profile → Collection → Attended
-                  (and Interested), then screenshot the list as you scroll. Up to {THEATR_MAX_SCREENSHOTS} screenshots.
-                  We only read the show names and dates; the images aren&apos;t saved.
+                  Theatr has no export, so upload screenshots instead. In the app: Profile → Activity, then screenshot
+                  the feed from the top as you scroll down. Up to {THEATR_MAX_SCREENSHOTS} screenshots. We read the shows,
+                  dates, and your reviews and scores (like 84/100); the images aren&apos;t saved.
                 </p>
                 <label className="btn-secondary text-sm gap-2 cursor-pointer inline-flex items-center">
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
