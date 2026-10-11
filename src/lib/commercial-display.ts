@@ -159,6 +159,8 @@ export function getModelHoldLabel(
   if (hold === 'estimates-disagree') return 'Estimates disagree';
   if (hold === 'too-uncertain') return 'Too uncertain to estimate';
   if (hold === 'awaiting-truth') return 'Not enough reported data yet';
+  // Never hint at a recoupment the producers have not announced (BRO-5073).
+  if (hold === 'past-100-unannounced') return 'Recoupment not announced';
   return 'Estimate unavailable';
 }
 
