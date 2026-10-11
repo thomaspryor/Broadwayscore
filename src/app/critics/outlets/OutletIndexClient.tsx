@@ -2,7 +2,8 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { getScoreClass, TierBadgeSmall } from '@/lib/critic-page-utils';
+import { getScoreClass } from '@/lib/critic-page-utils';
+import { OutletTierChip } from '@/components/show-cards';
 import { ToggleBar, ColumnHeader } from '@/components/show-cards';
 import Breadcrumb from '@/components/Breadcrumb';
 
@@ -65,7 +66,7 @@ function OutletCard({ outlet }: { outlet: OutletSummary }) {
           <h2 className="font-bold text-white group-hover:text-brand transition-colors truncate text-sm sm:text-base">
             {outlet.name}
           </h2>
-          <TierBadgeSmall tier={outlet.tier} />
+          <OutletTierChip tier={outlet.tier} />
         </div>
         <p className="text-gray-400 text-xs sm:text-sm">
           {outlet.criticCount} critic{outlet.criticCount !== 1 ? 's' : ''}
