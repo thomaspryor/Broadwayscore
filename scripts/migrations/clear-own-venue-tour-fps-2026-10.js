@@ -62,6 +62,7 @@ for (const c of JSON.parse(fs.readFileSync(candPath, 'utf8'))) {
     const text = d.fullText || d.wrongFullText || '';
     if (text.trim().length < 200) { console.log(`[SKIP] ${c.show}/${c.file}: no text to re-verify`); skipped++; continue; }
     try {
+      // venue-write-guard-ok: the record's venue is passed to the verifier as context, never written
       fresh = await require('../lib/content-verifier').verifyContent({
         scrapedText: text, showTitle: show.title, criticName: d.criticName || null, outletName: d.outlet || null,
         url: d.url || null, venue: show.venue || null, openingDate: show.openingDate || null,
