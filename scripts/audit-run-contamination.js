@@ -37,6 +37,10 @@ const {
   republishMarker, evaluateRepublishedReview, wrongProductionFlagVsClear,
 } = require('./lib/run-contamination');
 
+const { foldDiacritics } = require('./lib/title-match.js');
+const { exitOnHelp } = require('./lib/cli-help.js');
+exitOnHelp(module);
+
 const ROOT = path.join(__dirname, '..');
 const ARGV = process.argv.slice(2);
 const argVal = (n) => { const a = ARGV.find((x) => x.startsWith(`--${n}=`)); return a ? a.slice(n.length + 3) : null; };
@@ -47,7 +51,7 @@ const RECENT_SINCE = '2026-06-01';
 const DAY = 86400000;
 
 const want = (n) => !ONLY || ONLY.has(n);
-const norm = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+const norm = (s) => foldDiacritics(String(s || '')).toLowerCase().replace(/[^a-z0-9]/g, '');
 const critKey = (c) => { const n = norm(c); return n === 'unknown' ? '' : n; };
 const canon = (u) => {
   // Keep the query string except tracking params: londontheatrereviews.co.uk/post.cfm?id=N
