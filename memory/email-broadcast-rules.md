@@ -52,3 +52,23 @@ that reads as "this really happened") to a single address for manual
 testing MUST call `markTestSend()` on that path before it reaches
 `sendEmail()`/Resend. Don't hand-roll a different marker — reuse the lib so
 `[TEST] ` + banner styling stays consistent and greppable.
+
+## Policy: unsent opening-night drafts (BRO-2935, owner decision 2026-10-11)
+
+Three July West End drafts (To Kill a Mockingbird, Jesus Christ Superstar,
+Trainspotting) sat unsent in Resend for months. Nothing flagged them because a
+draft looks "handled" to every tracker check. Policy:
+
+- An opening-night draft nobody sends gets DELETED, never sent late. Use
+  `discard-broadcast-draft.yml` (dry run by default; `dry_run=false` to act).
+  It refuses unless every tracker record of the draft is unsent, every show of
+  a combo draft is named, and a live Resend GET says `draft`. It never calls
+  `/send`.
+- Discarded records keep their history and get `discardedAt`
+  (`markDraftDiscarded` in `scripts/lib/broadcast-state.js`). Every consumer
+  treats them as resolved: the send filter, deadline re-queue, reconcile,
+  missed-broadcast check and recreate guard all skip them. `discardedAt` is a
+  recency field, so a stale tracker copy cannot resurrect the draft on merge.
+- `check-missed-broadcasts.js` (daily, data-health-check.yml) pages one
+  `broadcast:draft-unsent:<draftId>` alert per draft that is 3 to 30 days old
+  and still `draft` on a live GET, skipping shows already in a never-sent alert.

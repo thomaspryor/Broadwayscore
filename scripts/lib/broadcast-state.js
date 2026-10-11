@@ -18,6 +18,8 @@
  *       recipientCount:  number | null,       // populated only on confirmed send
  *       completed:       boolean,             // true once draftStatus === 'sent'
  *       lastReconciledAt: ISO string,
+ *       discardedAt:     ISO string,   // set only when the unsent draft was deleted on purpose (BRO-2935)
+ *       discardReason:   string | null,
  *     }
  *   }
  *
@@ -157,6 +159,9 @@ function applyResendStatusUpdate(record, apiResponse, nowIso) {
  */
 function shouldRequeueShow(record, nowMs) {
   if (!record) return true; // never recorded — definitely pending
+  // Deliberately deleted unsent (BRO-2935): the owner chose not to send it.
+  // Checked before the completed:false branch below, which would re-queue it.
+  if (isDiscarded(record)) return false;
   // Belt-and-suspenders: if a broken external writer ever produced
   // { completed:false, draftStatus:'sent' }, do NOT re-queue — the 'sent'
   // status observed by the reconciler is authoritative. applyResendStatusUpdate
@@ -173,6 +178,80 @@ function shouldRequeueShow(record, nowMs) {
   return ageMs >= REQUEUE_AFTER_HOURS * 3600 * 1000;
 }
 
+/**
+ * True when the draft was deliberately deleted from Resend WITHOUT being sent
+ * (scripts/discard-stuck-broadcast-drafts.js, BRO-2935). Terminal: never
+ * re-queued, never reported as missed, never re-polled.
+ */
+function isDiscarded(record) {
+  return Boolean(record && typeof record === 'object' && record.discardedAt);
+}
+
+/**
+ * The tracker record after its unsent draft was deleted from Resend on
+ * purpose. Pure. completed stays false (nothing reached subscribers);
+ * discardedAt is what every consumer keys on, and it is a RECENCY_FIELD so a
+ * merge with a stale pre-discard copy keeps this one.
+ */
+function markDraftDiscarded(record, { nowIso, reason } = {}) {
+  return {
+    ...record,
+    draftStatus: 'deleted',
+    completed: false,
+    sentAt: null,
+    discardedAt: nowIso || new Date().toISOString(),
+    discardReason: reason || null,
+  };
+}
+
+const MS_PER_DAY = 86_400_000;
+
+/**
+ * Drafts waiting in Resend that nobody has sent (BRO-2935): one entry per
+ * draftId, aged by draftCreatedAt. The per-show mirrors of one broadcast share
+ * a draftId and can disagree after a failed poll (BRO-4474), so a draft is
+ * stale only when NO record of it is sent, deleted or discarded and at least
+ * one still says 'draft'. 'queued'/'sending' are a send in progress, not stuck.
+ *
+ * @returns {Array<{draftId, keys, showIds, draftCreatedAt, ageDays, draftUrl}>}
+ *   oldest first. Callers decide which ages page; this returns every age >= minAgeDays.
+ */
+function findStaleDrafts(sentShows, nowMs, { minAgeDays = 3 } = {}) {
+  const groups = new Map();
+  for (const [key, rec] of Object.entries(sentShows || {})) {
+    if (!rec || !rec.draftId) continue;
+    if (key.startsWith('preview:') || key.startsWith('overdue-alert:')) continue;
+    let g = groups.get(rec.draftId);
+    if (!g) { g = { draftId: rec.draftId, records: [] }; groups.set(rec.draftId, g); }
+    g.records.push([key, rec]);
+  }
+  const now = typeof nowMs === 'number' ? nowMs : Date.now();
+  const out = [];
+  for (const g of groups.values()) {
+    const recs = g.records.map(([, r]) => r);
+    if (recs.some((r) => isDiscarded(r) || r.draftStatus === 'sent' || r.draftStatus === 'deleted' || r.draftStatus === 'cancelled')) continue;
+    if (!recs.some((r) => r.draftStatus === 'draft')) continue;
+    const created = recs.map((r) => Date.parse(r.draftCreatedAt)).find(Number.isFinite);
+    if (!Number.isFinite(created)) continue;
+    const ageDays = Math.floor((now - created) / MS_PER_DAY);
+    if (ageDays < minAgeDays) continue;
+    const keys = g.records.map(([k]) => k).sort();
+    const showIds = [...new Set(keys.flatMap((k) => {
+      const m = /^[a-z-]+:([^:]+)$/.exec(k);
+      return m ? m[1].split('+') : [k];
+    }))].sort();
+    out.push({
+      draftId: g.draftId,
+      keys,
+      showIds,
+      draftCreatedAt: new Date(created).toISOString(),
+      ageDays,
+      draftUrl: (recs.find((r) => r.draftUrl) || {}).draftUrl || null,
+    });
+  }
+  return out.sort((a, b) => b.ageDays - a.ageDays || a.draftId.localeCompare(b.draftId));
+}
+
 module.exports = {
   REQUEUE_AFTER_HOURS,
   TERMINAL_FAILURE_STATUSES,
@@ -181,4 +260,7 @@ module.exports = {
   migrateSentRecord,
   applyResendStatusUpdate,
   shouldRequeueShow,
+  isDiscarded,
+  markDraftDiscarded,
+  findStaleDrafts,
 };

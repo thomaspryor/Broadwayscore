@@ -70,6 +70,9 @@ const PAGE_WORTHY_PREFIXES = [
   // owner noticed one show's email arriving and another's never had). Nothing
   // retries these automatically, so the page IS the recovery mechanism.
   'broadcast:never-sent:',
+  // check-missed-broadcasts.js (BRO-2935): a Resend draft has sat unsent 3+
+  // days. Only the owner can press Send or decide to discard it.
+  'broadcast:draft-unsent:',
   // BRO-4417: the draft deadline passed, so the draft was created over QA-gate
   // findings. The owner must read them before pressing Send, and the draft is
   // sitting in Resend right now, so the next morning's digest is too late.

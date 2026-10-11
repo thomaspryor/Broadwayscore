@@ -26,7 +26,11 @@
 
 const fs = require('fs');
 const path = require('path');
-const { findMissedBroadcasts, applyLiveBroadcastStatus } = require('./lib/missed-broadcasts');
+const {
+  findMissedBroadcasts, applyLiveBroadcastStatus, selectPageableStaleDrafts, wasCoveredByWeeklyRoundup,
+  STALE_DRAFT_MAX_ALERT_AGE_DAYS,
+} = require('./lib/missed-broadcasts');
+const { findStaleDrafts } = require('./lib/broadcast-state');
 
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
@@ -169,6 +173,17 @@ async function main() {
   const alertable = missed.filter((m) => m.alertable);
   const aged = missed.filter((m) => !m.alertable);
 
+  // Unsent drafts, whatever their show's state (BRO-2935). The never-sent pass
+  // above only sees shows that qualified and are inside their opening window,
+  // so a draft for anything else used to sit in Resend unseen for months.
+  const staleDrafts = findStaleDrafts(sentRaw.shows, Date.now());
+  const pageableDrafts = selectPageableStaleDrafts(staleDrafts, {
+    alertableMissedIds: alertable.filter((m) => m.state === 'draft-stuck').map((m) => m.id),
+    roundupCoveredIds: (showsRaw.shows || [])
+      .filter((s) => s.category === 'west-end' && wasCoveredByWeeklyRoundup(newsletterIssues, s.id))
+      .map((s) => s.id),
+  });
+
   // The snapshot is UNBOUNDED by age on purpose. Alerting stops at
   // MAX_ALERT_AGE_DAYS, but dropping aged shows from the record entirely would
   // recreate this sweep's own bug at a longer horizon — health-check.js reads
@@ -180,6 +195,7 @@ async function main() {
     alertableCount: alertable.length,
     agedOutCount: aged.length,
     missed,
+    staleDrafts,
   };
   if (!DRY_RUN) {
     try {
@@ -191,6 +207,15 @@ async function main() {
   }
 
   if (AS_JSON) console.log(JSON.stringify(snapshot, null, 2));
+
+  // Before the early returns below: those fire on every clean day.
+  // Isolated: a Resend or ledger failure here must not cost the never-sent
+  // pages below.
+  try {
+    await alertStaleDrafts(pageableDrafts, staleDrafts);
+  } catch (err) {
+    console.error(`::warning::unsent-draft alert pass failed: ${err.message}`);
+  }
 
   if (!missed.length) {
     console.log('No missed opening-night broadcasts.');
@@ -261,6 +286,91 @@ async function main() {
       console.log(`::warning::${m.id}: never-sent alert was downgraded to the morning digest — check that 'broadcast:never-sent:' is still in scripts/lib/page-worthy-alerts.js`);
     } else {
       console.log(`[alert-router] ${m.id} (${m.state}): ${result.action}`);
+    }
+  }
+}
+
+const DRAFT_UNSENT_PREFIX = 'broadcast:draft-unsent:';
+
+/**
+ * Page each unsent Resend draft 3-30 days old (BRO-2935), one condition per
+ * draftId, weekly until it is sent or discarded. A live GET first drops any
+ * draft Resend already sent (the tracker can lag, BRO-4474); a failed or slow
+ * GET pages on tracker state, the same rule as applyLiveBroadcastStatus.
+ */
+async function alertStaleDrafts(pageable, allStale) {
+  for (const d of allStale) {
+    console.log(`  - unsent draft ${d.draftId.slice(0, 8)} (${d.showIds.join(', ')}), created ${d.draftCreatedAt.slice(0, 10)}, ${d.ageDays}d old${pageable.includes(d) ? '' : ' [not paging]'}`);
+  }
+  if (DRY_RUN) return;
+
+  let toPage = pageable;
+  if (pageable.length && process.env.RESEND_API_KEY) {
+    const { getBroadcastWithRetry } = require('./reconcile-broadcast-state');
+    const deadline = Date.now() + 30_000;
+    toPage = [];
+    for (const d of pageable) {
+      if (Date.now() > deadline) { toPage.push(d); continue; }
+      const res = await getBroadcastWithRetry(d.draftId);
+      const status = res && res.ok && res.data ? String(res.data.status || '').toLowerCase() : null;
+      if (status && status !== 'draft') {
+        console.log(`::warning::draft ${d.draftId}: tracker says draft, Resend says ${status}; not paging (reconcile-broadcast-state will catch up)`);
+        continue;
+      }
+      toPage.push(d);
+    }
+  }
+
+  const { routeAlert, resolveCondition } = require('./lib/owner-alert-router');
+  // Resolve only drafts that are really gone (sent, deleted, discarded, or past
+  // the alert window). A draft merely held back this run (its show is in a
+  // never-sent page) stays open, so it does not re-page as new the day that
+  // page ages out.
+  const dropped = new Set(pageable.filter((d) => !toPage.includes(d)).map((d) => d.draftId));
+  const open = new Set(allStale
+    .filter((d) => d.ageDays <= STALE_DRAFT_MAX_ALERT_AGE_DAYS && !dropped.has(d.draftId))
+    .map((d) => DRAFT_UNSENT_PREFIX + d.draftId));
+  let ledger = null;
+  try {
+    ledger = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'audit', 'alert-ledger.json'), 'utf8'));
+  } catch { /* no ledger yet */ }
+  for (const [key, c] of Object.entries((ledger && ledger.conditions) || {})) {
+    if (!key.startsWith(DRAFT_UNSENT_PREFIX) || open.has(key) || !c || c.status !== 'open') continue;
+    try {
+      resolveCondition(key);
+      console.log(`[alert-router] resolved ${key}`);
+    } catch (err) {
+      console.error(`::warning::could not resolve ${key}: ${err.message}`);
+    }
+  }
+
+  for (const d of toPage) {
+    const shows = d.showIds.join(', ');
+    const result = await routeAlert({
+      conditionKey: DRAFT_UNSENT_PREFIX + d.draftId,
+      title: `Opening-night email draft waiting ${d.ageDays} days unsent: ${shows}`,
+      description:
+        `A Resend broadcast draft for ${shows} was created ${d.draftCreatedAt.slice(0, 10)} ` +
+        `(${d.ageDays} days ago) and has not been sent, so subscribers have not received it.\n\n` +
+        `Either press Send in Resend:\n  ${d.draftUrl || 'https://resend.com/broadcasts'}\n\n` +
+        'or, if it is too late to be worth sending, delete it without sending (the owner policy, ' +
+        `BRO-2935) with the Discard Broadcast Draft workflow, shows=${d.showIds.join(',')}. ` +
+        `Do NOT re-run the broadcast: that makes a second draft. This alert repeats weekly and stops ` +
+        `once the draft is sent, discarded, or more than 30 days old.`,
+      severity: 'error',
+      disposition: 'human',
+      cooldownHours: 24 * 7,
+      fields: [
+        { name: 'Shows', value: shows },
+        { name: 'Draft created', value: `${d.draftCreatedAt.slice(0, 10)} (${d.ageDays} days ago)` },
+        { name: 'Draft', value: d.draftUrl || d.draftId },
+      ],
+    });
+    console.log(`[alert-router] draft ${d.draftId.slice(0, 8)}: ${result.action}`);
+    // Same guard as the never-sent alert above: 'digest' means the page-worthy
+    // gate downgraded a 'human' alert, so the owner only hears tomorrow.
+    if (result.action === 'digest') {
+      console.log(`::warning::draft ${d.draftId.slice(0, 8)}: unsent-draft alert was downgraded to the morning digest — check that 'broadcast:draft-unsent:' is still in scripts/lib/page-worthy-alerts.js`);
     }
   }
 }

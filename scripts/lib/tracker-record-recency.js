@@ -30,7 +30,10 @@
 // If a future writer adds a new content-defining field to a record shape in
 // this file, add it here too — this list is the single point that both
 // merge paths trust.
-const RECENCY_FIELDS = ['sentAt', 'draftCreatedAt'];
+// discardedAt (BRO-2935): a discarded record keeps the stale copy's
+// draftCreatedAt and has sentAt:null, so without it a merge tie would hand the
+// win to a pre-discard copy and resurrect a deleted draft as pending.
+const RECENCY_FIELDS = ['sentAt', 'draftCreatedAt', 'discardedAt'];
 
 /**
  * Newest parseable timestamp among RECENCY_FIELDS present on `record`, in

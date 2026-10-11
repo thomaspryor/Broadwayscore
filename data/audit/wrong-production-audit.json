@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-11T02:40:49.138Z",
+  "timestamp": "2026-10-11T03:38:11.318Z",
   "stats": {
     "totalReviews": 54692,
-    "alreadyFlagged": 20019,
+    "alreadyFlagged": 20029,
     "dateGuardCatches": 272,
     "directorMismatch": 1674,
     "tvFilmSignals": 1526,
-    "londonSignals": 1817,
+    "londonSignals": 1820,
     "offBroadwaySignals": 504,
     "yearMismatch": 130,
-    "noPublishDate": 6154
+    "noPublishDate": 6137
   },
   "findings": [
     {
@@ -19648,6 +19648,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "everything-theatre--alice-grahame.json",
+      "score": 82,
       "publishDate": "2026-10-10",
       "url": "https://everything-theatre.co.uk/2026/10/review-into-the-woods-noel-coward-theatre/",
       "findings": [
@@ -19713,7 +19714,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "londontheatre1--chris-omaweng.json",
-      "score": 74,
+      "score": 76,
       "publishDate": "2026-10-07",
       "url": "https://www.londontheatre1.com/reviews/into-the-woods-noel-coward-theatre/",
       "findings": [
@@ -19826,7 +19827,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "plays-international--unknown.json",
-      "score": 79,
+      "score": 82,
       "publishDate": "2026-10-09",
       "url": "https://playsinternational.org.uk/into-the-woods-noel-coward-theatre/",
       "findings": [
@@ -19972,7 +19973,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 88,
+      "score": 87,
       "publishDate": "2026-10-08",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/into-woods-review-noel-coward-theatre-jordan-fein-stephen-sondheim-6r2kfzqln",
       "findings": [
@@ -50538,6 +50539,7 @@
     {
       "showId": "blood-of-my-blood-west-end-2026",
       "file": "everything-theatre--zaida-zeb.json",
+      "score": 82,
       "publishDate": "2026-10-10",
       "url": "https://everything-theatre.co.uk/2026/10/review-blood-of-my-blood-royal-court-theatre/",
       "findings": [
@@ -50578,7 +50580,7 @@
     {
       "showId": "blood-of-my-blood-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2026-10-08",
       "url": "https://www.londonboxoffice.co.uk/news/post/blood-of-my-blood-royal-court-theatre-review",
       "findings": [
@@ -52586,6 +52588,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "clueless-west-end-2025",
+      "file": "london-box-office--emmie-newitt.json",
+      "score": null,
+      "publishDate": "2025-06-25",
+      "url": "https://www.londonboxoffice.co.uk/news/post/clueless-the-musical-or-the-devil-wears-prada-west-end",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -66351,6 +66367,20 @@
       ]
     },
     {
+      "showId": "robin-hood-west-end-2024",
+      "file": "whatsonstage--tom-millward.json",
+      "score": 84,
+      "publishDate": "December 13th, 2024",
+      "url": "https://www.whatsonstage.com/news/robin-hood-pantomime-at-the-london-palladium-review_1657477/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "rock-n-roll-2007",
       "file": "nytimes--ben-brantley.json",
       "score": 80,
@@ -74852,6 +74882,20 @@
       "score": 74,
       "publishDate": "February 10th, 2025",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-YEARS-Harold-Pinter-Theatre-20250210",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-years-west-end-2025",
+      "file": "london-box-office--stuart-king.json",
+      "score": 92,
+      "publishDate": "2025-02-10",
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-years-harold-pinter-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

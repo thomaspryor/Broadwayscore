@@ -31,6 +31,7 @@ const {
   parseResendStatus,
   migrateSentRecord,
   applyResendStatusUpdate,
+  isDiscarded,
 } = require('./lib/broadcast-state');
 const { syncTrackerToOrigin } = require('./lib/opening-night-tracker-sync');
 
@@ -142,6 +143,36 @@ async function getBroadcast(broadcastId) {
   });
 }
 
+/**
+ * DELETE /broadcasts/{id}. Resend only deletes broadcasts still in draft (or
+ * scheduled) state; it never sends. Callers MUST prove the broadcast unsent
+ * with a live GET first (recreate-draft-guard.js recreateDraftBlockReason).
+ * Shared by send-opening-night-broadcast.js --recreate-draft and
+ * discard-stuck-broadcast-drafts.js so there is one copy of this call.
+ * @returns {Promise<{statusCode:number, body:string}>} statusCode 0 on a network error
+ */
+function deleteBroadcast(broadcastId) {
+  return new Promise((resolve) => {
+    const req = https.request(
+      {
+        hostname: 'api.resend.com',
+        path: `/broadcasts/${broadcastId}`,
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${RESEND_API_KEY}` },
+        timeout: 15000,
+      },
+      (res) => {
+        let body = '';
+        res.on('data', (c) => { body += c; });
+        res.on('end', () => resolve({ statusCode: res.statusCode, body }));
+      },
+    );
+    req.on('error', (err) => resolve({ statusCode: 0, body: err.message }));
+    req.on('timeout', () => { req.destroy(new Error('timeout')); });
+    req.end();
+  });
+}
+
 async function main() {
   if (!RESEND_API_KEY) {
     console.error('ERROR: RESEND_API_KEY not set');
@@ -229,6 +260,12 @@ async function main() {
       skipped++;
       continue;
     }
+    // Deleted unsent on purpose (BRO-2935): terminal, and the 404 a poll
+    // would get carries nothing new.
+    if (isDiscarded(rec)) {
+      skipped++;
+      continue;
+    }
     // Terminal success: no need to re-poll sent broadcasts.
     if (rec.draftStatus === 'sent' && rec.sentAt) {
       skipped++;
@@ -308,4 +345,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { main, parseBroadcastResponse, retryDelayMs, getBroadcastWithRetry, SENT_PATH };
+module.exports = { main, parseBroadcastResponse, retryDelayMs, getBroadcastWithRetry, deleteBroadcast, SENT_PATH };

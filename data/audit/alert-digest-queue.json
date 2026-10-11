@@ -1206,15 +1206,73 @@
     "queuedAt": "2026-10-11T03:10:21.208Z"
   },
   {
+    "conditionKey": "land:land/bro-4885-outlet-tier-chip",
+    "title": "Landing blocked: unit-tests-tsx red on land/bro-4885-outlet-tier-chip",
+    "description": "land.yml did not land land/bro-4885-outlet-tier-chip: the unit-tests-tsx gate went red at fc164ef45f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38106563024",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4885-outlet-tier-chip"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-tsx"
+      },
+      {
+        "name": "tip",
+        "value": "fc164ef45fef89ddfd76bd26d0248243d51cd980"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38106563024"
+      }
+    ],
+    "queuedAt": "2026-10-11T03:26:13.269Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4884-tour-scan",
+    "title": "Landing blocked: rebase red on land/bro-4884-tour-scan",
+    "description": "land.yml did not land land/bro-4884-tour-scan: the rebase gate went red at 443d9d745b. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38108444783",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4884-tour-scan"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "443d9d745b8843fde7bd3976d574cf6e69fcad21"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38108444783"
+      }
+    ],
+    "queuedAt": "2026-10-11T03:29:26.878Z"
+  },
+  {
     "conditionKey": "test-yml:data-validation-red",
     "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Run data validation, Audit review contamination",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38107554326",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38109505836",
     "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-10-11T03:17:04.185Z"
+    "queuedAt": "2026-10-11T03:53:37.083Z"
   }
 ]

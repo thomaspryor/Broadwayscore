@@ -589,7 +589,7 @@ jobs:
                 try {
                   const d = JSON.parse(require('fs').readFileSync('/dev/stdin','utf8'));
                   const e = d.shows && d.shows['$SID'];
-                  console.log(e && e.completed ? 'true' : 'false');
+                  console.log(e && (e.completed || e.discardedAt) ? 'true' : 'false');
                 } catch { console.log('false'); }
               " 2>/dev/null || echo "false")
               if [ "$COMPLETED" != "true" ]; then

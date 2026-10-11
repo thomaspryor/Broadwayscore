@@ -50,6 +50,9 @@ function collectRecreateDraftIds(sentShows, broadcastKey, showIds) {
   for (const [key, rec] of Object.entries(shows)) {
     if (!rec) continue;
     if (key !== broadcastKey && !showIds.some(id => recordCoversShow(key, id))) continue;
+    // Already deleted from Resend on purpose (BRO-2935): nothing to delete or
+    // protect, and its 404 would otherwise refuse the recreate forever.
+    if (rec.discardedAt) continue;
     if (classifyBroadcastState(rec) === 'sent') {
       return { keys: [], draftIds: [], blockReason: `tracker record "${key}" says this broadcast was already sent` };
     }

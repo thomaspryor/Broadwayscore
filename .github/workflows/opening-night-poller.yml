@@ -1097,7 +1097,7 @@ jobs:
                 try {
                   const sent = require('./data/opening-night-sent.json');
                   const entry = sent.shows && sent.shows['$SHOW_ID'];
-                  console.log(entry && entry.completed ? 'true' : 'false');
+                  console.log(entry && (entry.completed || entry.discardedAt) ? 'true' : 'false');
                 } catch(e) { console.log('false'); }
               " 2>/dev/null || echo "false")
 

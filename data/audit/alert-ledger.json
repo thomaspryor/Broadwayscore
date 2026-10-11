@@ -155,13 +155,14 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-11T03:11:08.799Z",
-      "lastSeen": "2026-10-11T03:11:08.799Z",
-      "lastNotifiedAt": "2026-10-11T03:11:08.799Z",
+      "incidentOpenedAt": "2026-10-11T03:27:20.299Z",
+      "lastSeen": "2026-10-11T03:47:21.877Z",
+      "lastNotifiedAt": "2026-10-11T03:27:20.299Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 128,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -13468,14 +13469,41 @@
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"ShowTrustLines: a parent whose tours have no score yet says reviews are coming in\"",
-      "firstSeen": "2026-10-11T03:11:08.408Z",
-      "incidentOpenedAt": "2026-10-11T03:11:08.408Z",
-      "lastSeen": "2026-10-11T03:11:08.408Z",
-      "lastNotifiedAt": "2026-10-11T03:11:08.408Z",
+      "firstSeen": "2026-10-11T03:06:31.623Z",
+      "incidentOpenedAt": "2026-10-11T03:06:31.623Z",
+      "lastSeen": "2026-10-11T03:47:21.870Z",
+      "lastNotifiedAt": "2026-10-11T03:06:31.623Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5025"
+      "linearIdentifier": "BRO-5025",
+      "silentRefires": 2
+    },
+    "land:land/bro-4885-outlet-tier-chip": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-tsx red on land/bro-4885-outlet-tier-chip",
+      "firstSeen": "2026-10-11T03:26:13.269Z",
+      "incidentOpenedAt": "2026-10-11T03:26:13.269Z",
+      "lastSeen": "2026-10-11T03:26:13.269Z",
+      "lastNotifiedAt": "2026-10-11T03:26:13.269Z",
+      "lastSurfacedAt": "2026-10-11T03:26:13.269Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-4884-tour-scan": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: rebase red on land/bro-4884-tour-scan",
+      "firstSeen": "2026-10-11T03:29:26.877Z",
+      "incidentOpenedAt": "2026-10-11T03:29:26.877Z",
+      "lastSeen": "2026-10-11T03:29:26.877Z",
+      "lastNotifiedAt": "2026-10-11T03:29:26.877Z",
+      "lastSurfacedAt": "2026-10-11T03:29:26.877Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }

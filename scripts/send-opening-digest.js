@@ -181,6 +181,12 @@ function isBroadcastSent(sentData, market, showId) {
   );
 }
 
+function isBroadcastDiscarded(sentData, market, showId) {
+  const sent = sentData?.shows || {};
+  return classifyShowBroadcastState(sent, showId) === 'discarded' ||
+    classifyBroadcastState(sent[`${market}:${showId}`]) === 'discarded';
+}
+
 // ---------------------------------------------------------------------------
 // Importance / broadcast eligibility
 // ---------------------------------------------------------------------------
@@ -309,6 +315,8 @@ function buildRows(shows, reviewMap, audienceBuzz, sentData, importantSet, exclu
       const important = !excluded && isImportant(s, importantSet);
       const broadcastEligible = !excluded && isBroadcastEligible(s, importantSet);
       const broadcastSent = broadcastEligible ? isBroadcastSent(sentData, market, s.id) : null;
+      // BRO-2935: a draft deleted unsent on purpose is settled, not "ready to send".
+      const broadcastDiscarded = broadcastEligible ? isBroadcastDiscarded(sentData, market, s.id) : false;
       const daysFromToday = daysBetween(s.openingDate, today);
       return {
         id: s.id,
@@ -334,6 +342,7 @@ function buildRows(shows, reviewMap, audienceBuzz, sentData, importantSet, exclu
         qualifyGap: q.ok ? null : describeQualifyGaps(q),
         audience,
         broadcastSent,
+        broadcastDiscarded,
         expected: prediction.expected,
         expectedRange: prediction.expected ? `${prediction.p25}–${prediction.p75}` : null,
       };
@@ -378,7 +387,7 @@ function classifyRows(rows) {
       }
 
       // Broadcast-ready
-      if (r.broadcastEligible && r.qualifies && !r.broadcastSent) {
+      if (r.broadcastEligible && r.qualifies && !r.broadcastSent && !r.broadcastDiscarded) {
         broadcastReady.push(r);
         continue;
       }

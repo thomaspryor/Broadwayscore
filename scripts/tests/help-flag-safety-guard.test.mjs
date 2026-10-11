@@ -36,13 +36,18 @@ test('predicate catches an unguarded destructive script and passes a guarded one
     checkFile('y.js', "const fs=require('fs');\nconst { hasHelpFlag } = require('./lib/cli-help.js');\nif (hasHelpFlag(process.argv.slice(2))) { process.exit(0); }\nfs.rmSync('a');\n"),
     null,
   );
+  assert.equal(
+    checkFile('z.js', "require('./lib/cli-help').exitOnHelp(module);\nconst fs=require('fs');\nfs.rmSync('a');\n"),
+    null,
+    'exitOnHelp(module), the convention cli-help.js documents, is a help check',
+  );
 });
 
 // Behavioural check (BRO-1711 review): text greps missed a guard sitting AFTER an
 // earlier usage-exit. Actually run --help on the retrofitted scripts.
 import { spawnSync } from 'node:child_process';
 const RETROFITTED = [
-  'discover-outlet-reviews-serp', 'fix-canonical-duplicate-backpointer', 'fix-duplicates-and-zeros',
+  'discard-stuck-broadcast-drafts', 'discover-outlet-reviews-serp', 'fix-canonical-duplicate-backpointer', 'fix-duplicates-and-zeros',
   'fix-outlet-case', 'gather-reviews', 'health-check', 'ingest-review-from-url', 'recovery-marker',
   'rollback-reroute-backlog', 'scrape-london-box-office-roundups', 'scrape-theatre-reviews',
 ];
