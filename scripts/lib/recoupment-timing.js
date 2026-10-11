@@ -21,7 +21,8 @@
 // that month ("Hollywood Reporter (Nov 29, 2011): ..."). The window is the
 // two weeks before a day (announcements refer to the books of the prior
 // week or two) and the whole month for a month. A year-only date is too
-// coarse to test. The model is scored on the interval between its values at
+// coarse to test. A show that closed before the window (it recouped
+// later, from a tax credit or tour profits) is not a running-show test. The model is scored on the interval between its values at
 // the window's two ends: inside when that interval touches the band.
 //
 // Pure functions; the CLI is scripts/backtest-recoupment-ground-truth.js --timing.
@@ -81,6 +82,8 @@ function timingTruth(comm, show) {
   const announcement = announcementDate(comm);
   const win = recoupWindow(announcement);
   if (!win) return null;
+  // Recouped after closing (tax credit, tour profits): not a running-show test.
+  if (show && show.closingDate && show.closingDate < win[0]) return null;
   const start = show && Date.parse(show.previewsStartDate || show.openingDate || '');
   const checkpoints = [{ label: 'at-recoup', from: win[0], to: win[1], lo: RECOUP_BAND[0], hi: RECOUP_BAND[1] }];
   for (const w of EARLIER_WEEKS) {
