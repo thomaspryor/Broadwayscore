@@ -138,3 +138,72 @@ test('apply on Mamma Mia!: the identical 2025 copy is gone and the 2001 row is u
   assert.equal(g['mamma-mia'].allTime.gross, null);
   assert.deepEqual(g['mamma-mia-2001'].allTime, { gross: 670_150_538, performances: 5979, attendance: 7_876_073 });
 });
+
+// BRO-5016 follow-up: a cleared production gets its own run's totals back.
+const { ownRunTotals, fillClearedFromHistory } = require('../../scripts/lib/alltime-attribution.js');
+const weeksFrom = (start, end) => {
+  const out = [];
+  for (let t = Date.parse(`${start}T00:00:00Z`); t <= Date.parse(`${end}T00:00:00Z`); t += 7 * 86_400_000) out.push(new Date(t).toISOString().slice(0, 10));
+  return out;
+};
+const hist = (bySlug) => {
+  const weeks = {};
+  for (const [slug, [start, end, row]] of Object.entries(bySlug)) {
+    for (const w of weeksFrom(start, end)) (weeks[w] ||= {})[slug] = { ...row };
+  }
+  return { weeks };
+};
+const ROW = { gross: 1_000_000.1, performances: 8, attendance: 8000 };
+
+test('apply with history: the emptied 2025 Mamma Mia! (a move source) gets its own run total back as allTime', () => {
+  const shows = MAMMA.map((s) => ({ ...s, title: 'Mamma Mia!' }));
+  const g = { 'mamma-mia': at(670_150_538, 5979, 7_876_073) };
+  const history = hist({ 'mamma-mia': ['2025-08-03', '2026-02-01', ROW] });
+  const r = applyAllTimeAttribution(g, shows, { now: NOW, history });
+  assert.deepEqual(r.moves.map((m) => [m.slug, m.to]), [['mamma-mia', 'mamma-mia-2001']]);
+  assert.equal(g['mamma-mia-2001'].allTime.performances, 5979);
+  assert.deepEqual(g['mamma-mia'].allTime, { gross: 27_000_002.7, performances: 216, attendance: 216_000 });
+  assert.equal(g['mamma-mia'].partialRun, undefined);
+  assert.deepEqual(r.fills, [{ slug: 'mamma-mia', complete: true, weeks: 27, since: '2025-08-03', gross: 27_000_002.7 }]);
+});
+
+test('history that starts after the first preview gives a partialRun with since, and allTime stays blank', () => {
+  const show = bw('the-music-man-2000', '2000-04-11', '2001-12-30');
+  const g = { 'the-music-man-2000': at(null, null, null) };
+  const history = hist({ 'the-music-man-2000': ['2001-12-16', '2001-12-30', ROW] });
+  const fills = fillClearedFromHistory(g, [show], history, [{ slug: 'the-music-man-2000' }], { now: NOW });
+  assert.equal(fills[0].complete, false);
+  assert.equal(g['the-music-man-2000'].allTime.gross, null);
+  assert.deepEqual(g['the-music-man-2000'].partialRun, { gross: 3_000_000.3, performances: 24, attendance: 24_000, since: '2001-12-16' });
+});
+
+test('no previews date: the opening is the run start (a return engagement is complete from its opening week)', () => {
+  const show = { id: 'beetlejuice-2025', slug: 'beetlejuice-2025', category: 'broadway', openingDate: '2025-10-08', closingDate: '2026-01-03' };
+  const history = hist({ 'beetlejuice-2025': ['2025-10-12', '2026-01-04', ROW] });
+  assert.equal(ownRunTotals(history, show, { now: NOW }).complete, true);
+  // A missing count anywhere makes the run incomplete; a missing attendance only blanks attendance.
+  history.weeks['2025-11-02']['beetlejuice-2025'].performances = null;
+  history.weeks['2025-11-09']['beetlejuice-2025'].attendance = null;
+  const own = ownRunTotals(history, show, { now: NOW });
+  assert.equal(own.complete, false);
+  assert.equal(own.attendance, null);
+});
+
+test('a running show counts to the newest week; a slug with a real allTime drops a stale partialRun; non-Broadway and uncleared slugs are untouched', () => {
+  const running = bw('chicago', '1996-10-23', null);
+  const ob = { ...bw('ob-show', '2025-01-05', '2025-03-01'), category: 'off-broadway' };
+  const g = {
+    chicago: { allTime: { gross: 9, performances: 9, attendance: 9 }, partialRun: { gross: 1, performances: 1, attendance: 1, since: '2001-12-16' } },
+    'ob-show': at(null, null, null),
+    other: at(null, null, null),
+  };
+  const history = hist({ 'ob-show': ['2025-01-05', '2025-03-02', ROW], other: ['2025-01-05', '2025-03-02', ROW] });
+  const shows = [running, ob, bw('other', '2025-01-05', '2025-03-01')];
+  const fills = fillClearedFromHistory(g, shows, history, [{ slug: 'ob-show' }], { now: NOW });
+  assert.deepEqual(fills, []);
+  assert.equal(g.chicago.partialRun, undefined);
+  assert.equal(g['ob-show'].allTime.gross, null);
+  assert.equal(g.other.allTime.gross, null);
+  const h2 = hist({ chicago: ['1996-10-27', '2026-10-04', ROW] });
+  assert.equal(ownRunTotals(h2, running, { now: NOW }).complete, true);
+});

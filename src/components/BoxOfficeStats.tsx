@@ -259,8 +259,15 @@ export function BoxOfficeThisWeek({ grosses, history, className = 'mb-4', stackC
 export default function BoxOfficeStats({ grosses, weekEnding, history }: BoxOfficeStatsProps) {
   const hasThisWeek = grosses.thisWeek && (grosses.thisWeek.gross !== null || grosses.thisWeek.capacity !== null);
   const hasAllTime = grosses.allTime.gross !== null || grosses.allTime.performances !== null;
+  // A run the weekly history only partly covers shows its own totals, labeled
+  // with the first week they count from (BRO-5016).
+  const partialRun = !hasAllTime && grosses.partialRun?.gross != null ? grosses.partialRun : null;
+  const totals = hasAllTime ? grosses.allTime : partialRun;
+  const totalsLabel = partialRun
+    ? `Since ${new Date(`${partialRun.since}T00:00:00Z`).toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' })}`
+    : 'All Time';
 
-  if (!hasThisWeek && !hasAllTime) {
+  if (!hasThisWeek && !totals) {
     return null;
   }
 
@@ -317,20 +324,20 @@ export default function BoxOfficeStats({ grosses, weekEnding, history }: BoxOffi
       )}
 
       {/* All Time Row */}
-      {hasAllTime && (
+      {totals && (
         <div>
-          <div className="text-[10px] font-bold uppercase tracking-[0.1em] text-gray-500 mb-2">All Time</div>
+          <div className="text-[10px] font-bold uppercase tracking-[0.1em] text-gray-500 mb-2">{totalsLabel}</div>
           <div className="flex gap-2 sm:gap-3">
             <StatCard
-              value={formatCurrency(grosses.allTime.gross)}
+              value={formatCurrency(totals.gross)}
               label="Gross"
             />
             <StatCard
-              value={formatNumber(grosses.allTime.performances)}
+              value={formatNumber(totals.performances)}
               label="Performances"
             />
             <StatCard
-              value={formatNumber(grosses.allTime.attendance)}
+              value={formatNumber(totals.attendance)}
               label="Attendance"
             />
           </div>

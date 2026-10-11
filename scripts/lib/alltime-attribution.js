@@ -181,7 +181,85 @@ function applyAllTimeAttribution(grossesShows, shows, opts = {}) {
   const sharedSlugs = new Set(shared.map((c) => c.slug));
   const clears = [...shared, ...unholdableAllTimeClears(grossesShows, shows, opts).filter((c) => !sharedSlugs.has(c.slug))];
   for (const c of clears) grossesShows[c.slug].allTime = EMPTY();
-  return { moves, clears };
+  // A moved row's source is emptied too (the 2025 Mamma Mia! handed the
+  // title's total to the 2001 run), so it is refilled the same way.
+  const emptied = [...clears, ...moves.map((m) => ({ slug: m.slug }))];
+  const fills = opts.history ? fillClearedFromHistory(grossesShows, shows, opts.history, emptied, opts) : [];
+  return { moves, clears, fills };
+}
+
+// History rows start in December 2001. A run's own weeks count as its whole
+// run when they begin within three weeks of its first preview and end within
+// two of its closing (running shows: the newest week).
+const OWN_RUN_START_SLACK_DAYS = 21;
+const OWN_RUN_END_SLACK_DAYS = 14;
+
+/**
+ * A production's totals from its own weekly League rows (grosses-history.json
+ * is keyed per run since BRO-5016). `complete` when the rows cover the run
+ * from first preview to closing and every row has a gross and a count.
+ */
+function ownRunTotals(history, show, { now = new Date() } = {}) {
+  const slug = show.slug || show.id;
+  const weeks = Object.keys(history?.weeks || {}).sort();
+  const rows = [];
+  for (const w of weeks) {
+    const r = history.weeks[w]?.[slug];
+    if (r && typeof r === 'object' && r.gross != null) rows.push([w, r]);
+  }
+  if (!rows.length) return null;
+  // Weekly grosses carry cents; round the sum so float drift never shows.
+  const sum = (k) => Math.round(rows.reduce((a, [, r]) => a + (Number(r[k]) || 0), 0) * 100) / 100;
+  const first = rows[0][0];
+  const last = rows[rows.length - 1][0];
+  // Without a first-preview date the opening is the latest the run can have
+  // begun (a return engagement like Beetlejuice 2025 has no previews).
+  const start = toMs(show.previewsStartDate) ?? toMs(show.openingDate);
+  const closing = toMs(show.closingDate);
+  const end = closing != null && closing < now.getTime() ? closing : toMs(weeks[weeks.length - 1]);
+  const complete = start != null && end != null
+    && toMs(first) <= start + OWN_RUN_START_SLACK_DAYS * DAY_MS
+    && toMs(last) >= end - OWN_RUN_END_SLACK_DAYS * DAY_MS
+    && rows.every(([, r]) => r.performances != null);
+  return {
+    gross: sum('gross'),
+    performances: sum('performances'),
+    attendance: rows.every(([, r]) => r.attendance != null) ? sum('attendance') : null,
+    weeks: rows.length,
+    since: first,
+    complete,
+  };
+}
+
+/**
+ * A cleared Broadway production gets its own run's totals back from the
+ * weekly rows instead of a blank (BRO-5016): as allTime when the rows cover
+ * the whole run, otherwise as partialRun (with `since`, the first week), which
+ * only the show's own card reads. A slug whose allTime is set drops any
+ * partialRun left from an earlier run.
+ */
+function fillClearedFromHistory(grossesShows, shows, history, clears, opts = {}) {
+  const bySlug = new Map(shows.map((s) => [s.slug || s.id, s]));
+  const cleared = new Set(clears.map((c) => c.slug));
+  const fills = [];
+  for (const [slug, entry] of Object.entries(grossesShows)) {
+    const show = bySlug.get(slug);
+    const at = entry && entry.allTime;
+    const empty = !at || (at.gross == null && at.performances == null);
+    if (!empty) { delete entry.partialRun; continue; }
+    if (!show || !isBroadway(show) || !(cleared.has(slug) || entry.partialRun)) continue;
+    const own = ownRunTotals(history, show, opts);
+    if (!own) { delete entry.partialRun; continue; }
+    const totals = { gross: own.gross, performances: own.performances, attendance: own.attendance };
+    if (own.complete) {
+      entry.allTime = totals;
+      delete entry.partialRun;
+    } else {
+      entry.partialRun = { ...totals, since: own.since };
+    }
+    fills.push({ slug, complete: own.complete, weeks: own.weeks, since: own.since, gross: own.gross });
+  }
+  return fills;
 }
 
 /**
@@ -220,4 +298,4 @@ function unholdableAllTimeClears(grossesShows, shows, { now = new Date() } = {})
   return clears.sort((x, y) => x.slug.localeCompare(y.slug));
 }
 
-module.exports = { applyAllTimeAttribution, sharedAllTimeClears, misplacedAllTimeMoves, unholdableAllTimeClears, runCapacity, constants: { PERFS_PER_WEEK, FIT_SLACK_RATIO, FIT_SLACK_PERFS, FIT_MIN_SHARE } };
+module.exports = { applyAllTimeAttribution, sharedAllTimeClears, misplacedAllTimeMoves, unholdableAllTimeClears, ownRunTotals, fillClearedFromHistory, runCapacity, constants:{ PERFS_PER_WEEK, FIT_SLACK_RATIO, FIT_SLACK_PERFS, FIT_MIN_SHARE } };

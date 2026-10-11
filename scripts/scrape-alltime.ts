@@ -31,6 +31,7 @@ const { applyAllTimeAttribution } = require('./lib/alltime-attribution');
 
 const BASE_URL = 'https://www.broadwayworld.com/grossescumulative.cfm';
 const GROSSES_PATH = path.join(__dirname, '../data/grosses.json');
+const HISTORY_PATH = path.join(__dirname, '../data/grosses-history.json');
 const MIN_SHOWS_MAIN_PAGE = 100; // BWW cumulative page typically lists 500+ shows
 
 interface AllTimeStats {
@@ -461,12 +462,18 @@ async function scrapeAllTime(): Promise<void> {
   // on each (the merge above never removes one). Move a count the run could
   // not have played to the same-title production whose run fits it, then keep
   // identical copies only on the production whose run fits (BRO-5012).
-  const { moves, clears }: {
+  // A cleared production gets its own run's totals back from its weekly
+  // League rows (BRO-5016).
+  const history = fs.existsSync(HISTORY_PATH) ? JSON.parse(fs.readFileSync(HISTORY_PATH, 'utf8')) : null;
+  if (!history) console.warn(`  ⚠ ${HISTORY_PATH} missing: cleared productions stay blank this run`);
+  const { moves, clears, fills }: {
     moves: { slug: string; to: string; reason: string }[];
     clears: { slug: string; owner: string | null; reason: string }[];
-  } = applyAllTimeAttribution(grossesData.shows, shows);
+    fills: { slug: string; complete: boolean; weeks: number; since: string; gross: number }[];
+  } = applyAllTimeAttribution(grossesData.shows, shows, { history });
   for (const m of moves) console.log(`  [attribution] moved ${m.slug} -> ${m.to}: ${m.reason}`);
   for (const c of clears) console.log(`  [attribution] cleared ${c.slug}: ${c.reason}`);
+  for (const f of fills) console.log(`  [attribution] ${f.complete ? 'own-run total' : `partial since ${f.since}`} ${f.slug}: ${f.weeks} weeks, $${Math.round(f.gross).toLocaleString()}`);
   console.log(`All-time attribution: moved ${moves.length} rows off runs that could not hold them, cleared ${clears.length} shared copies`);
 
   console.log(`\nNew entries: ${newCount}`);
