@@ -128,3 +128,10 @@ test('contractions, initials and quoted titles stay story', () => {
   const follies = "New York, 1971. There's a party on the stage of the Weismann Theatre. Tomorrow the iconic building will be demolished. Thirty years after their final performance, the Follies girls gather to have a few drinks, sing a few songs and lie about themselves.";
   assert.equal(cleanTodaytixAbout(follies), follies);
 });
+
+test('a quoted song cue in its own brackets is plot, a press quote is not (BRO-5063)', () => {
+  assert.equal(nonStoryReason('A trio of dockyard workers mourns the start of a new workday ("I Feel Like I\'m Not Out of Bed Yet").'), null);
+  assert.equal(nonStoryReason('Bateman documents his morning routine before travelling to Wall Street ("Opening (Morning Routine)"/"Selling Out").'), null);
+  assert.equal(nonStoryReason('A thriller that is "the best night out in years" (Evening Standard).'), 'pull-quote');
+  assert.equal(nonStoryReason('"Utterly brilliant" – The Guardian.'), 'pull-quote');
+});
