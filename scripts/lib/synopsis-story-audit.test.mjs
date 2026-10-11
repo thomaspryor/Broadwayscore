@@ -53,3 +53,8 @@ test('second review: a stray inch mark rejoins at most three pieces; Capt. is no
   assert.equal(storySentences('He buys a 12" record. Then he sleeps. She cries. Joe sells tickets. Fin.').length, 2);
   assert.deepEqual(storySentences('Capt. Hook kidnaps Wendy. Peter flies after them.'), ['Capt. Hook kidnaps Wendy.', 'Peter flies after them.']);
 });
+
+test('a content-warning bullet list is a hard problem (BRO-5063)', () => {
+  const spies = { title: 'The Comedy About Spies', synopsis: 'Spies converge on a London hotel. Subject matters in the show include : \u2022 Physical and verbal abuse are depicted. \u2022 Characters are jump scared.' };
+  assert.deepEqual(synopsisStoryProblems(spies, nonStoryReason).hard, ['bullet-list']);
+});

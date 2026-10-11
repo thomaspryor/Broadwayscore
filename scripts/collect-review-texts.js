@@ -162,6 +162,7 @@ const { logExclusion } = require('./lib/exclusion-logger');
 const { shouldSkipPollerUpdate, safeRenameReview, invalidateWrongShowAutoClear, shouldMarkUrlCollisionDuplicate } = require('./lib/review-write-guard');
 const { updateFileUrlWithInvariant, isDifferentArticleRecovery } = require('./lib/url-change-invariant');
 const { extractDateFromUrl: extractDateFromUrlCanonical } = require('./lib/rebuild-helpers');
+const { verificationPublishDate } = require('./lib/verification-publish-date');
 const { parseDate } = require('./lib/date-utils');
 const { evaluateShowScorePreviousProduction } = require('./lib/date-guard');
 const { findExistingFileForUrl, decideSameUrlDifferentFileGuard } = require('./lib/review-url-clusters');
@@ -2826,6 +2827,8 @@ async function fetchWithBrightData(url) {
     });
 
     const html = response.data;
+    // BRO-4936: the 200 is billed whether or not the body turns out blocked.
+    recordBdCall({ url, fn: 'collector-tier3', success: true, status: response.status });
 
     if (isBlocked(html)) {
       throw new Error('Access blocked in Bright Data response');
@@ -2843,6 +2846,7 @@ async function fetchWithBrightData(url) {
     if (error.response) {
       const status = error.response.status;
       const message = error.response.data?.message || error.response.data || error.message;
+      recordBdCall({ url, fn: 'collector-tier3', success: false, status });
       throw new Error(`Bright Data error (${status}): ${message}`);
     }
     throw error;
@@ -7248,11 +7252,22 @@ async function processReview(review) {
           // Pass publishDate so applyTemporalOverrides can downgrade wrongProduction
           // confidence on opening-week reviews (DoaS Apr 9-10 postmortem #9: missing
           // publishDate caused legitimate revival reviews to have their text nulled).
-          // Falls back to textFetchedAt as a proxy, then to today's date as last resort.
+          // Falls back to textFetchedAt, then today, only for a current show (lib/verification-publish-date.js).
           // On opening night, fresh stubs have publishDate=null and textFetchedAt=null —
           // without this fallback, temporal override never fires and the LLM's high-confidence
           // wrongProduction FP (44% rate; Proof 2026-04-17) stamps the file immediately.
-          publishDate: reviewData.publishDate || reviewData.textFetchedAt || new Date().toISOString().slice(0, 10),
+          // BRO-4884: read the page's own date first (it used to be extracted
+          // only at save, after this call) and drop the today fallback for a
+          // long-closed show, whose reviews were otherwise "written in 2026".
+          publishDate: verificationPublishDate({
+            storedDate: reviewData.publishDate,
+            derivedDate: extractPublishDateFromHtml(result.html)
+              || (() => { const u = reviewData.url ? extractDateFromUrlCanonical(reviewData.url) : null; return u && /^\d{4}-\d{2}-\d{2}$/.test(u.date || '') ? u.date : null; })()
+              || (result.text && result.text.length > 100 ? extractDateFromText(result.text) : null),
+            textFetchedAt: reviewData.textFetchedAt,
+            show: showMeta,
+            today: new Date().toISOString().slice(0, 10),
+          }),
           // URL passed in so verifyContent can surface URL-year-vs-publishDate
           // conflicts to the LLM (issue #4, Mamma Mia WE 2021 case). Not used to
           // override — the LLM decides with both dates in hand. See CLAUDE.md rule 3.

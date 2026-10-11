@@ -197,7 +197,8 @@ function _showsById() {
   return _showsByIdCache;
 }
 const REVIEWS_PATH = path.join(__dirname, '..', 'data', 'reviews.json');
-const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
+const { reviewTextsDirFromEnv } = require('./lib/review-texts-env-dir');
+const REVIEW_TEXTS_DIR = reviewTextsDirFromEnv(path.join(__dirname, '..', 'data', 'review-texts')); // BRO-3112
 const GATHER_COLLISIONS_PATH = path.join(__dirname, '..', 'data', 'audit', 'gather-collisions.json');
 const OUTLETS_PATH = path.join(__dirname, 'config', 'critic-outlets.json');
 const DTLI_SLUG_MAP_PATH = path.join(__dirname, '..', 'data', 'dtli-slug-map.json');

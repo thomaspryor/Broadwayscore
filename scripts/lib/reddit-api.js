@@ -17,7 +17,7 @@
  */
 
 const https = require('https');
-const { recordSbCall, recordSdCall, sbBilledCredits, sdBilledCredits } = require('./provider-telemetry');
+const { recordSbCall, recordSdCall, recordBdCall, sbBilledCredits, sdBilledCredits } = require('./provider-telemetry');
 const { consultScrapingdog } = require('./scrapingdog-caps');
 
 const USER_AGENT = 'web:broadwayscorecard:v1.0 (by /u/bwayscorecard)';
@@ -524,6 +524,7 @@ function brightDataRequest(token, zone, url) {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
+        try { recordBdCall({ url, fn: 'web-unlocker', success: res.statusCode === 200, status: res.statusCode, purpose: 'reddit' }); } catch (_) {}
         // Check for permanent zone errors in headers (zone disabled, trial exhausted, wrong type)
         const brdErrCode = res.headers['x-brd-err-code'];
         if (brdErrCode === 'client_10002' || brdErrCode === 'client_10090') {
