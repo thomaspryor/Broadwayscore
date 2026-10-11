@@ -24,6 +24,7 @@
 // The title grouping the rebuild's multi-production guards use, so "same production"
 // means the same thing here and there.
 const { baseTitle } = require('./prior-run-sibling');
+const { foldDiacritics } = require('./title-match');
 
 const DAY_MS = 86400000;
 
@@ -82,7 +83,8 @@ function urlYear(url) {
 }
 
 function normText(s) {
-  return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  // Fold accents first ("Noël", "Hémon") so they are not shredded into word breaks (task #648).
+  return foldDiacritics(String(s || '')).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 }
 
 function canonUrl(url) {

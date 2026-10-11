@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { isBlockedReviewUrl } = require('../../scripts/lib/domain-filters.js');
+const { isBlockedReviewUrl } = require('./domain-filters.js');
 
 // BRO-4886: a BWW roundup linked a NYT topic page; the parser registered "Ricky Martin" as an outlet
 // and Evita 2012 counted a 45 for it.
