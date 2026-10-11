@@ -516,7 +516,11 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   }
 
   const weeklyNut = commercial.weeklyRunningCost || estimateWeeklyNut(show, commercial);
-  const nutSource = commercial.weeklyRunningCost ? 'reported' : 'estimated';
+  // opts.costSourcedOnly (shadow, BRO-5073): a weekly cost with no cited
+  // source counts as 'unsourced', and only a cited cost lifts quality (a
+  // methodology label with no cost behind it does not).
+  const costUnsourced = !!(opts.costSourcedOnly && commercial.weeklyRunningCost && !isCitedReportedWeeklyCost(commercial));
+  const nutSource = costUnsourced ? 'unsourced' : commercial.weeklyRunningCost ? 'reported' : 'estimated';
   if (nutSource === 'estimated') {
     warnings.push('Weekly running cost estimated from show type');
   }
@@ -541,7 +545,9 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   }
 
   // --- Effective capitalization ---
-  const svogGrant = now < SVOG_FIRST_AWARDS ? 0 : (KNOWN_SVOG[slug] || parseSvogFromNotes(commercial.notes) || 0);
+  // opts.noSvog (shadow, BRO-5073): SVOG paid shutdown costs; test leaving it
+  // out of the capital investors must get back (Six: $10M grant on a $5M cap).
+  const svogGrant = now < SVOG_FIRST_AWARDS || opts.noSvog ? 0 : (KNOWN_SVOG[slug] || parseSvogFromNotes(commercial.notes) || 0);
 
   // NY theater tax credit: eligible if the show's run overlaps the program
   // window (Aug 2021 – 2027), which includes COVID reopenings of older shows.
@@ -718,7 +724,7 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   let dataQuality = 'low';
   if (isCitedReportedWeeklyCost(commercial)) {
     dataQuality = 'high';
-  } else if (REPORTED_COST_METHODOLOGIES.has(commercial.costMethodology) || (commercial.weeklyRunningCost && grossesAllTime)) {
+  } else if (!opts.costSourcedOnly && (REPORTED_COST_METHODOLOGIES.has(commercial.costMethodology) || (commercial.weeklyRunningCost && grossesAllTime))) {
     dataQuality = 'medium';
   }
 
