@@ -295,7 +295,7 @@ async function validateSubmission(issueBody) {
   if (nonReviewReason) {
     return {
       isValid: false,
-      error: `This URL is a listing or database page (${nonReviewReason}), not a review.`,
+      error: `This URL is not a review page (${nonReviewReason}): it looks like a listing, database, ticketing or press page.`,
       recommendation: 'reject',
       submissionData,
     };

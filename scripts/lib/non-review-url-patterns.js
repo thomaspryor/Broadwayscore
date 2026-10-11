@@ -251,7 +251,7 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   { host: /(^|\.)theatricalia\.com$/, reason: 'production-database-listing' },
   { host: /(^|\.)ibdb\.com$/, reason: 'production-database-listing' },
   { host: /(^|\.)lortel\.org$/, path: /^\/archives\//i, reason: 'production-database-listing' },
-  { host: /(^|\.)playbill\.com$/, path: /^\/(production|productions|person|people|venue|show)\//i, reason: 'production-database-listing' },
+  { host: /(^|\.)playbill\.com$/, path: /^\/(productions?|person|people|venues?|shows?)(\/|$)/i, reason: 'production-database-listing' },
   { host: /(^|\.)(wikipedia|wikidata)\.org$/, reason: 'encyclopedia-page' },
   // Producer's own what's-on page (mischiefcomedy.com listed as a Comedy About
   // Spies census "missing review"). Host-wide: a producer site never reviews
@@ -602,13 +602,15 @@ function classifyReviewUrl(url) {
 
 /**
  * Why a URL submitted through the review form (source submit-review-form) is
- * not a review, or null. The ONE decision shared by the write-path guard in
+ * not a review, or null. Shared by the write-path guard in
  * review-file-writer.js and validate-review-submission.js's deterministic
- * pre-filter (BRO-5065), so the two cannot drift.
+ * pre-filter (BRO-5065), so every page the writer refuses is also rejected,
+ * with a reply, at validation.
  *
- * Deliberately narrow: the CURATED named patterns, the listing-page shapes
- * (excluded at scoring time whatever the source, so refusing them at write
- * loses nothing) and ticket resellers. classifyReviewUrl's broader
+ * Deliberately narrow: the CURATED named patterns, the path-scoped
+ * listing-page shapes (excluded at scoring time whatever the source, so
+ * refusing them at write loses nothing) and ticket resellers. The validator
+ * also runs domain-filters.js's isBlockedReviewUrl first, which is broader. classifyReviewUrl's broader
  * non-review-host / non-review-path rules would refuse real scored reviews
  * (wbur.org /news/ reviews, blogcritics.org, theaterscene.org).
  *
@@ -627,8 +629,11 @@ function submissionNonReviewReason(url) {
   if (/(^|\.)newyorkcitytheatre\.com$/i.test(u.hostname) && /^\/reviews\/\d+/.test(u.pathname)) return null;
   const named = namedNonReviewReason(url);
   if (named && named !== 'ugc-platform') return named;
+  // Listing shapes only. A bare host ('/' path) is left to the read side, as
+  // the writer's BRO-4596 guard does: a hash-routed SPA review or a blog
+  // whose only post sits at the root would otherwise be refused outright.
   const listing = listingPageUrlReason(url);
-  if (listing) return listing;
+  if (listing && listing !== 'bare-host') return listing;
   return classifyReviewUrl(url).reason === 'ticketing-reseller' ? 'ticketing-reseller' : null;
 }
 

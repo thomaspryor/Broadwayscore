@@ -122,4 +122,11 @@ test('BRO-5065: an excluded creative name from author meta or JSON-LD is not ret
   assert.equal(extractAuthorFromHtml(meta, 'x', opts), null);
   assert.equal(extractAuthorFromHtml(ld, 'x', opts), null);
   assert.equal(extractAuthorFromHtml(meta, 'x', { ...opts, excludeNames: ['Someone Else'] }), 'Ayn Rand');
+  // Exact match only: a critic who merely shares a last name and first-name
+  // prefix with a credited person keeps the attribution.
+  assert.equal(extractAuthorFromHtml(meta, 'x', { ...opts, excludeNames: ['Ayn Randall', 'Aynsley Rand'] }), 'Ayn Rand');
+  // A vetoed meta author falls through to the article's own text byline.
+  const body = 'By Jane Critic | October 10, 2026\n\nThe play is a courtroom drama staged at Theatre Row with real energy.';
+  assert.equal(extractAuthorFromHtml(meta, body, opts), 'Jane Critic');
+  assert.equal(extractAuthorFromHtml(meta, body.replace('Jane Critic', 'Ayn Rand'), opts), null);
 });

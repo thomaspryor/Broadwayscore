@@ -102,4 +102,19 @@ test('BRO-5065: Playbill articles and the exempt review hosts still pass the sha
   ]) assert.equal(submissionNonReviewReason(url), null, url);
   assert.equal(submissionNonReviewReason('https://www.newyorkcitytheatre.com/news/reviews/x'), 'ticketing-reseller');
   assert.equal(submissionNonReviewReason('not a url'), null);
+  // Bare hosts are left to the read side (hash-routed SPAs, root-post blogs).
+  assert.equal(submissionNonReviewReason('https://example.com/#/review/1'), null);
+  assert.equal(submissionNonReviewReason('https://example.com/'), null);
+  for (const u of ['https://playbill.com/shows/broadway', 'https://playbill.com/venues', 'https://playbill.com/person/ayn-rand']) {
+    assert.equal(submissionNonReviewReason(u), 'production-database-listing', u);
+  }
+});
+
+// The scoring-time / validator-side list (domain-filters.js) covers the same
+// database hosts, so a row from any source is excluded, not only submissions.
+const { isBlockedReviewUrl } = require('./domain-filters.js');
+test('BRO-5065: isBlockedReviewUrl covers every production-database page too', () => {
+  for (const [, url] of DATABASE_PAGES) assert.equal(isBlockedReviewUrl(url), true, url);
+  assert.equal(isBlockedReviewUrl('https://www.lortel.org/news/2026-nominees'), false);
+  assert.equal(isBlockedReviewUrl('https://playbill.com/article/review-night-of-january-16th'), false);
 });

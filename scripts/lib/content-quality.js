@@ -2853,18 +2853,29 @@ function extractCultureSauceInlineAuthor(text) {
  * Extract author name from HTML using multiple strategies.
  * Priority: meta tags → JSON-LD → byline CSS → text-based extractByline()
  *
- * options.excludeNames (the show's cast + creative team) applies to EVERY
- * strategy's answer. It used to reach only the text-byline fallback, so a
- * meta/JSON-LD author was returned unchecked: a Theatricalia production page
- * credits the play's author, and the collector renamed
+ * options.excludeNames (the show's cast + creative team) also vetoes the
+ * meta/JSON-LD/CSS answer. It used to reach only the text-byline fallback, so
+ * a meta author was returned unchecked: a Theatricalia production page credits
+ * the play's author, and the collector renamed
  * night-of-january-16th-off-broadway-2026's --unknown file to the playwright
- * "Ayn Rand" (BRO-5065). An excluded name yields null (the file stays
- * Unknown) rather than a guess at the next strategy.
+ * "Ayn Rand" (BRO-5065). The veto is an EXACT normalized-name match (the
+ * text fallback's fuzzy last-name rule would drop a real critic who merely
+ * resembles a cast member), and a vetoed answer falls through to the text
+ * byline, which can still find the real critic.
  */
 function extractAuthorFromHtml(html, text, options = {}) {
   const name = extractAuthorFromHtmlUnfiltered(html, text, options);
-  if (name && options && isExcludedName(name, options.excludeNames)) return null;
-  return name;
+  const excluded = options && Array.isArray(options.excludeNames)
+    ? new Set(options.excludeNames.map(normalizeName).filter(Boolean))
+    : null;
+  if (!name || !excluded || !excluded.has(normalizeName(name))) return name;
+  if (!text) return null;
+  const bylineResult = extractByline(text, options);
+  if (bylineResult.found && isValidAuthorName(bylineResult.name)
+    && !excluded.has(normalizeName(cleanAuthorName(bylineResult.name)))) {
+    return cleanAuthorName(bylineResult.name);
+  }
+  return null;
 }
 
 function extractAuthorFromHtmlUnfiltered(html, text, options = {}) {

@@ -173,6 +173,11 @@ const REFERENCE_DOMAINS = new Set([
   // outlet. Domain-blocked rather than registered so the same photo-agency
   // livefeed can't be re-ingested for a future opening night.
   'rexfeatures.com',
+  // BRO-5065: Theatricalia is a production database (cast/crew listings and
+  // play descriptions). Its production page for Night of January 16th was
+  // ingested as a review credited to the playwright. 0 of 23,068 scored
+  // review URLs are on it.
+  'theatricalia.com',
 ]);
 
 // Venue/producer own-site listing pages — box-office "what's on" copy, never
@@ -368,7 +373,11 @@ function isBlockedReviewUrl(url) {
       if (lowerPath.startsWith('/article/')) return false; // allow articles
       return true; // block everything else (listings, production pages)
     }
-    // Path-based ticket/listing detection — catches ticket pages on news sites
+    // Lortel Archives (the Internet Off-Broadway Database): production and
+    // people records, never criticism (BRO-5065). lortel.org's other pages
+    // (awards news) are left alone.
+    if (matchesDomainSet(hostname, new Set(['lortel.org'])) && lowerPath.startsWith('/archives/')) return true;
+        // Path-based ticket/listing detection — catches ticket pages on news sites
     // (e.g., standard.co.uk/go/london/mamma-mia-musical-theatre-tickets-in-london)
     if (lowerPath.includes('/tickets/') || lowerPath.includes('/buy-tickets')
       || lowerPath.includes('/book-tickets') || lowerPath.includes('tickets-in-london')
