@@ -1,0 +1,219 @@
+{
+  "issueNumber": "bro-5020-e-e",
+  "planId": "be446d7d-802b-4c10-b348-bba7394f0436",
+  "status": "pending",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5020 owner policy B backfill, part 5 of 5 (12 shows): every Fizzle/Flop gets designationBasis; silence-based labels on shows closed under 6 months return to TBD with needsLossEvidence; grey-house regains its label on the silence basis (unlocked). Supersedes bro-5020-d, which never landed. Old values read from live commercial.json at 2026-10-11T09:59:50.397Z.",
+    "steps": [
+      "titanique: designation, recouped, needsLossEvidence",
+      "the-shark-is-broken: designationBasis",
+      "grey-house: humanReviewedDesignation, designation, recouped, designationBasis",
+      "the-hills-of-california-2024: designationBasis",
+      "left-on-tenth-2024: designationBasis",
+      "elf-2024: designationBasis",
+      "the-last-five-years-2025: designationBasis",
+      "john-proctor-is-the-villain-2025: designationBasis",
+      "beaches: designation, recouped, needsLossEvidence",
+      "mrs-doubtfire-2021: designationBasis",
+      "thoughts-of-a-colored-man-2021: designationBasis",
+      "company-2021: designationBasis"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "titanique",
+        "showId": "titanique",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "TBD",
+        "description": "titanique: designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "titanique",
+        "showId": "titanique",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": null,
+        "description": "titanique: recouped"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "titanique",
+        "showId": "titanique",
+        "field": "needsLossEvidence",
+        "oldValue": null,
+        "newValue": true,
+        "description": "titanique: needsLossEvidence"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-shark-is-broken",
+        "showId": "the-shark-is-broken",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "the-shark-is-broken: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "grey-house",
+        "showId": "grey-house",
+        "field": "humanReviewedDesignation",
+        "oldValue": true,
+        "newValue": null,
+        "description": "grey-house: humanReviewedDesignation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "grey-house",
+        "showId": "grey-house",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Fizzle",
+        "description": "grey-house: designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "grey-house",
+        "showId": "grey-house",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "grey-house: recouped"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "grey-house",
+        "showId": "grey-house",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "grey-house: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-hills-of-california-2024",
+        "showId": "the-hills-of-california-2024",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "the-hills-of-california-2024: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "left-on-tenth-2024",
+        "showId": "left-on-tenth-2024",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "left-on-tenth-2024: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "elf-2024",
+        "showId": "elf-2024",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "elf-2024: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-last-five-years-2025",
+        "showId": "the-last-five-years-2025",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "the-last-five-years-2025: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "john-proctor-is-the-villain-2025",
+        "showId": "john-proctor-is-the-villain-2025",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "john-proctor-is-the-villain-2025: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beaches",
+        "showId": "beaches",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "TBD",
+        "description": "beaches: designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beaches",
+        "showId": "beaches",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": null,
+        "description": "beaches: recouped"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beaches",
+        "showId": "beaches",
+        "field": "needsLossEvidence",
+        "oldValue": null,
+        "newValue": true,
+        "description": "beaches: needsLossEvidence"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mrs-doubtfire-2021",
+        "showId": "mrs-doubtfire-2021",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "reported-loss",
+        "description": "mrs-doubtfire-2021: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "thoughts-of-a-colored-man-2021",
+        "showId": "thoughts-of-a-colored-man-2021",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "no-recoupment-announced",
+        "description": "thoughts-of-a-colored-man-2021: designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "company-2021",
+        "showId": "company-2021",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "reported-loss",
+        "description": "company-2021: designationBasis"
+      }
+    ]
+  }
+}
