@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-11T15:43:02.518Z",
+  "timestamp": "2026-10-11T16:27:59.058Z",
   "stats": {
-    "totalReviews": 55610,
-    "alreadyFlagged": 20491,
-    "dateGuardCatches": 261,
+    "totalReviews": 55635,
+    "alreadyFlagged": 20539,
+    "dateGuardCatches": 262,
     "directorMismatch": 1717,
-    "tvFilmSignals": 1565,
-    "londonSignals": 2017,
+    "tvFilmSignals": 1573,
+    "londonSignals": 2033,
     "offBroadwaySignals": 506,
     "yearMismatch": 135,
-    "noPublishDate": 5822
+    "noPublishDate": 5746
   },
   "findings": [
     {
@@ -2076,6 +2076,7 @@
     {
       "showId": "amelie-west-end-2021",
       "file": "london-box-office--phil-willmott.json",
+      "score": 79,
       "publishDate": "2019-12-16",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-amelie-other-palace",
       "findings": [
@@ -8926,6 +8927,20 @@
       ]
     },
     {
+      "showId": "cruise-west-end-2021",
+      "file": "british-theatre--paul-t-davies.json",
+      "score": 89,
+      "publishDate": "June 2nd, 2021",
+      "url": "https://britishtheatre.com/review-cruise-duchess-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "cruise-west-end-2022",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
       "score": 100,
@@ -14003,6 +14018,19 @@
       ]
     },
     {
+      "showId": "foxfinder-west-end-2018",
+      "file": "london-box-office--hugh-wooldridge.json",
+      "publishDate": "2018-09-19",
+      "url": "https://www.londonboxoffice.co.uk/news/post/foxfinder-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "frankie-and-johnny-in-the-clair-de-lune-2019",
       "file": "broadwayworld--michael-dale.json",
       "score": 89,
@@ -15696,6 +15724,19 @@
     },
     {
       "showId": "good-time-charlie-off-broadway-2026",
+      "file": "josh-at-the-movies--unknown.json",
+      "publishDate": "2026-10-10",
+      "url": "https://joshatthemovies.com/2026/10/09/theater-review-good-time-charlie/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "good-time-charlie-off-broadway-2026",
       "file": "theater-pizzazz--unknown.json",
       "score": 49,
       "publishDate": "2026-10-10",
@@ -16824,6 +16865,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "hansard-west-end-2019",
+      "file": "nytimes--matt-wolf.json",
+      "score": null,
+      "publishDate": "2019-09-26",
+      "url": "https://www.nytimes.com/2019/09/26/theater/hansard-a-very-expensive-poison.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -30524,6 +30584,7 @@
     {
       "showId": "present-laughter-west-end-2019",
       "file": "variety--matt-trueman.json",
+      "score": 91,
       "publishDate": "2019-06-28",
       "url": null,
       "findings": [
@@ -38642,7 +38703,7 @@
     {
       "showId": "the-great-british-bake-off-musical-west-end-2023",
       "file": "artsdesk--helen-hawkins.json",
-      "score": 60,
+      "score": 58,
       "publishDate": "March 9th, 2023",
       "url": "https://theartsdesk.com/theatre-tv/great-british-bake-musical-noel-coward-theatre-review-blue-chip-cast-lift-daft-confection",
       "findings": [
@@ -38741,7 +38802,7 @@
     {
       "showId": "the-great-british-bake-off-musical-west-end-2023",
       "file": "shy-strange-manic--kariss-ainsworth.json",
-      "score": 68,
+      "score": 66,
       "publishDate": "March 7th, 2023",
       "url": "https://shystrangemanic.com/2023/03/the-great-british-bake-off-musical-at-the-noel-coward-theatre.html",
       "findings": [
@@ -42693,6 +42754,20 @@
       ]
     },
     {
+      "showId": "the-prince-of-egypt-west-end-2020",
+      "file": "daily-mail--patrick-marmion.json",
+      "score": 82,
+      "publishDate": "2020-02-28",
+      "url": "https://www.dailymail.com/tvshowbiz/article-8054119/Moses-whips-storm-PATRICK-MARMION-reviews-Prince-Egypt.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "the-producers-west-end-2025",
       "file": "standard--nick-curtis.json",
       "score": 97,
@@ -44015,6 +44090,53 @@
       ]
     },
     {
+      "showId": "the-upstart-crow-west-end-2020",
+      "file": "guardian--mark-lawson.json",
+      "score": 91,
+      "publishDate": "2020-02-17",
+      "url": "https://www.theguardian.com/stage/2020/feb/17/the-upstart-crow-review-gielgud-theatre-london",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv\nseries\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "the-upstart-crow-west-end-2020",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 74,
+      "publishDate": "2020-02-18",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"pilot episode\""
+        }
+      ]
+    },
+    {
+      "showId": "the-upstart-crow-west-end-2020",
+      "file": "times-uk--david-jays.json",
+      "score": 63,
+      "publishDate": "2020-02-23",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "the-velocity-of-autumn-2014",
       "file": "newsday--linda-winer.json",
       "score": 44,
@@ -44697,6 +44819,20 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1547d before show (2022-03-31 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 82,
+      "publishDate": "2023-02-07",
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
         }
       ]
     },
@@ -49126,6 +49262,7 @@
     {
       "showId": "a-very-expensive-poison-west-end-2019",
       "file": "daily-mail--patrick-marmion.json",
+      "score": 63,
       "publishDate": "2019-09-06",
       "url": null,
       "findings": [
@@ -54479,6 +54616,20 @@
       ]
     },
     {
+      "showId": "cruise-west-end-2021",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 84,
+      "publishDate": "May 21st, 2021",
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/review-cruise-duchess-theatre_54105.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "cruise-west-end-2022",
       "file": "whatsonstage--tom-millward.json",
       "publishDate": null,
@@ -55830,7 +55981,7 @@
     {
       "showId": "east-is-east-west-end-2021",
       "file": "partially-obstructed-view--view-my-complete.json",
-      "score": null,
+      "score": 79,
       "publishDate": null,
       "url": "https://partially-obstructed-view.blogspot.com/2021/10/theatre-review-east-is-east.html",
       "findings": [
@@ -57260,6 +57411,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "foxfinder-west-end-2018",
+      "file": "sierz-co-uk--unknown.json",
+      "score": null,
+      "publishDate": "2018-09-17",
+      "url": "https://sierz.co.uk/reviews/foxfinder-ambassadors-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -59369,7 +59534,50 @@
     },
     {
       "showId": "hansard-west-end-2019",
+      "file": "cultural-capital--unknown.json",
+      "score": null,
+      "publishDate": "2019-09-02",
+      "url": "https://maryamphilpottblog.wordpress.com/2019/09/02/hansard-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "hansard-west-end-2019",
+      "file": "london-theatre--will-longman.json",
+      "score": null,
+      "publishDate": "2019-09-04",
+      "url": "https://www.londontheatre.co.uk/reviews/review-hansard-at-the-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "hansard-west-end-2019",
+      "file": "londontheatre1--chris-omaweng.json",
+      "score": null,
+      "publishDate": "2019-09-03",
+      "url": "https://www.londontheatre1.com/reviews/play/review-of-hansard-a-new-play-by-simon-woods-at-the-lyttelton-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "hansard-west-end-2019",
       "file": "telegraph--dominic-cavendish.json",
+      "score": 63,
       "publishDate": "2019-09-04",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/hansard-review-nationals-lyttelton-theatre-tantalisingly-topical/",
       "findings": [
@@ -59383,6 +59591,7 @@
     {
       "showId": "hansard-west-end-2019",
       "file": "times-uk--quentin-letts.json",
+      "score": 71,
       "publishDate": "2019-09-08",
       "url": null,
       "findings": [
@@ -61061,6 +61270,47 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "im-not-running-west-end-2018",
+      "file": "london-box-office--phil-willmott.json",
+      "publishDate": "2018-10-15",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-im-not-running-nt",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "im-not-running-west-end-2018",
+      "file": "london-theatre--mark-shenton.json",
+      "score": null,
+      "publishDate": "2018-10-10",
+      "url": "https://www.londontheatre.co.uk/reviews/review-im-not-running-at-the-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "im-not-running-west-end-2018",
+      "file": "sierz-co-uk--unknown.json",
+      "score": null,
+      "publishDate": "2018-10-09",
+      "url": "https://sierz.co.uk/reviews/im-not-running-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -62981,6 +63231,20 @@
       ]
     },
     {
+      "showId": "leopoldstadt-west-end-2020",
+      "file": "the-spectator-uk--lloyd-evans.json",
+      "score": null,
+      "publishDate": "2020-02-15",
+      "url": "https://www.spectator.co.uk/article/a-brilliant-unrevivable-undertaking-tom-stoppard-s-leopoldstadt-reviewed/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
       "showId": "les-liaisons-dangereuses-2016",
       "file": "ap--mark-kennedy.json",
       "score": 86,
@@ -63724,6 +63988,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "magic-goes-wrong-west-end-2019",
+      "file": "curtainsup--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.curtainsup.online/blog/tags/magic-goes-wrong-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -68278,6 +68556,7 @@
     {
       "showId": "peter-gynt-west-end-2019",
       "file": "financialtimes--sarah-hemming.json",
+      "score": 59,
       "publishDate": "2019-07-12",
       "url": null,
       "findings": [
@@ -68403,6 +68682,7 @@
     {
       "showId": "present-laughter-west-end-2019",
       "file": "nytimes--matt-wolf.json",
+      "score": 88,
       "publishDate": "2019-07-25",
       "url": null,
       "findings": [
@@ -68969,6 +69249,19 @@
     },
     {
       "showId": "rent-west-end-2026",
+      "file": "londontheatregeek--unknown.json",
+      "publishDate": null,
+      "url": "https://www.londontheatregeek.co.uk/shows/rent",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "rent-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 61,
       "publishDate": "2026-10-08",
@@ -69320,6 +69613,7 @@
     {
       "showId": "rutherford-and-son-west-end-2019",
       "file": "times-uk--quentin-letts.json",
+      "score": 56,
       "publishDate": "2019-06-02",
       "url": null,
       "findings": [
@@ -69375,6 +69669,7 @@
     {
       "showId": "salt-west-end-2019",
       "file": "financialtimes--sarah-hemming.json",
+      "score": 79,
       "publishDate": "2019-05-20",
       "url": null,
       "findings": [
@@ -74644,6 +74939,7 @@
     {
       "showId": "the-great-british-bake-off-musical-west-end-2023",
       "file": "independent--isobel-lewis.json",
+      "score": 67,
       "publishDate": "March 7th, 2023",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/british-bake-off-musical-review-b2295101.html",
       "findings": [
@@ -76906,6 +77202,20 @@
     },
     {
       "showId": "the-prince-of-egypt-west-end-2020",
+      "file": "standard--nick-curtis.json",
+      "score": 43,
+      "publishDate": "2020-02-25T20:24:44-05:00",
+      "url": "https://www.standard.co.uk/go/london/theatre/the-prince-of-egypt-review-dominion-theatre-west-end-a4370831.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-prince-of-egypt-west-end-2020",
       "file": "theatre-weekly--greg-stewart.json",
       "score": 75,
       "publishDate": "2020-02-25",
@@ -77892,6 +78202,20 @@
       ]
     },
     {
+      "showId": "the-visit-or-the-old-lady-comes-to-call-west-end-2020",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 66,
+      "publishDate": "February 14th, 2020",
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/visit-national-lesley-manville-hugo-weaving_50947.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-waverly-gallery-2018",
       "file": "frontmezzjunkies--steven-ross.json",
       "score": 63,
@@ -77916,6 +78240,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-welkin-west-end-2020",
+      "file": "london-theatre--mark-shenton.json",
+      "score": 57,
+      "publishDate": "January 27th, 2020",
+      "url": "https://www.londontheatre.co.uk/reviews/review-the-welkin-at-the-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
