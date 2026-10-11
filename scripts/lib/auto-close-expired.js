@@ -17,7 +17,10 @@ function closeExpiredShows(shows, { apply = false, now = new Date() } = {}) {
     const today = getMarketDate(show.category, now);
     if (show.status === 'open' && show.closingDate && show.closingDate < today) {
       closedList.push({ id: show.id, closingDate: show.closingDate, market: show.market || 'broadway' });
-      if (apply) show.status = 'closed';
+      if (apply) {
+        show.status = 'closed';
+        delete show._staleMissingSince; // same bookkeeping as update-show-status.js close path
+      }
     }
   }
   return closedList;

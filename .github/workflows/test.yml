@@ -401,6 +401,7 @@ on:
       - 'scripts/audit-text-quality.js'
       - 'scripts/audit-verifier-wiring.js'
       - 'scripts/auto-close-expired-shows.js'
+      - 'scripts/auto-close-expired-shows.test.mjs'
       - 'scripts/build-actor-slugs-manifest.js'
       - 'scripts/build-cast-manifest.js'
       - 'scripts/check-brand-tokens-sync.js'
