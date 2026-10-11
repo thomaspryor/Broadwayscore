@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-11T13:09:47.859Z",
+  "generatedAt": "2026-10-11T15:06:51.251Z",
   "summary": {
-    "total": 19,
-    "high": 12,
+    "total": 20,
+    "high": 13,
     "medium": 5,
     "low": 2
   },
@@ -242,7 +242,7 @@
           "publishDate": null,
           "openingDate": "2021-08-07",
           "hasScore": true,
-          "hasFullText": false,
+          "hasFullText": true,
           "outletId": "artsdesk"
         }
       ],
@@ -266,15 +266,15 @@
         {
           "showId": "leopoldstadt-west-end-2021",
           "file": "london-theatre--mark-shenton.json",
-          "publishDate": null,
+          "publishDate": "2022-01-25",
           "openingDate": "2021-08-07",
           "hasScore": true,
-          "hasFullText": false,
+          "hasFullText": true,
           "outletId": "london-theatre"
         }
       ],
       "suggestedWinner": "leopoldstadt-west-end-2020",
-      "reason": "publishDate 2020-02-13 is 19 days from leopoldstadt-west-end-2020 opening (2020-01-25)",
+      "reason": "publishDate 2020-02-13 is 19 days from leopoldstadt-west-end-2020 opening (2020-01-25); next closest is 171 days from leopoldstadt-west-end-2021",
       "confidence": "high"
     },
     {
@@ -465,6 +465,33 @@
       "suggestedWinner": "the-score-regional-2026",
       "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
       "confidence": "low"
+    },
+    {
+      "url": "https://theatreweekly.com/review-to-kill-a-mockingbird-at-the-gielgud-theatre-london/",
+      "normalizedUrl": "https://theatreweekly.com/review-to-kill-a-mockingbird-at-the-gielgud-theatre-london",
+      "candidates": [
+        {
+          "showId": "to-kill-a-mockingbird-west-end-2022",
+          "file": "theatre-weekly--greg-stewart.json",
+          "publishDate": "2022-03-31",
+          "openingDate": "2022-03-10",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "theatre-weekly"
+        },
+        {
+          "showId": "to-kill-a-mockingbird-west-end-2026",
+          "file": "theatre-weekly--greg-stewart.json",
+          "publishDate": "2022-03-31",
+          "openingDate": "2026-06-30",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "theatre-weekly"
+        }
+      ],
+      "suggestedWinner": "to-kill-a-mockingbird-west-end-2022",
+      "reason": "publishDate 2022-03-31 is 21 days from to-kill-a-mockingbird-west-end-2022 opening (2022-03-10); next closest is 1552 days from to-kill-a-mockingbird-west-end-2026",
+      "confidence": "high"
     },
     {
       "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
