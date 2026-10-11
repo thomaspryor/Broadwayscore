@@ -88,7 +88,9 @@ jobs:
               exit 1
             fi
             CORE=/tmp/core-data-checkout
-            git -C "$CORE" fetch -q --deepen=500 origin main
+            # blob:none keeps the deepen to commits and trees; git show fetches
+            # the two commercial.json blobs it needs on demand.
+            git -C "$CORE" fetch -q --filter=blob:none --deepen=2000 origin main
             FULL=$(git -C "$CORE" rev-parse --verify "${REVERT}^{commit}")
             SUBJECT=$(git -C "$CORE" log -1 --format=%s "$FULL")
             if [ "$SUBJECT" != "data: release held commercial rows" ]; then
@@ -96,7 +98,8 @@ jobs:
               exit 1
             fi
             git -C "$CORE" show "${FULL}^:commercial.json" > "${RUNNER_TEMP}/commercial.before-release.json"
-            ARGS="--previous=${RUNNER_TEMP}/commercial.before-release.json --shows=$LIST"
+            git -C "$CORE" show "${FULL}:commercial.json" > "${RUNNER_TEMP}/commercial.at-release.json"
+            ARGS="--previous=${RUNNER_TEMP}/commercial.before-release.json --released=${RUNNER_TEMP}/commercial.at-release.json --shows=$LIST"
             if [ "$DRY_RUN" = "true" ]; then ARGS="$ARGS --dry-run"; fi
             node scripts/revert-commercial-release.js $ARGS | tee "${RUNNER_TEMP}/release.log"
             if [ "$DRY_RUN" != "true" ]; then node scripts/validate-data.js > "${RUNNER_TEMP}/validate.log" 2>&1 || { tail -40 "${RUNNER_TEMP}/validate.log"; exit 1; }; fi
