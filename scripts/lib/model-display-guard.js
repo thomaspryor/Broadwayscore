@@ -117,7 +117,9 @@ function modelDisplayGuard({ pct, playedWeeks: weeks, independent = null, runnin
  */
 function displayBasis({ pct, exCreditPct, creditCounted, running = false, runningEnabled = RUNNING_MODEL_BAR_ENABLED }) {
   if (running && runningEnabled && Array.isArray(exCreditPct) && exCreditPct.length === 3) {
-    return { pct: exCreditPct, creditBasis: creditCounted > 0 ? 'post-credit' : 'pre-credit' };
+    // A run written before modelTaxCreditCounted existed: basis unknown, not pre-credit.
+    const creditBasis = typeof creditCounted !== 'number' ? null : creditCounted > 0 ? 'post-credit' : 'pre-credit';
+    return { pct: exCreditPct, creditBasis };
   }
   return { pct, creditBasis: null };
 }

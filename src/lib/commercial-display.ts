@@ -122,7 +122,7 @@ export function applyModelDisplayGuard(
   if (!data.modelRecoupmentPct) return data;
   const running = isRunning(show, now);
   // Running shows: pre-credit unless the credit is cited (displayBasis, BRO-5073).
-  const basis = displayBasis({ pct: data.modelRecoupmentPct, exCreditPct: data.modelReturnedExCreditPct, creditCounted: data.modelTaxCreditCounted ?? 0, running });
+  const basis = displayBasis({ pct: data.modelRecoupmentPct, exCreditPct: data.modelReturnedExCreditPct, creditCounted: data.modelTaxCreditCounted, running });
   const pct = basis.pct as [number, number, number];
   const creditBasis = basis.creditBasis ? { modelCreditBasis: basis.creditBasis } : {};
   const g = modelDisplayGuard({
