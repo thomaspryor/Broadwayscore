@@ -220,7 +220,14 @@ jobs:
         if: failure()
         uses: ./.github/actions/notify-failure
         with:
-          title: 'Update Theatr Data Failed'
+          # Owner 2026-10-11: "Theatr breaking should send me a direct email."
+          # Two failures in a row, not one: single runs fail on a token race
+          # right after a good run (5x in Oct 2026) and recover on their own.
+          title: 'Theatr audience scores stopped updating'
+          description: 'The Theatr update has failed twice in a row, so Theatr audience scores on the site are not refreshing. The usual cause is that the Theatr login expired. Tell Claude "Theatr is broken" and it will find the cause and send you steps if the login needs re-capturing from the Theatr app.'
+          severity: 'critical'
+          email: 'true'
+          min_consecutive_failures: '2'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}
