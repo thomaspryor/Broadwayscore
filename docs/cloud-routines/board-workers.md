@@ -28,15 +28,23 @@ running from an earlier firing.
 
 1. `codex --version` must print 0.160.0; otherwise `npm i -g --no-audit --no-fund @openai/codex@0.160.0`.
 2. Start `node scripts/codex/daily-runner.js --limit 3 > /tmp/codex-run.log 2>&1`
-   with run_in_background. It restores the owner's Codex login, has Codex fix
+   with run_in_background AND timeout 7200000. The default background limit is
+   30 minutes and it killed the runner mid-card on 2026-10-11, after Codex had
+   pushed a passing fix. It restores the owner's Codex login, has Codex fix
    each card, gates every result on a Claude check, lands what passes and
    returns the rest to Todo. Do not touch .claude/worktrees/codex-runner.
 
 ## 2. Claude lane (up to 4 cards, in your own worktrees)
 
+Keep picking until 4 cards are finished or the pick comes back empty. A card
+you close, pause or bounce counts as finished; it is never a reason to stop
+the lane. Waiting for Codex is not a reason either: finish (section 3) only
+after this lane is done. On 2026-10-11 a worker paused its first card and then
+only waited for Codex while 68 cards were eligible.
+
 Never sit idle while a landing is checked (about 15-30 minutes): push it, start
-its waiter in the background, and go straight to the next card. Step 6 runs
-for each card once its waiter reports.
+its waiter in the background (timeout 4000000), and go straight to the next
+card. Step 6 runs for each card once its waiter reports.
 
 For each card:
 
