@@ -1,19 +1,48 @@
 {
-  "updatedAt": "2026-10-11T19:29:03.723Z",
-  "processed": 69,
-  "failed": 21,
-  "successRate": "76.7%",
+  "updatedAt": "2026-10-11T19:34:42.998Z",
+  "processed": 12,
+  "failed": 10,
+  "successRate": "54.5%",
   "tierBreakdown": {
-    "playwright": 55,
+    "playwright": 10,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 6,
-    "scrapingbee": 6,
+    "scrapingdog": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-10-11T19:31:20.487Z",
+      "event": "bb-session",
+      "session": "326254ff",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654485"
+    },
+    {
+      "t": "2026-10-11T19:31:21.296Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-11T19:31:38.942Z",
+      "event": "bb-session",
+      "session": "4e7c5788",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654485"
+    },
+    {
+      "t": "2026-10-11T19:31:39.586Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-11T19:31:49.629Z",
+      "event": "bb-session",
+      "session": "a5e12298",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    }
+  ]
 }
