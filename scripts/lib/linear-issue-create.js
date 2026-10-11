@@ -149,6 +149,25 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
   }
   const body = model == null ? (description || '') : stampModelHint(description, model);
 
+  // A START-NOW card the cloud worker would skip sits in Todo forever (BRO-5017).
+  // Sessions-only path (reuseTwin, i.e. linear-brain.js create): the alert router
+  // drops an alert whose create throws, and its free-text notes could quote a
+  // START-NOW line. Fails open: a throw inside the check never blocks a create.
+  let unpickable = null;
+  if (reuseTwin) {
+    try {
+      const filedPriority = effectiveCreatePriority({ priority, mode: disposition.mode, title }).priority;
+      unpickable = require('./cloud-worker-pick.js').startNowUnpickableReason({ title, description: body, priority: filedPriority, mode: disposition.mode });
+    } catch (e) {
+      console.warn(`[linear-issue-create] START-NOW pickability check failed open: ${e.message}`);
+    }
+  }
+  if (unpickable) {
+    const err = new Error(`START-NOW card would never be picked by the cloud worker (${unpickable.reason}): ${unpickable.hint}. Nothing was filed.`);
+    err.startNowUnpickable = unpickable.reason;
+    throw err;
+  }
+
   // Storm breaker (flow audit 2026-08-12: real intake 34.3/day vs burn-down
   // 5.7/day, and NOTHING bounded creation anywhere). Sized above a normal day,
   // so this is inert in ordinary use and only stops a runaway filer. Checked
