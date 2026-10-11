@@ -27,6 +27,8 @@ const USAGE = `count-scoring-queue.js — depth of each LLM scoring-cascade phas
   --shows=PATH      shows.json used for titles (default data/shows.json)
   --min-scanned=N   exit 1 if fewer than N review files were scanned
   --require-shows   exit 1 if shows.json can't be read (default: warn)
+  --urgent-only     count only shows in or near their opening-night window
+                    (scripts/lib/scoring-lane.js; BRO-5047)
   -h, --help        this message
 
 Counts are the CANONICAL, actionable depth — files the scorer can never consume
@@ -68,9 +70,17 @@ try {
   console.error(`WARNING: ${msg}`);
 }
 
+let onlyShowIds;
+if (args.includes('--urgent-only')) {
+  const { urgentScoringShowIds } = require('./lib/scoring-lane');
+  const { loadReviewEvidence } = require('./lib/review-evidence');
+  onlyShowIds = urgentScoringShowIds([...showsById.values()], { evidence: loadReviewEvidence() });
+  console.error(`Urgent-only: ${onlyShowIds.size} show(s) in or near their opening-night window`);
+}
+
 let counts;
 try {
-  counts = countScoringQueues(reviewTextsDir, { showTitles, showsById });
+  counts = countScoringQueues(reviewTextsDir, { showTitles, showsById, onlyShowIds });
 } catch (err) {
   console.error(`ERROR: could not scan ${reviewTextsDir}: ${err.message}`);
   process.exit(1);

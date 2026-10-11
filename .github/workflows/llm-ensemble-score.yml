@@ -11,6 +11,12 @@ concurrency:
 on:
   schedule:
     - cron: '30 4 * * *'  # Daily at 4:30 AM UTC — after rebuild (4 AM), before adjudicate (5:15 AM)
+    # BRO-5047 (owner decision 2026-10-11): catch-up scoring waits for the
+    # half-price batch runs instead of scoring at full price on every dispatch,
+    # so the batch run happens every 6h. Once-a-day extras stay on '30 4 * * *'.
+    - cron: '30 10 * * *'
+    - cron: '30 16 * * *'
+    - cron: '30 22 * * *'
   # Manual trigger with options
   workflow_dispatch:
     inputs:
@@ -97,6 +103,14 @@ on:
           - 'true'
       rescore:
         description: 'Re-score all reviews (even already scored ones)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+      sync:
+        description: 'Score catch-up reviews now at full price instead of waiting for the next half-price batch run (BRO-5047)'
         required: false
         default: 'false'
         type: choice
@@ -256,6 +270,15 @@ jobs:
             FORCE_RUN=true
           fi
           echo "force_run=$FORCE_RUN" >> $GITHUB_OUTPUT
+          # BRO-5047 (owner decision 2026-10-11): a plain catch-up dispatch (no
+          # show, no rescore reason, no action flag) scores only reviews for
+          # shows near opening night. Everything else waits for the next
+          # half-price batch run (crons above). Rule: scripts/lib/scoring-lane.js.
+          PLAIN_BACKLOG=$(EVENT_NAME="${{ github.event_name }}" SHOW_ID="${{ github.event.inputs.show_id }}" \
+            RESCORE_REASON="${{ github.event.inputs.rescore_reason }}" FORCE_RUN="$FORCE_RUN" \
+            SYNC="${{ github.event.inputs.sync }}" DISABLE_BACKLOG_BATCH="${{ vars.DISABLE_BACKLOG_BATCH }}" \
+            DISABLE_BATCH_SCORING="${{ vars.DISABLE_BATCH_SCORING }}" node scripts/lib/scoring-lane.js)
+          echo "only_urgent=$PLAIN_BACKLOG" >> $GITHUB_OUTPUT
           # ONE canonical counter for all four phases (task #652). Every phase
           # count used to be its own hand-rolled `node -e` block here, each
           # LOOSER than the selection filter scripts/llm-scoring/index.ts
@@ -306,6 +329,26 @@ jobs:
             echo "$name=$value" >> $GITHUB_OUTPUT
           done
           echo "Unscored reviews: $UNSCORED"
+          if [ "$PLAIN_BACKLOG" = "true" ]; then
+            # Same canonical counter, restricted to shows near opening night.
+            node scripts/count-scoring-queue.js --github-output --require-shows --urgent-only > /tmp/urgent-counts.txt
+            URGENT=$(grep -E "^unscored=[0-9]+$" /tmp/urgent-counts.txt | head -1 | cut -d= -f2)
+            if [ -z "$URGENT" ]; then
+              echo "::error::count-scoring-queue.js --urgent-only did not emit a numeric 'unscored'."
+              cat /tmp/urgent-counts.txt
+              exit 1
+            fi
+            echo "run_rescore=false" >> $GITHUB_OUTPUT
+            echo "run_stale=false" >> $GITHUB_OUTPUT
+            echo "run_emergency_retry=false" >> $GITHUB_OUTPUT
+            if [ "$URGENT" -ge 1 ]; then
+              echo "Catch-up dispatch: scoring $URGENT unscored review(s) for shows near opening night now; the rest waits for the next half-price batch run."
+              echo "skip=false" >> $GITHUB_OUTPUT
+            else
+              echo "Catch-up dispatch: nothing urgent. $UNSCORED unscored review(s) wait for the next half-price batch run. Skipping."
+              echo "skip=true" >> $GITHUB_OUTPUT
+            fi
+          else
           # Lowered from 5 to 1 on 2026-04-11. The 5-review threshold meant
           # 1-4 unscored reviews would sit indefinitely — combined with the
           # retry-pending-scores bug (which cleared the pending flag on
@@ -367,6 +410,7 @@ jobs:
               fi
             fi
           fi
+          fi
 
       - name: Build CLI arguments
         id: build-args
@@ -379,6 +423,11 @@ jobs:
             ARGS="$ARGS --show=${{ github.event.inputs.show_id }}"
           else
             ARGS="$ARGS --all"
+          fi
+
+          # BRO-5047: plain catch-up dispatch scores only shows near opening night.
+          if [ "${{ steps.check-needed.outputs.only_urgent }}" == "true" ]; then
+            ARGS="$ARGS --only-urgent"
           fi
 
           # Limit — scheduled runs default to 400
@@ -409,7 +458,7 @@ jobs:
           DOW=$(date -u +%u)  # 7 = Sunday
           if [ "${{ github.event.inputs.run_calibration }}" == "true" ]; then
             ARGS="$ARGS --calibrate"
-          elif [ "${{ github.event_name }}" == "schedule" ] && [ "$DOW" == "7" ]; then
+          elif [ "${{ github.event.schedule }}" == "30 4 * * *" ] && [ "$DOW" == "7" ]; then
             ARGS="$ARGS --calibrate"
             echo "Sunday scheduled run — including calibration"
           fi
@@ -561,7 +610,7 @@ jobs:
       # Skipped when the main pass already ran in rescore mode.
       # Kill switch: set repo variable DISABLE_RESCORE_DRAIN=1.
       - name: Drain needsRescore backlog (capped, scheduled only)
-        if: github.event_name == 'schedule' && steps.check-needed.outputs.skip != 'true' && steps.check-needed.outputs.run_rescore != 'true' && vars.DISABLE_RESCORE_DRAIN != '1'
+        if: github.event.schedule == '30 4 * * *' && steps.check-needed.outputs.skip != 'true' && steps.check-needed.outputs.run_rescore != 'true' && vars.DISABLE_RESCORE_DRAIN != '1'
         run: |
           npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts --ensemble --all --needs-rescore --limit=50 --verbose
 
@@ -607,7 +656,7 @@ jobs:
       # fired this cycle, so 3 flat samples surface in the daily digest
       # (health-check.js's progressWatchResults). Never fails the job.
       - name: Snapshot progress-watch state
-        if: always() && github.event_name == 'schedule'
+        if: always() && github.event.schedule == '30 4 * * *'
         continue-on-error: true
         run: node scripts/check-progress-stalls.js
 
@@ -863,11 +912,17 @@ jobs:
           REMAINING="${{ steps.count-remaining.outputs.remaining }}"
           echo "::notice::Scoring run processed 0 reviews with ${REMAINING} remaining unscored (likely all have insufficient text)"
 
+      # BRO-5047: plain chains (scheduled runs, rebuild's chain=true catch-up
+      # dispatches) no longer re-dispatch at full price: the next half-price
+      # batch run (every 6h) picks the rest up. Explicit action-flag and
+      # rescore_reason chains continue, as do all chains when batching is off.
       - name: Chain next batch
         if: >-
           always() && job.status != 'cancelled'
           && (github.event.inputs.chain == 'true' || github.event_name == 'schedule')
           && steps.check-changes.outputs.has_scored_reviews == 'true'
+          && (github.event.inputs.outdated == 'true' || github.event.inputs.needs_rescore == 'true' || github.event.inputs.stale_scores == 'true' || github.event.inputs.upgrade_ensemble == 'true' || github.event.inputs.retry_emergency == 'true' || github.event.inputs.rescore_reason || vars.DISABLE_BACKLOG_BATCH == '1' || vars.DISABLE_BATCH_SCORING == '1')
+          && steps.count-remaining.outputs.remaining != ''
           && (fromJSON(steps.count-remaining.outputs.remaining) > 10 || github.event.inputs.outdated == 'true' || github.event.inputs.needs_rescore == 'true' || github.event.inputs.stale_scores == 'true' || github.event.inputs.upgrade_ensemble == 'true')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -939,6 +994,7 @@ jobs:
         # that are now stranded in source files without a rebuild).
         if: >-
           ${{ (github.event.inputs.chain == 'true' || github.event_name == 'schedule')
+          && steps.count-remaining.outputs.remaining != ''
           && (fromJSON(steps.count-remaining.outputs.remaining) <= 10
               || github.event.inputs.remaining_batches == '0'
               || steps.check-changes.outputs.has_scored_reviews == 'false') }}
@@ -955,6 +1011,7 @@ jobs:
       - name: Trigger pull quote extraction (chain complete)
         if: >-
           ${{ (github.event.inputs.chain == 'true' || github.event_name == 'schedule')
+          && steps.count-remaining.outputs.remaining != ''
           && (fromJSON(steps.count-remaining.outputs.remaining) <= 10
               || github.event.inputs.remaining_batches == '0') }}
         env:

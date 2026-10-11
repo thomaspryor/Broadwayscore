@@ -3271,6 +3271,8 @@ on:
       # itself (scripts/lib/llm-scoring-cost-recording.js) is covered by the
       # scripts/lib/** glob already.
       - 'scripts/llm-scoring/cost-recording.test.mjs'
+      # BRO-5047: mixed sync/batch cost pricing, same gap shape as above.
+      - 'scripts/llm-scoring/mixed-batch-cost.test.mjs'
       - 'scripts/llm-scoring/batch-clients.ts'
       - 'scripts/llm-scoring/cost.ts'
       - 'scripts/llm-scoring/scorer.ts'

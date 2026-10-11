@@ -94,7 +94,9 @@ test('workflow: the "Snapshot progress-watch state" step is scheduled-run-only (
   assert.ok(stepMatch, 'could not locate the "Snapshot progress-watch state" step body');
   assert.match(
     stepMatch[0],
-    /if:\s*always\(\)\s*&&\s*github\.event_name\s*==\s*'schedule'/,
-    'the step must remain gated on github.event_name == \'schedule\' — if it starts running on workflow_dispatch too, the registry\'s single-writer verifiedBy claim (which relies on scheduled runs always resolving to the bare "scoring-reviews" concurrency group) needs re-verification'
+    // BRO-5047: the workflow now has four crons; the step runs on the 04:30
+    // one only, a strict subset of scheduled runs, so the claim still holds.
+    /if:\s*always\(\)\s*&&\s*(github\.event_name\s*==\s*'schedule'|github\.event\.schedule\s*==\s*'30 4 \* \* \*')/,
+    'the step must remain scheduled-run-only — if it starts running on workflow_dispatch too, the registry\'s single-writer verifiedBy claim (which relies on scheduled runs always resolving to the bare "scoring-reviews" concurrency group) needs re-verification'
   );
 });
