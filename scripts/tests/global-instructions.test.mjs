@@ -170,3 +170,12 @@ test('.claude/CLOUD.md stays under its byte cap', () => {
   const bytes = fs.statSync(path.join(REPO_ROOT, '.claude', 'CLOUD.md')).size;
   assert.ok(bytes <= CLOUD_MD_MAX_BYTES, `.claude/CLOUD.md is ${bytes}B (cap ${CLOUD_MD_MAX_BYTES}B): trim narrative, keep rules`);
 });
+
+// BRO-5072: AGENTS.md (Codex) points at CLAUDE.md instead of copying it; the
+// copies drifted. A cap stops them growing back.
+const AGENTS_MD_MAX_BYTES = 4 * 1024;
+test('AGENTS.md stays a short pointer to CLAUDE.md', () => {
+  const text = fs.readFileSync(path.join(REPO_ROOT, 'AGENTS.md'), 'utf8');
+  assert.ok(Buffer.byteLength(text) <= AGENTS_MD_MAX_BYTES, `AGENTS.md is ${Buffer.byteLength(text)}B (cap ${AGENTS_MD_MAX_BYTES}B): put rules in CLAUDE.md, not here`);
+  assert.match(text, /Read `CLAUDE\.md`/);
+});
