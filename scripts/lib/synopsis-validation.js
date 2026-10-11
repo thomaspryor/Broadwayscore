@@ -132,8 +132,9 @@ const WIKITEXT_DEBRIS_RE = /\bthumb(?:nail)?\s+(?:alt=|upright|left|right|centre
 // "Join us", "invites you", "You'll find your heart growing" (BRO-5063: 18 live
 // rows, 11 of them "Don’t miss" with a curly apostrophe the opener check below
 // never matched). Shared with the TodayTix cleaner's nonStoryReason. Test
-// it with isAudiencePitch: a song cue ("You'll Be Back") is plot.
-const AUDIENCE_PITCH_RE = /\b(?:join us|invites? you|you'll (?:find|love|be|see)|treat yourself)\b|^welcome to the\b|(?:^|[.!?]\s+)(?:Don't miss|Get (?:ready|set|your)|Get [^.!?]{1,60}?\btickets|Book (?:now|your|tickets|today))\b/i;
+// it with isAudiencePitch: a song cue ("You'll Be Back") is plot. "Head to the Old Vic to experience ..."
+// opened a live synopsis that passed (BRO-5031, The Real Thing 2024).
+const AUDIENCE_PITCH_RE = /\b(?:join us|invites? you|you'll (?:find|love|be|see)|treat yourself)\b|^welcome to the\b|(?:^|[.!?]\s+)(?:Don't miss|Get (?:ready|set|your)|Get [^.!?]{1,60}?\btickets|Book (?:now|your|tickets|today)|Head (?:down |over |along )?to the)\b/i;
 
 // A quoted Title-Case span is a song or show title ("You'll Be Back"), not
 // copy addressed to the reader; a quoted tagline ("Join us for the party!")
