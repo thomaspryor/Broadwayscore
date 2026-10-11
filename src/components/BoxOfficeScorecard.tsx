@@ -4,7 +4,7 @@ import type { BoxOfficeHistoryStats } from '@/lib/data-grosses-history';
 import WeeklyBarChart from '@/components/WeeklyBarChart';
 import { BoxOfficeThisWeek } from '@/components/BoxOfficeStats';
 import { formatCurrency } from '@/lib/formatting';
-import { type BoxOfficeFactsCard, formatGross } from '@/lib/box-office-v2-display';
+import { type BoxOfficeFactsCard, type BestLine, formatGross } from '@/lib/box-office-v2-display';
 
 /**
  * Box Office Scorecard v3 (BRO-5007): "how are ticket sales?", from public
@@ -77,6 +77,32 @@ function Chart({ card }: { card: BoxOfficeFactsCard }) {
   );
 }
 
+/** This run's records, Broadway League figures only; hidden under four reported weeks. */
+function PersonalBests({ lines }: { lines: BestLine[] }) {
+  return (
+    <section className="bg-surface-overlay/60 rounded-xl p-3.5 flex flex-col gap-2" aria-labelledby="personal-bests-heading">
+      <h3 id="personal-bests-heading" className={`${EYEBROW} m-0`}>Personal bests · this run</h3>
+      <ul className="m-0 p-0 list-none flex flex-col divide-y divide-white/5">
+        {lines.map((l) => (
+          <li key={l.label} className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-0.5 sm:gap-3 py-2">
+            <span className="text-sm text-gray-300">{l.label}</span>
+            <span className="text-sm text-white sm:text-right">
+              <span className="font-bold tabular-nums">{l.value}</span>
+              <span className="text-gray-400"> · {l.when}</span>
+              {l.latest && (
+                l.isNew
+                  ? <span className="ml-1.5 px-1.5 py-px rounded border border-white/20 text-[11px] font-bold text-gray-200 whitespace-nowrap">{l.latest}</span>
+                  : <span className="text-gray-400 tabular-nums"> · {l.latest}</span>
+              )}
+            </span>
+          </li>
+        ))}
+      </ul>
+      <p className="m-0 text-xs text-gray-500">Dollars at the time, not adjusted for inflation.</p>
+    </section>
+  );
+}
+
 export default function BoxOfficeScorecard({ card, grosses, history }: Props) {
   return (
     <section className="card p-4 sm:p-6 mb-5 sm:mb-8 flex flex-col gap-5" aria-labelledby="box-office-heading">
@@ -101,6 +127,8 @@ export default function BoxOfficeScorecard({ card, grosses, history }: Props) {
       <Chart card={card} />
 
       {grosses && <BoxOfficeThisWeek grosses={grosses} history={history} className="" stackChanges roundNearest />}
+
+      {card.bests && <PersonalBests lines={card.bests} />}
 
       <AllTimeFooter grosses={grosses} hasCommercial={card.hasCommercial} />
     </section>
