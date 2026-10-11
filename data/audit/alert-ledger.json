@@ -13778,7 +13778,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:c41fab62": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"grey-house carries the BRO-5020 values\"",
       "firstSeen": "2026-10-11T14:14:07.210Z",
@@ -13792,8 +13792,11 @@
       "silentRefires": 3,
       "absentRunIds": [
         "38156539139",
-        "38161313395"
-      ]
+        "38161313395",
+        "38169173157"
+      ],
+      "resolvedAt": "2026-10-11T20:00:41.500Z",
+      "resolveReason": "stale-signature"
     },
     "land:land/bro-5063-synopses": {
       "status": "resolved",
@@ -13853,7 +13856,10 @@
         "runId": "38156539139",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38156539139"
       },
-      "silentRefires": 1
+      "silentRefires": 1,
+      "absentRunIds": [
+        "38169173157"
+      ]
     },
     "land:land/bro-2730-we-late-cron": {
       "status": "open",
