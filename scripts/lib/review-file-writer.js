@@ -41,6 +41,7 @@ const { isStaleNonReviewSlot, isAggregatorPageUrl, flaggedSlotSupersededBy } = r
 const { isSameArticleBodyUpgrade } = require('./stale-merge-check');
 const { isShowDirHiddenBySparseCheckout } = require('./sparse-checkout-guard');
 const { validateUrlDomain } = require('./url-discovery');
+const { isUnresolvableRedirectUrl } = require('./unresolvable-url');
 const { safeWriteReview, safeRenameReview, invalidateWrongProductionAutoClear } = require('./review-write-guard');
 const { classifyContentTier } = require('./content-quality');
 const { clearFailureFlags } = require('./clear-failure-flags');
@@ -314,6 +315,15 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // --- Guard: normalize outlet ---
   let outletId = input.outletId || normalizeOutlet(input.outlet);
   if (!outletId) return { action: 'skipped', reason: 'no-outlet' };
+
+  // --- Guard: unfetchable URL (BRO-4458) ---
+  // SERP discovery can hand back Google's relative redirect (/goto?url=CAE...) or a
+  // cache/AMP wrapper instead of the article. No tier can fetch it, so the file
+  // strands as an empty stub forever (broadwaynews/tennessean on the-body-of-mary).
+  // A real URL for the same article arrives via another SERP call or source.
+  if (input.url && !fields.allowNonReviewUrl && isUnresolvableRedirectUrl(input.url)) {
+    return { action: 'skipped', reason: 'unresolvable-redirect-url' };
+  }
 
   // URL-based outlet refinement. The URL is objective ground truth;
   // aggregator-supplied outlet labels can be wrong. Two cases:

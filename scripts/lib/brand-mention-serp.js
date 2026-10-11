@@ -17,6 +17,7 @@
 
 const crypto = require('crypto');
 const { serpQuery } = require('./url-discovery');
+const { isUnresolvableRedirectUrl } = require('./unresolvable-url');
 
 const DEFAULT_KEYWORDS = ['broadwayscorecard', 'broadwayscorecard.com'];
 
@@ -149,31 +150,6 @@ function isUnattributableSocialUrl(url) {
   if (/^https?:\/\/(?:[a-z0-9-]+\.)*tiktok\.com\/video\/\d+/i.test(url)) return true;
   // Threads bare post URL
   if (/^https?:\/\/(?:[a-z0-9-]+\.)*threads\.(?:net|com)\/post\/[^/]+/i.test(url)) return true;
-  return false;
-}
-
-/**
- * Detect Google's opaque redirect/AMP cache URLs that can't be resolved.
- * Google SGE/AI Overview results sometimes return /goto?url=CAE... or
- * webcache.googleusercontent.com URLs instead of the actual destination.
- * These break dedup (each redirect URL is unique) and owner filtering
- * (no real hostname to match). Skip them — the same content should
- * appear with a real URL in a different SERP call or free source.
- */
-function isUnresolvableRedirectUrl(url) {
-  if (!url) return true;
-  const s = String(url);
-  // Relative paths (Google's /goto?url=... redirect)
-  if (s.startsWith('/')) return true;
-  // Google cache/AMP wrappers
-  if (/^https?:\/\/(?:webcache\.googleusercontent\.com|google\.com\/amp)/i.test(s)) return true;
-  // Must have a proper HTTP(S) scheme
-  try {
-    const parsed = new URL(s);
-    if (!['http:', 'https:'].includes(parsed.protocol)) return true;
-  } catch {
-    return true;
-  }
   return false;
 }
 
