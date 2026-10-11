@@ -146,18 +146,21 @@ describe('resolveCanonicalOutletId — task #1926 outlet-domain-borrowing fixtur
   // better outcome and is asserted separately below. This test reddened main
   // once the registry entry landed, expecting the pre-registration id.
   //
-  // The borrowing-refusal branch still needs coverage, so it moved to a host
-  // that fuzzy-matches vulture's "newyork" alias fragment but is NOT in the
-  // registry. If newyorkbulletin.substack.com is ever registered as a real
-  // outlet, rotate this fixture again rather than deleting the case — the
-  // branch under test is "refuse to borrow", not this particular hostname.
+  // The borrowing-refusal branch still needs coverage, so it moved to an input
+  // that fuzzy-matches vulture but whose host is NOT in the registry.
+  // FIXTURE ROTATED AGAIN 2026-10-11 (BRO-5053): BRO-3529 made the smashed
+  // "newyork" prefix ambiguous, so "newyorkbulletin" no longer matches vulture
+  // at all and never reached this branch. "vulturefanreviews" matches through
+  // vulture's own unambiguous name. If it is ever registered or stops matching,
+  // rotate again (probe normalizeOutlet first) rather than deleting the case —
+  // the branch under test is "refuse to borrow", not this particular hostname.
   test('operator input fuzzy-matches a registered outlet, but the URL host does not — falls back to a host-derived provisional, not the borrowed outlet', () => {
     const r = resolveCanonicalOutletId({
-      outletArg: 'newyorkbulletin',
-      url: 'https://newyorkbulletin.substack.com/p/paranormal-activity',
+      outletArg: 'vulturefanreviews',
+      url: 'https://vulturefanreviews.substack.com/p/paranormal-activity',
     });
     assert.notStrictEqual(r.outletId, 'vulture', 'must not borrow a registered T1 outlet\'s identity');
-    assert.strictEqual(r.outletId, 'newyorkbulletin');
+    assert.strictEqual(r.outletId, 'vulturefanreviews');
     assert.strictEqual(r.source, 'slug-fallback');
     assert.ok(r.warning);
     assert.match(r.warning, /vulture/);
