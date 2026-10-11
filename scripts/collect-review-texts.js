@@ -5370,6 +5370,10 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
 
   // Store LLM content verification results and ACT on high-confidence rejections
   if (contentVerification) {
+    // BRO-4884: the verifier judged this a tour stop at the record's own venue.
+    // The rebuild's fullText tour scan reads allowTourSignal, so record it or
+    // the review is dropped there as tourContaminationInText.
+    Object.assign(data, require('./lib/tour-stop-carveout').tourStopAllowFields(contentVerification, data));
     data.contentVerification = {
       isValid: contentVerification.isValid,
       confidence: contentVerification.confidence,
@@ -5387,6 +5391,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       // just in the LLM prompt hint. Reverify scripts already persist this
       // via `...result` spreads — this keeps the main ingestion path in sync.
       urlYearConflict: contentVerification.urlYearConflict || null,
+      reviewedVenue: contentVerification.reviewedVenue || null,
       // BRO-4563: a "not a review" verdict on a fetch cut off after the lede
       // of a /review/ URL. Rebuild reads this as advisory
       // (isCvVerdictFromPartialWindow), the collector below keeps the text.

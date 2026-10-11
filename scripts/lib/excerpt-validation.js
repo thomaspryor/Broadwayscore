@@ -713,6 +713,19 @@ function tourMatchIsDiscounted(excerpt, index, matchText, context, isVenue) {
     if ((prev && !/^(?:The|A|An|This|That|Its|Their|His|Her|Our)$/.test(prev)) || /^\s+[A-Z]/.test(after)) return 'company-name';
   }
   if (TOUR_HISTORY_PREFIX.test(before)) return 'history';
+  // The tour's stop AT this record's own venue is this production: "reviews
+  // the UK touring production of Curtains at the Wyndham's Theatre" on the
+  // Wyndham's 2019 record (BRO-4884). The venue must follow the tour words in
+  // the same sentence: "A West End fixture at the Cambridge Theatre, Matilda
+  // now embarks on its first UK national tour" is a tour leaving that venue.
+  // The venue matcher refuses same-named houses in other tour cities.
+  if (context && context.currentShowVenue) {
+    const endDot = excerpt.indexOf('.', index + matchText.length);
+    const rest = excerpt.slice(index + matchText.length, endDot === -1 ? excerpt.length : endDot);
+    const { reviewedAtOwnVenue } = require('./tour-stop-carveout');
+    // venue-write-guard-ok: read-only, a venue to match against the sentence, never written
+    if (reviewedAtOwnVenue(rest, { venue: context.currentShowVenue })) return 'own-venue-tour-stop';
+  }
   return null;
 }
 

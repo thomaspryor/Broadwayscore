@@ -1,7 +1,8 @@
 'use strict';
 
 /**
- * Own-venue tour-stop carve-out for content verification (BRO-4884).
+ * Own-venue carve-out for content verification (BRO-4884): tour stops and
+ * venue-taxonomy objections at the record's own theatre.
  *
  * Many West End and Off-West End records ARE a touring production's stop at
  * that theatre: Curtains 2019 at Wyndham's, the National Theatre's A Taste of
@@ -14,11 +15,15 @@
  * (reviewedVenue), and a touring-based wrongProduction is cleared when that
  * theatre is this record's own venue and the review is not dated far
  * outside this run. Reviews of the tour at Sheffield or Leeds stay flagged.
+ * The same holds for records filed as West End at subsidised or Off-West End
+ * houses: Translations 2019 at the Olivier had its reviews flagged as "a
+ * National Theatre production, not the West End production at the Olivier".
  */
 
-const { venueTokens, containsToken, normalizeForMatch } = require('./creative-team-verify');
+const { venueTokens, containsToken, normalizeForMatch } = require('./venue-tokens');
 
 const TOUR_BASIS = /\btour(s|ing|ed)?\b|\bon the road\b/i;
+const TAXONOMY_BASIS = /\b(off-)?west end\b|\bsubsidi[sz]ed\b|\bpre-transfer\b/i;
 const WINDOW_DAYS = 60;
 
 function parseDay(s) {
@@ -74,11 +79,30 @@ function reviewedAtOwnVenue(reviewedVenue, show) {
 function applyOwnVenueTourCarveout(cv, show, { publishDate } = {}) {
   const unchanged = { wrongProduction: !!(cv && cv.wrongProduction), tourStopCarveoutApplied: false };
   if (!cv || !cv.wrongProduction || !show) return unchanged;
-  const basis = [cv.reasoning || '', ...(Array.isArray(cv.issues) ? cv.issues : [])].join(' ');
-  if (!TOUR_BASIS.test(basis)) return unchanged;
   if (!reviewedAtOwnVenue(cv.reviewedVenue, show)) return unchanged;
   if (outsideRun(publishDate, show)) return unchanged;
+  // Attended this record's venue, and not dated outside this run. A dated
+  // review inside the run is this production whatever the objection. An
+  // undated one could be an earlier staging at the same house, so it is
+  // cleared only for the two objections that are about the record, not the
+  // review: touring, and venue taxonomy ("a National Theatre production, not
+  // the West End production at the Olivier"; "the Royal Court production,
+  // not a West End one" on the Royal Court record).
+  const basis = [cv.reasoning || '', ...(Array.isArray(cv.issues) ? cv.issues : [])].join(' ');
+  const dated = parseDay(publishDate) != null;
+  if (!dated && !TOUR_BASIS.test(basis) && !TAXONOMY_BASIS.test(basis)) return unchanged;
   return { wrongProduction: false, tourStopCarveoutApplied: true };
 }
 
-module.exports = { applyOwnVenueTourCarveout, reviewedAtOwnVenue, outsideRun };
+/**
+ * Fields to persist on a review when the verifier applied the carve-out: the
+ * rebuild's fullText tour scan reads allowTourSignal, not the CV verdict.
+ * @returns {object} {} when nothing should change
+ */
+function tourStopAllowFields(cv, data) {
+  if (!cv || !cv.tourStopCarveoutApplied || (data && data.allowTourSignal === true)) return {};
+  return require('./contamination-allow-signal').contaminationAllowFields('tour',
+    `own-venue tour stop: critic attended "${cv.reviewedVenue}"`);
+}
+
+module.exports = { applyOwnVenueTourCarveout, reviewedAtOwnVenue, outsideRun, tourStopAllowFields };
