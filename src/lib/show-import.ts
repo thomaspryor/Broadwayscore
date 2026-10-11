@@ -374,7 +374,7 @@ export const THEATR_ERROR_COPY: Record<string, string> = {
   busy: 'Theatr import is very busy today. Try again tomorrow.',
   not_configured: 'Theatr import isn’t available right now. Try again later.',
   internal: 'Something went wrong reading your screenshots. Try again in a few minutes.',
-  no_shows: 'We couldn’t find any shows in those screenshots. In Theatr, open Profile, then Collection, then Attended (or Interested), and screenshot the list.',
+  no_shows: 'We couldn’t find any shows in those screenshots. In Theatr, open Profile, then Activity, and screenshot the feed from the top as you scroll down.',
 };
 
 /** Most screenshots per import; sent to the edge function in batches. */
