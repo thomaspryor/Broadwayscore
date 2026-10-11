@@ -298,3 +298,14 @@ test('pairLabelLines zips a stack of labels over a stack of dates, never just th
   const pdf = 'OPENING NIGHT\nGielgud\nPress Night\n06 March 2024\n\n07 March 2024';
   assert.equal(parseTrHeaderDates(pdfHeaderFor(pdf, 'Opening Night')).openingDate, '2024-03-06');
 });
+
+// The 2024-25 run of the lookup (2026-10-11) logged the real HTML labels:
+// "Previews", "Opens/Press Night", "Closes", each over its date. "Opens/Press
+// Night" is the press night; "Previews / Opens" stays the previews start.
+test('htmlHeaderFor reads the Opens/Press Night label as the press night', () => {
+  const page = 'The Importance of Being Earnest\nNational Theatre - Lyttelton Theatre, London\n\nPreviews\n20 November 2024\nOpens/Press Night\n28 November 2024\nCloses\n25 January 2025\nReviews';
+  assert.deepEqual(parseTrHeaderDates(htmlHeaderFor('The Importance of Being Earnest', page)),
+    { previewsStartDate: '2024-11-20', openingDate: '2024-11-28', closingDate: '2025-01-25' });
+  assert.deepEqual(pairLabelLines(['Opens / Press Night', '03 September 2024']), ['Press night 03 September 2024']);
+  assert.deepEqual(pairLabelLines(['Previews / Opens', '22 August 2019']), ['Previews 22 August 2019']);
+});
