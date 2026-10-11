@@ -89,4 +89,103 @@ function extractCostsFromPost(selftext) {
   return results;
 }
 
-module.exports = { isRelevantPost, parseDollarAmount, extractCostsFromPost };
+// One dollar figure inside a profit value: "$100k", "($100k+)", "$(100k)",
+// "$0", "\~$50k". Parentheses anywhere around it mean a loss; "+" means the
+// bound is open (at least this much profit, or at least this much loss).
+const PROFIT_AMOUNT_RE = /(\()?\s*\\?~?\s*\$?\s*(\()?\s*\\?~?\s*\$?([\d.,]*\d)\s*(million|mil|m|k)?\b\s*(\+)?\s*(\))?/gi;
+
+/**
+ * "Estimated Profit (Loss): $0k-$(100k)" as a range in whole dollars.
+ * { low, high } with null for an open bound ("$100k+" is { low: 100000,
+ * high: null }, "($100k+)" is { low: null, high: -100000 }); null for N/A
+ * or an unreadable value. A bare low end takes the high end's suffix
+ * ("$50-$100k" is 50k..100k) unless it is zero.
+ */
+function parseProfitRange(value) {
+  if (!value || /n\/?a/i.test(value)) return null;
+  if (/^\W*(?:break[-\s]*)?even\b/i.test(value)) return { low: 0, high: 0 };
+  const amounts = [];
+  for (const m of String(value).matchAll(PROFIT_AMOUNT_RE)) {
+    const [, open1, open2, num, suffix, plus, close] = m;
+    amounts.push({ num, suffix, negative: !!(open1 || open2 || close), plus: !!plus });
+    if (amounts.length === 2) break;
+  }
+  if (!amounts.length) return null;
+  const toDollars = (a, fallbackSuffix) => {
+    const zero = parseFloat(a.num.replace(/,/g, '')) === 0;
+    const d = parseDollarAmount(a.num, a.suffix || (zero ? null : fallbackSuffix));
+    return d == null ? null : (a.negative ? -d : d);
+  };
+  if (amounts.length === 1) {
+    const v = toDollars(amounts[0], null);
+    if (v == null) return null;
+    if (!amounts[0].plus) return { low: v, high: v };
+    return v < 0 ? { low: null, high: v } : { low: v, high: null };
+  }
+  const second = toDollars(amounts[1], null);
+  const first = toDollars(amounts[0], amounts[1].suffix);
+  if (first == null || second == null) return null;
+  return { low: Math.min(first, second), high: Math.max(first, second) };
+}
+
+// "$884k" or "$*1.0 million" (an italic marker can sit after the "$").
+// A figure labelled "gross" wins, "$" optional ("*1.0 million gross" is a
+// typo seen in the wild); else the first dollar figure on the heading line.
+const LABELLED_GROSS_RE = /\$?[\s*]*([\d.,]*\d)\s*(million|mil|m|k)\s*gross\b/i;
+const DOLLAR_RE = /\$[\s*]*([\d.,]*\d)\s*(million|mil|m|k)?\b/i;
+const LESS_FEES_RE = /Gross\s+Less[-\s]*Fees:?\**\s*\$\s*([\d.,]*\d)\s*(million|mil|m|k)?\b/i;
+const PROFIT_LINE_RE = /Estimated\s+Profit\s*\(Loss\):?\**[ \t]*([^;\n]*)/i;
+const RECOUPED_RE = /percentage\s+recouped\**:?\**\s*~?\s*([\d.]+)\s*%(?:\s*[-–]\s*([\d.]+)\s*%)?/i;
+
+/**
+ * Per-show weekly figures from a Grosses Analysis post, in post order:
+ * { showName, gross, grossLessFees, costLow, costHigh, profit, recoupedLow,
+ * recoupedHigh }. gross is the first dollar figure on the ***Show*** heading
+ * line; profit is parseProfitRange's output. Missing fields are null. A show
+ * heading with none of the detail lines is dropped.
+ */
+function extractWeeklyFinancialsFromPost(selftext) {
+  if (!selftext) return [];
+  const rows = [];
+  let cur = null;
+  const flush = () => {
+    if (cur && (cur.grossLessFees || cur.profit || cur.costLow || cur.recoupedLow != null)) rows.push(cur);
+  };
+  for (const line of selftext.split('\n')) {
+    const showMatch = line.match(SHOW_RE);
+    if (showMatch) {
+      const name = showMatch[1].trim().replace(LEADING_EMOJI_RE, '').replace(TRAILING_PUNCT_RE, '').trim();
+      if (name) {
+        flush();
+        const after = line.slice(showMatch.index + showMatch[0].length);
+        const g = after.match(LABELLED_GROSS_RE) || after.match(DOLLAR_RE);
+        cur = {
+          showName: name, gross: g ? parseDollarAmount(g[1], g[2]) : null, grossLessFees: null,
+          costLow: null, costHigh: null, profit: null, recoupedLow: null, recoupedHigh: null,
+        };
+      }
+    }
+    if (!cur) continue;
+    const lf = line.match(LESS_FEES_RE);
+    if (lf) cur.grossLessFees = parseDollarAmount(lf[1], lf[2]);
+    const c = line.match(COST_RE);
+    if (c) {
+      const [, lowNum, lowSuffix, highNum, highSuffix] = c;
+      const high = highNum ? parseDollarAmount(highNum, highSuffix) : null;
+      const low = high ? rangeLow(lowNum, lowSuffix, high, highSuffix) : parseDollarAmount(lowNum, lowSuffix);
+      cur.costLow = low || high;
+      cur.costHigh = high || low;
+    }
+    const p = line.match(PROFIT_LINE_RE);
+    if (p) cur.profit = parseProfitRange(p[1]);
+    const r = line.match(RECOUPED_RE);
+    if (r) {
+      cur.recoupedLow = parseFloat(r[1]);
+      cur.recoupedHigh = r[2] ? parseFloat(r[2]) : parseFloat(r[1]);
+    }
+  }
+  flush();
+  return rows;
+}
+
+module.exports = { isRelevantPost, parseDollarAmount, extractCostsFromPost, parseProfitRange, extractWeeklyFinancialsFromPost };
