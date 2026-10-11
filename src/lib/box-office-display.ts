@@ -163,20 +163,22 @@ export interface Closing {
   gross: number;
 }
 
-/** "early August" / "mid-August" / "late August". */
 /** Records shown on the market page; the rest are counted as "and N more". */
 export const RECORDS_SHOWN = 6;
+/** Past this many days a record names its month and year, so the same week last year never reads like last week. */
+const RECORD_MONTH_ONLY_DAYS = 300;
 
 /**
  * "best week ever", or "best week since early January" for a record reaching
- * back under a year, "best week since March 2023" for an older one.
+ * back under RECORD_MONTH_ONLY_DAYS, "best week since December 2024" beyond.
  */
 export function recordText(r: { ever: boolean; since: string | null }, week: string): string {
   if (r.ever || !r.since) return 'best week ever';
-  const withinYear = Date.parse(`${week}T00:00:00Z`) - Date.parse(`${r.since}T00:00:00Z`) < 365 * 86_400_000;
-  return `best week since ${withinYear ? partOfMonth(r.since) : `${MONTHS[Number(r.since.slice(5, 7)) - 1]} ${r.since.slice(0, 4)}`}`;
+  const recent = Date.parse(`${week}T00:00:00Z`) - Date.parse(`${r.since}T00:00:00Z`) < RECORD_MONTH_ONLY_DAYS * 86_400_000;
+  return `best week since ${recent ? partOfMonth(r.since) : `${MONTHS[Number(r.since.slice(5, 7)) - 1]} ${r.since.slice(0, 4)}`}`;
 }
 
+/** "early August" / "mid-August" / "late August". */
 export function partOfMonth(week: string): string {
   const d = Number(week.slice(8, 10));
   const month = MONTHS[Number(week.slice(5, 7)) - 1];
