@@ -152,7 +152,7 @@ test('sweep counts each class once per file, joins published, and lists the show
     assert.equal(out.D.length, 1);
     assert.equal(out.D[0].published, true, 'D rows that are on the site are the ones doing harm');
     assert.equal(out.showsAffected, 1);
-    assert.match(summary(out), /A noUsableText=1 .*\n.*B rejectedYetVerified=1 .*\n.*C neverScored=1 alreadyQueued=0\nD blockedUrlUnflagged=1 .* publishedOnSite=1/);
+    assert.match(summary(out), /A noUsableText=1 .*\n.*B rejectedYetVerified=1 .*\n.*C neverScored=1 \(recent \d+\) alreadyQueued=0\nD blockedUrlUnflagged=1 .* publishedOnSite=1/);
     assert.equal(sweep({ root: c.root, only: 'nope' }).files, 0, '--show narrows the sweep');
   } finally { c.cleanup(); }
 });
@@ -178,4 +178,38 @@ test('the CLI is advisory by default and --strict fails on any hole; a clean cor
     assert.equal(run(dirty.root, ['--strict']).code, 1);
     assert.equal(run(clean.root, ['--strict']).code, 0);
   } finally { dirty.cleanup(); clean.cleanup(); }
+});
+
+// BRO-4838: E (a printed star never stored) and F (published score outside the critic's band), and the per-show
+// routing --alert uses. The published row is matched across scheme/www/query/trailing-slash differences.
+test('E uncapturedStar: a known star outlet printing a lone star before its sign-off', () => {
+  const d = base({ outletId: 'theatreandtonic', outlet: 'Theatre and Tonic', url: 'https://theatreandtonic.co.uk/blog/fixture-review',
+    fullText: `${longText} The Fixture Show plays until November. ★ Written by Bronagh for Theatre and Tonic.`, contentTier: 'complete', assignedScore: 42, scoreSource: 'llm-v6' });
+  assert.deepEqual(h.uncapturedStar(d, SHOW), { star: '1/5 stars' });
+  assert.equal(h.uncapturedStar({ ...d, originalScore: '1/5 stars', originalScoreSource: 'unicode-stars-fallthrough' }, SHOW), null);
+});
+
+test('F scoreOutsideBand: outlet rating binds, a relay alone does not, a queued re-score is marked', () => {
+  const d = base({ outletId: 'guardian', originalScore: '2/5 stars', originalScoreSource: 'guardian-star-svg', fullText: longText, contentTier: 'complete' });
+  assert.equal(h.scoreOutsideBand(d, 40), null, 'inside 31-50');
+  assert.deepEqual(h.scoreOutsideBand(d, 92), { score: 92, band: '31-50', rating: 'star 2/5 stars band 31-50', queued: false });
+  assert.equal(h.scoreOutsideBand(base({ aggregatorStars: '2/5 stars' }), 92), null, 'relay-only rating does not bind');
+  assert.equal(h.scoreOutsideBand({ ...d, needsRescore: true }, 92).queued, true);
+});
+
+test('sweep joins the published row loosely for F and marks recent shows; needsPerson keeps B and unqueued F', async () => {
+  const { needsPerson } = require('../../scripts/audit-coverage-holes.js');
+  const recentShow = { ...SHOW, openingDate: '2026-10-01' };
+  const c = corpus({
+    'f.json': base({ outletId: 'guardian', originalScore: '2/5 stars', originalScoreSource: 'guardian-star-svg', fullText: longText, contentTier: 'complete', url: 'https://www.theguardian.com/stage/fixture-review' }),
+    'b.json': base({ rejectionReason: 'not_a_review', contentVerification: cv(), criticName: 'B', url: 'https://variety.com/b' }),
+  }, [recentShow], [{ showId: SHOW.id, url: 'http://theguardian.com/stage/fixture-review/?utm_source=x', assignedScore: 92 }]);
+  try {
+    const out = sweep({ root: c.root, now: Date.parse('2026-10-08T00:00:00Z'), recentDays: 14 });
+    assert.deepEqual(out.recentShows, [SHOW.id]);
+    assert.equal(out.F.length, 1);
+    assert.equal(out.F[0].recent, true);
+    assert.deepEqual(needsPerson(out, SHOW.id).map((r) => r.cls).sort(), ['B', 'F']);
+    assert.match(summary(out), /F scoreOutsideBand=1 \(recent 1\) queued=0/);
+  } finally { c.cleanup(); }
 });
