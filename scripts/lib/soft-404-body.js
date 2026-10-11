@@ -11,13 +11,20 @@
  * require() this file.
  */
 
-const NOT_FOUND_SIGNATURES = [
+// Strong: wording only a site's error template uses.
+const STRONG_SIGNATURES = [
   /\bdocument not found\b/i,
   /\bthe document you are looking for does not exist\b/i,
-  /\bpage not found\b/i,
   /\bthe page you (?:are|were) looking for (?:does not exist|could not be found|can(?:no|')t be found|is no longer available)\b/i,
+];
+// Weak: phrases a short real review can contain ("page not found" joke, a
+// show with 404 in its title). Count only alongside site-nav chrome.
+const WEAK_SIGNATURES = [
+  /\bpage not found\b/i,
   /\b404\s*(?:-|:)?\s*(?:error|not found)\b/i,
 ];
+const NAV_CHROME = [/\bhome\b/i, /\bsearch\b/i, /\bmenu\b/i, /\bsubscribe\b/i, /\bsign in\b/i, /\bcontact\b/i, /\blatest news\b/i, /\bprivacy\b/i];
+const WEAK_MAX_LENGTH = 1200;
 
 // A real review is long. A not-found template wrapped in site nav is short
 // (870 chars for London Box Office). Above this length a "page not found"
@@ -32,7 +39,9 @@ function isSoft404Body(text) {
   if (typeof text !== 'string') return false;
   const body = text.trim();
   if (!body || body.length > SOFT_404_MAX_LENGTH) return false;
-  return NOT_FOUND_SIGNATURES.some((re) => re.test(body));
+  if (STRONG_SIGNATURES.some((re) => re.test(body))) return true;
+  if (body.length > WEAK_MAX_LENGTH || !WEAK_SIGNATURES.some((re) => re.test(body))) return false;
+  return NAV_CHROME.filter((re) => re.test(body)).length >= 2;
 }
 
 function normUrl(u) {

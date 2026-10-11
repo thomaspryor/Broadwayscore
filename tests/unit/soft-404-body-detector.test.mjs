@@ -18,7 +18,7 @@ const REAL_SHORT_REVIEW =
 
 test('soft-404 chrome is detected', () => {
   assert.equal(isSoft404Body(LBO_BODY), true);
-  assert.equal(isSoft404Body('Page not found. Sorry, we could not find that page.'), true);
+  assert.equal(isSoft404Body('Page not found. Sorry, we could not find that page. Home Search Contact'), true);
 });
 
 test('a genuine short review is not flagged', () => {
@@ -53,4 +53,17 @@ test('soft_404 is never retired and only cools down', () => {
   assert.equal(gate.reason, 'cooldown');
   const later = shouldRetryFetch(null, { fetchRetryAfter: new Date(Date.now() - 1000).toISOString() }, { failureReason: 'soft_404' });
   assert.equal(later.shouldRetry, true);
+});
+
+test('short real text containing a weak signature is not flagged', () => {
+  assert.equal(isSoft404Body('Review: Error 404 at the Bush Theatre. The 404 error message becomes a motif. Four stars.'), false);
+  assert.equal(isSoft404Body('Sorry, page not found? Not here: this short capsule review loves the show.'), false);
+  assert.equal(isSoft404Body('Page not found. Home Search Menu Subscribe'), true);
+});
+
+test('soft_404 cooldown backs off by repeat count', () => {
+  const a = recordFetchAttempt(null, { fetchSoft404Count: 0 }, { failureReason: 'soft_404' });
+  const b = recordFetchAttempt(null, { fetchSoft404Count: 3 }, { failureReason: 'soft_404' });
+  assert.equal(a.fetchSoft404Count, 1);
+  assert.ok(new Date(b.fetchRetryAfter) - new Date(a.fetchRetryAfter) > 100 * 3600 * 1000);
 });

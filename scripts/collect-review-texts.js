@@ -6326,7 +6326,7 @@ function findReviewsToProcess() {
           // Re-process showNotMentioned reviews for URL discovery (even if they have long text)
           const needsUrlDiscovery = data.showNotMentioned === true && !data._showNotMentionedDiscoveryAttempted;
           // Re-collect if existing fullText is garbage (cookie consent, GDPR banners, etc.)
-          let hasGarbageText = textLen > 0 && isGarbageContent(data.fullText).isGarbage;
+          let hasGarbageText = textLen > 0 && (isGarbageContent(data.fullText).isGarbage || isSoft404Body(data.fullText));
           if (!hasGarbageText && textLen > 0 && hasStrippableConsentLayer(data.fullText)) {
             // Consent-prefixed text: free when the stored article can be
             // re-verified, otherwise a capped network refetch.
@@ -6781,7 +6781,7 @@ function recordFailedFetch(review, reason, details = {}) {
     failureCount: counts ? prevCount + 1 : prevCount,
     lastFailedAt: new Date().toISOString(),
     firstFailedAt: existing?.firstFailedAt || new Date().toISOString(),
-    ...(counts ? {} : { lastCappedAt: new Date().toISOString() }),
+    ...(counts || reason === 'soft_404' ? {} : { lastCappedAt: new Date().toISOString() }),
     ...details,
   };
 
@@ -6849,7 +6849,7 @@ function recordFailedFetch(review, reason, details = {}) {
     // (e.g. pre-publication failures don't count, BRO-4281), so the raw
     // ledger count alone must not claim "permanently failed".
     console.log(`    ⚠ Permanently failed (${entry.failureCount} attempts, reason: ${reason}) — will skip on future runs`);
-  } else if (!counts) {
+  } else if (!counts && reason !== 'soft_404') {
     console.log(`    ⏸ Recorded as ${reason} (failureCount held at ${entry.failureCount}) — retried normally once the cap lifts`);
   } else if (fetchAttemptUpdates.fetchRetryAfter) {
     console.log(`    ⏳ Fetch cooldown until ${fetchAttemptUpdates.fetchRetryAfter} (${entry.failureCount} attempts, reason: ${reason})`);

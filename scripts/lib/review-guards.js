@@ -12,7 +12,9 @@ const crypto = require('crypto');
 const { isNonEvidenceFailure, isStrictFailureReason, SOFT_404_REASON } = require('./failed-fetch-policy');
 
 // BRO-3116: a soft-404 means "not published yet": short cooldown, never abandoned.
-const SOFT_404_COOLDOWN_MS = 3 * 3600 * 1000;
+// Backs off by repeat count (3h, 12h, 2d, then weekly) so a page that never
+// publishes stops costing a full fetch chain every run.
+const SOFT_404_COOLDOWNS_MS = [3, 12, 48, 168].map((h) => h * 3600 * 1000);
 const { passesGenericTitleIdentity } = require('./generic-title-guard');
 
 /**
@@ -3666,7 +3668,11 @@ function recordFetchAttempt(show, review, failureEntry) {
 
   const failureReason = failureEntry.failureReason || '';
   if (failureReason === SOFT_404_REASON) {
-    return { fetchRetryAfter: new Date(Date.now() + SOFT_404_COOLDOWN_MS).toISOString() };
+    const n = _counter(review && review.fetchSoft404Count);
+    return {
+      fetchRetryAfter: new Date(Date.now() + SOFT_404_COOLDOWNS_MS[Math.min(n, SOFT_404_COOLDOWNS_MS.length - 1)]).toISOString(),
+      fetchSoft404Count: n + 1,
+    };
   }
   if (isNonEvidenceFailure(failureReason)) return {};
 
