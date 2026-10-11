@@ -156,7 +156,7 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-11T14:14:07.486Z",
-      "lastSeen": "2026-10-11T20:40:22.255Z",
+      "lastSeen": "2026-10-11T20:49:50.675Z",
       "lastNotifiedAt": "2026-10-11T14:14:07.486Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 132,
@@ -13885,11 +13885,11 @@
       },
       "silentRefires": 1,
       "absentRunIds": [
-        "38169173157",
-        "38170655771",
-        "38172035855"
+        "38169467183",
+        "38171006542",
+        "38172663334"
       ],
-      "resolvedAt": "2026-10-11T20:40:22.236Z",
+      "resolvedAt": "2026-10-11T20:49:50.656Z",
       "resolveReason": "stale-signature"
     },
     "land:land/bro-2730-we-late-cron": {
@@ -13963,28 +13963,21 @@
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run review-guards regression tests — \"foo returns the contracted value\"",
-      "firstSeen": "2026-10-11T20:22:09.425Z",
-      "incidentOpenedAt": "2026-10-11T20:22:09.425Z",
-      "lastSeen": "2026-10-11T20:40:22.249Z",
-      "lastNotifiedAt": "2026-10-11T20:22:09.425Z",
+      "firstSeen": "2026-10-11T20:04:41.621Z",
+      "incidentOpenedAt": "2026-10-11T20:04:41.621Z",
+      "lastSeen": "2026-10-11T20:49:50.669Z",
+      "lastNotifiedAt": "2026-10-11T20:04:41.621Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-5078",
-      "silentRefires": 1
-    },
-    "land:land/bro-4886-integrity-audit": {
-      "status": "open",
-      "disposition": "digest",
-      "title": "Landing blocked: rebase red on land/bro-4886-integrity-audit",
-      "firstSeen": "2026-10-11T20:43:26.894Z",
-      "incidentOpenedAt": "2026-10-11T20:43:26.894Z",
-      "lastSeen": "2026-10-11T20:43:26.894Z",
-      "lastNotifiedAt": "2026-10-11T20:43:26.894Z",
-      "lastSurfacedAt": "2026-10-11T20:43:26.894Z",
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": null
+      "dispatch": {
+        "requestedAt": "2026-10-11T20:04:41.621Z",
+        "mode": "dispatch-at-filing",
+        "runId": "38169467183",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38169467183"
+      },
+      "silentRefires": 2
     }
   }
 }
