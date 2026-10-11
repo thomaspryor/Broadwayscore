@@ -133,6 +133,32 @@ test('pdfHeaderFor ignores a contents line and a two-column heading', () => {
   assert.equal(pdfHeaderFor('COMPANY     THE STAGE\nprose', 'Company'), null);
 });
 
+test('buildReviewLedCandidates files a run that started the season before under that season', () => {
+  const review = { title: 'The Real Thing', venue: 'Old Vic', date: '2024-09-04', url: 'https://www.whatsonstage.com/x' };
+  const tr = { title: 'The Real Thing', venue: 'The Old Vic, London', link: 'https://www.theatrerecord.com/archive/2024/9/x' };
+  const header = 'The Real Thing\nPreviews 22 August 2024\nCloses 26 October 2024';
+  const [c] = buildReviewLedCandidates({ season: '2024-2025', lookups: [{ review, tr, header }], shows: [], today: '2026-10-11' });
+  assert.equal(c.season, '2023-2024');
+  assert.equal(c.decision.promotable, true);
+  // August previews, September press night: stays in the season of the press night.
+  const [e] = buildReviewLedCandidates({ season: '2024-2025', lookups: [{ review, tr, header: header.replace('\nCloses', '\nPress night 03 September 2024\nCloses') }], shows: [], today: '2026-10-11' });
+  assert.equal(e.season, '2024-2025');
+  assert.equal(e.decision.promotable, true);
+  const old = header.replace('22 August 2024', '22 August 2022');
+  const [d] = buildReviewLedCandidates({ season: '2024-2025', lookups: [{ review, tr, header: old }], shows: [], today: '2026-10-11' });
+  assert.equal(d.season, '2024-2025');
+  assert.equal(d.decision.promotable, false);
+});
+
+test('buildReviewLedCandidates names the NT stage from the TR venue', () => {
+  const review = { title: 'Coriolanus', venue: 'National Theatre', date: '2024-09-25', url: 'https://www.whatsonstage.com/x' };
+  const header = 'Coriolanus\nPreviews 11 September 2024\nCloses 09 November 2024';
+  const at = v => buildReviewLedCandidates({ season: '2024-2025', lookups: [{ review, tr: { title: 'Coriolanus', venue: v, link: 'https://www.theatrerecord.com/archive/2024/9/20225-coriolanus' }, header }], shows: [], today: '2026-10-11' })[0].venue;
+  assert.equal(at('National Theatre - Olivier Theatre, London'), 'Olivier Theatre');
+  assert.equal(at('London, Lyttelton, National'), 'Lyttelton Theatre');
+  assert.equal(at('National Theatre, London'), 'National Theatre');
+});
+
 test('buildReviewLedCandidates ends a run straddling the March 2020 shutdown on 16 March', () => {
   const review = { title: 'The Upstart Crow', venue: 'Gielgud Theatre', date: '2020-02-18', url: 'https://www.whatsonstage.com/x' };
   const tr = { title: 'The Upstart Crow', venue: 'London, Gielgud', link: 'https://www.theatrerecord.com/archive/volume/40/dest/04_upstart_crow' };

@@ -326,7 +326,7 @@ async function main() {
           const text = execFileSync('pdftotext', [mode, tmp, '-'], { maxBuffer: 50 * 1024 * 1024 }).toString();
           const h = pdfHeaderFor(text, title);
           const d = parseTrHeaderDates(h);
-          if (!d.closingDate) logDateContext(text, title, mode);
+          if (!d.closingDate || !d.openingDate) logDateContext(text, title, mode);
           if (h) return h;
         }
         return null;
@@ -342,7 +342,7 @@ async function main() {
       return { title: first ? first.innerText.split('\n').map(l => l.trim()).find(Boolean) : null, text: root ? root.innerText : null };
     });
     const h = htmlHeaderFor(pageTitle || title, text);
-    if (!parseTrHeaderDates(h).closingDate) logDateContext(`${capsKey(cleanSearchTitle(title))}\n${text || ''}`, title, 'html');
+    if (!parseTrHeaderDates(h).closingDate || !parseTrHeaderDates(h).openingDate) logDateContext(`${capsKey(cleanSearchTitle(title))}\n${text || ''}`, title, 'html');
     return h;
   }
 
