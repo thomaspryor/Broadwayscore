@@ -28,6 +28,8 @@ Each is a copy of a `~/.claude/hooks/` master and self-skips when `$HOME/.claude
 
 ## Slash commands available in cloud
 
+**If one fails with "Unknown skill"** (sessions started with `create_session`, intermittently): Read `.claude/commands/<name>.md` and follow it fully by hand. The Stop hook counts that read after the failed call, never the failed call, and refuses a `NO-SHIP-CHECK`/`NO-WHAT-ELSE`/`NO-WRAP-UP` whose reason is only that the command did not load (BRO-5068).
+
 Only `.claude/commands/` in this repo (`ls .claude/commands/`). The planning suite (`/plan-review`, `/right-problem`, `/plan-tasks`) is committed here; its Codex/Gemini legs fall back to Claude agents when those CLIs/keys are absent.
 
 ## Landing (the owner never merges)
@@ -129,7 +131,7 @@ Do what you can from cloud first: most "local-only" things have a cloud route (G
 Owner 2026-10-11: "Trigger sessions yourself." The board worker takes one card per firing and its queue runs ~100-200 deep, so "queued for the worker" means weeks and is never a finish line. Anything important that comes up while the owner is in the session (a P0/P1, a bug they raised, a fix your work turned up) gets its own session now:
 
 1. File or claim the card first; it carries the handoff and a safe-form `VERIFY:` line.
-2. `create_session` with `source_url: "https://github.com/thomaspryor/Broadwayscore"`, `title: "BRO-N: <short>"`, `tags: ["bro-n"]` and a self-contained prompt: the card id and what done means; claim it with `linear-session.js claim`; make the worktree with `git worktree add`, never `EnterWorktree`; land via `land/<name>`, follow the run, re-run VERIFY on main, close the card; never call `create_session`, `send_later` or `create_trigger`. Several independent cards get several sessions (soft cap ~8).
+2. `create_session` with `source_url: "https://github.com/thomaspryor/Broadwayscore"`, `title: "BRO-N: <short>"`, `tags: ["bro-n"]` and a self-contained prompt: the card id and what done means; claim it with `linear-session.js claim`; make the worktree with `git worktree add`, never `EnterWorktree`; land via `land/<name>`, follow the run, re-run VERIFY on main, close the card; never call `create_session`, `send_later` or `create_trigger`; if `/ship-check`, `/what-else` or `/wrap-up` fails with "Unknown skill", Read `.claude/commands/<name>.md` and follow it by hand (BRO-5068). Several independent cards get several sessions (soft cap ~8).
 3. Each `create_session` can put one approval tap on the owner's phone. Tell them in one line that you started a session for X.
 4. Follow it with `get_session` every 20-30 min, not in a tight loop. `status_bucket` BLOCKED usually means an unanswered permission prompt: `interrupt_session`, then `send_message` the workaround. FAILED means fix or restart it.
 5. **SAFE TO EXIT only after its work is verified**: `get_session` shows COMPLETED or REVIEW_READY and you re-ran its VERIFY on origin/main yourself. With two or more sessions, also check the combined result once the last one lands; per-session checks alone are not enough. Until then: `NOT SAFE TO EXIT — <which session is doing what, and how you will check it>`. OPENWORK enforces this in single-repo sessions; multi-repo sessions follow it by hand.

@@ -494,12 +494,16 @@ test('P2 fallback: with no P0/P1 card eligible, the oldest P2 Todo card is picke
   assert.deepEqual(res.orderedP2.map((i) => i.identifier), ['BRO-40', 'BRO-60']);
 });
 
-test('P2 fallback: P3 and no-priority cards are never picked', () => {
-  const res = pickCloudCard([issue({ identifier: 'BRO-1', priority: 4 }), issue({ identifier: 'BRO-2', priority: 0 }), issue({ identifier: 'BRO-3', priority: undefined })], { nowMs: NOW });
+test('P2 fallback: no-priority cards are never picked; a P3 card only by the P3 tier', () => {
+  const res = pickCloudCard([issue({ identifier: 'BRO-2', priority: 0 }), issue({ identifier: 'BRO-3', priority: undefined })], { nowMs: NOW });
   assert.equal(res.pick, null);
   assert.equal(res.pickTier, null);
   assert.deepEqual(res.ordered, []);
   assert.deepEqual(res.orderedP2, []);
+  assert.deepEqual(res.orderedP3, []);
+  const low = pickCloudCard([issue({ identifier: 'BRO-1', priority: 4 })], { nowMs: NOW });
+  assert.deepEqual(low.orderedP2, []);
+  assert.equal(low.pickTier, 'p3-fallback');
   assert.equal(skipReason(issue({ priority: 4 }), NOW, { tier: 'p2' }), 'not-p2');
   assert.equal(skipReason(issue({ priority: 0 }), NOW, { tier: 'p2' }), 'not-p2');
   assert.equal(skipReason(issue({ priority: 2 }), NOW, { tier: 'p2' }), 'not-p2');
@@ -558,14 +562,16 @@ test('model: same policy as linear-next (P0 and Model: Opus get Opus, the rest S
   assert.equal(pickModel(issue({ priority: 1 }), { nowMs: NOW, readEntries: () => require('./dispatch-ledger.js').readEntries('/nonexistent/dispatch-ledger.jsonl'), env: {} }).model, 'opus');
 });
 
-test('P2 fallback: comments are read for P2 Todo and resumable P2 cards, never P3 or parked P2', () => {
+test('P2 fallback: comments are read for P2 Todo and resumable P2 cards, never parked P2 or no-priority', () => {
   const { needsComments } = require('./cloud-worker-pick.js');
   assert.equal(needsComments(issue({ priority: 2 }), NOW), true);
   assert.equal(needsComments(issue({ priority: 3, description: '## Acceptance criteria\nLooks right.' }), NOW), true);
   assert.equal(needsComments(startedCard({ priority: 3 }), NOW), true);
   assert.equal(needsComments(issue({ priority: 3, state: { name: 'In Review', type: 'started' } }), NOW), false);
   assert.equal(needsComments(issue({ priority: 3, state: { name: 'Backlog', type: 'backlog' } }), NOW), false);
-  assert.equal(needsComments(issue({ priority: 4 }), NOW), false);
+  // P3 Todo is the next fallback tier (see the P3 tests below).
+  assert.equal(needsComments(issue({ priority: 4 }), NOW), true);
+  assert.equal(needsComments(issue({ priority: 0 }), NOW), false);
   assert.equal(needsComments(startedCard({ priority: 0 }), NOW), false);
   // A started P2 card armed only by a comment VERIFY is resumable once comments are read.
   const armed = startedCard({ priority: 3, description: '## Acceptance criteria\nLooks right.',
@@ -579,4 +585,133 @@ test('P2 fallback: a pickable P2 card with a stale START-NOW line is not reporte
   assert.deepEqual(startNowSkipped, {});
   // One the fallback can't pick still says why.
   assert.equal(pickCloudCard([startNowCard({ identifier: 'BRO-71', priority: 3 })], { nowMs: NOW }).startNowSkipped['BRO-71'], 'not-p0-p1');
+});
+
+// P3 fallback: Low (Linear priority 4) Todo cards, one tier below P2, under the
+// same rules, reached only when no P0/P1 and no P2 card is eligible.
+const { TIER_P3, isP3FallbackCandidate, buildPickQueue } = require('./cloud-worker-pick.js');
+
+test('P3 fallback: P0/P1 wins, then P2, then P3', () => {
+  const res = pickCloudCard([
+    issue({ identifier: 'BRO-3', priority: 4 }),
+    issue({ identifier: 'BRO-5', priority: 3 }),
+    issue({ identifier: 'BRO-900', priority: 2 }),
+    issue({ identifier: 'BRO-1', priority: 4 }),
+  ], { nowMs: NOW });
+  assert.equal(TIER_P3, 'p3-fallback');
+  assert.equal(res.pick.identifier, 'BRO-900');
+  assert.equal(res.pickTier, TIER_P0P1);
+  assert.deepEqual(res.orderedP2.map((i) => i.identifier), ['BRO-5']);
+  assert.deepEqual(res.orderedP3.map((i) => i.identifier), ['BRO-1', 'BRO-3']);
+  // P0/P1 and P2 counters keep their meaning: P3 cards are 'not-p0-p1' and absent from skippedP2.
+  assert.equal(res.skipped['not-p0-p1'], 3);
+  assert.deepEqual(res.skippedP2, {});
+  assert.equal(res.eligibleP3, 2);
+  const noUrgent = pickCloudCard([issue({ identifier: 'BRO-3', priority: 4 }), issue({ identifier: 'BRO-5', priority: 3 })], { nowMs: NOW });
+  assert.equal(noUrgent.pick.identifier, 'BRO-5');
+  assert.equal(noUrgent.pickTier, TIER_P2);
+});
+
+test('P3 fallback: with no P0/P1 or P2 card eligible, the oldest P3 Todo card is picked', () => {
+  const res = pickCloudCard([
+    issue({ identifier: 'BRO-900', priority: 1, updatedAt: FRESH }), // recent-activity
+    issue({ identifier: 'BRO-50', priority: 3, description: `${BODY}\n\nDECISION NEEDED: owner picks.` }),
+    issue({ identifier: 'BRO-60', priority: 4 }),
+    issue({ identifier: 'BRO-40', priority: 4 }),
+    issue({ identifier: 'BRO-30', priority: 0 }),
+  ], { nowMs: NOW });
+  assert.equal(res.pick.identifier, 'BRO-40');
+  assert.equal(res.pickTier, TIER_P3);
+  assert.equal(res.eligible, 0);
+  assert.equal(res.eligibleP2, 0);
+  assert.deepEqual(res.orderedP3.map((i) => i.identifier), ['BRO-40', 'BRO-60']);
+});
+
+test('P3 fallback: the same rules apply; owner-decision, parked, started and unfit P3 cards are skipped', () => {
+  const p3 = (over) => issue({ priority: 4, ...over });
+  assert.equal(skipReason(p3(), NOW, { tier: 'p3' }), null);
+  assert.equal(skipReason(p3({ description: `${BODY}\n\nDECISION NEEDED: owner picks the copy.` }), NOW, { tier: 'p3' }), 'blocker-OWNER_DECISION_GATE');
+  assert.equal(skipReason(p3({ description: `NO-DISPATCH: needs the owner first\n${BODY}` }), NOW, { tier: 'p3' }), 'no-dispatch-marker');
+  assert.equal(skipReason(p3({ updatedAt: FRESH }), NOW, { tier: 'p3' }), 'recent-activity');
+  assert.equal(skipReason(p3({ description: '## Acceptance criteria\nLooks right.' }), NOW, { tier: 'p3' }), 'no-safe-verify');
+  assert.equal(skipReason(p3({ state: STARTED_STATE }), NOW, { tier: 'p3' }), 'state-started');
+  assert.equal(skipReason(p3({ title: 'iOS: fix the tab bar' }), NOW, { tier: 'p3' }), 'ios-app-repo');
+  // Tier membership: only priority 4 is P3, and P3 is not P2.
+  assert.equal(skipReason(issue({ priority: 3 }), NOW, { tier: 'p3' }), 'not-p3');
+  assert.equal(skipReason(issue({ priority: 0 }), NOW, { tier: 'p3' }), 'not-p3');
+  assert.equal(skipReason(issue({ priority: 2 }), NOW, { tier: 'p3' }), 'not-p3');
+  assert.equal(skipReason(p3(), NOW, { tier: 'p2' }), 'not-p2');
+  assert.equal(isP3FallbackCandidate(issue({ priority: 3 }), NOW), false);
+  // Todo only: a parked P3 card stays parked, even a stale machine-filed one.
+  const parked = p3({ state: { name: 'Backlog', type: 'backlog' }, description: `PARKED: needs a rule-18 second-opinion before the edit\n\n${BODY}` });
+  assert.equal(skipReason(parked, NOW, { tier: 'p3' }), 'parked-or-backlog');
+  assert.equal(isP3FallbackCandidate(parked, NOW), false);
+  const stale = new Date(NOW - AUTOMATION_PARK_STALE_MS - 60_000).toISOString();
+  const autofix = p3({ state: { name: 'Backlog', type: 'backlog' }, updatedAt: stale, description: `PARKED: Auto-filed by digest-autofix; runAutofix dispatches via linear-next separately in the same pass.\n\n${BODY}` });
+  assert.equal(skipReason(autofix, NOW, { tier: 'p3' }), 'parked-or-backlog');
+  const res = pickCloudCard([p3({ identifier: 'BRO-1', description: `${BODY}\n\nDECISION NEEDED: owner picks.` }), parked, autofix], { nowMs: NOW });
+  assert.equal(res.pick, null);
+  assert.equal(res.skippedP3['blocker-OWNER_DECISION_GATE'], 1);
+  assert.equal(res.skippedP3['parked-or-backlog'], 2);
+  // A P3 Todo card that only a comment VERIFY arms is still a prefetch candidate.
+  assert.equal(isP3FallbackCandidate(p3({ description: '## Acceptance criteria\nLooks right.' }), NOW), true);
+});
+
+test('P3 fallback: START-NOW does not apply (fresh card waits, idle card is ordinary P3, not reported skipped)', () => {
+  assert.equal(skipReason(startNowCard({ priority: 4 }), NOW, { tier: 'p3' }), 'recent-activity');
+  const res = pickCloudCard([
+    startNowCard({ identifier: 'BRO-70', priority: 4, updatedAt: OLD }),
+    issue({ identifier: 'BRO-60', priority: 4 }),
+    issue({ identifier: 'BRO-80', priority: 3 }),
+  ], { nowMs: NOW });
+  assert.equal(res.pick.identifier, 'BRO-80');
+  assert.deepEqual(res.orderedP3.map((i) => i.identifier), ['BRO-60', 'BRO-70']);
+  assert.deepEqual(res.startNowSkipped, {});
+  assert.equal(pickCloudCard([startNowCard({ identifier: 'BRO-71', priority: 4 })], { nowMs: NOW }).startNowSkipped['BRO-71'], 'not-p0-p1');
+});
+
+test('P3 fallback: a refused P3 landing is resumable only with includeP3, ranked after P0/P1 and P2', () => {
+  const p3 = startedCard({ priority: 4 });
+  assert.equal(findResumeCard([p3], [landRef()], { nowMs: NOW, includeP2: true }), null);
+  assert.equal(findResumeCard([p3], [landRef()], { nowMs: NOW, includeP3: true }).issue.identifier, 'BRO-100');
+  // includeP3 alone does not admit P2.
+  assert.equal(findResumeCard([startedCard({ priority: 3 })], [landRef()], { nowMs: NOW, includeP3: true }), null);
+  assert.equal(resumableCardsByNumber([startedCard({ priority: 0 })], { includeP2: true, includeP3: true }).size, 0);
+  const all = findResumeCandidates([
+    p3, startedCard({ identifier: 'BRO-200', priority: 3 }), startedCard({ identifier: 'BRO-300', priority: 1 }),
+  ], [landRef(), landRef({ ref: 'land/bro-200-x' }), landRef({ ref: 'land/bro-300-x' })], { nowMs: NOW, includeP2: true, includeP3: true });
+  assert.deepEqual(all.map((c) => c.issue.identifier), ['BRO-300', 'BRO-200', 'BRO-100']);
+});
+
+test('P3 fallback: buildPickQueue orders P0/P1, P2, P3 (resumes first in each tier) and tags each entry', () => {
+  const r = (identifier, priority) => ({ issue: issue({ identifier, priority }), ref: `land/${identifier.toLowerCase()}` });
+  const q = buildPickQueue(
+    [r('BRO-14', 4), r('BRO-13', 3), r('BRO-11', 1), r('BRO-19', 0)],
+    { ordered: [issue({ identifier: 'BRO-21', priority: 2 })], orderedP2: [issue({ identifier: 'BRO-22', priority: 3 })], orderedP3: [issue({ identifier: 'BRO-23', priority: 4 })] },
+  );
+  assert.deepEqual(q.map((e) => [e.issue.identifier, e.tier, !!e.resume]), [
+    ['BRO-11', TIER_P0P1, true], ['BRO-21', TIER_P0P1, false],
+    ['BRO-13', TIER_P2, true], ['BRO-22', TIER_P2, false],
+    ['BRO-14', TIER_P3, true], ['BRO-23', TIER_P3, false],
+  ]);
+  // A P3 resume is never in the P0/P1 block, so the history-check budget can't wave it through.
+  assert.equal(q.filter((e) => mayTakeUnchecked(e)).some((e) => Number(e.issue.priority) === 4), false);
+  assert.equal(mayTakeUnchecked({ tier: TIER_P3 }), false);
+  assert.deepEqual(buildPickQueue([], {}), []);
+});
+
+test('P3 fallback: comments are read for P3 Todo and resumable P3 cards, never parked or In Review P3', () => {
+  const { needsComments } = require('./cloud-worker-pick.js');
+  assert.equal(needsComments(issue({ priority: 4, description: '## Acceptance criteria\nLooks right.' }), NOW), true);
+  assert.equal(needsComments(startedCard({ priority: 4 }), NOW), true);
+  assert.equal(needsComments(issue({ priority: 4, state: { name: 'In Review', type: 'started' } }), NOW), false);
+  assert.equal(needsComments(issue({ priority: 4, state: { name: 'Backlog', type: 'backlog' } }), NOW), false);
+  assert.equal(needsComments(issue({ priority: undefined }), NOW), false);
+});
+
+test('P3 fallback: model by pickLinearModel (Sonnet, Model: Opus honored, retry escalates)', () => {
+  const opts = { nowMs: NOW, readEntries: () => [], env: {} };
+  assert.equal(pickModel(issue({ priority: 4 }), opts).model, 'sonnet');
+  assert.equal(pickModel(issue({ priority: 4, description: `${BODY}\n\nModel: Opus` }), opts).model, 'opus');
+  assert.equal(pickModel(issue({ priority: 4, comments: { nodes: [report('paused', 'Ran out of time.', 60_000)] } }), opts).model, 'opus');
 });

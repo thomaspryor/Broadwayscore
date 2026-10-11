@@ -1,6 +1,6 @@
 /**
- * cloud-worker-pick — choose the one P0/P1 card (or, when none is eligible, P2
- * card) a cloud worker session takes on a firing (BRO-4535).
+ * cloud-worker-pick — choose the one P0/P1 card (or, when none is eligible, a
+ * P2 card, then a P3 card) a cloud worker session takes on a firing (BRO-4535).
  *
  * WHY: every dispatcher that works the board (dispatch-watchdog.js,
  * linear-drain-parked.js, bsc-next.js) runs on the owner's Mac. When the Mac
@@ -31,7 +31,14 @@
  *     START-NOW does not apply to P2 (linear-issue-create refuses to file a
  *     START-NOW P2 card), so a P2 card always waits out IDLE_MS. A refused
  *     P2 landing is resumed too (findResumeCandidates includeP2), after every
- *     P0/P1 entry. P3 and no-priority cards are never picked.
+ *     P0/P1 entry.
+ *   - P3 FALLBACK: Low (Linear priority 4) Todo cards, one tier further down,
+ *     under the same rules as P2 (Todo only, IDLE_MS, START-NOW ignored,
+ *     every guard), reached only after every P0/P1 and P2 entry (orderedP3;
+ *     the CLI queues P3 resumes and P3 cards last). The owner wants every card
+ *     handled, not only urgent ones (2026-10-11). The Codex runner (--list=N)
+ *     reads the same queue, so it takes Low cards too, last. No-priority
+ *     (Linear 0) cards are never picked: nobody has triaged them.
  *   - Todo (unstarted) only, plus parked P0/P1 session cards the Mac drain
  *     would also unpark (isSessionParkedDrainable). Every Mac dispatch moves
  *     its card to a started state (linear-next.js), so the state filter alone
@@ -116,6 +123,11 @@ const PRIORITIES = new Set([1, 2]);
 const P2_PRIORITY = 3;
 const TIER_P0P1 = 'p0p1';
 const TIER_P2 = 'p2-fallback';
+// Linear priority 4 = Low = P3: the last fallback tier, after P2.
+const P3_PRIORITY = 4;
+const TIER_P3 = 'p3-fallback';
+// The fallback tiers skipReason accepts as `{ tier }`: Linear priority by tier.
+const FALLBACK_TIER_PRIORITY = { p2: P2_PRIORITY, p3: P3_PRIORITY };
 const STRANDED_MS = 90 * 60 * 1000;
 const RESUME_WINDOW_MS = 7 * 24 * HOUR_MS;
 const MAX_LAND_RUNS = 6;
@@ -221,21 +233,23 @@ function startNowUnpickableReason({ title, description, priority, mode }) {
  * Why this card can't be picked in a tier, or null. The default tier is
  * P0/P1 ('not-p0-p1' for anything else). `{ tier: 'p2' }` checks the P2
  * fallback: priority 3 only ('not-p2' otherwise), Todo only (no parked
- * paths), every other rule the same.
+ * paths), every other rule the same. `{ tier: 'p3' }` is the same for
+ * priority 4 ('not-p3').
  */
 function skipReason(issue, nowMs, { tier = 'p0p1' } = {}) {
   const drain = require('./linear-drain-parked.js');
   if (!issue || !issue.identifier) return 'malformed';
-  const p2 = tier === 'p2';
-  if (p2 ? Number(issue.priority) !== P2_PRIORITY : !PRIORITIES.has(Number(issue.priority))) return p2 ? 'not-p2' : 'not-p0-p1';
+  const fallbackPriority = FALLBACK_TIER_PRIORITY[tier];
+  const fallback = fallbackPriority != null;
+  if (fallback ? Number(issue.priority) !== fallbackPriority : !PRIORITIES.has(Number(issue.priority))) return fallback ? `not-${tier}` : 'not-p0-p1';
   const type = issue.state && issue.state.type;
-  const parkedDrainable = !p2 && (drain.isSessionParkedDrainable(issue) || isStaleAutomationParked(issue, nowMs));
+  const parkedDrainable = !fallback && (drain.isSessionParkedDrainable(issue) || isStaleAutomationParked(issue, nowMs));
   if (type !== 'unstarted' && !parkedDrainable) return type === 'backlog' ? 'parked-or-backlog' : `state-${type}`;
   const unfit = headlessUnfitReason(issue, { allowParkedSentinel: parkedDrainable });
   if (unfit) return unfit;
   const updatedMs = Date.parse(issue.updatedAt);
   if (!Number.isFinite(updatedMs)) return 'no-updatedAt';
-  if (nowMs - updatedMs < IDLE_MS && (p2 || !isStartNow(issue, nowMs))) return 'recent-activity';
+  if (nowMs - updatedMs < IDLE_MS && (fallback || !isStartNow(issue, nowMs))) return 'recent-activity';
   return null;
 }
 
@@ -245,28 +259,37 @@ function isP2FallbackCandidate(issue, nowMs) {
   return !/^(malformed|not-p2|parked-or-backlog|state-.*)$/.test(r || '');
 }
 
+/** True for a P3 (Low) card that is a fallback candidate at all (Todo). */
+function isP3FallbackCandidate(issue, nowMs) {
+  const r = skipReason(issue, nowMs, { tier: 'p3' });
+  return !/^(malformed|not-p3|parked-or-backlog|state-.*)$/.test(r || '');
+}
+
 /**
  * Cards the CLI must read comments for before picking: every P0/P1 card the
  * state rules don't rule out (parked and started/resume ones included), every
- * P2 Todo card, and every P2 card a land ref could resume. Comments carry a
+ * P2 and P3 Todo card, and every P2/P3 card a land ref could resume. Comments carry a
  * VERIFY that arms or corrects the card (BRO-4642), pause history, the Codex
  * bounce marker and the retry signal pickModel reads.
  */
 function needsComments(issue, nowMs) {
   if (!/^(malformed|not-p0-p1)$/.test(skipReason(issue, nowMs) || '')) return true;
-  if (isP2FallbackCandidate(issue, nowMs)) return true;
+  if (isP2FallbackCandidate(issue, nowMs) || isP3FallbackCandidate(issue, nowMs)) return true;
   const { issueNumber } = require('./linear-drain-parked.js');
-  return !!(issue && issue.identifier) && resumableCardsByNumber([issue], { includeP2: true }).has(issueNumber(issue.identifier));
+  return !!(issue && issue.identifier)
+    && resumableCardsByNumber([issue], { includeP2: true, includeP3: true }).has(issueNumber(issue.identifier));
 }
 
 /**
  * @param {Array<object>} issues - open Linear issues ({identifier, title, description, priority, state, updatedAt})
  * @param {{nowMs:number}} opts
- * @returns {{ pick: object|null, pickTier: ('p0p1'|'p2-fallback'|null), ordered: object[], eligible: number,
+ * @returns {{ pick: object|null, pickTier: ('p0p1'|'p2-fallback'|'p3-fallback'|null), ordered: object[], eligible: number,
  *   skipped: Record<string, number>, orderedP2: object[], eligibleP2: number, skippedP2: Record<string, number>,
+ *   orderedP3: object[], eligibleP3: number, skippedP3: Record<string, number>,
  *   startNowSkipped: Record<string, string> }}
- *   `ordered`/`eligible`/`skipped` are the P0/P1 tier, as before (a P2 card still counts as
- *   'not-p0-p1' there); `orderedP2`/`eligibleP2`/`skippedP2` are the P2 fallback tier.
+ *   `ordered`/`eligible`/`skipped` are the P0/P1 tier, as before (a P2 or P3 card still counts as
+ *   'not-p0-p1' there); `orderedP2`/`eligibleP2`/`skippedP2` are the P2 fallback tier and
+ *   `orderedP3`/`eligibleP3`/`skippedP3` the P3 (Low) fallback tier.
  */
 function pickCloudCard(issues, { nowMs }) {
   const { priorityRank } = require('./linear-dispatch.js');
@@ -275,6 +298,8 @@ function pickCloudCard(issues, { nowMs }) {
   const eligible = [];
   const skippedP2 = {};
   const eligibleP2 = [];
+  const skippedP3 = {};
+  const eligibleP3 = [];
   // START-NOW Todo cards that won't run (no safe VERIFY, a blocker, too new or
   // too old), by id: a filer told the owner they were queued, so say why not.
   const startNowSkipped = {};
@@ -282,14 +307,18 @@ function pickCloudCard(issues, { nowMs }) {
     const reason = skipReason(iss, nowMs);
     if (reason) skipped[reason] = (skipped[reason] || 0) + 1;
     else eligible.push(iss);
-    let p2Eligible = false;
+    let fallbackEligible = false;
     if (reason === 'not-p0-p1' && Number(iss.priority) === P2_PRIORITY) {
       const r2 = skipReason(iss, nowMs, { tier: 'p2' });
       if (r2) skippedP2[r2] = (skippedP2[r2] || 0) + 1;
-      else { eligibleP2.push(iss); p2Eligible = true; }
+      else { eligibleP2.push(iss); fallbackEligible = true; }
+    } else if (reason === 'not-p0-p1' && Number(iss.priority) === P3_PRIORITY) {
+      const r3 = skipReason(iss, nowMs, { tier: 'p3' });
+      if (r3) skippedP3[r3] = (skippedP3[r3] || 0) + 1;
+      else { eligibleP3.push(iss); fallbackEligible = true; }
     }
-    // A P2 card the fallback can pick is not "skipped", though its START-NOW line is ignored.
-    if (hasStartNowLine(iss) && iss.state && iss.state.type === 'unstarted' && !p2Eligible && (reason || !isStartNow(iss, nowMs))) {
+    // A P2/P3 card the fallback can pick is not "skipped", though its START-NOW line is ignored.
+    if (hasStartNowLine(iss) && iss.state && iss.state.type === 'unstarted' && !fallbackEligible && (reason || !isStartNow(iss, nowMs))) {
       startNowSkipped[iss.identifier] = reason || 'start-now-outside-age-window';
     }
   }
@@ -299,14 +328,41 @@ function pickCloudCard(issues, { nowMs }) {
   const startTier = (iss) => (isStartNow(iss, nowMs) ? 0 : 1);
   eligible.sort((a, b) => (startTier(a) - startTier(b)) || (priorityRank(a) - priorityRank(b)) || (machineTier(a) - machineTier(b))
     || (issueNumber(a.identifier) - issueNumber(b.identifier)));
-  // P2 is Todo only and START-NOW doesn't apply to it: oldest first.
+  // P2 and P3 are Todo only and START-NOW doesn't apply to them: oldest first.
   eligibleP2.sort((a, b) => issueNumber(a.identifier) - issueNumber(b.identifier));
-  const pick = eligible[0] || eligibleP2[0] || null;
-  const pickTier = eligible.length ? TIER_P0P1 : (eligibleP2.length ? TIER_P2 : null);
+  eligibleP3.sort((a, b) => issueNumber(a.identifier) - issueNumber(b.identifier));
+  const pick = eligible[0] || eligibleP2[0] || eligibleP3[0] || null;
+  const pickTier = eligible.length ? TIER_P0P1 : (eligibleP2.length ? TIER_P2 : (eligibleP3.length ? TIER_P3 : null));
   return {
     pick, pickTier, ordered: eligible, eligible: eligible.length, skipped, startNowSkipped,
     orderedP2: eligibleP2, eligibleP2: eligibleP2.length, skippedP2,
+    orderedP3: eligibleP3, eligibleP3: eligibleP3.length, skippedP3,
   };
+}
+
+/**
+ * PURE. The CLI's pick queue, in the order it is worked: P0/P1 resumes, P0/P1
+ * cards, P2 resumes, P2 cards, P3 resumes, P3 cards, each entry tagged with its
+ * tier. Resumes are split by their own priority, so a P2/P3 landing never rides
+ * in the P0/P1 block (where mayTakeUnchecked would skip its history check); a
+ * resume of any other priority is dropped.
+ * @param {Array<{issue: object}>} resumes - findResumeCandidates output
+ * @param {{ordered: object[], orderedP2: object[], orderedP3: object[]}} tiers - pickCloudCard output
+ * @returns {Array<{issue: object, resume: object|null, tier: string}>}
+ */
+function buildPickQueue(resumes, { ordered = [], orderedP2 = [], orderedP3 = [] } = {}) {
+  const rs = Array.isArray(resumes) ? resumes : [];
+  const resumesAt = (match, tier) => rs.filter((r) => r && r.issue && match(Number(r.issue.priority)))
+    .map((r) => ({ issue: r.issue, resume: r, tier }));
+  const fresh = (list, tier) => list.map((iss) => ({ issue: iss, resume: null, tier }));
+  return [
+    ...resumesAt((p) => PRIORITIES.has(p), TIER_P0P1),
+    ...fresh(ordered, TIER_P0P1),
+    ...resumesAt((p) => p === P2_PRIORITY, TIER_P2),
+    ...fresh(orderedP2, TIER_P2),
+    ...resumesAt((p) => p === P3_PRIORITY, TIER_P3),
+    ...fresh(orderedP3, TIER_P3),
+  ];
 }
 
 /**
@@ -347,7 +403,7 @@ function pickModel(issue, { nowMs = Date.now(), readEntries, env = process.env }
   return pickLinearModel({ explicitFlag: null, issue, taskId, readEntries: read, nowMs, env });
 }
 
-/** Past the history-check budget, only a P0/P1 entry may be taken unchecked; P2 entries are always checked. */
+/** Past the history-check budget, only a P0/P1 entry may be taken unchecked; P2/P3 entries are always checked. */
 function mayTakeUnchecked(entry) {
   return !!entry && entry.tier === TIER_P0P1;
 }
@@ -399,17 +455,17 @@ function landRefCardNumber(ref) {
 }
 
 /**
- * Open P0/P1 cards (and P2 with includeP2: the fallback tier's landings, which
- * the Codex runner leaves In Progress for this resume) someone holds (started,
+ * Open P0/P1 cards (and P2 with includeP2, P3 with includeP3: the fallback
+ * tiers' landings, which the Codex runner leaves In Progress for this resume) someone holds (started,
  * not In Review): the only ones a land ref can resume. In Review already has an owner, the stuck-card closer, which
  * runs the card's check and closes it or bounces it back to Todo.
  */
-function resumableCardsByNumber(issues, { includeP2 = false } = {}) {
+function resumableCardsByNumber(issues, { includeP2 = false, includeP3 = false } = {}) {
   const { issueNumber } = require('./linear-drain-parked.js');
   const byNum = new Map();
   for (const iss of Array.isArray(issues) ? issues : []) {
     const p = Number(iss && iss.priority);
-    if (!iss || !iss.identifier || !(PRIORITIES.has(p) || (includeP2 && p === P2_PRIORITY))) continue;
+    if (!iss || !iss.identifier || !(PRIORITIES.has(p) || (includeP2 && p === P2_PRIORITY) || (includeP3 && p === P3_PRIORITY))) continue;
     if (!iss.state || iss.state.type !== 'started' || /review/i.test(iss.state.name || '')) continue;
     const n = issueNumber(iss.identifier);
     if (Number.isFinite(n)) byNum.set(n, iss);
@@ -422,14 +478,14 @@ function resumableCardsByNumber(issues, { includeP2 = false } = {}) {
  * @param {Array<{ref:string, sha:string, lastRun:?{status:string, conclusion:?string, headSha:string, updatedAt:string, id:number, url?:string, attempts?:number}}>} landRefs
  *   remote land/ refs with the latest Land run on each (null when none ran);
  *   attempts is how many Land runs the ref has had
- * @param {{nowMs:number, landDispatchInFlight?:boolean, includeP2?:boolean}} opts
+ * @param {{nowMs:number, landDispatchInFlight?:boolean, includeP2?:boolean, includeP3?:boolean}} opts
  * @returns {Array<{ issue: object, ref: string, sha: string, lastRun: object, kind: 'refused'|'evicted' }>} best first
  */
-function findResumeCandidates(issues, landRefs, { nowMs, landDispatchInFlight = false, includeP2 = false }) {
+function findResumeCandidates(issues, landRefs, { nowMs, landDispatchInFlight = false, includeP2 = false, includeP3 = false }) {
   if (landDispatchInFlight) return [];
   const { priorityRank } = require('./linear-dispatch.js');
   const { issueNumber } = require('./linear-drain-parked.js');
-  const cards = resumableCardsByNumber(issues, { includeP2 });
+  const cards = resumableCardsByNumber(issues, { includeP2, includeP3 });
   const refsByCard = new Map();
   for (const r of Array.isArray(landRefs) ? landRefs : []) {
     const n = landRefCardNumber(r && r.ref);
@@ -469,6 +525,6 @@ function findResumeCard(issues, landRefs, opts) {
 module.exports = {
   IDLE_MS, STRANDED_MS, RESUME_WINDOW_MS, MAX_LAND_RUNS, RECENT_PAUSE_MS, AWAITING_OWNER_MAX_MS,
   AUTOMATION_PARK_STALE_MS, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS, IOS_APP_CARD_RE, isStaleAutomationParked, isStartNow, hasStartNowLine, startNowUnpickableReason, skipReason, pickCloudCard, pausedHistorySkipReason, landRefCardNumber, resumableCardsByNumber,
-  P2_PRIORITY, TIER_P0P1, TIER_P2, isP2FallbackCandidate, needsComments, pickModel, cloudPriorAttempts, mayTakeUnchecked,
+  P2_PRIORITY, TIER_P0P1, TIER_P2, isP2FallbackCandidate, P3_PRIORITY, TIER_P3, isP3FallbackCandidate, buildPickQueue, needsComments, pickModel, cloudPriorAttempts, mayTakeUnchecked,
   findResumeCandidates, findResumeCard,
 };

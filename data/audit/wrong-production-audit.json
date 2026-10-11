@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-11T20:12:22.786Z",
+  "timestamp": "2026-10-11T20:48:33.143Z",
   "stats": {
     "totalReviews": 55842,
-    "alreadyFlagged": 20793,
-    "dateGuardCatches": 261,
-    "directorMismatch": 1733,
-    "tvFilmSignals": 1600,
-    "londonSignals": 2187,
+    "alreadyFlagged": 20812,
+    "dateGuardCatches": 260,
+    "directorMismatch": 1734,
+    "tvFilmSignals": 1602,
+    "londonSignals": 2194,
     "offBroadwaySignals": 506,
     "yearMismatch": 135,
-    "noPublishDate": 5381
+    "noPublishDate": 5350
   },
   "findings": [
     {
@@ -8769,6 +8769,20 @@
       "score": null,
       "publishDate": "2021-07-23",
       "url": "https://sierz.co.uk/reviews/constellations-vaudeville-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael longhurst\" from constellations-2015"
+        }
+      ]
+    },
+    {
+      "showId": "constellations-west-end-2021",
+      "file": "standard--nick-curtis.json",
+      "score": 87,
+      "publishDate": "July 2nd, 2021",
+      "url": "https://www.standard.co.uk/culture/theatre/constellations-review-west-end-sheila-atim-b943761.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -18672,6 +18686,20 @@
     },
     {
       "showId": "idiots-assemble-spitting-image-the-musical-west-end-2023",
+      "file": "firstnightmagazine--unknown.json",
+      "score": null,
+      "publishDate": "2023-06-15",
+      "url": "https://firstnightmagazine.com/2023/06/15/review-of-spitting-image-idiots-assemble/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "idiots-assemble-spitting-image-the-musical-west-end-2023",
       "file": "lost-in-theatreland--amy-rye.json",
       "score": 62,
       "publishDate": "June 15th, 2023",
@@ -20500,6 +20528,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "musicomh--sam-smith.json",
+      "score": 79,
       "publishDate": "2026-10-10",
       "url": "https://www.musicomh.com/classical/into-the-woods-review-stephen-sondheimin-noel-coward-theatre",
       "findings": [
@@ -44594,6 +44623,25 @@
     },
     {
       "showId": "the-upstart-crow-west-end-2020",
+      "file": "daily-mail--robert-gore-langton.json",
+      "score": null,
+      "publishDate": "2020-02-22",
+      "url": "https://www.dailymail.com/home/event/article-8024547/The-Upstart-Crow-review-relentless.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-upstart-crow-west-end-2020",
       "file": "guardian--mark-lawson.json",
       "score": 91,
       "publishDate": "2020-02-17",
@@ -45322,20 +45370,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1547d before show (2022-03-31 vs 2026-06-25)"
-        }
-      ]
-    },
-    {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 82,
-      "publishDate": "2023-02-07",
-      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
         }
       ]
     },
@@ -57136,6 +57170,20 @@
     },
     {
       "showId": "east-is-east-west-end-2021",
+      "file": "partially-obstructed-view--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://partially-obstructed-view.blogspot.com/2021/10/theatre-review-east-is-east.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "east-is-east-west-end-2021",
       "file": "partially-obstructed-view--view-my-complete.json",
       "score": 79,
       "publishDate": null,
@@ -59868,6 +59916,34 @@
     },
     {
       "showId": "groundhog-day-west-end-2023",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": 100,
+      "publishDate": "June 8th, 2023",
+      "url": "https://www.allthatdazzles.co.uk/post/review-groundhog-day-old-vic-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "groundhog-day-west-end-2023",
+      "file": "standard--nick-curtis.json",
+      "score": 90,
+      "publishDate": "2023-06-09",
+      "url": "https://www.standard.co.uk/culture/theatre/groundhog-day-old-vic-theatre-review-tim-minchin-danny-rubin-b1086679.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "groundhog-day-west-end-2023",
       "file": "telegraph--dominic-cavendish.json",
       "score": 97,
       "publishDate": "2023-06-09",
@@ -59886,6 +59962,20 @@
       "score": 71,
       "publishDate": "2023-06-09",
       "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "groundhog-day-west-end-2023",
+      "file": "west-end-best-friend--callum-wallace.json",
+      "score": 88,
+      "publishDate": "June 9th, 2023",
+      "url": "https://www.westendbestfriend.co.uk/news/review-groundhog-day-old-vic-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -64580,6 +64670,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "leopoldstadt-west-end-2020",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": null,
+      "publishDate": "February 12th, 2020",
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/leopoldstadt-west-end-tom-stoppard-scarborough_50920.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -82718,6 +82822,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "we-will-rock-you-west-end-2023",
+      "file": "whatsonstage--unknown.json",
+      "publishDate": "June 8th, 2023",
+      "url": "https://www.whatsonstage.com/news/we-will-rock-you-review-its-already-defied-critics-so-does-anything-here-really-matter_1306755/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },

@@ -770,20 +770,10 @@ if os.environ.get('INFLIGHT_GATE_DISABLE', '0') != '1':
         pass  # fail-open — never let this gate crash the rest of the script
 
 # ─── Open-work gate (OPENWORK, BRO-5040, 2026-10-11) ────────────────────────
-# Owner (2026-10-11, screenshot of a BRO-5007 session): sessions end on SAFE
-# TO EXIT after "I queued it for the automatic worker", but the board worker
-# takes one card per firing and its queue ran ~100-200 deep, so the work
-# waited weeks. Owner: "Trigger sessions yourself", and SAFE TO EXIT only when
-# all the work discussed is done. Two signals, both on a closing SAFE TO EXIT:
-#   - a session this one started (create_session) that no later get_session
-#     shows finished (status_bucket COMPLETED or REVIEW_READY) and that was
-#     not archived. A child does not die with this session (that is INFLIGHT's
-#     concern), but its work is not done until its result is checked. A
-#     FAILED or BLOCKED child is unfinished work, not a pass.
-#   - the closing message hands work to the worker queue ("the automatic /
-#     cloud / board worker", "the worker will pick it up", "queued it",
-#     START-NOW). A card that can honestly wait weeks passes with
-#     BACKLOG-OK: <why it can wait>.
+# Owner: SAFE TO EXIT only when all discussed work is done. Blocks it while a
+# session started here (create_session) was not seen COMPLETED/REVIEW_READY via
+# get_session (or archived), or when the closing message hands work to the
+# board worker, whose queue is weeks deep. Escape: BACKLOG-OK: <why it can wait>.
 # Kill switch: OPENWORK_GATE_DISABLE=1. Bypass: NO-VERIFY: <reason>. Fail-open.
 # Hand-off phrasing only: naming the worker ("fixed the cloud worker's
 # picker") must not trip it (code-review, BRO-5040).
@@ -1211,6 +1201,26 @@ CHAIN_STRONG_REVIEWS = ('ship-check', 'code-review')
 CHAIN_REVIEW_SKILLS = CHAIN_STRONG_REVIEWS + ('second-opinion',)
 CHAIN_BIG_SESSION_EDITS = 15   # Mac BIG_SESSION_EDITS
 CHAIN_FIXUP_BUDGET = 8   # edits right after a review are its fixups (Mac FIXUP_BUDGET)
+# BRO-5068: started sessions sometimes lack .claude/commands ("Unknown skill"). A failed
+# Skill call is not a run; reading that command's file after the failure is (by hand).
+CHAIN_FALLBACK_FILES = {
+    'ship-check': ('.claude/commands/ship-check.md', '.agents/skills/ship-check/SKILL.md'),
+    'second-opinion': ('.claude/commands/second-opinion.md', '.agents/skills/second-opinion/SKILL.md'),
+    'what-else': ('.claude/commands/what-else.md',),
+    'wrap-up': ('.claude/commands/wrap-up.md',),
+}
+# A bypass whose only reason is "the command did not load" is refused (fallback exists).
+_CHAIN_NOT_LOADED_RE = re.compile(
+    r'(?:skill|command|/?(?:ship-check|what-else|wrap-up|second-opinion))[^\n]{0,40}?'
+    r'(?:not\s+(?:loaded|available|registered)|n\'?t\s+(?:loaded|available)|did\s*n[o\']?t\s+load'
+    r'|failed\s+to\s+load|unavailable|absent)'
+    r'|unknown\s+skill|no\s+such\s+(?:skill|command)', re.IGNORECASE)
+
+def _skill_ran(inp, tid):
+    """Normalized skill name of a Skill call that really ran, else None."""
+    if tid in tool_error_ids or 'Unknown skill' in (tool_results_by_id.get(tid, '') or '')[:300]:
+        return None
+    return (inp.get('skill') or '').split(':')[-1] or None
 
 def _chain_result():
     stripped = re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL)
@@ -1225,6 +1235,7 @@ def _chain_result():
                 and (any(d in fp for d in CHAIN_TRIGGER_DIRS)
                      or fp.startswith(tuple(d.lstrip('/') for d in CHAIN_TRIGGER_DIRS))))
     edits, reviews, what_else, wrap_up, humans, bash_cmds = [], [], [], [], [], []
+    failed_skills = set()
     for i, (kind, payload) in enumerate(events):
         if kind == 'user_human':
             humans.append(i)
@@ -1246,9 +1257,26 @@ def _chain_result():
                 edits.append((i, os.path.basename(fp)))
         elif name == 'Bash' and _tid not in tool_refused_ids:
             bash_cmds.append((i, inp.get('command', '') or ''))
+        if name == 'Skill' and _skill_ran(inp, _tid) is None:
+            failed_skills.add((inp.get('skill') or '').split(':')[-1])
+            continue
+        if name in ('Read', 'Bash') and failed_skills and _tid not in tool_error_ids:
+            # By-hand fallback: reading a failed command's own file runs it.
+            target = inp.get('file_path', '') if name == 'Read' else ''
+            if name == 'Bash':
+                m = re.match(r'\s*(?:cd\s+\S+\s*&&\s*)?(?:cat|sed\s+-n\s+\S+|head(?:\s+-n?\s*\d+)?|less)\s+(\S+)\s*$', inp.get('command', '') or '')
+                target = m.group(1).strip('\'"') if m else ''
+            for sk in list(failed_skills):
+                if target and target.endswith(CHAIN_FALLBACK_FILES.get(sk, ())):
+                    if sk in CHAIN_REVIEW_SKILLS:
+                        reviews.append((i, sk))
+                    elif sk == 'what-else':
+                        what_else.append(i)
+                    elif sk == 'wrap-up':
+                        wrap_up.append(i)
         if name == 'Skill':
             # Namespaced skills ("plugin:ship-check") normalize like typed commands.
-            sk = (inp.get('skill') or '').split(':')[-1]
+            sk = _skill_ran(inp, _tid)
             if sk in CHAIN_REVIEW_SKILLS:
                 reviews.append((i, sk))
             elif sk == 'what-else':
@@ -1277,15 +1305,17 @@ def _chain_result():
         fixups = [e for e in after if next_human is None or e[0] < next_human]
         if len(fixups) == len(after) and len(after) <= CHAIN_FIXUP_BUDGET:
             after = []
-    if after and not re.search(r'^\s*NO-SHIP-CHECK:\s*\S.{9,}', turn_text, re.M):
+    def bypassed(token):
+        return any(not _CHAIN_NOT_LOADED_RE.search(m.group(1))
+                   for m in re.finditer(r'^\s*' + token + r':\s*(\S.{9,})', turn_text, re.M))
+    if after and not bypassed('NO-SHIP-CHECK'):
         missing.append('review-strong' if big else 'review')
     # /what-else and /wrap-up: once for this piece of work (since the owner's
     # message that started the latest edits). Only real invocations count.
     work_start = max((h for h in humans if h < edits[-1][0]), default=-1)
     for step, seen in (('what-else', what_else), ('wrap-up', wrap_up)):
         token = 'NO-' + step.upper()
-        if not any(w > work_start for w in seen) \
-                and not re.search(r'^\s*' + token + r':\s*\S.{9,}', turn_text, re.M):
+        if not any(w > work_start for w in seen) and not bypassed(token):
             missing.append(step)
     # One combined result: the Stop hook blocks each code once per chain, so
     # separate codes would let the second missing step through.
@@ -1796,7 +1826,7 @@ for i in range(scan_start, len(events)):
             if any(p in cmd for p in SHIPCHECK_BASH_PATTERNS):
                 shipcheck_verified = True
         elif name == 'Skill':
-            if (inp.get('skill') or '') == 'ship-check':
+            if _skill_ran(inp, tid) == 'ship-check':
                 shipcheck_verified = True
         elif name in ('Agent', 'Task'):
             desc = (inp.get('description') or '').lower()
@@ -2015,7 +2045,7 @@ fi
 
 if [[ "$result" == UNSHIPCHECKED:* ]]; then
   fname="${result#UNSHIPCHECKED:}"
-  echo "🛑 BLOCKED: edit to \`${fname}\` (scripts/lib/ or .github/workflows/) without ship-check. Satisfy via /ship-check, codex exec, GPT-4o curl, or Agent with 'review'/'audit' in description. Bypass: NO-VERIFY: <why this can't break anything>." >&2
+  echo "🛑 BLOCKED: edit to \`${fname}\` (scripts/lib/ or .github/workflows/) without ship-check. Satisfy via /ship-check, codex exec, GPT-4o curl, or Agent with 'review'/'audit' in description (if /ship-check fails with Unknown skill, Read .claude/commands/ship-check.md and run its reviewer Agents). Bypass: NO-VERIFY: <why this can't break anything>." >&2
   exit 2
 fi
 
@@ -2035,7 +2065,7 @@ if [[ "$result" == NOCHAIN:* ]]; then
       bypass="${bypass:+$bypass / }NO-$(echo "$s" | tr 'a-z' 'A-Z'): <reason>" ;;
     esac
   done
-  echo "🛑 BLOCKED: SAFE TO EXIT after code edits (latest: \`${fname}\`), but the finish chain is incomplete. Still to run, as real skill calls (an Agent \"review\", a codex call or doing the steps by hand does not count): ${todo}. Fix what they find, then close. Step truly n/a: ${bypass}." >&2
+  echo "🛑 BLOCKED: SAFE TO EXIT after code edits (latest: \`${fname}\`), but the finish chain is incomplete. Still to run, as real skill calls (an Agent \"review\", a codex call or doing the steps by hand does not count): ${todo}. Fix what they find, then close. If a Skill call fails with Unknown skill (the project's commands did not load), Read .claude/commands/<name>.md and follow it fully by hand: that counts, and \"not loaded\" is not a bypass reason. Step truly n/a: ${bypass}." >&2
   exit 2
 fi
 
