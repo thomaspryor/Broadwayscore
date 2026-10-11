@@ -71,6 +71,7 @@ const URL_RE = /\bhttps?:\/\/\S+/gi;
 const CITATION_FIELDS = ['capitalizationSource', 'recoupedSource'];
 const LOSS_DESIGNATIONS = ['Flop', 'Fizzle'];
 const { VALID_DESIGNATION_BASES, DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS, isPrematureSilenceLabel } = require('./commercial-designations');
+const { COST_BASES } = require('./cost-split');
 
 /** The research wording in `text` outside any URL, or null. */
 function internalWordingIn(text) {
@@ -274,6 +275,14 @@ function commercialRecordErrors(showId, show, ctx = {}) {
     }
   }
 
+  // weeklyRunningCostBasis (BRO-5093): a known value, on a cited cost.
+  if (show.weeklyRunningCostBasis != null) {
+    if (!COST_BASES.includes(show.weeklyRunningCostBasis)) {
+      out.push(`commercial.json: "${showId}" has invalid weeklyRunningCostBasis "${show.weeklyRunningCostBasis}". Valid values: ${COST_BASES.join(', ')}`);
+    } else if (!show.weeklyRunningCost || !show.weeklyRunningCostSource) {
+      out.push(`commercial.json: "${showId}" has weeklyRunningCostBasis but no cited weeklyRunningCost (the basis is read from the source quote)`);
+    }
+  }
   // Validate costMethodology
   if (show.costMethodology && !VALID_COST_METHODOLOGIES.includes(show.costMethodology)) {
     out.push(`commercial.json: "${showId}" has invalid costMethodology "${show.costMethodology}". Valid values: ${VALID_COST_METHODOLOGIES.join(', ')}`);

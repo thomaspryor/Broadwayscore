@@ -65,6 +65,9 @@ const FEEDBACK_EDITABLE_FIELDS = {
   // estimatedRecoupmentPct/Source/Date: a reported "% returned" figure (the
   // backtest's reported-pct truth) with its citation and date (BRO-5073);
   // shape and range checked by commercial-record-checks.js.
+  // weeklyRunningCostBasis: what the cited weekly cost figure is (running /
+  // breakeven / all-in, BRO-5093; read by the costBasis shadow in
+  // cost-split.js, values checked by commercial-record-checks.js).
   'commercial.json': [
     'designation', 'capitalization', 'weeklyRunningCost',
     'capitalizationSource', 'notes', 'recouped', 'recoupedDate',
@@ -72,6 +75,7 @@ const FEEDBACK_EDITABLE_FIELDS = {
     'isEstimate', 'weeklyRunningCostSource', 'costMethodology',
     'needsLossEvidence', 'designationBasis',
     'estimatedRecoupmentPct', 'estimatedRecoupmentSource', 'estimatedRecoupmentDate',
+    'weeklyRunningCostBasis',
   ],
   'audience-buzz.json': ['title'],
   // Only auto-fix-feedback-bug.js's append-winner path handles this file —

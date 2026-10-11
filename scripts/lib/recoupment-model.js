@@ -21,7 +21,7 @@ const { isCitedReportedWeeklyCost, REPORTED_COST_METHODOLOGIES } = require('./wa
 const { previewWeeksFromWeekly } = require('./preview-weeks');
 const { runWindow, weeksInOwnRun, COVID_DARK_START, COVID_DARK_END } = require('./run-window');
 const { taxCreditCited } = require('./tax-credit-cited');
-const { splitCosts } = require('./cost-split');
+const { splitCosts, fixedNutFromBasis } = require('./cost-split');
 
 // ---------------------------------------------------------------------------
 // Constants & Defaults
@@ -517,6 +517,7 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   // (a reported figure's as-of date): weekly rows after it are dropped, the
   // run ends there, and a show still running then is treated as running.
   const asOf = opts.asOf ? new Date(opts.asOf) : null;
+  const weeklyUncut = grossesWeekly; // a cost quote's period may lie past asOf
   if (asOf) {
     if (Number.isNaN(asOf.getTime())) return { error: 'Bad asOf date', warnings: ['Bad asOf date'] };
     const iso = asOf.toISOString().slice(0, 10);
@@ -532,7 +533,11 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
     return { error: 'No capitalization data', warnings: ['Missing capitalization'] };
   }
 
-  const weeklyNut = commercial.weeklyRunningCost || estimateWeeklyNut(show, commercial);
+  const category = classifyShow(show);
+  // Shadow only (BRO-5093, opts.costBasis): a breakeven or all-in figure is
+  // turned back into the fixed nut the rest of the model expects.
+  const basisNut = opts.costBasis && commercial.weeklyRunningCost ? fixedNutFromBasis(commercial, commercial.weeklyRunningCost, getBaseVariableRate(category), THEATER_DEAL, weeklyUncut) : null;
+  const weeklyNut = basisNut ? basisNut.nut : commercial.weeklyRunningCost || estimateWeeklyNut(show, commercial);
   // opts.costSourcedOnly (shadow, BRO-5073): a weekly cost with no cited
   // source counts as 'unsourced', and only a cited cost lifts quality (a
   // methodology label with no cost behind it does not).
@@ -541,8 +546,8 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   if (nutSource === 'estimated') {
     warnings.push('Weekly running cost estimated from show type');
   }
+  if (basisNut && basisNut.basis !== 'running') warnings.push(`Weekly cost is ${basisNut.basis}: fixed nut ${Math.round(basisNut.nut)}${basisNut.gross ? ` at average gross ${Math.round(basisNut.gross)}` : ''}`);
 
-  const category = classifyShow(show);
   // Shadow only (BRO-5073, opts.costSplit): fixed part of the cost and a
   // larger gross-linked rate. The reserve and cap stay on the reported cost.
   const split = opts.costSplit ? splitCosts(commercial, category, weeklyNut, getBaseVariableRate(category), THEATER_DEAL.pctOfGross) : null;
@@ -1072,7 +1077,8 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}
 
   const slug = show.slug || show.id;
   const category = classifyShow(show);
-  const weeklyNut = commercial.weeklyRunningCost || estimateWeeklyNut(show, commercial, { eraAdjust: false });
+  const basisNut = opts.costBasis && commercial.weeklyRunningCost ? fixedNutFromBasis(commercial, commercial.weeklyRunningCost, getBaseVariableRate(category), THEATER_DEAL) : null; // shadow, BRO-5093
+  const weeklyNut = basisNut ? basisNut.nut : commercial.weeklyRunningCost || estimateWeeklyNut(show, commercial, { eraAdjust: false });
   const split = opts.costSplit ? splitCosts(commercial, category, weeklyNut, getBaseVariableRate(category), THEATER_DEAL.pctOfGross) : null; // shadow, BRO-5073
   const baseVarRate = split ? split.varRate : getBaseVariableRate(category);
   const runNut = split ? split.fixedNut : weeklyNut;

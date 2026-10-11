@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { splitCosts, costBasis, EXTRA_VARIABLE } = require('../../scripts/lib/cost-split');
+const { splitCosts, costBasis, fixedNutFromBasis, periodGross, EXTRA_VARIABLE } = require('../../scripts/lib/cost-split');
 const { calculateRecoupment, costPathFactor } = require('../../scripts/lib/recoupment-model');
 
 test('costBasis: explicit field wins, then the source text, default running', () => {
@@ -86,4 +86,50 @@ test('every slug-keyed table in the recoupment model names a commercial.json rec
   const records = JSON.parse(fs.readFileSync(commercialPath, 'utf8')).shows;
   const unmatched = [...Object.keys(KNOWN_SVOG), ...Object.keys(KNOWN_STAR_DEALS)].filter((k) => !records[k]);
   assert.deepEqual(unmatched, []);
+});
+
+test('fixedNutFromBasis: running unchanged, breakeven inverts the model breakeven, all-in sheds gross-linked costs (BRO-5093)', () => {
+  const T = { pctOfGross: 0.07, rentPctOfNut: 0.12 };
+  const v = 0.11;
+  assert.deepEqual(fixedNutFromBasis({ weeklyRunningCost: 600_000 }, 600_000, v, T), { nut: 600_000, basis: 'running' });
+  assert.equal(fixedNutFromBasis({ weeklyRunningCost: 600_000, weeklyRunningCostBasis: 'bogus' }, 600_000, v, T).basis, 'running');
+  // breakeven: the model's own breakeven of the nut comes back to the figure
+  const be = fixedNutFromBasis({ weeklyRunningCost: 800_000, weeklyRunningCostBasis: 'breakeven' }, 800_000, v, T);
+  assert.equal(Math.round(be.nut * (1 - T.rentPctOfNut) / (1 - v - T.pctOfGross)), 800_000);
+  // all-in over a quoted period: E = nut + v G + max(0, pct G - rent share x nut)
+  const weekly = {};
+  for (let i = 0; i < 60; i++) weekly[new Date(Date.UTC(2025, 2, 16) + i * 7 * 86400000).toISOString().slice(0, 10)] = { gross: 1_500_000 };
+  const src = 'BroadwayWorld: "averaged a weekly operating expense of $963,000 in the 52 week period ending March 15, 2026"';
+  assert.equal(Math.round(periodGross(src, weekly)), 1_500_000);
+  assert.equal(periodGross('no period here', weekly), null);
+  const ai = fixedNutFromBasis({ weeklyRunningCost: 963_000, weeklyRunningCostBasis: 'all-in', weeklyRunningCostSource: src }, 963_000, v, T, weekly);
+  const back = ai.nut + v * ai.gross + Math.max(0, T.pctOfGross * ai.gross - T.rentPctOfNut * ai.nut);
+  assert.equal(Math.round(back), 963_000);
+  assert.ok(ai.nut < 963_000 && ai.gross === 1_500_000);
+  // no period: taken at a gross equal to the figure
+  assert.equal(fixedNutFromBasis({ weeklyRunningCost: 963_000, weeklyRunningCostBasis: 'all-in' }, 963_000, v, T).gross, 963_000);
+  // gross-linked part larger than the figure: keep the figure
+  assert.deepEqual(fixedNutFromBasis({ weeklyRunningCost: 100_000, weeklyRunningCostBasis: 'all-in', weeklyRunningCostSource: src }, 100_000, v, T, weekly), { nut: 100_000, basis: 'running' });
+  assert.equal(costBasis({ weeklyRunningCostBasis: 'breakeven' }), 'all-in');
+});
+
+test('calculateRecoupment ignores the basis unless opts.costBasis is set (BRO-5093)', () => {
+  const WEEK = 7 * 86400000;
+  const iso = (t) => new Date(t).toISOString().slice(0, 10);
+  const first = Date.now() - 40 * WEEK;
+  const show = { slug: 'x', title: 'X', type: 'musical', previewsStartDate: iso(first), openingDate: iso(first + 4 * WEEK) };
+  const weekly = {};
+  for (let i = 0; i < 39; i++) weekly[iso(first + (i + 0.5) * WEEK)] = { gross: 1_000_000, performances: 8 };
+  const comm = { capitalization: 15_000_000, weeklyRunningCost: 700_000, weeklyRunningCostBasis: 'breakeven' };
+  const { weeklyRunningCostBasis, ...untagged } = comm;
+  assert.equal(weeklyRunningCostBasis, 'breakeven');
+  const live = calculateRecoupment(show, comm, null, weekly);
+  assert.deepEqual(live, calculateRecoupment(show, untagged, null, weekly));
+  const shadow = calculateRecoupment(show, comm, null, weekly, { costBasis: true });
+  assert.ok(shadow.recoupmentPctCentral > live.recoupmentPctCentral);
+  assert.ok(shadow.warnings.some((w) => /breakeven: fixed nut/.test(w)));
+  // no cost figure: the estimate is untouched
+  const { weeklyRunningCost, ...noCost } = comm;
+  assert.equal(weeklyRunningCost, 700_000);
+  assert.equal(calculateRecoupment(show, noCost, null, weekly, { costBasis: true }).recoupmentPctCentral, calculateRecoupment(show, noCost, null, weekly).recoupmentPctCentral);
 });
