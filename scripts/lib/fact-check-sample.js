@@ -1,0 +1,370 @@
+'use strict';
+/**
+ * Sourced fact-check sample of a historical backfill (BRO-5080).
+ *
+ * The two historical backfills (West End `we-historical:wos`, Broadway rows
+ * tagged `historical`) were written by scrapers and LLM enrichers, and earlier
+ * spot checks found whole classes of wrong facts: a famous director put on a
+ * revival, plays typed as musicals, dates from an older production, posters
+ * of another staging. This module draws a reproducible stratified sample and
+ * scores two independent web-grounded checkers' answers against the stored
+ * row, so an error rate can be measured instead of guessed.
+ *
+ * Rules the harness keeps:
+ *   - the checker is asked for the fact (identity = title + market + season),
+ *     never shown our value to confirm;
+ *   - an answer counts only with a source URL whose page was fetched and
+ *     contains the value (`pageSupports`); anything else is "unsourced";
+ *   - stored value vs sourced answers: agree -> ok, any sourced disagreement
+ *     -> adjudicate (a human opens the page and records the verdict).
+ *
+ * Pure, no I/O (CLAUDE.md §15): scripts/lib/fact-check-sample.test.mjs.
+ * CLI: scripts/fact-check-historical-sample.js.
+ */
+
+const { normalizeVenueName } = require('./image-source-match');
+const { findCanonical } = require('./venue-aliases');
+
+const WE_SEASONS = ['2018-2019', '2019-2020', '2020-2021', '2021-2022', '2022-2023', '2023-2024'];
+
+const COHORTS = {
+  'we-historical': {
+    label: 'West End historical backfill (we-historical:wos)',
+    market: 'West End (London)',
+    filter: (s) => s.discoverySource === 'we-historical:wos' && WE_SEASONS.includes(s.season),
+    stratum: (s) => s.season,
+  },
+  'broadway-historical': {
+    label: 'Broadway historical backfill (tag "historical")',
+    market: 'Broadway (New York)',
+    filter: (s) => s.category === 'broadway' && Array.isArray(s.tags) && s.tags.includes('historical')
+      && !String(s.discoverySource || '').startsWith('we-historical'),
+    stratum: (s) => {
+      const y = parseInt(String(s.openingDate || s.previewsStartDate || '').slice(0, 4), 10);
+      return Number.isFinite(y) ? `${Math.floor(y / 10) * 10}s` : 'undated';
+    },
+  },
+};
+
+/** mulberry32: tiny seeded PRNG, so a sample re-draws identically from the same seed. */
+function prng(seed) {
+  let a = (Number(seed) >>> 0) || 1;
+  return () => {
+    a = (a + 0x6D2B79F5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/** Fisher-Yates over a copy sorted by id first, so input order never changes the draw. */
+function seededShuffle(rows, seed) {
+  const out = [...rows].sort((a, b) => String(a.id).localeCompare(String(b.id)));
+  const rnd = prng(seed);
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(rnd() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
+
+/**
+ * Proportional allocation by largest remainder, at least one row per stratum
+ * when n allows. Returns rows in stratum order, each with `stratum` noted.
+ */
+function stratifiedSample(rows, stratumOf, n, seed) {
+  const groups = new Map();
+  for (const r of rows) {
+    const k = stratumOf(r);
+    if (!groups.has(k)) groups.set(k, []);
+    groups.get(k).push(r);
+  }
+  const keys = [...groups.keys()].sort();
+  const total = rows.length;
+  const want = Math.min(n, total);
+  const alloc = new Map();
+  const quotas = keys.map((k) => {
+    const q = (groups.get(k).length / total) * want;
+    return { k, base: Math.floor(q), rem: q - Math.floor(q) };
+  });
+  for (const { k, base } of quotas) alloc.set(k, base);
+  if (want >= keys.length) for (const k of keys) if (alloc.get(k) === 0) alloc.set(k, 1);
+  let used = [...alloc.values()].reduce((a, b) => a + b, 0);
+  const byRem = [...quotas].sort((a, b) => b.rem - a.rem || a.k.localeCompare(b.k));
+  for (let i = 0; used < want && i < byRem.length * 2; i++) {
+    const { k } = byRem[i % byRem.length];
+    if (alloc.get(k) < groups.get(k).length) { alloc.set(k, alloc.get(k) + 1); used++; }
+  }
+  while (used > want) {
+    const k = [...alloc.entries()].sort((a, b) => b[1] - a[1])[0][0];
+    alloc.set(k, alloc.get(k) - 1); used--;
+  }
+  const out = [];
+  keys.forEach((k, i) => {
+    const picked = seededShuffle(groups.get(k), Number(seed) + i * 7919).slice(0, alloc.get(k));
+    for (const r of picked) out.push({ ...r, stratum: k });
+  });
+  return out;
+}
+
+/** The cohort's rows and the seeded sample (ids + strata), ready to save. */
+function drawSample(shows, cohortName, n, seed) {
+  const cohort = COHORTS[cohortName];
+  if (!cohort) throw new Error(`unknown cohort ${cohortName} (have: ${Object.keys(COHORTS).join(', ')})`);
+  const rows = shows.filter(cohort.filter);
+  const sample = stratifiedSample(rows, cohort.stratum, n, seed);
+  const strata = {};
+  for (const r of rows) { const k = cohort.stratum(r); strata[k] = strata[k] || { population: 0, sampled: 0 }; strata[k].population++; }
+  for (const r of sample) strata[r.stratum].sampled++;
+  return { cohort: cohortName, label: cohort.label, seed: Number(seed), n: sample.length, population: rows.length, strata, ids: sample.map((r) => ({ id: r.id, stratum: r.stratum })) };
+}
+
+/** "2019-2020" -> "the 2019-20 season". */
+function seasonPhrase(season) {
+  const m = String(season || '').match(/^(\d{4})-(\d{4})$/);
+  return m ? `the ${m[1]}-${m[2].slice(2)} theatre season (roughly mid-${m[1]} to mid-${m[2]})` : 'an unknown season';
+}
+
+/**
+ * The question both checkers get. Identity only: title, market, season. No
+ * stored venue, date, credit or type, so the answer is the checker's own.
+ */
+function buildFactPrompt(show, cohortName) {
+  const market = COHORTS[cohortName].market;
+  return `Use web search. I need facts about one specific theatre production: "${show.title}" in the ${market} market, the production that played during ${seasonPhrase(show.season)}. If this title had several productions, answer only about the one in that market and season.
+
+Return JSON only, no prose, in this exact shape. Every non-null value needs the URL of a web page that states it (a page you actually found, not a guess). Never use broadwayscorecard.com as a source: it is the site being checked. Use null when you cannot find a page that states the fact.
+{
+  "theatre": {"value": "theatre name", "source": "url"},
+  "city": {"value": "city", "source": "url"},
+  "previewsStart": {"value": "YYYY-MM-DD", "source": "url"},
+  "openingNight": {"value": "YYYY-MM-DD (official press/opening night, not first preview)", "source": "url"},
+  "closing": {"value": "YYYY-MM-DD (final performance)", "source": "url"},
+  "type": {"value": "play | musical | other", "source": "url"},
+  "directors": {"value": ["name"], "source": "url"},
+  "writers": {"value": [{"name": "name", "role": "playwright | book | music | lyrics | adaptation | original author"}], "source": "url"},
+  "leadCast": {"value": ["up to 4 names"], "source": "url"}
+}`;
+}
+
+/** First JSON object in a model reply (tolerates ```json fences and prose). */
+function parseJsonReply(text) {
+  const s = String(text || '');
+  const start = s.indexOf('{');
+  const end = s.lastIndexOf('}');
+  if (start < 0 || end <= start) return null;
+  try { return JSON.parse(s.slice(start, end + 1)); } catch (e) { return null; }
+}
+
+function foldText(s) {
+  return String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+    .replace(/[‘’`]/g, "'").replace(/&/g, ' and ').replace(/[^a-z0-9']+/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+/** Comparable person name: accents/case/punctuation dropped, middle initials removed. */
+function normalizePerson(name) {
+  return foldText(name).replace(/'/g, '').split(' ').filter((t) => t.length > 1 || /\d/.test(t)).join(' ');
+}
+
+/** Same person: equal normalized names, or same first and last token (middle names dropped). */
+function samePerson(a, b) {
+  const x = normalizePerson(a); const y = normalizePerson(b);
+  if (!x || !y) return false;
+  if (x === y) return true;
+  const xs = x.split(' '); const ys = y.split(' ');
+  return xs[0] === ys[0] && xs[xs.length - 1] === ys[ys.length - 1];
+}
+
+const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+
+/** Spellings of an ISO date a page might use. */
+function dateSpellings(iso) {
+  const m = String(iso || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!m) return [];
+  const [, y, mo, d] = m;
+  const month = MONTHS[Number(mo) - 1];
+  const mon = month.slice(0, 3);
+  const day = String(Number(d));
+  const ord = day + (/1[123]$/.test(day) ? 'th' : ({ 1: 'st', 2: 'nd', 3: 'rd' }[day.slice(-1)] || 'th'));
+  return [
+    `${y}-${mo}-${d}`, `${day} ${month} ${y}`, `${ord} ${month} ${y}`, `${month} ${day} ${y}`, `${month} ${ord} ${y}`,
+    `${day} ${mon} ${y}`, `${mon} ${day} ${y}`, `${d}/${mo}/${y}`, `${mo}/${d}/${y}`, `${Number(mo)}/${day}/${y}`, `${day}/${Number(mo)}/${y}`,
+  ].map(foldText);
+}
+
+/** Does fetched page text state this value? kind: date | venue | person | type | text. */
+function pageSupports(pageText, value, kind) {
+  const page = ` ${foldText(pageText)} `;
+  if (!page.trim() || value == null || value === '') return false;
+  if (kind === 'date') {
+    const pageNoComma = page; // foldText already turned commas into spaces
+    return dateSpellings(value).some((s) => s && pageNoComma.includes(` ${s} `));
+  }
+  if (kind === 'venue') {
+    const v = normalizeVenueName(value);
+    return !!v && ` ${normalizeVenueName(pageText)} `.includes(` ${v} `);
+  }
+  if (kind === 'person') {
+    const n = normalizePerson(value);
+    if (!n) return false;
+    if (page.includes(` ${n} `)) return true;
+    const t = n.split(' ');
+    return t.length > 1 && page.includes(` ${t[0]} `) && page.includes(` ${t[t.length - 1]} `);
+  }
+  if (kind === 'type') return page.includes(` ${foldText(value)} `);
+  return page.includes(` ${foldText(value)} `);
+}
+
+/** Venue equality across renames ("Trafalgar Studios" is today's "Trafalgar Theatre"). */
+function sameVenue(a, b, market) {
+  if (!a || !b) return false;
+  const na = normalizeVenueName(a); const nb = normalizeVenueName(b);
+  if (!na || !nb) return false;
+  if (na === nb) return true;
+  const ca = normalizeVenueName(findCanonical(a, market)); const cb = normalizeVenueName(findCanonical(b, market));
+  if (ca === cb) return true;
+  // "Trafalgar Studios 2" vs "Trafalgar Studios": a studio inside the named house.
+  const strip = (s) => s.replace(/\b(studio|studios|main house|downstairs|upstairs|1|2|one|two)\b/g, ' ').replace(/\s+/g, ' ').trim();
+  return strip(na) !== '' && strip(na) === strip(nb);
+}
+
+const WRITER_ROLE_RE = /playwright|book|music|lyric|composer|adapt|writ|libretto|author|text|conceived|creator/i;
+const DIRECTOR_ROLE_RE = /^director\b|^director &|^co-director|& director$/i;
+
+/** Stored row's people for the two credit fields. */
+function storedCredits(show) {
+  const ct = Array.isArray(show.creativeTeam) ? show.creativeTeam : [];
+  return {
+    directors: ct.filter((m) => DIRECTOR_ROLE_RE.test(String(m.role || '').trim())).map((m) => m.name),
+    writers: ct.filter((m) => WRITER_ROLE_RE.test(String(m.role || '')) && !/design|direct|supervis|orchestrat|arrang|choreo/i.test(String(m.role || ''))).map((m) => m.name),
+  };
+}
+
+/** Our own site (or a copy of its data) cannot confirm itself. */
+const SELF_SOURCE_RE = /(^|[/.])broadwayscorecard\.com/i;
+function isSelfSource(url) { return SELF_SOURCE_RE.test(String(url || '')); }
+
+/** Value of one checker field, or null. */
+function answerValue(ans, field) {
+  const f = ans && ans[field];
+  if (!f || typeof f !== 'object') return null;
+  const v = f.value;
+  if (v == null || v === '' || (Array.isArray(v) && v.length === 0)) return null;
+  return v;
+}
+
+function namesOf(v) {
+  return (Array.isArray(v) ? v : [v]).map((x) => (x && typeof x === 'object' ? x.name : x)).filter(Boolean).map(String);
+}
+
+/**
+ * Compare a stored value with one checker's answer for a field.
+ * @returns {'agree'|'disagree'|'no-answer'|'no-stored'}
+ */
+function compareField(field, show, value, market) {
+  const stored = storedValue(show, field);
+  if (value == null) return 'no-answer';
+  if (stored == null || (Array.isArray(stored) && stored.length === 0)) return 'no-stored';
+  switch (field) {
+    case 'theatre': return sameVenue(stored, value, market) ? 'agree' : 'disagree';
+    case 'previewsStart': case 'openingNight': case 'closing': return stored === String(value).slice(0, 10) ? 'agree' : 'disagree';
+    case 'type': {
+      const v = foldText(value);
+      const t = /musical|opera|revue/.test(v) ? 'musical' : /play|drama|comedy|tragedy/.test(v) ? 'play' : v;
+      return t === stored ? 'agree' : 'disagree';
+    }
+    case 'directors': case 'writers': {
+      const found = namesOf(value);
+      // Every stored person must be credited by the checker; extra people the
+      // checker names are "missing on our side", not an error in what we show.
+      return stored.every((p) => found.some((f) => samePerson(p, f))) ? 'agree' : 'disagree';
+    }
+    default: return 'no-answer';
+  }
+}
+
+/** The stored value the site shows for a checked field. */
+function storedValue(show, field) {
+  switch (field) {
+    case 'theatre': return show.venue || null;
+    case 'previewsStart': return show.previewsStartDate || null;
+    case 'openingNight': return show.openingDate || null;
+    case 'closing': return show.closingDate || null;
+    case 'type': return show.type || null;
+    case 'directors': return storedCredits(show).directors;
+    case 'writers': return storedCredits(show).writers;
+    default: return null;
+  }
+}
+
+const FACT_FIELDS = ['theatre', 'previewsStart', 'openingNight', 'closing', 'type', 'directors', 'writers'];
+const FIELD_KIND = { theatre: 'venue', previewsStart: 'date', openingNight: 'date', closing: 'date', type: 'type', directors: 'person', writers: 'person' };
+
+/**
+ * Field triage from both checkers. `checks` = [{checker, answer, support}],
+ * support[field] = true when the cited page was fetched and states the value.
+ * Returns {status, detail} with status:
+ *   ok           at least one sourced answer agrees and none sourced disagrees
+ *   adjudicate   a sourced answer disagrees (or checkers' sourced answers split)
+ *   unsourced    no checker gave a page-supported answer
+ *   not-stored   we store nothing (a gap, counted apart from errors)
+ */
+function triageField(field, show, checks, market) {
+  const sourced = [];
+  const loose = [];
+  for (const c of checks) {
+    const v = answerValue(c.answer, field);
+    const cmp = compareField(field, show, v, market);
+    const source = c.answer && c.answer[field] && c.answer[field].source;
+    const row = { checker: c.checker, value: v, source, cmp, supported: !!(c.support && c.support[field]) && !isSelfSource(source) };
+    (row.supported ? sourced : loose).push(row);
+  }
+  const all = [...sourced, ...loose];
+  const stored = storedValue(show, field);
+  if (stored == null || (Array.isArray(stored) && stored.length === 0)) return { status: 'not-stored', detail: all };
+  if (sourced.some((r) => r.cmp === 'disagree')) return { status: 'adjudicate', detail: all };
+  if (sourced.some((r) => r.cmp === 'agree')) return { status: loose.some((r) => r.cmp === 'disagree') ? 'adjudicate' : 'ok', detail: all };
+  if (loose.some((r) => r.cmp === 'disagree')) return { status: 'adjudicate', detail: all };
+  return { status: 'unsourced', detail: all };
+}
+
+/** Wilson 95% interval for k errors in n checked. */
+function wilson(k, n) {
+  if (!n) return [0, 0];
+  const z = 1.96; const p = k / n;
+  const den = 1 + (z * z) / n;
+  const c = (p + (z * z) / (2 * n)) / den;
+  const h = (z * Math.sqrt((p * (1 - p)) / n + (z * z) / (4 * n * n))) / den;
+  return [Math.max(0, c - h), Math.min(1, c + h)];
+}
+
+/**
+ * Per-field error table. verdicts: [{id, field, verdict: 'correct'|'wrong'|'unverifiable'|'not-stored'}].
+ * Error rate = wrong / (correct + wrong); unverifiable rows are reported, not counted.
+ */
+function errorTable(verdicts) {
+  const t = {};
+  for (const v of verdicts) {
+    const r = t[v.field] = t[v.field] || { correct: 0, wrong: 0, unverifiable: 0, notStored: 0 };
+    if (v.verdict === 'correct') r.correct++;
+    else if (v.verdict === 'wrong') r.wrong++;
+    else if (v.verdict === 'not-stored') r.notStored++;
+    else r.unverifiable++;
+  }
+  for (const r of Object.values(t)) {
+    const n = r.correct + r.wrong;
+    r.checked = n;
+    r.rate = n ? r.wrong / n : 0;
+    r.ci95 = wilson(r.wrong, n);
+  }
+  return t;
+}
+
+module.exports = {
+  COHORTS, WE_SEASONS, FACT_FIELDS, FIELD_KIND,
+  prng, seededShuffle, stratifiedSample, drawSample,
+  seasonPhrase, buildFactPrompt, parseJsonReply,
+  normalizePerson, samePerson, dateSpellings, pageSupports, sameVenue,
+  storedCredits, storedValue, isSelfSource, compareField, triageField, wilson, errorTable,
+};
