@@ -156,7 +156,7 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-11T10:41:40.332Z",
-      "lastSeen": "2026-10-11T11:08:29.579Z",
+      "lastSeen": "2026-10-11T11:11:43.231Z",
       "lastNotifiedAt": "2026-10-11T10:41:40.332Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 131,
@@ -13683,7 +13683,7 @@
       "resolvedAt": "2026-10-11T10:27:01.482Z"
     },
     "land:land/bro-3512-scoring-delta-cv-low": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: lint-workflows red on land/bro-3512-scoring-delta-cv-low",
       "firstSeen": "2026-10-11T09:44:17.334Z",
@@ -13694,7 +13694,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-11T11:13:09.306Z"
     },
     "land:land/bro-5032-date-guard-resolver": {
       "status": "resolved",
@@ -13716,7 +13717,7 @@
       "title": "main test.yml red: E2E Tests / Run unit tests — \"operator input fuzzy-matches a registered outlet, but the URL host does not — falls back to a host-derived provisional, not the borrowed outlet\"",
       "firstSeen": "2026-10-11T10:25:00.086Z",
       "incidentOpenedAt": "2026-10-11T10:25:00.086Z",
-      "lastSeen": "2026-10-11T11:08:29.569Z",
+      "lastSeen": "2026-10-11T11:11:43.221Z",
       "lastNotifiedAt": "2026-10-11T10:25:00.086Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
