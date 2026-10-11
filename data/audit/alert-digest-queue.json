@@ -667,18 +667,6 @@
     "queuedAt": "2026-10-11T18:56:45.120Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Audit outlet-registry gaps",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38166329269",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-11T19:07:11.360Z"
-  },
-  {
     "conditionKey": "ob-venue-go-live:montgomery-an-american-musical-off-broadway-2026",
     "title": "Montgomery: An American Musical @ A.R.T./New York Theatres — off-Broadway show added",
     "description": "Auto-promoted via the venue listing (venue's own listing: 2026-12-11 to 2026-12-19). Reviews ingest automatically once critics publish.",
@@ -751,5 +739,75 @@
       }
     ],
     "queuedAt": "2026-10-11T19:23:35.243Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Validate market expansion, Audit outlet-registry gaps",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38168358145",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-11T19:37:29.466Z"
+  },
+  {
+    "conditionKey": "land:land/bro-2945-git-add-safe",
+    "title": "Landing blocked: unit-tests-node red on land/bro-2945-git-add-safe",
+    "description": "land.yml did not land land/bro-2945-git-add-safe: the unit-tests-node gate went red at c2dad65620. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38166313242",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2945-git-add-safe"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "c2dad65620a1cec778a6a85019da778fbcfb7635"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38166313242"
+      }
+    ],
+    "queuedAt": "2026-10-11T19:37:22.238Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4972-push-core-data-drop",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4972-push-core-data-drop",
+    "description": "land.yml did not land land/bro-4972-push-core-data-drop: the unit-tests-node gate went red at 7954cb9c3d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38166482353",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4972-push-core-data-drop"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "7954cb9c3d7eb0d00379faad98e843b13cd82ad1"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38166482353"
+      }
+    ],
+    "queuedAt": "2026-10-11T19:40:07.512Z"
   }
 ]
