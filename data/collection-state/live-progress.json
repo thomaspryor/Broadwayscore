@@ -1,19 +1,64 @@
 {
-  "updatedAt": "2026-10-11T23:26:42.409Z",
-  "processed": 327,
-  "failed": 275,
-  "successRate": "54.3%",
+  "updatedAt": "2026-10-11T23:38:47.161Z",
+  "processed": 326,
+  "failed": 223,
+  "successRate": "59.4%",
   "tierBreakdown": {
-    "playwright": 237,
-    "amp": 12,
-    "browserbase": 0,
+    "playwright": 214,
+    "amp": 8,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 39,
-    "scrapingbee": 24,
+    "scrapingdog": 38,
+    "scrapingbee": 49,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 29
+    "archive": 24
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-10-11T23:34:26.048Z",
+      "event": "bb-session",
+      "session": "9accf1fe",
+      "url": "https://www.talkinbroadway.com/page/world/SuperiorDonuts.html"
+    },
+    {
+      "t": "2026-10-11T23:34:26.926Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-11T23:34:45.497Z",
+      "event": "bb-session",
+      "session": "19945dbc",
+      "url": "https://www.talkinbroadway.com/page/world/SuperiorDonuts.html"
+    },
+    {
+      "t": "2026-10-11T23:34:46.440Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-11T23:34:51.783Z",
+      "event": "bb-session",
+      "session": "7ede4735",
+      "url": "http://theater.nytimes.com/2009/04/30/theater/reviews/30acce.html"
+    },
+    {
+      "t": "2026-10-11T23:34:52.647Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-11T23:35:14.197Z",
+      "event": "bb-session",
+      "session": "7d40129a",
+      "url": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2009/04/29/david-hyde-pie"
+    },
+    {
+      "t": "2026-10-11T23:35:15.072Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
