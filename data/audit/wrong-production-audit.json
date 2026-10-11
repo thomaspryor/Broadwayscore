@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-11T01:24:43.873Z",
+  "timestamp": "2026-10-11T02:06:27.426Z",
   "stats": {
     "totalReviews": 54685,
-    "alreadyFlagged": 20001,
+    "alreadyFlagged": 20018,
     "dateGuardCatches": 272,
-    "directorMismatch": 1667,
-    "tvFilmSignals": 1523,
-    "londonSignals": 1814,
+    "directorMismatch": 1673,
+    "tvFilmSignals": 1526,
+    "londonSignals": 1816,
     "offBroadwaySignals": 504,
     "yearMismatch": 130,
-    "noPublishDate": 6178
+    "noPublishDate": 6154
   },
   "findings": [
     {
@@ -405,6 +405,7 @@
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
       "file": "the-globe-and-mail--aisling-murphy.json",
+      "score": 58,
       "publishDate": "2026-05-03",
       "url": "https://www.theglobeandmail.com/culture/stage/article-neil-diamond-musical-beautiful-noise-review/",
       "findings": [
@@ -1957,6 +1958,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"pilot episode\""
+        }
+      ]
+    },
+    {
+      "showId": "alterations-west-end-2025",
+      "file": "fringereview--simon-jenner.json",
+      "score": 81,
+      "publishDate": "2025-03-06",
+      "url": "https://fringereview.co.uk/review/fringereview-uk/2025/alterations/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -4758,6 +4778,7 @@
     {
       "showId": "book-of-mormon-tour-2022",
       "file": "dc-theater-arts--eric-colchamiro.json",
+      "score": 87,
       "publishDate": "2026-05-01",
       "url": "https://dctheaterarts.org/2026/05/01/thank-goodness-for-the-book-of-mormon-on-tour-at-the-national/",
       "findings": [
@@ -4771,6 +4792,7 @@
     {
       "showId": "book-of-mormon-tour-2022",
       "file": "feature-presentation--patrick-j-regal.json",
+      "score": 88,
       "publishDate": "2026-04-30",
       "url": "https://featurepresentationvideo.substack.com/p/tour-review-the-book-of-mormon",
       "findings": [
@@ -4784,6 +4806,7 @@
     {
       "showId": "book-of-mormon-tour-2022",
       "file": "hotchka--unknown.json",
+      "score": 85,
       "publishDate": "2026-04-29",
       "url": "https://hotchka.com/the-book-of-mormon-2026-tour-review-washington-dc-national-theatre",
       "findings": [
@@ -4811,6 +4834,7 @@
     {
       "showId": "book-of-mormon-tour-2022",
       "file": "maryland-theatre-guide--unknown.json",
+      "score": 90,
       "publishDate": "2026-04-30",
       "url": "https://mdtheatreguide.com/2026/04/theatre-review-the-book-of-mormon-at-the-national-theatre-2/",
       "findings": [
@@ -9517,7 +9541,7 @@
     {
       "showId": "dear-england-west-end-2025",
       "file": "artsdesk--demetrios-matheou.json",
-      "score": 82,
+      "score": 80,
       "publishDate": "March 19th, 2025",
       "url": "https://theartsdesk.com/theatre/dear-england-national-theatre-review-extra-time-stirring-soccer-classic",
       "findings": [
@@ -9615,7 +9639,7 @@
     {
       "showId": "dear-england-west-end-2025",
       "file": "standard--nick-curtis.json",
-      "score": 89,
+      "score": 86,
       "publishDate": "March 19th, 2025",
       "url": "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-olivier-review-b1217522.html",
       "findings": [
@@ -9651,6 +9675,20 @@
       "score": 87,
       "publishDate": "2025-03-28",
       "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from dear-england-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "dear-england-west-end-2025",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 81,
+      "publishDate": "March 19th, 2025",
+      "url": "https://www.timeout.com/london/theatre/dear-england-review-2",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -18720,6 +18758,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -25620,6 +25663,20 @@
     },
     {
       "showId": "much-ado-about-nothing-west-end-2025",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": 96,
+      "publishDate": "2025-02-20",
+      "url": "https://www.allthatdazzles.co.uk/post/review-much-ado-about-nothing-theatre-royal-drury-lane",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-west-end-2025",
       "file": "british-theatre--howard-loxton.json",
       "score": 81,
       "publishDate": "2025-02-21",
@@ -25636,6 +25693,20 @@
       "showId": "much-ado-about-nothing-west-end-2025",
       "file": "broadwayworld--aliya-al-hassan.json",
       "score": 91,
+      "publishDate": "2025-02-20",
+      "url": "https://www.broadwayworld.com/westend/article/Review-MUCH-ADO-ABOUT-NOTHING-Theatre-Royal-Drury-Lane-20250220",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-west-end-2025",
+      "file": "broadwayworld--unknown.json",
+      "score": null,
       "publishDate": "2025-02-20",
       "url": "https://www.broadwayworld.com/westend/article/Review-MUCH-ADO-ABOUT-NOTHING-Theatre-Royal-Drury-Lane-20250220",
       "findings": [
@@ -25682,7 +25753,7 @@
     {
       "showId": "much-ado-about-nothing-west-end-2025",
       "file": "financialtimes--sarah-hemming.json",
-      "score": 95,
+      "score": 97,
       "publishDate": "2025-02-20",
       "url": "https://www.ft.com/content/9f767a15-8d37-4bc3-bbf3-9417d8e9ad45",
       "findings": [
@@ -25780,7 +25851,7 @@
     {
       "showId": "much-ado-about-nothing-west-end-2025",
       "file": "radio-times--unknown.json",
-      "score": 94,
+      "score": 97,
       "publishDate": "2025-02-21",
       "url": "https://www.radiotimes.com/going-out/going-out-reviews/much-ado-about-nothing-review/",
       "findings": [
@@ -25850,7 +25921,7 @@
     {
       "showId": "much-ado-about-nothing-west-end-2025",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 96,
+      "score": 97,
       "publishDate": "February 19th, 2025",
       "url": "https://www.whatsonstage.com/news/much-ado-about-nothing-with-tom-hiddleston-and-hayley-atwell-review-simply-sublime-shakespeare_1665700/",
       "findings": [
@@ -33866,6 +33937,7 @@
     {
       "showId": "suffs-tour-2025",
       "file": "outfrontmagazine--stephanie-kastler.json",
+      "score": 77,
       "publishDate": "2026-05-12",
       "url": "https://outfrontmagazine.com/review-suffs-makes-a-splash-on-pbs/",
       "findings": [
@@ -38044,6 +38116,7 @@
     {
       "showId": "the-great-gatsby-tour-2026",
       "file": "broadwayworld--jeffrey-kare.json",
+      "score": 66,
       "publishDate": "2026-05-06",
       "url": "https://www.broadwayworld.com/raleigh/article/Review-THE-GREAT-GATSBY-National-Tour-at-Durham-Performing-Arts-Center-20260506",
       "findings": [
@@ -40509,6 +40582,7 @@
     {
       "showId": "the-outsiders-tour-2025",
       "file": "arts-knoxville--alan-sherrod.json",
+      "score": 76,
       "publishDate": "2026-04-25",
       "url": "https://artsknoxville.com/2026/04/25/review-the-outsiders-national-tour/",
       "findings": [
@@ -42279,6 +42353,20 @@
     },
     {
       "showId": "the-score-west-end-2025",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": 57,
+      "publishDate": "March 1st, 2025",
+      "url": "https://www.allthatdazzles.co.uk/post/review-the-score-theatre-royal-haymarket",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from the-score-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "the-score-west-end-2025",
       "file": "artsdesk--rachel-halliburton.json",
       "score": 45,
       "publishDate": "2025-02-28",
@@ -42297,6 +42385,34 @@
       "score": 76,
       "publishDate": "2025-03-02",
       "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from the-score-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "the-score-west-end-2025",
+      "file": "broadwayworld--cindy-marcolina.json",
+      "score": 39,
+      "publishDate": "2025-02-28",
+      "url": "https://www.broadwayworld.com/westend/article/Review-THE-SCORE-Theatre-Royal-Haymarket-20250228",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from the-score-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "the-score-west-end-2025",
+      "file": "firstnightmagazine--unknown.json",
+      "score": 25,
+      "publishDate": "2025-02-28",
+      "url": "https://firstnightmagazine.com/2025/02/28/review-of-the-score-a-d-minor-work/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -44905,6 +45021,20 @@
       "score": 61,
       "publishDate": "2025-02-14",
       "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "unicorn-west-end-2025",
+      "file": "broadwayworld--unknown.json",
+      "score": 48,
+      "publishDate": "2025-02-14",
+      "url": "https://www.broadwayworld.com/westend/article/Review-UNICORN-Garrick-Theatre-20250214",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -63156,6 +63286,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "more-life-west-end-2025",
+      "file": "everything-theatre--nathan-blue.json",
+      "score": 87,
+      "publishDate": "2025-02-13",
+      "url": "https://everything-theatre.co.uk/2025/02/review-more-life-royal-court-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
