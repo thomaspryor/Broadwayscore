@@ -254,6 +254,9 @@ function findContinuingRun(shows, title, startDate) {
   })()) || null;
 }
 
+/** London theatres went dark the evening of 16 March 2020. */
+const LONDON_COVID_DARK = '2020-03-16';
+
 /**
  * Lookup rows (from the CI resolver) → candidates with decisions.
  * @param {{season: string, lookups: Array<{review: object, tr?: object|null, header?: string|null, error?: string}>,
@@ -281,6 +284,13 @@ function buildReviewLedCandidates({ season, lookups, shows, today }) {
     if (!dates.previewsStartDate && !dates.openingDate) { no('no dates on the Theatre Record production page'); continue; }
     const c = { ...base, ...dates };
     const startDate = c.previewsStartDate || c.openingDate;
+    // TR prints the scheduled close; London theatres went dark on 16 March
+    // 2020, so a run that straddles it ended then (as the WE rows in
+    // shows.json are dated).
+    if (startDate < LONDON_COVID_DARK && c.closingDate > LONDON_COVID_DARK) {
+      c.scheduledClosingDate = c.closingDate;
+      c.closingDate = LONDON_COVID_DARK;
+    }
     const dupOpts = { withinYears: 1, startDate, venueEquals: sameVenueFamily };
     const existing = findExactDuplicate(pool, c.title, c.venue, dupOpts)
       || pool.find(s => s.startDate && westEndIds.has(s.id) && normalizeTitle(s.title) === normalizeTitle(c.title)
