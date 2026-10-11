@@ -24,6 +24,8 @@ import {
   weekOfRun,
   isComparableRun,
   personalBests,
+  weeklyRecords,
+  RECORD_MIN_PRIOR_WEEKS,
   BESTS_MIN_WEEKS,
   newMusicalCohort,
   COHORT_MIN_N,
@@ -206,7 +208,7 @@ function runs(prefix: string, count: number, start: string, perSeat: (i: number)
 test('personalBests: records with their weeks, the latest week beside them, nulls skipped', () => {
   const w = ['2026-09-06', '2026-09-13', '2026-09-20', '2026-09-27', '2026-10-04'];
   const weeks: HistoryWeeks = {
-    [w[0]]: { s: row(900_000, { capacity: 70, atp: 90, performances: 5 }) }, // partial preview week still counts
+    [w[0]]: { s: row(900_000, { capacity: 70, atp: 90, performances: 0 }) }, // a preview week listed with 0 performances still counts
     [w[1]]: { s: row(1_400_000, { capacity: null, atp: null, attendance: null }) }, // no capacity or attendance
     [w[2]]: { s: row(1_200_000, { capacity: 97, atp: 120 }) },
     [w[3]]: { s: row(1_400_000, { capacity: 95, atp: 130 }) }, // ties the best gross later: the earlier week keeps it
@@ -265,4 +267,32 @@ test('newMusicalCohort leaves out revivals and draws the band only at n >= 15', 
   assert.equal(c.band[3], null); // only 3 weeks of data
   const short = newMusicalCohort(input(weeks, fresh.slice(1)), '2026-10-04', 1);
   assert.equal(short.band[0], null);
+});
+
+test('weeklyRecords: run-long records first, then the furthest-reaching "since"; ties, short runs and old runs never count', () => {
+  const latest = '2026-10-04';
+  const weeks: HistoryWeeks = {};
+  const put = (slug: string, grosses: number[]) => grosses.forEach((g, i) => {
+    const w = addDays(latest, -7 * (grosses.length - 1 - i));
+    (weeks[w] ??= {})[slug] = row(g);
+  });
+  const flat = (n: number, g: number) => Array.from({ length: n }, () => g);
+  put('ever', [...flat(12, 1_000_000), 1_500_000]); // beats all 12 earlier weeks
+  put('since', [2_000_000, ...flat(10, 1_000_000), 1_500_000]); // a higher week 11 back
+  put('recent', [2_000_000, ...flat(RECORD_MIN_PRIOR_WEEKS, 1_000_000), 1_500_000]); // exactly 8 topped
+  put('tooSoon', [2_000_000, ...flat(RECORD_MIN_PRIOR_WEEKS - 1, 1_000_000), 1_500_000]); // only 7 topped
+  put('tie', [...flat(12, 1_500_000), 1_500_000]); // equal to every earlier week: not a record
+  put('short', [...flat(RECORD_MIN_PRIOR_WEEKS - 1, 1_000_000), 1_500_000]); // fewer than 8 earlier weeks
+  // A revival whose slug still carries the original run's bigger weeks from years ago.
+  weeks['2018-12-30'] = { ...(weeks['2018-12-30'] ?? {}), revival: row(3_000_000) };
+  put('revival', [...flat(9, 1_000_000), 1_200_000]);
+  const shows = ['ever', 'since', 'recent', 'tooSoon', 'tie', 'short', 'revival'].map((s) => show(s, s === 'revival' ? { isRevival: true } : {}));
+  const got = weeklyRecords(input(weeks, shows), latest);
+  assert.deepEqual(got.map((r) => [r.slug, r.ever, r.topped]), [
+    ['ever', true, 12],
+    ['revival', true, 9],
+    ['since', false, 10],
+    ['recent', false, RECORD_MIN_PRIOR_WEEKS],
+  ]);
+  assert.equal(got.find((r) => r.slug === 'since')!.since, addDays(latest, -7 * 11));
 });

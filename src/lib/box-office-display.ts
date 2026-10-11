@@ -15,6 +15,7 @@ import {
   perSeatTable,
   sellOutStreaks,
   premiumPull,
+  weeklyRecords,
   newMusicalCohort,
   runPerSeatSeries,
   isComparableRun,
@@ -163,6 +164,19 @@ export interface Closing {
 }
 
 /** "early August" / "mid-August" / "late August". */
+/** Records shown on the market page; the rest are counted as "and N more". */
+export const RECORDS_SHOWN = 6;
+
+/**
+ * "best week ever", or "best week since early January" for a record reaching
+ * back under a year, "best week since March 2023" for an older one.
+ */
+export function recordText(r: { ever: boolean; since: string | null }, week: string): string {
+  if (r.ever || !r.since) return 'best week ever';
+  const withinYear = Date.parse(`${week}T00:00:00Z`) - Date.parse(`${r.since}T00:00:00Z`) < 365 * 86_400_000;
+  return `best week since ${withinYear ? partOfMonth(r.since) : `${MONTHS[Number(r.since.slice(5, 7)) - 1]} ${r.since.slice(0, 4)}`}`;
+}
+
 export function partOfMonth(week: string): string {
   const d = Number(week.slice(8, 10));
   const month = MONTHS[Number(week.slice(5, 7)) - 1];
@@ -287,6 +301,8 @@ export interface MarketPage {
   };
   streaks: Array<{ title: string; weeks: number }>;
   premium: { median: number | null; rows: Array<{ title: string; over: number; isNew: boolean }> };
+  /** "This week's personal bests": shows whose latest week topped their own run's recent weeks (weeklyRecords). */
+  records: { rows: Array<{ title: string; text: string }>; more: number };
   priceMap: Array<{ slug: string; title: string; label: string; capacity: number; atp: number; seats: number }>;
   /** The phone price map's named outliers and corner groups, worked out here so the client chart imports no held code. */
   priceMapPhone: { named: string[]; fullPct: number; medianAtp: number | null; corners: Array<{ key: MapCornerKey; title: string; slugs: string[] }> };
@@ -367,6 +383,12 @@ export function buildMarketPage(
   const priceMap = Object.entries(input.weeks[week] ?? {})
     .filter(([slug, r]) => isPaired(r) && r.capacity != null && r.atp != null && r.performances && (input.shows.get(slug)?.category ?? 'broadway') === 'broadway')
     .map(([slug, r]) => ({ slug, title: title(slug), label: shortTitle(title(slug)), capacity: r.capacity as number, atp: r.atp as number, seats: Math.round((r.seatsOffered as number) / (r.performances as number)) }));
+
+  const allRecords = weeklyRecords(input, week);
+  const records = {
+    rows: allRecords.slice(0, RECORDS_SHOWN).map((r) => ({ title: title(r.slug), text: recordText(r, week) })),
+    more: Math.max(0, allRecords.length - RECORDS_SHOWN),
+  };
 
   const mapGroups = mapCorners(priceMap);
   const priceMapPhone = {
@@ -451,6 +473,7 @@ export function buildMarketPage(
     },
     streaks: sellOutStreaks(input, week).map((x) => ({ title: title(x.slug), weeks: x.weeks })),
     premium: { median: pp.median, rows: pp.above.map((x) => ({ title: title(x.slug), over: x.over, isNew: x.isNew })) },
+    records,
     priceMap,
     priceMapPhone,
     cohort: {

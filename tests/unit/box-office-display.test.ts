@@ -8,6 +8,7 @@ import {
   closingsSentence,
   cohortSentence,
   mapCorners,
+  recordText,
   mapOutliers,
   MAP_FULL_PCT,
   moverNote,
@@ -143,4 +144,19 @@ test('real data: the market page builds with sane numbers', () => {
   if (page.cohort.story) assert.doesNotMatch(page.cohort.story, /\([A-Za-z]/, 'the cohort story uses short titles');
   // Movers never show a move that rounds to 0%.
   for (const m of [...page.movers.gains, ...page.movers.drops]) assert.ok(Math.abs(m.pct) >= MOVER_MIN_PCT, `${m.title} ${m.pct}`);
+});
+
+test('recordText: ever, early/mid/late Month within a year, Month YYYY before that', () => {
+  const week = '2026-10-04';
+  assert.equal(recordText({ ever: true, since: null }, week), 'best week ever');
+  assert.equal(recordText({ ever: false, since: '2026-01-04' }, week), 'best week since early January');
+  assert.equal(recordText({ ever: false, since: '2026-03-15' }, week), 'best week since mid-March');
+  assert.equal(recordText({ ever: false, since: '2025-09-28' }, week), 'best week since September 2025');
+});
+
+test('real data: the personal-bests card lists at most six, with the rest counted', () => {
+  const page = getBoxOfficeMarketPage()!;
+  assert.ok(page.records.rows.length <= 6);
+  if (page.records.more > 0) assert.equal(page.records.rows.length, 6);
+  for (const r of page.records.rows) assert.match(r.text, /^best week (ever|since )/);
 });
