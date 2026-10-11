@@ -120,9 +120,14 @@ function pickTrForReview(results, review, opts = {}) {
   return hits.length ? hits[0].r : null;
 }
 
-/** "Gielgud Theatre, London" → "Gielgud Theatre"; "Olivier, National Theatre, London" kept whole for venueFamily. */
+/**
+ * "Gielgud Theatre, London" → "Gielgud Theatre"; PDF-era "London, Old Vic" →
+ * "Old Vic"; "Olivier, National Theatre, London" kept whole for venueFamily.
+ */
 function trVenueName(v) {
-  const s = String(v || '').replace(/,?\s*London(\s+[A-Z]{1,2}\d+\w*)?\s*$/i, '').trim();
+  const s = String(v || '')
+    .replace(/^\s*London\s*,\s*/i, '')
+    .replace(/,?\s*London(\s+[A-Z]{1,2}\d+\w*)?\s*$/i, '').trim();
   return /national theatre|lyttelton|dorfman|olivier/i.test(s) ? s : s.replace(/,.*$/, '').trim();
 }
 
@@ -140,18 +145,35 @@ function iso(y, mon, d) {
 
 const DATE_RX = new RegExp(`\\d{1,2}\\s+${MON}`, 'i');
 
+const SNIP_D = `\\d{1,2}(?:st|nd|rd|th)?\\s+${MON}`;
+const SNIP_DAY = '(?:(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)[a-z]*\\.?\\s+)?';
+const SNIP_SEP = '\\s*(?:[–—-]|to)\\s*';
+const SNIP_RX = new RegExp([
+  `\\b(?:previews?|first preview|opened|opening night|opening|press night|press|until|closes|closing|ends|final performance)\\b\\s*(?:on|from|:)?\\s*${SNIP_DAY}${SNIP_D}(?:\\s+\\d{4})?`,
+  `${SNIP_DAY}${SNIP_D}(?:\\s+\\d{4})?${SNIP_SEP}${SNIP_DAY}${SNIP_D}\\s+\\d{4}`,
+  `\\b\\d{1,2}${SNIP_SEP}${SNIP_D}\\s+\\d{4}`,
+].join('|'), 'gi');
+
 /**
- * The factual lines of a TR production header: the first three non-empty
- * lines (title, author, venue) and short lines carrying a date. The lookup
- * file is public, so anything that could be review prose (long lines, lines
- * without a date after the first three) is dropped.
+ * The date phrases in one line ("Previews from 26 Sep 2018",
+ * "26 September 2018 – 30 March 2019"), and nothing around them.
+ */
+function dateSnippets(line) {
+  return (String(line || '').match(SNIP_RX) || []).map(s => s.replace(/\s+/g, ' ').trim());
+}
+
+/**
+ * The factual part of a TR production header: the first three non-empty
+ * lines (title, author, venue) when short, then only the date phrases found
+ * in later lines. The lookup file is public, so no surrounding text (which
+ * on a two-column PDF page can be review prose) is ever kept.
  */
 function headerFacts(text) {
   const lines = String(text || '').split('\n').map(l => l.replace(/\s+/g, ' ').trim()).filter(Boolean);
   const keep = [];
   lines.forEach((l, i) => {
-    if (i < 3 && l.length <= 120) keep.push(l);
-    else if (i >= 3 && DATE_RX.test(l) && l.split(' ').length <= 14) keep.push(l.slice(0, 160));
+    if (i < 3 && l.length <= 120 && !DATE_RX.test(l)) keep.push(l);
+    else for (const s of dateSnippets(l)) if (!keep.includes(s)) keep.push(s);
   });
   return keep.slice(0, 12).join('\n') || null;
 }
@@ -287,6 +309,7 @@ module.exports = {
   pickTrForReview,
   parseTrHeaderDates,
   headerFacts,
+  dateSnippets,
   findContinuingRun,
   buildReviewLedCandidates,
 };

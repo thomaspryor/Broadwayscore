@@ -1616,6 +1616,13 @@ function filterByConfidence(proposedChanges, commercialData) {
         continue;
       }
 
+      // A loss label needs a directly stated loss (BRO-5020): "strongly
+      // implied" (medium) goes to a person, like the stale-closure classifier.
+      if (oldValue === 'TBD' && (newValue === 'Fizzle' || newValue === 'Flop') && effectiveConfidence !== 'high') {
+        flagged.push({ ...change, flagReason: `TBD -> ${newValue} needs a cited loss source (high confidence); got ${effectiveConfidence}` });
+        continue;
+      }
+
       // TBD -> something with high/medium -> apply
       if (oldValue === 'TBD') {
         applied.push(change);

@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 /**
- * Classify stale closures — auto-Fizzle Broadway shows that closed 30+ days
- * ago with no recoupment news. Writes DIRECTLY to commercial.json (not
- * pending-review) because Fizzle-from-absent-evidence is deterministic policy,
- * not a claim awaiting review. Per Code Design reviewer redesign.
+ * Classify stale closures. A researched Broadway show closed 30+ days with no
+ * recoupment news is flagged needsLossEvidence and stays TBD (BRO-5020); it is
+ * labelled Fizzle only under --allow-inferred-loss. Writes DIRECTLY to
+ * commercial.json (not pending-review): the flag claims nothing, it only
+ * queues the row for a person to source.
  *
  * Side effects:
- *   - Updates data/commercial.json in place for shows classified as Fizzle.
+ *   - Updates data/commercial.json in place for flagged shows (and Fizzles
+ *     under --allow-inferred-loss).
  *     The merge-commercial-data.js reconciler ensures concurrent writers
  *     don't lose entries on push.
  *   - Logs human-review escalations to stdout JSON for downstream Linear
@@ -56,6 +58,10 @@ const thresholds = {
   graceDays: intOr('grace-days', 30),
   maxAgeDays: intOr('max-age-days', 365),
   recentSignalDays: intOr('recent-signal-days', 30),
+  // Off by default (BRO-5020): a closed show with no recoupment news stays TBD
+  // with needsLossEvidence instead of becoming Fizzle. --allow-inferred-loss
+  // or STALE_CLOSURE_ALLOW_INFERRED_LOSS=1 restores the old auto-Fizzle.
+  allowInferredLoss: ['1', 'true'].includes(String(flags['allow-inferred-loss'])) || process.env.STALE_CLOSURE_ALLOW_INFERRED_LOSS === '1',
 };
 
 function loadJSON(p, fallback) {
@@ -88,7 +94,7 @@ function main() {
     return true;
   });
 
-  const buckets = { wait: [], 'no-change': [], 'skip-carve-out': [], 'classify-fizzle': [], 'human-review': [] };
+  const buckets = { wait: [], 'no-change': [], 'skip-carve-out': [], 'classify-fizzle': [], 'flag-needs-loss-evidence': [], 'human-review': [] };
   for (const show of targets) {
     const entry = commercial.shows[show.slug];
     const pendingEntry = pending.shows[show.slug];
@@ -117,6 +123,7 @@ function main() {
   console.log(`Closed Broadway shows scanned: ${targets.length}`);
   console.log(`  classify-fizzle:   ${toApply.length} (overflow: ${overflowApply})`);
   console.log(`  undo-fizzle:       ${reopened.length} (running again)`);
+  console.log(`  needs-loss-evidence: ${buckets['flag-needs-loss-evidence'].length} (stay TBD)`);
   console.log(`  human-review:      ${buckets['human-review'].length}`);
   console.log(`  skip-carve-out:    ${buckets['skip-carve-out'].length}`);
   console.log(`  wait (grace):      ${buckets.wait.length}`);
@@ -125,7 +132,7 @@ function main() {
 
   if (DRY_RUN) {
     console.log('[dry-run] no writes. Sample of each bucket:');
-    for (const k of ['classify-fizzle', 'human-review', 'skip-carve-out']) {
+    for (const k of ['classify-fizzle', 'flag-needs-loss-evidence', 'human-review', 'skip-carve-out']) {
       for (const it of buckets[k].slice(0, 3)) {
         console.log(`  [${k}] ${it.show.slug} — ${it.result.reason}`);
       }
@@ -164,18 +171,30 @@ function main() {
     console.log(`  ✓ ${slug}: ${result.reason}`);
   }
 
+  // Flag (never relabel) researched closures with no cited loss source.
+  // Only the flag changes, so designation and recouped stay as they were.
+  let flagged = 0;
+  for (const { show, entry } of buckets['flag-needs-loss-evidence']) {
+    // Any existing value (true, or false/null set by a person) is left alone,
+    // so a hand-cleared flag is not re-raised the next day.
+    if (!entry || 'needsLossEvidence' in entry) continue;
+    commercial.shows[show.slug] = { ...entry, needsLossEvidence: true, lastUpdated: now };
+    flagged++;
+    console.log(`  ⚑ ${show.slug}: needs a cited loss source, stays ${entry.designation || 'TBD'}`);
+  }
+
   for (const { slug, undone, status } of reopened) {
     commercial.shows[slug] = { ...undone, lastUpdated: now };
     console.log(`  ↩ ${slug}: Fizzle -> TBD (status is "${status}")`);
   }
 
-  if (applied > 0 || reopened.length > 0) {
+  if (applied > 0 || flagged > 0 || reopened.length > 0) {
     commercial._meta = commercial._meta || {};
     commercial._meta.lastUpdated = now.slice(0, 10);
     saveCommercial(commercial);
-    console.log(`\n✓ Wrote ${applied} Fizzle classifications and ${reopened.length} undos to commercial.json`);
+    console.log(`\n✓ Wrote ${applied} Fizzle classifications, ${flagged} needsLossEvidence flags and ${reopened.length} undos to commercial.json`);
   } else {
-    console.log('\nNo Fizzle classifications to apply.');
+    console.log('\nNothing to write (no new Fizzle, flag or undo).');
   }
 
   // Surface human-review cases as JSON for downstream Linear processing.

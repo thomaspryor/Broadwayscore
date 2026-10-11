@@ -1897,166 +1897,6 @@
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog"
     },
-    "beaches": {
-      "capitalization": null,
-      "capitalizationSource": null,
-      "weeklyRunningCost": 850000,
-      "costMethodology": "industry-estimate",
-      "recouped": false,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "estimatedRecoupmentPct": [
-        0,
-        0
-      ],
-      "designation": "Flop",
-      "notes": "No reliable public data on capitalization; weekly running cost estimated at $850k; show closed at a loss without recoupment.",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "manual",
-          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
-          "date": "2025-08-10"
-        },
-        {
-          "type": "reddit",
-          "url": "https://www.reddit.com/r/Broadway/comments/1sf5swb/easter_grosses_analysis_week_ending_april_5/",
-          "date": "2026-04-06"
-        },
-        {
-          "type": "trade",
-          "url": "https://broadwaydirect.com/beaches-to-close-on-broadway-this-month/",
-          "date": "2026-05-21"
-        }
-      ],
-      "title": "Beaches, A New Musical",
-      "slug": "beaches",
-      "openingDate": "2026-04-22",
-      "status": "closed",
-      "researchedAt": "2026-10-10T18:47:25.647Z",
-      "model": "o4-mini",
-      "researchTrigger": "manual",
-      "requiresHumanReview": true,
-      "backfill": "BRO-4990",
-      "truthReview": {
-        "card": "BRO-5020",
-        "reviewedAt": "2026-10-11T06:20:31.503Z",
-        "verdict": "held",
-        "hardFields": [],
-        "rejectReasons": [
-          "no fetched page states a hard capitalization or outcome"
-        ]
-      }
-    },
-    "waitress-2021": {
-      "capitalization": 10111952,
-      "capitalizationSource": "Broadway Investment Alliance roundup of NYC musical/theatrical production tax credit (Waitress, LLC received $2,527,988 on 2024-07-16), implying $10,111,952 at the program's 25% rate.",
-      "weeklyRunningCost": null,
-      "costMethodology": "trade-reported",
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "estimatedRecoupmentPct": null,
-      "designation": "TBD",
-      "notes": "Public tax-credit data imply about $10.11M in qualified costs for the 2021 Barrymore return engagement. I couldn't verify a production-specific weekly nut or an official recoupment announcement for this remount.",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
-          "date": "2025-08-10"
-        },
-        {
-          "type": "manual",
-          "url": "https://www.ibdb.com/broadway-production/waitress-531975",
-          "date": null
-        }
-      ],
-      "title": "Waitress",
-      "slug": "waitress-2021",
-      "openingDate": "2021-09-02",
-      "status": "closed",
-      "researchedAt": "2026-10-10T19:21:18.555Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "manual",
-      "requiresHumanReview": true,
-      "backfill": "BRO-4990",
-      "researchAttempts": 1,
-      "truthReview": {
-        "card": "BRO-5020",
-        "reviewedAt": "2026-10-11T06:20:31.503Z",
-        "verdict": "held",
-        "hardFields": [],
-        "rejectReasons": [
-          "no fetched page states a hard capitalization or outcome"
-        ]
-      }
-    },
-    "thoughts-of-a-colored-man-2021": {
-      "capitalization": 5558416,
-      "capitalizationSource": "More Thoughts Broadway LLC received $1,389,604 in NYC musical/theatrical production tax credits; at 25%, that implies $5,558,416 in qualified production expenses.",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": false,
-      "recoupedDate": null,
-      "recoupedSource": "Backstage quoted producer Brian Moreland saying the show was close to recouping its $5 million investment when Omicron hit, but it closed on 2021-12-22.",
-      "estimatedRecoupmentPct": [
-        40,
-        70
-      ],
-      "designation": "Fizzle",
-      "notes": "Public reporting also described the show as capitalized for up to $5 million. No public weekly nut was verified. The Broadway run ended early on 2021-12-22 after 89 performances and $3,839,605 in cumulative grosses.",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "manual",
-          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
-          "date": "2025-08-09"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/new-york-extends-3-million-broadway-tax-credit-disneys-aladdin-approved",
-          "date": "2023-05-08"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwaynews.com/thoughts-of-a-colored-man-closes-on-broadway/",
-          "date": "2021-12-23"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.backstage.com/magazine/article/broadway-omicron-nyc-surge-74514/",
-          "date": "2022-01-10"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayworld.com/grossescumulative.php?orderby=desc&sortby=revenue.showname",
-          "date": null
-        }
-      ],
-      "title": "Thoughts of a Colored Man",
-      "slug": "thoughts-of-a-colored-man-2021",
-      "openingDate": "2021-10-13",
-      "status": "closed",
-      "researchedAt": "2026-10-10T19:22:56.490Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "manual",
-      "requiresHumanReview": true,
-      "backfill": "BRO-4990",
-      "researchAttempts": 1,
-      "truthReview": {
-        "card": "BRO-5020",
-        "reviewedAt": "2026-10-11T06:20:31.503Z",
-        "verdict": "cap-released",
-        "hardFields": [
-          "capitalization:5000000"
-        ],
-        "rejectReasons": [
-          "$5,558,416 was a tax-credit back-solve, replaced by the reported $5M",
-          "Fizzle not released: no source states the returned share"
-        ]
-      }
-    },
     "the-lehman-trilogy-2021": {
       "capitalization": 5750000,
       "capitalizationSource": "BroadwayNews reported the Broadway production was capitalized for up to $5.75 million, citing 2019 financial documents.",
@@ -2111,7 +1951,8 @@
         "rejectReasons": [
           "outcome unsourced; designation TBD"
         ]
-      }
+      },
+      "sourceVerifyAttempts": 1
     },
     "caroline-or-change-2021": {
       "capitalization": null,
@@ -2165,115 +2006,6 @@
           "designation:Nonprofit"
         ],
         "rejectReasons": []
-      }
-    },
-    "mrs-doubtfire-2021": {
-      "capitalization": 17000000,
-      "capitalizationSource": "AP-reported $17M capitalization in ArtDaily's Jan. 4, 2022 coverage; BroadwayNews earlier reported SEC documents showing 'up to $18 million'.",
-      "weeklyRunningCost": 700000,
-      "costMethodology": "trade-reported",
-      "recouped": false,
-      "recoupedDate": null,
-      "recoupedSource": "Broadway Journal reported on 2022-06-13 that the Broadway run 'closed at a loss on May 29'.",
-      "estimatedRecoupmentPct": null,
-      "designation": "Flop",
-      "notes": "Published reporting varies between $17M and up to $18M; I used the $17M AP figure. New York Focus later reported the production received the maximum $3M NYC tax credit, but Broadway Journal still described the Broadway run as a loss at closing.",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://artdaily.com/news/142620/-Mrs--Doubtfire--on-Broadway-is-pausing-to-avoid-closing",
-          "date": "2022-01-04"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwaynews.com/mrs-doubtfire-musical-to-open-on-broadway-this-season/",
-          "date": "2019-10-16"
-        },
-        {
-          "type": "trade",
-          "url": "https://nysfocus.com/2026/03/19/new-york-broadway-tax-credit-flops",
-          "date": "2026-03-19"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/broadway-cinderella-story-a-strange-loop-follows-its-pulitzer-with-best-musical",
-          "date": "2022-06-13"
-        }
-      ],
-      "title": "Mrs. Doubtfire",
-      "slug": "mrs-doubtfire-2021",
-      "openingDate": "2021-12-05",
-      "status": "closed",
-      "researchedAt": "2026-10-10T19:30:41.382Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "manual",
-      "requiresHumanReview": true,
-      "backfill": "BRO-4990",
-      "researchAttempts": 1,
-      "truthReview": {
-        "card": "BRO-5020",
-        "reviewedAt": "2026-10-11T06:20:31.503Z",
-        "verdict": "cap-released",
-        "hardFields": [
-          "capitalization:18000000"
-        ],
-        "rejectReasons": [
-          "recorded as the SEC filing ceiling (up to $18M); AP reported $17M",
-          "Flop not released: no source states the investor outcome"
-        ]
-      }
-    },
-    "company-2021": {
-      "capitalization": 13000000,
-      "capitalizationSource": "Broadway Journal, Aug. 23, 2022, Philip Boroff article 'WILL A NEW 'SWEENEY TODD' MAKE ITS INVESTORS A KILLING?'; it states Company would return about a third of its $13 million capitalization.",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": false,
-      "recoupedDate": null,
-      "recoupedSource": "Broadway Journal reported in Aug. 2022 that Company would return about a third of its $13 million capitalization and had closed at a loss.",
-      "estimatedRecoupmentPct": [
-        30,
-        35
-      ],
-      "designation": "Fizzle",
-      "notes": "Verified capitalization is $13 million. I could not verify a weekly nut. The best verified recoupment reporting says the production returned only about a third of capital and closed at a loss, so I classify it as a fizzle. A later NYC tax-credit list shows The Ladies Who Lunch LLC receiving $3 million, but I found no verified recoupment announcement.",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/will-a-new-sweeney-todd-make-its-investors-a-killing-exclusive",
-          "date": "2022-08-23"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/insurance-keeps-company-come-from-away-alive-as-jujamcyn-fights-chubb-snub",
-          "date": "2021-02-05"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
-          "date": "2025-08-10"
-        }
-      ],
-      "title": "Company",
-      "slug": "company-2021",
-      "openingDate": "2021-12-09",
-      "status": "closed",
-      "researchedAt": "2026-10-10T19:36:28.542Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "manual",
-      "requiresHumanReview": true,
-      "backfill": "BRO-4990",
-      "researchAttempts": 1,
-      "truthReview": {
-        "card": "BRO-5020",
-        "reviewedAt": "2026-10-11T06:20:31.503Z",
-        "verdict": "held",
-        "hardFields": [],
-        "rejectReasons": [
-          "no fetched page states a hard capitalization or outcome"
-        ]
       }
     },
     "plaza-suite-2022": {
@@ -2536,55 +2268,6 @@
       "openingDate": "2022-04-17",
       "status": "closed",
       "researchedAt": "2026-10-10T19:52:34.556Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "manual",
-      "requiresHumanReview": true,
-      "backfill": "BRO-4990",
-      "researchAttempts": 1,
-      "truthReview": {
-        "card": "BRO-5020",
-        "reviewedAt": "2026-10-11T06:20:31.503Z",
-        "verdict": "held",
-        "hardFields": [],
-        "rejectReasons": [
-          "no fetched page states a hard capitalization or outcome"
-        ]
-      }
-    },
-    "hangmen-2022": {
-      "capitalization": 5700220,
-      "capitalizationSource": "Broadway Investment Alliance NYC Musical and Theatrical Production Tax Credit list: Hangmen Broadway, LP received $1,425,055; implied capitalization = $5,700,220 by dividing by 25%.",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "estimatedRecoupmentPct": null,
-      "designation": "TBD",
-      "notes": "Capitalization inferred from the NYC tax credit payment. I did not find a verified weekly nut or public recoupment announcement for this closed limited engagement.",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
-          "date": "2025-08-09"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwaynews.com/hangmen-announces-broadway-return-this-spring/",
-          "date": "2022-02-01"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwaynews.com/tony-awards-covid-19-impact-broadway-box-office/",
-          "date": "2022-06-23"
-        }
-      ],
-      "title": "Hangmen",
-      "slug": "hangmen-2022",
-      "openingDate": "2022-04-21",
-      "status": "closed",
-      "researchedAt": "2026-10-10T19:54:15.048Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual",
       "requiresHumanReview": true,
@@ -3091,61 +2774,8 @@
         "rejectReasons": [
           "no fetched page states a hard capitalization or outcome"
         ]
-      }
-    },
-    "good-night-oscar-2023": {
-      "capitalization": 10665336,
-      "capitalizationSource": "Broadway Investment Alliance lists Goodnight Oscar, LLC at $2,666,334 in NYC tax-credit payouts; the state credit is 25% of qualified production costs, implying $10,665,336. ([investmentbroadway.com](https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit))",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "estimatedRecoupmentPct": null,
-      "designation": "TBD",
-      "notes": "Limited Broadway engagement; capitalization inferred from the NYC tax-credit payout, but I could not verify a weekly nut or a public recoupment announcement. ([playbill.com](https://playbill.com/article/good-night-oscar-closes-on-broadway-august-27?utm_source=openai))",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
-          "date": "2025-08-09"
-        },
-        {
-          "type": "manual",
-          "url": "https://www.nysenate.gov/sites/default/files/open-data/bluebook-2025.pdf",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayworld.com/grosses/GOOD-NIGHTOSCAR",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://playbill.com/article/good-night-oscar-closes-on-broadway-august-27",
-          "date": "2023-08-27"
-        }
-      ],
-      "title": "Good Night, Oscar",
-      "slug": "good-night-oscar-2023",
-      "openingDate": "2023-04-24",
-      "status": "closed",
-      "researchedAt": "2026-10-10T20:23:27.535Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "manual",
-      "requiresHumanReview": true,
-      "backfill": "BRO-4990",
-      "researchAttempts": 1,
-      "truthReview": {
-        "card": "BRO-5020",
-        "reviewedAt": "2026-10-11T06:20:31.503Z",
-        "verdict": "held",
-        "hardFields": [],
-        "rejectReasons": [
-          "no fetched page states a hard capitalization or outcome"
-        ]
-      }
+      },
+      "sourceVerifyAttempts": 1
     },
     "the-sign-in-sidney-brusteins-window-2023": {
       "capitalization": null,
@@ -4481,9 +4111,381 @@
       "researchedAt": "2026-10-11T01:22:54.529Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
+    },
+    "beaches": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": 850000,
+      "costMethodology": "industry-estimate",
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": [
+        0,
+        0
+      ],
+      "designation": "Flop",
+      "notes": "No reliable public data on capitalization; weekly running cost estimated at $850k; show closed at a loss without recoupment.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-10"
+        },
+        {
+          "type": "reddit",
+          "url": "https://www.reddit.com/r/Broadway/comments/1sf5swb/easter_grosses_analysis_week_ending_april_5/",
+          "date": "2026-04-06"
+        },
+        {
+          "type": "trade",
+          "url": "https://broadwaydirect.com/beaches-to-close-on-broadway-this-month/",
+          "date": "2026-05-21"
+        }
+      ],
+      "title": "Beaches, A New Musical",
+      "slug": "beaches",
+      "openingDate": "2026-04-22",
+      "status": "closed",
+      "researchedAt": "2026-10-10T18:47:25.647Z",
+      "model": "o4-mini",
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990",
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
+    },
+    "waitress-2021": {
+      "capitalization": 10111952,
+      "capitalizationSource": "Broadway Investment Alliance roundup of NYC musical/theatrical production tax credit (Waitress, LLC received $2,527,988 on 2024-07-16), implying $10,111,952 at the program's 25% rate.",
+      "weeklyRunningCost": null,
+      "costMethodology": "trade-reported",
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Public tax-credit data imply about $10.11M in qualified costs for the 2021 Barrymore return engagement. I couldn't verify a production-specific weekly nut or an official recoupment announcement for this remount.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-10"
+        },
+        {
+          "type": "manual",
+          "url": "https://www.ibdb.com/broadway-production/waitress-531975",
+          "date": null
+        }
+      ],
+      "title": "Waitress",
+      "slug": "waitress-2021",
+      "openingDate": "2021-09-02",
+      "status": "closed",
+      "researchedAt": "2026-10-10T19:21:18.555Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990",
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
+    },
+    "thoughts-of-a-colored-man-2021": {
+      "capitalization": 5558416,
+      "capitalizationSource": "More Thoughts Broadway LLC received $1,389,604 in NYC musical/theatrical production tax credits; at 25%, that implies $5,558,416 in qualified production expenses.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "Backstage quoted producer Brian Moreland saying the show was close to recouping its $5 million investment when Omicron hit, but it closed on 2021-12-22.",
+      "estimatedRecoupmentPct": [
+        40,
+        70
+      ],
+      "designation": "Fizzle",
+      "notes": "Public reporting also described the show as capitalized for up to $5 million. No public weekly nut was verified. The Broadway run ended early on 2021-12-22 after 89 performances and $3,839,605 in cumulative grosses.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/p/new-york-extends-3-million-broadway-tax-credit-disneys-aladdin-approved",
+          "date": "2023-05-08"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwaynews.com/thoughts-of-a-colored-man-closes-on-broadway/",
+          "date": "2021-12-23"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.backstage.com/magazine/article/broadway-omicron-nyc-surge-74514/",
+          "date": "2022-01-10"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/grossescumulative.php?orderby=desc&sortby=revenue.showname",
+          "date": null
+        }
+      ],
+      "title": "Thoughts of a Colored Man",
+      "slug": "thoughts-of-a-colored-man-2021",
+      "openingDate": "2021-10-13",
+      "status": "closed",
+      "researchedAt": "2026-10-10T19:22:56.490Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990",
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "cap-released",
+        "hardFields": [
+          "capitalization:5000000"
+        ],
+        "rejectReasons": [
+          "$5,558,416 was a tax-credit back-solve, replaced by the reported $5M",
+          "Fizzle not released: no source states the returned share"
+        ]
+      }
+    },
+    "mrs-doubtfire-2021": {
+      "capitalization": 17000000,
+      "capitalizationSource": "AP-reported $17M capitalization in ArtDaily's Jan. 4, 2022 coverage; BroadwayNews earlier reported SEC documents showing 'up to $18 million'.",
+      "weeklyRunningCost": 700000,
+      "costMethodology": "trade-reported",
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "Broadway Journal reported on 2022-06-13 that the Broadway run 'closed at a loss on May 29'.",
+      "estimatedRecoupmentPct": null,
+      "designation": "Flop",
+      "notes": "Published reporting varies between $17M and up to $18M; I used the $17M AP figure. New York Focus later reported the production received the maximum $3M NYC tax credit, but Broadway Journal still described the Broadway run as a loss at closing.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://artdaily.com/news/142620/-Mrs--Doubtfire--on-Broadway-is-pausing-to-avoid-closing",
+          "date": "2022-01-04"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwaynews.com/mrs-doubtfire-musical-to-open-on-broadway-this-season/",
+          "date": "2019-10-16"
+        },
+        {
+          "type": "trade",
+          "url": "https://nysfocus.com/2026/03/19/new-york-broadway-tax-credit-flops",
+          "date": "2026-03-19"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/p/broadway-cinderella-story-a-strange-loop-follows-its-pulitzer-with-best-musical",
+          "date": "2022-06-13"
+        }
+      ],
+      "title": "Mrs. Doubtfire",
+      "slug": "mrs-doubtfire-2021",
+      "openingDate": "2021-12-05",
+      "status": "closed",
+      "researchedAt": "2026-10-10T19:30:41.382Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990",
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "cap-released",
+        "hardFields": [
+          "capitalization:18000000"
+        ],
+        "rejectReasons": [
+          "recorded as the SEC filing ceiling (up to $18M); AP reported $17M",
+          "Flop not released: no source states the investor outcome"
+        ]
+      }
+    },
+    "company-2021": {
+      "capitalization": 13000000,
+      "capitalizationSource": "Broadway Journal, Aug. 23, 2022, Philip Boroff article 'WILL A NEW 'SWEENEY TODD' MAKE ITS INVESTORS A KILLING?'; it states Company would return about a third of its $13 million capitalization.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": "Broadway Journal reported in Aug. 2022 that Company would return about a third of its $13 million capitalization and had closed at a loss.",
+      "estimatedRecoupmentPct": [
+        30,
+        35
+      ],
+      "designation": "Fizzle",
+      "notes": "Verified capitalization is $13 million. I could not verify a weekly nut. The best verified recoupment reporting says the production returned only about a third of capital and closed at a loss, so I classify it as a fizzle. A later NYC tax-credit list shows The Ladies Who Lunch LLC receiving $3 million, but I found no verified recoupment announcement.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/p/will-a-new-sweeney-todd-make-its-investors-a-killing-exclusive",
+          "date": "2022-08-23"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/p/insurance-keeps-company-come-from-away-alive-as-jujamcyn-fights-chubb-snub",
+          "date": "2021-02-05"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-10"
+        }
+      ],
+      "title": "Company",
+      "slug": "company-2021",
+      "openingDate": "2021-12-09",
+      "status": "closed",
+      "researchedAt": "2026-10-10T19:36:28.542Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990",
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
+    },
+    "hangmen-2022": {
+      "capitalization": 5700220,
+      "capitalizationSource": "Broadway Investment Alliance NYC Musical and Theatrical Production Tax Credit list: Hangmen Broadway, LP received $1,425,055; implied capitalization = $5,700,220 by dividing by 25%.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Capitalization inferred from the NYC tax credit payment. I did not find a verified weekly nut or public recoupment announcement for this closed limited engagement.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwaynews.com/hangmen-announces-broadway-return-this-spring/",
+          "date": "2022-02-01"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwaynews.com/tony-awards-covid-19-impact-broadway-box-office/",
+          "date": "2022-06-23"
+        }
+      ],
+      "title": "Hangmen",
+      "slug": "hangmen-2022",
+      "openingDate": "2022-04-21",
+      "status": "closed",
+      "researchedAt": "2026-10-10T19:54:15.048Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990",
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
+    },
+    "good-night-oscar-2023": {
+      "capitalization": 10665336,
+      "capitalizationSource": "Broadway Investment Alliance lists Goodnight Oscar, LLC at $2,666,334 in NYC tax-credit payouts; the state credit is 25% of qualified production costs, implying $10,665,336. ([investmentbroadway.com](https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Limited Broadway engagement; capitalization inferred from the NYC tax-credit payout, but I could not verify a weekly nut or a public recoupment announcement. ([playbill.com](https://playbill.com/article/good-night-oscar-closes-on-broadway-august-27?utm_source=openai))",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        },
+        {
+          "type": "manual",
+          "url": "https://www.nysenate.gov/sites/default/files/open-data/bluebook-2025.pdf",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/grosses/GOOD-NIGHTOSCAR",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/good-night-oscar-closes-on-broadway-august-27",
+          "date": "2023-08-27"
+        }
+      ],
+      "title": "Good Night, Oscar",
+      "slug": "good-night-oscar-2023",
+      "openingDate": "2023-04-24",
+      "status": "closed",
+      "researchedAt": "2026-10-10T20:23:27.535Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990",
+      "researchAttempts": 1,
+      "truthReview": {
+        "card": "BRO-5020",
+        "reviewedAt": "2026-10-11T06:20:31.503Z",
+        "verdict": "held",
+        "hardFields": [],
+        "rejectReasons": [
+          "no fetched page states a hard capitalization or outcome"
+        ]
+      }
     }
   },
-  "lastUpdated": "2026-10-10T23:14:17.684Z",
+  "lastUpdated": "2026-10-11T08:52:06.912Z",
   "hardTruthFindings": {
     "collectedAt": "2026-10-11",
     "card": "BRO-5017",

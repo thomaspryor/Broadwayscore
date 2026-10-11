@@ -20,11 +20,24 @@ describe('classifyStaleClosure', () => {
     assert.equal(r.action, 'wait');
   });
 
-  it('classifies Fizzle for TBD entry closed 30+ days ago that WAS researched, no signal', () => {
+  it('flags (never labels) a researched TBD closed 30+ days with no recoupment news (BRO-5020)', () => {
+    // "No recoupment news" is not a cited loss: the row stays TBD and is
+    // flagged needsLossEvidence. No designation is returned at all.
     const r = classifyStaleClosure({
       show: { status: 'closed', closingDate: daysBefore(45) },
       entry: { designation: 'TBD', researchAttempts: 1, lastResearchedAt: daysBefore(20) },
       pending: null, archive: null, now: NOW,
+    });
+    assert.equal(r.action, 'flag-needs-loss-evidence');
+    assert.equal(r.designation, undefined);
+    assert.ok(r.reason.includes('no cited loss source'));
+  });
+
+  it('allowInferredLoss restores the old auto-Fizzle (reversible switch)', () => {
+    const r = classifyStaleClosure({
+      show: { status: 'closed', closingDate: daysBefore(45) },
+      entry: { designation: 'TBD', researchAttempts: 1, lastResearchedAt: daysBefore(20) },
+      pending: null, archive: null, now: NOW, thresholds: { allowInferredLoss: true },
     });
     assert.equal(r.action, 'classify-fizzle');
     assert.equal(r.designation, 'Fizzle');
@@ -70,7 +83,7 @@ describe('classifyStaleClosure', () => {
       entry: { designation: 'TBD', researchAttempts: 1, lastResearchedAt: daysBefore(20) },
       pending: null, archive: null, now: NOW,
     });
-    assert.equal(r.action, 'classify-fizzle');
+    assert.equal(r.action, 'flag-needs-loss-evidence');
   });
 
   it('honors humanReviewedDesignation lock', () => {
@@ -158,7 +171,7 @@ describe('classifyStaleClosure', () => {
       pending: { recouped: true, researchedAt: daysBefore(60), detectedBy: 'rss-poller' },
       archive: null, now: NOW,
     });
-    assert.equal(r.action, 'classify-fizzle');
+    assert.equal(r.action, 'flag-needs-loss-evidence');
   });
 
   it('handles missing closingDate', () => {
@@ -183,6 +196,6 @@ describe('classifyStaleClosure', () => {
       entry: { designation: 'TBD', deepResearch: { verifiedDate: daysBefore(40) } },
       now: NOW, thresholds: { graceDays: 15 },
     });
-    assert.equal(r.action, 'classify-fizzle');
+    assert.equal(r.action, 'flag-needs-loss-evidence');
   });
 });
