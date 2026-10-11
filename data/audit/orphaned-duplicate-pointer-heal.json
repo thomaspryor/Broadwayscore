@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-11T02:35:29.844Z",
+  "generated": "2026-10-11T03:32:46.030Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 23,
+  "count": 24,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -57,6 +57,13 @@
       "loserFile": "guardian--jesse-oxfeld.json",
       "targetFile": "guardian--david-jays.json",
       "reason": "orphaned-duplicate-heal: guardian--david-jays.json was flagged invalid after guardian--jesse-oxfeld.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "lost-atoms-off-west-end-2026",
+      "loserFile": "standard--unknown.json",
+      "targetFile": "standard--nick-curtis.json",
+      "reason": "orphaned-duplicate-heal: standard--nick-curtis.json was flagged invalid after standard--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
