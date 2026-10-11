@@ -1782,12 +1782,57 @@ test('BRO-3881: the row name survives colons in the conditionKey', () => {
   assert.equal(Buffer.from(token, 'base64url').toString('utf8'), rowName);
 });
 
-test('BRO-3881: a non-health-check condition keeps the prose criteria and is not given a bogus command', () => {
+test('BRO-3881: a non-health-check condition is not given a check-health-row-absent.js command', () => {
   const { buildCardNotes } = require('./owner-alert-router.js');
   const notes = buildCardNotes({ description: 'd', hint: 'h', fields: [], conditionKey: 'gap:some-show-2026/thestage--unknown.json' });
   assert.ok(!notes.includes('check-health-row-absent.js'),
     'only health-check rows have a check-health-row-absent.js answer — inventing one for other conditions would arm a command that can never pass');
   assert.match(notes, /no longer fires on the next check/);
+});
+
+// ── BRO-3889: the OTHER ~63% of router-filed conditions ─────────────────────
+// BRO-3881 armed health-check: cards only; every gap:/cron-health-chronic:/
+// backstop:/... card still carried prose-only acceptance, so linear-next.js
+// refused it. These mirror the BRO-3881 assertions above, against the REAL
+// buildCardNotes and the REAL evaluateVerifiability.
+for (const conditionKey of [
+  'gap:some-show-2026/thestage--unknown.json',
+  'cron-health-chronic:Refresh Show Score (opening-night)',
+]) {
+  test(`BRO-3889: a "${conditionKey.split(':')[0]}:" card carries a check-alert-condition-absent.js command the real dispatch gate arms`, () => {
+    const { buildCardNotes } = require('./owner-alert-router.js');
+    const { evaluateVerifiability } = require('./verify-gate.js');
+    const notes = buildCardNotes({ description: 'Condition fired', hint: 'Fix the root cause', fields: [], conditionKey });
+    const gate = evaluateVerifiability(notes, []);
+    assert.ok(gate.cmd, `router-filed card is undispatchable — linear-next.js refuses it: ${gate.reason}`);
+    assert.match(gate.cmd, /^node scripts\/check-alert-condition-absent\.js --key-b64 [A-Za-z0-9_-]+$/);
+    // The token must decode back to the RAW conditionKey the checker compares
+    // against in the alert ledger.
+    assert.equal(Buffer.from(gate.cmd.split(' ').pop(), 'base64url').toString('utf8'), conditionKey);
+    assert.ok(!notes.includes('[hold released by triage]'));
+  });
+}
+
+test('BRO-3889: a more specific command wins over the alert-ledger fallback', () => {
+  const { buildCardNotes } = require('./owner-alert-router.js');
+  const { evaluateVerifiability } = require('./verify-gate.js');
+  const health = buildCardNotes({ description: 'd', hint: 'h', fields: [], conditionKey: 'health-check:Data quality: provider spend ledger' });
+  assert.match(evaluateVerifiability(health, []).cmd, /check-health-row-absent\.js/);
+  assert.ok(!health.includes('check-alert-condition-absent.js'));
+  const red = buildCardNotes({ description: 'd', hint: 'h', fields: [], conditionKey: 'test-yml:red:unit:abc', verify: { line: 'VERIFY: node scripts/run-unit-tests.js' } });
+  assert.equal(evaluateVerifiability(red, []).cmd, 'node scripts/run-unit-tests.js');
+  assert.ok(!red.includes('check-alert-condition-absent.js'));
+});
+
+test('BRO-3889: the alert-ledger command is a legal safe form even for a long multi-byte key', () => {
+  const { alertAbsentCheckCmd } = require('./health-row-check-cmd.js');
+  const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
+  for (const key of ['gap:x/y.json', `backstop:${'é'.repeat(150)}`, `land:${'a'.repeat(400)}`]) {
+    const cmd = alertAbsentCheckCmd(key);
+    assert.ok(isSafeCheckCommand(cmd), `not a safe form: ${cmd.slice(0, 80)}...`);
+  }
+  assert.ok(!isSafeCheckCommand('node scripts/check-alert-condition-absent.js --key-b64 abc --live'));
+  assert.ok(!isSafeCheckCommand('node scripts/check-alert-condition-absent.js --key-b64 a;rm'));
 });
 
 test('BRO-3881: both auto-filers build the command from the SAME encoder', () => {
