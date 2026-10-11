@@ -8,7 +8,7 @@
  * season's last scoring dispatch; a season must pass before the next starts.
  *
  * Checks, over shows promoted by promote-historical-we.js
- * (discoverySource 'we-historical:wos') for the season:
+ * (discoverySource 'we-historical:wos' or, review-led, 'we-historical:tr') for the season:
  *   1. displayable   >= 70% of shows have >= 5 scored reviews
  *   2. in-window     every scored review is inside the show's run window
  *                    (date-guard.js evaluateDateGuard, the same rule the
@@ -42,6 +42,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { todaytixMarket } = require('./lib/todaytix-market');
 const { nonStoryReason } = require('./lib/todaytix-page-identity');
 const { isRejectedImage } = require('./lib/image-source-match');
+const { WE_HISTORICAL_DISCOVERY_SOURCES } = require('./lib/we-historical-corroboration');
 
 const NYC_ONLY_IMAGE_HOST_RE = /theatr-app\.appspot\.com/;
 const CENSORED_TITLE_RE = /[a-z]\*+[a-z]/i;
@@ -65,7 +66,6 @@ function synopsisNeedsLook(text) {
   return sentences(text).slice(0, 4).some(x => nonStoryReason(x));
 }
 
-const DISCOVERY_SOURCE = 'we-historical:wos';
 const MIN_SCORED = 5;
 const MIN_DISPLAYABLE_SHARE = 0.7;
 
@@ -87,7 +87,7 @@ const isScored = r => typeof r.assignedScore === 'number' && Number.isFinite(r.a
  * @param {{shows: object[], reviews: object[], season: string, ids?: Set<string>}} input
  */
 function auditSeason({ shows, reviews, season, ids, imageSources = {} }) {
-  const promoted = shows.filter(s => s.discoverySource === DISCOVERY_SOURCE && s.season === season
+  const promoted = shows.filter(s => WE_HISTORICAL_DISCOVERY_SOURCES.has(s.discoverySource) && s.season === season
     && (!ids || !ids.size || ids.has(s.id)));
   const byShow = new Map(promoted.map(s => [s.id, []]));
   for (const r of reviews) if (byShow.has(r.showId)) byShow.get(r.showId).push(r);
