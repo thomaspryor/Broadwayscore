@@ -5,7 +5,7 @@
  */
 import type { ReactNode } from 'react';
 import type { MarketPage, MoverRow } from '@/lib/box-office-display';
-import { money, PACE_MIN_WEEK, PACE_MAX_WEEK } from '@/lib/box-office-display';
+import { money, PACE_MIN_WEEK, PACE_MAX_WEEK, shortTitle } from '@/lib/box-office-display';
 import { EYEBROW } from './MarketOverview';
 
 const SECTION = 'card p-4 sm:p-6 mb-8 flex flex-col gap-4';
@@ -137,14 +137,46 @@ export function Standouts({ page }: { page: MarketPage }) {
           note={median != null ? `Average ticket above the Broadway middle ($${Math.round(median)} this week)` : 'Average ticket above the Broadway middle'}
           rows={page.premium.rows.slice(0, STANDOUTS_SHOWN).map((p) => ({ key: p.title, name: p.title, isNew: p.isNew, value: `+$${Math.round(p.over)}` }))}
         />
-        <StandoutList
-          title="Historic pace, new shows"
-          note="Share of Broadway runs since 2001 (plays and musicals) each new show outsold per seat at the same point, adjusted for the market that week"
-          rows={page.pace.map((p) => ({ key: p.title, name: p.title, value: `beats ${p.beatsPct}%` }))}
-        />
+        <NewShowsCompare pace={page.pace} />
       </div>
-      <p className="m-0 text-xs text-gray-400">Historic pace covers shows {PACE_MIN_WEEK} to {PACE_MAX_WEEK} weeks after their first preview.</p>
     </section>
+  );
+}
+
+/**
+ * How each new show's sales per seat rank against every Broadway run since
+ * 2001 at the same week of its run: a 0-100 bar with a tick at the average.
+ */
+function NewShowsCompare({ pace }: { pace: MarketPage['pace'] }) {
+  return (
+    <div className="bg-surface-overlay/60 rounded-xl p-3.5 flex flex-col gap-2 min-w-0">
+      <div className={EYEBROW}>How new shows compare</div>
+      <p
+        className="m-0 text-xs text-gray-400 leading-snug"
+        title="Each week is first compared with how all of Broadway sold that week, so a busy holiday week does not flatter a new show."
+      >
+        Sales per seat so far, compared with every Broadway play and musical since 2001 at the same point in its run. 50% is a middle-of-the-pack show.
+      </p>
+      {pace.length ? (
+        <ul className="m-0 p-0 list-none flex flex-col divide-y divide-white/5">
+          {pace.map((p) => (
+            <li key={p.title} className="flex flex-col gap-1 py-2">
+              <div className="flex items-baseline justify-between gap-3">
+                <span className="text-sm text-white truncate" title={p.title}>{shortTitle(p.title)}</span>
+                <span className="text-sm font-bold text-white tabular-nums shrink-0">Better than {p.beatsPct}%</span>
+              </div>
+              <div className="relative h-1.5 rounded-full bg-white/10" aria-hidden="true">
+                <div className="absolute inset-y-0 left-0 rounded-full bg-brand" style={{ width: `${Math.max(0, Math.min(100, p.beatsPct))}%` }} />
+                <div className="absolute -top-0.5 -bottom-0.5 left-1/2 w-px bg-white/60" />
+              </div>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="m-0 text-sm text-gray-400">None this week.</p>
+      )}
+      <p className="m-0 text-xs text-gray-400">Shows {PACE_MIN_WEEK} to {PACE_MAX_WEEK} weeks into their run.</p>
+    </div>
   );
 }
 

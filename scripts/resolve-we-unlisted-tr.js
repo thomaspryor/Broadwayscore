@@ -29,7 +29,7 @@ const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { selectLookups, pickTrForReview, reviewLedPath, headerFacts } = require('./lib/we-review-led-candidates');
+const { selectLookups, pickTrForReview, reviewLedPath, headerFacts, parseTrHeaderDates } = require('./lib/we-review-led-candidates');
 const { isLondonVenue } = require('./lib/tr-london-venue');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 
@@ -46,29 +46,38 @@ const PDF_HEADER_MAX_LINES = 40;
 const DATE_LINE = /^\s*\d{1,2}\s+[A-Z][a-z]+\s+\d{4}\s*$/;
 
 /**
- * The production block of a PDF-era issue: from the ALL-CAPS heading that IS
+ * The production block of a PDF-era issue: from an ALL-CAPS heading that IS
  * the title (a contents line "HANSARD 1234" or a two-column line does not
  * count) to the first review's date line, reduced by headerFacts() to the
- * title lines and short date lines. The file is public: never review prose.
+ * title lines and date phrases. The file is public: never review prose.
+ *
+ * An issue prints the title more than once (contents, the production listing
+ * with its run dates, the "Reviews" heading above the reviews), so the first
+ * heading whose block carries run dates wins; otherwise the first block.
  */
 const capsKey = s => String(s || '').toUpperCase().replace(/[^A-Z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
 
 function pdfHeaderFor(text, title) {
   const want = capsKey(cleanSearchTitle(title));
   if (!want) return null;
+  const wants = new Set([want, want.replace(/^THE /, ''), `THE ${want}`]);
   const lines = String(text || '').split('\n');
+  let first = null;
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
     if (!line || line !== line.toUpperCase() || !/[A-Z]/.test(line)) continue;
-    if (capsKey(line) !== want) continue;
+    if (!wants.has(capsKey(line))) continue;
     const block = [line];
     for (let j = i + 1; j < lines.length && j <= i + PDF_HEADER_MAX_LINES; j++) {
       if (DATE_LINE.test(lines[j])) break;
       block.push(lines[j]);
     }
-    return headerFacts(block.join('\n'));
+    const facts = headerFacts(block.join('\n'));
+    const d = parseTrHeaderDates(facts);
+    if (d.previewsStartDate || d.openingDate || d.closingDate) return facts;
+    if (!first) first = facts;
   }
-  return null;
+  return first;
 }
 
 /**
@@ -168,12 +177,15 @@ async function main() {
         if (fs.readFileSync(tmp).subarray(0, 5).toString() !== '%PDF-') throw new Error('download is not a PDF (login expired?)');
         // -layout keeps header lines whole on single-column pages; -raw is
         // the fallback for two-column pages (same order as extract-theatre-record.js).
+        let fallback = null;
         for (const mode of ['-layout', '-raw']) {
           const text = execFileSync('pdftotext', [mode, tmp, '-'], { maxBuffer: 50 * 1024 * 1024 }).toString();
           const h = pdfHeaderFor(text, title);
-          if (h) return h;
+          const d = parseTrHeaderDates(h);
+          if (d.previewsStartDate || d.openingDate || d.closingDate) return h;
+          fallback = fallback || h;
         }
-        return null;
+        return fallback;
       } finally {
         try { fs.unlinkSync(tmp); } catch (_) {}
       }
