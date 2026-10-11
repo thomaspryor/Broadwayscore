@@ -35,6 +35,7 @@ const { execSync, execFileSync } = require('child_process');
 const { getTodayJsonlPath } = require('./lib/exclusion-logger');
 const { computeCommercialModelDriftStatus } = require('./lib/commercial-model-drift');
 const { fitCheckStatus: waltzFitCheckStatus } = require('./lib/waltz-model-fit');
+const { revisitBarStatus } = require('./lib/recoupment-timing-report');
 const { routeAlert, readDispatchAttempts, peekDigestQueue, clearDigestQueue } = require('./lib/owner-alert-router.js');
 const { summarizeFailureStreak, deadmanShouldPage } = require('./lib/alert-dispatch-streak.js');
 const { readOwnerEmailLog } = require('./lib/discord-notify.js');
@@ -300,6 +301,10 @@ const AUTO_FIX_PLAYBOOK = [
   // BRO-5027. Advisory: only stale/missing/drift warns reach the digest.
   { match: /^Commercial model: Boring Waltz fit$/, urgency: 'this-week',
     humanAction: 'Boring Waltz is a Reddit user who posts weekly profit estimates for each show. Our profit model now agrees with his estimates much less often than usual, or this weekly comparison stopped updating. Nothing on the site changes by itself. Open Claude Code and say: "Check the Boring Waltz fit warning in the health digest and find out what changed."' },
+
+  // BRO-5073. Warns only when the revisit bar is met.
+  { match: /^Commercial model: running-show bar revisit$/, urgency: 'this-week',
+    humanAction: 'The "% returned" bar for shows still running was kept off because the model was not accurate enough. Enough shows have now announced recoupment, and the model got enough of them right, to look at turning it on. Nothing on the site changes by itself. Open Claude Code and say: "The running-show bar revisit check passed; review the numbers and recommend whether to turn on RUNNING_MODEL_BAR_ENABLED."' },
 
   // BRO-5004. Without an entry this falls to urgency 'low' and never shows.
   { match: /^Commercial model: stored vs fresh run$/, urgency: 'this-week',
@@ -1993,6 +1998,18 @@ function checkCommercialModelDrift() {
       try { file = readJSON(path.join(AUDIT_DIR, 'waltz-model-fit.json')); } catch { /* missing or corrupt: warn below */ }
       const result = waltzFitCheckStatus(file);
       return { name, ...result, hint: result.status === 'pass' ? undefined : 'Stale or missing: check the Monday scrape-waltz-costs.yml run. Drift: a model change or a shift in his numbers; compare with node scripts/backtest-recoupment-ground-truth.js before changing anything' };
+    }),
+    // BRO-5073: every announced recoupment is a dated check of the model.
+    // Running-show "% returned" bars stay off until >= 10 strong rows are
+    // >= 80% inside for plays and musicals each; this re-runs the timing
+    // backtest (about 1s, aggregates only) so the digest says when to revisit.
+    runCheck('Commercial model: running-show bar revisit', () => {
+      const name = 'Commercial model: running-show bar revisit';
+      const out = execFileSync(process.execPath, [path.join(__dirname, 'backtest-recoupment-ground-truth.js'), '--timing', '--json', '--aggregate-only'], { encoding: 'utf8', timeout: 120000, stdio: ['ignore', 'pipe', 'ignore'] });
+      let report = null;
+      try { report = JSON.parse(out.slice(out.indexOf('{'))); } catch { /* unreadable: warn below */ }
+      const result = revisitBarStatus(report);
+      return { name, ...result, hint: result.status === 'pass' ? undefined : 'Run node scripts/backtest-recoupment-ground-truth.js --timing --displayable-only for the rows; the launch call is the owner\'s' };
     }),
   ];
 }
