@@ -198,6 +198,12 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // no publishDate). Measured on the review-texts repo: every top-level
   // bestoftheatre.co.uk/<slug> file is house copy; 45 /blog/ URLs unaffected.
   { host: /(^|\.)theatrebookings\.com$/, path: /^\/play\//i, reason: 'ticket-seller-product-page', allSources: true },
+  // Theater Scene tag archives (BRO-5097): theaterscene.net/tag/<show>/ lists a
+  // show's posts (a Chip Deffaa column about a different play was ingested from
+  // one as a "review"). Its reviews live at /<section>/<category>/<slug>/<critic>/.
+  // Host-scoped: other sites' reviews do sit at /tag/ urls (twi-ny.com, offoffonline),
+  // and none of 357 theaterscene.net corpus reviews is a /tag/ url.
+  { host: /(^|\.)theaterscene\.net$/, path: /^\/tags?\/[^/]+\/?$/i, reason: 'tag-index-page', allSources: true },
   { host: /(^|\.)bestoftheatre\.co\.uk$/, path: /^\/(?!blog(\/|$))[^/]+\/?$/i, reason: 'ticket-seller-product-page', allSources: true },
   { host: /(^|\.)eventticketscenter\.com$/, reason: 'ticketing-reseller' },
   // Stagebuddy publishes real reviews under /theater/reviews/…; its
