@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5092",
   "planId": "b5cb6d28-b6af-4c14-942c-504de31ebeb9",
-  "status": "pending",
+  "status": "partial",
   "submitter": {
     "name": null,
     "email": null
@@ -40,5 +40,13 @@
         "description": "the-piano-lesson-2022: add commercial entry (Easy Winner, recouped Mar 2024)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-11T23:50:52.938Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": false,
+      "reason": "add-commercial-entry: \"the-piano-lesson-2022\" already has a commercial entry (use data-edit)"
+    }
+  ]
 }
