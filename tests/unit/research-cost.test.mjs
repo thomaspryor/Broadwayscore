@@ -64,4 +64,30 @@ describe('modelShutdownStatus', () => {
     }
     assert.ok(Object.keys(MODEL_SHUTDOWNS).length > 0);
   });
+
+  // BRO-4989: backfill-commercial-o4mini.js hardcoded model: 'o4-mini' outside
+  // the guarded default above. Any API-call literal naming a model with an
+  // announced shutdown fails here, in every script, before the cutoff.
+  it('no script hardcodes a model with an announced shutdown in an API call', async () => {
+    const fs = await import('node:fs');
+    const path = await import('node:path');
+    const { fileURLToPath } = await import('node:url');
+    const { MODEL_SHUTDOWNS } = require('../../scripts/lib/research-cost');
+    const scriptsDir = fileURLToPath(new URL('../../scripts/', import.meta.url));
+    const files = [];
+    const walk = (d) => {
+      for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+        if (e.name === 'node_modules') continue;
+        const p = path.join(d, e.name);
+        if (e.isDirectory()) walk(p);
+        else if (/\.(c?js|mjs|ts)$/.test(e.name) && !/\.test\./.test(e.name)) files.push(p);
+      }
+    };
+    walk(scriptsDir);
+    const names = Object.keys(MODEL_SHUTDOWNS).map(m => m.replace(/[.]/g, '\\.'));
+    const re = new RegExp(`\\bmodel\\s*[:=]\\s*['"\`](?:${names.join('|')})(?:-\\d{4}-\\d{2}-\\d{2})?['"\`]`);
+    const hits = files.filter(f => re.test(fs.readFileSync(f, 'utf8'))).map(f => path.relative(scriptsDir, f));
+    assert.deepEqual(hits, [], `hardcoded retiring model in: ${hits.join(', ')}`);
+    assert.ok(files.length > 100, 'scan found too few scripts');
+  });
 });

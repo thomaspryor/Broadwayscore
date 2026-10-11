@@ -5,6 +5,7 @@
  * public/data/mobile-shows.json; writes kitchen-sink empty stubs for the rest.
  * NEVER writes to tracked files.
  */
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const ROOT = process.cwd();

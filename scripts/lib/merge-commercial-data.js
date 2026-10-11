@@ -133,7 +133,7 @@ const MODEL_RUN_FIELDS = [
   'modelRecoupmentPct', 'modelRecouped', 'modelBreakeven', 'modelCostBasis', 'modelDataQuality',
   'modelMethod', 'modelCategory', 'modelLastRun', 'modelWarnings', 'modelDesignationFlag',
   // BRO-4989 shadow fields (written alongside, never read by the site yet).
-  'modelRecoupmentPctV2', 'modelInvestorMultiple',
+  'modelRecoupmentPctV2', 'modelInvestorMultiple', 'modelReturnedExCreditPct', 'modelTaxCreditExcluded',
 ];
 const LINKED_FIELD_GROUPS = [
   ['designation', 'productionType', 'recouped', 'recoupedDate', 'recoupedSource', 'classifiedBy', 'classifiedAt', 'classifiedReason'],

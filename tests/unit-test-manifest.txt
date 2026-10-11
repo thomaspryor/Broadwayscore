@@ -517,6 +517,7 @@ tests/unit/commercial-source-verify.test.mjs
 tests/unit/commercial-strict-gate-dedupe-order.test.mjs
 tests/unit/commercial-weekly-push-timeout.test.mjs
 tests/unit/commercial-write-guard.test.mjs
+tests/unit/commercial-writers-help-safety.test.mjs
 tests/unit/commit-or-amend.test.mjs
 tests/unit/compute-critic-score.test.mjs
 tests/unit/consent-refetch.test.mjs
@@ -826,6 +827,7 @@ tests/unit/mobile-shows.test.mjs
 tests/unit/mobile-watchlist-delete-icon.test.mjs
 tests/unit/mobile-watchlist-grid-feedback.test.mjs
 tests/unit/model-default-guard.test.mjs
+tests/unit/model-display-guard.test.mjs
 tests/unit/model-drift.test.mjs
 tests/unit/model-return-v2.test.mjs
 tests/unit/model-run-fields.test.mjs
@@ -1012,6 +1014,7 @@ tests/unit/reconcile-merged-json-jsonl-hardening.test.mjs
 tests/unit/reconcile-retired-ids.test.mjs
 tests/unit/recoupment-classify.test.mjs
 tests/unit/recoupment-ground-truth.test.mjs
+tests/unit/recoupment-model-shadow-opts.test.mjs
 tests/unit/recoupment-model.test.mjs
 tests/unit/recoupment-reconcile-gate.test.mjs
 tests/unit/recover-manual-review-score.test.mjs
@@ -1081,6 +1084,7 @@ tests/unit/roundup-gap-alert.test.mjs
 tests/unit/roundup-host-patterns.test.mjs
 tests/unit/roundup-hyperlink-reviews.test.mjs
 tests/unit/roundup-rebuild-guard.test.mjs
+tests/unit/route-alert-failure-cancelled.test.mjs
 tests/unit/rss-opening-window-identity.test.mjs
 tests/unit/rss-poller-state.test.mjs
 tests/unit/rss-wrongshow-guard.test.mjs
@@ -1198,6 +1202,7 @@ tests/unit/syndication-pairs-shared.test.mjs
 tests/unit/t1t2-gap-card-terminal-states.test.mjs
 tests/unit/table-schema-assertion.test.mjs
 tests/unit/talkin-broadway-scraper.test.mjs
+tests/unit/tax-credit-cited.test.mjs
 tests/unit/test-exit-code-leak-guard.test.mjs
 tests/unit/test-manifest-integrity.test.mjs
 tests/unit/test-manifest-node-ts-import.test.mjs

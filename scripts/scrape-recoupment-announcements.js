@@ -40,6 +40,7 @@
  * after the loop, so breaking early loses nothing already scanned.
  */
 
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 

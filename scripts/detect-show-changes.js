@@ -15,6 +15,7 @@
  * Usage: node scripts/detect-show-changes.js
  */
 
+require('./lib/cli-help').exitOnHelp(module);
 const { isStaleBaseline, stampDetectedAt } = require('./lib/follow-digest-prune');
 const fs = require('fs');
 const path = require('path');
