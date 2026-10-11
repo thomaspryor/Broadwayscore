@@ -16,4 +16,23 @@ function hasHelpFlag(argv) {
   return argv.some(a => a === '--help' || a === '-h' || a.startsWith('--help='));
 }
 
-module.exports = { hasHelpFlag };
+/**
+ * Print the calling script's leading doc comment and exit 0 when it was run
+ * directly with --help/-h. Call as the first statement of a CLI script, before
+ * any read, write or network call: `require('./lib/cli-help').exitOnHelp(module);`
+ * A no-op when the script is require()d (tests, other scripts).
+ */
+function exitOnHelp(mod, argv = process.argv.slice(2)) {
+  if (require.main !== mod || !hasHelpFlag(argv)) return;
+  const fs = require('fs');
+  const path = require('path');
+  let usage = '';
+  try {
+    const m = fs.readFileSync(mod.filename, 'utf8').match(/\/\*\*?([\s\S]*?)\*\//);
+    if (m) usage = m[1].split('\n').map((l) => l.replace(/^\s*\* ?/, '')).join('\n').trim();
+  } catch { /* fall through to the bare usage line */ }
+  console.log(usage || `Usage: node scripts/${path.basename(mod.filename)}`);
+  process.exit(0);
+}
+
+module.exports = { hasHelpFlag, exitOnHelp };

@@ -12,6 +12,8 @@ interface RecoupmentProgressBarProps {
    * "Est. recoupment" label with the percentage as a large brand-toned number.
    */
   variant?: 'compact' | 'headline';
+  /** Model central below 0: reads "0% returned · losing money so far" (BRO-4989). */
+  belowCosts?: boolean;
 }
 
 function getBarColor(value: number): string {
@@ -32,9 +34,9 @@ const METHOD_LABELS: Record<string, string> = {
 // (Hamilton read "~159x"). Above 100% we say "100%+" and stop there; labels
 // come from getModelRecoupmentLabels (unit-tested in
 // tests/unit/recoupment-progress-label.test.mjs).
-export default function RecoupmentProgressBar({ estimatedPct, modelMethod, variant = 'compact' }: RecoupmentProgressBarProps) {
-  const labels = getModelRecoupmentLabels(estimatedPct);
-  const { low, central, high, valueText, label, rangeLabel, ariaLabel, barWidth } = labels;
+export default function RecoupmentProgressBar({ estimatedPct, modelMethod, variant = 'compact', belowCosts = false }: RecoupmentProgressBarProps) {
+  const labels = getModelRecoupmentLabels(estimatedPct, { belowCosts });
+  const { low, central, high, valueText, label, rangeLabel, ariaLabel, barWidth, belowCostsNote } = labels;
   const isModel = estimatedPct.length === 3;
   const barColor = getBarColor(central);
   const methodLabel = modelMethod ? METHOD_LABELS[modelMethod] : null;
@@ -62,6 +64,9 @@ export default function RecoupmentProgressBar({ estimatedPct, modelMethod, varia
             style={{ width: `${barWidth}%` }}
           />
         </div>
+        {belowCostsNote && (
+          <p className="text-[11px] text-gray-400 mt-1.5 first-letter:uppercase">{belowCostsNote}</p>
+        )}
         <div className="flex items-center justify-between mt-1.5">
           {rangeLabel && <span className="text-[10px] text-gray-500">{rangeLabel}</span>}
           {methodLabel && <span className="text-[10px] text-gray-400">{methodLabel}</span>}

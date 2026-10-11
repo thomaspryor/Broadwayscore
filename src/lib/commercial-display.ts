@@ -18,6 +18,7 @@
 
 import type { ShowCommercial } from './data-types';
 import { getDesignationBadgeStyle, UNDISCLOSED_DESIGNATION } from '@/config/commercial';
+import { modelDisplayGuard, playedWeeks, independentEstimate, isRunning } from '../../scripts/lib/model-display-guard';
 
 export type RecoupmentDisplayMode = 'announced' | 'model' | 'none';
 
@@ -97,12 +98,86 @@ export function getRecoupmentDisplayMode(
   return 'none';
 }
 
+/**
+ * The model display guard (BRO-4989, scripts/lib/model-display-guard.js),
+ * applied once where the site loads commercial.json. Hidden (fewer than 12
+ * played weeks, central outside [-25, 150], or two independent estimates
+ * disagree by more than 25 points, the range is more than 60 points wide, or the
+ * show is running while RUNNING_MODEL_BAR_ENABLED is off):
+ * modelRecoupmentPct becomes null and modelDisplayHold says
+ * why. Shown: negative values become 0 and modelBelowCosts is set, so the
+ * negative number never reaches a page.
+ */
+export function applyModelDisplayGuard(
+  data: ShowCommercial,
+  show: { previewsStartDate?: string | null; openingDate?: string | null; closingDate?: string | null; status?: string | null } | undefined,
+  now: Date = new Date()
+): ShowCommercial {
+  if (!data.modelRecoupmentPct) return data;
+  const g = modelDisplayGuard({
+    pct: data.modelRecoupmentPct,
+    playedWeeks: show ? playedWeeks(show, now) : 0,
+    independent: independentEstimate(data),
+    running: isRunning(show, now),
+  });
+  if (!g.show) {
+    // Far below 0 (Schmigadoon -169) hides the number, not the fact.
+    const below = g.reason === 'out-of-bounds' && data.modelRecoupmentPct[1] < 0;
+    return {
+      ...data,
+      modelRecoupmentPct: null,
+      modelHeldRange: data.modelRecoupmentPct,
+      modelDisplayHold: g.reason ?? 'no-model',
+      ...(below ? { modelBelowCosts: true } : {}),
+    };
+  }
+  return { ...data, modelRecoupmentPct: g.shown as [number, number, number], ...(g.belowCosts ? { modelBelowCosts: true } : {}) };
+}
+
+/**
+ * Why a held model estimate is not shown, in reader words, for the cell or
+ * card that would otherwise print a bare dash (BRO-4989). Null when nothing
+ * was held: no model, a recouped or settled closed show, a nonprofit, or a
+ * model below the quality floor (that one never displays, held or not).
+ */
+export function getModelHoldLabel(
+  commercial: RecoupmentSignals & Pick<ShowCommercial, 'modelDisplayHold' | 'modelBelowCosts'>
+): string | null {
+  const hold = commercial.modelDisplayHold;
+  if (!hold || hold === 'no-model') return null;
+  if (commercial.recouped === true || isFinalClosedOutcome(commercial)) return null;
+  if (commercial.designation === 'Nonprofit' || !meetsModelQualityFloor(commercial)) return null;
+  if (commercial.modelBelowCosts) return 'Losing money so far';
+  if (hold === 'few-weeks') return 'Too early to estimate';
+  if (hold === 'estimates-disagree') return 'Estimates disagree';
+  if (hold === 'too-uncertain') return 'Too uncertain to estimate';
+  if (hold === 'awaiting-truth') return 'Not enough reported data yet';
+  return 'Estimate unavailable';
+}
+
 /** The model range when getRecoupmentDisplayMode would render it, else null. */
 export function getDisplayableModelRange(
   commercial: RecoupmentSignals
 ): [number, number, number] | null {
   if (getRecoupmentDisplayMode(commercial) !== 'model') return null;
   return commercial.modelRecoupmentPct ?? null;
+}
+
+/**
+ * The range the At Risk list judges by: the displayable model range, or, when
+ * the display guard hid the bar (too few weeks, estimates disagree, out of
+ * bounds), the range it held back, floored at 0. Hiding a number is about
+ * what a page prints; it must not drop a show losing money off the list
+ * (BRO-4989 ship-check). The card prints the hold reason, never this range.
+ */
+export function getAtRiskModelRange(
+  commercial: RecoupmentSignals & Pick<ShowCommercial, 'modelDisplayHold' | 'modelHeldRange'>
+): [number, number, number] | null {
+  const range = getDisplayableModelRange(commercial);
+  if (range) return range;
+  const held = commercial.modelHeldRange;
+  if (!held || !getModelHoldLabel({ ...commercial, modelRecoupmentPct: null })) return null;
+  return held.map((v) => Math.max(0, v)) as [number, number, number];
 }
 
 /**
@@ -202,6 +277,9 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
     investorMultiple: commercial.investorMultiple,
     nonprofitOrg: getNonprofitProducer(commercial) ?? undefined,
     modelRecoupmentPct: commercial.modelRecoupmentPct,
+    // Display-guard outputs (applyModelDisplayGuard): the show-page bar reads these.
+    ...(commercial.modelBelowCosts ? { modelBelowCosts: true } : {}),
+    ...(commercial.modelDisplayHold ? { modelDisplayHold: commercial.modelDisplayHold } : {}),
     modelBreakeven: commercial.modelBreakeven,
     modelDataQuality: commercial.modelDataQuality,
     modelMethod: commercial.modelMethod,
@@ -411,6 +489,10 @@ function pctText(value: number): string {
   return value >= PCT_CAP ? '100%+' : `${value}%`;
 }
 
+// An investor cannot get back less than nothing (BRO-4989 checker #5).
+const BELOW_COSTS_VALUE = '0% returned';
+const BELOW_COSTS_NOTE = 'losing money so far';
+
 export interface ModelRecoupmentLabels {
   /** Rounded, clamped at 0. */
   low: number;
@@ -425,6 +507,8 @@ export interface ModelRecoupmentLabels {
   ariaLabel: string;
   /** Progress-bar fill, 0-100. */
   barWidth: number;
+  /** "losing money so far" when the model central is below 0, else null. */
+  belowCostsNote: string | null;
 }
 
 /**
@@ -434,7 +518,8 @@ export interface ModelRecoupmentLabels {
  * labelled as an estimate, with the range.
  */
 export function getModelRecoupmentLabels(
-  estimatedPct: [number, number] | [number, number, number]
+  estimatedPct: [number, number] | [number, number, number],
+  { belowCosts = false }: { belowCosts?: boolean } = {}
 ): ModelRecoupmentLabels {
   const isModel = estimatedPct.length === 3;
   // Clamp at 0: the model can emit negative percentages for deep flops
@@ -445,7 +530,9 @@ export function getModelRecoupmentLabels(
   const valueText = pctText(central);
 
   let label: string;
-  if (isModel) {
+  if (isModel && belowCosts) {
+    label = `${BELOW_COSTS_VALUE} · ${BELOW_COSTS_NOTE}`;
+  } else if (isModel) {
     label = `Est. ${valueText} recouped`;
   } else if (low === high || low >= PCT_CAP) {
     label = `Est. ~${pctText(low)} recouped`;
@@ -462,8 +549,13 @@ export function getModelRecoupmentLabels(
     else rangeLabel = `Range: ${low}–${high}%`;
   }
 
-  const ariaLabel = `Estimated ${valueText} recouped (range ${pctText(low)} to ${pctText(high)})`;
-  return { low, central, high, valueText, label, rangeLabel, ariaLabel, barWidth: Math.min(central, PCT_CAP) };
+  const ariaLabel = isModel && belowCosts
+    ? `Estimated ${BELOW_COSTS_VALUE}, ${BELOW_COSTS_NOTE} (range ${pctText(low)} to ${pctText(high)})`
+    : `Estimated ${valueText} recouped (range ${pctText(low)} to ${pctText(high)})`;
+  return {
+    low, central, high, valueText, label, rangeLabel, ariaLabel, barWidth: Math.min(central, PCT_CAP),
+    belowCostsNote: isModel && belowCosts ? BELOW_COSTS_NOTE : null,
+  };
 }
 
 const MONTHS = [

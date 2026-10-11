@@ -56,4 +56,29 @@ function runWindow(show, opts = {}) {
   return { previewWeeks, totalRunWeeks, darkWeeks };
 }
 
-module.exports = { runWindow, COVID_DARK_START, COVID_DARK_END };
+// The grosses key a show resolves to can hold an earlier production's weeks
+// too (cabaret-2024 resolves to cabaret-2014, which holds every Cabaret week
+// since 2001). A week ending on or after the first preview and no later than
+// a week past the closing date is this production's; a 7-day margin absorbs
+// a date that is off by a few days. With no previews or opening date the
+// rows are kept as they are.
+const DAY_MS = 86400000;
+const ISO = (t) => new Date(t).toISOString().slice(0, 10);
+
+/**
+ * @param {Record<string, object>} weekly - { 'YYYY-MM-DD' week ending: row }
+ * @param {{ previewsStartDate?: string, openingDate?: string, closingDate?: string }} show
+ * @returns {{ weekly: Record<string, object>, dropped: string[] }}
+ */
+function weeksInOwnRun(weekly, show) {
+  const start = show.previewsStartDate || show.openingDate;
+  const rows = Object.entries(weekly || {});
+  if (!start || Number.isNaN(new Date(start).getTime())) return { weekly: weekly || {}, dropped: [] };
+  const from = ISO(new Date(start).getTime() - 7 * DAY_MS);
+  const to = show.closingDate && !Number.isNaN(new Date(show.closingDate).getTime())
+    ? ISO(new Date(show.closingDate).getTime() + 7 * DAY_MS) : '9999-12-31';
+  const keep = rows.filter(([d]) => d >= from && d <= to);
+  return { weekly: Object.fromEntries(keep), dropped: rows.filter(([d]) => d < from || d > to).map(([d]) => d).sort() };
+}
+
+module.exports = { runWindow, weeksInOwnRun, COVID_DARK_START, COVID_DARK_END };
