@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-11T21:03:16.721Z",
+  "timestamp": "2026-10-11T21:12:47.550Z",
   "stats": {
-    "totalReviews": 55849,
-    "alreadyFlagged": 20813,
-    "dateGuardCatches": 261,
+    "totalReviews": 55851,
+    "alreadyFlagged": 20823,
+    "dateGuardCatches": 260,
     "directorMismatch": 1734,
     "tvFilmSignals": 1602,
     "londonSignals": 2194,
     "offBroadwaySignals": 506,
     "yearMismatch": 135,
-    "noPublishDate": 5349
+    "noPublishDate": 5337
   },
   "findings": [
     {
@@ -45374,20 +45374,6 @@
       ]
     },
     {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 82,
-      "publishDate": "2023-02-07",
-      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
-        }
-      ]
-    },
-    {
       "showId": "tootsie-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 77,
@@ -60541,7 +60527,7 @@
     },
     {
       "showId": "hamlet-1995",
-      "file": "nytimes--unknown.json",
+      "file": "nytimes--vincent-canby.json",
       "score": 86,
       "publishDate": null,
       "url": "https://www.nytimes.com/1995/05/03/theater/theater-review-ralph-fiennes-as-mod-hamlet.html",
