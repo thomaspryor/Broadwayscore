@@ -913,5 +913,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-11T20:37:53.012Z"
+  },
+  {
+    "conditionKey": "land:land/bro-gap-nonreview-url-and-year-guard",
+    "title": "Landing blocked: unit-tests-node red on land/bro-gap-nonreview-url-and-year-guard",
+    "description": "land.yml did not land land/bro-gap-nonreview-url-and-year-guard: the unit-tests-node gate went red at 72d5894e8b. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38171144095",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-gap-nonreview-url-and-year-guard"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "72d5894e8bea9327f8f9117469ab92dc7b7e9d71"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38171144095"
+      }
+    ],
+    "queuedAt": "2026-10-11T20:42:46.714Z"
   }
 ]
