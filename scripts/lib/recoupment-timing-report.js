@@ -109,6 +109,20 @@ function revisitBar(rows) {
   return { met: ok(play) && ok(musical), play, musical };
 }
 
+/**
+ * Health-check verdict for the revisit bar (advisory, never 'error'): warn
+ * when it is met, so the digest asks for a launch review; pass otherwise.
+ * @param {{ revisitBar?: object, displayableHard?: number }|null} report the --timing --json output
+ */
+function revisitBarStatus(report) {
+  const bar = report && report.revisitBar;
+  if (!bar || !bar.play || !bar.musical) return { status: 'warn', message: 'Recoupment timing report missing or unreadable' };
+  const counts = `plays ${bar.play.inside}/${bar.play.n} inside, musicals ${bar.musical.inside}/${bar.musical.n} (needs ${REVISIT_MIN_ROWS}+ rows and ${REVISIT_MIN_INSIDE * 100}%+ each)`;
+  return bar.met
+    ? { status: 'warn', message: `Revisit bar MET: ${counts}. Review RUNNING_MODEL_BAR_ENABLED with the owner (BRO-5073)` }
+    : { status: 'pass', message: `Running-show bars stay off: ${counts}` };
+}
+
 function runTiming({ shows, commercial, lookup, by, baseLib, newLib, newOpts = {}, base, truth, displayableOnly, displayed, json, strict, aggregateOnly, markdown }) {
   const { rows, skipped } = buildTimingRows({
     shows, commercial, lookup, by, oldLibs: libsFrom(baseLib), newLibs: libsFrom(newLib), newOpts, truth, displayableOnly, displayed,
@@ -159,4 +173,4 @@ function runTiming({ shows, commercial, lookup, by, baseLib, newLib, newOpts = {
   if (strict && (worse.length || newEarly.length || skipped.newOnly)) process.exitCode = 1;
 }
 
-module.exports = { buildTimingRows, recoupBias, revisitBar, runTiming, libsFrom, MIN_COVERAGE };
+module.exports = { buildTimingRows, recoupBias, revisitBar, revisitBarStatus, runTiming, libsFrom, MIN_COVERAGE };

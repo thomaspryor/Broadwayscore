@@ -138,3 +138,12 @@ test('revisitBar: 10+ strong rows at 80%+ inside, plays and musicals each (BRO-5
   const noise = [row('play', true, { kind: 'timing:26w-before' }), row('play', true, { displayable: false }), row('play', true, { truthClass: 'inference' })];
   assert.equal(revisitBar([...many('play', 9, 9), ...noise, ...many('musical', 10, 10)]).play.n, 9);
 });
+
+test('revisitBarStatus: warn when the bar is met, pass while it is not (BRO-5073)', () => {
+  const { revisitBarStatus } = require('../../scripts/lib/recoupment-timing-report');
+  const g = (n, inside) => ({ n, inside });
+  assert.equal(revisitBarStatus({ revisitBar: { met: false, play: g(3, 1), musical: g(2, 2) } }).status, 'pass');
+  assert.match(revisitBarStatus({ revisitBar: { met: false, play: g(3, 1), musical: g(2, 2) } }).message, /plays 1\/3 inside, musicals 2\/2/);
+  assert.equal(revisitBarStatus({ revisitBar: { met: true, play: g(10, 9), musical: g(11, 10) } }).status, 'warn');
+  assert.equal(revisitBarStatus(null).status, 'warn');
+});
