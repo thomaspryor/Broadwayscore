@@ -210,6 +210,47 @@ function buildAmbiguousPrefixSlugs() {
 }
 
 /**
+ * Smashed (no-hyphen) counterpart of buildAmbiguousPrefixSlugs, used ONLY by the
+ * no-separator alias-prefix branch of normalizeOutlet (BRO-3529). That branch
+ * matches `slug.startsWith(aliasSlug)` with no "-" boundary, so an unregistered
+ * one-word slug like "newyorkfooreview" matched vulture's alias "newyork". An
+ * alias is smashed-ambiguous when hyphen-stripped, ANOTHER outlet's own name
+ * begins with it. Kept separate from the hyphenated set on purpose: folding the
+ * smashed forms into that set also disabled the hyphenated outlet-critic path
+ * and left real outlets unresolved (nytheatre-martin-denton, njarts-jay-lustig;
+ * Codex attempt rejected 2026-10-11).
+ */
+let _ambiguousSmashedPrefixCache = null;
+function buildAmbiguousSmashedPrefixSlugs() {
+  if (_ambiguousSmashedPrefixCache) return _ambiguousSmashedPrefixCache;
+  const registry = loadOutletRegistry();
+  const ownByCanonical = new Map();
+  for (const [canonical, data] of Object.entries((registry && registry.outlets) || {})) {
+    if (canonical === '_aliasIndex' || canonical === '_meta') continue;
+    if (isSentinelOutletId(canonical)) continue;
+    const smashed = new Set();
+    const add = (v) => { const sl = slugify(v); if (sl) smashed.add(sl.replace(/-/g, '')); };
+    add(canonical);
+    if (data.displayName) add(data.displayName);
+    for (const alias of (data.aliases || [])) add(alias);
+    ownByCanonical.set(canonical, smashed);
+  }
+  const all = [];
+  for (const [canonical, set] of ownByCanonical) for (const sm of set) all.push({ sm, canonical });
+  const ambiguous = new Set();
+  for (const [canonical, set] of ownByCanonical) {
+    for (const prefix of set) {
+      if (prefix.length <= 5) continue; // the branch only considers aliases longer than 5
+      if (all.some(({ sm, canonical: other }) => other !== canonical && sm.length > prefix.length && sm.startsWith(prefix))) {
+        ambiguous.add(prefix);
+      }
+    }
+  }
+  _ambiguousSmashedPrefixCache = ambiguous;
+  return ambiguous;
+}
+
+/**
  * Known critic name variations and typos.
  * Maps variations to canonical names.
  * Format: 'canonical-name': ['variation1', 'variation2', ...]
@@ -403,6 +444,7 @@ function normalizeOutlet(outletName) {
   // vulture's "new york" vs. nytg's "new-york-theater-guide") can never be
   // trusted to mean "outlet + critic name" — exclude them (card #116).
   const ambiguousPrefixSlugs = buildAmbiguousPrefixSlugs();
+  const ambiguousSmashedPrefixSlugs = buildAmbiguousSmashedPrefixSlugs();
   for (const [canonical, aliases] of Object.entries(outletAliases)) {
     // Skip short canonical IDs to prevent false prefix matches (e.g., "new", "ap", "ew", "gq")
     if (canonical.length < 4) continue;
@@ -418,7 +460,8 @@ function normalizeOutlet(outletName) {
         return canonical;
       }
       // Also check without separator (e.g., "newyorkmagazinevulture")
-      if (aliasSlug.length > 5 && slug.startsWith(aliasSlug) && slug.length > aliasSlug.length + 3) {
+      if (aliasSlug.length > 5 && slug.startsWith(aliasSlug) && slug.length > aliasSlug.length + 3
+          && !ambiguousSmashedPrefixSlugs.has(aliasSlug.replace(/-/g, ''))) {
         return canonical;
       }
     }
