@@ -4,7 +4,7 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { groundTruth, rangeError, category, summarize, worseGroups, formatMarkdown } = require('../../scripts/lib/recoupment-ground-truth');
+const { groundTruth, creditBasis, rangeError, category, summarize, worseGroups, formatMarkdown } = require('../../scripts/lib/recoupment-ground-truth');
 
 const closed = { closingDate: '2020-01-01', openingDate: '2019-01-01', type: 'musical' };
 
@@ -71,7 +71,7 @@ describe('groundTruth', () => {
   test('a reported range counts; our own inference does not', () => {
     assert.deepEqual(
       groundTruth({ estimatedRecoupmentPct: [20, 10], estimatedRecoupmentSource: 'NYT: returned about 15% of its investment' }, closed),
-      { kind: 'reported-pct', lo: 10, hi: 20, source: 'NYT: returned about 15% of its investment', truthClass: 'reported', truthClassFrom: 'source-text' },
+      { kind: 'reported-pct', lo: 10, hi: 20, source: 'NYT: returned about 15% of its investment', truthClass: 'reported', truthClassFrom: 'source-text', creditBasis: 'pre-credit' },
     );
     assert.equal(groundTruth({ estimatedRecoupmentPct: [30, 45], estimatedRecoupmentSource: 'Inferred: ~9 months run' }, {}), null);
     assert.equal(groundTruth({ estimatedRecoupmentPct: [30, 45], notes: 'Estimated: weekly profit x weeks' }, {}), null);
@@ -145,4 +145,13 @@ describe('formatMarkdown', () => {
     assert.match(md, /No row moved\./);
     assert.match(md, /No group got worse\./);
   });
+});
+
+test('creditBasis: post-credit only for a credit already in the figure (BRO-5073)', () => {
+  assert.equal(creditBasis({}, 'Playbill: recouped months after closing, from operating profit plus the NY State Broadway tax credit'), 'post-credit');
+  assert.equal(creditBasis({}, 'Eligible for $3M tax credit (would reduce net loss to ~$3M)'), 'pre-credit');
+  assert.equal(creditBasis({}, 'High end: ~65% if NY State tax credit is received'), 'pre-credit');
+  assert.equal(creditBasis({}, 'Broadway News: recouped its $6.75M capitalization'), 'pre-credit');
+  assert.equal(creditBasis({ taxCreditBasis: 'post-credit' }, 'no mention'), 'post-credit');
+  assert.equal(groundTruth({ recouped: true, recoupedSource: 'Deadline: recouped' }, {}).creditBasis, 'pre-credit');
 });

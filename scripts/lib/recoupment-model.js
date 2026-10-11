@@ -562,7 +562,9 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
         : 0);
   // Shadow (BRO-4989): a running show's credit counts only once a source says
   // it was received. A closed show keeps it: the credit does get paid.
-  const taxCreditExcluded = opts.taxCreditCitedOnly && !isClosed && !taxCreditCited(commercial).cited ? expectedTaxCredit : 0;
+  // opts.taxCreditPre (BRO-5073): pre-credit basis, no credit at all, so the
+  // backtest can score a pre-credit truth figure like with like.
+  const taxCreditExcluded = opts.taxCreditPre || (opts.taxCreditCitedOnly && !isClosed && !taxCreditCited(commercial).cited) ? expectedTaxCredit : 0;
   const taxCreditAmount = expectedTaxCredit - taxCreditExcluded;
   if (notesCredit === 0) {
     warnings.push(NO_TAX_CREDIT_FROM_NOTES_WARNING);
@@ -692,7 +694,9 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
     capitalization,
     svogGrant,
     taxCreditAmount,
-    ...(opts.taxCreditCitedOnly ? { taxCreditExcluded } : {}),
+    // The credit actually inside the % (a running show's lands at week TAX_CREDIT_LAG_WEEKS).
+    taxCreditApplied: taxCreditWeek === Infinity || Math.min(weeklySchedule.length, 520) >= taxCreditWeek ? taxCreditAmount : 0,
+    ...(opts.taxCreditCitedOnly || opts.taxCreditPre ? { taxCreditExcluded } : {}),
     reserveFund: Math.round(reserveFund),
     effectiveCapitalization: Math.round(effectiveCap),
     weeklyFixedCosts: weeklyNut,
@@ -1036,7 +1040,7 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}
     ? 0
     : Math.min(TAX_CREDIT_RATE * (capitalization + weeklyNut * 52), TAX_CREDIT_MAX);
   // Shadow (BRO-4989): same running-only, cited-only rule as the weekly model.
-  const taxCreditExcluded = opts.taxCreditCitedOnly && !isClosedRun && !taxCreditCited(commercial).cited ? expectedTaxCredit : 0;
+  const taxCreditExcluded = opts.taxCreditPre || (opts.taxCreditCitedOnly && !isClosedRun && !taxCreditCited(commercial).cited) ? expectedTaxCredit : 0;
   const taxCredit = expectedTaxCredit - taxCreditExcluded;
 
   // Run duration
@@ -1118,7 +1122,8 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}
     capitalization,
     svogGrant,
     taxCreditAmount: taxCredit,
-    ...(opts.taxCreditCitedOnly ? { taxCreditExcluded } : {}),
+    taxCreditApplied: taxCredit,
+    ...(opts.taxCreditCitedOnly || opts.taxCreditPre ? { taxCreditExcluded } : {}),
     reserveFund: Math.round(reserveFund),
     effectiveCapitalization: Math.round(effectiveCap),
     weeklyFixedCosts: weeklyNut,

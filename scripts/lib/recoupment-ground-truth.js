@@ -85,7 +85,21 @@ function truthClassOf(comm, kind, sourceText) {
  */
 function groundTruth(comm, show, now = new Date()) {
   const t = rawGroundTruth(comm, show, now);
-  return t && { ...t, ...truthClassOf(comm, t.kind, t.source) };
+  return t && { ...t, ...truthClassOf(comm, t.kind, t.source), creditBasis: creditBasis(comm, t.source) };
+}
+
+// Pre- or post-NY-tax-credit basis of a truth figure (BRO-5073). Post only
+// when the source counts a credit already in hand ("operating profit plus the
+// NY State tax credit"); "eligible for", "would", "if received" and "will"
+// are a credit not yet in the figure. An explicit taxCreditBasis field wins.
+const CREDIT_IN = /\b(plus|including|includes|after)\b[^.;|]{0,40}\btax credits?\b/i;
+const CREDIT_HEDGE = /\b(eligible|would|if|will|expected|pending)\b[^.;|]{0,40}\btax credits?\b|\btax credits?\b[^.;|]{0,40}\b(would|if|will)\b/i;
+/** @returns {'pre-credit'|'post-credit'} */
+function creditBasis(comm, sourceText) {
+  const explicit = comm && comm.taxCreditBasis;
+  if (explicit === 'pre-credit' || explicit === 'post-credit') return explicit;
+  const text = String(sourceText || '');
+  return CREDIT_IN.test(text) && !CREDIT_HEDGE.test(text) ? 'post-credit' : 'pre-credit';
 }
 
 // Recouped after the Broadway run closed, with the source crediting a tour
@@ -193,4 +207,5 @@ function formatMarkdown({ title, summary, rows, worse, limit = 15, aggregateOnly
 }
 
 module.exports = {
+  creditBasis,
   recoupedFromTour, STATED_PCT, statesFigure, groundTruth, truthClassOf, classifySourceText, classifyFailedText, TRUTH_CLASS_FIELD, rangeError, category, summarize, worseGroups, formatMarkdown, fmtTruth, OWN_INFERENCE };

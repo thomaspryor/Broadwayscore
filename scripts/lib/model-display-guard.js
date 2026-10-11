@@ -106,7 +106,24 @@ function modelDisplayGuard({ pct, playedWeeks: weeks, independent = null, runnin
   return { show: true, reason: null, shown: pct.map((v) => Math.min(top, Math.max(0, v))), belowCosts: central < 0 };
 }
 
+/**
+ * Which figure a running show's bar is judged and shown on, and its NY tax
+ * credit basis (owner decision, BRO-5073): a running show shows the "%
+ * returned so far" run (modelReturnedExCreditPct), which leaves the credit out
+ * until a source says it was received. creditCounted is the credit inside that
+ * figure ($, modelTaxCreditCounted): post-credit when above 0. While the
+ * running bar is off nothing changes: the live figure, basis null.
+ * @returns {{ pct: [number, number, number] | null | undefined, creditBasis: 'pre-credit'|'post-credit'|null }}
+ */
+function displayBasis({ pct, exCreditPct, creditCounted, running = false, runningEnabled = RUNNING_MODEL_BAR_ENABLED }) {
+  if (running && runningEnabled && Array.isArray(exCreditPct) && exCreditPct.length === 3) {
+    return { pct: exCreditPct, creditBasis: creditCounted > 0 ? 'post-credit' : 'pre-credit' };
+  }
+  return { pct, creditBasis: null };
+}
+
 module.exports = {
+  displayBasis,
   modelDisplayGuard, displaysModel, playedWeeks, independentEstimate, isRunning, RUNNING_MODEL_BAR_ENABLED,
   MIN_PLAYED_WEEKS, CENTRAL_MIN, CENTRAL_MAX, MAX_DISAGREEMENT, MAX_RANGE_WIDTH, RUNNING_SHOWN_MAX,
 };
