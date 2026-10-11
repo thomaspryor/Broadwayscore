@@ -102,11 +102,11 @@ test('installForCloud: a failed fetch installs nothing and says why (fail open)'
   assert.equal(fs.existsSync(path.join(home, '.claude', 'CLAUDE.md')), false);
 });
 
-function runHook(env) {
+function runHook(env, source = SOURCE) {
   const home = tmp('hookhome');
   const project = tmp('proj');
   const src = tmp('src');
-  for (const [n, c] of Object.entries(SOURCE)) fs.writeFileSync(path.join(src, n), c);
+  for (const [n, c] of Object.entries(source)) fs.writeFileSync(path.join(src, n), c);
   try {
     const full = { ...process.env, HOME: home, CLAUDE_PROJECT_DIR: REPO_ROOT, CODE_SYNC_DISABLED: '1', GLOBAL_INSTRUCTIONS_FROM_DIR: src, ...env };
     for (const [k, v] of Object.entries(full)) if (v === undefined) delete full[k];
@@ -144,4 +144,13 @@ test('session-start.sh (real hook): a failed install is never silent — it prin
   assert.match(out, /global instructions not installed \(.*fetch failed/);
   assert.match(out, /not technical/);
   assert.match(out, /never reviews or merges PRs/);
+});
+
+test('session-start.sh (real hook): a malformed mac-only marker is reported, and the rules still install whole (BRO-5072)', () => {
+  const { out, installed } = runHook({ CLAUDE_CODE_REMOTE: 'true' }, { ...SOURCE, 'CLAUDE.md': `${SOURCE['CLAUDE.md']}${O}\nmac rule\n` });
+  assert.match(installed, /mac rule/);
+  assert.match(out, /WARNING CLAUDE\.md: unclosed mac-only block/);
+  const ok = runHook({ CLAUDE_CODE_REMOTE: 'true' }, { ...SOURCE, 'CLAUDE.md': `${SOURCE['CLAUDE.md']}${O}\nmac rule\n${C}\n` });
+  assert.doesNotMatch(ok.installed, /mac rule/);
+  assert.doesNotMatch(ok.out, /WARNING/);
 });
