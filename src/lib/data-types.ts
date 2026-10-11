@@ -213,6 +213,20 @@ export interface ShowGrosses {
     performances: number | null;
     attendance: number | null;
   };
+  /** 'history' when allTime is this production's weekly League rows summed (BRO-5016). */
+  allTimeSource?: 'history';
+  /**
+   * This production's own weekly League rows summed, when its all-time row
+   * was a total over several runs (cleared) and the weekly history does not
+   * reach back to its first preview. Totals since week ending `since`
+   * (YYYY-MM-DD). Shown only on the show's own card, never ranked (BRO-5016).
+   */
+  partialRun?: {
+    gross: number | null;
+    performances: number | null;
+    attendance: number | null;
+    since: string;
+  };
   lastUpdated?: string;
 }
 

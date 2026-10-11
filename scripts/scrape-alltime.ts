@@ -31,6 +31,7 @@ const { applyAllTimeAttribution } = require('./lib/alltime-attribution');
 
 const BASE_URL = 'https://www.broadwayworld.com/grossescumulative.cfm';
 const GROSSES_PATH = path.join(__dirname, '../data/grosses.json');
+const HISTORY_PATH = path.join(__dirname, '../data/grosses-history.json');
 const MIN_SHOWS_MAIN_PAGE = 100; // BWW cumulative page typically lists 500+ shows
 
 interface AllTimeStats {
@@ -45,6 +46,7 @@ interface GrossesData {
   shows: Record<string, {
     thisWeek?: Record<string, unknown>;
     allTime: AllTimeStats;
+    allTimeSource?: 'history';
     lastUpdated?: string;
   }>;
 }
@@ -412,7 +414,11 @@ async function scrapeAllTime(): Promise<void> {
   let updateCount = 0;
   let downgradeRefused = 0;
   for (const [slug, stats] of allMatches) {
-    const existingAllTime = grossesData.shows[slug]?.allTime;
+    // A total summed from the weekly rows (BRO-5016) is not a BWW row: the
+    // scraped row replaces it whole and attribution refills it if it must.
+    const fromHistory = grossesData.shows[slug]?.allTimeSource === 'history';
+    if (fromHistory) delete grossesData.shows[slug].allTimeSource;
+    const existingAllTime = fromHistory ? undefined : grossesData.shows[slug]?.allTime;
     const hadData = existingAllTime?.gross != null;
     const merged: AllTimeStats = forceOverwrite ? {
       gross: stats.gross,
@@ -461,13 +467,21 @@ async function scrapeAllTime(): Promise<void> {
   // on each (the merge above never removes one). Move a count the run could
   // not have played to the same-title production whose run fits it, then keep
   // identical copies only on the production whose run fits (BRO-5012).
-  const { moves, clears }: {
+  // A cleared production gets its own run's totals back from its weekly
+  // League rows (BRO-5016).
+  const history = fs.existsSync(HISTORY_PATH) ? JSON.parse(fs.readFileSync(HISTORY_PATH, 'utf8')) : null;
+  if (!history) console.warn(`  ⚠ ${HISTORY_PATH} missing: cleared productions stay blank this run`);
+  const { moves, clears, fills }: {
     moves: { slug: string; to: string; reason: string }[];
     clears: { slug: string; owner: string | null; reason: string }[];
-  } = applyAllTimeAttribution(grossesData.shows, shows);
+    fills: { slug: string; status: 'complete' | 'partial' | 'gaps' | 'misfit'; weeks: number; gaps: number; since: string; gross: number }[];
+  } = applyAllTimeAttribution(grossesData.shows, shows, { history });
   for (const m of moves) console.log(`  [attribution] moved ${m.slug} -> ${m.to}: ${m.reason}`);
   for (const c of clears) console.log(`  [attribution] cleared ${c.slug}: ${c.reason}`);
-  console.log(`All-time attribution: moved ${moves.length} rows off runs that could not hold them, cleared ${clears.length} shared copies`);
+  const FILL_NOTE = { complete: 'own-run total', partial: 'partial', gaps: 'left blank, weekly rows have gaps', misfit: 'left blank, weekly rows exceed the run' };
+  for (const f of fills) console.log(`  [attribution] ${FILL_NOTE[f.status]} ${f.slug}: ${f.weeks} weeks since ${f.since} (${f.gaps} missing), $${Math.round(f.gross).toLocaleString()}`);
+  const fillCount = (s: string) => fills.filter((f) => f.status === s).length;
+  console.log(`All-time attribution: moved ${moves.length} rows off runs that could not hold them, cleared ${clears.length} shared copies; own-run totals ${fillCount('complete')} complete, ${fillCount('partial')} partial, ${fillCount('gaps') + fillCount('misfit')} left blank`);
 
   console.log(`\nNew entries: ${newCount}`);
   console.log(`Updated entries: ${updateCount}`);

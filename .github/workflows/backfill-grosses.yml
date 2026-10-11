@@ -13,6 +13,11 @@ on:
         required: false
         default: ''
         type: string
+      refill_gaps:
+        description: 'Refill stored weeks that miss a show held the weeks either side (ignores weeks/start_from)'
+        required: false
+        default: false
+        type: boolean
 
 # BRO-934: manual grosses-history writer; shares the group with the other grosses writers.
 concurrency:
@@ -54,6 +59,9 @@ jobs:
           if [ -n "${{ github.event.inputs.start_from }}" ]; then
             ARGS="$ARGS --start-from ${{ github.event.inputs.start_from }}"
           fi
+          if [ "${{ inputs.refill_gaps }}" = "true" ]; then
+            ARGS="--refill-gaps"
+          fi
           npx tsx scripts/backfill-grosses-history.ts $ARGS
         env:
           NODE_ENV: production
@@ -81,10 +89,10 @@ jobs:
         run: |
           if [ "${{ steps.changes.outputs.has_changes }}" = "true" ]; then
             echo "## Backfill Complete" >> $GITHUB_STEP_SUMMARY
-            echo "Added historical grosses data. Total weeks in history: **${{ steps.changes.outputs.week_count }}**" >> $GITHUB_STEP_SUMMARY
+            echo "Updated historical grosses data. Total weeks in history: **${{ steps.changes.outputs.week_count }}**" >> $GITHUB_STEP_SUMMARY
           else
             echo "## No Changes" >> $GITHUB_STEP_SUMMARY
-            echo "All requested weeks already present in history." >> $GITHUB_STEP_SUMMARY
+            echo "Nothing was added: the requested weeks were already present, or (refill) Playbill had none of the missing rows." >> $GITHUB_STEP_SUMMARY
           fi
       - name: Notify on failure
         if: failure()
