@@ -26,6 +26,7 @@ import {
 } from './box-office-market';
 import {
   addDays,
+  median,
   isPaired,
   isFullWeek,
   isReported,
@@ -74,20 +75,14 @@ export const MAP_PHONE_LABELS = 6;
 
 type MapDot = { slug: string; capacity: number; atp: number };
 
-function median(xs: number[]): number {
-  const s = [...xs].sort((a, b) => a - b);
-  const m = Math.floor(s.length / 2);
-  return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
-}
-
 /**
  * The shows farthest from the middle of the chart, each axis scaled by its
  * own spread, so the phone chart names the ones a reader would ask about.
  */
 export function mapOutliers(dots: MapDot[], n = MAP_PHONE_LABELS): Set<string> {
-  if (!dots.length) return new Set();
   const cMed = median(dots.map((d) => d.capacity));
   const aMed = median(dots.map((d) => d.atp));
+  if (cMed == null || aMed == null) return new Set();
   const cSpread = Math.max(...dots.map((d) => d.capacity)) - Math.min(...dots.map((d) => d.capacity)) || 1;
   const aSpread = Math.max(...dots.map((d) => d.atp)) - Math.min(...dots.map((d) => d.atp)) || 1;
   const far = (d: MapDot) => Math.hypot((d.capacity - cMed) / cSpread, (d.atp - aMed) / aSpread);
@@ -109,8 +104,8 @@ export const MAP_CORNER_TITLES: Record<MapCornerKey, string> = {
  * fullest first. Returns the median so the page can state the cutoffs.
  */
 export function mapCorners<T extends MapDot>(dots: T[]): { medianAtp: number | null; corners: Array<{ key: MapCornerKey; title: string; shows: T[] }> } {
-  if (!dots.length) return { medianAtp: null, corners: [] };
   const medianAtp = median(dots.map((d) => d.atp));
+  if (medianAtp == null) return { medianAtp: null, corners: [] };
   const keyOf = (d: T): MapCornerKey => {
     const full = d.capacity >= MAP_FULL_PCT;
     const pricey = d.atp >= medianAtp;
