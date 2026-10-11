@@ -183,3 +183,48 @@ test('cutToLastSentence keeps whole replies and trims a cut-off tail', () => {
   assert.equal(cutToLastSentence('A king divides his realm between'), '');
   assert.equal(cutToLastSentence(null), '');
 });
+
+// --- wikitext debris and audience pitch (BRO-5063) ---
+test('isValidSynopsis rejects wikitext debris saved as live synopses', () => {
+  const live = [
+    "The action is set in the Hall of David Bliss's house at Cookham, Berkshire, by the River Thames. ;A Saturday afternoon in June ) strikes a pose, 1925 thumb alt=middle aged white woman, extravagantly dressed, striking a theatrical pose Sorel and Simon Bliss, a brother and sister, exchange artistic and bohemian dialogue.",
+    'This synopsis reflects the final, New York version. ;Act I Lestat leaves his mother Gabrielle to go to Paris to live with his boyfriend Nicolas ("My Beautiful Boy").',
+    'Place: Near Bethlehem. :Time: The first century, just after the birth of Christ Amahl, a disabled boy who can walk only with a crutch, has a problem with telling tall tales.',
+    'Act I It is nearly Christmas, 1742, and young Englishman John Newton is a reluctant slave trader.',
+  ];
+  for (const s of live) assert.equal(isValidSynopsis(s), false, s);
+  assert.equal(classifyBadSynopsis({ synopsis: live[0], status: 'closed' }).reason, 'invalid');
+});
+
+test('isValidSynopsis keeps prose that names acts, colons and semicolons', () => {
+  const ok = [
+    'Act I ends with the family gathered at the table, and in Act II, Maria returns to find the house sold.',
+    'Two sisters meet at their mother’s funeral; one of them has a secret: she sold the farm years ago.',
+    'Set in 1925, a family of artists invites their own guests for the weekend and ignores everyone else.',
+  ];
+  for (const s of ok) assert.equal(isValidSynopsis(s), true, s);
+});
+
+test('isValidSynopsis rejects audience-address pitch copy, curly apostrophes included', () => {
+  const live = [
+    'Don’t miss *High Noon*, a thriller like none other, as it brings one of the most iconic westerns to life on stage.',
+    'Join us to revel in the midsummer madness as twins Sebastian and Viola survive shipwreck, revenge plots, and the trick doors of love.',
+    'You’ll find your heart growing a few sizes when you watch Dr. Seuss’ whimsical holiday classic come to life on stage!',
+    "CEILIDH is a brand new musical that invites you to step into the heart of one of Scotland's oldest and most beloved traditions.",
+    'Welcome to the club. Red lights. Oiled abs. Dollar bills. Three men about to make you feel things you weren’t expecting.',
+  ];
+  for (const s of live) assert.equal(isValidSynopsis(s), false, s);
+  assert.equal(isValidSynopsis("A young widow can't miss the last train home, so she spends one strange night in a stranger's house."), true);
+});
+
+test('song cues are plot, not pitch, and a setting label is debris (BRO-5063 review)', () => {
+  assert.equal(isValidSynopsis('King George III reminds the colonists that he still rules them and expects them to return ("You’ll Be Back").'), true);
+  assert.equal(isValidSynopsis('Time: The first century, just after the birth of Christ Amahl, a disabled boy, has a problem with telling tall tales.'), false);
+  assert.equal(isValidSynopsis('Set in 1925, the play begins at a time when the family is at its lowest ebb and nobody visits.'), true);
+});
+
+test('second review: quoted taglines still count as pitch, a stray inch mark does not hide it', () => {
+  assert.equal(isValidSynopsis('A 12" vinyl spins all night long. Join us tonight for the party! She says "hi" to everyone.'), false);
+  assert.equal(isValidSynopsis('"Join us for the party of the year!" says the poster on the wall of the club.'), false);
+  assert.equal(isValidSynopsis('Set in a hut near Bethlehem. Setting: A hut near Bethlehem Amahl tells tall tales to his mother.'), false);
+});

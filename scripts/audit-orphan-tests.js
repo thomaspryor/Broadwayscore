@@ -161,6 +161,10 @@ const EXEMPT_NEVER_CI = {
   // BRO-4930: asserts the 2026-10 outlet tier moves reached published show
   // JSON after the nightly rebuild-reviews run. Date-gated RECHECK-AFTER probe.
   'verify-outlet-tiers-published.test.mjs': 'BRO-4930',
+  // BRO-5063: asserts the synopsis cleanup plan applied and the rows it
+  // cleared were refilled, from live data/shows.json. Red between the plan
+  // run and the backfill, so it is an acceptance probe, never run by CI.
+  'verify-bro-5063-synopses.test.mjs': 'BRO-5063',
 };
 
 const EXEMPT_KNOWN_BROKEN = {
