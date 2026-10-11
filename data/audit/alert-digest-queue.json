@@ -799,15 +799,32 @@
     "queuedAt": "2026-10-11T19:40:07.512Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Validate market expansion, Audit outlet-registry gaps",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38169467183",
-    "severity": "warning",
+    "conditionKey": "land:land/bro-5068-skill-fallback",
+    "title": "Landing blocked: rebase red on land/bro-5068-skill-fallback",
+    "description": "land.yml did not land land/bro-5068-skill-fallback: the rebase gate went red at b0d1f37c58. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5068-skill-fallback @ b0d1f37c58 (origin/land/bro-5068-skill-fallback) → origin/main @ e4d0b69e14 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ e4d0b69e14: Rebasing (1/1) error: could not apply b0d1f37c587... BRO-5068: started sessions can't skip /ship-check, /what-else, /wrap-up when project commands fail to load hint: Resolve all conflicts manually, mark the Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38167099473",
+    "severity": "error",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-11T19:53:21.261Z"
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5068-skill-fallback"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "b0d1f37c5871b015727be4c609ff854ddd731c41"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38167099473"
+      }
+    ],
+    "queuedAt": "2026-10-11T19:53:55.221Z"
   }
 ]
