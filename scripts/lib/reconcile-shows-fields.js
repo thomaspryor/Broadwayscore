@@ -40,22 +40,95 @@ const RECONCILABLE_FIELDS = [
   'tourLegs', 'priorRuns',
 ];
 
+// Object-valued fields merged per sub-key in the 3-way pass, so two writers
+// touching DIFFERENT formats of the same object both survive (BRO-5011: a
+// plan nulling images.thumbnail must not lose a concurrent images.hero).
+const NESTED_3WAY_FIELDS = ['images'];
+
 function isEmpty(v) {
   return v === null || v === undefined;
 }
 
+function isPlainObject(v) {
+  return v !== null && typeof v === 'object' && !Array.isArray(v);
+}
+
+/** Structural equality for JSON values (shows.json rows). */
+function deepEqual(a, b) {
+  if (a === b) return true;
+  if (a === null || b === null || typeof a !== 'object' || typeof b !== 'object') return false;
+  if (Array.isArray(a) !== Array.isArray(b)) return false;
+  if (Array.isArray(a)) {
+    if (a.length !== b.length) return false;
+    for (let i = 0; i < a.length; i++) if (!deepEqual(a[i], b[i])) return false;
+    return true;
+  }
+  const ak = Object.keys(a);
+  const bk = Object.keys(b);
+  if (ak.length !== bk.length) return false;
+  for (const k of ak) {
+    if (!Object.prototype.hasOwnProperty.call(b, k)) return false;
+    if (!deepEqual(a[k], b[k])) return false;
+  }
+  return true;
+}
+
 /**
- * Reconcile one show's RECONCILABLE fields in place on `localShow`.
+ * Standard 3-way merge of one object's keys onto `target` (mutated):
+ * when ours still equals base and theirs changed it, a concurrent writer
+ * made the change and -X ours dropped it, so theirs wins (a key theirs
+ * deleted is deleted). When ours changed it, ours wins.
+ * @returns {number} keys taken from theirs
+ */
+function threeWayKeys(target, theirs, base, nested = []) {
+  let taken = 0;
+  const keys = new Set([...Object.keys(base), ...Object.keys(target), ...Object.keys(theirs)]);
+  for (const k of keys) {
+    if (k === 'id') continue;
+    const has = (o) => Object.prototype.hasOwnProperty.call(o, k);
+    const oursVal = target[k];
+    const theirsVal = theirs[k];
+    const baseVal = base[k];
+    const oursSame = has(target) === has(base) && deepEqual(oursVal, baseVal);
+    const theirsSame = has(theirs) === has(base) && deepEqual(theirsVal, baseVal);
+    if (theirsSame) continue; // remote did not touch it — ours stands
+    if (oursSame) {
+      if (has(theirs)) target[k] = theirsVal; else delete target[k];
+      taken++;
+      continue;
+    }
+    // Both sides changed it. For nested objects, merge per sub-key.
+    if (nested.includes(k) && isPlainObject(oursVal) && isPlainObject(theirsVal)
+        && (isPlainObject(baseVal) || baseVal === undefined || baseVal === null)) {
+      taken += threeWayKeys(oursVal, theirsVal, isPlainObject(baseVal) ? baseVal : {});
+    }
+    // Otherwise a true conflict: ours wins (-X ours semantics).
+  }
+  return taken;
+}
+
+/**
+ * Reconcile one show in place on `localShow`:
+ *  1. 3-way pass (BRO-5011), only when the baseline row exists: every
+ *     top-level field this run left at its baseline value takes remote's
+ *     value if remote changed it; `images` merges per format.
+ *  2. RECONCILABLE_FIELDS pass: refill an empty local field from remote,
+ *     unless baseline had that same value (a deliberate clear, #1817).
  * @returns {number} count of fields recovered from remote
  */
 function reconcileShowFields(localShow, remoteShow, baseShow, fields = RECONCILABLE_FIELDS) {
   let recovered = 0;
+  if (isPlainObject(baseShow)) {
+    recovered += threeWayKeys(localShow, remoteShow, baseShow, NESTED_3WAY_FIELDS);
+  }
   for (const key of fields) {
     const remoteVal = remoteShow[key];
     if (isEmpty(remoteVal)) continue;
     if (!isEmpty(localShow[key])) continue; // we already have a value — keep ours
 
-    if (baseShow && !isEmpty(baseShow[key]) && baseShow[key] === remoteVal) {
+    // deepEqual, not ===: array fields (tourLegs, priorRuns) are never ===
+    // across separately parsed files, so a deliberate clear was resurrected.
+    if (baseShow && !isEmpty(baseShow[key]) && deepEqual(baseShow[key], remoteVal)) {
       // Baseline (pre-run) had this exact value, our local doesn't anymore
       // (this run deliberately cleared it), and remote still has the SAME
       // stale value — do not let it back in. If remote's value differs from
@@ -153,4 +226,4 @@ function reconcileShowsJson(local, remote, base, fields = RECONCILABLE_FIELDS, r
   return { recovered, readded, baseAvailable, retiredSkipped };
 }
 
-module.exports = { RECONCILABLE_FIELDS, reconcileShowFields, reconcileShowsJson };
+module.exports = { RECONCILABLE_FIELDS, NESTED_3WAY_FIELDS, deepEqual, reconcileShowFields, reconcileShowsJson };

@@ -106,3 +106,111 @@ test('reconcileShowsJson: end-to-end #1817 repro across the full pipeline', () =
   const revival = local.shows.find((s) => s.id === 'the-sound-of-music-2027');
   assert.strictEqual(revival.ibdbUrl, null, 'the self-heal fix must survive reconciliation');
 });
+
+// BRO-5011: standard 3-way pass. -X ours lets our whole hunk win, so a field
+// this run never touched (local === baseline) loses a concurrent remote
+// change unless reconcile puts it back. Incident: execute-approved-fix nulled
+// a-dolls-house-off-west-end-2026 images.thumbnail while fetch-show-images ran.
+const IMG = (o) => ({
+  thumbnail: '/images/shows/x/thumbnail.jpg',
+  poster: '/images/shows/x/poster.jpg',
+  hero: null,
+  ...o,
+});
+
+test('BRO-5011: plan nulls thumbnail, fetch keeps baseline -> merged keeps null', () => {
+  const base = { id: 'x', images: IMG() };
+  const local = { id: 'x', images: IMG({ thumbnail: null }) };
+  const remote = { id: 'x', images: IMG() };
+  const recovered = reconcileShowFields(local, remote, base);
+  assert.strictEqual(recovered, 0);
+  assert.strictEqual(local.images.thumbnail, null);
+});
+
+test('BRO-5011: fetch changes hero while plan nulls thumbnail -> both kept', () => {
+  const base = { id: 'x', images: IMG() };
+  const local = { id: 'x', images: IMG({ thumbnail: null }) };
+  const remote = { id: 'x', images: IMG({ hero: '/images/shows/x/hero.jpg' }) };
+  const recovered = reconcileShowFields(local, remote, base);
+  assert.strictEqual(recovered, 1);
+  assert.deepStrictEqual(local.images, IMG({ thumbnail: null, hero: '/images/shows/x/hero.jpg' }));
+});
+
+test('BRO-5011: images untouched locally, remote restored thumbnail -> remote wins', () => {
+  const base = { id: 'x', images: IMG({ thumbnail: null }) };
+  const local = { id: 'x', images: IMG({ thumbnail: null }), status: 'closed' };
+  const remote = { id: 'x', images: IMG() };
+  reconcileShowFields(local, remote, base);
+  assert.strictEqual(local.images.thumbnail, '/images/shows/x/thumbnail.jpg');
+  assert.strictEqual(local.status, 'closed');
+});
+
+test('BRO-5011: same images sub-key changed on both sides -> ours wins', () => {
+  const base = { id: 'x', images: IMG() };
+  const local = { id: 'x', images: IMG({ hero: '/a.jpg' }) };
+  const remote = { id: 'x', images: IMG({ hero: '/b.jpg' }) };
+  reconcileShowFields(local, remote, base);
+  assert.strictEqual(local.images.hero, '/a.jpg');
+});
+
+test('BRO-5011: non-safelisted scalar changed only on remote -> remote wins', () => {
+  const base = { id: 'x', status: 'previews', closingDate: null };
+  const local = { id: 'x', status: 'previews', closingDate: null };
+  const remote = { id: 'x', status: 'open', closingDate: '2027-01-04' };
+  const recovered = reconcileShowFields(local, remote, base);
+  assert.strictEqual(recovered, 2);
+  assert.strictEqual(local.status, 'open');
+  assert.strictEqual(local.closingDate, '2027-01-04');
+});
+
+test('BRO-5011: scalar changed on both sides -> ours wins', () => {
+  const base = { id: 'x', status: 'previews' };
+  const local = { id: 'x', status: 'closed' };
+  const remote = { id: 'x', status: 'open' };
+  reconcileShowFields(local, remote, base);
+  assert.strictEqual(local.status, 'closed');
+});
+
+test('BRO-5011: remote deleted a key we never touched -> deleted locally', () => {
+  const base = { id: 'x', provisional: true };
+  const local = { id: 'x', provisional: true };
+  const remote = { id: 'x' };
+  reconcileShowFields(local, remote, base);
+  assert.ok(!('provisional' in local));
+});
+
+test('BRO-5011: we deleted a key remote left alone -> stays deleted', () => {
+  const base = { id: 'x', provisional: true };
+  const local = { id: 'x' };
+  const remote = { id: 'x', provisional: true };
+  reconcileShowFields(local, remote, base);
+  assert.ok(!('provisional' in local));
+});
+
+test('BRO-5011 cousin: a deliberately cleared array field (tourLegs) is not resurrected', () => {
+  const legs = () => [{ city: 'Chicago', start: '2026-01-01' }];
+  const base = { id: 'x', tourLegs: legs() };
+  const local = { id: 'x', tourLegs: null };
+  const remote = { id: 'x', tourLegs: legs() };
+  const recovered = reconcileShowFields(local, remote, base);
+  assert.strictEqual(recovered, 0);
+  assert.strictEqual(local.tourLegs, null);
+});
+
+test('BRO-5011: no baseline row -> 3-way pass skipped, -X ours result kept', () => {
+  const local = { id: 'x', status: 'previews', images: IMG({ thumbnail: null }) };
+  const remote = { id: 'x', status: 'open', images: IMG() };
+  const recovered = reconcileShowFields(local, remote, undefined);
+  assert.strictEqual(recovered, 0);
+  assert.strictEqual(local.status, 'previews');
+  assert.strictEqual(local.images.thumbnail, null);
+});
+
+test('BRO-5011: reconcileShowsJson applies the 3-way pass and counts it', () => {
+  const base = { shows: [{ id: 'x', images: IMG() }] };
+  const local = { shows: [{ id: 'x', images: IMG({ thumbnail: null }) }] };
+  const remote = { shows: [{ id: 'x', images: IMG({ hero: '/h.jpg' }) }] };
+  const r = reconcileShowsJson(local, remote, base, undefined, []);
+  assert.strictEqual(r.recovered, 1);
+  assert.deepStrictEqual(local.shows[0].images, IMG({ thumbnail: null, hero: '/h.jpg' }));
+});
