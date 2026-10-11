@@ -77,7 +77,7 @@ async function fetchPageWithRetry(url, attempts = 3) {
 // overwrite an on-disk recovery before this script ever gets to `git add`
 // at the end of a run — committing after each successful recovery shrinks
 // that exposure window from the whole batch to a single candidate. Mirrors
-// scripts/recover-serp-text.js's checkpointReviewTexts, without that
+// the checkpoint helper the other review-text recovery scripts use, without that
 // script's restore-protected-fields step (this script never touches
 // protected fields on OTHER outlets' files, only the talkinbroadway husk it
 // just wrote).
@@ -89,16 +89,14 @@ function checkpointReviewTexts(label) {
       return; // nothing to commit
     } catch { /* has staged changes */ }
     execSync(`git commit -m "data: ${label} checkpoint"`, { cwd: reviewTextsDir, stdio: 'pipe' });
-    for (let attempt = 1; attempt <= 3; attempt++) {
-      try {
-        execSync('git pull --rebase origin main', { cwd: reviewTextsDir, stdio: 'pipe' });
-        execSync('git push origin main', { cwd: reviewTextsDir, stdio: 'pipe' });
-        console.log(`  [checkpoint] pushed review-texts (attempt ${attempt})`);
-        return;
-      } catch (e) {
-        try { execSync('git rebase --abort', { cwd: reviewTextsDir, stdio: 'pipe' }); } catch { /* nothing to abort */ }
-        if (attempt === 3) console.warn(`  [checkpoint] WARNING: failed to push after 3 attempts: ${e.message.slice(0, 200)}`);
-      }
+    // push-with-retry.sh bounds the fetch for shallow checkouts and resolves
+    // review-texts conflicts; a bare `git pull --rebase` here pulled the whole
+    // repo history from the audit workflow's fetch-depth:1 checkout.
+    try {
+      execSync(`bash "${path.join(__dirname, 'lib', 'push-with-retry.sh')}" 3 main`, { cwd: reviewTextsDir, stdio: 'pipe' });
+      console.log('  [checkpoint] pushed review-texts');
+    } catch (e) {
+      console.warn(`  [checkpoint] WARNING: failed to push: ${String(e.message).slice(0, 200)}`);
     }
   } catch (e) {
     console.warn(`  [checkpoint] error: ${e.message.slice(0, 200)}`);

@@ -24,6 +24,8 @@
 
 const { isEmptyBodyFile, isRecoverableFlaggedFile } = require('./flagged-recovery');
 const { isRoundupPageAsReview, isIncludableForRebuild, hasValidScore, hasAggregatorExcerpt } = require('./review-guards');
+const { classifyReviewUrl } = require('./non-review-url-patterns');
+const { isForumLinkRecoverable } = require('./talkinbroadway-forum-link');
 // BRO-2985: the scorer's own selector. An 'unscored' gap whose file the scorer
 // would skip cannot be self-healed by dispatching llm-ensemble-score.yml, so
 // the sweep must not keep dispatching for it (4x/day/show forever at
@@ -88,6 +90,21 @@ function hasEditorialExclusion(f) {
 // is the reference implementation, hardened after 2 rounds of adversarial
 // review caught exactly this).
 const WRONG_URL_INCOMPLETE = new Set(['url_content_mismatch', 'wrong_content', 'scraper_garbage']);
+// The discovery-time URL classifier (video/news items, listing pages, ticket
+// sellers, aggregator navigation) already refuses these URLs, but it only ran
+// at discovery. NOT a blanket exclusion: existing regression tests
+// (silent-gap-rejection-reason, coverage-gap-alerts, audit-t1-silent-gaps) keep
+// non-review pieces flagged until the scorer terminally classifies them
+// not_a_review. It applies only where that can never happen: the scorer will
+// skip the file for good (dispatchable === false) and no ensemble verdict was
+// ever recorded, so nothing is going to classify it. Missing/unparseable URLs
+// are never judged here.
+function hasNonReviewUrl(f) {
+  if (!f || typeof f.url !== 'string' || !f.url.startsWith('http')) return false;
+  const r = classifyReviewUrl(f.url);
+  return r.ok === false && r.reason !== 'not-http-url' && r.reason !== 'unparseable-url';
+}
+
 function hasWrongUrlSignal(f) {
   return WRONG_URL_INCOMPLETE.has(f.incompleteReason)
     || f.isBlockedReviewUrl === true
@@ -148,7 +165,7 @@ function classifySilentGap({ file, show, tier, outletScored, now, filePath }) {
   if (isIncludableForRebuild(file, show, filePath)) {
     // Includable content (flags + context clean), but no valid score yet.
     if (isEmptyBodyFile(file)) {
-      return { type: 'empty-body', recoverable: isRecoverableFlaggedFile(file) };
+      return { type: 'empty-body', recoverable: isRecoverableFlaggedFile(file) || isForumLinkRecoverable(file) };
     }
     const fetchedAt = Date.parse(file.textFetchedAt || '');
     if (!Number.isNaN(fetchedAt) && now instanceof Date
@@ -169,6 +186,7 @@ function classifySilentGap({ file, show, tier, outletScored, now, filePath }) {
     } catch {
       dispatchable = true;
     }
+    if (dispatchable === false && !file.rejectionReason && hasNonReviewUrl(file)) return null;
     return { type: 'unscored', recoverable: false, dispatchable };
   }
 
@@ -196,7 +214,7 @@ function classifySilentGap({ file, show, tier, outletScored, now, filePath }) {
   //    rebuild time and is NOT a gap; isEmptyBodyFile only checks fullText/
   //    aggregatorStars/assignedScore, so use the canonical score predicate.
   if (file.contentTier !== 'invalid' && isEmptyBodyFile(file) && !hasValidScore(file)) {
-    return { type: 'empty-body', recoverable: isRecoverableFlaggedFile(file) };
+    return { type: 'empty-body', recoverable: isRecoverableFlaggedFile(file) || isForumLinkRecoverable(file) };
   }
 
   return null;
