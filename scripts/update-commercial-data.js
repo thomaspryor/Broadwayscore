@@ -1811,7 +1811,7 @@ function applyChanges(applied, newEntries, commercial, showKeyIndex) {
       const cite = isPrintableReportedCitation(data[CITATION_FIELD[field]]) ? data[CITATION_FIELD[field]].trim() : null;
       labelFigure(data, field, entry.source, cite);
     }
-    const { entry: record, changed, holdReason } = sanitizeForPublicRecord(data, show && show.status);
+    const { entry: record, changed, holdReason } = sanitizeForPublicRecord(data, show || undefined);
     if (holdReason) {
       console.log(`  [HOLD] New entry ${key}: ${holdReason}`);
       continue;

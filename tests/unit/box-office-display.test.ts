@@ -8,6 +8,7 @@ import {
   closingsSentence,
   cohortSentence,
   mapCorners,
+  recordText,
   mapOutliers,
   MAP_FULL_PCT,
   moverNote,
@@ -18,7 +19,7 @@ import {
 } from '../../src/lib/box-office-display';
 import { placeLabels } from '../../src/components/box-office/PriceMap';
 import { getBoxOfficeMarketInput, getBoxOfficeMarketPage } from '../../src/lib/data-commercial';
-import { historicPace, marketPerSeatByWeek, MOVER_MIN_PCT } from '../../src/lib/box-office-market';
+import { MOVER_MIN_PCT } from '../../src/lib/box-office-market';
 
 test('seasonPaceSentence: behind last season but ahead of two back', () => {
   assert.equal(
@@ -141,9 +142,23 @@ test('real data: the market page builds with sane numbers', () => {
   for (const r of page.perSeat.rows) assert.ok(r.perSeat > 10 && r.perSeat < 600, `${r.title} per seat ${r.perSeat}`);
   assert.ok(page.cohort.musicals >= 20, `cohort of ${page.cohort.musicals}`);
   if (page.cohort.story) assert.doesNotMatch(page.cohort.story, /\([A-Za-z]/, 'the cohort story uses short titles');
-  // Historic pace lists every qualifying new show, slow starters included.
-  const input = getBoxOfficeMarketInput();
-  assert.equal(page.pace.length, historicPace(input, page.week, marketPerSeatByWeek(input)).length);
   // Movers never show a move that rounds to 0%.
   for (const m of [...page.movers.gains, ...page.movers.drops]) assert.ok(Math.abs(m.pct) >= MOVER_MIN_PCT, `${m.title} ${m.pct}`);
+});
+
+test('recordText: ever, early/mid/late Month within a year, Month YYYY before that', () => {
+  const week = '2026-10-04';
+  assert.equal(recordText({ ever: true, since: null }, week), 'best week ever');
+  assert.equal(recordText({ ever: false, since: '2026-01-04' }, week), 'best week since early January');
+  assert.equal(recordText({ ever: false, since: '2026-03-15' }, week), 'best week since mid-March');
+  assert.equal(recordText({ ever: false, since: '2025-09-28' }, week), 'best week since September 2025');
+  // The same week a year back never reads like last week.
+  assert.equal(recordText({ ever: false, since: '2024-12-29' }, '2025-12-28'), 'best week since December 2024');
+});
+
+test('real data: the personal-bests card lists at most six, with the rest counted', () => {
+  const page = getBoxOfficeMarketPage()!;
+  assert.ok(page.records.rows.length <= 6);
+  if (page.records.more > 0) assert.equal(page.records.rows.length, 6);
+  for (const r of page.records.rows) assert.match(r.text, /^best week (ever|since )/);
 });

@@ -566,7 +566,7 @@ function applyPending() {
     };
     require('./lib/commercial-apply-gate').applyFigureEvidence(builtForApply, entry, {});
     const { entry: commercialEntry, changed, holdReason } = sanitizeForPublicRecord(
-      builtForApply, keyShow && keyShow.slug === commercialKey ? keyShow.status : undefined);
+      builtForApply, keyShow && keyShow.slug === commercialKey ? keyShow : undefined);
     if (holdReason) {
       console.log(`  🛑 "${showId}" — left pending for review: ${holdReason}`);
       skipped++;

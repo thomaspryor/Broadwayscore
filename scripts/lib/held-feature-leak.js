@@ -30,6 +30,8 @@ const SENTINELS = [
   'Is it covering its costs',
   'Most money per seat',
   'How the new musicals are selling',
+  'Dollars at the time, not adjusted for inflation',
+  'judged only against their own run',
 ];
 
 const HELD_PATHS = [

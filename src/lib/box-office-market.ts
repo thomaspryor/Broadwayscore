@@ -25,6 +25,7 @@ import {
   type HistoryRow,
   type HistoryWeeks,
 } from './box-office-weeks';
+import { SHUTDOWN_START, SHUTDOWN_END } from './box-office-status';
 
 /** The show fields these functions read, indexed by production slug. */
 export interface MarketShow {
@@ -381,84 +382,8 @@ export function runPerSeatSeries(input: MarketInput, show: MarketShow, maxWeeks:
   return out;
 }
 
-/** Median gross per seat across reporting Broadway shows, by week (the market adjustment). */
-export function marketPerSeatByWeek(input: MarketInput): Map<string, number> {
-  const out = new Map<string, number>();
-  for (const [week, rows] of Object.entries(input.weeks)) {
-    const v: number[] = [];
-    for (const [slug, r] of Object.entries(rows)) if (isPaired(r) && isBroadwaySlug(input, slug)) v.push(r.gross / r.seatsOffered);
-    const m = median(v);
-    if (m != null) out.set(week, m);
-  }
-  return out;
-}
-
-/**
- * A run's market-adjusted pace at week `k` of its run: the mean, over its
- * last up-to-4 paired weeks ending at week k, of its gross per seat divided
- * by that week's market median. Null without a paired week in the window.
- */
-export function adjustedPaceAt(input: MarketInput, show: MarketShow, k: number, market: Map<string, number>): number | null {
-  const first = weekEndingOnOrAfter(show.previewsStartDate!);
-  const ratios: number[] = [];
-  for (let i = Math.max(1, k - TRAILING_WEEKS + 1); i <= k; i++) {
-    const week = addDays(first, 7 * (i - 1));
-    const r = input.weeks[week]?.[show.slug];
-    const m = market.get(week);
-    if (isPaired(r) && m) ratios.push(r.gross / r.seatsOffered / m);
-  }
-  return ratios.length ? ratios.reduce((s, x) => s + x, 0) / ratios.length : null;
-}
-
+/** New-musical cohort chart starts at this week of a run. */
 export const PACE_MIN_WEEK = 4;
-export const PACE_MAX_WEEK = 48;
-/** Below this many comparable runs at a week, no "beats N%" is shown. */
-export const PACE_MIN_COMPARATORS = 50;
-
-export interface PaceRow {
-  slug: string;
-  week: number;
-  /** Share of comparable runs it outsold per seat at the same week, 0..100. */
-  beatsPct: number;
-  comparators: number;
-}
-
-/**
- * Historic pace for runs between week 4 and 48 at `week`: how many earlier
- * runs (plays and musicals since the history began) it beats on
- * market-adjusted gross per seat at the same week of run.
- */
-export function historicPace(input: MarketInput, week: string, market = marketPerSeatByWeek(input)): PaceRow[] {
-  const runs = Array.from(input.shows.values()).filter(isComparableRun);
-  const cache = new Map<string, Map<number, number | null>>();
-  const paceOf = (show: MarketShow, k: number) => {
-    let m = cache.get(show.slug);
-    if (!m) cache.set(show.slug, (m = new Map()));
-    if (!m.has(k)) m.set(k, adjustedPaceAt(input, show, k, market));
-    return m.get(k)!;
-  };
-  const out: PaceRow[] = [];
-  for (const show of runs) {
-    if (!isReported(input.weeks[week]?.[show.slug])) continue;
-    const k = weekOfRun(show.previewsStartDate!, week);
-    if (k < PACE_MIN_WEEK || k > PACE_MAX_WEEK) continue;
-    const mine = paceOf(show, k);
-    if (mine == null) continue;
-    let beaten = 0;
-    let n = 0;
-    for (const other of runs) {
-      if (other.slug === show.slug) continue;
-      // Only runs that had reached week k by this week can be compared.
-      if (addDays(weekEndingOnOrAfter(other.previewsStartDate!), 7 * (k - 1)) > week) continue;
-      const theirs = paceOf(other, k);
-      if (theirs == null) continue;
-      n++;
-      if (mine > theirs) beaten++;
-    }
-    if (n >= PACE_MIN_COMPARATORS) out.push({ slug: show.slug, week: k, beatsPct: Math.round((beaten / n) * 100), comparators: n });
-  }
-  return out.sort((a, b) => b.beatsPct - a.beatsPct || a.slug.localeCompare(b.slug));
-}
 
 /** Cohort window: new musicals from this many years before the latest week (2016 for a 2026 week). */
 export const COHORT_YEARS = 10;
@@ -517,6 +442,8 @@ export interface ShowFacts {
   series: Array<{ week: string; gross: number | null }>;
   /** The latest stretch of weeks that stayed within STEADY_MAX_RATIO, when at least STEADY_MIN_WEEKS long. */
   steady: { low: number; high: number; since: string } | null;
+  /** This run's records (personalBests), null under BESTS_MIN_WEEKS. */
+  bests: PersonalBests | null;
 }
 
 function avgTicket(r: HistoryRow): number | null {
@@ -582,5 +509,138 @@ export function showFacts(input: MarketInput, slug: string, latestWeek: string):
   }
   const steady = n >= STEADY_MIN_WEEKS ? { low, high, since } : null;
 
-  return { week, current: week === latestWeek, gross, rank, of: market?.shows ?? 0, yearAgoPct, marketYearAgoPct, attendanceYoyPct, atpYoyPct, marketAttendanceYoyPct, series: series.slice(Math.max(0, first)), steady };
+  return { week, current: week === latestWeek, gross, rank, of: market?.shows ?? 0, yearAgoPct, marketYearAgoPct, attendanceYoyPct, atpYoyPct, marketAttendanceYoyPct, series: series.slice(Math.max(0, first)), steady, bests: personalBests(input, slug, week) };
+}
+
+// ------------------------------------------------------------------
+// Personal bests: this run's records, Broadway League figures only
+// ------------------------------------------------------------------
+
+/** A run needs at least this many reported weeks before its records mean anything. */
+export const BESTS_MIN_WEEKS = 4;
+/** A silence longer than this (not counting the COVID shutdown) ends one engagement; earlier weeks belong to another. */
+export const BESTS_MAX_GAP_WEEKS = 26;
+/** Without a first-preview date, the run is taken to start this many weeks before opening night. */
+const BESTS_PREVIEW_WEEKS = 8;
+/** Below this attendance a gross/attendance average ticket is noise, not a record. */
+const BESTS_MIN_ATTENDANCE = 100;
+
+/** Weeks between two week endings, less any part of the COVID shutdown between them. */
+function gapWeeks(from: string, to: string): number {
+  const days = (a: string, b: string) => (Date.parse(`${b}T00:00:00Z`) - Date.parse(`${a}T00:00:00Z`)) / 86_400_000;
+  let d = days(from, to);
+  const lo = from > SHUTDOWN_START ? from : SHUTDOWN_START;
+  const hi = to < SHUTDOWN_END ? to : SHUTDOWN_END;
+  if (hi > lo) d -= days(lo, hi);
+  return d / 7;
+}
+
+export type BestKey = 'gross' | 'capacity' | 'atp';
+
+export interface BestRow {
+  key: BestKey;
+  /** The record and the week it was set; the earliest week wins a tie. */
+  value: number;
+  week: string;
+  /** The same measure in the show's latest reported week; null when that week lacks it. */
+  latest: number | null;
+  /** The latest week set the record. */
+  latestIsRecord: boolean;
+}
+
+export interface PersonalBests {
+  /** The show's latest reported week, which `latest` describes. */
+  latestWeek: string;
+  weeks: number;
+  rows: BestRow[];
+}
+
+/**
+ * A production's own reported weeks up to `latestWeek`, oldest first. History
+ * is keyed by production, so a revival never inherits the original run's
+ * weeks. Two guards catch rows filed under the wrong production anyway: rows
+ * before the run's first preview week (or BESTS_PREVIEW_WEEKS before opening
+ * when the preview date is unknown) are skipped, and only the weeks after the
+ * last silence longer than BESTS_MAX_GAP_WEEKS (shutdown excluded) count.
+ * Partial preview weeks count, including the older rows that list preview
+ * weeks with 0 performances but a real gross (the zero-perf-gross integrity
+ * rule), so any week with a gross is a week of the run here. Shared by
+ * personalBests and weeklyRecords.
+ */
+export function ownRunWeeks(input: MarketInput, slug: string, latestWeek: string): string[] {
+  const row = rowFor(input, slug);
+  const show = input.shows.get(slug);
+  const first = show?.previewsStartDate ?? (show?.openingDate ? addDays(show.openingDate, -7 * BESTS_PREVIEW_WEEKS) : null);
+  const start = first ? weekEndingOnOrAfter(first) : null;
+  const weeks = Object.keys(input.weeks)
+    .filter((w) => w <= latestWeek && (!start || w >= start) && (row(w)?.gross ?? 0) > 0)
+    .sort();
+  for (let i = weeks.length - 1; i > 0; i--) {
+    if (gapWeeks(weeks[i - 1], weeks[i]) > BESTS_MAX_GAP_WEEKS) return weeks.slice(i);
+  }
+  return weeks;
+}
+
+/**
+ * This run's best week, fullest week and highest average ticket over
+ * ownRunWeeks. A week missing capacity or attendance is left out of that
+ * measure (never read as 0). Null with fewer than BESTS_MIN_WEEKS weeks.
+ */
+export function personalBests(input: MarketInput, slug: string, latestWeek: string): PersonalBests | null {
+  const row = rowFor(input, slug);
+  const weeks = ownRunWeeks(input, slug, latestWeek);
+  if (weeks.length < BESTS_MIN_WEEKS) return null;
+  const last = weeks[weeks.length - 1];
+  const measures: Array<[BestKey, (r: HistoryRow) => number | null]> = [
+    ['gross', (r) => r.gross ?? null],
+    ['capacity', (r) => (r.capacity != null && r.capacity > 0 ? r.capacity : null)],
+    ['atp', (r) => (r.atp != null && r.atp > 0 ? r.atp : r.gross != null && (r.attendance ?? 0) >= BESTS_MIN_ATTENDANCE ? r.gross / (r.attendance as number) : null)],
+  ];
+  const rows: BestRow[] = [];
+  for (const [key, of] of measures) {
+    let best: { value: number; week: string } | null = null;
+    for (const w of weeks) {
+      const v = of(row(w) as HistoryRow);
+      if (v != null && (!best || v > best.value)) best = { value: v, week: w };
+    }
+    if (best) rows.push({ key, value: best.value, week: best.week, latest: of(row(last) as HistoryRow), latestIsRecord: best.week === last });
+  }
+  return { latestWeek: last, weeks: weeks.length, rows };
+}
+
+/** A latest week must top at least this many of the run's weeks before it to count as a record. */
+export const RECORD_MIN_PRIOR_WEEKS = 8;
+
+export interface WeeklyRecord {
+  slug: string;
+  /** The latest week topped every earlier week of the run. */
+  ever: boolean;
+  /** The last earlier week that grossed as much or more; null when `ever`. */
+  since: string | null;
+  /** Earlier weeks it topped in a row (the whole run when `ever`). */
+  topped: number;
+}
+
+/**
+ * Shows whose gross in `week` is their best in a long time, judged only
+ * against their own run (ownRunWeeks): it must beat each of at least
+ * RECORD_MIN_PRIOR_WEEKS weeks just before it. A tie is not a record.
+ * Run-long records first, then the ones reaching furthest back.
+ */
+export function weeklyRecords(input: MarketInput, week: string): WeeklyRecord[] {
+  const out: WeeklyRecord[] = [];
+  for (const [slug, r] of Object.entries(input.weeks[week] ?? {})) {
+    if (!isReported(r) || !isBroadwaySlug(input, slug)) continue;
+    const weeks = ownRunWeeks(input, slug, week);
+    if (weeks[weeks.length - 1] !== week) continue;
+    const prior = weeks.slice(0, -1);
+    if (prior.length < RECORD_MIN_PRIOR_WEEKS) continue;
+    const row = rowFor(input, slug);
+    let i = prior.length - 1;
+    while (i >= 0 && ((row(prior[i]) as HistoryRow).gross as number) < r.gross) i--;
+    const topped = prior.length - 1 - i;
+    if (topped < RECORD_MIN_PRIOR_WEEKS) continue;
+    out.push({ slug, ever: i < 0, since: i < 0 ? null : prior[i], topped });
+  }
+  return out.sort((a, b) => Number(b.ever) - Number(a.ever) || (a.since ?? '').localeCompare(b.since ?? '') || b.topped - a.topped || a.slug.localeCompare(b.slug));
 }

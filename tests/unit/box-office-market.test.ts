@@ -3,8 +3,8 @@
  * exported functions (CLAUDE.md rule 15) on small fixtures: market totals
  * from every history row, the half-count guard on comparisons, movers that
  * skip a first week and a tiny base, per-seat ranks with "too new", sell-out
- * streaks across a dark week, premium pull, historic pace's comparator floor
- * and the new-musical cohort's revival and n floors.
+ * streaks across a dark week, premium pull, each run's personal bests and
+ * the new-musical cohort's revival and n floors.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -23,9 +23,11 @@ import {
   weekEndingOnOrAfter,
   weekOfRun,
   isComparableRun,
-  historicPace,
+  personalBests,
+  weeklyRecords,
+  RECORD_MIN_PRIOR_WEEKS,
+  BESTS_MIN_WEEKS,
   newMusicalCohort,
-  PACE_MIN_COMPARATORS,
   COHORT_MIN_N,
   type MarketInput,
   type MarketShow,
@@ -203,21 +205,54 @@ function runs(prefix: string, count: number, start: string, perSeat: (i: number)
   return out;
 }
 
-test('historicPace ranks a new run against runs at the same week, only with enough comparators', () => {
-  const weeks: HistoryWeeks = {};
-  // Comparators in an older market where everyone sells $100 a seat except their spread.
-  const old = runs('old', PACE_MIN_COMPARATORS, '2010-01-04', (i) => 50 + i * 2, weeks); // 50..148
-  const mine = runs('new', 1, '2026-08-01', () => 100, weeks)[0];
-  const latest = addDays(weekEndingOnOrAfter('2026-08-01'), 7 * 5);
-  const pace = historicPace(input(weeks, [...old, mine]), latest);
-  const row0 = pace.find((p) => p.slug === mine.slug)!;
-  assert.equal(row0.week, 6);
-  assert.equal(row0.comparators, PACE_MIN_COMPARATORS);
-  // Market-adjusted: both markets' medians are the runs' own medians, so it beats about half.
-  assert.ok(row0.beatsPct > 40 && row0.beatsPct < 60, String(row0.beatsPct));
-  // One comparator short: nothing shown.
-  const fewer = historicPace(input(weeks, [...old.slice(1), mine]), latest);
-  assert.equal(fewer.find((p) => p.slug === mine.slug), undefined);
+test('personalBests: records with their weeks, the latest week beside them, nulls skipped', () => {
+  const w = ['2026-09-06', '2026-09-13', '2026-09-20', '2026-09-27', '2026-10-04'];
+  const weeks: HistoryWeeks = {
+    [w[0]]: { s: row(900_000, { capacity: 70, atp: 90, performances: 0 }) }, // a preview week listed with 0 performances still counts
+    [w[1]]: { s: row(1_400_000, { capacity: null, atp: null, attendance: null }) }, // no capacity or attendance
+    [w[2]]: { s: row(1_200_000, { capacity: 97, atp: 120 }) },
+    [w[3]]: { s: row(1_400_000, { capacity: 95, atp: 130 }) }, // ties the best gross later: the earlier week keeps it
+    [w[4]]: { s: row(1_100_000, { capacity: 92, atp: 135 }) },
+  };
+  const b = personalBests(input(weeks, [show('s', { previewsStartDate: '2026-09-01' })]), 's', w[4])!;
+  assert.equal(b.weeks, 5);
+  assert.equal(b.latestWeek, w[4]);
+  const by = Object.fromEntries(b.rows.map((r) => [r.key, r]));
+  assert.deepEqual([by.gross.value, by.gross.week, by.gross.latest, by.gross.latestIsRecord], [1_400_000, w[1], 1_100_000, false]);
+  assert.deepEqual([by.capacity.value, by.capacity.week, by.capacity.latest], [97, w[2], 92], 'a null capacity is skipped, never read as 0');
+  assert.deepEqual([by.atp.value, by.atp.week, by.atp.latestIsRecord], [135, w[4], true], 'the latest week can be the record');
+});
+
+test('personalBests: hidden under the minimum weeks, and a revival never inherits the original run', () => {
+  const few: HistoryWeeks = {};
+  for (let i = 0; i < BESTS_MIN_WEEKS - 1; i++) few[addDays('2026-09-06', 7 * i)] = { s: row(1_000_000) };
+  assert.equal(personalBests(input(few, [show('s')]), 's', '2026-10-04'), null);
+
+  // Rows filed under the revival's slug before its first preview belong to the old run.
+  const weeks: HistoryWeeks = { '2019-01-06': { r: row(3_000_000, { capacity: 102, atp: 300 }) } };
+  for (let i = 0; i < 4; i++) weeks[addDays('2026-09-13', 7 * i)] = { r: row(1_000_000 + i, { capacity: 80 + i, atp: 100 + i }) };
+  const b = personalBests(input(weeks, [show('r', { previewsStartDate: '2026-09-10', isRevival: true })]), 'r', '2026-10-04')!;
+  assert.equal(b.weeks, 4);
+  for (const r of b.rows) assert.ok(r.week >= '2026-09-13', `${r.key} record from ${r.week}`);
+  // No first-preview date: the run starts a few weeks before opening night, not at the slug's oldest row.
+  const noPreview = personalBests(input(weeks, [show('r', { openingDate: '2026-10-01' })]), 'r', '2026-10-04')!;
+  for (const r of noPreview.rows) assert.ok(r.week >= '2026-09-13', `${r.key} record from ${r.week}`);
+  // A long silence ends the engagement: weeks before it never set this run's records.
+  const gap: HistoryWeeks = {};
+  for (let i = 0; i < 4; i++) gap[addDays('2019-12-08', 7 * i)] = { m: row(2_000_000) };
+  for (let i = 0; i < 4; i++) gap[addDays('2025-11-02', 7 * i)] = { m: row(300_000 + i) };
+  const g = personalBests(input(gap, [show('m', { previewsStartDate: '1974-05-01' })]), 'm', '2025-11-23')!;
+  assert.equal(g.weeks, 4);
+  assert.equal(g.rows.find((r) => r.key === 'gross')!.week, '2025-11-23');
+  // The COVID shutdown is not a gap: a run that reopened keeps its pre-2020 records.
+  const covid: HistoryWeeks = {};
+  for (let i = 0; i < 3; i++) covid[addDays('2020-02-16', 7 * i)] = { h: row(3_000_000) };
+  for (let i = 0; i < 3; i++) covid[addDays('2021-09-19', 7 * i)] = { h: row(1_000_000) };
+  const c = personalBests(input(covid, [show('h', { previewsStartDate: '2015-07-13' })]), 'h', '2021-10-03')!;
+  assert.equal(c.weeks, 6);
+  assert.equal(c.rows.find((r) => r.key === 'gross')!.week, '2020-02-16');
+  // Weeks after the show's latest week are ignored too.
+  assert.equal(personalBests(input(weeks, [show('r', { previewsStartDate: '2026-09-10' })]), 'r', '2026-09-27'), null);
 });
 
 test('newMusicalCohort leaves out revivals and draws the band only at n >= 15', () => {
@@ -232,4 +267,32 @@ test('newMusicalCohort leaves out revivals and draws the band only at n >= 15', 
   assert.equal(c.band[3], null); // only 3 weeks of data
   const short = newMusicalCohort(input(weeks, fresh.slice(1)), '2026-10-04', 1);
   assert.equal(short.band[0], null);
+});
+
+test('weeklyRecords: run-long records first, then the furthest-reaching "since"; ties, short runs and old runs never count', () => {
+  const latest = '2026-10-04';
+  const weeks: HistoryWeeks = {};
+  const put = (slug: string, grosses: number[]) => grosses.forEach((g, i) => {
+    const w = addDays(latest, -7 * (grosses.length - 1 - i));
+    (weeks[w] ??= {})[slug] = row(g);
+  });
+  const flat = (n: number, g: number) => Array.from({ length: n }, () => g);
+  put('ever', [...flat(12, 1_000_000), 1_500_000]); // beats all 12 earlier weeks
+  put('since', [2_000_000, ...flat(10, 1_000_000), 1_500_000]); // a higher week 11 back
+  put('recent', [2_000_000, ...flat(RECORD_MIN_PRIOR_WEEKS, 1_000_000), 1_500_000]); // exactly 8 topped
+  put('tooSoon', [2_000_000, ...flat(RECORD_MIN_PRIOR_WEEKS - 1, 1_000_000), 1_500_000]); // only 7 topped
+  put('tie', [...flat(12, 1_500_000), 1_500_000]); // equal to every earlier week: not a record
+  put('short', [...flat(RECORD_MIN_PRIOR_WEEKS - 1, 1_000_000), 1_500_000]); // fewer than 8 earlier weeks
+  // A revival whose slug still carries the original run's bigger weeks from years ago.
+  weeks['2018-12-30'] = { ...(weeks['2018-12-30'] ?? {}), revival: row(3_000_000) };
+  put('revival', [...flat(9, 1_000_000), 1_200_000]);
+  const shows = ['ever', 'since', 'recent', 'tooSoon', 'tie', 'short', 'revival'].map((s) => show(s, s === 'revival' ? { isRevival: true } : {}));
+  const got = weeklyRecords(input(weeks, shows), latest);
+  assert.deepEqual(got.map((r) => [r.slug, r.ever, r.topped]), [
+    ['ever', true, 12],
+    ['revival', true, 9],
+    ['since', false, 10],
+    ['recent', false, RECORD_MIN_PRIOR_WEEKS],
+  ]);
+  assert.equal(got.find((r) => r.slug === 'since')!.since, addDays(latest, -7 * 11));
 });

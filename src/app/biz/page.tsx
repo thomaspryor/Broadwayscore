@@ -23,6 +23,7 @@ import {
 } from '@/lib/data-commercial';
 import { getGrossesWeekEnding } from '@/lib/data-grosses';
 import { formatDataDate, formatDevelopmentDate, sortNewestFirst } from '@/lib/biz-format';
+import { lossOutcomePhrase } from '@/lib/commercial-display';
 
 import SeasonStatsCard from '@/components/biz/SeasonStatsCard';
 import RecentDevelopmentsList, { type DevelopmentItem } from '@/components/biz/RecentDevelopmentsList';
@@ -82,11 +83,7 @@ function generateRecentDevelopments(): DevelopmentItem[] {
   // Add recent closings that didn't recoup (last 3 months)
   const recentClosings = getRecentClosings(3);
   for (const show of recentClosings.slice(0, 3)) {
-    const desc = show.designation === 'Flop'
-      ? 'closed as a flop'
-      : show.designation === 'Fizzle'
-        ? 'closed without recouping'
-        : 'closed';
+    const desc = lossOutcomePhrase({ designation: show.designation, designationBasis: show.designationBasis ?? undefined }, 'closing');
     past.push({
       isoDate: show.closingDate,
       item: {

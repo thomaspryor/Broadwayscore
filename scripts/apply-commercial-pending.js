@@ -315,12 +315,12 @@ async function main() {
     // that the scraper doesn't carry.
     // Then clear research wording and premature loss labels, which the
     // validate-data run below would otherwise reject, aborting every entry.
-    // Status comes from keyShow (resolveCommercialSlug above): the show whose
-    // slug IS the key, the record validate-data checks it against.
+    // The show record comes from keyShow (resolveCommercialSlug above): the show
+    // whose slug IS the key, the record validate-data checks it against.
     // Entries that would be held for review are held before any page is fetched: an entry stuck on a hold would
     // otherwise be re-verified (up to the per-run fetch cap) on every run.
-    const status = keyShow && keyShow.slug === commercialKey ? keyShow.status : undefined;
-    const heldBeforeFetch = sanitizeForPublicRecord(gate.buildCommercialEntry(row, existing, { isClaimAutoApply, mergeExisting, normalizeSources }), status).holdReason;
+    const keyShowRecord = keyShow && keyShow.slug === commercialKey ? keyShow : undefined;
+    const heldBeforeFetch = sanitizeForPublicRecord(gate.buildCommercialEntry(row, existing, { isClaimAutoApply, mergeExisting, normalizeSources }), keyShowRecord).holdReason;
     if (heldBeforeFetch) {
       console.log(`  🛑 "${showId}" — left pending for review: ${heldBeforeFetch}`);
       skipped++;
@@ -356,7 +356,7 @@ async function main() {
     }
     const { entry: commercialEntry, changed, holdReason } = sanitizeForPublicRecord(
       gate.buildCommercialEntry(row, existing, { isClaimAutoApply, mergeExisting, normalizeSources, figureEvidence }),
-      keyShow && keyShow.slug === commercialKey ? keyShow.status : undefined,
+      keyShowRecord,
     );
     if (holdReason) {
       console.log(`  🛑 "${showId}" — left pending for review: ${holdReason}`);
@@ -371,7 +371,7 @@ async function main() {
       gate.keepExistingPublicText(commercialEntry, existing);
       // One bad row must not fail validate-data for the whole batch.
       const rowErrors = commercialRecordErrors(commercialKey, commercialEntry, {
-        showRecord: keyShow && keyShow.slug === commercialKey ? keyShow : undefined,
+        showRecord: keyShowRecord,
         allRecords: commercial.shows,
       });
       if (rowErrors.length) {

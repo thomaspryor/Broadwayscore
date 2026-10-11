@@ -10,7 +10,7 @@ const {
   selectLookups, trIssueMonth, trVenueName, pickTrForReview, findContinuingRun, cleanReviewTitle,
 } = require('./we-review-led-candidates.js');
 const { isLondonVenue } = require('./tr-london-venue.js');
-const { searchTitles, pdfHeaderFor } = require('../resolve-we-unlisted-tr.js');
+const { searchTitles, pdfHeaderFor, htmlHeaderFor } = require('../resolve-we-unlisted-tr.js');
 
 // we-historical-candidates-2018-2019.json unlistedReviews (verbatim)
 const COMPANY = { title: 'Company', venue: 'Gielgud Theatre', date: '2018-10-17', url: 'https://www.whatsonstage.com/news/review-company-gielgud-theatre_47830/', rating: 5, market: [83, 98] };
@@ -211,4 +211,17 @@ test('pdfHeaderFor tries the exact title before a THE-variant (Father vs The Fat
   const text = 'THE FATHER\n6 October 2015 – 21 November 2015\nFATHER\n2 March 2016 – 9 April 2016';
   assert.equal(pdfHeaderFor(text, 'Father'), 'FATHER\n2 March 2016 – 9 April 2016');
   assert.equal(pdfHeaderFor('THE FATHER\n6 October 2015 – 21 November 2015', 'Father'), 'THE FATHER\n6 October 2015 – 21 November 2015');
+});
+
+// Label format seen in the real 2019-20 TR header (A Very Expensive Poison):
+// "Press Night 05 Sep 2019" / "Closes 05 Oct 2019".
+test('parseTrHeaderDates reads the TR "Press Night" / "Closes" labels', () => {
+  assert.deepEqual(parseTrHeaderDates('A VERY EXPENSIVE POISON\nPress Night 05 Sep 2019\nCloses 05 Oct 2019'),
+    { previewsStartDate: null, openingDate: '2019-09-05', closingDate: '2019-10-05' });
+});
+
+test('htmlHeaderFor reads only lines that start with a run-date label', () => {
+  const page = 'The Real Thing\nThe Old Vic Theatre, London\nPress Night 12 Sep 2024\nCloses 26 Oct 2024\nThe Guardian\nThe play opened on 4 September 2024 and runs until 9 November 2024 in a long review sentence.\nUntil the very end it charms';
+  assert.equal(htmlHeaderFor('The Real Thing', page), 'The Real Thing\nPress Night 12 Sep 2024\nCloses 26 Oct 2024');
+  assert.equal(htmlHeaderFor('X', 'The play opened on 4 September 2024 in a long review sentence that runs on'), null);
 });

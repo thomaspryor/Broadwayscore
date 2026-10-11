@@ -24,6 +24,7 @@ import {
   getDesignationDisplay,
   publicSourceText,
   isClosedWithoutRecouping,
+  lossOutcomePhrase,
   LOSS_ON_SILENCE_CAVEAT,
 } from '@/lib/commercial-display';
 import { isRunningStatus } from '@/lib/commercial-metrics';
@@ -79,7 +80,7 @@ function CitationIcon() {
 /** % Recouped cell: a recoupment record renders solid + a citation marker
  *  (plus "Not publicly announced" when it was never announced, matching the
  *  show page); a modeled estimate renders the shared progress bar (labelled
- *  "Est."); a closed Fizzle or Flop says "Did not recoup"
+ *  "Est."); a closed Fizzle or Flop says lossOutcomePhrase(…, 'cell')
  *  (isClosedWithoutRecouping); anything else renders "—". */
 function RecoupedCell({ show }: { show: CommercialShowRow }) {
   const displayMode = getRecoupmentDisplayMode(show);
@@ -123,7 +124,7 @@ function RecoupedCell({ show }: { show: CommercialShowRow }) {
   }
 
   if (isClosedWithoutRecouping(show)) {
-    return <span className="text-gray-400 text-sm">Did not recoup</span>;
+    return <span className="text-gray-400 text-sm">{lossOutcomePhrase({ designation: show.designation, designationBasis: show.designationBasis ?? undefined }, 'cell')}</span>;
   }
 
   const held = getModelHoldLabel(show);
@@ -299,7 +300,7 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                     <RecoupedCell show={show} />
                   </td>
                   <td className="py-3 px-4">
-                    <span className={designation.textClass} title={designation.description}>
+                    <span className={designation.textClass} title={show.lossCaveat ?? designation.description}>
                       {designation.label}
                     </span>
                     {show.nonprofitOrg && (

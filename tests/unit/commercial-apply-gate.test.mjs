@@ -491,7 +491,7 @@ describe('designationBasis on every loss label (BRO-5020 policy B)', () => {
     assert.equal(tbd.needsLossEvidence, true);
   });
   it('the public-record sanitizer drops the basis when it un-labels a running show', () => {
-    const { entry } = checks.sanitizeForPublicRecord({ designation: 'Fizzle', designationBasis: 'no-recoupment-announced' }, 'open');
+    const { entry } = checks.sanitizeForPublicRecord({ designation: 'Fizzle', designationBasis: 'no-recoupment-announced' }, { status: 'open' });
     assert.equal(entry.designation, 'TBD');
     assert.equal(entry.designationBasis, undefined);
   });
@@ -601,13 +601,13 @@ describe('first-person research notes never reach /biz (BRO-5041)', () => {
     assert.equal(checks.internalWordingIn('Source: https://example.com/a-(b)'), null);
   });
   it('sanitize removes markdown citation links and leaves the sentence', () => {
-    const out = checks.sanitizeForPublicRecord({ notes: 'Ran at Studio 54. Not-for-profit producer. ([ibdb.com](https://www.ibdb.com/x?utm_source=openai))' }, 'closed');
+    const out = checks.sanitizeForPublicRecord({ notes: 'Ran at Studio 54. Not-for-profit producer. ([ibdb.com](https://www.ibdb.com/x?utm_source=openai))' }, { status: 'closed' });
     assert.equal(out.entry.notes, 'Ran at Studio 54. Not-for-profit producer.');
-    const only = checks.sanitizeForPublicRecord({ notes: '([playbill.com](https://playbill.com/a?utm_source=openai))' }, 'closed');
+    const only = checks.sanitizeForPublicRecord({ notes: '([playbill.com](https://playbill.com/a?utm_source=openai))' }, { status: 'closed' });
     assert.equal(only.entry.notes, null);
   });
   it('sanitize drops only the first-person sentence', () => {
-    const out = checks.sanitizeForPublicRecord({ notes: "Capitalized at $14.5M. I couldn't verify the weekly nut." }, 'closed');
+    const out = checks.sanitizeForPublicRecord({ notes: "Capitalized at $14.5M. I couldn't verify the weekly nut." }, { status: 'closed' });
     assert.equal(out.entry.notes, 'Capitalized at $14.5M.');
   });
 });
@@ -615,9 +615,9 @@ describe('first-person research notes never reach /biz (BRO-5041)', () => {
 describe('released rows keep the record\'s own text (BRO-5041 review)', () => {
   const checks = require('../../scripts/lib/commercial-record-checks.js');
   it('a markdown citation in a source field becomes the bare URL', () => {
-    const out = checks.sanitizeForPublicRecord({ recouped: false, recoupedSource: '([variety.com](https://variety.com/a/?utm_source=openai))' }, 'closed');
+    const out = checks.sanitizeForPublicRecord({ recouped: false, recoupedSource: '([variety.com](https://variety.com/a/?utm_source=openai))' }, { status: 'closed' });
     assert.equal(out.entry.recoupedSource, 'https://variety.com/a/');
-    const kept = checks.sanitizeForPublicRecord({ capitalizationSource: 'SEC Form D [sec.gov](https://sec.gov/x?id=1&utm_source=openai)' }, 'closed');
+    const kept = checks.sanitizeForPublicRecord({ capitalizationSource: 'SEC Form D [sec.gov](https://sec.gov/x?id=1&utm_source=openai)' }, { status: 'closed' });
     assert.equal(kept.entry.capitalizationSource, 'SEC Form D https://sec.gov/x?id=1');
   });
   it('keepExistingPublicText keeps notes and an unchanged recoupment citation', () => {
