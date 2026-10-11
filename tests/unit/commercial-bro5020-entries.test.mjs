@@ -7,6 +7,9 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
+
+const { VALID_DESIGNATION_BASES } = createRequire(import.meta.url)('../../scripts/lib/commercial-designations.js');
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const file = process.env.COMMERCIAL_JSON || path.join(root, 'data/commercial.json');
@@ -20,7 +23,10 @@ const EXPECTED = {
   'thoughts-of-a-colored-man-2021': { designation: 'TBD', capitalization: 5000000 },
   'the-piano-lesson-2022': { designation: 'TBD', capitalization: 7000000 },
   'caroline-or-change-2021': { designation: 'Nonprofit' },
-  'grey-house': { designation: 'TBD', capitalization: 8000000 },
+  // grey-house's designation is not pinned: owner policy B (bro-5020-e-e)
+  // relabeled it Fizzle on the no-recoupment-announced basis. The test below
+  // checks that any loss label carries a basis.
+  'grey-house': { capitalization: 8000000 },
 };
 
 for (const [slug, want] of Object.entries(EXPECTED)) {
@@ -31,10 +37,15 @@ for (const [slug, want] of Object.entries(EXPECTED)) {
   });
 }
 
-test('grey-house has no loss label without a recouped source', { skip: !present && 'data/commercial.json not available' }, () => {
+// Owner policy B (BRO-5020): a Fizzle/Flop needs a designationBasis, which may
+// be "no-recoupment-announced" for a long-closed show, not a recoupedSource.
+test('grey-house has no loss label without a designation basis', { skip: !present && 'data/commercial.json not available' }, () => {
   const rec = records['grey-house'];
   assert.notEqual(rec.recouped, true, 'never recouped:true without citation');
-  if (['Fizzle', 'Flop'].includes(rec.designation)) assert.ok(rec.recoupedSource, 'loss label needs a cited source');
+  if (['Fizzle', 'Flop'].includes(rec.designation)) {
+    assert.ok(VALID_DESIGNATION_BASES.includes(rec.designationBasis),
+      `loss label needs a designationBasis (got ${rec.designationBasis})`);
+  }
 });
 
 test('piano-lesson recouped:true carries its citation', { skip: !present && 'data/commercial.json not available' }, () => {
