@@ -6,6 +6,8 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
+import path from 'node:path';
+import { execFileSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
 
 const gate = require('../../scripts/lib/commercial-apply-gate');
@@ -441,5 +443,66 @@ describe('backfill hold helpers (BRO-4990)', () => {
   it('a noData attempt record is never appliable', () => {
     assert.equal(gate.isReviewHold({ noData: true, requiresHumanReview: true }), true);
     assert.equal(gate.isReviewHold({ designation: 'Flop' }), false);
+  });
+});
+
+describe('held-row release (BRO-5041)', () => {
+  it('refuses records a person or a verified pass already settled', () => {
+    assert.equal(gate.heldReleaseRefusal(undefined), null);
+    assert.equal(gate.heldReleaseRefusal({ designation: 'TBD' }), null);
+    assert.equal(gate.heldReleaseRefusal({ designation: 'tbd', recouped: false }), null);
+    assert.match(gate.heldReleaseRefusal({ designation: 'TBD', humanReviewedDesignation: true }), /human review/);
+    assert.match(gate.heldReleaseRefusal({ designation: 'Windfall' }), /Windfall/);
+    assert.match(gate.heldReleaseRefusal({ designation: 'TBD', recouped: true }), /recoupment/);
+    assert.match(gate.heldReleaseRefusal({ designation: 'TBD', humanReviewedRecouped: true }), /recoupment/);
+  });
+  it('drops a "recouped" claim and nothing else; a cited loss stays', () => {
+    const row = { designation: 'Easy Winner', capitalization: 5e6, recouped: true, recoupedDate: null, recoupedSource: 'forum thread', requiresHumanReview: true };
+    const out = gate.withoutRecoupmentClaim(row);
+    assert.deepEqual(out, { designation: 'Easy Winner', capitalization: 5e6, requiresHumanReview: true });
+    assert.equal(row.recouped, true, 'input not mutated');
+    const loss = { designation: 'Flop', recouped: false, recoupedSource: 'Broadway Journal: closed at a loss' };
+    assert.deepEqual(gate.withoutRecoupmentClaim(loss), loss);
+  });
+  it('mergeExisting keeps the record fields the row does not carry and merges sources', () => {
+    const existing = { designation: 'TBD', capitalization: 4e6, capitalizationSource: 'SEC filing', modelRecouped: false, sources: [{ url: 'https://a.example/1' }] };
+    const row = { designation: 'Flop', sources: [{ url: 'https://b.example/2' }, { url: 'https://a.example/1' }] };
+    const merged = gate.buildCommercialEntry(row, existing, { mergeExisting: true });
+    assert.equal(merged.designation, 'Flop');
+    assert.equal(merged.capitalization, 4e6);
+    assert.equal(merged.capitalizationSource, 'SEC filing', 'a figure the row does not touch keeps its citation');
+    const refigured = gate.buildCommercialEntry({ ...row, capitalization: 9e6 }, existing, { mergeExisting: true });
+    assert.equal(refigured.capitalizationSource, undefined, 'a new unverified figure never inherits the old citation');
+    assert.equal(refigured.isEstimate.capitalization, true);
+    assert.equal(merged.modelRecouped, false);
+    assert.deepEqual(merged.sources.map(s => s.url), ['https://a.example/1', 'https://b.example/2']);
+    const rebuilt = gate.buildCommercialEntry(row, existing, {});
+    assert.equal(rebuilt.modelRecouped, undefined, 'default path still rebuilds from scratch');
+  });
+  it('CLI: --release-held applies only eligible held rows; plain --show and --all leave held rows pending', () => {
+    const dir = fs.mkdtempSync(path.resolve('tests/.bro5041-'));
+    try {
+      const held = (designation) => ({ designation, confidence: 'medium', requiresHumanReview: true, backfill: 'BRO-4990', recouped: true, recoupedSource: 'inference', sources: [] });
+      fs.writeFileSync(path.join(dir, 'pending.json'), JSON.stringify({ shows: {
+        fresh: held('Flop'), labelled: held('Fizzle'), tbd: held('Fizzle'), unheld: { designation: 'Flop', confidence: 'high', sources: [] },
+      } }));
+      fs.writeFileSync(path.join(dir, 'commercial.json'), JSON.stringify({ shows: {
+        labelled: { designation: 'Windfall' }, tbd: { designation: 'TBD', modelRecouped: false },
+      } }));
+      const mk = (slug) => ({ id: `${slug}-2020`, slug, title: slug, category: 'broadway', status: 'closed' });
+      fs.writeFileSync(path.join(dir, 'shows.json'), JSON.stringify({ shows: ['fresh', 'labelled', 'tbd', 'unheld'].map(mk) }));
+      const base = ['scripts/apply-commercial-pending.js', '--dry-run', `--pending-file=${dir}/pending.json`, `--commercial-file=${dir}/commercial.json`, `--shows-file=${dir}/shows.json`];
+      const out = execFileSync(process.execPath, [...base, '--release-held=fresh,labelled,tbd,unheld,gone'], { encoding: 'utf8' });
+      assert.match(out, /Not in pending file[^\n]*gone/);
+      assert.match(out, /"labelled" — not released: record already has designation "Windfall"/);
+      assert.match(out, /"unheld" — not a held row/);
+      assert.match(out, /Would apply "tbd" → [^\n]*"modelRecouped":false/);
+      assert.doesNotMatch(out, /"recouped":true/);
+      assert.match(out, /would apply 2, skip 2/);
+      const single = execFileSync(process.execPath, [...base, '--show=fresh'], { encoding: 'utf8' });
+      assert.match(single, /needs human review \(release with --release-held=fresh\)/);
+      const all = execFileSync(process.execPath, [...base, '--all'], { encoding: 'utf8' });
+      assert.match(all, /would apply 1, skip 3/);
+    } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }); }
   });
 });
