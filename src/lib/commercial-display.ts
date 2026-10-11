@@ -169,6 +169,8 @@ export function getModelHoldLabel(
   if (hold === 'awaiting-truth') return 'Not enough reported data yet';
   // Never hint at a recoupment the producers have not announced (BRO-5073).
   if (hold === 'past-100-unannounced') return 'Recoupment not announced';
+  // Low end of the range at 100%+: say so, as an estimate (owner, BRO-5073).
+  if (hold === 'estimated-recouped') return 'Estimated to have recouped, not yet announced';
   return 'Estimate unavailable';
 }
 

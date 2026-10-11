@@ -145,30 +145,42 @@ test('the guard output feeds the hold label end to end', () => {
   assert.equal(getModelHoldLabel({ ...toPublicShowCommercial(held), status: 'open' }), 'Losing money so far');
 });
 
-// Launch rule in code (checker, 2026-10-10): RUNNING_MODEL_BAR_ENABLED is off,
-// so a running show that passes every other check still prints no model %.
-test('launch switch off: a running show says "Not enough reported data yet"', () => {
-  const { RUNNING_MODEL_BAR_ENABLED } = require('../../scripts/lib/model-display-guard');
-  assert.equal(RUNNING_MODEL_BAR_ENABLED, false);
-  // The Lost Boys today: 28 weeks, narrow range, would otherwise print.
+// Launch (owner, 2026-10-11, BRO-5073): the running bar is on for plays only.
+// A running musical (or a show with no type) still says "Not enough reported
+// data yet"; a running play prints the estimate, capped at 99.
+test('running bar: plays print an estimate, musicals stay held', () => {
+  const { RUNNING_MODEL_BAR_ENABLED, RUNNING_MODEL_BAR_TYPES } = require('../../scripts/lib/model-display-guard');
+  assert.equal(RUNNING_MODEL_BAR_ENABLED, true);
+  assert.deepEqual(RUNNING_MODEL_BAR_TYPES, ['play']);
   const lostBoys = rec({ modelRecoupmentPct: [-13.9, 0.5, 14] });
-  const out = applyModelDisplayGuard(lostBoys, running, now);
-  assert.equal(out.modelRecoupmentPct, null);
-  assert.equal(out.modelDisplayHold, 'awaiting-truth');
-  assert.equal(getRecoupmentDisplayMode(out), 'none');
-  assert.equal(getModelHoldLabel({ ...out, status: 'open' }), 'Not enough reported data yet');
-  // A closing date still ahead is running too.
-  const closingLater = { ...running, closingDate: '2027-01-03', status: 'open' };
-  assert.equal(applyModelDisplayGuard(lostBoys, closingLater, now).modelDisplayHold, 'awaiting-truth');
+  const musical = applyModelDisplayGuard(lostBoys, { ...running, type: 'musical' }, now);
+  assert.equal(musical.modelRecoupmentPct, null);
+  assert.equal(musical.modelDisplayHold, 'awaiting-truth');
+  assert.equal(getRecoupmentDisplayMode(musical), 'none');
+  assert.equal(getModelHoldLabel({ ...musical, status: 'open' }), 'Not enough reported data yet');
+  assert.equal(applyModelDisplayGuard(lostBoys, { ...running, type: null }, now).modelDisplayHold, 'awaiting-truth');
+  // A running play prints; a closing date still ahead is running too.
+  const play = { ...running, type: 'play' };
+  assert.deepEqual(applyModelDisplayGuard(rec({ modelRecoupmentPct: [40, 55, 70] }), play, now).modelRecoupmentPct, [40, 55, 70]);
+  const closingLater = { ...play, closingDate: '2027-01-03', status: 'open' };
+  assert.deepEqual(applyModelDisplayGuard(rec({ modelRecoupmentPct: [80, 92, 110] }), closingLater, now).modelRecoupmentPct, [80, 92, 99]);
+  // Low end at 100%+: the estimated-recouped line, never a 100%+ bar.
+  const ahead = applyModelDisplayGuard(rec({ modelRecoupmentPct: [105, 120, 140] }), play, now);
+  assert.equal(ahead.modelRecoupmentPct, null);
+  assert.equal(getModelHoldLabel({ ...ahead, status: 'open' }), 'Estimated to have recouped, not yet announced');
+  const near = applyModelDisplayGuard(rec({ modelRecoupmentPct: [90, 104, 118] }), play, now);
+  assert.equal(getModelHoldLabel({ ...near, status: 'open' }), 'Recoupment not announced');
   // Closed and recouped displays are unaffected.
   assert.deepEqual(applyModelDisplayGuard(lostBoys, closedTbd, now).modelRecoupmentPct, [0, 0.5, 14]);
   const recouped = rec({ recouped: true, designation: 'Windfall', modelRecoupmentPct: [90, 110, 130] });
-  assert.notEqual(getRecoupmentDisplayMode(applyModelDisplayGuard(recouped, running, now)), 'model');
-  assert.equal(getModelHoldLabel({ ...applyModelDisplayGuard(recouped, running, now), status: 'open' }), null);
+  assert.notEqual(getRecoupmentDisplayMode(applyModelDisplayGuard(recouped, play, now)), 'model');
+  assert.equal(getModelHoldLabel({ ...applyModelDisplayGuard(recouped, play, now), status: 'open' }), null);
 });
 
-test('the pre-credit swap waits for the running bar: today nothing moves (BRO-5073)', () => {
-  const out = applyModelDisplayGuard(rec({ modelRecoupmentPct: [-12, 4, 18], modelReturnedExCreditPct: [-40, -20, -5] }), running, now);
-  assert.deepEqual(out.modelHeldRange, [-12, 4, 18]);
-  assert.equal(out.modelCreditBasis, undefined);
+test('running shows are judged on the pre-credit figure now the bar is on (BRO-5073)', () => {
+  const out = applyModelDisplayGuard(rec({ modelRecoupmentPct: [-12, 4, 18], modelReturnedExCreditPct: [-10, 2, 14], modelTaxCreditCounted: 0 }), { ...running, type: 'play' }, now);
+  assert.deepEqual(out.modelRecoupmentPct, [0, 2, 14]);
+  assert.equal(out.modelCreditBasis, 'pre-credit');
+  // closed shows keep the live figure
+  assert.deepEqual(applyModelDisplayGuard(rec({ modelRecoupmentPct: [10, 20, 30], modelReturnedExCreditPct: [0, 5, 10] }), closedTbd, now).modelRecoupmentPct, [10, 20, 30]);
 });
