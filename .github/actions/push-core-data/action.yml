@@ -202,6 +202,15 @@ runs:
           cp audience-buzz.json /tmp/our-audience-buzz.json
         fi
 
+        # BRO-4972: keep this job's committed shows.json (its intent) for the
+        # post-rebase drop check below. Captured once, before any retry, so
+        # later iterations' reconciled amends never become "ours".
+        rm -rf /tmp/push-core-data-ours
+        if [ -f shows.json ] && grep -qxF "shows.json" /tmp/.core-data-changed-files 2>/dev/null; then
+          mkdir -p /tmp/push-core-data-ours
+          cp -f shows.json /tmp/push-core-data-ours/shows.json
+        fi
+
         UPSTREAM_TIP=""
         for i in 1 2 3 4 5; do
           PUSH_STDERR_FILE=$(mktemp)
@@ -402,9 +411,12 @@ runs:
             bash "${GITHUB_WORKSPACE}/scripts/lib/commit-or-amend.sh" "${UPSTREAM_TIP:-}" "${COMMIT_MSG}" >/dev/null 2>&1 || git reset --hard HEAD
           fi
 
-          # Rebase with -X ours: our version wins on conflicts.
-          # Post-rebase reconciliation below restores any remote-only changes
-          # that -X ours silently dropped (manual corrections to shows.json, audience-buzz).
+          # Rebase with -X ours. CAUTION (BRO-4972): in a rebase "ours" is the
+          # UPSTREAM, so every conflicting hunk resolves to the REMOTE and our
+          # edit on it is discarded; if every hunk conflicts, our commit is
+          # dropped and HEAD == the remote tip. The per-file merges below work
+          # from pre-rebase copies, and the shows.json drop check re-applies
+          # this job's own field edits the rebase threw away.
           if ! git pull --rebase -X ours origin main; then
             git rebase --abort 2>/dev/null || true
             sleep $((RANDOM % 10 + 5))
@@ -531,6 +543,25 @@ runs:
                 console.error("Shows reconciliation failed (non-fatal):", e.message);
               }
             ' 2>&1 || true
+          fi
+
+          # BRO-4972: re-apply this job's shows.json field edits that the
+          # rebase dropped (3-way per show id: base = checkout snapshot, ours =
+          # the job's committed copy, current = post-rebase + reconciled).
+          # Fields the job never changed are left alone, so a concurrent
+          # writer's edit stands (BRO-5011). The amend below folds the write
+          # in; commit-or-amend.sh makes a new commit if ours was dropped.
+          # Advisory: residual loss logs ::error:: but only fails the step
+          # with PUSH_CORE_DATA_DROP_STRICT=1 (CLAUDE.md rule 19).
+          if [ -f /tmp/push-core-data-ours/shows.json ] && [ -f shows.json ]; then
+            if [ -f /tmp/core-data-snapshot/shows.json ]; then
+              node "${GITHUB_WORKSPACE}/scripts/lib/push-core-data-rebase-drop-detection.js" \
+                --file shows.json --base /tmp/core-data-snapshot/shows.json \
+                --ours /tmp/push-core-data-ours/shows.json --current shows.json --write 2>&1 \
+                || [ "${PUSH_CORE_DATA_DROP_STRICT:-}" != "1" ] || exit 1
+            else
+              echo "::warning::push-core-data: no checkout snapshot, cannot check shows.json for rebase-dropped edits"
+            fi
           fi
 
           # Reconcile audience-buzz.json: merge show-level entries from remote

@@ -156,13 +156,13 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-11T14:14:07.486Z",
-      "lastSeen": "2026-10-11T18:09:02.961Z",
+      "lastSeen": "2026-10-11T20:22:10.397Z",
       "lastNotifiedAt": "2026-10-11T14:14:07.486Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 132,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -13885,7 +13885,8 @@
       },
       "silentRefires": 1,
       "absentRunIds": [
-        "38169816008"
+        "38169173157",
+        "38170655771"
       ]
     },
     "land:land/bro-2730-we-late-cron": {
@@ -13959,24 +13960,24 @@
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run review-guards regression tests — \"foo returns the contracted value\"",
-      "firstSeen": "2026-10-11T20:10:30.258Z",
-      "incidentOpenedAt": "2026-10-11T20:10:30.258Z",
-      "lastSeen": "2026-10-11T20:10:30.258Z",
-      "lastNotifiedAt": "2026-10-11T20:10:30.258Z",
+      "firstSeen": "2026-10-11T20:22:09.425Z",
+      "incidentOpenedAt": "2026-10-11T20:22:09.425Z",
+      "lastSeen": "2026-10-11T20:22:09.425Z",
+      "lastNotifiedAt": "2026-10-11T20:22:09.425Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-5078"
     },
-    "land:land/bro-5074-cloud-memory-reconcile": {
+    "land:land/bro-5073-timing-backtest": {
       "status": "open",
       "disposition": "digest",
-      "title": "Landing blocked: rebase red on land/bro-5074-cloud-memory-reconcile",
-      "firstSeen": "2026-10-11T20:16:06.643Z",
-      "incidentOpenedAt": "2026-10-11T20:16:06.643Z",
-      "lastSeen": "2026-10-11T20:16:06.643Z",
-      "lastNotifiedAt": "2026-10-11T20:16:06.643Z",
-      "lastSurfacedAt": "2026-10-11T20:16:06.643Z",
+      "title": "Landing blocked: unit-tests-node red on land/bro-5073-timing-backtest",
+      "firstSeen": "2026-10-11T20:23:55.361Z",
+      "incidentOpenedAt": "2026-10-11T20:23:55.361Z",
+      "lastSeen": "2026-10-11T20:23:55.361Z",
+      "lastNotifiedAt": "2026-10-11T20:23:55.361Z",
+      "lastSurfacedAt": "2026-10-11T20:23:55.361Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
