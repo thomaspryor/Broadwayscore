@@ -1707,15 +1707,32 @@
     "queuedAt": "2026-10-11T09:27:24.119Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Audit circular duplicateOf pairs",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38128498683",
-    "severity": "warning",
+    "conditionKey": "land:land/bro-5032-date-guard-resolver",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5032-date-guard-resolver",
+    "description": "land.yml did not land land/bro-5032-date-guard-resolver: the unit-tests-node gate went red at fa31001300. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38126844057",
+    "severity": "error",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-11T09:34:45.291Z"
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5032-date-guard-resolver"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "fa310013008132a71a336afc4a7527479b86a9e8"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38126844057"
+      }
+    ],
+    "queuedAt": "2026-10-11T09:35:34.941Z"
   }
 ]
