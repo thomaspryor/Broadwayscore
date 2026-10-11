@@ -143,13 +143,29 @@ describe('normalizeExtraction', () => {
   });
 });
 
+describe('score fallback from the review', () => {
+  it('reads a score that ends the review when score_text is empty', () => {
+    const { entries } = normalizeExtraction({ entries: [row({ review: 'Warm and funny.\n\n84/100.' })] }, TODAY);
+    assert.deepStrictEqual([entries[0].score, entries[0].rating], [84, 4]);
+  });
+  it('never takes a mid-review fraction as the verdict', () => {
+    const { entries } = normalizeExtraction({ entries: [row({ review: 'Only 3/5 songs land, and the rest drag on and on and on.' })] }, TODAY);
+    assert.strictEqual(entries[0].score, null);
+  });
+});
+
 describe('parseScoreText / scoreToRating', () => {
   it('reads explicit scores over 100, 10 and 5 only', () => {
     assert.strictEqual(parseScoreText('84/100'), 84);
     assert.strictEqual(parseScoreText('68/100.'), 68);
     assert.strictEqual(parseScoreText('8.5/10'), 85);
     assert.strictEqual(parseScoreText(' 4 / 5 '), 80);
-    for (const bad of ['loved it', '120/100', '7/8', '84', '', null, 'Recommend it']) {
+    assert.strictEqual(parseScoreText('Score: 84/100!'), 84);
+    assert.strictEqual(parseScoreText('4 out of 5'), 80);
+    assert.strictEqual(parseScoreText('84 / 100 ⭐'), 84);
+    // Last score wins: the verdict ends the review.
+    assert.strictEqual(parseScoreText('3/5 songs land. Overall 72/100.'), 72);
+    for (const bad of ['loved it', '120/100', '7/8', '84', '', null, 'Recommend it', '84/1000']) {
       assert.strictEqual(parseScoreText(bad), null, String(bad));
     }
   });

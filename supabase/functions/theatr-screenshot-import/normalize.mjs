@@ -68,22 +68,33 @@ function cleanParagraphs(v, maxLen) {
   return s.length > maxLen ? s.slice(0, maxLen).trim() : s;
 }
 
-const SCORE_RE = /^\s*(\d{1,3}(?:\.\d+)?)\s*\/\s*(5|10|100)\s*\.?\s*$/;
+const SCORE_RE = /(\d{1,3}(?:\.\d+)?)\s*(?:\/|out of)\s*(100|10|5)(?![\d.]*\d)/gi;
 
 /**
- * Turn a score the user wrote in a review ("84/100", "8.5/10", "4/5") into
- * 0-100. Only an explicit number over 5, 10 or 100 counts: a reaction or a
- * loose "loved it" is never turned into a score.
+ * Turn a score the user wrote ("84/100", "Score: 8.5/10!", "4 out of 5")
+ * into 0-100. Only an explicit number over 5, 10 or 100 counts: a reaction
+ * or a loose "loved it" is never turned into a score. When several appear,
+ * the last one wins (reviews end with the verdict).
  * @returns {number|null}
  */
 export function parseScoreText(text) {
   if (typeof text !== 'string') return null;
-  const m = text.match(SCORE_RE);
-  if (!m) return null;
-  const n = Number(m[1]);
-  const d = Number(m[2]);
+  let last = null;
+  for (const m of text.matchAll(SCORE_RE)) last = m;
+  if (!last) return null;
+  const n = Number(last[1]);
+  const d = Number(last[2]);
   if (!Number.isFinite(n) || n < 0 || n > d) return null;
   return Math.round((n / d) * 1000) / 10;
+}
+
+/** A score on its own at the end of a review ("84/100."), for when the model
+ *  copied the review but not the score field. Only the final paragraph is
+ *  read, so a "4/5 songs land" mid-review is never taken as the verdict. */
+function scoreFromReviewEnd(review) {
+  if (!review) return null;
+  const tail = review.split('\n\n').pop() || '';
+  return tail.length <= 40 ? parseScoreText(tail) : null;
 }
 
 /** 0-100 → nearest half-star, 0.5 floor. Same rule as show-score-proxy's
@@ -136,7 +147,8 @@ export function normalizeExtraction(extraction, today) {
     if (date && !okYear(Number(date.slice(0, 4)))) date = null;
     const monthDay = isMonthDay(row?.month_day) ? row.month_day : null;
     const yearHint = okYear(row?.year_hint) ? row.year_hint : null;
-    const score = attended ? parseScoreText(row?.score_text) : null;
+    const review = attended ? cleanParagraphs(row?.review, MAX_REVIEW_LEN) : null;
+    const score = attended ? (parseScoreText(row?.score_text) ?? scoreFromReviewEnd(review)) : null;
     entries.push({
       title,
       venue: cleanText(row?.venue, MAX_VENUE_LEN),
@@ -148,7 +160,7 @@ export function normalizeExtraction(extraction, today) {
       yearHint,
       score,
       rating: scoreToRating(score),
-      review: attended ? cleanParagraphs(row?.review, MAX_REVIEW_LEN) : null,
+      review,
       reaction: attended && REACTIONS.has(row?.reaction) ? row.reaction : null,
     });
   }

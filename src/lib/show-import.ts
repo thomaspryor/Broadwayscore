@@ -424,6 +424,58 @@ export interface TheatrRow {
   reaction: 'recommend' | 'mixed' | 'dislike' | null;
   /** Set by resolveFeedDates when `date` came from the feed header. */
   dateFromFeed?: boolean;
+  /** Set by dropBackfillDates: a real viewing whose logged date was dropped,
+   *  not a copy with its date cropped off, so it never folds into another. */
+  dateDropped?: boolean;
+}
+
+/**
+ * Batches of at most `size` screenshots where each batch after the first
+ * starts with the previous batch's last screenshot as context, so the model
+ * sees the date header or year divider that scrolled off above. Rows read
+ * from that context screenshot repeat the previous batch's tail and are
+ * removed again by stitchBatchRows.
+ */
+export function overlapBatches<T>(items: T[], size: number): T[][] {
+  if (items.length === 0) return [];
+  const out: T[][] = [items.slice(0, size)];
+  let next = out[0].length;
+  while (next < items.length) {
+    const start = next - 1;
+    const batch = items.slice(start, start + size);
+    out.push(batch);
+    next = start + batch.length;
+  }
+  return out;
+}
+
+/**
+ * Join per-batch rows into one feed-ordered list, dropping the rows each
+ * batch repeats from its context screenshot: the longest run at the start of
+ * a batch that matches the end of what came before (same list and title).
+ */
+export function stitchBatchRows(batches: TheatrRow[][]): TheatrRow[] {
+  const same = (a: TheatrRow, b: TheatrRow) => a.list === b.list && a.title.toLowerCase() === b.title.toLowerCase();
+  const out: TheatrRow[] = [];
+  for (const rows of batches) {
+    let overlap = 0;
+    for (let k = Math.min(rows.length, out.length); k > 0; k--) {
+      const tail = out.slice(out.length - k);
+      if (tail.every((r, i) => same(r, rows[i]))) { overlap = k; break; }
+    }
+    // The context copy may show what the first copy lacked (a header that
+    // was cropped there, a review that ran onto the next screenshot).
+    for (let i = 0; i < overlap; i++) {
+      const kept = out[out.length - overlap + i];
+      const again = rows[i];
+      if (!kept.monthDay && again.monthDay) kept.monthDay = again.monthDay;
+      if (!kept.yearHint && again.yearHint) kept.yearHint = again.yearHint;
+      if (!kept.review && again.review) kept.review = again.review;
+      if (kept.score === null && again.score !== null) { kept.score = again.score; kept.rating = again.rating; }
+    }
+    out.push(...rows.slice(overlap).map((r) => ({ ...r })));
+  }
+  return out;
 }
 
 /**
@@ -464,17 +516,24 @@ export const THEATR_BACKFILL_MIN = 3;
 
 /** Drop feed dates on backfill days; returns how many were dropped. */
 export function dropBackfillDates(rows: TheatrRow[]): { rows: TheatrRow[]; dropped: number } {
-  const perDay = new Map<string, number>();
-  for (const r of rows) if (r.dateFromFeed && r.date) perDay.set(r.date, (perDay.get(r.date) || 0) + 1);
-  let dropped = 0;
+  // Distinct shows per day: a repeat of one row must not make a real
+  // two-show day look like a backfill.
+  const perDay = new Map<string, Set<string>>();
+  for (const r of rows) {
+    if (!r.dateFromFeed || !r.date) continue;
+    if (!perDay.has(r.date)) perDay.set(r.date, new Set());
+    perDay.get(r.date)!.add(r.title.toLowerCase());
+  }
+  const backfillDays = new Set(Array.from(perDay).filter(([, titles]) => titles.size >= THEATR_BACKFILL_MIN).map(([day]) => day));
+  const droppedTitles = new Set<string>();
   const out = rows.map((r) => {
-    if (r.dateFromFeed && r.date && (perDay.get(r.date) || 0) >= THEATR_BACKFILL_MIN) {
-      dropped++;
-      return { ...r, date: null, dateFromFeed: false };
+    if (r.dateFromFeed && r.date && backfillDays.has(r.date)) {
+      droppedTitles.add(`${r.date}|${r.title.toLowerCase()}`);
+      return { ...r, date: null, dateFromFeed: false, dateDropped: true };
     }
     return r;
   });
-  return { rows: out, dropped };
+  return { rows: out, dropped: droppedTitles.size };
 }
 
 /**
@@ -496,14 +555,14 @@ export function mergeTheatrRows(rows: TheatrRow[]): TheatrRow[] {
   };
   const pending: TheatrRow[] = [];
   for (const r of rows) {
-    const undatedDup = r.list === 'attended' && !r.date && datedTitles.has(titleKey(r));
+    const undatedDup = r.list === 'attended' && !r.date && !r.dateDropped && datedTitles.has(titleKey(r));
     if (undatedDup) {
       const prev = out.find((o) => titleKey(o) === titleKey(r) && o.date);
       if (prev) fill(prev, r);
       else pending.push(r); // its dated copy comes later
       continue;
     }
-    const key = `${titleKey(r)}|${r.date || ''}`;
+    const key = `${titleKey(r)}|${r.date || (r.dateDropped ? 'dropped' : '')}`;
     const prev = byKey.get(key);
     if (prev) { fill(prev, r); continue; }
     const copy = { ...r };
@@ -542,10 +601,11 @@ export function theatrRowsToEntries(rows: TheatrRow[]): RawImportEntry[] {
     : { title: r.title, venue: r.venue, rating: null, sourceScore: null, date: null, reviewText: null, kind: 'watchlist' as const, listName: 'Interested' });
 }
 
-/** The whole client-side pipeline after the edge function: feed dates,
- *  backfill days, repeats, then import entries. */
-export function theatrRowsPipeline(rows: TheatrRow[], today: string): { entries: RawImportEntry[]; feedDates: number; backfillDropped: number } {
-  const dated = resolveFeedDates(rows, today);
+/** The whole client-side pipeline after the edge function, given each
+ *  batch's rows in screenshot order: stitch batches, feed dates, backfill
+ *  days, repeats, then import entries. */
+export function theatrRowsPipeline(batches: TheatrRow[][], today: string): { entries: RawImportEntry[]; feedDates: number; backfillDropped: number } {
+  const dated = resolveFeedDates(stitchBatchRows(batches), today);
   const { rows: cleaned, dropped } = dropBackfillDates(dated);
   const merged = mergeTheatrRows(cleaned);
   return {
@@ -605,25 +665,26 @@ export async function acquireFromTheatrScreenshots(
   const supabase = getSupabaseClient();
   if (!supabase) throw new Error(THEATR_ERROR_COPY.unauthorized);
 
-  // Oldest capture first: users screenshot top to bottom as they scroll, and
-  // the feed-date walk needs that order (the file picker may sort by name).
-  const picked = [...files].sort((a, b) => a.lastModified - b.lastModified).slice(0, THEATR_MAX_SCREENSHOTS);
-  const batches = chunk(picked, THEATR_BATCH_SIZE);
-  // Indexed by batch so the merge sees rows in screenshot order, whichever
+  // Picker order: the feed walk needs screenshots top to bottom, which is the
+  // order users pick them in (and IMG_ name order). File dates are not used:
+  // phone pickers stamp them at export time, not capture time.
+  const picked = files.slice(0, THEATR_MAX_SCREENSHOTS);
+  const batches = overlapBatches(picked.map((_, i) => i), THEATR_BATCH_SIZE);
+  // Indexed by batch so the stitch sees rows in screenshot order, whichever
   // batch finishes first.
   const rowsByBatch: TheatrRow[][] = batches.map(() => []);
+  const read = new Set<number>(); // screenshots a successful call covered
+  const seen = new Set<number>(); // for progress: each screenshot once
   let unreadable = 0;
-  let failedScreenshots = 0;
   let firstError: string | null = null;
-  let done = 0;
   onProgress?.(0, picked.length);
 
   const runBatch = async (batchIndex: number) => {
     const batch = batches[batchIndex];
     // One unreadable file must not sink the other screenshots in its batch.
-    const encoded = await Promise.allSettled(batch.map(screenshotToJpegBase64));
+    const encoded = await Promise.allSettled(batch.map((i) => screenshotToJpegBase64(picked[i])));
+    const ok = batch.filter((_, j) => encoded[j].status === 'fulfilled');
     const images = encoded.flatMap((r) => (r.status === 'fulfilled' ? [r.value] : []));
-    failedScreenshots += batch.length - images.length;
     if (images.length < batch.length && !firstError) firstError = 'invalid_images';
     try {
       if (images.length === 0) return;
@@ -633,14 +694,14 @@ export async function acquireFromTheatrScreenshots(
       if (error || !data) throw new Error(invokeErrorCode(error));
       if (!data.ok) throw new Error(data.error || 'internal');
       rowsByBatch[batchIndex] = data.entries || [];
+      ok.forEach((i) => read.add(i));
       unreadable += data.unreadableImages || 0;
     } catch (err) {
-      failedScreenshots += images.length;
       const code = err instanceof Error ? err.message : 'internal';
       if (!firstError || firstError === 'invalid_images') firstError = code;
     } finally {
-      done += batch.length;
-      onProgress?.(done, picked.length);
+      batch.forEach((i) => seen.add(i));
+      onProgress?.(seen.size, picked.length);
     }
   };
 
@@ -651,13 +712,19 @@ export async function acquireFromTheatrScreenshots(
     while (next < batches.length) await runBatch(next++);
   }));
 
-  const { entries, feedDates, backfillDropped } = theatrRowsPipeline(rowsByBatch.flat(), localToday());
+  const { entries, feedDates, backfillDropped } = theatrRowsPipeline(rowsByBatch, localToday());
   if (entries.length === 0) {
     const code = firstError || 'no_shows';
     throw new Error(THEATR_ERROR_COPY[code] || THEATR_ERROR_COPY.internal);
   }
   return {
     entries,
-    notices: theatrNotices(entries, { picked: files.length, failedScreenshots, unreadable, feedDates, backfillDropped }),
+    notices: theatrNotices(entries, {
+      picked: files.length,
+      failedScreenshots: picked.length - read.size,
+      unreadable,
+      feedDates,
+      backfillDropped,
+    }),
   };
 }

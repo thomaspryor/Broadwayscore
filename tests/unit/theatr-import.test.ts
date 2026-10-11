@@ -21,6 +21,8 @@ import {
   theatrRowsPipeline,
   theatrNotices,
   chunk,
+  overlapBatches,
+  stitchBatchRows,
   type TheatrRow,
 } from '../../src/lib/show-import';
 
@@ -93,7 +95,7 @@ test('backfill day: three or more attended on one logged date lose that date', (
 });
 
 test('pipeline: scored reviews become rated diary entries, reactions stay unrated', () => {
-  const { entries, feedDates, backfillDropped } = theatrRowsPipeline(FEED, TODAY);
+  const { entries, feedDates, backfillDropped } = theatrRowsPipeline([FEED], TODAY);
   const by = (t: string) => entries.find(e => e.title === t)!;
   const bee = by('The 25th Annual Putnam County Spelling Bee');
   assert.deepEqual([bee.kind, bee.rating, bee.sourceScore, bee.date, bee.reviewText], ['diary', 4, 84, '2026-03-10', 'review text']);
@@ -146,7 +148,7 @@ test('chunk makes edge-function-sized batches', () => {
 });
 
 test('notices explain scores, reactions, feed dates, backfill and failures', () => {
-  const { entries, feedDates, backfillDropped } = theatrRowsPipeline(FEED, TODAY);
+  const { entries, feedDates, backfillDropped } = theatrRowsPipeline([FEED], TODAY);
   const n = theatrNotices(entries, { picked: 35, failedScreenshots: 6, unreadable: 1, feedDates, backfillDropped }).join(' ');
   for (const re of [/first 30 screenshots/, /couldn\u2019t be read/, /didn\u2019t look like/, /84\/100/, /when you logged/, /several shows at once/, /watchlist/]) {
     assert.match(n, re);
@@ -157,4 +159,60 @@ test('notices explain scores, reactions, feed dates, backfill and failures', () 
   const dated = theatrRowsToEntries([row({ date: '2024-01-01' })]);
   assert.match(theatrNotices(dated, { picked: 1, failedScreenshots: 0, unreadable: 0 }).join(' '), /To Be Rated/);
   assert.equal(theatrNotices([], { picked: 3, failedScreenshots: 0, unreadable: 0 }).length, 0);
+});
+
+// Batch boundaries (code review, 2026-10-11): the next batch re-sends the
+// previous batch's last screenshot as context, so its first rows repeat.
+
+test('overlapBatches repeats each batch\'s last screenshot as the next one\'s context', () => {
+  assert.deepEqual(overlapBatches([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 6), [[0, 1, 2, 3, 4, 5], [5, 6, 7, 8, 9, 10], [10, 11]]);
+  assert.deepEqual(overlapBatches([0, 1, 2], 6), [[0, 1, 2]]);
+  assert.deepEqual(overlapBatches([], 6), []);
+  // 30 screenshots stay within the per-hour call cap (15).
+  assert.ok(overlapBatches(Array.from({ length: 30 }, (_, i) => i), 6).length <= 6);
+});
+
+test('repeated context rows do not shift the year of the rest of the feed', () => {
+  const { entries } = theatrRowsPipeline([
+    [row({ title: 'X', monthDay: '10-05' }), row({ title: 'Y', monthDay: '10-01' })],
+    [row({ title: 'X', monthDay: '10-05' }), row({ title: 'Y', monthDay: '10-01' }), row({ title: 'Z', monthDay: '09-20' })],
+  ], TODAY);
+  assert.deepEqual(entries.map(e => [e.title, e.date]), [['X', '2026-10-05'], ['Y', '2026-10-01'], ['Z', '2026-09-20']]);
+});
+
+test('a context row with its header cropped neither takes the wrong date nor fakes a backfill', () => {
+  const { entries, backfillDropped } = theatrRowsPipeline([
+    [row({ title: 'X', monthDay: '10-05' }), row({ title: 'Y', monthDay: '10-01' })],
+    [row({ title: 'X' }), row({ title: 'Y', monthDay: '10-01' }), row({ title: 'Z', monthDay: '09-20' })],
+  ], TODAY);
+  assert.equal(backfillDropped, 0);
+  assert.deepEqual(entries.map(e => [e.title, e.date]), [['X', '2026-10-05'], ['Y', '2026-10-01'], ['Z', '2026-09-20']]);
+});
+
+test('a two-show day stays dated even when one show repeats at a batch boundary', () => {
+  const { entries } = theatrRowsPipeline([
+    [row({ title: 'A', monthDay: '09-01' }), row({ title: 'B', monthDay: '09-01' })],
+    [row({ title: 'B', monthDay: '09-01' }), row({ title: 'C', monthDay: '08-01' })],
+  ], TODAY);
+  assert.deepEqual(entries.map(e => e.date), ['2026-09-01', '2026-09-01', '2026-08-01']);
+});
+
+test('stitch fills what the first copy lacked from the context copy', () => {
+  const [kept] = stitchBatchRows([
+    [row({ title: 'Six', monthDay: null })],
+    [row({ title: 'Six', monthDay: '03-10', score: 84, rating: 4, review: 'r' })],
+  ]);
+  assert.deepEqual([kept.monthDay, kept.rating, kept.review], ['03-10', 4, 'r']);
+});
+
+test('a viewing that lost its date to a backfill day never folds into another viewing', () => {
+  const { entries } = theatrRowsPipeline([[
+    row({ title: 'A', monthDay: '10-01' }),
+    row({ title: 'B', monthDay: '10-01' }),
+    row({ title: 'Hamilton', monthDay: '10-01', score: 90, rating: 4.5, review: 'old' }),
+    row({ title: 'Hamilton', monthDay: '06-01' }),
+  ]], TODAY);
+  const ham = entries.filter(e => e.title === 'Hamilton');
+  assert.equal(ham.length, 2);
+  assert.deepEqual(ham.map(e => [e.date, e.rating, e.reviewText]), [[null, 4.5, 'old'], ['2026-06-01', null, null]]);
 });
