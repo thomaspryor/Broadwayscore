@@ -89,12 +89,12 @@ jobs:
         if: inputs.dry_run != 'true'
         id: changes
         run: |
-          if git diff --quiet data/grosses.json 2>/dev/null; then
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-          else
+          # BRO-5033: grosses.json is gitignored core data, so `git diff` on it
+          # always said "no changes". Compare to the checkout-core-data snapshot.
+          if node scripts/lib/core-data-changed.js grosses.json; then
             echo "has_changes=true" >> $GITHUB_OUTPUT
-            echo "Changes detected:"
-            git diff --stat data/grosses.json
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Push core data to private repo

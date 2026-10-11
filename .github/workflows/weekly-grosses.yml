@@ -100,17 +100,23 @@ jobs:
         if: always() && steps.check.outputs.skip != 'true'
         id: changes
         run: |
-          if git diff --quiet data/grosses.json data/grosses-history.json 2>/dev/null; then
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-          else
+          # BRO-5033: grosses*.json are gitignored core data, so `git diff` on
+          # them was always empty and every step below gated on has_changes
+          # never ran. Compare to the checkout-core-data snapshot instead.
+          if node scripts/lib/core-data-changed.js grosses.json grosses-history.json; then
             echo "has_changes=true" >> $GITHUB_OUTPUT
-            echo "Changes detected:"
-            git diff --stat data/grosses.json data/grosses-history.json
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
           fi
 
+      # Advisory (§19): these steps never ran before BRO-5033, so they report
+      # without gating the push. --dry-run keeps validate-data from writing the
+      # push-refusal sentinel, so an unrelated pre-existing error elsewhere in
+      # the data can't stop this week's grosses from being pushed.
       - name: Validate data integrity
         if: steps.check.outputs.skip != 'true' && steps.changes.outputs.has_changes == 'true'
-        run: node scripts/validate-data.js
+        continue-on-error: true
+        run: node scripts/validate-data.js --dry-run
 
       # BRO-4988: integrity rules over the newest 9 weeks (this week plus the
       # 8 the scraper may have backfilled): Sunday keys, missing weeks, rows vs
@@ -131,6 +137,7 @@ jobs:
 
       - name: Build site (verify no breaking changes)
         if: steps.check.outputs.skip != 'true' && steps.changes.outputs.has_changes == 'true'
+        continue-on-error: true  # advisory (§19), see "Validate data integrity"
         run: npm run build
         env:
           NODE_ENV: production
@@ -138,25 +145,9 @@ jobs:
           NEXT_PUBLIC_SANITY_DATASET: production
           NEXT_PUBLIC_SANITY_API_VERSION: '2024-10-01'
 
-      - name: Commit and push changes
-        if: always() && steps.check.outputs.skip != 'true' && steps.changes.outputs.has_changes == 'true'
-        run: |
-          set -euo pipefail
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-
-          WEEK_ENDING=$(jq -r '.weekEnding // "unknown"' data/grosses.json)
-
-          # Core data files pushed to private repo by push-core-data action
-          git commit -m "data: Update Broadway grosses for week ending $WEEK_ENDING
-
-          Automated weekly update of box office data.
-
-          Validated: Data integrity checked
-          Build: Site builds successfully"
-
-          bash scripts/lib/push-with-retry.sh
-
+      # BRO-5033: the old "Commit and push changes" step here never `git add`ed
+      # anything (grosses*.json are gitignored; push-core-data below ships
+      # them), so it could only fail with "nothing to commit". Removed.
 
       - name: Push core data to private repo
         if: always()
@@ -165,29 +156,11 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from weekly-grosses'
 
-      - name: Trigger deploy (core data changed)
-        if: always() && steps.changes.outputs.has_changes == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          # Deploy dedup: skip if a deploy was ALREADY triggered after our rebuild started
-          OUR_RUN_START=$(gh run view ${{ github.run_id }} --json createdAt -q '.createdAt' 2>/dev/null || echo "")
-          RECENT=$(gh run list --workflow=vercel-deploy.yml --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
-
-          if [ -n "$RECENT" ] && [ -n "$OUR_RUN_START" ]; then
-            RECENT_TS=$(date -d "$RECENT" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$RECENT" +%s 2>/dev/null || echo "0")
-            OUR_TS=$(date -d "$OUR_RUN_START" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$OUR_RUN_START" +%s 2>/dev/null || echo "0")
-            NOW_TS=$(date +%s)
-            DIFF=$((NOW_TS - RECENT_TS))
-
-            if [ "$RECENT_TS" -gt "$OUR_TS" ] && [ "$DIFF" -lt 900 ]; then
-              echo "Skipping deploy — already triggered after this run started (${DIFF}s ago)"
-              exit 0
-            fi
-          fi
-
-          echo "Triggering deploy..."
-          gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — will deploy on next schedule"
+      # BRO-5033: the "Trigger deploy (core data changed)" step that sat here
+      # never ran (has_changes was always false) and, if revived, would skip
+      # itself anyway: vercel-deploy.yml's 5-minute cron always has a run newer
+      # than this one inside its 15-minute dedup window. Deploys come from that
+      # cron (scripts/lib/should-deploy-gate.js).
 
       # The integrity check's routeAlert()/resolveCondition() state lives on
       # this runner's disk; commit it or every run re-alerts from a blank
