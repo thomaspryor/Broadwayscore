@@ -1,15 +1,10 @@
 {
-  "updatedAt": "2026-10-10T13:19:42.542Z",
-  "scanned": 2585,
+  "updatedAt": "2026-10-11T13:50:25.790Z",
+  "scanned": 2687,
   "showsWithViolations": 15,
   "totalViolations": 49,
-  "newSinceLastRun": 4,
-  "newViolationKeys": [
-    "the-47th-west-end-2022::guardian--arifa-akbar.json",
-    "the-47th-west-end-2022::hollywood-reporter--demetrios-matheou.json",
-    "the-47th-west-end-2022::open-letters-review--christopher-day.json",
-    "the-47th-west-end-2022::standard--nick-curtis.json"
-  ],
+  "newSinceLastRun": 0,
+  "newViolationKeys": [],
   "violationKeys": [
     "joe-turners-come-and-gone-2026::nysr--frank-scheck.json",
     "schmigadoon-2026::amny--matt-windman.json",
@@ -448,7 +443,7 @@
       "showId": "the-47th-west-end-2022",
       "title": "The 47th",
       "openingDate": "2022-03-29",
-      "message": "[excluded] guardian--arifa-akbar.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-Mike-Bartletts-THE-47TH-at-the-Old-Vic-20220411\n[excluded] hollywood-reporter--demetrios-matheou.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-Mike-Bartletts-THE-47TH-at-the-Old-Vic-20220411\n[SHIPPED] open-letters-review--christopher-day.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-Mike-Bartletts-THE-47TH-at-the-Old-Vic-20220411\n[excluded] standard--nick-curtis.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-Mike-Bartletts-THE-47TH-at-the-Old-Vic-20220411",
+      "message": "[excluded] guardian--arifa-akbar.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-Mike-Bartletts-THE-47TH-at-the-Old-Vic-20220411\n[excluded] hollywood-reporter--demetrios-matheou.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-Mike-Bartletts-THE-47TH-at-the-Old-Vic-20220411\n[SHIPPED] open-letters-review--christopher-day.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-Mike-Bartletts-THE-47TH-at-the-Old-Vic-20220411\n[SHIPPED] standard--nick-curtis.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-Mike-Bartletts-THE-47TH-at-the-Old-Vic-20220411",
       "violations": [
         {
           "filename": "guardian--arifa-akbar.json",
@@ -472,7 +467,7 @@
           "filename": "standard--nick-curtis.json",
           "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-Mike-Bartletts-THE-47TH-at-the-Old-Vic-20220411",
           "url": "https://www.standard.co.uk/culture/theatre/the-47th-theatre-review-old-vic-bertie-carvel-trump-b993628.html",
-          "shipped": false
+          "shipped": true
         }
       ]
     }

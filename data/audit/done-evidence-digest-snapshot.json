@@ -1,47 +1,47 @@
 {
-  "generatedAt": "2026-10-10T13:10:14.487Z",
-  "bannerText": "63/68 Done(14d) verified on main · 1 FAILED · 1 vacuous · 8 stuck-but-done",
+  "generatedAt": "2026-10-11T13:38:35.915Z",
+  "bannerText": "173/232 Done(14d) verified on main · 6 FAILED · 1 vacuous · 8 stuck-but-done — PARTIAL RUN: 54 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
     {
-      "title": "FAILED BRO-445 — BSC Daily: Stuck pipeline items",
-      "detail": "[check-health-row-absent] FAIL: \"Stuck pipeline items\" still listed in the 2026-10-10T13:07:38.125Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-445/bsc-daily-stuck-pipeline-items"
+      "title": "FAILED BRO-3626 — Rage clicks on 'All' filter on Off-Broadway page",
+      "detail": "TAP version 13 # node:internal/modules/esm/get_format:189 # throw new ERR_UNKNOWN_FILE_EXTENSION(ext, filepath); # ^ # TypeError [ERR_UNKNOWN_FILE_EXTENSION]: Unknown file extensi…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3626/rage-clicks-on-all-filter-on-off-broadway-page"
     },
     {
-      "title": "STUCK BRO-4963 — P1: tourContaminationInText silently excludes opening-night reviews that mention a DIFFERENT show's tour in the plot (GTC TheaterMania)",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4963/p1-tourcontaminationintext-silently-excludes-opening-night-reviews"
+      "title": "FAILED BRO-3145 — P1: rebuild-reviews.yml cannot push — 30s per-attempt push timeout kills every attempt, API fallback disqualified",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/push-with-retry-timeout.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3145/p1-rebuild-reviewsyml-cannot-push-30s-per-attempt-push-timeout-kills"
     },
     {
-      "title": "STUCK BRO-4770 — Star-band follow-ups: backfill HTML-only ratings on submit-form files + flag out-of-band hand overrides at rebuild",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4770/star-band-follow-ups-backfill-html-only-ratings-on-submit-form-files"
+      "title": "FAILED BRO-2883 — P1: rebuild-reviews push-core-data retry loop cannot converge (5 identical failed attempts, silent data loss)",
+      "detail": "TAP version 13",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2883/p1-rebuild-reviews-push-core-data-retry-loop-cannot-converge-5"
     },
     {
-      "title": "STUCK BRO-4745 — Codex trial: 3 cards by hand on the owner's ChatGPT plan, then a Codex card worker",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4745/codex-trial-3-cards-by-hand-on-the-owners-chatgpt-plan-then-a-codex"
+      "title": "FAILED BRO-5050 — BRO-5020 cap-only commercial fixes never applied (grey-house validation failure)",
+      "detail": "TAP version 13 # Subtest: the-lehman-trilogy-2021 carries the BRO-5020 values ok 1 - the-lehman-trilogy-2021 carries the BRO-5020 values --- duration_ms: 1.061569 ... # Subtest: m…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5050/bro-5020-cap-only-commercial-fixes-never-applied-grey-house-validation"
     },
     {
-      "title": "STUCK BRO-4487 — P0/P1 queue: make priority scarce + measure open P0/P1 age (pilot cleanup first)",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4487/p0p1-queue-make-priority-scarce-measure-open-p0p1-age-pilot-cleanup"
+      "title": "FAILED BRO-5020 — Review held commercial research rows (BRO-4990 46 + BRO-5017) by truth-class rule before release",
+      "detail": "TAP version 13 # ⚠️ Rejected non-canonical designation \"bogus\" (valid: Miracle, Windfall, Easy Winner, Trickle, TBD, Fizzle, Flop, Nonprofit, Tour Stop) # ⚠️ Rejected non-canonica…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5020/review-held-commercial-research-rows-bro-4990-46-bro-5017-by-truth"
     },
     {
-      "title": "STUCK BRO-3680 — Missing show: Under the Influence",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3680/missing-show-under-the-influence"
+      "title": "FAILED BRO-4947 — Untangle mixed and duplicate outlet ids: dctheatrescene, observer, dc-metro/dc-theater-arts, gotham-playgoer/bobs-theater-blog, medium, zeal-nyc",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-outlet-tiers.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4947/untangle-mixed-and-duplicate-outlet-ids-dctheatrescene-observer-dc"
     },
     {
-      "title": "STUCK BRO-3162 — Roll out stale-checkout race guard to remaining 20 rebuild-all-reviews.js workflows (BRO-3161 follow-up)",
+      "title": "STUCK BRO-3889 — P1: ~63% of owner-alert-router conditions still file undispatchable cards — BRO-3881 only covered health-check rows",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3162/roll-out-stale-checkout-race-guard-to-remaining-20-rebuild-all"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3889/p1-63percent-of-owner-alert-router-conditions-still-file"
     },
     {
-      "title": "STUCK BRO-3021 — 👑 OWNER — Fleet cost and waste audit (every paid line, billing-first)",
+      "title": "STUCK BRO-3793 — P1: venue-page opening-date extraction wrote an openingDate its cited source does not contain (mis-sized opening-night monitor window by 4 days)",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3021/owner-fleet-cost-and-waste-audit-every-paid-line-billing-first"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3793/p1-venue-page-opening-date-extraction-wrote-an-openingdate-its-cited"
     }
   ],
-  "moreCount": 2
+  "moreCount": 7
 }

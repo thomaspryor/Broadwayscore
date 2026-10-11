@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-10T13:17:54.325Z",
+  "generatedAt": "2026-10-11T13:48:36.107Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 3608,
+  "scannedShows": 3708,
   "flaggedShows": 63,
-  "flaggedFiles": 223,
+  "flaggedFiles": 225,
   "readmissionRiskFiles": 0,
   "readmissionRisks": [],
   "unevaluatedFiles": 0,
@@ -1371,6 +1371,121 @@
       ]
     },
     {
+      "showId": "billy-elliot-the-musical-west-end-2027",
+      "title": "Billy Elliot the Musical",
+      "market": "west-end",
+      "status": "upcoming",
+      "venue": "Adelphi Theatre",
+      "previewsStartDate": "2027-02-12",
+      "openingDate": "2027-02-23",
+      "verdict": "likely-contamination",
+      "reasoning": "7/7 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 7,
+        "distinctYears": [
+          2022,
+          2026
+        ],
+        "spanDays": 1302,
+        "flaggedCount": 7,
+        "venueMentionCount": 1
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "london-box-office--emmie-newitt.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "previewPlaceholder",
+          "afterReason": "previewPlaceholder",
+          "outletId": "london-box-office",
+          "criticName": "Emmie Newitt",
+          "publishDate": "2026-02-11",
+          "url": "https://www.londonboxoffice.co.uk/news/post/billy-elliot-the-musical-returns-to-the-west-end-2027",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "londontheatre1--chris-omaweng.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "previewPlaceholder",
+          "afterReason": "previewPlaceholder",
+          "outletId": "londontheatre1",
+          "criticName": "Chris Omaweng",
+          "publishDate": "2022-07-20",
+          "url": "https://www.londontheatre1.com/reviews/billy-elliot-the-musical-at-leicesters-curve-theatre/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "telegraph--holly-williams.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "telegraph",
+          "criticName": "Holly Williams",
+          "publishDate": "2022-07-21",
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/billy-elliot-curve-leicester-review-feel-good-tale-boy-who-loves/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "thestage--dave-fargnoli.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "thestage",
+          "criticName": "Dave Fargnoli",
+          "publishDate": "2022-07-21",
+          "url": "https://www.thestage.co.uk/long-reviews/billy-elliot-the-musical-review-leicester-curve-theatre",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "timeout-london--andrzej-lukowski.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "timeout-london",
+          "criticName": "Andrzej Lukowski",
+          "publishDate": "2026-02-11",
+          "url": "https://www.timeout.com/london/news/billy-elliot-the-musical-is-coming-back-to-londons-west-end-021126",
+          "wrongProduction": true,
+          "wrongShow": true,
+          "evaluationError": null
+        },
+        {
+          "file": "times-uk--dominic-maxwell.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "previewPlaceholder",
+          "afterReason": "previewPlaceholder",
+          "outletId": "times-uk",
+          "criticName": "Dominic Maxwell",
+          "publishDate": "2022-07-21",
+          "url": "https://www.thetimes.co.uk/article/billy-elliot-review-this-revival-will-have-you-dancing-for-joy-zt63t2mwr",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "whatsonstage--phil-lowe.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "previewPlaceholder",
+          "afterReason": "previewPlaceholder",
+          "outletId": "whatsonstage",
+          "criticName": "Phil Lowe",
+          "publishDate": "2022-07-21",
+          "url": "https://www.whatsonstage.com/leicester-theatre/reviews/billy-elliot-musical-revival-curve_56970.html",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "the-unbelievers-off-broadway-2026",
       "title": "The Unbelievers",
       "market": "broadway",
@@ -2130,95 +2245,6 @@
           "criticName": "Sarah Crompton",
           "publishDate": "2025-02-05",
           "url": "https://www.whatsonstage.com/news/elektra-west-end-review-brie-larson-leads-an-abstract-elusive-revival_1663709/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "billy-elliot-the-musical-west-end-2027",
-      "title": "Billy Elliot the Musical",
-      "market": "west-end",
-      "status": "upcoming",
-      "venue": "Adelphi Theatre",
-      "previewsStartDate": "2027-02-12",
-      "openingDate": "2027-02-23",
-      "verdict": "likely-contamination",
-      "reasoning": "5/5 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 5,
-        "distinctYears": [
-          2022,
-          2026
-        ],
-        "spanDays": 1301,
-        "flaggedCount": 5,
-        "venueMentionCount": 1
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "telegraph--holly-williams.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "telegraph",
-          "criticName": "Holly Williams",
-          "publishDate": "2022-07-21",
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/billy-elliot-curve-leicester-review-feel-good-tale-boy-who-loves/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "thestage--dave-fargnoli.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "thestage",
-          "criticName": "Dave Fargnoli",
-          "publishDate": "2022-07-21",
-          "url": "https://www.thestage.co.uk/long-reviews/billy-elliot-the-musical-review-leicester-curve-theatre",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "timeout-london--andrzej-lukowski.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "timeout-london",
-          "criticName": "Andrzej Lukowski",
-          "publishDate": "2026-02-11",
-          "url": "https://www.timeout.com/london/news/billy-elliot-the-musical-is-coming-back-to-londons-west-end-021126",
-          "wrongProduction": true,
-          "wrongShow": true,
-          "evaluationError": null
-        },
-        {
-          "file": "times-uk--dominic-maxwell.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "previewPlaceholder",
-          "afterReason": "previewPlaceholder",
-          "outletId": "times-uk",
-          "criticName": "Dominic Maxwell",
-          "publishDate": "2022-07-21",
-          "url": "https://www.thetimes.co.uk/article/billy-elliot-review-this-revival-will-have-you-dancing-for-joy-zt63t2mwr",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "whatsonstage--phil-lowe.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "previewPlaceholder",
-          "afterReason": "previewPlaceholder",
-          "outletId": "whatsonstage",
-          "criticName": "Phil Lowe",
-          "publishDate": "2022-07-21",
-          "url": "https://www.whatsonstage.com/leicester-theatre/reviews/billy-elliot-musical-revival-curve_56970.html",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
