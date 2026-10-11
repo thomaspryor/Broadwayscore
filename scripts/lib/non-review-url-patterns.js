@@ -408,7 +408,7 @@ const LISTING_PAGE_URL_PATTERNS = [
   { host: /^forum\.broadwayworld\.com$/, path: /^\/(thread|forum|newcsd)/i, reason: 'forum-thread' },
   { host: /(^|\.)balletcoforum\.com$/, path: /^\/(topic|forum)\b/i, reason: 'forum-thread' },
   { host: /(^|\.)yuku\.com$/, path: /^\/(topic|forum)\b/i, reason: 'forum-thread' },
-  { host: /^forums?\./i, path: /^\/(thread|topic|forum|t\/)/i, reason: 'forum-thread' },
+  { host: /^forums?\./i, path: /^\/(thread|topic|t)\/\d/i, reason: 'forum-thread' },
   // Talkin' Broadway's review index pages (/page/world/index.html and any
   // other .../index.html). Its reviews are /page/<section>/<slug>.html.
   { host: /(^|\.)talkinbroadway\.com$/, path: /\/index\.html$/i, reason: 'review-index-page' },

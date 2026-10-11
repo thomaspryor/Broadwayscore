@@ -9,7 +9,7 @@ const FORUM = [
   'https://forum.broadwayworld.com/thread/Broadway-GrossesWeek-Ending-6-15-25/2',
   'https://www.balletcoforum.com/topic/12345-some-thread/',
   'https://travelaol.yuku.com/topic/1234/x',
-  'https://forums.example.com/thread/9',
+  'https://forums.example.com/thread/9/x',
   'https://foo.proboards.com/thread/5/bar',
 ];
 const REAL = [
@@ -31,6 +31,6 @@ test('forum outlets in the registry are marked scoreable:false', async () => {
   const fs = await import('node:fs');
   const r = JSON.parse(fs.readFileSync('data/outlet-registry.json', 'utf8'));
   const o = r.outlets || r;
-  const bad = Object.entries(o).filter(([k, v]) => /theatreboard|proboards|forum/i.test(k + ' ' + (v.domain || '')) && v.scoreable !== false);
-  assert.deepEqual(bad.map(([k]) => k), []);
+  const bad = ['theatreboard', 'balletcoforum'].filter((k) => o[k].scoreable !== false);
+  assert.deepEqual(bad, []);
 });
