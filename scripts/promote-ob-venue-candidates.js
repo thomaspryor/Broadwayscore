@@ -44,7 +44,7 @@
 const { showTypeFor, knownShowType } = require('./lib/title-says-musical');
 const fs = require('fs');
 const path = require('path');
-const { loadStaging, writeStagingCandidates, updateStaging } = require('./lib/venue-listing-discover');
+const { loadStaging, writeStagingCandidates, updateStaging, candidateHash } = require('./lib/venue-listing-discover');
 const { isCandidateConfirmed, decideCriticListingPromotion, preferCorroboratingTitle, decideVenueListingPromotion, venuesCompatible, discoveryGateReason } = require('./lib/ob-cross-validation');
 const { fetchTmOffBroadway, parseTmOffBroadwayRow } = require('./lib/theatermania-ob');
 const { cleanListingTitle } = require('./lib/ob-listing-platforms');
@@ -57,6 +57,8 @@ const { scrapeLortel } = require('./enrich-off-broadway-dates');
 const { recordParseResult } = require('./lib/source-last-success');
 const { feederVenueCity } = require('./lib/aggregator-candidate-extract');
 const { decideReviewThresholdPromotion } = require('./lib/review-threshold');
+const { decideUkFlagshipPromotion, stageUkRegionalCandidates, ukFlagshipShows } = require('./lib/uk-regional-guardian');
+const normalizeTitleForStaging = (t) => String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { productionIdYear } = require('./lib/todaytix-dates');
 const { venuesMatch } = require('./lib/deduplication');
@@ -391,6 +393,12 @@ function decideRegionalPromotion(candidate) {
   if (!candidate || candidate.category !== 'regional') {
     return { confirmed: false, reason: 'not a regional candidate' };
   }
+  // Guardian review at a flagship UK house outside London (BRO-4923): one
+  // named national critic at an allowlisted house is the "noteworthy" signal,
+  // so the 3-outlet roundup threshold below does not apply. Score display
+  // still needs 3 reviews (score-buckets.ts), so a thinly covered run shows
+  // no score instead of a wrong one.
+  if (candidate.source === 'guardian-review') return decideUkFlagshipPromotion(candidate);
   if (!AGGREGATOR_ROUNDUP_SOURCES.has(candidate.source)) {
     return { confirmed: false, reason: `regional candidate from non-roundup source "${candidate.source}" — needs a PV/BWW roundup page to go live` };
   }
@@ -636,7 +644,7 @@ function buildRegionalShowEntry(candidate) {
     slug: id, // regional slugs must contain '-regional' (useCurrentMarket)
     venue: sanitizedVenue ? (city ? `${sanitizedVenue}, ${city}` : sanitizedVenue) : null,
     openingDate,
-    openingDateSource: 'aggregator-roundup',
+    openingDateSource: candidate.source === 'guardian-review' ? 'guardian-review' : 'aggregator-roundup',
     previewsStartDate: null,
     closingDate: null,
     status: ageDays > 90 ? 'closed' : 'open',
@@ -648,7 +656,8 @@ function buildRegionalShowEntry(candidate) {
     // gated markets today, but there's no reason to leave a known-bad
     // pattern in a third copy of it.
     type: showTypeFor(candidate.title, candidate.listingGenre),
-    discoverySource: `aggregator-roundup:${candidate.source}`,
+    // A Guardian-triggered show is not a roundup find; validate-show-venue.js exempts it by name.
+    discoverySource: candidate.source === 'guardian-review' ? 'guardian-review' : `aggregator-roundup:${candidate.source}`,
     discoveredAt: candidate.discoveredAt,
     // Provisional — reviews auto-ingest via the PV/BWW matchers now that the
     // show exists; images/cast/exact dates arrive via the enrichment email.
@@ -669,7 +678,29 @@ function writeLastPromotionFile(promoted) {
 async function main() {
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
-  const staged = loadStaging();
+  // Flagship UK houses the Guardian feed found missing (BRO-4923) join the
+  // staging file before it is read, so the one regional loop below handles
+  // them. Candidates the audit already matched are not in its report.
+  let ukRows = [];
+  if (regionalOnly) {
+    try {
+      const rd = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'audit', 'reverse-discovery-candidates.json'), 'utf8'));
+      // Rows for shows already in shows.json are dropped here: the audit report
+      // is refreshed every 6h, so without this they would re-stage and re-skip daily.
+      const have = ukFlagshipShows(loadShows().shows).map(s => normalizeTitleForStaging(s.title));
+      ukRows = stageUkRegionalCandidates(rd.candidates).filter(r => !have.includes(normalizeTitleForStaging(r.title)));
+      if (ukRows.length && !dryRun) writeStagingCandidates(ukRows);
+      if (ukRows.length) console.log(`${dryRun ? 'Would stage' : 'Staged'} ${ukRows.length} flagship-UK Guardian candidate(s): ${ukRows.map(r => r.title).join('; ')}`);
+    } catch (e) {
+      if (e.code !== 'ENOENT') console.warn(`UK Guardian staging skipped: ${e.message}`);
+    }
+  }
+  let staged = loadStaging();
+  // --dry-run writes nothing, so preview the Guardian rows in memory.
+  if (dryRun && ukRows.length) {
+    const have = new Set(staged.map(c => c.candidateHash));
+    staged = staged.concat(ukRows.filter(r => !have.has(candidateHash(r))));
+  }
   // Reset the promotion record up front so a crash mid-run can never leave a
   // STALE file claiming yesterday's promotions happened again (the workflow
   // reads it to decide targeted scrapes and commits it).

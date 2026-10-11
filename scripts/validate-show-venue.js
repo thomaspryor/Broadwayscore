@@ -200,6 +200,11 @@ function isExemptFromPlaybillCheck(show) {
   // Broadway transfer, not the regional run (little-bear-ridge-road-regional-2024:
   // Steppenwolf 2024 record vs Playbill's Booth 2025 transfer — main red 2026-07-10).
   if (show.category === 'regional' && src.startsWith('aggregator-roundup')) return true;
+  // Guardian-triggered UK flagship-house shows (BRO-4923): Playbill has no page
+  // for an RSC/Chichester production at all; a dated Guardian review is the
+  // third-party proof, and the promoter only mints this source for venues in
+  // data/uk-regional-venues.json.
+  if (show.category === 'regional' && src === 'guardian-review') return true;
   // Same rule for national tours (BRO-4211): a BWW tour roundup is dated,
   // third-party proof the tour exists and reviewed, which is what this check
   // establishes for a stub. A tour without a roundup still goes through the

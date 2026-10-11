@@ -1,0 +1,104 @@
+{
+  "issueNumber": "bro-4923",
+  "planId": "3f6d1c52-8a4e-4b0e-9c57-4923a1e0b001",
+  "status": "pending",
+  "createdAt": "2026-10-09T12:00:00.000Z",
+  "submitter": { "name": null, "email": null },
+  "plan": {
+    "summary": "Add the RSC Stratford-upon-Avon As You Like It (Daniel Evans, Jonathan Groff as Rosalind, press night 6 Oct 2026) as a regional UK show, and replace the Globe As You Like It cast, which had the RSC cast copied onto it.",
+    "steps": [
+      "Replace cast on as-you-like-it-globe-west-end-2026 with the Globe's 7 July 2026 company announcement",
+      "Add as-you-like-it-rsc-regional-2026",
+      "Then dispatch gather-reviews.yml for the new id"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "as-you-like-it-globe-west-end-2026",
+        "field": "cast",
+        "oldValue": [
+          { "name": "Fisayo Akinade", "role": "Celia" },
+          { "name": "Elliot Barnes-Worrell", "role": "Orlando" },
+          { "name": "Giles Cooper", "role": "Le Beau" },
+          { "name": "Jonathan Groff", "role": "Rosalind" },
+          { "name": "Greg Haiste", "role": "Touchstone" },
+          { "name": "Steffan Harri", "role": "Gwilym / Syr Osian" },
+          { "name": "Rhys Parry Jones", "role": "Corin / Hymen / a Lord at Court / a Lord in Arden" },
+          { "name": "Edward Judge", "role": "Charles the Wrestler / Silvius" },
+          { "name": "Richard McCabe", "role": "Jaques" },
+          { "name": "Luke McCall", "role": "Amiens" },
+          { "name": "Tim Preston", "role": "Phoebe" },
+          { "name": "Caleb Roberts", "role": "Oliver" },
+          { "name": "Gareth Snook", "role": "Adam / Audrey" },
+          { "name": "Gary Wilmot", "role": "Duke Frederick / Duke Senior" }
+        ],
+        "newValue": [
+          { "name": "Peter Bourke", "role": "Adam / Sir Oliver Martext" },
+          { "name": "Jonnie Broadbent", "role": "Touchstone" },
+          { "name": "Jurell Carter", "role": "Charles / William" },
+          { "name": "Colm Gormley", "role": "Duke Senior / Duke Frederick / Corin" },
+          { "name": "Charlie Josephine", "role": "Orlando" },
+          { "name": "Thomas Josling", "role": "Oliver" },
+          { "name": "Molly Madigan", "role": "Phoebe" },
+          { "name": "Phoebe Naughton", "role": "Audrey" },
+          { "name": "Gracie Oddie-James", "role": "Celia" },
+          { "name": "Katherine Pearce", "role": "Jaques" },
+          { "name": "Jordan Rhys", "role": "Jaques de Boys / Cover" },
+          { "name": "Lola Shalam", "role": "Rosalind" },
+          { "name": "Inez Solomon-Gardner", "role": "Ensemble / Cover" },
+          { "name": "Busa Wickramasuriya", "role": "Silvius" }
+        ],
+        "description": "Shakespeare's Globe press release, 7 July 2026 (cdn.shakespearesglobe.com/uploads/2026/07/As-You-Like-It-Company-Announcement.pdf): the Globe company. The current cast is the RSC Stratford company (Groff, McCabe, Wilmot), copied onto the Globe entry."
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "as-you-like-it-rsc-regional-2026",
+          "title": "As You Like It",
+          "slug": "as-you-like-it-rsc-regional-2026",
+          "venue": "Royal Shakespeare Theatre, Stratford-upon-Avon",
+          "theaterAddress": "Royal Shakespeare Theatre, Waterside, Stratford-upon-Avon, Warwickshire CV37 6BB",
+          "openingDate": "2026-10-06",
+          "openingDateSource": "manual",
+          "previewsStartDate": "2026-09-26",
+          "closingDate": "2026-11-07",
+          "status": "open",
+          "type": "play",
+          "isRevival": true,
+          "category": "regional",
+          "market": "regional",
+          "tags": ["regional"],
+          "discoverySource": "guardian-review",
+          "provisional": true,
+          "synopsis": "Daniel Evans directs an all-male Royal Shakespeare Company production of Shakespeare's comedy, with Jonathan Groff making his RSC debut as Rosalind, who flees the court for the Forest of Arden disguised as Ganymede.",
+          "ticketLinks": [
+            { "platform": "RSC Box Office", "url": "https://www.rsc.org.uk/as-you-like-it" }
+          ],
+          "cast": [
+            { "name": "Jonathan Groff", "role": "Rosalind" },
+            { "name": "Fisayo Akinade", "role": "Celia" },
+            { "name": "Elliot Barnes-Worrell", "role": "Orlando" },
+            { "name": "Giles Cooper", "role": "Le Beau" },
+            { "name": "Greg Haiste", "role": "Touchstone" },
+            { "name": "Steffan Harri", "role": "Gwilym / Syr Osian" },
+            { "name": "Rhys Parry Jones", "role": "Corin / Hymen / a Lord at Court / a Lord in Arden" },
+            { "name": "Edward Judge", "role": "Charles the Wrestler / Silvius" },
+            { "name": "Richard McCabe", "role": "Jaques" },
+            { "name": "Luke McCall", "role": "Amiens" },
+            { "name": "Tim Preston", "role": "Phoebe" },
+            { "name": "Caleb Roberts", "role": "Oliver" },
+            { "name": "Gareth Snook", "role": "Adam / Audrey" },
+            { "name": "Gary Wilmot", "role": "Duke Frederick / Duke Senior" }
+          ],
+          "creativeTeam": [
+            { "name": "William Shakespeare", "role": "Playwright" },
+            { "name": "Daniel Evans", "role": "Director" },
+            { "name": "Anisha Fields", "role": "Designer" }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -33,7 +33,7 @@ const DISCOVERY_MARKETS = new Set(['regional', 'tour']);
 function selectDiscoveryShows(shows, filter) {
   return shows.filter((s) => {
     if (!DISCOVERY_MARKETS.has(s.market)) return false;
-    if (filter) return s.id === filter;
+    if (filter) return String(filter).split(',').map((x) => x.trim()).includes(s.id);
     if (s.status === 'open' || s.status === 'previews') return true;
     const age = Math.min(ageInDays(s.closingDate), s.closingDate ? Infinity : ageInDays(s.openingDate));
     return age <= POOL_WINDOW_DAYS;

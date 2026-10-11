@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// venue-write-guard-ok: venue here is a name from the checked-in data/uk-regional-venues.json table, passed on as a routing hint; the shows.json write goes through buildRegionalShowEntry -> sanitizeVenueForWrite.
 /**
  * Reverse discovery audit — alert-only detector for shows the aggregators
  * are reviewing that are NOT in shows.json.
@@ -89,6 +90,7 @@ async function main(argv = process.argv.slice(2)) {
     buildShowTitleIndex, findUnmatchedCandidates, bwwRoundupCataloguedElsewhere, candidateKey,
   } = require('./lib/reverse-discovery');
   const { loadReviewEvidence, mergeEvidence, saveReviewEvidence } = require('./lib/review-evidence');
+  const { ukFlagshipShows } = require('./lib/uk-regional-guardian');
 
   const dryRun = argv.includes('--dry-run');
   const days = parseInt((argv.find(a => a.startsWith('--days=')) || '').split('=')[1] || '45', 10);
@@ -102,6 +104,7 @@ async function main(argv = process.argv.slice(2)) {
   // IS missing — a global index would swallow it.
   const weIndex = buildShowTitleIndex(shows, 'we');
   const nycIndex = buildShowTitleIndex(shows, 'nyc');
+  const regionalIndex = buildShowTitleIndex(ukFlagshipShows(shows), 'regional');
   console.log(`Loaded ${shows.length} shows (${weIndex.exact.size} WE / ${nycIndex.exact.size} NYC title variants)`);
 
   const items = [];
@@ -152,16 +155,16 @@ async function main(argv = process.argv.slice(2)) {
         if (!Number.isFinite(ts) || ts < cutoff) continue;
         recent++;
         if (/\breview\b/i.test(it.title)) reviewHeadlines++;
-        // null = regional UK / tour / unparseable: no catalogue market to check.
+        // null = other regional UK / tour / unparseable: no catalogue market to check.
         const r = extractGuardianReview(it);
         if (!r) continue;
         routed++;
-        items.push({ title: r.title, source: 'guardian-review', url: it.link, date: new Date(ts).toISOString(), market: r.market });
+        items.push({ title: r.title, source: 'guardian-review', url: it.link, date: new Date(ts).toISOString(), market: r.market, ...(r.venue ? { venue: r.venue } : {}) });
       }
       // Every item in this feed is a "<Title> review" headline; none in a
       // non-empty recent window is format drift, not a quiet week.
       if (recent > 0 && reviewHeadlines === 0) throw new Error(`Guardian title-format drift: ${recent} recent items, 0 "review" headlines`);
-      console.log(`Guardian: ${routed} London/NYC reviews of ${recent} within ${days}d`);
+      console.log(`Guardian: ${routed} London/NYC/flagship-UK reviews of ${recent} within ${days}d`);
       sourcesOk++;
     } catch (e) {
       console.error(`Guardian source failed: ${e.message}`);
@@ -390,6 +393,10 @@ async function main(argv = process.argv.slice(2)) {
       items.filter(i => i.market === 'nyc' && i.source === 'bww-roundup'), nycIndex,
       { allowClosedRevival: true }
     ).filter(c => !bwwRoundupCataloguedElsewhere(c.title, shows, c.date)),
+    // Flagship UK houses outside London (BRO-4923): checked against regional
+    // shows only, so a same-title Globe/Broadway run cannot hide the RSC one.
+    // promote-ob-venue-candidates.js --regional-only stages and promotes these.
+    ...findUnmatchedCandidates(items.filter(i => i.market === 'uk-regional'), regionalIndex, { allowClosedRevival: true }),
   ];
   console.log(`\n${candidates.length} missing-show candidate(s) of ${items.length} recent items:`);
   for (const c of candidates) console.log(`  [${c.source}] "${c.title}" — ${c.url}`);
