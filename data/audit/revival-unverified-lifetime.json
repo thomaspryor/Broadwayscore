@@ -1,10 +1,14 @@
 {
-  "updatedAt": "2026-10-10T13:19:43.638Z",
-  "scanned": 2585,
-  "showsWithViolations": 63,
-  "totalViolations": 63,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "updatedAt": "2026-10-11T13:50:26.772Z",
+  "scanned": 2687,
+  "showsWithViolations": 65,
+  "totalViolations": 65,
+  "newSinceLastRun": 3,
+  "newViolationKeys": [
+    "hadestown-west-end-2024",
+    "operation-mincemeat-tour-2026",
+    "all-male-as-you-like-it-regional-2026"
+  ],
   "violationKeys": [
     "the-lost-boys-2026",
     "schmigadoon-2026",
@@ -21,6 +25,7 @@
     "harry-potter-2021",
     "wicked-2003",
     "kramerfauci-st-anns-off-broadway-2026",
+    "hadestown-west-end-2024",
     "hamilton-west-end-2021",
     "the-play-that-goes-wrong-west-end-2021",
     "the-devil-wears-prada-west-end-2024",
@@ -64,11 +69,12 @@
     "water-for-elephants-tour-2025",
     "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026",
     "elektra-off-broadway-2026",
-    "gang-of-three-off-west-end-2026",
+    "operation-mincemeat-tour-2026",
     "spamalot-tour-2025",
     "the-music-man-tour-2026",
     "a-beautiful-noise-the-neil-diamond-musical-tour-2026",
-    "shucked-tour-2027"
+    "shucked-tour-2027",
+    "all-male-as-you-like-it-regional-2026"
   ],
   "hits": [
     {
@@ -202,6 +208,15 @@
       "title": "Kramer/Fauci",
       "openingDate": "2026-10-04",
       "message": "kramerfauci-st-anns-off-broadway-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "hadestown-west-end-2024",
+      "title": "Hadestown",
+      "openingDate": "2024-02-22",
+      "message": "hadestown-west-end-2024 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -381,7 +396,7 @@
       "showId": "paranormal-activity-2026",
       "title": "Paranormal Activity",
       "openingDate": "2026-08-25",
-      "message": "paranormal-activity-2026 review text mentions \"revival\" 9x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "paranormal-activity-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -480,7 +495,7 @@
       "showId": "pre-existing-condition-off-broadway-2026",
       "title": "Pre-Existing Condition",
       "openingDate": "2026-09-14",
-      "message": "pre-existing-condition-off-broadway-2026 review text mentions \"revival\" 8x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "pre-existing-condition-off-broadway-2026 review text mentions \"revival\" 7x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -561,7 +576,7 @@
       "showId": "the-outsiders-tour-2025",
       "title": "The Outsiders",
       "openingDate": "2025-09-17",
-      "message": "the-outsiders-tour-2025 review text mentions \"revival\" 38x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "the-outsiders-tour-2025 review text mentions \"revival\" 39x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -594,10 +609,10 @@
       ]
     },
     {
-      "showId": "gang-of-three-off-west-end-2026",
-      "title": "Gang Of Three",
-      "openingDate": "2026-10-01",
-      "message": "gang-of-three-off-west-end-2026 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
+      "showId": "operation-mincemeat-tour-2026",
+      "title": "Operation Mincemeat",
+      "openingDate": "2026-09-20",
+      "message": "operation-mincemeat-tour-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -606,7 +621,7 @@
       "showId": "spamalot-tour-2025",
       "title": "Spamalot",
       "openingDate": "2025-12-01",
-      "message": "spamalot-tour-2025 review text mentions \"revival\" 27x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "spamalot-tour-2025 review text mentions \"revival\" 29x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -634,6 +649,15 @@
       "title": "Shucked",
       "openingDate": "2027-01-12",
       "message": "shucked-tour-2027 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "all-male-as-you-like-it-regional-2026",
+      "title": "As You Like It",
+      "openingDate": "2026-10-07",
+      "message": "all-male-as-you-like-it-regional-2026 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
