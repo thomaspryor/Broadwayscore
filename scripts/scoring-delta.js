@@ -1268,7 +1268,12 @@ function decideInclusion(review, show, guards) {
   //    Mirrors rebuild-all-reviews.js:1095-1113 CV pre-pass staleness logic.
   const cv = review.contentVerification;
   // BRO-4806: rebuild skips CV promotion entirely for a lane review (nothing is promoted onto it).
-  if (cv && (cv.confidence === 'high' || cv.confidence === 'medium') && !laneOk('wrongProduction')) {
+  // BRO-3512: a RAW low-confidence row that names a different show also enters the chain
+  // (rebuild's cvLowButStrong); the promotion check below stays strong-signal-only for 'low'.
+  const cvLowButStrong = !!cv && cv.confidence === 'low' && cv.wrongProduction === true
+    && typeof guards.hasStrongDifferentShowSignal === 'function'
+    && guards.hasStrongDifferentShowSignal(cv.issues, cv.reasoning);
+  if (cv && (cv.confidence === 'high' || cv.confidence === 'medium' || cvLowButStrong) && !laneOk('wrongProduction')) {
     // Staleness check: (a) timestamp-based, (b) content-hash-based, with a
     // high-confidence-wrongArticle exception that survives staleness.
     let stale = false;
@@ -1306,6 +1311,13 @@ function decideInclusion(review, show, guards) {
         const effectiveConfidence = temporal.wpConfidence || cv.confidence;
         if (effectiveConfidence === 'high' || effectiveConfidence === 'medium') {
           return { included: false, reason: `cv-promoted wrongProduction (${effectiveConfidence})` };
+        }
+        // cvLowButStrong carve-out (Schmigadoon EBT, BRO-3512): rebuild promotes a
+        // RAW confidence:'low' row whose issues/reasoning independently name a
+        // different show. Mirror it through the per-side guards module so a change
+        // to hasStrongDifferentShowSignal shows up in the delta.
+        if (cvLowButStrong) {
+          return { included: false, reason: 'cv-promoted wrongProduction (low-but-strong-signal)' };
         }
       }
 
