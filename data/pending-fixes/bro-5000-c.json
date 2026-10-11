@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5000-c",
   "planId": "342c0d81-eb5f-4ec2-bcdb-aab033a274e5",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-11T19:00:00.000Z",
   "submitter": {
     "name": null,
@@ -67,5 +67,43 @@
         "description": "Press night was 2026-10-08: four outlets (Reviews Gate, Theatre News, Theatre Village, Theatre Weekly) published that day and more the next morning."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-11T21:55:32.362Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted burnt-up-love-off-west-end-2026/thereviewshub--stephen-bates.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted punch-2025/nytg--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted real-women-have-curves-2025/nytimes--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-cottage-2023/theatermania--unknown.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "arias-with-a-twist-off-broadway-2026/donshewey--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for a-ghost-in-your-ear-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for from-the-heart-west-end-2026"
+    }
+  ]
 }
