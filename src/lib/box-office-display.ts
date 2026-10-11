@@ -26,6 +26,7 @@ import {
 } from './box-office-market';
 import {
   addDays,
+  median,
   isPaired,
   isFullWeek,
   isReported,
@@ -61,6 +62,60 @@ function pct(n: number): string {
 export function shortTitle(title: string): string {
   const cut = title.split(/[:(;]/)[0].trim();
   return cut.length >= 3 ? cut : title;
+}
+
+// ------------------------------------------------------------------
+// Price map on phones: a few named outliers, the rest grouped by corner
+// ------------------------------------------------------------------
+
+/** "Full" on the price map: at least this share of seats sold. */
+export const MAP_FULL_PCT = 90;
+/** Dots named on the phone chart; the rest go in the corner lists below it. */
+export const MAP_PHONE_LABELS = 6;
+
+type MapDot = { slug: string; capacity: number; atp: number };
+
+/**
+ * The shows farthest from the middle of the chart, each axis scaled by its
+ * own spread, so the phone chart names the ones a reader would ask about.
+ */
+export function mapOutliers(dots: MapDot[], n = MAP_PHONE_LABELS): Set<string> {
+  const cMed = median(dots.map((d) => d.capacity));
+  const aMed = median(dots.map((d) => d.atp));
+  if (cMed == null || aMed == null) return new Set();
+  const cSpread = Math.max(...dots.map((d) => d.capacity)) - Math.min(...dots.map((d) => d.capacity)) || 1;
+  const aSpread = Math.max(...dots.map((d) => d.atp)) - Math.min(...dots.map((d) => d.atp)) || 1;
+  const far = (d: MapDot) => Math.hypot((d.capacity - cMed) / cSpread, (d.atp - aMed) / aSpread);
+  return new Set([...dots].sort((a, b) => far(b) - far(a) || a.slug.localeCompare(b.slug)).slice(0, n).map((d) => d.slug));
+}
+
+export type MapCornerKey = 'full-pricey' | 'full-cheaper' | 'pricey-empty' | 'cheaper-empty';
+
+export const MAP_CORNER_TITLES: Record<MapCornerKey, string> = {
+  'full-pricey': 'Full and pricey',
+  'full-cheaper': 'Full but cheaper',
+  'pricey-empty': 'Pricey with empty seats',
+  'cheaper-empty': 'Lower prices, empty seats',
+};
+
+/**
+ * Each show's corner of the price map: above or below the median average
+ * ticket, and at or above MAP_FULL_PCT full or not. Shows within a corner run
+ * fullest first. Returns the median so the page can state the cutoffs.
+ */
+export function mapCorners<T extends MapDot>(dots: T[]): { medianAtp: number | null; corners: Array<{ key: MapCornerKey; title: string; shows: T[] }> } {
+  const medianAtp = median(dots.map((d) => d.atp));
+  if (medianAtp == null) return { medianAtp: null, corners: [] };
+  const keyOf = (d: T): MapCornerKey => {
+    const full = d.capacity >= MAP_FULL_PCT;
+    const pricey = d.atp >= medianAtp;
+    return full ? (pricey ? 'full-pricey' : 'full-cheaper') : (pricey ? 'pricey-empty' : 'cheaper-empty');
+  };
+  const order: MapCornerKey[] = ['full-pricey', 'full-cheaper', 'pricey-empty', 'cheaper-empty'];
+  const corners = order
+    .map((key) => ({ key, title: MAP_CORNER_TITLES[key], shows: dots.filter((d) => keyOf(d) === key).sort((a, b) => b.capacity - a.capacity || b.atp - a.atp) }))
+    .filter((c) => c.shows.length);
+  return { medianAtp, corners };
 }
 
 // ------------------------------------------------------------------
@@ -237,6 +292,8 @@ export interface MarketPage {
   premium: { median: number | null; rows: Array<{ title: string; over: number; isNew: boolean }> };
   pace: Array<{ title: string; beatsPct: number; week: number }>;
   priceMap: Array<{ slug: string; title: string; label: string; capacity: number; atp: number; seats: number }>;
+  /** The phone price map's named outliers and corner groups, worked out here so the client chart imports no held code. */
+  priceMapPhone: { named: string[]; fullPct: number; medianAtp: number | null; corners: Array<{ key: MapCornerKey; title: string; slugs: string[] }> };
   cohort: {
     musicals: number;
     fromYear: number;
@@ -316,6 +373,14 @@ export function buildMarketPage(
     .filter(([slug, r]) => isPaired(r) && r.capacity != null && r.atp != null && r.performances && (input.shows.get(slug)?.category ?? 'broadway') === 'broadway')
     .map(([slug, r]) => ({ slug, title: title(slug), label: shortTitle(title(slug)), capacity: r.capacity as number, atp: r.atp as number, seats: Math.round((r.seatsOffered as number) / (r.performances as number)) }));
 
+  const mapGroups = mapCorners(priceMap);
+  const priceMapPhone = {
+    named: Array.from(mapOutliers(priceMap)),
+    fullPct: MAP_FULL_PCT,
+    medianAtp: mapGroups.medianAtp,
+    corners: mapGroups.corners.map((c) => ({ key: c.key, title: c.title, slugs: c.shows.map((d) => d.slug) })),
+  };
+
   // Cohort: new musicals running now that are past week 4, against the middle half since 2016.
   const current = Array.from(input.shows.values())
     .filter((sh) => isComparableRun(sh) && sh.type === 'musical' && !sh.isRevival && isReported(input.weeks[week]?.[sh.slug]))
@@ -393,6 +458,7 @@ export function buildMarketPage(
     premium: { median: pp.median, rows: pp.above.map((x) => ({ title: title(x.slug), over: x.over, isNew: x.isNew })) },
     pace,
     priceMap,
+    priceMapPhone,
     cohort: {
       musicals: cohort.musicals,
       fromYear: cohort.fromYear,
