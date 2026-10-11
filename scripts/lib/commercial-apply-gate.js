@@ -61,8 +61,14 @@ const BACKFILL_TAG = 'BRO-4990';
 
 // BRO-5041: a held row is released by name (--release-held). Refuse when the
 // record already carries something a person or a verified pass put there: a
-// human-reviewed or non-TBD label, or a recoupment on file. Null = may release.
-function heldReleaseRefusal(existing) {
+// human-reviewed or non-TBD label, or a recoupment on file. Also refuse a row
+// whose own label says the show recouped (Easy Winner/Windfall/Miracle): the
+// release drops the row's recoupment claim, and validation requires
+// recouped:true for those labels. Null = may release.
+const RECOUPED_LABELS = ['Easy Winner', 'Windfall', 'Miracle'];
+function heldReleaseRefusal(existing, row) {
+  const rowLabel = row && (canonicalDesignation(cleanNullish(row.designation)) || cleanNullish(row.designation));
+  if (rowLabel && RECOUPED_LABELS.includes(rowLabel)) return `row says "${rowLabel}", which needs a recoupment a person confirms`;
   if (!existing) return null;
   if (existing.humanReviewedDesignation === true) return 'designation was set by a human review';
   const designation = canonicalDesignation(cleanNullish(existing.designation)) || cleanNullish(existing.designation);
@@ -75,9 +81,12 @@ function heldReleaseRefusal(existing) {
 // calls cited to forums or other shows are settled by a person (BRO-5041).
 // A cited "did not recoup" stays, because a Flop/Fizzle label needs
 // recouped:false (commercial-record-checks.js loss-designation policy).
+// _recoupedClaim (the research's own "it recouped" flag) goes too, or the
+// recouped-claim gate would still hold the row.
 function withoutRecoupmentClaim(entry) {
-  if (entry.recouped !== true) return { ...entry };
-  const { recouped, recoupedDate, recoupedSource, ...rest } = entry;
+  const { _recoupedClaim, ...row } = entry;
+  if (row.recouped !== true) return row;
+  const { recouped, recoupedDate, recoupedSource, ...rest } = row;
   return rest;
 }
 

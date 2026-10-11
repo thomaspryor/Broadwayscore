@@ -251,7 +251,7 @@ async function main() {
     // entry.slug and strips -YYYY, so it can name a different production).
     const claimAutoApplyable = hasRecoupedClaim(row) && isAutoApplyableClaim(row, keyShow);
     if (hasRecoupedClaim(row) && !SINGLE_SHOW && !claimAutoApplyable) {
-      console.log(`  🛡️  "${showId}" — has recouped claim, requires manual review (use --show=${showId})`);
+      console.log(`  🛡️  "${showId}" — has recouped claim, requires manual review (${RELEASE_HELD ? 'settle it on the review page' : `use --show=${showId}`})`);
       skipped++;
       continue;
     }
@@ -272,7 +272,7 @@ async function main() {
     // clobbered the next Saturday when deep-research returns a 'low'-conf
     // contradicting result.
     const existing = commercial.shows[commercialKey];
-    const releaseRefusal = RELEASE_HELD ? gate.heldReleaseRefusal(existing) : null;
+    const releaseRefusal = RELEASE_HELD ? gate.heldReleaseRefusal(existing, row) : null;
     if (releaseRefusal) {
       console.log(`  🔒 "${showId}" — not released: ${releaseRefusal}; left pending for review`);
       skipped++;
