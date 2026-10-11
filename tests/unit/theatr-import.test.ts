@@ -23,6 +23,9 @@ import {
   chunk,
   overlapBatches,
   stitchBatchRows,
+  effectiveRating,
+  reactionCounts,
+  DEFAULT_REACTION_RATINGS,
   type TheatrRow,
 } from '../../src/lib/show-import';
 
@@ -150,14 +153,14 @@ test('chunk makes edge-function-sized batches', () => {
 test('notices explain scores, reactions, feed dates, backfill and failures', () => {
   const { entries, feedDates, backfillDropped } = theatrRowsPipeline([FEED], TODAY);
   const n = theatrNotices(entries, { picked: 35, failedScreenshots: 6, unreadable: 1, feedDates, backfillDropped }).join(' ');
-  for (const re of [/first 30 screenshots/, /couldn\u2019t be read/, /didn\u2019t look like/, /84\/100/, /when you logged/, /several shows at once/, /watchlist/]) {
+  for (const re of [/first 30 screenshots/, /couldn\u2019t be read/, /didn\u2019t look like/, /score you wrote/, /when you logged/, /several shows at once/]) {
     assert.match(n, re);
   }
-  // Every reaction-only show in the fixture is undated (backfill day), so
-  // none goes to To Be Rated and that line must not claim otherwise.
-  assert.doesNotMatch(n, /To Be Rated/);
-  const dated = theatrRowsToEntries([row({ date: '2024-01-01' })]);
-  assert.match(theatrNotices(dated, { picked: 1, failedScreenshots: 0, unreadable: 0 }).join(' '), /To Be Rated/);
+  // Every seen show in the fixture has a score or a reaction, so none is
+  // certain to stay unrated: no watchlist line.
+  assert.doesNotMatch(n, /watchlist/);
+  const bare = theatrRowsToEntries([row({})]);
+  assert.match(theatrNotices(bare, { picked: 1, failedScreenshots: 0, unreadable: 0 }).join(' '), /no date, reaction or score/);
   assert.equal(theatrNotices([], { picked: 3, failedScreenshots: 0, unreadable: 0 }).length, 0);
 });
 
@@ -215,4 +218,34 @@ test('a viewing that lost its date to a backfill day never folds into another vi
   const ham = entries.filter(e => e.title === 'Hamilton');
   assert.equal(ham.length, 2);
   assert.deepEqual(ham.map(e => [e.date, e.rating, e.reviewText]), [[null, 4.5, 'old'], ['2026-06-01', null, null]]);
+});
+
+// Reactions → stars: the user's choice in the preview (owner, 2026-10-11:
+// "normal users don't give shows a score out of 100").
+
+test('a seen show keeps its reaction; a written score stays the rating', () => {
+  const [liked, scored] = theatrRowsToEntries([
+    row({ title: 'A', reaction: 'recommend' }),
+    row({ title: 'B', reaction: 'dislike', score: 84, rating: 4 }),
+  ]);
+  assert.deepEqual([liked.rating, liked.reaction], [null, 'recommend']);
+  assert.deepEqual([scored.rating, scored.reaction], [4, 'dislike']);
+});
+
+test('effectiveRating: written score, else the reaction setting, else none', () => {
+  assert.equal(effectiveRating(4.5, 'dislike', DEFAULT_REACTION_RATINGS), 4.5);
+  assert.equal(effectiveRating(null, 'recommend', DEFAULT_REACTION_RATINGS), 4);
+  assert.equal(effectiveRating(null, 'mixed', DEFAULT_REACTION_RATINGS), 3);
+  assert.equal(effectiveRating(null, 'dislike', DEFAULT_REACTION_RATINGS), 2);
+  assert.equal(effectiveRating(null, 'recommend', { ...DEFAULT_REACTION_RATINGS, recommend: null }), null);
+  assert.equal(effectiveRating(null, undefined, DEFAULT_REACTION_RATINGS), null);
+});
+
+test('reactionCounts counts only reaction-rated rows, per reaction', () => {
+  assert.deepEqual(reactionCounts([
+    { reaction: 'recommend', scoreRating: null },
+    { reaction: 'recommend', scoreRating: null },
+    { reaction: 'dislike', scoreRating: 4 },
+    { scoreRating: null },
+  ]), { recommend: 2 });
 });

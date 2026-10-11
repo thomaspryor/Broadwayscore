@@ -30,7 +30,12 @@ export interface RawImportEntry {
    *  unmatched-import self-heal loop look this show up directly on Mezzanine
    *  instead of falling back to a fuzzy title search. */
   mezzShowId?: string;
+  /** Theatr reaction on a seen show. Rated by the user's own choice in the
+   *  preview (reactionRatings), never by the source; a written score wins. */
+  reaction?: TheatrReaction;
 }
+
+export type TheatrReaction = 'recommend' | 'mixed' | 'dislike';
 
 export interface ImportAcquireResult {
   entries: RawImportEntry[];
@@ -590,14 +595,49 @@ function halfStar(v: number | null): number | null {
 }
 
 /**
+ * What each Theatr reaction rates as when the user doesn't change it in the
+ * preview. Theatr has three reactions and no stars; these sit in the middle
+ * of each band and are only defaults: the preview shows one control per
+ * reaction, and "Don't rate" (null) keeps those shows unrated.
+ */
+export const DEFAULT_REACTION_RATINGS: Record<TheatrReaction, number | null> = {
+  recommend: 4,
+  mixed: 3,
+  dislike: 2,
+};
+
+export const REACTION_LABELS: Record<TheatrReaction, string> = {
+  recommend: 'Recommend it',
+  mixed: 'Mixed',
+  dislike: 'Didn\u2019t like it',
+};
+
+/** How many seen shows carry each reaction and no written score: the ones a
+ *  reaction setting would rate. Only reactions present are returned. */
+export function reactionCounts(entries: { reaction?: TheatrReaction; scoreRating: number | null }[]): Partial<Record<TheatrReaction, number>> {
+  const out: Partial<Record<TheatrReaction, number>> = {};
+  for (const e of entries) if (e.reaction && e.scoreRating == null) out[e.reaction] = (out[e.reaction] || 0) + 1;
+  return out;
+}
+
+/**
+ * The rating a row imports with: the score the user wrote, else what their
+ * reaction is set to in the preview, else none.
+ */
+export function effectiveRating(scoreRating: number | null, reaction: TheatrReaction | undefined, ratings: Record<TheatrReaction, number | null>): number | null {
+  if (scoreRating != null) return scoreRating;
+  return reaction ? ratings[reaction] ?? null : null;
+}
+
+/**
  * Map Theatr rows onto the shared import contract. A score the user wrote in
  * their review ("84/100") becomes the rating, with the review as review text.
- * A bare reaction (like / mixed / dislike) is not a star rating, so those
- * shows import unrated and land in To Be Rated rather than get a guess.
+ * A bare reaction rides along as `reaction`: the preview turns it into stars
+ * with the user's own reaction settings (effectiveRating).
  */
 export function theatrRowsToEntries(rows: TheatrRow[]): RawImportEntry[] {
   return rows.map((r) => r.list === 'attended'
-    ? { title: r.title, venue: r.venue, rating: halfStar(r.rating), sourceScore: r.score, date: r.date, reviewText: r.review, kind: 'diary' as const }
+    ? { title: r.title, venue: r.venue, rating: halfStar(r.rating), sourceScore: r.score, date: r.date, reviewText: r.review, kind: 'diary' as const, ...(r.reaction ? { reaction: r.reaction } : {}) }
     : { title: r.title, venue: r.venue, rating: null, sourceScore: null, date: null, reviewText: null, kind: 'watchlist' as const, listName: 'Interested' });
 }
 
@@ -633,17 +673,16 @@ export function theatrNotices(
   const attended = entries.filter((e) => e.kind === 'diary');
   const scored = attended.filter((e) => e.rating !== null).length;
   if (scored > 0) {
-    notices.push(`${scored} show(s) have a score in your review (like 84/100). It becomes the nearest half-star, and your review comes too.`);
-  }
-  if (attended.some((e) => e.rating === null && e.date)) {
-    notices.push('Shows with only a Theatr reaction (no written score) import to To Be Rated, where you can rate them.');
+    notices.push(`${scored} show(s) have a score you wrote in your review, so that is used as the rating.`);
   }
   if (counts.feedDates || counts.backfillDropped) {
     notices.push(`Dates are when you logged each show in Theatr, so check them.${counts.backfillDropped ? ' A day you logged several shows at once isn’t used.' : ''}`);
   }
-  const undatedUnrated = attended.filter((e) => !e.date && e.rating === null).length;
+  // Reaction rows are rated by the preview's reaction settings, so only rows
+  // with neither a score nor a reaction are certain to stay unrated.
+  const undatedUnrated = attended.filter((e) => !e.date && e.rating === null && !e.reaction).length;
   if (undatedUnrated > 0) {
-    notices.push(`${undatedUnrated} seen show(s) have no date or score, so they go to your watchlist. You can rate them from there.`);
+    notices.push(`${undatedUnrated} seen show(s) have no date, reaction or score, so they go to your watchlist. You can rate them from there.`);
   }
   return notices;
 }
