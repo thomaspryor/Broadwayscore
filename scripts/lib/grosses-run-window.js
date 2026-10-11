@@ -96,14 +96,17 @@ function sameWork(a, b) {
   if (CONNECTORS.has(small[0]) || CONNECTORS.has(small[small.length - 1])) return false;
   // One word is too weak alone (Annie / Annie Get Your Gun, Once / Once Upon a
   // Mattress): only a subtitle may follow it ("Doubt: A Parable").
-  // A possessive credit may precede it ("Bob Fosse's Dancin'", "Rodgers +
-  // Hammerstein's Cinderella").
+  // A full-name possessive credit may precede it ("Bob Fosse's Dancin'",
+  // "Rodgers + Hammerstein's Cinderella"), but not a one-word or article-led
+  // possessive: "The Band's Visit" is not "The Visit", "A Midsummer Night's
+  // Dream" is not "Dream", "Shakespeare's Cabaret" is not "Cabaret".
   if (small.length === 1) {
-    const bigTitle = wa.length >= wb.length ? a.title : b.title;
+    const [bigTitle, smallTitle] = wa.length >= wb.length ? [a.title, b.title] : [b.title, a.title];
     const mainTitle = String(bigTitle || '').split(/:|\s[-–—]\s/)[0].trim();
     const main = titleWords(mainTitle);
     if (main.length === 1) return main[0] === small[0];
-    const credited = /\S['’]s\s+(\S+)$/i.exec(mainTitle);
+    if (/^\s*(the|a|an)\s/i.test(String(smallTitle || ''))) return false;
+    const credited = /^(?!(?:the|a|an)\s)\S+(?:\s+\S+)+['’]s\s+(\S+)$/i.exec(mainTitle);
     const last = credited ? titleWords(credited[1]) : [];
     return last.length === 1 && last[0] === small[0];
   }
@@ -139,27 +142,43 @@ function grossesProductionFor(show, week, shows, nowMs = Date.now()) {
 }
 
 /**
- * The Broadway production a past week's League row belongs to, given
+ * The Broadway production a word-based (medium) match may take for a League
+ * row titled `title`: the one Broadway production of the matched work that ran
+ * that week, and only when the row's own title names that work too. Fuzzy
+ * alone filed rows on the wrong show ("Gore Vidal's The Best Man" is The Best
+ * Man 2012; a title that merely shares words with a running show is not).
+ * The title before a colon counts too ("Wolf Hall: Parts 1 & 2" for "Wolf
+ * Hall Parts One & Two").
+ */
+function mediumMatchProduction(title, show, week, shows, nowMs = Date.now()) {
+  const ran = week ? productionForWeek(show, week, shows, nowMs) : null;
+  if (!ran || !isBroadway(ran)) return null;
+  const main = String(title || '').split(':')[0];
+  return sameWork({ title }, ran) || sameWork({ title: main }, ran) ? ran : null;
+}
+
+/**
+ * The Broadway production a past week's League row titled `title` belongs to, given
  * matchTitleToShow's result for its title, or null to drop the row (the
  * historical backfill; the weekly scrape keeps an out-of-run pick for the
  * save-time repair instead). The matcher's window check only sees productions
  * with the exact title, so the pick is re-made by run window across the same
- * work (BRO-5016). A medium (word-based fuzzy) match alone filed rows on the
- * wrong show, so it counts only when one Broadway production of that work ran
- * that week ("The Best Man" for Gore Vidal's The Best Man 2012). The market is
+ * work (BRO-5016). A medium (word-based fuzzy) match goes through
+ * mediumMatchProduction. The market is
  * checked on the re-pick, not the first match: "Back To The Future" first
  * matches the West End run, and every Broadway week of it was dropped.
  */
-function historicalGrossesProduction(match, week, shows, nowMs = Date.now()) {
+function historicalGrossesProduction(title, match, week, shows, nowMs = Date.now()) {
   if (!match || !match.show) return null;
   const picked = match.confidence === 'high'
     ? grossesProductionFor(match.show, week, shows, nowMs)
-    : match.confidence === 'medium' ? productionForWeek(match.show, week, shows, nowMs) : null;
+    : match.confidence === 'medium' ? mediumMatchProduction(title, match.show, week, shows, nowMs) : null;
   return picked && isBroadway(picked) ? picked : null;
 }
 
 module.exports = {
   historicalGrossesProduction,
+  mediumMatchProduction,
   grossesProductionFor,
   WINDOW_SLACK_DAYS,
   PREVIEW_WEEKS_IF_UNKNOWN,

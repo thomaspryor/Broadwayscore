@@ -86,7 +86,7 @@ function loadShows(): void {
 function findMatchingSlug(title: string, weekDateStr: string): string | null {
   const weekYear = new Date(weekDateStr + 'T00:00:00Z').getFullYear();
   const result = matchTitleToShow(title, allShows, { market: 'broadway', prefer: 'open', year: weekYear, date: weekDateStr });
-  return historicalGrossesProduction(result, weekDateStr, allShows)?.slug ?? null;
+  return historicalGrossesProduction(title, result, weekDateStr, allShows)?.slug ?? null;
 }
 
 // Load or initialize grosses history

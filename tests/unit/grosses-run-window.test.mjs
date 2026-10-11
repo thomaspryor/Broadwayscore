@@ -42,6 +42,10 @@ test('sameWork: a revival under a longer title is the same work; a fragment or a
   assert.equal(W.sameWork(t('Cinderella'), t("Rodgers + Hammerstein's Cinderella")), true);
   assert.equal(W.sameWork(t('Annie'), t("Annie's Song")), false);
   assert.equal(W.sameWork(t('Cinderella'), t("Rodgers + Hammerstein's Cinderella Story")), false);
+  // Review false positives: a one-word or article-led possessive is another work.
+  for (const [x, y] of [['The Visit', "The Band's Visit"], ['The Women', "Jake's Women"], ['Cabaret', "Shakespeare's Cabaret"], ['Dream', "A Midsummer Night's Dream"]]) {
+    assert.equal(W.sameWork(t(x), t(y)), false, `${x} / ${y}`);
+  }
   assert.equal(W.sameWork({ title: 'Cabaret', id: 'cabaret-2014', originalProductionId: 'cabaret-1987' }, { title: 'Cabaret at the Kit Kat Club', id: 'cabaret-2024', originalProductionId: 'cabaret-1987' }), true);
 });
 
@@ -75,14 +79,21 @@ test('grossesProductionFor: the matcher\'s pick is replaced by the run that hold
 
 test('historicalGrossesProduction: re-picks before the market check; medium needs a Broadway run of the work that week', () => {
   // A West End first match is re-picked to the Broadway run (Back To The Future case).
-  assert.equal(W.historicalGrossesProduction({ show: cabaretWE, confidence: 'high' }, '2024-06-02', SHOWS, NOW).slug, 'cabaret-2024');
+  assert.equal(W.historicalGrossesProduction('Cabaret', { show: cabaretWE, confidence: 'high' }, '2024-06-02', SHOWS, NOW).slug, 'cabaret-2024');
   // Medium is kept only when a Broadway production of the work held the week (The Best Man case).
-  assert.equal(W.historicalGrossesProduction({ show: cabaret2014, confidence: 'medium' }, '2025-01-05', SHOWS, NOW).slug, 'cabaret-2024');
-  assert.equal(W.historicalGrossesProduction({ show: cabaret2014, confidence: 'medium' }, '2002-01-06', SHOWS, NOW), null);
-  assert.equal(W.historicalGrossesProduction({ show: cabaret2014, confidence: 'low' }, '2014-06-01', SHOWS, NOW), null);
-  assert.equal(W.historicalGrossesProduction(null, '2014-06-01', SHOWS, NOW), null);
+  assert.equal(W.historicalGrossesProduction('Cabaret at the Kit Kat Club', { show: cabaret2014, confidence: 'medium' }, '2025-01-05', SHOWS, NOW).slug, 'cabaret-2024');
+  assert.equal(W.historicalGrossesProduction('Cabaret', { show: cabaret2014, confidence: 'medium' }, '2002-01-06', SHOWS, NOW), null);
+  assert.equal(W.historicalGrossesProduction('Cabaret', { show: cabaret2014, confidence: 'low' }, '2014-06-01', SHOWS, NOW), null);
+  assert.equal(W.historicalGrossesProduction('Cabaret', null, '2014-06-01', SHOWS, NOW), null);
+  // A row whose own title is another work never takes the fuzzy pick's slot.
+  assert.equal(W.historicalGrossesProduction('Kit Kat Club Revue', { show: cabaret2014, confidence: 'medium' }, '2025-01-05', SHOWS, NOW), null);
+  const bestMan = { id: 'tbm', slug: 'tbm', title: 'The Best Man', category: 'broadway', previewsStartDate: '2012-03-06', openingDate: '2012-04-01', closingDate: '2012-09-09' };
+  assert.equal(W.mediumMatchProduction("Gore Vidal's The Best Man", bestMan, '2012-06-03', [bestMan], NOW)?.slug, 'tbm');
+  const wolf = { id: 'wh', slug: 'wh', title: 'Wolf Hall Parts One & Two', category: 'broadway', previewsStartDate: '2015-03-20', openingDate: '2015-04-09', closingDate: '2015-07-05' };
+  assert.equal(W.mediumMatchProduction('Wolf Hall: Parts 1 & 2', wolf, '2015-05-17', [wolf], NOW)?.slug, 'wh');
+  assert.equal(W.mediumMatchProduction('Hall Pass: Parts 1 & 2', wolf, '2015-05-17', [wolf], NOW), null);
   const weOnly = { id: 'we-only', slug: 'we-only', title: 'West End Only', category: 'west-end', openingDate: '2020-01-01' };
-  assert.equal(W.historicalGrossesProduction({ show: weOnly, confidence: 'high' }, '2024-06-02', [...SHOWS, weOnly], NOW), null);
+  assert.equal(W.historicalGrossesProduction('West End Only', { show: weOnly, confidence: 'high' }, '2024-06-02', [...SHOWS, weOnly], NOW), null);
 });
 
 test('rekeyRowsToRuns: Cabaret weeks move to their own run, weeks no listed run held are set aside, a second pass is a no-op', () => {

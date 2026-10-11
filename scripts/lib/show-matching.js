@@ -27,8 +27,10 @@ const KNOWN_ALIASES = {
   'harry potter': 'harry-potter',
   'cursed child': 'harry-potter',
 
-  // Playbill grosses lists it under the star's name
+  // Playbill grosses titles (an unspaced em dash is not split: it would turn
+  // review headlines like "Broadway—..." into high-confidence matches)
   'michael moore: the terms of my surrender': 'the-terms-of-my-surrender',
+  'aint too proud—the life and times of the temptations': 'aint-too-proud',
 
   // Lion King variations
   'the lion king': 'the-lion-king',
@@ -629,10 +631,8 @@ function matchTitleToShow(externalTitle, shows, options) {
   if (lowerCleaned.includes(':')) {
     titleVariants.push(lowerCleaned.split(':')[0].trim());
   }
-  // An em dash marks a subtitle even unspaced (Playbill's "Ain't Too
-  // Proud—The Life and Times of the Temptations"); an en dash only when spaced.
-  if (lowerCleaned.includes(' – ') || lowerCleaned.includes('—')) {
-    titleVariants.push(lowerCleaned.split(/\s+–\s+|\s*—\s*/)[0].trim());
+  if (lowerCleaned.includes(' – ') || lowerCleaned.includes(' — ')) {
+    titleVariants.push(lowerCleaned.split(/\s+[–—]\s+/)[0].trim());
   }
 
   // Build slug → show lookup

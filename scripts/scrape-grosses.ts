@@ -59,7 +59,7 @@ const {
   isoWeekToMDY,
 } = require('./lib/parse-playbill-grosses');
 const { weekKeyFor, repairGrossesHistory } = require('./lib/grosses-history-repair');
-const { grossesProductionFor, weekInRun, productionForWeek, isBroadway } = require('./lib/grosses-run-window');
+const { grossesProductionFor, weekInRun, mediumMatchProduction, isBroadway } = require('./lib/grosses-run-window');
 
 const GROSSES_URL = 'https://www.broadwayworld.com/grosses.php';
 const GROSSES_PATH = path.join(__dirname, '../data/grosses.json');
@@ -342,10 +342,9 @@ function findMatchingSlug(bwwTitle: string, market: string = 'broadway', pastWee
     return slug;
   }
   if (match && match.confidence === 'medium') {
-    // Fuzzy alone filed rows on the wrong show; it counts only when one
-    // Broadway production of that work ran that week ("The Best Man").
-    const ran = runWeekISO ? productionForWeek(match.show, runWeekISO, allShows) : null;
-    if (ran && isBroadway(ran)) return ran.slug;
+    // Fuzzy alone filed rows on the wrong show; see mediumMatchProduction.
+    const ran = runWeekISO ? mediumMatchProduction(bwwTitle, match.show, runWeekISO, allShows) : null;
+    if (ran) return ran.slug;
     console.warn(`  ⚠ Medium-confidence match: "${bwwTitle}" → ${match.show.slug} (rejected for financial data)`);
   }
   return null;
