@@ -152,7 +152,7 @@ function displayableAt({ comm, tier, result, playedWeeks }, guard) {
   if (!result || tier === 'ai-estimated' || !comm || comm.designation === 'Nonprofit') return false;
   // A replay has no cumulative grosses (they cannot be cut at a date), which
   // alone drops a reported-cost record to 'low'; the site had them then.
-  const quality = result.dataQuality === 'low' && comm.weeklyRunningCost ? 'medium' : result.dataQuality;
+  const quality = result.dataQuality === 'low' && result.weeklyFixedCostSource === 'reported' ? 'medium' : result.dataQuality;
   if (quality === 'low') return false;
   const pct = [result.recoupmentPctLow, result.recoupmentPctCentral, result.recoupmentPctHigh];
   return guard.modelDisplayGuard({ pct, playedWeeks, independent: guard.independentEstimate(comm), running: true, runningEnabled: true }).show;

@@ -107,7 +107,8 @@ describe('displayableAt', () => {
     assert.equal(T.displayableAt({ comm: {}, tier: 'weekly-model', result: { ...result, recoupmentPctHigh: 150 }, playedWeeks: 20 }, guard), false);
   });
   test('a replay with a reported cost is not marked low only for lacking cumulative grosses', () => {
-    assert.equal(T.displayableAt({ comm: { weeklyRunningCost: 500000 }, tier: 'weekly-model', result: { ...result, dataQuality: 'low' }, playedWeeks: 20 }, guard), true);
+    assert.equal(T.displayableAt({ comm: {}, tier: 'weekly-model', result: { ...result, dataQuality: 'low', weeklyFixedCostSource: 'reported' }, playedWeeks: 20 }, guard), true);
+    assert.equal(T.displayableAt({ comm: {}, tier: 'weekly-model', result: { ...result, dataQuality: 'low', weeklyFixedCostSource: 'estimated' }, playedWeeks: 20 }, guard), false);
   });
 });
 
@@ -124,4 +125,16 @@ test('buildTimingRows replays a recouped record with the recoupment hidden', () 
   assert.deepEqual(rows.map((r) => r.kind), ['timing:at-recoup', 'timing:26w-before']);
   assert.ok(seen.length && seen.every((c) => !('recouped' in c) && !('recoupedDate' in c)));
   assert.equal(typeof recoupBias(rows), 'number');
+});
+
+test('revisitBar: 10+ strong rows at 80%+ inside, plays and musicals each (BRO-5073)', () => {
+  const { revisitBar } = require('../../scripts/lib/recoupment-timing-report');
+  const row = (type, inside, extra = {}) => ({ type, displayable: true, truthClass: 'reported', kind: 'timing:at-recoup', newErr: inside ? 0 : 5, ...extra });
+  const many = (type, n, inside) => Array.from({ length: n }, (_, i) => row(type, i < inside));
+  assert.deepEqual(revisitBar([...many('play', 10, 8), ...many('musical', 10, 8)]), { met: true, play: { n: 10, inside: 8 }, musical: { n: 10, inside: 8 } });
+  assert.equal(revisitBar([...many('play', 10, 7), ...many('musical', 12, 12)]).met, false, 'plays under 80%');
+  assert.equal(revisitBar([...many('play', 9, 9), ...many('musical', 12, 12)]).met, false, 'too few plays');
+  // weak, non-displayable and inference rows do not count
+  const noise = [row('play', true, { kind: 'timing:26w-before' }), row('play', true, { displayable: false }), row('play', true, { truthClass: 'inference' })];
+  assert.equal(revisitBar([...many('play', 9, 9), ...noise, ...many('musical', 10, 10)]).play.n, 9);
 });

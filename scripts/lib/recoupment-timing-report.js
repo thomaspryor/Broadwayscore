@@ -91,6 +91,24 @@ function recoupBias(rows, side = 'new') {
   return Math.round(at.reduce((a, r) => a + (r[`${side}Pct`] - 100), 0) / at.length * 10) / 10;
 }
 
+// When to revisit RUNNING_MODEL_BAR_ENABLED (BRO-5073, coordinator 2026-10-11):
+// at least 10 strong (at-recoup) displayable hard-truth rows with at least 80%
+// inside, for plays and for musicals each. Weak "< 100" rows do not count.
+const REVISIT_MIN_ROWS = 10;
+const REVISIT_MIN_INSIDE = 0.8;
+/** @returns {{ met: boolean, play: { n: number, inside: number }, musical: { n: number, inside: number } }} */
+function revisitBar(rows) {
+  const strong = rows.filter((r) => r.displayable && r.truthClass === 'reported' && r.kind === 'timing:at-recoup');
+  const of = (type) => {
+    const list = strong.filter((r) => (type === 'play' ? r.type === 'play' : r.type !== 'play'));
+    return { n: list.length, inside: list.filter((r) => r.newErr === 0).length };
+  };
+  const play = of('play');
+  const musical = of('musical');
+  const ok = (g) => g.n >= REVISIT_MIN_ROWS && g.inside / g.n >= REVISIT_MIN_INSIDE;
+  return { met: ok(play) && ok(musical), play, musical };
+}
+
 function runTiming({ shows, commercial, lookup, by, baseLib, newLib, newOpts = {}, base, truth, displayableOnly, displayed, json, strict, aggregateOnly, markdown }) {
   const { rows, skipped } = buildTimingRows({
     shows, commercial, lookup, by, oldLibs: libsFrom(baseLib), newLibs: libsFrom(newLib), newOpts, truth, displayableOnly, displayed,
@@ -105,6 +123,8 @@ function runTiming({ shows, commercial, lookup, by, baseLib, newLib, newOpts = {
   // Strong rows test a band at the announcement; weak rows only test "< 100".
   const split = (list) => `${list.length} rows, ${list.filter((r) => r.newErr === 0).length} inside, MAE ${list.length ? Math.round(list.reduce((a, r) => a + r.newErr, 0) / list.length * 10) / 10 : '-'}`;
   const strongWeak = `Displayable hard-truth split: strong (at-recoup 85-115) ${split(hardRows.filter((r) => r.kind === 'timing:at-recoup'))}; weak (< 100 before) ${split(hardRows.filter((r) => r.kind !== 'timing:at-recoup'))}`;
+  const bar = revisitBar(rows);
+  if (process.env.GITHUB_ACTIONS && bar.met) console.log('::notice title=Recoupment timing::revisit bar met; review RUNNING_MODEL_BAR_ENABLED (BRO-5073)');
   const optNames = Object.keys(newOpts);
   const label = `${base ? `${base} vs working tree` : 'working tree'}${optNames.length ? `, opts ${optNames.join(', ')}` : ''}, recoupment timing${displayableOnly ? ', displayable rows only' : ''}${displayed ? ', displayed value (floored at 0)' : ''}`;
   const lines = [
@@ -113,11 +133,12 @@ function runTiming({ shows, commercial, lookup, by, baseLib, newLib, newOpts = {
     `Displayable hard-truth checkpoints (would show a bar with the launch flag on): ${displayableHard}`,
     strongWeak,
     ...(newOpts.creditBasis ? [basisLine(rows)] : []),
+    `Revisit bar for running-show bars (>= ${REVISIT_MIN_ROWS} strong rows, >= ${REVISIT_MIN_INSIDE * 100}% inside, plays and musicals each): ${bar.met ? 'MET' : 'not met'} (plays ${bar.play.inside}/${bar.play.n}, musicals ${bar.musical.inside}/${bar.musical.n})`,
     `Bias at recoupment (mean central - 100): old ${recoupBias(rows, 'old')}, new ${recoupBias(rows, 'new')}`,
     `New early recouped (>= 100 at 26/52 weeks before): ${newEarly.length}${newEarly.length && !aggregateOnly ? ` (${newEarly.map((r) => `${r.slug} ${r.kind}`).join(', ')})` : ''}`,
   ];
   if (json) {
-    console.log(JSON.stringify({ mode: 'timing', base: base || null, truth, summary, worse, skipped, displayableHard, bias: { old: recoupBias(rows, 'old'), new: recoupBias(rows, 'new') }, ...(aggregateOnly ? {} : { rows }) }, null, 2));
+    console.log(JSON.stringify({ mode: 'timing', base: base || null, truth, summary, worse, skipped, displayableHard, revisitBar: bar, bias: { old: recoupBias(rows, 'old'), new: recoupBias(rows, 'new') }, ...(aggregateOnly ? {} : { rows }) }, null, 2));
   } else if (markdown) {
     console.log(formatMarkdown({ title: `Recoupment-timing backtest: ${label} (${rows.length} checkpoints)`, summary, rows, worse, aggregateOnly }));
     console.log(lines.join('\n\n'));
@@ -138,4 +159,4 @@ function runTiming({ shows, commercial, lookup, by, baseLib, newLib, newOpts = {
   if (strict && (worse.length || newEarly.length || skipped.newOnly)) process.exitCode = 1;
 }
 
-module.exports = { buildTimingRows, recoupBias, runTiming, libsFrom, MIN_COVERAGE };
+module.exports = { buildTimingRows, recoupBias, revisitBar, runTiming, libsFrom, MIN_COVERAGE };
