@@ -12,7 +12,7 @@
  */
 
 const { earliestShowDate } = require('./date-guard');
-const { findMatchingPriorRun } = require('./wrong-production-autoclear');
+const { isWithinPriorRun, isWithinTourLeg } = require('./wrong-production-autoclear');
 
 // A page that says outright it was written for an earlier year. "This review is
 // from 2025" (An Oak Tree, Time Out) and "Originally published ... 2019" are
@@ -68,21 +68,48 @@ function republishMarker(text) {
  * @param {object} args.show shows.json record
  * @returns {{exclude: boolean, markerYear: number|null, snippet: string|null, reason: string|null}}
  */
-function evaluateRepublishedReview({ fullText, show }) {
+const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+
+// Month named inside the marker snippet, 1-12, or null when it names only a year.
+function markerMonth(snippet) {
+  const m = /\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\b/i.exec(snippet || '');
+  return m ? MONTHS.indexOf(m[1].toLowerCase()) + 1 : null;
+}
+
+function evaluateRepublishedReview({ fullText, show, publishDate }) {
   const none = { exclude: false, markerYear: null, snippet: null, reason: null };
   if (!show) return none;
   const marker = republishMarker(fullText);
   if (!marker) return none;
-  const earliest = earliestShowDate(show);
-  if (!earliest) return { ...none, markerYear: marker.year, snippet: marker.snippet };
-  const earliestYear = parseInt(String(earliest).slice(0, 4), 10);
-  if (!(marker.year < earliestYear)) return { ...none, markerYear: marker.year, snippet: marker.snippet };
-  const mid = `${marker.year}-07-01`;
-  const probe = (arr) => (Array.isArray(arr) && arr.length ? findMatchingPriorRun(mid, arr.filter((r) => r && typeof r === 'object')) : null);
-  if (probe(show.priorRuns) || probe(show.tourLegs)) {
-    return { exclude: false, markerYear: marker.year, snippet: marker.snippet, reason: 'covered-by-declared-run' };
+  const base = { ...none, markerYear: marker.year, snippet: marker.snippet };
+  // "Originally Published on January 13, 2013" beside a review dated 2014-01-15 is a
+  // year typo on the page (Beautiful, Theater Life), not a republish: the stated day and
+  // month land within a week of the review's own date once the year matches.
+  const dm = /\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+(\d{1,2})\b|\b(\d{1,2})(?:st|nd|rd|th)?\s+(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/i.exec(marker.snippet);
+  const pubMs = Date.parse(String(publishDate || '').slice(0, 10) + 'T00:00:00Z');
+  if (dm && !Number.isNaN(pubMs)) {
+    const mo = MONTHS.indexOf((dm[1] || dm[4]).toLowerCase()) + 1;
+    const day = parseInt(dm[2] || dm[3], 10);
+    const sameYear = Date.UTC(new Date(pubMs).getUTCFullYear(), mo - 1, day);
+    if (Math.abs(sameYear - pubMs) <= 7 * 86400000) return { ...base, reason: 'year-typo-matches-publish-date' };
   }
-  return { exclude: true, markerYear: marker.year, snippet: marker.snippet, reason: 'republished-from-earlier-year' };
+  const earliest = earliestShowDate(show);
+  if (!earliest) return base;
+  const earliestMs = Date.parse(`${String(earliest).slice(0, 10)}T00:00:00Z`);
+  const month = markerMonth(marker.snippet);
+  // With a month, the stated date must sit more than 35 days before the show's first date
+  // (the date-guard's widest grace); with a year only, the whole year must precede it.
+  const statedMs = month ? Date.UTC(marker.year, month - 1, 15) : Date.UTC(marker.year, 11, 31);
+  if (!(statedMs < earliestMs - (month ? 35 : 0) * 86400000)) return base;
+  // A declared prior run or tour leg that overlaps the stated year (or month) is the same
+  // production's own coverage. Probe each month so a short early-year run is not missed.
+  const probes = month ? [month] : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  const covered = probes.some((mo) => {
+    const d = new Date(Date.UTC(marker.year, mo - 1, 15));
+    return isWithinPriorRun(d, show.priorRuns) || isWithinTourLeg(d, show.tourLegs);
+  });
+  if (covered) return { ...base, reason: 'covered-by-declared-run' };
+  return { ...base, exclude: true, reason: 'republished-from-earlier-year' };
 }
 
 const CLEAR_MARKERS = [
@@ -106,7 +133,7 @@ function wrongProductionFlagVsClear(d) {
   if (markers.length === 0) return { conflict: false, flagLater: false, markers: [], clearedBy: null };
   // A plan/human flag leaves an approvedFixes entry for wrongProduction.
   const fixes = Array.isArray(d.approvedFixes) ? d.approvedFixes : [];
-  const flagFixes = fixes.filter((f) => f && f.field === 'wrongProduction' && f.at);
+  const flagFixes = fixes.filter((f) => f && f.field === 'wrongProduction' && f.at && f.newValue !== false);
   const clearAt = Date.parse(d.wrongProductionOverrideSetAt || '') || 0;
   const flagLater = flagFixes.some((f) => (Date.parse(f.at) || 0) > clearAt);
   return {
@@ -118,28 +145,19 @@ function wrongProductionFlagVsClear(d) {
 }
 
 /**
- * True when a script-made clear (not a human verdict) must not be stamped on a
- * record that a plan/human flagged after the clear's own stamp.
+ * True when a plan/human flag was set after a SCRIPT's clear and the clear markers still
+ * hide it. Only script clears qualify (wrongProductionOverrideSetBy names a .js file);
+ * a human clear is a verdict the flag does not overrule.
  */
-function humanFlagOutranksClear(d) {
+function humanFlagOutranksScriptClear(d) {
   const r = wrongProductionFlagVsClear(d);
-  return r.conflict && r.flagLater;
-}
-
-/** Strip the clear markers so a later human flag takes effect. Returns the keys removed. */
-function retractWrongProductionClearMarkers(d) {
-  const removed = [];
-  for (const k of CLEAR_MARKERS) {
-    if (d[k] !== undefined) { removed.push(k); delete d[k]; }
-  }
-  return removed;
+  return r.conflict && r.flagLater && typeof d.wrongProductionOverrideSetBy === 'string' && /\.js$/.test(d.wrongProductionOverrideSetBy.trim());
 }
 
 module.exports = {
+  humanFlagOutranksScriptClear,
   republishMarker,
   evaluateRepublishedReview,
   wrongProductionFlagVsClear,
-  humanFlagOutranksClear,
-  retractWrongProductionClearMarkers,
   CLEAR_MARKERS,
 };
