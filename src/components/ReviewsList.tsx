@@ -9,7 +9,8 @@ import { getGoldThreshold } from '@/config/score-buckets';
 import { getReviewKey } from '../../scripts/lib/review-list-key';
 import { catchEarlyImgError } from '@/lib/img-early-error';
 import { isLondonMarket } from '@/lib/market-utils';
-import { TIER_DISPLAY, TIER_LIST, tierBarsLit, tierPercent, type OutletTier } from '@/config/tier-display';
+import { TIER_DISPLAY, TIER_LIST, tierPercent, type OutletTier } from '@/config/tier-display';
+import { TIER_CHIP_BOX, TierBars, tierChipTextClass } from '@/components/show-cards/OutletTierChip';
 import { nestQuotes } from '@/lib/nest-quotes';
 
 interface Review {
@@ -155,20 +156,8 @@ function withEndPunctuation(text: string): string {
 // useLayoutEffect warns during the server render of this client component.
 const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
-// Shared by the review-row chip and the key's sample chips so they stay identical.
-const TIER_CHIP_BOX = 'inline-flex items-center gap-[3px] h-[18px] px-[5px] rounded border text-[10px] font-semibold leading-none tabular-nums tracking-[0.02em]';
-
-// Four ascending bars, lit one per step of weight (T1 all four, T4 one), so the
-// chip shows how much a review counts and not only which tier it is (BRO-4905).
-function TierBars({ tier, className = '' }: { tier: OutletTier; className?: string }) {
-  return (
-    <span className={`inline-flex items-end gap-[1.5px] h-[9px] ${className}`} aria-hidden="true" data-testid="tier-bars">
-      {[3, 5, 7, 9].map((h, i) => (
-        <span key={h} className={`w-[2px] rounded-[1px] ${i < tierBarsLit(tier) ? 'bg-current' : 'bg-white/[0.14]'}`} style={{ height: h }} />
-      ))}
-    </span>
-  );
-}
+// TIER_CHIP_BOX + TierBars are shared with the outlet pages' OutletTierChip
+// (show-cards/OutletTierChip.tsx) so every tier chip stays identical.
 
 function TierChip({ tier, isTopCritic, criticName, london }: { tier: OutletTier; isTopCritic?: boolean; criticName?: string; london: boolean }) {
   const [open, setOpen] = useState(false);
@@ -249,7 +238,7 @@ function TierChip({ tier, isTopCritic, criticName, london }: { tier: OutletTier;
         className={`tier-chip relative ${TIER_CHIP_BOX} cursor-help transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 ${
           open
             ? 'text-white border-brand/60 bg-brand/[0.08]'
-            : `${tier === 1 ? 'text-gray-300' : 'text-gray-400'} border-white/[0.12] hover:text-white hover:border-brand/60 hover:bg-brand/[0.08]`
+            : `${tierChipTextClass(tier)} border-white/[0.12] hover:text-white hover:border-brand/60 hover:bg-brand/[0.08]`
         }`}
         aria-label={`Tier ${tier}: ${title}. ${info.relative}`}
         aria-expanded={open}
@@ -505,7 +494,7 @@ export default function ReviewsList({ reviews, initialCount = 5, category, showT
           <ul className="flex flex-wrap items-center gap-x-3 gap-y-1.5" aria-label="How much each tier counts">
             {TIER_LIST.map(t => (
               <li key={t} className="inline-flex items-center gap-1.5">
-                <span aria-hidden="true" className={`${TIER_CHIP_BOX} border-white/[0.12] ${t === 1 ? 'text-gray-300' : 'text-gray-400'}`}>
+                <span aria-hidden="true" className={`${TIER_CHIP_BOX} border-white/[0.12] ${tierChipTextClass(t)}`}>
                   T{t}<TierBars tier={t} />
                 </span>
                 <span className="tabular-nums text-gray-400"><span className="sr-only">Tier {t}: </span>{tierPercent(t)}%</span>

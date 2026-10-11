@@ -4,8 +4,8 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import type { OutletProfile, ProfileReview } from '@/lib/data-types';
 import { getOptimizedImageUrl } from '@/lib/images';
-import { getScoreClass, getScoreTextColor, formatDate, ordinalSuffix, TierBadge } from '@/lib/critic-page-utils';
-import { ToggleBar, StatGrid } from '@/components/show-cards';
+import { getScoreClass, getScoreTextColor, formatDate, ordinalSuffix } from '@/lib/critic-page-utils';
+import { ToggleBar, StatGrid, OutletTierChip } from '@/components/show-cards';
 import Breadcrumb from '@/components/Breadcrumb';
 import { getReviewKey } from '../../../../../scripts/lib/review-list-key';
 import { nestQuotes } from '@/lib/nest-quotes';
@@ -153,7 +153,7 @@ export default function OutletDetailClient({ outlet }: { outlet: OutletProfile }
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-2xl sm:text-3xl font-bold text-white">{outlet.name}</h1>
-              <TierBadge tier={outlet.tier} />
+              <OutletTierChip tier={outlet.tier} />
             </div>
           </div>
         </div>
