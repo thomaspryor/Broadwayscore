@@ -280,6 +280,10 @@ const PAGE_WORTHY_WORKFLOWS = new Set([
   // Sign-in is down until the owner restores the project from the Supabase
   // dashboard; nobody else holds that login.
   'restore-supabase.yml',
+  // Owner 2026-10-11: "Theatr breaking should send me a direct email." Only
+  // the owner can re-capture an expired Theatr login (from the iPhone app).
+  // The YAML pages on 2 consecutive failures, so a one-off token race is quiet.
+  'update-theatr.yml',
   // test-ugc-roundtrip.yml is deliberately NOT here: its page is the routed
   // 'ugc-roundtrip:users-affected' key (PAGE_WORTHY_CONDITION_KEYS), which
   // fires only for urgent checks and dedups per incident.
