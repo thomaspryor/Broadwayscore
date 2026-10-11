@@ -91,4 +91,25 @@ function decideDrainFollowUp({ outcome, manifest = [] } = {}) {
   }
 }
 
-module.exports = { decideBatchDrain, decideDrainFollowUp };
+/**
+ * May this run submit a NEW vendor batch? (BRO-5047)
+ *
+ * index.ts keeps a single batch state file. A drain that finds its batch still
+ * in flight leaves the state in place and lets the run continue, and the submit
+ * block used to write the new batch's state over it: the earlier batch's vendor
+ * IDs were lost, so a batch that was already paid for could never be merged.
+ * Refusing the submit keeps the paid batch; the queued reviews simply wait for
+ * the next run.
+ *
+ * @param {object|null} existingState readBatchState() at submit time
+ * @returns {{allowed: boolean, reason: string|null}}
+ */
+function mayStartNewBatch(existingState) {
+  if (existingState && typeof existingState === 'object') {
+    const at = existingState.submittedAt || 'unknown time';
+    return { allowed: false, reason: `a batch submitted ${at} is still in flight` };
+  }
+  return { allowed: true, reason: null };
+}
+
+module.exports = { decideBatchDrain, decideDrainFollowUp, mayStartNewBatch };
