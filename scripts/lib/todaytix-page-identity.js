@@ -60,7 +60,10 @@ function isFragment(s) {
 }
 // Initials and titles end in a full stop that does not end the sentence
 // ("F. Murray Abraham", "Dr. Seuss").
-const ABBREV_DOT_RE = /\b(Mr|Mrs|Ms|Dr|St|Jr|Sr|Prof|Capt|Gen|Lt|[A-Z])\.(?=\s)/g;
+// A run of initials ("P.T. Barnum") counts too: the sentence matcher below
+// skips any text whose end punctuation is not followed by a space, so "P."
+// lost The Greatest Showman's opening sentence (BRO-5063).
+const ABBREV_DOT_RE = /\b(Mr|Mrs|Ms|Dr|St|Jr|Sr|Prof|Capt|Gen|Lt|[A-Z])\.(?=\s|[A-Z]\.)/g;
 // After a dropped sentence, a sentence leaning on it ("That meant a sudden
 // influx of 7,000 visitors") has lost what it refers to.
 const ANAPHORIC_OPENER_RE = /^(That|This|These|Those|It|They)\b/;
@@ -121,15 +124,21 @@ function cleanTodaytixAbout(text) {
     .replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#0?39;|&apos;/g, "'").replace(/&nbsp;/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
-  const sentences = (plain.replace(ABBREV_DOT_RE, '$1\u2024').match(/[^.!?]+[.!?]+(?=\s|$)/g) || []).map(x => x.replace(/\u2024/g, '.'));
+  const sentences = (plain.replace(ABBREV_DOT_RE, '$1\u2024').match(/[^.!?]+[.!?]+["')\]]*(?=\s|$)/g) || []).map(x => x.replace(/\u2024/g, '.'));
   const kept = [];
   let len = 0;
   let dropped = false;
   for (const raw of sentences) {
-    const sentence = raw.trim().replace(/^["'\s]+/, '');
+    // A sentence opening on a quote is judged with its mark: half of a pull
+    // quote ('"At 27, my dad had escaped ...') is only visible with it, and a
+    // quoted title ('"Hamilton" is ...') only balances with it. A stray mark
+    // followed by a space ('" Brace Brace is ...') is not an opening quote.
+    const whole = raw.trim();
+    const sentence = /^"\S/.test(whole) ? whole : whole.replace(/^["'\s]+/, '');
     // Pull quotes / soundbites (Unicorn: "...very, very funny," Nicola Walker
     // said), selling, billing and pitch openers are not plot.
-    if (!sentence || nonStoryReason(sentence) || (dropped && ANAPHORIC_OPENER_RE.test(sentence))) { dropped = true; continue; }
+    const reason = nonStoryReason(sentence);
+    if (!sentence || reason || (dropped && ANAPHORIC_OPENER_RE.test(sentence))) { dropped = true; continue; }
     dropped = false;
     if (len + sentence.length + 1 > MAX_ABOUT_CHARS) break;
     kept.push(sentence);
