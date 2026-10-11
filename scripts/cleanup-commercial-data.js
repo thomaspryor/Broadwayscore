@@ -104,19 +104,16 @@ for (const [key, val] of Object.entries(shows)) {
   }
 }
 
-// 4. Auto-designate closed TBD shows as Fizzle
+// 4. Closed TBD shows stay TBD: "no reported recoupment" is not a cited
+// loss (BRO-5020). Flag them for a person to source instead of labelling
+// them Fizzle, unless a person already ruled on the row.
 for (const [key, val] of Object.entries(shows)) {
   if (val && typeof val === 'object' && val.designation === 'TBD') {
     // Find the show
     const show = slugToShow[key] || idToShow[key];
-    if (show && show.status === 'closed') {
-      val.designation = 'Fizzle';
-      if (!val.notes) val.notes = '';
-      // /biz shows notes verbatim, so this reads as a public statement.
-      val.notes = val.notes
-        ? val.notes + ' Closed with no reported recoupment.'
-        : 'Closed with no reported recoupment.';
-      changes.designationFixed.push(`${key}: TBD -> Fizzle (${show.title})`);
+    if (show && show.status === 'closed' && val.humanReviewedDesignation !== true && !('needsLossEvidence' in val)) {
+      val.needsLossEvidence = true;
+      changes.designationFixed.push(`${key}: TBD, flagged needsLossEvidence (${show.title})`);
     }
   }
 }
@@ -148,7 +145,7 @@ if (changes.removedRecoupedWeeks) {
 }
 
 if (changes.designationFixed.length) {
-  console.log(`\nFixed ${changes.designationFixed.length} closed TBD designations:`);
+  console.log(`\nFlagged ${changes.designationFixed.length} closed TBD shows for a cited loss source:`);
   for (const d of changes.designationFixed) console.log(`  ${d}`);
 }
 

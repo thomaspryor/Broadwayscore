@@ -136,7 +136,7 @@ const MODEL_RUN_FIELDS = [
   'modelRecoupmentPctV2', 'modelInvestorMultiple', 'modelReturnedExCreditPct', 'modelTaxCreditExcluded',
 ];
 const LINKED_FIELD_GROUPS = [
-  ['designation', 'productionType', 'recouped', 'recoupedDate', 'recoupedSource', 'classifiedBy', 'classifiedAt', 'classifiedReason', 'needsLossEvidence'],
+  ['designation', 'productionType', 'recouped', 'recoupedDate', 'recoupedSource', 'classifiedBy', 'classifiedAt', 'classifiedReason'],
   ['capitalization', 'capitalizationSource'],
   ['weeklyRunningCost', 'costMethodology', 'weeklyRunningCostSource', 'weeklyRunningCostNote', 'weeklyRunningCostRange'],
   MODEL_RUN_FIELDS,

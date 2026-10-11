@@ -2,12 +2,13 @@
 /**
  * Classify stale closures. A researched Broadway show closed 30+ days with no
  * recoupment news is flagged needsLossEvidence and stays TBD (BRO-5020); it is
- * labelled Fizzle only under --allow-inferred-loss. Writes DIRECTLY to commercial.json (not
- * pending-review) because Fizzle-from-absent-evidence is deterministic policy,
- * not a claim awaiting review. Per Code Design reviewer redesign.
+ * labelled Fizzle only under --allow-inferred-loss. Writes DIRECTLY to
+ * commercial.json (not pending-review): the flag claims nothing, it only
+ * queues the row for a person to source.
  *
  * Side effects:
- *   - Updates data/commercial.json in place for shows classified as Fizzle.
+ *   - Updates data/commercial.json in place for flagged shows (and Fizzles
+ *     under --allow-inferred-loss).
  *     The merge-commercial-data.js reconciler ensures concurrent writers
  *     don't lose entries on push.
  *   - Logs human-review escalations to stdout JSON for downstream Linear
@@ -60,7 +61,7 @@ const thresholds = {
   // Off by default (BRO-5020): a closed show with no recoupment news stays TBD
   // with needsLossEvidence instead of becoming Fizzle. --allow-inferred-loss
   // or STALE_CLOSURE_ALLOW_INFERRED_LOSS=1 restores the old auto-Fizzle.
-  allowInferredLoss: flags['allow-inferred-loss'] === true || process.env.STALE_CLOSURE_ALLOW_INFERRED_LOSS === '1',
+  allowInferredLoss: ['1', 'true'].includes(String(flags['allow-inferred-loss'])) || process.env.STALE_CLOSURE_ALLOW_INFERRED_LOSS === '1',
 };
 
 function loadJSON(p, fallback) {
@@ -174,7 +175,9 @@ function main() {
   // Only the flag changes, so designation and recouped stay as they were.
   let flagged = 0;
   for (const { show, entry } of buckets['flag-needs-loss-evidence']) {
-    if (!entry || entry.needsLossEvidence === true) continue;
+    // Any existing value (true, or false/null set by a person) is left alone,
+    // so a hand-cleared flag is not re-raised the next day.
+    if (!entry || 'needsLossEvidence' in entry) continue;
     commercial.shows[show.slug] = { ...entry, needsLossEvidence: true, lastUpdated: now };
     flagged++;
     console.log(`  ⚑ ${show.slug}: needs a cited loss source, stays ${entry.designation || 'TBD'}`);
