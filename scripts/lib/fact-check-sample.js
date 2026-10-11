@@ -24,6 +24,7 @@
 
 const { normalizeVenueName } = require('./image-source-match');
 const { findCanonical } = require('./venue-aliases');
+const { isBroadwayCategory } = require('./venue-classification');
 
 const WE_SEASONS = ['2018-2019', '2019-2020', '2020-2021', '2021-2022', '2022-2023', '2023-2024'];
 
@@ -37,7 +38,7 @@ const COHORTS = {
   'broadway-historical': {
     label: 'Broadway historical backfill (tag "historical")',
     market: 'Broadway (New York)',
-    filter: (s) => s.category === 'broadway' && Array.isArray(s.tags) && s.tags.includes('historical')
+    filter: (s) => isBroadwayCategory(s) && Array.isArray(s.tags) && s.tags.includes('historical')
       && !String(s.discoverySource || '').startsWith('we-historical'),
     stratum: (s) => {
       const y = parseInt(String(s.openingDate || s.previewsStartDate || '').slice(0, 4), 10);

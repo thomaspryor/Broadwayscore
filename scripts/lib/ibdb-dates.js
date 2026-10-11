@@ -295,7 +295,11 @@ function extractCreativeTeamFromText(text) {
     [/(?:play|drama|comedy|farce|thriller|mystery|revue) by\s+([^;:\n]+)/gi, 'Playwright'],
     [/(?:^|;\s*)By\s+([A-Z][^;:\n]+)/gm, 'Playwright'],
     [/Original Score by\s+([^;:\n]+)/gi, 'Original Score'],
-    [/Directed by\s+([^;:\n]+)/gi, 'Director'],
+    // Only a credit that STARTS with "Directed by": "Originally directed by
+    // Harold Prince" (Company 2021, Evita 2012) and "Movement directed by"
+    // made other people this production's director (BRO-5080: 15 of 19
+    // sampled two-director rows were wrong).
+    [/(?:^|[;\n]|[.)]\s)\s*Directed by\s+([^;:\n]+)/gi, 'Director'],
     [/Choreograph(?:ed|y) by\s+([^;:\n]+)/gi, 'Choreographer'],
     [/Book by\s+([^;:\n]+)/gi, 'Book'],
     [/Scenic Design by\s+([^;:\n]+)/gi, 'Scenic Design'],
