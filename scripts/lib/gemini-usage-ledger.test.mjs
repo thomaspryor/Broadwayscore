@@ -11,17 +11,17 @@ const L = require('./gemini-usage-ledger.js');
 test('a call records workflow, model, tokens and cost', () => {
   const usage = L.extractUsage({ usageMetadata: { promptTokenCount: 1000000, candidatesTokenCount: 100000, thoughtsTokenCount: 100000 } });
   assert.deepEqual(usage, { inputTokens: 1000000, outputTokens: 200000 });
-  const agg = new Map([['gemini-2.5-flash', { calls: 1, unknownCalls: 0, inputTokens: 1000000, outputTokens: 200000 }]]);
+  const agg = new Map([['gemini-2.5-pro', { calls: 1, unknownCalls: 0, inputTokens: 1000000, outputTokens: 200000 }]]);
   const [row] = L.buildRows(agg, { workflow: 'enrich-reviews', script: 'x.js', now: new Date('2026-10-11T00:00:00Z') });
   assert.equal(row.workflow, 'enrich-reviews');
-  assert.equal(row.model, 'gemini-2.5-flash');
+  assert.equal(row.model, 'gemini-2.5-pro');
   assert.equal(row.inputTokens, 1000000);
-  assert.equal(row.costUsd, 0.8); // 0.30 + 0.2*2.50
+  assert.equal(row.costUsd, 3.25); // 1.25 + 0.2*10
 });
 
 test('missing usageMetadata records tokens as unknown, not zero', () => {
   assert.equal(L.extractUsage({}), null);
-  const agg = new Map([['gemini-2.5-flash', { calls: 2, unknownCalls: 2, inputTokens: 0, outputTokens: 0 }]]);
+  const agg = new Map([['gemini-2.5-pro', { calls: 2, unknownCalls: 2, inputTokens: 0, outputTokens: 0 }]]);
   const [row] = L.buildRows(agg, { workflow: 'w', script: 's' });
   assert.equal(row.inputTokens, null);
   assert.equal(row.outputTokens, null);
@@ -40,7 +40,7 @@ test('install() observes a Gemini fetch without altering the response, and flush
   const body = { candidates: [], usageMetadata: { promptTokenCount: 10, candidatesTokenCount: 5 } };
   globalThis.fetch = async () => new Response(JSON.stringify(body), { status: 200, headers: { 'content-type': 'application/json' } });
   L.install();
-  const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=k');
+  const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key=k');
   assert.deepEqual(await res.json(), body); // caller still reads its own body
   const rows = L.flush();
   assert.equal(rows.length, 1);
@@ -55,7 +55,7 @@ test('non-Gemini URLs and clone-less mock responses pass through untouched', asy
   globalThis.fetch = async () => plain;
   L.install();
   assert.equal(await fetch('https://example.com/x'), plain);
-  assert.equal(await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'), plain);
-  assert.equal(await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:batchGenerateContent'), plain);
+  assert.equal(await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent'), plain);
+  assert.equal(await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:batchGenerateContent'), plain);
   assert.deepEqual(L.flush(), []);
 });
