@@ -14,6 +14,7 @@
  */
 
 const https = require('https');
+require('./gemini-usage-ledger').install(); // BRO-5043: record-only Gemini usage ledger
 const crypto = require('crypto');
 const { GEMINI_FLASH, GPT4O_MINI, CLAUDE_HAIKU, CLAUDE_SONNET } = require('./models');
 const { foldDiacritics } = require('./title-match');

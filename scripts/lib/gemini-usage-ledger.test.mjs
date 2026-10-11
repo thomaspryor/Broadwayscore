@@ -38,14 +38,24 @@ test('install() observes a Gemini fetch without altering the response, and flush
   const p = path.join(os.tmpdir(), `gul-${process.pid}.jsonl`);
   process.env.GEMINI_USAGE_LEDGER_PATH = p;
   const body = { candidates: [], usageMetadata: { promptTokenCount: 10, candidatesTokenCount: 5 } };
-  globalThis.fetch = async () => new Response(JSON.stringify(body), { status: 200 });
+  globalThis.fetch = async () => new Response(JSON.stringify(body), { status: 200, headers: { 'content-type': 'application/json' } });
   L.install();
   const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=k');
   assert.deepEqual(await res.json(), body); // caller still reads its own body
-  await new Promise((r) => setTimeout(r, 20));
   const rows = L.flush();
   assert.equal(rows.length, 1);
   assert.equal(rows[0].inputTokens, 10);
   assert.equal(JSON.parse(fs.readFileSync(p, 'utf8').trim()).outputTokens, 5);
   fs.unlinkSync(p);
+});
+
+test('non-Gemini URLs and clone-less mock responses pass through untouched', async () => {
+  const plain = { ok: true, json: async () => ({}) };
+  globalThis[Symbol.for('bsc.geminiUsage')] = false;
+  globalThis.fetch = async () => plain;
+  L.install();
+  assert.equal(await fetch('https://example.com/x'), plain);
+  assert.equal(await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'), plain);
+  assert.equal(await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:batchGenerateContent'), plain);
+  assert.deepEqual(L.flush(), []);
 });

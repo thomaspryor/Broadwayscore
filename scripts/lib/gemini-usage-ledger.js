@@ -9,8 +9,10 @@
  * never touched). Calls are aggregated in memory per (model) and flushed as ONE
  * row per model at process exit, so ~100 callers do not write thousands of
  * lines a day. Rows go to data/audit/gemini-usage-ledger.jsonl (merge=union,
- * committed by the commit-scraper-spend-ledger composite action) and a
- * `[Gemini Usage]` stdout line so Actions logs hold them even if the push loses.
+ * committed by the commit-scraper-spend-ledger composite action). Prints
+ * nothing (callers parse stdout) and never records the URL (it carries ?key=).
+ * Coverage: processes that load a shared Gemini lib or call install(); batch
+ * operations are not observed here (usage sits per entry in the operation).
  *
  * A response without usageMetadata counts the call but leaves tokens unknown
  * (null), never zero: zero would read as "free".
@@ -83,6 +85,7 @@ function buildRows(agg, { now = new Date(), workflow, script } = {}) {
     rows.push({
       ts: now.toISOString(),
       workflow: workflow || process.env.GITHUB_WORKFLOW || 'local',
+      runId: process.env.GITHUB_RUN_ID || null,
       script: script || _scriptName(),
       model,
       calls: a.calls,
@@ -108,7 +111,6 @@ function flush() {
     if (process.env.GEMINI_USAGE_DISABLED === '1' || _agg.size === 0) { _agg.clear(); return []; }
     const rows = buildRows(_agg);
     _agg.clear();
-    for (const r of rows) console.log(`[Gemini Usage] ${JSON.stringify(r)}`);
     const p = _ledgerPath();
     fs.mkdirSync(path.dirname(p), { recursive: true });
     fs.appendFileSync(p, rows.map((r) => JSON.stringify(r)).join('\n') + '\n');
@@ -116,23 +118,27 @@ function flush() {
   } catch { return []; }
 }
 
-let _installed = false;
+const INSTALLED = Symbol.for('bsc.geminiUsage');
 function install() {
-  if (_installed || typeof globalThis.fetch !== 'function') return;
-  _installed = true;
+  if (globalThis[INSTALLED] || typeof globalThis.fetch !== 'function') return;
+  globalThis[INSTALLED] = true;
   const orig = globalThis.fetch;
-  globalThis.fetch = function geminiObservedFetch(input, init) {
-    const p = orig.apply(this, arguments);
-    let url = '';
-    try { url = typeof input === 'string' ? input : (input && (input.url || String(input))) || ''; } catch { /* ignore */ }
-    if (!url.includes(GEMINI_HOST)) return p;
-    // Observe on a side chain; the caller's promise is returned untouched.
-    p.then((res) => {
-      if (!res || !res.ok || typeof res.clone !== 'function') return;
+  globalThis.fetch = async function geminiObservedFetch(input, init) {
+    const res = await orig.apply(this, arguments);
+    try {
+      let url = '';
+      try { url = typeof input === 'string' ? input : (input && (input.url || String(input))) || ''; } catch { /* ignore */ }
+      // Only plain non-streaming generateContent; batch and SSE are skipped.
+      if (!url.includes(GEMINI_HOST) || !/:generateContent(\?|$)/.test(url)) return res;
+      if (!res || !res.ok || typeof res.clone !== 'function') return res;
+      const ct = res.headers && typeof res.headers.get === 'function' ? String(res.headers.get('content-type') || '') : 'application/json';
+      if (!ct.includes('json')) return res;
       const model = modelFromUrl(url);
-      return res.clone().json().then((j) => recordGeminiUsage({ model, usage: extractUsage(j) }), () => recordGeminiUsage({ model, usage: null }));
-    }).catch(() => { /* record only */ });
-    return p;
+      let usage = null;
+      try { usage = extractUsage(await res.clone().json()); } catch { /* unknown */ }
+      recordGeminiUsage({ model, usage });
+    } catch { /* record only */ }
+    return res; // the caller always gets the original response
   };
   process.once('exit', flush);
 }

@@ -20,6 +20,7 @@
  */
 
 const https = require('https');
+require('./gemini-usage-ledger').install(); // BRO-5043: record-only Gemini usage ledger
 const path = require('path');
 const fs = require('fs');
 const { normalizeLlmResult: sharedNormalizeLlmResult, LETTER_GRADES } = require('./score-parsers');
