@@ -535,7 +535,9 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
 
   const category = classifyShow(show);
   // Shadow only (BRO-5093, opts.costBasis): a breakeven or all-in figure is
-  // turned back into the fixed nut the rest of the model expects.
+  // turned back into the fixed nut the rest of the model expects. The
+  // reserve and tax-credit estimate follow it (they are weeks of the real
+  // nut), and costSplit is skipped so the share is not taken off twice.
   const basisNut = opts.costBasis && commercial.weeklyRunningCost ? fixedNutFromBasis(commercial, commercial.weeklyRunningCost, getBaseVariableRate(category), THEATER_DEAL, weeklyUncut) : null;
   const weeklyNut = basisNut ? basisNut.nut : commercial.weeklyRunningCost || estimateWeeklyNut(show, commercial);
   // opts.costSourcedOnly (shadow, BRO-5073): a weekly cost with no cited
@@ -551,7 +553,7 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
 
   // Shadow only (BRO-5073, opts.costSplit): fixed part of the cost and a
   // larger gross-linked rate. The reserve and cap stay on the reported cost.
-  const split = opts.costSplit ? splitCosts(commercial, category, weeklyNut, getBaseVariableRate(category), THEATER_DEAL.pctOfGross) : null;
+  const split = opts.costSplit && !basisNut ? splitCosts(commercial, category, weeklyNut, getBaseVariableRate(category), THEATER_DEAL.pctOfGross) : null;
   const baseVarRate = split ? split.varRate : getBaseVariableRate(category);
   const runNut = split ? split.fixedNut : weeklyNut;
   const costPath = opts.stepSmall || opts.stepLate || opts.costGrowth || opts.varBand || opts.varOverage || opts.varBandMusicals || opts.varOverageMusicals || opts.varBandMusicalsRamp
@@ -1080,7 +1082,7 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}
   const category = classifyShow(show);
   const basisNut = opts.costBasis && commercial.weeklyRunningCost ? fixedNutFromBasis(commercial, commercial.weeklyRunningCost, getBaseVariableRate(category), THEATER_DEAL) : null; // shadow, BRO-5093
   const weeklyNut = basisNut ? basisNut.nut : commercial.weeklyRunningCost || estimateWeeklyNut(show, commercial, { eraAdjust: false });
-  const split = opts.costSplit ? splitCosts(commercial, category, weeklyNut, getBaseVariableRate(category), THEATER_DEAL.pctOfGross) : null; // shadow, BRO-5073
+  const split = opts.costSplit && !basisNut ? splitCosts(commercial, category, weeklyNut, getBaseVariableRate(category), THEATER_DEAL.pctOfGross) : null; // shadow, BRO-5073
   const baseVarRate = split ? split.varRate : getBaseVariableRate(category);
   const runNut = split ? split.fixedNut : weeklyNut;
 

@@ -350,7 +350,7 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
   // (BRO-5091): ground truth, the designation rule and the display guard read
   // the range first, so the stale share would outrank the recoupment.
   const est = show.estimatedRecoupmentPct;
-  if (show.recouped === true && Array.isArray(est) && est.every((v) => typeof v === 'number') && Math.max(...est) < 100) {
+  if (show.recouped === true && Array.isArray(est) && est.length === 2 && est.every((v) => typeof v === 'number') && Math.max(...est) < 100) {
     out.push(`commercial.json: "${showId}" is recouped but carries estimatedRecoupmentPct [${est.join(', ')}] (an earlier share returned; ground truth reads it before the recoupment, so remove it)`);
   }
   if (isPrematureSilenceLabel(show, ctx.showRecord)) {
