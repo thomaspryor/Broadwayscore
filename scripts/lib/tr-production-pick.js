@@ -85,4 +85,4 @@ function pickTrProduction(titleMatches, show, opts) {
   return pool[0];
 }
 
-module.exports = { pickTrProduction, archiveMonth, pressNightWindow };
+module.exports = { pickTrProduction, archiveMonth, monthIndex, pressNightWindow };
