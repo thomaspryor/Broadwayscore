@@ -95,6 +95,8 @@ const PREVIEW_DEFAULTS = {
  *  Industry standard: 3-4 weeks for open-ended, 1.5 for limited runs. */
 const RESERVE_FUND_WEEKS = 3;
 const RESERVE_LAG_WEEKS = 8; // shadow, BRO-5073 opts.reserveLag
+// opts.reserveIfStated: "capitalization excludes the reserve", "plus a $1M reserve".
+const CAP_EXCLUDES_RESERVE = /\b(?:exclud\w*|not\s+includ\w*|plus|in\s+addition\s+to)\b[^.;]{0,40}\breserves?\b/i;
 
 /** Tax credit lag in weeks from opening date */
 const TAX_CREDIT_LAG_WEEKS = 78; // ~18 months
@@ -559,10 +561,16 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
     (new Date(show.closingDate) - new Date(show.openingDate)) < 200 * 86400000;
   // Shadow (BRO-5073, opts.reserveLag): producers hold more than 3 weeks
   // (bonds, working capital) and announce a few weeks after the books close.
-  const reserveWeeks = isLimitedRun ? 1.5 : (opts.reserveLag ? RESERVE_LAG_WEEKS : RESERVE_FUND_WEEKS);
+  // Shadow (BRO-5073): a Broadway capitalization usually already budgets the
+  // reserve and bonds, so adding one on top may double count. opts.noReserve
+  // drops it; opts.reserveIfStated keeps it only when the record says the
+  // capitalization excludes the reserve.
+  const reserveExcluded = !opts.reserveIfStated || CAP_EXCLUDES_RESERVE.test(`${commercial.capitalizationSource || ''} ${commercial.notes || ''}`);
+  const reserveWeeks = opts.noReserve || !reserveExcluded ? 0 : isLimitedRun ? 1.5 : (opts.reserveLag ? RESERVE_LAG_WEEKS : RESERVE_FUND_WEEKS);
   const reserveFund = weeklyNut * reserveWeeks;
-  // Effective cap can't go below zero (SVOG can't make cap negative)
-  const effectiveCap = Math.max(capitalization - svogGrant + reserveFund, reserveFund);
+  // Effective cap can't go below zero (SVOG can't make cap negative); with no
+  // reserve the floor is one week of nut, as for a closed run.
+  const effectiveCap = Math.max(capitalization - svogGrant + reserveFund, reserveFund || weeklyNut);
   // Tax credit timing: for closed shows, apply at closing (credit is eventual certainty).
   // For running shows, lag 18 months from opening.
   const isClosed = show.closingDate && new Date(show.closingDate) < now;
