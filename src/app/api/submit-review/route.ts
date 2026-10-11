@@ -214,6 +214,9 @@ export async function POST(req: NextRequest) {
     const criticName = ((formData.get('critic_name') as string) || '').trim();
     const notes = ((formData.get('notes') as string) || '').trim();
     const submitterEmail = ((formData.get('submitter_email') as string) || '').trim();
+    if (submitterEmail && !process.env.APPROVAL_HMAC_SECRET) {
+      console.error('submit-review: APPROVAL_HMAC_SECRET not set; submitter email dropped (BRO-4454)');
+    }
 
     const title = formatIssueTitle(reviewUrl, showName, outletName);
     const body = formatIssueBody(reviewUrl, showName, outletName, criticName, notes, submitterEmail);

@@ -108,6 +108,12 @@ function extractSubmitterEmail(issueBody, secret) {
   return candidate && isDeliverableEmail(candidate.trim()) ? candidate.trim() : null;
 }
 
+/** True when the body carries a sealed token (whether or not it decrypts). */
+function hasSealedContact(issueBody) {
+  const token = readSectionLine(issueBody, CONTACT_HEADING);
+  return token !== null && token.startsWith(TOKEN_PREFIX);
+}
+
 module.exports = {
   CONTACT_HEADING,
   LEGACY_EMAIL_HEADING,
@@ -118,23 +124,28 @@ module.exports = {
   decryptContact,
   formatContactSection,
   extractSubmitterEmail,
+  hasSealedContact,
 };
 
 // CLI for process-review-submission.yml:
 //   node scripts/lib/submitter-contact.js extract <issue-body-file>
-// Prints the address or nothing, always exits 0, and never prints an error
-// that could carry the token or the address.
+// Prints the address or nothing and never prints an error that could carry
+// the token or the address. Exit 0, except exit 3 when a sealed token is
+// present but does not decrypt (wrong/rotated APPROVAL_HMAC_SECRET or a
+// tampered body), so the workflow can warn instead of skipping silently.
 if (require.main === module) {
   const [cmd, file] = process.argv.slice(2);
   if (cmd !== 'extract' || !file) {
     process.stderr.write('usage: submitter-contact.js extract <issue-body-file>\n');
     process.exit(2);
   }
-  let email = null;
+  let body = '';
   try {
-    email = extractSubmitterEmail(fs.readFileSync(file, 'utf8'), process.env.APPROVAL_HMAC_SECRET);
+    body = fs.readFileSync(file, 'utf8');
   } catch {
-    email = null;
+    body = '';
   }
+  const email = extractSubmitterEmail(body, process.env.APPROVAL_HMAC_SECRET);
   if (email) process.stdout.write(email);
+  else if (hasSealedContact(body)) process.exit(3);
 }

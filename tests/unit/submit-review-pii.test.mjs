@@ -106,12 +106,16 @@ test('CLI prints the address only with the right secret and never errors loudly'
   assert.equal(ok.status, 0);
   assert.equal(ok.stdout, EMAIL);
   const wrong = spawnSync(process.execPath, [CLI, 'extract', file], { env: { ...process.env, APPROVAL_HMAC_SECRET: 'nope' }, encoding: 'utf8' });
-  assert.equal(wrong.status, 0);
+  assert.equal(wrong.status, 3, 'sealed but undecryptable is reported by exit code');
   assert.equal(wrong.stdout, '');
   assert.equal(wrong.stderr, '');
   const missing = spawnSync(process.execPath, [CLI, 'extract', path.join(dir, 'absent.txt')], { env: process.env, encoding: 'utf8' });
   assert.equal(missing.status, 0);
   assert.equal(missing.stdout + missing.stderr, '');
+  fs.writeFileSync(file, issueBody(contact.formatContactSection('', SECRET)));
+  const none = spawnSync(process.execPath, [CLI, 'extract', file], { env: { ...process.env, APPROVAL_HMAC_SECRET: SECRET }, encoding: 'utf8' });
+  assert.equal(none.status, 0, 'no email given is not an error');
+  assert.equal(none.stdout, '');
 });
 
 // Dry run of the real workflow notify steps: curl is a recorder on PATH, so
@@ -159,6 +163,7 @@ for (const name of ['Notify submitter - Approved', 'Notify submitter - Rejected'
     const { res, args } = runNotifyStep(name, issueBody(contact.formatContactSection(EMAIL, SECRET)), 'rotated');
     assert.equal(res.status, 0, res.stderr);
     assert.equal(args, null, 'curl not called');
+    assert.match(res.stdout, /::warning::Sealed submitter contact did not decrypt/);
     assert.match(res.stdout, /skipping notification/);
   });
 }
