@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-11T09:16:26.529Z",
+  "timestamp": "2026-10-11T09:37:21.026Z",
   "stats": {
-    "totalReviews": 55222,
-    "alreadyFlagged": 20135,
-    "dateGuardCatches": 267,
-    "directorMismatch": 1696,
+    "totalReviews": 55292,
+    "alreadyFlagged": 20152,
+    "dateGuardCatches": 266,
+    "directorMismatch": 1699,
     "tvFilmSignals": 1539,
     "londonSignals": 1896,
     "offBroadwaySignals": 505,
     "yearMismatch": 134,
-    "noPublishDate": 6447
+    "noPublishDate": 6482
   },
   "findings": [
     {
@@ -1788,6 +1788,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"simon mcburney\" from all-my-sons-2008"
+        }
+      ]
+    },
+    {
+      "showId": "all-my-sons-west-end-2019",
+      "file": "amny--matt-windman.json",
+      "publishDate": null,
+      "url": "/people/Matt-Windman/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jack o'brien\" from all-my-sons-2019"
         }
       ]
     },
@@ -27736,6 +27749,33 @@
       ]
     },
     {
+      "showId": "on-your-feet-west-end-2019",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": null,
+      "publishDate": "2019-06-27T19:45:03+00:00",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/feet-review-london-coliseum-should-sidestep-disposable-gloria/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from on-your-feet-2015"
+        }
+      ]
+    },
+    {
+      "showId": "on-your-feet-west-end-2019",
+      "file": "thestage--tim-bano.json",
+      "publishDate": "2019-06-27T19:45:03+00:00",
+      "url": "https://www.thestage.co.uk/reviews/2019/on-your-feet-gloria-estefan-review-at-london-coliseum/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from on-your-feet-2015"
+        }
+      ]
+    },
+    {
       "showId": "once-on-this-island-2017",
       "file": "deadline--jeremy-gerard.json",
       "score": 91,
@@ -44206,20 +44246,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1547d before show (2022-03-31 vs 2026-06-25)"
-        }
-      ]
-    },
-    {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 82,
-      "publishDate": "2023-02-07",
-      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
         }
       ]
     },
