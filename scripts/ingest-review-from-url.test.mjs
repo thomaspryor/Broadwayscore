@@ -36,6 +36,7 @@ import { createRequire } from 'node:module';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const { isStalePublishDate } = require('./lib/stale-publish-date.js');
@@ -281,7 +282,7 @@ describe('BRO-3142: real review vs same-outlet flagged preview at the Unknown-cr
 // before any fetch tier runs, and must not write a review file.
 describe('BRO-4478: unresolvable /goto redirect URL is refused before fetch', () => {
   const { spawnSync } = require('node:child_process');
-  const script = path.join(path.dirname(new URL(import.meta.url).pathname), 'ingest-review-from-url.js');
+  const script = path.join(path.dirname(fileURLToPath(import.meta.url)), 'ingest-review-from-url.js');
   const showId = JSON.parse(fs.readFileSync(path.join(path.dirname(script), '..', 'data', 'shows.json'), 'utf8')).shows[0].id;
   for (const url of [
     '/goto?url=CAESZwHrOzAVCX-UdB0BPVpxILU1p--M04NhSSNmWGF9CXhgwdpEIpkWRA',

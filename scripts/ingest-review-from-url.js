@@ -164,7 +164,7 @@ if (!show) {
   // and the run exited "fetch failed" with no actionable message. The writer
   // (BRO-4458) already refuses to file such a URL, so stop before fetching.
   if (isUnresolvableRedirectUrl(url)) {
-    console.error(`Refusing to ingest — ${url.slice(0, 80)} is an unresolvable redirect/cache URL, not an article. Find the real article URL (search the outlet) and re-run with it.`);
+    console.error(`Refusing to ingest — ${url.slice(0, 80)} is an unresolvable redirect/cache/non-http URL, not an article. Find the real article URL (search the outlet) and re-run with it.`);
     process.exit(1);
   }
 
