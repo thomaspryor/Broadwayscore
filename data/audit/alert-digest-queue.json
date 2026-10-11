@@ -1537,15 +1537,98 @@
     "queuedAt": "2026-10-11T07:25:54.188Z"
   },
   {
+    "conditionKey": "land:land/bro-5040-session-workers",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5040-session-workers",
+    "description": "land.yml did not land land/bro-5040-session-workers: the unit-tests-node gate went red at 5079642f4a. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38121797256",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5040-session-workers"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "5079642f4a97471f1574815d4cb54a7d0e62f240"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38121797256"
+      }
+    ],
+    "queuedAt": "2026-10-11T08:08:10.991Z"
+  },
+  {
     "conditionKey": "test-yml:data-validation-red",
     "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Audit circular duplicateOf pairs",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38121877309",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38124045431",
     "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-10-11T07:39:45.221Z"
+    "queuedAt": "2026-10-11T08:19:41.567Z"
+  },
+  {
+    "conditionKey": "llm-scoring:cost-breach",
+    "title": "LLM scoring spend over budget",
+    "description": "GitHub run 38122109806: cumulative LLM scoring cost $6.70 exceeds the $6.00 alarm line (scripts/config/provider-spend-thresholds.json's llmScoringRunUsd). Cost basis: cost.ts's costBreakdown() applied to Claude/OpenAI/Gemini token usage across this run's index.ts AND comparative-rescore.ts invocations (BRO-3392). This is an alarm, not an enforcement cap — see BRO-3381 for why a --max-cost default was rejected.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "GitHub run",
+        "value": "38122109806"
+      },
+      {
+        "name": "Cost",
+        "value": "$6.70"
+      },
+      {
+        "name": "Threshold",
+        "value": "$6.00"
+      }
+    ],
+    "queuedAt": "2026-10-11T08:13:52.052Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5007-v8-map-compare",
+    "title": "Landing blocked: unit-tests-tsx red on land/bro-5007-v8-map-compare",
+    "description": "land.yml did not land land/bro-5007-v8-map-compare: the unit-tests-tsx gate went red at d392fe96d8. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38122261074",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5007-v8-map-compare"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-tsx"
+      },
+      {
+        "name": "tip",
+        "value": "d392fe96d8bcfa2ac79c054dcc0543a12b780803"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38122261074"
+      }
+    ],
+    "queuedAt": "2026-10-11T08:16:17.211Z"
   }
 ]

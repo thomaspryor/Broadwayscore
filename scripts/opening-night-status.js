@@ -580,7 +580,11 @@ async function sendStatusNotification(data) {
     severity,
     fields,
     url: 'https://broadwayscorecard.com',
-    email: hasOverdue || hasFailure, // Email only on problems
+    // Discord only. The status email paged [CRITICAL] on every run while any
+    // show had an overdue stamp (already emailed once by the broadcast
+    // workflow) and duplicated the daily Opening Digest, which is the email
+    // for this (owner 2026-10-11).
+    email: false,
   });
 
   console.log(`Discord notification sent (severity: ${severity})`);

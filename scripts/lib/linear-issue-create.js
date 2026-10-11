@@ -36,7 +36,7 @@ const linear = require('./linear-client');
 const { LinearClient } = require('./linear');
 const { resolveDisposition } = require('./card-disposition');
 const { checkIntake, recordCreated, ENFORCE } = require('./intake-breaker');
-const { TITLE_PRIORITY_RE } = require('./linear-watchdog-source');
+const { TITLE_PRIORITY_TIER_RE } = require('./linear-watchdog-source');
 const { stampModelHint } = require('./bsc-next-model');
 
 const USAGE_LIMIT_MESSAGE =
@@ -108,19 +108,40 @@ const PARKED_MAX_PRIORITY = 3;
 // filer's ORIGINAL High intent (friction-fix-eligibility.js) read it back.
 const PARKED_CLAMP_MARKER = 'Priority: filed at Medium because it is parked.';
 
+// Every new card gets a priority field (2026-10-11): 341 of 993 open cards had
+// none, and the cloud worker picker (cloud-worker-pick.js skipReason) reads
+// only the field, so a dispatched "P1: ..." card with it unset was invisible
+// to the workers. An unset priority takes the title's P0-P3 prefix, else Medium.
+const DEFAULT_CREATE_PRIORITY = 3;
+const TIER_TO_LINEAR_PRIORITY = Object.freeze({ 0: 1, 1: 2, 2: 3, 3: 4 });
+
+/** PURE. Linear priority (1-4) from a "P0:".."P3:" title prefix, or null. */
+function priorityFromTitle(title) {
+  const m = TITLE_PRIORITY_TIER_RE.exec(String(title || ''));
+  return m ? TIER_TO_LINEAR_PRIORITY[m[1]] : null;
+}
+
 /**
- * PURE. The priority a new issue is actually filed at. Dispatched issues keep
- * whatever the caller asked for; parked issues are capped at Medium.
- * @returns {{priority: (number|undefined), clamped: boolean}}
+ * PURE. The priority a new issue is actually filed at.
+ *   - An explicit caller priority (1-4) wins; parked issues are capped at
+ *     Medium (BRO-4487).
+ *   - Unset (undefined/null/''/0, Linear's "No priority", or non-numeric)
+ *     takes the title's P0-P3 prefix, else Medium. A parked P0:/P1: title is
+ *     still clamped to Medium.
+ * @returns {{priority: number, clamped: boolean}}
  */
 function effectiveCreatePriority({ priority, mode, title }) {
-  if (mode !== 'park') return { priority, clamped: false };
   const n = priority === undefined || priority === null || priority === '' ? NaN : Number(priority);
-  const urgentOrHigh = n === 1 || n === 2;
   const explicitlyRanked = Number.isFinite(n) && n > 0;
-  const titlePromotes = !explicitlyRanked && TITLE_PRIORITY_RE.test(String(title || ''));
-  if (urgentOrHigh || titlePromotes) return { priority: PARKED_MAX_PRIORITY, clamped: true };
-  return { priority, clamped: false };
+  if (explicitlyRanked) {
+    const urgentOrHigh = n === 1 || n === 2;
+    if (mode === 'park' && urgentOrHigh) return { priority: PARKED_MAX_PRIORITY, clamped: true };
+    return { priority: n, clamped: false };
+  }
+  const fromTitle = priorityFromTitle(title);
+  if (fromTitle === null) return { priority: DEFAULT_CREATE_PRIORITY, clamped: false };
+  if (mode === 'park' && fromTitle < PARKED_MAX_PRIORITY) return { priority: PARKED_MAX_PRIORITY, clamped: true };
+  return { priority: fromTitle, clamped: false };
 }
 
 /**
@@ -298,5 +319,5 @@ async function reuseOpenTwin({ title, body, client, mode = 'park' }) {
 
 module.exports = {
   createLinearIssue, reuseOpenTwin, defaultFindOpenIssueByTitle, twinServes, pickStateForMode, isUsageLimitExceeded, USAGE_LIMIT_MESSAGE,
-  effectiveCreatePriority, PARKED_MAX_PRIORITY, PARKED_CLAMP_MARKER,
+  effectiveCreatePriority, priorityFromTitle, PARKED_MAX_PRIORITY, PARKED_CLAMP_MARKER, DEFAULT_CREATE_PRIORITY,
 };

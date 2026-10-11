@@ -1,32 +1,21 @@
 {
-  "updatedAt": "2026-10-11T07:17:59.672Z",
-  "processed": 683,
-  "failed": 369,
-  "successRate": "64.9%",
+  "updatedAt": "2026-10-11T07:56:14.223Z",
+  "processed": 736,
+  "failed": 383,
+  "successRate": "65.8%",
   "tierBreakdown": {
-    "playwright": 444,
+    "playwright": 481,
     "amp": 12,
-    "browserbase": 8,
+    "browserbase": 10,
     "directCookies": 0,
-    "scrapingdog": 78,
-    "scrapingbee": 78,
+    "scrapingdog": 86,
+    "scrapingbee": 83,
     "brightdata": 16,
     "archiveToday": 0,
-    "archive": 100
+    "archive": 103
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-10-11T04:03:31.948Z",
-      "event": "bb-session",
-      "session": "a9adb6eb",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
-    },
-    {
-      "t": "2026-10-11T04:03:32.983Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
     {
       "t": "2026-10-11T04:03:52.747Z",
       "event": "bb-session",
@@ -125,6 +114,17 @@
     },
     {
       "t": "2026-10-11T06:53:29.570Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-11T07:43:54.595Z",
+      "event": "bb-session",
+      "session": "b139ad84",
+      "url": "https://www.nytimes.com/2023/10/26/theater/lyonesse-review-lily-james-kristin-sc"
+    },
+    {
+      "t": "2026-10-11T07:43:54.932Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

@@ -84,7 +84,7 @@ test('createLinearIssue: rejects immediately on bad disposition, never calls the
 
 // BRO-4487: a parked issue is never filed as Urgent/High. Nothing dispatches a
 // PARKED: card, and CLAUDE.md requires P0/P1 to be dispatched at creation.
-const { effectiveCreatePriority, PARKED_MAX_PRIORITY } = require('./linear-issue-create.js');
+const { effectiveCreatePriority, priorityFromTitle, PARKED_MAX_PRIORITY, DEFAULT_CREATE_PRIORITY } = require('./linear-issue-create.js');
 
 test('effectiveCreatePriority: parked High and Urgent are clamped to Medium', () => {
   assert.equal(PARKED_MAX_PRIORITY, 3);
@@ -105,10 +105,69 @@ test('effectiveCreatePriority: an unset priority with a P0:/P1: title prefix is 
   assert.deepEqual(effectiveCreatePriority({ priority: 0, mode: 'park', title: 'P0: x' }), { priority: 3, clamped: true });
 });
 
-test('effectiveCreatePriority: parked Medium/Low and unranked untitled issues are left alone', () => {
+test('effectiveCreatePriority: parked Medium/Low issues are left alone', () => {
   assert.deepEqual(effectiveCreatePriority({ priority: 3, mode: 'park', title: 'P1: x' }), { priority: 3, clamped: false });
   assert.deepEqual(effectiveCreatePriority({ priority: 4, mode: 'park', title: 'x' }), { priority: 4, clamped: false });
-  assert.deepEqual(effectiveCreatePriority({ priority: undefined, mode: 'park', title: 'x' }), { priority: undefined, clamped: false });
+});
+
+test('effectiveCreatePriority: a parked card with no priority and no prefix is filed at Medium, not No priority', () => {
+  assert.deepEqual(effectiveCreatePriority({ priority: undefined, mode: 'park', title: 'x' }), { priority: 3, clamped: false });
+  assert.deepEqual(effectiveCreatePriority({ priority: undefined, mode: 'park', title: 'P2: x' }), { priority: 3, clamped: false });
+  assert.deepEqual(effectiveCreatePriority({ priority: undefined, mode: 'park', title: 'P3: x' }), { priority: 4, clamped: false });
+});
+
+// 2026-10-11: 341 of 993 open cards had no priority; the cloud worker reads
+// only the field, so an unset dispatched "P1: ..." card was never picked.
+test('effectiveCreatePriority: an unset priority takes the P0-P3 title prefix', () => {
+  const cases = [['P0: x', 1], ['P1: x', 2], ['P2: x', 3], ['P3: x', 4], ['  P1 fix it', 2]];
+  for (const [title, want] of cases) {
+    assert.deepEqual(effectiveCreatePriority({ priority: undefined, mode: 'dispatch', title }), { priority: want, clamped: false }, title);
+  }
+  assert.deepEqual(effectiveCreatePriority({ priority: 0, mode: 'dispatch', title: 'P1: x' }), { priority: 2, clamped: false }, '0 is Linear "No priority", i.e. unset');
+  assert.deepEqual(effectiveCreatePriority({ priority: null, mode: 'dispatch', title: 'P0: x' }), { priority: 1, clamped: false });
+  assert.equal(priorityFromTitle('P10: x'), null, 'P10 is not a P1 prefix');
+  assert.equal(priorityFromTitle('Fix P1: x'), null, 'prefix only, never mid-title');
+  assert.equal(priorityFromTitle('P4: x'), null);
+});
+
+test('effectiveCreatePriority: no priority and no prefix defaults to Medium', () => {
+  assert.equal(DEFAULT_CREATE_PRIORITY, 3);
+  for (const priority of [undefined, null, '', 0, 'abc']) {
+    assert.deepEqual(effectiveCreatePriority({ priority, mode: 'dispatch', title: 'Fix the thing' }), { priority: 3, clamped: false }, String(priority));
+  }
+  assert.deepEqual(effectiveCreatePriority({ priority: undefined, mode: 'dispatch', title: '' }), { priority: 3, clamped: false });
+});
+
+test('effectiveCreatePriority: an explicit caller priority wins over the title prefix', () => {
+  assert.deepEqual(effectiveCreatePriority({ priority: 4, mode: 'dispatch', title: 'P0: x' }), { priority: 4, clamped: false });
+  assert.deepEqual(effectiveCreatePriority({ priority: 1, mode: 'dispatch', title: 'P3: x' }), { priority: 1, clamped: false });
+  assert.deepEqual(effectiveCreatePriority({ priority: '2', mode: 'dispatch', title: 'x' }), { priority: 2, clamped: false });
+  assert.deepEqual(effectiveCreatePriority({ priority: 4, mode: 'park', title: 'P0: x' }), { priority: 4, clamped: false }, 'parked explicit Low stays Low');
+});
+
+test('createLinearIssue: a dispatched "P1:" card with no priority reaches the Linear client at High', async () => {
+  const fs = require('fs');
+  const linearClient = require('./linear-client.js');
+  const { LEDGER_PATH } = require('./intake-breaker.js');
+  const title = `P1: card-default-priority-test-${process.pid}-${Date.now()}`;
+  const realGetTeam = linearClient.getTeam;
+  linearClient.getTeam = async () => ({ id: 'team-1', states: { nodes: STATES } });
+  const sent = [];
+  try {
+    const client = { createIssue: async (input) => { sent.push(input); return { identifier: 'BRO-0', id: 'i' }; } };
+    await createLinearIssue({ title, description: 'body', dispatch: true, client });
+    await createLinearIssue({ title: `${title} no-prefix`.slice(4), description: 'body', dispatch: true, client });
+  } finally {
+    linearClient.getTeam = realGetTeam;
+    if (fs.existsSync(LEDGER_PATH)) {
+      const tag = title.slice(4);
+      const kept = fs.readFileSync(LEDGER_PATH, 'utf8').split('\n').filter((line) => !line.includes(tag));
+      fs.writeFileSync(LEDGER_PATH, kept.join('\n'));
+    }
+  }
+  assert.equal(sent[0].priority, 2);
+  assert.doesNotMatch(sent[0].description, /PARKED/);
+  assert.equal(sent[1].priority, 3, 'no prefix, no priority: Medium');
 });
 
 test('createLinearIssue: a parked High issue reaches the Linear client at Medium with a note', async () => {

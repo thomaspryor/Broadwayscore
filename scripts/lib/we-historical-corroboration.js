@@ -28,6 +28,11 @@ const { isWestEndVenue, normalizeVenueName } = require('./venue-classification')
 const { isDateInSeason } = require('./we-seasons');
 
 const DEFAULT_DAY_TOLERANCE = 14;
+
+// discoverySource values promote-historical-we.js writes: WOS-listing-led
+// rows, and review-led rows dated from Theatre Record (BRO-5031). Revert and
+// the season audit must cover both.
+const WE_HISTORICAL_DISCOVERY_SOURCES = new Set(['we-historical:wos', 'we-historical:tr']);
 const MIN_RUN_DAYS = 14;
 
 // WOS genre slugs that are not plays or musicals. Opera/dance at the
@@ -140,6 +145,7 @@ function decideWeHistoricalPromotion(candidate, opts = {}) {
 }
 
 module.exports = {
+  WE_HISTORICAL_DISCOVERY_SOURCES,
   MIN_RUN_DAYS,
   NON_THEATRE_GENRES,
   venueFamily,
