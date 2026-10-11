@@ -92,7 +92,13 @@ function isAllowed(showId, url) {
 
 test('classify-market-routing parity vs committed baseline (95 samples)', () => {
   const baseline = loadBaseline();
-  const shows = loadShows();
+  // Parity checks the routing code, not later catalog growth: a show discovered
+  // after the baseline was generated is a new sibling the baseline never saw, so
+  // it would flip decisions with no code change (BRO-5034: the WE 2018-19
+  // historical promotion added hadestown-west-end-2018 and broke main).
+  const baselineAt = Date.parse(baseline.generatedAt);
+  const shows = loadShows().filter(s =>
+    !s.discoveredAt || !(Date.parse(s.discoveredAt) > baselineAt));
   const showById = new Map(shows.map(s => [s.id, s]));
   const siblingIndex = buildSiblingIndex(shows);
 
