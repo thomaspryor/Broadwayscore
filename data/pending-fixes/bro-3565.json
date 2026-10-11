@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-3565",
   "planId": "1f88ef0b-53b8-4c96-bfd1-65d8eb8733c4",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-11T13:11:04.153Z",
   "submitter": {
     "name": null,
@@ -145,5 +145,13 @@
         "description": "Replace the 1946 Broadway cast with the 2026 Noel Coward Theatre cast (BRO-3565)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-11T14:00:04.046Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for cyrano-de-bergerac-west-end-2026"
+    }
+  ]
 }
