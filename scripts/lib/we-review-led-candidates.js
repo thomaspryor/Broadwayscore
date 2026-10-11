@@ -30,6 +30,7 @@
  * and runs locally against that file.
  */
 
+// venue-write-guard-ok: venues here are audit-log and candidate fields; shows.json gets the venue only through sanitizeVenueForWrite in promote-historical-we.js buildShowEntry.
 const { titlesMatch } = require('./title-normalization');
 const { normalizeTitle } = require('./title-match');
 const { venuesMatch } = require('./deduplication');

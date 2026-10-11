@@ -23,6 +23,7 @@
  *   node scripts/resolve-we-unlisted-tr.js --seasons=2019-2020 --dry-run   # list lookups, no TR
  */
 
+// venue-write-guard-ok: TR search-result venues go only into the public audit lookup file, never shows.json.
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
