@@ -156,6 +156,8 @@ const EXPECTED_REJECTION_REASONS = [
   // The URL is a section/index page, not an article (BRO-4596,
   // review-file-writer.js listing-page guard). Refusing it is permanent.
   'listing-page-url',
+  // BRO-4458: Google /goto redirect or cache/AMP wrapper, no fetchable article.
+  'unresolvable-redirect-url',
   // A caller's onMerge hook aborted the merge (review-file-writer.js:752).
   // The caller decided not to write; that is its prerogative, not a data
   // disagreement. Lower-cased here because classifyIngestSkip lower-cases the
@@ -293,6 +295,9 @@ function describeSkip(showId, url, { reason, detail }) {
   }
   if (reason === 'listing-page-url') {
     return `${showId}: ${url} is a section or index page, not an article, so it was refused. Expected rejection: find the outlet's own article URL for this review and ingest that instead.`;
+  }
+  if (reason === 'unresolvable-redirect-url') {
+    return `${showId}: ${url} is a Google redirect/cache wrapper, not the article, so it was refused. Expected rejection: find the outlet's real article URL and ingest that instead.`;
   }
   if (reason === 'onmerge-aborted') {
     return `${showId}: ${url} — the calling script's onMerge hook aborted the write. Expected rejection: the caller decided not to merge, no action needed here.`;
