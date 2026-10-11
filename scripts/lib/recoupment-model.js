@@ -349,6 +349,31 @@ function costPathFactor(weekNumber, path) {
 }
 
 /**
+ * Shadow variable-cost shape (BRO-5073, --opt=varBand|varOverage). Live
+ * deducts a flat ~11% of gross plus any theater overage. u/Boring_Waltz_9545's
+ * weekly posts deduct more as gross rises against cost: about 12% of gross
+ * below 0.9x cost, about 23.5% at 1.5x and up (inference, so shadow only).
+ *   varBand     total deductions ramp linearly from VAR_BAND.low at 0.9x
+ *               cost to VAR_BAND.high at 1.5x; the extra over live is added
+ *   varOverage  the same deduction at 1.5x, but charged only on gross above
+ *               the weekly cost (theater and royalty steps on overages):
+ *               OVERAGE_RATE = (0.235 - 0.11) x 1.5 / 0.5
+ *   varBandMusicals  varBand for musicals only (his posts are mostly musicals)
+ * Returns the extra variable cost in dollars (0 when neither is set).
+ */
+const VAR_BAND = { fromRatio: 0.9, toRatio: 1.5, low: 0.12, high: 0.235 };
+const OVERAGE_RATE = 0.375;
+function extraVariableCost(adjGross, nut, liveDeductions, path) {
+  if (!path || !(nut > 0) || !(adjGross > 0)) return 0;
+  if (path.varBand) {
+    const t = Math.min(1, Math.max(0, (adjGross / nut - VAR_BAND.fromRatio) / (VAR_BAND.toRatio - VAR_BAND.fromRatio)));
+    return Math.max(0, (VAR_BAND.low + (VAR_BAND.high - VAR_BAND.low) * t) * adjGross - liveDeductions);
+  }
+  if (path.varOverage) return OVERAGE_RATE * Math.max(0, adjGross - nut);
+  return 0;
+}
+
+/**
  * Calculate weekly operating profit for ONE week.
  *
  * Pre-recoupment: variable costs = base rate × gross + theater deal
@@ -398,6 +423,10 @@ function calcWeeklyProfit(weeklyGross, weeklyNut, baseVarRate, isPostRecoup, wee
   // No additional deflation for long runs — Broadway costs inflate over time.
   // The 0.88 floor already captures cast replacement savings and optimization.
 
+  // Shadow variable-cost shape against this week's running cost (BRO-5073).
+  const bandPath = costPath && costPath.varBandMusicals && !/^play/.test(showCategory || '') ? { ...costPath, varBand: true } : costPath;
+  const extraVar = costPath ? extraVariableCost(adjGross, fixedCosts, variableCosts + theaterCost, bandPath) * mult.variableCost : 0;
+
   // Preview cost premium
   if (isPreview) {
     fixedCosts *= PREVIEW_DEFAULTS.costMultiplier;
@@ -410,7 +439,7 @@ function calcWeeklyProfit(weeklyGross, weeklyNut, baseVarRate, isPostRecoup, wee
   }
 
   // Pre-recoupment operating profit
-  let operatingProfit = adjGross - variableCosts - theaterCost - fixedCosts;
+  let operatingProfit = adjGross - variableCosts - extraVar - theaterCost - fixedCosts;
 
   // Post-recoupment: royalty pool takes 35% of operating profit
   if (isPostRecoup && operatingProfit > 0) {
@@ -420,7 +449,7 @@ function calcWeeklyProfit(weeklyGross, weeklyNut, baseVarRate, isPostRecoup, wee
 
   return {
     profit: operatingProfit,
-    variableCosts,
+    variableCosts: variableCosts + extraVar,
     theaterCost,
     fixedCosts,
     adjGross,
@@ -496,8 +525,8 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   const split = opts.costSplit ? splitCosts(commercial, category, weeklyNut, getBaseVariableRate(category), THEATER_DEAL.pctOfGross) : null;
   const baseVarRate = split ? split.varRate : getBaseVariableRate(category);
   const runNut = split ? split.fixedNut : weeklyNut;
-  const costPath = opts.stepSmall || opts.stepLate || opts.costGrowth
-    ? { stepSmall: !!opts.stepSmall, stepLate: !!opts.stepLate, costGrowth: !!opts.costGrowth } : null; // shadow, BRO-5073
+  const costPath = opts.stepSmall || opts.stepLate || opts.costGrowth || opts.varBand || opts.varOverage || opts.varBandMusicals
+    ? { stepSmall: !!opts.stepSmall, stepLate: !!opts.stepLate, costGrowth: !!opts.costGrowth, varBand: !!opts.varBand, varOverage: !!opts.varOverage, varBandMusicals: !!opts.varBandMusicals } : null; // shadow, BRO-5073
 
   // --- Star deal ---
   const slug = show.slug || show.id;
@@ -1166,7 +1195,7 @@ module.exports = {
   PREVIEW_DEFAULTS,
   COST_COMPONENTS,
   RESERVE_FUND_WEEKS,
-  costPathFactor,
+  costPathFactor, extraVariableCost,
   TAX_CREDIT_PROGRAM_START,
   TAX_CREDIT_PROGRAM_END,
   TAX_CREDIT_MAX,
