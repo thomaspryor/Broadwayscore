@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { applyOwnVenueTourCarveout, reviewedAtOwnVenue, outsideRun } = require('./tour-stop-carveout.js');
+const { applyOwnVenueTourCarveout, reviewedAtOwnVenue, outsideRun, tourStopAllowFields } = require('./tour-stop-carveout.js');
 const { buildVerificationPrompt } = require('./content-verifier.js');
 
 const curtains = { id: 'curtains-west-end-2019', title: 'Curtains', venue: "Wyndham's Theatre", openingDate: '2019-12-13', closingDate: '2020-01-11' };
@@ -48,4 +48,12 @@ test('venue matching is whole-word and tolerant of "Park Theatre 200" style name
 test('the verification prompt asks for the attended venue', () => {
   const { prompt } = buildVerificationPrompt({ scrapedText: 'x'.repeat(400), showTitle: 'Curtains', outletName: 'The Arts Desk', criticName: 'Matt Wolf', openingDate: '2019-12-13', venue: "Wyndham's Theatre", market: 'west-end' });
   assert.match(prompt, /"reviewedVenue":/);
+});
+
+test('tourStopAllowFields: a carve-out verdict records the text-scan stand-down once', () => {
+  const cv = { tourStopCarveoutApplied: true, reviewedVenue: "Wyndham's Theatre" };
+  assert.deepEqual(tourStopAllowFields(cv, {}), { allowTourSignal: true, allowTourSignalReason: `own-venue tour stop: critic attended "Wyndham's Theatre"` });
+  assert.deepEqual(tourStopAllowFields(cv, { allowTourSignal: true }), {});
+  assert.deepEqual(tourStopAllowFields({ tourStopCarveoutApplied: false }, {}), {});
+  assert.deepEqual(tourStopAllowFields(null, {}), {});
 });

@@ -81,4 +81,15 @@ function applyOwnVenueTourCarveout(cv, show, { publishDate } = {}) {
   return { wrongProduction: false, tourStopCarveoutApplied: true };
 }
 
-module.exports = { applyOwnVenueTourCarveout, reviewedAtOwnVenue, outsideRun };
+/**
+ * Fields to persist on a review when the verifier applied the carve-out: the
+ * rebuild's fullText tour scan reads allowTourSignal, not the CV verdict.
+ * @returns {object} {} when nothing should change
+ */
+function tourStopAllowFields(cv, data) {
+  if (!cv || !cv.tourStopCarveoutApplied || (data && data.allowTourSignal === true)) return {};
+  return require('./contamination-allow-signal').contaminationAllowFields('tour',
+    `own-venue tour stop: critic attended "${cv.reviewedVenue}"`);
+}
+
+module.exports = { applyOwnVenueTourCarveout, reviewedAtOwnVenue, outsideRun, tourStopAllowFields };
