@@ -61,20 +61,29 @@ test('extraVariableCost: shadow gross-band and overage deductions (BRO-5073)', (
   assert.equal(Math.round(extraVariableCost(1.5e6, nut, 0, { varOverage: true })), Math.round(0.125 * 1.5e6));
 });
 
-test('shadow noSvog / costSourcedOnly leave the live model alone (BRO-5073)', () => {
+test('SVOG is off the cap unless svogCredit; costSourcedOnly is shadow (BRO-5073)', () => {
   const weekly = {};
   for (let i = 0; i < 60; i++) weekly[new Date(Date.UTC(2022, 0, 2 + 7 * i)).toISOString().slice(0, 10)] = { gross: 1200000 };
   const show = { slug: 'six', type: 'musical', previewsStartDate: '2021-12-20', openingDate: '2022-01-10' };
   const comm = { capitalization: 5e6, weeklyRunningCost: 469000, costMethodology: 'industry-estimate' };
   const live = calculateRecoupment(show, comm, null, weekly, { asOf: new Date('2023-03-01') });
-  const noSvog = calculateRecoupment(show, comm, null, weekly, { asOf: new Date('2023-03-01'), noSvog: true });
-  assert.equal(live.svogGrant, 10000000);
-  assert.equal(noSvog.svogGrant, 0);
-  assert.ok(noSvog.recoupmentPctCentral < live.recoupmentPctCentral);
+  const legacy = calculateRecoupment(show, comm, null, weekly, { asOf: new Date('2023-03-01'), svogCredit: true });
+  assert.equal(live.svogGrant, 0);
+  assert.equal(legacy.svogGrant, 10000000);
+  assert.ok(live.recoupmentPctCentral < legacy.recoupmentPctCentral);
   const sourced = calculateRecoupment(show, comm, null, weekly, { asOf: new Date('2023-03-01'), costSourcedOnly: true });
   assert.equal(live.weeklyFixedCostSource, 'reported');
   assert.equal(sourced.weeklyFixedCostSource, 'unsourced');
   assert.equal(sourced.dataQuality, 'low');
   const cited = { ...comm, costMethodology: 'trade-reported', weeklyRunningCostSource: 'Broadway Journal (Jan 16, 2020): "Its weekly breakeven, after deductions, is $469,000." https://www.broadwayjournal.com/p/x' };
   assert.equal(calculateRecoupment(show, cited, null, weekly, { asOf: new Date('2023-03-01'), costSourcedOnly: true }).dataQuality, 'high');
+});
+
+const commercialPath = new URL('../../data/commercial.json', import.meta.url);
+const fs = require('fs');
+test('every slug-keyed table in the recoupment model names a commercial.json record (BRO-5073)', { skip: !fs.existsSync(commercialPath) && 'data/commercial.json not available' }, () => {
+  const { KNOWN_SVOG, KNOWN_STAR_DEALS } = require('../../scripts/lib/recoupment-model');
+  const records = JSON.parse(fs.readFileSync(commercialPath, 'utf8')).shows;
+  const unmatched = [...Object.keys(KNOWN_SVOG), ...Object.keys(KNOWN_STAR_DEALS)].filter((k) => !records[k]);
+  assert.deepEqual(unmatched, []);
 });

@@ -41,6 +41,11 @@ const RUNNING_SHOWN_MAX = 99;
 // --displayable-only --strict). Flip this only after that holds. Closed shows
 // are unaffected.
 const RUNNING_MODEL_BAR_ENABLED = false;
+// Show types that get the running bar once the flag is on (BRO-5073): plays
+// only. The timing backtest finds the model crosses 100% a median 1.5 weeks
+// before a play's announcement (never more than 10 early) but up to a year
+// early for musicals. Add 'musical' when the weekly revisit bar is met for them.
+const RUNNING_MODEL_BAR_TYPES = ['play'];
 // Notes stand in for a source only when they state a figure for the money
 // returned or lost ("$6M loss (~40% of cap)"); notes without one ("No trade
 // report of the capitalization") are no estimate (checker (c), 2026-10-10).
@@ -86,10 +91,10 @@ function independentEstimate(comm) {
 }
 
 /**
- * @param {{ pct: [number, number, number] | null | undefined, playedWeeks: number, independent?: [number, number] | null, running?: boolean, runningEnabled?: boolean }} input
+ * @param {{ pct: [number, number, number] | null | undefined, playedWeeks: number, independent?: [number, number] | null, running?: boolean, runningEnabled?: boolean, showType?: string | null, runningTypes?: string[] }} input
  * @returns {{ show: boolean, reason: null | 'no-model' | 'few-weeks' | 'out-of-bounds' | 'estimates-disagree' | 'too-uncertain' | 'awaiting-truth' | 'past-100-unannounced', shown: [number, number, number] | null, belowCosts: boolean }}
  */
-function modelDisplayGuard({ pct, playedWeeks: weeks, independent = null, running = false, runningEnabled = RUNNING_MODEL_BAR_ENABLED }) {
+function modelDisplayGuard({ pct, playedWeeks: weeks, independent = null, running = false, runningEnabled = RUNNING_MODEL_BAR_ENABLED, showType, runningTypes = RUNNING_MODEL_BAR_TYPES }) {
   const hide = (reason) => ({ show: false, reason, shown: null, belowCosts: false });
   if (!Array.isArray(pct) || pct.length !== 3 || !pct.every((v) => typeof v === 'number' && Number.isFinite(v))) return hide('no-model');
   const central = pct[1];
@@ -100,7 +105,8 @@ function modelDisplayGuard({ pct, playedWeeks: weeks, independent = null, runnin
     if (off > MAX_DISAGREEMENT) return hide('estimates-disagree');
   }
   if (pct[2] - pct[0] > MAX_RANGE_WIDTH) return hide('too-uncertain');
-  if (running && !runningEnabled) return hide('awaiting-truth');
+  // showType undefined (callers that predate the per-type switch) keeps the flag alone.
+  if (running && (!runningEnabled || (showType !== undefined && !runningTypes.includes(showType || 'musical')))) return hide('awaiting-truth');
   if (running && central >= 100) return hide('past-100-unannounced');
   const top = running ? RUNNING_SHOWN_MAX : Infinity;
   return { show: true, reason: null, shown: pct.map((v) => Math.min(top, Math.max(0, v))), belowCosts: central < 0 };
@@ -126,6 +132,6 @@ function displayBasis({ pct, exCreditPct, creditCounted, running = false, runnin
 
 module.exports = {
   displayBasis,
-  modelDisplayGuard, displaysModel, playedWeeks, independentEstimate, isRunning, RUNNING_MODEL_BAR_ENABLED,
+  modelDisplayGuard, displaysModel, playedWeeks, independentEstimate, isRunning, RUNNING_MODEL_BAR_ENABLED, RUNNING_MODEL_BAR_TYPES,
   MIN_PLAYED_WEEKS, CENTRAL_MIN, CENTRAL_MAX, MAX_DISAGREEMENT, MAX_RANGE_WIDTH, RUNNING_SHOWN_MAX,
 };

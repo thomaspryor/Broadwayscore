@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { closedStillTbd, recoupedModelDisagreements } = require('../../scripts/lib/commercial-consistency.js');
+const { closedStillTbd, recoupedModelDisagreements, recoupedDateNoteConflicts } = require('../../scripts/lib/commercial-consistency.js');
 
 const NOW = Date.parse('2026-10-10T12:00:00Z');
 
@@ -48,4 +48,16 @@ test('recoupedModelDisagreements ignores a model range that straddles 100%', () 
     'model-says-short': { recouped: true, modelRecouped: false, modelRecoupmentPct: [40, 55, 80] },
   });
   assert.deepEqual(out.map(o => o.slug), ['the-music-man-2022', 'model-says-short']);
+});
+
+test('recoupedDateNoteConflicts flags a note month that differs from recoupedDate (BRO-5073)', () => {
+  const records = {
+    six: { recoupedDate: '2022-12', notes: 'Strong grosses. Recouped as of Dec 2021 (announced Mar 2023).' },
+    agree: { recoupedDate: '2022-12', notes: 'Recouped in December 2022.' },
+    either: { recoupedDate: '2019-03-05', notes: 'Recouped Mar 5, 2019; earlier reports said recouped Feb 2019.' },
+    yearOnly: { recoupedDate: '2019', notes: 'Recouped in May 2019.' },
+    none: { recoupedDate: '2020-01', notes: 'Opened in Apr 2018.' },
+    noDate: { notes: 'Recouped Dec 2021.' },
+  };
+  assert.deepEqual(recoupedDateNoteConflicts(records), [{ slug: 'six', recoupedDate: '2022-12', note: 'Recouped as of Dec 2021' }]);
 });

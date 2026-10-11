@@ -183,7 +183,9 @@ const COVID_DARK_WEEKS = 78;
  * BRO-4623: wicked, the-lion-king and aladdin were removed. Disney is a
  * publicly traded company and was ineligible (commercial.json notes, per
  * Variety Mar 2021), and Wicked's research notes record no SVOG. Only add a
- * show here with a cited grant (news report or SBA award list).
+ * show here with a cited grant (news report or SBA award list). Keys are
+ * commercial.json slugs (tests/unit/cost-split.test.mjs checks). Since BRO-5073
+ * the grant is not netted off the cap unless opts.svogCredit is set.
  */
 const KNOWN_SVOG = {
   'hamilton': 10000000,
@@ -196,11 +198,11 @@ const KNOWN_SVOG = {
   'chicago': 10000000,
   'dear-evan-hansen-2016': 10000000,
   'come-from-away-2017': 10000000,
-  'mean-girls': 10000000,
+  'mean-girls-2018': 10000000,
   'harry-potter': 10000000,
   'frozen-2018': 10000000,
-  'jagged-little-pill': 10000000,
-  'tina': 10000000,
+  'jagged-little-pill-2019': 10000000,
+  'tina-2019': 10000000,
 };
 
 /** Known star deals — weekly premium + % of gross above threshold */
@@ -545,9 +547,11 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   }
 
   // --- Effective capitalization ---
-  // opts.noSvog (shadow, BRO-5073): SVOG paid shutdown costs; test leaving it
-  // out of the capital investors must get back (Six: $10M grant on a $5M cap).
-  const svogGrant = now < SVOG_FIRST_AWARDS || opts.noSvog ? 0 : (KNOWN_SVOG[slug] || parseSvogFromNotes(commercial.notes) || 0);
+  // SVOG is not netted off the cap (BRO-5073). The model counts played weeks
+  // only, and the grant mostly reimbursed shutdown costs it never charges, so
+  // subtracting it double-counted (Six: $10M grant on a $5M cap read 1879%).
+  // No record says a grant went to investors. opts.svogCredit replays the old rule.
+  const svogGrant = now < SVOG_FIRST_AWARDS || !opts.svogCredit ? 0 : (KNOWN_SVOG[slug] || parseSvogFromNotes(commercial.notes) || 0);
 
   // NY theater tax credit: eligible if the show's run overlaps the program
   // window (Aug 2021 – 2027), which includes COVID reopenings of older shows.
@@ -1059,7 +1063,7 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}
   const runNut = split ? split.fixedNut : weeklyNut;
 
   // Effective capitalization
-  const svogGrant = KNOWN_SVOG[slug] || parseSvogFromNotes(commercial.notes) || 0;
+  const svogGrant = opts.svogCredit ? (KNOWN_SVOG[slug] || parseSvogFromNotes(commercial.notes) || 0) : 0; // see calculateRecoupment (BRO-5073)
   const reserveFund = weeklyNut * 1.5; // Minimal for established long-runners
   const effectiveCap = Math.max(capitalization - svogGrant + reserveFund, reserveFund);
   // Same semantics as the weekly model: closed shows measure against cap net
@@ -1228,6 +1232,7 @@ module.exports = {
   getTheaterSeats,
   // Exported for tests (BRO-4623)
   KNOWN_SVOG,
+  KNOWN_STAR_DEALS,
   parseSvogFromNotes,
   parseTaxCreditFromNotes,
   NO_TAX_CREDIT_FROM_NOTES_WARNING,
