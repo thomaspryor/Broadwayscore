@@ -159,3 +159,40 @@ test('rebase-apply/ (apply-based backend) is checked when rebase-merge/ is absen
   assert.equal(result.status, 'blocked-existing-residue');
   assert.equal(result.marker, 'REBASE_HEAD');
 });
+
+// BRO-5074: conflicts confined to cloud-memory/ take origin's copy (CI owns
+// the mirror now); anything else still aborts.
+test('conflicts only in cloud-memory/ resolve to origin and commit', () => {
+  const git = makeGit({
+    'fetch origin main': { code: 0, stdout: '', stderr: '' },
+    'merge --no-edit FETCH_HEAD': { code: 1, stdout: '', stderr: 'CONFLICT (content): Merge conflict in cloud-memory/a.md' },
+    'diff --name-only --diff-filter=U': { code: 0, stdout: 'cloud-memory/a.md\ncloud-memory/b.md\n', stderr: '' },
+  });
+  const result = syncMainSafely({ cwd: '/repo', git, log: () => {} });
+  assert.equal(result.status, 'ok');
+  assert.deepEqual(result.resolved, ['cloud-memory/a.md', 'cloud-memory/b.md']);
+  assert.ok(git.calls.includes('checkout --theirs -- cloud-memory/a.md cloud-memory/b.md'));
+  assert.ok(git.calls.includes('commit --no-edit'));
+  assert.ok(!git.calls.includes('merge --abort'));
+});
+
+test('a conflict outside cloud-memory/ still aborts the whole merge', () => {
+  const git = makeGit({
+    'fetch origin main': { code: 0, stdout: '', stderr: '' },
+    'merge --no-edit FETCH_HEAD': { code: 1, stdout: '', stderr: 'CONFLICT' },
+    'diff --name-only --diff-filter=U': { code: 0, stdout: 'cloud-memory/a.md\nscripts/x.js\n', stderr: '' },
+  });
+  const result = syncMainSafely({ cwd: '/repo', git, log: () => {} });
+  assert.equal(result.status, 'aborted');
+  assert.ok(!git.calls.some((c) => c.startsWith('checkout --theirs')));
+});
+
+test('a failed resolution falls back to abort', () => {
+  const git = makeGit({
+    'fetch origin main': { code: 0, stdout: '', stderr: '' },
+    'merge --no-edit FETCH_HEAD': { code: 1, stdout: '', stderr: 'CONFLICT' },
+    'diff --name-only --diff-filter=U': { code: 0, stdout: 'cloud-memory/a.md\n', stderr: '' },
+    'commit --no-edit': { code: 1, stdout: '', stderr: 'boom' },
+  });
+  assert.equal(syncMainSafely({ cwd: '/repo', git, log: () => {} }).status, 'aborted');
+});

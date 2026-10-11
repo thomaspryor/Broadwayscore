@@ -43,6 +43,9 @@ const DIGEST_CRONS = [
   // Success-keyed: its state-push step is continue-on-error, so a red or cancelled
   // run means the probe failed or never ran, both worth a digest row.
   { workflow: 'affiliate-link-integrity.yml', maxHours: 192, name: 'Affiliate Link Integrity' },
+  // BRO-5074: 6-hourly; 24h = four missed runs. If it stops, cloud sessions
+  // read a stale copy of the owner's memory with nothing else saying so.
+  { workflow: 'cloud-memory-reconcile.yml', maxHours: 24, name: 'Cloud Memory Reconcile' },
 ];
 
 // Digest entries that are intentionally NOT in check-cron-health.yml
@@ -51,6 +54,7 @@ const DIGEST_ONLY = {
   'audit-reverse-discovery.yml': 'digest-only by design: candidates surface in the daily digest, a 1-day-late detection is acceptable (.cron-health-exempt.txt)',
   'check-cron-health.yml': 'a watchdog cannot page on itself; the digest (data-health-check.yml, which IS paged) is the independent watcher',
   'affiliate-link-integrity.yml': 'a red probe week means broken links, which owner-alert-router already reports; paging it as a dead cron would be the wrong alarm (.cron-health-exempt.txt)',
+  'cloud-memory-reconcile.yml': 'a stale mirror slows cloud sessions but is never urgent for the owner; the digest row is enough (.cron-health-exempt.txt)',
 };
 
 module.exports = { DIGEST_CRONS, DIGEST_ONLY };

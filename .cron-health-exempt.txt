@@ -22,6 +22,10 @@ adjudicate-review-queue.yml
 # [digest] stale-run coverage: scripts/lib/health-digest-crons.js (192h).
 affiliate-link-integrity.yml
 aggregator-url-watcher.yml
+# BRO-5074: refreshes cloud-memory/ from claude-config every 6h. Not paged: a
+# stale mirror is never urgent for the owner.
+# [digest] stale-run coverage: scripts/lib/health-digest-crons.js (24h).
+cloud-memory-reconcile.yml
 # Self-healing image-fetch backstop (card #1456): a stale run means at-worst
 # a slower drain of the imageless-scored-shows backlog, not user-facing
 # staleness worth paging on — its own routeAlert escalation already alerts
