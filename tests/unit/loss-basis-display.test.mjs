@@ -45,8 +45,10 @@ test('lossOutcomePhrase: only a reported loss says "did not recoup" or "without 
 
 test('no page or component hardcodes a loss phrase outside lossOutcomePhrase', async () => {
   const { spawnSync } = await import('node:child_process');
-  const r = spawnSync('git', ['grep', '-n', '-i', '-E', "['\"`>](did not recoup|closed without recouping|closed as a flop)", '--', 'src/app', 'src/components'], { encoding: 'utf8' });
-  assert.equal(r.stdout.trim(), '', r.stdout);
+  const r = spawnSync('git', ['grep', '-n', '-i', '-E', 'did not recoup|without recouping|closed as a flop|lost money|never recouped', '--', 'src/app', 'src/components'], { encoding: 'utf8' });
+  // Comments may name the phrases; rendered text may not.
+  const hits = r.stdout.split('\n').filter((l) => l && !/^[^:]+:\d+:\s*(\*|\/\/|\/\*)/.test(l));
+  assert.deepEqual(hits, []);
 });
 
 test('our own notes stay off a loss label no source reported', () => {

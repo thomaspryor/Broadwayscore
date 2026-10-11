@@ -69,8 +69,21 @@ const DESIGNATION_BASES = Object.freeze({
 const VALID_DESIGNATION_BASES = Object.freeze(Object.values(DESIGNATION_BASES));
 const LOSS_LABEL_MIN_DAYS = 183;
 
+/**
+ * True for a Fizzle/Flop resting on silence whose show closed under
+ * LOSS_LABEL_MIN_DAYS ago: the one copy of the policy B age rule that the
+ * record checks and the public-record sanitizer share. `show` is the
+ * shows.json record; an unknown closing date never counts as premature.
+ */
+function isPrematureSilenceLabel(entry, show, now = Date.now()) {
+  if (!entry || !show || (entry.designation !== 'Fizzle' && entry.designation !== 'Flop')) return false;
+  if (entry.designationBasis !== DESIGNATION_BASES.NO_RECOUPMENT_ANNOUNCED) return false;
+  const closing = Date.parse(show.closingDate);
+  return Number.isFinite(closing) && (now - closing) / 86400000 < LOSS_LABEL_MIN_DAYS;
+}
+
 module.exports = {
-  DESIGNATION_BASES, VALID_DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS,
+  DESIGNATION_BASES, VALID_DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS, isPrematureSilenceLabel,
   VALID_DESIGNATIONS, canonicalDesignation,
   TRICKLE_MAX_MULTIPLE, MIRACLE_MIN_YEARS, FIZZLE_MIN_RETURNED_PCT, DESIGNATIONS_OUTSIDE_RULE,
   MODEL_CONTRADICTION, modelContradictsDesignation,

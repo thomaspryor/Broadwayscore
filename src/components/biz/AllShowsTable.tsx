@@ -300,7 +300,7 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                     <RecoupedCell show={show} />
                   </td>
                   <td className="py-3 px-4">
-                    <span className={designation.textClass} title={designation.description}>
+                    <span className={designation.textClass} title={show.lossCaveat ?? designation.description}>
                       {designation.label}
                     </span>
                     {show.nonprofitOrg && (
