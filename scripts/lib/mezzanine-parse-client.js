@@ -8,6 +8,39 @@ const https = require('https');
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
+// Parse Server error codes that mean the session is not usable. Parse reports
+// these in a JSON body ({code, error}) with HTTP 400, not 401/403, so a status
+// check alone reads an expired token as an empty result set (BRO-5098).
+const PARSE_AUTH_CODES = new Set([
+  206, // SESSION_MISSING
+  209, // INVALID_SESSION_TOKEN
+]);
+
+/**
+ * Turn one Parse REST response into data or a descriptive error. Never treats
+ * an error body as "no results": the caller sees status, Parse code and message.
+ * @returns {{json: object}|{error: Error}} error carries .authFailed / .rateLimited
+ */
+function classifyParseResponse(statusCode, bodyText) {
+  const fail = (msg, flags = {}) => ({ error: Object.assign(new Error(msg), { statusCode }, flags) });
+  if (statusCode === 401 || statusCode === 403) {
+    return fail(`Auth failed (${statusCode}). Token may have expired.`, { authFailed: true });
+  }
+  if (statusCode === 429) return fail('Rate limited (429). Wait and retry.', { rateLimited: true });
+  let json;
+  try { json = JSON.parse(bodyText); } catch (e) {
+    return fail(`HTTP ${statusCode}, non-JSON body: ${String(bodyText).substring(0, 200)}`);
+  }
+  if (json && typeof json.code === 'number' && json.error !== undefined) {
+    const msg = `Parse error ${json.code} (HTTP ${statusCode}): ${json.error}`;
+    return fail(msg, { parseCode: json.code, authFailed: PARSE_AUTH_CODES.has(json.code) });
+  }
+  if (statusCode < 200 || statusCode >= 300) {
+    return fail(`HTTP ${statusCode}: ${String(bodyText).substring(0, 200)}`);
+  }
+  return { json };
+}
+
 /**
  * Query a Parse Server class. Throws with `.authFailed = true` on 401/403 so
  * callers can distinguish "token expired" (page the owner) from a transient
@@ -36,20 +69,8 @@ function queryParse(className, body, { appId, sessionToken } = {}) {
       let resBody = '';
       res.on('data', c => resBody += c);
       res.on('end', () => {
-        if (res.statusCode === 401 || res.statusCode === 403) {
-          const err = new Error(`Auth failed (${res.statusCode}). Token may have expired.`);
-          err.authFailed = true;
-          reject(err);
-          return;
-        }
-        if (res.statusCode === 429) {
-          const err = new Error('Rate limited (429). Wait and retry.');
-          err.rateLimited = true;
-          reject(err);
-          return;
-        }
-        try { resolve(JSON.parse(resBody)); }
-        catch (e) { reject(new Error('Parse error: ' + resBody.substring(0, 200))); }
+        const out = classifyParseResponse(res.statusCode, resBody);
+        if (out.error) reject(out.error); else resolve(out.json);
       });
     });
     req.on('error', reject);
@@ -78,15 +99,10 @@ function getObject(className, objectId, { appId, sessionToken } = {}) {
       let resBody = '';
       res.on('data', c => resBody += c);
       res.on('end', () => {
-        if (res.statusCode === 401 || res.statusCode === 403) {
-          const err = new Error(`Auth failed (${res.statusCode}). Token may have expired.`);
-          err.authFailed = true;
-          reject(err);
-          return;
-        }
-        if (res.statusCode === 404) { resolve(null); return; }
-        try { resolve(JSON.parse(resBody)); }
-        catch (e) { reject(new Error('Parse error: ' + resBody.substring(0, 200))); }
+        const out = classifyParseResponse(res.statusCode, resBody);
+        // Parse answers a missing object with 404 + {code: 101}; keep that a null.
+        if (out.error && (res.statusCode === 404 || out.error.parseCode === 101)) { resolve(null); return; }
+        if (out.error) reject(out.error); else resolve(out.json);
       });
     });
     req.on('error', reject);
@@ -112,4 +128,4 @@ function findShowsByTitle(normalizedTitle, opts) {
   }, opts).then(res => res.results || []);
 }
 
-module.exports = { queryParse, getObject, findProductionsForShow, findShowsByTitle, sleep };
+module.exports = { classifyParseResponse, PARSE_AUTH_CODES, queryParse, getObject, findProductionsForShow, findShowsByTitle, sleep };

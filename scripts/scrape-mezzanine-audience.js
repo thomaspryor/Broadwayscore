@@ -17,6 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { classifyParseResponse } = require('./lib/mezzanine-parse-client');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { normalizeTitle, titleTokens, jaccard, foldDiacritics } = require('./lib/title-match');
@@ -167,12 +168,9 @@ function queryParseOnce(className, body) {
       let body = '';
       res.on('data', c => body += c);
       res.on('end', () => {
-        if (res.statusCode === 401 || res.statusCode === 403) {
-          reject(new AuthError(res.statusCode));
-          return;
-        }
-        try { resolve(JSON.parse(body)); }
-        catch (e) { reject(new Error('Parse error: ' + body.substring(0, 200))); }
+        const out = classifyParseResponse(res.statusCode, body);
+        if (out.error && out.error.authFailed) { reject(new AuthError(`${res.statusCode}; ${out.error.message}`)); return; }
+        if (out.error) reject(out.error); else resolve(out.json);
       });
     });
     req.on('timeout', () => {
@@ -747,8 +745,11 @@ async function main() {
   }
   console.log(`Fetched ${allProductions.length} productions with ratings`);
   if (allProductions.length === 0) {
-    console.error('⚠️  CRITICAL: Mezzanine API returned 0 productions — session token may have expired');
-    process.exit(2);
+    // BRO-5098: auth failures (HTTP 401/403 or Parse code 206/209) now throw
+    // above and exit 2. An error-free empty answer is not a token problem, so
+    // don't page the owner to rotate it.
+    console.error('⚠️  CRITICAL: Mezzanine API returned 0 productions with no error — the query or the API changed, not the token');
+    process.exit(1);
   }
 
   // 2. Filter productions by market
