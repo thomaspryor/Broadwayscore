@@ -8,6 +8,9 @@ const { reviewTextsDirFromEnv } = require('./review-texts-env-dir.js');
 test('env var wins and is made absolute', () => {
   assert.equal(reviewTextsDirFromEnv('/default', { REVIEW_TEXTS_DIR: '/tmp/sandbox' }), '/tmp/sandbox');
 });
+test('relative value resolves against cwd', () => {
+  assert.equal(reviewTextsDirFromEnv('/default', { REVIEW_TEXTS_DIR: 'rel/dir' }), process.cwd() + '/rel/dir');
+});
 test('unset or blank falls back to the default', () => {
   assert.equal(reviewTextsDirFromEnv('/default', {}), '/default');
   assert.equal(reviewTextsDirFromEnv('/default', { REVIEW_TEXTS_DIR: '  ' }), '/default');
