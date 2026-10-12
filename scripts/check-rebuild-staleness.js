@@ -33,12 +33,11 @@
 
 const fs = require('fs');
 const path = require('path');
-const { listShowDirs } = require('./lib/list-show-dirs');
-const { isIncludableForRebuild } = require('./lib/review-guards');
-const { getBestScore, applyScoreRelevantMigrations } = require('./lib/rebuild-helpers');
-const { normalizeOutlet } = require('./lib/review-normalization');
-const { getSyndicationConfig } = require('./lib/syndication-pairs');
-const { findMissingScoreableShows, formatMissingShowsFile } = require('./lib/rebuild-staleness-guard');
+const { formatMissingShowsFile } = require('./lib/rebuild-staleness-guard');
+// The read-only scan (which drifted shows are scoreable but absent from
+// reviews.json) lives in scripts/lib/rebuild-staleness-scan.js, shared with
+// scripts/check-rebuild-staleness-advisory.js (BRO-3162).
+const { loadJSON, readCandidateShowIds, scanDriftedShows } = require('./lib/rebuild-staleness-scan');
 // BRO-545 (pipeline self-healing): this guard is right to fail loud on its
 // first occurrence, but must not be allowed to wedge reviews.json indefinitely
 // if the same drift keeps recurring — see guard-escalation.js header.
@@ -52,9 +51,6 @@ const {
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 const DATA_DIR = path.join(REPO_ROOT, 'data');
-const SHOWS_FILE = path.join(DATA_DIR, 'shows.json');
-const REVIEWS_FILE = path.join(DATA_DIR, 'reviews.json');
-const REVIEW_TEXTS_DIR = path.join(DATA_DIR, 'review-texts');
 // Committed alongside the other per-run audit files (rebuild-reviews.yml's
 // commit step does `git add data/audit/*.json`) so the streak survives across
 // CI checkouts — a fresh checkout every run means this guard has no memory
@@ -89,67 +85,6 @@ function saveGuardState(state) {
   }
 }
 
-function loadJSON(file, fallback = null) {
-  try {
-    return JSON.parse(fs.readFileSync(file, 'utf8'));
-  } catch {
-    return fallback;
-  }
-}
-
-function readCandidateShowIds(showsFileArg) {
-  if (!showsFileArg || !fs.existsSync(showsFileArg)) return [];
-  return fs.readFileSync(showsFileArg, 'utf8')
-    .split('\n')
-    .map((s) => s.trim())
-    .filter(Boolean);
-}
-
-/**
- * Would rebuild-all-reviews.js include this specific file? Composes the two
- * real functions it calls — never a bespoke reimplementation. Mirrors
- * rebuild-all-reviews.js's own pre-scoring step: applyScoreRelevantMigrations
- * mutates a working copy in-memory before getBestScore() is asked whether a
- * score exists, so a file whose score is only exposed by that migration
- * (aggregator-source normalization, garbage-text recovery) isn't
- * misclassified as unscoreable here. Mutates a fresh copy, never the file on
- * disk.
- */
-function isScoreableFile(data, show, filePath) {
-  if (!isIncludableForRebuild(data, show || {}, filePath)) return false;
-  const migrated = { ...data };
-  applyScoreRelevantMigrations(migrated);
-  return getBestScore(migrated) !== null;
-}
-
-/**
- * Mirrors the unflagged-secondary dedup in rebuild-all-reviews.js (the
- * KNOWN_SYNDICATION_PAIRS check ~line 3193): a syndicated secondary copy is
- * excluded when an UNFLAGGED PRIMARY SIBLING for the same critic already
- * exists in the same show directory. Must require the sibling filename to
- * start with the primary outlet's prefix — checking only "some file whose
- * name contains the critic slug" without that prefix requirement matches the
- * file being tested against ITSELF (every candidate file's own name contains
- * its own critic slug), which always short-circuits true and silently
- * excludes every syndicated-secondary file from the scoreable set regardless
- * of whether a real primary exists.
- */
-function isUnflaggedSyndicationSecondary(data, currentFile, allFiles, showDir) {
-  const criticName = (data.criticName || '').toLowerCase().trim();
-  const outletId = normalizeOutlet(data.outletId || data.outlet || '');
-  const syndConfig = getSyndicationConfig(criticName);
-  if (!syndConfig || !syndConfig.secondary.includes(outletId)) return false;
-  const primaryPrefix = `${syndConfig.primary}--`;
-  const criticSlug = criticName.replace(/\s+/g, '-');
-  return allFiles.some((f) => {
-    if (f === currentFile) return false;
-    if (!f.startsWith(primaryPrefix) || !f.includes(criticSlug)) return false;
-    const pData = loadJSON(path.join(showDir, f));
-    if (!pData) return false;
-    return !pData.wrongProduction && !pData.wrongShow;
-  });
-}
-
 async function main() {
   const showsFileArg = (process.argv.find((a) => a.startsWith('--shows-file=')) || '')
     .replace('--shows-file=', '') || null;
@@ -164,18 +99,19 @@ async function main() {
   if (candidateShowIds.length === 0) {
     console.log('[check-rebuild-staleness] no drifted shows this run — nothing to verify.');
     // A clean no-op run is still "not blocked" — clear any open streak so a
-    // quiet stretch doesn't leave a stale escalation state behind.
-    const cleared = nextGuardState(loadGuardState(), false, Date.now());
-    saveGuardState(cleared);
+    // quiet stretch doesn't leave a stale escalation state behind. Only write
+    // when a streak is actually open (BRO-3162, the same fix BRO-2955 made on
+    // the healthy path below): most runs have no drift, and rewriting
+    // lastClearedAt on every one of them churned a tracked file for nothing.
+    const priorNoDrift = loadGuardState();
+    if (priorNoDrift && (priorNoDrift.consecutiveBlocks || 0) > 0) {
+      saveGuardState(nextGuardState(priorNoDrift, false, Date.now()));
+    }
     return;
   }
 
-  const showsDoc = loadJSON(SHOWS_FILE);
-  const shows = (showsDoc && (showsDoc.shows || showsDoc)) || [];
-  const showsById = new Map(shows.map((s) => [s.id, s]));
-
-  const reviewsDoc = loadJSON(REVIEWS_FILE);
-  if (!reviewsDoc || !Array.isArray(reviewsDoc.reviews)) {
+  const scan = scanDriftedShows(candidateShowIds, DATA_DIR);
+  if (!scan.ok) {
     // BRO-3127 ship-check (Codex adversarial finding): this is a DIFFERENT
     // failure class than "a specific show is missing" — we have no idea which
     // shows, if any, are affected, so the workflow must NOT treat this the
@@ -189,32 +125,7 @@ async function main() {
     console.error('::error::[check-rebuild-staleness] could not read data/reviews.json — aborting');
     process.exit(1);
   }
-  const reviewsShowIds = reviewsDoc.reviews.map((r) => r.showId);
-
-  const knownShowDirs = new Set(listShowDirs(REVIEW_TEXTS_DIR, { silent: true }));
-  const scoreableShowIds = [];
-
-  for (const showId of candidateShowIds) {
-    if (!knownShowDirs.has(showId)) continue;
-    const showDir = path.join(REVIEW_TEXTS_DIR, showId);
-    let files;
-    try {
-      files = fs.readdirSync(showDir).filter((f) => f.endsWith('.json'));
-    } catch {
-      continue;
-    }
-    const show = showsById.get(showId);
-    const isScoreable = files.some((file) => {
-      const data = loadJSON(path.join(showDir, file));
-      if (!data) return false;
-      if (!isScoreableFile(data, show, path.join(showDir, file))) return false;
-      if (isUnflaggedSyndicationSecondary(data, file, files, showDir)) return false;
-      return true;
-    });
-    if (isScoreable) scoreableShowIds.push(showId);
-  }
-
-  const missing = findMissingScoreableShows(scoreableShowIds, reviewsShowIds);
+  const { scoreableShowIds, missing } = scan;
   const overrideCommand = buildOverrideCommand({
     workflowDisplayName: WORKFLOW_DISPLAY_NAME,
     reason: 'BRO-545 stale-checkout guard manual override',

@@ -283,6 +283,13 @@ jobs:
             echo "has_changes=true" >> $GITHUB_OUTPUT
           fi
 
+      # Stale-checkout race guard, pre-rebuild (BRO-3162): sync review-texts
+      # files pushed by other jobs since this job's checkout (never files
+      # this job wrote), and record which shows drifted.
+      - name: Sync review-texts drift before rebuild
+        if: always() && steps.push.outputs.has_changes == 'true'
+        uses: ./.github/actions/sync-review-texts-drift
+
       - name: Rebuild reviews.json
         id: rebuild
         if: always() && steps.push.outputs.has_changes == 'true'
@@ -290,6 +297,16 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: node scripts/rebuild-all-reviews.js
         continue-on-error: true
+
+      # Stale-checkout race guard, post-rebuild (BRO-3162): advisory first
+      # (CLAUDE.md rule 19), so it flags a dropped show without blocking.
+      - name: Verify no scoreable review vanished during checkout drift
+        if: ${{ !cancelled() && steps.rebuild.outcome == 'success' }}
+        continue-on-error: true
+        # lint-allow-swallow: report-only by design (rule 19); writes nothing tracked, failure = ::error annotation
+        run: >-
+          node scripts/check-rebuild-staleness-advisory.js
+          --shows-file=/tmp/stale-checkout-shows.txt
 
 
       - name: Push review-texts to private repo
@@ -717,10 +734,27 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
 
+      # Stale-checkout race guard, pre-rebuild (BRO-3162): sync review-texts
+      # files pushed by other jobs since this job's checkout (never files
+      # this job wrote), and record which shows drifted.
+      - name: Sync review-texts drift before rebuild
+        uses: ./.github/actions/sync-review-texts-drift
+
       - name: Rebuild reviews.json
+        id: rebuild_reviews
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: node scripts/rebuild-all-reviews.js
+
+      # Stale-checkout race guard, post-rebuild (BRO-3162): advisory first
+      # (CLAUDE.md rule 19), so it flags a dropped show without blocking.
+      - name: Verify no scoreable review vanished during checkout drift
+        if: ${{ !cancelled() && steps.rebuild_reviews.outcome == 'success' }}
+        continue-on-error: true
+        # lint-allow-swallow: report-only by design (rule 19); writes nothing tracked, failure = ::error annotation
+        run: >-
+          node scripts/check-rebuild-staleness-advisory.js
+          --shows-file=/tmp/stale-checkout-shows.txt
 
 
       - name: Push review-texts to private repo

@@ -429,6 +429,13 @@ jobs:
         if: steps.check.outputs.has_new_reviews == 'true' || inputs.force_collection == 'true'
         run: node scripts/flag-wrong-production-by-date.js --apply
 
+      # Stale-checkout race guard, pre-rebuild (BRO-3162): sync review-texts
+      # files pushed by other jobs since this job's checkout (never files
+      # this job wrote), and record which shows drifted.
+      - name: Sync review-texts drift before rebuild
+        if: steps.check.outputs.has_new_reviews == 'true' || inputs.force_collection == 'true'
+        uses: ./.github/actions/sync-review-texts-drift
+
       - name: Rebuild reviews.json from review-texts
         id: rebuild
         if: steps.check.outputs.has_new_reviews == 'true' || inputs.force_collection == 'true'
@@ -436,6 +443,16 @@ jobs:
           echo "Rebuilding reviews.json from review-texts data..."
           node scripts/rebuild-all-reviews.js
           echo "Reviews rebuilt successfully"
+
+      # Stale-checkout race guard, post-rebuild (BRO-3162): advisory first
+      # (CLAUDE.md rule 19), so it flags a dropped show without blocking.
+      - name: Verify no scoreable review vanished during checkout drift
+        if: ${{ !cancelled() && steps.rebuild.outcome == 'success' }}
+        continue-on-error: true
+        # lint-allow-swallow: report-only by design (rule 19); writes nothing tracked, failure = ::error annotation
+        run: >-
+          node scripts/check-rebuild-staleness-advisory.js
+          --shows-file=/tmp/stale-checkout-shows.txt
 
       - name: Check for changes
         if: always()

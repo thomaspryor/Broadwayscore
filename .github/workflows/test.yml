@@ -2685,6 +2685,13 @@ on:
       # CI. scripts/lib/test-yml-manifest-paths.test.mjs caught this the
       # moment the test file was registered in tests/unit-test-manifest.txt.
       - 'scripts/check-rebuild-staleness.test.mjs'
+      # BRO-3162: pre-rebuild drift sync behind
+      # .github/actions/sync-review-texts-drift (tested by
+      # tests/unit/sync-review-texts-drift.test.mjs); root-level script.
+      - 'scripts/sync-review-texts-drift.js'
+      # BRO-3162: report-only post-rebuild check (tested by
+      # tests/unit/check-rebuild-staleness-advisory.test.mjs); root-level.
+      - 'scripts/check-rebuild-staleness-advisory.js'
       # BRO-4575: header-breakpoint pin (root-level scripts test, same shape).
       - 'scripts/check-header-overflow.test.mjs'
       # Same shape, one day later (BRO-3219 landed the test; caught by the

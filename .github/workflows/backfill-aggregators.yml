@@ -258,8 +258,25 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Stale-checkout race guard, pre-rebuild (BRO-3162): sync review-texts
+      # files pushed by other jobs since this job's checkout (never files
+      # this job wrote), and record which shows drifted.
+      - name: Sync review-texts drift before rebuild
+        uses: ./.github/actions/sync-review-texts-drift
+
       - name: Rebuild reviews.json
+        id: rebuild_reviews
         run: node scripts/rebuild-all-reviews.js
+
+      # Stale-checkout race guard, post-rebuild (BRO-3162): advisory first
+      # (CLAUDE.md rule 19), so it flags a dropped show without blocking.
+      - name: Verify no scoreable review vanished during checkout drift
+        if: ${{ !cancelled() && steps.rebuild_reviews.outcome == 'success' }}
+        continue-on-error: true
+        # lint-allow-swallow: report-only by design (rule 19); writes nothing tracked, failure = ::error annotation
+        run: >-
+          node scripts/check-rebuild-staleness-advisory.js
+          --shows-file=/tmp/stale-checkout-shows.txt
 
 
       - name: Push review-texts to private repo

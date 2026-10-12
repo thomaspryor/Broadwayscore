@@ -10,6 +10,11 @@ inputs:
     required: false
     default: '1'
 
+outputs:
+  sha:
+    description: review-texts HEAD right after the clone (also written to $RUNNER_TEMP/review-texts-checkout-sha)
+    value: ${{ steps.clone.outputs.sha }}
+
 runs:
   using: composite
   steps:
@@ -25,6 +30,7 @@ runs:
     # in tests/unit/checkout-rate-limit-retry.test.mjs) instead of failing the
     # whole job outright.
     - name: Clone review-texts repo
+      id: clone
       shell: bash
       env:
         REVIEW_TEXTS_TOKEN: ${{ inputs.token }}
@@ -92,6 +98,13 @@ runs:
           echo "::error::review-texts checkout FAILED — data/review-texts/.git missing"
           exit 1
         fi
+
+        # Stale-checkout race guard (BRO-3162): record the checkout-time SHA so
+        # ./.github/actions/sync-review-texts-drift can detect pushes that land
+        # between this clone and the job's rebuild-all-reviews.js step.
+        CHECKOUT_SHA=$(git -C data/review-texts rev-parse HEAD)
+        echo "${CHECKOUT_SHA}" > "${RUNNER_TEMP:-/tmp}/review-texts-checkout-sha"
+        echo "sha=${CHECKOUT_SHA}" >> "$GITHUB_OUTPUT"
 
         # Preserve checkout-time bytes even if the job commits before validation.
         node scripts/lib/review-validation-scope.js data/review-texts "${RUNNER_TEMP:-/tmp}/.review-validation-baseline.json"

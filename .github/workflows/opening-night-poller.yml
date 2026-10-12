@@ -832,6 +832,13 @@ jobs:
           done
         continue-on-error: true
 
+      # Stale-checkout race guard, pre-rebuild (BRO-3162): sync review-texts
+      # files pushed by other jobs since this job's checkout (never files
+      # this job wrote), and record which shows drifted.
+      - name: Sync review-texts drift before rebuild
+        if: inputs.fast_path && steps.find.outputs.has_shows == 'true' && (steps.poll.outputs.any_action == 'true' || steps.nyt_picks.outputs.picks_added == 'true')
+        uses: ./.github/actions/sync-review-texts-drift
+
       - name: Rebuild reviews.json (fast_path)
         id: fast_rebuild
         if: inputs.fast_path && steps.find.outputs.has_shows == 'true' && (steps.poll.outputs.any_action == 'true' || steps.nyt_picks.outputs.picks_added == 'true')
@@ -848,6 +855,16 @@ jobs:
             node scripts/rebuild-all-reviews.js
           fi
         timeout-minutes: 5
+
+      # Stale-checkout race guard, post-rebuild (BRO-3162): advisory first
+      # (CLAUDE.md rule 19), so it flags a dropped show without blocking.
+      - name: Verify no scoreable review vanished during checkout drift
+        if: ${{ !cancelled() && steps.fast_rebuild.outcome == 'success' }}
+        continue-on-error: true
+        # lint-allow-swallow: report-only by design (rule 19); writes nothing tracked, failure = ::error annotation
+        run: >-
+          node scripts/check-rebuild-staleness-advisory.js
+          --shows-file=/tmp/stale-checkout-shows.txt
 
       # NOTE: snapshot-overwrite step removed 2026-07-19. /tmp/core-data-snapshot/ is
       # the checkout-time baseline push-core-data diffs against (2beb6617c58);

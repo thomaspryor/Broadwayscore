@@ -480,6 +480,7 @@ tests/unit/check-claude-auth-health.test.mjs
 tests/unit/check-corpus-drift.test.mjs
 tests/unit/check-discovery-source-blind.test.mjs
 tests/unit/check-off-broadway-source-coverage.test.mjs
+tests/unit/check-rebuild-staleness-advisory.test.mjs
 tests/unit/checkout-rate-limit-retry.test.mjs
 tests/unit/ci-cancellation-logic.test.mjs
 tests/unit/ci-config-hygiene.test.mjs
@@ -1245,6 +1246,7 @@ tests/unit/suppression-logic.test.mjs
 tests/unit/sweep-false-positive-wrong-production.test.mjs
 tests/unit/sweep-pending-commercial.test.mjs
 tests/unit/sync-changed-files.test.mjs
+tests/unit/sync-review-texts-drift.test.mjs
 tests/unit/syndication-pairs-shared.test.mjs
 tests/unit/t1t2-gap-card-terminal-states.test.mjs
 tests/unit/table-schema-assertion.test.mjs
@@ -1367,6 +1369,7 @@ tests/unit/workflow-concurrency.test.mjs
 tests/unit/workflow-core-data-change-checks.test.mjs
 tests/unit/workflow-line-length.test.mjs
 tests/unit/workflow-playwright-setup.test.mjs
+tests/unit/workflow-rebuild-all-reviews-staleness-guard.test.mjs
 tests/unit/workflow-run-coverage.test.mjs
 tests/unit/workflow-run-hint-inputs.test.mjs
 tests/unit/worktree-gc-multi-repo.test.mjs
