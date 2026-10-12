@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-10-12T12:37:08.827Z",
+  "generatedAt": "2026-10-12T14:30:18.388Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 100,
     "avgScoreDiff": 0
   },
   "syndicationPairs": [
@@ -96,7 +96,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "AP wire",
+      "showId": "hamilton-2015",
+      "primaryOutlet": "ap",
+      "secondaryOutlet": "washington-times",
+      "primaryFile": "ap--mark-kennedy.json",
+      "secondaryFile": "washington-times--mark-kennedy.json",
+      "similarity": 100,
+      "primaryScore": null,
+      "secondaryScore": null,
+      "scoreDiff": 0
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",
