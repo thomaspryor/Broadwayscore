@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5133-b",
   "planId": "19e1bff8-c7ba-41cf-8d3c-db1b29e000b1",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-12T15:17:08.000Z",
   "submitter": {
     "name": null,
@@ -64,5 +64,48 @@
         "description": "BRO-5133: keep the SoHo Playhouse show page (pull quote, not the Guardian review itself) out of future gathers and gap audits."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T16:57:28.194Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted lost-in-del-valle-return-off-broadway-2026/sohoplayhouse--unknown.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hungry-women-off-broadway-2026/sohoplayhouse--unknown.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted motherfucker-off-broadway-2026/sohoplayhouse--the-guardian.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    }
+  ]
 }
