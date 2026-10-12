@@ -1328,36 +1328,6 @@
     "queuedAt": "2026-10-12T17:32:09.364Z"
   },
   {
-    "conditionKey": "land:land/bro-4792-transfer-gaps",
-    "title": "Landing blocked: unit-tests-node red on land/bro-4792-transfer-gaps",
-    "description": "land.yml did not land land/bro-4792-transfer-gaps: the unit-tests-node gate went red at 53330cdda7. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38281081198",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "branch",
-        "value": "land/bro-4792-transfer-gaps"
-      },
-      {
-        "name": "gate",
-        "value": "unit-tests-node"
-      },
-      {
-        "name": "tip",
-        "value": "53330cdda7cff8b659fd3c8b221894cc0518f0a5"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38281081198"
-      }
-    ],
-    "queuedAt": "2026-10-12T17:34:22.426Z"
-  },
-  {
     "conditionKey": "land:land/bro-3148-unpushed-files",
     "title": "Landing blocked: race red on land/bro-3148-unpushed-files",
     "description": "land.yml did not land land/bro-3148-unpushed-files: the race gate went red at a2b0843a70. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-3148-unpushed-files @ a2b0843a70 (origin/land/bro-3148-unpushed-files) → origin/main @ f8e5fba138 [land] attempt 1/3: rebased onto f8e5fba138, 4 file(s) changed — running checks [land] verified-base: main moved 14f3a5cebe → f8e5fba138 across 184 file(s), substantive — running the full gauntlet [land] linked 21 gitignored path(s) into the worktree (node_modules/core data) [land] che Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38271976969",
@@ -1399,6 +1369,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-12T18:05:41.942Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4792-transfer-gaps",
+    "title": "Landing blocked: race red on land/bro-4792-transfer-gaps",
+    "description": "land.yml did not land land/bro-4792-transfer-gaps: the race gate went red at 746e894ca0. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4792-transfer-gaps @ 746e894ca0 (origin/land/bro-4792-transfer-gaps) → origin/main @ d4905d6152 [land] attempt 1/3: rebased onto c8cc2dfcb3, 5 file(s) changed — running checks [land] verified-base: main moved e69ca4ca6e → c8cc2dfcb3 across 640 file(s), substantive — re-checking on the merged tree (+35 test file(s) changed on main since the verified base) [land] linked 21 gitignored Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38285358002",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4792-transfer-gaps"
+      },
+      {
+        "name": "gate",
+        "value": "race"
+      },
+      {
+        "name": "tip",
+        "value": "746e894ca036c3f9bca7f4cd2a40ee11cc3ba68a"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38285358002"
+      }
+    ],
+    "queuedAt": "2026-10-12T19:29:33.676Z"
   },
   {
     "conditionKey": "land:land/bro-5166-held-flags",
