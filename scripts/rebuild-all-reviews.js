@@ -104,6 +104,7 @@ const {
 const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
 const { evaluateRepublishedReview, humanFlagOutranksScriptClear } = require('./lib/run-contamination');
 const { detectPriorRunRepublish, shouldReleasePriorRunRepublish } = require('./lib/prior-run-republish-guard');
+const { detectOtherProductionUrl, shouldReleaseOtherProductionUrl, OTHER_PRODUCTION_URL_REASON } = require('./lib/other-production-signal');
 const { guardPublishDate, evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard, evaluatePreWindowInclusion, PRE_WINDOW_DAYS } = require('./lib/date-guard');
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
 const { isAwaitingUrlCorrectionRefetch, shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
@@ -1551,6 +1552,7 @@ const crossShowFingerprints = new Map();
   let datelessRevivalFlagged = 0;
   let priorRunRepublishFlagged = 0;
   let republishedEarlierYearFlagged = 0;
+  let otherProductionUrlFlagged = 0;
   let flagOutranksClearHealed = 0;
   let datelessRevivalAutoCleared = 0;
   let staleDateGuardAutoCleared = 0;
@@ -1770,6 +1772,18 @@ const crossShowFingerprints = new Map();
           safeWriteReview(fp, d, { force: true });
           console.log(`  [PRIOR-RUN-REPUBLISH-RELEASED] ${sid}/${f}`);
         }
+        // Other-production url self-release (BRO-5015): same contract as above.
+        if (shouldReleaseOtherProductionUrl(d, showRecord)) {
+          const wasNote = d.wrongProductionNote;
+          d.wrongProduction = false;
+          d.wrongProductionAutoCleared = `rebuild: other-production url no longer detected (was: ${wasNote})`;
+          d.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
+          delete d.wrongProductionNote;
+          delete d.wrongProductionReason;
+          if (isStaleScoreInput(d, showRecord, fp)) markRescoreNeeded(d, 'wrongProduction cleared (other-production url no longer detected)');
+          safeWriteReview(fp, d, { force: true });
+          console.log(`  [OTHER-PRODUCTION-URL-RELEASED] ${sid}/${f}`);
+        }
 
         if (d.wrongProduction || d.wrongShow) continue;
 
@@ -1791,7 +1805,31 @@ const crossShowFingerprints = new Map();
         // split the helper exists to end (ship-check finding, 2026-08-14). An
         // operator-cleared record now falls through to the manual-clear
         // handling below rather than being skipped here.
-        if (shouldWithholdStaleExclusionFlag(d)) { awaitingRefetchSkipped++; continue; }
+        // Gates every content-independent wrongProduction guard below shares.
+        const wpAuditOpen = !d.wrongProductionCleared && d.humanReviewedWrongProduction !== false && !shouldSkipWrongProductionAudit(d) && !laneHolds(d, 'wrongProduction');
+        // BRO-5015 other-production url guard (flag path); urlOnly skips the
+        // publishDate-reading class-G rule for a file whose date is known stale.
+        const flagOtherProductionUrl = (rec, opts) => {
+          const sig = detectOtherProductionUrl(rec, showRecord, opts);
+          if (!sig) return false;
+          console.log(`  [OTHER-PRODUCTION-URL] ${sid}/${f}: ${sig.signal} — ${sig.detail}`);
+          rec.wrongProduction = true;
+          invalidateWrongProductionAutoClear(rec);
+          rec.wrongProductionReason = OTHER_PRODUCTION_URL_REASON;
+          rec.wrongProductionNote = `Other-production url guard: ${sig.detail}`;
+          safeWriteReview(fp, rec);
+          otherProductionUrlFlagged++;
+          return true;
+        };
+        if (shouldWithholdStaleExclusionFlag(d)) {
+          // The withhold exists because publishDate may describe the OLD article.
+          // The url's own signals do not read publishDate, and a url-swapped file
+          // with no refetched body is exactly where a prior production's url
+          // lands (la-traviata 2026, BRO-5015), so they still apply here.
+          if (wpAuditOpen && !d.routedFromShowId && !d.allowEarlyDate && !d.wrongProductionManualClear
+            && flagOtherProductionUrl(d, { urlOnly: true })) continue;
+          awaitingRefetchSkipped++; continue;
+        }
         // routedFromShowId: already rerouted — publish date reflects the original show's era
         if (d.routedFromShowId) continue;
         // allowEarlyDate bypasses all date-based flagging
@@ -1809,7 +1847,7 @@ const crossShowFingerprints = new Map();
         // EARLIER production (e.g. "based on the 2025 performance at the Asylum
         // Theater") even though the page was republished with an in-window date.
         // Runs regardless of reviewDate: the date guards cannot see this.
-        if (!d.wrongProductionCleared && d.humanReviewedWrongProduction !== false && !shouldSkipWrongProductionAudit(d) && !laneHolds(d, 'wrongProduction')) {
+        if (wpAuditOpen) {
           const republish = detectPriorRunRepublish({ text: d.fullText, show: showRecord });
           if (republish.flag) {
             console.log(`  [PRIOR-RUN-REPUBLISH] ${sid}/${f}: ${republish.reason} — "${republish.evidence}"`);
@@ -1821,6 +1859,11 @@ const crossShowFingerprints = new Map();
             priorRunRepublishFlagged++;
             continue;
           }
+          // BRO-5015: the url itself proves another production (a /2022/ path on a
+          // 2026 run, a timeout.com/london page on a NYC show). The date guards below
+          // trust publishDate, which a url swap or republish can stamp with the
+          // current run's date.
+          if (flagOtherProductionUrl(d)) continue;
           // BRO-5000: a page that says outright it was written in an earlier year
           // ("This review is from 2025") on a show with no declared run in that year.
           const earlier = evaluateRepublishedReview({ fullText: d.fullText, show: showRecord, publishDate: d.publishDate });
@@ -1915,6 +1958,9 @@ const crossShowFingerprints = new Map();
   }
   if (flagOutranksClearHealed > 0) {
     console.log(`Flag-outranks-clear: retracted a script clear on ${flagOutranksClearHealed} reviews a later plan flagged\n`);
+  }
+  if (otherProductionUrlFlagged > 0) {
+    console.log(`Other-production url guard: flagged ${otherProductionUrlFlagged} reviews whose url proves another production\n`);
   }
   if (republishedEarlierYearFlagged > 0) {
     console.log(`Republished-page guard: flagged ${republishedEarlierYearFlagged} reviews that name an earlier year\n`);

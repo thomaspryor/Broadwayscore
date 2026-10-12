@@ -251,6 +251,42 @@ function auditIncludedReviews(reviews, shows) {
   return hits;
 }
 
+/**
+ * Rebuild-time exclusion (BRO-5015 cluster): a file whose OWN url proves
+ * another production must not score. URL_SIGNALS read only the url; the
+ * class-G url-date contradiction also reads publishDate (it fires only when
+ * publishDate disagrees with the url's own date), so `opts.urlOnly` drops it
+ * for files whose publishDate is known stale (mid url-correction). The date guards key on publishDate, and a url swap or a
+ * republish can stamp the current run's date on an old article (la-traviata
+ * 2026 carried a 2022 Met review dated 2026-03-26), so they let it through.
+ * Scope (shows with a home market) matches auditIncludedReviews. Returns the
+ * signal, or null.
+ */
+const OTHER_PRODUCTION_URL_REASON = 'other-production-url';
+
+function detectOtherProductionUrl(review, show, opts = {}) {
+  if (!review || !show || !showMarket(show)) return null;
+  const sig = otherProductionSignal(review, show, { ...opts, only: URL_SIGNALS });
+  if (sig || opts.urlOnly) return sig;
+  // A full /YYYY/mon/DD/ url date outside every run and priorRuns window, on a
+  // file whose publishDate disagrees with it (Oslo 2017 carried the Lyttelton
+  // review, url 2017-09-24, dated 2017-04-14). Reused from BRO-4432 class G.
+  const { urlDateContradictionReason } = require('./older-production-live-guard');
+  const g = urlDateContradictionReason(review, show);
+  return g ? { signal: 'url-date-contradiction', detail: g } : null;
+}
+
+/**
+ * Lift our own flag once the url no longer proves another production (the
+ * url was corrected, or the show gained a priorRuns window covering it).
+ * Human decisions are never touched.
+ */
+function shouldReleaseOtherProductionUrl(d, show, opts = {}) {
+  if (!d || d.wrongProduction !== true || d.wrongProductionReason !== OTHER_PRODUCTION_URL_REASON) return false;
+  if (d.wrongProductionManualClear || d.wrongProductionOverride || d.humanReviewedWrongProduction !== undefined || d.allowEarlyDate) return false;
+  return !detectOtherProductionUrl(d, show, opts);
+}
+
 if (require.main === module) {
   const path = require('path');
   const root = path.join(__dirname, '..', '..');
@@ -263,6 +299,9 @@ if (require.main === module) {
 }
 
 module.exports = {
+  OTHER_PRODUCTION_URL_REASON,
+  detectOtherProductionUrl,
+  shouldReleaseOtherProductionUrl,
   londonAggregatorCandidates,
   auditIncludedReviews,
   otherProductionSignal,
