@@ -20,6 +20,7 @@ const { validateShowMentioned, extractByline, matchesCritic, computeContentFinge
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { evaluateShowMentionGuard, pickShowTitleForHeuristic } = require('./lib/review-guards');
 
+const { pickFingerprintOwners, duplicateTextTarget } = require('./lib/fingerprint-owner');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `backfill-review-flags.js — Backfill Review Quality Flags (1D).
@@ -35,7 +36,7 @@ const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
 const SHOW_FILTER = (args.find(a => a.startsWith('--show=')) || '').replace('--show=', '');
 
-const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
+const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
 
 // Load shows.json for title lookup
 let showsData = {};
@@ -80,29 +81,24 @@ for (const showId of showDirs) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
   const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json'));
 
-  // Build fingerprint map for this show (for 1C dedup)
-  const fingerprintMap = new Map(); // fingerprint → filename
-
-  // First pass: build fingerprint map
+  // First pass: fingerprint every file (for 1C dedup). Owners are picked by
+  // pickFingerprintOwners so a same-URL dedup loser never owns (BRO-4188).
+  const fpEntries = [];
+  const fileMeta = new Map(); // filename -> { duplicateOf, duplicateTextOf }
   for (const file of files) {
     try {
       const filePath = path.join(showDir, file);
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      fileMeta.set(file, { duplicateOf: data.duplicateOf, duplicateTextOf: data.duplicateTextOf });
       if (data.fullText && data.fullText.length >= 100) {
         const fp = computeContentFingerprint(data.fullText);
-        if (fp) {
-          if (fingerprintMap.has(fp)) {
-            // This is a duplicate - record it
-            // The first file keeps the fingerprint, subsequent ones get flagged
-          } else {
-            fingerprintMap.set(fp, file);
-          }
-        }
+        if (fp) fpEntries.push({ file, fingerprint: fp, duplicateOf: data.duplicateOf, duplicateTextOf: data.duplicateTextOf });
       }
     } catch (e) {
       // Skip unreadable files
     }
   }
+  const fingerprintMap = pickFingerprintOwners(fpEntries); // fingerprint → owner filename
 
   // Second pass: apply checks
   for (const file of files) {
@@ -194,8 +190,9 @@ for (const showId of showDirs) {
       // 1C: Content hash dedup
       const fingerprint = computeContentFingerprint(fullText);
       if (fingerprint) {
-        const existingOwner = fingerprintMap.get(fingerprint);
-        if (existingOwner && existingOwner !== file) {
+        const owner = fingerprintMap.get(fingerprint);
+        const existingOwner = duplicateTextTarget(file, owner, fileMeta.get(owner));
+        if (existingOwner) {
           if (!data.duplicateTextOf || data.duplicateTextOf !== existingOwner) {
             data.duplicateTextOf = existingOwner;
             modified = true;
@@ -206,10 +203,6 @@ for (const showId of showDirs) {
           // Clear stale flag
           delete data.duplicateTextOf;
           modified = true;
-        }
-        // Register this file if not already in map
-        if (!fingerprintMap.has(fingerprint)) {
-          fingerprintMap.set(fingerprint, file);
         }
       }
 
