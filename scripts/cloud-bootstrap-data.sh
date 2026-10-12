@@ -119,10 +119,9 @@ log "data/shows.json missing — bootstrapping cloud dataset"
 # 2. Try the real private repos if we have any way to authenticate. In a cloud
 # session (CLAUDE_CODE_REMOTE=true) we try even without a token or gh, because
 # setup-local-data.sh has a tokenless proxy-clone path that only works there.
-# Bounded so a stuck clone can't hang SessionStart. NOTE: if an existing
-# $HOME/broadway-scorecard-data clone is present, setup-local-data.sh git-reset
-# --hard's it — safe in ephemeral cloud, but don't point this at a repo with
-# uncommitted work.
+# Bounded so a stuck clone can't hang SessionStart. An existing
+# $HOME/broadway-scorecard-data clone is only reset when it has no local work
+# (scripts/lib/core-data-clone-guard.sh, BRO-3337).
 if [ -n "${REVIEW_TEXTS_TOKEN:-}" ] || command -v gh >/dev/null 2>&1 || [ "${CLAUDE_CODE_REMOTE:-}" = "true" ]; then
   # Review texts (~234 MB, broadway-review-texts) clone only with --all. Opt in via
   # REVIEW_TEXTS_TOKEN so routines and UI-only sessions without it stay fast.
