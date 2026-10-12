@@ -382,9 +382,11 @@ test('no test invokes a ledger-writing main() without stubbing appendLedgerEntry
     + offenders.join('\n  '));
 });
 
-test('dispatch-ledger LEDGER_PATH is still hardcoded, so the guard above is still required', () => {
+// BRO-2681: REPO is now repo-root.js's MAIN_REPO_ROOT (the shared main
+// checkout), which mkdtempSync still does not isolate, so the guard stands.
+test('dispatch-ledger LEDGER_PATH is still the shared main checkout, so the guard above is still required', () => {
   const src = fs.readFileSync(path.join(SCRIPTS, 'lib', 'dispatch-ledger.js'), 'utf8');
-  assert.match(src, /const REPO = '\/Users\/tompryor\/Broadwayscore'/,
+  assert.match(src, /const \{ MAIN_REPO_ROOT: REPO \} = require\('\.\/repo-root'\)/,
     'LEDGER_PATH stopped being hardcoded — if appendEntry now resolves relative to cwd or takes an '
     + 'injected path by default, revisit this guard; the escape route changed.');
 });
