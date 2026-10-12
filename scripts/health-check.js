@@ -37,7 +37,7 @@ const { computeCommercialModelDriftStatus } = require('./lib/commercial-model-dr
 const { fitCheckStatus: waltzFitCheckStatus } = require('./lib/waltz-model-fit');
 const { revisitBarStatus } = require('./lib/recoupment-timing-report');
 const { selectUnroutedVisitorRows } = require('./lib/start-now-filing.js');
-const { untrackedPersistentRowsResult } = require('./lib/untracked-persistent-rows.js');
+const { untrackedPersistentRowsResult, ROW_NAME: UNTRACKED_ROWS_ROW_NAME } = require('./lib/untracked-persistent-rows.js');
 // BRO-5168: card filings per run for failing rows with no playbook route.
 const MAX_UNROUTED_FILINGS_PER_RUN = 4;
 const { routeAlert, resolveQuietConditions, readDispatchAttempts, peekDigestQueue, clearDigestQueue, toSnapshotQueuedRow } = require('./lib/owner-alert-router.js');
@@ -2872,11 +2872,16 @@ function checkAutofixCanary(isCI) {
 // visitor-facing row has been red for 4+ days and nothing open tracks it,
 // which is what the Mac-only throughput rows could not show from CI.
 async function checkUntrackedPersistentRows() {
-  return [await untrackedPersistentRowsResult({
-    ledger: require('./lib/owner-alert-router.js').loadLedger(),
-    listOpenIssues: () => require('./lib/linear-client.js').listOpenIssuesWithDescriptions(),
-    getIssue: (id) => require('./lib/linear-client.js').getIssue(id),
-  })];
+  try {
+    return [await untrackedPersistentRowsResult({
+      ledger: require('./lib/owner-alert-router.js').loadLedger(),
+      listOpenIssues: () => require('./lib/linear-client.js').listOpenIssuesWithDescriptions(),
+      getIssue: (id) => require('./lib/linear-client.js').getIssue(id),
+    })];
+  } catch (err) {
+    // Advisory row: a failure here must never take down the other checks.
+    return [{ name: UNTRACKED_ROWS_ROW_NAME, status: 'warn', message: `Unmeasurable: ${String(err.message || err).slice(0, 160)}` }];
+  }
 }
 
 // LOCAL-FOLD(checkAutofixThroughput): CI-skipped; the real row is evaluated
@@ -5201,6 +5206,7 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
             severity: r.status === 'error' ? 'error' : 'warning',
             disposition: 'auto',
             deferFilingHours: 72,
+            workerFixable: true,
             fields: [{ name: 'Check', value: r.name }],
           });
           if (result && (result.deferred || result.action === 'silent')) unroutedBudget++;

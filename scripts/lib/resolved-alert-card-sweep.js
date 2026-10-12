@@ -22,6 +22,8 @@
  */
 
 const AUTO_FILED_LINE = 'Auto-filed by owner-alert-router (condition: ';
+// BRO-5168: owner-alert-router's START-NOW cards carry this line instead.
+const START_NOW_FILED_LINE = 'Filed by owner-alert-router (START-NOW; condition: ';
 
 /** PURE. Map identifier -> {resolved: [keys], open: [keys]} from the ledger. */
 function cardConditionIndex(ledger) {
@@ -73,7 +75,8 @@ function skipReason(issue, conditionKey) {
   if (!issue) return 'issue-not-found';
   const type = issue.state && issue.state.type;
   if (type !== 'backlog' && type !== 'unstarted') return `state-${type || 'unknown'}`;
-  if (!String(issue.description || '').includes(`${AUTO_FILED_LINE}${conditionKey})`)) return 'not-filed-for-this-condition';
+  const desc = String(issue.description || '');
+  if (!desc.includes(`${AUTO_FILED_LINE}${conditionKey})`) && !desc.includes(`${START_NOW_FILED_LINE}${conditionKey})`)) return 'not-filed-for-this-condition';
   // A repeat-filing note (linear-issue-create reuseOpenTwin) is not activity.
   const comments = ((issue.comments && issue.comments.nodes) || []).filter((c) => !/^Filed again on /.test(String((c && c.body) || '')));
   if (comments.length > 0) return 'has-comments';

@@ -1446,3 +1446,14 @@ test('planAutofix: a queued router line already titled "BSC Daily: <row>" is not
   const plan = planAutofix({ health: { errors: [], warns: [] }, today: '2026-10-12', queued: [{ title: 'BSC Daily: Data: stale rows', description: 'x', conditionKey: 'health-check:Data: stale rows' }] });
   assert.deepEqual(plan.map((r) => r.title), ['BSC Daily: Data: stale rows']);
 });
+
+test('planAutofix: a queued router line that repeats a health row yields one plan row, the START-NOW-capable health one (BRO-5168)', () => {
+  const { planAutofix } = require('./digest-autofix.js');
+  const plan = planAutofix({
+    health: { errors: [], warns: [{ name: 'Data: stale rows', message: 'm' }] },
+    today: '2026-10-12',
+    queued: [{ title: 'BSC Daily: Data: stale rows', description: 'x', conditionKey: 'health-check:Data: stale rows' }],
+  });
+  assert.deepEqual(plan.map((r) => r.title), ['BSC Daily: Data: stale rows']);
+  assert.equal(plan[0].fromHealth, true);
+});
