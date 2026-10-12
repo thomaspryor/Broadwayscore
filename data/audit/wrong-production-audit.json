@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-12T22:58:55.154Z",
+  "timestamp": "2026-10-12T23:24:32.894Z",
   "stats": {
     "totalReviews": 56165,
-    "alreadyFlagged": 20952,
+    "alreadyFlagged": 20954,
     "dateGuardCatches": 216,
     "directorMismatch": 1804,
-    "tvFilmSignals": 1621,
-    "londonSignals": 2210,
+    "tvFilmSignals": 1620,
+    "londonSignals": 2209,
     "offBroadwaySignals": 507,
-    "yearMismatch": 139,
-    "noPublishDate": 5288
+    "yearMismatch": 138,
+    "noPublishDate": 5287
   },
   "findings": [
     {
@@ -8274,19 +8274,6 @@
       "score": 88,
       "publishDate": "2026-07-15",
       "url": "https://www.broadwayworld.com/edmonton/article/Review-CLUE-Takes-Centre-Stage-at-Edmontons-Northern-Alberta-Jubilee-Auditorium-20260715",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
-      "showId": "clue-tour-2025",
-      "file": "broadwayworld--victoria-schwarz.json",
-      "publishDate": "2026-09-28",
-      "url": "https://www.broadwayworld.com/austin/article/Review-CLUE-at-Gaslight-Baker-Theatre-20260928",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -17171,24 +17158,6 @@
     },
     {
       "showId": "hadestown-tour-2024",
-      "file": "indiewire--wilson-chapman.json",
-      "publishDate": "2026-07-22",
-      "url": "https://www.indiewire.com/criticism/movies/hadestown-the-musical-movie-review-1235206370/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2019 (4x) more than 2024 (0x). 2019 matches production: hadestown-2019"
-        }
-      ]
-    },
-    {
-      "showId": "hadestown-tour-2024",
       "file": "maryland-theatre-guide--unknown.json",
       "score": 91,
       "publishDate": "2025-11-20",
@@ -17625,6 +17594,7 @@
     {
       "showId": "harry-potter-tour-2024",
       "file": "rachelsreviewstheatre--unknown.json",
+      "score": 66,
       "publishDate": "2026-09-25",
       "url": "https://rachelsreviewstheatre.com/2026/09/25/cursed-child-delivers-magical-spectacle-over-story-review/",
       "findings": [
@@ -27542,6 +27512,7 @@
     {
       "showId": "my-neighbour-totoro-west-end-2025",
       "file": "thereviewshub--the-reviews-hub-london.json",
+      "score": 74,
       "publishDate": "2022-10-20",
       "url": "https://www.thereviewshub.com/my-neighbour-totoro-barbican-london/",
       "findings": [
@@ -29888,6 +29859,7 @@
     {
       "showId": "paranormal-activity-chicago-regional-2025",
       "file": "thefourthwalsh--unknown.json",
+      "score": 89,
       "publishDate": "2025-10-18",
       "url": "https://thefourthwalsh.com/2025/10/review-paranormal-activity-chicago-shakespeare-theater-staged-fright/",
       "findings": [
@@ -33459,6 +33431,7 @@
     {
       "showId": "shucked-tour-2024",
       "file": "the-globe-and-mail--ilana-lucas.json",
+      "score": 77,
       "publishDate": "2026-03-10",
       "url": "https://www.theglobeandmail.com/culture/stage/article-shucked-review/",
       "findings": [
@@ -34711,6 +34684,7 @@
     {
       "showId": "spamalot-tour-2025",
       "file": "metrmag--kevin-t-baldwin.json",
+      "score": 84,
       "publishDate": null,
       "url": "https://www.metrmag.com/latest-reviews/monty-python-s-spamalot-by-eric-idle-and-john-du-prez-boch-center-wang-theatre-boston-ma-review",
       "findings": [
@@ -38513,6 +38487,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2026",
       "file": "london-theatre--aliya-al-hassan.json",
+      "score": 90,
       "publishDate": "2025-05-13",
       "url": "https://www.londontheatre.co.uk/reviews/the-comedy-about-spies-review-noel-coward-theatre",
       "findings": [
@@ -38557,6 +38532,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2026",
       "file": "thestage--holly-o.json",
+      "score": 55,
       "publishDate": "2025-05-14",
       "url": "https://www.thestage.co.uk/reviews/the-comedy-about-spies-review-noel-coward-theatre-mischief-theatre",
       "findings": [
@@ -40038,6 +40014,7 @@
     {
       "showId": "the-great-gatsby-tour-2026",
       "file": "huntnewsnu--sabrina-lopez.json",
+      "score": 75,
       "publishDate": "2026-08-09",
       "url": "https://huntnewsnu.com/93567/lifestyle/the-great-gatsby-trades-literary-depth-for-broadway-pizzazz/",
       "findings": [
@@ -42878,6 +42855,7 @@
     {
       "showId": "the-outsiders-tour-2025",
       "file": "rachelweinbergreviews--rachelrweinberg.json",
+      "score": 81,
       "publishDate": "2026-08-08",
       "url": "https://rachelweinbergreviews.com/2026/08/08/review-the-outsiders-national-tour-presented-by-broadway-in-chicago/",
       "findings": [
@@ -43501,6 +43479,7 @@
     {
       "showId": "the-phantom-of-the-opera-tour-2025",
       "file": "broadwayworld--linda-hodges.json",
+      "score": 93,
       "publishDate": "2026-10-10",
       "url": "https://www.broadwayworld.com/san-francisco/article/Review-PHANTOM-OF-THE-OPERA-at-Broadway-San-Jose-20261010",
       "findings": [
@@ -49573,6 +49552,7 @@
     {
       "showId": "working-girl-la-jolla-regional-2025",
       "file": "latheatrix--anita-w-harris.json",
+      "score": 88,
       "publishDate": "2025-12-18",
       "url": "https://www.latheatrix.com/post/review-la-jolla-playhouse-s-world-premiere-working-girl-is-well-timed-for-broadway",
       "findings": [
@@ -78827,6 +78807,7 @@
     {
       "showId": "the-lion-king-tour-2021",
       "file": "trib-live--by-alexis-papalia.json",
+      "score": 78,
       "publishDate": "2026-09-11",
       "url": "https://triblive.com/aande/theater-arts/review-disneys-the-lion-king-is-a-majestic-start-to-the-pnc-broadway-in-pittsburgh-series-season-at-the-benedum/",
       "findings": [
@@ -79473,6 +79454,7 @@
     {
       "showId": "the-norman-conquests-2009",
       "file": "nytimes--ben-brantley.json",
+      "score": 95,
       "publishDate": null,
       "url": "https://www.nytimes.com/2009/04/24/theater/reviews/24norm.html",
       "findings": [
