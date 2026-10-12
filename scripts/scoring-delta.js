@@ -1243,7 +1243,13 @@ function decideInclusion(review, show, guards) {
       || review.wrongProductionManualClear === true
       || review.wrongProductionOverride === true
       || review.humanReviewedWrongProduction === false;
-    if (!wpCleared) return { included: false, reason: 'contentTier:invalid' };
+    // BRO-5130: a human clear of the wrongShow / not-a-review verdict that
+    // stamped the tier lifts it too. Optional so the baseline guards (which
+    // predate the helper) still load.
+    const humanCleared = typeof guards.invalidTierClearedByHuman === 'function'
+      ? guards.invalidTierClearedByHuman(review)
+      : false;
+    if (!wpCleared && !humanCleared) return { included: false, reason: 'contentTier:invalid' };
   }
   if (review.assignedScore == null) return { included: false, reason: 'no score' };
 

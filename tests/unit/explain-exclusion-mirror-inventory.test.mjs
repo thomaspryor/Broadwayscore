@@ -55,6 +55,10 @@ const INVENTORY = {
   // heuristic, too loose to un-exclude on its own). Measured 2026-10-12: 48
   // files match it, and the mirror still excludes all 48 under another rule,
   // so it changes no verdict today.
+  // BRO-5130: the rebuild has no contentTier==='invalid' exclusion (it only
+  // counts those files in a diagnostic), so the matching-human-clear lift of a
+  // stale invalid tier exists on the mirror side alone.
+  invalidTierClearedByHuman: 'mirror-only: rebuild never gates on contentTier invalid (only a diagnostic count), so the human-clear lift is mirror-side (2026-10-12)',
   isLikelyStaleWrongShow: 'mirror-only: heuristic (~75% precision) deferred to clear-stale-wrong-show-flags.js; 48 matching files, 0 verdict changes (2026-10-12)',
 };
 

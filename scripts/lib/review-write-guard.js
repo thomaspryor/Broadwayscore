@@ -186,6 +186,10 @@ const PROTECTED_FIELDS = [
   // if the breadcrumb itself were droppable the restore would resurrect the flag it
   // was raised to retire. See CLEAR_BREADCRUMBS below.
   'isNotReviewManualClear',
+  // Same breadcrumb for the isNonReview family (BRO-5130): a person's "this is a
+  // review" clear (isNonReview=false + nonReviewManualClear). Self-protecting; no
+  // code retracts it, so a rebase-time restore must never drop it.
+  'nonReviewManualClear',
   'wrongProductionOverride',
   'wrongProductionOverrideReason',
   'wrongProductionOverrideSetAt',

@@ -1758,6 +1758,51 @@ function cvWrongArticleFamily(cv) {
   return cv.wrongProduction === true ? 'wrongShow' : 'nonReview';
 }
 
+/**
+ * Which verdict stamped a file's contentTier 'invalid' (BRO-5130), read from the
+ * breadcrumbs each stamping site leaves:
+ *   'wrongProduction' — classifyContentTier's "Wrong production" tier reason
+ *   'wrongShow'       — classifyContentTier's "Wrong show" reason (CV-promoted or
+ *                       scorer wrong_show flags), or a wrong_show rejection
+ *   'nonReview'       — the scorer's not_a_review rejection (ensemble or
+ *                       preopening-interview-signal) or the collector's
+ *                       non_review invalidation
+ * null for garbage / unknown reasons: no human clear speaks to those.
+ */
+function invalidTierVerdict(data) {
+  if (!data) return null;
+  const reason = data.contentTierReason;
+  // Garbage text is about the body, not a verdict a person can clear — even
+  // when the file also carries a rejection (FT paywall stubs with wrong_show).
+  if (typeof reason === 'string' && /^(Garbage content|Marked as garbage)/.test(reason)) return null;
+  // Same for a garbage rejection under a verdict reason (30 files carry
+  // 'Wrong show' + rejectionReason garbage_text; one scraper_garbage).
+  if (typeof data.rejectionReason === 'string' && /garbage/.test(data.rejectionReason)) return null;
+  if (typeof data.incompleteReason === 'string' && /garbage/.test(data.incompleteReason)) return null;
+  if (reason === 'Wrong production') return 'wrongProduction';
+  if (reason === 'Wrong show' || data.rejectionReason === 'wrong_show') return 'wrongShow';
+  if (data.rejectionReason === 'not_a_review' || data.incompleteReason === 'non_review'
+      || data.rejectedBy === 'preopening-interview-signal') return 'nonReview';
+  return null;
+}
+
+/**
+ * True when a person cleared the very verdict that stamped contentTier 'invalid',
+ * so the tier is stale and must not keep the file excluded (BRO-5130). Before
+ * this only a wrongProduction clear lifted it (explainExclusion), so a
+ * wrongShowManualClear or a "this is a review" clear (nonReviewManualClear,
+ * isNotReviewManualClear, wrongArticleManualClear) left the review hidden.
+ * The wrongProduction clears are checked by callers directly (they lift any
+ * invalid tier, the pre-BRO-5130 rule). One helper so explainExclusion,
+ * isRejectedNonReview and scoring-delta.js's replay cannot drift apart.
+ */
+function invalidTierClearedByHuman(data) {
+  const verdict = invalidTierVerdict(data);
+  if (verdict === 'wrongShow') return wrongShowCleared(data);
+  if (verdict === 'nonReview') return cvNonReviewHumanCleared(data) || data.isNotReviewManualClear === true;
+  return false;
+}
+
 function wrongShowCleared(data) {
   if (!data) return false;
   // Note: isCombinedReview alone is NOT sufficient. It's set whenever a URL
@@ -4679,14 +4724,15 @@ function explainExclusion(data, show, filePath) {
 
   // Invalid content tier: rebuild's drift-checker excludes this at line 3158.
   // Respect manual clears — if wrongProduction was the reason and has since been cleared,
-  // the contentTier=invalid flag is stale and should not block inclusion.
+  // the contentTier=invalid flag is stale and should not block inclusion. Same for a
+  // human clear of the wrongShow / not-a-review verdict that stamped it (BRO-5130).
   if (data.contentTier === 'invalid' && !laneOk('headlineBackstop')) {
     const wpCleared =
       data.wrongProductionManualClear === true ||
       data.wrongProductionOverride === true ||
       data.humanReviewedWrongProduction === false ||
       isFreshWpAutoCleared(data);
-    if (!wpCleared) return 'contentTierInvalid';
+    if (!wpCleared && !invalidTierClearedByHuman(data)) return 'contentTierInvalid';
     // Cleared — fall through and let text/signal check decide
   }
 
@@ -5189,7 +5235,7 @@ function isRejectedNonReview(data) {
   if (cv && NON_REVIEW_CV_ARTICLE_TYPES.has(cv.articleType) && !cvWrongArticleManuallyCleared(data)) return true;
   // contentTier 'invalid' with no manual clear (the wrongShowCleared escape above
   // already returned for the human-cleared case) → garbage / unusable page.
-  if (data.contentTier === 'invalid') return true;
+  if (data.contentTier === 'invalid' && !invalidTierClearedByHuman(data)) return true;
   return false;
 }
 
@@ -5501,6 +5547,8 @@ module.exports = {
   cvNonReviewHumanCleared,
   cvWrongArticleFamily,
   wrongShowCleared,
+  invalidTierVerdict,
+  invalidTierClearedByHuman,
   rejectedAtHumanCleared,
   isTimestampAfter,
   isLikelyStaleSuspectedMisattribution,

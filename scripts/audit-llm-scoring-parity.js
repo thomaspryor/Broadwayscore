@@ -31,6 +31,7 @@ const {
   wrongShowCleared,
   isLikelyStaleSuspectedMisattribution,
   getCriticRegistry,
+  invalidTierClearedByHuman,
 } = require('./lib/review-guards');
 const { isScoreable } = require('./lib/is-scoreable');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
@@ -97,7 +98,7 @@ function classifyRebuildExclusion(data, show) {
     const hasSignal = !!(data.aggregatorStars != null || data.originalScore != null || data.llmScore);
     if (!hasText && !hasSignal) return 'incompleteReason_wrong_content';
   }
-  if (data.contentTier === 'invalid' && !wpClearedFlags(data) && !laneOk('headlineBackstop')) return 'contentTier_invalid';
+  if (data.contentTier === 'invalid' && !wpClearedFlags(data) && !invalidTierClearedByHuman(data) && !laneOk('headlineBackstop')) return 'contentTier_invalid';
 
   if (data.fullTextWrongAuthor === true) {
     const hasExc = !!(

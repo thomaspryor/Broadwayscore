@@ -2002,7 +2002,7 @@ const crossShowFingerprints = new Map();
 // from the --unknown file into it and delete the stale --unknown file. This prevents duplicate
 // entries in validate-review-texts.js (which keys on JSON criticName, not filename).
 {
-  let renamedCount = 0, mergedCount = 0, errorCount = 0, skippedFlaggedCount = 0, skippedLockedCount = 0;
+  let renamedCount = 0, mergedCount = 0, errorCount = 0, skippedFlaggedCount = 0, skippedLockedCount = 0, skippedProtectedCount = 0;
   for (const sid of showDirs) {
     const sDir = path.join(reviewTextsDir, sid);
     const unknownFiles = fs.readdirSync(sDir).filter(f => f.endsWith('.json') && f.includes('--unknown'));
@@ -2020,9 +2020,11 @@ const crossShowFingerprints = new Map();
         if (fs.existsSync(expectedPath)) {
           // Named file exists — merge unique fields from --unknown, then delete it.
           // Guarded: an exclusion-flagged source never folds into an unflagged
-          // target (totoro contamination, Notion 39b637c5-416f-815e) — leave it.
+          // target (totoro contamination, Notion 39b637c5-416f-815e), and a
+          // source a person cleared is never deleted (BRO-5130) — leave it.
           const existingData = JSON.parse(fs.readFileSync(expectedPath, 'utf8'));
           const mergeResult = mergeUniqueReviewFields(existingData, d);
+          if (mergeResult.action === 'skip-protected-source') { skippedProtectedCount++; continue; }
           if (mergeResult.action !== 'merged') { skippedFlaggedCount++; continue; }
           if (mergeResult.changed) {
             writeReviewOrThrow(expectedPath, existingData);
@@ -2048,9 +2050,10 @@ const crossShowFingerprints = new Map();
       }
     }
   }
-  if (renamedCount > 0 || mergedCount > 0 || skippedFlaggedCount > 0 || skippedLockedCount > 0) {
-    console.log(`Stale --unknown cleanup: ${renamedCount} renamed, ${mergedCount} merged+deleted, ${skippedFlaggedCount} flagged tombstones left in place${skippedLockedCount ? `, ${skippedLockedCount} skipped (_locked)` : ''}${errorCount ? `, ${errorCount} errors` : ''}`);
+  if (renamedCount > 0 || mergedCount > 0 || skippedFlaggedCount > 0 || skippedLockedCount > 0 || skippedProtectedCount > 0) {
+    console.log(`Stale --unknown cleanup: ${renamedCount} renamed, ${mergedCount} merged+deleted, ${skippedFlaggedCount} flagged tombstones left in place${skippedProtectedCount ? `, ${skippedProtectedCount} human-cleared kept` : ''}${skippedLockedCount ? `, ${skippedLockedCount} skipped (_locked)` : ''}${errorCount ? `, ${errorCount} errors` : ''}`);
   }
+  stats.staleUnknownSkippedProtected = skippedProtectedCount;
   stats.staleUnknownSkippedLocked = skippedLockedCount;
   stats.staleUnknownRenamed = renamedCount;
   stats.staleUnknownMerged = mergedCount;

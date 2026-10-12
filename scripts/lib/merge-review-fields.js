@@ -61,6 +61,12 @@ const NEVER_TRANSFER_PATTERN = new RegExp(
     'allowTourSignal', 'allowFilmSignal', // (+Reason) judged on THAT file's fullText
     'allowSignalHistory',
     '_locked',
+    // History of edits made to THAT file (BRO-5130, review-texts bf5fa64a0):
+    // copied onto the sibling they claimed fixes/clears it never received.
+    'approvedFixes',
+    '_urlChangedClear',
+    'previousUrl',
+    'urlCorrectedFrom',
   ].join('|') + ')'
 );
 
@@ -71,13 +77,27 @@ const OPERATOR_ASSERTION_FIELDS = [
   'wrongProductionOverride', 'wrongShowOverride', 'isNotReviewManualClear',
   'manualContentTier', 'humanReviewScore',
   'allowEarlyDate', 'allowCrossMarket', 'allowTourSignal', 'allowFilmSignal',
-  'manualClearNote',
+  'manualClearNote', 'nonReviewManualClear',
 ];
+
+// Any *ManualClear breadcrumb is a person's decision about THIS file, named or
+// not. BRO-5130: nonReviewManualClear was missing from the list above, so a
+// person's "this is a review" file was merged into a stale wrongShow sibling
+// and deleted (review-texts bf5fa64a0). A pattern, so the next new clear family
+// cannot drift out of the list again. *Override is NOT matched by pattern:
+// automation writes nonReviewOverride ("Auto-recovered: ...") and
+// textQualityOverride (batch fixes); human *Override names are listed above.
+const OPERATOR_ASSERTION_KEY_PATTERN = /ManualClear$/;
+
+function _isSet(v) {
+  return v != null && v !== false && v !== '';
+}
 
 function hasOperatorAssertion(data) {
   if (!data) return false;
   if (data.humanReviewedWrongProduction === false) return true;
-  return OPERATOR_ASSERTION_FIELDS.some(k => data[k] != null && data[k] !== false && data[k] !== '');
+  if (OPERATOR_ASSERTION_FIELDS.some(k => _isSet(data[k]))) return true;
+  return Object.keys(data).some(k => OPERATOR_ASSERTION_KEY_PATTERN.test(k) && _isSet(data[k]));
 }
 
 function isTransferableField(key) {
@@ -149,5 +169,6 @@ module.exports = {
   isTransferableField,
   hasOperatorAssertion,
   OPERATOR_ASSERTION_FIELDS,
+  OPERATOR_ASSERTION_KEY_PATTERN,
   NEVER_TRANSFER_PATTERN,
 };

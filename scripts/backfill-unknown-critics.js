@@ -28,6 +28,7 @@ const path = require('path');
 require('./lib/load-env').loadEnv();
 
 const { safeWriteReview, safeRenameReview, safeUnlinkReview, shouldSkipLockedEnrichment } = require('./lib/review-write-guard');
+const { mergeUniqueReviewFields } = require('./lib/merge-review-fields');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
 let lockedSkipCount = 0;
@@ -214,6 +215,7 @@ function phaseA(unknownOutlets) {
 
   let resolved = 0;
   let duplicatesRemoved = 0;
+  let keptCount = 0;
   let renamed = 0;
   let noMatch = 0;
   const unresolvedDomains = new Map(); // domain → count
@@ -236,8 +238,37 @@ function phaseA(unknownOutlets) {
     resolved++;
 
     if (fileResult.duplicate) {
-      duplicatesRemoved++;
+      // BRO-5130: this path deleted the source with no merge at all, so a
+      // person's clear (or the source's text) vanished with it. Fold it through
+      // the same guarded merge the rebuild's stale-filename passes use; any
+      // result other than 'merged' (flagged or human-cleared source) keeps it.
+      const targetPath = path.join(reviewsDir, u.dir, fileResult.newFile);
+      let targetData;
+      try {
+        targetData = JSON.parse(fs.readFileSync(targetPath, 'utf8'));
+      } catch (e) {
+        keptCount++;
+        console.log(`  [${i+1}] KEPT (unreadable target): ${u.dir}/${u.file}; ${fileResult.newFile}: ${e.message}`);
+        continue;
+      }
+      const mergeResult = mergeUniqueReviewFields(targetData, u.data);
+      if (mergeResult.action !== 'merged') {
+        keptCount++;
+        console.log(`  [${i+1}] KEPT (${mergeResult.action}): ${u.dir}/${u.file} duplicates ${fileResult.newFile} but carries a flag or human clear`);
+        continue;
+      }
       if (!dryRun) {
+        if (mergeResult.changed) {
+          const w = safeWriteReview(targetPath, targetData);
+          if (w.lockedSkipped) lockedSkipCount++;
+          // The merged fields (and the absorbed mergedDuplicates URL) live only
+          // in memory until this write lands; deleting the source now loses them.
+          if (!w.wrote) {
+            keptCount++;
+            console.log(`  [${i+1}] KEPT (target write refused): ${u.dir}/${u.file}`);
+            continue;
+          }
+        }
         // Honor _locked on the duplicate-delete path (ship-check P0 2026-04-29).
         // The rename path went through safeRenameReview; this delete path was a
         // raw fs.unlinkSync that bypassed _locked. Migrate it too.
@@ -247,7 +278,9 @@ function phaseA(unknownOutlets) {
           console.log(`  [${i+1}] LOCKED-SKIP: ${u.dir}/${u.file} would be a duplicate of ${fileResult.newFile} but is _locked — kept`);
           continue;
         }
+        if (u1.skipped) { keptCount++; continue; }
       }
+      duplicatesRemoved++;
       if (duplicatesRemoved <= 10) {
         console.log(`  [${i+1}] DUPE: ${u.dir}/${u.file} → ${fileResult.newFile} already exists`);
       }
@@ -265,6 +298,7 @@ function phaseA(unknownOutlets) {
   console.log(`  Resolved: ${resolved}`);
   console.log(`  Renamed: ${renamed}`);
   console.log(`  Duplicates removed: ${duplicatesRemoved}`);
+  console.log(`  Duplicates kept (flagged or human-cleared): ${keptCount}`);
   console.log(`  No match: ${noMatch}`);
 
   if (unresolvedDomains.size > 0) {
