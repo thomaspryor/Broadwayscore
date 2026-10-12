@@ -297,6 +297,103 @@ describe('replayed contention against a local bare repo', () => {
   });
 });
 
+describe('lost commit identity (third review, HIGH)', () => {
+  test('a push that fails leaving a merge commit as HEAD: the redo still replays the pre-push commit', () => {
+    const fx = setupFixture();
+    try {
+      firstPassCommit(fx);
+      const ours = sh('git rev-parse HEAD', fx.runner).trim();
+      // push-with-retry.sh's merge fallback: the competitor lands, the pusher
+      // `merge -X ours`es origin/main into HEAD, still loses, exits 1 with the
+      // merge commit M as HEAD (restore_head_if_moved keeps a descendant).
+      // Second cycle: a plain push that lands.
+      const mergingPusher = path.join(fx.tmp, 'merging-pusher.sh');
+      const calls = path.join(fx.tmp, 'push-invocations');
+      write(mergingPusher, `#!/usr/bin/env bash
+set -uo pipefail
+echo "cycle-push" >> "${calls}"
+if [ "$(wc -l < "${calls}")" -eq 1 ]; then
+  echo 1 > "${fx.races}"
+  bash "${path.join(fx.tmp, 'compete.sh')}" >/dev/null
+  git fetch -q origin main
+  git merge -q --no-edit -X ours FETCH_HEAD >/dev/null
+  exit 1
+fi
+git push -q origin HEAD:main
+`);
+      fs.chmodSync(mergingPusher, 0o755);
+      const r = runLoop(fx, { PUSH_CMD: `bash "${mergingPusher}"` });
+      const out = r.stdout + r.stderr;
+      assert.equal(r.status, 0, out);
+      assert.match(out, new RegExp(`using the pre-push commit ${ours} as the lost commit`));
+      assert.match(out, new RegExp(`lost commit ${ours}`));
+      // This run's own changes landed (with M^..M they would have been dropped)...
+      assert.deepEqual(JSON.parse(originFile(fx, 'public/data/shows/show-a.json')), { id: 'show-a', reviews: 13 });
+      assert.ok(JSON.parse(originFile(fx, 'data/audit/alert-ledger.json')).conditions['ours-row']);
+      assert.ok(originHas(fx, 'data/audit/orphan-unscored-show-a.json'));
+      // ...and the competitor's newer show-b was not republished from a stale copy.
+      assert.deepEqual(JSON.parse(originFile(fx, 'public/data/shows/show-b.json')), { id: 'show-b', reviews: 6 });
+      assert.equal(originFile(fx, 'data/audit/hot-ledger.jsonl').trim().split('\n').length, 2);
+    } finally {
+      fs.rmSync(fx.tmp, { recursive: true, force: true });
+    }
+  });
+
+  test('the redo refuses a merge commit as the lost commit', () => {
+    const fx = setupFixture();
+    try {
+      firstPassCommit(fx);
+      fs.writeFileSync(fx.races, '1\n');
+      sh(`bash "${path.join(fx.tmp, 'compete.sh')}"`, fx.tmp);
+      sh('git fetch -q origin main && git merge -q --no-edit -X ours FETCH_HEAD', fx.runner);
+      const merge = sh('git rev-parse HEAD', fx.runner).trim();
+      const r = spawnSync('bash', [REDO], {
+        cwd: fx.runner, encoding: 'utf8',
+        env: { ...process.env, ...GIT_ENV, REBUILD_FAST_SAFE_TO_PUBLISH: 'true', REBUILD_FAST_LOST_COMMIT: merge, REBUILD_FAST_REGEN_CMD: 'true' },
+      });
+      assert.equal(r.status, 1, r.stdout + r.stderr);
+      assert.match(r.stdout + r.stderr, /is a merge commit/);
+    } finally {
+      fs.rmSync(fx.tmp, { recursive: true, force: true });
+    }
+  });
+});
+
+describe('replay-audit validates a clean apply (third review, MEDIUM)', () => {
+  test('a clean `git apply -3` that yields invalid JSON falls back to main\'s copy', () => {
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'rebuild-fast-replay-'));
+    try {
+      sh('git init -q -b main', tmp);
+      const f = 'data/audit/some-state.json';
+      write(path.join(tmp, f), '{\n  "a": 1,\n  "b": 2,\n  "c": 3,\n  "d": 4,\n  "e": 5\n}\n');
+      write(path.join(tmp, 'data/audit/ok-state.json'), '{"ok":1}\n');
+      sh('git add -A && git commit -q -m base', tmp);
+      // The lost commit: its edit to some-state.json is not valid JSON (a dropped
+      // comma); ok-state.json is a normal, valid edit.
+      write(path.join(tmp, f), '{\n  "a": 1,\n  "b": 2,\n  "c": 3,\n  "d": 4\n  "e": 6\n}\n');
+      write(path.join(tmp, 'data/audit/ok-state.json'), '{"ok":2}\n');
+      sh('git add -A && git commit -q -m lost', tmp);
+      const lost = sh('git rev-parse HEAD', tmp).trim();
+      // Fresh main: another writer changed a non-adjacent line, so apply -3 is clean.
+      sh('git reset -q --hard HEAD^', tmp);
+      write(path.join(tmp, f), '{\n  "a": 100,\n  "b": 2,\n  "c": 3,\n  "d": 4,\n  "e": 5\n}\n');
+      sh('git add -A && git commit -q -m other-writer', tmp);
+      const head = fs.readFileSync(path.join(tmp, f), 'utf8');
+      const r = spawnSync('node', [path.join(REPO, 'scripts/lib/rebuild-fast-replay-audit.js'), lost], { cwd: tmp, encoding: 'utf8' });
+      const out = r.stdout + r.stderr;
+      assert.equal(r.status, 0, out);
+      assert.match(out, /clean apply of data\/audit\/some-state\.json produced invalid json/);
+      assert.match(out, /kept-remote: data\/audit\/some-state\.json/);
+      assert.equal(fs.readFileSync(path.join(tmp, f), 'utf8'), head, 'invalid JSON was left in place');
+      assert.equal(sh(`git diff --cached --name-only -- ${f}`, tmp).trim(), '', 'invalid JSON was left staged');
+      assert.match(out, /applied: data\/audit\/ok-state\.json/);
+      assert.deepEqual(JSON.parse(fs.readFileSync(path.join(tmp, 'data/audit/ok-state.json'), 'utf8')), { ok: 2 });
+    } finally {
+      fs.rmSync(tmp, { recursive: true, force: true });
+    }
+  });
+});
+
 describe('rebuild-fast.yml wiring', () => {
   test('the push step runs the bounded cycle with the redo, fail-closed on the staleness verdict', () => {
     const doc = yaml.load(fs.readFileSync(WORKFLOW, 'utf8'));

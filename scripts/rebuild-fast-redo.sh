@@ -56,6 +56,14 @@ if [ -z "$LOST" ] || ! git cat-file -e "$LOST^{commit}" 2>/dev/null \
   echo "::error::rebuild-fast redo refused: cannot read lost commit '${LOST}' or its parent (needed to replay data/audit and scope staging)"
   exit 1
 fi
+# A merge commit is never this run's own rebuild commit (stage-commit makes a
+# single-parent commit): LOST^..LOST would be another writer's diff, so the
+# replay and the staging scope would publish THEIR paths and drop ours.
+LOST_PARENTS="$(git rev-list --parents -n1 "$LOST" | wc -w)"
+if [ "$LOST_PARENTS" -gt 2 ]; then
+  echo "::error::rebuild-fast redo refused: lost commit $LOST is a merge commit ($((LOST_PARENTS - 1)) parents); its first-parent diff is not this run's rebuild"
+  exit 1
+fi
 
 if [ -n "${REBUILD_FAST_REGEN_CMD:-}" ]; then
   eval "$REBUILD_FAST_REGEN_CMD"
@@ -78,7 +86,8 @@ node "$SCRIPT_DIR/lib/rebuild-fast-replay-audit.js" "$LOST"
 # Scope staging to the lost commit's own paths.
 STAGE_ONLY="$(mktemp "${RUNNER_TEMP:-${TMPDIR:-/tmp}}/rebuild-fast-stage-only.XXXXXX")"
 trap 'rm -f "$STAGE_ONLY"' EXIT
-git diff --no-renames --name-only "$LOST^" "$LOST" > "$STAGE_ONLY"
+# NUL-delimited (-z): quoted/escaped paths (core.quotepath) cannot mismatch.
+git diff --no-renames --name-only -z "$LOST^" "$LOST" > "$STAGE_ONLY"
 export REBUILD_FAST_STAGE_ONLY_PATHS_FILE="$STAGE_ONLY"
 
 # The redo rebuilt reviews.json, so recount rather than reuse the first pass's.

@@ -15,7 +15,9 @@
  *                           from LOST). Only verify-all-scored.js writes them
  *                           and they are per-show snapshots.
  *   everything else         `git apply -3 --index` of that file's diff. Clean
- *                           -> done ("applied"). On conflict, the file is put
+ *                           AND the result still parses (registry format, else
+ *                           .json/.jsonl by extension) -> done ("applied").
+ *                           On conflict or invalid output, the file is put
  *                           back to fresh main's version, then:
  *                             - registry merger exists (alert-ledger.json,
  *                               alert-digest-queue.json, ...): 3-way merge
@@ -75,6 +77,27 @@ function restoreHead(file) {
   }
 }
 
+/** Format a data/audit file must parse as: registry format, else by extension. */
+function formatFor(file) {
+  const t = explicitMergerFor(file);
+  if (t) return t.format === 'jsonl' ? 'jsonl' : 'json';
+  if (file.endsWith('.jsonl')) return 'jsonl';
+  if (file.endsWith('.json')) return 'json';
+  return null; // not structured data: nothing to validate
+}
+
+/** null when the work-tree file is absent (a replayed delete) or parses; else a reason. */
+function invalidReason(file) {
+  const format = formatFor(file);
+  if (!format || !fs.existsSync(file)) return null;
+  try {
+    parse(fs.readFileSync(file, 'utf8'), format);
+    return null;
+  } catch (e) {
+    return `${format} (${String(e && e.message).slice(0, 80)})`;
+  }
+}
+
 function mergeWithRegistry(lost, file) {
   const t = explicitMergerFor(file);
   if (!t) return 'no-merger';
@@ -108,8 +131,15 @@ function replayAudit(lost) {
     const applied = spawnSync('git', ['apply', '-3', '--index'], { input: patch, encoding: 'utf8', maxBuffer: BIG });
     const unmerged = git(['diff', '--name-only', '--diff-filter=U', '--', file]).trim();
     if (applied.status === 0 && !unmerged) {
-      results.push({ file, outcome: 'applied' });
-      continue;
+      // A clean 3-way apply can still splice two writers' hunks into invalid
+      // JSON (e.g. a missing comma between adjacent added keys). Never publish
+      // that: treat it like a conflict.
+      const invalid = invalidReason(file);
+      if (!invalid) {
+        results.push({ file, outcome: 'applied' });
+        continue;
+      }
+      console.log(`::warning::rebuild-fast redo: clean apply of ${file} produced invalid ${invalid}; falling back to the merger / main's copy`);
     }
     restoreHead(file);
     let outcome;
@@ -144,4 +174,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { replayAudit, ORPHAN_RE };
+module.exports = { replayAudit, invalidReason, ORPHAN_RE };

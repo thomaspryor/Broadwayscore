@@ -54,7 +54,13 @@ _timeout() {
 
 cycle=1
 while :; do
-  echo "[rebuild-fast-push-cycle] cycle $cycle/$MAX_CYCLES: pushing $(git rev-parse --short HEAD)"
+  # The commit THIS run is trying to land, recorded BEFORE PUSH_CMD runs. After
+  # a failed push-with-retry.sh, HEAD may no longer be it: its merge fallback
+  # (`merge -X ours`) can leave a merge commit M as HEAD, and
+  # restore_head_if_moved keeps a descendant HEAD. M^..M is then the OTHER
+  # writers' diff, so the redo must be handed entry_head, never post-push HEAD.
+  entry_head="$(git rev-parse HEAD)"
+  echo "[rebuild-fast-push-cycle] cycle $cycle/$MAX_CYCLES: pushing $(git rev-parse --short "$entry_head")"
   set +e
   if [ "$cycle" -gt 1 ]; then
     ( export PUSH_DEADLINE_SEC="$REDO_DEADLINE"; eval "$PUSH_CMD" )
@@ -74,7 +80,10 @@ while :; do
       exit 1 ;;
   esac
 
-  lost_commit="$(git rev-parse HEAD)"
+  lost_commit="$entry_head"
+  if [ "$(git rev-parse HEAD)" != "$entry_head" ]; then
+    echo "[rebuild-fast-push-cycle] push left HEAD at $(git rev-parse --short HEAD), not this run's commit; using the pre-push commit $entry_head as the lost commit"
+  fi
   delay="$(node "$HELPER" jitter --cycle="$cycle" --max-sec="$JITTER_MAX")"
   echo "::warning::rebuild-fast lost its push race (exit $push_rc) on cycle $cycle/$MAX_CYCLES — redoing the fast rebuild on fresh origin/$PUSH_BRANCH in ${delay}s (lost commit $lost_commit)"
   sleep "$delay"
