@@ -9,9 +9,18 @@
  * unbounded per-item loop with no wall-clock budget check gets SIGKILLed
  * mid-run instead of exiting cleanly. See scripts/lib/run-budget.js header.
  *
- * Rule (only applies to SCHEDULED workflows — a workflow_dispatch-only job is
- * invoked with an explicit, human-sized input, not a growing backlog, so the
- * run-budget class of bug doesn't apply the same way):
+ * Scope (BRO-3447): SCHEDULED workflows, plus any workflow another workflow
+ * dispatches (`gh workflow run <file|"Name">`, github-script `workflow_id:`,
+ * REST `/actions/workflows/<file>/dispatches`) — see buildDispatchGraph. A
+ * workflow_dispatch-only job nothing else calls is still exempt (a human
+ * picks its input). Dispatched workflows use a 360-min timeout ceiling
+ * instead of 35, and a third finding kind, 'unbudgeted-invocation', flags a
+ * script whose run-budget is only enabled by --time-budget-min= when the
+ * workflow invokes it without that flag. Findings present when this landed
+ * live in scripts/lib/run-budget-coverage-baseline.json; main() tags others
+ * [NEW] and the unit tests fail only on NEW ones.
+ *
+ * Rule:
  *   For each job with `timeout-minutes` <= 35 whose body references
  *   BRIGHTDATA_TOKEN or SCRAPINGBEE_API_KEY, for each `node scripts/X.js`
  *   it invokes: if X.js requires scripts/lib/run-budget, pass. Otherwise,
@@ -87,6 +96,146 @@ function hasScheduleTrigger(raw) {
   const onIdx = lines.findIndex((l) => /^['"]?on['"]?\s*:/.test(l) && indentOf(l) === 0);
   if (onIdx === -1) return false;
   return directChildren(lines, onIdx).some((c) => /^schedule\s*:/.test(c.line.trim()));
+}
+
+// --- Dispatch graph (BRO-3447) ---------------------------------------------
+//
+// The schedule-only scope above missed the gather-reviews.yml incident: a
+// workflow_dispatch-only workflow whose "explicit, human-sized input" is in
+// practice supplied by ANOTHER workflow (opening-night-poller, the
+// orchestrator, its own follow-up job...) with a backlog-sized show list. A
+// 55-min job running gather-reviews.js with no --time-budget-min burned ~35K
+// credits in runs that hit the timeout and were cancelled. A workflow that
+// another workflow dispatches is therefore treated as scheduled-equivalent.
+
+/** Top-level `name:` of a workflow ('' if none). */
+function getWorkflowName(raw) {
+  const m = /^name\s*:\s*(.+?)\s*$/m.exec(raw);
+  if (!m) return '';
+  return m[1].replace(/^['"]|['"]$/g, '').trim();
+}
+
+/**
+ * Raw dispatch targets named in a workflow's text: `gh workflow run <x>`
+ * (file or quoted display name), `workflow_id: '<file>'` (github-script
+ * createWorkflowDispatch), and REST `.../actions/workflows/<file>/dispatches`.
+ * Whole-line YAML comments are dropped first so a "# re-run with gh workflow
+ * run X.yml" note doesn't fabricate an edge.
+ */
+function extractDispatchTargets(raw) {
+  const text = raw.split('\n').filter((l) => !/^\s*#/.test(l)).join('\n');
+  const out = [];
+  const ghRe = /\bgh\s+workflow\s+run\s+(?:\\?"([^"\\]+)\\?"|'([^']+)'|([^\s"'`;|&)]+))/g;
+  let m;
+  while ((m = ghRe.exec(text)) !== null) out.push((m[1] || m[2] || m[3]).trim());
+  const idRe = /\bworkflow_id\s*:\s*['"]([^'"]+)['"]/g;
+  while ((m = idRe.exec(text)) !== null) out.push(m[1].trim());
+  const restRe = /actions\/workflows\/([A-Za-z0-9_.\-]+\.ya?ml)\/dispatches/g;
+  while ((m = restRe.exec(text)) !== null) out.push(m[1]);
+  return out;
+}
+
+/**
+ * Builds target-file -> Set(caller files) over `workflows` ([{file, raw}]).
+ * Targets resolve by file basename (`x.yml`, `.github/workflows/x.yml`) or by
+ * the target's top-level `name:` (`gh workflow run "Gather Reviews"`).
+ * Unresolvable targets (`$WF`, a doc placeholder) are ignored. Self-edges
+ * (a workflow re-dispatching itself) are dropped: "dispatched by ANOTHER
+ * workflow" is the rule — a workflow nothing else calls stays exempt.
+ */
+function buildDispatchGraph(workflows) {
+  const files = new Set(workflows.map((w) => w.file));
+  const byName = new Map();
+  for (const w of workflows) {
+    const name = getWorkflowName(w.raw);
+    if (name) byName.set(name, w.file);
+  }
+  const graph = new Map();
+  for (const w of workflows) {
+    for (const target of extractDispatchTargets(w.raw)) {
+      const base = target.split('/').pop();
+      const resolved = files.has(base) ? base : byName.get(target);
+      if (!resolved || resolved === w.file) continue;
+      if (!graph.has(resolved)) graph.set(resolved, new Set());
+      graph.get(resolved).add(w.file);
+    }
+  }
+  return graph;
+}
+
+/**
+ * True when the script's run-budget is ONLY enabled by a `--time-budget-min=N`
+ * CLI flag (run-budget.js returns 0 = disabled when it's absent) and it has no
+ * numeric fallback. Requiring run-budget is then not enough: an invocation
+ * that omits the flag runs unbudgeted — exactly gather-reviews.js in the
+ * incident. Scripts with a default (`parseTimeBudgetMin(args) || 20`,
+ * `createRunBudget(22)`, `?? 10`, DEFAULT_TIME_BUDGET_MIN) are budgeted
+ * regardless of flags.
+ */
+function isFlagGatedBudgetScript(src) {
+  const clean = stripComments(src);
+  const usesFlag = /\bparseTimeBudgetMin\s*\(|['"`]-{0,2}time-budget-min['"`=]/.test(clean);
+  if (!usesFlag) return false;
+  const hasDefault =
+    /parseTimeBudgetMin\([^()]*\)\s*(?:\|\||\?\?)\s*\d/.test(clean) ||
+    /createRunBudget\(\s*\d/.test(clean) ||
+    /time-budget-min['"]?\s*\]?\s*\)?\s*(?:\|\||\?\?)\s*\d/.test(clean) ||
+    /DEFAULT_[A-Z_]*BUDGET[A-Z_]*\s*=\s*\d/.test(clean);
+  return !hasDefault;
+}
+
+/**
+ * The logical shell command starting at `startIdx` in a step body: the rest
+ * of that line plus any `\`-continued lines.
+ */
+function invocationTextAt(text, startIdx) {
+  const lines = text.slice(startIdx).split('\n');
+  const out = [lines[0]];
+  for (let i = 0; i < lines.length - 1 && /\\\s*$/.test(lines[i]); i++) out.push(lines[i + 1]);
+  return out.join('\n');
+}
+
+/**
+ * Shell/env variables in a step body that carry a run budget: assigned
+ * (`TB_FLAG="--time-budget-min=$TB"`, YAML env `TB_FLAG: --time-budget-min=9`)
+ * a value containing `--time-budget-min=`, or a value referencing another
+ * such variable (`ARGS="$ARGS $TB_FLAG"`) — resolved to a fixed point.
+ */
+function budgetCarryingVars(stepBody) {
+  const assigns = [];
+  const re = /(?:^|[\s;&|(])([A-Za-z_][A-Za-z0-9_]*)(?:=|:[ \t]+)(.*)$/gm;
+  let m;
+  while ((m = re.exec(stepBody)) !== null) assigns.push({ name: m[1], value: m[2] });
+  const vars = new Set();
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const { name, value } of assigns) {
+      if (vars.has(name)) continue;
+      const refs = [...value.matchAll(/\$\{?([A-Za-z_][A-Za-z0-9_]*)/g)].map((r) => r[1]);
+      if (/--time-budget-min=/.test(value) || refs.some((r) => vars.has(r))) {
+        vars.add(name);
+        changed = true;
+      }
+    }
+  }
+  return vars;
+}
+
+/**
+ * True if an invocation passes a run budget: the `--time-budget-min=` EQUALS
+ * form (the space form is silently ignored by parseTimeBudgetMin, BRO-3887),
+ * a shell/expression variable whose name says it carries one
+ * (`$BUDGET_FLAG`, `${{ inputs.time_budget }}`), or a variable the step body
+ * assigns a budget flag to (`$TB_FLAG`, `$ARGS` built from it).
+ */
+function invocationPassesBudget(invocation, stepBody = '') {
+  if (/--time-budget-min=/.test(invocation)) return true;
+  if (/\$\{?\{?\s*[\w.]*budget[\w.]*/i.test(invocation)) return true;
+  const refs = [...invocation.matchAll(/\$\{?([A-Za-z_][A-Za-z0-9_]*)/g)].map((r) => r[1]);
+  if (refs.length === 0) return false;
+  const vars = budgetCarryingVars(stepBody);
+  return refs.some((r) => vars.has(r));
 }
 
 /**
@@ -655,37 +804,96 @@ function findBudgetThreadingGaps(scriptSrc, libSrcByRelPath) {
 }
 
 /** Reads the lib files a script `require('./lib/X')`s (for findBudgetThreadingGaps's second argument). */
-function resolveLibSrcs(scriptSrc) {
+function resolveLibSrcs(scriptSrc, scriptsDir = SCRIPTS_DIR) {
   const map = {};
   for (const { relPath } of getLibRequires(scriptSrc)) {
     if (map[relPath] !== undefined) continue;
-    const libPath = path.join(SCRIPTS_DIR, 'lib', `${relPath}.js`);
+    const libPath = path.join(scriptsDir, 'lib', `${relPath}.js`);
     if (fs.existsSync(libPath)) map[relPath] = fs.readFileSync(libPath, 'utf8');
   }
   return map;
 }
 
+// Timeout ceilings per trigger class. Scheduled-only workflows keep the
+// original tight-timeout rule (#425). A workflow another workflow dispatches
+// (BRO-3447) gets GitHub's own 360-min default as the ceiling: its input is
+// whatever the dispatcher computed (a backlog-sized show list in the
+// gather-reviews incident), and the incident job had a 55-min timeout — a
+// "generous" timeout still SIGKILLs and still bills every credit spent
+// before it fires. A step/job with no timeout-minutes runs under that same
+// 360-min default, so for dispatched workflows a missing timeout is evaluated
+// as 360 rather than skipped.
+const DISPATCHED_MAX_TIMEOUT_MIN = 360;
+const GITHUB_DEFAULT_TIMEOUT_MIN = 360;
+
+// Advisory baseline (CLAUDE.md §19 / BRO-2123): the dispatch-graph extension
+// raised live findings from 0 to dozens on the day it landed. Those are
+// recorded here; main() marks anything outside it as NEW, and the colocated
+// unit test fails only on a NEW finding (a regression), never on a baselined
+// one. Shrink it as workflows get budgets: `node
+// scripts/audit-run-budget-coverage.js --write-baseline`.
+const BASELINE_PATH = path.join(__dirname, 'lib', 'run-budget-coverage-baseline.json');
+
+/** Stable identity for a finding (baseline key). */
+function findingKey(f) {
+  return [f.kind, f.file, f.job, f.script, f.relPath ? `${f.relPath}#${f.name}` : ''].join('|');
+}
+
+function loadBaseline(baselinePath = BASELINE_PATH) {
+  try {
+    const parsed = JSON.parse(fs.readFileSync(baselinePath, 'utf8'));
+    return new Set(Array.isArray(parsed.findings) ? parsed.findings : []);
+  } catch {
+    return new Set();
+  }
+}
+
+/** Splits findings into { fresh, known } against a baseline Set of keys. */
+function partitionByBaseline(findings, baseline) {
+  const fresh = [];
+  const known = [];
+  for (const f of findings) (baseline.has(findingKey(f)) ? known : fresh).push(f);
+  return { fresh, known };
+}
+
 /**
- * Scans the live .github/workflows/ + scripts/ corpus and returns the raw
- * findings ({ files, warnings, threadingWarnings }) with no printing/exit
- * behavior — the pure core that both main() and the colocated end-to-end
- * regression test call (CLAUDE.md §15: tests require() the real function,
- * never re-implement its scan logic).
+ * Scans .github/workflows/ + scripts/ (overridable for fixtures) and returns
+ * the raw findings ({ files, warnings, threadingWarnings, flagWarnings,
+ * dispatchGraph }) with no printing/exit behavior — the pure core that both
+ * main() and the unit tests call (CLAUDE.md §15: tests require() the real
+ * function, never re-implement its scan logic).
+ *
+ * A workflow is in scope when it has a schedule trigger OR another workflow
+ * dispatches it (BRO-3447 dispatch graph). Every finding carries `kind`
+ * ('missing-run-budget' | 'threading' | 'unbudgeted-invocation') and
+ * `trigger` ('schedule' or 'dispatched by a.yml, b.yml').
+ *
+ * 'unbudgeted-invocation' (BRO-3447): the script DOES require run-budget,
+ * but its budget is only switched on by `--time-budget-min=N` and this
+ * invocation doesn't pass it, so it runs with no budget at all.
  */
-function collectFindings() {
+function collectFindings({ workflowDir = WORKFLOW_DIR, scriptsDir = SCRIPTS_DIR } = {}) {
   const files = fs
-    .readdirSync(WORKFLOW_DIR)
+    .readdirSync(workflowDir)
     .filter((f) => f.endsWith('.yml') || f.endsWith('.yaml'))
     .sort();
+  const workflows = files.map((file) => ({ file, raw: fs.readFileSync(path.join(workflowDir, file), 'utf8') }));
+  const dispatchGraph = buildDispatchGraph(workflows);
 
   const warnings = [];
   const threadingWarnings = [];
-  const scriptCache = new Map(); // script path -> { hasRunBudget, risky, threadingGaps }
+  const flagWarnings = [];
+  const scriptCache = new Map(); // script path -> { hasRunBudget, risky, flagGated, threadingGaps }
 
-  for (const file of files) {
-    const raw = fs.readFileSync(path.join(WORKFLOW_DIR, file), 'utf8');
-    if (!hasScheduleTrigger(raw)) continue; // dispatch-only: not the backlog-cron shape this guards against
+  for (const { file, raw } of workflows) {
+    const scheduled = hasScheduleTrigger(raw);
+    const callers = [...(dispatchGraph.get(file) || [])].sort();
+    const dispatched = callers.length > 0;
+    if (!scheduled && !dispatched) continue; // nothing automated feeds it a backlog
     if (raw.includes(`${ANNOTATION}:`)) continue;
+    const trigger = scheduled ? 'schedule' : `dispatched by ${callers.join(', ')}`;
+    const maxTimeout = dispatched ? DISPATCHED_MAX_TIMEOUT_MIN : MAX_TIMEOUT_MIN;
+    const fallbackTimeout = dispatched ? GITHUB_DEFAULT_TIMEOUT_MIN : null;
 
     for (const job of getJobBlocks(raw)) {
       // Evaluate per-STEP, not per-job: a job can set a generous overall
@@ -701,65 +909,102 @@ function collectFindings() {
       // correct scope. Jobs with no parseable `steps:` list fall back to the
       // old whole-job-body behavior so we don't lose coverage on some
       // unanticipated YAML shape.
+      const jobTimeout = job.timeoutMinutes ?? fallbackTimeout;
       const steps = job.steps.length > 0
-        ? job.steps.map((s) => ({ bodyText: s.bodyText, timeoutMinutes: s.timeoutMinutes ?? job.timeoutMinutes }))
-        : [{ bodyText: job.bodyText, timeoutMinutes: job.timeoutMinutes }];
+        ? job.steps.map((s) => ({ bodyText: s.bodyText, timeoutMinutes: s.timeoutMinutes ?? jobTimeout }))
+        : [{ bodyText: job.bodyText, timeoutMinutes: jobTimeout }];
 
       for (const step of steps) {
-        if (!Number.isFinite(step.timeoutMinutes) || step.timeoutMinutes > MAX_TIMEOUT_MIN) continue;
+        if (!Number.isFinite(step.timeoutMinutes) || step.timeoutMinutes > maxTimeout) continue;
         if (!BD_SB_TOKENS.some((t) => step.bodyText.includes(t))) continue;
 
-        const scripts = [...new Set(
-          [...step.bodyText.matchAll(/\bnode\s+scripts\/([A-Za-z0-9_\-/]+\.js)/g)].map((m) => m[1]),
-        )];
+        const invocations = new Map(); // script -> [invocation text]
+        for (const m of step.bodyText.matchAll(/\bnode\s+scripts\/([A-Za-z0-9_\-/]+\.js)/g)) {
+          if (!invocations.has(m[1])) invocations.set(m[1], []);
+          invocations.get(m[1]).push(invocationTextAt(step.bodyText, m.index));
+        }
 
-        for (const script of scripts) {
-          const scriptPath = path.join(SCRIPTS_DIR, script);
+        for (const [script, invTexts] of invocations) {
+          const scriptPath = path.join(scriptsDir, script);
           if (!fs.existsSync(scriptPath)) continue;
 
           if (!scriptCache.has(scriptPath)) {
             const content = fs.readFileSync(scriptPath, 'utf8');
-            const hasRunBudget = /require\(['"]\.\/lib\/run-budget['"]\)/.test(content);
+            const hasRunBudget = /require\(\s*['"](?:\.\.?\/)+lib\/run-budget(?:\.js)?['"]\s*\)/.test(content);
             scriptCache.set(scriptPath, {
               hasRunBudget,
               risky: !hasRunBudget && hasRiskyLoop(content),
-              threadingGaps: findBudgetThreadingGaps(content, resolveLibSrcs(content)),
+              flagGated: isFlagGatedBudgetScript(content),
+              threadingGaps: findBudgetThreadingGaps(content, resolveLibSrcs(content, scriptsDir)),
             });
           }
 
           const result = scriptCache.get(scriptPath);
+          const base = { file, job: job.name, timeoutMinutes: step.timeoutMinutes, script, trigger };
           if (result.risky) {
-            warnings.push({ file, job: job.name, timeoutMinutes: step.timeoutMinutes, script });
+            warnings.push({ kind: 'missing-run-budget', ...base });
+          }
+          if (result.flagGated && invTexts.some((t) => !invocationPassesBudget(t, step.bodyText))) {
+            flagWarnings.push({ kind: 'unbudgeted-invocation', ...base });
           }
           for (const gap of result.threadingGaps) {
-            threadingWarnings.push({ file, job: job.name, timeoutMinutes: step.timeoutMinutes, script, ...gap });
+            threadingWarnings.push({ kind: 'threading', ...base, ...gap });
           }
         }
       }
     }
   }
 
-  return { files, warnings, threadingWarnings };
+  return { files, warnings, threadingWarnings, flagWarnings, dispatchGraph };
 }
 
 function main() {
-  const { files, warnings, threadingWarnings } = collectFindings();
+  const argv = process.argv.slice(2);
+  const { files, warnings, threadingWarnings, flagWarnings } = collectFindings();
+  const all = [...warnings, ...threadingWarnings, ...flagWarnings];
 
-  if (warnings.length === 0 && threadingWarnings.length === 0) {
+  if (argv.includes('--write-baseline')) {
+    const keys = [...new Set(all.map(findingKey))].sort();
+    fs.writeFileSync(BASELINE_PATH, `${JSON.stringify({
+      _comment: 'Advisory baseline for scripts/audit-run-budget-coverage.js (BRO-3447). Findings listed here are known; only findings NOT listed fail the colocated unit test. Regenerate with: node scripts/audit-run-budget-coverage.js --write-baseline',
+      findings: keys,
+    }, null, 2)}\n`);
+    console.log(`Wrote ${keys.length} baseline finding(s) to ${path.relative(process.cwd(), BASELINE_PATH)}`);
+    return;
+  }
+
+  if (all.length === 0) {
     console.log(`✅ Run-budget coverage guard: no candidates flagged (${files.length} workflows checked).`);
     return;
   }
 
+  const baseline = loadBaseline();
+  const tag = (f) => (baseline.has(findingKey(f)) ? '' : '[NEW] ');
+  const { fresh, known } = partitionByBaseline(all, baseline);
+
   if (warnings.length > 0) {
     console.log('⚠️  Run-budget coverage guard — possible missing scripts/lib/run-budget.js:\n');
-    console.log('These jobs have timeout-minutes <= 35 on a SCHEDULED trigger, use Bright Data /');
-    console.log('ScrapingBee, and invoke a script with a loop that calls a network helper but does');
-    console.log('NOT require scripts/lib/run-budget — the same shape as #369/#415/#421.\n');
+    console.log('These jobs run on a SCHEDULED trigger (timeout-minutes <= 35) or are DISPATCHED by');
+    console.log('another workflow (any timeout), use Bright Data / ScrapingBee, and invoke a script');
+    console.log('with a loop that calls a network helper but does NOT require scripts/lib/run-budget');
+    console.log('— the same shape as #369/#415/#421.\n');
     console.log('This is advisory (heuristic, non-blocking) — verify manually before fixing.\n');
     for (const w of warnings) {
-      console.log(`  • ${w.file} :: job "${w.job}" (timeout-minutes: ${w.timeoutMinutes}) → scripts/${w.script}`);
+      console.log(`  • ${tag(w)}${w.file} [${w.trigger}] :: job "${w.job}" (timeout-minutes: ${w.timeoutMinutes}) → scripts/${w.script}`);
     }
     console.log(`\nFix: wire scripts/lib/run-budget.js into the script (see #369/#415 for the pattern).`);
+    console.log(`Exempt (false positive): add  # ${ANNOTATION}: <reason>  anywhere in the workflow file.\n`);
+  }
+
+  if (flagWarnings.length > 0) {
+    console.log('⚠️  Run-budget coverage guard — budgeted script invoked WITHOUT --time-budget-min= (BRO-3447):\n');
+    console.log('These scripts require scripts/lib/run-budget.js, but their budget is only enabled by');
+    console.log('--time-budget-min=N (no default), and this invocation does not pass it — so the run');
+    console.log('has no wall-clock budget at all (the gather-reviews.yml 35K-credit incident shape).\n');
+    for (const w of flagWarnings) {
+      console.log(`  • ${tag(w)}${w.file} [${w.trigger}] :: job "${w.job}" (timeout-minutes: ${w.timeoutMinutes}) → scripts/${w.script}`);
+    }
+    console.log('\nFix: pass --time-budget-min=N (EQUALS form) a few minutes under the step/job timeout.');
     console.log(`Exempt (false positive): add  # ${ANNOTATION}: <reason>  anywhere in the workflow file.\n`);
   }
 
@@ -775,19 +1020,23 @@ function main() {
       const detail = w.reason === 'unsupported'
         ? `lib/${w.relPath}.js#${w.name}() has an internal network loop but no budget parameter at all`
         : `lib/${w.relPath}.js#${w.name}() accepts a budget param but the call site doesn't pass it`;
-      console.log(`  • ${w.file} :: job "${w.job}" → scripts/${w.script} calls ${detail}`);
+      console.log(`  • ${tag(w)}${w.file} [${w.trigger}] :: job "${w.job}" → scripts/${w.script} calls ${detail}`);
     }
     console.log(`\nFix: thread the script's run-budget object through to the helper call (see lib/broadway-com-runtimes.js's`);
     console.log(`batchScrapeAgeRecommendations or lib/serp-slug-discovery.js's batchDiscoverSlugs for the pattern).`);
     console.log(`Exempt (false positive): add  # ${ANNOTATION}: <reason>  anywhere in the workflow file.\n`);
   }
-  // Advisory only — never fails CI (see header).
+
+  console.log(`Summary: ${all.length} finding(s) — ${known.length} baselined, ${fresh.length} NEW (baseline: ${path.relative(process.cwd(), BASELINE_PATH)}).`);
+  // Advisory only — never fails CI (see header). NEW findings fail the
+  // colocated unit test instead (tests/unit/run-budget-coverage-dispatch-graph.test.mjs).
 }
 
 // Only run the audit when executed directly — `require()`d from a unit test,
 // the module must expose its decision functions without scanning the repo
 // (CLAUDE.md §15: tests require() the real function, never a copy of it).
 if (require.main === module) main();
+
 
 module.exports = {
   collectFindings,
@@ -810,4 +1059,16 @@ module.exports = {
   countTopLevelArgs,
   callArgCounts,
   findBudgetThreadingGaps,
+  hasScheduleTrigger,
+  getWorkflowName,
+  extractDispatchTargets,
+  buildDispatchGraph,
+  isFlagGatedBudgetScript,
+  invocationTextAt,
+  invocationPassesBudget,
+  budgetCarryingVars,
+  findingKey,
+  loadBaseline,
+  partitionByBaseline,
+  BASELINE_PATH,
 };

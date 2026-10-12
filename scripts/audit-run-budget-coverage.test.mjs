@@ -18,6 +18,9 @@ const {
   hasRiskyLoop,
   extractBracedBody,
   collectFindings,
+  partitionByBaseline,
+  loadBaseline,
+  findingKey,
 } = require('./audit-run-budget-coverage.js');
 
 // --- regex-literal awareness in findMatching / stripComments -------------
@@ -472,11 +475,15 @@ test('returns [] when a required lib file was not resolvable (not in the provide
 // missing scripts/lib/run-budget.js plus one script→lib-helper threading
 // gap (audit-opening-dates.js -> closing-date-discovery.js#discoverAnnouncedDate).
 // BRO-107 wired run-budget.js into all of them (see git history for the list).
-// This asserts the audit now sees the live corpus as clean — a regression
-// here means either a wiring reverted or a new unguarded candidate was added
-// without run-budget.js.
-test('collectFindings reports zero candidates against the live .github/workflows/ + scripts/ corpus', () => {
-  const { warnings, threadingWarnings } = collectFindings();
-  assert.deepEqual(warnings, []);
-  assert.deepEqual(threadingWarnings, []);
+// BRO-3447 widened the scope to workflows dispatched by other workflows and
+// added the unbudgeted-invocation check, which surfaced dozens of findings
+// at once; those are recorded in scripts/lib/run-budget-coverage-baseline.json
+// (CLAUDE.md §19: land advisory). This asserts no finding OUTSIDE that
+// baseline exists — a failure means a wiring reverted or a new unguarded
+// candidate was added without a budget. Fix it, or (if it's a false
+// positive) exempt it with # hygiene-run-budget-ok: <reason>.
+test('collectFindings reports no NEW (non-baselined) candidates against the live .github/workflows/ + scripts/ corpus', () => {
+  const { warnings, threadingWarnings, flagWarnings } = collectFindings();
+  const { fresh } = partitionByBaseline([...warnings, ...threadingWarnings, ...flagWarnings], loadBaseline());
+  assert.deepEqual(fresh.map(findingKey), []);
 });
