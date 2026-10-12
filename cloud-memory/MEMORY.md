@@ -24,7 +24,7 @@
 - [Polling + job liveness](feedback_liveness_needs_lsof_not_mtime.md) — no gh loops, never gh run watch; liveness = lsof+ledger not mtime/pgrep
 
 ## 📇 Board (Linear)
-- [Linear board workflow](linear-board-workflow.md) — linear-brain.js create/update, Done gate, dispatch; Notion retired 2026-08-20, never file there; cards need context: paths, commands, root cause, repro ([[feedback_notion_card_context.md]])
+- [Linear board workflow](linear-board-workflow.md) — linear-brain.js create/update, Done gate, dispatch; Notion retired 2026-08-20, never file there ([[notion-brain-workflow.md]] is history only); cards need context: paths, commands, root cause, repro ([[feedback_notion_card_context.md]])
 
 ## 🌳 Worktrees & git
 - [Landing on main](CLAUDE-reference.md) — merge-worktree-to-main.sh → land/** + land.yml; direct push to main refused (BRO-3425)
