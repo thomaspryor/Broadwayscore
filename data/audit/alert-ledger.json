@@ -157,13 +157,14 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-12T18:28:13.470Z",
-      "lastSeen": "2026-10-12T18:28:13.470Z",
-      "lastNotifiedAt": "2026-10-12T18:28:13.470Z",
+      "incidentOpenedAt": "2026-10-12T17:38:59.377Z",
+      "lastSeen": "2026-10-12T18:35:36.923Z",
+      "lastNotifiedAt": "2026-10-12T17:38:59.377Z",
       "lastSurfacedAt": "2026-10-12T12:08:38.296Z",
       "notifyCount": 135,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -14808,54 +14809,42 @@
       "cardId": null,
       "linearIdentifier": null
     },
-    "land:land/codex-bro-4188": {
+    "test-yml:red:Unit Tests:ce6967c0": {
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"Everybody's Talking About Jamie dates match the Playbill production page\"",
       "firstSeen": "2026-10-12T17:38:59.073Z",
       "incidentOpenedAt": "2026-10-12T17:38:59.073Z",
-      "lastSeen": "2026-10-12T17:38:59.073Z",
+      "lastSeen": "2026-10-12T18:35:36.882Z",
       "lastNotifiedAt": "2026-10-12T17:38:59.073Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5185"
+      "linearIdentifier": "BRO-5185",
+      "silentRefires": 1
     },
-    "land:land/job/linear-BRO-5106-mv5cpr1t": {
+    "land:land/bro-3621-archive-guard-core-data": {
       "status": "open",
       "disposition": "digest",
-      "title": "Landing blocked: race red on land/job/linear-BRO-5106-mv5cpr1t",
-      "firstSeen": "2026-10-12T17:41:46.327Z",
-      "incidentOpenedAt": "2026-10-12T17:41:46.327Z",
-      "lastSeen": "2026-10-12T17:41:46.327Z",
-      "lastNotifiedAt": "2026-10-12T17:41:46.327Z",
-      "lastSurfacedAt": "2026-10-12T17:41:46.327Z",
+      "title": "Landing blocked: unit-tests-node red on land/bro-3621-archive-guard-core-data",
+      "firstSeen": "2026-10-12T16:19:58.253Z",
+      "incidentOpenedAt": "2026-10-12T16:19:58.253Z",
+      "lastSeen": "2026-10-12T16:19:58.253Z",
+      "lastNotifiedAt": "2026-10-12T16:19:58.253Z",
+      "lastSurfacedAt": "2026-10-12T16:19:58.253Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
     },
-    "test-yml:red:Unit Tests:ce6967c0": {
-      "status": "open",
-      "disposition": "auto",
-      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"Everybody's Talking About Jamie dates match the Playbill production page\"",
-      "firstSeen": "2026-10-12T18:28:13.035Z",
-      "incidentOpenedAt": "2026-10-12T18:28:13.035Z",
-      "lastSeen": "2026-10-12T18:28:13.035Z",
-      "lastNotifiedAt": "2026-10-12T18:28:13.035Z",
-      "lastSurfacedAt": null,
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": "BRO-5185"
-    },
-    "land:land/bro-5166-held-flags": {
+    "land:land/bro-3414-hardening": {
       "status": "open",
       "disposition": "digest",
-      "title": "Landing blocked: scripts-lib-tests red on land/bro-5166-held-flags",
-      "firstSeen": "2026-10-12T18:34:10.118Z",
-      "incidentOpenedAt": "2026-10-12T18:34:10.118Z",
-      "lastSeen": "2026-10-12T18:34:10.118Z",
-      "lastNotifiedAt": "2026-10-12T18:34:10.118Z",
-      "lastSurfacedAt": "2026-10-12T18:34:10.118Z",
+      "title": "Landing blocked: unit-tests-node red on land/bro-3414-hardening",
+      "firstSeen": "2026-10-12T16:37:48.206Z",
+      "incidentOpenedAt": "2026-10-12T16:37:48.206Z",
+      "lastSeen": "2026-10-12T16:37:48.206Z",
+      "lastNotifiedAt": "2026-10-12T16:37:48.206Z",
+      "lastSurfacedAt": "2026-10-12T16:37:48.206Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
