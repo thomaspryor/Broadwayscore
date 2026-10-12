@@ -156,7 +156,7 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-11T14:14:07.486Z",
-      "lastSeen": "2026-10-12T00:26:08.290Z",
+      "lastSeen": "2026-10-12T00:38:09.551Z",
       "lastNotifiedAt": "2026-10-11T14:14:07.486Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 132,
@@ -12587,14 +12587,8 @@
       "cardId": null,
       "linearIdentifier": "BRO-5102",
       "absentRunIds": [
-        "38186967557"
+        "38187654352"
       ],
-      "dispatch": {
-        "requestedAt": "2026-10-11T23:41:19.580Z",
-        "mode": "dispatch-at-filing",
-        "runId": "38184281462",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38184281462"
-      },
       "silentRefires": 1
     },
     "test-yml:red:Unit Tests:2a5215c8": {
@@ -13983,11 +13977,11 @@
       "linearIdentifier": "BRO-5078",
       "silentRefires": 8,
       "absentRunIds": [
-        "38184281462",
-        "38185497104",
-        "38186967557"
+        "38184825734",
+        "38185946151",
+        "38187654352"
       ],
-      "resolvedAt": "2026-10-12T00:26:07.924Z",
+      "resolvedAt": "2026-10-12T00:38:09.179Z",
       "resolveReason": "stale-signature"
     },
     "review-gap:opening-window:mystic-pizza-tour-2026": {
@@ -14193,6 +14187,19 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "test-yml:red:Unit Tests:d27c1fe5": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"mrs-doubtfire-2021 carries the BRO-5020 values\"",
+      "firstSeen": "2026-10-12T00:38:09.191Z",
+      "incidentOpenedAt": "2026-10-12T00:38:09.191Z",
+      "lastSeen": "2026-10-12T00:38:09.191Z",
+      "lastNotifiedAt": "2026-10-12T00:38:09.191Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-5105"
     }
   }
 }
