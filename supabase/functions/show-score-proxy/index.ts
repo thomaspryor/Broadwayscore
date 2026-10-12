@@ -8,7 +8,7 @@
  * 50 tiles).
  *
  * Security model:
- * - verify_jwt ON (platform-enforced): signed-in users only.
+ * - verify_jwt ON (platform-enforced, pinned in supabase/config.toml): signed-in users only.
  * - The upstream URL is ALWAYS constructed here from a validated slug — the
  *   client never supplies a URL (no SSRF surface).
  * - Per-user rate limit (MAX_CALLS_PER_HOUR via import_fetch_log, service
