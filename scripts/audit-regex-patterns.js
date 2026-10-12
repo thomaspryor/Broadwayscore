@@ -74,6 +74,11 @@ const PATTERN_FAMILIES = [
   // Never occurs in real review prose/footers — verified 0 FPs against the
   // full corpus (18/43,886 files matched, all confirmed genuine truncation).
   'STRONG_WSJ_ARCHIVE_TRUNCATION_PATTERNS',
+  // WSJ registration interstitial (BRO-5198). Every hit is the interstitial
+  // itself; isGarbageContent judges the text after stripDowJonesReprintChrome,
+  // so a hit in a scored file means chrome is still stored ahead of a review.
+  // 0 after the 2026-10-12 cleanup of 26 files.
+  'WSJ_REGISTRATION_INTERSTITIAL_PATTERNS',
   // Position-independent chrome-dump markers (gated at runtime on no-review +
   // non-trailing). Raw corpus hits are ~0; the gate trips only if a scraper
   // regression starts emitting these as bulk chrome. See content-quality.js

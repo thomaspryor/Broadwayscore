@@ -184,3 +184,44 @@ describe('same-show ownership: combined/split-parent named copy is live', () => 
     assert.equal(drops[0].kind, 'same-show');
   });
 });
+
+describe('chrome cut persists as a record-level signal', () => {
+  let tmp;
+  beforeEach(() => { tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'dj-sig-')); });
+  afterEach(() => fs.rmSync(tmp, { recursive: true, force: true }));
+
+  test('an already-clean re-fetch of a chrome-bearing record gets the breadcrumb', () => {
+    const fp = path.join(tmp, 'zz-test-show-2010', 'wsj--critic.json');
+    fs.mkdirSync(path.dirname(fp), { recursive: true });
+    const committed = { showId: 'zz-test-show-2010', url: 'https://online.wsj.com/article/x.html', fullText: PRINT_HEADER + REVIEW };
+    fs.writeFileSync(fp, JSON.stringify(committed));
+    safeWriteReview(fp, { ...committed, fullText: REVIEW.trim() }, { force: true });
+    const stored = JSON.parse(fs.readFileSync(fp, 'utf8'));
+    assert.equal(stored.fullTextTrimmed.reason, cq.DOW_JONES_TRIM_REASON);
+    assert.equal(isIntentionalClear('fullText', stored, committed), true);
+  });
+
+  test('a different article replacing a chrome-bearing record gets no breadcrumb', () => {
+    const fp = path.join(tmp, 'zz-test-show-2010', 'wsj--critic.json');
+    fs.mkdirSync(path.dirname(fp), { recursive: true });
+    const committed = { showId: 'zz-test-show-2010', url: 'https://online.wsj.com/article/x.html', fullText: PRINT_HEADER + REVIEW };
+    fs.writeFileSync(fp, JSON.stringify(committed));
+    safeWriteReview(fp, { ...committed, fullText: 'An entirely different piece about another play. '.repeat(30) }, { force: true });
+    assert.equal(JSON.parse(fs.readFileSync(fp, 'utf8')).fullTextTrimmed, undefined);
+  });
+
+  test('classifyContentTier keeps the full-capture signal after the chrome is gone', () => {
+    // ~200-word terse capsule: Path 1 needs 300 words, Path 3 needs opinion
+    // keywords OR a trusted full-page capture.
+    const capsule = 'Cort Theatre, 138 W. 48th St. The musical tells its tale across two decades in the mountains of North Carolina. '
+      + 'The book is trite, the dialogue stiff and the songs forgettable, and the cast works hard to little effect in a staging that plods. '.repeat(7)
+      + 'If the star name were not on the marquee, it would not have gotten anywhere near Broadway.';
+    const base = { fullText: capsule, outletId: 'wsj' };
+    const withChrome = cq.classifyContentTier({ ...base, fullText: PRINT_HEADER + capsule });
+    const cleaned = cq.classifyContentTier({ ...base, fullTextTrimmed: { reason: cq.DOW_JONES_TRIM_REASON, fromLength: 1 } });
+    const neither = cq.classifyContentTier(base);
+    assert.equal(withChrome.contentTier, cleaned.contentTier);
+    assert.equal(cleaned.contentTier, 'complete', cleaned.tierReason);
+    assert.notEqual(neither.contentTier, 'complete', 'fixture must actually depend on the signal');
+  });
+});
