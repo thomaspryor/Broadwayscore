@@ -797,7 +797,8 @@ function checkSync() {
       }
     }
 
-    const gaps = openShowCoverageGaps(reports, openIds);
+    const showsById = new Map(showList.map(s => [s.id, s]));
+    const gaps = openShowCoverageGaps(reports, openIds, showsById);
     if (gaps.length === 0) {
       if (unreadable.length > 0) {
         return { name: 'Audience coverage: open-show gaps', status: 'warn', message: `Could not read coverage audit: ${unreadable.join(', ')} — gap detection blind for ${unreadable.length} source(s)`, hint: 'The scraper wrote a malformed audit file. Re-run the scraper to regenerate it.' };

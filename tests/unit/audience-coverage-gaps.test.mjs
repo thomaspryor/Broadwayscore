@@ -101,3 +101,68 @@ describe('openShowCoverageGaps', () => {
     assert.strictEqual(nonMatchKey('Theatr', 'Archduke', 'archduke-west-end-2026'), nonMatchKey('theatr', 'archduke', 'archduke-west-end-2026'));
   });
 });
+
+// BRO-5167: Mezzanine "An Oak Tree" (Young Vic, closed 2025-05-17) was flagged
+// against our 2026 Other Palace run because the title matched exactly. A source
+// run that closed before ours began is an earlier staging, never a gap.
+describe('earlier closed source runs are not gaps (BRO-5167)', () => {
+  const { isEarlierClosedRun } = require('../../scripts/lib/audience-coverage-gaps.js');
+  const ours = { id: 'oak-2026', previewsStartDate: '2026-10-07', openingDate: null };
+
+  test('isEarlierClosedRun: closed long before our first preview', () => {
+    assert.strictEqual(isEarlierClosedRun('2025-05-17T04:00:00.000Z', ours), true);
+  });
+  test('isEarlierClosedRun: overlapping or still-running source run is kept', () => {
+    assert.strictEqual(isEarlierClosedRun('2026-11-15', ours), false);
+    assert.strictEqual(isEarlierClosedRun(null, ours), false);
+    // within the 7-day grace window (catalog date slop); a month earlier is not
+    assert.strictEqual(isEarlierClosedRun('2026-10-02', ours), false);
+    assert.strictEqual(isEarlierClosedRun('2026-09-08', ours), true);
+  });
+  test('isEarlierClosedRun: unknown start dates never suppress', () => {
+    assert.strictEqual(isEarlierClosedRun('2025-05-17', { previewsStartDate: null, openingDate: null }), false);
+    assert.strictEqual(isEarlierClosedRun('2025-05-17', undefined), false);
+  });
+
+  test('openShowCoverageGaps drops a flag whose source run closed before ours', () => {
+    const showsById = new Map([['oak-2026', ours], ['live-2026', { id: 'live-2026', previewsStartDate: '2026-09-01' }]]);
+    const report = { source: 'Mezzanine', flagged: [
+      { ourShowId: 'oak-2026', ourTitle: 'Oak', mezzName: 'Oak', ratingsCount: 57, sourceClosed: '2025-05-17T04:00:00.000Z' },
+      { ourShowId: 'live-2026', ourTitle: 'Live', mezzName: 'Live', ratingsCount: 40, sourceClosed: null },
+    ] };
+    const gaps = openShowCoverageGaps([report], new Set(['oak-2026', 'live-2026']), showsById);
+    assert.deepStrictEqual(gaps.map(g => g.ourShowId), ['live-2026']);
+    // Without show dates the old behavior holds (back-compat for callers).
+    assert.strictEqual(openShowCoverageGaps([report], new Set(['oak-2026', 'live-2026'])).length, 2);
+  });
+
+  test('the real An Oak Tree flag (no closing date in the old audit file) is suppressed', () => {
+    const report = { source: 'Mezzanine', flagged: [
+      { mezzName: 'An Oak Tree', theater: 'Young Vic Theatre', ratingsCount: 57, mYear: 2025, ourShowId: 'an-oak-tree-off-west-end-2026', ourTitle: 'An Oak Tree' },
+    ] };
+    assert.strictEqual(openShowCoverageGaps([report], new Set(['an-oak-tree-off-west-end-2026'])).length, 0);
+  });
+});
+
+describe('differentProductionReason (BRO-5167)', () => {
+  const { differentProductionReason } = require('../../scripts/lib/audience-coverage-gaps.js');
+  const nycShow = { id: 'button-2026', market: 'broadway', previewsStartDate: '2026-10-08', openingDate: '2026-10-21' };
+  const weShow = { id: 'hp-2026', market: 'west-end', previewsStartDate: '2026-10-09', openingDate: null };
+
+  test('London source run never matches a NYC show', () => {
+    assert.ok(differentProductionReason({ mYear: 2024, sourceMarket: 'london' }, nycShow));
+  });
+  test('NYC source run never matches a West End or touring show', () => {
+    assert.ok(differentProductionReason({ mYear: 2026, sourceMarket: 'nyc' }, weShow));
+    assert.ok(differentProductionReason({ mYear: 2025, sourceMarket: 'nyc' }, { market: 'tour', previewsStartDate: '2025-10-10' }));
+  });
+  test('year gate uses previewsStartDate when the show has not opened (Cursed Child 2016 vs 2026)', () => {
+    assert.ok(differentProductionReason({ mYear: 2016, sourceMarket: 'london' }, weShow));
+  });
+  test('a same-city, same-era, still-running source run may be ours (stays a gap)', () => {
+    assert.strictEqual(differentProductionReason({ mYear: 2026, sourceMarket: 'london', sourceClosed: null }, weShow), null);
+    assert.strictEqual(differentProductionReason({ mYear: 2026, sourceMarket: 'nyc' }, nycShow), null);
+    // Old audit files carry no sourceMarket: market rule abstains.
+    assert.strictEqual(differentProductionReason({ mYear: 2026 }, nycShow), null);
+  });
+});

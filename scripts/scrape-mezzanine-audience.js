@@ -21,6 +21,7 @@ const { classifyParseResponse } = require('./lib/mezzanine-parse-client');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { normalizeTitle, titleTokens, jaccard, foldDiacritics } = require('./lib/title-match');
+const { differentProductionReason, isEarlierClosedRun } = require('./lib/audience-coverage-gaps');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 
 // Parse command line args
@@ -309,7 +310,11 @@ const normalize = normalizeTitle;
  * (Codex adversarial review, BRO-975).
  */
 function normalizeVenueForMatch(v) {
-  return foldDiacritics(v || '')
+  // Un-invert the catalog-style "Drury Lane, Theatre Royal" (our shows.json
+  // spelling) to "Theatre Royal Drury Lane" (Mezzanine's). Without this the
+  // 2026 Jesus Christ Superstar at Drury Lane never linked (BRO-5167).
+  const uninverted = String(v || '').replace(/^\s*(.+?)\s*,\s*((?:the\s+)?theat(?:re|er)\s+royal)\s*$/i, '$2 $1');
+  return foldDiacritics(uninverted)
     .toLowerCase()
     .replace(/^\s*the\s+/, '')
     .replace(/\btheatre\b|\btheater\b/g, '')
@@ -372,8 +377,11 @@ function venuesMatch(a, b) {
  * contradict it. If nothing clears the year bar at all, we drop every
  * candidate — no data beats wrong data.
  */
-function selectCurrentProductionMatches(allMatches, openYear, showVenue) {
-  if (allMatches.length <= 1) return allMatches;
+function selectCurrentProductionMatches(allMatches, openYear, showVenue, { forceVerify = false } = {}) {
+  // forceVerify: candidates were already set aside as earlier runs, so a lone
+  // leftover is not "the only production of this title" and must still prove
+  // itself by venue or year (BRO-5167).
+  if (allMatches.length === 0 || (allMatches.length === 1 && !forceVerify)) return allMatches;
 
   const withInfo = allMatches.map(m => {
     const y = parseInt(parseDate(m.production.opened || m.production.firstPreview).slice(0, 4));
@@ -517,6 +525,7 @@ function matchProductions(productions, shows) {
 
     // Collect ALL matching productions (not just best)
     let allMatches = [];
+    let earlierRunDrops = 0;
 
     for (const p of productions) {
       const mName = normalize(p.show?.name || p.showName || '');
@@ -564,6 +573,19 @@ function matchProductions(productions, shows) {
         }
       }
 
+      // A production at ANOTHER theater that closed before our run's first
+      // preview is an earlier staging, whatever the title confidence: Young Vic
+      // "An Oak Tree" (closed May 2025) would otherwise attach to our Oct 2026
+      // Other Palace run (BRO-5167). Same-theater earlier runs (return
+      // engagements) keep the existing BRO-975 same-venue behavior.
+      const pTheater = p.theater?.name || p.theaterName || null;
+      const sameHouse = !!(show.venue && pTheater && venuesMatch(show.venue, pTheater));
+      if (confidence !== 'none' && p.ratingsCount >= 1 && !sameHouse && isEarlierClosedRun(parseDate(p.closed), show)) {
+        if (verbose) console.log(`  SKIP prod ${p.objectId || mName} for ${show.id}: closed ${parseDate(p.closed).slice(0, 10)}, before our run began`);
+        earlierRunDrops++;
+        continue;
+      }
+
       if (confidence !== 'none' && p.ratingsCount >= 1) {
         const yearVerified = openYear && mYear && Math.abs(mYear - openYear) <= 1;
         // Require year verification for non-high confidence
@@ -604,7 +626,11 @@ function matchProductions(productions, shows) {
 
     // BRO-975: narrow down to the productions that actually represent the
     // CURRENT run before merging — see selectCurrentProductionMatches().
-    const currentMatches = selectCurrentProductionMatches(allMatches, openYear, show.venue);
+    // A show still in previews has no openingDate; when a lone leftover must
+    // prove itself, let the previews year stand in so a renamed venue does not
+    // drop the real current run. Scoped here so the dedup tiebreak is unchanged.
+    const verifyYear = openYear || (earlierRunDrops > 0 ? parseInt((show.previewsStartDate || '').substring(0, 4)) : NaN);
+    const currentMatches = selectCurrentProductionMatches(allMatches, verifyYear, show.venue, { forceVerify: earlierRunDrops > 0 });
     if (currentMatches.length === 0) {
       if (verbose) console.log(`  SKIP ${show.id}: ${allMatches.length} title match(es) found but none confirmed as the current production (venue mismatch)`);
       continue;
@@ -905,12 +931,18 @@ async function main() {
       return true;
     });
     const candidateIndex = candidateShows.map(s => ({
-      s, t: tokens(s.title), n: normalize(s.title), year: parseInt((s.openingDate || '').slice(0,4))
+      // previewsStartDate fallback: a not-yet-opened show has no openingDate, and
+      // a NaN year silently skipped the year gate below (BRO-5167).
+      s, t: tokens(s.title), n: normalize(s.title), year: parseInt((s.openingDate || s.previewsStartDate || '').slice(0,4))
     }));
 
     const flagged = [];
     const RATING_THRESHOLD = 20;
-    for (const p of [...nycProductions, ...londonProductions]) {
+    const tagged = [
+      ...nycProductions.map(p => [p, 'nyc']),
+      ...londonProductions.map(p => [p, 'london']),
+    ];
+    for (const [p, sourceMarket] of tagged) {
       if ((p.ratingsCount || 0) < RATING_THRESHOLD) continue;
       const pid = p.objectId || `${normalize(p.show?.name || p.showName || '')}-${(p.opened?.iso || p.firstPreview?.iso || '').slice(0,4)}`;
       if (matchedProdIds.has(pid)) continue;
@@ -919,6 +951,7 @@ async function main() {
       const mTokens = tokens(mName);
       if (!mTokens.size) continue;
       const mYear = parseInt(parseDate(p.opened || p.firstPreview).slice(0, 4));
+      const mClosed = parseDate(p.closed) || null;
 
       // Find the best fuzzy match among shows missing Mezzanine
       let best = null;
@@ -927,13 +960,20 @@ async function main() {
         const j = jaccard(mTokens, c.t);
         if (j < 0.6) continue;
         if (mYear && c.year && Math.abs(mYear - c.year) > 2) continue;
-        if (!best || j > best.j) best = { showId: c.s.id, showTitle: c.s.title, showYear: c.year, j };
+        // Earlier closed run, or a different city: a different production (BRO-5167).
+        // Same-theater earlier runs stay flaggable, matching the matcher's exemption.
+        const sameHouse = !!(c.s.venue && p.theater?.name && venuesMatch(c.s.venue, p.theater.name));
+        const closedForRule = sameHouse ? null : mClosed;
+        if (differentProductionReason({ sourceClosed: closedForRule, mYear, sourceMarket }, c.s)) continue;
+        if (!best || j > best.j) best = { showId: c.s.id, showTitle: c.s.title, showYear: c.year, j, closedForRule };
       }
       if (best) flagged.push({
         mezzName: mName,
         theater: p.theater?.name,
         ratingsCount: p.ratingsCount,
         mYear: mYear || null,
+        sourceClosed: best.closedForRule,
+        sourceMarket,
         ourShowId: best.showId,
         ourTitle: best.showTitle,
         ourYear: best.showYear || null,
@@ -981,7 +1021,7 @@ async function main() {
 }
 
 if (require.main !== module) {
-  module.exports = { matchProductions, deduplicateMatches, normalize, MEZZANINE_OVERRIDES, selectCurrentProductionMatches, venuesMatch, findStaleMezzanineShowIds };
+  module.exports = { matchProductions, deduplicateMatches, normalize, MEZZANINE_OVERRIDES, selectCurrentProductionMatches, venuesMatch, findStaleMezzanineShowIds, filterNYCProductions, filterLondonProductions };
 } else {
   main().catch(e => {
     console.error('Fatal error:', e.message);
