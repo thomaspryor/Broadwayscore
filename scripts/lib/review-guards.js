@@ -4075,7 +4075,12 @@ function buildMultiProdYearGuard(shows) {
  * Known limitations (context-dependent guards not expressible as pure predicates):
  *   - showNotMentioned: rebuild has complex auto-clear logic (text scan + LLM CV)
  *   - cross-market guard: needs show category + outlet registry
- *   - pre-opening date guard: needs show's earliest date
+ *   - pre-window DATE GUARD (rebuild "[DATE GUARD]", inline pre-opening check):
+ *     not mirrored here
+ *   Mirrored since BRO-3179 via shared helpers: post-closing late date
+ *   (evaluateLateDateGuard), URL-year reroute (evaluateUrlYearGuard) and the
+ *   director cross-check (evaluateDirectorGuard). explainExclusion builds
+ *   their multi-production lookups from data/shows.json (getMultiProdGuards).
  *   - LLM reasoning keywords: needs llmScore.reasoning string evaluation
  *   - aggregatorStars-only inclusion: this predicate treats any truthy
  *     data.aggregatorStars as a valid signal (coarse heuristic). Real rebuild
@@ -4269,6 +4274,126 @@ function isFreshWpAutoCleared(d) {
   } catch {
     return false;
   }
+}
+
+/**
+ * BRO-3179: the three rebuild-loop exclusion guards that need show context,
+ * shared by rebuild-all-reviews.js (which logs, counts and moves files) and
+ * explainExclusion (which only names the rule). Each takes the shows.json entry
+ * the file is filed under and computes everything else itself, so the two
+ * callers cannot drift on bypass flags, the lane bypass, or the run window.
+ */
+function wrongProductionLaneBypass(data, show) {
+  const { laneBypasses } = require('./opening-night-lane/trust-model');
+  return laneBypasses(data, 'wrongProduction', { openingDate: show && show.openingDate });
+}
+
+/**
+ * Post-closing date guard: a review dated more than 6 months after a CLOSED
+ * show's closing date is a revival / tour / later production. Uses the URL date
+ * (reliable) and falls back to publishDate only when it carries a timestamp
+ * (plain bulk-import dates don't correlate with real review dates).
+ * Bypass: allowLateDate.
+ * @returns {{exclude:boolean, effectiveDate?:Date, dateSource?:string, closingDate?:Date, monthsAfter?:number}}
+ */
+function evaluateLateDateGuard(data, show) {
+  if (!data || !show || !show.closingDate || show.status !== 'closed' || data.allowLateDate) return { exclude: false };
+  let effectiveDate = null;
+  let dateSource = null;
+  if (data.url) {
+    const m = data.url.match(/\/(\d{4})[/-](\d{2})[/-](\d{2})/);
+    if (m) {
+      const ud = new Date(`${m[1]}-${m[2]}-${m[3]}`);
+      if (!isNaN(ud.getTime())) { effectiveDate = ud; dateSource = 'url'; }
+    }
+  }
+  if (!effectiveDate && data.publishDate) {
+    const { parseDate } = require('./date-utils');
+    const pd = parseDate(data.publishDate);
+    if (pd && !isNaN(pd.getTime()) && /T\d|:\d/.test(data.publishDate)) { effectiveDate = pd; dateSource = 'publishDate'; }
+  }
+  if (!effectiveDate) return { exclude: false };
+  const closingDate = new Date(show.closingDate);
+  const monthsAfter = (effectiveDate - closingDate) / (1000 * 60 * 60 * 24 * 30);
+  return { exclude: monthsAfter > 6, effectiveDate, dateSource, closingDate, monthsAfter };
+}
+
+/**
+ * URL-year cross-production guard for multi-production shows: a publishDate (or
+ * URL) year clearly closer to a sibling production means the file belongs in
+ * that sibling's directory. The rebuild moves it there; either way it is not
+ * this show's review. guardEntry is buildMultiProdYearGuard(shows)[show.id].
+ * Bypass: wrongProductionManualClear, wrongProductionOverride, allowEarlyDate,
+ * allowLateDate, routedFromShowId (already rerouted), opening-night lane.
+ * @returns {null | {decision:object, detectedYear:number|null, yearSource:string|null}}
+ */
+function evaluateUrlYearGuard(data, show, guardEntry) {
+  if (!data || !show || !guardEntry) return null;
+  if (wrongProductionLaneBypass(data, show)
+      || data.wrongProductionManualClear || data.wrongProductionOverride
+      || data.allowEarlyDate || data.allowLateDate || data.routedFromShowId) return null;
+  let detectedYear = null;
+  let yearSource = null;
+  if (data.publishDate) {
+    const m = data.publishDate.match(/(20\d\d|19\d\d)/);
+    if (m) { detectedYear = parseInt(m[0]); yearSource = 'publishDate'; }
+  }
+  if (!detectedYear && data.url) {
+    const m = data.url.match(/\/(20\d\d|19\d\d)\//);
+    if (m) { detectedYear = parseInt(m[1]); yearSource = 'urlYear'; }
+  }
+  // Run window protects mid-run reviews of long-running shows (mamma-mia-2001
+  // ran 2001-2015; a 2014 NYT review must not route to mamma-mia-2025).
+  const startYear = show.openingDate ? new Date(show.openingDate).getFullYear() : guardEntry.showYear;
+  const endYear = show.closingDate && show.status === 'closed'
+    ? new Date(show.closingDate).getFullYear()
+    : new Date().getFullYear();
+  const decision = pickRerouteTarget(guardEntry.showYear, guardEntry.siblings, detectedYear, [startYear, endYear]);
+  return { decision, detectedYear, yearSource };
+}
+
+/**
+ * Director cross-check for multi-production shows: a review in an OLDER
+ * production's directory naming a NEWER production's director is filed under
+ * the wrong show. directorMap is buildMultiProdDirectorGuard(shows)[show.id].
+ * Bypass: routedFromShowId, humanReviewedWrongProduction === false, lane.
+ * Deliberately NOT wrongProductionOverride (see wrong-production-clear.js).
+ * @returns {null | {dirName:string, newerId:string}}
+ */
+function evaluateDirectorGuard(data, show, directorMap) {
+  if (!data || !directorMap || data.routedFromShowId || data.humanReviewedWrongProduction === false) return null;
+  if (wrongProductionLaneBypass(data, show)) return null;
+  const text = (data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.lboRoundupExcerpt || '').toLowerCase();
+  if (text.length < 30) return null;
+  for (const [dirName, newerId] of directorMap) {
+    if (text.includes(dirName)) return { dirName, newerId };
+  }
+  return null;
+}
+
+// explainExclusion has no shows list, so it builds the two multi-production
+// lookups once from data/shows.json (same lazy pattern as getCriticRegistry).
+// Missing/unreadable shows.json -> empty lookups (the guards simply don't fire).
+let _multiProdGuardsCache = null;
+function getMultiProdGuards() {
+  if (_multiProdGuardsCache) return _multiProdGuardsCache;
+  let shows = [];
+  try {
+    const path = require('path');
+    const fs = require('fs');
+    const raw = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'data', 'shows.json'), 'utf8'));
+    shows = Array.isArray(raw) ? raw : (raw.shows || []);
+  } catch { /* fall through with no shows */ }
+  return setMultiProdGuardShows(shows);
+}
+/** Test seam (and cache reset): build the lookups from an explicit shows list. */
+function setMultiProdGuardShows(shows) {
+  const { buildMultiProdDirectorGuard } = require('./prior-run-sibling');
+  _multiProdGuardsCache = {
+    year: buildMultiProdYearGuard(shows || []),
+    director: buildMultiProdDirectorGuard(shows || []),
+  };
+  return _multiProdGuardsCache;
 }
 
 /**
@@ -4471,6 +4596,14 @@ function explainExclusion(data, show, filePath) {
   // published long before its own previews window (helper honors priorRuns +
   // every manual-clear/early-date override — see its docstring).
   if (isPrematureReviewForUnopenedShow(data, show)) return 'prematureForUnopenedShow';
+  // BRO-3179: the rebuild's three context guards, same helpers it calls.
+  if (show && show.id) {
+    if (evaluateLateDateGuard(data, show).exclude) return 'lateDateMismatch';
+    const mp = getMultiProdGuards();
+    const urlYear = evaluateUrlYearGuard(data, show, mp.year[show.id]);
+    if (urlYear && urlYear.decision.action === 'reroute') return 'urlYearReroute';
+    if (evaluateDirectorGuard(data, show, mp.director[show.id])) return 'directorMismatch';
+  }
   // duplicateOf: when filePath is provided, mirror rebuild-all-reviews.js's
   // circular-duplicate-recovery logic (BUG F / Heated Rivalry nyt-theater--*
   // pair, 2026-05-27). The rebuild keeps the lexically-LOWER filename when
@@ -5606,6 +5739,10 @@ module.exports = {
   isGarbageTierReason,
   invalidTierHumanVerified,
   wrongProductionClearLiftsInvalidTier,
+  evaluateLateDateGuard,
+  evaluateUrlYearGuard,
+  evaluateDirectorGuard,
+  setMultiProdGuardShows,
   rejectedAtHumanCleared,
   isTimestampAfter,
   isLikelyStaleSuspectedMisattribution,

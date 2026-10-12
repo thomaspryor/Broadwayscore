@@ -63,7 +63,7 @@ const {
 const { emitStage, readTrackedShowIds, selectTerminalShowIds } = require('./lib/stage-latency');
 const { buildMultiProdDirectorGuard, inheritPriorRunReviews, findPriorRunSiblings, supersededPriorRunReviews } = require('./lib/prior-run-sibling');
 const { inheritUrlFromDuplicateLosers } = require('./lib/duplicate-fold-url');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, isRejectedByReasonExclusion, isRejectedAtExclusion, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, wrongShowCleared } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, isRejectedByReasonExclusion, isRejectedAtExclusion, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, wrongShowCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { extractBylineFromText } = require('./lib/byline-from-text');
@@ -4253,43 +4253,23 @@ showDirs.forEach(showId => {
       // Reviews with allowLateDate: true bypass this (e.g., retrospective pieces)
       // Uses URL-extracted dates (reliable) + publishDate only when it's a proper ISO/dated format
       // Skips unreliable bulk-import dates like "April 22, 2014" that don't correlate with actual review dates
-      if (showClosingDateMap[showId] && !data.allowLateDate) {
-        let effectiveDate = null;
-        let dateSource = null;
-        // Prefer URL date (most reliable — can't be a metadata artifact)
-        if (data.url) {
-          const m = data.url.match(/\/(\d{4})[/-](\d{2})[/-](\d{2})/);
-          if (m) {
-            const ud = new Date(`${m[1]}-${m[2]}-${m[3]}`);
-            if (!isNaN(ud.getTime())) { effectiveDate = ud; dateSource = 'url'; }
-          }
-        }
-        // Fall back to publishDate only if it looks like a real date (ISO format with time, or matches URL)
-        if (!effectiveDate && data.publishDate) {
-          const pd = parseDate(data.publishDate);
-          if (pd && !isNaN(pd.getTime())) {
-            // Only trust publishDate if it contains a timestamp (T or time component) — bulk imports are plain dates
-            const hasTimestamp = /T\d|:\d/.test(data.publishDate);
-            if (hasTimestamp) { effectiveDate = pd; dateSource = 'publishDate'; }
-          }
-        }
-        if (effectiveDate) {
-          const closingDate = showClosingDateMap[showId];
-          const monthsAfter = (effectiveDate - closingDate) / (1000 * 60 * 60 * 24 * 30);
-          if (monthsAfter > 6) {
-            console.log(`  [LATE DATE GUARD] ${showId}/${file}: ${dateSource}=${effectiveDate.toISOString().split('T')[0]}, show closed ${closingDate.toISOString().split('T')[0]} (${Math.round(monthsAfter)} months after)`);
-            if (!stats.suspectedLateReviews) stats.suspectedLateReviews = [];
-            stats.suspectedLateReviews.push({
-              showId, file, outlet: data.outletId || data.outlet,
-              critic: data.criticName, effectiveDate: effectiveDate.toISOString().split('T')[0],
-              closingDate: closingDate.toISOString().split('T')[0],
-              monthsAfter: Math.round(monthsAfter), score: data.assignedScore,
-              dateSource,
-            });
-            logExclusion("skippedLateDateMismatch", showId, file, data);
-            stats.skippedLateDateMismatch = (stats.skippedLateDateMismatch || 0) + 1;
-            return;
-          }
+      // Pure decision shared with explainExclusion: review-guards evaluateLateDateGuard (BRO-3179).
+      {
+        const late = evaluateLateDateGuard(data, showById[showId]);
+        if (late.exclude) {
+          const { effectiveDate, closingDate, monthsAfter, dateSource } = late;
+          console.log(`  [LATE DATE GUARD] ${showId}/${file}: ${dateSource}=${effectiveDate.toISOString().split('T')[0]}, show closed ${closingDate.toISOString().split('T')[0]} (${Math.round(monthsAfter)} months after)`);
+          if (!stats.suspectedLateReviews) stats.suspectedLateReviews = [];
+          stats.suspectedLateReviews.push({
+            showId, file, outlet: data.outletId || data.outlet,
+            critic: data.criticName, effectiveDate: effectiveDate.toISOString().split('T')[0],
+            closingDate: closingDate.toISOString().split('T')[0],
+            monthsAfter: Math.round(monthsAfter), score: data.assignedScore,
+            dateSource,
+          });
+          logExclusion("skippedLateDateMismatch", showId, file, data);
+          stats.skippedLateDateMismatch = (stats.skippedLateDateMismatch || 0) + 1;
+          return;
         }
       }
 
@@ -4299,38 +4279,12 @@ showDirs.forEach(showId => {
       // Pure decision: pickRerouteTarget() in scripts/lib/review-guards.js (with tests).
       // Bypass: wrongProductionManualClear, wrongProductionOverride, allowEarlyDate, allowLateDate, routedFromShowId
       // routedFromShowId: file was already rerouted to this directory by a prior rebuild — don't re-evaluate
-      if (multiProdYearGuard[showId] && !laneOk('wrongProduction')
-          && !data.wrongProductionManualClear
-          && !data.wrongProductionOverride
-          && !data.allowEarlyDate
-          && !data.allowLateDate
-          && !data.routedFromShowId) {
+      // Pure decision (bypass flags, lane, run window, pickRerouteTarget) shared
+      // with explainExclusion: review-guards evaluateUrlYearGuard (BRO-3179).
+      const urlYear = evaluateUrlYearGuard(data, showById[showId], multiProdYearGuard[showId]);
+      if (urlYear) {
+        const { decision, detectedYear, yearSource } = urlYear;
         const guard = multiProdYearGuard[showId];
-        let detectedYear = null;
-        let yearSource = null;
-        // Check publish date first (more reliable)
-        if (data.publishDate) {
-          const m = data.publishDate.match(/(20\d\d|19\d\d)/);
-          if (m) { detectedYear = parseInt(m[0]); yearSource = 'publishDate'; }
-        }
-        // Fall back to URL year
-        if (!detectedYear && data.url) {
-          const m = data.url.match(/\/(20\d\d|19\d\d)\//);
-          if (m) { detectedYear = parseInt(m[1]); yearSource = 'urlYear'; }
-        }
-        // Build run-window [startYear, endYear] from show data so pickRerouteTarget
-        // can protect mid-run reviews of long-running shows from being misrouted
-        // to a revival just because the revival is year-distance closer.
-        // Fixes: mamma-mia-2001 (ran 2001–2015) had a 2014 NYT review being routed
-        // to mamma-mia-2025 because |2014-2025|=11 < |2014-2001|=13.
-        const startYear = showOpeningDateMap[showId]
-          ? showOpeningDateMap[showId].getFullYear()
-          : guard.showYear;
-        const endYear = showClosingDateMap[showId]
-          ? showClosingDateMap[showId].getFullYear()
-          : new Date().getFullYear(); // still running → accept up to today
-        const runWindow = [startYear, endYear];
-        const decision = pickRerouteTarget(guard.showYear, guard.siblings, detectedYear, runWindow);
         if (decision.action === 'reroute') {
           const targetShowId = decision.targetShowId;
           const targetDir = path.join(reviewTextsDir, targetShowId);
@@ -4427,17 +4381,14 @@ showDirs.forEach(showId => {
       // If a review in an OLDER production's directory mentions a NEWER production's director,
       // it's almost certainly filed under the wrong show (validated pattern, zero false positives)
       // routedFromShowId: already rerouted — text may reference original show's era, skip re-evaluation
-      if (multiProdDirectorGuard[showId] && !data.routedFromShowId && data.humanReviewedWrongProduction !== false && !laneOk('wrongProduction')) {
-        const text = (data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.lboRoundupExcerpt || '').toLowerCase();
-        if (text.length >= 30) {
-          for (const [dirName, newerId] of multiProdDirectorGuard[showId]) {
-            if (text.includes(dirName)) {
-              console.log(`  [DIRECTOR GUARD] ${showId}/${file}: mentions director "${dirName}" from newer production ${newerId}`);
-              logExclusion("skippedDirectorMismatch", showId, file, data);
-              stats.skippedDirectorMismatch = (stats.skippedDirectorMismatch || 0) + 1;
-              return;
-            }
-          }
+      // Pure decision shared with explainExclusion: review-guards evaluateDirectorGuard (BRO-3179).
+      {
+        const dirHit = evaluateDirectorGuard(data, showById[showId], multiProdDirectorGuard[showId]);
+        if (dirHit) {
+          console.log(`  [DIRECTOR GUARD] ${showId}/${file}: mentions director "${dirHit.dirName}" from newer production ${dirHit.newerId}`);
+          logExclusion("skippedDirectorMismatch", showId, file, data);
+          stats.skippedDirectorMismatch = (stats.skippedDirectorMismatch || 0) + 1;
+          return;
         }
       }
 
