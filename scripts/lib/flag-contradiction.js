@@ -481,6 +481,14 @@ function retractStaleClearBreadcrumb(file, contradiction, now = new Date()) {
   file.clearBreadcrumbRetracted =
     `retracted stale ${contradiction.breadcrumb}: contradicted live ${contradiction.flag} (${contradiction.task})`;
   file.clearBreadcrumbRetractedAt = now.toISOString().split('T')[0];
+  // BRO-3110: the drain judged the live flag right. Without a reason on the
+  // flag the rebuild's UK-URL heuristics (shouldAutoClearWrongShowUkUrl's
+  // hasManualReason gate, the UK wrongProduction predicates' reason gate)
+  // re-derive the same clear on the next run and recreate the contradiction.
+  const reasonField = { wrongShow: 'wrongShowReason', wrongProduction: 'wrongProductionReason' }[contradiction.flag];
+  if (reasonField && file[contradiction.flag] === true && !file[reasonField]) {
+    file[reasonField] = `confirmed by clear-breadcrumb retraction (${contradiction.task})`;
+  }
   return removed;
 }
 

@@ -38,6 +38,7 @@
 
 const { wrongShowCleared } = require('./review-guards');
 const { absorbMergedDuplicates } = require('./merged-duplicate-urls');
+const { canonicalReviewUrl } = require('./review-url-clusters');
 
 // Field families that never transfer between review files.
 const NEVER_TRANSFER_PATTERN = new RegExp(
@@ -100,6 +101,70 @@ function hasOperatorAssertion(data) {
   return Object.keys(data).some(k => OPERATOR_ASSERTION_KEY_PATTERN.test(k) && _isSet(data[k]));
 }
 
+// The fetched-text block: these describe ONE body of text and move together.
+// Copying fullText alone left the stale contentTier/tierReason of the old
+// body on the target, so the review still never scored (BRO-4447).
+const FETCHED_TEXT_STATE_FIELDS = [
+  'fullText', 'textWordCount', 'wordCount', 'contentTier', 'contentTierReason',
+  'tierReason', 'textFetchedAt', 'collectedAt', 'fetchMethod', 'fetchTier',
+  'textStatus', 'textQuality', 'isFullReview', 'truncationSignals', 'textIssues',
+  'incompleteReason', 'incompleteDetail',
+];
+// Verdicts computed from the target's OLD body; wrong once the body changes.
+const STALE_TEXT_VERDICT_FIELDS = [
+  'rescoreBlockedReason', 'rescoreBlockedAt', 'rescoreBlockedHadExcerpt',
+  'rescoreBlockedTextLength', 'needsFullText', 'needsRefetch',
+];
+const MIN_ADOPTED_TEXT_CHARS = 200;
+const UNUSABLE_TEXT_TIERS = new Set(['invalid', 'stub']);
+
+function _textLength(d) {
+  return d && typeof d.fullText === 'string' ? d.fullText.trim().length : 0;
+}
+
+/**
+ * BRO-4447: a rebuild from a stale checkout renamed outlet--unknown.json to
+ * outlet--critic.json BEFORE the text fetch landed, so the named target holds
+ * the old textless body and the --unknown source holds the fetched review.
+ * The fill-only merge kept the target's stale text state and the caller then
+ * deleted the source, losing the text. When both files are the same review
+ * (same canonical url on both) and the source's text is substantially
+ * longer, usable and no older than the target's, the source's whole text block replaces the target's.
+ * A target a person pinned (_locked, manualContentTier) keeps its text.
+ * Mutates target; returns true when it adopted the source's text.
+ */
+function adoptNewerFetchedText(target, source) {
+  if (!target || !source) return false;
+  if (target._locked === true || _isSet(target.manualContentTier)) return false;
+  // Both files must name the same review. An empty url proves nothing: the
+  // rebuild pairs files by critic filename, so it could be another review.
+  if (!target.url || !source.url) return false;
+  if (canonicalReviewUrl(target.url) !== canonicalReviewUrl(source.url)) return false;
+  const srcLen = _textLength(source);
+  if (srcLen < MIN_ADOPTED_TEXT_CHARS) return false;
+  if (_textLength(target) >= srcLen * 0.8) return false;
+  // Longer is not better when the longer body is junk (paywall, roundup,
+  // wrong article) or older than the target's own fetch (a deliberate trim).
+  if (UNUSABLE_TEXT_TIERS.has(source.contentTier)) return false;
+  if (source.contentVerification && source.contentVerification.wrongArticle === true) return false;
+  if (source.isRoundupArticle === true || source.isNonReview === true) return false;
+  const srcAt = Date.parse(source.textFetchedAt || '');
+  const tgtAt = Date.parse(target.textFetchedAt || '');
+  if (Number.isFinite(srcAt) && Number.isFinite(tgtAt) && srcAt < tgtAt) return false;
+  for (const key of FETCHED_TEXT_STATE_FIELDS) {
+    if (source[key] != null) target[key] = source[key];
+    else delete target[key];
+  }
+  // The CV verdict describes a body of text: take the source's, or drop the
+  // target's, which was about the body just replaced.
+  if (source.contentVerification) target.contentVerification = source.contentVerification;
+  else delete target.contentVerification;
+  for (const key of STALE_TEXT_VERDICT_FIELDS) delete target[key];
+  target.needsRescore = true;
+  target.rescoreReason = 'fullText adopted from merged same-url sibling (BRO-4447)';
+  return true;
+}
+
 function isTransferableField(key) {
   return !NEVER_TRANSFER_PATTERN.test(key);
 }
@@ -149,7 +214,7 @@ function mergeUniqueReviewFields(target, source) {
   if (hasOperatorAssertion(source)) {
     return { action: 'skip-protected-source', changed: false };
   }
-  let changed = false;
+  let changed = adoptNewerFetchedText(target, source);
   for (const [key, val] of Object.entries(source || {})) {
     if (!isTransferableField(key)) continue;
     if (val != null && target[key] == null) {
@@ -165,6 +230,8 @@ function mergeUniqueReviewFields(target, source) {
 
 module.exports = {
   mergeUniqueReviewFields,
+  adoptNewerFetchedText,
+  FETCHED_TEXT_STATE_FIELDS,
   isExclusionFlagged,
   isTransferableField,
   hasOperatorAssertion,

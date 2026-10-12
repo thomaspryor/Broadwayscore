@@ -36,7 +36,7 @@ const RECONCILABLE_FIELDS = [
   'venue', 'synopsis', 'runtime', 'intermissions', 'ageRecommendation',
   'officialUrl', 'wikipediaUrl', 'ibdbUrl',
   'openingDate', 'previewsStartDate', 'openingDateSource',
-  'humanCorrectedClosingDate',
+  'humanCorrectedClosingDate', 'humanCorrectedOpeningDate',
   'tourLegs', 'priorRuns',
 ];
 

@@ -1393,8 +1393,8 @@ function applyScoreRelevantMigrations(data) {
  * other.
  *
  * Priority (lower sorts first / wins): non-duplicate > scored > named (not
- * Unknown/unnamed) > non-outlet-as-critic > content-verified > ensemble-
- * scored > alphabetical by filename.
+ * Unknown/unnamed) > non-outlet-as-critic > content-verified > byline
+ * attested in its own text > ensemble-scored > alphabetical by filename.
  *
  * Pure — no I/O. All flags are pre-computed by the caller from the file's
  * parsed JSON (see rebuild-all-reviews.js's sortMeta build; `hasScore` there
@@ -1402,7 +1402,7 @@ function applyScoreRelevantMigrations(data) {
  * downstream, not a looser proxy, so a file that sorts as "scored" here is
  * guaranteed to actually produce a score later).
  *
- * @param {{file:string, isDupe?:boolean, hasScore?:boolean, isUnknown?:boolean, isOutletAsCritic?:boolean, isVerified?:boolean, hasEnsemble?:boolean}} a
+ * @param {{file:string, isDupe?:boolean, hasScore?:boolean, isUnknown?:boolean, isOutletAsCritic?:boolean, isVerified?:boolean, isBylineUnattested?:boolean, hasEnsemble?:boolean}} a
  * @param {object} b - same shape as `a`
  * @returns {number}
  */
@@ -1413,6 +1413,10 @@ function compareFilesForDedupPriority(a, b) {
   if (rank(a.isUnknown) !== rank(b.isUnknown)) return rank(a.isUnknown) - rank(b.isUnknown);
   if (rank(a.isOutletAsCritic) !== rank(b.isOutletAsCritic)) return rank(a.isOutletAsCritic) - rank(b.isOutletAsCritic);
   if (rank(a.isVerified) !== rank(b.isVerified)) return rank(a.isVerified) - rank(b.isVerified);
+  // BRO-4911: same url filed under two critic names (ITW Observer credited
+  // Jesse Green): the copy whose own text bylines its critic wins. An absent
+  // flag ranks as attested, so callers that set it on neither file are unchanged.
+  if (rank(a.isBylineUnattested) !== rank(b.isBylineUnattested)) return rank(a.isBylineUnattested) - rank(b.isBylineUnattested);
   if (rank(a.hasEnsemble) !== rank(b.hasEnsemble)) return rank(a.hasEnsemble) - rank(b.hasEnsemble);
   return String(a.file).localeCompare(String(b.file));
 }

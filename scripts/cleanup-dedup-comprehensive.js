@@ -20,6 +20,7 @@ const { shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSpl
 const { cascadeClearDuplicateRefs } = require('./lib/cascade-clear-duplicate-refs');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
+const { adoptNewerFetchedText } = require('./lib/merge-review-fields');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -113,7 +114,9 @@ function readJsonFile(fp) { try { return JSON.parse(fs.readFileSync(fp, 'utf8'))
 function writeJsonFile(fp, d) { if (DRY_RUN) return; fs.writeFileSync(fp, JSON.stringify(d, null, 2) + '\n'); }
 
 function mergeReviewData(target, source) {
-  if (source.fullText && (!target.fullText || source.fullText.length > target.fullText.length)) target.fullText = source.fullText;
+  // A longer same-url body moves with its tier/verdict block and only when it
+  // is usable and no older (BRO-4447); fullText alone left the stale tier.
+  if (!adoptNewerFetchedText(target, source) && source.fullText && !target.fullText) target.fullText = source.fullText;
   if (source.llmScore != null && target.llmScore == null) target.llmScore = source.llmScore;
   if (source.llmConfidence && !target.llmConfidence) target.llmConfidence = source.llmConfidence;
   if (source.scoreSource && !target.scoreSource) target.scoreSource = source.scoreSource;

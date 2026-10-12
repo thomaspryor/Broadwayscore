@@ -67,6 +67,7 @@ const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribu
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { extractBylineFromText } = require('./lib/byline-from-text');
+const { isBylineAttestedInText } = require('./lib/byline-attestation');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl, compareFilesForDedupPriority, applyScoreRelevantMigrations, SCORE_SOURCE_LABELS } = require('./lib/rebuild-helpers');
 const { normalizeCriticName } = require('./lib/byline-normalization');
 const { recoverDisplayBylinesForShow, resolveCriticName } = require('./lib/byline-recovery');
@@ -2002,7 +2003,7 @@ const crossShowFingerprints = new Map();
 // from the --unknown file into it and delete the stale --unknown file. This prevents duplicate
 // entries in validate-review-texts.js (which keys on JSON criticName, not filename).
 {
-  let renamedCount = 0, mergedCount = 0, errorCount = 0, skippedFlaggedCount = 0, skippedLockedCount = 0, skippedProtectedCount = 0;
+  let renamedCount = 0, mergedCount = 0, errorCount = 0, skippedFlaggedCount = 0, skippedLockedCount = 0, skippedProtectedCount = 0, skippedSameUrlCount = 0;
   for (const sid of showDirs) {
     const sDir = path.join(reviewTextsDir, sid);
     const unknownFiles = fs.readdirSync(sDir).filter(f => f.endsWith('.json') && f.includes('--unknown'));
@@ -2045,6 +2046,7 @@ const crossShowFingerprints = new Map();
         }
       } catch (e) {
         if (e.code === 'LOCKED') { skippedLockedCount++; continue; } // _locked refused the rename
+        if (e.code === 'SAME_URL') { skippedSameUrlCount++; continue; } // BRO-3557: url already filed under another name; dedup keeps one
         errorCount++;
         console.warn(`  [stale-unknown] Error processing ${sid}/${f}: ${e.message}`);
       }
@@ -2055,6 +2057,7 @@ const crossShowFingerprints = new Map();
   }
   stats.staleUnknownSkippedProtected = skippedProtectedCount;
   stats.staleUnknownSkippedLocked = skippedLockedCount;
+  stats.staleUnknownSkippedSameUrl = skippedSameUrlCount;
   stats.staleUnknownRenamed = renamedCount;
   stats.staleUnknownMerged = mergedCount;
   stats.staleUnknownSkippedFlagged = skippedFlaggedCount;
@@ -2432,12 +2435,13 @@ showDirs.forEach(showId => {
     // isUnknown is filename-derived (not dependent on parse succeeding) so a
     // corrupt/unparseable file still sorts by its on-disk naming, matching the
     // pre-#1406 behavior for the parse-failure fallback path below.
-    const meta = { isDupe: 0, isVerified: 1, hasEnsemble: 1, isOutletAsCritic: 0, hasScore: 0, isUnknown: /unknown|unnamed/i.test(f) ? 1 : 0 };
+    const meta = { isDupe: 0, isVerified: 1, isBylineUnattested: 1, hasEnsemble: 1, isOutletAsCritic: 0, hasScore: 0, isUnknown: /unknown|unnamed/i.test(f) ? 1 : 0 };
     try {
       const d = parseReviewFileText(fs.readFileSync(path.join(showDir, f), 'utf8'));
       meta.isDupe = (d.isDuplicate || d.duplicateOf || d.duplicateTextOf) ? 1 : 0;
       meta.isVerified = d.contentVerification?.isValid ? 0 : 1;
       meta.hasEnsemble = d.ensembleData ? 0 : 1;
+      meta.isBylineUnattested = isBylineAttestedInText(d.criticName, d.fullText) ? 0 : 1; // BRO-4911
       // Dedup tiebreak (task #1406): does this file carry a score that the
       // real getBestScore() pipeline would actually use? Calling the core
       // helper directly (no stats/flagForHumanReview) keeps this side-effect
@@ -2509,7 +2513,7 @@ showDirs.forEach(showId => {
 
   // Sort: prefer higher-quality files first for dedup tiebreaking (first-seen wins)
   // Priority: non-duplicate > scored > named (not Unknown) > non-outlet-as-critic >
-  // verified > ensemble-scored > alphabetical. See compareFilesForDedupPriority's
+  // verified > byline-attested > ensemble-scored > alphabetical. See compareFilesForDedupPriority's
   // doc comment (task #1406) for why "scored" outranks "named".
   const files = allJsonFiles.sort((a, b) => {
     const am = sortMeta.get(a), bm = sortMeta.get(b);

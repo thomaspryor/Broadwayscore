@@ -474,6 +474,7 @@ function makeDirIO(sDir, dryRun) {
       if (!r || !r.wrote) {
         const err = new Error(`rename ${f} -> ${g} did not land (${(r && r.skipped) || 'no result'}) — source kept`);
         if (r && r.skipped === 'locked') err.code = 'LOCKED';
+        if (r && r.skipped === 'same-url-exists') err.code = 'SAME_URL'; // BRO-3557: url already filed under another name
         throw err;
       }
     },
@@ -674,6 +675,7 @@ function runOutletMismatchCleanup({ reviewTextsDir, showDirs, showById = {}, dry
         // A _locked file refusing the rename is a decision, not a failure —
         // counted on its own so the summary surfaces it.
         if (e.code === 'LOCKED') { out.skippedLockedCount++; (out.kept.locked = out.kept.locked || []).push(`${sid}/${f}`); continue; }
+        if (e.code === 'SAME_URL') { (out.kept.sameUrl = out.kept.sameUrl || []).push(`${sid}/${f}`); continue; }
         out.errorCount++;
         console.warn(`  [outlet-mismatch] Error processing ${sid}/${f}: ${e.message}`);
       }

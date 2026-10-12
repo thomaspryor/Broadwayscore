@@ -35,6 +35,9 @@ const ITW_1987 = {
 };
 const NYPOST_2022_URL = 'https://nypost.com/2022/07/10/into-the-woods-broadway-review-high-octane-unfiltered-sondheim/';
 const NYPOST_1987_URL = 'https://nypost.com/1987/11/06/into-the-woods-review/';
+// The self-heal reads "a NEW url arrived"; the same url seen again is not one
+// (BRO-4911), so the controls arrive from a different prior url.
+const PRIOR_URL = 'https://nypost.com/into-the-woods-review-old-slug/';
 
 function urlFlagged(url) {
   return {
@@ -57,24 +60,24 @@ test('auto-clear is vetoed when the kept url is dated far outside the show run',
 });
 
 test('control: a url dated inside the show run is still auto-cleared (venue-transfer self-heal)', () => {
-  const existing = urlFlagged(NYPOST_1987_URL);
+  const existing = urlFlagged(PRIOR_URL);
   const merged = mergeReviews(existing, { url: NYPOST_1987_URL, source: 'gather-reviews' }, {}, { show: ITW_1987, showId: ITW_1987.id, script: 'test' });
+  // A changed url releases the old url's flag (the url-change invariant clears
+  // it before the self-heal runs, so no AutoCleared breadcrumb is needed).
   assert.notEqual(merged.wrongProduction, true);
-  assert.equal(merged.wrongProductionAutoCleared, true);
 });
 
 test('control: with no show record the old behaviour is unchanged (fails open)', () => {
-  const existing = urlFlagged(NYPOST_2022_URL);
+  const existing = urlFlagged(PRIOR_URL);
   const merged = mergeReviews(existing, { url: NYPOST_2022_URL, source: 'gather-reviews' }, {}, { script: 'test' });
   assert.notEqual(merged.wrongProduction, true);
-  assert.equal(merged.wrongProductionAutoCleared, true);
 });
 
 test('a declared prior run covering the url date is not vetoed', () => {
   const show = { ...ITW_1987, priorRuns: [{ openingDate: '2022-07-10', closingDate: '2023-01-08', venue: 'St. James Theatre' }] };
-  const existing = urlFlagged(NYPOST_2022_URL);
+  const existing = urlFlagged(PRIOR_URL);
   const merged = mergeReviews(existing, { url: NYPOST_2022_URL, source: 'gather-reviews' }, {}, { show, showId: show.id, script: 'test' });
-  assert.equal(merged.wrongProductionAutoCleared, true);
+  assert.notEqual(merged.wrongProduction, true);
 });
 
 test('pin: a stale dated pre-opening flag is released once the openingDate is corrected', () => {

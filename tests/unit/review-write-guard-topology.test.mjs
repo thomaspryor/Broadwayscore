@@ -40,6 +40,60 @@ function writeFile(p, obj) {
 }
 
 describe('safeRenameReview', () => {
+  // BRO-3557: every caller gets the same-url guard collect-review-texts had.
+  test('refuses to rename onto a new name when the same url is already filed under another name', () => {
+    const showDir = path.join(tmpDir, 'review-texts', 'show-a');
+    const url = 'https://www.thetimes.com/culture/theatre/show-a-review-abc123';
+    const body = 'A full review body. '.repeat(40);
+    const src = path.join(showDir, 'thetimes--unknown.json');
+    const dst = path.join(showDir, 'thetimes--clive-davis.json');
+    const sibling = path.join(showDir, 'thetimes--dominic-maxwell.json');
+    writeFile(src, { criticName: 'Clive Davis', outletId: 'thetimes', url: url + '?utm=x', fullText: 'stub' });
+    writeFile(sibling, { criticName: 'Dominic Maxwell', outletId: 'thetimes', url, fullText: body });
+
+    const result = safeRenameReview(src, dst);
+    assert.equal(result.wrote, false);
+    assert.equal(result.skipped, 'same-url-exists');
+    assert.equal(result.duplicateOf, 'thetimes--dominic-maxwell.json');
+    assert.ok(fs.existsSync(src), 'source kept');
+    assert.ok(!fs.existsSync(dst));
+  });
+
+  test('same-url guard: a substantive source is not blocked by a near-empty sibling, and allowSameUrlSibling opts out', () => {
+    const showDir = path.join(tmpDir, 'review-texts', 'show-a');
+    const url = 'https://www.thetimes.com/culture/theatre/show-a-review-abc123';
+    const body = 'A full review body. '.repeat(40);
+    const sibling = path.join(showDir, 'thetimes--dominic-maxwell.json');
+    writeFile(sibling, { criticName: 'Dominic Maxwell', outletId: 'thetimes', url, fullText: '' });
+    const src = path.join(showDir, 'thetimes--unknown.json');
+    writeFile(src, { criticName: 'Clive Davis', outletId: 'thetimes', url, fullText: body });
+    assert.equal(safeRenameReview(src, path.join(showDir, 'thetimes--clive-davis.json')).wrote, true);
+
+    const src2 = path.join(showDir, 'thetimes--unknown-2.json');
+    writeFile(src2, { criticName: 'X Y', outletId: 'thetimes', url, fullText: '' });
+    const r2 = safeRenameReview(src2, path.join(showDir, 'thetimes--x-y.json'), { allowSameUrlSibling: true });
+    assert.equal(r2.wrote, true);
+  });
+
+  test('same-url guard: a sibling that is itself a duplicate of the source does not block', () => {
+    const showDir = path.join(tmpDir, 'review-texts', 'show-a');
+    const url = 'https://www.thetimes.com/culture/theatre/show-a-review-abc123';
+    const src = path.join(showDir, 'thetimes--unknown.json');
+    writeFile(src, { criticName: 'Clive Davis', outletId: 'thetimes', url });
+    writeFile(path.join(showDir, 'thetimes--old-name.json'), { outletId: 'thetimes', url, duplicateTextOf: 'thetimes--unknown.json' });
+    assert.equal(safeRenameReview(src, path.join(showDir, 'thetimes--clive-davis.json')).wrote, true);
+  });
+
+  test('same-url guard ignores other outlets and a cross-show move into a dir without the url', () => {
+    const url = 'https://www.thetimes.com/culture/theatre/show-a-review-abc123';
+    const a = path.join(tmpDir, 'review-texts', 'show-a');
+    const b = path.join(tmpDir, 'review-texts', 'show-b');
+    writeFile(path.join(a, 'guardian--someone.json'), { outletId: 'guardian', url, fullText: 'x'.repeat(900) });
+    const src = path.join(a, 'thetimes--unknown.json');
+    writeFile(src, { criticName: 'Clive Davis', outletId: 'thetimes', url });
+    assert.equal(safeRenameReview(src, path.join(b, 'thetimes--clive-davis.json')).wrote, true);
+  });
+
   test('renames cleanly when dst does not exist', () => {
     const showDir = path.join(tmpDir, 'review-texts', 'show-a');
     const src = path.join(showDir, 'nytimes--unknown.json');

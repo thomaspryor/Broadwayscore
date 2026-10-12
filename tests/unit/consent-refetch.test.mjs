@@ -204,6 +204,15 @@ describe('applyVerifiedRetryOutcome', () => {
     const m = { wrongProduction: true, wrongProductionReason: 'Collector LLM: x', contentVerification: { ...clean, confidence: 'medium' } };
     assert.equal(applyVerifiedRetryOutcome(m, NOW).clearedWrongProduction, false);
   });
+  it('never clears a flag a unanimous ensemble verdict backs (#1156)', () => {
+    const ens = (reason) => ({ rejectionReason: reason, rejectedBy: 'ensemble-scoreability-check', rejectionAgreeCount: 2 });
+    const p = { wrongProduction: true, wrongProductionReason: 'Collector LLM: x', contentVerification: clean, ...ens('wrong_production') };
+    assert.equal(applyVerifiedRetryOutcome(p, NOW).clearedWrongProduction, false);
+    assert.equal(p.wrongProduction, true);
+    const s = { wrongShow: true, wrongShowReason: 'Collector LLM: x', contentVerification: clean, ...ens('wrong_show') };
+    assert.equal(applyVerifiedRetryOutcome(s, NOW).clearedWrongShow, false);
+    assert.equal(s.wrongShow, true);
+  });
   it('a failed verdict starts the cooldown and clears nothing', () => {
     const d = { wrongShow: true, wrongShowReason: 'Collector LLM: x', contentVerification: { ...clean, isValid: false } };
     applyVerifiedRetryOutcome(d, NOW);

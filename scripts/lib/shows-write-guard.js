@@ -54,6 +54,7 @@
 const path = require('path');
 const { createJsonWriteGuard, mergeArrayRecords } = require('./json-write-guard');
 const { syncStaleTheaterAddresses } = require('./venue-address-sync');
+const { restoreHumanCorrectedOpeningDates } = require('./opening-date-guard');
 
 const SHOWS_PATH = path.join(__dirname, '..', '..', 'data', 'shows.json');
 
@@ -88,6 +89,9 @@ function createShowsWriteGuard(showsPath, options = {}) {
       // validate-data's >5 cap doubled as a tripwire for a wrong mass venue
       // edit; keep that signal loud now that the addresses follow along.
       if (synced.length) console.log(`${synced.length > 5 ? '::warning::' : ''}shows-write-guard: synced theaterAddress to venue for ${synced.length} show(s): ${synced.map((c) => `${c.id} (${c.venue})`).join(', ')}`);
+      // A person's openingDate correction outlives every writer (BRO-4911).
+      const restored = restoreHumanCorrectedOpeningDates(finalData.shows);
+      if (restored.length) console.log(`::warning::shows-write-guard: kept human-corrected openingDate for ${restored.map((r) => `${r.id} (${r.from} -> ${r.to})`).join(', ')}`);
     },
   });
 

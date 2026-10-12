@@ -360,6 +360,7 @@ function supersedeAdjudicatedTourVerdict(d) {
 
 function shouldAutoClearWrongProductionPriorRun(data, show) {
   if (!data || data.wrongProduction !== true) return false;
+  if (isWrongProductionHeld(data)) return false;
   if (!show || !Array.isArray(show.priorRuns) || show.priorRuns.length === 0) return false;
   const note = data.wrongProductionNote || '';
   const reason = data.wrongProductionReason || '';
@@ -409,6 +410,7 @@ function shouldAutoClearWrongProductionPriorRun(data, show) {
  */
 function shouldAutoClearWrongProductionTourLeg(data, show) {
   if (!data || data.wrongProduction !== true) return false;
+  if (isWrongProductionHeld(data)) return false;
   if (!show || !Array.isArray(show.tourLegs) || show.tourLegs.length === 0) return false;
   const note = data.wrongProductionNote || '';
   const reason = data.wrongProductionReason || '';
@@ -574,6 +576,25 @@ function hasAdjudicatedNote(data) {
 }
 
 /**
+ * A wrongProduction flag a person has stood behind. No rebuild heuristic may
+ * clear it (BRO-3585): humanReviewedWrongProduction === true, or
+ * wrongProductionProvenance 'manual' (same fields as contradicted-flag-
+ * basis.js hasHumanAssertedFlag, minus humanReviewScore, which is about the
+ * score).
+ * Deliberately NOT here: the adjudicator's verdict (hasAdjudicatedNote; the
+ * predicates that must refuse it check it themselves, and a declared
+ * priorRuns/tourLegs window may supersede a tour verdict, BRO-2841), and
+ * clearBreadcrumbRetractedFields (stamped by every re-flag, junk heuristics
+ * included, so it says nothing about who stands behind the flag; the
+ * --fix-safe drain stamps a reason instead, BRO-3110).
+ */
+function isWrongProductionHeld(data) {
+  if (!data) return false;
+  if (data.humanReviewedWrongProduction === true) return true;
+  return data.wrongProductionProvenance === 'manual';
+}
+
+/**
  * Decide whether the allowEarlyDate/allowCrossMarket auto-clear should
  * strip wrongProduction from a review file.
  *
@@ -649,6 +670,7 @@ function shouldAutoClearWrongShow(data) {
  */
 function shouldAutoClearWrongProductionUrlYear(data, { isLondonOrOffBroadway, cvBlocksClear, isShowListingUrl } = {}) {
   if (data.wrongProduction !== true) return false;
+  if (isWrongProductionHeld(data)) return false;
   if (!data.wrongProductionNote || !data.wrongProductionNote.includes('URL contains year')) return false;
   if (!isLondonOrOffBroadway) return false;
   if (cvBlocksClear) return false;
@@ -772,6 +794,10 @@ function shouldAutoClearStaleDateGuard(data, { nowInWindow } = {}) {
   // move a flag in either direction (same carve-out as date-plausibility.js /
   // contradicted-flag-basis.js). Pre-opening behaviour is left unchanged.
   if (String(data.wrongProductionNote).startsWith('Date guard:') && data.dateSource === 'llm-scoring') return false;
+  if (isWrongProductionHeld(data)) return false;
+  // BRO-3343: same #1146/#1156 rule as every sibling predicate — a unanimous
+  // ensemble wrong_production verdict outranks a date moving back in-window.
+  if (hasEnsembleConsensus(data, 'wrong_production')) return false;
   return nowInWindow === true;
 }
 
@@ -820,6 +846,7 @@ function isDatedGuardNote(note) {
  */
 function shouldAutoClearAnticipatoryGrace(data, { stillRejected } = {}) {
   if (!data || data.wrongProduction !== true) return false;
+  if (isWrongProductionHeld(data)) return false;
   if (data.wrongProductionReason !== 'anticipatory_pre_opening_post') return false;
   if (stillRejected !== false) return false;
   const cvConfirmedWrongProduction = data.contentVerification?.wrongProduction === true
@@ -1012,6 +1039,11 @@ function shouldAutoClearWrongProductionUkDualMarket(data, ctx = {}) {
   // review-queue.js populates on every write since this fix.
   // Concrete incident: the-car-man-west-end-2026/north-west-end--natalia-prucnal.json.
   if (hasAdjudicatedNote(data)) return false;
+  if (isWrongProductionHeld(data)) return false;
+  // BRO-3585: a UK URL is a market guess; it says nothing against a flag set
+  // by reading the article (the Guardian review of the SYDNEY Magic Mike Live,
+  // flagged by a same-day audit, was cleared back onto the West End page).
+  if (data.wrongProductionProvenance === 'content') return false;
   if (ctx.isDateMismatch) return false;
   if (isPreRunForUkClear(data.publishDate, ctx.showEarliestDate)) return false;
   if (namesNonLondonCity(data)) return false;
@@ -1084,6 +1116,8 @@ function shouldAutoClearStaleLondonOutletCrossMarket(data, ctx = {}) {
   const wpNote = data.wrongProductionNote || '';
   if (!wpNote.startsWith('Cross-market: London outlet')) return false;
   if (hasAdjudicatedNote(data)) return false;
+  if (isWrongProductionHeld(data)) return false;
+  if (data.wrongProductionProvenance === 'content') return false;
   if (data.wrongProductionReason) return false;
   if (ctx.isDateMismatch) return false;
   if (!ctx.outletIsDualMarket) return false;
@@ -1098,6 +1132,7 @@ function shouldAutoClearStaleLondonOutletCrossMarket(data, ctx = {}) {
 }
 
 module.exports = {
+  isWrongProductionHeld,
   isDateOnlyAutoReason,
   UK_CLEAR_PRE_RUN_DAYS,
   isPreRunForUkClear,

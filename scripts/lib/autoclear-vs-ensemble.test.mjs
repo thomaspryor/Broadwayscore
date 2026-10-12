@@ -26,6 +26,7 @@ const {
   shouldAutoClearDatelessRevival,
   hasEnsembleConsensus,
 } = require('./wrong-production-autoclear.js');
+const autoclear = require('./wrong-production-autoclear.js');
 const { scanAutoclearVsEnsembleViolations } = require('./autoclear-vs-ensemble-scan.js');
 
 const ROOT = path.resolve(new URL('../..', import.meta.url).pathname);
@@ -42,6 +43,28 @@ test('hasEnsembleConsensus matches only rejectionReason + rejectedBy=ensemble-sc
   assert.strictEqual(hasEnsembleConsensus({ rejectionReason: 'wrong_production', rejectedBy: 'manual-review', rejectionReasoning: reasoning }, 'wrong_production'), false);
   assert.strictEqual(hasEnsembleConsensus({ rejectionReason: 'wrong_production', rejectedBy: 'ensemble-scoreability-check' }, 'wrong_production'), false);
   assert.strictEqual(hasEnsembleConsensus(null, 'wrong_production'), false);
+});
+
+// BRO-3343: shouldAutoClearStaleDateGuard shipped with no ensemble guard and
+// nothing caught it. Every exported shouldAutoClear* predicate must consult
+// hasEnsembleConsensus, so the next new predicate cannot skip it either.
+test('every exported shouldAutoClear* predicate consults hasEnsembleConsensus', () => {
+  const names = Object.keys(autoclear).filter((k) => /^shouldAutoClear/.test(k) && typeof autoclear[k] === 'function');
+  assert.ok(names.length >= 9, `expected the full predicate family, got ${names.join(', ')}`);
+  const missing = names.filter((k) => !autoclear[k].toString().includes('hasEnsembleConsensus('));
+  assert.deepStrictEqual(missing, []);
+});
+
+test('shouldAutoClearStaleDateGuard refuses to clear a unanimous ensemble verdict even when the date is back in-window (BRO-3343)', () => {
+  const base = { wrongProduction: true, wrongProductionNote: 'Pre-opening guard: pre-window date' };
+  assert.strictEqual(autoclear.shouldAutoClearStaleDateGuard(base, { nowInWindow: true }), true);
+  const ensemble = {
+    ...base,
+    rejectionReason: 'wrong_production',
+    rejectedBy: 'ensemble-scoreability-check',
+    rejectionReasoning: 'claude: wrong production; openai: also wrong production',
+  };
+  assert.strictEqual(autoclear.shouldAutoClearStaleDateGuard(ensemble, { nowInWindow: true }), false);
 });
 
 test('shouldAutoClearWrongProduction refuses to clear a unanimous ensemble wrong_production verdict', () => {

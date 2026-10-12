@@ -1122,7 +1122,14 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
       });
     }
   }
+  // BRO-4911: "a new URL arrived" must mean the url CHANGED. The same url seen
+  // again (a re-scrape, an aggregator re-listing) is no evidence the verdict
+  // about it is void, yet it cleared the flag.
+  const { canonicalReviewUrl } = require('./review-url-clusters');
+  const urlActuallyChanged = !!incoming.url
+    && canonicalReviewUrl(incoming.url) !== canonicalReviewUrl(existing.url);
   if (merged.wrongProduction && incoming.url && incoming.url.startsWith('http')
+      && urlActuallyChanged
       && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling
       && !merged.wrongProductionManualClear
       && !cvSaysWrongProduction

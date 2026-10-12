@@ -172,7 +172,11 @@ function applyVerifiedRetryOutcome(data, nowIso) {
     data.wrongShowRetryAt = nowIso;
     return out;
   }
-  if (data.wrongShow === true && isVerifierSetReason(data.wrongShowReason)) {
+  // A unanimous ensemble verdict on the stored text outranks one clean CV
+  // retry (#1156 invariant; the Little Shop Slant clear broke it).
+  const { hasEnsembleConsensus } = require('./wrong-production-autoclear');
+  if (data.wrongShow === true && isVerifierSetReason(data.wrongShowReason)
+      && !hasEnsembleConsensus(data, 'wrong_show')) {
     delete data.wrongShow;
     delete data.wrongShowReason;
     delete data.wrongShowNote;
@@ -181,7 +185,8 @@ function applyVerifiedRetryOutcome(data, nowIso) {
     out.clearedWrongShow = true;
   }
   if (data.wrongProduction === true && isVerifierSetReason(data.wrongProductionReason)
-      && cv.wrongProduction !== true && cv.confidence === 'high') {
+      && cv.wrongProduction !== true && cv.confidence === 'high'
+      && !hasEnsembleConsensus(data, 'wrong_production')) {
     delete data.wrongProduction;
     delete data.wrongProductionNote;
     data.wrongProductionAutoCleared = 'collect-review-texts: retry of this URL passed content verification (high confidence, right production)';

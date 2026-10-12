@@ -716,3 +716,32 @@ test('detectCvFlagContradiction: isRoundupArticle with no URL at all still fires
   const f = { isRoundupArticle: true, textWordCount: 900, contentVerification: CV_HIGH_BRO3416 };
   assert.equal(detectCvFlagContradiction(f).flag, 'isRoundupArticle');
 });
+
+// BRO-3110: a --fix-safe drain retracts the clear breadcrumb, but the rebuild's
+// UK-URL heuristics used to re-derive the same clear on the next run. The
+// retraction stamps a reason on the flag, which those predicates honour.
+test('BRO-3110: retracted wrongShow clear is not re-derived by the UK-URL heuristic', () => {
+  const { shouldAutoClearWrongShowUkUrl } = require('./wrong-production-autoclear.js');
+  const ctx = { isLondonMarketShow: true, isUkOutletUrl: true, dateMismatchOver90d: false };
+  const f = { url: 'https://www.independent.co.uk/arts/cabaret-review', wrongShow: true, wrongShowAutoCleared: true };
+  assert.equal(shouldAutoClearWrongShowUkUrl(f, ctx), true, 'heuristic fires before retraction');
+  retractStaleClearBreadcrumb(f, { flag: 'wrongShow', breadcrumb: 'wrongShowAutoCleared', task: 'BRO-3110 test' });
+  assert.match(f.wrongShowReason, /clear-breadcrumb retraction \(BRO-3110 test\)/);
+  assert.equal(shouldAutoClearWrongShowUkUrl(f, ctx), false, 'heuristic stands down after retraction');
+});
+
+test('BRO-3110: retracted wrongProduction clear is not re-derived by the UK dual-market heuristic', () => {
+  const { shouldAutoClearWrongProductionUkDualMarket } = require('./wrong-production-autoclear.js');
+  const ctx = { isLondonMarketShow: true, isUkUrl: true, outletIsDualOrUk: true, outletIsLondonRegion: true };
+  const f = { url: 'https://www.standard.co.uk/culture/theatre/x-review-a1.html', wrongProduction: true, wrongProductionAutoCleared: true,
+    wrongProductionNote: 'Cross-market: London outlet on a Broadway show' };
+  retractStaleClearBreadcrumb(f, { flag: 'wrongProduction', breadcrumb: 'wrongProductionAutoCleared', task: 'BRO-3110 test' });
+  assert.match(f.wrongProductionReason, /clear-breadcrumb retraction/);
+  assert.equal(shouldAutoClearWrongProductionUkDualMarket(f, ctx), false);
+});
+
+test('BRO-3110: an existing reason is never overwritten by the retraction', () => {
+  const f = { wrongShow: true, wrongShowReason: 'manual: wrong show', wrongShowAutoCleared: 'x' };
+  retractStaleClearBreadcrumb(f, { flag: 'wrongShow', breadcrumb: 'wrongShowAutoCleared', task: 't' });
+  assert.equal(f.wrongShowReason, 'manual: wrong show');
+});

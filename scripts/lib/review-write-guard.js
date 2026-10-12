@@ -3023,6 +3023,9 @@ function shouldSkipPollerUpdate(existingData, newText) {
  * @param {string} dstPath - Absolute path the file should land at
  * @param {object} [options]
  * @param {boolean} [options.force=false] - Bypass the source `_locked` check
+ * @param {boolean} [options.allowSameUrlSibling=false] - Rename even when a
+ *   different file in the destination dir already holds the same url
+ *   (otherwise skipped: 'same-url-exists' with duplicateOf/conflictPath, BRO-3557)
  * @param {object|null} [options.newData=null] - Optional updated content to
  *   write at dstPath. When omitted, the helper writes the source file's
  *   content verbatim. Pass updated data when migrating cross-show MOVEs that
@@ -3030,7 +3033,8 @@ function shouldSkipPollerUpdate(existingData, newText) {
  * @returns {{
  *   wrote: boolean,
  *   renamed?: boolean,
- *   skipped?: 'source-missing'|'source-unreadable'|'locked'|'conflict'|'noop',
+ *   skipped?: 'source-missing'|'source-unreadable'|'locked'|'conflict'|'noop'|'same-url-exists',
+ *   duplicateOf?: string,
  *   conflictPath?: string,
  *   lockedSkipped?: boolean,
  *   sisterStoreMoved?: boolean,
@@ -3038,6 +3042,40 @@ function shouldSkipPollerUpdate(existingData, newText) {
  *   error?: string,
  * }}
  */
+/**
+ * A different file in dstPath's show dir, same outlet prefix, holding the same
+ * canonical url, that the rename must not duplicate. Returns
+ * { duplicateOf, duplicateReason, conflictPath } or null. The duplicate-or-not
+ * call is shouldMarkUrlCollisionDuplicate, so a substantive file is never
+ * blocked by an empty sibling and a cleared collision stays cleared.
+ */
+function _sameUrlSiblingBlockingRename(srcPath, dstPath, data) {
+  if (!data || !data.url) return null;
+  const dstDir = path.dirname(dstPath);
+  const dstBase = path.basename(dstPath);
+  const sep = dstBase.indexOf('--');
+  if (sep <= 0) return null;
+  const { findExistingFileForUrl, decideSameUrlDifferentFileGuard } = require('./review-url-clusters');
+  const srcBase = path.basename(srcPath);
+  const sameDir = path.resolve(path.dirname(srcPath)) === path.resolve(dstDir);
+  let existing;
+  try {
+    existing = findExistingFileForUrl(path.dirname(dstDir), path.basename(dstDir),
+      dstBase.slice(0, sep), data.url, sameDir ? srcBase : null);
+  } catch { return null; }
+  if (!existing) return null;
+  let colliderData = null;
+  try { colliderData = JSON.parse(fs.readFileSync(path.join(dstDir, existing), 'utf8')); } catch { /* null → historical "mark" */ }
+  // A sibling already pointing at the file being renamed is ITS duplicate;
+  // the rename repoints it (_updateSisterStoresOnRename), so it never blocks.
+  if (sameDir && colliderData && (colliderData.duplicateOf === srcBase || colliderData.duplicateTextOf === srcBase)) return null;
+  const guard = decideSameUrlDifferentFileGuard({
+    currentFile: sameDir ? srcBase : null, newFilename: dstBase, existingSameUrl: existing,
+    newData: data, colliderData, shouldMarkDuplicate: shouldMarkUrlCollisionDuplicate,
+  });
+  return guard ? { ...guard, conflictPath: path.join(dstDir, existing) } : null;
+}
+
 function safeRenameReview(srcPath, dstPath, options = {}) {
   const { force = false, newData = null } = options;
 
@@ -3070,8 +3108,20 @@ function safeRenameReview(srcPath, dstPath, options = {}) {
     return { wrote: false, skipped: 'conflict', conflictPath: dstPath };
   }
 
-  fs.mkdirSync(path.dirname(dstPath), { recursive: true });
   let contentToWrite = (newData && typeof newData === 'object') ? newData : srcData;
+  // BRO-3557: the same review already lives in the destination dir under a
+  // DIFFERENT filename (rotating bylines, a stale-checkout rename). Renaming
+  // would mint a second primary for one url. Same decision collect-review-
+  // texts made at its own call site (BRO-3550), now shared by every caller.
+  if (!options.allowSameUrlSibling) {
+    const sameUrl = _sameUrlSiblingBlockingRename(srcPath, dstPath, contentToWrite);
+    if (sameUrl) {
+      console.warn(`[review-write-guard] Refusing rename ${path.basename(srcPath)} → ${path.basename(dstPath)}: same url already filed as ${sameUrl.duplicateOf}`);
+      return { wrote: false, skipped: 'same-url-exists', ...sameUrl };
+    }
+  }
+
+  fs.mkdirSync(path.dirname(dstPath), { recursive: true });
   // A file flagged as a duplicate of `dstFile` that is now being renamed ONTO
   // that name (byline identified: outlet--unknown.json → outlet--critic.json)
   // would carry the pointer along and become a duplicate of itself — silently
