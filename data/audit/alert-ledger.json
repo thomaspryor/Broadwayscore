@@ -156,7 +156,7 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-11T14:14:07.486Z",
-      "lastSeen": "2026-10-12T00:22:51.264Z",
+      "lastSeen": "2026-10-12T00:26:08.290Z",
       "lastNotifiedAt": "2026-10-11T14:14:07.486Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 132,
@@ -12587,7 +12587,7 @@
       "cardId": null,
       "linearIdentifier": "BRO-5102",
       "absentRunIds": [
-        "38186654268"
+        "38186967557"
       ],
       "dispatch": {
         "requestedAt": "2026-10-11T23:41:19.580Z",
@@ -13985,9 +13985,9 @@
       "absentRunIds": [
         "38184281462",
         "38185497104",
-        "38186654268"
+        "38186967557"
       ],
-      "resolvedAt": "2026-10-12T00:22:48.812Z",
+      "resolvedAt": "2026-10-12T00:26:07.924Z",
       "resolveReason": "stale-signature"
     },
     "review-gap:opening-window:mystic-pizza-tour-2026": {
@@ -14166,7 +14166,20 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5106"
+      "linearIdentifier": null
+    },
+    "test-yml:red:Unit Tests:d27c1fe5": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"mrs-doubtfire-2021 carries the BRO-5020 values\"",
+      "firstSeen": "2026-10-12T00:26:07.936Z",
+      "incidentOpenedAt": "2026-10-12T00:26:07.936Z",
+      "lastSeen": "2026-10-12T00:26:07.936Z",
+      "lastNotifiedAt": "2026-10-12T00:26:07.936Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-5105"
     }
   }
 }
