@@ -1,53 +1,62 @@
 {
-  "generatedAt": "2026-10-12T19:37:51.723Z",
+  "generatedAt": "2026-10-12T21:04:25.649Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 223,
-  "clean": 221,
-  "defective": 2,
+  "clean": 220,
+  "defective": 3,
   "byType": {
-    "missing-from-prod": 1,
-    "score-drift": 2
+    "score-drift": 3
   },
   "shows": [
     {
-      "showId": "oh-mary-west-end-2025",
-      "title": "Oh, Mary!",
-      "openingDate": "2025-12-18",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: broadwayworld"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 75.92 vs local 75.49 (Δ0.43)"
-        }
-      ],
-      "missingFromProd": [
-        "broadwayworld"
-      ],
-      "localCount": 31,
-      "deployedCount": 30,
-      "firstDefectAt": "2026-10-12T19:37:47.903Z"
-    },
-    {
-      "showId": "rent-west-end-2026",
-      "title": "Rent",
-      "openingDate": "2026-10-08",
+      "showId": "fish-off-broadway-2026",
+      "title": "Fish",
+      "openingDate": "2026-10-11",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 78.15 vs local 78.21 (Δ0.06)"
+          "detail": "deployed cs 75.96 vs local 81.08 (Δ5.12)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 32,
-      "deployedCount": 32,
-      "firstDefectAt": "2026-10-12T19:37:47.903Z"
+      "localCount": 3,
+      "deployedCount": 4,
+      "firstDefectAt": "2026-10-12T21:04:20.783Z"
+    },
+    {
+      "showId": "good-time-charlie-off-broadway-2026",
+      "title": "Good Time Charlie",
+      "openingDate": "2026-10-09",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 75.33 vs local 75.23 (Δ0.1)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 15,
+      "deployedCount": 15,
+      "firstDefectAt": "2026-10-12T21:04:20.783Z"
+    },
+    {
+      "showId": "degenerates-off-broadway-2026",
+      "title": "Degenerates",
+      "openingDate": "2026-09-29",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 76.21 vs local 76.03 (Δ0.18)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 16,
+      "deployedCount": 17,
+      "firstDefectAt": "2026-10-12T21:04:20.783Z"
     }
   ],
   "persistentDefective": 0,
