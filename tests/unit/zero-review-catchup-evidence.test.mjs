@@ -41,7 +41,8 @@ test('evidence rows with reviews, unparseable or old discoveredAt are skipped', 
     evidence('old', { discoveredAt: daysAgo(200) }),
   ], [{ showId: 'has-review' }]);
   assert.deepEqual(r.batch, []);
-  assert.deepEqual(r.tooOld, ['old']);
+  // closed rows past the window are dropped, not reported as stale data
+  assert.deepEqual(r.tooOld, []);
 });
 
 test('evidence rows honour noReviewsExpected and the attempt budget', () => {

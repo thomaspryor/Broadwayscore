@@ -107,7 +107,10 @@ function selectCatchupCandidates(shows, reviews, attempts, opts = {}) {
       const sinceDiscovery = daysSince(s.discoveredAt, now);
       if (sinceDiscovery == null) continue;
       if (s.noReviewsExpected) { exempt.push(s.id); continue; }
-      if (sinceDiscovery > ageBoundDays) { tooOld.push(s.id); continue; }
+      // Past the window: dropped silently. tooOld feeds a 'status/data
+      // problem' warning, which a closed run is not, and closed rows never
+      // leave that list, so it would only grow.
+      if (sinceDiscovery > ageBoundDays) continue;
       if (hasGivenUp(attemptMap[s.id], now, opts)) { givenUp.push(s.id); continue; }
       eligibleEvidence.push(s.id);
       continue;
