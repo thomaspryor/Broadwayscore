@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5183-05",
   "planId": "d25d88a6-40c7-4cf3-85d4-ee3adb0ed156",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-12T22:52:13.942Z",
   "submitter": {
     "name": null,
@@ -230,5 +230,128 @@
         "description": "Duplicate of variety--david-rooney.json (same outlet, same production, real page text on file); this row came from the legacy LLM web-search step."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T23:35:35.042Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-christmas-story-the-musical-2012/ew--thom-geier.json url: \"https://ew.com/article/2012/11/20/a-christmas-story-the-musical-broadway-review\" -> \"http://www.ew.com/ew/article/0,,20364394_20649655,00.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "aint-no-mo-2022/nysr--bart-greenberg.json url: \"https://www.nystagereview.com/2022/12/aint-no-mo-broadway-review.html\" -> \"https://nystagereview.com/2022/12/15/aint-no-mo-satirical-beauty-languishes-amid-a-beastly-broadway/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "baby-its-you-2011/variety--david-rooney.json url: \"https://variety.com/2011/legit/reviews/baby-it-s-you-1117945046/\" -> \"https://www.variety.com/review/VE1117945106\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "chinglish-2011/theatermania--david-finkle.json url: \"https://www.theatermania.com/broadway/reviews/chinglish_38916.html\" -> \"http://www.theatermania.com/broadway/reviews/10-2011/chinglish_43496.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "company-2021/nysr--tulis-mccall.json url: \"https://nystagereview.com/2021/12/16/company-broadway-review/\" -> \"https://nystagereview.com/2021/12/09/company-everybody-rise-for-this-smashing-sondheim-revival/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cult-of-love-2024/washpost--peter-marks.json url: \"https://www.washingtonpost.com/theater-dance/2024/12/12/cult-of-love-broadway-review/\" -> \"https://www.washingtonpost.com/entertainment/theater/2024/12/12/cult-of-love-broadway-shailene-woodley-zachary-quinto/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "driving-miss-daisy-2010/variety--charles-isherwood.json url: \"https://variety.com/2010/legit/reviews/driving-miss-daisy-1117944054/\" -> \"https://variety.com/2010/legit/reviews/driving-miss-daisy-1117944063/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "enron-2010/observer--rex-reed.json url: \"https://observer.com/2010/04/the-enron-play-is-energetic-entertaining-and-empty/\" -> \"https://observer.com/2010/culture/there%E2%80%99s-no-business-show-about-business\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-2012/ew--thom-geier.json url: \"https://ew.com/article/2012/04/06/evita-broadway-review/\" -> \"http://www.ew.com/ew/article/0,,20364394_20584060,00.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "groundhog-day-2017/theatermania--adam-feldman.json url: \"https://www.theatermania.com/new-york-city-theater/reviews/groundhog-day_79326.html\" -> \"https://www.theatermania.com/broadway/reviews/groundhog-day_80742.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "here-lies-love-2023/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/page/regional/ny/ny721.html\" -> \"https://www.talkinbroadway.com/page/world/HereLiesLove.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mary-poppins-2006/variety--charles-isherwood.json url: \"https://variety.com/2006/legit/reviews/mary-poppins-5-1200511933/\" -> \"https://www.variety.com/review/VE1117932135.html?categoryid=33&cs=1\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    }
+  ]
 }
