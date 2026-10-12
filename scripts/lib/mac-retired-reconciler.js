@@ -68,7 +68,7 @@ function validateEntry(e) {
     return 'retiredAt must be YYYY-MM-DD';
   }
   if (!Array.isArray(e.replacedBy)) return 'replacedBy must be an array';
-  if (!Array.isArray(e.watchers)) return 'watchers must be an array';
+  if (!Array.isArray(e.watchers) || !e.watchers.length) return 'watchers must name the pagers/health checks that watched the job';
   return null;
 }
 
@@ -87,12 +87,17 @@ function planReconcile({ config, loaded, presentPlists, now = new Date() }) {
   for (const e of entries) {
     const bad = validateEntry(e);
     if (bad) { refused.push({ label: e && e.label, reason: bad }); continue; }
-    if (seen.has(e.label)) continue;
+    if (seen.has(e.label)) { refused.push({ label: e.label, reason: 'duplicate entry' }); continue; }
     seen.add(e.label);
     const actAt = Date.parse(`${e.retiredAt}T00:00:00Z`) + RETIRE_GRACE_DAYS * 86400e3;
     const isLoaded = loadedSet.has(e.label);
     const hasPlist = plists.has(e.label);
     if (!isLoaded && !hasPlist) continue;
+    if (isLoaded && !hasPlist) {
+      // Loaded but no <label>.plist: its plist has another filename, so the
+      // bootout below holds only until the next login. Say so every tick.
+      refused.push({ label: e.label, reason: `loaded but no ${e.label}.plist in LaunchAgents; find and move its plist by hand` });
+    }
     if (now.getTime() < actAt) {
       waiting.push({ label: e.label, actFrom: new Date(actAt).toISOString().slice(0, 10) });
       continue;
@@ -129,17 +134,24 @@ function presentPlistLabels(config, dir) {
   return out;
 }
 
-// Executes a plan. Never throws: every outcome is one log line.
+// Executes a plan. Never throws: every outcome is one log line. Returns
+// { done, failed } (labels + reasons) so the caller can report a partial
+// retirement somewhere other than a /tmp log.
 function applyPlan(plan, { dir = launchAgentsDir(), uid = process.getuid(), now = new Date(), log = console.log, run = execFileSync } = {}) {
   for (const r of plan.refused) log(`[mac-retired] REFUSED ${r.label}: ${r.reason}`);
   for (const w of plan.waiting) log(`[mac-retired] waiting ${w.label}: grace period, acts from ${w.actFrom}`);
+  const done = [];
+  const failed = [];
   for (const a of plan.actions) {
     if (a.type === 'bootout') {
       try {
         run('launchctl', ['bootout', `gui/${uid}/${a.label}`], { stdio: 'pipe', timeout: 30000 });
         log(`[mac-retired] bootout ${a.label}: ok`);
+        done.push(a);
       } catch (err) {
-        log(`[mac-retired] bootout ${a.label}: FAILED (${String(err.stderr || err.message).trim().split('\n')[0]})`);
+        const reason = String(err.stderr || err.message).trim().split('\n')[0];
+        log(`[mac-retired] bootout ${a.label}: FAILED (${reason})`);
+        failed.push({ ...a, reason });
       }
     } else if (a.type === 'move-plist') {
       const from = path.join(dir, `${a.label}.plist`);
@@ -147,15 +159,30 @@ function applyPlan(plan, { dir = launchAgentsDir(), uid = process.getuid(), now 
         const to = retiredPlistPath(dir, a.label, now);
         fs.renameSync(from, to);
         log(`[mac-retired] moved ${from} -> ${path.basename(to)}`);
+        done.push(a);
       } catch (err) {
         log(`[mac-retired] move ${from}: FAILED (${err.message})`);
+        failed.push({ ...a, reason: err.message });
       }
     }
   }
+  return { done, failed };
+}
+
+// One-line commit-status summary of an applied plan, or null when nothing
+// was attempted (so quiet ticks post nothing).
+function outcomeStatus({ done, failed }) {
+  if (!done.length && !failed.length) return null;
+  if (failed.length) {
+    const f = failed[0];
+    return { state: 'failure', description: `FAILED ${f.type} ${f.label}: ${f.reason}`.slice(0, 140) };
+  }
+  const labels = [...new Set(done.map(a => a.label))];
+  return { state: 'success', description: `retired ${labels.join(', ')}`.slice(0, 140) };
 }
 
 module.exports = {
   SELF_LABEL, KEEP_NAMES, RETIRE_GRACE_DAYS,
   parseLaunchctlList, refusalReason, validateEntry, planReconcile,
-  launchAgentsDir, retiredPlistPath, readConfig, presentPlistLabels, applyPlan,
+  launchAgentsDir, retiredPlistPath, readConfig, presentPlistLabels, applyPlan, outcomeStatus,
 };

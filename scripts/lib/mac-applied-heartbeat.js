@@ -12,8 +12,13 @@
 //   state       success
 //   description applied <ISO timestamp>
 // Readable from the cloud with the GitHub commit-status API, needs no land and
-// triggers no workflow. "Stuck" = origin/main's head has no such status after
-// an hour or so while older commits do.
+// triggers no workflow. Read it as two rules:
+//   stuck: origin/main's head is over ~1h old and has no such status while an
+//          older commit does (sync can't apply new commits);
+//   dead:  the newest such status is over ~7h old (REPOST_MS + one tick), even
+//          on a quiet day with no new commits.
+// Retirements done by the reconciler post their own context,
+// mac/launchd-retire (failure = a partial retirement to fix by hand).
 //
 // Posted only when the applied sha changed or the last post is older than
 // REPOST_MS, so a quiet day costs a handful of API calls, not 48.

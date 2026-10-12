@@ -19,7 +19,7 @@ const LIST = [
   '-\t0\tcom.apple.something',
 ].join('\n');
 
-const entry = (label, extra = {}) => ({ label, retiredAt: '2026-10-01', replacedBy: ['x'], watchers: [], ...extra });
+const entry = (label, extra = {}) => ({ label, retiredAt: '2026-10-01', replacedBy: ['x'], watchers: [{ conditionKey: 'k', file: 'f' }], ...extra });
 const NOW = new Date('2026-10-20T12:00:00Z');
 
 test('parses launchctl list labels, skipping the header', () => {
@@ -133,4 +133,32 @@ test('heartbeat posts on a new sha or after REPOST_MS, not every tick', () => {
   assert.equal(hb.shouldPost({ sha, last: { sha, at: new Date(NOW - hb.REPOST_MS).toISOString() }, now: NOW }), true);
   assert.equal(hb.shouldPost({ sha: 'not-a-sha', last: null, now: NOW }), false);
   assert.ok(hb.statusArgs({ repo: 'o/r', sha, now: NOW }).includes(`context=${hb.STATUS_CONTEXT}`));
+});
+
+test('duplicate entries and empty watchers are refused, not silently dropped', () => {
+  const config = { entries: [
+    entry('com.bwsc.dup', { watchers: [{ conditionKey: 'k', file: 'f' }] }),
+    entry('com.bwsc.dup', { watchers: [{ conditionKey: 'k', file: 'f' }], retiredAt: '2026-09-01' }),
+    entry('com.bwsc.nowatch', { watchers: [] }),
+  ] };
+  const plan = rec.planReconcile({ config, loaded: '', presentPlists: ['com.bwsc.dup', 'com.bwsc.nowatch'], now: NOW });
+  assert.deepEqual(plan.refused.map(r => [r.label, r.reason]), [
+    ['com.bwsc.dup', 'duplicate entry'],
+    ['com.bwsc.nowatch', 'watchers must name the pagers/health checks that watched the job'],
+  ]);
+  assert.deepEqual(plan.actions, [{ type: 'move-plist', label: 'com.bwsc.dup' }]);
+});
+
+test('a loaded label whose plist has another filename is flagged every tick', () => {
+  const plan = rec.planReconcile({ config: { entries: [entry('com.bwsc.opening-night-monitor')] }, loaded: LIST, presentPlists: [], now: NOW });
+  assert.deepEqual(plan.actions, [{ type: 'bootout', label: 'com.bwsc.opening-night-monitor' }]);
+  assert.match(plan.refused[0].reason, /no com\.bwsc\.opening-night-monitor\.plist/);
+});
+
+test('outcomeStatus reports partial retirements as failure and quiet ticks as nothing', () => {
+  assert.equal(rec.outcomeStatus({ done: [], failed: [] }), null);
+  assert.deepEqual(rec.outcomeStatus({ done: [{ type: 'move-plist', label: 'a' }, { type: 'bootout', label: 'a' }], failed: [] }), { state: 'success', description: 'retired a' });
+  const f = rec.outcomeStatus({ done: [{ type: 'move-plist', label: 'a' }], failed: [{ type: 'bootout', label: 'a', reason: 'boom' }] });
+  assert.equal(f.state, 'failure');
+  assert.match(f.description, /FAILED bootout a: boom/);
 });

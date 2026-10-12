@@ -1,5 +1,6 @@
 {
   "_comment": "Mac launchd jobs retired for good (BRO-5085, plan BRO-4622). com.broadwayscore.checkout-sync reads this after every successful sync and, once an entry is RETIRE_GRACE_DAYS old, boots the job out and renames its ~/Library/LaunchAgents plist to <label>.plist.retired-<date>. Remove an entry (and restore the plist) to un-retire. Every entry must name its watchers: the pagers/health checks that watched the job, updated in the same change so retiring it does not page. Logic + rules: scripts/lib/mac-retired-reconciler.js.",
+  "_rollback": "To un-retire a label: (1) delete its entry here and land; (2) on the Mac, mv ~/Library/LaunchAgents/<label>.plist.retired-<date> back to <label>.plist; (3) launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/<label>.plist; (4) clear any kill-switch marker the job still honours (com.bwsc.opening-night-monitor: delete data/opening-night-monitor/DISABLED); (5) pause the cloud replacement in replacedBy so both don't run.",
   "entries": [
     {
       "label": "com.bwsc.opening-night-monitor",

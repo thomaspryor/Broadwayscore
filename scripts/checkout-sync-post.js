@@ -20,6 +20,7 @@ const rec = require('./lib/mac-retired-reconciler.js');
 const hb = require('./lib/mac-applied-heartbeat.js');
 
 const REPO = 'thomaspryor/Broadwayscore';
+const RETIRE_CONTEXT = 'mac/launchd-retire';
 const ROOT = path.resolve(__dirname, '..');
 const args = new Set(process.argv.slice(2));
 const DRY = args.has('--dry-run');
@@ -40,7 +41,23 @@ function reconcile() {
     if (!plan.actions.length) log('[mac-retired] (dry-run) nothing to do');
     return;
   }
-  rec.applyPlan(plan, { dir, log });
+  const outcome = rec.applyPlan(plan, { dir, log });
+  // A partial retirement (bootout ok, rename failed, or the reverse) must be
+  // visible off the Mac: post it as its own commit status next to the
+  // heartbeat. Only on ticks that attempted something.
+  const st = rec.outcomeStatus(outcome);
+  if (st) postStatus(RETIRE_CONTEXT, st.state, st.description);
+}
+
+function postStatus(context, state, description) {
+  try {
+    const git = (...a) => execFileSync('git', a, { cwd: ROOT, encoding: 'utf8', timeout: 15000 }).trim();
+    const sha = git('rev-parse', 'origin/main');
+    execFileSync('gh', ['api', '-X', 'POST', `repos/${REPO}/statuses/${sha}`, '-f', `state=${state}`, '-f', `context=${context}`, '-f', `description=${description}`], { stdio: 'pipe', timeout: 20000 });
+    log(`[checkout-sync-post] posted ${context}=${state} on ${sha.slice(0, 10)}`);
+  } catch (err) {
+    log(`[checkout-sync-post] posting ${context} failed (non-fatal): ${String(err.stderr || err.message).trim().split('\n')[0]}`);
+  }
 }
 
 function heartbeat() {
