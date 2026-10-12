@@ -1395,36 +1395,55 @@ function writeReviewOrThrow(filePath, newData, options = {}) {
 
 /**
  * BRO-5198: return newData with the Dow Jones chrome prefix cut from fullText.
- * Word counts follow the cut text, and `fullTextTrimmed.fromLength` names the
- * chrome-bearing text it replaced, so the push restore (_deliberateTextTrim)
- * does not read a stale copy of it as richer content and put it back. A page
- * that is ONLY the interstitial stores nothing new: the record keeps the
- * fullText it already had.
+ * Word counts follow the cut text. `fullTextTrimmed` records the cut whenever
+ * stored text loses the chrome, both when the incoming text carries it and
+ * when a re-fetch that was already cut (collect-review-texts strips at fetch
+ * time) replaces a chrome-bearing on-disk copy of the same review:
+ *   - fromLength names the chrome-bearing text it replaced, so the push
+ *     restore (_deliberateTextTrim) does not read a stale copy as richer
+ *     content and put the chrome back;
+ *   - its reason keeps classifyContentTier's "full WSJ page capture" signal
+ *     after the evidence itself is gone.
+ * A page that is ONLY the interstitial stores nothing new: the record keeps
+ * the fullText it already had.
  */
 function stripDowJonesChromeForWrite(filePath, newData) {
-  const { stripDowJonesReprintChrome } = require('./content-quality');
+  const { stripDowJonesReprintChrome, DOW_JONES_TRIM_REASON } = require('./content-quality');
   const incoming = newData.fullText;
   const stripped = stripDowJonesReprintChrome(incoming);
-  if (stripped === incoming) return newData;
   let onDisk = null;
-  try { onDisk = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { /* new/unreadable file */ }
+  const readOnDisk = () => {
+    if (onDisk === null) {
+      try { onDisk = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { onDisk = {}; }
+    }
+    return onDisk;
+  };
   const label = `${path.basename(path.dirname(filePath))}/${path.basename(filePath)}`;
+  const trimmed = (fromLength) => ({ reason: DOW_JONES_TRIM_REASON, fromLength, at: new Date().toISOString() });
+
+  if (stripped === incoming) {
+    // Already-clean text replacing a chrome-bearing copy of the same review.
+    if (newData.fullTextTrimmed) return newData; // already records a cut
+    const diskText = typeof readOnDisk().fullText === 'string' ? onDisk.fullText : '';
+    if (!diskText || diskText === incoming) return newData;
+    const diskBody = stripDowJonesReprintChrome(diskText);
+    if (diskBody === diskText || !diskBody.trim()) return newData;
+    if (!incoming.includes(diskBody.slice(0, 120).trim())) return newData; // a different article
+    return { ...newData, fullTextTrimmed: trimmed(diskText.length) };
+  }
+
   if (!stripped.trim()) {
     console.warn(`[review-write-guard] ${label}: incoming fullText is only the WSJ registration interstitial — not stored`);
     const kept = { ...newData };
-    if (onDisk && typeof onDisk.fullText === 'string') kept.fullText = onDisk.fullText;
+    if (typeof readOnDisk().fullText === 'string') kept.fullText = onDisk.fullText;
     else delete kept.fullText;
     return kept;
   }
-  const onDiskText = onDisk && typeof onDisk.fullText === 'string' ? onDisk.fullText : '';
-  const fromLength = onDiskText && onDiskText.length > stripped.length && stripDowJonesReprintChrome(onDiskText) !== onDiskText
-    ? onDiskText.length
+  const diskText = typeof readOnDisk().fullText === 'string' ? onDisk.fullText : '';
+  const fromLength = diskText && diskText.length > stripped.length && stripDowJonesReprintChrome(diskText) !== diskText
+    ? diskText.length
     : incoming.length;
-  const out = {
-    ...newData,
-    fullText: stripped,
-    fullTextTrimmed: { reason: 'Dow Jones page chrome prefix (BRO-5198)', fromLength, at: new Date().toISOString() },
-  };
+  const out = { ...newData, fullText: stripped, fullTextTrimmed: trimmed(fromLength) };
   const words = stripped.split(/\s+/).filter(Boolean).length;
   for (const f of ['textWordCount', 'wordCount']) if (typeof out[f] === 'number') out[f] = words;
   console.log(`[review-write-guard] ${label}: cut ${incoming.length - stripped.length} chars of Dow Jones page chrome from fullText`);

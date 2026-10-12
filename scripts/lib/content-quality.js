@@ -248,6 +248,14 @@ const DOW_JONES_CHROME_SIGNAL_RE = /please\s+register\s+to\s+gain\s+free\s+acces
  * @param {string} text
  * @returns {string}
  */
+// Stamped as fullTextTrimmed.reason when stored text loses the chrome
+// (review-write-guard.js), so the record still says "full WSJ page capture"
+// after the evidence itself is gone (classifyContentTier Path 3).
+const DOW_JONES_TRIM_REASON = 'Dow Jones page chrome prefix (BRO-5198)';
+function isDowJonesChromeTrim(trimmed) {
+  return !!trimmed && trimmed.reason === DOW_JONES_TRIM_REASON;
+}
+
 function stripDowJonesReprintChrome(text) {
   if (typeof text !== 'string' || !text) return text;
   const front = text.slice(0, DOW_JONES_CHROME_WINDOW);
@@ -2012,7 +2020,7 @@ function classifyContentTier(review) {
   // BRO-4429: a leading JSON blob must not count toward length/completeness.
   const rawFullText = stripLeadingJsonBlob(review.fullText || '');
   const fullText = stripDowJonesReprintChrome(rawFullText);
-  const hadDowJonesChrome = fullText !== rawFullText;
+  const hadDowJonesChrome = fullText !== rawFullText || isDowJonesChromeTrim(review.fullTextTrimmed);
   const wordCount = countWords(fullText);
   const charCount = fullText.length;
 
@@ -3739,6 +3747,8 @@ module.exports = {
   detectStrongWsjArchiveTruncationAnywhere,
   detectWsjRegistrationInterstitial,
   stripDowJonesReprintChrome,
+  isDowJonesChromeTrim,
+  DOW_JONES_TRIM_REASON,
   detectStrongChromeDumpAnywhere,
   detectNewsletter,
   detectUrlOnly,
