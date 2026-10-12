@@ -905,3 +905,56 @@ test("the recovery label 'diverged-union-ledger' can never reach a refusal snaps
   assert.equal(d.reason, 'diverged-union-ledger');
   assert.equal(d.action, 'commit-and-rebase');
 });
+
+// BRO-5085: the EXIT trap runs scripts/checkout-sync-post.js only for
+// SYNC_TAG=checkout-sync, only when the sync succeeded, and never changes the
+// exit code even when the post step fails.
+function addPostScript(clone, body) {
+  fs.mkdirSync(path.join(clone, 'scripts'), { recursive: true });
+  fs.writeFileSync(path.join(clone, 'scripts', 'checkout-sync-post.js'), body);
+  git(clone, 'add', '-A');
+  git(clone, 'commit', '-q', '-m', 'post script');
+  git(clone, 'push', '-q', 'origin', 'main');
+}
+const MARK_POST = "require('fs').writeFileSync('post-ran.marker', 'x'); process.exit(0);\n";
+
+test('BRO-5085: checkout-sync runs the post step after a successful sync', () => {
+  withTmp((root) => {
+    const { clone } = setupPair(root, 'post-ok');
+    addPostScript(clone, MARK_POST);
+    const r = trySync(clone, 'checkout-sync');
+    assert.equal(r.code, 0, r.out);
+    assert.ok(fs.existsSync(path.join(clone, 'post-ran.marker')), 'post step ran');
+  });
+});
+
+test('BRO-5085: other SYNC_TAG callers never run the post step', () => {
+  withTmp((root) => {
+    const { clone } = setupPair(root, 'post-other');
+    addPostScript(clone, MARK_POST);
+    const r = trySync(clone, 'digest');
+    assert.equal(r.code, 0, r.out);
+    assert.ok(!fs.existsSync(path.join(clone, 'post-ran.marker')), 'post step must not run for other tags');
+  });
+});
+
+test('BRO-5085: a failing post step does not turn a good sync into a refusal', () => {
+  withTmp((root) => {
+    const { clone } = setupPair(root, 'post-fail');
+    addPostScript(clone, "process.exit(7);\n");
+    const r = trySync(clone, 'checkout-sync');
+    assert.equal(r.code, 0, r.out);
+    assert.match(r.out, /checkout-sync-post\.js failed or timed out \(non-fatal\)/);
+  });
+});
+
+test('BRO-5085: a refused sync does not run the post step and keeps exit 1', () => {
+  withTmp((root) => {
+    const { clone } = setupPair(root, 'post-refuse');
+    addPostScript(clone, MARK_POST);
+    git(clone, 'checkout', '-q', '-b', 'feature');
+    const r = trySync(clone, 'checkout-sync');
+    assert.equal(r.code, 1, r.out);
+    assert.ok(!fs.existsSync(path.join(clone, 'post-ran.marker')));
+  });
+});

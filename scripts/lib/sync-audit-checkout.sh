@@ -151,7 +151,20 @@ fi
 # shellcheck source=scripts/lib/push-mutex.sh
 source "$SCRIPT_DIR/push-mutex.sh"
 push_mutex_acquire
-trap 'push_mutex_release; [ -n "${SYNC_FRESH_DIR:-}" ] && rm -rf "$SYNC_FRESH_DIR"' EXIT
+
+# POST-SYNC (BRO-5085): after a SUCCESSFUL checkout-sync tick only, retire the
+# launchd jobs listed in config/mac-retired.json and post the applied-sha
+# heartbeat the cloud reads. Runs from the trap so it covers every `exit 0`
+# path below, after the mutex is released, from the repo root (so it is the
+# just-fast-forwarded copy even when this script is origin/main's tmp copy).
+# Other SYNC_TAG callers chain their own job after this script and must not
+# pay for it. Never changes the exit code. Second opinion 2026-10-12: PASS.
+run_checkout_sync_post() {
+  [ "$TAG" = checkout-sync ] && [ -f scripts/checkout-sync-post.js ] || return 0
+  perl -e 'alarm shift; exec @ARGV or die "exec: $!"' 180 node scripts/checkout-sync-post.js \
+    || echo "[$TAG] checkout-sync-post.js failed or timed out (non-fatal)"
+}
+trap '_rc=$?; push_mutex_release; [ -n "${SYNC_FRESH_DIR:-}" ] && rm -rf "$SYNC_FRESH_DIR"; [ "$_rc" -eq 0 ] && run_checkout_sync_post; exit $_rc' EXIT
 
 write_refused_snapshot() {
   local reason="$1" dirty="$2" blocking="${3:-}"
