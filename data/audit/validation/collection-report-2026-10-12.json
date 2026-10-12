@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-10-12T00:26:52.423Z",
+  "runDate": "2026-10-12T00:39:31.248Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,10 +11,10 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 56,
+    "processed": 0,
+    "failed": 55,
     "skipped": 0,
-    "successRate": "3.4%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
     "playwright": 250,
@@ -28,8 +28,8 @@
     "archive": 29
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 3,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -44,7 +44,7 @@
     "tier3_6Success": 0,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 56,
+    "totalFailed": 55,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
@@ -54,16 +54,14 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 2,
-    "failed": 56,
+    "processed": 0,
+    "failed": 55,
     "shows": [
       "aint-no-mo-2022",
       "all-my-sons-2008",
-      "alvin-ailey-american-dance-theater-new-works-west-end-2026",
       "appropriate-2023",
       "clybourne-park-2012",
       "come-back-little-sheba-2008",
-      "darkling-off-west-end-2026",
       "eclipsed-2016",
       "escape-to-margaritaville-2018",
       "farinelli-and-the-king-2017",
@@ -77,7 +75,6 @@
       "is-he-dead-2007",
       "jesus-christ-superstar-2012",
       "kiss-me-kate-2019",
-      "la-boheme-off-broadway-2026",
       "macbeth-2008",
       "mary-jane-2024",
       "matilda-the-musical-west-end-2021",
@@ -112,16 +109,12 @@
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
-      "processed": 379,
-      "failed": 252
+      "processed": 381,
+      "failed": 253
     }
   },
-  "processed": [
-    "darkling-off-west-end-2026/redbuslondinium--unknown.json",
-    "alvin-ailey-american-dance-theater-new-works-west-end-2026/theamerican--unknown.json"
-  ],
+  "processed": [],
   "failed": [
-    "la-boheme-off-broadway-2026/parterre-box--unknown.json",
     "matilda-the-musical-west-end-2021/whatsonstage--meriel-patrick.json",
     "tammy-faye-2024/stageandcinema--mike-mineo.json",
     "yellow-face-2024/nypost--johnny-oleksinski.json",
