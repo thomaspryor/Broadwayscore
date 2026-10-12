@@ -226,3 +226,25 @@ test('FT pair: the plan actions succeed through the real write guard and leave H
   assert.equal(hemming.duplicateOf ?? null, null, 'Hemming is canonical');
   assert.equal(bano.duplicateOf, H, 'the Bano copy is the duplicate');
 });
+
+test('a url fix undoes an outlet-split relabel that was made from the wrong url (BRO-4190 Hercules)', () => {
+  const { unexpectedChanges } = require('./review-field-edit.js');
+  const bad = 'https://www.britishtheatre.com/shows/disneys-hercules/cast';
+  const btg = 'https://www.britishtheatreguide.info/reviews/disney-s-hercul-theatre-royal-d-24528';
+  const rec = {
+    outletId: 'britishtheatrecom', outlet: 'BritishTheatre.com', criticName: 'Howard Loxton', url: bad,
+    outletIdCorrectedFrom: 'british-theatre',
+    outletIdCorrectedReason: `outlet-split: ${bad} resolves to britishtheatrecom (2026-10-12)`,
+  };
+  const r = applyReviewFieldEdit(rec, { field: 'url', oldValue: bad, newValue: btg }, { fixId: 'f', at: 'now' });
+  assert.equal(r.ok, true, r.reason);
+  assert.equal(r.record.outletId, 'british-theatre');
+  assert.equal(r.record.outletIdCorrectedFrom, 'britishtheatrecom');
+  assert.deepEqual(unexpectedChanges(rec, r.record, 'url'), []);
+  // no split marker: a cross-outlet url is still refused
+  const plain = { ...rec, outletIdCorrectedFrom: undefined, outletIdCorrectedReason: undefined };
+  assert.match(applyReviewFieldEdit(plain, { field: 'url', oldValue: bad, newValue: btg }, { fixId: 'f', at: 'now' }).reason, /another outlet/);
+  // a split made from some other url does not license the undo
+  const other = { ...rec, outletIdCorrectedReason: 'outlet-split: https://www.britishtheatre.com/review-x/ resolves to britishtheatrecom (2026-10-12)' };
+  assert.equal(applyReviewFieldEdit(other, { field: 'url', oldValue: bad, newValue: btg }, { fixId: 'f', at: 'now' }).ok, false);
+});

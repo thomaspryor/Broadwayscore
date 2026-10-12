@@ -98,10 +98,26 @@ const FIELD_VALUE_CHECKS = {
     if (typeof v !== 'string' || !/^https?:\/\//i.test(v)) return 'url must be an http(s) url or ""';
     if (!classifyReviewUrl(v).ok || isAggregatorPageUrl(v)) return 'url: new value is not a review-candidate url';
     const { isCrossOutletUrl } = require('./review-normalization');
-    if (record.outletId && isCrossOutletUrl(record.outletId, v)) return `url: new value belongs to another outlet than ${record.outletId}`;
+    if (record.outletId && isCrossOutletUrl(record.outletId, v) && !splitRelabelUndo(record, v)) return `url: new value belongs to another outlet than ${record.outletId}`;
     return null;
   },
 };
+
+// An outlet split (BRO-5128, outlet-mismatch-heal splitOutletCorrection)
+// relabels a file by its url, so a wrong url can move a review to the wrong
+// side of the split before its url fix lands (BRO-4190: a British Theatre Guide
+// review stored with a britishtheatre.com cast-page url). The url fix then
+// undoes that relabel: only when the split was made from the current url and
+// the new url belongs to the outlet the split moved the file away from.
+function splitRelabelUndo(record, newUrl) {
+  const from = record.outletIdCorrectedFrom;
+  const why = String(record.outletIdCorrectedReason || '');
+  if (!from || !record.url || !why.startsWith(`outlet-split: ${record.url} resolves to ${record.outletId}`)) return null;
+  const { resolveOutletFromUrl } = require('./review-normalization');
+  const owner = resolveOutletFromUrl(newUrl);
+  if (!owner || owner.outletId !== from) return null;
+  return { outletId: from, outlet: owner.displayName || from };
+}
 
 // Bookkeeping a url edit legitimately changes besides `url` itself: the
 // url-change-invariant clear (breadcrumb + the fields it names) and the
@@ -167,6 +183,13 @@ function applyReviewFieldEdit(record, action, stamp, ctx = {}) {
     next.urlCorrectedFrom = record.url || null;
     next.urlCorrectedReason = `approved fix ${stamp.fixId}: current url was wrong for this file`;
     next.needsRefetch = true;
+    const undo = splitRelabelUndo(record, newValue);
+    if (undo) {
+      next.outletId = undo.outletId;
+      next.outlet = undo.outlet;
+      next.outletIdCorrectedFrom = record.outletId;
+      next.outletIdCorrectedReason = `approved fix ${stamp.fixId}: outlet-split relabel undone, it was made from the wrong url`;
+    }
   }
   const prior = Array.isArray(record.approvedFixes) ? record.approvedFixes : [];
   next.approvedFixes = [...prior, { fixId: stamp.fixId, field, at: stamp.at, newValue }];
@@ -202,6 +225,9 @@ function unexpectedChanges(before, after, field, expectedKeys = []) {
     for (const k of URL_EDIT_SIDE_EFFECT_KEYS) expected.add(k);
     const bc = after && after._urlChangedClear;
     if (bc && bc.to === after.url && Array.isArray(bc.cleared)) bc.cleared.forEach((k) => expected.add(k));
+    if (after && / outlet-split relabel undone,/.test(String(after.outletIdCorrectedReason || ''))) {
+      for (const k of ['outletId', 'outlet', 'outletIdCorrectedFrom', 'outletIdCorrectedReason']) expected.add(k);
+    }
   }
   // BRO-4888: the write guard resolves a duplicate-pointer pair itself. Setting
   // duplicateClearReason on a file that points at a same-url sibling makes it
