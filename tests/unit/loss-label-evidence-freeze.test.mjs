@@ -86,4 +86,18 @@ describe('commercial-record-checks designationBasis rules', () => {
     assert.ok(w(60).some(m => /ages in/.test(m)));
     assert.equal(w(400).filter(m => /ages in/.test(m)).length, 0);
   });
+  it('warns when a recouped show still carries an earlier share returned (BRO-5091)', () => {
+    const w = (est) => commercialRecordWarnings('x', { designation: 'Windfall', recouped: true, estimatedRecoupmentPct: est });
+    assert.ok(w([65, 75]).some(m => /earlier share returned/.test(m)));
+    assert.equal(w([100, 120]).filter(m => /earlier share returned/.test(m)).length, 0);
+    assert.equal(w(null).filter(m => /earlier share returned/.test(m)).length, 0);
+  });
+  it('warns when a hard-sourced all-in or breakeven cost has no basis tag (BRO-5093)', () => {
+    const rec = (extra) => ({ designation: 'TBD', costMethodology: 'trade-reported', weeklyRunningCost: 900000, weeklyRunningCostSource: 'Variety: breakeven is about $900,000 a week', ...extra });
+    const hit = (r) => commercialRecordWarnings('x', r).some(m => /no weeklyRunningCostBasis/.test(m));
+    assert.ok(hit(rec({})));
+    assert.equal(hit(rec({ weeklyRunningCostBasis: 'breakeven' })), false);
+    assert.equal(hit(rec({ costMethodology: 'deep-research' })), false);
+    assert.equal(hit(rec({ weeklyRunningCostSource: 'Variety: weekly running costs of $900,000' })), false);
+  });
 });

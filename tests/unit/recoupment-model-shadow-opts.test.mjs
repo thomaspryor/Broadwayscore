@@ -123,3 +123,20 @@ describe('asOf (backtest only)', () => {
     assert.ok(calculateRecoupment(show, comm, null, weekly, { asOf: iso(weeksFrom(first, -10)) }).error);
   });
 });
+
+describe('musicals-only variable-cost shapes (BRO-5091, shadow)', () => {
+  const pct = (s, opts) => calculateRecoupment(s, comm, null, weekly, opts).recoupmentPctCentral;
+  test('a play is untouched; the ramp sits between live and the full band', () => {
+    const play = { ...show, type: 'play' };
+    for (const o of ['varOverageMusicals', 'varBandMusicalsRamp']) assert.equal(pct(play, { [o]: true }), pct(play));
+    const live = pct(show);
+    const full = pct(show, { varBandMusicals: true });
+    const ramp = pct(show, { varBandMusicalsRamp: true });
+    assert.ok(full < ramp && ramp < live, `${full} < ${ramp} < ${live}`);
+    assert.ok(pct(show, { varOverageMusicals: true }) < live);
+  });
+  test('the ramp adds nothing before week 26', () => {
+    const at = iso(weeksFrom(first, 20));
+    assert.equal(pct(show, { varBandMusicalsRamp: true, asOf: at }), pct(show, { asOf: at }));
+  });
+});

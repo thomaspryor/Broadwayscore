@@ -471,6 +471,8 @@ export interface ShowCommercial {
   estimatedRecoupmentSource?: string | null;
   estimatedRecoupmentDate?: string | null;
   weeklyRunningCostSource?: string | null;
+  /** What the cited weekly cost is: fixed running costs, a breakeven gross, or an all-in operating expense (BRO-5093). */
+  weeklyRunningCostBasis?: 'running' | 'breakeven' | 'all-in';
   isEstimate?: {
     capitalization?: boolean;
     weeklyRunningCost?: boolean;

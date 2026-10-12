@@ -21,7 +21,7 @@ const { isCitedReportedWeeklyCost, REPORTED_COST_METHODOLOGIES } = require('./wa
 const { previewWeeksFromWeekly } = require('./preview-weeks');
 const { runWindow, weeksInOwnRun, COVID_DARK_START, COVID_DARK_END } = require('./run-window');
 const { taxCreditCited } = require('./tax-credit-cited');
-const { splitCosts } = require('./cost-split');
+const { splitCosts, fixedNutFromBasis } = require('./cost-split');
 
 // ---------------------------------------------------------------------------
 // Constants & Defaults
@@ -363,10 +363,22 @@ function costPathFactor(weekNumber, path) {
  *               the weekly cost (theater and royalty steps on overages):
  *               OVERAGE_RATE = (0.235 - 0.11) x 1.5 / 0.5
  *   varBandMusicals  varBand for musicals only (his posts are mostly musicals)
+ *   varOverageMusicals  varOverage for musicals only (BRO-5091)
+ *   varBandMusicalsRamp varBand for musicals only, phased in from week 26
+ *               to week 78 (VAR_RAMP, BRO-5091): the timing test's fast
+ *               recoupers (under ~45 weeks) carry no such gap, the long-run
+ *               hits a steady $110-160K a week the live model leaves out.
+ *               Windows 0-52 and 30-60 pushed Hairspray, Jersey Boys,
+ *               Kinky Boots and Merrily out of band; 39-91 and 52-104 did less.
+ *               Weeks are the schedule index (estimated previews plus
+ *               gap-filled weeks), so a little ahead of weeks played. The
+ *               window was tuned on the rows it is scored on: promote only
+ *               after a holdout check. Plays are never ramped.
  * Returns the extra variable cost in dollars (0 when neither is set).
  */
 const VAR_BAND = { fromRatio: 0.9, toRatio: 1.5, low: 0.12, high: 0.235 };
 const OVERAGE_RATE = 0.375;
+const VAR_RAMP = { from: 26, to: 78 };
 function extraVariableCost(adjGross, nut, liveDeductions, path) {
   if (!path || !(nut > 0) || !(adjGross > 0)) return 0;
   if (path.varBand) {
@@ -428,8 +440,11 @@ function calcWeeklyProfit(weeklyGross, weeklyNut, baseVarRate, isPostRecoup, wee
   // The 0.88 floor already captures cast replacement savings and optimization.
 
   // Shadow variable-cost shape against this week's running cost (BRO-5073).
-  const bandPath = costPath && costPath.varBandMusicals && !/^play/.test(showCategory || '') ? { ...costPath, varBand: true } : costPath;
-  const extraVar = costPath ? extraVariableCost(adjGross, fixedCosts, variableCosts + theaterCost, bandPath) * mult.variableCost : 0;
+  const musical = !/^play/.test(showCategory || '');
+  const bandPath = costPath && musical && (costPath.varBandMusicals || costPath.varBandMusicalsRamp) ? { ...costPath, varBand: true }
+    : costPath && musical && costPath.varOverageMusicals ? { ...costPath, varOverage: true } : costPath;
+  const ramp = costPath && musical && costPath.varBandMusicalsRamp ? Math.min(1, Math.max(0, weekNumber - VAR_RAMP.from) / (VAR_RAMP.to - VAR_RAMP.from)) : 1;
+  const extraVar = costPath ? extraVariableCost(adjGross, fixedCosts, variableCosts + theaterCost, bandPath) * mult.variableCost * ramp : 0;
 
   // Preview cost premium
   if (isPreview) {
@@ -502,6 +517,7 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   // (a reported figure's as-of date): weekly rows after it are dropped, the
   // run ends there, and a show still running then is treated as running.
   const asOf = opts.asOf ? new Date(opts.asOf) : null;
+  const weeklyUncut = grossesWeekly; // a cost quote's period may lie past asOf
   if (asOf) {
     if (Number.isNaN(asOf.getTime())) return { error: 'Bad asOf date', warnings: ['Bad asOf date'] };
     const iso = asOf.toISOString().slice(0, 10);
@@ -517,7 +533,13 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
     return { error: 'No capitalization data', warnings: ['Missing capitalization'] };
   }
 
-  const weeklyNut = commercial.weeklyRunningCost || estimateWeeklyNut(show, commercial);
+  const category = classifyShow(show);
+  // Shadow only (BRO-5093, opts.costBasis): a breakeven or all-in figure is
+  // turned back into the fixed nut the rest of the model expects. The
+  // reserve and tax-credit estimate follow it (they are weeks of the real
+  // nut), and costSplit is skipped so the share is not taken off twice.
+  const basisNut = opts.costBasis && commercial.weeklyRunningCost ? fixedNutFromBasis(commercial, commercial.weeklyRunningCost, getBaseVariableRate(category), THEATER_DEAL, weeklyUncut) : null;
+  const weeklyNut = basisNut ? basisNut.nut : commercial.weeklyRunningCost || estimateWeeklyNut(show, commercial);
   // opts.costSourcedOnly (shadow, BRO-5073): a weekly cost with no cited
   // source counts as 'unsourced', and only a cited cost lifts quality (a
   // methodology label with no cost behind it does not).
@@ -526,15 +548,16 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   if (nutSource === 'estimated') {
     warnings.push('Weekly running cost estimated from show type');
   }
+  if (basisNut && basisNut.basis !== 'running') warnings.push(`Weekly cost is ${basisNut.basis}: fixed nut ${Math.round(basisNut.nut)}${basisNut.gross ? ` at ${basisNut.fromPeriod ? 'the quoted period\'s average gross' : 'a gross equal to the figure (no period in the quote)'} ${Math.round(basisNut.gross)}` : ''}`);
+  if (basisNut && basisNut.rejected) warnings.push(`Weekly cost tagged ${basisNut.rejected} but its gross-linked share exceeds it: used as a fixed nut`);
 
-  const category = classifyShow(show);
   // Shadow only (BRO-5073, opts.costSplit): fixed part of the cost and a
   // larger gross-linked rate. The reserve and cap stay on the reported cost.
-  const split = opts.costSplit ? splitCosts(commercial, category, weeklyNut, getBaseVariableRate(category), THEATER_DEAL.pctOfGross) : null;
+  const split = opts.costSplit && !basisNut ? splitCosts(commercial, category, weeklyNut, getBaseVariableRate(category), THEATER_DEAL.pctOfGross) : null;
   const baseVarRate = split ? split.varRate : getBaseVariableRate(category);
   const runNut = split ? split.fixedNut : weeklyNut;
-  const costPath = opts.stepSmall || opts.stepLate || opts.costGrowth || opts.varBand || opts.varOverage || opts.varBandMusicals
-    ? { stepSmall: !!opts.stepSmall, stepLate: !!opts.stepLate, costGrowth: !!opts.costGrowth, varBand: !!opts.varBand, varOverage: !!opts.varOverage, varBandMusicals: !!opts.varBandMusicals } : null; // shadow, BRO-5073
+  const costPath = opts.stepSmall || opts.stepLate || opts.costGrowth || opts.varBand || opts.varOverage || opts.varBandMusicals || opts.varOverageMusicals || opts.varBandMusicalsRamp
+    ? { stepSmall: !!opts.stepSmall, stepLate: !!opts.stepLate, costGrowth: !!opts.costGrowth, varBand: !!opts.varBand, varOverage: !!opts.varOverage, varBandMusicals: !!opts.varBandMusicals, varOverageMusicals: !!opts.varOverageMusicals, varBandMusicalsRamp: !!opts.varBandMusicalsRamp } : null; // shadow, BRO-5073/5091
 
   // --- Star deal ---
   const slug = show.slug || show.id;
@@ -1057,8 +1080,9 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}
 
   const slug = show.slug || show.id;
   const category = classifyShow(show);
-  const weeklyNut = commercial.weeklyRunningCost || estimateWeeklyNut(show, commercial, { eraAdjust: false });
-  const split = opts.costSplit ? splitCosts(commercial, category, weeklyNut, getBaseVariableRate(category), THEATER_DEAL.pctOfGross) : null; // shadow, BRO-5073
+  const basisNut = opts.costBasis && commercial.weeklyRunningCost ? fixedNutFromBasis(commercial, commercial.weeklyRunningCost, getBaseVariableRate(category), THEATER_DEAL) : null; // shadow, BRO-5093
+  const weeklyNut = basisNut ? basisNut.nut : commercial.weeklyRunningCost || estimateWeeklyNut(show, commercial, { eraAdjust: false });
+  const split = opts.costSplit && !basisNut ? splitCosts(commercial, category, weeklyNut, getBaseVariableRate(category), THEATER_DEAL.pctOfGross) : null; // shadow, BRO-5073
   const baseVarRate = split ? split.varRate : getBaseVariableRate(category);
   const runNut = split ? split.fixedNut : weeklyNut;
 

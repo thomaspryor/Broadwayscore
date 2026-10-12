@@ -71,6 +71,7 @@ const URL_RE = /\bhttps?:\/\/\S+/gi;
 const CITATION_FIELDS = ['capitalizationSource', 'recoupedSource'];
 const LOSS_DESIGNATIONS = ['Flop', 'Fizzle'];
 const { VALID_DESIGNATION_BASES, DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS, isPrematureSilenceLabel } = require('./commercial-designations');
+const { COST_BASES, BASIS_CUE_TEXT } = require('./cost-split');
 
 /** The research wording in `text` outside any URL, or null. */
 function internalWordingIn(text) {
@@ -274,6 +275,14 @@ function commercialRecordErrors(showId, show, ctx = {}) {
     }
   }
 
+  // weeklyRunningCostBasis (BRO-5093): a known value, on a cited cost.
+  if (show.weeklyRunningCostBasis != null) {
+    if (!COST_BASES.includes(show.weeklyRunningCostBasis)) {
+      out.push(`commercial.json: "${showId}" has invalid weeklyRunningCostBasis "${show.weeklyRunningCostBasis}". Valid values: ${COST_BASES.join(', ')}`);
+    } else if (!show.weeklyRunningCost || !show.weeklyRunningCostSource) {
+      out.push(`commercial.json: "${showId}" has weeklyRunningCostBasis but no cited weeklyRunningCost (the basis is read from the source quote)`);
+    }
+  }
   // Validate costMethodology
   if (show.costMethodology && !VALID_COST_METHODOLOGIES.includes(show.costMethodology)) {
     out.push(`commercial.json: "${showId}" has invalid costMethodology "${show.costMethodology}". Valid values: ${VALID_COST_METHODOLOGIES.join(', ')}`);
@@ -336,6 +345,19 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
   }
   if (show.designationBasis != null && !LOSS_DESIGNATIONS.includes(show.designation)) {
     out.push(`commercial.json: "${showId}" has designationBasis "${show.designationBasis}" on a non-loss designation "${show.designation || 'missing'}" (remove it)`);
+  }
+  // A dated "% returned" range below 100 on a show that later recouped
+  // (BRO-5091): ground truth, the designation rule and the display guard read
+  // the range first, so the stale share would outrank the recoupment.
+  const est = show.estimatedRecoupmentPct;
+  if (show.recouped === true && Array.isArray(est) && est.length === 2 && est.every((v) => typeof v === 'number') && Math.max(...est) < 100) {
+    out.push(`commercial.json: "${showId}" is recouped but carries estimatedRecoupmentPct [${est.join(', ')}] (an earlier share returned; ground truth reads it before the recoupment, so remove it)`);
+  }
+  // A hard-sourced cost whose quote says all-in or breakeven, with no
+  // explicit weeklyRunningCostBasis (BRO-5093): the costBasis model would
+  // read the text guess instead of a checked tag.
+  if (['trade-reported', 'sec-filing', 'producer-confirmed'].includes(show.costMethodology) && show.weeklyRunningCost && show.weeklyRunningCostBasis == null && BASIS_CUE_TEXT.test(String(show.weeklyRunningCostSource || ''))) {
+    out.push(`commercial.json: "${showId}" has a ${show.costMethodology} weeklyRunningCost whose source mentions all-in or breakeven but no weeklyRunningCostBasis (tag it running, breakeven or all-in)`);
   }
   if (isPrematureSilenceLabel(show, ctx.showRecord)) {
     out.push(`commercial.json: "${showId}" is "${show.designation}" on no recoupment announced but closed under ${LOSS_LABEL_MIN_DAYS} days ago (keep TBD + needsLossEvidence until it ages in)`);

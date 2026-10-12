@@ -30,12 +30,15 @@ const EXTRA_VARIABLE = {
 };
 
 const ALL_IN_TEXT = /\ball[- ]in\b|\bincludes?\s+(?:royalt|amortiz)/i;
+// A cue that the figure includes gross-linked costs, or is a breakeven.
+const BASIS_CUE_TEXT = /\ball[- ]in\b|\bincludes?\s+(?:royalt|amortiz)|\bbreak[- ]?even\b/i;
 const RUNNING_TEXT = /\bexcl\w*\s+royalt|\bbefore royalt|\bpure operating\b/i;
 
 /** 'all-in' | 'running' for the record's weekly cost figure. */
 function costBasis(commercial) {
   const explicit = commercial && commercial.weeklyRunningCostBasis;
   if (explicit === 'all-in' || explicit === 'running') return explicit;
+  if (explicit === 'breakeven') return 'all-in'; // gross-linked costs included (BRO-5093)
   const text = [commercial && commercial.weeklyRunningCostSource, commercial && commercial.notes].filter((v) => typeof v === 'string').join(' ');
   if (RUNNING_TEXT.test(text)) return 'running';
   return ALL_IN_TEXT.test(text) ? 'all-in' : 'running';
@@ -57,4 +60,59 @@ function splitCosts(commercial, category, weeklyNut, baseVarRate, theaterPct) {
   return { varRate, fixedNut, basis };
 }
 
-module.exports = { splitCosts, costBasis, EXTRA_VARIABLE };
+// Shadow cost basis (BRO-5093, opts.costBasis). weeklyRunningCost holds three
+// kinds of figure, tagged by weeklyRunningCostBasis from the cited quote:
+//
+//   running     fixed weekly expenses, royalties and percentage rent extra
+//               (Hamilton, Matilda). The model's own reading; unchanged.
+//   breakeven   the gross the show needs to break even (Six, Gutenberg).
+//               The fixed nut is what the model's breakeven formula inverts
+//               to: B x (1 - variable - theater pct) / (1 - rent share).
+//   all-in      an average weekly operating expense, royalties and
+//               percentage rent included (Outsiders, AG statements). The
+//               gross-linked part at the period's average gross comes off;
+//               the period is read from the quote ("52 week period ending
+//               March 15, 2026"), else the figure is taken at a gross equal
+//               to itself (a show near breakeven).
+//
+// Only the explicit field counts: text cues misfired (cost-split above).
+const BASES = ['running', 'breakeven', 'all-in'];
+const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+const PERIOD = /\b(\d{1,3})[- ]week period ending\s+(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+(\d{1,2}),?\s+(\d{4})/i;
+
+/** Average weekly gross over the period a quote names, or null. */
+function periodGross(source, weekly) {
+  const m = PERIOD.exec(String(source || ''));
+  if (!m || !weekly) return null;
+  const end = Date.UTC(Number(m[4]), MONTHS.indexOf(m[2].slice(0, 3).toLowerCase()), Number(m[3]));
+  const start = end - Number(m[1]) * 7 * 86400000;
+  const grosses = Object.entries(weekly)
+    .filter(([d]) => Date.parse(d) > start && Date.parse(d) <= end + 6 * 86400000)
+    .map(([, w]) => (w && typeof w === 'object' ? w.gross : w))
+    .filter((g) => g > 0);
+  return grosses.length >= Math.min(8, Number(m[1])) ? grosses.reduce((a, b) => a + b, 0) / grosses.length : null;
+}
+
+/**
+ * The fixed weekly nut behind a tagged cost figure.
+ * @param {object} commercial
+ * @param {number} weeklyNut - the figure the model would use
+ * @param {number} varRate - live gross-linked rate (author royalty, fees)
+ * @param {{ pctOfGross: number, rentPctOfNut: number }} theater - THEATER_DEAL
+ * @param {object} [weekly] - weekly grosses, uncut, for an all-in period
+ * @returns {{ nut: number, basis: string, gross?: number, fromPeriod?: boolean, rejected?: string }}
+ */
+function fixedNutFromBasis(commercial, weeklyNut, varRate, theater, weekly) {
+  const basis = commercial && commercial.weeklyRunningCost && BASES.includes(commercial.weeklyRunningCostBasis) ? commercial.weeklyRunningCostBasis : 'running';
+  const keep = 1 - theater.rentPctOfNut;
+  if (basis === 'breakeven') return { nut: weeklyNut * (1 - varRate - theater.pctOfGross) / keep, basis };
+  if (basis !== 'all-in') return { nut: weeklyNut, basis };
+  const period = periodGross(commercial.weeklyRunningCostSource, weekly);
+  const gross = period || weeklyNut;
+  // E = nut + varRate x G + max(0, pct x G - rent share x nut)
+  let nut = (weeklyNut - (varRate + theater.pctOfGross) * gross) / keep;
+  if (theater.pctOfGross * gross <= theater.rentPctOfNut * nut) nut = weeklyNut - varRate * gross;
+  return nut > 0 ? { nut, basis, gross, fromPeriod: !!period } : { nut: weeklyNut, basis: 'running', rejected: 'all-in' };
+}
+
+module.exports = { splitCosts, costBasis, fixedNutFromBasis, periodGross, EXTRA_VARIABLE, COST_BASES: BASES, BASIS_CUE_TEXT };

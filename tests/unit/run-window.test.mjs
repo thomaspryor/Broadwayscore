@@ -37,6 +37,27 @@ describe('runWindow', () => {
     assert.ok(r.darkWeeks > 70);
     assert.equal(r.totalRunWeeks, Math.round((new Date('2022-01-01') - new Date('2019-10-01')) / WEEK) - r.darkWeeks);
   });
+
+  // BRO-5091: an open-ended run counted as of a pre-shutdown date (the timing
+  // backtest's as-of runs) took the whole shutdown off and read 0 weeks.
+  test('an open-ended run counted as of a date before the shutdown has no dark weeks', () => {
+    const hamilton = { previewsStartDate: '2015-07-13', openingDate: '2015-08-06', closingDate: null };
+    const asOf = new Date('2016-03-31');
+    const r = runWindow(hamilton, { now: asOf, playedOnly: true });
+    assert.equal(r.darkWeeks, 0);
+    assert.equal(r.totalRunWeeks, Math.round((asOf - new Date('2015-07-13')) / WEEK));
+  });
+
+  test('an open-ended run counted as of a date inside the shutdown loses only the dark weeks so far', () => {
+    const r = runWindow({ previewsStartDate: '2019-03-22', openingDate: '2019-04-17', closingDate: null }, { now: new Date('2020-06-11') });
+    assert.equal(r.darkWeeks, Math.round((new Date('2020-06-11') - new Date('2020-03-12')) / WEEK));
+    assert.ok(r.totalRunWeeks > 40);
+  });
+
+  test('an open-ended run counted today still loses the whole shutdown', () => {
+    const r = runWindow({ previewsStartDate: '2003-10-08', openingDate: '2003-10-30', closingDate: null }, { now });
+    assert.equal(r.darkWeeks, Math.round((new Date('2021-09-14') - new Date('2020-03-12')) / WEEK));
+  });
 });
 
 describe('models with playedWeeksOnly', () => {
