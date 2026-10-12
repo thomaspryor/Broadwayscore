@@ -27,7 +27,7 @@ const { evaluateSerpAcceptance, downgradeBaselineUrl } = require('./serp-review-
 const { isTimeOutLondonListing } = require('./timeout-london-url');
 const { isBlockedReviewUrl } = require('./domain-filters');
 const { recordBdCall, recordSdCall, recordSbCall } = require('./bd-telemetry');
-const { sdBilledCredits } = require('./provider-telemetry');
+const { sdBilledCredits, withSpendFallback } = require('./provider-telemetry');
 const { consultBrightData } = require('./brightdata-caps');
 const { consultScrapingdog } = require('./scrapingdog-caps');
 const { creditsFor } = require('./provider-credits');
@@ -401,6 +401,30 @@ function _resolveGeo(query, override) {
  * Returns [{url, title, snippet}] or null if unavailable/failed (so the chain
  * falls through to BD/SB). Bake-off 2026-06-21 confirmed clean organic results.
  */
+/**
+ * Small, query-free diagnostic for a failed Scrapingdog SERP call (BRO-3344).
+ * ~4% of SD SERP calls return 400 across every script, and each one falls
+ * through to BD then ScrapingBee (25 credits). The ledger had only the status,
+ * so the cause was invisible. This records the provider's own error text and
+ * the request's shape (no query text, so no review titles land in the ledger).
+ */
+function scrapingdogSerpFailureDetail(error, q, geo, page, dated) {
+  const body = error && error.response && error.response.data;
+  let msg = null;
+  if (body && typeof body === 'object') msg = body.message || body.error || JSON.stringify(body);
+  else if (typeof body === 'string') msg = body;
+  return {
+    msg: msg ? String(msg).slice(0, 160) : null,
+    qlen: (q || '').length,
+    quoted: /"/.test(q || ''),
+    ops: ((q || '').match(/\b(site|after|before|intitle|inurl):/g) || []).length,
+    nonAscii: /[^\x00-\x7f]/.test(q || ''),
+    geo: geo || 'us',
+    page: page || 0,
+    dated: !!dated,
+  };
+}
+
 async function _serpViaScrapingdog(query, log, dateRange, geo, preferSpeed, page = 0) {
   if (!USE_SCRAPINGDOG || !SCRAPINGDOG_API_KEY) return null;
 
@@ -498,7 +522,7 @@ async function _serpViaScrapingdog(query, log, dateRange, geo, preferSpeed, page
   if (isProbe) _scrapingdogBreakerOpenedAt = _breakerNow;
   // SD bills only successful requests (A0 billing probe, see sdBilledCredits) —
   // booking failures at 5cr overstated SD SERP spend in the ledger (BRO-3325).
-  recordSdCall({ host: 'serp.scrapingdog', fn: 'serp', success: false, status: lastError.response?.status || (lastError.message || 'error').slice(0, 80), credits: sdBilledCredits(false, SD_SERP_CREDITS_PER_CALL * attemptsMade) });
+  recordSdCall({ host: 'serp.scrapingdog', fn: 'serp', success: false, status: lastError.response?.status || (lastError.message || 'error').slice(0, 80), credits: sdBilledCredits(false, SD_SERP_CREDITS_PER_CALL * attemptsMade), detail: scrapingdogSerpFailureDetail(lastError, q, geo, page, !!dateRange) });
   log(`    ✗ Scrapingdog SERP error (${_scrapingdogSerpFailures}/${MAX_CONSECUTIVE_FAILURES}): ${lastError.message} — falling back to BD/SB`);
   return null;
 }
@@ -911,6 +935,7 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   // Scrapingdog first (flag-gated, ~3x cheaper than BD SERP). On a real fetch
   // failure (null) it falls through to the existing BD/SB chain, which stays
   // as the safety net.
+  let _fallbackFrom = null;
   if (USE_SCRAPINGDOG && SCRAPINGDOG_API_KEY && !_skips.has('scrapingdog')) {
     const sdResults = await _serpViaScrapingdog(query, log, dateRange, resolvedGeo, preferSpeed, page);
     if (sdResults && sdResults.length > 0) {
@@ -931,6 +956,8 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
       _serpCache.set(query, cacheOpts, { results: [], provider: 'scrapingdog-empty' });
       return { results: [], provider: 'scrapingdog-empty' };
     }
+    // Reaching BD/SB after SD ran: tag their ledger rows (BRO-3344).
+    _fallbackFrom = 'scrapingdog';
   }
 
   const _entries = {
@@ -954,10 +981,10 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
     ? fn(q, k, l, dr, bdGeo, page)
     : fn(q, k, l, dr, page));
 
-  let results = await _withGeo(primary.fn)(query, primary.key, log, dateRange);
+  let results = await withSpendFallback(_fallbackFrom, () => _withGeo(primary.fn)(query, primary.key, log, dateRange));
   let provider = primary.name;
   if (fallback && (!results || results.length === 0)) {
-    const fbResults = await _withGeo(fallback.fn)(query, fallback.key, log, dateRange);
+    const fbResults = await withSpendFallback(primary.key ? primary.name : _fallbackFrom, () => _withGeo(fallback.fn)(query, fallback.key, log, dateRange));
     if (fbResults && fbResults.length > 0) {
       results = fbResults;
       provider = fallback.name;
@@ -1906,13 +1933,15 @@ async function serpImagesQuery(query, options = {}) {
     return null;
   }
   let exhausted = false;
+  let tried = null;
   for (const provider of order) {
     if (provider === 'scrapingdog') {
       const results = await _serpImagesViaScrapingdog(query, sdKey, nbResults, log);
       if (results) return { exhausted: false, failed: false, results, provider };
+      tried = 'scrapingdog';
       continue;
     }
-    const res = await _serpTypedViaScrapingBee(query, sbKey, 'images', nbResults, log);
+    const res = await withSpendFallback(tried, () => _serpTypedViaScrapingBee(query, sbKey, 'images', nbResults, log));
     if (!res.ok) { exhausted = res.exhausted; continue; }
     const data = res.data || {};
     return { exhausted: false, failed: false, results: data.images || data.image_results || [], provider };
@@ -1934,6 +1963,7 @@ module.exports = {
   serpNewsQuery,
   serpImagesQuery,
   normalizeScrapingdogImageResults,
+  scrapingdogSerpFailureDetail,
   imagesSerpChainOrder,
   serpChainOrder,
   shouldAcceptEmptyScrapingdogSerp,
