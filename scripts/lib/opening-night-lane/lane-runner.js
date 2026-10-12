@@ -71,6 +71,7 @@ async function runLaneNight({
         openingDate, dryRun, ...(pollMs ? { pollMs } : {}), ...(publishTimeoutMs ? { timeoutMs: publishTimeoutMs } : {}),
       });
       published.push(res);
+      for (const key of res.dropped || []) failed.push({ key, reason: 'landed in reviews.json but not in the regenerated show JSON' });
       const missing = new Set(res.missing);
       pending.push(...batch.filter((r) => missing.has(r.key))); // never went live: try again with the next batch
     } catch (e) {

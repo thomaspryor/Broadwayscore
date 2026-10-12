@@ -99,13 +99,13 @@ function createReviewsFilePort(file, { attempts = 5, beforeWrite = null, beforeR
 /**
  * @param {object} args
  *   show, night, rows [{key, row}] (key = the discovery canonical URL; row = the reviews.json record),
- *   ledgerDir, ports {updateReviews(fn), pushData?(), regenShow(showId), deploy(), fetchLiveShow(showId)},
- *   now?(), sleep?(ms), pollMs, timeoutMs
- * @returns {{merge, verified, missing, timedOut, ms}}
+ *   ledgerDir, ports {updateReviews(fn), pushData?(), isLeased?(showId), regenShow(showId, landedUrls) -> {missing?},
+ *   deploy(), fetchLiveShow(showId)}, now?(), sleep?(ms), pollMs, timeoutMs
+ * @returns {{merge, verified, missing, dropped, timedOut, ms}}
  */
 async function publishLaneReviews({ show, night, rows, ledgerDir, ports, now = () => Date.now(), sleep = (ms) => new Promise((r) => setTimeout(r, ms)), pollMs = DEFAULT_POLL_MS, timeoutMs = DEFAULT_TIMEOUT_MS, openingDate, dryRun = false } = {}) {
   if (!show || !night || !ledgerDir || !ports) throw new Error('publish: show, night, ledgerDir and ports are required');
-  if (!Array.isArray(rows) || !rows.length) return { merge: { added: 0, replaced: 0, kept: 0 }, verified: [], missing: [], timedOut: false, ms: 0 };
+  if (!Array.isArray(rows) || !rows.length) return { merge: { added: 0, replaced: 0, kept: 0 }, verified: [], missing: [], dropped: [], timedOut: false, ms: 0 };
   for (const p of ['updateReviews', 'regenShow', 'deploy', 'fetchLiveShow']) if (typeof ports[p] !== 'function') throw new Error(`publish: port "${p}" is required`);
   // A real publish must push the data and must be for a show the lane holds the lease on (a full rebuild only carries
   // over leased shows, so an unleased publish would be dropped by the next rebuild). Dry-run (rehearsal) skips both.
@@ -123,9 +123,18 @@ async function publishLaneReviews({ show, night, rows, ledgerDir, ports, now = (
     const pushed = await ports.pushData();
     if (pushed && pushed.ok === false) throw new Error(`publish: pushing core data failed: ${String(pushed.stderr || '').slice(0, 200)}`);
   }
-  await ports.regenShow(show);
+  // A port may report landed URLs the generator left out of the show JSON (e.g. its critic dedup uses a different key
+  // than the merge). Those rows can never go live, so they are reported as dropped, not awaited and not retried; one bad
+  // row must not hold back the rest of the batch.
+  const regen = await ports.regenShow(show, rows.filter((r) => landed.has(r.row)).map((r) => r.row.url));
+  const notRegenerated = new Set(((regen && regen.missing) || []).map(canonicalUrl));
+  const dropped = [];
+  for (const r of rows) {
+    if (!landed.has(r.row) || !notRegenerated.has(canonicalUrl(r.row.url))) continue;
+    landed.delete(r.row); dropped.push(r.key);
+  }
   for (const r of rows) if (landed.has(r.row)) log(r.key, 'rebuilt');
-  await ports.deploy(); // the deploy port must also commit the regenerated public/data/shows/{id}.json (tracked in git)
+  await ports.deploy(); // real ports: the core-data push is what ships (the deploy gate's data-changed path); see real-ports.js
   for (const r of rows) if (landed.has(r.row)) log(r.key, 'deployed');
 
   // Only rows that actually landed are awaited: a row the merge kept out (a manual correction won) will never show up.
@@ -144,7 +153,7 @@ async function publishLaneReviews({ show, night, rows, ledgerDir, ports, now = (
     if (now() - t0 >= timeoutMs) { timedOut = true; break; }
     await sleep(pollMs);
   }
-  return { merge: { added: merge.added, replaced: merge.replaced, kept: merge.kept }, verified, missing: [...pending.values()], timedOut, ms: now() - t0 };
+  return { merge: { added: merge.added, replaced: merge.replaced, kept: merge.kept }, verified, missing: [...pending.values()], dropped, timedOut, ms: now() - t0 };
 }
 
 // ---- real-world ports (thin; CI wires the deploy) -----------------------------------------------------------------
