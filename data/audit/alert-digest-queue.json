@@ -1236,5 +1236,35 @@
       }
     ],
     "queuedAt": "2026-10-12T17:32:09.364Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4792-transfer-gaps",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4792-transfer-gaps",
+    "description": "land.yml did not land land/bro-4792-transfer-gaps: the unit-tests-node gate went red at 53330cdda7. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38281081198",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4792-transfer-gaps"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "53330cdda7cff8b659fd3c8b221894cc0518f0a5"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38281081198"
+      }
+    ],
+    "queuedAt": "2026-10-12T17:34:22.426Z"
   }
 ]
