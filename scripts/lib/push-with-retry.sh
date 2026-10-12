@@ -712,8 +712,52 @@ PUSH_FAILURE_LOG="${PUSH_FAILURE_LOG:-$SCRIPT_DIR/../../data/audit/push-retry-fa
 # The LOCAL log below is unaffected — it still appends on every call, as
 # before, for full-detail post-hoc debugging when a later job's log survives.
 _FAILURE_TELEMETRY_SENT=false
+# BRO-3148: a failed push exits 1 and the runner throws the job's commits away,
+# so the only trace used to be a generic "All push attempts failed". Name the
+# files the caller committed (entry merge-base..entry HEAD) so the loss is
+# visible in the run annotations and in the durable failure ledger. Computed
+# once per run. Approximate: the base is origin/<branch> as known at script
+# start, so on a stale origin ref the list can include files main already has.
+_UNPUSHED_DONE=false
+_UNPUSHED_COUNT=""
+_UNPUSHED_LIST=""
+compute_unpushed_files() {
+  [ "$_UNPUSHED_DONE" = "true" ] && return 0
+  _UNPUSHED_DONE=true
+  [ -n "${SCRIPT_ENTRY_HEAD:-}" ] && [ -n "${SCRIPT_ENTRY_BASE:-}" ] || return 0
+  local files
+  files="$(git diff --name-only "$SCRIPT_ENTRY_BASE" "$SCRIPT_ENTRY_HEAD" 2>/dev/null)" || return 0
+  _UNPUSHED_COUNT="$(printf '%s' "$files" | grep -c . || true)"
+  _UNPUSHED_LIST="$(printf '%s\n' "$files" | head -20 | paste -sd, - 2>/dev/null || true)"
+}
+# Called from the EXIT trap on any nonzero exit, so every abort path (hook
+# rejection, shallow ancestry, no-op rebase, conflict markers, exhaustion, a
+# set -e crash) names what it discarded, not just the final exhaustion block.
+announce_unpushed_work() {
+  [ -n "${SCRIPT_ENTRY_HEAD:-}" ] || return 0
+  compute_unpushed_files
+  local msg
+  if [ -z "${SCRIPT_ENTRY_BASE:-}" ]; then
+    msg="This job's commits (HEAD ${SCRIPT_ENTRY_HEAD:0:10}) did not reach ${PULL_BRANCH:-main}; file list unknown (no origin merge-base at script start)."
+  elif [ "${_UNPUSHED_COUNT:-0}" = "0" ]; then
+    return 0
+  else
+    local more=""
+    [ "$_UNPUSHED_COUNT" -gt 20 ] && more=" (+$((_UNPUSHED_COUNT - 20)) more)"
+    msg="$_UNPUSHED_COUNT file(s) committed by this job did not reach ${PULL_BRANCH:-main} and are lost when the runner ends (approximate list): ${_UNPUSHED_LIST//,/, }$more"
+  fi
+  # Workflow-command escaping: % first, then CR and LF.
+  msg="${msg//'%'/%25}"; msg="${msg//$'\r'/%0D}"; msg="${msg//$'\n'/%0A}"
+  echo "::error title=push-with-retry discarded unpushed work::$msg"
+}
+
 record_push_failure() {
   local reason="${1:-unknown}" attempt="${2:-0}"
+  # autostash-conflict is recorded after the push itself, and
+  # commit-dropped-post-push mid-loop (a later attempt may still land), so
+  # neither carries an unpushed-file list; the EXIT trap computes it if the
+  # run really ends nonzero.
+  case "$reason" in autostash-conflict|commit-dropped-post-push) ;; *) compute_unpushed_files ;; esac
   local ts remote workflow
   ts=$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo unknown)
   remote=$(git remote get-url origin 2>/dev/null | sed -E 's#.*[/:]##; s#\.git$##' || echo unknown)
@@ -799,6 +843,8 @@ record_push_failure() {
       "--workflow=$workflow" "--ci=$([ -n "${GITHUB_ACTIONS:-}" ] && echo true || echo false)" \
       "--stall-phase=${_LAST_STALL_PHASE:-unknown}" \
       "--stall-service=${_LAST_STALL_SERVICE:-unknown}" \
+      ${_UNPUSHED_COUNT:+"--unpushed-count=$_UNPUSHED_COUNT"} \
+      ${_UNPUSHED_LIST:+"--unpushed-files=$_UNPUSHED_LIST"} \
       "--trace-census=${_LAST_TRACE_CENSUS:-}" \
       "--trace2-summary=${_LAST_TRACE2_SUMMARY:-}" \
       >/dev/null 2>&1 || true
@@ -971,7 +1017,7 @@ fi
 # against a half-restored tree). Same `command -v` guard as above: the stale-marker
 # exit below fires before it is defined. `|| true` is load-bearing: under set -e a
 # failing statement inside an EXIT trap aborts the trap before `exit $rc`.
-trap 'rc=$?; { [ "$rc" -ne 0 ] && command -v restore_head_if_moved >/dev/null 2>&1 && restore_head_if_moved "trap-nonzero-exit-$rc"; } || true; { command -v restore_autostash >/dev/null 2>&1 && restore_autostash; } || true; push_mutex_release; exit $rc' EXIT
+trap 'rc=$?; { [ "$rc" -ne 0 ] && announce_unpushed_work; } || true; { [ "$rc" -ne 0 ] && command -v restore_head_if_moved >/dev/null 2>&1 && restore_head_if_moved "trap-nonzero-exit-$rc"; } || true; { command -v restore_autostash >/dev/null 2>&1 && restore_autostash; } || true; push_mutex_release; exit $rc' EXIT
 
 # BRO-142 (generalized to REBASE_HEAD/CHERRY_PICK_HEAD/REVERT_HEAD by task
 # #1558): refuse to fetch/rebase/merge on top of an in-progress-operation
