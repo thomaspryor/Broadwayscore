@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5183-01",
   "planId": "7ebc63c3-4c59-4c45-a976-7b46f152e045",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-12T19:00:46.383Z",
   "submitter": {
     "name": null,
@@ -77,5 +77,43 @@
         "description": "Stored url https://www.nytimes.com/2009/04/30/theater/reviews/30norman.html came from the legacy LLM web-search step (url_dead). The outlet's real review of this production is https://www.nytimes.com/2009/04/24/theater/reviews/24norm.html. Found by web search / BroadwayWorld roundup, 2026-10-12; the collector refetches and verifies the page before it counts."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T22:31:00.100Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "1984-2017/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/1984.html\" -> \"https://www.talkinbroadway.com/page/world/19842017.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "1984-2017/talkinbroadway--matthew-murray.json criticName: \"Matthew Murray\" -> \"Michael Portantiere\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json url: \"https://www.timeout.com/newyork/theater/a-bronx-tale-review\" -> \"https://www.timeout.com/newyork/blog/broadway-review-a-bronx-tale-earns-a-bronx-cheer-120216\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "amelie-a-new-musical-2017/vulture--jesse-green.json url: \"https://www.vulture.com/2017/04/theater-review-amelie-a-new-musical.html\" -> \"https://www.vulture.com/2017/04/theater-review-amlie-and-the-limits-of-whimsy.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "leap-of-faith-2012/variety--marilyn-stasio.json url: \"https://variety.com/2012/legit/reviews/leap-of-faith-1117947436/\" -> \"http://www.variety.com/review/VE1117947451?refCatId=33\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "leap-of-faith-2012/variety--marilyn-stasio.json criticName: \"Marilyn Stasio\" -> \"Steven Suskin\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-norman-conquests-2009/nytimes--ben-brantley.json url: \"https://www.nytimes.com/2009/04/30/theater/reviews/30norman.html\" -> \"https://www.nytimes.com/2009/04/24/theater/reviews/24norm.html\""
+    }
+  ]
 }
