@@ -45,6 +45,7 @@ const STATES = Object.freeze({
   WRAPPER_EXITED: 'wrapper-exited',         // wrapper ran and died without claude registering
   SLOW_BOOT_TIMEOUT: 'slow-boot-timeout',   // wrapper still alive at the cap — alive, just not verifiable yet
   WRAPPER_GONE_TAG_ALIVE: 'wrapper-gone-tag-alive', // wrapper not in ps, but cmux still reports a live claude
+  NOT_LISTED: 'not-listed',                  // wrapper+tag registered but the ref is absent from cmux's workspace list after retries/settle (BRO-3380)
   SURFACE_NOT_FOUND: 'surface-not-found',   // wrapper+tag both said REGISTERED, but read-screen confirmed no terminal surface exists (card #1829)
   TERMINAL_RUNTIME_MISSING: 'terminal-runtime-missing', // cmux never attached a terminal to this workspace — the command CANNOT run here (task #1904)
 });
@@ -58,6 +59,7 @@ const REASONS = Object.freeze({
   [STATES.WRAPPER_EXITED]: 'launch wrapper exited without claude registering',
   [STATES.SLOW_BOOT_TIMEOUT]: 'claude still had not registered at the slow-boot cap (wrapper process still alive — may yet come up)',
   [STATES.WRAPPER_GONE_TAG_ALIVE]: 'launch wrapper is gone from the process table but cmux still reports a live claude in the workspace — ambiguous, left alone',
+  [STATES.NOT_LISTED]: 'workspace ref is not in cmux\'s workspace list — it never persisted; not a live session',
   [STATES.SURFACE_NOT_FOUND]: 'wrapper process and cmux tag both registered, but read-screen confirms the terminal surface was never rendered — not a live session',
   [STATES.TERMINAL_RUNTIME_MISSING]: 'cmux created the workspace but never attached a terminal to it, so the typed command can never run there (cmux is at its terminal-runtime ceiling — close finished tabs or restart cmux)',
 });

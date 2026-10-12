@@ -16,7 +16,7 @@ const require = createRequire(import.meta.url);
 const { hasSeedProcess, shouldAdoptLateStart, waitForLaunchOutcome, osActivateCmuxApp, CMUX_APP, shouldRefuseForAuth,
   shouldPreWake, cmuxIdleSec, noteLaunchAttempt, IDLE_GATE_SEC, buildLaunchCommand,
   computeStrictAliveness, isUsableString, describeLaunchArgError, launchCmuxSession,
-  makeSeedProcessProbe } = require('./cmux-launch.js');
+  makeSeedProcessProbe, confirmWorkspaceListed } = require('./cmux-launch.js');
 const { STATES } = require('./cmux-launch-state.js');
 
 // BRO-2251 (P0 regression, 2026-08-20): a crowned-successor handoff call
@@ -791,4 +791,19 @@ test('BRO-2982: the FIRST crown of a chain (crown title, no successorOf) also ge
   assert.equal(rows.length, 1);
   assert.equal(rows[0].taskId, 'linear:BRO-343');
   assert.equal(rows[0].succession, undefined);
+});
+
+test('confirmWorkspaceListed (BRO-3380): a ref cmux never lists is NOT confirmed, even when probes would fail open', () => {
+  assert.equal(confirmWorkspaceListed('workspace:99999', { workspaceListed: () => false, listedSleep: () => {} }), false);
+});
+test('confirmWorkspaceListed (BRO-3380): a list error is fail-CLOSED', () => {
+  assert.equal(confirmWorkspaceListed('workspace:1', { workspaceListed: () => { throw new Error('socket'); }, listedSleep: () => {} }), false);
+});
+test('confirmWorkspaceListed (BRO-3380): lagging list is retried and then confirmed', () => {
+  let n = 0;
+  assert.equal(confirmWorkspaceListed('workspace:1', { workspaceListed: () => ++n >= 3, listedSleep: () => {} }), true);
+});
+test('confirmWorkspaceListed (BRO-3380): a workspace that vanishes at the settle re-check is rejected', () => {
+  let n = 0;
+  assert.equal(confirmWorkspaceListed('workspace:1', { workspaceListed: () => ++n === 1, listedSleep: () => {} }), false);
 });
