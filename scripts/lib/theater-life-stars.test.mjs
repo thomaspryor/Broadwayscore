@@ -45,3 +45,21 @@ test('stars split by a space, and quarter stars', () => {
   assert.deepEqual(parseTitleStars('Sets **** 1/4'), { cleanTitle: 'Sets', rating: '4.25/5 stars' });
   assert.equal(footerStars('Sets **** 1/4 Venue', ['Sets']), '4.25/5 stars');
 });
+
+// Live shape: the scraper's plain text joins the venue straight onto the
+// fraction ("A Walk On The Moon ** 1/2Laura Pels Theatre"). The half star
+// used to be dropped there (2.5 read as 2).
+test('venue glued onto the fraction keeps the half star', () => {
+  assert.equal(footerStars('moon.\n\nA Walk On The Moon ** 1/2Laura Pels Theatre, 111', ['A Walk On The Moon']), '2.5/5 stars');
+  assert.equal(footerStars('Cats ** 1/23 more', ['Cats']), '2/5 stars');
+});
+
+// Live shapes: "THE MUSIC MAN ****I/2" (typo for 1/2), and "Pretty Woman ***"
+// with the half star in a separate element. A footer star count that differs
+// from the title's still wins ("Home *****" titled, "Home ****" footer).
+test('footer keeps the half star the title has; a real disagreement keeps the footer', () => {
+  assert.equal(footerStars('MAN: THE MUSIC MAN ****I/2 venue', ['The Music Man']), '4.5/5 stars');
+  assert.equal(resolveTheaterLifeStars({ title: 'Pretty Woman ***1/2', text: 'x\nPretty Woman ***\n' }).rating, '3.5/5 stars');
+  assert.deepEqual(resolveTheaterLifeStars({ title: 'Home *****', text: 'x\nHome ****Todd Haimes Theatre' }),
+    { cleanTitle: 'Home', rating: '4/5 stars', source: 'wp-api-footer' });
+});

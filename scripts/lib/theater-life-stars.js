@@ -19,8 +19,11 @@
 // in a fraction: half stars mostly, quarter stars sometimes ("Sets **** 1/4").
 const STARS = '([*★](?:\\s?[*★]){0,4})';
 const FRACTION = '(?:\\s*(1\\/2|1\\/4|3\\/4|½|¼|¾))?';
+// On a footer line the venue follows with no space after a fraction
+// ("** 1/2Laura Pels Theatre"), so only a digit or slash ends a fraction there.
+const FOOTER_FRACTION = '(?:\\s*([1I]\\/2|1\\/4|3\\/4|½|¼|¾)(?![\\d/]))?';
 const TITLE_STARS_RE = new RegExp(`\\s+${STARS}${FRACTION}\\s*$`);
-const FRACTION_VALUE = { '1/2': 0.5, '½': 0.5, '1/4': 0.25, '¼': 0.25, '3/4': 0.75, '¾': 0.75 };
+const FRACTION_VALUE = { '1/2': 0.5, 'I/2': 0.5, '½': 0.5, '1/4': 0.25, '¼': 0.25, '3/4': 0.75, '¾': 0.75 };
 
 function toRating(stars, fraction) {
   const n = stars.replace(/\s/g, '').length + (FRACTION_VALUE[fraction] || 0);
@@ -53,7 +56,7 @@ function footerStars(text, titles) {
     const title = String(raw || '').trim();
     if (title.length < 3) continue;
     const pat = escapeRe(title).replace(/\s+/g, '\\s+');
-    const re = new RegExp(`(?:^|[\\s"“”'‘’(])${pat}\\s+${STARS}${FRACTION}(?![*★\\w/])`, 'gi');
+    const re = new RegExp(`(?:^|[\\s"“”'‘’(])${pat}\\s+${STARS}(?![*★])${FOOTER_FRACTION}`, 'gi');
     let m;
     while ((m = re.exec(body)) !== null) found.add(toRating(m[1], m[2]));
   }
@@ -67,7 +70,14 @@ function footerStars(text, titles) {
 function resolveTheaterLifeStars({ title, text, showTitles = [] }) {
   const { cleanTitle, rating: titleRating } = parseTitleStars(title);
   const footer = footerStars(text, [cleanTitle, ...showTitles]);
-  if (footer) return { cleanTitle, rating: footer, source: 'wp-api-footer' };
+  if (footer) {
+    // Same whole stars, half only in the title: the footer lost its fraction to
+    // a separate tag or a typo the pattern does not read, so keep the half.
+    const f = parseFloat(footer);
+    const t = titleRating ? parseFloat(titleRating) : NaN;
+    const rating = Number.isInteger(f) && Math.floor(t) === f && t > f ? titleRating : footer;
+    return { cleanTitle, rating, source: 'wp-api-footer' };
+  }
   if (titleRating) return { cleanTitle, rating: titleRating, source: 'wp-api-title' };
   return { cleanTitle, rating: null, source: null };
 }

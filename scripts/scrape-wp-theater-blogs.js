@@ -648,4 +648,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { SITES, resolveAuthorName, extractAuthorFromContent };
+module.exports = { SITES, resolveAuthorName, extractAuthorFromContent, htmlToPlainText };
