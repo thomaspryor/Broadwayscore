@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-10-12T21:16:30.150Z",
+  "timestamp": "2026-10-12T21:28:52.256Z",
   "stats": {
     "totalReviews": 56110,
-    "alreadyFlagged": 20939,
-    "dateGuardCatches": 253,
+    "alreadyFlagged": 20941,
+    "dateGuardCatches": 252,
     "directorMismatch": 1782,
     "tvFilmSignals": 1617,
     "londonSignals": 2209,
@@ -46127,20 +46127,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1547d before show (2022-03-31 vs 2026-06-25)"
-        }
-      ]
-    },
-    {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 82,
-      "publishDate": "2023-02-07",
-      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
         }
       ]
     },
