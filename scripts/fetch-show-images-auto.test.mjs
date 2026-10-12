@@ -9,7 +9,7 @@
  *
  * processOneShow itself isn't exported (fetch-show-images-auto.js runs main()
  * unconditionally at module load, so it can't be require()'d in a test). The
- * fix lives in scripts/lib/show-image-coverage.js's runFetchWithCleanup, which
+ * fix lives in scripts/lib/show-images.js's runFetchWithCleanup, which
  * processOneShow calls directly — these tests assert on that REAL exported
  * function, against real directories on disk.
  */
@@ -25,7 +25,7 @@ const require = createRequire(import.meta.url);
 const {
   runFetchWithCleanup,
   snapshotShowImageDir,
-} = require('./lib/show-image-coverage.js');
+} = require('./lib/show-images.js');
 
 function makeRoot() {
   return fs.mkdtempSync(path.join(os.tmpdir(), 'fetch-cleanup-'));

@@ -29,7 +29,7 @@ const fs = require('fs');
 const { serpQuery, serpImagesQuery } = require('./lib/url-discovery');
 const { withSpendShow } = require('./lib/provider-telemetry');
 const { extractGoogleImageBuffer, hasUsableGoogleImage } = require('./lib/google-image-buffer');
-const { writeStagedCandidate, discardStaged, stagedBytesFor, finalizeStaged, sweepStagedCandidates } = require('./lib/image-candidate-staging');
+const { writeStagedCandidate, discardStaged, stagedBytesFor, stageImageSnapshot, finalizeStaged, sweepStagedCandidates } = require('./lib/image-candidate-staging');
 const path = require('path');
 const { compressImage } = require('./lib/compress-image');
 const { cleanSearchTitle } = require('./lib/title-normalization');
@@ -43,9 +43,8 @@ const { selectShowsToFetch, todaytixApiArtEligible } = require('./lib/image-fetc
 const { loadImageSources, saveImageSources } = require('./lib/image-sources-store');
 const { buildSourceIndex, addToSourceIndex, sourceConflict, stripConflictingSources, showScoreArtEligible, todaytixIdOwner, isOwnSiteSource, isShoppingSource } = require('./lib/shared-image-source');
 const { findOtherSameTitleProduction } = require('./lib/canon-poster-art');
-const { imageOnDisk, isPlaceholderFile, PLACEHOLDER_FILE_HASHES } = require('./lib/show-images');
+const { imageOnDisk, isPlaceholderFile, PLACEHOLDER_FILE_HASHES, pruneEmptyShowImageDir, snapshotShowImageDir, runFetchWithCleanup, discardFailedFetchArtifacts } = require('./lib/show-images');
 const { resolveMarketSlug } = require('./lib/verify-image');
-const { pruneEmptyShowImageDir, snapshotShowImageDir, runFetchWithCleanup, discardFailedFetchArtifacts } = require('./lib/show-image-coverage');
 const { armRunWatchdog } = require('./lib/run-watchdog');
 // Shows whose fetch is in flight right now: { showId: { dir, dirBefore } }.
 // The run watchdog (BRO-4401) discards their half-written artifacts before
@@ -1710,7 +1709,6 @@ async function fetchFromGoogleImages(show) {
   const marketKw = getMarketSearchKeyword(show.category || show.market);
   const outputBase = dryRunMode ? DRY_RUN_DIR : IMAGES_DIR;
   const showDir = path.join(outputBase, show.id);
-  fs.mkdirSync(showDir, { recursive: true });
 
   let thumbnailBuffer = null;
   let thumbnailResult = null;
@@ -1843,7 +1841,7 @@ async function fetchFromGoogleImages(show) {
     console.log(`   ✗ Downloaded thumbnail is a "Coming Soon" placeholder — rejecting`);
     return null;
   }
-  // Staged beside the live file until it is verified and chosen (BRO-4906).
+  // Held in memory until verified and chosen (BRO-179).
   const _staged = {};
   const thumbLocal = `/images/shows/${show.id}/thumbnail.jpg`;
   writeStagedCandidate(_staged, 'thumbnail', { local: thumbLocal, final: path.join(showDir, 'thumbnail.jpg') }, finalThumbnailBuffer);
@@ -1891,8 +1889,8 @@ async function fetchFromGoogleImages(show) {
 // Re-uses the remaining candidates from the initial search
 // Handles both ScrapingBee (base64) and Bright Data (direct URL) results
 //
-// previousPoster: the poster path (if any) fetchFromGoogleImages already wrote
-// to disk before its thumbnail candidate got rejected. The poster search is
+// previousPoster: the poster path (if any) fetchFromGoogleImages prepared
+// before its thumbnail candidate got rejected. The poster search is
 // independent of which square/thumbnail candidate wins verification, so a
 // retry here must NOT null it out — that orphaned a real poster.jpg on disk
 // while shows.json kept images.poster: null forever (card #795: gimme-a-sign,
@@ -1900,7 +1898,7 @@ async function fetchFromGoogleImages(show) {
 // sitting unreferenced in public/images/shows/).
 // previousPosterFile: that poster's _fileSources entry, so its source is still
 // recorded when this retry's thumbnail wins.
-// previousPosterStaged: that poster's _staged entry (BRO-4906), still unpromoted.
+// previousPosterStaged: that poster's bytes in memory, still unpromoted.
 async function tryNextGoogleCandidate(show, remainingCandidates, previousPoster = null, previousPosterFile = null, previousPosterStaged = null) {
   for (const result of remainingCandidates) {
     try {
@@ -1911,7 +1909,6 @@ async function tryNextGoogleCandidate(show, remainingCandidates, previousPoster 
 
       const outputBase = dryRunMode ? DRY_RUN_DIR : IMAGES_DIR;
       const showDir = path.join(outputBase, show.id);
-      fs.mkdirSync(showDir, { recursive: true });
       const compressed = await compressImage(buffer, 'thumbnail');
       const _staged = {};
       writeStagedCandidate(_staged, 'thumbnail', { local: `/images/shows/${show.id}/thumbnail.jpg`, final: path.join(showDir, 'thumbnail.jpg') }, compressed);
@@ -2400,10 +2397,10 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
     if (googleImages) await verifyGooglePoster(googleImages, show, verifyCtx);
   }
   while (googleImages && googleImages.thumbnail) {
-    // Save remaining candidates, and any already-saved poster, before
+    // Save remaining candidates, and any verified poster in memory, before
     // verifyAndCollect/the rejection path below can lose them. The poster
     // search is independent of the thumbnail candidate being verified here,
-    // so a rejected thumbnail must not cost us a poster already on disk.
+    // so a rejected thumbnail must not cost us a verified poster candidate.
     const remaining = googleImages._remainingCandidates || [];
     const previousPoster = googleImages.poster || null;
     const previousPosterFile = (googleImages._fileSources && googleImages._fileSources.poster) || null;
@@ -2473,10 +2470,11 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
     } else if (best.bufSize > 5000) {                             // GUARD 3: Quality floor (>5KB)
       console.log(`   ⚠ LAST RESORT: Using production photo — no poster art available (${(best.bufSize/1024).toFixed(0)} KB)`);
       verifyCtx.lastResort = (verifyCtx.lastResort || 0) + 1;
-      for (const [abs, bytes] of Object.entries(best.files || {})) fs.writeFileSync(abs, bytes);
-      // Those bytes are in place now; a later candidate may have reused the
-      // stage file, so it must not be promoted over them (BRO-4906).
-      delete best.images._staged;
+      // Keep the selected photo's snapshot in memory until applyImages checks
+      // ownership and chooses the formats to serve. The directory may not
+      // exist yet, and later Google retries must not replace these bytes.
+      const outputBase = dryRunMode ? DRY_RUN_DIR : IMAGES_DIR;
+      best.images._staged = stageImageSnapshot(best.images, best.files, outputBase);
       return best.images;
     } else {
       console.log(`   ✗ Production photo too small/no buffer (${best.bufSize} bytes), skipping`);
@@ -2613,7 +2611,7 @@ async function processOneShowInner(show, apiLookup, todayTixIds, badImagesOnly, 
   // reaches discardFailedFetchArtifacts instead of propagating straight out
   // (which would leave Promise.allSettled recording a rejection and the
   // freshly created EMPTY directory surviving as false coverage). See
-  // scripts/lib/show-image-coverage.js for the cleanup logic and tests.
+  // scripts/lib/show-images.js for the cleanup logic and tests.
   inFlightFetches.set(show.id, { dir: showImageDir, dirBefore });
   let images;
   try {
@@ -2717,7 +2715,7 @@ async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImages
       // that already finished must be in shows.json before the checkpoint,
       // or its files land on disk with no row pointing at them — the exact
       // "art in the dir, nothing in shows.json" false coverage
-      // show-image-coverage.js exists to prevent (review finding, BRO-4401).
+      // show-images.js exists to prevent (review finding, BRO-4401).
       batch.map(show => processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verifyCtx).then((v) => {
         if (v && v.images && !dryRunMode) {
           applyImages(v.show, v.images);
@@ -2870,7 +2868,7 @@ function applyImages(show, images) {
       try { fs.unlinkSync(path.join(__dirname, '..', 'public', d.path)); } catch {}
     }
   }
-  // Rename surviving staged candidates into place, delete the rest (BRO-4906).
+  // Write surviving verified candidates, release the rest (BRO-179).
   if (staged) {
     const servedStaged = Object.keys(staged).filter((f) => safe[f] === staged[f].local);
     const { discarded } = finalizeStaged(staged, safe);

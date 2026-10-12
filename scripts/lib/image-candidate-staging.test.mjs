@@ -10,7 +10,7 @@ import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const {
-  stagedPathFor, writeStagedCandidate, discardStaged, stagedBytesFor, finalizeStaged, sweepStagedCandidates,
+  stagedPathFor, writeStagedCandidate, discardStaged, stagedBytesFor, stageImageSnapshot, finalizeStaged, sweepStagedCandidates,
 } = require('./image-candidate-staging.js');
 
 const sha = (p) => crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
@@ -101,4 +101,48 @@ test('finalizeStaged reports a served format whose rename failed as discarded', 
   assert.equal(fs.existsSync(final), false);
   assert.deepEqual(fs.readdirSync(dir), []);
   fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('a deferred photo snapshot survives later rejected retries and is written only when served', t => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'photo-snapshot-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const final = path.join(root, 'x', 'thumbnail.jpg');
+  const staged = {};
+  const photo = Buffer.from('VERIFIED-PRODUCTION-PHOTO');
+  writeStagedCandidate(staged, 'thumbnail', { local: LOCAL_T, final }, photo);
+  const files = { [final]: stagedBytesFor(staged, final) };
+  const retry = {};
+  writeStagedCandidate(retry, 'thumbnail', { local: LOCAL_T, final }, Buffer.from('REJECTED-RETRY'));
+  discardStaged(retry, 'thumbnail');
+  const fallback = stageImageSnapshot({ thumbnail: LOCAL_T, poster: 'https://cdn.example/poster.jpg' }, files, root);
+  assert.equal(fs.existsSync(path.dirname(final)), false);
+  assert.deepEqual(Object.keys(fallback), ['thumbnail']);
+  finalizeStaged(fallback, { thumbnail: LOCAL_T });
+  assert.deepEqual(fs.readFileSync(final), photo);
+});
+
+test('a chosen photo subsequently refused by ownership checks never reaches disk', t => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'photo-refused-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const final = path.join(root, 'x', 'thumbnail.jpg');
+  const fallback = stageImageSnapshot({ thumbnail: LOCAL_T }, { [final]: Buffer.from('PHOTO') }, root);
+  assert.equal(discardStaged(fallback, 'thumbnail'), true);
+  finalizeStaged(fallback, { thumbnail: null });
+  assert.equal(fs.existsSync(path.dirname(final)), false);
+});
+
+test('a final write failure preserves existing art and removes the partial accepted candidate', t => {
+  const dir = showDir();
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const final = path.join(dir, 'thumbnail.jpg');
+  const before = sha(final);
+  const staged = {};
+  writeStagedCandidate(staged, 'thumbnail', { local: LOCAL_T, final }, Buffer.from('ACCEPTED'));
+  const failingFs = { ...fs, writeFileSync: (file, bytes) => {
+    fs.writeFileSync(file, bytes.subarray(0, 2));
+    throw new Error('ENOSPC');
+  } };
+  assert.deepEqual(finalizeStaged(staged, { thumbnail: LOCAL_T }, failingFs), { promoted: [], discarded: ['thumbnail'] });
+  assert.equal(sha(final), before);
+  assert.deepEqual(fs.readdirSync(dir).sort(), ['poster.jpg', 'thumbnail.jpg']);
 });
