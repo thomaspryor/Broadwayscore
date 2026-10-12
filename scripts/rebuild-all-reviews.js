@@ -3330,6 +3330,7 @@ showDirs.forEach(showId => {
               isDateMismatch,
               isShowListingUrl,
               cvBlocksClear,
+              showTitle: showTitleMap[showId],
             })) {
               const clearedTradeFlag = (data.wrongProductionNote || '').startsWith('Cross-market: US outlet')
                 && !!(internationalTradeOutlets
