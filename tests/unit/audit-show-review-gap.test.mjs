@@ -178,3 +178,26 @@ test('currentRunUncollected: a URL on the show blocklist is not uncollected', ()
   assert.equal(currentRunUncollected(r, { blocklist: loadBlocklist(dir) }), 1);
   assert.equal(currentRunUncollected(r, { blocklist: null }), 2);
 });
+
+// BRO-5133: the opening-window condition was never resolved, so its card's
+// check-alert-condition-absent VERIFY could not pass. Cleared keys feed
+// resolveQuietConditions (96h debounce in the router).
+test('openingWindowClearedKeys: rows with nothing uncollected, in or out of the 21-day window', () => {
+  const { openingWindowClearedKeys } = require('../../scripts/audit-show-review-gap.js');
+  const rows = [
+    { showId: 'cleared', openingDate: '2026-09-27', missing: [] },
+    // Show Score show page: the candidate gate rejects it, so a stale row listing it is cleared.
+    { showId: 'stale-junk', openingDate: '2026-09-27', missing: [{ host: 'show-score.com', url: 'https://www.show-score.com/off-off-broadway-shows/x' }] },
+    { showId: 'still-missing', openingDate: '2026-09-27', missing: [{ host: 'vulture.com', url: 'https://www.vulture.com/article/review-x.html' }] },
+    { showId: 'ingested', openingDate: '2026-09-27', missing: [{ host: 'vulture.com', url: 'https://www.vulture.com/article/review-y.html' }], ingestResults: [{ url: 'https://www.vulture.com/article/review-y.html', ok: true }] },
+    // Day 23: past the alert window but its condition may still be open (last fired ~day 19, before the 96h debounce).
+    { showId: 'past-window', openingDate: '2026-09-19', missing: [] },
+    { openingDate: '2026-09-27', missing: [] },
+  ];
+  assert.deepEqual(openingWindowClearedKeys(rows), [
+    'review-gap:opening-window:cleared',
+    'review-gap:opening-window:stale-junk',
+    'review-gap:opening-window:ingested',
+    'review-gap:opening-window:past-window',
+  ]);
+});

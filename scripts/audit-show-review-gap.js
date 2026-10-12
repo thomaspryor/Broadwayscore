@@ -1582,6 +1582,21 @@ function stillCollectable(m, blocklist) {
   return !findBlockedEntry(blocklist, m.url);
 }
 
+function openingWindowConditionKey(showId) {
+  return `review-gap:opening-window:${showId}`;
+}
+
+// BRO-5133: opening-window condition keys whose show's latest row counts no
+// uncollected cited reviews (the same test that skips routeAlert below). No
+// window filter here: resolving needs 96h of quiet, so a gap that last fired
+// after ~day 17 leaves the 21-day window before it could resolve and would
+// stay open forever. Keys that were never opened are a no-op in the router.
+function openingWindowClearedKeys(results) {
+  return (results || [])
+    .filter(r => r && r.showId && currentRunUncollected(r) <= 0)
+    .map(r => openingWindowConditionKey(r.showId));
+}
+
 function currentRunUncollected(r, { blocklist } = {}) {
   const ingestedOk = new Set((r.ingestResults || []).filter(x => x.ok).map(x => x.url));
   const bl = blocklist !== undefined ? blocklist : loadBlocklist(path.join(REVIEW_TEXTS_DIR, r.showId || ''));
@@ -2653,18 +2668,28 @@ async function main(argv = process.argv.slice(2)) {
   //     digest — it must not queue a real alert every invocation.
   if (!dryRun && useCheckpoint) {
     try {
-      const { routeAlert, removeDigestLines } = require('./lib/owner-alert-router');
+      const { routeAlert, removeDigestLines, resolveQuietConditions } = require('./lib/owner-alert-router');
+      // BRO-5133: close the loop once a show's gap is gone, the health-check
+      // way (BRO-2458): resolveQuietConditions only resolves a condition not
+      // fired for the router's incident gap (96h), so a flapping gap stays one
+      // incident and the cooldown is never reset by a quiet hour. Without this
+      // the per-show condition stayed 'open' forever and its card's
+      // check-alert-condition-absent VERIFY could never pass.
+      try {
+        const cleared = resolveQuietConditions(openingWindowClearedKeys(reportedResults), { reason: 'review-gap: no uncollected cited reviews on the latest audit' });
+        if (cleared.length) console.log(`[Alert Router] resolved ${cleared.length} cleared opening-window gap condition(s): ${cleared.join(', ')}`);
+      } catch (e) {
+        console.error(`::warning::resolving cleared opening-window gap conditions failed: ${(e.message || '').slice(0, 120)}`);
+      }
       for (const r of reportedResults) {
         if (!r || !r.showId || !inOpeningWindow({ openingDate: r.openingDate })) continue;
-        const conditionKey = `review-gap:opening-window:${r.showId}`;
+        const conditionKey = openingWindowConditionKey(r.showId);
         const uncollected = currentRunUncollected(r);
         if (uncollected <= 0) {
-          // Queue-only cleanup (never resolveCondition/ledger — a resolved
-          // ledger condition would reset the OTHER show's cooldown clock is
-          // not a risk here since keys are per-show, but resolving on every
-          // quiet run is still the known anti-pattern documented at
-          // audit-opening-night-coverage.js's "No resolveCondition() call"
-          // comment; removeDigestLines only trims the not-yet-sent queue).
+          // Trim the not-yet-sent digest queue. The ledger resolve is the
+          // debounced resolveQuietConditions call above, never a per-run
+          // resolveCondition (the anti-pattern at audit-opening-night-coverage.js's
+          // "No resolveCondition() call" comment: a quiet hour resetting the cooldown).
           removeDigestLines(conditionKey);
           continue;
         }
@@ -2857,4 +2882,4 @@ if (require.main === module) {
 // REVIEW_TEXTS_DIR before requiring this module.
 // main + USAGE are exported so scripts/audit-show-review-gap.test.mjs can
 // prove --help never falls through to a real gh call (task #266).
-module.exports = { planRoundupGapAlerts, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, otherProductionUrlSignal, computeResidualCounts, currentRunUncollected, main, USAGE };
+module.exports = { planRoundupGapAlerts, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, otherProductionUrlSignal, computeResidualCounts, currentRunUncollected, openingWindowClearedKeys, main, USAGE };
