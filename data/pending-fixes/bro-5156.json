@@ -2,7 +2,7 @@
   "createdAt": "2026-10-12T14:30:00Z",
   "issueNumber": "bro-5156",
   "planId": "e7812743-d99e-4705-845b-281c7255ae18",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -122,5 +122,63 @@
         "description": "Not opened yet: opening is 2026-10-15"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T14:09:35.801Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for grey-house-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for mother-russia-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for mother-russia-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for cabaret-at-the-kit-kat-club-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for harry-potter-and-the-cursed-child-both-parts-west-end-2021"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "harry-potter-and-the-cursed-child-both-parts-west-end-2021/variety--gordon-cox.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "harry-potter-and-the-cursed-child-both-parts-west-end-2021/variety--gordon-cox.json isNonReviewReason: null -> \"BRO-5156: Variety news round-up of other critics' Cursed Child reviews (url /legit/news/...-reviews-), not a review\""
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for bedlams-othello-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for midnight-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for midnight-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for midnight-off-broadway-2026"
+    }
+  ]
 }
