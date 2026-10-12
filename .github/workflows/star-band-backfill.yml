@@ -93,7 +93,8 @@ jobs:
           PO="${{ inputs.per_outlet }}"
           [ "${PO:-0}" != "0" ] && LIMIT_ARG="--per-outlet=${PO}"
           [ "${LIMIT:-0}" != "0" ] && LIMIT_ARG="$LIMIT_ARG --limit=${LIMIT}"
-          node scripts/backfill-html-only-ratings.js $APPLY $LIMIT_ARG | tee -a "$GITHUB_STEP_SUMMARY"
+          # BRO-5081: stop at 70 min so the push below runs inside the 90-min job.
+          node scripts/backfill-html-only-ratings.js $APPLY $LIMIT_ARG --time-budget-min=70 | tee -a "$GITHUB_STEP_SUMMARY"
 
       - name: Push to private repo
         if: inputs.mode == 'reflag' || inputs.mode == 'html-apply'
