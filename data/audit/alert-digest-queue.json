@@ -1749,5 +1749,35 @@
       }
     ],
     "queuedAt": "2026-10-12T20:42:23.479Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4823-real-ports",
+    "title": "Landing blocked: lint-workflows red on land/bro-4823-real-ports",
+    "description": "land.yml did not land land/bro-4823-real-ports: the lint-workflows gate went red at 98322e0874. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38305376336",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4823-real-ports"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "98322e087437a5a9b1b017b3c0eb41435d7c41e6"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38305376336"
+      }
+    ],
+    "queuedAt": "2026-10-12T21:03:16.019Z"
   }
 ]
