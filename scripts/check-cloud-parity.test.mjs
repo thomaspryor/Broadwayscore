@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { parseManifest, stripSelfSkip, compareManifest, buildAlert } = require('./lib/cloud-parity.js');
+const { GUARD_RE, parseManifest, stripSelfSkip, compareManifest, buildAlert } = require('./lib/cloud-parity.js');
 const { run } = require('./check-cloud-parity.js');
 
 const MANIFEST = { pairs: [
@@ -32,15 +32,17 @@ test('parseManifest validates shape', () => {
   assert.ok(real.pairs.length >= 2);
 });
 
+const GUARD = 'if [ -f "$HOME/.claude/hooks/$(basename "$0")" ]; then';
+
 test('stripSelfSkip drops the guard block only', () => {
-  assert.equal(stripSelfSkip('a\n# Self-skip x\nif y\nfi\nb'), 'a\nb');
+  assert.equal(stripSelfSkip(`a\n# Self-skip x\n${GUARD}\n  exit 0\nfi\nb`), 'a\nb');
   assert.equal(stripSelfSkip('a\nb'), 'a\nb');
 });
 
 test('compareManifest finds drift, tolerates self-skip, flags repo-only files as unverified', () => {
   const root = fixture({
     'r/cmd/same.md': 'x', 'r/cmd/diff.md': 'repo', 'r/cmd/only.md': 'o',
-    'r/hooks/h.sh': 'a\n# Self-skip\nif z\nfi\nb',
+    'r/hooks/h.sh': `a\n# Self-skip\n${GUARD}\n  exit 0\nfi\nb`,
     'h/cmd/same.md': 'x', 'h/cmd/diff.md': 'master', 'h/hooks/h.sh': 'a\nb',
   });
   const r = compareManifest(MANIFEST, { repoRoot: root, claudeHome: path.join(root, 'h') });
@@ -76,10 +78,49 @@ test('run routes one alert on drift and none when clean or quiet', async () => {
   assert.deepEqual(resolved, ['cloud-parity-drift']);
 });
 
-test('stripSelfSkip ignores mid-file comments and strips only the first block', () => {
+test('stripSelfSkip is anchored on the guard, not on the comment', () => {
+  // A comment mentioning the marker, with no guard, is left alone.
   assert.equal(stripSelfSkip('a\n# see "# Self-skip" rule\nb\nfi\nc'), 'a\n# see "# Self-skip" rule\nb\nfi\nc');
-  assert.equal(stripSelfSkip('# Self-skip\n  fi\nx\nfi\ny\n# Self-skip\nfi\nz'), 'y\n# Self-skip\nfi\nz');
-  assert.equal(stripSelfSkip('a\n# Self-skip\nnever closed'), 'a');
+  // One-line guard: nothing after it is eaten.
+  assert.equal(stripSelfSkip(`# Self-skip\n${GUARD} exit 0; fi\nreal\nfi\nz`), 'real\nfi\nz');
+  // Guard with no comment.
+  assert.equal(stripSelfSkip(`a\n${GUARD}\n  exit 0\nfi\nb`), 'a\nb');
+  // BASH_SOURCE form, named by file.
+  const named = 'if [ -f "$HOME/.claude/hooks/x.sh" ] && \\\n   [ "${BASH_SOURCE[0]}" != "$HOME/.claude/hooks/x.sh" ]; then\n  exit 0\nfi';
+  assert.equal(stripSelfSkip(`# Self-skip preamble\n${named}\nb`), 'b');
+  // Code between the comment and the guard is kept (notion-create-block.sh).
+  assert.equal(stripSelfSkip(`# Self-skip note\nhatch\n# end\n\n${GUARD}\n  exit 0\nfi\nb`), '# Self-skip note\nhatch\n# end\n\nb');
+  // Unterminated guard and other hooks/ paths are not stripped.
+  assert.equal(stripSelfSkip(`a\n${GUARD}\n  exit 0`), `a\n${GUARD}\n  exit 0`);
+  const lib = 'if [ -f "$HOME/.claude/hooks/lib/x.js" ]; then\n  node x\nfi';
+  assert.equal(stripSelfSkip(lib), lib);
+});
+
+// Every shipped hook: the guard is gone after normalizing, and every line
+// removed is part of the guard or a comment/blank line. That second check is
+// what catches a rule that quietly swallows real code.
+test('every shipped hook loses its guard and nothing but its guard', () => {
+  const dir = new URL('../.claude/hooks/', import.meta.url);
+  const files = fs.readdirSync(dir).filter((f) => f.endsWith('.sh'));
+  let guarded = 0;
+  for (const f of files) {
+    const text = fs.readFileSync(new URL(f, dir), 'utf8');
+    const out = stripSelfSkip(text);
+    assert.ok(!out.split('\n').some((l) => GUARD_RE.test(l)), `${f}: guard survived`);
+    if (out === text) continue;
+    guarded++;
+    const kept = out.split('\n');
+    const lines = text.split('\n');
+    // The removal is one contiguous slice; find where it starts.
+    let p = 0;
+    while (p < kept.length && kept[p] === lines[p]) p++;
+    const removed = lines.slice(p, p + (lines.length - kept.length));
+    assert.deepEqual([...lines.slice(0, p), ...lines.slice(p + removed.length)], kept, `${f}: removal is not one slice`);
+    for (const l of removed) {
+      assert.match(l, /^(\s*(#.*)?|if \[ -f "\$HOME.*|\s+\[ "\$\{BASH_SOURCE.*|\s*exit 0|fi\s*)$/, `${f}: dropped a real line: ${l}`);
+    }
+  }
+  assert.ok(guarded >= 14, `expected the guarded hooks, saw ${guarded}`);
 });
 
 test('buildAlert is accepted by the real router contract (required fields)', () => {

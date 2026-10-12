@@ -25,18 +25,34 @@ function parseManifest(text) {
   return m;
 }
 
-// Drops the repo-only guard block: from the first line STARTING with "# Self-skip" to the next
-// line that is exactly "fi". Anchored and first-block-only (unlike the shell sed, which also
-// matched a mid-file comment mentioning the marker and hid everything after it).
+// The repo-only guard that exits when the Mac master exists. It names its own
+// hook, by $(basename "$0") or by file name, and sits at column 0, so a check
+// on some other ~/.claude/hooks/ path (hooks/lib/...) is never mistaken for it.
+const GUARD_RE = /^if \[ -f "\$HOME\/\.claude\/hooks\/(\$\(basename "\$0"\)|[A-Za-z0-9_.-]+\.sh)" \]/;
+const ONE_LINE_GUARD_RE = /;\s*then\s+exit 0\s*;\s*fi\s*$/;
+
+// Drops the first guard, anchored on the guard itself (BRO-4239 follow-up).
+// Covers the multi-line form, the one-line form (check-skill-redaction.sh)
+// and a guard with no "# Self-skip" comment (block-prompting-remote-tools.sh).
+// Its comment goes too, but only when it sits in the run of comment/blank
+// lines directly above the guard: notion-create-block.sh has real code
+// between its "# Self-skip" note and the guard, and that code is compared.
+// A master without the guard comes back unchanged.
 function stripSelfSkip(text) {
-  const out = [];
-  let state = 0; // 0 before, 1 inside, 2 done
-  for (const line of text.split('\n')) {
-    if (state === 0 && line.startsWith('# Self-skip')) state = 1;
-    if (state === 1) { if (line === 'fi') state = 2; continue; }
-    out.push(line);
+  const lines = text.split('\n');
+  const guard = lines.findIndex((l) => GUARD_RE.test(l));
+  if (guard < 0) return text;
+  let end = guard;
+  if (!ONE_LINE_GUARD_RE.test(lines[guard])) {
+    end = lines.findIndex((l, i) => i > guard && /^fi\s*$/.test(l));
+    if (end < 0) return text;
   }
-  return out.join('\n');
+  let start = guard;
+  let top = guard;
+  while (top > 0 && /^\s*(#.*)?$/.test(lines[top - 1])) top--;
+  const note = lines.slice(top, guard).findIndex((l) => /^#.*Self-skip/.test(l));
+  if (note >= 0) start = top + note;
+  return [...lines.slice(0, start), ...lines.slice(end + 1)].join('\n');
 }
 
 function normalize(text, mode) {
@@ -76,4 +92,4 @@ function buildAlert(result) {
   };
 }
 
-module.exports = { parseManifest, stripSelfSkip, compareManifest, buildAlert };
+module.exports = { GUARD_RE, parseManifest, stripSelfSkip, compareManifest, buildAlert };
