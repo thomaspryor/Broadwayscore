@@ -1,87 +1,82 @@
 {
-  "runDate": "2026-10-12T21:05:47.254Z",
+  "runDate": "2026-10-12T22:37:57.179Z",
   "config": {
-    "batchSize": 10,
-    "maxReviews": 100,
+    "batchSize": 5,
+    "maxReviews": 5,
     "priority": "all",
-    "showFilter": "fish-off-broadway-2026,good-time-charlie-off-broadway-2026,fences-off-west-end-2026,a-ghost-in-your-ear-off-broadway-2026,bettys-summer-vacation-the-heights-players-off-broadway-2026",
+    "showFilter": "",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 7,
-    "failed": 3,
+    "processed": 5,
+    "failed": 0,
     "skipped": 0,
-    "successRate": "70.0%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 11,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 1,
-    "brightdata": 0,
+    "scrapingdog": 2,
+    "scrapingbee": 2,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 5
   },
   "statistics": {
-    "tier1Attempts": 8,
-    "tier1Success": 6,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 1,
-    "tier1_9Success": 1,
+    "tier1_9Attempts": 0,
+    "tier1_9Success": 0,
     "tier2Attempts": 1,
     "tier2Success": 1,
-    "tier3Attempts": 1,
-    "tier3Success": 0,
+    "tier3Attempts": 3,
+    "tier3Success": 2,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 5,
-    "tier4Success": 1,
-    "totalFailed": 2,
-    "scrapingBeePageCredits": 1,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 0,
+    "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
+    "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 7,
-    "failed": 3,
+    "processed": 5,
+    "failed": 0,
     "shows": [
-      "a-ghost-in-your-ear-off-broadway-2026",
-      "fences-off-west-end-2026",
-      "fish-off-broadway-2026",
-      "good-time-charlie-off-broadway-2026"
+      "1984-2017",
+      "a-bronx-tale-the-musical-2016",
+      "amelie-a-new-musical-2017",
+      "leap-of-faith-2012",
+      "the-norman-conquests-2009"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
-      "processed": 0,
-      "failed": 0
+      "processed": 17,
+      "failed": 12
     }
   },
   "processed": [
-    "a-ghost-in-your-ear-off-broadway-2026/timeout--unknown.json",
-    "good-time-charlie-off-broadway-2026/cititour--unknown.json",
-    "fences-off-west-end-2026/a-youngish-perspective--unknown.json",
-    "fences-off-west-end-2026/ground--unknown.json",
-    "fences-off-west-end-2026/north-west-end--michelle-knight.json",
-    "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "good-time-charlie-off-broadway-2026/the-recs--unknown.json"
+    "1984-2017/talkinbroadway--matthew-murray.json",
+    "amelie-a-new-musical-2017/vulture--jesse-green.json",
+    "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json",
+    "leap-of-faith-2012/variety--marilyn-stasio.json",
+    "the-norman-conquests-2009/nytimes--ben-brantley.json"
   ],
-  "failed": [
-    "fish-off-broadway-2026/timeout--unknown.json",
-    "a-ghost-in-your-ear-off-broadway-2026/theatermania--unknown.json",
-    "good-time-charlie-off-broadway-2026/talkinbroadway--unknown.json"
-  ],
+  "failed": [],
   "cumulativeResumedState": {
     "processed": [
       "a-ghost-in-your-ear-off-broadway-2026/timeout--unknown.json",
@@ -90,12 +85,36 @@
       "fences-off-west-end-2026/ground--unknown.json",
       "fences-off-west-end-2026/north-west-end--michelle-knight.json",
       "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "good-time-charlie-off-broadway-2026/the-recs--unknown.json"
+      "good-time-charlie-off-broadway-2026/the-recs--unknown.json",
+      "night-of-january-16th-off-broadway-2026/theatricalia--ayn-rand.json",
+      "soon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "slam-frank-off-broadway-2026/timeout--unknown.json",
+      "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+      "degenerates-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "school-girls-or-the-african-mean-girls-play-2026/one-minute-critic--emily-chackerian.json",
+      "school-girls-or-the-african-mean-girls-play-2026/the-recs--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json",
+      "1984-2017/talkinbroadway--matthew-murray.json",
+      "amelie-a-new-musical-2017/vulture--jesse-green.json",
+      "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json",
+      "leap-of-faith-2012/variety--marilyn-stasio.json",
+      "the-norman-conquests-2009/nytimes--ben-brantley.json"
     ],
     "failed": [
       "fish-off-broadway-2026/timeout--unknown.json",
       "a-ghost-in-your-ear-off-broadway-2026/theatermania--unknown.json",
-      "good-time-charlie-off-broadway-2026/talkinbroadway--unknown.json"
+      "good-time-charlie-off-broadway-2026/talkinbroadway--unknown.json",
+      "triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "soon-off-broadway-2026/nick-blaemire--unknown.json",
+      "soon-off-broadway-2026/playbill--unknown.json",
+      "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
+      "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--unknown.json",
+      "toc-toc-off-broadway-2026/laguiacultural--unknown.json",
+      "elf-lyons-the-woman-on-the-edge-off-broadway-2026/chortle--unknown.json",
+      "elf-lyons-the-woman-on-the-edge-off-broadway-2026/the-scotsman--david-hepburn.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/broadwaylog--unknown.json"
     ]
   },
   "tierDetails": {
@@ -103,21 +122,39 @@
       "a-ghost-in-your-ear-off-broadway-2026/timeout--unknown.json",
       "fences-off-west-end-2026/a-youngish-perspective--unknown.json",
       "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "good-time-charlie-off-broadway-2026/the-recs--unknown.json"
+      "good-time-charlie-off-broadway-2026/the-recs--unknown.json",
+      "slam-frank-off-broadway-2026/timeout--unknown.json",
+      "degenerates-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "school-girls-or-the-african-mean-girls-play-2026/the-recs--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json",
+      "a-bronx-tale-the-musical-2016/timeout--adam-feldman.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
-      "fences-off-west-end-2026/ground--unknown.json"
+      "fences-off-west-end-2026/ground--unknown.json",
+      "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
     ],
     "scrapingbee": [
-      "good-time-charlie-off-broadway-2026/cititour--unknown.json"
+      "good-time-charlie-off-broadway-2026/cititour--unknown.json",
+      "the-norman-conquests-2009/nytimes--ben-brantley.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "amelie-a-new-musical-2017/vulture--jesse-green.json",
+      "leap-of-faith-2012/variety--marilyn-stasio.json"
+    ],
     "archiveToday": [],
     "archive": [
-      "fences-off-west-end-2026/north-west-end--michelle-knight.json"
+      "fences-off-west-end-2026/north-west-end--michelle-knight.json",
+      "night-of-january-16th-off-broadway-2026/theatricalia--ayn-rand.json",
+      "soon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "school-girls-or-the-african-mean-girls-play-2026/one-minute-critic--emily-chackerian.json",
+      "1984-2017/talkinbroadway--matthew-murray.json"
     ]
   },
   "failuresByOutlet": {},
