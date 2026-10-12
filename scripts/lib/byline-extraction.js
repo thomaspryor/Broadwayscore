@@ -17,6 +17,7 @@ function decodeEntities(s) {
     .replace(/&amp;/g, '&')
     .replace(/&quot;|&ldquo;|&rdquo;/g, '"')
     .replace(/&apos;|&lsquo;|&rsquo;/g, "'")
+    .replace(/&eacute;/g, 'é')
     .replace(/&nbsp;/g, ' ');
 }
 
@@ -43,6 +44,17 @@ function extractReviewerLine(html) {
 // BRO-4475: BroadwayWorld's meta/author markup can carry the author PAGE URL
 // (broadwayworld.com/author/...) as the value; a name is never an href.
 const PUBLISHER_RE = /^(?:cond[eé] nast|the new yorker$|plasa media|dotdash meredith|vox media|penske media|gannett|hearst)\b/i;
+// Prose-shaped candidates ("By Name", "<b>--Name</b>") also match nav and
+// rating text ("By Date", "By The Numbers", "--Highly Recommended"), so their
+// capture must look like a name: every word capitalised, no house words.
+const INLINE_BY_RE = />By:?\s+([A-Z][A-Za-z](?:[A-Za-z .'’-]|&rsquo;|&#8217;){1,38})(?=\s*[<\/]|\s+(?:[A-Z]|—))/;
+const SIGN_OFF_RE = /<b>\s*(?:--|—)\s*([A-Z][A-Za-z.'’ -]{3,40}?)\s*<\/b>/;
+const PROSE_NOT_A_NAME_RE = /\b(?:date|dates|numbers?|name|title|category|categories|price|popularity|rating|ratings|recommended|highly|stars?|sunday|monday|tuesday|wednesday|thursday|friday|saturday|january|february|march|april|june|july|august|september|october|november|december)\b/i;
+function looksLikeProseName(name) {
+  if (NOT_A_PERSON_RE.test(name) || PROSE_NOT_A_NAME_RE.test(name)) return false;
+  const words = name.split(/\s+/).filter(Boolean);
+  return words.length >= 1 && words.length <= 4 && words.every((w) => /^[A-Z]/.test(w));
+}
 const URL_LIKE_RE = /^(?:https?:)?\/\/|^www\.|^\/[a-z]|\.(?:com|co\.uk|org|net)\/|\/author\//i;
 
 const DOMAIN_LIKE_RE = /\.(?:com|co\.uk|org|net)\b/i;
@@ -80,7 +92,7 @@ function extractJsonLdAuthor(html) {
           if (typeof raw !== 'string') continue;
           const name = stripBylineSuffixes(decodeEntities(raw).trim());
           if (!name || name.length < 2 || name.length > 80 || !/[A-Za-z]/.test(name)) continue;
-          if (URL_LIKE_RE.test(name) || DOMAIN_LIKE_RE.test(name) || NOT_A_PERSON_RE.test(name)) continue;
+          if (URL_LIKE_RE.test(name) || DOMAIN_LIKE_RE.test(name) || NOT_A_PERSON_RE.test(name) || PUBLISHER_RE.test(name)) continue;
           return name;
         }
       }
@@ -119,13 +131,13 @@ function extractByline(html) {
     // "By:" and a name closed straight by a tag ("By Isa Goldberg</p>",
     // theaterlife) are accepted; the old lookahead needed whitespace first,
     // so the capture backtracked to the first name only (BRO-3414).
-    />By:?\s+([A-Z][A-Za-z](?:[A-Za-z .'’-]|&rsquo;|&#8217;){1,38})(?=\s*[<\/]|\s+(?:[A-Z]|—))/,
+    INLINE_BY_RE,
     // <a rel="author"> — before the nested-author-name fallback below because
     // an explicit rel="author" is a stronger signal than a bare class name.
     /<a[^>]+rel=["']author["'][^>]*>([^<]+)<\/a>/i,
     // Lighting & Sound America signs off in bold: "<b>--David Barbour</b>";
     // its meta author is the publisher, PLASA Media (BRO-3414).
-    /<b>\s*(?:--|—)\s*([A-Z][A-Za-z.'’ -]{3,40}?)\s*<\/b>/,
+    SIGN_OFF_RE,
     // class="author-name" wrapping a nested <a> instead of raw text (e.g.
     // TheaterMania: <div class="author-name..."><a id="article-author-tag">Name</a></div>)
     // — the direct-text pattern above only captures immediate text content, so
@@ -157,6 +169,7 @@ function extractByline(html) {
       if (PUBLISHER_RE.test(name)) continue;
       // A bare "By" preamble span read as the name (BRO-3414).
       if (/^by:?$/i.test(name)) continue;
+      if ((re === INLINE_BY_RE || re === SIGN_OFF_RE) && !looksLikeProseName(name)) continue;
       // Capitalize lowercase author slugs from class="author-name" (e.g. "ross" → "Ross").
       if (/^[a-z][a-z\s.'’-]*$/.test(name)) {
         name = name.split(/\s+/).map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
