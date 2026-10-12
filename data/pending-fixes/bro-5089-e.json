@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5089-e",
   "planId": "c0be5a00-cc00-4f5f-a029-4dbc8f091620",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-12T00:34:28.560Z",
   "submitter": {
     "name": null,
@@ -404,5 +404,128 @@
         "description": "the-happy-journey-to-trenton-and-camden-1993: poster and thumbnail cleared, wrong-show: Image text reads 'LANDSHARKS', 'Jimmy Buffett Tribute Concert', and shows 'Alabama Theatre' / 'North Myrtle Beach' — advertises a concert/venue, not Thornton Wilder's The Happy Journey to Trenton and Camden. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T05:04:14.826Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for short-talks-on-the-universe-2002"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-old-neighborhood-1997"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for honour-1998"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for ma-raineys-black-bottom-2003"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for high-society-1998"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for high-society-1998"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for something-unspoken-1995"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-shadow-box-1994"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for whats-wrong-with-this-picture-1994"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-school-for-scandal-1995"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-school-for-scandal-1995"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-twilight-of-the-golds-1993"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for smokey-joes-cafe-1995"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for smokey-joes-cafe-1995"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-government-inspector-1994"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for oba-oba-93-1992"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for abe-lincoln-in-illinois-1993"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for someone-wholl-watch-over-me-1992"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for pullman-car-hiawatha-1993"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-long-christmas-dinner-1993"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for blood-brothers-1993"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for blood-brothers-1993"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for company-1993"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-happy-journey-to-trenton-and-camden-1993"
+    }
+  ]
 }
