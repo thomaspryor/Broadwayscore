@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5183-04",
   "planId": "bfc11e47-6c6f-4849-941c-8401e995c513",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-12T20:35:54.048Z",
   "submitter": {
     "name": null,
@@ -230,5 +230,128 @@
         "description": "Stored url https://www.talkinbroadway.com/world/OtherPlace.html came from the legacy LLM web-search step; the outlet's real review of this production is https://talkinbroadway.com/page/world/TheOtherPlace2013.html. Found by web search / aggregator listing, 2026-10-12; the collector refetches and verifies the page before it counts."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T22:50:43.718Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "come-fly-away-2010/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/ComeFlywithMe.html\" -> \"https://talkinbroadway.com/page/world/ComeFlyAway.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "disaster-2016/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/Disaster.html\" -> \"https://talkinbroadway.com/page/world/Disaster2016.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "in-the-next-room-2009/nytimes--ben-brantley.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "journeys-end-2007/variety--david-rooney.json url: \"https://variety.com/2007/legit/reviews/journey-s-end-1200558958/\" -> \"http://www.variety.com/review/VE1117932884.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "king-kong-2018/talkinbroadway--matthew-murray.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lady-day-at-emersons-bar-and-grill-2014/nytimes--ben-brantley.json url: \"https://www.nytimes.com/2014/04/14/theater/reviews/audra-mcdonald-in-lady-day-at-emersons-bar-grill.html\" -> \"http://www.nytimes.com/2014/04/14/theater/audra-mcdonald-in-lady-day-at-emersons-bar-and-grill.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "no-mans-land-2013/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/NoMansLand.html\" -> \"https://talkinbroadway.com/page/world/NoMansLandGodot.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "once-on-this-island-2017/vulture--jesse-green.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "one-man-two-guvnors-2012/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/OneManTwoGuvnors.html\" -> \"https://talkinbroadway.com/page/world/1Man2Guvnors.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "paradise-square-2022/talkinbroadway--matthew-murray.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "picnic-2013/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/Picnic.html\" -> \"https://talkinbroadway.com/page/world/Picnic2013.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "present-laughter-2017/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/PresentLaughter.html\" -> \"https://talkinbroadway.com/page/world/PresentLaughter2017.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-2011/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/PrivateLives.html\" -> \"https://talkinbroadway.com/page/world/PrivateLives2011.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "radio-golf-2007/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/RadioGolf.html\" -> \"https://talkinbroadway.com/page/world/RadioGolf2007.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rocky-2014/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/Rocky.html\" -> \"https://talkinbroadway.com/page/world/Rocky2014.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sweeney-todd-2023/talkinbroadway--matthew-murray.json url: \"https://talkinbroadway.com/world/SweeneyTodd.html\" -> \"https://www.talkinbroadway.com/page/world/SweeneyTodd23.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sweeney-todd-2023/talkinbroadway--matthew-murray.json criticName: \"Matthew Murray\" -> \"Howard Miller\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "talk-radio-2007/variety--charles-isherwood.json url: \"https://variety.com/2007/legit/reviews/talk-radio-1200558845/\" -> \"https://variety.com/2007/film/awards/talk-radio-2-1117933046/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tarzan-2006/variety--charles-isherwood.json url: \"https://variety.com/2006/film/reviews/brothers-sisters-1200513334/\" -> \"https://variety.com/2006/legit/markets-festivals/tarzan-2-1200516354/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "the-bands-visit-2017/talkinbroadway--matthew-murray.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-country-house-2014/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/CountryHouse.html\" -> \"https://www.talkinbroadway.com/page/world/CountryHouse2014.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "the-ferryman-2018/talkinbroadway--matthew-murray.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-little-mermaid-2008/washpost--peter-marks.json url: \"https://www.washingtonpost.com/wp-dyn/content/article/2008/01/10/AR2008011003281.html\" -> \"https://www.washingtonpost.com/wp-dyn/content/article/2008/01/10/AR2008011003871.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-other-place-2013/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/OtherPlace.html\" -> \"https://talkinbroadway.com/page/world/TheOtherPlace2013.html\""
+    }
+  ]
 }
