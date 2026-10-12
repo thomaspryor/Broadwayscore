@@ -374,8 +374,8 @@
   },
   {
     "conditionKey": "land:land/batch-xshow-urlswap",
-    "title": "Landing blocked: unit-tests-node red on land/batch-xshow-urlswap",
-    "description": "land.yml did not land land/batch-xshow-urlswap: the unit-tests-node gate went red at fd139b71a9. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38241470014",
+    "title": "Landing blocked: actionlint-install red on land/batch-xshow-urlswap",
+    "description": "land.yml did not land land/batch-xshow-urlswap: the actionlint-install gate went red at c5b0e26e34. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38246207257",
     "severity": "error",
     "url": null,
     "decision": false,
@@ -389,17 +389,17 @@
       },
       {
         "name": "gate",
-        "value": "unit-tests-node"
+        "value": "actionlint-install"
       },
       {
         "name": "tip",
-        "value": "fd139b71a91ff214ed958442374484de3dc9d637"
+        "value": "c5b0e26e3420ff893bb6f76920bf114aa4021011"
       },
       {
         "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38241470014"
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38246207257"
       }
     ],
-    "queuedAt": "2026-10-12T11:47:42.234Z"
+    "queuedAt": "2026-10-12T12:02:30.655Z"
   }
 ]
