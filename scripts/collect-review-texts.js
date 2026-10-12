@@ -591,7 +591,7 @@ const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { discoverCorrectUrl: _sharedDiscoverUrl } = require('./lib/url-discovery');
 const { shouldRetryUrlDiscovery, recordSerpAttempt, shouldRetryFetch, recordFetchAttempt, shouldBypassFetchGate, isFetchLedgerEntryForOtherUrl } = require('./lib/review-guards');
 const { clearFailureFlags } = require('./lib/clear-failure-flags');
-const { clearAutomatedTextRejectionOnRefetch } = require('./lib/stale-automated-text-verdict');
+const { clearAutomatedTextRejectionOnRefetch, isRejectedRefetchOnHold } = require('./lib/stale-automated-text-verdict');
 const { neutralizeStaleFlagsOnBodyReplacement } = require('./lib/stale-flag-neutralization');
 const { emitStage } = require('./lib/stage-latency');
 
@@ -6367,6 +6367,13 @@ function findReviewsToProcess() {
             if (!salvageConsentPrefixedStoredText(data)) data._networkDrain = true;
           }
           if (hasStrippableConsentLayer(data.fullText || '') || hasStrippableConsentLayer(data.wrongFullText || '')) data._consentLayerRetry = true;
+          // BRO-5166: a truncated page the ensemble just rejected (a listing page
+          // with no review yet) waits out the hold instead of being refetched
+          // every run; other refetch triggers still apply.
+          if (isTruncated && !paywallRecheck && !needsUrlDiscovery && !hasGarbageText && !urlCorrectedRefetch
+              && !data._datelessDateRetry && isRejectedRefetchOnHold(data)) {
+            continue;
+          }
           // Always re-try truncated/needs-rescrape reviews - they have text but it's incomplete or garbage
           if (!isTruncated && !needsUrlDiscovery && !hasGarbageText && !urlCorrectedRefetch && !data._datelessDateRetry && (data.isFullReview === true || data.textQuality === 'full' || textLen > 1500) && !failedFetches.has(reviewId)) {
             continue;

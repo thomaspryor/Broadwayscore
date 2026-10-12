@@ -45,6 +45,7 @@ const { clearWrongProductionFlags } = require('./wrong-production-clear');
 
 const TEXT_QUALITY_REASONS = new Set(['not_a_review', 'garbage_text', 'truncated_text']);
 const AUTOMATED_REJECTERS = new Set(['ensemble-scoreability-check', 'news-article-heuristic-check', 'preopening-interview-signal']);
+const ENSEMBLE_REJECTER = 'ensemble-scoreability-check';
 const AUTOMATED_NONREVIEW_METHODS = new Set(['heuristic+llm']);
 const COMPLETE_TEXT_MIN = 1500;
 // Tiers that say the body on disk is not a real article, whatever its length.
@@ -94,8 +95,30 @@ function hasHumanVerdict(d) {
  * silent-gap audit between rounds.
  */
 function isRejectedTextUnchanged(d) {
-  if (!d || typeof d.rejectedTextHash !== 'string' || !d.rejectedTextHash) return false;
+  // Only the ensemble stamps rejectedTextHash (llm-scoring stampRejectedTextFingerprint),
+  // and it is never nulled on clear, so a leftover hash must not freeze another
+  // rejecter's verdict (preopening-interview-signal depends on dates, not text).
+  if (!d || d.rejectedBy !== ENSEMBLE_REJECTER) return false;
+  if (typeof d.rejectedTextHash !== 'string' || !d.rejectedTextHash) return false;
   return require('./rescore-lifecycle').rejectionTextFingerprint(d) === d.rejectedTextHash;
+}
+
+/**
+ * Collector selection: hold a truncated file's "always retry" refetch while a
+ * fresh ensemble text rejection stands. A listing page is permanently
+ * 'truncated', so without this it was refetched every collector run; the push's
+ * stale-checkout guard (restore-protected-fields.js) put the longer stored body
+ * back, but the refetch had already cleared the verdict, so the ensemble
+ * re-judged the same page (franz-and-marie: 14 rounds in 3 days, BRO-5166).
+ * After the hold the page is refetched again, so a real review published later
+ * at the same URL (Time Out reuses listing URLs) still lands.
+ */
+const REJECTED_REFETCH_HOLD_HOURS = 72;
+function isRejectedRefetchOnHold(d, now = new Date()) {
+  if (!isAutomatedTextRejection(d) || d.rejectedBy !== ENSEMBLE_REJECTER) return false;
+  const at = Date.parse(d.rejectedAt || '');
+  if (Number.isNaN(at)) return false;
+  return now.getTime() - at < REJECTED_REFETCH_HOLD_HOURS * 3600000;
 }
 
 /** An automated text-quality rejection (reason + rejecter), regardless of timing. */
@@ -305,6 +328,8 @@ module.exports = {
   neutralizeStaleAutomatedTextVerdict,
   clearAutomatedTextRejectionOnRefetch,
   isRejectedTextUnchanged,
+  isRejectedRefetchOnHold,
+  REJECTED_REFETCH_HOLD_HOURS,
   isPreContextWrongProduction,
   neutralizePreContextWrongProduction,
   parkTextDerivedScore,
