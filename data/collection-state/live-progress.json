@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-10-12T11:08:01.511Z",
+  "updatedAt": "2026-10-12T12:08:52.852Z",
   "processed": 1,
-  "failed": 3,
-  "successRate": "25.0%",
+  "failed": 0,
+  "successRate": "100.0%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "amp": 0,
-    "browserbase": 3,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
@@ -14,29 +14,18 @@
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-10-12T11:06:07.843Z",
+      "t": "2026-10-12T12:08:34.884Z",
       "event": "bb-session",
-      "session": "5b051993",
-      "url": "https://www.thetimes.com/article/8ea532e7-98a0-4100-b982-3e8323151aac"
+      "session": "0a17fed4",
+      "url": "https://www.nytimes.com/2016/10/31/theater/liaisons-dangereuses-review.html"
     },
     {
-      "t": "2026-10-12T11:06:08.757Z",
+      "t": "2026-10-12T12:08:35.649Z",
       "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-10-12T11:07:49.504Z",
-      "event": "bb-session",
-      "session": "8a28540e",
-      "url": "https://www.thetimes.com/article/8ea532e7-98a0-4100-b982-3e8323151aac"
-    },
-    {
-      "t": "2026-10-12T11:07:50.380Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
+      "domain": "nytimes.com"
     }
   ]
 }
