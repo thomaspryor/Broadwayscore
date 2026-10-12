@@ -313,36 +313,6 @@
     "queuedAt": "2026-10-12T11:26:57.063Z"
   },
   {
-    "conditionKey": "land:land/bro-3999-empty-body-sweep",
-    "title": "Landing blocked: unit-tests-node red on land/bro-3999-empty-body-sweep",
-    "description": "land.yml did not land land/bro-3999-empty-body-sweep: the unit-tests-node gate went red at e471c36b80. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38239820228",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "branch",
-        "value": "land/bro-3999-empty-body-sweep"
-      },
-      {
-        "name": "gate",
-        "value": "unit-tests-node"
-      },
-      {
-        "name": "tip",
-        "value": "e471c36b80b94cb0af161ddaa982742da30aadf1"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38239820228"
-      }
-    ],
-    "queuedAt": "2026-10-12T11:36:14.128Z"
-  },
-  {
     "conditionKey": "test-yml:main-streak-escalation",
     "title": "main test.yml STILL red — auto-dispatch did not resolve it (still open — BRO-3030)",
     "description": "Still firing after 133 notifications since it was filed. Tracked at BRO-3030.\n\nmain test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: E2E Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
@@ -431,5 +401,35 @@
       }
     ],
     "queuedAt": "2026-10-12T12:18:29.485Z"
+  },
+  {
+    "conditionKey": "land:land/bro-3999-empty-body-sweep",
+    "title": "Landing blocked: rebase red on land/bro-3999-empty-body-sweep",
+    "description": "land.yml did not land land/bro-3999-empty-body-sweep: the rebase gate went red at 8f4589547a. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-3999-empty-body-sweep @ 8f4589547a (origin/land/bro-3999-empty-body-sweep) → origin/main @ 7b324bcea2 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 7b324bcea2: Rebasing (1/3) error: could not apply 167dac496ad... feat(BRO-3999): twice-daily empty-body review retry sweep workflow hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/rm Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38244573013",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-3999-empty-body-sweep"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "8f4589547a604e970821ef70c1b5d642f4d6e210"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38244573013"
+      }
+    ],
+    "queuedAt": "2026-10-12T12:24:51.292Z"
   }
 ]
