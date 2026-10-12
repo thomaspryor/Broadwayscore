@@ -31,6 +31,9 @@ stubModule(path.join(SCRIPTS, 'dispatch-watchdog.js'), { pageIfKillSwitchStale: 
 const monitor = require('./opening-night-monitor.js');
 const cliAuth = require('./claude-cli.js');
 const launcher = require('../opening-night-monitor-launch.js');
+// The launcher's repo root (was a hardcoded Mac path; BRO-2682). Its data and
+// config reads are faked missing; module source under it still loads.
+const { MAIN_REPO_ROOT } = require('./repo-root.js');
 
 const SCRAPER_KEYS_ON = { SCRAPINGBEE_API_KEY: 'sb-test' };
 const WINDOWS = [{ showId: 'test-show-2026', market: 'broadway' }];
@@ -102,7 +105,7 @@ function mockTick(t, { env, authResult }) {
   t.mock.method(fs, 'readFileSync', (p, ...rest) => {
     const s = String(p);
     if (s.endsWith(path.join('data', 'shows.json'))) return JSON.stringify(shows);
-    if (s.startsWith('/Users/tompryor/')) throw enoent(s);
+    if (s.startsWith(MAIN_REPO_ROOT + path.sep) && !/\.(c|m)?js$/.test(s)) throw enoent(s);
     return realRead.call(fs, p, ...rest);
   });
   t.mock.method(fs, 'existsSync', () => false);
