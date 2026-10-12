@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5133",
   "planId": "5ab7574b-6b94-43a1-8d2e-00fe456c279e",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-12T14:07:36.000Z",
   "submitter": {
     "name": null,
@@ -40,5 +40,28 @@
         "description": "BRO-5133: February 2026 news item announcing the US premiere, not a review."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T15:13:09.689Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted lost-in-del-valle-off-broadway-2026/vulture--kendall-dupre.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    }
+  ]
 }
