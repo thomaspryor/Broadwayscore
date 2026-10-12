@@ -158,13 +158,13 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-11T14:14:07.486Z",
-      "lastSeen": "2026-10-12T06:55:09.601Z",
+      "lastSeen": "2026-10-12T07:07:07.053Z",
       "lastNotifiedAt": "2026-10-11T14:14:07.486Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 132,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 28
+      "silentRefires": 29
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -12621,15 +12621,15 @@
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Ordinal publishDate guard parity (BRO-2836) — \"foo returns the contracted value\"",
       "firstSeen": "2026-10-09T14:40:39.110Z",
-      "incidentOpenedAt": "2026-10-12T06:37:42.809Z",
-      "lastSeen": "2026-10-12T06:55:09.593Z",
-      "lastNotifiedAt": "2026-10-12T06:37:42.809Z",
+      "incidentOpenedAt": "2026-10-12T06:32:50.737Z",
+      "lastSeen": "2026-10-12T07:07:07.045Z",
+      "lastNotifiedAt": "2026-10-12T06:32:50.737Z",
       "lastSurfacedAt": null,
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": "BRO-5139",
       "absentRunIds": [],
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "test-yml:red:Unit Tests:2a5215c8": {
       "status": "resolved",
@@ -14418,7 +14418,7 @@
       "resolveReason": "stale-signature"
     },
     "test-yml:red:Unit Tests:f6206569": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"unchanged per-review ERROR warns, quarantines the row and permits the actual push gate\"",
       "firstSeen": "2026-10-12T05:04:21.728Z",
@@ -14437,9 +14437,12 @@
       },
       "silentRefires": 2,
       "absentRunIds": [
-        "38212131386",
-        "38213495382"
-      ]
+        "38211724683",
+        "38213129349",
+        "38214546318"
+      ],
+      "resolvedAt": "2026-10-12T07:07:06.938Z",
+      "resolveReason": "stale-signature"
     },
     "land:land/bro-3366-fold-url": {
       "status": "resolved",
