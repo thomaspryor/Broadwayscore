@@ -18,6 +18,9 @@ test('parseDateRange handles the formats on the site', () => {
   assert.deepEqual(r('December 30, 2025&#8211;January 4, 2026'), ['2025-12-30', '2026-01-04']);
   assert.deepEqual(r('December 30&#x2013;January 4, 2026'), ['2025-12-30', '2026-01-04']);
   assert.equal(r('TBA'), null);
+  // Split runs in one month (Spamalot, BRO-5066).
+  assert.deepEqual(r('January 20-24 & 26-27, 2026 ℹ'), ['2026-01-20', '2026-01-27']);
+  assert.deepEqual(r('May 3 & 5, 2027'), ['2027-05-03', '2027-05-05']);
 });
 
 test('rescheduled rows are skipped; New York runs split tours', () => {
@@ -287,4 +290,62 @@ test('pruneOrphanSchedules keeps everything when shows has no tours', async () =
   const tours = { a: { stops: [1] } };
   assert.deepEqual(pruneOrphanSchedules(tours, []), []);
   assert.deepEqual(Object.keys(tours), ['a']);
+});
+
+// BRO-5066: Hadestown's page struck Bartlesville (<del> in every cell) and
+// listed Whitewater for the same night; Duluth carried a new legend mark (🜂).
+test('struck rows are cancelled, new legend marks are stripped, and the same-night replacement is kept', () => {
+  const { singleCompanyPath } = require('./tour-schedule.js');
+  const del = s => `<del datetime="2026-09-09T16:02:15+00:00">${s}</del>`;
+  const html = page([
+    `<tr><td>${del('Bartlesville, OK')}</td><td>${del('<a href="x">Bartlesville Community Center</a>')}</td><td>${del('October 13, 2026')}</td><td></td></tr>`,
+    row('Whitewater, WI', '<a href="y">Young Auditorium</a>', 'October 13, 2026'),
+    row('Appleton, WI', 'Fox Cities PAC', 'October 16-17, 2026'),
+    row('Duluth, MN', 'DECC', 'October 19, 2026 🜂'),
+    `<tr><td>${del(del('Schenectady, NY'))}</td><td>${del('Proctors')}</td><td>${del(del('March 3-8, 2026'))}</td><td></td></tr>`,
+    row('Pittsburgh, PA', '<span style="text-decoration: underline">Benedum Center</span>', 'October 27&#8211;November 1, 2026'),
+  ]);
+  const rows = parseTourSchedule(html);
+  assert.deepEqual(rows.map(r => `${r.city}|${r.venue}|${iso(r.start)}`), [
+    'Whitewater, WI|Young Auditorium|2026-10-13',
+    'Appleton, WI|Fox Cities PAC|2026-10-16',
+    'Duluth, MN|DECC|2026-10-19',
+    'Pittsburgh, PA|Benedum Center|2026-10-27',
+  ]);
+  assert.deepEqual(rows.unparsedDates, []);
+  // A strike set on the date cell itself also cancels the row.
+  assert.equal(parseTourSchedule(page(['<tr><td>Erie, PA</td><td>Warner</td><td style="text-decoration: line-through">May 5, 2027</td><td></td></tr>'])).length, 0);
+  // A partly edited cell keeps only its new text.
+  const edited = parseTourSchedule(page([row('Tulsa, OK', `${del('Old Hall')} Tulsa PAC`, `${del('May 1, 2027')} May 2, 2027`)]));
+  assert.deepEqual(edited.map(r => `${r.venue}|${iso(r.start)}`), ['Tulsa PAC|2027-05-02']);
+  // A dated cell nobody can read is reported, not silently lost.
+  assert.deepEqual(parseTourSchedule(page([row('Akron, OH', 'Civic', 'October 3rd-ish, 2026')])).unparsedDates, ['October 3rd-ish, 2026']);
+
+  // Even if a page lists two cities the same night unstruck, one company plays one.
+  const d = s => new Date(`${s}T00:00:00Z`);
+  const r = (city, a, b = a) => ({ city, venue: 'V', start: d(a), end: d(b) });
+  const { kept, dropped } = singleCompanyPath([r('A, OK', '2026-10-13'), r('B, WI', '2026-10-13'), r('C, WI', '2026-10-16', '2026-10-17')]);
+  assert.deepEqual(kept.map(x => x.city), ['A, OK', 'C, WI']);
+  assert.deepEqual(dropped.map(x => x.city), ['B, WI']);
+  // Back-to-back in the same city (a split listing) is not an overlap.
+  assert.equal(singleCompanyPath([r('A, OK', '2026-10-13'), r('A, OK', '2026-10-13', '2026-10-14')]).kept.length, 2);
+});
+
+test('BRO-5066 review: nested strikes, emoji selectors, month words, warning scope', () => {
+  const { dropStruck, unparsedForTour } = require('./tour-schedule.js');
+  // Text between two nested closers is struck too.
+  assert.equal(dropStruck('<del><del>a</del> STRUCK-B</del> keep'), ' keep');
+  assert.equal(dropStruck('<span style="text-decoration:line-through">a <span>b</span> STRUCK-C</span> keep'), ' keep');
+  // Look-alike tags are not strikes; an unclosed strike is left in place.
+  assert.equal(dropStruck('<s-x>k</s-x> <strong>k2</strong> <sup>1</sup>'), '<s-x>k</s-x> <strong>k2</strong> <sup>1</sup>');
+  assert.equal(dropStruck('x <del>May 1, 2027'), 'x <del>May 1, 2027');
+  const iso = r => r && [r.start.toISOString().slice(0, 10), r.end.toISOString().slice(0, 10)];
+  assert.deepEqual(iso(parseDateRange('May 5-10, 2027 ℹ️')), ['2027-05-05', '2027-05-10']);
+  assert.deepEqual(iso(parseDateRange('May 5-10, 2027 ⚠️')), ['2027-05-05', '2027-05-10']);
+  const row = c => `<table><tr><td>X, NY</td><td>V</td><td>${c}</td></tr></table>`;
+  assert.deepEqual(parseTourSchedule(row('Marquis Theatre 2027')).unparsedDates, []);
+  assert.deepEqual(parseTourSchedule(row('Sept 2026 (TBC)')).unparsedDates, ['Sept 2026 (TBC)']);
+  // Each warning once, and none from seasons before the tour's launch.
+  assert.deepEqual(unparsedForTour(['March 11-12, 2020 x', 'Dec 2027 y', 'Dec 2027 y', 'TBA'], { openingDate: '2024-09-01' }), ['Dec 2027 y', 'TBA']);
+  assert.deepEqual(unparsedForTour(['a 2020', 'a 2020'], {}), ['a 2020']);
 });

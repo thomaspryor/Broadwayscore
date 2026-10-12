@@ -26,7 +26,7 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { segmentTourRows, pickSegment, currentSegment, parseTourSchedule, duplicateScheduleOf, singleCompanyPath, pruneOrphanSchedules } = require('./lib/tour-schedule');
+const { segmentTourRows, pickSegment, currentSegment, parseTourSchedule, duplicateScheduleOf, singleCompanyPath, pruneOrphanSchedules, unparsedForTour } = require('./lib/tour-schedule');
 const { fetchSchedule } = require('./lib/tours-to-you');
 const { createRunBudget } = require('./lib/run-budget');
 
@@ -61,7 +61,9 @@ function rowsFromLaunch(rows, tour) {
 const MAX_LAYOFF_DAYS = 365;
 
 function tourStops(tour, html, now = new Date()) {
-  const segments = segmentTourRows(parseTourSchedule(html));
+  const parsed = parseTourSchedule(html);
+  const segments = segmentTourRows(parsed);
+  for (const d of unparsedForTour(parsed.unparsedDates, tour)) console.log(`::warning::${tour.id}: could not read date "${d}"; that stop is missing`);
   // The segment holding the launch; else the one running now, when it began
   // after the launch (Wicked's page starts in Oct 2021, after its Aug 2021
   // restart, BRO-4601).

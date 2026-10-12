@@ -21,7 +21,7 @@
  */
 
 const { matchTourTickets } = require('./todaytix-tour-tickets');
-const { parseDateRange } = require('./tour-schedule');
+const { parseDateRange, FOOTNOTE_MARKS } = require('./tour-schedule');
 
 // TodayTix fills a listing it has no art for with a "Coming soon" card. All
 // three file names below are that card (checked 2026-10-05: NORAM_480x720.jpg
@@ -97,7 +97,7 @@ function stopEventPages(html, stops, now = new Date()) {
   for (const tr of String(html || '').match(/<tr[\s\S]*?<\/tr>/g) || []) {
     const cells = (tr.match(/<td[^>]*>[\s\S]*?<\/td>/g) || []);
     if (cells.length < 3) continue;
-    const city = decode(cells[0]).replace(/\s*[§†‡❖◆✦*¤]+\s*/g, ' ').replace(/\s+/g, ' ').trim();
+    const city = decode(cells[0]).replace(FOOTNOTE_MARKS, ' ').replace(/\s+/g, ' ').trim();
     const range = parseDateRange(cells[2].replace(/^<td[^>]*>|<\/td>$/g, ''));
     if (!range) continue;
     const stop = want.get(`${city}|${dayOf(range.start)}`);

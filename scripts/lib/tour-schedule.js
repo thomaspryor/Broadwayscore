@@ -33,11 +33,45 @@ const SEGMENT_GAP_DAYS = 180;
 const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
 
 // Tours To You's legend marks: rescheduled (^ # +), venue season (§ † ‡ ❖),
-// non-Equity (*), cancelled (♦, handled by the caller), info (ℹ).
-const FOOTNOTE_MARKS = /[§†‡❖◆✦*¤♦^#+ℹ]/g;
+// non-Equity (*), cancelled (♦, handled by the caller), info (ℹ). Any other
+// Unicode "Symbol, other" mark is legend too: the page keeps adding new ones
+// (🜂 "Rescheduled from the 2025/2026 season" dropped Hadestown's Duluth stop,
+// BRO-5066), so they are matched by class rather than listed one by one.
+// The emoji variation selector and joiner ride along ("ℹ️", "⚠️").
+const FOOTNOTE_MARKS = /[§†‡❖◆✦*¤♦^#+ℹ\p{So}\p{Sk}\uFE0F\u200D]/gu;
+
+// Struck-through text is a cancelled or replaced entry: Tours To You wraps a
+// cancelled stop's cells in <del> and lists the replacement as a new row
+// (Hadestown's Bartlesville, OK, struck for Whitewater, WI on the same night,
+// BRO-5066). Dropping the struck text leaves a cancelled row with no date, so
+// it parses to nothing, and a partly edited cell keeps only its new text.
+// A tag scanner, not one regex: a struck element can hold other tags,
+// including another strike (<del><del>a</del> b</del>), and a lazy regex
+// stops at the first closer and leaves " b" behind. An unclosed strike is
+// left as is (the cell then fails to parse and is reported, never invented).
+const isStruckOpen = (name, tag) => /^(?:del|s|strike)$/.test(name) || (/^(?:span|font)$/.test(name) && /line-through/i.test(tag));
+const TAG = /<(\/?)([a-z][a-z0-9-]*)\b[^>]{0,2000}>/gi;
+
+function dropStruck(html) {
+  const s = String(html || '');
+  let out = '', last = 0, skip = null, depth = 0, skipFrom = 0;
+  for (const m of s.matchAll(TAG)) {
+    const closing = m[1] === '/', name = m[2].toLowerCase(), selfClosing = /\/>$/.test(m[0]);
+    if (skip) {
+      if (name === skip && !selfClosing) depth += closing ? -1 : 1;
+      if (depth === 0) { skip = null; last = m.index + m[0].length; }
+      continue;
+    }
+    out += s.slice(last, m.index);
+    last = m.index + m[0].length;
+    if (!closing && !selfClosing && isStruckOpen(name, m[0])) { skip = name; depth = 1; skipFrom = m.index; }
+    else out += m[0];
+  }
+  return skip ? out + s.slice(skipFrom) : out + s.slice(last);
+}
 
 function decode(s) {
-  return String(s || '')
+  return dropStruck(s)
     .replace(/<[^>]+>/g, '')
     .replace(/&nbsp;|&#160;/g, ' ')
     .replace(/&#8211;|&#8212;|&#x201[34];|&ndash;|&mdash;/gi, '–')
@@ -66,7 +100,10 @@ function monthIndex(name) {
 function parseDateRange(cell) {
   // Footnote marks after the date ("May 9-28, 2023 +") are the page's legend
   // (BRO-4723: Hamilton's "+" rows failed to parse and vanished).
-  const s = decode(cell).replace(FOOTNOTE_MARKS, '').replace(/\s*[-–—]\s*/g, '–').trim();
+  let s = decode(cell).replace(FOOTNOTE_MARKS, '').replace(/\s*[-–—]\s*/g, '–').trim();
+  // A split run in one month ("January 20-24 & 26-27, 2026", Spamalot) is one
+  // engagement: its first day to its last.
+  s = s.replace(/^([A-Za-z]+\.? \d{1,2})(?:–\d{1,2})?(?: ?& ?\d{1,2}(?:–\d{1,2})?)*? ?& ?(?:\d{1,2}–)?(\d{1,2}, \d{4})$/, '$1–$2');
   let m = s.match(/^([A-Za-z]+)\.? (\d{1,2}), (\d{4})–([A-Za-z]+)\.? (\d{1,2}), (\d{4})$/);
   if (m) {
     const a = utc(+m[3], monthIndex(m[1]), +m[2]);
@@ -99,22 +136,55 @@ function parseDateRange(cell) {
   return null;
 }
 
+// A whole word that starts a month name ("Sep", "Sept", "March"); "Marquis"
+// is a theatre, not March.
+const looksDated = cell => {
+  const t = decode(cell).toLowerCase();
+  return /\b(19|20)\d\d\b/.test(t)
+    && (t.match(/[a-z]+/g) || []).some(w => w.length >= 3 && MONTHS.some(m => m.startsWith(w)));
+};
+
+/**
+ * The unparsed date cells worth warning about for one tour: each once, and
+ * none whose latest year is before the tour's launch year (old seasons on the
+ * same page are not this tour's stops). Pure.
+ */
+function unparsedForTour(unparsed, tour) {
+  const launchYear = tour && tour.openingDate ? Number(String(tour.openingDate).slice(0, 4)) : null;
+  return [...new Set(unparsed || [])].filter(d => {
+    if (!launchYear) return true;
+    const years = (String(d).match(/\b(?:19|20)\d\d\b/g) || []).map(Number);
+    return !years.length || Math.max(...years) >= launchYear;
+  });
+}
+
 /**
  * Every engagement row on a Tours To You show page (current schedule and past
- * seasons), de-duplicated and sorted by start date.
- * @returns {Array<{city, venue, start: Date, end: Date}>}
+ * seasons), de-duplicated and sorted by start date. The array also carries
+ * `unparsedDates`: date cells that looked like dates but could not be read,
+ * so a caller can warn instead of losing the stop silently.
+ * @returns {Array<{city, venue, start: Date, end: Date}> & {unparsedDates: string[]}}
  */
 function parseTourSchedule(html) {
+  const unparsedDates = [];
   const rows = [];
   const seen = new Set();
   for (const table of String(html || '').match(/<table[\s\S]*?<\/table>/g) || []) {
     const tableRows = [];
     for (const tr of table.match(/<tr[\s\S]*?<\/tr>/g) || []) {
-      const cells = (tr.match(/<t[dh][^>]*>[\s\S]*?<\/t[dh]>/g) || []).map(c => c.replace(/^<t[dh][^>]*>|<\/t[dh]>$/g, ''));
+      const rawCells = tr.match(/<t[dh][^>]*>[\s\S]*?<\/t[dh]>/g) || [];
+      const cells = rawCells.map(c => c.replace(/^<t[dh][^>]*>|<\/t[dh]>$/g, ''));
       if (cells.length < 3) continue;
       if (/♦/.test(decode(cells[2]))) continue;
+      // A strike set on the row or the date cell itself is a cancelled stop too.
+      if (/^<tr[^>]*line-through/i.test(tr) || /^<t[dh][^>]*line-through/i.test(rawCells[2])) continue;
       const range = parseDateRange(cells[2]);
-      if (!range) continue;
+      if (!range) {
+        // A dated cell that fails to parse is a lost stop, not a header row:
+        // say so, so the next new legend mark is seen instead of dropped.
+        if (looksDated(cells[2])) unparsedDates.push(decode(cells[2]));
+        continue;
+      }
       // Footnote marks on the city ("Chicago, IL ❖", "Dallas, TX †", "Pueblo, CO *")
       // are Tours To You's legend, not part of the name (BRO-4601).
       const city = decode(cells[0]).replace(FOOTNOTE_MARKS, ' ').replace(/\s+/g, ' ').trim();
@@ -128,7 +198,9 @@ function parseTourSchedule(html) {
       rows.push(r);
     }
   }
-  return rows.sort((a, b) => a.start - b.start);
+  rows.sort((a, b) => a.start - b.start);
+  Object.defineProperty(rows, 'unparsedDates', { value: unparsedDates });
+  return rows;
 }
 
 const shiftYears = (d, n) => utc(d.getUTCFullYear() + n, d.getUTCMonth(), d.getUTCDate());
@@ -172,7 +244,9 @@ function singleCompanyPath(rows, gapDays = SEGMENT_GAP_DAYS) {
   const kept = [order[0]];
   for (const r of order.slice(1)) {
     const cur = kept[kept.length - 1];
-    if (r.start < cur.end) continue;
+    // Same day in another city is an overlap too (one-night stops), as in
+    // tour-page-audit's stops-overlap check.
+    if (r.start < cur.end || (r.start.getTime() === cur.end.getTime() && r.city !== cur.city)) continue;
     if ((r.start - cur.end) / DAY > gapDays) break;
     kept.push(r);
   }
@@ -619,6 +693,7 @@ function pruneOrphanSchedules(tours, shows) {
 }
 
 module.exports = {
+  unparsedForTour,
   pruneOrphanSchedules,
   MIN_TOUR_STOPS,
   tooFewStops,
@@ -628,6 +703,8 @@ module.exports = {
   duplicateScheduleOf,
   parseDateRange,
   parseTourSchedule,
+  FOOTNOTE_MARKS,
+  dropStruck,
   fixYearTypos,
   singleCompanyPath,
   segmentTourRows,
