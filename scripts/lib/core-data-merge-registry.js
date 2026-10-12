@@ -1838,7 +1838,10 @@ const CORE_DATA_MERGE_REGISTRY = [
   // real per-entry union reconciliation, unlike apiFallbackSafe's fail-closed
   // whole-file overwrite, so multi-writer is not a disqualifier here.
   { file: 'audit/scraper-spend-ledger.jsonl', surface: 'public-repo', status: 'active', merge: mergeScraperSpendLedger, format: 'jsonl', apiFallbackMerge: true },
-  { file: 'audit/owner-email-log.jsonl', surface: 'public-repo', status: 'active', merge: mergeOwnerEmailLog, format: 'jsonl' },
+  // BRO-4521: apiFallbackMerge so data-health-check.yml's intermediate
+  // commit steps can stage it (per-entry union merge, same as the ledgers
+  // around it).
+  { file: 'audit/owner-email-log.jsonl', surface: 'public-repo', status: 'active', merge: mergeOwnerEmailLog, format: 'jsonl', apiFallbackMerge: true },
   { file: 'audit/census-recall-trend.jsonl', surface: 'public-repo', status: 'active', merge: mergeCensusRecallTrend, format: 'jsonl', apiFallbackMerge: true },
   // BRO-3071 (2026-09-14): apiFallbackMerge added — already 'active' with a
   // real per-date union merge (mergeCoverageAdversarialProbeTrend, task #903)

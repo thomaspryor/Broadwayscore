@@ -257,24 +257,13 @@ jobs:
       # scripts/lib/push-with-retry.stranded-commit-cascade.test.sh), and
       # data/audit/triage/ has a second writer (rebuild-reviews.yml), so it is
       # not fallback-safe. Nothing between here and the final step reads these
-      # files (triage-unopened-shows.mjs reads/writes only its own report,
-      # which stays a known residual dirty file, as does alert-router state
-      # until "Commit alert router state").
+      # files. triage-unopened-shows.mjs writes its own report later and is
+      # parked again right after it (scripts/lib/park-triage.sh accumulates).
       - name: Park triage data until the final commit
         if: always()
         continue-on-error: true
         run: |
-          P="$RUNNER_TEMP/triage-parked"
-          rm -rf "$P" "$P.deleted"; mkdir -p "$P"
-          git -c core.quotePath=false ls-files -d -- data/audit/triage/ > "$P.deleted"
-          { git -c core.quotePath=false diff --name-only --diff-filter=d -- data/audit/triage/; git -c core.quotePath=false ls-files -o --exclude-standard -- data/audit/triage/; } | sort -u | while IFS= read -r f; do
-            [ -f "$f" ] || continue
-            mkdir -p "$P/$(dirname "$f")"; cp -p "$f" "$P/$f"
-          done
-          git checkout -- data/audit/triage/ 2>/dev/null || true
-          git clean -fdq -- data/audit/triage/
-          echo "parked $(find "$P" -type f | wc -l) changed/new and $(wc -l < "$P.deleted") deleted triage file(s)"
-          git status --short -- data/audit/triage/ | head -5
+          bash scripts/lib/park-triage.sh park
 
       # BRO-2529: isolated commit for the 4 files "Affiliate health monitor"
       # and "Run health check" already wrote to disk above, positioned
@@ -333,6 +322,13 @@ jobs:
           # appended by health-check.js's "Main: green rate" row) — the
           # trend/"day D of 14" line in the digest reads this history back.
           git add data/audit/ci-green-rate.jsonl 2>/dev/null || true
+          # BRO-4521: health-check.js routes alerts, and its unstaged router
+          # writes made this push's rebase refuse ("unstaged changes"). All 3
+          # are apiFallbackMerge-registered, same ride-along as "Commit
+          # provider spend ledger".
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No digest/coverage snapshot changes"
           else
@@ -471,6 +467,8 @@ jobs:
       - name: Commit provider spend ledger (apiFallbackSafe)
         if: always()
         env:
+          # BRO-4521: owner-email-log.jsonl is union-merged (reconcile-coverage gate).
+          PUSH_RECONCILE_MERGED_JSON: '1'
           PUSH_DEADLINE_SEC: '900'
           PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
           GIT_NET_TIMEOUT_SEC: '30'
@@ -484,6 +482,10 @@ jobs:
           git add data/audit/alert-ledger.json 2>/dev/null || true
           git add data/audit/alert-digest-queue.json 2>/dev/null || true
           git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          # BRO-4521: sendEmailAlert() appends here (discord-notify.js); no
+          # step committed it, so each run's log was lost and the file kept
+          # every later push's rebase refusing. apiFallbackMerge-registered.
+          git add data/audit/owner-email-log.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No provider spend ledger changes"
           else
@@ -922,6 +924,13 @@ jobs:
         continue-on-error: true
         timeout-minutes: 2
         run: node scripts/triage-unopened-shows.mjs
+
+      # BRO-4521: park unopened-shows-prior-runs.json too (see "Park triage
+      # data until the final commit").
+      - name: Park triage data written by the readmission sweep
+        if: always()
+        continue-on-error: true
+        run: bash scripts/lib/park-triage.sh park
 
       # 4 more lifetime corpus sweeps (task #1746), extending #1731's pattern
       # above to the other opening-night-checks plugins with the exact same
@@ -1456,6 +1465,8 @@ jobs:
       - name: Commit alert router state (apiFallbackMerge)
         if: always()
         env:
+          # BRO-4521: owner-email-log.jsonl is union-merged (reconcile-coverage gate).
+          PUSH_RECONCILE_MERGED_JSON: '1'
           PUSH_DEADLINE_SEC: '900'
           # Same override as "Commit lifetime sweep snapshots"/"Commit health
           # check audit snapshots" above — makes the fallback reachable
@@ -1471,6 +1482,10 @@ jobs:
           git add data/audit/alert-ledger.json 2>/dev/null || true
           git add data/audit/alert-digest-queue.json 2>/dev/null || true
           git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          # BRO-4521: sendEmailAlert() appends here (discord-notify.js); no
+          # step committed it, so each run's log was lost and the file kept
+          # every later push's rebase refusing. apiFallbackMerge-registered.
+          git add data/audit/owner-email-log.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No alert router state changes"
           else
@@ -1551,11 +1566,8 @@ jobs:
           # "Commit alert router state (apiFallbackMerge)" step (BRO-3318,
           # 2026-09-14) — see that step's comment for why they no longer
           # share a commit with triage/.
-          # BRO-4521: put back what "Park triage data until the final commit"
-          # set aside.
-          P="$RUNNER_TEMP/triage-parked"
-          if [ -d "$P/data" ]; then cp -pR "$P/data/." data/; fi
-          if [ -s "$P.deleted" ]; then while IFS= read -r f; do rm -f "$f"; done < "$P.deleted"; fi
+          # BRO-4521: put back what the two "Park triage data" steps set aside.
+          bash scripts/lib/park-triage.sh restore
           git add data/audit/triage/ 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No triage data changes"
