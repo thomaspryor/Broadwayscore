@@ -31,6 +31,7 @@ const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { classifyReason, describeSkip } = require('./lib/ingest-skip-classify');
 const { fetchJSON: scraperFetchJSON, fetchPage, cleanup } = require('./lib/scraper');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { roundupEntryDateFields } = require('./lib/publish-date-provenance');
 
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 const archiveDir = path.join(__dirname, '../data/aggregator-archive/westendtheatre');
@@ -374,6 +375,7 @@ function saveReview(review) {
       westEndTheatreExcerpt: review.westEndTheatreExcerpt || null,
       aggregatorStars: review.aggregatorStars || null,
       publishDate: review.publishDate || null,
+      // No dateSource: see re-extract-aggregator-reviews.js writeReviewFile.
     },
   }, {
     onMerge(existing, input) {
@@ -663,7 +665,8 @@ async function main() {
         outlet: outletName,
         criticName: r.critic || null,
         url: r.reviewUrl || null, // Don't fall back to WET roundup URL — it's not the outlet's review
-        publishDate: postDate,
+        // The round-up post's own date, marked provisional (BRO-5081).
+        ...roundupEntryDateFields(postDate || null),
         westEndTheatreScore: `${r.stars}/5 stars`,
         westEndTheatreExcerpt: r.excerpt || null,
         originalScore: null,

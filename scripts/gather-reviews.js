@@ -93,6 +93,7 @@ const { recordMarketMisroute: _recordMarketMisroute } = require('./lib/market-mi
 const { isNationalTourRoundupSlug } = require('./lib/tour-roundup-candidate');
 const { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow, isCloudflareChallenge } = require('./lib/bww-roundup-validator');
 const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
+const { roundupEntryDateFields } = require('./lib/publish-date-provenance');
 const { parseBwwPostingAuthor } = require('./lib/bww-jsonld-author');
 // 1 Minute Critic direct-discovery. Mirrors opening-night-poller.js Layer 2b:
 // omc-discovery covers OMC on a per-show RSS + date-window matcher, and was
@@ -2665,7 +2666,8 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
             outlet: outletName,
             criticName,
             url: null,
-            publishDate: normalizePublishDate(publishDate) || null,
+            // The roundup article's own date, marked provisional (BRO-5081).
+            ...roundupEntryDateFields(normalizePublishDate(publishDate) || null),
             bwwExcerpt: quote.substring(0, 300) + (quote.length > 300 ? '...' : ''),
             bwwRoundupUrl: bwwUrl,
             source: 'bww-roundup',
