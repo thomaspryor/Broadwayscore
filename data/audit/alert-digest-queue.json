@@ -1938,5 +1938,35 @@
       }
     ],
     "queuedAt": "2026-10-12T22:04:57.951Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4966-push-core-data-timeout",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-4966-push-core-data-timeout",
+    "description": "land.yml did not land land/bro-4966-push-core-data-timeout: the scripts-lib-tests gate went red at 766ea44c46. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38318567796",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4966-push-core-data-timeout"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "766ea44c462f7af18fd8befc10e8f002e3ac491c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38318567796"
+      }
+    ],
+    "queuedAt": "2026-10-12T23:11:09.299Z"
   }
 ]
