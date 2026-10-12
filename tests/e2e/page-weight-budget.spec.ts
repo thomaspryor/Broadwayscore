@@ -50,9 +50,11 @@ import {
  * server-rendering the market show grids into the HTML (deliberate: the
  * prerendered pages had shipped no grid at all). Production doc/rsc/slugs:
  * /west-end 4,449,172/1,791,333/832 (458 card links), /off-broadway
- * 2,042,690/683,424/193 (228 card links), same x1.1/10KB rule. RSC barely
- * moved; the document grew ~5.8KB per rendered card, which is the
- * card-markup weight to ratchet down later, not hidden payload.
+ * 2,042,690/683,424/193 (228 card links), same x1.1/10KB rule. /off-broadway
+ * RSC was flat (691,676 -> 683,424) while its document doubled (~4.1KB per
+ * rendered card: card markup to ratchet down later, not hidden payload).
+ * /west-end RSC rose with catalog growth (562 -> 832 slugs; RSC bytes per
+ * slug fell 2,298 -> 2,153), so baselineItems moves to 832 with it.
  */
 const PAGE_WEIGHT_BUDGETS: Record<string, CatalogBudget> = {
   // Not scaled: the homepage's 317 slugs (2026-09-29) are curated sections,
