@@ -1406,5 +1406,34 @@
       }
     ],
     "queuedAt": "2026-10-12T02:14:11.575Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5015-other-production-url",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5015-other-production-url",
+    "description": "land.yml did not land land/bro-5015-other-production-url: the unit-tests-node gate went red at da5d1a91b0. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38193363507",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5015-other-production-url"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "da5d1a91b02b2c3589e468eeb5e81b9db3fa74f4"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38193363507"
+      }
+    ],
+    "queuedAt": "2026-10-12T02:16:52.173Z"
   }
 ]
