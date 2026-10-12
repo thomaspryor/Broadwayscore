@@ -16,7 +16,7 @@
  */
 'use strict';
 
-const { stripLeadingJsonBlob } = require('./content-quality');
+const { stripLeadingFetchDebris } = require('./content-quality');
 const { normalizeForMention, buildShowTitleVariants, findVariantSpans } = require('./show-title-variants');
 
 const DEFAULTS = { head: 1500, tail: 1000, window: 700, maxWindows: 2, fullLimit: 3000 };
@@ -65,7 +65,7 @@ function showMentionOffsets(text, showTitle, o = DEFAULTS) {
  */
 function buildClassifySample(showTitle, fullText, opts = {}) {
   const o = { ...DEFAULTS, ...opts };
-  const text = stripLeadingJsonBlob(fullText || '');
+  const text = stripLeadingFetchDebris(fullText || '');
   if (text.length <= o.fullLimit) return text;
   const parts = [text.substring(0, o.head)];
   for (const i of showMentionOffsets(text, showTitle, o)) {
