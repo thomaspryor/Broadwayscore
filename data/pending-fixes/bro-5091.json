@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5091",
   "planId": "7c309162-e7bd-45d8-91e2-ac1d1e3ccc84",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-11T22:23:14.298Z",
   "submitter": {
     "name": null,
@@ -35,5 +35,18 @@
         "description": "merrily: weekly nut cited from a production estimate reported by Broadway Journal, quote checked on the page (BRO-5091)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T01:17:20.303Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for merrily-we-roll-along"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for merrily-we-roll-along"
+    }
+  ]
 }
