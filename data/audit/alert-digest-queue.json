@@ -1726,5 +1726,35 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-12T06:28:39.187Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5090-byline-sweep",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5090-byline-sweep",
+    "description": "land.yml did not land land/bro-5090-byline-sweep: the unit-tests-node gate went red at 03ac3de10a. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38210565765",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5090-byline-sweep"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "03ac3de10a9af73a1e9ff15e7fd7718e313db3ab"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38210565765"
+      }
+    ],
+    "queuedAt": "2026-10-12T06:35:41.247Z"
   }
 ]
