@@ -1,25 +1,36 @@
 {
   "processed": [
-    "fish-off-broadway-2026/nytg--austin-fimmano.json"
+    "a-ghost-in-your-ear-off-broadway-2026/timeout--unknown.json",
+    "fences-off-west-end-2026/ground--unknown.json",
+    "fences-off-west-end-2026/north-west-end--michelle-knight.json",
+    "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "good-time-charlie-off-broadway-2026/the-recs--unknown.json"
   ],
   "failed": [
-    "fish-off-broadway-2026/timeout--unknown.json"
+    "fish-off-broadway-2026/timeout--unknown.json",
+    "a-ghost-in-your-ear-off-broadway-2026/theatermania--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "fish-off-broadway-2026/nytg--austin-fimmano.json"
+      "a-ghost-in-your-ear-off-broadway-2026/timeout--unknown.json",
+      "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "good-time-charlie-off-broadway-2026/the-recs--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "fences-off-west-end-2026/ground--unknown.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "fences-off-west-end-2026/north-west-end--michelle-knight.json"
+    ]
   },
-  "startTime": "2026-10-12T07:56:32.046Z",
-  "lastProcessed": "fish-off-broadway-2026/timeout--unknown.json",
+  "startTime": "2026-10-12T10:02:54.601Z",
+  "lastProcessed": "good-time-charlie-off-broadway-2026/the-recs--unknown.json",
   "log": []
 }
