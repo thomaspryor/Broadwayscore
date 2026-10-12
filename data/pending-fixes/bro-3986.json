@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-3986",
   "planId": "97d551a0-9cac-4e44-b433-477715f542a5",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-11T01:21:50.111Z",
   "submitter": {
     "name": null,
@@ -90,5 +90,13 @@
       "exitCode": 3,
       "result": "Unresolved: No SERP API keys available (SCRAPINGBEE_API_KEY / BRIGHTDATA_TOKEN). Ran before any shows.json addition; no automated pass claimed. Manual validation above uses authoritative production content, not URL metadata."
     }
-  }
+  },
+  "executedAt": "2026-10-12T09:44:42.045Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added songs-for-a-new-world-off-broadway-1995"
+    }
+  ]
 }
