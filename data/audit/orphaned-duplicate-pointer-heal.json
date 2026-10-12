@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-12T14:30:24.938Z",
+  "generated": "2026-10-12T14:38:28.235Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 23,
+  "count": 22,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -155,13 +155,6 @@
       "loserFile": "broadwayworld--aliya-al-hassan.json",
       "targetFile": "broadwayworld--unknown.json",
       "reason": "orphaned-duplicate-heal: broadwayworld--unknown.json was flagged invalid after broadwayworld--aliya-al-hassan.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
-    },
-    {
-      "showId": "twelfth-night-2013",
-      "loserFile": "nytimes--ben-brantley.json",
-      "targetFile": "nytimes--alexis-soloski.json",
-      "reason": "orphaned-duplicate-heal: nytimes--alexis-soloski.json was flagged invalid after nytimes--ben-brantley.json was pointed at it (duplicateTextOf)",
       "field": "duplicateTextOf"
     }
   ]
