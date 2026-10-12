@@ -108,10 +108,12 @@ jobs:
     # ~25s per gauntlet). No review-texts checkout here on purpose: with it,
     # data-dependent node/scripts-lib tests run over the whole corpus and one
     # gauntlet took 24 min (land run 38250968505 hit this timeout). Recent
-    # runs measure ~16 min per gauntlet, not 6.5. The base gauntlet is a second
-    # ~6.5 min ONLY when neither the cache nor an artifact has it for this
-    # base tree. Re-measure from the live runs before changing.
-    timeout-minutes: 40
+    # runs measure ~16 min per gauntlet, not 6.5 (land run 38245849991: base
+    # 11:58-12:14, branch 12:14-12:30). The base gauntlet is a second ~16 min
+    # ONLY when neither the cache nor an artifact has it for this base tree,
+    # so a cold land needs ~35 min before any confirm re-run: 55 leaves room.
+    # Re-measure from the live runs before changing.
+    timeout-minutes: 55
     outputs:
       tip: ${{ steps.rebase.outputs.tip }}
       base: ${{ steps.rebase.outputs.base }}
