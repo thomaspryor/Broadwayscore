@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "from-the-heart-west-end-2026",
   "openingDate": "2026-10-08",
-  "detectedAt": "2026-10-12T23:38:44.121Z",
+  "detectedAt": "2026-10-12T23:46:04.025Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "stagedtheatre--karen-jemison.json",
-      "outletId": "stagedtheatre",
-      "criticName": "Karen Jemison",
-      "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/from-the-heart-the-songs-of-don-black-garrick-theatre?srsltid=AU7gw4VbucDXFI18DezskUqbfj7Iw1yfI3A9iNKQu-DDeF9YuAnhc3Ex",
-      "fullTextLen": 5708,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
     {
       "file": "theatre-news--unknown.json",
       "outletId": "theatre-news",
@@ -40,10 +23,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-10-12T23:35:19.745Z"
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
 }
