@@ -1,20 +1,20 @@
 {
-  "generatedAt": "2026-10-11T13:50:47.467Z",
+  "generatedAt": "2026-10-12T03:32:24.580Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "7df6660cbe4b0fc46d44dd46ada109878a0fefbf",
+  "latestRunHeadSha": "514d31b6912858a3bfa8f6262d50ebf72640e5f9",
   "state": "RED",
-  "consecutiveFailures": 1,
+  "consecutiveFailures": 57,
   "consecutiveSuccesses": 0,
   "greenSince": null,
   "greenForHours": null,
   "greenDurationIsFloor": false,
-  "redSince": "2026-10-11T13:20:54Z",
-  "redForHours": 0.49818527777777777,
+  "redSince": "2026-10-11T19:42:44Z",
+  "redForHours": 7.827938888888889,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-10-11T12:57:58Z",
-  "latestFailedRunId": "38142809925",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38142809925",
+  "lastSuccessAt": "2026-10-11T19:38:05Z",
+  "latestFailedRunId": "38198673628",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38198673628",
   "decidedRuns": 98,
   "failingJobs": [
     {
@@ -23,14 +23,14 @@
         "Run autoclear-vs-ensemble corpus test (needs review-texts)",
         "Run BRO-1397 prior-run former-cast sweep (needs review-texts)",
         "Audit review contamination",
-        "Audit circular duplicateOf pairs",
-        "Audit same-URL byline double-counts"
+        "Validate market expansion",
+        "Audit outlet-registry gaps"
       ]
     },
     {
       "name": "Unit Tests",
       "steps": [
-        "Run unit tests (no-data-dependency)"
+        "Ordinal publishDate guard parity (BRO-2836)"
       ]
     },
     {
@@ -52,12 +52,6 @@
       "job": "Data Validation",
       "step": "Run BRO-1397 prior-run former-cast sweep (needs review-texts)",
       "evidence": "not ok 1 - excerptMentionsFormerCast flags exactly the known-good set across every priorRuns show"
-    },
-    {
-      "path": "tests/unit/commercial-bro5020-entries.test.mjs",
-      "job": "Unit Tests",
-      "step": "Run unit tests (no-data-dependency)",
-      "evidence": "not ok 5867 - grey-house carries the BRO-5020 values"
     }
   ],
   "topFailingJob": "Unit Tests"

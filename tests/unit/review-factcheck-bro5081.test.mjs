@@ -164,3 +164,9 @@ test('a citation to an unrelated domain never counts, even if the tool also open
   const v = judgeVote({ answer: 'yes', evidence: 'quote only on the fan blog page', citation: 'https://fanblog.example/post' }, page, ['https://fanblog.example/post', 'https://variety.com/x'], 'https://variety.com/x');
   assert.equal(v.counted, false);
 });
+
+test('star backfill skips a page it already read with no rating (30-day marker), so batched runs progress', () => {
+  const show = { id: 'x', title: 'X', market: 'west-end', category: 'west-end', status: 'closed', openingDate: '2025-02-11' };
+  const d = { outletId: 'timeout-london', criticName: 'A B', url: 'https://www.timeout.com/london/theatre/x', source: 'theatre-record', starHtmlCheckedAt: new Date().toISOString() };
+  assert.equal(isCandidate(d, show, '/tmp/x/a.json'), false);
+});

@@ -1,7 +1,7 @@
 {
   "system": "sync",
-  "status": "error",
-  "lastChecked": "2026-10-11T13:36:32.690Z",
+  "status": "pass",
+  "lastChecked": "2026-10-12T03:14:25.226Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,7 @@
     {
       "name": "Sync: review-texts vs reviews.json",
       "status": "pass",
-      "message": "55881 files, 27867 reviews (surplus: 28014)"
+      "message": "56469 files, 28924 reviews (surplus: 27545)"
     },
     {
       "name": "Sync: open show coverage",
@@ -23,18 +23,18 @@
     },
     {
       "name": "Sync: cast coverage",
-      "status": "warn",
-      "message": "2 empty cast: Billy Crystal 860, A Few Good Men"
+      "status": "pass",
+      "message": "29 active Broadway shows all have cast data"
     },
     {
       "name": "Sync: baseline drift",
-      "status": "error",
-      "message": "Open shows dropped by 11: 210 vs baseline 221"
+      "status": "pass",
+      "message": "3725 shows, 211 open, 28924 reviews (all at or above baseline)"
     },
     {
       "name": "Sync: grosses weekEnding",
       "status": "pass",
-      "message": "weekEnding 10/4/2026 (7d ago)"
+      "message": "weekEnding 10/4/2026 (8d ago)"
     }
   ]
 }

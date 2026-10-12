@@ -20,7 +20,7 @@
  * Usage: node scripts/backfill-html-only-ratings.js [--apply] [--limit=N] [--per-outlet=N] [--show=ID]
  */
 const { hasHelpFlag } = require('./lib/cli-help.js');
-if (hasHelpFlag(process.argv.slice(2))) { console.log('Usage:\n  node scripts/backfill-html-only-ratings.js [--apply] [--limit=N] [--per-outlet=N] [--show=ID]\n  --help, -h   print this usage and exit'); process.exit(0); }
+if (hasHelpFlag(process.argv.slice(2))) { console.log('Usage:\n  node scripts/backfill-html-only-ratings.js [--apply] [--limit=N] [--per-outlet=N] [--show=ID] [--time-budget-min=N]\n  --help, -h   print this usage and exit'); process.exit(0); }
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
@@ -30,6 +30,7 @@ const { setExtractedScore } = require('./lib/score-routing');
 const { shouldUseAnchoredMode } = require('./lib/star-reliability');
 const { isIncludableForRebuild } = require('./lib/review-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const APPLY = process.argv.includes('--apply');
 const limitArg = process.argv.find(a => a.startsWith('--limit='));
@@ -58,6 +59,9 @@ function isCandidate(d, show, f) {
   const neverFetched = !d.fetchMethod && !d.sourceMethod;
   if (!neverFetched && !srcs.some(s => STARLESS_TEXT_SOURCES.has(s))) return false;
   if (d.scoreExtractedFrom === 'scraped-html') return false;
+  // A page already read with no rating found: skip until its marker is 30
+  // days old, so batched runs make progress instead of re-reading it.
+  if (d.starHtmlCheckedAt && Date.now() - Date.parse(d.starHtmlCheckedAt) < 30 * 864e5) return false;
   if (existingHasScoreSignal(d)) return false;
   // Star-publishing outlets only (the canonical KNOWN_STAR_OUTLETS set, plus
   // outlets whose extractor reads only the one host that prints stars): an
@@ -77,6 +81,9 @@ function alternateUrls(url) {
 }
 
 if (require.main === module) (async () => {
+  // Stop before the job timeout so the push step still runs (a cancelled job
+  // pushes nothing). star-band-backfill.yml passes --time-budget-min.
+  const budget = createRunBudget(parseTimeBudgetMin(process.argv.slice(2)));
   const showsRaw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
   const showsArr = Array.isArray(showsRaw) ? showsRaw : (showsRaw.shows || []);
   const showById = new Map(showsArr.filter(s => s && s.id).map(s => [s.id, s]));
@@ -90,6 +97,7 @@ if (require.main === module) (async () => {
     let d;
     try { d = JSON.parse(fs.readFileSync(f, 'utf8')); } catch { continue; }
     if (!isCandidate(d, show, f)) continue;
+    if (budget.exceeded()) { stats.stoppedOnBudget = true; break; }
     if (PER_OUTLET && (seenByOutlet[d.outletId] || 0) >= PER_OUTLET) continue;
     seenByOutlet[d.outletId] = (seenByOutlet[d.outletId] || 0) + 1;
     if (LIMIT && stats.candidates >= LIMIT) break;
@@ -117,7 +125,12 @@ if (require.main === module) (async () => {
       continue;
     }
     stats.fetched++;
-    if (!rec) { stats.noRating++; noRating.push(`${showId}/${path.basename(f)} [${d.outletId}] ${d.url}`); continue; }
+    if (!rec) {
+      stats.noRating++;
+      noRating.push(`${showId}/${path.basename(f)} [${d.outletId}] ${d.url}`);
+      if (APPLY) { d.starHtmlCheckedAt = new Date().toISOString(); safeWriteReview(f, d, { force: true }); }
+      continue;
+    }
     stats.recovered++;
     recovered.push(`${showId}/${path.basename(f)}  ${rec.originalScore} (${rec.normalizedScore}) [${rec.source}]`);
     if (!APPLY) continue;
