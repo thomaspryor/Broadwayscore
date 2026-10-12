@@ -13,6 +13,12 @@
 //
 // Usage: node scripts/checkout-sync-post.js [--dry-run] [--no-heartbeat]
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log('Usage: node scripts/checkout-sync-post.js [--dry-run] [--no-heartbeat]\nRuns after a successful checkout-sync: retires launchd jobs in config/mac-retired.json, posts the applied-sha heartbeat.');
+  process.exit(0);
+}
+
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
