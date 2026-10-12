@@ -1298,9 +1298,9 @@
     "queuedAt": "2026-10-12T17:00:05.623Z"
   },
   {
-    "conditionKey": "land:land/bro-4631-verify-jwt",
-    "title": "Landing blocked: scripts-lib-tests red on land/bro-4631-verify-jwt",
-    "description": "land.yml did not land land/bro-4631-verify-jwt: the scripts-lib-tests gate went red at 869e4b0466. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38280916089",
+    "conditionKey": "land:land/bro-4792-transfer-gaps",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4792-transfer-gaps",
+    "description": "land.yml did not land land/bro-4792-transfer-gaps: the unit-tests-node gate went red at 53330cdda7. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38281081198",
     "severity": "error",
     "url": null,
     "decision": false,
@@ -1310,22 +1310,22 @@
     "fields": [
       {
         "name": "branch",
-        "value": "land/bro-4631-verify-jwt"
+        "value": "land/bro-4792-transfer-gaps"
       },
       {
         "name": "gate",
-        "value": "scripts-lib-tests"
+        "value": "unit-tests-node"
       },
       {
         "name": "tip",
-        "value": "869e4b0466622e3c459d09143e6e9bc248d42798"
+        "value": "53330cdda7cff8b659fd3c8b221894cc0518f0a5"
       },
       {
         "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38280916089"
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38281081198"
       }
     ],
-    "queuedAt": "2026-10-12T17:32:09.364Z"
+    "queuedAt": "2026-10-12T17:34:22.426Z"
   },
   {
     "conditionKey": "land:land/bro-3148-unpushed-files",
@@ -1369,6 +1369,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-12T18:05:41.942Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4631-verify-jwt",
+    "title": "Landing blocked: race red on land/bro-4631-verify-jwt",
+    "description": "land.yml did not land land/bro-4631-verify-jwt: the race gate went red at b931ec0f76. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4631-verify-jwt @ b931ec0f76 (origin/land/bro-4631-verify-jwt) → origin/main @ d14dd7f740 [land] attempt 1/3: rebased onto eddd192cc1, 5 file(s) changed — running checks [land] verified-base: main moved e69ca4ca6e → eddd192cc1 across 668 file(s), substantive — re-checking on the merged tree (+38 test file(s) changed on main since the verified base) [land] linked 21 gitignored path( Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38285129458",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4631-verify-jwt"
+      },
+      {
+        "name": "gate",
+        "value": "race"
+      },
+      {
+        "name": "tip",
+        "value": "b931ec0f76e223fa485e3dc48846e415df2d1a3f"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38285129458"
+      }
+    ],
+    "queuedAt": "2026-10-12T19:59:34.197Z"
   },
   {
     "conditionKey": "land:land/bro-3566-registry-merge-check-2",
