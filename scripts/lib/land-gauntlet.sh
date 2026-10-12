@@ -49,6 +49,14 @@
 #     Blocking since 2026-10-12 (kill switch: LAND_TOPLEVEL_ADVISORY=1, see
 #     land-gate-delta.js). A red file is retried once, so a one-off flake on
 #     the branch cannot refuse a land (the branch side is never re-measured).
+#   unit-tests-e2e (tests/e2e-unit-test-manifest.txt, test.yml E2E Tests >
+#     "Run unit tests")
+#     BRO-5161: the gauntlet never ran this batch, so 19c4e4a193 (BRO-4911)
+#     broke tests/unit/review-normalization.test.js, landed clean and turned
+#     main red. Its own gate (not folded into unit-tests-tsx) so a batch that
+#     cannot start stays a fail-safe of its own. Several files read
+#     data/review-texts, which land.yml's checks job checks out for it.
+#     ADVISORY until armed (LAND_E2E_UNIT_BLOCKING=1, see land-gate-delta.js).
 # Env: GAUNTLET_GATES — optional comma list (e.g. "lint-workflows" or
 #   "unit-tests-node,scripts-lib-tests"): run only those gates, skipping the
 #   gold-lists prep unless a unit gate is listed. Unset = every gate (land.yml
@@ -106,7 +114,7 @@ gate() {
 }
 
 # ── prep (not gates): gold lists + gitignored manifests ────────────────────
-if want_gate unit-tests-node || want_gate unit-tests-tsx || want_gate scripts-lib-tests || want_gate bash-integration || want_gate toplevel-regression; then
+if want_gate unit-tests-node || want_gate unit-tests-tsx || want_gate unit-tests-e2e || want_gate scripts-lib-tests || want_gate bash-integration || want_gate toplevel-regression; then
   node scripts/compute-gold-lists.js > "$OUT/prep-gold-lists.log" 2>&1 || echo "::warning::compute-gold-lists.js failed (see $OUT/prep-gold-lists.log) — data-dependent tests may fail"
 fi
 
@@ -136,6 +144,16 @@ unit_tests_tsx() {
   npx tsx --test --test-reporter=tap --test-timeout 300000 "${tests[@]}"
 }
 gate unit-tests-tsx unit_tests_tsx
+
+# Same manifest and runner as test.yml's E2E Tests > "Run unit tests".
+unit_tests_e2e() {
+  local -a tests
+  mapfile -t tests < tests/e2e-unit-test-manifest.txt 2>/dev/null
+  if [ ${#tests[@]} -eq 0 ]; then echo "::error::tests/e2e-unit-test-manifest.txt is empty or missing"; return 1; fi
+  echo "# e2e unit batch: ${#tests[@]} files"
+  npx tsx --test --test-reporter=tap --test-timeout 300000 "${tests[@]}"
+}
+gate unit-tests-e2e unit_tests_e2e
 
 scripts_lib_tests() {
   shopt -s nullglob

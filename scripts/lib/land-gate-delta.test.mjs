@@ -210,7 +210,7 @@ test('next-lint keys on file::rule message, errors only — warnings never fail 
 test('parseGateFailures dispatches per gate and refuses an unknown gate', () => {
   assert.equal(parseGateFailures('lint-workflows', '::error::lint-workflows gate failed: actionlint (exit 1)').size, 1);
   assert.equal(parseLintWorkflowsFailures('unrelated ::error:: line').size, 0);
-  for (const g of ['unit-tests-node', 'unit-tests-tsx', 'scripts-lib-tests']) assert.equal(parseGateFailures(g, tap(ROOT, [['t.test.mjs', 'n']]), ROOT).size, 1);
+  for (const g of ['unit-tests-node', 'unit-tests-tsx', 'unit-tests-e2e', 'scripts-lib-tests']) assert.equal(parseGateFailures(g, tap(ROOT, [['t.test.mjs', 'n']]), ROOT).size, 1);
   assert.equal(GATES.includes('unit-tests'), false, 'the two unit batches are separate gates');
   assert.equal(GATES.includes('bash-integration'), true, 'BRO-4150: land.yml must run test.yml\'s bash integration tests too');
   assert.equal(parseGateFailures('bash-integration', '::error::bash-integration gate failed: scripts/lib/x.test.sh (exit 1)').size, 1);
@@ -475,4 +475,47 @@ test('toplevel-regression: base ran but parsed nothing is fail-safe (blocks when
   const [d] = withToplevelAdvisory('1', () => decideAllGates({ gates: ['toplevel-regression'], base: 'base', branch: 'branch', read }));
   assert.equal(d.verdict, 'pass');
   assert.equal(d.mode, 'advisory');
+});
+
+function withE2eUnitBlocking(value, fn) {
+  const prev = process.env.LAND_E2E_UNIT_BLOCKING;
+  try {
+    if (value === undefined) delete process.env.LAND_E2E_UNIT_BLOCKING; else process.env.LAND_E2E_UNIT_BLOCKING = value;
+    return fn();
+  } finally {
+    if (prev === undefined) delete process.env.LAND_E2E_UNIT_BLOCKING; else process.env.LAND_E2E_UNIT_BLOCKING = prev;
+  }
+}
+
+test('unit-tests-e2e (BRO-5161): runs after unit-tests-tsx; a new failure is ADVISORY by default, blocks with LAND_E2E_UNIT_BLOCKING=1', () => {
+  assert.equal(GATES.indexOf('unit-tests-e2e'), GATES.indexOf('unit-tests-tsx') + 1);
+  const failing = tap(ROOT, [['tests/unit/review-normalization.test.js', 'still auto-clears Same URL']]);
+  const read = (dir) => (dir === 'branch' ? { exit: 1, text: failing, root: ROOT } : { exit: 0, text: tap(ROOT, []), root: ROOT });
+  for (const unset of [undefined, '', '0']) {
+    const [d] = withE2eUnitBlocking(unset, () => decideAllGates({ gates: ['unit-tests-e2e'], base: 'base', branch: 'branch', read }));
+    assert.equal(d.verdict, 'pass', `LAND_E2E_UNIT_BLOCKING=${JSON.stringify(unset)} must stay advisory`);
+    assert.equal(d.mode, 'advisory');
+    assert.equal(d.newFailures.length, 1, 'the new failure is still reported');
+    assert.match(d.reason, /LAND_E2E_UNIT_BLOCKING=1/);
+  }
+  const [armed] = withE2eUnitBlocking('1', () => decideAllGates({ gates: ['unit-tests-e2e'], base: 'base', branch: 'branch', read }));
+  assert.equal(armed.verdict, 'fail');
+});
+
+test('unit-tests-e2e advisory never downgrades a gate that did not run on the branch', () => {
+  const [d] = withE2eUnitBlocking(undefined, () => decideAllGates({ gates: ['unit-tests-e2e'], base: 'base', branch: 'branch', read: () => null }));
+  assert.equal(d.verdict, 'fail');
+});
+
+test('the two switches are independent: arming unit-tests-e2e leaves toplevel-regression armed, and its kill switch leaves e2e advisory', () => {
+  const read = (dir, gate) => (dir === 'branch'
+    ? (gate === 'toplevel-regression' ? { exit: 1, text: TOPLEVEL_LINE } : { exit: 1, text: tap(ROOT, [['tests/unit/x.test.js', 'n']]), root: ROOT })
+    : (gate === 'toplevel-regression' ? { exit: 0, text: '' } : { exit: 0, text: tap(ROOT, []), root: ROOT }));
+  const gates = ['unit-tests-e2e', 'toplevel-regression'];
+  const [e2e, top] = withToplevelAdvisory(undefined, () => withE2eUnitBlocking(undefined, () => decideAllGates({ gates, base: 'base', branch: 'branch', read })));
+  assert.equal(e2e.mode, 'advisory');
+  assert.equal(top.verdict, 'fail');
+  const [e2e2, top2] = withToplevelAdvisory('1', () => withE2eUnitBlocking('1', () => decideAllGates({ gates, base: 'base', branch: 'branch', read })));
+  assert.equal(e2e2.verdict, 'fail');
+  assert.equal(top2.mode, 'advisory');
 });

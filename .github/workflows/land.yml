@@ -193,6 +193,15 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
+      - name: Checkout review-texts (private repo)
+        # The unit-tests-e2e gate runs test.yml's E2E unit batch, several of
+        # whose files read data/review-texts, as that job does (BRO-5161).
+        # Measured there: ~45s. Base cache key is v2 so no base measured
+        # without it is compared against a branch measured with it.
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
       - name: Generate gitignored manifests
         id: manifests
         run: |
@@ -232,7 +241,7 @@ jobs:
           HASH=$(node scripts/lib/land-gate-delta.js --code-hash "$BASE") || { echo "::error::could not hash the base tree"; exit 1; }
           DAY=$(date -u +%Y%m%d)
           echo "code_hash=$HASH" >> "$GITHUB_OUTPUT"
-          echo "key=land-base-gauntlet-v1-${HASH:0:32}-$DAY" >> "$GITHUB_OUTPUT"
+          echo "key=land-base-gauntlet-v2-${HASH:0:32}-$DAY" >> "$GITHUB_OUTPUT"
           echo "base ${BASE:0:10} → code tree hash ${HASH:0:16}, day $DAY"
 
       - name: Restore the base gauntlet result (actions/cache)
@@ -334,6 +343,7 @@ jobs:
         env:
           LAND_STRICT_GATES: ${{ vars.LAND_STRICT_GATES }}
           LAND_TOPLEVEL_ADVISORY: ${{ vars.LAND_TOPLEVEL_ADVISORY }}
+          LAND_E2E_UNIT_BLOCKING: ${{ vars.LAND_E2E_UNIT_BLOCKING }}
         run: |
           SRC="ran now (nothing cached)"
           [ "${{ steps.base_cache.outputs.cache-hit }}" = "true" ] && SRC="actions/cache hit"
@@ -355,6 +365,7 @@ jobs:
           REBASED: ${{ steps.rebase.outputs.rebased }}
           DEPS_CHANGED: ${{ steps.rebase.outputs.deps_changed }}
           LAND_TOPLEVEL_ADVISORY: ${{ vars.LAND_TOPLEVEL_ADVISORY }}
+          LAND_E2E_UNIT_BLOCKING: ${{ vars.LAND_E2E_UNIT_BLOCKING }}
         # A cached base was measured against an older private-data clone (the
         # unit batches read data/*.json, which is in no tree hash — it changes
         # every ~30 min and keying on it would never hit). If the data has
@@ -459,7 +470,7 @@ jobs:
           BASE_KEY: ${{ steps.basekey.outputs.key }}
         run: |
           HASH=$(node scripts/lib/land-gate-delta.js --code-hash "$REBASED")
-          KEY="land-base-gauntlet-v1-${HASH:0:32}-$(date -u +%Y%m%d)"
+          KEY="land-base-gauntlet-v2-${HASH:0:32}-$(date -u +%Y%m%d)"
           if [ "$KEY" = "$BASE_KEY" ]; then
             echo "rebased tip ${REBASED:0:10} has the base's code tree — nothing new to publish"
             exit 0

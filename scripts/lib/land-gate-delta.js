@@ -44,7 +44,7 @@
 //                                   gate.js applies to both of its runs).
 //
 // KEYS
-//   unit-tests-node / unit-tests-tsx / scripts-lib-tests:
+//   unit-tests-node / unit-tests-tsx / unit-tests-e2e / scripts-lib-tests:
 //     `<repo-relative test file>::<test name>` via parseTapOutput (unlocated
 //     `?::name` keys are ALWAYS new — see diffFailingSets for why), with the
 //     block's failureType appended for anything but 'subtestsFailed'
@@ -97,14 +97,22 @@ const { isInertForVerification } = require('./land-branch.js');
 
 // The gates land.yml's checks job runs, in verdict order (the first failing
 // one names the digest line). Keep in step with scripts/lib/land-gauntlet.sh.
-const GATES = ['tsc', 'tsc-llm-scoring', 'next-lint', 'unit-tests-node', 'unit-tests-tsx', 'scripts-lib-tests', 'bash-integration', 'toplevel-regression', 'lint-workflows'];
+const GATES = ['tsc', 'tsc-llm-scoring', 'next-lint', 'unit-tests-node', 'unit-tests-tsx', 'unit-tests-e2e', 'scripts-lib-tests', 'bash-integration', 'toplevel-regression', 'lint-workflows'];
 // Gates that landed advisory first (CLAUDE.md §19). toplevel-regression
 // (BRO-5117) is ARMED since 2026-10-12: across its first 15 land runs it was
 // green 14 times and fired once, a true positive (BRO-2749's raw Date parse,
 // which then turned main test.yml red as BRO-5140). Kill switch: repo variable
 // LAND_TOPLEVEL_ADVISORY=1 puts it back to report-only.
-const ADVISORY_GATES = new Set(['toplevel-regression']);
-const TAP_GATES = new Set(['unit-tests-node', 'unit-tests-tsx', 'scripts-lib-tests']);
+// unit-tests-e2e (BRO-5161) is new, so it lands report-only; repo variable
+// LAND_E2E_UNIT_BLOCKING=1 arms it once its land runs show no false positives.
+// Each entry: is this gate report-only right now, and why (for the digest).
+const ADVISORY_GATES = {
+  'toplevel-regression': () => (process.env.LAND_TOPLEVEL_ADVISORY === '1'
+    ? 'BRO-5117; LAND_TOPLEVEL_ADVISORY=1 is set' : null),
+  'unit-tests-e2e': () => (process.env.LAND_E2E_UNIT_BLOCKING === '1'
+    ? null : 'BRO-5161; arm with LAND_E2E_UNIT_BLOCKING=1'),
+};
+const TAP_GATES = new Set(['unit-tests-node', 'unit-tests-tsx', 'unit-tests-e2e', 'scripts-lib-tests']);
 const TSC_GATES = new Set(['tsc', 'tsc-llm-scoring']);
 
 // ── Parsers: gate output → Map<key, {file, name}> ───────────────────────────
@@ -270,14 +278,14 @@ function decideGateDelta({ gate, base, branch }) {
 
 /** Decide every gate. `read(dir, gate)` → {exit,text,root} | null. */
 function decideAllGates({ gates = GATES, base, branch, read = readGateResult }) {
-  const armed = process.env.LAND_TOPLEVEL_ADVISORY !== '1';
   return gates.map((gate) => {
     const branchResult = read(branch, gate);
     const d = decideGateDelta({ gate, base: base ? read(base, gate) : null, branch: branchResult });
+    const advisoryWhy = ADVISORY_GATES[gate] ? ADVISORY_GATES[gate]() : null;
     // Only a gate that never ran ON THE BRANCH stays blocking. A base tree that
     // predates the gate (first land of it) also reaches fail-safe, and must not block.
-    if (d.verdict === 'pass' || armed || !ADVISORY_GATES.has(gate) || !branchResult) return d;
-    return { ...d, verdict: 'pass', mode: 'advisory', reason: `ADVISORY (BRO-5117; LAND_TOPLEVEL_ADVISORY=1 is set): ${d.reason}` };
+    if (d.verdict === 'pass' || !advisoryWhy || !branchResult) return d;
+    return { ...d, verdict: 'pass', mode: 'advisory', reason: `ADVISORY (${advisoryWhy}): ${d.reason}` };
   });
 }
 
