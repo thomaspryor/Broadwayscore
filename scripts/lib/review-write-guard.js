@@ -2452,6 +2452,19 @@ function safeWriteReview(filePath, newData, options = {}) {
   // HTML-escaped url or a leaked leading <img> in fullText.
   newData = require('./review-url-entity-decode').sanitizeReviewRecord(newData);
 
+  // BRO-5064: an originalScore on a no-critic-rating outlet (london-theatre)
+  // that is not the outlet's own page rating is a Show Score relay, a hard
+  // violation in check-score-integrity.js. collect-review-texts discards it
+  // (BRO-2809), but gather and text-backfill writers bypassed that path and
+  // shipped 3 such files on 2026-10-11. Discard it here so no writer can.
+  // A rating read from the page (originalScoreSource = page data) or verified
+  // by a human (BRO-4849) is kept.
+  if (newData && newData.originalScore != null && newData.originalScore !== ''
+      && !require('./verified-original-score').isHumanVerifiedRating(newData)
+      && require('./no-rating-outlet-score').discardNoRatingOutletScore(newData)) {
+    console.warn(`[review-write-guard] discarded relayed originalScore on no-critic-rating outlet ${newData.outletId}: ${path.basename(filePath)}`);
+  }
+
   fs.writeFileSync(filePath, JSON.stringify(newData, null, 2) + '\n');
   return { wrote: true, preserved, lockedSkipped, ...(autoFlaggedWrongProduction ? { autoFlaggedWrongProduction: true } : {}) };
 }
