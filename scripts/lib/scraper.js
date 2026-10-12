@@ -1189,6 +1189,7 @@ async function _fetchWithPlaywrightInner(url, options = {}) {
       } catch (_) { /* best-effort — proceed with whatever rendered */ }
     }
     const content = await page.content();
+    const finalUrl = page.url();
     await page.close();
     if (context) {
       try { await context.close(); } catch (_) {}
@@ -1198,7 +1199,8 @@ async function _fetchWithPlaywrightInner(url, options = {}) {
     return {
       content,
       format: 'html',
-      source: 'playwright'
+      source: 'playwright',
+      finalUrl,
     };
   } catch (error) {
     console.error(`⚠️  Playwright failed: ${error.message}`);
@@ -1306,6 +1308,7 @@ function pageChainOrder(flags) {
  * `result.source` (tier label). Reading r.html/r.body yields undefined, which
  * looked like "length 0 = blocked" for six opening-night passes (BRO-2763).
  * Throws Error('All scraping methods failed') when every tier misses.
+ * Playwright results also include `finalUrl`, the destination after redirects.
  *
  * @param {string} url
  * @param {object} [options]

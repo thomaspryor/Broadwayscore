@@ -39,6 +39,7 @@ scraper.__setChromiumForTest({
           } finally { fetching--; }
         },
         content: async () => '<html><body>ok</body></html>',
+        url: () => 'https://publisher.example/review',
         close: async () => {},
       }),
       close: async () => {
@@ -81,6 +82,7 @@ const RETURN_WITHOUT_CLEANUP = `
 (async () => {
   const r = await fetchOne();
   console.log('fetched ' + !!(r && r.content));
+  console.log('finalUrl ' + r?.finalUrl);
 })();
 `;
 
@@ -89,6 +91,7 @@ test('a caller that never calls cleanup() still exits once the browser is idle',
   assert.equal(r.killed, false, `process hung (killed after 15s):\n${r.out}`);
   assert.equal(r.code, 0, r.out);
   assert.match(r.out, /fetched true/);
+  assert.match(r.out, /finalUrl https:\/\/publisher.example\/review/);
   assert.deepEqual(r.counts, { launches: 1, closes: 1, closedDuringFetch: 0 });
 });
 
