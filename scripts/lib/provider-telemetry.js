@@ -23,6 +23,29 @@
 
 const fs = require('fs');
 const path = require('path');
+const { AsyncLocalStorage } = require('async_hooks');
+
+// Per-show spend attribution (BRO-3386). A per-show loop wraps its work in
+// withSpendShow(show.id, fn) and every provider call made under it (fetchPage,
+// SERP, site search) stamps showId on its ledger row without threading the id
+// through each call site. AsyncLocalStorage keeps concurrent shows apart, which
+// a process-wide env var can't (fetch-show-images-auto.js runs shows in
+// parallel). Single-show processes (opening-night-poller.js --show=ID) set
+// SCRAPER_SPEND_SHOW_ID instead.
+const _spendShow = new AsyncLocalStorage();
+
+/** Run fn with showId attached to every ledger row it records. Returns fn's result. */
+function withSpendShow(showId, fn) {
+  return _spendShow.run({ showId: showId || null }, fn);
+}
+
+/** Pure-ish: the showId a row recorded now would carry (opts > context > env > null). */
+function currentSpendShowId(explicit) {
+  if (explicit) return explicit;
+  const store = _spendShow.getStore();
+  if (store && store.showId) return store.showId;
+  return process.env.SCRAPER_SPEND_SHOW_ID || null;
+}
 
 const REPO_ROOT = path.join(__dirname, '..', '..');
 const LEDGER_PATH = path.join(REPO_ROOT, 'data', 'audit', 'scraper-spend-ledger.jsonl');
@@ -150,6 +173,7 @@ function recordProviderCall(opts) {
       fallback_from: opts.fallbackFrom || null,
       purpose: opts.purpose || process.env.SCRAPER_SPEND_PURPOSE || null, // env: per-show tag, see spend-purpose.js
       category: opts.category || null,
+      showId: currentSpendShowId(opts.showId),
     };
     console.log(`[${tag} Call] ${JSON.stringify(record)}`);
     _appendLedgerLine(record);
@@ -368,6 +392,8 @@ function computeAttributedPct(ledgerCounts, billingRecord, ledgerCredits) {
 
 module.exports = {
   recordProviderCall,
+  withSpendShow,
+  currentSpendShowId,
   recordBdCall,
   recordSbCall,
   recordSdCall,

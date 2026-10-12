@@ -13,6 +13,7 @@ test('scrapingdog credit table matches the live mode ternary in fetchWithScrapin
   assert.equal(creditsFor('sd', 'premium'), 10);
   assert.equal(creditsFor('sd', 'stealth'), 10);
   assert.equal(creditsFor('sd', 'serp'), 5);
+  assert.equal(creditsFor('sd', 'serp-images'), 10);
 });
 
 test('scrapingbee credit table matches fetchWithScrapingBee (scraper.js): page/render/premium', () => {

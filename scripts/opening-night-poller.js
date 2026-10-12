@@ -274,6 +274,8 @@ function incrementSerpSessionLedger(showId, now = new Date()) {
 
 // CLI args
 const SHOW_ID = (process.argv.find(a => a.startsWith('--show=')) || '').replace('--show=', '');
+// One show per process: tag every spend-ledger row with it (BRO-3386).
+if (SHOW_ID && !process.env.SCRAPER_SPEND_SHOW_ID) process.env.SCRAPER_SPEND_SHOW_ID = SHOW_ID;
 const DRY_RUN = process.argv.includes('--dry-run');
 const SKIP_SERP = process.argv.includes('--skip-serp');
 const FORCE_SERP = process.argv.includes('--force-serp');
