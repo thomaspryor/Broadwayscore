@@ -21,6 +21,12 @@
  * and the next page posted again: one duplicate Formspree email per Google
  * sign-in (2026-10-09). A localStorage in-flight stamp, written BEFORE the
  * fetch, now survives that navigation, and keepalive lets the request finish.
+ *
+ * The stamp has no expiry. A failed post clears it, so a stamp still present
+ * on a later page means the post went out and its page closed before the
+ * reply: that counts as joined. A 10-minute expiry let the next page load
+ * after it post again (2026-10-12: second emails 10.5 min and 2 h after
+ * /auth/complete).
  */
 
 import { isFormspreeSubscribed, SUBSCRIBED_KEY_PREFIX } from '@/hooks/useFormspreeSubscribed';
@@ -28,14 +34,21 @@ import { isFormspreeSubscribed, SUBSCRIBED_KEY_PREFIX } from '@/hooks/useFormspr
 const FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID || '';
 
 export const INFLIGHT_KEY = 'bsc_autosub_inflight';
-const INFLIGHT_TTL_MS = 10 * 60 * 1000;
 
 let attemptedThisSession = false;
 
-function inflightRecently(): boolean {
+function markJoined(): void {
   try {
-    const at = Number(localStorage.getItem(INFLIGHT_KEY));
-    return at > 0 && Date.now() - at < INFLIGHT_TTL_MS;
+    localStorage.setItem(`${SUBSCRIBED_KEY_PREFIX}broadway`, 'true');
+    localStorage.removeItem(INFLIGHT_KEY);
+    window.dispatchEvent(new Event('bsc_subscribed'));
+  } catch { /* localStorage unavailable — gate still holds via auth */ }
+}
+
+/** True when an earlier page sent the post and closed before reading the reply. */
+function sentByEarlierPage(): boolean {
+  try {
+    return Number(localStorage.getItem(INFLIGHT_KEY)) > 0;
   } catch { return false; }
 }
 
@@ -56,7 +69,7 @@ export async function autoSubscribeOnSignIn(email: string): Promise<void> {
   // signs in still belongs on the main list (owner rule: sign-in = main list).
   if (isFormspreeSubscribed('broadway')) return;
   // A previous page already sent this and navigated away before the reply.
-  if (inflightRecently()) return;
+  if (sentByEarlierPage()) { markJoined(); return; }
   attemptedThisSession = true;
   setInflight(true);
 
@@ -79,11 +92,7 @@ export async function autoSubscribeOnSignIn(email: string): Promise<void> {
       setInflight(false);
       return;
     }
-    try {
-      localStorage.setItem(`${SUBSCRIBED_KEY_PREFIX}broadway`, 'true');
-      localStorage.removeItem(INFLIGHT_KEY);
-      window.dispatchEvent(new Event('bsc_subscribed'));
-    } catch { /* localStorage unavailable — gate still holds via auth */ }
+    markJoined();
   } catch {
     attemptedThisSession = false;
     setInflight(false);
