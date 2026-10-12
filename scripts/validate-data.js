@@ -1808,6 +1808,7 @@ function validateCreativeTeamCompleteness(shows) {
     'the-mikado-1976', 'the-mikado-1987', // G&S operettas
     'the-three-sisters-1996',          // Chekhov adaptation with music
     'here-lies-love-2023',             // Immersive concept album musical
+    'songs-for-a-new-world-off-broadway-1995', // JRB song cycle, no book (BRO-3986)
     'the-pirate-queen-2007',
     // Revues / concert shows / jukebox compilations (no narrative book)
     'after-midnight-2013',
