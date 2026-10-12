@@ -157,13 +157,14 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-12T20:08:07.190Z",
-      "lastSeen": "2026-10-12T20:08:07.190Z",
-      "lastNotifiedAt": "2026-10-12T20:08:07.190Z",
+      "incidentOpenedAt": "2026-10-12T20:02:24.610Z",
+      "lastSeen": "2026-10-12T20:19:58.709Z",
+      "lastNotifiedAt": "2026-10-12T20:02:24.610Z",
       "lastSurfacedAt": "2026-10-12T12:08:38.296Z",
       "notifyCount": 136,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -6057,7 +6058,7 @@
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
       "incidentOpenedAt": "2026-10-12T19:39:24.204Z",
-      "lastSeen": "2026-10-12T20:08:07.117Z",
+      "lastSeen": "2026-10-12T20:19:58.702Z",
       "lastNotifiedAt": "2026-10-12T19:39:24.204Z",
       "lastSurfacedAt": null,
       "notifyCount": 7,
@@ -6070,7 +6071,7 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38295830217"
       },
       "absentRunIds": [],
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "open",
@@ -14883,7 +14884,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:ce6967c0": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"Everybody's Talking About Jamie dates match the Playbill production page\"",
       "firstSeen": "2026-10-12T18:28:13.035Z",
@@ -14893,7 +14894,9 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5185"
+      "linearIdentifier": "BRO-5185",
+      "resolvedAt": "2026-10-12T20:19:58.670Z",
+      "resolveReason": "job-green"
     },
     "land:land/bro-4631-verify-jwt": {
       "status": "open",
