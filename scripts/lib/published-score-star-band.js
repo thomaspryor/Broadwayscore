@@ -80,6 +80,9 @@ function autoAcceptVerdict(data, llmScore) {
  */
 function rescoreFixesBandContradiction(data) {
   if (!data) return false;
+  // A served human score (rebuild P0) hides whatever the rescore writes.
+  const h = data.humanReviewScore;
+  if (Number.isInteger(h) && h >= 1 && h <= 100 && data.humanReviewScoreProvisional !== true) return false;
   const score = typeof data.assignedScore === 'number' ? data.assignedScore
     : (data.llmScore && typeof data.llmScore.score === 'number' ? data.llmScore.score : null);
   if (score === null) return false;

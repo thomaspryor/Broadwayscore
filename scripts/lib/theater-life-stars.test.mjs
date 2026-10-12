@@ -63,3 +63,15 @@ test('footer keeps the half star the title has; a real disagreement keeps the fo
   assert.deepEqual(resolveTheaterLifeStars({ title: 'Home *****', text: 'x\nHome ****Todd Haimes Theatre' }),
     { cleanTitle: 'Home', rating: '4/5 stars', source: 'wp-api-footer' });
 });
+
+// Review findings (ship-check): raw HTML entities, another show's footer on a
+// combined column, and a lone "*" inside prose.
+test('entities decode; a combined column never lends another show its footer', () => {
+  assert.equal(resolveTheaterLifeStars({ title: 'The Dinosaurs&nbsp;** 1/2', text: 'x The Dinosaurs&nbsp;** 1/2Playwrights' }).rating, '2.5/5 stars');
+  assert.equal(resolveTheaterLifeStars({ title: 'Don&#8217;t Go ***', text: 'x\nDon&#8217;t Go ***Venue', showTitles: ['Don’t Go'] }).source, 'wp-api-footer');
+  assert.equal(resolveTheaterLifeStars({ title: 'Romeo &amp; Juliet **', text: 'x\nRomeo &amp; Juliet **Venue' }).rating, '2/5 stars');
+  // Post is about Birthright, this review is for Other's Play whose footer did not match.
+  const r = resolveTheaterLifeStars({ title: 'Birthright *****', text: 'Birthright *****MCC\nOther Plays ** Venue', showTitles: ['Other’s Play'] });
+  assert.notEqual(r.source, 'wp-api-footer');
+  assert.equal(footerStars('like Cats * the original', ['Cats']), null);
+});

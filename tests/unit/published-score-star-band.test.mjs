@@ -188,4 +188,6 @@ test('rescoreFixesBandContradiction: out-of-band current score yes; in-band, rel
   assert.equal(sb.rescoreFixesBandContradiction({ aggregatorStars: '5/5 stars', assignedScore: 40 }), false, 'a relay does not bind');
   assert.equal(sb.rescoreFixesBandContradiction(threeStar), false);
   assert.equal(sb.rescoreFixesBandContradiction(null), false);
+  assert.equal(sb.rescoreFixesBandContradiction({ ...threeStar, assignedScore: 93, humanReviewScore: 60 }), false, "a served human score wins");
+  assert.equal(sb.rescoreFixesBandContradiction({ ...threeStar, assignedScore: 93, humanReviewScore: 60, humanReviewScoreProvisional: true }), true);
 });

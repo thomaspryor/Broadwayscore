@@ -145,7 +145,9 @@ function evaluateReview(review, opts = {}) {
 
   const expected = parsed.expected;
   if (humanScoreResolvesBand(review)) return null;
-  if (isUncorroboratedGenericStar(review, expected)) return null;
+  // An adjudicatedScore can still be served (rebuild P0a) next to a dropped
+  // star, so only skip when there is none to contradict the rating.
+  if (review.adjudicatedScore == null && isUncorroboratedGenericStar(review, expected)) return null;
   const llm = review.llmScore && typeof review.llmScore.score === 'number' ? review.llmScore.score : null;
   const assigned = typeof review.assignedScore === 'number' ? review.assignedScore : null;
   if (llm === null && assigned === null) return null;

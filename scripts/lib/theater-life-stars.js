@@ -11,7 +11,8 @@
  * footer line (card #396, BRO-434), so the footer line naming THIS show wins.
  * A title-only star is a fallback labelled 'wp-api-title', the
  * corroboration-gated source the rebuild drops when the ensemble contradicts
- * it (star-reliability.js). The scraper used to stamp it 'wp-api', which no
+ * it (star-reliability.js isUncorroboratedGenericStar, which reads
+ * originalScoreSource; the scraper's writer leaves scoreSource alone). The scraper used to stamp it 'wp-api', which no
  * gate knew, so a wrong title star bound the score as if outlet-verified.
  */
 
@@ -38,6 +39,27 @@ function parseTitleStars(title) {
   return { cleanTitle: t.replace(TITLE_STARS_RE, '').trim(), rating: toRating(m[1], m[2]) };
 }
 
+// Raw WP HTML stripped of tags still carries entities ("Don&#8217;t", "&amp;",
+// "&nbsp;"), which would stop a title from matching its footer line.
+const NAMED_ENTITIES = { amp: '&', nbsp: ' ', quot: '"', apos: "'", lt: '<', gt: '>', rsquo: '’', lsquo: '‘', rdquo: '”', ldquo: '“', hellip: '…', ndash: '–', mdash: '—' };
+function decodeEntities(s) {
+  return String(s || '')
+    .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
+    .replace(/&([a-z]+);/gi, (m, n) => NAMED_ENTITIES[n.toLowerCase()] ?? m);
+}
+
+function normTitle(s) {
+  return String(s || '').toLowerCase().replace(/[’']/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+/** Loose equality: "Gotta Dance!" vs "Gotta Dance", "The Music Man" vs "Music Man". */
+function sameTitle(a, b) {
+  const x = normTitle(a).replace(/^the /, '');
+  const y = normTitle(b).replace(/^the /, '');
+  return !!x && !!y && (x === y || x.startsWith(y + ' ') || y.startsWith(x + ' '));
+}
+
 function escapeRe(s) {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
@@ -58,7 +80,12 @@ function footerStars(text, titles) {
     const pat = escapeRe(title).replace(/\s+/g, '\\s+');
     const re = new RegExp(`(?:^|[\\s"“”'‘’(])${pat}\\s+${STARS}(?![*★])${FOOTER_FRACTION}`, 'gi');
     let m;
-    while ((m = re.exec(body)) !== null) found.add(toRating(m[1], m[2]));
+    while ((m = re.exec(body)) !== null) {
+      // A lowercase word next means prose ("like Cats * the original"), not a
+      // footer line. Checked here because the title match is case-insensitive.
+      if (!m[2] && /^[ \t\u00a0]+[a-z]/.test(body.slice(re.lastIndex))) continue;
+      found.add(toRating(m[1], m[2]));
+    }
   }
   return found.size === 1 ? [...found][0] : null;
 }
@@ -68,8 +95,13 @@ function footerStars(text, titles) {
  * @returns {{cleanTitle: string, rating: string|null, source: 'wp-api-footer'|'wp-api-title'|null}}
  */
 function resolveTheaterLifeStars({ title, text, showTitles = [] }) {
-  const { cleanTitle, rating: titleRating } = parseTitleStars(title);
-  const footer = footerStars(text, [cleanTitle, ...showTitles]);
+  const { cleanTitle, rating: titleRating } = parseTitleStars(decodeEntities(title));
+  const shows = showTitles.map(decodeEntities).filter(t => t.trim());
+  // The post title names this show's footer only on a single-show post that is
+  // about this show; on a combined column it names another show's line.
+  const titleIsThisShow = !/[*★]/.test(cleanTitle)
+    && (shows.length === 0 || shows.some(t => sameTitle(t, cleanTitle)));
+  const footer = footerStars(decodeEntities(text), titleIsThisShow ? [cleanTitle, ...shows] : shows);
   if (footer) {
     // Same whole stars, half only in the title: the footer lost its fraction to
     // a separate tag or a typo the pattern does not read, so keep the half.
@@ -82,4 +114,4 @@ function resolveTheaterLifeStars({ title, text, showTitles = [] }) {
   return { cleanTitle, rating: null, source: null };
 }
 
-module.exports = { parseTitleStars, footerStars, resolveTheaterLifeStars };
+module.exports = { parseTitleStars, footerStars, resolveTheaterLifeStars, decodeEntities };
