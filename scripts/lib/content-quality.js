@@ -239,6 +239,7 @@ const DOW_JONES_CHROME_WINDOW = 3000;
 // Chrome lines are short (nav labels, form prompts). A prose paragraph before
 // the marker means it is not a pure chrome prefix, so nothing is cut.
 const DOW_JONES_CHROME_MAX_LINE = 320;
+const DOW_JONES_CHROME_SIGNAL_RE = /please\s+register\s+to\s+gain\s+free\s+access|(?:»|&raquo;)\s*More\b|\bSkip to Main Content\b|\bOrder Reprints\b/i;
 
 /**
  * Cut the Dow Jones chrome prefix (see above) and return what follows it.
@@ -260,6 +261,11 @@ function stripDowJonesReprintChrome(text) {
   // Every line before the reprints sentence must be chrome-length.
   const sentenceStart = head.search(/(?:Dow Jones Reprints:\s*)?This copy is for your personal/i);
   const chrome = sentenceStart >= 0 ? head.slice(0, sentenceStart) : head;
+  // Positive evidence the prefix is chrome, never just "short lines" (a short
+  // review followed by a reprints footer has short lines too): either the
+  // reprints sentence opens the text (print header), or the prefix carries the
+  // interstitial / nav rail / skip link (corpus 2026-10-12: 136 + 57 of 193).
+  if (chrome.trim().length >= 200 && !DOW_JONES_CHROME_SIGNAL_RE.test(chrome)) return text;
   // A flattened (single-line) capture of the current wsj.com header has no line
   // breaks to check, but opens with the skip link and stays under ~1.5KB.
   const flattenedHeader = /^[^\n]{0,200}\bSkip to Main Content\b/i.test(chrome) && chrome.length < 1500;
