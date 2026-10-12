@@ -157,9 +157,9 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-12T15:04:47.330Z",
-      "lastSeen": "2026-10-12T15:04:47.330Z",
-      "lastNotifiedAt": "2026-10-12T15:04:47.330Z",
+      "incidentOpenedAt": "2026-10-12T15:09:32.136Z",
+      "lastSeen": "2026-10-12T15:09:32.136Z",
+      "lastNotifiedAt": "2026-10-12T15:09:32.136Z",
       "lastSurfacedAt": "2026-10-12T12:08:38.296Z",
       "notifyCount": 134,
       "cardId": null,
@@ -4643,18 +4643,15 @@
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every scripts/ root file with the shred signature and no fold is in the frozen baseline\"",
       "firstSeen": "2026-09-23T04:33:50.096Z",
-      "incidentOpenedAt": "2026-10-12T15:04:46.539Z",
-      "lastSeen": "2026-10-12T15:04:46.539Z",
-      "lastNotifiedAt": "2026-10-12T15:04:46.539Z",
+      "incidentOpenedAt": "2026-10-12T14:48:27.277Z",
+      "lastSeen": "2026-10-12T15:09:32.126Z",
+      "lastNotifiedAt": "2026-10-12T14:48:27.277Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-4063",
-      "absentRunIds": [
-        "36084309752",
-        "36087172520",
-        "36089959426"
-      ]
+      "absentRunIds": [],
+      "silentRefires": 1
     },
     "land:land/worktree-bro-3873-c-old": {
       "status": "resolved",
