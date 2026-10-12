@@ -1859,5 +1859,35 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-12T07:52:44.829Z"
+  },
+  {
+    "conditionKey": "land:land/bro-3162-rebuild-staleness-guard",
+    "title": "Landing blocked: unit-tests-node red on land/bro-3162-rebuild-staleness-guard",
+    "description": "land.yml did not land land/bro-3162-rebuild-staleness-guard: the unit-tests-node gate went red at ee2559c644. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38217346089",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-3162-rebuild-staleness-guard"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "ee2559c64489e3a471fc5788edeb296610fc5d3e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38217346089"
+      }
+    ],
+    "queuedAt": "2026-10-12T07:57:11.264Z"
   }
 ]
