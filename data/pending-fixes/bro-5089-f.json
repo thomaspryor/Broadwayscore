@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5089-f",
   "planId": "a5484d78-b5be-4f18-8ed2-7ed181da4921",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-12T00:34:28.560Z",
   "submitter": {
     "name": null,
@@ -414,5 +414,128 @@
         "description": "your-arms-too-short-to-box-with-god-1980: poster and thumbnail cleared, other-production: The Playbill cover clearly shows \"LYCEUM THEATRE\" beneath the header, indicating a different theatre than the Ambassador Theatre specified for the 1980 run. (BRO-5089 sweep: rejected by the Gemini verifier and by gpt-5-mini twice, the second time told the theatre's former names)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T05:07:57.576Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for park-your-car-in-harvard-yard-1991"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for a-little-hotel-on-the-side-1992"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-secret-rapture-1989"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for dancing-at-lughnasa-1991"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for dancing-at-lughnasa-1991"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for i-hate-hamlet-1991"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for dangerous-games-1989"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for an-american-daughter-1997"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-three-sisters-1996"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for broadway-1987"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for il-berretto-a-songali-1987"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for oedipus-rex-1984"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for la-serva-amorosa-1987"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-search-for-signs-of-intelligent-life-in-the-universe-1985"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-search-for-signs-of-intelligent-life-in-the-universe-1985"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for wind-in-the-willows-1985"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for precious-sons-1986"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for corpse-1986"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for electra-1998"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for more-to-love-1998"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for peter-pan-1999"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-lonesome-west-1999"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for night-must-fall-1999"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for your-arms-too-short-to-box-with-god-1980"
+    }
+  ]
 }
