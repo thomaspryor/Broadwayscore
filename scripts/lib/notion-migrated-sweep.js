@@ -150,7 +150,7 @@ function scoreCard(card, commits, { pathExists = () => true, pathHistory = () =>
   const notionCompact = notionId ? notionId.replace(/-/g, '') : null;
   const titleTasks = extractTaskNumbers(card.title);
   const createdAt = card.createdAt ? Date.parse(card.createdAt) : 0;
-  const idRe = new RegExp(`\\b${card.identifier}\\b`);
+  const idRe = new RegExp(`\\b${card.identifier.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`);
   const namedPaths = extractPaths(text);
   // sha -> a path the card names that this commit changed.
   const touchedNamedPath = new Map();

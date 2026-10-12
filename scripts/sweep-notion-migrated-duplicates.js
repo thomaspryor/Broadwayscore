@@ -30,7 +30,7 @@ const ROOT = path.resolve(__dirname, '..');
 const ISSUE_FIELDS = `
       id identifier title description createdAt url
       state { name }
-      comments(first: 100) { nodes { body } }`;
+      comments(first: 250) { nodes { body } }`;
 
 const ISSUES_QUERY = `query($after: String, $markers: [IssueFilter!]) {
   issues(first: 50, after: $after, filter: {
@@ -64,6 +64,11 @@ function parseArgs(argv) {
     else if (a === '--help' || a === '-h') opts.help = true;
     else throw new Error(`unknown argument: ${a}`);
   }
+  if (!(opts.limit > 0)) throw new Error('--limit must be a positive number');
+  if (opts.ids && (!opts.ids.length || opts.ids.some((id) => !/^BRO-\d+$/i.test(id)))) {
+    throw new Error('--ids takes BRO-N identifiers, comma separated');
+  }
+  if (opts.ids && opts.ids.length > 100) throw new Error('--ids takes at most 100 cards per run');
   return opts;
 }
 
