@@ -190,6 +190,26 @@ jobs:
         id: deps
         run: npm ci --prefer-offline --no-audit --no-fund
 
+      - name: Check outlet-registry merge (advisory)
+        id: registry_merge
+        # BRO-3566: git merges data/outlet-registry.json line by line and can
+        # keep one side's outlet block without a conflict marker (BRO-1343 lost
+        # main's chichester-observer domain fix that way). Per-outlet 3-way
+        # check of the rebased result. Advisory (CLAUDE.md §19): findings are
+        # warnings, an unreadable ref is "could not check".
+        continue-on-error: true
+        env:
+          TIP: ${{ steps.rebase.outputs.tip }}
+          BASE: ${{ steps.rebase.outputs.base }}
+        run: |
+          F=data/outlet-registry.json
+          MB=$(git merge-base "$TIP" "$BASE" 2>/dev/null) || { echo "no merge base; skipping"; exit 0; }
+          if git diff --quiet "$MB" "$TIP" -- "$F" || git diff --quiet "$MB" "$BASE" -- "$F"; then
+            echo "$F not changed on both sides since ${MB:0:10}; nothing to check"; exit 0
+          fi
+          [ -f scripts/check-registry-merge.js ] || { echo "check script not on this tree yet; skipping"; exit 0; }
+          node scripts/check-registry-merge.js --ancestor="$MB" --ours="$TIP" --theirs="$BASE" --result=HEAD
+
       - name: Checkout core data
         id: coredata
         # src/lib/data-*.ts import data/*.json via resolveJsonModule; tsc and
