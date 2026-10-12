@@ -47,4 +47,29 @@ function existingHasScoreSignal(existingData) {
     || existingData.originalScoreCleared === true;
 }
 
-module.exports = { recoverScoreFromHtml, existingHasScoreSignal };
+/** Record a merged body that still needs scoring, using the existing audit log. */
+function auditMergedReviewWithoutScore(review, filepath) {
+  const { hasValidScore } = require('./review-guards');
+  if (!review || !review.fullText || !review.fullText.trim()
+      || hasValidScore(review)) return false;
+
+  const path = require('path');
+  const { emitStage } = require('./stage-latency');
+  const { normalizeCritic } = require('./review-normalization');
+  emitStage({
+    showId: review.showId,
+    reviewKey: `${review.outletId}:${normalizeCritic(review.criticName)}:${review.url || ''}`,
+    stage: 'review-text-collected',
+    metadata: {
+      source: 'ingest-review-from-url',
+      reason: 'merge-fulltext-no-score',
+      file: path.basename(filepath),
+      outletId: review.outletId,
+      contentTier: review.contentTier || null,
+    },
+  });
+  console.warn(`  ⚠ Merged body has no score signal: ${filepath} (merge-fulltext-no-score; recorded in stage-latency audit)`);
+  return true;
+}
+
+module.exports = { recoverScoreFromHtml, existingHasScoreSignal, auditMergedReviewWithoutScore };

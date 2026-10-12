@@ -50,7 +50,7 @@ const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
 const { isolateMultiShowSection } = require('./lib/multi-show-section-extract');
 const { extractArticleTextFromUrl, extractPublishDate, extractLsaByline } = require('./lib/article-extractor');
 const { classifyReviewUrl } = require('./lib/non-review-url-patterns');
-const { recoverScoreFromHtml, existingHasScoreSignal } = require('./lib/ingest-html-score');
+const { recoverScoreFromHtml, existingHasScoreSignal, auditMergedReviewWithoutScore } = require('./lib/ingest-html-score');
 // classifyReviewUrl reasons that never occur on a scored review in the corpus
 // (checked 2026-09-28); see the refusal below.
 const INGEST_REFUSED_URL_REASONS = new Set([
@@ -533,6 +533,7 @@ if (!show) {
       normalizedValue: recoveredScore.normalizedScore,
       source: recoveredScore.source,
     });
+    if (!routed.wasAggregator) fields.scoreExtractionSource = recoveredScore.source;
     fields.scoreExtractedFrom = 'scraped-html';
     fields.scoreRecoveredAt = new Date().toISOString();
     console.log(`  → Score routed to ${routed.field}`);
@@ -623,6 +624,13 @@ if (!show) {
     } catch (e) {
       console.warn(`  ⚠ multi-show fan-out failed: ${e.message}`);
     }
+  }
+
+  // Inspect the final on-disk merge, after body replacement and fan-out. A
+  // refused write or dry-run must not produce a success-path audit row.
+  if (result.action !== 'new' && result.filepath && !dryRun
+      && !(result.guardRefused === true || WRITE_GUARD_REFUSED_REASONS.has(result.reason))) {
+    auditMergedReviewWithoutScore(JSON.parse(fs.readFileSync(result.filepath, 'utf8')), result.filepath);
   }
 
   if (result.action === 'new') {
