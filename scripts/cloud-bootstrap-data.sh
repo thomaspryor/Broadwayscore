@@ -22,6 +22,8 @@
 
 set -uo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=lib/core-data-clone-guard.sh
+source "$SCRIPT_DIR/lib/core-data-clone-guard.sh"
 ROOT="$(dirname "$SCRIPT_DIR")"
 cd "$ROOT" || exit 0
 
@@ -76,9 +78,9 @@ CORE_HOME="$HOME/broadway-scorecard-data"
 refresh_core_data() {
   [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] || return 0
   [ -d "$CORE_HOME/.git" ] && [ ! -L "$CORE_HOME" ] || return 0
-  if [ "$(git -C "$CORE_HOME" branch --show-current 2>/dev/null)" != "main" ] \
-     || [ -n "$(git -C "$CORE_HOME" status --porcelain 2>/dev/null)" ]; then
-    log "core data clone has local changes or is off main; not refreshing it"
+  local why
+  if why="$(core_clone_local_work "$CORE_HOME")"; then
+    log "not refreshing the core data clone: $why"
   elif run_bounded 90 git -C "$CORE_HOME" fetch -q --depth 1 origin main 2>/dev/null \
        && git -C "$CORE_HOME" reset -q --hard FETCH_HEAD 2>/dev/null; then
     :

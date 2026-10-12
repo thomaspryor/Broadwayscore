@@ -19,6 +19,8 @@ set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
+# shellcheck source=lib/core-data-clone-guard.sh
+source "$SCRIPT_DIR/lib/core-data-clone-guard.sh"
 DATA_DIR="$PROJECT_DIR/data"
 LINK_ONLY=0
 [ "${1:-}" = "--link-only" ] && LINK_ONLY=1
@@ -93,6 +95,12 @@ elif [ -n "${REVIEW_TEXTS_SOURCE:-}" ] && [ -d "$CORE_DATA_DIR/.git" ]; then
   # already refreshed core data only when that clone was clean; never fetch or
   # reset it here, and never let a failed fetch stop the review-texts copy.
   echo "Keeping the existing core-data clone at $CORE_DATA_DIR (REVIEW_TEXTS_SOURCE mode)."
+elif [ -d "$CORE_DATA_DIR/.git" ] && LOCAL_WORK="$(core_clone_local_work "$CORE_DATA_DIR")"; then
+  # BRO-3337: this clone is shared by every session; a reset here destroyed
+  # other sessions' uncommitted edits and unpushed commits. Keep it as is.
+  echo "WARNING: not updating $CORE_DATA_DIR: $LOCAL_WORK."
+  echo "  Another session may own that work. Linking the clone as it stands;"
+  echo "  push or discard the work there, then re-run to refresh."
 elif [ -d "$CORE_DATA_DIR/.git" ]; then
   echo "Updating existing core-data clone at $CORE_DATA_DIR..."
   # Retry with backoff: this clone is shared across parallel local sessions, so
