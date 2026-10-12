@@ -46,14 +46,21 @@ import {
  * took /west-end past x1.5: 1,797,808/1,291,440/562 and
  * 1,101,133/691,676/193, same x1.1/10KB rule. Bytes per show fell on both
  * routes (3,558 -> 3,199 and 6,507 -> 5,705), so this was catalog growth.
+ * Re-derived 2026-10-12 (BRO-5199) after BRO-4600 (69740c2b0e) began
+ * server-rendering the market show grids into the HTML (deliberate: the
+ * prerendered pages had shipped no grid at all). Production doc/rsc/slugs:
+ * /west-end 4,449,172/1,791,333/832 (458 card links), /off-broadway
+ * 2,042,690/683,424/193 (228 card links), same x1.1/10KB rule. RSC barely
+ * moved; the document grew ~5.8KB per rendered card, which is the
+ * card-markup weight to ratchet down later, not hidden payload.
  */
 const PAGE_WEIGHT_BUDGETS: Record<string, CatalogBudget> = {
   // Not scaled: the homepage's 317 slugs (2026-09-29) are curated sections,
   // not one market's catalog, so more shows there is a change to review, not
   // growth. 2026-09-29 production: 889,058 doc / 856,189 rsc (budget unchanged).
   '/': { documentBytes: 1_020_000, rscBytes: 980_000 },
-  '/west-end': { documentBytes: 1_980_000, rscBytes: 1_430_000, baselineItems: 562 },
-  '/off-broadway': { documentBytes: 1_220_000, rscBytes: 770_000, baselineItems: 193 },
+  '/west-end': { documentBytes: 4_900_000, rscBytes: 1_980_000, baselineItems: 832 },
+  '/off-broadway': { documentBytes: 2_250_000, rscBytes: 760_000, baselineItems: 193 },
   // Fixed-content guide page: no slugs in its payload, never scaled.
   '/guides/best-broadway-musicals': { documentBytes: 460_000, rscBytes: 270_000 },
 };
