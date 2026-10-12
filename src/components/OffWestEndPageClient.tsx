@@ -187,7 +187,7 @@ function OffWestEndPageInner({ shows, archiveHash, totalShows, totalReviews, mar
       setOrDelete('q', next.q, !next.q);
 
       const paramString = urlParams.toString();
-      window.history.replaceState({}, '', paramString ? `/off-west-end?${paramString}` : '/off-west-end');
+      replaceLocationSearch(paramString ? `/off-west-end?${paramString}` : '/off-west-end');
 
       return next;
     }));
@@ -202,7 +202,7 @@ function OffWestEndPageInner({ shows, archiveHash, totalShows, totalReviews, mar
       scoreMode: DEFAULT_SCORE_MODE,
       q: '',
     });
-    window.history.replaceState({}, '', '/off-west-end');
+    replaceLocationSearch('/off-west-end');
   }, []);
 
   // Archive shows (closed Off-West End shows) — lazy-loaded on demand when the

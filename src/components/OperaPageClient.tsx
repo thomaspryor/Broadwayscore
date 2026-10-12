@@ -7,6 +7,7 @@ import type { ShowCardShow, ScoreModeParam } from '@/components/show-cards/types
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { getNextSort, getSortArrow, normalizeSort } from '@/lib/sort-toggle';
 import ScrollRow from '@/components/ScrollRow';
+import { replaceLocationSearch } from '@/lib/hooks/useLocationSearch';
 
 export interface OperaPageClientProps {
   shows: ShowCardShow[];
@@ -88,7 +89,7 @@ function OperaPageInner({ shows, totalShows, totalReviews }: OperaPageClientProp
       setOrDelete('sort', next.sort, next.sort === DEFAULT_SORT);
 
       const paramString = urlParams.toString();
-      window.history.replaceState({}, '', paramString ? `/opera?${paramString}` : '/opera');
+      replaceLocationSearch(paramString ? `/opera?${paramString}` : '/opera');
 
       return next;
     }));

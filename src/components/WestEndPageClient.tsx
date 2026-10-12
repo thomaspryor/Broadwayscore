@@ -204,7 +204,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
       setOrDelete('venue', next.venue, next.venue !== 'west-end-only');
 
       const paramString = urlParams.toString();
-      window.history.replaceState({}, '', paramString ? `/west-end?${paramString}` : '/west-end');
+      replaceLocationSearch(paramString ? `/west-end?${paramString}` : '/west-end');
 
       return next;
     }));
@@ -220,7 +220,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
       q: '',
       venue: 'all',
     });
-    window.history.replaceState({}, '', '/west-end');
+    replaceLocationSearch('/west-end');
   }, []);
 
   // Fuse.js — lazy-loaded on first search keystroke to reduce initial bundle

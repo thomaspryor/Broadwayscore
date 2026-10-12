@@ -82,6 +82,17 @@ for (const [entry, client] of BROWSE_ENTRIES) {
   });
 }
 
+// useLocationSearch() only re-reads the URL on popstate or its own change
+// event, so a raw history.replaceState in a browse page leaves the filter
+// panel showing stale chips. Writes go through replaceLocationSearch().
+for (const [, client] of BROWSE_ENTRIES) {
+  test(`${client} writes the URL via replaceLocationSearch()`, () => {
+    const src = stripComments(readFileSync(path.join(ROOT, 'src/components', client), 'utf8'));
+    assert.equal(/window\.history\.(replaceState|pushState)\s*\(/.test(src), false,
+      `${client} calls window.history directly; use replaceLocationSearch()`);
+  });
+}
+
 test('the comment stripper still sees a real call', () => {
   assert.equal(/\buseSearchParams\s*\(/.test(stripComments("// useSearchParams()\nconst p = useSearchParams();")), true);
   assert.equal(/\buseSearchParams\s*\(/.test(stripComments("// useSearchParams()\n/* useSearchParams() */\nconst x = 1; // useSearchParams()")), false);

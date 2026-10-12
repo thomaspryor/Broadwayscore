@@ -375,7 +375,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
       setOrDelete('obPicks', next.obPicks, next.obPicks !== 'hidden');
 
       const paramString = urlParams.toString();
-      window.history.replaceState({}, '', paramString ? `/?${paramString}` : '/');
+      replaceLocationSearch(paramString ? `/?${paramString}` : '/');
 
       return next;
     }));
@@ -392,7 +392,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
       q: '',
       obPicks: 'shown',
     });
-    window.history.replaceState({}, '', '/');
+    replaceLocationSearch('/');
   }, []);
 
   // Search should span ALL shows (Broadway + OB + West End + archive) regardless of toggle state

@@ -206,7 +206,7 @@ function OffBroadwayPageInner({ shows, archiveHash, totalShows, totalReviews, ma
       setOrDelete('q', next.q, !next.q);
 
       const paramString = urlParams.toString();
-      window.history.replaceState({}, '', paramString ? `/off-broadway?${paramString}` : '/off-broadway');
+      replaceLocationSearch(paramString ? `/off-broadway?${paramString}` : '/off-broadway');
 
       return next;
     }));
@@ -221,7 +221,7 @@ function OffBroadwayPageInner({ shows, archiveHash, totalShows, totalReviews, ma
       scoreMode: DEFAULT_SCORE_MODE,
       q: '',
     });
-    window.history.replaceState({}, '', '/off-broadway');
+    replaceLocationSearch('/off-broadway');
   }, []);
 
   // Archive shows (closed OB shows) — lazy-loaded on demand when the user

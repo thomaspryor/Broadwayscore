@@ -30,8 +30,13 @@ export function useLocationSearch(): string {
   return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }
 
-/** Replace the current URL (no navigation) and notify useLocationSearch(). */
+/**
+ * Replace the current URL (no navigation) and notify useLocationSearch().
+ * Pass a fresh state object: Next's patched replaceState skips its router sync
+ * when the state already carries its __NA marker, and a stale router URL lets
+ * Next's HistoryUpdater rewrite this change away later.
+ */
 export function replaceLocationSearch(url: string) {
-  window.history.replaceState(window.history.state, '', url);
+  window.history.replaceState({}, '', url);
   window.dispatchEvent(new Event(CHANGE_EVENT));
 }
