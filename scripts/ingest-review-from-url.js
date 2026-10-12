@@ -47,7 +47,7 @@ const path = require('path');
 const { fetchPage } = require('./lib/scraper');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
-const { isolateMultiShowSection, normSectionText } = require('./lib/multi-show-section-extract');
+const { isolateMultiShowSection, normSectionText, isolatedSectionWriteFields } = require('./lib/multi-show-section-extract');
 const { extractArticleTextFromUrl, extractPublishDate, extractLsaByline } = require('./lib/article-extractor');
 const { classifyReviewUrl } = require('./lib/non-review-url-patterns');
 const { isUnresolvableRedirectUrl } = require('./lib/unresolvable-url');
@@ -529,6 +529,7 @@ if (!show) {
   // (a real review on a ticket/listing host). Persists on the file as a
   // record of the override.
   if (allowNonReviewUrl) fields.allowNonReviewUrl = true;
+  Object.assign(fields, isolatedSectionWriteFields(iso));
   if (stageMeta && stageMeta.standfirst && stageMeta.standfirst.length >= 25) {
     fields.outletStandfirst = stageMeta.standfirst;
   }

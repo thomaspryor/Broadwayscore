@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { extractShowSection, findSectionHeadings, isolateMultiShowSection, isMultiShowPostUrl, isolateMultiShowSectionForShowId } = require('./multi-show-section-extract.js');
+const { extractShowSection, findSectionHeadings, isolateMultiShowSection, isMultiShowPostUrl, isolateMultiShowSectionForShowId, isolatedSectionWriteFields } = require('./multi-show-section-extract.js');
 const { stripVenueListingsTrailer, detectTruncationSignals } = require('./content-quality.js');
 
 // Synthetic post mirroring the real interestedbystander shape (real text is private/copyrighted).
@@ -100,6 +100,15 @@ test('isolateMultiShowSection: a misspelled section heading matches only via an 
   assert.equal(r.action, 'isolated');
   assert.match(r.text, /^Toera \(c\)/);
   assert.doesNotMatch(r.text, /Samuel Friedman/);
+});
+
+test('isolatedSectionWriteFields: only an isolated section may share the post URL with other shows (BRO-4834)', () => {
+  const { shouldBlockCrossShowCreate } = require('./url-ownership.js');
+  const owner = [{ showId: 'the-invention-of-love-off-broadway-2026', file: 'x.json', blocking: true }];
+  assert.equal(shouldBlockCrossShowCreate(owner).block, true);
+  assert.deepEqual(isolatedSectionWriteFields(isolateMultiShowSection(IB_URL, POST, 'Pen Pals')), { allowCrossShowUrl: true });
+  assert.deepEqual(isolatedSectionWriteFields(isolateMultiShowSection(IB_URL, POST, 'Stereophonic')), {});
+  assert.deepEqual(isolatedSectionWriteFields(isolateMultiShowSection('https://example.com/r', POST, 'Pen Pals')), {});
 });
 
 test('isolateMultiShowSection: single-section post on the host and other hosts pass text through', () => {

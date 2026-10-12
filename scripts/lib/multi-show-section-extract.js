@@ -131,6 +131,18 @@ function isolateMultiShowSection(url, text, showTitle, aliases = []) {
   return { action: 'isolated', text: sec.text };
 }
 
+/**
+ * Extra review fields for a write whose text came from isolateMultiShowSection.
+ * An isolated section is this show's own review, so the post's URL is shared
+ * with the other shows' sections by design: the cross-show URL ownership gate
+ * (url-ownership.js, honoured by review-file-writer and the push validator)
+ * must not refuse it (BRO-4834: the Invention of Love section blocked the
+ * America, Who Hurt You? section of the same post).
+ */
+function isolatedSectionWriteFields(iso) {
+  return iso && iso.action === 'isolated' ? { allowCrossShowUrl: true } : {};
+}
+
 let _titles = null;
 function showTitleFor(showId) {
   if (!_titles) {
@@ -155,5 +167,5 @@ const MULTI_SHOW_NOT_FOUND_REASON = 'multi_show_section_not_found';
 
 module.exports = {
   extractShowSection, findSectionHeadings, headingShowName, normSectionText: norm, isMultiShowPostUrl, isolateMultiShowSection,
-  isolateMultiShowSectionForShowId, MULTI_SHOW_NOT_FOUND_REASON,
+  isolateMultiShowSectionForShowId, isolatedSectionWriteFields, MULTI_SHOW_NOT_FOUND_REASON,
 };
