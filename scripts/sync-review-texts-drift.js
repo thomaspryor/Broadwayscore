@@ -42,6 +42,7 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { shouldRetryForStaleCheckout } = require('./lib/rebuild-staleness-guard');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const DEFAULT_SHOWS_FILE = '/tmp/stale-checkout-shows.txt';
 
@@ -195,6 +196,12 @@ function mainRestore(env) {
 }
 
 function main(argv = process.argv.slice(2), env = process.env) {
+  if (hasHelpFlag(argv)) {
+    console.log('Usage: node scripts/sync-review-texts-drift.js [--dir=data/review-texts] [--checkout-sha=<sha>] [--shows-file=<path>]');
+    console.log('       node scripts/sync-review-texts-drift.js --restore');
+    console.log('Pre-rebuild review-texts drift sync / post-rebuild restore (BRO-3162). Fail-open.');
+    return 0;
+  }
   if (argv.includes('--restore')) return mainRestore(env);
   const dir = argValue(argv, 'dir') || 'data/review-texts';
   const showsFile = argValue(argv, 'shows-file') || DEFAULT_SHOWS_FILE;
