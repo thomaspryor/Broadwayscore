@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4849-g",
   "planId": "399b51e1-4671-441a-8643-e72473f0670c",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-12T15:02:15.345Z",
   "submitter": {
     "name": null,
@@ -56,5 +56,33 @@
         "description": "Exclude: listing page submitted through the review form, with the playwright named as critic"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T16:29:29.516Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "beauty-and-the-beast-tour-2025/the-tennessee-tribune--tn-tribune.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "beauty-and-the-beast-tour-2025/the-tennessee-tribune--tn-tribune.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "beauty-and-the-beast-tour-2025/the-tennessee-tribune--tn-tribune.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "night-of-january-16th-off-broadway-2026/theatricalia--ayn-rand.json isNonReviewReason: null -> \"BRO-4849: show database production listing, not a review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "night-of-january-16th-off-broadway-2026/theatricalia--ayn-rand.json isNonReview: null -> true"
+    }
+  ]
 }
