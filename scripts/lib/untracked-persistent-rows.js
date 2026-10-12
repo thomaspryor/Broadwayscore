@@ -88,7 +88,7 @@ async function untrackedPersistentRowsResult({ ledger, listOpenIssues, getIssue,
     name: ROW_NAME,
     status: 'warn',
     message: `${rows.length} visitor-facing row(s) red for ${PERSISTENT_AFTER_HOURS / 24}+ days with no open card: ${list}${rows.length > 5 ? '; ...' : ''}`,
-    hint: 'The alert router refiles these on its next run (BRO-5168). If this persists, the router or Linear filing is broken: check data/audit/alert-router-attempts.jsonl.',
+    hint: 'The alert router files a new card once a completed card has been closed 7 days with its row still red (BRO-5168). It leaves a canceled card alone: reopen it, or fix the row. Otherwise check data/audit/alert-router-attempts.jsonl.',
   };
 }
 

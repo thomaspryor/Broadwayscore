@@ -442,10 +442,13 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
   // cards (isVisitorFacingRow). extraIssues and queued router lines don't go
   // through digest-audience.js, whose default for an unknown name is 'visitors'.
   const fromHealth = new Set(healthRows);
+  // health-check.js also routes unrouted health rows through the router,
+  // whose queued "BSC Daily: <row>" line would repeat the row (ship-check).
+  const healthNames = new Set(healthRows.map((r) => r && r.name));
   const rows = [
     ...healthRows,
     ...extraIssues,
-    ...normalizeQueuedRows(queued),
+    ...normalizeQueuedRows(queued).filter((q) => !healthNames.has(q.name)),
   ].filter(r => r && r.name && !isWatchdogParkedMirrorTracker(r.name, r.conditionKey));
 
   // Every "<condition> on <show>" row's ANCHOR is the plan row at the

@@ -2278,16 +2278,20 @@ test('routeAlert: an eligible health row files START-NOW (dispatch, High); a non
   const { router, calls, restore } = loadRouterWithFakes();
   try {
     router._resetStartNowCountForTests();
-    const r = await router.routeAlert({ conditionKey: 'health-check:Images: missing posters', title: 'BSC Daily: Images: missing posters', description: 'd', disposition: 'auto' });
+    const r = await router.routeAlert({ conditionKey: 'health-check:Images: missing posters', title: 'BSC Daily: Images: missing posters', description: 'd', disposition: 'auto', workerFixable: true });
     assert.equal(r.action, 'auto');
     const c = calls.createLinearIssue[0];
     assert.equal(c.dispatch, true);
     assert.equal(c.park, undefined);
     assert.equal(c.priority, 2);
     assert.match(c.description, /^START-NOW: /);
+    assert.ok(c.description.includes('Filed by owner-alert-router (START-NOW; condition: health-check:Images: missing posters)'), 'resolved-alert-card-sweep.js START_NOW_FILED_LINE shape');
     assert.doesNotMatch(c.description, /Auto-filed by owner-alert-router/, 'not selected by the parked drain too');
-    await router.routeAlert({ conditionKey: 'test:plain', title: 't', description: 'd', disposition: 'auto' });
+    await router.routeAlert({ conditionKey: 'test:plain', title: 't', description: 'd', disposition: 'auto', workerFixable: true });
     assert.ok(calls.createLinearIssue[1].park, 'non-health condition parks');
+    // A playbook (humanAction) row does not pass workerFixable: it parks.
+    await router.routeAlert({ conditionKey: 'health-check:Commercial model: Boring Waltz fit', title: 'BSC Daily: Commercial model: Boring Waltz fit', description: 'd', disposition: 'auto' });
+    assert.ok(calls.createLinearIssue[2].park, 'eligible name without workerFixable parks');
   } finally {
     restore();
   }
@@ -2299,7 +2303,7 @@ test('routeAlert: START-NOW filings stop at MAX_START_NOW_PER_RUN; the rest file
     router._resetStartNowCountForTests();
     const n = router.MAX_START_NOW_PER_RUN + 2;
     for (let i = 0; i < n; i++) {
-      await router.routeAlert({ conditionKey: `health-check:Images: row ${i}`, title: `BSC Daily: Images: row ${i}`, description: 'd', disposition: 'auto' });
+      await router.routeAlert({ conditionKey: `health-check:Images: row ${i}`, title: `BSC Daily: Images: row ${i}`, description: 'd', disposition: 'auto', workerFixable: true });
     }
     assert.equal(calls.createLinearIssue.filter((c) => c.dispatch).length, router.MAX_START_NOW_PER_RUN);
     assert.equal(calls.createLinearIssue.filter((c) => c.park).length, 2);
@@ -2310,7 +2314,7 @@ test('routeAlert: START-NOW filings stop at MAX_START_NOW_PER_RUN; the rest file
 
 test('routeAlert: a deferred condition whose tracker was closed while the row stayed red gets a new card', async () => {
   const state = { type: 'completed' };
-  const { router, calls, restore } = loadRouterWithFakes({ linearGetIssueImpl: async (id) => ({ identifier: id, state }) });
+  const { router, calls, restore } = loadRouterWithFakes({ linearGetIssueImpl: async (id) => ({ identifier: id, state, completedAt: isoAgo(200) }) });
   try {
     await router.routeAlert({ conditionKey: 'test:closed-tracker', title: 'Still red', description: 'd', ...DEFER });
     router.patchCondition('test:closed-tracker', { incidentOpenedAt: isoAgo(2000), lastSeen: isoAgo(1), lastNotifiedAt: isoAgo(24), linearIdentifier: 'BRO-1' });
@@ -2323,6 +2327,45 @@ test('routeAlert: a deferred condition whose tracker was closed while the row st
     const again = await router.routeAlert({ conditionKey: 'test:closed-tracker', title: 'Still red', description: 'd', ...DEFER });
     assert.equal(again.action, 'silent');
     assert.equal(calls.createLinearIssue.length, 1);
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: a tracker completed under a week ago, or canceled, is not refiled (no daily refile loop)', async () => {
+  const cases = [
+    async (id) => ({ identifier: id, state: { type: 'completed' }, completedAt: isoAgo(24) }),
+    async (id) => ({ identifier: id, state: { type: 'completed' } }),
+    async (id) => ({ identifier: id, state: { type: 'canceled' }, completedAt: null }),
+  ];
+  for (const impl of cases) {
+    const { router, calls, restore } = loadRouterWithFakes({ linearGetIssueImpl: impl });
+    try {
+      await router.routeAlert({ conditionKey: 'test:recent-close', title: 't', description: 'd', ...DEFER });
+      router.patchCondition('test:recent-close', { incidentOpenedAt: isoAgo(2000), lastSeen: isoAgo(1), lastNotifiedAt: isoAgo(24), linearIdentifier: 'BRO-1' });
+      const r = await router.routeAlert({ conditionKey: 'test:recent-close', title: 't', description: 'd', ...DEFER });
+      assert.equal(r.action, 'silent');
+      assert.equal(calls.createLinearIssue.length, 0);
+    } finally {
+      restore();
+    }
+  }
+});
+
+test('trackerRefileDue: gone or completed 7d+ ago only; canceled, recent, open and errors never', async () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    const now = Date.now();
+    const ago = (h) => new Date(now - h * 3600000).toISOString();
+    assert.equal(router.REFILE_AFTER_CLOSE_HOURS, 168);
+    assert.equal(await router.trackerRefileDue('BRO-1', async () => null, now), true, 'gone');
+    assert.equal(await router.trackerRefileDue('BRO-1', async () => ({ state: { type: 'completed' }, completedAt: ago(169) }), now), true);
+    assert.equal(await router.trackerRefileDue('BRO-1', async () => ({ state: { type: 'completed' }, completedAt: ago(167) }), now), false);
+    assert.equal(await router.trackerRefileDue('BRO-1', async () => ({ state: { type: 'canceled' }, completedAt: ago(999) }), now), false);
+    assert.equal(await router.trackerRefileDue('BRO-1', async () => ({ state: { type: 'started' } }), now), false);
+    assert.equal(await router.trackerRefileDue('BRO-1', async () => { throw new Error('x'); }, now), false);
+    const chain = { 'BRO-2': { state: { type: 'duplicate' }, relations: { nodes: [{ type: 'duplicate', relatedIssue: { identifier: 'BRO-3' } }] } }, 'BRO-3': { state: { type: 'completed' }, completedAt: ago(200) } };
+    assert.equal(await router.trackerRefileDue('BRO-2', async (id) => chain[id], now), true, 'duplicate of an original completed 7d+ ago');
   } finally {
     restore();
   }

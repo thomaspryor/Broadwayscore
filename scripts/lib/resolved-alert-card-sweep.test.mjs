@@ -34,6 +34,12 @@ test('skipReason: an untouched backlog card filed for exactly this condition is 
   assert.equal(skipReason(issue({ state: { type: 'unstarted' } }), 'gap:a'), null);
 });
 
+test('skipReason: a START-NOW router card (BRO-5168) is eligible for its own condition only', () => {
+  const d = 'START-NOW: x\nFiled by owner-alert-router (START-NOW; condition: health-check:Images: posters).\n\nbody';
+  assert.equal(skipReason(issue({ state: { type: 'unstarted' }, description: d }), 'health-check:Images: posters'), null);
+  assert.equal(skipReason(issue({ state: { type: 'unstarted' }, description: d }), 'health-check:Images'), 'not-filed-for-this-condition');
+});
+
 test('skipReason: started, closed, commented or foreign cards are never cancelled', () => {
   assert.equal(skipReason(issue({ state: { type: 'started' } }), 'gap:a'), 'state-started');
   assert.equal(skipReason(issue({ state: { type: 'completed' } }), 'gap:a'), 'state-completed');

@@ -554,7 +554,7 @@ function startNowEligible({ conditionKey, description, verify }) {
   return startNowHealthRowReason({ name, message: description }) === null;
 }
 
-async function dispatchCard({ title, description, hint, fields, severity, cardAction, priority, category, tags, conditionKey, verify, dispatchAtFiling }) {
+async function dispatchCard({ title, description, hint, fields, severity, cardAction, priority, category, tags, conditionKey, verify, dispatchAtFiling, workerFixable }) {
   let notes = buildCardNotes({ description, hint, fields, conditionKey, verify });
   // Linear priority ints: 1=Urgent 2=High 3=Medium 4=Low. Alert-filed issues
   // map error-class severities to High, everything else Medium — Urgent is
@@ -586,7 +586,9 @@ async function dispatchCard({ title, description, hint, fields, severity, cardAc
   // runs here, before the create, because a START-NOW card the cloud worker
   // would skip sits in Todo forever (BRO-5017); such a card files parked.
   let startNow = false;
-  if (!dispatchMode && startNowFiledThisRun < MAX_START_NOW_PER_RUN && startNowEligible({ conditionKey, description, verify })) {
+  // Only callers that pass workerFixable ask for it: a playbook row with a
+  // humanAction is the owner's to do, whatever its name says (ship-check P1).
+  if (workerFixable && !dispatchMode && startNowFiledThisRun < MAX_START_NOW_PER_RUN && startNowEligible({ conditionKey, description, verify })) {
     const startNowNotes = `${startNowLine('the Mac drain')}\n${START_NOW_PROVENANCE}; condition: ${conditionKey}).\n\n${notes}`;
     let unpickable = null;
     try {
@@ -863,30 +865,58 @@ function alertIdempotencyKey(conditionKey, cooldownHours, nowMs, incident = '') 
   return `owner-alert:${id}:${Math.floor(nowMs / windowMs)}`;
 }
 
-// BRO-5168. Is this tracker issue closed or gone? A card closed as a
-// duplicate is followed to its original (board triage closes the newer twin,
-// e.g. BRO-4093 -> BRO-3795 -> BRO-3712), so a row whose original is still
-// open stays tracked. Any lookup error counts as "still open", so a Linear
-// outage never files a duplicate.
+// BRO-5168. Follow a tracker to the issue that stands for it. A card closed
+// as a duplicate is followed to its original (board triage closes the newer
+// twin, e.g. BRO-4093 -> BRO-3795 -> BRO-3712), so a row whose original is
+// still open stays tracked. Returns { issue }, { gone: true } (deleted, or a
+// duplicate with no original) or { unknown: true } (lookup error or a chain
+// longer than MAX_DUPLICATE_HOPS). Callers treat unknown as still open, so a
+// Linear outage never files a duplicate.
 const MAX_DUPLICATE_HOPS = 3;
-async function trackerIsClosed(identifier, getIssueFn) {
+async function resolveTracker(identifier, getIssueFn) {
   let id = identifier;
   try {
     for (let hop = 0; hop <= MAX_DUPLICATE_HOPS; hop++) {
       const issue = await getIssueFn(id);
-      if (!issue) return true;
-      const type = issue.state && issue.state.type;
-      if (type !== 'duplicate') return isTerminalStateType(type);
+      if (!issue) return { gone: true };
+      if ((issue.state && issue.state.type) !== 'duplicate') return { issue };
       const rel = ((issue.relations && issue.relations.nodes) || [])
         .find((r) => r && r.type === 'duplicate' && r.relatedIssue && r.relatedIssue.identifier && r.relatedIssue.identifier !== id);
-      if (!rel) return true;
+      if (!rel) return { gone: true };
       id = rel.relatedIssue.identifier;
     }
-    return false; // a longer chain than this is unusual; don't refile on a guess
+    return { unknown: true };
   } catch (err) {
     console.error(`[alert-router] tracker check for ${identifier} failed (treating it as open): ${err.message}`);
-    return false;
+    return { unknown: true };
   }
+}
+
+/** Is this tracker closed or gone (any terminal state)? Unknown counts as open. */
+async function trackerIsClosed(identifier, getIssueFn) {
+  const t = await resolveTracker(identifier, getIssueFn);
+  if (t.unknown) return false;
+  if (t.gone) return true;
+  return isTerminalStateType(t.issue.state && t.issue.state.type);
+}
+
+// How long a COMPLETED tracker must have been closed, with its row still red,
+// before the router files a new card. Without this wait a card closed on a
+// red row was refiled on the next daily run, every day (ship-check P1).
+const REFILE_AFTER_CLOSE_HOURS = 168;
+/**
+ * Should the router file a new card over this closed tracker? Only when it
+ * is gone, or was COMPLETED at least REFILE_AFTER_CLOSE_HOURS ago. A
+ * canceled card is a decision (won't fix, or parked by the owner), so the
+ * router leaves it alone; the untracked-rows tripwire still reports it.
+ */
+async function trackerRefileDue(identifier, getIssueFn, nowMs = Date.now()) {
+  const t = await resolveTracker(identifier, getIssueFn);
+  if (t.unknown) return false;
+  if (t.gone) return true;
+  if ((t.issue.state && t.issue.state.type) !== 'completed') return false;
+  const closedMs = Date.parse(t.issue.completedAt || '');
+  return Number.isFinite(closedMs) && (nowMs - closedMs) / 3600000 >= REFILE_AFTER_CLOSE_HOURS;
 }
 
 async function routeAlert(opts) {
@@ -911,6 +941,7 @@ async function routeAlert(opts) {
     dispatchAtFiling,
     deferFilingHours,
     subjectLabel,
+    workerFixable,
   } = opts || {};
 
   if (!conditionKey) throw new Error('routeAlert requires a stable conditionKey');
@@ -940,7 +971,7 @@ async function routeAlert(opts) {
   // false whenever it is set, so the condition was never carded again.
   if (!staleTracker && deferAuto && existing && existing.linearIdentifier
       && (nowMs - Date.parse(incidentOpenedAt)) / 3600000 >= fileAfterHours) {
-    staleTracker = await trackerIsClosed(existing.linearIdentifier, (opts && opts.getIssueFn) || linearClient.getIssue);
+    staleTracker = await trackerRefileDue(existing.linearIdentifier, (opts && opts.getIssueFn) || linearClient.getIssue, nowMs);
   }
   const existingForDecision = staleTracker ? { ...existing, linearIdentifier: null } : existing;
 
@@ -1059,7 +1090,7 @@ async function routeAlert(opts) {
   if (pageGated) result.requestedDisposition = disposition;
   let notifyOk = true;
   if (effectiveDisposition === 'auto') {
-    const dispatch = await dispatchCard({ title, description, hint, fields, severity, cardAction, priority, category, tags, conditionKey, verify, dispatchAtFiling });
+    const dispatch = await dispatchCard({ title, description, hint, fields, severity, cardAction, priority, category, tags, conditionKey, verify, dispatchAtFiling, workerFixable });
     result.cardId = dispatch.cardId || null;
     // BRO-4054: the durable "dispatch requested" stamp. The Mac-side pass
     // selects candidates from Linear itself (a lost ledger push must not
@@ -1316,6 +1347,8 @@ module.exports = {
   startNowEligible,
   MAX_START_NOW_PER_RUN,
   trackerIsClosed,
+  trackerRefileDue,
+  REFILE_AFTER_CLOSE_HOURS,
   _resetStartNowCountForTests: () => { startNowFiledThisRun = 0; },
   DEFERRED_AUTO_FILE_AFTER_HOURS,
   INCIDENT_GAP_RESET_HOURS,
