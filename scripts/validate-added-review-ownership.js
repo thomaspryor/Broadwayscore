@@ -60,7 +60,7 @@ const {
   findCrossShowOwners,
   shouldBlockCrossShowCreate,
   _resetUrlOwnershipIndex,
-  _isBlockingOwnerCopy,
+  _isLiveSameShowCopy,
   _isOwnableUrl,
 } = require('./lib/url-ownership');
 
@@ -189,8 +189,10 @@ function decideOwnershipDrops(newFiles, reviewTextsDir) {
     //     readdir hit may itself be unknown-byline, and accepting only that one
     //     made a three-file cluster silently drop nothing (readdir order also
     //     is not guaranteed, so the gate was nondeterministic).
-    //  3. That named sibling is LIVE — same _isBlockingOwnerCopy predicate the
-    //     cross-show branch uses. Without it, deleting the added file when the
+    //  3. That named sibling is LIVE — _isLiveSameShowCopy: the cross-show
+    //     branch's predicate, plus a combined/split-parent copy that is
+    //     includable in this show (BRO-5198: the Addams split parent read as
+    //     dead and the duplicate came back). Without it, deleting the added file when the
     //     only other copy is wrongProduction-flagged leaves the show with no
     //     includable record for that url, and every later re-collection is
     //     deleted again: a self-perpetuating black hole. wrongProduction runs
@@ -198,7 +200,8 @@ function decideOwnershipDrops(newFiles, reviewTextsDir) {
     //     so that is not hypothetical.
     if (normalizeCritic(data.criticName) !== 'unknown') continue;
     const liveNamed = siblings.find(
-      (sib) => normalizeCritic(sib.data.criticName) !== 'unknown' && _isBlockingOwnerCopy(sib.data),
+      (sib) => normalizeCritic(sib.data.criticName) !== 'unknown'
+        && _isLiveSameShowCopy(sib.data, showId, path.join(reviewTextsDir, showId, sib.file)),
     );
     if (!liveNamed) continue;
 

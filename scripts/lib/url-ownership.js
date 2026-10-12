@@ -61,6 +61,38 @@ function _isBlockingOwnerCopy(data) {
   return true;
 }
 
+// SAME-show liveness (BRO-5198). The combined/roundup clause above is about
+// SHARING an article across shows; within its own show a combined copy is the
+// live record of that url. The 2026-10-12 refresh turned the Addams/Lend Me a
+// Tenor column's named copy into a split parent (isCombinedReview), the
+// predicate above then called it dead, and the same-show branch of
+// validate-added-review-ownership.js let the unknown-byline duplicate back in.
+// A combined copy counts only when the canonical includability check agrees
+// (a combined review that is also excluded must not license a deletion).
+function _isLiveSameShowCopy(data, showId, filePath) {
+  if (_isBlockingOwnerCopy(data)) return true;
+  if (!data || data.isCombinedReview !== true || data.isRoundupArticle === true) return false;
+  if (data.wrongShow === true || data.wrongProduction === true) return false;
+  try {
+    const { isIncludableForRebuild } = require('./review-guards');
+    return isIncludableForRebuild(data, _showMeta(showId), filePath);
+  } catch {
+    return false; // unknown -> not live -> the caller deletes nothing
+  }
+}
+
+let _showsById = null;
+function _showMeta(showId) {
+  if (!_showsById) {
+    _showsById = new Map();
+    try {
+      const shows = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'data', 'shows.json'), 'utf8'));
+      for (const s of (shows.shows || shows)) if (s && s.id) _showsById.set(s.id, s);
+    } catch { /* shows.json unavailable: guards treat a missing show as unknown */ }
+  }
+  return _showsById.get(showId) || null;
+}
+
 // Shows a split file names as the article's other sections (BRO-4431): a
 // parent lists its children, a child names its parent.
 function _splitShows(data) {
@@ -165,5 +197,6 @@ module.exports = {
   recordUrlOwner,
   _resetUrlOwnershipIndex,
   _isBlockingOwnerCopy,
+  _isLiveSameShowCopy,
   _isOwnableUrl,
 };

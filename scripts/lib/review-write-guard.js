@@ -1393,6 +1393,44 @@ function writeReviewOrThrow(filePath, newData, options = {}) {
   return r;
 }
 
+/**
+ * BRO-5198: return newData with the Dow Jones chrome prefix cut from fullText.
+ * Word counts follow the cut text, and `fullTextTrimmed.fromLength` names the
+ * chrome-bearing text it replaced, so the push restore (_deliberateTextTrim)
+ * does not read a stale copy of it as richer content and put it back. A page
+ * that is ONLY the interstitial stores nothing new: the record keeps the
+ * fullText it already had.
+ */
+function stripDowJonesChromeForWrite(filePath, newData) {
+  const { stripDowJonesReprintChrome } = require('./content-quality');
+  const incoming = newData.fullText;
+  const stripped = stripDowJonesReprintChrome(incoming);
+  if (stripped === incoming) return newData;
+  let onDisk = null;
+  try { onDisk = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { /* new/unreadable file */ }
+  const label = `${path.basename(path.dirname(filePath))}/${path.basename(filePath)}`;
+  if (!stripped.trim()) {
+    console.warn(`[review-write-guard] ${label}: incoming fullText is only the WSJ registration interstitial — not stored`);
+    const kept = { ...newData };
+    if (onDisk && typeof onDisk.fullText === 'string') kept.fullText = onDisk.fullText;
+    else delete kept.fullText;
+    return kept;
+  }
+  const onDiskText = onDisk && typeof onDisk.fullText === 'string' ? onDisk.fullText : '';
+  const fromLength = onDiskText && onDiskText.length > stripped.length && stripDowJonesReprintChrome(onDiskText) !== onDiskText
+    ? onDiskText.length
+    : incoming.length;
+  const out = {
+    ...newData,
+    fullText: stripped,
+    fullTextTrimmed: { reason: 'Dow Jones page chrome prefix (BRO-5198)', fromLength, at: new Date().toISOString() },
+  };
+  const words = stripped.split(/\s+/).filter(Boolean).length;
+  for (const f of ['textWordCount', 'wordCount']) if (typeof out[f] === 'number') out[f] = words;
+  console.log(`[review-write-guard] ${label}: cut ${incoming.length - stripped.length} chars of Dow Jones page chrome from fullText`);
+  return out;
+}
+
 function safeWriteReview(filePath, newData, options = {}) {
   const { force = false, merge = true } = options;
   // A file missing only because this checkout is sparse is not new: writing it
@@ -1439,6 +1477,13 @@ function safeWriteReview(filePath, newData, options = {}) {
       newData = { ...newData, url: unwrapped, urlUnwrappedFrom: newData.url };
       console.log(`[review-write-guard] ${path.basename(filePath)}: unwrapped google-redirect url → ${unwrapped}`);
     }
+  }
+
+  // BRO-5198: Dow Jones page chrome (WSJ registration interstitial, nav rail,
+  // print header) ahead of the review. collect-review-texts cuts it at fetch
+  // time (stripExemptedChrome); this catches every other writer.
+  if (newData && typeof newData.fullText === 'string' && newData.fullText) {
+    newData = stripDowJonesChromeForWrite(filePath, newData);
   }
 
   // Temporal byline guard — refuse to write attributions to retired/deceased

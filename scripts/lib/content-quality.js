@@ -202,6 +202,72 @@ function detectStrongWsjArchiveTruncationAnywhere(text) {
   return { detected: false, match: null };
 }
 
+// BRO-5198: Dow Jones page chrome stored ahead of a WSJ (or AP-via-WSJ) review.
+// Three shapes, all ending at the "Dow Jones Reprints ... www.djreprints.com"
+// sentence, with the real review right after it (198 corpus files, 2026-10-12):
+//   - the WSJ registration interstitial ("WSJ.com is available in the following
+//     editions and languages ... Please register to gain free access to WSJ
+//     tools ...") plus the nav rail, ~1.1-2.1KB (26 files, archive.org captures);
+//   - the nav rail alone ("World » More ... Order Reprints ..."), 0.35-1.1KB;
+//   - the ~270-char print header ("This copy is for your personal,
+//     non-commercial use only ... www.djreprints.com. https://www.wsj.com/...").
+// The chrome read as content: classifyContentTier rated the files complete, and
+// the content-verification LLM flagged real reviews wrongShow for being
+// "registration forms, navigation menus". The interstitial with NO review after
+// it is garbage (isGarbageContent); with a review after it, the chrome is cut.
+const WSJ_REGISTRATION_INTERSTITIAL_PATTERNS = [
+  /please\s+register\s+to\s+gain\s+free\s+access\s+to\s+wsj\s+tools/i,
+  /wsj\.com\]?(?:\([^)]*\))?\s+is\s+available\s+in\s+the\s+following\s+editions\s+and\s+languages/i,
+];
+
+/**
+ * @param {string} text
+ * @returns {{ detected: boolean, match: string|null }}
+ */
+function detectWsjRegistrationInterstitial(text) {
+  const t = (typeof text === 'string') ? text : '';
+  for (const pattern of WSJ_REGISTRATION_INTERSTITIAL_PATTERNS) {
+    const m = t.match(pattern);
+    if (m) return { detected: true, match: m[0] };
+  }
+  return { detected: false, match: null };
+}
+
+// The chrome is always at the front: the marker sits at 163-2106 chars in the
+// corpus. A reprints footer at the END of a page must never cut the review.
+const DOW_JONES_CHROME_WINDOW = 3000;
+// Chrome lines are short (nav labels, form prompts). A prose paragraph before
+// the marker means it is not a pure chrome prefix, so nothing is cut.
+const DOW_JONES_CHROME_MAX_LINE = 320;
+
+/**
+ * Cut the Dow Jones chrome prefix (see above) and return what follows it.
+ * Unchanged when the text has no such prefix. Returns '' for a page that is
+ * only the registration interstitial (no marker, no review after it).
+ * @param {string} text
+ * @returns {string}
+ */
+function stripDowJonesReprintChrome(text) {
+  if (typeof text !== 'string' || !text) return text;
+  const front = text.slice(0, DOW_JONES_CHROME_WINDOW);
+  const m = /www\.djreprints\.com\.?/i.exec(front);
+  if (!m) {
+    // Interstitial-only page: short, and no marker for a review to follow.
+    return detectWsjRegistrationInterstitial(front).detected && text.length < DOW_JONES_CHROME_WINDOW ? '' : text;
+  }
+  const head = text.slice(0, m.index);
+  if (!/dow\s+jones|this\s+copy\s+is\s+for\s+your\s+personal/i.test(head)) return text;
+  // Every line before the reprints sentence must be chrome-length.
+  const sentenceStart = head.search(/(?:Dow Jones Reprints:\s*)?This copy is for your personal/i);
+  const chrome = sentenceStart >= 0 ? head.slice(0, sentenceStart) : head;
+  // A flattened (single-line) capture of the current wsj.com header has no line
+  // breaks to check, but opens with the skip link and stays under ~1.5KB.
+  const flattenedHeader = /^[^\n]{0,200}\bSkip to Main Content\b/i.test(chrome) && chrome.length < 1500;
+  if (!flattenedHeader && chrome.split('\n').some((line) => line.trim().length > DOW_JONES_CHROME_MAX_LINE)) return text;
+  // Drop the article URL the print header appends after the marker.
+  return text.slice(m.index + m[0].length).replace(/^\s*https?:\/\/\S+/, '').trim();
+}
+
 // Unambiguous full-page chrome (cookie-consent banners, dedicated legal/privacy
 // pages, hard paywall walls) whose distinctive marker can be pushed PAST the
 // first-500-char windows used by detectCookieConsent (line ~271) and the legal
@@ -1082,6 +1148,17 @@ function stripLeadingJsonBlob(text) {
 }
 
 /**
+ * Fetch debris that sits AHEAD of the review: a leading JSON blob (BRO-4429)
+ * and Dow Jones page chrome (BRO-5198). Read-side callers judge the review
+ * after it; text-quality's cleaner stores the text without it.
+ * @param {string} text
+ * @returns {string}
+ */
+function stripLeadingFetchDebris(text) {
+  return stripDowJonesReprintChrome(stripLeadingJsonBlob(text));
+}
+
+/**
  * Main function to check if content is garbage/invalid
  *
  * @param {string} text - The fullText content to check
@@ -1102,6 +1179,23 @@ function isGarbageContent(text) {
         return { isGarbage: true, reason: 'JSON blob with no article text behind it' };
       }
       text = stripped;
+    }
+  }
+
+  // BRO-5198: Dow Jones chrome (WSJ registration interstitial, nav rail, print
+  // header) ahead of the review. Judge the review after it; the interstitial
+  // with no review behind it, or one still mixed into the text, is garbage.
+  if (typeof text === 'string') {
+    const stripped = stripDowJonesReprintChrome(text);
+    if (stripped !== text) {
+      if (stripped.trim().length < 100) {
+        return { isGarbage: true, reason: 'WSJ registration interstitial / Dow Jones page chrome with no review behind it' };
+      }
+      text = stripped;
+    }
+    const interstitial = detectWsjRegistrationInterstitial(text);
+    if (interstitial.detected) {
+      return { isGarbage: true, reason: `WSJ registration interstitial: "${interstitial.match}"` };
     }
   }
 
@@ -1553,6 +1647,9 @@ const TRUNCATION_SIGNALS = {
  */
 const MAX_CHROME_LINE = 200;
 function stripExemptedChrome(text) {
+  // BRO-5198: Dow Jones chrome is a prefix, never exempted — cut it first so
+  // the splitter, word counts and tier all judge the review alone.
+  text = stripDowJonesReprintChrome(text);
   if (!text || text.length < 500 || !text.includes('\n')) return text;
   const stripped = _stripExemptedChromeLines(text);
   if (stripped !== text && isGarbageContent(stripped).isGarbage) return text;
@@ -1907,7 +2004,7 @@ function classifyContentTier(review) {
   }
 
   // BRO-4429: a leading JSON blob must not count toward length/completeness.
-  const fullText = stripLeadingJsonBlob(review.fullText || '');
+  const fullText = stripLeadingFetchDebris(review.fullText || '');
   const wordCount = countWords(fullText);
   const charCount = fullText.length;
 
@@ -3593,6 +3690,7 @@ module.exports = {
   stripVenueListingsTrailer,
   isGarbageContent,
   stripLeadingJsonBlob,
+  stripLeadingFetchDebris,
   hasReviewContent,
   assessTextQuality,
   detectGarbageFromReasoning,
@@ -3626,6 +3724,8 @@ module.exports = {
   detectErrorPage,
   detectStrongErrorPageAnywhere,
   detectStrongWsjArchiveTruncationAnywhere,
+  detectWsjRegistrationInterstitial,
+  stripDowJonesReprintChrome,
   detectStrongChromeDumpAnywhere,
   detectNewsletter,
   detectUrlOnly,
@@ -3655,6 +3755,7 @@ module.exports = {
   ERROR_PAGE_PATTERNS,
   STRONG_ERROR_PAGE_PATTERNS,
   STRONG_WSJ_ARCHIVE_TRUNCATION_PATTERNS,
+  WSJ_REGISTRATION_INTERSTITIAL_PATTERNS,
   STRONG_CHROME_DUMP_PATTERNS,
   PARKED_DOMAIN_PATTERNS,
   NEWSLETTER_PATTERNS,
