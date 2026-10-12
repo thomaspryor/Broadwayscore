@@ -54,7 +54,7 @@ const {
   DEFAULT_REFETCH_CONFIG,
 } = require('./lib/refetch-circuit-breaker');
 const { dispatchRescore } = require('./lib/dispatch-rescore');
-const { isForumThreadUrl, isForumLinkRecoverable, FORUM_RECOVERY_CAP } = require('./lib/talkinbroadway-forum-link');
+const { isForumThreadUrl, isForumLinkRecoverable, FORUM_RECOVERY_CAP, FORUM_RECOVERY_SLOW_TRIES } = require('./lib/talkinbroadway-forum-link');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { routeAlert, resolveCondition, loadLedger } = require('./lib/owner-alert-router');
 const { execErrorDetail } = require('./lib/exec-error-detail');
@@ -590,8 +590,10 @@ async function main() {
     if (g.type === 'unscored') return shouldEmailUnscoredGap(state[`dispatch:${g.showId}`] || null, now);
     if (g.type === 'empty-body' && g.url) {
       // Talkin' Broadway forum stubs have their own recovery budget; do not page
-      // while the forum-link recovery still has attempts left.
-      if (isForumThreadUrl(g.url) && (g.forumLinkRecoveryCount || 0) < FORUM_RECOVERY_CAP) return false;
+      // while the forum-link recovery still has attempts left (the fast tries
+      // plus the daily long tail, BRO-5166).
+      if (isForumThreadUrl(g.url)
+        && (g.forumLinkRecoveryCount || 0) < FORUM_RECOVERY_CAP + FORUM_RECOVERY_SLOW_TRIES) return false;
       return (g.recoveryCount || 0) >= FLAGGED_RECOVERY_CAP;
     }
     return true;

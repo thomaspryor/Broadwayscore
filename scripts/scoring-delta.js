@@ -1112,7 +1112,6 @@ function decideInclusion(review, show, guards) {
           isDateMismatch,
           isShowListingUrl,
           cvBlocksClear,
-          showTitle: show?.title,
         });
       } catch {}
     }

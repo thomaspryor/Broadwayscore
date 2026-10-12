@@ -481,32 +481,3 @@ describe('BRO-2749 international trade false-positive heal', () => {
     assert.strictEqual(shouldAutoClearWrongProductionUkDualMarket({ ...flagged, url: 'https://deadline.com/2015/08/hamilton-broadway-review/' }, ctx), false);
   });
 });
-
-describe('BRO-5166 trade heal needs the article to name the show', () => {
-  const flagged = {
-    wrongProduction: true,
-    wrongProductionNote: 'Cross-market: US outlet "deadline" reviewing London show',
-    publishDate: '2026-09-02',
-  };
-  const ctx = { ...baseCtx, isUkUrl: false, outletIsInternationalTrade: true, showEarliestDate: '2026-08-15' };
-  it('refuses a trade news story that never names a one-word-core title', () => {
-    const news = { ...flagged, url: 'https://deadline.com/2026/09/ted-cruz-no-fakes-act-1236500000/', fullText: 'The senator said the bill would pass the committee this week.' };
-    assert.strictEqual(shouldAutoClearWrongProductionUkDualMarket(news, { ...ctx, showTitle: 'The Pass' }), false);
-  });
-  it('clears when the slug names the show', () => {
-    const review = { ...flagged, url: 'https://deadline.com/2026/09/the-pass-review-royal-court-1236500001/' };
-    assert.strictEqual(shouldAutoClearWrongProductionUkDualMarket(review, { ...ctx, showTitle: 'The Pass' }), true);
-  });
-  it('clears when only the text names the show', () => {
-    const review = { ...flagged, url: 'https://deadline.com/2026/09/royal-court-review-1236500002/', fullText: 'In The Pass, John Donnelly returns to the Royal Court.' };
-    assert.strictEqual(shouldAutoClearWrongProductionUkDualMarket(review, { ...ctx, showTitle: 'The Pass' }), true);
-  });
-  it('refuses a generic title matched only inside another title', () => {
-    const lists = { ...flagged, url: 'https://www.hollywoodreporter.com/lists/american-horror-story-seasons-ranked/', fullText: 'Every season of American Horror Story, ranked.' };
-    assert.strictEqual(shouldAutoClearWrongProductionUkDualMarket(lists, { ...ctx, showTitle: 'The Story' }), false);
-  });
-  it('multi-word titles match without the leading article', () => {
-    const review = { ...flagged, url: 'https://variety.com/2026/legit/reviews/into-the-woods-review-1236500003/' };
-    assert.strictEqual(shouldAutoClearWrongProductionUkDualMarket(review, { ...ctx, showTitle: 'Into the Woods' }), true);
-  });
-});

@@ -1014,8 +1014,6 @@ function namesNonLondonCity(data) {
  * @param {boolean} ctx.isDateMismatch - review predates the show's earliest date by more than PRE_WINDOW_DAYS
  * @param {boolean} ctx.isShowListingUrl - URL is a listing/aggregate page, not a dated review
  * @param {boolean} ctx.cvBlocksClear - cvBlocksUkWrongProductionAutoClear(data.contentVerification)
- * @param {string} [ctx.showTitle] - shows.json title; the trade path refuses when neither the
- *   URL slug nor the stored text names the show (BRO-5166). Omitted = no identity check.
  * @param {string|Date} [ctx.showEarliestDate] - show's earliest date; a publishDate more than
  *   UK_CLEAR_PRE_RUN_DAYS before it refuses the clear (BRO-4476)
  * @returns {boolean}
@@ -1072,12 +1070,6 @@ function shouldAutoClearWrongProductionUkDualMarket(data, ctx = {}) {
         || (urlYear && Number(urlYear) < new Date(start).getUTCFullYear())) {
       return false;
     }
-    // BRO-5166: the US-outlet flag was also the only thing holding off trade
-    // NEWS pieces that discovery mis-matched on a short title (Deadline's
-    // "Ted Cruz No Fakes Act" story on The Pass, its Lizzie Borden premiere
-    // story on The Story). Clearing it put them back as unscoreable "reviews".
-    // Clear only when the URL slug or the stored text names the show.
-    if (ctx.showTitle && !tradeArticleNamesShow(data, ctx.showTitle)) return false;
   }
   if (!tradeFalsePositive) {
     if (!ctx.isUkUrl && !ctx.outletIsDualOrUk) return false;
@@ -1091,25 +1083,6 @@ function shouldAutoClearWrongProductionUkDualMarket(data, ctx = {}) {
   if (isTextStaleRelativeToUrlRewrite(data)) return false;
 
   return true;
-}
-
-// Does a trade article's URL slug or stored text name the show? Generic
-// one-word titles ("The Story") need the article+word phrase, as at discovery.
-function tradeArticleNamesShow(data, showTitle) {
-  const { passesGenericTitleIdentity } = require('./generic-title-guard');
-  const norm = (t) => String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    .replace(/[\u2018\u2019']/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
-  const full = norm(showTitle);
-  if (!full) return true;
-  // A one-word core ("pass" in The Pass) is ordinary prose; need the whole title.
-  const stripped = full.replace(/^(the|a|an) /, '') || full;
-  const core = stripped.includes(' ') ? stripped : full;
-  const has = (hay) => (' ' + norm(hay) + ' ').includes(' ' + core + ' ');
-  let slug = '';
-  try { slug = new URL(data.url).pathname; } catch { /* unparseable url */ }
-  if (has(slug) && passesGenericTitleIdentity(data.url, showTitle)) return true;
-  const text = typeof data.fullText === 'string' ? data.fullText : '';
-  return has(text) && passesGenericTitleIdentity(text, showTitle);
 }
 
 /**
@@ -1193,6 +1166,5 @@ module.exports = {
   WRONG_SHOW_ORPHAN_DIR_PREFIX,
   isUrlIndependentWrongShowReason,
   shouldAutoClearWrongProductionUkDualMarket,
-  tradeArticleNamesShow,
   shouldAutoClearStaleLondonOutletCrossMarket,
 };
