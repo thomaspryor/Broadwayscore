@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5183-07",
   "planId": "2f2b6392-7e1f-4376-9f8b-85a71472a8f8",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-12T22:52:13.944Z",
   "submitter": {
     "name": null,
@@ -68,5 +68,38 @@
         "description": "Duplicate of talkinbroadway--howard-miller.json (same outlet, same production, real page text on file); this row came from the legacy LLM web-search step."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T23:43:04.883Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paradise-square-2022/talkinbroadway--matthew-murray.json url: \"https://talkinbroadway.com/page/world/nyc/paradise_square.html\" -> \"https://www.talkinbroadway.com/page/world/ParadiseSquare.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-bands-visit-2017/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/page/world/off/bandsvisit.html\" -> \"https://www.talkinbroadway.com/page/world/index.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-ferryman-2018/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/Ferryman.html\" -> \"https://www.talkinbroadway.com/page/world/Ferryman2018.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    }
+  ]
 }
