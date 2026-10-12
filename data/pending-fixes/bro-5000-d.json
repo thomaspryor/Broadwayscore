@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5000-d",
   "planId": "f996745d-040f-46c1-8b78-82ee2d4cd3db",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-11T23:42:16.168Z",
   "submitter": {
     "name": null,
@@ -110,5 +110,28 @@
         "description": "The one-part version is a re-staged, shortened show, not the two-part production reviewed from 2016, so its reviews are not carried over."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T06:37:10.205Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for to-kill-a-mockingbird-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for the-comedy-about-spies-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for kramerfauci-st-anns-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for harry-potter-and-the-cursed-child-one-part-west-end-2026"
+    }
+  ]
 }
