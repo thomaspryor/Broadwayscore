@@ -160,7 +160,7 @@ function classifyCmuxError(err) {
   // cmux says "Socket not found at <path>" when the DAEMON is down, which the
   // generic /not found/ pattern below would otherwise misread as "cmux is not
   // installed". Both stay quiet, but they mean different things to a reader.
-  if (/Failed to connect|Connection refused|Socket not found|Socket closed/i.test(text)) {
+  if (/Failed to connect|Connection refused|Socket not found|Socket closed|No live cmux socket found/i.test(text)) {
     return 'unavailable';
   }
   if (/timed out|ETIMEDOUT|SIGTERM/i.test(text)) return 'timeout';

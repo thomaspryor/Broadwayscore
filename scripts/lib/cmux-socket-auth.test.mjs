@@ -68,6 +68,7 @@ test('classifyCmuxError separates a permanent auth fault from a transient outage
     ['Error: Failed to connect to socket at /Users/x/cmux.sock (Connection refused)', 'unavailable'],
     ['Error: Socket not found at /Users/x/cmux.sock', 'unavailable'],
     ['Error: Socket closed before reply', 'unavailable'],
+    ['Error: No live cmux socket found. Tried:\n  /Users/x/.local/state/cmux/cmux.sock\n  /tmp/cmux.sock', 'unavailable'],
     ['Error: Command timed out', 'timeout'],
     ['spawn ENOENT', 'not-found'],
     ['something else entirely', 'unknown'],
@@ -299,4 +300,12 @@ test('an unreadable config is reported ONCE per path, not once per read', (t) =>
     fs.rmSync(dir, { recursive: true, force: true });
     auth._resetPasswordCache();
   }
+});
+
+test('summarizeCmuxFailures stays quiet when no cmux socket exists (BRO-5108)', () => {
+  const noSock = auth.summarizeCmuxFailures([
+    'cmux listing failed: Error: No live cmux socket found. Tried:\n  /Users/x/.local/state/cmux/cmux.sock\n  /tmp/cmux.sock',
+  ]);
+  assert.equal(noSock.escalate, false);
+  assert.equal(noSock.counts.unavailable, 1);
 });
