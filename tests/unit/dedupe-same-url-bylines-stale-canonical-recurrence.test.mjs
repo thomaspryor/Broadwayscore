@@ -220,7 +220,12 @@ test('audit(): a human-reviewed canonical is never touched, even with a stale ba
   assert.equal(result.cohesive.some((g) => g.showId === showId), false, 'a human-reviewed canonical must never be queued for a forced write');
 });
 
-test('audit(): a TRUE uncommitted mutual cycle (both sides duplicateOf:null, mutual duplicateTextOf) is left alone, not force-collapsed from both directions (live corpus case, cats-1982 the-sunflower)', () => {
+// BRO-3605: this shape used to be skipped from both directions (BRO-2391
+// safe-default), so the live cats-1982 pair was never repaired. It is now
+// resolved from exactly ONE direction: both passes compute the same
+// order-independent pick (group-canonical.js), so only the winner's pass
+// queues it and fix() cannot reverse itself.
+test('audit(): a TRUE uncommitted mutual cycle (both sides duplicateOf:null, mutual duplicateTextOf) with cohesive text is resolved to exactly one canonical (live corpus case, cats-1982 the-sunflower)', () => {
   const showId = 'cats-1982';
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
   fs.mkdirSync(showDir, { recursive: true });
@@ -228,26 +233,80 @@ test('audit(): a TRUE uncommitted mutual cycle (both sides duplicateOf:null, mut
   const url = 'https://thesunflower.com/45810/arts-and-culture/review-cats-is-the-musical-spectacular-that-we-all-know-it-to-be/';
   const nameA = 'the-sunflower--karen-galindo.json';
   const nameB = 'the-sunflower--reviews-karen-galindo.json';
+  const text = 'Cats is the musical spectacular that we all know it to be. By Karen Galindo. The dancing is superb and the score soars. '.repeat(20);
 
   // Neither side has committed via duplicateOf — each only carries a
-  // duplicateTextOf pointing at the other. Both look like a valid canonical
-  // from the "duplicateOf falsy" test alone.
+  // duplicateTextOf pointing at the other.
   fs.writeFileSync(path.join(showDir, nameA), JSON.stringify({
-    showId, outletId: 'the-sunflower', criticName: 'Karen Galindo', url, fullText: body(3000),
+    showId, outletId: 'the-sunflower', criticName: 'Karen Galindo', url, fullText: text,
     contentTier: 'complete', isFullReview: true, duplicateOf: null, duplicateTextOf: nameB,
   }));
   fs.writeFileSync(path.join(showDir, nameB), JSON.stringify({
-    showId, outletId: 'the-sunflower', criticName: 'Karen Galindo', url, fullText: body(2900),
+    showId, outletId: 'the-sunflower', criticName: 'Reviews Karen Galindo', url, fullText: text,
     contentTier: 'complete', isFullReview: true, duplicateOf: null, duplicateTextOf: nameA,
   }));
 
   const before = audit();
-  assert.equal(before.cohesive.some((g) => g.showId === showId), false, 'a genuinely uncommitted mutual cycle must not be queued at all — not from either direction');
+  const queued = before.cohesive.filter((g) => g.showId === showId);
+  assert.equal(queued.length, 1, 'queued from exactly one direction');
+  assert.equal(queued[0].canonical, nameA, 'the real byline beats the "Reviews <name>" scrape artifact');
+  assert.deepEqual(queued[0].losers, [nameB]);
 
-  // fix() on an empty queue must leave both files completely untouched.
-  fix(before.cohesive.filter((g) => g.showId === showId));
+  fix(queued);
   const a = JSON.parse(fs.readFileSync(path.join(showDir, nameA), 'utf-8'));
   const b = JSON.parse(fs.readFileSync(path.join(showDir, nameB), 'utf-8'));
-  assert.equal(a.duplicateTextOf, nameB, 'A must be untouched');
-  assert.equal(b.duplicateTextOf, nameA, 'B must be untouched');
+  assert.equal(a.duplicateOf ?? null, null, 'canonical stays primary');
+  assert.equal(a.duplicateTextOf, undefined, 'canonical no longer points back at its loser');
+  assert.equal(b.duplicateOf, nameA, 'loser now commits to the canonical');
+
+  // Converged: a second pass has nothing left to do for this show.
+  assert.equal(audit().cohesive.some((g) => g.showId === showId), false);
+});
+
+test('audit(): a mutual duplicateTextOf cycle whose texts are DIFFERENT reviews is still left alone (BRO-3605 guard)', () => {
+  const showId = 'cats-1982-different-text';
+  const showDir = path.join(REVIEW_TEXTS_DIR, showId);
+  fs.mkdirSync(showDir, { recursive: true });
+  const url = 'https://example.com/shared-roundup-url';
+  const nameA = 'outlet--critic-one.json';
+  const nameB = 'outlet--critic-two.json';
+  fs.writeFileSync(path.join(showDir, nameA), JSON.stringify({
+    showId, outletId: 'outlet', criticName: 'Critic One', url,
+    fullText: 'An exhilarating triumph with dazzling choreography and a radiant lead performance. '.repeat(20),
+    contentTier: 'complete', isFullReview: true, duplicateOf: null, duplicateTextOf: nameB,
+  }));
+  fs.writeFileSync(path.join(showDir, nameB), JSON.stringify({
+    showId, outletId: 'outlet', criticName: 'Critic Two', url,
+    fullText: 'A tedious slog, the staging muddled and the orchestra thin throughout the night. '.repeat(20),
+    contentTier: 'complete', isFullReview: true, duplicateOf: null, duplicateTextOf: nameA,
+  }));
+  const before = audit();
+  assert.equal(before.cohesive.some((g) => g.showId === showId), false, 'different text must never be collapsed from either direction');
+});
+
+test('audit(): a mutual cycle with a LOCKED third member pointing in is not queued from either direction (BRO-3605 guard)', () => {
+  const showId = 'cats-1982-locked-third';
+  const showDir = path.join(REVIEW_TEXTS_DIR, showId);
+  fs.mkdirSync(showDir, { recursive: true });
+  const url = 'https://example.com/locked-third';
+  const text = 'Cats is the musical spectacular that we all know it to be. By Karen Galindo. The dancing is superb. '.repeat(20);
+  const A = 'the-sunflower--karen-galindo.json', B = 'the-sunflower--reviews-karen-galindo.json', C = 'the-sunflower--kg.json';
+  const base = { showId, outletId: 'the-sunflower', url, fullText: text, contentTier: 'complete', isFullReview: true };
+  fs.writeFileSync(path.join(showDir, A), JSON.stringify({ ...base, criticName: 'Karen Galindo', duplicateOf: null, duplicateTextOf: B }));
+  fs.writeFileSync(path.join(showDir, B), JSON.stringify({ ...base, criticName: 'Reviews Karen Galindo', duplicateOf: null, duplicateTextOf: A }));
+  fs.writeFileSync(path.join(showDir, C), JSON.stringify({ ...base, criticName: 'KG', duplicateOf: null, duplicateTextOf: A, _locked: true }));
+  assert.equal(audit().cohesive.some((g) => g.showId === showId), false);
+});
+
+test('audit(): a same-URL group carrying a human _duplicateOfCleared ("two critics, one URL") is never queued, even with cohesive text', () => {
+  const showId = 'two-critics-one-url';
+  const showDir = path.join(REVIEW_TEXTS_DIR, showId);
+  fs.mkdirSync(showDir, { recursive: true });
+  const url = 'https://example.com/joint-review';
+  const text = 'Two critics share this one article about the revival, a lively evening with a great cast. '.repeat(20);
+  const base = { showId, outletId: 'vulture', url, fullText: text, contentTier: 'complete', isFullReview: true, duplicateOf: null };
+  fs.writeFileSync(path.join(showDir, 'vulture--jesse-green.json'), JSON.stringify({ ...base, criticName: 'Jesse Green', _duplicateOfCleared: 'auto:2026-04-12 different critics' }));
+  fs.writeFileSync(path.join(showDir, 'vulture--sara-holdren.json'), JSON.stringify({ ...base, criticName: 'Sara Holdren', duplicateTextOf: 'vulture--jesse-green.json' }));
+  fs.writeFileSync(path.join(showDir, 'vulture--jesse-green.json'), JSON.stringify({ ...base, criticName: 'Jesse Green', _duplicateOfCleared: 'auto:2026-04-12 different critics', duplicateTextOf: 'vulture--sara-holdren.json' }));
+  assert.equal(audit().cohesive.some((g) => g.showId === showId), false);
 });

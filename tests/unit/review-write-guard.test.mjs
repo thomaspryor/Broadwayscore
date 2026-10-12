@@ -388,6 +388,61 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
     }
   });
 
+  test('BRO-3470: force:true duplicateOf write also retracts the stale same-URL _duplicateOfCleared', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'dup-cleared-forced-'));
+    try {
+      const sharedUrl = 'https://example.com/1984-review';
+      fs.writeFileSync(path.join(dir, 'christopher-bonanos.json'), JSON.stringify({ url: sharedUrl }, null, 2));
+      const ourPath = path.join(dir, 'jesse-green.json');
+      // fix-inverted-byline-duplicates.js shape: read the whole record, set
+      // duplicateOf, write it back forced (breadcrumb rides along).
+      const data = { url: sharedUrl, _duplicateOfCleared: 'auto:2026-04-12 different critics' };
+      fs.writeFileSync(ourPath, JSON.stringify(data, null, 2));
+      data.duplicateOf = 'christopher-bonanos.json';
+      data.duplicateReason = 'inverted-byline';
+      safeWriteReview(ourPath, data, { force: true });
+      const written = JSON.parse(fs.readFileSync(ourPath, 'utf8'));
+      assert.equal(written.duplicateOf, 'christopher-bonanos.json');
+      assert.equal('_duplicateOfCleared' in written, false);
+      assert.match(written.duplicateOfClearedRetracted, /different critics/, 'removal leaves a provenance stamp');
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+    }
+  });
+
+  test('BRO-3470: a forced write that does NOT change duplicateOf leaves an existing breadcrumb alone', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'dup-cleared-forced-same-'));
+    try {
+      const sharedUrl = 'https://example.com/1984-review';
+      fs.writeFileSync(path.join(dir, 'christopher-bonanos.json'), JSON.stringify({ url: sharedUrl }, null, 2));
+      const ourPath = path.join(dir, 'jesse-green.json');
+      const data = { url: sharedUrl, duplicateOf: 'christopher-bonanos.json', _duplicateOfCleared: 'auto:2026-04-12 different critics' };
+      fs.writeFileSync(ourPath, JSON.stringify(data, null, 2));
+      safeWriteReview(ourPath, { ...data, assignedScore: 70 }, { force: true });
+      const written = JSON.parse(fs.readFileSync(ourPath, 'utf8'));
+      assert.equal(written._duplicateOfCleared, 'auto:2026-04-12 different critics');
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+    }
+  });
+
+  test('BRO-3470: force:true keeps _duplicateOfCleared when duplicateOf points at a DIFFERENT-URL sibling', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'dup-cleared-forced-diff-'));
+    try {
+      fs.writeFileSync(path.join(dir, 'other.json'), JSON.stringify({ url: 'https://example.com/other' }, null, 2));
+      const ourPath = path.join(dir, 'jesse-green.json');
+      safeWriteReview(ourPath, {
+        url: 'https://example.com/1984-review',
+        _duplicateOfCleared: 'auto:2026-04-12 different critics',
+        duplicateOf: 'other.json',
+      }, { force: true });
+      const written = JSON.parse(fs.readFileSync(ourPath, 'utf8'));
+      assert.equal(written._duplicateOfCleared, 'auto:2026-04-12 different critics');
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+    }
+  });
+
   test('urlCorrectedFrom + bodyless + sibling-owned URL → tombstoned (post-correction branch)', () => {
     // The blanket urlCorrectedFrom skip was replaced 2026-08-01 (enormous-
     // crocodile oscillation): a corrected file adopting a URL a substantive

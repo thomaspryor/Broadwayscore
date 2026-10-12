@@ -506,3 +506,52 @@ test('cross-market: _auditAllowCrossMarket carve-out — allowlisting one member
   assert.equal(real.duplicateOf ?? null, null, 'allowlisted member is canonicalized (not suppressed)');
   assert.equal(junk.duplicateOf, 'timeout--real.json', 'junk sibling stays a duplicate of the canonical');
 });
+
+// BRO-3402: chooseCanonical is not transitive. A (byline attested, 1 score
+// signal) beats B (3 signals, byline absent from the text) by attestation;
+// B beats C (2 signals) by score richness; C, a near-misspelling of A with
+// the richer score, beats A by the near-misspelling rule. The old running
+// fold crowned a different survivor depending on input order. The group pick
+// must give ONE answer for all 6 orderings, and with no member beating every
+// other, that answer is "no canonical" (report it, hide nobody).
+test('BRO-3402: pickGroupCanonical over the real chooseCanonical is order-independent for an A>B>C>A cycle', () => {
+  const { pickGroupCanonical } = require('../../scripts/lib/group-canonical.js');
+  const text = 'Theater review. By Jesse Green. The revival is a crisp, well judged evening and the cast is fine.';
+  const A = 'vulture--jesse-green.json', B = 'vulture--sara-holdren.json', C = 'vulture--jesse-gren.json';
+  const data = {
+    [A]: { criticName: 'Jesse Green', fullText: text, assignedScore: 70 },
+    [B]: { criticName: 'Sara Holdren', fullText: text, assignedScore: 70, llmScore: { score: 70 }, originalScore: 'B' },
+    [C]: { criticName: 'Jesse Gren', fullText: text, assignedScore: 70, llmScore: { score: 70 } },
+  };
+  const cmp = (a, b) => chooseCanonical(a, data[a], b, data[b]);
+  // Precondition: the comparator really cycles (else this test proves nothing).
+  assert.equal(cmp(A, B).canonical, A);
+  assert.equal(cmp(B, C).canonical, B);
+  assert.equal(cmp(C, A).canonical, C);
+  const orders = [[A, B, C], [A, C, B], [B, A, C], [B, C, A], [C, A, B], [C, B, A]];
+  const results = orders.map((o) => JSON.stringify(pickGroupCanonical(o, cmp)));
+  assert.equal(new Set(results).size, 1, `ordering changed the outcome: ${results.join(' / ')}`);
+  const r = pickGroupCanonical(orders[0], cmp);
+  assert.equal(r.canonical, null);
+  assert.equal(r.intransitive, true);
+});
+
+test('BRO-3402: a transitive 3-member group picks the same real winner under all 6 orderings', () => {
+  const { pickGroupCanonical } = require('../../scripts/lib/group-canonical.js');
+  const text = 'Theater review. By Jesse Green. The revival is a crisp, well judged evening and the cast is fine.';
+  const A = 'vulture--jesse-green.json', B = 'vulture--sara-holdren.json', D = 'vulture--adam-feldman.json';
+  const data = {
+    [A]: { criticName: 'Jesse Green', fullText: text, assignedScore: 70 },
+    [B]: { criticName: 'Sara Holdren', fullText: text, assignedScore: 70, llmScore: { score: 70 }, originalScore: 'B' },
+    [D]: { criticName: 'Adam Feldman', fullText: text, assignedScore: 70 },
+  };
+  const cmp = (a, b) => chooseCanonical(a, data[a], b, data[b]);
+  const orders = [[A, B, D], [A, D, B], [B, A, D], [B, D, A], [D, A, B], [D, B, A]];
+  for (const o of orders) assert.equal(pickGroupCanonical(o, cmp).canonical, A, `order ${o.join(',')}`);
+});
+
+test('BRO-3402: a skip verdict on any pair aborts the whole group pick', () => {
+  const { pickGroupCanonical } = require('../../scripts/lib/group-canonical.js');
+  const r = pickGroupCanonical(['a.json', 'b.json', 'c.json'], (a, b) => (b === 'c.json' ? { skip: true, reason: 'x-market' } : { canonical: a }));
+  assert.deepEqual(r, { canonical: null, reason: 'x-market', skip: true, intransitive: false });
+});

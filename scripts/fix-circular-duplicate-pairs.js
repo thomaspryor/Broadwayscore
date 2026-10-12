@@ -375,8 +375,11 @@ function chooseCanonical(aName, aData, bName, bData) {
   const _bText = (bData && bData.fullText) || '';
   const _bothTexts = `${_aText}\n${_bText}`;
   // Promotion evidence: judged per-file. A shared blob would let one file's
-  // editor credit attest the OTHER file's invented byline, and would make the
-  // pairwise fold order-dependent for 3+ member groups.
+  // editor credit attest the OTHER file's invented byline. This does NOT make
+  // the comparator transitive (attestation, score richness and the
+  // near-misspelling rule can still cycle A>B>C>A), so group callers must use
+  // scripts/lib/group-canonical.js pickGroupCanonical, never a running fold
+  // (BRO-3402).
   const aAttested = isBylineAttestedInText(aData && aData.criticName, _aText);
   const bAttested = isBylineAttestedInText(bData && bData.criticName, _bText);
   // Demotion evidence: a plain mention anywhere in either copy is enough to

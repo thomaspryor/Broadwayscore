@@ -2137,6 +2137,35 @@ function safeWriteReview(filePath, newData, options = {}) {
     }
   }
 
+  // BRO-3470: the #1655 retraction above only runs on non-force writes, but the
+  // duplicateOf setters that must force (a same-URL pair re-fires the collision
+  // detector otherwise) are exactly the ones that leave the contradiction
+  // (fix-inverted-byline-duplicates.js, 9 files 2026-09-15). force bypasses the
+  // collision DECISION; it is no reason to keep a breadcrumb the record's own
+  // duplicateOf now contradicts. Same predicate as the CI gate
+  // (audit-duplicate-of-cleared-contradiction.js), so the two cannot disagree.
+  // Inclusion-neutral: rebuild reads duplicateOf, never the breadcrumb.
+  // Only when THIS write sets/changes duplicateOf (#1655's "re-asserts"
+  // semantics): an unrelated rewrite of an already-contradicted record must
+  // not silently erase the human "two critics, one URL" verdict.
+  if (newData._duplicateOfCleared && typeof newData.duplicateOf === 'string' && newData.duplicateOf
+      && path.basename(newData.duplicateOf) !== path.basename(filePath)) {
+    let onDiskDuplicateOf;
+    try { onDiskDuplicateOf = JSON.parse(fs.readFileSync(filePath, 'utf-8')).duplicateOf; } catch { onDiskDuplicateOf = undefined; }
+    if (newData.duplicateOf !== onDiskDuplicateOf) {
+      const { detectDuplicateOfClearedContradiction, retractDuplicateOfCleared } = require('./duplicate-of-cleared-contradiction');
+      let target = null;
+      try {
+        target = JSON.parse(fs.readFileSync(path.join(path.dirname(filePath), path.basename(newData.duplicateOf)), 'utf-8'));
+      } catch { /* unreadable/missing target: not provably the same URL, leave it */ }
+      const hit = detectDuplicateOfClearedContradiction({ review: newData, target });
+      if (hit.contradicted) {
+        console.warn(`[review-write-guard] ${path.basename(filePath)} sets duplicateOf=${newData.duplicateOf} (same URL) while carrying a stale _duplicateOfCleared — retracting the breadcrumb with a provenance stamp (BRO-3470)`);
+        retractDuplicateOfCleared(newData, hit);
+      }
+    }
+  }
+
   // BRO-4406 cloned-excerpt guard: an aggregator excerpt lives on ONE file per
   // show+outlet. A writer that matched an aggregator row to a file by outlet
   // alone (or a web-search record that copied the excerpt into its own text)

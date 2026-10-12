@@ -93,6 +93,8 @@ Usage:
 const {
   chooseCanonicalForRebuild, isScoreable,
 } = require('./fix-circular-duplicate-pairs');
+const { pickGroupCanonical } = require('./lib/group-canonical');
+const { hasDuplicateOfClearedValue } = require('./lib/duplicate-of-cleared-contradiction');
 
 const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
 const AUDIT_PATH = path.join(__dirname, '..', 'data', 'audit', 'same-url-different-text.json');
@@ -272,6 +274,13 @@ function hasContestedCycleClear(datas) {
     && CYCLE_CLEAR_BREADCRUMB_PATTERNS.some(p => d.duplicateClearReason.includes(p)));
 }
 
+function minPairJaccard(datas) {
+  let minJ = 1;
+  const texts = datas.map(d => (d && d.fullText) || '');
+  for (let i = 0; i < texts.length; i++) for (let j = i + 1; j < texts.length; j++) { const s = jaccard(texts[i], texts[j]); if (s < minJ) minJ = s; }
+  return Number(minJ.toFixed(2));
+}
+
 function walkShowDirs(root) {
   if (!fs.existsSync(root)) return [];
   return fs.readdirSync(root, { withFileTypes: true })
@@ -310,6 +319,12 @@ function audit() {
     }
     for (const members of Object.values(groups)) {
       if (members.length < 2) continue;
+      // A person (or the 2026-04 heal) recorded "two critics, one URL, not a
+      // duplicate" on a member: never collapse that group. fix() writes
+      // force:true, and the write guard would then retract the breadcrumb, so
+      // the human verdict and the contradiction gate would both vanish
+      // (ship-check review, BRO-3470/3605). Not a triage item: skip silently.
+      if (members.some(f => { const d = load(f); return d && hasDuplicateOfClearedValue(d._duplicateOfCleared); })) continue;
       const set = new Set(members);
       // A member already carrying a LIVE duplicateOf link into this same-URL
       // group means the group is already collapsed for scoring purposes — but
@@ -384,7 +399,22 @@ function audit() {
           // (adversarial review, BRO-2391). This is the exact "genuinely
           // uncommitted cycle" case hasContestedCycleClear/the double-clear
           // repair already own — leave it for that, or a human, to resolve.
-          if (losers.some(f => !load(f).duplicateOf && pointsAt(canonName, f))) continue;
+          //
+          // BRO-3605: resolve it from ONE direction instead. Both directions
+          // compute the same order-independent pick over the same cycle set,
+          // so only the winner's pass queues it (no self-reversal). Only when
+          // the texts are cohesive (the same article twice, never two
+          // different reviews), and not when the pick is skip/intransitive.
+          // Always exactly 2 members: canonName has duplicateOf null, so
+          // pointsAt(canonName, f) can only match its ONE duplicateTextOf.
+          // The one-direction argument depends on that.
+          const cyclePartners = losers.filter(f => !load(f).duplicateOf && pointsAt(canonName, f));
+          if (cyclePartners.length) {
+            const cycle = [canonName, ...cyclePartners];
+            if (!isCohesiveGroup(cycle.map(load))) continue;
+            const pick = pickGroupCanonical(cycle, (a, b) => chooseCanonicalForRebuild(a, load(a), b, load(b), showDir));
+            if (pick.canonical !== canonName) continue;
+          }
           // No `siblings`: this whole group is already a same-URL cluster
           // (grouped by normalizeUrl above), which planCanonicalPointerClear's
           // own docs treat as sufficient proof a pointer into it is a cycle —
@@ -430,20 +460,20 @@ function audit() {
         // `c.canonical` here would ignore that safety verdict and could
         // unsuppress a known wrong-production review — Codex adversarial
         // review, card #1907. Abort the WHOLE group on any skip.
-        let canonName = incl[0];
-        let skipped = false;
-        for (let i = 1; i < incl.length; i++) {
-          const c = chooseCanonicalForRebuild(canonName, load(canonName), incl[i], load(incl[i]), showDir);
-          if (c.skip) { skipped = true; break; }
-          canonName = c.canonical;
+        // BRO-3402: pick order-independently (the comparator is not
+        // transitive, so a running fold's survivor depended on readdir order).
+        const pick = pickGroupCanonical(incl, (a, b) => chooseCanonicalForRebuild(a, load(a), b, load(b), showDir));
+        if (pick.skip) continue;
+        if (pick.intransitive) {
+          // No member beats every other: nothing defensible to hide. Report it
+          // for triage instead of letting file order choose who disappears.
+          different.push({ showId, members: incl, minJaccard: minPairJaccard(datas), reason: 'no-consistent-canonical' });
+          continue;
         }
-        if (skipped) continue;
+        const canonName = pick.canonical;
         cohesive.push({ showId, canonical: canonName, losers: incl.filter(f => f !== canonName) });
       } else {
-        let minJ = 1;
-        const texts = datas.map(d => (d && d.fullText) || '');
-        for (let i = 0; i < texts.length; i++) for (let j = i + 1; j < texts.length; j++) { const s = jaccard(texts[i], texts[j]); if (s < minJ) minJ = s; }
-        different.push({ showId, members: incl, minJaccard: Number(minJ.toFixed(2)) });
+        different.push({ showId, members: incl, minJaccard: minPairJaccard(datas) });
       }
     }
   }
