@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-10-12T12:16:44.564Z",
-  "processed": 3,
-  "failed": 2,
-  "successRate": "60.0%",
+  "updatedAt": "2026-10-12T12:41:38.251Z",
+  "processed": 1,
+  "failed": 39,
+  "successRate": "2.5%",
   "tierBreakdown": {
     "playwright": 2,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
@@ -14,18 +14,73 @@
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 15,
   "recentActivity": [
     {
-      "t": "2026-10-12T12:12:18.720Z",
+      "t": "2026-10-12T12:12:23.924Z",
       "event": "bb-session",
-      "session": "036a1d74",
-      "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-l"
+      "session": "44d58387",
+      "url": "https://variety.com/2024/legit/reviews/left-on-tenth-review-julianna-margulies-p"
     },
     {
-      "t": "2026-10-12T12:12:19.582Z",
+      "t": "2026-10-12T12:12:24.480Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-10-12T12:12:32.561Z",
+      "event": "bb-session",
+      "session": "e006887c",
+      "url": "https://variety.com/2024/legit/reviews/left-on-tenth-review-julianna-margulies-p"
+    },
+    {
+      "t": "2026-10-12T12:12:33.062Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-10-12T12:15:15.392Z",
+      "event": "bb-session",
+      "session": "d55f5541",
+      "url": "https://www.talkinbroadway.com/world/Illinoise.html"
+    },
+    {
+      "t": "2026-10-12T12:15:15.893Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-12T12:15:27.428Z",
+      "event": "bb-session",
+      "session": "c15e1567",
+      "url": "https://www.talkinbroadway.com/world/Illinoise.html"
+    },
+    {
+      "t": "2026-10-12T12:15:27.927Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-12T12:16:06.660Z",
+      "event": "bb-session",
+      "session": "a97e43e4",
+      "url": "https://www.usatoday.com/story/entertainment/theater/2024/09/27/cabaret-kit-kat-"
+    },
+    {
+      "t": "2026-10-12T12:16:07.138Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-10-12T12:16:25.824Z",
+      "event": "bb-session",
+      "session": "14c5c208",
+      "url": "https://www.usatoday.com/story/entertainment/theater/2024/09/27/cabaret-kit-kat-"
+    },
+    {
+      "t": "2026-10-12T12:16:26.308Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
     }
   ]
 }

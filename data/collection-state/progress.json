@@ -1,25 +1,56 @@
 {
   "processed": [
-    "hercules-west-end-2025/nytimes--matt-wolf.json",
-    "hercules-west-end-2025/british-theatre--howard-loxton.json",
-    "hercules-west-end-2025/thestage--sam-marlowe.json"
+    "deep-azure-globe-west-end-2026/thestage--dave-fargnoli.json"
   ],
   "failed": [
-    "hercules-west-end-2025/the-sun--dominic-maxwell.json",
-    "hercules-west-end-2025/times-uk--dominic-maxwell.json"
+    "harry-potter-2021/indiewire--david-ehrlich.json",
+    "book-of-mormon-2011/theatermania--david-rooney.json",
+    "book-of-mormon-2011/dailybeast--john-anderson.json",
+    "cult-of-love-2024/nypost--johnny-oleksinski.json",
+    "left-on-tenth-2024/variety--aramide-tinubu.json",
+    "illinoise-2024/guardian--adrian-horton.json",
+    "illinoise-2024/timeout--adam-feldman.json",
+    "illinoise-2024/talkinbroadway--matthew-murray.json",
+    "cabaret-2024/usatoday--charles-isherwood.json",
+    "hells-kitchen-2024/observer--rex-reed.json",
+    "hells-kitchen-2024/rollingstone--brittany-spanos.json",
+    "hells-kitchen-2024/usatoday--david-rooney.json",
+    "just-for-us-2023/wsj--charles-isherwood.json",
+    "grey-house-2023/wsj--charles-isherwood.json",
+    "fat-ham-2023/theatermania--adam-feldman.json",
+    "fat-ham-2023/usatoday--charles-isherwood.json",
+    "life-of-pi-2023/variety--aramide-tinubu.json",
+    "bob-fosses-dancin-2023/timeout--adam-feldman.json",
+    "aint-no-mo-2022/wsj--charles-isherwood.json",
+    "aint-no-mo-2022/nysr--bart-greenberg.json",
+    "aint-no-mo-2022/usatoday--charles-isherwood.json",
+    "kpop-2022/hollywood-reporter--angie-han.json",
+    "kpop-2022/hollywood-reporter--david-rooney.json",
+    "kpop-2022/wsj--charles-isherwood.json",
+    "kpop-2022/usatoday--charles-isherwood.json",
+    "kimberly-akimbo-2022/newyorker--vinson-cunningham.json",
+    "almost-famous-2022/rollingstone--kalia-richardson.json",
+    "leopoldstadt-2022/timeout--adam-feldman.json",
+    "leopoldstadt-2022/wsj--charles-isherwood.json",
+    "into-the-woods-2022/frontmezzjunkies--shannon-shyne.json",
+    "a-strange-loop-2022/hollywood-reporter--david-rooney.json",
+    "a-strange-loop-2022/usatoday--elysa-gardner.json",
+    "hangmen-2022/hollywood-reporter--david-rooney.json",
+    "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/vulture--sara-holdren.json",
+    "american-buffalo-2022/hollywood-reporter--david-rooney.json",
+    "american-buffalo-2022/usatoday--kelly-lawler.json",
+    "birthday-candles-2022/hollywood-reporter--angie-han.json",
+    "flying-over-sunset-2021/hollywood-reporter--david-rooney.json",
+    "company-2021/nysr--tulis-mccall.json"
   ],
   "failed": [],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "hercules-west-end-2025/british-theatre--howard-loxton.json",
-      "hercules-west-end-2025/thestage--sam-marlowe.json"
+      "deep-azure-globe-west-end-2026/thestage--dave-fargnoli.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/hercules-west-end-2025/nytimes--matt-wolf.json",
-      "hercules-west-end-2025/nytimes--matt-wolf.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
@@ -27,19 +58,74 @@
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-10-12T12:11:57.410Z",
-  "lastProcessed": "hercules-west-end-2025/times-uk--dominic-maxwell.json",
+  "startTime": "2026-10-12T12:07:46.605Z",
+  "lastProcessed": "company-2021/nysr--tulis-mccall.json",
   "log": [
     {
-      "t": "2026-10-12T12:12:18.720Z",
+      "t": "2026-10-12T12:12:23.924Z",
       "event": "bb-session",
-      "session": "036a1d74",
-      "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-l"
+      "session": "44d58387",
+      "url": "https://variety.com/2024/legit/reviews/left-on-tenth-review-julianna-margulies-p"
     },
     {
-      "t": "2026-10-12T12:12:19.582Z",
+      "t": "2026-10-12T12:12:24.480Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-10-12T12:12:32.561Z",
+      "event": "bb-session",
+      "session": "e006887c",
+      "url": "https://variety.com/2024/legit/reviews/left-on-tenth-review-julianna-margulies-p"
+    },
+    {
+      "t": "2026-10-12T12:12:33.062Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-10-12T12:15:15.392Z",
+      "event": "bb-session",
+      "session": "d55f5541",
+      "url": "https://www.talkinbroadway.com/world/Illinoise.html"
+    },
+    {
+      "t": "2026-10-12T12:15:15.893Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-12T12:15:27.428Z",
+      "event": "bb-session",
+      "session": "c15e1567",
+      "url": "https://www.talkinbroadway.com/world/Illinoise.html"
+    },
+    {
+      "t": "2026-10-12T12:15:27.927Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-12T12:16:06.660Z",
+      "event": "bb-session",
+      "session": "a97e43e4",
+      "url": "https://www.usatoday.com/story/entertainment/theater/2024/09/27/cabaret-kit-kat-"
+    },
+    {
+      "t": "2026-10-12T12:16:07.138Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-10-12T12:16:25.824Z",
+      "event": "bb-session",
+      "session": "14c5c208",
+      "url": "https://www.usatoday.com/story/entertainment/theater/2024/09/27/cabaret-kit-kat-"
+    },
+    {
+      "t": "2026-10-12T12:16:26.308Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
     }
   ]
 }
