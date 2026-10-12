@@ -313,6 +313,11 @@ const AUTO_FIX_PLAYBOOK = [
   { match: /^Commercial model: stored vs fresh run$/, urgency: 'this-week',
     humanAction: 'Some recoupment percentages on the site were computed before a cost or capital figure changed, so they are out of date until the model re-runs. Open Claude Code and say: "Check the stored-vs-fresh model drift and re-run the recoupment model."' },
 
+  // BRO-5156. Before the generic /^Quality:/ route, which would describe this
+  // as a scored-review-percentage drop.
+  { match: /^Quality: opening date vs review dates$/, urgency: 'this-week',
+    humanAction: 'Some shows have a stored opening date later than the date critics reviewed them, which hides real first-night reviews from the score. Open Claude Code and say: "Check the opening date vs review dates warning and fix the dates."' },
+
   { match: /^Quality:/, urgency: 'this-week',
     humanAction: 'The percentage of scored reviews has dropped. Open Claude Code and say: "Check why the scored review percentage dropped and fix it."' },
 
@@ -1151,6 +1156,30 @@ function checkQuality() {
     // appears — a time window would miss slow-burn cases (Birthright's bad
     // extraction predated the user report by 19 days). `/^Quality:/` playbook
     // route = this-week warn, not a page.
+    // BRO-5156: a stored openingDate later than the review cluster makes the
+    // ingest anticipatory gate drop real first-night reviews as "pre-opening
+    // posts" (Hercules WE 2025 lost five). Source labels ('ibdb',
+    // 'theatremonkey') were often stamped after the fact, so this asks the
+    // reviews instead. Warn only; triage with audit-opening-date-vs-reviews.js.
+    // Own playbook entry below (the generic /^Quality:/ route describes a
+    // scored-review-percentage drop, which is not what this measures).
+    runCheck('Quality: opening date vs review dates', () => {
+      const name = 'Quality: opening date vs review dates';
+      const { scanOpeningDateContradictions, loadAcks } = require('./lib/opening-date-contradiction');
+      const rtDir = path.join(DATA_DIR, 'review-texts');
+      if (!fs.existsSync(rtDir)) {
+        return { name, status: 'pass', message: 'Skipped (review-texts not checked out)' };
+      }
+      const showsData = readJSON(path.join(DATA_DIR, 'shows.json'));
+      const shows = Array.isArray(showsData) ? showsData : (showsData?.shows || []);
+      const { flagged, acked } = scanOpeningDateContradictions(shows, rtDir, loadAcks());
+      if (flagged.length > 0) {
+        const sample = flagged.slice(0, 3).map((f) => `${f.id} (stored ${f.openingDate}, reviews ${f.pressNight})`).join('; ');
+        return { name, status: 'warn', message: `${flagged.length} show(s) store an opening date later than their reviews: ${sample}`, hint: 'node scripts/audit-opening-date-vs-reviews.js; fix with a data-edit plan or --ack=<id>' };
+      }
+      return { name, status: 'pass', message: `No opening date contradicts its reviews (${acked.length} acked)` };
+    }),
+
     runCheck('Quality: star-vs-score mismatch', () => {
       const { scanReviewTexts } = require('./lib/star-score-mismatch');
       const rtDir = path.join(DATA_DIR, 'review-texts');

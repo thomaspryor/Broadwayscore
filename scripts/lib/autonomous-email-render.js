@@ -233,6 +233,7 @@ const PLAIN_HEALTH = [
   [/^Audience coverage/, () => 'Some shows have audience ratings that never linked up'],
   [/^Sync: baseline drift/, () => 'The site is showing fewer shows/reviews than yesterday'],
   [/^Sync: cast coverage/, () => 'Some shows are missing cast lists'],
+  [/^Quality: opening date vs review dates/, () => 'Some shows have an opening date later than their reviews, hiding those reviews'],
   [/^Quality: star-vs-score mismatch/, () => 'A few review scores contradict the critic\u2019s own star rating'],
   [/^Quality: corpus drift/, () => 'Some data-quality checks are drifting from their baselines'],
   [/^Commercial model drift/, () => 'The commercial (recoupment) model\u2019s estimates shifted'],
