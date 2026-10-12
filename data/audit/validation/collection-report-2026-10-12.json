@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-10-12T10:31:24.973Z",
+  "runDate": "2026-10-12T10:34:46.619Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "cosi-fan-tutte-off-broadway-2026,night-city-off-west-end-2026",
+    "showFilter": "the-car-man-west-end-2026,the-hairy-ape-irish-repertory-theatre-off-broadway-2026,human-things-off-broadway-2026,mystic-pizza-tour-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,7 +12,7 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 2,
+    "failed": 4,
     "skipped": 0,
     "successRate": "0%"
   },
@@ -28,37 +28,39 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 1,
+    "tier1Attempts": 4,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 2,
+    "tier1_5Attempts": 6,
     "tier1_5Success": 0,
     "tier1_9Attempts": 1,
-    "tier1_9Success": 1,
+    "tier1_9Success": 0,
     "tier2Attempts": 1,
-    "tier2Success": 1,
-    "tier3Attempts": 2,
-    "tier3Success": 1,
-    "tier3_6Attempts": 2,
+    "tier2Success": 0,
+    "tier3Attempts": 4,
+    "tier3Success": 0,
+    "tier3_6Attempts": 4,
     "tier3_6Success": 0,
-    "tier4Attempts": 2,
+    "tier4Attempts": 4,
     "tier4Success": 0,
-    "totalFailed": 2,
-    "scrapingBeePageCredits": 10,
+    "totalFailed": 4,
+    "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 1.2,
+    "browserbaseSessionsUsed": 6,
+    "browserbaseMinutesUsed": 3.7,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
     "processed": 0,
-    "failed": 2,
+    "failed": 4,
     "shows": [
-      "cosi-fan-tutte-off-broadway-2026",
-      "night-city-off-west-end-2026"
+      "human-things-off-broadway-2026",
+      "mystic-pizza-tour-2026",
+      "the-car-man-west-end-2026",
+      "the-hairy-ape-irish-repertory-theatre-off-broadway-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -68,14 +70,18 @@
   },
   "processed": [],
   "failed": [
-    "cosi-fan-tutte-off-broadway-2026/talkinbroadway--unknown.json",
-    "night-city-off-west-end-2026/timeout-london--unknown.json"
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--unknown.json",
+    "mystic-pizza-tour-2026/talkinbroadway--unknown.json",
+    "human-things-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-car-man-west-end-2026/bachtrack--unknown.json"
   ],
   "cumulativeResumedState": {
     "processed": [],
     "failed": [
-      "cosi-fan-tutte-off-broadway-2026/talkinbroadway--unknown.json",
-      "night-city-off-west-end-2026/timeout-london--unknown.json"
+      "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--unknown.json",
+      "mystic-pizza-tour-2026/talkinbroadway--unknown.json",
+      "human-things-off-broadway-2026/talkinbroadway--unknown.json",
+      "the-car-man-west-end-2026/bachtrack--unknown.json"
     ]
   },
   "tierDetails": {
@@ -91,11 +97,18 @@
   },
   "failuresByOutlet": {
     "Talkin' Broadway": {
-      "count": 1,
+      "count": 3,
       "domain": "talkinbroadway.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
+    },
+    "Bachtrack": {
+      "count": 1,
+      "domain": "bachtrack.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": []
