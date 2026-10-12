@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-12T22:20:58.939Z",
+  "timestamp": "2026-10-12T22:31:57.829Z",
   "stats": {
-    "totalReviews": 56112,
-    "alreadyFlagged": 20946,
-    "dateGuardCatches": 215,
+    "totalReviews": 56119,
+    "alreadyFlagged": 20945,
+    "dateGuardCatches": 217,
     "directorMismatch": 1799,
     "tvFilmSignals": 1617,
-    "londonSignals": 2208,
+    "londonSignals": 2209,
     "offBroadwaySignals": 507,
     "yearMismatch": 137,
-    "noPublishDate": 5248
+    "noPublishDate": 5250
   },
   "findings": [
     {
@@ -27483,6 +27483,24 @@
     },
     {
       "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "thereviewshub--the-reviews-hub-london.json",
+      "publishDate": "2022-10-20",
+      "url": "https://www.thereviewshub.com/my-neighbour-totoro-barbican-london/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 575d before show (2022-10-20 vs 2024-05-17)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
       "file": "thestage--sam-marlowe.json",
       "score": 100,
       "publishDate": "October 19th, 2022",
@@ -45845,6 +45863,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2018 (2x) more than 2026 (0x). 2018 matches production: to-kill-a-mockingbird-2018"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 82,
+      "publishDate": "2023-02-07",
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
         }
       ]
     },
