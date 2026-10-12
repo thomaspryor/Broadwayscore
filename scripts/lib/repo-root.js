@@ -7,7 +7,7 @@
 // runner or a cloud container, and anything that mkdir -p'd under it created a
 // stray partial tree there. That stray tree then fooled existsSync()-based
 // "am I on the Mac?" checks (bsc-next/linear-next refused every acceptance path
-// as phantom, 15 red tests in cloud). tests/unit/hardcoded-repo-path.test.mjs
+// as phantom, 15 red tests in cloud). tests/unit/hardcoded-broadwayscore-path.test.mjs
 // fails if the literal appears anywhere else.
 //
 // Resolution order for MAIN_REPO_ROOT:

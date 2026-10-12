@@ -204,9 +204,8 @@ async function main(argv = process.argv.slice(2)) {
   // removed: the Notion mirror froze 2026-08-20 (CLAUDE.md section 6), so it
   // could only ever re-surface stale frozen cards, and it kept a live
   // schedule (data-health-check.yml) coupled to the retired board.
-  // `doneCards` stays as an (empty) bucket so selectRecheckTargets' Done vs
-  // Paused budget split is unchanged; every Linear candidate is the
-  // "awaiting a promised recheck" class the Paused-reserved half protects.
+  // `doneCards` stays as an (empty) bucket; with it empty the Paused share
+  // below widens to the whole limit so the nightly slots are not halved.
   const doneCards = [];
   let pausedCards = [];
   // fetchLinearRecheckCandidates never throws; this try/catch is a backstop
@@ -282,7 +281,8 @@ async function main(argv = process.argv.slice(2)) {
   // still gets a meaningful, bounded share for its own regression-checking job.
   const pausedTargets = selectFrom(pausedCards);
   const doneTargets = selectFrom(doneCards);
-  const pausedShare = Math.min(pausedTargets.length, Math.ceil(limit / 2));
+  // An empty Done bucket gives Paused every slot (BRO-3488 left Done empty).
+  const pausedShare = Math.min(pausedTargets.length, doneTargets.length ? Math.ceil(limit / 2) : limit);
   const seen = new Set();
   const targets = [];
   for (const t of [...pausedTargets.slice(0, pausedShare), ...doneTargets]) {
