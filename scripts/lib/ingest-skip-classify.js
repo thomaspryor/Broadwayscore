@@ -158,6 +158,8 @@ const EXPECTED_REJECTION_REASONS = [
   'listing-page-url',
   // BRO-4458: Google /goto redirect or cache/AMP wrapper, no fetchable article.
   'unresolvable-redirect-url',
+  // BRO-3410: URL is in the show's _blocklist.json; an operator deleted it on purpose.
+  'blocklisted-url',
   // A caller's onMerge hook aborted the merge (review-file-writer.js:752).
   // The caller decided not to write; that is its prerogative, not a data
   // disagreement. Lower-cased here because classifyIngestSkip lower-cases the
@@ -292,6 +294,9 @@ function describeSkip(showId, url, { reason, detail }) {
   }
   if (reason === 'cross-market') {
     return `${showId}: ${url} was refused by the cross-market guard — expected rejection, no action needed unless this outlet really does cover this market (then fix its region in data/outlet-registry.json).`;
+  }
+  if (reason === 'blocklisted-url') {
+    return `${showId}: ${url} is in this show's _blocklist.json, so the write was refused. Expected rejection: an operator deleted it on purpose; remove the entry (scripts/block-review.js) only if the review really belongs to this production.`;
   }
   if (reason === 'listing-page-url') {
     return `${showId}: ${url} is a section or index page, not an article, so it was refused. Expected rejection: find the outlet's own article URL for this review and ingest that instead.`;
