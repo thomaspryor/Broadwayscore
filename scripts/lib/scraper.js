@@ -42,6 +42,14 @@ const { consultScrapingdog, getScrapingdogCapStats } = require('./scrapingdog-ca
 const { creditsFor } = require('./provider-credits');
 const { usdFor } = require('./provider-pricing');
 const { fallbackFromLabel } = require('./fallback-attribution');
+const { createRunMemo } = require('./scraper-run-memo');
+
+// BRO-4296: paid tiers that keep failing on a host in THIS process are skipped
+// for the rest of it (see scraper-run-memo.js for the counting rule).
+// Kill switch: SCRAPER_RUN_MEMO_DISABLED=true.
+const RUN_MEMO_DISABLED = process.env.SCRAPER_RUN_MEMO_DISABLED === 'true';
+let _runMemo = createRunMemo();
+const _RUN_MEMO_RECORDERS = { scrapingdog: recordSdCall, brightdata: recordBdCall, scrapingbee: recordSbCall };
 
 // --- Domain-tier-skip: skip providers known to fail for specific domains ---
 // Sourced from collect-review-texts.js empirical data (30K+ collection results).
@@ -839,7 +847,9 @@ async function fetchScrapingdogYouTube(kind, videoId, options = {}) {
  * Fetch page using ScrapingBee API (HTML output)
  */
 async function fetchWithScrapingBee(url, options = {}) {
+  const onSkip = typeof options.onSkip === 'function' ? options.onSkip : () => {};
   if (!SCRAPINGBEE_KEY || _scrapingBeePageExhausted) {
+    onSkip('sb-unavailable');
     return null;
   }
 
@@ -855,6 +865,7 @@ async function fetchWithScrapingBee(url, options = {}) {
   // resolves — acceptable, matches the SD pattern exactly.
   checkScrapingBeeCredits();
   if (_sbCreditsLow) {
+    onSkip('sb-credits-low');
     return null;
   }
 
@@ -882,6 +893,7 @@ async function fetchWithScrapingBee(url, options = {}) {
       console.log(`  ⚠️  SB credit budget exhausted (${_scraperStats.sbCredits}/${SB_CREDIT_BUDGET}) — skipping SB for remaining requests`);
     }
     _scraperStats.sbBudgetExceeded = true;
+    onSkip('sb-budget');
     return null;
   }
 
@@ -1350,6 +1362,11 @@ async function fetchPage(url, options = {}) {
   const isPublicSite = _isPlaywrightFirstDomain(url);
   const isBroadwayWorld = url.includes('broadwayworld.com');
   const skips = _getDomainSkips(url);
+  let memoHost = null;
+  try { memoHost = new URL(url).hostname.replace(/^www\./, ''); } catch { /* malformed: no memo */ }
+  if (!RUN_MEMO_DISABLED && memoHost) {
+    for (const tier of _runMemo.skippedTiers(memoHost)) skips.add(tier);
+  }
   const cookieDomain = hasCookiesForUrl(url);
 
   console.log(`Fetching: ${url}`);
@@ -1504,15 +1521,18 @@ async function fetchPage(url, options = {}) {
       }
       return null;
     },
-    scrapingbee: async (fallbackFrom) => {
+    scrapingbee: async (fallbackFrom, onSkip) => {
       // Live re-check (see the comment above `chain`): the exact same
       // condition pageChainOrder was given, re-evaluated now instead of
       // trusting the snapshot from before the earlier tiers' awaits.
       if (!(SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded && !_scrapingBeePageExhausted)) {
+        onSkip(_scraperStats.sbBudgetExceeded ? 'sb-budget'
+             : _sbCreditsLow ? 'sb-credits-low'
+             : 'sb-unavailable');
         return null;
       }
       console.log('  → Trying ScrapingBee...');
-      const raw = await fetchWithScrapingBee(url, { ...options, fallbackFrom });
+      const raw = await fetchWithScrapingBee(url, { ...options, fallbackFrom, onSkip });
       if (raw) {
         const checked = _checkAndReturn(raw, 'ScrapingBee');
         if (checked) return checked;
@@ -1544,14 +1564,41 @@ async function fetchPage(url, options = {}) {
   // the counter-delta version of this was wrong). Telemetry only: no tier
   // reads `fallbackFrom`, and every tier still returns exactly what it did.
   let fallbackFrom = null;
+  const outcomes = [];
   for (const tierName of chain) {
     let skipReason = null;
     const result = await tiers[tierName](fallbackFrom, (reason) => { skipReason = reason; });
-    if (result) return result;
+    outcomes.push({ tier: tierName, attempted: skipReason === null, ok: !!result });
+    if (result) {
+      _recordRunMemo(memoHost, outcomes);
+      return result;
+    }
     fallbackFrom = fallbackFromLabel(tierName, { skipReason });
   }
 
   throw new Error('All scraping methods failed');
+}
+
+/**
+ * BRO-4296: feed one fetchPage chain into the run memo; log and write one
+ * ledger row per newly latched (host, tier). Never throws into the scrape.
+ */
+function _recordRunMemo(host, outcomes) {
+  if (RUN_MEMO_DISABLED || !host) return;
+  try {
+    for (const { tier, failures } of _runMemo.recordOutcome(host, outcomes)) {
+      console.log(`  ⏭️  run memo: ${tier} failed ${failures}x on ${host} while a later tier succeeded — skipping it for the rest of this run`);
+      const record = _RUN_MEMO_RECORDERS[tier];
+      if (record) record({ host, fn: 'run-memo-skip', success: false, status: 'run-memo-skip', credits: 0 });
+    }
+  } catch (err) {
+    console.warn(`[scraper] run memo error (ignored): ${err.message}`);
+  }
+}
+
+// Test seam (BRO-4296): fresh memo between tests. Never used by production code.
+function __resetRunMemoForTest() {
+  _runMemo = createRunMemo();
 }
 
 /**
@@ -2078,6 +2125,7 @@ module.exports = {
   PLAYWRIGHT_TIER_DEADLINE_MS,
   PLAYWRIGHT_IDLE_CLOSE_MS,
   __setChromiumForTest,
+  __resetRunMemoForTest,
   isChallengeOrGarbage: _isChallengeOrGarbage,
   cleanup,
   domainMatchesExpected,

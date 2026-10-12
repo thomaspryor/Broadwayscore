@@ -50,6 +50,9 @@ const SKIP_REASONS = new Set([
   'sd-budget',       // per-run SD_CREDIT_BUDGET spent
   'sd-unavailable',  // flag off / no API key
   'bd-budget',       // Bright Data daily cap (consultBrightData)
+  'sb-unavailable',  // no key, or the reactive 401/403/429 page latch (BRO-4296)
+  'sb-credits-low',  // account credits low (checkScrapingBeeCredits)
+  'sb-budget',       // per-run SB_CREDIT_BUDGET spent
 ]);
 
 /**
