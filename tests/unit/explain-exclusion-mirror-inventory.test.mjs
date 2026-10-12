@@ -59,6 +59,11 @@ const INVENTORY = {
   // counts those files in a diagnostic), so the matching-human-clear lift of a
   // stale invalid tier exists on the mirror side alone.
   invalidTierClearedByHuman: 'mirror-only: rebuild never gates on contentTier invalid (only a diagnostic count), so the human-clear lift is mirror-side (2026-10-12)',
+  evaluateDirectorGuard: 'live',
+  evaluateLateDateGuard: 'live',
+  evaluateUrlYearGuard: 'live',
+  getMultiProdGuards: 'mirror-only: lazy shows.json cache feeding the three guards above; the rebuild builds the same maps itself with buildMultiProdYearGuard/buildMultiProdDirectorGuard (BRO-3179, 2026-10-12)',
+  wrongProductionClearLiftsInvalidTier: 'mirror-only: rebuild never gates on contentTier invalid, same as invalidTierClearedByHuman; a garbage tier is no longer lifted by a wrongProduction clear (BRO-3584, 2026-10-12)',
   isLikelyStaleWrongShow: 'mirror-only: heuristic (~75% precision) deferred to clear-stale-wrong-show-flags.js; 48 matching files, 0 verdict changes (2026-10-12)',
 };
 

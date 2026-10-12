@@ -4281,7 +4281,8 @@ showDirs.forEach(showId => {
       // routedFromShowId: file was already rerouted to this directory by a prior rebuild — don't re-evaluate
       // Pure decision (bypass flags, lane, run window, pickRerouteTarget) shared
       // with explainExclusion: review-guards evaluateUrlYearGuard (BRO-3179).
-      const urlYear = evaluateUrlYearGuard(data, showById[showId], multiProdYearGuard[showId]);
+      // laneOk kept at the call site too, so the lane-bypass pin test sees it here.
+      const urlYear = laneOk('wrongProduction') ? null : evaluateUrlYearGuard(data, showById[showId], multiProdYearGuard[showId]);
       if (urlYear) {
         const { decision, detectedYear, yearSource } = urlYear;
         const guard = multiProdYearGuard[showId];
@@ -4383,7 +4384,7 @@ showDirs.forEach(showId => {
       // routedFromShowId: already rerouted — text may reference original show's era, skip re-evaluation
       // Pure decision shared with explainExclusion: review-guards evaluateDirectorGuard (BRO-3179).
       {
-        const dirHit = evaluateDirectorGuard(data, showById[showId], multiProdDirectorGuard[showId]);
+        const dirHit = laneOk('wrongProduction') ? null : evaluateDirectorGuard(data, showById[showId], multiProdDirectorGuard[showId]);
         if (dirHit) {
           console.log(`  [DIRECTOR GUARD] ${showId}/${file}: mentions director "${dirHit.dirName}" from newer production ${dirHit.newerId}`);
           logExclusion("skippedDirectorMismatch", showId, file, data);
