@@ -28,7 +28,7 @@ function buildDispatchSignature({ conditionKey, title, description = '', exp, se
 /**
  * Build a full signed URL for the dispatch action. exp is a unix timestamp
  * in SECONDS (integer). title/description are truncated to keep the URL and
- * the eventual Notion card bounded.
+ * the eventual Linear issue bounded.
  */
 function buildDispatchUrl({ conditionKey, title, description = '', exp, secret, baseUrl }) {
   const clippedTitle = String(title).slice(0, 140);
@@ -65,35 +65,10 @@ function verifyDispatchSignature({ conditionKey, title, description = '', exp, s
   }
 }
 
-// Statuses that count as "still open" on their own — a card in either state
-// means a session is already working the issue (or about to), so a repeat
-// tap is a no-op. 'Done'/'Paused' cards are resolved: a fresh tap should be
-// allowed to open a new one (mirrors owner-alert-router's resolveCondition()
-// semantics — a recurred condition is a NEW incident).
-const OPEN_STATUSES = new Set(['Not started', 'In progress']);
-
-/**
- * Pick the first still-open card from a list of Notion page summaries
- * already filtered (by the caller's Notion query) to ones whose Notes
- * mention this conditionKey. Pure so the "second click is a no-op" decision
- * is unit-testable without a live Notion query.
- *
- * A card is open if EITHER its Status is Not-started/In-progress, OR its
- * Action property is still set — not Status alone. scripts/notion-action-poll.js
- * only ever looks at Action (`Action is-not-empty`, see getActionableCards())
- * and never reads Status at all, so a card manually flipped to Status=Paused
- * while Action=Fix is still set will STILL be picked up and run by the
- * poller's next tick. Treating Paused-with-Action-set as "resolved" here
- * (ship-check adversarial finding, codex 2026-07-30) would let a second tap
- * file a SECOND Fix card for the same condition — now two pipelines running
- * concurrently on one issue. action is cleared by clearAction() exactly when
- * a card's work is actually done (success or 3-strikes give-up), so
- * `action != null` is the more correct "still pending" signal.
- */
-function selectOpenDispatchCard(candidates) {
-  if (!Array.isArray(candidates)) return null;
-  return candidates.find(c => c && (OPEN_STATUSES.has(c.status) || (c.action != null && c.action !== ''))) || null;
-}
+// The "is this condition already being worked?" dedupe now lives with the
+// route: src/lib/linear-dispatch-issue.js pickCanonicalIssue (BRO-4718). The
+// Notion-card selectOpenDispatchCard that used to sit here was removed with
+// the Notion dispatch path.
 
 /**
  * Attach a signed Fix-this URL to every ERROR row of a health-digest
@@ -107,7 +82,7 @@ function selectOpenDispatchCard(candidates) {
  * conditionKey convention (`health-check:${name}`) matches health-check.js's
  * own routeAlert() call, so a tap on an issue that already auto-dispatched
  * lands on the SAME open card instead of filing a duplicate (see
- * handleDispatch's Notion dedup query in api/autonomous-action/route.ts).
+ * handleDispatch's Linear dedup query in api/autonomous-action/route.ts).
  *
  * Returns the number of rows given a URL. Missing secret/baseUrl returns 0
  * and attaches nothing rather than throwing: the morning digest must still
@@ -148,7 +123,5 @@ module.exports = {
   buildDispatchSignature,
   buildDispatchUrl,
   verifyDispatchSignature,
-  selectOpenDispatchCard,
   attachHealthFixUrls,
-  OPEN_STATUSES,
 };

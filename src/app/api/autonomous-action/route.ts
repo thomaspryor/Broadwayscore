@@ -1,5 +1,13 @@
 import { NextRequest } from 'next/server';
 import crypto from 'crypto';
+import {
+  TEAM_KEY,
+  TERMINAL_STATE_TYPES,
+  buildDispatchIssue,
+  conditionAnchor,
+  pickCanonicalIssue,
+  pickTodoState,
+} from '@/lib/linear-dispatch-issue';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -18,40 +26,104 @@ function sanitize(input: string, maxLen = 200): string {
   return input.replace(/[<>&]/g, '').slice(0, maxLen);
 }
 
-const NOTION_BASE = 'https://api.notion.com/v1';
+// ── Linear (BRO-4718) ──────────────────────────────────────────────────────
+// The "Fix this" tap files a Linear issue in Todo, where the dispatchers
+// (linear-next.js on the Mac, the cloud worker routine) pick up work. It used
+// to create a Notion card for scripts/notion-action-poll.js, whose launchd job
+// was disabled 2026-08-30: the owner tapped and nothing happened.
+// Raw GraphQL because this route cannot require scripts/lib/linear-client.js
+// (CommonJS outside src/); the issue body and dedupe anchor live in
+// src/lib/linear-dispatch-issue.js, drift-tested against scripts/lib.
+const LINEAR_API_URL = 'https://api.linear.app/graphql';
 
-async function notionApi(
-  path: string,
-  method: string,
-  apiKey: string,
-  body?: object,
-  notionVersion = '2022-06-28'
-): Promise<{ ok: boolean; status: number; json: Record<string, unknown> }> {
-  const res = await fetch(`${NOTION_BASE}${path}`, {
-    method,
-    headers: {
-      'Authorization': `Bearer ${apiKey}`,
-      'Notion-Version': notionVersion,
-      'Content-Type': 'application/json',
-    },
-    body: body ? JSON.stringify(body) : undefined,
+interface LinearCandidate {
+  id: string;
+  identifier: string;
+  url: string;
+  createdAt: string;
+  stateType: string;
+}
+
+async function linearGraphql(apiKey: string, query: string, variables: Record<string, unknown>): Promise<Record<string, unknown>> {
+  const res = await fetch(LINEAR_API_URL, {
+    method: 'POST',
+    headers: { 'Authorization': apiKey, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query, variables }),
   });
-  let json: Record<string, unknown> = {};
+  let json: { data?: Record<string, unknown>; errors?: Array<{ message?: string }> } = {};
   try {
     json = await res.json();
   } catch {
-    // non-JSON body; leave empty
+    // non-JSON body; handled below
   }
-  return { ok: res.ok, status: res.status, json };
+  if (!res.ok || json.errors?.length || !json.data) {
+    const msg = json.errors?.map(e => e.message).join('; ') || `HTTP ${res.status}`;
+    throw new Error(`Linear GraphQL failed: ${msg.slice(0, 200)}`);
+  }
+  return json.data;
 }
 
-const VALID_ACTIONS = ['approve', 'reject', 'revert'] as const;
-type AutoAction = (typeof VALID_ACTIONS)[number];
+// Open issues on the team whose description carries this condition's anchor.
+// owner-alert-router.js writes the same anchor, so this also finds an issue the
+// automatic health-check path already filed; a tap then lands on that issue.
+async function queryConditionIssues(conditionKey: string, apiKey: string): Promise<LinearCandidate[]> {
+  const data = await linearGraphql(apiKey,
+    `query($teamKey: String!, $anchor: String!, $terminal: [String!]) {
+      issues(first: 50, filter: { team: { key: { eq: $teamKey } }, description: { contains: $anchor }, state: { type: { nin: $terminal } } }) {
+        nodes { id identifier url createdAt state { type } }
+      }
+    }`,
+    { teamKey: TEAM_KEY, anchor: conditionAnchor(conditionKey), terminal: TERMINAL_STATE_TYPES });
+  const nodes = ((data.issues as { nodes?: Array<Record<string, unknown>> } | undefined)?.nodes) || [];
+  return nodes.map(n => ({
+    id: String(n.id),
+    identifier: String(n.identifier || ''),
+    url: String(n.url || ''),
+    createdAt: String(n.createdAt || ''),
+    stateType: String((n.state as { type?: string } | undefined)?.type || ''),
+  }));
+}
 
-// GET never mutates: mail-security link scanners and preview fetchers open
-// every URL in an email, so a state-changing GET would let a robot approve
-// overnight work (ship-check P0, 2026-07-13). GET validates the signed link
-// and renders a one-button confirm form; the POST it submits does the write.
+async function createConditionIssue(
+  { conditionKey, title, description }: { conditionKey: string; title: string; description: string },
+  apiKey: string
+): Promise<LinearCandidate> {
+  const teamData = await linearGraphql(apiKey,
+    'query($teamKey: String!) { teams(filter: { key: { eq: $teamKey } }) { nodes { id states { nodes { id name type } } } } }',
+    { teamKey: TEAM_KEY });
+  const team = ((teamData.teams as { nodes?: Array<{ id: string; states?: { nodes?: Array<{ id: string; name: string; type: string }> } }> } | undefined)?.nodes || [])[0];
+  if (!team) throw new Error(`Linear team ${TEAM_KEY} not found`);
+  const todo = pickTodoState(team.states?.nodes || []);
+  if (!todo) throw new Error(`Linear team ${TEAM_KEY} has no unstarted (Todo) state`);
+  const issue = buildDispatchIssue({ conditionKey, title, description });
+  const created = await linearGraphql(apiKey,
+    `mutation($input: IssueCreateInput!) {
+      issueCreate(input: $input) { success issue { id identifier url createdAt state { type } } }
+    }`,
+    { input: { teamId: team.id, stateId: todo.id, title: issue.title, description: issue.description, priority: issue.priority } });
+  const payload = created.issueCreate as { success?: boolean; issue?: Record<string, unknown> } | undefined;
+  if (!payload?.success || !payload.issue) throw new Error('Linear issueCreate returned no issue');
+  const n = payload.issue;
+  return {
+    id: String(n.id),
+    identifier: String(n.identifier || ''),
+    url: String(n.url || ''),
+    createdAt: String(n.createdAt || ''),
+    stateType: String((n.state as { type?: string } | undefined)?.type || ''),
+  };
+}
+
+// Archives the losing issue from a create-time race (double tap, or the link
+// opened in two tabs). Failure is logged, never surfaced: worst case is a
+// harmless duplicate issue, not a broken tap.
+async function archiveIssue(id: string, apiKey: string): Promise<void> {
+  try {
+    await linearGraphql(apiKey, 'mutation($id: String!) { issueArchive(id: $id) { success } }', { id });
+  } catch (err) {
+    console.error(`Failed to archive duplicate dispatch issue ${id}:`, (err as Error).message);
+  }
+}
+
 export async function GET(req: NextRequest): Promise<Response> {
   return handle(req, 'GET');
 }
@@ -61,383 +133,24 @@ export async function POST(req: NextRequest): Promise<Response> {
 }
 
 async function handle(req: NextRequest, method: 'GET' | 'POST'): Promise<Response> {
-  const searchParams = req.nextUrl.searchParams;
-  // "Fix this" digest buttons (card #634): a separate action with its own
-  // param shape (conditionKey+title, no existing card/branch — the card
-  // doesn't exist yet, it gets created on click) and its own HMAC message —
-  // handle it before the approve/reject/revert path below, which requires
-  // card+branch.
-  if (searchParams.get('action') === 'dispatch') {
+  if (req.nextUrl.searchParams.get('action') === 'dispatch') {
     return handleDispatch(req, method);
   }
-  const card = searchParams.get('card');
-  const branch = searchParams.get('branch');
-  const action = searchParams.get('action');
-  const exp = searchParams.get('exp');
-  const sig = searchParams.get('sig');
-  const reason = sanitize(searchParams.get('reason') || 'owner tap');
-
-  const html = (title: string, body: string, status = 200) =>
-    new Response(htmlPage(title, body), { status, headers: { 'Content-Type': 'text/html' } });
-
-  if (!card || !branch || !action || !exp || !sig) {
-    return html('Invalid Link',
-      '<h1>Invalid Link</h1><p>This action link is incomplete or malformed.</p>', 400);
-  }
-
-  if (!(VALID_ACTIONS as readonly string[]).includes(action)) {
-    return html('Invalid Link',
-      '<h1>Invalid Link</h1><p>This action link requests an unknown action.</p>', 400);
-  }
-  const autoAction = action as AutoAction;
-
-  const expMs = parseInt(exp) * 1000;
-  if (isNaN(expMs) || Date.now() > expMs) {
-    return html('Link Expired',
-      '<h1>Link Expired</h1><p>This action link has expired — nothing was changed.</p>' +
-      '<p><a href="https://broadwayscorecard.com">Back to Broadway Scorecard</a></p>', 410);
-  }
-
-  const secret = process.env.APPROVAL_HMAC_SECRET;
-  if (!secret) {
-    return html('Configuration Error',
-      '<h1>Server Error</h1><p>The autonomous-action system is not configured. Please contact the admin.</p>', 500);
-  }
-
-  // HMAC message must match scripts/lib/autonomous-links.js — change them together.
-  const expected = crypto
-    .createHmac('sha256', secret)
-    .update(`auto:${autoAction}:${card}:${branch}:${exp}`)
-    .digest('hex');
-
-  let sigValid = false;
-  // Require exactly 64 lowercase hex chars: Buffer.from(_, 'hex') silently
-  // TRUNCATES at the first non-hex char, so "<validsig>JUNK" would otherwise
-  // decode back to the valid signature and pass (ship-check 2026-07-13).
-  if (/^[0-9a-f]{64}$/.test(sig)) {
-    try {
-      const sigBuf = Buffer.from(sig, 'hex');
-      const expectedBuf = Buffer.from(expected, 'hex');
-      sigValid = sigBuf.length === expectedBuf.length &&
-        crypto.timingSafeEqual(sigBuf, expectedBuf);
-    } catch {
-      // invalid hex
-    }
-  }
-  if (!sigValid) {
-    return html('Invalid Link',
-      '<h1>Invalid Link</h1><p>This action link could not be verified.</p>', 403);
-  }
-
-  // Valid signed link opened in a browser: show the one-tap confirm form.
-  // Only the POST it submits mutates anything.
-  if (method === 'GET') {
-    const verb = autoAction === 'approve' ? 'Approve' : autoAction === 'reject' ? 'Reject' : 'Revert';
-    const color = autoAction === 'approve' ? '#16a34a' : '#dc2626';
-    const qs = new URLSearchParams({ card, branch, action: autoAction, exp, sig });
-    if (reason) qs.set('reason', reason);
-    return html(`Confirm ${verb}`,
-      `<h1>Confirm ${verb}</h1><p>${sanitize(branch, 100)}</p>` +
-      `<form method="POST" action="/api/autonomous-action?${qs.toString()}">` +
-      `<button type="submit" style="background:${color};color:#fff;border:0;font-size:17px;font-weight:700;padding:14px 36px;border-radius:10px;">${verb}</button>` +
-      `</form>`);
-  }
-
-  const notionKey = process.env.NOTION_API_KEY;
-  if (!notionKey) {
-    return html('Configuration Error',
-      '<h1>Server Error</h1><p>Notion integration is not configured. Please contact the admin.</p>', 500);
-  }
-
-  // Read the card's current automation state (Auto select property).
-  let currentState: string | null = null;
-  try {
-    const page = await notionApi(`/pages/${encodeURIComponent(card)}`, 'GET', notionKey);
-    if (!page.ok) {
-      console.error(`Notion GET page failed: ${page.status}`);
-      return html('Update Failed',
-        '<h1>Could Not Update the Card</h1><p>Tap the link again in a minute.</p>', 502);
-    }
-    const props = page.json.properties as Record<string, { select?: { name?: string } | null }> | undefined;
-    currentState = props?.Auto?.select?.name ?? null;
-  } catch (err) {
-    console.error('Notion GET page error:', (err as Error).message);
-    return html('Update Failed',
-      '<h1>Could Not Update the Card</h1><p>Tap the link again in a minute.</p>', 502);
-  }
-
-  const backLink = '<p><a href="https://broadwayscorecard.com">Back to Broadway Scorecard</a></p>';
-  const safeState = sanitize(currentState ?? 'none', 50);
-
-  const patchAuto = async (name: string): Promise<boolean> => {
-    try {
-      const res = await notionApi(`/pages/${encodeURIComponent(card)}`, 'PATCH', notionKey, {
-        properties: { Auto: { select: { name } } },
-      });
-      if (!res.ok) console.error(`Notion PATCH failed: ${res.status}`);
-      return res.ok;
-    } catch (err) {
-      console.error('Notion PATCH error:', (err as Error).message);
-      return false;
-    }
-  };
-
-  // Dispatch autonomous-merge.yml (Sprint 3). Returns whether the dispatch
-  // itself succeeded — callers must not treat a dispatch failure as fatal,
-  // since the underlying state (approved / still merged) is already correct
-  // either way; the owner can re-tap or the next nightly run will surface it.
-  const dispatchMergeWorkflow = async (mergeAction: 'approve' | 'revert'): Promise<boolean> => {
-    const ghToken = process.env.GH_DISPATCH_TOKEN;
-    const repo = process.env.GITHUB_REPO || 'thomaspryor/Broadwayscore';
-    if (!ghToken) return false;
-    try {
-      const res = await fetch(
-        `https://api.github.com/repos/${repo}/actions/workflows/autonomous-merge.yml/dispatches`,
-        {
-          method: 'POST',
-          headers: {
-            'Authorization': `token ${ghToken}`,
-            'User-Agent': 'BroadwayScorecard-AutonomousAction',
-            'Content-Type': 'application/json',
-            'Accept': 'application/vnd.github.v3+json',
-          },
-          body: JSON.stringify({ ref: 'main', inputs: { card_id: card, branch, action: mergeAction } }),
-        }
-      );
-      if (!res.ok) console.error(`Merge dispatch (${mergeAction}) failed: ${res.status} ${(await res.text()).slice(0, 200)}`);
-      return res.ok;
-    } catch (err) {
-      console.error(`Merge dispatch (${mergeAction}) error:`, (err as Error).message);
-      return false;
-    }
-  };
-
-  if (autoAction === 'approve') {
-    if (currentState === 'approved') {
-      return html('Already Approved',
-        '<h1>Already Approved</h1><p>This card was already approved — nothing further was changed.</p>' + backLink);
-    }
-    if (currentState === 'merged') {
-      return html('Already Merged',
-        '<h1>Already Merged</h1><p>This card has already been merged — nothing further was changed.</p>' + backLink);
-    }
-    if (currentState === 'rejected') {
-      return html('Card Was Rejected',
-        '<h1>Card Was Rejected</h1><p>This card was rejected — a fresh nightly run is needed before it can be approved.</p>' + backLink, 409);
-    }
-    if (currentState !== 'needs-approval') {
-      return html('Not Awaiting Approval',
-        `<h1>Not Awaiting Approval</h1><p>This card is not awaiting approval (state: ${safeState}).</p>` + backLink, 409);
-    }
-
-    if (!(await patchAuto('approved'))) {
-      return html('Update Failed',
-        '<h1>Could Not Update the Card</h1><p>Tap the link again in a minute.</p>', 502);
-    }
-
-    const dispatched = await dispatchMergeWorkflow('approve');
-    return html('Approved',
-      '<h1>Approved!</h1>' +
-      (dispatched
-        ? '<p>Approval recorded and the merge is underway. You\'ll see the result on the card.</p>'
-        : '<p>Approval recorded, but the merge dispatch could not be confirmed. Check the card shortly — re-tap Approve if it\'s still showing needs-approval.</p>') +
-      backLink);
-  }
-
-  if (autoAction === 'revert') {
-    if (currentState === 'reverted') {
-      return html('Already Reverted',
-        '<h1>Already Reverted</h1><p>This card was already reverted — nothing further was changed.</p>' + backLink);
-    }
-    if (currentState !== 'merged') {
-      return html('Cannot Revert',
-        `<h1>Cannot Revert</h1><p>This card is not in a revertable state (state: ${safeState}). Only merged work can be reverted.</p>` + backLink, 409);
-    }
-
-    // No pre-patch here (unlike approve): 'reverted' should only be set once
-    // the git revert actually lands — autonomous-merge.js's revert() flips
-    // Auto atomically after a successful push. A failed dispatch below just
-    // leaves the card at Auto=merged, which is still an accurate state.
-    const dispatched = await dispatchMergeWorkflow('revert');
-    return html('Revert Underway',
-      '<h1>Revert Underway</h1>' +
-      (dispatched
-        ? '<p>The revert is running now. You\'ll see the result on the card shortly.</p>'
-        : '<p>The revert dispatch could not be confirmed. Check the card shortly — re-tap Undo if it\'s still showing merged.</p>') +
-      backLink);
-  }
-
-  // autoAction === 'reject'
-  if (currentState === 'rejected') {
-    return html('Already Rejected',
-      '<h1>Already Rejected</h1><p>This card was already rejected — nothing further was changed.</p>' + backLink);
-  }
-  if (currentState !== 'needs-approval' && currentState !== 'approved') {
-    return html('Cannot Reject',
-      `<h1>Cannot Reject</h1><p>This card is not in a rejectable state (state: ${safeState}).</p>` + backLink, 409);
-  }
-
-  if (!(await patchAuto('rejected'))) {
-    return html('Update Failed',
-      '<h1>Could Not Update the Card</h1><p>Tap the link again in a minute.</p>', 502);
-  }
-
-  // Leave an audit comment on the card; comment failure is non-fatal.
-  try {
-    const res = await notionApi('/comments', 'POST', notionKey, {
-      parent: { page_id: card },
-      rich_text: [{ text: { content: `[auto] rejected via signed tap: ${reason}` } }],
-    });
-    if (!res.ok) console.error(`Notion comment failed: ${res.status}`);
-  } catch (err) {
-    console.error('Notion comment error:', (err as Error).message);
-  }
-
-  return html('Rejected',
-    '<h1>Rejected</h1><p>The branch will not merge.</p>' + backLink);
+  // approve/reject/revert (BRO-4718): those signed links were only ever built
+  // by scripts/autonomous-email.js for Notion cards in Auto=needs-approval, a
+  // state only the autonomous nightly loop set. The loop was retired
+  // 2026-07-27 and the Notion board froze 2026-08-20, so the paths that read
+  // and patched those cards (and dispatched autonomous-merge.yml) were removed.
+  // An old link gets a plain answer instead of a silent no-op.
+  return new Response(htmlPage('Link Retired',
+    '<h1>This Link Is Retired</h1><p>Approve, reject and undo links from the old overnight loop no longer do anything. Nothing was changed.</p>' +
+    '<p><a href="https://broadwayscorecard.com">Back to Broadway Scorecard</a></p>'),
+  { status: 410, headers: { 'Content-Type': 'text/html' } });
 }
 
-// ── "Fix this" digest buttons (card #634 — owner ask 2026-07-30) ───────────
-// A tap here has no existing Notion card: it creates one with the Action
-// Queue property set to 'Fix', which scripts/notion-action-poll.js (launchd,
-// polls every 5 min) already picks up hands-free via its 'Fix' pipeline
-// (Investigate → Plan → Review → Start — see PIPELINES in that file). Reuses
-// that infrastructure as-is; no poller changes needed.
-//
-// BRAIN_DATABASE_ID / DISPATCH_NOTION_VERSION MUST match
-// scripts/lib/notion-constants.js — duplicated here rather than imported
-// (this route can't require a CommonJS file outside src/), same convention
-// as the HMAC message duplication called out at the top of this file.
-const BRAIN_DATABASE_ID = 'fa7b3ff2-c073-4097-b54c-0a78e56e06b6';
-const DISPATCH_NOTION_VERSION = '2025-09-03';
-
-interface DispatchCandidate {
-  id: string;
-  url: string;
-  status: string | null;
-  action: string | null;
-  createdTime: string;
-}
-
-// The exact substring written into a card's Notes to mark which condition it
-// belongs to — ALSO what the dedup query below searches for. Quoted (not
-// bare) so `health-check:foo` never substring-matches a card actually filed
-// for `health-check:foo-bar` (ship-check adversarial finding, codex
-// 2026-07-30: Notion's rich_text `contains` filter is a plain substring
-// match with no anchoring). Phrasing MUST match buildCardNotes() in
-// scripts/lib/owner-alert-router.js (`Condition "${conditionKey}" no longer
-// fires…`, no colon) — that's the exact substring already written into every
-// card the EXISTING automatic health-check.js path files, and matching it is
-// what lets a Fix-this tap land on that same card instead of duplicating it.
-function conditionMarker(conditionKey: string): string {
-  return `Condition "${conditionKey}"`;
-}
-
-// Mirrors scripts/lib/dispatch-link.js's selectOpenDispatchCard — kept as a
-// small inline duplicate for the same reason as the constants above. See that
-// file's comment for why `action` (not just `status`) decides "still open".
-function selectOpenDispatchCard(candidates: DispatchCandidate[]): DispatchCandidate | null {
-  const OPEN = new Set(['Not started', 'In progress']);
-  return candidates.find(c => (c.status !== null && OPEN.has(c.status)) || (c.action !== null && c.action !== '')) || null;
-}
-
-// Race-safe idempotency (Sprint 0d): two near-simultaneous taps (double-tap,
-// or the same link opened in two tabs) can both pass the pre-create dedup
-// check below before either card exists. Rather than a distributed lock
-// Notion doesn't offer, the caller creates unconditionally then re-queries —
-// this picks a single, deterministic winner so both racing requests converge
-// on the SAME card regardless of read/write order.
-//
-// createdTime alone is NOT sufficient (ship-check adversarial finding, codex
-// + codebase reviewer 2026-07-31): Notion's created_time granularity can tie
-// for two cards created milliseconds apart, and the two racing requests'
-// queries aren't guaranteed to return results in the same order. A strict
-// `<` comparison on a tie means EACH request can see the OTHER as earlier —
-// both archive themselves, and zero cards survive. Comparing `id` as a
-// secondary key makes the choice a pure function of the candidate SET, not
-// of scan order, so both requests compute the identical winner.
-function pickEarliestOpenCard(candidates: DispatchCandidate[]): DispatchCandidate | null {
-  const OPEN = new Set(['Not started', 'In progress']);
-  const open = candidates.filter(c => (c.status !== null && OPEN.has(c.status)) || (c.action !== null && c.action !== ''));
-  if (!open.length) return null;
-  return open.reduce((earliest, c) => {
-    if (c.createdTime !== earliest.createdTime) return c.createdTime < earliest.createdTime ? c : earliest;
-    return c.id < earliest.id ? c : earliest;
-  });
-}
-
-// Dedup query: any card whose Notes carry this condition's marker
-// (createDispatchCard below writes it, and dispatchCard() in
-// scripts/lib/owner-alert-router.js already writes the equivalent
-// `Condition "${conditionKey}"` phrasing into every card it files — so this
-// also finds cards filed by the EXISTING automatic health-check.js path; a
-// tap on an issue that already auto-dispatched lands on that same card
-// instead of filing a duplicate). page_size 100 (Notion's max, not paginated
-// further) — plenty for a single-owner project's card volume; a real
-// pagination loop would be premature complexity here.
-async function queryDispatchCandidates(conditionKey: string, notionKey: string): Promise<DispatchCandidate[]> {
-  const res = await notionApi(`/data_sources/${BRAIN_DATABASE_ID}/query`, 'POST', notionKey, {
-    filter: { property: 'Notes', rich_text: { contains: conditionMarker(conditionKey) } },
-    sorts: [{ timestamp: 'created_time', direction: 'ascending' }],
-    page_size: 100,
-  }, DISPATCH_NOTION_VERSION);
-  if (!res.ok) throw new Error(`Notion query failed: ${res.status}`);
-  const results = Array.isArray(res.json.results) ? (res.json.results as Array<Record<string, unknown>>) : [];
-  return results.map(page => {
-    const props = (page.properties || {}) as Record<string, { status?: { name?: string } | null; select?: { name?: string } | null }>;
-    return {
-      id: String(page.id),
-      url: String(page.url || ''),
-      status: props.Status?.status?.name ?? null,
-      action: props.Action?.select?.name ?? null,
-      createdTime: String(page.created_time || ''),
-    };
-  });
-}
-
-async function findOpenDispatchCard(conditionKey: string, notionKey: string): Promise<DispatchCandidate | null> {
-  const candidates = await queryDispatchCandidates(conditionKey, notionKey);
-  return selectOpenDispatchCard(candidates);
-}
-
-// Archives (Notion's soft-delete) the losing card from a create-time race —
-// "self-delete the loser" per the Sprint 0d design. Failure here is logged
-// but never surfaced to the owner: worst case is a harmless duplicate card
-// sitting in the brain, not a broken tap.
-async function archiveDispatchCard(pageId: string, notionKey: string): Promise<void> {
-  const res = await notionApi(`/pages/${pageId}`, 'PATCH', notionKey, { archived: true }, DISPATCH_NOTION_VERSION);
-  if (!res.ok) console.error(`Failed to archive duplicate dispatch card ${pageId}: ${res.status}`);
-}
-
-async function createDispatchCard(
-  { conditionKey, title, description }: { conditionKey: string; title: string; description: string },
-  notionKey: string
-): Promise<{ id: string; url: string }> {
-  // description (ship-check adversarial finding, codex 2026-07-30): without
-  // it, the dispatched session only sees a check NAME — for a check whose
-  // failure reason has changed since the digest was generated (or that
-  // covers several distinct failure modes under one name), it can "fix" the
-  // wrong thing silently. This is the same detail health-check.js's OWN
-  // routeAlert() calls already pass as `description` (see health-check.js's
-  // dispatchedCards loop) — carrying it here keeps the two dispatch paths at
-  // parity.
-  const notes = `## Problem\nFiled via a "Fix this" tap in the digest email.\n\n- **Title:** ${title}\n${description ? `- **Detail:** ${description}\n` : ''}\n## Suggested approach\nInvestigate the condition named above and fix the root cause.\n\n## Acceptance criteria\n${conditionMarker(conditionKey)} no longer fires. The Action Queue pipeline (Investigate → Plan → Review → Start) runs this hands-free — no owner involvement needed beyond this tap.`;
-  const res = await notionApi('/pages', 'POST', notionKey, {
-    parent: { type: 'data_source_id', data_source_id: BRAIN_DATABASE_ID },
-    properties: {
-      Name: { title: [{ text: { content: `Fix: ${title}`.slice(0, 200) } }] },
-      Status: { status: { name: 'Not started' } },
-      Action: { select: { name: 'Fix' } },
-      Priority: { select: { name: 'P1 Next' } },
-      Category: { select: { name: 'Infra' } },
-      Tags: { multi_select: [{ name: 'alert-router' }, { name: 'fix-this-button' }] },
-      Notes: { rich_text: [{ text: { content: notes.slice(0, 2000) } }] },
-    },
-  }, DISPATCH_NOTION_VERSION);
-  if (!res.ok) throw new Error(`Notion create failed: ${res.status} ${JSON.stringify(res.json).slice(0, 200)}`);
-  return { id: String(res.json.id), url: String(res.json.url || '') };
-}
-
+// ── "Fix this" digest buttons (card #634, owner ask 2026-07-30) ────────────
+// Param shape: conditionKey + title (+ description), signed by
+// scripts/lib/dispatch-link.js. The issue does not exist yet; a tap files it.
 async function handleDispatch(req: NextRequest, method: 'GET' | 'POST'): Promise<Response> {
   const searchParams = req.nextUrl.searchParams;
   const conditionKey = searchParams.get('conditionKey');
@@ -463,10 +176,8 @@ async function handleDispatch(req: NextRequest, method: 'GET' | 'POST'): Promise
 
   // Kill switch (ship-check adversarial finding, codex 2026-07-30): reverting
   // the sender stops NEW links but every already-delivered "Fix this" stays
-  // tappable until it expires, and rotating APPROVAL_HMAC_SECRET would also
-  // revoke the unrelated approve/reject/revert links. Setting
-  // DISPATCH_LINKS_DISABLED=true in the Vercel env kills the dispatch action
-  // alone, immediately, without touching the other actions.
+  // tappable until it expires. Setting DISPATCH_LINKS_DISABLED=true in the
+  // Vercel env kills the dispatch action immediately.
   if (process.env.DISPATCH_LINKS_DISABLED === 'true') {
     return html('Temporarily Disabled',
       '<h1>Fix-this Links Are Paused</h1><p>One-tap dispatch is temporarily switched off — nothing was changed. ' +
@@ -487,7 +198,9 @@ async function handleDispatch(req: NextRequest, method: 'GET' | 'POST'): Promise
     .digest('hex');
 
   let sigValid = false;
-  // Same truncated-hex hardening as the approve/reject/revert path above.
+  // Require exactly 64 lowercase hex chars: Buffer.from(_, 'hex') silently
+  // TRUNCATES at the first non-hex char, so "<validsig>JUNK" would otherwise
+  // decode back to the valid signature and pass (ship-check 2026-07-13).
   if (/^[0-9a-f]{64}$/.test(sig)) {
     try {
       const sigBuf = Buffer.from(sig, 'hex');
@@ -503,8 +216,10 @@ async function handleDispatch(req: NextRequest, method: 'GET' | 'POST'): Promise
       '<h1>Invalid Link</h1><p>This action link could not be verified.</p>', 403);
   }
 
-  // GET never mutates (same mail-scanner hazard as the approve/reject/revert
-  // path above) — it renders a confirm form; only the POST it submits writes.
+  // GET never mutates: mail-security link scanners and preview fetchers open
+  // every URL in an email, so a state-changing GET would let a robot file
+  // work (ship-check P0, 2026-07-13). GET renders a one-button confirm form;
+  // only the POST it submits writes.
   if (method === 'GET') {
     const qs = new URLSearchParams({ action: 'dispatch', conditionKey, title, exp, sig });
     if (description) qs.set('description', description);
@@ -515,60 +230,59 @@ async function handleDispatch(req: NextRequest, method: 'GET' | 'POST'): Promise
       '</form>');
   }
 
-  const notionKey = process.env.NOTION_API_KEY;
-  if (!notionKey) {
+  const linearKey = process.env.LINEAR_API_KEY;
+  if (!linearKey) {
+    // Fail visibly (BRO-4718): a tap that silently did nothing is the bug this replaced.
+    console.error('autonomous-action dispatch: LINEAR_API_KEY is not set in this deployment');
     return html('Configuration Error',
-      '<h1>Server Error</h1><p>Notion integration is not configured. Please contact the admin.</p>', 500);
+      '<h1>Could Not Start the Fix</h1><p>The Linear integration is not configured on the site, so nothing was filed. ' +
+      'This is a setup problem, not something you did.</p>', 500);
   }
 
   const backLink = '<p><a href="https://broadwayscorecard.com">Back to Broadway Scorecard</a></p>';
+  const openLink = (c: LinearCandidate, label: string) =>
+    c.url ? `<p><a href="${sanitize(c.url, 300)}">${label} ${sanitize(c.identifier, 20)}</a></p>` : '';
 
-  // Dedup: an already-open card for this condition means a session is
-  // already on it (or about to be) — a repeat tap, or re-opening the same
-  // email within its expiry window, is a no-op rather than a second dispatch.
-  let existing: DispatchCandidate | null = null;
+  // Dedup: an open issue for this condition means a session is already on it
+  // (or about to be). A repeat tap is a no-op rather than a second dispatch.
+  let existing: LinearCandidate | null = null;
   try {
-    existing = await findOpenDispatchCard(conditionKey, notionKey);
+    existing = pickCanonicalIssue(await queryConditionIssues(conditionKey, linearKey));
   } catch (err) {
     console.error('Dispatch dedup query failed:', (err as Error).message);
-    // Fail CLOSED: a Notion hiccup here must not risk a duplicate dispatch —
-    // safer to ask for a retry than to skip the dedup check.
+    // Fail CLOSED: a Linear hiccup here must not risk a duplicate dispatch.
     return html('Could Not Check',
       '<h1>Could Not Check for Existing Work</h1><p>Tap the link again in a minute.</p>' + backLink, 502);
   }
   if (existing) {
     return html('Already Being Fixed',
       '<h1>Already Being Fixed</h1><p>A session is already working on this (or waiting to start).</p>' +
-      (existing.url ? `<p><a href="${sanitize(existing.url, 300)}">Open the card</a></p>` : '') + backLink);
+      openLink(existing, 'Open') + backLink);
   }
 
   try {
-    const created = await createDispatchCard({ conditionKey, title, description }, notionKey);
+    const created = await createConditionIssue({ conditionKey, title, description }, linearKey);
 
-    // Race-safe re-check (Sprint 0d): our own card now exists too, so a
-    // second concurrent tap that raced past the dedup query above would
-    // ALSO have created a card by now. Re-query and let createdTime decide a
-    // single winner — if ours lost, archive it and hand the owner the
-    // winning card instead of leaving two sessions dispatched on one issue.
+    // Race-safe re-check: a second concurrent tap that raced past the dedup
+    // query would also have filed an issue by now. Re-query and let
+    // pickCanonicalIssue decide one winner; if ours lost, archive it.
     try {
-      const candidates = await queryDispatchCandidates(conditionKey, notionKey);
-      const winner = pickEarliestOpenCard(candidates);
+      const winner = pickCanonicalIssue(await queryConditionIssues(conditionKey, linearKey));
       if (winner && winner.id !== created.id) {
-        await archiveDispatchCard(created.id, notionKey);
+        await archiveIssue(created.id, linearKey);
         return html('Already Being Fixed',
           '<h1>Already Being Fixed</h1><p>A session is already working on this (or waiting to start).</p>' +
-          (winner.url ? `<p><a href="${sanitize(winner.url, 300)}">Open the card</a></p>` : '') + backLink);
+          openLink(winner, 'Open') + backLink);
       }
     } catch (err) {
-      // Non-fatal: worst case is a harmless duplicate card, not a broken tap.
       console.error('Post-create race recheck failed (non-fatal):', (err as Error).message);
     }
 
     return html('Queued',
-      '<h1>Queued</h1><p>A fix session will pick this up shortly. You\'ll get an email when it finishes, or if it needs you.</p>' +
-      (created.url ? `<p><a href="${sanitize(created.url, 300)}">Watch the card</a></p>` : '') + backLink);
+      '<h1>Queued</h1><p>A fix session will pick this up from the board. You\'ll hear back when it finishes, or if it needs you.</p>' +
+      openLink(created, 'Watch') + backLink);
   } catch (err) {
-    console.error('Dispatch card create failed:', (err as Error).message);
+    console.error('Dispatch issue create failed:', (err as Error).message);
     return html('Could Not Start the Fix',
       '<h1>Could Not Start the Fix</h1><p>Tap the link again in a minute.</p>' + backLink, 502);
   }

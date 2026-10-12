@@ -9,9 +9,10 @@ file outside its allowlist that gains a Notion channel (SDK write, raw
 helpers), and fails on stale allowlist entries. Registered in `test.yml` and
 `tests/unit-test-manifest.txt`.
 
-Of the 388 files that mention "notion", 25 have a live code channel. Rest is comments.
+Of the 388 files that mention "notion", 25 had a live code channel at the sweep; 21 remain
+(BRO-4717/4718 removed the four site-side ones on 2026-10-12). Rest is comments.
 
-## A. Still references the old world (25 files with a live channel)
+## A. Still references the old world (21 files with a live channel)
 
 | File | Verdict | Notes |
 |---|---|---|
@@ -20,14 +21,24 @@ Of the 388 files that mention "notion", 25 have a live code channel. Rest is com
 | `scripts/lib/notion-create-safety.js` | chokepoint | post-create check, reached only via notion-brain create |
 | `scripts/notion-action-poll.js` | dead | its launchd job is disabled (`.disabled-2026-08-30`) |
 | `scripts/autonomous-merge.js`, `scripts/autonomous-run.js`, `scripts/autonomous-triage.js` | dead | autonomous loop retired 2026-07-27; `autonomous-merge.yml` is dispatch-only |
-| `src/app/api/autonomous-action/route.ts` | additive-deadend, LIVE | the 7:30am morning digest's signed "Dispatch a fix" button (`send-morning-digest.js`, `dispatch-link.js`) creates a Notion card for the disabled poller: owner taps, nothing happens. **Filed BRO-4718 (dispatched)** |
 | `scripts/audit-archived-in-progress.js`, `scripts/audit-orphan-inprogress.js` | dead | no scheduler, only `test.yml` |
 | `scripts/notify-pending-commercial-notion.js`, `scripts/sync-pending-review-to-notion.js` | dead | workflows call the `-linear` twins |
 | `scripts/bsc-prune.js`, `scripts/bsc-reconcile.js`, `scripts/reconcile-dead-completions.js`, `scripts/notion-tasks-sync.js` | mirror-update | live launchd; local task store → Notion card UPDATES, never creates. See C |
 | `scripts/enrich-card-acceptance.js` | mirror-update | Notion leg was live daily via `card-verifiability-audit.yml`. **Fixed**: workflow now `--source linear` |
 | `scripts/freeze-ledgers.js`, `scripts/lib/stuck-work.js` | read-only | list/get/query only |
 | `scripts/bsc-next.js`, `scripts/linear-brain.js`, `scripts/lib/dispatch-guards.js` | text-only | hint/refusal strings naming the legacy command |
-| `src/lib/notion-api.ts`, `src/app/api/feedback/route.ts`, `src/app/api/submit-review/route.ts` | additive-deadend | public site still creates a Notion page per submission (Formspree / GitHub issue are the real consumers). **Filed BRO-4717** |
+
+Removed from the list on 2026-10-12 (no Notion channel left, so no longer allowlisted):
+
+- `src/app/api/autonomous-action/route.ts`: the morning digest's signed "Fix this" tap
+  (`send-morning-digest.js`, `dispatch-link.js`) now files a Linear issue in Todo with the
+  router's `[conditionKey:...]` anchor and a safe-form acceptance command
+  (`src/lib/linear-dispatch-issue.js`), and shows an error page when `LINEAR_API_KEY` is
+  missing. Its approve/reject/revert paths (Notion `Auto` cards, only ever linked by the
+  retired nightly loop's `autonomous-email.js`) were removed; old links get a 410 page. **BRO-4718**
+- `src/lib/notion-api.ts`, `src/app/api/feedback/route.ts`, `src/app/api/submit-review/route.ts`:
+  the per-submission Notion page write was deleted (Formspree / the GitHub issue were the real
+  consumers). `isMalformedFeedbackPayload` moved to `src/lib/feedback-form-validation.js`. **BRO-4717**
 
 Prompt/seed text: `scripts/opening-night-prompts/monitor-v2.md` told the
 opening-night monitor to create a Notion card (exit 6). **Fixed** (Linear
@@ -50,7 +61,7 @@ comments/rule text. Plists whose CONTENTS mention notion:
 | `generate-remediation-plan.js` | was 6 | already files to Linear (BRO-3430/377) | fixed earlier |
 | `posthog-friction-analyzer.js`, `ux-walkthrough.mjs`, `commercial-*-notify` | was 6 | already moved to Linear | fixed earlier |
 | `sync-pending-review-to-notion.js` | 6 | throws `FATAL`, non-zero | dead, loud |
-| morning-digest dispatch button (route.ts) | 0 (HTTP 200) | creates a Notion card nobody reads: silent | filed BRO-4718 |
+| morning-digest dispatch button (route.ts) | 0 (HTTP 200) | created a Notion card nobody reads: silent | **fixed** (BRO-4718): files a Linear issue; 500 page if `LINEAR_API_KEY` is missing |
 | `monitor-v2.md` prompt | 6 | the LLM would hit exit 6 and (maybe) skip the outcome | **fixed** |
 | `card-verifiability-audit.yml` enrich | n/a | not an exit failure: silent LLM spend on a frozen board | **fixed** |
 | `enrich-card-acceptance.js --source linear` when the Linear fetch fails | 0 | `runLinearLeg` returned `[]`, job exited 0, so an outage was silent | **fixed**: fetch and getTeam failures now return a `failed` row so `allFailed()` exits 1 (still masked under `--source both` if the Notion leg enriched a card; workflow no longer uses `both`) |
@@ -68,8 +79,10 @@ No fail-soft `notion-brain.js create` caller remains: `notion-write-paths-retire
 - `predispatch-queue-audit` (launchd) audits that same task store via
   `notion-brain get`: audits the legacy queue, not Linear. Dormant-by-source.
 - `reconcile-dead-completions` (launchd): same mirror. Dormant-by-source.
-- `health-check.js` row "Data: undispatchable backlog cards" reads the
-  Notion-only `card-verifiability.json`, which nothing now shrinks. Filed in BRO-4717.
+- `health-check.js` row "Data: undispatchable backlog cards" read the
+  Notion-only `card-verifiability.json`, regenerated daily from the frozen mirror.
+  **Retired** (BRO-4717): only the Linear rows (`card-verifiability-linear.json`) remain,
+  and `card-verifiability-audit.yml` no longer runs the `--source notion` audit (BRO-3488).
 
 ## D. Capability gaps
 

@@ -123,7 +123,7 @@ test('renderNeedsAttentionBlock: empty input renders nothing; items keep their o
   assert.match(html, /Needs your attention/);
   assert.match(html, /Dispatch a fix/);
 });
-const { buildDispatchUrl, verifyDispatchSignature, selectOpenDispatchCard, attachHealthFixUrls } = require('./dispatch-link.js');
+const { buildDispatchUrl, verifyDispatchSignature, attachHealthFixUrls } = require('./dispatch-link.js');
 const { CHECK_NAME: AUTOFIX_EFFECTIVENESS_CHECK_NAME } = require('./autofix-effectiveness.js');
 
 const STATS = {
@@ -648,35 +648,8 @@ test('dispatch-link: description travels in the signed message — tampering it 
   assert.equal(verifyDispatchSignature({ conditionKey, title, description: 'something else entirely', exp, secret, sig }), false);
 });
 
-test('dispatch-link: (c) a second click within cooldown is a no-op — selectOpenDispatchCard finds the still-open card', () => {
-  // "In progress" or "Not started" means a session is already on it (or
-  // about to be) — a repeat tap must be a no-op, not a second dispatch.
-  assert.deepEqual(
-    selectOpenDispatchCard([{ id: '1', url: 'https://notion.so/1', status: 'In progress', action: null }]),
-    { id: '1', url: 'https://notion.so/1', status: 'In progress', action: null }
-  );
-  assert.deepEqual(
-    selectOpenDispatchCard([{ id: '2', url: 'https://notion.so/2', status: 'Not started', action: null }]),
-    { id: '2', url: 'https://notion.so/2', status: 'Not started', action: null }
-  );
-  // resolved cards (Done/Paused, Action cleared) don't block a fresh
-  // dispatch — a recurred condition is a NEW incident, same semantics as
-  // owner-alert-router's resolveCondition().
-  assert.equal(selectOpenDispatchCard([{ id: '3', url: 'x', status: 'Done', action: null }]), null);
-  assert.equal(selectOpenDispatchCard([{ id: '4', url: 'x', status: 'Paused', action: null }]), null);
-  assert.equal(selectOpenDispatchCard([]), null);
-});
-
-test('dispatch-link: a card manually Paused while Action is still set counts as open (poller runs on Action alone)', () => {
-  // scripts/notion-action-poll.js's getActionableCards() filters ONLY on
-  // `Action is-not-empty` and never reads Status — a card someone paused
-  // while Action=Fix is still queued WILL still run on the poller's next
-  // tick. Treating it as "resolved" here would let a second tap file a
-  // SECOND Fix card for the same condition (ship-check adversarial finding,
-  // codex 2026-07-30).
-  const paused = { id: '5', url: 'https://notion.so/5', status: 'Paused', action: 'Fix' };
-  assert.deepEqual(selectOpenDispatchCard([paused]), paused);
-});
+// dispatch-link (c)/(d) repeat-tap dedupe tests moved with the logic to
+// tests/unit/linear-dispatch-issue.test.mjs (pickCanonicalIssue, BRO-4718).
 
 test('renderHealthDigestBlock: queued digest-router items render (never silently dropped after drainDigestQueue)', () => {
   const html = renderHealthDigestBlock({
