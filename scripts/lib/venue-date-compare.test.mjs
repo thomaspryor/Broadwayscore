@@ -917,3 +917,13 @@ test('BRO-3903: venue-unverified cannot clear a recorded mismatch (venue half wa
   // ...and so a deferred show whose last real verdict was mismatch still blocks.
   assert.equal(blocksOnDeferral('a', { a: { result: 'venue-unverified', lastDefinitiveResult: 'mismatch' } }), true);
 });
+
+import { createRequire as __cr } from 'node:module';
+import { test as __t } from 'node:test';
+import __assert from 'node:assert/strict';
+__t('BRO-3903: Royal Court sub-stage names match the bare building name', () => {
+  const { venuesMatch } = __cr(import.meta.url)('./deduplication.js');
+  __assert.equal(venuesMatch('Royal Court', 'Royal Court Jerwood Theatre Downstairs'), true);
+  __assert.equal(venuesMatch('Royal Court Theatre', 'Royal Court Jerwood Theatre Upstairs'), true);
+  __assert.equal(venuesMatch('Paper Mill Playhouse, Millburn, NJ', 'Riverside Theatre - Stark Stage'), false);
+});
