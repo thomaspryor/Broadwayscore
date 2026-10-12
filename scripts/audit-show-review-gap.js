@@ -197,7 +197,8 @@ const { normalizeOutlet: normalizeOutletId } = require('./lib/review-normalizati
 // aggregator articles are date-gated against the show's opening window, and
 // prior-run URLs are ingest-blocked on EVERY path (see lib/gap-ingest-policy.js).
 const { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow } = require('./lib/gap-ingest-policy');
-const { otherProductionSignal } = require('./lib/other-production-signal');
+const { otherProductionSignal, showMarket } = require('./lib/other-production-signal');
+const { BWW_NYC_SECTIONS } = require('./lib/regional-serp-discovery');
 const { classifyIngestSkip, describeSkip } = require('./lib/ingest-skip-classify');
 // WE reference schema version — bump to invalidate WE checkpoint entries (59 shows
 // recorded gaps:0 from vacuous Broadway-only-reference runs and closed-clean shows
@@ -541,7 +542,10 @@ const BOOK_HOST_RE = /(^|\.)(amazon\.[a-z.]+|goodreads\.com|bookbrowse\.com|hard
 function isBookPageUrl(href) {
   try {
     const x = new URL(href);
-    return BOOK_HOST_RE.test(x.hostname) || /(^|[\/\-_])(book-?review|books?|novel)([\/\-_]|$)/i.test(x.pathname);
+    // "a-collection-of-stories-by-richard-burgin" (Broad Street Review) is a book
+    // review that shares A Thousand Natural Shocks' title (BRO-4540). Not "stories-by":
+    // that is John Lithgow: Stories by Heart, 35 real reviews.
+    return BOOK_HOST_RE.test(x.hostname) || /(^|[\/\-_])(book-?review|books?|novel|a-collection-of-(?:short-)?(?:stories|poems|essays))([\/\-_]|$)/i.test(x.pathname);
   } catch { return false; }
 }
 
@@ -566,6 +570,17 @@ function otherProductionUrlSignal(u, show, serpTitle) {
     host = parsed.hostname.toLowerCase();
     slug = decodeURIComponent(parsed.pathname).replace(/[-_/.+]+/g, ' ');
   } catch { return null; }
+  // A BroadwayWorld city edition (/toronto/article/Review-COSI-FAN-TUTTE-at-Four-Seasons-
+  // Centre-..., /new-orleans/article/Review-THE-SECRET-CIRCUS-...) reviews that city's
+  // staging, never the New York one. Genre desks (/bwwopera/, /bwwdance/) and the NYC
+  // sections are New York. 0 scored reviews of NYC shows sit on a city edition.
+  if (/(^|\.)broadwayworld\.com$/.test(host) && showMarket(show) === 'nyc') {
+    const segs = new URL(u).pathname.split('/').filter(Boolean);
+    const edition = segs.indexOf('article') > 0 ? segs[0].toLowerCase() : null;
+    if (edition && !BWW_NYC_SECTIONS.has(edition) && !edition.startsWith('bww')) {
+      return { signal: 'bww-city-edition', detail: `BroadwayWorld ${edition} edition; show is NYC` };
+    }
+  }
   const venueTextApplies = /\.uk$/.test(host) && !(Array.isArray(show.priorRuns) && show.priorRuns.length > 0);
   const sig = otherProductionSignal(
     { url: u, fullText: `${slug} ${serpTitle || ''}` },

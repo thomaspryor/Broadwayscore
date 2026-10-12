@@ -168,6 +168,10 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   { host: /(^|\.)newbrunswicktheater\.com$/, reason: 'ticketing-reseller' },
   { host: /(^|\.)nationaltheatre\.org\.uk$/, path: /^\/productions\//, reason: 'venue-production-page' },
   { host: /(^|\.)middlesexcountyculture\.com$/, path: /^\/event\//, reason: 'event-listing' },
+  // An events-calendar entry ("UPCOMING ... Event information supplied by the
+  // originating source") at a bare title slug. Opening Night Online's real reviews
+  // use the same shape (/the-invention-of-love/), so only this page is named (BRO-4679).
+  { host: /(^|\.)openingnight\.online$/, path: /^\/crazy-mama-a-true-story-of-love-and-madness\/?$/, reason: 'event-listing' },
   { host: /(^|\.)londontheatre\.co\.uk$/, path: /^\/show\/\d+/, reason: 'ticketing-listing' },
   { host: /(^|\.)broadway\.com$/, reason: 'ticketing-reseller' },
   { host: /(^|\.)theatermania\.com$/, path: /^\/shows\//, reason: 'venue-production-page' },

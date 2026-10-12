@@ -93,3 +93,8 @@ test('blast radius: a candidate drop against an older-rule row is not risky, a l
   assert.strictEqual(isRiskyGapChange(prev, 'incomplete:3:6'), true);
   assert.strictEqual(isRiskyGapChange('incomplete:4:9', 'incomplete:4:6'), true);
 });
+
+test('an events-calendar page is rejected, a real review on the same host stays (BRO-4679)', () => {
+  assert.strictEqual(classifyGapCandidateUrl('https://openingnight.online/crazy-mama-a-true-story-of-love-and-madness/').ok, false);
+  assert.deepStrictEqual(classifyGapCandidateUrl('https://openingnight.online/the-invention-of-love/'), { ok: true, reason: null });
+});
