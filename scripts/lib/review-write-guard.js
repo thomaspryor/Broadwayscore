@@ -128,6 +128,8 @@ const PROTECTED_FIELDS = [
   'wrongProductionNote',
   'originalScoreCleared',
   'originalScoreClearedReason',
+  // Retires the clear above when a page-structure star superseded it (BRO-3171).
+  'originalScoreClearSupersededBy',
   'previousOriginalScore',
   'humanReviewNote',
   'humanReviewedWrongProduction',
@@ -466,6 +468,9 @@ const _isEmptyValue = (v) => v === undefined || v === null
 // the rebase-restore resurrects the stale flag and rediscover becomes a no-op for
 // flagged reviews (the whole point being to re-scrape wrong_content). Sub-field
 // precise so it only suppresses restore of a flag rediscover actually cleared.
+const _scoreClearSuperseded = (d) =>
+  typeof d.originalScoreClearSupersededBy === 'string' && d.originalScoreCleared !== true;
+
 const _rediscoveredWrongProduction = (d) =>
   !!(d._previousWrongFlags && d._previousWrongFlags.wrongProduction);
 const _rediscoveredWrongShow = (d) =>
@@ -1021,6 +1026,11 @@ const CLEAR_BREADCRUMBS = {
   originalScore: (d) => d.originalScoreCleared === true,
   originalScoreSource: (d) => d.originalScoreCleared === true,
   originalScoreNormalized: (d) => d.originalScoreCleared === true,
+  // A star that superseded the clear retires it (score-routing
+  // retireSupersededScoreClear, BRO-3171); without this the restore puts the
+  // contradicted breadcrumb back next to the star.
+  originalScoreCleared: _scoreClearSuperseded,
+  originalScoreClearedReason: _scoreClearSuperseded,
   // strip-stale-single-model-scores.js --before-opening mode (opening-night-
   // express.yml): removes prior-production score contamination and stamps
   // staleScoredBeforeOpening(+At) so the restore doesn't undo it later in the
@@ -1252,6 +1262,9 @@ function preserveFlaggedFields(filePath, review) {
     // stripping it here (as this function does below) would silently
     // resurrect a flag the caller deliberately cleared.
     for (const field of Object.keys(CLEAR_BREADCRUMBS)) {
+      // A retired score clear (BRO-3171) is a standing breadcrumb that any
+      // copy of the file carries; it says nothing about the flag on disk.
+      if (field === 'originalScoreCleared' || field === 'originalScoreClearedReason') continue;
       if (isIntentionalClear(field, review)) return review;
     }
     const adjusted = { ...review };

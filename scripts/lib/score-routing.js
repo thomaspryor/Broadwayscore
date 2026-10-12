@@ -63,6 +63,53 @@ function isAggregatorScore(incomingSource, existingScoreSource) {
   );
 }
 
+// Sources that read the outlet's own rating element (page structure), not the
+// review prose. A clear whose reason is "no star in the text" or "outlet has
+// no ratings" says nothing about them: Time Out's SVG stars and London
+// Theatre's page-data stars (BRO-3139) never appear in fullText, so the clear
+// and the re-extracted star sat side by side on 136 files (BRO-3171).
+// review-guards' STRUCTURAL_STAR_SOURCES is the canonical list (its not-a-review
+// exception doesn't cover London Theatre's page-data star, so it's added here).
+// Lazy require: review-guards is heavy.
+let _structuralStarSources = null;
+function structuralStarSources() {
+  if (!_structuralStarSources) {
+    _structuralStarSources = new Set([
+      ...require('./review-guards').STRUCTURAL_STAR_SOURCES,
+      'londontheatre-page-json',
+    ]);
+  }
+  return _structuralStarSources;
+}
+// Clear reasons a page-structure star disproves. Not aggregator-in-p0-slot or
+// wrong-show clears: those are about WHOSE star it is, which structure can't settle.
+const RETIRABLE_CLEAR_REASON_RE = /^(extraction-no-evidence|outlet-publishes-no-critic-rating|london-theatre)/i;
+
+/**
+ * Retire an originalScoreCleared breadcrumb that a later star supersedes.
+ * Records what superseded it; review-write-guard's CLEAR_BREADCRUMBS honours
+ * originalScoreClearSupersededBy so a rebase restore can't resurrect the clear.
+ * @param {object} data   review-text record (mutated)
+ * @param {string} supersededBy  the source (or evidence) that superseded it
+ * @returns {boolean} true when it retired a breadcrumb
+ */
+function retireSupersededScoreClear(data, supersededBy) {
+  if (!data || data.originalScoreCleared !== true || !supersededBy) return false;
+  data.originalScoreClearSupersededBy = supersededBy;
+  if (data.originalScoreClearedReason) data.originalScoreClearSupersededReason = data.originalScoreClearedReason;
+  data.originalScoreClearSupersededAt = new Date().toISOString();
+  delete data.originalScoreCleared;
+  delete data.originalScoreClearedReason;
+  return true;
+}
+
+/** True when `source` is a page-structure star that disproves this file's clear. */
+function isScoreClearSupersededBy(data, source) {
+  return !!(data && data.originalScoreCleared === true
+    && structuralStarSources().has(source)
+    && RETIRABLE_CLEAR_REASON_RE.test(String(data.originalScoreClearedReason || '')));
+}
+
 /**
  * Write an extracted score to a review-text data object, routing it to
  * `originalScore` or `aggregatorStars` based on whether the incoming or
@@ -106,6 +153,7 @@ function setExtractedScore(data, { value, normalizedValue, source }) {
     data.originalScoreNormalized = normalizedValue;
   }
   data.originalScoreSource = source;
+  if (isScoreClearSupersededBy(data, source)) retireSupersededScoreClear(data, source);
   return { field: 'originalScore', wasAggregator: false };
 }
 
@@ -151,4 +199,7 @@ module.exports = {
   isAggregatorScore,
   setExtractedScore,
   repairAggregatorContamination,
+  structuralStarSources,
+  retireSupersededScoreClear,
+  isScoreClearSupersededBy,
 };

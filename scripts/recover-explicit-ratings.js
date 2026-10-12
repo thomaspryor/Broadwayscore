@@ -40,6 +40,7 @@ const { setExtractedScore } = require('./lib/score-routing');
 const { isMissingOriginalScore } = require('./lib/star-score-mismatch');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { persistReviewSnapshot } = require('./lib/persist-review-snapshot');
 
 // showId → shows.json record so isScoreable sees what the rebuild sees: the
 // wrongShow stale-flag override (Notion 34e637c5-416f-8121), the pre-opening
@@ -291,7 +292,7 @@ async function phase0DiscoverUrls(reviews) {
         if (gate.updates && !DRY_RUN) {
           try {
             Object.assign(review.data, gate.updates);
-            fs.writeFileSync(review.filePath, JSON.stringify(review.data, null, 2));
+            persistReviewSnapshot(review);
           } catch (e) { /* non-fatal */ }
         }
         continue;
@@ -308,7 +309,7 @@ async function phase0DiscoverUrls(reviews) {
           const attemptUpdates = recordSerpAttempt(showMeta, review.data);
           if (Object.keys(attemptUpdates).length > 0) {
             Object.assign(review.data, attemptUpdates);
-            fs.writeFileSync(review.filePath, JSON.stringify(review.data, null, 2));
+            persistReviewSnapshot(review);
           }
         } catch (e) { /* non-fatal */ }
       }
@@ -321,7 +322,7 @@ async function phase0DiscoverUrls(reviews) {
         if (!DRY_RUN) {
           review.data.url = result;
           review.data.urlSource = 'serp-recovery';
-          fs.writeFileSync(review.filePath, JSON.stringify(review.data, null, 2));
+          persistReviewSnapshot(review);
         }
       } else {
         console.log(`    ✗ No URL found`);
@@ -386,7 +387,7 @@ async function phase1ExtractLocal(reviews) {
         review.data.scoreExtractedFrom = 'local-text';
         review.data.scoreRecoveredAt = new Date().toISOString();
         console.log(`  ✓ ${review.showId}/${review.file}: ${result.originalScore} (${result.normalizedScore}/100) [${result.source}] → ${routed.field}`);
-        fs.writeFileSync(review.filePath, JSON.stringify(review.data, null, 2));
+        persistReviewSnapshot(review);
       } else {
         console.log(`  ✓ ${review.showId}/${review.file}: ${result.originalScore} (${result.normalizedScore}/100) [${result.source}]`);
       }
@@ -490,7 +491,7 @@ async function fetchGuardianRatings(reviews) {
               review.data.scoreSource = 'guardian-api';
               review.data.scoreExtractedFrom = 'api-metadata';
               review.data.scoreRecoveredAt = new Date().toISOString();
-              fs.writeFileSync(review.filePath, JSON.stringify(review.data, null, 2));
+              persistReviewSnapshot(review);
             }
             review.recovered = true;
           }
@@ -562,7 +563,7 @@ async function fetchTheaterLifeRatings(reviews) {
             review.data.scoreSource = 'wp-api-title';
             review.data.scoreExtractedFrom = 'api-metadata';
             review.data.scoreRecoveredAt = new Date().toISOString();
-            fs.writeFileSync(review.filePath, JSON.stringify(review.data, null, 2));
+            persistReviewSnapshot(review);
           }
           review.recovered = true;
         }
@@ -622,7 +623,7 @@ async function fetchNYSRRatings(reviews) {
               review.data.scoreSource = 'wp-api-excerpt';
               review.data.scoreExtractedFrom = 'api-metadata';
               review.data.scoreRecoveredAt = new Date().toISOString();
-              fs.writeFileSync(review.filePath, JSON.stringify(review.data, null, 2));
+              persistReviewSnapshot(review);
             }
             review.recovered = true;
           }
@@ -806,7 +807,7 @@ async function phase3ScrapeURLs(reviews) {
             review.data.scoreExtractedFrom = 'scraped-html';
             review.data.scoreRecoveredAt = new Date().toISOString();
             console.log(`    ★ ${review.showId}: ${result.originalScore} (${result.normalizedScore}/100) [${result.source}] → ${routed.field}`);
-            fs.writeFileSync(review.filePath, JSON.stringify(review.data, null, 2));
+            persistReviewSnapshot(review);
           } else {
             console.log(`    ★ ${review.showId}: ${result.originalScore} (${result.normalizedScore}/100) [${result.source}]`);
           }
@@ -964,7 +965,8 @@ function findMissingRatings() {
         if (OUTLET_FILTER && outletId !== OUTLET_FILTER) continue;
         if (SOURCE_FILTER && data.source !== SOURCE_FILTER) continue;
 
-        reviews.push({ showId, file, filePath, data });
+        // snapshot: what was read, so writes merge onto the current disk record (BRO-3168).
+        reviews.push({ showId, file, filePath, data, snapshot: JSON.parse(JSON.stringify(data)) });
       } catch {}
     }
   }
