@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-12T06:16:55.976Z",
+  "timestamp": "2026-10-12T06:59:54.201Z",
   "stats": {
-    "totalReviews": 56014,
-    "alreadyFlagged": 20928,
-    "dateGuardCatches": 254,
+    "totalReviews": 56016,
+    "alreadyFlagged": 20931,
+    "dateGuardCatches": 253,
     "directorMismatch": 1776,
     "tvFilmSignals": 1612,
-    "londonSignals": 2197,
+    "londonSignals": 2198,
     "offBroadwaySignals": 505,
     "yearMismatch": 137,
-    "noPublishDate": 5223
+    "noPublishDate": 5224
   },
   "findings": [
     {
@@ -45982,20 +45982,6 @@
       ]
     },
     {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 82,
-      "publishDate": "2023-02-07",
-      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
-        }
-      ]
-    },
-    {
       "showId": "tootsie-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 77,
@@ -53678,6 +53664,19 @@
       "score": 89,
       "publishDate": "2026-10-08",
       "url": "https://www.london-unattached.com/blood-of-my-blood-royal-court-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "blood-of-my-blood-west-end-2026",
+      "file": "markaspen--markaspen.json",
+      "publishDate": "2026-10-09",
+      "url": "https://markaspen.com/2026/10/09/blood-blood/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
