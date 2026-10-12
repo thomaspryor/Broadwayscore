@@ -1125,5 +1125,35 @@
       }
     ],
     "queuedAt": "2026-10-12T16:14:56.989Z"
+  },
+  {
+    "conditionKey": "land:land/bro-3621-archive-guard-core-data",
+    "title": "Landing blocked: unit-tests-node red on land/bro-3621-archive-guard-core-data",
+    "description": "land.yml did not land land/bro-3621-archive-guard-core-data: the unit-tests-node gate went red at 24808193b9. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38273007216",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-3621-archive-guard-core-data"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "24808193b923efb8b9c674165db92b628886b27d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38273007216"
+      }
+    ],
+    "queuedAt": "2026-10-12T16:19:58.253Z"
   }
 ]
