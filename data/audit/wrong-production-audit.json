@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-10-12T15:34:06.445Z",
+  "timestamp": "2026-10-12T16:15:51.877Z",
   "stats": {
     "totalReviews": 55981,
-    "alreadyFlagged": 20894,
+    "alreadyFlagged": 20895,
     "dateGuardCatches": 252,
-    "directorMismatch": 1782,
-    "tvFilmSignals": 1616,
+    "directorMismatch": 1783,
+    "tvFilmSignals": 1617,
     "londonSignals": 2200,
     "offBroadwaySignals": 507,
     "yearMismatch": 137,
@@ -15868,6 +15868,20 @@
     },
     {
       "showId": "godspell-2011",
+      "file": "talkinbroadway--matthew-murray.json",
+      "score": null,
+      "publishDate": "November 7, 2011",
+      "url": "http://www.talkinbroadway.com/world/Godspell2011.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john-michael tebelak\" from godspell-1976"
+        }
+      ]
+    },
+    {
+      "showId": "godspell-2011",
       "file": "theater-life--eric-march.json",
       "score": 62,
       "publishDate": "2011-11-25T17:15:00",
@@ -27669,6 +27683,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 1\""
+        }
+      ]
+    },
+    {
+      "showId": "mystic-pizza-tour-2026",
+      "file": "talkinbroadway--arthur-dorman.json",
+      "publishDate": null,
+      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"streaming service\""
         }
       ]
     },
