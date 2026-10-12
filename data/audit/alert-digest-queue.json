@@ -1667,6 +1667,36 @@
     "queuedAt": "2026-10-12T19:21:01.834Z"
   },
   {
+    "conditionKey": "land:land/bro-4814-stuck-closer",
+    "title": "Landing blocked: rebase red on land/bro-4814-stuck-closer",
+    "description": "land.yml did not land land/bro-4814-stuck-closer: the rebase gate went red at 63d09a51fa. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4814-stuck-closer @ 63d09a51fa (origin/land/bro-4814-stuck-closer) → origin/main @ de290c8e1d REFUSED: rebase: branch would not rebase cleanly onto origin/main @ de290c8e1d: Rebasing (1/2) error: could not apply 985a9a75df3... BRO-4814: stuck-card closer accepts tsx/multi-file checks and a land-ref route hint: Resolve all conflicts manually, mark them as resolved with hint: \"git ad Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38295566330",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4814-stuck-closer"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "63d09a51faf88eba759ed77af2714dd75369b955"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38295566330"
+      }
+    ],
+    "queuedAt": "2026-10-12T20:58:25.727Z"
+  },
+  {
     "conditionKey": "cron-health-failed:Test Suite",
     "title": "Cron's latest run failed (not yet stale): Test Suite",
     "description": "Test Suite: Latest run failed (last success 1h ago). Not stale yet; fix it before it is.",
