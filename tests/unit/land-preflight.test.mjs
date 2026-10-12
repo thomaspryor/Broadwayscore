@@ -315,8 +315,77 @@ test('bot-owned rewrite: a squash over a failed merge (reverting main\'s bot dat
   assert.equal(bad.count, 12);
   const v = judgeLand({ cwd: d, src: 'HEAD', target: 'land/x', base: 'main', fetch: false, checkTests: false });
   assert.equal(v.decision, 'block');
-  assert.match(v.message, /bot-owned data files/);
+  // BRO-5086: the stale-tree check names the older main state; it supersedes the bot-owned recipe.
+  assert.match(v.message, /reverts 12 of the 13 files it changes to an older main state/);
   // a deliberate edit of one audit file is fine
   sh(d, 'git checkout -qB ok main && echo \'{"v":99}\' > data/audit/a1.json && git commit -qam one');
   assert.equal(checkBotOwnedRewrite({ base: 'main', tip: 'HEAD', cwd: d }).status, 'pass');
+});
+
+// BRO-5086: the general stale-tree squash. main gains edits to ordinary files
+// after the branch point; `git reset --soft main` without merging first makes
+// one commit that reverts them all. Bot-owned paths are not involved, so only
+// checkStaleRevert can see it.
+function staleSquashRepo() {
+  const d = baseRepo();
+  for (let i = 0; i < 4; i++) write(d, `src/m${i}.ts`, `export const v = 0;\n`);
+  sh(d, 'git add -A && git commit -qm "more files"');
+  sh(d, 'git branch feat');
+  for (let i = 0; i < 4; i++) write(d, `src/m${i}.ts`, `export const v = ${i + 1};\n`);
+  write(d, 'src/new.ts', 'export {};\n');
+  sh(d, 'git add -A && git commit -qm "main moves on"');
+  return d;
+}
+
+test('stale-tree squash: reverting main\'s newer edits to ordinary files blocks (BRO-5086)', async () => {
+  const { judgeLand, checkStaleRevert } = await import('../../scripts/lib/land-preflight.mjs');
+  const d = staleSquashRepo();
+  sh(d, 'git checkout -q feat && echo fix >> g.txt && git commit -qam fix && git reset -q --soft main && git commit -qm squash');
+  const s = checkStaleRevert({ base: 'main', tip: 'HEAD', cwd: d });
+  assert.equal(s.status, 'fail', JSON.stringify(s));
+  assert.equal(s.count, 5); // 4 edits + 1 add reverted; g.txt is the branch's own change
+  assert.equal(s.of, 6);
+  assert.match(s.matches, /more files/);
+  const v = judgeLand({ cwd: d, src: 'HEAD', target: 'land/x', base: 'main', fetch: false, checkTests: false });
+  assert.equal(v.decision, 'block');
+  assert.match(v.message, /reverts 5 of the 6 files/);
+  assert.match(v.message, /merging origin\/main/);
+});
+
+test('stale-tree check passes a correct squash, a branch merely behind main, and a branch deleting old files (BRO-5086)', async () => {
+  const { judgeLand } = await import('../../scripts/lib/land-preflight.mjs');
+  const d = staleSquashRepo();
+  // behind main, unmerged: land rebases it, so nothing is reverted
+  sh(d, 'git checkout -q feat && echo fix >> g.txt && git commit -qam fix');
+  let v = judgeLand({ cwd: d, src: 'HEAD', target: 'land/x', base: 'main', fetch: false, checkTests: false });
+  assert.equal(v.decision, 'allow', v.message);
+  assert.equal(v.detail.staleRevert.status, 'pass');
+  // the right squash: merge main first
+  sh(d, 'git merge -q --no-edit main && git reset -q --soft main && git commit -qm squash');
+  v = judgeLand({ cwd: d, src: 'HEAD', target: 'land/x', base: 'main', fetch: false, checkTests: false });
+  assert.equal(v.decision, 'allow', v.message);
+  // deleting files that have existed for a while is not a revert
+  sh(d, 'git checkout -qB del main && git rm -q src/m0.ts src/m1.ts src/m2.ts src/m3.ts f.txt && git commit -qm "delete old files"');
+  v = judgeLand({ cwd: d, src: 'HEAD', target: 'land/x', base: 'main', fetch: false, checkTests: false });
+  assert.equal(v.decision, 'allow', v.message);
+});
+
+test('manifest left unsorted on the rebased tree blocks; a sorted one passes (BRO-5086)', async () => {
+  const { judgeLand } = await import('../../scripts/lib/land-preflight.mjs');
+  const d = baseRepo();
+  write(d, 'tests/unit-test-manifest.txt', 'tests/unit/a.test.mjs\ntests/unit/m.test.mjs\n');
+  sh(d, 'git add -A && git commit -qm manifest && git branch feat');
+  sh(d, 'echo more >> g.txt && git commit -qam "main moves on"');
+  sh(d, 'git checkout -q feat');
+  write(d, 'tests/unit-test-manifest.txt', 'tests/unit/a.test.mjs\ntests/unit/m.test.mjs\ntests/unit/b.test.mjs\n');
+  sh(d, 'git commit -qam "branch appends b"');
+  let v = judgeLand({ cwd: d, src: 'HEAD', target: 'land/x', base: 'main', fetch: false, checkTests: false });
+  assert.equal(v.detail.manifests.status, 'fail', JSON.stringify(v.detail.manifests));
+  assert.equal(v.decision, 'block');
+  assert.match(v.message, /unit-test-manifest\.txt is not sorted \(first out of place: tests\/unit\/m\.test\.mjs\) after the land rebase/);
+  write(d, 'tests/unit-test-manifest.txt', 'tests/unit/a.test.mjs\ntests/unit/b.test.mjs\ntests/unit/m.test.mjs\n');
+  sh(d, 'git commit -qam sort');
+  v = judgeLand({ cwd: d, src: 'HEAD', target: 'land/x', base: 'main', fetch: false, checkTests: false });
+  assert.equal(v.detail.manifests.status, 'pass');
+  assert.equal(v.decision, 'allow', v.message);
 });

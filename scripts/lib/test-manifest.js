@@ -154,11 +154,21 @@ function validateManifest(manifestPath, repoRoot) {
 // check then passes, and the auto-fix would have laundered the defect instead of
 // surfacing it. Dropping the extra copy is always the intended outcome here, so
 // the auto-fix half of the check heals it rather than cementing it.
+// Content form of the sorted+deduped rule, for callers that hold a manifest's
+// text rather than a file (land-preflight reads it from the simulated rebased
+// tree, BRO-5086). Returns null when the text is canonical.
+function manifestOrderProblem(text) {
+  const entries = String(text).split('\n').map((l) => l.trim()).filter(Boolean);
+  const sorted = [...new Set(entries)].sort();
+  if (entries.length !== sorted.length) return 'has duplicate entries';
+  const i = entries.findIndex((e, k) => e !== sorted[k]);
+  return i === -1 ? null : `is not sorted (first out of place: ${entries[i]})`;
+}
+
 function sortManifestFile(manifestPath) {
   const entries = readManifest(manifestPath);
   const sorted = [...new Set(entries)].sort();
-  const isSorted = entries.length === sorted.length && entries.every((e, i) => e === sorted[i]);
-  if (isSorted) return false;
+  if (!manifestOrderProblem(entries.join('\n'))) return false;
   fs.writeFileSync(manifestPath, sorted.join('\n') + '\n');
   return true;
 }
@@ -173,6 +183,7 @@ module.exports = {
   readManifest,
   validateManifest,
   sortManifestFile,
+  manifestOrderProblem,
 };
 
 // CLI: `node scripts/lib/test-manifest.js --fix [manifest ...]` sorts the

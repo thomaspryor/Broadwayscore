@@ -34,6 +34,7 @@ import { landPushTargets } from './push-command.mjs';
 
 const require = createRequire(import.meta.url);
 const { isPromisorFetchFailure } = require('./promisor-fetch-failure.js');
+const { manifestOrderProblem } = require('./test-manifest.js');
 
 export const MAX_COMMITS = 200;
 const BYPASS_RE = /#\s*NO-LAND-PREFLIGHT:\s*(\S.{14,})/;
@@ -74,7 +75,7 @@ export function previewRebase({ base, tip, cwd, maxCommits = MAX_COMMITS }) {
   if (!ok(git(cwd, ['merge-base', baseSha, tipSha]))) {
     return { status: 'skip', reason: 'no merge-base with the base (shallow clone boundary?)' };
   }
-  if (ok(git(cwd, ['merge-base', '--is-ancestor', tipSha, baseSha]))) return { status: 'clean', replayed: 0 };
+  if (ok(git(cwd, ['merge-base', '--is-ancestor', tipSha, baseSha]))) return { status: 'clean', replayed: 0, tip: baseSha };
   // The commit list `git rebase` replays: non-merge, patch-equivalent
   // upstream commits dropped, oldest first.
   const list = git(cwd, ['rev-list', '--reverse', '--topo-order', '--no-merges', '--right-only', '--cherry-pick', `${baseSha}...${tipSha}`]);
@@ -115,7 +116,8 @@ export function previewRebase({ base, tip, cwd, maxCommits = MAX_COMMITS }) {
     cur = ct.stdout.trim();
     curTree = tree;
   }
-  return { status: 'clean', replayed: commits.length };
+  // tip: the simulated rebased commit, i.e. the tree land.yml would put on main.
+  return { status: 'clean', replayed: commits.length, tip: cur };
 }
 
 const TEST_FILE_RE = /^(tests\/unit|scripts|scripts\/tests)\/[^/]+\.test\.(mjs|ts|tsx|js|cjs|sh)$/;
@@ -199,6 +201,89 @@ export function checkBotOwnedRewrite({ base, tip, cwd, max = BOT_OWNED_MAX }) {
   return files.length > max ? { status: 'fail', count: files.length, sample: files.slice(0, 5) } : { status: 'pass', count: files.length };
 }
 
+// BRO-5086: a squash made with `git reset --soft origin/main` WITHOUT first
+// merging origin/main has the new main as parent but the OLD branch point's
+// tree, so it reverts everything main gained in between (BRO-4638: 165 files,
+// 6196+/37596-). The rebase is clean and only bot-owned paths were counted, so
+// it went through. Signature: the tree land would apply matches some OLDER
+// main commit M on most of the paths it changes. Scanning first-parent
+// ancestors of base for the best M costs one bounded ls-tree per commit; a
+// file the branch deletes is still present in recent M, so ordinary deletions
+// do not match.
+export const STALE_WINDOW = 200;
+export const STALE_MIN_FILES = 3;
+// Matches that are only "absent in both" (main added the path after M, the
+// tip lacks it) also describe a branch deleting files main added recently, so
+// on their own they need many more files before they block.
+export const STALE_MIN_ABSENT_ONLY = 10;
+const STALE_MAX_PATHS = 2000;
+
+function lsTreeBlobs(cwd, rev, paths) {
+  const r = git(cwd, ['ls-tree', '-r', '-z', rev, '--', ...paths]);
+  if (!ok(r)) return null;
+  const m = new Map();
+  for (const e of r.stdout.split('\0').filter(Boolean)) {
+    const tab = e.indexOf('\t');
+    m.set(e.slice(tab + 1), e.slice(0, tab).split(' ')[2]);
+  }
+  return m;
+}
+
+/**
+ * Does the tree land would apply (tip = the simulated rebased commit) revert
+ * many paths to an older main state?
+ * -> { status: 'pass' | 'fail' | 'skip', count?, of?, sample?, matches?, reason? }
+ */
+export function checkStaleRevert({ base, tip, cwd, window = STALE_WINDOW, minFiles = STALE_MIN_FILES }) {
+  const d = git(cwd, ['diff', '--name-only', '--no-renames', '-z', base, tip]);
+  if (!ok(d)) return { status: 'skip', reason: (d.stderr || 'git diff failed').trim().slice(0, 200) };
+  const paths = d.stdout.split('\0').filter(Boolean).slice(0, STALE_MAX_PATHS);
+  if (paths.length < minFiles) return { status: 'pass', count: 0, of: paths.length };
+  const tipBlobs = lsTreeBlobs(cwd, tip, paths);
+  if (!tipBlobs) return { status: 'skip', reason: 'ls-tree of tip failed' };
+  const rl = git(cwd, ['rev-list', '--first-parent', `--max-count=${window + 1}`, base]);
+  if (!ok(rl)) return { status: 'skip', reason: 'rev-list of base failed' };
+  const older = out(rl).split('\n').filter(Boolean).slice(1); // [0] is base itself
+  if (older.length === 0) return { status: 'skip', reason: 'no older main commits (shallow clone?)' };
+  let best = { count: 0, sha: null, hits: [], content: 0 };
+  for (const sha of older) {
+    const mBlobs = lsTreeBlobs(cwd, sha, paths);
+    if (!mBlobs) continue; // commit missing past a shallow boundary
+    // Absent in both counts: main added the path after M and tip lacks it.
+    const hits = paths.filter((p) => mBlobs.get(p) === tipBlobs.get(p));
+    if (hits.length > best.count) best = { count: hits.length, sha, hits, content: hits.filter((p) => tipBlobs.has(p)).length };
+    if (best.count === paths.length) break;
+  }
+  const fail = best.count * 2 >= paths.length
+    && (best.content > 0 ? best.count >= minFiles : best.count >= STALE_MIN_ABSENT_ONLY);
+  return {
+    status: fail ? 'fail' : 'pass',
+    count: best.count,
+    of: paths.length,
+    matches: best.sha ? out(git(cwd, ['log', '-1', '--format=%h %cs %s', best.sha])) : null,
+    sample: best.hits.slice(0, 5),
+  };
+}
+
+/**
+ * BRO-5086 (comment): a manifest the branch edited can come out of the land
+ * rebase unsorted, when git's 3-way merge puts the branch's new line after a
+ * neighbour main just added (run 38177137379). Judge the rebased tree's copy.
+ * -> { status: 'pass' | 'fail' | 'skip', problems? }
+ */
+export function checkRebasedManifests({ base, src, tip, cwd }) {
+  const d = git(cwd, ['diff', '--name-only', '--no-renames', `${base}...${src}`]);
+  if (!ok(d)) return { status: 'skip', reason: 'diff vs base failed' };
+  const problems = [];
+  for (const m of out(d).split('\n').filter((p) => MANIFEST_RE.test(p))) {
+    const r = git(cwd, ['show', `${tip}:${m}`]);
+    if (!ok(r)) continue; // deleted on the branch
+    const p = manifestOrderProblem(r.stdout);
+    if (p) problems.push(`${m} ${p} after the land rebase onto ${base}`);
+  }
+  return problems.length ? { status: 'fail', problems } : { status: 'pass' };
+}
+
 function fetchBase(cwd) {
   const r = git(cwd, ['-c', 'gc.auto=0', '-c', 'maintenance.auto=false', 'fetch', '-q', 'origin', 'main'], { timeout: 20000 });
   return ok(r) ? null : r.timedOut ? 'fetch timed out' : `fetch failed: ${r.stderr.trim().slice(0, 120)}`;
@@ -219,7 +304,7 @@ function testTreeDirty(cwd) {
   return paths.filter((p) => TEST_FILE_RE.test(p) || MANIFEST_RE.test(p) || p.startsWith('.github/workflows/'));
 }
 
-export function blockMessage({ target, rebase, tests, base, botOwned }) {
+export function blockMessage({ target, rebase, tests, base, botOwned, staleRevert, manifests }) {
   const lines = [`LAND PREFLIGHT: land.yml would refuse this push to ${target}. Fix it on the branch and push again (about 30 minutes saved).`];
   if (rebase?.status === 'conflict') {
     lines.push(
@@ -236,7 +321,22 @@ export function blockMessage({ target, rebase, tests, base, botOwned }) {
     lines.push('', `${rebase?.status === 'conflict' ? '2' : '1'}) Test registration (audit-orphan-tests / test-yml-manifest-paths would go red):`);
     for (const p of tests.problems) lines.push(`   - ${p}`);
   }
-  if (botOwned?.status === 'fail') {
+  if (manifests?.status === 'fail') {
+    lines.push('', '* Test manifest order (test-manifest-integrity would go red after the land rebase):');
+    for (const p of manifests.problems) lines.push(`   - ${p}`);
+    lines.push('   Fix: git fetch origin main && git merge origin/main, then node -e "require(\'./scripts/lib/test-manifest.js\').sortManifestFile(\'<manifest>\')", commit, squash.');
+  }
+  if (staleRevert?.status === 'fail') {
+    lines.push(
+      '',
+      `* This push reverts ${staleRevert.count} of the ${staleRevert.of} files it changes to an older main state`,
+      `   (they match main as of ${staleRevert.matches}: ${staleRevert.sample.join(', ')}, ...).`,
+      '   That is `git reset --soft origin/main` without merging origin/main first: the commit would REVERT',
+      '   everything main gained since your branch point. Merge origin/main before git reset --soft, or rebuild it:',
+      '     git fetch origin main && git checkout -B <branch> origin/main',
+      '     git checkout <old-tip> -- <only your files> && git commit',
+    );
+  } else if (botOwned?.status === 'fail') {
     lines.push(
       '',
       `* This push rewrites ${botOwned.count} bot-owned data files (${botOwned.sample.join(', ')}, ...).`,
@@ -283,8 +383,18 @@ export function judgeLand({ cwd, src, target, base = 'origin/main', fetch = true
   detail.tests = tests;
   const botOwned = (seams.checkBotOwned || checkBotOwnedRewrite)({ base, tip: src, cwd });
   detail.botOwned = botOwned;
-  if (rebase.status === 'conflict' || tests.status === 'fail' || botOwned.status === 'fail') {
-    return { decision: 'block', message: blockMessage({ target, rebase, tests, base, botOwned }), detail };
+  // Judged on what land would apply (the rebased tree), so an unmerged branch
+  // that is merely behind main is not mistaken for a revert.
+  const staleRevert = rebase.status === 'clean' && rebase.tip
+    ? (seams.checkStaleRevert || checkStaleRevert)({ base, tip: rebase.tip, cwd })
+    : { status: 'skip', reason: `rebase preview ${rebase.status}` };
+  detail.staleRevert = staleRevert;
+  const manifests = rebase.status === 'clean' && rebase.tip
+    ? (seams.checkRebasedManifests || checkRebasedManifests)({ base, src, tip: rebase.tip, cwd })
+    : { status: 'skip' };
+  detail.manifests = manifests;
+  if ([rebase.status === 'conflict', tests.status, botOwned.status, staleRevert.status, manifests.status].some((x) => x === true || x === 'fail')) {
+    return { decision: 'block', message: blockMessage({ target, rebase, tests, base, botOwned, staleRevert, manifests }), detail };
   }
   return { decision: rebase.status === 'skip' && tests.status === 'skip' ? 'skip' : 'allow', detail };
 }
@@ -333,7 +443,7 @@ export function runHook({ command, cwd, env = process.env, seams = {} }) {
     const checkTests = srcIsHead && dirty.length === 0;
     const v = judgeLand({ cwd: root, src: t.src || 'HEAD', target: t.dst, checkTests, seams });
     if (!checkTests) v.detail.tests = { status: 'skip', reason: srcIsHead ? `uncommitted test files: ${dirty.slice(0, 3).join(', ')}` : 'pushed ref is not HEAD' };
-    logEvent(root, { event: v.decision, target: t.dst, rebase: v.detail.rebase?.status, tests: v.detail.tests?.status, fetch: v.detail.fetch || null, skipReason: v.detail.rebase?.reason || null });
+    logEvent(root, { event: v.decision, target: t.dst, rebase: v.detail.rebase?.status, tests: v.detail.tests?.status, botOwned: v.detail.botOwned?.status, staleRevert: v.detail.staleRevert?.status, fetch: v.detail.fetch || null, skipReason: v.detail.rebase?.reason || null });
     results.push(v);
   }
   const blocked = results.filter((r) => r.decision === 'block');
