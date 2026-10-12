@@ -39,6 +39,8 @@ const require = createRequire(import.meta.url);
 const {
   validateRoundupPageTitle,
   buildSiblingCategoriesByTitle,
+  isPunctuationFalsePositive,
+  checkTitleMatchSiblingGuards,
 } = require('./show-matching.js');
 const { readCachedArchiveIfValid, checkArchiveCategory } = require('./archive-cache-guard.js');
 
@@ -125,6 +127,89 @@ test('checkArchiveCategory does NOT rescue cross-market-sibling (distinct, delib
   );
   assert.equal(check.ok, false, JSON.stringify(check));
   assert.equal(check.reason, 'cross-market-sibling', JSON.stringify(check));
+});
+
+// BRO-3607: the rescue path used to return ok:true before any sibling guard
+// ran, because validateRoundupPageTitle() only runs them after a word match
+// and a 'page-title-mismatch' returns early. "Q.E.D." vs "QED" is a
+// mismatch the punctuation rescue accepts, so a "(Broadway)" page in the
+// regional show's cache slipped through.
+test('BRO-3607: a punctuation-RESCUED page carrying a sibling market qualifier is REJECTED for the regional show', () => {
+  const html = page('QED (Broadway) Reviews');
+  const show = { title: 'Q.E.D.', category: 'regional' };
+  // Precondition: this really is the rescue path, not the word-match path.
+  const raw = validateRoundupPageTitle(html, show.title, show.category, ['broadway']);
+  assert.equal(raw.reason, 'page-title-mismatch', JSON.stringify(raw));
+  assert.equal(isPunctuationFalsePositive(raw.pageTitle, show.title), true);
+
+  const check = checkArchiveCategory(html, show, ['broadway']);
+  assert.equal(check.ok, false, JSON.stringify(check));
+  assert.equal(check.reason, 'cross-market-sibling', JSON.stringify(check));
+  assert.equal(check.pageMarketQualifier, 'broadway', JSON.stringify(check));
+  assert.equal(check.rescuedTitle, true, JSON.stringify(check));
+});
+
+test('BRO-3607: the same rescued page is still ACCEPTED for the Broadway show and for a regional show with no sibling there', () => {
+  const html = page('QED (Broadway) Reviews');
+  const broadway = checkArchiveCategory(html, { title: 'Q.E.D.', category: 'broadway' }, ['regional']);
+  assert.equal(broadway.ok, true, JSON.stringify(broadway));
+  assert.equal(broadway.rescued, true, JSON.stringify(broadway));
+  // Regional show whose only sibling is off-broadway: the "(Broadway)"
+  // qualifier names no sibling market, so the rescue stands.
+  const regional = checkArchiveCategory(html, { title: 'Q.E.D.', category: 'regional' }, ['off-broadway']);
+  assert.equal(regional.ok, true, JSON.stringify(regional));
+  assert.equal(regional.rescued, true, JSON.stringify(regional));
+});
+
+test('BRO-3607: a normal rescue for a regional show with an unqualified page is still ok', () => {
+  const check = checkArchiveCategory(
+    page('QED Reviews'),
+    { title: 'Q.E.D.', category: 'regional' },
+    ['broadway'],
+  );
+  assert.equal(check.ok, true, JSON.stringify(check));
+  assert.equal(check.rescued, true, JSON.stringify(check));
+});
+
+// Cousin of the above, found by the integrity audit once it shared this
+// predicate: nyc-theatre/and-juliet-tour-2024.html held the "Romeo + Juliet"
+// roundup. Word matching fails ("& Juliet" has one significant word), the
+// rescue accepted it on "juliet", and the containing-title-sibling guard
+// never ran. findContainingTitleSibling() indexes data/shows.json (private
+// data, absent in a fresh checkout), so this one skips without it; the
+// cross-market tests above are hermetic.
+const showsJsonHasRomeoJuliet = (() => {
+  try {
+    const raw = JSON.parse(fs.readFileSync(new URL('../../data/shows.json', import.meta.url), 'utf8'));
+    return (Array.isArray(raw) ? raw : raw.shows || []).some(s => /^romeo \+ juliet$/i.test(s.title || ''));
+  } catch { return false; }
+})();
+test('BRO-3607: a punctuation-rescued page naming a LONGER containing title is REJECTED (containing-title-sibling)',
+  { skip: !showsJsonHasRomeoJuliet && 'data/shows.json missing or has no "Romeo + Juliet" entry' }, () => {
+  const pageTitle = 'Reviews: Review Roundup: Romeo + Juliet - News from New York City Theatre';
+  const raw = validateRoundupPageTitle(page(pageTitle), '& Juliet', 'tour', []);
+  assert.equal(raw.reason, 'page-title-mismatch', JSON.stringify(raw));
+  assert.equal(isPunctuationFalsePositive(pageTitle, '& Juliet'), true);
+
+  const check = checkArchiveCategory(page(pageTitle), { title: '& Juliet', category: 'tour' }, []);
+  assert.equal(check.ok, false, JSON.stringify(check));
+  assert.equal(check.reason, 'containing-title-sibling', JSON.stringify(check));
+});
+
+test('BRO-3607: checkTitleMatchSiblingGuards is the one sibling check validateRoundupPageTitle also uses', () => {
+  const html = page('Little Bear Ridge Road (Broadway)');
+  const direct = checkTitleMatchSiblingGuards(html, 'Little Bear Ridge Road (Broadway)', 'Little Bear Ridge Road', 'regional', ['broadway']);
+  const viaValidator = validateRoundupPageTitle(html, 'Little Bear Ridge Road', 'regional', ['broadway']);
+  assert.equal(direct.reason, 'cross-market-sibling');
+  assert.equal(viaValidator.reason, direct.reason);
+  assert.equal(viaValidator.pageMarketQualifier, direct.pageMarketQualifier);
+  assert.equal(checkTitleMatchSiblingGuards(html, 'Little Bear Ridge Road (Broadway)', 'Little Bear Ridge Road', 'broadway', ['regional']), null);
+});
+
+test('BRO-3607: the integrity audit uses checkArchiveCategory, not its own copy of the rescue', () => {
+  const src = fs.readFileSync(new URL('../audit-aggregator-archive-integrity.js', import.meta.url), 'utf8');
+  assert.match(src, /checkArchiveCategory\(html, show, siblingCategoriesById\[showId\]\)/);
+  assert.doesNotMatch(src, /isPunctuationFalsePositive\(/);
 });
 
 // ---------------------------------------------------------------------------

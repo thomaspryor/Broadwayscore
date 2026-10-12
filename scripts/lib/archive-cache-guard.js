@@ -1,7 +1,12 @@
 'use strict';
 
 const fs = require('fs');
-const { validateRoundupPageTitle, isPunctuationFalsePositive, buildSiblingCategoriesFromShows } = require('./show-matching');
+const {
+  validateRoundupPageTitle,
+  isPunctuationFalsePositive,
+  checkTitleMatchSiblingGuards,
+  buildSiblingCategoriesFromShows,
+} = require('./show-matching');
 
 /**
  * The one place "is this archive's category/title acceptable" gets decided —
@@ -20,7 +25,10 @@ const { validateRoundupPageTitle, isPunctuationFalsePositive, buildSiblingCatego
  * page can never be cached at all). One predicate, used everywhere a "keep
  * or drop this archive" decision is made, closes that drift for good.
  * NOT applied to 'cross-market-sibling' — a distinct, deliberate check per
- * isPunctuationFalsePositive()'s own jsdoc.
+ * isPunctuationFalsePositive()'s own jsdoc. A rescued page still goes through
+ * checkTitleMatchSiblingGuards() (the same sibling checks a word-matched page
+ * gets inside validateRoundupPageTitle), so a rescue can never bypass them
+ * (BRO-3607).
  *
  * Originally BWW-only (bww-archive-category-guard.js); generalized to
  * archive-cache-guard.js by BRO-2565 once DTLI, Playbill Verdict, NYC
@@ -32,12 +40,23 @@ const { validateRoundupPageTitle, isPunctuationFalsePositive, buildSiblingCatego
  * @param {{title: string, category: string}} show
  * @param {string[]} [siblingCategories]
  * @returns {object} same shape as validateRoundupPageTitle(); a rescued
- *   punctuation false positive comes back with ok:true and rescued:true.
+ *   punctuation false positive comes back with ok:true and rescued:true, or
+ *   ok:false with the sibling guard's reason and rescuedTitle:true when the
+ *   rescued page is really a sibling's.
  */
 function checkArchiveCategory(html, show, siblingCategories) {
   const check = validateRoundupPageTitle(html, show.title, show.category, siblingCategories);
   if (check.ok) return check;
   if (check.reason === 'page-title-mismatch' && isPunctuationFalsePositive(check.pageTitle, show.title)) {
+    // A rescue only proves the page names this title. The sibling guards a
+    // word-matched page gets (containing-title-sibling, cross-market-sibling)
+    // must still run, or a regional show's cache holding its Broadway
+    // sibling's "(Broadway)" page is rescued and accepted (BRO-3607).
+    const siblingFailure = checkTitleMatchSiblingGuards(
+      html, check.pageTitle, show.title, show.category, siblingCategories);
+    if (siblingFailure) {
+      return { ok: false, pageTitle: check.pageTitle, rescuedTitle: true, ...siblingFailure };
+    }
     return { ...check, ok: true, rescued: true };
   }
   return check;

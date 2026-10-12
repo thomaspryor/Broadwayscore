@@ -3,7 +3,8 @@
  * Aggregator-archive integrity audit.
  *
  * Walks every cached HTML archive under data/aggregator-archive/<src>/<showId>.html
- * and runs validateRoundupPageTitle() to confirm the page title matches the
+ * and runs checkArchiveCategory() (validateRoundupPageTitle() plus the
+ * shared punctuation rescue) to confirm the page title matches the
  * showId in the filename. This is the standing gate that would have caught
  * the Stuart King contamination class (Notion 34e637c5) at PR time instead
  * of waiting for a critic to email us.
@@ -28,7 +29,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const { validateRoundupPageTitle, isPunctuationFalsePositive, buildSiblingCategoriesByTitle } = require('./lib/show-matching');
+const { buildSiblingCategoriesByTitle } = require('./lib/show-matching');
+const { checkArchiveCategory } = require('./lib/archive-cache-guard');
 
 const STRICT = process.argv.includes('--strict');
 const UPDATE_BASELINE = process.argv.includes('--update-baseline');
@@ -84,15 +86,13 @@ function audit() {
       const show = showById[showId];
       if (!show) { skippedNoShow++; continue; }
       const html = fs.readFileSync(path.join(dir, f), 'utf8');
-      const v = validateRoundupPageTitle(html, show.title, show.category, siblingCategoriesById[showId]);
+      // checkArchiveCategory = validateRoundupPageTitle + the punctuation
+      // false-positive rescue + the sibling guards re-run on a rescued page.
+      // The audit used to run its own copy of the rescue, which skipped the
+      // cross-market-sibling check on rescued pages (BRO-3607); sharing the
+      // scrapers' predicate keeps audit and write/read guards identical.
+      const v = checkArchiveCategory(html, show, siblingCategoriesById[showId]);
       if (v.ok) continue;
-
-      // False-positive guard: see isPunctuationFalsePositive() jsdoc for the
-      // cases it rescues (trailing punctuation, dotted acronyms, slash-joined
-      // titles, byline-prefixed subtitles).
-      if (v.reason === 'page-title-mismatch' && isPunctuationFalsePositive(v.pageTitle, show.title)) {
-        continue;
-      }
 
       bad.push({
         source: src,

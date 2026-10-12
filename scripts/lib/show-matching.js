@@ -1204,6 +1204,48 @@ function buildSiblingCategoriesFromShows(shows) {
   return buildSiblingCategoriesByTitle(showById);
 }
 
+/**
+ * The checks that must run on EVERY page whose title has been accepted as
+ * naming this show — whether accepted by the word matcher inside
+ * validateRoundupPageTitle() or rescued afterwards by
+ * isPunctuationFalsePositive() (archive-cache-guard.js checkArchiveCategory,
+ * which audit-aggregator-archive-integrity.js also uses). A title match says
+ * "the page names this title"; these say "but it is a different show/market
+ * sharing that title". Before BRO-3607 they lived inline after the word
+ * match, so a punctuation-rescued page skipped them entirely: a regional
+ * show's cache holding the Broadway sibling's "(Broadway)" page was rescued
+ * and accepted.
+ *
+ *   - 'containing-title-sibling' (BRO-4953): the page names a DIFFERENT,
+ *     longer show whose title contains this one ("The Heart of Rock and Roll"
+ *     for "The Heart"). Same guard as page-validator.js Layer 0d.
+ *   - 'cross-market-sibling' (BRO-363): regional show only; the page carries
+ *     an explicit market qualifier naming a market where a same-title sibling
+ *     exists. See validateRoundupPageTitle()'s jsdoc for why it is scoped to
+ *     regional.
+ *
+ * @param {string} html
+ * @param {string} pageTitle
+ * @param {string} showTitle
+ * @param {string} [showCategory]
+ * @param {string[]} [siblingCategories]
+ * @returns {null|{reason:'containing-title-sibling', sibling:string}|{reason:'cross-market-sibling', showCategory:string, pageMarketQualifier:string}}
+ *   null when the page passes.
+ */
+function checkTitleMatchSiblingGuards(html, pageTitle, showTitle, showCategory, siblingCategories) {
+  const containing = findContainingTitleSibling(pageTitle, showTitle);
+  if (containing) {
+    return { reason: 'containing-title-sibling', sibling: containing.sibling };
+  }
+  if (showCategory === 'regional' && Array.isArray(siblingCategories) && siblingCategories.length) {
+    const qualifier = detectPageMarketQualifier(html, pageTitle);
+    if (qualifier && qualifier !== showCategory && siblingCategories.includes(qualifier)) {
+      return { reason: 'cross-market-sibling', showCategory, pageMarketQualifier: qualifier };
+    }
+  }
+  return null;
+}
+
 function validateRoundupPageTitle(html, showTitle, showCategory, siblingCategories) {
   if (!html || typeof html !== 'string') {
     return { ok: false, reason: 'no-html', pageTitle: null };
@@ -1215,31 +1257,9 @@ function validateRoundupPageTitle(html, showTitle, showCategory, siblingCategori
   const pageTitle = m[1].trim();
   const conf = titleWordsMatchWithConfidence(showTitle, pageTitle);
   if (conf.matched) {
-    // BRO-4953: the word match also accepts a DIFFERENT, longer show whose
-    // title contains this one ("The Heart of Rock and Roll" for "The Heart",
-    // "Fun Home" for "Home"). Same guard as page-validator.js Layer 0d.
-    const containing = findContainingTitleSibling(pageTitle, showTitle);
-    if (containing) {
-      return {
-        ok: false,
-        reason: 'containing-title-sibling',
-        pageTitle,
-        confidence: conf.confidence,
-        sibling: containing.sibling,
-      };
-    }
-    if (showCategory === 'regional' && Array.isArray(siblingCategories) && siblingCategories.length) {
-      const qualifier = detectPageMarketQualifier(html, pageTitle);
-      if (qualifier && qualifier !== showCategory && siblingCategories.includes(qualifier)) {
-        return {
-          ok: false,
-          reason: 'cross-market-sibling',
-          pageTitle,
-          confidence: conf.confidence,
-          showCategory,
-          pageMarketQualifier: qualifier,
-        };
-      }
+    const siblingFailure = checkTitleMatchSiblingGuards(html, pageTitle, showTitle, showCategory, siblingCategories);
+    if (siblingFailure) {
+      return { ok: false, pageTitle, confidence: conf.confidence, ...siblingFailure };
     }
     return { ok: true, reason: 'matched', pageTitle, confidence: conf.confidence };
   }
@@ -1263,9 +1283,12 @@ function validateRoundupPageTitle(html, showTitle, showCategory, siblingCategori
  * word breaks (compound titles); remaining punctuation is dropped with no
  * space so dotted acronyms collapse correctly.
  *
- * Used by scripts/audit-aggregator-archive-integrity.js as a second-pass
- * check after validateRoundupPageTitle flags 'page-title-mismatch' — NOT
- * called for 'cross-market-sibling', which is a distinct, deliberate check.
+ * Used by archive-cache-guard.js checkArchiveCategory() (and through it the
+ * integrity audit) as a second-pass check after validateRoundupPageTitle
+ * flags 'page-title-mismatch' — NOT called for 'cross-market-sibling', which
+ * is a distinct, deliberate check. A rescue only proves the title; callers
+ * must still run checkTitleMatchSiblingGuards() on the rescued page
+ * (BRO-3607).
  *
  * @param {string} pageTitle - the archive's <title> text (HTML-entity encoded)
  * @param {string} showTitle - the show's title from shows.json
@@ -1821,6 +1844,7 @@ module.exports = {
   titleWordsMatch,
   titleWordsMatchWithConfidence,
   validateRoundupPageTitle,
+  checkTitleMatchSiblingGuards,
   buildSiblingCategoriesByTitle,
   buildSiblingCategoriesFromShows,
   detectPageMarketQualifier,
