@@ -522,7 +522,11 @@ function checkShowPage({ url, page, show, parent, schedule, tickets = [], todays
   return out;
 }
 
-/** The city pages the build should have, from data (mirrors data-tour-cities.ts). */
+/**
+ * The city pages the build should have, from data (mirrors data-tour-cities.ts).
+ * `listedIds` must be the SCORED tours (isTourListed), not every tour on the
+ * tours list: unscored running tours are on the list but never count here.
+ */
 function expectedCities({ tours, schedules, listedIds, today, minTours = 3, indexMinTours = 5, recentDays = 365 }) {
   const since = addDays(today, -recentDays);
   const open = tours.filter(t => t.status !== 'closed');

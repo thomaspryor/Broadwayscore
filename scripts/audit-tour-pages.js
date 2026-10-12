@@ -184,8 +184,17 @@ async function main() {
     }
 
     // 3. City pages the data says exist.
-    const expected = A.expectedCities({ tours, schedules, listedIds: new Set(listed.keys()), today });
-    const expectedYesterday = A.expectedCities({ tours, schedules, listedIds: new Set(listed.keys()), today: todays[0] });
+    // City pages count SCORED tours only (isTourListed in data-tour-cities.ts),
+    // not everything on the tours list: the list also carries unscored running
+    // tours under "Reviews coming in" (BRO-4931). A scored tour's public JSON
+    // carries `cs`; an unscored one's does not.
+    const scoredIds = new Set();
+    await pool([...listed.keys()], 6, async id => {
+      const r = await fetchText(`${BASE}/data/shows/${id}.json`);
+      try { if (JSON.parse(r.text).cs != null) scoredIds.add(id); } catch { /* no public json: not scored */ }
+    });
+    const expected = A.expectedCities({ tours, schedules, listedIds: scoredIds, today });
+    const expectedYesterday = A.expectedCities({ tours, schedules, listedIds: scoredIds, today: todays[0] });
     const cityPages = new Set(expected.keys());
     cityCount = expected.size;
     for (const p of sitemap) {

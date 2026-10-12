@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { isShowScoreStatusEligible } = require('./showscore-status-eligibility.js');
-const { checkTourData } = require('./tour-page-audit.js');
+const { checkTourData, expectedCities } = require('./tour-page-audit.js');
+import { readFileSync } from 'node:fs';
 
 // BRO-4876: ShowScore "Closed" on a tour's borrowed URL closed the live
 // Operation Mincemeat tour with no closingDate; the audit then saw 24 future stops.
@@ -45,4 +46,21 @@ test('fetcher drops stops ending before openingDate but keeps an opening engagem
   assert.ok(!checkTourData({ show, parent: null, schedule: { stops }, today: '2026-10-11' }).some(f => f.code === 'stops-before-opening'));
   const all = rows.map(r => ({ city: r.city, venue: r.venue, start: iso(r.start), end: iso(r.end) }));
   assert.ok(checkTourData({ show, parent: null, schedule: { stops: all }, today: '2026-10-11' }).some(f => f.code === 'stops-before-opening'));
+});
+
+// BRO-4979: city pages count scored tours only, but the tours list also carries
+// unscored running tours, so the audit expected 31 pages the site never builds.
+test('expectedCities counts only the scored ids it is given', () => {
+  const stop = { city: 'Ames, IA', start: '2026-11-01', end: '2026-11-02' };
+  const tours = ['a', 'b', 'c', 'd'].map(id => ({ id, status: 'open' }));
+  const schedules = Object.fromEntries(tours.map(t => [t.id, { stops: [stop] }]));
+  const cities = ids => expectedCities({ tours, schedules, listedIds: new Set(ids), today: '2026-10-12' });
+  assert.ok(cities(['a', 'b', 'c']).has('ames-ia'));
+  assert.ok(!cities(['a', 'b']).has('ames-ia'), 'two scored + two unscored tours must not make a page');
+});
+
+test('audit script feeds expectedCities scored ids, not every tours-list id', () => {
+  const src = readFileSync(new URL('../audit-tour-pages.js', import.meta.url), 'utf8');
+  assert.ok(!/expectedCities\([^)]*listedIds: new Set\(listed\.keys\(\)\)/.test(src));
+  assert.ok(/listedIds: scoredIds/.test(src));
 });
