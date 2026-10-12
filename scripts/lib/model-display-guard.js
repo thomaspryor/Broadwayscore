@@ -20,6 +20,11 @@
 //                   bar would read "100%+" (recouped) on a show that has not
 //                   announced it (BRO-5073: Mean Girls read 144 half a year
 //                   before it recouped). A shown range tops out at 99.
+//   star-deal-unknown  a star-driven show with no sourced gross-participation
+//                   deal (BRO-5029): the model would leave the star's share
+//                   of the gross out, so no bar rather than a guessed premium.
+//                   Only when the caller passes starDealUnknown (the model's
+//                   opts.sourcedStarDeals output); off until the live switch.
 //   estimated-recouped  the same, but the low end of the range is 100 or more:
 //                   the card says "Estimated to have recouped, not yet
 //                   announced" instead of a bar (owner decision, BRO-5073:
@@ -98,14 +103,16 @@ function independentEstimate(comm) {
 }
 
 /**
- * @param {{ pct: [number, number, number] | null | undefined, playedWeeks: number, independent?: [number, number] | null, running?: boolean, runningEnabled?: boolean, showType?: string | null, runningTypes?: string[] }} input
- * @returns {{ show: boolean, reason: null | 'no-model' | 'few-weeks' | 'out-of-bounds' | 'estimates-disagree' | 'too-uncertain' | 'awaiting-truth' | 'past-100-unannounced' | 'estimated-recouped', shown: [number, number, number] | null, belowCosts: boolean }}
+ * @param {{ pct: [number, number, number] | null | undefined, playedWeeks: number, independent?: [number, number] | null, running?: boolean, runningEnabled?: boolean, showType?: string | null, runningTypes?: string[], starDealUnknown?: boolean }} input
+ * @returns {{ show: boolean, reason: null | 'no-model' | 'star-deal-unknown' | 'few-weeks' | 'out-of-bounds' | 'estimates-disagree' | 'too-uncertain' | 'awaiting-truth' | 'past-100-unannounced' | 'estimated-recouped', shown: [number, number, number] | null, belowCosts: boolean }}
  */
-function modelDisplayGuard({ pct, playedWeeks: weeks, independent = null, running = false, runningEnabled = RUNNING_MODEL_BAR_ENABLED, showType, runningTypes = RUNNING_MODEL_BAR_TYPES }) {
+function modelDisplayGuard({ pct, playedWeeks: weeks, independent = null, running = false, runningEnabled = RUNNING_MODEL_BAR_ENABLED, showType, runningTypes = RUNNING_MODEL_BAR_TYPES, starDealUnknown = false }) {
   const hide = (reason) => ({ show: false, reason, shown: null, belowCosts: false });
   if (!Array.isArray(pct) || pct.length !== 3 || !pct.every((v) => typeof v === 'number' && Number.isFinite(v))) return hide('no-model');
   const central = pct[1];
   if (!(weeks >= MIN_PLAYED_WEEKS)) return hide('few-weeks');
+  // After few-weeks, so a new show still reads "Too early" (BRO-5029).
+  if (starDealUnknown) return hide('star-deal-unknown');
   if (central < CENTRAL_MIN || central > CENTRAL_MAX) return hide('out-of-bounds');
   if (independent) {
     const off = central < independent[0] ? independent[0] - central : central > independent[1] ? central - independent[1] : 0;
