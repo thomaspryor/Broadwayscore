@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-12T16:02:59.794Z",
-  "processed": 1,
-  "failed": 49,
-  "successRate": "2.0%",
+  "updatedAt": "2026-10-12T16:28:35.071Z",
+  "processed": 186,
+  "failed": 203,
+  "successRate": "47.8%",
   "tierBreakdown": {
-    "playwright": 6,
-    "amp": 0,
-    "browserbase": 0,
+    "playwright": 106,
+    "amp": 2,
+    "browserbase": 10,
     "directCookies": 0,
-    "scrapingdog": 2,
-    "scrapingbee": 0,
-    "brightdata": 1,
+    "scrapingdog": 19,
+    "scrapingbee": 14,
+    "brightdata": 8,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 28
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-10-12T12:12:23.924Z",
@@ -58,8 +58,70 @@
     {
       "t": "2026-10-12T16:00:39.510Z",
       "event": "bb-session",
-      "session": "379af852",
-      "url": "https://www.jonathanbaz.com/2026/10/rent-review.html"
+      "session": "a97e43e4",
+      "url": "https://www.usatoday.com/story/entertainment/theater/2024/09/27/cabaret-kit-kat-"
+    },
+    {
+      "t": "2026-10-12T12:16:07.138Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-10-12T12:16:25.824Z",
+      "event": "bb-session",
+      "session": "14c5c208",
+      "url": "https://www.usatoday.com/story/entertainment/theater/2024/09/27/cabaret-kit-kat-"
+    },
+    {
+      "t": "2026-10-12T12:16:26.308Z",
+      "event": "bb-cookie-inject",
+      "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-10-12T15:44:45.682Z",
+      "event": "bb-session",
+      "session": "a54dc6ac",
+      "url": "https://www.hollywoodreporter.com/tv/tv-features/scott-speedman-r-j-decker-greys"
+    },
+    {
+      "t": "2026-10-12T15:44:57.010Z",
+      "event": "bb-session",
+      "session": "d3482e02",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-10-12T15:54:41.631Z",
+      "event": "bb-session",
+      "session": "444fe44e",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-10-12T15:54:42.574Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-12T15:57:32.991Z",
+      "event": "bb-session",
+      "session": "5d5df5d8",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/dirty-dancing-the-musical-comin"
+    },
+    {
+      "t": "2026-10-12T15:58:10.013Z",
+      "event": "bb-session",
+      "session": "7b385975",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-12T15:58:10.921Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-12T15:59:05.720Z",
+      "event": "bb-session",
+      "session": "50fc8322",
+      "url": "https://deadline.com/2026/10/dirty-dancing-musical-broadway-lionsgate-1237147780"
     }
   ]
 }
