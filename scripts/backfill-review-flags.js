@@ -2,7 +2,7 @@
 /**
  * Backfill Review Quality Flags (1D)
  *
- * One-time script that reads all review-text JSON files and applies
+ * Reads all review-text JSON files (also run by weekly-integrity.yml) and applies
  * Phase 1 post-scrape validation checks:
  * - 1A: validateShowMentioned() → sets showNotMentioned
  * - 1B: extractByline() + matchesCritic() → sets misattributedFullText
@@ -12,12 +12,14 @@
  *   node scripts/backfill-review-flags.js              # Apply flags
  *   node scripts/backfill-review-flags.js --dry-run    # Report only, no file changes
  *   node scripts/backfill-review-flags.js --show=slug  # Single show only
+ *   REVIEW_TEXTS_DIR=... node scripts/backfill-review-flags.js # Isolated replay
  */
 
 const fs = require('fs');
 const path = require('path');
 const { validateShowMentioned, extractByline, matchesCritic, computeContentFingerprint } = require('./lib/content-quality');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { applyFingerprintDuplicate } = require('./lib/backfill-fingerprint-dedup');
 const { evaluateShowMentionGuard, pickShowTitleForHeuristic } = require('./lib/review-guards');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -35,7 +37,7 @@ const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
 const SHOW_FILTER = (args.find(a => a.startsWith('--show=')) || '').replace('--show=', '');
 
-const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
+const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
 
 // Load shows.json for title lookup
 let showsData = {};
@@ -82,12 +84,15 @@ for (const showId of showDirs) {
 
   // Build fingerprint map for this show (for 1C dedup)
   const fingerprintMap = new Map(); // fingerprint → filename
+  const siblings = new Map();
+  const loadSibling = (name) => siblings.get(name) || null;
 
   // First pass: build fingerprint map
   for (const file of files) {
     try {
       const filePath = path.join(showDir, file);
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      siblings.set(file, data);
       if (data.fullText && data.fullText.length >= 100) {
         const fp = computeContentFingerprint(data.fullText);
         if (fp) {
@@ -195,17 +200,13 @@ for (const showId of showDirs) {
       const fingerprint = computeContentFingerprint(fullText);
       if (fingerprint) {
         const existingOwner = fingerprintMap.get(fingerprint);
-        if (existingOwner && existingOwner !== file) {
-          if (!data.duplicateTextOf || data.duplicateTextOf !== existingOwner) {
-            data.duplicateTextOf = existingOwner;
-            modified = true;
-          }
-          flags.push(`duplicateTextOf: ${existingOwner}`);
+        const dedup = applyFingerprintDuplicate(data, file, existingOwner, loadSibling);
+        if (dedup.changed) modified = true;
+        // Later files must see this run's decisions, including in dry-run mode.
+        siblings.set(file, data);
+        if (dedup.target) {
+          flags.push(`duplicateTextOf: ${dedup.target}`);
           stats.duplicateText++;
-        } else if (data.duplicateTextOf) {
-          // Clear stale flag
-          delete data.duplicateTextOf;
-          modified = true;
         }
         // Register this file if not already in map
         if (!fingerprintMap.has(fingerprint)) {
