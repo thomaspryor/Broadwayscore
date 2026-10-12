@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-12T01:59:09.912Z",
+  "timestamp": "2026-10-12T02:21:53.311Z",
   "stats": {
-    "totalReviews": 56008,
-    "alreadyFlagged": 20914,
+    "totalReviews": 56011,
+    "alreadyFlagged": 20917,
     "dateGuardCatches": 255,
     "directorMismatch": 1752,
-    "tvFilmSignals": 1610,
-    "londonSignals": 2198,
+    "tvFilmSignals": 1611,
+    "londonSignals": 2199,
     "offBroadwaySignals": 507,
     "yearMismatch": 136,
-    "noPublishDate": 5236
+    "noPublishDate": 5221
   },
   "findings": [
     {
@@ -2361,7 +2361,7 @@
     {
       "showId": "american-psycho-off-west-end-2026",
       "file": "independent--alice-saville.json",
-      "score": 78,
+      "score": 80,
       "publishDate": "2026-02-02",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/american-psycho-musical-almeida-theatre-review-b2912010.html",
       "findings": [
@@ -2375,7 +2375,7 @@
     {
       "showId": "american-psycho-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 76,
+      "score": 77,
       "publishDate": "2026-02-01",
       "url": "https://www.londonboxoffice.co.uk/news/post/american-psycho-almeida-review",
       "findings": [
@@ -17496,6 +17496,19 @@
     },
     {
       "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
+      "file": "the-interested-bystander--interested-bystander.json",
+      "publishDate": null,
+      "url": "https://www.interestedbystander.com/2026/06/off-broadway-reviews-some-pride-month.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
       "file": "theater-scene--darryl-reilly.json",
       "score": 84,
       "publishDate": "2026-05-26",
@@ -24234,7 +24247,7 @@
     {
       "showId": "lungs-west-end-2019",
       "file": "financialtimes--sarah-hemming.json",
-      "score": 75,
+      "score": 78,
       "publishDate": "2019-10-25",
       "url": "https://www.ft.com/content/d999fc08-f650-11e9-a79c-bc9acae3b654",
       "findings": [
@@ -24253,7 +24266,7 @@
     {
       "showId": "lungs-west-end-2019",
       "file": "guardian--arifa-akbar.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2019-10-20",
       "url": "https://www.theguardian.com/stage/2019/oct/20/lungs-review-old-vic-london-claire-foy-and-matt-smith-shine-in-climate-crisis-drama",
       "findings": [
@@ -56745,6 +56758,19 @@
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
+      "file": "london-theatre-reviews--james-dix.json",
+      "publishDate": "2026-08-12",
+      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=28650",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
       "file": "londontheatre1--john-groves.json",
       "score": 94,
       "publishDate": "2026-08-12",
@@ -62065,7 +62091,7 @@
     },
     {
       "showId": "high-society-west-end-2026",
-      "file": "british-theatre--unknown.json",
+      "file": "british-theatre--susan-novak.json",
       "score": 93,
       "publishDate": "2026-06-04",
       "url": "https://www.britishtheatre.com/posts/high-society-review-a-joyous-champagne-soaked-revival-at-the-barbican",
@@ -71676,7 +71702,7 @@
     {
       "showId": "rosmersholm-west-end-2019",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 82,
+      "score": 81,
       "publishDate": "May 3rd, 2019",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/rosmersholm-duke-of-yorks-_49001.html",
       "findings": [
