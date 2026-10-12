@@ -51,6 +51,8 @@ on:
       - 'scripts/check-workflow-run-status.test.mjs'
       # scripts/backtest-recoupment-ground-truth.js runs in unit-tests (advisory model backtest, BRO-4989)
       - 'scripts/backtest-recoupment-ground-truth.js'
+      # scripts/print-review-text.js is required by tests/unit/print-review-text.test.mjs (BRO-4889)
+      - 'scripts/print-review-text.js'
       # scripts/posthog-flag-admin.js is a thin CLI wrapper around
       # scripts/lib/posthog-flag-admin-core.js (covered by the glob above) —
       # no independent test of its own, but a solo edit here would otherwise
