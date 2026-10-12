@@ -109,3 +109,22 @@ describe('query-ID urls carry no slug (BRO-4956)', () => {
     assert.equal(slugLooksLikeDifferentShow('https://www.londontheatre1.com/reviews/hamlet-national-theatre/', { showTitle: 'Affluenza' }), true);
   });
 });
+
+describe('path plumbing and file extensions are not show tokens (BRO-5166)', () => {
+  const TB = 'https://www.talkinbroadway.com/page/ob/09_25_26.html';
+  test('a Talkin\' Broadway dated review page is not a different show', () => {
+    assert.equal(slugLooksLikeDifferentShow(TB, { showTitle: 'Human Things' }), false);
+  });
+  test('a forum-thread stub upgrades to its real TB review page', () => {
+    const stub = {
+      showId: 'human-things-off-broadway-2026', outletId: 'talkinbroadway', criticName: 'Unknown',
+      url: 'https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913', contentTier: 'stub',
+    };
+    assert.equal(maybeUpgradeUrl(stub, TB, 'url-ingest', { showTitle: 'Human Things' }), true);
+    assert.equal(stub.url, TB);
+  });
+  test('a different show named in an .html or index.php slug still trips the guard', () => {
+    assert.equal(slugLooksLikeDifferentShow('https://www.nytimes.com/2026/09/25/theater/wicked-review.html', { showTitle: 'Human Things' }), true);
+    assert.equal(slugLooksLikeDifferentShow('https://example.com/index.php/hamilton-review', { showTitle: 'Human Things' }), true);
+  });
+});

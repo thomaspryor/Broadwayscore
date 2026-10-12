@@ -2415,6 +2415,10 @@ const URL_GENERIC_SLUG_TOKENS = new Set([
   'olivier', 'lyttelton', 'cottesloe', 'menier', 'chocolate', 'factory',
   // stopwords that survive slug tokenisation
   'the', 'and', 'for', 'with', 'from', 'are', 'was',
+  // path plumbing and file extensions (BRO-5166: Talkin' Broadway's dated
+  // review pages, /page/ob/09_25_26.html, read as the "show" "page html", so
+  // every forum-stub upgrade to the real review page was silently refused)
+  'page', 'pages', 'html', 'htm', 'php', 'asp', 'aspx', 'cfm', 'jsp', 'index',
 ]);
 
 // Distinctive (show-identifying) tokens from a URL slug. Drops generic words,
