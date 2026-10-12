@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-3414-b",
   "planId": "57150243-98e5-4bc3-8f10-d1f27cac8167",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-12T15:41:13.399693Z",
   "submitter": {
     "name": null,
@@ -89,5 +89,53 @@
         "description": "no URL and the stored text stops before the sign-off; the publisher is not a critic"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T18:43:12.794Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-the-jellicle-ball-2026/lighting-and-sound-america--plasa-media-inc-lighting-and-sound-america.json duplicateOf: null -> \"lighting-and-sound-america--david-barbour.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-fear-of-13-2026/lighting-and-sound-america--plasa-media-inc-lighting-and-sound-america.json duplicateOf: null -> \"lighting-and-sound-america--david-barbour.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dog-day-afternoon-2026/lighting-and-sound-america--plasa-media-inc-lighting-and-sound-america.json duplicateOf: null -> \"lighting-and-sound-america--david-barbour.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "titanique-2026/lighting-and-sound-america--plasa-media-inc-lighting-and-sound-america.json duplicateOf: null -> \"lighting-and-sound-america--david-barbour.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-emporium-off-broadway-2025/lighting-and-sound-america--plasa-media-inc-lighting-and-sound-america.json criticName: \"PLASA Media Inc - Lighting & Sound America\" -> \"David Barbour\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-american-daughter-off-broadway-2026/lighting-and-sound-america--plasa-media-inc-lighting-and-sound-america.json criticName: \"PLASA Media Inc - Lighting & Sound America\" -> \"David Barbour\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "small-off-broadway-2026/lighting-and-sound-america--plasa-media-inc-lighting-and-sound-america.json criticName: \"PLASA Media Inc - Lighting & Sound America\" -> \"David Barbour\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "scorched-earth-off-broadway-2026/lighting-and-sound-america--plasa-media-inc-lighting-and-sound-america.json criticName: \"PLASA Media Inc - Lighting & Sound America\" -> \"David Barbour\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "giant-2026/lighting-and-sound-america--plasa-media-inc-lighting-and-sound-america.json criticName: \"PLASA Media Inc - Lighting & Sound America\" -> \"Unknown\""
+    }
+  ]
 }
