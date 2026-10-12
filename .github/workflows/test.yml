@@ -699,6 +699,7 @@ on:
       # digest renderer's test is in tests/unit-test-manifest.txt — these are
       # path-listed so a solo edit to either triggers CI.
       - 'scripts/audit-serp-census-recall.js'
+      - 'scripts/audit-serp-census-recall.test.mjs'
       - '.github/workflows/audit-census-recall.yml'
       - 'scripts/health-check.js'
       # Digest invariant FAIL monitor (task #1648): colocated *.test.mjs runs

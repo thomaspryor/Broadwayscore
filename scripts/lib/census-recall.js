@@ -127,7 +127,14 @@ function armFamily(arm) {
 function classifySample(show, opts = {}) {
   const now = opts.now === undefined ? Date.now() : opts.now;
   const settlingHours = opts.settlingHours === undefined ? SETTLING_HOURS : opts.settlingHours;
-  const opening = show && show.openingDate ? Date.parse(show.openingDate) : NaN;
+  // A date-only openingDate ('2026-10-04') parses as UTC midnight — ~23h
+  // BEFORE a 7pm ET curtain, so a 24h window ended about an hour after the
+  // reviews dropped (BRO-2296: The Hairy Ape read "opened 43h ago" when ~21h
+  // had passed). Date-only means "some time that day", so the window starts
+  // at the end of it.
+  const raw = show && show.openingDate ? String(show.openingDate) : '';
+  const dateOnly = /^\d{4}-\d{2}-\d{2}$/.test(raw);
+  const opening = raw ? Date.parse(raw) + (dateOnly ? 24 * 3600000 : 0) : NaN;
   if (!Number.isFinite(opening)) {
     return {
       state: 'unknown-date',
@@ -257,7 +264,7 @@ function perCategoryRecall(rows) {
  * recall computed over zero shows.
  *
  * @param {object} report {generatedAt, naivePages, shows:[rows]}
- * @param {object} [opts] {date}
+ * @param {object} [opts] {date, unavailableArms, settlingSkipped}
  * @returns {object} trend record
  */
 function summarizeRun(report, opts = {}) {
@@ -269,6 +276,9 @@ function summarizeRun(report, opts = {}) {
     if (s === 'measured') continue;
     excluded[s] = (excluded[s] || 0) + 1;
   }
+  // Settling shows are now skipped at selection (BRO-2296), so they never
+  // reach `rows`; the caller passes the count so the tally stays visible.
+  if (opts.settlingSkipped > 0) excluded.settling = (excluded.settling || 0) + opts.settlingSkipped;
   const agg = perArmRecall(measured);
   const generatedAt = (report && report.generatedAt) || null;
   return {
@@ -324,7 +334,12 @@ function detectRecallRegression(entries, opts = {}) {
   const cfg = { ...REGRESSION_DEFAULTS, ...opts };
   const list = (Array.isArray(entries) ? entries : []).filter(e => e && typeof e === 'object');
   const latest = list.length ? list[list.length - 1] : null;
-  const prior = list.slice(0, -1).slice(-cfg.baselineRuns);
+  // A run too thin to be judged is also too thin to judge others by
+  // (BRO-2296): the 1-show 2026-10-05 row would otherwise sit in the next
+  // four baselines. Rows without a `shows` count predate the field and stay.
+  const judgeable = e => !(typeof e.shows === 'number' && e.shows < cfg.minShows);
+  const history = list.slice(0, -1).filter(judgeable);
+  const prior = history.slice(-cfg.baselineRuns);
 
   if (!latest) {
     return { verdict: 'blind', reason: 'no trend entries recorded yet', regressions: [], latest: null, comparedArms: 0 };
@@ -424,7 +439,7 @@ function detectRecallRegression(entries, opts = {}) {
       }
 
       // Slow drift: compare against runs OLDER than the sliding baseline window.
-      const older = list.slice(0, Math.max(0, list.length - 1 - cfg.baselineRuns)).slice(-cfg.driftLookbackRuns);
+      const older = history.slice(0, Math.max(0, history.length - cfg.baselineRuns)).slice(-cfg.driftLookbackRuns);
       const olderSamples = older
         .map(e => (e[level] || {})[arm])
         .filter(v => typeof v === 'number' && Number.isFinite(v));

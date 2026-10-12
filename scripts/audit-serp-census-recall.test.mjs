@@ -9,7 +9,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { pickShows } = require('./audit-serp-census-recall.js');
-const { detectRecallRegression } = require('./lib/census-recall.js');
+const { classifySample, detectRecallRegression, summarizeRun } = require('./lib/census-recall.js');
 
 const NOW = Date.parse('2026-10-05T19:43:00Z');
 
@@ -24,18 +24,34 @@ const SHOWS = [
   { id: 'b', title: 'B', openingDate: '2026-09-28', status: 'open' },
   { id: 'c', title: 'C', openingDate: '2026-09-25', status: 'open' },
   { id: 'd', title: 'D', openingDate: '2026-09-20', status: 'open' },
+  { id: 'e', title: 'E', openingDate: '2026-09-15', status: 'open' },
 ];
 
-test('pickShows fills the sample with measurable shows, skipping same-day openings', () => {
+test('pickShows fills the sample with measurable shows, skipping recent openings', () => {
   const sel = pickShows(SHOWS, { limit: 5, days: 30, now: NOW, includeUndated: false, settlingHours: 24 });
-  assert.deepEqual(sel.pool.map(s => s.id), ['hairy-ape', 'a', 'b', 'c', 'd']);
-  assert.equal(sel.settlingSkipped, 4);
+  // hairy-ape opened the evening of 10-04, ~21h before the run: still settling.
+  assert.deepEqual(sel.pool.map(s => s.id), ['a', 'b', 'c', 'd', 'e']);
+  assert.equal(sel.settlingSkipped, 5);
 });
 
-test('pickShows with --settling-hours=0 keeps same-day openings (operator override)', () => {
+test('classifySample: a date-only openingDate settles from the END of that day', () => {
+  // 10-04 date-only at 10-05 19:43Z: ~43.7h after UTC midnight, but the
+  // curtain was the evening of 10-04 — ~20h of indexing at most.
+  assert.equal(classifySample({ openingDate: '2026-10-04' }, { now: NOW, settlingHours: 24 }).state, 'settling');
+  assert.equal(classifySample({ openingDate: '2026-10-03' }, { now: NOW, settlingHours: 24 }).state, 'measured');
+  // A full timestamp is taken at face value.
+  assert.equal(classifySample({ openingDate: '2026-10-04T12:00:00Z' }, { now: NOW, settlingHours: 24 }).state, 'measured');
+});
+
+test('summarizeRun tallies settling shows skipped at selection', () => {
+  const e = summarizeRun({ generatedAt: '2026-10-05T19:43:00Z', shows: [] }, { settlingSkipped: 4 });
+  assert.equal(e.excluded.settling, 4);
+});
+
+test('pickShows with --settling-hours=0 admits any show whose opening day has ended', () => {
   const sel = pickShows(SHOWS, { limit: 5, days: 30, now: NOW, includeUndated: false, settlingHours: 0 });
-  assert.equal(sel.pool.length, 5);
-  assert.ok(sel.pool.some(s => s.id === 'torera'));
+  assert.deepEqual(sel.pool.map(s => s.id), ['hairy-ape', 'a', 'b', 'c', 'd']);
+  assert.equal(sel.settlingSkipped, 4);
 });
 
 // Trend entries shaped like the real 2026-08-24 .. 2026-10-05 ledger rows.
@@ -54,6 +70,28 @@ test('a one-show run is insufficient-sample, not a naive-arm regression (2026-10
   assert.equal(r.verdict, 'insufficient-sample', JSON.stringify(r));
   assert.match(r.reason, /measured only 1 show/);
   assert.match(r.reason, /4 settling/);
+});
+
+test('exactly minShows (3) measured shows is judged, not suppressed', () => {
+  const r = detectRecallRegression([
+    wk('2026-09-14', 5, 120, 0.5, 12),
+    wk('2026-09-21', 5, 118, 0.5, 12),
+    wk('2026-09-28', 3, 72, 0.2, 4.8),
+  ]);
+  assert.equal(r.verdict, 'regressed');
+});
+
+test('a thin prior run is kept out of the baseline it would distort', () => {
+  // Without the filter the 1-show 0.05 row drags the median to 0.275 and the
+  // 0.2 latest reads as a small dip; with it, the baseline is 0.5.
+  const r = detectRecallRegression([
+    wk('2026-09-14', 5, 120, 0.5, 12),
+    wk('2026-09-21', 1, 18, 0.05, 1),
+    wk('2026-09-28', 5, 122, 0.5, 12),
+    wk('2026-10-05', 5, 120, 0.2, 4.8),
+  ]);
+  assert.equal(r.verdict, 'regressed');
+  assert.equal(r.regressions[0].baseline, 0.5);
 });
 
 test('the same drop on a full sample still regresses', () => {

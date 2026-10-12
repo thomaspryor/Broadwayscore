@@ -464,7 +464,10 @@ async function main() {
   let exitCode = 0;
   if (hasFlag('trend')) {
     const trendPath = getArg('trend-out') || TREND_PATH;
-    const entry = summarizeRun(out, { unavailableArms: onDiskUnavailable ? ['onDisk'] : [] });
+    const entry = summarizeRun(out, {
+      unavailableArms: onDiskUnavailable ? ['onDisk'] : [],
+      settlingSkipped: selection.settlingSkipped || 0,
+    });
     const entries = providerOutage
       ? readTrendEntries(trendPath)
       : appendTrendEntry(trendPath, entry, { force: hasFlag('force-trend') });
