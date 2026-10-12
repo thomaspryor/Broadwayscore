@@ -46,6 +46,18 @@ const LIVENESS_TTL_MS = 5 * 60 * 1000;
 const POLL_MIN_MS = 10 * 1000;
 const POLL_MAX_MS = 30 * 1000;
 const DEADLINE_MINUTES = 75;
+// BRO-5196: a Land job that sees PARK_DEPTH or more tickets ahead does not
+// sleep-poll on its runner (14 deep on 2026-10-12 held 14 of the account's ~20
+// runners and starved test.yml on main). Its first step cancels the run
+// BEFORE any work, which is the "evicted while queued" state the sweep
+// (land-retry-cancelled.js) already re-runs with rerun-failed-jobs, Checks
+// result kept. The step name below is how a parked job is told apart from an
+// eviction; land.yml's step must carry exactly this name.
+const PARK_DEPTH = 4;
+const PARK_STEP_NAME = 'Admit to the landing queue';
+// Parked runs resume only when the queue has room, so re-parks are rare; the
+// budget is still bounded and stays below land-stranded-refs STRANDED_MAX_ATTEMPT.
+const PARKED_MAX_ATTEMPTS = 15;
 
 const TICKET_RE = /^refs\/land-mutex\/queue\/([01])-(\d{13})-(\d+)-(\d+)$/;
 
@@ -151,12 +163,26 @@ function nextPollMs(poll, { rand = Math.random } = {}) {
   return Math.round(base * (0.8 + 0.4 * rand()));
 }
 
+/**
+ * Is this Land job (from the run's jobs listing) one that parked itself?
+ * The admit step ended cancelled, nothing after it ran to completion, and
+ * nothing failed: it never started landing.
+ */
+function isParkedLandJob(land) {
+  const steps = (land && land.steps) || [];
+  const admit = steps.find((x) => x.name === PARK_STEP_NAME);
+  if (!admit || admit.conclusion !== 'cancelled') return false;
+  // The runner's own bookkeeping steps succeed around any job; they are not work.
+  const bookkeeping = (x) => x.name === 'Set up job' || x.name === 'Complete job';
+  return steps.every((x) => x === admit || bookkeeping(x) || (x.conclusion !== 'success' && x.conclusion !== 'failure'));
+}
+
 /** Our tickets in a state (release deletes every one, any attempt name drift aside). */
 function ownTickets(state, self) {
   return ((state && state.tickets) || []).filter((t) => isSelf(t, self));
 }
 
 module.exports = {
-  QUEUE_PREFIX, LOCK_REF, GRACE_MS, STALE_AGE_MS, LIVENESS_TTL_MS, POLL_MIN_MS, POLL_MAX_MS, DEADLINE_MINUTES,
+  QUEUE_PREFIX, LOCK_REF, PARK_DEPTH, PARK_STEP_NAME, PARKED_MAX_ATTEMPTS, isParkedLandJob, GRACE_MS, STALE_AGE_MS, LIVENESS_TTL_MS, POLL_MIN_MS, POLL_MAX_MS, DEADLINE_MINUTES,
   ticketName, parseTicket, parseLsRemote, ticketLiveness, decideStep, blockerRef, nextPollMs, ownTickets,
 };

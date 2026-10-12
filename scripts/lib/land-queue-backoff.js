@@ -24,6 +24,7 @@ const { isMainRedBranch } = require('./land-main-red');
 
 const MAX_AGE_HOURS = 24;
 const MAX_INSPECT = 10;
+const { PARKED_MAX_ATTEMPTS } = require('./land-mutex');
 
 /**
  * Cancelled Land runs worth inspecting, oldest first: on a land/** branch, the
@@ -59,7 +60,8 @@ function supersededByNewerRun(candidate, latestForBranch) {
  * capped; the caller re-runs the FIRST one decideLandRetry accepts.
  */
 function decideSweep({ cancelledRuns, refs, now, maxInspect = MAX_INSPECT } = {}) {
-  const candidates = pickStrandedCandidates(cancelledRuns, { refs, now }).slice(0, maxInspect);
+  // Prefilter at the parked budget (BRO-5196); decideLandRetry applies the exact one per run.
+  const candidates = pickStrandedCandidates(cancelledRuns, { refs, now, maxAttempts: Math.max(MAX_ATTEMPTS, PARKED_MAX_ATTEMPTS) }).slice(0, maxInspect);
   if (!candidates.length) return { action: 'idle', reason: 'nothing-stranded' };
   return { action: 'inspect', candidates };
 }

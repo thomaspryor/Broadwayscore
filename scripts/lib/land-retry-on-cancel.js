@@ -17,6 +17,8 @@
  * exists (it is deleted once landed) at the same tip the run verified, and the attempt budget is not spent.
  */
 
+const { PARKED_MAX_ATTEMPTS, isParkedLandJob } = require('./land-mutex');
+
 const MAX_ATTEMPTS = 6;
 
 function decideLandRetry({ run, jobs, branchExists, branchTip, maxAttempts = MAX_ATTEMPTS } = {}) {
@@ -30,13 +32,19 @@ function decideLandRetry({ run, jobs, branchExists, branchTip, maxAttempts = MAX
   if (!checks || checks.conclusion !== 'success') return no('checks-not-success');
   if (!land) return no('no-land-job');
   if (land.conclusion !== 'cancelled') return no(`land-${land.conclusion || 'none'}`);
-  const started = (land.steps || []).some((s) => s.conclusion === 'success' || s.conclusion === 'failure');
+  // BRO-5196: a Land job that parked itself behind a deep landing queue (its
+  // admit step cancelled the run before any work) is resumed like an eviction,
+  // on its own, larger budget: it burns an attempt only when the queue is full again.
+  const parked = isParkedLandJob(land);
+  const started = !parked && (land.steps || []).some((s) => s.conclusion === 'success' || s.conclusion === 'failure');
   if (started) return no('land-started-work');
   if (!branchExists) return no('branch-gone');
   if (branchTip && run.head_sha && branchTip !== run.head_sha) return no('superseded-tip');
   const attempt = run.run_attempt || 1;
-  if (attempt >= maxAttempts) return no('attempts-exhausted');
-  return { retry: true, reason: 'land-cancelled-while-queued', attempt };
+  if (attempt >= (parked ? Math.max(maxAttempts, PARKED_MAX_ATTEMPTS) : maxAttempts)) return no('attempts-exhausted');
+  return parked
+    ? { retry: true, reason: 'land-parked-behind-deep-queue', attempt, parked: true }
+    : { retry: true, reason: 'land-cancelled-while-queued', attempt };
 }
 
 // BRO-4651: GITHUB_TOKEN's per-repo quota is shared by every workflow and ran

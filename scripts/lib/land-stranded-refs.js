@@ -23,6 +23,7 @@
  */
 
 const { MAX_ATTEMPTS } = require('./land-retry-on-cancel');
+const { PARKED_MAX_ATTEMPTS, isParkedLandJob } = require('./land-mutex');
 const { MAX_AGE_HOURS } = require('./land-queue-backoff');
 
 // One full re-run per ref per hour at most; the whole pass runs hourly.
@@ -92,10 +93,12 @@ function decideStrandedRef({ tip, latestRun, jobs, tipCommittedAt, cardLandedAt,
   const attempt = latestRun.run_attempt || 1;
 
   if (latestRun.conclusion === 'cancelled' || RERUNNABLE_CONCLUSIONS.has(latestRun.conclusion)) {
-    const landStarted = Boolean(land && (land.steps || []).some((s) => s.conclusion === 'success' || s.conclusion === 'failure'));
+    // BRO-5196: a job that parked itself behind a deep queue never started landing.
+    const parked = isParkedLandJob(land);
+    const landStarted = !parked && Boolean(land && (land.steps || []).some((s) => s.conclusion === 'success' || s.conclusion === 'failure'));
     if (landStarted) return out('escalate', 'land-cancelled-mid-flight');
     const fastOwned = checks && checks.conclusion === 'success'
-      && attempt < MAX_ATTEMPTS
+      && attempt < (parked ? PARKED_MAX_ATTEMPTS : MAX_ATTEMPTS)
       && minutesSince(latestRun.created_at, now) < MAX_AGE_HOURS * 60;
     if (fastOwned) return out('none', 'fast-retry-owns');
     if (attempt >= STRANDED_MAX_ATTEMPT) return out('escalate', 'evicted-budget-exhausted');
