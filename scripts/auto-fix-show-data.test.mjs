@@ -274,6 +274,10 @@ test('generateSynopsisWithLLM logs UNKNOWN and cut-off replies by their real rea
 // Teenage Armageddon after Haiku replied UNKNOWN. A fallback plot now needs
 // search results that describe the same story.
 async function runFallback(judgeReply) {
+  return runReplies(['UNKNOWN', 'A teenage girl navigates grief and the emo scene of the mid-2000s after the loss of her father.', judgeReply]);
+}
+
+async function runReplies(replyList) {
   const https = require('https');
   const { EventEmitter } = require('events');
   const realRequest = https.request;
@@ -281,7 +285,7 @@ async function runFallback(judgeReply) {
   const prevKey = process.env.ANTHROPIC_API_KEY;
   process.env.ANTHROPIC_API_KEY = 'test-key';
   const invented = 'A teenage girl navigates grief and the emo scene of the mid-2000s after the loss of her father.';
-  const replies = ['UNKNOWN', invented, judgeReply];
+  const replies = [...replyList];
   const prompts = [];
   const logs = [];
   https.request = (_opts, onRes) => {
@@ -319,6 +323,21 @@ test('generateSynopsisWithLLM drops an Opus fallback plot that search results co
 test('generateSynopsisWithLLM keeps an Opus fallback plot that search results support', async () => {
   const { out, invented } = await runFallback('SUPPORTED: same premise');
   assert.equal(out, invented);
+});
+
+// BRO-5080: Haiku's answer skipped grounding, so its invented plots were saved
+// (Rockets and Blue Lights' "Kent pub", Present Laughter's lead as a playwright).
+test('generateSynopsisWithLLM grounds a Haiku plot too, and falls back to Opus when it is contradicted', async () => {
+  const haikuGuess = 'A grieving teenager joins a punk band and wins a talent contest.';
+  const { out, logs } = await runReplies([haikuGuess, 'CONTRADICTED: the results describe a girl grieving her sister', 'UNKNOWN']);
+  assert.equal(out, null);
+  assert.ok(logs.some(l => /claude-haiku[^:]*: dropped, search results CONTRADICTED/.test(l)), logs.join('\n'));
+});
+
+test('generateSynopsisWithLLM keeps a Haiku plot that search results support', async () => {
+  const haikuPlot = 'Eileen, 15, grieves her sister Olive while trying to hold her family together.';
+  const { out } = await runReplies([haikuPlot, 'SUPPORTED: same premise']);
+  assert.equal(out, haikuPlot);
 });
 
 // BRO-4884: the LLM creative-team path must tie a director to the venue.

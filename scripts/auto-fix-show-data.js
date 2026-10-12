@@ -15,7 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { isValidSynopsis, classifyBadSynopsis, cutToLastSentence } = require('./lib/synopsis-validation');
+const { isValidSynopsis, classifyBadSynopsis, cutToLastSentence, synopsisAuthorMismatch } = require('./lib/synopsis-validation');
 const { isTourShow } = require('./lib/tour-family');
 const { imageOnDisk } = require('./lib/show-images');
 const { verifyProductionMatch } = require('./lib/synopsis-production-match');
@@ -295,22 +295,25 @@ async function generateSynopsisWithLLM(show) {
     if (why) console.log(`    · ${model}: ${why}`);
     return why ? null : t;
   };
+  // Every model answer must be grounded: the wrong-show verifier confirms
+  // the title, not the plot, so it cannot catch invented details. Keep a plot
+  // only if web search results about this production describe the same story
+  // (BRO-4884 for Opus; BRO-5080 found Haiku inventing too: Rockets and Blue
+  // Lights' "Kent pub", Present Laughter's lead as a playwright).
+  const grounded = async (text, model) => {
+    const g = await groundSynopsis(show, text, {
+      search: q => serpQuery(q, { nbResults: 8 }),
+      judge: p => callClaudeAPI(p, 120, CLAUDE_HAIKU),
+    });
+    if (g.supported) return text;
+    console.log(`    · ${model}: dropped, search results ${g.verdict}: ${g.reason}`);
+    return null;
+  };
   const haiku = usable(await callClaudeAPI(prompt, 300, CLAUDE_HAIKU), CLAUDE_HAIKU);
-  if (haiku) return haiku;
+  if (haiku && await grounded(haiku, CLAUDE_HAIKU)) return haiku;
   const opus = usable(await callClaudeAPI(prompt, 300, CLAUDE_OPUS), CLAUDE_OPUS);
   if (!opus) return null;
-  // Haiku did not know this work, so Opus may be guessing; the Opus wrong-show
-  // check cannot catch its own invention. Keep it only if web search results
-  // about this production describe the same story (BRO-4884, lib/synopsis-grounding.js).
-  const g = await groundSynopsis(show, opus, {
-    search: q => serpQuery(q, { nbResults: 8 }),
-    judge: p => callClaudeAPI(p, 120, CLAUDE_HAIKU),
-  });
-  if (!g.supported) {
-    console.log(`    · ${CLAUDE_OPUS}: dropped, search results ${g.verdict}: ${g.reason}`);
-    return null;
-  }
-  return opus;
+  return grounded(opus, CLAUDE_OPUS);
 }
 
 // Generate creative team via Claude API (fallback)
@@ -428,6 +431,13 @@ async function fixSynopsis(show, todayTixIds) {
     // saved candidate is not flagged bad again on the next run.
     if (classifyBadSynopsis({ ...show, synopsis: text }).bad) {
       console.log(`    ✗ rejected ${source} synopsis (fails classifyBadSynopsis)`);
+      return false;
+    }
+    // A lead naming an author the row's credits do not carry is a same-titled
+    // other work (Home Front 1985 got Warren Leight's 2023 play, BRO-5080).
+    const author = synopsisAuthorMismatch({ ...show, synopsis: text });
+    if (author) {
+      console.log(`    ✗ rejected ${source} synopsis (names ${author}, not in this row's credits)`);
       return false;
     }
     // Award claims must agree with awards.json (LLMs and producer copy both invent them, BRO-4853).
