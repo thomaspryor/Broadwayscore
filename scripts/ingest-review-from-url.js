@@ -47,7 +47,7 @@ const path = require('path');
 const { fetchPage } = require('./lib/scraper');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
-const { isolateMultiShowSection } = require('./lib/multi-show-section-extract');
+const { isolateMultiShowSection, normSectionText } = require('./lib/multi-show-section-extract');
 const { extractArticleTextFromUrl, extractPublishDate, extractLsaByline } = require('./lib/article-extractor');
 const { classifyReviewUrl } = require('./lib/non-review-url-patterns');
 const { isUnresolvableRedirectUrl } = require('./lib/unresolvable-url');
@@ -85,6 +85,9 @@ const showId = getArg('show');
 const url = getArg('url');
 const outletArg = getArg('outlet');
 const criticArg = getArg('critic');
+// Extra heading spelling for a multi-show post whose section heading misspells
+// the title (interestedbystander's "Toera" for Torera, BRO-4658).
+const sectionTitleArg = getArg('section-title');
 const publishDateArg = getArg('publish-date');
 // --date-window=YYYY-MM-DD,YYYY-MM-DD (BRO-4656): skip, before any write, a page
 // whose publish date is missing or outside the window. Tour-stop discovery
@@ -129,12 +132,12 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 
 // --help must print usage and exit BEFORE any side effect (BRO-1711).
 if (require.main === module && hasHelpFlag(process.argv.slice(2))) {
-  console.log('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--dry-run] [--data-dir=PATH] [--allow-non-review-url] [--land]');
+  console.log('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--dry-run] [--data-dir=PATH] [--allow-non-review-url] [--section-title=HEADING] [--land]');
   process.exit(0);
 }
 
 if (!showId || !url) {
-  console.error('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--dry-run] [--data-dir=PATH] [--allow-non-review-url] [--land]');
+  console.error('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--dry-run] [--data-dir=PATH] [--allow-non-review-url] [--section-title=HEADING] [--land]');
   process.exit(1);
 }
 
@@ -335,9 +338,15 @@ if (!show) {
   let text = stripTrailingJunk(extractArticleTextFromUrl(html, url, criticArg));
   // Multi-show blog posts (interestedbystander): keep only THIS show's section,
   // and refuse rather than score other shows' paragraphs into the file (BRO-4387).
-  const iso = isolateMultiShowSection(url, text, show.title);
+  const iso = isolateMultiShowSection(url, text, show.title, sectionTitleArg ? [sectionTitleArg] : []);
   if (iso.action === 'refuse') {
-    console.error(`Refusing ingest: could not isolate a "${show.title}" section in multi-show post ${url}. Ingest manually or pass the correct show title.`);
+    console.error(`Refusing ingest: could not isolate a "${show.title}" section in multi-show post ${url}. Ingest manually or pass --section-title=<heading as the post spells it>.`);
+    process.exit(1);
+  }
+  // A wrong --section-title would isolate another show's section; that section
+  // must still name this show in its body.
+  if (sectionTitleArg && iso.action === 'isolated' && !normSectionText(iso.text).includes(normSectionText(show.title))) {
+    console.error(`Refusing ingest: the "${sectionTitleArg}" section of ${url} never mentions "${show.title}".`);
     process.exit(1);
   }
   text = iso.text;
