@@ -1,52 +1,72 @@
 {
   "everReachedFloor": true,
   "recentCaptures": [
-    3,
     5,
+    3,
     3
   ],
-  "lastRunAt": "2026-09-28T20:03:30.454Z",
+  "lastRunAt": "2026-10-12T09:54:39.502Z",
   "lastSummary": {
     "days": 7,
-    "impressions": 238,
-    "impressionEvents": 246,
-    "dismissed": 179,
-    "dismissRatePct": 75.21,
+    "impressions": 369,
+    "impressionEvents": 380,
+    "dismissed": 279,
+    "dismissRatePct": 75.61,
     "captured": 3,
     "capturedEvents": 3,
-    "convRatePct": 1.26,
+    "convRatePct": 0.81,
     "capturesPerWeek": 3,
-    "mobileBouncePct": 67.36,
+    "mobileBouncePct": 62.55,
     "byTrigger": {
       "scroll_depth": {
-        "n": 115,
-        "people": 115
+        "n": 175,
+        "people": 174
       },
       "exit_intent": {
-        "n": 102,
-        "people": 98
+        "n": 164,
+        "people": 159
       },
       "return_visitor": {
-        "n": 29,
-        "people": 26
+        "n": 40,
+        "people": 38
+      },
+      "recapture": {
+        "n": 1,
+        "people": 1
       }
     },
     "byCopyVersion": {
-      "v2-2026-08-10": {
+      "v4-2026-10-08": {
         "shown": {
-          "n": 246,
-          "people": 238
+          "n": 150,
+          "people": 147
         },
         "dismissed": {
-          "n": 179,
-          "people": 179
+          "n": 109,
+          "people": 109
+        },
+        "captured": {
+          "n": 0,
+          "people": 0
+        },
+        "dismissRatePct": 74.15,
+        "convRatePct": 0
+      },
+      "v3-2026-10-04": {
+        "shown": {
+          "n": 230,
+          "people": 225
+        },
+        "dismissed": {
+          "n": 170,
+          "people": 170
         },
         "captured": {
           "n": 3,
           "people": 3
         },
-        "dismissRatePct": 75.21,
-        "convRatePct": 1.26
+        "dismissRatePct": 75.56,
+        "convRatePct": 1.33
       }
     }
   }
