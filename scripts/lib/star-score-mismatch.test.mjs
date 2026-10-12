@@ -120,3 +120,30 @@ test('gap only against assignedScore (star cleared but LLM absent) still flags',
   assert.equal(f.gapAssigned, 50);
   assert.equal(f.starWonHidingContradiction, false);
 });
+
+// BRO-305: electra-persona Daily Mail (2/5) — humanReviewScore 50 set from the
+// page, llm/assigned still 92. The rebuild serves 50, so this is not a live
+// contradiction and must not re-alert daily.
+test('in-band non-provisional humanReviewScore resolves the mismatch', () => {
+  const r = { outletId: 'daily-mail', originalScore: '2/5 stars', scoreSource: 'manual-verified', humanReviewScore: 50, assignedScore: 92, llmScore: { score: 92, confidence: 'high' } };
+  assert.equal(evaluateReview(r), null);
+});
+
+test('provisional or out-of-band humanReviewScore still flags', () => {
+  const base = { outletId: 'daily-mail', originalScore: '2/5 stars', scoreSource: 'manual-verified', assignedScore: 92, llmScore: { score: 92, confidence: 'high' } };
+  assert.ok(evaluateReview({ ...base, humanReviewScore: 50, humanReviewScoreProvisional: true }), 'rebuild skips a provisional human score');
+  assert.ok(evaluateReview({ ...base, humanReviewScore: 85 }), 'human score outside 31-50 is itself the contradiction');
+});
+
+// BRO-305: oh-mary-west-end LBC / death-becomes-her-tour HerCampus — a generic
+// "1/5"/"2/5" pattern on a rave the ensemble scored 78-87. The rebuild drops
+// such a star (isUncorroboratedGenericStar), so the site never shows it.
+test('uncorroborated generic-pattern star the rebuild drops is not flagged', () => {
+  const r = { outletId: 'lbc', originalScore: '1/5', originalScoreSource: 'numeric-stars', scoreSource: 'numeric-stars', assignedScore: 78, llmScore: { score: 78, confidence: 'high' } };
+  assert.equal(evaluateReview(r), null);
+});
+
+test('generic-pattern star with a low-confidence LLM is still flagged (the rebuild keeps it)', () => {
+  const r = { outletId: 'lbc', originalScore: '1/5', originalScoreSource: 'numeric-stars', scoreSource: 'numeric-stars', assignedScore: 78, llmScore: { score: 78, confidence: 'low' } };
+  assert.ok(evaluateReview(r));
+});

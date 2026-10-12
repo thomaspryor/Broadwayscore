@@ -46,12 +46,15 @@ function makeFixture() {
   // The Theater Life / card #396 shape: wp-api-title grabbed the wrong
   // show's star off a combined multi-show roundup column. LLM read (93,
   // Rave) is the independently-correct one; the 2/5 star belongs to the
-  // OTHER show in the same article.
+  // OTHER show in the same article. Source is 'unicode-stars' here, not the
+  // real 'wp-api-title': since BRO-305 the detector skips a wp-api-title star
+  // the rebuild drops as uncorroborated, and this test is about the CLI's
+  // baseline/exit-code contract, not that skip.
   writeReview(reviewTextsDir, 'fixture-mis-extracted-2026', 'theater-life--critic.json', {
     outlet: 'Theater Life',
     originalScore: '2/5 stars',
     originalScoreNormalized: 40,
-    scoreSource: 'wp-api-title',
+    scoreSource: 'unicode-stars',
     assignedScore: 40,
     llmScore: { score: 93, confidence: 'medium' },
   });
@@ -151,7 +154,7 @@ test('a DIFFERENT bad rating in the same file re-alerts even after baselining th
       outlet: 'Theater Life',
       originalScore: '1/5 stars',
       originalScoreNormalized: 20,
-      scoreSource: 'wp-api-title',
+      scoreSource: 'unicode-stars',
       assignedScore: 20,
       llmScore: { score: 93, confidence: 'medium' },
     });

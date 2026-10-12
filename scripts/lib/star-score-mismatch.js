@@ -21,6 +21,13 @@
  * `llmConf !== 'low'`; Birthright's llmScore.confidence was 'low', so that guard
  * never fired. This detector is confidence-agnostic on purpose.)
  *
+ * Two cases are NOT contradictions, because the site never serves the stale
+ * score (BRO-305): a non-provisional humanReviewScore inside the rating's band
+ * (rebuild-helpers P0 serves it, so a stale llm/assigned read is moot), and a
+ * generic-pattern / post-title star the rebuild itself drops as uncorroborated
+ * (isUncorroboratedGenericStar: a reader-submitted page's "1/5" gallery counter
+ * on a rave). Both kept firing daily on reviews the site already shows right.
+ *
  * This is a DETECTION guard (audit + daily health-check alert), not a scoring-logic
  * change — it never mutates scores, so it carries no scoring-delta obligation.
  */
@@ -30,6 +37,7 @@ const path = require('path');
 const { parseRating } = require('./score-conversion-rules');
 const { listShowDirs } = require('./list-show-dirs');
 const { isIntentionalClear } = require('./review-write-guard');
+const { detectBandFromReviewFile, isUncorroboratedGenericStar } = require('./star-reliability');
 
 // A gap this large between an explicit critic rating and the site's independent
 // read almost always means the rating was mis-extracted (wrong show in a combined
@@ -100,6 +108,16 @@ function isExcludedReview(r) {
   );
 }
 
+// A human score the rebuild serves (P0, rebuild-helpers.js: not provisional)
+// that already sits inside the critic's rating band: the contradiction was
+// resolved by hand and only the bookkeeping llm/assigned fields are stale.
+function humanScoreResolvesBand(review) {
+  const h = review.humanReviewScore;
+  if (!Number.isInteger(h) || h < 1 || h > 100 || review.humanReviewScoreProvisional === true) return false;
+  const det = detectBandFromReviewFile(review);
+  return !!(det && det.band && h >= det.band.floor && h <= det.band.ceiling);
+}
+
 /**
  * Evaluate a single review for a star-vs-score contradiction.
  *
@@ -126,6 +144,8 @@ function evaluateReview(review, opts = {}) {
   if (parsed.type === 'numeric') return null;
 
   const expected = parsed.expected;
+  if (humanScoreResolvesBand(review)) return null;
+  if (isUncorroboratedGenericStar(review, expected)) return null;
   const llm = review.llmScore && typeof review.llmScore.score === 'number' ? review.llmScore.score : null;
   const assigned = typeof review.assignedScore === 'number' ? review.assignedScore : null;
   if (llm === null && assigned === null) return null;
@@ -240,6 +260,7 @@ module.exports = {
   isIntentionallyClearedRating,
   isMissingOriginalScore,
   evaluateReview,
+  humanScoreResolvesBand,
   reviewTimestamp,
   keyOf,
   scanReviewTexts,
