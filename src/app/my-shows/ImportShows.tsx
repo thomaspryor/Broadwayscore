@@ -11,6 +11,11 @@ import {
   acquireFromTheatrScreenshots,
   mergeDiaryShows,
   THEATR_MAX_SCREENSHOTS,
+  DEFAULT_REACTION_RATINGS,
+  REACTION_LABELS,
+  effectiveRating,
+  reactionCounts,
+  type TheatrReaction,
   type ImportAcquireResult,
   type RawImportEntry,
 } from '@/lib/show-import';
@@ -80,7 +85,13 @@ function formatDateSeen(iso: string): string {
 
 interface MatchedEntry {
   sourceTitle: string;
+  /** The rating this row imports with: the source's own rating, or for a
+   *  Theatr reaction, what the user set that reaction to (effectiveRating). */
   sourceRating: number | null;
+  /** The source's own rating before any reaction setting (Theatr: a score
+   *  the user wrote); recomputing sourceRating starts from this. */
+  scoreRating: number | null;
+  reaction?: TheatrReaction;
   /** Original source-scale score (Show Score 0–100) for preview display. */
   sourceScore: number | null;
   sourceDate: string | null;
@@ -168,6 +179,8 @@ export default function ImportShows({
   const offers = (id: ImportSourceId) => onlySource === null || onlySource === id;
   const [entries, setEntries] = useState<MatchedEntry[]>([]);
   const [notices, setNotices] = useState<string[]>([]);
+  // Theatr has no stars: the user decides what each reaction rates as.
+  const [reactionRatings, setReactionRatings] = useState(DEFAULT_REACTION_RATINGS);
   const [profileInput, setProfileInput] = useState('');
   const [importStats, setImportStats] = useState({ imported: 0, skipped: 0, errors: 0 });
   const [error, setError] = useState<string | null>(null);
@@ -344,7 +357,9 @@ export default function ImportShows({
       const alreadyReviewed = showId ? existingReviewShowIds.has(showId) : false;
       matched.push({
         sourceTitle: raw.title,
-        sourceRating: raw.rating,
+        sourceRating: effectiveRating(raw.rating, raw.reaction, reactionRatings),
+        scoreRating: raw.rating,
+        ...(raw.reaction ? { reaction: raw.reaction } : {}),
         sourceScore: raw.sourceScore,
         sourceDate: raw.date,
         sourceReview: raw.reviewText,
@@ -375,6 +390,7 @@ export default function ImportShows({
       matched.push({
         sourceTitle: raw.title,
         sourceRating: null,
+        scoreRating: null,
         sourceScore: null,
         sourceDate: raw.date,
         sourceReview: null,
@@ -413,7 +429,7 @@ export default function ImportShows({
         mezz_show_id: raw.mezzShowId || null,
       }).catch(() => {}); // best-effort logging — an insert failure must never surface to the user
     }
-  }, [ensureSearchData, matchShow, existingReviewShowIds, existingWatchlistShowIds, userId, context]);
+  }, [ensureSearchData, matchShow, existingReviewShowIds, existingWatchlistShowIds, userId, context, reactionRatings]);
 
   const handleFileSelect = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -513,6 +529,17 @@ export default function ImportShows({
     [entries],
   );
   const untickedCount = untickedEntries.length;
+
+  // Seen shows rated only by a Theatr reaction, per reaction: one control
+  // each in the preview. Changing one re-rates every row with that reaction.
+  // Counted over rows that will import (ticked and matched), so the box
+  // never shows for reactions whose shows are all skipped.
+  const reactionCountsInPreview = useMemo(() => reactionCounts(entries.filter(e => e.type === 'diary' && e.selected && e.match)), [entries]);
+  const setReactionRating = (reaction: TheatrReaction, rating: number | null) => {
+    const next = { ...reactionRatings, [reaction]: rating };
+    setReactionRatings(next);
+    setEntries(prev => prev.map(e => e.reaction ? { ...e, sourceRating: effectiveRating(e.scoreRating, e.reaction, next) } : e));
+  };
 
   const toggleEntry = (index: number) => {
     setEntries(prev => prev.map((e, i) => i === index ? { ...e, selected: !e.selected } : e));
@@ -683,6 +710,7 @@ export default function ImportShows({
     setStep('closed');
     setEntries([]);
     setNotices([]);
+    setReactionRatings(DEFAULT_REACTION_RATINGS);
     setProfileInput('');
     setError(null);
     setImportStats({ imported: 0, skipped: 0, errors: 0 });
@@ -807,7 +835,7 @@ export default function ImportShows({
                 <p className="text-xs text-gray-500 mb-2">
                   Theatr has no export, so upload screenshots instead. In the app: Profile → Activity, then screenshot
                   the feed from the top as you scroll down. Up to {THEATR_MAX_SCREENSHOTS} screenshots. We read the shows,
-                  dates, and your reviews and scores (like 84/100); the images aren&apos;t saved.
+                  dates, your reactions and any reviews you wrote; the images aren&apos;t saved.
                 </p>
                 <label className="btn-secondary text-sm gap-2 cursor-pointer inline-flex items-center">
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -867,6 +895,31 @@ export default function ImportShows({
                 )}
                 {unmatchedCount > 0 && <span className="text-yellow-400">{unmatchedCount} not on Broadway Scorecard</span>}
               </div>
+              {(Object.keys(reactionCountsInPreview) as TheatrReaction[]).length > 0 && (
+                <div className="mb-3 rounded-lg border border-white/10 bg-white/5 p-3">
+                  <p className="text-xs font-bold text-white mb-0.5">Your Theatr reactions</p>
+                  <p className="text-xs text-gray-500 mb-2">
+                    Theatr has no star ratings, so choose what each reaction means. Any review you wrote comes along too,
+                    and you can change any rating later.
+                  </p>
+                  {(['recommend', 'mixed', 'dislike'] as TheatrReaction[]).filter(r => reactionCountsInPreview[r]).map(r => (
+                    <label key={r} className="flex items-center justify-between gap-3 py-1 text-sm">
+                      <span className="text-gray-300">
+                        {REACTION_LABELS[r]} <span className="text-gray-500">({reactionCountsInPreview[r]})</span>
+                      </span>
+                      <select
+                        value={reactionRatings[r] ?? ''}
+                        onChange={(e) => setReactionRating(r, e.target.value === '' ? null : Number(e.target.value))}
+                        aria-label={`Rating for shows marked ${REACTION_LABELS[r]}`}
+                        className="bg-white/5 border border-white/10 rounded-md px-2 py-2 min-h-[44px] sm:min-h-0 sm:py-1 text-base sm:text-sm text-white focus:outline-none focus:border-brand/50"
+                      >
+                        {[5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1, 0.5].map(v => <option key={v} value={v}>★ {v}</option>)}
+                        <option value="">Don&apos;t rate</option>
+                      </select>
+                    </label>
+                  ))}
+                </div>
+              )}
               {notices.map((n, i) => (
                 <p key={i} className="text-xs text-yellow-500 mb-1">{n}</p>
               ))}
@@ -1062,7 +1115,7 @@ function ImportEntryRow({ entry, index, onToggle, liveResolve, onFindIt, onPickC
           <span className="text-xs text-white truncate">{entry.sourceTitle}</span>
           {entry.sourceRating ? (
             <span className="text-xs text-amber-400 flex-shrink-0">
-              {entry.sourceScore !== null ? `${entry.sourceScore} → ` : ''}★ {entry.sourceRating}
+              {entry.sourceScore !== null && entry.scoreRating !== null ? `${entry.sourceScore} → ` : entry.reaction && entry.scoreRating === null ? `${REACTION_LABELS[entry.reaction]} → ` : ''}★ {entry.sourceRating}
             </span>
           ) : entry.type === 'diary' ? (
             // Unrated diary entries import into the watchlist, not the diary —

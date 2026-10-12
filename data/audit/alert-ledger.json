@@ -156,13 +156,13 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-11T14:14:07.486Z",
-      "lastSeen": "2026-10-12T00:10:33.733Z",
+      "lastSeen": "2026-10-12T00:22:51.264Z",
       "lastNotifiedAt": "2026-10-11T14:14:07.486Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 132,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 15
+      "silentRefires": 16
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -12586,7 +12586,15 @@
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-5102",
-      "absentRunIds": [],
+      "absentRunIds": [
+        "38186654268"
+      ],
+      "dispatch": {
+        "requestedAt": "2026-10-11T23:41:19.580Z",
+        "mode": "dispatch-at-filing",
+        "runId": "38184281462",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38184281462"
+      },
       "silentRefires": 1
     },
     "test-yml:red:Unit Tests:2a5215c8": {
@@ -13962,7 +13970,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:cd6784f6": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run review-guards regression tests — \"foo returns the contracted value\"",
       "firstSeen": "2026-10-11T20:22:09.425Z",
@@ -13975,9 +13983,12 @@
       "linearIdentifier": "BRO-5078",
       "silentRefires": 8,
       "absentRunIds": [
-        "38184825734",
-        "38185946151"
-      ]
+        "38184281462",
+        "38185497104",
+        "38186654268"
+      ],
+      "resolvedAt": "2026-10-12T00:22:48.812Z",
+      "resolveReason": "stale-signature"
     },
     "review-gap:opening-window:mystic-pizza-tour-2026": {
       "status": "open",
@@ -14144,18 +14155,24 @@
       "cardId": null,
       "linearIdentifier": null
     },
-    "land:land/bro-3410-writer-blocklist": {
+    "test-yml:red:Unit Tests:d27c1fe5": {
       "status": "open",
-      "disposition": "digest",
-      "title": "Landing blocked: unit-tests-node red on land/bro-3410-writer-blocklist",
-      "firstSeen": "2026-10-12T00:07:25.851Z",
-      "incidentOpenedAt": "2026-10-12T00:07:25.851Z",
-      "lastSeen": "2026-10-12T00:07:25.851Z",
-      "lastNotifiedAt": "2026-10-12T00:07:25.851Z",
-      "lastSurfacedAt": "2026-10-12T00:07:25.851Z",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"mrs-doubtfire-2021 carries the BRO-5020 values\"",
+      "firstSeen": "2026-10-12T00:22:48.844Z",
+      "incidentOpenedAt": "2026-10-12T00:22:48.844Z",
+      "lastSeen": "2026-10-12T00:22:48.844Z",
+      "lastNotifiedAt": "2026-10-12T00:22:48.844Z",
+      "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": "BRO-5105",
+      "dispatch": {
+        "requestedAt": "2026-10-12T00:22:48.844Z",
+        "mode": "dispatch-at-filing",
+        "runId": "38186654268",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38186654268"
+      }
     }
   }
 }
