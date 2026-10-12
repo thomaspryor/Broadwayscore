@@ -232,9 +232,11 @@ for (const showId of showDirs) {
     // Skip already-flagged files
     // multiShowSplit*: sections of one multi-show article split per show by
     // multi-show-review-fanout.js (BRO-4431) share its URL by design, like a
-    // combined review.
+    // combined review; so does an allowCrossShowUrl file (an isolated section
+    // ingested on its own, BRO-4834).
     if (laneBypasses(data, 'tourCrossMarket') || data.wrongProduction || data.wrongShow || data.isRoundupArticle || data.isCombinedReview || data.duplicateOf
-      || data.multiShowSplitChild === true || data.multiShowSplitParent === true) {
+      || data.multiShowSplitChild === true || data.multiShowSplitParent === true
+      || data.allowCrossShowUrl === true) {
       skippedFlagged++;
       continue;
     }

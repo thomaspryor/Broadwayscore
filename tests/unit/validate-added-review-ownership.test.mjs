@@ -300,6 +300,18 @@ describe('decideOwnershipDrops — same-show resurrection race (BRO-3092)', () =
     assert.equal(drops[0].owner.file, 'wsj--terry-teachout.json');
   });
 
+  test('allowCrossShowUrl waives only the cross-show check, never the same-show duplicate (BRO-4834)', () => {
+    const show = 'pen-pals-off-broadway-2026';
+    const url = 'https://www.interestedbystander.com/2026/03/an-ark-try-step-trip-pen-pals.html';
+    writeFile(show, 'the-interested-bystander--cary-wong.json', { url, outletId: 'the-interested-bystander', criticName: 'Cary Wong' });
+    const again = writeFile(show, 'the-interested-bystander--unknown.json', {
+      url, outletId: 'the-interested-bystander', criticName: 'Unknown', allowCrossShowUrl: true,
+    });
+    const drops = decideOwnershipDrops([again], tmpDir);
+    assert.equal(drops.length, 1);
+    assert.equal(drops[0].kind, 'same-show');
+  });
+
   test('a NAMED added file is never dropped for an unknown-byline sibling', () => {
     // Direction matters: the rule fires only on the unnamed loser. With the
     // named file in the added set and the unknown one incumbent, nothing is
