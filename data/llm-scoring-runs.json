@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-10-11T15:46:17.542Z",
-    "completedAt": "2026-10-11T15:47:24.084Z",
-    "totalReviews": 31,
-    "processed": 31,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 65789,
-      "output": 7132,
-      "total": 72921
-    },
-    "costUsd": 0.1970849,
-    "runId": "38151794387",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-11T15:53:28.583Z",
-    "completedAt": "2026-10-11T15:54:45.743Z",
-    "totalReviews": 56069,
-    "processed": 16,
-    "skipped": 56052,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 82862,
-      "output": 5008,
-      "total": 217967
-    },
-    "costUsd": 0.3879224,
-    "runId": "38152836019",
-    "errorDetails": [
-      {
-        "showId": "diana-the-musical-2021",
-        "outletId": "nytimes",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-10-11T15:54:47.857Z",
     "completedAt": "2026-10-11T15:55:06.341Z",
     "totalReviews": 7,
@@ -588191,6 +588153,49 @@
     },
     "costUsd": 0,
     "runId": "38300470617",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-12T19:59:45.451Z",
+    "completedAt": "2026-10-12T20:03:14.692Z",
+    "totalReviews": 56556,
+    "processed": 32,
+    "skipped": 56501,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 267248,
+      "output": 12366,
+      "total": 706712
+    },
+    "costUsd": 0.88456695,
+    "runId": "38300653781",
+    "errorDetails": [
+      {
+        "showId": "hadestown-tour-2024",
+        "outletId": "arkansas-democrat-gazette",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "the-years-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-12T20:03:28.048Z",
+    "completedAt": "2026-10-12T20:04:02.876Z",
+    "totalReviews": 13,
+    "processed": 13,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 35328,
+      "output": 3083,
+      "total": 38411
+    },
+    "costUsd": 0.09879320000000001,
+    "runId": "38300653781",
     "errorDetails": []
   }
 ]
