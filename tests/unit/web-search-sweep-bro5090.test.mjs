@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { mergeRecheck, alreadyTriedByFetchPage } = require('../../scripts/review-factcheck/sweep-web-search-bylines.js');
+const { mergeRecheck, alreadyTriedByFetchPage, unreadVerdict, judgeDate } = require('../../scripts/review-factcheck/sweep-web-search-bylines.js');
 const { textTargets, FORCE_TEXT, planLedger } = require('../../scripts/review-factcheck/make-byline-fix-plans.js');
 const { parseReviewFilter, matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement } = require('../../scripts/lib/review-filter.js');
 
@@ -106,4 +106,13 @@ test('plans never repeat BRO-5081 actions or overwrite an applied plan; stale pe
   const l81 = planLedger(existing, 'bro-5081');
   assert.ok(l81.seen.has('1776-2022/wsj--charles-isherwood.json|criticName|"Terry Teachout"'));
   assert.ok(l81.seen.has('b/x.json|criticName|"Y Z"'), 'another issue\'s pending plan is a ledger entry');
+});
+
+test('a url the site answers 404/410 is a dead url, not an unreachable page (invented WaPo urls)', () => {
+  assert.equal(unreadVerdict(404), 'dead-url');
+  assert.equal(unreadVerdict(410), 'dead-url');
+  assert.equal(unreadVerdict(401), 'unreachable', 'WSJ paywall');
+  assert.equal(unreadVerdict(403), 'unreachable');
+  assert.equal(unreadVerdict(0), 'unreachable', 'timeout / network');
+  assert.equal(judgeDate('2006-10-06', null, '2006-10-05', 'dead-url'), 'n/a');
 });

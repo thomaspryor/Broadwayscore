@@ -47,7 +47,7 @@ const THIN_TIERS = new Set(['excerpt', 'truncated', 'invalid', 'stub', 'needs-re
  * content tier. Returns REVIEW_FILTER entries (showId/file, force: first). Pure.
  */
 function textTargets(rows, force = FORCE_TEXT) {
-  const reached = rows.filter(r => r.status === 200 && !['off-topic-page', 'unreachable', 'not-live'].includes(r.verdict));
+  const reached = rows.filter(r => r.status === 200 && !['off-topic-page', 'unreachable', 'dead-url', 'not-live'].includes(r.verdict));
   const thin = reached.filter(r => typeof r.textLen === 'number' && (r.textLen < 300 || THIN_TIERS.has(r.contentTier)));
   const keys = [...new Set(thin.map(r => `${r.showId}/${r.file}`))].filter(k => !force.includes(k));
   // Every entry is force: so collect-review-texts refetches past its

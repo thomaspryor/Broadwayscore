@@ -58,8 +58,30 @@ async function viaFetchPage(url) {
     if (garbage) return { status: 0, html: '', fetchedVia: 'fetchPage-challenge' };
     return html.trim() ? { status: 200, html, fetchedVia: r.source || 'fetchPage', format: r.format || null } : { status: 0, html: '', fetchedVia: 'fetchPage-empty' };
   } catch (e) {
-    return { status: 0, html: '', fetchedVia: 'fetchPage-failed', error: String(e && e.message || e).slice(0, 120) };
+    // Every tier missed. Ask the site itself: a 404/410 means the stored url
+    // does not exist (BRO-5090: 95 Washington Post urls the web-search step
+    // invented, e.g. a GUID ending ...2a1b3c4d5e6f), not that we were blocked.
+    const direct = await directStatus(url);
+    return { status: isDeadStatus(direct) ? direct : 0, html: '', fetchedVia: 'fetchPage-failed', directStatus: direct, error: String(e && e.message || e).slice(0, 120) };
   }
+}
+
+/** HTTP status the site returns to a plain GET (redirects followed), or 0. */
+async function directStatus(url) {
+  try {
+    const res = await fetch(url, { redirect: 'follow', headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(20000) });
+    return res.status;
+  } catch { return 0; }
+}
+
+/** 404/410 from the site: the page does not exist. Pure. */
+function isDeadStatus(status) {
+  return status === 404 || status === 410;
+}
+
+/** Verdict for a page we could not read: 'dead-url' (site says no such page) or 'unreachable'. Pure. */
+function unreadVerdict(status) {
+  return isDeadStatus(status) ? 'dead-url' : 'unreachable';
 }
 
 /**
@@ -122,7 +144,7 @@ function compareByline(ours, bylines) {
  * News 2015), never evidence. Pure.
  */
 function judgeDate(ours, pageDate, openingDate, bylineVerdict) {
-  if (bylineVerdict === 'off-topic-page' || bylineVerdict === 'unreachable') return 'n/a';
+  if (['off-topic-page', 'unreachable', 'dead-url'].includes(bylineVerdict)) return 'n/a';
   const p = Date.parse(String(pageDate || '').slice(0, 10));
   const o = Date.parse(String(ours || ''));
   const open = Date.parse(String(openingDate || ''));
@@ -186,7 +208,7 @@ async function main() {
       const row = todo[i++];
       const r = await fetcher(row.url);
       const bylines = r.status === 200 ? pageBylines(r.html) : [];
-      let verdict = r.status === 200 ? compareByline(row.criticName, bylines) : 'unreachable';
+      let verdict = r.status === 200 ? compareByline(row.criticName, bylines) : unreadVerdict(r.status);
       const title = r.status === 200 ? ((r.html.match(/<title[^>]*>([\s\S]*?)<\/title>/i) || [])[1] || '').trim() : '';
       // A byline only counts if the page is about this show: a stored URL that
       // now serves another article (THR American Buffalo -> a Met Ball piece)
@@ -218,4 +240,4 @@ async function main() {
   if (args.fetcher === 'fetchpage') { try { await require('../lib/scraper').cleanup(); } catch { /* best effort */ } }
 }
 if (require.main === module) main().then(() => process.exit(0), (e) => { console.error(e); process.exit(1); });
-module.exports = { pageBylines, compareByline, normName, pageIsAboutShow, judgeDate, mergeRecheck, alreadyTriedByFetchPage };
+module.exports = { pageBylines, compareByline, normName, pageIsAboutShow, judgeDate, mergeRecheck, alreadyTriedByFetchPage, unreadVerdict };
