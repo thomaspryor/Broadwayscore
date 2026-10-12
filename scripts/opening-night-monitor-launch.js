@@ -65,7 +65,7 @@ const {
   MAX_ATTEMPTS_PER_NIGHT, shouldPageForFailedPass,
   claimLockGeneration, isLockGenerationOwner,
 } = require('./lib/opening-night-windows.js');
-const { runMonitorPass, buildMonitorPassEnv } = require('./lib/opening-night-monitor.js');
+const { runMonitorPass, buildMonitorPassEnv, assertMonitorScraperEnv, SCRAPER_CREDENTIAL_KEYS } = require('./lib/opening-night-monitor.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const { isShowCoverageComplete } = require('./lib/opening-night-readiness.js');
 const { readRetiredMarker } = require('./lib/retired-kill-switch.js');
@@ -387,6 +387,31 @@ async function handleAuthFailure({ auth, key, windows, now }) {
   return route;
 }
 
+/**
+ * Scraper-credential preflight (BRO-2758). A pass launched with no
+ * SCRAPINGBEE_API_KEY / BRIGHTDATA_TOKEN / BROWSERBASE_API_KEY / SCRAPINGDOG_API_KEY
+ * has every fetchPage() fail silently, so aggregators go unchecked on
+ * opening night while the pass still bills and "succeeds". Runs BEFORE the
+ * auth ping, the lock and any attempt bookkeeping: a missing-key tick must
+ * never consume an attempt or spend, and it pages exactly like an auth
+ * failure (handleAuthFailure) because nothing heals it on the next tick.
+ * @returns {Promise<boolean>} true when the pass may proceed
+ */
+async function preflightScraperEnv({ env = process.env, key, windows, now }) {
+  const check = assertMonitorScraperEnv(env);
+  if (check.ok) return true;
+  const shows = windows.map(w => w.showId).join(', ');
+  log(`scraper env preflight failed — none of ${SCRAPER_CREDENTIAL_KEYS.join(', ')} set; paging owner, no pass launched`);
+  await alert({
+    conditionKey: `on-monitor-scraper-env-missing-${key}`,
+    title: 'Opening-night monitor: no scraper API keys in the launcher env — no session launched',
+    description: `None of ${SCRAPER_CREDENTIAL_KEYS.join(', ')} is set for the launchd job, so every fetchPage() in a pass would fail silently and aggregators would go unchecked. ` +
+      `A show is in its opening-night window (${shows}). Fix: put the scraper keys in ${path.join(REPO, '.env')} (loaded by scripts/lib/load-env.js); the next 20-min tick retries automatically.`,
+    severity: 'error', disposition: 'human', cooldownHours: 6,
+  });
+  return false;
+}
+
 // How many consecutive spawn-starved/spawn-error preflights (one per 20-min
 // tick) before the owner is paged. A ping that times out because the Mac is
 // overloaded is not a credential problem and heals on the next tick; only a
@@ -603,6 +628,10 @@ async function main(argv = process.argv.slice(2)) {
     return 1;
   }
 
+  // BRO-2758: before the lock reclaim, auth ping, lock mkdir and attempt
+  // bookkeeping below — a keyless tick consumes nothing.
+  if (!(await preflightScraperEnv({ env: process.env, key, windows, now }))) return 1;
+
   if (decision.action === 'reclaim-and-launch') {
     // Adversarial ship-check finding: a lock that needs reclaiming means the
     // PREVIOUS pass never reached its own success/failure write (the node
@@ -809,7 +838,7 @@ async function main(argv = process.argv.slice(2)) {
   return 0;
 }
 
-module.exports = { parseArgs, monitorCandidates, buildSeed, resolvePassAuth, authFailureRouting, STARVED_PREFLIGHT_PAGE_AFTER, readStarvedCount, writeStarvedCount, handleAuthFailure, alert, main };
+module.exports = { parseArgs, monitorCandidates, buildSeed, resolvePassAuth, authFailureRouting, STARVED_PREFLIGHT_PAGE_AFTER, readStarvedCount, writeStarvedCount, handleAuthFailure, preflightScraperEnv, alert, main };
 
 if (require.main === module) {
   main().then(code => process.exit(code)).catch(e => {

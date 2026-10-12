@@ -86,11 +86,18 @@ async function runMonitorPass({ prompt, cwd, model, settingsPath = null, maxWall
 // forwarded by explicit name only — never a full process.env pass-through.
 // Matches the keys scripts/lib/scraper.js reads for its Bright Data ->
 // ScrapingBee -> Browserbase chain (plus the ScrapingDog alt provider).
+//
+// BRO-2758: SCRAPER_CREDENTIAL_KEYS is the subset that actually authenticates a
+// fetchPage() provider. It is the single list both the forwarder below and the
+// launcher's preflight (assertMonitorScraperEnv) read, so the two can never
+// drift: with NONE of these set every fetch fails and the pass checks nothing.
+const SCRAPER_CREDENTIAL_KEYS = Object.freeze([
+  'SCRAPINGBEE_API_KEY', 'BRIGHTDATA_TOKEN', 'BROWSERBASE_API_KEY', 'SCRAPINGDOG_API_KEY',
+]);
 const SCRAPER_ENV_KEYS = Object.freeze([
-  'SCRAPINGBEE_API_KEY',
-  'BRIGHTDATA_TOKEN', 'BRIGHTDATA_ZONE', 'BRIGHTDATA_SERP_ZONE', 'BRIGHTDATA_CUSTOMER',
-  'BROWSERBASE_API_KEY', 'BROWSERBASE_PROJECT_ID',
-  'SCRAPINGDOG_API_KEY',
+  ...SCRAPER_CREDENTIAL_KEYS,
+  'BRIGHTDATA_ZONE', 'BRIGHTDATA_SERP_ZONE', 'BRIGHTDATA_CUSTOMER',
+  'BROWSERBASE_PROJECT_ID',
   // Spend/safety tunables scraper.js, browserbase-session.js and
   // brightdata-caps.js read. Forwarded only when the launcher has them set, so
   // a kill switch or budget cap in the launcher's env still binds inside the
@@ -114,4 +121,21 @@ function buildMonitorPassEnv(src, { authMode } = {}) {
   return env;
 }
 
-module.exports = { runMonitorPass, isModelAllowed, buildMonitorPassEnv, SCRAPER_ENV_KEYS };
+/**
+ * Pure preflight (BRO-2758): does `env` hold at least one scraper provider
+ * credential? Reads SCRAPER_CREDENTIAL_KEYS only (never a second key list).
+ * Whitespace-only values count as missing.
+ * @param {NodeJS.ProcessEnv} env
+ * @returns {{ok: boolean, present: string[], missing: string[]}}
+ */
+function assertMonitorScraperEnv(env) {
+  const src = env || {};
+  // scraper.js ignores SCRAPINGDOG_API_KEY when SCRAPER_USE_SCRAPINGDOG=0, so
+  // that key alone is not a working provider then.
+  const usable = k => !(k === 'SCRAPINGDOG_API_KEY' && src.SCRAPER_USE_SCRAPINGDOG === '0');
+  const present = SCRAPER_CREDENTIAL_KEYS.filter(k => usable(k) && typeof src[k] === 'string' && src[k].trim() !== '');
+  const missing = SCRAPER_CREDENTIAL_KEYS.filter(k => !present.includes(k));
+  return { ok: present.length > 0, present, missing };
+}
+
+module.exports = { runMonitorPass, isModelAllowed, buildMonitorPassEnv, assertMonitorScraperEnv, SCRAPER_ENV_KEYS, SCRAPER_CREDENTIAL_KEYS };
