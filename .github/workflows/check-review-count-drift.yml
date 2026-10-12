@@ -65,6 +65,8 @@ jobs:
       - uses: ./.github/actions/setup-node
 
       - name: Run drift check
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: |
           ARGS=""
           if [ -n "${{ inputs.show }}" ]; then

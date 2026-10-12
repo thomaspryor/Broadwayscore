@@ -85,14 +85,13 @@ jobs:
         # writes nothing, moves nothing, no LLM calls in CI (operator verifies
         # locally where keys live in .env). continue-on-error so a transient
         # email failure never skips the non-if:always() commit step below.
-        # audit-secret-gap-ok: LINEAR_API_KEY — disposition-misroute.js's only
-        # routeAlert() call uses disposition:'digest' (see its report() fn),
-        # which never reaches dispatchCard()/linear-client.js. False positive
-        # from audit-workflow-secret-gaps.js's known text-based-not-control-
-        # flow-aware limitation (see workflow-secret-scan.js's header).
+        # LINEAR_API_KEY: disposition-misroute.js's routeAlert() uses
+        # disposition:'digest', which files a Linear tracker once the condition
+        # has stayed open (BRO-3030), so the key is needed here (BRO-5168).
         continue-on-error: true
         run: node scripts/disposition-misroute.js report --email
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
 

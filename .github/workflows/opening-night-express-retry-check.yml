@@ -51,6 +51,7 @@ jobs:
 
       - name: Dispatch due retries
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: node scripts/express-retry-queue.js dispatch-due

@@ -29,7 +29,7 @@ const { TERMINAL_STATE_TYPES, isTerminalStateType } = require('./linear-state-ty
 // BRO-2499: autofixFiledIssueGuard below recognises issues the digest-autofix
 // / canary pipeline filed and dispatches itself. Leaf module, no I/O — see
 // its header for why the signal lives there and not in this file.
-const { isAutofixFiledIssue, hasAutofixFiledMarker } = require('./autofix-filed-marker.js');
+const { isAutofixFiledIssue, hasAutofixProvenance } = require('./autofix-filed-marker.js');
 // BRO-2543 - reportedOutcomeGuard's two "already reported back" signals plus
 // the acceptance-command parse it quotes. All three are leaf modules
 // (linear-session-reporting.js has zero require()s of its own), so requiring
@@ -678,7 +678,7 @@ function autofixFiledIssueGuard(issue, opts) {
   // sends them to the wrong log. digest-autofix's own trackers carry its
   // PARKED marker; an alert-router tracker (health-check.js:3951, same
   // "BSC Daily:" title, different marker) is owned by linear-drain-parked.js.
-  const owner = hasAutofixFiledMarker(issue && issue.description)
+  const owner = hasAutofixProvenance(issue && issue.description)
     ? { pipeline: 'the digest-autofix / canary pipeline', dispatcher: "scripts/lib/digest-autofix.js's runAutofix", check: 'no autofix dispatch is in flight for it' }
     : { pipeline: 'an automated filer (owner-alert-router, via health-check)', dispatcher: 'scripts/linear-drain-parked.js', check: 'that drain is not about to pick it up' };
   return `${(issue && issue.identifier) || '(unknown)'} was auto-filed by ${owner.pipeline} ` +

@@ -13,7 +13,7 @@
 # Usage: lint-workflow-guards.sh <check>[,<check>...]
 #   Checks: prebuild | core-data-pairing | private-git-add | merge-drivers
 #         | scraping-fallback | scrapingdog-pairing | theatr-token | demo-flags
-#         | snapshot-overwrite | alert-ledger-commit | ledger-coverage | ledger-step-guard
+#         | snapshot-overwrite | alert-ledger-commit | routealert-linear-key | ledger-coverage | ledger-step-guard
 #         | reset-soft-partial-commit | dry-run-flag-setter | swallowed-audit-writers
 #   Groups: workflows (all .github/workflows-scoped checks) | all
 
@@ -449,6 +449,50 @@ check_alert_ledger_commit() {
   fi
 }
 
+check_routealert_linear_key() {
+  # BRO-5168: a step that calls routeAlert() (inline node -e / github-script,
+  # or by running a script that reaches it) needs LINEAR_API_KEY in its env.
+  # Without it the router throws "LINEAR_API_KEY not set", logs the attempt
+  # ok:false, and the "Alert Router: dispatch deadman" health row stays red
+  # (test.yml's data-audit digest step did this on every run for weeks).
+  # Logic: findMissingLinearKeySteps in scripts/lib/alert-ledger-commit-check.js.
+  # ADVISORY (rule 19, new gates land advisory first): prints ::warning:: and
+  # never sets FAILED. Promote to ::error:: + FAILED=1 once it has stayed clean.
+  # Opt-outs: file-level '# audit-secret-gap-ok: LINEAR_API_KEY', or
+  # '# routealert-linear-key-ok: <reason>' inside the step's run:/script:.
+  local OUT
+  OUT=$(node -e "
+    let acorn;
+    try { acorn = require('acorn'); } catch { acorn = null; }
+    if (!acorn) { console.log('__ACORN_MISSING__'); process.exit(0); }
+    const fs = require('fs');
+    const path = require('path');
+    const { findMissingLinearKeySteps, findRouteAlertCallerScripts } = require('./scripts/lib/alert-ledger-commit-check.js');
+    const { readWorkflowFilesOrFailClosed } = require('./scripts/lib/workflow-glob-guard.js');
+    const callers = findRouteAlertCallerScripts('scripts');
+    const dir = '.github/workflows';
+    let files;
+    try { files = readWorkflowFilesOrFailClosed(dir); } catch (e) { console.log(e.message); process.exit(0); }
+    let any = false;
+    for (const name of files) {
+      for (const v of findMissingLinearKeySteps(fs.readFileSync(path.join(dir, name), 'utf8'), callers)) {
+        any = true;
+        console.log(name + ': ' + v);
+      }
+    }
+    if (!any) console.log('__CLEAN__');
+  " 2>&1)
+  if [ "$OUT" = "__CLEAN__" ]; then
+    echo "All routeAlert() steps have LINEAR_API_KEY in their env"
+  elif [ "$OUT" = "__ACORN_MISSING__" ]; then
+    echo "::warning::acorn is unavailable, so the routeAlert() LINEAR_API_KEY check could not resolve script callers. Run 'npm ci'."
+  else
+    echo "::warning::Workflow steps call routeAlert() without LINEAR_API_KEY in their env (the router will log ok:false and keep the dispatch deadman red):"
+    echo "$OUT"
+    echo "Fix: add 'LINEAR_API_KEY: \${{ secrets.LINEAR_API_KEY }}' to the step's env:, or mark a step that never alerts with '# routealert-linear-key-ok: <reason>'."
+  fi
+}
+
 check_ledger_coverage() {
   # Card 3b1637c5 / task #996: any workflow job that runs a script calling
   # url-discovery.js's serpQuery()/discoverCorrectUrl() (SERP path) must also
@@ -756,6 +800,7 @@ run_check() {
     demo-flags)        check_demo_flags ;;
     snapshot-overwrite) check_snapshot_overwrite ;;
     alert-ledger-commit) check_alert_ledger_commit ;;
+    routealert-linear-key) check_routealert_linear_key ;;
     ledger-coverage)    check_ledger_coverage ;;
     ledger-step-guard)  check_ledger_step_guard ;;
     reset-soft-partial-commit) check_reset_soft_partial_commit ;;
@@ -775,8 +820,9 @@ run_check() {
       check_prebuild; check_core_data_pairing; check_private_git_add
       check_merge_drivers; check_scraping_fallback; check_scrapingdog_pairing; check_theatr_token
       check_demo_flags; check_snapshot_overwrite; check_alert_ledger_commit; check_ledger_coverage
-      check_ledger_step_guard; check_reset_soft_partial_commit; check_dry_run_flag_setter; check_swallowed_audit_writers ;;
-    *) echo "usage: $0 <prebuild|core-data-pairing|private-git-add|merge-drivers|scraping-fallback|scrapingdog-pairing|theatr-token|demo-flags|snapshot-overwrite|alert-ledger-commit|ledger-coverage|ledger-step-guard|reset-soft-partial-commit|dry-run-flag-setter|swallowed-audit-writers|workflows|all>[,...]" >&2; exit 2 ;;
+      check_ledger_step_guard; check_reset_soft_partial_commit; check_dry_run_flag_setter; check_swallowed_audit_writers
+      check_routealert_linear_key ;;
+    *) echo "usage: $0 <prebuild|core-data-pairing|private-git-add|merge-drivers|scraping-fallback|scrapingdog-pairing|theatr-token|demo-flags|snapshot-overwrite|alert-ledger-commit|routealert-linear-key|ledger-coverage|ledger-step-guard|reset-soft-partial-commit|dry-run-flag-setter|swallowed-audit-writers|workflows|all>[,...]" >&2; exit 2 ;;
   esac
 }
 

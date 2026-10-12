@@ -413,7 +413,7 @@ lint_workflows() {
   }
   lwgate tracked-symlinks symlinks
   local g w
-  for g in prebuild core-data-pairing private-git-add merge-drivers scraping-fallback scrapingdog-pairing theatr-token demo-flags alert-ledger-commit ledger-coverage ledger-step-guard reset-soft-partial-commit; do
+  for g in prebuild core-data-pairing private-git-add merge-drivers scraping-fallback scrapingdog-pairing theatr-token demo-flags alert-ledger-commit routealert-linear-key ledger-coverage ledger-step-guard reset-soft-partial-commit; do
     lwgate "lint-workflow-guards:$g" bash scripts/lint-workflow-guards.sh "$g"
   done
   for w in review-texts reviews-json shows-json commercial-json audience-buzz-json; do

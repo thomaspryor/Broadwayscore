@@ -474,6 +474,7 @@ jobs:
       - name: Email feedback outcomes to owner
         if: always()
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           PIPELINE_STATUS: ${{ job.status }}
@@ -493,6 +494,7 @@ jobs:
       - name: Verify user requests are live on the site
         if: always()
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -55,3 +55,52 @@ test('applyPersistenceGate: sightings older than 14 days are pruned', () => {
   const seen = applyPersistenceGate([], { 't:gone': { firstSeen: iso(40 * 24 * H), lastSeen: iso(20 * 24 * H) }, 't:recent': { firstSeen: iso(5 * 24 * H), lastSeen: iso(2 * 24 * H) } }, NOW);
   assert.deepEqual(Object.keys(seen), ['t:recent']);
 });
+
+// BRO-5168: the gate used to hold rows BEFORE writing the sightings file. When
+// the write failed, every run looked like a first sighting, so nothing was
+// ever old enough to file. Holds now apply only after the write succeeds.
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+const { runAutofix, computePersistenceGate } = require('./digest-autofix.js');
+
+function runWithSeenPath(seenPath) {
+  const filed = [];
+  const plan = [{ name: 'Data: something broke', message: 'm', title: 'BSC Daily: Data: something broke', state: 'needs-card', taskId: null, conditionKey: null }];
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro5168-'));
+  runAutofix({
+    plan, dryRun: false, seenPath, loadTasksFn: () => [],
+    ledgerPath: path.join(dir, 'ledger.jsonl'), dispatchLedgerEntriesFn: () => [],
+    dispatchFn: () => {}, now: new Date(NOW),
+    fileCardFn: (title) => { filed.push(title); return { ok: true, identifier: 'BRO-1' }; },
+  });
+  return { plan, filed };
+}
+
+test('computePersistenceGate does not mutate the plan', () => {
+  const plan = [row('BSC Daily: New thing')];
+  const { seen, hold } = computePersistenceGate(plan, {}, NOW);
+  assert.equal(plan[0].state, 'needs-card');
+  assert.equal(hold.length, 1);
+  assert.equal(hold[0], plan[0]);
+  assert.ok(seen[persistenceKey(plan[0])]);
+});
+
+test('runAutofix: an unwritable sightings file files the card instead of holding the row forever', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro5168-'));
+  const notADir = path.join(dir, 'file');
+  fs.writeFileSync(notADir, 'x'); // parent of seenPath is a FILE, so mkdir/write fail even as root
+  const { plan, filed } = runWithSeenPath(path.join(notADir, 'digest-seen.json'));
+  assert.deepEqual(filed, ['BSC Daily: Data: something broke']);
+  assert.notEqual(plan[0].state, 'watching');
+  assert.ok(['card-filed', 'dispatched'].includes(plan[0].state), plan[0].state);
+});
+
+test('runAutofix: a writable sightings file still holds a first sighting as watching', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro5168-'));
+  const seenPath = path.join(dir, 'digest-seen.json');
+  const { plan, filed } = runWithSeenPath(seenPath);
+  assert.deepEqual(filed, []);
+  assert.equal(plan[0].state, 'watching');
+  assert.ok(Object.keys(JSON.parse(fs.readFileSync(seenPath, 'utf8'))).length === 1);
+});

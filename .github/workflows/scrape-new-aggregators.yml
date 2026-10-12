@@ -147,6 +147,7 @@ jobs:
         if: always()
         continue-on-error: true
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
@@ -650,6 +651,8 @@ jobs:
       # commit step below, which stages the files routeAlert writes. Candidates
       # create-tour-entries.js turned into entries are no longer open.
       - name: Suggest national tours to add
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         if: always()
         continue-on-error: true
         run: node scripts/route-tour-candidates.js

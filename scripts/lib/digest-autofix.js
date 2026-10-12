@@ -94,6 +94,7 @@ const { LINEAR_TASK_ID_RE, LINEAR_IDENTIFIER_RE } = require('./task-id-namespace
 // numeric>" tracker for the frozen Notion mirror — see that module's header
 // for the incident (31 hand-canceled trackers, 2026-09-21).
 const { isWatchdogParkedMirrorTracker } = require('./digest-autofix-mirror-park-guard.js');
+const { classifyHealthCheck } = require('./digest-audience.js');
 
 // Pulling a Linear identifier out of linear-issue-create.js's JSON output.
 // Built from the shared identifier shape rather than a third hand-written
@@ -231,18 +232,21 @@ function persistenceKey(row) {
 }
 
 /**
- * PURE. Records today's sightings and holds back 'needs-card' rows whose
- * condition is younger than PERSIST_BEFORE_FILING_HOURS (state -> 'watching').
- * A row unseen for SEEN_GAP_RESET_HOURS starts over. Mutates plan row states;
- * returns the updated sightings map (old entries pruned).
+ * PURE (no mutation). Records today's sightings and picks the 'needs-card'
+ * rows whose condition is younger than PERSIST_BEFORE_FILING_HOURS. A row
+ * unseen for SEEN_GAP_RESET_HOURS starts over. Returns { seen, hold }: the
+ * updated sightings map (old entries pruned) and the rows to hold back.
+ * BRO-5168: runAutofix applies `hold` only after `seen` was written, so a
+ * failed write files as before instead of holding every row forever.
  */
-function applyPersistenceGate(plan, seen, nowMs) {
+function computePersistenceGate(plan, seen, nowMs) {
   const next = {};
   for (const [k, v] of Object.entries(seen || {})) {
     const last = Date.parse(v && v.lastSeen);
     if (Number.isFinite(last) && (nowMs - last) / 86400000 <= SEEN_PRUNE_AFTER_DAYS) next[k] = v;
   }
   const nowIso = new Date(nowMs).toISOString();
+  const hold = [];
   for (const row of plan || []) {
     const key = persistenceKey(row);
     const prev = next[key];
@@ -251,8 +255,18 @@ function applyPersistenceGate(plan, seen, nowMs) {
     const firstSeen = continuing ? prev.firstSeen : nowIso;
     next[key] = { firstSeen, lastSeen: nowIso };
     const ageHours = (nowMs - Date.parse(firstSeen)) / 3600000;
-    if (row.state === 'needs-card' && ageHours < PERSIST_BEFORE_FILING_HOURS) row.state = 'watching';
+    if (row.state === 'needs-card' && ageHours < PERSIST_BEFORE_FILING_HOURS) hold.push(row);
   }
+  return { seen: next, hold };
+}
+
+/**
+ * computePersistenceGate + hold in one step (state -> 'watching'). Mutates
+ * plan row states; returns the updated sightings map.
+ */
+function applyPersistenceGate(plan, seen, nowMs) {
+  const { seen: next, hold } = computePersistenceGate(plan, seen, nowMs);
+  for (const row of hold) row.state = 'watching';
   return next;
 }
 
@@ -418,9 +432,16 @@ function buildPlanRow(r, { tasks, today, titleOverride = null } = {}) {
  *   ('parked' is only ever set by runAutofix, never by planAutofix.)
  */
 function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {}) {
-  const rows = [
+  const healthRows = [
     ...(Array.isArray(health?.errors) ? health.errors : []),
     ...(Array.isArray(health?.warns) ? health.warns : []),
+  ];
+  // BRO-5168: only daily-health-check rows can be visitor-facing START-NOW
+  // cards (isVisitorFacingRow). extraIssues and queued router lines don't go
+  // through digest-audience.js, whose default for an unknown name is 'visitors'.
+  const fromHealth = new Set(healthRows);
+  const rows = [
+    ...healthRows,
     ...extraIssues,
     ...normalizeQueuedRows(queued),
   ].filter(r => r && r.name && !isWatchdogParkedMirrorTracker(r.name, r.conditionKey));
@@ -440,7 +461,9 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
   for (const r of rows) {
     const split = (r.decision || r.tracked) ? null : splitOnShowSuffix(r.name);
     if (!split) {
-      planRows.push(buildPlanRow(r, { tasks, today }));
+      const row = buildPlanRow(r, { tasks, today });
+      if (fromHealth.has(r)) row.fromHealth = true;
+      planRows.push(row);
       continue;
     }
     const key = split.condition.toLowerCase();
@@ -479,6 +502,7 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
     const batch = open ? open.batch + 1 : 1;
     const titleOverride = `${BSC_DAILY_TITLE_PREFIX}${split.condition}${batch > 1 ? ` (batch ${batch})` : ''}`;
     const row = buildPlanRow(r, { tasks, today, titleOverride });
+    if (fromHealth.has(r)) row.fromHealth = true;
     row.affected = [{ name: r.name, message: String(r.message || '').slice(0, 400) }];
     // anchorModel: the anchor's raw model hint, captured HERE (not read back
     // off `row` later) because buildPlanRow's 'acknowledged' branch discards
@@ -599,7 +623,25 @@ function buildCardNotes(row) {
 // is the human id ("BRO-287") the caller threads straight onto its row as
 // `linear:BRO-287`, REPLACING the old file→syncTasks→matchOpenTask numeric-
 // task resolution dance (there is no Notion mirror card to resolve anymore).
-function fileCard(title, notes, { log = () => {}, refreshNotesOnReattach = false } = {}) {
+// BRO-5168: a parked card was clamped to Medium (linear-issue-create's
+// effectiveCreatePriority) and only the Mac's same-pass dispatch ever ran it,
+// so when the Mac dispatcher was down nothing did. `startNow` (visitor-facing
+// health rows, isVisitorFacingRow) files with --dispatch instead: Todo at
+// High, a START-NOW line so the cloud worker takes it after its 10-minute
+// grace if no Mac dispatch has claimed it, and a non-PARKED provenance line so
+// autofix-filed-marker.js still knows who filed it. A row the cloud worker
+// could not run (linear-issue-create refuses the START-NOW) files parked.
+const START_NOW_REFUSED_RE = /START-NOW card would never be picked/;
+function startNowNotes(notes) {
+  return [
+    'START-NOW: visitor-facing daily health row (digest-audience.js). Any worker may take it once no Mac dispatch has claimed it.',
+    `${AUTOFIX_FILED_MARKER} (START-NOW): runAutofix also dispatches it via linear-next in the same pass.`,
+    '',
+    notes,
+  ].join('\n');
+}
+
+function fileCard(title, notes, { log = () => {}, refreshNotesOnReattach = false, startNow = false } = {}) {
   // Dedup BEFORE filing (BRO-286 merge-review P0): a persistent health row
   // hits this every morning, and the Notion-mirror dedup (matchOpenTask in
   // planAutofix) can't see Linear issues — without this check the same row
@@ -643,31 +685,58 @@ function fileCard(title, notes, { log = () => {}, refreshNotesOnReattach = false
   } catch (err) {
     log(`[digest-autofix] WARN Linear dedup lookup failed (filing anyway): ${String(err.message).slice(0, 120)}`);
   }
+  const createArgs = (body, disposition) => [path.join(REPO, 'scripts', 'linear-brain.js'), 'create', title,
+    // Linear priority 2 = High (scale: 1 Urgent / 2 High / 3 Medium / 4
+    // Low) — same intent as the old 'P1' Notion priority: auto-fix rows
+    // are dispatch-eligible immediately. A --park create is clamped to
+    // Medium by linear-issue-create; a --dispatch one keeps High.
+    '--priority', '2',
+    '--notes', body,
+    ...disposition,
+  ];
+  // task #1310: filing and dispatching are deliberately separate steps
+  // here (see header comment above) — this call only ever files; the
+  // caller's own dispatchDetached() (below) is the real dispatch.
+  const parkArgs = ['--park', `${AUTOFIX_FILED_MARKER}; runAutofix dispatches via linear-next separately in the same pass.`];
+  const run = (args) => execFileSync('node', args, { cwd: REPO, encoding: 'utf8', timeout: 60000 });
   try {
-    const out = execFileSync('node', [path.join(REPO, 'scripts', 'linear-brain.js'), 'create', title,
-      // Linear priority 2 = High (scale: 1 Urgent / 2 High / 3 Medium / 4
-      // Low) — same intent as the old 'P1' Notion priority: auto-fix rows
-      // are dispatch-eligible immediately.
-      '--priority', '2',
-      '--notes', notes,
-      // task #1310: filing and dispatching are deliberately separate steps
-      // here (see header comment above) — this call only ever files; the
-      // caller's own dispatchDetached() (below) is the real dispatch.
-      '--park', `${AUTOFIX_FILED_MARKER}; runAutofix dispatches via linear-next separately in the same pass.`,
-    ], { cwd: REPO, encoding: 'utf8', timeout: 60000 });
-    // linear-brain prints the issue JSON then a PARKED: line — the field is
-    // `.identifier` (NOT `.id`, which is the opaque UUID).
+    let out;
+    if (startNow) {
+      const body = startNowNotes(notes);
+      try {
+        out = run(createArgs(body, ['--dispatch']));
+      } catch (err) {
+        // Retry only on the pickability refusal, which files nothing. Any
+        // other failure (a timeout above all) may have filed the issue, and a
+        // retry would mint a duplicate.
+        if (!START_NOW_REFUSED_RE.test(`${err.message}\n${err.stderr || ''}`)) throw err;
+        // Refused means the cloud worker could not run it headless either, so
+        // file it the old way: parked, owned by runAutofix's own dispatch and
+        // the stale-automation drain. A Todo card nobody owns would be worse.
+        log(`[digest-autofix] WARN START-NOW refused for "${title}"; filing parked as before`);
+        out = run(createArgs(notes, parkArgs));
+      }
+    } else {
+      out = run(createArgs(notes, parkArgs));
+    }
+    // linear-brain prints the issue JSON (then a PARKED: line when parked) —
+    // the field is `.identifier` (NOT `.id`, which is the opaque UUID).
     const m = out.match(LINEAR_IDENTIFIER_IN_JSON_RE);
     if (!m) {
       log(`[digest-autofix] WARN issue created but identifier not found in output for "${title}"`);
       return { ok: false, identifier: null };
     }
-    log(`[digest-autofix] filed issue ${m[1]}: ${title}`);
+    log(`[digest-autofix] filed issue ${m[1]}${startNow ? ' (START-NOW)' : ''}: ${title}`);
     return { ok: true, identifier: m[1] };
   } catch (err) {
     log(`[digest-autofix] WARN issue create failed for "${title}": ${String(err.message).slice(0, 120)}`);
     return { ok: false, identifier: null };
   }
+}
+
+/** BRO-5168: a daily-health row whose audience is site visitors. */
+function isVisitorFacingRow(row) {
+  return !!(row && row.fromHealth) && classifyHealthCheck(row) === 'visitors';
 }
 
 // Pull newly filed cards into the shared task list so they get task numbers.
@@ -1014,6 +1083,7 @@ function runAutofix({
   ledgerPath = DIGEST_LEDGER_PATH, dispatchLedgerEntriesFn = null, now = new Date(),
   seenPath = DIGEST_SEEN_PATH,
   dispatchFn = dispatchDetached,
+  fileCardFn = fileCard,
   // BRO-3412: shared defaults imported from scripts/backlog-drain.js
   // (DEFAULT_CONCURRENCY_CAP=2, DEFAULT_SPEND_THRESHOLD_USD=12) rather than
   // re-declared here. BRO-3438: the DEFAULT stays 2 so backlog-drain.js's own
@@ -1054,9 +1124,13 @@ function runAutofix({
   if (!(gateUsesRealFile && process.env.NODE_TEST_CONTEXT)) try {
     let seen = {};
     try { seen = JSON.parse(require('fs').readFileSync(seenPath, 'utf8')); } catch { seen = {}; }
-    const updated = applyPersistenceGate(plan, seen, now.getTime());
+    const { seen: updated, hold } = computePersistenceGate(plan, seen, now.getTime());
     require('fs').mkdirSync(path.dirname(seenPath), { recursive: true });
     require('fs').writeFileSync(seenPath, JSON.stringify(updated, null, 1));
+    // BRO-5168: hold only once the sightings are on disk. Holding first and
+    // then failing the write meant every run saw a "first sighting" again,
+    // so no row was ever old enough to file.
+    for (const row of hold) row.state = 'watching';
   } catch (err) {
     log(`[digest-autofix] WARN persistence gate skipped: ${String(err.message).slice(0, 120)}`);
   }
@@ -1076,7 +1150,9 @@ function runAutofix({
     // refresh the reattached card's acceptance criteria via comment so a
     // membership change is never silently invisible. See fileCard's own
     // comment for why this is scoped to folded rows only.
-    const filed = fileCard(row.title, buildCardNotes(row), { log, refreshNotesOnReattach: Array.isArray(row.affected) });
+    const filed = fileCardFn(row.title, buildCardNotes(row), {
+      log, refreshNotesOnReattach: Array.isArray(row.affected), startNow: isVisitorFacingRow(row),
+    });
     if (filed.ok) {
       row.state = 'card-filed';
       row.taskId = `linear:${filed.identifier}`;
@@ -1310,7 +1386,7 @@ module.exports = {
   keepDecisionQueued,
   planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP,
   DIGEST_LEDGER_PATH, reconcileDigestOutcomes, isDispatchResolved, findMyJob, readJsonlLedger, appendJsonlLedger,
-  persistenceKey, applyPersistenceGate, PERSIST_BEFORE_FILING_HOURS, DIGEST_SEEN_PATH,
-  fileCard, syncTasks, dispatchDetached, familyDisplayName, rowFamilyKey,
+  persistenceKey, computePersistenceGate, applyPersistenceGate, PERSIST_BEFORE_FILING_HOURS, DIGEST_SEEN_PATH,
+  fileCard, startNowNotes, START_NOW_REFUSED_RE, isVisitorFacingRow, syncTasks, dispatchDetached, familyDisplayName, rowFamilyKey,
   splitOnShowSuffix, MAX_FOLD_PER_CONDITION,
 };

@@ -241,6 +241,8 @@ jobs:
           echo "Review-texts refreshed"
 
       - name: Check if scoring needed
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         id: check-needed
         run: |
           # BRO-3029: this gate used to be schedule-only (if:
@@ -551,6 +553,8 @@ jobs:
       # occurrence exactly like a bare npx ts-node call would; only
       # auto-recovers after 2+ consecutive crashes past a 24h floor.
       - name: Run ensemble scoring pipeline
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         if: steps.check-needed.outputs.skip != 'true' || steps.check-needed.outputs.force_run == 'true'
         run: |
           node scripts/run-ensemble-scoring-guard.js ${{ steps.build-args.outputs.args }}

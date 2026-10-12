@@ -55,6 +55,7 @@ jobs:
 
       - name: Verify affiliate links on production
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           CI: 'true'
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}

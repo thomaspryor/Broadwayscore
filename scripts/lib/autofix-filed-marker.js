@@ -110,6 +110,18 @@ function hasAutofixFiledMarker(description) {
   return AUTOFIX_PARKED_RE.test(String(description || ''));
 }
 
+// BRO-5168: visitor-facing digest-autofix cards are filed with --dispatch, so
+// they carry no PARKED line. Their provenance is a line starting with the
+// marker instead. Kept separate from hasAutofixFiledMarker on purpose: that
+// one gates headless-dispatchability's isAutomationParked waiver, and a
+// provenance line next to an owner's own PARKED line must not let the owner's
+// park be waived as "automation-parked".
+const AUTOFIX_PROVENANCE_RE = new RegExp(`^${AUTOFIX_FILED_MARKER.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'm');
+function hasAutofixProvenance(description) {
+  const d = String(description || '');
+  return hasAutofixFiledMarker(d) || AUTOFIX_PROVENANCE_RE.test(d);
+}
+
 /**
  * Does this issue title match the auto-filed digest/canary convention?
  * @param {string|null|undefined} title
@@ -128,7 +140,7 @@ function isAutofixFiledTitle(title) {
  */
 function isAutofixFiledIssue(issue) {
   if (!issue) return false;
-  return isAutofixFiledTitle(issue.title) || hasAutofixFiledMarker(issue.description);
+  return isAutofixFiledTitle(issue.title) || hasAutofixProvenance(issue.description);
 }
 
 module.exports = {
@@ -137,6 +149,8 @@ module.exports = {
   BSC_DAILY_TITLE_PREFIX,
   AUTOFIX_TITLE_PATTERNS,
   hasAutofixFiledMarker,
+  hasAutofixProvenance,
+  AUTOFIX_PROVENANCE_RE,
   isAutofixFiledTitle,
   isAutofixFiledIssue,
 };

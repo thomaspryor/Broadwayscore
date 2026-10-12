@@ -349,6 +349,7 @@ jobs:
         id: staleness
         if: always() && steps.rebuild.outcome == 'success'
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           GITHUB_REPOSITORY: ${{ github.repository }}

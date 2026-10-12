@@ -230,7 +230,7 @@ function collectRunText(runField) {
 
 /**
  * Parses one workflow YAML file into { workflowEnv, jobs }, where each job
- * is { name, env, steps }, and each step is { name, run, env }.
+ * is { name, env, steps }, and each step is { name, run, env, uses, script }.
  */
 function parseWorkflowFile(raw) {
   const lines = toLines(raw);
@@ -250,10 +250,17 @@ function parseWorkflowFile(raw) {
         for (const stepChild of groupByMinIndent(stepsField.bodyLines)) {
           const stepFields = asSequenceItemFields(stepChild);
           const nameField = findMappingChild(stepFields, 'name');
+          const usesField = findMappingChild(stepFields, 'uses');
+          const withField = findMappingChild(stepFields, 'with');
+          const withFields = withField ? groupByMinIndent(withField.bodyLines).map(asMapping).filter(Boolean) : [];
           steps.push({
             name: nameField ? nameField.inline : '(unnamed step)',
             run: collectRunText(findMappingChild(stepFields, 'run')),
             env: collectEnvKeys(findMappingChild(stepFields, 'env')),
+            // BRO-5168: actions/github-script inline JS (with: script:), so
+            // callers can audit code that never appears in a run: block.
+            uses: usesField ? usesField.inline : '',
+            script: collectRunText(findMappingChild(withFields, 'script')),
           });
         }
       }

@@ -265,6 +265,7 @@ jobs:
         # steps (integrity report, history commit, issue creation).
         continue-on-error: true
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
         run: |
           node scripts/audit-tier-skip-drift.js

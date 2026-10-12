@@ -208,6 +208,7 @@ jobs:
         continue-on-error: true
         timeout-minutes: 5
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           IMPACT_ACCOUNT_SID: ${{ secrets.IMPACT_ACCOUNT_SID }}
           IMPACT_AUTH_TOKEN: ${{ secrets.IMPACT_AUTH_TOKEN }}
           POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
@@ -1103,6 +1104,7 @@ jobs:
         continue-on-error: true
         timeout-minutes: 2
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
@@ -1154,6 +1156,8 @@ jobs:
       # data/audit snapshots. continue-on-error: a metric must never block the
       # health commit.
       - name: Time-to-publish SLA
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         if: always()
         continue-on-error: true
         timeout-minutes: 4

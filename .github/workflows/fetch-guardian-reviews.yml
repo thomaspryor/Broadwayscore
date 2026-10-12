@@ -177,6 +177,7 @@ jobs:
       - name: Verify no scoreable review vanished during checkout drift
         if: ${{ github.event.inputs.dry_run != 'true' }}
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           GITHUB_REPOSITORY: ${{ github.repository }}

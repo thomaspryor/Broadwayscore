@@ -391,6 +391,7 @@ jobs:
         id: checklist_gate
         if: steps.check.outputs.pending_shows != ''
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
@@ -497,6 +498,7 @@ jobs:
         id: drift_gate
         if: steps.check.outputs.pending_shows != ''
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
@@ -585,6 +587,7 @@ jobs:
         id: orphan_gate
         if: steps.check.outputs.pending_shows != ''
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
@@ -837,6 +840,7 @@ jobs:
         if: steps.check.outputs.pending_shows != '' && env.BROADCAST_HOLD_ACTIVE != 'true' && steps.orphan_gate.outputs.blocked != 'true'
         id: broadcast
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           RESEND_WE_AUDIENCE_ID: ${{ secrets.RESEND_WE_AUDIENCE_ID }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
@@ -931,6 +935,7 @@ jobs:
         # unrelated step in the job failed (audit-alert-reachability, BRO-2817).
         if: always() && steps.broadcast.outputs.draft_created == 'true' && (steps.checklist_gate.outputs.overridden != '' || steps.drift_gate.outputs.overridden != '' || steps.orphan_gate.outputs.overridden != '')
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
@@ -1056,6 +1061,7 @@ jobs:
         # step reachable, it doesn't change when it decides to alert.
         if: always() && steps.check.outputs.pending_shows != '' && steps.broadcast.outputs.broadcast_sent != 'true'
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}

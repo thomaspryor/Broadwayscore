@@ -791,3 +791,101 @@ jobs:
   const violations = findMissingLedgerCommits(fixture);
   assert.equal(violations.length, 3, 'ledger, attempts log and digest queue (BRO-4487)');
 });
+
+// --- BRO-5168: routeAlert() steps need LINEAR_API_KEY ----------------------
+const { findMissingLinearKeySteps, findRouteAlertCallerScripts } = require('./alert-ledger-commit-check.js');
+
+const GH_SCRIPT_STEP = (extra = '') => `name: t
+on: push
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Route data-audit failures to the daily digest
+${extra}        uses: actions/github-script@v7
+        with:
+          script: |
+            const { routeAlert } = require('./scripts/lib/owner-alert-router.js');
+            await routeAlert({ conditionKey: 'x', disposition: 'digest' });
+`;
+
+test('findMissingLinearKeySteps flags a github-script routeAlert step with no LINEAR_API_KEY (the BRO-5168 test.yml bug)', () => {
+  const v = findMissingLinearKeySteps(GH_SCRIPT_STEP());
+  assert.equal(v.length, 1);
+  assert.match(v[0], /job 'audit' step 'Route data-audit failures to the daily digest' calls routeAlert\(\) inline/);
+});
+
+test('findMissingLinearKeySteps accepts the key at step, job or workflow level', () => {
+  assert.deepEqual(findMissingLinearKeySteps(GH_SCRIPT_STEP('        env:\n          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}\n')), []);
+  const jobLevel = GH_SCRIPT_STEP().replace('    runs-on: ubuntu-latest\n', '    runs-on: ubuntu-latest\n    env:\n      LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}\n');
+  assert.deepEqual(findMissingLinearKeySteps(jobLevel), []);
+  const wfLevel = GH_SCRIPT_STEP().replace('on: push\n', 'on: push\nenv:\n  LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}\n');
+  assert.deepEqual(findMissingLinearKeySteps(wfLevel), []);
+});
+
+test('findMissingLinearKeySteps flags an inline node -e routeAlert call in run:', () => {
+  const yml = `on: push
+jobs:
+  j:
+    runs-on: ubuntu-latest
+    steps:
+      - name: alert
+        run: |
+          node -e "
+            const { routeAlert } = require('./scripts/lib/owner-alert-router');
+            routeAlert({ conditionKey: 'k' });
+          "
+`;
+  assert.equal(findMissingLinearKeySteps(yml).length, 1);
+});
+
+test('findMissingLinearKeySteps ignores echo breadcrumbs and comments that only name routeAlert(', () => {
+  const yml = `on: push
+jobs:
+  j:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Commit alert ledger
+        run: |
+          # owner-alert-router: routeAlert( writes these files
+          echo "send-welcome-emails.js calls routeAlert( and resolveCondition( - staging the router ledger"
+          git add data/audit/alert-ledger.json
+`;
+  assert.deepEqual(findMissingLinearKeySteps(yml), []);
+});
+
+test('findMissingLinearKeySteps flags a step running a routeAlert caller script, honoring the step-level opt-out', () => {
+  const step = (body) => `on: push
+jobs:
+  j:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build numbers
+        run: |
+${body}
+`;
+  const callers = new Set(['account-metrics.js']);
+  assert.equal(findMissingLinearKeySteps(step('          node scripts/account-metrics.js --out=x'), callers).length, 1);
+  assert.deepEqual(findMissingLinearKeySteps(step('          node scripts/other.js'), callers), []);
+  assert.deepEqual(
+    findMissingLinearKeySteps(step('          # routealert-linear-key-ok: --simulate never alerts\n          node scripts/account-metrics.js --simulate=x'), callers),
+    []
+  );
+});
+
+test('findMissingLinearKeySteps honors the file-level audit-secret-gap-ok exemption', () => {
+  assert.deepEqual(findMissingLinearKeySteps('# audit-secret-gap-ok: LINEAR_API_KEY\n' + GH_SCRIPT_STEP()), []);
+});
+
+test('real .github/workflows: every routeAlert() step has LINEAR_API_KEY', (t) => {
+  try { require('acorn'); } catch { t.skip('acorn not installed'); return; }
+  const root = path.resolve(__dirname, '..', '..');
+  const callers = findRouteAlertCallerScripts(path.join(root, 'scripts'));
+  assert.ok(callers.size > 20, `expected many routeAlert callers, got ${callers.size}`);
+  const dir = path.join(root, '.github', 'workflows');
+  const gaps = [];
+  for (const f of fs.readdirSync(dir).filter((n) => /\.ya?ml$/.test(n))) {
+    for (const v of findMissingLinearKeySteps(fs.readFileSync(path.join(dir, f), 'utf8'), callers)) gaps.push(`${f}: ${v}`);
+  }
+  assert.deepEqual(gaps, []);
+});

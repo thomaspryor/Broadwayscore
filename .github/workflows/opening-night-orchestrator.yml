@@ -762,6 +762,7 @@ jobs:
       - name: Run opening night checklist + SLA dispatch
         if: always() && steps.find.outputs.has_shows == 'true'
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}

@@ -740,6 +740,7 @@ jobs:
       - name: Notify — stale critical crons self-heal failed (paging, deduped per-cron)
         if: failure() && steps.check.outputs.page_count != '0' && steps.check.outputs.page_count != ''
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           PAGE_NAMES: ${{ steps.check.outputs.page_names }}

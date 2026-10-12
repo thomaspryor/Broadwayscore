@@ -211,6 +211,8 @@ jobs:
       # safe_to_publish=true only when it exits 0 OR exits 1 with a populated
       # missing-shows file (the scoped case) — never on an unexplained crash.
       - name: Verify no scoreable review vanished during checkout drift
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         id: staleness
         if: always() && steps.rebuild.outcome == 'success'
         run: |

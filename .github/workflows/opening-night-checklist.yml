@@ -171,6 +171,7 @@ jobs:
         # else (crash, or exit 3 = the history-ledger append itself failed —
         # see opening-night-checklist.js), which now fails this step loudly.
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           # Arms the self-declared remediation layer (task #389). Without a
           # token, dispatchWorkflow() returns {ok:false,error:'no-token'} and
           # every remediation lands in the ledger as 'failed' — detection still
@@ -237,6 +238,7 @@ jobs:
         # "Commit audit data" (if: always()) still persists whatever ledger
         # state exists so a crash here doesn't also strand the audit trail.
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}

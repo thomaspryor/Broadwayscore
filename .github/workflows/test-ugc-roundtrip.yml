@@ -64,6 +64,8 @@ jobs:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
 
       - name: Notify — self-heal succeeded (informational)
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         if: steps.rt1.outcome == 'failure' && steps.rt2.outcome == 'success'
         uses: actions/github-script@v7
         with:
@@ -103,6 +105,7 @@ jobs:
           (steps.heal.outcome != 'success' || (steps.rt2.outcome != 'success' && steps.rt2.outputs.urgent != 'false'))
         uses: actions/github-script@v7
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           FAILED_CHECKS: ${{ steps.rt2.outputs.failed_checks || steps.rt1.outputs.failed_checks }}

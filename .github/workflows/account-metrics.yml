@@ -55,7 +55,9 @@ jobs:
 
       - name: Dry run (simulate)
         if: inputs.simulate == 'signin-stalled'
-        run: node scripts/account-metrics.js --simulate=signin-stalled --out=account-metrics
+        run: |
+          # routealert-linear-key-ok: --simulate turns SEND_ALERTS off (account-metrics.js), so this step never calls routeAlert
+          node scripts/account-metrics.js --simulate=signin-stalled --out=account-metrics
 
       - name: Checkout core data (private repo for the dashboard payload)
         if: inputs.simulate != 'signin-stalled'

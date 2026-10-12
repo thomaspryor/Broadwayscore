@@ -169,6 +169,7 @@ jobs:
       # detection anymore, but the ledger below must still be committed.
       - name: Ingest DMARC reports
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           GMAIL_CLIENT_ID: ${{ secrets.GMAIL_CLIENT_ID }}
           GMAIL_CLIENT_SECRET: ${{ secrets.GMAIL_CLIENT_SECRET }}
           GMAIL_REFRESH_TOKEN: ${{ secrets.GMAIL_REFRESH_TOKEN }}

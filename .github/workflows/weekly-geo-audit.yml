@@ -41,6 +41,7 @@ jobs:
       - name: Run geo bot audit
         run: node scripts/audit-geo-bots.js ${{ inputs.test == true && '--test' || '' }}
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
           GA_SERVICE_ACCOUNT_KEY: ${{ secrets.GA_SERVICE_ACCOUNT_KEY }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

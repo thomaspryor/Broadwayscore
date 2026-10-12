@@ -365,8 +365,80 @@ function findRouterCallerScripts(scriptsDir) {
   return findTrackedCallerScripts(scriptsDir, ROUTER_TRACKED_TARGETS, { referenceCountsAsReach: true });
 }
 
+// BRO-5168: routeAlert() can open or update a Linear issue (an 'auto' alert
+// always does; 'digest' escalates after it has stayed open). Without
+// LINEAR_API_KEY in the step's environment that throws "LINEAR_API_KEY not
+// set", the attempt logs ok:false, and the "Alert Router: dispatch deadman"
+// health row stays red. test.yml's data-audit digest step ran that way for
+// weeks (249 of the last 300 attempts). resolveCondition() never touches
+// Linear, so only routeAlert callers are tracked here.
+const ROUTE_ALERT_ONLY_TARGETS = new Map([['owner-alert-router.js', new Set(['routeAlert'])]]);
+const ROUTE_ALERT_ONLY_CALL_RE = /\brouteAlert\s*\(/;
+const ROUTER_MODULE_MENTION_RE = /owner-alert-router/;
+const LINEAR_KEY = 'LINEAR_API_KEY';
+// Step-level opt-out, written as a comment inside the step's run:/script:
+// text, e.g. a --simulate step that never sends: `# routealert-linear-key-ok: <reason>`.
+const LINEAR_KEY_STEP_EXEMPT_RE = /#\s*routealert-linear-key-ok:\s*\S/;
+
+/**
+ * findRouteAlertCallerScripts(scriptsDir) -> Set<string>
+ * Like findRouterCallerScripts, but only scripts that reach routeAlert()
+ * (the one that needs LINEAR_API_KEY). Fails open (empty set) without acorn.
+ */
+function findRouteAlertCallerScripts(scriptsDir) {
+  return findTrackedCallerScripts(scriptsDir, ROUTE_ALERT_ONLY_TARGETS, { referenceCountsAsReach: true });
+}
+
+/**
+ * findMissingLinearKeySteps(workflowYamlText, routeAlertCallerScripts) -> string[]
+ * One violation per step that calls routeAlert() — inline (a `node -e` or
+ * actions/github-script body that requires owner-alert-router and calls
+ * routeAlert), or by running a script in routeAlertCallerScripts — while
+ * LINEAR_API_KEY is absent from the workflow, job and step env. Honors the
+ * file-level `# audit-secret-gap-ok: LINEAR_API_KEY` exemption and the
+ * step-level `# routealert-linear-key-ok: <reason>` marker. Comment lines are
+ * not calls (echo breadcrumbs that only name routeAlert don't require the
+ * router module, so they don't count either).
+ */
+function findMissingLinearKeySteps(workflowYamlText, routeAlertCallerScripts = new Set()) {
+  const { parseWorkflowFile, collectExemptions } = require('./workflow-secret-scan');
+  if (collectExemptions(workflowYamlText).has(LINEAR_KEY)) return [];
+  const { workflowEnv, jobs } = parseWorkflowFile(workflowYamlText);
+  if (workflowEnv.has(LINEAR_KEY)) return [];
+  const violations = [];
+  for (const job of jobs) {
+    if (job.env.has(LINEAR_KEY)) continue;
+    for (const step of job.steps) {
+      if (step.env.has(LINEAR_KEY)) continue;
+      const raw = [step.run, step.script].filter(Boolean).join('\n');
+      if (!raw || LINEAR_KEY_STEP_EXEMPT_RE.test(raw)) continue;
+      const code = raw.split('\n').filter(l => !COMMENT_LINE_RE.test(l)).join('\n');
+      let reason = null;
+      if (ROUTE_ALERT_ONLY_CALL_RE.test(code) && ROUTER_MODULE_MENTION_RE.test(code)) {
+        reason = 'calls routeAlert() inline';
+      } else if (routeAlertCallerScripts.size > 0) {
+        NODE_SCRIPT_INVOKE_RE.lastIndex = 0;
+        let m;
+        while ((m = NODE_SCRIPT_INVOKE_RE.exec(code))) {
+          if (routeAlertCallerScripts.has(m[1])) { reason = `runs scripts/${m[1]} (reaches routeAlert())`; break; }
+        }
+      }
+      if (reason) {
+        violations.push(`job '${job.name}' step '${step.name}' ${reason} without ${LINEAR_KEY} in its env`);
+      }
+    }
+  }
+  return violations;
+}
+
 // ROUTE_ALERT_CALL_RE is exported for its colocated tests ONLY. Its exact
 // behaviour (whitespace tolerated before `(`; a bare `require` of the router is
 // NOT a call) is the thing sessions keep restating incorrectly in prose, so it
 // is pinned by assertions instead — see the "ROUTE_ALERT_CALL_RE" tests.
-module.exports = { findMissingLedgerCommits, findRouterCallerScripts, ROUTE_ALERT_CALL_RE };
+module.exports = {
+  findMissingLedgerCommits,
+  findRouterCallerScripts,
+  findRouteAlertCallerScripts,
+  findMissingLinearKeySteps,
+  ROUTE_ALERT_CALL_RE,
+};

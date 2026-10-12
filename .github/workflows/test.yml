@@ -4436,6 +4436,12 @@ jobs:
           # ux-walkthrough.yml/check-cron-health.yml (card #618).
           bash scripts/lint-workflow-guards.sh alert-ledger-commit
 
+      - name: Check routeAlert() steps carry LINEAR_API_KEY (advisory)
+        if: always() && steps.deps.outcome == 'success'
+        run: |
+          # BRO-5168. Advisory first (rule 19): warns, never fails the job.
+          bash scripts/lint-workflow-guards.sh routealert-linear-key
+
       - name: Check SERP-calling workflows commit scraper-spend ledger
         if: always() && steps.deps.outcome == 'success'
         run: |
@@ -6397,6 +6403,8 @@ jobs:
         # Full validator runs daily in check-corpus-drift.yml (→ digest).
 
       - name: Route data-audit failures to the daily digest
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         # BRO-3425: this job is continue-on-error, so a corpus-state audit going
         # red no longer reddens main or pages anyone. It queues ONE digest line
         # (24h cooldown) naming the failing steps. The old Discord "Test Suite

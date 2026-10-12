@@ -347,6 +347,7 @@ jobs:
         id: coverage
         continue-on-error: true
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

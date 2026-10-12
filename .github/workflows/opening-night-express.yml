@@ -332,6 +332,8 @@ jobs:
       # below, no separate push needed. is_retry=true runs never re-enqueue;
       # if a retry run is STILL thin, this routes an alert instead.
       - name: Evaluate full-text coverage for same-night retry
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         if: inputs.dry_run != true
         run: |
           node scripts/express-retry-queue.js evaluate \
@@ -579,6 +581,7 @@ jobs:
         if: (failure() || cancelled()) && inputs.dry_run != true && steps.show_meta.outcome == 'success'
         continue-on-error: true
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           PUSH_DEADLINE_SEC: '120'
           GIT_NET_TIMEOUT_SEC: '30'
         run: |

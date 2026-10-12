@@ -158,6 +158,7 @@ jobs:
         if: always() && inputs.dry_run != true
         continue-on-error: true
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           # Authenticated /meta: unauthenticated is 60 req/hr per source IP,
@@ -206,6 +207,7 @@ jobs:
         if: always() && inputs.dry_run != true
         continue-on-error: true
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           # BRO-2943 rollback knobs, sourced from repo VARIABLES so an
           # emergency pin needs `gh variable set SD_BREAKER_CEILING --body N`

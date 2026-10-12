@@ -1362,3 +1362,78 @@ test('BRO-3868: reconcileDigestOutcomes stamps every row with a finite ts (check
       'every reconciled outcome must reach attempt-memory — this is the exact count that silently went to zero');
   }
 });
+
+// --- BRO-5168: visitor-facing health rows file as START-NOW, Todo, High ------
+const { startNowNotes, START_NOW_REFUSED_RE, isVisitorFacingRow } = require('./digest-autofix.js');
+const { startNowUnpickableReason } = require('./cloud-worker-pick.js');
+const { isAutofixFiledIssue, hasAutofixFiledMarker, hasAutofixProvenance } = require('./autofix-filed-marker.js');
+const { isAutomationParked } = require('./headless-dispatchability.js');
+
+test('planAutofix tags daily-health rows only; isVisitorFacingRow needs health + visitors audience', () => {
+  const plan = planAutofix({
+    health: { errors: [{ name: 'Show pages: missing poster images', message: 'm' }], warns: [{ name: 'Data: undispatchable backlog cards', message: 'm' }] },
+    extraIssues: [{ name: 'Some extra issue', message: 'm' }],
+    queued: [{ title: 'Router line', description: 'd', conditionKey: 'k:1' }],
+  });
+  const byName = Object.fromEntries(plan.map(r => [r.name, r]));
+  assert.equal(isVisitorFacingRow(byName['Show pages: missing poster images']), true);
+  assert.equal(isVisitorFacingRow(byName['Data: undispatchable backlog cards']), false, 'internal health row');
+  assert.equal(isVisitorFacingRow(byName['Some extra issue']), false, 'extraIssues are not health rows');
+  assert.equal(isVisitorFacingRow(byName['Router line']), false, 'queued router lines are not health rows');
+});
+
+function oldSightings(plan) {
+  const { persistenceKey } = require('./digest-autofix.js');
+  const p = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'bro5168-')), 'seen.json');
+  const t = new Date(Date.now() - 5 * 86400000).toISOString();
+  const recent = new Date(Date.now() - 3600000).toISOString();
+  fs.writeFileSync(p, JSON.stringify(Object.fromEntries(plan.map(r => [persistenceKey(r), { firstSeen: t, lastSeen: recent }]))));
+  return p;
+}
+
+test('runAutofix asks fileCard for START-NOW only on visitor-facing health rows', () => {
+  const calls = [];
+  const plan = planAutofix({
+    health: { errors: [{ name: 'Show pages: missing poster images', message: 'm' }] },
+    queued: [{ title: 'Router line', description: 'd', conditionKey: 'k:2' }],
+  });
+  runAutofix({
+    plan, dryRun: false, loadTasksFn: () => [], ledgerPath: tmpLedgerPath(), dispatchLedgerEntriesFn: () => [],
+    // seen file older than the persistence window, so both rows are filed today
+    dispatchFn: () => {}, seenPath: oldSightings(plan),
+    fileCardFn: (title, notes, opts) => { calls.push({ title, startNow: opts.startNow }); return { ok: true, identifier: `BRO-${calls.length}` }; },
+  });
+  const m = Object.fromEntries(calls.map(c => [c.title, c.startNow]));
+  assert.equal(m['BSC Daily: Show pages: missing poster images'], true);
+  assert.equal(m['BSC Daily: Router line'], false);
+});
+
+test('START-NOW notes pass the cloud worker pickability check at --priority 2 --dispatch', () => {
+  const row = { name: 'Show pages: missing poster images', message: 'm', title: 'BSC Daily: Show pages: missing poster images' };
+  const description = startNowNotes(buildCardNotes(row));
+  assert.equal(startNowUnpickableReason({ title: row.title, description, priority: 2, mode: 'dispatch' }), null);
+  // and the same notes parked would be refused, which is the old failure mode
+  assert.equal(startNowUnpickableReason({ title: row.title, description, priority: 3, mode: 'park' }).reason, 'parked-or-backlog');
+});
+
+test('START-NOW cards stay recognisable as autofix-filed without letting a PARKED waiver through', () => {
+  const description = startNowNotes('body');
+  assert.equal(hasAutofixProvenance(description), true);
+  assert.equal(hasAutofixFiledMarker(description), false, 'no PARKED line, so not automation-parked');
+  assert.equal(isAutofixFiledIssue({ title: 'Something else', description }), true);
+  // an owner PARKED line on top of the provenance line is still an owner park
+  assert.equal(isAutomationParked(`PARKED: owner hold, waiting on pricing\n${description}`), false);
+});
+
+test('START_NOW_REFUSED_RE matches the refusal linear-issue-create actually throws', async () => {
+  const { createLinearIssue } = require('./linear-issue-create.js');
+  let err = null;
+  try {
+    await createLinearIssue({
+      title: 'BSC Daily: x', description: 'START-NOW: x\nbody', park: 'Auto-filed by digest-autofix; test reason here',
+      priority: 2, reuseTwin: true, client: { createIssue: () => { throw new Error('must not be called'); } },
+    });
+  } catch (e) { err = e; }
+  assert.ok(err, 'expected a refusal');
+  assert.match(err.message, START_NOW_REFUSED_RE);
+});

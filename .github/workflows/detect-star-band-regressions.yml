@@ -63,6 +63,7 @@ jobs:
       - name: Detect and flag
         shell: bash
         env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           APPLY: ${{ inputs.apply || 'true' }}
           HISTORY_DAYS: ${{ inputs.history_days || '2' }}
         run: |
