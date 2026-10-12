@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-12T14:39:00.772Z",
+  "generatedAt": "2026-10-12T14:41:04.799Z",
   "summary": {
     "total": 11,
     "high": 4,
@@ -109,33 +109,6 @@
           "hasScore": true,
           "hasFullText": true,
           "outletId": "timeout-london"
-        }
-      ],
-      "suggestedWinner": "christmas-carol-goes-wrong-apollo-west-end-2025",
-      "reason": "publishDate 2025-12-14 is 0 days from christmas-carol-goes-wrong-apollo-west-end-2025 opening (2025-12-14)",
-      "confidence": "high"
-    },
-    {
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/christmas-carol-goes-wrong-review-apollo-shaftsbury-lbgtdhfk3",
-      "normalizedUrl": "https://thetimes.com/culture/theatre-dance/article/christmas-carol-goes-wrong-review-apollo-shaftsbury-lbgtdhfk3",
-      "candidates": [
-        {
-          "showId": "christmas-carol-goes-wrong-apollo-west-end-2025",
-          "file": "times-uk--clive-davis.json",
-          "publishDate": "2025-12-14",
-          "openingDate": "2025-12-14",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "times-uk"
-        },
-        {
-          "showId": "christmas-carol-goes-wrong-west-end-2026",
-          "file": "times-uk--clive-davis.json",
-          "publishDate": "2025-12-14",
-          "openingDate": null,
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "times-uk"
         }
       ],
       "suggestedWinner": "christmas-carol-goes-wrong-apollo-west-end-2025",
@@ -303,6 +276,60 @@
       "suggestedWinner": "the-score-regional-2026",
       "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
       "confidence": "low"
+    },
+    {
+      "url": "https://theatreweekly.com/review-to-kill-a-mockingbird-at-the-gielgud-theatre-london/",
+      "normalizedUrl": "https://theatreweekly.com/review-to-kill-a-mockingbird-at-the-gielgud-theatre-london",
+      "candidates": [
+        {
+          "showId": "to-kill-a-mockingbird-west-end-2022",
+          "file": "theatre-weekly--greg-stewart.json",
+          "publishDate": "2022-03-31",
+          "openingDate": "2022-03-31",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "theatre-weekly"
+        },
+        {
+          "showId": "to-kill-a-mockingbird-west-end-2026",
+          "file": "theatre-weekly--greg-stewart.json",
+          "publishDate": "2022-03-31",
+          "openingDate": "2026-06-30",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "theatre-weekly"
+        }
+      ],
+      "suggestedWinner": "to-kill-a-mockingbird-west-end-2022",
+      "reason": "publishDate 2022-03-31 is 0 days from to-kill-a-mockingbird-west-end-2022 opening (2022-03-31); next closest is 1552 days from to-kill-a-mockingbird-west-end-2026",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "normalizedUrl": "https://timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "candidates": [
+        {
+          "showId": "to-kill-a-mockingbird-west-end-2022",
+          "file": "timeout-london--andrzej-lukowski.json",
+          "publishDate": "2022-03-31",
+          "openingDate": "2022-03-31",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        },
+        {
+          "showId": "to-kill-a-mockingbird-west-end-2026",
+          "file": "timeout-london--andrzej-lukowski.json",
+          "publishDate": "2023-02-07",
+          "openingDate": "2026-06-30",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        }
+      ],
+      "suggestedWinner": "to-kill-a-mockingbird-west-end-2022",
+      "reason": "publishDate 2022-03-31 is 0 days from to-kill-a-mockingbird-west-end-2022 opening (2022-03-31); next closest is 1239 days from to-kill-a-mockingbird-west-end-2026",
+      "confidence": "high"
     }
   ]
 }
