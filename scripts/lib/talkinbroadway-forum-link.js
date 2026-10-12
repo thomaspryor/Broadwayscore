@@ -60,13 +60,31 @@ function extractCriticName(html) {
 // after 3 pointless same-URL refetches, so the one tool that works
 // (recover-talkinbroadway-forum-links.js) was never reached.
 const FORUM_RECOVERY_CAP = 3;
+// BRO-5166: the hourly sweep spends the 3 fast tries in 3 hours, and a Bright
+// Data timeout on talkinbroadway.com (about half of fetches on 2026-10-12) or a
+// thread whose "Link" anchor is not posted yet spends a try as surely as a real
+// failure. Cosi Fan Tutte, Human Things and Mystic Pizza were stranded that way
+// with the recovery script working. After the fast tries, keep one try a day
+// for a bounded tail so a transient outage cannot strand a review for good.
+const FORUM_RECOVERY_SLOW_TRIES = 7;
+const FORUM_RECOVERY_SLOW_INTERVAL_MS = 24 * 3600 * 1000;
 
-function isForumLinkRecoverable(file, cap = FORUM_RECOVERY_CAP) {
+function forumRetryBudgetLeft(file, cap, now) {
+  const count = file.forumLinkRecoveryCount || 0;
+  if (count < cap) return true;
+  if (cap !== FORUM_RECOVERY_CAP) return false; // explicit caps stay hard (tests, callers)
+  if (count >= cap + FORUM_RECOVERY_SLOW_TRIES) return false;
+  const last = Date.parse(file.forumLinkRecoveryAt || '');
+  if (Number.isNaN(last)) return false;
+  return now - last >= FORUM_RECOVERY_SLOW_INTERVAL_MS;
+}
+
+function isForumLinkRecoverable(file, cap = FORUM_RECOVERY_CAP, now = Date.now()) {
   if (!file || !isForumThreadUrl(file.url)) return false;
-  if ((file.forumLinkRecoveryCount || 0) >= cap) return false;
+  if (!forumRetryBudgetLeft(file, cap, now instanceof Date ? now.getTime() : now)) return false;
   // Same merge-safety / empty-body checks as the generic path, minus its
   // same-URL retry counter (cap Infinity disables only that check).
   return require('./flagged-recovery').isRecoverableFlaggedFile(file, Infinity);
 }
 
-module.exports = { isForumThreadUrl, isForumLinkRecoverable, FORUM_RECOVERY_CAP, extractReviewPageUrl, extractCriticName, FORUM_URL_RE };
+module.exports = { isForumThreadUrl, isForumLinkRecoverable, FORUM_RECOVERY_CAP, FORUM_RECOVERY_SLOW_TRIES, FORUM_RECOVERY_SLOW_INTERVAL_MS, extractReviewPageUrl, extractCriticName, FORUM_URL_RE };
