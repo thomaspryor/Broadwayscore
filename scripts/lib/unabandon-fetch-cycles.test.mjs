@@ -196,6 +196,10 @@ test('--show targeted override: clears even when the gate would still say no (do
   assert.strictEqual(after.fetchDiscoveryAbandoned, null);
   assert.strictEqual(after.fetchAbandonmentReason, null);
   assert.strictEqual(after.fetchAbandonmentDate, null);
+  // BRO-3319: the ledger row must go too, or the next collect run (which now
+  // honours the gate for closed shows) re-abandons it at the tiered max.
+  const ledger = JSON.parse(fs.readFileSync(path.join(dir, 'data', 'review-texts', 'failed-fetches.json'), 'utf8'));
+  assert.deepStrictEqual(ledger.map(f => f.reviewId), ['show-a/review1.json']);
 });
 
 test('--show targeted override also bypasses the human-authored-reason provenance check (that check is bulk-mode-only)', () => {

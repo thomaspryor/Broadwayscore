@@ -6185,7 +6185,7 @@ function findReviewsToProcess() {
       const failed = JSON.parse(fs.readFileSync(failedPath, 'utf8'));
       for (const f of failed) {
         const id = f.reviewId || `${f.showId}/${f.file}`;
-        const entry = { failureReason: f.failureReason || '', failureCount: f.failureCount || 1, url: f.url || null };
+        const entry = { failureReason: f.failureReason || '', failureCount: f.failureCount || 1, url: f.url || null, lastFailedAt: f.lastFailedAt || null };
         failedFetchesByReviewId.set(id, entry);
         // budget_capped entries are excluded here as well as at write time:
         // belt-and-braces, so a ledger written before this fix still can't
@@ -6408,7 +6408,7 @@ function findReviewsToProcess() {
         // lifecycle (abandonment/cooldown) does not apply to it.
         const storedTextOnly = data._consentLayerRetry === true && !!salvageConsentPrefixedStoredText(data);
         // The ledger entry may describe a URL the review no longer carries (BRO-3319).
-        const ledgerForOtherUrl = isFetchLedgerEntryForOtherUrl(fetchFailureEntry, data.url);
+        const ledgerForOtherUrl = isFetchLedgerEntryForOtherUrl(fetchFailureEntry, data);
         if (fetchFailureEntry && !urlCorrectedRefetch && !reopenStaleMismatch && !storedTextOnly && !ledgerForOtherUrl) {
           const fetchGate = shouldRetryFetch(showsById.get(showId) || null, data, fetchFailureEntry);
           const gateBypassed = shouldBypassFetchGate({

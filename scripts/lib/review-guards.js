@@ -3770,15 +3770,27 @@ function shouldBypassFetchGate({ reviewTargeted, showFilterActive, show }) {
 
 /**
  * True when the failed-fetches.json entry was recorded against a different
- * URL than the review now carries. The old URL's failures say nothing about
- * the new one, so the gate must not apply (BRO-3319 review: a URL change on a
- * review that still has text does not set needsRefetch, so
- * urlCorrectedRefetch misses it). Entries without a url are not stale.
+ * URL than the review file now carries AND the file's URL was set after that
+ * failure. The old URL's failures say nothing about the new one, so the gate
+ * must not apply (BRO-3319 review: a URL change on a review that still has
+ * text does not set needsRefetch, so urlCorrectedRefetch misses it).
+ *
+ * The ledger records the URL actually fetched, which can be a SERP-discovered
+ * URL never saved to the file. A mismatch alone would then lift the gate on
+ * every run forever, so the file must carry a URL-change stamp
+ * (urlDiscoveredAt / urlUpdatedAt) newer than the entry's lastFailedAt.
+ * Entries without url or lastFailedAt are treated as current.
  */
-function isFetchLedgerEntryForOtherUrl(entry, reviewUrl) {
-  if (!entry || !entry.url || !reviewUrl) return false;
+function isFetchLedgerEntryForOtherUrl(entry, review) {
+  if (!entry || !entry.url || !entry.lastFailedAt || !review || !review.url) return false;
   const { normalizeUrl } = require('./review-normalization');
-  return normalizeUrl(entry.url) !== normalizeUrl(reviewUrl);
+  if (normalizeUrl(entry.url) === normalizeUrl(review.url)) return false;
+  const failedAt = Date.parse(entry.lastFailedAt);
+  if (isNaN(failedAt)) return false;
+  return [review.urlDiscoveredAt, review.urlUpdatedAt].some(t => {
+    const changedAt = Date.parse(t || '');
+    return !isNaN(changedAt) && changedAt > failedAt;
+  });
 }
 
 /**

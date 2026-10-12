@@ -39,6 +39,10 @@
  *    case, where the lifecycle-tiered gate legitimately still says no (the
  *    show's classification didn't change, only the operator's real-world
  *    knowledge did) but an operator has verified retrying is now safe.
+ *    It also drops those reviews' failed-fetches.json rows and clears
+ *    fetchRetryAfter: since BRO-3319 a show-filtered collect run honours the
+ *    gate outside the opening window, so a row left at its tiered max would
+ *    re-abandon the review on the very next run.
  *
  * A ledger entry may no longer exist (cleaned up). Bulk mode has nothing to
  * re-derive against in that case and skips the file; targeted mode doesn't
@@ -99,12 +103,14 @@ try {
 // just means every abandoned file falls back to the no-ledger-entry path)
 // ---------------------------------------------------------------------------
 let failedFetchesByReviewId = new Map();
+let failedFetchesRaw = null; // parsed ledger array, only when it parsed cleanly
 const failedPath = path.join(REVIEW_TEXTS_DIR, 'failed-fetches.json');
 try {
   const raw = fs.readFileSync(failedPath, 'utf8');
   let failedFetches;
   try {
     failedFetches = JSON.parse(raw);
+    if (Array.isArray(failedFetches)) failedFetchesRaw = failedFetches;
   } catch (parseErr) {
     // Missing file (ENOENT, caught below) is a normal empty-ledger state.
     // A PRESENT-but-corrupt ledger is not — bulk mode would silently treat
@@ -237,10 +243,21 @@ for (const c of toClear) {
     review.fetchDiscoveryAbandoned = null;
     review.fetchAbandonmentReason = null;
     review.fetchAbandonmentDate = null;
+    if (SHOW_FILTER) review.fetchRetryAfter = null;
     safeWriteReview(c.filePath, review, { merge: false });
     cleared++;
   } catch (e) {
     errors++;
+  }
+}
+
+// Targeted mode: drop the cleared reviews' ledger rows (see header, mode 2).
+if (SHOW_FILTER && failedFetchesRaw && cleared > 0) {
+  const clearedIds = new Set(toClear.map(c => c.reviewId));
+  const kept = failedFetchesRaw.filter(f => !clearedIds.has(f.reviewId || (f.showId && f.file ? `${f.showId}/${f.file}` : null)));
+  if (kept.length !== failedFetchesRaw.length) {
+    fs.writeFileSync(failedPath, JSON.stringify(kept, null, 2) + '\n');
+    console.log(`Ledger rows dropped: ${failedFetchesRaw.length - kept.length}`);
   }
 }
 
