@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-12T06:49:47.952Z",
-  "windowDays": 1095,
-  "targets": 546,
-  "auditedThisRun": 11,
-  "carriedForward": 714,
+  "generatedAt": "2026-10-12T08:31:56.196Z",
+  "windowDays": 21,
+  "targets": 1,
+  "auditedThisRun": 1,
+  "carriedForward": 724,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 408,
-    "missingCurrentRun": 929,
+    "missingCurrentRun": 928,
     "totalCitedNoUrl": 8,
     "totalFlaggedMisses": 916,
     "totalRecoverable": 5,
@@ -38167,20 +38167,12 @@
         "https://cititour.com/NYC_Broadway/CRAZY-MAMA/1394",
         "https://t2conline.com/crazy-mama-linda-purl-gives-a-performance-that-should-not-be-missed/",
         "https://thefrontrowcenter.com/2026/10/crazy-mama-a-true-story-of-love-and-madness/",
-        "https://www.timeout.com/newyork/theater/crazy-mama-a-true-story-of-love-and-madness",
-        "https://openingnight.online/crazy-mama-crazy-mama-a-true-story-of-love-and-madness-is-coming-to-59e59-theaters/"
+        "https://www.timeout.com/newyork/theater/crazy-mama-a-true-story-of-love-and-madness"
       ],
       "dirFiles": 8,
       "dirClean": 6,
       "inReviewsJson": 6,
-      "missing": [
-        {
-          "url": "https://openingnight.online/crazy-mama-crazy-mama-a-true-story-of-love-and-madness-is-coming-to-59e59-theaters/",
-          "host": "openingnight.online",
-          "knownOutletId": "openingnight",
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [
         {
           "host": "blogcritics.org",
@@ -38265,54 +38257,32 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 3,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
         "count": 39,
         "byReason": {
-          "non-review-host": 30,
+          "non-review-host": 29,
           "aggregator-internal-nav": 4,
           "event-listing": 1,
           "census-junk-host": 2,
           "production-database-listing": 1,
+          "non-review-path": 1,
           "write-path-blocked": 1
         }
       },
       "dedupedVariants": [],
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://openingnight.online/crazy-mama-crazy-mama-a-true-story-of-love-and-madness-is-coming-to-59e59-theaters/",
-          "host": "openingnight.online",
-          "outletId": "openingnight",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": true,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=openingnight.online): Scrapingdog HTTP 404: {\"message\""
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "openingnight",
-            "outlet": "openingnight",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://openingnight.online/crazy-mama-crazy-mama-a-true-story-of-love-and-madness-is-coming-to-59e59-theaters/"
-          },
           {
             "outletId": "timeout-london",
             "outlet": "timeout-london",
@@ -38348,13 +38318,6 @@
             "firstSeenAt": "2026-10-10T16:31:40.157Z"
           },
           {
-            "url": "https://openingnight.online/crazy-mama-crazy-mama-a-true-story-of-love-and-madness-is-coming-to-59e59-theaters/",
-            "outletId": "openingnight",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-12T06:01:12.911Z"
-          },
-          {
             "url": "https://www.timeout.com/newyork/theater/crazy-mama-a-true-story-of-love-and-madness",
             "outletId": "timeout-london",
             "state": "GAP",
@@ -38364,9 +38327,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 4,
-        "candidateCount": 6
+        "candidateCount": 5
       },
-      "computedAt": "2026-10-12T06:01:12.911Z"
+      "computedAt": "2026-10-12T08:31:56.196Z"
     },
     {
       "showId": "crazy-mama-off-broadway-2026",
