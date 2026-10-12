@@ -516,3 +516,55 @@ test('assessThroughputRow: EVERY verdict reports skipped rows, including the war
   assert.equal(dead.status, 'error', `fixture precondition: must be a DEAD arm; got ${JSON.stringify(dead)}`);
   assert.match(dead.message, /2 ledger row\(s\) skipped/, `a DEAD arm must report skipped rows too; got ${dead.message}`);
 });
+
+// ── BRO-5168: Linear as a throughput source both CI and the Mac can read ──
+test('assessThroughputRow: Linear cards started and finished daily pass with no Mac ledgers', () => {
+  const { assessThroughputRow, linearIssuesToLedgerRows } = require('./autofix-canary.js');
+  const now = new Date('2026-10-12T12:00:00Z');
+  const issues = [];
+  for (let d = 0; d < 7; d++) {
+    const day = new Date(now.getTime() - d * 86400000).toISOString();
+    issues.push({ title: `BSC Daily: row ${d}`, startedAt: day, completedAt: day, state: { type: 'completed' } });
+  }
+  issues.push({ title: 'CANARY: touch data/audit/canary-2026-10-12.marker', startedAt: now.toISOString(), state: { type: 'completed' } });
+  issues.push({ title: 'BSC Daily: never started', startedAt: null, state: { type: 'unstarted' } });
+  assert.equal(linearIssuesToLedgerRows(issues).length, 14, 'canary and unstarted cards ignored');
+  const r = assessThroughputRow({ digestLedgerEntries: null, backlogLedgerEntries: null, linearIssues: issues, now });
+  assert.equal(r.status, 'pass');
+  assert.match(r.message, /7 dispatched, 7 passed/);
+});
+
+test('assessThroughputRow: Linear readable but no card started for 2+ days -> DEAD on dispatches', () => {
+  const { assessThroughputRow, throughputDeathMessage } = require('./autofix-canary.js');
+  const now = new Date('2026-10-12T12:00:00Z');
+  const old = new Date(now.getTime() - 5 * 86400000).toISOString();
+  const r = assessThroughputRow({ digestLedgerEntries: null, backlogLedgerEntries: null, linearIssues: [{ title: 'BSC Daily: x', startedAt: old, state: { type: 'completed' } }], now });
+  assert.equal(r.status, 'error');
+  assert.match(throughputDeathMessage(r, { pendingIssues: 3 }), /0 dispatches/);
+});
+
+test('assessThroughputRow: Linear unreadable keeps the old partial/unmeasurable verdicts', () => {
+  const { assessThroughputRow } = require('./autofix-canary.js');
+  assert.equal(assessThroughputRow({ digestLedgerEntries: null, backlogLedgerEntries: null, linearIssues: null }).status, 'warn');
+  const now = new Date('2026-10-12T12:00:00Z');
+  const rows = [];
+  for (let d = 0; d < 7; d++) {
+    const ts = new Date(now.getTime() - d * 86400000).toISOString();
+    rows.push({ event: 'auto-dispatch', ts }, { event: 'card-pass', ts });
+  }
+  const partial = assessThroughputRow({ digestLedgerEntries: rows, backlogLedgerEntries: null, now });
+  assert.equal(partial.status, 'warn', 'one Mac ledger alone is still partial');
+  const full = assessThroughputRow({ digestLedgerEntries: rows, backlogLedgerEntries: null, linearIssues: [], now });
+  assert.equal(full.status, 'pass', 'Linear readable covers the missing ledger');
+});
+
+test('fetchPipelineIssues: asks Linear for both filers\' cards over the window', async () => {
+  const { fetchPipelineIssues } = require('./autofix-canary.js');
+  let got;
+  const out = await fetchPipelineIssues({ windowDays: 7, client: { listIssuesByProvenance: async (opts) => { got = opts; return ['x']; } } });
+  assert.deepEqual(out, ['x']);
+  assert.equal(got.since, '-P8D');
+  assert.ok(got.titlePrefixes.includes('BSC Daily:'));
+  assert.ok(got.descriptionMarkers.includes('Auto-filed by digest-autofix'));
+  assert.ok(got.descriptionMarkers.includes('Auto-filed by owner-alert-router'));
+});

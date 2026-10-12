@@ -263,6 +263,37 @@ function dailyCounts(entries, dispatchEvent, windowDays, now) {
   return { days, dispatched, passed, unreadable };
 }
 
+// BRO-5168: the cards both automated filers create, as Linear sees them.
+// Their start and completion are the throughput CI can read; the two Mac
+// ledgers above are the only other source and exist on the Mac alone.
+const PIPELINE_TITLE_PREFIXES = ['BSC Daily:', 'Fix: BSC Daily:'];
+const PIPELINE_DESCRIPTION_MARKERS = ['Auto-filed by owner-alert-router', 'Filed by owner-alert-router', 'Auto-filed by digest-autofix'];
+
+/**
+ * PURE. Linear issues -> ledger-shaped rows dailyCounts() understands. A card
+ * counts as dispatched on the day it moved to started, and as passed (credited
+ * to that same day, as BRO-3321 does for ledger passes) when it completed.
+ * Canary cards are excluded: they pass daily by design and would mask a dead loop.
+ */
+function linearIssuesToLedgerRows(issues) {
+  const rows = [];
+  for (const i of Array.isArray(issues) ? issues : []) {
+    if (!i || !i.startedAt || String(i.title || '').startsWith(CANARY_TITLE_PREFIX)) continue;
+    rows.push({ event: 'linear-start', ts: i.startedAt });
+    if (i.state && i.state.type === 'completed') rows.push({ event: 'card-pass', ts: i.startedAt });
+  }
+  return rows;
+}
+
+/** Fetch the pipeline's Linear issues for the throughput window. Throws on failure. */
+async function fetchPipelineIssues({ windowDays = THROUGHPUT_WINDOW_DAYS, client = require('./linear-client.js') } = {}) {
+  return client.listIssuesByProvenance({
+    since: `-P${windowDays + 1}D`,
+    titlePrefixes: PIPELINE_TITLE_PREFIXES,
+    descriptionMarkers: PIPELINE_DESCRIPTION_MARKERS,
+  });
+}
+
 /**
  * Throughput row with teeth (task #1225): rolls up daily dispatched/passed
  * counts from BOTH dispatch sources over `windowDays`. `digestLedgerEntries`/
@@ -270,12 +301,16 @@ function dailyCounts(entries, dispatchEvent, windowDays, now) {
  * environment) or an array (possibly empty). Both null -> 'warn', NEVER
  * 'pass' (closes the #1221 "renders green on missing input" class).
  */
-function assessThroughputRow({ digestLedgerEntries, backlogLedgerEntries, now = new Date(), windowDays = THROUGHPUT_WINDOW_DAYS } = {}) {
+function assessThroughputRow({ digestLedgerEntries, backlogLedgerEntries, linearIssues, now = new Date(), windowDays = THROUGHPUT_WINDOW_DAYS } = {}) {
   const name = 'Autofix: throughput (dispatched/passed, daily)';
   const digestNull = digestLedgerEntries === null || digestLedgerEntries === undefined;
   const backlogNull = backlogLedgerEntries === null || backlogLedgerEntries === undefined;
+  // BRO-5168: `linearIssues` (fetchPipelineIssues) is null/undefined when
+  // Linear could not be read. When it was read, it sees every card either
+  // dispatcher started, so a missing Mac ledger is no longer blindness.
+  const linearNull = linearIssues === null || linearIssues === undefined;
 
-  if (digestNull && backlogNull) {
+  if (digestNull && backlogNull && linearNull) {
     return {
       name,
       status: 'warn',
@@ -290,9 +325,13 @@ function assessThroughputRow({ digestLedgerEntries, backlogLedgerEntries, now = 
   const unreadable = digestDaily.unreadable + backlogDaily.unreadable;
   const unreadableNote = unreadable ? ` (${unreadable} ledger row(s) skipped — unparseable timestamp, writer bug)` : '';
 
+  const linearDaily = dailyCounts(linearNull ? [] : linearIssuesToLedgerRows(linearIssues), 'linear-start', windowDays, now);
+
   const days = digestDaily.days;
-  const dispatchedTotal = days.map((d) => digestDaily.dispatched[d] + backlogDaily.dispatched[d]);
-  const passedTotal = days.map((d) => digestDaily.passed[d] + backlogDaily.passed[d]);
+  // A card the Mac dispatched also shows up as started in Linear, so the sums
+  // can double-count; the verdicts below only ask whether a day was zero.
+  const dispatchedTotal = days.map((d) => digestDaily.dispatched[d] + backlogDaily.dispatched[d] + linearDaily.dispatched[d]);
+  const passedTotal = days.map((d) => digestDaily.passed[d] + backlogDaily.passed[d] + linearDaily.passed[d]);
 
   let zeroDispatchStreak = 0;
   for (let i = dispatchedTotal.length - 1; i >= 0 && dispatchedTotal[i] === 0; i--) zeroDispatchStreak++;
@@ -316,8 +355,11 @@ function assessThroughputRow({ digestLedgerEntries, backlogLedgerEntries, now = 
   // that. (Dropping the trailing day unconditionally would have thrown this
   // proof away and alarmed on a loop that had just succeeded.)
 
-  const partialNote = digestNull ? ' (digest-autofix ledger unreadable here — backlog-drain only)'
-    : backlogNull ? ' (backlog-drain ledger unreadable here — digest-autofix only)' : '';
+  const readable = [!digestNull && 'digest-autofix ledger', !backlogNull && 'backlog-drain ledger', !linearNull && 'Linear'].filter(Boolean);
+  const partialNote = linearNull
+    ? (digestNull ? ' (digest-autofix ledger unreadable here — backlog-drain only)'
+      : backlogNull ? ' (backlog-drain ledger unreadable here — digest-autofix only)' : '')
+    : ` (sources: ${readable.join(', ')})`;
 
   if (zeroDispatchStreak >= ZERO_DISPATCH_ERROR_DAYS) {
     return {
@@ -341,7 +383,7 @@ function assessThroughputRow({ digestLedgerEntries, backlogLedgerEntries, now = 
   // starved. 'pass' must mean BOTH sources were actually checked (Codex
   // re-review, task #1225: the earlier version could report 'pass' off one
   // healthy source while the other silently starved).
-  if (digestNull || backlogNull) {
+  if (linearNull && (digestNull || backlogNull)) {
     return {
       name,
       status: 'warn',
@@ -620,6 +662,10 @@ function runAutofixCanary({ dryRun = false, log = () => {}, now = new Date(), lo
 
 module.exports = {
   throughputDeathMessage,
+  linearIssuesToLedgerRows,
+  fetchPipelineIssues,
+  PIPELINE_TITLE_PREFIXES,
+  PIPELINE_DESCRIPTION_MARKERS,
   CANARY_LEDGER_PATH,
   CANARY_TITLE_PREFIX,
   ZERO_DISPATCH_ERROR_DAYS,

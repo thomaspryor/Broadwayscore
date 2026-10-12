@@ -94,7 +94,7 @@ const { LINEAR_TASK_ID_RE, LINEAR_IDENTIFIER_RE } = require('./task-id-namespace
 // numeric>" tracker for the frozen Notion mirror — see that module's header
 // for the incident (31 hand-canceled trackers, 2026-09-21).
 const { isWatchdogParkedMirrorTracker } = require('./digest-autofix-mirror-park-guard.js');
-const { classifyHealthCheck } = require('./digest-audience.js');
+const { startNowHealthRowReason, startNowLine, START_NOW_REFUSED_RE } = require('./start-now-filing.js');
 
 // Pulling a Linear identifier out of linear-issue-create.js's JSON output.
 // Built from the shared identifier shape rather than a third hand-written
@@ -311,7 +311,9 @@ function isRowAcknowledged(message, today) {
 // those come back null/false for them (harmless: nothing reads them there).
 function normalizeQueuedRows(queued) {
   return (Array.isArray(queued) ? queued : []).filter(q => q && q.title).map(q => ({
-    name: q.title,
+    // A router line for a health-check condition is already titled
+    // "BSC Daily: <row>"; keep buildPlanRow from prefixing it twice (BRO-5168).
+    name: String(q.title).replace(/^(?:Fix: )?BSC Daily: /, ''),
     message: q.description || q.title,
     decision: !!q.decision,
     decisionPrompt: q.decisionPrompt || null,
@@ -631,10 +633,9 @@ function buildCardNotes(row) {
 // grace if no Mac dispatch has claimed it, and a non-PARKED provenance line so
 // autofix-filed-marker.js still knows who filed it. A row the cloud worker
 // could not run (linear-issue-create refuses the START-NOW) files parked.
-const START_NOW_REFUSED_RE = /START-NOW card would never be picked/;
 function startNowNotes(notes) {
   return [
-    'START-NOW: visitor-facing daily health row (digest-audience.js). Any worker may take it once no Mac dispatch has claimed it.',
+    startNowLine('a Mac dispatch'),
     `${AUTOFIX_FILED_MARKER} (START-NOW): runAutofix also dispatches it via linear-next in the same pass.`,
     '',
     notes,
@@ -734,9 +735,12 @@ function fileCard(title, notes, { log = () => {}, refreshNotesOnReattach = false
   }
 }
 
-/** BRO-5168: a daily-health row whose audience is site visitors. */
+/**
+ * BRO-5168: a daily-health row a worker can fix on its own (visitor-facing,
+ * not an owner-money/Mac row, not acknowledged) — start-now-filing.js.
+ */
 function isVisitorFacingRow(row) {
-  return !!(row && row.fromHealth) && classifyHealthCheck(row) === 'visitors';
+  return !!(row && row.fromHealth) && startNowHealthRowReason(row) === null;
 }
 
 // Pull newly filed cards into the shared task list so they get task numbers.

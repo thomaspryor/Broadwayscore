@@ -59,6 +59,7 @@ function loadRouterWithFakes({
   useRealLinearIssueCreate,
   linearGetTeamImpl,
   linearGraphqlImpl,
+  linearGetIssueImpl,
 } = {}) {
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'alert-router-test-'));
   const priorLedgerEnv = process.env.ALERT_LEDGER_PATH;
@@ -162,6 +163,8 @@ function loadRouterWithFakes({
         return null;
       },
       getTeam: async () => (linearGetTeamImpl ? linearGetTeamImpl() : DEFAULT_TEAM),
+      // BRO-5168: routeAlert's closed-tracker check. Default: the tracker is open.
+      getIssue: async (id) => (linearGetIssueImpl ? linearGetIssueImpl(id) : { identifier: id, state: { type: 'unstarted' } }),
       TEAM_KEY: 'BRO',
       graphql: async (query, variables) => {
         calls.linearGraphql.push({ query, variables });
@@ -2238,6 +2241,118 @@ test('resolveQuietConditions: resolves open conditions not seen for quietHours, 
     assert.equal(cond.status, 'resolved');
     assert.equal(cond.resolveReason, 'row passed');
     assert.deepEqual(router.resolveQuietConditions(['test:quiet-old'], { nowMs: later }), [], 'already resolved: no-op');
+  } finally {
+    restore();
+  }
+});
+
+// ── BRO-5168: router cards a cloud worker can take, and refiling past a closed tracker ──
+test('startNowEligible: visitor health rows only; internal, owner/Mac, acknowledged and owner-judgment rows stay parked', () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    assert.equal(router.startNowEligible({ conditionKey: 'health-check:Images: missing posters', description: 'd' }), true);
+    assert.equal(router.startNowEligible({ conditionKey: 'test:not-a-health-row', description: 'd' }), false);
+    assert.equal(router.startNowEligible({ conditionKey: 'health-check:Autofix: throughput', description: 'd' }), false, 'internal category');
+    assert.equal(router.startNowEligible({ conditionKey: 'health-check:Credits: ScrapingBee', description: 'd' }), false, 'owner money');
+    assert.equal(router.startNowEligible({ conditionKey: 'health-check:Cookies: BWW', description: 'd' }), false, 'owner Mac');
+    assert.equal(router.startNowEligible({ conditionKey: 'health-check:Images: missing posters', description: 'acknowledged: x [expires 2999-01-01]' }), false, 'acknowledged');
+    assert.equal(router.startNowEligible({ conditionKey: 'health-check:Images: missing posters', description: 'd', verify: { line: 'VERIFY: owner-judgment' } }), false);
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: an eligible health row files START-NOW (dispatch, High); a non-health key still files parked', async () => {
+  const { router, calls, restore } = loadRouterWithFakes();
+  try {
+    router._resetStartNowCountForTests();
+    const r = await router.routeAlert({ conditionKey: 'health-check:Images: missing posters', title: 'BSC Daily: Images: missing posters', description: 'd', disposition: 'auto' });
+    assert.equal(r.action, 'auto');
+    const c = calls.createLinearIssue[0];
+    assert.equal(c.dispatch, true);
+    assert.equal(c.park, undefined);
+    assert.equal(c.priority, 2);
+    assert.match(c.description, /^START-NOW: /);
+    assert.doesNotMatch(c.description, /Auto-filed by owner-alert-router/, 'not selected by the parked drain too');
+    await router.routeAlert({ conditionKey: 'test:plain', title: 't', description: 'd', disposition: 'auto' });
+    assert.ok(calls.createLinearIssue[1].park, 'non-health condition parks');
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: START-NOW filings stop at MAX_START_NOW_PER_RUN; the rest file parked', async () => {
+  const { router, calls, restore } = loadRouterWithFakes();
+  try {
+    router._resetStartNowCountForTests();
+    const n = router.MAX_START_NOW_PER_RUN + 2;
+    for (let i = 0; i < n; i++) {
+      await router.routeAlert({ conditionKey: `health-check:Images: row ${i}`, title: `BSC Daily: Images: row ${i}`, description: 'd', disposition: 'auto' });
+    }
+    assert.equal(calls.createLinearIssue.filter((c) => c.dispatch).length, router.MAX_START_NOW_PER_RUN);
+    assert.equal(calls.createLinearIssue.filter((c) => c.park).length, 2);
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: a deferred condition whose tracker was closed while the row stayed red gets a new card', async () => {
+  const state = { type: 'completed' };
+  const { router, calls, restore } = loadRouterWithFakes({ linearGetIssueImpl: async (id) => ({ identifier: id, state }) });
+  try {
+    await router.routeAlert({ conditionKey: 'test:closed-tracker', title: 'Still red', description: 'd', ...DEFER });
+    router.patchCondition('test:closed-tracker', { incidentOpenedAt: isoAgo(2000), lastSeen: isoAgo(1), lastNotifiedAt: isoAgo(24), linearIdentifier: 'BRO-1' });
+    const r = await router.routeAlert({ conditionKey: 'test:closed-tracker', title: 'Still red', description: 'd', ...DEFER });
+    assert.equal(r.action, 'auto');
+    assert.equal(r.linearIdentifier, 'BRO-999');
+    assert.equal(calls.createLinearIssue.length, 1);
+    // Tracker now open: no further card.
+    state.type = 'unstarted';
+    const again = await router.routeAlert({ conditionKey: 'test:closed-tracker', title: 'Still red', description: 'd', ...DEFER });
+    assert.equal(again.action, 'silent');
+    assert.equal(calls.createLinearIssue.length, 1);
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: an open tracker, or a failed tracker lookup, never refiles', async () => {
+  for (const impl of [async (id) => ({ identifier: id, state: { type: 'started' } }), async () => { throw new Error('Linear down'); }]) {
+    const { router, calls, restore } = loadRouterWithFakes({ linearGetIssueImpl: impl });
+    try {
+      await router.routeAlert({ conditionKey: 'test:open-tracker', title: 't', description: 'd', ...DEFER });
+      router.patchCondition('test:open-tracker', { incidentOpenedAt: isoAgo(2000), lastSeen: isoAgo(1), lastNotifiedAt: isoAgo(24), linearIdentifier: 'BRO-1' });
+      const r = await router.routeAlert({ conditionKey: 'test:open-tracker', title: 't', description: 'd', ...DEFER });
+      assert.equal(r.action, 'silent');
+      assert.equal(r.linearIdentifier, 'BRO-1');
+      assert.equal(calls.createLinearIssue.length, 0);
+    } finally {
+      restore();
+    }
+  }
+});
+
+test('trackerIsClosed: completed, canceled, duplicate and missing are closed; open states and errors are not', async () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    for (const type of ['completed', 'canceled']) {
+      assert.equal(await router.trackerIsClosed('BRO-1', async () => ({ state: { type } })), true, type);
+    }
+    assert.equal(await router.trackerIsClosed('BRO-1', async () => ({ state: { type: 'duplicate' } })), true, 'duplicate with no original');
+    // BRO-4093 -> BRO-3795 -> BRO-3712 (open): still tracked.
+    const chain = {
+      'BRO-4093': { state: { type: 'duplicate' }, relations: { nodes: [{ type: 'duplicate', relatedIssue: { identifier: 'BRO-3795' } }] } },
+      'BRO-3795': { state: { type: 'duplicate' }, relations: { nodes: [{ type: 'related', relatedIssue: { identifier: 'BRO-9' } }, { type: 'duplicate', relatedIssue: { identifier: 'BRO-3712' } }] } },
+      'BRO-3712': { state: { type: 'backlog' } },
+    };
+    assert.equal(await router.trackerIsClosed('BRO-4093', async (id) => chain[id]), false, 'original still open');
+    chain['BRO-3712'] = { state: { type: 'completed' } };
+    assert.equal(await router.trackerIsClosed('BRO-4093', async (id) => chain[id]), true, 'original closed');
+    assert.equal(await router.trackerIsClosed('BRO-1', async () => null), true, 'issue gone');
+    for (const type of ['backlog', 'unstarted', 'started']) {
+      assert.equal(await router.trackerIsClosed('BRO-1', async () => ({ state: { type } })), false, type);
+    }
+    assert.equal(await router.trackerIsClosed('BRO-1', async () => { throw new Error('x'); }), false, 'lookup error');
   } finally {
     restore();
   }

@@ -36,6 +36,10 @@ const { getTodayJsonlPath } = require('./lib/exclusion-logger');
 const { computeCommercialModelDriftStatus } = require('./lib/commercial-model-drift');
 const { fitCheckStatus: waltzFitCheckStatus } = require('./lib/waltz-model-fit');
 const { revisitBarStatus } = require('./lib/recoupment-timing-report');
+const { selectUnroutedVisitorRows } = require('./lib/start-now-filing.js');
+const { untrackedPersistentRowsResult } = require('./lib/untracked-persistent-rows.js');
+// BRO-5168: card filings per run for failing rows with no playbook route.
+const MAX_UNROUTED_FILINGS_PER_RUN = 4;
 const { routeAlert, resolveQuietConditions, readDispatchAttempts, peekDigestQueue, clearDigestQueue, toSnapshotQueuedRow } = require('./lib/owner-alert-router.js');
 const { clearedHealthCheckKeys } = require('./lib/health-row-check-cmd.js');
 const { summarizeFailureStreak, deadmanShouldPage } = require('./lib/alert-dispatch-streak.js');
@@ -2861,6 +2865,18 @@ function checkAutofixCanary(isCI) {
   return [assessCanaryRow({ canaryLedgerEntries, dispatchLedgerEntries })];
 }
 
+// BRO-5168: advisory (warn-only) tripwire that reads only CI-visible state:
+// the tracked alert ledger plus Linear's open issues. Fires when a
+// visitor-facing row has been red for 4+ days and nothing open tracks it,
+// which is what the Mac-only throughput rows could not show from CI.
+async function checkUntrackedPersistentRows() {
+  return [await untrackedPersistentRowsResult({
+    ledger: require('./lib/owner-alert-router.js').loadLedger(),
+    listOpenIssues: () => require('./lib/linear-client.js').listOpenIssuesWithDescriptions(),
+    getIssue: (id) => require('./lib/linear-client.js').getIssue(id),
+  })];
+}
+
 // LOCAL-FOLD(checkAutofixThroughput): CI-skipped; the real row is evaluated
 // by send-morning-digest.js localLoopDeadMessage() (BRO-3321) on the Mac.
 // Enforced by tests/unit/audit-health-check-audit.test.mjs (BRO-2199).
@@ -5164,6 +5180,33 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
         console.log(`[Alert Router] hit MAX_CARD_DISPATCHES_PER_RUN=${MAX_CARD_DISPATCHES_PER_RUN} — remaining humanAction items will dispatch next run`);
       }
 
+      // BRO-5168: failing rows with no playbook route reached no tracker from
+      // CI, so with the Mac's digest-autofix down they were never carded at
+      // all. Route the ones a worker can fix (start-now-filing.js) the same
+      // deferred way: a card only after 3 days, and the router files it
+      // START-NOW so the cloud worker can take it. Budget counts only calls
+      // that may file; a deferred or silent result gives its slot back.
+      let unroutedBudget = MAX_UNROUTED_FILINGS_PER_RUN;
+      for (const r of selectUnroutedVisitorRows(needsAttention, { getPlaybookEntry })) {
+        if (unroutedBudget <= 0) break;
+        unroutedBudget--;
+        try {
+          const result = await routeAlert({
+            conditionKey: `health-check:${r.name}`,
+            title: `BSC Daily: ${r.name}`,
+            description: `${r.message}${r.hint ? `\n\n${r.hint}` : ''}`,
+            hint: 'Find and fix the cause of this daily health row; done when the row no longer appears in the health check.',
+            severity: r.status === 'error' ? 'error' : 'warning',
+            disposition: 'auto',
+            deferFilingHours: 72,
+            fields: [{ name: 'Check', value: r.name }],
+          });
+          if (result && (result.deferred || result.action === 'silent')) unroutedBudget++;
+        } catch (err) {
+          console.error(`[Alert Router] unrouted-row dispatch failed for "${r.name}": ${err.message}`);
+        }
+      }
+
       const items = actionable.map(r => {
         const entry = getPlaybookEntry(r.name);
         const urgency = URGENCY_LABELS[r._escalatedUrgency || (entry ? entry.urgency : 'low')] || URGENCY_LABELS['low'];
@@ -5629,6 +5672,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkAutofixEffectiveness(),
     ...checkAutofixCanary(isCI),
     ...checkAutofixThroughput(isCI),
+    ...(await checkUntrackedPersistentRows()),
     ...checkDigestInvariantFail(isCI),
     ...checkStuckPipelineItems(),
     ...checkDataFreshnessGaps(),
@@ -5877,4 +5921,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness };
+module.exports = { buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness };
