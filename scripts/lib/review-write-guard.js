@@ -1432,6 +1432,10 @@ function stripDowJonesChromeForWrite(filePath, newData) {
     return kept;
   };
 
+  // A human-locked record keeps its text as-is (the merge restores it anyway,
+  // which would leave a breadcrumb beside text that still has the chrome).
+  if (readOnDisk()._locked === true) return newData;
+
   if (stripped === incoming) {
     // Already-clean text replacing a chrome-bearing copy of the same review.
     // Interstitial with no marker: no boundary to cut at, so store nothing new.
@@ -1447,7 +1451,7 @@ function stripDowJonesChromeForWrite(filePath, newData) {
     return { ...newData, fullTextTrimmed: trimmed(diskText.length, incoming) };
   }
 
-  if (!stripped.trim() || detectWsjRegistrationInterstitial(stripped).detected) return keepExistingText();
+  if (detectWsjRegistrationInterstitial(stripped).detected) return keepExistingText();
   const diskText = typeof readOnDisk().fullText === 'string' ? onDisk.fullText : '';
   const fromLength = diskText && diskText.length > stripped.length && stripDowJonesReprintChrome(diskText) !== diskText
     ? diskText.length

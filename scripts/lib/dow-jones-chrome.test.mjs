@@ -108,6 +108,15 @@ describe('detector + stripper', () => {
     assert.equal(cq.stripDowJonesReprintChrome(t), t);
   });
 
+  test('toolbar chrome + short review + reprints FOOTER: review kept (old wsj.com layout)', () => {
+    const shortReview = REVIEW.split('\n\n').slice(0, 3).join('\n\n');
+    const t = 'Skip to Main Content Order Reprints World Business Opinion\n\n' + shortReview + '\n\n' + PRINT_HEADER;
+    assert.equal(cq.stripDowJonesReprintChrome(t), t);
+    const nav = NAV + '\n\n' + shortReview + '\n\n' + PRINT_HEADER + 'Most Popular';
+    assert.equal(cq.stripDowJonesReprintChrome(nav), nav);
+    assert.equal(cq.isGarbageContent(nav).isGarbage, false);
+  });
+
   test('prose before the marker is not treated as chrome', () => {
     const t = REVIEW.slice(0, 600).replace(/\n/g, ' ') + '\n\n' + PRINT_HEADER + REVIEW;
     assert.equal(cq.stripDowJonesReprintChrome(t), t);
@@ -269,5 +278,16 @@ describe('codex review hardening', () => {
 
   test('_isLiveSameShowCopy fails closed when the show is unknown', () => {
     assert.equal(_isLiveSameShowCopy({ criticName: 'X', isCombinedReview: true, fullText: REVIEW }, 'zz-no-such-show-1900', 'x'), false);
+  });
+
+  test('a human-locked record is left alone by the backstop', () => {
+    const fp = path.join(tmp, 'zz-test-show-2010', 'wsj--critic.json');
+    fs.mkdirSync(path.dirname(fp), { recursive: true });
+    const rec = { showId: 'zz-test-show-2010', url: 'https://online.wsj.com/article/x.html', fullText: PRINT_HEADER + REVIEW, wordCount: 7, _locked: true };
+    fs.writeFileSync(fp, JSON.stringify(rec));
+    safeWriteReview(fp, { ...rec }, { force: true });
+    const stored = JSON.parse(fs.readFileSync(fp, 'utf8'));
+    assert.equal(stored.fullTextTrimmed, undefined);
+    assert.equal(stored.wordCount, 7);
   });
 });
