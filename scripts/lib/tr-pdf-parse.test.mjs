@@ -16,7 +16,6 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { parsePdfReviews, parseRawPdfReviews, cutAtProductionHeader } = require('./tr-pdf-parse.js');
-const { checkWrongShowMentionGuard } = require('./tr-wrongshow-guard.js');
 
 const JOSEPH = 'Joseph and the Amazing Technicolor Dreamcoat';
 const PAD = ' '.repeat(52);
@@ -106,17 +105,4 @@ test('BRO-5141: raw parser cuts a review where the next production\'s info page 
 test('BRO-5141: text with no production header is left whole', () => {
   const lines = ['A plain review line.', 'Another line naming the PALLADIUM.'];
   assert.deepEqual(cutAtProductionHeader(lines), lines);
-});
-
-test('BRO-5141: "Joseph" inside a person\'s name is no mention of Joseph; corroboration may not rescue it', () => {
-  const show = { title: JOSEPH };
-  const annaX = 'Emma Corrin stars in Anna X, the new play by Joseph Charlton. JOSEPH CHARLTON wrote it after the Sorokin case.';
-  const r = checkWrongShowMentionGuard(show, annaX);
-  assert.equal(r.fails, true);
-  assert.equal(r.nameOnly, true);
-
-  const real = 'Go go go Joseph! The Palladium revival is a joy. Jac Yarrow returns as Joseph.';
-  assert.equal(checkWrongShowMentionGuard(show, real).fails, false);
-  const titleWordAfter = 'Joseph Technicolor nights are back at the Palladium.';
-  assert.equal(checkWrongShowMentionGuard(show, titleWordAfter).fails, false);
 });

@@ -582,9 +582,7 @@ async function main() {
       // corroborate against the show's WET roundup (card #1227).
       if (!skipReason) {
         const mentionCheck = checkWrongShowMentionGuard(show, review.fullText);
-        if (mentionCheck.fails && mentionCheck.nameOnly) {
-          skipReason = mentionCheck.reason;
-        } else if (mentionCheck.fails) {
+        if (mentionCheck.fails) {
           const roundupRows = await getRoundupRows();
           if (isCorroboratedByRoundup(review.outlet, review.critic, roundupRows)) {
             console.log(`    (wrong-show guard bypassed — corroborated by WET roundup: ${filename}, ${mentionCheck.mentions} mention(s))`);

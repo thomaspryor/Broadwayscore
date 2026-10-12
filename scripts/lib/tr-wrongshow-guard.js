@@ -22,21 +22,6 @@ const CORE_WORD_STOPWORDS = ['the', 'and', 'for', 'from', 'with', 'a', 'an', 'at
 // Same signals as the extractor's original inline film/TV guard.
 const FILM_TV_PATTERNS = [/\b(?:in cinemas|on screen|film adaptation|movie version|streaming on)\b/i];
 
-// A title word followed by a capitalised word that isn't part of the title
-// is a person's name, not the show ("Joseph Charlton's Anna X" is no mention
-// of "Joseph and the Amazing Technicolor Dreamcoat"). BRO-5141.
-function countWordMentions(fullText, word, titleWords) {
-  const re = new RegExp(`\\b${word}\\b(?:[ \\t]+([A-Z][A-Za-z'’-]+))?`, 'gi');
-  let all = 0;
-  let named = 0;
-  for (const m of String(fullText || '').matchAll(re)) {
-    all++;
-    // The 'i' flag also loosens [A-Z], so check the capital here.
-    if (m[1] && /^[A-Z]/.test(m[1]) && !titleWords.includes(m[1].toLowerCase())) named++;
-  }
-  return { all, real: all - named };
-}
-
 function computeMentionCounts(show, fullText) {
   const reviewLower = (fullText || '').toLowerCase();
   const showTitleLower = foldDiacritics(show.title || '').toLowerCase().replace(/[^a-z0-9\s]/g, '').trim();
@@ -45,18 +30,18 @@ function computeMentionCounts(show, fullText) {
 
   const titleRegex = new RegExp(`\\b${showTitleLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi');
   const titleMentions = (reviewLower.match(titleRegex) || []).length;
-  const titleWords = showTitleLower.split(/\s+/).filter(Boolean);
-  const wordCounts = [...new Set([...showWords, ...coreWords])]
-    .map(w => ({ w, ...countWordMentions(foldDiacritics(fullText || ''), w, titleWords) }));
-  const best = (words, key) => Math.max(0, ...wordCounts.filter(c => words.includes(c.w)).map(c => c[key]));
+  const wordMentions = showWords.length > 0
+    ? Math.max(...showWords.map(w => (reviewLower.match(new RegExp(`\\b${w}\\b`, 'gi')) || []).length))
+    : 0;
+  const coreMentions = coreWords.length > 0
+    ? Math.max(...coreWords.map(w => (reviewLower.match(new RegExp(`\\b${w}\\b`, 'gi')) || []).length))
+    : 0;
 
-  const mentions = Math.max(titleMentions, best(showWords, 'real'), best(coreWords, 'real'));
-  // Mentions before discounting names; > mentions only when names were dropped.
-  const rawMentions = Math.max(titleMentions, best(showWords, 'all'), best(coreWords, 'all'));
+  const mentions = Math.max(titleMentions, wordMentions, coreMentions);
   // Single-word or very short titles need 2+ mentions (common words cause false positives).
   // Multi-word titles with distinctive words need only 1.
   const minMentions = showWords.length >= 2 ? 1 : 2;
-  return { mentions, rawMentions, minMentions, showWords, coreWords };
+  return { mentions, minMentions, showWords, coreWords };
 }
 
 // The title written as a proper name (exact casing or ALL CAPS, the way TR
@@ -89,14 +74,7 @@ function hasProperNameTitleInOpening(show, fullText) {
 }
 
 function checkWrongShowMentionGuard(show, fullText) {
-  const { mentions, rawMentions, minMentions } = computeMentionCounts(show, fullText);
-  // Every apparent mention was a person's name: the text never names the
-  // show at all. A roundup row for the same outlet+critic can't rescue this
-  // (critics review several shows the same week), so callers must not
-  // corroborate it.
-  if (mentions === 0 && rawMentions > 0) {
-    return { fails: true, reason: 'wrong-show (title word appears only in a person\'s name)', mentions, minMentions, nameOnly: true };
-  }
+  const { mentions, minMentions } = computeMentionCounts(show, fullText);
   if (mentions < minMentions && mentions >= 1 && hasProperNameTitleInOpening(show, fullText)) {
     return { fails: false, reason: null, mentions, minMentions, openingProperName: true };
   }
