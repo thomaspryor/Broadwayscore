@@ -1,6 +1,6 @@
 {
   "_comment": "Outlets seen on included reviews that the rebuild REFUSED to auto-register (BRO-4370): no resolvable domain, a critic name, or a domain collision. Resolve by adding the outlet to data/outlet-registry.json with a domain, merging it into the right outlet, or fixing the review files; the rebuild prunes resolved rows on its next run.",
-  "updatedAt": "2026-10-11T14:14:44.508Z",
+  "updatedAt": "2026-10-12T20:22:02.248Z",
   "staged": [
     {
       "outletId": "islington-gazette",
@@ -9,7 +9,7 @@
       "reviewCount": 1,
       "exampleShowId": "when-we-have-sufficiently-tortured-each-other-west-end-2019",
       "firstSeenAt": "2026-10-11T14:14:44.508Z",
-      "lastSeenAt": "2026-10-11T14:14:44.508Z"
+      "lastSeenAt": "2026-10-12T20:22:02.247Z"
     },
     {
       "outletId": "therevieshub-com",
@@ -18,7 +18,16 @@
       "reviewCount": 1,
       "exampleShowId": "paradise-west-end-2021",
       "firstSeenAt": "2026-10-10T06:47:47.451Z",
-      "lastSeenAt": "2026-10-11T14:14:44.508Z"
+      "lastSeenAt": "2026-10-12T20:22:02.247Z"
+    },
+    {
+      "outletId": "time-outs",
+      "reason": "no-domain",
+      "domainHint": null,
+      "reviewCount": 1,
+      "exampleShowId": "why-am-i-so-single-west-end-2024",
+      "firstSeenAt": "2026-10-12T20:22:02.247Z",
+      "lastSeenAt": "2026-10-12T20:22:02.247Z"
     }
   ]
 }

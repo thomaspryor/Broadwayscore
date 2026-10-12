@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-12T19:58:54.166Z",
+  "timestamp": "2026-10-12T20:23:54.566Z",
   "stats": {
-    "totalReviews": 56085,
-    "alreadyFlagged": 20933,
+    "totalReviews": 56100,
+    "alreadyFlagged": 20937,
     "dateGuardCatches": 252,
-    "directorMismatch": 1781,
+    "directorMismatch": 1782,
     "tvFilmSignals": 1617,
     "londonSignals": 2208,
     "offBroadwaySignals": 507,
     "yearMismatch": 137,
-    "noPublishDate": 5242
+    "noPublishDate": 5245
   },
   "findings": [
     {
@@ -10118,6 +10118,7 @@
     {
       "showId": "death-becomes-her-tour-2026",
       "file": "cleveland-jewish-news--sheri-gross.json",
+      "score": 90,
       "publishDate": "2026-09-25",
       "url": "https://www.clevelandjewishnews.com/columnists/sheri_gross/death-becomes-her-timely-for-high-holy-days/article_9e932cc3-6d50-4d0a-bceb-3e7a4098fae2.html",
       "findings": [
@@ -11455,7 +11456,7 @@
     {
       "showId": "diana-the-musical-2021",
       "file": "nytimes--jesse-green.json",
-      "score": null,
+      "score": 13,
       "publishDate": "November 17, 2021",
       "url": "https://www.nytimes.com/2021/11/17/theater/diana-the-musical-review.html",
       "findings": [
@@ -15882,7 +15883,7 @@
     {
       "showId": "godspell-2011",
       "file": "talkinbroadway--matthew-murray.json",
-      "score": null,
+      "score": 87,
       "publishDate": "November 7, 2011",
       "url": "http://www.talkinbroadway.com/world/Godspell2011.html",
       "findings": [
@@ -20884,6 +20885,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
+      "file": "theatrebookings--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.theatrebookings.com/musical/into-the-woods",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
         }
       ]
     },
@@ -33398,7 +33413,7 @@
     {
       "showId": "sinatra-the-musical-west-end-2026",
       "file": "seatplan--patrick-jeremy.json",
-      "score": null,
+      "score": 79,
       "publishDate": "2026-06-24",
       "url": "https://seatplan.com/london/news/sinatra-the-musical-review-aldwych-theatre/",
       "findings": [
@@ -38248,7 +38263,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 93,
+      "score": 92,
       "publishDate": "2025-05-13",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-comedy-about-spies",
       "findings": [
@@ -38405,6 +38420,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2026",
       "file": "soundsandstage--tim-todd.json",
+      "score": 93,
       "publishDate": "May 13th, 2025",
       "url": "https://soundsandstage.com/post.php?slug=the-comedy-about-spies---magnificent-mischief-strike-again-1786463836",
       "findings": [
@@ -38540,7 +38556,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2026",
       "file": "thereviewshub--reviewer-upload.json",
-      "score": 96,
+      "score": 95,
       "publishDate": "2025-05-14",
       "url": "https://www.thereviewshub.com/the-comedy-about-spies-noel-coward-theatre-london/",
       "findings": [
@@ -83302,7 +83318,7 @@
     {
       "showId": "venus-in-fur-2011",
       "file": "faster-times--jonathan-mandell.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2011-11-09T08:16:10-05:00",
       "url": "https://www.thefastertimes.com/newyorktheater/2011/11/08/venus-in-fur-review-nina-arianda-dominates/",
       "findings": [
