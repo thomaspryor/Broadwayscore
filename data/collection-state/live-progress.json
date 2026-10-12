@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-10-12T00:10:08.862Z",
-  "processed": 378,
-  "failed": 251,
+  "updatedAt": "2026-10-12T00:13:00.535Z",
+  "processed": 379,
+  "failed": 252,
   "successRate": "60.1%",
   "tierBreakdown": {
     "playwright": 248,
@@ -10,34 +10,12 @@
     "directCookies": 0,
     "scrapingdog": 42,
     "scrapingbee": 51,
-    "brightdata": 1,
+    "brightdata": 2,
     "archiveToday": 0,
     "archive": 29
   },
-  "browserbaseSessions": 15,
+  "browserbaseSessions": 17,
   "recentActivity": [
-    {
-      "t": "2026-10-11T23:35:15.072Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-11T23:47:45.808Z",
-      "event": "bb-session",
-      "session": "b9fb8a66",
-      "url": "https://www.talkinbroadway.com/world/SweetCharity.html"
-    },
-    {
-      "t": "2026-10-11T23:47:46.707Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-11T23:48:06.330Z",
-      "event": "bb-session",
-      "session": "36ba08fc",
-      "url": "https://www.talkinbroadway.com/world/SweetCharity.html"
-    },
     {
       "t": "2026-10-11T23:48:07.112Z",
       "event": "bb-cookie-inject",
@@ -124,6 +102,28 @@
     },
     {
       "t": "2026-10-12T00:03:06.817Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-12T00:11:17.393Z",
+      "event": "bb-session",
+      "session": "2b46f5e8",
+      "url": "https://www.nytimes.com/2024/07/31/theater/midnight-in-the-garden-chicago.html"
+    },
+    {
+      "t": "2026-10-12T00:11:18.291Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-12T00:11:36.926Z",
+      "event": "bb-session",
+      "session": "162b2e60",
+      "url": "https://www.nytimes.com/2024/07/31/theater/midnight-in-the-garden-chicago.html"
+    },
+    {
+      "t": "2026-10-12T00:11:37.792Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
