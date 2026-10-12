@@ -33,8 +33,8 @@ test('boots out only loaded retired labels, and moves present plists', () => {
   const config = { entries: [entry('com.bwsc.opening-night-monitor'), entry('com.bwsc.not-loaded')] };
   const plan = rec.planReconcile({ config, loaded: LIST, presentPlists: new Set(['com.bwsc.opening-night-monitor']), now: NOW });
   assert.deepEqual(plan.actions, [
-    { type: 'bootout', label: 'com.bwsc.opening-night-monitor' },
     { type: 'move-plist', label: 'com.bwsc.opening-night-monitor' },
+    { type: 'bootout', label: 'com.bwsc.opening-night-monitor' },
   ]);
   assert.deepEqual(plan.refused, []);
 });
@@ -93,7 +93,7 @@ test('applyPlan renames the plist without clobbering an earlier retired copy and
     const calls = [];
     const lines = [];
     rec.applyPlan(
-      { actions: [{ type: 'bootout', label: 'com.bwsc.x' }, { type: 'move-plist', label: 'com.bwsc.x' }], refused: [], waiting: [] },
+      { actions: [{ type: 'move-plist', label: 'com.bwsc.x' }, { type: 'bootout', label: 'com.bwsc.x' }], refused: [], waiting: [] },
       { dir, uid: 501, now: NOW, log: l => lines.push(l), run: (...a) => calls.push(a) },
     );
     assert.deepEqual(calls[0].slice(0, 2), ['launchctl', ['bootout', 'gui/501/com.bwsc.x']]);

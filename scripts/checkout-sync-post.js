@@ -45,7 +45,11 @@ function reconcile() {
 
 function heartbeat() {
   const git = (...a) => execFileSync('git', a, { cwd: ROOT, encoding: 'utf8', timeout: 15000 }).trim();
-  const sha = git('rev-parse', 'HEAD');
+  // origin/main, not HEAD: two success paths in sync-audit-checkout.sh leave
+  // HEAD on a local-only ledger commit GitHub has never seen (a status POST
+  // on it 422s). Applied = origin/main is contained in HEAD.
+  const sha = git('rev-parse', 'origin/main');
+  try { git('merge-base', '--is-ancestor', sha, 'HEAD'); } catch { log(`[mac-applied] HEAD does not contain origin/main ${sha.slice(0, 10)}; not posting`); return; }
   let commonDir = git('rev-parse', '--git-common-dir');
   if (!path.isAbsolute(commonDir)) commonDir = path.join(ROOT, commonDir);
   const stateFile = path.join(commonDir, 'mac-applied-heartbeat.json');

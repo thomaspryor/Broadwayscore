@@ -6,7 +6,8 @@
 // but when it wedges (an untracked file at a path origin adds blocks ff-only,
 // scripts/lib/sync-audit-decision.js) only the Mac's own morning digest knew.
 // Cloud sessions could not tell. After each successful sync this posts a
-// commit status on the applied sha:
+// commit status on the applied origin/main sha (not HEAD, which can be a
+// local-only ledger commit):
 //   context     mac/checkout-sync-applied
 //   state       success
 //   description applied <ISO timestamp>

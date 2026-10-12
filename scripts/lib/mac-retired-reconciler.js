@@ -97,8 +97,11 @@ function planReconcile({ config, loaded, presentPlists, now = new Date() }) {
       waiting.push({ label: e.label, actFrom: new Date(actAt).toISOString().slice(0, 10) });
       continue;
     }
-    if (isLoaded) actions.push({ type: 'bootout', label: e.label });
+    // Rename first: if the bootout then fails the job stops at the next
+    // login anyway; the other order could leave a booted-out job whose
+    // plist reloads it at login.
     if (hasPlist) actions.push({ type: 'move-plist', label: e.label });
+    if (isLoaded) actions.push({ type: 'bootout', label: e.label });
   }
   return { actions, refused, waiting };
 }
