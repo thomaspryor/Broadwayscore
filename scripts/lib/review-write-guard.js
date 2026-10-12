@@ -1120,7 +1120,7 @@ const ARTICLE_STATE_FIELDS = new Set([
  * score. A field that belongs to an article never carries across articles.
  */
 function _differentArticleAtSamePath(field, localData, committedData) {
-  if (!committedData || !localData.url || !committedData.url) return false;
+  if (!committedData) return false;
   // A locked record keeps its unconditional restore.
   if (committedData._locked === true || localData._locked === true) return false;
   const { URL_DERIVED_FIELDS, urlCanonicallyChanged, MANUAL_WP_PREFIXES } = require('./url-change-invariant');
@@ -1129,7 +1129,27 @@ function _differentArticleAtSamePath(field, localData, committedData) {
   // url-change-invariant keeps it across url changes, so the restore does too.
   if (/^wrongProduction/.test(field) && typeof committedData.wrongProductionNote === 'string'
       && MANUAL_WP_PREFIXES.some((p) => committedData.wrongProductionNote.startsWith(p))) return false;
+  if (_replacedFlaggedText(localData, committedData)) return true;
+  if (!localData.url || !committedData.url) return false;
   return urlCanonicallyChanged(committedData.url, localData.url);
+}
+
+/**
+ * BRO-5141: same url, different article. The committed record was flagged
+ * for holding ANOTHER article's text (the Theatre Record parser filed Anna X
+ * reviews under Joseph's Guardian url); a plan deleted it and re-ingested the
+ * real review at the same path. The url never moved, so only the text tells
+ * the two apart: both substantial, no shared passage. Requiring the old
+ * record's own wrong-content flag keeps an ordinary bad re-fetch of the same
+ * article (consent wall, truncation) on the normal restore path.
+ */
+function _replacedFlaggedText(localData, committedData) {
+  if (committedData.wrongShow !== true && committedData.wrongProduction !== true) return false;
+  const a = String(localData.fullText || '');
+  const b = String(committedData.fullText || '');
+  if (a.length < 1000 || b.length < 1000) return false;
+  const { textsShareVerbatimPassage } = require('./review-text-identity');
+  return !textsShareVerbatimPassage(a, b);
 }
 
 /**

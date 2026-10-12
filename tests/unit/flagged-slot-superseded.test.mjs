@@ -204,3 +204,22 @@ test('writer dry run reports the supersede without moving anything', () => {
   assert.equal(JSON.parse(fs.readFileSync(path.join(showDir, 'london-box-office--stuart-king.json'), 'utf8')).url, JUNIPER.url);
   fs.rmSync(root, { recursive: true, force: true });
 });
+
+test('BRO-5141: same url, flagged other-article text replaced by the real review: old flags stay behind', () => {
+  // joseph-...-west-end-2021/guardian--arifa-akbar.json held Anna X text under
+  // Joseph's Guardian url (wrongShow); the plan deleted it and re-ingested the
+  // Joseph review at that url, and the push restore copied wrongShow back.
+  const { isIntentionalClear } = require('../../scripts/lib/review-write-guard.js');
+  const url = 'https://www.theguardian.com/stage/2021/jul/28/joseph-and-the-amazing-technicolor-dreamcoat-review-london-palladium';
+  const annaX = 'Damien Hirst\u2019s conceptual art is mentioned more than once in Joseph Charlton\u2019s play about the fake heiress Anna Sorokin, renamed Anna here, and her Tinder date Ariel. '.repeat(8);
+  const joseph = 'Andrew Lloyd Webber and Tim Rice\u2019s musical returns to the Palladium with Jac Yarrow in the coat, Alexandra Burke narrating and Jason Donovan as Pharaoh, all megamix and glitter. '.repeat(8);
+  const committed = { outletId: 'guardian', criticName: 'Arifa Akbar', url, fullText: annaX, wrongShow: true, contentTierReason: 'Wrong show', textWordCount: 466 };
+  const local = { outletId: 'guardian', criticName: 'Arifa Akbar', url, fullText: joseph };
+  for (const f of ['wrongShow', 'contentTierReason', 'textWordCount']) {
+    assert.equal(isIntentionalClear(f, local, committed), true, `${f} must not ride over from the misfiled text`);
+  }
+  // Unflagged old record, or a re-fetch of the same article: normal restore.
+  assert.equal(isIntentionalClear('wrongShow', local, { ...committed, wrongShow: undefined }), false);
+  assert.equal(isIntentionalClear('wrongShow', { ...local, fullText: annaX + ' Extra line.' }, committed), false);
+  assert.equal(isIntentionalClear('wrongShow', { ...local, fullText: 'Short consent wall.' }, committed), false);
+});
