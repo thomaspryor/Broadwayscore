@@ -56,8 +56,9 @@
  *                       announcement search for candidates with no sibling
  *   --json              print the audit JSON to stdout only (no file write)
  *   --ci                exit 1 if any high-confidence (sibling-found)
- *                        candidate exists (no baseline diff yet: an accepted
- *                        collision keeps it red)
+ *                        candidate exists that is not listed in
+ *                        data/audit/transfer-review-gaps-baseline.json
+ *                        (acceptedShowIds)
  *   --serp-limit=N      with --serp, search at most N candidates (default 15)
  *   --dry-run           don't write the audit file
  *   --verbose           log per-candidate detail to stdout
@@ -83,7 +84,7 @@ Modes:
   --window-days=N       maximum days since opening to still flag (default 240)
   --serp                also attempt a best-effort SERP transfer-announcement search
   --json                print the audit JSON to stdout only
-  --ci                  exit 1 if any high-confidence (sibling-found) candidate exists (no baseline diff yet, so an accepted collision keeps it red)
+  --ci                  exit 1 if any high-confidence (sibling-found) candidate exists not listed in data/audit/transfer-review-gaps-baseline.json (acceptedShowIds)
   --serp-limit=N        with --serp, search at most N candidates per run (default 15)
   --dry-run             don't write the audit file
   --verbose             log per-candidate detail
@@ -101,12 +102,13 @@ const { parseDate } = require('./lib/date-utils');
 const { normalizeTitle } = require('./lib/title-normalization');
 const { sanitizeVenueForWrite } = require('./lib/venue-classification');
 const {
-  DAY_MS, isEligibleCandidate, findSiblingCandidate, buildSuggestedPriorRun, isPerpetualRepertoryVenue, hasSameVenueSibling,
+  DAY_MS, isEligibleCandidate, findSiblingCandidate, buildSuggestedPriorRun, isPerpetualRepertoryVenue, hasSameVenueSibling, unbaselinedCandidates,
 } = require('./lib/transfer-review-gaps');
 
 const ROOT = path.resolve(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
 const REVIEWS_PATH = path.join(ROOT, 'data', 'reviews.json');
+const BASELINE_PATH = path.join(ROOT, 'data', 'audit', 'transfer-review-gaps-baseline.json');
 const OUT_PATH = path.join(ROOT, 'data', 'audit', 'transfer-review-gaps.json');
 
 const getOpt = (name, def) => {
@@ -292,13 +294,16 @@ async function main() {
     if (!DRY_RUN) console.log(`\nWrote ${OUT_PATH}`);
   }
 
-  if (CI_MODE && siblingFound.length) {
-    console.error(`\n::warning::${siblingFound.length} OB show(s) appear to be transfers sitting at 0 reviews with a same-title sibling entry already in shows.json: ${siblingFound.map((c) => c.showId).join(', ')}`);
+  let baselineIds = [];
+  try { baselineIds = JSON.parse(fs.readFileSync(BASELINE_PATH, 'utf8')).acceptedShowIds || []; } catch { /* no baseline: nothing accepted */ }
+  const newSiblings = unbaselinedCandidates(siblingFound, baselineIds);
+  if (CI_MODE && newSiblings.length) {
+    console.error(`\n::warning::${newSiblings.length} OB show(s) appear to be transfers sitting at 0 reviews with a same-title sibling entry already in shows.json (not in the baseline): ${newSiblings.map((c) => c.showId).join(', ')}`);
     process.exit(1);
   }
 }
 
-module.exports = { isEligibleCandidate, findSiblingCandidate, buildSuggestedPriorRun, isPerpetualRepertoryVenue, hasSameVenueSibling };
+module.exports = { isEligibleCandidate, findSiblingCandidate, buildSuggestedPriorRun, isPerpetualRepertoryVenue, hasSameVenueSibling, unbaselinedCandidates };
 
 if (require.main === module) {
   main().catch((e) => {

@@ -3,7 +3,7 @@ import assert from 'node:assert';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { isEligibleCandidate, findSiblingCandidate, buildSuggestedPriorRun, isPerpetualRepertoryVenue, hasSameVenueSibling } = require('./transfer-review-gaps.js');
+const { isEligibleCandidate, findSiblingCandidate, buildSuggestedPriorRun, isPerpetualRepertoryVenue, hasSameVenueSibling, unbaselinedCandidates } = require('./transfer-review-gaps.js');
 
 const NOW = new Date('2026-09-15T00:00:00Z');
 const OPTS = { minDaysOpen: 14, windowDays: 240 };
@@ -225,3 +225,16 @@ describe('BRO-1361 review follow-ups', () => {
   });
 });
 
+
+describe('unbaselinedCandidates', () => {
+  const cands = [{ showId: 'a' }, { showId: 'b' }];
+  test('a baselined candidate does not fail --ci', () => {
+    assert.deepStrictEqual(unbaselinedCandidates(cands, ['a', 'b']), []);
+  });
+  test('a candidate outside the baseline does', () => {
+    assert.deepStrictEqual(unbaselinedCandidates(cands, ['a']).map((c) => c.showId), ['b']);
+  });
+  test('missing baseline treats everything as new', () => {
+    assert.strictEqual(unbaselinedCandidates(cands, undefined).length, 2);
+  });
+});

@@ -146,4 +146,11 @@ function buildSuggestedPriorRun(sibling, reviewCounts) {
   };
 }
 
-module.exports = { DAY_MS, MAX_SIBLING_GAP_DAYS, isEligibleCandidate, findSiblingCandidate, buildSuggestedPriorRun, isPerpetualRepertoryVenue, hasSameVenueSibling };
+/** Candidates not yet accepted in the baseline (list of show ids). --ci fails
+ *  only on these, so an accepted title collision does not stay red (BRO-4792). */
+function unbaselinedCandidates(candidates, baselineIds) {
+  const accepted = new Set(Array.isArray(baselineIds) ? baselineIds : []);
+  return (candidates || []).filter((c) => c && !accepted.has(c.showId));
+}
+
+module.exports = { unbaselinedCandidates, DAY_MS, MAX_SIBLING_GAP_DAYS, isEligibleCandidate, findSiblingCandidate, buildSuggestedPriorRun, isPerpetualRepertoryVenue, hasSameVenueSibling };

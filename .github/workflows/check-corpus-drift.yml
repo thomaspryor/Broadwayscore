@@ -256,6 +256,22 @@ jobs:
             fi
           fi
 
+      - name: Audit OB transfer review gaps (advisory, read-only)
+        if: always()
+        continue-on-error: true # lands advisory first (BRO-2123); BRO-4792
+        run: |
+          set +e
+          OUT=$(node scripts/audit-transfer-review-gaps.js --ci --dry-run 2>&1)
+          RC=$?
+          echo "$OUT"
+          {
+            echo "## OB transfer review gaps"
+            echo '```'
+            echo "$OUT" | head -60
+            echo '```'
+          } >> $GITHUB_STEP_SUMMARY
+          exit $RC
+
       - name: Check for changes
         id: changes
         if: always()
