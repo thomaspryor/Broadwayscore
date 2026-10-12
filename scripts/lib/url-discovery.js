@@ -19,6 +19,7 @@ const scraper = require('./scraper');
 const { domainMatchesExpected, setRegistryDomainAliases } = scraper;
 const { isUrlYearOutsideWindow, hasTryoutUrlMarker } = require('./content-filters');
 const { isLondonMarket } = require('./venue-classification');
+const { reviewSearchKeyword } = require('./opening-night-discovery-policy');
 const { urlLooksLikeReview, isSluglessReviewUrl } = require('./review-guards');
 const { resolveOutletFromUrlIfPathInformed } = require('./review-normalization');
 const { validateSerpCandidate } = require('./serp-candidate-validator');
@@ -1097,9 +1098,7 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     ? ` "${showInfo.leadActor}"` : '';
 
   // Use market-appropriate search term based on show category
-  const marketTerm = isLondonMarket(showInfo.category) ? 'West End review'
-    : showInfo.category === 'off-broadway' ? 'Off-Broadway review'
-    : 'Broadway review';
+  const marketTerm = reviewSearchKeyword(showInfo);
 
   // Strip venue/subtitle suffix for alternate search (e.g., "The Tempest - Globe" → "The Tempest")
   // Reviewers omit these suffixes, so SERP with the full title returns 0 results.

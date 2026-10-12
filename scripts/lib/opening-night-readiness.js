@@ -19,6 +19,7 @@ const fs = require('fs');
 const path = require('path');
 const { isLondonMarket } = require('./venue-classification');
 const { getFoundOutletIds } = require('./found-outlet-ids');
+const { selectMissingT1T2Outlets } = require('./opening-night-discovery-policy');
 
 const DATA_DIR = path.join(__dirname, '..', '..', 'data');
 const REVIEWS_PATH = path.join(DATA_DIR, 'reviews.json');
@@ -55,17 +56,8 @@ function getMissingT1T2Outlets(showId, market, show) {
   const { getTier } = require('./outlet-tiers');
   const showCategory = isLondonMarket(market) ? 'west-end' : 'broadway';
 
-  const missing = [];
-  for (const [outletId, outlet] of Object.entries(outlets)) {
-    const effectiveTier = getTier(outletId, { showCategory });
-    if (effectiveTier > 2) continue;
-    if (foundIds.has(outletId.toLowerCase())) continue;
-    if (isLondonMarket(market) && !outlet.isDualMarket && outlet.region !== 'uk') continue;
-    if (market === 'broadway' && outlet.region === 'uk' && !outlet.isDualMarket) continue;
-    missing.push({ id: outletId, name: outlet.displayName || outletId, tier: effectiveTier, domain: outlet.domain, isDualMarket: !!outlet.isDualMarket });
-  }
-
-  return missing.sort((a, b) => a.tier - b.tier); // T1 first
+  return selectMissingT1T2Outlets(outlets, foundIds, market,
+    id => getTier(id, { showCategory }));
 }
 
 /** Check readiness for broadcast. */
