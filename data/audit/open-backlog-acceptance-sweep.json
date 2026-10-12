@@ -1,18 +1,36 @@
 {
-  "generatedAt": "2026-10-12T05:12:33.571Z",
+  "generatedAt": "2026-10-12T09:20:04.068Z",
   "shadow": true,
-  "checkoutSha": "72b06c56714fc8ec5a1e5a884d2337ad2dd0e12e",
-  "totalCandidates": 828,
-  "eligibleCandidates": 240,
-  "checked": 13,
+  "checkoutSha": "d9bac0c27989fe8014dcca67b3426e884c046579",
+  "totalCandidates": 800,
+  "eligibleCandidates": 232,
+  "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 8,
+    "pass": 19,
     "fail": 0,
-    "unverifiable": 5
+    "unverifiable": 11
   },
   "alreadyDone": [
+    {
+      "id": "BRO-5143",
+      "name": "monitor-gate-ab.yml (Weekly A/B Monitors) stale 309h: checkout git fetch hangs, cancelled by 10-min timeout",
+      "verifyCmd": "node scripts/audit-cron-health-coverage.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-5142",
+      "name": "Write guard BRO-4383 flags real reviews wrongShow on historical shows with no cast/creative data (67 files)",
+      "verifyCmd": "node --test tests/unit/review-write-guard.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5127",
+      "name": "28 Studio 54 shows carry Roundabout's 111 W 46th St address (validate-data fails)",
+      "verifyCmd": "node scripts/validate-data.js",
+      "detail": null
+    },
     {
       "id": "BRO-5088",
       "name": "Fact-check 1 follow-up: unsourced director rows, Steinberg-as-Broadway site tables, findTheater substring matching, Covid closings",
@@ -60,6 +78,54 @@
       "name": "National tour pages show wrong information: 273 page problem(s) (schedule-city-unlinked)",
       "verifyCmd": "node --test scripts/lib/tour-page-audit.test.mjs",
       "detail": null
+    },
+    {
+      "id": "BRO-4979",
+      "name": "National tour pages show wrong information: 52 page problem(s) (list-city-missing)",
+      "verifyCmd": "node --test scripts/lib/tour-page-audit.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4976",
+      "name": "Outlet ids stage 2: observer (NY vs UK) split, medium (Christian Lewis blog), zeal-nyc personal-blog row",
+      "verifyCmd": "node --test tests/unit/outlet-id-migrations.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4971",
+      "name": "Round-up-listed reviews excluded by an automated verdict are never re-checked (5 of 16 were false in BRO-4956)",
+      "verifyCmd": "node --test scripts/audit-show-review-gap.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4909",
+      "name": "Land preflight: run lint-workflow-guards + DEPENDENCIES.md check when a push touches .github/workflows",
+      "verifyCmd": "node --test tests/unit/land-preflight.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4898",
+      "name": "Corpus-wide cleanup: counted reviews that break invariants + flagged-in-window recovery worklist (from the revival spot check)",
+      "verifyCmd": "node --test tests/unit/check-corpus-drift.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4869",
+      "name": "Critics' Take: Wicked tour refused by the model; audit drift false positives on text-light shows",
+      "verifyCmd": "node --test tests/unit/critic-consensus-eligibility.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4868",
+      "name": "Make linear-next, the watchdog and the classifier honour the NO-DISPATCH marker, and anchor its regex",
+      "verifyCmd": "node --test scripts/lib/cloud-worker-pick.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4860",
+      "name": "Coverage holes repair (BRO-4849 A-C): re-collect the 110 no-text reviews, read the 40 rejected-yet-verified, repair 7 wrong URLs, score the 41 unscored",
+      "verifyCmd": "node --test tests/unit/coverage-holes-audit.test.mjs",
+      "detail": null
     }
   ],
   "failing": [],
@@ -68,19 +134,13 @@
       "id": "BRO-5124",
       "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"unchanged per-review ERROR warns, quarantines the row and permits the actual push gate\"",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 139331ms (timeout — no verdict)"
-    },
-    {
-      "id": "BRO-5121",
-      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"wanted-2022: open pool is full and active-only\"",
-      "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 111644ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 135337ms (timeout — no verdict)"
     },
     {
       "id": "BRO-5067",
       "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no bare-string override collides with another tracked show's own title\"",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 62657ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 92081ms (timeout — no verdict)"
     },
     {
       "id": "BRO-5001",
@@ -93,6 +153,48 @@
       "name": "Re-check 18 model-path directors on current/upcoming/tour shows (wrong-production credits)",
       "verifyCmd": "node --test scripts/verify-directors.test.mjs",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/verify-directors.test.mjs"
+    },
+    {
+      "id": "BRO-4966",
+      "name": "push-core-data: bound each git push with a timeout so a transport hang falls into the retry loop",
+      "verifyCmd": "node --test tests/unit/push-core-data-push-timeout.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/push-core-data-push-timeout.test.mjs"
+    },
+    {
+      "id": "BRO-4960",
+      "name": "Critics' Take blurb outlives its reviews for up to 7 days after a wrongShow/removal (prune only runs weekly)",
+      "verifyCmd": "node --test tests/unit/critic-consensus-prune-only.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/critic-consensus-prune-only.test.mjs"
+    },
+    {
+      "id": "BRO-4911",
+      "name": "Prevention for the Into the Woods page bugs: byline dedup, fabricated-row block, openingDate source, same-URL self-heal",
+      "verifyCmd": "node --test tests/unit/itw-prevention-byline-fabricated.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/itw-prevention-byline-fabricated.test.mjs"
+    },
+    {
+      "id": "BRO-4896",
+      "name": "App: TestFlight submission of build 82 failed at Apple (eas-build run 37856154098)",
+      "verifyCmd": "node --test scripts/ship.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/ship.test.mjs"
+    },
+    {
+      "id": "BRO-4891",
+      "name": "Older musicals and missing prior-production pages for revival promo (Dreamgirls 2016, Sound of Music tour, Full Monty, JP, Paddington, director data)",
+      "verifyCmd": "node --test tests/unit/revival-promo-musicals-and-missing-pages.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/revival-promo-musicals-and-missing-pages.test.mjs"
+    },
+    {
+      "id": "BRO-4889",
+      "name": "Older Broadway pages behind spring 2027 revivals: contamination, false flags, junk rows (Evita, Osage, Cat, Private Lives, Dreamgirls 1981)",
+      "verifyCmd": "node --test tests/unit/revival-promo-older-broadway.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/revival-promo-older-broadway.test.mjs"
+    },
+    {
+      "id": "BRO-4886",
+      "name": "Revival promo spot check: older productions of upcoming 2026-27 revivals (reviews, scores, wrong-production)",
+      "verifyCmd": "node --test scripts/revival-promo-spot-check.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/revival-promo-spot-check.test.mjs"
     }
   ]
 }
