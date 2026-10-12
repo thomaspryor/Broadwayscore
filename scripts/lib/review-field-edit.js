@@ -24,6 +24,8 @@
 // Clears of a protected flag go through its human-clear marker, not a raw
 // null: the protected-field restore would otherwise put the flag back (see
 // PROTECTED_FIELDS / CLEAR_BREADCRUMBS in review-write-guard.js).
+const { EXCERPT_FIELDS } = require('./excerpt-fields');
+
 const REVIEW_TEXT_EDITABLE_FIELDS = [
   // byline / metadata
   'criticName', 'publishDate', 'designation',
@@ -59,6 +61,11 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   // starRating, scoreSource, the cleared breadcrumb) is derived by
   // verified-original-score.js, never edited on its own. null clears.
   'originalScore',
+  // Aggregator excerpts (BRO-4251): CLEAR ONLY. An aggregator can glue another
+  // show's review onto this one's excerpt (NYC Theatre put Fat Ham text on
+  // Shucked's Variety quote), and selectBestExcerpt prints it. A plan may null
+  // the field; it may never write excerpt text (see FIELD_VALUE_CHECKS).
+  ...EXCERPT_FIELDS,
 ];
 
 // Per-field value checks beyond "scalar". Returns an error string or null.
@@ -114,6 +121,10 @@ const FIELD_VALUE_CHECKS = {
     if (record.outletId && isCrossOutletUrl(record.outletId, v) && !splitRelabelUndo(record, v)) return `url: new value belongs to another outlet than ${record.outletId}`;
     return null;
   },
+  // Excerpts: clear only (BRO-4251). Text written by a plan would bypass the
+  // scraper's provenance; a wrong excerpt is removed, never rewritten.
+  ...Object.fromEntries(EXCERPT_FIELDS.map((f) => [f, (v) => (v === null
+    ? null : `${f}: a plan may only clear an excerpt (newValue must be null)`)])),
 };
 
 // An outlet split (BRO-5128, outlet-mismatch-heal splitOutletCorrection)

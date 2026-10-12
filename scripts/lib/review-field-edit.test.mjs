@@ -422,3 +422,16 @@ test('originalScore: a verified rating is protected from the collector re-extrac
   assert.match(src, /hasUnverifiedSSScore = isSSSource && data\.originalScore && !humanVerified/);
   assert.match(src, /isUnverifiedOrAggregator =\s*!isLlmSource && !humanVerified/);
 });
+
+test('aggregator excerpts are clear-only (BRO-4251: Fat Ham text on Shucked\'s Variety quote)', () => {
+  const bad = '"The funniest... "Fat Ham" recasts its source material."';
+  const rec = { nycTheatreExcerpt: bad };
+  const cleared = applyReviewFieldEdit(rec, { field: 'nycTheatreExcerpt', oldValue: bad, newValue: null }, stamp);
+  assert.equal(cleared.ok, true);
+  assert.equal(cleared.record.nycTheatreExcerpt, null);
+  const rewrite = applyReviewFieldEdit(rec, { field: 'nycTheatreExcerpt', oldValue: bad, newValue: 'Some new excerpt text here' }, stamp);
+  assert.equal(rewrite.ok, false);
+  assert.match(rewrite.reason, /may only clear/);
+  const stale = applyReviewFieldEdit(rec, { field: 'nycTheatreExcerpt', oldValue: 'something else', newValue: null }, stamp);
+  assert.equal(stale.ok, false);
+});
