@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5141-c",
   "planId": "8ed69d24-0fb1-4787-bbb7-cb14ee024099",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-12T06:58:46.964Z",
   "submitter": {
     "name": null,
@@ -117,5 +117,93 @@
         "description": "BRO-5141: Anna X review (Joseph Charlton play, Harold Pinter Theatre, July 2021) misfiled under joseph-and-the-amazing-technicolor-dreamcoat-1982 by the Theatre Record PDF parser; the same review is already in anna-x-west-end-2021."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T08:21:15.426Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-1982/artsdesk--laura-de-lisle.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-1982/camdennewjournal--lucy-popescu.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-1982/daily-mail--patrick-marmion.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-1982/daily-mail--robert-gore-langton.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-1982/financialtimes--sarah-hemming.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-1982/guardian--arifa-akbar.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-1982/independent--paul-taylor.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-1982/london-theatre--matt-wolf.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-1982/observer--susannah-clapp.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-1982/standard--nick-curtis.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-1982/telegraph--dominic-cavendish.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-1982/theatre-weekly--bethany-jane-christian.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-1982/theatre-weekly--greg-stewart.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-1982/thestage--dave-fargnoli.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-1982/timeout-london--andrzej-lukowski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-1982/times-uk--dominic-maxwell.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-1982/whatsonstage--alex-wood.json"
+    }
+  ]
 }
