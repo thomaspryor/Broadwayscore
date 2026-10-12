@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-10-12T02:31:49.909Z",
+  "timestamp": "2026-10-12T05:30:49.502Z",
   "stats": {
     "totalReviews": 56011,
-    "alreadyFlagged": 20918,
-    "dateGuardCatches": 254,
-    "directorMismatch": 1752,
+    "alreadyFlagged": 20946,
+    "dateGuardCatches": 253,
+    "directorMismatch": 1776,
     "tvFilmSignals": 1611,
-    "londonSignals": 2199,
-    "offBroadwaySignals": 507,
-    "yearMismatch": 136,
+    "londonSignals": 2197,
+    "offBroadwaySignals": 505,
+    "yearMismatch": 137,
     "noPublishDate": 5221
   },
   "findings": [
@@ -9324,6 +9324,19 @@
       ]
     },
     {
+      "showId": "cyrano-de-bergerac-west-end-2019",
+      "file": "independent--unknown.json",
+      "publishDate": null,
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cyrano-de-bergerac-james-mcavoy-review-playhouse-theatre-a9238031.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2012 (2x) more than 2019 (0x). 2012 matches production: cyrano-de-bergerac-2012"
+        }
+      ]
+    },
+    {
       "showId": "cyrano-de-bergerac-west-end-2022",
       "file": "nytimes--unknown.json",
       "score": 84,
@@ -10966,20 +10979,6 @@
       "score": 76,
       "publishDate": "2023-11-01",
       "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"clint dyer\" from death-of-england-delroy-west-end-2020"
-        }
-      ]
-    },
-    {
-      "showId": "death-of-england-closing-time-west-end-2023",
-      "file": "guardian--arifa-akbar.json",
-      "score": 56,
-      "publishDate": "2023-10-10",
-      "url": "https://www.theguardian.com/stage/article/2024/aug/29/death-of-england-closing-time-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -12661,6 +12660,104 @@
       ]
     },
     {
+      "showId": "evita-2012",
+      "file": "hollywood-reporter--david-rooney.json",
+      "score": 78,
+      "publishDate": "April 5, 2012",
+      "url": "https://www.hollywoodreporter.com/news/general-news/evita-theater-review-ricky-martin-308779/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from evita-1979"
+        }
+      ]
+    },
+    {
+      "showId": "evita-2012",
+      "file": "newsday--linda-winer.json",
+      "score": 78,
+      "publishDate": "2012-04-04",
+      "url": "http://www.newsday.com/entertainment/theater/evita-revived-on-broadway-1.3643191",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from evita-1979"
+        }
+      ]
+    },
+    {
+      "showId": "evita-2012",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "score": 78,
+      "publishDate": null,
+      "url": "http://www.nydailynews.com/entertainment/evita-opens-broadway-starring-ricky-martin-argentinian-actress-elena-roger-article-1.1056595",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from evita-1979"
+        }
+      ]
+    },
+    {
+      "showId": "evita-2012",
+      "file": "nypost--elisabeth-vincentelli.json",
+      "score": 76,
+      "publishDate": "2012-04-06",
+      "url": "http://www.nypost.com/p/entertainment/theater/you_must_love_che_WMFrjwJmuK264KxT8MjTOM",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from evita-1979"
+        }
+      ]
+    },
+    {
+      "showId": "evita-2012",
+      "file": "nytimes--ben-brantley.json",
+      "score": 45,
+      "publishDate": "April 5, 2012",
+      "url": "https://www.nytimes.com/2012/04/06/theater/reviews/evita-starring-elena-roger-at-the-marquis-theater.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from evita-1979"
+        }
+      ]
+    },
+    {
+      "showId": "evita-2012",
+      "file": "village-voice--michael-musto.json",
+      "score": 78,
+      "publishDate": null,
+      "url": "https://blogs.villagevoice.com/dailymusto/2012/04/evita_returns_m.php",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from evita-1979"
+        }
+      ]
+    },
+    {
+      "showId": "evita-2012",
+      "file": "wsj--terry-teachout.json",
+      "score": 80,
+      "publishDate": "April 6, 2012",
+      "url": "https://online.wsj.com/article/SB10001424052702303299604577324311953757058.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from evita-1979"
+        }
+      ]
+    },
+    {
       "showId": "evita-2026",
       "file": "whatsonstage--sarah-crompton.json",
       "publishDate": "2025-07-02",
@@ -13062,6 +13159,20 @@
       ]
     },
     {
+      "showId": "fiddler-on-the-roof-2004",
+      "file": "nytimes--ben-brantley.json",
+      "score": 41,
+      "publishDate": "February 27, 2004",
+      "url": "http://www.nytimes.com/2004/02/27/movies/theater-review-a-cozy-little-mcshtetl.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
+        }
+      ]
+    },
+    {
       "showId": "fiddler-on-the-roof-2015",
       "file": "amny--matt-windman.json",
       "score": 79,
@@ -13071,12 +13182,12 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"david leveaux\" from fiddler-on-the-roof-2004"
         },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"david leveaux\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         },
         {
           "type": "YEAR_MISMATCH",
@@ -13095,7 +13206,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13109,7 +13220,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13123,7 +13234,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13137,7 +13248,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13151,7 +13262,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13165,7 +13276,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13179,7 +13290,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13193,7 +13304,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13207,7 +13318,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13221,7 +13332,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13235,7 +13346,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13249,7 +13360,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13263,7 +13374,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13277,12 +13388,12 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"david leveaux\" from fiddler-on-the-roof-2004"
         },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"david leveaux\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13296,12 +13407,12 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"david leveaux\" from fiddler-on-the-roof-2004"
         },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"david leveaux\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13315,7 +13426,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13329,7 +13440,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13343,7 +13454,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13357,7 +13468,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13371,7 +13482,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13385,7 +13496,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13399,7 +13510,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13413,7 +13524,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13427,7 +13538,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13441,7 +13552,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13455,7 +13566,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13469,7 +13580,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13483,7 +13594,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13497,7 +13608,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13511,7 +13622,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13525,7 +13636,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13539,7 +13650,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13553,7 +13664,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13567,7 +13678,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13581,7 +13692,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13595,7 +13706,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13609,7 +13720,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13623,7 +13734,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13637,7 +13748,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         },
         {
           "type": "TV_FILM_SIGNAL",
@@ -13656,12 +13767,12 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"david leveaux\" from fiddler-on-the-roof-2004"
         },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"david leveaux\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         },
         {
           "type": "YEAR_MISMATCH",
@@ -13680,7 +13791,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13694,7 +13805,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13707,7 +13818,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -13721,7 +13832,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-2004"
+          "detail": "Mentions director \"jerome robbins\" from fiddler-on-the-roof-1976"
         }
       ]
     },
@@ -15627,6 +15738,151 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
+        }
+      ]
+    },
+    {
+      "showId": "godspell-2011",
+      "file": "about-entertainment--charles-isherwood.json",
+      "score": 59,
+      "publishDate": "November 7, 2011",
+      "url": "http://theater.nytimes.com/2011/11/08/theater/reviews/godspell-at-the-circle-in-the-square-review.html?ref=theater",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john-michael tebelak\" from godspell-1976"
+        }
+      ]
+    },
+    {
+      "showId": "godspell-2011",
+      "file": "ap--mark-kennedy.json",
+      "score": 79,
+      "publishDate": "November 7, 2011",
+      "url": "http://www.sfgate.com/cgi-bin/article.cgi?f=/n/a/2011/11/07/entertainment/e192104S91.DTL",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john-michael tebelak\" from godspell-1976"
+        }
+      ]
+    },
+    {
+      "showId": "godspell-2011",
+      "file": "hollywood-reporter--david-rooney.json",
+      "score": 39,
+      "publishDate": "2011-11-07",
+      "url": "https://www.hollywoodreporter.com/review/godspell-theater-review-258325",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john-michael tebelak\" from godspell-1976"
+        }
+      ]
+    },
+    {
+      "showId": "godspell-2011",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "score": 45,
+      "publishDate": "2011-11-08",
+      "url": "https://www.newspapers.com/image/582976246/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john-michael tebelak\" from godspell-1976"
+        }
+      ]
+    },
+    {
+      "showId": "godspell-2011",
+      "file": "nypost--elisabeth-vincentelli.json",
+      "score": 63,
+      "publishDate": "2011-11-08",
+      "url": "http://www.nypost.com/p/entertainment/theater/bit_bible_campy_ap5AEY7kOvd6ECidB6v5nJ",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john-michael tebelak\" from godspell-1976"
+        }
+      ]
+    },
+    {
+      "showId": "godspell-2011",
+      "file": "nytimes--ben-brantley.json",
+      "score": 49,
+      "publishDate": "November 7, 2011",
+      "url": "https://www.nytimes.com/2011/11/08/theater/reviews/godspell-at-the-circle-in-the-square-review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john-michael tebelak\" from godspell-1976"
+        }
+      ]
+    },
+    {
+      "showId": "godspell-2011",
+      "file": "nytimes--charles-isherwood.json",
+      "score": 49,
+      "publishDate": "November 7, 2011",
+      "url": "https://www.nytimes.com/2011/11/08/theater/reviews/godspell-at-the-circle-in-the-square-review.html?ref=theater",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john-michael tebelak\" from godspell-1976"
+        }
+      ]
+    },
+    {
+      "showId": "godspell-2011",
+      "file": "theater-life--eric-march.json",
+      "score": 62,
+      "publishDate": "2011-11-25T17:15:00",
+      "url": "https://theaterlife.com/godspell-12/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john-michael tebelak\" from godspell-1976"
+        }
+      ]
+    },
+    {
+      "showId": "godspell-2011",
+      "file": "vulture--scott-brown.json",
+      "score": 66,
+      "publishDate": "November 7, 2011",
+      "url": "https://nymag.com/daily/entertainment/2011/11/theater-review-is-godspell-worthy.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john-michael tebelak\" from godspell-1976"
+        }
+      ]
+    },
+    {
+      "showId": "godspell-2011",
+      "file": "wsj--terry-teachout.json",
+      "score": 90,
+      "publishDate": "November 11, 2011",
+      "url": "http://online.wsj.com/article/SB10001424052970204224604577030051331149034.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john-michael tebelak\" from godspell-1976"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
@@ -19916,20 +20172,6 @@
       ]
     },
     {
-      "showId": "into-the-woods-1997",
-      "file": "washpost--peter-marks.json",
-      "score": 89,
-      "publishDate": "1997-11-09",
-      "url": "https://www.washingtonpost.com/theater-dance/2022/07/29/into-the-woods-broadway/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"lear debessonet\" from into-the-woods-2022"
-        }
-      ]
-    },
-    {
       "showId": "into-the-woods-2022",
       "file": "dailybeast--tim-teeman.json",
       "score": 94,
@@ -23072,6 +23314,19 @@
       "score": 88,
       "publishDate": "2020-02-12",
       "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "leopoldstadt-west-end-2021",
+      "file": "timeout-london--unknown.json",
+      "publishDate": null,
+      "url": "https://www.timeout.com/london/theatre/leopoldstadt-review",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -26281,20 +26536,6 @@
       ]
     },
     {
-      "showId": "much-ado-about-nothing-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 94,
-      "publishDate": "2025-02-20",
-      "url": "https://www.timeout.com/london/theatre/much-ado-about-nothing-49-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 618d before show (2025-02-20 vs 2026-10-31)"
-        }
-      ]
-    },
-    {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
       "file": "guardian--arifa-akbar.json",
       "score": 64,
@@ -26422,25 +26663,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
-        }
-      ]
-    },
-    {
-      "showId": "much-ado-about-nothing-west-end-2022",
-      "file": "guardian--arifa-akbar.json",
-      "score": 93,
-      "publishDate": "2022-07-19",
-      "url": "https://www.theguardian.com/stage/2025/feb/19/much-ado-about-nothing-review-theatre-royal-tom-hiddleston-hayley-atwell",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
@@ -28316,6 +28538,104 @@
     },
     {
       "showId": "on-the-twentieth-century-2015",
+      "file": "broadwayworld--michael-dale.json",
+      "score": 74,
+      "publishDate": "2015-03-15",
+      "url": "https://www.broadwayworld.com/article/BWW-Reviews-Chenoweth-Glitters-in-ON-THE-TWENTIETH-CENTURY-20150315",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from on-the-twentieth-century-1978"
+        }
+      ]
+    },
+    {
+      "showId": "on-the-twentieth-century-2015",
+      "file": "deadline--jeremy-gerard.json",
+      "score": 64,
+      "publishDate": "2015-03-16",
+      "url": "https://deadline.com/2015/03/peter-gallagher-kristin-chenoweth-on-the-20th-century-review-broadway-1201392958/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from on-the-twentieth-century-1978"
+        }
+      ]
+    },
+    {
+      "showId": "on-the-twentieth-century-2015",
+      "file": "front-row-center--tulis-mccall.json",
+      "score": 88,
+      "publishDate": "2015-03-15T22:45:58",
+      "url": "https://thefrontrowcenter.com/2015/03/on-the-twentieth-century/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from on-the-twentieth-century-1978"
+        }
+      ]
+    },
+    {
+      "showId": "on-the-twentieth-century-2015",
+      "file": "hollywood-reporter--david-rooney.json",
+      "score": 43,
+      "publishDate": "March 15, 2015",
+      "url": "https://www.hollywoodreporter.com/review/kristin-chenoweth-peter-gallagher-twentieth-781525",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from on-the-twentieth-century-1978"
+        }
+      ]
+    },
+    {
+      "showId": "on-the-twentieth-century-2015",
+      "file": "huffpost--david-finkle.json",
+      "score": 63,
+      "publishDate": null,
+      "url": "https://www.huffpost.com/david-finkle/first-nighter-chenoweth-g_b_6874632.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from on-the-twentieth-century-1978"
+        }
+      ]
+    },
+    {
+      "showId": "on-the-twentieth-century-2015",
+      "file": "nypost--frank-scheck.json",
+      "score": 93,
+      "publishDate": "March 15, 2015",
+      "url": "https://nypost.com/2015/03/15/kristin-chenoweth-leads-on-the-twentieth-century-to-theatrical-bliss/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from on-the-twentieth-century-1978"
+        }
+      ]
+    },
+    {
+      "showId": "on-the-twentieth-century-2015",
+      "file": "nytimes--ben-brantley.json",
+      "score": 94,
+      "publishDate": "March 12, 2015",
+      "url": "http://www.nytimes.com/2015/03/16/theater/review-on-the-twentieth-century-with-kristin-chenoweth-opens-on-broadway.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from on-the-twentieth-century-1978"
+        }
+      ]
+    },
+    {
+      "showId": "on-the-twentieth-century-2015",
       "file": "usatoday--elysa-gardner.json",
       "score": 97,
       "publishDate": "2015-03-15",
@@ -28336,9 +28656,28 @@
       "url": "https://variety.com/2015/legit/reviews/on-the-20th-century-review-kristin-chenoweth-peter-gallagher-broadway-1201452467/",
       "findings": [
         {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from on-the-twentieth-century-1978"
+        },
+        {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "on-the-twentieth-century-2015",
+      "file": "vulture--jesse-green.json",
+      "score": 78,
+      "publishDate": "March 13, 2015",
+      "url": "https://www.vulture.com/2015/03/theater-review-on-the-twentieth-century.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from on-the-twentieth-century-1978"
         }
       ]
     },
@@ -43583,20 +43922,6 @@
     },
     {
       "showId": "the-prom-2018",
-      "file": "nypost--johnny-oleksinski.json",
-      "score": 88,
-      "publishDate": "November 16, 2018",
-      "url": "https://nypost.com/2020/12/01/the-prom-review-broadway-is-back-on-netflix/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "the-prom-2018",
       "file": "nyt-theater--jonathan-mandell.json",
       "score": 72,
       "publishDate": "2018-11-20",
@@ -55600,20 +55925,6 @@
     },
     {
       "showId": "company-2021",
-      "file": "guardian--adrian-horton.json",
-      "score": 87,
-      "publishDate": "December 10, 2021",
-      "url": "https://www.theguardian.com/stage/2018/oct/17/company-review-sex-switch-sondheim-gielgud-theatre-london",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"gielgud\""
-        }
-      ]
-    },
-    {
-      "showId": "company-2021",
       "file": "slantmagazine--dan-rubins.json",
       "score": 76,
       "publishDate": "2021-12-09T21:02:50-05:00",
@@ -58217,6 +58528,20 @@
     },
     {
       "showId": "eureka-day-west-end-2022",
+      "file": "thestage--sam-marlowe.json",
+      "score": 51,
+      "publishDate": "September 24th, 2022",
+      "url": "https://www.thestage.co.uk/reviews/eureka-day-review-at-the-old-vic-london-starring-helen-hunt",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "eureka-day-west-end-2022",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 60,
       "publishDate": "September 24th, 2022",
@@ -59459,20 +59784,6 @@
       ]
     },
     {
-      "showId": "godspell-2011",
-      "file": "wsj--terry-teachout.json",
-      "score": 90,
-      "publishDate": "November 11, 2011",
-      "url": "http://online.wsj.com/article/SB10001424052970204224604577030051331149034.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
       "showId": "golden-boy-2012",
       "file": "bloomberg--jeremy-gerard.json",
       "score": 45,
@@ -60710,20 +61021,6 @@
     },
     {
       "showId": "hamilton-2015",
-      "file": "guardian--jesse-green.json",
-      "score": 95,
-      "publishDate": "August 7, 2015",
-      "url": "https://www.theguardian.com/stage/2015/feb/18/hamilton-review-founding-father-gets-a-hip-hop-makeover",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "hamilton-2015",
       "file": "ny1--roma-torre.json",
       "score": 95,
       "publishDate": "August 7, 2015",
@@ -61820,20 +62117,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "hells-kitchen-2024",
-      "file": "guardian--adrian-horton.json",
-      "score": 93,
-      "publishDate": "April 21, 2024",
-      "url": "https://www.theguardian.com/stage/2023/nov/19/hells-kitchen-alicia-keys-musical-review",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
@@ -63040,20 +63323,6 @@
     },
     {
       "showId": "indecent-2017",
-      "file": "deadline--jeremy-gerard.json",
-      "score": 88,
-      "publishDate": "April 18, 2017",
-      "url": "https://deadline.com/2016/05/indecent-and-daphnes-dive-review-1201758629/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"signature theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "indecent-2017",
       "file": "forward--jesse-oxfeld.json",
       "score": 89,
       "publishDate": "2017-04-19",
@@ -63883,20 +64152,6 @@
     },
     {
       "showId": "jerusalem-2011",
-      "file": "guardian--brian-logan.json",
-      "score": 78,
-      "publishDate": "April 22, 2011",
-      "url": "https://www.theguardian.com/stage/2010/feb/10/jerusalem-review",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "jerusalem-2011",
       "file": "nytimes--ben-brantley.json",
       "score": 94,
       "publishDate": "April 21, 2011",
@@ -64629,20 +64884,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"wyndham\""
-        }
-      ]
-    },
-    {
-      "showId": "kiss-me-kate-2019",
-      "file": "guardian--jesse-oxfeld.json",
-      "score": 82,
-      "publishDate": "March 15, 2019",
-      "url": "https://www.theguardian.com/stage/article/2024/jun/18/kiss-me-kate-review-cole-porter-adrian-dunbar-line-of-duty-barbican",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
@@ -67360,6 +67601,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "middle-west-end-2022",
+      "file": "independent--unknown.json",
+      "publishDate": null,
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/middle-review-national-theatre-dorfman-b2072129.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -77123,6 +77377,20 @@
       ]
     },
     {
+      "showId": "the-fifth-step-west-end-2025",
+      "file": "times-uk--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-fifth-step-review-jack-lowden-martin-freeman-jc0mcsqst",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "the-ford-hill-project-off-broadway-2026",
       "file": "nytimes--helen-shaw.json",
       "score": 75,
@@ -77416,20 +77684,6 @@
     },
     {
       "showId": "the-height-of-the-storm-2019",
-      "file": "guardian--jesse-green.json",
-      "score": 93,
-      "publishDate": "October 25, 2019",
-      "url": "https://www.theguardian.com/stage/2018/oct/09/the-height-of-the-storm-review-jonathan-pryce-eileen-atkins-florian-zeller",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
-        }
-      ]
-    },
-    {
-      "showId": "the-height-of-the-storm-2019",
       "file": "nytimes--jesse-green.json",
       "score": 44,
       "publishDate": "September 24, 2019",
@@ -77467,20 +77721,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-hills-of-california-2024",
-      "file": "guardian--adrian-horton.json",
-      "score": 59,
-      "publishDate": "September 27, 2024",
-      "url": "https://www.theguardian.com/stage/2024/feb/08/the-hills-of-california-review-jerusalem-jez-butterworth-harold-pinter-theatre-london",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -78964,6 +79204,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-night-of-the-iguana-west-end-2019",
+      "file": "standard--unknown.json",
+      "publishDate": null,
+      "url": "https://www.standard.co.uk/culture/theatre/the-night-of-the-iguana-review-lia-williams-triumphs-alongside-clive-owen-in-flawed-fascinating-tennessee-williams-revival-a4191586.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -82716,6 +82969,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "venus-in-fur-2011",
+      "file": "faster-times--jonathan-mandell.json",
+      "score": null,
+      "publishDate": "2011-11-09T08:16:10-05:00",
+      "url": "https://www.thefastertimes.com/newyorktheater/2011/11/08/venus-in-fur-review-nina-arianda-dominates/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"classic stage\""
         }
       ]
     },
