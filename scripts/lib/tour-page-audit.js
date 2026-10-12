@@ -151,7 +151,12 @@ function parseListPage(html) {
     let card = $(a);
     for (let i = 0; i < 6 && card.parent().length; i++) {
       if (leafTexts($, card).some(t => /^\d+ reviews?$/.test(t))) break;
-      card = card.parent();
+      // Never climb into a container holding another show's card: an unscored
+      // tour has no "N reviews" line, and the walk would borrow a neighbour's.
+      const up = card.parent();
+      const others = new Set(up.find('a[href^="/show/"]').toArray().map(x => $(x).attr('href').replace(/^\/show\//, '').replace(/[#?].*$/, '')));
+      if (others.size > 1) break;
+      card = up;
     }
     const rc = leafTexts($, card).find(t => /^\d+ reviews?$/.test(t));
     const line = leafTexts($, card).find(t => /^(Now in|Next:)/.test(t)) || null;

@@ -70,3 +70,13 @@ test('isScoredSlim: cs present means scored; missing json or cs does not', () =>
   assert.equal(isScoredSlim({ id: 'x', cov: {} }), false);
   assert.equal(isScoredSlim(null), false);
 });
+
+// BRO-4981: an unscored tour card has no "N reviews" line; the list parser
+// used to climb into the grid and borrow the neighbouring card's count.
+test('parseListPage: unscored tour card does not borrow a neighbour review count', () => {
+  const { parseListPage } = require('./tour-page-audit.js');
+  const card = (id, rc) => `<div><a href="/show/${id}"><div>${id}</div>${rc ? `<span>${rc}</span>` : ''}</a></div>`;
+  const html = `<html><body><div>${card('a-tour-2026', '3 reviews')}${card('b-tour-2026', null)}${card('c-tour-2026', '5 reviews')}</div></body></html>`;
+  const byId = Object.fromEntries(parseListPage(html).shows.map(s => [s.id, s.reviewCount]));
+  assert.deepEqual(byId, { 'a-tour-2026': 3, 'b-tour-2026': null, 'c-tour-2026': 5 });
+});
