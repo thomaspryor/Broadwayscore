@@ -1847,6 +1847,7 @@ const crossShowFingerprints = new Map();
         // EARLIER production (e.g. "based on the 2025 performance at the Asylum
         // Theater") even though the page was republished with an in-window date.
         // Runs regardless of reviewDate: the date guards cannot see this.
+        // lane-guarded: wpAuditOpen includes laneHolds(d, 'wrongProduction')
         if (wpAuditOpen) {
           const republish = detectPriorRunRepublish({ text: d.fullText, show: showRecord });
           if (republish.flag) {
