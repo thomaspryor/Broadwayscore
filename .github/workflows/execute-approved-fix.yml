@@ -61,6 +61,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # ingest-review-from-url.js fetches Playwright-first hosts (bachtrack renders
+      # its body only in a browser); without one it saves the meta description.
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
       - name: Configure git
         run: |
           git config user.name "github-actions[bot]"

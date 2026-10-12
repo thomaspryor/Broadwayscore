@@ -25,6 +25,8 @@ const ROOT = resolve(__dirname, '..', '..');
 const PLAYWRIGHT_FIRST_SCRIPTS = {
   'scripts/fetch-show-images-auto.js': 'todaytix.com / ibdb.com / playbill.com pages (BRO-4326)',
   'scripts/validate-show-venue.js': 'playbill.com production pages (BRO-2560)',
+  'scripts/execute-approved-fix.js': 'ingest-review-from-url.js on bachtrack.com and other Playwright-first hosts (BRO-4190)',
+  'scripts/discover-regional-serp-reviews.js': 'ingest-review-from-url.js on SERP-found review URLs (BRO-4190)',
 };
 
 function workflowsRunning(script) {
