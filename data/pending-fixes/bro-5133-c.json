@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5133-c",
   "planId": "a88bc4f5-cdd2-4965-9cde-58091bfd23c1",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-12T15:40:00.000Z",
   "submitter": {
     "name": null,
@@ -36,5 +36,23 @@
         "description": "BRO-5133: file the restored review under newyorksocialdiary (url host newyorksocialdiary.com)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T17:06:20.007Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted lost-in-del-valle-off-broadway-2026/newyorksocialdiary--kendall-dupre.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored lost-in-del-valle-off-broadway-2026/vulture--kendall-dupre.json@88e8155a27320f9fbc341e451ff8d0b683d8598d^ -> lost-in-del-valle-off-broadway-2026/vulture--kendall-dupre.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran migrate-outlet-ids.js successfully"
+    }
+  ]
 }
