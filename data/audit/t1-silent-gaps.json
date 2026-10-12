@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-12T08:45:25.554Z",
+  "generatedAt": "2026-10-12T09:45:10.576Z",
   "windowDays": 45,
   "showsScanned": 158,
   "gaps": [
@@ -12,18 +12,14 @@
       "tier": 2,
       "type": "empty-body",
       "url": "https://deadline.com/2026/09/monster-lizzie-borden-premiere-viewership-netflix-crew-girl-1237110521/",
-      "recovery": {
-        "attempted": true,
-        "ok": true,
-        "reason": null
-      },
-      "recoveryCount": 2,
+      "recovery": null,
+      "recoveryCount": 3,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=the-story-west-end-2026 --url=https://deadline.com/2026/09/monster-lizzie-borden-premiere-viewership-netflix-crew-girl-1237110521/ --outlet=deadline --critic=\"Katie Campione\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-12T08:22:39.158Z",
-      "fileAgeHours": 0.37683333333333335,
-      "gapSeenAt": "2026-10-12T08:23:16.314Z",
-      "nonTerminalAgeHours": 0.36923333333333336
+      "fileAgeHours": 1.3744247222222221,
+      "gapSeenAt": "2026-10-12T08:32:15.102Z",
+      "nonTerminalAgeHours": 1.2154094444444445
     },
     {
       "showId": "the-story-west-end-2026",
@@ -40,9 +36,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-story-west-end-2026",
       "firstSeen": "2026-09-11T12:10:50.082Z",
-      "fileAgeHours": 740.5738002777778,
-      "gapSeenAt": "2026-10-12T08:23:16.314Z",
-      "nonTerminalAgeHours": 0.36923333333333336
+      "fileAgeHours": 741.5713916666666,
+      "gapSeenAt": "2026-10-12T08:32:15.102Z",
+      "nonTerminalAgeHours": 1.2154094444444445
     },
     {
       "showId": "cosi-fan-tutte-off-broadway-2026",
@@ -58,9 +54,9 @@
       "forumLinkRecoveryCount": 3,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=cosi-fan-tutte-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-08T17:44:48.110Z",
-      "fileAgeHours": 87.00782027777778,
+      "fileAgeHours": 88.0054138888889,
       "gapSeenAt": "2026-10-08T22:46:44.413Z",
-      "nonTerminalAgeHours": 81.97809472222222
+      "nonTerminalAgeHours": 82.97393416666667
     },
     {
       "showId": "truly-howard-hughes-off-broadway-2026",
@@ -77,9 +73,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=truly-howard-hughes-off-broadway-2026",
       "firstSeen": "2026-09-09T14:56:32.660Z",
-      "fileAgeHours": 785.8121563888889,
+      "fileAgeHours": 786.8097516666667,
       "gapSeenAt": "2026-10-12T06:09:40.724Z",
-      "nonTerminalAgeHours": 2.595786111111111
+      "nonTerminalAgeHours": 3.5916255555555554
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -96,9 +92,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=golden-boy-off-west-end-2026",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 472.07945916666665,
+      "fileAgeHours": 473.0770572222222,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 23.10070888888889
+      "nonTerminalAgeHours": 24.096548333333335
     },
     {
       "showId": "september-l-davis-the-apology-tour-off-broadway-2026",
@@ -115,9 +111,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=september-l-davis-the-apology-tour-off-broadway-2026",
       "firstSeen": "2026-09-28T17:47:33.366Z",
-      "fileAgeHours": 326.96234055555556,
+      "fileAgeHours": 327.95993944444444,
       "gapSeenAt": "2026-10-12T06:09:40.724Z",
-      "nonTerminalAgeHours": 2.595786111111111
+      "nonTerminalAgeHours": 3.5916255555555554
     },
     {
       "showId": "human-things-off-broadway-2026",
@@ -133,9 +129,9 @@
       "forumLinkRecoveryCount": 3,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=human-things-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-09-26T14:54:28.766Z",
-      "fileAgeHours": 377.84704194444447,
+      "fileAgeHours": 378.84463944444445,
       "gapSeenAt": "2026-09-26T17:43:29.271Z",
-      "nonTerminalAgeHours": 375.03230083333335
+      "nonTerminalAgeHours": 376.02814027777777
     },
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
@@ -152,9 +148,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=into-the-woods-noel-coward-west-end-2026",
       "firstSeen": "2026-10-08T00:53:29.136Z",
-      "fileAgeHours": 103.86375916666667,
+      "fileAgeHours": 104.86136027777778,
       "gapSeenAt": "2026-10-12T06:09:40.724Z",
-      "nonTerminalAgeHours": 2.595786111111111
+      "nonTerminalAgeHours": 3.5916255555555554
     },
     {
       "showId": "the-pass-off-west-end-2026",
@@ -165,18 +161,14 @@
       "tier": 2,
       "type": "empty-body",
       "url": "https://deadline.com/2026/09/ted-cruz-no-fakes-act-senate-1237143753/",
-      "recovery": {
-        "attempted": true,
-        "ok": true,
-        "reason": null
-      },
-      "recoveryCount": 2,
+      "recovery": null,
+      "recoveryCount": 3,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=the-pass-off-west-end-2026 --url=https://deadline.com/2026/09/ted-cruz-no-fakes-act-senate-1237143753/ --outlet=deadline --critic=\"Ted Johnson\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-12T08:23:01.499Z",
-      "fileAgeHours": 0.3732025,
-      "gapSeenAt": "2026-10-12T08:23:16.314Z",
-      "nonTerminalAgeHours": 0.36923333333333336
+      "fileAgeHours": 1.369038888888889,
+      "gapSeenAt": "2026-10-12T08:32:15.102Z",
+      "nonTerminalAgeHours": 1.2154094444444445
     },
     {
       "showId": "fire-fire-off-west-end-2026",
@@ -192,9 +184,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=fire-fire-off-west-end-2026 --url=https://www.thetimes.com/culture/classical-opera/article/fire-in-my-mouth-marin-alsop-review-hdnsrp752 --outlet=times-uk   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-01T15:51:33.268Z",
-      "fileAgeHours": 256.8977580555555,
+      "fileAgeHours": 257.89359527777776,
       "gapSeenAt": "2026-10-12T06:09:40.724Z",
-      "nonTerminalAgeHours": 2.595786111111111
+      "nonTerminalAgeHours": 3.5916255555555554
     },
     {
       "showId": "mystic-pizza-tour-2026",
@@ -210,9 +202,9 @@
       "forumLinkRecoveryCount": 3,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=mystic-pizza-tour-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-10T21:41:34.767Z",
-      "fileAgeHours": 35.06410722222222,
+      "fileAgeHours": 36.05994666666667,
       "gapSeenAt": "2026-10-10T23:15:13.713Z",
-      "nonTerminalAgeHours": 33.50328916666667
+      "nonTerminalAgeHours": 34.49912861111111
     }
   ],
   "contradictions": []

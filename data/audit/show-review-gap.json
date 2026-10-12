@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-12T08:45:07.198Z",
+  "generatedAt": "2026-10-12T09:45:05.332Z",
   "windowDays": 21,
-  "targets": 6,
-  "auditedThisRun": 6,
-  "carriedForward": 719,
+  "targets": 1,
+  "auditedThisRun": 1,
+  "carriedForward": 724,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 406,
-    "missingCurrentRun": 898,
+    "withGap": 405,
+    "missingCurrentRun": 896,
     "totalCitedNoUrl": 8,
     "totalFlaggedMisses": 918,
     "totalRecoverable": 5,
@@ -2919,20 +2919,11 @@
       "status": "closed",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://www.secrettheatre.com/shows-events/a-thousand-natural-shocks"
-      ],
-      "dirFiles": 3,
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://www.secrettheatre.com/shows-events/a-thousand-natural-shocks",
-          "host": "secrettheatre.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
@@ -2969,7 +2960,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -2995,62 +2986,31 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 1,
+        "resultCount": 0,
         "error": null
       },
       "candidatesRejected": {
-        "count": 25,
+        "count": 30,
         "byReason": {
-          "non-review-host": 20,
+          "non-review-host": 25,
           "aggregator-internal-nav": 2,
-          "write-path-blocked": 2,
+          "show-listing-page": 1,
+          "census-junk-host": 1,
           "licensing-listing": 1
         }
       },
       "dedupedVariants": [],
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://www.secrettheatre.com/shows-events/a-thousand-natural-shocks",
-          "host": "secrettheatre.com",
-          "outletId": "secrettheatre",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": true,
-          "reason": "⚠️  provisional outlet \"secrettheatre\" (not in registry) — onboard to outlet-registry.json after rev"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "secrettheatre.com",
-            "outlet": "secrettheatre.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.secrettheatre.com/shows-events/a-thousand-natural-shocks"
-          }
-        ],
+        "verdict": "no-census-yet",
+        "missing": [],
         "suppressedMissing": [],
-        "candidates": [
-          {
-            "url": "https://www.secrettheatre.com/shows-events/a-thousand-natural-shocks",
-            "outletId": "secrettheatre.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-12T08:45:07.198Z"
-          }
-        ],
+        "candidates": [],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 1
+        "candidateCount": 0
       },
-      "computedAt": "2026-10-12T08:45:07.198Z"
+      "computedAt": "2026-10-12T09:45:05.332Z"
     },
     {
       "showId": "a-walk-on-the-moon-off-broadway-2026",
