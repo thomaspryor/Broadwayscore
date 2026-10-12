@@ -1,26 +1,8 @@
 {
-  "generatedAt": "2026-10-12T02:15:11.963Z",
+  "generatedAt": "2026-10-12T06:09:40.725Z",
   "windowDays": 45,
   "showsScanned": 158,
   "gaps": [
-    {
-      "showId": "good-time-charlie-off-broadway-2026",
-      "title": "Good Time Charlie",
-      "openingDate": "2026-10-09",
-      "file": "talkinbroadway--unknown.json",
-      "outletId": "talkinbroadway",
-      "tier": 2,
-      "type": "empty-body",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654485",
-      "recovery": null,
-      "recoveryCount": 3,
-      "forumLinkRecoveryCount": 3,
-      "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=good-time-charlie-off-broadway-2026   # follows the thread's Link to the real review page",
-      "firstSeen": "2026-10-10T16:02:50.313Z",
-      "fileAgeHours": 34.077866388888886,
-      "gapSeenAt": "2026-10-11T02:31:35.490Z",
-      "nonTerminalAgeHours": 23.726798055555555
-    },
     {
       "showId": "cosi-fan-tutte-off-broadway-2026",
       "title": "Così fan tutte",
@@ -35,9 +17,28 @@
       "forumLinkRecoveryCount": 3,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=cosi-fan-tutte-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-08T17:44:48.110Z",
-      "fileAgeHours": 80.37855388888889,
+      "fileAgeHours": 84.27784444444444,
       "gapSeenAt": "2026-10-08T22:46:44.413Z",
-      "nonTerminalAgeHours": 75.47431944444445
+      "nonTerminalAgeHours": 79.38230861111111
+    },
+    {
+      "showId": "truly-howard-hughes-off-broadway-2026",
+      "title": "Truly, Howard Hughes",
+      "openingDate": "2026-09-17",
+      "file": "cititour--unknown.json",
+      "outletId": "cititour",
+      "tier": 2,
+      "type": "unscored",
+      "dispatchable": false,
+      "url": "https://cititour.com/NYC_Events/Truly-Howard-Hughes/34944",
+      "recovery": null,
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=truly-howard-hughes-off-broadway-2026",
+      "firstSeen": "2026-09-09T14:56:32.660Z",
+      "fileAgeHours": 783.0821827777778,
+      "gapSeenAt": "2026-10-12T06:09:40.724Z",
+      "nonTerminalAgeHours": 0
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -54,27 +55,27 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=golden-boy-off-west-end-2026",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 465.45018666666664,
+      "fileAgeHours": 469.34948833333334,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 16.596933611111112
+      "nonTerminalAgeHours": 20.50492277777778
     },
     {
-      "showId": "a-ghost-in-your-ear-off-broadway-2026",
-      "title": "A Ghost In Your Ear",
-      "openingDate": "2026-10-09",
+      "showId": "september-l-davis-the-apology-tour-off-broadway-2026",
+      "title": "September L. Davis: The Apology Tour",
+      "openingDate": "2026-09-20",
       "file": "timeout--unknown.json",
       "outletId": "timeout",
       "tier": 1,
       "type": "unscored",
-      "dispatchable": true,
-      "url": "https://www.timeout.com/newyork/theater/a-ghost-in-your-ear",
+      "dispatchable": false,
+      "url": "https://www.timeout.com/newyork/theater/september-l-davis-the-apology-tour",
       "recovery": null,
       "recoveryCount": 0,
       "forumLinkRecoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=a-ghost-in-your-ear-off-broadway-2026",
-      "firstSeen": "2026-10-10T14:47:24.637Z",
-      "fileAgeHours": 35.335546666666666,
-      "gapSeenAt": "2026-10-12T02:15:11.963Z",
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=september-l-davis-the-apology-tour-off-broadway-2026",
+      "firstSeen": "2026-09-28T17:47:33.366Z",
+      "fileAgeHours": 324.2323752777778,
+      "gapSeenAt": "2026-10-12T06:09:40.724Z",
       "nonTerminalAgeHours": 0
     },
     {
@@ -92,12 +93,49 @@
         "reason": "⚠️  Bright Data failed: Bright Data request timeout\n⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913\", waiting until \"networkidle\"\n\n⚠️  Bright Data failed: Bright Data request timeout\n⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www.talkinbroad"
       },
       "recoveryCount": 3,
-      "forumLinkRecoveryCount": 1,
+      "forumLinkRecoveryCount": 2,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=human-things-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-09-26T14:54:28.766Z",
-      "fileAgeHours": 371.2807280555555,
+      "fileAgeHours": 375.1742116666667,
       "gapSeenAt": "2026-09-26T17:43:29.271Z",
-      "nonTerminalAgeHours": 368.5285255555556
+      "nonTerminalAgeHours": 372.4365147222222
+    },
+    {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
+      "title": "Into the Woods",
+      "openingDate": "2026-10-07",
+      "file": "variety--naman-ramachandran.json",
+      "outletId": "variety",
+      "tier": 2,
+      "type": "unscored",
+      "dispatchable": false,
+      "url": "https://variety.com/2026/theater/news/paddington-into-the-woods-2026-olivier-awards-nominations-1236680111/",
+      "recovery": null,
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=into-the-woods-noel-coward-west-end-2026",
+      "firstSeen": "2026-10-08T00:53:29.136Z",
+      "fileAgeHours": 101.19094638888889,
+      "gapSeenAt": "2026-10-12T06:09:40.724Z",
+      "nonTerminalAgeHours": 0
+    },
+    {
+      "showId": "fire-fire-off-west-end-2026",
+      "title": "Fire Fire",
+      "openingDate": "2026-09-11",
+      "file": "times-uk--unknown.json",
+      "outletId": "times-uk",
+      "tier": 1,
+      "type": "empty-body",
+      "url": "https://www.thetimes.com/culture/classical-opera/article/fire-in-my-mouth-marin-alsop-review-hdnsrp752",
+      "recovery": null,
+      "recoveryCount": 3,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=fire-fire-off-west-end-2026 --url=https://www.thetimes.com/culture/classical-opera/article/fire-in-my-mouth-marin-alsop-review-hdnsrp752 --outlet=times-uk   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-10-01T15:51:33.268Z",
+      "fileAgeHours": 254.22318416666667,
+      "gapSeenAt": "2026-10-12T06:09:40.724Z",
+      "nonTerminalAgeHours": 0
     },
     {
       "showId": "mystic-pizza-tour-2026",
@@ -111,15 +149,15 @@
       "recovery": {
         "attempted": true,
         "ok": false,
-        "reason": "⚠️  Bright Data failed: Bright Data request timeout\n⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654479\", waiting until \"networkidle\"\n\n⚠️  Bright Data failed: Bright Data request timeout\n⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www.talkinbroad"
+        "reason": "⚠️  Bright Data failed: Bright Data request timeout\n⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www.talkinbroadway.com/regional/minn/minn1534.html\", waiting until \"networkidle\"\n\n⚠️  Bright Data failed: Bright Data request timeout\n⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www.talkinbroadway.c"
       },
       "recoveryCount": 2,
-      "forumLinkRecoveryCount": 1,
+      "forumLinkRecoveryCount": 2,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=mystic-pizza-tour-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-10T21:41:34.767Z",
-      "fileAgeHours": 28.560331944444446,
+      "fileAgeHours": 32.46832138888889,
       "gapSeenAt": "2026-10-10T23:15:13.713Z",
-      "nonTerminalAgeHours": 26.999513888888888
+      "nonTerminalAgeHours": 30.907503055555555
     }
   ],
   "contradictions": []
