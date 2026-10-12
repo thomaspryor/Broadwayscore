@@ -133,6 +133,7 @@ const PROTECTED_FIELDS = [
   'originalScoreClearedReason',
   // Retires the clear above when a page-structure star superseded it (BRO-3171).
   'originalScoreClearSupersededBy',
+  'originalScoreClearSupersededAt',
   'previousOriginalScore',
   'humanReviewNote',
   'humanReviewedWrongProduction',
@@ -471,8 +472,14 @@ const _isEmptyValue = (v) => v === undefined || v === null
 // the rebase-restore resurrects the stale flag and rediscover becomes a no-op for
 // flagged reviews (the whole point being to re-scrape wrong_content). Sub-field
 // precise so it only suppresses restore of a flag rediscover actually cleared.
-const _scoreClearSuperseded = (d) =>
-  typeof d.originalScoreClearSupersededBy === 'string' && d.originalScoreCleared !== true;
+// BRO-3171 retirement breadcrumb. Honoured only when this write is the one
+// retiring: if the committed copy already carries the same retirement, a clear
+// set on it since then is a re-clear, and a stale copy (breadcrumb, no clear)
+// must not delete it.
+const _scoreClearSuperseded = (d, committed) =>
+  typeof d.originalScoreClearSupersededBy === 'string' && d.originalScoreCleared !== true
+  && !(committed && committed.originalScoreClearSupersededAt
+    && committed.originalScoreClearSupersededAt === d.originalScoreClearSupersededAt);
 
 const _rediscoveredWrongProduction = (d) =>
   !!(d._previousWrongFlags && d._previousWrongFlags.wrongProduction);

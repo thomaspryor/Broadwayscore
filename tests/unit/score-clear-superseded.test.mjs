@@ -80,3 +80,20 @@ test('a retired score clear does not let a write skip the flagged-file strip', (
   });
   assert.equal(out.publishDate, undefined, 'stripped like any write to a flagged file');
 });
+
+test('a stale retired copy cannot delete a later re-clear', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'clear-sup-'));
+  const filePath = path.join(dir, 'timeout-london--x.json');
+  const retired = {
+    showId: 'x', outletId: 'timeout-london', criticName: 'X', url: 'https://t/x',
+    originalScore: '4/5', originalScoreNormalized: 80, originalScoreSource: 'timeout-svg-stars',
+    originalScoreClearSupersededBy: 'timeout-svg-stars', originalScoreClearSupersededAt: '2026-10-12T00:00:00Z',
+  };
+  const stale = JSON.parse(JSON.stringify(retired));
+  fs.writeFileSync(filePath, JSON.stringify({ ...retired, originalScore: null, originalScoreNormalized: null,
+    originalScoreSource: null, originalScoreCleared: true, originalScoreClearedReason: 'human: other show' }));
+  safeWriteReview(filePath, stale);
+  const onDisk = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  assert.equal(onDisk.originalScoreCleared, true, 'the re-clear survives');
+  assert.equal(onDisk.originalScoreClearedReason, 'human: other show');
+});
