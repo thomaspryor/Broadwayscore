@@ -214,6 +214,10 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // news of later revivals; a westendtheatre-sourced Mousetrap stub) plus a
   // Disruption file holding an Edinburgh Fringe "travel disruption" news item.
   { host: /(^|\.)thestage\.co\.uk$/, path: /^\/news\//, reason: 'news-article' },
+  // TheatreVibe files news and reviews under the same /YYYY/MM/DD/ path and
+  // prefixes the slug: news-... vs review-... (BRO-4190: a news-... casting
+  // post held the Last Ship 2026 review's slot).
+  { host: /(^|\.)theatrevibe\.co\.uk$/, path: /^\/\d{4}\/\d{2}\/\d{2}\/news-/i, reason: 'news-article' },
   // Census auto-ingest junk, 2026-09-25 backlog pass (each read at file level):
   // NYTG /show/<id>-<slug> is a ticket listing ("La Traviata Tickets ... 90%") —
   // three were LIVE scored "reviews" (la-traviata-off-broadway-2026 90,
