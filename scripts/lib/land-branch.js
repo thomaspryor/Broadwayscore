@@ -286,8 +286,12 @@ function makeVerifiedBaseChecks({ verifiedBase, checks = defaultChecks, git = nu
       // branch's new file. Feed the test files main changed in that window to
       // the merged-tree floor too. Only test files: a guard tightened through
       // its helper or data file on main is still not selected.
-      const interveningTests = intervening.filter(isRunnableTestFile);
-      log(`[land] verified-base: ${decision.reason} — re-checking on the merged tree (+${interveningTests.length} test file(s) changed on main since the verified base)`);
+      // A test main deleted is absent here; dropping it keeps it from arming
+      // the whole scripts/lib suite for nothing. An intervening scripts/lib
+      // test still does arm it (~4 min, within MERGED_TREE_TIMEOUT_MS).
+      const interveningTests = intervening.filter(f => isRunnableTestFile(f) && (!cwd || fs.existsSync(path.join(cwd, f))));
+      const extra = ancestor ? `+${interveningTests.length} test file(s) changed on main since the verified base` : 'tests changed on main unknown: verified base is not an ancestor';
+      log(`[land] verified-base: ${decision.reason} — re-checking on the merged tree (${extra})`);
       return checks({ ...o, interveningTests });
     }
     if (prepare && repoDir) {

@@ -677,16 +677,32 @@ test('makeVerifiedBaseChecks: reuses the verdict (and still prepares the worktre
 test('BRO-5180: a substantive move hands the test files main changed since the verified base to the merged-tree floor', () => {
   const v = 'a'.repeat(40);
   const b = 'b'.repeat(40);
-  const intervening = ['tests/unit/sibling-matchers-diacritics.test.mjs', 'src/x.ts', 'tests/unit/old.test.js', 'scripts/lib/foo.test.mjs', 'scripts/lib/foo.js'];
-  const git = (args) => (args[0] === 'merge-base' ? '' : args[0] === 'diff' ? intervening.join('\n') : '');
-  let seen = null;
-  const checks = makeVerifiedBaseChecks({ verifiedBase: v, checks: (o) => { seen = o; return []; }, git, prepare: () => [] });
-  const logs = [];
-  checks({ cwd: '/wt', baseSha: b, repoDir: '/repo', changedFiles: ['scripts/diagnostics/x.js'], log: (l) => logs.push(l) });
-  assert.deepEqual(seen.interveningTests, ['tests/unit/sibling-matchers-diacritics.test.mjs', 'scripts/lib/foo.test.mjs']);
-  assert.deepEqual(seen.changedFiles, ['scripts/diagnostics/x.js'], 'the branch diff itself is untouched');
-  assert.match(logs.join('\n'), /\+2 test file\(s\) changed on main/);
-  assert.doesNotMatch(logs.join('\n'), /full gauntlet/, 'the re-check is not the full gauntlet and must not say so');
+  // gone.test.mjs: main deleted it, so it is absent from the rebased tree.
+  const intervening = ['tests/unit/sibling-matchers-diacritics.test.mjs', 'src/x.ts', 'tests/unit/old.test.js', 'scripts/lib/foo.test.mjs', 'scripts/lib/foo.js', 'tests/unit/gone.test.mjs'];
+  const wt = fs.mkdtempSync(path.join(os.tmpdir(), 'bro5180-wt-'));
+  try {
+    for (const f of ['tests/unit/sibling-matchers-diacritics.test.mjs', 'scripts/lib/foo.test.mjs']) {
+      fs.mkdirSync(path.dirname(path.join(wt, f)), { recursive: true });
+      fs.writeFileSync(path.join(wt, f), '');
+    }
+    const git = (args) => (args[0] === 'merge-base' ? '' : args[0] === 'diff' ? intervening.join('\n') : '');
+    let seen = null;
+    const checks = makeVerifiedBaseChecks({ verifiedBase: v, checks: (o) => { seen = o; return []; }, git, prepare: () => [] });
+    const logs = [];
+    checks({ cwd: wt, baseSha: b, repoDir: '/repo', changedFiles: ['scripts/diagnostics/x.js'], log: (l) => logs.push(l) });
+    assert.deepEqual(seen.interveningTests, ['tests/unit/sibling-matchers-diacritics.test.mjs', 'scripts/lib/foo.test.mjs']);
+    assert.deepEqual(seen.changedFiles, ['scripts/diagnostics/x.js'], 'the branch diff itself is untouched');
+    assert.match(logs.join('\n'), /\+2 test file\(s\) changed on main/);
+    assert.doesNotMatch(logs.join('\n'), /full gauntlet/, 'the re-check is not the full gauntlet and must not say so');
+
+    // Not an ancestor: the window is unknown, and the log must say so rather than "+0".
+    const notAnc = makeVerifiedBaseChecks({ verifiedBase: v, checks: () => [], git: (args) => (args[0] === 'merge-base' ? null : ''), prepare: () => [] });
+    const logs2 = [];
+    notAnc({ cwd: wt, baseSha: b, repoDir: '/repo', log: (l) => logs2.push(l) });
+    assert.match(logs2.join('\n'), /unknown: verified base is not an ancestor/);
+  } finally {
+    fs.rmSync(wt, { recursive: true, force: true });
+  }
 
   assert.deepEqual(mergedTreeGateInput(['a.js', 't/x.test.mjs'], ['t/x.test.mjs', 't/y.test.mjs']), ['a.js', 't/x.test.mjs', 't/y.test.mjs']);
   assert.deepEqual(mergedTreeGateInput(['a.js'], undefined), ['a.js']);
