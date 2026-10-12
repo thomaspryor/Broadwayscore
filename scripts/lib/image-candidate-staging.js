@@ -59,6 +59,8 @@ function stagedBytesFor(staged, finalAbs, fsImpl = fs) {
 /**
  * Promote the staged formats the row now serves (`served[format] === local`),
  * delete the rest.
+ * A failed rename counts as discarded, so the caller can drop that format
+ * instead of serving a path whose bytes never arrived.
  * @returns {{promoted: string[], discarded: string[]}}
  */
 function finalizeStaged(staged, served, fsImpl = fs) {
@@ -66,8 +68,11 @@ function finalizeStaged(staged, served, fsImpl = fs) {
   const discarded = [];
   for (const format of Object.keys(staged || {})) {
     const e = staged[format];
+    let moved = false;
     if (served && served[format] === e.local && fsImpl.existsSync(e.stage)) {
-      fsImpl.renameSync(e.stage, e.final);
+      try { fsImpl.renameSync(e.stage, e.final); moved = true; } catch { /* treated as discarded */ }
+    }
+    if (moved) {
       promoted.push(format);
     } else {
       try { fsImpl.unlinkSync(e.stage); } catch { /* already gone */ }

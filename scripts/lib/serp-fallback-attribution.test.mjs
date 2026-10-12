@@ -76,3 +76,37 @@ test('scrapingdogSerpFailureDetail never stores the query text', () => {
   assert.ok(!JSON.stringify(d).includes('Wicked'));
   assert.equal(scrapingdogSerpFailureDetail(new Error('timeout'), 'Café', null, 0, false).nonAscii, true);
 });
+
+test('detail keeps only the provider message, with the key and the query scrubbed', () => {
+  const q = 'Wicked review site:nytimes.com';
+  const echo = { response: { status: 400, data: { message: `bad request for ${q} api_key=sd-test-key&query=${encodeURIComponent(q)}` } } };
+  const d = scrapingdogSerpFailureDetail(echo, q, null, 0, false);
+  assert.ok(!d.msg.includes('Wicked') && !d.msg.includes('sd-test-key'), d.msg);
+  assert.match(d.msg, /\[query\]/);
+  // A body with no message/error string is not copied wholesale.
+  const raw = { response: { status: 400, data: { echo: { query: q, api_key: 'sd-test-key' } } } };
+  assert.equal(scrapingdogSerpFailureDetail(raw, q, null, 0, false).msg, null);
+});
+
+test('images: a 200 with no images_results falls back to ScrapingBee instead of ending empty', async () => {
+  axios.get = async (url) => (url.includes('scrapingdog')
+    ? { data: { success: false, error: 'something' } }
+    : { data: { images: [{ image: 'data:image/png;base64,AA', url: 'https://p.test' }] } });
+  console.log = () => {};
+  let r;
+  try { r = await serpImagesQuery('poster q2', { scrapingBeeKey: 'sb', log: quiet }); } finally { console.log = origLog; }
+  assert.equal(r.provider, 'scrapingbee');
+  const sd = rows().find((x) => x.provider === 'scrapingdog');
+  assert.equal(sd.success, false);
+  assert.equal(rows().find((x) => x.provider === 'scrapingbee').fallback_from, 'scrapingdog');
+});
+
+test('images: a Scrapingdog that never sent a request (quota latch) is not named as fallback_from', async () => {
+  sd400ThenSb({ images: [{ image: 'data:image/png;base64,AA', url: 'https://p.test' }] });
+  const desc = Object.getOwnPropertyDescriptor(scraper, 'sdQuotaExceeded');
+  Object.defineProperty(scraper, 'sdQuotaExceeded', { get: () => true, configurable: true });
+  console.log = () => {};
+  try { await serpImagesQuery('poster q3', { scrapingBeeKey: 'sb', log: quiet }); } finally { console.log = origLog; Object.defineProperty(scraper, 'sdQuotaExceeded', desc); }
+  assert.equal(rows().filter((x) => x.provider === 'scrapingdog').length, 0);
+  assert.equal(rows().find((x) => x.provider === 'scrapingbee').fallback_from, null);
+});
