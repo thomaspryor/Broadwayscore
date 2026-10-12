@@ -1,0 +1,49 @@
+// BRO-3319: show-filtered collect-review-texts runs must honour the
+// fetch-retry cooldown outside the opening window.
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+const { shouldBypassFetchGate, isFetchLedgerEntryForOtherUrl, shouldRetryFetch } = require('./review-guards.js');
+
+const DAY = 864e5;
+const iso = (ms) => new Date(Date.now() + ms).toISOString().slice(0, 10);
+const openWindowShow = { status: 'open', openingDate: iso(-3 * DAY), category: 'broadway' };
+const previewsShow = { status: 'previews', openingDate: iso(5 * DAY) };
+const openMatureShow = { status: 'open', openingDate: iso(-400 * DAY), category: 'broadway' };
+const closedOldShow = { status: 'closed', closingDate: iso(-900 * DAY) };
+
+test('explicit per-file targeting always bypasses', () => {
+  assert.equal(shouldBypassFetchGate({ reviewTargeted: true, showFilterActive: false, show: closedOldShow }), true);
+});
+
+test('show filter bypasses only in previews / opening window', () => {
+  assert.equal(shouldBypassFetchGate({ reviewTargeted: false, showFilterActive: true, show: openWindowShow }), true);
+  assert.equal(shouldBypassFetchGate({ reviewTargeted: false, showFilterActive: true, show: previewsShow }), true);
+  assert.equal(shouldBypassFetchGate({ reviewTargeted: false, showFilterActive: true, show: openMatureShow }), false);
+  assert.equal(shouldBypassFetchGate({ reviewTargeted: false, showFilterActive: true, show: closedOldShow }), false);
+});
+
+test('unknown lifecycle and missing show do not bypass', () => {
+  assert.equal(shouldBypassFetchGate({ reviewTargeted: false, showFilterActive: true, show: { status: 'announced' } }), false);
+  assert.equal(shouldBypassFetchGate({ reviewTargeted: false, showFilterActive: true, show: null }), false);
+});
+
+test('unfiltered run never bypasses', () => {
+  assert.equal(shouldBypassFetchGate({ reviewTargeted: false, showFilterActive: false, show: openWindowShow }), false);
+});
+
+test('mature show in cooldown stays gated under a show filter (the BRO-3319 repeat)', () => {
+  const review = { fetchRetryAfter: new Date(Date.now() + 2 * 3600e3).toISOString() };
+  const gate = shouldRetryFetch(openMatureShow, review, { failureReason: 'all_tiers_failed', failureCount: 1 });
+  assert.equal(gate.shouldRetry, false);
+  assert.equal(gate.shouldRetry || shouldBypassFetchGate({ reviewTargeted: false, showFilterActive: true, show: openMatureShow }), false);
+});
+
+test('ledger entry recorded against another URL is stale', () => {
+  assert.equal(isFetchLedgerEntryForOtherUrl({ url: 'https://a.com/old-review' }, 'https://a.com/new-review'), true);
+  assert.equal(isFetchLedgerEntryForOtherUrl({ url: 'https://www.a.com/review/' }, 'https://a.com/review'), false);
+  assert.equal(isFetchLedgerEntryForOtherUrl({ url: null }, 'https://a.com/x'), false);
+  assert.equal(isFetchLedgerEntryForOtherUrl(null, 'https://a.com/x'), false);
+  assert.equal(isFetchLedgerEntryForOtherUrl({ url: 'https://a.com/x' }, ''), false);
+});

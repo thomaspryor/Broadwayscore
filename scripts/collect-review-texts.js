@@ -589,7 +589,7 @@ const { consultBrightData } = require('./lib/brightdata-caps');
 const { recordBdCall } = require('./lib/bd-telemetry');
 const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { discoverCorrectUrl: _sharedDiscoverUrl } = require('./lib/url-discovery');
-const { shouldRetryUrlDiscovery, recordSerpAttempt, shouldRetryFetch, recordFetchAttempt } = require('./lib/review-guards');
+const { shouldRetryUrlDiscovery, recordSerpAttempt, shouldRetryFetch, recordFetchAttempt, shouldBypassFetchGate, isFetchLedgerEntryForOtherUrl } = require('./lib/review-guards');
 const { clearFailureFlags } = require('./lib/clear-failure-flags');
 const { clearAutomatedTextRejectionOnRefetch } = require('./lib/stale-automated-text-verdict');
 const { neutralizeStaleFlagsOnBodyReplacement } = require('./lib/stale-flag-neutralization');
@@ -6185,7 +6185,7 @@ function findReviewsToProcess() {
       const failed = JSON.parse(fs.readFileSync(failedPath, 'utf8'));
       for (const f of failed) {
         const id = f.reviewId || `${f.showId}/${f.file}`;
-        const entry = { failureReason: f.failureReason || '', failureCount: f.failureCount || 1 };
+        const entry = { failureReason: f.failureReason || '', failureCount: f.failureCount || 1, url: f.url || null };
         failedFetchesByReviewId.set(id, entry);
         // budget_capped entries are excluded here as well as at write time:
         // belt-and-braces, so a ledger written before this fix still can't
@@ -6407,9 +6407,16 @@ function findReviewsToProcess() {
         // A stored-text re-verify fetches nothing, so the fetch-retry
         // lifecycle (abandonment/cooldown) does not apply to it.
         const storedTextOnly = data._consentLayerRetry === true && !!salvageConsentPrefixedStoredText(data);
-        if (fetchFailureEntry && !urlCorrectedRefetch && !reopenStaleMismatch && !storedTextOnly) {
+        // The ledger entry may describe a URL the review no longer carries (BRO-3319).
+        const ledgerForOtherUrl = isFetchLedgerEntryForOtherUrl(fetchFailureEntry, data.url);
+        if (fetchFailureEntry && !urlCorrectedRefetch && !reopenStaleMismatch && !storedTextOnly && !ledgerForOtherUrl) {
           const fetchGate = shouldRetryFetch(showsById.get(showId) || null, data, fetchFailureEntry);
-          if (!fetchGate.shouldRetry && CONFIG.reviewFilter.size === 0 && !isShowFilterActive(CONFIG.showFilterSet, CONFIG.showFilter)) {
+          const gateBypassed = shouldBypassFetchGate({
+            reviewTargeted: CONFIG.reviewFilter.size > 0,
+            showFilterActive: isShowFilterActive(CONFIG.showFilterSet, CONFIG.showFilter),
+            show: showsById.get(showId) || null,
+          });
+          if (!fetchGate.shouldRetry && !gateBypassed) {
             logExclusion({
               script: 'collect-review-texts',
               showId,

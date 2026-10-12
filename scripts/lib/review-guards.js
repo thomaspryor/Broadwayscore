@@ -3749,6 +3749,38 @@ function shouldRetryFetch(show, review, failureEntry) {
   return { shouldRetry: true, reason: isStrict ? 'strict_retry' : 'lenient_retry' };
 }
 
+// Show-filtered runs skip the fetch-retry gate only inside the opening
+// window, where a 15-min poller retry is the point (BRO-3319). Outside it,
+// collect-review-texts.yml is dispatched with show_filter many times a day by
+// aggregator scrapers and gather-reviews; letting every one of those ignore
+// the cooldown re-ran the paid fetch waterfall on URLs failed hours earlier,
+// including closedOld URLs whose retry budget is 0.
+const SHOW_FILTER_BYPASS_LIFECYCLES = new Set(['previews', 'openWindow']);
+
+/**
+ * Should collect-review-texts.js let a gated (cooldown/abandoned) review
+ * through anyway? Explicit per-file targeting always does; a show filter only
+ * for shows in SHOW_FILTER_BYPASS_LIFECYCLES. RETRY_FAILED is deliberately
+ * not a bypass: dispatchers pass retry_failed=true routinely.
+ */
+function shouldBypassFetchGate({ reviewTargeted, showFilterActive, show }) {
+  if (reviewTargeted) return true;
+  return !!showFilterActive && SHOW_FILTER_BYPASS_LIFECYCLES.has(classifyLifecycle(show));
+}
+
+/**
+ * True when the failed-fetches.json entry was recorded against a different
+ * URL than the review now carries. The old URL's failures say nothing about
+ * the new one, so the gate must not apply (BRO-3319 review: a URL change on a
+ * review that still has text does not set needsRefetch, so
+ * urlCorrectedRefetch misses it). Entries without a url are not stale.
+ */
+function isFetchLedgerEntryForOtherUrl(entry, reviewUrl) {
+  if (!entry || !entry.url || !reviewUrl) return false;
+  const { normalizeUrl } = require('./review-normalization');
+  return normalizeUrl(entry.url) !== normalizeUrl(reviewUrl);
+}
+
 /**
  * Compute the state updates to apply to a review file AFTER a fetch attempt
  * has failed and the failed-fetches.json ledger has already been updated
@@ -5770,6 +5802,9 @@ module.exports = {
   findShowKeywordInText,
   checkLlmVerificationAgainstKeywords,
   classifyLifecycle,
+  SHOW_FILTER_BYPASS_LIFECYCLES,
+  shouldBypassFetchGate,
+  isFetchLedgerEntryForOtherUrl,
   shouldRetryUrlDiscovery,
   recordSerpAttempt,
   shouldRetryFetch,
