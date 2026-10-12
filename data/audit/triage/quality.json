@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-10-12T03:14:25.227Z",
+  "lastChecked": "2026-10-12T05:05:44.498Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,12 +9,12 @@
     {
       "name": "Quality: star-vs-score mismatch",
       "status": "warn",
-      "message": "18 NEW review(s) whose explicit rating contradicts the score (worst: therese-raquin-2015 HuffPost A→90 vs LLM 24, gap 66)"
+      "message": "20 NEW review(s) whose explicit rating contradicts the score (worst: therese-raquin-2015 HuffPost A→90 vs LLM 24, gap 66)"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "97.6% scored (28924/29650)"
+      "message": "97.5% scored (28732/29457)"
     },
     {
       "name": "Quality: corpus drift",

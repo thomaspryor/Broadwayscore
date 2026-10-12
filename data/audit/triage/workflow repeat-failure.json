@@ -1,7 +1,7 @@
 {
   "system": "workflow repeat-failure",
   "status": "error",
-  "lastChecked": "2026-10-12T03:14:25.232Z",
+  "lastChecked": "2026-10-12T05:05:44.503Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -9,22 +9,7 @@
     {
       "name": "Workflow repeat-failure: Test Suite",
       "status": "error",
-      "message": "Test Suite failed 13 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: PostHog Ad-hoc Query",
-      "status": "error",
-      "message": "PostHog Ad-hoc Query failed 8 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Land",
-      "status": "error",
-      "message": "Land failed 7 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Rebuild Reviews (Fast)",
-      "status": "warn",
-      "message": "Rebuild Reviews (Fast) failed 2 times in the last 24h — likely broken, not transient."
+      "message": "Test Suite failed 16 times in the last 24h — likely broken, not transient."
     }
   ]
 }

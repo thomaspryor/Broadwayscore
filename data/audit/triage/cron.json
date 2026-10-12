@@ -1,7 +1,7 @@
 {
   "system": "cron",
   "status": "warn",
-  "lastChecked": "2026-10-12T03:14:25.229Z",
+  "lastChecked": "2026-10-12T05:05:44.500Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,22 +9,22 @@
     {
       "name": "Cron: Update Show Status",
       "status": "pass",
-      "message": "13h ago, success"
+      "message": "15h ago, success"
     },
     {
       "name": "Cron: Rebuild Reviews",
       "status": "pass",
-      "message": "1h ago, success (newest run cancelled — superseded, not a failure)"
+      "message": "3h ago, success (newest run cancelled — superseded, not a failure)"
     },
     {
       "name": "Cron: Collect Review Texts",
       "status": "pass",
-      "message": "1h ago, success"
+      "message": "3h ago, success"
     },
     {
       "name": "Cron: LLM Ensemble Score",
       "status": "pass",
-      "message": "1h ago, success"
+      "message": "3h ago, success"
     },
     {
       "name": "Cron: Test Suite",
@@ -39,17 +39,17 @@
     {
       "name": "Cron: Update Lottery/Rush",
       "status": "pass",
-      "message": "14h ago, success"
+      "message": "15h ago, success"
     },
     {
       "name": "Cron: Weekly Grosses",
       "status": "pass",
-      "message": "17h ago, success"
+      "message": "19h ago, success"
     },
     {
       "name": "Cron: Update Show Score",
       "status": "pass",
-      "message": "2h ago, success"
+      "message": "4h ago, success"
     },
     {
       "name": "Cron: Update Cast Changes",
@@ -59,7 +59,7 @@
     {
       "name": "Cron: NYT Critics Picks",
       "status": "pass",
-      "message": "16h ago, success"
+      "message": "18h ago, success"
     },
     {
       "name": "Cron: Weekly Video Reviews",
@@ -69,12 +69,12 @@
     {
       "name": "Cron: Reverse Discovery",
       "status": "pass",
-      "message": "2h ago, success"
+      "message": "4h ago, success"
     },
     {
       "name": "Cron: Cron Health Watchdog",
       "status": "pass",
-      "message": "10h ago, ran (failure; liveness-only check)"
+      "message": "12h ago, ran (failure; liveness-only check)"
     },
     {
       "name": "Cron: Affiliate Link Integrity",
@@ -84,7 +84,7 @@
     {
       "name": "Cron: Cloud Memory Reconcile",
       "status": "pass",
-      "message": "5h ago, success"
+      "message": "7h ago, success"
     }
   ]
 }
