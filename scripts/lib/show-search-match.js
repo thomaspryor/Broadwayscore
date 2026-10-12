@@ -62,11 +62,16 @@ function matchesShowCastQuery(show, query) {
  * Fuse also searches these fields, but fuzzily ("fleabg" hits The Flea Theater).
  */
 function matchesShowPlaceOrCreatorQuery(show, query) {
-  const q = normalizeSearchText(query);
-  if (q.length < MIN_CAST_MATCH_LENGTH) return false;
-  if (normalizeSearchText(show.venue).includes(q)) return true;
-  return !!show.creativeTeamNames
-    && show.creativeTeamNames.split(',').some(name => normalizeSearchText(name).includes(q));
+  if (normalizeSearchText(query).length < MIN_CAST_MATCH_LENGTH) return false;
+  // Whole words, so a title typo is not swallowed by a name that starts or
+  // contains it ("carie" in Vaccariello, "bink" in Binkley, "mcnal" in
+  // McNally all block the typo fix). A multi-word query may end mid-word
+  // while it is being typed ("jason robert br").
+  const qWords = searchWords(query);
+  const q = ` ${qWords.join(' ')}${qWords.length === 1 ? ' ' : ''}`;
+  const matches = (text) => ` ${searchWords(text).join(' ')} `.includes(q);
+  if (matches(show.venue)) return true;
+  return !!show.creativeTeamNames && show.creativeTeamNames.split(',').some(matches);
 }
 
 // Display tiers: playing/upcoming first, then closed shows we scored, then the

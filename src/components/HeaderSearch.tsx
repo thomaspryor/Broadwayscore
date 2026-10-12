@@ -86,9 +86,9 @@ export default function HeaderSearch() {
   const filteredShows = useMemo(() => {
     if (deferredQuery.length < 1 || !fuseRef.current) return [];
     const fuseResults = fuseRef.current.search(deferredQuery, { limit: 8 });
-    // Adds exact title and cast-name substring matches Fuse can miss, then
-    // orders playing/upcoming, closed-scored, unscored archive (stable).
-    // With no title or cast match, confident typo fixes ("fleabg" -> Fleabag,
+    // Adds exact title, cast-name and whole-word venue/creator matches Fuse
+    // can miss, then orders playing/upcoming, closed-scored, unscored archive
+    // (stable). With none of those, confident typo fixes ("fleabg" -> Fleabag,
     // archive included) lead the list ahead of Fuse's fuzzy noise (BRO-3628).
     const closeMatches = () => (deferredQuery.trim().length >= 3 && suggestionIndexRef.current
       ? suggestCloseMatches(suggestionIndexRef.current, deferredQuery, 3) : []);
@@ -100,7 +100,7 @@ export default function HeaderSearch() {
 
   // Fire search_performed after 1s of no typing (≥2 chars).
   // Query text is captured ONLY on searches we failed: zero results, or only
-  // Fuse's fuzzy guesses (no title, cast or typo-fix match, `confident` false) — these reveal
+  // Fuse's fuzzy guesses (no title, cast, venue/creator or typo-fix match, `confident` false) — these reveal
   // shows we may be missing (surfaced as Notion cards by
   // posthog-friction-analyzer.js). Searches that match real shows stay term-less
   // (privacy: don't log what users browse, only what we failed to return).

@@ -109,9 +109,17 @@ test('real index: exact titles lead, archive typos are rescued, misses are flagg
     const out = search(q);
     assert.equal(out.confident, true, q);
     const top = out[0];
-    const hay = lib.normalizeSearchText(`${top.venue || ''}${top.creativeTeamNames || ''}`);
-    assert.ok(hay.includes(venueOrCreator), `${q} -> ${top.title}`);
+    const fields = [top.venue, ...(top.creativeTeamNames || '').split(',')];
+    assert.ok(fields.some(f => lib.normalizeSearchText(f).includes(venueOrCreator)), `${q} -> ${top.title}`);
   }
+  // A title typo that is part of a creator's name (Vaccariello, Binkley,
+  // McNally) must still reach the typo fix, and a bare name fragment is
+  // not a venue/creator answer (ship-check P1).
+  for (const [q, want] of [['carie', 'carrie'], ['bink', 'blink'], ['mcnal', 'mcneal']]) {
+    assert.ok(search(q).some(s => norm(s.title).startsWith(want)), `${q} -> ${want}`);
+  }
+  assert.equal(lib.matchesShowPlaceOrCreatorQuery({ venue: 'Majestic Theatre', creativeTeamNames: 'Howell Binkley' }, 'bink'), false);
+  assert.equal(lib.matchesShowPlaceOrCreatorQuery({ venue: 'Majestic Theatre', creativeTeamNames: 'Howell Binkley' }, 'howell bink'), true);
 });
 
 test('exact archive titles are found by typing them (every 8th, plus the old misses)', async () => {
