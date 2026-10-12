@@ -112,7 +112,7 @@ const FIELD_VALUE_CHECKS = {
 function splitRelabelUndo(record, newUrl) {
   const from = record.outletIdCorrectedFrom;
   const why = String(record.outletIdCorrectedReason || '');
-  if (!from || !record.url || !why.startsWith(`outlet-split: ${record.url} resolves to ${record.outletId}`)) return null;
+  if (!from || !record.url || !why.startsWith(`outlet-split: ${record.url} resolves to ${record.outletId} (`)) return null;
   const { resolveOutletFromUrl } = require('./review-normalization');
   const owner = resolveOutletFromUrl(newUrl);
   if (!owner || owner.outletId !== from) return null;
@@ -225,7 +225,9 @@ function unexpectedChanges(before, after, field, expectedKeys = []) {
     for (const k of URL_EDIT_SIDE_EFFECT_KEYS) expected.add(k);
     const bc = after && after._urlChangedClear;
     if (bc && bc.to === after.url && Array.isArray(bc.cleared)) bc.cleared.forEach((k) => expected.add(k));
-    if (after && / outlet-split relabel undone,/.test(String(after.outletIdCorrectedReason || ''))) {
+    // only when THIS edit made the undo: the marker stays on the file afterwards
+    if (after && after.outletIdCorrectedReason !== (before || {}).outletIdCorrectedReason
+      && / outlet-split relabel undone,/.test(String(after.outletIdCorrectedReason || ''))) {
       for (const k of ['outletId', 'outlet', 'outletIdCorrectedFrom', 'outletIdCorrectedReason']) expected.add(k);
     }
   }

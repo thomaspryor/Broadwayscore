@@ -241,6 +241,9 @@ test('a url fix undoes an outlet-split relabel that was made from the wrong url 
   assert.equal(r.record.outletId, 'british-theatre');
   assert.equal(r.record.outletIdCorrectedFrom, 'britishtheatrecom');
   assert.deepEqual(unexpectedChanges(rec, r.record, 'url'), []);
+  // the marker left on the file does not excuse a later outletId change
+  const later = { ...r.record, outletId: 'britishtheatrecom', url: 'https://www.britishtheatreguide.info/reviews/x-1' };
+  assert.deepEqual(unexpectedChanges(r.record, later, 'url'), ['outletId']);
   // no split marker: a cross-outlet url is still refused
   const plain = { ...rec, outletIdCorrectedFrom: undefined, outletIdCorrectedReason: undefined };
   assert.match(applyReviewFieldEdit(plain, { field: 'url', oldValue: bad, newValue: btg }, { fixId: 'f', at: 'now' }).reason, /another outlet/);
