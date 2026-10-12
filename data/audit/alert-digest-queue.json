@@ -1594,36 +1594,6 @@
     "queuedAt": "2026-10-12T19:37:32.173Z"
   },
   {
-    "conditionKey": "land:land/bro-4849-sidecar-guard",
-    "title": "Landing blocked: unit-tests-node red on land/bro-4849-sidecar-guard",
-    "description": "land.yml did not land land/bro-4849-sidecar-guard: the unit-tests-node gate went red at 389acbc5fc. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38293271586",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "branch",
-        "value": "land/bro-4849-sidecar-guard"
-      },
-      {
-        "name": "gate",
-        "value": "unit-tests-node"
-      },
-      {
-        "name": "tip",
-        "value": "389acbc5fcb84096ac6efb39bc8affe56f3271d8"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38293271586"
-      }
-    ],
-    "queuedAt": "2026-10-12T19:18:50.934Z"
-  },
-  {
     "conditionKey": "land:land/bro-3712-gmail-reauth",
     "title": "Landing blocked: unit-tests-node red on land/bro-3712-gmail-reauth",
     "description": "land.yml did not land land/bro-3712-gmail-reauth: the unit-tests-node gate went red at 1fea0a000e. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38293316893",
@@ -1652,6 +1622,36 @@
       }
     ],
     "queuedAt": "2026-10-12T19:21:01.834Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4849-sidecar-guard",
+    "title": "Landing blocked: race red on land/bro-4849-sidecar-guard",
+    "description": "land.yml did not land land/bro-4849-sidecar-guard: the race gate went red at 9f89674153. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4849-sidecar-guard @ 9f89674153 (origin/land/bro-4849-sidecar-guard) → origin/main @ e949c344a4 [land] attempt 1/3: rebased onto e949c344a4, 8 file(s) changed — running checks [land] verified-base: main moved 71e38c6a4f → e949c344a4 across 410 file(s), substantive — re-checking on the merged tree (+15 test file(s) changed on main since the verified base) [land] linked 21 gitignored Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38297335472",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4849-sidecar-guard"
+      },
+      {
+        "name": "gate",
+        "value": "race"
+      },
+      {
+        "name": "tip",
+        "value": "9f8967415314940df7766e9a590e8caff0cbded1"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38297335472"
+      }
+    ],
+    "queuedAt": "2026-10-12T21:08:20.772Z"
   },
   {
     "conditionKey": "land:land/bro-4814-stuck-closer",
