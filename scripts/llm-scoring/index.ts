@@ -16,8 +16,6 @@
  *   --force-full-run      Skip the A/B distribution check (required for --outdated runs >100 reviews)
  *   --stale-scores        Score reviews with stale excerpt-based scores that now have fullText
  *   --retry-emergency     Retry stuck singleModelEmergency reviews once (clears flag if 2+ models succeed)
- *   --nonreview-corroboration  Score unscored CV-promoted isNonReview files (fullText >= 1500) so
- *                         isNonReviewDemotedByFreshCV has its LLM corroboration (BRO-4189)
  *   --ensemble-source=X   Only rescore reviews with this ensembleSource (e.g. two-model-fallback)
  *   --score-range=MIN-MAX Only process reviews with existing LLM score in this range (e.g. 78-82)
  *   --dry-run             Don't save results, just print what would happen
@@ -100,8 +98,6 @@ import { detectMultiShow } from './multi-show-detector';
 import { trimMultiShowText } from './trim-multi-show';
 import { PROMPT_VERSION, SYSTEM_PROMPT_V5, buildPromptV5, BUCKET_RANGES } from './config';
 import { isScoreable } from './is-scoreable';
-// BRO-4189: opt-in --nonreview-corroboration gate (JS-only helper, no TS twin needed).
-const { isNonReviewCorroborationCandidate } = require('../lib/is-scoreable');
 const { detectPreOpeningInterviewFeature } = require('../lib/preopening-interview-signal');
 const { emitStage } = require('../lib/stage-latency');
 const { decideBatchDrain, decideDrainFollowUp, mayStartNewBatch } = require('../lib/batch-drain-decision');
@@ -669,8 +665,6 @@ function parseArgs(): ScoringPipelineOptions & {
   ensembleCalibrateOnly: boolean;
   upgradeEnsemble: boolean;
   retryEmergency: boolean;
-  /** BRO-4189: score CV-promoted isNonReview files for demotion corroboration. */
-  nonReviewCorroboration: boolean;
   openaiModel: 'gpt-4o-mini' | 'gpt-4o' | 'gpt-5.4-mini';
   checkpointInterval: number;
   shard?: number;
@@ -732,7 +726,6 @@ function parseArgs(): ScoringPipelineOptions & {
 
   const upgradeEnsemble = args.includes('--upgrade-ensemble');
   const retryEmergency = args.includes('--retry-emergency');
-  const nonReviewCorroboration = args.includes('--nonreview-corroboration');
 
   const rescoreReasonArg = args.find(a => a.startsWith('--rescore-reason='));
   const rescoreReason = rescoreReasonArg ? rescoreReasonArg.split('=').slice(1).join('=') : undefined;
@@ -767,7 +760,7 @@ function parseArgs(): ScoringPipelineOptions & {
   return {
     showId,
     onlyUrgent: args.includes('--only-urgent'),
-    unscoredOnly: !args.includes('--rescore') && !args.includes('--needs-rescore') && !outdated && !ensembleSource && !args.includes('--stale-scores') && !upgradeEnsemble && !retryEmergency && !nonReviewCorroboration,
+    unscoredOnly: !args.includes('--rescore') && !args.includes('--needs-rescore') && !outdated && !ensembleSource && !args.includes('--stale-scores') && !upgradeEnsemble && !retryEmergency,
     minTextLength: 50,
     model,
     dryRun: args.includes('--dry-run'),
@@ -788,7 +781,6 @@ function parseArgs(): ScoringPipelineOptions & {
     ensembleCalibrateOnly: args.includes('--ensemble-calibrate'),
     upgradeEnsemble,
     retryEmergency,
-    nonReviewCorroboration,
     openaiModel,
     checkpointInterval,
     shard,
@@ -1143,16 +1135,6 @@ async function main(): Promise<void> {
     // Predicate shared with the cascade gate's counter (task #652).
     filesToProcess = allFiles.filter(f => isActionableEmergencyRetry(f.data as any, queueCtx(f)));
     console.log(`Filtering to stuck-emergency reviews for one-shot retry: ${filesToProcess.length} reviews\n`);
-  } else if (options.nonReviewCorroboration) {
-    // BRO-4189: first-time scores for CV-promoted isNonReview files so a later
-    // fresh CV pass can demote the flag (isNonReviewDemotedByFreshCV requires
-    // hasHighConfidenceLlmScore for this provenance). Opt-in only.
-    filesToProcess = allFiles.filter(f => {
-      const d = f.data as any;
-      if (d.llmScore) return false;
-      return isNonReviewCorroborationCandidate(d, showFor(d), f.path);
-    });
-    console.log(`Filtering to CV-promoted non-review files for corroboration scoring: ${filesToProcess.length} reviews\n`);
   } else if (options.unscoredOnly) {
     // Filter to unscored reviews.
     //
@@ -1284,8 +1266,7 @@ async function main(): Promise<void> {
       starRatingSkipped++;
       return false;
     }
-    const corroborationOk = options.nonReviewCorroboration && isNonReviewCorroborationCandidate(d, showFor(d), f.path);
-    if (!corroborationOk && !isScoreable(d, showFor(d), f.path)) {
+    if (!isScoreable(d, showFor(d), f.path)) {
       dataQualitySkipped++;
       // Log the specific reason for rejection
       const reasons: string[] = [];
@@ -2087,7 +2068,7 @@ async function main(): Promise<void> {
   // When rescoring >100 reviews (--outdated or --rescore), run a sample comparison
   // to catch unintended distribution shifts BEFORE spending hundreds of dollars.
   // upgradeEnsemble = first-time ensemble scores (not a rescore), skip A/B check
-  const isRescore = options.outdated || (!options.unscoredOnly && !options.needsRescore && !options.ensembleSource && !options.upgradeEnsemble && !options.retryEmergency && !options.nonReviewCorroboration);
+  const isRescore = options.outdated || (!options.unscoredOnly && !options.needsRescore && !options.ensembleSource && !options.upgradeEnsemble && !options.retryEmergency);
   if (isRescore && finalFiles.length > 100 && !options.forceFullRun && !options.dryRun && options.ensemble) {
     const abResult = await runABDistributionCheck(
       finalFiles,
@@ -2694,8 +2675,6 @@ Options:
   --rescore             Re-score even if already scored
   --needs-rescore       Only score reviews flagged with needsRescore=true
   --retry-emergency     Retry stuck singleModelEmergency reviews once (one-shot per file)
-  --nonreview-corroboration  Score unscored CV-promoted isNonReview files (fullText >= 1500)
-                        so a fresh CV can demote the flag (BRO-4189; first-time scores)
   --outdated            Re-score reviews with promptVersion older than current
   --force-full-run      Skip A/B distribution check (required for rescore >100 reviews)
   --ensemble-source=X   Only rescore reviews with this ensembleSource (e.g. two-model-fallback)
