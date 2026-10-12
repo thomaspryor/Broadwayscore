@@ -210,6 +210,14 @@ export function LotteryTable({ data, market = 'broadway' }: LotteryTableProps) {
                   <tr
                     className={`border-b border-white/5 transition-colors ${hasDetails ? 'cursor-pointer hover:bg-white/5' : ''} ${isExpanded ? 'border-b-0' : ''}`}
                     onClick={() => hasDetails && setExpandedSlug(isExpanded ? null : item.show.slug)}
+                    onKeyDown={(e) => {
+                      if (!hasDetails || e.target !== e.currentTarget) return;
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setExpandedSlug(isExpanded ? null : item.show.slug);
+                      }
+                    }}
+                    tabIndex={hasDetails ? 0 : undefined}
                     aria-expanded={hasDetails ? isExpanded : undefined}
                   >
                   <td className="py-3 px-4">
@@ -237,7 +245,7 @@ export function LotteryTable({ data, market = 'broadway' }: LotteryTableProps) {
                       {formatTicketPrice(price, market)}
                     </span>
                   </td>
-                  <td className="py-3 px-4 hidden sm:table-cell" onClick={(e) => e.stopPropagation()}>
+                  <td className="py-3 px-4 hidden sm:table-cell">
                     {(() => {
                       const platform = lottery?.platform || special?.platform;
                       const rawUrl = ensureHttps(lottery?.url || special?.url);
@@ -250,7 +258,7 @@ export function LotteryTable({ data, market = 'broadway' }: LotteryTableProps) {
                             target="_blank"
                             rel={affiliateRel(isAffiliate)}
                             className="inline-flex items-center text-purple-400 hover:text-purple-300 font-medium transition-colors"
-                            onClick={() => trackTicketClick({ showId: item.show.id, showName: item.show.title, platform: platform || '', pageType: 'lottery', showStatus: item.show.status, isAffiliate })}
+                            onClick={(e) => { e.stopPropagation(); trackTicketClick({ showId: item.show.id, showName: item.show.title, platform: platform || '', pageType: 'lottery', showStatus: item.show.status, isAffiliate }); }}
                           >
                             {platform}<ExternalLinkIcon />
                           </a>
@@ -470,6 +478,14 @@ export function StandingRoomTable({ data, market = 'broadway' }: StandingRoomTab
                   <tr
                     className={`border-b border-white/5 transition-colors ${hasDetails ? 'cursor-pointer hover:bg-white/5' : ''} ${isExpanded ? 'border-b-0' : ''}`}
                     onClick={() => hasDetails && setExpandedSlug(isExpanded ? null : item.show.slug)}
+                    onKeyDown={(e) => {
+                      if (!hasDetails || e.target !== e.currentTarget) return;
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setExpandedSlug(isExpanded ? null : item.show.slug);
+                      }
+                    }}
+                    tabIndex={hasDetails ? 0 : undefined}
                     aria-expanded={hasDetails ? isExpanded : undefined}
                   >
                   <td className="py-3 px-4">
@@ -494,9 +510,9 @@ export function StandingRoomTable({ data, market = 'broadway' }: StandingRoomTab
                       {formatTicketPrice(price, market)}
                     </span>
                   </td>
-                  <td className="py-3 px-4 hidden sm:table-cell" onClick={(e) => e.stopPropagation()}>
+                  <td className="py-3 px-4 hidden sm:table-cell">
                     {item.show.officialUrl ? (
-                      <a href={ensureHttps(item.show.officialUrl) || '#'} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-gray-300 hover:text-white font-medium transition-colors text-sm">
+                      <a href={ensureHttps(item.show.officialUrl) || '#'} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-gray-300 hover:text-white font-medium transition-colors text-sm" onClick={(e) => e.stopPropagation()}>
                         {item.show.venue ? item.show.venue.replace(/ Theatre| Theater/i, '') : 'Official site'}
                         <ExternalLinkIcon />
                       </a>
@@ -704,6 +720,14 @@ export function RushTable({ data, market = 'broadway' }: RushTableProps) {
                   <tr
                     className={`border-b border-white/5 transition-colors ${hasDetails ? 'cursor-pointer hover:bg-white/5' : ''} ${isExpanded ? 'border-b-0' : ''}`}
                     onClick={() => hasDetails && setExpandedSlug(isExpanded ? null : item.show.slug)}
+                    onKeyDown={(e) => {
+                      if (!hasDetails || e.target !== e.currentTarget) return;
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setExpandedSlug(isExpanded ? null : item.show.slug);
+                      }
+                    }}
+                    tabIndex={hasDetails ? 0 : undefined}
                     aria-expanded={hasDetails ? isExpanded : undefined}
                   >
                   <td className="py-3 px-4">
@@ -728,14 +752,14 @@ export function RushTable({ data, market = 'broadway' }: RushTableProps) {
                       {formatTicketPrice(cheapestPrice, market)}
                     </span>
                   </td>
-                  <td className="py-3 px-4 hidden sm:table-cell" onClick={(e) => e.stopPropagation()}>
+                  <td className="py-3 px-4 hidden sm:table-cell">
                     <div className="flex flex-wrap gap-1 items-center">
                       {rush && (() => {
                         const rawUrl = ensureHttps(rush.url) || (rush.platform ? undefined : ensureHttps(item.show.officialUrl));
                         const label = rush.platform || 'Box Office';
                         if (rawUrl) {
                           const affiliateResult = rush.url ? buildAffiliateUrl(rawUrl, rush.platform || '', 'rush') : { url: rawUrl, isAffiliate: false };
-                          return <a href={affiliateResult.url} target="_blank" rel={affiliateRel(affiliateResult.isAffiliate)} className="inline-flex items-center text-emerald-400 hover:text-emerald-300 font-medium transition-colors" onClick={() => trackTicketClick({ showId: item.show.id, showName: item.show.title, platform: rush.platform || '', pageType: 'rush', showStatus: item.show.status, isAffiliate: affiliateResult.isAffiliate })}>{label}<ExternalLinkIcon /></a>;
+                          return <a href={affiliateResult.url} target="_blank" rel={affiliateRel(affiliateResult.isAffiliate)} className="inline-flex items-center text-emerald-400 hover:text-emerald-300 font-medium transition-colors" onClick={(e) => { e.stopPropagation(); trackTicketClick({ showId: item.show.id, showName: item.show.title, platform: rush.platform || '', pageType: 'rush', showStatus: item.show.status, isAffiliate: affiliateResult.isAffiliate }); }}>{label}<ExternalLinkIcon /></a>;
                         }
                         return <span className="text-emerald-400">{label}</span>;
                       })()}
@@ -745,7 +769,7 @@ export function RushTable({ data, market = 'broadway' }: RushTableProps) {
                         const prefix = rush ? ' + ' : '';
                         if (rawUrl) {
                           const { url, isAffiliate } = buildAffiliateUrl(rawUrl, digital.platform || '', 'rush');
-                          return <>{prefix && <span className="text-gray-500">{prefix}</span>}<a href={url} target="_blank" rel={affiliateRel(isAffiliate)} className="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium transition-colors" onClick={() => trackTicketClick({ showId: item.show.id, showName: item.show.title, platform: digital.platform || '', pageType: 'rush', showStatus: item.show.status, isAffiliate })}>{label}<ExternalLinkIcon /></a></>;
+                          return <>{prefix && <span className="text-gray-500">{prefix}</span>}<a href={url} target="_blank" rel={affiliateRel(isAffiliate)} className="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium transition-colors" onClick={(e) => { e.stopPropagation(); trackTicketClick({ showId: item.show.id, showName: item.show.title, platform: digital.platform || '', pageType: 'rush', showStatus: item.show.status, isAffiliate }); }}>{label}<ExternalLinkIcon /></a></>;
                         }
                         return <span className="text-blue-400">{prefix}{label}</span>;
                       })()}
