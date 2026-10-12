@@ -89,6 +89,15 @@ const REGRESSION_DEFAULTS = {
    */
   minTruthUrls: 10,
   /**
+   * Runs that measured fewer shows than this cannot support a recall
+   * comparison either (BRO-2296). minTruthUrls alone let a single show through:
+   * on 2026-10-05 four of the five sampled shows had opened that day and were
+   * excluded as settling, and The Hairy Ape alone (18 truth URLs, a venue name
+   * the naive query handles badly) reported "naive regressed". One show's
+   * quirks are not an arm's recall.
+   */
+  minShows: 3,
+  /**
    * An arm whose baseline recall is under this is already contributing almost
    * nothing; a further "drop" there is noise, not news.
    */
@@ -331,6 +340,14 @@ function detectRecallRegression(entries, opts = {}) {
     return {
       verdict: 'insufficient-sample',
       reason: `latest run found only ${latest.truthUrls || 0} ground-truth URL(s) (need ${cfg.minTruthUrls}) — too thin for a recall comparison`,
+      regressions: [], latest, comparedArms: 0,
+    };
+  }
+  if (typeof latest.shows === 'number' && latest.shows < cfg.minShows) {
+    const excluded = Object.entries(latest.excluded || {}).map(([k, n]) => `${n} ${k}`).join(', ');
+    return {
+      verdict: 'insufficient-sample',
+      reason: `latest run measured only ${latest.shows} show(s) (need ${cfg.minShows})${excluded ? `; excluded: ${excluded}` : ''} — one show's quirks are not an arm's recall`,
       regressions: [], latest, comparedArms: 0,
     };
   }

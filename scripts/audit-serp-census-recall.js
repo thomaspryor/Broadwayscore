@@ -190,8 +190,18 @@ function pickShows(shows, opts = {}) {
   // --include-undated` quietly cost 8 shows' worth of calls.
   const undatedIncluded = includeUndated ? undated.slice(0, Math.min(UNDATED_SAMPLE_CAP, Math.max(0, limit - 1))) : [];
 
-  const pool = shows
-    .filter(s => s.openingDate && Date.parse(s.openingDate) >= cutoff && Date.parse(s.openingDate) <= now)
+  // Shows still inside the SERP indexing window are skipped at selection, not
+  // just excluded from the headline afterwards (BRO-2296). The weekly cron
+  // picks the N most recent openings, and on a Monday after a busy weekend
+  // those are mostly same-day openings: 2026-10-05 spent 4 of its 5 slots on
+  // settling shows and judged the naive arm "regressed" on the one show left.
+  const settlingHours = opts.settlingHours === undefined
+    ? parseInt(getArg('settling-hours', '24'), 10)
+    : opts.settlingHours;
+  const dated = shows
+    .filter(s => s.openingDate && Date.parse(s.openingDate) >= cutoff && Date.parse(s.openingDate) <= now);
+  const measurable = dated.filter(s => classifySample(s, { now, settlingHours }).state === 'measured');
+  const pool = measurable
     .sort((a, b) => (a.openingDate < b.openingDate ? 1 : -1))
     .slice(0, Math.max(0, limit - undatedIncluded.length));
 
@@ -199,6 +209,7 @@ function pickShows(shows, opts = {}) {
     pool: [...pool, ...undatedIncluded],
     undatedCandidates: undated.length,
     undatedIncluded: undatedIncluded.length,
+    settlingSkipped: dated.length - measurable.length,
     explicit: false,
   };
 }
@@ -266,20 +277,21 @@ async function main() {
   }
 
   const shows = loadShows();
-  const selection = pickShows(shows);
+  const settlingHours = parseInt(getArg('settling-hours', '24'), 10);
+  const selection = pickShows(shows, { settlingHours });
   const pool = selection.pool;
   if (!pool.length) {
     console.error('No shows matched the selection — nothing to measure.');
     return 1;
   }
   const naivePages = hasFlag('scoped-only') ? 0 : parseInt(getArg('pages', String(DEFAULT_NAIVE_PAGES)), 10);
-  const settlingHours = parseInt(getArg('settling-hours', '24'), 10);
   const outPath = getArg('out') || OUT_PATH;
   const now = Date.now();
 
   console.log(`SERP census recall harness — ${pool.length} show(s), naive pages: ${naivePages}`);
   if (!selection.explicit) {
     console.log(`  undated shows (no openingDate, open): ${selection.undatedCandidates} candidate(s), ${selection.undatedIncluded} sampled${selection.undatedIncluded ? '' : ' (use --include-undated)'}`);
+    if (selection.settlingSkipped) console.log(`  settling shows skipped (opened <${settlingHours}h ago): ${selection.settlingSkipped}`);
   }
   console.log('');
 
