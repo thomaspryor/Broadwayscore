@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-12T05:24:47.384Z",
+  "generated": "2026-10-12T06:12:58.742Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 28,
+  "count": 21,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -15,13 +15,6 @@
       "loserFile": "vulture--jesse-green.json",
       "targetFile": "vulture--sara-holdren.json",
       "reason": "orphaned-duplicate-heal: vulture--sara-holdren.json was flagged invalid after vulture--jesse-green.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "an-enemy-of-the-people-2012",
-      "loserFile": "guardian--charles-isherwood.json",
-      "targetFile": "guardian--adrian-horton.json",
-      "reason": "orphaned-duplicate-heal: guardian--adrian-horton.json was flagged invalid after guardian--charles-isherwood.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -39,13 +32,6 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "cruise-west-end-2022",
-      "loserFile": "consequence--unknown.json",
-      "targetFile": "consequence--abby-jones.json",
-      "reason": "orphaned-duplicate-heal: consequence--abby-jones.json was flagged invalid after consequence--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "end-of-the-rainbow-west-end-2026",
       "loserFile": "guardian--unknown.json",
       "targetFile": "guardian--emma-brockes.json",
@@ -57,20 +43,6 @@
       "loserFile": "nytimes--elisabeth-vincentelli.json",
       "targetFile": "nytimes--ben-brantley.json",
       "reason": "orphaned-duplicate-heal: nytimes--ben-brantley.json was flagged invalid after nytimes--elisabeth-vincentelli.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "kiss-me-kate-2019",
-      "loserFile": "guardian--jesse-oxfeld.json",
-      "targetFile": "guardian--david-jays.json",
-      "reason": "orphaned-duplicate-heal: guardian--david-jays.json was flagged invalid after guardian--jesse-oxfeld.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "leopoldstadt-west-end-2021",
-      "loserFile": "timeout-london--unknown.json",
-      "targetFile": "timeout-london--andrzej-lukowski.json",
-      "reason": "orphaned-duplicate-heal: timeout-london--andrzej-lukowski.json was flagged invalid after timeout-london--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -130,13 +102,6 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "sweat-2017",
-      "loserFile": "guardian--jesse-green.json",
-      "targetFile": "guardian--alexis-soloski.json",
-      "reason": "orphaned-duplicate-heal: guardian--alexis-soloski.json was flagged invalid after guardian--jesse-green.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "the-car-man-west-end-2026",
       "loserFile": "financialtimes--unknown.json",
       "targetFile": "financialtimes--louise-levene.json",
@@ -172,13 +137,6 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "the-story-west-end-2026",
-      "loserFile": "gramilano--unknown.json",
-      "targetFile": "gramilano--graham-watts.json",
-      "reason": "orphaned-duplicate-heal: gramilano--graham-watts.json was flagged invalid after gramilano--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "torch-song-2018",
       "loserFile": "variety--matt-windman.json",
       "targetFile": "variety--marilyn-stasio.json",
@@ -190,13 +148,6 @@
       "loserFile": "daily-mail--georgina-brown.json",
       "targetFile": "daily-mail--joanna-crawley.json",
       "reason": "orphaned-duplicate-heal: daily-mail--joanna-crawley.json was flagged invalid after daily-mail--georgina-brown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "two-palestinians-go-dogging-west-end-2022",
-      "loserFile": "standard--unknown.json",
-      "targetFile": "standard--nick-curtis.json",
-      "reason": "orphaned-duplicate-heal: standard--nick-curtis.json was flagged invalid after standard--unknown.json was pointed at it",
       "field": "duplicateOf"
     }
   ]

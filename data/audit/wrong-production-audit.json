@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-12T05:30:49.502Z",
+  "timestamp": "2026-10-12T06:16:55.976Z",
   "stats": {
-    "totalReviews": 56011,
-    "alreadyFlagged": 20946,
-    "dateGuardCatches": 253,
+    "totalReviews": 56014,
+    "alreadyFlagged": 20928,
+    "dateGuardCatches": 254,
     "directorMismatch": 1776,
-    "tvFilmSignals": 1611,
+    "tvFilmSignals": 1612,
     "londonSignals": 2197,
     "offBroadwaySignals": 505,
     "yearMismatch": 137,
-    "noPublishDate": 5221
+    "noPublishDate": 5223
   },
   "findings": [
     {
@@ -44843,6 +44843,20 @@
     },
     {
       "showId": "the-story-west-end-2026",
+      "file": "hollywood-reporter--lexi-carson.json",
+      "score": null,
+      "publishDate": "2026-09-10",
+      "url": "https://www.hollywoodreporter.com/lists/american-horror-story-season-13-everything-we-know-guide/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-story-west-end-2026",
       "file": "london-unattached--lucy-foxell.json",
       "score": 76,
       "publishDate": "2026-09-04",
@@ -45964,6 +45978,20 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1547d before show (2022-03-31 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 82,
+      "publishDate": "2023-02-07",
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
         }
       ]
     },
