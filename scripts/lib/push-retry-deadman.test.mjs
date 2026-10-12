@@ -99,3 +99,12 @@ test('autostash-conflict rows do not lift 2 push failures to the 3+ error thresh
   assert.match(r.message, /^2 push-retry failure/);
   assert.match(r.message, /1 autostash-conflict/);
 });
+
+test('BRO-3148: discarded committed files are totalled in the message', () => {
+  const now = Date.now();
+  const row = (extra) => ({ ts: new Date(now - 3600e3).toISOString(), reason: 'retries-exhausted', branch: 'main', workflow: 'w', ...extra });
+  const r = assessPushRetryDeadman([row({ unpushedCount: 3 }), row({ unpushedCount: 2 }), row({})], { now });
+  assert.match(r.message, /5 committed file\(s\) discarded across 2 run\(s\)/);
+  const plain = assessPushRetryDeadman([row({})], { now });
+  assert.doesNotMatch(plain.message, /discarded/);
+});

@@ -106,10 +106,15 @@ function assessPushRetryDeadman(entries, opts = {}) {
     .sort((a, b) => b[1] - a[1])
     .map(([wf, n]) => `${wf} x${n}`)
     .join(', ');
+  // BRO-3148: rows from a run that gave up carry how many committed files the
+  // runner threw away. Surface the total so a lost-work week reads as one.
+  const lossRows = recent.filter((r) => Number(r.unpushedCount) > 0);
+  const lostFiles = lossRows.reduce((n, r) => n + Number(r.unpushedCount), 0);
+  const lossNote = lossRows.length > 0 ? ` ${lostFiles} committed file(s) discarded across ${lossRows.length} run(s).` : '';
   const message =
     `${recent.length} push-retry failure(s) in the last 7d` +
     (noops.length > 0 ? ` including ${noops.length} NO-OP-rebase abort(s) (task-#394 stale-ref signature)` : '') +
-    ` across ${branches.join(', ')} [${workflowBreakdown}]. Most recent reason: ${recent[recent.length - 1].reason || '?'}.` + conflictNote;
+    ` across ${branches.join(', ')} [${workflowBreakdown}]. Most recent reason: ${recent[recent.length - 1].reason || '?'}.` + lossNote + conflictNote;
 
   return {
     name: NAME,
