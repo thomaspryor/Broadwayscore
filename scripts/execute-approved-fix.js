@@ -456,6 +456,11 @@ function executeReviewFileOp(action) {
   const { operation, sourcePath, destPath } = action;
   const reviewTextsDir = path.join(ROOT, 'data/review-texts');
 
+  // BRO-5133: bring back a file from review-texts history (source need not exist now).
+  if (operation === 'restore') {
+    return require('./lib/review-file-restore').restoreReviewFileFromCommit(reviewTextsDir, action);
+  }
+
   // Ensure paths are within review-texts/
   const absSource = path.resolve(reviewTextsDir, sourcePath);
   if (!absSource.startsWith(reviewTextsDir)) {

@@ -55,3 +55,11 @@ test('never-idle domains are registered for domcontentloaded', () => {
 test('Cloudflare interstitial is still treated as garbage', () => {
   assert.equal(s.isChallengeOrGarbage('<title>Just a moment...</title>'), true);
 });
+
+test('a large WAF "Access Denied" robot-block page is garbage, a review quoting the phrase is not (BRO-5133)', () => {
+  const pad = 'x'.repeat(19000);
+  const block = `<html><head><title>Access Denied</title></head><body>Your access to this page has been blocked. Your request appears similar to malicious requests sent by robots.${pad}</body></html>`;
+  assert.equal(s.isChallengeOrGarbage(block), true);
+  const article = `<html><head><title>A review</title></head><body>The bouncer says your request appears similar to malicious requests sent by robots.${pad}</body></html>`;
+  assert.equal(s.isChallengeOrGarbage(article), false);
+});

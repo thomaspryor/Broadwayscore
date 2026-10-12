@@ -165,3 +165,12 @@ test('script: dry run reports the same duplicates without touching anything', ()
   assert.match(run(dir), /same-article duplicates 1, conflicts 0/);
   assert.equal(fs.readdirSync(path.join(dir, 'w-2016')).length, 2);
 });
+
+test('vulture-nysd rule moves only the newyorksocialdiary.com row (BRO-5133)', () => {
+  const { planOutletMigration: plan } = require('../../scripts/lib/outlet-id-migrations.js');
+  const nysd = plan({ outletId: 'vulture', outlet: 'Vulture', url: 'https://www.newyorksocialdiary.com/lost-in-del-valle-this-true-tale-doesnt-write-itself/' }, 'vulture--kendall-dupre.json');
+  assert.equal(nysd.rule, 'vulture-nysd-host-to-newyorksocialdiary');
+  assert.equal(nysd.newFilename, 'newyorksocialdiary--kendall-dupre.json');
+  assert.equal(nysd.newData.outlet, 'New York Social Diary');
+  assert.equal(plan({ outletId: 'vulture', url: 'https://www.vulture.com/article/x.html' }, 'vulture--jackson-mchenry.json'), null);
+});

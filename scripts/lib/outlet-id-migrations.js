@@ -44,6 +44,14 @@ const MIGRATIONS = [
     toName: 'DC Theater Arts',
   },
   {
+    id: 'vulture-nysd-host-to-newyorksocialdiary',
+    note: 'A New York Social Diary review (lost-in-del-valle-off-broadway-2026) filed under vulture; restored from history by BRO-5133 plan c.',
+    from: ['vulture'],
+    to: 'newyorksocialdiary',
+    toName: 'New York Social Diary',
+    match: (r) => hostOf(r.url) === 'newyorksocialdiary.com',
+  },
+  {
     id: 'gotham-playgoer-to-bobs-theater-blog',
     note: 'Same Blogspot blog, renamed in 2017.',
     from: ['gotham-playgoer'],

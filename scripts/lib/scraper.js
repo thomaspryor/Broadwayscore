@@ -128,7 +128,7 @@ const JS_REQUIRED_DOMAINS = new Set([
  * Success and wiped 29 shows' cast data twice).
  */
 function _isChallengeOrGarbage(content) {
-  return !!content && content.length < 10000 && (
+  return (!!content && content.length < 10000 && (
     content.includes('Just a moment...') ||
     content.includes('cf_chl_opt') ||
     content.includes('challenge-platform') ||
@@ -141,7 +141,19 @@ function _isChallengeOrGarbage(content) {
     // 200 by Scrapingdog; without this the chain stops on a 1.4KB page (BRO-4450).
     content.includes('<title>Verifying Device</title>') ||
     content.includes('p.toadmash.net')
-  );
+  )) || isRobotBlockPage(content);
+}
+
+/**
+ * A WAF "Access Denied" page that some sites (newyorksocialdiary.com) serve
+ * as a ~20KB 200 to Playwright: bigger than the 10KB cap above, so it was
+ * stored as a 334-char "review" (BRO-5133). Title + phrase together, so an
+ * article quoting the phrase is not rejected.
+ */
+function isRobotBlockPage(content) {
+  return !!content && content.length < 60000 &&
+    /<title>\s*Access Denied\s*<\/title>/i.test(content) &&
+    content.includes('similar to malicious requests sent by robots');
 }
 
 function _isJsRequiredDomain(url) {
