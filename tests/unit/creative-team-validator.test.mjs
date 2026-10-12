@@ -28,6 +28,7 @@ describe('isValidCreativeTeamName — legitimate names (regression guard)', () =
     'Will Frears',
     'Will Pickens',
     'Or Matias',
+    'Yuriko',
     'SCK Sound Design, Walter Trarbach and Andrew Keister',
     'David Cumming, Felix Hagan, Natasha Hodgson & Zoë Roberts',
   ];
@@ -74,4 +75,13 @@ describe('isValidCreativeTeamName — edge cases', () => {
   test('rejects names with digits', () => assert.equal(
     isValidCreativeTeamName('John Doe 3rd'), false
   ));
+});
+
+describe('isValidCreativeTeamName — placeholders and bare articles (BRO-4993)', () => {
+  for (const name of ['An', 'A', 'The', 'TBA', 'TBC', 'tbd', 'N/A', 'NA', 'unknown', 'Unknown', 'None']) {
+    test(`rejects "${name}"`, () => assert.equal(isValidCreativeTeamName(name), false));
+  }
+  for (const name of ['Yuriko', 'Na Young', 'Antony Marsellis', 'The Avett Brothers']) {
+    test(`keeps "${name}"`, () => assert.equal(isValidCreativeTeamName(name), true));
+  }
 });

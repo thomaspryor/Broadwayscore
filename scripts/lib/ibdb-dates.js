@@ -220,6 +220,11 @@ function isValidCreativeTeamName(name) {
   // regardless of length.
   if (normalized.length > 70) return false;
 
+  // Reject placeholders and bare articles: "TBA", "N/A", "unknown", and a
+  // truncated parse that kept only "An"/"A"/"The" (BRO-4993: "An" was stored
+  // as the director of the-people-versus-lenny-bruce-off-broadway-2026).
+  if (/^(tba|tbd|tbc|n\/?a|unknown|anonymous|none|an?|the)$/i.test(normalized)) return false;
+
   // Reject multi-word names that start with lowercase (sentence fragments like "of Disney")
   // Single-word lowercase names are allowed (e.g. "dots" scenic-design collective, "beyoncé")
   if (/^[a-z]/.test(normalized) && /\s/.test(normalized)) return false;
