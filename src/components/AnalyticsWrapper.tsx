@@ -90,6 +90,21 @@ export default function AnalyticsWrapper() {
             capture_pageview: 'history_change',
             capture_pageleave: true,
             enable_heatmaps: false,
+            // Rage-click filter (BRO-3657 cluster): without it, triple-clicks
+            // to select text in the search boxes (132 rage clicks from 18
+            // visitors in 60 days, all in the show-search input) were
+            // reported as broken UI and filed as cards nobody could act on.
+            // Symbol-only stepper text matches exactly. The SDK's word
+            // entries (next/previous/prev) are left out on purpose: they
+            // match as substrings up the ancestor chain, so "Next to Normal"
+            // or "Previews" would hide real rage clicks on show cards; paging
+            // arrows carry .ph-no-rageclick instead (ShowtimesCard).
+            // css_selector_ignorelist stays unset so the SDK default
+            // (.ph-no-rageclick, .ph-no-capture) keeps applying.
+            rageclick: {
+              content_ignorelist: ['>', '<', '+', '-', '\u2212', '\u2013'],
+              ignore_text_selection: true,
+            },
             person_profiles: 'identified_only',
             // Inputs stay visible for UX debugging, except textareas (private
             // rating notes, list descriptions, feedback) and email/password.

@@ -74,6 +74,10 @@ function ExternalLinkIcon() {
   );
 }
 
+// A price with a link opens the booking page; one without (SRO is always box
+// office only) is plain text that lets the click reach the row, which opens
+// the detail panel with the time and instructions. The cells used to swallow
+// every click, so an unlinked chip did nothing (BRO-3674 rage clicks on $40).
 function PriceCell({ price, url, platform, color, bgColor, market, showId, showName, showStatus }: { price: number; url?: string; platform?: string; color: string; bgColor: string; market: TicketMarket; showId: string; showName: string; showStatus?: string }) {
   const badge = (
     <span className={`inline-flex items-center gap-0.5 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md sm:rounded-lg border text-xs sm:text-sm font-semibold ${bgColor} ${color}`}>
@@ -90,7 +94,7 @@ function PriceCell({ price, url, platform, color, bgColor, market, showId, showN
         target="_blank"
         rel={affiliateRel(isAffiliate)}
         className="hover:brightness-125 transition-all"
-        onClick={() => trackTicketClick({ showId, showName, platform: platform || '', pageType: 'discount-tickets', showStatus, isAffiliate })}
+        onClick={(e) => { e.stopPropagation(); trackTicketClick({ showId, showName, platform: platform || '', pageType: 'discount-tickets', showStatus, isAffiliate }); }}
       >
         {badge}
       </a>
@@ -317,6 +321,14 @@ export function DiscountTicketsTable({ rows, market = 'broadway' }: DiscountTick
                   <tr
                     className={`border-b border-white/5 transition-colors ${hasDetails ? 'cursor-pointer hover:bg-white/5' : ''} ${isExpanded ? 'border-b-0' : ''}`}
                     onClick={() => hasDetails && setExpandedSlug(isExpanded ? null : row.slug)}
+                    onKeyDown={(e) => {
+                      if (!hasDetails || e.target !== e.currentTarget) return;
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setExpandedSlug(isExpanded ? null : row.slug);
+                      }
+                    }}
+                    tabIndex={hasDetails ? 0 : undefined}
                     aria-expanded={hasDetails ? isExpanded : undefined}
                   >
                     <td className="py-3 px-2 sm:px-3 w-6 sm:w-8 hidden sm:table-cell">
@@ -340,7 +352,7 @@ export function DiscountTicketsTable({ rows, market = 'broadway' }: DiscountTick
                         )}
                       </div>
                     </td>
-                    <td className="py-3 px-1.5 sm:px-3 text-center whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
+                    <td className="py-3 px-1.5 sm:px-3 text-center whitespace-nowrap">
                       {row.lottery ? (
                         <PriceCell
                           price={row.lottery.price}
@@ -356,7 +368,7 @@ export function DiscountTicketsTable({ rows, market = 'broadway' }: DiscountTick
                         <span className="text-gray-600">—</span>
                       )}
                     </td>
-                    <td className="py-3 px-1.5 sm:px-3 text-center whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
+                    <td className="py-3 px-1.5 sm:px-3 text-center whitespace-nowrap">
                       {row.rush ? (
                         <PriceCell
                           price={row.rush.price}
@@ -372,7 +384,7 @@ export function DiscountTicketsTable({ rows, market = 'broadway' }: DiscountTick
                         <span className="text-gray-600">—</span>
                       )}
                     </td>
-                    <td className="py-3 px-1.5 sm:px-3 text-center whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
+                    <td className="py-3 px-1.5 sm:px-3 text-center whitespace-nowrap">
                       {row.sro ? (
                         <PriceCell
                           price={row.sro.price}

@@ -28,6 +28,7 @@ require('./lib/load-env').loadEnv();
 
 const Anthropic = require('@anthropic-ai/sdk');
 const linearClient = require('./lib/linear-client');
+const { MIN_RAGE_USERS, summarizeRageClicks, isBackedRageClickIssue } = require('./lib/rage-click-summary');
 const { createLinearIssue } = require('./lib/linear-issue-create');
 const { CLAUDE_SONNET } = require('./lib/models');
 const {
@@ -161,13 +162,6 @@ function summarizeBtcFunnel(rows) {
   return `Beat-the-Critics: ${started} started → ${reached} reached results (${completion}% completion) → ${submitted} submitted email`;
 }
 
-function summarizeRageClicks(rows) {
-  return rows
-    .filter(([, elText, n]) => Number(n) >= 2)
-    .map(([page, elText, n]) => `  ${page}: ${Number(n)}x${elText ? ` on "${elText}"` : ''}`)
-    .join('\n');
-}
-
 function summarizeTicketClicks(rows) {
   const top = rows.slice(0, 8);
   return top.map(([show, platform, n]) => `  ${show} (${platform}): ${n}`).join('\n');
@@ -213,7 +207,7 @@ function buildContext(data) {
 
   const rageDetail = summarizeRageClicks(rageClicks);
   if (rageDetail) {
-    parts.push(`\nRAGE CLICKS (frustrated interactions, ≥2 occurrences):\n${rageDetail}`);
+    parts.push(`\nRAGE CLICKS (frustrated interactions, elements hit by ≥${MIN_RAGE_USERS} distinct visitors):\n${rageDetail}`);
   }
 
   if (ticketClicks.length > 0) {
@@ -308,7 +302,9 @@ Only surface issues that are:
 2. Not already in the existing open issues list
 3. Actionable (something a developer can investigate and fix)
 
-Return 3-5 issues maximum, ordered by priority.${existingSection}
+Return 3-5 issues maximum, ordered by priority.
+
+For a rage-click issue: name the element exactly as the data describes it (tag, link, text), and use the row's [page key] as the PAGE in evidence_key. Repeated clicks on a link that goes somewhere, a text box, or a toggle that visibly changes state are normal use, not a defect; skip them. Only file when the element looks clickable but does nothing, or is broken.${existingSection}
 
 SEPARATELY, examine the ZERO-RESULTS SEARCH TERMS section (if present). These are queries that returned no results — each is a candidate for a show we don't yet cover. Classify them: most will be typos, partial spellings of shows we likely already have, generic words, performer names, or non-theatre noise. Only a few (if any) will be REAL productions (Broadway, West End, or Off-Broadway) that we are genuinely missing. Return ONLY the confident real-missing-production matches in the "missing_shows" array — when in doubt, leave it out. Do NOT propose adding shows yourself; a human must validate the venue/date before any show is created.
 
@@ -399,6 +395,12 @@ async function main() {
   const skipped = [];
 
   for (const issue of issues) {
+    // The model only sees qualifying rows, but can still invent a rage-click
+    // card for a page none of them name (BRO-3657 cluster).
+    if (!isBackedRageClickIssue(issue, rageClicks)) {
+      skipped.push(`[no qualifying rage-click row] ${issue.title}`);
+      continue;
+    }
     if (created.length >= CARDS_PER_RUN_CAP) {
       skipped.push(`[cap] ${issue.title}`);
       continue;

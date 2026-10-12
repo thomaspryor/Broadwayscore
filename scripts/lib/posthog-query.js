@@ -125,16 +125,34 @@ async function getRageClicks() {
   `);
 }
 
-// Rage clicks with element text — for friction analysis.
+// Rage clicks per clicked element — for friction analysis. Row shape is
+// documented in scripts/lib/rage-click-summary.js (its only consumer). Real
+// Users lens + distinct visitors so one person (or the owner) can't file a
+// card; tag/href/nearest id so the card names the element (BRO-3657 cluster).
+// The HAVING floor matches MIN_RAGE_USERS and is load-bearing: on 2026-10-12
+// the same SELECT without it returned PostHog API 500 on every try, while
+// with it the query answered (some single-visitor row breaks the response).
+// Known limit: the floor is per exact path, so a widget broken on many show
+// pages with one visitor each never qualifies. Collapsing /show/<id> to
+// /show/* in HogQL (replaceRegexpAll, multiIf(match(...)), or a subquery)
+// also returned 500 on every try that day; pageKeyForPath groups the rows
+// that do qualify.
 async function getRageClickDetails() {
   return phQuery(`
     SELECT
       properties.$pathname AS page,
       properties.$el_text AS element_text,
-      count() AS n
+      arrayElement(elements_chain_elements, 1) AS tag,
+      elements_chain_href AS href,
+      arrayElement(elements_chain_ids, 1) AS nearest_id,
+      count() AS n,
+      count(DISTINCT person_id) AS users
     FROM events
     WHERE event = '$rageclick' AND timestamp > now() - interval 7 day
-    GROUP BY page, element_text ORDER BY n DESC LIMIT 15
+      AND ${REAL_USERS_WHERE}
+    GROUP BY page, element_text, tag, href, nearest_id
+    HAVING users >= 2
+    ORDER BY n DESC LIMIT 25
   `);
 }
 

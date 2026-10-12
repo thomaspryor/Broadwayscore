@@ -63,7 +63,11 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
           Opera-domain swap happens client-side after hydration; SSR renders the
           Broadway default so search engines + first-paint stay consistent across
           the shared static export. */}
-      <Link href={isOpera ? '/opera' : (isWestEnd || isOffWestEnd ? '/west-end' : '/')} className="flex items-center shrink-0 group">
+      {/* ph-no-rageclick: the logo on its own home page is a no-op link, and
+          repeat clicks on it were filed as broken UI (BRO-4739). Applies on
+          every page, so a broken logo link would not show as rage clicks;
+          the build and route checks cover that instead. */}
+      <Link href={isOpera ? '/opera' : (isWestEnd || isOffWestEnd ? '/west-end' : '/')} className="flex items-center shrink-0 group ph-no-rageclick">
         {isOpera ? (
           <span className="text-base min-[390px]:text-lg sm:text-3xl font-extrabold text-white tracking-tight">Opera<span className="bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">Scorecard</span></span>
         ) : isWestEnd || isOffWestEnd ? (

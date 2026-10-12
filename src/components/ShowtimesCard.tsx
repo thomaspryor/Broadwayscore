@@ -139,7 +139,7 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tic
         <button
           onClick={() => setWeekIndex(i => i - 1)}
           disabled={!canPrev}
-          className="p-2.5 -m-1.5 rounded text-gray-400 hover:text-white disabled:opacity-30 disabled:cursor-default transition-colors"
+          className="p-2.5 -m-1.5 rounded text-gray-400 hover:text-white disabled:opacity-30 disabled:cursor-default transition-colors ph-no-rageclick"
           aria-label="Previous week"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
@@ -153,7 +153,7 @@ export default function ShowtimesCard({ schedule, currentMonday, showStatus, tic
         <button
           onClick={() => setWeekIndex(i => i + 1)}
           disabled={!canNext}
-          className="p-2.5 -m-1.5 rounded text-gray-400 hover:text-white disabled:opacity-30 disabled:cursor-default transition-colors"
+          className="p-2.5 -m-1.5 rounded text-gray-400 hover:text-white disabled:opacity-30 disabled:cursor-default transition-colors ph-no-rageclick"
           aria-label="Next week"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
