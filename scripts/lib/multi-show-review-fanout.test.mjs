@@ -733,3 +733,24 @@ test('a split parent never takes a whole article the fan-out cannot act on', () 
   createOrMergeReviewFile(hs, { outletId: 'vulture', outlet: 'Vulture', criticName: 'Sara Holdren', url: 'https://www.vulture.com/x.html', source: 'submit-review-form', replaceBadBody: true, fields: { fullText: whole } }, { reviewTextsDir: dir });
   assert.equal(JSON.parse(fs.readFileSync(p, 'utf8')).fullText, section);
 });
+
+// BRO-5198 ship-check: WSJ Teachout columns put each show's listing block and
+// a short lede BEFORE its title. The intro cut sat at the title, filing the
+// next show's listing + lede at the end of the previous show's section.
+test('listing block + lede before the next title move into that section', () => {
+  const shows = [
+    { id: 'the-addams-family-2010', title: 'The Addams Family', category: 'broadway', openingDate: '2010-04-08' },
+    { id: 'lend-me-a-tenor-2010', title: 'Lend Me a Tenor', category: 'broadway', openingDate: '2010-04-04' },
+  ];
+  const a = 'If you are bringing the family to Manhattan, you will have to go to "The Addams Family." The set is lavish and the songs are forgettable, and "The Addams Family" never finds its tone. '.repeat(6)
+    + 'My nephew liked "The Addams Family" more than I did. I am with him, mostly.';
+  const listing = '\n\nMusic Box Theatre,\n\n239 W. 45th St.\n\n($86.50-$126.50),\n\n212-239-6200\n\n'
+    + 'Ken Ludwig writes comfy, low-stakes farces in which nobody is embarrassed for long.\n\n';
+  const b = '"Lend Me a Tenor," last seen on Broadway in 1990, is the model of that approach, and "Lend Me a Tenor" is staged with gusto. '.repeat(5)
+    + 'The six-door set is gloriously farce-friendly.';
+  const plan = planMultiShowFanout({ showId: 'the-addams-family-2010', publishDate: '2010-04-09', contentTier: 'complete', fullText: a + listing + b }, shows);
+  assert.ok(plan, 'expected a split');
+  assert.ok(plan.ownSection.sectionText.trim().endsWith('I am with him, mostly.'), plan.ownSection.sectionText.slice(-80));
+  const tenor = plan.otherSections.find((s) => s.showId === 'lend-me-a-tenor-2010');
+  assert.ok(tenor.sectionText.startsWith('Music Box Theatre,'), tenor.sectionText.slice(0, 80));
+});
