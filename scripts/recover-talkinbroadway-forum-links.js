@@ -214,7 +214,9 @@ async function run() {
     // development first surfaced). Reaching this line means the write is
     // already confirmed correct; no need to re-check it here too.
 
-    if (path.resolve(newFilePath) !== path.resolve(filePath) && fs.existsSync(newFilePath)) {
+    // BRO-5166: an --critic ingest now renames the husk itself, so it may
+    // already be gone.
+    if (path.resolve(newFilePath) !== path.resolve(filePath) && fs.existsSync(newFilePath) && fs.existsSync(filePath)) {
       try {
         fs.unlinkSync(filePath);
         console.log(`  deleted superseded husk: ${path.join(showDir, file)}`);
