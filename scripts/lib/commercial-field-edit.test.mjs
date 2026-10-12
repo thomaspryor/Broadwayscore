@@ -19,6 +19,19 @@ describe('applyCommercialFieldEdit', () => {
     assert.equal(c.shows['lucky-guy-2013'].lastUpdated, NOW);
   });
 
+  it('drops designationBasis when the designation leaves Flop/Fizzle', () => {
+    const c = { shows: { 'torch-song-2018': { designation: 'Fizzle', designationBasis: 'reported-loss' } } };
+    const r = applyCommercialFieldEdit(c, 'torch-song-2018', 'designation', 'Fizzle', 'Nonprofit', NOW);
+    assert.equal(r.ok, true);
+    assert.equal('designationBasis' in c.shows['torch-song-2018'], false);
+  });
+
+  it('keeps designationBasis on a loss-to-loss relabel', () => {
+    const c = { shows: { 'grey-house': { designation: 'Fizzle', designationBasis: 'no-recoupment-announced' } } };
+    applyCommercialFieldEdit(c, 'grey-house', 'designation', 'Fizzle', 'Flop', NOW);
+    assert.equal(c.shows['grey-house'].designationBasis, 'no-recoupment-announced');
+  });
+
   it('refuses a stale oldValue and leaves the record untouched', () => {
     const c = fresh();
     const before = JSON.stringify(c);

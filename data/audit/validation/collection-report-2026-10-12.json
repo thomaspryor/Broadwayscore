@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-10-12T02:13:06.209Z",
+  "runDate": "2026-10-12T02:29:49.259Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,10 +11,10 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 14,
-    "failed": 57,
+    "processed": 0,
+    "failed": 55,
     "skipped": 0,
-    "successRate": "19.7%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
     "playwright": 273,
@@ -28,8 +28,8 @@
     "archive": 34
   },
   "statistics": {
-    "tier1Attempts": 14,
-    "tier1Success": 14,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -38,13 +38,13 @@
     "tier1_9Success": 0,
     "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 8,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 57,
+    "totalFailed": 55,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
@@ -54,23 +54,17 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 14,
-    "failed": 57,
+    "processed": 0,
+    "failed": 55,
     "shows": [
-      "a-christmas-carol-2001",
-      "a-wonderful-world-the-louis-armstrong-musical-2024",
       "aint-no-mo-2022",
       "all-my-sons-2008",
       "appropriate-2023",
-      "beetlejuice-2019",
-      "boop-2025",
       "clybourne-park-2012",
       "come-back-little-sheba-2008",
       "eclipsed-2016",
-      "english-2025",
       "escape-to-margaritaville-2018",
       "farinelli-and-the-king-2017",
-      "gary-a-sequel-to-titus-andronicus-2019",
       "ghost-the-musical-2012",
       "grey-house-2023",
       "hamlet-2009",
@@ -88,9 +82,7 @@
       "ohio-state-murders-2022",
       "on-a-clear-day-you-can-see-forever-2011",
       "picnic-2013",
-      "pirates-the-penzance-musical-2025",
       "ragtime-2009",
-      "real-women-have-curves-2025",
       "reasons-to-be-pretty-2009",
       "red-2010",
       "rodgers-hammersteins-cinderella-2013",
@@ -99,14 +91,12 @@
       "suffs-2024",
       "tammy-faye-2024",
       "the-collaboration-2022",
-      "the-cottage-2023",
       "the-hills-of-california-2024",
       "the-inheritance-2019",
       "the-lieutenant-of-inishmore-2006",
       "the-little-mermaid-2008",
       "the-nap-2018",
       "the-norman-conquests-2009",
-      "the-picture-of-dorian-gray-2025",
       "the-shark-is-broken-2023",
       "the-waverly-gallery-2018",
       "the-whos-tommy-2024",
@@ -119,30 +109,13 @@
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
-      "processed": 400,
-      "failed": 275
+      "processed": 414,
+      "failed": 277
     }
   },
-  "processed": [
-    "real-women-have-curves-2025/ew--unknown.json",
-    "real-women-have-curves-2025/timeout--unknown.json",
-    "real-women-have-curves-2025/nysr--unknown.json",
-    "pirates-the-penzance-musical-2025/nypost--unknown.json",
-    "pirates-the-penzance-musical-2025/nysr--unknown.json",
-    "boop-2025/timeout--unknown.json",
-    "the-picture-of-dorian-gray-2025/ew--unknown.json",
-    "the-picture-of-dorian-gray-2025/nypost--unknown.json",
-    "the-picture-of-dorian-gray-2025/timeout--unknown.json",
-    "a-wonderful-world-the-louis-armstrong-musical-2024/timeout--unknown.json",
-    "the-cottage-2023/ew--unknown.json",
-    "beetlejuice-2019/ew--nick-romano.json",
-    "gary-a-sequel-to-titus-andronicus-2019/rollingstone--jerry-portwood.json",
-    "a-christmas-carol-2001/ew--ruth-kinane.json"
-  ],
+  "processed": [],
   "failed": [
     "matilda-the-musical-west-end-2021/whatsonstage--meriel-patrick.json",
-    "boop-2025/nypost--unknown.json",
-    "english-2025/guardian--unknown.json",
     "tammy-faye-2024/stageandcinema--mike-mineo.json",
     "yellow-face-2024/nypost--johnny-oleksinski.json",
     "the-hills-of-california-2024/times-uk--ann-treneman.json",
@@ -1348,14 +1321,6 @@
       "soon-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ]
   },
-  "failuresByOutlet": {
-    "The Guardian": {
-      "count": 1,
-      "domain": "theguardian.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
