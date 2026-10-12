@@ -1429,5 +1429,35 @@
       }
     ],
     "queuedAt": "2026-10-12T18:34:10.118Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4849-sidecar-guard",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4849-sidecar-guard",
+    "description": "land.yml did not land land/bro-4849-sidecar-guard: the unit-tests-node gate went red at 389acbc5fc. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38293271586",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4849-sidecar-guard"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "389acbc5fcb84096ac6efb39bc8affe56f3271d8"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38293271586"
+      }
+    ],
+    "queuedAt": "2026-10-12T19:18:50.934Z"
   }
 ]
