@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-12T10:18:23.293Z",
+  "timestamp": "2026-10-12T10:39:26.859Z",
   "stats": {
-    "totalReviews": 55973,
+    "totalReviews": 55974,
     "alreadyFlagged": 20876,
     "dateGuardCatches": 254,
     "directorMismatch": 1776,
     "tvFilmSignals": 1616,
-    "londonSignals": 2199,
+    "londonSignals": 2197,
     "offBroadwaySignals": 505,
     "yearMismatch": 137,
-    "noPublishDate": 5224
+    "noPublishDate": 5223
   },
   "findings": [
     {
@@ -50762,20 +50762,6 @@
       ]
     },
     {
-      "showId": "a-taste-of-honey-west-end-2019",
-      "file": "timeout-london--rosemary-waugh.json",
-      "score": 77,
-      "publishDate": "2019-12-10",
-      "url": "https://www.timeout.com/london/theatre/a-taste-of-honey-review",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
-        }
-      ]
-    },
-    {
       "showId": "a-tupperware-of-ashes-west-end-2024",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
       "score": 100,
@@ -83247,20 +83233,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"adelphi theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "waitress-west-end-2019",
-      "file": "camdennewjournal--catherine-usher.json",
-      "score": 89,
-      "publishDate": "2019-03-15",
-      "url": null,
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
