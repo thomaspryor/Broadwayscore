@@ -126,3 +126,83 @@ describe('Mezzanine venue-aware override', () => {
     assert.strictEqual(m.score, 67, `expected score 67, got ${m.score}`);
   });
 });
+
+// BRO-5167: shows in previews (no openingDate yet) at a West End house whose
+// shows.json venue is written "Drury Lane, Theatre Royal".
+describe('Mezzanine matcher: earlier closed runs and inverted venue names (BRO-5167)', () => {
+  const run = (name, theater, firstPreview, closed, ratingsCount) => ({
+    objectId: `pid-${theater.replace(/\W+/g, '-')}-${firstPreview.slice(0, 4)}`,
+    show: { name }, showName: name,
+    firstPreview: { __type: 'Date', iso: `${firstPreview}T04:00:00.000Z` },
+    ...(closed ? { closed: { __type: 'Date', iso: `${closed}T04:00:00.000Z` } } : {}),
+    ratingsCount, averageRating: 4, theater: { name: theater },
+  });
+
+  test('a single exact-title production that closed before our previews is NOT linked (An Oak Tree)', () => {
+    const show = { id: 'an-oak-tree-off-west-end-2026', title: 'An Oak Tree', venue: 'The Other Palace - Main Theatre', previewsStartDate: '2026-01-07', openingDate: null, status: 'open' };
+    const matches = matchProductions([run('An Oak Tree', 'Young Vic Theatre', '2025-05-06', '2025-05-17', 56)], [show]);
+    assert.strictEqual(matches.length, 0, `expected no link, got ${JSON.stringify(matches.map(m => m.prodIds))}`);
+  });
+
+  test('"Drury Lane, Theatre Royal" matches Mezzanine "Theatre Royal Drury Lane" and drops the 2019 Barbican run', () => {
+    const show = { id: 'jcs-2026', title: 'Jesus Christ Superstar', venue: 'Drury Lane, Theatre Royal', previewsStartDate: '2026-01-16', openingDate: null, status: 'open' };
+    const matches = matchProductions([
+      run('Jesus Christ Superstar', 'Barbican Theatre', '2019-07-04', '2019-08-24', 107),
+      run('Jesus Christ Superstar', 'Theatre Royal Drury Lane', '2026-01-16', null, 54),
+    ], [show]);
+    assert.strictEqual(matches.length, 1);
+    assert.deepStrictEqual(matches[0].prodIds, ['pid-Theatre-Royal-Drury-Lane-2026']);
+  });
+
+  test('a long-running production with no closing date still links (Phantom-style)', () => {
+    const show = { id: 'mousetrap', title: 'The Mousetrap', venue: "St Martin's Theatre", openingDate: '1974-03-25', status: 'open' };
+    const matches = matchProductions([run('The Mousetrap', "St Martin's Theatre", '1952-11-25', null, 500)], [show]);
+    assert.strictEqual(matches.length, 1);
+  });
+});
+
+describe('Mezzanine matcher: leftovers after dropping earlier runs must still verify (BRO-5167)', () => {
+  const prod = (objectId, theater, from, to, ratingsCount) => ({
+    objectId, show: { name: 'The Maids' }, ratingsCount, averageRating: 4, theater: { name: theater },
+    ...(from ? { firstPreview: { __type: 'Date', iso: `${from}T04:00:00.000Z` } } : {}),
+    ...(to ? { closed: { __type: 'Date', iso: `${to}T04:00:00.000Z` } } : {}),
+  });
+  const show = { id: 'the-maids-off-broadway-2026', title: 'The Maids', venue: "St. Ann's Warehouse", previewsStartDate: '2026-05-17', openingDate: '2026-05-17', status: 'closed' };
+
+  test('an undated production at another theater is NOT linked once the earlier run elsewhere is set aside', () => {
+    // Real shape: Donmar Warehouse run (closed 2025-11-29) + an undated Barbican record.
+    const prods = [prod('donmar', 'Donmar Warehouse', '2025-10-13', '2025-11-29', 120), prod('barbican', 'The Barbican', null, null, 3)];
+    assert.strictEqual(matchProductions(prods, [show]).length, 0);
+  });
+
+  test('a same-theater earlier run (return engagement) keeps the existing same-venue behavior', () => {
+    const prods = [prod('sa-2025', "St. Ann's Warehouse", '2025-03-01', '2025-04-01', 60)];
+    const m = matchProductions(prods, [show]);
+    assert.strictEqual(m.length, 1);
+    assert.deepStrictEqual(m[0].prodIds, ['sa-2025']);
+  });
+});
+
+describe('Mezzanine matcher: previews-only show keeps its current run after an earlier run is dropped (BRO-5167)', () => {
+  const prod = (objectId, theater, from, to, ratingsCount) => ({
+    objectId, show: { name: 'Example Musical' }, ratingsCount, averageRating: 4, theater: { name: theater },
+    ...(from ? { firstPreview: { __type: 'Date', iso: `${from}T04:00:00.000Z` } } : {}),
+    ...(to ? { closed: { __type: 'Date', iso: `${to}T04:00:00.000Z` } } : {}),
+  });
+  // Venue renamed (Queen's -> Sondheim): venuesMatch fails, so only the year can verify.
+  const show = { id: 'example-musical-west-end-2026', title: 'Example Musical', venue: 'Sondheim Theatre', previewsStartDate: '2026-09-01', status: 'previews', market: 'west-end' };
+
+  test('the current run under an old venue name still links via the previews year', () => {
+    const prods = [prod('yv', 'Young Vic', '2025-03-01', '2025-04-01', 40), prod('cur', "Queen's Theatre", '2026-09-01', null, 12)];
+    const m = matchProductions(prods, [show]);
+    assert.strictEqual(m.length, 1);
+    assert.deepStrictEqual(m[0].prodIds, ['cur']);
+  });
+
+  test('a 0-rating earlier record does not strip the single-candidate pass', () => {
+    const prods = [prod('yv', 'Young Vic', '2025-03-01', '2025-04-01', 0), prod('cur', "Queen's Theatre", null, null, 12)];
+    const m = matchProductions(prods, [show]);
+    assert.strictEqual(m.length, 1);
+    assert.deepStrictEqual(m[0].prodIds, ['cur']);
+  });
+});
