@@ -14,6 +14,7 @@
  *   --aggregator: show-score, dtli, bww-rr, or all
  *   --shows: comma-separated show IDs, "all", or "missing" (only fetch missing)
  *   --force: re-fetch even if file exists
+ *   --time-budget-min=N: wall-clock budget (default 100 minutes)
  */
 
 import { chromium, Browser, Page } from 'playwright';
@@ -30,6 +31,8 @@ const {
 } = require('./lib/not-found-cache');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { findConflictingShowId } = require('./lib/show-score-url-map');
+const { createRunBudget, parseTimeBudgetMin } = require('./lib/run-budget');
+const { withDeadline, closeBrowserServer } = require('./lib/cron-deadline');
 const { parseShowScorePagination, showScorePaginationPages } = require('./lib/show-score-discover');
 
 // Paths
@@ -304,7 +307,7 @@ async function fetchShowScore(page: Page, showId: string, shows: Record<string, 
           for (const p of pages) {
             let body;
             try {
-              const resp = await fetch(`${nextPagePath}?page=${p}`, { credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+              const resp = await fetch(`${nextPagePath}?page=${p}`, { credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' }, signal: AbortSignal.timeout(15000) });
               if (!resp.ok) return { added, pagesFetched, reason: `page ${p} HTTP ${resp.status}` };
               body = await resp.json();
             } catch (e) {
@@ -601,23 +604,30 @@ async function fetchAggregatorPage(
   showId: string,
   shows: Record<string, Show>,
   showScoreUrls: Record<string, string>,
-  dtliSlugMap: Record<string, string>
+  dtliSlugMap: Record<string, string>,
+  timeoutMs = 180000
 ): Promise<FetchResult> {
-  const page = await browser.newPage();
+  const startedAt = Date.now();
+  const page = await withDeadline(() => browser.newPage(), Math.min(30000, timeoutMs), 'Page creation');
 
   try {
-    switch (aggregator) {
-      case 'show-score':
-        return await fetchShowScore(page, showId, shows, showScoreUrls);
-      case 'dtli':
-        return await fetchDtli(page, showId, shows, dtliSlugMap);
-      case 'bww-rr':
-        return await fetchBwwRoundup(page, showId, shows);
-      default:
-        return { showId, aggregator, success: false, error: `Unknown aggregator: ${aggregator}` };
-    }
+    return await withDeadline(async () => {
+      switch (aggregator) {
+        case 'show-score':
+          return await fetchShowScore(page, showId, shows, showScoreUrls);
+        case 'dtli':
+          return await fetchDtli(page, showId, shows, dtliSlugMap);
+        case 'bww-rr':
+          return await fetchBwwRoundup(page, showId, shows);
+        default:
+          return { showId, aggregator, success: false, error: `Unknown aggregator: ${aggregator}` };
+      }
+    }, Math.max(1, timeoutMs - (Date.now() - startedAt)), 'Aggregator item');
+  } catch (error) {
+    // A deadline is transient, never a confirmed not-found cache entry.
+    return { showId, aggregator, success: false, error: String(error) };
   } finally {
-    await page.close();
+    await withDeadline(() => page.close(), 5000, 'Page close').catch(() => {});
   }
 }
 
@@ -666,7 +676,8 @@ async function runShowScoreExtraction(): Promise<void> {
   try {
     execSync('node scripts/extract-show-score-reviews.js', {
       cwd: path.join(__dirname, '..'),
-      stdio: 'inherit'
+      stdio: 'inherit',
+      timeout: 300000
     });
   } catch (error) {
     console.error('Extraction script failed:', error);
@@ -677,6 +688,7 @@ async function runShowScoreExtraction(): Promise<void> {
 async function main() {
   console.log('=== Aggregator Page Fetcher ===\n');
 
+  const budget = createRunBudget(parseTimeBudgetMin(process.argv.slice(2)) || 100);
   const { aggregators, showIds, force } = parseArgs();
   const shows = loadShows();
   const showScoreUrls = loadShowScoreUrls();
@@ -687,11 +699,13 @@ async function main() {
   console.log(`DTLI slug map: ${Object.keys(dtliSlugMap).length} entries`);
   console.log(`Force re-fetch: ${force}\n`);
 
-  const browser = await chromium.launch({ headless: true });
+  // launchServer exposes the child process so a hung close cannot keep Node alive.
+  const browserServer = await chromium.launchServer({ headless: true, timeout: 30000 });
   const results: FetchResult[] = [];
   let fetchedShowScore = false;
 
   try {
+    const browser = await chromium.connect(browserServer.wsEndpoint(), { timeout: 30000 });
     for (const aggregator of aggregators) {
       console.log(`\n--- ${aggregator.toUpperCase()} ---`);
       let notFound = loadNotFoundForAggregator(aggregator);
@@ -700,6 +714,10 @@ async function main() {
       let fetchCount = 0;
 
       for (const showId of showIds) {
+        if (budget.exceeded()) {
+          console.log(`Run budget reached; remaining ${aggregator} pages deferred. Completed archives and not-found cache will be saved.`);
+          break;
+        }
         const show = shows[showId];
 
         // Skip London shows — Show Score and DTLI only cover Broadway/OB
@@ -720,7 +738,7 @@ async function main() {
         }
 
         console.log(`[${showId}] Fetching...`);
-        const result = await fetchAggregatorPage(browser, aggregator, showId, shows, showScoreUrls, dtliSlugMap);
+        const result = await fetchAggregatorPage(browser, aggregator, showId, shows, showScoreUrls, dtliSlugMap, Math.min(180000, budget.remainingMs()));
         results.push(result);
         fetchCount++;
 
@@ -749,7 +767,7 @@ async function main() {
       if (skippedMarket > 0) console.log(`  Skipped ${skippedMarket} shows (wrong market)`);
     }
   } finally {
-    await browser.close();
+    await closeBrowserServer(browserServer);
   }
 
   // Update Show Score URL mappings if any changed
@@ -799,7 +817,9 @@ async function main() {
   }
 }
 
-main().catch(err => {
+export { main, fetchAggregatorPage };
+
+if (require.main === module) main().catch(err => {
   console.error('Fatal error:', err);
   process.exit(1);
 });

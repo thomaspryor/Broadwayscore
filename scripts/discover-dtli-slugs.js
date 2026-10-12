@@ -9,6 +9,7 @@
  * Usage:
  *   node scripts/discover-dtli-slugs.js              # Full discovery
  *   node scripts/discover-dtli-slugs.js --dry-run    # Print matches without writing
+ *   node scripts/discover-dtli-slugs.js --time-budget-min=N  # Default: 10 minutes
  *   node scripts/discover-dtli-slugs.js --verify     # Check mapped URLs still work
  *   node scripts/discover-dtli-slugs.js --force      # Re-discover even for mapped shows
  *                                                    # (re-probes each mapped id's current
@@ -29,7 +30,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
+const { cronHttpRequest } = require('./lib/cron-http-request');
+const { createRunBudget, parseTimeBudgetMin } = require('./lib/run-budget');
 const { pickBestDtliSlug, dtliSlugPredatesShow, extractDtliReviewYears, dtliShowYear } = require('./lib/review-guards');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -37,6 +39,7 @@ const SLUG_MAP_PATH = path.join(__dirname, '..', 'data', 'dtli-slug-map.json');
 const SITEMAP_INDEX_URL = 'https://didtheylikeit.com/sitemap_index.xml';
 
 const args = process.argv.slice(2);
+const budget = createRunBudget(parseTimeBudgetMin(args) || 10);
 const DRY_RUN = args.includes('--dry-run');
 const VERIFY = args.includes('--verify');
 const FORCE = args.includes('--force');
@@ -50,35 +53,20 @@ const SHOW_FILTER = (() => {
   return ids.length ? new Set(ids) : null;
 })();
 
-function httpGet(url) {
-  return new Promise((resolve, reject) => {
-    const options = {
-      timeout: 20000,
+async function httpGet(url) {
+  if (budget.exceeded()) return { ok: false, error: 'run budget reached' };
+  try {
+    const result = await cronHttpRequest(url, 'GET', {
+      timeout: Math.min(20000, budget.remainingMs()), maxRedirects: 5,
       headers: {
         'User-Agent': 'Mozilla/5.0 (compatible; BroadwayScorecard/1.0; +https://broadwayscorecard.com)',
         'Accept': 'text/xml, application/xml, text/html, */*'
       }
-    };
-    const req = https.get(url, options, (res) => {
-      if (res.statusCode === 301 || res.statusCode === 302) {
-        const redirectUrl = res.headers.location;
-        if (redirectUrl) {
-          httpGet(redirectUrl.startsWith('http') ? redirectUrl : `https://didtheylikeit.com${redirectUrl}`)
-            .then(resolve).catch(reject);
-          return;
-        }
-      }
-      if (res.statusCode !== 200) {
-        resolve({ ok: false, status: res.statusCode });
-        return;
-      }
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => resolve({ ok: true, body: data }));
     });
-    req.on('error', (err) => resolve({ ok: false, error: err.message }));
-    req.on('timeout', () => { req.destroy(); resolve({ ok: false, error: 'timeout' }); });
-  });
+    return { ok: result.statusCode === 200, status: result.statusCode, body: result.body };
+  } catch (error) {
+    return { ok: false, error: error.message };
+  }
 }
 
 function sleep(ms) {
@@ -134,6 +122,7 @@ async function fetchSitemapUrls() {
   console.log(`Sitemap index unavailable (${result.error || result.status}), trying individual sitemaps...`);
   const urls = [];
   for (let i = 1; i <= 20; i++) {
+    if (budget.exceeded()) break;
     const url = `https://didtheylikeit.com/shows-sitemap${i}.xml`;
     const res = await httpGet(url);
     if (res.ok && res.body && res.body.includes('<loc>')) {
@@ -319,6 +308,7 @@ function matchDtliSlug(dtliSlug, indices) {
 async function probeCandidateYears(slugs, fetchFn = httpGet) {
   const out = {};
   for (const slug of slugs) {
+    if (budget.exceeded()) return null;
     const result = await fetchFn(`https://didtheylikeit.com/shows/${slug}/`);
     out[slug] = result && result.ok && result.body ? extractDtliReviewYears(result.body) : null;
     await sleep(200); // Be gentle
@@ -344,6 +334,7 @@ async function verifyMappedUrls(slugMap) {
   const brokenList = [];
 
   for (const [showId, dtliSlug] of entries) {
+    if (budget.exceeded()) { console.log(`Run budget reached; ${entries.length - working - broken} URLs deferred.`); break; }
     const url = `https://didtheylikeit.com/shows/${dtliSlug}/`;
     const result = await httpGet(url);
     if (result.ok) {
@@ -393,6 +384,7 @@ async function main() {
 
   const allDtliSlugs = [];
   for (const sitemapUrl of sitemapUrls) {
+    if (budget.exceeded()) { console.log('Run budget reached; remaining sitemaps deferred.'); break; }
     const result = await httpGet(sitemapUrl);
     if (!result.ok) {
       console.warn(`  Failed to fetch ${sitemapUrl}`);
@@ -474,6 +466,7 @@ async function main() {
   if (probeCount > 0) console.log(`\nYear rule: probing ${probeCount} candidate page(s) across ${probeTargets.length} show(s)...`);
 
   for (const [showId, candidates] of Object.entries(candidatesByShow)) {
+    if (budget.exceeded()) { console.log('Run budget reached; remaining candidates deferred.'); break; }
     // Don't overwrite high-confidence existing mappings with low-confidence new ones
     if (existingReverse.has(showId) && !FORCE) {
       skippedExisting++;
@@ -485,6 +478,12 @@ async function main() {
     const mappedSlug = existingReverse.get(showId) || null;
     const slugs = candidates.map(c => c.dtliSlug);
     const reviewYearsBySlug = showYear ? await probeCandidateYears(slugs) : null;
+
+    // Never select a mapping from an incomplete set of year probes.
+    if (showYear && (reviewYearsBySlug === null || budget.exceeded())) {
+      console.log(`Run budget reached during ${showId}; mapping left unchanged.`);
+      break;
+    }
 
     // Revival preference: for shows with a year suffix (e.g. giant-2026), pick the DTLI slug
     // with the highest numeric suffix (e.g. giant-2 over giant). Logic lives in review-guards.js.
