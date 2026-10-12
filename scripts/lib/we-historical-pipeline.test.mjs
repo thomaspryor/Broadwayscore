@@ -205,6 +205,29 @@ test('auditSeason: flags a review of the OTHER same-title production and duplica
   assert.equal(r.pass, false);
 });
 
+test('auditSeason (BRO-5141): reviews of a declared prior run are in window', () => {
+  const amelie = { id: 'amelie-west-end-2021', title: 'Amélie', venue: 'Criterion Theatre', previewsStartDate: '2021-06-17', openingDate: '2021-06-17', closingDate: '2021-09-25', status: 'closed', category: 'west-end', market: 'west-end', season: SEASON, discoverySource: 'we-historical:wos',
+    priorRuns: [{ openingDate: '2019-11-29', closingDate: '2020-02-01', venue: 'The Other Palace' }] };
+  const reviews = [
+    { showId: amelie.id, outletId: 'telegraph', outlet: 'The Telegraph', criticName: 'Fiona Mountford', publishDate: '2019-12-04', assignedScore: 80 },
+    { showId: amelie.id, outletId: 'guardian', outlet: 'The Guardian', criticName: 'X', publishDate: '2018-05-01', assignedScore: 60 },
+  ];
+  const r = auditSeason({ shows: [amelie], reviews, season: SEASON });
+  assert.deepEqual(r.checks.inWindow.rows.map(x => x.publishDate), ['2018-05-01']);
+});
+
+test('auditSeason (BRO-5141): a reviewed window exception is reported, not failed', () => {
+  const delroy = { id: 'death-of-england-delroy-west-end-2020', title: 'Death of England: Delroy', venue: 'Olivier Theatre', previewsStartDate: '2020-10-21', openingDate: '2020-11-04', closingDate: '2020-11-04', status: 'closed', category: 'west-end', market: 'west-end', season: SEASON, discoverySource: 'we-historical:wos' };
+  const reviews = [{ showId: delroy.id, outletId: 'sierz-co-uk', outlet: 'Aleks Sierz', criticName: null, publishDate: '2020-11-27', assignedScore: 92 }];
+  assert.equal(auditSeason({ shows: [delroy], reviews, season: SEASON }).checks.inWindow.value, 1);
+  const windowExceptions = [{ showId: delroy.id, outletId: 'sierz-co-uk', publishDate: '2020-11-27', reason: 'lockdown close' }];
+  const r = auditSeason({ shows: [delroy], reviews, season: SEASON, windowExceptions });
+  assert.equal(r.checks.inWindow.pass, true);
+  assert.equal(r.checks.inWindow.exempted.length, 1);
+  const other = auditSeason({ shows: [delroy], reviews: [{ ...reviews[0], publishDate: '2020-12-30' }], season: SEASON, windowExceptions });
+  assert.equal(other.checks.inWindow.value, 1, 'an exception covers that one review only');
+});
+
 test('auditSeason: a clean season passes; --ids limits the audit to a batch', () => {
   const s = { id: 'kyoto-west-end-2025', title: 'Kyoto', venue: '@sohoplace', previewsStartDate: '2025-01-09', closingDate: '2025-05-03', status: 'closed', category: 'west-end', market: 'west-end', season: SEASON, discoverySource: 'we-historical:wos' };
   const other = { ...s, id: 'unscored-west-end-2025' };

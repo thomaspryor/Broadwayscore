@@ -91,7 +91,14 @@ const isScored = r => typeof r.assignedScore === 'number' && Number.isFinite(r.a
  * Pure: shows + reviews → audit result.
  * @param {{shows: object[], reviews: object[], season: string, ids?: Set<string>}} input
  */
-function auditSeason({ shows, reviews, season, ids, imageSources = {}, factCheckVerdicts = [] }) {
+// Reviewed exceptions to the in-window check (data/audit/we-historical-window-exceptions.json):
+// a review outside the run window that a session checked and kept, with the
+// evidence. Matched on show + outlet + publish date.
+const windowExceptionKey = (showId, outletId, publishDate) => `${showId}|${outletId}|${String(publishDate || '').slice(0, 10)}`;
+
+function auditSeason({ shows, reviews, season, ids, imageSources = {}, factCheckVerdicts = [], windowExceptions = [] }) {
+  const excepted = new Map(windowExceptions.map(e => [windowExceptionKey(e.showId, e.outletId, e.publishDate), e]));
+  const exempted = [];
   const promoted = shows.filter(s => WE_HISTORICAL_DISCOVERY_SOURCES.has(s.discoverySource) && s.season === season
     && (!ids || !ids.size || ids.has(s.id)));
   const byShow = new Map(promoted.map(s => [s.id, []]));
@@ -109,8 +116,15 @@ function auditSeason({ shows, reviews, season, ids, imageSources = {}, factCheck
     for (const r of scored) {
       const pub = r.publishDate ? new Date(String(r.publishDate).slice(0, 10)) : null;
       if (pub && !Number.isNaN(pub.getTime())) {
-        const d = evaluateDateGuard({ pubDate: pub, show, outletId: r.outletId });
-        if (d && d.flag) outOfWindow.push({ showId: show.id, outlet: r.outlet, critic: r.criticName, publishDate: r.publishDate });
+        // A declared earlier run / tour leg is the same production (Amélie
+        // 2021's Other Palace 2019-20 run); the rebuild includes those (BRO-5141).
+        const d = evaluateDateGuard({ pubDate: pub, show, outletId: r.outletId, priorRuns: show.priorRuns, tourLegs: show.tourLegs });
+        if (d && d.flag) {
+          const row = { showId: show.id, outlet: r.outlet, critic: r.criticName, publishDate: r.publishDate };
+          const exception = excepted.get(windowExceptionKey(show.id, r.outletId, r.publishDate));
+          if (exception) exempted.push({ ...row, reason: exception.reason });
+          else outOfWindow.push(row);
+        }
       }
       const key = `${r.outletId || r.outlet}|${String(r.criticName || '').toLowerCase()}`;
       if (seen.has(key)) duplicates.push({ showId: show.id, outlet: r.outlet, critic: r.criticName });
@@ -139,7 +153,7 @@ function auditSeason({ shows, reviews, season, ids, imageSources = {}, factCheck
   const displayableShare = promoted.length ? perShow.filter(s => s.displayable).length / promoted.length : 0;
   const checks = {
     displayable: { pass: displayableShare >= MIN_DISPLAYABLE_SHARE, value: Math.round(displayableShare * 100) / 100, threshold: MIN_DISPLAYABLE_SHARE },
-    inWindow: { pass: outOfWindow.length === 0, value: outOfWindow.length, rows: outOfWindow },
+    inWindow: { pass: outOfWindow.length === 0, value: outOfWindow.length, rows: outOfWindow, exempted },
     duplicates: { pass: duplicates.length === 0, value: duplicates.length, rows: duplicates },
     provenance: { pass: null, value: t12 ? Math.round((t12WithUrl / t12) * 100) / 100 : null, note: `${t12WithUrl}/${t12} T1/T2 reviews have a URL (reported, not gated)` },
     poster: { pass: badPosters.length === 0, value: badPosters.length, rows: badPosters, missing: noPoster },
@@ -175,7 +189,11 @@ function main() {
     // Missing files read as "no sample"; anything else (a corrupt adjudications file, a bug) must not hide verdicts.
     if (e.code !== 'ENOENT' && !(e.code === 'MODULE_NOT_FOUND' && /fact-check-historical-sample/.test(e.message.split('\n')[0]))) throw e;
   }
-  const result = auditSeason({ shows, reviews, season, ids, imageSources, factCheckVerdicts });
+  let windowExceptions = [];
+  try {
+    windowExceptions = JSON.parse(fs.readFileSync(path.join(root, 'data', 'audit', 'we-historical-window-exceptions.json'), 'utf8')).exceptions || [];
+  } catch (e) { if (e.code !== 'ENOENT') throw e; }
+  const result = auditSeason({ shows, reviews, season, ids, imageSources, factCheckVerdicts, windowExceptions });
 
   if (args.includes('--json')) { console.log(JSON.stringify(result, null, 2)); }
   else {
@@ -186,6 +204,7 @@ function main() {
     console.log(`${mark(c.displayable.pass)} displayable: ${c.displayable.value} (need >= ${c.displayable.threshold})`);
     console.log(`${mark(c.inWindow.pass)} in-window: ${c.inWindow.value} review(s) outside their show's run`);
     for (const r of c.inWindow.rows) console.log(`    ${r.showId}: ${r.outlet} / ${r.critic} ${r.publishDate}`);
+    for (const r of c.inWindow.exempted) console.log(`    kept (reviewed exception): ${r.showId}: ${r.outlet} ${r.publishDate} (${r.reason})`);
     console.log(`${mark(c.duplicates.pass)} duplicates: ${c.duplicates.value}`);
     for (const r of c.duplicates.rows) console.log(`    ${r.showId}: ${r.outlet} / ${r.critic}`);
     console.log(`${mark(c.provenance.pass)} provenance: ${c.provenance.note}`);
