@@ -54,11 +54,14 @@ test('a failed post clears the marker so a later sign-in retries', async () => {
   assert.equal(store.get('bsc_email_subscribed_broadway'), 'true');
 });
 
-test('a stale marker (older than 10 min) does not block forever', async () => {
+test('an older marker still counts as sent (no second post after 10+ min)', async () => {
   const m = await import('../../src/lib/auto-subscribe');
   m.__resetForNewPage();
-  store.set(m.INFLIGHT_KEY, String(Date.now() - 11 * 60 * 1000));
+  // 2026-10-12: second emails 10.5 min and 2 h after /auth/complete.
+  store.set(m.INFLIGHT_KEY, String(Date.now() - 2 * 60 * 60 * 1000));
   respond = 'ok';
   await m.autoSubscribeOnSignIn('c@example.com');
-  assert.equal(posts, 1);
+  assert.equal(posts, 0);
+  assert.equal(store.get('bsc_email_subscribed_broadway'), 'true');
+  assert.equal(store.get(m.INFLIGHT_KEY), undefined);
 });
