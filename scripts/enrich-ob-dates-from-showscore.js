@@ -14,6 +14,7 @@ const fs = require('fs');
 const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const { extractStatusFromHtml } = require('./lib/show-score-status');
+const { shouldTrustShowScoreClosed } = require('./lib/showscore-closure-guard');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { sanitizeVenueForWrite } = require('./lib/venue-classification');
@@ -119,7 +120,7 @@ async function main() {
       changes.push(`status: previews → open`);
       if (!dryRun) show.status = 'open';
       statusChanges++;
-    } else if (show.status === 'open' && ssData.ssStatus === 'closed') {
+    } else if (show.status === 'open' && ssData.ssStatus === 'closed' && shouldTrustShowScoreClosed(show, ssData, new Date().toISOString().slice(0, 10)).trust) {
       changes.push(`status: open → closed`);
       if (!dryRun) {
         show.status = 'closed';

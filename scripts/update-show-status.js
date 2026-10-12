@@ -20,6 +20,7 @@ const { isShowScoreStatusEligible } = require('./lib/showscore-status-eligibilit
 const path = require('path');
 const https = require('https');
 const { extractStatusFromHtml } = require('./lib/show-score-status');
+const { shouldTrustShowScoreClosed, todayTixIdMismatch } = require('./lib/showscore-closure-guard');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 const { hasBookableEvidence } = require('./lib/todaytix-reopen-guard');
 const { countByShow, isStuckInPreviews, reviewsPredateRun, openingDateStillAhead, openSignalFromReviews, openSignalFromDiscovery, chooseOpeningDateBackfill, estimatePressNight } = require('./lib/opening-signal');
@@ -550,7 +551,14 @@ async function refreshShowScoreStatuses(data, updates, ttActiveIds) {
 
     // Cross-validation: ShowScore says closed
     if (ssData.ssStatus === 'closed' && (show.status === 'open' || show.status === 'previews')) {
-      if (ttActive) {
+      const closeGuard = shouldTrustShowScoreClosed(show, ssData, new Date().toISOString().slice(0, 10));
+      if (todayTixIdMismatch(show)) {
+        console.log(`  ⚠️  ${show.title}: todaytixId ${show.todaytixId} disagrees with ticketLinks TodayTix id (stale prior-run id?)`);
+      }
+      if (!closeGuard.trust) {
+        // BRO-4617 slam-frank pattern: ShowScore page is a prior production
+        console.log(`  ⚠️  ${show.title} (${cat}): ShowScore says "Closed" but ${closeGuard.reason} — NOT closing`);
+      } else if (ttActive) {
         // Hold On To Your Butts pattern — TodayTix still lists it, don't trust ShowScore
         console.log(`  ⚠️  ${show.title} (${cat}): ShowScore says "Closed" but TodayTix still active — NOT closing`);
       } else {
