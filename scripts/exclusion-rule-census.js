@@ -23,6 +23,16 @@
  *   node scripts/exclusion-rule-census.js --json-only      # JSON to stdout, no console report
  *   node scripts/exclusion-rule-census.js --no-diff        # skip baseline diff/rotation
  *   node scripts/exclusion-rule-census.js --limit=N        # top-N shows per rule (default 5)
+ *   node scripts/exclusion-rule-census.js --compare-rebuild
+ *       # BRO-2320: after a full rebuild in the same job, compare the mirror
+ *       # against the rebuild's real per-show exclusion lists
+ *       # (data/audit/rebuild-exclusions-*.json) and reviews.json, print the
+ *       # disagreement rate, and write the committed counts-only summary
+ *       # data/audit/exclusion-mirror-summary.json
+ *   node scripts/exclusion-rule-census.js --check [--max-rule-delta=N] [--max-rate-rise=R]
+ *       # BRO-2321: no rescan; read the committed summary and exit 1 when a
+ *       # rule's count moved more than N, the disagreement rate rose more than
+ *       # R (fraction), or the summary is stale (check-corpus-drift.js AUDITS)
  *
  * Exit codes: 0 on a completed scan (report-only monitor, not a gate) / 1 on
  * a setup error (missing review-texts dir, or a full-corpus scan that found
@@ -37,7 +47,16 @@ const { explainExclusion } = require('./lib/review-guards');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { assertCorpusScanned } = require('./lib/corpus-scan-guard');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
-const { buildCensus, diffCensus, formatCensusReport, formatDriftReport } = require('./lib/exclusion-rule-census');
+const {
+  buildCensus,
+  diffCensus,
+  formatCensusReport,
+  formatDriftReport,
+  compareToRebuildExclusions,
+  formatMirrorReport,
+  buildMirrorSummary,
+  checkMirrorSummary,
+} = require('./lib/exclusion-rule-census');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 // resolveReviewTextsDir() picks the real checkout: explicit REVIEW_TEXTS_DIR ->
@@ -49,6 +68,72 @@ const REVIEW_TEXTS_DIR = resolveReviewTextsDir();
 const SHOWS_JSON = process.env.SHOWS_JSON || path.join(REPO_ROOT, 'data', 'shows.json');
 const AUDIT_DIR = process.env.EXCLUSION_CENSUS_AUDIT_DIR || path.join(REPO_ROOT, 'data', 'audit');
 const SNAPSHOT_PATH = path.join(AUDIT_DIR, 'exclusion-rule-census.json');
+const MIRROR_SUMMARY_PATH = path.join(AUDIT_DIR, 'exclusion-mirror-summary.json');
+const REVIEWS_JSON = process.env.REVIEWS_JSON || path.join(REPO_ROOT, 'data', 'reviews.json');
+const REBUILD_EXCLUSIONS_RE = /^rebuild-exclusions-(.+)\.json$/;
+
+function readJsonOrNull(p) {
+  try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return null; }
+}
+
+// { showId: { file: statKey } } from the rebuild's per-show exclusion files.
+function loadRebuildExclusions(auditDir) {
+  const out = Object.create(null);
+  let names = [];
+  try { names = fs.readdirSync(auditDir); } catch { return out; }
+  for (const name of names) {
+    const m = name.match(REBUILD_EXCLUSIONS_RE);
+    if (!m) continue;
+    const payload = readJsonOrNull(path.join(auditDir, name));
+    if (!payload || !Array.isArray(payload.exclusions)) continue;
+    const files = Object.create(null);
+    for (const ex of payload.exclusions) {
+      if (ex && ex.file && ex.file !== '-' && ex.reason && !files[ex.file]) files[ex.file] = ex.reason;
+    }
+    out[payload.showId || m[1]] = files;
+  }
+  return out;
+}
+
+function loadProcessedShowIds(reviewsJsonPath) {
+  const doc = readJsonOrNull(reviewsJsonPath);
+  const reviews = doc && Array.isArray(doc.reviews) ? doc.reviews : [];
+  return new Set(reviews.map((r) => r && r.showId).filter(Boolean));
+}
+
+// A leased opening-night show is not rebuilt: its rows are carried over and it
+// gets no fresh exclusion list, so comparing it would invent disagreements.
+function loadLeasedShowIds() {
+  try {
+    return new Set(require('./lib/opening-night-lane/lease-guard').leasedShowIds());
+  } catch (e) {
+    console.warn(`::warning::exclusion census: could not read opening-night leases (${e.message}); comparing all shows`);
+    return new Set();
+  }
+}
+
+function numArg(argv, name, fallback) {
+  const raw = (argv.find((a) => a.startsWith(`--${name}=`)) || '').split('=')[1];
+  const n = raw === undefined ? NaN : Number(raw);
+  return Number.isFinite(n) ? n : fallback;
+}
+
+function runCheck(argv) {
+  const summary = readJsonOrNull(MIRROR_SUMMARY_PATH);
+  const breaches = checkMirrorSummary(summary, {
+    maxRuleDelta: numArg(argv, 'max-rule-delta', 200),
+    maxRateRise: numArg(argv, 'max-rate-rise', 0.01),
+  });
+  if (summary) {
+    const m = summary.mirror;
+    console.log(`Exclusion mirror summary ${summary.generatedAt}: ${summary.totalExcluded}/${summary.totalScanned} excluded by the mirror`
+      + (m ? `; ${m.disagreements}/${m.comparedFiles} disagree with the rebuild (${(m.disagreementRate * 100).toFixed(2)}%)` : ''));
+    const deltas = Object.entries(summary.ruleDeltas || {}).sort((a, b) => Math.abs(b[1]) - Math.abs(a[1])).slice(0, 5);
+    if (deltas.length) console.log(`  largest rule moves: ${deltas.map(([r, d]) => `${r} ${d > 0 ? '+' : ''}${d}`).join(', ')}`);
+  }
+  for (const b of breaches) console.log(`DRIFT: ${b}`);
+  process.exit(breaches.length ? 1 : 0);
+}
 
 function loadShowsById(showsJsonPath) {
   const byId = {};
@@ -101,6 +186,8 @@ function main() {
   const jsonOnly = argv.includes('--json-only');
   const noDiff = argv.includes('--no-diff');
   const limit = parseInt((argv.find((a) => a.startsWith('--limit=')) || '').split('=')[1], 10) || 5;
+  const compareRebuild = argv.includes('--compare-rebuild');
+  if (argv.includes('--check')) return runCheck(argv);
 
   console.error(`review-texts dir: ${REVIEW_TEXTS_DIR}`);
   if (!fs.existsSync(REVIEW_TEXTS_DIR)) {
@@ -143,13 +230,50 @@ function main() {
     }
   }
 
+  let comparison = null;
+  if (compareRebuild) {
+    const allLists = loadRebuildExclusions(AUDIT_DIR);
+    const processedShowIds = loadProcessedShowIds(REVIEWS_JSON);
+    const leased = loadLeasedShowIds();
+    for (const id of leased) { delete allLists[id]; processedShowIds.delete(id); }
+    if (leased.size) console.error(`exclusion census: ${leased.size} leased show(s) left out of the comparison`);
+    const rebuildExcludedByShow = showFilter
+      ? (allLists[showFilter] ? { [showFilter]: allLists[showFilter] } : {})
+      : allLists;
+    if (Object.keys(rebuildExcludedByShow).length === 0) {
+      console.error(`WARN: --compare-rebuild found no rebuild-exclusions-*.json in ${AUDIT_DIR}; skipping comparison`);
+    } else {
+      comparison = compareToRebuildExclusions(records, {
+        rebuildExcludedByShow,
+        processedShowIds,
+      });
+      if (!jsonOnly) {
+        console.log('');
+        console.log('=== Mirror vs rebuild (explainExclusion vs rebuild-exclusions-*.json) ===');
+        console.log(formatMirrorReport(comparison, { limit }));
+      }
+    }
+    // A single-show comparison is a spot check; only a full scan feeds the
+    // committed summary check-corpus-drift.js reads.
+    // Local per-show lists can be left over from older rebuilds, so only a CI
+    // run (fresh checkout, this run's lists) writes the committed summary.
+    if (!showFilter && !process.env.GITHUB_ACTIONS && !process.env.EXCLUSION_CENSUS_WRITE_SUMMARY) {
+      if (!jsonOnly) console.log(`\n${path.relative(REPO_ROOT, MIRROR_SUMMARY_PATH)} not written (local run; set EXCLUSION_CENSUS_WRITE_SUMMARY=1 to force)`);
+    } else if (!showFilter) {
+      const summary = buildMirrorSummary(census, comparison, readJsonOrNull(MIRROR_SUMMARY_PATH));
+      fs.mkdirSync(AUDIT_DIR, { recursive: true });
+      fs.writeFileSync(MIRROR_SUMMARY_PATH, JSON.stringify(summary, null, 2) + '\n');
+      if (!jsonOnly) console.log(`\nWrote ${path.relative(REPO_ROOT, MIRROR_SUMMARY_PATH)}`);
+    }
+  }
+
   if (!showFilter) {
     fs.mkdirSync(AUDIT_DIR, { recursive: true });
     fs.writeFileSync(SNAPSHOT_PATH, JSON.stringify(snapshot, null, 2) + '\n');
     if (!jsonOnly) console.log(`\nWrote ${path.relative(REPO_ROOT, SNAPSHOT_PATH)}`);
   }
 
-  if (jsonOnly) console.log(JSON.stringify({ census: snapshot, diff }, null, 2));
+  if (jsonOnly) console.log(JSON.stringify({ census: snapshot, diff, comparison }, null, 2));
 }
 
 if (require.main === module) {
@@ -161,4 +285,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { scanCorpus, loadShowsById };
+module.exports = { scanCorpus, loadShowsById, loadRebuildExclusions, loadProcessedShowIds };

@@ -114,6 +114,10 @@ data/audit/coverage-digest-snapshot.json merge=ours
 # from flagging its OWN output (the audit dogfoods its own rule).
 data/audit/corpus-drift.json merge=ours
 data/audit/churn-merge-coverage.json merge=ours
+# BRO-3598 / BRO-2321: rebuild exclusion daily totals and the exclusion mirror
+# census summary. Bot-written full snapshots, latest-wins.
+data/audit/exclusion-daily-totals.json merge=ours
+data/audit/exclusion-mirror-summary.json merge=ours
 
 # Collection-state checkpoints (500+ commits/3d — the repo's highest-churn tracked
 # files), triaged 2026-06-26. Single-state JSON, bot-only: written by collect-

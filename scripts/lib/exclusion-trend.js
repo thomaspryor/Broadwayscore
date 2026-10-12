@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const { parseExclusionLog } = require('./wrong-production-exclusion-analysis');
+const { readDailyTotals } = require('./rebuild-exclusion-audit');
 
 /**
  * BRO-2379: generalizes the sticky-flag repeat-vs-new categorization built
@@ -206,8 +207,87 @@ function buildNextLedger(records, previousLedger = {}) {
  * fixture directory instead of the real data/audit; opts.persistLedger
  * (default true) lets callers skip writing the ledger back to disk.
  */
+/**
+ * BRO-3598: trend from rebuild-all-reviews.js's committed per-reason daily
+ * totals (data/audit/exclusion-daily-totals.json), for runs that have no
+ * exclusions-*.jsonl at all (daily-digest.yml, data-health-check.yml: fresh
+ * checkouts — the JSONL lives only on the runner that wrote it).
+ *
+ * Each day's entry is the latest full rebuild's DISTINCT excluded-file count
+ * per reason, a whole-corpus snapshot rather than a sum of re-logged lines,
+ * so the BRO-75 repeat-logging inflation cannot occur here: "new" is simply
+ * growth over the previous recorded day. Same return shape as the JSONL path.
+ */
+const TOTALS_MAX_AGE_DAYS = 2;
+
+function computeTrendFromDailyTotals(doc, now) {
+  const todayKey = new Date(now).toISOString().slice(0, 10);
+  const days = Object.keys((doc && doc.days) || {}).filter((d) => d <= todayKey).sort();
+  const empty = { spikes: [], novelReasons: [], topToday: [], todayTotal: 0, source: 'daily-totals', day: null };
+  if (days.length === 0) return empty;
+  const day = days[days.length - 1];
+  // Totals stop moving when the rebuild stops recording them; an old snapshot
+  // must read as "no data", never as today's quiet baseline.
+  if (Date.parse(todayKey) - Date.parse(day) > TOTALS_MAX_AGE_DAYS * 86400000) {
+    return { ...empty, stale: true, day };
+  }
+  const baselineDays = days.slice(0, -1).slice(-7);
+  const today = doc.days[day] || {};
+  const prev = baselineDays.length ? doc.days[baselineDays[baselineDays.length - 1]] || {} : null;
+  const reasons = new Set([...Object.keys(today), ...baselineDays.flatMap((d) => Object.keys(doc.days[d] || {}))]);
+  const trend = [];
+  for (const reason of reasons) {
+    const todayCount = (today[reason] && today[reason].files) || 0;
+    const pastCounts = baselineDays.map((d) => ((doc.days[d] || {})[reason] || {}).files || 0);
+    const mean = pastCounts.length ? pastCounts.reduce((a, b) => a + b, 0) / pastCounts.length : 0;
+    const stdev = pastCounts.length
+      ? Math.sqrt(pastCounts.reduce((a, b) => a + (b - mean) ** 2, 0) / pastCounts.length)
+      : 0;
+    const threshold = mean + 2 * stdev;
+    const prevCount = prev ? ((prev[reason] || {}).files || 0) : todayCount;
+    const newLines = Math.max(0, todayCount - prevCount);
+    // A snapshot series is often flat (stdev 0), so +1 file would clear
+    // mean+2σ; require a real jump of at least 5 files as well.
+    const spike = pastCounts.length > 0 && todayCount > threshold && todayCount - mean >= Math.max(5, 2 * stdev);
+    const seenBefore = baselineDays.some((d) => (doc.days[d] || {})[reason]);
+    const novel = baselineDays.length > 0 && !seenBefore && todayCount > 0;
+    const prevTop = (prev && prev[reason] && prev[reason].topShows) || {};
+    const growingShows = Object.entries((today[reason] && today[reason].topShows) || {})
+      .filter(([id, n]) => prev && n > (prevTop[id] || 0))
+      .map(([id]) => id);
+    trend.push({
+      reason,
+      todayCount,
+      mean: Math.round(mean * 10) / 10,
+      stdev: Math.round(stdev * 10) / 10,
+      threshold: Math.round(threshold * 10) / 10,
+      spike,
+      novel,
+      firstSeen: seenBefore ? baselineDays.find((d) => (doc.days[d] || {})[reason]) : day,
+      newLines,
+      repeatedLines: todayCount - newLines,
+      needsReviewShows: growingShows,
+    });
+  }
+  return {
+    spikes: trend.filter((t) => t.spike).sort((a, b) => b.todayCount - a.todayCount),
+    novelReasons: trend.filter((t) => t.novel).sort((a, b) => b.todayCount - a.todayCount),
+    topToday: trend.filter((t) => t.todayCount > 0).sort((a, b) => b.todayCount - a.todayCount).slice(0, 10),
+    todayTotal: trend.reduce((a, t) => a + t.todayCount, 0),
+    source: 'daily-totals',
+    day,
+  };
+}
+
 function computeExclusionTrend(now, opts = {}) {
   const auditDir = opts.auditDir || DEFAULT_AUDIT_DIR;
+  // BRO-3598: no JSONL for any of the window's days means a fresh checkout
+  // (the scheduled digest), where the trend used to be silently empty forever.
+  const windowHasJsonl = Array.from({ length: 8 }, (_, i) => new Date(now.getTime() - i * 86400000).toISOString().slice(0, 10))
+    .some((d) => fs.existsSync(path.join(auditDir, `exclusions-${d}.jsonl`)));
+  if (!windowHasJsonl) {
+    return computeTrendFromDailyTotals(readDailyTotals(auditDir), now);
+  }
   const ledgerFile = opts.ledgerFile || path.join(auditDir, 'exclusion-seen-files.json');
   const persistLedger = opts.persistLedger !== false;
 
@@ -337,4 +417,5 @@ module.exports = {
   analyzeExclusionLog,
   buildNextLedger,
   computeExclusionTrend,
+  computeTrendFromDailyTotals,
 };

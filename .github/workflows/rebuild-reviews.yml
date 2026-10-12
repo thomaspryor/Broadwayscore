@@ -59,7 +59,9 @@ jobs:
     # data-health-check.yml's job timeout was (task #1842): give real
     # headroom past the new internal push-step deadline, not just past the
     # old one.
-    timeout-minutes: 40
+    # 40->45 (BRO-2321): the advisory "Exclusion mirror vs rebuild census"
+    # step adds its own 5-minute budget.
+    timeout-minutes: 45
 
     steps:
       - name: Checkout repository
@@ -444,6 +446,17 @@ jobs:
         run: node scripts/analyze-rebuild-drops.js
         continue-on-error: true
 
+      - name: Exclusion mirror vs rebuild census
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
+        # BRO-2320/BRO-2321: compares explainExclusion() (the mirror) against
+        # this run's real per-show exclusion lists and reviews.json, and writes
+        # the counts-only data/audit/exclusion-mirror-summary.json that the
+        # commit step below stages (data/audit/*.json) and check-corpus-drift.js
+        # reads. Advisory: a census failure must never block publishing.
+        timeout-minutes: 5
+        run: node scripts/exclusion-rule-census.js --compare-rebuild --no-diff
+        continue-on-error: true
+
       - name: Opening-night drop + completeness check
         if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
         # Per-critic snapshot diff + per-show rebuild-regression alert path
@@ -667,6 +680,17 @@ jobs:
             GUARD_STATE_CHANGED=true
             echo "Changes detected in data/audit/guard-escalation-state.json (guard-escalation state)"
           fi
+          # BRO-3598 / BRO-2321: exclusion daily totals and the mirror census
+          # summary feed the daily digest and check-corpus-drift; a no-diff
+          # rebuild must still persist them or the digest reads stale counts.
+          EXCLUSION_STATE_CHANGED=false
+          if [ -n "$(git status --porcelain data/audit/exclusion-daily-totals.json data/audit/exclusion-mirror-summary.json 2>/dev/null)" ]; then
+            EXCLUSION_STATE_CHANGED=true
+            echo "Changes detected in exclusion totals / mirror summary"
+          fi
+          # Separate output: it gates only the commit, so audit counts alone
+          # never dispatch the consensus update below.
+          echo "exclusion_state_changed=$EXCLUSION_STATE_CHANGED" >> $GITHUB_OUTPUT
           if [ "$PUBLIC_CHANGED" = "true" ] || [ "$TRIAGE_CHANGED" = "true" ] || [ "$GUARD_STATE_CHANGED" = "true" ]; then
             echo "has_changes=true" >> $GITHUB_OUTPUT
           else
@@ -700,7 +724,7 @@ jobs:
       # (data/audit/scraper-spend-ledger.jsonl is a registered MANAGED
       # union-merge file this step also stages via `git add -u data/audit/`).
       - name: Commit and push changes
-        if: always() && steps.changes.outputs.has_changes == 'true'
+        if: always() && (steps.changes.outputs.has_changes == 'true' || steps.changes.outputs.exclusion_state_changed == 'true')
         env:
           PUSH_DEADLINE_SEC: '900'
           PUSH_RECONCILE_MERGED_JSON: '1'

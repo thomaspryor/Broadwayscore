@@ -321,3 +321,91 @@ describe('send-daily-digest.js does not execute main() on require (guarded by re
     assert.equal(typeof buildDigestItems, 'function');
   });
 });
+
+describe('BRO-3601: URL-carrying reasons get ledger-based new-vs-repeat via exclusion-logger', () => {
+  it('skippedBlockedUrl logged with file:"-" + details.url is identified by URL, so re-logged known URLs are sticky-suppressed', () => {
+    const tmpLog = fs.mkdtempSync(path.join(os.tmpdir(), 'excl-logger-3601-'));
+    const loggerPath = require.resolve('../../scripts/lib/exclusion-logger.js');
+    delete require.cache[loggerPath];
+    const prevEnv = process.env.EXCLUSION_LOGGER_AUDIT_DIR;
+    process.env.EXCLUSION_LOGGER_AUDIT_DIR = tmpLog;
+    const origLog = console.log;
+    console.log = () => {};
+    let records;
+    try {
+      const { logExclusion, getTodayJsonlPath } = require('../../scripts/lib/exclusion-logger.js');
+      // gather-reviews.js's call shape: file:'-', URL only in details.
+      for (let pass = 0; pass < 20; pass++) {
+        for (const url of ['https://x.example/a', 'https://x.example/b']) {
+          logExclusion({ script: 'gather-reviews', showId: 'show-u', file: '-', reason: 'skippedBlockedUrl', details: { url } });
+        }
+      }
+      records = fs.readFileSync(getTodayJsonlPath(), 'utf8').trim().split('\n').map((l) => JSON.parse(l));
+    } finally {
+      console.log = origLog;
+      if (prevEnv === undefined) delete process.env.EXCLUSION_LOGGER_AUDIT_DIR; else process.env.EXCLUSION_LOGGER_AUDIT_DIR = prevEnv;
+      delete require.cache[loggerPath];
+      fs.rmSync(tmpLog, { recursive: true, force: true });
+    }
+    assert.ok(records.every((r) => r.file.startsWith('https://')), 'logger must use the URL, not the "-" sentinel');
+
+    fs.writeFileSync(path.join(auditDir, 'exclusion-seen-files.json'),
+      JSON.stringify({ skippedBlockedUrl: { 'show-u': ['https://x.example/a', 'https://x.example/b'] } }));
+    for (let d = 1; d <= 7; d++) {
+      writeDayLog(isoDay(d), [exclusionLine({ showId: 'show-u', file: 'https://x.example/a', reason: 'skippedBlockedUrl' })]);
+    }
+    writeDayLog(isoDay(0), records.map((r) => JSON.stringify({ ...r, ts: `${isoDay(0)}T00:00:00.000Z` })));
+    const entry = computeExclusionTrend(NOW, { auditDir, persistLedger: false }).topToday.find((t) => t.reason === 'skippedBlockedUrl');
+    assert.equal(entry.todayCount, 40);
+    assert.equal(entry.newLines, 0, 'known URLs re-logged 20x are repeats, not new (pre-fix: all 40 counted as new via NO_FILE_IDENTITY)');
+    assert.equal(entry.spike, false);
+  });
+});
+
+describe('BRO-3598: fresh checkout (no JSONL) reads committed exclusion-daily-totals.json', () => {
+  const { serializeDailyTotals } = require('../../scripts/lib/rebuild-exclusion-audit.js');
+  function writeTotals(days) {
+    fs.writeFileSync(path.join(auditDir, 'exclusion-daily-totals.json'), serializeDailyTotals({ days }));
+  }
+
+  it('with no totals file either, returns an empty trend instead of throwing', () => {
+    const trend = computeExclusionTrend(NOW, { auditDir, persistLedger: false });
+    assert.equal(trend.todayTotal, 0);
+    assert.deepEqual(trend.spikes, []);
+  });
+
+  it('flat sticky totals produce no spike; a real jump and a new reason surface', () => {
+    const days = {};
+    for (let d = 7; d >= 1; d--) {
+      days[isoDay(d)] = {
+        skippedWrongProduction: { files: 17200, shows: 900, topShows: { 'show-a': 40 } },
+        skippedNoScore: { files: 700, shows: 300, topShows: { 'show-b': 9 } },
+      };
+    }
+    days[isoDay(0)] = {
+      skippedWrongProduction: { files: 17201, shows: 900, topShows: { 'show-a': 40 } },
+      skippedNoScore: { files: 760, shows: 301, topShows: { 'show-c': 60 } },
+      skippedBrandNew: { files: 3, shows: 1, topShows: { 'show-d': 3 } },
+    };
+    writeTotals(days);
+    const trend = computeExclusionTrend(NOW, { auditDir, persistLedger: false });
+    assert.equal(trend.source, 'daily-totals');
+    assert.equal(trend.day, isoDay(0));
+    assert.deepEqual(trend.spikes.map((s) => s.reason), ['skippedNoScore'], '+1 on a flat 17,200 series is not a spike; +60 is');
+    const noScore = trend.spikes[0];
+    assert.equal(noScore.newLines, 60);
+    assert.deepEqual(noScore.needsReviewShows, ['show-c']);
+    assert.deepEqual(trend.novelReasons.map((s) => s.reason), ['skippedBrandNew']);
+    const items = buildDigestItems({ newShows: [], scoreChanges: [], audienceChanges: [], suspiciousChanges: [], reviewSpikes: [], exclusionTrend: trend });
+    assert.ok(items.some((i) => i.title === 'Exclusion spike: skippedNoScore'));
+    assert.ok(items.some((i) => i.title === 'New exclusion reason: skippedBrandNew'));
+  });
+
+  it('a lone first day reports totals without calling everything novel', () => {
+    writeTotals({ [isoDay(0)]: { skippedWrongShow: { files: 1800, shows: 400, topShows: {} } } });
+    const trend = computeExclusionTrend(NOW, { auditDir, persistLedger: false });
+    assert.equal(trend.todayTotal, 1800);
+    assert.deepEqual(trend.novelReasons, []);
+    assert.deepEqual(trend.spikes, []);
+  });
+});

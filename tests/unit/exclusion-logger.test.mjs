@@ -126,6 +126,18 @@ describe('exclusion-logger — validation errors', () => {
     fs.rmSync(tmpDir, { recursive: true });
   });
 
+  it('TC5b (BRO-3601): file "-" or omitted with details.url → the URL becomes the file identity', () => {
+    const tmpDir = makeTmpDir();
+    const { logExclusion, getTodayJsonlPath } = loadLogger(tmpDir);
+    logExclusion({ script: 'gather-reviews', showId: 'x', file: '-', reason: 'skippedBlockedUrl', details: { url: 'https://a.example/r1' } });
+    logExclusion({ script: 'gather-reviews', showId: 'x', reason: 'skippedCrossShowUrl', details: { url: 'https://a.example/r2' } });
+    logExclusion({ script: 'rebuild-all-reviews', showId: 'x', file: 'nyt--a.json', reason: 'skippedBlockedUrl', details: { url: 'https://a.example/r3' } });
+    logExclusion({ script: 'rebuild-all-reviews', showId: 'x', file: '-', reason: 'skippedUpcomingShows', details: { url: undefined } });
+    const files = readJsonlLines(getTodayJsonlPath()).map((l) => l.file);
+    assert.deepStrictEqual(files, ['https://a.example/r1', 'https://a.example/r2', 'nyt--a.json', '-']);
+    fs.rmSync(tmpDir, { recursive: true });
+  });
+
   it('TC6: details is a string → throws', () => {
     const tmpDir = makeTmpDir();
     const { logExclusion } = loadLogger(tmpDir);

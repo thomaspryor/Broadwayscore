@@ -29,7 +29,16 @@ function logExclusion({ script, showId, file, reason, details }) {
     throw new Error('logExclusion: details must be a plain object (may be {})');
   }
 
-  const resolvedFile = (file !== undefined && file !== null) ? file : '-';
+  // BRO-3601: a caller with no per-file identity used to log file:'-' even
+  // when the event carried its URL (gather-reviews' skippedBlockedUrl /
+  // skippedCrossShowUrl / skippedBwwForeignTitle, outlet-domain-supplement),
+  // so exclusion-trend.js's NO_FILE_IDENTITY carve-out could never tell a
+  // re-logged known URL from a new one. Fall back to details.url here, once,
+  // instead of relying on every call site to remember. Genuinely show-level
+  // reasons (skippedUpcomingShows, ...) carry no url and stay '-'.
+  const hasFile = file !== undefined && file !== null && file !== '' && file !== '-';
+  const detailUrl = typeof details.url === 'string' && details.url ? details.url : null;
+  const resolvedFile = hasFile ? file : (detailUrl || '-');
 
   // Truncate details if serialized size would exceed MAX_DETAILS_BYTES
   let safeDetails = details;

@@ -26,6 +26,7 @@ const { CLAUDE_SONNET } = require('./lib/models');
 
 const { isPrematureReviewForUnopenedShow, hasValidScore, isIncludableForRebuild } = require('./lib/review-guards');
 const { routeAlert } = require('./lib/owner-alert-router.js');
+const { summarizeShowExclusionsForPrompt } = require('./lib/rebuild-exclusion-audit');
 
 // BSC_DATA_ROOT: worktree sessions point at the main checkout's data/ (the
 // private review-texts clone only exists there).
@@ -243,7 +244,11 @@ const top10 = regressions.slice(0, 10).map(r =>
   (r.scoredOnDisk != null ? `, scored on disk: ${r.scoredOnDisk}` : '') +
   (r.flaggedScored ? `, quality-flagged: ${r.flaggedScored}` : '') +
   (r.guardExcluded ? `, unopened-show guard-excluded: ${r.guardExcluded}` : '') +
-  (r.reason ? ` [${r.reason}]` : '')
+  (r.reason ? ` [${r.reason}]` : '') +
+  // BRO-3508: the rebuild already wrote which files it dropped and why
+  // (rebuild-exclusions-{showId}.json, same job); hand that to the model
+  // instead of letting it guess from counts alone.
+  (() => { const ev = summarizeShowExclusionsForPrompt(r.showId); return ev ? `\n      ${ev}` : ''; })()
 ).join('\n');
 
 const driftTop5 = significantDrift.slice(0, 5).map(d =>

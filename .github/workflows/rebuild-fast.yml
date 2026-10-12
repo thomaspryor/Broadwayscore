@@ -358,6 +358,14 @@ jobs:
             echo "Changes detected in public show JSONs"
             git diff --stat public/data/shows/ | tail -5
           fi
+          # BRO-3598: the daily exclusion totals feed the digest trend; persist
+          # them even on a no-diff rebuild (the file only changes when a count does).
+          EXCLUSION_TOTALS_CHANGED=false
+          if [ -n "$(git status --porcelain data/audit/exclusion-daily-totals.json 2>/dev/null)" ]; then
+            EXCLUSION_TOTALS_CHANGED=true
+            echo "Changes detected in data/audit/exclusion-daily-totals.json"
+          fi
+          echo "exclusion_state_changed=$EXCLUSION_TOTALS_CHANGED" >> $GITHUB_OUTPUT
           if [ "$PUBLIC_CHANGED" = "true" ]; then
             echo "has_changes=true" >> $GITHUB_OUTPUT
           else
@@ -402,7 +410,7 @@ jobs:
       # that can actually engage here, not a no-op — fails open like the
       # rest of push-with-retry.sh's reconciliation.
       - name: Commit and push changes
-        if: always() && steps.changes.outputs.has_changes == 'true'
+        if: always() && (steps.changes.outputs.has_changes == 'true' || steps.changes.outputs.exclusion_state_changed == 'true')
         env:
           PUSH_DEADLINE_SEC: '600'
           PUSH_RECONCILE_MERGED_JSON: '1'

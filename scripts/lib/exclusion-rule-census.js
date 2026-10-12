@@ -145,8 +145,176 @@ function formatDriftReport(diff, { limit = 5 } = {}) {
   return lines.join('\n');
 }
 
+/**
+ * BRO-2320: measure how often the explainExclusion() MIRROR disagrees with
+ * what rebuild-all-reviews.js actually did. Ground truth is the rebuild's own
+ * per-show exclusion list (data/audit/rebuild-exclusions-{showId}.json,
+ * written by the same job, same snapshot of review-texts): a file listed
+ * there was excluded by the real gate, with the real statKey.
+ *
+ * A show is compared only when the rebuild demonstrably processed it: it has
+ * an exclusions list, or it appears in the rebuild's output (processedShowIds,
+ * shows present in reviews.json, whose files with no exclusion entry were
+ * included). Shows skipped wholesale (no output, no list) are not compared.
+ *
+ * @param {Array<{showId: string, file: string, rule: string|null}>} records
+ * @param {{ rebuildExcludedByShow: Record<string, Record<string, string>>,
+ *           processedShowIds?: Set<string>|string[], exampleLimit?: number }} opts
+ *   rebuildExcludedByShow: { showId: { file: statKey } }
+ */
+function compareToRebuildExclusions(records, { rebuildExcludedByShow = {}, processedShowIds = [], exampleLimit = 5 } = {}) {
+  const processed = processedShowIds instanceof Set ? processedShowIds : new Set(processedShowIds);
+  const mirrorOnlyByRule = Object.create(null);
+  const rebuildOnlyByReason = Object.create(null);
+  const disagreeByShow = Object.create(null);
+  const examples = { mirrorOnly: [], rebuildOnly: [] };
+  const comparedShows = new Set();
+  const seen = new Set();
+  const notComparedShows = new Set();
+  let notComparedFiles = 0;
+  let compared = 0;
+  let agreeExcluded = 0;
+  let agreeIncluded = 0;
+  let mirrorOnly = 0;
+  let rebuildOnly = 0;
+
+  for (const { showId, file, rule } of records) {
+    const showList = Object.prototype.hasOwnProperty.call(rebuildExcludedByShow, showId)
+      ? rebuildExcludedByShow[showId] : null;
+    if (!showList && !processed.has(showId)) {
+      // Reported, not silently dropped: a show the rebuild left no trace of
+      // (whole-show skip, or a missing artifact) is outside the comparison.
+      notComparedShows.add(showId);
+      notComparedFiles++;
+      continue;
+    }
+    comparedShows.add(showId);
+    compared++;
+    seen.add(`${showId}/${file}`);
+    const reason = showList && Object.prototype.hasOwnProperty.call(showList, file) ? showList[file] : null;
+    const mirrorExcluded = rule !== null && rule !== undefined;
+    if (mirrorExcluded && reason) { agreeExcluded++; continue; }
+    if (!mirrorExcluded && !reason) { agreeIncluded++; continue; }
+    disagreeByShow[showId] = (disagreeByShow[showId] || 0) + 1;
+    if (mirrorExcluded) {
+      mirrorOnly++;
+      mirrorOnlyByRule[rule] = (mirrorOnlyByRule[rule] || 0) + 1;
+      if (examples.mirrorOnly.length < exampleLimit) examples.mirrorOnly.push({ showId, file, rule });
+    } else {
+      rebuildOnly++;
+      rebuildOnlyByReason[reason] = (rebuildOnlyByReason[reason] || 0) + 1;
+      if (examples.rebuildOnly.length < exampleLimit) examples.rebuildOnly.push({ showId, file, reason });
+    }
+  }
+
+  // Rebuild exclusions for files the census never scanned (e.g. a file the
+  // rebuild read that failed to parse here): reported, not counted as compared.
+  let rebuildEntriesUnscanned = 0;
+  for (const [showId, files] of Object.entries(rebuildExcludedByShow)) {
+    for (const file of Object.keys(files)) if (!seen.has(`${showId}/${file}`)) rebuildEntriesUnscanned++;
+  }
+
+  const sortCounts = (obj) => Object.fromEntries(Object.entries(obj).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])));
+  const disagreements = mirrorOnly + rebuildOnly;
+  return {
+    comparedShows: comparedShows.size,
+    comparedFiles: compared,
+    agreeExcluded,
+    agreeIncluded,
+    mirrorOnly,
+    rebuildOnly,
+    disagreements,
+    disagreementRate: compared ? Number((disagreements / compared).toFixed(4)) : 0,
+    mirrorOnlyByRule: sortCounts(mirrorOnlyByRule),
+    rebuildOnlyByReason: sortCounts(rebuildOnlyByReason),
+    topShows: Object.entries(disagreeByShow).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 5)
+      .map(([showId, count]) => ({ showId, count })),
+    rebuildEntriesUnscanned,
+    notComparedShows: notComparedShows.size,
+    notComparedFiles,
+    examples,
+  };
+}
+
+function formatMirrorReport(cmp, { limit = 5 } = {}) {
+  const pct = (cmp.disagreementRate * 100).toFixed(2);
+  const lines = [
+    `Compared ${cmp.comparedFiles} files across ${cmp.comparedShows} shows: ${cmp.disagreements} disagreements (${pct}%)`,
+    `  mirror excludes, rebuild included: ${cmp.mirrorOnly}`,
+    ...Object.entries(cmp.mirrorOnlyByRule).slice(0, limit).map(([r, n]) => `      ${r}: ${n}`),
+    `  rebuild excluded, mirror includes: ${cmp.rebuildOnly}`,
+    ...Object.entries(cmp.rebuildOnlyByReason).slice(0, limit).map(([r, n]) => `      ${r}: ${n}`),
+  ];
+  if (cmp.topShows.length) lines.push(`  top shows: ${cmp.topShows.map((s) => `${s.showId} (${s.count})`).join(', ')}`);
+  for (const e of cmp.examples.mirrorOnly) lines.push(`  e.g. mirror-only ${e.rule}: ${e.showId}/${e.file}`);
+  for (const e of cmp.examples.rebuildOnly) lines.push(`  e.g. rebuild-only ${e.reason}: ${e.showId}/${e.file}`);
+  if (cmp.notComparedFiles) lines.push(`  not compared (no rebuild output or exclusion list): ${cmp.notComparedFiles} files across ${cmp.notComparedShows} shows`);
+  if (cmp.rebuildEntriesUnscanned) lines.push(`  rebuild exclusions for files the census did not scan: ${cmp.rebuildEntriesUnscanned}`);
+  return lines.join('\n');
+}
+
+/**
+ * BRO-2321: the small, committed mirror summary (counts only, no filenames)
+ * that check-corpus-drift.js reads without rescanning the corpus. `previous`
+ * is the prior summary; per-rule deltas are computed against its counts.
+ */
+function buildMirrorSummary(census, comparison, previous, now = new Date()) {
+  const ruleCounts = Object.fromEntries(Object.entries(census.byRule || {})
+    .map(([rule, v]) => [rule, v.count]).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])));
+  const prevCounts = (previous && previous.ruleCounts) || null;
+  let ruleDeltas = null;
+  if (prevCounts) {
+    ruleDeltas = {};
+    for (const rule of new Set([...Object.keys(prevCounts), ...Object.keys(ruleCounts)])) {
+      const d = (ruleCounts[rule] || 0) - (prevCounts[rule] || 0);
+      if (d !== 0) ruleDeltas[rule] = d;
+    }
+  }
+  const mirror = comparison ? (({ examples, topShows, ...rest }) => rest)(comparison) : null; // eslint-disable-line no-unused-vars
+  return {
+    generatedAt: now.toISOString(),
+    totalScanned: census.totalScanned,
+    totalExcluded: census.totalExcluded,
+    ruleCounts,
+    ruleDeltas,
+    previousGeneratedAt: previous ? previous.generatedAt || null : null,
+    mirror,
+    previousDisagreementRate: previous && previous.mirror ? previous.mirror.disagreementRate : null,
+  };
+}
+
+/**
+ * Exit-contract check for check-corpus-drift.js's AUDITS entry. Returns the
+ * list of breaches (empty = ok). Thresholds are deltas against the previous
+ * summary, so a long-standing, stable disagreement does not alarm daily.
+ */
+function checkMirrorSummary(summary, { maxRuleDelta = Infinity, maxRateRise = Infinity, maxAgeDays = 3, now = Date.now() } = {}) {
+  const breaches = [];
+  if (!summary) return ['no mirror summary found (has rebuild-reviews run the census?)'];
+  const ageDays = (now - Date.parse(summary.generatedAt)) / 86400000;
+  if (!(ageDays <= maxAgeDays)) breaches.push(`mirror summary is stale (generated ${summary.generatedAt}, > ${maxAgeDays}d old)`);
+  for (const [rule, d] of Object.entries(summary.ruleDeltas || {})) {
+    if (Math.abs(d) > maxRuleDelta) breaches.push(`rule ${rule} moved ${d > 0 ? '+' : ''}${d} (> ${maxRuleDelta})`);
+  }
+  const rate = summary.mirror ? summary.mirror.disagreementRate : null;
+  const prev = summary.previousDisagreementRate;
+  if (rate !== null && prev !== null && prev !== undefined && rate - prev > maxRateRise) {
+    breaches.push(`mirror disagreement rate rose ${(prev * 100).toFixed(2)}% -> ${(rate * 100).toFixed(2)}% (> +${(maxRateRise * 100).toFixed(2)} pts)`);
+  }
+  return breaches;
+}
+
 function signed(n) {
   return n >= 0 ? `+${n}` : `${n}`;
 }
 
-module.exports = { buildCensus, diffCensus, formatCensusReport, formatDriftReport };
+module.exports = {
+  buildCensus,
+  diffCensus,
+  formatCensusReport,
+  formatDriftReport,
+  compareToRebuildExclusions,
+  formatMirrorReport,
+  buildMirrorSummary,
+  checkMirrorSummary,
+};

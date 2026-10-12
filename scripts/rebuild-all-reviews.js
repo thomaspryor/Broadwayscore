@@ -112,7 +112,7 @@ const { isAwaitingUrlCorrectionRefetch, shouldWithholdStaleExclusionFlag } = req
 const { safeWriteReview, writeReviewOrThrow, invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear, retractScriptWrongProductionClear } = require('./lib/review-write-guard');
 const { KNOWN_SYNDICATION_PAIRS, getSyndicationPrimaries, isPrimaryFileFor, isLiveSyndicationPrimary } = require('./lib/syndication-pairs');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
-const { writeShowExclusionsFile } = require('./lib/rebuild-exclusion-audit');
+const { writeShowExclusionsFile, writeDailyExclusionTotals } = require('./lib/rebuild-exclusion-audit');
 const { isRebuildPaused, readRebuildPause, REBUILD_PAUSE_PATH } = require('./lib/rebuild-pause');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { findDuplicateOfCycle, resolveCycleTiebreak } = require('./lib/duplicate-cycle');
@@ -5933,6 +5933,26 @@ if (consistencyIssues.length > 0) {
 // POST-PROCESSING: Outlet-level dedup — keep only one review per outlet+critic per show.
 // Different critics at the same outlet are genuinely different reviews and both count.
 // Only dedup when the SAME critic has multiple entries at the same outlet (true duplicate).
+// BRO-3506: both post-processing dedup passes below used to drop reviews with
+// only an aggregate counter (stats.skippedMultiCriticOutletDedup /
+// skippedOutletNameDedup) and no per-file audit trail — the silent-drop shape
+// BRO-925 fixed for skippedNoScore. reviewSourceFile (WeakMap, set when the
+// review was built) still knows the dropped review's file, so log it like any
+// other exclusion and re-flush that show's rebuild-exclusions file after the
+// passes (same pattern as priorRunSuperseded above). Inherited/carried rows
+// have no source file; they log '-' and exclusion-logger falls back to the URL.
+const postDedupTouchedShows = new Set();
+function logPostDedupExclusion(statKey, dropped, kept, dedupKey) {
+  const file = reviewSourceFile.get(dropped) || '-';
+  logExclusion(statKey, dropped.showId, file, dropped, {
+    dedupKey,
+    keptFile: reviewSourceFile.get(kept) || null,
+    keptUrl: kept.url || null,
+    keptPublishDate: kept.publishDate || null,
+  });
+  if (file !== '-') postDedupTouchedShows.add(dropped.showId);
+}
+
 // Same-URL duplicates were already caught by seenUrlsByOutlet earlier in the pipeline.
 {
   const beforeCount = allReviews.length;
@@ -5948,6 +5968,9 @@ if (consistencyIssues.length > 0) {
       const newDate = review.publishDate || '';
       if (newDate > existDate) {
         byShowOutlet.set(key, review);
+        logPostDedupExclusion('skippedMultiCriticOutletDedup', existing, review, key);
+      } else {
+        logPostDedupExclusion('skippedMultiCriticOutletDedup', review, existing, key);
       }
     }
   }
@@ -5983,6 +6006,9 @@ if (consistencyIssues.length > 0) {
       const existing = byShowOutletName.get(key);
       if ((review.publishDate || '') > (existing.publishDate || '')) {
         byShowOutletName.set(key, review);
+        logPostDedupExclusion('skippedOutletNameDedup', existing, review, key);
+      } else {
+        logPostDedupExclusion('skippedOutletNameDedup', review, existing, key);
       }
     }
   }
@@ -5993,6 +6019,14 @@ if (consistencyIssues.length > 0) {
     allReviews.length = 0;
     allReviews.push(...deduped);
     stats.skippedOutletNameDedup = removed;
+  }
+}
+
+// BRO-3506: re-flush per-show exclusion files the dedup passes added rows to.
+for (const sid of postDedupTouchedShows) {
+  const showStats = stats.byShow[sid];
+  if (showStats && showStats.exclusions && showStats.exclusions.length > 0) {
+    writeShowExclusionsFile(sid, showStats.exclusions);
   }
 }
 
@@ -6206,6 +6240,19 @@ try {
   } else {
     throw renameErr;
   }
+}
+
+// BRO-3598: record this full run's per-reason exclusion totals for the daily
+// digest, only once reviews.json is written (an aborted run records nothing).
+// Same CI-only rule as the deploy watermark below: a local clone can drift.
+// A run that skipped leased opening-night shows saw a partial corpus, so it
+// leaves the day's entry to a later unleased run instead of recording a dip.
+if (!isRunningInCI()) {
+  console.log('Exclusion daily totals: skipped (local run; only CI records the shared totals)');
+} else if (leasedShowIds.size) {
+  console.log(`Exclusion daily totals: skipped (${leasedShowIds.size} leased show(s) not rebuilt this run)`);
+} else {
+  writeDailyExclusionTotals(stats.byShow);
 }
 
 // Sync deploy watermark so pre-deploy-check.js doesn't block on intentional count changes.

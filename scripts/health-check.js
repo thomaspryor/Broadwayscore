@@ -4678,19 +4678,38 @@ function buildObCandidatesHtml(staged, typoCount) {
       `;
 }
 
-function buildExclusionSummaryHtml() {
+function buildExclusionSummaryHtml({ auditDir = AUDIT_DIR, todayPath = getTodayJsonlPath(), now = Date.now() } = {}) {
   try {
-    const now = Date.now();
     const cutoff = now - 24 * 60 * 60 * 1000;
-    const summaryFile = path.join(AUDIT_DIR, 'exclusion-summary-yesterday.json');
+    const summaryFile = path.join(auditDir, 'exclusion-summary-yesterday.json');
 
     // Read today's and yesterday's JSONL files
-    const todayPath = getTodayJsonlPath();
     const yesterday = new Date(now - 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
     const yesterdayPath = path.join(path.dirname(todayPath), `exclusions-${yesterday}.jsonl`);
 
+    // BRO-3598: CI runs this on a fresh checkout where the JSONL never
+    // exists, so this section always printed the "no log" warning. Fall back
+    // to rebuild-all-reviews.js's committed per-reason daily totals.
+    let counts = {};
+    let showIdsByReason = {};
+    let yesterday_counts = {};
+    let heading = 'Exclusion summary (last 24h)';
     if (!fs.existsSync(todayPath)) {
-      return '<p style="color:#e74c3c;font-size:13px;margin:4px 0;">⚠️ No exclusion log for today — rebuild/gather/collect may not have run.</p>';
+      const { readDailyTotals } = require('./lib/rebuild-exclusion-audit');
+      const totals = readDailyTotals(auditDir);
+      const days = Object.keys(totals.days).sort();
+      const latest = days[days.length - 1];
+      if (!latest || latest < yesterday) {
+        return '<p style="color:#e74c3c;font-size:13px;margin:4px 0;">⚠️ No exclusion log or rebuild exclusion totals for the last day — rebuild may not have run.</p>';
+      }
+      for (const [reason, t] of Object.entries(totals.days[latest])) {
+        counts[reason] = t.files;
+        showIdsByReason[reason] = new Set(Object.keys(t.topShows || {}));
+      }
+      const prevDay = days[days.length - 2];
+      if (prevDay) for (const [reason, t] of Object.entries(totals.days[prevDay])) yesterday_counts[reason] = t.files;
+      heading = `Rebuild exclusions (distinct files, latest full rebuild ${latest}${prevDay ? ` vs ${prevDay}` : ''})`;
+      return renderExclusionSummaryHtml(heading, counts, showIdsByReason, yesterday_counts);
     }
 
     const records = [];
@@ -4705,8 +4724,6 @@ function buildExclusionSummaryHtml() {
     }
 
     // Count by reason
-    const counts = {};
-    const showIdsByReason = {};
     for (const r of records) {
       counts[r.reason] = (counts[r.reason] || 0) + 1;
       if (!showIdsByReason[r.reason]) showIdsByReason[r.reason] = new Set();
@@ -4714,7 +4731,6 @@ function buildExclusionSummaryHtml() {
     }
 
     // Load yesterday's counts for spike detection
-    let yesterday_counts = {};
     try {
       if (fs.existsSync(summaryFile)) {
         yesterday_counts = JSON.parse(fs.readFileSync(summaryFile, 'utf8'));
@@ -4724,6 +4740,14 @@ function buildExclusionSummaryHtml() {
     // Persist today's counts for tomorrow
     try { fs.writeFileSync(summaryFile, JSON.stringify(counts, null, 2)); } catch {}
 
+    return renderExclusionSummaryHtml(heading, counts, showIdsByReason, yesterday_counts);
+  } catch (e) {
+    return `<p style="color:#888;font-size:13px;">Exclusion summary unavailable: ${e.message}</p>`;
+  }
+}
+
+function renderExclusionSummaryHtml(heading, counts, showIdsByReason, yesterday_counts) {
+  try {
     if (Object.keys(counts).length === 0) {
       return '<p style="color:#888;font-size:13px;margin:4px 0;">No exclusions logged in last 24h.</p>';
     }
@@ -4746,7 +4770,7 @@ function buildExclusionSummaryHtml() {
     }).join('');
 
     return `
-      <h3 style="color:#aaa;margin:24px 0 8px;">Exclusion summary (last 24h)</h3>
+      <h3 style="color:#aaa;margin:24px 0 8px;">${heading}</h3>
       <table style="width:100%;border-collapse:collapse;background:#16213e;border-radius:6px;overflow:hidden;">
         <thead>
           <tr style="border-bottom:1px solid #333;">
@@ -5658,4 +5682,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkAutofixCanary, checkAutofixThroughput, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift };
+module.exports = { buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkAutofixCanary, checkAutofixThroughput, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift };

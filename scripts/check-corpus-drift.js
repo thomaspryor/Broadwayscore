@@ -502,6 +502,19 @@ const AUDITS = [
     // pre-mortem, BRO-4434).
     crashCodes: [],
   },
+  {
+    // BRO-2320/BRO-2321: explainExclusion() is a MIRROR of rebuild's inline
+    // gate. rebuild-reviews.yml runs the census with --compare-rebuild right
+    // after the full rebuild (same job, real per-show exclusion lists) and
+    // commits a counts-only summary; this reads it without rescanning.
+    // Fires when a rule's excluded count jumps, the mirror/rebuild
+    // disagreement rate rises, or the summary went stale.
+    name: 'exclusion-mirror',
+    label: 'exclusion rule census: per-rule count jump or explainExclusion-vs-rebuild disagreement rise',
+    script: 'exclusion-rule-census.js',
+    args: ['--check', '--max-rule-delta=200', '--max-rate-rise=0.01'],
+    crashCodes: [],            // 0 ok / 1 = rule moved > 200, rate rose > 1pt, or summary missing/stale
+  },
 ];
 
 function runAudit(audit) {
