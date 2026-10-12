@@ -53,11 +53,20 @@ test("Everybody's Talking About Jamie is correctly classified as West End / off-
   assert.equal(show.category, 'off-west-end');
 });
 
-test("Everybody's Talking About Jamie dates match the Playbill production page", () => {
+// BRO-5186: 8 Feb 2024 is the FIRST PREVIEW (londontheatre.co.uk, WhatsOnStage),
+// not press night; reviews ran 15-16 Feb. Playbill's page gives only the run
+// span. So pin the sourced dates and bound openingDate by them, never an
+// exact press night no source states (the date repair now infers it from
+// reviews, and a pinned 2024-02-08 turned main red when it did).
+const FIRST_REVIEW_DATE = '2024-02-15';
+
+test("Everybody's Talking About Jamie dates match the sourced run (first preview, press night window, closing)", () => {
   const show = loadShow();
   assert.equal(show.previewsStartDate, '2024-02-08');
-  assert.equal(show.openingDate, '2024-02-08');
   assert.equal(show.closingDate, '2024-03-23');
+  assert.match(String(show.openingDate), /^\d{4}-\d{2}-\d{2}$/);
+  assert.ok(show.openingDate >= show.previewsStartDate, `openingDate ${show.openingDate} is before the first preview`);
+  assert.ok(show.openingDate <= FIRST_REVIEW_DATE, `openingDate ${show.openingDate} is after the first review (${FIRST_REVIEW_DATE})`);
 });
 
 test("Everybody's Talking About Jamie is flagged with its manual-verification source recorded", () => {
