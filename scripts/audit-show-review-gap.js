@@ -198,6 +198,7 @@ const { normalizeOutlet: normalizeOutletId } = require('./lib/review-normalizati
 // prior-run URLs are ingest-blocked on EVERY path (see lib/gap-ingest-policy.js).
 const { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow } = require('./lib/gap-ingest-policy');
 const { otherProductionSignal } = require('./lib/other-production-signal');
+const { isLikelyTourReview } = require('./lib/review-guards');
 const { classifyIngestSkip, describeSkip } = require('./lib/ingest-skip-classify');
 // WE reference schema version — bump to invalidate WE checkpoint entries (59 shows
 // recorded gaps:0 from vacuous Broadway-only-reference runs and closed-clean shows
@@ -541,7 +542,10 @@ const BOOK_HOST_RE = /(^|\.)(amazon\.[a-z.]+|goodreads\.com|bookbrowse\.com|hard
 function isBookPageUrl(href) {
   try {
     const x = new URL(href);
-    return BOOK_HOST_RE.test(x.hostname) || /(^|[\/\-_])(book-?review|books?|novel)([\/\-_]|$)/i.test(x.pathname);
+    // "a-collection-of-stories-by-richard-burgin" (Broad Street Review) is a book
+    // review that shares A Thousand Natural Shocks' title (BRO-4540). Not "stories-by":
+    // that is John Lithgow: Stories by Heart, 35 real reviews.
+    return BOOK_HOST_RE.test(x.hostname) || /(^|[\/\-_])(book-?review|books?|novel|a-collection-of-(?:short-)?(?:stories|poems|essays))([\/\-_]|$)/i.test(x.pathname);
   } catch { return false; }
 }
 
@@ -566,6 +570,14 @@ function otherProductionUrlSignal(u, show, serpTitle) {
     host = parsed.hostname.toLowerCase();
     slug = decodeURIComponent(parsed.pathname).replace(/[-_/.+]+/g, ' ');
   } catch { return null; }
+  // A BroadwayWorld city edition (/toronto/article/Review-COSI-FAN-TUTTE-at-Four-Seasons-
+  // Centre-..., /new-orleans/article/Review-THE-SECRET-CIRCUS-...) reviews that city's
+  // staging. Same verdict as the write path: isLikelyTourReview is the single copy of
+  // the BWW edition rule (review-guards.js), so the audit never counts a URL the
+  // writer would flag. Only its BWW branch is used here.
+  if (/(^|\.)broadwayworld\.com$/.test(host) && isLikelyTourReview(u, show.id)) {
+    return { signal: 'bww-city-edition', detail: 'BroadwayWorld city edition (isLikelyTourReview)' };
+  }
   const venueTextApplies = /\.uk$/.test(host) && !(Array.isArray(show.priorRuns) && show.priorRuns.length > 0);
   const sig = otherProductionSignal(
     { url: u, fullText: `${slug} ${serpTitle || ''}` },

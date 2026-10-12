@@ -26,6 +26,7 @@ const JUNK = [
   'https://www.lwtheatres.co.uk/whats-on/the-last-ship/',
   'https://www.indiewire.com/features/general/some-interview-1234/',
   'https://youtu.be/abc123',
+  'https://theatrevibe.co.uk/2026/08/03/news-the-last-ship-stings-musical-theatre-royal-drury-lane-22nd-september-to-3rd-october-2026/',
   'https://maryrobinettekowal.com/journal/my-favorite-bit/my-favorite-bit-omar-hussain-talks-about-a-thousand-natural-shocks/',
 ];
 
@@ -35,6 +36,7 @@ const REAL = [
   'https://www.theatermania.com/news/review-the-hope-theory_12345/',
   'https://www.parterre.com/broadcast/turandot-2026/',
   'https://lovelondonloveculture.com/review-the-last-ship/',
+  'https://theatrevibe.co.uk/2026/09/25/review-the-last-ship-theatre-royal-drury-lane-2026/',
   'https://www.thetheatretimes.com/the-hope-theory-review/',
   'https://www.nytimes.com/2026/10/01/theater/the-hope-theory-review.html',
 ];
@@ -92,4 +94,15 @@ test('blast radius: a candidate drop against an older-rule row is not risky, a l
   assert.strictEqual(isRiskyGapChange(prev, 'incomplete:4:6'), false);
   assert.strictEqual(isRiskyGapChange(prev, 'incomplete:3:6'), true);
   assert.strictEqual(isRiskyGapChange('incomplete:4:9', 'incomplete:4:6'), true);
+});
+
+test('an events-calendar page is rejected, a real review on the same host stays (BRO-4679)', () => {
+  assert.strictEqual(classifyGapCandidateUrl('https://openingnight.online/crazy-mama-a-true-story-of-love-and-madness/').ok, false);
+  assert.deepStrictEqual(classifyGapCandidateUrl('https://openingnight.online/the-invention-of-love/'), { ok: true, reason: null });
+});
+
+test('a flagged TheatreVibe news post no longer holds a review slot (BRO-4190)', () => {
+  const { isStaleNonReviewSlot } = require('./review-slot-guards.js');
+  const news = { url: 'https://theatrevibe.co.uk/2026/08/03/news-the-last-ship-stings-musical-theatre-royal-drury-lane-22nd-september-to-3rd-october-2026/', wrongProduction: true };
+  assert.strictEqual(isStaleNonReviewSlot(news, 'https://theatrevibe.co.uk/2026/09/25/review-the-last-ship-theatre-royal-drury-lane-2026/'), true);
 });

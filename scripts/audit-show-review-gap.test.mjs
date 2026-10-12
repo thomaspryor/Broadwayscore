@@ -515,3 +515,35 @@ test('acceptSerpCensusResult drops a novel review whose slug spells "bookreview"
   const sr = { url: 'https://whatsbetterthanbooks.com/bookreview-natural-shocks-ohussain/', title: 'A Thousand Natural Shocks by Omar Hussain' };
   assert.equal(acceptSerpCensusResult(sr, { show, showInfo: info }), null);
 });
+
+// BRO-4190 residuals: a BroadwayWorld city edition is that city's staging, a
+// "collection of stories" is a book, both under a New York title.
+test('acceptSerpCensusResult drops BWW city editions and story-collection book reviews on NYC shows', () => {
+  const { otherProductionUrlSignal } = require('./audit-show-review-gap.js');
+  const cosi = { id: 'cosi-fan-tutte-off-broadway-2026', title: 'Così fan tutte', category: 'off-broadway', venue: 'Metropolitan Opera House', openingDate: '2026-09-24' };
+  const circus = { id: 'the-secret-circus-musical-off-broadway-2026', title: 'The Secret Circus', category: 'off-broadway', venue: 'SoHo Playhouse', openingDate: '2026-09-26' };
+  assert.equal(otherProductionUrlSignal('https://www.broadwayworld.com/toronto/article/Review-COS-FAN-TUTTE-at-Four-Seasons-Centre-For-The-Performing-Arts-20261004', cosi).signal, 'bww-city-edition');
+  assert.equal(otherProductionUrlSignal('https://www.broadwayworld.com/new-orleans/article/Review-THE-SECRET-CIRCUS-THE-MUSICAL-at-Mudlark-Theatre-20260504', circus).signal, 'bww-city-edition');
+  // New York sections and genre desks stay.
+  assert.equal(otherProductionUrlSignal('https://www.broadwayworld.com/bwwopera/article/Review-COSI-FAN-TUTTE-at-the-Met-20260925', cosi), null);
+  assert.equal(otherProductionUrlSignal('https://www.broadwayworld.com/off-broadway/article/Review-THE-SECRET-CIRCUS-at-SoHo-Playhouse-20260927', circus), null);
+  assert.equal(otherProductionUrlSignal('https://www.broadwayworld.com/article/Review-THE-SECRET-CIRCUS-at-SoHo-Playhouse-20260927', circus), null);
+  // Parity with the write path's isLikelyTourReview on every BWW edition shape.
+  const { isLikelyTourReview } = require('./lib/review-guards.js');
+  for (const ed of ['toronto', 'chicago', 'cabaret', 'westend', 'bwwtv', 'bwwopera', 'off-broadway']) {
+    const u = `https://www.broadwayworld.com/${ed}/article/Review-COSI-FAN-TUTTE-20261004`;
+    assert.equal(!!otherProductionUrlSignal(u, cosi), isLikelyTourReview(u, cosi.id), ed);
+  }
+  // A London show is not judged by this rule (BWW /westend/ is its home edition).
+  const we = { id: 'darkling-off-west-end-2026', title: 'Darkling', category: 'off-west-end', venue: 'Bush Theatre', openingDate: '2026-09-10' };
+  assert.equal(otherProductionUrlSignal('https://www.broadwayworld.com/westend/article/Review-DARKLING-Bush-Theatre-20260911', we), null);
+
+  const shocks = { id: 'a-thousand-natural-shocks-off-broadway-2026', title: 'A Thousand Natural Shocks', category: 'off-broadway', venue: 'The Tank', openingDate: '2026-10-01' };
+  const info = { title: shocks.title, cast: [], creativeNames: [] };
+  const book = { url: 'https://www.broadstreetreview.com/articles/a-thousand-natural-shocks-a-collection-of-stories-by-richard-burgin', title: 'A Thousand Natural Shocks' };
+  assert.equal(acceptSerpCensusResult(book, { show: shocks, showInfo: info }), null);
+  // "Stories by" alone is a play title (John Lithgow: Stories by Heart).
+  const lithgow = { id: 'john-lithgow-stories-by-heart-2018', title: 'John Lithgow: Stories by Heart', category: 'broadway', venue: 'American Airlines Theatre', openingDate: '2018-01-11' };
+  const real = { url: 'https://www.thewrap.com/john-lithgow-stories-by-heart-broadway-review/', title: 'John Lithgow: Stories by Heart review' };
+  assert.ok(acceptSerpCensusResult(real, { show: lithgow, showInfo: { title: lithgow.title, cast: [], creativeNames: [] }, now: Date.parse('2018-01-20') }));
+});
