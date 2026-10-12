@@ -309,6 +309,13 @@ jobs:
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
           bash scripts/lib/push-with-retry.sh
 
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: check-corpus-drift
+
       - name: Summary
         if: always()
         run: |
