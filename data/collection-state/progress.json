@@ -1,15 +1,24 @@
 {
   "processed": [
-    "les-liaisons-dangereuses-2016/nytimes--ben-brantley.json"
+    "hercules-west-end-2025/nytimes--matt-wolf.json",
+    "hercules-west-end-2025/british-theatre--howard-loxton.json",
+    "hercules-west-end-2025/thestage--sam-marlowe.json"
+  ],
+  "failed": [
+    "hercules-west-end-2025/the-sun--dominic-maxwell.json",
+    "hercules-west-end-2025/times-uk--dominic-maxwell.json"
   ],
   "failed": [],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "hercules-west-end-2025/british-theatre--howard-loxton.json",
+      "hercules-west-end-2025/thestage--sam-marlowe.json"
+    ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/les-liaisons-dangereuses-2016/nytimes--ben-brantley.json",
-      "les-liaisons-dangereuses-2016/nytimes--ben-brantley.json"
+      "data/review-texts/hercules-west-end-2025/nytimes--matt-wolf.json",
+      "hercules-west-end-2025/nytimes--matt-wolf.json"
     ],
     "directCookies": [],
     "scrapingdog": [],
@@ -18,17 +27,17 @@
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-10-12T12:07:53.426Z",
-  "lastProcessed": "les-liaisons-dangereuses-2016/nytimes--ben-brantley.json",
+  "startTime": "2026-10-12T12:11:57.410Z",
+  "lastProcessed": "hercules-west-end-2025/times-uk--dominic-maxwell.json",
   "log": [
     {
-      "t": "2026-10-12T12:08:34.884Z",
+      "t": "2026-10-12T12:12:18.720Z",
       "event": "bb-session",
-      "session": "0a17fed4",
-      "url": "https://www.nytimes.com/2016/10/31/theater/liaisons-dangereuses-review.html"
+      "session": "036a1d74",
+      "url": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-l"
     },
     {
-      "t": "2026-10-12T12:08:35.649Z",
+      "t": "2026-10-12T12:12:19.582Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
