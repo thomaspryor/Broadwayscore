@@ -15,6 +15,16 @@
  * no re-score is queued for) to the owner digest, keyed per show so each show's line clears on its own. A, C, D and
  * E are counted in the step summary only: their remedies are automatic (the hourly gap audit's ingestion, the nightly
  * scorer, the rebuild's runtime block, the enrich-reviews star capture) or need a URL nobody has yet.
+ *
+ * Decisions ledger (BRO-4849): data/audit/coverage-holes-decisions.json records a person's verdict on a row (a B file
+ * that really is a round-up, an F rating that was misread and a fix plan is in flight). A row with a live decision is
+ * "explained": the summary counts it apart and --alert does not route it again. A decision with `recheckAfter` lapses
+ * on that date, so a planned fix that never took brings the row back. Decisions whose row is gone are printed as stale
+ * so the ledger can be pruned. Reasons describe, never quote, review text (the ledger is public).
+ *
+ * C rows carry `scorer`: 'queued' when the scorer's own selection (scripts/lib/scoring-queue-counts.js) will pick the
+ * file up on its next run, else the reason it never will (terminal_text_gate_block, no_scorable_text...): those need
+ * new text, not a score.
  */
 const { hasHelpFlag } = require('./lib/cli-help.js');
 if (hasHelpFlag(process.argv.slice(2))) {
@@ -26,12 +36,35 @@ const path = require('path');
 const holes = require('./lib/coverage-holes');
 
 const ROOT = path.join(__dirname, '..');
+const LEDGER = path.join('data', 'audit', 'coverage-holes-decisions.json');
 const CLASSES = ['A', 'B', 'C', 'D', 'E', 'F'];
 const arg = (n) => { const a = process.argv.find((x) => x.startsWith(`--${n}=`)); return a ? a.slice(n.length + 3) : null; };
 // reviews.json URLs and review-file URLs differ in scheme, www, query and trailing slash.
+const excludedBy = (d, show, filePath) => require('./lib/review-guards').explainExclusion(d, show, filePath);
 const normUrl = (u) => String(u || '').replace(/^https?:\/\/(www\.)?/, '').replace(/[?#].*$/, '').replace(/\/$/, '').toLowerCase();
 
+/** Live decisions keyed `${class}|${file}`. A decision past its recheckAfter date has lapsed and is left out. */
+function loadDecisions(root = ROOT, now = Date.now()) {
+  const map = new Map();
+  let doc;
+  try { doc = JSON.parse(fs.readFileSync(path.join(root, LEDGER), 'utf8')); } catch { return map; } // no ledger: nothing explained
+  for (const d of (doc && doc.decisions) || []) {
+    if (!d || !d.class || !d.file || !d.reason) continue; // a decision without a reason explains nothing
+    if (d.recheckAfter && Date.parse(d.recheckAfter) <= now) continue;
+    map.set(`${d.class}|${d.file}`, d);
+  }
+  return map;
+}
+
+/** The scorer's own verdict on a C row: 'queued' (its next run picks the file up) or why it never will. */
+function scorerVerdict(d, show, filePath) {
+  try {
+    return require('./lib/scoring-queue-counts').unscoredSkipReason(d, { show, showTitle: show && show.title, filePath }) || 'queued';
+  } catch { return 'unknown'; }
+}
+
 function sweep({ root = ROOT, days = 120, only = null, now = Date.now(), recentDays = 14 } = {}) {
+  const decisions = loadDecisions(root, now);
   const raw = JSON.parse(fs.readFileSync(path.join(root, 'data', 'shows.json'), 'utf8'));
   const shows = (Array.isArray(raw) ? raw : raw.shows || []).filter((s) => (only ? s.id === only : holes.isCurrentShow(s, now, days)));
   // reviews.json is the source of truth for what the site shows: D rows that are PUBLISHED are the ones doing harm,
@@ -42,7 +75,7 @@ function sweep({ root = ROOT, days = 120, only = null, now = Date.now(), recentD
       if (r && r.showId && r.url) published.set(`${r.showId}|${normUrl(r.url)}`, r);
     }
   } catch { /* none readable: published counts stay 0 */ }
-  const out = { shows: shows.length, files: 0, unreadable: 0, showsAffected: 0, recentShows: [] };
+  const out = { shows: shows.length, files: 0, unreadable: 0, showsAffected: 0, recentShows: [], staleDecisions: [] };
   for (const k of CLASSES) out[k] = [];
   const affected = new Set();
   for (const show of shows) {
@@ -58,37 +91,51 @@ function sweep({ root = ROOT, days = 120, only = null, now = Date.now(), recentD
       try { d = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { out.unreadable++; continue; } // counted: corruption must not hide
       out.files++;
       const row = d.url ? published.get(`${show.id}|${normUrl(d.url)}`) : null;
-      const c = holes.classify(d, show, filePath, row && typeof row.assignedScore === 'number' ? row.assignedScore : undefined);
+      // reviews.json rows carry no file name, so the join is by URL. A duplicate or otherwise excluded file shares its
+      // URL with the file that IS published: judging F on it compared the published file's score with the excluded
+      // copy's stored rating (BRO-4849: 9 of 29 F rows). Only a file the rebuild includes owns the published score.
+      const owns = row && typeof row.assignedScore === 'number' && !excludedBy(d, show, filePath);
+      const c = holes.classify(d, show, filePath, owns ? row.assignedScore : undefined);
       if (c.D) c.D = { ...c.D, published: !!row };
+      if (c.C) c.C = { ...c.C, scorer: scorerVerdict(d, show, filePath) };
       for (const [k, v] of Object.entries(c)) {
-        out[k].push({ file: `${show.id}/${f}`, show: show.id, outletId: d.outletId || null, recent, ...v });
+        const file = `${show.id}/${f}`;
+        const decision = decisions.get(`${k}|${file}`);
+        out[k].push({ file, show: show.id, outletId: d.outletId || null, recent, ...v, ...(decision ? { decision: decision.verdict || 'decided', reason: decision.reason } : {}) });
         affected.add(show.id);
       }
     }
   }
   out.showsAffected = affected.size;
+  // Only judge staleness on a full sweep: with --show or a narrower window a decision's row may simply be out of scope.
+  if (!only) {
+    const live = new Set(CLASSES.flatMap((k) => out[k].map((r) => `${k}|${r.file}`)));
+    for (const [key, d] of decisions) if (!live.has(key)) out.staleDecisions.push({ class: d.class, file: d.file });
+  }
   return out;
 }
 
-/** Rows a person has to act on for one show: B, and F with no re-score queued. */
+/** Rows a person has to act on for one show: B, and F with no re-score queued, unless a live decision explains them. */
 function needsPerson(out, showId) {
   return [
-    ...out.B.filter((r) => r.show === showId).map((r) => ({ cls: 'B', ...r })),
-    ...out.F.filter((r) => r.show === showId && !r.queued).map((r) => ({ cls: 'F', ...r })),
+    ...out.B.filter((r) => r.show === showId && !r.decision).map((r) => ({ cls: 'B', ...r })),
+    ...out.F.filter((r) => r.show === showId && !r.queued && !r.decision).map((r) => ({ cls: 'F', ...r })),
   ];
 }
 
 function summary(out) {
   const tally = (rows, key) => rows.reduce((a, r) => { const k = String(r[key]); a[k] = (a[k] || 0) + 1; return a; }, {});
   const recent = (rows) => rows.filter((r) => r.recent).length;
+  const explained = (rows) => rows.filter((r) => r.decision).length;
   return [
     `shows=${out.shows} files=${out.files} unreadable=${out.unreadable} showsAffected=${out.showsAffected} recentShows=${out.recentShows.length}`,
-    `A noUsableText=${out.A.length} (recent ${recent(out.A)}) ${JSON.stringify(tally(out.A, 'bucket'))}`,
-    `B rejectedYetVerified=${out.B.length} (recent ${recent(out.B)}) urlOtherShow=${out.B.filter((r) => r.urlOtherShow).length} (repair the URL) / ${out.B.filter((r) => !r.urlOtherShow).length} (read the text) blockedBy=${JSON.stringify(tally(out.B, 'blockedBy'))}`,
-    `C neverScored=${out.C.length} (recent ${recent(out.C)}) alreadyQueued=${out.C.filter((r) => r.queued).length}`,
+    `A noUsableText=${out.A.length} (recent ${recent(out.A)}) ${JSON.stringify(tally(out.A, 'bucket'))} explained=${explained(out.A)}`,
+    `B rejectedYetVerified=${out.B.length} (recent ${recent(out.B)}) urlOtherShow=${out.B.filter((r) => r.urlOtherShow).length} (repair the URL) / ${out.B.filter((r) => !r.urlOtherShow).length} (read the text) blockedBy=${JSON.stringify(tally(out.B, 'blockedBy'))} explained=${explained(out.B)} unexplained=${out.B.length - explained(out.B)}`,
+    `C neverScored=${out.C.length} (recent ${recent(out.C)}) alreadyQueued=${out.C.filter((r) => r.queued).length} scorer=${JSON.stringify(tally(out.C, 'scorer'))}`,
     `D blockedUrlUnflagged=${out.D.length} ${JSON.stringify(tally(out.D, 'kind'))} publishedOnSite=${out.D.filter((r) => r.published).length} (the harm; the rest is hygiene)`,
     `E uncapturedStar=${out.E.length} (recent ${recent(out.E)})`,
-    `F scoreOutsideBand=${out.F.length} (recent ${recent(out.F)}) queued=${out.F.filter((r) => r.queued).length}`,
+    `F scoreOutsideBand=${out.F.length} (recent ${recent(out.F)}) queued=${out.F.filter((r) => r.queued).length} explained=${out.F.filter((r) => !r.queued && r.decision).length} unqueued=${out.F.filter((r) => !r.queued && !r.decision).length}`,
+    ...(out.staleDecisions && out.staleDecisions.length ? [`stale decisions (row gone, prune from ${LEDGER}): ${out.staleDecisions.length}`] : []),
   ].join('\n');
 }
 
@@ -123,7 +170,7 @@ async function alert(out) {
   return raised;
 }
 
-module.exports = { sweep, summary, needsPerson, normUrl };
+module.exports = { sweep, summary, needsPerson, normUrl, loadDecisions, scorerVerdict, LEDGER };
 
 if (require.main === module) {
   (async () => {

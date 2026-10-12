@@ -152,7 +152,7 @@ test('sweep counts each class once per file, joins published, and lists the show
     assert.equal(out.D.length, 1);
     assert.equal(out.D[0].published, true, 'D rows that are on the site are the ones doing harm');
     assert.equal(out.showsAffected, 1);
-    assert.match(summary(out), /A noUsableText=1 .*\n.*B rejectedYetVerified=1 .*\n.*C neverScored=1 \(recent \d+\) alreadyQueued=0\nD blockedUrlUnflagged=1 .* publishedOnSite=1/);
+    assert.match(summary(out), /A noUsableText=1 .*\n.*B rejectedYetVerified=1 .*\n.*C neverScored=1 \(recent \d+\) alreadyQueued=0 scorer=\{"queued":1\}\nD blockedUrlUnflagged=1 .* publishedOnSite=1/);
     assert.equal(sweep({ root: c.root, only: 'nope' }).files, 0, '--show narrows the sweep');
   } finally { c.cleanup(); }
 });
@@ -211,5 +211,51 @@ test('sweep joins the published row loosely for F and marks recent shows; needsP
     assert.equal(out.F[0].recent, true);
     assert.deepEqual(needsPerson(out, SHOW.id).map((r) => r.cls).sort(), ['B', 'F']);
     assert.match(summary(out), /F scoreOutsideBand=1 \(recent 1\) queued=0/);
+  } finally { c.cleanup(); }
+});
+
+// BRO-4849: the decisions ledger (data/audit/coverage-holes-decisions.json) explains rows a person decided to leave,
+// the C `scorer` field says whether the scorer will ever pick a row up, and F is judged only on the file that owns the
+// published score.
+test('decisions ledger: an entry with a reason explains its row until recheckAfter; needsPerson skips it; gone rows are stale', () => {
+  const { needsPerson, LEDGER } = require('../../scripts/audit-coverage-holes.js');
+  const recentShow = { ...SHOW, openingDate: '2026-10-01' };
+  const c = corpus({
+    'b1.json': base({ rejectionReason: 'not_a_review', contentVerification: cv(), criticName: 'B1', url: 'https://variety.com/b1' }),
+    'b2.json': base({ rejectionReason: 'not_a_review', contentVerification: cv(), criticName: 'B2', url: 'https://variety.com/b2' }),
+    'b3.json': base({ rejectionReason: 'not_a_review', contentVerification: cv(), criticName: 'B3', url: 'https://variety.com/b3' }),
+  }, [recentShow], []);
+  const dec = (file, extra) => ({ class: 'B', file: `${SHOW.id}/${file}`, verdict: 'roundup', reason: 'multi-show page', ...extra });
+  fs.mkdirSync(path.join(c.root, 'data', 'audit'), { recursive: true });
+  fs.writeFileSync(path.join(c.root, LEDGER), JSON.stringify({ decisions: [
+    dec('b1.json'),
+    dec('b2.json', { recheckAfter: '2026-10-01' }), // lapsed: counts as unexplained again
+    dec('b3.json', { reason: '' }), // no reason: explains nothing
+    dec('gone.json'), // row no longer exists
+  ] }));
+  try {
+    const out = sweep({ root: c.root, now: Date.parse('2026-10-08T00:00:00Z'), recentDays: 14 });
+    assert.equal(out.B.length, 3);
+    assert.deepEqual(out.B.filter((r) => r.decision).map((r) => r.file), [`${SHOW.id}/b1.json`]);
+    assert.equal(out.B.find((r) => r.decision).reason, 'multi-show page');
+    assert.match(summary(out), /explained=1 unexplained=2/);
+    assert.deepEqual(needsPerson(out, SHOW.id).map((r) => r.criticName || r.file).length, 2, 'a decided row is not routed to the owner');
+    assert.deepEqual(out.staleDecisions, [{ class: 'B', file: `${SHOW.id}/gone.json` }]);
+    assert.match(summary(out), /stale decisions .*: 1/);
+  } finally { c.cleanup(); }
+});
+
+test('C rows carry the scorer\'s own verdict; F is judged only on the file that owns the published URL', () => {
+  const c = corpus({
+    'c.json': base({ fullText: longText, contentTier: 'complete', criticName: 'C', url: 'https://variety.com/c' }),
+    // published file (in band) and an excluded duplicate of the same URL whose stored rating disagrees
+    'f.json': base({ outletId: 'guardian', originalScore: '2/5 stars', originalScoreSource: 'guardian-star-svg', fullText: longText, contentTier: 'complete', url: 'https://www.theguardian.com/stage/fixture-review' }),
+    'f-dup.json': base({ outletId: 'guardian', originalScore: '5/5 stars', originalScoreSource: 'guardian-star-svg', fullText: longText, contentTier: 'complete', criticName: 'Dup', url: 'https://www.theguardian.com/stage/fixture-review', duplicateOf: 'f.json' }),
+  }, [SHOW], [{ showId: SHOW.id, url: 'https://www.theguardian.com/stage/fixture-review', assignedScore: 40 }]);
+  try {
+    const out = sweep({ root: c.root, now: Date.parse('2026-10-08T00:00:00Z') });
+    const cRow = out.C.find((r) => r.file.endsWith('/c.json'));
+    assert.ok(cRow && typeof cRow.scorer === 'string' && cRow.scorer.length, 'scorer verdict present');
+    assert.equal(out.F.length, 0, 'the duplicate does not inherit the published score');
   } finally { c.cleanup(); }
 });

@@ -4851,7 +4851,9 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   // Re-extract to replace SS-assigned scores with verified outlet scores.
   // Phase 2a: Run both old regex AND new LLM extraction, log disagreements, use LLM result
   const isSSSource = data.source === 'show-score' || data.source === 'show-score-playwright' || data.source === 'showscore-roundup';
-  const hasUnverifiedSSScore = isSSSource && data.originalScore && !OUTLET_VERIFIED_SOURCES.has(data.scoreSource);
+  // A rating a human verified against the outlet page (BRO-4849) is never superseded by extraction.
+  const humanVerified = require('./lib/verified-original-score').isHumanVerifiedRating(data);
+  const hasUnverifiedSSScore = isSSSource && data.originalScore && !humanVerified && !OUTLET_VERIFIED_SOURCES.has(data.scoreSource);
   // Skip re-extraction if score was deliberately cleared by P0 audit
   const wasCleared = data.originalScoreCleared === true;
   // BRO-2809: no-critic-rating outlets (london-theatre) never yield a verified score,
@@ -4946,7 +4948,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     // face value). Never supersede an LLM-extracted score with a regex pass.
     const isLlmSource = typeof scoreSource === 'string' && scoreSource.startsWith('llm-');
     const isUnverifiedOrAggregator =
-      !isLlmSource && (
+      !isLlmSource && !humanVerified && (
         !data.originalScore ||
         !scoreSource ||
         AGGREGATOR_SCORE_SOURCES.has(scoreSource) ||

@@ -54,10 +54,16 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   // write then runs url-change-invariant (clears old-url-derived state) and
   // the collector refetches the new url (needsRefetch + urlCorrectedFrom).
   'url',
+  // originalScore (BRO-4849): a critic's rating a human checked against the
+  // outlet page. The rest of the rating set (normalized, source, type,
+  // starRating, scoreSource, the cleared breadcrumb) is derived by
+  // verified-original-score.js, never edited on its own. null clears.
+  'originalScore',
 ];
 
 // Per-field value checks beyond "scalar". Returns an error string or null.
 const FIELD_VALUE_CHECKS = {
+  originalScore: (v, record) => require('./verified-original-score').verifiedRatingError(record, v),
   // No null: both are write-guard PROTECTED_FIELDS with no clear breadcrumb,
   // so a clear would be silently restored on write.
   humanReviewScore: (v) => (Number.isInteger(v) && v >= 1 && v <= 100
@@ -191,6 +197,14 @@ function applyReviewFieldEdit(record, action, stamp, ctx = {}) {
       next.outletIdCorrectedReason = `approved fix ${stamp.fixId}: outlet-split relabel undone, it was made from the wrong url`;
     }
   }
+  if (field === 'originalScore') {
+    // The helper owns the whole rating write, so it starts from the stored value.
+    next.originalScore = record.originalScore === undefined ? null : record.originalScore;
+    const beforeRating = { ...next };
+    const r = require('./verified-original-score').applyVerifiedOriginalScore(next, newValue, `approved fix ${stamp.fixId}: rating verified against the outlet page`);
+    if (!r.ok) return { ok: false, reason: r.reason };
+    sideEffectKeys = unexpectedChanges(beforeRating, next, field);
+  }
   const prior = Array.isArray(record.approvedFixes) ? record.approvedFixes : [];
   next.approvedFixes = [...prior, { fixId: stamp.fixId, field, at: stamp.at, newValue }];
   const retractMsg = sideEffectKeys.length ? ` (retracted ${sideEffectKeys.join(', ')})` : '';
@@ -252,4 +266,51 @@ function unexpectedChanges(before, after, field, expectedKeys = []) {
   return changed.sort();
 }
 
-module.exports = { REVIEW_TEXT_EDITABLE_FIELDS, applyReviewFieldEdit, resolveReviewPath, unexpectedChanges };
+/**
+ * Apply one review-field-edit action to a file under `reviewTextsDir` through the write guard, and report what
+ * actually landed. execute-approved-fix.js runs it on data/review-texts; lib/preflight-review-fix-plan.js runs it on
+ * a throwaway copy, so a plan is proven before it lands (BRO-4849: a write tripped the guard's url-collision duplicate
+ * marking, which only the real write showed).
+ */
+function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
+  const fs = require('fs');
+  const path = require('path');
+  const abs = resolveReviewPath(reviewTextsDir, action.file);
+  if (!abs) return { ok: false, reason: `Bad review path: ${action.file}` };
+  if (!fs.existsSync(abs)) return { ok: false, reason: `Review file not found: ${action.file}` };
+  const record = JSON.parse(fs.readFileSync(abs, 'utf8'));
+  // url edits (BRO-4430) may repair a url that a sibling file holds for a
+  // different named critic; that needs the show dir, so it is computed here.
+  const ctx = {};
+  if (action.field === 'url' && record.url) {
+    const { urlOwnedByOtherCritic } = require('./review-slot-guards');
+    ctx.currentUrlOwnedByOtherCritic = !!urlOwnedByOtherCritic({
+      showDir: path.dirname(abs), url: record.url,
+      selfFilename: path.basename(abs), selfCriticName: record.criticName,
+    });
+  }
+  const res = applyReviewFieldEdit(record, action, stamp, ctx);
+  if (!res.ok) return res;
+  // A copy: the guard restores protected fields by mutating what it is handed, which would hide a revert below.
+  require('./review-write-guard').safeWriteReview(abs, { ...res.record }, action.field === 'url' ? { approvedUrlRepair: true } : {});
+  // The write guard can legitimately refuse a change (a protected field with
+  // no clear breadcrumb). Report that instead of claiming success.
+  const after = JSON.parse(fs.readFileSync(abs, 'utf8'));
+  const got = after[action.field] === undefined ? null : after[action.field];
+  if (JSON.stringify(got) !== JSON.stringify(action.newValue)) {
+    return { ok: false, reason: `${action.file} ${action.field}: write guard kept ${JSON.stringify(got)}` };
+  }
+  // Side effects the edit made itself (BRO-4849: the derived rating fields) must
+  // survive the write too, or a half-written rating would report success.
+  const lost = (res.sideEffectKeys || []).filter((k) => JSON.stringify(after[k] ?? null) !== JSON.stringify(res.record[k] ?? null));
+  if (lost.length) {
+    return { ok: false, reason: `${action.file} ${action.field}: write guard reverted ${lost.join(', ')}` };
+  }
+  const extra = unexpectedChanges(record, after, action.field, res.sideEffectKeys || []);
+  if (extra.length) {
+    return { ok: false, reason: `${action.file} ${action.field} applied, but the write guard also changed ${extra.join(', ')}; check the record before trusting it` };
+  }
+  return { ok: true, msg: `${action.file} ${res.msg}` };
+}
+
+module.exports = { REVIEW_TEXT_EDITABLE_FIELDS, applyReviewFieldEdit, resolveReviewPath, unexpectedChanges, executeReviewFieldEditIn };

@@ -30,7 +30,7 @@ test('clears a stale rejection (english-2025 NYT, BRO-4202)', () => {
 });
 
 test('refuses fields outside the allowlist (scores, text, lock)', () => {
-  for (const field of ['assignedScore', 'llmScore', 'originalScore', 'fullText', '_locked', 'approvedFixes']) {
+  for (const field of ['assignedScore', 'llmScore', 'originalScoreNormalized', 'originalScoreSource', 'originalScoreCleared', 'scoreSource', 'fullText', '_locked', 'approvedFixes']) {
     assert.equal(REVIEW_TEXT_EDITABLE_FIELDS.includes(field), false, field);
     const res = applyReviewFieldEdit({}, { field, oldValue: null, newValue: 1 }, stamp);
     assert.equal(res.ok, false, field);
@@ -250,4 +250,111 @@ test('a url fix undoes an outlet-split relabel that was made from the wrong url 
   // a split made from some other url does not license the undo
   const other = { ...rec, outletIdCorrectedReason: 'outlet-split: https://www.britishtheatre.com/review-x/ resolves to britishtheatrecom (2026-10-12)' };
   assert.equal(applyReviewFieldEdit(other, { field: 'url', oldValue: bad, newValue: btg }, { fixId: 'f', at: 'now' }).ok, false);
+});
+
+// BRO-4849: originalScore corrects a rating a human checked on the outlet page; the
+// rest of the rating set is derived (verified-original-score.js).
+const { unexpectedChanges } = require('./review-field-edit.js');
+const { getBestScore } = require('./rebuild-helpers.js');
+const fixStamp = { fixId: 'bro-4849-f', at: '2026-10-12T00:00:00.000Z' };
+
+test('originalScore: corrects a wrong stored star and derives the rating set', () => {
+  // beetlejuice-west-end-2026 shinylife: stored 5/5, page shows 4/5
+  const rec = { outletId: 'shinylife', originalScore: '5/5', originalScoreNormalized: 100, originalScoreSource: 'numeric-stars', scoreSource: 'numeric-stars', scoreConfidence: 'low', starRating: '5/5' };
+  const res = applyReviewFieldEdit(rec, { field: 'originalScore', oldValue: '5/5', newValue: '4/5' }, fixStamp);
+  assert.equal(res.ok, true, res.reason);
+  const r = res.record;
+  assert.equal(r.originalScore, '4/5');
+  assert.equal(r.originalScoreNormalized, 80);
+  assert.equal(r.originalScoreSource, 'manual-verified');
+  assert.equal(r.scoreSource, 'manual-verified');
+  assert.equal(r.scoreConfidence, null);
+  assert.equal(r.starRating, null, 'a disagreeing starRating would keep binding the band');
+  assert.equal(r.originalScoreCorrectedFrom, '5/5');
+  assert.equal(r.previousOriginalScore, undefined, 'not stored as a star an adjudication relied on');
+  assert.deepEqual(unexpectedChanges(rec, r, 'originalScore', res.sideEffectKeys), [], 'every derived key is declared');
+  assert.equal(getBestScore(r).score, 80, 'the rebuild uses the corrected rating');
+});
+
+test('originalScore: a correction on a cleared file un-clears it (else the rebuild skips it)', () => {
+  const rec = { outletId: 'shinylife', originalScore: null, originalScoreCleared: true, originalScoreClearedReason: 'p0 audit' };
+  const res = applyReviewFieldEdit(rec, { field: 'originalScore', oldValue: null, newValue: '4/5' }, fixStamp);
+  assert.equal(res.ok, true, res.reason);
+  assert.equal(res.record.originalScoreCleared, false, 'explicit false: a deleted protected field is restored');
+  assert.match(res.record.originalScoreClearedReason, /^un-cleared .*was: p0 audit$/, 'rewritten, not nulled: the guard restores a nulled reason');
+  assert.equal(getBestScore(res.record).score, 80);
+});
+
+test('originalScore: null clears with the write-guard breadcrumb and drops a star-sided adjudication', () => {
+  // matilda telegraph: low-reliability star-class 3/5 contradicting the text
+  const rec = { outletId: 'telegraph', originalScore: '3/5 stars', originalScoreNormalized: 60, originalScoreSource: 'star-class', scoreSource: 'star-class',
+    adjudicatedScore: 60, adjudicationHistory: [{ sidedWith: 'stars' }], llmScore: 88 };
+  const res = applyReviewFieldEdit(rec, { field: 'originalScore', oldValue: '3/5 stars', newValue: null }, fixStamp);
+  assert.equal(res.ok, true, res.reason);
+  const r = res.record;
+  assert.equal(r.originalScore, null);
+  assert.equal(r.originalScoreNormalized, null);
+  assert.equal(r.originalScoreSource, null);
+  assert.equal(r.originalScoreCleared, true);
+  assert.match(r.originalScoreClearedReason, /bro-4849-f/);
+  assert.equal(r.adjudicatedScore, null, 'an adjudication that sided with the wrong star is dropped');
+  assert.deepEqual(unexpectedChanges(rec, r, 'originalScore', res.sideEffectKeys), []);
+});
+
+test('originalScore: refuses ambiguous, unparseable, outlet-less and stale edits', () => {
+  const base = { outletId: 'ew', originalScore: 'B' };
+  const bad = [
+    [{ ...base }, '75', /unambiguous/],
+    [{ ...base }, 'great', /unambiguous/],
+    [{ originalScore: 'B' }, 'B+', /outletId/],
+    [{ outletId: 'guardian', originalScore: 'B' }, 'B+', /does not parse/],
+  ];
+  for (const [rec, v, re] of bad) {
+    const res = applyReviewFieldEdit(rec, { field: 'originalScore', oldValue: 'B', newValue: v }, fixStamp);
+    assert.equal(res.ok, false, v);
+    assert.match(res.reason, re);
+  }
+  assert.equal(applyReviewFieldEdit({ ...base }, { field: 'originalScore', oldValue: 'B', newValue: 'B+' }, fixStamp).ok, true, 'EW letter grade parses');
+  assert.equal(applyReviewFieldEdit({ ...base }, { field: 'originalScore', oldValue: 'A', newValue: 'B+' }, fixStamp).ok, false, 'compare-and-set');
+  assert.equal(applyReviewFieldEdit({ ...base, _locked: true }, { field: 'originalScore', oldValue: 'B', newValue: 'B+' }, fixStamp).ok, false, '_locked');
+});
+
+test('originalScore: un-clear and adjudication drop survive the real write guard on disk', async () => {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  process.env.EXCLUSION_LOGGER_AUDIT_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'rfe-audit-'));
+  const { executeReviewFieldEditIn } = require('./review-field-edit.js');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'rfe-os-'));
+  const show = 'fixture-show-2026';
+  fs.mkdirSync(path.join(root, show));
+  const base = { showId: show, outlet: 'Daily Mail', outletId: 'daily-mail', criticName: 'Patrick Marmion', url: 'https://www.dailymail.co.uk/x' };
+  const write = (f, d) => fs.writeFileSync(path.join(root, show, f), JSON.stringify({ ...base, ...d }, null, 2));
+  const read = (f) => JSON.parse(fs.readFileSync(path.join(root, show, f), 'utf8'));
+  write('a.json', { originalScore: '5/5 stars', originalScoreCleared: true, originalScoreClearedReason: 'audit' });
+  write('b.json', { url: 'https://www.dailymail.co.uk/y', originalScore: '5/5 stars', adjudicatedScore: 40, adjudicationNote: 'sided with the stars', adjudicationHistory: [{ sidedWith: 'stars' }] });
+  const a = executeReviewFieldEditIn(root, { file: `${show}/a.json`, field: 'originalScore', oldValue: '5/5 stars', newValue: '3/5 stars' }, fixStamp);
+  assert.equal(a.ok, true, a.reason);
+  const ra = read('a.json');
+  assert.equal(ra.originalScoreCleared, false);
+  assert.match(ra.originalScoreClearedReason, /^un-cleared/);
+  const b = executeReviewFieldEditIn(root, { file: `${show}/b.json`, field: 'originalScore', oldValue: '5/5 stars', newValue: '3/5 stars' }, fixStamp);
+  assert.equal(b.ok, true, b.reason);
+  const rb = read('b.json');
+  assert.equal(rb.adjudicatedScore, null, 'the guard must not restore a retracted adjudication');
+  assert.equal(rb.adjudicationNote, null);
+  assert.equal(rb.adjudicatedScoreInvalidated.score, 40);
+});
+
+test('originalScore: a verified rating is protected from the collector re-extracting over it', async () => {
+  const fs = await import('node:fs');
+  const { isHumanVerifiedRating } = require('./verified-original-score.js');
+  const rec = { outletId: 'shinylife', originalScore: '5/5' };
+  const res = applyReviewFieldEdit(rec, { field: 'originalScore', oldValue: '5/5', newValue: '4/5' }, fixStamp);
+  // The scorer re-stamps scoreSource after the fix; the verified marker must still hold.
+  assert.equal(isHumanVerifiedRating({ ...res.record, scoreSource: 'anchored-v6' }), true);
+  assert.equal(isHumanVerifiedRating({ originalScoreSource: 'lbo-css-stars', originalScore: '4/5' }), false);
+  // updateReviewJson is not exported, so pin that both extraction overwrites consult the predicate.
+  const src = fs.readFileSync(new URL('../collect-review-texts.js', import.meta.url), 'utf8');
+  assert.match(src, /hasUnverifiedSSScore = isSSSource && data\.originalScore && !humanVerified/);
+  assert.match(src, /isUnverifiedOrAggregator =\s*!isLlmSource && !humanVerified/);
 });

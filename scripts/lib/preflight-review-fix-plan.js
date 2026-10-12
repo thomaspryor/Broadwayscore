@@ -1,0 +1,59 @@
+#!/usr/bin/env node
+'use strict';
+/**
+ * preflight-review-fix-plan.js (BRO-4849): replay a data/pending-fixes plan's review-field-edit actions, in order, on a
+ * throwaway copy of each touched show directory, through the same executor and write guard execute-approved-fix.yml
+ * uses. Proves the plan applies cleanly BEFORE it lands: a compare-and-set mismatch, a value check, or a write-guard
+ * side effect (a url-collision duplicate stamp, a restored protected field) shows here instead of failing the apply run.
+ *
+ * Usage: node scripts/lib/preflight-review-fix-plan.js data/pending-fixes/<plan>.json [...more plans]
+ *   Plans are replayed in the order given, on one shared copy, so later plans see earlier plans' writes.
+ *   Exit 0 when every action applies cleanly, 1 otherwise. data/review-texts is never written.
+ */
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
+const { executeReviewFieldEditIn } = require('./review-field-edit');
+
+const ROOT = path.join(__dirname, '..', '..');
+
+function preflight(planPaths, { reviewTextsDir = path.join(ROOT, 'data', 'review-texts'), log = console.log } = {}) {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'preflight-fix-'));
+  const copied = new Set();
+  let failed = 0;
+  try {
+    for (const planPath of planPaths) {
+      const planData = JSON.parse(fs.readFileSync(planPath, 'utf8'));
+      const id = planData.issueNumber || path.basename(planPath, '.json');
+      const actions = (planData.plan && planData.plan.actions) || [];
+      let ok = 0;
+      for (const a of actions) {
+        if (a.type !== 'review-field-edit') { log(`  skip ${a.type} (not replayed)`); continue; }
+        const showId = String(a.file || '').split('/')[0];
+        if (showId && !copied.has(showId) && fs.existsSync(path.join(reviewTextsDir, showId))) {
+          fs.cpSync(path.join(reviewTextsDir, showId), path.join(tmp, showId), { recursive: true });
+          copied.add(showId);
+        }
+        const res = executeReviewFieldEditIn(tmp, a, { fixId: id, at: new Date().toISOString() });
+        if (res.ok) ok++;
+        else { failed++; log(`  FAIL ${id} ${a.file} ${a.field}: ${res.reason}`); }
+      }
+      log(`${id}: ${ok}/${actions.length} applied cleanly`);
+    }
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+  return { failed };
+}
+
+module.exports = { preflight };
+
+const USAGE = 'Usage: node scripts/lib/preflight-review-fix-plan.js <plan.json> [...]';
+
+if (require.main === module) {
+  if (require('./cli-help').hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
+  const plans = process.argv.slice(2).filter((a) => !a.startsWith('--'));
+  if (!plans.length) { console.error(USAGE); process.exit(2); }
+  const { failed } = preflight(plans);
+  process.exit(failed ? 1 : 0);
+}

@@ -103,6 +103,9 @@ const PROTECTED_FIELDS = [
   'humanReviewScore',
   'adjudicatedScore',
   'adjudicationNote',
+  // BRO-4849: the retraction record the adjudicatedScore clear breadcrumb reads; a restore that dropped it would
+  // resurrect the retracted score on the next write.
+  'adjudicatedScoreInvalidated',
   'manualContentTier',
   'originalScore',
   'originalScoreSource',
@@ -717,6 +720,19 @@ const _freshStaleTextVerdictScoreParked = (d) => _freshAutoClearStamp(d, {
   flagIsString: false,
 });
 
+// star-reliability.invalidateStarSidedAdjudication (BRO-4849): nulls adjudicatedScore/adjudicationNote and stamps
+// adjudicatedScoreInvalidated {score, at}. Without this the restore put the retracted score back, and the rebuild
+// does not read adjudicatedScoreInvalidated, so the bad adjudication stayed live. Freshness-gated like its siblings
+// so an old stamp cannot suppress the restore of a later, unrelated adjudication forever.
+const _freshAdjudicationInvalidated = (d) => {
+  const s = d && d.adjudicatedScoreInvalidated;
+  if (!s || typeof s !== 'object' || typeof s.score !== 'number' || !s.at) return false;
+  const at = Date.parse(String(s.at));
+  if (Number.isNaN(at)) return false;
+  const age = Date.now() - at;
+  return age >= 0 && age <= STALE_SCORE_FRESH_DAYS * 86400000;
+};
+
 const _freshFullTextWrongAuthor = (d) => {
   if (!d || d.fullTextWrongAuthor !== true || !d.fullTextWrongAuthorAt) return false;
   const at = Date.parse(String(d.fullTextWrongAuthorAt));
@@ -1049,7 +1065,8 @@ const CLEAR_BREADCRUMBS = {
   llmScore: (d) => _freshStaleScoredBeforeOpening(d) || _freshStaleTextVerdictScoreParked(d),
   llmMetadata: _freshStaleScoredBeforeOpening,
   ensembleData: (d) => _freshStaleScoredBeforeOpening(d) || _freshFullTextWrongAuthor(d) || _freshStaleTextVerdictScoreParked(d),
-  adjudicatedScore: _freshStaleTextVerdictScoreParked,
+  adjudicatedScore: (d) => _freshStaleTextVerdictScoreParked(d) || _freshAdjudicationInvalidated(d),
+  adjudicationNote: _freshAdjudicationInvalidated,
   // apply-audit-flags.js (task #1237): deletes fullText alongside assignedScore/
   // ensembleData when a byline mismatch is detected — see PROTECTED_FIELDS
   // comment above and _freshFullTextWrongAuthor. fullText has no other

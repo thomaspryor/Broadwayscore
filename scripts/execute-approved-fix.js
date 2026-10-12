@@ -49,8 +49,7 @@ const { applyRetireShow } = require('./lib/retire-show-action.js');
 const { applyAddCommercialEntry } = require('./lib/commercial-entry-action.js');
 const { commercialRecordErrors, commercialRecordWarnings } = require('./lib/commercial-record-checks.js');
 const { unretireId } = require('./lib/retired-show-ids.js');
-const { applyReviewFieldEdit, resolveReviewPath, unexpectedChanges } = require('./lib/review-field-edit.js');
-const { safeWriteReview } = require('./lib/review-write-guard.js');
+const { executeReviewFieldEditIn } = require('./lib/review-field-edit.js');
 const { shouldEmailOwnerOnFix, readerFromDiagnosis, sendReaderFixOwnerEmail } = require('./lib/owner-fix-email.js');
 const { loadIssueDiagnosis } = require('./lib/feedback-submitter-store.js');
 
@@ -469,36 +468,7 @@ function executeReviewFileOp(action) {
 }
 
 function executeReviewFieldEdit(action, stamp) {
-  const reviewTextsDir = path.join(ROOT, 'data/review-texts');
-  const abs = resolveReviewPath(reviewTextsDir, action.file);
-  if (!abs) return { ok: false, reason: `Bad review path: ${action.file}` };
-  if (!fs.existsSync(abs)) return { ok: false, reason: `Review file not found: ${action.file}` };
-  const record = JSON.parse(fs.readFileSync(abs, 'utf8'));
-  // url edits (BRO-4430) may repair a url that a sibling file holds for a
-  // different named critic; that needs the show dir, so it is computed here.
-  const ctx = {};
-  if (action.field === 'url' && record.url) {
-    const { urlOwnedByOtherCritic } = require('./lib/review-slot-guards');
-    ctx.currentUrlOwnedByOtherCritic = !!urlOwnedByOtherCritic({
-      showDir: path.dirname(abs), url: record.url,
-      selfFilename: path.basename(abs), selfCriticName: record.criticName,
-    });
-  }
-  const res = applyReviewFieldEdit(record, action, stamp, ctx);
-  if (!res.ok) return res;
-  safeWriteReview(abs, res.record, action.field === 'url' ? { approvedUrlRepair: true } : {});
-  // The write guard can legitimately refuse a change (a protected field with
-  // no clear breadcrumb). Report that instead of claiming success.
-  const after = JSON.parse(fs.readFileSync(abs, 'utf8'));
-  const got = after[action.field] === undefined ? null : after[action.field];
-  if (JSON.stringify(got) !== JSON.stringify(action.newValue)) {
-    return { ok: false, reason: `${action.file} ${action.field}: write guard kept ${JSON.stringify(got)}` };
-  }
-  const extra = unexpectedChanges(record, after, action.field, res.sideEffectKeys || []);
-  if (extra.length) {
-    return { ok: false, reason: `${action.file} ${action.field} applied, but the write guard also changed ${extra.join(', ')}; check the record before trusting it` };
-  }
-  return { ok: true, msg: `${action.file} ${res.msg}` };
+  return executeReviewFieldEditIn(path.join(ROOT, 'data/review-texts'), action, stamp);
 }
 
 function executeBatchTransform(action) {
