@@ -1067,6 +1067,36 @@
     "queuedAt": "2026-10-12T16:13:39.128Z"
   },
   {
+    "conditionKey": "land:land/bro-3414-lsa",
+    "title": "Landing blocked: unit-tests-node red on land/bro-3414-lsa",
+    "description": "land.yml did not land land/bro-3414-lsa: the unit-tests-node gate went red at d11d1016ae. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38272122674",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-3414-lsa"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "d11d1016ae03c85aecdf822d0888ed3c3bd93b31"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38272122674"
+      }
+    ],
+    "queuedAt": "2026-10-12T16:15:23.027Z"
+  },
+  {
     "conditionKey": "land:land/bro-3566-registry-merge-check",
     "title": "Landing blocked: unit-tests-node red on land/bro-3566-registry-merge-check",
     "description": "land.yml did not land land/bro-3566-registry-merge-check: the unit-tests-node gate went red at bfba7db161. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38271989718",
