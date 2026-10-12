@@ -54,8 +54,10 @@
 #     BRO-5161: the gauntlet never ran this batch, so 19c4e4a193 (BRO-4911)
 #     broke tests/unit/review-normalization.test.js, landed clean and turned
 #     main red. Its own gate (not folded into unit-tests-tsx) so a batch that
-#     cannot start stays a fail-safe of its own. Several files read
-#     data/review-texts, which land.yml's checks job checks out for it.
+#     cannot start stays a fail-safe of its own. land.yml does NOT check out
+#     data/review-texts (it doubled the other unit gates' run time), so the
+#     few subtests asserting that corpus fail on base and branch alike and
+#     the delta treats them as pre-existing; every other subtest is diffed.
 #     ADVISORY until armed (LAND_E2E_UNIT_BLOCKING=1, see land-gate-delta.js).
 # Env: GAUNTLET_GATES — optional comma list (e.g. "lint-workflows" or
 #   "unit-tests-node,scripts-lib-tests"): run only those gates, skipping the
