@@ -106,6 +106,8 @@ jobs:
         if: github.event_name == 'schedule'
         env:
           CI: true
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
         run: |
           echo "=== Scheduled: Running Phases 1-2 (protocol upgrades + redirect detection) ==="
           echo "--- Phase 1: Protocol upgrades (limit 200) ---"

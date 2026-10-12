@@ -487,7 +487,12 @@ jobs:
           while IFS= read -r name; do
             [ -z "$name" ] && continue
             wf="${WF_FILE[$name]:-}"
-            if [ -n "$wf" ] && GH_TOKEN="${DISPATCH_TOKEN:-$GH_TOKEN}" gh workflow run "$wf" >/dev/null 2>&1; then
+            # Opted-in workflows (a `redispatched` dispatch input, see
+            # scripts/lib/re-dispatcher.js) run their scheduled scope only when
+            # told; a bare dispatch is their manual/full-sweep path.
+            RD_ARGS=()
+            if [ -n "$wf" ] && grep -qE '^\s+redispatched\s*:\s*$' ".github/workflows/$wf" 2>/dev/null; then RD_ARGS=(-f redispatched=true); fi
+            if [ -n "$wf" ] && GH_TOKEN="${DISPATCH_TOKEN:-$GH_TOKEN}" gh workflow run "$wf" "${RD_ARGS[@]}" >/dev/null 2>&1; then
               echo "🔁 Self-heal: redispatched ${wf} for '${name}' — pages only if still stale at next check"
               REDISPATCHED_NOW="${REDISPATCHED_NOW}${name}"$'\n'
             else

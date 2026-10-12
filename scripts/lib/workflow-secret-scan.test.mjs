@@ -541,8 +541,9 @@ test('a read with a literal fallback is not required; a bare read is', () => {
     'const t = process.env.X_TIMEOUT ?? 30;',
     'const k = process.env.SCRAPINGBEE_API_KEY;',
     "const z2 = process.env.MIXED || 'd'; const z3 = process.env.MIXED;",
+    "const e = process.env.EMPTY_FALLBACK || ''; const p = (process.env.PAGESPEED_API_KEY || \"\").trim();",
   ].join('\n');
-  assert.deepEqual([...scan.extractRequiredEnvReads(src)].sort(), ['MIXED', 'SCRAPINGBEE_API_KEY']);
+  assert.deepEqual([...scan.extractRequiredEnvReads(src)].sort(), ['EMPTY_FALLBACK', 'MIXED', 'PAGESPEED_API_KEY', 'SCRAPINGBEE_API_KEY']);
 });
 
 test('secret-optional marker masks that file\'s reads; needs a reason', () => {

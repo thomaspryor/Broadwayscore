@@ -461,7 +461,9 @@ function extractEnvReads(source) {
 // || _envTopUp.BRIGHTDATA_ZONE || 'web_unlocker2'`) is a config knob with a
 // built-in default, not a secret whose absence silently no-ops. BRO-3602: these
 // reads (BRIGHTDATA_ZONE, BRIGHTDATA_SERP_ZONE) were ~130 of the audit's findings.
-const DEFAULTED_READ_RE = /process\.env(?:\.([A-Z][A-Z0-9_]*)\b|\[\s*['"]([A-Z][A-Z0-9_]*)['"]\s*\])((?:\s*(?:\|\||\?\?)\s*[A-Za-z_$][\w$.]*(?:\[['"][A-Z0-9_]+['"]\])?)*\s*(?:\|\||\?\?)\s*(?:'[^'\n]*'|"[^"\n]*"|`[^`\n]*`|-?\d+(?:\.\d+)?))?/g;
+// An EMPTY literal (`|| ''`) is the silent-no-op pattern itself, so it stays
+// required (SCRAPINGBEE_API_KEY || '' in scrape-stagedoor-critics.js).
+const DEFAULTED_READ_RE = /process\.env(?:\.([A-Z][A-Z0-9_]*)\b|\[\s*['"]([A-Z][A-Z0-9_]*)['"]\s*\])((?:\s*(?:\|\||\?\?)\s*[A-Za-z_$][\w$.]*(?:\[['"][A-Z0-9_]+['"]\])?)*\s*(?:\|\||\?\?)\s*(?:'[^'\n]+'|"[^"\n]+"|`[^`\n]+`|-?\d+(?:\.\d+)?))?/g;
 
 /**
  * extractEnvReads() minus names that are only ever read with a literal
