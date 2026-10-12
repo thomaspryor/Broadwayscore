@@ -878,7 +878,8 @@ function normalizeForMatching(s) {
 function matchesAsWholeWord(word, text) {
   const escaped = normalizeForMatching(word).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const normalizedText = normalizeForMatching(text);
-  const re = new RegExp(`(?:^|[\\s\\-/,.?!:;'""\\u2018\\u2019\\u201C\\u201D])${escaped}(?:$|[\\s\\-/,.?!:;'""\\u2018\\u2019\\u201C\\u201D])`, 'i');
+  // En/em dashes are word breaks too: "Ain't Too Proud\u2014The Life and Times".
+  const re = new RegExp(`(?:^|[\\s\\-/,.?!:;'""\\u2013\\u2014\\u2018\\u2019\\u201C\\u201D])${escaped}(?:$|[\\s\\-/,.?!:;'""\\u2013\\u2014\\u2018\\u2019\\u201C\\u201D])`, 'i');
   return re.test(normalizedText) || re.test(normalizedText.replace(/-/g, ' '));
 }
 

@@ -342,6 +342,30 @@ if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; }; the
   fi
 fi
 
+# STALE LOCAL CORE-DATA COPIES (BRO-3523/BRO-3331). The block above only says
+# whether the core-data CLONE is behind origin. setup-local-data.sh COPIES some
+# files (critic-registry.json, grosses.json, ... its COPY_FILES) into data/ as
+# plain files, so a fresh clone can still sit behind a stale data/ copy: a
+# copy missing 4 outlets read as a live regression (BRO-3115, BRO-3515).
+# Byte compare, local disk only, size-checked first. Fail-open: skipped when
+# the clone or the helper is absent (older worktrees), bounded by the same
+# 5s alarm as the fetch above.
+if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } && [ -n "$REPO_ROOT" ]; then
+  CORE_DATA_DIR="${BSC_DATA_REPO:-$HOME/broadway-scorecard-data}"
+  if [ -d "$CORE_DATA_DIR" ] && [ -f "$REPO_ROOT/scripts/lib/core-data-files.js" ]; then
+    STALE_COPIES=$(perl -e 'alarm shift; exec @ARGV' 5 \
+      node "$REPO_ROOT/scripts/lib/core-data-files.js" stale-copies "$REPO_ROOT/data" "$CORE_DATA_DIR" 2>/dev/null | tr '\n' ' ')
+    if [ -n "$STALE_COPIES" ]; then
+      echo ""
+      echo "🔶 STALE LOCAL CORE-DATA COPY: data/ differs from $CORE_DATA_DIR for: $STALE_COPIES"
+      echo "   These are plain copies, not symlinks, so they do not follow the clone."
+      echo "   Conclusions drawn from them may be wrong. Refresh:"
+      echo "     ./scripts/setup-local-data.sh"
+      echo ""
+    fi
+  fi
+fi
+
 # CODE-REPO staleness (BRO-2663, added 2026-08-31). The two blocks above watch
 # derived data checkouts (review-texts, core-data clone); nothing warned when
 # the CODE checkout itself was behind origin/main. Same hazard, same shape: a

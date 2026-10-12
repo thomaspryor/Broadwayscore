@@ -16,7 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const { JSDOM } = require('jsdom');
-const { makeArchiveShowChecker } = require('./lib/archive-cache-guard');
+const { makeArchiveCountGuard } = require('./lib/archive-cache-guard');
 
 // Paths
 const SHOWS_PATH = path.join(__dirname, '../data/shows.json');
@@ -35,21 +35,13 @@ function loadShows() {
   return data.shows;
 }
 
-let _archiveShowChecker = null;
-
 /**
  * An archive is saved under a show id, but the page may be another show's
  * (BRO-4563: the Hay Fever roundup counted as 8 Richard II reviews). A
- * wrong-show page comes back with hasArchive:false so determineFlags and
- * audit-aggregator-coverage.js treat the show as having no archive instead of
- * comparing against a wrong count.
+ * wrong-show page comes back with hasArchive:false and error:'wrong-show'.
+ * Shared with audit-aggregator-coverage.js (BRO-3621).
  */
-function wrongShowArchive(html, showId) {
-  if (!_archiveShowChecker) _archiveShowChecker = makeArchiveShowChecker(loadShows());
-  const check = _archiveShowChecker(html, showId);
-  if (!check) return null;
-  return { reviewCount: null, hasArchive: false, error: 'wrong-show', reason: check.reason, pageTitle: check.pageTitle };
-}
+const wrongShowArchive = makeArchiveCountGuard(loadShows);
 
 /**
  * Count local review files for a show

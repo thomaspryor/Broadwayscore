@@ -21,7 +21,7 @@ const { matchTitleToShow, matchSlugToShow, cleanSlugTitle, loadShows, cleanExter
 const { shouldSkipPreviewsShow } = require('./lib/opening-signal');
 const { pruneUnmatchedAudit, collisionSlugSet, obRegionalShows } = require('./lib/aggregator-candidate-extract');
 const { validatePageMatchesShow } = require('./lib/page-validator');
-const { checkArchiveCategory } = require('./lib/archive-cache-guard');
+const { checkArchiveCategory, checkArchivePageIdentity, createRejectedPageLedger } = require('./lib/archive-cache-guard');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters');
@@ -36,6 +36,8 @@ const cheerio = require('cheerio');
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 const archiveDir = path.join(__dirname, '../data/aggregator-archive/playbill-verdict');
 const sitemapAccumulatorPath = path.join(__dirname, '../data/audit/playbill-verdict-sitemap-seen.json');
+// Batch-path pages fetched then rejected (wrong market / wrong show), BRO-3608.
+const rejectedPagesPath = path.join(__dirname, '../data/audit/playbill-verdict-rejected-pages.json');
 
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 
@@ -606,6 +608,7 @@ function printSummary() {
   console.log(`Skipped (existing): ${stats.skippedExisting}`);
   if (stats.skippedConflict) console.log(`⚠️  Skipped (conflict — needs a human, see warnings above): ${stats.skippedConflict}`);
   console.log(`Skipped (off-Broadway): ${stats.skippedOffBroadway}`);
+  if (stats.skippedWrongShow) console.log(`Skipped (page is a different show): ${stats.skippedWrongShow}`);
   console.log(`Google searches: ${stats.googleSearches}`);
   if (stats.errors.length > 0) {
     console.log(`Errors: ${stats.errors.length}`);
@@ -818,6 +821,7 @@ async function scrapePlaybillVerdict() {
   // permanently lose a candidate whose fetch/validation fails on a day it's
   // already scrolled out of the live sitemap window.
   const processedArticleUrls = new Set();
+  const rejectedLedger = createRejectedPageLedger(rejectedPagesPath);
   for (const article of matchedArticles) {
     const archivePath = path.join(archiveDir, `${article.showId}.html`);
     // Also check slug-based archive from older runs
@@ -829,16 +833,22 @@ async function scrapePlaybillVerdict() {
 
     // Use cached archive if fresh (<14 days), otherwise re-fetch
     let html;
+    let fromCache = false;
     const archiveFresh = fs.existsSync(effectiveArchive) &&
       (Date.now() - fs.statSync(effectiveArchive).mtimeMs) / (1000 * 60 * 60 * 24) < 14;
     if (archiveFresh) {
       html = fs.readFileSync(effectiveArchive, 'utf8');
+      fromCache = true;
       console.log(`  [CACHE] ${article.showId}: Using archived HTML`);
     } else {
+      const prior = rejectedLedger.recentRejection(article.url, article.showId);
+      if (prior) {
+        console.log(`  [SKIP] ${article.showId}: rejected ${prior.at.slice(0, 10)} (${prior.reason}), not re-fetching`);
+        continue;
+      }
       try {
         html = await fetchHtml(article.url);
         if (html) {
-          fs.writeFileSync(archivePath, html);
           stats.articlesFetched++;
           console.log(`  [FETCH] ${article.showId}: ${article.title.slice(0, 60)}`);
         }
@@ -852,22 +862,42 @@ async function scrapePlaybillVerdict() {
 
     if (!html) continue;
 
+    // A rejected page is never archived (BRO-3608: the write used to happen
+    // before any check ran). A cached one is purged so a poisoned file cannot
+    // keep confirming the show; a fetched one goes in the rejected-page ledger
+    // so it is not paid for again every run.
+    const reject = (reason) => {
+      if (fromCache) {
+        try { fs.unlinkSync(effectiveArchive); } catch { /* already gone */ }
+      }
+      // Ledger both paths so a purged cached page is not re-fetched next run.
+      rejectedLedger.record(article.url, article.showId, reason);
+    };
+
     // Validate the fetched article is about Broadway (not London, Chicago, film, etc.)
     const $article = cheerio.load(html);
     const articlePageTitle = $article('title').text() + ' ' + $article('h1').text();
     if (isNotBroadway(articlePageTitle, { allowOffBroadway: matchedShow && matchedShow.category === 'off-broadway', allowWestEnd: matchedShow && isLondonMarket(matchedShow.category), allowOpera: matchedShow && matchedShow.type === 'opera', allowRegional: matchedShow && matchedShow.category === 'regional' })) {
       console.log(`    [SKIP] Article is not about Broadway: "${articlePageTitle.slice(0, 80)}"`);
+      reject('wrong-market');
       continue;
     }
 
+    // Per-show identity (BRO-3608): the same checkArchiveCategory +
+    // validatePageMatchesShow pair processShowViaGoogle runs. Without it a
+    // market-correct page for the WRONG production was archived under this
+    // show, confirmed it (suppressing the Google fallback) and had its review
+    // links attributed to it.
+    const identity = await checkArchivePageIdentity(html, matchedShow, siblingCategoriesByShowId()[article.showId]);
+    if (!identity.ok) {
+      console.log(`    [SKIP] ${article.showId}: page is not this show (${identity.reason})`);
+      stats.skippedWrongShow = (stats.skippedWrongShow || 0) + 1;
+      reject(identity.reason);
+      continue;
+    }
+
+    if (!fromCache) fs.writeFileSync(archivePath, html);
     processedArticleUrls.add(article.url);
-    // "Validated" here means passed the market check above (isNotBroadway) —
-    // this batch path does NOT run per-show identity validation
-    // (validatePageMatchesShow, used by processShowViaGoogle below) before
-    // confirming. A market-correct page for the WRONG production can still
-    // confirm the show and suppress Google fallback; that's a separate,
-    // pre-existing gap (batch discovery never identity-checks), not
-    // something #1647's tracker-ordering fix covers.
     fallbackTracker.confirmMatch(article.showId);
 
     // Extract review links
@@ -895,6 +925,12 @@ async function scrapePlaybillVerdict() {
         console.log(`    [NEW] ${link.outletDomain}: ${link.critic || 'unknown'}`);
       }
     }
+  }
+
+  try {
+    rejectedLedger.save();
+  } catch (err) {
+    console.error(`  Error saving rejected-page ledger: ${err.message}`);
   }
 
   // Prune sitemap accumulator: only drop candidates that actually cleared

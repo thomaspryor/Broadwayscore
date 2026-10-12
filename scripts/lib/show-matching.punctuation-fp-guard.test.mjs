@@ -83,3 +83,14 @@ test('pageTitleConfirmsShow: false when the page names a different show entirely
 test('pageTitleConfirmsShow: false for an empty/missing page title', () => {
   assert.equal(pageTitleConfirmsShow('', 'Avenue Q'), false);
 });
+
+test('titleWordsMatchWithConfidence treats en/em dashes as word breaks (Playbill "Proud—The Life")', () => {
+  const { titleWordsMatchWithConfidence } = require('./show-matching.js');
+  const heading = "What Do Critics Think of Ain't Too Proud—The Life and Times of The Temptations? | Playbill";
+  const r = titleWordsMatchWithConfidence("Ain't Too Proud", heading);
+  assert.deepEqual(r.missingWords, []);
+  assert.equal(r.confidence, 1);
+  assert.equal(titleWordsMatchWithConfidence('Hadestown', 'Hadestown–Review').matched, true);
+  // A dash is a boundary, not a wildcard: a longer word still does not match.
+  assert.equal(titleWordsMatchWithConfidence('Chess', 'Chessboard—Review').matched, false);
+});

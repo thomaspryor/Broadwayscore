@@ -67,16 +67,29 @@ function checkArchiveCategory(html, show, siblingCategories) {
  *   failure).
  */
 function readCachedArchiveIfValid(archivePath, maxAgeDays, show, siblingCategories) {
-  if (!fs.existsSync(archivePath)) return null;
-  const age = (Date.now() - fs.statSync(archivePath).mtimeMs) / (1000 * 60 * 60 * 24);
-  if (age >= maxAgeDays) return null;
-
-  const html = fs.readFileSync(archivePath, 'utf8');
+  // ENOENT-tolerant throughout (BRO-3621): gather-reviews.js and
+  // opening-night-poller.js read and purge the same files with no lock. Both
+  // run this same predicate on the same shows.json, so their verdicts agree;
+  // the one real race is a file vanishing between steps (the other reader
+  // purged it), which must read as "no cache", not crash the run.
+  let html;
+  try {
+    const age = (Date.now() - fs.statSync(archivePath).mtimeMs) / (1000 * 60 * 60 * 24);
+    if (age >= maxAgeDays) return null;
+    html = fs.readFileSync(archivePath, 'utf8');
+  } catch (err) {
+    if (err.code === 'ENOENT') return null;
+    throw err;
+  }
   const check = checkArchiveCategory(html, show, siblingCategories);
   if (check.ok) {
     return { valid: true, html, check };
   }
-  fs.unlinkSync(archivePath);
+  try {
+    fs.unlinkSync(archivePath);
+  } catch (err) {
+    if (err.code !== 'ENOENT') throw err;
+  }
   return { valid: false, purged: true, check };
 }
 
@@ -88,6 +101,9 @@ function readCachedArchiveIfValid(archivePath, maxAgeDays, show, siblingCategori
  * reviews (BRO-4563). Runs checkArchiveCategory() against that id's show.
  *
  * @param {Array<{id:string,title:string,category:string}>} shows
+ * Files named by a show's slug (older Playbill Verdict runs) resolve to that
+ * show too, so they are checked rather than waved through.
+ *
  * @returns {(html: string, showId: string) => object|null} the failing check
  *   (validateRoundupPageTitle() shape), or null when the page passes or the id
  *   is not in shows.
@@ -95,13 +111,101 @@ function readCachedArchiveIfValid(archivePath, maxAgeDays, show, siblingCategori
 function makeArchiveShowChecker(shows) {
   const byId = {};
   for (const s of shows) if (s && s.id) byId[s.id] = s;
+  for (const s of shows) if (s && s.slug && !byId[s.slug]) byId[s.slug] = s;
   const siblings = buildSiblingCategoriesFromShows(shows);
   return (html, showId) => {
     const show = byId[showId];
     if (!show) return null;
-    const check = checkArchiveCategory(html, show, siblings[showId]);
+    const check = checkArchiveCategory(html, show, siblings[show.id]);
     return check.ok ? null : check;
   };
 }
 
-module.exports = { readCachedArchiveIfValid, checkArchiveCategory, makeArchiveShowChecker };
+/**
+ * makeArchiveShowChecker() shaped for the aggregator COUNT readers
+ * (build-aggregator-truth.js, audit-aggregator-coverage.js): a wrong-show page
+ * comes back as an explicit 'wrong-show' result instead of a count, so the
+ * show is reported as such rather than compared against another show's count
+ * (BRO-4563) or filed as never-searched. Shows load lazily, once.
+ *
+ * @param {() => Array<object>} loadShows
+ * @returns {(html: string, showId: string) => null|{reviewCount: null, hasArchive: false, error: 'wrong-show', reason: string, pageTitle: string}}
+ */
+function makeArchiveCountGuard(loadShows) {
+  let checker = null;
+  return (html, showId) => {
+    if (!checker) checker = makeArchiveShowChecker(loadShows());
+    const check = checker(html, showId);
+    if (!check) return null;
+    return { reviewCount: null, hasArchive: false, error: 'wrong-show', reason: check.reason, pageTitle: check.pageTitle };
+  };
+}
+
+/**
+ * Full identity check for a page about to be cached or trusted under a show:
+ * checkArchiveCategory() first (sync, free, catches cross-market siblings),
+ * then validatePageMatchesShow() (title + opening year + production category;
+ * an LLM tiebreak only on partial title matches). Same pair the Playbill
+ * Verdict Google path already runs at read and write time.
+ *
+ * @param {string} html
+ * @param {{title: string, category: string, openingDate?: string}} show
+ * @param {string[]} [siblingCategories]
+ * @param {{validatePage?: Function}} [opts] test seam for validatePageMatchesShow
+ * @returns {Promise<{ok: true}|{ok: false, reason: string, pageTitle?: string}>}
+ */
+async function checkArchivePageIdentity(html, show, siblingCategories, { validatePage } = {}) {
+  const cat = checkArchiveCategory(html, show, siblingCategories);
+  if (!cat.ok) return { ok: false, reason: cat.reason, pageTitle: cat.pageTitle };
+  const validate = validatePage || require('./page-validator').validatePageMatchesShow;
+  const v = await validate(html, show.title, {
+    openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null,
+    category: show.category,
+  });
+  return v.valid ? { ok: true } : { ok: false, reason: v.reason };
+}
+
+/**
+ * Remembers pages that were fetched and then REJECTED (wrong market, wrong
+ * show), keyed by url + show id, so a rejected page costs one paid fetch per
+ * maxAgeDays instead of one per run. Rejected pages are never written to the
+ * archive (BRO-3608), so the archive's own 14-day freshness can no longer
+ * stand in for this. A missing or corrupt file starts empty.
+ *
+ * @param {string} ledgerPath  JSON file: { [url]: {showId, reason, at} }
+ * @param {{maxAgeDays?: number, now?: () => number}} [opts]
+ */
+function createRejectedPageLedger(ledgerPath, { maxAgeDays = 14, now = Date.now } = {}) {
+  let entries = {};
+  try {
+    const parsed = JSON.parse(fs.readFileSync(ledgerPath, 'utf8'));
+    if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) entries = parsed;
+  } catch { /* missing or corrupt: start empty */ }
+  const maxAgeMs = maxAgeDays * 24 * 60 * 60 * 1000;
+  const fresh = (e) => e && now() - Date.parse(e.at) < maxAgeMs;
+  // One url can be matched to several shows; each rejection is its own row.
+  const key = (url, showId) => `${showId} ${url}`;
+  return {
+    recentRejection(url, showId) {
+      const e = entries[key(url, showId)];
+      return fresh(e) ? e : null;
+    },
+    record(url, showId, reason) {
+      entries[key(url, showId)] = { url, showId, reason, at: new Date(now()).toISOString() };
+    },
+    save() {
+      const kept = {};
+      for (const [k, e] of Object.entries(entries)) if (fresh(e)) kept[k] = e;
+      fs.writeFileSync(ledgerPath, JSON.stringify(kept, null, 2) + '\n');
+    },
+  };
+}
+
+module.exports = {
+  readCachedArchiveIfValid,
+  checkArchiveCategory,
+  makeArchiveShowChecker,
+  makeArchiveCountGuard,
+  checkArchivePageIdentity,
+  createRejectedPageLedger,
+};

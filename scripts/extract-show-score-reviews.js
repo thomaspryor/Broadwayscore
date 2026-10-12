@@ -23,6 +23,7 @@ const { detectSiblingMisfile } = require('./lib/sibling-misfile');
 // Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
 // `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
 const { parseJsonLd } = require('./lib/jsonld');
+const { makeArchiveShowChecker } = require('./lib/archive-cache-guard');
 
 const archivePath = path.join(__dirname, '../data/aggregator-archive/show-score');
 const urlsPath = path.join(__dirname, '../data/show-score-urls.json');
@@ -38,6 +39,8 @@ const showsArray = Array.isArray(showsList) ? showsList : Object.values(showsLis
 const showsById = {};
 for (const s of showsArray) if (s.id) showsById[s.id] = s;
 const siblingIndex = buildSiblingIndex(showsArray);
+// BRO-3621: skip an archive file that is another show's page.
+const archiveShowChecker = makeArchiveShowChecker(showsArray);
 
 function detectCategory(html, showId) {
   // Use shows.json category if available
@@ -321,6 +324,12 @@ function main() {
 
     try {
       const html = fs.readFileSync(archiveFile, 'utf8');
+      const wrongShow = archiveShowChecker(html, showId);
+      if (wrongShow) {
+        console.log(`  SKIP: archive is another show's page (${wrongShow.reason})`);
+        failCount++;
+        continue;
+      }
 
       // Check if the HTML looks like the correct page
       if (html.includes('NYC Theatre Reviews and Tickets</title>') &&

@@ -1069,6 +1069,14 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (scrape-new-aggregators.yml), group scrape-new-aggregators (cancel-in-progress: false).',
   },
   {
+    file: 'audit/playbill-verdict-rejected-pages.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'scrape-new-aggregators',
+    verifiedBy: '2026-10-12 (BRO-3608): written by scrape-playbill-verdict.js Step 3; only scrape-new-aggregators.yml stages it (git-add-existing.sh list beside playbill-verdict-sitemap-seen.json), group scrape-new-aggregators (cancel-in-progress: false).',
+  },
+  {
     file: 'audit/playbill-verdict-unmatched.json',
     surface: 'public-repo',
     status: 'single-writer',
