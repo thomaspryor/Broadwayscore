@@ -9,6 +9,7 @@
  */
 
 const crypto = require('crypto');
+const { isLegacyWebSearchOnly } = require('./legacy-web-search');
 const { isNonEvidenceFailure, isStrictFailureReason, SOFT_404_REASON } = require('./failed-fetch-policy');
 
 // BRO-3116: a soft-404 means "not published yet": short cooldown, never abandoned.
@@ -4252,7 +4253,7 @@ function isUnverifiableWebSearchRow(data) {
   // step wrote itself: 0 of 34 reachable review pages contained the excerpt
   // ("Despite handsome design elements...", a TheaterMania review credited to
   // David Rooney). SERP-sourced url rows keep the old rule.
-  if (data.url && !sources.every((x) => x === 'web-search')) return false;
+  if (data.url && !isLegacyWebSearchOnly(data)) return false;
   // That step also copied its one-sentence summary into fullText (175 live rows
   // of 50-299 chars, all "X is a show that knows exactly what it wants..."), so
   // a url row needs a real page's worth of text to count as checkable.
@@ -4262,9 +4263,10 @@ function isUnverifiableWebSearchRow(data) {
   // is rescored on that text its score is still the one read from the
   // invented excerpt, so a legacy web-search url row stays out while its LLM
   // score says it was read from an excerpt, or, with no such record, while a
-  // rescore is pending. A score read from the page itself (originalScore) is
-  // not from the excerpt.
-  if (data.url && isLegacyWebSearchOnly(data) && !data.originalScore) {
+  // rescore is pending. A score read from the page itself (an originalScore
+  // with its extractor source recorded) is not from the excerpt; a bare
+  // originalScore may be that step's own guess too.
+  if (data.url && !(data.originalScore && data.originalScoreSource)) {
     const textSource = data.llmMetadata && data.llmMetadata.textSource && data.llmMetadata.textSource.type;
     if (textSource === 'excerpt') return true;
     if (!textSource && data.needsRescore === true) return true;
@@ -4272,7 +4274,6 @@ function isUnverifiableWebSearchRow(data) {
   return false;
 }
 
-const { isLegacyWebSearchOnly } = require('./legacy-web-search');
 
 /**
  * BRO-3126: a "first look" piece published while the show was still in previews, scored and

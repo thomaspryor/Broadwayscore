@@ -23,6 +23,7 @@
  */
 
 const { OTHER_PRODUCTION_URL_REASON } = require('./lib/other-production-signal');
+const { verifierExcerpt } = require('./lib/excerpt-fields');
 const fs = require('fs');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
@@ -185,7 +186,7 @@ async function processVerify(items) {
     try {
       const result = await verifyContent({
         scrapedText: item.text,
-        excerpt: require('./lib/excerpt-fields').verifierExcerpt(r),
+        excerpt: verifierExcerpt(r),
         showTitle: show?.title || item.showId,
         outletName: r.outlet || r.outletId || '',
         criticName: r.criticName || '',
@@ -287,7 +288,7 @@ async function processRecover(items) {
     try {
       const result = await verifyContent({
         scrapedText: item.text,
-        excerpt: require('./lib/excerpt-fields').verifierExcerpt(r),
+        excerpt: verifierExcerpt(r),
         showTitle: show?.title || item.showId,
         outletName: r.outlet || r.outletId || '',
         criticName: r.criticName || '',

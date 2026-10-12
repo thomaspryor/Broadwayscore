@@ -21,6 +21,7 @@
  *   node scripts/resolve-date-guard-holds.js --limit=N   at most N fetches (default and max 10)
  */
 const fs = require('fs');
+const { verifierExcerpt } = require('./lib/excerpt-fields');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -140,7 +141,7 @@ async function main() {
         const [outlet, critic] = file.replace('.json', '').split('--');
         cvResult = await verifyContent({
           scrapedText: text,
-          excerpt: require('./lib/excerpt-fields').verifierExcerpt(data),
+          excerpt: verifierExcerpt(data),
           showTitle: show.title,
           outletName: outlet || data.outlet || 'unknown',
           criticName: critic || data.criticName || 'unknown',

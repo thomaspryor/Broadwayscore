@@ -165,6 +165,8 @@ const { shouldSkipPollerUpdate, safeRenameReview, invalidateWrongShowAutoClear, 
 const { updateFileUrlWithInvariant, isDifferentArticleRecovery } = require('./lib/url-change-invariant');
 const { extractDateFromUrl: extractDateFromUrlCanonical } = require('./lib/rebuild-helpers');
 const { verificationPublishDate } = require('./lib/verification-publish-date');
+const { verifierExcerpt } = require('./lib/excerpt-fields');
+const { isLegacyWebSearchOnly } = require('./lib/legacy-web-search');
 const { parseDate } = require('./lib/date-utils');
 const { evaluateShowScorePreviousProduction } = require('./lib/date-guard');
 const { findExistingFileForUrl, decideSameUrlDifferentFileGuard } = require('./lib/review-url-clusters');
@@ -4639,7 +4641,11 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   const hasLlmScore = data.llmScore && data.llmScore.score;
   const newTextIsSubstantial = text.length > 1000;
 
-  if (!hadFullTextBefore && hasLlmScore && newTextIsSubstantial) {
+  // A legacy web-search row's score came from an excerpt that step made up
+  // (BRO-5183), so any real page text (300+ chars, the bar the BRO-5107 guard
+  // uses) must be rescored, not only text over 1000 chars.
+  const legacyRowGotPage = isLegacyWebSearchOnly(data) && text.length >= 300;
+  if (!hadFullTextBefore && hasLlmScore && (newTextIsSubstantial || legacyRowGotPage)) {
     // Review was scored on excerpt, now has fullText - flag for rescoring
     data.needsRescore = true;
     data.rescoreReason = 'fullText added after excerpt-based scoring';
@@ -7271,7 +7277,7 @@ async function processReview(review) {
       try {
         // Get excerpt and show metadata from existing review data
         const reviewData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
-        const excerpt = require('./lib/excerpt-fields').verifierExcerpt(reviewData);
+        const excerpt = verifierExcerpt(reviewData);
         const showId = reviewData.showId || review.showId || '';
 
         // Look up show metadata for richer context

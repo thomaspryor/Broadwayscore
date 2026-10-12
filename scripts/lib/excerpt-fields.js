@@ -62,7 +62,7 @@ function getLongestExcerpt(data) {
  */
 function verifierExcerpt(data) {
   if (!data || isLegacyWebSearchOnly(data)) return '';
-  return data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt || '';
+  return EXCERPT_FIELDS.map((f) => data[f]).find(Boolean) || '';
 }
 
 module.exports = { EXCERPT_FIELDS, hasExcerpt, getExcerpts, getLongestExcerpt, verifierExcerpt };

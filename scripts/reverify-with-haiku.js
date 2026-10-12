@@ -33,6 +33,7 @@
  */
 
 const fs = require('fs');
+const { verifierExcerpt } = require('./lib/excerpt-fields');
 const path = require('path');
 const { verifyContent, resolveCvMarket } = require('./lib/content-verifier');
 const { isLongRunningProduction } = require('./lib/long-runner-registry');
@@ -92,7 +93,7 @@ function buildVerifyInput(showId, r) {
   const show = showsMap.get(showId);
   return {
     scrapedText: r.fullText,
-    excerpt: require('./lib/excerpt-fields').verifierExcerpt(r),
+    excerpt: verifierExcerpt(r),
     showTitle: show?.title || showId,
     outletName: r.outlet || r.outletId || '',
     criticName: r.criticName || '',

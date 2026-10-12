@@ -25,7 +25,8 @@ test('recovered text does not bring the row back until it is rescored on that te
   assert.equal(isUnverifiableWebSearchRow({ ...ROW, fullText: PAGE, needsRescore: true, llmMetadata: { textSource: { type: 'fullText' } } }), false, 'already scored on page text; a leftover flag does not hide it');
   assert.equal(isUnverifiableWebSearchRow({ ...ROW, fullText: PAGE, llmMetadata: { textSource: { type: 'fullText' } } }), false, 'rescored on the page');
   assert.equal(isUnverifiableWebSearchRow({ ...ROW, fullText: PAGE, llmMetadata: undefined }), false, 'no excerpt provenance recorded');
-  assert.equal(isUnverifiableWebSearchRow({ ...ROW, fullText: PAGE, originalScore: '4/5' }), false, 'score read from the page');
+  assert.equal(isUnverifiableWebSearchRow({ ...ROW, fullText: PAGE, originalScore: '4/5', originalScoreSource: 'html-stars' }), false, 'score read from the page');
+  assert.equal(isUnverifiableWebSearchRow({ ...ROW, fullText: PAGE, originalScore: '2/5 stars' }), true, 'a bare originalScore may be the search step\'s own guess');
   assert.equal(isUnverifiableWebSearchRow({ ...ROW, fullText: PAGE, humanReviewScore: 70 }), false, 'human score');
   assert.equal(isUnverifiableWebSearchRow({ ...ROW, fullText: PAGE, sources: ['web-search', 'dtli'] }), false, 'aggregator-backed row: not this rule');
 });
@@ -56,8 +57,11 @@ test('no verifyContent caller builds its excerpt from the raw excerpt fields', (
       if (e.isDirectory()) { if (!['node_modules', 'tests'].includes(e.name)) walk(p); continue; }
       if (!/\.(c?js|mjs|ts)$/.test(e.name)) continue;
       const src = fs.readFileSync(p, 'utf8');
-      if (!src.includes('verifyContent(')) continue;
-      if (/excerpt\s*[:=]\s*[\w.]*\.(dtliExcerpt|bwwExcerpt|showScoreExcerpt)\s*\|\|/.test(src)) offenders.push(path.relative(ROOT, p));
+      if (!/\b(verifyContent|heuristicVerify)\(/.test(src)) continue;
+      // Any excerpt built from a raw aggregator excerpt field, by dot,
+      // bracket or destructured access, instead of verifierExcerpt(data).
+      const raw = /\bexcerpt\s*[:=][^,;\n]*\b(dtli|bww|showScore|nycTheatre|lboRoundup)Excerpt\b/;
+      if (src.split('\n').some((l) => raw.test(l) && !l.includes('verifierExcerpt'))) offenders.push(path.relative(ROOT, p));
     }
   };
   walk(path.join(ROOT, 'scripts'));

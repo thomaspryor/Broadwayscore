@@ -1541,6 +1541,8 @@ function main() {
         // BRO-4890: show-level never-opened exclusion and the unverifiable search-row rule.
         && (baseline.isCancelledBeforeOpeningShow?.toString() || '') === (working.isCancelledBeforeOpeningShow?.toString() || '')
         && (baseline.isUnverifiableWebSearchRow?.toString() || '') === (working.isUnverifiableWebSearchRow?.toString() || '')
+        // BRO-5183: the helper it delegates to (lib/legacy-web-search.js).
+        && (baseline.isLegacyWebSearchOnly?.toString() || '') === (working.isLegacyWebSearchOnly?.toString() || '')
         // BRO-3126: preview first-look piece (patterns are inside the function body, so toString() covers them).
         && (baseline.isPreviewFirstLookPiece?.toString() || '') === (working.isPreviewFirstLookPiece?.toString() || '')
         // cvLowButStrong carve-out (BRO-3512): the predicate and its marker regexes.

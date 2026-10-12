@@ -100,7 +100,8 @@ const FIELD_VALUE_CHECKS = {
     // page text holds a url that step made up (outlet 404 pages, patterned
     // Washington Post GUIDs). Nothing ever vouched for it, so it may be repaired
     // to the review's real url; the collector then refetches and verifies it.
-    const unverifiedSearchUrl = require('./review-guards').isUnverifiableWebSearchRow(record);
+    const { isUnverifiableWebSearchRow, isLegacyWebSearchOnly } = require('./review-guards');
+    const unverifiedSearchUrl = isLegacyWebSearchOnly(record) && isUnverifiableWebSearchRow(record);
     const currentWrong = currentAggregator
       || (current && classifyReviewUrl(current).ok === false)
       || ctx.currentUrlOwnedByOtherCritic === true

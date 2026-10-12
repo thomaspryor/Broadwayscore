@@ -7,6 +7,7 @@
  */
 
 const fs = require('fs');
+const { verifierExcerpt } = require('./lib/excerpt-fields');
 const path = require('path');
 const { verifyContent, heuristicVerify, quickValidityCheck } = require('./lib/content-verifier');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -104,7 +105,7 @@ async function runTests() {
         const data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));
 
         if (data.fullText && data.fullText.length > 500) {
-          const excerpt = require('./lib/excerpt-fields').verifierExcerpt(data);
+          const excerpt = verifierExcerpt(data);
 
           const result = heuristicVerify({
             scrapedText: data.fullText,

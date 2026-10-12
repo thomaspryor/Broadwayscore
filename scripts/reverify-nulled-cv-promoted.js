@@ -36,6 +36,7 @@
  */
 
 const fs = require('fs');
+const { verifierExcerpt } = require('./lib/excerpt-fields');
 const { verificationPublishDate } = require('./lib/verification-publish-date');
 const path = require('path');
 const { verifyContent, resolveCvMarket } = require('./lib/content-verifier');
@@ -179,7 +180,7 @@ async function main() {
     try {
       const result = await verifyContent({
         scrapedText: data.wrongFullText, // verify the quarantined text — restoring it IS the candidate change
-        excerpt: require('./lib/excerpt-fields').verifierExcerpt(data),
+        excerpt: verifierExcerpt(data),
         showTitle,
         outletName: outletCritic[0] || f.outletId || 'unknown',
         criticName: outletCritic[1] || f.criticName || 'unknown',

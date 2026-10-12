@@ -14,6 +14,7 @@
  */
 
 const fs = require("fs");
+const { verifierExcerpt } = require('./lib/excerpt-fields');
 const path = require("path");
 const { verifyContent, contentHash } = require("./lib/content-verifier");
 const { isLondonMarket } = require("./lib/venue-classification");
@@ -88,7 +89,7 @@ async function main() {
     try {
       const result = await verifyContent({
         scrapedText: c.data.fullText,  // KEY: verify the STORED fullText, not a re-scrape
-        excerpt: require('./lib/excerpt-fields').verifierExcerpt(c.data),
+        excerpt: verifierExcerpt(c.data),
         showTitle,
         outletName,
         criticName,
