@@ -101,6 +101,10 @@ function findFullyUnsuppressedSameUrlGroups(records) {
       return candidates.some((t) => t !== m.file && names.has(t));
     });
     if (hasInternalPointer) continue;
+    // A human "two critics, one URL" verdict on a member: not a duplicate
+    // group. fix() writes force:true and the write guard would retract the
+    // breadcrumb, erasing the verdict silently (BRO-3470 ship-check).
+    if (members.some((m) => require('./duplicate-of-cleared-contradiction').hasDuplicateOfClearedValue(m.data._duplicateOfCleared))) continue;
     const [outlet, url] = key.split('\n');
     groups.push({ outlet, url, members });
   }

@@ -235,3 +235,14 @@ test('chooseSameUrlCanonical: throws without a chooseCanonicalFn (no silent fall
 test('chooseSameUrlCanonical: empty input is a no-op, not a throw', () => {
   assert.deepEqual(chooseSameUrlCanonical([], chooseCanonical), { canonical: null, losers: [], reason: null });
 });
+
+test('findFullyUnsuppressedSameUrlGroups: a group carrying a human _duplicateOfCleared ("two critics, one URL") is not a duplicate group (BRO-3470)', () => {
+  const u = 'https://www.vulture.com/article/joint-review.html';
+  const records = [
+    { file: 'vulture--jesse-green.json', data: { url: u, _duplicateOfCleared: 'auto:2026-04-12 different critics' } },
+    { file: 'vulture--sara-holdren.json', data: { url: u } },
+  ];
+  assert.equal(findFullyUnsuppressedSameUrlGroups(records).length, 0);
+  // Control: same pair without the breadcrumb IS a group.
+  assert.equal(findFullyUnsuppressedSameUrlGroups(records.map((r) => ({ ...r, data: { url: u } }))).length, 1);
+});
