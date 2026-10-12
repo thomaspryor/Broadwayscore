@@ -511,19 +511,6 @@
     "queuedAt": "2026-10-12T13:33:42.815Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:degenerates-off-broadway-2026",
-    "title": "Review gap — \"Degenerates\" missing 1 cited review(s)",
-    "description": "Degenerates (degenerates-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=degenerates-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-12T13:33:42.824Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:fences-off-west-end-2026",
     "title": "Review gap — \"Fences\" missing 3 cited review(s)",
     "description": "Fences (fences-off-west-end-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=fences-off-west-end-2026 --checkpoint --ingest-missing",
@@ -652,32 +639,6 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-12T13:33:42.972Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
-    "title": "Review gap — \"The Hairy Ape\" missing 1 cited review(s)",
-    "description": "The Hairy Ape (the-hairy-ape-irish-repertory-theatre-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-hairy-ape-irish-repertory-theatre-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-12T13:33:42.988Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:the-hungry-ghost-off-west-end-2026",
-    "title": "Review gap — \"The Hungry Ghost\" missing 1 cited review(s)",
-    "description": "The Hungry Ghost (the-hungry-ghost-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-hungry-ghost-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-12T13:33:43.005Z"
   },
   {
     "conditionKey": "review-gap:opening-window:the-standard-of-living-west-end-2026",
