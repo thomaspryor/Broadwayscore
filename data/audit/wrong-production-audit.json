@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-12T19:00:09.948Z",
+  "timestamp": "2026-10-12T19:46:36.855Z",
   "stats": {
-    "totalReviews": 56063,
-    "alreadyFlagged": 20917,
-    "dateGuardCatches": 252,
+    "totalReviews": 56086,
+    "alreadyFlagged": 20931,
+    "dateGuardCatches": 253,
     "directorMismatch": 1781,
     "tvFilmSignals": 1617,
-    "londonSignals": 2207,
+    "londonSignals": 2208,
     "offBroadwaySignals": 507,
     "yearMismatch": 137,
-    "noPublishDate": 5242
+    "noPublishDate": 5243
   },
   "findings": [
     {
@@ -46115,6 +46115,20 @@
       ]
     },
     {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 82,
+      "publishDate": "2023-02-07",
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
       "showId": "tootsie-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 77,
@@ -61532,7 +61546,7 @@
       "file": "financialtimes--sarah-hemming.json",
       "score": 63,
       "publishDate": "2025-10-03",
-      "url": null,
+      "url": "https://www.ft.com/content/29ea5370-383c-436b-9888-b6705571687b?syn-25a6b1a6=1",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -70444,6 +70458,19 @@
       "score": 86,
       "publishDate": "2023-08-09",
       "url": "https://www.nytimes.com/2023/08/09/theater/operation-mincemeat-musical-west-end.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "file": "whatsonstage--unknown.json",
+      "publishDate": "2023-06-26",
+      "url": "https://www.whatsonstage.com/news/operation-mincemeat-extends-west-end-run-again-and-unveils-loyalty-scheme_1465642/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
