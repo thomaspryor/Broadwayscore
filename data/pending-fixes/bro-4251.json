@@ -1,0 +1,27 @@
+{
+  "issueNumber": "bro-4251",
+  "planId": "e28f76db-ef9f-4808-93f6-9a2eb550bc6a",
+  "status": "pending",
+  "createdAt": "2026-10-12T18:20:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4251: Shucked (2023) Variety quote showed text from Variety's Fat Ham review. The file's llmPullQuote opens with 'But', so the hedge guard defers it and the rebuild fell through to nycTheatreExcerpt, which the NYC Theatre roundup scraper filled with the Fat Ham excerpt. Replace the pull quote with a verbatim, non-hedged sentence from the review so the curated quote wins again.",
+    "steps": [
+      "Verbatim sentence from Frank Rizzo's Variety review (fullText); passes the hedge, generic and cross-show guards, so it outranks the Fat Ham nycTheatreExcerpt."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "shucked-2023/variety--aramide-tinubu.json",
+        "field": "llmPullQuote",
+        "oldValue": "But with its exuberance, heart and non-stop yucks, “Shucked” is the surprise delight of the season.",
+        "newValue": "“Shucked” is the surprise delight of the season.",
+        "description": "Verbatim sentence from Frank Rizzo's Variety review (fullText); passes the hedge, generic and cross-show guards, so it outranks the Fat Ham nycTheatreExcerpt."
+      }
+    ]
+  }
+}
