@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-12T12:15:59.333Z",
+  "generated": "2026-10-12T12:26:13.609Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 24,
+  "count": 21,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -43,13 +43,6 @@
       "loserFile": "nytimes--elisabeth-vincentelli.json",
       "targetFile": "nytimes--ben-brantley.json",
       "reason": "orphaned-duplicate-heal: nytimes--ben-brantley.json was flagged invalid after nytimes--elisabeth-vincentelli.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
-      "loserFile": "nytimes--ben-brantley.json",
-      "targetFile": "nytimes--charles-isherwood.json",
-      "reason": "orphaned-duplicate-heal: nytimes--charles-isherwood.json was flagged invalid after nytimes--ben-brantley.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -106,20 +99,6 @@
       "loserFile": "nytimes--unknown.json",
       "targetFile": "nytimes--helen-shaw.json",
       "reason": "orphaned-duplicate-heal: nytimes--helen-shaw.json was flagged invalid after nytimes--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "sea-wall-a-life-2019",
-      "loserFile": "nytimes--ben-brantley.json",
-      "targetFile": "nytimes--laura-collins-hughes.json",
-      "reason": "orphaned-duplicate-heal: nytimes--laura-collins-hughes.json was flagged invalid after nytimes--ben-brantley.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "she-loves-me-2016",
-      "loserFile": "nypost--johnny-oleksinski.json",
-      "targetFile": "nypost--elisabeth-vincentelli.json",
-      "reason": "orphaned-duplicate-heal: nypost--elisabeth-vincentelli.json was flagged invalid after nypost--johnny-oleksinski.json was pointed at it",
       "field": "duplicateOf"
     },
     {

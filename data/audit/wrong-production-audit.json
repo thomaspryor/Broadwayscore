@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-10-12T12:22:20.761Z",
+  "timestamp": "2026-10-12T12:31:27.138Z",
   "stats": {
     "totalReviews": 55974,
     "alreadyFlagged": 20878,
-    "dateGuardCatches": 253,
+    "dateGuardCatches": 252,
     "directorMismatch": 1779,
     "tvFilmSignals": 1616,
     "londonSignals": 2197,
@@ -32189,7 +32189,7 @@
       "showId": "relatively-speaking-2011",
       "file": "nytimes--charles-isherwood.json",
       "score": 75,
-      "publishDate": "November 15, 2011",
+      "publishDate": "2011-10-21",
       "url": "https://www.nytimes.com/2011/10/21/theater/reviews/relatively-speaking-at-brooks-atkinson-theater-review.html",
       "findings": [
         {
@@ -40470,7 +40470,7 @@
       "showId": "the-great-society-2019",
       "file": "nyt-theater--david-nounou.json",
       "score": 63,
-      "publishDate": "October 31, 2019",
+      "publishDate": "2019-10-02",
       "url": "https://newyorktheater.me/2019/10/01/the-great-society-review-and-pics/",
       "findings": [
         {
@@ -46053,20 +46053,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1547d before show (2022-03-31 vs 2026-06-25)"
-        }
-      ]
-    },
-    {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 82,
-      "publishDate": "2023-02-07",
-      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
         }
       ]
     },
@@ -63241,7 +63227,7 @@
       "showId": "illinoise-2024",
       "file": "usatoday--david-rooney.json",
       "score": 89,
-      "publishDate": "April 25, 2024",
+      "publishDate": "2024-05-10",
       "url": "https://hawkeyeswire.usatoday.com/story/entertainment/theater/2024/05/10/illinoise-on-broadway-dance-musical-nominated-for-four-tonys/73594172007/",
       "findings": [
         {
