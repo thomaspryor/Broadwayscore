@@ -27,7 +27,7 @@
 'use strict';
 
 /** Total push cycles (first push + redos) when the caller does not override. */
-const DEFAULT_MAX_CYCLES = 3;
+const DEFAULT_MAX_CYCLES = 2; // one redo; fits rebuild-fast.yml's 45-min budget
 /** Hard ceiling regardless of env, so a typo can never make the loop unbounded. */
 const HARD_MAX_CYCLES = 5;
 /** push-with-retry.sh exit code for a LOCAL pre-push hook rejection (BRO-2879). */

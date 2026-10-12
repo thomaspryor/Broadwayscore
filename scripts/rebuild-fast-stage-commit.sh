@@ -5,6 +5,10 @@
 # (scripts/rebuild-fast-redo.sh) stage exactly the same paths.
 #
 # Env: REVIEWS_BEFORE, REVIEWS_AFTER (review counts), REBUILD_REASON.
+#      REBUILD_FAST_STAGE_ONLY_PATHS_FILE (redo only, BRO-2783): newline list of
+#      repo paths; any staged path NOT listed is unstaged and put back to HEAD
+#      (removed if HEAD lacks it), so the redo publishes only what the lost
+#      commit changed. Unset (the workflow's first pass) = no filtering.
 # Exit: 0 committed, 3 nothing staged (no commit made), other = git failure.
 set -euo pipefail
 
@@ -31,6 +35,23 @@ git add public/data/admin/locks.json 2>/dev/null || true
 # Critic-coverage admin digest (S4 — drives /admin/critic-coverage page).
 git add public/data/admin/critic-coverage.json 2>/dev/null || true
 git checkout -- data/reviews.json data/audience-buzz.json 2>/dev/null || true
+
+if [ -n "${REBUILD_FAST_STAGE_ONLY_PATHS_FILE:-}" ]; then
+  [ -f "$REBUILD_FAST_STAGE_ONLY_PATHS_FILE" ] || { echo "::error::stage-only list $REBUILD_FAST_STAGE_ONLY_PATHS_FILE missing"; exit 1; }
+  # Snapshot the staged list first: the loop below rewrites the index.
+  STAGED_NOW="$(git diff --cached --no-renames --name-only)"
+  while IFS= read -r p; do
+    [ -z "$p" ] && continue
+    grep -qxF -- "$p" "$REBUILD_FAST_STAGE_ONLY_PATHS_FILE" && continue
+    if git cat-file -e "HEAD:$p" 2>/dev/null; then
+      git checkout -q HEAD -- "$p"
+    else
+      git rm -q --cached --ignore-unmatch -- "$p"
+      rm -f -- "$p"
+    fi
+    echo "rebuild-fast-stage-commit: not in the lost commit, kept main's version: $p"
+  done <<< "$STAGED_NOW"
+fi
 
 if git diff --cached --quiet; then
   echo "rebuild-fast-stage-commit: nothing staged"

@@ -51,9 +51,17 @@ jobs:
     # 6.6-7.3min and failed ones 11.4-11.6min under the OLD 240s budget, so
     # the new ~600s worst case plus this job's other steps lands well inside
     # 25min with real margin.
-    # 25->40 (BRO-2783): the push step may now redo the fast rebuild on fresh
-    # main after a lost race (up to 2 extra cycles at a 300s push deadline).
-    timeout-minutes: 40
+    # 25->45 (BRO-2783): the push step may now redo the fast rebuild on fresh
+    # main after a lost race. Worst-case budget (REBUILD_FAST_MAX_CYCLES=2):
+    #   steps before the push            ~600s (observed 6.6-7.3 min whole run)
+    #   cycle 1 push (PUSH_DEADLINE_SEC)  600s
+    #   1 redo: jitter <=20s + fetch <=30s + rebuild/mobile regen ~180s
+    #           + redo push deadline 300s = 530s
+    #   always() steps after the push (core-data push, deploy trigger,
+    #   failure notify, summary)          ~300s
+    #   total ~2030s = ~34 min, leaving ~11 min under 45 min.
+    # tests/unit/rebuild-fast-push-retry.test.mjs re-checks this arithmetic.
+    timeout-minutes: 45
 
     steps:
       - name: Checkout repository
@@ -433,12 +441,13 @@ jobs:
           # fallback skips union-merge-managed files by design, and
           # API_FALLBACK_SAFE must NOT be widened). rebuild-fast-push-cycle.sh
           # instead resets to fresh origin/main, redoes the fast rebuild
-          # (scripts/rebuild-fast-redo.sh) and pushes again: 3 cycles total,
-          # jittered, hard-capped at 5 in rebuild-fast-push-cycle.js. Redo
-          # cycles push with a 300s deadline (a fresh-HEAD push lands fast),
-          # so the worst case is 600 + 2x300s plus two redos, inside the job's
-          # timeout-minutes (raised 25 -> 40 for it).
-          REBUILD_FAST_MAX_CYCLES: '3'
+          # (scripts/rebuild-fast-redo.sh) and pushes again: 2 cycles total
+          # (one redo), jittered, hard-capped at 5 in rebuild-fast-push-cycle.js.
+          # The redo replays this run's data/audit writes 3-way and publishes
+          # only the paths the lost commit changed. Redo cycles push with a
+          # 300s deadline (a fresh-HEAD push lands fast); see the job's
+          # timeout-minutes comment for the worst-case budget (~34 of 45 min).
+          REBUILD_FAST_MAX_CYCLES: '2'
           REBUILD_FAST_REDO_PUSH_DEADLINE_SEC: '300'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"

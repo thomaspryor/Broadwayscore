@@ -8,16 +8,29 @@
 # stages:
 #   rebuild-all-reviews.js -> generate-mobile-artifacts.sh -> BRO-3127 staleness
 #   revert -> audit-score-public-since.js
-# then carries this run's orphan-unscored broadcast-gate markers over from the
-# lost commit (verify-all-scored.js is NOT re-run: it dispatches scoring and
-# sends alerts), and restages + commits via rebuild-fast-stage-commit.sh.
+# then:
+#   * data/audit/: discards whatever the regen wrote there and REPLAYS the lost
+#     commit's data/audit diff onto fresh main (scripts/lib/rebuild-fast-replay-
+#     audit.js: 3-way `git apply -3`, registry mergers for the alert ledger /
+#     digest queue on conflict, else keep main's copy). This keeps the first
+#     pass's ledger rows, digest lines, state snapshots and orphan-unscored
+#     markers (verify-all-scored.js and the alert router are NOT re-run: they
+#     dispatch scoring and send alerts) without overwriting other writers'.
+#   * staging is LIMITED to the paths the lost commit changed
+#     (REBUILD_FAST_STAGE_ONLY_PATHS_FILE, read by rebuild-fast-stage-commit.sh).
+#     The regen rewrites EVERY show from this job's inputs; a show another
+#     writer updated on fresh main (newer reviews) that this run did not change
+#     must keep main's version, exactly as the old `rebase -X theirs` only
+#     overrode files in our own diff.
+#   then restages + commits via rebuild-fast-stage-commit.sh.
 # Deliberately NOT re-run: the review-texts flagger/sweeps (their output was
 # already pushed to the private repo), the completeness alert, the awaiting-
 # score sweep — all have external side effects or write nothing here.
 #
 # Env:
 #   REBUILD_FAST_SAFE_TO_PUBLISH  must be 'true' (staleness guard verdict), else refuse
-#   REBUILD_FAST_LOST_COMMIT  commit that failed to land (set by the cycle loop)
+#   REBUILD_FAST_LOST_COMMIT  commit that failed to land (set by the cycle loop);
+#                             required, the redo refuses without it
 #   REBUILD_FORCE_WRITE       'true' to pass --force-write to rebuild-all-reviews.js
 #   REBUILD_FAST_REGEN_CMD    override the regenerate chain (tests only)
 #   REVIEWS_BEFORE, REBUILD_REASON  passed through to the commit message
@@ -34,6 +47,16 @@ if [ "${REBUILD_FAST_SAFE_TO_PUBLISH:-}" != "true" ]; then
   exit 1
 fi
 
+# Fail closed: without the lost commit (and its parent) we can neither replay
+# its data/audit writes nor scope staging to its paths, and staging the whole
+# regenerated tree would revert other writers' newer show files.
+LOST="${REBUILD_FAST_LOST_COMMIT:-}"
+if [ -z "$LOST" ] || ! git cat-file -e "$LOST^{commit}" 2>/dev/null \
+   || ! git cat-file -e "$LOST^^{commit}" 2>/dev/null; then
+  echo "::error::rebuild-fast redo refused: cannot read lost commit '${LOST}' or its parent (needed to replay data/audit and scope staging)"
+  exit 1
+fi
+
 if [ -n "${REBUILD_FAST_REGEN_CMD:-}" ]; then
   eval "$REBUILD_FAST_REGEN_CMD"
 else
@@ -45,22 +68,18 @@ else
   node "$SCRIPT_DIR/audit-score-public-since.js" || echo "::warning::audit-score-public-since.js failed during redo (fail-open, same as the first pass)"
 fi
 
-# Carry this run's orphan-unscored markers (adds, updates AND deletions) from
-# the lost commit. They are per-show snapshots that only verify-all-scored.js
-# writes, so this run's fresh verdict is the right one to keep.
-LOST="${REBUILD_FAST_LOST_COMMIT:-}"
-if [ -n "$LOST" ] && git cat-file -e "$LOST^{commit}" 2>/dev/null \
-   && git cat-file -e "$LOST^^{commit}" 2>/dev/null; then
-  while IFS=$'\t' read -r status path; do
-    [ -z "${path:-}" ] && continue
-    case "$status" in
-      D) git rm -q --ignore-unmatch -- "$path" ;;
-      *) git checkout "$LOST" -- "$path" ;;
-    esac
-  done < <(git diff --no-renames --name-status "$LOST^" "$LOST" -- 'data/audit/orphan-unscored-*.json')
-elif [ -n "$LOST" ]; then
-  echo "::warning::rebuild-fast redo: cannot read lost commit $LOST or its parent; orphan-unscored markers not carried (next run rewrites them)"
+# data/audit: start from fresh main's copy, then replay the lost commit's diff.
+if git cat-file -e "HEAD:data/audit" 2>/dev/null; then
+  git checkout -q HEAD -- data/audit
 fi
+git clean -fdq -- data/audit
+node "$SCRIPT_DIR/lib/rebuild-fast-replay-audit.js" "$LOST"
+
+# Scope staging to the lost commit's own paths.
+STAGE_ONLY="$(mktemp "${RUNNER_TEMP:-${TMPDIR:-/tmp}}/rebuild-fast-stage-only.XXXXXX")"
+trap 'rm -f "$STAGE_ONLY"' EXIT
+git diff --no-renames --name-only "$LOST^" "$LOST" > "$STAGE_ONLY"
+export REBUILD_FAST_STAGE_ONLY_PATHS_FILE="$STAGE_ONLY"
 
 # The redo rebuilt reviews.json, so recount rather than reuse the first pass's.
 if [ -f data/reviews.json ]; then
@@ -68,4 +87,6 @@ if [ -f data/reviews.json ]; then
 fi
 export REVIEWS_AFTER
 
-exec bash "$SCRIPT_DIR/rebuild-fast-stage-commit.sh"
+rc=0
+bash "$SCRIPT_DIR/rebuild-fast-stage-commit.sh" || rc=$?
+exit "$rc"

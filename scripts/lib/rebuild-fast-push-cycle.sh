@@ -14,7 +14,7 @@
 #   3. runs REBUILD_FAST_REDO_CMD, which redoes the fast rebuild on the fresh
 #      tree and commits (exit 0), or finds nothing left to commit (exit 3),
 #   4. pushes again.
-# Bounded: REBUILD_FAST_MAX_CYCLES total cycles (default 3, hard cap 5, see
+# Bounded: REBUILD_FAST_MAX_CYCLES total cycles (default 2, hard cap 5, see
 # rebuild-fast-push-cycle.js). Every decision comes from that JS helper.
 #
 # Env:

@@ -97,6 +97,12 @@ function setupFixture() {
   write(path.join(seed, 'public/data/shows/show-b.json'), JSON.stringify({ id: 'show-b', reviews: 5 }) + '\n');
   write(path.join(seed, 'data/audit/hot-ledger.jsonl'), '{"n":0}\n');
   write(path.join(seed, 'data/audit/orphan-unscored-show-c.json'), '{"show":"show-c"}\n');
+  // Union-merged alert ledger (real registry merger) + two plain state files.
+  write(path.join(seed, 'data/audit/alert-ledger.json'), JSON.stringify({
+    conditions: { seed: { status: 'open', lastSeen: '2026-10-01T00:00:00.000Z' } },
+  }, null, 2) + '\n');
+  write(path.join(seed, 'data/audit/verify-all-scored-state.json'), '{"run":"seed"}\n');
+  write(path.join(seed, 'data/audit/critic-outlets-baseline.json'), '{"outlets":1}\n');
   sh('git add -A && git commit -q -m base', seed);
   sh(`git push -q "${origin}" main`, seed);
   sh(`git clone -q --depth=1 --branch main "file://${origin}" "${runner}"`, tmp);
@@ -104,12 +110,16 @@ function setupFixture() {
 
   // The scored rebuild input (stands in for the private core data, which a
   // reset of the public checkout never touches): show-a now has 13 reviews.
+  // show-b's job-start input is unchanged (5), so the first pass does not
+  // touch it; the regen still rewrites EVERY show, like the real one.
   write(path.join(runner, 'inputs/show-a.count'), '13\n');
+  write(path.join(runner, 'inputs/show-b.count'), '5\n');
   const regen = path.join(tmp, 'regen.sh');
   write(regen, `#!/usr/bin/env bash
 set -euo pipefail
 n=$(cat inputs/show-a.count)
 printf '{"id":"show-a","reviews":%s}\\n' "$n" > public/data/shows/show-a.json
+printf '{"id":"show-b","reviews":%s}\\n' "$(cat inputs/show-b.count)" > public/data/shows/show-b.json
 echo "{\\"show\\":\\"show-a\\"}" > data/audit/orphan-unscored-show-a.json
 rm -f data/audit/orphan-unscored-show-c.json
 `);
@@ -122,6 +132,12 @@ git pull -q --rebase origin main
 n=$(( $(wc -l < data/audit/hot-ledger.jsonl) ))
 echo "{\\"n\\":$n}" >> data/audit/hot-ledger.jsonl
 printf '{"id":"show-b","reviews":%s}\\n' "$((5 + n))" > public/data/shows/show-b.json
+node -e '
+const fs = require("fs"); const f = "data/audit/alert-ledger.json";
+const l = JSON.parse(fs.readFileSync(f, "utf8"));
+l.conditions["comp-" + process.argv[1]] = { status: "open", lastSeen: new Date().toISOString() };
+fs.writeFileSync(f, JSON.stringify(l, null, 2) + "\\n");' "$n"
+echo "{\\"run\\":\\"comp-$n\\"}" > data/audit/verify-all-scored-state.json
 git add -A && git commit -q -m "competitor $n" && git push -q origin HEAD:main
 `);
   // Replays one push-with-retry.sh budget of 20 attempts: before each
@@ -153,8 +169,16 @@ exit 1
 }
 
 function firstPassCommit(fx) {
-  // What the workflow's first pass does: regenerate, then the real stage+commit.
+  // What the workflow's first pass does: regenerate, the alert router /
+  // verify-all-scored write their data/audit state (NOT re-run by the redo),
+  // then the real stage+commit.
   sh(`bash "${fx.regen}"`, fx.runner);
+  const ledgerPath = path.join(fx.runner, 'data/audit/alert-ledger.json');
+  const ledger = JSON.parse(fs.readFileSync(ledgerPath, 'utf8'));
+  ledger.conditions['ours-row'] = { status: 'open', lastSeen: '2026-10-12T00:00:00.000Z' };
+  fs.writeFileSync(ledgerPath, JSON.stringify(ledger, null, 2) + '\n');
+  write(path.join(fx.runner, 'data/audit/verify-all-scored-state.json'), '{"run":"ours"}\n');
+  write(path.join(fx.runner, 'data/audit/critic-outlets-baseline.json'), '{"outlets":2}\n');
   const r = spawnSync('bash', [path.join(REPO, 'scripts/rebuild-fast-stage-commit.sh')], {
     cwd: fx.runner, env: { ...process.env, ...GIT_ENV, REVIEWS_BEFORE: '10', REVIEWS_AFTER: '13', REBUILD_REASON: 'test' },
     encoding: 'utf8',
@@ -203,10 +227,27 @@ describe('replayed contention against a local bare repo', () => {
       assert.match(sh(`git --git-dir="${fx.origin}" log -1 --format=%B main`, fx.tmp), /\(\+3 reviews\)/);
       // ...on top of all 20 competitor commits, none of which were clobbered.
       assert.equal(originFile(fx, 'data/audit/hot-ledger.jsonl').trim().split('\n').length, 21);
-      assert.deepEqual(JSON.parse(originFile(fx, 'public/data/shows/show-b.json')), { id: 'show-b', reviews: 25 });
+      // (a) show-b: the redo's regen rewrote it from this job's stale input
+      // (5 reviews) but it is not in the lost commit, so the competitor's
+      // newer file (25) survives un-reverted.
+      assert.deepEqual(JSON.parse(originFile(fx, 'public/data/shows/show-b.json')), { id: 'show-b', reviews: 25 },
+        'redo reverted a show file another writer updated on fresh main');
+      assert.match(out, /kept main's version: public\/data\/shows\/show-b\.json/);
       // The redo carried the lost commit's orphan-marker add AND delete.
       assert.ok(originHas(fx, 'data/audit/orphan-unscored-show-a.json'));
       assert.ok(!originHas(fx, 'data/audit/orphan-unscored-show-c.json'));
+      // (b) alert ledger: the lost commit's row AND every competitor row survive
+      // (conflicting hunks resolved by the registry's 3-way merger).
+      const conds = JSON.parse(originFile(fx, 'data/audit/alert-ledger.json')).conditions;
+      assert.ok(conds['ours-row'], 'lost commit\'s ledger row was dropped by the redo');
+      for (let n = 1; n <= 20; n++) assert.ok(conds[`comp-${n}`], `competitor ledger row comp-${n} was clobbered`);
+      assert.ok(conds.seed);
+      assert.match(out, /merged: data\/audit\/alert-ledger\.json/);
+      // A state file only this run changed is replayed cleanly...
+      assert.deepEqual(JSON.parse(originFile(fx, 'data/audit/critic-outlets-baseline.json')), { outlets: 2 });
+      // ...and one both sides changed, with no merger, keeps main's copy (never ours blindly).
+      assert.deepEqual(JSON.parse(originFile(fx, 'data/audit/verify-all-scored-state.json')), { run: 'comp-20' });
+      assert.match(out, /verify-all-scored-state\.json conflicts with fresh main/);
     } finally {
       fs.rmSync(fx.tmp, { recursive: true, force: true });
     }
@@ -267,13 +308,15 @@ describe('rebuild-fast.yml wiring', () => {
     assert.equal(step.env.REBUILD_FAST_SAFE_TO_PUBLISH, '${{ steps.staleness.outputs.safe_to_publish }}');
     const max = Number(step.env.REBUILD_FAST_MAX_CYCLES);
     assert.ok(max >= 2 && max <= cycle.HARD_MAX_CYCLES, `REBUILD_FAST_MAX_CYCLES=${max}`);
-    // Worst case must fit the job timeout: first push deadline + redo cycles
-    // at the redo deadline, plus ~3 min per redo for the rebuild itself and
-    // ~10 min for the job's earlier steps.
-    const worstSec = Number(step.env.PUSH_DEADLINE_SEC)
-      + (max - 1) * (Number(step.env.REBUILD_FAST_REDO_PUSH_DEADLINE_SEC) + 180) + 600;
-    assert.ok(worstSec < doc.jobs['rebuild-fast']['timeout-minutes'] * 60,
-      `worst case ${worstSec}s exceeds timeout-minutes`);
+    // Worst case must fit the job timeout WITH margin for the always() steps
+    // after the push: ~600s of earlier steps + first push deadline + per redo
+    // (jitter 20s + fetch 30s + ~180s rebuild + redo push deadline) + ~300s of
+    // post-push steps (core-data push, deploy trigger, failure notify), and at
+    // least 5 min spare (mirrors the job's timeout-minutes comment).
+    const worstSec = 600 + Number(step.env.PUSH_DEADLINE_SEC)
+      + (max - 1) * (20 + 30 + 180 + Number(step.env.REBUILD_FAST_REDO_PUSH_DEADLINE_SEC)) + 300;
+    assert.ok(worstSec + 300 <= doc.jobs['rebuild-fast']['timeout-minutes'] * 60,
+      `worst case ${worstSec}s (+300s margin) exceeds timeout-minutes`);
   });
 });
 
