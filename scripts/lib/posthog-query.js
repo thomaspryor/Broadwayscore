@@ -179,7 +179,8 @@ async function getZeroResultsSearches() {
     SELECT lower(trim(properties.query)) AS query, count() AS cnt
     FROM events
     WHERE event = 'search_performed'
-      AND properties.has_results = false
+      -- HeaderSearch sends query only on a miss: zero results, or only fuzzy
+      -- guesses (fuzzy_only, has_results true). query IS NOT NULL covers both.
       AND properties.query IS NOT NULL
       AND trim(properties.query) != ''
       AND timestamp > now() - interval 7 day

@@ -115,7 +115,7 @@ async function createMissingShowIssue(show, hash) {
     `Tags: ${tags.join(', ')}`,
     ``,
     `## Missing production (from zero-results search)`,
-    `Users searched for **"${show.search_term}"** ${show.search_count}x in the last 7 days and got zero results.`,
+    `Users searched for **"${show.search_term}"** ${show.search_count}x in the last 7 days and found no matching show (zero results, or only loose fuzzy guesses).`,
     `Likely production: **${show.canonical_title}** (${show.market}).`,
     ``,
     `## Why flagged`,
@@ -127,7 +127,7 @@ async function createMissingShowIssue(show, hash) {
     `3. If valid, add the show and let discovery/scraping pick up reviews.`,
     ``,
     `## Evidence`,
-    `PostHog search_performed, has_results=false, query="${show.search_term}", ${show.search_count} searches (7d).`,
+    `PostHog search_performed with query set (zero results or fuzzy_only), query="${show.search_term}", ${show.search_count} searches (7d).`,
   ].join('\n');
 
   const result = await createLinearIssue({
