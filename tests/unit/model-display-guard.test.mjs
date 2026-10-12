@@ -40,22 +40,27 @@ describe('modelDisplayGuard', () => {
     assert.equal(modelDisplayGuard({ pct: [38, 90, 133], playedWeeks: 85, independent: [10, 30] }).reason, 'estimates-disagree');
   });
   test('a running show is held while the launch switch is off; other reasons win', () => {
-    assert.equal(modelDisplayGuard({ pct: [-14, 1, 14], playedWeeks: 28, running: true }).reason, 'awaiting-truth');
+    assert.equal(modelDisplayGuard({ pct: [-14, 1, 14], playedWeeks: 28, running: true, runningEnabled: false }).reason, 'awaiting-truth');
     assert.equal(modelDisplayGuard({ pct: [-14, 1, 14], playedWeeks: 28, running: true, runningEnabled: true }).show, true);
     assert.equal(modelDisplayGuard({ pct: [-14, 1, 14], playedWeeks: 28, running: false }).show, true);
-    assert.equal(modelDisplayGuard({ pct: [-14, 1, 14], playedWeeks: 5, running: true }).reason, 'few-weeks');
+    assert.equal(modelDisplayGuard({ pct: [-14, 1, 14], playedWeeks: 5, running: true, runningEnabled: false }).reason, 'few-weeks');
   });
   test('a running show never prints 100%+ before it announces recoupment (BRO-5073)', () => {
     const on = { playedWeeks: 69, running: true, runningEnabled: true };
-    assert.equal(modelDisplayGuard({ ...on, pct: [130, 144, 150] }).reason, 'past-100-unannounced');
+    assert.equal(modelDisplayGuard({ ...on, pct: [130, 144, 150] }).reason, 'estimated-recouped');
     assert.equal(modelDisplayGuard({ ...on, pct: [95, 100, 110] }).reason, 'past-100-unannounced');
+    // low end at 100%+: "Estimated to have recouped, not yet announced" (owner, BRO-5073)
+    assert.equal(modelDisplayGuard({ ...on, pct: [100, 120, 140] }).reason, 'estimated-recouped');
+    assert.equal(modelDisplayGuard({ ...on, pct: [99.5, 120, 140] }).reason, 'past-100-unannounced');
+    // still out of bounds above 150 central
+    assert.equal(modelDisplayGuard({ ...on, pct: [120, 155, 180] }).reason, 'out-of-bounds');
     assert.deepEqual(modelDisplayGuard({ ...on, pct: [80, 92, 110] }).shown, [80, 92, 99]);
     // the launch switch still wins while it is off; a closed show is unaffected
     assert.equal(modelDisplayGuard({ ...on, runningEnabled: false, pct: [130, 144, 150] }).reason, 'awaiting-truth');
     assert.deepEqual(modelDisplayGuard({ ...on, running: false, pct: [80, 92, 110] }).shown, [80, 92, 110]);
   });
-  test('per-type running switch: plays only once the flag is on, default off (BRO-5073)', () => {
-    assert.equal(RUNNING_MODEL_BAR_ENABLED, false);
+  test('per-type running switch: on for plays only (owner, 2026-10-11, BRO-5073)', () => {
+    assert.equal(RUNNING_MODEL_BAR_ENABLED, true);
     assert.deepEqual(RUNNING_MODEL_BAR_TYPES, ['play']);
     const on = { pct: [40, 55, 70], playedWeeks: 30, running: true, runningEnabled: true };
     assert.equal(modelDisplayGuard({ ...on, showType: 'play' }).show, true);
@@ -121,8 +126,8 @@ describe('displaysModel (mirrors getRecoupmentDisplayMode === "model")', () => {
 test('displayBasis: running shows use the pre-credit figure once running bars are on (BRO-5073)', () => {
   const pct = [80, 90, 100];
   const ex = [60, 70, 80];
-  // Bar off (today): live figure, no basis.
-  assert.deepEqual(displayBasis({ pct, exCreditPct: ex, creditCounted: 0, running: true }), { pct, creditBasis: null });
+  // Bar off: live figure, no basis.
+  assert.deepEqual(displayBasis({ pct, exCreditPct: ex, creditCounted: 0, running: true, runningEnabled: false }), { pct, creditBasis: null });
   assert.deepEqual(displayBasis({ pct, exCreditPct: ex, creditCounted: 0, running: true, runningEnabled: true }), { pct: ex, creditBasis: 'pre-credit' });
   assert.deepEqual(displayBasis({ pct, exCreditPct: ex, creditCounted: 3e6, running: true, runningEnabled: true }), { pct: ex, creditBasis: 'post-credit' });
   // Closed shows and records without the run keep the live figure.

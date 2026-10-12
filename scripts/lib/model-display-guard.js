@@ -20,6 +20,11 @@
 //                   bar would read "100%+" (recouped) on a show that has not
 //                   announced it (BRO-5073: Mean Girls read 144 half a year
 //                   before it recouped). A shown range tops out at 99.
+//   estimated-recouped  the same, but the low end of the range is 100 or more:
+//                   the card says "Estimated to have recouped, not yet
+//                   announced" instead of a bar (owner decision, BRO-5073:
+//                   estimates are the point; 3 wrong early calls in 28 replay
+//                   checkpoints, all musicals, which stay off).
 // Otherwise shown. An investor cannot get back less than nothing, so a
 // negative value displays as 0 with "losing money so far"; the negative
 // number stays internal.
@@ -40,7 +45,9 @@ const RUNNING_SHOWN_MAX = 99;
 // displayable rows and passes (node scripts/backtest-recoupment-ground-truth.js
 // --displayable-only --strict). Flip this only after that holds. Closed shows
 // are unaffected.
-const RUNNING_MODEL_BAR_ENABLED = false;
+// Owner turned it on for plays, 2026-10-11 (BRO-5073 timing test; strict
+// backtest passes). Still inside the held Commercial Scorecard build.
+const RUNNING_MODEL_BAR_ENABLED = true;
 // Show types that get the running bar once the flag is on (BRO-5073): plays
 // only. The timing backtest finds the model crosses 100% a median 1.5 weeks
 // before a play's announcement (never more than 10 early) but up to a year
@@ -92,7 +99,7 @@ function independentEstimate(comm) {
 
 /**
  * @param {{ pct: [number, number, number] | null | undefined, playedWeeks: number, independent?: [number, number] | null, running?: boolean, runningEnabled?: boolean, showType?: string | null, runningTypes?: string[] }} input
- * @returns {{ show: boolean, reason: null | 'no-model' | 'few-weeks' | 'out-of-bounds' | 'estimates-disagree' | 'too-uncertain' | 'awaiting-truth' | 'past-100-unannounced', shown: [number, number, number] | null, belowCosts: boolean }}
+ * @returns {{ show: boolean, reason: null | 'no-model' | 'few-weeks' | 'out-of-bounds' | 'estimates-disagree' | 'too-uncertain' | 'awaiting-truth' | 'past-100-unannounced' | 'estimated-recouped', shown: [number, number, number] | null, belowCosts: boolean }}
  */
 function modelDisplayGuard({ pct, playedWeeks: weeks, independent = null, running = false, runningEnabled = RUNNING_MODEL_BAR_ENABLED, showType, runningTypes = RUNNING_MODEL_BAR_TYPES }) {
   const hide = (reason) => ({ show: false, reason, shown: null, belowCosts: false });
@@ -107,7 +114,7 @@ function modelDisplayGuard({ pct, playedWeeks: weeks, independent = null, runnin
   if (pct[2] - pct[0] > MAX_RANGE_WIDTH) return hide('too-uncertain');
   // showType undefined (callers that predate the per-type switch) keeps the flag alone.
   if (running && (!runningEnabled || (showType !== undefined && !runningTypes.includes(showType || 'musical')))) return hide('awaiting-truth');
-  if (running && central >= 100) return hide('past-100-unannounced');
+  if (running && central >= 100) return hide(pct[0] >= 100 ? 'estimated-recouped' : 'past-100-unannounced');
   const top = running ? RUNNING_SHOWN_MAX : Infinity;
   return { show: true, reason: null, shown: pct.map((v) => Math.min(top, Math.max(0, v))), belowCosts: central < 0 };
 }
