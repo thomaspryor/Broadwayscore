@@ -156,13 +156,13 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-11T14:14:07.486Z",
-      "lastSeen": "2026-10-11T23:55:46.924Z",
+      "lastSeen": "2026-10-12T00:01:26.521Z",
       "lastNotifiedAt": "2026-10-11T14:14:07.486Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 132,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 14
+      "silentRefires": 15
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -12578,17 +12578,21 @@
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Ordinal publishDate guard parity (BRO-2836) — \"foo returns the contracted value\"",
       "firstSeen": "2026-10-09T14:40:39.110Z",
-      "incidentOpenedAt": "2026-10-11T23:55:46.616Z",
-      "lastSeen": "2026-10-11T23:55:46.616Z",
-      "lastNotifiedAt": "2026-10-11T23:55:46.616Z",
+      "incidentOpenedAt": "2026-10-11T23:41:19.580Z",
+      "lastSeen": "2026-10-12T00:01:26.513Z",
+      "lastNotifiedAt": "2026-10-11T23:41:19.580Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-5102",
-      "absentRunIds": [
-        "37951424811",
-        "37956977077"
-      ]
+      "absentRunIds": [],
+      "dispatch": {
+        "requestedAt": "2026-10-11T23:41:19.580Z",
+        "mode": "dispatch-at-filing",
+        "runId": "38184281462",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38184281462"
+      },
+      "silentRefires": 1
     },
     "test-yml:red:Unit Tests:2a5215c8": {
       "status": "resolved",
@@ -13976,7 +13980,8 @@
       "linearIdentifier": "BRO-5078",
       "silentRefires": 8,
       "absentRunIds": [
-        "38185015383"
+        "38184281462",
+        "38185497104"
       ]
     },
     "review-gap:opening-window:mystic-pizza-tour-2026": {
