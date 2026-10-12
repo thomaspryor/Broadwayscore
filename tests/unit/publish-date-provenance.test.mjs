@@ -28,7 +28,7 @@ const {
 } = require('../../scripts/lib/publish-date-provenance.js');
 const { extractBWWRoundupReviews } = require('../../scripts/gather-reviews.js');
 
-// Real row values (data/reviews.json + data/shows.json, 2026-10-12).
+// Real row values (the live review and show records, 2026-10-12).
 const WOLF_HALL_THR = {
   showId: 'wolf-hall-parts-one-and-two-2015',
   outletId: 'hollywood-reporter',
