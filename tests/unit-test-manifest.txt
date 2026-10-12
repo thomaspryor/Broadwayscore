@@ -1069,6 +1069,7 @@ tests/unit/reverse-discovery-freshness.test.mjs
 tests/unit/review-completeness-monitor.test.mjs
 tests/unit/review-factcheck-bro5081.test.mjs
 tests/unit/review-file-creation-same-url-check.test.mjs
+tests/unit/review-file-writer-blocklist.test.js
 tests/unit/review-file-writer-preserves-flags-on-url-change.test.mjs
 tests/unit/review-file-writer-roundup-autoflag.test.mjs
 tests/unit/review-filename-collision.test.mjs
@@ -1362,4 +1363,3 @@ tests/unit/wrong-production-setters-honor-manual-clear.test.mjs
 tests/unit/year-page-precursor-table-schema.test.mjs
 tests/unit/youtube-captions.test.mjs
 tests/unit/zox-news-page-bleed.test.mjs
-tests/unit/review-file-writer-blocklist.test.js
