@@ -35,6 +35,7 @@ const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { EXCERPT_FIELDS } = require('./lib/excerpt-fields');
 const guard = require('./lib/cloned-excerpt-guard');
+const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
 
 const USAGE = `audit-cloned-excerpts.js — same-outlet cloned-excerpt (phantom/duplicate) review audit (BRO-4406).
 
@@ -211,6 +212,7 @@ function apply(p, showDir) {
     for (const f of fields) d[f] = null;
     // Its score may have been read off the copied excerpt: rescore from its own text.
     d.needsRescore = true;
+    markRescoreFlagged(d);
     d.rescoreReason = 'BRO-4406-cloned-excerpt-stripped';
     safeWriteReview(path.join(showDir, p.stripFrom), d, { force: true });
     return `excerpt-copy: stripped ${fields.join(',')} from ${p.stripFrom} (owner ${p.owner})`;

@@ -15,6 +15,7 @@ const path = require('path');
 const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
 
 const dryRun = !process.argv.includes('--apply');
 const base = path.join(__dirname, '..', 'data', 'review-texts');
@@ -65,6 +66,7 @@ for (const d of dirs) {
         data.contentTierReason = tierResult.reason;
         if (data.needsRescore !== true && data.llmScore && !data.humanReviewScore) {
           data.needsRescore = true;
+          markRescoreFlagged(data);
         }
         fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
       }

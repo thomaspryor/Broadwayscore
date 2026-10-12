@@ -96,7 +96,7 @@ function applyBleedTrim(record, newText, { at, source } = {}) {
   if (out.llmPullQuote && !norm(newText).includes(norm(out.llmPullQuote))) out.llmPullQuote = null;
   out.needsRescore = true;
   out.rescoreReason = RESCORE_REASON;
-  out.rescoreFlaggedAt = at || new Date().toISOString();
+  require('./rescore-lifecycle').markRescoreFlagged(out, at);
   delete out.rescoreCompletedAt;
   out.pageBleedRepair = { at: out.rescoreFlaggedAt, previousLength, newLength: newText.length, source: source || null };
   return out;

@@ -46,6 +46,8 @@ function markRescoreComplete(fileData, completedAt) {
   if (fileData.needsRescore || fileData.needs_rescore) {
     delete fileData.needsRescore;
     delete fileData.needs_rescore;
+    // BRO-117: the enqueue stamp describes the flag it timestamps; retire both.
+    delete fileData.rescoreFlaggedAt;
     fileData.rescoreCompletedAt = completedAt || new Date().toISOString();
   }
   // Task #97 adversarial review (codex, 2026-08-10): staleScoredBeforeOpening
@@ -65,6 +67,35 @@ function markRescoreComplete(fileData, completedAt) {
     delete fileData.staleTextVerdictScoreParked;
     delete fileData.staleTextVerdictScoreParkedAt;
   }
+  return fileData;
+}
+
+/**
+ * markRescoreFlagged: the enqueue end of the same lifecycle (BRO-117).
+ *
+ * Every producer that sets needsRescore truthy calls this right after, so the
+ * flag always carries the moment it was raised. Two readers depend on it:
+ *   - stuck-rescore-flag.js isScoredButStillQueued(): a score newer than the
+ *     stamp with the flag still set means the scorer served the queue entry
+ *     and failed to retire it, for ANY producer (not only the Haiku-fallback
+ *     fingerprint it was first built for).
+ *   - scoring-recency.js carryNewerScoring(): a requeue whose stamp is newer
+ *     than the other side's score survives push-review-texts (BRO-4804);
+ *     without a stamp the requeue can be silently carried away.
+ *
+ * Always restamps (a re-flag is a new enqueue). Preserving an older stamp
+ * would let carryNewerScoring treat a fresh requeue as a stale snapshot.
+ * Does not touch needsRescore itself: producers set `true` or a reason string.
+ * scripts/lib/stamp-rescore-flagged-at.test.mjs scans scripts/ so a new
+ * producer that forgets this call fails CI.
+ *
+ * @param {Object} fileData - review file object about to be persisted
+ * @param {string} [flaggedAt] - ISO timestamp; defaults to now (injectable for tests)
+ * @returns {Object} the same fileData, mutated
+ */
+function markRescoreFlagged(fileData, flaggedAt) {
+  if (!fileData || typeof fileData !== 'object') return fileData;
+  fileData.rescoreFlaggedAt = flaggedAt || new Date().toISOString();
   return fileData;
 }
 
@@ -259,6 +290,7 @@ function isBlockedByStickyRejection(data, opts = {}) {
 
 module.exports = {
   markRescoreComplete,
+  markRescoreFlagged,
   stampTerminalScoringFailure,
   isBlockedFromRescore,
   isDeterministicTextGateFailure,

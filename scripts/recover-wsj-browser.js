@@ -51,6 +51,7 @@ const { cleanText, stripTrailingJunk } = require('./lib/text-cleaning');
 const { loadCookiesForDomain } = require('./lib/cookie-loader');
 const { checkDatePlausibility } = require('./lib/browser-recovery-helpers');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
 
 const CONFIG = {
   reviewTextsDir: path.join(__dirname, '..', 'data', 'review-texts'),
@@ -174,6 +175,7 @@ function processRecoveredText(candidate, rawText) {
 
   if (data.llmScore?.score) {
     data.needsRescore = true;
+    markRescoreFlagged(data);
     data.rescoreReason = 'fullText recovered via WSJ subscriber browser session (task #779)';
   }
 

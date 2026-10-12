@@ -27,6 +27,9 @@
  * `needsRescore = true` call sites repo-wide with no shared gate; migrating
  * them onto isStaleScoreInput()/markRescoreNeeded() is explicitly deferred
  * to a follow-up card, not done here (see card #1902 correction 2).
+ * BRO-117: those raw sites (and markRescoreNeeded below) all stamp
+ * rescoreFlaggedAt through rescore-lifecycle.js markRescoreFlagged(), enforced
+ * by scripts/lib/stamp-rescore-flagged-at.test.mjs.
  */
 
 const { isScoreable } = require('./is-scoreable');
@@ -160,7 +163,7 @@ function markRescoreNeeded(fileData, reason, flaggedAt) {
   if (fileData.needsRescore === true) return fileData; // idempotent — no duplicate stamp
   fileData.needsRescore = true;
   fileData.rescoreReason = reason;
-  fileData.rescoreFlaggedAt = flaggedAt || new Date().toISOString();
+  require('./rescore-lifecycle').markRescoreFlagged(fileData, flaggedAt);
   return fileData;
 }
 

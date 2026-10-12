@@ -161,6 +161,7 @@ function adoptNewerFetchedText(target, source) {
   else delete target.contentVerification;
   for (const key of STALE_TEXT_VERDICT_FIELDS) delete target[key];
   target.needsRescore = true;
+  require('./rescore-lifecycle').markRescoreFlagged(target);
   target.rescoreReason = 'fullText adopted from merged same-url sibling (BRO-4447)';
   return true;
 }

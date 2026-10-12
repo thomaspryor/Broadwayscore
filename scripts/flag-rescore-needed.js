@@ -32,6 +32,7 @@ if (hasHelpFlag(process.argv.slice(2))) {
 // (category/type). A hand-picked subset dropped category, so this script
 // stripped needsRescore from tour reviews the scorer takes (BRO-4563).
 const { loadShowsById } = require('./lib/scoring-queue-counts');
+const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
 const SHOW_TITLES = loadShowsById(path.join(__dirname, '..', 'data', 'shows.json'));
 const showFor = (d) => (d.showId ? SHOW_TITLES.get(d.showId) : undefined);
 
@@ -86,6 +87,7 @@ if (cleanupMode) {
           cleanedFiles.push(`${show}/${file}`);
           if (!dryRun) {
             delete data.needsRescore;
+            delete data.rescoreFlaggedAt; // BRO-117: the stamp retires with its flag
             delete data.rescoreReason;
             fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
           }
@@ -206,6 +208,7 @@ for (const show of shows) {
         if (!dryRun) {
           // Flag for rescore
           data.needsRescore = true;
+          markRescoreFlagged(data);
           data.rescoreReason = isExcerptBased
             ? 'scored on brief excerpt, now has fullText'
             : 'fullText significantly longer than excerpt used for scoring';

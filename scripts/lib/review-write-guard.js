@@ -391,6 +391,13 @@ const PROTECTED_FIELDS = [
   // restore loop only iterates PROTECTED fields).
   'rescoreReason',
   'lateStarAnchorBand',
+  // BRO-117: enqueue stamp written by markRescoreFlagged() (rescore-lifecycle.js)
+  // alongside needsRescore. Protected for the same reason as needsRescore: a
+  // restore that brings the flag back without its stamp loses the only
+  // evidence of when it was queued. Retired with the flag by
+  // markRescoreComplete() and audit-stuck-rescore-flags.js --fix, so it shares
+  // needsRescore's CLEAR_BREADCRUMBS union below.
+  'rescoreFlaggedAt',
   // NOTE: rescoreCompletedAt is intentionally NOT protected, even though
   // _freshRescoreCompleted (the CLEAR_BREADCRUMBS predicate for needsRescore)
   // reads it — same shape as duplicateClearReason below. flag-combined-
@@ -1140,6 +1147,8 @@ const CLEAR_BREADCRUMBS = {
   needsRescore: (d) => _freshStuckRescoreCleared(d) || _freshRescoreCompleted(d),
   rescoreReason: _freshStuckRescoreCleared,
   lateStarAnchorBand: _freshStuckRescoreCleared,
+  // BRO-117: cleared by the same two paths as needsRescore.
+  rescoreFlaggedAt: (d) => _freshStuckRescoreCleared(d) || _freshRescoreCompleted(d),
   manualClearFallbackFailedAt: _manualClearFallbackCleared('manualClearFallbackFailedAt'),
   manualClearFallbackFailureReason: _manualClearFallbackCleared('manualClearFallbackFailureReason'),
   manualClearFallbackAttempts: _manualClearFallbackCleared('manualClearFallbackAttempts'),

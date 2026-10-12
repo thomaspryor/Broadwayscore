@@ -43,6 +43,7 @@ const seenByOutlet = {};
 const ROOT = path.join(__dirname, '..');
 
 const { OUTLET_EXTRACTORS, KNOWN_STAR_OUTLETS, HOST_GATED_STAR_OUTLETS } = require('./lib/score-extractors');
+const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
 
 // Sources whose stored text cannot carry the printed rating, so the score was
 // built from words alone: the review form / url-ingest path before BRO-4764,
@@ -141,7 +142,7 @@ if (require.main === module) (async () => {
       d.needsRescore = true;
       d.rescoreReason = 'late-star-anchor';
       delete d.rescoreCompletedAt;
-      d.rescoreFlaggedAt = new Date().toISOString();
+      markRescoreFlagged(d);
     }
     safeWriteReview(f, d, { force: true });
     stats.written++;

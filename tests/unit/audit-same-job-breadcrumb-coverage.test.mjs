@@ -307,7 +307,7 @@ test('findForceTrueClearSites: exact field match on the real audit-stuck-rescore
   const src = fs.readFileSync(path.join(repoRoot, 'scripts/audit-stuck-rescore-flags.js'), 'utf8');
   const sites = findForceTrueClearSites(src, new Set(PROTECTED_FIELDS));
   const fields = new Set(sites.flatMap((s) => s.fields));
-  assert.deepEqual([...fields].sort(), ['lateStarAnchorBand', 'needsRescore', 'rescoreReason']);
+  assert.deepEqual([...fields].sort(), ['lateStarAnchorBand', 'needsRescore', 'rescoreFlaggedAt', 'rescoreReason']);
 });
 
 test('findForceTrueClearSites: exact field match on the real strip-stale-single-model-scores.js (positive control, null-assignment idiom)', () => {

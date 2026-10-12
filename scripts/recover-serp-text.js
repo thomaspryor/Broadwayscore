@@ -51,6 +51,7 @@ const { discoverCorrectUrl, OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES } = require(
 const { evaluateCandidate, buildDomainOutletIds, isProvenZeroSweep } = require('./lib/serp-text-recovery-candidates');
 const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 const { fetchPage, unwrapRedirectUrl, cleanup } = require('./lib/scraper');
+const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
 
 const args = process.argv.slice(2);
 const getArg = (name) => {
@@ -370,6 +371,7 @@ async function processRecovered(candidate, text, html, newUrl, method) {
 
   if (data.llmScore && data.llmScore.score) {
     data.needsRescore = true;
+    markRescoreFlagged(data);
     data.rescoreReason = 'fullText recovered via SERP text recovery';
   }
 

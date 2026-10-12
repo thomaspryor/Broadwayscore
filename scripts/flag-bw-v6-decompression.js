@@ -38,6 +38,7 @@ const { isIncludableForRebuild } = require('./lib/review-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
 
 const USAGE = `flag-bw-v6-decompression.js — Component 2 of the NYC anchored-bands rollout (Notion card.
 
@@ -90,7 +91,7 @@ for (const f of glob.sync(path.join(ROOT, 'data', 'review-texts', '*', '*.json')
     d.needsRescore = true;
     d.rescoreReason = 'bw-v6-decompression';
     delete d.rescoreCompletedAt;
-    d.rescoreFlaggedAt = new Date().toISOString();
+    markRescoreFlagged(d);
     safeWriteReview(f, d, { force: true });
   }
   if (LIMIT && flagged >= LIMIT) break;

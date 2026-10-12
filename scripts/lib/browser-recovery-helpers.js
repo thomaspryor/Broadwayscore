@@ -201,6 +201,7 @@ function processRecoveredText(candidate, rawText, labels) {
 
   if (data.llmScore?.score) {
     data.needsRescore = true;
+    require('./rescore-lifecycle').markRescoreFlagged(data);
     data.rescoreReason = `fullText recovered via ${labels.sourceMethod} (task #831)`;
   }
 

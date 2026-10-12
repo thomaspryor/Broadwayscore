@@ -27,6 +27,7 @@ const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 const { ADJUDICATED_NOTE_PREFIX } = require('./lib/wrong-production-autoclear');
 const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { applyContaminationAllow, contaminationKindForQueueReason } = require('./lib/contamination-allow-signal');
+const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -460,9 +461,11 @@ Respond with ONLY this JSON (no markdown fences):
           sourceData.autoAcceptRefusals = outcome.refusals;
           if (giveUp) {
             sourceData.needsRescore = false;
+            delete sourceData.rescoreFlaggedAt; // BRO-117: the stamp retires with its flag
             sourceData.autoAcceptBlocked = `LLM score ${llmScore} stays outside the critic's rating (${outcome.violation.detail}) after ${outcome.refusals - 1} band-anchored rescores; check the extracted rating`;
           } else {
             sourceData.needsRescore = true;
+            markRescoreFlagged(sourceData);
             sourceData.rescoreReason = 'auto-accept-outside-star-band';
           }
           sourceData.adjudicationAttempts = attempts;

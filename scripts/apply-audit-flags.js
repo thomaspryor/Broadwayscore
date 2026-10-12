@@ -17,6 +17,7 @@ const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
 
 const USAGE = `apply-audit-flags.js — Reads audit reports and applies flags to review-text source files.
 
@@ -108,6 +109,7 @@ if (audit.authorMismatches && audit.authorMismatches.length > 0) {
       delete data.scoringModel;
       delete data.scoringTimestamp;
       data.needsRescore = 'fullTextWrongAuthor-applied';
+      markRescoreFlagged(data);
       data.contentTier = hasExcerpt ? 'excerpt' : 'stub';
 
       safeWriteReview(filePath, data, { force: true });
@@ -176,6 +178,7 @@ if (audit.apContentDetections && audit.apContentDetections.length > 0) {
       data.fullTextWrongAuthor = true;
       data._authorMismatch = `AP wire content detected in non-AP file: ${det.signal}`;
       data.needsRescore = 'ap-content-detected';
+      markRescoreFlagged(data);
 
       safeWriteReview(filePath, data);
     }

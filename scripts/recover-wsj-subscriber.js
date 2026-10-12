@@ -38,6 +38,7 @@ const { cleanText, stripTrailingJunk } = require('./lib/text-cleaning');
 const { loadCookiesForDomain } = require('./lib/cookie-loader');
 const { hasHelpFlag } = require('./lib/cli-help');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
 
 if (hasHelpFlag(process.argv.slice(2))) {
   console.log('Usage: node scripts/recover-wsj-subscriber.js');
@@ -354,6 +355,7 @@ function processRecoveredText(candidate, text) {
   // Flag for LLM rescoring if previously scored on excerpt
   if (data.llmScore && data.llmScore.score) {
     data.needsRescore = true;
+    markRescoreFlagged(data);
     data.rescoreReason = 'fullText recovered via WSJ subscriber session';
   }
 

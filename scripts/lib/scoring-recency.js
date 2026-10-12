@@ -102,6 +102,7 @@ function carryNewerScoring(winner, other) {
   // re-check so it is re-verified against the new text.
   if (changed && bodyChanged) {
     winner.needsRescore = true;
+    require('./rescore-lifecycle').markRescoreFlagged(winner);
     winner.rescoreReason = 'text-changed-after-rescore';
     delete winner.rescoreCompletedAt;
   }

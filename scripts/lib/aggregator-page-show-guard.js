@@ -81,7 +81,7 @@ function planWrongShowRoundupClear(record, rows) {
   if (out.scoreSource === 'westendtheatre-star-rating') {
     out.needsRescore = true;
     out.rescoreReason = 'wrong-show round-up star removed (BRO-3564)';
-    out.rescoreFlaggedAt = new Date().toISOString();
+    require('./rescore-lifecycle').markRescoreFlagged(out);
     delete out.rescoreCompletedAt;
   }
   out.wrongShowRoundupCleared = { at: new Date().toISOString(), source: 'westendtheatre' };

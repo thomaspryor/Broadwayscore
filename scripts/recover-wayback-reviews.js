@@ -35,6 +35,7 @@ const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { generateReviewFilename } = require('./lib/review-normalization');
 const { setExtractedScore } = require('./lib/score-routing');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
 
 const USAGE = `recover-wayback-reviews.js — recover review full text from the Wayback Machine for dead-URL reviews.
 
@@ -1409,6 +1410,7 @@ async function processRecoveredText(candidate, text, html, archiveData) {
   // Flag for LLM rescoring if previously scored on excerpt
   if (data.llmScore && data.llmScore.score) {
     data.needsRescore = true;
+    markRescoreFlagged(data);
     data.rescoreReason = 'fullText recovered from Wayback Machine';
   }
 

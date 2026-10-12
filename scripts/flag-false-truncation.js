@@ -22,6 +22,7 @@ const { isFalseTruncationScore } = require('./lib/rescore-flagging');
 const { safeWriteReview } = require('./lib/review-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
 
 const USAGE = `flag-false-truncation.js — flag scored reviews that a page footer made the scorer call truncated.
 
@@ -77,7 +78,7 @@ for (const h of picked) {
   if (APPLY) {
     h.d.needsRescore = true;
     h.d.rescoreReason = REASON;
-    h.d.rescoreFlaggedAt = new Date().toISOString();
+    markRescoreFlagged(h.d);
     delete h.d.rescoreCompletedAt;
     safeWriteReview(h.f, h.d, { force: true });
   }

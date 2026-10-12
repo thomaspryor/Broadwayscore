@@ -29,6 +29,7 @@ const { parseDate } = require('./lib/date-utils');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
 
 const USAGE = `strip-stale-single-model-scores.js — Strip stale scores from review files.
 
@@ -99,6 +100,7 @@ function runQualityFlaggedMode() {
         data.llmScore = null;
         data.llmMetadata = null;
         if (data.needsRescore) data.needsRescore = null;
+        if (data.rescoreFlaggedAt) data.rescoreFlaggedAt = null; // BRO-117: retires with its flag
         if (data.rescoreCompletedAt) data.rescoreCompletedAt = null;
         const r = safeWriteReview(fp, data);
         if (r.lockedSkipped) lockedSkipCount++;
@@ -176,6 +178,7 @@ function runBeforeOpeningMode(openingDateStr, showId) {
       data.llmScore = null;
       data.llmMetadata = null;
       data.needsRescore = true;
+      markRescoreFlagged(data);
       data.staleScoredBeforeOpening = true;
       // Freshness-stamped so the push-restore breadcrumb (review-write-guard.js
       // CLEAR_BREADCRUMBS) can bound how long it suppresses restoring a stale

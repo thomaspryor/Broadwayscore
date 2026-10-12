@@ -510,6 +510,7 @@ function rewriteParent(data, ownSection, childShowIds, now = new Date().toISOStr
   // originalScore stays on the parent (the file the article was filed under)
   // and is never copied to children: it can't be attributed to one section.
   out.needsRescore = true;
+  require('./rescore-lifecycle').markRescoreFlagged(out, now);
   out.needsRescoreReason = 'multi-show-split: text trimmed to own section';
   delete out.ensembleData;
   delete out.llmScore;
@@ -542,6 +543,7 @@ function buildChild(parentData, section, parentShowId, now = new Date().toISOStr
   if (parentData.textFetchedAt) child.textFetchedAt = parentData.textFetchedAt;
   if (parentData.firstSeenAt) child.firstSeenAt = parentData.firstSeenAt;
   child.textWordCount = child.wordCount;
+  require('./rescore-lifecycle').markRescoreFlagged(child, now); // needsRescore: true above (BRO-117)
   return child;
 }
 
@@ -670,6 +672,7 @@ function unsplitArticle(filePath, data, reviewTextsDir, ownShowId) {
     out.isCombinedReview = true;
     out.combinedWith = allShows.filter((id) => id !== out.showId);
     out.needsRescore = true;
+    require('./rescore-lifecycle').markRescoreFlagged(out, now);
     out.needsRescoreReason = 'multi-show-split undone: article is one essay about both shows';
     delete out.ensembleData;
     delete out.llmScore;

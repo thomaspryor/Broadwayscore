@@ -170,6 +170,7 @@ const { isLegacyWebSearchOnly } = require('./lib/legacy-web-search');
 const { parseDate } = require('./lib/date-utils');
 const { evaluateShowScorePreviousProduction } = require('./lib/date-guard');
 const { findExistingFileForUrl, decideSameUrlDifferentFileGuard } = require('./lib/review-url-clusters');
+const { markRescoreFlagged } = require('./lib/rescore-lifecycle');
 
 /**
  * Rename a review-text file to match its in-memory criticName when one of the
@@ -4648,6 +4649,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   if (!hadFullTextBefore && hasLlmScore && (newTextIsSubstantial || legacyRowGotPage)) {
     // Review was scored on excerpt, now has fullText - flag for rescoring
     data.needsRescore = true;
+    markRescoreFlagged(data);
     data.rescoreReason = 'fullText added after excerpt-based scoring';
     console.log(`    → Flagged for rescore: was scored at ${data.llmScore.score} on excerpt, now has ${text.length} char fullText`);
   }
@@ -4672,7 +4674,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       console.log(`    [MULTI-SHOW] could not isolate this show's section in ${data.url || review.url} — not storing another show's text`);
       if (!data.fullText) {
         if (data.rescoreReason === 'fullText added after excerpt-based scoring' && !hadFullTextBefore) {
-          delete data.needsRescore; delete data.rescoreReason; // set above for text we are not storing
+          delete data.needsRescore; delete data.rescoreReason; delete data.rescoreFlaggedAt; // set above for text we are not storing
         }
         data.incompleteReason = MULTI_SHOW_NOT_FOUND_REASON;
         data.incompleteDetail = 'multi-show post has no unique section for this show (isolateMultiShowSection)';
@@ -4718,6 +4720,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   // when there was no text before). BRO-5090.
   if (shouldRescoreForcedReplacement(review, fullTextBeforeUpdate, cleanedText)) {
     data.needsRescore = true;
+    markRescoreFlagged(data);
     data.rescoreReason = 'fullText replaced by forced refetch (stored text was from the wrong page)';
     console.log(`    → Flagged for rescore: forced refetch replaced ${fullTextBeforeUpdate.length} chars with ${cleanedText.length}`);
   }

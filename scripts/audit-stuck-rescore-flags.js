@@ -130,7 +130,12 @@ function main() {
   const byReason = {};
   for (const s of stuck) byReason[s.reason] = (byReason[s.reason] || 0) + 1;
 
-  // REPORT-ONLY for kind==='scored-but-queued' (2026-07-26). That predicate keys
+  // REPORT-ONLY for kind==='scored-but-queued' (2026-07-26). BRO-117 update:
+  // producers now stamp rescoreFlaggedAt (rescore-lifecycle.js
+  // markRescoreFlagged) and the predicate also fires for any producer when a
+  // score is newer than that stamp. Still report-only: files queued before
+  // BRO-117 carry no stamp, and a wrong --fix cancels a real rescore.
+  // Original rationale: the predicate keyed
   // on scoreSource==='manual-cleared-haiku-fallback', but scoreSource is NOT
   // durable provenance: collect-review-texts.js:4186 requeues a file (fullText
   // arrived after excerpt scoring) WITHOUT resetting scoreSource, so a perfectly
@@ -138,7 +143,6 @@ function main() {
   // needsRescore, which would silently cancel that real rescore. The producing
   // bug is already fixed at source (rescore-lifecycle.js markRescoreComplete on
   // every success path), so this class only needs to be VISIBLE, never auto-fixed.
-  // Revisit once producers stamp rescoreFlaggedAt (Notion 3a9637c5-416f-8155).
   const fixable = stuck.filter((s) => s.kind !== 'scored-but-queued');
   const reportOnly = stuck.length - fixable.length;
   if (opts.fix && reportOnly) {
@@ -151,6 +155,7 @@ function main() {
       const d = JSON.parse(fs.readFileSync(s.path, 'utf8'));
       delete d.needsRescore;
       delete d.rescoreReason;
+      delete d.rescoreFlaggedAt; // BRO-117: the enqueue stamp retires with its flag
       delete d.lateStarAnchorBand;
       // Freshness-gated breadcrumb (task #1259, same shape as tasks #97/#1237):
       // this runs in enrich-reviews.yml's single job, which later calls

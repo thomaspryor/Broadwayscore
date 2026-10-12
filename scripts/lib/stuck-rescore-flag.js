@@ -83,20 +83,39 @@ function isScoredButStillQueued(data) {
   // broad version would have handed the other 162 to this auditor's --fix,
   // which DELETES needsRescore (audit-stuck-rescore-flags.js:124) and would
   // have silently cancelled 162 genuinely-needed rescores.
-  //
-  // So key on the bug's fingerprint instead, which is provable: the
-  // Haiku-fallback path is the only writer of this scoreSource, and it was the
-  // path that failed to retire the flag. Anything else that is scored-and-queued
-  // is presumed legitimate until a producer stamps an enqueue timestamp we can
-  // compare against (no producer does today — that gap is Notion-carded).
-  if (data.scoreSource !== 'manual-cleared-haiku-fallback') return false;
 
   // Retired correctly by a post-fix run — not stuck.
   if (data.rescoreCompletedAt) return false;
 
   const flaggedAt = data.rescoreFlaggedAt || data.needsRescoreAt;
-  if (!flaggedAt) return true;
-  return String(scoredAt) > String(flaggedAt);
+
+  // The original provable fingerprint (2026-07-26): the Haiku-fallback path is
+  // the only writer of this scoreSource and the path that failed to retire the
+  // flag. Those files never got a stamp, so an absent stamp counts as stuck.
+  if (data.scoreSource === 'manual-cleared-haiku-fallback') {
+    if (!flaggedAt) return true;
+    return isAfter(scoredAt, flaggedAt);
+  }
+
+  // General path (BRO-117): every producer now stamps rescoreFlaggedAt at
+  // enqueue (rescore-lifecycle.js markRescoreFlagged), so a score written AFTER
+  // the flag was raised, with the flag still set, means the scorer served the
+  // queue entry and failed to retire it, whatever the producer. A score older
+  // than the stamp is a legitimate requeue (the 162 healthy files above).
+  // No stamp (files queued before BRO-117, or a producer that skipped the
+  // helper) stays presumed legitimate: without a timestamp it is
+  // indistinguishable from a healthy requeue.
+  if (!flaggedAt) return false;
+  return isAfter(scoredAt, flaggedAt);
+}
+
+// Timestamps come from different writers (with/without millis, offsets), so
+// compare as instants; fall back to string order only if either won't parse.
+function isAfter(a, b) {
+  const ta = Date.parse(String(a));
+  const tb = Date.parse(String(b));
+  if (Number.isFinite(ta) && Number.isFinite(tb)) return ta > tb;
+  return String(a) > String(b);
 }
 
 module.exports = { isStuckRescoreFlag, isScoredButStillQueued };
