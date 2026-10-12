@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-12T12:44:36.956Z",
+    "generatedAt": "2026-10-12T12:57:52.723Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -9,9 +9,9 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 14,
-    "exemptCount": 83,
+    "exemptCount": 82,
     "coveredCount": 41,
-    "highChurnTracked": 138
+    "highChurnTracked": 137
   },
   "flagged": [
     {
@@ -28,19 +28,19 @@
     },
     {
       "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 144
+      "churn": 142
     },
     {
       "path": "data/audit/orphaned-duplicate-pointer-heal.json",
-      "churn": 124
+      "churn": 125
     },
     {
       "path": "data/audit/tour-sweep.json",
-      "churn": 124
+      "churn": 125
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 49
+      "churn": 48
     },
     {
       "path": "data/audit/rebuild-regression.json",
@@ -74,35 +74,35 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 510
+      "churn": 511
     },
     {
       "path": "data/audit/alert-digest-queue.json",
-      "churn": 471
+      "churn": 470
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 324
+      "churn": 322
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 280
+      "churn": 282
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 280
+      "churn": 282
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 280
+      "churn": 282
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 252
+      "churn": 253
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 125
+      "churn": 126
     },
     {
       "path": "public/data/shows/rent-west-end-2026.json",
@@ -141,11 +141,11 @@
       "churn": 52
     },
     {
-      "path": "public/data/shows/into-the-woods-west-end-2025.json",
-      "churn": 50
+      "path": "public/data/shows/fences-off-west-end-2026.json",
+      "churn": 49
     },
     {
-      "path": "public/data/shows/fences-off-west-end-2026.json",
+      "path": "public/data/shows/into-the-woods-west-end-2025.json",
       "churn": 49
     },
     {
@@ -197,12 +197,12 @@
       "churn": 40
     },
     {
-      "path": "public/data/shows/slam-frank-off-broadway-2026.json",
+      "path": "public/data/shows/walden-west-end-2021.json",
       "churn": 39
     },
     {
-      "path": "public/data/shows/walden-west-end-2021.json",
-      "churn": 39
+      "path": "public/data/shows/slam-frank-off-broadway-2026.json",
+      "churn": 38
     },
     {
       "path": "public/data/shows/the-pillowman-west-end-2023.json",
@@ -245,15 +245,7 @@
       "churn": 35
     },
     {
-      "path": "public/data/shows/kramerfauci-st-anns-off-broadway-2026.json",
-      "churn": 35
-    },
-    {
       "path": "public/data/shows/medea-west-end-2023.json",
-      "churn": 35
-    },
-    {
-      "path": "public/data/shows/school-girls-or-the-african-mean-girls-play-2026.json",
       "churn": 35
     },
     {
@@ -270,6 +262,14 @@
     },
     {
       "path": "public/data/shows/cyrano-de-bergerac-west-end-2019.json",
+      "churn": 34
+    },
+    {
+      "path": "public/data/shows/kramerfauci-st-anns-off-broadway-2026.json",
+      "churn": 34
+    },
+    {
+      "path": "public/data/shows/school-girls-or-the-african-mean-girls-play-2026.json",
       "churn": 34
     },
     {
@@ -397,10 +397,6 @@
       "churn": 30
     },
     {
-      "path": "public/data/shows/the-king-and-i-west-end-2024.json",
-      "churn": 30
-    },
-    {
       "path": "public/data/shows/uncle-vanya-west-end-2020.json",
       "churn": 30
     }
@@ -408,12 +404,12 @@
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 996,
+      "churn": 994,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 661,
+      "churn": 660,
       "mergeAttr": "union"
     },
     {
@@ -438,12 +434,12 @@
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 372,
+      "churn": 370,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/landings.jsonl",
-      "churn": 345,
+      "churn": 346,
       "mergeAttr": "union"
     },
     {
@@ -453,42 +449,42 @@
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 310,
+      "churn": 312,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 280,
+      "churn": 282,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 206,
+      "churn": 207,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 196,
+      "churn": 197,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 125,
+      "churn": 126,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 124,
+      "churn": 125,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 124,
+      "churn": 125,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 112,
+      "churn": 113,
       "mergeAttr": "ours"
     },
     {
@@ -503,22 +499,22 @@
     },
     {
       "path": "data/audit/orphan-unscored-into-the-woods-noel-coward-west-end-2026.json",
-      "churn": 87,
+      "churn": 89,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-from-the-heart-west-end-2026.json",
-      "churn": 86,
+      "churn": 88,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 83,
+      "churn": 84,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-triumph-off-broadway-2026.json",
-      "churn": 66,
+      "churn": 68,
       "mergeAttr": "ours"
     },
     {
@@ -538,12 +534,12 @@
     },
     {
       "path": "data/audit/churn-merge-coverage.json",
-      "churn": 32,
+      "churn": 33,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/corpus-drift.json",
-      "churn": 32,
+      "churn": 33,
       "mergeAttr": "ours"
     },
     {
