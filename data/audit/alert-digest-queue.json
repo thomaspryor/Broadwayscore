@@ -1766,5 +1766,35 @@
       }
     ],
     "queuedAt": "2026-10-12T21:03:16.019Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4251-hero-integrity",
+    "title": "Landing blocked: rebase red on land/bro-4251-hero-integrity",
+    "description": "land.yml did not land land/bro-4251-hero-integrity: the rebase gate went red at 539d087a18. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38309157461",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4251-hero-integrity"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "539d087a187e64813e13eba092de807a8198dd07"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38309157461"
+      }
+    ],
+    "queuedAt": "2026-10-12T21:14:31.614Z"
   }
 ]
