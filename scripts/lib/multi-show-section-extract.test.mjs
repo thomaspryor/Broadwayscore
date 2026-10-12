@@ -92,6 +92,16 @@ test('isolateMultiShowSection: section not found in a multi-section post refuses
   assert.equal(r.text, null);
 });
 
+test('isolateMultiShowSection: a misspelled section heading matches only via an alias (BRO-4658 "Toera")', () => {
+  const post = 'Punch (c) Matthew MurphyBroadway: Punch At the Samuel Friedman Theatre A play about a punch. ' +
+    'Toera (c) Joan MarcusTheater: Toera At the WP Theater The debut play, Torera, is a family drama.';
+  assert.equal(isolateMultiShowSection(IB_URL, post, 'Torera').action, 'refuse');
+  const r = isolateMultiShowSection(IB_URL, post, 'Torera', ['Toera']);
+  assert.equal(r.action, 'isolated');
+  assert.match(r.text, /^Toera \(c\)/);
+  assert.doesNotMatch(r.text, /Samuel Friedman/);
+});
+
 test('isolateMultiShowSection: single-section post on the host and other hosts pass text through', () => {
   const one = 'Giulia (c) PhotogTheater: Giulia At the Mint A whole review of one show.';
   assert.deepEqual(isolateMultiShowSection(IB_URL, one, 'Giulia'), { action: 'single-section', text: one });
