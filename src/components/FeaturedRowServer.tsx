@@ -13,6 +13,7 @@ import { isCriticalGold, hasEnoughReviews } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import HoverRateStars from '@/components/user/HoverRateStars';
+import ScrollRow from '@/components/ScrollRow';
 
 /**
  * Minimal structural shape used by the server shelf. HomepageShow / WestEndShow /
@@ -128,11 +129,11 @@ export default function FeaturedRowServer({
         )}
       </div>
       {subtitle && <p className="text-xs text-gray-500 mb-2">{subtitle}</p>}
-      <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
+      <ScrollRow>
         {shows.map((show, index) => (
           <ServerMiniShowCard key={show.id} show={show} priority={index < 4} />
         ))}
-      </div>
+      </ScrollRow>
     </section>
   );
 }

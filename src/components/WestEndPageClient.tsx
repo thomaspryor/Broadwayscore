@@ -15,6 +15,7 @@ import { TYPE_GROUP, buildStatusGroup, STATUS_OPTIONS_WITH_PREVIEWS, PANEL_PARAM
 import { usePanelFilters } from '@/lib/hooks/usePanelFilters';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { getNextSort, getSortArrow, normalizeSort } from '@/lib/sort-toggle';
+import ScrollRow from '@/components/ScrollRow';
 
 // Serialized show data passed from server component
 export interface WestEndShow {
@@ -120,11 +121,11 @@ function FeaturedRow({ title, subtitle, shows }: { title: string; subtitle?: str
       {subtitle && (
         <p className="text-xs text-gray-500 mb-2">{subtitle}</p>
       )}
-      <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
+      <ScrollRow>
         {shows.map((show) => (
           <MiniShowCard key={show.id} show={show} />
         ))}
-      </div>
+      </ScrollRow>
     </section>
   );
 }
@@ -525,11 +526,11 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
                 <h2 className="text-base font-bold text-white">Top Musicals</h2>
               </div>
               <p className="text-xs text-gray-500 mb-2">Ranked by critical consensus</p>
-              <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
+              <ScrollRow>
                 {topMusicals.map((show, index) => (
                   <MiniShowCard key={show.id} show={show} priority={index < 2} />
                 ))}
-              </div>
+              </ScrollRow>
             </section>
           )}
         </>

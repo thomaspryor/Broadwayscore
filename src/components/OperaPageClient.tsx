@@ -6,6 +6,7 @@ import { ShowListCard, MiniShowCard, ToggleBar, SCORE_TIERS } from '@/components
 import type { ShowCardShow, ScoreModeParam } from '@/components/show-cards/types';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { getNextSort, getSortArrow, normalizeSort } from '@/lib/sort-toggle';
+import ScrollRow from '@/components/ScrollRow';
 
 export interface OperaPageClientProps {
   shows: ShowCardShow[];
@@ -257,11 +258,11 @@ function OperaPageInner({ shows, totalShows, totalReviews }: OperaPageClientProp
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-base font-bold text-white">Coming Next Season</h2>
           </div>
-          <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
+          <ScrollRow>
             {upcomingShows.map((show) => (
               <MiniShowCard key={show.id} show={show} />
             ))}
-          </div>
+          </ScrollRow>
         </section>
       )}
 

@@ -22,6 +22,7 @@ import { ActiveFilterChips } from '@/components/filters/ActiveFilterChips';
 import { TYPE_GROUP, buildStatusGroup, STATUS_OPTIONS_BROADWAY, PANEL_PARAM_KEYS } from '@/components/filters/filter-ui-config';
 import { usePanelFilters } from '@/lib/hooks/usePanelFilters';
 import { getShowListEmptyState } from '@/lib/show-list-empty-state';
+import ScrollRow from '@/components/ScrollRow';
 
 export interface FeaturedRowData {
   title: string;
@@ -215,11 +216,11 @@ function FeaturedRow({ title, shows, viewAllHref, minCount = 4 }: { title: strin
           </Link>
         )}
       </div>
-      <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
+      <ScrollRow>
         {shows.map((show, index) => (
           <MiniShowCard key={show.id} show={show} />
         ))}
-      </div>
+      </ScrollRow>
     </section>
   );
 }
@@ -686,11 +687,11 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
               See all <ChevronRightIcon />
             </Link>
           </div>
-          <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
+          <ScrollRow>
             {bestRecentShows.map((show, index) => (
               <MiniShowCard key={show.id} show={show} priority={index < 4} />
             ))}
-          </div>
+          </ScrollRow>
         </section>
       )}
 

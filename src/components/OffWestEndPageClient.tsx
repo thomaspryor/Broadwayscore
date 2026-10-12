@@ -17,6 +17,7 @@ import { usePanelFilters } from '@/lib/hooks/usePanelFilters';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { getNextSort, getSortArrow, normalizeSort } from '@/lib/sort-toggle';
 import { getShowListEmptyState } from '@/lib/show-list-empty-state';
+import ScrollRow from '@/components/ScrollRow';
 
 // Serialized show data passed from server component
 export interface OffWestEndShow {
@@ -107,11 +108,11 @@ function FeaturedRow({ title, shows }: { title: string; shows: OffWestEndShow[] 
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-base font-bold text-white">{title}</h2>
       </div>
-      <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
+      <ScrollRow>
         {shows.map((show) => (
           <MiniShowCard key={show.id} show={show} />
         ))}
-      </div>
+      </ScrollRow>
     </section>
   );
 }
@@ -489,11 +490,11 @@ function OffWestEndPageInner({ shows, archiveHash, totalShows, totalReviews, mar
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-base font-bold text-white">Top Recent Shows</h2>
           </div>
-          <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
+          <ScrollRow>
             {topRecentShows.map((show, index) => (
               <MiniShowCard key={show.id} show={show} priority={index < 2} />
             ))}
-          </div>
+          </ScrollRow>
         </section>
       )}
 

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { getScoreColorClass, getScoreTier, getScoreTextColorClass } from '@/components/show-cards';
 import type { VideoReview } from '@/lib/data-video-reviews';
+import ScrollRow from '@/components/ScrollRow';
 
 function TikTokIcon() {
   return (
@@ -69,7 +70,7 @@ export default function VideoReviewsShelf({ reviews }: { reviews: VideoReview[] 
 
       {/* Horizontal shelf */}
       <div className="relative">
-        <div
+        <ScrollRow
           className="flex gap-3 overflow-x-auto pb-1 -mx-4 px-4 sm:-mx-5 sm:px-5 scrollbar-hide"
           aria-label="Video reviews"
           role="list"
@@ -138,7 +139,7 @@ export default function VideoReviewsShelf({ reviews }: { reviews: VideoReview[] 
             );
           })}
 
-        </div>
+        </ScrollRow>
       </div>
     </section>
   );

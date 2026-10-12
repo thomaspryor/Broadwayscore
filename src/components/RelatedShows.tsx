@@ -6,6 +6,7 @@ import { isOperaShow, OPERA_MARKET_LABEL } from '@/lib/show-market';
 import ShowImage from '@/components/ShowImage';
 import { ScoreBadge } from '@/components/show-cards';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
+import ScrollRow from '@/components/ScrollRow';
 
 export default function RelatedShows({ shows, title = 'You Might Also Like' }: { shows: ShowCardShow[]; title?: string }) {
   if (shows.length === 0) return null;
@@ -13,7 +14,7 @@ export default function RelatedShows({ shows, title = 'You Might Also Like' }: {
   return (
     <section className="mt-8 pt-6 border-t border-white/5">
       <h2 className="text-base font-bold text-white mb-3">{title}</h2>
-      <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
+      <ScrollRow>
         {shows.map((show) => (
           <Link
             key={show.id}
@@ -54,7 +55,7 @@ export default function RelatedShows({ shows, title = 'You Might Also Like' }: {
             </h3>
           </Link>
         ))}
-      </div>
+      </ScrollRow>
     </section>
   );
 }

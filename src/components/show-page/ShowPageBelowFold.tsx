@@ -45,6 +45,7 @@ import type { ShowRanks } from '@/lib/data-show-ranks';
 import type { BoxOfficeHistoryStats } from '@/lib/data-grosses-history';
 import type { ShowTonyInfo } from '@/lib/data-tony-noms';
 import type { TodayTixShowtimeData } from '@/lib/data-showtimes';
+import ScrollRow from '@/components/ScrollRow';
 
 // BRO-5007: unreleased. A separate chunk, fetched only when the card renders,
 // so the held feature's code and copy stay out of every show page's bundle.
@@ -513,7 +514,7 @@ export default function ShowPageBelowFold({
       {otherProductions.length > 0 && (
         <section className="mt-8 pt-6 border-t border-white/5">
           <h2 className="text-base font-bold text-white mb-3">Other Productions of {show.title}</h2>
-          <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
+          <ScrollRow>
             {otherProductions.map(prod => {
               const openYear = prod.openingDate ? new Date(prod.openingDate + 'T12:00:00').getFullYear() : null;
               const closeYear = prod.closingDate ? new Date(prod.closingDate + 'T12:00:00').getFullYear() : null;
@@ -532,7 +533,7 @@ export default function ShowPageBelowFold({
                 />
               );
             })}
-          </div>
+          </ScrollRow>
         </section>
       )}
 

@@ -80,6 +80,7 @@ Import: `import { ComponentName } from '@/components/show-cards'`
 | `ScoreBreakdownBar` | Horizontal bar showing rave/positive/mixed/negative distribution |
 | `ShowListCard` | Primary card for show listings (image + score + metadata) |
 | `MiniShowCard` | Compact card for shelves and grids |
+| `ScrollRow` (`@/components/ScrollRow`, not in show-cards) | Wrap every horizontal poster shelf in it: adds desktop prev/next arrows because `scrollbar-hide` leaves mouse users no cue. Never hand-roll a bare `overflow-x-auto scrollbar-hide` card row. |
 | `StatusBadge` | Open/Closed/Previews pill |
 | `FormatPill` | Musical/Play/Revival pill |
 | `ProductionPill` | Broadway/WE/OB pill |
