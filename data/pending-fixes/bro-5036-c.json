@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5036-c",
   "planId": "f2688508-d3a8-42b0-964c-da56b569f2e5",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-12T12:59:45.852Z",
   "submitter": {
     "name": null,
@@ -170,5 +170,58 @@
         "description": "little-women-the-musical-off-broadway-2026: never re-take those Google sources (BRO-5036)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T14:37:18.916Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-iceman-cometh-1973"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-iceman-cometh-1973"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for la-boheme-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for la-boheme-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for la-boheme-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for we-had-a-world-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for we-had-a-world-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for we-had-a-world-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for little-women-the-musical-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for little-women-the-musical-off-broadway-2026"
+    }
+  ]
 }
