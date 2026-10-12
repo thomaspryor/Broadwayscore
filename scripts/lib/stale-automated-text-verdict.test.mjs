@@ -315,3 +315,31 @@ test('BRO-4391: audit-autoclear-vs-ensemble does not restore from the pre-contex
 test('BRO-4391: the recheck stamp survives safeWriteReview (PROTECTED_FIELDS)', () => {
   assert.ok(PROTECTED_FIELDS.includes('productionVerdictRecheckedAt'));
 });
+
+test('BRO-5166: a refetch that brought back the rejected text keeps the verdict (both clear paths)', async () => {
+  const { rejectionTextFingerprint } = await import('./rescore-lifecycle.js').then((m) => m.default || m);
+  const { isRejectedTextUnchanged, staleAutomatedTextVerdicts } = await import('./stale-automated-text-verdict.js').then((m) => m.default || m);
+  // franz-and-marie-west-end-2026/timeout-london--unknown.json: a listing page
+  // rejected not_a_review, then cleared by every collector pass on identical text.
+  const same = staleRejection({ rejectionReason: 'not_a_review' });
+  same.rejectedTextHash = rejectionTextFingerprint(same);
+  assert.equal(isRejectedTextUnchanged(same), true);
+  assert.equal(clearAutomatedTextRejectionOnRefetch(same, '2026-10-12T00:00:00Z'), false);
+  assert.equal(same.rejectionReason, 'not_a_review');
+  assert.equal(same.needsRescore, undefined);
+  assert.deepEqual(staleAutomatedTextVerdicts(same), [], 'daily backstop leaves it too');
+
+  // New body: the verdict is about old text, so both paths clear as before.
+  const changed = staleRejection({ rejectionReason: 'not_a_review' });
+  changed.rejectedTextHash = rejectionTextFingerprint(changed);
+  changed.fullText = BODY + ' The review proper, now published.';
+  assert.equal(isRejectedTextUnchanged(changed), false);
+  assert.deepEqual(staleAutomatedTextVerdicts(changed), ['rejection']);
+  assert.equal(clearAutomatedTextRejectionOnRefetch(changed, '2026-10-12T00:00:00Z'), true);
+  assert.equal(changed.rejectionReason, null);
+
+  // No fingerprint (pre-BRO fingerprint rejections): unchanged behaviour, clears.
+  const legacy = staleRejection({ rejectionReason: 'not_a_review' });
+  assert.equal(isRejectedTextUnchanged(legacy), false);
+  assert.equal(clearAutomatedTextRejectionOnRefetch(legacy, '2026-10-12T00:00:00Z'), true);
+});
