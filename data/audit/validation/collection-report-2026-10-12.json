@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-10-12T23:11:03.299Z",
+  "runDate": "2026-10-12T23:19:45.863Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "the-devil-wears-prada-west-end-2024",
+    "showFilter": "relics-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -17,19 +17,19 @@
     "successRate": "66.7%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 2,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -38,18 +38,18 @@
     "tier1_9Success": 0,
     "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
     "tier4Attempts": 1,
-    "tier4Success": 1,
+    "tier4Success": 0,
     "totalFailed": 1,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -57,7 +57,7 @@
     "processed": 2,
     "failed": 1,
     "shows": [
-      "the-devil-wears-prada-west-end-2024"
+      "relics-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,36 +66,43 @@
     }
   },
   "processed": [
-    "the-devil-wears-prada-west-end-2024/variety--unknown.json",
-    "the-devil-wears-prada-west-end-2024/the-spectator-uk--unknown.json"
+    "relics-west-end-2026/liamodell--unknown.json",
+    "relics-west-end-2026/rhombus-rota--unknown.json"
   ],
   "failed": [
-    "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json"
+    "relics-west-end-2026/guardian--arifa-akbar.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "the-devil-wears-prada-west-end-2024/variety--unknown.json",
-      "the-devil-wears-prada-west-end-2024/the-spectator-uk--unknown.json"
+      "relics-west-end-2026/liamodell--unknown.json",
+      "relics-west-end-2026/rhombus-rota--unknown.json"
     ],
     "failed": [
-      "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json"
+      "relics-west-end-2026/guardian--arifa-akbar.json"
     ]
   },
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "relics-west-end-2026/liamodell--unknown.json",
+      "relics-west-end-2026/rhombus-rota--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
-    "brightdata": [
-      "the-devil-wears-prada-west-end-2024/variety--unknown.json"
-    ],
+    "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "the-devil-wears-prada-west-end-2024/the-spectator-uk--unknown.json"
-    ]
+    "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Guardian": {
+      "count": 1,
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
