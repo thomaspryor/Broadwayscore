@@ -39,6 +39,7 @@
 'use strict';
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { enforceLocalSendGuard } = require('./lib/local-send-guard');
 const { sleep, buildFromAddress, buildReplyToAddress } = require('./lib/email-templates');
 const { routeAlert, resolveCondition } = require('./lib/owner-alert-router');
 const db = require('./lib/supabase-service-rest');
@@ -47,7 +48,7 @@ const welcome = require('./lib/welcome-email');
 const USAGE = `send-welcome-emails.js — one-time welcome email for new accounts (BRO-4620).
 
 Usage:
-  node scripts/send-welcome-emails.js [--dry-run [--preview-since=ISO]] [--test-send]
+  node scripts/send-welcome-emails.js [--dry-run [--preview-since=ISO]] [--test-send] [--allow-local-send]
   node scripts/send-welcome-emails.js --help, -h    print this usage and exit
 `;
 
@@ -126,6 +127,8 @@ async function testSend() {
 
 async function main() {
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+  // BRO-791: outside CI only previews run unless --allow-local-send.
+  enforceLocalSendGuard('send-welcome-emails.yml', { previewFlags: ['--dry-run', '--test-send'] });
   if (process.argv.includes('--test-send')) { await testSend(); return; }
 
   const dryRun = process.argv.includes('--dry-run');

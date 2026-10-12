@@ -11,7 +11,8 @@
  * Delivery-safe: after sending, removes fully-delivered shows from the
  * digest so undelivered changes persist for the next run.
  *
- * Usage: node scripts/send-follow-notifications.js [--dry-run]
+ * Usage: node scripts/send-follow-notifications.js [--dry-run] [--allow-local-send]
+ *   A real send outside CI is refused unless --allow-local-send (BRO-791).
  *
  * Env: RESEND_API_KEY, DISCORD_WEBHOOK_ALERTS
  */
@@ -21,6 +22,7 @@ const path = require('path');
 const { sendAlert } = require('./lib/discord-notify');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { enforceLocalSendGuard } = require('./lib/local-send-guard');
 const { unfollowedShowIds, dropAgedChanges } = require('./lib/follow-digest-prune');
 const crypto = require('crypto');
 
@@ -95,6 +97,8 @@ function shouldNotify(changes) {
 async function main() {
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+  // BRO-791: a local real send races the cron (no shared lock on the checkpoint).
+  enforceLocalSendGuard('send-follow-notifications.yml', { previewFlags: ['--dry-run'] });
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
 
   if (!RESEND_API_KEY) {
