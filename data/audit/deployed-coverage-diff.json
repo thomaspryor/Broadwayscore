@@ -1,13 +1,48 @@
 {
-  "generatedAt": "2026-10-12T00:25:36.010Z",
+  "generatedAt": "2026-10-12T00:51:43.756Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 227,
-  "clean": 227,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 225,
+  "defective": 2,
+  "byType": {
+    "score-drift": 2
+  },
+  "shows": [
+    {
+      "showId": "rent-west-end-2026",
+      "title": "Rent",
+      "openingDate": "2026-10-08",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 78.42 vs local 78.77 (Δ0.35)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 30,
+      "deployedCount": 31,
+      "firstDefectAt": "2026-10-12T00:51:37.690Z"
+    },
+    {
+      "showId": "darkling-off-west-end-2026",
+      "title": "Darkling",
+      "openingDate": "2026-09-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 71.48 vs local 71.2 (Δ0.28)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 29,
+      "deployedCount": 30,
+      "firstDefectAt": "2026-10-12T00:51:37.690Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
