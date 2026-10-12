@@ -2,7 +2,7 @@
   "createdAt": "2026-10-12T08:50:40Z",
   "issueNumber": "bro-4190-g",
   "planId": "7a520f08-e449-4365-9b4a-c80771f18e91",
-  "status": "pending",
+  "status": "partial",
   "submitter": {
     "name": null,
     "email": null
@@ -23,5 +23,13 @@
         "description": "British Theatre Guide review by Howard Loxton; stored URL was a britishtheatre.com cast page"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T09:42:48.975Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "Review file not found: hercules-west-end-2025/british-theatre--howard-loxton.json"
+    }
+  ]
 }
