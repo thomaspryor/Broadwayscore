@@ -20,6 +20,13 @@ test('tour: NYC-run URLs (dated before the tour, or verdict names the earlier ru
   assert.equal(r.totalBlackout, false);
 });
 
+// BRO-5115: ordinal dates ("October 17th, 2023") are NaN to Date.parse; toDateMs reads them.
+test('tour: an ordinal-dated pre-tour URL is still recognized as the earlier run', () => {
+  const r = assessShow(tour, files(wp('anticipatory', { publishDate: 'October 17th, 2023' })), { nowMs });
+  assert.equal(r.discovered, 0);
+  assert.equal(r.totalBlackout, false);
+});
+
 test('tour: bare LLM wrongProduction on local reviews still pages (and-juliet / mrs-doubtfire shape)', () => {
   const r = assessShow(tour, files(
     wp('Collector LLM: wrong production (high) — different cast', { publishDate: '2025-02-01' }),
