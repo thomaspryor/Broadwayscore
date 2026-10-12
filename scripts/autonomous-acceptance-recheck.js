@@ -38,7 +38,6 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const { execFileSync } = require('child_process');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const ledger = require('./lib/autonomous-ledger.js');
@@ -48,10 +47,9 @@ const { CHECK_TIMEOUT_MS } = require('./lib/autonomous-checks.js');
 // ONE implementation of "check out origin/main and run the card's command",
 // shared with notion-brain.js's close-time verify (task #1003, CLAUDE.md §15).
 const { makeFreshCheckout: freshCheckout, removeCheckout, runVerify } = require('./lib/acceptance-check-core.js');
-const { selectRecheckTargets, summarize, describeResult, shouldExitShadow, SHADOW_EXIT, DEFAULT_WINDOW_HOURS, needsOverflowHydration } = require('./lib/autonomous-recheck-core.js');
-// Linear candidate source (BRO-3373) — see that module's header for why this
-// exists: notion-brain.js alone can no longer see every card that promised a
-// recheck, since the Notion mirror froze 2026-08-20 (CLAUDE.md §6).
+const { selectRecheckTargets, summarize, describeResult, shouldExitShadow, SHADOW_EXIT, DEFAULT_WINDOW_HOURS } = require('./lib/autonomous-recheck-core.js');
+// Linear candidate source (BRO-3373), the only source since BRO-3488 removed
+// the frozen Notion mirror's leg (mirror froze 2026-08-20, CLAUDE.md §6).
 const { fetchLinearRecheckCandidates } = require('./lib/linear-recheck-source.js');
 
 const REPO = path.join(__dirname, '..');
@@ -108,59 +106,6 @@ function parseArgs(argv) {
     else { a[k] = n; i++; }
   }
   return a;
-}
-
-function notionBrain(args) {
-  const out = execFileSync('node', [path.join(__dirname, 'notion-brain.js'), ...args], {
-    cwd: REPO, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], env: process.env,
-  });
-  return JSON.parse(out);
-}
-
-// ── Un-truncating the candidates (2026-08-14) ──────────────────────────────
-//
-// `list --include-notes` hands back the RAW Notion property, and notion-brain
-// caps a property at 1800 chars: past that it stores a preview and puts the
-// tail in the page body. `## Acceptance criteria` is written last on this
-// repo's cards, so it is the first thing to fall off — 14 of the 18
-// RECHECK-AFTER-stamped cards on the live board were truncated, their
-// criteria invisible, and every one of them was dropped as "no runnable
-// command" by a recheck that had simply never seen the command.
-//
-// Fixed on THIS side rather than by teaching `list` to stitch, deliberately:
-// `get` (notion-brain's loadCard) is already the ONE canonical un-truncation
-// path — readFieldWithOverflow, one implementation, used by `get` and by
-// audit-card-verifiability.js with this same comment ("every card needs its
-// own `get` to see the acceptance-criteria body"). Stitching inside `list`
-// would add a second place that knows how, and would cost a page-body fetch
-// for EVERY long card in the listing (128 of 200 Done+Paused rows carry the
-// marker) on every nightly run. Hydrating here is bounded to the cards that
-// actually promise a recheck: 14 today, and only because the stamp itself
-// survives truncation (notion-brain hoists it to the front on write), so a
-// stamped card is still recognisable from its preview.
-//
-// Best-effort per card, never fatal — same posture as
-// audit-card-verifiability.js's fetchCard: a Notion blip on one card leaves
-// that card truncated (exactly as bad as before, no worse) instead of
-// sinking the whole night's run.
-function hydrateOverflowCards(cards, label) {
-  const needy = (cards || []).filter(needsOverflowHydration);
-  if (!needy.length) return { cards, hydrated: 0, failed: 0 };
-  let hydrated = 0;
-  let failed = 0;
-  const byId = new Map();
-  for (const card of needy) {
-    try {
-      const full = notionBrain(['get', card.id]);
-      byId.set(card.id, { ...card, notes: full.notes, outcome: full.outcome });
-      hydrated++;
-    } catch (err) {
-      console.error(`[recheck] WARN could not re-read ${label} card ${card.id} for its full notes: ${String(err.message).slice(0, 160)}`);
-      failed++;
-    }
-  }
-  console.error(`[recheck] re-read ${hydrated}/${needy.length} truncated ${label} card(s) through \`get\` to recover their acceptance criteria${failed ? ` (${failed} failed)` : ''}`);
-  return { cards: (cards || []).map(c => byId.get(c.id) || c), hydrated, failed };
 }
 
 // Same shared-task snapshot the triage pass uses for its claim-visibility
@@ -254,121 +199,44 @@ async function main(argv = process.argv.slice(2)) {
   }
   const timeBudgetMinLabel = Math.round(timeBudgetMs / 60000);
 
-  // 100 = Notion's page cap, PER STATUS. Originally one combined
-  // `--status Done,Paused` call shared a single 100-card page across both
-  // statuses — Done's daily churn (routinely 80-90+ edits/day on this brain)
-  // crowded Paused cards out of the page entirely. Found 2026-08-07 (card
-  // #1121): the combined page held 89 Done + 11 Paused, so 6 of 7 genuinely
-  // stuck Paused P0/P1 cards (overdue RECHECK-AFTER stamps) were invisible to
-  // this recheck every single night, no matter how starved they were —
-  // selectRecheckTargets' starvation guard only reorders candidates that
-  // already made it into the page. Querying each status separately gives
-  // Paused its own full page (the brain runs ~30-40 Paused cards total, far
-  // under 100), decoupled from however many cards close today.
-  const DONE_LIST_LIMIT = 100;
-  const PAUSED_LIST_LIMIT = 100;
-  let doneCards = [];
+  // BRO-3488: Linear is the only candidate source. The Notion leg (Done +
+  // Paused listings through notion-brain.js, plus overflow re-reads) was
+  // removed: the Notion mirror froze 2026-08-20 (CLAUDE.md section 6), so it
+  // could only ever re-surface stale frozen cards, and it kept a live
+  // schedule (data-health-check.yml) coupled to the retired board.
+  // `doneCards` stays as an (empty) bucket so selectRecheckTargets' Done vs
+  // Paused budget split is unchanged; every Linear candidate is the
+  // "awaiting a promised recheck" class the Paused-reserved half protects.
+  const doneCards = [];
   let pausedCards = [];
-  // --sort edited: most-recently-touched cards first. The default Priority
-  // sort returns the highest-priority cards EVER, so the cards completed
-  // last night were never in the page (2026-07-26 root cause). Paused is
-  // included alongside Done (task #695): a deferred-effect fix per /wrap-up's
-  // process rule sits in Paused with a RECHECK-AFTER stamp until its own
-  // stamp is due — selectRecheckTargets/doneWithinWindow refuse every Paused
-  // card that lacks that stamp, so this widening never pulls in ordinary
-  // paused backlog work.
-  // Independent try/catch per status (ship-check finding, 2026-08-07): a
-  // shared try/catch around both calls meant a transient failure fetching
-  // Paused would discard an already-successful Done fetch (and vice versa),
-  // silently reintroducing the crowding-out failure this split exists to fix
-  // on any night one of the two calls has a blip.
-  let doneErr = null;
-  let pausedErr = null;
-  try { doneCards = notionBrain(['list', '--status', 'Done', '--limit', String(DONE_LIST_LIMIT), '--sort', 'edited', '--include-notes']); }
-  catch (err) { doneErr = err; }
-  try { pausedCards = notionBrain(['list', '--status', 'Paused', '--limit', String(PAUSED_LIST_LIMIT), '--sort', 'edited', '--include-notes']); }
-  catch (err) { pausedErr = err; }
-
-  // Linear candidates (BRO-3373) — fetched HERE, before the "both Notion
-  // listings failed" bail-out below, deliberately: an earlier draft fetched
-  // Linear only after that bail-out, so a Notion outage would return early
-  // and skip Linear too — leaving the recheck fully blind on exactly the
-  // night Linear (the actual source of truth, CLAUDE.md §6) is all it has
-  // left to check (ship-check finding, Codex). fetchLinearRecheckCandidates
-  // never throws, so this try/catch is only a backstop for a genuinely
-  // unexpected bug in this call, not the expected failure paths (auth,
+  // fetchLinearRecheckCandidates never throws; this try/catch is a backstop
+  // for a genuinely unexpected bug, not the expected failure paths (auth,
   // network, timeout), which it reports via the returned `error` field.
-  let linearCards = [];
   try {
     const linearResult = await fetchLinearRecheckCandidates();
-    linearCards = linearResult.cards;
+    pausedCards = linearResult.cards;
     if (linearResult.error) {
       console.error(`[recheck] Linear candidate fetch failed: ${linearResult.error}`);
       if (!dryRun) ledger.appendEntry({ event: 'recheck-skip', runId, note: `Linear listing failed: ${linearResult.error}` }, RECHECK_LEDGER_PATH);
-    } else if (linearResult.truncated) {
-      // Same posture as the Notion DONE_LIST_LIMIT/PAUSED_LIST_LIMIT
-      // truncation warnings below: a fetch that silently stops growing is
-      // exactly BRO-3373's own failure shape, so it is reported, never
-      // swallowed.
+      return;
+    }
+    if (linearResult.truncated) {
+      // A fetch that silently stops growing is exactly BRO-3373's own
+      // failure shape, so it is reported, never swallowed.
       console.error('[recheck] WARN the Linear listing was truncated (page/deadline cap) — some candidates may be missing');
       if (!dryRun) ledger.appendEntry({ event: 'recheck-truncated', runId, note: 'Linear listing hit its page/deadline cap; coverage may be incomplete' }, RECHECK_LEDGER_PATH);
     }
   } catch (err) {
     console.error(`[recheck] could not list Linear candidates: ${String(err.message).slice(0, 200)}`);
     if (!dryRun) ledger.appendEntry({ event: 'recheck-skip', runId, note: `Linear listing failed: ${String(err.message).slice(0, 200)}` }, RECHECK_LEDGER_PATH);
-  }
-  if (linearCards.length) console.error(`[recheck] ${linearCards.length} Linear issue(s) fetched as recheck candidates`);
-
-  if (doneErr && pausedErr && !linearCards.length) {
-    console.error(`[recheck] could not list Done or Paused cards, and no Linear candidates were found either: ${String(doneErr.message).slice(0, 200)}`);
-    if (!dryRun) ledger.appendEntry({ event: 'recheck-skip', runId, note: `Notion listing failed for both statuses, no Linear candidates: ${String(doneErr.message).slice(0, 200)}` }, RECHECK_LEDGER_PATH);
     return;
   }
-  if (doneErr) {
-    console.error(`[recheck] could not list Done cards, proceeding with Paused only: ${String(doneErr.message).slice(0, 200)}`);
-    if (!dryRun) ledger.appendEntry({ event: 'recheck-skip', runId, note: `Done listing failed, Paused still checked: ${String(doneErr.message).slice(0, 200)}` }, RECHECK_LEDGER_PATH);
-  }
-  if (pausedErr) {
-    console.error(`[recheck] could not list Paused cards, proceeding with Done only: ${String(pausedErr.message).slice(0, 200)}`);
-    if (!dryRun) ledger.appendEntry({ event: 'recheck-skip', runId, note: `Paused listing failed, Done still checked: ${String(pausedErr.message).slice(0, 200)}` }, RECHECK_LEDGER_PATH);
-  }
+  console.error(`[recheck] ${pausedCards.length} Linear issue(s) fetched as recheck candidates`);
 
   const cfg = (() => { try { return JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8')); } catch { return {}; } })();
   const enforcement = enforcementState(cfg, ledger.readEntries(RECHECK_LEDGER_PATH).entries || []);
   if (enforcement.requested && !enforcement.enforcing) console.error(`[recheck] ${enforcement.reason}`);
   if (enforcement.enforcing) console.error('[recheck] enforcement is ON — failures will still only be REPORTED until the reopen path ships (carry-forward)');
-
-  // A full page means there may be cards we never saw — say so instead of
-  // reporting "nothing to re-check" from a truncated list (ship-check finding).
-  // `if (!dryRun)` on both appends (2026-08-14): --dry-run documents itself as
-  // "plan only — no checks run, no ledger write", and every OTHER append in
-  // this function already honours that — these two did not. Caught live while
-  // dry-running this fix: four recheck-truncated rows landed in the CI-owned
-  // ledger from planning runs that were supposed to write nothing, which is
-  // both a dirty working tree for whoever runs it from a worktree and false
-  // telemetry (a "coverage may be incomplete" row for a run that never ran).
-  if (doneCards.length >= DONE_LIST_LIMIT) {
-    console.error(`[recheck] WARN the Done listing came back full (${DONE_LIST_LIMIT}) — older Done cards in the window may have been cut off`);
-    if (!dryRun) ledger.appendEntry({ event: 'recheck-truncated', runId, note: `Done listing hit the ${DONE_LIST_LIMIT}-card limit; coverage may be incomplete` }, RECHECK_LEDGER_PATH);
-  }
-  if (pausedCards.length >= PAUSED_LIST_LIMIT) {
-    console.error(`[recheck] WARN the Paused listing came back full (${PAUSED_LIST_LIMIT}) — older Paused cards in the window may have been cut off`);
-    if (!dryRun) ledger.appendEntry({ event: 'recheck-truncated', runId, note: `Paused listing hit the ${PAUSED_LIST_LIMIT}-card limit; coverage may be incomplete` }, RECHECK_LEDGER_PATH);
-  }
-  // Recover the acceptance criteria that Notion's 1800-char property cap cut
-  // off, BEFORE anything judges these cards on their notes.
-  doneCards = hydrateOverflowCards(doneCards, 'Done').cards;
-  pausedCards = hydrateOverflowCards(pausedCards, 'Paused').cards;
-
-  // Linear candidates were already fetched above (before the Notion
-  // both-failed bail-out). Folded into the SAME `pausedCards` bucket rather
-  // than kept separate: doneWithinWindow decides eligibility per-card off
-  // the card's own fields (a RECHECK-AFTER stamp, or status==='Done' + a
-  // completion stamp), not off which array it arrived in, and every Linear
-  // card this fetch returns is exactly the "awaiting a promised recheck"
-  // class the Paused-reserved half of tonight's budget already exists to
-  // protect from being crowded out by Done churn.
-  pausedCards = [...pausedCards, ...linearCards];
 
   const taskState = loadSharedTaskState();
   // Starvation guard (ship-check finding): a permanently-due RECHECK-AFTER
@@ -419,8 +287,7 @@ async function main(argv = process.argv.slice(2)) {
   const targets = [];
   for (const t of [...pausedTargets.slice(0, pausedShare), ...doneTargets]) {
     if (targets.length >= limit) break;
-    // A card could theoretically transition Done<->Paused between the two
-    // sequential Notion calls above and land in both lists — dedupe by id.
+    // Defensive: never run the same card twice if it appears in both buckets.
     if (seen.has(t.cardId)) continue;
     seen.add(t.cardId);
     targets.push(t);

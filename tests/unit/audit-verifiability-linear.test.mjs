@@ -53,12 +53,11 @@ test('main() never references a loop-scoped variable outside its loop (CI step-s
   execFileSync('node', ['--check', new URL('../../scripts/audit-card-verifiability.js', import.meta.url).pathname]);
 });
 
-test('workflow pins an explicit --source on every audit call (notion, plus the daily linear leg) so CI never depends on the bare default', async () => {
+test('workflow pins --source linear on every audit/enrich call and never audits the frozen Notion mirror (BRO-3488)', async () => {
   const { readFileSync } = await import('node:fs');
   const wf = readFileSync(new URL('../../.github/workflows/card-verifiability-audit.yml', import.meta.url), 'utf8');
-  const calls = wf.split('\n').filter(l => /node scripts\/audit-card-verifiability\.js/.test(l) && !l.trim().startsWith('#'));
-  assert.ok(calls.length >= 3);
-  for (const l of calls) assert.match(l, /--source (notion|linear)\b/);
-  assert.ok(calls.filter(l => /--source notion/.test(l)).length >= 2, 'the Notion audit/re-audit pair stays');
-  assert.ok(calls.some(l => /--source linear/.test(l)), 'BRO-3619: the Linear report is refreshed on the same schedule');
+  const calls = wf.split('\n').filter(l => /node scripts\/(audit-card-verifiability|enrich-card-acceptance)\.js/.test(l) && !l.trim().startsWith('#'));
+  assert.ok(calls.length >= 3, `expected the enrich pair + the Linear audit, got ${calls.length}`);
+  for (const l of calls) assert.match(l, /--source linear\b/, `every scheduled call must pin --source linear: ${l.trim()}`);
+  assert.ok(calls.some(l => /audit-card-verifiability\.js/.test(l)), 'BRO-3619: the Linear report is refreshed on the same schedule');
 });

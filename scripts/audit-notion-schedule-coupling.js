@@ -98,6 +98,12 @@ const NOTION_COUPLING_ALLOWLIST = {
   'scripts/linear-drain-parked.js': "Linear's own parked-card drain — same cross-board collision-guard reasoning as linear-next.js",
   'scripts/bsc-prune.js': 'legacy-mirror housekeeping (parks straggler Notion cards) — already carries the BRO-3431 fix that also parks the Linear twin when one exists',
   'scripts/bsc-reconcile.js': 'legacy-mirror housekeeping/reconciliation of straggler Notion cards, not dispatch of current work from them',
+  // BRO-3488 triage of the last 5 findings (2026-10-12). autonomous-acceptance-recheck.js was a real
+  // frozen-mirror read and was migrated (its Notion leg deleted, Linear-only); these are the intentional rest.
+  'scripts/freeze-ledgers.js': 'check-arm-yield.js and health-check.js import it only for the pure isLedgerFrozenNow/freezeSkipMessage/FROZEN_LEDGERS predicates; its notion-brain.js calls live in the manual freeze/list-self-referential/close-safe-duplicates CLI subcommands, which no workflow or schedule runs',
+  'scripts/audit-card-verifiability.js': 'Notion leg is opt-in (--source notion/all); its only scheduled caller, card-verifiability-audit.yml, passes --source linear since BRO-3488 dropped the frozen-mirror audit runs',
+  'scripts/enrich-card-acceptance.js': 'Notion leg is opt-in (--source notion/both); card-verifiability-audit.yml passes --source linear on both scheduled calls (BRO-3018/BRO-3488), so the schedule never reaches notion-brain.js',
+  'scripts/health-check.js': 'its one mirror read, checkDispatchOutcomes -> loadTasksUnioned, returns before reading when data/audit/dispatch-ledger.jsonl is absent, and that ledger is gitignored, so data-health-check.yml never reaches it; the TASKS_DIR hit rides in via lib/autofix-canary.js, of which health-check uses only the pure assessCanaryRow/assessThroughputRow (the mirror-reading runAutofixCanary is called by send-morning-digest.js). Retired Notion report row removed in BRO-4717',
   'scripts/audit-notion-schedule-coupling.js': 'is this detector itself — its own COUPLING_SIGNALS regexes and this allowlist\'s comments literally contain the 4 signal strings as pattern definitions, which self-matches once data-health-check.yml (its own host workflow) is correctly recognized as scheduled',
 };
 
