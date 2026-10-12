@@ -29,7 +29,14 @@ const { foldDiacritics } = require('../lib/title-match');
 const { extractPublishDate } = require('../lib/article-extractor');
 
 const ROOT = path.resolve(__dirname, '..', '..');
-const args = Object.fromEntries(process.argv.slice(2).map(a => a.replace(/^--/, '').split('=')));
+/** --k=v -> {k: 'v'}; a bare --flag -> {flag: true} (it used to parse as undefined). Pure. */
+function parseArgs(argv) {
+  return Object.fromEntries(argv.map(a => {
+    const [k, ...rest] = a.replace(/^--/, '').split('=');
+    return [k, rest.length ? rest.join('=') : true];
+  }));
+}
+const args = parseArgs(process.argv.slice(2));
 const CACHE = process.env.FACTCHECK_CACHE || path.join(os.tmpdir(), 'review-factcheck');
 const CONC = Number(args.concurrency || 8);
 const LIMIT = Number(args.limit || 0);
@@ -240,4 +247,4 @@ async function main() {
   if (args.fetcher === 'fetchpage') { try { await require('../lib/scraper').cleanup(); } catch { /* best effort */ } }
 }
 if (require.main === module) main().then(() => process.exit(0), (e) => { console.error(e); process.exit(1); });
-module.exports = { pageBylines, compareByline, normName, pageIsAboutShow, judgeDate, mergeRecheck, alreadyTriedByFetchPage, unreadVerdict };
+module.exports = { pageBylines, compareByline, normName, pageIsAboutShow, judgeDate, mergeRecheck, alreadyTriedByFetchPage, unreadVerdict, parseArgs };

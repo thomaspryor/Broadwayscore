@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { mergeRecheck, alreadyTriedByFetchPage, unreadVerdict, judgeDate } = require('../../scripts/review-factcheck/sweep-web-search-bylines.js');
+const { mergeRecheck, alreadyTriedByFetchPage, unreadVerdict, judgeDate, parseArgs } = require('../../scripts/review-factcheck/sweep-web-search-bylines.js');
 const { textTargets, FORCE_TEXT, planLedger, pageNamesShow } = require('../../scripts/review-factcheck/make-byline-fix-plans.js');
 const { parseReviewFilter, matchesReviewFilter, isForcedRefetch, shouldRescoreForcedReplacement } = require('../../scripts/lib/review-filter.js');
 
@@ -124,4 +124,9 @@ test('plans only use rows whose page title names the show (first-pass rows carri
   assert.equal(pageNamesShow({ ...mermaid, showTitle: 'The Little Mermaid', pageTitle: '' }), false);
   assert.equal(pageNamesShow({ ...mermaid, showTitle: 'Cats', pageTitle: 'Review: Does ‘Cats’ Have Nine Lives on Broadway? Two, Certainly - The New York Times' }), true);
   assert.equal(pageNamesShow({ ...mermaid, showTitle: 'American Buffalo', pageTitle: 'Met Gala 2022: best looks' }), false);
+});
+
+test('a bare --retry-fetched flag is true (retry run 38245561879 fetched 0 rows)', () => {
+  assert.deepEqual(parseArgs(['--fetcher=fetchpage', '--retry-fetched', '--recheck=unreachable', '--limit=0']),
+    { fetcher: 'fetchpage', 'retry-fetched': true, recheck: 'unreachable', limit: '0' });
 });
