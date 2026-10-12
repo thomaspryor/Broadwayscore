@@ -1696,5 +1696,35 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-12T06:01:22.391Z"
+  },
+  {
+    "conditionKey": "land:land/bro-3598-exclusion-visibility",
+    "title": "Landing blocked: lint-workflows red on land/bro-3598-exclusion-visibility",
+    "description": "land.yml did not land land/bro-3598-exclusion-visibility: the lint-workflows gate went red at fafb5a4df1. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38208663957",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-3598-exclusion-visibility"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "fafb5a4df11703c0af4a3524d361754347873877"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38208663957"
+      }
+    ],
+    "queuedAt": "2026-10-12T06:13:08.784Z"
   }
 ]
