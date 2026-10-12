@@ -1665,5 +1665,59 @@
       }
     ],
     "queuedAt": "2026-10-12T19:21:01.834Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Test Suite",
+    "title": "Cron's latest run failed (not yet stale): Test Suite",
+    "description": "Test Suite: Latest run failed (last success 1h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38305820112",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/38305820112)"
+      }
+    ],
+    "queuedAt": "2026-10-12T20:42:23.461Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Collect WE/OB Reviews",
+    "title": "Cron's latest run failed (not yet stale): Collect WE/OB Reviews",
+    "description": "Collect WE/OB Reviews: Latest run failed (last success 28h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38305820112",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/38305820112)"
+      }
+    ],
+    "queuedAt": "2026-10-12T20:42:23.472Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Weekly Video Reviews",
+    "title": "Cron's latest run failed (not yet stale): Weekly Video Reviews",
+    "description": "Weekly Video Reviews: Latest run failed (last success 164h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38305820112",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/38305820112)"
+      }
+    ],
+    "queuedAt": "2026-10-12T20:42:23.479Z"
   }
 ]
