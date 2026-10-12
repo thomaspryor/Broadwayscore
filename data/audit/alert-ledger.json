@@ -152,7 +152,7 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -164,7 +164,8 @@
       "notifyCount": 134,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-10-12T16:22:11.196Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -4640,7 +4641,7 @@
       "resolveReason": "stale-signature"
     },
     "test-yml:red:Unit Tests:eb9a92ac": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every scripts/ root file with the shred signature and no fold is in the frozen baseline\"",
       "firstSeen": "2026-09-23T04:33:50.096Z",
@@ -4652,7 +4653,9 @@
       "cardId": null,
       "linearIdentifier": "BRO-4063",
       "absentRunIds": [],
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-10-12T16:22:11.023Z",
+      "resolveReason": "job-green"
     },
     "land:land/worktree-bro-3873-c-old": {
       "status": "resolved",
