@@ -257,6 +257,7 @@ const { auditExitDecision } = require('./lib/aggregator-gap-audit-exit');
 // (task #1073): registrableHost/hostOf moved there VERBATIM so the canonical
 // classifyReviewUrl and this audit share one implementation.
 const { classifyReviewUrl, classifyGapCandidateUrl, registrableHost, hostOf } = require('./lib/non-review-url-patterns');
+const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
 const { parseHistoricalDate } = require('./lib/date-utils');
 
 // provisionalOutletIdFromHost lives in scripts/lib/outlet-canonicalize.js so the
@@ -1077,6 +1078,19 @@ async function auditShow(show, opts = {}) {
     }
   }
 
+  // BRO-5133: honor the show's _blocklist.json, the list ingest-review-from-url.js
+  // and gather-reviews.js already refuse. Without it an operator-blocked URL (a
+  // wrong-production review, a news item) stayed "missing" and re-alerted forever.
+  // Dropped before aggregatorListedUrls so the census can't count it as covered.
+  {
+    const blocklist = loadBlocklist(path.join(REVIEW_TEXTS_DIR, show.id));
+    for (const u of [...aggUrls]) {
+      if (!findBlockedEntry(blocklist, u)) continue;
+      aggUrls.delete(u);
+      candidateRejections.count++;
+      candidateRejections.byReason['show-blocklist'] = (candidateRejections.byReason['show-blocklist'] || 0) + 1;
+    }
+  }
   result.aggregatorListedUrls = [...aggUrls];
   if (aggUrls.size === 0 && weRefNoUrlRows.length === 0) {
     tallyRejections(result, rejStartCount, rejStartByReason);
@@ -1556,9 +1570,23 @@ function ingestMissingUrl(showId, url, knownOutletId) {
 // gapped by anything computed before the ingest step ran (ship-check finding,
 // BRO-3928: the first draft of the opening-window digest below snapshotted
 // this BEFORE ingestion).
-function currentRunUncollected(r) {
+// BRO-5133: the opening-window alert reads every row on file, including rows
+// carried forward from runs that predate today's candidate gate. A starved show
+// (not re-audited for days) kept re-alerting on URLs the gate now rejects (Show
+// Score pages, podcasts) — 15 repeats on Lost in Del Valle / Midnight. Re-apply
+// the current gate and the show's blocklist at read time so a stale row can
+// never alert on a URL a fresh audit would drop.
+function stillCollectable(m, blocklist) {
+  if (!m || !m.url) return true;
+  if (!classifyGapCandidateUrl(m.url).ok) return false;
+  return !findBlockedEntry(blocklist, m.url);
+}
+
+function currentRunUncollected(r, { blocklist } = {}) {
   const ingestedOk = new Set((r.ingestResults || []).filter(x => x.ok).map(x => x.url));
-  const missing = currentRunOnly(r.missing).filter(m => !ingestedOk.has(m.url)).length;
+  const bl = blocklist !== undefined ? blocklist : loadBlocklist(path.join(REVIEW_TEXTS_DIR, r.showId || ''));
+  const missing = currentRunOnly(r.missing)
+    .filter(m => !ingestedOk.has(m.url) && stillCollectable(m, bl)).length;
   const citedNoUrl = currentRunCount(r.citedNoUrl);
   return missing + citedNoUrl;
 }
@@ -2090,6 +2118,17 @@ async function main(argv = process.argv.slice(2)) {
         r.unextractable = [...(r.unextractable || []), ...newlyTerminal];
         // One visible line per URL at the moment it goes terminal: it drops out of every gap count after this.
         for (const u of newlyTerminal) console.log(`::warning::review gap — ${r.showId}: ${u.url} extracted 0 chars on ${u.zeroCharAttempts} runs over 24h+; no longer retried (may be a non-review page, a paywall or a missing extractor pattern). Retried once after 30 days.`);
+      }
+      // BRO-5133: the checkpoint `uncollected` was stamped before this ingest
+      // pass; recount it the way the opening-window alert does (nets this
+      // run's successful ingests, re-gates urls) so auditTier and the
+      // newsletter gate don't keep a just-closed gap at > 0 for another cycle.
+      if (useCheckpoint && r.ingestResults.length && checkpoint[s.id]) {
+        const recount = currentRunUncollected(r);
+        if (recount !== checkpoint[s.id].uncollected) {
+          checkpoint[s.id] = { ...checkpoint[s.id], uncollected: recount };
+          saveCheckpointEntries(CHECKPOINT_PATH, { [s.id]: checkpoint[s.id] });
+        }
       }
       if (cappedSkipped.length > 0) {
         console.log(`  ⏸  skipped ${cappedSkipped.length} URL(s) over per-show cap (--ingest-cap=${INGEST_PER_SHOW_CAP}) — recorded in audit JSON for next run`);

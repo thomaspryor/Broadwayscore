@@ -96,6 +96,10 @@ const ALLOWED_SCRIPTS = [
   // BRO-4947: move review files from a wrong or duplicate outlet id to the canonical one
   // (rules are code, in scripts/lib/outlet-id-migrations.js; conflicts are left in place).
   'migrate-outlet-ids.js',
+  // BRO-5133: add a URL to a show's _blocklist.json (a wrong-production review or
+  // a news item an aggregator cites) so ingest and the gap audit both skip it.
+  // execSync splits args on spaces: pass --reason without spaces.
+  'block-review.js',
   // BRO-3139: refetch londontheatre.co.uk review pages once and store the critic's stars
   // (--limit chunks it inside the 5-minute run-script cap; it skips files already done).
   'backfill-london-theatre-stars.js',
