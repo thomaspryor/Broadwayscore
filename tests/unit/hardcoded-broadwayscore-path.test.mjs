@@ -3,6 +3,8 @@
 // MAIN_REPO_ROOT. A bare literal does not exist on CI runners or cloud
 // containers, and scripts that mkdir -p'd under it left a stray partial tree
 // that fooled the old existsSync() check (15 red dispatcher tests in cloud).
+// Shell scripts are out of scope on purpose: the ones carrying the literal are
+// Mac launchd jobs (local-triggers, autonomous-nightly) that only run there.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
