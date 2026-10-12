@@ -42,4 +42,20 @@ function selectShowsToFetch(shows, { onlyMissing = false, includeClosed = false,
   return { shows: out, skippedNoArt };
 }
 
-module.exports = { selectShowsToFetch };
+/**
+ * May this row take art from the TodayTix catalogue API? The API lists only
+ * productions on sale now, so for a row that closed long ago a title match is
+ * by definition another production (BRO-5080 sample: Hairspray 2002 got the
+ * 2021 London Coliseum art, Bonnie & Clyde 2011 the 2023 Garrick art, Lennon
+ * 2005 a tribute concert). Running, upcoming and recently closed rows only.
+ */
+const TODAYTIX_RECENT_CLOSE_DAYS = 120;
+function todaytixApiArtEligible(show, now = Date.now()) {
+  if (!show) return false;
+  if (show.status !== 'closed') return true;
+  const closed = Date.parse(show.closingDate || '');
+  if (Number.isNaN(closed)) return false;
+  return now - closed <= TODAYTIX_RECENT_CLOSE_DAYS * 86400000;
+}
+
+module.exports = { selectShowsToFetch, todaytixApiArtEligible, TODAYTIX_RECENT_CLOSE_DAYS };

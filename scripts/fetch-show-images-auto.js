@@ -36,7 +36,7 @@ const { getMarketSearchKeyword } = require('./lib/market-label');
 const { todaytixMarket, todaytixSearchUrl, extractTodaytixShowLink, todaytixSerpQuery, todaytixShowUrl } = require('./lib/todaytix-market');
 const { pickMezzanineCandidate, theatrEligible, isRejectedImage, thumbnailFallbackAction, ibdbEligible, venuesMatch, buildVenueCityIndex, keepExistingImage, fileSourceUrls, recordFileSources, recordedSourceFor, imagePathOwner } = require('./lib/image-source-match');
 const { isStrictGoogleShow, noArtOutcome, buildNoReliableArtMarker } = require('./lib/no-reliable-art');
-const { selectShowsToFetch } = require('./lib/image-fetch-selection');
+const { selectShowsToFetch, todaytixApiArtEligible } = require('./lib/image-fetch-selection');
 const { loadImageSources, saveImageSources } = require('./lib/image-sources-store');
 const { buildSourceIndex, addToSourceIndex, sourceConflict, stripConflictingSources, showScoreArtEligible, todaytixIdOwner, isOwnSiteSource, isShoppingSource } = require('./lib/shared-image-source');
 const { findOtherSameTitleProduction } = require('./lib/canon-poster-art');
@@ -1000,7 +1000,10 @@ async function fetchAllTodayTixShows() {
 // `market` ('nyc' | 'london', from todaytixMarket(show)) restricts title
 // matching to that city's active shows (BRO-4401); without it the combined
 // map's last-write-wins order handed a Broadway show its London twin's id.
-function matchTodayTixShow(showTitle, apiLookup, todaytixId, market) {
+function matchTodayTixShow(showTitle, apiLookup, todaytixId, market, show) {
+  // BRO-5080: the catalogue only holds productions on sale now; a long-closed
+  // row's title match is another production's art.
+  if (show && !todaytixApiArtEligible(show)) return null;
   if (!apiLookup || Object.keys(apiLookup).length === 0) return null;
 
   // 0. Direct ID match (most reliable — handles cross-market title collisions like "Hamilton")
@@ -2522,7 +2525,7 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
   if (!skipTodayTix) {
     // Try matching against TodayTix API data (instant, no HTTP call)
     const market = todaytixMarket(show);
-    apiData = matchTodayTixShow(show.title, apiLookup, show.todaytixId, market);
+    apiData = matchTodayTixShow(show.title, apiLookup, show.todaytixId, market, show);
 
     // Cache API-discovered TodayTix ID
     if (apiData && apiData.id) {
@@ -2644,7 +2647,7 @@ async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImages
   const apiShows = [];
   const scrapeShows = [];
   for (const show of shows) {
-    const apiData = matchTodayTixShow(show.title, apiLookup, show.todaytixId, todaytixMarket(show));
+    const apiData = matchTodayTixShow(show.title, apiLookup, show.todaytixId, todaytixMarket(show), show);
     if (apiData) {
       apiShows.push(show);
     } else {
@@ -3133,7 +3136,7 @@ async function main() {
       }
 
       // Try TodayTix API match
-      const apiData = matchTodayTixShow(show.title, apiLookup, show.todaytixId, todaytixMarket(show));
+      const apiData = matchTodayTixShow(show.title, apiLookup, show.todaytixId, todaytixMarket(show), show);
       if (apiData) {
         const hero = apiData.hero || apiData.headerImage || null;
         if (hero && !/coming.?soon/i.test(hero) && !/NORAM/i.test(hero) && !isRejectedImage({ hero }, show)) {

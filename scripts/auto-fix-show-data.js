@@ -295,22 +295,33 @@ async function generateSynopsisWithLLM(show) {
     if (why) console.log(`    · ${model}: ${why}`);
     return why ? null : t;
   };
+  // Every model answer must be grounded: the wrong-show verifier confirms
+  // the title, not the plot, so it cannot catch invented details. Keep a plot
+  // only if web search results about this production describe the same story
+  // (BRO-4884 for Opus; BRO-5080 found Haiku inventing too: Rockets and Blue
+  // Lights' "Kent pub", Present Laughter's lead as a playwright).
+  // Opus is tried after a Haiku plot only when search CONTRADICTED it: when
+  // the results hold no plot (UNSUPPORTED, NO_RESULTS, e.g. a SERP outage) an
+  // Opus answer would fail the same check, so it is not worth the call.
+  let lastVerdict = null;
+  const grounded = async (text, model) => {
+    const g = await groundSynopsis(show, text, {
+      search: q => serpQuery(q, { nbResults: 8 }),
+      judge: p => callClaudeAPI(p, 120, CLAUDE_HAIKU),
+    });
+    lastVerdict = g.verdict;
+    if (g.supported) return text;
+    console.log(`    · ${model}: dropped, search results ${g.verdict}: ${g.reason}`);
+    return null;
+  };
   const haiku = usable(await callClaudeAPI(prompt, 300, CLAUDE_HAIKU), CLAUDE_HAIKU);
-  if (haiku) return haiku;
+  if (haiku) {
+    if (await grounded(haiku, CLAUDE_HAIKU)) return haiku;
+    if (lastVerdict !== 'CONTRADICTED') return null;
+  }
   const opus = usable(await callClaudeAPI(prompt, 300, CLAUDE_OPUS), CLAUDE_OPUS);
   if (!opus) return null;
-  // Haiku did not know this work, so Opus may be guessing; the Opus wrong-show
-  // check cannot catch its own invention. Keep it only if web search results
-  // about this production describe the same story (BRO-4884, lib/synopsis-grounding.js).
-  const g = await groundSynopsis(show, opus, {
-    search: q => serpQuery(q, { nbResults: 8 }),
-    judge: p => callClaudeAPI(p, 120, CLAUDE_HAIKU),
-  });
-  if (!g.supported) {
-    console.log(`    · ${CLAUDE_OPUS}: dropped, search results ${g.verdict}: ${g.reason}`);
-    return null;
-  }
-  return opus;
+  return grounded(opus, CLAUDE_OPUS);
 }
 
 // Generate creative team via Claude API (fallback)
@@ -431,7 +442,7 @@ async function fixSynopsis(show, todayTixIds) {
       return false;
     }
     // Award claims must agree with awards.json (LLMs and producer copy both invent them, BRO-4853).
-    const factGate = gateScrapedSynopsis(show, text, { showsById: {} });
+    const factGate = gateScrapedSynopsis(show, text, { showsById: {}, checkAuthor: !trusted });
     if (!factGate.ok) {
       console.log(`    ✗ rejected ${source} synopsis (${factGate.reason})`);
       return false;

@@ -202,6 +202,50 @@ function isStaleSynopsis(show) {
 }
 
 /**
+ * Author named by the synopsis's lead ("a play by Warren Leight", "a musical
+ * by X and Y") that none of the row's stored credits carry. Home Front 1985
+ * (James Duff) was saved with Warren Leight's 2023 Home Front (BRO-5080): a
+ * same-titled work's article passed the wrong-show verifier. Only fires when
+ * the row has writer credits to compare and the text names someone; matched
+ * on surname, against every stored credit (adapters and composers included).
+ * A write-time gate for NEW candidates (auto-fix-show-data.js, enrich-wikipedia-
+ * synopsis.js), not a badness test for stored rows: when the stored credit is
+ * the wrong side (Sweetmeats 2026 credits Kaufman and Hart), re-writing the
+ * synopsis would not help.
+ * @returns {string|null} the unmatched name, or null
+ */
+// "a play by [American playwright] Warren Leight": the descriptor is skipped,
+// a name is capitalised words or initials ("J. M. Barrie"), never a sentence end.
+const NAME_PART = "(?:[A-Z]\\.\\s*)*(?:Sir\\s+)?[A-Z][a-zA-Z'’-]+(?:\\s+(?:[A-Z]\\.\\s*)*[A-Z][a-zA-Z'’-]+){0,3}";
+const AUTHOR_LEAD_RE = new RegExp(
+  "\\b(?:play|musical|comedy|drama|tragedy|farce|opera|revue|operetta)\\s+(?:written\\s+)?by\\s+"
+  + "(?:(?:[A-Za-z][\\w-]*\\s+){0,5}?(?:playwright|writer|author|dramatist|novelist|poet|comedian|composer|winner|nominee|actor)s?\\s+)?"
+  + "(" + NAME_PART + ")(?:\\s*(?:,|and|&)\\s*(" + NAME_PART + "))?"
+);
+const WRITER_ROLE_RE = /playwright|book|music|lyric|composer|writ|adapt|libretto|author|creator|conceived/i;
+// A capitalised word that is not part of a person's name ("by P. Set in", "by Tony Award nominee").
+const NOT_NAME = /^(?:The|Set|In|A|An|Its|This|Prize|Award|Awards|Tony|Olivier|Pulitzer|Nominee|Disney|Theatre|Theater|Company|American|British|English|Irish|Scottish|Welsh|French|German|Norwegian)$/;
+function synopsisAuthorMismatch(show) {
+  const text = String((show && show.synopsis) || '').slice(0, 400);
+  const m = text.match(AUTHOR_LEAD_RE);
+  if (!m) return null;
+  // "based on the play by William Shakespeare" names the source work's author.
+  if (/\b(?:based on|adapted from|inspired by|version of)\s+(?:the\s+|a\s+|an\s+)?[\w\s'’-]{0,40}$/i.test(text.slice(0, m.index + m[0].search(/\sby\s/)))) return null;
+  // A capitalised common word is not a name ("by P. Set in Providence").
+  if ([m[1], m[2]].filter(Boolean).some(n => n.trim().split(/\s+/).some(t => NOT_NAME.test(t.replace(/[^A-Za-z]/g, ''))))) return null;
+  const team = Array.isArray(show.creativeTeam) ? show.creativeTeam : [];
+  const isWriter = c => WRITER_ROLE_RE.test(String(c && c.role || '')) && !/direct|supervis|orchestrat|arrang|design|coordinat/i.test(String(c && c.role || ''));
+  if (!team.some(isWriter)) return null;
+  const fold = x => String(x || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const credited = team.map(c => fold(c && c.name)).join(' | ');
+  const names = [m[1], m[2]].filter(Boolean);
+  // Any named author credited on the row is enough (a co-writer may be missing from the record).
+  const surnames = names.map(n => fold(n.trim().split(/\s+/).pop()).replace(/[^a-z'-]/g, '')).filter(x => x.length >= 3);
+  if (!surnames.length || surnames.some(x => credited.includes(x))) return null;
+  return names[0].trim();
+}
+
+/**
  * Classify why a show's synopsis is bad, or null if it's fine. Single source of
  * truth for the freshness gate (check-show-freshness.js) and the deploy-time
  * self-heal (pre-deploy-check.js).
@@ -293,6 +337,7 @@ function cutToLastSentence(text) {
 }
 
 module.exports = {
+  synopsisAuthorMismatch,
   PLOT_SIGNAL_RE,
   REFUSAL_PATTERNS,
   PLACEHOLDER_OPENER_RE,

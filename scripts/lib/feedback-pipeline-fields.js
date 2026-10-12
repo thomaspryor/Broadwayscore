@@ -18,6 +18,9 @@ const FEEDBACK_EDITABLE_FIELDS = {
     'venue', 'synopsis', 'runtime', 'intermissions', 'ageRecommendation',
     'type', 'isRevival', 'status', 'closingDate', 'openingDate',
     'previewsStartDate', 'creativeTeam',
+    // BRO-5080: a date repair re-stamps where the date came from, so an
+    // unconfirmed source can still be corrected by the daily date pass.
+    'openingDateSource',
     // Whole images object, compare-and-set; human-approved plans only (BRO-4380:
     // clearing another show's art). execute-approved-fix refuses cross-show paths.
     'images',

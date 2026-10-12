@@ -119,6 +119,7 @@ scripts/lib/affiliate-link-contract.test.mjs
 scripts/lib/archive-cache-guard.test.mjs
 scripts/lib/audit-push-retry-budgets.test.mjs
 scripts/lib/automated-clear-not-manual.test.mjs
+scripts/lib/broadway-theaters-studio54.test.mjs
 scripts/lib/cast-changes-data-quality.test.mjs
 scripts/lib/check-critic-coverage.test.mjs
 scripts/lib/check-merge-history.test.mjs
@@ -149,6 +150,8 @@ scripts/lib/dmarc-report-parser.test.mjs
 scripts/lib/domainless-outlet-guard.test.mjs
 scripts/lib/drain-ledger-health.test.mjs
 scripts/lib/exec-error-detail.test.mjs
+scripts/lib/fact-check-sample.test.mjs
+scripts/lib/ibdb-directed-by.test.mjs
 scripts/lib/impact-payout-readout.test.mjs
 scripts/lib/ip-cidr.test.mjs
 scripts/lib/ledger-write-isolation.test.mjs
@@ -180,14 +183,17 @@ scripts/lib/serp-review-census.test.mjs
 scripts/lib/show-title-normalize.test.mjs
 scripts/lib/show-title-variants.test.mjs
 scripts/lib/sync-audit-checkout.test.mjs
+scripts/lib/synopsis-author-mismatch.test.mjs
 scripts/lib/t1-sla.test.mjs
 scripts/lib/title-display-case.test.mjs
 scripts/lib/title-match.test.js
 scripts/lib/title-venue-suffix.test.mjs
+scripts/lib/todaytix-api-art.test.mjs
 scripts/lib/todaytix-market.test.mjs
 scripts/lib/url-names-other-show.test.mjs
 scripts/lib/venue-date-compare.test.mjs
 scripts/lib/waltz-cost-gap-fill.test.mjs
+scripts/lib/we-historical-dates.test.mjs
 scripts/lib/welcome-email.test.mjs
 scripts/lib/workspace-naming.test.mjs
 scripts/lib/zombie-tab-sweep.test.mjs
@@ -216,6 +222,7 @@ scripts/opening-night-checklist.test.mjs
 scripts/opening-night-pipeline.test.mjs
 scripts/opening-night-tools-data-dir.test.mjs
 scripts/outlet-registry.test.mjs
+scripts/plan-we-historical-opening-repair.test.mjs
 scripts/pre-push.test.mjs
 scripts/pre-send-check.test.mjs
 scripts/print-sample-show-urls.test.mjs

@@ -26,6 +26,10 @@
  *                    pitch, billing, a pull quote or a cast list
  *                    (todaytix-page-identity nonStoryReason; Phase B saved
  *                    several) and rows with none
+ *   8. fact-check    advisory (BRO-5080): per-field error rates from the
+ *                    sourced two-checker sample (fact-check-historical-sample.js)
+ *                    for this season's rows, or a note that none was run.
+ *                    Proposed to gate once a season sample pass is routine.
  *
  * Usage:
  *   node scripts/audit-we-historical-season.js --season=2024-2025 [--json] [--ids=a,b]
@@ -43,6 +47,7 @@ const { todaytixMarket } = require('./lib/todaytix-market');
 const { nonStoryReason } = require('./lib/todaytix-page-identity');
 const { isRejectedImage } = require('./lib/image-source-match');
 const { WE_HISTORICAL_DISCOVERY_SOURCES } = require('./lib/we-historical-corroboration');
+const { seasonSummary } = require('./lib/fact-check-sample');
 
 const NYC_ONLY_IMAGE_HOST_RE = /theatr-app\.appspot\.com/;
 const CENSORED_TITLE_RE = /[a-z]\*+[a-z]/i;
@@ -86,7 +91,7 @@ const isScored = r => typeof r.assignedScore === 'number' && Number.isFinite(r.a
  * Pure: shows + reviews → audit result.
  * @param {{shows: object[], reviews: object[], season: string, ids?: Set<string>}} input
  */
-function auditSeason({ shows, reviews, season, ids, imageSources = {} }) {
+function auditSeason({ shows, reviews, season, ids, imageSources = {}, factCheckVerdicts = [] }) {
   const promoted = shows.filter(s => WE_HISTORICAL_DISCOVERY_SOURCES.has(s.discoverySource) && s.season === season
     && (!ids || !ids.size || ids.has(s.id)));
   const byShow = new Map(promoted.map(s => [s.id, []]));
@@ -140,6 +145,7 @@ function auditSeason({ shows, reviews, season, ids, imageSources = {} }) {
     poster: { pass: badPosters.length === 0, value: badPosters.length, rows: badPosters, missing: noPoster },
     titles: { pass: censored.length === 0, value: censored.length, rows: censored },
     synopsis: { pass: null, value: synopsisLook.length, rows: synopsisLook, missing: noSynopsis },
+    factCheck: { pass: null, ...seasonSummary(factCheckVerdicts, promoted.map(s => s.id)) },
   };
   const gated = Object.values(checks).filter(c => c.pass !== null);
   return { season, shows: promoted.length, pass: promoted.length > 0 && gated.every(c => c.pass), checks, perShow };
@@ -160,7 +166,16 @@ function main() {
     const raw = JSON.parse(fs.readFileSync(path.join(root, 'data', 'image-sources.json'), 'utf8'));
     imageSources = raw.shows || raw;
   } catch { /* no sources file: poster provenance check sees no URLs */ }
-  const result = auditSeason({ shows, reviews, season, ids, imageSources });
+  // Sourced sample verdicts (BRO-5080): the cross-season sample plus a season sample if one was drawn.
+  let factCheckVerdicts = [];
+  try {
+    const { verdictsFor } = require('./fact-check-historical-sample');
+    factCheckVerdicts = [...verdictsFor('we-historical'), ...verdictsFor(`we-historical-${season}`)];
+  } catch (e) {
+    // Missing files read as "no sample"; anything else (a corrupt adjudications file, a bug) must not hide verdicts.
+    if (e.code !== 'ENOENT' && !(e.code === 'MODULE_NOT_FOUND' && /fact-check-historical-sample/.test(e.message.split('\n')[0]))) throw e;
+  }
+  const result = auditSeason({ shows, reviews, season, ids, imageSources, factCheckVerdicts });
 
   if (args.includes('--json')) { console.log(JSON.stringify(result, null, 2)); }
   else {
@@ -181,6 +196,14 @@ function main() {
     for (const r of c.titles.rows) console.log(`    ${r.showId}: "${r.title}" (set the real title)`);
     console.log(`${mark(c.synopsis.pass)} synopsis: ${c.synopsis.value} to look at (pitch/billing/quotes); ${c.synopsis.missing.length} missing`);
     for (const r of c.synopsis.rows) console.log(`    ${r.showId}: ${r.synopsis}`);
+    if (!c.factCheck.sampled) {
+      console.log(`INFO fact-check: no sourced sample pass covers this season (node scripts/fact-check-historical-sample.js sample --cohort=we-historical --season=${season} --n=30, then check + report)`);
+    } else {
+      const t = c.factCheck.table;
+      const line = Object.entries(t).filter(([, v]) => v.checked).map(([f, v]) => `${f} ${v.wrong}/${v.checked}`).join(', ');
+      console.log(`INFO fact-check: ${c.factCheck.sampled} sampled row(s), wrong/checked: ${line}`);
+      for (const w of c.factCheck.wrong) console.log(`    ${w.id} ${w.field}: ${w.note || ''}${w.url ? ` (${w.url})` : ''}`);
+    }
     console.log(result.pass ? 'SEASON PASS' : 'SEASON FAIL');
   }
   process.exit(result.pass ? 0 : 1);
