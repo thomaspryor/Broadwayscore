@@ -1,31 +1,11 @@
 {
-  "generatedAt": "2026-10-12T05:12:41.895Z",
-  "bannerText": "226/251 Done(14d) verified on main · 17 FAILED · 1 vacuous · 15 stuck-but-done — PARTIAL RUN: 1 check not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-10-12T09:20:14.221Z",
+  "bannerText": "265/290 Done(14d) verified on main · 11 FAILED · 1 vacuous · 12 stuck-but-done — PARTIAL RUN: 8 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
     {
       "title": "FAILED BRO-5020 — Review held commercial research rows (BRO-4990 46 + BRO-5017) by truth-class rule before release",
       "detail": "TAP version 13 # ⚠️ Rejected non-canonical designation \"bogus\" (valid: Miracle, Windfall, Easy Winner, Trickle, TBD, Fizzle, Flop, Nonprofit, Tour Stop) # ⚠️ Rejected non-canonica…",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5020/review-held-commercial-research-rows-bro-4990-46-bro-5017-by-truth"
-    },
-    {
-      "title": "FAILED BRO-4990 — Commercial backfill 2020+ (fill rate, blind accuracy test, real cost) + forward coverage guarantee",
-      "detail": "⚠️ WARNING: 95 Off-West End shows missing \"off-west-end\" in slug: magic-mike-live-west-end, starlight-express-west-end-2024, into-the-woods-west-end-2025... ⚠️ WARNING: 69 Off-Bro…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4990/commercial-backfill-2020-fill-rate-blind-accuracy-test-real-cost"
-    },
-    {
-      "title": "FAILED BRO-4989 — Cost history + Broadway cost index + fixed investor-return model + Trickle redefinition (shadow-first)",
-      "detail": "⚠️ WARNING: 95 Off-West End shows missing \"off-west-end\" in slug: magic-mike-live-west-end, starlight-express-west-end-2024, into-the-woods-west-end-2025... ⚠️ WARNING: 69 Off-Bro…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4989/cost-history-broadway-cost-index-fixed-investor-return-model-trickle"
-    },
-    {
-      "title": "FAILED BRO-4988 — Weekly grosses integrity check after every ingest (Sunday keys, totals vs League, dropouts, dup values, capacity cap, seatsOffered)",
-      "detail": "⚠️ WARNING: 95 Off-West End shows missing \"off-west-end\" in slug: magic-mike-live-west-end, starlight-express-west-end-2024, into-the-woods-west-end-2025... ⚠️ WARNING: 69 Off-Bro…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4988/weekly-grosses-integrity-check-after-every-ingest-sunday-keys-totals"
-    },
-    {
-      "title": "FAILED BRO-4985 — Fix commercial/grosses data defects: breakeven<cost, Chicago cost, Gatsby BE, non-Sunday weeks, seatsOffered, Sweeney dup, Wicked 2025 cap",
-      "detail": "⚠️ WARNING: 95 Off-West End shows missing \"off-west-end\" in slug: magic-mike-live-west-end, starlight-express-west-end-2024, into-the-woods-west-end-2025... ⚠️ WARNING: 69 Off-Bro…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4985/fix-commercialgrosses-data-defects-breakevencost-chicago-cost-gatsby"
     },
     {
       "title": "FAILED BRO-4947 — Untangle mixed and duplicate outlet ids: dctheatrescene, observer, dc-metro/dc-theater-arts, gotham-playgoer/bobs-theater-blog, medium, zeal-nyc",
@@ -38,10 +18,30 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-4884/we-historical-phase-c-2023-24-to-2018-19"
     },
     {
-      "title": "FAILED BRO-4735 — commercial.json: 9 /biz fields show internal research wording (Per policy, owner review, recouped:null)",
-      "detail": "⚠️ WARNING: 95 Off-West End shows missing \"off-west-end\" in slug: magic-mike-live-west-end, starlight-express-west-end-2024, into-the-woods-west-end-2025... ⚠️ WARNING: 69 Off-Bro…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4735/commercialjson-9-biz-fields-show-internal-research-wording-per-policy"
+      "title": "FAILED BRO-4838 — P1: 1-2 star and space-separated star ratings never captured (Affluenza Theatre and Tonic 1-star scored 42)",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/capture-published-stars.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4838/p1-1-2-star-and-space-separated-star-ratings-never-captured-affluenza"
+    },
+    {
+      "title": "FAILED BRO-4167 — BSC Daily: Workflow repeat-failure: Land",
+      "detail": "[check-health-row-absent] FAIL: \"Workflow repeat-failure: Land\" still listed in the 2026-10-12T09:14:10.994Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4167/bsc-daily-workflow-repeat-failure-land"
+    },
+    {
+      "title": "FAILED BRO-3674 — Rage clicks on '$40' element on /discount-tickets page",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: src/components/DiscountTicketFilter.jsx",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3674/rage-clicks-on-dollar40-element-on-discount-tickets-page"
+    },
+    {
+      "title": "FAILED BRO-3626 — Rage clicks on 'All' filter on Off-Broadway page",
+      "detail": "TAP version 13 # node:internal/modules/esm/get_format:189 # throw new ERR_UNKNOWN_FILE_EXTENSION(ext, filepath); # ^ # TypeError [ERR_UNKNOWN_FILE_EXTENSION]: Unknown file extensi…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3626/rage-clicks-on-all-filter-on-off-broadway-page"
+    },
+    {
+      "title": "FAILED BRO-3366 — P2: duplicate-fold discards the loser's URL, leaving scored review rows unlinkable on prod",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/duplicate-fold-url-inheritance.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3366/p2-duplicate-fold-discards-the-losers-url-leaving-scored-review-rows"
     }
   ],
-  "moreCount": 25
+  "moreCount": 16
 }
