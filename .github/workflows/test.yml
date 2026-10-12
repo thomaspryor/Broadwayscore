@@ -1086,6 +1086,8 @@ on:
       - 'scripts/lib/push-with-retry.push-rc-diagnosis.test.sh'
       # BRO-2879: local pre-push hook rejection stops after one attempt, exit 4.
       - 'scripts/lib/push-with-retry.hook-rejection.test.sh'
+      # BRO-3668: dirty-worktree autostash.
+      - 'scripts/lib/push-with-retry.autostash.test.sh'
       # BRO-2951: bash unit test for the github.com remote-slug and
       # checkout-extraheader parsers. Covered by the scripts/lib/** push glob
       # above for TRIGGERING, but .test.sh files are each run by their own
@@ -5171,6 +5173,16 @@ jobs:
         # over-fire.
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.rebase-refusal.test.sh
+
+      - name: Run push-with-retry autostash test (bash integration)
+        # BRO-3668/3669/3667/3687. A caller that arrives with tracked files
+        # modified but uncommitted had them silently destroyed by the script's
+        # `git reset --hard` paths, or forced every retry onto `merge -X ours`.
+        # Pins: rebase path runs, dirt restored byte-identical and never pushed,
+        # 3-way restore when upstream changed the same file, conflict keeps
+        # upstream + a recoverable snapshot ref, PUSH_AUTOSTASH=0 kill switch.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/push-with-retry.autostash.test.sh
 
       - name: Run push-with-retry content-drop test (bash integration)
         # Asserts the task #619 P0 fix: a push could report success with a
