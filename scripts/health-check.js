@@ -36,7 +36,7 @@ const { getTodayJsonlPath } = require('./lib/exclusion-logger');
 const { computeCommercialModelDriftStatus } = require('./lib/commercial-model-drift');
 const { fitCheckStatus: waltzFitCheckStatus } = require('./lib/waltz-model-fit');
 const { revisitBarStatus } = require('./lib/recoupment-timing-report');
-const { routeAlert, readDispatchAttempts, peekDigestQueue, clearDigestQueue } = require('./lib/owner-alert-router.js');
+const { routeAlert, readDispatchAttempts, peekDigestQueue, clearDigestQueue, toSnapshotQueuedRow } = require('./lib/owner-alert-router.js');
 const { summarizeFailureStreak, deadmanShouldPage } = require('./lib/alert-dispatch-streak.js');
 const { readOwnerEmailLog } = require('./lib/discord-notify.js');
 const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged } = require('./lib/scrapingbee-ack');
@@ -5246,7 +5246,8 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
     // persists it, but projecting it away here made renderHealthDigestBlock's
     // link unreachable in production — a digest line whose whole point is
     // "go look at this page" (regional show going live) arrived unclickable.
-    queued: queuedDigestItems.map(q => ({ title: q.title, description: q.description, severity: q.severity, url: q.url ?? null, fields: Array.isArray(q.fields) ? q.fields : [] })),
+    // BRO-5099: toSnapshotQueuedRow carries every field the digest reads.
+    queued: queuedDigestItems.map(toSnapshotQueuedRow),
     autoFixedCount,
     passedCount: passed.length,
     totalCount: results.length,
