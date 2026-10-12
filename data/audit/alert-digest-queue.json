@@ -1319,5 +1319,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-12T01:07:15.083Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4190-residuals",
+    "title": "Landing blocked: rebase red on land/bro-4190-residuals",
+    "description": "land.yml did not land land/bro-4190-residuals: the rebase gate went red at 22aad1c1c3. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38190992403",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4190-residuals"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "22aad1c1c359bb3e4153239408237bb870bcc65f"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38190992403"
+      }
+    ],
+    "queuedAt": "2026-10-12T01:14:16.496Z"
   }
 ]
