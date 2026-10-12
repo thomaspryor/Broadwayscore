@@ -22,7 +22,7 @@
  * Never log a decrypted address: the Actions logs of this repo are public.
  */
 
-const crypto = require('crypto');
+const { seal, open } = require('./hkdf-seal');
 
 const CONTACT_HEADING = '### Submitter Contact (encrypted)';
 const LEGACY_EMAIL_HEADING = '### Submitter Email';
@@ -30,8 +30,6 @@ const NO_RESPONSE = '_No response_';
 const NOT_STORED = '_Not stored_';
 const TOKEN_PREFIX = 'v1.';
 const HKDF_INFO = 'bsc/submit-review/submitter-contact/v1';
-const IV_BYTES = 12;
-const TAG_BYTES = 16;
 const MAX_EMAIL_LENGTH = 254;
 
 // Strict on purpose: the workflow puts the result into a JSON payload and a
@@ -43,31 +41,16 @@ function isDeliverableEmail(value) {
   return s.length <= MAX_EMAIL_LENGTH && STRICT_EMAIL_RE.test(s);
 }
 
-function deriveKey(secret) {
-  if (!secret) throw new Error('submitter-contact: no secret');
-  return Buffer.from(crypto.hkdfSync('sha256', Buffer.from(String(secret), 'utf8'), Buffer.alloc(0), HKDF_INFO, 32));
-}
+const SEAL_OPTS = { info: HKDF_INFO, prefix: TOKEN_PREFIX };
 
 function encryptContact(email, secret) {
-  const iv = crypto.randomBytes(IV_BYTES);
-  const cipher = crypto.createCipheriv('aes-256-gcm', deriveKey(secret), iv);
-  const ct = Buffer.concat([cipher.update(String(email), 'utf8'), cipher.final()]);
-  return TOKEN_PREFIX + Buffer.concat([iv, cipher.getAuthTag(), ct]).toString('base64url');
+  if (!secret) throw new Error('submitter-contact: no secret');
+  return seal(email, secret, SEAL_OPTS);
 }
 
 /** Returns the plaintext, or null for a wrong secret, a tampered or foreign token. */
 function decryptContact(token, secret) {
-  try {
-    const t = String(token || '').trim();
-    if (!secret || !t.startsWith(TOKEN_PREFIX)) return null;
-    const raw = Buffer.from(t.slice(TOKEN_PREFIX.length), 'base64url');
-    if (raw.length <= IV_BYTES + TAG_BYTES) return null;
-    const decipher = crypto.createDecipheriv('aes-256-gcm', deriveKey(secret), raw.subarray(0, IV_BYTES));
-    decipher.setAuthTag(raw.subarray(IV_BYTES, IV_BYTES + TAG_BYTES));
-    return Buffer.concat([decipher.update(raw.subarray(IV_BYTES + TAG_BYTES)), decipher.final()]).toString('utf8');
-  } catch {
-    return null;
-  }
+  return open(token, secret, SEAL_OPTS);
 }
 
 /**

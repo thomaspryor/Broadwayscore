@@ -56,11 +56,13 @@ test('findOwnerDecisions takes marked or awaiting-owner cards, oldest first', ()
   assert.equal(got[1].question, 'B?');
 });
 
+const ids = (e) => e.split('@')[0];
+
 test('planNotification announces each card once and prunes closed ones', () => {
   const ds = ['BRO-1', 'BRO-2', 'BRO-3'].map((identifier) => ({ identifier, title: identifier }));
   const first = planNotification(ds, []);
   assert.equal(first.fresh.length, 3);
-  assert.deepEqual(first.nextNotified, ['BRO-1', 'BRO-2', 'BRO-3']);
+  assert.deepEqual(first.nextNotified.map(ids), ['BRO-1', 'BRO-2', 'BRO-3']);
 
   const second = planNotification(ds, first.nextNotified);
   assert.equal(second.fresh.length, 0);
@@ -68,7 +70,23 @@ test('planNotification announces each card once and prunes closed ones', () => {
   // BRO-2 answered (marker removed), BRO-9 is old notified state, BRO-4 is new.
   const third = planNotification([ds[0], ds[2], { identifier: 'BRO-4', title: 'd' }], ['BRO-1', 'BRO-2', 'BRO-3', 'BRO-9']);
   assert.deepEqual(third.fresh.map((d) => d.identifier), ['BRO-4']);
-  assert.deepEqual(third.nextNotified, ['BRO-1', 'BRO-3', 'BRO-4']);
+  assert.deepEqual(third.nextNotified.map(ids), ['BRO-1', 'BRO-3', 'BRO-4']);
+});
+
+test('a card whose question changes is announced again; bare legacy entries upgrade silently', () => {
+  const v1 = { identifier: 'BRO-7', title: 'Gmail', question: 'Tap https://x/1 to reconnect Gmail.' };
+  const v2 = { ...v1, question: 'Tap https://x/2 to reconnect Gmail. (Last try failed.)' };
+  const first = planNotification([v1], []);
+  assert.equal(planNotification([v1], first.nextNotified).fresh.length, 0);
+  const changed = planNotification([v2], first.nextNotified);
+  assert.deepEqual(changed.fresh.map((d) => d.identifier), ['BRO-7']);
+  assert.notDeepEqual(changed.nextNotified, first.nextNotified);
+
+  // State written before the hash existed: told, no email, upgraded in place.
+  const legacy = planNotification([v1], ['BRO-7']);
+  assert.equal(legacy.fresh.length, 0);
+  assert.deepEqual(legacy.nextNotified, first.nextNotified);
+  assert.equal(planNotification([v2], legacy.nextNotified).fresh.length, 1);
 });
 
 test('only the listed cards are marked told when more than the cap are new', () => {

@@ -20,6 +20,7 @@
  * Side-effect free: scripts/notify-owner-decisions.js does the I/O.
  */
 
+const crypto = require('crypto');
 const { AWAITING_OWNER_LABEL } = require('./owner-approval-channel.js');
 const { isEmptyDecisionContent } = require('./needs-you-snapshot.js');
 
@@ -93,15 +94,35 @@ function findOwnerDecisions(issues) {
 // email is actually delivered. Only the cards listed in the email count as
 // told; the set is pruned to decisions still open so it cannot grow forever,
 // and a card whose marker is removed and later re-added is announced again.
+// Entries are "ID@<question hash>", so a card whose question changes (a fresh
+// renewal link after a failed attempt, BRO-3712) is announced again too. A
+// bare "ID" entry (stored before the hash) counts as told and is upgraded to
+// the current question without an email.
+function decisionHash(d) {
+  return crypto.createHash('sha256').update(String(d.question || d.title || '')).digest('hex').slice(0, 12);
+}
+
 function planNotification(decisions, notifiedIds, { maxListed = MAX_LISTED } = {}) {
-  const told = new Set(Array.isArray(notifiedIds) ? notifiedIds : []);
-  const fresh = decisions.filter((d) => !told.has(d.identifier));
+  const told = new Map();
+  for (const entry of Array.isArray(notifiedIds) ? notifiedIds : []) {
+    const at = String(entry).lastIndexOf('@');
+    if (at > 0) told.set(String(entry).slice(0, at), String(entry).slice(at + 1));
+    else told.set(String(entry), null);
+  }
+  const isFresh = (d) => !told.has(d.identifier)
+    || (told.get(d.identifier) !== null && told.get(d.identifier) !== decisionHash(d));
+  const fresh = decisions.filter(isFresh);
   const listed = fresh.slice(0, maxListed);
-  const openIds = new Set(decisions.map((d) => d.identifier));
-  const nextNotified = [...new Set([...told, ...listed.map((d) => d.identifier)])]
-    .filter((id) => openIds.has(id))
-    .sort();
-  return { fresh, listed, more: fresh.length - listed.length, nextNotified, totalOpen: decisions.length };
+  const listedIds = new Set(listed.map((d) => d.identifier));
+  const nextNotified = [];
+  for (const d of decisions) {
+    if (listedIds.has(d.identifier) || told.get(d.identifier) === null) {
+      nextNotified.push(`${d.identifier}@${decisionHash(d)}`);
+    } else if (told.has(d.identifier)) {
+      nextNotified.push(`${d.identifier}@${told.get(d.identifier)}`);
+    }
+  }
+  return { fresh, listed, more: fresh.length - listed.length, nextNotified: [...new Set(nextNotified)].sort(), totalOpen: decisions.length };
 }
 
 function plural(n, one, many) { return n === 1 ? one : many; }

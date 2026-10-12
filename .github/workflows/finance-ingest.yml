@@ -40,6 +40,7 @@ on:
 concurrency:
   group: finance-ingest
   cancel-in-progress: false
+  # concurrency-queue-ok: each run ingests everything new since the last success, so the newest pending run covers any it evicts
 
 # Workflow default stays read-only; only the dmarc job is granted write (see
 # its own permissions: block). Granting write at the workflow level would have
@@ -128,7 +129,7 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Finance Ingest Failed'
-          description: 'Daily Gmail receipt ingest did not complete. Likely causes: revoked GMAIL_REFRESH_TOKEN (re-mint via OAuth Playground), REVIEW_TEXTS_TOKEN expiry, or a private-repo push conflict.'
+          description: 'Daily Gmail receipt ingest did not complete. Likely causes: revoked GMAIL_REFRESH_TOKEN (the renew-gmail job then mints the owner a one-tap renewal link, BRO-3712), REVIEW_TEXTS_TOKEN expiry, or a private-repo push conflict.'
 
   # ---- DMARC aggregate reports (BRO-525) ----
   # Google, Microsoft and Zoho send a report a day for broadwayscorecard.com to
@@ -226,4 +227,50 @@ jobs:
         with:
           title: 'DMARC Ingest Failed'
           severity: 'warning'
-          description: 'Daily DMARC aggregate report ingest did not complete. Likely causes: revoked GMAIL_REFRESH_TOKEN (re-mint via OAuth Playground), a malformed report attachment, an alert-routing failure, or a push conflict on data/audit/.'
+          description: 'Daily DMARC aggregate report ingest did not complete. Likely causes: revoked GMAIL_REFRESH_TOKEN (the renew-gmail job then mints the owner a one-tap renewal link, BRO-3712), a malformed report attachment, an alert-routing failure, or a push conflict on data/audit/.'
+
+  # BRO-3712: when either job fails, ask Google whether the saved token is
+  # revoked. Only then (exit 3) start gmail-reauth.yml, which puts a one-tap
+  # renewal link on the card and so in the owner's decisions email. A Gmail
+  # outage or a bad attachment never asks the owner for anything.
+  renew-gmail:
+    needs: [ingest, dmarc]
+    if: ${{ always() && (needs.ingest.result == 'failure' || needs.dmarc.result == 'failure') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      actions: write # dispatch gmail-reauth.yml
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Check the Gmail token
+        id: token
+        env:
+          GMAIL_CLIENT_ID: ${{ secrets.GMAIL_CLIENT_ID }}
+          GMAIL_CLIENT_SECRET: ${{ secrets.GMAIL_CLIENT_SECRET }}
+          GMAIL_REFRESH_TOKEN: ${{ secrets.GMAIL_REFRESH_TOKEN }}
+        run: |
+          rc=0
+          node scripts/gmail-reauth.js token-status || rc=$?
+          echo "revoked=$([ "$rc" -eq 3 ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
+      - name: Send the owner a renewal link
+        if: ${{ steps.token.outputs.revoked == 'true' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run gmail-reauth.yml --repo "$GITHUB_REPOSITORY" --ref main -f mode=link -f issue=BRO-3712
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Gmail Renewal Trigger Failed'
+          severity: 'warning'
+          description: 'finance-ingest.yml could not check the Gmail token or start gmail-reauth.yml (BRO-3712).'

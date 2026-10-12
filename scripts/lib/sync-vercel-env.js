@@ -18,7 +18,9 @@ const API = 'https://api.vercel.com';
 // Names this script may copy into the site's runtime. Hard-coded so a dispatch
 // can never ship VERCEL_TOKEN (or PATH) into the production env; add a name
 // here and map its secret in sync-vercel-env.yml together.
-const ALLOWED = new Set(['LINEAR_API_KEY']);
+// GMAIL_CLIENT_ID (BRO-3712) is public by OAuth design; its client secret is
+// deliberately NOT here and stays in GitHub Actions only.
+const ALLOWED = new Set(['LINEAR_API_KEY', 'GMAIL_CLIENT_ID']);
 
 function parseNames(argv) {
   const arg = argv.find(a => a.startsWith('--names='));

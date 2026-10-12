@@ -94,7 +94,7 @@ async function main(argv = process.argv.slice(2)) {
     if (!dryRun) router.resolveCondition(BROKEN_KEY, { reason: 'ran clean, nothing new' });
     // Nothing new, but drop answered cards from the told-set so a card that
     // is later re-marked gets announced again.
-    if (!dryRun && plan.nextNotified.length !== notified.length) {
+    if (!dryRun && JSON.stringify(plan.nextNotified) !== JSON.stringify([...notified].sort())) {
       router.patchCondition(CONDITION_KEY, { notifiedIds: plan.nextNotified });
     }
     return 0;

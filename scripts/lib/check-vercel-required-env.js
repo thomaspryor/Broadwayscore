@@ -33,6 +33,15 @@ const RUNTIME_ENV = {
     required: ['APPROVAL_HMAC_SECRET', 'LINEAR_API_KEY'],
     optional: ['DISPATCH_LINKS_DISABLED'],
   },
+  // BRO-3712 one-tap Gmail renewal: the owner taps these from an email.
+  'src/app/api/admin/gmail-reauth/route.ts': {
+    required: ['APPROVAL_HMAC_SECRET', 'GMAIL_CLIENT_ID'],
+    optional: ['GMAIL_REAUTH_DISABLED'],
+  },
+  'src/app/api/admin/gmail-reauth/callback/route.ts': {
+    required: ['APPROVAL_HMAC_SECRET', 'GH_DISPATCH_TOKEN'],
+    optional: ['GMAIL_REAUTH_DISABLED'],
+  },
 };
 
 function requiredNames(runtimeEnv = RUNTIME_ENV) {

@@ -51,6 +51,7 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           # Also needs the name in ALLOWED (scripts/lib/sync-vercel-env.js) to sync.
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          GMAIL_CLIENT_ID: ${{ secrets.GMAIL_CLIENT_ID }}
           NAMES: ${{ inputs.names }}
         run: node scripts/lib/sync-vercel-env.js "--names=$NAMES"
 
