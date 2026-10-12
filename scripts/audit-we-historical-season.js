@@ -122,7 +122,7 @@ function auditSeason({ shows, reviews, season, ids, imageSources = {}, factCheck
         if (d && d.flag) {
           const row = { showId: show.id, outlet: r.outlet, critic: r.criticName, publishDate: r.publishDate };
           const exception = excepted.get(windowExceptionKey(show.id, r.outletId, r.publishDate));
-          if (exception) exempted.push({ ...row, reason: exception.reason });
+          if (exception && (!exception.url || exception.url === r.url)) exempted.push({ ...row, reason: exception.reason });
           else outOfWindow.push(row);
         }
       }

@@ -115,7 +115,8 @@ test('ingest merge (BRO-5141): a clean re-extraction replaces text that bled int
   const merged = mergeTheatreRecordIntoExisting(existing, { criticName: 'Howard Loxton', fullText: own, textWordCount: 60 });
   assert.equal(merged.fullText, own);
   assert.equal(merged.needsRescore, true);
-  assert.match(merged.needsRescoreReason, /BRO-5141/);
+  assert.match(merged.rescoreReason, /BRO-5141/);
+  assert.equal(merged.textWordCount, own.split(/\s+/).length);
   assert.equal(merged.assignedScore, 77, 'score stays until the rescore lands');
 
   const other = mergeTheatreRecordIntoExisting(existing, { criticName: 'Howard Loxton', fullText: 'A different review entirely. '.repeat(20) });

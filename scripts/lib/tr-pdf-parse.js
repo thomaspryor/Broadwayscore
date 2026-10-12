@@ -32,7 +32,8 @@ function parseShortDate(dateStr) {
 const INDEX_SUFFIX = /\s{2,}Index\s*$/;
 const stripIndexSuffix = (line) => line.replace(INDEX_SUFFIX, '').trim();
 const PRODUCTION_INFO_LINE = /^Previews \/ Opens\b/;
-const isCapsTitleLine = (t) => t.length > 1 && /[A-Z]/.test(t) && t === t.toUpperCase() && !isDateLine(t);
+// A title line never ends a sentence ("BRAVO." closing a review is prose).
+const isCapsTitleLine = (t) => t.length > 1 && /[A-Z]/.test(t) && t === t.toUpperCase() && !isDateLine(t) && !/[.,;:]$/.test(t);
 
 // 2019-20 issues print "TITLE" / "Goto" / "CITY, VENUE" above the info line.
 const isHeaderLine = (t) => isCapsTitleLine(t) || t === 'Goto';
@@ -43,8 +44,9 @@ function productionHeaderStart(lines, infoIdx, floor = 0) {
   for (let k = infoIdx - 1; k >= Math.max(floor, infoIdx - 8); k--) {
     const t = stripIndexSuffix(lines[k].trim());
     if (!t || !isCapsTitleLine(t)) continue;
+    // A title wraps over at most three lines, plus the 2019 "Goto" line.
     let start = k;
-    while (start - 1 >= floor && isHeaderLine(stripIndexSuffix(lines[start - 1].trim()))) start--;
+    while (start - 1 >= floor && k - start < 3 && isHeaderLine(stripIndexSuffix(lines[start - 1].trim()))) start--;
     return start;
   }
   return infoIdx;
@@ -62,6 +64,23 @@ function cutAtProductionHeader(textLines) {
 
 const normTitleLine = (line) => stripIndexSuffix(line.trim()).normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
+// Outlet names look like production titles (ALL CAPS) but never end a section.
+const KNOWN_OUTLETS_UPPER = new Set([
+    'THE GUARDIAN', 'THE TELEGRAPH', 'THE TIMES', 'THE STAGE', 'DAILY MAIL',
+    'EVENING STANDARD', 'THE STANDARD', 'FINANCIAL TIMES', 'THE INDEPENDENT',
+    'THE OBSERVER', 'SUNDAY TIMES', 'THE SUNDAY TIMES', 'DAILY TELEGRAPH',
+    'DAILY EXPRESS', 'THE SPECTATOR', 'TIME OUT', 'TIME OUT LONDON',
+    'THE JEWISH CHRONICLE', 'JEWISH CHRONICLE', 'TRIBUNE', 'METRO',
+    'MAIL ON SUNDAY', 'SUNDAY TELEGRAPH', 'BBC NEWS', 'VARIETY',
+    'THE NEW YORK TIMES', 'NEW YORK TIMES', 'WHATSONSTAGE',
+    'THEREVIEWSHUB.COM', 'THE REVIEWS HUB', 'THEATRECAT', 'LONDON THEATRE',
+    'LONDONTHEATRE1', 'EVERYTHING THEATRE', 'BRITISH THEATRE GUIDE',
+    'BROADWAYWORLD', 'MUSICAL THEATRE REVIEW', 'THEATRE WEEKLY',
+    'THE ARTS DESK', 'THE SCOTSMAN', 'THE LIST', 'RADIO TIMES',
+    'DIGITAL SPY', 'THE SUN', 'THE MIRROR', 'THE EXPRESS', 'CULTURE WHISPER',
+    'THE I', 'I NEWS', 'LONDONIST', 'CITY A.M.',
+]);
+
 function parsePdfReviews(text, showTitle) {
   const lines = text.split('\n');
   const reviews = [];
@@ -78,9 +97,13 @@ function parsePdfReviews(text, showTitle) {
   for (let j = 0; j < lines.length; j++) {
     const trimmed = normTitleLine(lines[j]);
     if (!trimmed) continue;
-    // A wrapped title spans this line and the next.
-    const wrapped = trimmed + ' ' + normTitleLine(lines[j + 1] || '');
-    const titleEnd = isOurTitle(trimmed) ? j : (isOurTitle(wrapped) ? j + 1 : -1);
+    // A wrapped title spans up to three lines.
+    let titleEnd = -1;
+    let joined = trimmed;
+    for (let w = 0; w < 3 && titleEnd === -1; w++) {
+      if (w > 0) joined += ' ' + normTitleLine(lines[j + w] || '');
+      if (isOurTitle(joined)) titleEnd = j + w;
+    }
     if (titleEnd > -1) {
       // Check if preceded by "Reviews" marker (within 5 lines)
       for (let k = Math.max(0, j - 5); k < j; k++) {
@@ -114,7 +137,10 @@ function parsePdfReviews(text, showTitle) {
     }
   }
 
-  if (reviewsStart === -1) return [];
+  if (reviewsStart === -1) {
+    if (productionCount > 1) console.log(`  -layout: "${showTitle}" heading not found in a ${productionCount}-production issue; relying on -raw title matching`);
+    return [];
+  }
 
   // Step 2: Find end boundary — next production
   for (let j = reviewsStart; j < lines.length; j++) {
@@ -138,21 +164,6 @@ function parsePdfReviews(text, showTitle) {
     // Method B: Production metadata block (works for -raw mode)
     // Pattern: ALL CAPS title → "by AUTHOR" or venue+date-range within 5 lines
     // EXCLUDE known outlet names (they look like production titles but aren't)
-    const KNOWN_OUTLETS_UPPER = new Set([
-      'THE GUARDIAN', 'THE TELEGRAPH', 'THE TIMES', 'THE STAGE', 'DAILY MAIL',
-      'EVENING STANDARD', 'THE STANDARD', 'FINANCIAL TIMES', 'THE INDEPENDENT',
-      'THE OBSERVER', 'SUNDAY TIMES', 'THE SUNDAY TIMES', 'DAILY TELEGRAPH',
-      'DAILY EXPRESS', 'THE SPECTATOR', 'TIME OUT', 'TIME OUT LONDON',
-      'THE JEWISH CHRONICLE', 'JEWISH CHRONICLE', 'TRIBUNE', 'METRO',
-      'MAIL ON SUNDAY', 'SUNDAY TELEGRAPH', 'BBC NEWS', 'VARIETY',
-      'THE NEW YORK TIMES', 'NEW YORK TIMES', 'WHATSONSTAGE',
-      'THEREVIEWSHUB.COM', 'THE REVIEWS HUB', 'THEATRECAT', 'LONDON THEATRE',
-      'LONDONTHEATRE1', 'EVERYTHING THEATRE', 'BRITISH THEATRE GUIDE',
-      'BROADWAYWORLD', 'MUSICAL THEATRE REVIEW', 'THEATRE WEEKLY',
-      'THE ARTS DESK', 'THE SCOTSMAN', 'THE LIST', 'RADIO TIMES',
-      'DIGITAL SPY', 'THE SUN', 'THE MIRROR', 'THE EXPRESS', 'CULTURE WHISPER',
-      'THE I', 'I NEWS', 'LONDONIST', 'CITY A.M.',
-    ]);
 
     if (trimmed === trimmed.toUpperCase() && trimmed.length > 3 && /^[A-Z]/.test(trimmed) &&
         trimmed !== 'Reviews' && trimmed !== 'Index' && !trimmed.includes(titleUpper) &&
@@ -238,8 +249,6 @@ function parseRawPdfReviews(text, showTitle) {
   const lines = text.split('\n');
   const allReviews = [];
   const titleLower = showTitle.toLowerCase();
-  // Also match with common title variations
-  const titleWords = titleLower.split(/\s+/).filter(w => w.length > 3);
 
   let i = 0;
   while (i < lines.length) {
@@ -357,9 +366,6 @@ function parseRawPdfReviews(text, showTitle) {
     // If title isn't in first 300 chars, the review is likely about a different show
     // (multi-column contamination from adjacent productions in the same PDF page)
     return false;
-    // Allow if title words appear in the first 50% of text
-    const firstHalf = r.fullText.substring(0, Math.floor(r.fullText.length * 0.5)).toLowerCase();
-    return significantWords.some(w => firstHalf.includes(w));
   });
 
   // Convert outlet names to Title Case

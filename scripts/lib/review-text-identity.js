@@ -21,6 +21,8 @@
 const { stripQuotedSpans, stripBoilerplate, normalizeForShingles, isCastListLike } = require('./aggregator-outlet-byline-audit');
 const { isExclusionFlagged } = require('./merge-review-fields');
 const { criticIsCompatibleMergeTarget } = require('./review-normalization');
+const { hasProductionHeaderBleed } = require('./tr-pdf-parse');
+const { markRescoreNeeded } = require('./rescore-flagging');
 
 const SHINGLE_WORDS = 16;
 const MIN_SHARED_WINDOWS = 3;
@@ -176,15 +178,13 @@ function mergeTheatreRecordIntoExisting(existing, reviewData, { fillCritic = fal
   // BRO-5141: before the PDF parser was bounded, a TR text could run on into
   // the next production's info page (synopsis, cast, sometimes its reviews).
   // A fresh extraction of the same review without that tail replaces it.
-  const { hasProductionHeaderBleed } = require('./tr-pdf-parse');
   if (merged.fullText && reviewData.fullText && merged.fullText !== reviewData.fullText
       && hasProductionHeaderBleed(merged.fullText) && !hasProductionHeaderBleed(reviewData.fullText)
       && openingOf(reviewData.fullText).length === OPENING_CHARS
       && openingOf(merged.fullText) === openingOf(reviewData.fullText)) {
     merged.fullText = reviewData.fullText;
-    merged.textWordCount = reviewData.textWordCount;
-    merged.needsRescore = true;
-    merged.needsRescoreReason = 'theatre-record: text trimmed to own section (BRO-5141)';
+    merged.textWordCount = reviewData.fullText.split(/\s+/).filter(Boolean).length;
+    markRescoreNeeded(merged, 'theatre-record: text trimmed to own section (BRO-5141)');
   }
   if (!merged.textWordCount && reviewData.textWordCount) merged.textWordCount = reviewData.textWordCount;
   if (!merged.contentTier || merged.contentTier === 'stub' || merged.contentTier === 'excerpt' || merged.contentTier === 'invalid') {

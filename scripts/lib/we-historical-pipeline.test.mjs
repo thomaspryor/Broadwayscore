@@ -218,14 +218,17 @@ test('auditSeason (BRO-5141): reviews of a declared prior run are in window', ()
 
 test('auditSeason (BRO-5141): a reviewed window exception is reported, not failed', () => {
   const delroy = { id: 'death-of-england-delroy-west-end-2020', title: 'Death of England: Delroy', venue: 'Olivier Theatre', previewsStartDate: '2020-10-21', openingDate: '2020-11-04', closingDate: '2020-11-04', status: 'closed', category: 'west-end', market: 'west-end', season: SEASON, discoverySource: 'we-historical:wos' };
-  const reviews = [{ showId: delroy.id, outletId: 'sierz-co-uk', outlet: 'Aleks Sierz', criticName: null, publishDate: '2020-11-27', assignedScore: 92 }];
+  const url = 'https://sierz.co.uk/reviews/death-of-england-delroy-national-theatre/';
+  const reviews = [{ showId: delroy.id, outletId: 'sierz-co-uk', outlet: 'Aleks Sierz', criticName: null, url, publishDate: '2020-11-27', assignedScore: 92 }];
   assert.equal(auditSeason({ shows: [delroy], reviews, season: SEASON }).checks.inWindow.value, 1);
-  const windowExceptions = [{ showId: delroy.id, outletId: 'sierz-co-uk', publishDate: '2020-11-27', reason: 'lockdown close' }];
+  const windowExceptions = [{ showId: delroy.id, outletId: 'sierz-co-uk', publishDate: '2020-11-27', url, reason: 'lockdown close' }];
   const r = auditSeason({ shows: [delroy], reviews, season: SEASON, windowExceptions });
   assert.equal(r.checks.inWindow.pass, true);
   assert.equal(r.checks.inWindow.exempted.length, 1);
   const other = auditSeason({ shows: [delroy], reviews: [{ ...reviews[0], publishDate: '2020-12-30' }], season: SEASON, windowExceptions });
   assert.equal(other.checks.inWindow.value, 1, 'an exception covers that one review only');
+  const otherUrl = auditSeason({ shows: [delroy], reviews: [{ ...reviews[0], url: 'https://sierz.co.uk/other/' }], season: SEASON, windowExceptions });
+  assert.equal(otherUrl.checks.inWindow.value, 1, 'and only at its url');
 });
 
 test('auditSeason: a clean season passes; --ids limits the audit to a batch', () => {

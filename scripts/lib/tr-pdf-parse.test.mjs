@@ -118,3 +118,39 @@ test('BRO-5141: 2019-format header ("TITLE" / "Goto" / "CITY, VENUE") is cut who
   ]);
   assert.deepEqual(cut, ['company and especially Ann Louise Ross and Oliver Ford Davies.']);
 });
+
+test('BRO-5141: a title wrapped over three lines is found', () => {
+  const text = [
+    'THE CURIOUS INCIDENT OF THE DOG',
+    'IN THE NIGHT-TIME',
+    'Revival of play by SIMON STEPHENS',
+    'Piccadilly Theatre, London',
+    'Previews / Opens              Press night                   Closes',
+    '',
+    `${PAD}Reviews`,
+    'THE CURIOUS INCIDENT',
+    'OF THE DOG IN THE',
+    'NIGHT-TIME',
+    'THE GUARDIAN',
+    '02 July 2021',
+    'Arifa Akbar',
+    '',
+    'Christopher Boone is back, and the production still dazzles in its new home, with a cast that',
+    'finds fresh detail in every scene.',
+  ].join('\n');
+  const reviews = parsePdfReviews(text, 'The Curious Incident of the Dog in the Night-Time');
+  assert.deepEqual(reviews.map(r => r.outlet), ['The Guardian']);
+});
+
+test('BRO-5141: the header walk-back stops at three title lines (a caps line in the review above stays)', () => {
+  const cut = cutAtProductionHeader([
+    'and the audience roars its approval.',
+    'BRAVO.',
+    'JOSEPH AND THE AMAZING',
+    'TECHNICOLOR DREAMCOAT',
+    'Revival of musical composed by ANDREW LLOYD WEBBER with lyrics by TIM RICE',
+    'London Palladium, London',
+    'Previews / Opens              Press night                   Closes',
+  ]);
+  assert.deepEqual(cut, ['and the audience roars its approval.', 'BRAVO.']);
+});
