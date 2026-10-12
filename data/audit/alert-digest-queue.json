@@ -1799,5 +1799,35 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-12T07:35:08.341Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5128-split-outlets",
+    "title": "Landing blocked: rebase red on land/bro-5128-split-outlets",
+    "description": "land.yml did not land land/bro-5128-split-outlets: the rebase gate went red at fa0eec3b42. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5128-split-outlets @ fa0eec3b42 (origin/land/bro-5128-split-outlets) → origin/main @ 9d68a135e7 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 9d68a135e7: Rebasing (1/1) error: could not apply fa0eec3b422... BRO-5128: split BritishTheatre.com out of the british-theatre outletId hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/rm < Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38211854972",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5128-split-outlets"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "fa0eec3b422bc30d7313fb53cdec1ad76c7a475b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38211854972"
+      }
+    ],
+    "queuedAt": "2026-10-12T07:37:00.127Z"
   }
 ]
