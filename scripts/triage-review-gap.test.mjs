@@ -204,6 +204,23 @@ test('display name "The QR" finds a review-texts file named theqr--<critic>.json
   assert.notEqual(r.state, 'true-missed-discovery');
 });
 
+// BRO-3693 / BRO-4127 / BRO-4845: the three live misses, pinned. Each outlet
+// was ingested under its compact id while the display name slugs hyphenated.
+test('Stage Raw finds _pending/stageraw--*.json (BRO-3693)', () => {
+  const r = run({ [`_pending/${SHOW}/stageraw--steven-morris.json`]: { ...base, outletId: 'stageraw', outlet: 'Stage Raw', publishDate: '2026-09-12' } }, 'Stage Raw');
+  assert.notEqual(r.state, 'true-missed-discovery');
+});
+
+test('Beyond the Curtain finds reviews.json outletId beyondthecurtain (BRO-4127)', () => {
+  const r = runWithReviewsJson([{ showId: SHOW, outletId: 'beyondthecurtain', outlet: 'Beyond the Curtain', assignedScore: 63 }], 'Beyond the Curtain');
+  assert.notEqual(r.state, 'true-missed-discovery');
+});
+
+test('Read About Stuff finds readaboutstuff--*.json (BRO-4845)', () => {
+  const r = run({ [`${SHOW}/readaboutstuff--dan-english.json`]: { ...base, outletId: 'readaboutstuff', outlet: 'Read About Stuff', publishDate: '2026-09-12' } }, 'Read About Stuff');
+  assert.notEqual(r.state, 'true-missed-discovery');
+});
+
 test('outletIdCandidates folds diacritics before stripping', () => {
   assert.ok(outletIdCandidates('Théâtre Mag', 'theatre-mag').includes('theatremag'));
 });
