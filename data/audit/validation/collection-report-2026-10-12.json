@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-10-12T01:47:40.123Z",
+  "runDate": "2026-10-12T02:13:06.209Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,25 +11,25 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 55,
+    "processed": 14,
+    "failed": 57,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "19.7%"
   },
   "tierBreakdown": {
-    "playwright": 255,
+    "playwright": 273,
     "amp": 18,
-    "browserbase": 9,
+    "browserbase": 10,
     "directCookies": 0,
-    "scrapingdog": 44,
+    "scrapingdog": 46,
     "scrapingbee": 51,
-    "brightdata": 2,
+    "brightdata": 3,
     "archiveToday": 0,
-    "archive": 33
+    "archive": 34
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 14,
+    "tier1Success": 14,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -38,13 +38,13 @@
     "tier1_9Success": 0,
     "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier4Attempts": 8,
     "tier4Success": 0,
-    "totalFailed": 55,
+    "totalFailed": 57,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
@@ -54,17 +54,23 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 0,
-    "failed": 55,
+    "processed": 14,
+    "failed": 57,
     "shows": [
+      "a-christmas-carol-2001",
+      "a-wonderful-world-the-louis-armstrong-musical-2024",
       "aint-no-mo-2022",
       "all-my-sons-2008",
       "appropriate-2023",
+      "beetlejuice-2019",
+      "boop-2025",
       "clybourne-park-2012",
       "come-back-little-sheba-2008",
       "eclipsed-2016",
+      "english-2025",
       "escape-to-margaritaville-2018",
       "farinelli-and-the-king-2017",
+      "gary-a-sequel-to-titus-andronicus-2019",
       "ghost-the-musical-2012",
       "grey-house-2023",
       "hamlet-2009",
@@ -82,7 +88,9 @@
       "ohio-state-murders-2022",
       "on-a-clear-day-you-can-see-forever-2011",
       "picnic-2013",
+      "pirates-the-penzance-musical-2025",
       "ragtime-2009",
+      "real-women-have-curves-2025",
       "reasons-to-be-pretty-2009",
       "red-2010",
       "rodgers-hammersteins-cinderella-2013",
@@ -91,12 +99,14 @@
       "suffs-2024",
       "tammy-faye-2024",
       "the-collaboration-2022",
+      "the-cottage-2023",
       "the-hills-of-california-2024",
       "the-inheritance-2019",
       "the-lieutenant-of-inishmore-2006",
       "the-little-mermaid-2008",
       "the-nap-2018",
       "the-norman-conquests-2009",
+      "the-picture-of-dorian-gray-2025",
       "the-shark-is-broken-2023",
       "the-waverly-gallery-2018",
       "the-whos-tommy-2024",
@@ -109,13 +119,30 @@
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
-      "processed": 392,
-      "failed": 263
+      "processed": 400,
+      "failed": 275
     }
   },
-  "processed": [],
+  "processed": [
+    "real-women-have-curves-2025/ew--unknown.json",
+    "real-women-have-curves-2025/timeout--unknown.json",
+    "real-women-have-curves-2025/nysr--unknown.json",
+    "pirates-the-penzance-musical-2025/nypost--unknown.json",
+    "pirates-the-penzance-musical-2025/nysr--unknown.json",
+    "boop-2025/timeout--unknown.json",
+    "the-picture-of-dorian-gray-2025/ew--unknown.json",
+    "the-picture-of-dorian-gray-2025/nypost--unknown.json",
+    "the-picture-of-dorian-gray-2025/timeout--unknown.json",
+    "a-wonderful-world-the-louis-armstrong-musical-2024/timeout--unknown.json",
+    "the-cottage-2023/ew--unknown.json",
+    "beetlejuice-2019/ew--nick-romano.json",
+    "gary-a-sequel-to-titus-andronicus-2019/rollingstone--jerry-portwood.json",
+    "a-christmas-carol-2001/ew--ruth-kinane.json"
+  ],
   "failed": [
     "matilda-the-musical-west-end-2021/whatsonstage--meriel-patrick.json",
+    "boop-2025/nypost--unknown.json",
+    "english-2025/guardian--unknown.json",
     "tammy-faye-2024/stageandcinema--mike-mineo.json",
     "yellow-face-2024/nypost--johnny-oleksinski.json",
     "the-hills-of-california-2024/times-uk--ann-treneman.json",
@@ -564,7 +591,29 @@
       "rent-west-end-2026/british-theatre--british-theatre.json",
       "rent-west-end-2026/city-am--adam-bloodworth.json",
       "rent-west-end-2026/ground--unknown.json",
-      "blood-of-my-blood-west-end-2026/theatremonkey--unknown.json"
+      "blood-of-my-blood-west-end-2026/theatremonkey--unknown.json",
+      "a-ghost-in-your-ear-off-broadway-2026/timeout--unknown.json",
+      "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "good-time-charlie-off-broadway-2026/the-recs--unknown.json",
+      "night-of-january-16th-off-broadway-2026/theatricalia--ayn-rand.json",
+      "soon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "slam-frank-off-broadway-2026/timeout--unknown.json",
+      "jena-friedman-motherfucker-off-broadway-2026/thecomedybureau--unknown.json",
+      "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+      "real-women-have-curves-2025/ew--unknown.json",
+      "real-women-have-curves-2025/timeout--unknown.json",
+      "real-women-have-curves-2025/nysr--unknown.json",
+      "pirates-the-penzance-musical-2025/nypost--unknown.json",
+      "pirates-the-penzance-musical-2025/nysr--unknown.json",
+      "boop-2025/timeout--unknown.json",
+      "the-picture-of-dorian-gray-2025/ew--unknown.json",
+      "the-picture-of-dorian-gray-2025/nypost--unknown.json",
+      "the-picture-of-dorian-gray-2025/timeout--unknown.json",
+      "a-wonderful-world-the-louis-armstrong-musical-2024/timeout--unknown.json",
+      "the-cottage-2023/ew--unknown.json",
+      "beetlejuice-2019/ew--nick-romano.json",
+      "gary-a-sequel-to-titus-andronicus-2019/rollingstone--jerry-portwood.json",
+      "a-christmas-carol-2001/ew--ruth-kinane.json"
     ],
     "failed": [
       "matilda-the-musical-west-end-2021/whatsonstage--meriel-patrick.json",
@@ -829,7 +878,21 @@
       "rent-west-end-2026/jonathan-baz--unknown.json",
       "into-the-woods-noel-coward-west-end-2026/london-theatre-reviews--unknown.json",
       "blood-of-my-blood-west-end-2026/broadwayworld--stephi-wild.json",
-      "blood-of-my-blood-west-end-2026/chelmsfordtheatre--unknown.json"
+      "blood-of-my-blood-west-end-2026/chelmsfordtheatre--unknown.json",
+      "fish-off-broadway-2026/timeout--unknown.json",
+      "fish-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+      "a-ghost-in-your-ear-off-broadway-2026/theatermania--unknown.json",
+      "good-time-charlie-off-broadway-2026/talkinbroadway--unknown.json",
+      "triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "soon-off-broadway-2026/nick-blaemire--unknown.json",
+      "soon-off-broadway-2026/playbill--unknown.json",
+      "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
+      "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--unknown.json",
+      "jena-friedman-motherfucker-off-broadway-2026/oklahomatickets--unknown.json",
+      "jena-friedman-motherfucker-off-broadway-2026/viptickets--unknown.json",
+      "toc-toc-off-broadway-2026/laguiacultural--unknown.json",
+      "boop-2025/nypost--unknown.json",
+      "english-2025/guardian--unknown.json"
     ]
   },
   "tierDetails": {
@@ -1088,7 +1151,25 @@
       "from-the-heart-west-end-2026/theatre-news--unknown.json",
       "an-oak-tree-off-west-end-2026/bestoftheatre--ella-dunmore.json",
       "an-oak-tree-off-west-end-2026/timcrouchtheatre--unknown.json",
-      "rent-west-end-2026/british-theatre--british-theatre.json"
+      "rent-west-end-2026/british-theatre--british-theatre.json",
+      "a-ghost-in-your-ear-off-broadway-2026/timeout--unknown.json",
+      "good-time-charlie-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "good-time-charlie-off-broadway-2026/the-recs--unknown.json",
+      "night-of-january-16th-off-broadway-2026/theatricalia--ayn-rand.json",
+      "slam-frank-off-broadway-2026/timeout--unknown.json",
+      "real-women-have-curves-2025/ew--unknown.json",
+      "real-women-have-curves-2025/timeout--unknown.json",
+      "real-women-have-curves-2025/nysr--unknown.json",
+      "pirates-the-penzance-musical-2025/nypost--unknown.json",
+      "pirates-the-penzance-musical-2025/nysr--unknown.json",
+      "boop-2025/timeout--unknown.json",
+      "the-picture-of-dorian-gray-2025/ew--unknown.json",
+      "the-picture-of-dorian-gray-2025/nypost--unknown.json",
+      "the-picture-of-dorian-gray-2025/timeout--unknown.json",
+      "a-wonderful-world-the-louis-armstrong-musical-2024/timeout--unknown.json",
+      "the-cottage-2023/ew--unknown.json",
+      "beetlejuice-2019/ew--nick-romano.json",
+      "a-christmas-carol-2001/ew--ruth-kinane.json"
     ],
     "amp": [
       "data/review-texts/dr-semmelweis-west-end-2023/variety--unknown.json",
@@ -1119,7 +1200,8 @@
       "dirty-rotten-scoundrels-2005/washpost--barbara-ley-toffler.json",
       "data/review-texts/frozen-2004/nytimes--helen-shaw.json",
       "data/review-texts/king-lear-2004/hollywood-reporter--unknown.json",
-      "king-lear-2004/hollywood-reporter--unknown.json"
+      "king-lear-2004/hollywood-reporter--unknown.json",
+      "data/review-texts/triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -1166,7 +1248,9 @@
       "once-upon-a-mattress-1996/metrmag--unknown.json",
       "working-1978/musical-theatre-review--unknown.json",
       "fences-off-west-end-2026/ground--unknown.json",
-      "rent-west-end-2026/ground--unknown.json"
+      "rent-west-end-2026/ground--unknown.json",
+      "jena-friedman-motherfucker-off-broadway-2026/thecomedybureau--unknown.json",
+      "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
     ],
     "scrapingbee": [
       "elektra-west-end-2025/broadwayworld--alexander-cohen.json",
@@ -1223,7 +1307,8 @@
     ],
     "brightdata": [
       "ballroom-1978/nytimes--richard-eder.json",
-      "midnight-in-the-garden-of-good-and-evil-2024/nytimes--unknown.json"
+      "midnight-in-the-garden-of-good-and-evil-2024/nytimes--unknown.json",
+      "gary-a-sequel-to-titus-andronicus-2019/rollingstone--jerry-portwood.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -1259,9 +1344,18 @@
       "fences-off-west-end-2026/north-west-end--michelle-knight.json",
       "from-the-heart-west-end-2026/north-west-end--alan-stuart-malin.json",
       "rent-west-end-2026/city-am--adam-bloodworth.json",
-      "blood-of-my-blood-west-end-2026/theatremonkey--unknown.json"
+      "blood-of-my-blood-west-end-2026/theatremonkey--unknown.json",
+      "soon-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Guardian": {
+      "count": 1,
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
