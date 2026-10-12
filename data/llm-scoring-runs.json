@@ -1,37 +1,5 @@
 [
   {
-    "startedAt": "2026-10-11T17:36:56.857Z",
-    "completedAt": "2026-10-11T17:37:04.753Z",
-    "totalReviews": 32,
-    "processed": 1,
-    "skipped": 30,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 10143,
-      "output": 464,
-      "total": 26655
-    },
-    "costUsd": 0.03754249999999999,
-    "runId": "38160040020",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-11T17:37:06.705Z",
-    "completedAt": "2026-10-11T17:37:14.405Z",
-    "totalReviews": 3,
-    "processed": 3,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 9453,
-      "output": 722,
-      "total": 10175
-    },
-    "costUsd": 0.0255706,
-    "runId": "38160040020",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-11T18:03:40.459Z",
     "completedAt": "2026-10-11T18:03:40.644Z",
     "totalReviews": 3,
@@ -617539,6 +617507,69 @@
     },
     "costUsd": 0,
     "runId": "38319673745",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-12T23:12:05.734Z",
+    "completedAt": "2026-10-12T23:14:56.163Z",
+    "totalReviews": 56641,
+    "processed": 39,
+    "skipped": 56589,
+    "errors": 6,
+    "tokensUsed": {
+      "input": 283637,
+      "output": 13127,
+      "total": 694155
+    },
+    "costUsd": 0.6324695250000001,
+    "runId": "38320322340",
+    "errorDetails": [
+      {
+        "showId": "begin-again-regional-2026",
+        "outletId": "san-diego-reader",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "the-notebook-tour-2025",
+        "outletId": "washpost",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "and-juliet-tour-2024",
+        "outletId": "nuvo",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "the-humanities-regional-2026",
+        "outletId": "broadwayworld",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "the-getaway-driver-regional-2026",
+        "outletId": "broadwayworld",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "the-years-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-12T23:15:09.744Z",
+    "completedAt": "2026-10-12T23:15:19.715Z",
+    "totalReviews": 3,
+    "processed": 3,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 4236,
+      "output": 619,
+      "total": 4855
+    },
+    "costUsd": 0.0143041,
+    "runId": "38320322340",
     "errorDetails": []
   }
 ]
