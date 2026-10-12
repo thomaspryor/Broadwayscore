@@ -90,7 +90,7 @@ async function main(argv = process.argv.slice(2)) {
     buildShowTitleIndex, findUnmatchedCandidates, bwwRoundupCataloguedElsewhere, candidateKey,
   } = require('./lib/reverse-discovery');
   const { loadReviewEvidence, mergeEvidence, saveReviewEvidence } = require('./lib/review-evidence');
-  const { ukFlagshipShows } = require('./lib/uk-regional-guardian');
+  const { ukFlagshipShows, isSameProduction } = require('./lib/uk-regional-guardian');
 
   const dryRun = argv.includes('--dry-run');
   const days = parseInt((argv.find(a => a.startsWith('--days=')) || '').split('=')[1] || '45', 10);
@@ -104,7 +104,7 @@ async function main(argv = process.argv.slice(2)) {
   // IS missing — a global index would swallow it.
   const weIndex = buildShowTitleIndex(shows, 'we');
   const nycIndex = buildShowTitleIndex(shows, 'nyc');
-  const regionalIndex = buildShowTitleIndex(ukFlagshipShows(shows), 'regional');
+  const ukShows = ukFlagshipShows(shows);
   console.log(`Loaded ${shows.length} shows (${weIndex.exact.size} WE / ${nycIndex.exact.size} NYC title variants)`);
 
   const items = [];
@@ -393,10 +393,11 @@ async function main(argv = process.argv.slice(2)) {
       items.filter(i => i.market === 'nyc' && i.source === 'bww-roundup'), nycIndex,
       { allowClosedRevival: true }
     ).filter(c => !bwwRoundupCataloguedElsewhere(c.title, shows, c.date)),
-    // Flagship UK houses outside London (BRO-4923): checked against regional
-    // shows only, so a same-title Globe/Broadway run cannot hide the RSC one.
+    // Flagship UK houses outside London (BRO-4923): matched on house + title +
+    // run dates (isSameProduction), so a same-title Globe/Broadway/US-regional
+    // run, another house's run, or last year's revival cannot hide it.
     // promote-ob-venue-candidates.js --regional-only stages and promotes these.
-    ...findUnmatchedCandidates(items.filter(i => i.market === 'uk-regional'), regionalIndex, { allowClosedRevival: true }),
+    ...items.filter(i => i.market === 'uk-regional' && !ukShows.some(s => isSameProduction(i, s))),
   ];
   console.log(`\n${candidates.length} missing-show candidate(s) of ${items.length} recent items:`);
   for (const c of candidates) console.log(`  [${c.source}] "${c.title}" — ${c.url}`);

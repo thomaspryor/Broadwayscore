@@ -196,3 +196,94 @@ test('US/Canadian feeder houses added in BRO-4923 resolve to a city and never ma
   }
   assert.deepEqual(clashes, []);
 });
+
+// ── Ship-check P1s (BRO-4923): same-production matching and tag-only venue proof ──
+const { isSameProduction, findSameProduction } = require('../../scripts/lib/uk-regional-guardian.js');
+const { cityFromVenue, selectDiscoveryShows } = require('../../scripts/lib/regional-serp-discovery.js');
+const { isExemptFromPlaybillCheck } = require('../../scripts/validate-show-venue.js');
+
+const rscShow = (over = {}) => ({
+  id: 'x', title: 'Twelfth Night', category: 'regional', status: 'closed',
+  venue: 'Royal Shakespeare Theatre, Stratford-upon-Avon',
+  previewsStartDate: '2019-03-01', openingDate: '2019-03-12', closingDate: '2019-04-20', ...over,
+});
+const guardianItem = (over = {}) => ({
+  title: 'Twelfth Night', venue: 'Royal Shakespeare Theatre', date: '2026-10-07T10:00:00.000Z', ...over,
+});
+
+test('a revival at the same house is a different production from last time\'s run', () => {
+  assert.equal(isSameProduction(guardianItem(), rscShow()), false); // 2019 run vs 2026 review
+  const current = rscShow({ status: 'open', previewsStartDate: '2026-09-26', openingDate: '2026-10-06', closingDate: '2026-11-07' });
+  assert.equal(isSameProduction(guardianItem(), current), true);
+  assert.equal(findSameProduction(guardianItem(), [rscShow(), current]), current);
+});
+
+test('the same title at another flagship house is a different production', () => {
+  const rscHamlet = rscShow({ title: 'Hamlet', status: 'open', previewsStartDate: '2026-09-26', openingDate: '2026-10-06', closingDate: '2026-11-07' });
+  assert.equal(isSameProduction({ title: 'Hamlet', venue: 'Bristol Old Vic', date: '2026-10-08T00:00:00Z' }, rscHamlet), false);
+  assert.equal(isSameProduction({ title: 'Hamlet', venue: 'Royal Shakespeare Theatre', date: '2026-10-08T00:00:00Z' }, rscHamlet), true);
+});
+
+test('a subtitle head matches (Game of Thrones vs Game of Thrones: The Mad King) and an unrelated title does not', () => {
+  const got = rscShow({ title: 'Game of Thrones: The Mad King', previewsStartDate: '2026-07-28', openingDate: '2026-08-08', closingDate: '2026-09-05' });
+  assert.equal(isSameProduction({ title: 'Game of Thrones', venue: 'Royal Shakespeare Theatre', date: '2026-08-10T00:00:00Z' }, got), true);
+  assert.equal(isSameProduction({ title: 'Macbeth', venue: 'Royal Shakespeare Theatre', date: '2026-08-10T00:00:00Z' }, got), false);
+});
+
+test('staging drops only the rows of productions already catalogued, keeps a revival', () => {
+  const rows = stageUkRegionalCandidates([
+    { title: 'Twelfth Night', source: 'guardian-review', url: 'https://g/1', date: '2026-10-07T10:00:00Z', market: 'uk-regional', venue: 'Royal Shakespeare Theatre' },
+  ]);
+  assert.equal(rows.length, 1);
+  assert.equal(findSameProduction(rows[0], [rscShow()]), undefined, 'the 2019 run must not swallow the 2026 row');
+});
+
+test('a company tag on a tour date is not proof of the house; the house city or name in the slug is', () => {
+  const tour = extractGuardianReview({
+    title: 'Matilda review – the RSC musical on tour',
+    link: 'https://www.theguardian.com/stage/2026/oct/05/matilda-review-theatre-royal-newcastle',
+    categories: ['Theatre', 'Royal Shakespeare Company'],
+  });
+  assert.equal(tour, null);
+  const truro = extractGuardianReview({
+    title: 'Hamlet review – Bristol Old Vic on the road',
+    link: 'https://www.theguardian.com/stage/2026/oct/05/hamlet-review-hall-for-cornwall-truro',
+    categories: ['Theatre', 'Bristol Old Vic'],
+  });
+  assert.equal(truro, null);
+  // Chichester's Minerva: the tag plus the city in the slug still routes.
+  const chi = extractGuardianReview({
+    title: 'Antigone Exits review – new play',
+    link: 'https://www.theguardian.com/stage/2026/oct/04/antigone-exits-review-minerva-theatre-chichester-nina-segal',
+    categories: ['Theatre', 'Chichester Festival theatre'],
+  });
+  assert.equal(chi.venue, 'Chichester Festival Theatre');
+  // The live RSC As You Like It item (company tag, slug names no venue) still routes.
+  assert.equal(extractGuardianReview(RSC_AYLI_ITEM).venue, 'Royal Shakespeare Theatre');
+});
+
+test('SERP city: UK venues end in the city, US venues in "City, ST"', () => {
+  assert.equal(cityFromVenue('Royal Shakespeare Theatre, Stratford-upon-Avon'), 'Stratford-upon-Avon');
+  assert.equal(cityFromVenue('Goodman Theatre, Chicago, IL'), 'Chicago');
+  assert.equal(cityFromVenue('Joan and Robert Rechnitz Theater, Two River Theater, Red Bank, NJ'), 'Red Bank');
+});
+
+test('the SERP discovery filter takes a comma-separated id list', () => {
+  const shows = ['a-regional-2026', 'b-regional-2026', 'c-regional-2026'].map((id) => ({ id, market: 'regional', status: 'open' }));
+  assert.deepEqual(selectDiscoveryShows(shows, 'a-regional-2026,c-regional-2026').map((s) => s.id), ['a-regional-2026', 'c-regional-2026']);
+  assert.deepEqual(selectDiscoveryShows(shows, 'b-regional-2026').map((s) => s.id), ['b-regional-2026']);
+});
+
+test('Guardian-triggered regional shows are exempt from the Playbill check; a manual stub is not', () => {
+  assert.equal(isExemptFromPlaybillCheck({ category: 'regional', discoverySource: 'guardian-review' }), true);
+  assert.equal(isExemptFromPlaybillCheck({ category: 'regional', discoverySource: 'manual-user-request' }), false);
+  assert.equal(isExemptFromPlaybillCheck({ category: 'off-broadway', discoverySource: 'guardian-review' }), false);
+});
+
+test('feeder venue spellings: curly apostrophe, one-word Playhouse; Tin Pan Alley is not the Alley Theatre', () => {
+  assert.equal(feederVenueCity('Ford’s Theatre'), 'Washington, DC');
+  assert.equal(feederVenueCity("Ford's Theatre"), 'Washington, DC');
+  assert.equal(feederVenueCity('Cleveland Playhouse'), 'Cleveland, OH');
+  assert.equal(feederVenueCity('Tin Pan Alley Theater'), null);
+  assert.equal(feederVenueCity('Alley Theatre'), 'Houston, TX');
+});
