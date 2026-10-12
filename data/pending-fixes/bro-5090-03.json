@@ -1,8 +1,8 @@
 {
  "issueNumber": "bro-5090-03",
- "planId": "01d12ba4-e65a-4d7d-b45a-97e48f87ace9",
+ "planId": "28494836-a725-4c10-a97b-5b5c9f00f639",
  "status": "pending",
- "createdAt": "2026-10-12T11:19:41.332Z",
+ "createdAt": "2026-10-12T11:57:00.096Z",
  "submitter": {
   "name": null,
   "email": null
@@ -10,22 +10,6 @@
  "plan": {
   "summary": "BRO-5090 part 3: correct 25 critic bylines and publish dates. The legacy LLM web-search step (Feb 2026 backfill) invented them; each review page's own metadata (JSON-LD/meta author, published time) says otherwise.",
   "steps": [
-   "Page byline at http://www.nytimes.com/2014/06/20/theater/holler-if-ya-hear-me-inspired-by-tupac-shakurs-rap.html?_r=0 is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page.",
-   "Page byline at https://deadline.com/2017/04/broadway-review-indecent-1202071471/ is Jeremy Gerard; Pete Hammond came from the legacy web-search step and is not on the page.",
-   "Page byline at https://ew.com/theater/2017/04/18/indecent-broadway-review/?srsltid=AfmBOoqay76bcV0mlvSBRKQGJEEiNBR-EFPMTKoUwsLvDunzn-UDkVrM is Elysa Gardner; Melissa Rose Bernardo came from the legacy web-search step and is not on the page.",
-   "Page byline at https://www.nytimes.com/2022/07/10/theater/into-the-woods-review.html is Alexis Soloski; Jesse Green came from the legacy web-search step and is not on the page.",
-   "Page byline at https://variety.com/2007/legit/reviews/journey-s-end-1200558958/ is Julio Martinez; David Rooney came from the legacy web-search step and is not on the page.",
-   "Page byline at https://www.nytimes.com/2018/11/08/theater/king-kong-review.html is Jesse Green; Ben Brantley came from the legacy web-search step and is not on the page. The page critic already has the live record nytimes--ben-brantleyjesse-green.json for this url, so this web-search copy is a duplicate of it.",
-   "Page byline at https://ew.com/theater/theater-reviews/kpop-review-broadway/?srsltid=AfmBOoq_mimZT2J3W9HDNX4MPI4LXQ4VAPbjrgwelpzbYJmnhJ1tvNdb is Emlyn Travis; Kristen Baldwin came from the legacy web-search step and is not on the page.",
-   "Page byline at https://www.nytimes.com/2024/10/23/theater/review-left-on-tenth-delia-ephron.html is Laura Collins-Hughes; Jesse Green came from the legacy web-search step and is not on the page.",
-   "Page byline at https://variety.com/2012/legit/reviews/leap-of-faith-1117947436/ is John Anderson; Marilyn Stasio came from the legacy web-search step and is not on the page.",
-   "Page byline at https://www.wsj.com/articles/linda-vista-review-his-own-worst-enemy-11570753800?gaa_at=eafs&gaa_n=AWEtsqdZ7icR0wTRMK7eNgzesahOK3B2_SmXrbcSFOzZO6TEN_DG3j3cQtMF&gaa_ts=699527ca&gaa_sig=A5fgUzkVu_rale5Iuzj7GRJzl76v1s7ZreVv10F_ubI8DR1eqS7Ke_ivYFy1fp6Tk4c4PhcbrUTTYZ0S2dFOag%3D%3D is Terry Teachout; Charles Isherwood came from the legacy web-search step and is not on the page. The page critic already has the live record wsj--terry-teachout.json for this url, so this web-search copy is a duplicate of it.",
-   "Page byline at https://www.ew.com/article/2016/04/27/long-days-journey-night-review-michael-shannon-jessica-lange is Jeff Labrecque; Melissa Rose Bernardo came from the legacy web-search step and is not on the page.",
-   "Page byline at https://www.nytimes.com/2017/06/29/theater/marvins-room-review-broadway.html is Jesse Green; Ben Brantley came from the legacy web-search step and is not on the page.",
-   "Page byline at https://variety.com/2009/legit/reviews/mary-stuart-1117999944/ is Rick Kissell; Marilyn Stasio came from the legacy web-search step and is not on the page.",
-   "Page byline at https://www.washingtonpost.com/entertainment/theater/2024/11/12/maybe-happy-ending-broadway-review/ is Naveen Kumar; Peter Marks came from the legacy web-search step and is not on the page.",
-   "Page byline at https://ew.com/mcneal-review-robert-downey-jr-makes-broadway-debut-8720305?srsltid=AfmBOoqTC2I55xAyzzPmQqrPsDpejVVfEnQv2rSzQNhry3wJME3u-NKy is Emlyn Travis; Joey Nolfi came from the legacy web-search step and is not on the page.",
-   "Page byline at https://www.nytimes.com/2017/11/29/theater/meteor-shower-amy-schumer-steve-martin-review.html is Jesse Green; Ben Brantley came from the legacy web-search step and is not on the page. The page critic already has the live record nytimes--jesse-green.json for this url, so this web-search copy is a duplicate of it.",
    "Page byline at http://www.nytimes.com/2015/11/16/theater/review-in-misery-with-bruce-willis-and-laurie-metcalf-the-ghost-of-productions-past.html?_r=0 is Ben Brantley; Charles Isherwood came from the legacy web-search step and is not on the page.",
    "Page byline at https://www.nytimes.com/2024/04/25/theater/mother-play-review-jessica-lange-paula-vogel.html is Alexis Soloski; Jesse Green came from the legacy web-search step and is not on the page.",
    "Page byline at https://www.nytimes.com/2013/04/15/theater/reviews/motown-the-musical-berry-gordys-story.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page. The page critic already has the live record nytimes--charles-isherwood.json for this url, so this web-search copy is a duplicate of it.",
@@ -34,138 +18,26 @@
    "Page byline at http://www.nytimes.com/2014/04/17/theater/james-franco-and-chris-odowd-in-of-mice-and-men.html?_r=0 is Ben Brantley; Charles Isherwood came from the legacy web-search step and is not on the page.",
    "Page byline at http://www.nytimes.com/2014/10/17/theater/in-on-the-town-the-city-is-candy-colored-heaven.html?partner=rss&emc=rss is Ben Brantley; Charles Isherwood came from the legacy web-search step and is not on the page.",
    "Page byline at https://www.nytimes.com/2015/11/06/theater/review-on-your-feet-rides-the-rhythm-of-the-estefans.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page.",
-   "Page byline at https://www.nytimes.com/2017/12/03/theater/review-once-on-this-island-revived-and-ravishing.html is Jesse Green; Ben Brantley came from the legacy web-search step and is not on the page."
+   "Page byline at https://www.nytimes.com/2017/12/03/theater/review-once-on-this-island-revived-and-ravishing.html is Jesse Green; Ben Brantley came from the legacy web-search step and is not on the page.",
+   "Page byline at https://www.nytimes.com/2024/08/12/theater/once-upon-a-mattress-review.html is Elisabeth Vincentelli; Jesse Green came from the legacy web-search step and is not on the page.",
+   "Page byline at https://ew.com/patriots-review-broadway-8637303?srsltid=AfmBOoryi-3RI9IQ6TzsZ4WfoMi9X8sMAb3IdeIuoiFAZxKPrInacuom is Christian Holub; Kristen Baldwin came from the legacy web-search step and is not on the page.",
+   "Page byline at https://www.nytimes.com/2019/08/08/theater/sea-wall-a-life-review-broadway-gyllenhaal.html is Laura Collins-Hughes; Ben Brantley came from the legacy web-search step and is not on the page. The page critic already has the live record nytimes--laura-collins-hughes.json for this url, so this web-search copy is a duplicate of it.",
+   "Page byline at http://nypost.com/2016/03/17/she-loves-me-and-the-robber-bridegroom-prove-old-shows-rock/ is Elisabeth Vincentelli; Johnny Oleksinski came from the legacy web-search step and is not on the page. The page critic already has the live record nypost--elisabeth-vincentelli.json for this url, so this web-search copy is a duplicate of it.",
+   "Page byline at http://www.nytimes.com/2014/11/18/theater/side-show-directed-by-bill-condon-returns-to-broadway.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page.",
+   "Page byline at https://ew.com/article/2014/11/17/side-show-ew-review/?srsltid=AfmBOopLj9fSwOczF47RjL8f0ux3iWKHNT7qh2he8yC7h_5hDiStTQJ- is Melissa Rose Bernardo; Thom Geier came from the legacy web-search step and is not on the page.",
+   "Page byline at https://www.washingtonpost.com/entertainment/theater/2024/04/18/suffs-broadway-review/ is Elisabeth Vincentelli; Peter Marks came from the legacy web-search step and is not on the page. The page critic already has the live record washpost--elisabeth-vincentelli.json for this url, so this web-search copy is a duplicate of it.",
+   "Page byline at https://ew.com/theater/sweeney-todd-the-demon-barber-of-fleet-street-review-josh-groban-annaleigh-ashford/?srsltid=AfmBOoo7i-_7MZ4oeFNg7qcc5xqurAowqr2UTU8Q7r-x0mk6fWu3zAJB is Emlyn Travis; Joey Nolfi came from the legacy web-search step and is not on the page.",
+   "Page byline at https://www.nytimes.com/2015/10/28/theater/review-sylvia-in-which-a-man-loves-a-dog-too-much.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page.",
+   "Page byline at https://ew.com/tammy-faye-review-broadway-musical-elton-john-8743171?srsltid=AfmBOoou5ek-lZ1jdkwhWpvAoajMJSOI_VY1zF7ogmEi1Y5U_NBmJ9NE is Emlyn Travis; Joey Nolfi came from the legacy web-search step and is not on the page.",
+   "Page byline at https://www.washingtonpost.com/entertainment/theater/2024/04/22/patriots-broadway-review/ is Naveen Kumar; Peter Marks came from the legacy web-search step and is not on the page. The page critic already has the live record washpost--naveen-kumar.json for this url, so this web-search copy is a duplicate of it.",
+   "Page byline at https://www.nytimes.com/2018/05/31/theater/the-boys-in-the-band-review-jim-parsons-zachary-quinto.html is Ben Brantley; Jesse Green came from the legacy web-search step and is not on the page.",
+   "Page byline at https://www.nytimes.com/2017/12/12/theater/review-in-the-children-manhattan-theater-club-lucy-kirkwood.html is Jesse Green; Ben Brantley came from the legacy web-search step and is not on the page.",
+   "Page byline at http://www.nytimes.com/2015/12/11/theater/review-the-color-purple-on-broadway-stripped-to-its-essence.html is Ben Brantley; Charles Isherwood came from the legacy web-search step and is not on the page.",
+   "Page byline at https://www.nytimes.com/2022/12/20/theater/the-collaboration-review.html is Laura Collins-Hughes; Jesse Green came from the legacy web-search step and is not on the page.",
+   "Page byline at https://www.nytimes.com/2015/03/20/theater/review-the-heidi-chronicles-with-elisabeth-moss-opens-on-broadway.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page. The page critic already has the live record nytimes--charles-isherwood.json for this url, so this web-search copy is a duplicate of it."
   ],
   "riskLevel": "Low",
   "actions": [
-   {
-    "type": "review-field-edit",
-    "file": "holler-if-ya-hear-me-2014/nytimes--ben-brantley.json",
-    "field": "criticName",
-    "oldValue": "Ben Brantley",
-    "newValue": "Charles Isherwood",
-    "description": "Page byline at http://www.nytimes.com/2014/06/20/theater/holler-if-ya-hear-me-inspired-by-tupac-shakurs-rap.html?_r=0 is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "indecent-2017/deadline--pete-hammond.json",
-    "field": "criticName",
-    "oldValue": "Pete Hammond",
-    "newValue": "Jeremy Gerard",
-    "description": "Page byline at https://deadline.com/2017/04/broadway-review-indecent-1202071471/ is Jeremy Gerard; Pete Hammond came from the legacy web-search step and is not on the page."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "indecent-2017/ew--melissa-rose-bernardo.json",
-    "field": "criticName",
-    "oldValue": "Melissa Rose Bernardo",
-    "newValue": "Elysa Gardner",
-    "description": "Page byline at https://ew.com/theater/2017/04/18/indecent-broadway-review/?srsltid=AfmBOoqay76bcV0mlvSBRKQGJEEiNBR-EFPMTKoUwsLvDunzn-UDkVrM is Elysa Gardner; Melissa Rose Bernardo came from the legacy web-search step and is not on the page."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "into-the-woods-2022/nytimes--jesse-green.json",
-    "field": "criticName",
-    "oldValue": "Jesse Green",
-    "newValue": "Alexis Soloski",
-    "description": "Page byline at https://www.nytimes.com/2022/07/10/theater/into-the-woods-review.html is Alexis Soloski; Jesse Green came from the legacy web-search step and is not on the page."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "journeys-end-2007/variety--david-rooney.json",
-    "field": "criticName",
-    "oldValue": "David Rooney",
-    "newValue": "Julio Martinez",
-    "description": "Page byline at https://variety.com/2007/legit/reviews/journey-s-end-1200558958/ is Julio Martinez; David Rooney came from the legacy web-search step and is not on the page."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "king-kong-2018/nytimes--ben-brantley.json",
-    "field": "duplicateOf",
-    "oldValue": null,
-    "newValue": "nytimes--ben-brantleyjesse-green.json",
-    "description": "Page byline at https://www.nytimes.com/2018/11/08/theater/king-kong-review.html is Jesse Green; Ben Brantley came from the legacy web-search step and is not on the page. The page critic already has the live record nytimes--ben-brantleyjesse-green.json for this url, so this web-search copy is a duplicate of it."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "kpop-2022/ew--kristen-baldwin.json",
-    "field": "criticName",
-    "oldValue": "Kristen Baldwin",
-    "newValue": "Emlyn Travis",
-    "description": "Page byline at https://ew.com/theater/theater-reviews/kpop-review-broadway/?srsltid=AfmBOoq_mimZT2J3W9HDNX4MPI4LXQ4VAPbjrgwelpzbYJmnhJ1tvNdb is Emlyn Travis; Kristen Baldwin came from the legacy web-search step and is not on the page."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "left-on-tenth-2024/nytimes--jesse-green.json",
-    "field": "criticName",
-    "oldValue": "Jesse Green",
-    "newValue": "Laura Collins-Hughes",
-    "description": "Page byline at https://www.nytimes.com/2024/10/23/theater/review-left-on-tenth-delia-ephron.html is Laura Collins-Hughes; Jesse Green came from the legacy web-search step and is not on the page."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "leap-of-faith-2012/variety--marilyn-stasio.json",
-    "field": "criticName",
-    "oldValue": "Marilyn Stasio",
-    "newValue": "John Anderson",
-    "description": "Page byline at https://variety.com/2012/legit/reviews/leap-of-faith-1117947436/ is John Anderson; Marilyn Stasio came from the legacy web-search step and is not on the page."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "linda-vista-2019/wsj--charles-isherwood.json",
-    "field": "duplicateOf",
-    "oldValue": null,
-    "newValue": "wsj--terry-teachout.json",
-    "description": "Page byline at https://www.wsj.com/articles/linda-vista-review-his-own-worst-enemy-11570753800?gaa_at=eafs&gaa_n=AWEtsqdZ7icR0wTRMK7eNgzesahOK3B2_SmXrbcSFOzZO6TEN_DG3j3cQtMF&gaa_ts=699527ca&gaa_sig=A5fgUzkVu_rale5Iuzj7GRJzl76v1s7ZreVv10F_ubI8DR1eqS7Ke_ivYFy1fp6Tk4c4PhcbrUTTYZ0S2dFOag%3D%3D is Terry Teachout; Charles Isherwood came from the legacy web-search step and is not on the page. The page critic already has the live record wsj--terry-teachout.json for this url, so this web-search copy is a duplicate of it."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "long-days-journey-into-night-2016/ew--melissa-rose-bernardo.json",
-    "field": "criticName",
-    "oldValue": "Melissa Rose Bernardo",
-    "newValue": "Jeff Labrecque",
-    "description": "Page byline at https://www.ew.com/article/2016/04/27/long-days-journey-night-review-michael-shannon-jessica-lange is Jeff Labrecque; Melissa Rose Bernardo came from the legacy web-search step and is not on the page."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "marvins-room-2017/nytimes--ben-brantley.json",
-    "field": "criticName",
-    "oldValue": "Ben Brantley",
-    "newValue": "Jesse Green",
-    "description": "Page byline at https://www.nytimes.com/2017/06/29/theater/marvins-room-review-broadway.html is Jesse Green; Ben Brantley came from the legacy web-search step and is not on the page."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "mary-stuart-2009/variety--marilyn-stasio.json",
-    "field": "criticName",
-    "oldValue": "Marilyn Stasio",
-    "newValue": "Rick Kissell",
-    "description": "Page byline at https://variety.com/2009/legit/reviews/mary-stuart-1117999944/ is Rick Kissell; Marilyn Stasio came from the legacy web-search step and is not on the page."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "maybe-happy-ending-2024/washpost--peter-marks.json",
-    "field": "criticName",
-    "oldValue": "Peter Marks",
-    "newValue": "Naveen Kumar",
-    "description": "Page byline at https://www.washingtonpost.com/entertainment/theater/2024/11/12/maybe-happy-ending-broadway-review/ is Naveen Kumar; Peter Marks came from the legacy web-search step and is not on the page."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "mcneal-2024/ew--joey-nolfi.json",
-    "field": "criticName",
-    "oldValue": "Joey Nolfi",
-    "newValue": "Emlyn Travis",
-    "description": "Page byline at https://ew.com/mcneal-review-robert-downey-jr-makes-broadway-debut-8720305?srsltid=AfmBOoqTC2I55xAyzzPmQqrPsDpejVVfEnQv2rSzQNhry3wJME3u-NKy is Emlyn Travis; Joey Nolfi came from the legacy web-search step and is not on the page."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "meteor-shower-2017/nytimes--ben-brantley.json",
-    "field": "duplicateOf",
-    "oldValue": null,
-    "newValue": "nytimes--jesse-green.json",
-    "description": "Page byline at https://www.nytimes.com/2017/11/29/theater/meteor-shower-amy-schumer-steve-martin-review.html is Jesse Green; Ben Brantley came from the legacy web-search step and is not on the page. The page critic already has the live record nytimes--jesse-green.json for this url, so this web-search copy is a duplicate of it."
-   },
    {
     "type": "review-field-edit",
     "file": "misery-2015/nytimes--charles-isherwood.json",
@@ -237,6 +109,134 @@
     "oldValue": "Ben Brantley",
     "newValue": "Jesse Green",
     "description": "Page byline at https://www.nytimes.com/2017/12/03/theater/review-once-on-this-island-revived-and-ravishing.html is Jesse Green; Ben Brantley came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "once-upon-a-mattress-2024/nytimes--jesse-green.json",
+    "field": "criticName",
+    "oldValue": "Jesse Green",
+    "newValue": "Elisabeth Vincentelli",
+    "description": "Page byline at https://www.nytimes.com/2024/08/12/theater/once-upon-a-mattress-review.html is Elisabeth Vincentelli; Jesse Green came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "patriots-2024/ew--kristen-baldwin.json",
+    "field": "criticName",
+    "oldValue": "Kristen Baldwin",
+    "newValue": "Christian Holub",
+    "description": "Page byline at https://ew.com/patriots-review-broadway-8637303?srsltid=AfmBOoryi-3RI9IQ6TzsZ4WfoMi9X8sMAb3IdeIuoiFAZxKPrInacuom is Christian Holub; Kristen Baldwin came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "sea-wall-a-life-2019/nytimes--ben-brantley.json",
+    "field": "duplicateOf",
+    "oldValue": null,
+    "newValue": "nytimes--laura-collins-hughes.json",
+    "description": "Page byline at https://www.nytimes.com/2019/08/08/theater/sea-wall-a-life-review-broadway-gyllenhaal.html is Laura Collins-Hughes; Ben Brantley came from the legacy web-search step and is not on the page. The page critic already has the live record nytimes--laura-collins-hughes.json for this url, so this web-search copy is a duplicate of it."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "she-loves-me-2016/nypost--johnny-oleksinski.json",
+    "field": "duplicateOf",
+    "oldValue": null,
+    "newValue": "nypost--elisabeth-vincentelli.json",
+    "description": "Page byline at http://nypost.com/2016/03/17/she-loves-me-and-the-robber-bridegroom-prove-old-shows-rock/ is Elisabeth Vincentelli; Johnny Oleksinski came from the legacy web-search step and is not on the page. The page critic already has the live record nypost--elisabeth-vincentelli.json for this url, so this web-search copy is a duplicate of it."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "side-show-2014/nytimes--ben-brantley.json",
+    "field": "criticName",
+    "oldValue": "Ben Brantley",
+    "newValue": "Charles Isherwood",
+    "description": "Page byline at http://www.nytimes.com/2014/11/18/theater/side-show-directed-by-bill-condon-returns-to-broadway.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "side-show-2014/ew--thom-geier.json",
+    "field": "criticName",
+    "oldValue": "Thom Geier",
+    "newValue": "Melissa Rose Bernardo",
+    "description": "Page byline at https://ew.com/article/2014/11/17/side-show-ew-review/?srsltid=AfmBOopLj9fSwOczF47RjL8f0ux3iWKHNT7qh2he8yC7h_5hDiStTQJ- is Melissa Rose Bernardo; Thom Geier came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "suffs-2024/washpost--peter-marks.json",
+    "field": "duplicateOf",
+    "oldValue": null,
+    "newValue": "washpost--elisabeth-vincentelli.json",
+    "description": "Page byline at https://www.washingtonpost.com/entertainment/theater/2024/04/18/suffs-broadway-review/ is Elisabeth Vincentelli; Peter Marks came from the legacy web-search step and is not on the page. The page critic already has the live record washpost--elisabeth-vincentelli.json for this url, so this web-search copy is a duplicate of it."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "sweeney-todd-2023/ew--joey-nolfi.json",
+    "field": "criticName",
+    "oldValue": "Joey Nolfi",
+    "newValue": "Emlyn Travis",
+    "description": "Page byline at https://ew.com/theater/sweeney-todd-the-demon-barber-of-fleet-street-review-josh-groban-annaleigh-ashford/?srsltid=AfmBOoo7i-_7MZ4oeFNg7qcc5xqurAowqr2UTU8Q7r-x0mk6fWu3zAJB is Emlyn Travis; Joey Nolfi came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "sylvia-2015/nytimes--ben-brantley.json",
+    "field": "criticName",
+    "oldValue": "Ben Brantley",
+    "newValue": "Charles Isherwood",
+    "description": "Page byline at https://www.nytimes.com/2015/10/28/theater/review-sylvia-in-which-a-man-loves-a-dog-too-much.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "tammy-faye-2024/ew--joey-nolfi.json",
+    "field": "criticName",
+    "oldValue": "Joey Nolfi",
+    "newValue": "Emlyn Travis",
+    "description": "Page byline at https://ew.com/tammy-faye-review-broadway-musical-elton-john-8743171?srsltid=AfmBOoou5ek-lZ1jdkwhWpvAoajMJSOI_VY1zF7ogmEi1Y5U_NBmJ9NE is Emlyn Travis; Joey Nolfi came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "patriots-2024/washpost--peter-marks.json",
+    "field": "duplicateOf",
+    "oldValue": null,
+    "newValue": "washpost--naveen-kumar.json",
+    "description": "Page byline at https://www.washingtonpost.com/entertainment/theater/2024/04/22/patriots-broadway-review/ is Naveen Kumar; Peter Marks came from the legacy web-search step and is not on the page. The page critic already has the live record washpost--naveen-kumar.json for this url, so this web-search copy is a duplicate of it."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "the-boys-in-the-band-2018/nytimes--jesse-green.json",
+    "field": "criticName",
+    "oldValue": "Jesse Green",
+    "newValue": "Ben Brantley",
+    "description": "Page byline at https://www.nytimes.com/2018/05/31/theater/the-boys-in-the-band-review-jim-parsons-zachary-quinto.html is Ben Brantley; Jesse Green came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "the-children-2017/nytimes--ben-brantley.json",
+    "field": "criticName",
+    "oldValue": "Ben Brantley",
+    "newValue": "Jesse Green",
+    "description": "Page byline at https://www.nytimes.com/2017/12/12/theater/review-in-the-children-manhattan-theater-club-lucy-kirkwood.html is Jesse Green; Ben Brantley came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "the-color-purple-2015/nytimes--charles-isherwood.json",
+    "field": "criticName",
+    "oldValue": "Charles Isherwood",
+    "newValue": "Ben Brantley",
+    "description": "Page byline at http://www.nytimes.com/2015/12/11/theater/review-the-color-purple-on-broadway-stripped-to-its-essence.html is Ben Brantley; Charles Isherwood came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "the-collaboration-2022/nytimes--jesse-green.json",
+    "field": "criticName",
+    "oldValue": "Jesse Green",
+    "newValue": "Laura Collins-Hughes",
+    "description": "Page byline at https://www.nytimes.com/2022/12/20/theater/the-collaboration-review.html is Laura Collins-Hughes; Jesse Green came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "the-heidi-chronicles-2015/nytimes--ben-brantley.json",
+    "field": "duplicateOf",
+    "oldValue": null,
+    "newValue": "nytimes--charles-isherwood.json",
+    "description": "Page byline at https://www.nytimes.com/2015/03/20/theater/review-the-heidi-chronicles-with-elisabeth-moss-opens-on-broadway.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page. The page critic already has the live record nytimes--charles-isherwood.json for this url, so this web-search copy is a duplicate of it."
    }
   ]
  }

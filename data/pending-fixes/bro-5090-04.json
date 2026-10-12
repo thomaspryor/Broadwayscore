@@ -1,8 +1,8 @@
 {
  "issueNumber": "bro-5090-04",
- "planId": "2198f62a-ea99-42f9-9420-9e041f6e18bc",
+ "planId": "5e9f08b3-b95e-48ed-9753-9ec4ad564fc4",
  "status": "pending",
- "createdAt": "2026-10-12T11:19:41.332Z",
+ "createdAt": "2026-10-12T11:57:00.096Z",
  "submitter": {
   "name": null,
   "email": null
@@ -10,233 +10,233 @@
  "plan": {
   "summary": "BRO-5090 part 4: correct 25 critic bylines and publish dates. The legacy LLM web-search step (Feb 2026 backfill) invented them; each review page's own metadata (JSON-LD/meta author, published time) says otherwise.",
   "steps": [
-   "Page byline at https://www.nytimes.com/2024/08/12/theater/once-upon-a-mattress-review.html is Elisabeth Vincentelli; Jesse Green came from the legacy web-search step and is not on the page.",
-   "Page byline at https://ew.com/patriots-review-broadway-8637303?srsltid=AfmBOoryi-3RI9IQ6TzsZ4WfoMi9X8sMAb3IdeIuoiFAZxKPrInacuom is Christian Holub; Kristen Baldwin came from the legacy web-search step and is not on the page.",
-   "Page byline at https://variety.com/2009/legit/reviews/race-1200473116/ is Joe Leydon; Marilyn Stasio came from the legacy web-search step and is not on the page.",
-   "Page byline at https://variety.com/2009/legit/reviews/reasons-to-be-pretty-1200474421/ is John Anderson; Charles Isherwood came from the legacy web-search step and is not on the page.",
-   "Page byline at https://www.theatermania.com/new-york-city-theater/reviews/rodgers-hammersteins-cinderella_64239.html is Bethany Rickwald; David Gordon came from the legacy web-search step and is not on the page.",
-   "Page byline at https://variety.com/2024/legit/reviews/romeo-juliet-broadway-review-kit-connor-rachel-zegler-1236194876/ is Patrick Frater; Charles Isherwood came from the legacy web-search step and is not on the page.",
-   "Page byline at https://www.nytimes.com/2019/08/08/theater/sea-wall-a-life-review-broadway-gyllenhaal.html is Laura Collins-Hughes; Ben Brantley came from the legacy web-search step and is not on the page. The page critic already has the live record nytimes--laura-collins-hughes.json for this url, so this web-search copy is a duplicate of it.",
-   "Page byline at http://nypost.com/2016/03/17/she-loves-me-and-the-robber-bridegroom-prove-old-shows-rock/ is Elisabeth Vincentelli; Johnny Oleksinski came from the legacy web-search step and is not on the page. The page critic already has the live record nypost--elisabeth-vincentelli.json for this url, so this web-search copy is a duplicate of it.",
-   "Page byline at https://variety.com/2011/legit/reviews/seminar-1117946828/ is Bob Verini; Marilyn Stasio came from the legacy web-search step and is not on the page.",
-   "Page byline at http://www.nytimes.com/2014/11/18/theater/side-show-directed-by-bill-condon-returns-to-broadway.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page.",
-   "Page byline at https://ew.com/article/2014/11/17/side-show-ew-review/?srsltid=AfmBOopLj9fSwOczF47RjL8f0ux3iWKHNT7qh2he8yC7h_5hDiStTQJ- is Melissa Rose Bernardo; Thom Geier came from the legacy web-search step and is not on the page.",
-   "Page byline at https://www.theatermania.com/broadway/reviews/side-show_70742.html is Michael Feingold; David Gordon came from the legacy web-search step and is not on the page.",
-   "Page byline at https://www.washingtonpost.com/entertainment/theater/2024/04/18/suffs-broadway-review/ is Elisabeth Vincentelli; Peter Marks came from the legacy web-search step and is not on the page. The page critic already has the live record washpost--elisabeth-vincentelli.json for this url, so this web-search copy is a duplicate of it.",
-   "Page byline at https://ew.com/theater/sweeney-todd-the-demon-barber-of-fleet-street-review-josh-groban-annaleigh-ashford/?srsltid=AfmBOoo7i-_7MZ4oeFNg7qcc5xqurAowqr2UTU8Q7r-x0mk6fWu3zAJB is Emlyn Travis; Joey Nolfi came from the legacy web-search step and is not on the page.",
-   "Page byline at https://www.nytimes.com/2015/10/28/theater/review-sylvia-in-which-a-man-loves-a-dog-too-much.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page.",
-   "Page byline at https://variety.com/2007/legit/reviews/talk-radio-1200558845/ is Alan Rich; Charles Isherwood came from the legacy web-search step and is not on the page.",
-   "Page byline at https://ew.com/tammy-faye-review-broadway-musical-elton-john-8743171?srsltid=AfmBOoou5ek-lZ1jdkwhWpvAoajMJSOI_VY1zF7ogmEi1Y5U_NBmJ9NE is Emlyn Travis; Joey Nolfi came from the legacy web-search step and is not on the page.",
-   "Page byline at https://www.washingtonpost.com/entertainment/theater/2024/04/22/patriots-broadway-review/ is Naveen Kumar; Peter Marks came from the legacy web-search step and is not on the page. The page critic already has the live record washpost--naveen-kumar.json for this url, so this web-search copy is a duplicate of it.",
-   "Page byline at https://www.nytimes.com/2018/05/31/theater/the-boys-in-the-band-review-jim-parsons-zachary-quinto.html is Ben Brantley; Jesse Green came from the legacy web-search step and is not on the page.",
-   "Page byline at https://www.nytimes.com/2017/12/12/theater/review-in-the-children-manhattan-theater-club-lucy-kirkwood.html is Jesse Green; Ben Brantley came from the legacy web-search step and is not on the page.",
-   "Page byline at http://www.nytimes.com/2015/12/11/theater/review-the-color-purple-on-broadway-stripped-to-its-essence.html is Ben Brantley; Charles Isherwood came from the legacy web-search step and is not on the page.",
-   "Page byline at https://www.nytimes.com/2022/12/20/theater/the-collaboration-review.html is Laura Collins-Hughes; Jesse Green came from the legacy web-search step and is not on the page.",
-   "Page byline at https://variety.com/2005/legit/reviews/the-constant-wife-1200520826/ is David Lewis; Charles Isherwood came from the legacy web-search step and is not on the page.",
-   "Page byline at https://www.theatermania.com/new-york-city-theater/reviews/the-crucible_75849.html is Bethany Rickwald; Jesse Green came from the legacy web-search step and is not on the page.",
-   "Page byline at https://variety.com/2007/legit/reviews/the-farnsworth-invention-1200558354/ is Steven Mirkin; Charles Isherwood came from the legacy web-search step and is not on the page."
+   "Page byline at http://www.nytimes.com/2016/02/19/theater/review-the-humans-depicts-a-family-and-a-country-under-pressure.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page.",
+   "Page byline at https://www.nytimes.com/2013/01/11/theater/reviews/the-other-place-at-samuel-j-friedman-theater.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page.",
+   "Page byline at https://www.nytimes.com/2017/04/02/theater/review-the-play-that-goes-wrong-review.html is Ben Brantley; Jesse Green came from the legacy web-search step and is not on the page.",
+   "Page byline at https://www.nytimes.com/2017/03/16/theater/review-the-price-mark-ruffalo-arthur-miller.html is Alexis Soloski; Ben Brantley came from the legacy web-search step and is not on the page. The page critic already has the live record nytimes--alexis-soloski.json for this url, so this web-search copy is a duplicate of it.",
+   "Page byline at http://www.nytimes.com/2014/04/07/theater/realistic-joneses-stars-toni-collette-and-michael-c-hall.html?_r=0 is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page.",
+   "Page byline at https://www.nytimes.com/2022/04/25/theater/skin-of-our-teeth-review-lincoln-center.html is Alexis Soloski; Jesse Margolin came from the legacy web-search step and is not on the page.",
+   "Page byline at https://www.wsj.com/articles/thoughts-of-a-colored-man-review-keenan-scott-ii-steve-h-broadax-iii-katori-hall-the-hot-wing-king-11634851069?gaa_at=eafs&gaa_n=AWEtsqfBzkbHUA4BYwkkzOXDLmFi3dC5U1lR9S5qcpw9zJOwT0bg3NCroF6t&gaa_ts=69881993&gaa_sig=3uUEICm3t339J9QLYwOCIVXp6b-xbX9Ex4JM3wPPvAiBJ51IP6uKhhv_twjbulSYFKLUQvcYh4YMxNSUZdzF7A%3D%3D is Terry Teachout; Charles Isherwood came from the legacy web-search step and is not on the page. The page critic already has the live record wsj--terry-teachout.json for this url, so this web-search copy is a duplicate of it.",
+   "Page byline at https://www.nytimes.com/2021/10/13/theater/thoughts-of-a-colored-man-review.html is Maya Phillips; Jesse Green came from the legacy web-search step and is not on the page.",
+   "Page byline at https://www.nytimes.com/2017/10/10/theater/time-and-the-conways-theater-review-roundabout.html is Jesse Green; Ben Brantley came from the legacy web-search step and is not on the page.",
+   "Page byline at https://www.nytimes.com/2018/12/13/theater/to-kill-a-mockingbird-review-jeff-daniels.html is Jesse Green; Ben Brantley came from the legacy web-search step and is not on the page.",
+   "Page byline at https://www.nytimes.com/2016/04/27/theater/review-tuck-everlasting-a-lyrical-meditation-on-life-death-and-immortality.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page.",
+   "Page byline at https://www.nytimes.com/2011/11/09/theater/reviews/venus-in-fur-by-david-ives-with-nina-arianda-review.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page.",
+   "Page byline at https://www.nytimes.com/2016/04/25/theater/review-jessie-mueller-serves-a-slice-of-life-with-pie-in-sara-bareilless-waitress.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page.",
+   "Page date at https://newyorktheater.me/2013/11/03/after-midnight-review-ellington-alive-on-broadway/ is 2013-11-04 (show opened 2013-11-03); November 14, 2013 came from the legacy web-search step.",
+   "Page date at https://online.wsj.com/news/articles/SB10001424052702303663604579502122944164150?mg=reno64-wsj&url=http%3A%2F%2Fonline.wsj.com%2Farticle%2FSB10001424052702303663604579502122944164150.html is 2014-04-17 (show opened 2014-04-17); April 25, 2014 came from the legacy web-search step.",
+   "Page date at https://www.wsj.com/articles/american-buffalo-david-mamet-circle-in-the-square-sam-rockwell-lawrence-fishburne-darren-criss-glengarry-glen-ross-11649974686 is 2022-04-14 (show opened 2022-04-14); April 22, 2022 came from the legacy web-search step.",
+   "Page date at http://www.usatoday.com/story/life/theater/2013/10/27/broadway-review-betrayal/3178159/ is 2013-10-28 (show opened 2013-10-27); November 14, 2013 came from the legacy web-search step.",
+   "Page date at http://www.wsj.com/articles/blackbird-review-the-past-comes-back-to-haunt-you-1457650097 is 2016-03-10 (show opened 2016-03-10); April 1, 2016 came from the legacy web-search step.",
+   "Page date at https://www.wsj.com/articles/clydes-lynn-nottage-kate-whoriskey-uzo-aduba-ron-cephas-jones-ednumd-donovan-reza-salazar-kara-young-11637794641 is 2021-11-24 (show opened 2021-11-23); December 2, 2021 came from the legacy web-search step.",
+   "Page date at https://www.nytimes.com/2024/12/12/theater/cult-of-love-broadway-review.html is 2024-12-13 (show opened 2024-12-12); November 21, 2024 came from the legacy web-search step.",
+   "Page date at https://www.nytimes.com/2007/12/03/theater/reviews/03cymb.html is 2007-12-03 (show opened 2007-12-02); August 22, 2007 came from the legacy web-search step.",
+   "Page date at https://www.nytimes.com/2016/03/09/theater/review-mayhem-gambling-disco-in-disaster-its-all-there-for-the-spoofing.html is 2016-03-09 (show opened 2016-03-08); February 23, 2016 came from the legacy web-search step.",
+   "Page date at http://www.wsj.com/articles/fish-in-the-dark-review-enthusiasm-curbed-1425612431 is 2015-03-06 (show opened 2015-03-05); March 19, 2015 came from the legacy web-search step.",
+   "Page date at https://www.wsj.com/articles/flying-over-sunset-james-lapine-cary-grant-clare-booth-luce-aldous-huxley-lsd-11639694774?gaa_at=eafs&gaa_n=AWEtsqdelg-IkxZB5ebYZaFswyMDXaDLHGGSwm5MdOxQz7tI8tDO43kDWotO&gaa_ts=698c3c16&gaa_sig=ZuC6KkmAA8fL-kyZynwAjgv3Sqft0KWM6BBP2RgCP8lRE4N4nA46RnzLOXp4yutOmKfPSo83V3JjnH4D5reA7Q%3D%3D is 2021-12-16 (show opened 2021-12-13); November 30, 2021 came from the legacy web-search step.",
+   "Page date at https://www.washingtonpost.com/theater-dance/2022/04/24/funny-girl-beanie-feldstein-broadway-streisand/ is 2022-05-09 (show opened 2022-04-24); April 25, 2022 came from the legacy web-search step."
   ],
   "riskLevel": "Low",
   "actions": [
    {
     "type": "review-field-edit",
-    "file": "once-upon-a-mattress-2024/nytimes--jesse-green.json",
-    "field": "criticName",
-    "oldValue": "Jesse Green",
-    "newValue": "Elisabeth Vincentelli",
-    "description": "Page byline at https://www.nytimes.com/2024/08/12/theater/once-upon-a-mattress-review.html is Elisabeth Vincentelli; Jesse Green came from the legacy web-search step and is not on the page."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "patriots-2024/ew--kristen-baldwin.json",
-    "field": "criticName",
-    "oldValue": "Kristen Baldwin",
-    "newValue": "Christian Holub",
-    "description": "Page byline at https://ew.com/patriots-review-broadway-8637303?srsltid=AfmBOoryi-3RI9IQ6TzsZ4WfoMi9X8sMAb3IdeIuoiFAZxKPrInacuom is Christian Holub; Kristen Baldwin came from the legacy web-search step and is not on the page."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "race-2009/variety--marilyn-stasio.json",
-    "field": "criticName",
-    "oldValue": "Marilyn Stasio",
-    "newValue": "Joe Leydon",
-    "description": "Page byline at https://variety.com/2009/legit/reviews/race-1200473116/ is Joe Leydon; Marilyn Stasio came from the legacy web-search step and is not on the page."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "reasons-to-be-pretty-2009/variety--charles-isherwood.json",
-    "field": "criticName",
-    "oldValue": "Charles Isherwood",
-    "newValue": "John Anderson",
-    "description": "Page byline at https://variety.com/2009/legit/reviews/reasons-to-be-pretty-1200474421/ is John Anderson; Charles Isherwood came from the legacy web-search step and is not on the page."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "rodgers-hammersteins-cinderella-2013/theatermania--david-gordon.json",
-    "field": "criticName",
-    "oldValue": "David Gordon",
-    "newValue": "Bethany Rickwald",
-    "description": "Page byline at https://www.theatermania.com/new-york-city-theater/reviews/rodgers-hammersteins-cinderella_64239.html is Bethany Rickwald; David Gordon came from the legacy web-search step and is not on the page."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "romeo-juliet-2024/variety--charles-isherwood.json",
-    "field": "criticName",
-    "oldValue": "Charles Isherwood",
-    "newValue": "Patrick Frater",
-    "description": "Page byline at https://variety.com/2024/legit/reviews/romeo-juliet-broadway-review-kit-connor-rachel-zegler-1236194876/ is Patrick Frater; Charles Isherwood came from the legacy web-search step and is not on the page."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "sea-wall-a-life-2019/nytimes--ben-brantley.json",
-    "field": "duplicateOf",
-    "oldValue": null,
-    "newValue": "nytimes--laura-collins-hughes.json",
-    "description": "Page byline at https://www.nytimes.com/2019/08/08/theater/sea-wall-a-life-review-broadway-gyllenhaal.html is Laura Collins-Hughes; Ben Brantley came from the legacy web-search step and is not on the page. The page critic already has the live record nytimes--laura-collins-hughes.json for this url, so this web-search copy is a duplicate of it."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "she-loves-me-2016/nypost--johnny-oleksinski.json",
-    "field": "duplicateOf",
-    "oldValue": null,
-    "newValue": "nypost--elisabeth-vincentelli.json",
-    "description": "Page byline at http://nypost.com/2016/03/17/she-loves-me-and-the-robber-bridegroom-prove-old-shows-rock/ is Elisabeth Vincentelli; Johnny Oleksinski came from the legacy web-search step and is not on the page. The page critic already has the live record nypost--elisabeth-vincentelli.json for this url, so this web-search copy is a duplicate of it."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "seminar-2011/variety--marilyn-stasio.json",
-    "field": "criticName",
-    "oldValue": "Marilyn Stasio",
-    "newValue": "Bob Verini",
-    "description": "Page byline at https://variety.com/2011/legit/reviews/seminar-1117946828/ is Bob Verini; Marilyn Stasio came from the legacy web-search step and is not on the page."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "side-show-2014/nytimes--ben-brantley.json",
+    "file": "the-humans-2016/nytimes--ben-brantley.json",
     "field": "criticName",
     "oldValue": "Ben Brantley",
     "newValue": "Charles Isherwood",
-    "description": "Page byline at http://www.nytimes.com/2014/11/18/theater/side-show-directed-by-bill-condon-returns-to-broadway.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page."
+    "description": "Page byline at http://www.nytimes.com/2016/02/19/theater/review-the-humans-depicts-a-family-and-a-country-under-pressure.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page."
    },
    {
     "type": "review-field-edit",
-    "file": "side-show-2014/ew--thom-geier.json",
-    "field": "criticName",
-    "oldValue": "Thom Geier",
-    "newValue": "Melissa Rose Bernardo",
-    "description": "Page byline at https://ew.com/article/2014/11/17/side-show-ew-review/?srsltid=AfmBOopLj9fSwOczF47RjL8f0ux3iWKHNT7qh2he8yC7h_5hDiStTQJ- is Melissa Rose Bernardo; Thom Geier came from the legacy web-search step and is not on the page."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "side-show-2014/theatermania--david-gordon.json",
-    "field": "criticName",
-    "oldValue": "David Gordon",
-    "newValue": "Michael Feingold",
-    "description": "Page byline at https://www.theatermania.com/broadway/reviews/side-show_70742.html is Michael Feingold; David Gordon came from the legacy web-search step and is not on the page."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "suffs-2024/washpost--peter-marks.json",
-    "field": "duplicateOf",
-    "oldValue": null,
-    "newValue": "washpost--elisabeth-vincentelli.json",
-    "description": "Page byline at https://www.washingtonpost.com/entertainment/theater/2024/04/18/suffs-broadway-review/ is Elisabeth Vincentelli; Peter Marks came from the legacy web-search step and is not on the page. The page critic already has the live record washpost--elisabeth-vincentelli.json for this url, so this web-search copy is a duplicate of it."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "sweeney-todd-2023/ew--joey-nolfi.json",
-    "field": "criticName",
-    "oldValue": "Joey Nolfi",
-    "newValue": "Emlyn Travis",
-    "description": "Page byline at https://ew.com/theater/sweeney-todd-the-demon-barber-of-fleet-street-review-josh-groban-annaleigh-ashford/?srsltid=AfmBOoo7i-_7MZ4oeFNg7qcc5xqurAowqr2UTU8Q7r-x0mk6fWu3zAJB is Emlyn Travis; Joey Nolfi came from the legacy web-search step and is not on the page."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "sylvia-2015/nytimes--ben-brantley.json",
+    "file": "the-other-place-2013/nytimes--ben-brantley.json",
     "field": "criticName",
     "oldValue": "Ben Brantley",
     "newValue": "Charles Isherwood",
-    "description": "Page byline at https://www.nytimes.com/2015/10/28/theater/review-sylvia-in-which-a-man-loves-a-dog-too-much.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page."
+    "description": "Page byline at https://www.nytimes.com/2013/01/11/theater/reviews/the-other-place-at-samuel-j-friedman-theater.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page."
    },
    {
     "type": "review-field-edit",
-    "file": "talk-radio-2007/variety--charles-isherwood.json",
-    "field": "criticName",
-    "oldValue": "Charles Isherwood",
-    "newValue": "Alan Rich",
-    "description": "Page byline at https://variety.com/2007/legit/reviews/talk-radio-1200558845/ is Alan Rich; Charles Isherwood came from the legacy web-search step and is not on the page."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "tammy-faye-2024/ew--joey-nolfi.json",
-    "field": "criticName",
-    "oldValue": "Joey Nolfi",
-    "newValue": "Emlyn Travis",
-    "description": "Page byline at https://ew.com/tammy-faye-review-broadway-musical-elton-john-8743171?srsltid=AfmBOoou5ek-lZ1jdkwhWpvAoajMJSOI_VY1zF7ogmEi1Y5U_NBmJ9NE is Emlyn Travis; Joey Nolfi came from the legacy web-search step and is not on the page."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "patriots-2024/washpost--peter-marks.json",
-    "field": "duplicateOf",
-    "oldValue": null,
-    "newValue": "washpost--naveen-kumar.json",
-    "description": "Page byline at https://www.washingtonpost.com/entertainment/theater/2024/04/22/patriots-broadway-review/ is Naveen Kumar; Peter Marks came from the legacy web-search step and is not on the page. The page critic already has the live record washpost--naveen-kumar.json for this url, so this web-search copy is a duplicate of it."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "the-boys-in-the-band-2018/nytimes--jesse-green.json",
+    "file": "the-play-that-goes-wrong-2017/nytimes--jesse-green.json",
     "field": "criticName",
     "oldValue": "Jesse Green",
     "newValue": "Ben Brantley",
-    "description": "Page byline at https://www.nytimes.com/2018/05/31/theater/the-boys-in-the-band-review-jim-parsons-zachary-quinto.html is Ben Brantley; Jesse Green came from the legacy web-search step and is not on the page."
+    "description": "Page byline at https://www.nytimes.com/2017/04/02/theater/review-the-play-that-goes-wrong-review.html is Ben Brantley; Jesse Green came from the legacy web-search step and is not on the page."
    },
    {
     "type": "review-field-edit",
-    "file": "the-children-2017/nytimes--ben-brantley.json",
+    "file": "the-price-2017/nytimes--ben-brantley.json",
+    "field": "duplicateOf",
+    "oldValue": null,
+    "newValue": "nytimes--alexis-soloski.json",
+    "description": "Page byline at https://www.nytimes.com/2017/03/16/theater/review-the-price-mark-ruffalo-arthur-miller.html is Alexis Soloski; Ben Brantley came from the legacy web-search step and is not on the page. The page critic already has the live record nytimes--alexis-soloski.json for this url, so this web-search copy is a duplicate of it."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "the-realistic-joneses-2014/nytimes--ben-brantley.json",
+    "field": "criticName",
+    "oldValue": "Ben Brantley",
+    "newValue": "Charles Isherwood",
+    "description": "Page byline at http://www.nytimes.com/2014/04/07/theater/realistic-joneses-stars-toni-collette-and-michael-c-hall.html?_r=0 is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "the-skin-of-our-teeth-2022/nytimes--jesse-margolin.json",
+    "field": "criticName",
+    "oldValue": "Jesse Margolin",
+    "newValue": "Alexis Soloski",
+    "description": "Page byline at https://www.nytimes.com/2022/04/25/theater/skin-of-our-teeth-review-lincoln-center.html is Alexis Soloski; Jesse Margolin came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "thoughts-of-a-colored-man-2021/wsj--charles-isherwood.json",
+    "field": "duplicateOf",
+    "oldValue": null,
+    "newValue": "wsj--terry-teachout.json",
+    "description": "Page byline at https://www.wsj.com/articles/thoughts-of-a-colored-man-review-keenan-scott-ii-steve-h-broadax-iii-katori-hall-the-hot-wing-king-11634851069?gaa_at=eafs&gaa_n=AWEtsqfBzkbHUA4BYwkkzOXDLmFi3dC5U1lR9S5qcpw9zJOwT0bg3NCroF6t&gaa_ts=69881993&gaa_sig=3uUEICm3t339J9QLYwOCIVXp6b-xbX9Ex4JM3wPPvAiBJ51IP6uKhhv_twjbulSYFKLUQvcYh4YMxNSUZdzF7A%3D%3D is Terry Teachout; Charles Isherwood came from the legacy web-search step and is not on the page. The page critic already has the live record wsj--terry-teachout.json for this url, so this web-search copy is a duplicate of it."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "thoughts-of-a-colored-man-2021/nytimes--jesse-green.json",
+    "field": "criticName",
+    "oldValue": "Jesse Green",
+    "newValue": "Maya Phillips",
+    "description": "Page byline at https://www.nytimes.com/2021/10/13/theater/thoughts-of-a-colored-man-review.html is Maya Phillips; Jesse Green came from the legacy web-search step and is not on the page."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "time-and-the-conways-2017/nytimes--ben-brantley.json",
     "field": "criticName",
     "oldValue": "Ben Brantley",
     "newValue": "Jesse Green",
-    "description": "Page byline at https://www.nytimes.com/2017/12/12/theater/review-in-the-children-manhattan-theater-club-lucy-kirkwood.html is Jesse Green; Ben Brantley came from the legacy web-search step and is not on the page."
+    "description": "Page byline at https://www.nytimes.com/2017/10/10/theater/time-and-the-conways-theater-review-roundabout.html is Jesse Green; Ben Brantley came from the legacy web-search step and is not on the page."
    },
    {
     "type": "review-field-edit",
-    "file": "the-color-purple-2015/nytimes--charles-isherwood.json",
+    "file": "to-kill-a-mockingbird-2018/nytimes--ben-brantley.json",
     "field": "criticName",
-    "oldValue": "Charles Isherwood",
-    "newValue": "Ben Brantley",
-    "description": "Page byline at http://www.nytimes.com/2015/12/11/theater/review-the-color-purple-on-broadway-stripped-to-its-essence.html is Ben Brantley; Charles Isherwood came from the legacy web-search step and is not on the page."
+    "oldValue": "Ben Brantley",
+    "newValue": "Jesse Green",
+    "description": "Page byline at https://www.nytimes.com/2018/12/13/theater/to-kill-a-mockingbird-review-jeff-daniels.html is Jesse Green; Ben Brantley came from the legacy web-search step and is not on the page."
    },
    {
     "type": "review-field-edit",
-    "file": "the-collaboration-2022/nytimes--jesse-green.json",
+    "file": "tuck-everlasting-2016/nytimes--ben-brantley.json",
     "field": "criticName",
-    "oldValue": "Jesse Green",
-    "newValue": "Laura Collins-Hughes",
-    "description": "Page byline at https://www.nytimes.com/2022/12/20/theater/the-collaboration-review.html is Laura Collins-Hughes; Jesse Green came from the legacy web-search step and is not on the page."
+    "oldValue": "Ben Brantley",
+    "newValue": "Charles Isherwood",
+    "description": "Page byline at https://www.nytimes.com/2016/04/27/theater/review-tuck-everlasting-a-lyrical-meditation-on-life-death-and-immortality.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page."
    },
    {
     "type": "review-field-edit",
-    "file": "the-constant-wife-2005/variety--charles-isherwood.json",
+    "file": "venus-in-fur-2011/nytimes--ben-brantley.json",
     "field": "criticName",
-    "oldValue": "Charles Isherwood",
-    "newValue": "David Lewis",
-    "description": "Page byline at https://variety.com/2005/legit/reviews/the-constant-wife-1200520826/ is David Lewis; Charles Isherwood came from the legacy web-search step and is not on the page."
+    "oldValue": "Ben Brantley",
+    "newValue": "Charles Isherwood",
+    "description": "Page byline at https://www.nytimes.com/2011/11/09/theater/reviews/venus-in-fur-by-david-ives-with-nina-arianda-review.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page."
    },
    {
     "type": "review-field-edit",
-    "file": "the-crucible-2016/theatermania--jesse-green.json",
+    "file": "waitress-2016/nytimes--ben-brantley.json",
     "field": "criticName",
-    "oldValue": "Jesse Green",
-    "newValue": "Bethany Rickwald",
-    "description": "Page byline at https://www.theatermania.com/new-york-city-theater/reviews/the-crucible_75849.html is Bethany Rickwald; Jesse Green came from the legacy web-search step and is not on the page."
+    "oldValue": "Ben Brantley",
+    "newValue": "Charles Isherwood",
+    "description": "Page byline at https://www.nytimes.com/2016/04/25/theater/review-jessie-mueller-serves-a-slice-of-life-with-pie-in-sara-bareilless-waitress.html is Charles Isherwood; Ben Brantley came from the legacy web-search step and is not on the page."
    },
    {
     "type": "review-field-edit",
-    "file": "the-farnsworth-invention-2007/variety--charles-isherwood.json",
-    "field": "criticName",
-    "oldValue": "Charles Isherwood",
-    "newValue": "Steven Mirkin",
-    "description": "Page byline at https://variety.com/2007/legit/reviews/the-farnsworth-invention-1200558354/ is Steven Mirkin; Charles Isherwood came from the legacy web-search step and is not on the page."
+    "file": "after-midnight-2013/nyt-theater--david-nounou.json",
+    "field": "publishDate",
+    "oldValue": "November 14, 2013",
+    "newValue": "2013-11-04",
+    "description": "Page date at https://newyorktheater.me/2013/11/03/after-midnight-review-ellington-alive-on-broadway/ is 2013-11-04 (show opened 2013-11-03); November 14, 2013 came from the legacy web-search step."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "act-one-2014/wsj--terry-teachout.json",
+    "field": "publishDate",
+    "oldValue": "April 25, 2014",
+    "newValue": "2014-04-17",
+    "description": "Page date at https://online.wsj.com/news/articles/SB10001424052702303663604579502122944164150?mg=reno64-wsj&url=http%3A%2F%2Fonline.wsj.com%2Farticle%2FSB10001424052702303663604579502122944164150.html is 2014-04-17 (show opened 2014-04-17); April 25, 2014 came from the legacy web-search step."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "american-buffalo-2022/wsj--charles-isherwood.json",
+    "field": "publishDate",
+    "oldValue": "April 22, 2022",
+    "newValue": "2022-04-14",
+    "description": "Page date at https://www.wsj.com/articles/american-buffalo-david-mamet-circle-in-the-square-sam-rockwell-lawrence-fishburne-darren-criss-glengarry-glen-ross-11649974686 is 2022-04-14 (show opened 2022-04-14); April 22, 2022 came from the legacy web-search step."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "betrayal-2013/usatoday--elysa-gardner.json",
+    "field": "publishDate",
+    "oldValue": "November 14, 2013",
+    "newValue": "2013-10-28",
+    "description": "Page date at http://www.usatoday.com/story/life/theater/2013/10/27/broadway-review-betrayal/3178159/ is 2013-10-28 (show opened 2013-10-27); November 14, 2013 came from the legacy web-search step."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "blackbird-2016/wsj--terry-teachout.json",
+    "field": "publishDate",
+    "oldValue": "April 1, 2016",
+    "newValue": "2016-03-10",
+    "description": "Page date at http://www.wsj.com/articles/blackbird-review-the-past-comes-back-to-haunt-you-1457650097 is 2016-03-10 (show opened 2016-03-10); April 1, 2016 came from the legacy web-search step."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "clydes-2021/wsj--charles-isherwood.json",
+    "field": "publishDate",
+    "oldValue": "December 2, 2021",
+    "newValue": "2021-11-24",
+    "description": "Page date at https://www.wsj.com/articles/clydes-lynn-nottage-kate-whoriskey-uzo-aduba-ron-cephas-jones-ednumd-donovan-reza-salazar-kara-young-11637794641 is 2021-11-24 (show opened 2021-11-23); December 2, 2021 came from the legacy web-search step."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "cult-of-love-2024/nytimes--jesse-green.json",
+    "field": "publishDate",
+    "oldValue": "November 21, 2024",
+    "newValue": "2024-12-13",
+    "description": "Page date at https://www.nytimes.com/2024/12/12/theater/cult-of-love-broadway-review.html is 2024-12-13 (show opened 2024-12-12); November 21, 2024 came from the legacy web-search step."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "cymbeline-2007/nytimes--ben-brantley.json",
+    "field": "publishDate",
+    "oldValue": "August 22, 2007",
+    "newValue": "2007-12-03",
+    "description": "Page date at https://www.nytimes.com/2007/12/03/theater/reviews/03cymb.html is 2007-12-03 (show opened 2007-12-02); August 22, 2007 came from the legacy web-search step."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "disaster-2016/nytimes--ben-brantley.json",
+    "field": "publishDate",
+    "oldValue": "February 23, 2016",
+    "newValue": "2016-03-09",
+    "description": "Page date at https://www.nytimes.com/2016/03/09/theater/review-mayhem-gambling-disco-in-disaster-its-all-there-for-the-spoofing.html is 2016-03-09 (show opened 2016-03-08); February 23, 2016 came from the legacy web-search step."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "fish-in-the-dark-2015/wsj--terry-teachout.json",
+    "field": "publishDate",
+    "oldValue": "March 19, 2015",
+    "newValue": "2015-03-06",
+    "description": "Page date at http://www.wsj.com/articles/fish-in-the-dark-review-enthusiasm-curbed-1425612431 is 2015-03-06 (show opened 2015-03-05); March 19, 2015 came from the legacy web-search step."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "flying-over-sunset-2021/wsj--terry-teachout.json",
+    "field": "publishDate",
+    "oldValue": "November 30, 2021",
+    "newValue": "2021-12-16",
+    "description": "Page date at https://www.wsj.com/articles/flying-over-sunset-james-lapine-cary-grant-clare-booth-luce-aldous-huxley-lsd-11639694774?gaa_at=eafs&gaa_n=AWEtsqdelg-IkxZB5ebYZaFswyMDXaDLHGGSwm5MdOxQz7tI8tDO43kDWotO&gaa_ts=698c3c16&gaa_sig=ZuC6KkmAA8fL-kyZynwAjgv3Sqft0KWM6BBP2RgCP8lRE4N4nA46RnzLOXp4yutOmKfPSo83V3JjnH4D5reA7Q%3D%3D is 2021-12-16 (show opened 2021-12-13); November 30, 2021 came from the legacy web-search step."
+   },
+   {
+    "type": "review-field-edit",
+    "file": "funny-girl-2022/washpost--peter-marks.json",
+    "field": "publishDate",
+    "oldValue": "April 25, 2022",
+    "newValue": "2022-05-09",
+    "description": "Page date at https://www.washingtonpost.com/theater-dance/2022/04/24/funny-girl-beanie-feldstein-broadway-streisand/ is 2022-05-09 (show opened 2022-04-24); April 25, 2022 came from the legacy web-search step."
    }
   ]
  }

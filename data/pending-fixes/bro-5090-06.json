@@ -1,242 +1,98 @@
 {
  "issueNumber": "bro-5090-06",
- "planId": "998f4524-40c6-4538-b6a5-cbe653e3a9c4",
+ "planId": "37902f51-8caf-4db1-98f6-8be6410afcd1",
  "status": "pending",
- "createdAt": "2026-10-12T11:19:41.332Z",
+ "createdAt": "2026-10-12T11:57:00.096Z",
  "submitter": {
   "name": null,
   "email": null
  },
  "plan": {
-  "summary": "BRO-5090 part 6: correct 25 critic bylines and publish dates. The legacy LLM web-search step (Feb 2026 backfill) invented them; each review page's own metadata (JSON-LD/meta author, published time) says otherwise.",
+  "summary": "BRO-5090 part 6: correct 9 critic bylines and publish dates. The legacy LLM web-search step (Feb 2026 backfill) invented them; each review page's own metadata (JSON-LD/meta author, published time) says otherwise.",
   "steps": [
-   "Page date at https://newyorktheater.me/2013/11/03/after-midnight-review-ellington-alive-on-broadway/ is 2013-11-04 (show opened 2013-11-03); November 14, 2013 came from the legacy web-search step.",
-   "Page date at https://online.wsj.com/news/articles/SB10001424052702303663604579502122944164150?mg=reno64-wsj&url=http%3A%2F%2Fonline.wsj.com%2Farticle%2FSB10001424052702303663604579502122944164150.html is 2014-04-17 (show opened 2014-04-17); April 25, 2014 came from the legacy web-search step.",
-   "Page date at https://www.wsj.com/articles/american-buffalo-david-mamet-circle-in-the-square-sam-rockwell-lawrence-fishburne-darren-criss-glengarry-glen-ross-11649974686 is 2022-04-14 (show opened 2022-04-14); April 22, 2022 came from the legacy web-search step.",
-   "Page date at https://variety.com/2011/legit/reviews/anything-goes-1117945052/ is 2011-04-21 (show opened undefined); April 7, 2011 came from the legacy web-search step.",
-   "Page date at http://www.usatoday.com/story/life/theater/2013/10/27/broadway-review-betrayal/3178159/ is 2013-10-28 (show opened 2013-10-27); November 14, 2013 came from the legacy web-search step.",
-   "Page date at http://www.wsj.com/articles/blackbird-review-the-past-comes-back-to-haunt-you-1457650097 is 2016-03-10 (show opened 2016-03-10); April 1, 2016 came from the legacy web-search step.",
-   "Page date at https://www.wsj.com/articles/clydes-lynn-nottage-kate-whoriskey-uzo-aduba-ron-cephas-jones-ednumd-donovan-reza-salazar-kara-young-11637794641 is 2021-11-24 (show opened 2021-11-23); December 2, 2021 came from the legacy web-search step.",
-   "Page date at https://variety.com/2022/legit/reviews/cost-of-living-review-broadway-1235392544/ is 2022-10-04 (show opened undefined); October 19, 2022 came from the legacy web-search step.",
-   "Page date at https://www.nytimes.com/2024/12/12/theater/cult-of-love-broadway-review.html is 2024-12-13 (show opened 2024-12-12); November 21, 2024 came from the legacy web-search step.",
-   "Page date at https://www.nytimes.com/2007/12/03/theater/reviews/03cymb.html is 2007-12-03 (show opened 2007-12-02); August 22, 2007 came from the legacy web-search step.",
-   "Page date at https://variety.com/2007/legit/reviews/deuce-1200558841/ is 2007-06-04 (show opened undefined); May 15, 2007 came from the legacy web-search step.",
-   "Page date at https://www.nytimes.com/2016/03/09/theater/review-mayhem-gambling-disco-in-disaster-its-all-there-for-the-spoofing.html is 2016-03-09 (show opened 2016-03-08); February 23, 2016 came from the legacy web-search step.",
-   "Page date at http://www.wsj.com/articles/fish-in-the-dark-review-enthusiasm-curbed-1425612431 is 2015-03-06 (show opened 2015-03-05); March 19, 2015 came from the legacy web-search step.",
-   "Page date at https://www.wsj.com/articles/flying-over-sunset-james-lapine-cary-grant-clare-booth-luce-aldous-huxley-lsd-11639694774?gaa_at=eafs&gaa_n=AWEtsqdelg-IkxZB5ebYZaFswyMDXaDLHGGSwm5MdOxQz7tI8tDO43kDWotO&gaa_ts=698c3c16&gaa_sig=ZuC6KkmAA8fL-kyZynwAjgv3Sqft0KWM6BBP2RgCP8lRE4N4nA46RnzLOXp4yutOmKfPSo83V3JjnH4D5reA7Q%3D%3D is 2021-12-16 (show opened 2021-12-13); November 30, 2021 came from the legacy web-search step.",
-   "Page date at https://www.washingtonpost.com/theater-dance/2022/04/24/funny-girl-beanie-feldstein-broadway-streisand/ is 2022-05-09 (show opened 2022-04-24); April 25, 2022 came from the legacy web-search step.",
-   "Page date at https://www.nytimes.com/2006/05/01/theater/reviews/01hot.html is 2006-05-01 (show opened 2006-04-30); April 21, 2006 came from the legacy web-search step.",
-   "Page date at https://www.wsj.com/articles/how-to-dance-in-ohio-review-a-compassionate-coming-of-age-musical-4a42287f is 2023-12-11 (show opened 2023-12-10); December 20, 2023 came from the legacy web-search step.",
-   "Page date at https://hawkeyeswire.usatoday.com/story/entertainment/theater/2024/05/10/illinoise-on-broadway-dance-musical-nominated-for-four-tonys/73594172007/ is 2024-05-10 (show opened 2024-04-24); April 25, 2024 came from the legacy web-search step.",
-   "Page date at https://ew.com/article/2014/04/25/lady-day-emersons-bar-grill-ew-review/?srsltid=AfmBOoo-kVzEoevOeiHK03SlY8scljGD85NmVlEsTj807JnemfKOX-dE is 2014-04-25 (show opened 2014-04-13); April 14, 2014 came from the legacy web-search step.",
-   "Page date at https://www.wsj.com/articles/linda-vista-review-his-own-worst-enemy-11570753800?gaa_at=eafs&gaa_n=AWEtsqdZ7icR0wTRMK7eNgzesahOK3B2_SmXrbcSFOzZO6TEN_DG3j3cQtMF&gaa_ts=699527ca&gaa_sig=A5fgUzkVu_rale5Iuzj7GRJzl76v1s7ZreVv10F_ubI8DR1eqS7Ke_ivYFy1fp6Tk4c4PhcbrUTTYZ0S2dFOag%3D%3D is 2019-10-11 (show opened 2019-10-10); October 24, 2019 came from the legacy web-search step.",
-   "Page date at http://www.nytimes.com/2016/04/28/theater/review-long-days-journey-into-night-is-a-tempest-in-a-bourbon-bottle.html is 2016-04-28 (show opened 2016-04-27); April 19, 2016 came from the legacy web-search step.",
-   "Page date at https://www.washingtonpost.com/news/arts-and-entertainment/wp/2016/04/27/jessica-lange-gabriel-byrne-take-long-days-journey-out-for-its-harrowing-ride/ is 2016-04-28 (show opened 2016-04-27); April 20, 2016 came from the legacy web-search step.",
-   "Page date at https://www.nytimes.com/2006/10/13/theater/reviews/13loui.html is 2006-10-13 (show opened 2006-10-12); October 31, 2006 came from the legacy web-search step.",
-   "Page date at https://www.nytimes.com/2011/10/10/theater/reviews/man-and-boy-with-frank-langella-review.html is 2011-10-10 (show opened 2011-10-09); November 14, 2011 came from the legacy web-search step.",
-   "Page date at https://www.nytimes.com/2017/06/29/theater/marvins-room-review-broadway.html is 2017-06-30 (show opened 2017-06-29); June 15, 2017 came from the legacy web-search step."
+   "Page date at https://www.nytimes.com/2017/03/16/theater/review-the-price-mark-ruffalo-arthur-miller.html is 2017-03-17 (show opened 2017-03-16); February 16, 2017 came from the legacy web-search step.",
+   "Page date at https://online.wsj.com/articles/not-quite-real-enoughtom-stoppards-the-real-thing-review-by-terry-teachout-1414715401 is 2014-10-31 (show opened 2014-10-30); October 23, 2014 came from the legacy web-search step.",
+   "Page date at https://www.nytimes.com/2019/10/15/theater/the-rose-tattoo-review-marisa-tomei.html is 2019-10-16 (show opened 2019-10-15); October 7, 2019 came from the legacy web-search step.",
+   "Page date at http://www.wsj.com/articles/the-visit-review-as-long-as-the-lady-is-paying-1429835402 is 2015-04-24 (show opened 2015-04-23); April 16, 2015 came from the legacy web-search step.",
+   "Page date at https://www.nytimes.com/2021/10/13/theater/thoughts-of-a-colored-man-review.html is 2021-10-13 (show opened 2021-10-13); October 31, 2021 came from the legacy web-search step.",
+   "Page date at https://www.washingtonpost.com/entertainment/theater_dance/thoughts-colored-man/2021/10/13/eef681e0-2b71-11ec-8ef6-3ca8fe943a92_story.html is 2021-10-14 (show opened 2021-10-13); November 1, 2021 came from the legacy web-search step.",
+   "Page date at https://www.nytimes.com/2008/05/08/theater/reviews/08girl.html is 2008-05-08 (show opened 2008-05-07); December 8, 2008 came from the legacy web-search step.",
+   "Page date at http://www.usatoday.com/story/life/theater/2014/04/20/broadway-review-violet/7806053/ is 2014-04-21 (show opened 2014-04-20); April 12, 2014 came from the legacy web-search step.",
+   "Page date at https://www.nytimes.com/2013/11/25/theater/reviews/no-mans-land-and-waiting-for-godot-at-the-cort.html is 2013-11-25 (show opened 2013-11-24); November 7, 2013 came from the legacy web-search step."
   ],
   "riskLevel": "Low",
   "actions": [
    {
     "type": "review-field-edit",
-    "file": "after-midnight-2013/nyt-theater--david-nounou.json",
+    "file": "the-price-2017/nytimes--ben-brantley.json",
     "field": "publishDate",
-    "oldValue": "November 14, 2013",
-    "newValue": "2013-11-04",
-    "description": "Page date at https://newyorktheater.me/2013/11/03/after-midnight-review-ellington-alive-on-broadway/ is 2013-11-04 (show opened 2013-11-03); November 14, 2013 came from the legacy web-search step."
+    "oldValue": "February 16, 2017",
+    "newValue": "2017-03-17",
+    "description": "Page date at https://www.nytimes.com/2017/03/16/theater/review-the-price-mark-ruffalo-arthur-miller.html is 2017-03-17 (show opened 2017-03-16); February 16, 2017 came from the legacy web-search step."
    },
    {
     "type": "review-field-edit",
-    "file": "act-one-2014/wsj--terry-teachout.json",
+    "file": "the-real-thing-2014/wsj--terry-teachout.json",
     "field": "publishDate",
-    "oldValue": "April 25, 2014",
-    "newValue": "2014-04-17",
-    "description": "Page date at https://online.wsj.com/news/articles/SB10001424052702303663604579502122944164150?mg=reno64-wsj&url=http%3A%2F%2Fonline.wsj.com%2Farticle%2FSB10001424052702303663604579502122944164150.html is 2014-04-17 (show opened 2014-04-17); April 25, 2014 came from the legacy web-search step."
+    "oldValue": "October 23, 2014",
+    "newValue": "2014-10-31",
+    "description": "Page date at https://online.wsj.com/articles/not-quite-real-enoughtom-stoppards-the-real-thing-review-by-terry-teachout-1414715401 is 2014-10-31 (show opened 2014-10-30); October 23, 2014 came from the legacy web-search step."
    },
    {
     "type": "review-field-edit",
-    "file": "american-buffalo-2022/wsj--charles-isherwood.json",
+    "file": "the-rose-tattoo-2019/nytimes--ben-brantley.json",
     "field": "publishDate",
-    "oldValue": "April 22, 2022",
-    "newValue": "2022-04-14",
-    "description": "Page date at https://www.wsj.com/articles/american-buffalo-david-mamet-circle-in-the-square-sam-rockwell-lawrence-fishburne-darren-criss-glengarry-glen-ross-11649974686 is 2022-04-14 (show opened 2022-04-14); April 22, 2022 came from the legacy web-search step."
+    "oldValue": "October 7, 2019",
+    "newValue": "2019-10-16",
+    "description": "Page date at https://www.nytimes.com/2019/10/15/theater/the-rose-tattoo-review-marisa-tomei.html is 2019-10-16 (show opened 2019-10-15); October 7, 2019 came from the legacy web-search step."
    },
    {
     "type": "review-field-edit",
-    "file": "anything-goes-2011/variety--charles-isherwood.json",
+    "file": "the-visit-2015/wsj--terry-teachout.json",
     "field": "publishDate",
-    "oldValue": "April 7, 2011",
-    "newValue": "2011-04-21",
-    "description": "Page date at https://variety.com/2011/legit/reviews/anything-goes-1117945052/ is 2011-04-21 (show opened undefined); April 7, 2011 came from the legacy web-search step."
+    "oldValue": "April 16, 2015",
+    "newValue": "2015-04-24",
+    "description": "Page date at http://www.wsj.com/articles/the-visit-review-as-long-as-the-lady-is-paying-1429835402 is 2015-04-24 (show opened 2015-04-23); April 16, 2015 came from the legacy web-search step."
    },
    {
     "type": "review-field-edit",
-    "file": "betrayal-2013/usatoday--elysa-gardner.json",
+    "file": "thoughts-of-a-colored-man-2021/nytimes--jesse-green.json",
     "field": "publishDate",
-    "oldValue": "November 14, 2013",
-    "newValue": "2013-10-28",
-    "description": "Page date at http://www.usatoday.com/story/life/theater/2013/10/27/broadway-review-betrayal/3178159/ is 2013-10-28 (show opened 2013-10-27); November 14, 2013 came from the legacy web-search step."
+    "oldValue": "October 31, 2021",
+    "newValue": "2021-10-13",
+    "description": "Page date at https://www.nytimes.com/2021/10/13/theater/thoughts-of-a-colored-man-review.html is 2021-10-13 (show opened 2021-10-13); October 31, 2021 came from the legacy web-search step."
    },
    {
     "type": "review-field-edit",
-    "file": "blackbird-2016/wsj--terry-teachout.json",
+    "file": "thoughts-of-a-colored-man-2021/washpost--peter-marks.json",
     "field": "publishDate",
-    "oldValue": "April 1, 2016",
-    "newValue": "2016-03-10",
-    "description": "Page date at http://www.wsj.com/articles/blackbird-review-the-past-comes-back-to-haunt-you-1457650097 is 2016-03-10 (show opened 2016-03-10); April 1, 2016 came from the legacy web-search step."
+    "oldValue": "November 1, 2021",
+    "newValue": "2021-10-14",
+    "description": "Page date at https://www.washingtonpost.com/entertainment/theater_dance/thoughts-colored-man/2021/10/13/eef681e0-2b71-11ec-8ef6-3ca8fe943a92_story.html is 2021-10-14 (show opened 2021-10-13); November 1, 2021 came from the legacy web-search step."
    },
    {
     "type": "review-field-edit",
-    "file": "clydes-2021/wsj--charles-isherwood.json",
+    "file": "top-girls-2008/nytimes--ben-brantley.json",
     "field": "publishDate",
-    "oldValue": "December 2, 2021",
-    "newValue": "2021-11-24",
-    "description": "Page date at https://www.wsj.com/articles/clydes-lynn-nottage-kate-whoriskey-uzo-aduba-ron-cephas-jones-ednumd-donovan-reza-salazar-kara-young-11637794641 is 2021-11-24 (show opened 2021-11-23); December 2, 2021 came from the legacy web-search step."
+    "oldValue": "December 8, 2008",
+    "newValue": "2008-05-08",
+    "description": "Page date at https://www.nytimes.com/2008/05/08/theater/reviews/08girl.html is 2008-05-08 (show opened 2008-05-07); December 8, 2008 came from the legacy web-search step."
    },
    {
     "type": "review-field-edit",
-    "file": "cost-of-living-2022/variety--aramide-tinubu.json",
+    "file": "violet-2014/usatoday--elysa-gardner.json",
     "field": "publishDate",
-    "oldValue": "October 19, 2022",
-    "newValue": "2022-10-04",
-    "description": "Page date at https://variety.com/2022/legit/reviews/cost-of-living-review-broadway-1235392544/ is 2022-10-04 (show opened undefined); October 19, 2022 came from the legacy web-search step."
+    "oldValue": "April 12, 2014",
+    "newValue": "2014-04-21",
+    "description": "Page date at http://www.usatoday.com/story/life/theater/2014/04/20/broadway-review-violet/7806053/ is 2014-04-21 (show opened 2014-04-20); April 12, 2014 came from the legacy web-search step."
    },
    {
     "type": "review-field-edit",
-    "file": "cult-of-love-2024/nytimes--jesse-green.json",
+    "file": "waiting-for-godot-2013/nytimes--ben-brantley.json",
     "field": "publishDate",
-    "oldValue": "November 21, 2024",
-    "newValue": "2024-12-13",
-    "description": "Page date at https://www.nytimes.com/2024/12/12/theater/cult-of-love-broadway-review.html is 2024-12-13 (show opened 2024-12-12); November 21, 2024 came from the legacy web-search step."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "cymbeline-2007/nytimes--ben-brantley.json",
-    "field": "publishDate",
-    "oldValue": "August 22, 2007",
-    "newValue": "2007-12-03",
-    "description": "Page date at https://www.nytimes.com/2007/12/03/theater/reviews/03cymb.html is 2007-12-03 (show opened 2007-12-02); August 22, 2007 came from the legacy web-search step."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "deuce-2007/variety--david-rooney.json",
-    "field": "publishDate",
-    "oldValue": "May 15, 2007",
-    "newValue": "2007-06-04",
-    "description": "Page date at https://variety.com/2007/legit/reviews/deuce-1200558841/ is 2007-06-04 (show opened undefined); May 15, 2007 came from the legacy web-search step."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "disaster-2016/nytimes--ben-brantley.json",
-    "field": "publishDate",
-    "oldValue": "February 23, 2016",
-    "newValue": "2016-03-09",
-    "description": "Page date at https://www.nytimes.com/2016/03/09/theater/review-mayhem-gambling-disco-in-disaster-its-all-there-for-the-spoofing.html is 2016-03-09 (show opened 2016-03-08); February 23, 2016 came from the legacy web-search step."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "fish-in-the-dark-2015/wsj--terry-teachout.json",
-    "field": "publishDate",
-    "oldValue": "March 19, 2015",
-    "newValue": "2015-03-06",
-    "description": "Page date at http://www.wsj.com/articles/fish-in-the-dark-review-enthusiasm-curbed-1425612431 is 2015-03-06 (show opened 2015-03-05); March 19, 2015 came from the legacy web-search step."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "flying-over-sunset-2021/wsj--terry-teachout.json",
-    "field": "publishDate",
-    "oldValue": "November 30, 2021",
-    "newValue": "2021-12-16",
-    "description": "Page date at https://www.wsj.com/articles/flying-over-sunset-james-lapine-cary-grant-clare-booth-luce-aldous-huxley-lsd-11639694774?gaa_at=eafs&gaa_n=AWEtsqdelg-IkxZB5ebYZaFswyMDXaDLHGGSwm5MdOxQz7tI8tDO43kDWotO&gaa_ts=698c3c16&gaa_sig=ZuC6KkmAA8fL-kyZynwAjgv3Sqft0KWM6BBP2RgCP8lRE4N4nA46RnzLOXp4yutOmKfPSo83V3JjnH4D5reA7Q%3D%3D is 2021-12-16 (show opened 2021-12-13); November 30, 2021 came from the legacy web-search step."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "funny-girl-2022/washpost--peter-marks.json",
-    "field": "publishDate",
-    "oldValue": "April 25, 2022",
-    "newValue": "2022-05-09",
-    "description": "Page date at https://www.washingtonpost.com/theater-dance/2022/04/24/funny-girl-beanie-feldstein-broadway-streisand/ is 2022-05-09 (show opened 2022-04-24); April 25, 2022 came from the legacy web-search step."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "hot-feet-2006/nytimes--ben-brantley.json",
-    "field": "publishDate",
-    "oldValue": "April 21, 2006",
-    "newValue": "2006-05-01",
-    "description": "Page date at https://www.nytimes.com/2006/05/01/theater/reviews/01hot.html is 2006-05-01 (show opened 2006-04-30); April 21, 2006 came from the legacy web-search step."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "how-to-dance-in-ohio-2023/wsj--charles-isherwood.json",
-    "field": "publishDate",
-    "oldValue": "December 20, 2023",
-    "newValue": "2023-12-11",
-    "description": "Page date at https://www.wsj.com/articles/how-to-dance-in-ohio-review-a-compassionate-coming-of-age-musical-4a42287f is 2023-12-11 (show opened 2023-12-10); December 20, 2023 came from the legacy web-search step."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "illinoise-2024/usatoday--david-rooney.json",
-    "field": "publishDate",
-    "oldValue": "April 25, 2024",
-    "newValue": "2024-05-10",
-    "description": "Page date at https://hawkeyeswire.usatoday.com/story/entertainment/theater/2024/05/10/illinoise-on-broadway-dance-musical-nominated-for-four-tonys/73594172007/ is 2024-05-10 (show opened 2024-04-24); April 25, 2024 came from the legacy web-search step."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "lady-day-at-emersons-bar-and-grill-2014/ew--thom-geier.json",
-    "field": "publishDate",
-    "oldValue": "April 14, 2014",
-    "newValue": "2014-04-25",
-    "description": "Page date at https://ew.com/article/2014/04/25/lady-day-emersons-bar-grill-ew-review/?srsltid=AfmBOoo-kVzEoevOeiHK03SlY8scljGD85NmVlEsTj807JnemfKOX-dE is 2014-04-25 (show opened 2014-04-13); April 14, 2014 came from the legacy web-search step."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "linda-vista-2019/wsj--charles-isherwood.json",
-    "field": "publishDate",
-    "oldValue": "October 24, 2019",
-    "newValue": "2019-10-11",
-    "description": "Page date at https://www.wsj.com/articles/linda-vista-review-his-own-worst-enemy-11570753800?gaa_at=eafs&gaa_n=AWEtsqdZ7icR0wTRMK7eNgzesahOK3B2_SmXrbcSFOzZO6TEN_DG3j3cQtMF&gaa_ts=699527ca&gaa_sig=A5fgUzkVu_rale5Iuzj7GRJzl76v1s7ZreVv10F_ubI8DR1eqS7Ke_ivYFy1fp6Tk4c4PhcbrUTTYZ0S2dFOag%3D%3D is 2019-10-11 (show opened 2019-10-10); October 24, 2019 came from the legacy web-search step."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "long-days-journey-into-night-2016/nytimes--ben-brantley.json",
-    "field": "publishDate",
-    "oldValue": "April 19, 2016",
-    "newValue": "2016-04-28",
-    "description": "Page date at http://www.nytimes.com/2016/04/28/theater/review-long-days-journey-into-night-is-a-tempest-in-a-bourbon-bottle.html is 2016-04-28 (show opened 2016-04-27); April 19, 2016 came from the legacy web-search step."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "long-days-journey-into-night-2016/washpost--peter-marks.json",
-    "field": "publishDate",
-    "oldValue": "April 20, 2016",
-    "newValue": "2016-04-28",
-    "description": "Page date at https://www.washingtonpost.com/news/arts-and-entertainment/wp/2016/04/27/jessica-lange-gabriel-byrne-take-long-days-journey-out-for-its-harrowing-ride/ is 2016-04-28 (show opened 2016-04-27); April 20, 2016 came from the legacy web-search step."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "losing-louie-2006/nytimes--charles-isherwood.json",
-    "field": "publishDate",
-    "oldValue": "October 31, 2006",
-    "newValue": "2006-10-13",
-    "description": "Page date at https://www.nytimes.com/2006/10/13/theater/reviews/13loui.html is 2006-10-13 (show opened 2006-10-12); October 31, 2006 came from the legacy web-search step."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "man-and-boy-2011/nytimes--ben-brantley.json",
-    "field": "publishDate",
-    "oldValue": "November 14, 2011",
-    "newValue": "2011-10-10",
-    "description": "Page date at https://www.nytimes.com/2011/10/10/theater/reviews/man-and-boy-with-frank-langella-review.html is 2011-10-10 (show opened 2011-10-09); November 14, 2011 came from the legacy web-search step."
-   },
-   {
-    "type": "review-field-edit",
-    "file": "marvins-room-2017/nytimes--ben-brantley.json",
-    "field": "publishDate",
-    "oldValue": "June 15, 2017",
-    "newValue": "2017-06-30",
-    "description": "Page date at https://www.nytimes.com/2017/06/29/theater/marvins-room-review-broadway.html is 2017-06-30 (show opened 2017-06-29); June 15, 2017 came from the legacy web-search step."
+    "oldValue": "November 7, 2013",
+    "newValue": "2013-11-25",
+    "description": "Page date at https://www.nytimes.com/2013/11/25/theater/reviews/no-mans-land-and-waiting-for-godot-at-the-cort.html is 2013-11-25 (show opened 2013-11-24); November 7, 2013 came from the legacy web-search step."
    }
   ]
  }
