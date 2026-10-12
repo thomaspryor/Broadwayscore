@@ -7,7 +7,9 @@ import type Fuse from 'fuse.js';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { useCurrentMarket } from '@/hooks/useCurrentMarket';
 import { captureEvent } from '@/lib/posthog-events';
-import { mergeSearchResults, suggestCloseMatches, createSuggestionIndex } from '../../scripts/lib/show-search-match';
+import {
+  mergeSearchResults, suggestCloseMatches, createSuggestionIndex, withHeaderSearchExtra, HEADER_FUSE_OPTIONS,
+} from '../../scripts/lib/show-search-match';
 
 interface Show {
   id: string;
@@ -25,11 +27,6 @@ interface Show {
   castNames?: string;
   archived?: boolean;
   year?: string;
-}
-
-interface HeaderSearchExtra {
-  cast?: Record<string, string>;
-  archive?: Show[];
 }
 
 export default function HeaderSearch() {
@@ -68,28 +65,14 @@ export default function HeaderSearch() {
       let data: Show[] = await res.json();
       if (extraRes?.ok) {
         try {
-          const extra: HeaderSearchExtra = await extraRes.json();
-          const cast = extra.cast || {};
-          data = data.map(show => (cast[show.id] ? { ...show, castNames: cast[show.id] } : show));
-          if (Array.isArray(extra.archive)) data = data.concat(extra.archive);
+          data = withHeaderSearchExtra(data, await extraRes.json()) as Show[];
         } catch { /* keep the main index */ }
       }
       suggestionIndexRef.current = createSuggestionIndex(FuseClass, data);
       // Archived (unscored closed) shows stay out of the fuzzy index so they
       // can't take its 8 slots from live shows; they are still found by exact
-      // title substring in mergeSearchResults and by "Did you mean".
-      fuseRef.current = new FuseClass(data.filter(show => !show.archived), {
-        keys: [
-          { name: 'title', weight: 0.6 },
-          { name: 'akaTitles', weight: 0.5 },
-          { name: 'venue', weight: 0.2 },
-          { name: 'creativeTeamNames', weight: 0.2 },
-        ],
-        threshold: 0.35,
-        ignoreLocation: true,
-        minMatchCharLength: 2,
-        includeMatches: true, // lets mergeSearchResults rank title hits above venue/creative-only hits
-      });
+      // title substring and by typo fixes in mergeSearchResults.
+      fuseRef.current = new FuseClass(data.filter(show => !show.archived), HEADER_FUSE_OPTIONS);
       setShows(data);
       setDataReady(true);
     } catch {
@@ -105,20 +88,19 @@ export default function HeaderSearch() {
     const fuseResults = fuseRef.current.search(deferredQuery, { limit: 8 });
     // Adds exact title and cast-name substring matches Fuse can miss, then
     // orders playing/upcoming, closed-scored, unscored archive (stable).
-    return mergeSearchResults(shows, deferredQuery, fuseResults, 8) as Show[];
+    // With no title or cast match, confident typo fixes ("fleabg" -> Fleabag,
+    // archive included) lead the list ahead of Fuse's fuzzy noise (BRO-3628).
+    const closeMatches = () => (deferredQuery.trim().length >= 3 && suggestionIndexRef.current
+      ? suggestCloseMatches(suggestionIndexRef.current, deferredQuery, 3) : []);
+    return mergeSearchResults(shows, deferredQuery, fuseResults, 8, closeMatches) as Show[] & { confident?: boolean };
   }, [deferredQuery, dataReady, shows]);
-
-  // Zero results: offer close title matches ("Did you mean") instead of a dead end (BRO-3628).
-  const suggestions = useMemo(() => {
-    if (!dataReady || filteredShows.length > 0 || deferredQuery.trim().length < 3) return [];
-    return suggestCloseMatches(suggestionIndexRef.current, deferredQuery, 3) as Show[];
-  }, [deferredQuery, dataReady, filteredShows.length]);
 
   const closeSearch = useCallback(() => { setIsOpen(false); setIsMobileOpen(false); }, []);
   useClickOutside(containerRef, closeSearch);
 
   // Fire search_performed after 1s of no typing (≥2 chars).
-  // Query text is captured ONLY on TRUE zero-results searches — these reveal
+  // Query text is captured ONLY on searches we failed: zero results, or only
+  // Fuse's fuzzy guesses (no title, cast or typo-fix match, `confident` false) — these reveal
   // shows we may be missing (surfaced as Notion cards by
   // posthog-friction-analyzer.js). Searches that match real shows stay term-less
   // (privacy: don't log what users browse, only what we failed to return).
@@ -130,16 +112,16 @@ export default function HeaderSearch() {
     if (query.length < 2) return;
     const timer = setTimeout(() => {
       const hasResults = filteredShows.length > 0;
-      const trueZeroResult = dataReady && query === deferredQuery && !hasResults;
+      const missed = dataReady && query === deferredQuery && !filteredShows.confident;
       captureEvent('search_performed', {
         results_count: filteredShows.length,
         has_results: hasResults,
-        ...(trueZeroResult ? { suggestions_count: suggestions.length } : {}),
-        ...(trueZeroResult ? { query: query.trim().slice(0, 120) } : {}),
+        ...(missed && hasResults ? { fuzzy_only: true } : {}),
+        ...(missed ? { query: query.trim().slice(0, 120) } : {}),
       });
     }, 1000);
     return () => clearTimeout(timer);
-  }, [query, deferredQuery, filteredShows.length, dataReady, suggestions.length]);
+  }, [query, deferredQuery, filteredShows, dataReady]);
 
   // Handle keyboard navigation — guard Enter against stale deferred results
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
@@ -188,11 +170,10 @@ export default function HeaderSearch() {
 
   // selectedIndex is reset inline in onChange handlers to avoid a second render per keystroke
 
-  const handleResultClick = (slug: string, fromSuggestion = false) => {
+  const handleResultClick = (slug: string) => {
     captureEvent('search_selected', {
       show_id: slug,
       results_count: filteredShows.length,
-      ...(fromSuggestion ? { from_suggestion: true } : {}),
     });
     router.push(`/show/${slug}`);
     setIsOpen(false);
@@ -311,7 +292,7 @@ export default function HeaderSearch() {
                        show.category === 'regional' ? 'Regional' :
                        show.category === 'tour' ? 'Tour' : 'Broadway'}
                     </span>
-                    {show.venue && <span className="truncate">{show.venue}</span>}
+                    {show.venue ? <span className="truncate">{show.venue}</span> : show.year ? <span>{show.year}</span> : null}
                   </div>
                 </div>
               </button>
@@ -325,7 +306,7 @@ export default function HeaderSearch() {
             {isLoading ? (
               <p className="text-sm text-gray-400 text-center">Loading...</p>
             ) : (
-              <NoResults query={query} suggestions={suggestions} onPick={(slug) => handleResultClick(slug, true)} onLink={closeSearch} browseHref={browseHref} />
+              <NoResults query={query} onLink={closeSearch} browseHref={browseHref} />
             )}
           </div>
         )}
@@ -423,7 +404,7 @@ export default function HeaderSearch() {
                           {show.category === 'off-broadway' && (
                             <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-indigo-500/20 text-indigo-400">Off-Bway</span>
                           )}
-                          {show.venue && <span className="truncate">{show.venue}</span>}
+                          {show.venue ? <span className="truncate">{show.venue}</span> : show.year ? <span>{show.year}</span> : null}
                         </div>
                       </div>
                       <svg className="w-5 h-5 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -437,7 +418,7 @@ export default function HeaderSearch() {
                   {isLoading ? (
                     <p className="text-gray-400 text-center">Loading...</p>
                   ) : (
-                    <NoResults query={query} suggestions={suggestions} onPick={(slug) => handleResultClick(slug, true)} onLink={() => { closeSearch(); setQuery(''); }} browseHref={browseHref} large />
+                    <NoResults query={query} onLink={() => { closeSearch(); setQuery(''); }} browseHref={browseHref} large />
                   )}
                 </div>
               ) : (
@@ -453,22 +434,9 @@ export default function HeaderSearch() {
   );
 }
 
-function categoryLabel(category?: string): string {
-  switch (category) {
-    case 'west-end': return 'West End';
-    case 'off-west-end': return 'Off-West End';
-    case 'off-broadway': return 'Off-Broadway';
-    case 'regional': return 'Regional';
-    case 'tour': return 'Tour';
-    default: return 'Broadway';
-  }
-}
-
-/** Zero-result state: "Did you mean" close matches plus a way forward. */
-function NoResults({ query, suggestions, onPick, onLink, browseHref, large = false }: {
+/** Zero-result state: a way forward instead of a dead end (BRO-3628). */
+function NoResults({ query, onLink, browseHref, large = false }: {
   query: string;
-  suggestions: Show[];
-  onPick: (slug: string) => void;
   onLink: () => void;
   browseHref: string;
   large?: boolean;
@@ -477,26 +445,6 @@ function NoResults({ query, suggestions, onPick, onLink, browseHref, large = fal
   return (
     <div className={text}>
       <p className="text-gray-400 text-center">No shows found for &ldquo;{query}&rdquo;</p>
-      {suggestions.length > 0 && (
-        <div className="mt-3">
-          <p className="text-xs uppercase tracking-wide text-gray-500 mb-1">Did you mean</p>
-          <ul>
-            {suggestions.map((show) => (
-              <li key={show.id}>
-                <button
-                  onClick={() => onPick(show.slug)}
-                  className="w-full text-left px-2 py-1.5 rounded hover:bg-white/5 transition-colors"
-                >
-                  <span className="text-white font-medium">{show.title}</span>
-                  <span className="text-gray-500 text-xs ml-2 whitespace-nowrap">
-                    {categoryLabel(show.category)}{show.year ? ` · ${show.year}` : ''}
-                  </span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
       <p className="mt-3 text-xs text-gray-400 text-center">
         Try a show title or a performer&rsquo;s name, or{' '}
         <Link href={browseHref} onClick={onLink} className="text-brand hover:text-brand-hover">browse all shows</Link>.

@@ -77,3 +77,46 @@ test('committed header-search-extra.json has the archive and cast sections', asy
   assert.ok(Object.keys(extra.cast).length > 0);
   assert.ok(main.every(s => !('castNames' in s)), 'cast stays out of the shared index');
 });
+
+// Ship-check on the landed version (BRO-3628): exact archive titles fell past
+// the 8-slot cut behind fuzzy live hits ("art" -> Tartuffe), and a typo of an
+// archive title ("fleabg") got only fuzzy noise. Run against the real index.
+test('real index: exact titles lead, archive typos are rescued, misses are flagged', async () => {
+  const fs = await import('node:fs');
+  const read = (rel) => JSON.parse(fs.readFileSync(new URL(`../../${rel}`, import.meta.url), 'utf8'));
+  const data = lib.withHeaderSearchExtra(read('public/data/search-shows.json'), read('public/data/header-search-extra.json'));
+  const fuse = new Fuse(data.filter(s => !s.archived), lib.HEADER_FUSE_OPTIONS);
+  const sIndex = lib.createSuggestionIndex(Fuse, data);
+  const search = (q) => mergeSearchResults(data, q, fuse.search(q, { limit: 8 }), 8,
+    () => lib.suggestCloseMatches(sIndex, q, 3));
+  const norm = (t) => lib.normalizeSearchText(t);
+  for (const q of ['Art', 'The Chairs', 'The Miser', 'Big', 'Honour', 'Fleabag', 'Ruthless']) {
+    const out = search(q);
+    assert.ok(norm(out[0].title).startsWith(norm(q)), `${q}: got ${out.slice(0, 3).map(s => s.title)}`);
+    assert.equal(out.confident, true);
+  }
+  const alice = search('alice').slice(0, 3);
+  assert.ok(alice.every(s => /alice/i.test(s.title)), `alice: ${alice.map(s => s.title)}`);
+  assert.equal(norm(search('fleabg')[0].title), 'fleabag');
+  assert.ok(norm(search('ruthles')[0].title).startsWith('ruthless'));
+  assert.equal(norm(search('hamiltn')[0].title), 'hamilton');
+  assert.equal(search('christopher jackso')[0].id, 'hamilton-2015');
+  // Only fuzzy guesses (or nothing): HeaderSearch logs these as misses.
+  assert.equal(search('simon and garfunkel story').confident, false);
+});
+
+test('exact archive titles are found by typing them (every 8th, plus the old misses)', async () => {
+  const fs = await import('node:fs');
+  const read = (rel) => JSON.parse(fs.readFileSync(new URL(`../../${rel}`, import.meta.url), 'utf8'));
+  const data = lib.withHeaderSearchExtra(read('public/data/search-shows.json'), read('public/data/header-search-extra.json'));
+  const fuse = new Fuse(data.filter(s => !s.archived), lib.HEADER_FUSE_OPTIONS);
+  // The full 1,278 take ~80s; a fixed stride plus the titles the landed
+  // version lost keeps this a fast unit test.
+  const known = new Set(['Art', 'The Chairs', 'The Miser', 'Big', 'Honour', 'Cyrano - The Musical']);
+  const sample = data.filter(s => s.archived).filter((s, i) => i % 8 === 0 || known.has(s.title));
+  const missing = sample.filter(s => {
+    const out = mergeSearchResults(data, s.title, fuse.search(s.title, { limit: 8 }), 8);
+    return !out.some(r => lib.normalizeSearchText(r.title) === lib.normalizeSearchText(s.title));
+  });
+  assert.deepEqual(missing.map(s => s.title), []);
+});

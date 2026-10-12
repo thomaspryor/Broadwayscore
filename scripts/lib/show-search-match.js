@@ -65,18 +65,59 @@ function searchTier(show) {
 
 const TITLE_KEYS = new Set(['title', 'akaTitles']);
 
+// HeaderSearch's fuzzy index (archived shows are kept out of it, see there).
+const HEADER_FUSE_OPTIONS = {
+  keys: [
+    { name: 'title', weight: 0.6 },
+    { name: 'akaTitles', weight: 0.5 },
+    { name: 'venue', weight: 0.2 },
+    { name: 'creativeTeamNames', weight: 0.2 },
+  ],
+  threshold: 0.35,
+  ignoreLocation: true,
+  minMatchCharLength: 2,
+  includeMatches: true, // lets mergeSearchResults rank title hits above venue/creative-only hits
+};
+
+/** Main search-shows.json entries plus header-search-extra.json's cast names and archive. */
+function withHeaderSearchExtra(shows, extra) {
+  const cast = (extra && extra.cast) || {};
+  const out = shows.map(show => (cast[show.id] ? { ...show, castNames: cast[show.id] } : show));
+  return extra && Array.isArray(extra.archive) ? out.concat(extra.archive) : out;
+}
+
+// 0: whole title (or aka) equals the query; 1: a title word starts with it;
+// 2: plain substring. Lower ranks first, so "art" finds Art, not tARTuffe.
+function titleMatchRank(show, query) {
+  const q = normalizeSearchText(query);
+  const titles = [show.title, ...(Array.isArray(show.akaTitles) ? show.akaTitles : [])];
+  if (titles.some(t => normalizeSearchText(t) === q)) return 0;
+  const qWords = searchWords(query).join(' ');
+  if (qWords && titles.some(t => ` ${searchWords(t).join(' ')}`.includes(` ${qWords}`))) return 1;
+  return 2;
+}
+
 /**
  * Merge Fuse's ranked hits with exact substring matches Fuse can miss
- * (multi-word partials). Order, each group stable-sorted by searchTier:
- *  1. title matches (Fuse hits on title/akaTitles + title substring), so
+ * (multi-word partials). Order:
+ *  1. title substring matches, by match quality (exact, word start, inside)
+ *     then searchTier, so an exact archive title beats a fuzzy live one and
  *     "anna" lists Anna Christie before shows with an Anna in the cast;
  *  2. cast-name substring matches ("christopher jackso" -> Hamilton);
- *  3. Fuse hits that matched only venue or creative team, which are fuzzy
- *     and often noise.
+ *  3. only when 1 and 2 are empty: `closeMatches()` (confident typo fixes,
+ *     archive included, which Fuse never indexes: "fleabg" -> Fleabag);
+ *  4. Fuse fuzzy title hits, then Fuse hits on venue/creative team only.
+ * Groups 2-4 are stable-sorted by searchTier.
  * `fuseResults` are Fuse results made with includeMatches ({ item, matches }),
- * or bare items (treated as title matches).
+ * or bare items (treated as title matches). `closeMatches` is a lazy callback
+ * so the typo pass only costs anything when nothing else matched.
+ * @param {object[]} shows
+ * @param {string} query
+ * @param {object[]} fuseResults
+ * @param {number} [limit]
+ * @param {(() => object[]) | null} [closeMatches]
  */
-function mergeSearchResults(shows, query, fuseResults, limit = 8) {
+function mergeSearchResults(shows, query, fuseResults, limit = 8, closeMatches = null) {
   const fuseTitled = [];
   const fuseOther = [];
   for (const r of fuseResults) {
@@ -87,16 +128,26 @@ function mergeSearchResults(shows, query, fuseResults, limit = 8) {
       fuseTitled.push(r);
     }
   }
-  const seen = new Set(fuseTitled.map(s => s.id));
-  const take = (pred) => shows.filter(s => !seen.has(s.id) && pred(s)).map(s => { seen.add(s.id); return s; });
-  const titleHits = take(s => matchesShowSearchQuery(s, query));
-  const castHits = take(s => matchesShowCastQuery(s, query));
+  const seen = new Set();
+  const take = (list) => list.filter(s => s && !seen.has(s.id)).map(s => { seen.add(s.id); return s; });
   const byTier = (a, b) => searchTier(a) - searchTier(b);
-  return [
-    ...[...fuseTitled, ...titleHits].sort(byTier),
-    ...castHits.sort(byTier),
-    ...fuseOther.filter(s => !seen.has(s.id)).sort(byTier),
+  const titleHits = take(shows.filter(s => matchesShowSearchQuery(s, query)))
+    .map(s => ({ s, rank: titleMatchRank(s, query) }))
+    .sort((a, b) => a.rank - b.rank || byTier(a.s, b.s))
+    .map(x => x.s);
+  const castHits = take(shows.filter(s => matchesShowCastQuery(s, query))).sort(byTier);
+  const typoHits = !titleHits.length && !castHits.length && closeMatches ? take(closeMatches()) : [];
+  const merged = [
+    ...titleHits,
+    ...castHits,
+    ...typoHits,
+    ...take(fuseTitled).sort(byTier),
+    ...take(fuseOther).sort(byTier),
   ].slice(0, limit);
+  // False when the list is only Fuse's fuzzy guesses: HeaderSearch logs those
+  // queries as misses, same as zero results.
+  merged.confident = titleHits.length + castHits.length + typoHits.length > 0;
+  return merged;
 }
 
 // Looser than HeaderSearch's 0.35 so typos ("hamlton", "phantom of the
@@ -234,5 +285,7 @@ module.exports = {
   mergeSearchResults,
   suggestCloseMatches,
   createSuggestionIndex,
+  withHeaderSearchExtra,
+  HEADER_FUSE_OPTIONS,
   MAX_SEARCH_CAST,
 };
