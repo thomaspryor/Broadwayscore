@@ -19,10 +19,11 @@ name: Check Corpus Drift
 
 on:
   schedule:
-    # Daily at 6:20 AM UTC — after the 4 AM rebuild + 5 AM scoring crons, so the
-    # audits see the freshly-rebuilt corpus. Offset from check-review-count-drift
-    # (6:00) to avoid a checkout-core-data stampede.
-    - cron: '20 6 * * *'
+    # Daily at 08:20 UTC: 4h20m after the 04:00 rebuild (04:30 scoring), so the
+    # audits see the freshly rebuilt corpus; GitHub's schedule lag needs 4h+
+    # between ordered crons (BRO-4801; scripts/lib/cron-ordering.js). Offset
+    # from check-review-count-drift (09:00) to avoid a checkout-core-data stampede.
+    - cron: '20 8 * * *'
   workflow_run:
     # Re-check right after each rebuild — drift is caused by the rebuild, not by
     # code pushes, so this is the cadence that matters.

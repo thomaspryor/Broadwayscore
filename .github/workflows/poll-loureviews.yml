@@ -7,7 +7,7 @@ name: Poll LouReviews
 
 on:
   schedule:
-    - cron: '0 7 * * *'  # Daily 07:00 UTC — after the 04:00 rebuild / 05:00 score, catches prior-day UK reviews
+    - cron: '0 7 * * *'  # Daily 07:00 UTC — after the 04:00 rebuild / 04:30 score, catches prior-day UK reviews
   workflow_dispatch:
     inputs:
       days:

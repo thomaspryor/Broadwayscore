@@ -10,7 +10,7 @@ concurrency:
 
 on:
   schedule:
-    - cron: '30 4 * * *'  # Daily at 4:30 AM UTC — after rebuild (4 AM), before adjudicate (5:15 AM)
+    - cron: '30 4 * * *'  # Daily at 4:30 AM UTC, after rebuild (4 AM); adjudicate-review-queue runs 09:15
     # BRO-5047 (owner decision 2026-10-11): catch-up scoring waits for the
     # half-price batch runs instead of scoring at full price on every dispatch,
     # so the batch run happens every 6h. Once-a-day extras stay on '30 4 * * *'.

@@ -25,12 +25,13 @@ name: Audit Provisional Show Venues
 
 on:
   schedule:
-    # 05:25 UTC daily. Chosen to land BEFORE data-health-check.yml's 06:45 tick so
-    # data/audit/venue-date-mismatches.json is same-day fresh for the morning digest
-    # and for scripts/promote-ob-historical.js (which reads this file's `match` rows
-    # as a shows.json write-path input), while staying clear of the 07:00 UTC cron
-    # trio. See the staleness-band note in check-cron-health.yml before re-timing.
-    - cron: '25 5 * * *'
+    # 20:25 UTC daily, so data/audit/venue-date-mismatches.json is fresh for the
+    # next morning's data-health-check.yml (02:15) digest and for
+    # scripts/promote-ob-historical.js (which reads this file's `match` rows as a
+    # shows.json write-path input). It was 05:25, which landed AFTER the health
+    # check once that moved to 02:15 (BRO-4800); GitHub's schedule lag needs
+    # 4h+ between ordered crons (BRO-4801, registry: scripts/lib/cron-ordering.js).
+    - cron: '25 20 * * *'
   workflow_dispatch:
     inputs:
       time_budget_min:

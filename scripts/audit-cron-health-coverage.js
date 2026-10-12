@@ -12,6 +12,7 @@ const {
   worstGapHours, extractCrons, classifyAlertPaths,
 } = require('./lib/cron-coverage');
 const { DIGEST_CRONS, DIGEST_ONLY } = require('./lib/health-digest-crons');
+const { ORDERING, checkOrdering, fileReader } = require('./lib/cron-ordering');
 
 const CUSHION_HOURS = 12;
 const WORKFLOWS_DIR = path.join(__dirname, '..', '.github', 'workflows');
@@ -184,6 +185,15 @@ function main() {
   if (noCadence.length) {
     console.log(`  🟡 ${noCadence.length} liveness-swept workflow(s) have no computable cadence (seasonal?) so the sweep skips them: ${noCadence.join(', ')}`);
     warnings += noCadence.length;
+  }
+
+  // ── BRO-4801: "B runs after A" assumptions between crons (scripts/lib/cron-ordering.js).
+  // Advisory here (blocking in scripts/lib/cron-ordering.test.mjs).
+  const orderingProblems = checkOrdering(fileReader(WORKFLOWS_DIR));
+  console.log(`Cron ordering: ${ORDERING.length - new Set(orderingProblems.map(p => p.entry)).size} of ${ORDERING.length} registered orderings hold.`);
+  for (const p of orderingProblems) {
+    console.log(`  🟡 ${p.entry.before} -> ${p.entry.after}: ${p.problem}`);
+    warnings++;
   }
 
   if (failures > 0) {

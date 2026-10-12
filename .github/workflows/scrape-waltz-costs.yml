@@ -2,7 +2,7 @@ name: Scrape Waltz Weekly Costs
 
 on:
   schedule:
-    - cron: '0 14 * * 1'  # Monday 2 PM UTC (after Sunday grosses)
+    - cron: '0 14 * * 1'  # Monday 2 PM UTC (weekly-grosses lands Tue/Wed, so this sees the prior week's)
   workflow_dispatch:
     inputs:
       dry_run:

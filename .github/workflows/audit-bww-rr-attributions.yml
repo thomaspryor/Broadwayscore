@@ -11,7 +11,8 @@ name: Audit BWW RR Attributions
 
 on:
   schedule:
-    # Weekly Saturday 08:00 UTC — after Friday's BWW RR scrape (scrape-bww-reviews.yml)
+    # Weekly Saturday 08:00 UTC. Reads the week's BWW RR data; scrape-bww-reviews.yml
+    # runs Sundays 13:00 UTC, so this sees data up to six days old (BRO-4801).
     - cron: '0 8 * * 6'
   workflow_dispatch:
     inputs:

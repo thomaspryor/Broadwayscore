@@ -1,7 +1,7 @@
 name: Collection Coverage Report
 on:
   schedule:
-    - cron: '0 15 * * 1'  # Monday 3 PM UTC (10 AM EST, after PostHog insights at 2 PM)
+    - cron: '0 15 * * 1'  # Monday 3 PM UTC (10 AM EST), after posthog-monday.yml (08:00 UTC)
   workflow_dispatch: {}
 
 # BRO-3071: added so its own cron can't race a manual workflow_dispatch into

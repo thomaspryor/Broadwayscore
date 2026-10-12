@@ -24,7 +24,7 @@ on:
   workflow_dispatch: {}
 
 # Ship-check finding (card #374): a manual workflow_dispatch overlapping the
-# 7am cron would let two runs read-modify-write data/audit/alert-router-attempts.jsonl
+# 02:15 cron would let two runs read-modify-write data/audit/alert-router-attempts.jsonl
 # and data/audit/alert-ledger.json concurrently — logDispatchAttempt() does a
 # full read-filter-rewrite, not an atomic append, and push-with-retry.sh
 # resolves data/audit/* conflicts by keeping one side wholesale, so the loser's

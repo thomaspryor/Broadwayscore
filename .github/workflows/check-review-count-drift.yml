@@ -9,9 +9,10 @@ name: Check Review-Count Drift
 
 on:
   schedule:
-    # Daily at 6 AM UTC (2 AM EDT / 1 AM EST). After the 4 AM rebuild cron + 5 AM
-    # scoring cron, so drift reflects the freshly-rebuilt reviews.json.
-    - cron: '0 6 * * *'
+    # Daily at 09:00 UTC: 5h after the 04:00 rebuild cron (04:30 scoring), so
+    # drift reflects the freshly rebuilt reviews.json. GitHub's schedule lag
+    # needs 4h+ between ordered crons (BRO-4801; scripts/lib/cron-ordering.js).
+    - cron: '0 9 * * *'
   workflow_dispatch:
     inputs:
       show:

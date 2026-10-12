@@ -18,7 +18,7 @@ on:
       - 'tsconfig.json'
       - '.gitleaks.toml'
   schedule:
-    - cron: '0 7 * * 1'  # Mondays at 7 AM UTC (after weekly grosses runs)
+    - cron: '0 7 * * 1'  # Mondays at 7 AM UTC (weekly full scan)
   workflow_dispatch:
 
 concurrency:

@@ -4,8 +4,10 @@ name: Adjudicate Review Queue
 
 on:
   schedule:
-    # Daily at 5:15 AM UTC — staggered 15 min after scoring (5 AM) and rebuild (4 AM)
-    - cron: '15 5 * * *'
+    # Daily at 09:15 UTC: 4.75h after the 04:30 scoring run (rebuild 04:00).
+    # Was 05:15, which GitHub's schedule lag could start before scoring
+    # (BRO-4801; scripts/lib/cron-ordering.js).
+    - cron: '15 9 * * *'
   workflow_dispatch:
     inputs:
       dry_run:

@@ -2,10 +2,11 @@ name: Monitor Scheduled Email Count
 
 # Card #510 / BRO-1690: verifies the owner's "exactly 1 scheduled digest
 # email/day" goal (cards #364/#497) actually holds, by reading real Resend
-# send history instead of trusting code comments. Runs after every known
-# scheduled digest would have fired: Overnight (~07:30 UTC), opening-digest
-# (11:00 UTC), daily-digest (12:00 UTC), reddit-engagement-digest (13:00 &
-# 01:00 UTC). 15:00 UTC gives margin over all of them.
+# send history instead of trusting code comments. Scheduled digests:
+# reddit-engagement-digest (01:45 UTC), daily-digest (02:00), opening-digest
+# (11:00), overnight-collect. GitHub starts schedules hours late, so the
+# order on a given day is not fixed; the script reads a 2-day lookback, which
+# covers every digest whatever time this run starts (BRO-4801).
 #
 # Also regenerates data/audit/alert-sender-inventory.json every run and
 # asserts against scripts/.alert-sender-baseline.json (BRO-1690's second
