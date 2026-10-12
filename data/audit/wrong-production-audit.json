@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-12T20:56:27.057Z",
+  "timestamp": "2026-10-12T21:16:30.150Z",
   "stats": {
-    "totalReviews": 56102,
-    "alreadyFlagged": 20937,
+    "totalReviews": 56110,
+    "alreadyFlagged": 20939,
     "dateGuardCatches": 253,
     "directorMismatch": 1782,
     "tvFilmSignals": 1617,
-    "londonSignals": 2208,
+    "londonSignals": 2209,
     "offBroadwaySignals": 507,
     "yearMismatch": 137,
-    "noPublishDate": 5245
+    "noPublishDate": 5246
   },
   "findings": [
     {
@@ -62658,6 +62658,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new world stages\""
+        }
+      ]
+    },
+    {
+      "showId": "high-school-musical-off-west-end-2026",
+      "file": "kidify--unknown.json",
+      "publishDate": null,
+      "url": "https://kidify.co.uk/day-out/high-school-musical",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
