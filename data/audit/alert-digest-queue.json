@@ -1431,6 +1431,32 @@
     "queuedAt": "2026-10-12T18:34:10.118Z"
   },
   {
+    "conditionKey": "review-gap:opening-window:all-male-as-you-like-it-regional-2026",
+    "title": "Review gap — \"As You Like It\" missing 2 cited review(s)",
+    "description": "As You Like It (all-male-as-you-like-it-regional-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=all-male-as-you-like-it-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-12T19:37:32.099Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:mystic-pizza-tour-2026",
+    "title": "Review gap — \"Mystic Pizza\" missing 12 cited review(s)",
+    "description": "Mystic Pizza (mystic-pizza-tour-2026): 12 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=mystic-pizza-tour-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-12T19:37:32.173Z"
+  },
+  {
     "conditionKey": "land:land/bro-4849-sidecar-guard",
     "title": "Landing blocked: unit-tests-node red on land/bro-4849-sidecar-guard",
     "description": "land.yml did not land land/bro-4849-sidecar-guard: the unit-tests-node gate went red at 389acbc5fc. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38293271586",

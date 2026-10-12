@@ -1,27 +1,8 @@
 {
-  "generatedAt": "2026-10-12T16:27:08.491Z",
+  "generatedAt": "2026-10-12T19:37:38.870Z",
   "windowDays": 45,
   "showsScanned": 159,
   "gaps": [
-    {
-      "showId": "crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026",
-      "title": "Crazy Mama: A True Story of Love and Madness",
-      "openingDate": "2026-09-22",
-      "file": "timeout--unknown.json",
-      "outletId": "timeout",
-      "tier": 1,
-      "type": "unscored",
-      "dispatchable": true,
-      "url": "https://www.timeout.com/newyork/theater/crazy-mama-a-true-story-of-love-and-madness",
-      "recovery": null,
-      "recoveryCount": 0,
-      "forumLinkRecoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026",
-      "firstSeen": "2026-10-10T16:18:52.937Z",
-      "fileAgeHours": 48.13686111111111,
-      "gapSeenAt": "2026-10-12T13:33:50.012Z",
-      "nonTerminalAgeHours": 2.888466388888889
-    },
     {
       "showId": "cosi-fan-tutte-off-broadway-2026",
       "title": "Così fan tutte",
@@ -36,9 +17,47 @@
       "forumLinkRecoveryCount": 3,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=cosi-fan-tutte-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-08T17:44:48.110Z",
-      "fileAgeHours": 94.70491277777778,
+      "fileAgeHours": 97.87931166666667,
       "gapSeenAt": "2026-10-08T22:46:44.413Z",
-      "nonTerminalAgeHours": 89.673355
+      "nonTerminalAgeHours": 92.84846
+    },
+    {
+      "showId": "franz-and-marie-west-end-2026",
+      "title": "Franz & Marie",
+      "openingDate": "2026-10-05",
+      "file": "timeout-london--unknown.json",
+      "outletId": "timeout-london",
+      "tier": 1,
+      "type": "unscored",
+      "dispatchable": true,
+      "url": "https://www.timeout.com/london/theatre/franz-marie",
+      "recovery": null,
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=franz-and-marie-west-end-2026",
+      "firstSeen": "2026-10-09T09:40:14.319Z",
+      "fileAgeHours": 81.95552583333334,
+      "gapSeenAt": "2026-10-12T19:37:38.869Z",
+      "nonTerminalAgeHours": 0
+    },
+    {
+      "showId": "jane-eyre-off-west-end-2026",
+      "title": "Jane Eyre",
+      "openingDate": "2026-09-08",
+      "file": "daily-mail--libby-purves.json",
+      "outletId": "daily-mail",
+      "tier": 1,
+      "type": "unscored",
+      "dispatchable": true,
+      "url": null,
+      "recovery": null,
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=jane-eyre-off-west-end-2026",
+      "firstSeen": null,
+      "fileAgeHours": null,
+      "gapSeenAt": "2026-10-12T19:37:38.869Z",
+      "nonTerminalAgeHours": 0
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -55,47 +74,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=golden-boy-off-west-end-2026",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 479.7765205555556,
+      "fileAgeHours": 482.9507947222222,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 30.795969166666666
-    },
-    {
-      "showId": "a-ghost-in-your-ear-off-broadway-2026",
-      "title": "A Ghost In Your Ear",
-      "openingDate": "2026-10-09",
-      "file": "timeout--unknown.json",
-      "outletId": "timeout",
-      "tier": 1,
-      "type": "unscored",
-      "dispatchable": true,
-      "url": "https://www.timeout.com/newyork/theater/a-ghost-in-your-ear",
-      "recovery": null,
-      "recoveryCount": 0,
-      "forumLinkRecoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=a-ghost-in-your-ear-off-broadway-2026",
-      "firstSeen": "2026-10-10T14:47:24.637Z",
-      "fileAgeHours": 49.661855,
-      "gapSeenAt": "2026-10-12T16:27:08.491Z",
-      "nonTerminalAgeHours": 0
-    },
-    {
-      "showId": "tom-at-the-farm-off-broadway-2026",
-      "title": "Tom at the Farm",
-      "openingDate": null,
-      "file": "timeout--unknown.json",
-      "outletId": "timeout",
-      "tier": 1,
-      "type": "unscored",
-      "dispatchable": true,
-      "url": "https://www.timeout.com/newyork/theater/tom-at-the-farm",
-      "recovery": null,
-      "recoveryCount": 0,
-      "forumLinkRecoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=tom-at-the-farm-off-broadway-2026",
-      "firstSeen": "2026-10-09T02:42:22.788Z",
-      "fileAgeHours": 85.74576166666667,
-      "gapSeenAt": "2026-10-12T16:27:08.491Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 33.97107416666667
     },
     {
       "showId": "human-things-off-broadway-2026",
@@ -111,9 +92,9 @@
       "forumLinkRecoveryCount": 3,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=human-things-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-09-26T14:54:28.766Z",
-      "fileAgeHours": 385.5441102777778,
+      "fileAgeHours": 388.71831972222225,
       "gapSeenAt": "2026-09-26T17:43:29.271Z",
-      "nonTerminalAgeHours": 382.72756111111113
+      "nonTerminalAgeHours": 385.9026661111111
     },
     {
       "showId": "fire-fire-off-west-end-2026",
@@ -129,9 +110,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=fire-fire-off-west-end-2026 --url=https://www.thetimes.com/culture/classical-opera/article/fire-in-my-mouth-marin-alsop-review-hdnsrp752 --outlet=times-uk   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-01T15:51:33.268Z",
-      "fileAgeHours": 264.593025,
+      "fileAgeHours": 267.7671613888889,
       "gapSeenAt": "2026-10-12T06:09:40.724Z",
-      "nonTerminalAgeHours": 10.291046388888889
+      "nonTerminalAgeHours": 13.466151388888889
     }
   ],
   "contradictions": []
