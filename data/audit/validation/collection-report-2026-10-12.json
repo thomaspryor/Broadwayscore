@@ -1,20 +1,20 @@
 {
-  "runDate": "2026-10-12T23:22:34.109Z",
+  "runDate": "2026-10-12T23:23:34.425Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "affluenza-off-west-end-2026",
+    "showFilter": "from-the-heart-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 2,
+    "processed": 3,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "50.0%"
+    "successRate": "75.0%"
   },
   "tierBreakdown": {
     "playwright": 1,
@@ -29,7 +29,7 @@
   },
   "statistics": {
     "tier1Attempts": 3,
-    "tier1Success": 2,
+    "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 1,
@@ -42,9 +42,9 @@
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
-    "tier4Success": 1,
-    "totalFailed": 2,
+    "tier4Attempts": 2,
+    "tier4Success": 0,
+    "totalFailed": 1,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 1,
@@ -54,10 +54,10 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 2,
-    "failed": 2,
+    "processed": 3,
+    "failed": 1,
     "shows": [
-      "affluenza-off-west-end-2026"
+      "from-the-heart-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,26 +66,27 @@
     }
   },
   "processed": [
-    "affluenza-off-west-end-2026/firstnightmagazine--unknown.json",
-    "affluenza-off-west-end-2026/west-end-best-friend--tara-whenray.json"
+    "from-the-heart-west-end-2026/theatre-news--unknown.json",
+    "from-the-heart-west-end-2026/north-west-end--alan-stuart-malin.json",
+    "from-the-heart-west-end-2026/stagedtheatre--unknown.json"
   ],
   "failed": [
-    "affluenza-off-west-end-2026/artsdesk--unknown.json",
-    "affluenza-off-west-end-2026/trustpilot--john-taggart.json"
+    "from-the-heart-west-end-2026/reviewsgate--william-russell.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "affluenza-off-west-end-2026/firstnightmagazine--unknown.json",
-      "affluenza-off-west-end-2026/west-end-best-friend--tara-whenray.json"
+      "from-the-heart-west-end-2026/theatre-news--unknown.json",
+      "from-the-heart-west-end-2026/north-west-end--alan-stuart-malin.json",
+      "from-the-heart-west-end-2026/stagedtheatre--unknown.json"
     ],
     "failed": [
-      "affluenza-off-west-end-2026/artsdesk--unknown.json",
-      "affluenza-off-west-end-2026/trustpilot--john-taggart.json"
+      "from-the-heart-west-end-2026/reviewsgate--william-russell.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "affluenza-off-west-end-2026/firstnightmagazine--unknown.json"
+      "from-the-heart-west-end-2026/theatre-news--unknown.json",
+      "from-the-heart-west-end-2026/stagedtheatre--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -95,7 +96,7 @@
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "affluenza-off-west-end-2026/west-end-best-friend--tara-whenray.json"
+      "from-the-heart-west-end-2026/north-west-end--alan-stuart-malin.json"
     ]
   },
   "failuresByOutlet": {},
