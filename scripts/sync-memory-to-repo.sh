@@ -226,3 +226,10 @@ if [ -n "$DO_COMMIT" ] && [ -z "$DRY_RUN" ]; then
     echo "sync-memory-to-repo: another session holds the sync lock — skipping commit" >&2
   fi
 fi
+
+# BRO-4239: report drift between ~/.claude masters and the repo's cloud copies.
+# Non-fatal; alerts through the owner-alert router (digest) and no-ops in cloud.
+if command -v node >/dev/null 2>&1 && [ -f "$REPO/scripts/check-cloud-parity.js" ] && [ -z "$DRY_RUN" ]; then
+  # timeout: a digest alert can escalate to a Linear card, which must not stall the stop hook.
+  timeout 20 node "$REPO/scripts/check-cloud-parity.js" >&2 || true
+fi
