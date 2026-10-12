@@ -160,7 +160,6 @@
     "christmas-carol-goes-wrong-west-end-2026/london-theatre-reviews--the-anonymous-reviewer.json",
     "stick-man-off-west-end-2026/london-box-office--emmie-newitt.json",
     "hadestown-2019/the-knockturnal--justin-rodriguez.json",
-    "wicked-west-end-2021/daily-mail--unknown.json",
     "one-day-the-musical-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
     "top-gunchained-off-west-end-2026/times-uk--unknown.json",
     "a-beautiful-noise-the-neil-diamond-musical-tour-2026/dayton-local--michael-woody.json",
@@ -458,7 +457,9 @@
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/standard--nick-curtis.json",
     "bloodsport-after-helen-of-troy-off-west-end-2026/buy-tickets-direct-from-the-theatre--unknown.json",
     "fire-fire-off-west-end-2026/hollywood-reporter--angie-han.json",
-    "electra-persona-west-end-2026/vocaleyes--unknown.json"
+    "electra-persona-west-end-2026/vocaleyes--unknown.json",
+    "1984-2017/talkinbroadway--matthew-murray.json",
+    "a-chorus-line-2006/washpost--peter-marks.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -730,7 +731,7 @@
     ]
   },
   "startTime": "2026-10-12T12:07:46.605Z",
-  "lastProcessed": "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
+  "lastProcessed": "a-chorus-line-2006/washpost--peter-marks.json",
   "log": [
     {
       "t": "2026-10-12T12:12:23.924Z",
@@ -843,6 +844,94 @@
       "event": "bb-session",
       "session": "50fc8322",
       "url": "https://deadline.com/2026/10/dirty-dancing-musical-broadway-lionsgate-1237147780"
+    },
+    {
+      "t": "2026-10-12T18:35:06.376Z",
+      "event": "bb-session",
+      "session": "20f30b65",
+      "url": "https://www.talkinbroadway.com/world/1984.html"
+    },
+    {
+      "t": "2026-10-12T18:35:06.920Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-12T18:35:18.242Z",
+      "event": "bb-session",
+      "session": "75e7d713",
+      "url": "https://www.talkinbroadway.com/world/1984.html"
+    },
+    {
+      "t": "2026-10-12T18:35:18.711Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-12T18:36:03.505Z",
+      "event": "bb-session",
+      "session": "58a2ff40",
+      "url": "https://variety.com/2013/legit/reviews/700-sundays-1200886604/"
+    },
+    {
+      "t": "2026-10-12T18:36:03.983Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-10-12T18:36:12.104Z",
+      "event": "bb-session",
+      "session": "2e9b4dba",
+      "url": "https://variety.com/2013/legit/reviews/700-sundays-1200886604/"
+    },
+    {
+      "t": "2026-10-12T18:36:12.676Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-10-12T18:38:27.020Z",
+      "event": "bb-session",
+      "session": "e1996734",
+      "url": "https://www.wsj.com/articles/SB117961869834728582"
+    },
+    {
+      "t": "2026-10-12T18:38:27.535Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-12T18:38:46.254Z",
+      "event": "bb-session",
+      "session": "57264eaa",
+      "url": "https://www.wsj.com/articles/SB117961869834728582"
+    },
+    {
+      "t": "2026-10-12T18:38:46.729Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-12T18:39:17.903Z",
+      "event": "bb-session",
+      "session": "44d262e5",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/2006/10/06/a-chorus-line-back-i"
+    },
+    {
+      "t": "2026-10-12T18:39:18.448Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-10-12T18:39:26.460Z",
+      "event": "bb-session",
+      "session": "b6f33ad7",
+      "url": "https://www.washingtonpost.com/archive/lifestyle/2006/10/06/a-chorus-line-back-i"
+    },
+    {
+      "t": "2026-10-12T18:39:27.123Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ],
   "recoveredAfterFailure": [
