@@ -401,5 +401,35 @@
       }
     ],
     "queuedAt": "2026-10-12T12:02:30.655Z"
+  },
+  {
+    "conditionKey": "land:land/bro-3171-reclear",
+    "title": "Landing blocked: unit-tests-node red on land/bro-3171-reclear",
+    "description": "land.yml did not land land/bro-3171-reclear: the unit-tests-node gate went red at c4953803db. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38244874044",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-3171-reclear"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "c4953803db20046324d83fdd59f4f94790229624"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38244874044"
+      }
+    ],
+    "queuedAt": "2026-10-12T12:18:29.485Z"
   }
 ]
