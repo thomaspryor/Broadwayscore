@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5080-g",
   "planId": "e976deb5-57d6-40a0-930e-63ca4a55d140",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-11T22:25:50.015Z",
   "submitter": {
     "name": null,
@@ -34,5 +34,18 @@
         "description": "summer-and-smoke-west-end-2018: sourced press night"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T04:45:38.789Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for summer-and-smoke-west-end-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for summer-and-smoke-west-end-2018"
+    }
+  ]
 }
