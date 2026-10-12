@@ -2750,6 +2750,7 @@ function checkAutofixEffectiveness() {
       return [{
         name,
         status: 'warn',
+        unmeasurable: true,
         message: 'Auto-fix health is not measurable here: data/audit/digest-autofix-ledger.jsonl is absent. '
           + 'It is untracked, so CI never sees it — this row cannot judge the loop from this environment.',
         hint: 'Track the ledger (or run this check on the dispatch host) so auto-fix success rate becomes visible where the digest is generated.',
@@ -3172,6 +3173,7 @@ function checkInfraReviewGate() {
     return [{
       name: 'Infra-review: gate telemetry',
       status: 'warn',
+      unmeasurable: true,
       message: 'No local infra-review telemetry visible from this environment — data/audit/infra-review-gate.jsonl and .claude/review-verdicts.jsonl are gitignored, per-machine files the #1079 hook writes only where it runs. This check cannot confirm the plan-review gate is being used or bypassed from here.',
       hint: 'Run `node scripts/health-check.js` on the machine where the hook actually fires to see real counts. A CI-visible rollup (so the scheduled digest sees this too) is tracked as a follow-up.',
     }];
@@ -3216,6 +3218,7 @@ function checkDispatchOutcomes(dryRun) {
     return [{
       name: 'Dispatch outcomes: abandoned',
       status: 'warn',
+      unmeasurable: true,
       message: 'No local dispatch-ledger.jsonl visible from this environment — data/audit/dispatch-ledger.jsonl is gitignored, per-machine, written only where dispatches actually launch. This check cannot confirm dispatch outcomes from here.',
       hint: 'Run `node scripts/health-check.js` (or `node scripts/audit-dispatch-outcomes.js`) on the machine where dispatches launch to see real counts.',
     }];
@@ -3337,20 +3340,24 @@ function checkDispatchHealth() {
     // via routeAlert on every single CI run, forever — since the condition
     // that would close it (the ledger existing on that runner) can never
     // become true. Suffixed name deliberately does NOT match either playbook
-    // regex (both are `^...$`-anchored), so this falls back to the default
-    // urgency 'low': still visible in the category summary and full check
-    // list, never actionable, never card-spammed. The unsuffixed names stay
+    // regex (both are `^...$`-anchored). That alone was NOT enough: a row
+    // with no playbook entry is actionable by default, so these were filed as
+    // "BSC Daily" cards anyway (BRO-4120, BRO-4704..4708). `unmeasurable: true`
+    // is what keeps them visible in the full check list but never actionable,
+    // never in the digest snapshot, never card-filed. The unsuffixed names stay
     // reserved for a real local run where the ledger IS present.
     return [
       {
         name: `${CHECK_NAME} (unmeasurable here)`,
         status: 'warn',
+        unmeasurable: true,
         message: 'No local dispatch-ledger.jsonl visible from this environment — data/audit/dispatch-ledger.jsonl is gitignored, per-machine, written only where dispatches actually launch. The dead-launch rate cannot be measured from here.',
         hint: 'Run `node scripts/audit-dispatch-dead-rate.js` on the machine where dispatches launch to see the real rate.',
       },
       {
         name: `${HEADLESS_CHECK_NAME} (unmeasurable here)`,
         status: 'warn',
+        unmeasurable: true,
         message: 'No local dispatch-ledger.jsonl visible from this environment — data/audit/dispatch-ledger.jsonl is gitignored, per-machine, written only where dispatches actually launch. The headless success rate cannot be measured from here.',
         hint: 'Run `node scripts/audit-headless-outcome-rate.js` on the machine where dispatches launch to see the real rate.',
       },
@@ -3926,6 +3933,10 @@ function isRepeatFailureSelfHealed(conclusionsNewestFirst) {
 // in tests/unit/health-check-repeat-failures.test.mjs.
 function effectiveUrgencyLevel(urgencyLevel, result) {
   if (result && result.selfHealed) return 'low';
+  // BRO-4120: a row that says "this environment cannot see the input" (a
+  // gitignored per-machine ledger read from CI) is never fixable from where
+  // the digest runs, so it must never file a card or count as a warning.
+  if (result && result.unmeasurable) return 'low';
   return urgencyLevel;
 }
 
@@ -3938,6 +3949,7 @@ function effectiveUrgencyLevel(urgencyLevel, result) {
 // count toward "N warnings need attention" in one place while the digest
 // body calls it "monitoring itself, no action needed" in another.
 function isActionableResult(r) {
+  if (r.unmeasurable) return false; // BRO-4120: see effectiveUrgencyLevel
   const entry = getPlaybookEntry(r.name);
   // No playbook entry at all → actionable by default (matches the three
   // inline predicates this replaced: `!entry || entry.urgency !== 'low'`).
@@ -5929,4 +5941,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness };
+module.exports = { buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness };

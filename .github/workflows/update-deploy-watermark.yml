@@ -26,7 +26,7 @@ on:
 jobs:
   update-watermark:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10  # BRO-4266: checkout-core-data alone can take 3-5 min
     concurrency:
       group: deploy-watermark-update
       # false (2026-07-13): a RUNNING run now finishes its stage-latency append

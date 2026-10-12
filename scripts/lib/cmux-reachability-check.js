@@ -197,6 +197,7 @@ async function runReachabilityCheck({
     return {
       name: `${CHECK_NAME} (unmeasurable here)`,
       status: 'warn',
+      unmeasurable: true, // BRO-4120: never actionable, never card-filed
       message: 'cmux.app is not installed on this machine (or this is CI) — reachability cannot be measured from here.',
     };
   }

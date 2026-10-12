@@ -198,6 +198,7 @@
  *   # paid-provider-ok: <reason>          — skip paid-provider-on-push check for this workflow
  *   # hygiene-cache-runid-ok: <reason>    — skip run-id-keyed actions/cache check for this file
  *   # hygiene-audit-glob-ok: <reason>     — skip bare-audit-dir-glob check for this workflow
+ *   # hygiene-short-timeout-ok: <reason>  — (in the job) skip rule (r), short core-data job timeout (BRO-4266)
  *
  * No external deps. Parsed with plain regex, consistent with
  * audit-workflow-concurrency.js and audit-cron-health-coverage.js.
@@ -226,6 +227,8 @@ const {
   extractSingleQuotedEvalBodies,
   findBareAuditDirectoryGlobs,
   findFullBlobFullHistoryCheckouts,
+  findShortCoreDataJobTimeouts,
+  CORE_DATA_JOB_MIN_TIMEOUT,
   findGitDiffOnIgnoredPaths,
 } = require('./lib/audit-workflow-hygiene-rules');
 const { scanWorkflow: scanPaidProviders } = require('./lib/paid-provider-push-scan');
@@ -812,6 +815,7 @@ async function main() {
   const bareAuditGlobFindings = [];
   // Rule (o) is advisory too (same posture; see its doc comment).
   const fullBlobCheckoutFindings = [];
+  const shortCoreDataTimeoutFindings = [];
   // Rule (q) (BRO-5033) is advisory too: git diff/status/show on an ignored
   // path. Scans workflows and composite actions; `git check-ignore` decides.
   const ignoredDiffFindings = [];
@@ -951,6 +955,12 @@ async function main() {
       if (hits.length > 0) fullBlobCheckoutFindings.push({ file, hits });
     }
 
+    // ── Rule (r): core-data job with a job timeout too short for the checkout (advisory) ─
+    {
+      const hits = findShortCoreDataJobTimeouts(raw);
+      if (hits.length > 0) shortCoreDataTimeoutFindings.push({ file, hits });
+    }
+
     // Rule (l): no paid-provider spend in a push-triggered workflow (BRO-2984).
     // Honors its own `# paid-provider-ok:` marker internally (scanWorkflow
     // returns zero violations when present), so no extra guard is needed here.
@@ -1011,6 +1021,18 @@ async function main() {
     for (const { file, hits } of fullBlobCheckoutFindings) {
       console.log(`   • ${file}`);
       for (const h of hits) console.log(`       line ${h.lineNum}: ${h.text.trim()}`);
+    }
+  }
+
+  // ── Rule (r): short job timeout on a checkout-core-data job (advisory — never counts toward `total`) ─
+  if (shortCoreDataTimeoutFindings.length > 0) {
+    const n = shortCoreDataTimeoutFindings.reduce((acc, { hits }) => acc + hits.length, 0);
+    console.log(
+      `ℹ️  checkout-core-data jobs with timeout-minutes < ${CORE_DATA_JOB_MIN_TIMEOUT}: ${n} across ${shortCoreDataTimeoutFindings.length} workflow(s) — the checkouts alone can take 3-5 min, so the job is cancelled before its own step runs (BRO-4266). Raise it or add \`# hygiene-short-timeout-ok: <reason>\` in the job.`,
+    );
+    for (const { file, hits } of shortCoreDataTimeoutFindings) {
+      console.log(`   • ${file}`);
+      for (const h of hits) console.log(`       line ${h.lineNum}: ${h.job} (timeout-minutes: ${h.timeoutMin})`);
     }
   }
 

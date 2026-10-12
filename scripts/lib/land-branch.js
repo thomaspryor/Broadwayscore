@@ -650,6 +650,11 @@ function landBranch(o) {
       let landBase = baseSha;
       let churnSkips = 0;
       let restart = false;
+      // BRO-3945: a push rejected because main moved across INERT paths only
+      // (bot data churn during the 20-50s push) re-enters this loop and keeps
+      // the verdict, instead of burning a whole attempt on a full re-check.
+      // Shares the churn budget, so a firehose still terminates.
+      pushLoop: for (;;) {
       for (;;) {
         git(['fetch', remote, target], workdir);
         const nowBase = git(['rev-parse', targetRef], workdir);
@@ -670,10 +675,18 @@ function landBranch(o) {
           return done({ attempts: attempt, baseSha: nowBase, verifiedBase: baseSha, failedCheck: 'rebase', reason: `branch would not rebase cleanly onto ${targetRef} @ ${nowBase.slice(0, 10)} (inert churn since ${landBase.slice(0, 10)}): ${String(err.stderr || err.message).slice(0, 300)}`, files });
         }
         churnSkips++;
+        if (git(['rev-parse', 'HEAD'], workdir) === nowBase) {
+          // The rebase dropped every commit: they are already on main (a
+          // push the client saw fail but the server accepted). Same exit as
+          // the rebased-to-empty path above; never amend main's own commit.
+          const contentNote = contentNoteFor(sha);
+          log(`[land] re-rebase onto ${targetRef} left nothing to land — the branch's changes are already on ${target}${contentNote ? ` (${contentNote})` : ''}`);
+          return done({ landed: true, sha: nowBase, attempts: attempt, baseSha: nowBase, verifiedBase: baseSha, churnSkips, pushed: false, verified: 'LANDED', contentNote, reason: `rebased to empty — changes already on ${targetRef}` });
+        }
         log(`[land] attempt ${attempt}: ${targetRef} moved across ${intervening.length} inert path(s) only (${landBase.slice(0, 10)} → ${nowBase.slice(0, 10)}: ${intervening.slice(0, 3).join(', ')}${intervening.length > 3 ? ', …' : ''}) — verdict kept, rebased without re-checking (${churnSkips}/${maxChurnSkips})`);
         landBase = nowBase;
       }
-      if (restart) continue;
+      if (restart) break pushLoop;
 
       // Trailers/amends go on the commit that will actually be pushed, with
       // the base it actually sits on (autonomous-merge's Auto-merge-base
@@ -703,8 +716,15 @@ function landBranch(o) {
           return done({ attempts: attempt, baseSha: landBase, verifiedBase: baseSha, failedCheck: 'push', reason: `${blocked}${errText.match(/=== PRE-PUSH BLOCKED: ([^=]+) ===/)?.[1]?.trim() || errLine}`.slice(0, 500), files });
         }
         lastReason = `push rejected after ${targetRef} moved: ${errLine}`.slice(0, 200);
+        const movedTo = gitOrNull(['rev-parse', targetRef], workdir);
+        const pushIntervening = movedTo ? git(['diff', '--name-only', `${landBase}..${movedTo}`], workdir).split('\n').filter(Boolean) : [];
+        if (classifyIntervening(pushIntervening) === 'inert' && churnSkips < maxChurnSkips) {
+          log(`[land] attempt ${attempt}: ${lastReason} — inert churn only, re-rebasing without re-checking`);
+          continue pushLoop;
+        }
         log(`[land] attempt ${attempt}: ${lastReason}${shouldRetry(attempt, maxAttempts) ? ' — re-rebasing and re-checking' : ''}`);
-        continue;
+        restart = true;
+        break pushLoop;
       }
 
       // Prove it, don't assume it. The push seam is push-only, so HEAD is
@@ -723,6 +743,8 @@ function landBranch(o) {
         landed: true, sha: head, attempts: attempt, baseSha: landBase, verifiedBase: baseSha, churnSkips, pushed: true, files, verified: verdict.verdict,
         reason: verdict.verdict === 'UNKNOWN' ? `push succeeded; local ancestry check UNKNOWN (${verdict.reason}) — confirm via git ls-remote / the GitHub compare API` : null,
       });
+      }
+      if (restart) continue;
     }
     return done({
       attempts: maxAttempts, failedCheck: 'race',

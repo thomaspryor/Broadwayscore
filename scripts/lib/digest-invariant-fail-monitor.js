@@ -42,6 +42,7 @@ function assessDigestInvariantFailRow(entries, opts = {}) {
     return {
       name: NAME,
       status: 'warn',
+      unmeasurable: true,
       message: 'Cannot measure digest content-invariant failures from this environment — data/audit/digest-invariant-fail-ledger.jsonl is gitignored, per-machine, and absent here. This row cannot judge digest-content health from here.',
       hint: 'Run `node scripts/health-check.js` on the machine where scripts/send-morning-digest.js actually runs (the launchd host) so a FAIL becomes visible where the digest is generated.',
     };

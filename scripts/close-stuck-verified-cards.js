@@ -27,13 +27,14 @@ const path = require('path');
 const { spawnSync, execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const {
-  planCandidates, decideClosure, buildClosureComment, closeRunStopReason,
+  planCandidates, decideClosure, parseLandingRows, buildClosureComment, closeRunStopReason,
   decideBounce, buildBounceComment, MAX_BOUNCES, MAX_BOUNCES_PER_RUN,
 } = require('./lib/stuck-card-closer.js');
 
 const REPO = path.join(__dirname, '..');
 const AUDIT = path.join(REPO, 'data', 'audit', 'done-evidence-audit.json');
 const OUT = path.join(REPO, 'data', 'audit', 'stuck-card-closer.json');
+const LANDINGS = path.join(REPO, 'data', 'audit', 'landings.jsonl');
 const TIME_BUDGET_MS = 18 * 60 * 1000;
 // One close re-runs the card's check through the Done gate; never start one
 // that could outlive the workflow step (25 min) if it hits its own timeout.
@@ -122,6 +123,20 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   const linear = deps.linear || require('./lib/linear-client.js');
   const commitsTouching = deps.commitsTouching || (gitRepo ? gitCommitsTouching(gitRepo) : apiCommitsTouching());
   const plan = planCandidates(report, nowMs);
+  // Evidence for non-test commands (BRO-4814). Read once per run; a missing
+  // file means no card can close on this evidence, never that all can.
+  let landings = deps.landings;
+  if (!landings) {
+    try {
+      landings = parseLandingRows(fs.readFileSync(deps.landingsPath || LANDINGS, 'utf8'));
+    } catch (err) {
+      // Visible, not silent: every non-test card reads "no-landing-naming-card"
+      // this run, and the report says why.
+      console.error(`[close-stuck-verified-cards] landings.jsonl unreadable (${err.code || err.message}); non-test cards cannot close this run`);
+      count('landings-unreadable');
+      landings = [];
+    }
+  }
 
   if (plan.error) {
     console.log(`[close-stuck-verified-cards] ${plan.error}; nothing to do`);
@@ -191,14 +206,14 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     try {
       const data = await linear.graphql(ISSUE_QUERY, { id: candidate.id });
       issue = data && data.issue ? { ...data.issue, comments: (data.issue.comments && data.issue.comments.nodes) || [] } : null;
-      commits = issue ? await commitsTouching(candidate.testPath, issue.createdAt) : [];
+      commits = issue && candidate.testPath ? await commitsTouching(candidate.testPath, issue.createdAt) : [];
     } catch (err) {
       console.error(`[close-stuck-verified-cards] could not read ${candidate.id}: ${err.message}`);
       out.rows.push({ id: candidate.id, action: 'read-failed', reason: err.message.slice(0, 200) });
       exitCode = 3;
       break;
     }
-    const decision = decideClosure({ candidate, issue, commits, nowMs });
+    const decision = decideClosure({ candidate, issue, commits, landings, nowMs });
     if (!decision.close) {
       count(decision.reason);
       out.rows.push({ id: candidate.id, state: candidate.state, action: 'leave', reason: decision.reason });
@@ -206,7 +221,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     }
     if (!apply) {
       count('would-close');
-      console.log(`would close ${candidate.id} (${candidate.state}; commit ${decision.sha.slice(0, 9)} touched ${candidate.testPath})`);
+      console.log(`would close ${candidate.id} (${candidate.state}; commit ${decision.sha.slice(0, 9)}, ${decision.evidence})`);
       out.rows.push({ id: candidate.id, state: candidate.state, action: 'would-close', sha: decision.sha });
       continue;
     }

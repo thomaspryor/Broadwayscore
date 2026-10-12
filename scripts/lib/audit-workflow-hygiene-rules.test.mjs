@@ -39,6 +39,7 @@ const {
   findPipefailDeadExitCodeEcho,
   findBareAuditDirectoryGlobs,
   findFullBlobFullHistoryCheckouts,
+  findShortCoreDataJobTimeouts,
 } = require('./audit-workflow-hygiene-rules.js');
 
 const CORE_FILES = ['shows.json', 'reviews.json'];
@@ -571,5 +572,54 @@ jobs:
 `;
     assert.deepStrictEqual(findFullBlobFullHistoryCheckouts(own), []);
     assert.strictEqual(findFullBlobFullHistoryCheckouts(previous).length, 1);
+  });
+});
+
+describe('findShortCoreDataJobTimeouts (rule r, BRO-4266)', () => {
+  const wf = (timeout, extra = '') => `
+on: workflow_dispatch
+jobs:
+  readiness:
+    runs-on: ubuntu-latest
+${timeout === null ? '' : `    timeout-minutes: ${timeout}\n`}${extra}    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/checkout-core-data
+      - run: node scripts/check.js
+  other:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - run: echo hi
+`;
+
+  test('flags a checkout-core-data job under the minimum and names it', () => {
+    const hits = findShortCoreDataJobTimeouts(wf(3));
+    assert.deepStrictEqual(hits, [{ job: 'readiness', lineNum: 4, timeoutMin: 3 }]);
+  });
+
+  test('a short job without checkout-core-data, an 8+ timeout, or no timeout is fine', () => {
+    assert.deepStrictEqual(findShortCoreDataJobTimeouts(wf(10)), []);
+    assert.deepStrictEqual(findShortCoreDataJobTimeouts(wf(8)), []);
+    assert.deepStrictEqual(findShortCoreDataJobTimeouts(wf(null)), []);
+  });
+
+  test('the in-job exemption marker skips it; a commented-out uses line does not count', () => {
+    assert.deepStrictEqual(findShortCoreDataJobTimeouts(wf(3, '    # hygiene-short-timeout-ok: tiny sparse checkout\n')), []);
+    const commented = wf(3).replace('      - uses: ./.github/actions/checkout-core-data', '      # - uses: ./.github/actions/checkout-core-data');
+    assert.deepStrictEqual(findShortCoreDataJobTimeouts(commented), []);
+  });
+
+  test('a direct actions/checkout of the core-data repo counts too', () => {
+    const direct = wf(5).replace('      - uses: ./.github/actions/checkout-core-data',
+      '      - uses: actions/checkout@v4\n        with:\n          repository: thomaspryor/broadway-scorecard-data\n          path: .private-data');
+    assert.deepStrictEqual(findShortCoreDataJobTimeouts(direct), [{ job: 'readiness', lineNum: 4, timeoutMin: 5 }]);
+  });
+
+  test('the real workflows that hit BRO-4266 no longer carry a short core-data job', async () => {
+    const fs = await import('node:fs');
+    for (const f of ['update-show-status.yml', 'opening-night-stage-alert.yml']) {
+      const raw = fs.readFileSync(new URL(`../../.github/workflows/${f}`, import.meta.url), 'utf8');
+      assert.deepStrictEqual(findShortCoreDataJobTimeouts(raw), [], f);
+    }
   });
 });

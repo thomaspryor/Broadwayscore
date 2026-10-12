@@ -1013,7 +1013,7 @@ jobs:
     needs: update-shows
     if: always()
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 10  # BRO-4266: 3 min cancelled runs on 10-01, 10-05, 10-07 (checkout + setup-node alone can take 3+ min)
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -1803,7 +1803,7 @@ jobs:
     needs: update-shows
     if: always() && needs.update-shows.result == 'success'
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10  # BRO-4266: 5 min cancelled runs on 08-06, 10-05 (core-data checkout is slow)
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -1887,7 +1887,7 @@ jobs:
     needs: update-shows
     if: always() && needs.update-shows.result == 'success'
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 10  # BRO-4266: 3 min cancelled runs on 09-28, 10-01 (core-data checkout is slow)
     steps:
       - uses: actions/checkout@v5
       - name: Checkout core data

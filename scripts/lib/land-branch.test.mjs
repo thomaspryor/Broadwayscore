@@ -368,6 +368,63 @@ test('the churn budget is bounded: past maxChurnSkips a further inert move force
   } finally { w.cleanup(); }
 });
 
+test('BRO-3945: push rejected because main moved across INERT paths during the push → re-rebased and re-pushed in the same attempt, no re-check', () => {
+  const w = makeWorld();
+  try {
+    w.makeBranch('feat-push-churn');
+    let checkRuns = 0; let pushes = 0; const logs = [];
+    const r = landBranch({
+      branch: 'feat-push-churn', repoDir: w.repoDir, log: (m) => logs.push(m),
+      checks: () => { checkRuns++; return greenChecks(); },
+      // Bot data commits land while each of the first two pushes is in flight
+      // (land.yml run 38270219301 lost three attempts this way on 2026-10-12).
+      pushMain: (o) => { pushes++; if (pushes <= 2) w.moveOrigin(`data/audit/churn-${pushes}.json`); plainPush(o); },
+    });
+    assert.equal(r.landed, true, JSON.stringify(r));
+    assert.equal(r.attempts, 1, 'inert churn during the push does not consume an attempt');
+    assert.equal(checkRuns, 1, 'and never re-runs the checks');
+    assert.equal(pushes, 3);
+    assert.equal(r.churnSkips, 2);
+    assert.equal(w.originMain(), r.sha);
+    assert.ok(logs.some((l) => /inert churn only, re-rebasing without re-checking/.test(l)), logs.join('\n'));
+  } finally { w.cleanup(); }
+});
+
+test('BRO-3945: a SUBSTANTIVE move during the push still forces a full re-check', () => {
+  const w = makeWorld();
+  try {
+    w.makeBranch('feat-push-code');
+    let checkRuns = 0; let pushes = 0;
+    const r = landBranch({
+      branch: 'feat-push-code', repoDir: w.repoDir,
+      checks: () => { checkRuns++; return greenChecks(); },
+      pushMain: (o) => { pushes++; if (pushes === 1) w.moveOrigin('scripts/lib/x.js'); plainPush(o); },
+    });
+    assert.equal(r.landed, true, JSON.stringify(r));
+    assert.equal(r.attempts, 2);
+    assert.equal(checkRuns, 2);
+  } finally { w.cleanup(); }
+});
+
+test('BRO-3945: a push the server accepted but the client saw fail → landed without pushing again or amending main', () => {
+  const w = makeWorld();
+  try {
+    w.makeBranch('feat-ghost-push');
+    let pushes = 0; let amends = 0;
+    const r = landBranch({
+      branch: 'feat-ghost-push', repoDir: w.repoDir,
+      checks: () => greenChecks(),
+      beforePush: ({ git: g }) => { amends++; g(['commit', '--amend', '-m', `feat: ghost\n\nTrailer: ${amends}`]); },
+      pushMain: (o) => { pushes++; plainPush(o); if (pushes === 1) throw new Error('fatal: the remote end hung up unexpectedly'); },
+    });
+    assert.equal(r.landed, true, JSON.stringify(r));
+    assert.equal(r.pushed, false, 'nothing left to push: the first push already landed');
+    assert.equal(pushes, 1);
+    assert.equal(amends, 1, "main's own commit is never amended");
+    assert.equal(r.sha, w.originMain());
+  } finally { w.cleanup(); }
+});
+
 test('checks that dirty the throwaway tree (tracked edit + untracked file) do not break the retry rebase', () => {
   const w = makeWorld();
   try {

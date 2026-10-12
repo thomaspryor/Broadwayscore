@@ -167,13 +167,20 @@ function assessCanaryRow({ canaryLedgerEntries, dispatchLedgerEntries, now = new
   const name = 'Autofix: daily canary (dispatch pipeline proof)';
   const entries = Array.isArray(canaryLedgerEntries) ? canaryLedgerEntries : null;
 
-  if (!entries || !entries.length) {
+  if (entries === null) {
+    // unmeasurable: the CI digest must not file a card for a ledger it can't see (BRO-4120).
     return {
       name,
       status: 'warn',
-      message: entries === null
-        ? 'Cannot measure the autofix canary from this environment — data/audit/autofix-canary-ledger.jsonl is gitignored/per-machine and absent here.'
-        : 'No autofix canary history yet — it will start filing/verifying from the next morning digest run.',
+      unmeasurable: true,
+      message: 'Cannot measure the autofix canary from this environment — data/audit/autofix-canary-ledger.jsonl is gitignored/per-machine and absent here.',
+    };
+  }
+  if (!entries.length) {
+    return {
+      name,
+      status: 'warn',
+      message: 'No autofix canary history yet — it will start filing/verifying from the next morning digest run.',
     };
   }
 
@@ -315,6 +322,7 @@ function assessThroughputRow({ digestLedgerEntries, backlogLedgerEntries, linear
     return {
       name,
       status: 'warn',
+      unmeasurable: true,
       message: 'Autofix throughput is not measurable from this environment — both data/audit/digest-autofix-ledger.jsonl and data/audit/backlog-drain-ledger.jsonl are gitignored/per-machine and absent here.',
     };
   }

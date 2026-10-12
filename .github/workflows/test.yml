@@ -3134,6 +3134,9 @@ on:
       # not globbed), so it's path-listed here too so a solo edit to just the
       # test still triggers CI.
       - 'scripts/tests/health-check-autofix-ci-gate.test.mjs'
+      # BRO-4120: unmeasurable-in-CI rows never actionable. Same scripts/tests/
+      # path-listing rationale as the entries directly above.
+      - 'scripts/tests/health-check-unmeasurable-rows.test.mjs'
       - 'scripts/bsc-prune.js'
       - 'scripts/bsc-prune.test.mjs'
       # validate-show-venue.js already path-listed above (line ~180).

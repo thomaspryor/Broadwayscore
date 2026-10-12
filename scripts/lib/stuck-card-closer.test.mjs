@@ -7,6 +7,8 @@ const {
   CLOSER_MARKER,
   cardTestPath,
   mentionsCard,
+  branchIsForCard,
+  parseLandingRows,
   commitIsForCard,
   planCandidates,
   futureRecheckAfter,
@@ -62,16 +64,24 @@ test('planCandidates keeps only card-specific STUCK rows', () => {
       row({ id: 'BRO-6', cmd: 'node --test scripts/lib/shared.test.mjs' }),
       row({ id: 'BRO-7', verdict: 'VERIFIED', cmd: 'node --test scripts/lib/shared.test.mjs' }),
       row({ id: 'BRO-8', verdict: 'FAILED', cmd: 'node --test scripts/lib/eight.test.mjs' }),
+      row({ id: 'BRO-9', cmd: 'node scripts/audit-workflow-hygiene.js' }),
+      row({ id: 'BRO-10', verdict: 'VERIFIED', cmd: 'node scripts/audit-workflow-hygiene.js' }),
+      row({ id: 'BRO-11', cmd: 'node --test scripts/lib/a.test.mjs scripts/lib/b.test.mjs' }),
     ],
   };
   const { candidates, skipped } = planCandidates(report, NOW);
-  assert.deepEqual(candidates.map((c) => c.id), ['BRO-1', 'BRO-2']);
+  // BRO-4814: a shared TEST command stays a candidate (its evidence is a card-
+  // naming commit touching the file); an unshared non-test command is a
+  // candidate on landing evidence; a shared non-test command is not.
+  assert.deepEqual(candidates.map((c) => c.id), ['BRO-1', 'BRO-2', 'BRO-5', 'BRO-6']);
   assert.equal(candidates[0].testPath, 'scripts/lib/one.test.mjs');
+  assert.equal(candidates[2].testPath, null);
+  assert.equal(candidates[3].testPath, 'scripts/lib/shared.test.mjs');
   assert.deepEqual(skipped, {
     'state-Todo': 1,
     'no-verify-command': 1,
-    'command-not-a-single-test-file': 1,
     'command-shared-with-another-card': 1,
+    'command-multi-file-test': 1,
   });
 });
 
@@ -101,7 +111,8 @@ test('commitIsForCard reads the subject and Refs/Fixes/Closes trailers only', ()
 });
 
 test('decideClosure closes an idle card whose own commit touched its test', () => {
-  assert.deepEqual(decideClosure({ candidate, issue: issue(), commits, nowMs: NOW }), { close: true, sha: 'bbb222bbb222ccc' });
+  assert.deepEqual(decideClosure({ candidate, issue: issue(), commits, nowMs: NOW }),
+    { close: true, sha: 'bbb222bbb222ccc', evidence: 'touched scripts/lib/one.test.mjs' });
 });
 
 test('decideClosure refuses every unsafe case', () => {
@@ -370,4 +381,53 @@ test('CLI: a failed read on a bounce card skips that card and still runs the clo
   assert.equal(out.counts['bounce:read-failed'], 1);
   assert.deepEqual(spawned, ['BRO-402']);
   assert.equal(out.counts.closed, 1);
+});
+
+// ── BRO-4814: non-test commands close on a land/ branch naming the card ────
+
+test('branchIsForCard matches the land/ naming styles in use, never a longer id', () => {
+  assert.equal(branchIsForCard('land/bro-4171-row-fix', 'BRO-4171'), true);
+  assert.equal(branchIsForCard('land/job/linear-BRO-4171-mv3x9uwn', 'BRO-4171'), true);
+  assert.equal(branchIsForCard('land/codex-bro-4171', 'BRO-4171'), true);
+  assert.equal(branchIsForCard('land/bro-41710-other', 'BRO-4171'), false);
+  assert.equal(branchIsForCard('land/xbro-4171', 'BRO-4171'), false);
+});
+
+test('parseLandingRows keeps complete rows and drops torn ones', () => {
+  const text = '{"ts":"2026-10-01T00:00:00Z","branch":"land/bro-1","sha":"aaa"}\n{"ts":\n\n{"branch":"land/bro-2"}\n';
+  assert.deepEqual(parseLandingRows(text), [{ ts: '2026-10-01T00:00:00Z', branch: 'land/bro-1', sha: 'aaa' }]);
+});
+
+test('decideClosure on a non-test command needs a post-creation, non-revert landing naming the card', () => {
+  const cand = { id: 'BRO-1', state: 'In Review', cmd: 'node scripts/check-health-row-absent.js --row-b64 eA', testPath: null };
+  const created = issue().createdAt;
+  const after = new Date(Date.parse(created) + DAY).toISOString();
+  const before = new Date(Date.parse(created) - DAY).toISOString();
+  const d = (landings) => decideClosure({ candidate: cand, issue: issue(), commits: [], landings, nowMs: NOW });
+  assert.deepEqual(d([{ ts: after, branch: 'land/job/linear-BRO-1-x', sha: 'fff' }]),
+    { close: true, sha: 'fff', evidence: 'land branch land/job/linear-BRO-1-x' });
+  assert.equal(d([]).reason, 'no-landing-naming-card');
+  assert.equal(d(undefined).reason, 'no-landing-naming-card');
+  assert.equal(d([{ ts: before, branch: 'land/bro-1-early', sha: 'e' }]).reason, 'no-landing-naming-card');
+  assert.equal(d([{ ts: after, branch: 'land/bro-10-other', sha: 'o' }]).reason, 'no-landing-naming-card');
+  assert.equal(d([{ ts: after, branch: 'land/revert-bro-1', sha: 'r' }]).reason, 'no-landing-naming-card');
+  // A commit touching some file is not the evidence for a non-test command.
+  assert.equal(decideClosure({ candidate: cand, issue: issue(), commits, landings: [], nowMs: NOW }).reason, 'no-landing-naming-card');
+  // Every other safety rule still runs first.
+  assert.equal(decideClosure({ candidate: cand, issue: issue({ updatedAt: iso(NOW - 3600e3) }), commits: [],
+    landings: [{ ts: after, branch: 'land/bro-1', sha: 'f' }], nowMs: NOW }).reason, 'recent-activity');
+  // A card still In Progress has not claimed the work is finished, so a landing
+  // that names it (e.g. a plans-only branch) is not enough.
+  const ip = { ...cand, state: 'In Progress' };
+  assert.equal(decideClosure({ candidate: ip, issue: issue({ state: { name: 'In Progress' }, updatedAt: iso(NOW - 4 * DAY), comments: [] }),
+    commits: [], landings: [{ ts: after, branch: 'land/bro-1-plans', sha: 'p' }], nowMs: NOW }).reason, 'landing-evidence-needs-in-review');
+  // An unparseable creation date refuses instead of matching every landing.
+  assert.equal(decideClosure({ candidate: cand, issue: issue({ createdAt: 'garbage' }), commits: [],
+    landings: [{ ts: after, branch: 'land/bro-1', sha: 'f' }], nowMs: NOW }).reason, 'issue-created-unparseable');
+});
+
+test('buildClosureComment names the evidence the close used', () => {
+  const body = buildClosureComment({ candidate: { id: 'BRO-1', cmd: 'node scripts/x.js', testPath: null }, sha: 'abcdef1234567', auditGeneratedAt: 'T' });
+  assert.match(body, /land\/ branch naming this card/);
+  assert.doesNotMatch(body, /changed null/);
 });

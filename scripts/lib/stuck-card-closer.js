@@ -13,11 +13,17 @@
  *
  * WHY THESE RULES (a passing test alone is not proof the card's work landed;
  * a test that existed before the card was filed passes vacuously):
- *   - the command must be exactly `node --test <one test file>`, and no other
- *     audited card may share it, so the test is this card's own;
- *   - a commit on main naming the card in its subject (or a Refs/Fixes/Closes
- *     trailer) must have touched that test file after the card was created,
- *     and must not be a revert, so the work demonstrably landed;
+ *   - a `node --test <one test file>` command: a commit on main naming the
+ *     card in its subject (or a Refs/Fixes/Closes trailer) must have touched
+ *     that test file after the card was created, and must not be a revert.
+ *     That ties the test to this card, so another card sharing the same
+ *     command does not matter (BRO-4814: three shared-test cards sat STUCK);
+ *   - any other safe-form command (`node scripts/check-x.js --arg ...`): no
+ *     other audited card may share it (a generic audit passes for everyone),
+ *     and a data/audit/landings.jsonl row whose land/ branch names the card
+ *     must postdate the card. land.yml writes that row only after the push
+ *     to main succeeded, so the card's work demonstrably landed (BRO-4814:
+ *     seven such cards were skipped as "not a single test file");
  *   - the card must be idle (24h In Review, 72h In Progress) so a live
  *     worker is never pre-empted;
  *   - a RECHECK-AFTER date still in the future means the author asked for
@@ -94,8 +100,8 @@ function planCandidates(report, nowMs) {
     if (!IDLE_MS_BY_STATE[r.state]) { skip(`state-${r.state}`); continue; }
     if (!Array.isArray(r.channels) || !r.channels.includes('verify-command')) { skip('no-verify-command'); continue; }
     const testPath = cardTestPath(r.cmd);
-    if (!testPath) { skip('command-not-a-single-test-file'); continue; }
-    if (cmdUse.get(r.cmd) > 1) { skip('command-shared-with-another-card'); continue; }
+    if (!testPath && /^node --test\b/.test(String(r.cmd || '').trim())) { skip('command-multi-file-test'); continue; }
+    if (!testPath && cmdUse.get(r.cmd) > 1) { skip('command-shared-with-another-card'); continue; }
     candidates.push({ id: r.id, state: r.state, cmd: r.cmd, testPath });
   }
   // The audit stamps openCheckFails only on In Review cards whose own VERIFY
@@ -104,6 +110,27 @@ function planCandidates(report, nowMs) {
     .filter((r) => r && r.openCheckFails && r.state === 'In Review' && r.cmd)
     .map((r) => ({ id: r.id, state: r.state, cmd: r.cmd, failDetail: r.failDetail || null }));
   return { candidates, skipped, bounces };
+}
+
+// A land/ branch is for the card when it names it: land/bro-4171-x,
+// land/job/linear-BRO-4171-mv3x, land/codex-bro-4408. Case-insensitive
+// because branch names are usually lowercased; BRO-71 must not match bro-710.
+function branchIsForCard(branch, identifier) {
+  if (!branch || !identifier) return false;
+  return new RegExp(`(?<![A-Za-z0-9])${escapeRe(identifier)}(?![0-9])`, 'i').test(branch);
+}
+
+/** Parse landings.jsonl text into [{ ts, branch, sha }], skipping bad lines. */
+function parseLandingRows(text) {
+  const rows = [];
+  for (const line of String(text || '').split('\n')) {
+    if (!line.trim()) continue;
+    try {
+      const r = JSON.parse(line);
+      if (r && r.branch && r.sha && r.ts) rows.push({ ts: r.ts, branch: r.branch, sha: r.sha });
+    } catch { /* a torn line is not evidence */ }
+  }
+  return rows;
 }
 
 function futureRecheckAfter(texts, nowMs) {
@@ -117,13 +144,13 @@ function futureRecheckAfter(texts, nowMs) {
 }
 
 /**
- * Decide one candidate against the live issue and the commits that touched
- * its test file since the card was created.
- *   issue:   { state: { name, type }, createdAt, updatedAt, description, comments: [{ body, createdAt }] }
- *   commits: [{ sha, message }]
- * Returns { close: true, sha } or { close: false, reason }.
+ * Decide one candidate against the live issue and its landing evidence.
+ *   issue:    { state: { name, type }, createdAt, updatedAt, description, comments: [{ body, createdAt }] }
+ *   commits:  [{ sha, message }] that touched candidate.testPath since the card was created
+ *   landings: [{ ts, branch, sha }] rows of data/audit/landings.jsonl (non-test commands)
+ * Returns { close: true, sha, evidence } or { close: false, reason }.
  */
-function decideClosure({ candidate, issue, commits, nowMs }) {
+function decideClosure({ candidate, issue, commits, landings, nowMs }) {
   if (!issue) return { close: false, reason: 'issue-not-found' };
   const stateName = issue.state && issue.state.name;
   if (stateName !== candidate.state) return { close: false, reason: 'state-changed-since-audit' };
@@ -139,10 +166,23 @@ function decideClosure({ candidate, issue, commits, nowMs }) {
   if (futureRecheckAfter([issue.description, ...comments.map((c) => c.body)], nowMs)) {
     return { close: false, reason: 'recheck-after-pending' };
   }
+  if (!candidate.testPath) {
+    // A generic checker command proves nothing card-specific, so a landing only
+    // counts once the worker itself moved the card to In Review (its own claim
+    // that the work is finished), and only after the card existed.
+    if (candidate.state !== 'In Review') return { close: false, reason: 'landing-evidence-needs-in-review' };
+    const createdMs = Date.parse(issue.createdAt);
+    if (!Number.isFinite(createdMs)) return { close: false, reason: 'issue-created-unparseable' };
+    const landed = (landings || []).filter((l) => !/revert/i.test(l.branch)
+      && branchIsForCard(l.branch, candidate.id) && Date.parse(l.ts) > createdMs);
+    if (!landed.length) return { close: false, reason: 'no-landing-naming-card' };
+    const last = landed[landed.length - 1];
+    return { close: true, sha: last.sha, evidence: `land branch ${last.branch}` };
+  }
   // A revert names the card too, but it undoes the fix rather than landing it.
   const own = (commits || []).find((c) => !/^Revert\b/.test(String(c.message || '').trim()) && commitIsForCard(c.message, candidate.id));
   if (!own) return { close: false, reason: 'no-commit-naming-card-touched-test' };
-  return { close: true, sha: own.sha };
+  return { close: true, sha: own.sha, evidence: `touched ${candidate.testPath}` };
 }
 
 /**
@@ -212,7 +252,9 @@ function buildClosureComment({ candidate, sha, auditGeneratedAt }) {
     `${CLOSER_MARKER}.`,
     '',
     `This card's own check, \`${candidate.cmd}\`, passed on main in the done-evidence audit of ${auditGeneratedAt}.`,
-    `Commit ${String(sha).slice(0, 12)} names this card and changed ${candidate.testPath} after the card was filed, so the work landed.`,
+    candidate.testPath
+      ? `Commit ${String(sha).slice(0, 12)} names this card and changed ${candidate.testPath} after the card was filed, so the work landed.`
+      : `Commit ${String(sha).slice(0, 12)} reached main through a land/ branch naming this card after the card was filed, so the work landed.`,
     'The close went through the Done gate, which runs the check again on a fresh copy of main.',
     'If the problem is still happening, reopen the card and say what you saw.',
   ].join('\n');
@@ -229,6 +271,8 @@ module.exports = {
   MAX_BOUNCES_PER_RUN,
   cardTestPath,
   mentionsCard,
+  branchIsForCard,
+  parseLandingRows,
   commitIsForCard,
   planCandidates,
   futureRecheckAfter,

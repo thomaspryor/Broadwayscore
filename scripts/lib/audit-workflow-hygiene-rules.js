@@ -823,7 +823,45 @@ function findGitDiffOnIgnoredPaths(raw, isIgnored) {
   return hits;
 }
 
+/**
+ * Rule (r) (BRO-4266): a job that runs checkout-core-data (or checks out the
+ * broadway-scorecard-data repo directly with actions/checkout) under a job-level
+ * `timeout-minutes` below CORE_DATA_JOB_MIN_TIMEOUT. The repo checkout plus the
+ * core-data clone alone can take 3-5 min on a slow runner, so update-show-
+ * status.yml's 3- and 5-minute jobs were CANCELLED before their own step ran
+ * (check-opening-night-readiness 09-28/10-01, catchup-zero-review-shows
+ * 08-06/10-05). A job with no job-level timeout inherits GitHub's 360 min and
+ * is not flagged.
+ *
+ * ADVISORY at introduction (CLAUDE.md §19). Exempt a job with
+ * `# hygiene-short-timeout-ok: <reason>` anywhere in its block.
+ *
+ * Returns [{ job, lineNum, timeoutMin }].
+ */
+const CORE_DATA_JOB_MIN_TIMEOUT = 8;
+function findShortCoreDataJobTimeouts(raw) {
+  const lines = raw.split('\n');
+  const jobsIdx = lines.findIndex((l) => /^jobs\s*:/.test(l));
+  if (jobsIdx === -1) return [];
+  const starts = findJobBoundaries(lines, jobsIdx);
+  const hits = [];
+  for (let j = 0; j < starts.length - 1; j++) {
+    const block = lines.slice(starts[j], starts[j + 1]);
+    const code = block.filter((l) => !l.trimStart().startsWith('#'));
+    // The composite action, or a direct actions/checkout of the same private repo.
+    if (!code.some((l) => /uses:\s*\.\/\.github\/actions\/checkout-core-data\b/.test(l)
+      || /repository:\s*['"]?thomaspryor\/broadway-scorecard-data\b/.test(l))) continue;
+    if (block.some((l) => /hygiene-short-timeout-ok:/.test(l))) continue;
+    const timeoutMin = jobTimeoutMinutes(block);
+    if (timeoutMin === null || timeoutMin >= CORE_DATA_JOB_MIN_TIMEOUT) continue;
+    hits.push({ job: block[0].trim().replace(/:\s*$/, ''), lineNum: starts[j] + 1, timeoutMin });
+  }
+  return hits;
+}
+
 module.exports = {
+  CORE_DATA_JOB_MIN_TIMEOUT,
+  findShortCoreDataJobTimeouts,
   findGitDiffOnIgnoredPaths,
   indentOf,
   RUN_LINE_RE,

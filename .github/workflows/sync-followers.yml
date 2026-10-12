@@ -22,7 +22,7 @@ concurrency:
 jobs:
   sync:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10  # BRO-4266: checkout-core-data alone can take 3-5 min
     steps:
       - uses: actions/checkout@v5
         with:
