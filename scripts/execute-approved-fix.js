@@ -39,6 +39,7 @@ const require = createRequire(import.meta.url);
 const { buildFeedbackThankYouEmail } = require('./lib/email-templates.js');
 const showsWriteGuard = require('./lib/shows-write-guard.js');
 const commercialWriteGuard = require('./lib/commercial-write-guard.js');
+const { planStatusAction } = require('./lib/plan-status.js');
 const audienceBuzzWriteGuard = require('./lib/audience-buzz-write-guard.js');
 const { MAX_PLAN_ACTIONS } = require('./lib/pending-fix-limits.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -593,7 +594,13 @@ async function main() {
   if (!planData.submitter || typeof planData.submitter !== 'object') planData.submitter = { name: null, email: null };
 
   // 2. Check status
-  if (planData.status !== 'pending') {
+  const statusAction = planStatusAction(planData.status);
+  if (statusAction === 'error') {
+    console.error(`Plan status "${planData.status}" is not one the executor knows; a new plan must be "pending". Refusing.`);
+    output('result', 'error');
+    return;
+  }
+  if (statusAction === 'already-applied') {
     console.log(`Plan already ${planData.status} — skipping`);
     output('result', 'already-applied');
     return;
