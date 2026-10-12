@@ -1769,5 +1769,35 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-12T06:40:20.969Z"
+  },
+  {
+    "conditionKey": "land:land/main-red-venue-address",
+    "title": "Landing blocked: unit-tests-node red on land/main-red-venue-address",
+    "description": "land.yml did not land land/main-red-venue-address: the unit-tests-node gate went red at bd25e849c9. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38211382711",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/main-red-venue-address"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "bd25e849c9770473f9283c14dac94c64594dcc1b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38211382711"
+      }
+    ],
+    "queuedAt": "2026-10-12T06:44:53.144Z"
   }
 ]
