@@ -1840,6 +1840,15 @@ async function main(argv = process.argv.slice(2)) {
     process.exit(1);
   }
 
+  // Same silent-zero class as the SERP key check above (BRO-5132): a worktree
+  // has no data/review-texts, so every show reads dirFiles=0 and the audit
+  // reports reviews that are already collected as "missing", then checkpoints
+  // and routes alerts off that. Refuse instead of auditing an empty directory.
+  if ((!fs.existsSync(REVIEW_TEXTS_DIR) || fs.readdirSync(REVIEW_TEXTS_DIR).length === 0) && process.env.GAP_AUDIT_ALLOW_EMPTY_DIR !== '1') {
+    console.error(`::error::gap audit preflight failed — review-texts dir missing or empty: ${REVIEW_TEXTS_DIR}. Set REVIEW_TEXTS_DIR (e.g. $HOME/broadway-review-texts) or run ./scripts/setup-local-data.sh. Override: GAP_AUDIT_ALLOW_EMPTY_DIR=1`);
+    process.exit(1);
+  }
+
   const allShows = loadShows();
   let targets;
   if (showFilter) {

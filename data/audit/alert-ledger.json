@@ -157,9 +157,9 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-12T20:02:24.610Z",
-      "lastSeen": "2026-10-12T20:19:58.709Z",
-      "lastNotifiedAt": "2026-10-12T20:02:24.610Z",
+      "incidentOpenedAt": "2026-10-12T20:08:07.190Z",
+      "lastSeen": "2026-10-12T20:32:31.092Z",
+      "lastNotifiedAt": "2026-10-12T20:08:07.190Z",
       "lastSurfacedAt": "2026-10-12T12:08:38.296Z",
       "notifyCount": 136,
       "cardId": null,
@@ -4892,13 +4892,13 @@
       "title": "Data audits failing (non-blocking): Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Validate market expansion, Audit outlet-registry gaps, Audit same-URL byline double-counts",
       "firstSeen": "2026-09-23T19:33:16.776Z",
       "incidentOpenedAt": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-10-12T20:19:52.030Z",
+      "lastSeen": "2026-10-12T20:36:07.258Z",
       "lastNotifiedAt": "2026-10-12T14:58:59.768Z",
       "lastSurfacedAt": "2026-10-12T14:58:59.768Z",
       "notifyCount": 15,
       "cardId": null,
       "linearIdentifier": "BRO-5168",
-      "silentRefires": 16
+      "silentRefires": 18
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -6058,7 +6058,7 @@
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
       "incidentOpenedAt": "2026-10-12T19:39:24.204Z",
-      "lastSeen": "2026-10-12T20:19:58.702Z",
+      "lastSeen": "2026-10-12T20:32:31.087Z",
       "lastNotifiedAt": "2026-10-12T19:39:24.204Z",
       "lastSurfacedAt": null,
       "notifyCount": 7,
@@ -12211,7 +12211,7 @@
       "title": "National tour pages show wrong information: 1 page problem(s) (poster-missing)",
       "firstSeen": "2026-10-08T18:00:17.152Z",
       "incidentOpenedAt": "2026-10-08T18:00:17.152Z",
-      "lastSeen": "2026-10-11T16:44:47.399Z",
+      "lastSeen": "2026-10-12T20:24:04.324Z",
       "lastNotifiedAt": "2026-10-08T18:00:17.152Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
@@ -12223,7 +12223,7 @@
         "runId": "37820206082",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37820206082"
       },
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "tour-page-audit:schedule-orphan": {
       "status": "resolved",
@@ -14895,7 +14895,7 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-5185",
-      "resolvedAt": "2026-10-12T20:19:58.670Z",
+      "resolvedAt": "2026-10-12T20:32:31.076Z",
       "resolveReason": "job-green"
     },
     "land:land/bro-4631-verify-jwt": {
@@ -14923,6 +14923,32 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "tour-page-audit:stops-overlap": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "National tour pages show wrong information: 1 page problem(s) (stops-overlap)",
+      "firstSeen": "2026-10-12T20:24:04.082Z",
+      "incidentOpenedAt": "2026-10-12T20:24:04.082Z",
+      "lastSeen": "2026-10-12T20:24:04.082Z",
+      "lastNotifiedAt": "2026-10-12T20:24:04.082Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-5066"
+    },
+    "imageless-scored-show:still-imageless:soldiers-of-tomorrow-off-west-end-2026": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Soldiers Of Tomorrow still has no image after 3 self-heal attempts",
+      "firstSeen": "2026-10-12T20:34:07.714Z",
+      "incidentOpenedAt": "2026-10-12T20:34:07.714Z",
+      "lastSeen": "2026-10-12T20:34:07.714Z",
+      "lastNotifiedAt": "2026-10-12T20:34:07.714Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-5158"
     }
   }
 }

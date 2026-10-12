@@ -1,48 +1,5 @@
 [
   {
-    "startedAt": "2026-10-11T15:54:47.857Z",
-    "completedAt": "2026-10-11T15:55:06.341Z",
-    "totalReviews": 7,
-    "processed": 7,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 18978,
-      "output": 1546,
-      "total": 20524
-    },
-    "costUsd": 0.0522038,
-    "runId": "38152836019",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-11T16:01:07.940Z",
-    "completedAt": "2026-10-11T16:01:57.863Z",
-    "totalReviews": 56077,
-    "processed": 7,
-    "skipped": 56062,
-    "errors": 2,
-    "tokensUsed": {
-      "input": 59884,
-      "output": 2917,
-      "total": 165174
-    },
-    "costUsd": 0.2390065,
-    "runId": "38153366068",
-    "errorDetails": [
-      {
-        "showId": "night-of-january-16th-off-broadway-2026",
-        "outletId": "theatricalia",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "diana-the-musical-2021",
-        "outletId": "nytimes",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-10-11T16:01:59.760Z",
     "completedAt": "2026-10-11T16:02:03.562Z",
     "totalReviews": 0,
@@ -588196,6 +588153,38 @@
     },
     "costUsd": 0.09879320000000001,
     "runId": "38300653781",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-12T20:29:37.865Z",
+    "completedAt": "2026-10-12T20:29:41.063Z",
+    "totalReviews": 32,
+    "processed": 0,
+    "skipped": 31,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 3986,
+      "output": 125,
+      "total": 11634
+    },
+    "costUsd": 0.0268661,
+    "runId": "38303922901",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-12T20:29:43.080Z",
+    "completedAt": "2026-10-12T20:29:43.092Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "38303922901",
     "errorDetails": []
   }
 ]
