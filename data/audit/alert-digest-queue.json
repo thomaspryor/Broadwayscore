@@ -1788,19 +1788,6 @@
     "queuedAt": "2026-10-12T06:44:53.144Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Validate market expansion, Audit outlet-registry gaps",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38218658076",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-12T07:43:13.306Z"
-  },
-  {
     "conditionKey": "land:land/bro-5130-human-clear",
     "title": "Landing blocked: push red on land/bro-5130-human-clear",
     "description": "land.yml did not land land/bro-5130-human-clear: the push gate went red at b8c38e5661. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5130-human-clear @ b8c38e5661 (origin/land/bro-5130-human-clear) → origin/main @ 0d33e98a69 [land] attempt 1/3: rebased onto 0d33e98a69, 9 file(s) changed — running checks [land] verified-base: main moved 1928cd385f → 0d33e98a69 across 279 file(s), substantive — running the full gauntlet [land] linked 21 gitignored path(s) into the worktree (node_modules/core data) [land] checks: c Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38212771058",
@@ -1859,5 +1846,18 @@
       }
     ],
     "queuedAt": "2026-10-12T07:37:00.127Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Validate market expansion, Audit outlet-registry gaps",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38219762381",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-12T07:52:44.829Z"
   }
 ]
