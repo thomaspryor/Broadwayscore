@@ -11,7 +11,7 @@ process.env.SCRAPER_SPEND_LEDGER_PATH = LEDGER;
 delete process.env.SCRAPER_SPEND_SHOW_ID;
 
 const require = createRequire(import.meta.url);
-const { recordSbCall, recordSdCall, withSpendShow, currentSpendShowId } = require('./provider-telemetry.js');
+const { recordSbCall, recordSdCall, withSpendShow, currentSpendShowId, withSpendFallback } = require('./provider-telemetry.js');
 
 function rows() {
   try { return fs.readFileSync(LEDGER, 'utf8').split('\n').filter(Boolean).map(JSON.parse); } catch { return []; }
@@ -51,4 +51,16 @@ test('explicit opts.showId beats context, context beats env', () => {
     delete process.env.SCRAPER_SPEND_SHOW_ID;
     fs.rmSync(LEDGER, { force: true });
   }
+});
+
+test('withSpendFallback tags fallback_from and keeps the surrounding showId (BRO-3344)', async () => {
+  fs.rmSync(LEDGER, { force: true });
+  await withSpendShow('show-x', () => withSpendFallback('scrapingdog', async () => {
+    quiet(() => recordSbCall({ host: 'serp.scrapingbee', fn: 'serp', success: true, credits: 25 }));
+  }));
+  quiet(() => recordSbCall({ host: 'outside', fn: 'serp', success: true, credits: 25, detail: { msg: 'm' } }));
+  const [inside, outside] = rows();
+  assert.deepEqual([inside.fallback_from, inside.showId, 'detail' in inside], ['scrapingdog', 'show-x', false]);
+  assert.deepEqual([outside.fallback_from, outside.detail], [null, { msg: 'm' }]);
+  fs.rmSync(LEDGER, { force: true });
 });

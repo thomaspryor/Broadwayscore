@@ -36,7 +36,26 @@ const _spendShow = new AsyncLocalStorage();
 
 /** Run fn with showId attached to every ledger row it records. Returns fn's result. */
 function withSpendShow(showId, fn) {
-  return _spendShow.run({ showId: showId || null }, fn);
+  const cur = _spendShow.getStore() || {};
+  return _spendShow.run({ ...cur, showId: showId || null }, fn);
+}
+
+/**
+ * Run fn with fallback_from set on every row it records (BRO-3344): a SERP
+ * call made because a cheaper provider already failed is tagged with that
+ * provider, so the ledger can tell a designed fallback from a first choice.
+ * Keeps the surrounding showId.
+ */
+function withSpendFallback(fallbackFrom, fn) {
+  const cur = _spendShow.getStore() || {};
+  return _spendShow.run({ ...cur, fallbackFrom: fallbackFrom || null }, fn);
+}
+
+/** fallback_from a row recorded now would carry (opts > context > null). */
+function currentSpendFallback(explicit) {
+  if (explicit) return explicit;
+  const store = _spendShow.getStore();
+  return (store && store.fallbackFrom) || null;
 }
 
 /** Pure-ish: the showId a row recorded now would carry (opts > context > env > null). */
@@ -170,10 +189,12 @@ function recordProviderCall(opts) {
       success: opts.success === true,
       status: opts.status ?? null,
       credits: opts.credits ?? null,
-      fallback_from: opts.fallbackFrom || null,
+      fallback_from: currentSpendFallback(opts.fallbackFrom),
       purpose: opts.purpose || process.env.SCRAPER_SPEND_PURPOSE || null, // env: per-show tag, see spend-purpose.js
       category: opts.category || null,
       showId: currentSpendShowId(opts.showId),
+      // Optional small diagnostic object (BRO-3344: why a SERP call failed).
+      ...(opts.detail ? { detail: opts.detail } : {}),
     };
     console.log(`[${tag} Call] ${JSON.stringify(record)}`);
     _appendLedgerLine(record);
@@ -394,6 +415,8 @@ module.exports = {
   recordProviderCall,
   withSpendShow,
   currentSpendShowId,
+  withSpendFallback,
+  currentSpendFallback,
   recordBdCall,
   recordSbCall,
   recordSdCall,
