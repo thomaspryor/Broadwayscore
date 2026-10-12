@@ -1,5 +1,6 @@
 // BRO-4785 (epic BRO-4210 phase 3): the lane's publish path. Real functions only (CLAUDE.md section 15); the rehearsal runs
 // against a local static server, so nothing here touches production.
+// TESTS-VS-DERIVED-DATA-EXEMPT: every reviews.json here is a throwaway file in a temp git sandbox; no real data is read or pinned.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -233,4 +234,189 @@ test('reviews file port: writes through a symlink (the link survives), keeps the
     assert.equal(final.filter((r) => r.showId === SHOW).length, 3);
     assert.deepEqual(fs.readdirSync(s.dir).filter((f) => f.endsWith('.tmp')), []);
   } finally { s.cleanup(); }
+});
+
+// ---- BRO-4823: real ports (temp git repos with a bare remote stand in for the private core-data repo) ---------------
+const real = require('../../scripts/lib/opening-night-lane/real-ports.js');
+const lease = require('../../scripts/lib/opening-night-lane/lease.js');
+const { execFileSync } = require('node:child_process');
+const HOLDER = 'lane-test-holder';
+
+const gitIn = (cwd, ...args) => execFileSync('git', ['-c', 'user.name=t', '-c', 'user.email=t@t', ...args], { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
+
+/** bare remote + the lane's core-data clone + a second clone for a concurrent writer + a Broadwayscore-like repoDir. */
+function gitSandbox({ symlinkLayout = false } = {}) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4823-'));
+  const remote = path.join(dir, 'remote.git');
+  const seed = path.join(dir, 'seed');
+  gitIn(dir, 'init', '--quiet', '--bare', '-b', 'main', remote);
+  gitIn(dir, 'clone', '--quiet', remote, seed);
+  fs.writeFileSync(path.join(seed, 'reviews.json'), `${JSON.stringify({ reviews: [row(OTHER, 'Time Out', 'A Critic', 'https://timeout.com/a')] }, null, 2)}\n`);
+  gitIn(seed, 'add', 'reviews.json'); gitIn(seed, 'commit', '--quiet', '-m', 'seed'); gitIn(seed, 'push', '--quiet', 'origin', 'HEAD:main');
+  const coreDir = path.join(dir, 'core'); const otherWriter = path.join(dir, 'writer');
+  gitIn(dir, 'clone', '--quiet', remote, coreDir); gitIn(dir, 'clone', '--quiet', remote, otherWriter);
+  const repoDir = path.join(dir, 'site');
+  fs.mkdirSync(path.join(repoDir, 'data'), { recursive: true });
+  fs.mkdirSync(path.join(repoDir, 'public', 'data', 'shows'), { recursive: true });
+  if (symlinkLayout) fs.symlinkSync(path.join(coreDir, 'reviews.json'), path.join(repoDir, 'data', 'reviews.json'));
+  else fs.copyFileSync(path.join(coreDir, 'reviews.json'), path.join(repoDir, 'data', 'reviews.json')); // CI: checkout-core-data copies
+  const generated = (dropUrl) => async (id) => { // stands in for generate-mobile-show-details.js --show=id
+    const doc = JSON.parse(fs.readFileSync(path.join(repoDir, 'data', 'reviews.json'), 'utf8'));
+    const rv = doc.reviews.filter((r) => r.showId === id && r.url !== dropUrl).map((r) => ({ o: r.outlet, cn: r.criticName, u: r.url }));
+    fs.writeFileSync(path.join(repoDir, 'public', 'data', 'shows', `${id}.json`), JSON.stringify({ id, rv }));
+  };
+  const remoteReviews = () => JSON.parse(execFileSync('git', ['show', 'main:reviews.json'], { cwd: remote, encoding: 'utf8' })).reviews;
+  const leases = (holder, expiresAt = '2099-01-01T00:00:00.000Z', show = SHOW) => () => ({ state: { leases: { [`${show}|${NIGHT}`]: { holder, expiresAt } } } });
+  return { dir, remote, coreDir, otherWriter, repoDir, generated, remoteReviews, leases, cleanup: () => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }) };
+}
+const portsFor = (g, extra = {}) => real.createRealPublishPorts({ show: SHOW, repoDir: g.repoDir, coreDir: g.coreDir, holder: HOLDER, readLeases: g.leases(HOLDER), regen: g.generated(), sleep: async () => {}, ...extra });
+
+test('real pushData: a concurrent writer\'s push lands first and both rows survive (CAS replay, no rebase -X theirs)', async () => {
+  const g = gitSandbox();
+  try {
+    const ports = portsFor(g);
+    await ports.updateReviews((doc) => pub.mergeShowRows(doc, SHOW, FIXTURE.map((f) => f.row)));
+    // another workflow pushes a row for a different show to core data before the lane pushes
+    const w = path.join(g.otherWriter, 'reviews.json');
+    const doc = JSON.parse(fs.readFileSync(w, 'utf8'));
+    doc.reviews.push(row(OTHER, 'Guardian', 'B Critic', 'https://theguardian.com/b'));
+    fs.writeFileSync(w, `${JSON.stringify(doc, null, 2)}\n`);
+    gitIn(g.otherWriter, 'commit', '--quiet', '-am', 'concurrent'); gitIn(g.otherWriter, 'push', '--quiet', 'origin', 'HEAD:main');
+
+    const res = await ports.pushData();
+    assert.equal(res.ok, true, res.stderr);
+    const urls = g.remoteReviews().map((r) => r.url);
+    assert.ok(urls.includes('https://theguardian.com/b'), 'the concurrent writer\'s row survived');
+    assert.ok(urls.includes('https://timeout.com/a'));
+    for (const f of FIXTURE) assert.ok(urls.includes(f.row.url), `lane row ${f.row.outlet} pushed`);
+    assert.match(gitIn(g.coreDir, 'log', '-1', '--format=%s'), /^lane: other-desert-cities-2026 reviews \[skip ci\]$/);
+    const site = JSON.parse(fs.readFileSync(path.join(g.repoDir, 'data', 'reviews.json'), 'utf8')).reviews.map((r) => r.url);
+    assert.ok(site.includes('https://theguardian.com/b'), 'the generator\'s copy is refreshed to the pushed tip');
+    assert.deepEqual(await ports.pushData(), { ok: true, stderr: '' }, 'nothing left to push');
+  } finally { g.cleanup(); }
+});
+
+test('real pushData: refuses to reset a core-data checkout with foreign uncommitted changes or unpushed commits', async () => {
+  const g = gitSandbox();
+  try {
+    fs.writeFileSync(path.join(g.coreDir, 'shows.json'), '[]\n');
+    gitIn(g.coreDir, 'add', 'shows.json');
+    const ports = portsFor(g);
+    await ports.updateReviews((doc) => pub.mergeShowRows(doc, SHOW, [FIXTURE[0].row]));
+    let res = await ports.pushData();
+    assert.equal(res.ok, false);
+    assert.match(res.stderr, /uncommitted changes/);
+    gitIn(g.coreDir, 'commit', '--quiet', '-m', 'local only');
+    res = await ports.pushData();
+    assert.equal(res.ok, false);
+    assert.match(res.stderr, /1 unpushed commit/);
+    assert.equal(g.remoteReviews().length, 1, 'remote untouched');
+    assert.ok(fs.existsSync(path.join(g.coreDir, 'shows.json')), 'local work not discarded');
+  } finally { g.cleanup(); }
+});
+
+test('real pushData: a failed push is reported, never thrown, and publish stops before regenerate', async () => {
+  const g = gitSandbox();
+  try {
+    const ports = portsFor(g, { remote: 'https://lane-user:s3cret-token@127.0.0.1:9/core.git', attempts: 2 });
+    await ports.updateReviews((doc) => pub.mergeShowRows(doc, SHOW, [FIXTURE[0].row]));
+    const res = await ports.pushData();
+    assert.equal(res.ok, false);
+    assert.ok(res.stderr.length > 0);
+    assert.ok(!res.stderr.includes('s3cret-token'), `credentials never reach the error text: ${res.stderr}`);
+  } finally { g.cleanup(); }
+});
+
+test('real isLeased: only a live lease held by this lane\'s holder, for the bound show, from the shared store', async () => {
+  const g = gitSandbox();
+  try {
+    const at = (readLeases) => portsFor(g, { readLeases, now: () => '2026-10-19T00:00:00.000Z' }).isLeased(SHOW);
+    assert.equal(await at(g.leases(HOLDER)), true);
+    assert.equal(await at(g.leases('someone-else')), false, 'another holder');
+    assert.equal(await at(g.leases(HOLDER, '2026-10-18T23:00:00.000Z')), false, 'expired');
+    assert.equal(await at(g.leases(HOLDER, undefined, OTHER)), false, 'lease is for another show');
+    assert.equal(await at(() => { throw new Error('ls-remote failed'); }), false, 'unreadable store refuses');
+    assert.equal(await portsFor(g).isLeased(OTHER), false, 'ports are bound to one show');
+    assert.equal(lease.activeLeaseFor(g.leases(HOLDER)().state, SHOW, { now: '2026-10-19T00:00:00.000Z', ignoreHolder: HOLDER }), null,
+      'why lease-guard (which ignores our own holder) cannot answer this');
+    assert.throws(() => real.createRealPublishPorts({ show: SHOW, repoDir: g.repoDir, coreDir: g.coreDir }), /holder is required/);
+  } finally { g.cleanup(); }
+});
+
+test('real ports end to end: a row the generator leaves out is dropped (not awaited, not blocking); the rest go live', async () => {
+  const g = gitSandbox();
+  const ledgerDir = path.join(g.dir, 'ledger');
+  const server = await pub.startStaticServer(path.join(g.repoDir, 'public')); // stands in for the live site after a deploy
+  try {
+    const dropUrl = FIXTURE[2].row.url;
+    const ports = portsFor(g, { regen: g.generated(dropUrl), baseUrl: server.baseUrl });
+    const deployed = await ports.deploy();
+    assert.match(deployed.shippedBy, /core-data push/, 'deploy commits nothing: the core-data push is what ships');
+    const res = await pub.publishLaneReviews({ show: SHOW, night: NIGHT, rows: FIXTURE, ledgerDir, ports, pollMs: 1, timeoutMs: 2000 });
+    assert.deepEqual(res.dropped, [FIXTURE[2].key]);
+    assert.deepEqual(res.verified.sort(), [FIXTURE[0].key, FIXTURE[1].key].sort());
+    assert.deepEqual(res.missing, []);
+    assert.equal(res.timedOut, false);
+    const stages = ledger.readLedger(ledgerDir, SHOW, NIGHT).events.filter((e) => e.reviewKey === FIXTURE[2].key).map((e) => e.stage);
+    assert.ok(!stages.includes('rebuilt') && !stages.includes('verified-live'), `dropped row logged no rebuilt/live: ${stages}`);
+    assert.ok(g.remoteReviews().some((r) => r.url === dropUrl), 'the dropped row is still in core data (it was merged), only not awaited');
+  } finally { await server.close(); g.cleanup(); }
+});
+
+test('real ports: the local symlink layout (data/reviews.json -> core checkout) pushes through the link', async () => {
+  const g = gitSandbox({ symlinkLayout: true });
+  try {
+    const ports = portsFor(g);
+    await ports.updateReviews((doc) => pub.mergeShowRows(doc, SHOW, [FIXTURE[1].row]));
+    const res = await ports.pushData();
+    assert.equal(res.ok, true, res.stderr);
+    assert.ok(g.remoteReviews().some((r) => r.url === FIXTURE[1].row.url));
+    assert.ok(fs.lstatSync(path.join(g.repoDir, 'data', 'reviews.json')).isSymbolicLink(), 'link survives');
+  } finally { g.cleanup(); }
+});
+
+test('real pushData: a push rejected after the commit leaves no lane commit behind, so the next batch can still push', async () => {
+  const g = gitSandbox();
+  const hook = path.join(g.remote, 'hooks', 'pre-receive');
+  try {
+    fs.writeFileSync(hook, '#!/bin/sh\necho rejected by test >&2\nexit 1\n', { mode: 0o755 });
+    const start = gitIn(g.coreDir, 'rev-parse', 'HEAD');
+    const ports = portsFor(g, { attempts: 2 });
+    await ports.updateReviews((doc) => pub.mergeShowRows(doc, SHOW, [FIXTURE[0].row]));
+    const res = await ports.pushData();
+    assert.equal(res.ok, false);
+    assert.equal(gitIn(g.coreDir, 'rev-parse', 'HEAD'), start, 'reset back to where it started');
+    fs.rmSync(hook);
+    await ports.updateReviews((doc) => pub.mergeShowRows(doc, SHOW, [FIXTURE[1].row]));
+    const again = await ports.pushData();
+    assert.equal(again.ok, true, again.stderr);
+    const urls = g.remoteReviews().map((r) => r.url);
+    assert.ok(urls.includes(FIXTURE[0].row.url) && urls.includes(FIXTURE[1].row.url), 'the failed batch rides the next push');
+  } finally { g.cleanup(); }
+});
+
+test('real pushData: two batches pushing at once are serialized and both land', async () => {
+  const g = gitSandbox();
+  try {
+    const ports = portsFor(g);
+    await ports.updateReviews((doc) => pub.mergeShowRows(doc, SHOW, [FIXTURE[0].row]));
+    const a = ports.pushData();
+    await ports.updateReviews((doc) => pub.mergeShowRows(doc, SHOW, [FIXTURE[2].row]));
+    const b = ports.pushData();
+    const [ra, rb] = await Promise.all([a, b]);
+    assert.equal(ra.ok, true, ra.stderr); assert.equal(rb.ok, true, rb.stderr);
+    const urls = g.remoteReviews().map((r) => r.url);
+    assert.ok(urls.includes(FIXTURE[0].row.url) && urls.includes(FIXTURE[2].row.url));
+  } finally { g.cleanup(); }
+});
+
+test('real isLeased: our lease is found even when another holder holds the same show on another night', async () => {
+  const g = gitSandbox();
+  try {
+    const readLeases = () => ({ state: { leases: {
+      [`${SHOW}|2026-10-17`]: { holder: 'someone-else', expiresAt: '2099-01-01T00:00:00.000Z' },
+      [`${SHOW}|${NIGHT}`]: { holder: HOLDER, expiresAt: '2099-01-01T00:00:00.000Z' },
+    } } });
+    assert.equal(await portsFor(g, { readLeases }).isLeased(SHOW), true);
+  } finally { g.cleanup(); }
 });

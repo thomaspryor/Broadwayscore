@@ -49,7 +49,7 @@ function loadDone(ledgerDir, show, night, onDiskUrls = []) {
 async function runLaneNight({
   show, night, openingDate, timeZone, adapters, fetchText, ledgerDir, fetchReview, scoreReview, publishPorts, makePublishPorts, dryRun = false,
   onDiskUrls = [], maxInflight = 2, now, wait, forkClock, latency = {}, passIntervalMs = 2 * 60 * 1000, maxPasses = 1000, windowMs = 6 * 60 * 60 * 1000,
-  startedAt, publishTimeoutMs, pollMs, reviewTextsDir,
+  startedAt, publishTimeoutMs, pollMs, reviewTextsDir, shouldStop = () => false,
 } = {}) {
   for (const [k, v] of Object.entries({ show, night, adapters, fetchText, ledgerDir, fetchReview, scoreReview, now, wait })) {
     if (v === undefined || v === null) throw new Error(`lane-runner: ${k} is required`);
@@ -74,6 +74,7 @@ async function runLaneNight({
         openingDate, dryRun, ...(pollMs ? { pollMs } : {}), ...(publishTimeoutMs ? { timeoutMs: publishTimeoutMs } : {}),
       });
       published.push(res);
+      for (const key of res.dropped || []) failed.push({ key, reason: 'landed in reviews.json but not in the regenerated show JSON' });
       const missing = new Set(res.missing);
       pending.push(...batch.filter((r) => missing.has(r.key))); // never went live: try again with the next batch
     } catch (e) {
@@ -97,7 +98,11 @@ async function runLaneNight({
   let passes = 0;
   // The lane runs for its whole window, not until a pass finds nothing: reviews keep arriving for hours (late roundup
   // entries, slow outlets), and an idle-stop would walk away from them.
+  // shouldStop: the production driver's lease-lost signal. Stop discovering and scoring (they spend credits for rows
+  // nobody may publish); the flush below still runs, and publish refuses on its own once the lease is gone.
+  let stopped = false;
   for (; passes < maxPasses && now() - t0 < windowMs; passes++) {
+    if (shouldStop()) { stopped = true; break; }
     const pass = await discovery.runDiscoveryPass({ show, night, now: now(), startedAt: t0, adapters, fetchText, seen, memo, timeZone });
     errors.push(...pass.errors);
     const stamp = now();
@@ -149,7 +154,7 @@ async function runLaneNight({
       else await Promise.race(inflight);
     }
   }
-  return { passes, admitted, published, errors, failed, unpublished: pending.map((r) => r.key) };
+  return { passes, admitted, published, errors, failed, unpublished: pending.map((r) => r.key), stopped };
 }
 
 module.exports = { runLaneNight, loadDone };
