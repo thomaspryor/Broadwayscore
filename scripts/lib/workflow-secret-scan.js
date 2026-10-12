@@ -384,6 +384,35 @@ const SHARED_MODULE_THRESHOLD = 5;
  * (never the entry file itself) required by more than SHARED_MODULE_THRESHOLD
  * distinct files repo-wide is treated as shared infra — excluded entirely,
  * its own deps not followed — per buildRequirerCounts's doc comment above. */
+// A lib that degrades cleanly without a secret declares it once, at the read
+// site's file: `// secret-optional: NAME[, NAME2] <reason>`. Reads of those
+// names IN THAT FILE then never count as gaps, for every workflow (BRO-3602),
+// instead of each caller suppressing them with `# audit-secret-gap-ok:`.
+// A reason is required so the marker cannot be a bare mute.
+const SECRET_OPTIONAL_RE = /^\s*(?:\/\/|\*|#)\s*secret-optional:\s*([A-Z][A-Z0-9_]*(?:\s*,\s*[A-Z][A-Z0-9_]*)*)\s+\S/gm;
+function optionalSecretsDeclared(src) {
+  const out = new Set();
+  for (const m of String(src).matchAll(SECRET_OPTIONAL_RE)) {
+    for (const n of m[1].split(',')) out.add(n.trim());
+  }
+  return out;
+}
+// Whole-line comments never read env (load-env.js's header quoting
+// `process.env.RESEND_API_KEY` was 30 false gaps, BRO-3602). Only lines that
+// START as a comment are dropped, so a URL's `//` inside code is untouched.
+const COMMENT_LINE_RE = /^\s*(?:\/\/|\/?\*).*$/gm;
+function maskOptionalReads(src) {
+  const names = optionalSecretsDeclared(src);
+  let out = String(src).replace(COMMENT_LINE_RE, '');
+  if (!names.size) return out;
+  for (const n of names) {
+    out = out
+      .replace(new RegExp(`process\\.env\\.${n}\\b`, 'g'), '__optionalEnv__')
+      .replace(new RegExp(`process\\.env\\[\\s*['"]${n}['"]\\s*\\]`, 'g'), '__optionalEnv__');
+  }
+  return out;
+}
+
 function collectTransitiveSource(entryAbsPath, { maxFiles = 60, requirerCounts = null } = {}) {
   const visited = new Set();
   const queue = [entryAbsPath];
@@ -402,7 +431,7 @@ function collectTransitiveSource(entryAbsPath, { maxFiles = 60, requirerCounts =
       const requirers = requirerCounts.get(cur);
       if (requirers && requirers.size > SHARED_MODULE_THRESHOLD) continue;
     }
-    chunks.push(src);
+    chunks.push(maskOptionalReads(src));
     for (const dep of extractLocalDeps(src, cur)) {
       if (!visited.has(dep)) queue.push(dep);
     }
@@ -426,6 +455,83 @@ function extractEnvReads(source) {
     }
   }
   return reads;
+}
+
+// A read whose fallback chain ends in a literal (`process.env.BRIGHTDATA_ZONE
+// || _envTopUp.BRIGHTDATA_ZONE || 'web_unlocker2'`) is a config knob with a
+// built-in default, not a secret whose absence silently no-ops. BRO-3602: these
+// reads (BRIGHTDATA_ZONE, BRIGHTDATA_SERP_ZONE) were ~130 of the audit's findings.
+const DEFAULTED_READ_RE = /process\.env(?:\.([A-Z][A-Z0-9_]*)\b|\[\s*['"]([A-Z][A-Z0-9_]*)['"]\s*\])((?:\s*(?:\|\||\?\?)\s*[A-Za-z_$][\w$.]*(?:\[['"][A-Z0-9_]+['"]\])?)*\s*(?:\|\||\?\?)\s*(?:'[^'\n]*'|"[^"\n]*"|`[^`\n]*`|-?\d+(?:\.\d+)?))?/g;
+
+/**
+ * extractEnvReads() minus names that are only ever read with a literal
+ * fallback. A name read bare even once stays required. Destructured reads
+ * always count as required (their defaults are not parsed).
+ */
+function extractRequiredEnvReads(source) {
+  const all = extractEnvReads(source);
+  const bare = new Set();
+  const defaulted = new Set();
+  let m;
+  const re = new RegExp(DEFAULTED_READ_RE);
+  while ((m = re.exec(source))) {
+    const name = m[1] || m[2];
+    if (m[3]) defaulted.add(name); else bare.add(name);
+  }
+  const destructured = new Set();
+  const reD = new RegExp(ENV_DESTRUCTURE_RE);
+  while ((m = reD.exec(source))) {
+    for (const part of m[1].split(',')) {
+      const name = part.trim().split(':')[0].trim();
+      if (/^[A-Z][A-Z0-9_]*$/.test(name)) destructured.add(name);
+    }
+  }
+  for (const name of defaulted) {
+    if (!bare.has(name) && !destructured.has(name)) all.delete(name);
+  }
+  return all;
+}
+
+// Computed companion reads: `process.env[`${envVar}_META`]` (cookie-loader.js
+// loadEnvMeta). Returns the literal suffixes ('_META'). BRO-4186: WSJ_COOKIES
+// was wired into 19 workflows and WSJ_COOKIES_META into none, so the fresher
+// OTP-login cookie always lost to the stale bundle, and this audit could not
+// see it because the name is built at run time.
+// Captures the interpolated identifier's last property name and the suffix:
+// `${cfg.envVar}_META` -> ['envVar', '_META'].
+const ENV_COMPUTED_SUFFIX_RE = /process\.env\[\s*`\$\{\s*(?:[A-Za-z_$][\w$]*\.)*([A-Za-z_$][\w$]*)\s*\}([A-Z0-9_]+)`\s*\]/g;
+/** @returns {Array<{ident: string, suffix: string}>} */
+function extractComputedEnvSuffixes(source) {
+  const out = [];
+  const seen = new Set();
+  let m;
+  const re = new RegExp(ENV_COMPUTED_SUFFIX_RE);
+  while ((m = re.exec(source))) {
+    const k = `${m[1]}|${m[2]}`;
+    if (seen.has(k)) continue;
+    seen.add(k);
+    out.push({ ident: m[1], suffix: m[2] });
+  }
+  return out;
+}
+
+/**
+ * Companion env names a step should also provide: for a computed read
+ * `${ident}SUFFIX`, each name the step provides that the source assigns to
+ * that identifier as a literal (`envVar: 'WSJ_COOKIES'` in cookie-loader.js's
+ * domain table) needs `${name}SUFFIX` too. Keyed on the identifier so a
+ * provided name that merely appears in a string elsewhere does not count.
+ */
+function companionEnvNames(source, providedEnv, computed) {
+  const out = [];
+  for (const { ident, suffix } of computed) {
+    for (const name of providedEnv) {
+      if (name.endsWith(suffix)) continue;
+      if (!new RegExp(`\\b${ident}\\s*[:=]\\s*['"\`]${name}['"\`]`).test(source)) continue;
+      out.push(name + suffix);
+    }
+  }
+  return out;
 }
 
 /** Every secret name referenced anywhere via the secrets context (dot or
@@ -456,6 +562,11 @@ function collectExemptions(raw) {
 }
 
 module.exports = {
+  optionalSecretsDeclared,
+  maskOptionalReads,
+  extractRequiredEnvReads,
+  extractComputedEnvSuffixes,
+  companionEnvNames,
   parseWorkflowFile,
   groupByMinIndent,
   asMapping,

@@ -236,6 +236,7 @@ jobs:
           COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
           COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
           WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+          WSJ_COOKIES_META: ${{ secrets.WSJ_COOKIES_META }}
           NYDAILYNEWS_EMAIL: ${{ secrets.NYDAILYNEWS_EMAIL }}
           NYDAILYNEWS_PASSWORD: ${{ secrets.NYDAILYNEWS_PASSWORD }}
           DOMAIN_FILTER: ${{ inputs.domain }}
@@ -628,6 +629,7 @@ jobs:
           COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
           COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
           WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+          WSJ_COOKIES_META: ${{ secrets.WSJ_COOKIES_META }}
           DOMAIN_FILTER: ${{ matrix.domain }}
           BATCH_SIZE: '10'
           MAX_REVIEWS: ${{ inputs.max_reviews }}

@@ -11,6 +11,7 @@
 //   node scripts/lib/check-sb-credits.js --output=skip_serp --floor-remaining-pct=1
 //     # emits "skip_serp=true" or "skip_serp=false" to stdout on separate line
 
+// secret-optional: SCRAPINGBEE_API_KEY fetchSBCreditStatus returns { ok: false, reason: 'no-key' } without it (BRO-3602).
 const https = require('https');
 
 function httpsGetJson(url, timeoutMs = 8000) {

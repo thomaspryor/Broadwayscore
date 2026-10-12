@@ -26,6 +26,13 @@
  * Suppress a specific false positive with a comment anywhere in the workflow
  * file: `# audit-secret-gap-ok: SECRET_NAME`
  *
+ * Not counted as gaps (BRO-3602): reads with a literal fallback
+ * (`process.env.X || 'default'`), whole-line comments, and reads in a file
+ * that declares `// secret-optional: X <reason>` (the lib degrades cleanly
+ * without X, so every caller is covered at once). Counted in addition
+ * (BRO-4186): computed companions like cookie-loader's `${envVar}_META`, for
+ * each wired name assigned to that identifier.
+ *
  * Usage:
  *   node scripts/audit-workflow-secret-gaps.js            # human-readable, exit 0 always
  *   node scripts/audit-workflow-secret-gaps.js --json      # JSON output for CI/scripts
@@ -44,7 +51,9 @@ const {
   resolveModulePath,
   buildRequirerCounts,
   collectTransitiveSource,
-  extractEnvReads,
+  extractRequiredEnvReads,
+  extractComputedEnvSuffixes,
+  companionEnvNames,
   collectKnownSecrets,
   collectExemptions,
 } = require('./lib/workflow-secret-scan.js');
@@ -68,11 +77,19 @@ function findGaps(workflowDir, { repoRoot = ROOT, scriptsDir = path.join(repoRoo
   const secretReadsCache = new Map();
   function secretReadsForScript(scriptAbsPath) {
     if (secretReadsCache.has(scriptAbsPath)) return secretReadsCache.get(scriptAbsPath);
-    const combinedSource = collectTransitiveSource(scriptAbsPath, { requirerCounts });
-    const reads = extractEnvReads(combinedSource);
-    const secretReads = new Set([...reads].filter((r) => knownSecrets.has(r)));
-    secretReadsCache.set(scriptAbsPath, secretReads);
-    return secretReads;
+    const source = collectTransitiveSource(scriptAbsPath, { requirerCounts });
+    // A read with a hard-coded fallback (`process.env.X || 'default'`) works
+    // without the secret, so it is not a gap (BRO-3602: ~130 BRIGHTDATA_*_ZONE hits).
+    const reads = extractRequiredEnvReads(source);
+    const entry = {
+      source,
+      secretReads: new Set([...reads].filter((r) => knownSecrets.has(r))),
+      // Computed reads like cookie-loader's process.env[`${envVar}_META`]:
+      // wiring X without X_META silently drops X's metadata (BRO-4186).
+      suffixes: extractComputedEnvSuffixes(source),
+    };
+    secretReadsCache.set(scriptAbsPath, entry);
+    return entry;
   }
 
   const gaps = [];
@@ -88,9 +105,12 @@ function findGaps(workflowDir, { repoRoot = ROOT, scriptsDir = path.join(repoRoo
         for (const scriptRel of extractScriptInvocations(step.run)) {
           const scriptAbs = resolveModulePath(repoRoot, scriptRel);
           if (!scriptAbs) continue; // unresolvable (e.g. dynamic path) — skip
-          const secretReads = secretReadsForScript(scriptAbs);
-          for (const secret of secretReads) {
-            if (providedEnv.has(secret)) continue;
+          const { source, secretReads, suffixes } = secretReadsForScript(scriptAbs);
+          const missing = new Set([...secretReads].filter((s) => !providedEnv.has(s)));
+          for (const companion of companionEnvNames(source, providedEnv, suffixes)) {
+            if (!providedEnv.has(companion)) missing.add(companion);
+          }
+          for (const secret of missing) {
             if (exempt.has(secret)) continue;
             gaps.push({ workflow: file, job: job.name, step: step.name, script: scriptRel, secret });
           }

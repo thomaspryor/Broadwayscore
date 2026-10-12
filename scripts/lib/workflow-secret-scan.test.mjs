@@ -531,3 +531,44 @@ test('findGaps: no self-referential gap from this tool describing its own regex 
     []
   );
 });
+
+// ---- BRO-3602 / BRO-4186 ---------------------------------------------------
+const scan = require('./workflow-secret-scan.js');
+
+test('a read with a literal fallback is not required; a bare read is', () => {
+  const src = [
+    "const z = process.env.BRIGHTDATA_ZONE || _envTopUp.BRIGHTDATA_ZONE || 'web_unlocker2';",
+    'const t = process.env.X_TIMEOUT ?? 30;',
+    'const k = process.env.SCRAPINGBEE_API_KEY;',
+    "const z2 = process.env.MIXED || 'd'; const z3 = process.env.MIXED;",
+  ].join('\n');
+  assert.deepEqual([...scan.extractRequiredEnvReads(src)].sort(), ['MIXED', 'SCRAPINGBEE_API_KEY']);
+});
+
+test('secret-optional marker masks that file\'s reads; needs a reason', () => {
+  const src = '// secret-optional: GHA_BILLING_PAT, FOO falls back to caps\nconst p = process.env.GHA_BILLING_PAT; const q = process.env["FOO"]; const r = process.env.GHA_BILLING_PATX;';
+  assert.deepEqual([...scan.extractRequiredEnvReads(scan.maskOptionalReads(src))], ['GHA_BILLING_PATX']);
+  assert.equal(scan.optionalSecretsDeclared('// secret-optional: X').size, 0);
+});
+
+test('whole-line comments are not env reads, code with a URL is kept', () => {
+  const src = ' * a script that reads process.env.RESEND_API_KEY works by hand\nconst u = "https://x.test"; const k = process.env.REAL_KEY;';
+  assert.deepEqual([...scan.extractRequiredEnvReads(scan.maskOptionalReads(src))], ['REAL_KEY']);
+});
+
+test('computed companion reads: only names fed to the interpolated identifier', () => {
+  const src = "const T = { 'wsj.com': { envVar: 'WSJ_COOKIES' } };\nconst e = 'NYT_PASSWORD';\nfunction m(cfg) { return process.env[`${cfg.envVar}_META`]; }";
+  const computed = scan.extractComputedEnvSuffixes(src);
+  assert.deepEqual(computed, [{ ident: 'envVar', suffix: '_META' }]);
+  assert.deepEqual(scan.companionEnvNames(src, new Set(['WSJ_COOKIES', 'NYT_PASSWORD', 'WSJ_COOKIES_META']), computed), ['WSJ_COOKIES_META']);
+});
+
+test('live cookie-loader: every workflow wiring X_COOKIES also wires X_COOKIES_META (BRO-4186)', () => {
+  const dir = path.join(__dirname, '..', '..', '.github', 'workflows');
+  for (const f of fs.readdirSync(dir).filter((x) => x.endsWith('.yml'))) {
+    const text = fs.readFileSync(path.join(dir, f), 'utf8');
+    for (const m of text.matchAll(/^\s+([A-Z]+_COOKIES):\s*\$\{\{\s*secrets\./gm)) {
+      assert.match(text, new RegExp(`^\\s+${m[1]}_META:\\s*\\$\\{\\{\\s*secrets\\.${m[1]}_META`, 'm'), `${f} wires ${m[1]} without ${m[1]}_META`);
+    }
+  }
+});

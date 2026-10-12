@@ -20,6 +20,8 @@
 
 'use strict';
 
+// secret-optional: GHA_BILLING_PAT, SCRAPINGBEE_API_KEY, BRIGHTDATA_TOKEN live-balance lookups only; each returns { remaining: null, reason } without its key and the caller falls back to cap-based budgeting (BRO-3602).
+
 const https = require('https');
 const path = require('path');
 const { countShowsInOpeningWindow } = require('./opening-night-selection');

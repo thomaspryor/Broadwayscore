@@ -271,6 +271,7 @@ jobs:
           COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
           COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
           WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+          WSJ_COOKIES_META: ${{ secrets.WSJ_COOKIES_META }}
           SHOW_FILTER: ${{ matrix.shows }}
           CONTENT_TIER_FILTER: truncated
           EXCLUDE_DOMAINS: ${{ inputs.exclude_domains }}

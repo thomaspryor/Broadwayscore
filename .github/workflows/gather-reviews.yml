@@ -401,6 +401,7 @@ jobs:
           COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
           COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
           WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+          WSJ_COOKIES_META: ${{ secrets.WSJ_COOKIES_META }}
           # BRO-4859: shows the time budget stops short of; the follow-up job re-dispatches them.
           GATHER_DEFERRED_FILE: ${{ runner.temp }}/deferred-shows.txt
         run: |

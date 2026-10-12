@@ -10,6 +10,11 @@
  * Diagnostics go to stderr (BRO-4780): stdout from a library loaded inside a
  * `node --test` worker shares the runner's serialized stream and can trip
  * "Unable to deserialize cloned data" (main run 37407347107).
+ *
+ * audit-secret-scan-always-trace: required by 20 scripts (over the scanner's
+ * shared-module threshold), but its only env reads are the computed
+ * process.env[`${envVar}_META`] companions, which the secret-gap audit must
+ * see so a workflow wiring X_COOKIES without X_COOKIES_META is flagged (BRO-4186).
  */
 
 const fs = require('fs');

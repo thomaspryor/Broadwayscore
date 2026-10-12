@@ -137,6 +137,7 @@ jobs:
           COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
           COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
           WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+          WSJ_COOKIES_META: ${{ secrets.WSJ_COOKIES_META }}
         run: |
           IFS=',' read -ra OUTLET_ARRAY <<< "${{ steps.outlets.outputs.list }}"
           LIMIT="${{ inputs.limit || '100' }}"
