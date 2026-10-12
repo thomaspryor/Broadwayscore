@@ -32,6 +32,7 @@ function syncStaleTheaterAddresses(shows) {
     const canonical = getTheaterAddress(show.venue);
     if (!canonical || show.theaterAddress === canonical) continue;
     if (!KNOWN_ADDRESSES.has(show.theaterAddress)) continue;
+    // venue-write-guard-ok: change report echoes the existing venue; only theaterAddress is written.
     changed.push({ id: show.id, venue: show.venue, from: show.theaterAddress, to: canonical });
     show.theaterAddress = canonical;
   }
