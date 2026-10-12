@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4599-f",
   "planId": "1a55d53b-cac4-436c-820d-0bbb02f96582",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-12T12:00:00.000Z",
   "submitter": {
     "name": null,
@@ -104,5 +104,63 @@
         "description": "explains section verdict"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T13:56:28.330Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2013/nydailynews--joe-dziemianowicz.json humanReviewScore: null -> 66"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2013/nydailynews--joe-dziemianowicz.json humanReviewNote: null -> \"BRO-4599: Godot section is mixed: called a bit less successful, too buoyant, supporting roles make attention slack; stars still praised.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2013/usatoday--elysa-gardner.json llmPullQuote: \"Both Land and Godot, in fact, prove that the most challenging and unsettling material can make for accessible, even buoyant, entertainment.\" -> \"As played by Ian McKellen and Patrick Stewart, Beckett's iconic hobos suggest two old vaudevillians, well past their prime but not incapable of recapturing that old magic.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2013/usatoday--elysa-gardner.json humanReviewScore: null -> 85"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2013/usatoday--elysa-gardner.json humanReviewNote: null -> \"BRO-4599: Critic gives Waiting for Godot 3.5 of 4 stars (upper 4/5 band); section is positive.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2013/usatoday--patrick-ryan.json llmPullQuote: \"Both Land and Godot, in fact, prove that the most challenging and unsettling material can make for accessible, even buoyant, entertainment.\" -> \"As played by Ian McKellen and Patrick Stewart, Beckett's iconic hobos suggest two old vaudevillians, well past their prime but not incapable of recapturing that old magic.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2013/usatoday--patrick-ryan.json humanReviewScore: null -> 85"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2013/usatoday--patrick-ryan.json humanReviewNote: null -> \"BRO-4599: Same Gardner article (duplicate record, critic name wrong); Godot rated 3.5 of 4 stars.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "what-happened-was-off-broadway-2026/nysr--frank-scheck.json llmPullQuote: \"Both are eminently worth a visit.\" -> \"The playwright’s gifts for quirky characterizations and off-kilter dialogue are on ample display in the sensitive staging by Ian Rickson that showcases Strong’s emotional expressiveness.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "what-happened-was-off-broadway-2026/nysr--frank-scheck.json humanReviewScore: null -> 75"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "what-happened-was-off-broadway-2026/nysr--frank-scheck.json humanReviewNote: null -> \"BRO-4599: What Happened Was section is positive: praises writing, staging and Strong; only quibble is Stoll slightly miscast.\""
+    }
+  ]
 }
