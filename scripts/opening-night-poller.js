@@ -70,6 +70,7 @@ const { discoverTrRoundupHtml } = require('./lib/tr-roundup-discover');
 const { discoverWetRoundupRows } = require('./lib/wet-roundup-discover');
 const { tryTbDirectUrl } = require('./lib/tb-direct-url');
 const { isInOpeningWindow } = require('./lib/opening-window-backoff');
+const { getLondonSupplementalOutlets, rotateMissingOutlets, warnStalledReviewStubs } = require('./lib/opening-night-discovery-policy');
 const {
   DEFAULT_SERP_BURST_CONFIG,
   DEFAULT_BW_SERP_BURST_CONFIG,
@@ -1644,11 +1645,15 @@ async function pollCycle() {
   console.log(`Title: ${show.title}`);
   console.log(`Market: ${market}`);
 
+  // Check collection independently of new discoveries and scored readiness.
+  warnStalledReviewStubs(show, path.join(REVIEW_TEXTS_DIR, SHOW_ID));
+
   // Balusters postmortem CLASS 7 — backoff guard. Skip cycle if still in cooldown,
   // unless we're in the opening window (#1314: [openingDate-1d, openingDate+3d]),
   // which always runs regardless of backoff.
   // FORCE_SERP also bypasses the gate for manual dispatches that explicitly want to retry.
   const backoff = loadBackoffState(SHOW_ID);
+  let nextSerpOutletOffset = backoff.serpOutletOffset || 0;
   if (!FORCE_SERP && !isInAggressiveWindow(show) && backoff.nextRunAfter && Date.now() < backoff.nextRunAfter) {
     const waitMinutes = Math.ceil((backoff.nextRunAfter - Date.now()) / 60000);
     console.log(`\n[BACKOFF] Skipping poll — ${backoff.consecutiveNoOp} consecutive no-op runs; next run in ${waitMinutes}m. Pass --force-serp to bypass.`);
@@ -1863,12 +1868,6 @@ async function pollCycle() {
     let missingOutlets = getMissingT1T2Outlets(SHOW_ID, market, show)
       .filter(o => !foundOutletIds.has(o.id.toLowerCase()))
       .sort((a, b) => (a.tier || 3) - (b.tier || 3));
-    // For WE shows on day 1+: also search notable T3 WE outlets
-    // Skip first 24h (opening night) — T3 outlets haven't published yet and SERP adds ~90s
-    const daysSinceOpening = show.openingDate
-      ? (Date.now() - new Date(show.openingDate).getTime()) / 86400000
-      : 999;
-
     // Broadway T3 SERP: ~11 historically high-activity Broadway T3 outlets
     // Curated by 2024-26 review count (covers ~85% of T3 volume vs 800+ total).
     // Same 3h SERP gate as T1/T2 — Broadway T3 outlets DO publish opening night.
@@ -1899,38 +1898,19 @@ async function pollCycle() {
       missingOutlets.sort((a, b) => (a.tier || 3) - (b.tier || 3));
     }
 
-    if (isLondonMarket(market) && daysSinceOpening < 1) {
-      console.log(`  [T3 SERP skipped: opening night (${daysSinceOpening.toFixed(1)} days). T3 outlets added after 24h]`);
-    }
-    if (isLondonMarket(market) && daysSinceOpening >= 1) {
-      // Notable T3 WE outlets that regularly review shows and have searchable domains
-      // ~18 outlets × 5s each = ~90s extra SERP time per show, acceptable for day 2+ polls
-      const WE_T3_SERP_OUTLETS = [
-        'new-statesman', 'afridiziak-theatre-news', 'theatreandtonic',
-        'west-end-best-friend', 'all-that-dazzles-uk',
-        'london-box-office', 'artsdesk', 'theatre-weekly', 'theupcoming',
-        'musical-theatre-review', 'british-theatre', 'everything-theatre',
-        'londonist', 'thereviewshub', 'city-am', 'a-younger-theatre',
-        'west-end-wilma', 'digital-spy', 'monstagigz',
-        'radio-times', 'attitude', 'metro-uk', 'lost-in-theatreland',
-        'the-spectator-uk', 'shy-strange-manic',
-      ];
+    if (isLondonMarket(market)) {
       const reg = JSON.parse(fs.readFileSync(OUTLET_REGISTRY_PATH, 'utf8'));
       const allOutlets = reg.outlets || reg;
-      for (const t3Id of WE_T3_SERP_OUTLETS) {
-        if (foundOutletIds.has(t3Id.toLowerCase())) continue;
-        const outlet = allOutlets[t3Id];
-        if (outlet) {
-          missingOutlets.push({ id: t3Id, name: outlet.displayName || t3Id, tier: outlet.tier, domain: outlet.domain });
-        }
+      const queuedIds = new Set([...foundOutletIds, ...missingOutlets.map(o => o.id.toLowerCase())]);
+      missingOutlets.push(...getLondonSupplementalOutlets(reg, queuedIds, show));
+      // Keep UK outlets ahead of dual-market US outlets under the SERP cap.
+      const isUK = o => ['london', 'uk'].includes(allOutlets[o.id]?.region);
+      missingOutlets = [...missingOutlets.filter(isUK), ...missingOutlets.filter(o => !isUK(o))];
+      // A fringe show may never get national coverage. Rotate across polls
+      // so the same missing nationals cannot consume every 12-call budget.
+      if (show.category === 'off-west-end') {
+        missingOutlets = rotateMissingOutlets(missingOutlets, nextSerpOutletOffset);
       }
-      // Sort: UK T1/T2 first, then UK T3, then dual-market US
-      const ukOutlets = missingOutlets.filter(o => {
-        const outlet = allOutlets[o.id];
-        return outlet && (outlet.region === 'london' || outlet.region === 'uk');
-      });
-      const rest = missingOutlets.filter(o => !ukOutlets.find(u => u.id === o.id));
-      missingOutlets = [...ukOutlets, ...rest];
     }
     if (missingOutlets.length > 0) {
       // Daily SERP-SESSION cap (Sprint 1, scripts/lib/serp-session-cap.js). A hard per-show +
@@ -2008,6 +1988,9 @@ async function pollCycle() {
         });
       }
       serpResults = await runSERPBackup(show, missingOutlets, knownUrls);
+      if (show.category === 'off-west-end') {
+        nextSerpOutletOffset = (nextSerpOutletOffset + SERP_BUDGET) % missingOutlets.length;
+      }
       } // end: daily SERP-session cap allowed
     } else {
       console.log('\n[Layer 4] SERP Backup... all T1/T2 outlets found');
@@ -2099,6 +2082,7 @@ async function pollCycle() {
       lastRunAt: new Date().toISOString(),
       nextRunAfter: 0,
       jsOutletMisses,
+      ...(show.category === 'off-west-end' ? { serpOutletOffset: nextSerpOutletOffset } : {}),
     };
     nextBackoff.nextRunAfter = Date.now() + computeNextBackoffDelayMs(nextBackoff.consecutiveNoOp);
     saveBackoffState(SHOW_ID, nextBackoff);

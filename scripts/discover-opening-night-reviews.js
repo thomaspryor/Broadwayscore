@@ -29,6 +29,7 @@ const { isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { isSerpUrlWrongProductionForOpeningNight } = require('./lib/opening-night-discovery');
 const { OUTLET_DOMAINS: _OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES: _REGISTRY_DOMAIN_ALIASES, serpQuery, serpNewsQuery } = require('./lib/url-discovery');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { getLondonSupplementalOutlets, reviewSearchKeyword } = require('./lib/opening-night-discovery-policy');
 const { isSyndicationHost, makeRegisteredOutletPredicate, resolveSyndicatedHit } = require('./lib/syndication-canonical');
 
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -298,7 +299,7 @@ async function main() {
   const isWestEnd = isLondonMarket(show.category);
   const isOB = show.category === 'off-broadway';
   const marketLabel = isWestEnd ? 'West End' : isOB ? 'Off-Broadway' : 'Broadway';
-  const reviewKeyword = isWestEnd ? 'West End review' : isOB ? 'Off-Broadway review' : 'Broadway review';
+  const reviewKeyword = reviewSearchKeyword(show);
 
   // Calculate tight opening-night date range for SERP filtering
   const DAY = 86400000;
@@ -339,6 +340,11 @@ async function main() {
   const outletIds = [];
   if (TIERS.includes(1)) outletIds.push(...TIER1_OUTLETS);
   if (TIERS.includes(2)) outletIds.push(...TIER2_OUTLETS);
+  // The opening-night workflow passes --tiers=1,2. Fringe coverage also
+  // needs the poller's specialist sweep; it shares the existing SERP cap.
+  if (show.category === 'off-west-end') {
+    outletIds.push(...getLondonSupplementalOutlets(_reg, new Set(), show).map(o => o.id));
+  }
 
   // Deduplicate outlet domains (some IDs map to same domain)
   const searchedDomains = new Set();
