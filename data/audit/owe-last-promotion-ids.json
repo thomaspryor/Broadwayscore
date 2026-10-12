@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-11T19:38:20.070Z",
+  "generatedAt": "2026-10-12T22:33:04.966Z",
   "promoted": [],
   "rejected": [
     {
@@ -31,16 +31,16 @@
       "venue": "Theatre Royal Stratford East",
       "source": "venue-page:theatre-royal-stratford-east",
       "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as an-evening-of-stratford-east-singers-2026-off-west-end-2026 (jaccard=0.80)"
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-17))"
     },
     {
       "title": "Application 39",
       "venue": "Theatre Royal Stratford East",
       "source": "venue-page:theatre-royal-stratford-east",
       "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as application-39-off-west-end-2026 (normalized-equal)"
+      "kind": "skip-retired",
+      "reason": "matches retired application-39-off-west-end-2026 by id — never re-add (data/retired-show-ids.json)"
     },
     {
       "title": "Boy Blue: 25 Stories",
@@ -51,12 +51,28 @@
       "reason": "already in shows.json as boy-blue-25-stories-off-west-end-2026 (normalized-equal)"
     },
     {
+      "title": "Mehfil Masti",
+      "venue": "Theatre Royal Stratford East",
+      "source": "venue-page:theatre-royal-stratford-east",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-12-03))"
+    },
+    {
       "title": "Mince Pie Hard: The Hairytale!",
       "venue": "Theatre Royal Stratford East",
       "source": "venue-page:theatre-royal-stratford-east",
       "sourceUrl": null,
       "kind": "skip-unconfirmed",
       "reason": "venue's dated listing does not confirm a run: only 2 performance(s) listed — a short booking, not a run"
+    },
+    {
+      "title": "Nice N' Spiky Presents Milton Jones",
+      "venue": "Theatre Royal Stratford East",
+      "source": "venue-page:theatre-royal-stratford-east",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-12-09))"
     },
     {
       "title": "Robin Hood",
@@ -79,16 +95,16 @@
       "venue": "Theatre Royal Stratford East",
       "source": "venue-page:theatre-royal-stratford-east",
       "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as the-ballad-of-john-and-paul-off-west-end-2026 (normalized-equal)"
+      "kind": "skip-retired",
+      "reason": "matches retired the-ballad-of-john-and-paul-off-west-end-2026 by id — never re-add (data/retired-show-ids.json)"
     },
     {
       "title": "Vittorio Angelone: you can't Say Nothing any more",
       "venue": "Theatre Royal Stratford East",
       "source": "venue-page:theatre-royal-stratford-east",
       "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as vittorio-angelone-you-cant-say-nothing-any-more-off-west-end-2026 (normalized-equal)"
+      "kind": "skip-retired",
+      "reason": "matches retired vittorio-angelone-you-cant-say-nothing-any-more-off-west-end-2026 by id — never re-add (data/retired-show-ids.json)"
     },
     {
       "title": "STUFFED",
@@ -347,14 +363,6 @@
       "reason": "already in shows.json as an-oak-tree-off-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"The Other Palace - Main Theatre\"))"
     },
     {
-      "title": "Deep Heat Rivalry",
-      "venue": "The Other Palace",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as deep-heat-rivalry-off-west-end-2026 (normalized-equal)"
-    },
-    {
       "title": "Big Man Little Man",
       "venue": "The Other Palace",
       "source": "venue-page:the-other-palace",
@@ -488,7 +496,7 @@
       "source": "venue-page:orange-tree-theatre",
       "sourceUrl": null,
       "kind": "skip-duplicate",
-      "reason": "already in shows.json as king-lear-2-off-west-end-2026 (jaccard=1.00)"
+      "reason": "already in shows.json as king-lear-2-off-west-end-2026 (normalized-equal)"
     },
     {
       "title": "Mortal Wounds at St Mary Magdalene Church",
@@ -559,8 +567,8 @@
       "venue": "Park Theatre",
       "source": "venue-page:park-theatre",
       "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as drag-tales-off-west-end-2026 (normalized-equal)"
+      "kind": "skip-retired",
+      "reason": "matches retired drag-tales-off-west-end-2026 by id — never re-add (data/retired-show-ids.json)"
     },
     {
       "title": "Florence",
