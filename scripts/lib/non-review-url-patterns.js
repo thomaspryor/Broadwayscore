@@ -38,6 +38,9 @@ const NON_REVIEW_HOST_PATTERNS = [
   /^facebook\.com$/, /^instagram\.com$/, /^twitter\.com$/, /^x\.com$/,
   /^youtube\.com$/, /^tiktok\.com$/, /^threads\.net$/, /^bsky\.app$/, /^linkedin\.com$/,
   /^pinterest\./, /^reddit\.com$/, /^t\.me$/, /^whatsapp\./,
+  // Podcast platforms (BRO-4540: redcircle.com/shows/a-thousand-natural-shocks-
+  // with-gabe-s-dunn was a census gap). 0 of 26,591 reviews.json URLs.
+  /^redcircle\.com$/, /^podcasts\.apple\.com$/, /^podbean\.com$/, /^buzzsprout\.com$/,
   /^playbillder\.com$/, /^playbillstore\.com$/, /^playbilltravel\.com$/,
   /^stagemag\.broadwayworld\.com$/, /^broadwayworldshop\.com$/,
   /^forum\.broadwayworld\.com$/, /^data\.broadwayworld\.com$/,
@@ -146,6 +149,9 @@ const NON_REVIEW_PATH_PATTERNS = [
   /(^|[-/])announc(es|ed|ement)([-/]|$)/i,
   /production-photos/i,
   /new-tour-dates/i,
+  // "<show>-is-coming-to-59e59-theaters" (BRO-4679 openingnight.online census
+  // gap). 0 of 26,591 reviews.json URLs.
+  /(^|[-/])(is|are)-coming-to-/i,
   // Photo galleries: openingnight.online/photos-becoming-hamlet-celebrates-
   // opening-night-off-broadway/ was Becoming Hamlet's residual census "gap".
   // 0 of 21,083 reviews.json URLs have a path segment starting "photo(s)-".

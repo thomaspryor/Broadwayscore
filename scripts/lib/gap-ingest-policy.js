@@ -51,7 +51,12 @@ const { isUrlYearInPriorRun, urlYearOf } = require('./url-discovery');
  */
 function articleRunIdentity(html, show, url) {
   const publishDate = extractPublishDate(html, url);
-  return { publishDate, priorRun: !isCurrentRunRoundup(publishDate, show) };
+  // No readable publish date (bot wall, missing meta): the article URL's own year
+  // (BWW roundups end in YYYYMMDD) still dates a prior production's roundup.
+  const priorRun = publishDate
+    ? !isCurrentRunRoundup(publishDate, show)
+    : !!(url && isUrlYearOutOfWindow(url, show));
+  return { publishDate, priorRun };
 }
 
 /**

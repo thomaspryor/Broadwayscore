@@ -80,8 +80,17 @@ function inOpeningWindow(show, now = Date.now(), windowDays = 21) {
  * verifyAggregatorUrl / validateRoundupPageTitle at discovery).
  */
 function isCurrentRunRoundup(postDate, show) {
-  if (!postDate || !show || !show.openingDate) return true;
+  if (!postDate || !show) return true;
   const post = Date.parse(postDate);
+  // No opening date (a limited run that never had a press opening, e.g. The Last
+  // Ship at the Met, June 2026): previews still date the run. Reject only roundups
+  // clearly OLDER than it (its 2014 Broadway and 2020 Ahmanson roundups read as 29
+  // missing reviews, BRO-4190); no upper bound, so a late press night stays current.
+  if (!show.openingDate) {
+    const previews = show.previewsStartDate ? Date.parse(show.previewsStartDate) : NaN;
+    if (!Number.isFinite(post) || !Number.isFinite(previews)) return true;
+    return post >= previews - 30 * DAY_MS;
+  }
   const opening = Date.parse(show.openingDate);
   if (!Number.isFinite(post) || !Number.isFinite(opening)) return true;
   return post >= opening - 30 * DAY_MS && post <= opening + 90 * DAY_MS;

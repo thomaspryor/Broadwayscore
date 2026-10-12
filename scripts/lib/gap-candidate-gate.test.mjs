@@ -28,6 +28,8 @@ const JUNK = [
   'https://youtu.be/abc123',
   'https://theatrevibe.co.uk/2026/08/03/news-the-last-ship-stings-musical-theatre-royal-drury-lane-22nd-september-to-3rd-october-2026/',
   'https://maryrobinettekowal.com/journal/my-favorite-bit/my-favorite-bit-omar-hussain-talks-about-a-thousand-natural-shocks/',
+  'https://redcircle.com/shows/a-thousand-natural-shocks-with-gabe-s-dunn',
+  'https://openingnight.online/crazy-mama-crazy-mama-a-true-story-of-love-and-madness-is-coming-to-59e59-theaters/',
 ];
 
 const REAL = [
@@ -105,4 +107,25 @@ test('a flagged TheatreVibe news post no longer holds a review slot (BRO-4190)',
   const { isStaleNonReviewSlot } = require('./review-slot-guards.js');
   const news = { url: 'https://theatrevibe.co.uk/2026/08/03/news-the-last-ship-stings-musical-theatre-royal-drury-lane-22nd-september-to-3rd-october-2026/', wrongProduction: true };
   assert.strictEqual(isStaleNonReviewSlot(news, 'https://theatrevibe.co.uk/2026/09/25/review-the-last-ship-theatre-royal-drury-lane-2026/'), true);
+});
+
+test('a show with no opening date still dates roundups by previews: older runs are prior (BRO-4190 The Last Ship at the Met)', () => {
+  const { isCurrentRunRoundup } = require('./gap-reference-sources.js');
+  const met = { openingDate: null, previewsStartDate: '2026-06-09' };
+  assert.strictEqual(isCurrentRunRoundup('2020-01-24', met), false);
+  assert.strictEqual(isCurrentRunRoundup('2014-10-26', met), false);
+  assert.strictEqual(isCurrentRunRoundup('2026-06-10', met), true);
+  // no upper bound without an opening: a late press night stays current
+  assert.strictEqual(isCurrentRunRoundup('2026-11-01', met), true);
+  assert.strictEqual(isCurrentRunRoundup('2020-01-24', { openingDate: null }), true);
+});
+
+test('an undated roundup is dated by its URL (BWW YYYYMMDD) when the page gives no publish date', () => {
+  const { articleRunIdentity } = require('./gap-ingest-policy.js');
+  const met = { id: 'the-last-ship-off-broadway-2026', title: 'The Last Ship', openingDate: null, previewsStartDate: '2026-06-09' };
+  const old = 'https://www.broadwayworld.com/article/Review-Roundup-Stings-THE-LAST-SHIP-at-the-Ahmanson-in-Los-Angeles-What-Did-the-Critics-Think-20200124';
+  assert.strictEqual(articleRunIdentity('<html></html>', met, old).priorRun, true);
+  const cur = 'https://www.broadwayworld.com/off-broadway/article/Review-Roundup-THE-HOPE-THEORY-at-MCC-20261001';
+  const hope = { id: 'the-hope-theory-off-broadway-2026', title: 'The Hope Theory', openingDate: '2026-09-28', previewsStartDate: '2026-09-10' };
+  assert.strictEqual(articleRunIdentity('<html></html>', hope, cur).priorRun, false);
 });
