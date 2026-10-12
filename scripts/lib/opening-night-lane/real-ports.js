@@ -28,12 +28,14 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const publish = require('./publish');
-const lease = require('./lease');
 const leaseStore = require('./lease-store');
 const { canonicalUrl } = require('./discovery');
 
 const DEFAULT_BASE_URL = 'https://broadwayscorecard.com';
 const BOT_IDENTITY = ['-c', 'user.name=opening-night-lane', '-c', 'user.email=opening-night-lane@users.noreply.github.com'];
+
+/** Push errors can echo the authenticated clone URL (CI clones with a token in it); never pass that on to logs. */
+const redact = (text) => String(text || '').replace(/\/\/[^@\s/]+@/g, '//***@').slice(0, 2000);
 
 function createRealPublishPorts({
   show, repoDir, coreDir, holder, baseUrl = DEFAULT_BASE_URL, remote = 'origin', branch = 'main', attempts = 5,
@@ -53,10 +55,19 @@ function createRealPublishPorts({
   const gitOk = (args) => { try { git(args); return true; } catch { return false; } };
   const syncSiteFile = () => { if (fs.realpathSync(siteFile) !== fs.realpathSync(coreFile)) fs.copyFileSync(coreFile, siteFile); };
 
-  async function pushData() {
+  // runLaneNight can have two batches in flight; both would fetch/reset the same checkout, so pushes run one at a time.
+  let pushChain = Promise.resolve();
+  function pushData() {
+    const run = pushChain.then(pushOnce, pushOnce);
+    pushChain = run.catch(() => {});
+    return run;
+  }
+
+  async function pushOnce() {
     if (!merges.length) return { ok: true, stderr: '' };
     const foreign = git(['status', '--porcelain', '--untracked-files=no']).split('\n').filter(Boolean).filter((l) => l.slice(3) !== 'reviews.json');
     if (foreign.length) return { ok: false, stderr: `refusing to reset ${coreDir}: uncommitted changes (${foreign.slice(0, 3).join('; ')})` };
+    const startSha = git(['rev-parse', 'HEAD']);
     let lastErr = '';
     for (let i = 0; i < attempts; i++) {
       try {
@@ -80,7 +91,10 @@ function createRealPublishPorts({
         if (i < attempts - 1) await sleep(2000 * (i + 1));
       }
     }
-    return { ok: false, stderr: lastErr };
+    // Leave no unpushed lane commit behind: the next batch's unpushed-commit guard would refuse every push after it.
+    // The site file keeps the rows and `merges` keeps the replay, so the next batch retries the same data.
+    try { git(['reset', '--hard', '--quiet', startSha]); } catch { /* the next batch's guards report the checkout state */ }
+    return { ok: false, stderr: redact(lastErr) };
   }
 
   return {
@@ -94,8 +108,9 @@ function createRealPublishPorts({
       if (s !== show) return false;
       try {
         const { state } = readLeases({ repoDir });
-        const live = lease.activeLeaseFor(state, s, { now: now ? now() : undefined });
-        return !!live && live.holder === holder;
+        const t = now ? new Date(now()).getTime() : Date.now();
+        // Any night: activeLeaseFor returns the first live lease for the show, which could be another holder's other night.
+        return Object.entries((state && state.leases) || {}).some(([key, l]) => key.split('|')[0] === s && l && l.holder === holder && Date.parse(l.expiresAt) > t);
       } catch { return false; } // an unreadable lease store is not permission to publish
     },
     async regenShow(s, landedUrls = []) {

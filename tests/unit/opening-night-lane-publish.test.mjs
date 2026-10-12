@@ -317,11 +317,12 @@ test('real pushData: refuses to reset a core-data checkout with foreign uncommit
 test('real pushData: a failed push is reported, never thrown, and publish stops before regenerate', async () => {
   const g = gitSandbox();
   try {
-    const ports = portsFor(g, { remote: 'no-such-remote', attempts: 2 });
+    const ports = portsFor(g, { remote: 'https://lane-user:s3cret-token@127.0.0.1:9/core.git', attempts: 2 });
     await ports.updateReviews((doc) => pub.mergeShowRows(doc, SHOW, [FIXTURE[0].row]));
     const res = await ports.pushData();
     assert.equal(res.ok, false);
     assert.ok(res.stderr.length > 0);
+    assert.ok(!res.stderr.includes('s3cret-token'), `credentials never reach the error text: ${res.stderr}`);
   } finally { g.cleanup(); }
 });
 
@@ -370,5 +371,51 @@ test('real ports: the local symlink layout (data/reviews.json -> core checkout) 
     assert.equal(res.ok, true, res.stderr);
     assert.ok(g.remoteReviews().some((r) => r.url === FIXTURE[1].row.url));
     assert.ok(fs.lstatSync(path.join(g.repoDir, 'data', 'reviews.json')).isSymbolicLink(), 'link survives');
+  } finally { g.cleanup(); }
+});
+
+test('real pushData: a push rejected after the commit leaves no lane commit behind, so the next batch can still push', async () => {
+  const g = gitSandbox();
+  const hook = path.join(g.remote, 'hooks', 'pre-receive');
+  try {
+    fs.writeFileSync(hook, '#!/bin/sh\necho rejected by test >&2\nexit 1\n', { mode: 0o755 });
+    const start = gitIn(g.coreDir, 'rev-parse', 'HEAD');
+    const ports = portsFor(g, { attempts: 2 });
+    await ports.updateReviews((doc) => pub.mergeShowRows(doc, SHOW, [FIXTURE[0].row]));
+    const res = await ports.pushData();
+    assert.equal(res.ok, false);
+    assert.equal(gitIn(g.coreDir, 'rev-parse', 'HEAD'), start, 'reset back to where it started');
+    fs.rmSync(hook);
+    await ports.updateReviews((doc) => pub.mergeShowRows(doc, SHOW, [FIXTURE[1].row]));
+    const again = await ports.pushData();
+    assert.equal(again.ok, true, again.stderr);
+    const urls = g.remoteReviews().map((r) => r.url);
+    assert.ok(urls.includes(FIXTURE[0].row.url) && urls.includes(FIXTURE[1].row.url), 'the failed batch rides the next push');
+  } finally { g.cleanup(); }
+});
+
+test('real pushData: two batches pushing at once are serialized and both land', async () => {
+  const g = gitSandbox();
+  try {
+    const ports = portsFor(g);
+    await ports.updateReviews((doc) => pub.mergeShowRows(doc, SHOW, [FIXTURE[0].row]));
+    const a = ports.pushData();
+    await ports.updateReviews((doc) => pub.mergeShowRows(doc, SHOW, [FIXTURE[2].row]));
+    const b = ports.pushData();
+    const [ra, rb] = await Promise.all([a, b]);
+    assert.equal(ra.ok, true, ra.stderr); assert.equal(rb.ok, true, rb.stderr);
+    const urls = g.remoteReviews().map((r) => r.url);
+    assert.ok(urls.includes(FIXTURE[0].row.url) && urls.includes(FIXTURE[2].row.url));
+  } finally { g.cleanup(); }
+});
+
+test('real isLeased: our lease is found even when another holder holds the same show on another night', async () => {
+  const g = gitSandbox();
+  try {
+    const readLeases = () => ({ state: { leases: {
+      [`${SHOW}|2026-10-17`]: { holder: 'someone-else', expiresAt: '2099-01-01T00:00:00.000Z' },
+      [`${SHOW}|${NIGHT}`]: { holder: HOLDER, expiresAt: '2099-01-01T00:00:00.000Z' },
+    } } });
+    assert.equal(await portsFor(g, { readLeases }).isLeased(SHOW), true);
   } finally { g.cleanup(); }
 });
