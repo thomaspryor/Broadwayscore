@@ -1371,9 +1371,9 @@
     "queuedAt": "2026-10-12T18:05:41.942Z"
   },
   {
-    "conditionKey": "land:land/bro-4792-transfer-gaps",
-    "title": "Landing blocked: race red on land/bro-4792-transfer-gaps",
-    "description": "land.yml did not land land/bro-4792-transfer-gaps: the race gate went red at 746e894ca0. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4792-transfer-gaps @ 746e894ca0 (origin/land/bro-4792-transfer-gaps) → origin/main @ d4905d6152 [land] attempt 1/3: rebased onto c8cc2dfcb3, 5 file(s) changed — running checks [land] verified-base: main moved e69ca4ca6e → c8cc2dfcb3 across 640 file(s), substantive — re-checking on the merged tree (+35 test file(s) changed on main since the verified base) [land] linked 21 gitignored Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38285358002",
+    "conditionKey": "land:land/bro-4339-leak-plans",
+    "title": "Landing blocked: rebase red on land/bro-4339-leak-plans",
+    "description": "land.yml did not land land/bro-4339-leak-plans: the rebase gate went red at 4484564ac7. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4339-leak-plans @ 4484564ac7 (origin/land/bro-4339-leak-plans) → origin/main @ a5a409be2c REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 17e9cbfff3: Rebasing (1/1) error: could not apply 4484564ac7c... data(BRO-4339): plans to clear the 38 class-A cross-market review leaks hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/rm <confl Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38287729212",
     "severity": "error",
     "url": null,
     "decision": false,
@@ -1383,22 +1383,22 @@
     "fields": [
       {
         "name": "branch",
-        "value": "land/bro-4792-transfer-gaps"
+        "value": "land/bro-4339-leak-plans"
       },
       {
         "name": "gate",
-        "value": "race"
+        "value": "rebase"
       },
       {
         "name": "tip",
-        "value": "746e894ca036c3f9bca7f4cd2a40ee11cc3ba68a"
+        "value": "4484564ac7c6d816956ddba46ce8198f16d1d672"
       },
       {
         "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38285358002"
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38287729212"
       }
     ],
-    "queuedAt": "2026-10-12T19:29:33.676Z"
+    "queuedAt": "2026-10-12T19:47:07.876Z"
   },
   {
     "conditionKey": "land:land/bro-5166-held-flags",
