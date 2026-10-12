@@ -403,40 +403,6 @@
       "confidence": "low",
       "researchedAt": "2026-10-10T21:28:56.222Z"
     },
-    "the-lion-king-1997": {
-      "title": "The Lion King",
-      "slug": "the-lion-king",
-      "openingDate": "1997-11-13",
-      "status": "open",
-      "capitalization": null,
-      "capitalizationSource": null,
-      "weeklyRunningCost": null,
-      "costMethodology": "industry-estimate",
-      "recouped": true,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "designation": "Miracle",
-      "notes": "The Lion King is one of Broadway's longest-running and highest-grossing shows, opening in November 1997 and still running. It is widely acknowledged as a mega-hit. However, none of the evidence gathered contains explicit figures for capitalization, weekly running costs, or a specific recoupment date. The theatregold.com source references a $9 billion gross figure in its keywords, but no usable financial detail was extractable from the evidence provided. Designation as Miracle is based on the show's well-known status as a decades-long phenomenon, but specific financial data cannot be cited from these sources.",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://theatregold.com/how-much-does-a-broadway-musical-cost-wicked-lion-king/",
-          "date": null
-        },
-        {
-          "type": "reddit",
-          "url": "https://www.reddit.com/r/Broadway/comments/13p5d0p/current_broadway_shows_that_have_recouped_their/",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://thehustle.co/the-economics-of-broadway-shows",
-          "date": null
-        }
-      ],
-      "confidence": "low",
-      "researchedAt": "2026-10-10T21:32:20.394Z"
-    },
     "chicago-1996": {
       "title": "Chicago",
       "slug": "chicago",
@@ -611,51 +577,6 @@
           "only source is a fabricated host (monorepo-sample1.nyt.net)"
         ]
       }
-    },
-    "bug": {
-      "recouped": true,
-      "_recoupedClaim": true,
-      "recoupedDate": "2005-01-28",
-      "recoupedSource": "https://playbill.com/article/in-last-week-of-performances-bug-recoups-its-investment-closes-jan-30-com-123862",
-      "confidence": "high",
-      "evidence": "the Off-Broadway critical hit Bug has recouped its investment.",
-      "sourceHost": "playbill.com",
-      "detectedBy": "recoupment-announcement-scraper",
-      "detectedAt": "2026-08-07T22:21:39.285Z",
-      "researchedAt": "2026-08-07T22:21:39.285Z",
-      "promoteRecommended": true,
-      "verifyAttempts": 2,
-      "lastVerifyAttemptAt": "2026-07-31T22:32:04.705Z"
-    },
-    "beetlejuice-2025": {
-      "recouped": true,
-      "_recoupedClaim": true,
-      "recoupedDate": "2023-10-30",
-      "recoupedSource": "https://playbill.com/article/beetlejuice-national-tour-recoups",
-      "confidence": "high",
-      "evidence": "The national tour of Beetlejuice has recouped after just 11 months—37 weeks—on the road.",
-      "sourceHost": "playbill.com",
-      "detectedBy": "recoupment-announcement-scraper",
-      "detectedAt": "2026-08-07T22:21:39.285Z",
-      "researchedAt": "2026-08-07T22:21:39.285Z",
-      "promoteRecommended": true,
-      "verifyAttempts": 2,
-      "lastVerifyAttemptAt": "2026-07-31T22:32:37.363Z"
-    },
-    "mamma-mia": {
-      "recouped": true,
-      "_recoupedClaim": true,
-      "recoupedDate": null,
-      "recoupedSource": "https://playbill.com/article/money-money-money-hit-mamma-mia-recoups-its-investment-com-106096",
-      "confidence": "high",
-      "evidence": "Mamma Mia! has recouped its entire $10 million Broadway investment",
-      "sourceHost": "playbill.com",
-      "detectedBy": "recoupment-announcement-scraper",
-      "detectedAt": "2026-08-07T22:21:39.285Z",
-      "researchedAt": "2026-08-07T22:21:39.285Z",
-      "promoteRecommended": true,
-      "verifyAttempts": 2,
-      "lastVerifyAttemptAt": "2026-07-31T22:32:52.073Z"
     },
     "paranormal-activity": {
       "capitalization": 8000000,
@@ -1135,7 +1056,6 @@
           "date": "2026-06-04"
         }
       ],
-      "_recoupedClaim": true,
       "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
       "title": "Leopoldstadt",
       "slug": "leopoldstadt-2022",
@@ -1154,6 +1074,10 @@
         "rejectReasons": [
           "recoup quote refers to the producer's 2013 production, not Leopoldstadt"
         ]
+      },
+      "claimStripped": {
+        "at": "2026-10-11T21:07:45.425Z",
+        "reason": "Cited source (palmerpb.com Catherine Adler interview, 2026-06-04) does not say Leopoldstadt recouped; its only recoupment line is about Vanya and Sonia and Masha and Spike. No trade report of Leopoldstadt recouping found (web search 2026-10-11)."
       }
     },
     "job-2024": {
@@ -1837,9 +1761,6 @@
       "capitalizationSource": "Broadway Investment Alliance listed a $2,000,887 NYC theater tax credit for Suite 719 LLC, and Broadway Journal identifies Suite 719 LLC as the company presenting Plaza Suite; 2,000,887 / 0.25 = 8,003,548. ([investmentbroadway.com](https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit))",
       "weeklyRunningCost": null,
       "costMethodology": null,
-      "recouped": true,
-      "recoupedDate": null,
-      "recoupedSource": "BroadwayWorld forum discussion on June 11, 2024 said Plaza Suite had definitely recouped, and Broadway Journal described it as the most commercially successful play of the 2021–22 season. ([forum.broadwayworld.com](https://forum.broadwayworld.com/thread/JULIET-Recoups-Its-Investment?utm_source=openai))",
       "estimatedRecoupmentPct": null,
       "designation": "Easy Winner",
       "notes": "The only hard dollar figure I could verify publicly was the NYC tax credit for Suite 719 LLC, which implies about $8.0M of production cost. I could not verify a weekly nut. Recoupment appears to have happened, but I did not find an official producer announcement. ([investmentbroadway.com](https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit))",
@@ -1861,7 +1782,6 @@
           "date": "2024-06-11"
         }
       ],
-      "_recoupedClaim": true,
       "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
       "title": "Plaza Suite",
       "slug": "plaza-suite-2022",
@@ -1881,6 +1801,10 @@
         "rejectReasons": [
           "no fetched source states recoupment (cite is a forum thread)"
         ]
+      },
+      "claimStripped": {
+        "at": "2026-10-11T21:07:45.595Z",
+        "reason": "Only evidence is a BroadwayWorld forum post, not a citation. No Playbill/Broadway News/Variety/Broadway Journal recoupment report found (web search 2026-10-11). Re-surface only with a quotable trade source."
       }
     },
     "titanique": {
@@ -2855,40 +2779,6 @@
       ],
       "confidence": "medium",
       "researchedAt": "2026-10-10T21:20:59.797Z"
-    },
-    "moulin-rouge-2019": {
-      "title": "Moulin Rouge! The Musical",
-      "slug": "moulin-rouge",
-      "openingDate": "2019-07-25",
-      "status": "closed",
-      "capitalization": 28000000,
-      "capitalizationSource": "nytix.com article listing top 10 most expensive Broadway shows, states '$28 Million' capitalization for Moulin Rouge! The Musical",
-      "weeklyRunningCost": null,
-      "costMethodology": "trade-reported",
-      "recouped": true,
-      "recoupedDate": "2023-07",
-      "recoupedSource": "BroadwayWorld article dated 2023-07-31 titled 'MOULIN ROUGE! THE MUSICAL Recoups on Broadway, in the West End & in Australia'; Deadline article from 2023-07 referencing recoupment; nytix.com also confirms recoupment",
-      "designation": "Windfall",
-      "notes": "Moulin Rouge! The Musical opened July 25, 2019 and is scheduled to close August 30, 2026 — a roughly 7-year run. It was capitalized at $28 million per trade reporting, won 10 Tony Awards including Best Musical, and recouped its Broadway investment in July 2023 (also recouping simultaneously in the West End and Australia). While a strong commercial hit, its ~7-year run falls short of the decade-plus phenomenon threshold for a Miracle designation, making Windfall the appropriate classification.",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.nytix.com/articles/top-10-most-expensive-broadway-shows",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayworld.com/article/MOULIN-ROUGE-THE-MUSICAL-Recoups-on-Broadway-in-the-West-End-in-Australia-20230731",
-          "date": "2023-07-31"
-        },
-        {
-          "type": "trade",
-          "url": "https://deadline.com/2023/07/baz-luhrmann-moulin-rouge-musical-breaking-baz-1235451329/",
-          "date": "2023-07-01"
-        }
-      ],
-      "confidence": "medium",
-      "researchedAt": "2026-10-10T21:22:58.271Z"
     },
     "hadestown-2019": {
       "title": "Hadestown",

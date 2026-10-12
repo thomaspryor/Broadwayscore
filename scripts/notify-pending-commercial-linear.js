@@ -37,6 +37,7 @@ const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { buildNotes, buildTitle } = require('./lib/commercial-claim-card');
 
 const USAGE = `notify-pending-commercial-linear.js — file recouped-claim pending entries as Linear issues.
 
@@ -64,7 +65,7 @@ const DRY_RUN = flags['dry-run'] === true;
 const CAP = parseInt(flags.cap, 10) || 25;
 const LINEAR_BRAIN = path.join(__dirname, 'linear-brain.js');
 
-if (!REPORT_JSON) {
+if (!REPORT_JSON && require.main === module) {
   console.error('FATAL: --report-json=PATH required');
   process.exit(1);
 }
@@ -75,51 +76,6 @@ function runLinearBrain(subargs) {
     stdio: ['inherit', 'pipe', 'pipe'],
   });
   return { stdout: res.stdout || '', stderr: res.stderr || '', status: res.status };
-}
-
-function buildNotes(item) {
-  const lines = [
-    '## Problem',
-    '',
-    `The commercial-data pipeline flagged a recouped-claim entry for **${item.slug}** that needs human verification before \`commercial.json\` is updated. The Friday scraper or deep-research pass found evidence that this show recouped, but the auto-apply gate (\`commercial-apply-gate.js\`) refused to promote it because the gate's combination of (confidence, sourceHost, detectedBy) didn't qualify for the trusted-publisher fast path. Without manual review, the show stays at TBD and the Sunday newsletter under-reports.`,
-    '',
-    '## Claim details',
-    '',
-    `- **Show slug:** \`${item.slug}\``,
-    `- **Confidence:** ${item.confidence || 'unknown'}`,
-    `- **Detected by:** ${item.detectedBy || 'unknown'}`,
-    `- **Source host:** ${item.sourceHost || 'unknown'}`,
-    `- **Recouped date claim:** ${item.recoupedDate || 'unknown'}`,
-    `- **Source URL:** ${item.recoupedSource || 'n/a'}`,
-    `- **First researched:** ${item.researchedAt || 'unknown'}`,
-    '',
-    '### Evidence quote',
-    item.evidence ? `> ${item.evidence}` : '_(none captured — verify against source URL above before promoting)_',
-    '',
-    '## Suggested approach',
-    '',
-    '1. Open the source URL and confirm the article actually states recoupment for THIS production (not a prior revival, not a different show by the same title).',
-    '2. If valid → apply the pending entry:',
-    '   ```bash',
-    `   node scripts/apply-commercial-pending.js --show=${item.slug}`,
-    '   ```',
-    '3. If the article is real but additional citations would help, queue a deep-research pass:',
-    '   ```bash',
-    `   node scripts/deep-research-commercial.js --shows=${item.slug} --max-shows=1`,
-    '   ```',
-    '4. If invalid (wrong production, SEO republish of an old article, misread by the LLM classifier) → reject by moving the entry from `data/commercial-pending-review.json` to `data/commercial-pending-archive.json` with `archivedReason: "rejected-recouped-claim"`. The Friday scraper reads the archive (via `isRejectedInArchive` in `scripts/scrape-recoupment-announcements.js`) so the same URL won\'t resurface.',
-    '5. Optional belt-and-braces: set `humanReviewedDesignation: true` on the `commercial.json` entry so future auto-applies skip it (the merge layer preserves this flag across rebases).',
-    '',
-    '## Acceptance criteria',
-    '',
-    `- \`commercial.json\` entry for \`${item.slug}\` reflects the verified state (recouped applied OR archived with reason), OR the entry has \`humanReviewedDesignation: true\` set.`,
-    '- Next Friday/Saturday run does NOT re-surface the same entry (verified by checking the archive for the rejected URL, or by the apply removing the pending entry).',
-  ];
-  return lines.join('\n');
-}
-
-function buildTitle(slug) {
-  return `commercial-pending-${slug} — recoupment claim needs review`;
 }
 
 // Exact-title match (linear-brain.js's --exact-title mode), not a substring
@@ -215,4 +171,5 @@ function main() {
   if (results.error > 0) process.exit(1);
 }
 
-main();
+if (require.main === module) main();
+

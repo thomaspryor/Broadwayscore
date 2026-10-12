@@ -33,7 +33,8 @@ const { normalizeSources } = require('./lib/commercial-sources');
 const { createRunBudget } = require('./lib/run-budget');
 const { isCommercialScope, DESIGNATION_CRITERIA } = require('./lib/commercial-scope');
 const { filterUncoveredClosedShows, COMMERCIAL_RESEARCH_FLOOR } = require('./lib/commercial-queue');
-const { holdForBackfill, carryHumanReviewHold } = require('./lib/commercial-apply-gate');
+const { holdForBackfill, carryHumanReviewHold, withoutRecoupmentClaim } = require('./lib/commercial-apply-gate');
+const { rejectedClaimSource: rejectedClaimSourceIn } = require('./lib/commercial-claim-triage');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
 const { buildShowKeyIndex, resolveCommercialSlug } = require('./lib/commercial-slug-key');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
@@ -46,6 +47,16 @@ const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
 const COMMERCIAL_PATH = path.join(DATA_DIR, 'commercial.json');
 const GROSSES_PATH = path.join(DATA_DIR, 'grosses.json');
 const PENDING_PATH = path.join(DATA_DIR, 'commercial-pending-review.json');
+const ARCHIVE_PATH = path.join(DATA_DIR, 'commercial-pending-archive.json');
+let rejectionArchive = null;
+// Claims a person already rejected (sweep --reject) must not be re-filed by
+// the next --all-tbd pass from the same source.
+function rejectedClaimSource(slug, recoupedSource) {
+  if (rejectionArchive === null) {
+    try { rejectionArchive = JSON.parse(fs.readFileSync(ARCHIVE_PATH, 'utf8')); } catch { rejectionArchive = { shows: {} }; }
+  }
+  return rejectedClaimSourceIn(rejectionArchive, slug, recoupedSource);
+}
 const COST_LOG_PATH = path.join(DATA_DIR, 'deep-research-cost-log.json');
 const PROGRESS_PATH = path.join(DATA_DIR, 'deep-research-progress.json');
 const SPEND_PATH = path.join(DATA_DIR, 'commercial-research-spend.json');
@@ -953,8 +964,15 @@ async function main() {
         console.log(`    Backfill: pending review only (attempt ${analysis.researchAttempts}), held for human review; commercial.json untouched`);
       }
 
+      let row = analysis;
+      const rejectedUrl = analysis._recoupedClaim ? rejectedClaimSource(slug, analysis.recoupedSource) : null;
+      if (rejectedUrl) {
+        console.log(`    Recouped claim dropped: ${rejectedUrl} was already rejected for ${slug}`);
+        row = { ...withoutRecoupmentClaim(analysis), claimStripped: { at: analysis.researchedAt, reason: `source previously rejected: ${rejectedUrl}` } };
+      }
+
       // Merge into pending (don't overwrite existing entries from other research runs)
-      pending.shows[slug] = carryHumanReviewHold(pending.shows[slug], analysis);
+      pending.shows[slug] = carryHumanReviewHold(pending.shows[slug], row);
       pending.generatedAt = new Date().toISOString();
 
       // Update research tracking in commercial.json AFTER successful write

@@ -43,6 +43,7 @@
 require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
+const { isRejectedSource } = require('./lib/commercial-claim-triage');
 
 const { serpQuery } = require('./lib/url-discovery');
 const { fetchPage, cleanup } = require('./lib/scraper');
@@ -207,34 +208,11 @@ function loadArchive() {
   try { return JSON.parse(fs.readFileSync(archivePath, 'utf8')); } catch { return { shows: {} }; }
 }
 
-// Strip volatile URL bits (utm_*, fbclid, gclid, ref, hash, trailing slash) so
-// a single article shared with different tracking params still matches a prior
-// rejection. Ship-check P1: without this, the same NYT recoupment article
-// keeps re-surfacing through trivial URL variations.
-function normalizeUrl(url) {
-  if (!url) return null;
-  try {
-    const u = new URL(url);
-    u.hash = '';
-    const drop = [];
-    for (const k of u.searchParams.keys()) {
-      if (k.startsWith('utm_') || ['fbclid', 'gclid', 'mc_eid', 'mc_cid', 'ref', 'source'].includes(k)) {
-        drop.push(k);
-      }
-    }
-    for (const k of drop) u.searchParams.delete(k);
-    return u.toString().replace(/\/$/, '');
-  } catch { return url; }
-}
-
+// A claim a person (or the sweep's wrong-production triage) rejected stays
+// rejected for that source URL. Memory and URL normalization live in
+// lib/commercial-claim-triage.js, shared with the sweep and deep research.
 function isRejectedInArchive(archive, slug, finding) {
-  const e = archive.shows?.[slug];
-  if (!e) return false;
-  // Rejected if archived for being a recouped claim that didn't pass review,
-  // and the same source URL (normalized) reappears.
-  if (e.archivedReason !== 'rejected-recouped-claim') return false;
-  if (!e.recoupedSource || !finding.url) return false;
-  return normalizeUrl(e.recoupedSource) === normalizeUrl(finding.url);
+  return isRejectedSource(archive, slug, finding.url);
 }
 
 function writePending(pending) {

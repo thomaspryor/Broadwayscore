@@ -413,7 +413,15 @@
     "the-cottage-2023/ew--unknown.json",
     "beetlejuice-2019/ew--nick-romano.json",
     "gary-a-sequel-to-titus-andronicus-2019/rollingstone--jerry-portwood.json",
-    "a-christmas-carol-2001/ew--ruth-kinane.json"
+    "a-christmas-carol-2001/ew--ruth-kinane.json",
+    "fish-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "degenerates-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+    "school-girls-or-the-african-mean-girls-play-2026/one-minute-critic--emily-chackerian.json",
+    "school-girls-or-the-african-mean-girls-play-2026/the-recs--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json"
   ],
   "failed": [
     "matilda-the-musical-west-end-2021/whatsonstage--meriel-patrick.json",
@@ -680,7 +688,6 @@
     "blood-of-my-blood-west-end-2026/broadwayworld--stephi-wild.json",
     "blood-of-my-blood-west-end-2026/chelmsfordtheatre--unknown.json",
     "fish-off-broadway-2026/timeout--unknown.json",
-    "fish-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
     "a-ghost-in-your-ear-off-broadway-2026/theatermania--unknown.json",
     "good-time-charlie-off-broadway-2026/talkinbroadway--unknown.json",
     "triumph-off-broadway-2026/hollywood-reporter--frank-scheck.json",
@@ -692,7 +699,9 @@
     "jena-friedman-motherfucker-off-broadway-2026/viptickets--unknown.json",
     "toc-toc-off-broadway-2026/laguiacultural--unknown.json",
     "boop-2025/nypost--unknown.json",
-    "english-2025/guardian--unknown.json"
+    "english-2025/guardian--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/chortle--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/the-scotsman--david-hepburn.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -969,7 +978,14 @@
       "a-wonderful-world-the-louis-armstrong-musical-2024/timeout--unknown.json",
       "the-cottage-2023/ew--unknown.json",
       "beetlejuice-2019/ew--nick-romano.json",
-      "a-christmas-carol-2001/ew--ruth-kinane.json"
+      "a-christmas-carol-2001/ew--ruth-kinane.json",
+      "fish-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+      "degenerates-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "school-girls-or-the-african-mean-girls-play-2026/the-recs--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json",
+      "elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json"
     ],
     "amp": [
       "data/review-texts/dr-semmelweis-west-end-2023/variety--unknown.json",
@@ -1145,11 +1161,12 @@
       "from-the-heart-west-end-2026/north-west-end--alan-stuart-malin.json",
       "rent-west-end-2026/city-am--adam-bloodworth.json",
       "blood-of-my-blood-west-end-2026/theatremonkey--unknown.json",
-      "soon-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+      "soon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "school-girls-or-the-african-mean-girls-play-2026/one-minute-critic--emily-chackerian.json"
     ]
   },
   "startTime": "2026-10-11T18:57:25.101Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+  "lastProcessed": "elf-lyons-the-woman-on-the-edge-off-broadway-2026/the-scotsman--david-hepburn.json",
   "log": [
     {
       "t": "2026-10-11T23:34:26.048Z",
@@ -1390,9 +1407,60 @@
       "t": "2026-10-12T01:40:38.849Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-12T02:42:15.924Z",
+      "event": "bb-session",
+      "session": "fe688211",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-12T02:43:03.877Z",
+      "event": "bb-session",
+      "session": "adb61357",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654485"
+    },
+    {
+      "t": "2026-10-12T02:43:04.561Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-12T02:43:22.394Z",
+      "event": "bb-session",
+      "session": "d1d136e6",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654485"
+    },
+    {
+      "t": "2026-10-12T02:43:23.013Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-12T02:46:08.159Z",
+      "event": "bb-session",
+      "session": "b7e5bf3f",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-12T02:46:08.846Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-12T02:46:26.666Z",
+      "event": "bb-session",
+      "session": "1f869bef",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-12T02:46:27.312Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
-    "a-day-in-the-death-of-joe-egg-west-end-2019/british-theatre--julian-eaves.json"
+    "a-day-in-the-death-of-joe-egg-west-end-2019/british-theatre--julian-eaves.json",
+    "fish-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
   ]
 }
