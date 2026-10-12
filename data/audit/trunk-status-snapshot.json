@@ -1,77 +1,22 @@
 {
-  "generatedAt": "2026-10-12T05:25:08.463Z",
+  "generatedAt": "2026-10-12T09:32:31.093Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "728c73a8b5a9ca078671b4260975d59df635d18d",
-  "state": "RED",
-  "consecutiveFailures": 6,
-  "consecutiveSuccesses": 0,
-  "greenSince": null,
-  "greenForHours": null,
+  "latestRunHeadSha": "3dbe953c9a9f28cd565aa05a428180bcc8d43be5",
+  "state": "GREEN",
+  "consecutiveFailures": 0,
+  "consecutiveSuccesses": 12,
+  "greenSince": "2026-10-12T07:28:17Z",
+  "greenForHours": 2.070581388888889,
   "greenDurationIsFloor": false,
-  "redSince": "2026-10-12T04:04:22Z",
-  "redForHours": 1.3462397222222222,
+  "redSince": null,
+  "redForHours": null,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-10-12T03:51:00Z",
-  "latestFailedRunId": "38206200316",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38206200316",
-  "decidedRuns": 99,
-  "failingJobs": [
-    {
-      "name": "Data Validation",
-      "steps": [
-        "Run autoclear-vs-ensemble corpus test (needs review-texts)",
-        "Run BRO-1397 prior-run former-cast sweep (needs review-texts)",
-        "Run data validation",
-        "Audit review contamination",
-        "Validate market expansion",
-        "Audit outlet-registry gaps"
-      ]
-    },
-    {
-      "name": "Unit Tests",
-      "steps": [
-        "Run unit tests (no-data-dependency)"
-      ]
-    },
-    {
-      "name": "Test Summary",
-      "steps": [
-        "Check results"
-      ]
-    }
-  ],
-  "failingPaths": [
-    {
-      "path": "scripts/lib/autoclear-vs-ensemble.test.mjs",
-      "job": "Data Validation",
-      "step": "Run autoclear-vs-ensemble corpus test (needs review-texts)",
-      "evidence": "not ok 6 - corpus: 0 files where an auto-clear overrode a live unanimous ensemble verdict (wrongProduction + wrongShow)"
-    },
-    {
-      "path": "scripts/verify-prior-run-former-cast-sweep.test.mjs",
-      "job": "Data Validation",
-      "step": "Run BRO-1397 prior-run former-cast sweep (needs review-texts)",
-      "evidence": "not ok 1 - excerptMentionsFormerCast flags exactly the known-good set across every priorRuns show"
-    },
-    {
-      "path": "scripts/lib/venue-addresses.js",
-      "job": "Data Validation",
-      "step": "Run data validation",
-      "evidence": "❌ ERROR: 28 theaterAddress/venue mismatches exceed cap 5 — refusing to autofix. A wrong entry in scripts/lib/venue-addresses.js could be silently rewriting correct data; investigate before continuing."
-    },
-    {
-      "path": "tests/unit/push-core-data-scoped-refusal.test.mjs",
-      "job": "Unit Tests",
-      "step": "Run unit tests (no-data-dependency)",
-      "evidence": "not ok 9995 - unchanged per-review ERROR warns, quarantines the row and permits the actual push gate"
-    },
-    {
-      "path": "tests/unit/related-shows-fallback.test.ts",
-      "job": "Unit Tests",
-      "step": "Run unit tests (no-data-dependency)",
-      "evidence": "not ok 3 - wanted-2022: open pool is full and active-only"
-    }
-  ],
-  "topFailingJob": "Unit Tests"
+  "lastSuccessAt": "2026-10-12T09:06:00Z",
+  "latestFailedRunId": null,
+  "latestFailedRunUrl": null,
+  "decidedRuns": 98,
+  "failingJobs": [],
+  "failingPaths": [],
+  "topFailingJob": null
 }
