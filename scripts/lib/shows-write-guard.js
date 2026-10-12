@@ -85,7 +85,9 @@ function createShowsWriteGuard(showsPath, options = {}) {
       // A venue change must carry its address (BRO-5136); only provably stale
       // addresses (another known venue's canonical one) are rewritten.
       const synced = syncStaleTheaterAddresses(finalData.shows);
-      if (synced.length) console.log(`shows-write-guard: synced theaterAddress to venue for ${synced.length} show(s): ${synced.slice(0, 5).map((c) => c.id).join(', ')}${synced.length > 5 ? ', ...' : ''}`);
+      // validate-data's >5 cap doubled as a tripwire for a wrong mass venue
+      // edit; keep that signal loud now that the addresses follow along.
+      if (synced.length) console.log(`${synced.length > 5 ? '::warning::' : ''}shows-write-guard: synced theaterAddress to venue for ${synced.length} show(s): ${synced.map((c) => `${c.id} (${c.venue})`).join(', ')}`);
     },
   });
 

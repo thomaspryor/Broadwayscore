@@ -27,11 +27,12 @@ test('a hand-entered or unknown address is never rewritten', () => {
   assert.equal(shows[0].theaterAddress, '254 West 54th Street, NYC');
 });
 
-test('unknown venue, null address and already-canonical address are left alone', () => {
+test('unknown venue, null address, already-canonical address and non-Broadway shows are left alone', () => {
   const shows = [
     { id: 'u', venue: 'Some Barn', theaterAddress: STEINBERG },
     { id: 'n', venue: 'Studio 54', theaterAddress: null },
     { id: 'c', venue: 'Studio 54', theaterAddress: STUDIO54 },
+    { id: 'we', category: 'west-end', venue: 'Studio 54', theaterAddress: STEINBERG },
   ];
   assert.deepEqual(syncStaleTheaterAddresses(shows), []);
   assert.equal(shows[0].theaterAddress, STEINBERG);

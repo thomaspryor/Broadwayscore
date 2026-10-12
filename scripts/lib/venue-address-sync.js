@@ -27,7 +27,8 @@ const KNOWN_ADDRESSES = new Set(Object.values(VENUE_ADDRESSES));
 function syncStaleTheaterAddresses(shows) {
   const changed = [];
   for (const show of shows || []) {
-    if (!show || !show.theaterAddress) continue;
+    // Same scope as validate-data.js's registry cross-check (Broadway only).
+    if (!show || !show.theaterAddress || (show.category || 'broadway') !== 'broadway') continue;
     const canonical = getTheaterAddress(show.venue);
     if (!canonical || show.theaterAddress === canonical) continue;
     if (!KNOWN_ADDRESSES.has(show.theaterAddress)) continue;
