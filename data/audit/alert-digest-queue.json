@@ -1399,5 +1399,35 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-12T18:05:41.942Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5166-held-flags",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-5166-held-flags",
+    "description": "land.yml did not land land/bro-5166-held-flags: the scripts-lib-tests gate went red at 64660e1bbe. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38288190639",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5166-held-flags"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "64660e1bbe3dfbc770e4d4f740de85d0ad9c3e25"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38288190639"
+      }
+    ],
+    "queuedAt": "2026-10-12T18:34:10.118Z"
   }
 ]
