@@ -66,7 +66,10 @@ git -C "$TMP/work" commit -q -m local
 # ...plus the dirty tracked file that makes rebase refuse pre-flight.
 printf 'dirty\n' >> "$TMP/work/other.txt"
 
-out1=$( cd "$TMP/work" && bash "$PUSH_SCRIPT" 2 main 2>&1 )
+# PUSH_AUTOSTASH=0: since BRO-3668 the script sets dirt aside before rebasing, so
+# the refusal branch only fires with autostash off (or if the snapshot fails open).
+# push-with-retry.autostash.test.sh covers the default path.
+out1=$( cd "$TMP/work" && PUSH_AUTOSTASH=0 bash "$PUSH_SCRIPT" 2 main 2>&1 )
 
 if ! grep -q "rebase REFUSED before it started" <<<"$out1"; then
   echo "FAIL[1]: expected the pre-flight-refusal warning. Output:"; echo "$out1"; fail=1

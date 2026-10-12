@@ -1,4 +1,4 @@
-// TESTS-VS-DERIVED-DATA-EXEMPT: live shows are opaque validation fixtures; no factual pins.
+// Synthetic shows fixture: validate-data runs on it, so live-data errors must not leak in.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -23,7 +23,17 @@ function fixture(fn) {
     fs.symlinkSync(path.join(ROOT, 'scripts/lib'), path.join(dir, 'scripts/lib'));
     fs.symlinkSync(path.join(ROOT, 'node_modules'), path.join(dir, 'node_modules'));
     fs.mkdirSync(path.join(dir, 'data/review-texts/scope-show-2026'), { recursive: true });
-    const shows = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shows.json')));
+    // A synthetic corpus, not the live data/shows.json: a data error anywhere in
+    // the live corpus (e.g. 28 stale theaterAddress rows on 2026-10-12) made
+    // validate-data exit 1 and turned these push-gate tests red on main.
+    // Sized to clear validate-data's corpus floors (30 shows, 15 open).
+    const words = ['amber', 'birch', 'cobalt', 'delta', 'ember', 'fjord', 'garnet', 'harbor', 'indigo', 'juniper',
+      'kestrel', 'lagoon', 'meadow', 'nickel', 'orchid', 'pewter', 'quartz', 'raven', 'saffron', 'tundra',
+      'umber', 'velvet', 'willow', 'xenon', 'yarrow', 'zephyr', 'aspen', 'basalt', 'cypress', 'dune'];
+    const shows = { _meta: {}, shows: words.map((w, i) => ({
+      id: `${w}-off-broadway-2025`, slug: `${w}-off-broadway-2025`, title: w[0].toUpperCase() + w.slice(1),
+      status: i < 15 ? 'open' : 'closed', category: 'off-broadway', market: 'broadway', type: 'play',
+      venue: `${w} hall`, openingDate: '2025-01-01', ...(i < 15 ? {} : { closingDate: '2025-06-01' }) })) };
     shows.shows.push({ id: 'scope-show-2026', slug: 'scope-show-2026', title: 'Scoped Review Test',
       status: 'closed', category: 'off-broadway', market: 'broadway', type: 'play',
       venue: 'Test Theatre', openingDate: '2026-01-01', closingDate: '2026-06-01' });

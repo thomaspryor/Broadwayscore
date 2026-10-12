@@ -148,3 +148,39 @@ describe('computeTouchedSites', () => {
     assert.strictEqual(result.touched, true, 'a deletion near a logExclusion( site should still be flagged');
   });
 });
+
+// BRO-5015: run-script.yml checks out one commit, so --base=<sha> must fetch it.
+describe('ensureBaseRef', () => {
+  const { ensureBaseRef } = require('./scoring-delta.js');
+  const sha = 'a'.repeat(40);
+  const fake = (present) => {
+    const calls = [];
+    const run = (cmd) => {
+      calls.push(cmd);
+      if (cmd.startsWith('git fetch')) { present = true; return ''; }
+      if (!present) throw new Error('bad object');
+      return '';
+    };
+    return { run, calls };
+  };
+  test('a commit already in the clone is used as is', () => {
+    const f = fake(true);
+    assert.strictEqual(ensureBaseRef(sha, f.run), true);
+    assert.ok(!f.calls.some(c => c.startsWith('git fetch')));
+  });
+  test('a missing full sha is fetched from origin', () => {
+    const f = fake(false);
+    assert.strictEqual(ensureBaseRef(sha, f.run), true);
+    assert.ok(f.calls.includes(`git fetch --no-tags --depth=1 origin ${sha}`));
+  });
+  test('a missing name or short sha is not fetched and reports false', () => {
+    for (const ref of ['main', 'abc1234']) {
+      const f = fake(false);
+      assert.strictEqual(ensureBaseRef(ref, f.run), false);
+      assert.ok(!f.calls.some(c => c.startsWith('git fetch')));
+    }
+  });
+  test('the real clone resolves HEAD', () => {
+    assert.strictEqual(ensureBaseRef('HEAD'), true);
+  });
+});

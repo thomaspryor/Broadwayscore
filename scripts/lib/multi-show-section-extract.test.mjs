@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { extractShowSection, findSectionHeadings, isolateMultiShowSection, isMultiShowPostUrl, isolateMultiShowSectionForShowId } = require('./multi-show-section-extract.js');
+const { extractShowSection, findSectionHeadings, isolateMultiShowSection, isMultiShowPostUrl, isolateMultiShowSectionForShowId, isolatedSectionWriteFields } = require('./multi-show-section-extract.js');
 const { stripVenueListingsTrailer, detectTruncationSignals } = require('./content-quality.js');
 
 // Synthetic post mirroring the real interestedbystander shape (real text is private/copyrighted).
@@ -90,6 +90,31 @@ test('isolateMultiShowSection: section not found in a multi-section post refuses
   const r = isolateMultiShowSection(IB_URL, POST, 'Stereophonic');
   assert.equal(r.action, 'refuse');
   assert.equal(r.text, null);
+});
+
+test('isolateMultiShowSection: a misspelled section heading matches only via an alias (BRO-4658 "Toera")', () => {
+  const post = 'Punch (c) Matthew MurphyBroadway: Punch At the Samuel Friedman Theatre A play about a punch. ' +
+    'Toera (c) Joan MarcusTheater: Toera At the WP Theater The debut play, Torera, is a family drama.';
+  assert.equal(isolateMultiShowSection(IB_URL, post, 'Torera').action, 'refuse');
+  const r = isolateMultiShowSection(IB_URL, post, 'Torera', ['Toera']);
+  assert.equal(r.action, 'isolated');
+  assert.match(r.text, /^Toera \(c\)/);
+  assert.doesNotMatch(r.text, /Samuel Friedman/);
+});
+
+test('isolatedSectionWriteFields: an isolated section may share the post URL only with differently titled shows (BRO-4834)', () => {
+  const iso = isolateMultiShowSection(IB_URL, POST, 'Pen Pals');
+  const other = 'the-invention-of-love-off-broadway-2026';
+  assert.deepEqual(isolatedSectionWriteFields(iso, 'Pen Pals', [other]), { allowCrossShowUrl: true });
+  // nobody else holds the URL: nothing to waive
+  assert.deepEqual(isolatedSectionWriteFields(iso, 'Pen Pals', []), {});
+  // a same-title sibling isolates the same section: Guard I still decides
+  assert.deepEqual(isolatedSectionWriteFields(iso, 'The Invention of Love', [other]), {});
+  // unknown holder show: no waiver
+  assert.deepEqual(isolatedSectionWriteFields(iso, 'Pen Pals', ['no-such-show-1999']), {});
+  // refused or non-multi-show text: no waiver
+  assert.deepEqual(isolatedSectionWriteFields(isolateMultiShowSection(IB_URL, POST, 'Stereophonic'), 'Stereophonic', [other]), {});
+  assert.deepEqual(isolatedSectionWriteFields(isolateMultiShowSection('https://example.com/r', POST, 'Pen Pals'), 'Pen Pals', [other]), {});
 });
 
 test('isolateMultiShowSection: single-section post on the host and other hosts pass text through', () => {

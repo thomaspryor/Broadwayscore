@@ -1,238 +1,30 @@
 {
-  "generatedAt": "2026-10-12T02:17:23.780Z",
+  "generatedAt": "2026-10-12T06:50:06.625Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 227,
-  "clean": 213,
-  "defective": 14,
+  "clean": 226,
+  "defective": 1,
   "byType": {
-    "score-drift": 14
+    "score-drift": 1
   },
   "shows": [
     {
-      "showId": "darkling-off-west-end-2026",
-      "title": "Darkling",
-      "openingDate": "2026-09-16",
+      "showId": "cosi-fan-tutte-off-broadway-2026",
+      "title": "Così fan tutte",
+      "openingDate": "2026-09-23",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 71.63 vs local 71.48 (Δ0.15)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 30,
-      "deployedCount": 30,
-      "firstDefectAt": "2026-10-12T00:51:37.690Z"
-    },
-    {
-      "showId": "the-story-west-end-2026",
-      "title": "The Story",
-      "openingDate": "2026-09-03",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 61.19 vs local 61.05 (Δ0.14)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 39,
-      "deployedCount": 39,
-      "firstDefectAt": "2026-10-12T02:17:20.876Z"
-    },
-    {
-      "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-off-west-end-2026",
-      "title": "for colored girls who have considered suicide / when the rainbow is enuf",
-      "openingDate": "2026-09-02",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 72.66 vs local 72.1 (Δ0.56)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 9,
-      "deployedCount": 9,
-      "firstDefectAt": "2026-10-12T02:17:20.876Z"
-    },
-    {
-      "showId": "mamma-mia-tour-2026",
-      "title": "Mamma Mia!",
-      "openingDate": "2026-03-05",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 78.44 vs local 77.66 (Δ0.78)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 18,
-      "deployedCount": 18,
-      "firstDefectAt": "2026-10-12T02:17:20.876Z"
-    },
-    {
-      "showId": "the-great-gatsby-tour-2026",
-      "title": "The Great Gatsby",
-      "openingDate": "2026-01-31",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 64.17 vs local 63.54 (Δ0.63)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 25,
-      "deployedCount": 25,
-      "firstDefectAt": "2026-10-12T02:17:20.876Z"
-    },
-    {
-      "showId": "oh-mary-west-end-2025",
-      "title": "Oh, Mary!",
-      "openingDate": "2025-12-18",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 75.49 vs local 75.4 (Δ0.09)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 31,
-      "deployedCount": 31,
-      "firstDefectAt": "2026-10-12T02:17:20.876Z"
-    },
-    {
-      "showId": "clue-tour-2025",
-      "title": "Clue",
-      "openingDate": "2025-10-21",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 79.32 vs local 78.27 (Δ1.05)"
+          "detail": "deployed cs 79 vs local 81.4 (Δ2.4)"
         }
       ],
       "missingFromProd": [],
       "localCount": 5,
-      "deployedCount": 5,
-      "firstDefectAt": "2026-10-12T02:17:20.876Z"
-    },
-    {
-      "showId": "the-outsiders-tour-2025",
-      "title": "The Outsiders",
-      "openingDate": "2025-09-17",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 82.87 vs local 83.12 (Δ0.25)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 34,
-      "deployedCount": 34,
-      "firstDefectAt": "2026-10-12T02:17:20.876Z"
-    },
-    {
-      "showId": "the-sound-of-music-tour-2025",
-      "title": "The Sound of Music",
-      "openingDate": "2025-09-05",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 84.23 vs local 81.61 (Δ2.62)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 8,
-      "deployedCount": 8,
-      "firstDefectAt": "2026-10-12T02:17:20.876Z"
-    },
-    {
-      "showId": "amaze-magic-off-broadway-2025",
-      "title": "AMAZE Magic",
-      "openingDate": "2025-08-13",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 79.75 vs local 80.13 (Δ0.38)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 10,
-      "deployedCount": 10,
-      "firstDefectAt": "2026-10-12T02:17:20.876Z"
-    },
-    {
-      "showId": "beauty-and-the-beast-tour-2025",
-      "title": "Beauty and the Beast",
-      "openingDate": "2025-06-25",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 84.36 vs local 80.95 (Δ3.41)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 23,
-      "deployedCount": 23,
-      "firstDefectAt": "2026-10-12T02:17:20.876Z"
-    },
-    {
-      "showId": "titanique-west-end-2024",
-      "title": "Titanique",
-      "openingDate": "2025-01-08",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 74.18 vs local 74.82 (Δ0.64)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 19,
-      "deployedCount": 19,
-      "firstDefectAt": "2026-10-12T02:17:20.876Z"
-    },
-    {
-      "showId": "the-book-of-mormon-west-end-2024",
-      "title": "The Book of Mormon",
-      "openingDate": "2013-03-21",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 76.28 vs local 75.94 (Δ0.34)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 15,
-      "deployedCount": 15,
-      "firstDefectAt": "2026-10-12T02:17:20.876Z"
-    },
-    {
-      "showId": "book-of-mormon-2011",
-      "title": "The Book of Mormon",
-      "openingDate": "2011-03-24",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 87.9 vs local 87.69 (Δ0.21)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 34,
-      "deployedCount": 34,
-      "firstDefectAt": "2026-10-12T02:17:20.876Z"
+      "deployedCount": 6,
+      "firstDefectAt": "2026-10-12T06:50:01.238Z"
     }
   ],
   "persistentDefective": 0,

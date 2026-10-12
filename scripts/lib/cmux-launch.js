@@ -366,6 +366,23 @@ function computeStrictAliveness({ listed, claudeAlive, osProcessAlive, surfaceAl
   return !!(listed && claudeAlive && osProcessAlive && surfaceAlive);
 }
 
+// BRO-3380: positive, fail-CLOSED (true | 'absent' | 'error') "ref is listed" confirmation for the primary
+// success path. Retried (cmux can lag the list behind registration), then a
+// settle re-check so a workspace that vanishes right after creation is caught.
+// probes.workspaceListed(ref) is the test seam; probes.listedSleep skips waits.
+function confirmWorkspaceListed(ref, probes = {}) {
+  const isListed = probes.workspaceListed
+    || (r => cmuxws.listWorkspaces().some(w => w.ref === r));
+  const sleep = probes.listedSleep || (ms => { try { Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms); } catch {} });
+  // 'present' | 'absent' | 'error': a read error is NOT proof of absence.
+  const check = () => { try { return isListed(ref) === true ? 'present' : 'absent'; } catch { return 'error'; } };
+  let seen = 'absent';
+  for (let i = 0; i < 4 && seen !== 'present'; i++) { if (i) sleep(500); seen = check(); }
+  if (seen !== 'present') return seen;
+  sleep(1000);
+  return check() === 'present' ? true : 'absent';
+}
+
 function strictlyAliveWorkspace(ref, marker, probes = {}) {
   const surfaceAliveFn = probes.terminalSurfaceAlive || defaultSurfaceAliveFn;
   try {
@@ -1358,7 +1375,11 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
       // it here would false-fail a brand-new, genuinely healthy launch on
       // pure timing (adversarial review, 2026-08-19).
       const surfaceAliveFn = probes.terminalSurfaceAlive || defaultSurfaceAliveFn;
-      if (surfaceAliveFn(ws.ref) !== false) {
+      // BRO-3380: wrapper, tag and surface signals are all fail-OPEN when cmux
+      // errors, so none proves the workspace exists. Require the ref in the
+      // workspace list (retried), and again after a settle, before ok:true.
+      const refListed = confirmWorkspaceListed(ws.ref, probes);
+      if (refListed === true && surfaceAliveFn(ws.ref) !== false) {
         if (autoColor) setAutoColor(ws.ref);
         // cmux DID attach a terminal at this live-runtime count, which is the
         // only evidence that can raise a ceiling learned too low (task #1904).
@@ -1377,8 +1398,10 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
       // same failed/late-adopt handling every other unverified outcome gets
       // (which itself now also requires the surface signal, so it will not
       // be silently re-adopted either).
-      console.error(`[cmux-launch] ${ws.ref}: wrapper + cmux tag both registered, but read-screen confirms NO terminal surface — refusing to report success (card #1829).`);
-      outcome = { ...outcome, action: 'fail', state: STATES.SURFACE_NOT_FOUND, reason: REASONS[STATES.SURFACE_NOT_FOUND] };
+      if (refListed !== true) console.error(`[cmux-launch] ${ws.ref}: registered but not confirmed in the workspace list — refusing to report success (BRO-3380)`);
+      else console.error(`[cmux-launch] ${ws.ref}: wrapper + cmux tag both registered, but read-screen confirms NO terminal surface — refusing to report success (card #1829).`);
+      const failState = refListed === true ? STATES.SURFACE_NOT_FOUND : (refListed === 'error' ? STATES.LIST_UNREADABLE : STATES.NOT_LISTED);
+      outcome = { ...outcome, action: 'fail', state: failState, reason: REASONS[failState] };
     }
     if (outcome.action === 'retry') {
       // DISPROVED 2026-08-13 (owner decision, Option A). The premise this
@@ -1514,7 +1537,7 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
 
 module.exports = {
   launchCmuxSession, recordSuccessionLaunchRow, ledgerTaskIdForLaunch, CMUX, CMUX_APP, pollUntil, sleepSec, setAutoColor, setAppFocus,
-  osActivateCmuxApp, strictlyAliveWorkspace, computeStrictAliveness, shouldAdoptLateStart,
+  osActivateCmuxApp, confirmWorkspaceListed, strictlyAliveWorkspace, computeStrictAliveness, shouldAdoptLateStart,
   waitForLaunchOutcome,
   hasSeedProcess, osProcessAliveForSeed, makeSeedProcessProbe, verifiedAlive, shouldRefuseForAuth,
   buildLaunchCommand, isUsableString, describeLaunchArgError,

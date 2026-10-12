@@ -80,6 +80,7 @@ function baseProbes(overrides = {}) {
     // path it was written for, not a real (and here undefined-behavior)
     // read-screen call against a fabricated workspace ref.
     terminalSurfaceAlive: () => true,
+    workspaceListed: () => true, listedSleep: () => {}, // BRO-3380: success path now requires the ref in the list
     // Task #1904: MUST be stubbed for the same reason as cmuxExists/wake/
     // terminalSurfaceAlive above — the default shells out to the real
     // `cmux debug-terminals` and consults this MACHINE's learned ceiling, so
@@ -846,3 +847,28 @@ test('a failed launch journals its live-runtime count so a later reclaim can dis
     assert.equal(readLaunchJournalEntry('task-1904-journalcount', journalPath).liveRuntimes, 23);
   } finally { listMock.mock.restore(); }
 });
+
+for (const [label, listed, expectState, expectDead] of [
+  ['absent from the list', () => false, 'not-listed', true],
+  ['list unreadable', () => { throw new Error('cmux socket'); }, 'list-unreadable', false],
+]) {
+  test(`BRO-3380: wrapper+tag registered but ref ${label} is never ok:true (deadConfirmed=${expectDead})`, () => {
+    const journalPath = tmpJournalPath();
+    const newWorkspaceMock = mock.fn(() => ({ status: 0, stdout: 'OK workspace:9502\n', stderr: '' }));
+    const listMock = mock.method(cmuxws, 'listWorkspaces', () => []);
+    try {
+      const res = launchCmuxSession({
+        title: 'test launch not listed', seed: 'seed text', seedKey: 'reclaim-3380-' + expectState, workKey: 'task-3380-' + expectState,
+        cwd: REPO_ROOT, model: 'sonnet', focus: false, skipAuthPreflight: true,
+        verifyTimeoutSec: 1, lateAdoptSec: 0, journalPath,
+        probes: { ...baseProbes(), wrapperAlive: () => true, claudeTagAlive: () => true, workspaceListed: listed, newWorkspace: newWorkspaceMock },
+      });
+      assert.equal(res.ok, false);
+      assert.equal(res.state, expectState);
+      assert.equal(res.deadConfirmed, expectDead);
+    } finally {
+      listMock.mock.restore();
+      try { fs.unlinkSync(journalPath); } catch { /* cleanup */ }
+    }
+  });
+}

@@ -70,6 +70,7 @@ function isAlreadyHandled(d) {
     d.wrongProductionOverride === true ||
     d.humanReviewedWrongProduction === false ||
     d.allowCrossMarket === true ||
+    d.allowCrossShowUrl === true ||
     (d.contentVerification && d.contentVerification.wrongProduction === false) ||
     isRejectedNonReview(d)
   );

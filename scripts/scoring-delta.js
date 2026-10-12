@@ -109,6 +109,7 @@ const SHOWS_FILE = path.join(DATA_DIR, 'shows.json');
 // same way here as in the rebuild it's replaying.
 const outletRegistry = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'outlet-registry.json'), 'utf8'));
 const outletRegionMap = buildOutletRegionMap(outletRegistry);
+const { internationalTradeOutlets } = require('./lib/outlet-region-map').buildOutletMaps(outletRegistry);
 const DUAL_MARKET_OUTLETS = new Set();
 for (const [id, info] of Object.entries(outletRegistry.outlets || {})) {
   if (info.isDualMarket) {
@@ -1107,6 +1108,7 @@ function decideInclusion(review, show, guards) {
           isUkUrl,
           outletIsDualOrUk,
           outletIsLondonRegion,
+          outletIsInternationalTrade: internationalTradeOutlets.has(canonicalOutlet) || internationalTradeOutlets.has(rawOutlet),
           isDateMismatch,
           isShowListingUrl,
           cvBlocksClear,
@@ -1382,10 +1384,25 @@ function decideInclusion(review, show, guards) {
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
+// run-script.yml (cloud-run-script.js, the only way a cloud session reaches
+// review-texts) checks out one commit, so a --base=<sha> from before the
+// change is a "bad object" there (BRO-5015). Fetch just that commit.
+function ensureBaseRef(ref, run = execSync) {
+  const has = () => { try { run(`git cat-file -e ${ref}^{commit}`, { stdio: 'ignore' }); return true; } catch { return false; } };
+  if (has()) return true;
+  if (!/^[0-9a-f]{40}$/.test(ref)) return false;
+  try { run(`git fetch --no-tags --depth=1 origin ${ref}`, { stdio: 'ignore' }); } catch { return false; }
+  return has();
+}
+
 function main() {
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   log(`[scoring-delta] Comparing working-tree vs ${BASE_REF}`);
+  if (!ensureBaseRef(BASE_REF)) {
+    log(`[scoring-delta] ${BASE_REF} is not in this clone; in a shallow clone pass the full 40-char sha so it can be fetched`);
+    process.exit(1);
+  }
 
   // Guard 1: any diff in either watchlist?
   let inclusionDiff = false;
@@ -2002,7 +2019,7 @@ function main() {
   process.exit((cannotAutoVerify || dataInputDrift || totalFlips > TOTAL_FLIP_THRESHOLD || t1Flips > T1_FLIP_THRESHOLD) ? 2 : 0);
 }
 
-module.exports = { decideInclusion, FLAG_FIELDS, findLogExclusionSites, parseUnifiedHunks, computeTouchedSites, detectRebuildLoopTouch };
+module.exports = { ensureBaseRef, decideInclusion, FLAG_FIELDS, findLogExclusionSites, parseUnifiedHunks, computeTouchedSites, detectRebuildLoopTouch };
 
 if (require.main === module) {
   try {

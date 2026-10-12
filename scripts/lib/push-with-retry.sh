@@ -819,7 +819,9 @@ assert_no_conflict_markers() {
   # no timeout binary exists, matching this file's other _timeout call sites.
   if ! _timeout 30 node "$SCRIPT_DIR/conflict-markers.js" "${existing[@]}"; then
     echo "::error::Refusing to push: one or more staged/outgoing files contain unresolved git conflict markers (see paths above). This is the corruption class that committed invalid JSON to review-texts (commit 09e78a7a). Resolve the markers, re-commit, then push. Bypass only if these are intentional fixture lines: PUSH_SKIP_CONFLICT_CHECK=1."
-    restore_head_if_moved "conflict-markers" 1  # force: the descendant IS the corruption (task #769 exception)
+    # `command -v`: the autostash block calls this guard before restore_head_if_moved
+    # is defined (nothing has moved HEAD at that point, so there is nothing to restore).
+    command -v restore_head_if_moved >/dev/null 2>&1 && restore_head_if_moved "conflict-markers" 1  # force: the descendant IS the corruption (task #769 exception)
     exit 1
   fi
 }
@@ -928,7 +930,12 @@ fi
 # would NOT work: the body reads RESTORE_BASE_HEAD and SCRIPT_ENTRY_HEAD and
 # calls _head_is_descendant, all of which are still unset there, and `set -u`
 # aborts on the unbound read before the function's own guard can return 0.
-trap 'rc=$?; push_mutex_release; [ "$rc" -ne 0 ] && command -v restore_head_if_moved >/dev/null 2>&1 && restore_head_if_moved "trap-nonzero-exit-$rc"; exit $rc' EXIT
+# BRO-3668: restore_autostash runs AFTER restore_head_if_moved (so it writes onto
+# the final HEAD) and BEFORE push_mutex_release (so no other session's push runs
+# against a half-restored tree). Same `command -v` guard as above: the stale-marker
+# exit below fires before it is defined. `|| true` is load-bearing: under set -e a
+# failing statement inside an EXIT trap aborts the trap before `exit $rc`.
+trap 'rc=$?; { [ "$rc" -ne 0 ] && command -v restore_head_if_moved >/dev/null 2>&1 && restore_head_if_moved "trap-nonzero-exit-$rc"; } || true; { command -v restore_autostash >/dev/null 2>&1 && restore_autostash; } || true; push_mutex_release; exit $rc' EXIT
 
 # BRO-142 (generalized to REBASE_HEAD/CHERRY_PICK_HEAD/REVERT_HEAD by task
 # #1558): refuse to fetch/rebase/merge on top of an in-progress-operation
@@ -966,6 +973,138 @@ if [ -f "$SCRIPT_DIR/detect-stale-merge-head.sh" ]; then
   done
 fi
 unset _bro142_result _bro142_status _bro142_marker
+
+# ── Dirty-worktree autostash (BRO-3668/3669/3667/3687) ───────────────────────
+# Callers sometimes arrive with TRACKED files modified but not committed: a
+# write-early/commit-late step (data-health-check.yml, five incidents), an
+# alert-ledger written before an earlier push (opening-night-broadcast.yml), or
+# checkout-core-data's cp drift. Before this block that dirt (a) made `git rebase`
+# refuse pre-flight, sending every retry down the clobber-prone `merge -X ours`
+# path (BRO-3662), and (b) was silently DESTROYED by any of the `git reset --hard`
+# sites below (conflict path, API-fallback restore, restore_head_if_moved).
+#
+# Snapshot it ONCE here (mutex held, no marker, nothing fetched yet) with
+# `git stash create` (a commit object, no write to the stash stack that every
+# worktree shares), pin it under refs/worktree/ (per-worktree, so parallel
+# sessions never collide), start from a clean tree, and put it back in the EXIT
+# trap. The restore is the same end state as today's happy path, where the first
+# push succeeds and the dirt is never touched. Staged-but-uncommitted state
+# comes back UNSTAGED (content is preserved; the caller re-stages before its
+# own commit anyway). Fails OPEN: any snapshot error leaves the tree as it was
+# and the run behaves exactly as before. Kill switch: PUSH_AUTOSTASH=0.
+AUTOSTASH_SHA=""
+AUTOSTASH_REF=""
+AUTOSTASH_HEAD=""
+AUTOSTASH_PATHS=()
+if [ "${PUSH_AUTOSTASH:-1}" != "0" ] && git rev-parse --verify --quiet HEAD >/dev/null 2>&1; then
+  _as_list=$(mktemp 2>/dev/null || echo "/tmp/push-retry-autostash.$$.$RANDOM")
+  # Symlinks (120000) and submodules (160000) cannot be written back with
+  # `git show >path`; if any dirty path is one, skip the autostash entirely and
+  # keep the pre-BRO-3668 behaviour for this run (ship-check finding).
+  if git diff --raw --no-renames HEAD -- 2>/dev/null | grep -qE '^:(120000|160000) |^:[0-7]{6} (120000|160000) '; then
+    echo "::warning::push-with-retry: uncommitted symlink/submodule change present; autostash skipped for this run."
+  elif git diff -z --name-only --no-renames HEAD -- >"$_as_list" 2>/dev/null && [ -s "$_as_list" ]; then
+    while IFS= read -r -d '' _as_p; do AUTOSTASH_PATHS+=("$_as_p"); done <"$_as_list"
+    # Staged content is about to leave the index; give the conflict-marker guard
+    # its look at it first, exactly as the in-loop call would have.
+    git diff --cached --quiet 2>/dev/null || assert_no_conflict_markers
+    _as_sha=$(git stash create "push-with-retry autostash pid $$" 2>/dev/null || true)
+    _as_ref="refs/worktree/push-autostash/$$-$(date +%s)-$RANDOM"
+    if [ -n "$_as_sha" ] && ! git rev-parse --verify --quiet "$_as_ref" >/dev/null 2>&1 \
+         && git update-ref "$_as_ref" "$_as_sha" "" 2>/dev/null; then
+      if git reset -q --hard HEAD 2>/dev/null; then
+        AUTOSTASH_SHA="$_as_sha"
+        AUTOSTASH_REF="$_as_ref"
+        AUTOSTASH_HEAD="$(git rev-parse HEAD)"
+        echo "::warning::push-with-retry: caller left ${#AUTOSTASH_PATHS[@]} tracked file(s) modified but uncommitted; set aside for this push and restored on exit (BRO-3668). Commit them before calling to silence this. Paths: $(printf '%s ' "${AUTOSTASH_PATHS[@]:0:20}")"
+        echo "  If this run is killed before restoring, recover with: git checkout $_as_sha -- <path>   (snapshot pinned at $_as_ref)"
+      else
+        git update-ref -d "$_as_ref" 2>/dev/null || true
+        AUTOSTASH_PATHS=()
+        echo "::warning::push-with-retry: autostash could not clean the worktree; continuing with the dirty tree (old behaviour)."
+      fi
+    else
+      AUTOSTASH_PATHS=()
+    fi
+  fi
+  rm -f "$_as_list" 2>/dev/null || true
+  unset _as_list _as_p _as_sha _as_ref
+fi
+
+# Put the snapshot back onto whatever HEAD this run ended on. Per path:
+#  - someone else edited it on disk during the run (local sessions can share a
+#    worktree): leave theirs alone, keep the ref, say so;
+#  - upstream did not touch it between the snapshot and now: restore exactly;
+#  - upstream DID change it: 3-way merge (base = snapshot HEAD's version), so the
+#    caller's next commit cannot silently revert a concurrent writer. On conflict
+#    keep HEAD's version and keep the ref for manual recovery.
+# Called from the EXIT trap with `|| true`; every step checks its own rc.
+restore_autostash() {
+  [ -n "${AUTOSTASH_SHA:-}" ] || return 0
+  local p kept=0 merged=0 tmpd base_f ours_f theirs_f union
+  local -a restored=()
+  # Paths are root-relative and may hold glob characters (ship-check findings).
+  local -x GIT_LITERAL_PATHSPECS=1
+  cd "$(git rev-parse --show-toplevel 2>/dev/null || pwd)" 2>/dev/null || true
+  tmpd=$(mktemp -d 2>/dev/null || echo "/tmp/push-retry-autostash-merge.$$")
+  mkdir -p "$tmpd" 2>/dev/null || true
+  for p in "${AUTOSTASH_PATHS[@]}"; do
+    # Current on-disk content must equal HEAD's (or be absent where HEAD lacks it).
+    if git cat-file -e "HEAD:$p" 2>/dev/null; then
+      if [ ! -f "$p" ] || ! git diff --quiet HEAD -- "$p" 2>/dev/null; then
+        echo "::warning::push-with-retry: autostash: $p changed on disk during this run; not overwriting it. Snapshot copy: git show $AUTOSTASH_SHA:$p"
+        kept=1; continue
+      fi
+    elif [ -e "$p" ]; then
+      echo "::warning::push-with-retry: autostash: $p appeared on disk during this run; not overwriting it. Snapshot copy: git show $AUTOSTASH_SHA:$p"
+      kept=1; continue
+    fi
+    if ! git cat-file -e "$AUTOSTASH_SHA:$p" 2>/dev/null; then
+      # The caller had deleted it. If upstream edited it meanwhile, keep
+      # upstream's copy: a later `git add -u` would otherwise delete their edit.
+      if ! git diff --quiet "$AUTOSTASH_HEAD" HEAD -- "$p" 2>/dev/null; then
+        echo "::warning::push-with-retry: autostash: you deleted $p but upstream changed it meanwhile; kept the upstream version."
+        kept=1; continue
+      fi
+      if [ -e "$p" ] && ! rm -f -- "$p"; then kept=1; fi
+      continue
+    fi
+    if git diff --quiet "$AUTOSTASH_HEAD" HEAD -- "$p" 2>/dev/null; then
+      mkdir -p "$(dirname "$p")" 2>/dev/null || true
+      if git show "$AUTOSTASH_SHA:$p" >"$p" 2>/dev/null; then restored+=("$p"); else kept=1; fi
+      continue
+    fi
+    # Upstream changed it: 3-way.
+    base_f="$tmpd/base"; ours_f="$tmpd/ours"; theirs_f="$tmpd/theirs"
+    git show "$AUTOSTASH_HEAD:$p" >"$base_f" 2>/dev/null || : >"$base_f"
+    git show "$AUTOSTASH_SHA:$p" >"$ours_f" 2>/dev/null || { kept=1; continue; }
+    git show "HEAD:$p" >"$theirs_f" 2>/dev/null || : >"$theirs_f"
+    # Honour merge=union from .gitattributes (append-only ledgers such as
+    # stage-latency.jsonl): plain merge-file reports every both-sides append as
+    # a conflict, which would drop the caller's rows.
+    union=""
+    case "$(git check-attr merge -- "$p" 2>/dev/null)" in *": merge: union") union="--union" ;; esac
+    if git merge-file -q $union "$ours_f" "$base_f" "$theirs_f" 2>/dev/null; then
+      if cp -f "$ours_f" "$p" 2>/dev/null; then merged=1; restored+=("$p"); else kept=1; fi
+    else
+      echo "::error::push-with-retry: autostash: your uncommitted edit to $p conflicts with a concurrent upstream change; kept the upstream version on disk. Your version: git show $AUTOSTASH_SHA:$p"
+      kept=1
+    fi
+  done
+  # Restore the executable bit git show cannot carry.
+  for p in ${restored[@]+"${restored[@]}"}; do
+    if [ -f "$p" ] && [ "$(git ls-tree "$AUTOSTASH_SHA" -- "$p" 2>/dev/null | cut -c1-6)" = "100755" ]; then chmod +x "$p" 2>/dev/null || true; fi
+  done
+  rm -rf "$tmpd" 2>/dev/null || true
+  if [ "$kept" = "0" ]; then
+    git update-ref -d "$AUTOSTASH_REF" 2>/dev/null || true
+    echo "  autostash: restored ${#AUTOSTASH_PATHS[@]} uncommitted file(s)$([ "$merged" = "1" ] && echo ' (some 3-way merged with upstream)')."
+  else
+    echo "::warning::push-with-retry: autostash: not every file was restored; snapshot kept at $AUTOSTASH_REF ($AUTOSTASH_SHA)."
+  fi
+  AUTOSTASH_SHA=""
+  return 0
+}
 
 # ── Preserve-HEAD guard (task #543) ──────────────────────────────────────────
 # Captured ONCE, before this script performs ANY fetch/rebase/merge/reset, so
@@ -1608,7 +1747,10 @@ restore_protected_fields() {
   count=$(node "$SCRIPT_DIR/restore-protected-fields.js" "$remote_ref")
   if [ "$count" -gt 0 ] 2>/dev/null; then
     echo "  Restored protected fields in $count file(s) after rebase"
-    git add -A
+    # -u, not -A (BRO-3668, same reasoning as reconcile_merged_json's task #574
+    # note): restore-protected-fields.js only rewrites tracked files, and -A also
+    # swept any untracked file in the worktree into the pushed commit.
+    git add -u
     bash "$SCRIPT_DIR/commit-or-amend.sh" "origin/$PULL_BRANCH" >/dev/null 2>&1 || true
   fi
 }

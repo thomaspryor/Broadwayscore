@@ -35,6 +35,11 @@ test('never flags a human-cleared or human-scored file', () => {
   assert.equal(detect(mk({ manuallyCleared: true }), SHOW).suspect, false);
 });
 
+test('a person\'s "this is a review" clear always wins (BRO-4838)', () => {
+  assert.equal(detect(mk({ nonReviewManualClear: true }), SHOW).reason, 'human_override');
+  assert.equal(detect(mk({ nonReviewManualClear: false }), SHOW).suspect, true);
+});
+
 test('a prose review with few attributions is not flagged', () => {
   const review = 'The staging is confident and the ensemble sings with real conviction throughout. '.repeat(60);
   assert.equal(detect(mk({ fullText: review }), SHOW).suspect, false);

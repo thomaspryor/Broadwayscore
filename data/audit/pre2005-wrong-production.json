@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-12T05:24:06.560Z",
+    "generatedAt": "2026-10-12T06:53:12.334Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 93,
+    "totalFlagged": 94,
     "highConfidence": 4,
-    "mediumConfidence": 89,
+    "mediumConfidence": 90,
     "lowConfidence": 0,
     "reassignable": 37
   },
@@ -1066,22 +1066,6 @@
       "textSnippet": "  A bright and beckoning path cuts through the fairy-tale thicket of whimsy and woe that is ”Into the Woods,” the musical by Stephen Sondheim and James Lapine that opened last night in a new revival a"
     },
     {
-      "showId": "into-the-woods-1997",
-      "showTitle": "Into the Woods",
-      "showYear": 1997,
-      "file": "washpost--peter-marks.json",
-      "outlet": "The Washington Post",
-      "criticName": "Peter Marks",
-      "publishDate": "1997-11-09",
-      "confidence": "high",
-      "suggestedShowId": "into-the-woods-2022",
-      "signals": [
-        "revival cast/director match for into-the-woods-2022: Sara Bareilles, St. James Theatre, Lear deBessonet, director: Lear deBessonet",
-        "year 1987 in text matches revival into-the-woods-1987"
-      ],
-      "textSnippet": "Listen8 minComment on this storyCommentGift ArticleShareNEW YORK — As the band strikes up and the singers open their throats in the hit Broadway revival of “Into the Woods,” the audience realizes it i"
-    },
-    {
       "showId": "a-delicate-balance-1996",
       "showTitle": "A Delicate Balance",
       "showYear": 1996,
@@ -1110,6 +1094,23 @@
         "revival text signals: revival, this production"
       ],
       "textSnippet": "Tethered to a window washer's platform and all but edible in a powder-blue monkey suit and bow tie, Matthew Broderick descends the brightly lit side of a sleek Manhattan office building, reading the t"
+    },
+    {
+      "showId": "the-mystery-of-edwin-drood-1985",
+      "showTitle": "The Mystery of Edwin Drood",
+      "showYear": 1985,
+      "file": "amny--matt-windman.json",
+      "outlet": "amNY",
+      "criticName": "Matt Windman",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, this production",
+        "modern references: twitter",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "Photo credit: Betsy Wolfe, left, and Will Chase in “The Mystery of Edwin Drood”\n\nThe Mystery of Edwin Drood 4 stars\n\n\"The Mystery of Edwin Drood,\" inspired by an unfinished Charles Dickens novel, is o"
     },
     {
       "showId": "macbeth-1981",
@@ -1371,6 +1372,21 @@
         "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "A mere 30 years or so after joining the front rank of American playwrights, Sam Shepard looks to have his first Broadway hit courtesy of Matthew Warchus’ blistering new revival of “True West.”\n\nMake t"
+    },
+    {
+      "showId": "jesus-christ-superstar-2000",
+      "showTitle": "Jesus Christ Superstar",
+      "showYear": 2000,
+      "file": "ew--melissa-rose-bernardo.json",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Melissa Rose Bernardo",
+      "publishDate": null,
+      "confidence": "high",
+      "suggestedShowId": "jesus-christ-superstar-2012",
+      "signals": [
+        "revival cast/director match for jesus-christ-superstar-2012: Des McAnuff, Paul Nolan, Josh Young, Chilina Kennedy, Stratford, director: Des McAnuff"
+      ],
+      "textSnippet": "Andrew Lloyd Webber has said he's never really been happy with Jesus Christ Superstar until now  41 years after its stage debut. That's high advance praise for the new Stratford (Ontario) Shakespeare"
     },
     {
       "showId": "jesus-christ-superstar-2000",

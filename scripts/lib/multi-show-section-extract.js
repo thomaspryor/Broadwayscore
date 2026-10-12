@@ -131,6 +131,31 @@ function isolateMultiShowSection(url, text, showTitle, aliases = []) {
   return { action: 'isolated', text: sec.text };
 }
 
+/**
+ * Extra review fields for a write whose text came from isolateMultiShowSection.
+ * An isolated section is this show's own review, so the post's URL is shared
+ * with the other shows' sections by design: the cross-show URL ownership gate
+ * (url-ownership.js, honoured by review-file-writer and the push validator)
+ * must not refuse it (BRO-4834: the Invention of Love section blocked the
+ * America, Who Hurt You? section of the same post).
+ * Stamped only when it is needed and safe: some other show holds the URL, and
+ * every holder has a different title. A same-title sibling (tender vs
+ * tender-by-dave-harris) isolates the very same section, so Guard I must
+ * still decide that one.
+ * @param {{action:string}} iso isolateMultiShowSection() result
+ * @param {string} showTitle this show's title
+ * @param {string[]} ownerShowIds shows that already hold the URL live
+ */
+function isolatedSectionWriteFields(iso, showTitle, ownerShowIds) {
+  if (!iso || iso.action !== 'isolated' || !ownerShowIds || ownerShowIds.length === 0) return {};
+  const mine = norm(showTitle);
+  const distinct = ownerShowIds.every((id) => {
+    const t = norm(showTitleFor(id));
+    return t && mine && t !== mine;
+  });
+  return distinct ? { allowCrossShowUrl: true } : {};
+}
+
 let _titles = null;
 function showTitleFor(showId) {
   if (!_titles) {
@@ -155,5 +180,5 @@ const MULTI_SHOW_NOT_FOUND_REASON = 'multi_show_section_not_found';
 
 module.exports = {
   extractShowSection, findSectionHeadings, headingShowName, normSectionText: norm, isMultiShowPostUrl, isolateMultiShowSection,
-  isolateMultiShowSectionForShowId, MULTI_SHOW_NOT_FOUND_REASON,
+  isolateMultiShowSectionForShowId, isolatedSectionWriteFields, MULTI_SHOW_NOT_FOUND_REASON,
 };

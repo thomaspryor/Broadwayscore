@@ -133,10 +133,11 @@ function decideOwnershipDrops(newFiles, reviewTextsDir) {
       continue; // deleted or unparseable — not this gate's problem
     }
     if (!data || typeof data !== 'object') continue;
-    if (data.allowCrossShowUrl === true) continue;
     if (data.humanReviewScore != null || data._locked === true) continue;
     const showId = rel.split('/')[0];
-    const owners = findCrossShowOwners(data.url, showId, reviewTextsDir);
+    // allowCrossShowUrl waives only the cross-show check; a same-show re-creation
+    // below is still a duplicate (BRO-4834 review).
+    const owners = data.allowCrossShowUrl === true ? [] : findCrossShowOwners(data.url, showId, reviewTextsDir);
     // BRO-4431: sibling sections of one split multi-show article share its URL.
     const verdict = shouldBlockCrossShowCreate(owners, multiShowSplitGroup(data, showId), showId);
     if (verdict.block) {
