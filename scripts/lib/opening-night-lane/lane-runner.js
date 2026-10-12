@@ -25,6 +25,7 @@ const ledger = require('./ledger');
 const discovery = require('./discovery');
 const trust = require('./trust-model');
 const publish = require('./publish');
+const { createLaneReviewWriter } = require('./persist');
 
 /** Review keys a restarted lane must not redo: those that already reached `scored`, plus URLs already on disk. */
 function loadDone(ledgerDir, show, night, onDiskUrls = []) {
@@ -40,6 +41,7 @@ function loadDone(ledgerDir, show, night, onDiskUrls = []) {
  *   fetchReview(candidate) -> {outletId?, outlet, criticName, fullText, aggregator?, publishDate?}   (throws to retry)
  *   scoreReview(row, fetched) -> number | {score, extra}   (called only for rows without a fallback score; `extra` fields are merged into the row)
  *   publishPorts {updateReviews, regenShow, deploy, fetchLiveShow, pushData?, isLeased?} OR makePublishPorts(clock),
+ *   reviewTextsDir? (persist scored rows before marking done, also in a dry-run sandbox),
  *   dryRun?, onDiskUrls?, now() -> ms, wait(ms) -> Promise, forkClock?(startMs) -> {now, wait},
  *   latency {fetchMs, scoreMs}, passIntervalMs, maxPasses, windowMs (how long the lane runs), startedAt?, publishTimeoutMs, pollMs
  * @returns {Promise<{passes, admitted, published, errors, failed, unpublished}>}
@@ -47,12 +49,13 @@ function loadDone(ledgerDir, show, night, onDiskUrls = []) {
 async function runLaneNight({
   show, night, openingDate, timeZone, adapters, fetchText, ledgerDir, fetchReview, scoreReview, publishPorts, makePublishPorts, dryRun = false,
   onDiskUrls = [], maxInflight = 2, now, wait, forkClock, latency = {}, passIntervalMs = 2 * 60 * 1000, maxPasses = 1000, windowMs = 6 * 60 * 60 * 1000,
-  startedAt, publishTimeoutMs, pollMs,
+  startedAt, publishTimeoutMs, pollMs, reviewTextsDir,
 } = {}) {
   for (const [k, v] of Object.entries({ show, night, adapters, fetchText, ledgerDir, fetchReview, scoreReview, now, wait })) {
     if (v === undefined || v === null) throw new Error(`lane-runner: ${k} is required`);
   }
   if (!publishPorts && !makePublishPorts) throw new Error('lane-runner: publishPorts or makePublishPorts is required');
+  const persistReview = reviewTextsDir ? createLaneReviewWriter({ reviewTextsDir, show, night }) : null;
   const t0 = startedAt === undefined ? now() : startedAt;
   const seen = loadDone(ledgerDir, show.id, night, onDiskUrls);
   const memo = { rejected: {} };
@@ -105,7 +108,7 @@ async function runLaneNight({
         await wait(latency.fetchMs || 0);
         const fetched = await fetchReview(a);
         ledger.appendEvent(ledgerDir, { show: show.id, night, reviewKey: a.key, stage: 'fetched', at: now() });
-        const row = trust.buildLaneReview({
+        let row = trust.buildLaneReview({
           showId: show.id, night, source: a.source, seenAt: new Date(stamp).toISOString(), outletId: fetched.outletId || a.outletId,
           outlet: fetched.outlet, criticName: fetched.criticName, url: a.url, publishDate: a.publishDate || fetched.publishDate || null,
           fullText: fetched.fullText, aggregator: fetched.aggregator || {},
@@ -114,6 +117,10 @@ async function runLaneNight({
           if (scored && typeof scored === 'object') { Object.assign(row, scored.extra || {}); row.assignedScore = scored.score; } else row.assignedScore = scored;
         }
         row.contentTier = row.isFullReview ? 'complete' : 'stub';
+        if (persistReview) {
+          // The guarded writer can preserve a human correction. Publish precisely what survived on disk.
+          row = persistReview(row).row;
+        }
         ledger.appendEvent(ledgerDir, { show: show.id, night, reviewKey: a.key, stage: 'scored', at: now() });
         pending.push({ key: a.key, row });
         seen.add(a.key);

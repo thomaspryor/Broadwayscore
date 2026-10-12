@@ -18,6 +18,78 @@ const { buildSyntheticFixture } = require('../../scripts/lib/opening-night-lane/
 
 const NIGHT_START = Date.parse('2026-10-18T22:00:00-04:00');
 
+test('the live smoke uses real HTML extractors and persists ensemble fields through the lane', async (t) => {
+  const { runLiveSmoke } = require('../../scripts/lib/opening-night-lane/live-smoke.js');
+  const scraper = require('../../scripts/lib/scraper.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4835-smoke-'));
+  const show = { id: 'archived-test-2026', title: 'Archived Test', openingDate: '2026-10-18', category: 'broadway' };
+  const review = { showId: show.id, outletId: 'guardian', url: 'https://www.theguardian.com/stage/2026/oct/18/archived-test-review' };
+  const text = 'This is a theatre review of Archived Test. The performances make the production a delight. '.repeat(15);
+  const fetches = [];
+  t.mock.method(scraper, 'fetchPage', async url => {
+    fetches.push(url);
+    return { content: `<meta name="author" content="Arifa Akbar"><meta property="article:published_time" content="2026-10-18T20:00:00Z"><article>${text}</article>` };
+  });
+  const inputs = [];
+  const scorer = { scoreReviewFile: async input => {
+    inputs.push(input);
+    return { success: true, scoredFile: { assignedScore: 83, llmScore: { score: 83 }, llmMetadata: { model: 'ensemble' }, ensembleData: { modelCount: 2 } } };
+  } };
+  try {
+    const result = await runLiveSmoke({ show, review, workDir: dir, fetchPorts: inl.realFetchPorts(), scorer });
+    assert.equal(result.pass, true);
+    assert.deepEqual(fetches, [review.url]);
+    assert.equal(inputs.length, 1);
+    assert.equal(inputs[0].criticName, 'Arifa Akbar');
+    assert.equal(inputs[0].publishDate.slice(0, 10), '2026-10-18');
+    assert.ok(inputs[0].fullText.includes('The performances'));
+    const saved = JSON.parse(fs.readFileSync(path.join(dir, 'data/review-texts', show.id, 'guardian--arifa-akbar--on-2026-10-18.json'), 'utf8'));
+    assert.equal(saved.assignedScore, 83);
+    assert.deepEqual(saved.ensembleData, { modelCount: 2 });
+    assert.deepEqual(saved.llmMetadata, { model: 'ensemble' });
+    await assert.rejects(runLiveSmoke({ show, review, workDir: dir, fetchPorts: inl.realFetchPorts(), scorer }), /sandbox must be empty/);
+    assert.equal(fetches.length, 1, 'a used sandbox cannot silently skip a fresh fetch');
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('a failed persistence leaves no scored ledger event, so a restart can recover', async () => {
+  const s = sandbox();
+  try {
+    const root = path.join(s.dir, 'blocked-root');
+    fs.writeFileSync(root, 'not a directory');
+    const run = await s.run({ reviewTextsDir: root, maxPasses: 1 });
+    assert.equal(run.admitted.length, 0);
+    assert.ok(run.errors.length > 0);
+    assert.ok(!ledger.readLedger(s.ledgerDir, s.fixture.show.id, s.fixture.night).events.some(e => e.stage === 'scored'));
+    fs.unlinkSync(root);
+    const recovered = await s.run({ reviewTextsDir: root });
+    assert.ok(recovered.admitted.length > 0);
+    assert.ok(fs.readdirSync(path.join(root, s.fixture.show.id)).length > 0);
+  } finally { s.cleanup(); }
+});
+
+test('scored lane rows are persisted in night-specific files before the scored ledger event', async () => {
+  const s = sandbox();
+  try {
+    const root = path.join(s.dir, 'review-texts');
+    const run = await s.run({ reviewTextsDir: root });
+    assert.equal(run.errors.length, 0);
+    const showDir = path.join(root, s.fixture.show.id);
+    assert.ok(fs.existsSync(showDir), 'the review-texts writer ran');
+    const files = fs.readdirSync(showDir);
+    assert.equal(files.length, run.admitted.length);
+    for (const file of files) {
+      assert.match(file, /--on-2026-10-18(?:--[^.]+)?\.json$/);
+      const row = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));
+      assert.ok(Number.isFinite(row.assignedScore));
+      assert.equal(row.showId, s.fixture.show.id);
+      assert.ok(row.openingNightLane);
+    }
+    await s.run({ reviewTextsDir: root });
+    assert.deepEqual(fs.readdirSync(showDir), files, 'a restart does not create more files');
+  } finally { s.cleanup(); }
+});
+
 function sandbox({ failFetch = {}, failScore = {}, scorer, retryMs, aggregatorFor, extractArticle } = {}) {
   const fixture = buildSyntheticFixture();
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4784-'));

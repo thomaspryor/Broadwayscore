@@ -17,6 +17,7 @@
  *   node scripts/opening-night-poller.js --show=show-id-2026 --dry-run
  *   node scripts/opening-night-poller.js --show=show-id-2026 --skip-serp
  *   node scripts/opening-night-poller.js --show=show-id-2026 --skip-site-search
+ *   node scripts/opening-night-poller.js --lane-live-smoke --show=show-id --url=archived-review-url [--out=empty-sandbox]
  *   node scripts/opening-night-poller.js --show=show-id-2026 --bww-roundup-url=https://www.broadwayworld.com/article/Review-Roundup-...
  *   node scripts/opening-night-poller.js --show=show-id-2026 --tb-review-url=https://www.talkinbroadway.com/page/world/giant2026.html
  *
@@ -2148,8 +2149,11 @@ async function pollCycle() {
 }
 
 if (require.main === module) {
-  pollCycle().then(() => {
-    process.exit(0);
+  const liveSmoke = process.argv.includes('--lane-live-smoke');
+  const run = liveSmoke ? require('./lib/opening-night-lane/live-smoke').liveSmokeFromArgs() : pollCycle();
+  run.then(result => {
+    if (liveSmoke) console.log(JSON.stringify(result));
+    process.exit(liveSmoke && !result.pass ? 1 : 0);
   }).catch(err => {
     console.error('Fatal error:', err);
     process.exit(1);

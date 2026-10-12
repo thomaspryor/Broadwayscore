@@ -142,6 +142,7 @@ async function runRehearsal({ fixture, workDir, keep = false, scoreReview, regen
     const run = await runLaneNight({
       show, night, openingDate: fixture.openingDate, timeZone: fixture.timeZone, adapters: buildAdapters(fixture), fetchText, ledgerDir,
       fetchReview, scoreReview: scoreReview || ((row, fetched) => fetched.score), makePublishPorts, forkClock, maxInflight, dryRun: true,
+      reviewTextsDir: path.join(dir, 'review-texts'),
       now, wait, latency: lat, passIntervalMs: lat.passIntervalMs, windowMs: Math.max(45 * 60 * 1000, ...(fixture.waves || []).map((w) => w.afterMs + 15 * 60 * 1000)), startedAt: startMs, pollMs: lat.pollMs, publishTimeoutMs: maxMs,
     });
 
