@@ -4236,7 +4236,8 @@ function isCancelledBeforeOpeningShow(show) {
 }
 
 // 2. A row known only from a raw search hit, with no url and no stored text,
-//    has nothing a reader or the scorer can check. The canonical unvetted-SERP
+//    has nothing a reader or the scorer can check. Nor does a legacy
+//    'web-search' row with a url but no stored text (BRO-5081). The canonical unvetted-SERP
 //    source list (unvetted-serp-sources.js, BRO-4101) plus 'web-search', the
 //    tag the older discovery path wrote. EVERY source on the record must be a
 //    search source, so an aggregator-backed stub (show-score, bww-*, dtli,
@@ -4246,8 +4247,16 @@ function isUnverifiableWebSearchRow(data) {
   if (!data) return false;
   const sources = [].concat(data.sources || [], data.source || []).filter((x) => typeof x === 'string' && x);
   if (!sources.length || !sources.every((x) => UNVERIFIABLE_SEARCH_SOURCES.has(x))) return false;
-  if (data.url) return false;
-  if (String(data.fullText || '').trim().length >= 50) return false;
+  // BRO-5081: a url does not rescue a row the legacy LLM web-search step wrote
+  // on its own. With no stored text, its score came from excerpt fields that
+  // step wrote itself: 0 of 34 reachable review pages contained the excerpt
+  // ("Despite handsome design elements...", a TheaterMania review credited to
+  // David Rooney). SERP-sourced url rows keep the old rule.
+  if (data.url && !sources.every((x) => x === 'web-search')) return false;
+  // That step also copied its one-sentence summary into fullText (175 live rows
+  // of 50-299 chars, all "X is a show that knows exactly what it wants..."), so
+  // a url row needs a real page's worth of text to count as checkable.
+  if (String(data.fullText || '').trim().length >= (data.url ? 300 : 50)) return false;
   if (data.humanReviewScore || data.adjudicatedScore) return false;
   return true;
 }

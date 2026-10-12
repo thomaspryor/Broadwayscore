@@ -53,7 +53,10 @@ test('web-search row with no url and no text is unverifiable', () => {
 });
 
 test('web-search rule: a url, stored text, an aggregator source or a human override each keep the row', () => {
-  assert.equal(isUnverifiableWebSearchRow({ ...SEARCH_ROW, url: 'https://www.timeout.com/newyork/theater/x-review' }), false, 'has a url');
+  // BRO-5107: a url alone no longer rescues a web-search-only row (its score came
+  // from an excerpt that step wrote); a url plus 300+ chars of page text does.
+  assert.equal(isUnverifiableWebSearchRow({ ...SEARCH_ROW, url: 'https://www.timeout.com/newyork/theater/x-review' }), true, 'web-search url, no text');
+  assert.equal(isUnverifiableWebSearchRow({ ...SEARCH_ROW, url: 'https://www.timeout.com/newyork/theater/x-review', fullText: 'y'.repeat(300) }), false, 'url + page text');
   assert.equal(isUnverifiableWebSearchRow({ ...SEARCH_ROW, fullText: 'y'.repeat(200) }), false, 'has stored text');
   assert.equal(isUnverifiableWebSearchRow({ ...SEARCH_ROW, sources: ['web-search', 'show-score'] }), false, 'aggregator-backed stub');
   assert.equal(isUnverifiableWebSearchRow({ ...SEARCH_ROW, source: 'bww-roundup', sources: undefined }), false);
