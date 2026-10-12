@@ -18,6 +18,7 @@ const path = require('path');
 const { unscoredSkipReason } = require('../lib/scoring-queue-counts');
 const { classifyReviewUrl } = require('../lib/non-review-url-patterns');
 const { isIncludableForRebuild, hasValidScore } = require('../lib/review-guards');
+const { foldDiacritics } = require('../lib/title-match');
 
 const ROOT = path.join(__dirname, '..', '..');
 const arg = (name) => {
@@ -47,8 +48,8 @@ function describe(fp, show) {
   try {
     skip = unscoredSkipReason(d, { show, showTitle: show && show.title, filePath: fp });
   } catch (e) { skip = `THREW: ${e.message}`; }
-  const ft = typeof d.fullText === 'string' ? d.fullText.toLowerCase() : '';
-  const titleWord = show && show.title ? show.title.toLowerCase().replace(/[^a-z0-9 ]/g, ' ').trim() : '';
+  const ft = typeof d.fullText === 'string' ? foldDiacritics(d.fullText.toLowerCase()) : '';
+  const titleWord = show && show.title ? foldDiacritics(show.title.toLowerCase()).replace(/[^a-z0-9 ]/g, ' ').trim() : '';
   return {
     flags,
     textLengths: lengths,
