@@ -243,6 +243,39 @@ jobs:
       # in the email digest sent by health-check.js. Discord alerts are reserved
       # for critical real-time workflow failures via notify-failure action.
 
+      # BRO-4521: park the data/audit/triage/*.json files "Run health check"
+      # just wrote. Left dirty in the tree until the final "Commit triage
+      # data" step, they made EVERY intermediate push-with-retry.sh call log
+      # "rebase REFUSED before it started: cannot rebase: You have unstaged
+      # changes" and fall through to the merge fallback (the merge -X ours
+      # path BRO-3662 warns can drop a concurrent writer's hunks). This step
+      # copies the changed/new files to $RUNNER_TEMP and restores the tree, so
+      # the later pushes rebase normally; "Commit triage data" copies them
+      # back and commits them as before. No push here on purpose: a
+      # non-apiFallbackSafe push before the apiFallbackSafe steps can strand a
+      # commit that disables their API fallback (BRO-2538, guarded by
+      # scripts/lib/push-with-retry.stranded-commit-cascade.test.sh), and
+      # data/audit/triage/ has a second writer (rebuild-reviews.yml), so it is
+      # not fallback-safe. Nothing between here and the final step reads these
+      # files (triage-unopened-shows.mjs reads/writes only its own report,
+      # which stays a known residual dirty file, as does alert-router state
+      # until "Commit alert router state").
+      - name: Park triage data until the final commit
+        if: always()
+        continue-on-error: true
+        run: |
+          P="$RUNNER_TEMP/triage-parked"
+          rm -rf "$P" "$P.deleted"; mkdir -p "$P"
+          git -c core.quotePath=false ls-files -d -- data/audit/triage/ > "$P.deleted"
+          { git -c core.quotePath=false diff --name-only --diff-filter=d -- data/audit/triage/; git -c core.quotePath=false ls-files -o --exclude-standard -- data/audit/triage/; } | sort -u | while IFS= read -r f; do
+            [ -f "$f" ] || continue
+            mkdir -p "$P/$(dirname "$f")"; cp -p "$f" "$P/$f"
+          done
+          git checkout -- data/audit/triage/ 2>/dev/null || true
+          git clean -fdq -- data/audit/triage/
+          echo "parked $(find "$P" -type f | wc -l) changed/new and $(wc -l < "$P.deleted") deleted triage file(s)"
+          git status --short -- data/audit/triage/ | head -5
+
       # BRO-2529: isolated commit for the 4 files "Affiliate health monitor"
       # and "Run health check" already wrote to disk above, positioned
       # immediately after the write with NO other push-with-retry.sh call in
@@ -935,15 +968,29 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: node scripts/audit-wrong-article.js --adjudicate --max=20
 
-      # BRO-4383: NOT shadow mode. A scored review whose text is a different
-      # article (2 reached the live site) is a correctness bug, so an
-      # unverified suspect (no cast/creative/venue evidence, title named <=1x,
-      # no Opus verdict in data/audit/wrong-article-verified.json or
-      # data/audit/wrong-article-adjudicated.json) fails the step.
-      - name: wrong-article audit (fails on unverified suspects)
+      # BRO-4383 made this blocking: an unverified suspect (no cast/creative/
+      # venue evidence, title named <=1x, no Opus verdict in
+      # data/audit/wrong-article-verified.json or wrong-article-adjudicated.json)
+      # failed the step. BRO-4521 (2026-10-11): REPORT-ONLY. It went red on
+      # every scheduled run from 2026-10-05 (381 unverified suspects; the
+      # adjudication step above clears at most 20/day), which marked the
+      # whole digest carrier failed, tripped cron-health, and fired a false
+      # "Health check script crashed" alert. CLAUDE.md rule 19: a new
+      # blocking gate lands advisory first. The script still prints every
+      # CONFIRMED file as a ::warning:: annotation; those get flagged
+      # wrongShow through a data/pending-fixes plan. Re-arm (drop
+      # continue-on-error) only once the unverified count has drained to 0
+      # and stayed there for a week.
+      - name: wrong-article audit (report-only)
         if: always()
+        continue-on-error: true
         timeout-minutes: 3
-        run: node scripts/audit-wrong-article.js
+        run: |
+          # Exit 1 = suspects (expected while the backlog drains). Exit 2 = the
+          # script crashed; annotate it so continue-on-error doesn't hide it.
+          rc=0; node scripts/audit-wrong-article.js || rc=$?
+          [ "$rc" -eq 2 ] && echo "::error title=wrong-article audit crashed::scripts/audit-wrong-article.js exited 2"
+          exit "$rc"
 
       - name: slug-mismatch lifetime sweep (shadow mode)
         if: always()
@@ -1005,6 +1052,10 @@ jobs:
           git add data/audit/roundup-url-mismatch-lifetime.json 2>/dev/null || true
           git add data/audit/revival-unverified-lifetime.json 2>/dev/null || true
           git add data/audit/wrong-article-adjudicated.json 2>/dev/null || true
+          # BRO-4521: written by the drift check step above; it used to stay
+          # dirty until the bulk audit-snapshots step and made this push's
+          # rebase refuse. Same apiFallbackSafe class as that bulk step.
+          git add data/audit/cross-outlet-attribution-drift.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No lifetime sweep snapshot changes"
           else
@@ -1500,6 +1551,11 @@ jobs:
           # "Commit alert router state (apiFallbackMerge)" step (BRO-3318,
           # 2026-09-14) — see that step's comment for why they no longer
           # share a commit with triage/.
+          # BRO-4521: put back what "Park triage data until the final commit"
+          # set aside.
+          P="$RUNNER_TEMP/triage-parked"
+          if [ -d "$P/data" ]; then cp -pR "$P/data/." data/; fi
+          if [ -s "$P.deleted" ]; then while IFS= read -r f; do rm -f "$f"; done < "$P.deleted"; fi
           git add data/audit/triage/ 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No triage data changes"

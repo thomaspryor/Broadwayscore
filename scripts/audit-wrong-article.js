@@ -15,6 +15,9 @@
  *   node scripts/audit-wrong-article.js --list       # print unverified suspects as JSON
  *   node scripts/audit-wrong-article.js --record-verified   # merge ALL current suspects into the verified baseline
  *                                                    # (only after an Opus pass over --list)
+ *   node scripts/audit-wrong-article.js --fix-actions  # print review-field-edit actions (wrongShow -> true, with
+ *                                                    # the current value as oldValue) for every CONFIRMED file, ready
+ *                                                    # for a data/pending-fixes plan (BRO-4521)
  *   node scripts/audit-wrong-article.js --adjudicate [--max=N]   # the daily LLM pass (BRO-4603, default N=20): asks
  *                                                    # Opus via content-verifier about each unverified suspect,
  *                                                    # writes data/audit/wrong-article-adjudicated.json
@@ -123,7 +126,7 @@ function findSuspects(textsDir, shows) {
       scanned++;
       const r = screenWrongArticle(j.fullText, show);
       if (r.suspect) {
-        out.push({ file: `${showId}/${f}`, hash: hashText(j.fullText), show: show.title, url: j.url, source: j.source, titleMentions: r.titleMentions, head: j.fullText.slice(0, 160).replace(/\s+/g, ' ') });
+        out.push({ file: `${showId}/${f}`, hash: hashText(j.fullText), show: show.title, url: j.url, source: j.source, wrongShow: j.wrongShow ?? null, titleMentions: r.titleMentions, head: j.fullText.slice(0, 160).replace(/\s+/g, ' ') });
       }
     }
   }
@@ -132,7 +135,7 @@ function findSuspects(textsDir, shows) {
 
 async function main(argv) {
   if (require('./lib/cli-help').hasHelpFlag(argv)) {
-    console.log('Usage: node scripts/audit-wrong-article.js [--list | --record-verified | --adjudicate [--max=N]]  (no flag = CI check)');
+    console.log('Usage: node scripts/audit-wrong-article.js [--list | --fix-actions | --record-verified | --adjudicate [--max=N]]  (no flag = CI check)');
     return 0;
   }
   const shows = loadShows();
@@ -158,12 +161,28 @@ async function main(argv) {
   }
   console.log(`wrong-article audit: scanned ${scanned} included+scored, ${suspects.length} suspects, ${cleared} cleared by LLM adjudication, ${unverified.length} unverified`);
   if (argv.includes('--list')) console.log(JSON.stringify(unverified, null, 2));
+  const confirmed = unverified.filter((u) => adjudicated[u.file]?.hash === u.hash && adjudicated[u.file]?.verdict === 'wrong-article');
+  if (argv.includes('--fix-actions')) {
+    console.log(JSON.stringify(confirmed.map((u) => ({
+      type: 'review-field-edit', file: u.file, field: 'wrongShow', oldValue: u.wrongShow, newValue: true,
+      description: `Opus wrong-article verdict ${adjudicated[u.file].at || ''}: ${describeConfirmed(adjudicated[u.file])}`.trim(),
+    })), null, 2));
+    return 0;
+  }
   if (unverified.length) {
-    const confirmed = unverified.filter((u) => adjudicated[u.file]?.hash === u.hash && adjudicated[u.file]?.verdict === 'wrong-article');
     for (const u of confirmed) console.error(`  CONFIRMED WRONG ARTICLE ${u.file} (${u.show}): ${describeConfirmed(adjudicated[u.file])}`);
+    // BRO-4521: the CI step is report-only, so annotate the run page; a
+    // red step is no longer what makes these visible.
+    if (process.env.GITHUB_ACTIONS === 'true') {
+      // Workflow-command message escaping (%, CR, LF), so a show title can't break the annotation.
+      const esc = (t) => String(t).replace(/%/g, '%25').replace(/\r/g, '%0D').replace(/\n/g, '%0A');
+      // Summary first: GitHub keeps only the first few annotations per step.
+      console.log(`::warning title=wrong-article audit::${confirmed.length} confirmed, ${unverified.length - confirmed.length} unverified suspect(s)`);
+      for (const u of confirmed) console.log(`::warning title=Confirmed wrong article::${esc(`${u.file} (${u.show})`)}: flag wrongShow via a data/pending-fixes plan`);
+    }
     for (const u of unverified.filter((x) => !confirmed.includes(x)).slice(0, 25)) console.error(`  UNVERIFIED ${u.file} (${u.show}, title x${u.titleMentions}, ${u.source}): ${u.head}`);
     console.error(confirmed.length
-      ? 'Flag each CONFIRMED file wrongShow (data/pending-fixes plan, review-field-edit). UNVERIFIED ones get the LLM pass next run (--adjudicate).'
+      ? 'Flag each CONFIRMED file wrongShow (data/pending-fixes plan; --fix-actions prints the review-field-edit actions). UNVERIFIED ones get the LLM pass next run (--adjudicate).'
       : 'UNVERIFIED suspects get the LLM pass next run (--adjudicate), or run Opus over --list and --record-verified.');
     return 1;
   }

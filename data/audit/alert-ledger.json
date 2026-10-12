@@ -156,13 +156,13 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-11T14:14:07.486Z",
-      "lastSeen": "2026-10-12T02:59:49.522Z",
+      "lastSeen": "2026-10-12T03:07:47.696Z",
       "lastNotifiedAt": "2026-10-11T14:14:07.486Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 132,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 20
+      "silentRefires": 21
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -12581,9 +12581,9 @@
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Ordinal publishDate guard parity (BRO-2836) — \"foo returns the contracted value\"",
       "firstSeen": "2026-10-09T14:40:39.110Z",
-      "incidentOpenedAt": "2026-10-12T02:59:24.006Z",
-      "lastSeen": "2026-10-12T02:59:24.006Z",
-      "lastNotifiedAt": "2026-10-12T02:59:24.006Z",
+      "incidentOpenedAt": "2026-10-12T03:07:47.464Z",
+      "lastSeen": "2026-10-12T03:07:47.464Z",
+      "lastNotifiedAt": "2026-10-12T03:07:47.464Z",
       "lastSurfacedAt": null,
       "notifyCount": 3,
       "cardId": null,
@@ -12592,13 +12592,7 @@
         "38187654352",
         "38189720816",
         "38191732373"
-      ],
-      "dispatch": {
-        "requestedAt": "2026-10-12T02:59:24.006Z",
-        "mode": "dispatch-at-filing",
-        "runId": "38196863807",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38196863807"
-      }
+      ]
     },
     "test-yml:red:Unit Tests:2a5215c8": {
       "status": "resolved",
@@ -14078,7 +14072,7 @@
       "resolvedAt": "2026-10-11T23:35:05.491Z"
     },
     "land:land/bro-4521-health-check": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: bash-integration red on land/bro-4521-health-check",
       "firstSeen": "2026-10-11T21:49:56.338Z",
@@ -14089,7 +14083,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-10-12T03:10:00.404Z"
     },
     "land:land/bro-4589-commercial-claim-triage": {
       "status": "resolved",
@@ -14187,7 +14182,10 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-5105",
-      "silentRefires": 3
+      "silentRefires": 3,
+      "absentRunIds": [
+        "38197332180"
+      ]
     },
     "land:land/bro-2735-pending-stubs": {
       "status": "open",
