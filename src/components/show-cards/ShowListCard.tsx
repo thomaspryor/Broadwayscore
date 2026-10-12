@@ -189,7 +189,7 @@ const ShowListCard = memo(function ShowListCard({
   const infoContent = isCompact ? (
     // Compact variant (Browse): different date formatting, performances support
     <div className="flex-1 min-w-0">
-      <h2 className="font-bold text-lg text-white group-hover:text-brand transition-colors line-clamp-2">
+      <h2 className="font-bold text-lg text-white group-hover:text-brand transition-colors line-clamp-2 break-words hyphens-auto">
         {show.title}
       </h2>
       <div className="flex flex-wrap items-center gap-1.5 mt-1">
