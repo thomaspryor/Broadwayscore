@@ -6,7 +6,7 @@
  *
  *   node scripts/close-stuck-verified-cards.js                report only
  *   node scripts/close-stuck-verified-cards.js --apply        close eligible cards until the time budget
- *                                                             runs out, 3 Done-gate refusals, or 50 closes
+ *                                                             runs out, 3 Done-gate refusals, or 100 closes
  *   node scripts/close-stuck-verified-cards.js --git-repo P   read commit history from a local clone
  *                                                             instead of the GitHub API
  *   node scripts/close-stuck-verified-cards.js --only BRO-N   consider just one card
@@ -28,13 +28,15 @@ const { spawnSync, execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const {
   planCandidates, decideClosure, buildClosureComment, closeRunStopReason,
-  decideBounce, buildBounceComment, MAX_BOUNCES, MAX_BOUNCES_PER_RUN,
+  decideBounce, buildBounceComment, MAX_BOUNCES, MAX_BOUNCES_PER_RUN, NO_OWN_COMMIT,
 } = require('./lib/stuck-card-closer.js');
 
 const REPO = path.join(__dirname, '..');
 const AUDIT = path.join(REPO, 'data', 'audit', 'done-evidence-audit.json');
 const OUT = path.join(REPO, 'data', 'audit', 'stuck-card-closer.json');
-const TIME_BUDGET_MS = 18 * 60 * 1000;
+// Raised from 18 min (BRO-4814). The last close starts with at least
+// CLOSE_TIMEOUT_MS left, so it ends by 22 min, inside the 25 min step.
+const TIME_BUDGET_MS = 22 * 60 * 1000;
 // One close re-runs the card's check through the Done gate; never start one
 // that could outlive the workflow step (25 min) if it hits its own timeout.
 const CLOSE_TIMEOUT_MS = 5 * 60 * 1000;
@@ -62,6 +64,45 @@ function gitCommitsTouching(gitRepo) {
       const [sha, message] = s.split('\x00');
       return { sha, message };
     });
+  };
+}
+
+// Land route evidence (BRO-4814): successful Land runs and the land/** refs
+// still on origin, read once per run and only when a card needs it. The same
+// two listings land-retry-cancelled.js --stranded reads. GitHub serves at most
+// 1000 runs per listing (about 12 days of landings), so a card filed earlier
+// than the listing reaches gets a second, date-bounded listing of its own.
+const LAND_RUN_PAGES = 10;
+function apiLanding() {
+  const { fetchGitHubJSON } = require('./lib/gh-api-client.js');
+  const listRuns = async (created) => {
+    const runs = [];
+    let complete = false;
+    for (let page = 1; page <= LAND_RUN_PAGES; page++) {
+      const q = `status=success&per_page=100&page=${page}${created ? `&created=${encodeURIComponent(created)}` : ''}`;
+      const data = await fetchGitHubJSON(`https://api.github.com/repos/${GH_REPO}/actions/workflows/land.yml/runs?${q}`);
+      const batch = (data && data.workflow_runs) || [];
+      for (const r of batch) runs.push({ id: r.id, branch: r.head_branch, headSha: r.head_sha, createdAt: r.created_at });
+      if (batch.length < 100) { complete = true; break; }
+    }
+    const oldest = runs.reduce((m, r) => Math.min(m, Date.parse(r.createdAt) || Infinity), Infinity);
+    return { runs, complete, oldest };
+  };
+  return async ({ sinceIso, untilMs } = {}) => {
+    if (sinceIso) {
+      // Extend an earlier listing back to sinceIso; whatever it cannot reach stays uncovered.
+      const { runs, complete, oldest } = await listRuns(`${sinceIso.slice(0, 10)}..${new Date(untilMs).toISOString()}`);
+      return { runs, coveredSinceMs: complete ? Date.parse(sinceIso.slice(0, 10)) : oldest };
+    }
+    const { runs, complete, oldest } = await listRuns(null);
+    const refs = await fetchGitHubJSON(`https://api.github.com/repos/${GH_REPO}/git/matching-refs/heads/land`);
+    if (!Array.isArray(refs)) throw new Error('land ref listing was not an array');
+    return {
+      runs,
+      coveredSinceMs: complete ? 0 : oldest,
+      refs: refs.filter((r) => String(r.ref || '').startsWith('refs/heads/land/'))
+        .map((r) => ({ branch: r.ref.replace(/^refs\/heads\//, ''), sha: r.object && r.object.sha })),
+    };
   };
 }
 
@@ -120,7 +161,45 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   }
   out.auditGeneratedAt = report.generatedAt || null;
   const linear = deps.linear || require('./lib/linear-client.js');
-  const commitsTouching = deps.commitsTouching || (gitRepo ? gitCommitsTouching(gitRepo) : apiCommitsTouching());
+  const commitsTouchingOne = deps.commitsTouching || (gitRepo ? gitCommitsTouching(gitRepo) : apiCommitsTouching());
+  // A multi-file check: every commit that touched any of its files, once each.
+  const commitsTouching = async (testPaths, sinceIso) => {
+    const seen = new Set();
+    const all = [];
+    for (const p of testPaths) {
+      for (const c of await commitsTouchingOne(p, sinceIso)) {
+        if (!seen.has(c.sha)) { seen.add(c.sha); all.push(c); }
+      }
+    }
+    return all;
+  };
+  const fetchLanding = deps.fetchLanding || apiLanding();
+  let landing; // undefined: not read yet; null: unreadable this run
+  const getLanding = async () => {
+    if (landing !== undefined) return landing;
+    try {
+      landing = await fetchLanding();
+    } catch (err) {
+      console.error(`[close-stuck-verified-cards] land evidence unreadable, land route off this run: ${err.message.split('\n')[0]}`);
+      out.landEvidenceError = err.message.slice(0, 200);
+      landing = null;
+    }
+    return landing;
+  };
+  // A failed extension leaves the listing as it was: the card stays uncovered and is left alone.
+  const extendLanding = async (sinceIso) => {
+    try {
+      const more = await fetchLanding({ sinceIso, untilMs: landing.coveredSinceMs });
+      const seen = new Set(landing.runs.map((r) => r.id));
+      landing = {
+        ...landing,
+        runs: landing.runs.concat(more.runs.filter((r) => !seen.has(r.id))),
+        coveredSinceMs: Math.min(landing.coveredSinceMs, more.coveredSinceMs),
+      };
+    } catch (err) {
+      console.error(`[close-stuck-verified-cards] could not list Land runs back to ${sinceIso}: ${err.message.split('\n')[0]}`);
+    }
+  };
   const plan = planCandidates(report, nowMs);
 
   if (plan.error) {
@@ -191,14 +270,22 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     try {
       const data = await linear.graphql(ISSUE_QUERY, { id: candidate.id });
       issue = data && data.issue ? { ...data.issue, comments: (data.issue.comments && data.issue.comments.nodes) || [] } : null;
-      commits = issue ? await commitsTouching(candidate.testPath, issue.createdAt) : [];
+      commits = issue ? await commitsTouching(candidate.testPaths || [candidate.testPath], issue.createdAt) : [];
     } catch (err) {
       console.error(`[close-stuck-verified-cards] could not read ${candidate.id}: ${err.message}`);
       out.rows.push({ id: candidate.id, action: 'read-failed', reason: err.message.slice(0, 200) });
       exitCode = 3;
       break;
     }
-    const decision = decideClosure({ candidate, issue, commits, nowMs });
+    let decision = decideClosure({ candidate, issue, commits, nowMs });
+    if (!decision.close && decision.reason === NO_OWN_COMMIT && commits.length) {
+      const l = await getLanding();
+      if (l) decision = decideClosure({ candidate, issue, commits, landing: l, nowMs });
+      if (!decision.close && decision.reason === 'land-history-not-covered') {
+        await extendLanding(issue.createdAt);
+        decision = decideClosure({ candidate, issue, commits, landing, nowMs });
+      }
+    }
     if (!decision.close) {
       count(decision.reason);
       out.rows.push({ id: candidate.id, state: candidate.state, action: 'leave', reason: decision.reason });
@@ -206,20 +293,21 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     }
     if (!apply) {
       count('would-close');
-      console.log(`would close ${candidate.id} (${candidate.state}; commit ${decision.sha.slice(0, 9)} touched ${candidate.testPath})`);
-      out.rows.push({ id: candidate.id, state: candidate.state, action: 'would-close', sha: decision.sha });
+      const via = decision.route === 'land-ref' ? `; landed from ${decision.branch} (run ${decision.runId})` : '';
+      console.log(`would close ${candidate.id} (${candidate.state}; commit ${decision.sha.slice(0, 9)} touched ${(candidate.testPaths || [candidate.testPath]).join(' ')}${via})`);
+      out.rows.push({ id: candidate.id, state: candidate.state, action: 'would-close', route: decision.route, sha: decision.sha, branch: decision.branch });
       continue;
     }
     const stop = closeRunStopReason({ closed, refused, remainingMs: TIME_BUDGET_MS - (Date.now() - startMs), closeTimeoutMs: CLOSE_TIMEOUT_MS });
     if (stop) { count(stop); continue; }
-    const comment = buildClosureComment({ candidate, sha: decision.sha, auditGeneratedAt: report.generatedAt });
+    const comment = buildClosureComment({ candidate, sha: decision.sha, route: decision.route, branch: decision.branch, runId: decision.runId, auditGeneratedAt: report.generatedAt });
     const r = (deps.spawn || spawnSync)('node', [path.join(__dirname, 'linear-brain.js'), 'update', candidate.id, '--state', 'Done', '--comment', comment],
       { cwd: REPO, encoding: 'utf8', timeout: CLOSE_TIMEOUT_MS });
     if (r.status === 0) {
       closed++;
       count('closed');
       console.log(`closed ${candidate.id} (commit ${decision.sha.slice(0, 9)})`);
-      out.rows.push({ id: candidate.id, state: candidate.state, action: 'closed', sha: decision.sha });
+      out.rows.push({ id: candidate.id, state: candidate.state, action: 'closed', route: decision.route, sha: decision.sha, branch: decision.branch });
       write(); // a killed step must not lose the record of a close that already happened
     } else {
       const why = r.status === 5 ? 'gate-refused' : 'close-failed';
@@ -243,4 +331,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { main };
+module.exports = { main, apiLanding };

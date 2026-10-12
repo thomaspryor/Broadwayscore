@@ -6,6 +6,9 @@ const require = createRequire(import.meta.url);
 const {
   CLOSER_MARKER,
   cardTestPath,
+  cardTestPaths,
+  landedViaLandRef,
+  NO_OWN_COMMIT,
   mentionsCard,
   commitIsForCard,
   planCandidates,
@@ -26,13 +29,38 @@ const NOW = Date.parse('2026-10-02T18:00:00Z');
 const DAY = 24 * 60 * 60 * 1000;
 const iso = (ms) => new Date(ms).toISOString();
 
-test('cardTestPath accepts only a single node --test file', () => {
+test('cardTestPath accepts a single node --test file', () => {
   assert.equal(cardTestPath('node --test scripts/lib/a.test.mjs'), 'scripts/lib/a.test.mjs');
   assert.equal(cardTestPath('node --test tests/unit/b.test.js'), 'tests/unit/b.test.js');
-  assert.equal(cardTestPath('node --test a.test.mjs b.test.mjs'), null);
   assert.equal(cardTestPath('node scripts/validate-data.js'), null);
   assert.equal(cardTestPath('node --test scripts/lib/a.mjs'), null);
   assert.equal(cardTestPath(undefined), null);
+});
+
+test('cardTestPaths (BRO-4814) widens to npx tsx --test and multi-file runs', () => {
+  assert.deepEqual(cardTestPaths('npx tsx --test tests/unit/show-market.test.ts'), ['tests/unit/show-market.test.ts']);
+  assert.deepEqual(cardTestPaths('npx tsx --test scripts/lib/a.test.mjs tests/unit/b.test.ts'), ['scripts/lib/a.test.mjs', 'tests/unit/b.test.ts']);
+  assert.deepEqual(cardTestPaths('node --test scripts/lib/a.test.mjs tests/unit/b.test.js'), ['scripts/lib/a.test.mjs', 'tests/unit/b.test.js']);
+  assert.deepEqual(cardTestPaths('node --test --test-timeout 60000 scripts/lib/a.test.mjs'), ['scripts/lib/a.test.mjs']);
+  // A file named twice is one file.
+  assert.deepEqual(cardTestPaths('node --test scripts/lib/a.test.mjs scripts/lib/a.test.mjs'), ['scripts/lib/a.test.mjs']);
+  assert.equal(cardTestPath('node --test scripts/lib/a.test.mjs tests/unit/b.test.js'), 'scripts/lib/a.test.mjs');
+});
+
+test('cardTestPaths keeps every safe-form refusal: shapes, traversal, directories, injection', () => {
+  for (const cmd of [
+    'node --test tests/unit/a.test.ts', // plain node never runs .ts
+    'node --test a.test.mjs', // outside tests/, scripts/, src/
+    'node --test scripts/../../etc/x.test.mjs',
+    'node --test scripts/lib/a.test.mjs; rm -rf /',
+    'node --test scripts/lib/a.test.mjs && node scripts/push-anything.js',
+    'npx tsx --test scripts/lib/a.test.mjs $(whoami)',
+    'npx tsx scripts/lib/a.test.mjs',
+    'npx tsc --noEmit', // safe, but not a test run of named files
+    'test -f scripts/lib/a.test.mjs',
+    'node --test',
+    'node --test scripts/lib/a.test.cjs',
+  ]) assert.equal(cardTestPaths(cmd), null, cmd);
 });
 
 test('mentionsCard matches the exact identifier only', () => {
@@ -70,7 +98,7 @@ test('planCandidates keeps only card-specific STUCK rows', () => {
   assert.deepEqual(skipped, {
     'state-Todo': 1,
     'no-verify-command': 1,
-    'command-not-a-single-test-file': 1,
+    'command-not-a-test-run': 1,
     'command-shared-with-another-card': 1,
   });
 });
@@ -101,7 +129,7 @@ test('commitIsForCard reads the subject and Refs/Fixes/Closes trailers only', ()
 });
 
 test('decideClosure closes an idle card whose own commit touched its test', () => {
-  assert.deepEqual(decideClosure({ candidate, issue: issue(), commits, nowMs: NOW }), { close: true, sha: 'bbb222bbb222ccc' });
+  assert.deepEqual(decideClosure({ candidate, issue: issue(), commits, nowMs: NOW }), { close: true, route: 'commit', sha: 'bbb222bbb222ccc' });
 });
 
 test('decideClosure refuses every unsafe case', () => {
@@ -370,4 +398,232 @@ test('CLI: a failed read on a bounce card skips that card and still runs the clo
   assert.equal(out.counts['bounce:read-failed'], 1);
   assert.deepEqual(spawned, ['BRO-402']);
   assert.equal(out.counts.closed, 1);
+});
+
+// ── BRO-4814: the land route, multi-file planning, the raised budget ──────
+
+test('planCandidates admits tsx and multi-file runs, and flags a test file another card names', () => {
+  const plan = planCandidates({ generatedAt: iso(NOW - 3600e3), results: [
+    row({ id: 'BRO-21', cmd: 'npx tsx --test tests/unit/twenty-one.test.ts' }),
+    row({ id: 'BRO-22', cmd: 'node --test scripts/lib/a22.test.mjs scripts/lib/b22.test.mjs' }),
+    row({ id: 'BRO-23', cmd: 'node --test scripts/lib/b22.test.mjs' }),
+    row({ id: 'BRO-24', cmd: 'node --test scripts/lib/x.test.mjs; true' }),
+  ] }, NOW);
+  assert.deepEqual(plan.candidates.map((c) => [c.id, c.testPaths, c.sharesTestFile]), [
+    ['BRO-21', ['tests/unit/twenty-one.test.ts'], false],
+    ['BRO-22', ['scripts/lib/a22.test.mjs', 'scripts/lib/b22.test.mjs'], true],
+    ['BRO-23', ['scripts/lib/b22.test.mjs'], true],
+  ]);
+  assert.deepEqual(plan.skipped, { 'command-not-a-test-run': 1 });
+});
+
+const created = iso(NOW - 10 * DAY);
+const landing = (over = {}) => ({
+  runs: [{ id: 901, branch: 'land/bro-1-the-fix', headSha: 'tip901', createdAt: iso(NOW - 5 * DAY) }],
+  refs: [{ branch: 'land/bro-77-other-card', sha: 'x' }],
+  ...over,
+});
+
+test('landedViaLandRef needs a successful Land run for the card after it was filed, and no ref left', () => {
+  const l = (over, identifier = 'BRO-1') => landedViaLandRef({ identifier, cardCreatedAt: created, landing: over === null ? null : landing(over) });
+  assert.deepEqual(l({}), { landed: true, branch: 'land/bro-1-the-fix', runId: 901 });
+  assert.equal(l(null).reason, 'no-land-evidence');
+  assert.equal(l({ refs: [{ branch: 'land/bro-1-retry', sha: 'newtip' }] }).reason, 'land-ref-still-open');
+  assert.equal(l({ refs: ['land/bro-1-retry'] }).reason, 'land-ref-still-open'); // no sha known: wait
+  // A ref left behind at exactly the tip Land already landed holds nothing unlanded.
+  assert.equal(l({ refs: [{ branch: 'land/bro-1-the-fix', sha: 'tip901' }] }).landed, true);
+  // A card older than the run listing is not judged until the caller lists further back.
+  assert.equal(l({ runs: [], coveredSinceMs: NOW - 3 * DAY }).reason, 'land-history-not-covered');
+  assert.equal(l({ runs: [], coveredSinceMs: NOW - 30 * DAY }).reason, NO_OWN_COMMIT);
+  assert.equal(l({ runs: [{ id: 1, branch: 'land/bro-1-old', createdAt: iso(NOW - 20 * DAY) }] }).reason, NO_OWN_COMMIT);
+  // BRO-10's landing is not BRO-1's.
+  assert.equal(l({ runs: [{ id: 2, branch: 'land/bro-10-x', createdAt: iso(NOW - DAY) }] }).reason, NO_OWN_COMMIT);
+  assert.equal(l({ runs: [{ id: 3, branch: 'feature/bro-1', createdAt: iso(NOW - DAY) }] }).reason, NO_OWN_COMMIT);
+  assert.equal(l({}, 'not-a-card').reason, 'no-land-evidence');
+  const newest = l({ runs: [
+    { id: 4, branch: 'land/bro-1-a', createdAt: iso(NOW - 4 * DAY) },
+    { id: 5, branch: 'land/bro-1-b', createdAt: iso(NOW - 2 * DAY) },
+  ] });
+  assert.equal(newest.runId, 5);
+});
+
+test('decideClosure land route: landed + ref gone + test touched closes without a commit naming the card', () => {
+  const anon = [{ sha: 'ddd444', message: 'tighten the guard\n\nno card named here' }];
+  const d = (over = {}) => decideClosure({ candidate: { ...candidate, sharesTestFile: false, ...over.cand }, issue: issue({ createdAt: created }), commits: over.commits || anon, landing: 'landing' in over ? over.landing : landing(), nowMs: NOW });
+  assert.deepEqual(d(), { close: true, route: 'land-ref', sha: 'ddd444', branch: 'land/bro-1-the-fix', runId: 901 });
+  // The commit route still wins when it applies.
+  assert.equal(d({ commits }).route, 'commit');
+  assert.equal(d({ landing: null }).reason, NO_OWN_COMMIT);
+  assert.equal(d({ landing: landing({ refs: [{ branch: 'land/bro-1-the-fix', sha: 'unlanded' }] }) }).reason, 'land-ref-still-open');
+  assert.equal(d({ cand: { sharesTestFile: true } }).reason, 'landed-but-test-shared-with-another-card');
+  assert.equal(d({ commits: [] }).reason, 'landed-but-test-untouched-since-card');
+  assert.equal(d({ commits: [{ sha: 'r', message: 'Revert "BRO-1: fix"' }, ...anon] }).reason, 'landed-but-reverted');
+  assert.equal(d({ commits: [{ sha: 'r', message: 'Revert "unrelated"' }] }).reason, 'landed-but-test-untouched-since-card');
+  // The safety checks before the landing still apply.
+  assert.equal(decideClosure({ candidate, issue: issue({ createdAt: created, updatedAt: iso(NOW - 3600e3) }), commits: anon, landing: landing(), nowMs: NOW }).reason, 'recent-activity');
+});
+
+test('buildClosureComment names the land run and every test file on the land route', () => {
+  const cand = { ...candidate, testPaths: ['scripts/lib/one.test.mjs', 'tests/unit/two.test.ts'] };
+  const body = buildClosureComment({ candidate: cand, sha: 'ddd444ddd444', route: 'land-ref', branch: 'land/bro-1-x', runId: 901, auditGeneratedAt: 'T' });
+  assert.ok(body.startsWith(CLOSER_MARKER));
+  assert.match(body, /Land run 901 landed land\/bro-1-x/);
+  assert.match(body, /tests\/unit\/two\.test\.ts/);
+  assert.doesNotMatch(body, /VERIFY:|PR-EVIDENCE:|^Dispatched/m);
+});
+
+test('per-run close ceiling is raised to 100 (BRO-4814)', () => {
+  assert.equal(MAX_CLOSES_PER_RUN, 100);
+  const ok = { closed: 60, refused: 0, remainingMs: 10 * 60e3, closeTimeoutMs: 5 * 60e3 };
+  assert.equal(closeRunStopReason(ok), null);
+});
+
+test('CLI closes a multi-file card via the land route, reads land evidence once, and goes through the Done gate', async () => {
+  const fs = require('node:fs');
+  const os = require('node:os');
+  const path = require('node:path');
+  const { main } = require('../close-stuck-verified-cards.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'closer-land-'));
+  const auditPath = path.join(dir, 'audit.json');
+  const outPath = path.join(dir, 'out.json');
+  const now = Date.now();
+  fs.writeFileSync(auditPath, JSON.stringify({
+    generatedAt: new Date(now - 3600e3).toISOString(),
+    results: [
+      row({ id: 'BRO-501', cmd: 'node --test scripts/lib/a501.test.mjs tests/unit/b501.test.mjs' }),
+      row({ id: 'BRO-502', cmd: 'npx tsx --test tests/unit/c502.test.ts' }),
+      row({ id: 'BRO-503', cmd: 'node --test scripts/lib/d503.test.mjs' }),
+    ],
+  }));
+  const linear = {
+    graphql: async (_q, { id }) => ({ issue: {
+      identifier: id, title: `Fix ${id}`, priority: 2, state: { name: 'In Review', type: 'started' },
+      createdAt: new Date(now - 10 * DAY).toISOString(), updatedAt: new Date(now - 3 * DAY).toISOString(),
+      description: 'x', comments: { nodes: [] },
+    } }),
+  };
+  const touched = [];
+  const commitsTouching = async (p) => {
+    touched.push(p);
+    // b501 only: no subject names the card. c502: subject names it. d503: nothing at all.
+    if (p.includes('b501')) return [{ sha: 'eee555eee555', message: 'harden the parser' }];
+    if (p.includes('c502')) return [{ sha: 'fff666fff666', message: 'BRO-502: the fix' }];
+    return [];
+  };
+  let landingReads = 0;
+  const fetchLanding = async () => {
+    landingReads++;
+    return {
+      runs: [
+        { id: 7001, branch: 'land/bro-501-parser', createdAt: new Date(now - 2 * DAY).toISOString() },
+        { id: 7003, branch: 'land/bro-503-x', createdAt: new Date(now - 2 * DAY).toISOString() },
+      ],
+      refs: [{ branch: 'land/bro-503-x', sha: 'zzz' }],
+    };
+  };
+  const run = async (argv) => {
+    const spawned = [];
+    const spawn = (_node, args) => { spawned.push(args.slice(1, 5).concat(args[6])); return { status: 0, stdout: '' }; };
+    const log = console.log;
+    console.log = () => {};
+    try {
+      assert.equal(await main(argv, { linear, commitsTouching, fetchLanding, spawn, auditPath, outPath }), 0);
+    } finally {
+      console.log = log;
+    }
+    return { spawned, out: JSON.parse(fs.readFileSync(outPath, 'utf8')) };
+  };
+  const dry = await run([]);
+  assert.equal(dry.spawned.length, 0);
+  assert.deepEqual(dry.out.rows.map((r) => [r.id, r.action, r.route || r.reason]), [
+    ['BRO-501', 'would-close', 'land-ref'],
+    ['BRO-502', 'would-close', 'commit'],
+    // No commit touched its test at all: the land listing is not even read for it.
+    ['BRO-503', 'leave', NO_OWN_COMMIT],
+  ]);
+  assert.ok(touched.includes('scripts/lib/a501.test.mjs') && touched.includes('tests/unit/b501.test.mjs'));
+  assert.equal(landingReads, 1);
+  const live = await run(['--apply']);
+  fs.rmSync(dir, { recursive: true, force: true });
+  assert.equal(live.out.counts.closed, 2);
+  // Every close is a Done-gate update, never a forced one.
+  for (const a of live.spawned) {
+    assert.deepEqual(a.slice(0, 4), ['update', a[1], '--state', 'Done']);
+    assert.ok(!a.includes('--force'));
+  }
+  assert.match(live.spawned[0][4], /Land run 7001 landed land\/bro-501-parser/);
+});
+
+test('CLI: unreadable land evidence turns the land route off for the run, nothing else', async () => {
+  const fs = require('node:fs');
+  const os = require('node:os');
+  const path = require('node:path');
+  const { main } = require('../close-stuck-verified-cards.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'closer-land-err-'));
+  const auditPath = path.join(dir, 'audit.json');
+  const outPath = path.join(dir, 'out.json');
+  const now = Date.now();
+  fs.writeFileSync(auditPath, JSON.stringify({
+    generatedAt: new Date(now - 3600e3).toISOString(),
+    results: [row({ id: 'BRO-601', cmd: 'node --test scripts/lib/a601.test.mjs' })],
+  }));
+  const linear = { graphql: async (_q, { id }) => ({ issue: {
+    identifier: id, title: 'x', priority: 2, state: { name: 'In Review', type: 'started' },
+    createdAt: new Date(now - 10 * DAY).toISOString(), updatedAt: new Date(now - 3 * DAY).toISOString(),
+    description: 'x', comments: { nodes: [] },
+  } }) };
+  const err = console.error;
+  const log = console.log;
+  console.error = () => {};
+  console.log = () => {};
+  try {
+    assert.equal(await main([], { linear, commitsTouching: async () => [{ sha: 'a1', message: 'anon' }], fetchLanding: async () => { throw new Error('403 rate limit'); }, auditPath, outPath }), 0);
+  } finally {
+    console.error = err;
+    console.log = log;
+  }
+  const out = JSON.parse(fs.readFileSync(outPath, 'utf8'));
+  fs.rmSync(dir, { recursive: true, force: true });
+  assert.equal(out.rows[0].reason, NO_OWN_COMMIT);
+  assert.match(out.landEvidenceError, /403/);
+});
+
+test('CLI lists Land runs further back for a card older than the first listing', async () => {
+  const fs = require('node:fs');
+  const os = require('node:os');
+  const path = require('node:path');
+  const { main } = require('../close-stuck-verified-cards.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'closer-land-old-'));
+  const auditPath = path.join(dir, 'audit.json');
+  const outPath = path.join(dir, 'out.json');
+  const now = Date.now();
+  fs.writeFileSync(auditPath, JSON.stringify({
+    generatedAt: new Date(now - 3600e3).toISOString(),
+    results: [row({ id: 'BRO-701', cmd: 'node --test scripts/lib/a701.test.mjs' })],
+  }));
+  const cardCreated = new Date(now - 40 * DAY).toISOString();
+  const linear = { graphql: async (_q, { id }) => ({ issue: {
+    identifier: id, title: 'x', priority: 2, state: { name: 'In Review', type: 'started' },
+    createdAt: cardCreated, updatedAt: new Date(now - 3 * DAY).toISOString(), description: 'x', comments: { nodes: [] },
+  } }) };
+  const calls = [];
+  const fetchLanding = async (opts) => {
+    calls.push(opts || null);
+    if (!opts) return { runs: [], refs: [], coveredSinceMs: now - 12 * DAY };
+    return { runs: [{ id: 8001, branch: 'land/bro-701-old', headSha: 's', createdAt: new Date(now - 30 * DAY).toISOString() }], coveredSinceMs: Date.parse(opts.sinceIso) };
+  };
+  const log = console.log;
+  console.log = () => {};
+  try {
+    assert.equal(await main([], { linear, commitsTouching: async () => [{ sha: 'b1b1', message: 'anon' }], fetchLanding, auditPath, outPath }), 0);
+  } finally {
+    console.log = log;
+  }
+  const out = JSON.parse(fs.readFileSync(outPath, 'utf8'));
+  fs.rmSync(dir, { recursive: true, force: true });
+  assert.equal(calls.length, 2);
+  assert.equal(calls[1].sinceIso, cardCreated);
+  assert.equal(calls[1].untilMs, now - 12 * DAY);
+  assert.equal(out.rows[0].action, 'would-close');
+  assert.equal(out.rows[0].branch, 'land/bro-701-old');
 });

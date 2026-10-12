@@ -13,11 +13,23 @@
  *
  * WHY THESE RULES (a passing test alone is not proof the card's work landed;
  * a test that existed before the card was filed passes vacuously):
- *   - the command must be exactly `node --test <one test file>`, and no other
- *     audited card may share it, so the test is this card's own;
- *   - a commit on main naming the card in its subject (or a Refs/Fixes/Closes
- *     trailer) must have touched that test file after the card was created,
- *     and must not be a revert, so the work demonstrably landed;
+ *   - the command must be a test run, `node --test` or `npx tsx --test` over
+ *     one or more test files, that the shared safe-form gate
+ *     (autonomous-triage-core.js isSafeCheckCommand) accepts, and no other
+ *     audited card may use the identical command, so the test is this card's own;
+ *   - the work demonstrably landed, by one of two routes:
+ *       commit route: a commit on main naming the card in its subject (or a
+ *       Refs/Fixes/Closes trailer) touched one of those test files after the
+ *       card was created, and is not a revert;
+ *       land route (BRO-4814): a Land run for a land/** ref naming the card
+ *       succeeded after the card was created, every land/** ref naming the
+ *       card is gone from origin (Land deletes the ref it lands) or sits at a
+ *       tip Land already landed, some non-revert
+ *       commit touched one of the test files after the card was created, no
+ *       revert naming the card touched them, and no other audited card's
+ *       command names any of the same files. This catches work landed with a
+ *       commit subject that never named the card (27 of 44 In Review cards on
+ *       2026-10-06 were done and sat up to 46 days for that reason);
  *   - the card must be idle (24h In Review, 72h In Progress) so a live
  *     worker is never pre-empted;
  *   - a RECHECK-AFTER date still in the future means the author asked for
@@ -33,7 +45,11 @@
 const HOUR_MS = 60 * 60 * 1000;
 const MAX_REPORT_AGE_MS = 6 * HOUR_MS;
 const IDLE_MS_BY_STATE = { 'In Review': 24 * HOUR_MS, 'In Progress': 72 * HOUR_MS };
-const CARD_TEST_RE = /^node --test (\S+\.test\.(?:mjs|cjs|js))$/;
+// Only a test run counts as the card's own check; the shapes (and every path
+// check: traversal, allowed directories, mutating scripts) come from the one
+// safe-form gate every VERIFY command already passes, never a local copy.
+const TEST_RUNNER_RE = /^(?:node|npx tsx) --test(?: |$)/;
+const NO_OWN_COMMIT = 'no-commit-naming-card-touched-test';
 const RECHECK_AFTER_RE = /RECHECK-AFTER:\s*(\d{4}-\d{2}-\d{2})/g;
 const CLOSER_MARKER = 'AUTO-CLOSED by stuck-card-closer';
 // In Review cards whose own check FAILS on main go back to Todo for another
@@ -44,10 +60,61 @@ const BOUNCE_MARKER = 'BOUNCED by stuck-card-closer';
 const MAX_BOUNCES = 2;
 const MAX_BOUNCES_PER_RUN = 10;
 
-function cardTestPath(cmd) {
-  const m = CARD_TEST_RE.exec(String(cmd || '').trim());
-  return m ? m[1] : null;
+/** The test files a `node --test`/`npx tsx --test` VERIFY runs, or null for any other or unsafe command. */
+function cardTestPaths(cmd) {
+  const s = String(cmd || '').trim();
+  if (!TEST_RUNNER_RE.test(s)) return null;
+  const { isSafeCheckCommand, extractCheckPaths } = require('./autonomous-triage-core.js');
+  if (!isSafeCheckCommand(s)) return null;
+  const paths = [...new Set(extractCheckPaths(s))];
+  return paths.length && paths.every((p) => /\.test\.(?:m?js|ts)$/.test(p)) ? paths : null;
 }
+
+function cardTestPath(cmd) {
+  const paths = cardTestPaths(cmd);
+  return paths ? paths[0] : null;
+}
+
+function cardNumber(identifier) {
+  const m = /^BRO-(\d+)$/.exec(String(identifier || ''));
+  return m ? Number(m[1]) : null;
+}
+
+/**
+ * Land route evidence (BRO-4814). landing = {
+ *   runs: [{ id, branch, headSha, createdAt }]  successful land.yml runs,
+ *   refs: [{ branch, sha }]                     land/** refs still on origin,
+ *   coveredSinceMs                              runs before this were not listed (optional),
+ * } or null when it could not be read. Returns { landed: true, branch, runId }
+ * or { landed: false, reason }; 'land-history-not-covered' means the card is
+ * older than the listing, so the caller should list further back and ask again.
+ */
+function landedViaLandRef({ identifier, cardCreatedAt, landing }) {
+  if (!landing || !Array.isArray(landing.runs) || !Array.isArray(landing.refs)) return { landed: false, reason: 'no-land-evidence' };
+  const n = cardNumber(identifier);
+  const createdMs = Date.parse(cardCreatedAt);
+  if (n == null || !Number.isFinite(createdMs)) return { landed: false, reason: 'no-land-evidence' };
+  const { landRefCardNumber } = require('./cloud-worker-pick.js');
+  const mine = landing.runs.filter((r) => r && landRefCardNumber(r.branch) === n);
+  // A ref still naming the card is unlanded work unless its tip is exactly a
+  // tip Land already landed (cloud sessions cannot delete refs, so a landed
+  // ref can linger). Anything else, including a ref with no known sha, waits.
+  const landedTips = new Set(mine.map((r) => r.headSha).filter(Boolean));
+  const open = landing.refs
+    .map((r) => (typeof r === 'string' ? { branch: r, sha: null } : r || {}))
+    .filter((r) => landRefCardNumber(r.branch) === n);
+  if (open.some((r) => !r.sha || !landedTips.has(r.sha))) return { landed: false, reason: 'land-ref-still-open' };
+  const run = mine
+    .filter((r) => Date.parse(r.createdAt) >= createdMs)
+    .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))[0];
+  if (!run) {
+    if (Number.isFinite(landing.coveredSinceMs) && landing.coveredSinceMs > createdMs) return { landed: false, reason: 'land-history-not-covered' };
+    return { landed: false, reason: NO_OWN_COMMIT };
+  }
+  return { landed: true, branch: run.branch, runId: run.id };
+}
+
+const isRevert = (c) => /^Revert\b/.test(String((c && c.message) || '').trim());
 
 function escapeRe(s) {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -83,8 +150,14 @@ function planCandidates(report, nowMs) {
   }
   const results = Array.isArray(report.results) ? report.results : [];
   const cmdUse = new Map();
+  const pathUsers = new Map();
   for (const r of results) {
-    if (r && r.cmd) cmdUse.set(r.cmd, (cmdUse.get(r.cmd) || 0) + 1);
+    if (!r || !r.cmd) continue;
+    cmdUse.set(r.cmd, (cmdUse.get(r.cmd) || 0) + 1);
+    for (const p of cardTestPaths(r.cmd) || []) {
+      if (!pathUsers.has(p)) pathUsers.set(p, new Set());
+      pathUsers.get(p).add(r.id);
+    }
   }
   const candidates = [];
   const skipped = {};
@@ -93,10 +166,14 @@ function planCandidates(report, nowMs) {
     if (!r || r.verdict !== 'STUCK') continue;
     if (!IDLE_MS_BY_STATE[r.state]) { skip(`state-${r.state}`); continue; }
     if (!Array.isArray(r.channels) || !r.channels.includes('verify-command')) { skip('no-verify-command'); continue; }
-    const testPath = cardTestPath(r.cmd);
-    if (!testPath) { skip('command-not-a-single-test-file'); continue; }
+    const testPaths = cardTestPaths(r.cmd);
+    if (!testPaths) { skip('command-not-a-test-run'); continue; }
     if (cmdUse.get(r.cmd) > 1) { skip('command-shared-with-another-card'); continue; }
-    candidates.push({ id: r.id, state: r.state, cmd: r.cmd, testPath });
+    // Another card naming one of the files does not block the commit route
+    // (a commit naming this card is its own proof) but does block the land
+    // route, which has no such tie to the card.
+    const sharesTestFile = testPaths.some((p) => [...pathUsers.get(p)].some((id) => id !== r.id));
+    candidates.push({ id: r.id, state: r.state, cmd: r.cmd, testPath: testPaths[0], testPaths, sharesTestFile });
   }
   // The audit stamps openCheckFails only on In Review cards whose own VERIFY
   // command failed twice on main (done-evidence-audit.js classifyCard).
@@ -118,12 +195,14 @@ function futureRecheckAfter(texts, nowMs) {
 
 /**
  * Decide one candidate against the live issue and the commits that touched
- * its test file since the card was created.
+ * its test files since the card was created.
  *   issue:   { state: { name, type }, createdAt, updatedAt, description, comments: [{ body, createdAt }] }
- *   commits: [{ sha, message }]
- * Returns { close: true, sha } or { close: false, reason }.
+ *   commits: [{ sha, message }], newest first
+ *   landing: land route evidence for landedViaLandRef, or null/undefined
+ * Returns { close: true, route: 'commit', sha }, { close: true, route:
+ * 'land-ref', sha, branch, runId } or { close: false, reason }.
  */
-function decideClosure({ candidate, issue, commits, nowMs }) {
+function decideClosure({ candidate, issue, commits, landing, nowMs }) {
   if (!issue) return { close: false, reason: 'issue-not-found' };
   const stateName = issue.state && issue.state.name;
   if (stateName !== candidate.state) return { close: false, reason: 'state-changed-since-audit' };
@@ -140,9 +219,16 @@ function decideClosure({ candidate, issue, commits, nowMs }) {
     return { close: false, reason: 'recheck-after-pending' };
   }
   // A revert names the card too, but it undoes the fix rather than landing it.
-  const own = (commits || []).find((c) => !/^Revert\b/.test(String(c.message || '').trim()) && commitIsForCard(c.message, candidate.id));
-  if (!own) return { close: false, reason: 'no-commit-naming-card-touched-test' };
-  return { close: true, sha: own.sha };
+  const all = commits || [];
+  const own = all.find((c) => !isRevert(c) && commitIsForCard(c.message, candidate.id));
+  if (own) return { close: true, route: 'commit', sha: own.sha };
+  const land = landedViaLandRef({ identifier: candidate.id, cardCreatedAt: issue.createdAt, landing });
+  if (!land.landed) return { close: false, reason: land.reason === 'no-land-evidence' ? NO_OWN_COMMIT : land.reason };
+  if (candidate.sharesTestFile) return { close: false, reason: 'landed-but-test-shared-with-another-card' };
+  if (all.some((c) => isRevert(c) && mentionsCard(c.message, candidate.id))) return { close: false, reason: 'landed-but-reverted' };
+  const touched = all.find((c) => !isRevert(c));
+  if (!touched) return { close: false, reason: 'landed-but-test-untouched-since-card' };
+  return { close: true, route: 'land-ref', sha: touched.sha, branch: land.branch, runId: land.runId };
 }
 
 /**
@@ -190,7 +276,9 @@ function buildBounceComment({ candidate, priorBounces, auditGeneratedAt }) {
 // re-runs the card's check through the Done gate on a fresh origin/main
 // checkout, so quick checks close many cards per run and slow ones few. The
 // count ceiling only bounds the damage if the closer itself has a bug.
-const MAX_CLOSES_PER_RUN = 50;
+// Raised from 50 (BRO-4814) with the land route and multi-file checks
+// widening what qualifies; still a backstop, not the limiter.
+const MAX_CLOSES_PER_RUN = 100;
 // The closer and the Done gate read the same check. When the gate keeps
 // refusing what the closer picked, they disagree, and closing more on that
 // run would be guessing. Stop and let the report show it.
@@ -207,12 +295,16 @@ function closeRunStopReason({ closed, refused, remainingMs, closeTimeoutMs }) {
   return null;
 }
 
-function buildClosureComment({ candidate, sha, auditGeneratedAt }) {
+function buildClosureComment({ candidate, sha, route = 'commit', branch, runId, auditGeneratedAt }) {
+  const files = (candidate.testPaths || [candidate.testPath]).join(', ');
+  const landed = route === 'land-ref'
+    ? `Land run ${runId} landed ${branch} after the card was filed and no unlanded land ref for this card is left, and commit ${String(sha).slice(0, 12)} changed ${files} after the card was filed, so the work landed.`
+    : `Commit ${String(sha).slice(0, 12)} names this card and changed ${files} after the card was filed, so the work landed.`;
   return [
     `${CLOSER_MARKER}.`,
     '',
     `This card's own check, \`${candidate.cmd}\`, passed on main in the done-evidence audit of ${auditGeneratedAt}.`,
-    `Commit ${String(sha).slice(0, 12)} names this card and changed ${candidate.testPath} after the card was filed, so the work landed.`,
+    landed,
     'The close went through the Done gate, which runs the check again on a fresh copy of main.',
     'If the problem is still happening, reopen the card and say what you saw.',
   ].join('\n');
@@ -227,7 +319,10 @@ module.exports = {
   BOUNCE_MARKER,
   MAX_BOUNCES,
   MAX_BOUNCES_PER_RUN,
+  NO_OWN_COMMIT,
   cardTestPath,
+  cardTestPaths,
+  landedViaLandRef,
   mentionsCard,
   commitIsForCard,
   planCandidates,

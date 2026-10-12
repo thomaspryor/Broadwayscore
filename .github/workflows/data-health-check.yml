@@ -821,7 +821,7 @@ jobs:
       # owner-approved (BRO-4535, 2026-10-02): each close goes through
       # linear-brain's Done gate, which re-runs the check on a fresh
       # origin/main, and the run stops at the time budget, 3 gate refusals or
-      # 50 closes. The report lists what closed and why the rest were left.
+      # 100 closes. The report lists what closed and why the rest were left.
       # Rules: scripts/lib/stuck-card-closer.js. Same shadow-mode reasoning as
       # the audit step above: a crash here must never block the commits after
       # it. Kill switch: repo variable STUCK_CARD_CLOSER_KILL_SWITCH=1.
