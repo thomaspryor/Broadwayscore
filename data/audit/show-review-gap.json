@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-10-12T21:04:05.688Z",
+  "generatedAt": "2026-10-12T23:33:06.241Z",
   "windowDays": 1095,
-  "targets": 637,
-  "auditedThisRun": 19,
-  "carriedForward": 706,
+  "targets": 635,
+  "auditedThisRun": 15,
+  "carriedForward": 713,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 400,
-    "missingCurrentRun": 844,
+    "withGap": 403,
+    "missingCurrentRun": 874,
     "totalCitedNoUrl": 9,
-    "totalFlaggedMisses": 909,
+    "totalFlaggedMisses": 915,
     "totalRecoverable": 6,
     "totalRecovered": 15,
-    "priorProductionCitations": 4927
+    "priorProductionCitations": 4993
   },
   "results": [
     {
@@ -725,7 +725,12 @@
         "liveCount": 0,
         "candidateCount": 5
       },
-      "computedAt": "2026-10-12T19:37:31.912Z"
+      "computedAt": "2026-10-12T19:37:31.912Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-12T23:33:06.310Z",
+        "lastAt": "2026-10-12T23:33:06.310Z"
+      }
     },
     {
       "showId": "a-life-in-four-seasons-west-end-2026",
@@ -5633,7 +5638,12 @@
         "liveCount": 11,
         "candidateCount": 17
       },
-      "computedAt": "2026-10-12T19:37:31.912Z"
+      "computedAt": "2026-10-12T19:37:31.912Z",
+      "quarantine": {
+        "nextState": "incomplete:5:6",
+        "since": "2026-10-12T23:33:06.310Z",
+        "lastAt": "2026-10-12T23:33:06.310Z"
+      }
     },
     {
       "showId": "all-my-sons-west-end-2025",
@@ -8409,7 +8419,12 @@
         "liveCount": 17,
         "candidateCount": 21
       },
-      "computedAt": "2026-10-12T19:37:31.912Z"
+      "computedAt": "2026-10-12T19:37:31.912Z",
+      "quarantine": {
+        "nextState": "incomplete:16:19",
+        "since": "2026-10-12T23:33:06.310Z",
+        "lastAt": "2026-10-12T23:33:06.310Z"
+      }
     },
     {
       "showId": "anansi-the-spider-west-end-2026",
@@ -11489,6 +11504,290 @@
         "candidateCount": 1
       },
       "computedAt": "2026-09-05T17:16:12.711Z"
+    },
+    {
+      "showId": "antigone-exits-chichester-regional-2026",
+      "title": "Antigone Exits",
+      "openingDate": "2026-10-04",
+      "status": "open",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.theguardian.com/stage/2026/oct/04/antigone-exits-review-minerva-theatre-chichester-nina-segal-jeff-james",
+        "https://fringereview.co.uk/review/fringereview-uk/2026/antigone-exits/",
+        "https://theatreandtonic.co.uk/blog/antigone-exits-at-chichester-festival-theatre-minerva-studio-review",
+        "https://www.westendbestfriend.co.uk/news/review-antigone-exits-chichester-festival-theatre",
+        "https://www.whatsonstage.com/news/antigone-exits-at-chichesters-minerva-theatre-review_1734289/",
+        "https://www.allthatdazzles.co.uk/post/review-antigone-exits-minerva-theatre-chichester",
+        "https://theatresoutheast.com/antigone-exits-minerva-theatre-chichester-review/",
+        "https://www.aol.co.uk/articles/antigone-exits-review-emotions-run-104342000.html",
+        "https://www.theargus.co.uk/news/26600536.antigone-exits-minerva-theatre-chichester/",
+        "https://www.theargus.co.uk/news/26460635.antigone-exits-cast-revealed-chichester-festival-theatre/"
+      ],
+      "dirFiles": 6,
+      "dirClean": 6,
+      "inReviewsJson": 6,
+      "missing": [
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/review-antigone-exits-chichester-festival-theatre",
+          "host": "westendbestfriend.co.uk",
+          "knownOutletId": "west-end-best-friend",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.aol.co.uk/articles/antigone-exits-review-emotions-run-104342000.html",
+          "host": "aol.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theargus.co.uk/news/26600536.antigone-exits-minerva-theatre-chichester/",
+          "host": "theargus.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theargus.co.uk/news/26460635.antigone-exits-cast-revealed-chichester-festival-theatre/",
+          "host": "theargus.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"Antigone Exits\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Antigone Exits\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 5,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Antigone Exits\" review chichester",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Antigone Exits Chichester Festival Theatre, Chichester review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Antigone Exits Chichester Festival Theatre, Chichester review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Antigone Exits Chichester Festival Theatre, Chichester review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 10,
+        "error": null
+      },
+      "candidatesRejected": {
+        "count": 32,
+        "byReason": {
+          "non-review-host": 28,
+          "census-junk-host": 1,
+          "write-path-blocked": 1,
+          "non-review-path": 2
+        }
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/review-antigone-exits-chichester-festival-theatre",
+          "host": "westendbestfriend.co.uk",
+          "outletId": "west-end-best-friend",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.aol.co.uk/articles/antigone-exits-review-emotions-run-104342000.html",
+          "host": "aol.co.uk",
+          "outletId": "aol",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        },
+        {
+          "url": "https://www.theargus.co.uk/news/26600536.antigone-exits-minerva-theatre-chichester/",
+          "host": "theargus.co.uk",
+          "outletId": "theargus",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.theargus.co.uk/news/26460635.antigone-exits-cast-revealed-chichester-festival-theatre/",
+          "host": "theargus.co.uk",
+          "outletId": "theargus",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "west-end-best-friend",
+            "outlet": "west-end-best-friend",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.westendbestfriend.co.uk/news/review-antigone-exits-chichester-festival-theatre"
+          },
+          {
+            "outletId": "aol.co.uk",
+            "outlet": "aol.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.aol.co.uk/articles/antigone-exits-review-emotions-run-104342000.html"
+          },
+          {
+            "outletId": "theargus.co.uk",
+            "outlet": "theargus.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theargus.co.uk/news/26600536.antigone-exits-minerva-theatre-chichester/"
+          },
+          {
+            "outletId": "theargus.co.uk",
+            "outlet": "theargus.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theargus.co.uk/news/26460635.antigone-exits-cast-revealed-chichester-festival-theatre/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.theguardian.com/stage/2026/oct/04/antigone-exits-review-minerva-theatre-chichester-nina-segal-jeff-james",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://fringereview.co.uk/review/fringereview-uk/2026/antigone-exits/",
+            "outletId": "fringereview.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/antigone-exits-at-chichester-festival-theatre-minerva-studio-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/antigone-exits-at-chichesters-minerva-theatre-review_1734289/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-antigone-exits-minerva-theatre-chichester",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://theatresoutheast.com/antigone-exits-minerva-theatre-chichester-review/",
+            "outletId": "theatresoutheast.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-antigone-exits-chichester-festival-theatre",
+            "outletId": "west-end-best-friend",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.aol.co.uk/articles/antigone-exits-review-emotions-run-104342000.html",
+            "outletId": "aol.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.theargus.co.uk/news/26600536.antigone-exits-minerva-theatre-chichester/",
+            "outletId": "theargus.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.theargus.co.uk/news/26460635.antigone-exits-cast-revealed-chichester-festival-theatre/",
+            "outletId": "theargus.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 6,
+        "candidateCount": 9
+      },
+      "computedAt": "2026-10-12T23:33:06.241Z"
     },
     {
       "showId": "antigone-this-play-i-read-in-high-school-off-broadway-2026",
@@ -21316,71 +21615,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Betty's Summer Vacation (The Heights Players)\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Betty's Summer Vacation (The Heights Players)\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Betty's Summer Vacation (The Heights Players)\" review john",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 2,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Betty's Summer Vacation (The Heights Players) The John Bourne Theatre review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Betty's Summer Vacation (The Heights Players) The John Bourne Theatre review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 1,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Betty's Summer Vacation (The Heights Players) The John Bourne Theatre review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 0,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 13,
-        "byReason": {
-          "non-review-host": 13
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -21393,7 +21633,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-12T19:37:31.912Z"
+      "computedAt": "2026-10-12T23:33:06.241Z"
     },
     {
       "showId": "between-two-knees-off-broadway-2024",
@@ -26952,7 +27192,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-12T21:04:05.688Z"
+      "computedAt": "2026-10-12T23:33:06.241Z"
     },
     {
       "showId": "bug-2026",
@@ -28830,7 +29070,12 @@
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-10-02T21:17:32.479Z"
+      "computedAt": "2026-10-02T21:17:32.479Z",
+      "quarantine": {
+        "nextState": "incomplete:1:2",
+        "since": "2026-10-12T23:33:06.310Z",
+        "lastAt": "2026-10-12T23:33:06.310Z"
+      }
     },
     {
       "showId": "burnout-paradise-off-broadway-2026",
@@ -48499,41 +48744,35 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.sohoplayhouse.com/see-a-show/elf-lyons-the-woman-on-the-edge",
-        "https://variety.com/2026/legit/news/elf-lyons-solo-show-woman-on-the-edge-new-york-1236822695/",
+        "https://fringereview.co.uk/review/edinburgh-fringe/2026/elf-lyons-is-the-woman-on-the-edge/",
+        "https://festmag.com/2026/08/11/review-elf-lyons-is-the-woman-on-the-edge/",
         "https://rolandcat.substack.com/p/review-elf-lyons-the-woman-on-the",
+        "https://www.timeout.com/edinburgh/comedy/elf-lyons-is-the-woman-on-the-edge-review",
+        "https://www.beyondthejoke.co.uk/content/17820/elf-lyons-edge",
+        "https://snackmag.co.uk/elf-lyons-is-the-woman-on-the-edge-fringe-review-5-stars",
         "https://www.chortle.co.uk/shows/edinburgh_fringe_2026/e/38651/_elf_lyons_is_the_woman_on_the_edge",
         "https://list.co.uk/news/elf-lyons-is-the-woman-on-the-edge-comedy-review-clever-and-profound-48789",
-        "https://www.timeout.com/edinburgh/comedy/elf-lyons-is-the-woman-on-the-edge-review",
-        "https://overlookmaps.com/events/elf-lyons-the-woman-on-the-edge-8952757580201420",
-        "https://www.paperweightmag.com/review-elf-lyons-is-the-woman-on-the-edge/"
+        "https://www.bingefringe.com/2026/08/31/review-elf-lyons-is-the-woman-on-the-edge-mick-perrin-worldwide-pbj-management-edfringe-2026-%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
+        "https://theatreandtonic.co.uk/edinburgh-fringe/elf-lyons-is-the-woman-on-the-edge-at-pleasance-courtyard-review",
+        "https://theqr.co.uk/2026/08/09/edfringe-review-elf-lyons-is-the-woman-on-the-edge-2/"
       ],
       "dirFiles": 22,
-      "dirClean": 2,
-      "inReviewsJson": 1,
+      "dirClean": 0,
+      "inReviewsJson": 0,
       "missing": [
         {
-          "url": "https://overlookmaps.com/events/elf-lyons-the-woman-on-the-edge-8952757580201420",
-          "host": "overlookmaps.com",
+          "url": "https://www.bingefringe.com/2026/08/31/review-elf-lyons-is-the-woman-on-the-edge-mick-perrin-worldwide-pbj-management-edfringe-2026-%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
+          "host": "bingefringe.com",
           "knownOutletId": null,
           "serpCensus": true
         }
       ],
-      "dirOnly": [
-        {
-          "host": "broadwaybaby.com",
-          "count": 1
-        },
-        {
-          "host": "sohotheatre.com",
-          "count": 1
-        }
-      ],
+      "dirOnly": [],
       "flaggedMisses": [
         {
-          "url": "https://www.sohoplayhouse.com/see-a-show/elf-lyons-the-woman-on-the-edge",
-          "host": "sohoplayhouse.com",
-          "knownOutletId": "sohoplayhouse",
+          "url": "https://fringereview.co.uk/review/edinburgh-fringe/2026/elf-lyons-is-the-woman-on-the-edge/",
+          "host": "fringereview.co.uk",
+          "knownOutletId": "fringereview",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -48541,17 +48780,17 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "sohoplayhouse--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.sohoplayhouse.com/see-a-show/elf-lyons-the-woman-on-the-edge"
+              "file": "fringereview--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://fringereview.co.uk/review/edinburgh-fringe/2026/elf-lyons-is-the-woman-on-the-edge/"
             }
           ],
           "serpCensus": true
         },
         {
-          "url": "https://variety.com/2026/legit/news/elf-lyons-solo-show-woman-on-the-edge-new-york-1236822695/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
+          "url": "https://festmag.com/2026/08/11/review-elf-lyons-is-the-woman-on-the-edge/",
+          "host": "festmag.com",
+          "knownOutletId": null,
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -48559,9 +48798,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "variety--ethan-shanfeld.json",
+              "file": "festmag--jamie-dunn.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://variety.com/2026/legit/news/elf-lyons-solo-show-woman-on-the-edge-new-york-1236822695/"
+              "urlInDir": "https://festmag.com/2026/08/11/review-elf-lyons-is-the-woman-on-the-edge/"
             }
           ],
           "serpCensus": true
@@ -48580,6 +48819,60 @@
               "file": "rolandcat--roviews.json",
               "flag": "wrongProduction",
               "urlInDir": "https://rolandcat.substack.com/p/review-elf-lyons-the-woman-on-the"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.timeout.com/edinburgh/comedy/elf-lyons-is-the-woman-on-the-edge-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--andrzej-lukowski.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/edinburgh/comedy/elf-lyons-is-the-woman-on-the-edge-review"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.beyondthejoke.co.uk/content/17820/elf-lyons-edge",
+          "host": "beyondthejoke.co.uk",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "beyondthejoke--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.beyondthejoke.co.uk/content/17820/elf-lyons-edge"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://snackmag.co.uk/elf-lyons-is-the-woman-on-the-edge-fringe-review-5-stars",
+          "host": "snackmag.co.uk",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "snackmag--juliet-gartside.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://snackmag.co.uk/elf-lyons-is-the-woman-on-the-edge-fringe-review-5-stars"
             }
           ],
           "serpCensus": true
@@ -48621,9 +48914,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.timeout.com/edinburgh/comedy/elf-lyons-is-the-woman-on-the-edge-review",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
+          "url": "https://theatreandtonic.co.uk/edinburgh-fringe/elf-lyons-is-the-woman-on-the-edge-at-pleasance-courtyard-review",
+          "host": "theatreandtonic.co.uk",
+          "knownOutletId": "theatreandtonic",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -48631,17 +48924,17 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "timeout--andrzej-lukowski.json",
+              "file": "theatreandtonic--penny-walshe.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/edinburgh/comedy/elf-lyons-is-the-woman-on-the-edge-review"
+              "urlInDir": "https://theatreandtonic.co.uk/edinburgh-fringe/elf-lyons-is-the-woman-on-the-edge-at-pleasance-courtyard-review"
             }
           ],
           "serpCensus": true
         },
         {
-          "url": "https://www.paperweightmag.com/review-elf-lyons-is-the-woman-on-the-edge/",
-          "host": "paperweightmag.com",
-          "knownOutletId": null,
+          "url": "https://theqr.co.uk/2026/08/09/edfringe-review-elf-lyons-is-the-woman-on-the-edge-2/",
+          "host": "theqr.co.uk",
+          "knownOutletId": "theqr",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -48649,9 +48942,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "paperweightmag--unknown.json",
+              "file": "theqr--will-quinn.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.paperweightmag.com/review-elf-lyons-is-the-woman-on-the-edge/"
+              "urlInDir": "https://theqr.co.uk/2026/08/09/edfringe-review-elf-lyons-is-the-woman-on-the-edge-2/"
             }
           ],
           "serpCensus": true
@@ -48670,7 +48963,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -48680,7 +48973,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 5,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -48690,7 +48983,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -48701,7 +48994,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 6,
             "error": null
           },
           {
@@ -48711,7 +49004,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 1,
             "error": null
           },
           {
@@ -48721,39 +49014,40 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 4,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 8,
+        "resultCount": 11,
         "error": null
       },
       "candidatesRejected": {
-        "count": 31,
+        "count": 40,
         "byReason": {
-          "aggregator-internal-nav": 2,
-          "non-review-host": 25,
-          "census-junk-host": 1,
-          "merch-store": 1,
+          "non-review-host": 30,
+          "aggregator-internal-nav": 1,
           "non-review-path": 1,
-          "venue-production-page": 1
+          "venue-production-page": 3,
+          "static-asset": 5
         }
       },
       "dedupedVariants": [],
+      "unextractable": [],
       "ingestResults": [
         {
-          "url": "https://overlookmaps.com/events/elf-lyons-the-woman-on-the-edge-8952757580201420",
-          "host": "overlookmaps.com",
-          "outletId": "overlookmaps",
+          "url": "https://www.bingefringe.com/2026/08/31/review-elf-lyons-is-the-woman-on-the-edge-mick-perrin-worldwide-pbj-management-edfringe-2026-%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
+          "host": "bingefringe.com",
+          "outletId": "bingefringe",
           "provisional": true,
           "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=overlookmaps.com): Scrapingdog HTTP 400: Oops! Somethi"
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
         }
       ],
       "ingestSkippedByCap": [],
@@ -48761,18 +49055,25 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "overlookmaps.com",
-            "outlet": "overlookmaps.com",
+            "outletId": "bingefringe.com",
+            "outlet": "bingefringe.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://overlookmaps.com/events/elf-lyons-the-woman-on-the-edge-8952757580201420"
+            "url": "https://www.bingefringe.com/2026/08/31/review-elf-lyons-is-the-woman-on-the-edge-mick-perrin-worldwide-pbj-management-edfringe-2026-%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%85/"
           },
           {
-            "outletId": "variety",
-            "outlet": "variety",
+            "outletId": "fringereview",
+            "outlet": "fringereview",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://variety.com/2026/legit/news/elf-lyons-solo-show-woman-on-the-edge-new-york-1236822695/"
+            "url": "https://fringereview.co.uk/review/edinburgh-fringe/2026/elf-lyons-is-the-woman-on-the-edge/"
+          },
+          {
+            "outletId": "festmag.com",
+            "outlet": "festmag.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://festmag.com/2026/08/11/review-elf-lyons-is-the-woman-on-the-edge/"
           },
           {
             "outletId": "rolandcat",
@@ -48780,6 +49081,27 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://rolandcat.substack.com/p/review-elf-lyons-the-woman-on-the"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/edinburgh/comedy/elf-lyons-is-the-woman-on-the-edge-review"
+          },
+          {
+            "outletId": "beyondthejoke.co.uk",
+            "outlet": "beyondthejoke.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.beyondthejoke.co.uk/content/17820/elf-lyons-edge"
+          },
+          {
+            "outletId": "snackmag.co.uk",
+            "outlet": "snackmag.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://snackmag.co.uk/elf-lyons-is-the-woman-on-the-edge-fringe-review-5-stars"
           },
           {
             "outletId": "chortle",
@@ -48796,35 +49118,42 @@
             "url": "https://list.co.uk/news/elf-lyons-is-the-woman-on-the-edge-comedy-review-clever-and-profound-48789"
           },
           {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
+            "outletId": "theatreandtonic",
+            "outlet": "theatreandtonic",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.timeout.com/edinburgh/comedy/elf-lyons-is-the-woman-on-the-edge-review"
+            "url": "https://theatreandtonic.co.uk/edinburgh-fringe/elf-lyons-is-the-woman-on-the-edge-at-pleasance-courtyard-review"
           },
           {
-            "outletId": "paperweightmag.com",
-            "outlet": "paperweightmag.com",
+            "outletId": "theqr",
+            "outlet": "theqr",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.paperweightmag.com/review-elf-lyons-is-the-woman-on-the-edge/"
+            "url": "https://theqr.co.uk/2026/08/09/edfringe-review-elf-lyons-is-the-woman-on-the-edge-2/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://overlookmaps.com/events/elf-lyons-the-woman-on-the-edge-8952757580201420",
-            "outletId": "overlookmaps.com",
+            "url": "https://www.bingefringe.com/2026/08/31/review-elf-lyons-is-the-woman-on-the-edge-mick-perrin-worldwide-pbj-management-edfringe-2026-%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
+            "outletId": "bingefringe.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-03T23:39:15.002Z"
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
           },
           {
-            "url": "https://variety.com/2026/legit/news/elf-lyons-solo-show-woman-on-the-edge-new-york-1236822695/",
-            "outletId": "variety",
+            "url": "https://fringereview.co.uk/review/edinburgh-fringe/2026/elf-lyons-is-the-woman-on-the-edge/",
+            "outletId": "fringereview",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-03T23:39:15.002Z"
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://festmag.com/2026/08/11/review-elf-lyons-is-the-woman-on-the-edge/",
+            "outletId": "festmag.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
           },
           {
             "url": "https://rolandcat.substack.com/p/review-elf-lyons-the-woman-on-the",
@@ -48832,6 +49161,27 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-03T23:39:15.002Z"
+          },
+          {
+            "url": "https://www.timeout.com/edinburgh/comedy/elf-lyons-is-the-woman-on-the-edge-review",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-03T23:39:15.002Z"
+          },
+          {
+            "url": "https://www.beyondthejoke.co.uk/content/17820/elf-lyons-edge",
+            "outletId": "beyondthejoke.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://snackmag.co.uk/elf-lyons-is-the-woman-on-the-edge-fringe-review-5-stars",
+            "outletId": "snackmag.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
           },
           {
             "url": "https://www.chortle.co.uk/shows/edinburgh_fringe_2026/e/38651/_elf_lyons_is_the_woman_on_the_edge",
@@ -48848,25 +49198,25 @@
             "firstSeenAt": "2026-10-03T23:39:15.002Z"
           },
           {
-            "url": "https://www.timeout.com/edinburgh/comedy/elf-lyons-is-the-woman-on-the-edge-review",
-            "outletId": "timeout-london",
+            "url": "https://theatreandtonic.co.uk/edinburgh-fringe/elf-lyons-is-the-woman-on-the-edge-at-pleasance-courtyard-review",
+            "outletId": "theatreandtonic",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-03T23:39:15.002Z"
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
           },
           {
-            "url": "https://www.paperweightmag.com/review-elf-lyons-is-the-woman-on-the-edge/",
-            "outletId": "paperweightmag.com",
+            "url": "https://theqr.co.uk/2026/08/09/edfringe-review-elf-lyons-is-the-woman-on-the-edge-2/",
+            "outletId": "theqr",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-03T23:39:15.002Z"
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 7
+        "candidateCount": 11
       },
-      "computedAt": "2026-10-03T23:39:15.002Z"
+      "computedAt": "2026-10-12T23:33:06.241Z"
     },
     {
       "showId": "encores-la-cage-aux-folles-off-broadway-2026",
@@ -53412,7 +53762,7 @@
       ],
       "dirFiles": 12,
       "dirClean": 4,
-      "inReviewsJson": 3,
+      "inReviewsJson": 4,
       "missing": [
         {
           "url": "http://www.nytimes.com/2015/03/06/theater/review-fish-in-the-dark-larry-davids-antic-broadway-debut.html",
@@ -53931,10 +54281,10 @@
       "candidatesRejected": {
         "count": 1748,
         "byReason": {
+          "non-review-host": 90,
           "aggregator-internal-nav": 1321,
           "not-http-url": 307,
           "aggregator-section-root": 26,
-          "non-review-host": 90,
           "bare-host": 3,
           "unparseable-url": 1
         }
@@ -54382,7 +54732,7 @@
         "liveCount": 1,
         "candidateCount": 5
       },
-      "computedAt": "2026-10-12T21:04:05.688Z"
+      "computedAt": "2026-10-12T23:33:06.241Z"
     },
     {
       "showId": "fishing-for-alaska-off-broadway-2026",
@@ -56016,7 +56366,12 @@
         "liveCount": 20,
         "candidateCount": 22
       },
-      "computedAt": "2026-10-12T19:37:31.912Z"
+      "computedAt": "2026-10-12T19:37:31.912Z",
+      "quarantine": {
+        "nextState": "incomplete:19:20",
+        "since": "2026-10-12T23:33:06.310Z",
+        "lastAt": "2026-10-12T23:33:06.310Z"
+      }
     },
     {
       "showId": "galileo-berkeley-rep-regional-2024",
@@ -62817,7 +63172,12 @@
         "liveCount": 9,
         "candidateCount": 11
       },
-      "computedAt": "2026-10-12T19:37:31.912Z"
+      "computedAt": "2026-10-12T19:37:31.912Z",
+      "quarantine": {
+        "nextState": "complete:6:6",
+        "since": "2026-10-12T23:33:06.310Z",
+        "lastAt": "2026-10-12T23:33:06.310Z"
+      }
     },
     {
       "showId": "gotta-dance-off-broadway-2026",
@@ -74238,7 +74598,12 @@
         "liveCount": 2,
         "candidateCount": 45
       },
-      "computedAt": "2026-10-12T19:37:31.912Z"
+      "computedAt": "2026-10-12T19:37:31.912Z",
+      "quarantine": {
+        "nextState": "incomplete:2:27",
+        "since": "2026-10-12T23:33:06.310Z",
+        "lastAt": "2026-10-12T23:33:06.310Z"
+      }
     },
     {
       "showId": "harry-potter-tour-2024",
@@ -79488,7 +79853,12 @@
         "liveCount": 0,
         "candidateCount": 10
       },
-      "computedAt": "2026-10-12T21:04:05.688Z"
+      "computedAt": "2026-10-12T21:04:05.688Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-12T23:33:06.310Z",
+        "lastAt": "2026-10-12T23:33:06.310Z"
+      }
     },
     {
       "showId": "high-society-west-end-2026",
@@ -81473,37 +81843,44 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-HOW-SHAKESPEARE-SAVED-MY-LIFE-at-the-Public-Theater-20260928",
-        "https://playbill.com/article/what-are-the-reviews-for-jacob-ming-trents-how-shakespeare-saved-my-life"
+        "https://playbill.com/article/what-are-the-reviews-for-jacob-ming-trents-how-shakespeare-saved-my-life",
+        "https://www.broadwayworld.com/article/Review-Roundup-HOW-SHAKESPEARE-SAVED-MY-LIFE-at-the-Public-Theater-20260928"
       ],
       "aggregatorListedUrls": [
+        "https://newyorktheater.me/2026/09/27/how-shakespeare-saved-my-life-review/",
         "https://culturesauce.com/how-shakespeare-saved-my-life-off-broadway-review/",
         "https://nystagereview.com/2026/09/27/how-shakespeare-saved-my-life-theater-as-testimony/",
-        "https://newyorktheater.me/2026/09/27/how-shakespeare-saved-my-life-review/",
         "https://www.newyorktheatreguide.com/reviews/how-shakespeare-saved-my-life-off-broadway-review-jacob-ming-trent",
+        "https://www.nytimes.com/2026/09/29/theater/how-shakespeare-saved-my-life-review.html",
         "https://www.timeout.com/newyork/theater/how-shakespeare-saved-my-life-jacob-ming-trent-review",
         "https://www.vulture.com/article/reviews-how-shakespeare-saved-my-life-arias-with-a-twist.html",
-        "https://www.nytimes.com/2026/09/29/theater/how-shakespeare-saved-my-life-review.html",
         "https://www.offoffonline.com/offoffonline/2026/9/21/how-shakespeare-saved-my-life",
-        "https://www.show-score.com/off-broadway-shows/how-shakespeare-saved-my-life",
-        "https://broadwaylog.app/shows/how-shakespeare-saved-my-life-2026",
         "https://thefrontrowcenter.com/2026/09/how-shakespeare-saved-my-life/",
-        "https://www.folger.edu/whats-on/how-shakespeare-saved-my-life/",
+        "https://theatrereviewskurahashi.wordpress.com/2026/10/04/an-urbanwitness-reporter-jacob-ming-trents-how-shakespeare-saved-my-life-at-the-public-theater/",
+        "https://mdtheatreguide.com/2026/06/theatre-review-how-shakespeare-saved-my-life-at-folger-theatre/",
+        "https://outinjersey.net/how-shakespeare-saved-my-life-is-a-funny-lively-and-inspirational-performance/",
+        "https://news.frombroadway.com/post/review-roundup-how-shakespeare-saved-my-life-public-theater",
         "https://theatreeddys.com/2026/01/how-shakespeare-saved-my-life.html"
       ],
-      "dirFiles": 24,
-      "dirClean": 12,
+      "dirFiles": 26,
+      "dirClean": 11,
       "inReviewsJson": 11,
       "missing": [
         {
-          "url": "https://www.show-score.com/off-broadway-shows/how-shakespeare-saved-my-life",
-          "host": "show-score.com",
+          "url": "https://theatrereviewskurahashi.wordpress.com/2026/10/04/an-urbanwitness-reporter-jacob-ming-trents-how-shakespeare-saved-my-life-at-the-public-theater/",
+          "host": "theatrereviewskurahashi.wordpress.com",
           "knownOutletId": null,
           "serpCensus": true
         },
         {
-          "url": "https://www.folger.edu/whats-on/how-shakespeare-saved-my-life/",
-          "host": "folger.edu",
+          "url": "https://outinjersey.net/how-shakespeare-saved-my-life-is-a-funny-lively-and-inspirational-performance/",
+          "host": "outinjersey.net",
+          "knownOutletId": "outinjersey",
+          "serpCensus": true
+        },
+        {
+          "url": "https://news.frombroadway.com/post/review-roundup-how-shakespeare-saved-my-life-public-theater",
+          "host": "frombroadway.com",
           "knownOutletId": null,
           "serpCensus": true
         }
@@ -81519,6 +81896,24 @@
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://mdtheatreguide.com/2026/06/theatre-review-how-shakespeare-saved-my-life-at-folger-theatre/",
+          "host": "mdtheatreguide.com",
+          "knownOutletId": "maryland-theatre-guide",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "maryland-theatre-guide--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://mdtheatreguide.com/2026/06/theatre-review-how-shakespeare-saved-my-life-at-folger-theatre/"
+            }
+          ],
+          "serpCensus": true
+        },
         {
           "url": "https://theatreeddys.com/2026/01/how-shakespeare-saved-my-life.html",
           "host": "theatreeddys.com",
@@ -81552,7 +81947,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 7,
+            "accepted": 5,
             "error": null
           },
           {
@@ -81592,7 +81987,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -81602,7 +81997,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 3,
             "error": null
           }
         ],
@@ -81612,50 +82007,96 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 415,
+        "count": 425,
         "byReason": {
-          "not-http-url": 77,
-          "non-review-host": 51,
-          "aggregator-internal-nav": 267,
+          "non-review-host": 56,
+          "aggregator-internal-nav": 257,
+          "not-http-url": 78,
+          "production-database-listing": 12,
           "aggregator-section-root": 11,
-          "roundup-page": 5,
-          "ticketing-reseller": 1,
-          "ticketing-listing": 1,
+          "write-path-blocked": 1,
+          "roundup-page": 4,
           "venue-production-page": 1,
-          "census-junk-host": 1
+          "ticketing-listing": 2,
+          "ticketing-reseller": 2,
+          "show-listing-page": 1
         }
       },
       "dedupedVariants": [],
+      "unextractable": [],
       "ingestResults": [
         {
-          "url": "https://www.show-score.com/off-broadway-shows/how-shakespeare-saved-my-life",
-          "host": "show-score.com",
-          "outletId": null,
+          "url": "https://theatrereviewskurahashi.wordpress.com/2026/10/04/an-urbanwitness-reporter-jacob-ming-trents-how-shakespeare-saved-my-life-at-the-public-theater/",
+          "host": "theatrereviewskurahashi.wordpress.com",
+          "outletId": "theatrereviewskurahashi",
           "provisional": true,
-          "ok": false,
+          "ok": true,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "unknown-outlet-aggregator-host (show-score.com)"
+          "zeroChar": false,
+          "reason": null
         },
         {
-          "url": "https://www.folger.edu/whats-on/how-shakespeare-saved-my-life/",
-          "host": "folger.edu",
-          "outletId": "folger",
-          "provisional": true,
-          "ok": false,
+          "url": "https://outinjersey.net/how-shakespeare-saved-my-life-is-a-funny-lively-and-inspirational-performance/",
+          "host": "outinjersey.net",
+          "outletId": "outinjersey",
+          "provisional": false,
+          "ok": true,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "Refusing to ingest — https://www.folger.edu/whats-on/how-shakespeare-saved-my-life/ matches a known "
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://news.frombroadway.com/post/review-roundup-how-shakespeare-saved-my-life-public-theater",
+          "host": "frombroadway.com",
+          "outletId": "frombroadway",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "theatrereviewskurahashi.wordpress.com",
+            "outlet": "theatrereviewskurahashi.wordpress.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatrereviewskurahashi.wordpress.com/2026/10/04/an-urbanwitness-reporter-jacob-ming-trents-how-shakespeare-saved-my-life-at-the-public-theater/"
+          },
+          {
+            "outletId": "outinjersey",
+            "outlet": "outinjersey",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://outinjersey.net/how-shakespeare-saved-my-life-is-a-funny-lively-and-inspirational-performance/"
+          },
+          {
+            "outletId": "frombroadway.com",
+            "outlet": "frombroadway.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://news.frombroadway.com/post/review-roundup-how-shakespeare-saved-my-life-public-theater"
+          },
+          {
+            "outletId": "maryland-theatre-guide",
+            "outlet": "maryland-theatre-guide",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://mdtheatreguide.com/2026/06/theatre-review-how-shakespeare-saved-my-life-at-folger-theatre/"
+          },
           {
             "outletId": "theatreeddys.com",
             "outlet": "theatreeddys.com",
@@ -81666,6 +82107,12 @@
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://newyorktheater.me/2026/09/27/how-shakespeare-saved-my-life-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-09-28T07:54:42.859Z"
+          },
           {
             "url": "https://culturesauce.com/how-shakespeare-saved-my-life-off-broadway-review/",
             "outletId": "culturesauce.com",
@@ -81679,16 +82126,16 @@
             "firstSeenAt": "2026-09-28T07:54:42.859Z"
           },
           {
-            "url": "https://newyorktheater.me/2026/09/27/how-shakespeare-saved-my-life-review/",
-            "outletId": "newyorktheater.me",
-            "state": "live",
-            "firstSeenAt": "2026-09-28T07:54:42.859Z"
-          },
-          {
             "url": "https://www.newyorktheatreguide.com/reviews/how-shakespeare-saved-my-life-off-broadway-review-jacob-ming-trent",
             "outletId": "newyorktheatreguide.com",
             "state": "live",
             "firstSeenAt": "2026-09-28T07:54:42.859Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2026/09/29/theater/how-shakespeare-saved-my-life-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-29T21:21:30.952Z"
           },
           {
             "url": "https://www.timeout.com/newyork/theater/how-shakespeare-saved-my-life-jacob-ming-trent-review",
@@ -81703,12 +82150,6 @@
             "firstSeenAt": "2026-09-28T16:16:03.674Z"
           },
           {
-            "url": "https://www.nytimes.com/2026/09/29/theater/how-shakespeare-saved-my-life-review.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-29T21:21:30.952Z"
-          },
-          {
             "url": "https://www.offoffonline.com/offoffonline/2026/9/21/how-shakespeare-saved-my-life",
             "outletId": "offoffonline.com",
             "state": "live",
@@ -81721,6 +82162,34 @@
             "firstSeenAt": "2026-10-03T23:39:15.002Z"
           },
           {
+            "url": "https://theatrereviewskurahashi.wordpress.com/2026/10/04/an-urbanwitness-reporter-jacob-ming-trents-how-shakespeare-saved-my-life-at-the-public-theater/",
+            "outletId": "theatrereviewskurahashi.wordpress.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://outinjersey.net/how-shakespeare-saved-my-life-is-a-funny-lively-and-inspirational-performance/",
+            "outletId": "outinjersey",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://news.frombroadway.com/post/review-roundup-how-shakespeare-saved-my-life-public-theater",
+            "outletId": "frombroadway.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://mdtheatreguide.com/2026/06/theatre-review-how-shakespeare-saved-my-life-at-folger-theatre/",
+            "outletId": "maryland-theatre-guide",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
             "url": "https://theatreeddys.com/2026/01/how-shakespeare-saved-my-life.html",
             "outletId": "theatreeddys.com",
             "state": "GAP",
@@ -81730,9 +82199,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 9,
-        "candidateCount": 10
+        "candidateCount": 14
       },
-      "computedAt": "2026-10-04T16:57:13.680Z"
+      "computedAt": "2026-10-12T23:33:06.241Z"
     },
     {
       "showId": "how-the-other-half-loves-west-end-2026",
@@ -93527,6 +93996,1776 @@
         "candidateCount": 20
       },
       "computedAt": "2026-10-11T22:49:53.446Z"
+    },
+    {
+      "showId": "king-lear-royal-exchange-regional-2026",
+      "title": "King Lear",
+      "openingDate": "2026-10-10",
+      "status": "open",
+      "category": "regional",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-reviews-for-broadways-king-lear-with-glenda-jackson",
+        "https://playbill.com/article/reviews-what-do-critics-think-of-kenneth-branagh-led-king-lear",
+        "https://playbill.com/article/what-do-critics-think-of-shakespeare-theatre-companys-king-lear-starring-patrick-page",
+        "https://playbill.com/article/read-reviews-for-king-lear-starring-anthony-hopkins-and-emma-thompson",
+        "https://playbill.com/article/read-uk-reviews-for-ian-mckellen-in-king-lear",
+        "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404",
+        "https://www.broadwayworld.com/article/Review-Roundup-Kenneth-Branagh-Directed-KING-LEAR-Opens-at-The-Shed-20241114",
+        "https://www.broadwayworld.com/article/Review-Roundup-The-Publics-KING-LEAR-Opens-at-the-Delacorte-20140805",
+        "https://www.broadwayworld.com/article/Review-Roundup-Amazon-Primes-KING-LEAR-with-Anthony-Hopkins-and-Emma-Thompson-20180927"
+      ],
+      "aggregatorListedUrls": [
+        "http://broadway.news/2019/04/04/review-a-scorching-glenda-jackson-leads-the-way-for-the-women-of-king-lear/",
+        "http://dctheatrescene.com/2019/04/04/king-lear-review-glenda-jackson-in-must-see-if-imperfect-shakespeare/",
+        "http://deadline.com/2019/04/glenda-jackson-king-lear-broadway-review-ruth-wilson-pedro-pascal-1202587083/",
+        "http://ew.com/theater-reviews/2019/04/04/glenda-jackson-king-lear-review/",
+        "http://www.hollywoodreporter.com/review/king-lear-theater-review-1199652",
+        "http://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-king-lear-review-20190404-story.html",
+        "http://www.vulture.com/2019/04/theater-review-once-more-into-the-storm-with-king-lear.html",
+        "http://nystagereview.com/2019/04/04/king-lear-glenda-jackson-rants-raves-and-rules/",
+        "http://nystagereview.com/2019/04/04/king-lear-a-role-fit-for-a-commander/",
+        "http://www.nytimes.com/2019/04/04/theater/king-lear-review-glenda-jackson.html",
+        "http://www.nj.com/entertainment/2019/04/glenda-jackson-roars-in-an-amazing-king-lear-on-broadway-review.html",
+        "http://www.ny1.com/nyc/all-boroughs/news/2019/04/05/theater-review---king-lear-",
+        "http://www.nydailynews.com/entertainment/broadway/ny-king-lear-broadway-review-20190405-hensmh363bdgvh7fiewqorn25m-story.html",
+        "http://www.timeout.com/newyork/theater/review-king-lear-glenda-jackson",
+        "http://www.towleroad.com/2019/04/glenda-jackson-king-lear/",
+        "http://variety.com/2019/legit/reviews/king-lear-review-glenda-jackson-broadway-1203180018/",
+        "https://www.nytimes.com/2023/10/31/theater/review-kenneth-branaghs-short-shallow-king-lear.html",
+        "https://www.theguardian.com/stage/2023/oct/31/king-lear-review-kenneth-branagh-shakespeare-tragedy-wyndhams-theatre-london",
+        "https://www.dailymail.co.uk/tvshowbiz/article-12695241/PATRICK-MARMION-Kenneth-Branagh-King-Lear-play-mad-dash-tragedy.html",
+        "https://theartsdesk.com/theatre/king-lear-wyndhams-theatre-review-kenneth-branagh-helms-pared-down-tragedy",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/king-lear-review-kenneth-branagh-wyndhams-b2439245.html",
+        "https://www.newstatesman.com/culture/theatre/2023/11/kenneth-branagh-king-lear-review-callow-utterly-unmoving",
+        "https://www.telegraph.co.uk/theatre/what-to-see/king-lear-wyndhams-theatre-review-kenneth-branagh/",
+        "https://www.thetimes.co.uk/article/king-lear-theatre-review-kenneth-branagh-6cwrgk03v",
+        "https://www.timeout.com/london/theatre/king-lear-25-review",
+        "https://www.thestage.co.uk/reviews/king-lear-review-at-wyndhams-theatre-london-with-kenneth-branagh",
+        "https://www.whatsonstage.com/news/king-lear-review-kenneth-branaghs-banal-tragedy_1543275/",
+        "https://www.broadwayworld.com/washington-dc/article/Review-KING-LEAR-at-Shakespeare-Theatre-Company-20230303",
+        "https://www.washingtonpost.com/theater-dance/2023/03/03/king-lear-patrick-page-godwin-stc/",
+        "http://www.theguardian.com/tv-and-radio/2018/may/28/bbc-king-lear-review-anthony-hopkins",
+        "http://www.hollywoodreporter.com/review/king-lear-review-amazon-1143459",
+        "https://www.standard.co.uk/goingout/theatre/king-lear-theatre-review-ian-mckellens-detailed-intelligent-performance-is-a-triumph-a3648041.html",
+        "https://www.theguardian.com/stage/2017/oct/01/king-lear-review-ian-mckellen-delivers-profound-portrait-of-a-soul-in-torment-chicester-festival-theatre",
+        "https://inews.co.uk/essentials/ian-mckellen-king-lear-brutal-sensual-triumphant/",
+        "https://www.metro.news/theatre-review-ian-mckellen-put-through-the-wringer-in-king-lear/766152/",
+        "http://variety.com/2017/legit/reviews/king-lear-review-ian-mckellen-1202577750/",
+        "https://www.hollywoodreporter.com/review/king-lear-theater-review-258884",
+        "https://www.nytimes.com/2019/04/04/theater/king-lear-review-glenda-jackson.html",
+        "https://www.timeout.com/newyork/theater/review-king-lear-glenda-jackson",
+        "https://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-king-lear-review-20190404-story.html",
+        "https://www.thewrap.com/king-lear-broadway-review-glenda-jackson-triumphs-in-cluttered-mess-of-a-revival/",
+        "https://www.hollywoodreporter.com/review/king-lear-theater-review-1199652",
+        "https://deadline.com/2019/04/glenda-jackson-king-lear-broadway-review-ruth-wilson-pedro-pascal-1202587083/",
+        "https://www.washingtonpost.com/entertainment/theater_dance/glenda-jackson-as-king-lear-was-a-good-idea-why-is-everything-around-her-so-wrong/2019/04/04/ed786ad0-56db-11e9-8ef3-fbd41a2ce4d5_story.html",
+        "https://variety.com/2019/legit/reviews/king-lear-review-glenda-jackson-broadway-1203180018/",
+        "https://ew.com/theater-reviews/2019/04/04/glenda-jackson-king-lear-review/",
+        "https://www.amny.com/entertainment/king-lear-broadway-review-1.29377016",
+        "https://www.nydailynews.com/entertainment/broadway/ny-king-lear-broadway-review-20190405-hensmh363bdgvh7fiewqorn25m-story.html",
+        "https://www.ny1.com/nyc/all-boroughs/news/2019/04/05/theater-review---king-lear-",
+        "https://www.vulture.com/2019/04/theater-review-once-more-into-the-storm-with-king-lear.html",
+        "https://www.nj.com/entertainment/2019/04/glenda-jackson-roars-in-an-amazing-king-lear-on-broadway-review.html",
+        "https://www.thedailybeast.com/glenda-jackson-in-shakespeares-king-lear-on-broadway-tragedy-and-a-lot-of-trump-era-sighing",
+        "https://www.theguardian.com/stage/2019/apr/04/king-lear-shakespeare-glenda-jackson-broadway",
+        "https://www.nytimes.com/2024/11/14/theater/king-lear-review-kenneth-branagh.html",
+        "https://observer.com/2024/11/review-kenneth-branaghs-king-lear-howls-into-a-stormy-rushed-muddle/",
+        "https://www.theatrely.com/post/a-hasty-king-lear-at-the-shed-review",
+        "https://www.newyorktheatreguide.com/reviews/king-lear-off-broadway-review-kenneth-branagh",
+        "http://www.nytimes.com/2014/08/06/theater/king-lear-in-central-park-starring-john-lithgow.html",
+        "http://www.vulture.com/2014/08/theater-review-king-lear-public-theater-john-lithgow.html",
+        "http://www.newsday.com/entertainment/theater/king-lear-review-hail-john-lithgow-1.8945797",
+        "http://www.hollywoodreporter.com/review/king-lear-theater-review-723483",
+        "http://variety.com/2014/legit/reviews/review-king-lear-john-lithgow-annette-bening-1201275895/",
+        "http://www.timeout.com/newyork/theater/king-lear-12",
+        "http://www.nydailynews.com/entertainment/theater-arts/king-lear-theater-review-article-1.1892742",
+        "http://www.nbcnewyork.com/entertainment/the-scene/SITP-King-Lear-Review-269970641.html",
+        "http://www.usatoday.com/story/life/theater/2014/08/05/shakespeare-in-the-park-review-king-lear/13580135/",
+        "http://online.wsj.com/articles/theater-review-king-lear-1407290743",
+        "http://nypost.com/2014/08/05/john-lithgow-and-annette-bening-flail-in-central-park-king-lear/",
+        "http://www.amny.com/entertainment/king-lear-review-john-lithgow-superb-in-shakespeare-in-the-park-production-1.8971915",
+        "https://www.theguardian.com/stage/2014/aug/06/king-lear-shakespeare-central-park-john-lithgow-review",
+        "http://www.deadline.com/2014/08/king-lear-central-park-john-lithgow-annette-bening-review/",
+        "https://www.theguardian.com/tv-and-radio/2018/may/28/bbc-king-lear-review-anthony-hopkins",
+        "https://www.hollywoodreporter.com/review/king-lear-review-amazon-1143459",
+        "https://www.pastemagazine.com/articles/2018/09/amazon-prime-bbc-king-lear-anthony-hopkins-emma-th.html",
+        "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Oakland-Theater-Project-20261002",
+        "https://www.marinij.com/2026/10/01/review-missed-opportunities-plague-oakland-theaters-king-lear/",
+        "https://www.whatsonstage.com/news/king-lear-with-david-threlfall-at-the-royal-exchange-review_1734679/",
+        "https://www.thestage.co.uk/reviews/king-lear-review-royal-exchange-theatre-manchester-matthew-dunster-david-threlfall",
+        "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Z-Space-20260928",
+        "https://www.thetimes.com/culture/theatre-dance/article/king-lear-review-david-threlfall-kb6mrfglj",
+        "https://theatreandtonic.co.uk/blog/king-lear-at-royal-exchange-theatre-review",
+        "https://www.thereviewshub.com/king-lear-royal-exchange-manchester/",
+        "https://www.telegraph.co.uk/theatre/what-to-see/king-lear-royal-exchange-three-star-review/",
+        "https://www.allabouttheatreuk.com/post/review-king-lear-royal-exchange-theatre-manchester",
+        "https://jadar.uk/2026/10/11/review-king-lear-royal-exchange-theatre/",
+        "https://www.theguardian.com/stage/2026/oct/10/king-lear-review-david-threlfall-royal-exchange-theatre-manchester",
+        "https://www.royalexchange.co.uk/event/king-lear/",
+        "https://northwestend.co.uk/index.php/professional-reviews/773-king-lear-royal-exchange-manchester",
+        "https://confidentials.com/manchester/review-king-lear-royal-exchange-theatre",
+        "https://ilovemanchester.com/king-lear-royal-exchange-review",
+        "https://www.britishtheatreguide.info/reviews/king-lear-royal-exchange-26094",
+        "https://www.weekendnotes.co.uk/king-lear-royal-exchange-review/",
+        "https://quayslife.com/reviews/king-lear-royal-exchange-50th-anniversary-production-review/",
+        "https://www.visitmanchester.com/event/king-lear/111756101/",
+        "https://www.theatrereviewsnorth.com/post/king-lear-1",
+        "https://www.franklymydearuk.co.uk/theatre-review-king-lear-royal-exchange-manchester/",
+        "https://www.liverpooltheatres.com/news/review-_-king-lear-is-a-thrilling-production-with-a-brilliant-balanced-cast-_-a-classic-full-of-fire",
+        "https://www.westendbestfriend.co.uk/news/review-king-lear-royal-exchange-theatre"
+      ],
+      "dirFiles": 8,
+      "dirClean": 5,
+      "inReviewsJson": 5,
+      "missing": [
+        {
+          "url": "http://broadway.news/2019/04/04/review-a-scorching-glenda-jackson-leads-the-way-for-the-women-of-king-lear/",
+          "host": "broadway.news",
+          "knownOutletId": "broadwaynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://dctheatrescene.com/2019/04/04/king-lear-review-glenda-jackson-in-must-see-if-imperfect-shakespeare/",
+          "host": "dctheatrescene.com",
+          "knownOutletId": "dctheatrescene",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://deadline.com/2019/04/glenda-jackson-king-lear-broadway-review-ruth-wilson-pedro-pascal-1202587083/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://ew.com/theater-reviews/2019/04/04/glenda-jackson-king-lear-review/",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.vulture.com/2019/04/theater-review-once-more-into-the-storm-with-king-lear.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2019/04/04/king-lear-glenda-jackson-rants-raves-and-rules/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2019/04/04/king-lear-a-role-fit-for-a-commander/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nytimes.com/2019/04/04/theater/king-lear-review-glenda-jackson.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nj.com/entertainment/2019/04/glenda-jackson-roars-in-an-amazing-king-lear-on-broadway-review.html",
+          "host": "nj.com",
+          "knownOutletId": "njcom",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.ny1.com/nyc/all-boroughs/news/2019/04/05/theater-review---king-lear-",
+          "host": "ny1.com",
+          "knownOutletId": "ny1",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.timeout.com/newyork/theater/review-king-lear-glenda-jackson",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.towleroad.com/2019/04/glenda-jackson-king-lear/",
+          "host": "towleroad.com",
+          "knownOutletId": "towleroad",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://variety.com/2019/legit/reviews/king-lear-review-glenda-jackson-broadway-1203180018/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2023/10/31/theater/review-kenneth-branaghs-short-shallow-king-lear.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-12695241/PATRICK-MARMION-Kenneth-Branagh-King-Lear-play-mad-dash-tragedy.html",
+          "host": "dailymail.co.uk",
+          "knownOutletId": "daily-mail",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/king-lear-wyndhams-theatre-review-kenneth-branagh-helms-pared-down-tragedy",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/king-lear-review-kenneth-branagh-wyndhams-b2439245.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newstatesman.com/culture/theatre/2023/11/kenneth-branagh-king-lear-review-callow-utterly-unmoving",
+          "host": "newstatesman.com",
+          "knownOutletId": "new-statesman",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/king-lear-wyndhams-theatre-review-kenneth-branagh/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/king-lear-theatre-review-kenneth-branagh-6cwrgk03v",
+          "host": "thetimes.co.uk",
+          "knownOutletId": "times-uk",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/king-lear-25-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.broadwayworld.com/washington-dc/article/Review-KING-LEAR-at-Shakespeare-Theatre-Company-20230303",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.washingtonpost.com/theater-dance/2023/03/03/king-lear-patrick-page-godwin-stc/",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.standard.co.uk/goingout/theatre/king-lear-theatre-review-ian-mckellens-detailed-intelligent-performance-is-a-triumph-a3648041.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://inews.co.uk/essentials/ian-mckellen-king-lear-brutal-sensual-triumphant/",
+          "host": "inews.co.uk",
+          "knownOutletId": "i-paper",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.metro.news/theatre-review-ian-mckellen-put-through-the-wringer-in-king-lear/766152/",
+          "host": "metro.news",
+          "knownOutletId": "metro-uk",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://variety.com/2017/legit/reviews/king-lear-review-ian-mckellen-1202577750/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2019/04/04/theater/king-lear-review-glenda-jackson.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/review-king-lear-glenda-jackson",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/king-lear-broadway-review-glenda-jackson-triumphs-in-cluttered-mess-of-a-revival/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://deadline.com/2019/04/glenda-jackson-king-lear-broadway-review-ruth-wilson-pedro-pascal-1202587083/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/glenda-jackson-as-king-lear-was-a-good-idea-why-is-everything-around-her-so-wrong/2019/04/04/ed786ad0-56db-11e9-8ef3-fbd41a2ce4d5_story.html",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2019/legit/reviews/king-lear-review-glenda-jackson-broadway-1203180018/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://ew.com/theater-reviews/2019/04/04/glenda-jackson-king-lear-review/",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.amny.com/entertainment/king-lear-broadway-review-1.29377016",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.ny1.com/nyc/all-boroughs/news/2019/04/05/theater-review---king-lear-",
+          "host": "ny1.com",
+          "knownOutletId": "ny1",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/2019/04/theater-review-once-more-into-the-storm-with-king-lear.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nj.com/entertainment/2019/04/glenda-jackson-roars-in-an-amazing-king-lear-on-broadway-review.html",
+          "host": "nj.com",
+          "knownOutletId": "njcom",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thedailybeast.com/glenda-jackson-in-shakespeares-king-lear-on-broadway-tragedy-and-a-lot-of-trump-era-sighing",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2024/11/14/theater/king-lear-review-kenneth-branagh.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2024/11/review-kenneth-branaghs-king-lear-howls-into-a-stormy-rushed-muddle/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrely.com/post/a-hasty-king-lear-at-the-shed-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/king-lear-off-broadway-review-kenneth-branagh",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nytimes.com/2014/08/06/theater/king-lear-in-central-park-starring-john-lithgow.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.vulture.com/2014/08/theater-review-king-lear-public-theater-john-lithgow.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/king-lear-review-hail-john-lithgow-1.8945797",
+          "host": "newsday.com",
+          "knownOutletId": "newsday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://variety.com/2014/legit/reviews/review-king-lear-john-lithgow-annette-bening-1201275895/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.timeout.com/newyork/theater/king-lear-12",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/king-lear-theater-review-article-1.1892742",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nbcnewyork.com/entertainment/the-scene/SITP-King-Lear-Review-269970641.html",
+          "host": "nbcnewyork.com",
+          "knownOutletId": "nbcny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.usatoday.com/story/life/theater/2014/08/05/shakespeare-in-the-park-review-king-lear/13580135/",
+          "host": "usatoday.com",
+          "knownOutletId": "usatoday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://online.wsj.com/articles/theater-review-king-lear-1407290743",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nypost.com/2014/08/05/john-lithgow-and-annette-bening-flail-in-central-park-king-lear/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.amny.com/entertainment/king-lear-review-john-lithgow-superb-in-shakespeare-in-the-park-production-1.8971915",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.deadline.com/2014/08/king-lear-central-park-john-lithgow-annette-bening-review/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.pastemagazine.com/articles/2018/09/amazon-prime-bbc-king-lear-anthony-hopkins-emma-th.html",
+          "host": "pastemagazine.com",
+          "knownOutletId": "paste-magazine",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Oakland-Theater-Project-20261002",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.marinij.com/2026/10/01/review-missed-opportunities-plague-oakland-theaters-king-lear/",
+          "host": "marinij.com",
+          "knownOutletId": "marin-independent-journal",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Z-Space-20260928",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/king-lear-review-david-threlfall-kb6mrfglj",
+          "host": "thetimes.com",
+          "knownOutletId": "times-uk",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/king-lear-royal-exchange-three-star-review/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.allabouttheatreuk.com/post/review-king-lear-royal-exchange-theatre-manchester",
+          "host": "allabouttheatreuk.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://jadar.uk/2026/10/11/review-king-lear-royal-exchange-theatre/",
+          "host": "jadar.uk",
+          "knownOutletId": "jadar",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.royalexchange.co.uk/event/king-lear/",
+          "host": "royalexchange.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://northwestend.co.uk/index.php/professional-reviews/773-king-lear-royal-exchange-manchester",
+          "host": "northwestend.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://confidentials.com/manchester/review-king-lear-royal-exchange-theatre",
+          "host": "confidentials.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://ilovemanchester.com/king-lear-royal-exchange-review",
+          "host": "ilovemanchester.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/king-lear-royal-exchange-26094",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.weekendnotes.co.uk/king-lear-royal-exchange-review/",
+          "host": "weekendnotes.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://quayslife.com/reviews/king-lear-royal-exchange-50th-anniversary-production-review/",
+          "host": "quayslife.com",
+          "knownOutletId": "quays-life",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.visitmanchester.com/event/king-lear/111756101/",
+          "host": "visitmanchester.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theatrereviewsnorth.com/post/king-lear-1",
+          "host": "theatrereviewsnorth.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.franklymydearuk.co.uk/theatre-review-king-lear-royal-exchange-manchester/",
+          "host": "franklymydearuk.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.liverpooltheatres.com/news/review-_-king-lear-is-a-thrilling-production-with-a-brilliant-balanced-cast-_-a-classic-full-of-fire",
+          "host": "liverpooltheatres.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/review-king-lear-royal-exchange-theatre",
+          "host": "westendbestfriend.co.uk",
+          "knownOutletId": "west-end-best-friend",
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "http://www.hollywoodreporter.com/review/king-lear-theater-review-1199652",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "recoverable": true,
+          "recoverableFile": "hollywood-reporter--david-rooney.json",
+          "recoverableOutletId": "hollywood-reporter",
+          "recoverableCritic": "David Rooney",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "hollywood-reporter--david-rooney.json",
+              "flag": "emptyBody",
+              "urlInDir": "http://www.hollywoodreporter.com/review/king-lear-theater-review-1199652"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-king-lear-review-20190404-story.html",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "latimes--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-king-lear-review-20190404-story.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/broadway/ny-king-lear-broadway-review-20190405-hensmh363bdgvh7fiewqorn25m-story.html",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nydailynews--chris-jones.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.nydailynews.com/entertainment/broadway/ny-king-lear-broadway-review-20190405-hensmh363bdgvh7fiewqorn25m-story.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/king-lear-review-amazon-1143459",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "recoverable": true,
+          "recoverableFile": "hollywood-reporter--david-rooney.json",
+          "recoverableOutletId": "hollywood-reporter",
+          "recoverableCritic": "David Rooney",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "hollywood-reporter--david-rooney.json",
+              "flag": "emptyBody",
+              "urlInDir": "http://www.hollywoodreporter.com/review/king-lear-theater-review-1199652"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/king-lear-theater-review-258884",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "recoverable": true,
+          "recoverableFile": "hollywood-reporter--david-rooney.json",
+          "recoverableOutletId": "hollywood-reporter",
+          "recoverableCritic": "David Rooney",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "hollywood-reporter--david-rooney.json",
+              "flag": "emptyBody",
+              "urlInDir": "http://www.hollywoodreporter.com/review/king-lear-theater-review-1199652"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-king-lear-review-20190404-story.html",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "latimes--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-king-lear-review-20190404-story.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/king-lear-theater-review-1199652",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "recoverable": true,
+          "recoverableFile": "hollywood-reporter--david-rooney.json",
+          "recoverableOutletId": "hollywood-reporter",
+          "recoverableCritic": "David Rooney",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "hollywood-reporter--david-rooney.json",
+              "flag": "emptyBody",
+              "urlInDir": "http://www.hollywoodreporter.com/review/king-lear-theater-review-1199652"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nydailynews.com/entertainment/broadway/ny-king-lear-broadway-review-20190405-hensmh363bdgvh7fiewqorn25m-story.html",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nydailynews--chris-jones.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.nydailynews.com/entertainment/broadway/ny-king-lear-broadway-review-20190405-hensmh363bdgvh7fiewqorn25m-story.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/king-lear-theater-review-723483",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "recoverable": true,
+          "recoverableFile": "hollywood-reporter--david-rooney.json",
+          "recoverableOutletId": "hollywood-reporter",
+          "recoverableCritic": "David Rooney",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "hollywood-reporter--david-rooney.json",
+              "flag": "emptyBody",
+              "urlInDir": "http://www.hollywoodreporter.com/review/king-lear-theater-review-1199652"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/king-lear-review-amazon-1143459",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "recoverable": true,
+          "recoverableFile": "hollywood-reporter--david-rooney.json",
+          "recoverableOutletId": "hollywood-reporter",
+          "recoverableCritic": "David Rooney",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "hollywood-reporter--david-rooney.json",
+              "flag": "emptyBody",
+              "urlInDir": "http://www.hollywoodreporter.com/review/king-lear-theater-review-1199652"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"King Lear\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"King Lear\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 5,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"King Lear\" review exchange",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 6,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "King Lear Royal Exchange Theatre, Manchester review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "King Lear Royal Exchange Theatre, Manchester review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "King Lear Royal Exchange Theatre, Manchester review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 6,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 24,
+        "error": null
+      },
+      "candidatesRejected": {
+        "count": 1731,
+        "byReason": {
+          "non-review-host": 174,
+          "aggregator-internal-nav": 1257,
+          "not-http-url": 189,
+          "production-database-listing": 73,
+          "aggregator-section-root": 36,
+          "bare-host": 1,
+          "write-path-blocked": 1
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-reviews-for-broadways-king-lear-with-glenda-jackson",
+          "publishDate": "2019-04-04"
+        },
+        {
+          "url": "https://playbill.com/article/reviews-what-do-critics-think-of-kenneth-branagh-led-king-lear",
+          "publishDate": "2023-11-01"
+        },
+        {
+          "url": "https://playbill.com/article/what-do-critics-think-of-shakespeare-theatre-companys-king-lear-starring-patrick-page",
+          "publishDate": "2023-03-04"
+        },
+        {
+          "url": "https://playbill.com/article/read-reviews-for-king-lear-starring-anthony-hopkins-and-emma-thompson",
+          "publishDate": "2018-09-27"
+        },
+        {
+          "url": "https://playbill.com/article/read-uk-reviews-for-ian-mckellen-in-king-lear",
+          "publishDate": "2017-10-02"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-KING-LEAR-Starring-Glenda-Jackson-Opens-On-Broadway-20190404",
+          "publishDate": "2019-04-04"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Kenneth-Branagh-Directed-KING-LEAR-Opens-at-The-Shed-20241114",
+          "publishDate": "2024-11-14"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-The-Publics-KING-LEAR-Opens-at-the-Delacorte-20140805",
+          "publishDate": "2014-08-05"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Amazon-Primes-KING-LEAR-with-Anthony-Hopkins-and-Emma-Thompson-20180927",
+          "publishDate": "2018-09-27"
+        }
+      ],
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "http://broadway.news/2019/04/04/review-a-scorching-glenda-jackson-leads-the-way-for-the-women-of-king-lear/",
+          "host": "broadway.news",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://dctheatrescene.com/2019/04/04/king-lear-review-glenda-jackson-in-must-see-if-imperfect-shakespeare/",
+          "host": "dctheatrescene.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://deadline.com/2019/04/glenda-jackson-king-lear-broadway-review-ruth-wilson-pedro-pascal-1202587083/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://ew.com/theater-reviews/2019/04/04/glenda-jackson-king-lear-review/",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.vulture.com/2019/04/theater-review-once-more-into-the-storm-with-king-lear.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://nystagereview.com/2019/04/04/king-lear-glenda-jackson-rants-raves-and-rules/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://nystagereview.com/2019/04/04/king-lear-a-role-fit-for-a-commander/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.nytimes.com/2019/04/04/theater/king-lear-review-glenda-jackson.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.nj.com/entertainment/2019/04/glenda-jackson-roars-in-an-amazing-king-lear-on-broadway-review.html",
+          "host": "nj.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.ny1.com/nyc/all-boroughs/news/2019/04/05/theater-review---king-lear-",
+          "host": "ny1.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.timeout.com/newyork/theater/review-king-lear-glenda-jackson",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.towleroad.com/2019/04/glenda-jackson-king-lear/",
+          "host": "towleroad.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://variety.com/2019/legit/reviews/king-lear-review-glenda-jackson-broadway-1203180018/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.nytimes.com/2023/10/31/theater/review-kenneth-branaghs-short-shallow-king-lear.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-12695241/PATRICK-MARMION-Kenneth-Branagh-King-Lear-play-mad-dash-tragedy.html",
+          "host": "dailymail.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/king-lear-wyndhams-theatre-review-kenneth-branagh-helms-pared-down-tragedy",
+          "host": "theartsdesk.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/king-lear-review-kenneth-branagh-wyndhams-b2439245.html",
+          "host": "independent.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.newstatesman.com/culture/theatre/2023/11/kenneth-branagh-king-lear-review-callow-utterly-unmoving",
+          "host": "newstatesman.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/king-lear-wyndhams-theatre-review-kenneth-branagh/",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/king-lear-theatre-review-kenneth-branagh-6cwrgk03v",
+          "host": "thetimes.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/king-lear-25-review",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.broadwayworld.com/washington-dc/article/Review-KING-LEAR-at-Shakespeare-Theatre-Company-20230303",
+          "host": "broadwayworld.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.washingtonpost.com/theater-dance/2023/03/03/king-lear-patrick-page-godwin-stc/",
+          "host": "washingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.standard.co.uk/goingout/theatre/king-lear-theatre-review-ian-mckellens-detailed-intelligent-performance-is-a-triumph-a3648041.html",
+          "host": "standard.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://inews.co.uk/essentials/ian-mckellen-king-lear-brutal-sensual-triumphant/",
+          "host": "inews.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.metro.news/theatre-review-ian-mckellen-put-through-the-wringer-in-king-lear/766152/",
+          "host": "metro.news",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://variety.com/2017/legit/reviews/king-lear-review-ian-mckellen-1202577750/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.nytimes.com/2019/04/04/theater/king-lear-review-glenda-jackson.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/review-king-lear-glenda-jackson",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.thewrap.com/king-lear-broadway-review-glenda-jackson-triumphs-in-cluttered-mess-of-a-revival/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://deadline.com/2019/04/glenda-jackson-king-lear-broadway-review-ruth-wilson-pedro-pascal-1202587083/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/glenda-jackson-as-king-lear-was-a-good-idea-why-is-everything-around-her-so-wrong/2019/04/04/ed786ad0-56db-11e9-8ef3-fbd41a2ce4d5_story.html",
+          "host": "washingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://variety.com/2019/legit/reviews/king-lear-review-glenda-jackson-broadway-1203180018/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://ew.com/theater-reviews/2019/04/04/glenda-jackson-king-lear-review/",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.amny.com/entertainment/king-lear-broadway-review-1.29377016",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.ny1.com/nyc/all-boroughs/news/2019/04/05/theater-review---king-lear-",
+          "host": "ny1.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.vulture.com/2019/04/theater-review-once-more-into-the-storm-with-king-lear.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.nj.com/entertainment/2019/04/glenda-jackson-roars-in-an-amazing-king-lear-on-broadway-review.html",
+          "host": "nj.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.thedailybeast.com/glenda-jackson-in-shakespeares-king-lear-on-broadway-tragedy-and-a-lot-of-trump-era-sighing",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.nytimes.com/2024/11/14/theater/king-lear-review-kenneth-branagh.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://observer.com/2024/11/review-kenneth-branaghs-king-lear-howls-into-a-stormy-rushed-muddle/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.theatrely.com/post/a-hasty-king-lear-at-the-shed-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/king-lear-off-broadway-review-kenneth-branagh",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.nytimes.com/2014/08/06/theater/king-lear-in-central-park-starring-john-lithgow.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.vulture.com/2014/08/theater-review-king-lear-public-theater-john-lithgow.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/king-lear-review-hail-john-lithgow-1.8945797",
+          "host": "newsday.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://variety.com/2014/legit/reviews/review-king-lear-john-lithgow-annette-bening-1201275895/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.timeout.com/newyork/theater/king-lear-12",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/king-lear-theater-review-article-1.1892742",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.nbcnewyork.com/entertainment/the-scene/SITP-King-Lear-Review-269970641.html",
+          "host": "nbcnewyork.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.usatoday.com/story/life/theater/2014/08/05/shakespeare-in-the-park-review-king-lear/13580135/",
+          "host": "usatoday.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://online.wsj.com/articles/theater-review-king-lear-1407290743",
+          "host": "wsj.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://nypost.com/2014/08/05/john-lithgow-and-annette-bening-flail-in-central-park-king-lear/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.amny.com/entertainment/king-lear-review-john-lithgow-superb-in-shakespeare-in-the-park-production-1.8971915",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.deadline.com/2014/08/king-lear-central-park-john-lithgow-annette-bening-review/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.pastemagazine.com/articles/2018/09/amazon-prime-bbc-king-lear-anthony-hopkins-emma-th.html",
+          "host": "pastemagazine.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Oakland-Theater-Project-20261002",
+          "host": "broadwayworld.com",
+          "outletId": "broadwayworld",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.marinij.com/2026/10/01/review-missed-opportunities-plague-oakland-theaters-king-lear/",
+          "host": "marinij.com",
+          "outletId": "marin-independent-journal",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www"
+        },
+        {
+          "url": "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Z-Space-20260928",
+          "host": "broadwayworld.com",
+          "outletId": "broadwayworld",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/king-lear-review-david-threlfall-kb6mrfglj",
+          "host": "thetimes.com",
+          "outletId": "times-uk",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/king-lear-royal-exchange-three-star-review/",
+          "host": "telegraph.co.uk",
+          "outletId": "sunday-telegraph",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.allabouttheatreuk.com/post/review-king-lear-royal-exchange-theatre-manchester",
+          "host": "allabouttheatreuk.com",
+          "outletId": "allabouttheatreuk"
+        },
+        {
+          "url": "https://jadar.uk/2026/10/11/review-king-lear-royal-exchange-theatre/",
+          "host": "jadar.uk",
+          "outletId": "jadar"
+        },
+        {
+          "url": "https://www.royalexchange.co.uk/event/king-lear/",
+          "host": "royalexchange.co.uk",
+          "outletId": "royalexchange"
+        },
+        {
+          "url": "https://northwestend.co.uk/index.php/professional-reviews/773-king-lear-royal-exchange-manchester",
+          "host": "northwestend.co.uk",
+          "outletId": "northwestend"
+        },
+        {
+          "url": "https://confidentials.com/manchester/review-king-lear-royal-exchange-theatre",
+          "host": "confidentials.com",
+          "outletId": "confidentials"
+        },
+        {
+          "url": "https://ilovemanchester.com/king-lear-royal-exchange-review",
+          "host": "ilovemanchester.com",
+          "outletId": "ilovemanchester"
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/king-lear-royal-exchange-26094",
+          "host": "britishtheatreguide.info",
+          "outletId": "british-theatre"
+        },
+        {
+          "url": "https://www.weekendnotes.co.uk/king-lear-royal-exchange-review/",
+          "host": "weekendnotes.co.uk",
+          "outletId": "weekendnotes"
+        },
+        {
+          "url": "https://quayslife.com/reviews/king-lear-royal-exchange-50th-anniversary-production-review/",
+          "host": "quayslife.com",
+          "outletId": "quays-life"
+        },
+        {
+          "url": "https://www.visitmanchester.com/event/king-lear/111756101/",
+          "host": "visitmanchester.com",
+          "outletId": "visitmanchester"
+        },
+        {
+          "url": "https://www.theatrereviewsnorth.com/post/king-lear-1",
+          "host": "theatrereviewsnorth.com",
+          "outletId": "theatrereviewsnorth"
+        },
+        {
+          "url": "https://www.franklymydearuk.co.uk/theatre-review-king-lear-royal-exchange-manchester/",
+          "host": "franklymydearuk.co.uk",
+          "outletId": "franklymydearuk"
+        },
+        {
+          "url": "https://www.liverpooltheatres.com/news/review-_-king-lear-is-a-thrilling-production-with-a-brilliant-balanced-cast-_-a-classic-full-of-fire",
+          "host": "liverpooltheatres.com",
+          "outletId": "liverpooltheatres"
+        },
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/review-king-lear-royal-exchange-theatre",
+          "host": "westendbestfriend.co.uk",
+          "outletId": "west-end-best-friend"
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "broadwayworld",
+            "outlet": "broadwayworld",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Oakland-Theater-Project-20261002"
+          },
+          {
+            "outletId": "marin-independent-journal",
+            "outlet": "marin-independent-journal",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.marinij.com/2026/10/01/review-missed-opportunities-plague-oakland-theaters-king-lear/"
+          },
+          {
+            "outletId": "broadwayworld",
+            "outlet": "broadwayworld",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Z-Space-20260928"
+          },
+          {
+            "outletId": "times-uk",
+            "outlet": "times-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/king-lear-review-david-threlfall-kb6mrfglj"
+          },
+          {
+            "outletId": "sunday-telegraph",
+            "outlet": "sunday-telegraph",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/king-lear-royal-exchange-three-star-review/"
+          },
+          {
+            "outletId": "allabouttheatreuk.com",
+            "outlet": "allabouttheatreuk.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.allabouttheatreuk.com/post/review-king-lear-royal-exchange-theatre-manchester"
+          },
+          {
+            "outletId": "jadar",
+            "outlet": "jadar",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://jadar.uk/2026/10/11/review-king-lear-royal-exchange-theatre/"
+          },
+          {
+            "outletId": "royalexchange.co.uk",
+            "outlet": "royalexchange.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.royalexchange.co.uk/event/king-lear/"
+          },
+          {
+            "outletId": "northwestend.co.uk",
+            "outlet": "northwestend.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://northwestend.co.uk/index.php/professional-reviews/773-king-lear-royal-exchange-manchester"
+          },
+          {
+            "outletId": "confidentials.com",
+            "outlet": "confidentials.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://confidentials.com/manchester/review-king-lear-royal-exchange-theatre"
+          },
+          {
+            "outletId": "ilovemanchester.com",
+            "outlet": "ilovemanchester.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://ilovemanchester.com/king-lear-royal-exchange-review"
+          },
+          {
+            "outletId": "british-theatre",
+            "outlet": "british-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.britishtheatreguide.info/reviews/king-lear-royal-exchange-26094"
+          },
+          {
+            "outletId": "weekendnotes.co.uk",
+            "outlet": "weekendnotes.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.weekendnotes.co.uk/king-lear-royal-exchange-review/"
+          },
+          {
+            "outletId": "quays-life",
+            "outlet": "quays-life",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://quayslife.com/reviews/king-lear-royal-exchange-50th-anniversary-production-review/"
+          },
+          {
+            "outletId": "visitmanchester.com",
+            "outlet": "visitmanchester.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.visitmanchester.com/event/king-lear/111756101/"
+          },
+          {
+            "outletId": "theatrereviewsnorth.com",
+            "outlet": "theatrereviewsnorth.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatrereviewsnorth.com/post/king-lear-1"
+          },
+          {
+            "outletId": "franklymydearuk.co.uk",
+            "outlet": "franklymydearuk.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.franklymydearuk.co.uk/theatre-review-king-lear-royal-exchange-manchester/"
+          },
+          {
+            "outletId": "liverpooltheatres.com",
+            "outlet": "liverpooltheatres.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.liverpooltheatres.com/news/review-_-king-lear-is-a-thrilling-production-with-a-brilliant-balanced-cast-_-a-classic-full-of-fire"
+          },
+          {
+            "outletId": "west-end-best-friend",
+            "outlet": "west-end-best-friend",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.westendbestfriend.co.uk/news/review-king-lear-royal-exchange-theatre"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.theguardian.com/stage/2023/oct/31/king-lear-review-kenneth-branagh-shakespeare-tragedy-wyndhams-theatre-london",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/king-lear-review-at-wyndhams-theatre-london-with-kenneth-branagh",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/king-lear-review-kenneth-branaghs-banal-tragedy_1543275/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "http://www.theguardian.com/tv-and-radio/2018/may/28/bbc-king-lear-review-anthony-hopkins",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2017/oct/01/king-lear-review-ian-mckellen-delivers-profound-portrait-of-a-soul-in-torment-chicester-festival-theatre",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2019/apr/04/king-lear-shakespeare-glenda-jackson-broadway",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2014/aug/06/king-lear-shakespeare-central-park-john-lithgow-review",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.theguardian.com/tv-and-radio/2018/may/28/bbc-king-lear-review-anthony-hopkins",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/king-lear-with-david-threlfall-at-the-royal-exchange-review_1734679/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/king-lear-review-royal-exchange-theatre-manchester-matthew-dunster-david-threlfall",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/king-lear-at-royal-exchange-theatre-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/king-lear-royal-exchange-manchester/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/oct/10/king-lear-review-david-threlfall-royal-exchange-theatre-manchester",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Oakland-Theater-Project-20261002",
+            "outletId": "broadwayworld",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.marinij.com/2026/10/01/review-missed-opportunities-plague-oakland-theaters-king-lear/",
+            "outletId": "marin-independent-journal",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/san-francisco/article/Review-KING-LEAR-at-Z-Space-20260928",
+            "outletId": "broadwayworld",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/king-lear-review-david-threlfall-kb6mrfglj",
+            "outletId": "times-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/king-lear-royal-exchange-three-star-review/",
+            "outletId": "sunday-telegraph",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.allabouttheatreuk.com/post/review-king-lear-royal-exchange-theatre-manchester",
+            "outletId": "allabouttheatreuk.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://jadar.uk/2026/10/11/review-king-lear-royal-exchange-theatre/",
+            "outletId": "jadar",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.royalexchange.co.uk/event/king-lear/",
+            "outletId": "royalexchange.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://northwestend.co.uk/index.php/professional-reviews/773-king-lear-royal-exchange-manchester",
+            "outletId": "northwestend.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://confidentials.com/manchester/review-king-lear-royal-exchange-theatre",
+            "outletId": "confidentials.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://ilovemanchester.com/king-lear-royal-exchange-review",
+            "outletId": "ilovemanchester.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.britishtheatreguide.info/reviews/king-lear-royal-exchange-26094",
+            "outletId": "british-theatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.weekendnotes.co.uk/king-lear-royal-exchange-review/",
+            "outletId": "weekendnotes.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://quayslife.com/reviews/king-lear-royal-exchange-50th-anniversary-production-review/",
+            "outletId": "quays-life",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.visitmanchester.com/event/king-lear/111756101/",
+            "outletId": "visitmanchester.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.theatrereviewsnorth.com/post/king-lear-1",
+            "outletId": "theatrereviewsnorth.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.franklymydearuk.co.uk/theatre-review-king-lear-royal-exchange-manchester/",
+            "outletId": "franklymydearuk.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.liverpooltheatres.com/news/review-_-king-lear-is-a-thrilling-production-with-a-brilliant-balanced-cast-_-a-classic-full-of-fire",
+            "outletId": "liverpooltheatres.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-king-lear-royal-exchange-theatre",
+            "outletId": "west-end-best-friend",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 5,
+        "candidateCount": 23
+      },
+      "computedAt": "2026-10-12T23:33:06.241Z"
     },
     {
       "showId": "king-of-the-yees-off-broadway-2026",
@@ -116720,7 +118959,12 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-10-02T16:20:26.670Z"
+      "computedAt": "2026-10-02T16:20:26.670Z",
+      "quarantine": {
+        "nextState": "incomplete:0:1",
+        "since": "2026-10-12T23:33:06.310Z",
+        "lastAt": "2026-10-12T23:33:06.310Z"
+      }
     },
     {
       "showId": "mother-play-2024",
@@ -121088,7 +123332,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-12T21:04:05.688Z"
+      "computedAt": "2026-10-12T23:33:06.241Z"
     },
     {
       "showId": "murder-she-didnt-write-west-end-2025",
@@ -123452,42 +125696,27 @@
       "category": "regional",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.sfchronicle.com/entertainment/theater/article/act-north-by-northwest-review-22404833.php",
         "https://www.mercurynews.com/2026/09/24/alfred-hitchcock-north-by-northwest-play-review/",
+        "https://stanforddaily.com/2026/10/11/north-by-northwest-review/",
+        "https://www.sfgate.com/news/bayarea/article/bcnarts-review-acts-north-by-northwest-a-22450489.php",
+        "https://www.sfchronicle.com/entertainment/theater/article/act-north-by-northwest-review-22404833.php",
         "https://culturevulture.net/theater/north-by-northwest-adapted-by-emma-rice/",
         "https://sfist.com/2026/09/24/north-by-northwest-at-act-is-a-lively-and-ludicrous-take-on-the-hitchcock-classic/",
-        "https://www.broadwayworld.com/san-francisco/article/Review-NORTH-BY-NORTHWEST-at-American-Conservatory-Theatre-20260924",
         "https://www.yahoo.com/entertainment/articles/north-northwest-review-act-proves-215527870.html",
+        "https://www.broadwayworld.com/san-francisco/article/Review-NORTH-BY-NORTHWEST-at-American-Conservatory-Theatre-20260924",
+        "https://www.timeout.com/san-francisco/theater/north-by-northwest",
+        "https://www.encoreplus.app/act-sf/north-by-northwest-2026-sfa/",
         "http://www.viagogo.ie/Teater-Billetter/Teater/Alfred-Hitchcocks-North-by-Northwest-Billetter/E-161997334",
-        "https://encorespotlight.com/event/american-conservatory-theater-north-by-northwest-2026/",
-        "https://www.sfgate.com/news/bayarea/article/bcnarts-review-acts-north-by-northwest-a-22450489.php"
+        "https://www.san-francisco-theater.com/reviews/customer-reviews/north-by-northwest"
       ],
-      "dirFiles": 2,
-      "dirClean": 2,
-      "inReviewsJson": 2,
+      "dirFiles": 8,
+      "dirClean": 8,
+      "inReviewsJson": 8,
       "missing": [
         {
-          "url": "https://www.sfchronicle.com/entertainment/theater/article/act-north-by-northwest-review-22404833.php",
-          "host": "sfchronicle.com",
-          "knownOutletId": "san-francisco-chronicle",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.mercurynews.com/2026/09/24/alfred-hitchcock-north-by-northwest-play-review/",
-          "host": "mercurynews.com",
-          "knownOutletId": "san-jose-mercury-news",
-          "serpCensus": true
-        },
-        {
-          "url": "https://culturevulture.net/theater/north-by-northwest-adapted-by-emma-rice/",
-          "host": "culturevulture.net",
-          "knownOutletId": "culture-vulture",
-          "serpCensus": true
-        },
-        {
-          "url": "https://sfist.com/2026/09/24/north-by-northwest-at-act-is-a-lively-and-ludicrous-take-on-the-hitchcock-classic/",
-          "host": "sfist.com",
-          "knownOutletId": "sfist",
+          "url": "https://stanforddaily.com/2026/10/11/north-by-northwest-review/",
+          "host": "stanforddaily.com",
+          "knownOutletId": null,
           "serpCensus": true
         },
         {
@@ -123497,25 +125726,35 @@
           "serpCensus": true
         },
         {
+          "url": "https://www.timeout.com/san-francisco/theater/north-by-northwest",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.encoreplus.app/act-sf/north-by-northwest-2026-sfa/",
+          "host": "encoreplus.app",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
           "url": "http://www.viagogo.ie/Teater-Billetter/Teater/Alfred-Hitchcocks-North-by-Northwest-Billetter/E-161997334",
           "host": "viagogo.ie",
           "knownOutletId": null,
           "serpCensus": true
         },
         {
-          "url": "https://encorespotlight.com/event/american-conservatory-theater-north-by-northwest-2026/",
-          "host": "encorespotlight.com",
+          "url": "https://www.san-francisco-theater.com/reviews/customer-reviews/north-by-northwest",
+          "host": "san-francisco-theater.com",
           "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.sfgate.com/news/bayarea/article/bcnarts-review-acts-north-by-northwest-a-22450489.php",
-          "host": "sfgate.com",
-          "knownOutletId": "sfgate",
           "serpCensus": true
         }
       ],
       "dirOnly": [
+        {
+          "host": "kqed.org",
+          "count": 1
+        },
         {
           "host": "stageandcinema.com",
           "count": 1
@@ -123536,7 +125775,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 6,
             "error": null
           },
           {
@@ -123556,7 +125795,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -123576,7 +125815,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -123592,65 +125831,33 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 9,
+        "resultCount": 12,
         "error": null
       },
       "candidatesRejected": {
-        "count": 35,
+        "count": 32,
         "byReason": {
+          "non-review-host": 25,
+          "census-junk-host": 2,
           "aggregator-internal-nav": 2,
-          "non-review-host": 31,
-          "census-junk-host": 2
+          "non-review-path": 2,
+          "ticketing-reseller": 1
         }
       },
       "dedupedVariants": [],
+      "unextractable": [],
       "ingestResults": [
         {
-          "url": "https://www.sfchronicle.com/entertainment/theater/article/act-north-by-northwest-review-22404833.php",
-          "host": "sfchronicle.com",
-          "outletId": "san-francisco-chronicle",
-          "provisional": false,
+          "url": "https://stanforddaily.com/2026/10/11/north-by-northwest-review/",
+          "host": "stanforddaily.com",
+          "outletId": "stanforddaily",
+          "provisional": true,
           "ok": true,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.mercurynews.com/2026/09/24/alfred-hitchcock-north-by-northwest-play-review/",
-          "host": "mercurynews.com",
-          "outletId": "san-jose-mercury-news",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://culturevulture.net/theater/north-by-northwest-adapted-by-emma-rice/",
-          "host": "culturevulture.net",
-          "outletId": "culture-vulture",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://sfist.com/2026/09/24/north-by-northwest-at-act-is-a-lively-and-ludicrous-take-on-the-hitchcock-classic/",
-          "host": "sfist.com",
-          "outletId": "sfist",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
+          "zeroChar": false,
           "reason": null
         },
         {
@@ -123663,56 +125870,65 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  ScrapingBee credits low: -5 remaining (-0.0%) — skipping SB\n⚠️  ScrapingBee failed (render_js=fa"
+          "zeroChar": false,
+          "reason": "⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www"
+        },
+        {
+          "url": "https://www.timeout.com/san-francisco/theater/north-by-northwest",
+          "host": "timeout.com",
+          "outletId": "timeout-london",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.encoreplus.app/act-sf/north-by-northwest-2026-sfa/",
+          "host": "encoreplus.app",
+          "outletId": "encoreplus",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "http://www.viagogo.ie/Teater-Billetter/Teater/Alfred-Hitchcocks-North-by-Northwest-Billetter/E-161997334",
+          "host": "viagogo.ie",
+          "outletId": "viagogo",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "⚠️  provisional outlet \"viagogo\" (not in registry) — onboard to outlet-registry.json after review.\nA"
         }
       ],
       "ingestSkippedByCap": [
         {
-          "url": "http://www.viagogo.ie/Teater-Billetter/Teater/Alfred-Hitchcocks-North-by-Northwest-Billetter/E-161997334",
-          "host": "viagogo.ie",
-          "outletId": "viagogo"
-        },
-        {
-          "url": "https://encorespotlight.com/event/american-conservatory-theater-north-by-northwest-2026/",
-          "host": "encorespotlight.com",
-          "outletId": "encorespotlight"
-        },
-        {
-          "url": "https://www.sfgate.com/news/bayarea/article/bcnarts-review-acts-north-by-northwest-a-22450489.php",
-          "host": "sfgate.com",
-          "outletId": "sfgate"
+          "url": "https://www.san-francisco-theater.com/reviews/customer-reviews/north-by-northwest",
+          "host": "san-francisco-theater.com",
+          "outletId": "san-francisco-theater"
         }
       ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "san-francisco-chronicle",
-            "outlet": "san-francisco-chronicle",
+            "outletId": "stanforddaily.com",
+            "outlet": "stanforddaily.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.sfchronicle.com/entertainment/theater/article/act-north-by-northwest-review-22404833.php"
-          },
-          {
-            "outletId": "san-jose-mercury-news",
-            "outlet": "san-jose-mercury-news",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.mercurynews.com/2026/09/24/alfred-hitchcock-north-by-northwest-play-review/"
-          },
-          {
-            "outletId": "culture-vulture",
-            "outlet": "culture-vulture",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://culturevulture.net/theater/north-by-northwest-adapted-by-emma-rice/"
-          },
-          {
-            "outletId": "sfist",
-            "outlet": "sfist",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://sfist.com/2026/09/24/north-by-northwest-at-act-is-a-lively-and-ludicrous-take-on-the-hitchcock-classic/"
+            "url": "https://stanforddaily.com/2026/10/11/north-by-northwest-review/"
           },
           {
             "outletId": "yahoo",
@@ -123722,6 +125938,20 @@
             "url": "https://www.yahoo.com/entertainment/articles/north-northwest-review-act-proves-215527870.html"
           },
           {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/san-francisco/theater/north-by-northwest"
+          },
+          {
+            "outletId": "encoreplus.app",
+            "outlet": "encoreplus.app",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.encoreplus.app/act-sf/north-by-northwest-2026-sfa/"
+          },
+          {
             "outletId": "viagogo.ie",
             "outlet": "viagogo.ie",
             "critic": "Unknown",
@@ -123729,22 +125959,45 @@
             "url": "http://www.viagogo.ie/Teater-Billetter/Teater/Alfred-Hitchcocks-North-by-Northwest-Billetter/E-161997334"
           },
           {
-            "outletId": "encorespotlight.com",
-            "outlet": "encorespotlight.com",
+            "outletId": "san-francisco-theater.com",
+            "outlet": "san-francisco-theater.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://encorespotlight.com/event/american-conservatory-theater-north-by-northwest-2026/"
-          },
-          {
-            "outletId": "sfgate",
-            "outlet": "sfgate",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.sfgate.com/news/bayarea/article/bcnarts-review-acts-north-by-northwest-a-22450489.php"
+            "url": "https://www.san-francisco-theater.com/reviews/customer-reviews/north-by-northwest"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.mercurynews.com/2026/09/24/alfred-hitchcock-north-by-northwest-play-review/",
+            "outletId": "mercurynews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T19:06:54.776Z"
+          },
+          {
+            "url": "https://www.sfgate.com/news/bayarea/article/bcnarts-review-acts-north-by-northwest-a-22450489.php",
+            "outletId": "sfgate.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T19:06:54.776Z"
+          },
+          {
+            "url": "https://www.sfchronicle.com/entertainment/theater/article/act-north-by-northwest-review-22404833.php",
+            "outletId": "sfchronicle.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T19:06:54.776Z"
+          },
+          {
+            "url": "https://culturevulture.net/theater/north-by-northwest-adapted-by-emma-rice/",
+            "outletId": "culturevulture.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T19:06:54.776Z"
+          },
+          {
+            "url": "https://sfist.com/2026/09/24/north-by-northwest-at-act-is-a-lively-and-ludicrous-take-on-the-hitchcock-classic/",
+            "outletId": "sfist.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T19:06:54.776Z"
+          },
           {
             "url": "https://www.broadwayworld.com/san-francisco/article/Review-NORTH-BY-NORTHWEST-at-American-Conservatory-Theatre-20260924",
             "outletId": "broadwayworld.com",
@@ -123752,32 +126005,11 @@
             "firstSeenAt": "2026-10-04T19:06:54.776Z"
           },
           {
-            "url": "https://www.sfchronicle.com/entertainment/theater/article/act-north-by-northwest-review-22404833.php",
-            "outletId": "san-francisco-chronicle",
+            "url": "https://stanforddaily.com/2026/10/11/north-by-northwest-review/",
+            "outletId": "stanforddaily.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-04T19:06:54.776Z"
-          },
-          {
-            "url": "https://www.mercurynews.com/2026/09/24/alfred-hitchcock-north-by-northwest-play-review/",
-            "outletId": "san-jose-mercury-news",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-04T19:06:54.776Z"
-          },
-          {
-            "url": "https://culturevulture.net/theater/north-by-northwest-adapted-by-emma-rice/",
-            "outletId": "culture-vulture",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-04T19:06:54.776Z"
-          },
-          {
-            "url": "https://sfist.com/2026/09/24/north-by-northwest-at-act-is-a-lively-and-ludicrous-take-on-the-hitchcock-classic/",
-            "outletId": "sfist",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-04T19:06:54.776Z"
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
           },
           {
             "url": "https://www.yahoo.com/entertainment/articles/north-northwest-review-act-proves-215527870.html",
@@ -123787,6 +126019,20 @@
             "firstSeenAt": "2026-10-04T19:06:54.776Z"
           },
           {
+            "url": "https://www.timeout.com/san-francisco/theater/north-by-northwest",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.encoreplus.app/act-sf/north-by-northwest-2026-sfa/",
+            "outletId": "encoreplus.app",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
             "url": "http://www.viagogo.ie/Teater-Billetter/Teater/Alfred-Hitchcocks-North-by-Northwest-Billetter/E-161997334",
             "outletId": "viagogo.ie",
             "state": "GAP",
@@ -123794,25 +126040,18 @@
             "firstSeenAt": "2026-10-04T19:06:54.776Z"
           },
           {
-            "url": "https://encorespotlight.com/event/american-conservatory-theater-north-by-northwest-2026/",
-            "outletId": "encorespotlight.com",
+            "url": "https://www.san-francisco-theater.com/reviews/customer-reviews/north-by-northwest",
+            "outletId": "san-francisco-theater.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-04T19:06:54.776Z"
-          },
-          {
-            "url": "https://www.sfgate.com/news/bayarea/article/bcnarts-review-acts-north-by-northwest-a-22450489.php",
-            "outletId": "sfgate",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-04T19:06:54.776Z"
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 1,
-        "candidateCount": 9
+        "liveCount": 6,
+        "candidateCount": 12
       },
-      "computedAt": "2026-10-04T19:06:54.776Z"
+      "computedAt": "2026-10-12T23:33:06.241Z"
     },
     {
       "showId": "not-nobody-off-broadway-2026",
@@ -140849,7 +143088,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-12T21:04:05.688Z"
+      "computedAt": "2026-10-12T23:33:06.241Z"
     },
     {
       "showId": "queen-versailles-2025",
@@ -141997,7 +144236,12 @@
         "liveCount": 0,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-02T21:17:32.479Z"
+      "computedAt": "2026-10-02T21:17:32.479Z",
+      "quarantine": {
+        "nextState": "incomplete:0:1",
+        "since": "2026-10-12T23:33:06.310Z",
+        "lastAt": "2026-10-12T23:33:06.310Z"
+      }
     },
     {
       "showId": "redcliffe-off-west-end-2026",
@@ -166805,7 +169049,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-12T19:37:31.912Z"
+      "computedAt": "2026-10-12T23:33:06.241Z"
     },
     {
       "showId": "the-balusters-2026",
@@ -169016,7 +171260,7 @@
         "http://www.northjersey.com/arts-and-entertainment/theater-review-the-cherry-orchard-with-diane-lane-1.1677715",
         "https://www.theguardian.com/stage/2016/oct/16/the-cherry-orchard-review-diane-lane"
       ],
-      "dirFiles": 30,
+      "dirFiles": 31,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
@@ -169208,10 +171452,10 @@
       "candidatesRejected": {
         "count": 288,
         "byReason": {
+          "non-review-host": 15,
           "aggregator-internal-nav": 226,
           "not-http-url": 43,
-          "aggregator-section-root": 4,
-          "non-review-host": 15
+          "aggregator-section-root": 4
         }
       },
       "dedupedVariants": [],
@@ -169283,7 +171527,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-12T19:37:31.912Z"
+      "computedAt": "2026-10-12T23:33:06.241Z"
     },
     {
       "showId": "the-children-off-west-end-2026",
@@ -193376,6 +195620,455 @@
       "computedAt": "2026-09-20T01:54:21.561Z"
     },
     {
+      "showId": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
+      "title": "The Prime of Miss Jean Brodie",
+      "openingDate": "2026-10-11",
+      "status": "open",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.theguardian.com/stage/2026/oct/11/the-prime-of-miss-jean-brodie-review-muriel-spark-royal-lyceum-edinburgh-tour",
+        "https://corrblimey.uk/2026/10/10/review-the-prime-of-miss-jean-brodie-the-royal-lyceum-theatre/",
+        "https://www.whatsonstage.com/news/the-prime-of-miss-jean-brodie-at-royal-lyceum-theatre-and-on-tour-review_1734843/",
+        "https://www.telegraph.co.uk/theatre/what-to-see/the-prime-of-miss-jean-brodie-national-theatre-of-scotland/",
+        "https://www.thereviewshub.com/the-prime-of-miss-jean-brodie-royal-lyceum-theatre-edinburgh/",
+        "https://bouquetsbrickbatsreviews.com/2026/10/10/the-prime-of-miss-jean-brodie/",
+        "https://list.co.uk/news/the-prime-of-miss-jean-brodie-theatre-review-sparkling-ambiguity-49282",
+        "https://www.scotsman.com/arts-and-culture/edinburgh-festivals/the-prime-of-miss-jean-brodie-review-lyceum-edinburgh-9279438",
+        "https://www.heraldscotland.com/life_style/26626439.review-prime-miss-jean-brodie-royal-lyceum-theatre-edinburgh/",
+        "https://www.thetimes.com/culture/theatre-dance/article/the-prime-of-miss-jean-brodie-review-nk3mmsrbz",
+        "https://www.reviewsgate.co.uk/reviews-archive-part-2/the-prime-of-miss-jean-brodie",
+        "https://www.londontheatre.co.uk/reviews/the-prime-of-miss-jean-brodie",
+        "https://westendwilma.com/review-the-prime-of-miss-jean-brodie-donmar-warehouse/",
+        "https://www.whatsonstage.com/news/the-prime-of-miss-jean-brodie-tour-with-gayle-rankin-completes-casting_1728565/",
+        "https://www.heraldscotland.com/news/26547748.prime-miss-jean-brodie-edinburgh-lyceum-need-know/"
+      ],
+      "dirFiles": 6,
+      "dirClean": 3,
+      "inReviewsJson": 4,
+      "missing": [
+        {
+          "url": "https://corrblimey.uk/2026/10/10/review-the-prime-of-miss-jean-brodie-the-royal-lyceum-theatre/",
+          "host": "corrblimey.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-prime-of-miss-jean-brodie-national-theatre-of-scotland/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.thereviewshub.com/the-prime-of-miss-jean-brodie-royal-lyceum-theatre-edinburgh/",
+          "host": "thereviewshub.com",
+          "knownOutletId": "thereviewshub",
+          "serpCensus": true
+        },
+        {
+          "url": "https://bouquetsbrickbatsreviews.com/2026/10/10/the-prime-of-miss-jean-brodie/",
+          "host": "bouquetsbrickbatsreviews.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://list.co.uk/news/the-prime-of-miss-jean-brodie-theatre-review-sparkling-ambiguity-49282",
+          "host": "list.co.uk",
+          "knownOutletId": "the-list",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/the-prime-of-miss-jean-brodie-review-nk3mmsrbz",
+          "host": "thetimes.com",
+          "knownOutletId": "times-uk",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.reviewsgate.co.uk/reviews-archive-part-2/the-prime-of-miss-jean-brodie",
+          "host": "reviewsgate.co.uk",
+          "knownOutletId": "reviewsgate",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/the-prime-of-miss-jean-brodie",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "serpCensus": true
+        },
+        {
+          "url": "https://westendwilma.com/review-the-prime-of-miss-jean-brodie-donmar-warehouse/",
+          "host": "westendwilma.com",
+          "knownOutletId": "west-end-wilma",
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.scotsman.com/arts-and-culture/edinburgh-festivals/the-prime-of-miss-jean-brodie-review-lyceum-edinburgh-9279438",
+          "host": "scotsman.com",
+          "knownOutletId": "the-scotsman",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "the-scotsman--joyce-mcmillan.json",
+              "flag": "clean",
+              "urlInDir": "https://www.scotsman.com/arts-and-culture/edinburgh-festivals/the-prime-of-miss-jean-brodie-review-lyceum-edinburgh-9279438"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"The Prime of Miss Jean Brodie\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Prime of Miss Jean Brodie\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 7,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Prime of Miss Jean Brodie\" review lyceum",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Prime of Miss Jean Brodie Royal Lyceum Theatre, Edinburgh review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Prime of Miss Jean Brodie Royal Lyceum Theatre, Edinburgh review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Prime of Miss Jean Brodie Royal Lyceum Theatre, Edinburgh review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 15,
+        "error": null
+      },
+      "candidatesRejected": {
+        "count": 10,
+        "byReason": {
+          "non-review-host": 6,
+          "census-junk-host": 1,
+          "aggregator-internal-nav": 3
+        }
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://corrblimey.uk/2026/10/10/review-the-prime-of-miss-jean-brodie-the-royal-lyceum-theatre/",
+          "host": "corrblimey.uk",
+          "outletId": "corrblimey",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-prime-of-miss-jean-brodie-national-theatre-of-scotland/",
+          "host": "telegraph.co.uk",
+          "outletId": "sunday-telegraph",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.thereviewshub.com/the-prime-of-miss-jean-brodie-royal-lyceum-theatre-edinburgh/",
+          "host": "thereviewshub.com",
+          "outletId": "thereviewshub",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://bouquetsbrickbatsreviews.com/2026/10/10/the-prime-of-miss-jean-brodie/",
+          "host": "bouquetsbrickbatsreviews.com",
+          "outletId": "bouquetsbrickbatsreviews",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://list.co.uk/news/the-prime-of-miss-jean-brodie-theatre-review-sparkling-ambiguity-49282",
+          "host": "list.co.uk",
+          "outletId": "the-list",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/the-prime-of-miss-jean-brodie-review-nk3mmsrbz",
+          "host": "thetimes.com",
+          "outletId": "times-uk"
+        },
+        {
+          "url": "https://www.reviewsgate.co.uk/reviews-archive-part-2/the-prime-of-miss-jean-brodie",
+          "host": "reviewsgate.co.uk",
+          "outletId": "reviewsgate"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/the-prime-of-miss-jean-brodie",
+          "host": "londontheatre.co.uk",
+          "outletId": "london-theatre"
+        },
+        {
+          "url": "https://westendwilma.com/review-the-prime-of-miss-jean-brodie-donmar-warehouse/",
+          "host": "westendwilma.com",
+          "outletId": "west-end-wilma"
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "corrblimey.uk",
+            "outlet": "corrblimey.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://corrblimey.uk/2026/10/10/review-the-prime-of-miss-jean-brodie-the-royal-lyceum-theatre/"
+          },
+          {
+            "outletId": "sunday-telegraph",
+            "outlet": "sunday-telegraph",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-prime-of-miss-jean-brodie-national-theatre-of-scotland/"
+          },
+          {
+            "outletId": "thereviewshub",
+            "outlet": "thereviewshub",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thereviewshub.com/the-prime-of-miss-jean-brodie-royal-lyceum-theatre-edinburgh/"
+          },
+          {
+            "outletId": "bouquetsbrickbatsreviews.com",
+            "outlet": "bouquetsbrickbatsreviews.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://bouquetsbrickbatsreviews.com/2026/10/10/the-prime-of-miss-jean-brodie/"
+          },
+          {
+            "outletId": "the-list",
+            "outlet": "the-list",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://list.co.uk/news/the-prime-of-miss-jean-brodie-theatre-review-sparkling-ambiguity-49282"
+          },
+          {
+            "outletId": "times-uk",
+            "outlet": "times-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/the-prime-of-miss-jean-brodie-review-nk3mmsrbz"
+          },
+          {
+            "outletId": "reviewsgate",
+            "outlet": "reviewsgate",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.reviewsgate.co.uk/reviews-archive-part-2/the-prime-of-miss-jean-brodie"
+          },
+          {
+            "outletId": "london-theatre",
+            "outlet": "london-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatre.co.uk/reviews/the-prime-of-miss-jean-brodie"
+          },
+          {
+            "outletId": "west-end-wilma",
+            "outlet": "west-end-wilma",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://westendwilma.com/review-the-prime-of-miss-jean-brodie-donmar-warehouse/"
+          },
+          {
+            "outletId": "the-scotsman",
+            "outlet": "the-scotsman",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.scotsman.com/arts-and-culture/edinburgh-festivals/the-prime-of-miss-jean-brodie-review-lyceum-edinburgh-9279438"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.theguardian.com/stage/2026/oct/11/the-prime-of-miss-jean-brodie-review-muriel-spark-royal-lyceum-edinburgh-tour",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/the-prime-of-miss-jean-brodie-at-royal-lyceum-theatre-and-on-tour-review_1734843/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.heraldscotland.com/life_style/26626439.review-prime-miss-jean-brodie-royal-lyceum-theatre-edinburgh/",
+            "outletId": "heraldscotland.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/the-prime-of-miss-jean-brodie-tour-with-gayle-rankin-completes-casting_1728565/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.heraldscotland.com/news/26547748.prime-miss-jean-brodie-edinburgh-lyceum-need-know/",
+            "outletId": "heraldscotland.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://corrblimey.uk/2026/10/10/review-the-prime-of-miss-jean-brodie-the-royal-lyceum-theatre/",
+            "outletId": "corrblimey.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-prime-of-miss-jean-brodie-national-theatre-of-scotland/",
+            "outletId": "sunday-telegraph",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/the-prime-of-miss-jean-brodie-royal-lyceum-theatre-edinburgh/",
+            "outletId": "thereviewshub",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://bouquetsbrickbatsreviews.com/2026/10/10/the-prime-of-miss-jean-brodie/",
+            "outletId": "bouquetsbrickbatsreviews.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://list.co.uk/news/the-prime-of-miss-jean-brodie-theatre-review-sparkling-ambiguity-49282",
+            "outletId": "the-list",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/the-prime-of-miss-jean-brodie-review-nk3mmsrbz",
+            "outletId": "times-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.reviewsgate.co.uk/reviews-archive-part-2/the-prime-of-miss-jean-brodie",
+            "outletId": "reviewsgate",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/the-prime-of-miss-jean-brodie",
+            "outletId": "london-theatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://westendwilma.com/review-the-prime-of-miss-jean-brodie-donmar-warehouse/",
+            "outletId": "west-end-wilma",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.scotsman.com/arts-and-culture/edinburgh-festivals/the-prime-of-miss-jean-brodie-review-lyceum-edinburgh-9279438",
+            "outletId": "the-scotsman",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 3,
+        "candidateCount": 13
+      },
+      "computedAt": "2026-10-12T23:33:06.241Z"
+    },
+    {
       "showId": "the-producers-west-end-2025",
       "title": "The Producers",
       "openingDate": "2025-09-13",
@@ -199029,51 +201722,36 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://theatreandtonic.co.uk/blog/the-urmetazoan-hampstead-theatre-review",
         "https://www.thereviewshub.com/the-urmetazoan-hampstead-theatre-london/",
-        "https://lovelondonloveculture.com/2026/09/29/review-round-up-the-urmetazoan-hampstead-theatre/",
-        "https://thespyinthestalls.com/2026/09/the-urmetazoan/",
+        "https://theatreandtonic.co.uk/blog/the-urmetazoan-hampstead-theatre-review",
         "https://www.theupcoming.co.uk/2026/09/25/the-urmetazoan-at-hampstead-theatre-theatre-review/",
         "https://sierz.co.uk/reviews/the-urmetazoan-hampstead-theatre/",
-        "https://readaboutstuff.com/2026/09/29/review-the-urmetazoan-hampstead-theatre-london/",
-        "https://www.broadwayworld.com/westend/article/Review-THE-URMETAZOAN-Hampstead-Theatre-20260925",
-        "https://www.thestage.co.uk/reviews/the-urmetazoan-review-hampstead-theatre-london-alex-rugman",
-        "https://www.allthatdazzles.co.uk/post/review-the-urmetazoan-hampstead-theatre-downstairs",
-        "https://www.londontheatre1.com/reviews/the-urmetazoan-hampstead-theatre/",
         "https://khambayswordswordswords.blog/2026/09/26/the-urmetazoan-at-hampstead-theatre-2026-review/",
+        "https://thespyinthestalls.com/2026/09/the-urmetazoan/",
+        "https://www.thestage.co.uk/reviews/the-urmetazoan-review-hampstead-theatre-london-alex-rugman",
+        "https://readaboutstuff.com/2026/09/29/review-the-urmetazoan-hampstead-theatre-london/",
+        "https://www.allthatdazzles.co.uk/post/review-the-urmetazoan-hampstead-theatre-downstairs",
+        "https://www.broadwayworld.com/westend/article/Review-THE-URMETAZOAN-Hampstead-Theatre-20260925",
+        "https://www.londontheatre1.com/reviews/the-urmetazoan-hampstead-theatre/",
         "https://www.timeout.com/london/theatre/the-urmetazoan",
-        "https://northwestend.com/the-urmetazoan-hampstead-theatre/amp/",
         "https://www.londonboxoffice.co.uk/news/post/the-urmetazoan-hampstead-theatre-review",
-        "https://www.thereviewshub.com/tag/the-urmetazoan/",
-        "https://fullhouse.me/production/the-urmetazoan-2026"
+        "https://northwestend.com/the-urmetazoan-hampstead-theatre/",
+        "https://www.theatre-news.com/review/UK/6651/Theatre/The-Urmetazoan-Hampstead-Theatre-Downstairs",
+        "https://fairypoweredproductions.com/the-urmetazoan-review/",
+        "https://theartsdesk.com/theatre/urmetazoan-hampstead-theatre-review-unconvincing-and-underwhelming"
       ],
-      "dirFiles": 22,
-      "dirClean": 14,
+      "dirFiles": 23,
+      "dirClean": 15,
       "inReviewsJson": 14,
       "missing": [
         {
-          "url": "https://lovelondonloveculture.com/2026/09/29/review-round-up-the-urmetazoan-hampstead-theatre/",
-          "host": "lovelondonloveculture.com",
-          "knownOutletId": "lovelondonloveculture",
-          "serpCensus": true
-        },
-        {
-          "url": "https://fullhouse.me/production/the-urmetazoan-2026",
-          "host": "fullhouse.me",
-          "knownOutletId": null,
+          "url": "https://www.theatre-news.com/review/UK/6651/Theatre/The-Urmetazoan-Hampstead-Theatre-Downstairs",
+          "host": "theatre-news.com",
+          "knownOutletId": "theatre-news",
           "serpCensus": true
         }
       ],
-      "dirOnly": [
-        {
-          "host": "theartsdesk.com",
-          "count": 1
-        },
-        {
-          "host": "fairypoweredproductions.com",
-          "count": 1
-        }
-      ],
+      "dirOnly": [],
       "flaggedMisses": [
         {
           "url": "https://sierz.co.uk/reviews/the-urmetazoan-hampstead-theatre/",
@@ -199114,7 +201792,7 @@
       ],
       "citedNoUrl": [],
       "weReference": {
-        "rowCount": 1,
+        "rowCount": 14,
         "sources": {
           "westendtheatre": {
             "found": false,
@@ -199137,6 +201815,13 @@
             "error": null,
             "fetchErrors": 0
           },
+          "bestoftheatre": {
+            "found": true,
+            "rows": 13,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
           "thestage-archive": {
             "found": false,
             "rows": 0,
@@ -199146,12 +201831,16 @@
           }
         },
         "allSourcesFailed": false,
-        "currentRunRows": 1,
-        "corroborated": 1,
+        "currentRunRows": 14,
+        "corroborated": 13,
         "perSource": {
           "lbo-roundup": {
             "cited": 1,
             "corroborated": 1
+          },
+          "bestoftheatre": {
+            "cited": 13,
+            "corroborated": 13
           }
         }
       },
@@ -199167,7 +201856,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 9,
+            "accepted": 8,
             "error": null
           },
           {
@@ -199177,7 +201866,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -199187,7 +201876,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -199207,50 +201896,41 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 17,
+        "resultCount": 15,
         "error": null
       },
       "candidatesRejected": {
-        "count": 15,
+        "count": 18,
         "byReason": {
-          "non-review-host": 7,
+          "non-review-host": 10,
+          "write-path-blocked": 1,
           "roundup-page": 1,
-          "ticketing-listing": 1,
           "non-review-path": 1,
-          "venue-production-page": 5
+          "venue-production-page": 4,
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
+      "unextractable": [],
       "ingestResults": [
         {
-          "url": "https://lovelondonloveculture.com/2026/09/29/review-round-up-the-urmetazoan-hampstead-theatre/",
-          "host": "lovelondonloveculture.com",
-          "outletId": "lovelondonloveculture",
+          "url": "https://www.theatre-news.com/review/UK/6651/Theatre/The-Urmetazoan-Hampstead-Theatre-Downstairs",
+          "host": "theatre-news.com",
+          "outletId": "theatre-news",
           "provisional": false,
-          "ok": false,
+          "ok": true,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "Refusing to ingest — https://lovelondonloveculture.com/2026/09/29/review-round-up-the-urmetazoan-ham"
-        },
-        {
-          "url": "https://fullhouse.me/production/the-urmetazoan-2026",
-          "host": "fullhouse.me",
-          "outletId": "fullhouse",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  provisional outlet \"fullhouse\" (not in registry) — onboard to outlet-registry.json after review."
+          "zeroChar": false,
+          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -199258,11 +201938,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "fullhouse.me",
-            "outlet": "fullhouse.me",
+            "outletId": "theatre-news",
+            "outlet": "theatre-news",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://fullhouse.me/production/the-urmetazoan-2026"
+            "url": "https://www.theatre-news.com/review/UK/6651/Theatre/The-Urmetazoan-Hampstead-Theatre-Downstairs"
           },
           {
             "outletId": "sierz-co-uk",
@@ -199282,20 +201962,14 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://theatreandtonic.co.uk/blog/the-urmetazoan-hampstead-theatre-review",
-            "outletId": "theatreandtonic.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-29T16:28:11.903Z"
-          },
-          {
             "url": "https://www.thereviewshub.com/the-urmetazoan-hampstead-theatre-london/",
             "outletId": "thereviewshub.com",
             "state": "live",
             "firstSeenAt": "2026-09-29T16:28:11.903Z"
           },
           {
-            "url": "https://thespyinthestalls.com/2026/09/the-urmetazoan/",
-            "outletId": "thespyinthestalls.com",
+            "url": "https://theatreandtonic.co.uk/blog/the-urmetazoan-hampstead-theatre-review",
+            "outletId": "theatreandtonic.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-29T16:28:11.903Z"
           },
@@ -199306,14 +201980,14 @@
             "firstSeenAt": "2026-09-29T16:28:11.903Z"
           },
           {
-            "url": "https://readaboutstuff.com/2026/09/29/review-the-urmetazoan-hampstead-theatre-london/",
-            "outletId": "readaboutstuff.com",
+            "url": "https://khambayswordswordswords.blog/2026/09/26/the-urmetazoan-at-hampstead-theatre-2026-review/",
+            "outletId": "khambayswordswordswords.blog",
             "state": "live",
             "firstSeenAt": "2026-09-29T16:28:11.903Z"
           },
           {
-            "url": "https://www.broadwayworld.com/westend/article/Review-THE-URMETAZOAN-Hampstead-Theatre-20260925",
-            "outletId": "broadwayworld.com",
+            "url": "https://thespyinthestalls.com/2026/09/the-urmetazoan/",
+            "outletId": "thespyinthestalls.com",
             "state": "live",
             "firstSeenAt": "2026-09-29T16:28:11.903Z"
           },
@@ -199324,8 +201998,20 @@
             "firstSeenAt": "2026-09-29T16:28:11.903Z"
           },
           {
+            "url": "https://readaboutstuff.com/2026/09/29/review-the-urmetazoan-hampstead-theatre-london/",
+            "outletId": "readaboutstuff.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-29T16:28:11.903Z"
+          },
+          {
             "url": "https://www.allthatdazzles.co.uk/post/review-the-urmetazoan-hampstead-theatre-downstairs",
             "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-29T16:28:11.903Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-THE-URMETAZOAN-Hampstead-Theatre-20260925",
+            "outletId": "broadwayworld.com",
             "state": "live",
             "firstSeenAt": "2026-09-29T16:28:11.903Z"
           },
@@ -199336,35 +202022,35 @@
             "firstSeenAt": "2026-09-29T16:28:11.903Z"
           },
           {
-            "url": "https://khambayswordswordswords.blog/2026/09/26/the-urmetazoan-at-hampstead-theatre-2026-review/",
-            "outletId": "khambayswordswordswords.blog",
-            "state": "live",
-            "firstSeenAt": "2026-09-29T16:28:11.903Z"
-          },
-          {
-            "url": "https://northwestend.com/the-urmetazoan-hampstead-theatre/amp/",
-            "outletId": "northwestend.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-30T07:43:36.484Z"
-          },
-          {
             "url": "https://www.londonboxoffice.co.uk/news/post/the-urmetazoan-hampstead-theatre-review",
             "outletId": "londonboxoffice.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-26T13:41:46.057Z"
           },
           {
-            "url": "https://www.thereviewshub.com/tag/the-urmetazoan/",
-            "outletId": "thereviewshub.com",
+            "url": "https://northwestend.com/the-urmetazoan-hampstead-theatre/",
+            "outletId": "northwestend.com",
             "state": "live",
-            "firstSeenAt": "2026-09-29T16:28:11.903Z"
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
           },
           {
-            "url": "https://fullhouse.me/production/the-urmetazoan-2026",
-            "outletId": "fullhouse.me",
+            "url": "https://fairypoweredproductions.com/the-urmetazoan-review/",
+            "outletId": "fairypoweredproductions.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://theartsdesk.com/theatre/urmetazoan-hampstead-theatre-review-unconvincing-and-underwhelming",
+            "outletId": "theartsdesk.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://www.theatre-news.com/review/UK/6651/Theatre/The-Urmetazoan-Hampstead-Theatre-Downstairs",
+            "outletId": "theatre-news",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-01T09:45:45.530Z"
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
           },
           {
             "url": "https://sierz.co.uk/reviews/the-urmetazoan-hampstead-theatre/",
@@ -199382,10 +202068,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 12,
-        "candidateCount": 15
+        "liveCount": 14,
+        "candidateCount": 17
       },
-      "computedAt": "2026-10-01T22:20:57.880Z"
+      "computedAt": "2026-10-12T23:33:06.241Z"
     },
     {
       "showId": "the-very-hungry-caterpillar-interactive-show-off-broadway-2026",
@@ -206541,22 +209227,25 @@
         "https://www.wsj.com/articles/topdog-underdog-review-suzan-lori-parks-corey-hawkins-yahya-abdul-mateen-ii-kenny-leon-arnulfo-maldonado-11666302909",
         "https://www.vulture.com/2022/10/theater-review-topdog-underdog-suzan-lori-parks-broadway.html",
         "https://www.thewrap.com/topdog-underdog-broadway-review-yahya-abdul-mateen-corey-hawkins/",
-        "https://splashmags.com/2026/10/topdog-underdog-review-identity-and-reversals-at-steppenwolf-theatre-company/",
         "https://www.chicagotribune.com/2026/09/28/review-topdog-underdog-steppenwolf/",
-        "https://thirdcoastreview.com/stages/2026/09/28/review-steppenwolf-theatre-topdog-underdog",
-        "https://www.conversationswithedtracy.com/picksinsix/2026/9/28/picksinsix-review-topdog-underdog-steppenwolf-theatre-company",
-        "https://www.chicagostageandscreen.com/post/heartbreaking-topdog-underdog-at-steppenwolf",
-        "https://chicago.suntimes.com/theater/2026/09/29/topdog-underdog-steppenwolf-review-glenn-davis-namir-smallwood",
-        "https://aroundthetownchicago.com/theatre-reviews/topdog-underdog-2/",
-        "https://chicagoreader.com/performing-arts/theater/theater-review/topdog-underdog-steppenwolf-theatre-company/",
-        "https://www.chicagoonstage.com/steppenwolfs-topdog-underdog-shows-why-the-play-is-a-classic/",
-        "https://aroundthetownchicago.com/theatre-reviews/topdog-underdog/",
         "https://rachelweinbergreviews.com/2026/09/28/review-topdog-underdog-at-steppenwolf/",
+        "https://chicago.suntimes.com/theater/2026/09/29/topdog-underdog-steppenwolf-review-glenn-davis-namir-smallwood",
+        "https://chicagoreader.com/performing-arts/theater/theater-review/topdog-underdog-steppenwolf-theatre-company/",
+        "https://www.newcitystage.com/2026/10/01/steppenwolfs-topdog-underdog-reckons-with-the-american-dream/",
+        "https://aroundthetownchicago.com/theatre-reviews/topdog-underdog-2/",
+        "https://www.chicagoonstage.com/steppenwolfs-topdog-underdog-shows-why-the-play-is-a-classic/",
+        "https://www.sandiegouniontribune.com/2026/10/02/review-old-globes-thrilling-topdog-underdog-comes-up-aces/",
+        "https://splashmags.com/2026/10/topdog-underdog-review-identity-and-reversals-at-steppenwolf-theatre-company/",
+        "https://aroundthetownchicago.com/theatre-reviews/topdog-underdog/",
+        "https://thirdcoastreview.com/stages/2026/09/28/review-steppenwolf-theatre-topdog-underdog",
+        "https://www.chicagostageandscreen.com/post/heartbreaking-topdog-underdog-at-steppenwolf",
+        "https://www.conversationswithedtracy.com/picksinsix/2026/9/28/picksinsix-review-topdog-underdog-steppenwolf-theatre-company",
+        "https://wernerstheatrereviews.wordpress.com/2026/09/30/topdog-underdog-returns-to-steppenwolf-with-great-success/",
         "https://www.buzznews.net/theatre/theatre-reviews/item/6729-steppenwolf-s-topdog-underdog-when-history-deals-the-cards.html"
       ],
-      "dirFiles": 17,
+      "dirFiles": 20,
       "dirClean": 13,
-      "inReviewsJson": 13,
+      "inReviewsJson": 14,
       "missing": [
         {
           "url": "https://www.amny.com/entertainment/theater/review-topdog-underdog-scores-a-winning-hand/",
@@ -206699,9 +209388,9 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://splashmags.com/2026/10/topdog-underdog-review-identity-and-reversals-at-steppenwolf-theatre-company/",
-          "host": "splashmags.com",
-          "knownOutletId": "splash-magazines",
+          "url": "https://www.sandiegouniontribune.com/2026/10/02/review-old-globes-thrilling-topdog-underdog-comes-up-aces/",
+          "host": "sandiegouniontribune.com",
+          "knownOutletId": "san-diego-union-tribune",
           "serpCensus": true
         }
       ],
@@ -206711,15 +209400,7 @@
           "count": 1
         },
         {
-          "host": "newcitystage.com",
-          "count": 1
-        },
-        {
           "host": "stageandcinema.com",
-          "count": 1
-        },
-        {
-          "host": "wernerstheatrereviews.wordpress.com",
           "count": 1
         }
       ],
@@ -206763,6 +209444,24 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "https://rachelweinbergreviews.com/2026/09/28/review-topdog-underdog-at-steppenwolf/",
+          "host": "rachelweinbergreviews.com",
+          "knownOutletId": "rachelweinbergreviews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "rachelweinbergreviews--rachelrweinberg.json",
+              "flag": "clean",
+              "urlInDir": "https://rachelweinbergreviews.com/2026/09/28/review-topdog-underdog-at-steppenwolf/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
           "url": "https://thirdcoastreview.com/stages/2026/09/28/review-steppenwolf-theatre-topdog-underdog",
           "host": "thirdcoastreview.com",
           "knownOutletId": "third-coast-review",
@@ -206794,8 +209493,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 2,
+            "results": 10,
+            "accepted": 8,
             "error": null
           },
           {
@@ -206805,7 +209504,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 4,
+            "accepted": 1,
             "error": null
           },
           {
@@ -206814,8 +209513,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 2,
+            "results": 10,
+            "accepted": 0,
             "error": null
           },
           {
@@ -206835,7 +209534,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -206845,23 +209544,23 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 12,
+        "resultCount": 15,
         "error": null
       },
       "candidatesRejected": {
-        "count": 148,
+        "count": 142,
         "byReason": {
+          "non-review-host": 39,
+          "aggregator-internal-nav": 78,
           "not-http-url": 6,
-          "non-review-host": 45,
-          "aggregator-internal-nav": 91,
-          "aggregator-section-root": 4,
-          "roundup-page": 2
+          "production-database-listing": 15,
+          "aggregator-section-root": 4
         }
       },
       "dedupedVariants": [],
@@ -206871,6 +209570,7 @@
           "publishDate": "2022-10-20"
         }
       ],
+      "unextractable": [],
       "weIngestBlocked": [
         {
           "url": "https://www.amny.com/entertainment/theater/review-topdog-underdog-scores-a-winning-hand/",
@@ -206995,15 +209695,16 @@
       ],
       "ingestResults": [
         {
-          "url": "https://splashmags.com/2026/10/topdog-underdog-review-identity-and-reversals-at-steppenwolf-theatre-company/",
-          "host": "splashmags.com",
-          "outletId": "splash-magazines",
+          "url": "https://www.sandiegouniontribune.com/2026/10/02/review-old-globes-thrilling-topdog-underdog-comes-up-aces/",
+          "host": "sandiegouniontribune.com",
+          "outletId": "san-diego-union-tribune",
           "provisional": false,
           "ok": true,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
+          "zeroChar": false,
           "reason": null
         }
       ],
@@ -207012,11 +209713,18 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "splash-magazines",
-            "outlet": "splash-magazines",
+            "outletId": "san-diego-union-tribune",
+            "outlet": "san-diego-union-tribune",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://splashmags.com/2026/10/topdog-underdog-review-identity-and-reversals-at-steppenwolf-theatre-company/"
+            "url": "https://www.sandiegouniontribune.com/2026/10/02/review-old-globes-thrilling-topdog-underdog-comes-up-aces/"
+          },
+          {
+            "outletId": "rachelweinbergreviews",
+            "outlet": "rachelweinbergreviews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://rachelweinbergreviews.com/2026/09/28/review-topdog-underdog-at-steppenwolf/"
           },
           {
             "outletId": "third-coast-review",
@@ -207035,26 +209743,8 @@
             "firstSeenAt": "2026-10-03T13:03:46.299Z"
           },
           {
-            "url": "https://www.conversationswithedtracy.com/picksinsix/2026/9/28/picksinsix-review-topdog-underdog-steppenwolf-theatre-company",
-            "outletId": "conversationswithedtracy.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-03T13:03:46.299Z"
-          },
-          {
-            "url": "https://www.chicagostageandscreen.com/post/heartbreaking-topdog-underdog-at-steppenwolf",
-            "outletId": "chicagostageandscreen.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-03T13:03:46.299Z"
-          },
-          {
             "url": "https://chicago.suntimes.com/theater/2026/09/29/topdog-underdog-steppenwolf-review-glenn-davis-namir-smallwood",
             "outletId": "chicago.suntimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-03T13:03:46.299Z"
-          },
-          {
-            "url": "https://aroundthetownchicago.com/theatre-reviews/topdog-underdog-2/",
-            "outletId": "aroundthetownchicago.com",
             "state": "live",
             "firstSeenAt": "2026-10-03T13:03:46.299Z"
           },
@@ -207065,10 +209755,28 @@
             "firstSeenAt": "2026-10-03T13:03:46.299Z"
           },
           {
+            "url": "https://www.newcitystage.com/2026/10/01/steppenwolfs-topdog-underdog-reckons-with-the-american-dream/",
+            "outletId": "newcitystage.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://aroundthetownchicago.com/theatre-reviews/topdog-underdog-2/",
+            "outletId": "aroundthetownchicago.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-03T13:03:46.299Z"
+          },
+          {
             "url": "https://www.chicagoonstage.com/steppenwolfs-topdog-underdog-shows-why-the-play-is-a-classic/",
             "outletId": "chicagoonstage.com",
             "state": "live",
             "firstSeenAt": "2026-10-03T13:03:46.299Z"
+          },
+          {
+            "url": "https://splashmags.com/2026/10/topdog-underdog-review-identity-and-reversals-at-steppenwolf-theatre-company/",
+            "outletId": "splashmags.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T16:57:13.680Z"
           },
           {
             "url": "https://aroundthetownchicago.com/theatre-reviews/topdog-underdog/",
@@ -207077,10 +209785,22 @@
             "firstSeenAt": "2026-10-03T13:03:46.299Z"
           },
           {
-            "url": "https://rachelweinbergreviews.com/2026/09/28/review-topdog-underdog-at-steppenwolf/",
-            "outletId": "rachelweinbergreviews.com",
+            "url": "https://www.chicagostageandscreen.com/post/heartbreaking-topdog-underdog-at-steppenwolf",
+            "outletId": "chicagostageandscreen.com",
             "state": "live",
             "firstSeenAt": "2026-10-03T13:03:46.299Z"
+          },
+          {
+            "url": "https://www.conversationswithedtracy.com/picksinsix/2026/9/28/picksinsix-review-topdog-underdog-steppenwolf-theatre-company",
+            "outletId": "conversationswithedtracy.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-03T13:03:46.299Z"
+          },
+          {
+            "url": "https://wernerstheatrereviews.wordpress.com/2026/09/30/topdog-underdog-returns-to-steppenwolf-with-great-success/",
+            "outletId": "wernerstheatrereviews.wordpress.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
           },
           {
             "url": "https://www.buzznews.net/theatre/theatre-reviews/item/6729-steppenwolf-s-topdog-underdog-when-history-deals-the-cards.html",
@@ -207089,11 +209809,18 @@
             "firstSeenAt": "2026-10-03T20:31:28.413Z"
           },
           {
-            "url": "https://splashmags.com/2026/10/topdog-underdog-review-identity-and-reversals-at-steppenwolf-theatre-company/",
-            "outletId": "splash-magazines",
+            "url": "https://www.sandiegouniontribune.com/2026/10/02/review-old-globes-thrilling-topdog-underdog-comes-up-aces/",
+            "outletId": "san-diego-union-tribune",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-04T16:57:13.680Z"
+            "firstSeenAt": "2026-10-12T23:33:06.241Z"
+          },
+          {
+            "url": "https://rachelweinbergreviews.com/2026/09/28/review-topdog-underdog-at-steppenwolf/",
+            "outletId": "rachelweinbergreviews",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-03T13:03:46.299Z"
           },
           {
             "url": "https://thirdcoastreview.com/stages/2026/09/28/review-steppenwolf-theatre-topdog-underdog",
@@ -207104,10 +209831,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 9,
-        "candidateCount": 11
+        "liveCount": 11,
+        "candidateCount": 14
       },
-      "computedAt": "2026-10-04T16:57:13.680Z"
+      "computedAt": "2026-10-12T23:33:06.241Z"
     },
     {
       "showId": "torera-off-broadway-2026",

@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-12T21:04:10.701Z",
+  "generatedAt": "2026-10-12T23:33:09.290Z",
   "windowDays": 45,
-  "showsScanned": 159,
+  "showsScanned": 161,
   "gaps": [
     {
       "showId": "the-story-west-end-2026",
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-story-west-end-2026",
       "firstSeen": "2026-10-12T08:22:49.711Z",
-      "fileAgeHours": 12.688275833333334,
+      "fileAgeHours": 15.171586666666666,
       "gapSeenAt": "2026-10-12T21:04:10.700Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 2.4829416666666666
     },
     {
       "showId": "good-time-charlie-off-broadway-2026",
@@ -39,9 +39,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=good-time-charlie-off-broadway-2026 --url=https://www.talkinbroadway.com/page/ob/10_09_26.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-12T20:09:47.097Z",
-      "fileAgeHours": 0.9057088888888889,
+      "fileAgeHours": 3.3890025,
       "gapSeenAt": "2026-10-12T21:04:10.700Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 2.4829416666666666
     },
     {
       "showId": "cosi-fan-tutte-off-broadway-2026",
@@ -57,28 +57,9 @@
       "forumLinkRecoveryCount": 3,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=cosi-fan-tutte-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-08T17:44:48.110Z",
-      "fileAgeHours": 99.3221775,
+      "fileAgeHours": 101.80544916666666,
       "gapSeenAt": "2026-10-08T22:46:44.413Z",
-      "nonTerminalAgeHours": 94.29063527777778
-    },
-    {
-      "showId": "franz-and-marie-west-end-2026",
-      "title": "Franz & Marie",
-      "openingDate": "2026-10-05",
-      "file": "timeout-london--unknown.json",
-      "outletId": "timeout-london",
-      "tier": 1,
-      "type": "unscored",
-      "dispatchable": true,
-      "url": "https://www.timeout.com/london/theatre/franz-marie",
-      "recovery": null,
-      "recoveryCount": 0,
-      "forumLinkRecoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=franz-and-marie-west-end-2026",
-      "firstSeen": "2026-10-09T09:40:14.319Z",
-      "fileAgeHours": 83.39849583333333,
-      "gapSeenAt": "2026-10-12T19:37:38.869Z",
-      "nonTerminalAgeHours": 1.4421752777777779
+      "nonTerminalAgeHours": 96.77357694444444
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -95,64 +76,51 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=golden-boy-off-west-end-2026",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 484.3938063888889,
+      "fileAgeHours": 486.8769022222222,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 35.413249444444446
+      "nonTerminalAgeHours": 37.89619111111111
     },
     {
-      "showId": "a-ghost-in-your-ear-off-broadway-2026",
-      "title": "A Ghost In Your Ear",
-      "openingDate": "2026-10-09",
-      "file": "timeout--unknown.json",
-      "outletId": "timeout",
-      "tier": 1,
-      "type": "unscored",
-      "dispatchable": true,
-      "url": "https://www.timeout.com/newyork/theater/a-ghost-in-your-ear",
-      "recovery": null,
+      "showId": "the-humanities-regional-2026",
+      "title": "The Humanities",
+      "openingDate": "2026-09-13",
+      "file": "broadwayworld--unknown.json",
+      "outletId": "broadwayworld",
+      "tier": 2,
+      "type": "empty-body",
+      "url": "https://www.broadwayworld.com/chicago/regional/The-Humanities",
+      "recovery": {
+        "attempted": false,
+        "reason": "circuit-breaker:daily-global-cap"
+      },
       "recoveryCount": 0,
       "forumLinkRecoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=a-ghost-in-your-ear-off-broadway-2026",
-      "firstSeen": "2026-10-10T14:47:24.637Z",
-      "fileAgeHours": 54.27914861111111,
-      "gapSeenAt": "2026-10-12T21:04:10.700Z",
+      "fix": "node scripts/ingest-review-from-url.js --show=the-humanities-regional-2026 --url=https://www.broadwayworld.com/chicago/regional/The-Humanities --outlet=broadwayworld   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-10-12T22:37:29.921Z",
+      "fileAgeHours": 0.9275780555555555,
+      "gapSeenAt": "2026-10-12T23:33:09.290Z",
       "nonTerminalAgeHours": 0
     },
     {
-      "showId": "human-things-off-broadway-2026",
-      "title": "Human Things",
-      "openingDate": "2026-09-25",
-      "file": "talkinbroadway--unknown.json",
-      "outletId": "talkinbroadway",
-      "tier": 2,
-      "type": "empty-body",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913",
-      "recovery": null,
-      "recoveryCount": 3,
-      "forumLinkRecoveryCount": 3,
-      "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=human-things-off-broadway-2026   # follows the thread's Link to the real review page",
-      "firstSeen": "2026-09-26T14:54:28.766Z",
-      "fileAgeHours": 390.16139111111113,
-      "gapSeenAt": "2026-09-26T17:43:29.271Z",
-      "nonTerminalAgeHours": 387.3448413888889
-    },
-    {
-      "showId": "fire-fire-off-west-end-2026",
-      "title": "Fire Fire",
-      "openingDate": "2026-09-11",
-      "file": "times-uk--unknown.json",
-      "outletId": "times-uk",
+      "showId": "king-lear-royal-exchange-regional-2026",
+      "title": "King Lear",
+      "openingDate": "2026-10-10",
+      "file": "hollywood-reporter--david-rooney.json",
+      "outletId": "hollywood-reporter",
       "tier": 1,
       "type": "empty-body",
-      "url": "https://www.thetimes.com/culture/classical-opera/article/fire-in-my-mouth-marin-alsop-review-hdnsrp752",
-      "recovery": null,
-      "recoveryCount": 3,
+      "url": "http://www.hollywoodreporter.com/review/king-lear-theater-review-1199652",
+      "recovery": {
+        "attempted": false,
+        "reason": "circuit-breaker:daily-global-cap"
+      },
+      "recoveryCount": 0,
       "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=fire-fire-off-west-end-2026 --url=https://www.thetimes.com/culture/classical-opera/article/fire-in-my-mouth-marin-alsop-review-hdnsrp752 --outlet=times-uk   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-10-01T15:51:33.268Z",
-      "fileAgeHours": 269.21030333333334,
-      "gapSeenAt": "2026-10-12T06:09:40.724Z",
-      "nonTerminalAgeHours": 14.908326666666667
+      "fix": "node scripts/ingest-review-from-url.js --show=king-lear-royal-exchange-regional-2026 --url=http://www.hollywoodreporter.com/review/king-lear-theater-review-1199652 --outlet=hollywood-reporter --critic=\"David Rooney\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-10-12T22:03:53.607Z",
+      "fileAgeHours": 1.487681111111111,
+      "gapSeenAt": "2026-10-12T23:33:09.290Z",
+      "nonTerminalAgeHours": 0
     }
   ],
   "contradictions": []
