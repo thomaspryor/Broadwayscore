@@ -321,12 +321,13 @@
       "title": "Scraping spend over budget",
       "firstSeen": "2026-08-01T07:38:45.313Z",
       "incidentOpenedAt": "2026-08-01T07:38:45.313Z",
-      "lastSeen": "2026-10-11T13:37:15.335Z",
+      "lastSeen": "2026-10-12T03:15:33.915Z",
       "lastNotifiedAt": "2026-10-11T13:37:15.335Z",
       "lastSurfacedAt": "2026-10-11T13:37:15.335Z",
       "notifyCount": 32,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "silentRefires": 1
     },
     "orphan-unscored-requeue:tao-of-glass-west-end-2026": {
       "status": "open",
@@ -7782,7 +7783,7 @@
       "linearIdentifier": "BRO-4420"
     },
     "provider-spend:attribution-gap:brightdata": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Untracked brightdata spend: ledger explains only 79%, 75% of billed",
       "firstSeen": "2026-09-30T13:04:35.419Z",
@@ -7793,7 +7794,9 @@
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-4936",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-12T03:15:33.929Z",
+      "resolveReason": "attributedPct 90%, 100% through 2026-10-11"
     },
     "opening-night-remediation-exhausted-t1-missing:the-standard-of-living-west-end-2026": {
       "status": "open",
@@ -8850,12 +8853,13 @@
       "title": "Overdue P0/P1 queue: 9 P0 older than 24h, 105 P1 older than 7d",
       "firstSeen": "2026-10-02T13:15:40.706Z",
       "incidentOpenedAt": "2026-10-02T13:15:40.706Z",
-      "lastSeen": "2026-10-11T13:36:52.414Z",
+      "lastSeen": "2026-10-12T03:14:40.458Z",
       "lastNotifiedAt": "2026-10-11T13:36:52.414Z",
       "lastSurfacedAt": "2026-10-11T13:36:52.414Z",
       "notifyCount": 9,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-remediation-exhausted-t1-missing:hay-fever-west-end-2026": {
       "status": "open",
@@ -10996,17 +11000,19 @@
     "owner-decisions:new": {
       "status": "open",
       "disposition": "human",
-      "title": "31 new decisions are waiting on you",
+      "title": "2 new decisions are waiting on you",
       "firstSeen": "2026-10-06T13:42:06.180Z",
-      "incidentOpenedAt": "2026-10-06T13:42:06.180Z",
-      "lastSeen": "2026-10-06T13:42:06.180Z",
-      "lastNotifiedAt": "2026-10-06T13:42:06.180Z",
-      "lastSurfacedAt": "2026-10-06T13:42:06.180Z",
-      "notifyCount": 1,
+      "incidentOpenedAt": "2026-10-12T03:15:06.793Z",
+      "lastSeen": "2026-10-12T03:15:06.793Z",
+      "lastNotifiedAt": "2026-10-12T03:15:06.793Z",
+      "lastSurfacedAt": "2026-10-12T03:15:06.793Z",
+      "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
       "notifiedIds": [
         "BRO-50",
+        "BRO-5103",
+        "BRO-5107",
         "BRO-539",
         "BRO-855",
         "BRO-958"
@@ -14072,7 +14078,7 @@
       "resolvedAt": "2026-10-11T23:35:05.491Z"
     },
     "land:land/bro-4521-health-check": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: bash-integration red on land/bro-4521-health-check",
       "firstSeen": "2026-10-11T21:49:56.338Z",
@@ -14083,7 +14089,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-10-12T03:10:00.404Z"
     },
     "land:land/bro-4589-commercial-claim-triage": {
       "status": "resolved",
@@ -14234,6 +14241,58 @@
       "lastSeen": "2026-10-12T02:52:19.781Z",
       "lastNotifiedAt": "2026-10-12T02:52:19.781Z",
       "lastSurfacedAt": "2026-10-12T02:52:19.781Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "coverage-holes:hay-fever-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "hay-fever-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+      "firstSeen": "2026-10-12T03:15:02.943Z",
+      "incidentOpenedAt": "2026-10-12T03:15:02.943Z",
+      "lastSeen": "2026-10-12T03:15:02.943Z",
+      "lastNotifiedAt": "2026-10-12T03:15:02.943Z",
+      "lastSurfacedAt": "2026-10-12T03:15:02.943Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "coverage-holes:good-time-charlie-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "good-time-charlie-off-broadway-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+      "firstSeen": "2026-10-12T03:15:02.955Z",
+      "incidentOpenedAt": "2026-10-12T03:15:02.955Z",
+      "lastSeen": "2026-10-12T03:15:02.955Z",
+      "lastNotifiedAt": "2026-10-12T03:15:02.955Z",
+      "lastSurfacedAt": "2026-10-12T03:15:02.955Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "coverage-holes:rent-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "rent-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+      "firstSeen": "2026-10-12T03:15:02.966Z",
+      "incidentOpenedAt": "2026-10-12T03:15:02.966Z",
+      "lastSeen": "2026-10-12T03:15:02.966Z",
+      "lastNotifiedAt": "2026-10-12T03:15:02.966Z",
+      "lastSurfacedAt": "2026-10-12T03:15:02.966Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "coverage-holes:an-oak-tree-off-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "an-oak-tree-off-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+      "firstSeen": "2026-10-12T03:15:03.003Z",
+      "incidentOpenedAt": "2026-10-12T03:15:03.003Z",
+      "lastSeen": "2026-10-12T03:15:03.003Z",
+      "lastNotifiedAt": "2026-10-12T03:15:03.003Z",
+      "lastSurfacedAt": "2026-10-12T03:15:03.003Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
