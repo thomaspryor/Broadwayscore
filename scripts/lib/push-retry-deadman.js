@@ -62,12 +62,28 @@ function assessPushRetryDeadman(entries, opts = {}) {
   }
 
   const cutoff = now - WINDOW_MS;
-  const recent = entries.filter((r) => {
+  const inWindow = entries.filter((r) => {
     const ts = Date.parse(r && r.ts);
     return Number.isFinite(ts) && ts >= cutoff;
   });
+  // autostash-conflict rows (BRO-3668) record a caller's uncommitted edit that
+  // could not be merged back after the push; the push itself may have
+  // succeeded, so they are reported alongside, never counted as push failures.
+  const conflicts = inWindow.filter((r) => r && r.reason === 'autostash-conflict');
+  const recent = inWindow.filter((r) => !(r && r.reason === 'autostash-conflict'));
+  const conflictNote = conflicts.length > 0
+    ? ` ${conflicts.length} autostash-conflict(s) (an uncommitted edit lost to an upstream change after the push; see the run's ::error:: line).`
+    : '';
 
   if (recent.length === 0) {
+    if (conflicts.length > 0) {
+      return {
+        name: NAME,
+        status: 'warn',
+        message: `No push-retry failures in the trailing 7d, but${conflictNote}`,
+        hint: 'autostash-conflict means push-with-retry.sh could not 3-way merge a caller\'s uncommitted tracked file with the upstream copy, so it kept upstream. Find the workflow in the row and commit that file before calling push-with-retry.sh.',
+      };
+    }
     return { name: NAME, status: 'pass', message: 'No push-retry failures in the trailing 7d' };
   }
 
@@ -93,7 +109,7 @@ function assessPushRetryDeadman(entries, opts = {}) {
   const message =
     `${recent.length} push-retry failure(s) in the last 7d` +
     (noops.length > 0 ? ` including ${noops.length} NO-OP-rebase abort(s) (task-#394 stale-ref signature)` : '') +
-    ` across ${branches.join(', ')} [${workflowBreakdown}]. Most recent reason: ${recent[recent.length - 1].reason || '?'}.`;
+    ` across ${branches.join(', ')} [${workflowBreakdown}]. Most recent reason: ${recent[recent.length - 1].reason || '?'}.` + conflictNote;
 
   return {
     name: NAME,

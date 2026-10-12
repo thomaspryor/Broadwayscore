@@ -9,7 +9,8 @@
 #  2. Dirty file that upstream ALSO changed (non-overlapping hunks): restore is a
 #     3-way merge, so both the caller's edit and upstream's edit survive on disk.
 #  3. Dirty file whose edit CONFLICTS with upstream: upstream's version stays on
-#     disk, ::error:: names the path, snapshot ref is kept for recovery.
+#     disk, ::error:: names the path, snapshot ref is kept for recovery, and an
+#     autostash-conflict row lands in the failure ledger.
 #  4. Caller-deleted tracked file stays deleted.
 #  5. PUSH_AUTOSTASH=0 keeps the old behaviour (dirt untouched, no autostash line).
 #  6. A dirty symlink skips the autostash (cannot be restored via git show).
@@ -57,7 +58,7 @@ setup c1; race c1
 printf 'dirty\n' >> "$TMP/c1-work/other.txt"
 printf 'untracked\n' > "$TMP/c1-work/scratch.tmp"
 want=$(cat "$TMP/c1-work/other.txt")
-out=$( cd "$TMP/c1-work" && bash "$PUSH_SCRIPT" 3 main 2>&1 ); rc=$?
+out=$( cd "$TMP/c1-work" && PUSH_FAILURE_LOG="$TMP/c1-fail.jsonl" bash "$PUSH_SCRIPT" 3 main 2>&1 ); rc=$?
 pushed_other=$(git -C "$TMP/c1.git" show main:other.txt)
 pushed_files=$(git -C "$TMP/c1.git" ls-tree --name-only main | tr '\n' ' ')
 if [ "$rc" -ne 0 ]; then echo "FAIL[1]: push rc=$rc"; echo "$out"; fail=1
@@ -67,6 +68,7 @@ elif [ "$pushed_other" != "other" ]; then echo "FAIL[1]: dirt leaked into pushed
 elif grep -q scratch.tmp <<<"$pushed_files"; then echo "FAIL[1]: untracked file pushed"; fail=1
 elif [ ! -f "$TMP/c1-work/scratch.tmp" ]; then echo "FAIL[1]: untracked file lost"; fail=1
 elif [ "$(refs_left c1)" != "0" ]; then echo "FAIL[1]: snapshot ref not cleaned"; fail=1
+elif [ -s "$TMP/c1-fail.jsonl" ]; then echo "FAIL[1]: clean restore wrote a failure row"; fail=1
 elif ! git -C "$TMP/c1.git" show main:tracked.txt | grep -q remote-advance; then echo "FAIL[1]: upstream commit lost"; fail=1
 else echo "PASS[1]: rebase path, dirt restored, not pushed, ref cleaned"; fi
 
@@ -85,12 +87,13 @@ else echo "PASS[2]: 3-way restore kept caller and upstream edits"; fi
 setup c3
 sed -i 's/^l4$/l4-upstream/' "$TMP/c3-racer/shared.txt"; race c3
 sed -i 's/^l4$/l4-caller/' "$TMP/c3-work/shared.txt"
-out=$( cd "$TMP/c3-work" && bash "$PUSH_SCRIPT" 3 main 2>&1 ); rc=$?
+out=$( cd "$TMP/c3-work" && PUSH_FAILURE_LOG="$TMP/c3-fail.jsonl" bash "$PUSH_SCRIPT" 3 main 2>&1 ); rc=$?
 if [ "$rc" -ne 0 ]; then echo "FAIL[3]: rc=$rc"; echo "$out"; fail=1
 elif ! grep -q l4-upstream "$TMP/c3-work/shared.txt" || grep -q '<<<<<<<' "$TMP/c3-work/shared.txt"; then
   echo "FAIL[3]: expected clean upstream version on disk:"; cat "$TMP/c3-work/shared.txt"; fail=1
 elif ! grep -q "::error::.*shared.txt conflicts" <<<"$out"; then echo "FAIL[3]: no ::error:: naming the path"; echo "$out"; fail=1
 elif [ "$(refs_left c3)" != "1" ]; then echo "FAIL[3]: snapshot ref should be kept"; fail=1
+elif ! grep -q '"autostash-conflict"' "$TMP/c3-fail.jsonl" 2>/dev/null; then echo "FAIL[3]: conflict not recorded in the failure ledger"; fail=1
 elif ! git -C "$TMP/c3-work" show "$(git -C "$TMP/c3-work" for-each-ref --format='%(objectname)' refs/worktree/push-autostash):shared.txt" | grep -q l4-caller; then
   echo "FAIL[3]: kept snapshot lacks the caller's edit"; fail=1
 else echo "PASS[3]: conflict keeps upstream, errors, keeps recoverable snapshot"; fi

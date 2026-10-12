@@ -1041,7 +1041,7 @@ fi
 # Called from the EXIT trap with `|| true`; every step checks its own rc.
 restore_autostash() {
   [ -n "${AUTOSTASH_SHA:-}" ] || return 0
-  local p kept=0 merged=0 tmpd base_f ours_f theirs_f union
+  local p kept=0 merged=0 conflicted=0 tmpd base_f ours_f theirs_f union
   local -a restored=()
   # Paths are root-relative and may hold glob characters (ship-check findings).
   local -x GIT_LITERAL_PATHSPECS=1
@@ -1088,7 +1088,7 @@ restore_autostash() {
       if cp -f "$ours_f" "$p" 2>/dev/null; then merged=1; restored+=("$p"); else kept=1; fi
     else
       echo "::error::push-with-retry: autostash: your uncommitted edit to $p conflicts with a concurrent upstream change; kept the upstream version on disk. Your version: git show $AUTOSTASH_SHA:$p"
-      kept=1
+      kept=1; conflicted=1
     fi
   done
   # Restore the executable bit git show cannot carry.
@@ -1096,6 +1096,19 @@ restore_autostash() {
     if [ -f "$p" ] && [ "$(git ls-tree "$AUTOSTASH_SHA" -- "$p" 2>/dev/null | cut -c1-6)" = "100755" ]; then chmod +x "$p" 2>/dev/null || true; fi
   done
   rm -rf "$tmpd" 2>/dev/null || true
+  # In CI the snapshot ref dies with the runner, so a conflict would otherwise
+  # leave no trace past the ::error:: line: record it in the durable failure
+  # ledger (push-retry-failures branch) under its own reason. It is a separate
+  # event from any push failure this run already recorded, so it gets its own
+  # durable write (one more 15s-capped call at most) instead of being swallowed
+  # by the once-per-run gate. push-retry-deadman.js counts this reason apart
+  # from push failures.
+  if [ "$conflicted" = "1" ] && command -v record_push_failure >/dev/null 2>&1; then
+    _FAILURE_TELEMETRY_SENT=false
+    _LAST_STALL_PHASE=autostash-restore
+    _LAST_STALL_SERVICE=none
+    record_push_failure "autostash-conflict" 0 >/dev/null 2>&1 || true
+  fi
   if [ "$kept" = "0" ]; then
     git update-ref -d "$AUTOSTASH_REF" 2>/dev/null || true
     echo "  autostash: restored ${#AUTOSTASH_PATHS[@]} uncommitted file(s)$([ "$merged" = "1" ] && echo ' (some 3-way merged with upstream)')."

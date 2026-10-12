@@ -85,3 +85,17 @@ test('workflow attribution breaks down per-workflow, most-frequent first (task #
   // most-frequent workflow listed before the less-frequent one
   assert.ok(r.message.indexOf('data-health-check.yml x2') < r.message.indexOf('opening-night-express.yml x1'));
 });
+
+test('autostash-conflict rows alone -> warn, not counted as push failures (BRO-3668)', () => {
+  const r = assessPushRetryDeadman([rec(1, 'autostash-conflict'), rec(2, 'autostash-conflict'), rec(3, 'autostash-conflict')], { now: NOW });
+  assert.equal(r.status, 'warn');
+  assert.match(r.message, /No push-retry failures/);
+  assert.match(r.message, /3 autostash-conflict/);
+});
+
+test('autostash-conflict rows do not lift 2 push failures to the 3+ error threshold', () => {
+  const r = assessPushRetryDeadman([rec(1), rec(2), rec(3, 'autostash-conflict')], { now: NOW });
+  assert.equal(r.status, 'warn');
+  assert.match(r.message, /^2 push-retry failure/);
+  assert.match(r.message, /1 autostash-conflict/);
+});
