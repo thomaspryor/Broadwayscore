@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-12T22:31:57.829Z",
+  "timestamp": "2026-10-12T22:48:55.910Z",
   "stats": {
-    "totalReviews": 56119,
-    "alreadyFlagged": 20945,
+    "totalReviews": 56118,
+    "alreadyFlagged": 20946,
     "dateGuardCatches": 217,
-    "directorMismatch": 1799,
+    "directorMismatch": 1798,
     "tvFilmSignals": 1617,
     "londonSignals": 2209,
     "offBroadwaySignals": 507,
     "yearMismatch": 137,
-    "noPublishDate": 5250
+    "noPublishDate": 5264
   },
   "findings": [
     {
@@ -38007,25 +38007,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
-        }
-      ]
-    },
-    {
-      "showId": "the-comedy-about-spies-west-end-2025",
-      "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 100,
-      "publishDate": "2025-05-13",
-      "url": "https://www.allthatdazzles.co.uk/post/review-the-comedy-about-spies-no%C3%ABl-coward-theatre",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"noel coward theatre\""
         }
       ]
     },
@@ -79338,6 +79319,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "the-norman-conquests-2009",
+      "file": "nytimes--ben-brantley.json",
+      "publishDate": null,
+      "url": "https://www.nytimes.com/2009/04/24/theater/reviews/24norm.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
