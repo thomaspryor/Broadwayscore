@@ -150,7 +150,17 @@ test(
       `New/unexpected former-cast flag(s) not in KNOWN_GOOD_FLAGS — either a genuine new catch (add it to KNOWN_GOOD_FLAGS after confirming the quote really does name a departed cast member) or a false positive (fix the guard):\n${unexpected.join('\n')}`
     );
 
-    for (const key of KNOWN_GOOD_FLAGS) {
+    // BRO-5195: a known-good file the pipeline has since removed (e.g. the
+    // show's priorRuns set inheritReviews:false and the rebuild dropped the
+    // prior-run files) cannot be flagged; only files still on disk count,
+    // and at least one must remain so the regression check keeps its teeth.
+    const presentKnownGood = [...KNOWN_GOOD_FLAGS].filter((key) => {
+      const [showId, file] = key.split('::');
+      return fs.existsSync(path.join(REVIEW_TEXTS_DIR, showId, file));
+    });
+    assert.ok(presentKnownGood.length > 0,
+      'every KNOWN_GOOD_FLAGS file is gone from the corpus: re-baseline KNOWN_GOOD_FLAGS against a show that still has a confirmed former-cast quote');
+    for (const key of presentKnownGood) {
       assert.ok(actualFlags.has(key),
         `${key} was expected to be flagged as a former-cast mention but wasn't — a guard change regressed the original BRO-1397 fix.`);
     }

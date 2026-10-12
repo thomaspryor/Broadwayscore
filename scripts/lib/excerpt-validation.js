@@ -320,7 +320,15 @@ function buildRoleTerms(show) {
 // created/directed a production typically stays on for a returning run,
 // the same reasoning as the explicit show.creativeTeam exclusion in
 // buildSafeNameTokens.
-const CREATIVE_ROLE_PHRASE_RE = /\b(?:directed|written|created|developed|choreographed|composed|designed|adapted)\s+(?:(?:&|and)\s+\w+\s+)?by:?\s+([A-Z][A-Za-z'-]+(?:\s+[A-Z][A-Za-z'-]+){0,2})|\b([A-Z][A-Za-z'-]+(?:\s+[A-Z][A-Za-z'-]+){0,2})['’]s\s+(?:production|staging|direction|adaptation)\b/gi;
+// BRO-5195: the possessive form also takes up to 2 lowercase modifiers and
+// "version"/"revival": "Jamie Lloyd's rap-battling version of Edmond
+// Rostand's romance" credits a director (of another Cyrano), and was flagged
+// as former cast on cyrano-de-bergerac-west-end-2026. Modifiers must be
+// lowercase so "Adrian Lester's Cyrano in this production" (an actor in a
+// role) never matches; hence no /i flag, with the credit verbs spelled
+// case-insensitively instead. Performance words and prepositions are not
+// modifiers, so "Rafe Spall's performance in this revival" stays an actor.
+const CREATIVE_ROLE_PHRASE_RE = /\b(?:[Dd]irected|[Ww]ritten|[Cc]reated|[Dd]eveloped|[Cc]horeographed|[Cc]omposed|[Dd]esigned|[Aa]dapted)\s+(?:(?:&|and)\s+\w+\s+)?[Bb]y:?\s+([A-Z][A-Za-z'-]+(?:\s+[A-Z][A-Za-z'-]+){0,2})|\b([A-Z][A-Za-z'-]+(?:\s+[A-Z][A-Za-z'-]+){0,2})['’]s\s+(?:(?!(?:performance|portrayal|turn|role|work|acting|in|as|at|of|for|this|the|a|an)\b)[a-z][a-z-]*\s+){0,2}(?:production|staging|direction|adaptation|version|revival)\b/g;
 
 /**
  * Names inferred from "directed by X" style credit lines in a review's own

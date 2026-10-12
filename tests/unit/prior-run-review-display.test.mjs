@@ -162,6 +162,27 @@ describe('excerptMentionsFormerCast', () => {
     assert.strictEqual(res.mentionsFormerCast, false);
   });
 
+  it('BRO-5195: does not flag a director credited as "NAME\'s <modifiers> version", but still flags an actor\'s "performance-led revival"', () => {
+    // Live false positive on cyrano-de-bergerac-west-end-2026 (Guardian):
+    // "Jamie Lloyd's rap-battling version of ..." names the director of a
+    // different Cyrano, near the role name.
+    const reviewData = {
+      publishDate: '2022-04-01',
+      fullText: "Jamie Lloyd's rap-battling version of the novel gave Atticus Finch new edges.",
+    };
+    const ctx = { show: { ...SHOW, creativeTeam: [] }, reviewDate: '2022-04-01', reviewData };
+    assert.strictEqual(
+      excerptMentionsFormerCast("Jamie Lloyd's rap-battling version showed what an adaptation could be.", ctx).mentionsFormerCast,
+      false
+    );
+    const actorData = {
+      publishDate: '2022-04-01',
+      fullText: "Rafe Spall plays Atticus Finch. It is Rafe Spall's performance-led revival.",
+    };
+    const actorCtx = { show: SHOW, reviewDate: '2022-04-01', reviewData: actorData };
+    assert.strictEqual(excerptMentionsFormerCast('Spall is superb.', actorCtx).mentionsFormerCast, true);
+  });
+
   it('flags a hyphenated former-cast surname (UK/West End casts commonly hyphenate)', () => {
     const reviewData = {
       publishDate: '2022-04-04',
