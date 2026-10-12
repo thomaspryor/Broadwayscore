@@ -412,7 +412,26 @@ function titleCandidates(title) {
   // parens-flattened form too.
   const flat = String(title || '').replace(/[()]/g, ' ').replace(/\s+/g, ' ').trim();
   if (flat !== title && !out.includes(flat)) out.push(flat);
+  const tail = capsTitleTail(title);
+  if (tail && !out.includes(tail)) out.push(tail);
   return out;
+}
+
+/**
+ * BWW headlines set the show title in capitals after a mixed-case lead:
+ * "Nick Blaemire's SOON", "Gaten Matarazzo in RENT?", "All-Male AS YOU LIKE
+ * IT" (BRO-4689: all three were catalogued but read as missing for days).
+ * Returns that capitalised tail, or null. Limits keep it from inventing
+ * matches: a lead of at most 4 words that has lowercase letters, and a tail
+ * of at least 4 letters with no lowercase at all (so "RSC"/"BAM" never count).
+ */
+function capsTitleTail(title) {
+  const m = String(title || '').trim().match(/^(\S.*?)\s+([A-Z0-9][^a-z]*)$/);
+  if (!m) return null;
+  const [, lead, tail] = m;
+  if (!/[a-z]/.test(lead) || lead.split(/\s+/).length > 4) return null;
+  if ((tail.match(/[A-Z]/g) || []).length < 4) return null;
+  return tail.trim();
 }
 
 /**
@@ -675,9 +694,7 @@ function titleMatchesIndex(title, index, opts = {}) {
   // Possessive lead-ins ("Cat Cohen's Broad Strokes" for "Cat Cohen: Broad
   // Strokes") only differ by an 's — try the stripped variant too, so a
   // Playbill-style headline can't false-positive as a missing show.
-  const cands = titleCandidates(title);
-  if (cands.length > 1 && titleMatchesIndexSingle(cands[1], index, opts)) return true;
-  return titleMatchesIndexSingle(cands[0], index, opts);
+  return titleCandidates(title).some((c) => titleMatchesIndexSingle(c, index, opts));
 }
 
 function titleMatchesIndexSingle(title, index, opts = {}) {
@@ -740,7 +757,8 @@ function bwwRoundupCataloguedElsewhere(title, shows, roundupDate) {
   const DAY = 86400000;
   const near = shows.filter((s) => {
     if (s.status === 'closed' || !s.openingDate) return false;
-    if (s.category !== 'tour' && !WE_CATEGORIES.has(s.category)) return false;
+    // 'regional': BWW files RSC/regional openings as nyc too (All-Male AS YOU LIKE IT, BRO-4689).
+    if (s.category !== 'tour' && s.category !== 'regional' && !WE_CATEGORIES.has(s.category)) return false;
     const d = ts - Date.parse(s.openingDate);
     return d >= -3 * DAY && d <= 21 * DAY;
   });

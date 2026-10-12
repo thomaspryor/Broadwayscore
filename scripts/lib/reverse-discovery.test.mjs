@@ -560,3 +560,31 @@ test('BRO-4689: health row lists only reviewed (evidence-anchored) candidates', 
   assert.equal(rows.length, 1);
   assert.match(rows[0].message, /^1 aggregator-reviewed/);
 });
+
+test('BRO-4689: BWW caps-title tail matches the catalogued show behind a mixed-case lead', () => {
+  const { buildShowTitleIndex, titleMatchesIndex, resolveMatchedShowId, bwwRoundupCataloguedElsewhere } = require('./reverse-discovery.js');
+  const shows = [
+    { id: 'soon-off-broadway-2026', title: 'Soon', category: 'off-broadway', status: 'open', openingDate: '2026-10-05' },
+    { id: 'rent-west-end-2026', title: 'Rent', category: 'west-end', status: 'previews', openingDate: '2026-10-08' },
+    { id: 'all-male-as-you-like-it-regional-2026', title: 'As You Like It', category: 'regional', status: 'open', openingDate: '2026-10-06' },
+    { id: 'midnight-off-broadway-2026', title: 'Midnight', category: 'off-broadway', status: 'open' },
+  ];
+  const nyc = buildShowTitleIndex(shows, 'nyc');
+  assert.equal(titleMatchesIndex("Nick Blaemire's SOON", nyc), true);
+  assert.equal(resolveMatchedShowId("Nick Blaemire's SOON", nyc), 'soon-off-broadway-2026');
+  // Filed as nyc by BWW, catalogued as WE / regional near the roundup date.
+  assert.equal(bwwRoundupCataloguedElsewhere('Gaten Matarazzo in RENT?', shows, '2026-10-09'), true);
+  assert.equal(bwwRoundupCataloguedElsewhere('All-Male AS YOU LIKE IT', shows, '2026-10-07'), true);
+  // A regional run far from the roundup date does not hide a same-title NYC show.
+  assert.equal(bwwRoundupCataloguedElsewhere('AS YOU LIKE IT', shows, '2027-03-01'), false);
+  // No variant: all-caps title, short tail, long lead, no caps tail.
+  assert.equal(titleMatchesIndex('MIDNIGHT AT THE NEVER GET', nyc), false);
+  assert.equal(titleMatchesIndex('Midnight at the RSC', nyc), false);
+  assert.equal(titleMatchesIndex('A Very Long Lead Of Words SOON', nyc), false);
+  assert.equal(titleMatchesIndex('Something Soon', nyc), false);
+});
+
+test('BRO-4689: health-check West End index is scoped to WE categories', () => {
+  const src = require('fs').readFileSync(new URL('../health-check.js', import.meta.url), 'utf8');
+  assert.ok(!/buildShowTitleIndex\(shows, 'west-end'\)/.test(src), "use market key 'we' ('west-end' is not a buildShowTitleIndex market)");
+});

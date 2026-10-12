@@ -4294,7 +4294,7 @@ function buildStillMissingPredicate() {
       fs.readFileSync(path.join(__dirname, '../data/shows.json'), 'utf8')
     ).shows;
     const nycIndex = buildShowTitleIndex(shows, 'nyc');
-    const weIndex = buildShowTitleIndex(shows, 'west-end');
+    const weIndex = buildShowTitleIndex(shows, 'we'); // 'we' is the market key; 'west-end' indexed every category
     const ukGuardian = require('./lib/uk-regional-guardian'); // uk-regional Guardian items (BRO-4923)
     const ukShows = ukGuardian.ukFlagshipShows(shows);
     const { bwwRoundupCataloguedElsewhere } = require('./lib/reverse-discovery');
