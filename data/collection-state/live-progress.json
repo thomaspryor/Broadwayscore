@@ -1,130 +1,42 @@
 {
-  "updatedAt": "2026-10-12T13:20:33.071Z",
-  "processed": 7,
-  "failed": 83,
-  "successRate": "7.8%",
+  "updatedAt": "2026-10-12T13:20:59.759Z",
+  "processed": 100,
+  "failed": 31,
+  "successRate": "76.3%",
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 63,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 1,
-    "brightdata": 3,
+    "scrapingdog": 13,
+    "scrapingbee": 4,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 19
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-10-12T12:10:15.445Z",
+      "t": "2026-10-12T12:08:34.884Z",
       "event": "bb-session",
-      "session": "8ded4ba9",
-      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+      "session": "0a17fed4",
+      "url": "https://www.nytimes.com/2016/10/31/theater/liaisons-dangereuses-review.html"
     },
     {
-      "t": "2026-10-12T12:10:16.318Z",
+      "t": "2026-10-12T12:08:35.649Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-12T12:56:55.430Z",
+      "event": "bb-session",
+      "session": "41228c3c",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654250"
+    },
+    {
+      "t": "2026-10-12T12:56:56.298Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-12T12:10:19.406Z",
-      "event": "bb-session",
-      "session": "3e7ae2a9",
-      "url": "https://www.wsj.com/arts-culture/theater/the-great-gatsby-broadway-review-jeremy"
-    },
-    {
-      "t": "2026-10-12T12:10:20.277Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-12T12:10:31.192Z",
-      "event": "bb-session",
-      "session": "003c0063",
-      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
-    },
-    {
-      "t": "2026-10-12T12:10:32.049Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-12T12:10:36.339Z",
-      "event": "bb-session",
-      "session": "f246deed",
-      "url": "https://www.wsj.com/arts-culture/theater/the-great-gatsby-broadway-review-jeremy"
-    },
-    {
-      "t": "2026-10-12T12:10:37.226Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-12T12:11:40.552Z",
-      "event": "bb-session",
-      "session": "c83c14a0",
-      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235179126"
-    },
-    {
-      "t": "2026-10-12T12:11:41.549Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-10-12T12:11:52.691Z",
-      "event": "bb-session",
-      "session": "0de9dc37",
-      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235179126"
-    },
-    {
-      "t": "2026-10-12T12:11:53.543Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-10-12T12:14:03.553Z",
-      "event": "bb-session",
-      "session": "700ee59c",
-      "url": "https://www.wsj.com/articles/mj-the-musical-review-broadway-michael-jackson-1164"
-    },
-    {
-      "t": "2026-10-12T12:14:04.417Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-12T12:14:22.693Z",
-      "event": "bb-session",
-      "session": "8a1e2270",
-      "url": "https://www.wsj.com/articles/mj-the-musical-review-broadway-michael-jackson-1164"
-    },
-    {
-      "t": "2026-10-12T12:14:23.490Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-12T12:14:31.077Z",
-      "event": "bb-session",
-      "session": "400de1ab",
-      "url": "https://www.newyorker.com/goings-on-about-town/theatre/six-10-25-21"
-    },
-    {
-      "t": "2026-10-12T12:14:32.032Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-10-12T12:16:26.157Z",
-      "event": "bb-session",
-      "session": "a0905279",
-      "url": "https://www.wsj.com/arts-culture/theater/tammy-faye-review-katie-brayben-broadwa"
-    },
-    {
-      "t": "2026-10-12T12:16:27.018Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
     }
   ]
 }
