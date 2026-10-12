@@ -31,6 +31,7 @@
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('../lib/list-show-dirs');
+const { foldDiacritics } = require('../lib/title-match');
 const { describeProduction, videoPredatesProduction } = require('../lib/video-production-context');
 const { GPT4O, CLAUDE_SONNET, GEMINI_FLASH } = require('../lib/models');
 const { invalidateWrongProductionAutoClear } = require('../lib/review-write-guard');
@@ -76,7 +77,7 @@ const ACCEPTED_EVIDENCE = new Set(['other_city', 'tryout', 'concert', 'community
 
 // Loose match: transcripts are auto-captions, so compare letters and digits only.
 function norm(s) {
-  return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  return foldDiacritics(String(s || '')).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 }
 
 /**

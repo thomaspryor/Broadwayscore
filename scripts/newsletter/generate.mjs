@@ -581,9 +581,9 @@ function outletLink(name, inner) {
   if (!slug) return inner;
   return `<a href="${SITE}/critics/outlets/${slug}" style="color:inherit;text-decoration:none">${inner}</a>`;
 }
-function castSlugify(name) {
-  return (name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-}
+// The site's /cast/<slug> pages use url-slug.js slugify (folds accents:
+// "José" -> jose); an unfolded copy here linked accented names to 404s.
+const { slugify: castSlugify, foldDiacritics } = cjsRequire('../lib/url-slug.js');
 function castLink(name, inner) {
   if (!name) return inner;
   const slug = castSlugify(name);
@@ -1843,7 +1843,7 @@ function castingSection() {
   // A "departure" whose name IS the production (e.g. "Moulin Rouge! The Musical
   // Company") is a show-wide closing restated as a per-actor row, not a person.
   // Rendering it prints "<Show> Company departs" — the closure-as-departure bug.
-  const norm = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  const norm = (s) => foldDiacritics(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
   const isProductionName = (e) => {
     const n = norm(e.name);
     const t = norm(e.showTitle);

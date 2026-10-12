@@ -38,6 +38,7 @@ const {
   isRevivalByCanonicalTitle,
 } = require('../lib/review-guards');
 const { listShowDirs } = require('../lib/list-show-dirs');
+const { foldDiacritics } = require('../lib/title-match');
 
 const argv = process.argv.slice(2);
 const jsonArg = argv.find(a => a.startsWith('--json='));
@@ -67,7 +68,7 @@ function isActiveShow(show) {
 
 /** Canonical slug used in URLs — show title lowercased and hyphenated. */
 function showSlugTokens(show) {
-  const title = (show.canonicalTitle || show.title || '').toLowerCase();
+  const title = foldDiacritics(show.canonicalTitle || show.title || '').toLowerCase();
   return title
     .replace(/[^a-z0-9 ]/g, ' ')
     .split(/\s+/)

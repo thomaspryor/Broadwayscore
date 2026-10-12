@@ -3,22 +3,13 @@
 const fs = require('fs');
 const path = require('path');
 
-const { buildAcceptSlugs } = require('./slug-mismatch.check.js');
+const { buildMentionRegex } = require('./slug-mismatch.check.js');
 
 const name = 'fulltext-mentions-show';
 const description = 'Source review-text files that shipped to reviews.json contain at least one show-title mention in fullText (catches EBT-content-as-Schmig class)';
 
-// Token patterns we accept as "mentions this show."
-// Built from the show's title tokens (len>=4, stopword-filtered) and any aliases.
-function buildMentionRegex(show) {
-  const acceptSlugs = buildAcceptSlugs(show);
-  const patterns = acceptSlugs
-    .map(s => s.replace(/-/g, '[\\s-]*'))
-    .filter(s => s.length >= 3);
-  if (patterns.length === 0) return null;
-  // Word-boundary-ish match against fullText (case-insensitive). Multiple slugs ORed.
-  return new RegExp(`(^|[^A-Za-z0-9])(${patterns.join('|')})($|[^A-Za-z0-9])`, 'i');
-}
+// buildMentionRegex lives in slug-mismatch.check.js so both checks share one
+// definition of "mentions this show" (BRO-4697).
 
 function run(show, context) {
   const showDir = path.join(context.reviewTextsRoot, show.id);

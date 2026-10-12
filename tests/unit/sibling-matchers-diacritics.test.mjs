@@ -343,12 +343,26 @@ const {
 // summary was discarded, and the survivor inherited a fabricated
 // agreementCount of 2. A guard that only sees half the file types reports
 // stronger coverage than it has.
-function scanUnfolded(dir) {
-  return fs.readdirSync(dir)
-    .filter(f => f.endsWith('.js') || f.endsWith('.mjs'))
-    .filter(f => !f.endsWith('.test.mjs') && !f.endsWith('.test.js'))
-    .filter(f => fs.statSync(path.join(dir, f)).isFile())
-    .filter(f => isUnfolded(fs.readFileSync(path.join(dir, f), 'utf8')));
+// Recurses into subdirectories (BRO-4697): until 2026-10-12 it read only the
+// top level of scripts/lib, so opening-night-checks/slug-mismatch.check.js
+// shredded "Amélie" to "amlie" unseen. Subdirectory files are reported by
+// their path relative to dir ('opening-night-checks/x.check.js'); top-level
+// names are unchanged, so existing baseline entries still match.
+function scanUnfolded(dir, prefix = '') {
+  const out = [];
+  for (const f of fs.readdirSync(dir)) {
+    const full = path.join(dir, f);
+    const st = fs.statSync(full);
+    if (st.isDirectory()) {
+      if (f === 'node_modules' || f.startsWith('.')) continue;
+      out.push(...scanUnfolded(full, `${prefix}${f}/`));
+      continue;
+    }
+    if (!st.isFile() || !(f.endsWith('.js') || f.endsWith('.mjs'))) continue;
+    if (f.endsWith('.test.mjs') || f.endsWith('.test.js')) continue;
+    if (isUnfolded(fs.readFileSync(full, 'utf8'))) out.push(prefix + f);
+  }
+  return out;
 }
 
 describe('structural guard: no NEW unfolded title matcher', () => {
@@ -446,7 +460,8 @@ describe('structural guard: no NEW unfolded title matcher', () => {
 });
 
 describe('structural guard: no NEW unfolded title matcher at scripts/ root (task #781)', () => {
-  const unfolded = scanUnfolded(SCRIPTS_ROOT);
+  // lib/ is covered (recursively) by the scripts/lib guard above.
+  const unfolded = scanUnfolded(SCRIPTS_ROOT).filter(f => !f.startsWith('lib/'));
 
   it('every scripts/ root file with the shred signature and no fold is in the frozen baseline', () => {
     const novel = unfolded.filter(f => !UNFOLDED_BASELINE_ROOT.has(f));

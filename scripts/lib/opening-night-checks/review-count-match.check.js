@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { foldDiacritics } = require('../title-match.js');
 // Balusters ship-check P1 #5: use canonical generateReviewFilename from review-normalization
 // so filenames match how rebuild and gather write them (handles aliases + prefix stripping).
 let _generateReviewFilename;
@@ -184,7 +185,7 @@ function run(show, context) {
       if (_generateReviewFilename) {
         try { filenamesInBuild.add(_generateReviewFilename(r.outletId, r.criticName)); } catch { /* fall through */ }
       }
-      const slug = String(r.criticName).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      const slug = foldDiacritics(String(r.criticName)).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
       filenamesInBuild.add(`${r.outletId}--${slug}.json`);
     }
   }
