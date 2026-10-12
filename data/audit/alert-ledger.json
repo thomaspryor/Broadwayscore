@@ -3234,13 +3234,13 @@
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
       "incidentOpenedAt": "2026-10-08T11:25:20.258Z",
-      "lastSeen": "2026-10-12T22:57:54.543Z",
+      "lastSeen": "2026-10-12T23:36:38.850Z",
       "lastNotifiedAt": "2026-10-12T14:57:24.182Z",
       "lastSurfacedAt": "2026-10-09T12:26:47.818Z",
       "notifyCount": 23,
       "cardId": null,
       "linearIdentifier": "BRO-4515",
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
@@ -3248,13 +3248,13 @@
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
       "incidentOpenedAt": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-10-12T22:57:54.556Z",
+      "lastSeen": "2026-10-12T23:36:38.865Z",
       "lastNotifiedAt": "2026-10-12T14:57:24.201Z",
       "lastSurfacedAt": "2026-10-09T12:26:47.835Z",
       "notifyCount": 25,
       "cardId": null,
       "linearIdentifier": "BRO-4501",
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3927,13 +3927,13 @@
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
       "incidentOpenedAt": "2026-10-05T11:20:30.123Z",
-      "lastSeen": "2026-10-12T22:57:54.531Z",
+      "lastSeen": "2026-10-12T23:36:38.835Z",
       "lastNotifiedAt": "2026-10-12T00:49:43.648Z",
       "lastSurfacedAt": "2026-10-06T13:33:30.414Z",
       "notifyCount": 20,
       "cardId": null,
       "linearIdentifier": "BRO-4795",
-      "silentRefires": 19
+      "silentRefires": 20
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "resolved",
@@ -4330,13 +4330,13 @@
       "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
       "firstSeen": "2026-09-21T09:41:19.072Z",
       "incidentOpenedAt": "2026-10-09T12:26:41.876Z",
-      "lastSeen": "2026-10-12T22:57:54.522Z",
+      "lastSeen": "2026-10-12T23:36:38.822Z",
       "lastNotifiedAt": "2026-10-12T14:57:24.153Z",
       "lastSurfacedAt": "2026-10-09T12:26:41.876Z",
       "notifyCount": 18,
       "cardId": null,
       "linearIdentifier": "BRO-4932",
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "test-yml:red:E2E Tests:c58b7c79": {
       "status": "resolved",
@@ -5924,13 +5924,13 @@
       "title": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
       "firstSeen": "2026-09-28T19:21:55.577Z",
       "incidentOpenedAt": "2026-10-07T01:51:51.676Z",
-      "lastSeen": "2026-10-12T22:57:54.500Z",
+      "lastSeen": "2026-10-12T23:36:38.794Z",
       "lastNotifiedAt": "2026-10-12T14:57:24.120Z",
       "lastSurfacedAt": "2026-10-12T14:57:24.120Z",
       "notifyCount": 12,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "test-yml:red:Unit Tests:ee08ae2a": {
       "status": "resolved",
@@ -5989,13 +5989,13 @@
       "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff)",
       "firstSeen": "2026-09-28T19:48:00.401Z",
       "incidentOpenedAt": "2026-09-28T19:48:00.401Z",
-      "lastSeen": "2026-10-12T22:57:54.511Z",
+      "lastSeen": "2026-10-12T23:36:38.809Z",
       "lastNotifiedAt": "2026-10-12T00:49:43.623Z",
       "lastSurfacedAt": "2026-10-12T00:49:43.623Z",
       "notifyCount": 13,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 19
+      "silentRefires": 20
     },
     "land:land/bro-4236-prompt-blocker": {
       "status": "resolved",
@@ -9253,13 +9253,13 @@
       "title": "Corpus drift: live reviews on look-alike/blocked hosts, look-alike registry aliases, or undecided provisional outlets",
       "firstSeen": "2026-10-03T11:51:42.151Z",
       "incidentOpenedAt": "2026-10-03T11:51:42.151Z",
-      "lastSeen": "2026-10-12T22:57:54.537Z",
+      "lastSeen": "2026-10-12T23:36:38.842Z",
       "lastNotifiedAt": "2026-10-12T00:49:43.655Z",
       "lastSurfacedAt": "2026-10-12T00:49:43.655Z",
       "notifyCount": 9,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 19
+      "silentRefires": 20
     },
     "broadcast-gate:checklist:hay-fever-west-end-2026": {
       "status": "open",
