@@ -3915,16 +3915,11 @@ function createReviewFile(showId, reviewData, options = {}) {
     dtliExcerpt: cleanText(reviewData.dtliExcerpt || (reviewData.source !== 'serp-discovery' ? reviewData.excerpt : null)) || null,
     // AGGREGATOR SCORE GUARD: Never store aggregator-sourced scores as originalScore.
     // Aggregator stars are third-party ratings, not the outlet's own score.
-    ...(() => {
-      const isAggregator = AGGREGATOR_SCORE_SOURCES.has(reviewData.scoreSource);
-      const parsedScore = reviewData.originalRating
-        ? parseRating(reviewData.originalRating, normalizedOutletId)
-        : (reviewData.score != null ? reviewData.score : null);
-      if (isAggregator) {
-        return { originalScore: null, aggregatorStars: parsedScore };
-      }
-      return { originalScore: parsedScore };
-    })(),
+    // No-rating outlets (london-theatre) start with no score (BRO-5064): initialScoreFields.
+    ...require('./lib/no-rating-outlet-score').initialScoreFields(
+      { ...reviewData, outletId: normalizedOutletId },
+      { parseRating, isAggregatorSource: (src) => AGGREGATOR_SCORE_SOURCES.has(src) }
+    ),
     scoreSource: reviewData.scoreSource || null,
     assignedScore: null,
     source: reviewData.source || 'gather-reviews',

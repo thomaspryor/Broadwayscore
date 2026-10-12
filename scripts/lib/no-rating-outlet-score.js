@@ -27,4 +27,26 @@ function discardNoRatingOutletScore(data) {
   return true;
 }
 
-module.exports = { discardNoRatingOutletScore };
+/**
+ * The score fields a NEW review file (gather-reviews createReviewFile) may start with (BRO-5064).
+ * Show Score hands every row a star rating, including rows for outlets that print none
+ * (london-theatre), and createReviewFile used to store it as originalScore. The collect step's
+ * discardNoRatingOutletScore only runs when the page is re-fetched, so the placeholder reached
+ * review-texts and failed check-score-integrity. A no-rating outlet starts with no score at all
+ * (not aggregatorStars either: see the note on discardNoRatingOutletScore).
+ *
+ * @param {object} reviewData  { outletId, scoreSource, originalRating, score }
+ * @param {object} deps        { parseRating(rating, outletId), isAggregatorSource(scoreSource) }
+ * @returns {{originalScore: *, aggregatorStars?: *}}
+ */
+function initialScoreFields(reviewData, deps) {
+  const { outletId } = reviewData;
+  if (publishesNoCriticRating(outletId)) return { originalScore: null };
+  const parsed = reviewData.originalRating
+    ? deps.parseRating(reviewData.originalRating, outletId)
+    : (reviewData.score != null ? reviewData.score : null);
+  if (deps.isAggregatorSource(reviewData.scoreSource)) return { originalScore: null, aggregatorStars: parsed };
+  return { originalScore: parsed };
+}
+
+module.exports = { discardNoRatingOutletScore, initialScoreFields };

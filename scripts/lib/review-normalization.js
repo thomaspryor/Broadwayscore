@@ -1032,7 +1032,9 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // Prefer original scores — but NEVER overwrite outlet-verified scores
   // with aggregator scores (prevents theatre-reviews/ShowScore contamination)
   const incomingIsAggregator = AGGREGATOR_SCORE_SOURCES.has(incoming.scoreSource);
-  if (incoming.originalScore && !existing.originalScore && !incomingIsAggregator) {
+  // BRO-5064: never onto an outlet that publishes no critic rating (london-theatre).
+  const outletTakesScore = !require('./score-extractors').publishesNoCriticRating(merged.outletId || existing.outletId);
+  if (incoming.originalScore && !existing.originalScore && !incomingIsAggregator && outletTakesScore) {
     merged.originalScore = incoming.originalScore;
     merged.originalRating = incoming.originalRating;
   }
