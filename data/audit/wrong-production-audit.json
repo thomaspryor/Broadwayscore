@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-12T16:15:51.877Z",
+  "timestamp": "2026-10-12T16:27:05.973Z",
   "stats": {
-    "totalReviews": 55981,
-    "alreadyFlagged": 20895,
-    "dateGuardCatches": 252,
+    "totalReviews": 56000,
+    "alreadyFlagged": 20900,
+    "dateGuardCatches": 251,
     "directorMismatch": 1783,
     "tvFilmSignals": 1617,
     "londonSignals": 2200,
     "offBroadwaySignals": 507,
     "yearMismatch": 137,
-    "noPublishDate": 5195
+    "noPublishDate": 5210
   },
   "findings": [
     {
@@ -27689,6 +27689,7 @@
     {
       "showId": "mystic-pizza-tour-2026",
       "file": "talkinbroadway--arthur-dorman.json",
+      "score": 75,
       "publishDate": null,
       "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html",
       "findings": [
@@ -46124,20 +46125,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1547d before show (2022-03-31 vs 2026-06-25)"
-        }
-      ]
-    },
-    {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 82,
-      "publishDate": "2023-02-07",
-      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
         }
       ]
     },
@@ -71781,7 +71768,7 @@
     {
       "showId": "rent-west-end-2026",
       "file": "ground--unknown.json",
-      "score": 61,
+      "score": 66,
       "publishDate": "2026-10-08",
       "url": "https://ground.news/article/rent-reborn-how-star-gaten-matarazzo-director-luke-sheppard-and-a-perfectly-cast-west-end-ensemble-are-giving-the-musical-its-biggest-revi",
       "findings": [
