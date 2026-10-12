@@ -1314,12 +1314,21 @@ export function getRelatedShows(show: ComputedShow, limit = 6): ComputedShow[] {
     const idMap = new Map(allShows.map(s => [s.id, s]));
     const slugMap = new Map(allShows.map(s => [s.slug, s]));
     const showCity = getCity(show.category);
-    return entry.relatedIds
+    const curated = entry.relatedIds
       .map((id: string) => idMap.get(id) || slugMap.get(id))
-      .filter((s): s is ComputedShow => s != null && !isSameShow(s, show) && getCity(s.category) === showCity)
-      .slice(0, limit);
+      .filter((s): s is ComputedShow => s != null && !isSameShow(s, show) && getCity(s.category) === showCity);
+    return topUpRelated(curated, show, limit);
   }
   return getRelatedShowsAlgorithmic(show, limit);
+}
+
+// A curated list can come up short once one of its shows changes status (a
+// curated open rec that has since closed is filtered out). Fill the gap from the
+// algorithmic ranking for the same pool instead of showing fewer cards (BRO-5122).
+function topUpRelated(curated: ComputedShow[], show: ComputedShow, limit: number, statusFilter?: 'open' | 'closed'): ComputedShow[] {
+  if (curated.length >= limit) return curated.slice(0, limit);
+  const extra = getRelatedShowsAlgorithmic(show, limit + curated.length, statusFilter).filter(s => !curated.some(c => isSameShow(c, s)));
+  return [...curated, ...extra].slice(0, limit);
 }
 
 function getCity(category: string | undefined): string {
@@ -1338,10 +1347,10 @@ export function getRelatedShowsOpen(show: ComputedShow, limit = 6): ComputedShow
     const idMap = new Map(allShows.map(s => [s.id, s]));
     const slugMap = new Map(allShows.map(s => [s.slug, s]));
     const showCity = getCity(show.category);
-    return entry.relatedOpenIds
+    const curated = entry.relatedOpenIds
       .map((id: string) => idMap.get(id) || slugMap.get(id))
-      .filter((s): s is ComputedShow => s != null && (s.status === 'open' || s.status === 'previews' || s.status === 'upcoming') && !isSameShow(s, show) && getCity(s.category) === showCity)
-      .slice(0, limit);
+      .filter((s): s is ComputedShow => s != null && (s.status === 'open' || s.status === 'previews' || s.status === 'upcoming') && !isSameShow(s, show) && getCity(s.category) === showCity);
+    return topUpRelated(curated, show, limit, 'open');
   }
   // Fallback: rank within the open pool (status filter runs BEFORE the top-N cut,
   // otherwise closed shows crowd the cut and the pool comes back near-empty)
@@ -1355,10 +1364,10 @@ export function getRelatedShowsClosed(show: ComputedShow, limit = 6): ComputedSh
     const idMap = new Map(allShows.map(s => [s.id, s]));
     const slugMap = new Map(allShows.map(s => [s.slug, s]));
     const showCity = getCity(show.category);
-    return entry.relatedClosedIds
+    const curated = entry.relatedClosedIds
       .map((id: string) => idMap.get(id) || slugMap.get(id))
-      .filter((s): s is ComputedShow => s != null && s.status === 'closed' && !isSameShow(s, show) && getCity(s.category) === showCity)
-      .slice(0, limit);
+      .filter((s): s is ComputedShow => s != null && s.status === 'closed' && !isSameShow(s, show) && getCity(s.category) === showCity);
+    return topUpRelated(curated, show, limit, 'closed');
   }
   // Fallback: rank within the closed pool. Filtering AFTER a global top-N cut gave
   // an unreviewed show (previews, no tags) ONE closed rec: open shows carry a +3
