@@ -104,11 +104,11 @@ function main() {
     if (truncated) out += `\n[run-script] output truncated at ${MAX_OUTPUT} bytes`;
     if (timedOut) out += `\n[run-script] killed after ${timeoutMin} min`;
     const exitCode = code == null ? (signal ? 128 : 1) : code;
-    console.log(BEGIN);
-    for (const line of chunk(JSON.stringify(seal(out, pub)))) console.log(line);
-    console.log(END);
-    console.log(`=== RUN-SCRIPT EXIT ${exitCode} ===`);
-    process.exit(0);
+    const lines = [BEGIN, ...chunk(JSON.stringify(seal(out, pub))), END, `=== RUN-SCRIPT EXIT ${exitCode} ===`];
+    // stdout to a pipe is async: process.exit() right after console.log cut a
+    // large sealed blob off after two chunks and dropped END (2026-10-12, a
+    // 200KB audit-review-contamination --json). Exit once the write has flushed.
+    process.stdout.write(lines.join('\n') + '\n', () => process.exit(0));
   });
   child.on('error', (err) => refuse(`could not start ${cmd}: ${err.message}`));
 }

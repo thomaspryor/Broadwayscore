@@ -83,6 +83,7 @@ const DATE_BASED_WRONGPROD_PREFIXES = [
   'Dateless show',
   'Tour transfer',
   'Auto-flagged: URL date',
+  'Other-production url guard',
 ];
 
 // collect-review-texts.js's anticipatory-pre-opening-post gate stamps this
