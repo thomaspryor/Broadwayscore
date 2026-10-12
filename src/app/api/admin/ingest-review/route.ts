@@ -22,6 +22,13 @@ const { resolveIngestFilename, normalizeReviewUrl: normalizeUrl } = cjsRequire('
     existingUrl: string | null;
   };
 };
+// BRO-5133: the same narrow non-review gate review-file-writer applies to NEW
+// files (venue/ticket/listing pages). This route writes to the review-texts
+// repo directly, so before this it skipped that gate: 2026-10-12 it filed
+// SoHo Playhouse / Soho Theatre show pages as includable "reviews".
+const { submissionNonReviewReason } = cjsRequire('../../../../../scripts/lib/non-review-url-patterns') as {
+  submissionNonReviewReason: (url: string) => string | null;
+};
 const { hasClearBreadcrumbValue } = cjsRequire('../../../../../scripts/lib/flag-contradiction') as {
   hasClearBreadcrumbValue: (v: unknown) => boolean;
 };
@@ -333,6 +340,19 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
           existingData = null;
         }
       }
+    }
+  }
+
+  // Same NEW-files-only non-review gate as review-file-writer: a venue,
+  // ticketing or listing url can't create a review file, but updates to an
+  // existing file are left alone.
+  if (!existingData) {
+    const nonReviewReason = submissionNonReviewReason(url);
+    if (nonReviewReason) {
+      return NextResponse.json(
+        { success: false, error: `Not a review: this url is a ${nonReviewReason} page (venue, ticketing or listing), so it can't be ingested as a review`, failureReason: 'other' },
+        { status: 400 },
+      );
     }
   }
 

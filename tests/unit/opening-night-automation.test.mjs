@@ -94,6 +94,17 @@ describe('Alt 2 — admin UI ingest form (auth-gated, commits via GitHub API)', 
     const src = read('src/app/api/admin/ingest-review/route.ts');
     assert.match(src, /buildManualReviewFields/);
   });
+
+  // BRO-5133: the route writes to review-texts directly, so it must apply the
+  // writer's non-review gate itself (venue pages were filed as reviews).
+  it('refuses venue/ticket/listing urls with the shared submissionNonReviewReason gate', () => {
+    const src = read('src/app/api/admin/ingest-review/route.ts');
+    assert.match(src, /submissionNonReviewReason\(url\)/);
+    const { submissionNonReviewReason } = require('../../scripts/lib/non-review-url-patterns.js');
+    assert.equal(submissionNonReviewReason('https://sohotheatre.com/events/elf-lyons-is-the-woman-on-the-edge/'), 'venue-production-page');
+    assert.equal(submissionNonReviewReason('https://www.sohoplayhouse.com/see-a-show/lost-in-del-valle'), 'venue-production-page');
+    assert.equal(submissionNonReviewReason('https://www.newyorksocialdiary.com/lost-in-del-valle-this-true-tale-doesnt-write-itself/'), null);
+  });
 });
 
 describe('Shared protection-field guarantee (fixes the class of bug, not one instance)', () => {
