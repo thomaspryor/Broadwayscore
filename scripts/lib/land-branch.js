@@ -204,7 +204,9 @@ function decideCancelledLandRetry({ landConclusion, checksConclusion, remoteTip,
 // first; under queue pressure that takes minutes. The sweep re-runs one
 // stranded run per Land completion (oldest first), so in a burst the re-run
 // can come several landings later.
-const CANCEL_GRACE_SEC = 900;
+// BRO-5196: a Land job parked behind a deep queue resumes only as landings
+// finish (~2-3 min each, queue held near PARK_DEPTH), so allow a full queue's drain.
+const CANCEL_GRACE_SEC = 2700;
 const CANCEL_GRACE_POLL_SEC = 15;
 
 // decideCancelledWait lives in land-retry-on-cancel.js (shared with the

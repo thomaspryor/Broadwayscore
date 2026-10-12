@@ -533,7 +533,48 @@ jobs:
     # 75 min waiting in the landing mutex queue (land-mutex DEADLINE_MINUTES,
     # then it fails open), so 15 + 75 + setup headroom.
     timeout-minutes: 110
+    permissions:
+      contents: write
+      # actions: write — the admit step cancels THIS run to park it (BRO-5196).
+      actions: write
     steps:
+      - name: Admit to the landing queue
+        id: admit
+        # BRO-5196: a Land job used to sleep-poll the landing mutex on its own
+        # runner. 14 deep (2026-10-12) held 14 of the account's ~20 runners for
+        # up to 35 min and starved test.yml on main. Now, when PARK_DEPTH or more
+        # tickets are already queued, this FIRST step (before any checkout or
+        # setup) cancels the run: Checks stay green, the Land job ends cancelled
+        # having done no work, and land-retry-cancelled.yml's sweep re-runs it
+        # (rerun-failed-jobs, Checks result kept) once the queue has room
+        # (scripts/lib/land-mutex.js isParkedLandJob; the step name below is
+        # the marker). Fail-open everywhere: an unreadable queue, a refused
+        # cancel, a main-red lane, or the kill switch proceeds to the old
+        # in-runner wait. Kill switch: repo variable LAND_MUTEX_DISABLED=true or
+        # LAND_MUTEX_PARK_DEPTH=0. The always() steps below are guarded on this
+        # step succeeding so a parked run leaves no completed work step behind.
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LAND_MUTEX_DISABLED: ${{ vars.LAND_MUTEX_DISABLED }}
+          LAND_MUTEX_PARK_DEPTH: ${{ vars.LAND_MUTEX_PARK_DEPTH }}
+        run: |
+          cap="${LAND_MUTEX_PARK_DEPTH:-4}"
+          if [ "$LAND_MUTEX_DISABLED" = "true" ] || [ "$cap" = "0" ]; then echo "parking disabled; proceeding"; exit 0; fi
+          lower="${BRANCH,,}"
+          case "$lower" in land/*main-red*) echo "main-red lane never parks; proceeding"; exit 0 ;; esac
+          if ! queue=$(git ls-remote "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" 'refs/land-mutex/queue/*'); then
+            echo "::warning::could not read the landing queue; proceeding to the in-runner wait"; exit 0
+          fi
+          depth=$(printf '%s\n' "$queue" | grep -c . || true)
+          if [ "$depth" -lt "$cap" ]; then echo "queue is $depth deep (park at $cap); proceeding"; exit 0; fi
+          echo "::notice::landing queue is $depth deep (park at $cap): parking this run; the Land retry sweep re-runs it when there is room"
+          if gh api -X POST "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/cancel" > /dev/null; then
+            sleep 600
+            echo "::warning::cancel was accepted but this job is still running; proceeding to the in-runner wait"
+          else
+            echo "::warning::could not cancel this run to park it; proceeding to the in-runner wait"
+          fi
+
       - name: Checkout main
         uses: actions/checkout@v5
         with:
@@ -725,7 +766,7 @@ jobs:
             --detail-file /tmp/land.log
 
       - name: Commit alert-router ledger changes
-        if: always()
+        if: always() && steps.admit.outcome == 'success'
         # scripts/land-alert.js calls routeAlert()/resolveCondition(); the
         # ledger, digest queue and attempts log only exist on this runner's
         # disk until committed. Non-blocking by rule (ledger-step-guard).
@@ -751,7 +792,7 @@ jobs:
         # fast-forward. always(): a failed or cancelled landing must not hold
         # the queue (a lock that survives anyway is broken by the next waiter
         # once this run reads completed).
-        if: always()
+        if: always() && steps.admit.outcome == 'success'
         env:
           LAND_BRANCH: ${{ env.BRANCH }}
         run: |

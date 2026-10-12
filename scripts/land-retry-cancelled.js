@@ -25,7 +25,7 @@
  * casualty?) and scripts/lib/land-queue-backoff.js (which run goes next?).
  */
 
-const { execFileSync } = require('child_process');
+const { execFileSync, spawnSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { decideLandRetry, runGhWithFallback, isRefNotFound, decideCancelledWait } = require('./lib/land-retry-on-cancel');
 const { supersededByNewerRun, decideSweep, MAX_AGE_HOURS } = require('./lib/land-queue-backoff');
@@ -86,6 +86,16 @@ function runTargeted() {
   rerun(runId, run.run_attempt);
 }
 
+/**
+ * Tickets under refs/land-mutex/queue on origin (BRO-5196), or null when the
+ * remote is unreadable (callers resume: a parked run is never held on a guess).
+ */
+function queueDepth() {
+  const r = spawnSync('git', ['ls-remote', process.env.LAND_MUTEX_REMOTE || 'origin', 'refs/land-mutex/*'], { encoding: 'utf8', timeout: 60000 });
+  if (r.status !== 0) return null;
+  return require('./lib/land-mutex').parseLsRemote(r.stdout).tickets.length;
+}
+
 function runSweep() {
   // Cancelled runs only (status filter): the last 24h held ~150 Land runs, so
   // an unfiltered page would drop the oldest stranded ones first.
@@ -110,6 +120,13 @@ function runSweep() {
     const fresh = latest || run;
     const r = decideLandRetry({ run: fresh, jobs: jobsOf(run.id), branchExists: true, branchTip: refs.get(run.head_branch) });
     console.log(`run ${run.id} ${run.head_branch} attempt ${fresh.run_attempt}: ${r.retry ? 'RETRY' : 'skip'} (${r.reason})`);
+    if (r.retry && r.parked) {
+      // A parked run resumes only when the queue has room; resuming into a full
+      // queue just parks it again and spends an attempt (BRO-5196).
+      const depth = queueDepth();
+      const { PARK_DEPTH } = require('./lib/land-mutex');
+      if (depth !== null && depth >= PARK_DEPTH) { console.log(`run ${run.id} ${run.head_branch}: parked, queue still ${depth} deep (>= ${PARK_DEPTH}); not resumed yet`); continue; }
+    }
     if (r.retry) { rerun(run.id, fresh.run_attempt); return; } // one per sweep: the next Land completion sweeps again
   }
 }

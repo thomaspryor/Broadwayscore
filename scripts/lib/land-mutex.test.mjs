@@ -175,3 +175,70 @@ test('CLI: an unreachable remote fails open with held=false', { timeout: 60000 }
     rmSync(ctx.dir, { recursive: true, force: true });
   }
 });
+
+// ---- BRO-5196: parking behind a deep queue ----
+const { decideLandRetry } = require('./land-retry-on-cancel.js');
+const { decideStrandedRef } = require('./land-stranded-refs.js');
+const { decideSweep } = require('./land-queue-backoff.js');
+
+const step = (name, number, conclusion) => ({ name, number, conclusion });
+const parkedLand = (extra = []) => ({
+  name: 'Land',
+  conclusion: 'cancelled',
+  steps: [step('Set up job', 1, 'success'), step(m.PARK_STEP_NAME, 2, 'cancelled'), step('Checkout main', 3, 'skipped'), step('Complete job', 9, 'success'), ...extra],
+});
+const evictedLand = () => ({ name: 'Land', conclusion: 'cancelled', steps: [] });
+const checksOk = { name: 'Checks', conclusion: 'success' };
+const runOf = (o = {}) => ({ id: 5, status: 'completed', conclusion: 'cancelled', head_branch: 'land/bro-1', head_sha: 'abc', run_attempt: 1, created_at: new Date(NOW - 3600e3).toISOString(), updated_at: new Date(NOW - 3000e3).toISOString(), ...o });
+
+test('isParkedLandJob: only an admit step that ended cancelled with no work after it', () => {
+  assert.equal(m.isParkedLandJob(parkedLand()), true);
+  assert.equal(m.isParkedLandJob(evictedLand()), false);
+  assert.equal(m.isParkedLandJob(null), false);
+  // admit passed (normal run) then a later cancel mid-flight: not parked
+  assert.equal(m.isParkedLandJob({ steps: [step(m.PARK_STEP_NAME, 2, 'success'), step('Land the branch', 8, 'cancelled')] }), false);
+  // work step completed after the admit step cancelled: never a parked job
+  assert.equal(m.isParkedLandJob(parkedLand([step('Land the branch', 8, 'success')])), false);
+  assert.equal(m.isParkedLandJob(parkedLand([step('Release the landing mutex', 8, 'failure')])), false);
+});
+
+test('decideLandRetry resumes a parked job (its set-up-job step succeeded, so a plain eviction rule would refuse it)', () => {
+  const jobs = [checksOk, parkedLand()];
+  const d = decideLandRetry({ run: runOf(), jobs, branchExists: true, branchTip: 'abc' });
+  assert.equal(d.retry, true);
+  assert.equal(d.parked, true);
+  assert.equal(d.reason, 'land-parked-behind-deep-queue');
+  // the same steps without the admit marker is a Land job cancelled mid-flight: refused
+  const midFlight = { name: 'Land', conclusion: 'cancelled', steps: [step('Set up job', 1, 'success'), step('Land the branch', 8, 'success')] };
+  assert.equal(decideLandRetry({ run: runOf(), jobs: [checksOk, midFlight], branchExists: true, branchTip: 'abc' }).reason, 'land-started-work');
+});
+
+test('a parked job gets the parked attempt budget; an eviction keeps the old one', () => {
+  const at = (n, land) => decideLandRetry({ run: runOf({ run_attempt: n }), jobs: [checksOk, land], branchExists: true, branchTip: 'abc' });
+  assert.equal(at(6, parkedLand()).retry, true);
+  assert.equal(at(m.PARKED_MAX_ATTEMPTS - 1, parkedLand()).retry, true);
+  assert.equal(at(m.PARKED_MAX_ATTEMPTS, parkedLand()).reason, 'attempts-exhausted');
+  assert.equal(at(6, evictedLand()).reason, 'attempts-exhausted');
+});
+
+test('the stranded pass leaves a parked run to the sweep instead of escalating it as cancelled mid-flight', () => {
+  const now = NOW;
+  const base = { tip: 'abc', latestRun: runOf({ run_attempt: 8 }), jobs: [checksOk, parkedLand()], now };
+  assert.deepEqual(decideStrandedRef(base), { action: 'none', reason: 'fast-retry-owns' });
+  // an eviction at the same attempt is already past the fast window
+  assert.notEqual(decideStrandedRef({ ...base, jobs: [checksOk, evictedLand()] }).reason, 'fast-retry-owns');
+  assert.equal(decideStrandedRef({ ...base, latestRun: runOf({ run_attempt: m.PARKED_MAX_ATTEMPTS }) }).reason !== 'fast-retry-owns', true);
+});
+
+test('the sweep prefilter keeps a parked run past the eviction budget', () => {
+  const refs = new Map([['land/bro-1', 'abc']]);
+  const d = decideSweep({ cancelledRuns: [runOf({ run_attempt: 9 })], refs, now: NOW });
+  assert.equal(d.action, 'inspect');
+  assert.equal(decideSweep({ cancelledRuns: [runOf({ run_attempt: m.PARKED_MAX_ATTEMPTS })], refs, now: NOW }).action, 'idle');
+});
+
+test('the parked budget stays below the stranded pass budget so ownership never has a gap', () => {
+  const { STRANDED_MAX_ATTEMPT } = require('./land-stranded-refs.js');
+  assert.ok(m.PARKED_MAX_ATTEMPTS < STRANDED_MAX_ATTEMPT);
+  assert.ok(m.PARKED_MAX_ATTEMPTS > require('./land-retry-on-cancel.js').MAX_ATTEMPTS);
+});
