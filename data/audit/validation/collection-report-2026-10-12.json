@@ -1,66 +1,72 @@
 {
-  "runDate": "2026-10-12T10:34:46.619Z",
+  "runDate": "2026-10-12T10:38:03.074Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "the-car-man-west-end-2026,the-hairy-ape-irish-repertory-theatre-off-broadway-2026,human-things-off-broadway-2026,mystic-pizza-tour-2026",
+    "showFilter": "oh-mary-west-end-2025,the-enormous-crocodile-west-end-2026,death-note-the-musical-west-end-2026,cats-west-end-2026,the-car-man-west-end-2026,glengarry-glen-ross-west-end-2026,the-last-ship-west-end-2026,the-winters-tale-off-broadway-2026,here-comes-j-edgar-off-west-end-2026,a-slow-fire-off-west-end-2026,fire-fire-off-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 4,
+    "processed": 6,
+    "failed": 5,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "54.5%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingdog": 1,
+    "scrapingbee": 1,
+    "brightdata": 1,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 0,
+    "tier1Attempts": 9,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 6,
-    "tier1_5Success": 0,
-    "tier1_9Attempts": 1,
-    "tier1_9Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 0,
-    "tier3Attempts": 4,
-    "tier3Success": 0,
-    "tier3_6Attempts": 4,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier1_9Attempts": 7,
+    "tier1_9Success": 1,
+    "tier2Attempts": 7,
+    "tier2Success": 1,
+    "tier3Attempts": 6,
+    "tier3Success": 1,
+    "tier3_6Attempts": 5,
     "tier3_6Success": 0,
-    "tier4Attempts": 4,
+    "tier4Attempts": 6,
     "tier4Success": 0,
-    "totalFailed": 4,
-    "scrapingBeePageCredits": 1,
+    "totalFailed": 5,
+    "scrapingBeePageCredits": 43,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 6,
-    "browserbaseMinutesUsed": 3.7,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 0,
-    "failed": 4,
+    "processed": 6,
+    "failed": 5,
     "shows": [
-      "human-things-off-broadway-2026",
-      "mystic-pizza-tour-2026",
+      "a-slow-fire-off-west-end-2026",
+      "cats-west-end-2026",
+      "death-note-the-musical-west-end-2026",
+      "fire-fire-off-west-end-2026",
+      "here-comes-j-edgar-off-west-end-2026",
+      "oh-mary-west-end-2025",
       "the-car-man-west-end-2026",
-      "the-hairy-ape-irish-repertory-theatre-off-broadway-2026"
+      "the-enormous-crocodile-west-end-2026",
+      "the-last-ship-west-end-2026",
+      "the-winters-tale-off-broadway-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -68,44 +74,79 @@
       "failed": 0
     }
   },
-  "processed": [],
+  "processed": [
+    "the-winters-tale-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "the-winters-tale-off-broadway-2026/theater-pizzazz--unknown.json",
+    "cats-west-end-2026/deadline--liz-shackleton.json",
+    "the-car-man-west-end-2026/london-unattached--unknown.json",
+    "the-enormous-crocodile-west-end-2026/london-box-office--unknown.json",
+    "here-comes-j-edgar-off-west-end-2026/times-uk--unknown.json"
+  ],
   "failed": [
-    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--unknown.json",
-    "mystic-pizza-tour-2026/talkinbroadway--unknown.json",
-    "human-things-off-broadway-2026/talkinbroadway--unknown.json",
-    "the-car-man-west-end-2026/bachtrack--unknown.json"
+    "death-note-the-musical-west-end-2026/times-uk--patrick-kidd.json",
+    "oh-mary-west-end-2025/micablackwell--unknown.json",
+    "the-last-ship-west-end-2026/the-recs--unknown.json",
+    "fire-fire-off-west-end-2026/times-uk--unknown.json",
+    "a-slow-fire-off-west-end-2026/times-uk--unknown.json"
   ],
   "cumulativeResumedState": {
-    "processed": [],
+    "processed": [
+      "the-winters-tale-off-broadway-2026/cititour--brian-scott-lipton.json",
+      "the-winters-tale-off-broadway-2026/theater-pizzazz--unknown.json",
+      "cats-west-end-2026/deadline--liz-shackleton.json",
+      "the-car-man-west-end-2026/london-unattached--unknown.json",
+      "the-enormous-crocodile-west-end-2026/london-box-office--unknown.json",
+      "here-comes-j-edgar-off-west-end-2026/times-uk--unknown.json"
+    ],
     "failed": [
-      "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--unknown.json",
-      "mystic-pizza-tour-2026/talkinbroadway--unknown.json",
-      "human-things-off-broadway-2026/talkinbroadway--unknown.json",
-      "the-car-man-west-end-2026/bachtrack--unknown.json"
+      "death-note-the-musical-west-end-2026/times-uk--patrick-kidd.json",
+      "oh-mary-west-end-2025/micablackwell--unknown.json",
+      "the-last-ship-west-end-2026/the-recs--unknown.json",
+      "fire-fire-off-west-end-2026/times-uk--unknown.json",
+      "a-slow-fire-off-west-end-2026/times-uk--unknown.json"
     ]
   },
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "the-winters-tale-off-broadway-2026/theater-pizzazz--unknown.json",
+      "the-enormous-crocodile-west-end-2026/london-box-office--unknown.json"
+    ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/cats-west-end-2026/deadline--liz-shackleton.json",
+      "cats-west-end-2026/deadline--liz-shackleton.json"
+    ],
     "directCookies": [],
-    "scrapingdog": [],
-    "scrapingbee": [],
-    "brightdata": [],
+    "scrapingdog": [
+      "the-car-man-west-end-2026/london-unattached--unknown.json"
+    ],
+    "scrapingbee": [
+      "the-winters-tale-off-broadway-2026/cititour--brian-scott-lipton.json"
+    ],
+    "brightdata": [
+      "here-comes-j-edgar-off-west-end-2026/times-uk--unknown.json"
+    ],
     "archiveToday": [],
     "archive": []
   },
   "failuresByOutlet": {
-    "Talkin' Broadway": {
+    "The Times (UK)": {
       "count": 3,
-      "domain": "talkinbroadway.com",
+      "domain": "thetimes.com",
       "hasCredentials": false,
       "isPaywalled": false,
-      "isKnownBlocked": true
+      "isKnownBlocked": false
     },
-    "Bachtrack": {
+    "Micablackwell": {
       "count": 1,
-      "domain": "bachtrack.com",
+      "domain": "micablackwell.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Recs": {
+      "count": 1,
+      "domain": "therecs.co.uk",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
