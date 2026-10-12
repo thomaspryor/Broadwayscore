@@ -33,7 +33,10 @@
 // delta is therefore empty by construction. A pre-existing red on main is
 // not blocking under the delta rule either; under LAND_STRICT_GATES=1 (any
 // red refuses) a skip could bypass that, so strict mode never skips.
-// test.yml still runs every check on main for the landed sha.
+// NOTE: test.yml's push trigger is path-filtered (no prose paths), so a
+// prose-only landing gets no push run on main; only the daily cron covers it.
+// Root *.md files (STATE.md, HANDOFF-*) and cloud-memory/MEMORY.md are
+// skippable by policy: no CI gate reads them.
 //
 // Fail closed everywhere: any parse error, git error, unknown status or path,
 // an empty diff, or more than MAX_FILES paths means "run the gauntlet". The
@@ -219,9 +222,9 @@ function main(argv = process.argv.slice(2), { log = console.log } = {}) {
     '',
     `- decision: ${decision.skip ? 'SKIP both gauntlets (verdict GREEN by construction)' : 'RUN the full gauntlet'}`,
     `- reason: ${decision.reason}`,
-    ...decision.blockers.slice(0, 20).map((b) => `- needs gauntlet: \`${b.path}\` (${b.reason})`),
+    ...decision.blockers.slice(0, 20).map((b) => `- needs gauntlet: \`${JSON.stringify(b.path)}\` (${b.reason})`),
     decision.blockers.length > 20 ? `- … and ${decision.blockers.length - 20} more` : '',
-    ...(decision.skip ? decision.paths.map((p) => `- prose: \`${p}\``) : []),
+    ...(decision.skip ? decision.paths.map((p) => `- prose: \`${JSON.stringify(p)}\``) : []),
   ].filter(Boolean);
   log(lines.join('\n'));
   if (args['summary-file']) fs.appendFileSync(String(args['summary-file']), `${lines.join('\n')}\n`);
