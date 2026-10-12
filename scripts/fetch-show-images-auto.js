@@ -2492,7 +2492,15 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
 // Staged Google candidates (BRO-4906) the result doesn't carry to applyImages
 // are deleted here; dry runs (no applyImages) promote what they would serve.
 async function processOneShow(show, ...rest) {
-  const result = await withSpendShow(show && show.id, () => processOneShowInner(show, ...rest));
+  let result;
+  try {
+    result = await withSpendShow(show && show.id, () => processOneShowInner(show, ...rest));
+  } catch (err) {
+    // A throw leaves nothing for applyImages to promote: drop every staged file
+    // so the workflow's `git add public/images/shows/` can't pick one up.
+    if (show && show.id) sweepStagedCandidates(path.join(dryRunMode ? DRY_RUN_DIR : IMAGES_DIR, show.id));
+    throw err;
+  }
   if (show && show.id) {
     const images = result && result.images;
     if (dryRunMode && images && images._staged) finalizeStaged(images._staged, images);

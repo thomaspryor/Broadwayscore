@@ -81,3 +81,11 @@ test('sweepStagedCandidates removes only *.candidate.* leftovers', () => {
   assert.deepEqual(fs.readdirSync(dir).sort(), ['poster.jpg', 'thumbnail.jpg']);
   assert.deepEqual(sweepStagedCandidates(path.join(dir, 'missing')), []);
 });
+
+test('a staged candidate path under public/images/shows is gitignored, so a crashed run cannot commit it', async () => {
+  const { execFileSync } = await import('node:child_process');
+  const staged = stagedPathFor(path.join('public', 'images', 'shows', 'some-show', 'thumbnail.webp'));
+  const repo = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', '..');
+  // check-ignore exits 0 when the path is ignored (the file need not exist).
+  execFileSync('git', ['check-ignore', '-q', '--no-index', staged], { cwd: repo });
+});

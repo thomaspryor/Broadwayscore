@@ -577,6 +577,8 @@ data/opening-night/leases.json
 
 # archive-show-images.js downloads here before its checks pass (BRO-2242)
 public/images/shows/**/*.incoming
+# fetch-show-images-auto.js stages unverified Google candidates here (BRO-4906)
+public/images/shows/**/*.candidate.*
 
 # BRO-5022 A/B: pre-change verifier copied next to the live one while the A/B runs
 scripts/lib/.ab-old-verify-image-*.js
