@@ -333,6 +333,15 @@ const CENSUS_JUNK_DOMAINS = new Set([
   // A novelist's blog: its "My Favorite Bit" author interviews share titles
   // with plays (A Thousand Natural Shocks, BRO-4540).
   'maryrobinettekowal.com',
+  // BRO-4540 re-audit (2026-10-12): ticket resellers, event calendars, a licensing
+  // house and venue/producer sites the census counted as missing reviews across
+  // 20 shows. 0 rows in reviews.json for each; the only review-texts files on
+  // these hosts are ticket and production pages.
+  'eventbrite.com', 'eventbrite.co.uk', 'barrystickets.com', 'stub.com', 'ticketgenie.com',
+  'ticketsmate.com', 'expedia.com', 'eventslist.co.uk', 'visitsoutheastengland.com',
+  'overlookmaps.com', 'musicofourdesire.com', 'mtishows.com', 'audiblexminetta.com',
+  'secrettheatre.com', 'arsnovanyc.com', 'brixtonhouse.co.uk', 'cleanbreak.org.uk',
+  'headlong.co.uk', 'spitnvigor.com', 'sydneydramaturgical.com',
 ]);
 
 /**

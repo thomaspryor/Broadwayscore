@@ -30,6 +30,16 @@ const JUNK = [
   'https://maryrobinettekowal.com/journal/my-favorite-bit/my-favorite-bit-omar-hussain-talks-about-a-thousand-natural-shocks/',
   'https://redcircle.com/shows/a-thousand-natural-shocks-with-gabe-s-dunn',
   'https://openingnight.online/crazy-mama-crazy-mama-a-true-story-of-love-and-madness-is-coming-to-59e59-theaters/',
+  'https://www.secrettheatre.com/shows-events/a-thousand-natural-shocks',
+  'https://www.eventbrite.co.uk/e/home-girls-theatre-trip-watching-baby-tickets-2002959864874',
+  'https://www.ticketgenie.com/8055661/begin-again-play-tickets.html',
+  'https://www.expedia.com/event-tickets/event/begin-again-play-tickets-8055647',
+  'https://www.headlong.co.uk/productions/fences',
+  'https://stagebuddy.com/event/going-bacharach-the-songs-of-an-icon',
+  'https://chiswickcalendar.co.uk/event/august-wilsons-fences-lyric-theatre/2026-10-12/',
+  'https://www.britishtheatre.com/shows/deep-heat-rivalry',
+  'https://didtheylikeit.com/shows/boop-the-musical/',
+  'https://theatre.reviews/london-productions/harry-potter-cursed-child/',
 ];
 
 const REAL = [
@@ -41,6 +51,11 @@ const REAL = [
   'https://theatrevibe.co.uk/2026/09/25/review-the-last-ship-theatre-royal-drury-lane-2026/',
   'https://www.thetheatretimes.com/the-hope-theory-review/',
   'https://www.nytimes.com/2026/10/01/theater/the-hope-theory-review.html',
+  'https://stagebuddy.com/theater/theater-review/review-arcadia',
+  'http://stagebuddy.com/reviews/review-white-rabbit-red-rabbit',
+  'https://didtheylikeit.com/shows/the-wiz-bway/the-wiz-broadway-review-were-off-to-see-the-cheap-national-tour/',
+  'https://chiswickcalendar.co.uk/darkling-bush-theatre-review/',
+  'https://www.britishtheatre.com/review-cruise-duchess-theatre/',
 ];
 
 test('junk URLs from the cluster cards are not gap candidates', () => {

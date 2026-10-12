@@ -382,6 +382,14 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // SoHo Playhouse is a registered outlet, so only its show pages are listed:
   // seven /see-a-show/ pages were ingested as "reviews" and later rejected.
   { host: /(^|\.)sohoplayhouse\.com$/, path: /^\/see-a-show\//i, reason: 'venue-production-page' },
+  // BRO-4540 re-audit: listing pages on hosts that also publish reviews. Their
+  // reviews live elsewhere (stagebuddy /theater/, /reviews/; chiswickcalendar
+  // /<slug>-review/; britishtheatre /review-...; didtheylikeit /shows/<show>/<review>/).
+  { host: /(^|\.)stagebuddy\.com$/, path: /^\/event\//i, reason: 'event-listing' },
+  { host: /(^|\.)chiswickcalendar\.co\.uk$/, path: /^\/event\//i, reason: 'event-listing' },
+  { host: /(^|\.)britishtheatre\.com$/, path: /^\/shows\//i, reason: 'show-hub' },
+  { host: /(^|\.)didtheylikeit\.com$/, path: /^\/shows\/[^/]+\/?$/i, reason: 'show-hub' },
+  { host: /(^|\.)theatre\.reviews$/, path: /^\/london-productions\//i, reason: 'show-hub' },
 ];
 
 // BRO-4419: mirror the two domain-filters.js sets classifyReviewUrl() does not
