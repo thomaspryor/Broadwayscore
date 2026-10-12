@@ -149,6 +149,9 @@ const CONFLICT_REASONS = [
 // changes that. Printed once per occurrence so it is never invisible, but
 // deliberately NOT residual — see the three-bucket note in the header.
 const EXPECTED_REJECTION_REASONS = [
+  // BRO-4317: the id is not in shows.json, so a new folder for it would never reach
+  // the site. Correct to refuse until the show row exists; then the write succeeds.
+  'unknown-show-id',
   // Cross-market guard refused the write. On a genuine cross-market leak this
   // is the right answer forever; counting it as an unresolved conflict re-arms
   // the chronic hourly alarm on every show that legitimately has one.
@@ -291,6 +294,9 @@ function describeSkip(showId, url, { reason, detail }) {
   }
   if (reason === 'no-outlet' || reason === 'suspicious-outlet-id') {
     return `${showId}: ${url} could not be attributed to a usable outlet (${reason}) — add a registry entry for its host.`;
+  }
+  if (reason === 'unknown-show-id') {
+    return `${showId}: ${url} was refused because ${showId} is not a shows.json id, so the review would sit in a folder the site never reads. Add the show row (scripts/validate-show-venue.js first) or write it under the right existing id.`;
   }
   if (reason === 'cross-market') {
     return `${showId}: ${url} was refused by the cross-market guard — expected rejection, no action needed unless this outlet really does cover this market (then fix its region in data/outlet-registry.json).`;

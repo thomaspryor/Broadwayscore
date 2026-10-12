@@ -476,17 +476,7 @@ function executeReviewFileOp(action) {
     return { ok: true, msg: `Deleted ${sourcePath}` };
 
   } else if (operation === 'move' || operation === 'rename') {
-    if (!destPath) return { ok: false, reason: 'No destination path for move/rename' };
-
-    const absDest = path.resolve(reviewTextsDir, destPath);
-    if (!absDest.startsWith(reviewTextsDir)) {
-      return { ok: false, reason: `Dest path escapes review-texts/: ${destPath}` };
-    }
-
-    // Ensure destination directory exists
-    fs.mkdirSync(path.dirname(absDest), { recursive: true });
-    fs.renameSync(absSource, absDest);
-    return { ok: true, msg: `Moved ${sourcePath} → ${destPath}` };
+    return require('./lib/review-file-move').moveReviewFile(reviewTextsDir, sourcePath, destPath, { overwrite: action.overwrite === true });
   }
 
   return { ok: false, reason: `Unknown operation: ${operation}` };

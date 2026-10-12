@@ -255,6 +255,41 @@ function _getShowById(showId) {
   return _showByIdCache[showId] || null;
 }
 
+// BRO-4317: ids read fresh from disk, so a show added earlier in the same process
+// (after the require() cache above was filled) is still known. Re-read only when
+// shows.json's mtime moved, so a scraper looping over one unknown id does not
+// re-parse the whole file per review.
+let _freshShowIds = null;
+let _freshShowIdsMtime = null;
+function _isKnownShowId(showId) {
+  if (_getShowById(showId)) return true;
+  try {
+    const mtime = fs.statSync(SHOWS_PATH).mtimeMs;
+    if (!_freshShowIds || mtime !== _freshShowIdsMtime) {
+      const shows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows || [];
+      _freshShowIds = new Set(shows.map((s) => s && s.id).filter(Boolean));
+      _freshShowIdsMtime = mtime;
+    }
+  } catch {
+    return true; // unreadable shows.json: never block on a missing ground truth
+  }
+  return _freshShowIds.size === 0 || _freshShowIds.has(showId);
+}
+
+/**
+ * True when this write would create a new review-texts folder for an id that is
+ * not in shows.json. Enforced for the real corpus dir only (tests and tools that
+ * point reviewTextsDir elsewhere opt in with options.knownShowIds); a writer that
+ * genuinely stages files for a not-yet-added show passes options.allowUnknownShow.
+ */
+function unknownShowFolderRefused(showId, reviewTextsDir, options = {}) {
+  if (options.allowUnknownShow || !showId) return false; // a missing id still fails loudly below
+  if (fs.existsSync(path.join(reviewTextsDir, String(showId)))) return false;
+  if (options.knownShowIds) return !new Set(options.knownShowIds).has(showId);
+  if (path.resolve(reviewTextsDir) !== path.resolve(DEFAULT_REVIEW_TEXTS_DIR)) return false;
+  return !_isKnownShowId(showId);
+}
+
 /**
  * Shared existing-file lookup for the wrongProduction human-clear check
  * (isHumanClearedWrongProduction, imported from stale-flag-neutralization.js)
@@ -316,6 +351,18 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // --- Guard: normalize outlet ---
   let outletId = input.outletId || normalizeOutlet(input.outlet);
   if (!outletId) return { action: 'skipped', reason: 'no-outlet' };
+
+  // --- Guard: unknown show id (BRO-4317) ---
+  // rebuild-all-reviews.js skips any review-texts folder that is not a shows.json id,
+  // so a write that mints a new folder for an unknown id is a review that silently never
+  // counts (389 files had piled up in 120 such folders). Existing folders are left alone
+  // (their fix is a move, not a refused write).
+  // gather-reviews.js createReviewFile writes outside this helper; it is covered only by
+  // its own shows.json check before writing.
+  if (unknownShowFolderRefused(showId, reviewTextsDir, options)) {
+    console.warn(`  ⛔ Refusing write: ${showId} is not a shows.json id, so a new ${showId}/ folder would never reach the site`);
+    return { action: 'skipped', reason: 'unknown-show-id', guardRefused: true };
+  }
 
   // --- Guard: per-show URL blocklist (BRO-3410) ---
   // _blocklist.json is what makes an operator's deletion stick. Only gather-reviews
@@ -1975,6 +2022,7 @@ const WRITE_GUARD_REFUSED_REASONS = new Set([
   'cross_market_contamination',
   'flagged-filename-collision',
   'show-dir-outside-sparse-checkout',
+  'unknown-show-id',
 ]);
 
-module.exports = { createOrMergeReviewFile, stampFirstSeen, emitReviewFirstSeen, WRITE_GUARD_REFUSED_REASONS, shouldUpgradeUnknownByline, pageBylineRefusal, applyPageByline, revertBodyFromRefusedUrl };
+module.exports = { createOrMergeReviewFile, unknownShowFolderRefused, stampFirstSeen, emitReviewFirstSeen, WRITE_GUARD_REFUSED_REASONS, shouldUpgradeUnknownByline, pageBylineRefusal, applyPageByline, revertBodyFromRefusedUrl };
