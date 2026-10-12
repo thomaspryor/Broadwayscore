@@ -175,12 +175,12 @@ async function getSearchStats() {
 async function getZeroResultsSearches() {
   // Group on lower(trim(query)) so case/whitespace variants of the same term
   // don't fragment the count (and under-rank a real missing show).
+  // HeaderSearch sends query only on a miss: zero results, or only fuzzy
+  // guesses (fuzzy_only, has_results true). query IS NOT NULL covers both.
   return phQuery(`
     SELECT lower(trim(properties.query)) AS query, count() AS cnt
     FROM events
     WHERE event = 'search_performed'
-      -- HeaderSearch sends query only on a miss: zero results, or only fuzzy
-      -- guesses (fuzzy_only, has_results true). query IS NOT NULL covers both.
       AND properties.query IS NOT NULL
       AND trim(properties.query) != ''
       AND timestamp > now() - interval 7 day

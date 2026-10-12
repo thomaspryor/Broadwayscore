@@ -103,6 +103,15 @@ test('real index: exact titles lead, archive typos are rescued, misses are flagg
   assert.equal(search('christopher jackso')[0].id, 'hamilton-2015');
   // Only fuzzy guesses (or nothing): HeaderSearch logs these as misses.
   assert.equal(search('simon and garfunkel story').confident, false);
+  // Venue and creator searches are answers, not misses, and must not be
+  // pre-empted by a typo guess ("majestic" -> Masticate) (ship-check P2).
+  for (const [q, venueOrCreator] of [['majestic', 'majestic'], ['st james', 'stjames'], ['jason robert brown', 'jasonrobertbrown']]) {
+    const out = search(q);
+    assert.equal(out.confident, true, q);
+    const top = out[0];
+    const hay = lib.normalizeSearchText(`${top.venue || ''}${top.creativeTeamNames || ''}`);
+    assert.ok(hay.includes(venueOrCreator), `${q} -> ${top.title}`);
+  }
 });
 
 test('exact archive titles are found by typing them (every 8th, plus the old misses)', async () => {

@@ -233,7 +233,7 @@ function buildContext(data) {
 
   const zeroResultsSummary = summarizeZeroResultsSearches(zeroResultsSearches || []);
   if (zeroResultsSummary) {
-    parts.push(`\nZERO-RESULTS SEARCH TERMS (queries that returned nothing — candidate missing shows):\n${zeroResultsSummary}`);
+    parts.push(`\nZERO-RESULTS SEARCH TERMS (queries that found no matching show, zero results or only loose title guesses: candidate missing shows):\n${zeroResultsSummary}`);
   }
 
   const full = parts.join('\n');

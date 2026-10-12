@@ -56,6 +56,19 @@ function matchesShowCastQuery(show, query) {
   return show.castNames.split(',').some(name => normalizeSearchText(name).includes(q));
 }
 
+/**
+ * True if `query` is part of the show's venue or a creative-team name
+ * ("majestic", "st james", "jason robert brown"). Exact like the cast match:
+ * Fuse also searches these fields, but fuzzily ("fleabg" hits The Flea Theater).
+ */
+function matchesShowPlaceOrCreatorQuery(show, query) {
+  const q = normalizeSearchText(query);
+  if (q.length < MIN_CAST_MATCH_LENGTH) return false;
+  if (normalizeSearchText(show.venue).includes(q)) return true;
+  return !!show.creativeTeamNames
+    && show.creativeTeamNames.split(',').some(name => normalizeSearchText(name).includes(q));
+}
+
 // Display tiers: playing/upcoming first, then closed shows we scored, then the
 // unscored archive (closed productions with a page but no reviews, BRO-3628).
 function searchTier(show) {
@@ -104,10 +117,12 @@ function titleMatchRank(show, query) {
  *     then searchTier, so an exact archive title beats a fuzzy live one and
  *     "anna" lists Anna Christie before shows with an Anna in the cast;
  *  2. cast-name substring matches ("christopher jackso" -> Hamilton);
- *  3. only when 1 and 2 are empty: `closeMatches()` (confident typo fixes,
+ *  3. venue / creative-team substring matches ("majestic" -> the shows at
+ *     the Majestic, ahead of Fuse's fuzzy "Masticate");
+ *  4. only when 1-3 are empty: `closeMatches()` (confident typo fixes,
  *     archive included, which Fuse never indexes: "fleabg" -> Fleabag);
- *  4. Fuse fuzzy title hits, then Fuse hits on venue/creative team only.
- * Groups 2-4 are stable-sorted by searchTier.
+ *  5. Fuse fuzzy title hits, then Fuse hits on venue/creative team only.
+ * Groups 2-5 are stable-sorted by searchTier.
  * `fuseResults` are Fuse results made with includeMatches ({ item, matches }),
  * or bare items (treated as title matches). `closeMatches` is a lazy callback
  * so the typo pass only costs anything when nothing else matched.
@@ -136,17 +151,21 @@ function mergeSearchResults(shows, query, fuseResults, limit = 8, closeMatches =
     .sort((a, b) => a.rank - b.rank || byTier(a.s, b.s))
     .map(x => x.s);
   const castHits = take(shows.filter(s => matchesShowCastQuery(s, query))).sort(byTier);
-  const typoHits = !titleHits.length && !castHits.length && closeMatches ? take(closeMatches()) : [];
+  const placeHits = take(shows.filter(s => matchesShowPlaceOrCreatorQuery(s, query))).sort(byTier);
+  const typoHits = !titleHits.length && !castHits.length && !placeHits.length && closeMatches
+    ? take(closeMatches()) : [];
   const merged = [
     ...titleHits,
     ...castHits,
+    ...placeHits,
     ...typoHits,
     ...take(fuseTitled).sort(byTier),
     ...take(fuseOther).sort(byTier),
   ].slice(0, limit);
   // False when the list is only Fuse's fuzzy guesses: HeaderSearch logs those
-  // queries as misses, same as zero results.
-  merged.confident = titleHits.length + castHits.length + typoHits.length > 0;
+  // queries as misses, same as zero results. A venue or creator match answers
+  // the query, so it is not a miss.
+  merged.confident = titleHits.length + castHits.length + placeHits.length + typoHits.length > 0;
   return merged;
 }
 
@@ -280,6 +299,7 @@ function suggestCloseMatches(index, query, limit = 3) {
 module.exports = {
   matchesShowSearchQuery,
   matchesShowCastQuery,
+  matchesShowPlaceOrCreatorQuery,
   normalizeSearchText,
   castNamesForSearch,
   mergeSearchResults,
