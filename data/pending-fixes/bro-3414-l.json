@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-3414-l",
   "planId": "a157492b-65c8-4c0f-86a2-521595405931",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-12T15:32:33.183569Z",
   "submitter": {
     "name": null,
@@ -217,5 +217,133 @@
         "description": "byline was glued to the first word of the article (\"Isa Goldberg\" + \"Trapped\")"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T18:41:38.812Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "some-like-it-hot-2022/newyorker--conde-nast.json criticName: \"Condé Nast\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stereophonic-off-broadway-2023/theater-scene--archive.json criticName: \"Archive\" -> \"Tony Marinelli\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sunset-boulevard-2017/newyorker--conde-nast.json criticName: \"Condé Nast\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-adding-machine-off-broadway-2026/theater-scene--archive.json criticName: \"Archive\" -> \"Victor Gluck\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-bathroom-attendant-off-broadway-2026/theater-scene--archive.json criticName: \"Archive\" -> \"Tony Marinelli\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-brothers-paranormal-off-broadway-2019/newyorker--conde-nast.json criticName: \"Condé Nast\" -> \"Rollo Romig\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-collaboration-2022/newyorker--conde-nast.json criticName: \"Condé Nast\" -> \"Vinson Cunningham\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-ford-hill-project-off-broadway-2026/theater-scene--unknown.json criticName: \"Unknown\" -> \"Victor Gluck\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-invention-of-love-off-broadway-2026/theater-scene--unknown.json criticName: \"Unknown\" -> \"Tony Marinelli\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-pass-off-broadway-2026/theater-scene--archive.json criticName: \"Archive\" -> \"Tony Marinelli\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-realistic-joneses-2014/newyorker--conde-nast.json criticName: \"Condé Nast\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-saviors-off-broadway-2026/theater-scene--unknown.json criticName: \"Unknown\" -> \"Victor Gluck\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-unknown-off-broadway-2026/theater-scene--archive.json criticName: \"Archive\" -> \"Tony Marinelli\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-vessel-off-broadway-2026/theater-scene--archive.json criticName: \"Archive\" -> \"Tony Marinelli\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tina-2019/newyorker--conde-nast.json criticName: \"Condé Nast\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "trash-off-broadway-2026/theater-scene--archive.json criticName: \"Archive\" -> \"Victor Gluck\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "vanya-off-broadway-2025/theater-scene--archive.json criticName: \"Archive\" -> \"Joel Benjamin\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2025/theater-scene--archive.json criticName: \"Archive\" -> \"Joseph Pisano\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "macbeth-2013/theater-life--david-shewardpart.json criticName: \"David ShewardPart\" -> \"David Sheward\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "texas-in-paris-off-broadway/theater-life--paulanne-simmonsbased.json criticName: \"Paulanne SimmonsBased\" -> \"Paulanne Simmons\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "man-and-superman-1978/theater-life--david-shewardwhen.json criticName: \"David ShewardWhen\" -> \"David Sheward\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "little-me-1982/theater-life--paulanne-simmonsthe.json criticName: \"Paulanne SimmonsThe\" -> \"Paulanne Simmons\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "passion-2004/theater-life--david-shewardoriginally.json criticName: \"David ShewardOriginally\" -> \"David Sheward\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-rivals-2004/theater-life--paulanne-simmonsfirst.json criticName: \"Paulanne SimmonsFirst\" -> \"Paulanne Simmons\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-three-sisters-1996/theater-life--isa-goldbergtrapped.json criticName: \"Isa GoldbergTrapped\" -> \"Isa Goldberg\""
+    }
+  ]
 }
