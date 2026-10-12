@@ -273,6 +273,10 @@ function inferPressNightFromReviews({ candidateShows, reviews, enabled = true, s
     // Same for the BRO-5080 review-mode repair (scripts/lib/we-historical-dates.js):
     // a non-collapsed row whose forward re-run would chase straggler waves.
     if (show.openingDateSource === MODE_INFERENCE_SOURCE) continue;
+    // BRO-5171: a Guardian review date is a press night bound already (press
+    // night was on or before it). A later straggler wave must not move it
+    // forward and stamp the confirmed 'inferred-from-reviews'.
+    if (show.openingDateSource === 'guardian-review') continue;
 
     const openingMs = new Date(show.openingDate).getTime();
     if (Number.isNaN(openingMs)) continue;

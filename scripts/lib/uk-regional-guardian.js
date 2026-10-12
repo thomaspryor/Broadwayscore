@@ -109,11 +109,16 @@ const titleKeys = (t) => {
  * three weeks. Title alone is not enough: the RSC restages the canon, so a new
  * Twelfth Night must not be swallowed by a closed 2019 one, and a Hamlet at
  * Bristol Old Vic is not the RSC Hamlet.
+ *
+ * `opts.houseOf` swaps the house table: the Off-West End Guardian stager
+ * (lib/owe-guardian-staging.js) passes its London one. It maps a venue string
+ * to a table entry (compared by identity) or undefined.
  */
-function isSameProduction(candidate, show) {
+function isSameProduction(candidate, show, opts = {}) {
   if (!candidate || !show) return false;
-  const house = ukVenueEntry(candidate.venue);
-  if (!house || house !== ukVenueEntry(show.venue)) return false;
+  const houseOf = typeof opts.houseOf === 'function' ? opts.houseOf : ukVenueEntry;
+  const house = houseOf(candidate.venue);
+  if (!house || house !== houseOf(show.venue)) return false;
   const a = titleKeys(candidate.title);
   const b = titleKeys(show.title);
   if (![...a].some((k) => b.has(k))) return false;
@@ -127,8 +132,8 @@ function isSameProduction(candidate, show) {
 }
 
 /** The catalogued show `candidate` reviews, or undefined. */
-function findSameProduction(candidate, shows) {
-  return (shows || []).find((s) => isSameProduction(candidate, s));
+function findSameProduction(candidate, shows, opts = {}) {
+  return (shows || []).find((s) => isSameProduction(candidate, s, opts));
 }
 
 /**

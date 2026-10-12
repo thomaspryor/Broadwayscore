@@ -136,6 +136,7 @@ const { stripHtml } = require('./lib/article-extractor');
 const { showTypeFor, knownShowType } = require('./lib/title-says-musical');
 const { decideVenueListingPromotion } = require('./lib/ob-cross-validation');
 const { OWE_VENUE_CONFIGS } = require('./lib/venue-listing-discover');
+const { stageOweGuardianCandidates, guardianTombstones, guardianRunEndDate, findCataloguedOweProduction } = require('./lib/owe-guardian-staging');
 
 // venue-write-guard-ok: the ONLY shows.json venue write in this file is
 // buildOffWestEndVenueShowEntry's `venue: sanitizeVenueForWrite(candidate.venue)`
@@ -169,6 +170,12 @@ const PROMOTION_LOG = path.join(__dirname, '..', 'data', 'audit', 'owe-promotion
 // OB script's last-promotion-ids.json: two crons writing one filename race,
 // and promote-owe-venue-candidates.yml's job-summary step reads THIS one.
 const LAST_PROMOTION_FILE = path.join(__dirname, '..', 'data', 'audit', 'owe-last-promotion-ids.json');
+// BRO-5171: West End Guardian reviews reverse discovery found missing.
+const REVERSE_DISCOVERY_FILE = path.join(__dirname, '..', 'data', 'audit', 'reverse-discovery-candidates.json');
+// A Guardian row whose review page states no closing date is held this long
+// after the review (a fetch may have caught a truncated page), then dropped:
+// writing it would mark a closed visiting run 'open' indefinitely.
+const GUARDIAN_NO_END_DATE_HOLD_DAYS = 45;
 const MAX_PROMOTE_PER_RUN = 25;
 const DEFAULT_FETCH_LIMIT = 20;
 const DEFAULT_EVIDENCE_FETCH_LIMIT = 60;
@@ -761,7 +768,9 @@ function buildOffWestEndVenueShowEntry(candidate, venueVocabulary, options = {})
     // rather than write a garbage venue string.
     venue: sanitizeVenueForWrite(candidate.venue),
     openingDate,
-    openingDateSource: openingDate ? (evidenceBacked ? AUDIT_EVIDENCE_SOURCE : 'venue-page') : null,
+    // An evidence row may name its date's source (BRO-5171: 'guardian-review',
+    // the review's publish date, which press-night sources may overwrite).
+    openingDateSource: openingDate ? (evidenceBacked ? (candidate.openingDateSource || AUDIT_EVIDENCE_SOURCE) : 'venue-page') : null,
     previewsStartDate,
     closingDate,
     status,
@@ -1034,20 +1043,33 @@ async function evaluateCandidates(candidates, ctx) {
   };
   const prune = (c, kind, reason, extra = {}) => {
     pruned.push({ candidate: c, kind, reason });
-    logEntryFn({ kind, title: c.title, venue: c.venue, source: c.source, reason, ...extra });
+    // A Guardian row's prune line is its tombstone (lib/owe-guardian-staging.js
+    // guardianTombstones): the next run never stages that review URL again.
+    const tomb = c.source === 'guardian-review' && c.sourceUrl ? { sourceUrl: c.sourceUrl, pruned: true } : {};
+    logEntryFn({ kind, title: c.title, venue: c.venue, source: c.source, reason, ...tomb, ...extra });
   };
 
-  for (const c of candidates) {
+  for (const staged of candidates) {
+    let c = staged;
     if (timeBudget && timeBudget.exceeded()) {
       log(`\n⏱ Time budget (${timeBudget.minutes} min) reached — remaining candidates held for the next run.`);
-      for (const rest of candidates.slice(candidates.indexOf(c))) held.push({ candidate: rest, kind: 'skip-time-budget', reason: 'time budget reached' });
+      for (const rest of candidates.slice(candidates.indexOf(staged))) held.push({ candidate: rest, kind: 'skip-time-budget', reason: 'time budget reached' });
       break;
     }
     try {
       // 1. Already in shows.json (venue-gated match, then the London-pool
       //    title fallback) — the ordinary way a staged candidate resolves
       //    once TodayTix/OLT/a hand add landed the same production.
-      const existingMatch = findDuplicate(c, existingCandidates);
+      //    A Guardian row dedupes by production (house + title + run window),
+      //    never by the title-only London-pool fallback: that would prune,
+      //    and so tombstone, a revival of a closed show.
+      let existingMatch;
+      if (c.source === 'guardian-review') {
+        const same = findCataloguedOweProduction(c, existingCandidates);
+        existingMatch = same ? { match: same, reason: 'same-production' } : null;
+      } else {
+        existingMatch = findDuplicate(c, existingCandidates);
+      }
       if (existingMatch) {
         // BRO-4433 — a confirmed dated listing dates the undated row it
         // matched (null fields only; main() writes it).
@@ -1062,6 +1084,26 @@ async function evaluateCandidates(candidates, ctx) {
         }
         prune(c, 'skip-duplicate', `already in shows.json as ${existingMatch.match.id} (${existingMatch.reason})`, { matchedTo: existingMatch.match.id, matchReason: existingMatch.reason });
         continue;
+      }
+
+      // 1b. BRO-5171 — a Guardian row takes its closing date from the review's
+      //     own "At the X, London, until 7 October" line. No page yet: the
+      //     evidence decision below holds it. Page but no line: held, then
+      //     dropped once the review is GUARDIAN_NO_END_DATE_HOLD_DAYS old.
+      if (c.source === 'guardian-review' && !validDateOrNull(c.closingDate)) {
+        const page = c.sourceUrl ? evidencePages.get(c.sourceUrl) : null;
+        if (page && typeof page.text === 'string' && page.text) {
+          const closingDate = guardianRunEndDate(page.text, c.articlePublishedAt);
+          if (closingDate) {
+            c = { ...c, closingDate };
+          } else {
+            const ageDays = (now().getTime() - Date.parse(c.articlePublishedAt)) / DAY_MS;
+            const why = 'the Guardian review states no closing date ("At the ..., until <date>")';
+            if (Number.isFinite(ageDays) && ageDays > GUARDIAN_NO_END_DATE_HOLD_DAYS) prune(c, 'skip-unconfirmed', `${why}, and the review is over ${GUARDIAN_NO_END_DATE_HOLD_DAYS} days old — dropped; add the show by hand`);
+            else hold(c, 'skip-unconfirmed', `${why} — held`);
+            continue;
+          }
+        }
       }
 
       // 2. Retired-id registry (S0-T2), BEFORE any venue-page evidence is
@@ -1151,6 +1193,39 @@ function parseStringFlag(argv, name) {
  *   summarises; retiredEntries replaces the on-disk registry.
  * @returns {Promise<{promoted: Array, held: Array, pruned: Array, dryRun: boolean, suppressedWrites: Array, staged?: number, stageOnly?: boolean}|undefined>}
  */
+/**
+ * BRO-5171 — stage the West End Guardian candidates in the reverse-discovery
+ * report (lib/owe-guardian-staging.js does the deciding). Returns the
+ * in-memory staging override for a dry run (or the one passed in), never
+ * throws: a missing or unreadable report skips this step only.
+ */
+function stageGuardianRows({ dryRun, log, stagingPath, stagedOverride, showsPath, reverseDiscoveryPath, promotionLogPath }) {
+  if (!reverseDiscoveryPath) return stagedOverride;
+  let report;
+  try {
+    report = JSON.parse(fs.readFileSync(reverseDiscoveryPath, 'utf8'));
+  } catch (e) {
+    if (e.code !== 'ENOENT') log(`Guardian staging skipped: ${path.basename(reverseDiscoveryPath)} unreadable (${e.message})`);
+    return stagedOverride;
+  }
+  try {
+    let logLines = [];
+    try { logLines = fs.readFileSync(promotionLogPath, 'utf8').split('\n'); } catch (e) { if (e.code !== 'ENOENT') throw e; }
+    const current = stagedOverride || loadStaging(stagingPath);
+    const shows = JSON.parse(fs.readFileSync(showsPath, 'utf8')).shows || [];
+    const { rows, skipped } = stageOweGuardianCandidates(report.candidates, { shows, tombstones: guardianTombstones(logLines), staged: current });
+    for (const s of skipped) log(`  Guardian: not staged "${s.title}": ${s.reason}`);
+    if (rows.length === 0) return stagedOverride;
+    log(`${dryRun ? 'Would stage' : 'Staged'} ${rows.length} West End Guardian candidate(s): ${rows.map(r => `${r.title} @ ${r.venue} (${r.openingDate})`).join('; ')}`);
+    if (dryRun) return mergeCandidates(current, rows);
+    writeStagingCandidates(rows, stagingPath);
+    return stagedOverride ? mergeCandidates(stagedOverride, rows) : null;
+  } catch (e) {
+    log(`::warning::Guardian staging skipped: ${e.message}`);
+    return stagedOverride;
+  }
+}
+
 async function main(argv = process.argv.slice(2), io = {}) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
   const dryRun = argv.includes('--dry-run');
@@ -1195,6 +1270,20 @@ async function main(argv = process.argv.slice(2), io = {}) {
     log(`--stage-only: ${dryRun ? 'validated the stage file; ' : ''}no evaluation this run.`);
     return { promoted: [], held: [], pruned: [], dryRun, suppressedWrites: showsGuard.suppressedWrites, stageOnly: true, staged: stagedOverride ? stagedOverride.length : loadStaging(stagingPath).length };
   }
+
+  // BRO-5171 — West End Guardian reviews reverse discovery found missing
+  // join staging through the same locked upsert (in memory under --dry-run).
+  stagedOverride = stageGuardianRows({
+    dryRun,
+    log,
+    stagingPath,
+    stagedOverride,
+    showsPath,
+    // A run on scratch staging (io.stagingPath, the tests) reads the real
+    // report only when told to; null skips the step.
+    reverseDiscoveryPath: io.reverseDiscoveryPath !== undefined ? io.reverseDiscoveryPath : (stagingPath === STAGING_PATH ? REVERSE_DISCOVERY_FILE : null),
+    promotionLogPath: io.promotionLogPath || PROMOTION_LOG,
+  });
 
   // Reset up front so a crash mid-run can never leave a stale file claiming
   // a prior run's promotions happened again.
@@ -1289,7 +1378,7 @@ async function main(argv = process.argv.slice(2), io = {}) {
     return result;
   }
 
-  const rejectedRows = rejected.map(r => ({ title: r.candidate.title, venue: r.candidate.venue, source: r.candidate.source, sourceUrl: null, kind: r.kind, reason: r.reason }));
+  const rejectedRows = rejected.map(r => ({ title: r.candidate.title, venue: r.candidate.venue, source: r.candidate.source, sourceUrl: r.candidate.sourceUrl || null, kind: r.kind, reason: r.reason }));
   const prunedHashes = new Set(pruned.map(p => p.candidate.candidateHash).filter(Boolean));
   const rewriteStaging = () => {
     const next = updateStaging((current) => current.filter((c) => !prunedHashes.has(c.candidateHash)), stagingPath);
@@ -1391,6 +1480,7 @@ module.exports = {
   datedBackfillFor,
   listingRunDates,
   evaluateCandidates,
+  stageGuardianRows,
   main,
   MAX_PROMOTE_PER_RUN,
   DEFAULT_FETCH_LIMIT,

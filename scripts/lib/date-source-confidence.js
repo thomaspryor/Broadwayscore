@@ -56,6 +56,10 @@ const ALWAYS_UNCONFIRMED = new Set([
   // sourced sample). Unconfirmed so Theatremonkey/Playbill can overwrite it;
   // infer-press-night-from-reviews.js never re-infers over it.
   'inferred-from-reviews-mode',
+  // A Guardian review's publish date (BRO-4923 regional rows, BRO-5171
+  // Off-West End rows): press night was on or before it, usually a day or
+  // more earlier, so any press-night source may overwrite it.
+  'guardian-review',
   null,
   undefined,
   '',
