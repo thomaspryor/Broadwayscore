@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-10-12T23:19:45.863Z",
+  "runDate": "2026-10-12T23:22:34.109Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 30,
     "priority": "all",
-    "showFilter": "relics-west-end-2026",
+    "showFilter": "affluenza-off-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,12 +12,12 @@
   },
   "summary": {
     "processed": 2,
-    "failed": 1,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "66.7%"
+    "successRate": "50.0%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -25,17 +25,17 @@
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 2,
+    "tier1Attempts": 3,
     "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 1,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
-    "tier1_9Success": 0,
+    "tier1_9Attempts": 1,
+    "tier1_9Success": 1,
     "tier2Attempts": 0,
     "tier2Success": 0,
     "tier3Attempts": 0,
@@ -43,11 +43,11 @@
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
     "tier4Attempts": 1,
-    "tier4Success": 0,
-    "totalFailed": 1,
+    "tier4Success": 1,
+    "totalFailed": 2,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
+    "browserbaseSessionsUsed": 1,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
@@ -55,9 +55,9 @@
   },
   "thisRun": {
     "processed": 2,
-    "failed": 1,
+    "failed": 2,
     "shows": [
-      "relics-west-end-2026"
+      "affluenza-off-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,25 +66,26 @@
     }
   },
   "processed": [
-    "relics-west-end-2026/liamodell--unknown.json",
-    "relics-west-end-2026/rhombus-rota--unknown.json"
+    "affluenza-off-west-end-2026/firstnightmagazine--unknown.json",
+    "affluenza-off-west-end-2026/west-end-best-friend--tara-whenray.json"
   ],
   "failed": [
-    "relics-west-end-2026/guardian--arifa-akbar.json"
+    "affluenza-off-west-end-2026/artsdesk--unknown.json",
+    "affluenza-off-west-end-2026/trustpilot--john-taggart.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "relics-west-end-2026/liamodell--unknown.json",
-      "relics-west-end-2026/rhombus-rota--unknown.json"
+      "affluenza-off-west-end-2026/firstnightmagazine--unknown.json",
+      "affluenza-off-west-end-2026/west-end-best-friend--tara-whenray.json"
     ],
     "failed": [
-      "relics-west-end-2026/guardian--arifa-akbar.json"
+      "affluenza-off-west-end-2026/artsdesk--unknown.json",
+      "affluenza-off-west-end-2026/trustpilot--john-taggart.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "relics-west-end-2026/liamodell--unknown.json",
-      "relics-west-end-2026/rhombus-rota--unknown.json"
+      "affluenza-off-west-end-2026/firstnightmagazine--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -93,16 +94,10 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "affluenza-off-west-end-2026/west-end-best-friend--tara-whenray.json"
+    ]
   },
-  "failuresByOutlet": {
-    "The Guardian": {
-      "count": 1,
-      "domain": "theguardian.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
