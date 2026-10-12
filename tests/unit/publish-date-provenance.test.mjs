@@ -127,8 +127,10 @@ describe('roundup article date is a provisional publishDate (Tortured, BritishTh
 
   test('BWW roundup articleBody extraction stamps dateSource roundup-article', () => {
     const reviews = extractBWWRoundupReviews(ROUNDUP_HTML, TORTURED_SHOW_ID, ROUNDUP_URL, 'When We Have Sufficiently Tortured Each Other');
-    const bt = reviews.find(r => r.outletId === 'british-theatre');
-    assert.ok(bt, `british-theatre entry extracted (got ${reviews.map(r => r.outletId).join(', ')})`);
+    // Matched on the outlet name, not outletId: the id BritishTheatre.com
+    // normalizes to depends on the outlet registry data present.
+    const bt = reviews.find(r => /britishtheatre/i.test(`${r.outletId} ${r.outlet}`));
+    assert.ok(bt, `BritishTheatre.com entry extracted (got ${reviews.map(r => r.outletId).join(', ')})`);
     assert.equal(String(bt.publishDate).slice(0, 10), ROUNDUP_DATE);
     assert.equal(bt.dateSource, 'roundup-article');
     assert.equal(isProvisionalPublishDate(bt), true);
