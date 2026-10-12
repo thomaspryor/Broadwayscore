@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5080-h",
   "planId": "834f7b32-8682-4a0c-857c-c0918650c8ad",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-12T00:12:12.386Z",
   "submitter": {
     "name": null,
@@ -58,5 +58,23 @@
         "description": "no reliable art; the image sweep and self-heal skip it until the row changes"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T04:48:30.188Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for barnum-1980"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for barnum-1980"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for barnum-1980"
+    }
+  ]
 }
