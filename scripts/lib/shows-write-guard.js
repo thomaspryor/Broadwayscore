@@ -53,6 +53,7 @@
 
 const path = require('path');
 const { createJsonWriteGuard, mergeArrayRecords } = require('./json-write-guard');
+const { syncStaleTheaterAddresses } = require('./venue-address-sync');
 
 const SHOWS_PATH = path.join(__dirname, '..', '..', 'data', 'shows.json');
 
@@ -81,6 +82,10 @@ function createShowsWriteGuard(showsPath, options = {}) {
     metaKey: '_meta',
     beforeWrite: (finalData) => {
       finalData._meta.totalShows = finalData.shows.length;
+      // A venue change must carry its address (BRO-5136); only provably stale
+      // addresses (another known venue's canonical one) are rewritten.
+      const synced = syncStaleTheaterAddresses(finalData.shows);
+      if (synced.length) console.log(`shows-write-guard: synced theaterAddress to venue for ${synced.length} show(s): ${synced.slice(0, 5).map((c) => c.id).join(', ')}${synced.length > 5 ? ', ...' : ''}`);
     },
   });
 
