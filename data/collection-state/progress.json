@@ -99,7 +99,9 @@
     "maybe-happy-ending-tour-2026/broadwayworld--richard-sasanow.json",
     "death-becomes-her-tour-2026/cleveland-jewish-news--sheri-gross.json",
     "night-city-off-west-end-2026/london-theatre-reviews--cara-louise-scott-lapish.json",
-    "death-becomes-her-tour-2026/hercampus--jessica-sprague.json"
+    "death-becomes-her-tour-2026/hercampus--jessica-sprague.json",
+    "fences-off-west-end-2026/timeout-london--tom-wicker.json",
+    "the-hungry-ghost-off-west-end-2026/guardian--kate-wyver.json"
   ],
   "failed": [
     "mamma-mia-west-end-2021/whatsonstage--sarah-crompton.json",
@@ -111,7 +113,6 @@
     "an-oak-tree-off-west-end-2026/times-uk--dominic-maxwell.json",
     "rent-west-end-2026/financialtimes--sarah-hemming.json",
     "into-the-woods-noel-coward-west-end-2026/london-theatre-reviews--unknown.json",
-    "the-hungry-ghost-off-west-end-2026/guardian--kate-wyver.json",
     "all-male-as-you-like-it-regional-2026/times-uk--clive-davis.json",
     "bull-off-west-end-2026/whatsonstage--unknown.json",
     "jena-friedman-motherfucker-off-broadway-2026/oklahomatickets--unknown.json",
@@ -132,7 +133,19 @@
     "golden-boy-off-west-end-2026/londonlivinglarge--london-living-large.json",
     "golden-boy-off-west-end-2026/thestage--dave-fargnoli.json",
     "golden-boy-off-west-end-2026/whatsonstage--unknown.json",
-    "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/off-off-online--deirdre-donovan.json"
+    "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/off-off-online--deirdre-donovan.json",
+    "from-the-heart-west-end-2026/reviewsgate--william-russell.json",
+    "from-the-heart-west-end-2026/timeout-london--unknown.json",
+    "an-oak-tree-off-west-end-2026/north-west-end--alice-rose.json",
+    "rent-west-end-2026/jonathan-baz--unknown.json",
+    "blood-of-my-blood-west-end-2026/broadwayworld--stephi-wild.json",
+    "blood-of-my-blood-west-end-2026/chelmsfordtheatre--unknown.json",
+    "into-the-woods-noel-coward-west-end-2026/cherylmarkosky--unknown.json",
+    "affluenza-off-west-end-2026/artsdesk--unknown.json",
+    "affluenza-off-west-end-2026/trustpilot--john-taggart.json",
+    "franz-and-marie-west-end-2026/firstnightmagazine--unknown.json",
+    "franz-and-marie-west-end-2026/whatnightout--unknown.json",
+    "bull-off-west-end-2026/thestage--dave-fargnoli.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -199,12 +212,15 @@
       "million-dollar-quartet-off-west-end-2026/jonathan-baz--jonathan-baz.json",
       "pre-existing-condition-off-broadway-2026/seatplan--unknown.json",
       "maybe-happy-ending-tour-2026/theatermania--zachary-stewart.json",
-      "night-city-off-west-end-2026/london-theatre-reviews--cara-louise-scott-lapish.json"
+      "night-city-off-west-end-2026/london-theatre-reviews--cara-louise-scott-lapish.json",
+      "fences-off-west-end-2026/timeout-london--tom-wicker.json",
+      "the-hungry-ghost-off-west-end-2026/guardian--kate-wyver.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/les-liaisons-dangereuses-2016/nytimes--ben-brantley.json",
-      "les-liaisons-dangereuses-2016/nytimes--ben-brantley.json"
+      "les-liaisons-dangereuses-2016/nytimes--ben-brantley.json",
+      "data/review-texts/affluenza-off-west-end-2026/trustpilot--john-taggart.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -249,10 +265,11 @@
       "maybe-happy-ending-tour-2026/broadwayworld--richard-sasanow.json",
       "death-becomes-her-tour-2026/cleveland-jewish-news--sheri-gross.json",
       "death-becomes-her-tour-2026/hercampus--jessica-sprague.json"
-    ]
+    ],
+    "brightdata": []
   },
   "startTime": "2026-10-12T12:07:53.426Z",
-  "lastProcessed": "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/off-off-online--deirdre-donovan.json",
+  "lastProcessed": "bull-off-west-end-2026/whatsonstage--unknown.json",
   "log": [
     {
       "t": "2026-10-12T12:08:34.884Z",
@@ -275,6 +292,63 @@
       "t": "2026-10-12T12:56:56.298Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-12T13:25:52.338Z",
+      "event": "bb-session",
+      "session": "960791cd",
+      "url": "https://www.broadwayworld.com/shows/Blood-of-My-Blood-336245/photos"
+    },
+    {
+      "t": "2026-10-12T13:26:08.954Z",
+      "event": "bb-session",
+      "session": "3c6c8042",
+      "url": "https://www.broadwayworld.com/shows/Blood-of-My-Blood-336245/photos"
+    },
+    {
+      "t": "2026-10-12T13:27:27.402Z",
+      "event": "bb-session",
+      "session": "9c2b18b6",
+      "url": "https://cherylmarkosky.com/2026/10/08/bww-review-into-the-woods-noel-coward-thea"
+    },
+    {
+      "t": "2026-10-12T13:27:36.531Z",
+      "event": "bb-session",
+      "session": "d3615264",
+      "url": "https://cherylmarkosky.com/2026/10/08/bww-review-into-the-woods-noel-coward-thea"
+    },
+    {
+      "t": "2026-10-12T13:29:08.043Z",
+      "event": "bb-session",
+      "session": "908558ea",
+      "url": "https://www.trustpilot.com/review/www.londontheatredirect.com/product/affluenza-"
+    },
+    {
+      "t": "2026-10-12T13:29:41.699Z",
+      "event": "bb-session",
+      "session": "eaed8f25",
+      "url": "https://firstnightmagazine.com/tag/franz-and-marie/"
+    },
+    {
+      "t": "2026-10-12T13:29:50.701Z",
+      "event": "bb-session",
+      "session": "668eeed7",
+      "url": "https://firstnightmagazine.com/tag/franz-and-marie/"
+    },
+    {
+      "t": "2026-10-12T13:30:43.920Z",
+      "event": "bb-session",
+      "session": "5e571c08",
+      "url": "https://whatnightout.uk/london/events/franz-marie-8871320"
+    },
+    {
+      "t": "2026-10-12T13:30:51.698Z",
+      "event": "bb-session",
+      "session": "dc4ae5c2",
+      "url": "https://whatnightout.uk/london/events/franz-marie-8871320"
     }
+  ],
+  "recoveredAfterFailure": [
+    "the-hungry-ghost-off-west-end-2026/guardian--kate-wyver.json"
   ]
 }
