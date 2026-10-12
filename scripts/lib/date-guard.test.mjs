@@ -269,3 +269,20 @@ test('evaluateShowScorePreviousProduction: ignores real dates, nulls and text th
   }
   assert.equal(evaluateShowScorePreviousProduction({ review: null, show }).flag, false);
 });
+
+// BRO-4884: callers that pass only the show still honour its declared runs.
+test("a show's own priorRuns apply when the caller passes none (Amélie, The Other Palace 2019)", () => {
+  const amelie = {
+    id: 'amelie-west-end-2021', category: 'west-end',
+    previewsStartDate: '2021-06-17', openingDate: '2021-06-17', closingDate: '2021-09-25',
+    priorRuns: [{ openingDate: '2019-11-29', closingDate: '2020-02-01', venue: 'The Other Palace' }],
+  };
+  const inPrior = evaluateDateGuard({ pubDate: new Date('2019-12-04'), show: amelie, outletId: 'telegraph' });
+  assert.equal(inPrior.flag, false);
+  // Outside both windows it still flags.
+  const before = evaluateDateGuard({ pubDate: new Date('2019-05-26'), show: amelie, outletId: 'telegraph' });
+  assert.equal(before.flag, true);
+  // An explicit argument still wins over the show's field.
+  const explicit = evaluateDateGuard({ pubDate: new Date('2019-12-04'), show: amelie, outletId: 'telegraph', priorRuns: [] });
+  assert.equal(explicit.flag, true);
+});
