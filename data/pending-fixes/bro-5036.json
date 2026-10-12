@@ -1,0 +1,869 @@
+{
+  "issueNumber": "bro-5036",
+  "planId": "f58e604a-6b68-4062-93b4-31cdac80ca4b",
+  "status": "pending",
+  "createdAt": "2026-10-12T12:59:45.852Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5036: strict re-verify of the closed Broadway and West End rows with Google-sourced art, then contact sheets of every strict reject, found 30 wrong images on 26 rows (films, albums, novels, other productions, newspaper scans). Null them, reject each Google source, and mark the 7 rows left with no art so the sweep and self-heal stop refilling them.",
+    "steps": [
+      "Null each wrong format (compare-and-set)",
+      "Add its recorded Google source to rejectedImageUrls (add-only)",
+      "Set noReliableArt on rows left with no art (fingerprint-checked)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "funny-girl-2002",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/funny-girl-2002/thumbnail.jpg",
+          "poster": "/images/shows/funny-girl-2002/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "funny-girl-2002: poster was original 1964 Broadway art, not the 2002 concert; thumbnail was original 1964 Broadway art, not the 2002 concert (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "funny-girl-2002",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://d2rawotm8xdpob.cloudfront.net/v0/b/theatr-app.appspot.com/o/shows/banners/6p36c2knz05.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/6868/medium_1662483958-TT_480x720.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/6868/preview_1662483958-TT_480x720.jpg"
+        ],
+        "newValue": [
+          "https://d2rawotm8xdpob.cloudfront.net/v0/b/theatr-app.appspot.com/o/shows/banners/6p36c2knz05.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/6868/medium_1662483958-TT_480x720.jpg",
+          "https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/6868/preview_1662483958-TT_480x720.jpg",
+          "google-images:https://en.wikipedia.org/wiki/Funny_Girl_(musical)",
+          "google-images:https://www.playhousesquare.org/events/detail/funny-girl"
+        ],
+        "description": "funny-girl-2002: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "funny-girl-2002",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-12",
+          "reason": "BRO-5036: every Google Images hit for this title was another work or production (contact sheet)",
+          "key": "funny girl|new amsterdam theatre|2002-09-23"
+        },
+        "description": "funny-girl-2002: no reliable art; the image sweep and self-heal skip it until the row changes (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dreamgirls-2001",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/dreamgirls-2001/thumbnail.jpg",
+          "poster": "/images/shows/dreamgirls-2001/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/dreamgirls-2001/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "dreamgirls-2001: poster was 1987 Ambassador Theatre revival Playbill, not the 2001 concert (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dreamgirls-2001",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://www.theaterdiary.com/parse/files/C7TsezAg3jnX9jHLsC9KFEteyKePkwLtB46dDpfh/4dcb369aa1e20bd4d5d973e75272d526_dreamgirls.jpg",
+          "https://images.ctfassets.net/6pezt69ih962/43xtLb8SftDaxeA1k5F2sk/5df3b6b60da48ff358351908b1b9fb8c/Hero_1440x580.png?fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://www.theaterdiary.com/parse/files/C7TsezAg3jnX9jHLsC9KFEteyKePkwLtB46dDpfh/4dcb369aa1e20bd4d5d973e75272d526_dreamgirls.jpg",
+          "https://images.ctfassets.net/6pezt69ih962/43xtLb8SftDaxeA1k5F2sk/5df3b6b60da48ff358351908b1b9fb8c/Hero_1440x580.png?fm=webp&q=90",
+          "google-images:https://playbill.com/production/dreamgirlsbroadway-lyric-theatre-2001"
+        ],
+        "description": "dreamgirls-2001: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "quick-change-1980",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/quick-change-1980/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "quick-change-1980: thumbnail was a vaudeville quick-change artist, another work (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "quick-change-1980",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://vaudevisuals.com/michael-mcgiveney-quick-change-artist-a-lost-performing-art/"
+        ],
+        "description": "quick-change-1980: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "quick-change-1980",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-12",
+          "reason": "BRO-5036: every Google Images hit for this title was another work or production (contact sheet)",
+          "key": "quick change|bijou theatre|1980-10-30"
+        },
+        "description": "quick-change-1980: no reliable art; the image sweep and self-heal skip it until the row changes (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "loose-ends-1979",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/loose-ends-1979/thumbnail.jpg",
+          "poster": "/images/shows/loose-ends-1979/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/loose-ends-1979/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "loose-ends-1979: poster was a Playbill cast-list page, not art (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "loose-ends-1979",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://playbill.com/production/loose-ends-circle-in-the-square-theatre-vault-0000003280"
+        ],
+        "description": "loose-ends-1979: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "teibele-and-her-demon-1979",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/teibele-and-her-demon-1979/thumbnail.jpg",
+          "poster": "/images/shows/teibele-and-her-demon-1979/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": "/images/shows/teibele-and-her-demon-1979/poster.jpg",
+          "hero": null
+        },
+        "description": "teibele-and-her-demon-1979: thumbnail was a scanned newspaper page, not art (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "teibele-and-her-demon-1979",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://playbill.com/production/teibele-and-her-demon-brooks-atkinson-theatre-vault-0000008030"
+        ],
+        "description": "teibele-and-her-demon-1979: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "break-a-leg-1979",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/break-a-leg-1979/thumbnail.jpg",
+          "poster": "/images/shows/break-a-leg-1979/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": "/images/shows/break-a-leg-1979/poster.jpg",
+          "hero": null
+        },
+        "description": "break-a-leg-1979: thumbnail was a podcast graphic, another work (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "break-a-leg-1979",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://castro.fm/podcast/98fdadb2-af72-4d12-b219-c712173a4e93"
+        ],
+        "description": "break-a-leg-1979: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "whose-life-is-it-anyway-1979",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/whose-life-is-it-anyway-1979/thumbnail.jpg",
+          "poster": "/images/shows/whose-life-is-it-anyway-1979/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": "/images/shows/whose-life-is-it-anyway-1979/poster.jpg",
+          "hero": null
+        },
+        "description": "whose-life-is-it-anyway-1979: thumbnail was the London Trafalgar Theatre production (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "whose-life-is-it-anyway-1979",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://playbill.com/production/whose-life-is-it-anyway-trafalgar-theatre-vault-0000002726"
+        ],
+        "description": "whose-life-is-it-anyway-1979: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "diversions-and-delights-1978",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/diversions-and-delights-1978/thumbnail.jpg",
+          "poster": "/images/shows/diversions-and-delights-1978/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/diversions-and-delights-1978/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "diversions-and-delights-1978: poster was a touring date at Chrysler Hall, Norfolk (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "diversions-and-delights-1978",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.walterfilm.com/shop/film-category_all/broadway-stage/oscar-wilde-source-vincent-price-as-oscar-wilde-in-diversions-delights-by-john-gay/"
+        ],
+        "description": "diversions-and-delights-1978: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-first-breeze-of-summer-1975",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-first-breeze-of-summer-1975/thumbnail.jpg",
+          "poster": "/images/shows/the-first-breeze-of-summer-1975/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": "/images/shows/the-first-breeze-of-summer-1975/poster.jpg",
+          "hero": null
+        },
+        "description": "the-first-breeze-of-summer-1975: thumbnail was the TV film DVD (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-first-breeze-of-summer-1975",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.imdb.com/title/tt0208158/"
+        ],
+        "description": "the-first-breeze-of-summer-1975: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kennedys-children-1975",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/kennedys-children-1975/thumbnail.jpg",
+          "poster": "/images/shows/kennedys-children-1975/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": "/images/shows/kennedys-children-1975/poster.jpg",
+          "hero": null
+        },
+        "description": "kennedys-children-1975: thumbnail was a later small-theatre production (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kennedys-children-1975",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.tdf.org/shows/15778/kennedys-children/"
+        ],
+        "description": "kennedys-children-1975: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-norman-conquests-living-together-1975",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-norman-conquests-living-together-1975/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-norman-conquests-living-together-1975: thumbnail was unrelated Ayckbourn artwork, not this production (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-norman-conquests-living-together-1975",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.broadwayworld.com/people/Alan-Ayckbourn/"
+        ],
+        "description": "the-norman-conquests-living-together-1975: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-norman-conquests-living-together-1975",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-12",
+          "reason": "BRO-5036: every Google Images hit for this title was another work or production (contact sheet)",
+          "key": "the norman conquests: living together|morosco theatre|1975-12-07"
+        },
+        "description": "the-norman-conquests-living-together-1975: no reliable art; the image sweep and self-heal skip it until the row changes (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dreyfus-in-rehearsal-1974",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/dreyfus-in-rehearsal-1974/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "dreyfus-in-rehearsal-1974: thumbnail was a scanned newspaper page, not art (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dreyfus-in-rehearsal-1974",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://playbill.com/production/dreyfus-in-rehearsal-ethel-barrymore-theatre-vault-0000004328"
+        ],
+        "description": "dreyfus-in-rehearsal-1974: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dreyfus-in-rehearsal-1974",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-12",
+          "reason": "BRO-5036: every Google Images hit for this title was another work or production (contact sheet)",
+          "key": "dreyfus in rehearsal|ethel barrymore theatre|1974-10-17"
+        },
+        "description": "dreyfus-in-rehearsal-1974: no reliable art; the image sweep and self-heal skip it until the row changes (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-national-health-1974",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-national-health-1974/thumbnail.jpg",
+          "poster": "/images/shows/the-national-health-1974/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": "/images/shows/the-national-health-1974/poster.jpg",
+          "hero": null
+        },
+        "description": "the-national-health-1974: thumbnail was the Columbia Pictures film poster (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-national-health-1974",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://playbill.com/production/the-national-health-circle-in-the-square-theatre-vault-0000003299"
+        ],
+        "description": "the-national-health-1974: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "saturday-sunday-monday-1974",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/saturday-sunday-monday-1974/thumbnail.jpg",
+          "poster": "/images/shows/saturday-sunday-monday-1974/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": "/images/shows/saturday-sunday-monday-1974/poster.jpg",
+          "hero": null
+        },
+        "description": "saturday-sunday-monday-1974: thumbnail was the film (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "saturday-sunday-monday-1974",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.themoviedb.org/movie/2814-sabato-domenica-e-lunedi"
+        ],
+        "description": "saturday-sunday-monday-1974: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "p-s-your-cat-is-dead-1975",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/p-s-your-cat-is-dead-1975/thumbnail.jpg",
+          "poster": "/images/shows/p-s-your-cat-is-dead-1975/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": "/images/shows/p-s-your-cat-is-dead-1975/poster.jpg",
+          "hero": null
+        },
+        "description": "p-s-your-cat-is-dead-1975: thumbnail was the novel cover (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "p-s-your-cat-is-dead-1975",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.daytonaplayhouse.org/seasons/2020s/2024-2025/ps-your-cat-is-dead"
+        ],
+        "description": "p-s-your-cat-is-dead-1975: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "thieves-1974",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/thieves-1974/thumbnail.jpg",
+          "poster": "/images/shows/thieves-1974/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": "/images/shows/thieves-1974/poster.jpg",
+          "hero": null
+        },
+        "description": "thieves-1974: thumbnail was a scanned newspaper ad page, not art (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "thieves-1974",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.facebook.com/groups/893472017418035/posts/7417084951723343/"
+        ],
+        "description": "thieves-1974: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mother-earth-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/mother-earth-1972/thumbnail.jpg",
+          "poster": "/images/shows/mother-earth-1972/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "mother-earth-1972: poster was the rock band Mother Earth album cover; thumbnail was Emma Goldman's Mother Earth magazine (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mother-earth-1972",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.facebook.com/groups/538701559522634/posts/26868368479462583/",
+          "google-images:https://playbill.com/production/mother-earth-belasco-theatre-vault-0000010790"
+        ],
+        "description": "mother-earth-1972: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mother-earth-1972",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-12",
+          "reason": "BRO-5036: every Google Images hit for this title was another work or production (contact sheet)",
+          "key": "mother earth|belasco theatre|1972-10-19"
+        },
+        "description": "mother-earth-1972: no reliable art; the image sweep and self-heal skip it until the row changes (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "not-now-darling-1970",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/not-now-darling-1970/thumbnail.jpg",
+          "poster": "/images/shows/not-now-darling-1970/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": "/images/shows/not-now-darling-1970/poster.jpg",
+          "hero": null
+        },
+        "description": "not-now-darling-1970: thumbnail was the 1973 film poster (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "not-now-darling-1970",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://playbill.com/production/not-now-darling-brooks-atkinson-theatre-vault-0000008042"
+        ],
+        "description": "not-now-darling-1970: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "youre-a-good-man-charlie-brown-1971",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/youre-a-good-man-charlie-brown-1971/thumbnail.jpg",
+          "poster": "/images/shows/youre-a-good-man-charlie-brown-1971/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": "/images/shows/youre-a-good-man-charlie-brown-1971/poster.jpg",
+          "hero": null
+        },
+        "description": "youre-a-good-man-charlie-brown-1971: thumbnail was a later college production graphic (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "youre-a-good-man-charlie-brown-1971",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.mit.edu/~mtg/PastShowsPresent-2015.html"
+        ],
+        "description": "youre-a-good-man-charlie-brown-1971: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "into-the-woods-1997",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/into-the-woods-1997/thumbnail.jpg",
+          "poster": "/images/shows/into-the-woods-1997/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/into-the-woods-1997/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "into-the-woods-1997: poster was the original 1987 Martin Beck production window card (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "into-the-woods-1997",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://en.wikipedia.org/wiki/Into_the_Woods"
+        ],
+        "description": "into-the-woods-1997: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-most-happy-fella-1979",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-most-happy-fella-1979/thumbnail.jpg",
+          "poster": "/images/shows/the-most-happy-fella-1979/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": "/images/shows/the-most-happy-fella-1979/poster.jpg",
+          "hero": null
+        },
+        "description": "the-most-happy-fella-1979: thumbnail was the 1956 original cast recording (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-most-happy-fella-1979",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://en.wikipedia.org/wiki/The_Most_Happy_Fella"
+        ],
+        "description": "the-most-happy-fella-1979: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peter-pan-1979",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/peter-pan-1979/thumbnail.jpg",
+          "poster": "/images/shows/peter-pan-1979/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": "/images/shows/peter-pan-1979/poster.jpg",
+          "hero": null
+        },
+        "description": "peter-pan-1979: thumbnail was a later touring production logo (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peter-pan-1979",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://www.instagram.com/peterpanthemusical/"
+        ],
+        "description": "peter-pan-1979: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-iceman-cometh-1973",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-iceman-cometh-1973/thumbnail.jpg",
+          "poster": "/images/shows/the-iceman-cometh-1973/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/the-iceman-cometh-1973/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-iceman-cometh-1973: poster was the 1985 Lunt-Fontanne revival Playbill (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-iceman-cometh-1973",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://playbill.com/production/the-iceman-cometh-circle-in-the-square-theatre-vault-0000003302"
+        ],
+        "description": "the-iceman-cometh-1973: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-boheme-off-broadway-2024",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/la-boheme-off-broadway-2024/thumbnail.jpg",
+          "poster": "/images/shows/la-boheme-off-broadway-2024/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "la-boheme-off-broadway-2024: poster was a Lyric Opera of the North staging; thumbnail was an Arcola Theatre staging (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-boheme-off-broadway-2024",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://writingnearthelake.org/2025/03/30/an-afternoon-at-the-opera-with-puccinis-la-boheme/",
+          "google-images:https://www.facebook.com/arcolatheatre/posts/la-boh%C3%A8me-soon-arrives-at-grimeborn-2024-on-20th-augustpuccinis-timeless-tale-of/897133892458507/"
+        ],
+        "description": "la-boheme-off-broadway-2024: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-boheme-off-broadway-2024",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-12",
+          "reason": "BRO-5036: every Google Images hit for this title was another work or production (contact sheet)",
+          "key": "la bohème|metropolitan opera house|2024-11-13"
+        },
+        "description": "la-boheme-off-broadway-2024: no reliable art; the image sweep and self-heal skip it until the row changes (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "we-had-a-world-off-west-end-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/we-had-a-world-off-west-end-2026/thumbnail.jpg",
+          "poster": "/images/shows/we-had-a-world-off-west-end-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "we-had-a-world-off-west-end-2026: poster was the Manhattan Theatre Club production; thumbnail was the Manhattan Theatre Club production (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "we-had-a-world-off-west-end-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://d2rawotm8xdpob.cloudfront.net/v0/b/theatr-app.appspot.com/o/shows/1728984447029-79axvsi8m89.jpg",
+          "https://d2rawotm8xdpob.cloudfront.net/v0/b/theatr-app.appspot.com/o/shows/1728984452907-nr6ideiwr1f.png",
+          "https://d2rawotm8xdpob.cloudfront.net/v0/b/theatr-app.appspot.com/o/shows/1728984458443-tq8xjgocn69.jpg"
+        ],
+        "newValue": [
+          "https://d2rawotm8xdpob.cloudfront.net/v0/b/theatr-app.appspot.com/o/shows/1728984447029-79axvsi8m89.jpg",
+          "https://d2rawotm8xdpob.cloudfront.net/v0/b/theatr-app.appspot.com/o/shows/1728984452907-nr6ideiwr1f.png",
+          "https://d2rawotm8xdpob.cloudfront.net/v0/b/theatr-app.appspot.com/o/shows/1728984458443-tq8xjgocn69.jpg",
+          "google-images:https://www.manhattantheatreclub.com/shows/24-25-season/we-had-a-world/"
+        ],
+        "description": "we-had-a-world-off-west-end-2026: never re-take those Google sources (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "we-had-a-world-off-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-12",
+          "reason": "BRO-5036: every Google Images hit for this title was another work or production (contact sheet)",
+          "key": "we had a world|hampstead theatre|2026-06-09"
+        },
+        "description": "we-had-a-world-off-west-end-2026: no reliable art; the image sweep and self-heal skip it until the row changes (BRO-5036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "little-women-the-musical-off-broadway-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/little-women-the-musical-off-broadway-2026/thumbnail.jpg",
+          "poster": "/images/shows/little-women-the-musical-off-broadway-2026/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": "/images/shows/little-women-the-musical-off-broadway-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "description": "little-women-the-musical-off-broadway-2026: poster was a Musical Theatre West, Long Beach staging (BRO-5036 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "little-women-the-musical-off-broadway-2026",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "https://images.ctfassets.net/6pezt69ih962/3xhhpmquDOJksmWGKPaWQY/c044ad3266a474834824278b73d00fdf/LW_Poster.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/4bYiANf6R2yMjINfrYZZiR/4427fff29d0242f6a91a3c5ff2be09e4/LW_Square.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/7dOVCmPGrf556jUFgV99Ox/4b4533ad4abaf9b28afe532f71dceb65/LW_Hero.jpg?fm=webp&q=90"
+        ],
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/3xhhpmquDOJksmWGKPaWQY/c044ad3266a474834824278b73d00fdf/LW_Poster.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/4bYiANf6R2yMjINfrYZZiR/4427fff29d0242f6a91a3c5ff2be09e4/LW_Square.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/7dOVCmPGrf556jUFgV99Ox/4b4533ad4abaf9b28afe532f71dceb65/LW_Hero.jpg?fm=webp&q=90",
+          "google-images:https://www.instagram.com/p/DOZSZ1vjDEU/"
+        ],
+        "description": "little-women-the-musical-off-broadway-2026: never re-take those Google sources (BRO-5036)"
+      }
+    ]
+  }
+}
