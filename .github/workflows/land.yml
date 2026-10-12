@@ -104,7 +104,9 @@ jobs:
       cancel-in-progress: true
     # Budget (measured, run 35536264524): checkout ~30s, npm ci ~25s, core
     # data ~10s, one gauntlet ~6.5 min (tsc x2 + lint ~35s, unit batches ~4.3
-    # min, scripts/lib ~40s, lint audits ~40s). The base gauntlet is a second
+    # min, scripts/lib ~40s, lint audits ~40s; BRO-5161 adds review-texts
+    # ~45s once per job and unit-tests-e2e ~25s per gauntlet, from test.yml
+    # run 38242949861). The base gauntlet is a second
     # ~6.5 min ONLY when neither the cache nor an artifact has it for this
     # base tree. Re-measure from the live runs before changing.
     timeout-minutes: 40
@@ -194,6 +196,7 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
       - name: Checkout review-texts (private repo)
+        id: reviewtexts
         # The unit-tests-e2e gate runs test.yml's E2E unit batch, several of
         # whose files read data/review-texts, as that job does (BRO-5161).
         # Measured there: ~45s. Base cache key is v2 so no base measured
@@ -409,6 +412,7 @@ jobs:
             "rebase:${{ steps.rebase.outcome }}" \
             "npm-ci:${{ steps.deps.outcome }}" \
             "core-data:${{ steps.coredata.outcome }}" \
+            "review-texts:${{ steps.reviewtexts.outcome }}" \
             "manifests:${{ steps.manifests.outcome }}" \
             "actionlint-install:${{ steps.actionlint.outcome }}" \
             "harness:${{ steps.harness.outcome }}" \
