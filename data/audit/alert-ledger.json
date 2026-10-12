@@ -152,7 +152,7 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -164,7 +164,8 @@
       "notifyCount": 136,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-10-12T20:55:45.952Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -6055,7 +6056,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:E2E Tests:36f3f039": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
@@ -6073,7 +6074,9 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38295830217"
       },
       "absentRunIds": [],
-      "silentRefires": 3
+      "silentRefires": 3,
+      "resolvedAt": "2026-10-12T20:55:45.754Z",
+      "resolveReason": "job-green"
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "open",
