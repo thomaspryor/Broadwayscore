@@ -42,6 +42,7 @@ const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { domainMatchesExpected } = require('./lib/scraper');
 const { isLondonMarket, isBroadwayCategory } = require('./lib/venue-classification');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { prefetchDiscoveredArticle, applyPrefetch } = require('./lib/discovery-prefetch');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -286,8 +287,9 @@ function looksLikeReview(url, serpTitle) {
   return true;
 }
 
-function writeReviewFile(showId, outletId, url, showTitle, outletName, opts) {
-  const showDir = path.join(REVIEW_TEXTS_DIR, showId);
+async function writeReviewFile(showId, outletId, url, showTitle, outletName, opts) {
+  const reviewTextsDir = opts.reviewTextsDir || REVIEW_TEXTS_DIR;
+  const showDir = path.join(reviewTextsDir, showId);
 
   // Pre-check under the caller's own outlet identity (read-only): the shared
   // writer refines outletId from the URL, so without this an existing file
@@ -301,11 +303,18 @@ function writeReviewFile(showId, outletId, url, showTitle, outletName, opts) {
     return false;
   }
 
+  // BRO-3133: fetch the body now, as opening-night discovery does (BRO-4933).
+  // A text-less stub waited for the next collect-review-texts pass with no
+  // alert (Jane Eyre's London Theatre review sat empty on opening night).
+  // Failure is non-fatal: the file is written as the old empty stub.
+  const prefetch = (opts.dryRun || opts.prefetch === false) ? null
+    : await (opts.prefetchFn || prefetchDiscoveredArticle)(url, { criticName: 'Unknown', outletId, showId });
+
   // Route through the shared save-time chokepoint (card 38b637c5) so every
   // guard applies (junk outlet, domain validation, cross-market reroute,
   // cross-show URL ownership, roundup detection). onMerge aborts — this
   // discovery path only CREATES stubs, never enriches.
-  const res = createOrMergeReviewFile(showId, {
+  const res = createOrMergeReviewFile(showId, applyPrefetch({
     outlet: outletName,
     outletId,
     criticName: 'Unknown',
@@ -316,7 +325,7 @@ function writeReviewFile(showId, outletId, url, showTitle, outletName, opts) {
       contentTier: 'stub',
       collectedAt: new Date().toISOString(),
     },
-  }, { dryRun: opts.dryRun, onMerge: () => false });
+  }, prefetch), { dryRun: opts.dryRun, onMerge: () => false, reviewTextsDir });
 
   if (res.action !== 'new') {
     console.log(`    SKIP (${res.reason || res.action})`);
@@ -568,7 +577,7 @@ async function main() {
             const valid = skipValidation || await validateUrl(foundUrl);
             if (valid) {
               if (skipValidation) console.log(`    SKIP validation (${accessModel} outlet)`);
-              const written = writeReviewFile(show.id, outlet.id, foundUrl, show.title, outletName, opts);
+              const written = await writeReviewFile(show.id, outlet.id, foundUrl, show.title, outletName, opts);
               if (written) totalWritten++;
             } else {
               console.log(`    INVALID (HTTP error): ${foundUrl}`);

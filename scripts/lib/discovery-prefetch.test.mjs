@@ -60,3 +60,29 @@ test('registered outlet with SERP-less byline resolves from JSON-LD', async () =
   assert.equal(pre.criticName, 'Nick Curtis');
   assert.ok(pre.fullText);
 });
+
+// BRO-3133: the weekly outlet SERP collector wrote text-less stubs that sat
+// until a later collect pass with no alert. It now prefetches like BRO-4933.
+test('collect-outlet-reviews writeReviewFile stores the prefetched body', async () => {
+  const { writeReviewFile } = require('../collect-outlet-reviews.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro3133-'));
+  const prefetchFn = (url, o) => prefetchDiscoveredArticle(url, { ...o, fetchPageFn: async () => ({ content: HTML }) });
+  const ok = await writeReviewFile('rent-west-end-2026', 'standard', URL_, 'Rent', 'Evening Standard', { reviewTextsDir: dir, prefetchFn });
+  assert.equal(ok, true);
+  const files = fs.readdirSync(path.join(dir, 'rent-west-end-2026')).filter(f => f.endsWith('.json'));
+  assert.equal(files.length, 1, files.join(','));
+  const d = JSON.parse(fs.readFileSync(path.join(dir, 'rent-west-end-2026', files[0]), 'utf8'));
+  assert.ok(d.fullText && d.fullText.length >= 200, `fullText empty: ${JSON.stringify(d).slice(0, 300)}`);
+  assert.notEqual(d.contentTier, 'stub');
+});
+
+test('collect-outlet-reviews writeReviewFile keeps the empty stub when prefetch fails', async () => {
+  const { writeReviewFile } = require('../collect-outlet-reviews.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro3133-'));
+  const prefetchFn = (url, o) => prefetchDiscoveredArticle(url, { ...o, fetchPageFn: async () => { throw new Error('blocked'); } });
+  const ok = await writeReviewFile('rent-west-end-2026', 'standard', URL_, 'Rent', 'Evening Standard', { reviewTextsDir: dir, prefetchFn });
+  assert.equal(ok, true);
+  const files = fs.readdirSync(path.join(dir, 'rent-west-end-2026')).filter(f => f.endsWith('.json'));
+  const d = JSON.parse(fs.readFileSync(path.join(dir, 'rent-west-end-2026', files[0]), 'utf8'));
+  assert.ok(!d.fullText);
+});

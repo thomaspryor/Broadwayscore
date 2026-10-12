@@ -35,6 +35,8 @@ const { validateUrlDomain, serpQuery } = require('./lib/url-discovery');
 const { safeWriteReview, preserveFlaggedFields } = require('./lib/review-write-guard');
 const { namedNonReviewReason } = require('./lib/non-review-url-patterns');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { prefetchDiscoveredArticle } = require('./lib/discovery-prefetch');
+const { classifyContentTier } = require('./lib/content-quality');
 
 // --help must print usage and exit BEFORE any side effect (BRO-1711).
 if (require.main === module && hasHelpFlag(process.argv.slice(2))) {
@@ -318,6 +320,16 @@ async function discoverForOutlet(outletId, config, shows, opts) {
         contentTier: 'stub',
         createdAt: new Date().toISOString(),
       };
+
+      // BRO-3133: fetch the body now (BRO-4933 pattern) rather than leave an
+      // empty stub for a later collect pass. The filename keeps the SERP
+      // byline; only text and publish date are taken. Failure keeps the stub.
+      const pre = await prefetchDiscoveredArticle(result.url, { criticName, outletId: normOutlet, showId });
+      if (pre && pre.fullText) {
+        reviewData.fullText = pre.fullText;
+        if (pre.publishDate) reviewData.publishDate = pre.publishDate;
+        reviewData.contentTier = classifyContentTier(reviewData).contentTier || 'stub';
+      }
 
       const filePath = path.join(showDir, filename);
       saveDiscoveredReviewStub(filePath, reviewData);
