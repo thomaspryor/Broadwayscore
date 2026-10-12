@@ -57,8 +57,7 @@ const { scrapeLortel } = require('./enrich-off-broadway-dates');
 const { recordParseResult } = require('./lib/source-last-success');
 const { feederVenueCity } = require('./lib/aggregator-candidate-extract');
 const { decideReviewThresholdPromotion } = require('./lib/review-threshold');
-const { decideUkFlagshipPromotion, stageUkRegionalCandidates, ukFlagshipShows } = require('./lib/uk-regional-guardian');
-const normalizeTitleForStaging = (t) => String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+const { decideUkFlagshipPromotion, stageUkRegionalCandidates, ukFlagshipShows, findSameProduction } = require('./lib/uk-regional-guardian');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { productionIdYear } = require('./lib/todaytix-dates');
 const { venuesMatch } = require('./lib/deduplication');
@@ -687,8 +686,8 @@ async function main() {
       const rd = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'audit', 'reverse-discovery-candidates.json'), 'utf8'));
       // Rows for shows already in shows.json are dropped here: the audit report
       // is refreshed every 6h, so without this they would re-stage and re-skip daily.
-      const have = ukFlagshipShows(loadShows().shows).map(s => normalizeTitleForStaging(s.title));
-      ukRows = stageUkRegionalCandidates(rd.candidates).filter(r => !have.includes(normalizeTitleForStaging(r.title)));
+      const have = ukFlagshipShows(loadShows().shows);
+      ukRows = stageUkRegionalCandidates(rd.candidates).filter(r => !findSameProduction(r, have));
       if (ukRows.length && !dryRun) writeStagingCandidates(ukRows);
       if (ukRows.length) console.log(`${dryRun ? 'Would stage' : 'Staged'} ${ukRows.length} flagship-UK Guardian candidate(s): ${ukRows.map(r => r.title).join('; ')}`);
     } catch (e) {
@@ -799,6 +798,15 @@ async function main() {
   const promoted = [];
   const skipped = [];
   const remainingStaged = [];
+  // Guardian-triggered rows are matched by production (house + title + run
+  // dates), not the generic title/venue dedup, which has no date check and would
+  // swallow a revival at the same house. Shows promoted earlier in this run
+  // count too.
+  const findDuplicate = (c) => {
+    if (c.source !== 'guardian-review') return findExistingOB(c, existingCandidates);
+    const s = findSameProduction(c, [...showsData.shows, ...promoted.map(p => p.entry)]);
+    return s ? { match: { id: s.id }, reason: 'same production already catalogued (house + title + run dates)' } : null;
+  };
   for (const c of staged) {
     const titleLower = (c.title || '').toLowerCase();
 
@@ -828,7 +836,7 @@ async function main() {
     // venue-string variants ("Atlantic Theater Company - Linda Gross" vs
     // "Atlantic Theater"), cross-source same-venue (TNG → Signature Center),
     // AND word-order variants ("Musical Parody" vs "Parody Musical").
-    const existingMatch = findExistingOB(c, existingCandidates);
+    const existingMatch = findDuplicate(c);
     if (existingMatch) {
       skipped.push({ candidate: c, reason: `already in shows.json as ${existingMatch.match.id} (${existingMatch.reason})` });
       logEntry({ kind: 'skip-duplicate', title: c.title, venue: c.venue, matchedTo: existingMatch.match.id, matchReason: existingMatch.reason });
@@ -915,7 +923,7 @@ async function main() {
     // check again before minting an entry (BRO-4377 hand-added shows under
     // their full titles; the staged slug titles did not match them).
     if (confirmed) {
-      const renamedMatch = findExistingOB(c, existingCandidates);
+      const renamedMatch = findDuplicate(c);
       if (renamedMatch) {
         skipped.push({ candidate: c, reason: `already in shows.json as ${renamedMatch.match.id} (${renamedMatch.reason}, after ${source} rename)` });
         logEntry({ kind: 'skip-duplicate', title: c.title, venue: c.venue, matchedTo: renamedMatch.match.id, matchReason: renamedMatch.reason });

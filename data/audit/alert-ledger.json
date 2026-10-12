@@ -156,13 +156,13 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-11T14:14:07.486Z",
-      "lastSeen": "2026-10-12T03:07:47.696Z",
+      "lastSeen": "2026-10-12T03:28:10.275Z",
       "lastNotifiedAt": "2026-10-11T14:14:07.486Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 132,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 21
+      "silentRefires": 22
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -12588,17 +12588,14 @@
       "title": "main test.yml red: Unit Tests / Ordinal publishDate guard parity (BRO-2836) — \"foo returns the contracted value\"",
       "firstSeen": "2026-10-09T14:40:39.110Z",
       "incidentOpenedAt": "2026-10-12T03:07:47.464Z",
-      "lastSeen": "2026-10-12T03:07:47.464Z",
+      "lastSeen": "2026-10-12T03:28:10.267Z",
       "lastNotifiedAt": "2026-10-12T03:07:47.464Z",
       "lastSurfacedAt": null,
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": "BRO-5116",
-      "absentRunIds": [
-        "38187654352",
-        "38189720816",
-        "38191732373"
-      ]
+      "absentRunIds": [],
+      "silentRefires": 1
     },
     "test-yml:red:Unit Tests:2a5215c8": {
       "status": "resolved",
@@ -14190,7 +14187,8 @@
       "linearIdentifier": "BRO-5105",
       "silentRefires": 3,
       "absentRunIds": [
-        "38197332180"
+        "38197332180",
+        "38198673628"
       ]
     },
     "land:land/bro-2735-pending-stubs": {
