@@ -1327,8 +1327,7 @@ export function getRelatedShows(show: ComputedShow, limit = 6): ComputedShow[] {
 // algorithmic ranking for the same pool instead of showing fewer cards (BRO-5122).
 function topUpRelated(curated: ComputedShow[], show: ComputedShow, limit: number, statusFilter?: 'open' | 'closed'): ComputedShow[] {
   if (curated.length >= limit) return curated.slice(0, limit);
-  const chosen = new Set(curated.map(s => s.id));
-  const extra = getRelatedShowsAlgorithmic(show, limit + chosen.size, statusFilter).filter(s => !chosen.has(s.id));
+  const extra = getRelatedShowsAlgorithmic(show, limit + curated.length, statusFilter).filter(s => !curated.some(c => isSameShow(c, s)));
   return [...curated, ...extra].slice(0, limit);
 }
 
