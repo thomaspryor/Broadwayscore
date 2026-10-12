@@ -633,7 +633,12 @@ const WE_CATEGORIES = new Set(['west-end', 'off-west-end']);
  * "title matches only CLOSED productions" (a same-title revival, still a
  * missing-show candidate — see titleMatchesIndex's allowClosedRevival).
  */
+const INDEX_MARKETS = new Set(['nyc', 'we', 'tour', 'regional']);
+
 function buildShowTitleIndex(shows, market = null) {
+  // An unknown key used to fall through every scope check and index all
+  // categories ('west-end' in health-check, BRO-4689); refuse it instead.
+  if (market && !INDEX_MARKETS.has(market)) throw new Error(`buildShowTitleIndex: unknown market "${market}" (use ${[...INDEX_MARKETS].join('/')})`);
   const exact = new Set();
   const containment = new Set();
   const statusByVariant = new Map();

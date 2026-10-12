@@ -584,7 +584,9 @@ test('BRO-4689: BWW caps-title tail matches the catalogued show behind a mixed-c
   assert.equal(titleMatchesIndex('Something Soon', nyc), false);
 });
 
-test('BRO-4689: health-check West End index is scoped to WE categories', () => {
-  const src = require('fs').readFileSync(new URL('../health-check.js', import.meta.url), 'utf8');
-  assert.ok(!/buildShowTitleIndex\(shows, 'west-end'\)/.test(src), "use market key 'we' ('west-end' is not a buildShowTitleIndex market)");
+test('BRO-4689: buildShowTitleIndex refuses an unknown market key', () => {
+  // 'west-end' once slipped through as an unscoped index in health-check.
+  assert.throws(() => buildShowTitleIndex(SHOWS, 'west-end'), /unknown market "west-end"/);
+  assert.doesNotThrow(() => buildShowTitleIndex(SHOWS, 'we'));
+  assert.doesNotThrow(() => buildShowTitleIndex(SHOWS));
 });
