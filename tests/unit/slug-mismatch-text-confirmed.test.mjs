@@ -29,6 +29,7 @@ const { run, urlSearchSlug, isOpaqueUrlSlug, buildAcceptSlugs, urlMentionsAnySlu
 const SHOW = { id: 'torera-off-broadway-2026', title: 'Torera', slug: 'torera' };
 const HEADLINE = 'https://www.interestedbystander.com/2026/09/theater-reviews-david-greenspan-shines.html';
 const OTHER_SHOW = 'https://www.interestedbystander.com/2025/10/theater-broadways-punch-argues-for.html';
+const PASSING = 'https://www.interestedbystander.com/2026/09/fall-theater-roundup.html';
 
 let root;
 before(() => {
@@ -40,6 +41,9 @@ before(() => {
   }));
   fs.writeFileSync(path.join(dir, 'ib--b.json'), JSON.stringify({
     url: OTHER_SHOW, fullText: 'Punch, the Broadway play about a fatal assault, argues for restorative justice.',
+  }));
+  fs.writeFileSync(path.join(dir, 'ib--c.json'), JSON.stringify({
+    url: PASSING, fullText: 'Punch is a gripping play about a fatal assault. '.repeat(40) + 'Also opening this month: Torera.',
   }));
 });
 after(() => fs.rmSync(root, { recursive: true, force: true }));
@@ -60,6 +64,12 @@ describe('text-confirmed URLs', () => {
     const r = run(SHOW, ctx([HEADLINE, OTHER_SHOW]));
     assert.strictEqual(r.ok, false);
     assert.deepStrictEqual(r.details.mismatches.map(m => m.url), [OTHER_SHOW]);
+  });
+
+  it('a show named only in passing deep in the body still flags', () => {
+    const r = run(SHOW, ctx([PASSING]));
+    assert.strictEqual(r.ok, false);
+    assert.strictEqual(check.sourceTextNamesShow(['x'.repeat(2000) + ' Torera'], check.buildMentionRegex(SHOW)), false);
   });
 
   it('no saved text (missing dir) leaves the old behavior: flag', () => {

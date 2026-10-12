@@ -225,9 +225,9 @@ function loadSourceTextByUrl(reviewTextsRoot, showId) {
     let d;
     try { d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { continue; }
     if (!d || !d.url) continue;
-    const text = [d.fullText, d.bwwExcerpt, d.dtliExcerpt, d.showScoreExcerpt, d.pullQuote]
-      .filter(Boolean).join('\n\n');
-    byUrl.set(d.url, (byUrl.get(d.url) || '') + '\n\n' + text);
+    const segments = [d.fullText, d.bwwExcerpt, d.dtliExcerpt, d.showScoreExcerpt, d.pullQuote]
+      .filter(t => typeof t === 'string' && t);
+    byUrl.set(d.url, (byUrl.get(d.url) || []).concat(segments));
   }
   return byUrl;
 }
@@ -237,10 +237,15 @@ function loadSourceTextByUrl(reviewTextsRoot, showId) {
  * ("/david-greenspan-shines") that never names the show is normal for many
  * outlets; cross-show contamination means the ARTICLE is about another show,
  * and then its text does not name this one either (BRO-4697: ~1,700 lifetime
- * hits were headline URLs on correctly filed reviews).
+ * hits were headline URLs on correctly filed reviews). The show must be named
+ * in the lede (first LEDE_CHARS of a text or excerpt): a roundup or an article
+ * about something else that names the show only in passing still flags.
  */
-function sourceTextNamesShow(text, mentionRe) {
-  return Boolean(mentionRe && text && mentionRe.test(text));
+const LEDE_CHARS = 1500;
+function sourceTextNamesShow(segments, mentionRe) {
+  if (!mentionRe || !segments) return false;
+  const list = Array.isArray(segments) ? segments : [segments];
+  return list.some(t => typeof t === 'string' && mentionRe.test(t.slice(0, LEDE_CHARS)));
 }
 
 function run(show, context) {
