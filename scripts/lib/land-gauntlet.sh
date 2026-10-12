@@ -41,6 +41,12 @@
 #     regression the same way). The file list is DERIVED from test.yml's own
 #     `run:` text (bash-integration-test-list.js), not hardcoded here, so a
 #     bash test added to test.yml is covered automatically — no second edit.
+#   toplevel-regression (every standalone `node scripts/test-*.js` step in
+#     test.yml, via land-gauntlet-toplevel-list.js)
+#     BRO-5117: the gauntlet never ran these, so BRO-5079 (test-opening-night-
+#     fixes.js) and BRO-5115 (test-ordinal-publishdate-guards.js) landed clean
+#     and turned main red. List DERIVED from test.yml, like bash-integration.
+#     Lands ADVISORY in land-gate-delta.js (CLAUDE.md §19).
 # Env: GAUNTLET_GATES — optional comma list (e.g. "lint-workflows" or
 #   "unit-tests-node,scripts-lib-tests"): run only those gates, skipping the
 #   gold-lists prep unless a unit gate is listed. Unset = every gate (land.yml
@@ -98,7 +104,7 @@ gate() {
 }
 
 # ── prep (not gates): gold lists + gitignored manifests ────────────────────
-if want_gate unit-tests-node || want_gate unit-tests-tsx || want_gate scripts-lib-tests || want_gate bash-integration; then
+if want_gate unit-tests-node || want_gate unit-tests-tsx || want_gate scripts-lib-tests || want_gate bash-integration || want_gate toplevel-regression; then
   node scripts/compute-gold-lists.js > "$OUT/prep-gold-lists.log" 2>&1 || echo "::warning::compute-gold-lists.js failed (see $OUT/prep-gold-lists.log) — data-dependent tests may fail"
 fi
 
@@ -216,6 +222,32 @@ bash_integration() {
   echo "bash-integration: all files green"
 }
 gate bash-integration bash_integration
+
+# ── Standalone regression scripts (BRO-5117) ───────────────────────────────
+# Keyed by failing file path (land-gate-delta.js), so only a newly-red file
+# blocks; one already red on origin/main is pre-existing.
+toplevel_regression() {
+  local -a tests
+  mapfile -t tests < <(node scripts/lib/land-gauntlet-toplevel-list.js --list)
+  if [ ${#tests[@]} -eq 0 ]; then echo "::error::land-gauntlet-toplevel-list.js derived ZERO node scripts/test-*.js steps from test.yml — broken matcher?"; return 1; fi
+  echo "# toplevel regression: ${#tests[@]} files (derived from test.yml)"
+  local FAILED="" f rc
+  for f in "${tests[@]}"; do
+    echo "── $f"
+    timeout 300 node "$f"
+    rc=$?
+    if [ "$rc" -ne 0 ]; then
+      echo "::error::toplevel-regression gate failed: $f (exit $rc)"
+      FAILED="$FAILED\n  - $f"
+    fi
+  done
+  if [ -n "$FAILED" ]; then
+    printf "::error::toplevel-regression failures:%b\n" "$FAILED"
+    return 1
+  fi
+  echo "toplevel-regression: all files green"
+}
+gate toplevel-regression toplevel_regression
 
 # ── Lint Workflows: actionlint + test.yml's lint-workflows audit list ──────
 # ALL of them run (a failure does not short-circuit the rest) and every red
