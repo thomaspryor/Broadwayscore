@@ -1,10 +1,21 @@
-# BRO-4786 state
-Done: lease CAS store, guard, CLI, six workflow syncs, push-review-texts enforce, script skips, 13 passing tests (tests/unit/opening-night-lane-lease-wiring.test.mjs). ship-check recorded pass.
-Landing: land run 37487992073 went red on one test (rmSync without maxRetries in my test) — fixed in the last commit; needs re-land.
-Next: `bash scripts/merge-worktree-to-main.sh job/linear-BRO-4786-muwt2lon`, wait for green land run, then on main `node --test tests/unit/opening-night-lane-lease-wiring.test.mjs`, then `node scripts/linear-session.js report --issue=BRO-4786 --status=done ...`.
-# BRO-4196 state
-Done: tests/unit/image-presence.test.mjs live imageless sweep -> t.diagnostic (fatal only with IMAGE_PRESENCE_STRICT=1) + deterministic fixture test for findImagelessScoredShows. Committed (2131dcc2e28), /second-opinion pass recorded.
-Root cause: newly scored shows are imageless until image self-heal lands (hours); a live-data assert turned main red each time.
-Remaining: land run 36623320088 (land/job/linear-BRO-4196-mun0ydst) must finish; verify `git merge-base --is-ancestor 2131dcc2e28 origin/main`. If cancelled: empty commit + bash scripts/merge-worktree-to-main.sh.
-Then: node scripts/linear-session.js report --issue=BRO-4196 --status=done --summary="..."
-Local run-unit-tests has 27 env failures (missing review-texts private repo, worktree/hook tests) unrelated to this change.
+# BRO-5198 state (2026-10-12 ~21:12Z)
+
+DONE
+- Code (branch job/linear-BRO-5198-mv5npgiy, 9 commits): Dow Jones chrome strip (content-quality.js
+  stripDowJonesReprintChrome / detectWsjRegistrationInterstitial / stripLeadingFetchDebris), write-guard
+  backstop + fullTextTrimmed breadcrumb (toLength-bound), same-show ownership liveness for combined copies
+  (url-ownership._isLiveSameShowCopy), splitter listing+lede back-extension, tests in
+  scripts/lib/dow-jones-chrome.test.mjs + multi-show-review-fanout.test.mjs. Reviewed (second-opinion,
+  Codex, Claude ship-check); verdict recorded.
+- Data PUSHED to broadway-review-texts main (abd7284877a): 193 WSJ files cut, addams restored as split
+  parent, addams/lend-me-a-tenor boundary corrected. Grep for interstitial on origin/main = 0 files.
+
+IN FLIGHT (21:27Z: Land job stuck at "Wait for the landing mutex"; re-run merge script to resume, it will not re-push)
+- Land run https://github.com/thomaspryor/Broadwayscore/actions/runs/38305000684 (Checks green, Land job
+  running). Log: /tmp/bro5198-land2.log
+
+NEXT (exact)
+1. If not landed: `MERGE_SKIP_POST_MERGE_TEST_GATE=1 bash scripts/merge-worktree-to-main.sh` from this worktree
+   (local floor fails on 2 unrelated tests: testflight ASC 403, stash-pop test).
+2. On fresh main: `node --test scripts/verify-addams-wsj-dedup-held.test.mjs scripts/lib/dow-jones-chrome.test.mjs`
+3. `node scripts/linear-session.js report --issue=BRO-5198 --status=done --summary=... --verification=...`
