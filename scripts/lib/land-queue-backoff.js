@@ -25,6 +25,7 @@
  */
 
 const { MAX_ATTEMPTS } = require('./land-retry-on-cancel');
+const { isMainRedBranch } = require('./land-admit');
 
 const LANDING_WORKFLOWS = ['land.yml', 'autonomous-merge.yml'];
 // Every non-completed run status the runs API filters on.
@@ -72,6 +73,10 @@ function landJobInSlot(jobs) {
   const checks = byName('Checks');
   const land = byName('Land');
   if (!checks || checks.status !== 'completed') return false;
+  // BRO-5096: a lane still waiting in `admit` is outside the `landing` group; it
+  // holds no seat. Admit done (any result: land.yml fails open) = about to enter.
+  const admit = byName('Admit');
+  if (admit && admit.status !== 'completed') return false;
   return !land || land.status !== 'completed';
 }
 
@@ -178,7 +183,7 @@ function pickStrandedCandidates(cancelledRuns, { refs, now = Date.now(), maxAgeH
     .filter((r) => Date.parse(r.created_at) >= cutoff)
     .filter((r) => (r.run_attempt || 1) < maxAttempts)
     .filter((r) => tipOf(r.head_branch) && tipOf(r.head_branch) === r.head_sha)
-    .sort((a, b) => Date.parse(a.created_at) - Date.parse(b.created_at));
+    .sort((a, b) => (isMainRedBranch(b.head_branch) - isMainRedBranch(a.head_branch)) || (Date.parse(a.created_at) - Date.parse(b.created_at)));
 }
 
 /** A newer Land run exists for the candidate's branch (a re-push or a refusal since): leave it. */
@@ -190,7 +195,7 @@ function supersededByNewerRun(candidate, latestForBranch) {
 function pickAgedCandidates(candidates, { now = Date.now(), agedMinutes = AGED_RETRY_MINUTES } = {}) {
   const since = (r) => Date.parse(r.updated_at || r.created_at);
   return (candidates || []).filter((r) => now - since(r) > agedMinutes * 60000)
-    .sort((a, b) => since(a) - since(b));
+    .sort((a, b) => (isMainRedBranch(b.head_branch) - isMainRedBranch(a.head_branch)) || (since(a) - since(b)));
 }
 
 /**
@@ -201,6 +206,11 @@ function pickAgedCandidates(candidates, { now = Date.now(), agedMinutes = AGED_R
 function decideSweep({ slot, cancelledRuns, refs, now, maxInspect = MAX_INSPECT } = {}) {
   if (!slot || slot.busy) {
     const blockers = (slot && slot.blockers) || [];
+    // BRO-5096: a main-red fix lane holds or waits for the seat. An ordinary
+    // re-run would evict it from the pending seat, so only main-red candidates
+    // may be re-run while it is there.
+    const mainRedAhead = blockers.some((b) => isMainRedBranch(b.branch));
+    const only = (list) => (mainRedAhead ? list.filter((r) => isMainRedBranch(r.head_branch)) : list);
     // Aging (BRO-4676): a busy slot never blocks a run stranded past the threshold.
     // The caller re-runs at most the FIRST accepted candidate, so one per sweep.
     // And never while an earlier re-run is still in flight: sweeps fire on every
@@ -215,12 +225,12 @@ function decideSweep({ slot, cancelledRuns, refs, now, maxInspect = MAX_INSPECT 
     // (same lottery a fresh push runs, one attempt at stake).
     if (slot && slot.pending === false) {
       const since = (r) => Date.parse(r.updated_at || r.created_at);
-      const candidates = pickStrandedCandidates(cancelledRuns, { refs, now })
+      const candidates = only(pickStrandedCandidates(cancelledRuns, { refs, now }))
         .filter((r) => (r.run_attempt || 1) <= FAST_RETRY_MAX_ATTEMPT && now - since(r) > FAST_RETRY_MINUTES * 60000)
         .slice(0, maxInspect);
       if (candidates.length) return { action: 'inspect', reason: 'no-pending-slot-busy', candidates, blockers };
     }
-    const aged = pickAgedCandidates(pickStrandedCandidates(cancelledRuns, { refs, now }), { now }).slice(0, maxInspect);
+    const aged = pickAgedCandidates(only(pickStrandedCandidates(cancelledRuns, { refs, now })), { now }).slice(0, maxInspect);
     if (slot && aged.length) return { action: 'inspect', reason: 'aged-slot-busy', aged: true, candidates: aged, blockers };
     return { action: 'wait', reason: 'slot-busy', blockers };
   }
