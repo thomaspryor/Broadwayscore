@@ -1,15 +1,25 @@
 {
   "system": "workflow repeat-failure",
   "status": "error",
-  "lastChecked": "2026-10-12T05:05:44.503Z",
+  "lastChecked": "2026-10-12T09:14:10.916Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
-      "name": "Workflow repeat-failure: Test Suite",
+      "name": "Workflow repeat-failure: Land",
       "status": "error",
-      "message": "Test Suite failed 16 times in the last 24h — likely broken, not transient."
+      "message": "Land failed 6 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Test Suite",
+      "status": "warn",
+      "message": "Test Suite failed 6 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+    },
+    {
+      "name": "Workflow repeat-failure: Verify Supabase Schema",
+      "status": "warn",
+      "message": "Verify Supabase Schema failed 2 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
     }
   ]
 }

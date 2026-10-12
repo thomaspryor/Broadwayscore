@@ -1,7 +1,7 @@
 {
   "system": "cron",
   "status": "warn",
-  "lastChecked": "2026-10-12T05:05:44.500Z",
+  "lastChecked": "2026-10-12T09:14:10.913Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,22 +9,22 @@
     {
       "name": "Cron: Update Show Status",
       "status": "pass",
-      "message": "15h ago, success"
+      "message": "19h ago, success"
     },
     {
       "name": "Cron: Rebuild Reviews",
       "status": "pass",
-      "message": "3h ago, success (newest run cancelled — superseded, not a failure)"
+      "message": "0h ago, success"
     },
     {
       "name": "Cron: Collect Review Texts",
       "status": "pass",
-      "message": "3h ago, success"
+      "message": "1h ago, success"
     },
     {
       "name": "Cron: LLM Ensemble Score",
       "status": "pass",
-      "message": "3h ago, success"
+      "message": "0h ago, success"
     },
     {
       "name": "Cron: Test Suite",
@@ -34,22 +34,22 @@
     {
       "name": "Cron: Opening Night Broadcast",
       "status": "pass",
-      "message": "1h ago, success"
+      "message": "0h ago, success"
     },
     {
       "name": "Cron: Update Lottery/Rush",
       "status": "pass",
-      "message": "15h ago, success"
+      "message": "20h ago, success"
     },
     {
       "name": "Cron: Weekly Grosses",
       "status": "pass",
-      "message": "19h ago, success"
+      "message": "23h ago, success"
     },
     {
       "name": "Cron: Update Show Score",
       "status": "pass",
-      "message": "4h ago, success"
+      "message": "8h ago, success"
     },
     {
       "name": "Cron: Update Cast Changes",
@@ -59,7 +59,7 @@
     {
       "name": "Cron: NYT Critics Picks",
       "status": "pass",
-      "message": "18h ago, success"
+      "message": "22h ago, success"
     },
     {
       "name": "Cron: Weekly Video Reviews",
@@ -69,12 +69,12 @@
     {
       "name": "Cron: Reverse Discovery",
       "status": "pass",
-      "message": "4h ago, success"
+      "message": "8h ago, success"
     },
     {
       "name": "Cron: Cron Health Watchdog",
       "status": "pass",
-      "message": "12h ago, ran (failure; liveness-only check)"
+      "message": "16h ago, ran (failure; liveness-only check)"
     },
     {
       "name": "Cron: Affiliate Link Integrity",
@@ -84,7 +84,12 @@
     {
       "name": "Cron: Cloud Memory Reconcile",
       "status": "pass",
-      "message": "7h ago, success"
+      "message": "3h ago, success"
+    },
+    {
+      "name": "Cron: exempt-cron liveness",
+      "status": "warn",
+      "message": "2 of 125 exempt scheduled workflow(s) stopped starting: fix-todaytix-links.yml (no scheduled start in last 5 runs, limit 192h); scrape-dtli-show-score.yml (last start 519h ago, limit 192h). Disabled on purpose: codex-runner.yml."
     }
   ]
 }

@@ -1,7 +1,7 @@
 {
   "system": "push-retry deadman",
   "status": "error",
-  "lastChecked": "2026-10-12T05:05:44.501Z",
+  "lastChecked": "2026-10-12T09:14:10.915Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,7 @@
     {
       "name": "Push-retry deadman",
       "status": "error",
-      "message": "27 push-retry failure(s) in the last 7d across broadway-scorecard-data:main, Broadwayscore:main [LLM Ensemble Score Reviews x15, Collect Review Texts x6, Opening Night Poller x2, Rebuild Reviews (Fast) x1, Land x1, Collect WE/OB Review Texts x1, Deep Research Commercial x1]. Most recent reason: shallow-ancestry-unrecoverable."
+      "message": "26 push-retry failure(s) in the last 7d across Broadwayscore:main [LLM Ensemble Score Reviews x15, Collect Review Texts x6, Opening Night Poller x2, Land x1, Collect WE/OB Review Texts x1, Deep Research Commercial x1]. Most recent reason: shallow-ancestry-unrecoverable. 3 autostash-conflict(s) (an uncommitted edit lost to an upstream change after the push; see the run's ::error:: line)."
     }
   ]
 }

@@ -1,7 +1,7 @@
 {
   "system": "data quality",
   "status": "warn",
-  "lastChecked": "2026-10-12T05:05:44.499Z",
+  "lastChecked": "2026-10-12T09:14:10.911Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,47 +9,47 @@
     {
       "name": "Data quality: provider spend ledger",
       "status": "pass",
-      "message": "Newest entry (day=2026-10-11) 5h past its end-of-day"
+      "message": "Newest entry (day=2026-10-11) 9h past its end-of-day"
     },
     {
       "name": "Data quality: cross-outlet attribution drift",
       "status": "warn",
-      "message": "Unreviewed cross-outlet attribution suspect(s) found (2h ago)"
+      "message": "Unreviewed cross-outlet attribution suspect(s) found (4h ago)"
     },
     {
       "name": "Data quality: cv-wrongproduction lifetime sweep",
-      "status": "warn",
-      "message": "71 NEW unhandled CV.wrongProduction review(s) since last run (1175 total across 577 show(s), 2h ago)"
+      "status": "pass",
+      "message": "No new unhandled violations since last run (1175 known baseline across 2700 show(s), 4h ago)"
     },
     {
       "name": "Data quality: fulltext-mentions-show lifetime sweep",
-      "status": "warn",
-      "message": "22 NEW unmatched review(s) since last run (839 total across 434 show(s), 2h ago)"
+      "status": "pass",
+      "message": "No new violations since last run (839 known baseline across 2700 show(s), 4h ago)"
     },
     {
       "name": "Data quality: slug-mismatch lifetime sweep",
-      "status": "warn",
-      "message": "15 NEW cross-show URL mismatch(es) since last run (1801 total across 819 show(s), 2h ago)"
+      "status": "pass",
+      "message": "No new violations since last run (1801 known baseline across 2700 show(s), 4h ago)"
     },
     {
       "name": "Data quality: roundup-url-mismatch lifetime sweep",
       "status": "pass",
-      "message": "No new violations since last run (49 known baseline across 2700 show(s), 2h ago)"
+      "message": "No new violations since last run (49 known baseline across 2700 show(s), 4h ago)"
     },
     {
       "name": "Data quality: revival-unverified lifetime sweep",
-      "status": "warn",
-      "message": "4 NEW unverified revival flag(s) since last run (68 total across 68 show(s), 2h ago)"
+      "status": "pass",
+      "message": "No new violations since last run (68 known baseline across 2700 show(s), 4h ago)"
     },
     {
       "name": "Data quality: missed opening-night broadcasts",
       "status": "warn",
-      "message": "10 show(s) opened and qualified but never emailed subscribers (2 still alertable, 8 aged out past the paging window, 2h ago)"
+      "message": "10 show(s) opened and qualified but never emailed subscribers (2 still alertable, 8 aged out past the paging window, 4h ago)"
     },
     {
       "name": "Data quality: stale announced shows",
       "status": "warn",
-      "message": "1 show(s) still 'announced' after apparently opening (18 silenced by contamination, 2h ago)"
+      "message": "1 show(s) still 'announced' after apparently opening (18 silenced by contamination, 4h ago)"
     }
   ]
 }

@@ -1,7 +1,7 @@
 {
   "system": "infra",
   "status": "warn",
-  "lastChecked": "2026-10-12T05:05:44.503Z",
+  "lastChecked": "2026-10-12T09:14:10.917Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,12 +9,12 @@
     {
       "name": "Infra: disk space",
       "status": "ok",
-      "message": "80GB free (45% used)"
+      "message": "79GB free (46% used)"
     },
     {
       "name": "Infra: notion-schedule-coupling audit",
       "status": "warn",
-      "message": "5 live schedule(s) still reference the frozen Notion mirror (2h ago)"
+      "message": "5 live schedule(s) still reference the frozen Notion mirror (4h ago)"
     }
   ]
 }

@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "error",
-  "lastChecked": "2026-10-12T05:05:44.499Z",
+  "lastChecked": "2026-10-12T09:14:10.912Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -23,13 +23,13 @@
     },
     {
       "name": "Data: T1/T2 silent review gaps",
-      "status": "warn",
-      "message": "6 discovered review(s) not reaching the composite score (2 T1). Oldest: golden-boy-off-west-end-2026 — daily-mail (unscored)"
+      "status": "error",
+      "message": "11 discovered review(s) not reaching the composite score (3 T1). Oldest: truly-howard-hughes-off-broadway-2026 — cititour (unscored)"
     },
     {
       "name": "Data: uncollected live review strands",
       "status": "warn",
-      "message": "34 discovered review URL(s) across 23 live show(s) were never fetched. First: little-shop-of-horrors-off-broadway-2019 (3 stranded)"
+      "message": "37 discovered review URL(s) across 26 live show(s) were never fetched. First: little-shop-of-horrors-off-broadway-2019 (3 stranded)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
