@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4849-d",
   "planId": "21468360-5c79-4d46-88c0-89206a0bc4e7",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-12T10:21:50.515Z",
   "submitter": {
     "name": null,
@@ -111,5 +111,68 @@
         "description": "Exclude: blocked-host page that is not a critic review"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T13:07:35.348Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-mousetrap-west-end-2021/standard--jessie-thompson.json isNonReviewReason: null -> \"BRO-4849: ticket listing page, not a review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-mousetrap-west-end-2021/standard--jessie-thompson.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sting-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json isNonReviewReason: null -> \"BRO-4849: news photo gallery, not a review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sting-west-end-2026/westendtheatre--ghenet-pinderhughes-randall.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "how-shakespeare-saved-my-life-off-broadway-2026/broadwaylog--unknown.json isNonReviewReason: null -> \"BRO-4849: show listing page on a tracking app, not a review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "how-shakespeare-saved-my-life-off-broadway-2026/broadwaylog--unknown.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-bathroom-attendant-off-broadway-2026/vocal--unknown.json isNonReviewReason: null -> \"BRO-4849: user-generated post on an open publishing platform, not a critic outlet\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-bathroom-attendant-off-broadway-2026/vocal--unknown.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "million-dollar-quartet-off-west-end-2026/londonmumsmagazine--francesca-olivieri.json isNonReviewReason: null -> \"BRO-4849: preview cheat sheet written before opening, not a review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "million-dollar-quartet-off-west-end-2026/londonmumsmagazine--francesca-olivieri.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "night-of-january-16th-off-broadway-2026/theatricalia--ayn-rand.json isNonReviewReason: null -> \"BRO-4849: production database entry (the byline is the playwright), not a review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "night-of-january-16th-off-broadway-2026/theatricalia--ayn-rand.json isNonReview: null -> true"
+    }
+  ]
 }
