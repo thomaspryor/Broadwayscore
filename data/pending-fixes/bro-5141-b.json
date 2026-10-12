@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5141-b",
   "planId": "cb4ae3ed-1b18-410a-85c5-944c8b6add0e",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-12T06:58:46.964Z",
   "submitter": {
     "name": null,
@@ -117,5 +117,93 @@
         "description": "BRO-5141: recreate the Telegraph (Dominic Cavendish) review of the Jan 2020 Harold Pinter stage run on its own url; paywalled, so a retry stub until the Theatre Record re-run fills its text."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-12T08:17:27.505Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/camdennewjournal--lucy-popescu.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/daily-mail--patrick-marmion.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/daily-mail--robert-gore-langton.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/financialtimes--sarah-hemming.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/independent--paul-taylor.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/london-theatre--matt-wolf.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/observer--susannah-clapp.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/telegraph--dominic-cavendish.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/theatre-weekly--bethany-jane-christian.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/theatre-weekly--greg-stewart.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/thestage--dave-fargnoli.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/times-uk--dominic-maxwell.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/whatsonstage--alex-wood.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/standard--nick-curtis.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted uncle-vanya-west-end-2020/telegraph--dominic-cavendish.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ]
 }
