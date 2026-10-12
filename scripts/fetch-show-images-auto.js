@@ -27,6 +27,9 @@ require('./lib/load-env').loadEnv();
 const https = require('https');
 const fs = require('fs');
 const { serpQuery, serpImagesQuery } = require('./lib/url-discovery');
+const { withSpendShow } = require('./lib/provider-telemetry');
+const { extractGoogleImageBuffer, hasUsableGoogleImage } = require('./lib/google-image-buffer');
+const { writeStagedCandidate, discardStaged, stagedBytesFor, finalizeStaged, sweepStagedCandidates } = require('./lib/image-candidate-staging');
 const path = require('path');
 const { compressImage } = require('./lib/compress-image');
 const { cleanSearchTitle } = require('./lib/title-normalization');
@@ -84,6 +87,7 @@ const AUDIT_DIR = path.join(__dirname, '..', 'data', 'audit');
 // archived as valid art (2026-07-31 review). One source of truth now.
 
 const SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY;
+const SCRAPINGDOG_API_KEY = process.env.SCRAPINGDOG_API_KEY;
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 
 // Module-level dry-run state (set in main)
@@ -1572,10 +1576,12 @@ function extractDirectImageUrl(url) {
 // store/google fetch that never called recordSbCall(). Keeps the throw-based
 // contract searchGoogleImages() below expects (exhaustion → `.status` set on
 // the thrown Error, checked to decide whether to fall back to Bright Data).
+// Scrapingdog first, ScrapingBee fallback (BRO-3377); `skipProviders` drops SB
+// once it has run out of credits this run.
 async function searchGoogleImagesSB(query) {
-  const result = await serpImagesQuery(query, { nbResults: 10 });
+  const result = await serpImagesQuery(query, { nbResults: 10, skipProviders: _sbImagesExhausted ? ['scrapingbee'] : [] });
   if (result === null) {
-    throw new Error('SCRAPINGBEE_API_KEY not set');
+    throw new Error('no images SERP key set (SCRAPINGDOG_API_KEY / SCRAPINGBEE_API_KEY)');
   }
   // Throw on ANY failure (not just exhaustion) — a transient timeout/5xx must
   // still reach searchGoogleImages()'s catch below so it falls back to Bright
@@ -1626,7 +1632,7 @@ async function searchGoogleImagesBD(query) {
 let _sbImagesExhausted = false;
 
 async function searchGoogleImages(query) {
-  if (SCRAPINGBEE_API_KEY && !_sbImagesExhausted) {
+  if (SCRAPINGDOG_API_KEY || (SCRAPINGBEE_API_KEY && !_sbImagesExhausted)) {
     try {
       return await searchGoogleImagesSB(query);
     } catch (sbErr) {
@@ -1645,28 +1651,9 @@ async function searchGoogleImages(query) {
   return await searchGoogleImagesBD(query);
 }
 
-// Helper: extract valid image buffer from Google Images result
-// Handles both ScrapingBee (base64 inline) and Bright Data (direct URL) results
-async function extractImageBuffer(result) {
-  // ScrapingBee format: base64 data URI
-  if (result.image && result.image.startsWith('data:image/')) {
-    const commaIdx = result.image.indexOf(',');
-    if (commaIdx === -1) return null;
-    const buffer = Buffer.from(result.image.substring(commaIdx + 1), 'base64');
-    if (buffer.length < 3000 || !isImageBuffer(buffer)) return null;
-    return buffer;
-  }
-  // Bright Data format: direct image URL — download it
-  if (result._brightdata && result.imageUrl) {
-    try {
-      const buffer = await downloadImageDirect(result.imageUrl);
-      if (buffer.length < 3000 || !isImageBuffer(buffer)) return null;
-      return buffer;
-    } catch {
-      return null;
-    }
-  }
-  return null;
+// Helper: bytes for one Google Images hit (scripts/lib/google-image-buffer.js).
+function extractImageBuffer(result) {
+  return extractGoogleImageBuffer(result, { download: downloadImageDirect, isImageBuffer });
 }
 
 // Helper: filter Google Images results to usable candidates
@@ -1694,11 +1681,7 @@ function filterGoogleCandidates(results, maxCount = 10, show = null) {
   return (results || [])
     .filter(r => !show || !isRejectedImage({ poster: googleResultSource(r) }, show))
     .filter(r => {
-      // ScrapingBee: has base64 data URI
-      const hasSBImage = r.image && r.image.startsWith('data:image/');
-      // Bright Data: has direct URL
-      const hasBDImage = r._brightdata && r.imageUrl;
-      if (!hasSBImage && !hasBDImage) return false;
+      if (!hasUsableGoogleImage(r)) return false;
       if (isShoppingSource(r.domain, r.url, r.imageUrl)) return false;
       if (isOwnSiteSource(r.domain, r.url, r.imageUrl)) return false;
       return true;
@@ -1860,9 +1843,11 @@ async function fetchFromGoogleImages(show) {
     console.log(`   ✗ Downloaded thumbnail is a "Coming Soon" placeholder — rejecting`);
     return null;
   }
-  const thumbnailPath = path.join(showDir, 'thumbnail.jpg');
-  fs.writeFileSync(thumbnailPath, finalThumbnailBuffer);
-  console.log(`   ✓ Saved thumbnail${thumbnailBuffer ? ' (native square)' : ' (from poster)'}`);
+  // Staged beside the live file until it is verified and chosen (BRO-4906).
+  const _staged = {};
+  const thumbLocal = `/images/shows/${show.id}/thumbnail.jpg`;
+  writeStagedCandidate(_staged, 'thumbnail', { local: thumbLocal, final: path.join(showDir, 'thumbnail.jpg') }, finalThumbnailBuffer);
+  console.log(`   ✓ Staged thumbnail candidate${thumbnailBuffer ? ' (native square)' : ' (from poster)'}`);
 
   // Save poster if we have one distinct from thumbnail
   let posterPath = null;
@@ -1873,8 +1858,8 @@ async function fetchFromGoogleImages(show) {
       console.log(`   ✗ Downloaded poster is a "Coming Soon" placeholder — rejecting`);
     } else {
       posterPath = path.join(showDir, 'poster.jpg');
-      fs.writeFileSync(posterPath, compressedPoster);
-      console.log(`   ✓ Saved poster`);
+      writeStagedCandidate(_staged, 'poster', { local: `/images/shows/${show.id}/poster.jpg`, final: posterPath }, compressedPoster);
+      console.log(`   ✓ Staged poster candidate`);
     }
   }
 
@@ -1883,7 +1868,6 @@ async function fetchFromGoogleImages(show) {
   const allRemaining = [...squareCandidates, ...posterCandidates]
     .filter(r => !usedResults.includes(r));
 
-  const thumbLocal = `/images/shows/${show.id}/thumbnail.jpg`;
   const posterLocal = posterPath ? `/images/shows/${show.id}/poster.jpg` : null;
   const _fileSources = { thumbnail: { path: thumbLocal, source: googleResultSource(thumbnailBuffer ? thumbnailResult : posterResult) } };
   if (posterLocal) _fileSources.poster = { path: posterLocal, source: googleResultSource(posterResult) };
@@ -1899,6 +1883,7 @@ async function fetchFromGoogleImages(show) {
     _remainingCandidates: allRemaining,
     _hasNativeSquare: !!thumbnailBuffer,
     _fileSources,
+    _staged,
   };
 }
 
@@ -1915,7 +1900,8 @@ async function fetchFromGoogleImages(show) {
 // sitting unreferenced in public/images/shows/).
 // previousPosterFile: that poster's _fileSources entry, so its source is still
 // recorded when this retry's thumbnail wins.
-async function tryNextGoogleCandidate(show, remainingCandidates, previousPoster = null, previousPosterFile = null) {
+// previousPosterStaged: that poster's _staged entry (BRO-4906), still unpromoted.
+async function tryNextGoogleCandidate(show, remainingCandidates, previousPoster = null, previousPosterFile = null, previousPosterStaged = null) {
   for (const result of remainingCandidates) {
     try {
       const buffer = await extractImageBuffer(result);
@@ -1927,19 +1913,21 @@ async function tryNextGoogleCandidate(show, remainingCandidates, previousPoster 
       const showDir = path.join(outputBase, show.id);
       fs.mkdirSync(showDir, { recursive: true });
       const compressed = await compressImage(buffer, 'thumbnail');
-      const thumbnailPath = path.join(showDir, 'thumbnail.jpg');
-      fs.writeFileSync(thumbnailPath, compressed);
+      const _staged = {};
+      writeStagedCandidate(_staged, 'thumbnail', { local: `/images/shows/${show.id}/thumbnail.jpg`, final: path.join(showDir, 'thumbnail.jpg') }, compressed);
 
       const nextRemaining = remainingCandidates.slice(remainingCandidates.indexOf(result) + 1);
       const images = buildRetryCandidateImages({ showId: show.id, previousPoster });
       const _fileSources = { thumbnail: { path: images.thumbnail, source: googleResultSource(result) } };
       if (previousPoster && previousPosterFile && previousPosterFile.path === previousPoster) _fileSources.poster = previousPosterFile;
+      if (previousPoster && previousPosterStaged && previousPosterStaged.local === previousPoster) _staged.poster = previousPosterStaged;
       return {
         ...images,
         _verifyBuffer: buffer,
         _verifyMeta: googleResultMeta(result),
         _remainingCandidates: nextRemaining,
         _fileSources,
+        _staged,
       };
     } catch {
       continue;
@@ -1969,6 +1957,9 @@ function snapshotLocalImageFiles(images) {
   for (const p of Object.values(images || {})) {
     if (typeof p !== 'string' || !p.startsWith('/images/shows/')) continue;
     const abs = path.join(base, p.slice('/images/shows/'.length));
+    // A staged Google candidate's bytes, not the live file it would replace (BRO-4906).
+    const staged = stagedBytesFor(images && images._staged, abs);
+    if (staged) { out[abs] = staged; continue; }
     try { out[abs] = fs.readFileSync(abs); } catch { /* not written yet */ }
   }
   return out;
@@ -2015,8 +2006,8 @@ async function verifyGooglePoster(googleImages, show, verifyCtx) {
   }
   if (strict) { const t = strictTallyFor(verifyCtx, show.id); if (verdict.errored) t.errored++; else t.rejected++; }
   console.log(`   ✗ Google poster rejected (${strict ? 'strict, ' : ''}${verdict.reason}): ${result.description} from ${pv.meta?.pageDomain || 'unknown page'}`);
-  const abs = path.join(dryRunMode ? DRY_RUN_DIR : IMAGES_DIR, googleImages.poster.slice('/images/shows/'.length));
-  try { fs.unlinkSync(abs); } catch { /* not written */ }
+  // Only the staged candidate goes; the live poster.jpg was never touched (BRO-4906).
+  discardStaged(googleImages._staged, 'poster');
   googleImages.poster = null;
   if (googleImages._fileSources) delete googleImages._fileSources.poster;
 }
@@ -2416,6 +2407,7 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
     const remaining = googleImages._remainingCandidates || [];
     const previousPoster = googleImages.poster || null;
     const previousPosterFile = (googleImages._fileSources && googleImages._fileSources.poster) || null;
+    const previousPosterStaged = (googleImages._staged && googleImages._staged.poster) || null;
     const candidate = await verifyAndCollect(googleImages, show, 'Google Images', verifyCtx);
     if (candidate) {
       candidates.push(candidate);
@@ -2431,7 +2423,7 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
     }
     // Rejected — try next candidate from the same search results
     if (remaining.length === 0) break;
-    googleImages = await tryNextGoogleCandidate(show, remaining, previousPoster, previousPosterFile);
+    googleImages = await tryNextGoogleCandidate(show, remaining, previousPoster, previousPosterFile, previousPosterStaged);
   }
   if (!googleGate.skip && !googleErrored) noteGoogleAttempt(show.id, googleAccepted);
 
@@ -2482,6 +2474,9 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
       console.log(`   ⚠ LAST RESORT: Using production photo — no poster art available (${(best.bufSize/1024).toFixed(0)} KB)`);
       verifyCtx.lastResort = (verifyCtx.lastResort || 0) + 1;
       for (const [abs, bytes] of Object.entries(best.files || {})) fs.writeFileSync(abs, bytes);
+      // Those bytes are in place now; a later candidate may have reused the
+      // stage file, so it must not be promoted over them (BRO-4906).
+      delete best.images._staged;
       return best.images;
     } else {
       console.log(`   ✗ Production photo too small/no buffer (${best.bufSize} bytes), skipping`);
@@ -2493,7 +2488,22 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
 
 // Process a single show: discover TodayTix ID, fetch images, update show object.
 // Returns { show, images, apiSourced } or null on failure.
-async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verifyCtx) {
+// Every provider call under it carries showId in the spend ledger (BRO-3386).
+// Staged Google candidates (BRO-4906) the result doesn't carry to applyImages
+// are deleted here; dry runs (no applyImages) promote what they would serve.
+async function processOneShow(show, ...rest) {
+  const result = await withSpendShow(show && show.id, () => processOneShowInner(show, ...rest));
+  if (show && show.id) {
+    const images = result && result.images;
+    if (dryRunMode && images && images._staged) finalizeStaged(images._staged, images);
+    if (dryRunMode || !(images && images._staged && Object.keys(images._staged).length)) {
+      sweepStagedCandidates(path.join(dryRunMode ? DRY_RUN_DIR : IMAGES_DIR, show.id));
+    }
+  }
+  return result;
+}
+
+async function processOneShowInner(show, apiLookup, todayTixIds, badImagesOnly, verifyCtx) {
   // Skip pinned images — these were manually curated and must not be overwritten
   if (PINNED_IMAGES.has(show.id) && show.images?.thumbnail) {
     console.log(`   PINNED — skipping ${show.id} (manually curated thumbnail)`);
@@ -2794,6 +2804,8 @@ function applyImages(show, images) {
     if (keepExistingImage(show, 'thumbnail', sources)) {
       console.log(`   ⚠ Keeping existing local thumbnail for ${show.id} (new source is poster crop)`);
       images.thumbnail = existingThumb;
+      // The candidate is not what the row serves: drop it and its source (BRO-4906).
+      if (discardStaged(images._staged, 'thumbnail') && images._fileSources) delete images._fileSources.thumbnail;
     } else {
       console.log(`   ✗ Not keeping existing local thumbnail for ${show.id}: its recorded source is rejected for this show`);
     }
@@ -2814,6 +2826,7 @@ function applyImages(show, images) {
   }
 
   const fileSources = images._fileSources;
+  const staged = images._staged;
 
   // Strip internal underscore-prefixed fields before writing to shows.json
   // (_verifyBuffer, _remainingCandidates are already stripped in verifyAndCollect,
@@ -2838,12 +2851,21 @@ function applyImages(show, images) {
   for (const d of sharedSourceProblems({ ...safe, _fileSources: fileSources }, show)) {
     console.log(`   ✗ Refusing ${describeSharedSource(d)} for ${show.id}`);
     const prior = before[d.format];
-    const priorIntact = typeof prior === 'string' && prior.startsWith('/images/') && prior !== d.path;
+    // A staged candidate never touched the live file, so the prior one at the
+    // same path is still intact (BRO-4906); only the stage file goes.
+    const wasStaged = discardStaged(staged, d.format);
+    if (wasStaged && fileSources) delete fileSources[d.format];
+    const priorIntact = typeof prior === 'string' && prior.startsWith('/images/') && (prior !== d.path || wasStaged);
     safe[d.format] = priorIntact && keepExistingImage(show, d.format, sources) ? prior : null;
     // d.path holds the bytes this fetch wrote from the refused source.
-    if (d.path) {
+    if (d.path && !wasStaged) {
       try { fs.unlinkSync(path.join(__dirname, '..', 'public', d.path)); } catch {}
     }
+  }
+  // Rename surviving staged candidates into place, delete the rest (BRO-4906).
+  if (staged) {
+    finalizeStaged(staged, safe);
+    sweepStagedCandidates(path.join(IMAGES_DIR, show.id));
   }
   show.images = safe;
   // Files this fetch wrote and the row now serves: record where they came from,
@@ -2947,8 +2969,8 @@ async function main() {
     console.log(`DRY-RUN MODE: Images saved to ${DRY_RUN_DIR}, shows.json NOT modified`);
   }
 
-  if (!SCRAPINGBEE_API_KEY && !BRIGHTDATA_TOKEN && !auditExisting) {
-    console.error('ERROR: Set SCRAPINGBEE_API_KEY or BRIGHTDATA_TOKEN environment variable');
+  if (!SCRAPINGBEE_API_KEY && !SCRAPINGDOG_API_KEY && !BRIGHTDATA_TOKEN && !auditExisting) {
+    console.error('ERROR: Set SCRAPINGDOG_API_KEY, SCRAPINGBEE_API_KEY or BRIGHTDATA_TOKEN environment variable');
     process.exit(1);
   }
   if (!SCRAPINGBEE_API_KEY) {

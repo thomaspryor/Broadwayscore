@@ -48,6 +48,7 @@ const CREDITS = {
     premium: 10,
     stealth: 10,
     serp: 5,
+    'serp-images': 10, // google_images endpoint (BRO-3377)
     // BRO-4665: dedicated YouTube APIs (scraper.js fetchScrapingdogYouTube).
     'youtube-transcripts': 1,
     'youtube-video': 5,

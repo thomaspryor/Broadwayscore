@@ -107,7 +107,7 @@ const { findBWWRoundupLinkOnHomepage } = require('./lib/bww-homepage-scan');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
 const { shouldTriggerRebuild } = require('./lib/gather-reviews-rebuild-trigger');
 const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-discovery');
-const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
+const { recordSbCall, sbBilledCredits, withSpendShow } = require('./lib/provider-telemetry');
 const { isSerpUrlWrongProductionForOpeningNight, computeSerpShare, exceedsOpeningNightSerpBudget, parseGatherReviewsFlags } = require('./lib/opening-night-discovery');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { recordDeferredShows } = require('./lib/gather-deferred');
@@ -5998,7 +5998,8 @@ async function main() {
     process.env.SCRAPER_SPEND_PURPOSE = _DISPATCH_SPEND_PURPOSE || gatherPurposeForShow(_showsById().get(showId));
     let result;
     try {
-      result = await gatherReviewsForShow(showId, aggregatorsOnly, { validateUrls, historical, openingNight });
+      // BRO-3386: stamp showId on this show's spend-ledger rows.
+      result = await withSpendShow(showId, () => gatherReviewsForShow(showId, aggregatorsOnly, { validateUrls, historical, openingNight }));
     } catch (err) {
       console.error(`✗ Unhandled error for ${showId}: ${err.message}`);
       result = { showId, success: false, error: err.message, reviewsFound: 0, filesCreated: 0 };

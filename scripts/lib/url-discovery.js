@@ -1804,32 +1804,120 @@ async function serpNewsQuery(query, options = {}) {
   return { exhausted: false, failed: false, results };
 }
 
+const SD_SERP_IMAGES_CREDITS_PER_CALL = creditsFor('sd', 'serp-images');
+let _sdImagesFailures = 0;
+let _sdImagesBreakerOpenedAt = null;
+
 /**
- * Google Images SERP via ScrapingBee (ledger-instrumented — task #1005,
- * sibling of #998). Returns the RAW provider result array (`.image` base64
- * thumbnail, `.url` source page) unmapped — fetch-square-images.js and
- * fetch-show-images-auto.js both key their downstream candidate filtering
- * off that exact ScrapingBee response shape.
+ * Pure: Scrapingdog google_images response → the candidate shape image
+ * callers already read. Each result carries a direct full-size image URL
+ * (`imageUrl`, from `original`) plus `_directUrl: true`, so callers download it
+ * the way they download Bright Data hits; `image` keeps the inline thumbnail
+ * only when it is a data: URI. `url` is the page the image sits on.
+ */
+function normalizeScrapingdogImageResults(data) {
+  const raw = (data && (data.images_results || data.image_results)) || [];
+  return raw.map((r) => {
+    const page = r.link || r.url || '';
+    let domain = '';
+    try { domain = page ? new URL(page).hostname : ''; } catch { /* keep source */ }
+    const thumb = typeof r.image === 'string' ? r.image : '';
+    const imageUrl = (typeof r.original === 'string' && /^https?:\/\//.test(r.original)) ? r.original
+      : (/^https?:\/\//.test(thumb) ? thumb : null);
+    return {
+      image: thumb.startsWith('data:image/') ? thumb : null,
+      imageUrl,
+      url: page,
+      title: r.title || '',
+      domain: domain || r.source || '',
+      width: Number(r.original_width) || null,
+      height: Number(r.original_height) || null,
+      _directUrl: true,
+    };
+  }).filter((r) => r.imageUrl || r.image);
+}
+
+/**
+ * Pure: provider order for an images SERP (BRO-3377). Scrapingdog first (10
+ * credits against ScrapingBee's 25); ScrapingBee only as the fallback.
+ */
+function imagesSerpChainOrder({ sdKey, sbKey, skip } = {}) {
+  const skips = skip instanceof Set ? skip : new Set(skip || []);
+  if (process.env.SERP_NO_SB === '1') skips.add('scrapingbee');
+  const order = [];
+  if (sdKey && USE_SCRAPINGDOG && !skips.has('scrapingdog')) order.push('scrapingdog');
+  if (sbKey && !skips.has('scrapingbee')) order.push('scrapingbee');
+  return order;
+}
+
+/** Scrapingdog google_images call. null = unavailable/failed (caller falls back). */
+async function _serpImagesViaScrapingdog(query, sdKey, nbResults, log) {
+  const verdict = consecutiveFailureBreakerBlocked(_sdImagesFailures, _sdImagesBreakerOpenedAt, Date.now());
+  if (verdict.blocked) { _sdImagesBreakerOpenedAt = verdict.openedAt; return null; }
+  scraper.checkScrapingdogQuotaOnce();
+  if (scraper.sdQuotaExceeded) return null;
+  if (!consultScrapingdog().allowed) return null;
+  const axios = require('axios');
+  try {
+    const response = await axios.get('https://api.scrapingdog.com/google_images', {
+      params: { api_key: sdKey, query, country: 'us' },
+      timeout: 30000,
+    });
+    _sdImagesFailures = 0;
+    _sdImagesBreakerOpenedAt = null;
+    recordSdCall({ host: 'serp.scrapingdog.images', fn: 'serp', success: true, status: 200, credits: SD_SERP_IMAGES_CREDITS_PER_CALL });
+    return normalizeScrapingdogImageResults(response.data).slice(0, nbResults);
+  } catch (error) {
+    _sdImagesFailures++;
+    if (verdict.halfOpen) _sdImagesBreakerOpenedAt = Date.now();
+    const status = error.response?.status;
+    recordSdCall({ host: 'serp.scrapingdog.images', fn: 'serp', success: false, status: status || (error.message || 'error').slice(0, 80), credits: sdBilledCredits(false, SD_SERP_IMAGES_CREDITS_PER_CALL) });
+    log(`    ✗ Scrapingdog images SERP error (${_sdImagesFailures}/${MAX_CONSECUTIVE_FAILURES}): ${error.message} — trying the next images tier`);
+    return null;
+  }
+}
+
+/**
+ * Google Images SERP, ledger-instrumented (task #1005). Scrapingdog first,
+ * ScrapingBee fallback (BRO-3377). Results come in two shapes callers handle:
+ * Scrapingdog `{imageUrl, url, _directUrl:true}` (download imageUrl) and
+ * ScrapingBee raw `{image: base64 data URI, url}`. A Scrapingdog success with
+ * zero results is final (same rule as organic SERP: re-asking ScrapingBee at
+ * 2.5x the price rarely finds what Google itself did not return).
  * @param {string} query
  * @param {Object} [options]
  * @param {string} [options.scrapingBeeKey] - default: env SCRAPINGBEE_API_KEY
+ * @param {string} [options.scrapingdogKey] - default: env SCRAPINGDOG_API_KEY
  * @param {number} [options.nbResults] - default 20
+ * @param {string[]} [options.skipProviders] - e.g. ['scrapingbee'] once SB is exhausted this run
  * @param {Function} [options.log] - default console.log
- * @returns {{exhausted: boolean, failed: boolean, results: Array}|null} null when no key configured.
- *   `failed:true` means the call itself broke — see serpNewsQuery's doc comment.
+ * @returns {{exhausted: boolean, failed: boolean, results: Array, provider?: string}|null}
+ *   null when no images SERP key is configured. `exhausted` is ScrapingBee's
+ *   credit/auth failure only. `failed:true` means every tier broke.
  */
 async function serpImagesQuery(query, options = {}) {
   const sbKey = options.scrapingBeeKey || process.env.SCRAPINGBEE_API_KEY || '';
+  const sdKey = options.scrapingdogKey || process.env.SCRAPINGDOG_API_KEY || '';
   const log = options.log || console.log;
   const nbResults = options.nbResults || 20;
-  if (!sbKey) {
-    log('    ⚠ No ScrapingBee API key available for images SERP');
+  const order = imagesSerpChainOrder({ sdKey, sbKey, skip: options.skipProviders });
+  if (!sdKey && !sbKey) {
+    log('    ⚠ No images SERP key available (SCRAPINGDOG_API_KEY / SCRAPINGBEE_API_KEY)');
     return null;
   }
-  const res = await _serpTypedViaScrapingBee(query, sbKey, 'images', nbResults, log);
-  if (!res.ok) return { exhausted: res.exhausted, failed: true, results: [] };
-  const data = res.data || {};
-  return { exhausted: false, failed: false, results: data.images || data.image_results || [] };
+  let exhausted = false;
+  for (const provider of order) {
+    if (provider === 'scrapingdog') {
+      const results = await _serpImagesViaScrapingdog(query, sdKey, nbResults, log);
+      if (results) return { exhausted: false, failed: false, results, provider };
+      continue;
+    }
+    const res = await _serpTypedViaScrapingBee(query, sbKey, 'images', nbResults, log);
+    if (!res.ok) { exhausted = res.exhausted; continue; }
+    const data = res.data || {};
+    return { exhausted: false, failed: false, results: data.images || data.image_results || [], provider };
+  }
+  return { exhausted, failed: true, results: [] };
 }
 
 module.exports = {
@@ -1845,6 +1933,8 @@ module.exports = {
   serpQuery,
   serpNewsQuery,
   serpImagesQuery,
+  normalizeScrapingdogImageResults,
+  imagesSerpChainOrder,
   serpChainOrder,
   shouldAcceptEmptyScrapingdogSerp,
   consecutiveFailureBreakerBlocked,
