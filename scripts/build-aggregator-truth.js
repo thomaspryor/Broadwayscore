@@ -53,7 +53,7 @@ function countLocalReviews(showId) {
   }
 
   const files = fs.readdirSync(showDir)
-    .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json' && !f.startsWith('_')); // _blocklist.json is a sidecar, not a review
 
   // Count only valid reviews (exclude wrongProduction and wrongShow)
   let validCount = 0;

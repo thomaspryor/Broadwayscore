@@ -73,7 +73,7 @@ function main() {
     try { stat = fs.statSync(showPath); } catch { continue; }
     if (stat.isDirectory() === false) continue;
 
-    const files = fs.readdirSync(showPath).filter(f => f.endsWith('.json'));
+    const files = fs.readdirSync(showPath).filter(f => f.endsWith('.json') && !f.startsWith('_')); // _blocklist.json is a sidecar
     for (const file of files) {
       const filePath = path.join(showPath, file);
       const reviewId = showDir + '/' + file;

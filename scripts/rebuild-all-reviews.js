@@ -2408,7 +2408,8 @@ showDirs.forEach(showId => {
   }
 
   const showDir = path.join(reviewTextsDir, showId);
-  const allJsonFiles = fs.readdirSync(showDir).filter(f => f.endsWith('.json'));
+  // '_'-prefixed files (BLOCKLIST_FILENAME) are sidecars, not reviews: reading them here stamped tier fields into them.
+  const allJsonFiles = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && !f.startsWith('_'));
 
   // Memoized sibling loader for the duplicateOf cycle walk below — one read per
   // basename per rebuild pass, shared across every file's circular-tiebreak check

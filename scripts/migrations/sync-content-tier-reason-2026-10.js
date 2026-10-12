@@ -39,7 +39,7 @@ let scanned = 0, synced = 0, tierDiffers = 0, written = 0, failed = 0, unreadabl
 for (const dir of listShowDirs(ROOT)) {
   const full = path.join(ROOT, dir);
   for (const f of fs.readdirSync(full)) {
-    if (!f.endsWith('.json') || f === 'failed-fetches.json') continue;
+    if (!f.endsWith('.json') || f === 'failed-fetches.json' || f.startsWith('_')) continue; // _blocklist.json is a sidecar
     const fp = path.join(full, f);
     let data, text;
     try { text = fs.readFileSync(fp, 'utf8'); data = JSON.parse(text); } catch { unreadable++; continue; }
