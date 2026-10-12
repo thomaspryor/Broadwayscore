@@ -176,6 +176,8 @@ const EXEMPT_NEVER_CI = {
   'scripts/cast-backfill-year-validation.test.mjs': 'BRO-4051',
   // BRO-3151 shim: imports scripts/lib/manual-review-url-change.test.mjs (scripts/lib/*.test.mjs glob).
   'scripts/ingest-manual-review.test.mjs': 'BRO-3151',
+  // BRO-4408 shim: imports scripts/lib/opening-night-poller-pending-drain.test.mjs (CI glob).
+  'scripts/replay-pending-bylines.test.mjs': 'BRO-4408',
   // BRO-4434 LIVE VERIFY probes in tests/live/ (first scanned BRO-2778): run the
   // real `npm audit` against the registry advisory feed and the calendar, so
   // their answer changes without a code change. Card acceptance commands only.
