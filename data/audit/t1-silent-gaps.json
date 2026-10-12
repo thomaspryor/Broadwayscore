@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-12T00:51:26.869Z",
+  "generatedAt": "2026-10-12T02:15:11.963Z",
   "windowDays": 45,
   "showsScanned": 158,
   "gaps": [
@@ -17,9 +17,9 @@
       "forumLinkRecoveryCount": 3,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=good-time-charlie-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-10T16:02:50.313Z",
-      "fileAgeHours": 32.664678611111114,
+      "fileAgeHours": 34.077866388888886,
       "gapSeenAt": "2026-10-11T02:31:35.490Z",
-      "nonTerminalAgeHours": 22.33093861111111
+      "nonTerminalAgeHours": 23.726798055555555
     },
     {
       "showId": "cosi-fan-tutte-off-broadway-2026",
@@ -35,28 +35,9 @@
       "forumLinkRecoveryCount": 3,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=cosi-fan-tutte-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-08T17:44:48.110Z",
-      "fileAgeHours": 78.9653825,
+      "fileAgeHours": 80.37855388888889,
       "gapSeenAt": "2026-10-08T22:46:44.413Z",
-      "nonTerminalAgeHours": 74.07846
-    },
-    {
-      "showId": "what-the-animals-say-off-west-end-2026",
-      "title": "What The Animals Say",
-      "openingDate": "2026-10-02",
-      "file": "timeout-london--unknown.json",
-      "outletId": "timeout-london",
-      "tier": 1,
-      "type": "unscored",
-      "dispatchable": false,
-      "url": "https://www.timeout.com/london/theatre/what-the-animals-say-2",
-      "recovery": null,
-      "recoveryCount": 0,
-      "forumLinkRecoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=what-the-animals-say-off-west-end-2026",
-      "firstSeen": "2026-10-01T16:51:40.508Z",
-      "fileAgeHours": 247.85089638888888,
-      "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 15.201074166666666
+      "nonTerminalAgeHours": 75.47431944444445
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -73,9 +54,28 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=golden-boy-off-west-end-2026",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 464.03699555555556,
+      "fileAgeHours": 465.45018666666664,
       "gapSeenAt": "2026-10-11T09:39:23.002Z",
-      "nonTerminalAgeHours": 15.201074166666666
+      "nonTerminalAgeHours": 16.596933611111112
+    },
+    {
+      "showId": "a-ghost-in-your-ear-off-broadway-2026",
+      "title": "A Ghost In Your Ear",
+      "openingDate": "2026-10-09",
+      "file": "timeout--unknown.json",
+      "outletId": "timeout",
+      "tier": 1,
+      "type": "unscored",
+      "dispatchable": true,
+      "url": "https://www.timeout.com/newyork/theater/a-ghost-in-your-ear",
+      "recovery": null,
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=a-ghost-in-your-ear-off-broadway-2026",
+      "firstSeen": "2026-10-10T14:47:24.637Z",
+      "fileAgeHours": 35.335546666666666,
+      "gapSeenAt": "2026-10-12T02:15:11.963Z",
+      "nonTerminalAgeHours": 0
     },
     {
       "showId": "human-things-off-broadway-2026",
@@ -92,67 +92,12 @@
         "reason": "⚠️  Bright Data failed: Bright Data request timeout\n⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913\", waiting until \"networkidle\"\n\n⚠️  Bright Data failed: Bright Data request timeout\n⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www.talkinbroad"
       },
       "recoveryCount": 3,
-      "forumLinkRecoveryCount": 0,
+      "forumLinkRecoveryCount": 1,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=human-things-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-09-26T14:54:28.766Z",
-      "fileAgeHours": 369.8862,
+      "fileAgeHours": 371.2807280555555,
       "gapSeenAt": "2026-09-26T17:43:29.271Z",
-      "nonTerminalAgeHours": 367.1326661111111
-    },
-    {
-      "showId": "burning-leaves-off-broadway-2026",
-      "title": "Burning Leaves",
-      "openingDate": "2026-09-26",
-      "file": "theater-scene--victor-gluck.json",
-      "outletId": "theater-scene",
-      "tier": 2,
-      "type": "unscored",
-      "dispatchable": false,
-      "url": "https://www.theaterscene.net/tag/burning-leaves/",
-      "recovery": null,
-      "recoveryCount": 0,
-      "forumLinkRecoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=burning-leaves-off-broadway-2026",
-      "firstSeen": "2026-09-30T14:32:12.902Z",
-      "fileAgeHours": 274.2574213888889,
-      "gapSeenAt": "2026-10-01T02:44:11.346Z",
-      "nonTerminalAgeHours": 262.1209786111111
-    },
-    {
-      "showId": "fire-fire-off-west-end-2026",
-      "title": "Fire Fire",
-      "openingDate": "2026-09-11",
-      "file": "times-uk--unknown.json",
-      "outletId": "times-uk",
-      "tier": 1,
-      "type": "empty-body",
-      "url": "https://www.thetimes.com/culture/classical-opera/article/fire-in-my-mouth-marin-alsop-review-hdnsrp752",
-      "recovery": null,
-      "recoveryCount": 3,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=fire-fire-off-west-end-2026 --url=https://www.thetimes.com/culture/classical-opera/article/fire-in-my-mouth-marin-alsop-review-hdnsrp752 --outlet=times-uk   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-10-01T15:51:33.268Z",
-      "fileAgeHours": 248.9351088888889,
-      "gapSeenAt": "2026-10-01T17:09:50.481Z",
-      "nonTerminalAgeHours": 247.6934411111111
-    },
-    {
-      "showId": "the-visit-regional-2026",
-      "title": "The Visit",
-      "openingDate": "2026-09-13",
-      "file": "curtainup--unknown.json",
-      "outletId": "curtainup",
-      "tier": 2,
-      "type": "empty-body",
-      "url": "https://www.curtainup.com/visitwtf14.html",
-      "recovery": null,
-      "recoveryCount": 3,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=the-visit-regional-2026 --url=https://www.curtainup.com/visitwtf14.html --outlet=curtainup   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-10-02T06:13:33.238Z",
-      "fileAgeHours": 234.56851,
-      "gapSeenAt": "2026-10-02T09:21:24.837Z",
-      "nonTerminalAgeHours": 231.50056444444445
+      "nonTerminalAgeHours": 368.5285255555556
     },
     {
       "showId": "mystic-pizza-tour-2026",
@@ -169,12 +114,12 @@
         "reason": "⚠️  Bright Data failed: Bright Data request timeout\n⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654479\", waiting until \"networkidle\"\n\n⚠️  Bright Data failed: Bright Data request timeout\n⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www.talkinbroad"
       },
       "recoveryCount": 2,
-      "forumLinkRecoveryCount": 0,
+      "forumLinkRecoveryCount": 1,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=mystic-pizza-tour-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-10-10T21:41:34.767Z",
-      "fileAgeHours": 27.16446388888889,
+      "fileAgeHours": 28.560331944444446,
       "gapSeenAt": "2026-10-10T23:15:13.713Z",
-      "nonTerminalAgeHours": 25.603654444444444
+      "nonTerminalAgeHours": 26.999513888888888
     }
   ],
   "contradictions": []
