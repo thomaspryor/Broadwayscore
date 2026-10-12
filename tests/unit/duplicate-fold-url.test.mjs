@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { inheritUrlFromDuplicateLosers } = require('./lib/duplicate-fold-url');
+const { inheritUrlFromDuplicateLosers } = require('../../scripts/lib/duplicate-fold-url');
 
 const files = {
   'ft--hemming.json': { url: null },
