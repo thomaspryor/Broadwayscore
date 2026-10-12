@@ -49,16 +49,17 @@
     },
     "health-check:Workflow repeat-failure: Test Suite": {
       "status": "open",
-      "disposition": "auto",
+      "disposition": "digest",
       "title": "BSC Daily: Workflow repeat-failure: Test Suite",
       "firstSeen": "2026-07-24T07:50:34.248Z",
-      "lastSeen": "2026-09-25T12:18:27.045Z",
-      "lastNotifiedAt": "2026-09-20T11:52:55.209Z",
-      "lastSurfacedAt": null,
-      "notifyCount": 6,
+      "incidentOpenedAt": "2026-10-12T05:05:44.509Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-10-12T05:05:44.509Z",
+      "lastNotifiedAt": "2026-10-12T05:05:44.509Z",
+      "lastSurfacedAt": "2026-10-12T05:05:44.509Z",
+      "notifyCount": 7,
       "cardId": "3b7637c5-416f-8157-8989-cf33da0974b8",
-      "linearIdentifier": "BRO-3448",
-      "silentRefires": 2
+      "linearIdentifier": null
     },
     "health-check:Workflow repeat-failure: Commercial RSS Poll": {
       "status": "open",
@@ -78,12 +79,13 @@
       "firstSeen": "2026-07-24T07:50:35.242Z",
       "incidentOpenedAt": "2026-10-10T13:07:38.043Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-11T13:36:38.767Z",
+      "lastSeen": "2026-10-12T05:05:44.514Z",
       "lastNotifiedAt": "2026-10-11T13:36:38.767Z",
       "lastSurfacedAt": "2026-10-11T13:36:38.767Z",
       "notifyCount": 7,
       "cardId": "3b6637c5-416f-8101-ba5f-dda540f78b96",
-      "linearIdentifier": "BRO-3700"
+      "linearIdentifier": "BRO-3700",
+      "silentRefires": 1
     },
     "health-check:Sync: baseline drift": {
       "status": "open",
@@ -92,13 +94,13 @@
       "firstSeen": "2026-07-24T07:50:35.775Z",
       "incidentOpenedAt": "2026-07-24T07:50:35.775Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-11T13:36:38.752Z",
+      "lastSeen": "2026-10-12T05:05:44.519Z",
       "lastNotifiedAt": "2026-10-09T13:52:41.608Z",
       "lastSurfacedAt": "2026-10-09T13:52:41.608Z",
       "notifyCount": 9,
       "cardId": "3b8637c5-416f-8197-8600-fc247b284a3e",
       "linearIdentifier": "BRO-3164",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "health-check:Quality: corpus drift": {
       "status": "open",
@@ -107,13 +109,13 @@
       "firstSeen": "2026-07-24T07:50:36.268Z",
       "incidentOpenedAt": "2026-07-24T07:50:36.268Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-11T13:36:38.804Z",
+      "lastSeen": "2026-10-12T05:05:44.530Z",
       "lastNotifiedAt": "2026-10-10T13:07:38.081Z",
       "lastSurfacedAt": "2026-10-10T13:07:38.081Z",
       "notifyCount": 10,
       "cardId": "3b6637c5-416f-8198-a033-eca6dcc6e7d7",
       "linearIdentifier": "BRO-3081",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-sla:pages-stuck": {
       "status": "resolved",
@@ -156,13 +158,13 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-11T14:14:07.486Z",
-      "lastSeen": "2026-10-12T04:50:09.877Z",
+      "lastSeen": "2026-10-12T05:27:28.890Z",
       "lastNotifiedAt": "2026-10-11T14:14:07.486Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 132,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 24
+      "silentRefires": 25
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -171,13 +173,13 @@
       "firstSeen": "2026-07-27T08:00:24.727Z",
       "incidentOpenedAt": "2026-07-27T08:00:24.727Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-11T13:36:38.794Z",
+      "lastSeen": "2026-10-12T05:05:44.526Z",
       "lastNotifiedAt": "2026-10-05T15:21:35.595Z",
       "lastSurfacedAt": "2026-10-05T15:21:35.595Z",
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": "BRO-3978",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "health-check:Credits: ScrapingBee": {
       "status": "open",
@@ -321,13 +323,13 @@
       "title": "Scraping spend over budget",
       "firstSeen": "2026-08-01T07:38:45.313Z",
       "incidentOpenedAt": "2026-08-01T07:38:45.313Z",
-      "lastSeen": "2026-10-12T03:15:33.915Z",
+      "lastSeen": "2026-10-12T05:06:44.816Z",
       "lastNotifiedAt": "2026-10-11T13:37:15.335Z",
       "lastSurfacedAt": "2026-10-11T13:37:15.335Z",
       "notifyCount": 32,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "orphan-unscored-requeue:tao-of-glass-west-end-2026": {
       "status": "open",
@@ -381,12 +383,13 @@
       "firstSeen": "2026-08-03T07:58:02.691Z",
       "incidentOpenedAt": "2026-10-10T13:07:38.117Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-10T13:07:38.117Z",
+      "lastSeen": "2026-10-12T05:05:44.542Z",
       "lastNotifiedAt": "2026-10-10T13:07:38.117Z",
       "lastSurfacedAt": "2026-10-10T13:07:38.117Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "health-check:Cron failed: Test Suite": {
       "status": "open",
@@ -636,13 +639,13 @@
       "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
       "firstSeen": "2026-08-08T11:39:46.729Z",
       "incidentOpenedAt": "2026-08-08T11:39:46.729Z",
-      "lastSeen": "2026-10-12T03:32:34.822Z",
+      "lastSeen": "2026-10-12T05:25:19.415Z",
       "lastNotifiedAt": "2026-10-07T09:04:37.321Z",
       "lastSurfacedAt": "2026-10-07T09:04:37.321Z",
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "affiliate:bot-divergence": {
       "status": "resolved",
@@ -776,13 +779,12 @@
       "firstSeen": "2026-08-11T07:57:54.489Z",
       "incidentOpenedAt": "2026-08-11T07:57:54.489Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-11T13:36:38.817Z",
-      "lastNotifiedAt": "2026-10-04T20:51:58.103Z",
-      "lastSurfacedAt": "2026-10-04T20:51:58.103Z",
-      "notifyCount": 4,
+      "lastSeen": "2026-10-12T05:05:44.537Z",
+      "lastNotifiedAt": "2026-10-12T05:05:44.537Z",
+      "lastSurfacedAt": "2026-10-12T05:05:44.537Z",
+      "notifyCount": 5,
       "cardId": "3b9637c5-416f-81bd-965b-ddfceefeae77",
-      "linearIdentifier": "BRO-2263",
-      "silentRefires": 6
+      "linearIdentifier": "BRO-2263"
     },
     "health-check:Quality: outlet invalid-content rate": {
       "status": "open",
@@ -3086,13 +3088,13 @@
       "firstSeen": "2026-09-15T12:12:15.198Z",
       "incidentOpenedAt": "2026-09-15T12:12:15.198Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-11T13:36:38.810Z",
+      "lastSeen": "2026-10-12T05:05:44.533Z",
       "lastNotifiedAt": "2026-10-10T13:07:38.102Z",
       "lastSurfacedAt": "2026-10-10T13:07:38.102Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": "BRO-4093",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "health-check:Digest: content-invariant check": {
       "status": "open",
@@ -8853,13 +8855,13 @@
       "title": "Overdue P0/P1 queue: 9 P0 older than 24h, 105 P1 older than 7d",
       "firstSeen": "2026-10-02T13:15:40.706Z",
       "incidentOpenedAt": "2026-10-02T13:15:40.706Z",
-      "lastSeen": "2026-10-12T03:14:40.458Z",
+      "lastSeen": "2026-10-12T05:06:00.084Z",
       "lastNotifiedAt": "2026-10-11T13:36:52.414Z",
       "lastSurfacedAt": "2026-10-11T13:36:52.414Z",
       "notifyCount": 9,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-remediation-exhausted-t1-missing:hay-fever-west-end-2026": {
       "status": "open",
@@ -11003,7 +11005,7 @@
       "title": "2 new decisions are waiting on you",
       "firstSeen": "2026-10-06T13:42:06.180Z",
       "incidentOpenedAt": "2026-10-12T03:15:06.793Z",
-      "lastSeen": "2026-10-12T03:15:06.793Z",
+      "lastSeen": "2026-10-12T05:06:16.128Z",
       "lastNotifiedAt": "2026-10-12T03:15:06.793Z",
       "lastSurfacedAt": "2026-10-12T03:15:06.793Z",
       "notifyCount": 2,
@@ -11016,7 +11018,8 @@
         "BRO-539",
         "BRO-855",
         "BRO-958"
-      ]
+      ],
+      "silentRefires": 1
     },
     "land:land/job/linear-BRO-3619-muuev8ci": {
       "status": "open",
@@ -12547,12 +12550,13 @@
       "title": "Alert Router: auto-dispatch silently failing for 3h (17 consecutive)",
       "firstSeen": "2026-10-09T13:52:17.714Z",
       "incidentOpenedAt": "2026-10-09T13:52:17.714Z",
-      "lastSeen": "2026-10-11T13:36:18.548Z",
+      "lastSeen": "2026-10-12T05:05:30.092Z",
       "lastNotifiedAt": "2026-10-11T13:36:18.548Z",
       "lastSurfacedAt": "2026-10-11T13:36:18.548Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "health-check:Workflow repeat-failure: Add Requested Show": {
       "status": "open",
@@ -12583,7 +12587,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:80529a26": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Ordinal publishDate guard parity (BRO-2836) — \"foo returns the contracted value\"",
       "firstSeen": "2026-10-09T14:40:39.110Z",
@@ -12596,9 +12600,12 @@
       "linearIdentifier": "BRO-5116",
       "absentRunIds": [
         "38202295146",
-        "38204195471"
+        "38204195471",
+        "38206200316"
       ],
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-10-12T05:19:18.175Z",
+      "resolveReason": "stale-signature"
     },
     "test-yml:red:Unit Tests:2a5215c8": {
       "status": "resolved",
@@ -14226,7 +14233,7 @@
       "resolvedAt": "2026-10-12T04:15:55.278Z"
     },
     "land:land/bro-5015-other-production-url": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-5015-other-production-url",
       "firstSeen": "2026-10-12T02:16:52.172Z",
@@ -14236,7 +14243,8 @@
       "lastSurfacedAt": "2026-10-12T02:16:52.172Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-12T05:09:18.050Z"
     },
     "land:land/bro-3657-rage-click-instrumentation": {
       "status": "open",
@@ -14257,12 +14265,13 @@
       "title": "hay-fever-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-12T03:15:02.943Z",
       "incidentOpenedAt": "2026-10-12T03:15:02.943Z",
-      "lastSeen": "2026-10-12T03:15:02.943Z",
+      "lastSeen": "2026-10-12T05:06:12.357Z",
       "lastNotifiedAt": "2026-10-12T03:15:02.943Z",
       "lastSurfacedAt": "2026-10-12T03:15:02.943Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "coverage-holes:good-time-charlie-off-broadway-2026": {
       "status": "open",
@@ -14270,12 +14279,13 @@
       "title": "good-time-charlie-off-broadway-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-12T03:15:02.955Z",
       "incidentOpenedAt": "2026-10-12T03:15:02.955Z",
-      "lastSeen": "2026-10-12T03:15:02.955Z",
+      "lastSeen": "2026-10-12T05:06:12.363Z",
       "lastNotifiedAt": "2026-10-12T03:15:02.955Z",
       "lastSurfacedAt": "2026-10-12T03:15:02.955Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "coverage-holes:rent-west-end-2026": {
       "status": "open",
@@ -14283,12 +14293,13 @@
       "title": "rent-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-12T03:15:02.966Z",
       "incidentOpenedAt": "2026-10-12T03:15:02.966Z",
-      "lastSeen": "2026-10-12T03:15:02.966Z",
+      "lastSeen": "2026-10-12T05:06:12.369Z",
       "lastNotifiedAt": "2026-10-12T03:15:02.966Z",
       "lastSurfacedAt": "2026-10-12T03:15:02.966Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "coverage-holes:an-oak-tree-off-west-end-2026": {
       "status": "open",
@@ -14296,12 +14307,13 @@
       "title": "an-oak-tree-off-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-12T03:15:03.003Z",
       "incidentOpenedAt": "2026-10-12T03:15:03.003Z",
-      "lastSeen": "2026-10-12T03:15:03.003Z",
+      "lastSeen": "2026-10-12T05:06:12.388Z",
       "lastNotifiedAt": "2026-10-12T03:15:03.003Z",
       "lastSurfacedAt": "2026-10-12T03:15:03.003Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "broadcast:never-sent:into-the-woods-noel-coward-west-end-2026": {
       "status": "open",
@@ -14309,12 +14321,13 @@
       "title": "Opening Night Email Never Reached Subscribers — Into the Woods",
       "firstSeen": "2026-10-12T03:32:22.628Z",
       "incidentOpenedAt": "2026-10-12T03:32:22.628Z",
-      "lastSeen": "2026-10-12T03:32:22.628Z",
+      "lastSeen": "2026-10-12T05:25:07.283Z",
       "lastNotifiedAt": "2026-10-12T03:32:22.628Z",
       "lastSurfacedAt": "2026-10-12T03:32:22.628Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "broadcast:never-sent:from-the-heart-west-end-2026": {
       "status": "open",
@@ -14322,12 +14335,13 @@
       "title": "Opening Night Email Never Reached Subscribers — From The Heart",
       "firstSeen": "2026-10-12T03:32:22.730Z",
       "incidentOpenedAt": "2026-10-12T03:32:22.730Z",
-      "lastSeen": "2026-10-12T03:32:22.730Z",
+      "lastSeen": "2026-10-12T05:25:07.288Z",
       "lastNotifiedAt": "2026-10-12T03:32:22.730Z",
       "lastSurfacedAt": "2026-10-12T03:32:22.730Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/codex-bro-4042": {
       "status": "open",
@@ -14343,7 +14357,7 @@
       "linearIdentifier": null
     },
     "land:land/bro-4521-followup": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-tsx red on land/bro-4521-followup",
       "firstSeen": "2026-10-12T04:09:28.225Z",
@@ -14353,7 +14367,8 @@
       "lastSurfacedAt": "2026-10-12T04:09:28.225Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-12T05:01:58.296Z"
     },
     "test-yml:red:Unit Tests:68e8b180": {
       "status": "open",
@@ -14366,7 +14381,31 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5121"
+      "linearIdentifier": "BRO-5121",
+      "absentRunIds": [
+        "38205161549",
+        "38206709029"
+      ]
+    },
+    "test-yml:red:Unit Tests:f6206569": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"unchanged per-review ERROR warns, quarantines the row and permits the actual push gate\"",
+      "firstSeen": "2026-10-12T05:04:21.728Z",
+      "incidentOpenedAt": "2026-10-12T05:04:21.728Z",
+      "lastSeen": "2026-10-12T05:27:28.825Z",
+      "lastNotifiedAt": "2026-10-12T05:04:21.728Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-5124",
+      "dispatch": {
+        "requestedAt": "2026-10-12T05:04:21.728Z",
+        "mode": "dispatch-at-filing",
+        "runId": "38205161549",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38205161549"
+      },
+      "silentRefires": 1
     }
   }
 }

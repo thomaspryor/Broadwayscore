@@ -4,7 +4,8 @@
  * intermediate push-with-retry.sh call logged "rebase REFUSED before it
  * started: cannot rebase: You have unstaged changes" and fell through to the
  * merge fallback. The fix parks them in $RUNNER_TEMP right after the health
- * check and the final "Commit triage data" step puts them back.
+ * check (and again after the readmission sweep) via scripts/lib/park-triage.sh;
+ * the final "Commit triage data" step puts them back.
  *
  * The park step must never push: data/audit/triage/ is not apiFallbackSafe,
  * so a stranded triage commit would disable every later apiFallbackSafe
@@ -46,12 +47,19 @@ test('BRO-4521: triage data is parked right after the health check, before any p
   assert.equal(park, health + 1, 'the park step must be the very next step after "Run health check"');
 });
 
-test('BRO-4521: park step restores the tree and never pushes', () => {
-  const step = steps[idx('Park triage data until the final commit')];
-  assert.match(step.bodyText, /RUNNER_TEMP\/triage-parked/);
-  assert.match(step.bodyText, /git checkout -- data\/audit\/triage\//);
-  assert.match(step.bodyText, /git clean -fdq -- data\/audit\/triage\//);
-  assert.doesNotMatch(step.bodyText, /push-with-retry\\.sh|git push|git commit/);
+test('BRO-4521: both park steps call park-triage.sh and never push', () => {
+  const after = idx('Park triage data written by the readmission sweep');
+  assert.equal(after, idx('unopened-show readmission-risk sweep (shadow mode)') + 1, 'parks right after the sweep that writes triage/');
+  for (const name of ['Park triage data until the final commit', 'Park triage data written by the readmission sweep']) {
+    const body = steps[idx(name)].bodyText.split('\n\n')[0]; // the step itself, not the next step's comment
+    assert.match(body, /bash scripts\/lib\/park-triage\.sh park/);
+    assert.doesNotMatch(body, /push-with-retry\.sh|git push|git commit/);
+  }
+  const script = fs.readFileSync(path.join(REPO, 'scripts', 'lib', 'park-triage.sh'), 'utf8')
+    .split('\n').filter((l) => !/^\s*#/.test(l)).join('\n'); // code only
+  assert.match(script, /git checkout -- "\$T"/);
+  assert.match(script, /git clean -fdq -- "\$T"/);
+  assert.doesNotMatch(script, /push-with-retry|git push|git commit/);
 });
 
 test('BRO-4521: final "Commit triage data" stays the last push and restores before staging', () => {
@@ -59,7 +67,7 @@ test('BRO-4521: final "Commit triage data" stays the last push and restores befo
   const pushers = steps.map((s, i) => (/push-with-retry\.sh/.test(s.bodyText) ? i : -1)).filter((i) => i >= 0);
   assert.equal(finalIdx, pushers[pushers.length - 1], 'it stays the last push step');
   const body = steps[finalIdx].bodyText;
-  const restore = body.indexOf('triage-parked');
+  const restore = body.indexOf('park-triage.sh restore');
   const add = body.search(/^\s+git add data\/audit\/triage\//m);
   assert.ok(restore >= 0 && add > restore, 'restore must precede git add');
 });

@@ -1,15 +1,15 @@
 {
   "system": "commercial model",
-  "status": "pass",
-  "lastChecked": "2026-10-12T03:14:25.228Z",
+  "status": "warn",
+  "lastChecked": "2026-10-12T05:05:44.499Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Commercial model: stored vs fresh run",
-      "status": "pass",
-      "message": "271 records match a fresh run"
+      "status": "warn",
+      "message": "2 of 271 records differ from a fresh run (2 same-day, 0 drift, 0 method): pictures-from-home-2023 [same-day] run 2026-10-12 stored -54.1%, same inputs give -47.9%; the-minutes-2022 [same-day] run 2026-10-12 stored -264.4%, same inputs give -248.8%"
     },
     {
       "name": "Commercial model: Boring Waltz fit",

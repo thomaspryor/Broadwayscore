@@ -1,27 +1,28 @@
 {
-  "generatedAt": "2026-10-12T03:32:24.580Z",
+  "generatedAt": "2026-10-12T05:25:08.463Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "514d31b6912858a3bfa8f6262d50ebf72640e5f9",
+  "latestRunHeadSha": "728c73a8b5a9ca078671b4260975d59df635d18d",
   "state": "RED",
-  "consecutiveFailures": 57,
+  "consecutiveFailures": 6,
   "consecutiveSuccesses": 0,
   "greenSince": null,
   "greenForHours": null,
   "greenDurationIsFloor": false,
-  "redSince": "2026-10-11T19:42:44Z",
-  "redForHours": 7.827938888888889,
+  "redSince": "2026-10-12T04:04:22Z",
+  "redForHours": 1.3462397222222222,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-10-11T19:38:05Z",
-  "latestFailedRunId": "38198673628",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38198673628",
-  "decidedRuns": 98,
+  "lastSuccessAt": "2026-10-12T03:51:00Z",
+  "latestFailedRunId": "38206200316",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38206200316",
+  "decidedRuns": 99,
   "failingJobs": [
     {
       "name": "Data Validation",
       "steps": [
         "Run autoclear-vs-ensemble corpus test (needs review-texts)",
         "Run BRO-1397 prior-run former-cast sweep (needs review-texts)",
+        "Run data validation",
         "Audit review contamination",
         "Validate market expansion",
         "Audit outlet-registry gaps"
@@ -30,7 +31,7 @@
     {
       "name": "Unit Tests",
       "steps": [
-        "Ordinal publishDate guard parity (BRO-2836)"
+        "Run unit tests (no-data-dependency)"
       ]
     },
     {
@@ -52,6 +53,24 @@
       "job": "Data Validation",
       "step": "Run BRO-1397 prior-run former-cast sweep (needs review-texts)",
       "evidence": "not ok 1 - excerptMentionsFormerCast flags exactly the known-good set across every priorRuns show"
+    },
+    {
+      "path": "scripts/lib/venue-addresses.js",
+      "job": "Data Validation",
+      "step": "Run data validation",
+      "evidence": "❌ ERROR: 28 theaterAddress/venue mismatches exceed cap 5 — refusing to autofix. A wrong entry in scripts/lib/venue-addresses.js could be silently rewriting correct data; investigate before continuing."
+    },
+    {
+      "path": "tests/unit/push-core-data-scoped-refusal.test.mjs",
+      "job": "Unit Tests",
+      "step": "Run unit tests (no-data-dependency)",
+      "evidence": "not ok 9995 - unchanged per-review ERROR warns, quarantines the row and permits the actual push gate"
+    },
+    {
+      "path": "tests/unit/related-shows-fallback.test.ts",
+      "job": "Unit Tests",
+      "step": "Run unit tests (no-data-dependency)",
+      "evidence": "not ok 3 - wanted-2022: open pool is full and active-only"
     }
   ],
   "topFailingJob": "Unit Tests"
