@@ -1,26 +1,54 @@
 {
-  "updatedAt": "2026-10-12T18:10:02.454Z",
-  "processed": 103,
-  "failed": 47,
-  "successRate": "68.7%",
+  "updatedAt": "2026-10-12T18:15:51.571Z",
+  "processed": 174,
+  "failed": 106,
+  "successRate": "62.1%",
   "tierBreakdown": {
-    "playwright": 72,
+    "playwright": 105,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 1,
-    "scrapingdog": 17,
-    "scrapingbee": 3,
+    "scrapingdog": 14,
+    "scrapingbee": 16,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 10
+    "archive": 27
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-10-12T17:41:42.801Z",
       "event": "bb-session",
       "session": "06974f9f",
       "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-10-12T18:07:33.024Z",
+      "event": "bb-session",
+      "session": "13f2f1a1",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-12T18:13:13.108Z",
+      "event": "bb-session",
+      "session": "981f628a",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-12T18:13:14.035Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-12T18:13:28.996Z",
+      "event": "bb-session",
+      "session": "73cac60d",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-12T18:13:29.884Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
