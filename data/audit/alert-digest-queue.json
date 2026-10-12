@@ -343,16 +343,33 @@
     "queuedAt": "2026-10-12T11:36:14.128Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Validate market expansion, Audit outlet-registry gaps",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38244161669",
-    "severity": "warning",
+    "conditionKey": "land:land/batch-xshow-urlswap",
+    "title": "Landing blocked: unit-tests-node red on land/batch-xshow-urlswap",
+    "description": "land.yml did not land land/batch-xshow-urlswap: the unit-tests-node gate went red at fd139b71a9. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38241470014",
+    "severity": "error",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-12T11:47:04.374Z"
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/batch-xshow-urlswap"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "fd139b71a91ff214ed958442374484de3dc9d637"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38241470014"
+      }
+    ],
+    "queuedAt": "2026-10-12T11:47:42.234Z"
   }
 ]
