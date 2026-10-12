@@ -109,6 +109,7 @@ const SHOWS_FILE = path.join(DATA_DIR, 'shows.json');
 // same way here as in the rebuild it's replaying.
 const outletRegistry = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'outlet-registry.json'), 'utf8'));
 const outletRegionMap = buildOutletRegionMap(outletRegistry);
+const { internationalTradeOutlets } = require('./lib/outlet-region-map').buildOutletMaps(outletRegistry);
 const DUAL_MARKET_OUTLETS = new Set();
 for (const [id, info] of Object.entries(outletRegistry.outlets || {})) {
   if (info.isDualMarket) {
@@ -1107,6 +1108,7 @@ function decideInclusion(review, show, guards) {
           isUkUrl,
           outletIsDualOrUk,
           outletIsLondonRegion,
+          outletIsInternationalTrade: internationalTradeOutlets.has(canonicalOutlet) || internationalTradeOutlets.has(rawOutlet),
           isDateMismatch,
           isShowListingUrl,
           cvBlocksClear,
