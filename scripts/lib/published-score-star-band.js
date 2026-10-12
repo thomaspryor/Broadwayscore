@@ -72,6 +72,20 @@ function autoAcceptVerdict(data, llmScore) {
   return violation ? { accept: false, violation } : { accept: true };
 }
 
+/**
+ * Should the --needs-rescore drain take this review first? True when its current score (assignedScore, else the
+ * LLM read) sits outside the critic's own high-reliability rating band: the site is showing a contradiction now, so
+ * it outranks routine excerpt->fullText upgrades in a queue that drains 50 a day (BRO-305: eleven late-star-anchor
+ * reviews sat behind ~2,200 others with a printed 3/5 shown as 91-93). Only the rating binds, as in autoAcceptVerdict.
+ */
+function rescoreFixesBandContradiction(data) {
+  if (!data) return false;
+  const score = typeof data.assignedScore === 'number' ? data.assignedScore
+    : (data.llmScore && typeof data.llmScore.score === 'number' ? data.llmScore.score : null);
+  if (score === null) return false;
+  return !!publishedScoreViolation(data, score, { unanimousTol: Infinity });
+}
+
 const MAX_AUTO_ACCEPT_REFUSALS = 2;
 
 /**
@@ -89,4 +103,4 @@ function autoAcceptOutcome(data, llmScore, { maxRefusals = MAX_AUTO_ACCEPT_REFUS
   return { action: refusals > maxRefusals ? 'block' : 'rescore', refusals, violation: verdict.violation };
 }
 
-module.exports = { MAX_AUTO_ACCEPT_REFUSALS, autoAcceptOutcome, hasPrimaryRating, autoAcceptVerdict, DEFAULT_TOL, DEFAULT_UNANIMOUS_TOL, BUCKET_RANGES, unanimousBucket, publishedScoreViolation };
+module.exports = { MAX_AUTO_ACCEPT_REFUSALS, rescoreFixesBandContradiction, autoAcceptOutcome, hasPrimaryRating, autoAcceptVerdict, DEFAULT_TOL, DEFAULT_UNANIMOUS_TOL, BUCKET_RANGES, unanimousBucket, publishedScoreViolation };

@@ -85,6 +85,7 @@ const { EXCERPT_FIELDS } = require('../lib/excerpt-fields');
 // so "would this review be scoreable?" has exactly one answer — see task #652.
 const { selectScorableText, strippedFullTextSelection } = require('../lib/scorable-text');
 const { declaredRunsForPrompt } = require('../lib/declared-runs');
+const { rescoreFixesBandContradiction } = require('../lib/published-score-star-band');
 // Same predicates the cascade gate counts with — one source, so the gate can
 // never again believe there is work the scorer will not take (task #652).
 const {
@@ -373,20 +374,33 @@ function loadShowRecords(): Map<string, Record<string, any>> {
 /**
  * Sort reviews by scoring priority:
  *   1. Full-text reviews before excerpt-only
+ *   1b. (needsRescore drain only) reviews whose current score contradicts the
+ *       critic's own rating band, so a capped drain fixes those first (BRO-305)
  *   2. Open shows before previews before closed
  *   3. Newer opening dates first
  */
 function prioritizeReviews(
   files: Array<{ path: string; data: ReviewTextFile }>,
-  showPriority: Map<string, ShowPriorityInfo>
+  showPriority: Map<string, ShowPriorityInfo>,
+  bandContradictionFirst = false
 ): Array<{ path: string; data: ReviewTextFile }> {
   const statusOrder: Record<string, number> = { open: 0, previews: 1, closed: 2 };
+  // Computed once per file, not per comparison (band detection is not free).
+  const contradicts = new Set<string>();
+  if (bandContradictionFirst) {
+    for (const f of files) if (rescoreFixesBandContradiction(f.data)) contradicts.add(f.path);
+  }
 
   return [...files].sort((a, b) => {
     // 1. Full text first
     const aHasText = !!(a.data as any).fullText && (a.data as any).fullText.length >= 200;
     const bHasText = !!(b.data as any).fullText && (b.data as any).fullText.length >= 200;
     if (aHasText !== bHasText) return aHasText ? -1 : 1;
+
+    // 1b. A live band contradiction before a routine rescore
+    const aBand = contradicts.has(a.path);
+    const bBand = contradicts.has(b.path);
+    if (aBand !== bBand) return aBand ? -1 : 1;
 
     // 2. Show status: open > previews > closed
     const aShow = showPriority.get((a.data as any).showId || '');
@@ -1319,7 +1333,11 @@ async function main(): Promise<void> {
 
   // Prioritize: full-text first, open shows first, newer shows first
   const showPriority = loadShowPriority();
-  const validFiles = prioritizeReviews(validFilesUnsorted, showPriority);
+  const validFiles = prioritizeReviews(validFilesUnsorted, showPriority, options.needsRescore);
+  if (options.needsRescore) {
+    const bandFirst = validFiles.filter(f => rescoreFixesBandContradiction(f.data)).length;
+    if (bandFirst > 0) console.log(`Rescore drain: ${bandFirst} reviews whose score contradicts their star band go first`);
+  }
   const fullTextCount = validFiles.filter(f => !!(f.data as any).fullText && (f.data as any).fullText.length >= 200).length;
   console.log(`Priority sort: ${fullTextCount} full-text reviews first, then ${validFiles.length - fullTextCount} excerpt-only\n`);
 

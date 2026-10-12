@@ -178,3 +178,14 @@ test('audit-star-band-drift reports published out-of-band scores joined from rev
     assert.match(clean.out, /published: joined=1 outOfBand=0/);
   } finally { fs.rmSync(root, { recursive: true, force: true, maxRetries: 5 }); }
 });
+
+// BRO-305: broken-glass London Theatre (printed 3/5, served 93) must jump the needsRescore drain.
+test('rescoreFixesBandContradiction: out-of-band current score yes; in-band, relay-only or unscored no', () => {
+  const threeStar = { originalScore: '3/5 stars', originalScoreSource: 'londontheatre-page-json', scoreSource: 'londontheatre-page-json' };
+  assert.equal(sb.rescoreFixesBandContradiction({ ...threeStar, assignedScore: 93 }), true);
+  assert.equal(sb.rescoreFixesBandContradiction({ ...threeStar, llmScore: { score: 25 } }), true, 'falls back to the LLM read');
+  assert.equal(sb.rescoreFixesBandContradiction({ ...threeStar, assignedScore: 60 }), false);
+  assert.equal(sb.rescoreFixesBandContradiction({ aggregatorStars: '5/5 stars', assignedScore: 40 }), false, 'a relay does not bind');
+  assert.equal(sb.rescoreFixesBandContradiction(threeStar), false);
+  assert.equal(sb.rescoreFixesBandContradiction(null), false);
+});
