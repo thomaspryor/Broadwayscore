@@ -18,7 +18,13 @@
 
 const fs = require('fs');
 const path = require('path');
+const { makeArchiveShowChecker } = require('./lib/archive-cache-guard');
+const { loadShows } = require('./lib/show-matching');
 const { normalizeOutletFull: normalizeOutlet, slugify } = require('./lib/review-normalization');
+
+// Archive files are named by show id, but the page inside can be another
+// show's (BRO-3621): skip it rather than extract its reviews into this show.
+const archiveShowChecker = makeArchiveShowChecker(loadShows());
 
 const bwwDir = path.join(__dirname, '../data/aggregator-archive/bww-roundups');
 const outputDir = path.join(__dirname, '../data/review-texts');
@@ -95,6 +101,11 @@ for (const file of files.sort()) {
   const filePath = path.join(bwwDir, file);
   const showId = file.replace('.html', '');
   const content = fs.readFileSync(filePath, 'utf-8');
+  const wrongShow = archiveShowChecker(content, showId);
+  if (wrongShow) {
+    console.log(`  [SKIP] ${showId}: archive is another show's page (${wrongShow.reason})`);
+    continue;
+  }
 
   // Extract JSON-LD
   const jsonMatch = content.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);

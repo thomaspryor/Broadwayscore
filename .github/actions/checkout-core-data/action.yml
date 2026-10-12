@@ -145,16 +145,19 @@ runs:
           basename=$(basename "$f")
           [ -L "data/$basename" ] && rm -f "data/$basename"
         done
-        # outlet-registry.json (BRO-1084) is PUBLIC-repo-owned as of this change —
-        # never overwrite it from the private clone, even if a stale copy still
-        # lingers there post-migration. Without this explicit skip, this wildcard
-        # copy would silently revert any public-repo edit to the registry made
-        # between this migration landing and the private copy actually being
-        # deleted (or if it's ever accidentally re-added there later).
-        for f in /tmp/core-data-checkout/*.json; do
-          basename=$(basename "$f")
-          [ "$basename" = "outlet-registry.json" ] && continue
-          [ -f "$f" ] && cp -f "$f" data/
+        # Copy only what core-data-files.js plans (BRO-3521). A private-repo json
+        # whose name is git-tracked in this public repo is copied ONLY if it is in
+        # push-core-data's CORE_FILES (e.g. the awards.json dual-track exception);
+        # otherwise the public file wins and a ::warning:: names the stray. A blind
+        # *.json copy let a stale private show-score-urls.json silently overwrite
+        # the public one and re-introduce a fixed wrong-production URL (BRO-3471);
+        # outlet-registry.json (BRO-1084, public-owned) used to need its own skip
+        # here and is now covered by the same rule. Untracked extras still copy,
+        # so no workflow loses a file it reads. No fallback to the glob: under
+        # bash -e a planner failure fails the step loudly.
+        COPY_PLAN=$(node "${GITHUB_WORKSPACE}/scripts/lib/core-data-files.js" plan /tmp/core-data-checkout "$PWD")
+        for basename in $COPY_PLAN; do
+          cp -f "/tmp/core-data-checkout/$basename" data/
         done
         # Canary check — fail fast if key files missing
         if [ ! -f "data/shows.json" ] || [ ! -f "data/reviews.json" ]; then

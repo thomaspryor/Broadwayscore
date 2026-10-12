@@ -341,6 +341,7 @@ if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; }; the
     fi
   fi
 fi
+{ [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } && [ -f "$REPO_ROOT/scripts/lib/core-data-files.js" ] && perl -e 'alarm shift; exec @ARGV' 5 node "$REPO_ROOT/scripts/lib/core-data-files.js" stale-copies "$REPO_ROOT/data" "${BSC_DATA_REPO:-$HOME/broadway-scorecard-data}" --warn 2>/dev/null  # BRO-3523/BRO-3331: stale data/ copies vs the core-data clone
 
 # CODE-REPO staleness (BRO-2663, added 2026-08-31). The two blocks above watch
 # derived data checkouts (review-texts, core-data clone); nothing warned when

@@ -22,6 +22,7 @@ const { listShowDirs } = require('./lib/list-show-dirs');
 
 // Import existing counting functions for DTLI, Show Score, BWW
 const { extractShowScoreCount, extractDTLICount, extractBWWCount } = require('./build-aggregator-truth.js');
+const { makeArchiveCountGuard } = require('./lib/archive-cache-guard');
 
 // Paths
 const SHOWS_PATH = path.join(__dirname, '../data/shows.json');
@@ -29,6 +30,10 @@ const REVIEW_TEXTS_DIR = path.join(__dirname, '../data/review-texts');
 const PV_ARCHIVE = path.join(__dirname, '../data/aggregator-archive/playbill-verdict');
 const NYC_ARCHIVE = path.join(__dirname, '../data/aggregator-archive/nyc-theatre');
 const BWW_REVIEWS_ARCHIVE = path.join(__dirname, '../data/aggregator-archive/bww-reviews');
+
+// Same wrong-show guard build-aggregator-truth.js applies to its counts
+// (BRO-4563): PV, NYC Theatre and BWW /reviews/ counts here had none (BRO-3621).
+const wrongShowArchive = makeArchiveCountGuard(() => JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows);
 const OUTPUT_PATH = path.join(__dirname, '../data/audit/aggregator-coverage.json');
 
 // ============================================================
@@ -126,6 +131,8 @@ function extractPlaybillVerdictCount(showId) {
     }
 
     const html = fs.readFileSync(archivePath, 'utf8');
+    const wrongShow = wrongShowArchive(html, showId);
+    if (wrongShow) return wrongShow;
     const $ = cheerio.load(html);
 
     // Same container selector as scrape-playbill-verdict.js line 275
@@ -182,6 +189,8 @@ function extractNYCTheatreCount(showId) {
     }
 
     const html = fs.readFileSync(archivePath, 'utf8');
+    const wrongShow = wrongShowArchive(html, showId);
+    if (wrongShow) return wrongShow;
     const $ = cheerio.load(html);
 
     let inReviewSection = false;
@@ -248,6 +257,8 @@ function extractBWWReviewsCount(showId) {
     }
 
     const html = fs.readFileSync(archivePath, 'utf8');
+    const wrongShow = wrongShowArchive(html, showId);
+    if (wrongShow) return wrongShow;
     const $ = cheerio.load(html);
 
     const count = $('div.one-feed').length;
@@ -415,6 +426,9 @@ function main() {
         if (data.reviewCount === 0 && local.total > 5) {
           flags.push(`${key}-wrong-page`);
         }
+      } else if (data.error === 'wrong-show') {
+        // Archive exists but is another show's page: not "never searched".
+        flags.push(`${key}-wrong-show`);
       } else if (!data.hasArchive) {
         neverSearched[key]++;
         flags.push(`${key}-no-archive`);

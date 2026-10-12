@@ -13,6 +13,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { makeArchiveShowChecker } = require('./lib/archive-cache-guard');
 const https = require('https');
 const {
   normalizeOutlet,
@@ -30,6 +31,10 @@ const dataDir = path.join(__dirname, '..', 'data');
 const archiveDir = path.join(dataDir, 'aggregator-archive');
 const reviewTextsDir = path.join(dataDir, 'review-texts');
 const showsData = JSON.parse(fs.readFileSync(path.join(dataDir, 'shows.json'), 'utf-8'));
+// Archive files are named by show id, but the page inside can be another
+// show's (BRO-3621): skip it rather than extract its reviews into this show.
+const archiveShowChecker = makeArchiveShowChecker(showsData.shows || showsData);
+
 
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
@@ -103,6 +108,11 @@ function reExtractDTLI() {
   for (const file of files) {
     const showId = file.replace('.html', '');
     const html = fs.readFileSync(path.join(dtliDir, file), 'utf-8');
+    const wrongShow = archiveShowChecker(html, showId);
+    if (wrongShow) {
+      console.log(`  [SKIP] ${showId}: archive is another show's page (${wrongShow.reason})`);
+      continue;
+    }
 
     // Extract the DTLI URL from archive header
     const urlMatch = html.match(/Archived URL: (.+)/);
@@ -188,6 +198,11 @@ function reExtractBWW() {
   for (const file of files) {
     const showId = file.replace('.html', '');
     const html = fs.readFileSync(path.join(bwwDir, file), 'utf-8');
+    const wrongShow = archiveShowChecker(html, showId);
+    if (wrongShow) {
+      console.log(`  [SKIP] ${showId}: archive is another show's page (${wrongShow.reason})`);
+      continue;
+    }
 
     // Method 1: Extract from BlogPosting JSON-LD entries
     let reviews = [];
@@ -293,6 +308,11 @@ async function reExtractShowScore() {
   for (const file of files) {
     const showId = file.replace('.html', '');
     const html = fs.readFileSync(path.join(ssDir, file), 'utf-8');
+    const wrongShow = archiveShowChecker(html, showId);
+    if (wrongShow) {
+      console.log(`  [SKIP] ${showId}: archive is another show's page (${wrongShow.reason})`);
+      continue;
+    }
 
     // Parse pagination attributes
     const nextPagePathMatch = html.match(/data-next-page-path="([^"]+)"/);
