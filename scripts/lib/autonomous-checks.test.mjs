@@ -372,6 +372,64 @@ test('prepareCheckWorkdir fills gaps only and never overwrites tracked files', (
   fs.rmSync(root, { recursive: true, force: true });
 });
 
+// ── own install when the tree pins different packages (BRO-5210) ─────────────
+
+function depsFixture({ installed, pinned }) {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'checks-deps-'));
+  const repo = path.join(root, 'repo');
+  const wt = path.join(root, 'wt');
+  fs.mkdirSync(wt, { recursive: true });
+  for (const [name, version] of Object.entries(installed)) {
+    fs.mkdirSync(path.join(repo, 'node_modules', name), { recursive: true });
+    fs.writeFileSync(path.join(repo, 'node_modules', name, 'package.json'), JSON.stringify({ name, version }));
+  }
+  const packages = { '': { dependencies: {}, devDependencies: {} } };
+  for (const [name, version] of Object.entries(pinned)) {
+    packages[''][name === 'typescript' ? 'devDependencies' : 'dependencies'][name] = `^${version}`;
+    packages[`node_modules/${name}`] = { version };
+  }
+  fs.writeFileSync(path.join(wt, 'package-lock.json'), JSON.stringify({ lockfileVersion: 3, packages }));
+  return { root, repo, wt };
+}
+
+test('prepareCheckWorkdir: a tree pinning different top-level versions gets its own install, not the stale symlink', () => {
+  const { root, repo, wt } = depsFixture({ installed: { next: '14.2.35', react: '18.3.1' }, pinned: { next: '15.5.27', react: '18.3.1' } });
+  const calls = [];
+  const linked = prepareCheckWorkdir(wt, repo, { install: (dir) => { calls.push(dir); fs.mkdirSync(path.join(dir, 'node_modules')); return true; } });
+  assert.deepEqual(calls, [wt]);
+  assert.equal(fs.lstatSync(path.join(wt, 'node_modules')).isSymbolicLink(), false);
+  assert.ok(linked.some(l => l.startsWith('node_modules (npm ci') && l.includes('next 14.2.35->15.5.27')), linked.join(' | '));
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
+test('prepareCheckWorkdir: matching installed versions keep the symlink and never install', () => {
+  const { root, repo, wt } = depsFixture({ installed: { next: '15.5.27', typescript: '5.9.3' }, pinned: { next: '15.5.27', typescript: '5.9.3' } });
+  const linked = prepareCheckWorkdir(wt, repo, { install: () => { throw new Error('must not install'); } });
+  assert.ok(linked.includes('node_modules'));
+  assert.equal(fs.lstatSync(path.join(wt, 'node_modules')).isSymbolicLink(), true);
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
+test('prepareCheckWorkdir: a failed install removes its partial tree and falls back to the symlink, with a FAILED marker', () => {
+  const { root, repo, wt } = depsFixture({ installed: { react: '18.3.1' }, pinned: { react: '19.3.0' } });
+  const linked = prepareCheckWorkdir(wt, repo, { install: (dir) => { fs.mkdirSync(path.join(dir, 'node_modules', 'half'), { recursive: true }); return false; } });
+  assert.equal(fs.lstatSync(path.join(wt, 'node_modules')).isSymbolicLink(), true, 'partial tree replaced by the link');
+  assert.ok(linked.some(l => l.includes('npm ci FAILED')), linked.join(' | '));
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
+test('prepareCheckWorkdir: an existing workdir node_modules or an unreadable lockfile never triggers an install', () => {
+  const { root, repo, wt } = depsFixture({ installed: { react: '18.3.1' }, pinned: { react: '19.3.0' } });
+  fs.mkdirSync(path.join(wt, 'node_modules'));
+  const never = { install: () => { throw new Error('must not install'); } };
+  prepareCheckWorkdir(wt, repo, never);
+  fs.rmSync(path.join(wt, 'node_modules'), { recursive: true });
+  fs.writeFileSync(path.join(wt, 'package-lock.json'), 'not json');
+  const linked = prepareCheckWorkdir(wt, repo, never);
+  assert.ok(linked.includes('node_modules'));
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
 // ── resolveInstallRoot (BRO-3907) ────────────────────────────────────────────
 
 test('resolveInstallRoot: a repo with its own node_modules is returned unchanged', () => {

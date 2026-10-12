@@ -316,6 +316,62 @@ function resolveInstallRoot(repo) {
   return repo;
 }
 
+const NPM_CI_TIMEOUT_MS = 10 * 60 * 1000;
+
+// The top-level dependencies (root package.json deps + devDeps, as recorded
+// in `workdir`'s lockfile) whose version installed under `installRoot`
+// differs from the lockfile's pin (BRO-5210). Compares what is INSTALLED,
+// not lockfile bytes: the Mac's main checkout often lags origin/main, and a
+// pulled-but-not-reinstalled lockfile would match while its node_modules is
+// stale. Unreadable lockfile (none, v1, corrupt) -> [] so the caller keeps
+// the plain symlink.
+function staleTopLevelDeps(workdir, installRoot) {
+  let lock;
+  try { lock = JSON.parse(fs.readFileSync(path.join(workdir, 'package-lock.json'), 'utf8')); } catch { return []; }
+  const pkgs = lock && lock.packages;
+  const root = pkgs && pkgs[''];
+  if (!root) return [];
+  const names = Object.keys({ ...(root.dependencies || {}), ...(root.devDependencies || {}) });
+  const stale = [];
+  for (const name of names) {
+    const want = pkgs[`node_modules/${name}`] && pkgs[`node_modules/${name}`].version;
+    if (!want) continue;
+    let have = null;
+    try { have = JSON.parse(fs.readFileSync(path.join(installRoot, 'node_modules', name, 'package.json'), 'utf8')).version; } catch { /* missing */ }
+    if (have !== want) stale.push(`${name} ${have || 'missing'}->${want}`);
+  }
+  return stale;
+}
+
+// `npm ci` into `workdir` under the secret-free checksEnv (the lockfile may be
+// implementer-written, and npm runs dependency install scripts), with the real
+// npm cache so --prefer-offline does not re-download everything into the fresh
+// HOME. Output goes to a log file (piped stdio has hit ENOBUFS before). True on
+// success.
+function npmCiInto(workdir) {
+  const home = fs.mkdtempSync(path.join(os.tmpdir(), 'auto-checks-home-'));
+  const env = checksEnv({ home });
+  env.npm_config_cache = process.env.npm_config_cache || path.join(os.homedir(), '.npm');
+  // Network routing only (no credentials of ours): a proxied host can't reach
+  // the registry for a package the cache lacks without these.
+  for (const k of ['HTTPS_PROXY', 'HTTP_PROXY', 'NO_PROXY', 'https_proxy', 'http_proxy', 'no_proxy', 'NODE_EXTRA_CA_CERTS']) {
+    if (process.env[k] !== undefined) env[k] = process.env[k];
+  }
+  const logPath = path.join(os.tmpdir(), `npm-ci-${path.basename(workdir)}-${process.pid}.log`);
+  let fd = null;
+  try {
+    fd = fs.openSync(logPath, 'w');
+    execFileSync('npm', ['ci', '--prefer-offline', '--no-audit', '--no-fund'],
+      { cwd: workdir, env, stdio: ['ignore', fd, fd], timeout: NPM_CI_TIMEOUT_MS });
+    return true;
+  } catch {
+    return false;
+  } finally {
+    if (fd !== null) try { fs.closeSync(fd); } catch { /* already closed */ }
+    try { fs.rmSync(home, { recursive: true, force: true }); } catch { /* temp dir */ }
+  }
+}
+
 // A fresh `git worktree add` has NO node_modules and none of the gitignored
 // core-data symlinks (data/shows.json et al are symlinks into the private
 // repo). Without them `npx tsc --noEmit` fails TS2307 on every JSON import
@@ -336,7 +392,7 @@ function resolveInstallRoot(repo) {
 // own gitignored data/*.json (populated by setup-local-data.sh) is the
 // fresher copy for that worktree's own session, and should never be
 // silently swapped for the main checkout's.
-function prepareCheckWorkdir(workdir, repoRoot) {
+function prepareCheckWorkdir(workdir, repoRoot, { install = npmCiInto } = {}) {
   const linked = [];
   const link = (from, to) => {
     if (fs.existsSync(to) || !fs.existsSync(from)) return;
@@ -347,10 +403,26 @@ function prepareCheckWorkdir(workdir, repoRoot) {
     } catch { /* best effort — a missing link surfaces as a failed check */ }
   };
 
-  // node_modules stays a symlink: 1.3GB is not copyable per card, and it is
-  // already writable by anything running as this user in the main checkout,
-  // so the symlink adds no blast radius.
-  link(path.join(resolveInstallRoot(repoRoot), 'node_modules'), path.join(workdir, 'node_modules'));
+  // node_modules is normally a symlink: 1.3GB is not copyable per card, and
+  // it is already writable by anything running as this user in the main
+  // checkout, so the symlink adds no blast radius. The exception (BRO-5210):
+  // when the tree under check pins different top-level versions than the
+  // install root has (a branch that bumps next/react), the symlink would
+  // type-check it against the old packages, so it gets its own `npm ci`.
+  const installRoot = resolveInstallRoot(repoRoot);
+  const wdModules = path.join(workdir, 'node_modules');
+  const stale = fs.existsSync(wdModules) ? [] : staleTopLevelDeps(workdir, installRoot);
+  if (stale.length) {
+    const ok = install(workdir);
+    if (ok) linked.push(`node_modules (npm ci: ${stale.length} top-level version(s) differ from the install root, e.g. ${stale.slice(0, 3).join(', ')})`);
+    else {
+      // A failed or timed-out install leaves a partial tree that link()
+      // would skip over; remove it so the fallback symlink is made.
+      try { fs.rmSync(wdModules, { recursive: true, force: true }); } catch { /* link() below reports nothing; the marker does */ }
+      linked.push('node_modules (npm ci FAILED; linked the install root, checks may see old packages)');
+    }
+  }
+  link(path.join(installRoot, 'node_modules'), wdModules);
 
   // Core data is COPIED, not linked. data/shows.json et al are symlinks into
   // the owner's PRIVATE data repo; linking them would hand implementer-written
@@ -504,6 +576,7 @@ module.exports = {
   CHECK_HEAP_MB,
   UI_PATH_RES,
   checksEnv,
+  staleTopLevelDeps,
   tierOf,
   decideChecks,
   readTsxManifest,
