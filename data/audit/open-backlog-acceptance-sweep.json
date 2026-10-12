@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-11T13:38:24.577Z",
+  "generatedAt": "2026-10-12T03:19:52.531Z",
   "shadow": true,
-  "checkoutSha": "4a4a3ed87ce548fd096dfd1a519a5bb0dad4eac7",
-  "totalCandidates": 907,
-  "eligibleCandidates": 190,
+  "checkoutSha": "befb3952c085d161010434b48fbadbcf3c08c118",
+  "totalCandidates": 840,
+  "eligibleCandidates": 241,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
@@ -14,9 +14,27 @@
   },
   "alreadyDone": [
     {
+      "id": "BRO-5086",
+      "name": "Land preflight: block a land push whose squashed commit silently reverts newer origin/main changes",
+      "verifyCmd": "node --test tests/unit/land-preflight.test.mjs",
+      "detail": null
+    },
+    {
       "id": "BRO-5047",
       "name": "Cut AI scoring cost: batch mode for non-urgent scoring runs and skip runs with nothing to score",
       "verifyCmd": "node --test tests/unit/sticky-not-a-review-rejection.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5029",
+      "name": "Recoupment model: sourced-only grossParticipation field for star deals, held flag when unknown",
+      "verifyCmd": "node --test tests/unit/recoupment-classify.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-5028",
+      "name": "Weekly commercial update: regex grosses parser is dead, every run falls back to Sonnet",
+      "verifyCmd": "node --test tests/unit/reddit-grosses.test.mjs",
       "detail": null
     },
     {
@@ -50,12 +68,6 @@
       "detail": null
     },
     {
-      "id": "BRO-4978",
-      "name": "National tour pages show wrong information: 1 page problem(s) (stops-before-opening)",
-      "verifyCmd": "node --test scripts/lib/tour-page-audit.test.mjs",
-      "detail": null
-    },
-    {
       "id": "BRO-4976",
       "name": "Outlet ids stage 2: observer (NY vs UK) split, medium (Christian Lewis blog), zeal-nyc personal-blog row",
       "verifyCmd": "node --test tests/unit/outlet-id-migrations.test.mjs",
@@ -65,6 +77,18 @@
       "id": "BRO-4971",
       "name": "Round-up-listed reviews excluded by an automated verdict are never re-checked (5 of 16 were false in BRO-4956)",
       "verifyCmd": "node --test scripts/audit-show-review-gap.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4958",
+      "name": "Owner-facing scheduled emails still unwatched by cron-health: weekly traffic report + Reddit engagement digest",
+      "verifyCmd": "node scripts/audit-cron-health-coverage.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-4922",
+      "name": "UK regional: add RSC As You Like It (Groff), fix Globe cast, auto-trigger for noteworthy non-London UK shows",
+      "verifyCmd": "node --test tests/unit/uk-regional-guardian-trigger.test.mjs",
       "detail": null
     },
     {
@@ -80,44 +104,38 @@
       "detail": null
     },
     {
+      "id": "BRO-4869",
+      "name": "Critics' Take: Wicked tour refused by the model; audit drift false positives on text-light shows",
+      "verifyCmd": "node --test tests/unit/critic-consensus-eligibility.test.mjs",
+      "detail": null
+    },
+    {
       "id": "BRO-4868",
       "name": "Make linear-next, the watchdog and the classifier honour the NO-DISPATCH marker, and anchor its regex",
       "verifyCmd": "node --test scripts/lib/cloud-worker-pick.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-4860",
-      "name": "Coverage holes repair (BRO-4849 A-C): re-collect the 110 no-text reviews, read the 40 rejected-yet-verified, repair 7 wrong URLs, score the 41 unscored",
-      "verifyCmd": "node --test tests/unit/coverage-holes-audit.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-4849",
-      "name": "P1: ~260 found reviews never reach the site (no text, wrongly rejected, never scored) across 394 current shows",
-      "verifyCmd": "node --test tests/unit/coverage-holes-audit.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-4840",
-      "name": "Star-band drift triage: human-review overrides, relayed ratings, letter-grade extraction, and a daily published-score audit in the health digest",
-      "verifyCmd": "node --test tests/unit/published-score-star-band.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-4831",
-      "name": "Lane rehearsal follow-ups: record a real-opening fixture (Paranormal Activity), wire arm-check into the real lane driver and a T-24h rehearsal, production lane driver on runLaneNight",
-      "verifyCmd": "node --test tests/unit/opening-night-lane-rehearsal.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-4823",
-      "name": "Lane publish: wire real ports in CI (pushData via push-with-retry, isLeased from lease-guard, deploy that commits public/data/shows/{id}.json, live base URL) and a 2-minute publish driver",
-      "verifyCmd": "node --test tests/unit/opening-night-lane-publish.test.mjs",
       "detail": null
     }
   ],
   "failing": [],
   "unverifiable": [
+    {
+      "id": "BRO-5105",
+      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"mrs-doubtfire-2021 carries the BRO-5020 values\"",
+      "verifyCmd": "node scripts/run-unit-tests.js",
+      "detail": "check killed by SIGTERM after 138767ms (timeout — no verdict)"
+    },
+    {
+      "id": "BRO-5088",
+      "name": "Fact-check 1 follow-up: unsourced director rows, Steinberg-as-Broadway site tables, findTheater substring matching, Covid closings",
+      "verifyCmd": "node --test scripts/lib/broadway-theaters-studio54.test.mjs scripts/lib/ibdb-directed-by.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/broadway-theaters-studio54.test.mjs, scripts/lib/ibdb-directed-by.test.mjs"
+    },
+    {
+      "id": "BRO-5067",
+      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no bare-string override collides with another tracked show's own title\"",
+      "verifyCmd": "node scripts/run-unit-tests.js",
+      "detail": "check killed by SIGTERM after 92013ms (timeout — no verdict)"
+    },
     {
       "id": "BRO-5013",
       "name": "Recoupment model runs high on 2020+ running shows vs reported ranges (median 31 pts outside, 1 of 15 inside)",
@@ -149,12 +167,6 @@
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/critic-consensus-prune-only.test.mjs"
     },
     {
-      "id": "BRO-4922",
-      "name": "UK regional: add RSC As You Like It (Groff), fix Globe cast, auto-trigger for noteworthy non-London UK shows",
-      "verifyCmd": "node --test tests/unit/uk-regional-guardian-trigger.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/uk-regional-guardian-trigger.test.mjs"
-    },
-    {
       "id": "BRO-4911",
       "name": "Prevention for the Into the Woods page bugs: byline dedup, fabricated-row block, openingDate source, same-URL self-heal",
       "verifyCmd": "node --test tests/unit/itw-prevention-byline-fabricated.test.mjs",
@@ -183,18 +195,6 @@
       "name": "Revival promo spot check: older productions of upcoming 2026-27 revivals (reviews, scores, wrong-production)",
       "verifyCmd": "node --test scripts/revival-promo-spot-check.test.mjs",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/revival-promo-spot-check.test.mjs"
-    },
-    {
-      "id": "BRO-4884",
-      "name": "WE historical Phase C: 2023-24 to 2018-19",
-      "verifyCmd": "node --test scripts/audit-we-historical-season.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-we-historical-season.test.mjs"
-    },
-    {
-      "id": "BRO-4835",
-      "name": "Lane inline scoring follow-ups: lane workflow with sparse shallow checkout, CI wiring of realFetchPorts and the ensemble scorer, first live fetch check",
-      "verifyCmd": "node --test scripts/lib/opening-night-lane-inline-score.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/opening-night-lane-inline-score.test.mjs"
     }
   ]
 }
