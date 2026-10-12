@@ -1,7 +1,8 @@
 'use client';
 
 import { useMemo, useCallback } from 'react';
-import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
+import { useLocationSearch, replaceLocationSearch } from '@/lib/hooks/useLocationSearch';
 import type { ShowCardShow } from '@/components/show-cards/types';
 import { type FilterPredicateCtx, TIME_PERIOD_RANGE } from '@/lib/show-filter-predicates';
 import type { AwardWinnerSets } from '@/lib/data-awards';
@@ -80,8 +81,8 @@ interface UsePanelFiltersReturn<T extends ShowCardShow> {
 }
 
 /**
- * Owns the advanced-filter-panel state. Reads from URL searchParams,
- * writes back via router.replace. Applies predicates as a final step
+ * Owns the advanced-filter-panel state. Reads from the URL query,
+ * writes back via replaceLocationSearch. Applies predicates as a final step
  * on the already-filtered show list (purely additive — does not touch
  * existing inline filter logic).
  *
@@ -98,8 +99,10 @@ export function usePanelFilters<T extends ShowCardShow>({
   singleValueOverrides,
   onSetSingleValueOverride,
 }: UsePanelFiltersArgs<T>): UsePanelFiltersReturn<T> {
-  const searchParams = useSearchParams();
-  const router = useRouter();
+  // Not useSearchParams(): it bails the page out of server rendering on a
+  // static export, so the HTML would ship with no show grid (BRO-4600).
+  const search = useLocationSearch();
+  const searchParams = useMemo(() => new URLSearchParams(search), [search]);
   const pathname = usePathname();
 
   // Stable reference for the optional singleGroups prop — empty array if omitted
@@ -233,26 +236,14 @@ export function usePanelFilters<T extends ShowCardShow>({
 
   const writeParams = useCallback(
     (mutate: (params: URLSearchParams) => void) => {
-      // Read from live URL — searchParams is React state and may lag behind
-      // rapid back-to-back updates, dropping params silently otherwise.
-      const live = typeof window !== 'undefined' ? window.location.search : (searchParams?.toString() ?? '');
-      const params = new URLSearchParams(live);
+      // Read from the live URL so rapid back-to-back toggles in the same
+      // tick build on each other instead of dropping params.
+      const params = new URLSearchParams(window.location.search);
       mutate(params);
       const qs = params.toString();
-      const url = qs ? `${pathname}?${qs}` : pathname;
-      // Two writes to the SAME URL:
-      //   1. replaceState so subsequent in-tick reads of window.location see it
-      //      (router.replace is async — lets back-to-back toggles overwrite each
-      //      other; verified manually 2026-04-27 with 2-3 rapid season pills).
-      //   2. router.replace so Next.js's useSearchParams() updates and React
-      //      re-renders the panel.
-      // Same URL on both → no two-writer race (see feedback_clearall_two_writer_race.md).
-      if (typeof window !== 'undefined') {
-        window.history.replaceState(null, '', url);
-      }
-      router.replace(url, { scroll: false });
+      replaceLocationSearch(qs ? `${pathname}?${qs}` : pathname);
     },
-    [searchParams, router, pathname],
+    [pathname],
   );
 
   const toggleOption = useCallback(
@@ -327,7 +318,7 @@ export function usePanelFilters<T extends ShowCardShow>({
   // Hook-internal clearAll for non-controlled mode (no override props). When
   // the page owns single-select state (controlled mode), wire the page's own
   // handler at the FilterPanel/ActiveFilterChips call sites instead of using
-  // panel.clearAll — mixing writeParams (router.replace) with the page's
+  // panel.clearAll — mixing writeParams (replaceLocationSearch) with the page's
   // updateParams (window.history.replaceState in startTransition) produces a
   // URL race where the deferred page write overwrites the router state, or the
   // synchronous router state overwrites the page write. See trace in

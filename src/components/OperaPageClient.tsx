@@ -1,7 +1,6 @@
 'use client';
 
-import { useState, useMemo, useCallback, startTransition, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useState, useMemo, useCallback, useEffect, startTransition, Suspense } from 'react';
 import Link from 'next/link';
 import { ShowListCard, MiniShowCard, ToggleBar, SCORE_TIERS } from '@/components/show-cards';
 import type { ShowCardShow, ScoreModeParam } from '@/components/show-cards/types';
@@ -37,15 +36,30 @@ function operaHasEnoughReviews(show: ShowCardShow): boolean {
   return hasEnoughReviews(rc, 'off-broadway', t1t2);
 }
 
-function OperaPageInner({ shows, totalShows, totalReviews }: OperaPageClientProps) {
-  const initialSearchParams = useSearchParams();
 
-  const [filters, setFilters] = useState(() => ({
-    status: (['now_playing', 'closed', 'all'].includes(initialSearchParams.get('status') as string)
-      ? initialSearchParams.get('status') as StatusParam : DEFAULT_STATUS),
-    sort: (SORT_PARAMS.includes(initialSearchParams.get('sort') as SortParam)
-      ? initialSearchParams.get('sort') as SortParam : DEFAULT_SORT),
-  }));
+// Filters parsed from a URL query. Components start from the defaults
+// (filtersFromParams(new URLSearchParams())) so the prerendered HTML ships the
+// full grid, then apply the real query after mount. useSearchParams() would
+// bail the whole page out to client-side rendering on a static export (BRO-4600).
+function filtersFromParams(initialSearchParams: URLSearchParams) {
+  return {
+      status: (['now_playing', 'closed', 'all'].includes(initialSearchParams.get('status') as string)
+        ? initialSearchParams.get('status') as StatusParam : DEFAULT_STATUS),
+      sort: (SORT_PARAMS.includes(initialSearchParams.get('sort') as SortParam)
+        ? initialSearchParams.get('sort') as SortParam : DEFAULT_SORT),
+  };
+}
+
+function OperaPageInner({ shows, totalShows, totalReviews }: OperaPageClientProps) {
+
+  const [filters, setFilters] = useState(() => filtersFromParams(new URLSearchParams()));
+
+  // Apply deep-link filters (?status=, ?sort=, ...) after mount; see filtersFromParams.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (!params.toString()) return;
+    setFilters(filtersFromParams(params));
+  }, []);
 
   const status = filters.status;
   const sort = filters.sort;

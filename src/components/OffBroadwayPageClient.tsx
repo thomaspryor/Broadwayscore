@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useCallback, useState, useRef, useEffect, startTransition, Suspense } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { replaceLocationSearch } from '@/lib/hooks/useLocationSearch';
 import Link from 'next/link';
 import type Fuse from 'fuse.js';
 import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard, MiniShowCard } from '@/components/show-cards';
@@ -135,25 +135,40 @@ function FeaturedRow({ title, shows, minShows = 4, href }: { title: string; show
   );
 }
 
+
+// Filters parsed from a URL query. Components start from the defaults
+// (filtersFromParams(new URLSearchParams())) so the prerendered HTML ships the
+// full grid, then apply the real query after mount. useSearchParams() would
+// bail the whole page out to client-side rendering on a static export (BRO-4600).
+function filtersFromParams(initialSearchParams: URLSearchParams) {
+  return {
+      status: (['now_playing', 'previews', 'closed', 'all'].includes(initialSearchParams.get('status') as string)
+        ? initialSearchParams.get('status') as StatusParam : DEFAULT_STATUS),
+      sort: (SORT_PARAMS.includes(initialSearchParams.get('sort') as SortParam)
+        ? initialSearchParams.get('sort') as SortParam : DEFAULT_SORT),
+      type: (['all', 'musical', 'play', 'opera'].includes(initialSearchParams.get('type') as string)
+        ? initialSearchParams.get('type') as TypeParam : DEFAULT_TYPE),
+      scoreMode: (['critics', 'audience'].includes(initialSearchParams.get('scoreMode') as string)
+        ? initialSearchParams.get('scoreMode') as ScoreModeParam : DEFAULT_SCORE_MODE),
+      q: initialSearchParams.get('q') || '',
+  };
+}
+
 // Inner component that uses searchParams
 function OffBroadwayPageInner({ shows, archiveHash, totalShows, totalReviews, marketOpenCounts, awardWinnerSets, startingSoonShows = [], justOpenedShows = [], skipAboveFold = false }: OffBroadwayPageClientProps) {
-  const initialSearchParams = useSearchParams();
-  const router = useRouter();
 
-  const [filters, setFilters] = useState(() => ({
-    status: (['now_playing', 'previews', 'closed', 'all'].includes(initialSearchParams.get('status') as string)
-      ? initialSearchParams.get('status') as StatusParam : DEFAULT_STATUS),
-    sort: (SORT_PARAMS.includes(initialSearchParams.get('sort') as SortParam)
-      ? initialSearchParams.get('sort') as SortParam : DEFAULT_SORT),
-    type: (['all', 'musical', 'play', 'opera'].includes(initialSearchParams.get('type') as string)
-      ? initialSearchParams.get('type') as TypeParam : DEFAULT_TYPE),
-    scoreMode: (['critics', 'audience'].includes(initialSearchParams.get('scoreMode') as string)
-      ? initialSearchParams.get('scoreMode') as ScoreModeParam : DEFAULT_SCORE_MODE),
-    q: initialSearchParams.get('q') || '',
-  }));
+  const [filters, setFilters] = useState(() => filtersFromParams(new URLSearchParams()));
 
   // Separate synchronous state for search input — startTransition drops keystrokes on controlled inputs
-  const [searchInput, setSearchInput] = useState(() => initialSearchParams.get('q') || '');
+  const [searchInput, setSearchInput] = useState('');
+
+  // Apply deep-link filters (?status=, ?sort=, ...) after mount; see filtersFromParams.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (!params.toString()) return;
+    setFilters(filtersFromParams(params));
+    setSearchInput(params.get('q') || '');
+  }, []);
 
   const status = filters.status;
   const sort = filters.sort;
@@ -470,8 +485,8 @@ function OffBroadwayPageInner({ shows, archiveHash, totalShows, totalReviews, ma
     const live = new URLSearchParams(window.location.search);
     Array.from(PANEL_PARAM_KEYS).forEach((k) => live.delete(k));
     const qs = live.toString();
-    router.replace(qs ? `/off-broadway?${qs}` : '/off-broadway', { scroll: false });
-  }, [router]);
+    replaceLocationSearch(qs ? `/off-broadway?${qs}` : '/off-broadway');
+  }, []);
 
   const shouldHideStatus = statusFilter !== 'all';
 

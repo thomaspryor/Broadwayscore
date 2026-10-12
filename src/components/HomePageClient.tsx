@@ -1,7 +1,8 @@
 'use client';
 
 import { useMemo, useCallback, useState, useRef, useEffect, startTransition, Suspense, lazy } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { replaceLocationSearch } from '@/lib/hooks/useLocationSearch';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import type Fuse from 'fuse.js';
 import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard, MiniShowCard } from '@/components/show-cards';
@@ -223,38 +224,46 @@ function FeaturedRow({ title, shows, viewAllHref, minCount = 4 }: { title: strin
   );
 }
 
+
+// Filters parsed from a URL query. Components start from the defaults
+// (filtersFromParams(new URLSearchParams())) so the prerendered HTML ships the
+// full grid, then apply the real query after mount. useSearchParams() would
+// bail the whole page out to client-side rendering on a static export (BRO-4600).
+function filtersFromParams(initialSearchParams: URLSearchParams) {
+  return {
+      status: (['now_playing', 'closed', 'upcoming', 'closing_soon', 'all'].includes(initialSearchParams.get('status') as string)
+        ? initialSearchParams.get('status') as StatusParam : DEFAULT_STATUS),
+      sort: (['recent', 'recent_asc', 'score_desc', 'score_asc', 'alpha', 'alpha_desc', 'audience_buzz', 'audience_asc'].includes(initialSearchParams.get('sort') as string)
+        ? initialSearchParams.get('sort') as SortParam : DEFAULT_SORT),
+      type: (['all', 'musical', 'play', 'opera'].includes(initialSearchParams.get('type') as string)
+        ? initialSearchParams.get('type') as TypeParam : DEFAULT_TYPE),
+      scoreMode: (['critics', 'audience'].includes(initialSearchParams.get('scoreMode') as string)
+        ? initialSearchParams.get('scoreMode') as ScoreModeParam : DEFAULT_SCORE_MODE),
+      q: initialSearchParams.get('q') || '',
+      // Off-Broadway picks toggle — the grid mixes in a small curated set of
+      // notable OB shows (src/lib/homepage-notability.ts); 'hidden' removes them.
+      obPicks: (initialSearchParams.get('obPicks') === 'hidden' ? 'hidden' : 'shown') as 'shown' | 'hidden',
+  };
+}
+
 // Inner component that uses searchParams
 function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [], westEndShows = [], totalShows, totalReviews, totalCritics = 0, totalOutlets = 0, skipHero, skipFirstMusicals, featuredRows = [], marketOpenCounts, awardWinnerSets, tonyTrackRecord, tonyPromoActive, btcPromoActive }: HomePageClientProps) {
-  const initialSearchParams = useSearchParams();
 
   // Local state for instant updates (no full-page reload)
-  const [filters, setFilters] = useState(() => ({
-    status: (['now_playing', 'closed', 'upcoming', 'closing_soon', 'all'].includes(initialSearchParams.get('status') as string)
-      ? initialSearchParams.get('status') as StatusParam : DEFAULT_STATUS),
-    sort: (['recent', 'recent_asc', 'score_desc', 'score_asc', 'alpha', 'alpha_desc', 'audience_buzz', 'audience_asc'].includes(initialSearchParams.get('sort') as string)
-      ? initialSearchParams.get('sort') as SortParam : DEFAULT_SORT),
-    type: (['all', 'musical', 'play', 'opera'].includes(initialSearchParams.get('type') as string)
-      ? initialSearchParams.get('type') as TypeParam : DEFAULT_TYPE),
-    scoreMode: (['critics', 'audience'].includes(initialSearchParams.get('scoreMode') as string)
-      ? initialSearchParams.get('scoreMode') as ScoreModeParam : DEFAULT_SCORE_MODE),
-    q: initialSearchParams.get('q') || '',
-    // Off-Broadway picks toggle — the grid mixes in a small curated set of
-    // notable OB shows (src/lib/homepage-notability.ts); 'hidden' removes them.
-    obPicks: (initialSearchParams.get('obPicks') === 'hidden' ? 'hidden' : 'shown') as 'shown' | 'hidden',
-  }));
+  const [filters, setFilters] = useState(() => filtersFromParams(new URLSearchParams()));
 
   // Legacy redirect: `/?offBway=true` used to switch the list to Off-Broadway in place.
   // The new pattern routes to /off-broadway instead. Preserve any other query params
   // (sort, type, q, scoreMode) so shared links like /?offBway=true&sort=alpha still work.
   const router = useRouter();
   useEffect(() => {
-    if (initialSearchParams.get('offBway') === 'true') {
-      const params = new URLSearchParams(initialSearchParams);
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('offBway') === 'true') {
       params.delete('offBway');
       const qs = params.toString();
       router.replace(qs ? `/off-broadway?${qs}` : '/off-broadway');
     }
-  }, [initialSearchParams, router]);
+  }, [router]);
 
   // Archive shows — lazy-loaded on demand when user filters to all/closed or searches
   const [archiveShows, setArchiveShows] = useState<HomepageShow[] | null>(null);
@@ -305,7 +314,15 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
   }, [shows, archiveShows]);
 
   // Separate synchronous state for search input to avoid startTransition dropping keystrokes
-  const [searchInput, setSearchInput] = useState(() => initialSearchParams.get('q') || '');
+  const [searchInput, setSearchInput] = useState('');
+
+  // Apply deep-link filters (?status=, ?sort=, ...) after mount; see filtersFromParams.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (!params.toString()) return;
+    setFilters(filtersFromParams(params));
+    setSearchInput(params.get('q') || '');
+  }, []);
 
   const status = filters.status;
   const sort = filters.sort;
@@ -633,8 +650,8 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
     const live = new URLSearchParams(window.location.search);
     Array.from(PANEL_PARAM_KEYS).forEach((k) => live.delete(k));
     const qs = live.toString();
-    router.replace(qs ? `/?${qs}` : '/', { scroll: false });
-  }, [router]);
+    replaceLocationSearch(qs ? `/?${qs}` : '/');
+  }, []);
 
   // Hide status chip when it would be redundant
   const shouldHideStatus = statusFilter !== 'all';

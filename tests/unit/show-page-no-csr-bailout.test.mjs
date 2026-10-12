@@ -15,6 +15,15 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const ENTRY = path.join(ROOT, 'src/app/show/[slug]/page.tsx');
 const ALLOW = new Set([]);
+// Home + market browse pages had the same bailout: the HTML shipped no show
+// grid, only the RSC payload carried it (BRO-4600).
+const BROWSE_ENTRIES = [
+  ['src/app/page.tsx', 'HomePageClient.tsx'],
+  ['src/app/west-end/page.tsx', 'WestEndPageClient.tsx'],
+  ['src/app/off-broadway/page.tsx', 'OffBroadwayPageClient.tsx'],
+  ['src/app/off-west-end/page.tsx', 'OffWestEndPageClient.tsx'],
+  ['src/app/opera/page.tsx', 'OperaPageClient.tsx'],
+];
 
 function resolveImport(from, spec) {
   let base;
@@ -27,6 +36,10 @@ function resolveImport(from, spec) {
   }
   return null;
 }
+
+// Comments may name the hook when explaining why it is banned.
+const stripComments = (src) => src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '').replace(/\s\/\/[^'"`\n]*$/gm, '');
+const callsUseSearchParams = (f) => /\buseSearchParams\s*\(/.test(stripComments(readFileSync(f, 'utf8')));
 
 function walk(entry) {
   const seen = new Set();
@@ -49,8 +62,27 @@ test('nothing the show page renders calls useSearchParams()', () => {
   assert.ok(files.size > 20, `import walk found only ${files.size} files; resolver broken?`);
   assert.ok([...files].some(f => f.endsWith('ShowHeroRedesign.tsx')), 'walk should reach ShowHeroRedesign');
   const offenders = [...files]
-    .filter(f => /\buseSearchParams\s*\(/.test(readFileSync(f, 'utf8')))
+    .filter(callsUseSearchParams)
     .map(f => path.relative(ROOT, f))
     .filter(f => !ALLOW.has(f));
   assert.deepEqual(offenders, [], `useSearchParams() bails the show page out of server rendering: ${offenders.join(', ')}`);
+});
+
+for (const [entry, client] of BROWSE_ENTRIES) {
+  test(`nothing ${entry} renders calls useSearchParams()`, () => {
+    const files = walk(path.join(ROOT, entry));
+    assert.ok([...files].some(f => f.endsWith(client)), `walk should reach ${client}`);
+    assert.ok([...files].some(f => f.endsWith('usePanelFilters.ts')) || client === 'OperaPageClient.tsx',
+      'walk should reach the shared usePanelFilters hook');
+    const offenders = [...files]
+      .filter(callsUseSearchParams)
+      .map(f => path.relative(ROOT, f))
+      .filter(f => !ALLOW.has(f));
+    assert.deepEqual(offenders, [], `useSearchParams() bails ${entry} out of server rendering: ${offenders.join(', ')}`);
+  });
+}
+
+test('the comment stripper still sees a real call', () => {
+  assert.equal(/\buseSearchParams\s*\(/.test(stripComments("// useSearchParams()\nconst p = useSearchParams();")), true);
+  assert.equal(/\buseSearchParams\s*\(/.test(stripComments("// useSearchParams()\n/* useSearchParams() */\nconst x = 1; // useSearchParams()")), false);
 });
