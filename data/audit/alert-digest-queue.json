@@ -416,19 +416,6 @@
     "queuedAt": "2026-10-12T12:34:40.002Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Validate market expansion, Audit outlet-registry gaps",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38251703859",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-12T12:56:49.134Z"
-  },
-  {
     "conditionKey": "land:land/bro-3999-empty-body-sweep",
     "title": "Landing blocked: scripts-lib-tests red on land/bro-3999-empty-body-sweep",
     "description": "land.yml did not land land/bro-3999-empty-body-sweep: the scripts-lib-tests gate went red at 1628dd0c9d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38249038797",
@@ -457,6 +444,19 @@
       }
     ],
     "queuedAt": "2026-10-12T13:03:36.853Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Validate market expansion, Audit outlet-registry gaps",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38254353841",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-12T13:21:53.007Z"
   },
   {
     "conditionKey": "land:land/bro-4505-closing-retire-retitle",
