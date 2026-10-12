@@ -156,13 +156,13 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-11T14:14:07.486Z",
-      "lastSeen": "2026-10-12T03:28:10.275Z",
+      "lastSeen": "2026-10-12T03:54:48.846Z",
       "lastNotifiedAt": "2026-10-11T14:14:07.486Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 132,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 22
+      "silentRefires": 23
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -12588,14 +12588,17 @@
       "title": "main test.yml red: Unit Tests / Ordinal publishDate guard parity (BRO-2836) — \"foo returns the contracted value\"",
       "firstSeen": "2026-10-09T14:40:39.110Z",
       "incidentOpenedAt": "2026-10-12T03:07:47.464Z",
-      "lastSeen": "2026-10-12T03:28:10.267Z",
+      "lastSeen": "2026-10-12T03:54:48.841Z",
       "lastNotifiedAt": "2026-10-12T03:07:47.464Z",
       "lastSurfacedAt": null,
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": "BRO-5116",
-      "absentRunIds": [],
-      "silentRefires": 1
+      "absentRunIds": [
+        "38202295146",
+        "38203493477"
+      ],
+      "silentRefires": 2
     },
     "test-yml:red:Unit Tests:2a5215c8": {
       "status": "resolved",
@@ -14119,7 +14122,7 @@
       "resolvedAt": "2026-10-11T23:00:12.752Z"
     },
     "land:land/bro-5080-fact-check": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-5080-fact-check",
       "firstSeen": "2026-10-11T22:23:51.866Z",
@@ -14130,7 +14133,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-12T04:22:09.858Z"
     },
     "land:land/bro-3475-drift-order-test": {
       "status": "resolved",
@@ -14174,7 +14178,7 @@
       "linearIdentifier": "BRO-5106"
     },
     "test-yml:red:Unit Tests:d27c1fe5": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"mrs-doubtfire-2021 carries the BRO-5020 values\"",
       "firstSeen": "2026-10-12T01:07:33.762Z",
@@ -14188,8 +14192,11 @@
       "silentRefires": 3,
       "absentRunIds": [
         "38197332180",
-        "38198673628"
-      ]
+        "38198673628",
+        "38200573284"
+      ],
+      "resolvedAt": "2026-10-12T03:54:48.816Z",
+      "resolveReason": "stale-signature"
     },
     "land:land/bro-2735-pending-stubs": {
       "status": "open",
@@ -14205,7 +14212,7 @@
       "linearIdentifier": null
     },
     "land:land/bro-2783-rebuild-fast-retry": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-2783-rebuild-fast-retry",
       "firstSeen": "2026-10-12T02:14:11.575Z",
@@ -14215,7 +14222,8 @@
       "lastSurfacedAt": "2026-10-12T02:14:11.575Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-12T04:15:55.278Z"
     },
     "land:land/bro-5015-other-production-url": {
       "status": "open",
@@ -14320,6 +14328,45 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "land:land/codex-bro-4042": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: rebase red on land/codex-bro-4042",
+      "firstSeen": "2026-10-12T04:06:21.354Z",
+      "incidentOpenedAt": "2026-10-12T04:06:21.354Z",
+      "lastSeen": "2026-10-12T04:06:21.354Z",
+      "lastNotifiedAt": "2026-10-12T04:06:21.354Z",
+      "lastSurfacedAt": "2026-10-12T04:06:21.354Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-4521-followup": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-tsx red on land/bro-4521-followup",
+      "firstSeen": "2026-10-12T04:09:28.225Z",
+      "incidentOpenedAt": "2026-10-12T04:09:28.225Z",
+      "lastSeen": "2026-10-12T04:09:28.225Z",
+      "lastNotifiedAt": "2026-10-12T04:09:28.225Z",
+      "lastSurfacedAt": "2026-10-12T04:09:28.225Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "test-yml:red:Unit Tests:68e8b180": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"wanted-2022: open pool is full and active-only\"",
+      "firstSeen": "2026-10-12T04:37:24.786Z",
+      "incidentOpenedAt": "2026-10-12T04:37:24.786Z",
+      "lastSeen": "2026-10-12T04:37:24.786Z",
+      "lastNotifiedAt": "2026-10-12T04:37:24.786Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-5121"
     }
   }
 }

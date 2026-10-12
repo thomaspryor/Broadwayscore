@@ -1,0 +1,2005 @@
+{
+  "issueNumber": "bro-5080-f",
+  "planId": "92d6b492-cdc7-4b1b-85fd-d00d674a0645",
+  "status": "applied",
+  "createdAt": "2026-10-11T21:45:25.582Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5080 class sweep part 2/2 (apply after bro-5080..d): Broadway historical rows filed at the Steinberg Center that played Studio 54, and Director credits that belong to another production or another role (sourced).",
+    "steps": [
+      "venue -> Studio 54 (IBDB production page)",
+      "creativeTeam: drop the Director entry another production or role holds (sourced)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-threepenny-opera-2006",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "the-threepenny-opera-2006: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/the-threepenny-opera-392567); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-touch-of-the-poet-2005",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "a-touch-of-the-poet-2005: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/a-touch-of-the-poet-397702); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pacific-overtures-2004",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "pacific-overtures-2004: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/pacific-overtures-383003); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-streetcar-named-desire-2005",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "a-streetcar-named-desire-2005: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/a-streetcar-named-desire-381031); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "assassins-2004",
+        "field": "venue",
+        "oldValue": "Harold and Miriam Steinberg Center for Theatre",
+        "newValue": "Studio 54",
+        "description": "assassins-2004: venue -> Studio 54: IBDB lists this production at Studio 54 (https://www.ibdb.com/broadway-production/assassins-13580); a bogus \"Studio 54\" alias on a Steinberg Center entry in scripts/lib/broadway-theaters.js renamed it (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Christopher Renshaw",
+            "role": "Director"
+          },
+          {
+            "name": "Christina Sajous",
+            "role": "Director"
+          },
+          {
+            "name": "James Monroe Iglehart",
+            "role": "Director"
+          },
+          {
+            "name": "Dewitt Fleming, Jr",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Aurin Squire",
+            "role": "Book"
+          },
+          {
+            "name": "Adam Koch and Stephen Royal",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Toni-Leslie James",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Cory Pattak",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Kai Harada",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Branford Marsalis",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Daryl Waters",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Daryl Waters",
+            "role": "Music Supervision"
+          },
+          {
+            "name": "Darryl G. Ivey",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Clarence Muse",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Leon René",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Otis René",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Spencer Williams",
+            "role": "Lyrics"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Christopher Renshaw",
+            "role": "Director"
+          },
+          {
+            "name": "Dewitt Fleming, Jr",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Aurin Squire",
+            "role": "Book"
+          },
+          {
+            "name": "Adam Koch and Stephen Royal",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Toni-Leslie James",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Cory Pattak",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Kai Harada",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Branford Marsalis",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Daryl Waters",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Daryl Waters",
+            "role": "Music Supervision"
+          },
+          {
+            "name": "Darryl G. Ivey",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Clarence Muse",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Leon René",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Otis René",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Spencer Williams",
+            "role": "Lyrics"
+          }
+        ],
+        "description": "a-wonderful-world-the-louis-armstrong-musical-2024: drop Director credit for Christina Sajous (cast member), James Monroe Iglehart (cast member (Armstrong)): Wikipedia: directed by Renshaw; Iglehart is a performer. (https://en.wikipedia.org/wiki/A_Wonderful_World_(musical))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "spring-awakening-2015",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Andy Mientus",
+            "role": "Director"
+          },
+          {
+            "name": "Michael Arden",
+            "role": "Director"
+          },
+          {
+            "name": "Spencer Liff",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Steven Sater",
+            "role": "Book & Lyrics"
+          },
+          {
+            "name": "Dane Laffrey",
+            "role": "Scenic & Costume Design"
+          },
+          {
+            "name": "Ben Stanton",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Gareth Owen",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Duncan Sheik",
+            "role": "Music"
+          },
+          {
+            "name": "Duncan Sheik",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Simon Hale",
+            "role": "Orchestrations"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Michael Arden",
+            "role": "Director"
+          },
+          {
+            "name": "Spencer Liff",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Steven Sater",
+            "role": "Book & Lyrics"
+          },
+          {
+            "name": "Dane Laffrey",
+            "role": "Scenic & Costume Design"
+          },
+          {
+            "name": "Ben Stanton",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Gareth Owen",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Duncan Sheik",
+            "role": "Music"
+          },
+          {
+            "name": "Duncan Sheik",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Simon Hale",
+            "role": "Orchestrations"
+          }
+        ],
+        "description": "spring-awakening-2015: drop Director credit for Andy Mientus (originated the concept and played Hanschen; not director): Wikipedia: Deaf West production directed by Arden, concept credited to Mientus. (https://en.wikipedia.org/wiki/Spring_Awakening_(musical))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "brooklyn-2004",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Stephen Herek",
+            "role": "Director"
+          },
+          {
+            "name": "Jeff Calhoun",
+            "role": "Director"
+          },
+          {
+            "name": "Mark Schoenfeld and Barri McPherson",
+            "role": "Book"
+          },
+          {
+            "name": "Ray Klausen",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Tobin Ost",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Michael Gilliam",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Jonathan Deans and Peter Hylenski",
+            "role": "Sound Design"
+          },
+          {
+            "name": "John McDaniel",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "John McDaniel",
+            "role": "Music Supervision"
+          },
+          {
+            "name": "James Sampliner",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Mark Schoenfeld and Barri McPherson",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Mark Schoenfeld and Barri McPherson",
+            "role": "Music"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Jeff Calhoun",
+            "role": "Director"
+          },
+          {
+            "name": "Mark Schoenfeld and Barri McPherson",
+            "role": "Book"
+          },
+          {
+            "name": "Ray Klausen",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Tobin Ost",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Michael Gilliam",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Jonathan Deans and Peter Hylenski",
+            "role": "Sound Design"
+          },
+          {
+            "name": "John McDaniel",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "John McDaniel",
+            "role": "Music Supervision"
+          },
+          {
+            "name": "James Sampliner",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Mark Schoenfeld and Barri McPherson",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Mark Schoenfeld and Barri McPherson",
+            "role": "Music"
+          }
+        ],
+        "description": "brooklyn-2004: drop Director credit for Stephen Herek (directed an earlier staging, not Broadway): Wikipedia: Broadway production directed by Jeff Calhoun. (https://en.wikipedia.org/wiki/Brooklyn_(musical))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-kite-runner-2022",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Giles Croft",
+            "role": "Director"
+          },
+          {
+            "name": "Kitty Winter",
+            "role": "Director"
+          },
+          {
+            "name": "Matthew Spangler",
+            "role": "Playwright"
+          },
+          {
+            "name": "Barney George",
+            "role": "Scenic & Costume Design"
+          },
+          {
+            "name": "Charles Balfour",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Drew Baumohl",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Jonathan Girling",
+            "role": "Music Supervision"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Giles Croft",
+            "role": "Director"
+          },
+          {
+            "name": "Matthew Spangler",
+            "role": "Playwright"
+          },
+          {
+            "name": "Barney George",
+            "role": "Scenic & Costume Design"
+          },
+          {
+            "name": "Charles Balfour",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Drew Baumohl",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Jonathan Girling",
+            "role": "Music Supervision"
+          }
+        ],
+        "description": "the-kite-runner-2022: drop Director credit for Kitty Winter (credited as Movement Director): Playbill lists Giles Croft as Director and Kitty Winter as Movement Director. (https://playbill.com/production/the-kite-runner-broadway-helen-hayes-theatre-2022)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "charlie-and-the-chocolate-factory-2017",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Sam Mendes",
+            "role": "Director"
+          },
+          {
+            "name": "Jack O'Brien",
+            "role": "Director"
+          },
+          {
+            "name": "Peter Darling",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Joshua Bergasse",
+            "role": "Choreographer"
+          },
+          {
+            "name": "David Greig",
+            "role": "Book"
+          },
+          {
+            "name": "Mark Thompson",
+            "role": "Scenic & Costume Design"
+          },
+          {
+            "name": "Japhy Weideman",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Andrew Keister",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Doug Besterman",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Michael Starobin",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Nicholas Skilbeck",
+            "role": "Music Supervision & Direction"
+          },
+          {
+            "name": "Scott Wittman",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Marc Shaiman",
+            "role": "Music & Lyrics"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Jack O'Brien",
+            "role": "Director"
+          },
+          {
+            "name": "Peter Darling",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Joshua Bergasse",
+            "role": "Choreographer"
+          },
+          {
+            "name": "David Greig",
+            "role": "Book"
+          },
+          {
+            "name": "Mark Thompson",
+            "role": "Scenic & Costume Design"
+          },
+          {
+            "name": "Japhy Weideman",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Andrew Keister",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Doug Besterman",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Michael Starobin",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Nicholas Skilbeck",
+            "role": "Music Supervision & Direction"
+          },
+          {
+            "name": "Scott Wittman",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Marc Shaiman",
+            "role": "Music & Lyrics"
+          }
+        ],
+        "description": "charlie-and-the-chocolate-factory-2017: drop Director credit for Sam Mendes (directed the 2013 West End production, not the 2017 Broadway one): Broadway version has new direction by Jack O'Brien. (https://en.wikipedia.org/wiki/Charlie_and_the_Chocolate_Factory_(musical))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "on-the-twentieth-century-2015",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Scott Ellis",
+            "role": "Director"
+          },
+          {
+            "name": "Harold Prince",
+            "role": "Director"
+          },
+          {
+            "name": "Warren Carlyle",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Betty Comden",
+            "role": "Book & Lyrics"
+          },
+          {
+            "name": "Adolph Green",
+            "role": "Book & Lyrics"
+          },
+          {
+            "name": "David Rockwell",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "William Ivey Long",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Donald Holder",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Jon Weston",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Larry Hochman",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Bruce Coughlin",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "James Abbott",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Kevin Stites",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Cy Coleman",
+            "role": "Music"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Scott Ellis",
+            "role": "Director"
+          },
+          {
+            "name": "Warren Carlyle",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Betty Comden",
+            "role": "Book & Lyrics"
+          },
+          {
+            "name": "Adolph Green",
+            "role": "Book & Lyrics"
+          },
+          {
+            "name": "David Rockwell",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "William Ivey Long",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Donald Holder",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Jon Weston",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Larry Hochman",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Bruce Coughlin",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "James Abbott",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Kevin Stites",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Cy Coleman",
+            "role": "Music"
+          }
+        ],
+        "description": "on-the-twentieth-century-2015: drop Director credit for Harold Prince (directed the 1978 original): Prince directed the 1978 original; Scott Ellis directed the 2015 revival. (https://en.wikipedia.org/wiki/On_the_Twentieth_Century)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-little-mermaid-2008",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "John Musker",
+            "role": "Director"
+          },
+          {
+            "name": "Ron Clements",
+            "role": "Director"
+          },
+          {
+            "name": "Francesca Zambello",
+            "role": "Director"
+          },
+          {
+            "name": "Stephen Mear",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Doug Wright",
+            "role": "Book"
+          },
+          {
+            "name": "George Tsypin",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Tatiana Noginova",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Natasha Katz",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "John Shivers",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Danny Troob",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Larry Hochman and Michael Starobin",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Michael Kosarin",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Howard Ashman",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Glenn Slater",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Alan Menken",
+            "role": "Music"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Francesca Zambello",
+            "role": "Director"
+          },
+          {
+            "name": "Stephen Mear",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Doug Wright",
+            "role": "Book"
+          },
+          {
+            "name": "George Tsypin",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Tatiana Noginova",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Natasha Katz",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "John Shivers",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Danny Troob",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Larry Hochman and Michael Starobin",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Michael Kosarin",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Howard Ashman",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Glenn Slater",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Alan Menken",
+            "role": "Music"
+          }
+        ],
+        "description": "the-little-mermaid-2008: drop Director credit for John Musker (directed the 1989 film), Ron Clements (directed the 1989 film): Stage direction by Zambello; Musker and Clements are the film's directors. (https://en.wikipedia.org/wiki/The_Little_Mermaid_(musical))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "meet-me-in-st-louis-1989",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Louis Burke",
+            "role": "Director"
+          },
+          {
+            "name": "Ashley Lazarus",
+            "role": "Director"
+          },
+          {
+            "name": "Joan Brickhill",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Hugh Wheeler",
+            "role": "Book"
+          },
+          {
+            "name": "Ken Billington",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Alan Stieb and James Brousseau",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Michael Gibson",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Frederick Willard",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Milton Rosenstock",
+            "role": "Music Supervision"
+          },
+          {
+            "name": "Bruce Pomahac",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Hugh Martin and Ralph Blane",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Hugh Martin and Ralph Blane",
+            "role": "Music"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Louis Burke",
+            "role": "Director"
+          },
+          {
+            "name": "Joan Brickhill",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Hugh Wheeler",
+            "role": "Book"
+          },
+          {
+            "name": "Ken Billington",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Alan Stieb and James Brousseau",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Michael Gibson",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Frederick Willard",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Milton Rosenstock",
+            "role": "Music Supervision"
+          },
+          {
+            "name": "Bruce Pomahac",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Hugh Martin and Ralph Blane",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Hugh Martin and Ralph Blane",
+            "role": "Music"
+          }
+        ],
+        "description": "meet-me-in-st-louis-1989: drop Director credit for Ashley Lazarus (not credited as director in Wikipedia/NYT-based text): Directed by Louis Burke, choreography by Joan Brickhill. (https://en.wikipedia.org/wiki/Meet_Me_in_St._Louis_(musical))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fiddler-on-the-roof-2004",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Jerome Robbins",
+            "role": "Director"
+          },
+          {
+            "name": "David Leveaux",
+            "role": "Director"
+          },
+          {
+            "name": "Joseph Stein",
+            "role": "Book"
+          },
+          {
+            "name": "Tom Pye",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Vicki Mortimer",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Brian MacDevitt",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Acme Sound Partners",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Don Walker",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Larry Hochman",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Kevin Stites",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Sheldon Harnick",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Jerry Bock",
+            "role": "Music"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "David Leveaux",
+            "role": "Director"
+          },
+          {
+            "name": "Joseph Stein",
+            "role": "Book"
+          },
+          {
+            "name": "Tom Pye",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Vicki Mortimer",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Brian MacDevitt",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Acme Sound Partners",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Don Walker",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Larry Hochman",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Kevin Stites",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Sheldon Harnick",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Jerry Bock",
+            "role": "Music"
+          }
+        ],
+        "description": "fiddler-on-the-roof-2004: drop Director credit for Jerome Robbins (credited Choreographer/Original Director): Playbill: Leveaux Director, Robbins Choreographer/Original Director. (https://playbill.com/production/fiddler-on-the-roof-minskoff-theatre-vault-0000002329)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "company-2021",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Harold Prince",
+            "role": "Director"
+          },
+          {
+            "name": "Marianne Elliott",
+            "role": "Director"
+          },
+          {
+            "name": "Liam Steel",
+            "role": "Choreographer"
+          },
+          {
+            "name": "George Furth",
+            "role": "Book"
+          },
+          {
+            "name": "Bunny Christie",
+            "role": "Scenic & Costume Design"
+          },
+          {
+            "name": "Neil Austin",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Ian Dickinson and Autograph",
+            "role": "Sound Design"
+          },
+          {
+            "name": "David Cullen",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Joel Fram",
+            "role": "Music Supervision & Direction"
+          },
+          {
+            "name": "Stephen Sondheim",
+            "role": "Music & Lyrics"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Marianne Elliott",
+            "role": "Director"
+          },
+          {
+            "name": "Liam Steel",
+            "role": "Choreographer"
+          },
+          {
+            "name": "George Furth",
+            "role": "Book"
+          },
+          {
+            "name": "Bunny Christie",
+            "role": "Scenic & Costume Design"
+          },
+          {
+            "name": "Neil Austin",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Ian Dickinson and Autograph",
+            "role": "Sound Design"
+          },
+          {
+            "name": "David Cullen",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Joel Fram",
+            "role": "Music Supervision & Direction"
+          },
+          {
+            "name": "Stephen Sondheim",
+            "role": "Music & Lyrics"
+          }
+        ],
+        "description": "company-2021: drop Director credit for Harold Prince (directed the 1970 original, not the 2021 revival): 2021 revival directed by Marianne Elliott; Prince directed the 1970 original. (https://en.wikipedia.org/wiki/Company_(musical))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "latin-history-for-morons-2017",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Tony Taccone",
+            "role": "Director"
+          },
+          {
+            "name": "Emmanuel Hernandez",
+            "role": "Director"
+          },
+          {
+            "name": "John Leguizamo",
+            "role": "Playwright"
+          },
+          {
+            "name": "Rachel Hauck",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Luke McDonough",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Alexander V. Nichols",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Bray Poor",
+            "role": "Sound Design"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Tony Taccone",
+            "role": "Director"
+          },
+          {
+            "name": "John Leguizamo",
+            "role": "Playwright"
+          },
+          {
+            "name": "Rachel Hauck",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Luke McDonough",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Alexander V. Nichols",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Bray Poor",
+            "role": "Sound Design"
+          }
+        ],
+        "description": "latin-history-for-morons-2017: drop Director credit for Emmanuel Hernandez (credited for movement direction): Taccone directed; Hernandez is movement (IBDB via search snippet). (https://www.ibdb.com/broadway-cast-staff/emmanuel-hernandez-516629)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "evita-2012",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Harold Prince",
+            "role": "Director"
+          },
+          {
+            "name": "Michael Grandage",
+            "role": "Director"
+          },
+          {
+            "name": "Rob Ashford",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Tim Rice",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Christopher Oram",
+            "role": "Scenic & Costume Design"
+          },
+          {
+            "name": "Neil Austin",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Mick Potter",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Andrew Lloyd Webber and David Cullen",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Kristen Blodgette",
+            "role": "Music Supervision"
+          },
+          {
+            "name": "Andrew Lloyd Webber",
+            "role": "Music"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Michael Grandage",
+            "role": "Director"
+          },
+          {
+            "name": "Rob Ashford",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Tim Rice",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Christopher Oram",
+            "role": "Scenic & Costume Design"
+          },
+          {
+            "name": "Neil Austin",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Mick Potter",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Andrew Lloyd Webber and David Cullen",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Kristen Blodgette",
+            "role": "Music Supervision"
+          },
+          {
+            "name": "Andrew Lloyd Webber",
+            "role": "Music"
+          }
+        ],
+        "description": "evita-2012: drop Director credit for Harold Prince (directed the 1978/79 original): Grandage directed the 2012 revival. (https://www.ibdb.com/broadway-production/evita-491036)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "godspell-2011",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Daniel Goldstein",
+            "role": "Director"
+          },
+          {
+            "name": "John-Michael Tebelak",
+            "role": "Director"
+          },
+          {
+            "name": "Christopher Gattelli",
+            "role": "Choreographer"
+          },
+          {
+            "name": "David Korins",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Miranda Hoffman",
+            "role": "Costume Design"
+          },
+          {
+            "name": "David Weiner",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Andrew Keister",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Michael Holland",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Charlie Alterman",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Stephen Schwartz",
+            "role": "Music & Lyrics"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Daniel Goldstein",
+            "role": "Director"
+          },
+          {
+            "name": "Christopher Gattelli",
+            "role": "Choreographer"
+          },
+          {
+            "name": "David Korins",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Miranda Hoffman",
+            "role": "Costume Design"
+          },
+          {
+            "name": "David Weiner",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Andrew Keister",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Michael Holland",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Charlie Alterman",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Stephen Schwartz",
+            "role": "Music & Lyrics"
+          }
+        ],
+        "description": "godspell-2011: drop Director credit for John-Michael Tebelak (directed the 1971/1976 original productions): 2011 revival directed by Daniel Goldstein. (https://en.wikipedia.org/wiki/Godspell)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dr-seuss-how-the-grinch-stole-christmas-2007",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Albert Hague",
+            "role": "Music & Lyrics"
+          },
+          {
+            "name": "Dr. Seuss",
+            "role": "Music & Lyrics"
+          },
+          {
+            "name": "Jack O'Brien",
+            "role": "Director"
+          },
+          {
+            "name": "Matt August",
+            "role": "Director"
+          },
+          {
+            "name": "John DeLuca",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Timothy Mason",
+            "role": "Book & Lyrics"
+          },
+          {
+            "name": "John Lee Beatty",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Robert Morgan",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Pat Collins",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Acme Sound Partners",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Michael Starobin",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Joshua Rosenblum",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Mel Marvin",
+            "role": "Music"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Albert Hague",
+            "role": "Music & Lyrics"
+          },
+          {
+            "name": "Dr. Seuss",
+            "role": "Music & Lyrics"
+          },
+          {
+            "name": "Matt August",
+            "role": "Director"
+          },
+          {
+            "name": "John DeLuca",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Timothy Mason",
+            "role": "Book & Lyrics"
+          },
+          {
+            "name": "John Lee Beatty",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Robert Morgan",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Pat Collins",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Acme Sound Partners",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Michael Starobin",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Joshua Rosenblum",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Mel Marvin",
+            "role": "Music"
+          }
+        ],
+        "description": "dr-seuss-how-the-grinch-stole-christmas-2007: drop Director credit for Jack O'Brien (directed the Old Globe original; credited as creator/conceiver of the Broadway version): Broadway version directed by Matt August, created and conceived by O'Brien. (https://en.wikipedia.org/wiki/Dr._Seuss%27_How_the_Grinch_Stole_Christmas!_The_Musical)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "losing-louie-2006",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Robin Lefèvre",
+            "role": "Director"
+          },
+          {
+            "name": "Jerry Zaks",
+            "role": "Director"
+          },
+          {
+            "name": "Simon Mendes da Costa",
+            "role": "Playwright"
+          },
+          {
+            "name": "John Lee Beatty",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "William Ivey Long",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Paul Gallo",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Dan Moses Schreier",
+            "role": "Sound Design"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Jerry Zaks",
+            "role": "Director"
+          },
+          {
+            "name": "Simon Mendes da Costa",
+            "role": "Playwright"
+          },
+          {
+            "name": "John Lee Beatty",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "William Ivey Long",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Paul Gallo",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Dan Moses Schreier",
+            "role": "Sound Design"
+          }
+        ],
+        "description": "losing-louie-2006: drop Director credit for Robin Lefèvre (directed the 2005 London (Hampstead) production, not the MTC Broadway one): Broadway MTC production directed by Jerry Zaks (search result). (https://en.wikipedia.org/wiki/Robin_Lefevre)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "man-of-la-mancha-2002",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Dale Wasserman",
+            "role": "Playwright"
+          },
+          {
+            "name": "Albert Marre",
+            "role": "Director"
+          },
+          {
+            "name": "Jonathan Kent",
+            "role": "Director"
+          },
+          {
+            "name": "Luis Perez",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Paul Brown",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Paul Brown",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Paul Gallo",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Carlyle W. Hall, Sr",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Robert Billig",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Joe Darion",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Mitch Leigh",
+            "role": "Music"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Dale Wasserman",
+            "role": "Playwright"
+          },
+          {
+            "name": "Jonathan Kent",
+            "role": "Director"
+          },
+          {
+            "name": "Luis Perez",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Paul Brown",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Paul Brown",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Paul Gallo",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Carlyle W. Hall, Sr",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Robert Billig",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Joe Darion",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Mitch Leigh",
+            "role": "Music"
+          }
+        ],
+        "description": "man-of-la-mancha-2002: drop Director credit for Albert Marre (directed the 1965 original): 2002 revival directed by Jonathan Kent. (https://en.wikipedia.org/wiki/Man_of_La_Mancha)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "holiday-1995",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Philip Barry",
+            "role": "Playwright"
+          },
+          {
+            "name": "David Warren",
+            "role": "Director"
+          },
+          {
+            "name": "Loyd Williamson",
+            "role": "Director"
+          },
+          {
+            "name": "Derek McLane",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Martin Pakledinaz",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Donald Holder",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "John Gromada",
+            "role": "Sound Design"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Philip Barry",
+            "role": "Playwright"
+          },
+          {
+            "name": "David Warren",
+            "role": "Director"
+          },
+          {
+            "name": "Derek McLane",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Martin Pakledinaz",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Donald Holder",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "John Gromada",
+            "role": "Sound Design"
+          }
+        ],
+        "description": "holiday-1995: drop Director credit for Loyd Williamson (credited for style/movement): Wikipedia: directed by David Warren, style/movement by Loyd Williamson. (https://en.wikipedia.org/wiki/Holiday_(play))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "travesties-1975",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Tom Stoppard",
+            "role": "Playwright"
+          },
+          {
+            "name": "Peter Wood",
+            "role": "Director"
+          },
+          {
+            "name": "William Chappell",
+            "role": "Director"
+          },
+          {
+            "name": "Carl Toms",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Carl Toms",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Robert Ornbo",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Grant Hossack",
+            "role": "Music Supervision"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Tom Stoppard",
+            "role": "Playwright"
+          },
+          {
+            "name": "Peter Wood",
+            "role": "Director"
+          },
+          {
+            "name": "Carl Toms",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Carl Toms",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Robert Ornbo",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Grant Hossack",
+            "role": "Music Supervision"
+          }
+        ],
+        "description": "travesties-1975: drop Director credit for William Chappell (credited for movement/staging, not director): Peter Wood directed; Chappell movement per IBDB snippet. (https://www.ibdb.com/broadway-production/travesties-3765)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "boom-boom-room-1973",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "David Rabe",
+            "role": "Playwright"
+          },
+          {
+            "name": "Joseph Papp",
+            "role": "Director"
+          },
+          {
+            "name": "Julie Bovasso",
+            "role": "Director"
+          },
+          {
+            "name": "Santo Loquasto",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Theoni V. Aldredge",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Martin Aronstein",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Roger Jay",
+            "role": "Sound Design"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "David Rabe",
+            "role": "Playwright"
+          },
+          {
+            "name": "Joseph Papp",
+            "role": "Director"
+          },
+          {
+            "name": "Santo Loquasto",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Theoni V. Aldredge",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Martin Aronstein",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Roger Jay",
+            "role": "Sound Design"
+          }
+        ],
+        "description": "boom-boom-room-1973: drop Director credit for Julie Bovasso (no source credits her as director of this production): Wikipedia and IBDB snippet: directed by Joseph Papp. (https://en.wikipedia.org/wiki/In_the_Boom_Boom_Room)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "chess-2003",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Trevor Nunn",
+            "role": "Director"
+          },
+          {
+            "name": "Peter Flynn",
+            "role": "Director"
+          },
+          {
+            "name": "Christopher Gattelli",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Paul Weimer",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Jeff Croiter",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Cynthia J. Hawkins",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Seth Rudetsky",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Tim Rice",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Benny Andersson and Björn Ulvaeus",
+            "role": "Music"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Peter Flynn",
+            "role": "Director"
+          },
+          {
+            "name": "Christopher Gattelli",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Paul Weimer",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Jeff Croiter",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Cynthia J. Hawkins",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Seth Rudetsky",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Tim Rice",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Benny Andersson and Björn Ulvaeus",
+            "role": "Music"
+          }
+        ],
+        "description": "chess-2003: drop Director credit for Trevor Nunn (directed the 1986 London original): 2003 New Amsterdam concert directed by Peter Flynn. (https://en.wikipedia.org/wiki/Chess_(musical))"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T04:42:40.331Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for the-threepenny-opera-2006"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for a-touch-of-the-poet-2005"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for pacific-overtures-2004"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for a-streetcar-named-desire-2005"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for assassins-2004"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for a-wonderful-world-the-louis-armstrong-musical-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for spring-awakening-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for brooklyn-2004"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for the-kite-runner-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for charlie-and-the-chocolate-factory-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for on-the-twentieth-century-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for the-little-mermaid-2008"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for meet-me-in-st-louis-1989"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for fiddler-on-the-roof-2004"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for company-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for latin-history-for-morons-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for evita-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for godspell-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for dr-seuss-how-the-grinch-stole-christmas-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for losing-louie-2006"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for man-of-la-mancha-2002"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for holiday-1995"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for travesties-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for boom-boom-room-1973"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for chess-2003"
+    }
+  ]
+}

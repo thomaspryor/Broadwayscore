@@ -97,7 +97,10 @@ const { isInertForVerification } = require('./land-branch.js');
 
 // The gates land.yml's checks job runs, in verdict order (the first failing
 // one names the digest line). Keep in step with scripts/lib/land-gauntlet.sh.
-const GATES = ['tsc', 'tsc-llm-scoring', 'next-lint', 'unit-tests-node', 'unit-tests-tsx', 'scripts-lib-tests', 'bash-integration', 'lint-workflows'];
+const GATES = ['tsc', 'tsc-llm-scoring', 'next-lint', 'unit-tests-node', 'unit-tests-tsx', 'scripts-lib-tests', 'bash-integration', 'toplevel-regression', 'lint-workflows'];
+// Gates that report but do not block yet (CLAUDE.md §19: new blocking gates land
+// advisory first). toplevel-regression (BRO-5117) arms with LAND_TOPLEVEL_BLOCKING=1.
+const ADVISORY_GATES = new Set(['toplevel-regression']);
 const TAP_GATES = new Set(['unit-tests-node', 'unit-tests-tsx', 'scripts-lib-tests']);
 const TSC_GATES = new Set(['tsc', 'tsc-llm-scoring']);
 
@@ -173,6 +176,16 @@ function parseBashIntegrationFailures(text) {
   return out;
 }
 
+// toplevel-regression (BRO-5117): same file-path key as bash-integration.
+function parseToplevelRegressionFailures(text) {
+  const out = new Map();
+  for (const raw of stripAnsi(text).split('\n')) {
+    const m = /^::error::toplevel-regression gate failed: (.+?) \(exit \d+\)$/.exec(raw.trimEnd());
+    if (m) out.set(`toplevel-regression::${m[1]}`, { file: 'toplevel-regression', name: m[1] });
+  }
+  return out;
+}
+
 // TAP failures re-keyed with their failureType (see KEYS above). A plain
 // assertion failure keys `file::name [testCodeFailure]` on both sides — same
 // key, same verdict; only a CHANGE of failure kind (subtests failed → file
@@ -195,6 +208,7 @@ function parseGateFailures(gate, text, treeRoot) {
   if (gate === 'next-lint') return parseNextLintFailures(text);
   if (gate === 'lint-workflows') return parseLintWorkflowsFailures(text);
   if (gate === 'bash-integration') return parseBashIntegrationFailures(text);
+  if (gate === 'toplevel-regression') return parseToplevelRegressionFailures(text);
   throw new Error(`land-gate-delta: no parser for gate ${JSON.stringify(gate)}`);
 }
 
@@ -253,7 +267,15 @@ function decideGateDelta({ gate, base, branch }) {
 
 /** Decide every gate. `read(dir, gate)` → {exit,text,root} | null. */
 function decideAllGates({ gates = GATES, base, branch, read = readGateResult }) {
-  return gates.map((gate) => decideGateDelta({ gate, base: base ? read(base, gate) : null, branch: read(branch, gate) }));
+  const armed = process.env.LAND_TOPLEVEL_BLOCKING === '1';
+  return gates.map((gate) => {
+    const branchResult = read(branch, gate);
+    const d = decideGateDelta({ gate, base: base ? read(base, gate) : null, branch: branchResult });
+    // Only a gate that never ran ON THE BRANCH stays blocking. A base tree that
+    // predates the gate (first land of it) also reaches fail-safe, and must not block.
+    if (d.verdict === 'pass' || armed || !ADVISORY_GATES.has(gate) || !branchResult) return d;
+    return { ...d, verdict: 'pass', mode: 'advisory', reason: `ADVISORY (BRO-5117; not blocking until LAND_TOPLEVEL_BLOCKING=1): ${d.reason}` };
+  });
 }
 
 function firstFailingGate(decisions) {
@@ -386,7 +408,7 @@ function main(argv = process.argv.slice(2)) {
 
   for (const d of decisions) {
     console.log(`${d.verdict === 'pass' ? 'PASS' : 'FAIL'}  ${d.gate.padEnd(18)} ${d.mode.padEnd(9)} ${d.reason}`);
-    for (const f of d.newFailures) console.log(`::error::${d.gate}: NEW failure on the branch (absent on origin/main): ${f.file}::${f.name}`);
+    for (const f of d.newFailures) console.log(`::${d.mode === 'advisory' ? 'warning' : 'error'}::${d.gate}: NEW failure on the branch (absent on origin/main): ${f.file}::${f.name}`);
     for (const f of d.preExisting) console.log(`  pre-existing (origin/main is red on this too, not blocking): ${f.file}::${f.name}`);
     for (const f of d.fixed) console.log(`  fixed by this branch: ${f.file}::${f.name}`);
   }
@@ -403,6 +425,7 @@ function main(argv = process.argv.slice(2)) {
 
 module.exports = {
   GATES,
+  ADVISORY_GATES,
   parseGateFailures,
   parseTscFailures,
   parseNextLintFailures,

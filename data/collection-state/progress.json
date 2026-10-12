@@ -421,7 +421,8 @@
     "school-girls-or-the-african-mean-girls-play-2026/the-recs--unknown.json",
     "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
     "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json",
-    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json"
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/showify--unknown.json"
   ],
   "failed": [
     "matilda-the-musical-west-end-2021/whatsonstage--meriel-patrick.json",
@@ -701,7 +702,9 @@
     "boop-2025/nypost--unknown.json",
     "english-2025/guardian--unknown.json",
     "elf-lyons-the-woman-on-the-edge-off-broadway-2026/chortle--unknown.json",
-    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/the-scotsman--david-hepburn.json"
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/the-scotsman--david-hepburn.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/broadwaylog--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/theater-life--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1066,7 +1069,8 @@
       "fences-off-west-end-2026/ground--unknown.json",
       "rent-west-end-2026/ground--unknown.json",
       "jena-friedman-motherfucker-off-broadway-2026/thecomedybureau--unknown.json",
-      "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
+      "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/showify--unknown.json"
     ],
     "scrapingbee": [
       "elektra-west-end-2025/broadwayworld--alexander-cohen.json",
@@ -1166,7 +1170,7 @@
     ]
   },
   "startTime": "2026-10-11T18:57:25.101Z",
-  "lastProcessed": "elf-lyons-the-woman-on-the-edge-off-broadway-2026/the-scotsman--david-hepburn.json",
+  "lastProcessed": "how-shakespeare-saved-my-life-off-broadway-2026/theater-life--unknown.json",
   "log": [
     {
       "t": "2026-10-11T23:34:26.048Z",
@@ -1455,6 +1459,56 @@
     },
     {
       "t": "2026-10-12T02:46:27.312Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-12T04:00:17.980Z",
+      "event": "bb-session",
+      "session": "d95421c5",
+      "url": "https://www.hollywoodreporter.com/movies/movie-reviews/wildwood-review-laika-tra"
+    },
+    {
+      "t": "2026-10-12T04:00:23.819Z",
+      "event": "bb-session",
+      "session": "bf08a0b0",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654485"
+    },
+    {
+      "t": "2026-10-12T04:00:24.447Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-12T04:00:42.118Z",
+      "event": "bb-session",
+      "session": "8eb11ff3",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654485"
+    },
+    {
+      "t": "2026-10-12T04:00:42.776Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-12T04:03:40.110Z",
+      "event": "bb-session",
+      "session": "49ea8802",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-12T04:03:40.798Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-12T04:03:58.830Z",
+      "event": "bb-session",
+      "session": "4fa30586",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-12T04:03:59.487Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }

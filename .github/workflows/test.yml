@@ -345,6 +345,10 @@ on:
       - 'scripts/discover-historical-shows-we.js'
       - 'scripts/merge-wet-stars-urls.js'
       - 'scripts/audit-we-historical-season.js'
+      # scripts/plan-we-historical-opening-repair.test.mjs, scripts/lib/fact-check-sample.test.mjs (BRO-5080)
+      - 'scripts/plan-we-historical-opening-repair.js'
+      - 'scripts/plan-we-historical-opening-repair.test.mjs'
+      - 'scripts/fact-check-historical-sample.js'
       # scripts/lib/we-review-led-candidates.test.mjs (BRO-5031)
       - 'scripts/resolve-we-unlisted-tr.js'
       # tests/unit/landed-but-open-merge-direction.test.mjs

@@ -75,11 +75,11 @@
  * (dispatched runs report head_branch main, so they can't be tied to a ref).
  * A ref that has been through MAX_LAND_RUNS runs, or whose last run has been
  * re-run that many times, is not resumed again: the same card would otherwise
- * win every firing ahead of fresh work. A `cancelled` run is an eviction from
- * the shared landing slot (CLOUD.md Landing). land-retry-cancelled.yml re-runs
- * those once the landing slot is free (BRO-4653), so one still cancelled here is
- * waiting for the slot or was declined; its resume kind is 'evicted': nothing to
- * fix, the slot-aware retry decides (re-run now, wait, or re-push).
+ * win every firing ahead of fresh work. A `cancelled` run was cancelled before
+ * it did any work (an eviction under the pre-BRO-5112 shared landing group).
+ * land-retry-cancelled.yml re-runs those, one per sweep, so one still cancelled
+ * here is waiting for the sweep or was declined; its resume kind is 'evicted':
+ * nothing to fix, the retry decides (re-run now or re-push).
  *
  * PAUSE MEMORY (BRO-4574): the card text above can't tell whether a worker
  * already tried this card and stopped. Seen on the first two live firings

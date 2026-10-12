@@ -101,6 +101,7 @@ const { parseBwwPostingAuthor } = require('./lib/bww-jsonld-author');
 // The Maids or Heated Rivalry would still miss 1MC despite the poller now
 // catching it on the cron. US markets only (omc-discovery is region=us).
 const { discoverNewReviews: discoverOMCReviews, OUTLET_NAME: OMC_OUTLET_NAME } = require('./lib/omc-discovery');
+const { discoverGoogleNewsReviews } = require('./lib/google-news-rss');
 const { findBWWRoundupLinkOnHomepage } = require('./lib/bww-homepage-scan');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
 const { shouldTriggerRebuild } = require('./lib/gather-reviews-rebuild-trigger');
@@ -5320,6 +5321,23 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     } catch (err) {
       console.log(`  OMC error: ${err.message}`);
     }
+  }
+
+  // Opening-night dispatches also poll Google News, whose article index can
+  // precede the outlet's own listing by hours. The helper bounds the window.
+  if (options.openingNight) {
+    const knownNewsUrls = new Set(foundReviews.map(r => r.url).filter(Boolean));
+    const showDir = path.join(REVIEW_TEXTS_DIR, showId);
+    if (fs.existsSync(showDir)) {
+      for (const file of fs.readdirSync(showDir).filter(f => f.endsWith('.json'))) {
+        try {
+          const review = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));
+          if (review.url) knownNewsUrls.add(review.url);
+          if (review.reviewUrl) knownNewsUrls.add(review.reviewUrl);
+        } catch { /* ignore unreadable records */ }
+      }
+    }
+    foundReviews.push(...await discoverGoogleNewsReviews(show, { knownUrls: knownNewsUrls, verbose: true }));
   }
 
   // STEP 2: Search outlets via Google SERP (ScrapingBee / Bright Data)

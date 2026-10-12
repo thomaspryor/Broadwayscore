@@ -9,6 +9,7 @@
  *   4. SERP backup (Google via ScrapingBee/BrightData) — catches the rest
  *
  * Each poll cycle discovers new URLs, creates review files, and reports progress.
+ * Google News RSS runs alongside outlet feeds during the opening window.
  * Designed to be called repeatedly by a CI workflow every 15 min on opening night.
  *
  * Usage:
@@ -42,6 +43,7 @@ const {
 } = require('./gather-reviews');
 
 const { checkRSSFeeds } = require('./lib/rss-discovery');
+const { discoverGoogleNewsReviews } = require('./lib/google-news-rss');
 const { searchOutletSites, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-discovery');
 const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
 // 1 Minute Critic direct-discovery. Its RSS feed isn't in rss-discovery.js's
@@ -1693,18 +1695,20 @@ async function pollCycle() {
       })
     : [];
 
-  const [aggSettled, rssSettled, ssrSettled, omcSettled] = await Promise.allSettled([
+  const [aggSettled, rssSettled, ssrSettled, omcSettled, googleNewsSettled] = await Promise.allSettled([
     runAggregators(show),
     runRSSFeeds(show.title, knownUrls, show.openingDate || null, market),
     ssrSiteSearchIds.length > 0
       ? runSiteSearch(show.title, ssrSiteSearchIds, knownUrls, market, show.openingDate || null, show)
       : Promise.resolve([]),
     SKIP_OMC ? Promise.resolve([]) : runOMC(SHOW_ID, show, market),
+    discoverGoogleNewsReviews(show, { knownUrls, verbose: true }),
   ]);
   const aggResults = aggSettled.status === 'fulfilled' ? aggSettled.value : (console.log(`  [Layer 1] ERROR: ${aggSettled.reason?.message}`), []);
   const rssResults = rssSettled.status === 'fulfilled' ? rssSettled.value : (console.log(`  [Layer 2] ERROR: ${rssSettled.reason?.message}`), []);
   const ssrSiteSearchResults = ssrSettled.status === 'fulfilled' ? ssrSettled.value : (console.log(`  [Layer 3 SSR] ERROR: ${ssrSettled.reason?.message}`), []);
   const omcResults = omcSettled.status === 'fulfilled' ? omcSettled.value : (console.log(`  [Layer 2b] ERROR: ${omcSettled.reason?.message}`), []);
+  const googleNewsResults = googleNewsSettled.status === 'fulfilled' ? googleNewsSettled.value : (console.log(`  [google-news-rss] ERROR: ${googleNewsSettled.reason?.message}`), []);
 
   // JS-rendered site-search: only for outlets still missing after parallel phase.
   // Prevents burning SB credits on outlets aggregators/RSS already found.
@@ -1727,7 +1731,7 @@ async function pollCycle() {
   let jsOutletMisses = { ...(backoff.jsOutletMisses || {}) };
   if (!SKIP_SITE_SEARCH) {
     const foundAfterParallel = getFoundOutletIds(SHOW_ID, { show, market });
-    for (const r of [...aggResults, ...rssResults, ...ssrSiteSearchResults, ...omcResults]) {
+    for (const r of [...aggResults, ...rssResults, ...ssrSiteSearchResults, ...omcResults, ...googleNewsResults]) {
       if (r.outletId) foundAfterParallel.add(r.outletId.toLowerCase());
     }
     // A find via ANY channel clears stale misses — otherwise an outlet found
@@ -1852,7 +1856,7 @@ async function pollCycle() {
   let serpResults = [];
   if ((!SKIP_SERP && shouldRunSerp()) || serpBurstActive) {
     const foundOutletIds = getFoundOutletIds(SHOW_ID, { show, market });
-    for (const r of [...aggResults, ...rssResults, ...siteSearchResults, ...omcResults]) {
+    for (const r of [...aggResults, ...rssResults, ...siteSearchResults, ...omcResults, ...googleNewsResults]) {
       if (r.outletId) foundOutletIds.add(r.outletId.toLowerCase());
     }
     // Sort T1 before T2 so the 30-call SERP budget goes to highest-value outlets first
@@ -2016,7 +2020,7 @@ async function pollCycle() {
   // else: ENABLE_WE_SERP_BURST on but burst disallowed — the "burst not allowed" line above already logged it
 
   // ── Process discovered reviews ──
-  const allDiscovered = [...aggResults, ...rssResults, ...siteSearchResults, ...serpResults, ...omcResults];
+  const allDiscovered = [...aggResults, ...rssResults, ...siteSearchResults, ...serpResults, ...omcResults, ...googleNewsResults];
   console.log(`\n━━━ Processing ${allDiscovered.length} discovered reviews ━━━`);
 
   const { created, skipped, rejected } = processDiscoveredReviews(
@@ -2061,7 +2065,7 @@ async function pollCycle() {
   console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log('  POLL CYCLE RESULTS');
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-  console.log(`  Discovered: ${allDiscovered.length} (agg:${aggResults.length} rss:${rssResults.length} site:${siteSearchResults.length} serp:${serpResults.length} omc:${omcResults.length}) [parallel: layers 1-3+2b]`);
+  console.log(`  Discovered: ${allDiscovered.length} (agg:${aggResults.length} rss:${rssResults.length} site:${siteSearchResults.length} serp:${serpResults.length} omc:${omcResults.length} google-news-rss:${googleNewsResults.length}) [parallel: layers 1-3+2b]`);
   console.log(`  Files created: ${created} | Skipped: ${skipped} | Rejected: ${rejected}`);
   console.log(`  Scored reviews: ${preStatus.total} → ${postStatus.total} (+${newReviews})`);
   console.log(`  T1: ${postStatus.t1} | T2: ${postStatus.t2} | Hi-conf: ${postStatus.highConfidence}`);

@@ -100,6 +100,11 @@ const ALLOWED_SCRIPTS = [
   // on (refetch + same-article check in scripts/lib/page-bleed-repair.js;
   // queues a rescore for each trimmed file).
   'repair-page-bleed.js',
+  // BRO-5080: West End historical rows whose openingDate is a WhatsOnStage
+  // first-performance date (221 rows, past the plan action cap). --apply
+  // recomputes from live data and is idempotent; rules in
+  // scripts/lib/we-historical-dates.js.
+  'plan-we-historical-opening-repair.js',
 ];
 
 // --- Helpers ---

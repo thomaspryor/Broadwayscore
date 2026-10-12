@@ -235,13 +235,11 @@ const BROADWAY_THEATERS = {
     aliases: ['American Airlines Theatre', 'Selwyn Theatre'],
     renamed: '2023-09-12'
   },
-  'harold-and-miriam-steinberg': {
-    canonical: 'Harold and Miriam Steinberg Center for Theatre',
-    address: '111 W 46th St',
-    seats: 499,
-    aliases: ['Studio 54'],
-    note: 'Often listed as Studio 54'
-  },
+  // No Steinberg Center entry (BRO-5080): it is Roundabout's off-Broadway
+  // building (Laura Pels + Black Box, 111 W 46th St), not a Broadway house.
+  // An entry here with alias 'Studio 54' renamed 31 IBDB "Studio 54"
+  // productions to it, and its partial match made "Laura Pels Theatre at the
+  // ... Steinberg Center" validate as Broadway. Studio 54 has its own entry.
 
   // === LINCOLN CENTER THEATER ===
   'vivian-beaumont': {

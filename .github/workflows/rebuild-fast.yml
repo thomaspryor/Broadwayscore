@@ -51,7 +51,17 @@ jobs:
     # 6.6-7.3min and failed ones 11.4-11.6min under the OLD 240s budget, so
     # the new ~600s worst case plus this job's other steps lands well inside
     # 25min with real margin.
-    timeout-minutes: 25
+    # 25->45 (BRO-2783): the push step may now redo the fast rebuild on fresh
+    # main after a lost race. Worst-case budget (REBUILD_FAST_MAX_CYCLES=2):
+    #   steps before the push            ~600s (observed 6.6-7.3 min whole run)
+    #   cycle 1 push (PUSH_DEADLINE_SEC)  600s
+    #   1 redo: jitter <=20s + fetch <=30s + rebuild/mobile regen ~180s
+    #           + redo push deadline 300s = 530s
+    #   always() steps after the push (core-data push, deploy trigger,
+    #   failure notify, summary)          ~300s
+    #   total ~2030s = ~34 min, leaving ~11 min under 45 min.
+    # tests/unit/rebuild-fast-push-retry.test.mjs re-checks this arithmetic.
+    timeout-minutes: 45
 
     steps:
       - name: Checkout repository
@@ -265,31 +275,9 @@ jobs:
       # updates for every OTHER show in this run.
       - name: Revert public data for shows flagged by staleness guard
         if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
-        run: |
-          FILE="${RUNNER_TEMP:-/tmp}/staleness-missing-shows.txt"
-          if [ -s "$FILE" ]; then
-            echo "Staleness guard flagged show(s) — reconciling their public/data/shows/*.json (BRO-3127):"
-            while IFS= read -r show_id; do
-              [ -z "$show_id" ] && continue
-              TARGET="public/data/shows/$show_id.json"
-              if git cat-file -e "HEAD:$TARGET" 2>/dev/null; then
-                git checkout HEAD -- "$TARGET" 2>/dev/null \
-                  && echo "  reverted to last-known-good: $show_id" \
-                  || echo "::warning::could not revert $TARGET for flagged show $show_id"
-              elif [ -f "$TARGET" ]; then
-                # ship-check/Codex adversarial finding: a BRAND-NEW show has no
-                # committed HEAD version to revert to — `git checkout HEAD --`
-                # would just fail on it and leave the freshly-regenerated,
-                # incomplete file in place to be staged and published as-is.
-                # Remove it instead; it publishes correctly once the drift
-                # resolves and this show is no longer flagged.
-                rm -f "$TARGET"
-                echo "  removed (newly-generated, no prior committed version to revert to): $show_id"
-              else
-                echo "  skip (no public JSON exists at all): $show_id"
-              fi
-            done < "$FILE"
-          fi
+        # Logic lives in scripts/lib/revert-staleness-flagged-shows.sh (BRO-2783)
+        # so the post-lost-race redo in scripts/rebuild-fast-redo.sh reuses it.
+        run: bash scripts/lib/revert-staleness-flagged-shows.sh
 
       # Coverage Verdict S3 (task #905): stamps the first time each show's
       # score goes public (public/data/shows/{id}.json's `cs` field, just
@@ -440,10 +428,36 @@ jobs:
           # (push-with-retry.sh already reads GIT_NET_TIMEOUT_SEC from env) —
           # it does not touch the shared 90s default other callers rely on.
           GIT_NET_TIMEOUT_SEC: '30'
+          REVIEWS_BEFORE: ${{ steps.before.outputs.count }}
+          REVIEWS_AFTER: ${{ steps.after.outputs.count }}
+          REBUILD_REASON: ${{ inputs.reason || 'Scheduled safety-net refresh' }}
+          REBUILD_FORCE_WRITE: ${{ inputs.force_write || 'false' }}
+          # The redo regenerates public data, so it refuses unless the
+          # staleness guard said this run was safe to publish.
+          REBUILD_FAST_SAFE_TO_PUBLISH: ${{ steps.staleness.outputs.safe_to_publish }}
+          # BRO-2783 (board option b): when push-with-retry.sh loses all 20
+          # rebase races to a hot main it exits 1, which stranded a fully
+          # scored rebuild on opening night 2026-09-04 (the Git Data API
+          # fallback skips union-merge-managed files by design, and
+          # API_FALLBACK_SAFE must NOT be widened). rebuild-fast-push-cycle.sh
+          # instead resets to fresh origin/main, redoes the fast rebuild
+          # (scripts/rebuild-fast-redo.sh) and pushes again: 2 cycles total
+          # (one redo), jittered, hard-capped at 5 in rebuild-fast-push-cycle.js.
+          # The redo replays this run's data/audit writes 3-way and publishes
+          # only the paths the lost commit changed. Redo cycles push with a
+          # 300s deadline (a fresh-HEAD push lands fast); see the job's
+          # timeout-minutes comment for the worst-case budget (~34 of 45 min).
+          REBUILD_FAST_MAX_CYCLES: '2'
+          REBUILD_FAST_REDO_PUSH_DEADLINE_SEC: '300'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
 
+          # Staged inline as well as in scripts/rebuild-fast-stage-commit.sh
+          # (which the post-lost-race redo uses): the workflow lints
+          # (alert-ledger-commit-check, ledger coverage) read staging from
+          # this file. tests/unit/rebuild-fast-push-retry.test.mjs fails if
+          # the two path lists drift apart.
           git add data/audit/*.json 2>/dev/null || true
           # Stage deletions of orphan-unscored marker files. verify-all-scored.js
           # deletes them when scores have filled in; without -u those deletions
@@ -467,30 +481,26 @@ jobs:
           git add public/data/admin/locks.json 2>/dev/null || true
           # Critic-coverage admin digest (S4 — drives /admin/critic-coverage page).
           git add public/data/admin/critic-coverage.json 2>/dev/null || true
-          git checkout -- data/reviews.json data/audience-buzz.json 2>/dev/null || true
 
-          BEFORE=${{ steps.before.outputs.count }}
-          AFTER=${{ steps.after.outputs.count }}
-          DIFF=$((AFTER - BEFORE))
-
-          REASON="${{ inputs.reason || 'Scheduled safety-net refresh' }}"
-          MSG="data: Fast rebuild - $REASON"
-
-          if [ $DIFF -ne 0 ]; then
-            if [ $DIFF -gt 0 ]; then
-              MSG="$MSG (+$DIFF reviews)"
-            else
-              MSG="$MSG ($DIFF reviews)"
-            fi
+          # Commit message + commit: scripts/rebuild-fast-stage-commit.sh
+          # (re-stages the same paths, a no-op here). Exit 3 = nothing staged;
+          # has_changes said otherwise, so a no-op is benign and the push is
+          # skipped.
+          set +e
+          bash scripts/rebuild-fast-stage-commit.sh
+          COMMIT_RC=$?
+          set -e
+          if [ "$COMMIT_RC" -eq 3 ]; then
+            echo "Nothing staged after all; skipping push."
+            exit 0
+          elif [ "$COMMIT_RC" -ne 0 ]; then
+            exit "$COMMIT_RC"
           fi
 
-          git commit -m "$MSG
-
-          Reviews: $BEFORE → $AFTER
-
-          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
-
-          bash scripts/lib/push-with-retry.sh 20 main
+          # hygiene-stage-no-commit-ok: the commit is made by scripts/rebuild-fast-stage-commit.sh (COMMIT_RC above) before this push
+          PUSH_CMD="bash scripts/lib/push-with-retry.sh 20 main" \
+          REBUILD_FAST_REDO_CMD="bash scripts/rebuild-fast-redo.sh" \
+            bash scripts/lib/rebuild-fast-push-cycle.sh
 
       - name: Push core data to private repo
         id: push-core-data

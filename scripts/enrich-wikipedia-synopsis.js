@@ -31,7 +31,7 @@ const {
   pickSearchCandidate,
 } = require('./lib/wikipedia-synopsis-match');
 const { cleanSearchTitle } = require('./lib/title-normalization');
-const { isValidSynopsis, classifyBadSynopsis } = require('./lib/synopsis-validation');
+const { isValidSynopsis, classifyBadSynopsis, synopsisAuthorMismatch } = require('./lib/synopsis-validation');
 const { isTourShow } = require('./lib/tour-family');
 const { verifyProductionMatch } = require('./lib/synopsis-production-match');
 const { CLAUDE_OPUS } = require('./lib/models');
@@ -294,6 +294,16 @@ async function main() {
     if (synopsis.length < 20 || hasBadSynopsisContent(synopsis) || !isValidSynopsis(synopsis)) {
       console.log('synopsis too short or invalid');
       noPlot++;
+      await new Promise(r => setTimeout(r, 300));
+      continue;
+    }
+
+    // Same title, other author: Home Front 1985 (James Duff) got Warren
+    // Leight's 2023 play past the verifier (BRO-5080).
+    const otherAuthor = synopsisAuthorMismatch({ ...show, synopsis });
+    if (otherAuthor) {
+      console.log(`rejected (names ${otherAuthor}, not in this row's credits)`);
+      wrongShow++;
       await new Promise(r => setTimeout(r, 300));
       continue;
     }

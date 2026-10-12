@@ -1,0 +1,592 @@
+{
+  "issueNumber": "bro-5080-b",
+  "planId": "12fe7eab-0282-408f-8bc4-8577d61ed7e2",
+  "status": "applied",
+  "createdAt": "2026-10-11T21:34:08.879Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5080 part 2 (apply after part 1): fix wrong basic facts the sourced sample audit found on the historical backfills (24 edits, each description carrying its source URL).",
+    "steps": [
+      "Dates: set the sourced value",
+      "Type/venue/credits: set the sourced value",
+      "Synopsis: clear marketing / other-production / wrong-work text so the production-verified enricher refills it",
+      "Posters of other productions: clear, reject the source, mark no reliable art"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bonnie-and-clyde-2011",
+        "field": "images",
+        "oldValue": {
+          "hero": "/images/shows/bonnie-and-clyde-2011/hero.webp",
+          "thumbnail": "/images/shows/bonnie-and-clyde-2011/thumbnail.webp",
+          "poster": "/images/shows/bonnie-and-clyde-2011/poster.webp"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "bonnie-and-clyde-2011: poster, thumbnail and hero cleared: poster-other-production: art is for the 2023 London Garrick Theatre staging (McCann/Gage), not the 2011 Broadway production with Osnes/Jordan. (https://en.wikipedia.org/wiki/Bonnie_%26_Clyde_(musical))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bonnie-and-clyde-2011",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/NnMWnBUntrW22b8GiXbmy/c63526d76f79198b129149f645936978/B_C_480x720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/NnMWnBUntrW22b8GiXbmy/c63526d76f79198b129149f645936978/B_C_480x720.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/31boJuvua8yOJBkGE3qdfo/d42635e419be95a584424a6feea1f48f/030423_TOR1446_EMG_Bonnie_Clyde_PRODUCTION_PRESS_008.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "bonnie-and-clyde-2011: never re-take the wrong art source (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bonnie-and-clyde-2011",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-11",
+          "reason": "BRO-5080 sourced fact-check: art was poster-other-production",
+          "key": "bonnie and clyde|gerald schoenfeld theatre|2011-12-01"
+        },
+        "description": "bonnie-and-clyde-2011: no reliable art; the image sweep and self-heal skip it until the row changes"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dear-evan-hansen-2016",
+        "field": "synopsis",
+        "oldValue": "\"Dear Evan Hansen\" is the deeply personal and profoundly contemporary musical about life and the way we live it.",
+        "newValue": null,
+        "description": "dear-evan-hansen-2016: synopsis cleared (synopsis-marketing) so the production-verified enricher refills it (https://en.wikipedia.org/wiki/Dear_Evan_Hansen)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hamlet-1975",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/hamlet-1975/thumbnail.jpg",
+          "poster": "/images/shows/hamlet-1975/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "hamlet-1975: poster, thumbnail and hero cleared: poster-wrong-show: image is a Playbill cover for P.S. Your Cat Is Dead! at the John Golden Theatre; Hamlet (Rudman, Waterston) played the Vivian Beaumont. (https://www.ibdb.com/person.php?id=69015)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hamlet-1975",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "google-images:https://playbill.com/production/hamlet-vivian-beaumont-theatre-vault-0000011268",
+          "google-images:https://www.easthamptonstar.com/archive/paul-davis-posters-public-theater"
+        ],
+        "description": "hamlet-1975: never re-take the wrong art source (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hamlet-1975",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-11",
+          "reason": "BRO-5080 sourced fact-check: art was poster-wrong-show",
+          "key": "hamlet|vivian beaumont theater|1975-12-17"
+        },
+        "description": "hamlet-1975: no reliable art; the image sweep and self-heal skip it until the row changes"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sherlock-holmes-1974",
+        "field": "synopsis",
+        "oldValue": "Sherlock Holmes is a four-act play by William Gillette and Sir Arthur Conan Doyle, based on Conan Doyle's character Sherlock Holmes. After three previews it premiered on Broadway November 6, 1899, at the Garrick Theatre in New York City.",
+        "newValue": null,
+        "description": "sherlock-holmes-1974: synopsis cleared (synopsis-wrong-production) so the production-verified enricher refills it (https://www.arthur-conan-doyle.com/wiki/Sherlock_Holmes_(play_1974-1975_with_John_Wood))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sherlock-holmes-1974",
+        "field": "images",
+        "oldValue": {
+          "hero": null,
+          "thumbnail": "/images/shows/sherlock-holmes-1974/thumbnail.jpg",
+          "poster": "/images/shows/sherlock-holmes-1974/poster.jpg"
+        },
+        "newValue": {
+          "hero": null,
+          "thumbnail": null,
+          "poster": null
+        },
+        "description": "sherlock-holmes-1974: poster, thumbnail and hero cleared: poster-other-production: modern art for 'a new mystery by Joel Horwood', a different play; the 1974 production was Gillette/Doyle with John Wood. (https://www.arthur-conan-doyle.com/wiki/Sherlock_Holmes_(play_1974-1975_with_John_Wood))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sherlock-holmes-1974",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://www.theaterdiary.com/parse/files/C7TsezAg3jnX9jHLsC9KFEteyKePkwLtB46dDpfh/c5c6bbe8ff6b8da1acc6ffd36fb4f5fe_sherlock%20holmes%20regents%20park.jpg"
+        ],
+        "description": "sherlock-holmes-1974: never re-take the wrong art source (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sherlock-holmes-1974",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-11",
+          "reason": "BRO-5080 sourced fact-check: art was poster-other-production",
+          "key": "sherlock holmes|broadhurst theatre|1974-11-12"
+        },
+        "description": "sherlock-holmes-1974: no reliable art; the image sweep and self-heal skip it until the row changes"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "little-johnny-jones-1982",
+        "field": "previewsStartDate",
+        "oldValue": "1982-02-25",
+        "newValue": "1982-03-05",
+        "description": "little-johnny-jones-1982: previewsStartDate -> 1982-03-05: other: Playbill gives first preview March 5, 1982, not Feb 25. (https://playbill.com/production/little-johnny-jones-alvin-theatre-vault-0000000875)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sally-marrand-her-escorts-1994",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Joan Rivers, Erin Sanders and Lonny Price",
+            "role": "Playwright"
+          },
+          {
+            "name": "Lonny Price",
+            "role": "Director"
+          },
+          {
+            "name": "William Barclay",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Phil Monat",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Jan Nebozenko",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Tim Weil",
+            "role": "Orchestrations"
+          },
+          {
+            "name": "Noble Sissle",
+            "role": "Lyrics"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Joan Rivers, Erin Sanders and Lonny Price",
+            "role": "Playwright"
+          },
+          {
+            "name": "Lonny Price",
+            "role": "Director"
+          },
+          {
+            "name": "William Barclay",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Phil Monat",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Jan Nebozenko",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Tim Weil",
+            "role": "Orchestrations"
+          }
+        ],
+        "description": "sally-marrand-her-escorts-1994: writers: wrong-person: Noble Sissle is not credited on this production; only Rivers, Sanders and Price. (https://www.ibdb.com/broadway-production/sally-marrand-her-escorts-4608)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "zoyas-apartment-1990",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Mikhail Bulgakov",
+            "role": "Playwright"
+          },
+          {
+            "name": "Boris A. Morozov",
+            "role": "Director"
+          },
+          {
+            "name": "Mina Yakim",
+            "role": "Director"
+          },
+          {
+            "name": "James Morgan",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Mary Jo Dondlinger",
+            "role": "Lighting Design"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Mikhail Bulgakov",
+            "role": "Playwright"
+          },
+          {
+            "name": "Boris A. Morozov",
+            "role": "Director"
+          },
+          {
+            "name": "James Morgan",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Mary Jo Dondlinger",
+            "role": "Lighting Design"
+          }
+        ],
+        "description": "zoyas-apartment-1990: directors: wrong-person: Mina Yakim is credited for movement/choreography, not direction; Morozov alone directed. (https://www.ibdb.com/broadway-production/zoyas-apartment-4326)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-man-who-came-to-dinner-2000",
+        "field": "synopsis",
+        "oldValue": "created the role of Sheridan Whiteside in The Man Who Came to Dinner The play is set in the small town of Mesalia, Ohio in the weeks leading to Christmas in the late 1930s. The famously outlandish New York City radio wit Sheridan Whiteside ('Sherry' to his friends) is invited to dine at the house of the well-to-do factory owner Ernest W.",
+        "newValue": null,
+        "description": "the-man-who-came-to-dinner-2000: synopsis cleared (other) so the production-verified enricher refills it (https://en.wikipedia.org/wiki/The_Man_Who_Came_to_Dinner)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lennon-2005",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/lennon-2005/thumbnail.jpg",
+          "poster": "/images/shows/lennon-2005/poster.webp",
+          "hero": "/images/shows/lennon-2005/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "lennon-2005: poster, thumbnail and hero cleared: poster-not-art: image is for 'The 42nd Annual John Lennon Tribute' event (photo by Bob Gruen), not the 2005 Broadway musical Lennon. (https://playbill.com/article/marquee-value-lennon-at-the-broadhurst-com-127192)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lennon-2005",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/10Jj11i3918M7UTt2yWBEC/3663c5a082f7aa80003c1aae8a6476e2/42nd-Lennon-Tribute-480-720.jpg?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/10Jj11i3918M7UTt2yWBEC/3663c5a082f7aa80003c1aae8a6476e2/42nd-Lennon-Tribute-480-720.jpg?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/10Jj11i3918M7UTt2yWBEC/3663c5a082f7aa80003c1aae8a6476e2/42nd-Lennon-Tribute-480-720.jpg?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "lennon-2005: never re-take the wrong art source (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lennon-2005",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-11",
+          "reason": "BRO-5080 sourced fact-check: art was poster-not-art",
+          "key": "lennon|broadhurst theatre|2005-08-14"
+        },
+        "description": "lennon-2005: no reliable art; the image sweep and self-heal skip it until the row changes"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "john-lithgow-stories-by-heart-2018",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Jack O'Brien",
+            "role": "Director"
+          },
+          {
+            "name": "Daniel Sullivan",
+            "role": "Director"
+          },
+          {
+            "name": "John Lithgow",
+            "role": "Playwright"
+          },
+          {
+            "name": "John Lee Beatty",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Jess Goldstein",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Kenneth Posner",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Peter Fitzgerald",
+            "role": "Sound Design"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Daniel Sullivan",
+            "role": "Director"
+          },
+          {
+            "name": "John Lithgow",
+            "role": "Playwright"
+          },
+          {
+            "name": "John Lee Beatty",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Jess Goldstein",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Kenneth Posner",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Peter Fitzgerald",
+            "role": "Sound Design"
+          }
+        ],
+        "description": "john-lithgow-stories-by-heart-2018: directors: credit-other-production: Jack O'Brien directed the 2008 Lincoln Center version; Broadway 2018 was directed by Daniel Sullivan. (https://www.playbill.com/article/john-lithgow-to-return-to-broadway-with-personal-solo-show)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bullets-over-broadway-2014",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/bullets-over-broadway-2014/thumbnail.jpg",
+          "poster": "/images/shows/bullets-over-broadway-2014/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "bullets-over-broadway-2014: poster, thumbnail and hero cleared: poster-other-production: this is the 1994 Woody Allen film poster (Cusack, Wiest, Palminteri), not the 2014 Susan Stroman musical. (https://en.wikipedia.org/wiki/Bullets_over_Broadway)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bullets-over-broadway-2014",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-11",
+          "reason": "BRO-5080 sourced fact-check: art was poster-other-production",
+          "key": "bullets over broadway|st. james theatre|2014-04-10"
+        },
+        "description": "bullets-over-broadway-2014: no reliable art; the image sweep and self-heal skip it until the row changes"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "johnny-johnson-1971",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "johnny-johnson-1971: type -> musical: type-wrong: a musical with music by Kurt Weill, not a play. (https://en.wikipedia.org/wiki/Johnny_Johnson_(musical))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "johnny-johnson-1971",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/johnny-johnson-1971/thumbnail.jpg",
+          "poster": "/images/shows/johnny-johnson-1971/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "johnny-johnson-1971: poster, thumbnail and hero cleared: poster-other-production: Portuguese 2026 Sao Carlos concert tour poster, not the 1971 Quintero staging. (https://en.wikipedia.org/wiki/Johnny_Johnson_(musical))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "johnny-johnson-1971",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-11",
+          "reason": "BRO-5080 sourced fact-check: art was poster-other-production",
+          "key": "johnny johnson|edison theatre|1971-04-11"
+        },
+        "description": "johnny-johnson-1971: no reliable art; the image sweep and self-heal skip it until the row changes"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T04:29:15.058Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for bonnie-and-clyde-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for bonnie-and-clyde-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for bonnie-and-clyde-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for dear-evan-hansen-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for hamlet-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for hamlet-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for hamlet-1975"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for sherlock-holmes-1974"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for sherlock-holmes-1974"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for sherlock-holmes-1974"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for sherlock-holmes-1974"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for little-johnny-jones-1982"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for sally-marrand-her-escorts-1994"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for zoyas-apartment-1990"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-man-who-came-to-dinner-2000"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for lennon-2005"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for lennon-2005"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for lennon-2005"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for john-lithgow-stories-by-heart-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for bullets-over-broadway-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for bullets-over-broadway-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for johnny-johnson-1971"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for johnny-johnson-1971"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for johnny-johnson-1971"
+    }
+  ]
+}

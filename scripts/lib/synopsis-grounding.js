@@ -1,7 +1,8 @@
 'use strict';
 
 /**
- * Web-search grounding for an LLM synopsis the fast model could not write.
+ * Web-search grounding for every LLM synopsis (Haiku's first answer and the
+ * Opus fallback; Haiku was grounded too after BRO-5080 found it inventing).
  *
  * auto-fix-show-data.js asks Haiku first and falls back to Opus when Haiku
  * replies UNKNOWN. For a classic that fallback is right (Haiku balked at a

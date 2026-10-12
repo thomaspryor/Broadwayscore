@@ -53,6 +53,7 @@ Options:
   --help, -h    print this usage and exit
 `;
 
+const { wosStartDates, plausibleOpeningDate } = require('./lib/we-historical-dates');
 const ROOT = path.join(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
 const DAY_MS = 86400000;
@@ -93,16 +94,6 @@ function collapseDuplicateListings(rows) {
   return out;
 }
 
-const MAX_PREVIEW_DAYS = 42;
-
-/** WOS opening_date, or null when it is a placeholder (= first preview) or implausibly late. */
-function plausibleOpeningDate(l) {
-  if (!l.openingDate) return null;
-  if (!l.previewsStartDate) return l.openingDate;
-  const gapDays = (Date.parse(l.openingDate) - Date.parse(l.previewsStartDate)) / DAY_MS;
-  return gapDays > 0 && gapDays <= MAX_PREVIEW_DAYS ? l.openingDate : null;
-}
-
 /**
  * Pure: listings + signals + shows.json → candidate rows with decisions.
  * @param {{season: string, listings: Array, reviews: Array, oliviers: Array, shows: Array, today?: string}} input
@@ -135,15 +126,11 @@ function buildCandidates({ season, listings, reviews, oliviers, shows, today }) 
     const candidate = {
       title: l.title,
       venue: l.venue,
-      previewsStartDate: l.previewsStartDate,
-      // WOS fills opening_date with the first preview for many listings (26
-      // of 144 in 2024-25). A press night on the first performance is rare
-      // in the West End, so treat equal dates as "opening unknown" rather
-      // than write a placeholder as the opening night.
-      // Likewise an "opening" more than 6 weeks after the first preview is
-      // not a press night (Macbeth, Harold Pinter 2024: WOS says 12-08 for a
-      // run that opened in October and closed 12-14).
-      openingDate: plausibleOpeningDate(l),
+      // WOS opening_date is the first performance when no preview_date is
+      // listed (61 of 85 sampled 2018-24 rows showed a first preview as
+      // opening night, BRO-5080), and a placeholder when it equals the first
+      // preview or lands 6+ weeks after it. Rules: lib/we-historical-dates.js.
+      ...wosStartDates(l),
       closingDate: l.closingDate,
       genres: l.genres || [],
       season,

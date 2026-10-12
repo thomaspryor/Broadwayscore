@@ -28,6 +28,7 @@
 'use strict';
 
 const { isUnconfirmedDateSource } = require('./date-source-confidence');
+const { MODE_INFERENCE_SOURCE } = require('./we-historical-dates');
 const { normalizeDate } = require('./date-utils');
 const { isWithinPriorRun, isWithinTourLeg } = require('./wrong-production-autoclear');
 
@@ -269,6 +270,9 @@ function inferPressNightFromReviews({ candidateShows, reviews, enabled = true, s
     // list, making that wrong date permanent. Only Phase 3's authoritative
     // sources may revise a reverse inference.
     if (show.openingDateSource === REVERSE_SOURCE) continue;
+    // Same for the BRO-5080 review-mode repair (scripts/lib/we-historical-dates.js):
+    // a non-collapsed row whose forward re-run would chase straggler waves.
+    if (show.openingDateSource === MODE_INFERENCE_SOURCE) continue;
 
     const openingMs = new Date(show.openingDate).getTime();
     if (Number.isNaN(openingMs)) continue;

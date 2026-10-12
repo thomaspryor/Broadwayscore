@@ -42,8 +42,13 @@ on:
 # Serializing means the second dispatch just queues briefly — the loop caps
 # at 3 items/night, so throughput is a non-issue.
 # Group renamed autonomous-merge → landing (BRO-3873 step 3): land.yml's
-# `land` job shares it, so a hand/CI landing and an autonomous merge never
+# `land` job shared it (until BRO-5112, below), so a hand/CI landing and an autonomous merge never
 # race the same fast-forward either.
+# BRO-5112: land.yml's Land jobs left `landing` for per-branch groups plus the
+# landing mutex (the steps around "Run merge/revert"), which is what keeps
+# this workflow and land.yml from racing main now. The group stays so this
+# workflow still serializes itself, and with land.yml runs (re-runs) that
+# predate BRO-5112.
 concurrency:
   group: landing
   cancel-in-progress: false
@@ -77,7 +82,9 @@ jobs:
     # regresses to a truly shallow clone, it deepens via `git fetch
     # --unshallow` before the oscillation scan instead of silently
     # undercounting.
-    timeout-minutes: 50
+    #
+    # BRO-5112: +75 for the landing mutex wait (land-mutex DEADLINE_MINUTES).
+    timeout-minutes: 125
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -116,6 +123,17 @@ jobs:
           node scripts/build-actor-slugs-manifest.js
           node scripts/build-cast-manifest.js
 
+      - name: Wait for the landing mutex
+        # BRO-5112: land.yml's Land jobs no longer share the `landing` group
+        # (per-branch now); the fast-forward is serialized by this FIFO
+        # git-ref mutex instead. Fails open (exit 0) like there.
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_FALLBACK_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          LAND_BRANCH: ${{ github.event.inputs.branch }}
+          LAND_MUTEX_DISABLED: ${{ vars.LAND_MUTEX_DISABLED }}
+        run: node scripts/land-mutex.js acquire
+
       - name: Run merge/revert
         env:
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
@@ -128,6 +146,10 @@ jobs:
             --card "${{ github.event.inputs.card_id }}" \
             --branch "${{ github.event.inputs.branch }}" \
             --action "${{ github.event.inputs.action }}"
+
+      - name: Release the landing mutex
+        if: always()
+        run: node scripts/land-mutex.js release
 
       - name: Notify on failure
         if: failure()
