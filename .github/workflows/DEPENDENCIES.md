@@ -8,7 +8,7 @@ writer needs a known place in this graph.
 
 | Repo | Role | Workflows | Reached from this repo via |
 |---|---|---|---|
-| `thomaspryor/Broadwayscore` (main) | code + all pipelines (275 workflows here) | this directory | n/a |
+| `thomaspryor/Broadwayscore` (main) | code + all pipelines (277 workflows here) | this directory | n/a |
 | `thomaspryor/broadway-scorecard-data` (private) | core data: shows.json, reviews.json, commercial.json | `submit-indexnow.yml`, `theatr-review-discovery.yml` (own repo) | `checkout-core-data` (read), `push-core-data` (write) |
 | `thomaspryor/broadway-review-texts` (private) | review texts + aggregator archive | none checked in locally | `checkout-review-texts`/`checkout-aggregator-archive` (read), `push-review-texts`/`push-aggregator-archive` (write) |
 
@@ -291,7 +291,6 @@ Groups shared by 2+ workflows:
 | `commercial-data-write` | false | `commercial-friday.yml`, `commercial-release-held.yml`, `commercial-rss-poll.yml`, `commercial-stale-closures.yml`, `commercial-weekly.yml`, `deep-research-commercial.yml`, `scrape-waltz-costs.yml`, `update-commercial.yml` |
 | `data-grosses-writers` | false | `backfill-grosses.yml`, `scrape-alltime-grosses.yml`, `weekly-grosses.yml` |
 | `data-health-check` | false | `affiliate-link-integrity.yml`, `data-health-check.yml` |
-| `landing` | false | `autonomous-merge.yml`, `land.yml` |
 | `newsletter-draft` | false | `newsletter-draft-refresh.yml`, `newsletter-draft.yml` |
 | `rebuild-reviews` | false | `gather-reviews.yml`, `rebuild-reviews.yml`, `scoring-audit.yml` |
 | `reconcile-broadcast-state` | false | `discard-broadcast-draft.yml`, `reconcile-broadcast-state.yml` |

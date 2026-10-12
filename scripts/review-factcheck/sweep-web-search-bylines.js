@@ -11,7 +11,14 @@
  * page's critic for the same URL.
  *
  * Usage: node scripts/review-factcheck/sweep-web-search-bylines.js [--concurrency=8] [--limit=N]
+ *          [--recheck=<verdict>] [--fetcher=curl|fetchpage] [--time-budget-min=N] [--retry-fetched]
  *   -> $FACTCHECK_CACHE/web-search-bylines.json
+ *
+ * BRO-5090: --fetcher=fetchpage reads pages through scripts/lib/scraper.js
+ * fetchPage (Bright Data / ScrapingBee / Scrapingdog, CI secrets) instead of
+ * plain curl, for the paywalled hosts (NYT, WSJ, WaPo) that refuse curl.
+ * With --recheck, --limit caps how many of the rechecked rows are fetched
+ * this run; rows not fetched keep their previous entry.
  */
 const fs = require('fs');
 const os = require('os');
@@ -28,10 +35,58 @@ const CONC = Number(args.concurrency || 8);
 const LIMIT = Number(args.limit || 0);
 const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36';
 
+const TIME_BUDGET_MS = Number(args['time-budget-min'] || 0) * 60e3;
+
 const curl = url => new Promise(res => execFile('curl', ['-sSL', '--max-time', '30', '-A', UA, '-w', '\n__HTTP__%{http_code}', url], { maxBuffer: 30 << 20, encoding: 'utf8' }, (e, out) => {
   const m = String(out || '').match(/\n__HTTP__(\d+)$/);
   res({ status: m ? Number(m[1]) : 0, html: m ? out.slice(0, m.index) : '' });
 }));
+
+/**
+ * fetchPage as a curl-shaped result. A throw (every tier missed) is
+ * unreachable (status 0); non-HTML formats keep status 200 but carry no meta
+ * tags, so their byline reads 'unknown'.
+ */
+async function viaFetchPage(url) {
+  const { fetchPage } = require('../lib/scraper');
+  try {
+    const r = await fetchPage(url);
+    const html = String((r && r.content) || '');
+    // A challenge/soft-404 shell is not the page: count it as unreachable.
+    let garbage = false;
+    try { garbage = !!require('../lib/scraper').isChallengeOrGarbage(html); } catch { garbage = false; }
+    if (garbage) return { status: 0, html: '', fetchedVia: 'fetchPage-challenge' };
+    return html.trim() ? { status: 200, html, fetchedVia: r.source || 'fetchPage', format: r.format || null } : { status: 0, html: '', fetchedVia: 'fetchPage-empty' };
+  } catch (e) {
+    return { status: 0, html: '', fetchedVia: 'fetchPage-failed', error: String(e && e.message || e).slice(0, 120) };
+  }
+}
+
+/**
+ * Merge a recheck pass into the previous results. Rows fetched this run
+ * replace their old entry; rows not fetched keep it, except a rechecked row
+ * that no longer counts on the site (renamed, excluded, deleted), which is
+ * marked 'not-live' so it stops reading as unreachable. Pure.
+ * @param {object[]} prev previous web-search-bylines.json rows
+ * @param {object[]} fetched rows produced this run
+ * @param {Set<string>} liveKeys showId/file keys of current live web-search rows
+ * @param {string} recheck the verdict being rechecked
+ */
+function mergeRecheck(prev, fetched, liveKeys, recheck) {
+  const k = r => r.showId + '/' + r.file;
+  const done = new Map(fetched.map(r => [k(r), r]));
+  return prev.map(p => {
+    if (done.has(k(p))) return done.get(k(p));
+    if (p.verdict === recheck && !liveKeys.has(k(p))) return { ...p, verdict: 'not-live', dateVerdict: 'n/a' };
+    return p;
+  });
+}
+
+/** Did a fetchPage pass already try this row (failed, or read and still undecided)? Pure. */
+function alreadyTriedByFetchPage(row) {
+  const via = String(row && row.fetchedVia || '');
+  return via !== '' && via !== 'curl';
+}
 
 const normName = s => foldDiacritics(String(s || '')).toLowerCase().replace(/[^a-z ]+/g, ' ').replace(/\s+/g, ' ').trim();
 
@@ -97,30 +152,39 @@ async function main() {
     const dir = path.join(ROOT, 'data/review-texts', r.showId);
     if (!dirCache.has(r.showId)) {
       const files = [];
-      if (fs.existsSync(dir)) for (const f of fs.readdirSync(dir)) { if (!f.endsWith('.json')) continue; try { const j = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); files.push({ f, d: { outletId: j.outletId, criticName: j.criticName, source: j.source, url: j.url, duplicateOf: j.duplicateOf, publishDate: j.publishDate } }); } catch { /* skip */ } }
+      if (fs.existsSync(dir)) for (const f of fs.readdirSync(dir)) { if (!f.endsWith('.json')) continue; try { const j = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); files.push({ f, d: { outletId: j.outletId, criticName: j.criticName, source: j.source, url: j.url, duplicateOf: j.duplicateOf, publishDate: j.publishDate, textLen: String(j.fullText || '').trim().length, contentTier: j.contentTier || null } }); } catch { /* skip */ } }
       dirCache.set(r.showId, files);
     }
     const files = dirCache.get(r.showId);
     const own = files.find(x => x.d.outletId === r.outletId && x.d.criticName === r.criticName && !x.d.duplicateOf) || files.find(x => x.d.outletId === r.outletId && x.d.criticName === r.criticName);
     if (!own || own.d.source !== 'web-search') continue;
     const siblings = files.filter(x => x !== own && x.d.url && x.d.url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '') === r.url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')).map(x => ({ file: x.f, criticName: x.d.criticName, source: x.d.source, duplicateOf: x.d.duplicateOf || null }));
-    rows.push({ showId: r.showId, showTitle: (showTitles.get(r.showId) || ''), openingDate: showOpen.get(r.showId) || null, publishDate: own.d.publishDate || null, file: own.f, outletId: r.outletId, criticName: r.criticName, url: r.url, score: r.assignedScore, siblings });
+    rows.push({ showId: r.showId, showTitle: (showTitles.get(r.showId) || ''), openingDate: showOpen.get(r.showId) || null, publishDate: own.d.publishDate || null, file: own.f, outletId: r.outletId, criticName: r.criticName, url: r.url, score: r.assignedScore, textLen: own.d.textLen, contentTier: own.d.contentTier, siblings });
   }
-  // --recheck=different re-fetches only rows a previous run called different.
+  // --recheck=<verdict> re-fetches only rows a previous run gave that verdict.
   let todo = LIMIT ? rows.slice(0, LIMIT) : rows;
+  let prev = null;
   if (args.recheck) {
-    const prev = JSON.parse(fs.readFileSync(path.join(CACHE, 'web-search-bylines.json'), 'utf8'));
-    const keep = new Set(prev.filter(p => p.verdict === args.recheck).map(p => p.showId + '/' + p.file));
-    const rest = prev.filter(p => p.verdict !== args.recheck);
+    prev = JSON.parse(fs.readFileSync(path.join(CACHE, 'web-search-bylines.json'), 'utf8'));
+    // A row fetchPage already failed on stays 'unreachable'; without this the
+    // next run would spend its limit/time budget on the same hard failures
+    // first and never reach the untried rows. --retry-fetched re-tries them.
+    const keep = new Set(prev.filter(p => p.verdict === args.recheck && (args['retry-fetched'] || !alreadyTriedByFetchPage(p))).map(p => p.showId + '/' + p.file));
     todo = rows.filter(r => keep.has(r.showId + '/' + r.file));
-    rows.length = 0; rest.forEach(p => rows.push(p));
+    if (LIMIT) todo = todo.slice(0, LIMIT);
   }
-  const out = args.recheck ? [...rows] : [];
+  const fetcher = args.fetcher === 'fetchpage' ? viaFetchPage : curl;
+  const started = Date.now();
+  const fetched = [];
+  // Checkpoint every 50 fetched rows so a crash late in a run keeps what it paid for.
+  const liveKeys = new Set(rows.map(r => r.showId + '/' + r.file));
+  const save = () => fs.writeFileSync(path.join(CACHE, 'web-search-bylines.json'), JSON.stringify(prev ? mergeRecheck(prev, fetched, liveKeys, args.recheck) : fetched, null, 1));
   let i = 0;
   await Promise.all(Array.from({ length: CONC }, async () => {
     while (i < todo.length) {
+      if (TIME_BUDGET_MS && Date.now() - started > TIME_BUDGET_MS) return;
       const row = todo[i++];
-      const r = await curl(row.url);
+      const r = await fetcher(row.url);
       const bylines = r.status === 200 ? pageBylines(r.html) : [];
       let verdict = r.status === 200 ? compareByline(row.criticName, bylines) : 'unreachable';
       const title = r.status === 200 ? ((r.html.match(/<title[^>]*>([\s\S]*?)<\/title>/i) || [])[1] || '').trim() : '';
@@ -131,16 +195,27 @@ async function main() {
       const sib = verdict === 'different' ? row.siblings.find(s => compareByline(s.criticName, bylines) === 'match') : null;
       let pageDate = null;
       try { pageDate = r.status === 200 ? extractPublishDate(r.html, row.url) : null; } catch { pageDate = null; }
-      out.push({ ...row, status: r.status, bylines, verdict, siblingWithPageCritic: sib || null, pageDate, pageTitle: title.slice(0, 160),
+      fetched.push({ ...row, status: r.status, fetchedVia: r.fetchedVia || 'curl', bylines, verdict, siblingWithPageCritic: sib || null, pageDate, pageTitle: title.slice(0, 160),
         dateVerdict: judgeDate(row.publishDate, pageDate, row.openingDate, verdict) });
+      if (fetched.length % 50 === 0) save();
     }
   }));
+  const merged = prev ? mergeRecheck(prev, fetched, liveKeys, args.recheck) : fetched;
+  // Refresh the stored-text fields on every row (old curl-pass rows predate
+  // them), so the text-collection target list reads the files as they are now.
+  const byKey = new Map(rows.map(r => [r.showId + '/' + r.file, r]));
+  const out = merged.map(o => { const cur = byKey.get(o.showId + '/' + o.file); return cur ? { ...o, textLen: cur.textLen, contentTier: cur.contentTier } : o; });
   fs.writeFileSync(path.join(CACHE, 'web-search-bylines.json'), JSON.stringify(out, null, 1));
   const tally = {};
   for (const o of out) tally[o.verdict] = (tally[o.verdict] || 0) + 1;
   const dates = {};
   for (const o of out) dates[o.dateVerdict] = (dates[o.dateVerdict] || 0) + 1;
-  console.log(JSON.stringify({ rows: out.length, tally, dates, differentWithSibling: out.filter(o => o.siblingWithPageCritic).length }));
+  const fetchedTally = {};
+  for (const o of fetched) fetchedTally[o.verdict] = (fetchedTally[o.verdict] || 0) + 1;
+  let spend = null;
+  if (args.fetcher === 'fetchpage') { try { spend = require('../lib/scraper').getScraperStats(); } catch { spend = null; } }
+  console.log(JSON.stringify({ rows: out.length, fetched: fetched.length, queued: todo.length, fetchedTally, tally, dates, differentWithSibling: out.filter(o => o.siblingWithPageCritic).length, spend }));
+  if (args.fetcher === 'fetchpage') { try { await require('../lib/scraper').cleanup(); } catch { /* best effort */ } }
 }
-if (require.main === module) main();
-module.exports = { pageBylines, compareByline, normName, pageIsAboutShow, judgeDate };
+if (require.main === module) main().then(() => process.exit(0), (e) => { console.error(e); process.exit(1); });
+module.exports = { pageBylines, compareByline, normName, pageIsAboutShow, judgeDate, mergeRecheck, alreadyTriedByFetchPage };

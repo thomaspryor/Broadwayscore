@@ -27,6 +27,9 @@
 const REVIEW_TEXT_EDITABLE_FIELDS = [
   // byline / metadata
   'criticName', 'publishDate', 'designation',
+  // provenance of publishDate (BRO-5090): a date fix re-labels a provisional
+  // 'llm-scoring' / 'roundup-article' source, or guards keep ignoring the date
+  'dateSource',
   // ensemble rejection (not protected; null clears it)
   'rejectedAt', 'rejectedBy', 'rejectionReason', 'rejectionReasoning',
   // verdict flags and their human-clear markers
