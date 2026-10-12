@@ -93,6 +93,35 @@ function criticOutletCount(criticName, outletId) {
 }
 
 /**
+ * Outlet split (BRO-5128): registry outlet B declares `splitFrom: A` when A's
+ * one outletId used to cover two publications. A file still labelled A whose
+ * URL is on B's own domain is B's, whatever else it carries: the relabel moves
+ * the file with every flag, override and score intact, so the exclusion,
+ * operator-assertion and critic-record checks of publisherDomainCorrection
+ * (all there to stop a relabel from overruling a decision about THIS file)
+ * do not apply. A critic's record at A was built while both publications
+ * shared the id. Applied by applyUrlEditionCorrection only: misfileHealPlan's
+ * pointer-dropping and folding paths never see a split (it returns null).
+ * @returns {{ outletId: string, outlet: string, from: string|null, reason: string } | null}
+ */
+function splitOutletCorrection(data) {
+  if (!data || typeof data.url !== 'string' || !data.url || data._locked) return null;
+  const { resolveOutletFromUrl, getOutletFromRegistry } = require('./review-normalization');
+  const current = normalizeOutlet(data.outletId || data.outlet || '');
+  if (!current) return null;
+  const owner = resolveOutletFromUrl(data.url);
+  if (!owner || !owner.outletId || owner.outletId === current) return null;
+  const entry = getOutletFromRegistry(owner.outletId);
+  if (!entry || entry.splitFrom !== current) return null;
+  return {
+    outletId: owner.outletId,
+    outlet: getOutletDisplayName(owner.outletId) || owner.displayName || owner.outletId,
+    from: data.outletId || null,
+    reason: 'outlet-split',
+  };
+}
+
+/**
  * A review whose URL is on ANOTHER registry outlet's own domain is filed under
  * the wrong outletId (e.g. Brantley's theater.nytimes.com review under
  * about-entertainment, T3 0.35 instead of nytimes T1 1.0). Returns the
@@ -198,6 +227,9 @@ function textCovered(source, target) {
  */
 function misfileHealPlan({ data, file, io, explain }) {
   if (!data || data.duplicateTextOf || data.crossOutletDuplicate) return null;
+  // A split relabel is a rename that keeps every flag and pointer (BRO-5128),
+  // never a misfile to fold or un-point.
+  if (splitOutletCorrection(data)) return null;
   const hasPtr = !!data.duplicateOf;
   const stale = !hasPtr && !!(data.rejectedAt || data.rejectionReason) && !explain(data, file);
   if (!hasPtr && !stale) return null;
@@ -240,7 +272,8 @@ function misfileHealPlan({ data, file, io, explain }) {
 
 /** Apply the URL-edition or publisher-domain correction in place; returns it or null. */
 function applyUrlEditionCorrection(data, today = new Date().toISOString().slice(0, 10), opts = {}) {
-  const fix = urlEditionCorrection(data) ? { ...urlEditionCorrection(data), reason: 'url-edition' } : publisherDomainCorrection(data, opts);
+  const edition = urlEditionCorrection(data);
+  const fix = edition ? { ...edition, reason: 'url-edition' } : (splitOutletCorrection(data) || publisherDomainCorrection(data, opts));
   if (!fix) return null;
   data.outletIdCorrectedFrom = fix.from;
   data.outletIdCorrectedReason = `${fix.reason}: ${data.url} resolves to ${fix.outletId} (${today})`;
@@ -523,7 +556,7 @@ function runOutletMismatchCleanup({ reviewTextsDir, showDirs, showById = {}, dry
         // A publisher-domain relabel is only persisted once the rename/merge
         // it needs lands (BRO-4402): a kept tombstone must stay untouched, not
         // become a mislabelled file that re-reports every run.
-        const deferWrite = !!editionFix && editionFix.reason === 'publisher-domain';
+        const deferWrite = !!editionFix && (editionFix.reason === 'publisher-domain' || editionFix.reason === 'outlet-split');
         const announceFix = () => {
           out.editionFixedCount++;
           act(`${sid}/${f}: outletId ${editionFix.from} -> ${editionFix.outletId} (${editionFix.reason})`);
@@ -655,6 +688,7 @@ module.exports = {
   makeDirIO,
   urlEditionCorrection,
   publisherDomainCorrection,
+  splitOutletCorrection,
   misfileHealPlan,
   excludedTargetSwapAllowed,
   sameArticlePath,

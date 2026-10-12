@@ -1587,8 +1587,11 @@ function isRoundupUrl(url) {
   // host, found live in the same sweep. jesus-christ-superstar-west-end-2026's
   // was bylined "Editorial Staff", opened "opened at the London Palladium to
   // sharply divided reviews. Here is the critics' verdict", and was scored 78
-  // in reviews.json (2026-09-05).
-  if (/britishtheatre\.com\/posts\/[^/?#]*review-round[-_ ]?up/i.test(url)) {
+  // in reviews.json (2026-09-05). The site also serves every post under a
+  // locale prefix (/es/posts/, /de/posts/, /pt-br/posts/) and spells the slug
+  // "review-roundup" or "reviews-roundup" (BRO-5128: waiting-for-godot-west-end-2024
+  // /es/posts/waiting-for-godot-review-roundup was scored 90).
+  if (/britishtheatre\.com\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?posts\/[^/?#]*reviews?-round[-_ ]?up/i.test(url)) {
     return { isRoundup: true, reason: 'BritishTheatre review round-up post (aggregate of other critics)' };
   }
 
@@ -2805,7 +2808,9 @@ const ROUNDUP_HOST_OUTLETS = {
   // defensive — the corpus uses the bare id, confirmed against
   // data/outlet-registry.json.
   'bestoftheatre.co.uk': ['bestoftheatre', 'best-of-theatre'],
-  'britishtheatre.com': ['british-theatre', 'britishtheatre'],
+  // britishtheatrecom is the outlet's own id since BRO-5128; british-theatre
+  // stays for files the rebuild has not relabelled yet.
+  'britishtheatre.com': ['britishtheatrecom', 'british-theatre', 'britishtheatre'],
   // BRO-4875, with their isRoundupUrl patterns. Ids per data/outlet-registry.json.
   'londontheatredirect.com': ['londontheatredirect', 'london-theatre-direct'],
   'independent.co.uk': ['independent', 'the-independent'],

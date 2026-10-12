@@ -12,7 +12,7 @@ const LONDON_SUPPLEMENT = [
   'new-statesman', 'afridiziak-theatre-news', 'theatreandtonic',
   'west-end-best-friend', 'all-that-dazzles-uk',
   'london-box-office', 'artsdesk', 'theatre-weekly', 'theupcoming',
-  'musical-theatre-review', 'british-theatre', 'everything-theatre',
+  'musical-theatre-review', 'british-theatre', 'britishtheatrecom', 'everything-theatre',
   'londonist', 'thereviewshub', 'city-am', 'a-younger-theatre',
   'west-end-wilma', 'digital-spy', 'monstagigz',
   'radio-times', 'attitude', 'metro-uk', 'lost-in-theatreland',

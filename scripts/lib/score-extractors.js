@@ -1323,9 +1323,10 @@ function extractObserverScore(html, text, showTitle) {
 }
 
 // britishtheatre.com (BritishTheatre.com, Paul T. Davies, Julian Eaves...) prints
-// "<p>N Stars</p>" in the article header. It shares outletId 'british-theatre'
-// with britishtheatreguide.info, which prints no ratings, so only a page served
-// from britishtheatre.com is read (BRO-5081).
+// "<p>N Stars</p>" in the article header. Its own id is 'britishtheatrecom'
+// since BRO-5128; files still labelled 'british-theatre' (British Theatre Guide,
+// britishtheatreguide.info, which prints no ratings) until the rebuild relabels
+// them use it too, so only a page served from britishtheatre.com is read (BRO-5081).
 function extractBritishTheatreScore(html) {
   if (_pageHost(html) !== 'britishtheatre.com') return { __skipGeneric: true };
   const head = html.slice(0, 120000);
@@ -1417,6 +1418,7 @@ const OUTLET_EXTRACTORS = {
   'rollingstone': noScoreExtractor,    // RS theater reviews don't have star ratings
   'rolling-stone': noScoreExtractor,
   'british-theatre': extractBritishTheatreScore, // britishtheatre.com prints stars; britishtheatreguide.info does not
+  'britishtheatrecom': extractBritishTheatreScore, // BRO-5128: BritishTheatre.com's own id since the split
   'britishtheatreguide': noScoreExtractor,
   'rolling-stone': noScoreExtractor,
   'theater-life': extractUKStarRating,
@@ -1882,7 +1884,9 @@ function publishesNoCriticRating(outletId, data) {
 // Outlets whose extractor reads one specific host and skips the rest (outletId
 // shared by a star-printing and a star-less site). Not in KNOWN_STAR_OUTLETS, so
 // the generic glyph scan never runs for them (BRO-5081).
-const HOST_GATED_STAR_OUTLETS = new Set(['british-theatre']);
+// british-theatre keeps the entry for files the rebuild has not relabelled to
+// britishtheatrecom yet (BRO-5128).
+const HOST_GATED_STAR_OUTLETS = new Set(['british-theatre', 'britishtheatrecom']);
 
 module.exports = {
   extractScore,

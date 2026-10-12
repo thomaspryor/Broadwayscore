@@ -3,7 +3,7 @@
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
     "lastUpdated": "2026-10-12T06:36:15.758Z",
     "version": "2.1.0",
-    "lastChange": "task #1844 follow-up: move mislabeled sundayexpress alias from express-uk to sunday-express + repoint metro-source aliasIndex entry from metro-uk to metrosource (real routing bugs found by adversarial review, not registry duplicates)"
+    "lastChange": "BRO-5128: split BritishTheatre.com (britishtheatrecom, britishtheatre.com) out of british-theatre (British Theatre Guide, now britishtheatreguide.info)"
   },
   "outlets": {
     "westendtheatre": {
@@ -2833,9 +2833,8 @@
       "tier": 2,
       "aliases": [
         "british-theatre",
-        "british theatre",
-        "britishtheatrecom",
         "britishtheatre",
+        "british theatre",
         "british-theatre-guide",
         "british theatre guide",
         "britishtheatreguide-info",
@@ -2843,12 +2842,25 @@
         "britishtheatreguide",
         "btg"
       ],
+      "domain": "britishtheatreguide.info",
+      "region": "london",
+      "accessModel": "free"
+    },
+    "britishtheatrecom": {
+      "displayName": "BritishTheatre.com",
+      "tier": 2,
+      "aliases": [
+        "britishtheatrecom",
+        "britishtheatre.com",
+        "britishtheatre-com",
+        "www.britishtheatre.com",
+        "british theatre.com"
+      ],
       "domain": "britishtheatre.com",
       "region": "london",
       "accessModel": "free",
-      "domainAliases": [
-        "britishtheatreguide.info"
-      ]
+      "splitFrom": "british-theatre",
+      "splitNote": "BRO-5128: BritishTheatre.com (britishtheatre.com) is a separate publication from British Theatre Guide (britishtheatreguide.info); both were filed under british-theatre until 2026-10-12. Files on a britishtheatre.com url migrate here via the rebuild outlet-mismatch pass."
     },
     "sfgate": {
       "displayName": "SFGate",
@@ -12590,7 +12602,7 @@
     "new-york-1": "ny1",
     "newjerseycom": "njcom",
     "the-jewish-daily-forward": "forward",
-    "britishtheatrecom": "british-theatre",
+    "britishtheatrecom": "britishtheatrecom",
     "1minutecritic": "one-minute-critic",
     "the-washington-times": "washington-times",
     "the-albany-times-union": "albany-times-union",
