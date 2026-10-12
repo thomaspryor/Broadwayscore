@@ -427,5 +427,35 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-12T12:56:49.134Z"
+  },
+  {
+    "conditionKey": "land:land/bro-3999-empty-body-sweep",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-3999-empty-body-sweep",
+    "description": "land.yml did not land land/bro-3999-empty-body-sweep: the scripts-lib-tests gate went red at 1628dd0c9d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38249038797",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-3999-empty-body-sweep"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "1628dd0c9d1df12dd31ac7bb61886c973303e365"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38249038797"
+      }
+    ],
+    "queuedAt": "2026-10-12T13:03:36.853Z"
   }
 ]
