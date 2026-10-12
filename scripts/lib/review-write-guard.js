@@ -1084,8 +1084,27 @@ const CLEAR_BREADCRUMBS = {
  */
 function isIntentionalClear(field, localData, committedData) {
   if (!localData) return false;
+  if (_deliberateTextTrim(field, localData, committedData)) return true;
   if (_differentArticleAtSamePath(field, localData, committedData)) return true;
   return _isBreadcrumbClear(field, localData, committedData);
+}
+
+/**
+ * BRO-5141: a writer cut text that did not belong to this review (Theatre
+ * Record text that ran on into the next production) and recorded the length
+ * it cut from in `fullTextTrimmed.fromLength`. A push restore comparing
+ * lengths would read the other copy, still holding exactly that original
+ * text, as richer content and put it back. Only that exact original counts:
+ * any other longer text (a real re-collection) is still restored.
+ */
+const TRIM_FOLLOWER_FIELDS = new Set(['fullText', 'textWordCount', 'wordCount', 'textStatus', 'textQuality', 'contentTier', 'contentTierReason']);
+function _deliberateTextTrim(field, localData, committedData) {
+  if (!TRIM_FOLLOWER_FIELDS.has(field)) return false;
+  const t = localData.fullTextTrimmed;
+  if (!t || typeof t.fromLength !== 'number' || !localData.fullText) return false;
+  return !!committedData && typeof committedData.fullText === 'string'
+    && committedData.fullText.length === t.fromLength
+    && committedData.fullText.length > localData.fullText.length;
 }
 
 // The breadcrumb half alone. safeWriteReview's own merge uses this: there the

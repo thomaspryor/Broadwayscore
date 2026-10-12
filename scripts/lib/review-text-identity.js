@@ -182,6 +182,9 @@ function mergeTheatreRecordIntoExisting(existing, reviewData, { fillCritic = fal
       && hasProductionHeaderBleed(merged.fullText) && !hasProductionHeaderBleed(reviewData.fullText)
       && openingOf(reviewData.fullText).length === OPENING_CHARS
       && openingOf(merged.fullText) === openingOf(reviewData.fullText)) {
+    // Breadcrumb: the push restore must not read the remote's longer, bled
+    // copy as richer content and put it back (review-write-guard isIntentionalClear).
+    merged.fullTextTrimmed = { reason: 'theatre-record header bleed (BRO-5141)', fromLength: existing.fullText.length, at: new Date().toISOString() };
     merged.fullText = reviewData.fullText;
     merged.textWordCount = reviewData.fullText.split(/\s+/).filter(Boolean).length;
     markRescoreNeeded(merged, 'theatre-record: text trimmed to own section (BRO-5141)');

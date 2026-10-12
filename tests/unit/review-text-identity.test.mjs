@@ -118,6 +118,14 @@ test('ingest merge (BRO-5141): a clean re-extraction replaces text that bled int
   assert.match(merged.rescoreReason, /BRO-5141/);
   assert.equal(merged.textWordCount, own.split(/\s+/).length);
   assert.equal(merged.assignedScore, 77, 'score stays until the rescore lands');
+  assert.equal(merged.fullTextTrimmed.fromLength, bled.length);
+
+  // The push restore must not put the bled copy back as "richer" content
+  // (review-refresh run 38223606879 reverted 3 trims this way).
+  const { isIntentionalClear } = require('../../scripts/lib/review-write-guard.js');
+  assert.equal(isIntentionalClear('fullText', merged, existing), true);
+  assert.equal(isIntentionalClear('textWordCount', merged, existing), true);
+  assert.equal(isIntentionalClear('fullText', merged, { ...existing, fullText: bled + ' A real longer re-collection.' }), false);
 
   const other = mergeTheatreRecordIntoExisting(existing, { criticName: 'Howard Loxton', fullText: 'A different review entirely. '.repeat(20) });
   assert.equal(other.fullText, bled, 'a different opening never replaces the stored text');
