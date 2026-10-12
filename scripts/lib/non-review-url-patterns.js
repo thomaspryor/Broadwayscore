@@ -151,7 +151,7 @@ const NON_REVIEW_PATH_PATTERNS = [
   /new-tour-dates/i,
   // "<show>-is-coming-to-59e59-theaters" (BRO-4679 openingnight.online census
   // gap). 0 of 26,591 reviews.json URLs.
-  /(^|[-/])(is|are)-coming-to-/i,
+  /(^|[-/])(is|are)-coming-to-(?!terms|life|grips)/i,
   // Photo galleries: openingnight.online/photos-becoming-hamlet-celebrates-
   // opening-night-off-broadway/ was Becoming Hamlet's residual census "gap".
   // 0 of 21,083 reviews.json URLs have a path segment starting "photo(s)-".

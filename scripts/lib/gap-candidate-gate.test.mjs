@@ -51,6 +51,10 @@ test('junk URLs from the cluster cards are not gap candidates', () => {
   }
 });
 
+test('a review headline with "is coming to terms/life" stays a candidate', () => {
+  assert.deepStrictEqual(classifyGapCandidateUrl('https://www.thetheatretimes.com/the-hope-theory-is-coming-to-terms-with-grief/'), { ok: true, reason: null });
+});
+
 test('real reviews on the same hosts stay candidates', () => {
   for (const u of REAL) assert.deepStrictEqual(classifyGapCandidateUrl(u), { ok: true, reason: null }, u);
 });
@@ -118,6 +122,10 @@ test('a show with no opening date still dates roundups by previews: older runs a
   // no upper bound without an opening: a late press night stays current
   assert.strictEqual(isCurrentRunRoundup('2026-11-01', met), true);
   assert.strictEqual(isCurrentRunRoundup('2020-01-24', { openingDate: null }), true);
+  // a declared earlier run keeps its roundups (transfer with no opening date yet)
+  const transfer = { openingDate: null, previewsStartDate: '2026-10-16', priorRuns: [{ openingDate: '2026-07-01', closingDate: '2026-08-30' }] };
+  assert.strictEqual(isCurrentRunRoundup('2026-07-05', transfer), true);
+  assert.strictEqual(isCurrentRunRoundup('2020-07-05', transfer), false);
 });
 
 test('an undated roundup is dated by its URL (BWW YYYYMMDD) when the page gives no publish date', () => {
